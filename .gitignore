@@ -1,0 +1,39 @@
+# Unity project and Git repository share this root.
+# Generated Unity data and local editor settings
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+/.utmp/
+/UIElementsSchema/
+/mono_crash.*
+/sysinfo.txt
+/*.log
+
+# Player builds and package exports
+/[Bb]uild/
+/[Bb]uilds/
+/*.apk
+/*.aab
+/*.app/
+/*.unitypackage
+/*.unitypackage.meta
+
+# Generated IDE projects and local caches
+/*.csproj
+/*.unityproj
+/*.sln
+/*.slnx
+/*.suo
+/*.user
+/*.userprefs
+.vs/
+.idea/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+[Dd]esktop.ini
