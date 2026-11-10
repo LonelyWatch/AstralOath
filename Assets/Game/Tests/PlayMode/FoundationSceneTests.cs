@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 using System.Linq;
-using AstralOath.Client.FoundationDemo;
+using AstralOath.Client.Common;
 using NUnit.Framework;
 using TMPro;
 using UnityEditor;
@@ -57,12 +57,14 @@ namespace AstralOath.Client.Tests
             var scene = EditorSceneManager.LoadSceneInPlayMode(ScenePath, new LoadSceneParameters(LoadSceneMode.Additive));
             try
             {
-                yield return null;
-                var view = scene.GetRootGameObjects().SelectMany(go => go.GetComponentsInChildren<FoundationView>(true)).Single();
-                var status = view.Status.GetComponent<TextMeshProUGUI>();
+                BindingMap view = null;
+                yield return WaitFor(() => view = scene.GetRootGameObjects()
+                    .SelectMany(go => go.GetComponentsInChildren<BindingMap>(true)).SingleOrDefault());
+                var status = view.Require<GameText>("status").GetComponent<TextMeshProUGUI>();
                 yield return WaitFor(() => status.text == ready);
-                Assert.That(view.Title.GetComponent<TextMeshProUGUI>().text, Is.EqualTo(locale[demo.titleKey]));
-                Assert.That(view.Description.GetComponent<TextMeshProUGUI>().text, Is.EqualTo(locale[demo.messageKey]));
+                var title = view.Require<GameText>("title").GetComponent<TextMeshProUGUI>();
+                Assert.That(title.text, Is.EqualTo(locale[demo.titleKey]));
+                Assert.That(view.Require<GameText>("description").GetComponent<TextMeshProUGUI>().text, Is.EqualTo(locale[demo.messageKey]));
                 Assert.That(scene.GetRootGameObjects().Select(go => go.GetComponent<Camera>())
                     .Count(camera => camera && camera.isActiveAndEnabled), Is.EqualTo(1));
                 const string fontPath = "Assets/Game/Modules/FoundationDemo/Res/Fonts/FoundationFont.asset";
@@ -77,7 +79,6 @@ namespace AstralOath.Client.Tests
                     Assert.That(label.fontSharedMaterial, Is.EqualTo(font.material), label.name);
                 }
 
-                var title = view.Title.GetComponent<TextMeshProUGUI>();
                 title.ForceMeshUpdate();
                 Assert.That(title.textInfo.characterCount, Is.EqualTo(title.text.Length));
                 Assert.That(title.textInfo.characterInfo.Take(title.textInfo.characterCount)
@@ -85,13 +86,13 @@ namespace AstralOath.Client.Tests
 
                 if (Environment.GetEnvironmentVariable("ASTRAL_FOUNDATION_LIVE_TEST") == "1")
                 {
-                    view.Echo.GetComponent<Button>().onClick.Invoke();
+                    view.Require<GameButton>("echo").GetComponent<Button>().onClick.Invoke();
                     yield return WaitFor(() => status.text != ready && status.text != locale["foundation.pending"]);
                     Assert.That(status.text, Is.Not.EqualTo(locale["foundation.echo.error"]));
                     Debug.Log("ASTRAL_EDITOR_ECHO_OK " + status.text);
                 }
 
-                view.Close.GetComponent<Button>().onClick.Invoke();
+                view.Require<GameButton>("close").GetComponent<Button>().onClick.Invoke();
                 Assert.That(view.gameObject.activeSelf, Is.False);
                 Button open = scene.GetRootGameObjects()
                     .SelectMany(go => go.GetComponentsInChildren<Button>(true)).Single(button => button.name == "Open");

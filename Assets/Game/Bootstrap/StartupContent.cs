@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using AstralOath.Client.Common;
 using AstralOath.Client.Core;
 using AstralOath.Client.FoundationDemo;
 using AstralOath.Shared;
@@ -16,7 +17,7 @@ namespace AstralOath.Client.Bootstrap
 {
     internal sealed class StartupContent : IDisposable
     {
-        private const int SchemaVersion = 1;
+        private const int SchemaVersion = 2;
 
         [Serializable, Preserve]
         private sealed class PublicKey
@@ -146,6 +147,9 @@ namespace AstralOath.Client.Bootstrap
             {
                 await assets.InitializeAsync(token, root);
                 using var scope = new BindingScope(token);
+                var prefab = await assets.LoadAsync<GameObject>(FoundationView.PrefabAddress, scope);
+                scope.Token.ThrowIfCancellationRequested();
+                UIViewRegistry.ValidatePrefab<FoundationView>(prefab);
                 var config = new JsonConfigService(assets);
                 var messages = await DemoMessages.LoadAsync(config, scope);
                 var locale = new LocaleService(messages, textLocale, voiceLocale, "ja", "zh-Hans");

@@ -92,6 +92,7 @@ namespace AstralOath.Client.FoundationDemo
             try
             {
                 var result = await ReadOpenModelAsync(assets, config, lua, locale, scope);
+                scope.Token.ThrowIfCancellationRequested();
                 view.Show();
                 result.title.Bind(view.Title, locale, scope);
                 result.description.Bind(view.Description, locale, scope);
@@ -221,7 +222,7 @@ namespace AstralOath.Client.FoundationDemo
             var scope = current;
             current = null;
             try { scope?.Dispose(); }
-            finally { if (view) view.Hide(); }
+            finally { if (view.Root) view.Hide(); }
         }
 
         public void Dispose()

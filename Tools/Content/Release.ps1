@@ -13,6 +13,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
+. (Join-Path $PSScriptRoot 'SourcePath.ps1')
 $repo = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
 $original = 'D:/sevenepic'
 $artifacts = Join-Path $repo '.artifacts'
@@ -97,14 +98,15 @@ function Read-Provenance([string]$InputFile) {
     Assert-PathSet $document.files.path
     $entries = [Collections.Generic.Dictionary[string,object]]::new([StringComparer]::Ordinal)
     foreach ($entry in $document.files) {
+        if ($entry.sourcePath -isnot [string]) { throw 'Source path must be a string.' }
         if ($entry.origin -ceq 'project') {
             $sourceRoot = $repo
-            if ($entry.sourcePath -notmatch '\A(?:Assets|Config)/') { throw 'Project sources must be under Assets or Config.' }
+            if ($entry.sourcePath -cnotmatch '\A(?:Assets|Config)/') { throw 'Project sources must be under Assets or Config.' }
         } elseif ($entry.origin -ceq 'sevenepic') {
             $sourceRoot = $original
         } else { throw "Unknown origin '$($entry.origin)'." }
 
-        $source = Resolve-File $sourceRoot $entry.sourcePath
+        $source = Resolve-ContentSourceFile $sourceRoot $entry.sourcePath
         if ($entry.sourceSha256 -cnotmatch '\A[a-f0-9]{64}\z' -or (Get-Hash $source) -cne $entry.sourceSha256) {
             throw "Source hash mismatch for '$($entry.sourcePath)'."
         }

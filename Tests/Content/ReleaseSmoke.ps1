@@ -5,13 +5,14 @@ Set-Location $repo
 $staging = '.artifacts/content-smoke-' + [Guid]::NewGuid().ToString('N')
 New-Item -ItemType Directory -Path "$staging/input/yooasset" -Force | Out-Null
 Set-Content -Path "$staging/input/yooasset/demo.bytes" -Value 'foundation' -NoNewline
-$source = 'Config/Tables/demo_ui.csv'
+$tmpShader = 'Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader'
+if (-not (Test-Path -LiteralPath $tmpShader -PathType Leaf)) { throw 'The Foundation TMP shader source fixture is missing.' }
 $provenance = @{
     files = @(@{
         path = 'yooasset/demo.bytes'
         origin = 'project'
-        sourcePath = $source
-        sourceSha256 = (Get-FileHash $source).Hash.ToLowerInvariant()
+        sourcePath = $tmpShader
+        sourceSha256 = (Get-FileHash -LiteralPath $tmpShader).Hash.ToLowerInvariant()
         dependencies = @()
     })
 }
@@ -31,6 +32,62 @@ try { & ./Tools/Content/Release.ps1 -Action Build -Key "$staging/dev/private.key
 if (-not $rejected) { throw 'Unresolved dependency was accepted.' }
 Write-Host 'Content CLI round-trip, tamper and dependency checks passed.'
 
+$sourceDirectory = 'Config/.release-smoke-' + [Guid]::NewGuid().ToString('N')
+$unicodeSource = "$sourceDirectory/中文 资源.txt"
+$sourceLink = "$sourceDirectory/linked"
+$sourceLinkTarget = (Resolve-Path -LiteralPath "$staging/input/yooasset").Path
+$null = New-Item -ItemType Directory -Path $sourceDirectory
+try {
+    Set-Content -LiteralPath $unicodeSource -Value 'local source fixture' -NoNewline
+    $sourceEntry = $provenance.files[0]
+    $sourceEntry.dependencies = @()
+    $sourceEntry.sourcePath = $unicodeSource
+    $sourceEntry.sourceSha256 = (Get-FileHash -LiteralPath $unicodeSource).Hash.ToLowerInvariant()
+    $provenance | ConvertTo-Json -Depth 8 | Set-Content "$staging/provenance.json"
+    & ./Tools/Content/Release.ps1 -Action Build -Key "$staging/dev/private.key" -PayloadRoot "$staging/input" -Provenance "$staging/provenance.json" -Release "$staging/unicode-release" -Version 3
+    & ./Tools/Content/Release.ps1 -Action Verify -Key "$staging/dev/public.pem" -Release "$staging/unicode-release"
+
+    $linkType = if ($IsWindows) { 'Junction' } else { 'SymbolicLink' }
+    $null = New-Item -ItemType $linkType -Path $sourceLink -Target $sourceLinkTarget
+    $cases = @(
+        @{ name = 'traversal'; origin = 'project'; path = "$sourceDirectory/../Tables/demo_ui.csv"; file = 'Config/Tables/demo_ui.csv'; error = '*Invalid source path*' }
+        @{ name = 'absolute'; origin = 'sevenepic'; path = (Resolve-Path -LiteralPath $tmpShader).Path; file = $tmpShader; error = '*Invalid source path*' }
+        @{ name = 'drive-relative'; origin = 'sevenepic'; path = 'C:demo.bytes'; file = $tmpShader; error = '*Invalid source path*' }
+        @{ name = 'unc'; origin = 'sevenepic'; path = '//server/share/demo.bytes'; file = $tmpShader; error = '*Invalid source path*' }
+        @{ name = 'outside-project-source'; origin = 'project'; path = 'README.md'; file = 'README.md'; error = '*Project sources must be under Assets or Config*' }
+        @{ name = 'linked-source'; origin = 'project'; path = "$sourceLink/demo.bytes"; file = "$sourceLinkTarget/demo.bytes"; error = '*reparse point*' }
+    )
+    foreach ($case in $cases) {
+        $sourceEntry.origin = $case.origin
+        $sourceEntry.sourcePath = $case.path
+        $sourceEntry.sourceSha256 = (Get-FileHash -LiteralPath $case.file).Hash.ToLowerInvariant()
+        $releasePath = "$staging/rejected-$($case.name)"
+        $provenance | ConvertTo-Json -Depth 8 | Set-Content "$staging/provenance.json"
+        $rejected = $false
+        try {
+            & ./Tools/Content/Release.ps1 -Action Build -Key "$staging/dev/private.key" -PayloadRoot "$staging/input" -Provenance "$staging/provenance.json" -Release $releasePath -Version 4
+        } catch { $rejected = $_.Exception.Message -like $case.error }
+        if (-not $rejected -or (Test-Path -LiteralPath $releasePath)) { throw "Unsafe source was not rejected as expected: $($case.name)." }
+    }
+
+    $sourceEntry.origin = 'project'
+    $sourceEntry.sourcePath = $unicodeSource
+    $sourceEntry.sourceSha256 = (Get-FileHash -LiteralPath $unicodeSource).Hash.ToLowerInvariant()
+    $sourceEntry.path = 'yooasset/invalid payload.bytes'
+    Copy-Item -LiteralPath "$staging/input/yooasset/demo.bytes" -Destination "$staging/input/$($sourceEntry.path)"
+    $provenance | ConvertTo-Json -Depth 8 | Set-Content "$staging/provenance.json"
+    $rejected = $false
+    try {
+        & ./Tools/Content/Release.ps1 -Action Build -Key "$staging/dev/private.key" -PayloadRoot "$staging/input" -Provenance "$staging/provenance.json" -Release "$staging/unsafe-payload" -Version 4
+    } catch { $rejected = $_.Exception.Message -like '*Invalid relative path*' }
+    if (-not $rejected -or (Test-Path -LiteralPath "$staging/unsafe-payload")) { throw 'A payload path with spaces was accepted.' }
+} finally {
+    if (Test-Path -LiteralPath $sourceLink) { Remove-Item -LiteralPath $sourceLink }
+    if (Test-Path -LiteralPath $unicodeSource) { Remove-Item -LiteralPath $unicodeSource }
+    Remove-Item -LiteralPath $sourceDirectory
+}
+Write-Host 'Local source paths allow spaces and CJK while unsafe sources and payload paths are rejected.'
+
 $packageDir = "$staging/unity-package"
 New-Item -ItemType Directory -Path $packageDir | Out-Null
 Set-Content -Path "$packageDir/Foundation.version" -Value 'foundation-1' -NoNewline
@@ -46,11 +103,13 @@ Set-Content -Path "$packageDir/OutputCache.manifest" -Value 'build-only fixture'
         FileSize = (Get-Item "$packageDir/demo.bundle").Length
         FileHash = (Get-FileHash "$packageDir/demo.bundle" -Algorithm MD5).Hash
         DependBundles = @()
-        BundleContents = @(@{ AssetPath = 'Assets/Game/Modules/FoundationDemo/Res/Text/demo-resource.txt' })
+        BundleContents = @(@{ AssetPath = $tmpShader })
     })
 } | ConvertTo-Json -Depth 8 | Set-Content "$packageDir/Foundation_foundation-1.report"
 & ./Tools/Content/Package-Unity.ps1 -PackageDirectory $packageDir -Key "$staging/dev/private.key" -Release "$staging/unity-release" -Version 42
-& ./Tools/Content/Release.ps1 -Action Verify -Key "$staging/dev/public.pem" -Release "$staging/unity-release"
+& ./Tools/Content/Release.ps1 -Action Verify -Key "$staging/dev/public.pem" -Release "$staging/unity-release" -SchemaVersion 2
+$unityManifest = Get-Content -Raw "$staging/unity-release/manifest.json" | ConvertFrom-Json
+if ($unityManifest.schemaVersion -ne 2) { throw 'Foundation UIView content must use schema 2.' }
 if (-not (Test-Path "$staging/unity-release/yooasset/Foundation/demo.bundle") -or
     (Test-Path "$staging/unity-release/yooasset/Foundation/OutputCache.manifest")) {
     throw 'YooAsset bundle layout or allowlist differs from the build report.'

@@ -1,12 +1,12 @@
 using AstralOath.Client.Common;
-using UnityEngine;
 
 namespace AstralOath.Client.FoundationDemo
 {
-    [DisallowMultipleComponent, RequireComponent(typeof(BindingMap))]
-    public sealed class FoundationView : MonoBehaviour
+    public sealed class FoundationView : UIView
     {
-        private BindingMap Bindings => GetComponent<BindingMap>();
+        public const string PrefabAddress = "foundation/foundation-window";
+
+        public override string PrefabPath => PrefabAddress;
         public GameText Title => Bindings.Require<GameText>("title");
         public GameText Description => Bindings.Require<GameText>("description");
         public GameText Status => Bindings.Require<GameText>("status");
@@ -15,7 +15,7 @@ namespace AstralOath.Client.FoundationDemo
         public GameButton Close => Bindings.Require<GameButton>("close");
         public GameText CloseLabel => Bindings.Require<GameText>("closeLabel");
 
-        public void Validate()
+        public override void Validate()
         {
             _ = Title;
             _ = Description;
@@ -26,7 +26,5 @@ namespace AstralOath.Client.FoundationDemo
             _ = CloseLabel;
         }
 
-        public void Show() => gameObject.SetActive(true);
-        public void Hide() => gameObject.SetActive(false);
     }
 }

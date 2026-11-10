@@ -6,11 +6,12 @@ param(
     [Parameter(Mandatory)][string]$Release,
     [Parameter(Mandatory)][long]$Version,
     [int]$ProtocolVersion = 1,
-    [int]$SchemaVersion = 1
+    [int]$SchemaVersion = 2
 )
 
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
+. (Join-Path $PSScriptRoot 'SourcePath.ps1')
 $repo = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
 $package = (Resolve-Path -LiteralPath $PackageDirectory).Path
 $prefix = 'yooasset/Foundation/'
@@ -28,14 +29,15 @@ function Get-PackageFile([string]$Name) {
 }
 
 function New-Provenance([string]$Name, [string]$Source, [string[]]$Dependencies) {
-    if ($Source -cnotmatch '\AAssets/(?:[A-Za-z0-9_][A-Za-z0-9_.-]*/)*[A-Za-z0-9_][A-Za-z0-9_.-]*\z') {
+    if ($Source -cnotmatch '\AAssets/') {
         throw "Expected a project asset source: $Source"
     }
+    $sourceFile = Resolve-ContentSourceFile $repo $Source
     return @{
         path = $prefix + $Name
         origin = 'project'
         sourcePath = $Source
-        sourceSha256 = (Get-FileHash -LiteralPath (Join-Path $repo $Source)).Hash.ToLowerInvariant()
+        sourceSha256 = (Get-FileHash -LiteralPath $sourceFile).Hash.ToLowerInvariant()
         dependencies = @($Dependencies | ForEach-Object { $prefix + $_ })
     }
 }

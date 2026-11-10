@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace AstralOath.Client.Common
 {
@@ -11,30 +12,47 @@ namespace AstralOath.Client.Common
         private struct Entry
         {
             public string key;
-            public Component component;
+            public Object component;
         }
 
         [SerializeField] private Entry[] entries = Array.Empty<Entry>();
 
-        public T Require<T>(string key) where T : Component
+        public T Require<T>(string key) where T : Object
         {
             Validate();
             foreach (var entry in entries)
             {
-                if (entry.key == key && entry.component is T component)
-                    return component;
+                if (entry.key != key)
+                    continue;
+                if (entry.component is T value)
+                    return value;
+                throw new InvalidOperationException(
+                    $"Binding '{key}' on '{name}' expects {typeof(T).Name} but references {entry.component.GetType().Name}.");
             }
-            throw new InvalidOperationException($"Missing binding {key} ({typeof(T).Name}) on {name}.");
+            throw new InvalidOperationException($"Missing binding '{key}' ({typeof(T).Name}) on '{name}'.");
         }
 
         public void Validate()
         {
             var seen = new HashSet<string>(StringComparer.Ordinal);
-            foreach (var entry in entries)
+            for (int i = 0; i < entries.Length; i++)
             {
-                if (string.IsNullOrWhiteSpace(entry.key) || !seen.Add(entry.key) || !entry.component ||
-                    !entry.component.transform.IsChildOf(transform))
-                    throw new InvalidOperationException($"Invalid binding {entry.key} on {name}.");
+                var entry = entries[i];
+                if (string.IsNullOrWhiteSpace(entry.key))
+                    throw new InvalidOperationException($"Binding at index {i} on '{name}' has an empty key.");
+                if (!seen.Add(entry.key))
+                    throw new InvalidOperationException($"Duplicate binding '{entry.key}' on '{name}'.");
+                if (!entry.component)
+                    throw new InvalidOperationException($"Binding '{entry.key}' on '{name}' has a missing reference.");
+
+                Transform target = entry.component switch
+                {
+                    GameObject gameObject => gameObject.transform,
+                    Component component => component.transform,
+                    _ => throw new InvalidOperationException($"Binding '{entry.key}' on '{name}' must reference a GameObject or Component.")
+                };
+                if (!target.IsChildOf(transform))
+                    throw new InvalidOperationException($"Binding '{entry.key}' on '{name}' references '{target.name}' outside its hierarchy.");
             }
         }
     }

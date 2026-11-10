@@ -4,7 +4,7 @@ Bootstrap 是场景内的组合入口，通过实例级 ServiceRegistry 按逆�
 
 窗口每次打开都新建 BindingScope。关闭先取消操作，再按逆序解除监听、释放资源句柄和复位动画。GameButton 的单次点击在等待期间锁定交互，禁用时取消监听和请求。GameText 按文案 key 订阅文字语言变动，统一使用 TMP 字体及其回退，超长文案按行换行和省略。缺字显示问号并记录码点，语音语言单独选择。演示文字默认为 zh-Hans，语音默认为 ja，演示无需语音素材。
 
-FoundationView 使用序列化 BindingMap 提供组件引用。演示 Lua Binder 通过 xLua 在无宿主全局表的环境执行，只接收原始数据并返回显示、点击和完成阶段的数据。C# 负责异步请求、资源、生命周期和 View 适配。编辑器按 `DemoBinder.exports.txt` 生成允许的 Lua 导出名，校验导出和序列化绑定。演示桥接不依赖运行时动态生成 C# 委托、CS 反射或全局热更。Lua 仍是受信任的发布内容。
+FoundationView 继承普通 C# UIView，不作为 MonoBehaviour 挂在预制体上。UIViewRegistry 记录 View 类型与重写的 PrefabPath，并通过 IAssetService 加载预制体。预制体仅用通用 BindingMap 保存引用；Inspector 每项单行展示，Hierarchy 支持 + / − 增删和撤销。使用方式见 [UIView 与 Binder](../development/ui-binder.md)。演示 Lua Binder 通过 xLua 在无宿主全局表的环境执行，只接收原始数据并返回显示、点击和完成阶段的数据。C# 负责异步请求、资源、生命周期和 View 适配。编辑器按 `DemoBinder.exports.txt` 生成允许的 Lua 导出名，校验导出和序列化绑定。演示桥接不依赖运行时动态生成 C# 委托、CS 反射或全局热更。Lua 仍是受信任的发布内容。
 
 ## 演示及构建
 
@@ -15,7 +15,7 @@ FoundationView 使用序列化 BindingMap 提供组件引用。演示 Lua Binder
 5. 通过 Unity 2022.3.62f3 批处理分别指定 `-buildTarget Win64 -executeMethod AstralOath.Editor.FoundationBuilder.BuildWindows`、`-buildTarget Android -executeMethod AstralOath.Editor.FoundationBuilder.BuildAndroidAstc` 或 `BuildAndroidEtc2`。输出在 `.artifacts/builds`。Android 为 API 29、ARM64、横屏。构建在相同目标上先生成 YooAsset 内置包，再生成 IL2CPP Player。
 6. 进行 loopback HTTP 联调时向构建命令附加 `-astral-dev-http` 生成开发版本。运行 Windows Player 时附加 `-astral-demo-echo -logFile <绝对路径>`，程序在资源及 Lua Binder 就绪后发起实际请求，输出 `ASTRAL_ECHO_OK sequence=...` 或 `ASTRAL_ECHO_FAILED ...` 并退出。正式连接需要部署端提供可验证的 HTTPS 证书。
 
-未配置远端更新时，YooAsset 编辑器模式使用资产数据库生成的模拟清单，Player 使用 StreamingAssets 中的内置内容。Lua、配置、本地化和示例资源均来自当前包。启动等待和初始化失败提示有独立的内置简体中文文案。
+未配置远端更新时，YooAsset 编辑器模式使用资产数据库生成的模拟清单，Player 使用 StreamingAssets 中的内置内容。窗口预制体、Lua、配置、本地化和示例资源均来自当前包。启动等待和初始化失败提示有独立的内置简体中文文案。
 
 ## 资源导入
 
@@ -27,7 +27,7 @@ FoundationView 使用序列化 BindingMap 提供组件引用。演示 Lua Binder
 
 在 Bootstrap 配置清单 URL、签名 URL 和发布公钥 JSON（Base64 的 `modulus` 和 `exponent`）。开发联调也可在隔离项目运行 `ConfigureContentUpdate`，传入 `-astral-content-manifest`、`-astral-content-signature` 和 `-astral-content-public-key`。公钥由客户端发布固定。生产使用 HTTPS，开发版本允许 loopback HTTP。发布包将 YooAsset 文件放在签名负载的 `yooasset/Foundation/` 路径下。
 
-启动以协议版本 1 和配置 schema 版本 1 验签并核对文件。候选包的 YooAsset 清单、Lua 导出、配置及资源验证通过后才切换活动版本。Lua 和配置用候选包自身的本地化数据验证，活动版本的文案随其资源一起保留。更新失败时验证并加载已有活动版本，窗口上方显示更新失败提示。远端已配置且没有可用活动版本时，启动显示失败。运行中的窗口使用启动时确定的版本。
+启动以协议版本 1 和配置 schema 版本 2 验签并核对文件。候选包的 YooAsset 清单、Lua 导出、配置及资源验证通过后才切换活动版本。Lua 和配置用候选包自身的本地化数据验证，活动版本的文案随其资源一起保留。更新失败时验证并加载已有活动版本，窗口上方显示更新失败提示。远端已配置且没有可用活动版本时，启动显示失败。运行中的窗口使用启动时确定的版本。
 每次构建保留独立的 YooAsset 包目录。Windows 首次输出为 `.artifacts/yooasset/StandaloneWindows64/Foundation/foundation-1`，后续使用 `foundation-2` 等未用编号。Android 在根目录下按 `ASTC/Android` 或 `ETC2/Android` 分开保存。签名工具的 `-PackageDirectory` 使用构建日志 `ASTRAL_YOOASSET_PACKAGE` 给出的绝对目录。此本地 YooAsset 构建编号与发布工具的签名版本各自独立。
 
 图形环境的 Windows 回显演练可附加 `-astral-demo-screenshot <PNG绝对路径>`。程序在回显成功且启动画面结束后等待渲染完成，截取包含窗口和状态提示的画面。写入截图后退出，遇到全幅单色画面则记录失败。

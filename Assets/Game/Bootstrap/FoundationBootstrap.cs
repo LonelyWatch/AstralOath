@@ -12,7 +12,7 @@ namespace AstralOath.Client.Bootstrap
 {
     public sealed class FoundationBootstrap : MonoBehaviour
     {
-        [SerializeField] private FoundationView view;
+        [SerializeField] private Transform viewRoot;
         [SerializeField] private GameButton open;
         [SerializeField] private GameText openLabel;
         [SerializeField] private GameText startupStatus;
@@ -72,8 +72,12 @@ namespace AstralOath.Client.Bootstrap
                 services.Add<IAudioService>(new VoiceService(audioOutput, content.Assets, locale));
                 string url = Environment.GetEnvironmentVariable("ASTRAL_FOUNDATION_URL");
                 services.Add<IEchoService>(new ProtobufEchoService(string.IsNullOrWhiteSpace(url) ? baseUrl : url));
+                var views = new UIViewRegistry();
+                views.Register<FoundationView>();
+                var view = await views.CreateAsync<FoundationView>(content.Assets, viewRoot, scope);
+                scope.Token.ThrowIfCancellationRequested();
                 var windows = new WindowCoordinator(scope.Token);
-                services.Add(windows);
+                scope.Add(windows.Dispose);
                 var window = new DemoWindow(view, lua, content.Assets, services.Get<IConfigService>(), locale,
                     services.Get<IEchoService>(), services.Get<IAnimationService>(), scope.Token);
                 windows.Register(Demo, window);
