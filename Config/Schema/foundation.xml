@@ -1,0 +1,20 @@
+<module name="demo">
+  <bean name="Localization">
+    <var name="key" type="string"/>
+    <var name="zhCn" type="string"/>
+  </bean>
+  <bean name="Asset">
+    <var name="address" type="string"/>
+    <var name="sourcePath" type="string"/>
+  </bean>
+  <bean name="UiRow">
+    <var name="id" type="int#range=[1,9999]"/>
+    <var name="titleKey" type="string#ref=demo.LocalizationKeys"/>
+    <var name="messageKey" type="string#ref=demo.LocalizationKeys"/>
+    <var name="displaySeconds" type="int#range=[1,30]"/>
+    <var name="assetAddress" type="string#ref=demo.Assets"/>
+  </bean>
+  <table name="Ui" value="UiRow" input="demo_ui.csv"/>
+  <table name="LocalizationKeys" value="Localization" input="demo_localization.csv"/>
+  <table name="Assets" value="Asset" input="demo_assets.csv"/>
+</module>
