@@ -1,0 +1,13 @@
+{
+  "name": "AstralOath.Client.PlayMode",
+  "references": [
+    "AstralOath.Client.Core",
+    "AstralOath.Client.Common",
+    "AstralOath.Client.FoundationDemo",
+    "UnityEngine.UI",
+    "Unity.TextMeshPro"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

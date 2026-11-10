@@ -1,0 +1,10 @@
+{
+  "name": "AstralOath.Client.FoundationDemo",
+  "references": [
+    "AstralOath.Client.Core",
+    "AstralOath.Client.Common",
+    "UnityEngine.UI",
+    "Unity.TextMeshPro",
+    "XLua.Runtime"
+  ]
+}

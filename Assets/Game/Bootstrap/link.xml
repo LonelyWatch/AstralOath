@@ -1,0 +1,6 @@
+<linker>
+  <assembly fullname="AstralOath.Shared">
+    <type fullname="AstralOath.Shared.Updates.ContentManifest" preserve="all" />
+    <type fullname="AstralOath.Shared.Updates.ContentEntry" preserve="all" />
+  </assembly>
+</linker>

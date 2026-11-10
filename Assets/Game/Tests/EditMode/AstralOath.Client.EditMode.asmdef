@@ -1,0 +1,12 @@
+{
+  "name": "AstralOath.Client.EditMode",
+  "references": [
+    "AstralOath.Client.Core", "AstralOath.Client.FoundationDemo"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ]
+}

@@ -1,0 +1,13 @@
+<linker>
+  <assembly fullname="YooAsset">
+    <type fullname="YooAsset.DefaultBuildinFileSystem" preserve="all" />
+  </assembly>
+  <assembly fullname="AstralOath.Shared">
+    <type fullname="AstralOath.Protocol.EchoRequest" preserve="all" />
+    <type fullname="AstralOath.Protocol.EchoResponse" preserve="all" />
+  </assembly>
+  <assembly fullname="AstralOath.Client.FoundationDemo">
+    <type fullname="AstralOath.Client.FoundationDemo.DemoWindow/ConfigRows" preserve="all" />
+    <type fullname="AstralOath.Client.FoundationDemo.DemoWindow/ConfigRow" preserve="all" />
+  </assembly>
+</linker>

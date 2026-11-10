@@ -1,0 +1,10 @@
+{
+  "name": "XLua.DefaultConfig.Editor",
+  "references": [
+    "XLua.Runtime",
+    "XLua.Editor"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ]
+}

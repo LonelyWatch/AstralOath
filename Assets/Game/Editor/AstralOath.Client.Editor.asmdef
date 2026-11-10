@@ -1,0 +1,16 @@
+{
+  "name": "AstralOath.Client.Editor",
+  "references": [
+    "AstralOath.Client.Bootstrap",
+    "AstralOath.Client.Core",
+    "AstralOath.Client.Common",
+    "AstralOath.Client.FoundationDemo",
+    "UnityEngine.UI",
+    "Unity.TextMeshPro",
+    "YooAsset",
+    "YooAsset.Editor"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ]
+}

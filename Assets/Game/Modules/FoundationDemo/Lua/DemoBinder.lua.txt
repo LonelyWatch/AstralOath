@@ -1,0 +1,14 @@
+return {
+    open = function(titleKey, messageKey, duration, sample)
+        return titleKey, messageKey, "foundation.ready", sample, duration
+    end,
+    click = function()
+        return "foundation.pending", "AstralOath"
+    end,
+    completed = function(state, message, sequence)
+        if state == "ok" then
+            return "foundation.echo.ok", message, sequence
+        end
+        return "foundation.echo.error"
+    end
+}
