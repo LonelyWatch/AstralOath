@@ -16,6 +16,8 @@
 # Player builds and package exports
 /[Bb]uild/
 /[Bb]uilds/
+# YooAsset default build output, including Editor simulation manifests
+/Bundles/
 /*.apk
 /*.aab
 /*.app/
