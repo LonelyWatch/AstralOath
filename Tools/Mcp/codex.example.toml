@@ -1,0 +1,10 @@
+# Project-scoped .codex/config.toml. Replace cwd with your clone's absolute path.
+# Reload the MCP connection after adding; this is not proof of an active connection.
+[mcp_servers.astraloath_unity]
+command = "pwsh"
+args = ["-NoProfile", "-File", "Tools/Mcp/Start.ps1"]
+cwd = 'D:\UnityProjects\AstralOath'
+startup_timeout_sec = 60
+tool_timeout_sec = 180
+enabled_tools = ["manage_editor", "manage_scene", "manage_gameobject", "manage_components", "manage_asset", "manage_prefabs", "read_console", "run_tests", "get_test_job", "refresh_unity", "find_gameobjects", "execute_menu_item", "set_active_instance"]
+
