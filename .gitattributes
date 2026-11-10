@@ -1,0 +1,16 @@
+* text=auto
+*.cs text eol=lf
+*.lua text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.ps1 text eol=lf
+*.mjs text eol=lf
+*.proto text eol=lf
+*.unity text eol=lf
+*.prefab text eol=lf
+*.meta text eol=lf
+*.dll binary
+*.so binary
+*.ttf binary
+*.png binary
+*.bytes binary

@@ -37,3 +37,22 @@
 .DS_Store
 Thumbs.db
 [Dd]esktop.ini
+
+# Local toolchains, verification reports, secrets and service outputs
+/.tools/
+/.artifacts/
+/.superpowers/
+/.worktrees/
+**/bin/
+**/obj/
+**/TestResults/
+*.local.json
+*.local.toml
+*.pfx
+*.p12
+*.key
+.env
+/Server/.mysql/
+**/__pycache__/
+**/*.egg-info/
+**/.venv/
