@@ -1,3 +1,4 @@
+using System.IO;
 using System.Linq;
 using AstralOath.Client.Common;
 using AstralOath.Client.FoundationDemo;
@@ -14,8 +15,23 @@ namespace AstralOath.Client.Tests
         [Test]
         public void BusinessViewIsAPlainClassRatherThanAPrefabComponent()
         {
-            Assert.That(typeof(MonoBehaviour).IsAssignableFrom(typeof(FoundationView)), Is.False,
-                "Business views must inherit the plain UIView class; prefabs retain only the generic Binder.");
+            Assert.That(typeof(FoundationWindow).BaseType, Is.EqualTo(typeof(UIBaseView)));
+            Assert.That(typeof(MonoBehaviour).IsAssignableFrom(typeof(FoundationWindow)), Is.False,
+                "Business views must inherit the plain UIBaseView class; prefabs retain only the generic Binder.");
+        }
+
+        [Test]
+        public void WindowViewAndBinderNamesMatchThePrefab()
+        {
+            string prefabName = Path.GetFileNameWithoutExtension(PrefabPath);
+            const string modulePath = "Assets/Game/Modules/FoundationDemo";
+            Assert.That(typeof(FoundationWindow).Name, Is.EqualTo(prefabName));
+            Assert.That(AssetDatabase.LoadAssetAtPath<MonoScript>($"{modulePath}/Scripts/{prefabName}.cs"),
+                Is.Not.Null, "The View source file must use the prefab name.");
+            Assert.That(AssetDatabase.LoadAssetAtPath<TextAsset>($"{modulePath}/Lua/{prefabName}Binder.lua.txt"),
+                Is.Not.Null, "The business Binder must use the prefab name plus Binder.");
+            Assert.That(AssetDatabase.LoadAssetAtPath<TextAsset>($"{modulePath}/Lua/{prefabName}Binder.exports.txt"),
+                Is.Not.Null, "The Binder export contract must use the same stem.");
         }
 
         [Test]
@@ -26,8 +42,8 @@ namespace AstralOath.Client.Tests
             Assert.That(prefab.GetComponent<BindingMap>(), Is.Not.Null);
             var scripts = prefab.GetComponentsInChildren<MonoBehaviour>(true);
             Assert.That(scripts.All(script => script != null), Is.True, "The migrated prefab must have no missing scripts.");
-            Assert.That(scripts.Any(script => script.GetType() == typeof(FoundationView)), Is.False,
-                "FoundationView must be created by the UIView registry, not attached to this prefab.");
+            Assert.That(scripts.Any(script => script.GetType() == typeof(FoundationWindow)), Is.False,
+                "FoundationWindow must be created by the UIBaseView registry, not attached to this prefab.");
         }
     }
 }

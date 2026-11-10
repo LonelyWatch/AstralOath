@@ -4,7 +4,7 @@ Bootstrap 是场景内的组合入口，通过实例级 ServiceRegistry 按逆�
 
 窗口每次打开都新建 BindingScope。关闭先取消操作，再按逆序解除监听、释放资源句柄和复位动画。GameButton 的单次点击在等待期间锁定交互，禁用时取消监听和请求。GameText 按文案 key 订阅文字语言变动，统一使用 TMP 字体及其回退，超长文案按行换行和省略。缺字显示问号并记录码点，语音语言单独选择。演示文字默认为 zh-Hans，语音默认为 ja，演示无需语音素材。
 
-FoundationView 继承普通 C# UIView，不作为 MonoBehaviour 挂在预制体上。UIViewRegistry 记录 View 类型与重写的 PrefabPath，并通过 IAssetService 加载预制体。预制体仅用通用 BindingMap 保存引用；Inspector 每项单行展示，Hierarchy 支持 + / − 增删和撤销。使用方式见 [UIView 与 Binder](../development/ui-binder.md)。演示 Lua Binder 通过 xLua 在无宿主全局表的环境执行，只接收原始数据并返回显示、点击和完成阶段的数据。C# 负责异步请求、资源、生命周期和 View 适配。编辑器按 `DemoBinder.exports.txt` 生成允许的 Lua 导出名，校验导出和序列化绑定。演示桥接不依赖运行时动态生成 C# 委托、CS 反射或全局热更。Lua 仍是受信任的发布内容。
+FoundationWindow 继承普通 C# UIBaseView，不作为 MonoBehaviour 挂在预制体上。UIViewRegistry 记录 View 类型与重写的 PrefabPath，并通过 IAssetService 加载预制体。预制体仅用通用 BindingMap 保存引用；Inspector 每项单行展示，Hierarchy 支持 + / − 增删和撤销。使用方式见 [UIBaseView 与 Binder](../development/ui-binder.md)。演示 Lua Binder 通过 xLua 在无宿主全局表的环境执行，只接收原始数据并返回显示、点击和完成阶段的数据。C# 负责异步请求、资源、生命周期和 View 适配。编辑器按 `FoundationWindowBinder.exports.txt` 生成允许的 Lua 导出名，校验导出和序列化绑定。演示桥接不依赖运行时动态生成 C# 委托、CS 反射或全局热更。Lua 仍是受信任的发布内容。
 
 ## 演示及构建
 

@@ -15,7 +15,7 @@ namespace AstralOath.Client.FoundationDemo
             try
             {
                 using var environment = vm.NewTable();
-                var result = vm.DoString(source, "FoundationBinder", environment);
+                var result = vm.DoString(source, "FoundationWindowBinder", environment);
                 if (result.Length != 1 || !(result[0] is LuaTable table))
                     throw new InvalidOperationException("Foundation binder must return an export table.");
                 using (table)

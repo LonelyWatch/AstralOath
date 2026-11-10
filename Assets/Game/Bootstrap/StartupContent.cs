@@ -147,9 +147,9 @@ namespace AstralOath.Client.Bootstrap
             {
                 await assets.InitializeAsync(token, root);
                 using var scope = new BindingScope(token);
-                var prefab = await assets.LoadAsync<GameObject>(FoundationView.PrefabAddress, scope);
+                var prefab = await assets.LoadAsync<GameObject>(FoundationWindow.PrefabAddress, scope);
                 scope.Token.ThrowIfCancellationRequested();
-                UIViewRegistry.ValidatePrefab<FoundationView>(prefab);
+                UIViewRegistry.ValidatePrefab<FoundationWindow>(prefab);
                 var config = new JsonConfigService(assets);
                 var messages = await DemoMessages.LoadAsync(config, scope);
                 var locale = new LocaleService(messages, textLocale, voiceLocale, "ja", "zh-Hans");

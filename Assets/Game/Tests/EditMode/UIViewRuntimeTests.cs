@@ -149,14 +149,14 @@ namespace AstralOath.Client.Tests
             return registry;
         }
 
-        public sealed class TestView : UIView
+        public sealed class TestView : UIBaseView
         {
             public override string PrefabPath => "test/window";
             public GameObject Label => Bindings.Require<GameObject>("label");
             public override void Validate() => _ = Label;
         }
 
-        public sealed class ConflictingView : UIView
+        public sealed class ConflictingView : UIBaseView
         {
             public override string PrefabPath => "test/window";
         }

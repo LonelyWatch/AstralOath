@@ -109,7 +109,7 @@ Set-Content -Path "$packageDir/OutputCache.manifest" -Value 'build-only fixture'
 & ./Tools/Content/Package-Unity.ps1 -PackageDirectory $packageDir -Key "$staging/dev/private.key" -Release "$staging/unity-release" -Version 42
 & ./Tools/Content/Release.ps1 -Action Verify -Key "$staging/dev/public.pem" -Release "$staging/unity-release" -SchemaVersion 2
 $unityManifest = Get-Content -Raw "$staging/unity-release/manifest.json" | ConvertFrom-Json
-if ($unityManifest.schemaVersion -ne 2) { throw 'Foundation UIView content must use schema 2.' }
+if ($unityManifest.schemaVersion -ne 2) { throw 'Foundation UIBaseView content must use schema 2.' }
 if (-not (Test-Path "$staging/unity-release/yooasset/Foundation/demo.bundle") -or
     (Test-Path "$staging/unity-release/yooasset/Foundation/OutputCache.manifest")) {
     throw 'YooAsset bundle layout or allowlist differs from the build report.'

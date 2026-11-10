@@ -50,7 +50,7 @@ GitHub Actions 执行源码边界、协议生成、配表及更新器检查；My
 - [交付验证记录](docs/delivery/foundation.md)：通过、阻塞和未执行项。
 - [地基决策](docs/architecture/foundation-decisions.md)、[客户端](docs/architecture/client.md)、[服务端](docs/architecture/server.md)、[配表与更新](docs/architecture/content.md)。
 - [AI 开发与 MCP](docs/development/ai-workflow.md)、[项目规则](AGENTS.md)、[依赖版本与来源](Tools/dependencies.lock.json)。
-- [UIView 与预制体 Binder](docs/development/ui-binder.md)：路径注册、单行绑定与 Hierarchy 快捷增删。
+- [UIBaseView 与预制体 Binder](docs/development/ui-binder.md)：统一命名、路径注册、单行绑定与 Hierarchy 快捷增删。
 - [原始资源证据边界](docs/architecture/resource-evidence.md)、[下一阶段战斗验收](docs/delivery/battle-acceptance.md)。
 
 界面语言与语音语言分别配置，默认中文与日语。`D:\sevenepic` 保持只读，本阶段未导入原作资源。国际服版本追踪仅在用户明确提出时执行。

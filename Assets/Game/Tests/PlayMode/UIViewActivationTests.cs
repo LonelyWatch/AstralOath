@@ -92,12 +92,12 @@ namespace AstralOath.Client.Tests
             private void OnEnable() => Activations++;
         }
 
-        public sealed class TestView : UIView
+        public sealed class TestView : UIBaseView
         {
             public override string PrefabPath => "test/window";
         }
 
-        public sealed class RejectedView : UIView
+        public sealed class RejectedView : UIBaseView
         {
             public override string PrefabPath => "test/rejected-window";
             public override void Validate() => throw new InvalidOperationException("Rejected view.");

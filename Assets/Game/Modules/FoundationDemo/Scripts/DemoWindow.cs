@@ -56,7 +56,7 @@ namespace AstralOath.Client.FoundationDemo
             }
         }
 
-        private readonly FoundationView view;
+        private readonly FoundationWindow view;
         private readonly FoundationLua lua;
         private readonly IAssetService assets;
         private readonly IConfigService config;
@@ -67,7 +67,7 @@ namespace AstralOath.Client.FoundationDemo
         private BindingScope current;
         private bool disposed;
 
-        public DemoWindow(FoundationView view, FoundationLua lua, IAssetService assets, IConfigService config,
+        public DemoWindow(FoundationWindow view, FoundationLua lua, IAssetService assets, IConfigService config,
             ILocaleService locale, IEchoService network, IAnimationService animation, CancellationToken owner)
         {
             this.view = view;

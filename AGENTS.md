@@ -6,6 +6,8 @@
 - `D:\sevenepic` 是只读外部来源；不得修改、批量导入或提交整个解包目录。
 - 业务模块独立；Common 不得引用业务模块。共享战斗逻辑不得依赖 Unity、Lua、网络或数据库。
 - 客户端 View 只维护组件和显示，Lua Binder 管理界面业务；禁止在动画回调中结算战斗或发放奖励。
+- UI 命名为项目通用约束：`Foo.prefab` 对应普通 C# `Foo.cs` / `Foo : UIBaseView`，业务 Binder 统一命名 `FooBinder`（当前 Lua 文件为 `FooBinder.lua.txt`，导出契约为 `FooBinder.exports.txt`）。文件名与类型名严格保持大小写一致；不额外追加 View 后缀。
+- 预制体只挂通用 `BindingMap`，业务 View/Binder 不作为预制体组件。`UIBaseView`、`UIViewRegistry`、`BindingMap` 等通用设施不属于逐预制体命名范围。重命名同步修改引用、生成器、契约及文档，移动已有 `.meta` 保留 GUID；资源地址不随文件重命名自动改变。详见 `docs/development/ui-binder.md`。
 - Lua 仅用于客户端界面及业务流程，战斗权威逻辑使用 C#；不要引入第二套热更机制。
 - 所有异步操作明确取消、超时和生命周期；关闭窗口必须解绑事件、释放资源与动画。
 - 单例必须有明确所有权和重置路径；优先使用显式依赖注入，不把所有业务做成全局状态。

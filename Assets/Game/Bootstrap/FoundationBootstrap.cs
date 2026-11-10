@@ -73,8 +73,8 @@ namespace AstralOath.Client.Bootstrap
                 string url = Environment.GetEnvironmentVariable("ASTRAL_FOUNDATION_URL");
                 services.Add<IEchoService>(new ProtobufEchoService(string.IsNullOrWhiteSpace(url) ? baseUrl : url));
                 var views = new UIViewRegistry();
-                views.Register<FoundationView>();
-                var view = await views.CreateAsync<FoundationView>(content.Assets, viewRoot, scope);
+                views.Register<FoundationWindow>();
+                var view = await views.CreateAsync<FoundationWindow>(content.Assets, viewRoot, scope);
                 scope.Token.ThrowIfCancellationRequested();
                 var windows = new WindowCoordinator(scope.Token);
                 scope.Add(windows.Dispose);

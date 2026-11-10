@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace AstralOath.Client.Common
 {
-    public abstract class UIView
+    public abstract class UIBaseView
     {
         public abstract string PrefabPath { get; }
         public GameObject Root { get; private set; }
@@ -20,7 +20,7 @@ namespace AstralOath.Client.Common
             Root = root;
             Bindings = root.GetComponent<BindingMap>();
             if (!Bindings)
-                throw new InvalidOperationException($"UIView '{PrefabPath}' requires a BindingMap on the root of '{root.name}'.");
+                throw new InvalidOperationException($"UIBaseView '{PrefabPath}' requires a BindingMap on the root of '{root.name}'.");
             Bindings.Validate();
             Validate();
         }

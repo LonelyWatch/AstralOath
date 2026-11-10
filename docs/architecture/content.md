@@ -39,7 +39,7 @@ pwsh -File Tools/Content/Package-Unity.ps1 -PackageDirectory .artifacts/UnityPro
 pwsh -File Tools/Content/Release.ps1 -Action Verify -Key .artifacts/keys/dev/public.pem -Release .artifacts/releases/foundation-win-3 -SchemaVersion 2
 ```
 
-该命令将可运行文件发布到 `yooasset/Foundation/`。客户端把已校验版本的这一目录传为 YooAsset 的 packageRoot。JSON 公钥包含 Base64 编码的 `modulus` 和 `exponent`，签名和验证仍使用同一把 RSA 公钥。演示协议为 1；UIView 改造后内容 schema 为 2，要求包内包含窗口预制体，旧 schema 1 包需重建。Package-Unity 默认生成 schema 2，通用 Release.ps1 的 Verify 应显式传入 2。整数发布版本独立于 YooAsset 的包版本字符串。
+该命令将可运行文件发布到 `yooasset/Foundation/`。客户端把已校验版本的这一目录传为 YooAsset 的 packageRoot。JSON 公钥包含 Base64 编码的 `modulus` 和 `exponent`，签名和验证仍使用同一把 RSA 公钥。演示协议为 1；UIBaseView 改造后内容 schema 为 2，要求包内包含窗口预制体，旧 schema 1 包需重建。Package-Unity 默认生成 schema 2，通用 Release.ps1 的 Verify 应显式传入 2。整数发布版本独立于 YooAsset 的包版本字符串。
 
 示例版本 3 仅适用于历史发布版本不超过 2 的情况。schema 升级不重置发布版本号：每次发布必须选择大于已发布版本的新整数与新目录，已有版本清单不可覆盖。客户端程序与 schema 2 资源需配套发布，schema 1 客户端继续使用其兼容发布地址。
 

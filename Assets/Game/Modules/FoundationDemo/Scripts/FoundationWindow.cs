@@ -2,7 +2,7 @@ using AstralOath.Client.Common;
 
 namespace AstralOath.Client.FoundationDemo
 {
-    public sealed class FoundationView : UIView
+    public sealed class FoundationWindow : UIBaseView
     {
         public const string PrefabAddress = "foundation/foundation-window";
 

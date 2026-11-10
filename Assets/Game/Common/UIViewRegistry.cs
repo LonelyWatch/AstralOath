@@ -12,21 +12,21 @@ namespace AstralOath.Client.Common
     {
         private readonly Dictionary<Type, string> addresses = new Dictionary<Type, string>();
 
-        public void Register<T>() where T : UIView, new()
+        public void Register<T>() where T : UIBaseView, new()
         {
             var type = typeof(T);
             if (addresses.ContainsKey(type))
-                throw new InvalidOperationException($"UIView '{type.Name}' is already registered.");
+                throw new InvalidOperationException($"UIBaseView '{type.Name}' is already registered.");
             string address = new T().PrefabPath;
             if (string.IsNullOrWhiteSpace(address))
-                throw new InvalidOperationException($"UIView '{type.Name}' requires a prefab address.");
+                throw new InvalidOperationException($"UIBaseView '{type.Name}' requires a prefab address.");
             if (addresses.ContainsValue(address))
-                throw new InvalidOperationException($"UIView prefab address '{address}' is already registered.");
+                throw new InvalidOperationException($"UIBaseView prefab address '{address}' is already registered.");
             addresses.Add(type, address);
         }
 
         public async Task<T> CreateAsync<T>(IAssetService assets, Transform parent, BindingScope owner)
-            where T : UIView, new()
+            where T : UIBaseView, new()
         {
             if (assets == null)
                 throw new ArgumentNullException(nameof(assets));
@@ -35,7 +35,7 @@ namespace AstralOath.Client.Common
             if (owner == null)
                 throw new ArgumentNullException(nameof(owner));
             if (!addresses.TryGetValue(typeof(T), out string address))
-                throw new InvalidOperationException($"UIView '{typeof(T).Name}' is not registered.");
+                throw new InvalidOperationException($"UIBaseView '{typeof(T).Name}' is not registered.");
 
             owner.Token.ThrowIfCancellationRequested();
             var scope = new BindingScope(owner.Token);
@@ -45,9 +45,9 @@ namespace AstralOath.Client.Common
                 var prefab = await assets.LoadAsync<GameObject>(address, scope);
                 scope.Token.ThrowIfCancellationRequested();
                 if (!parent)
-                    throw new InvalidOperationException($"UIView parent was destroyed while loading '{address}'.");
+                    throw new InvalidOperationException($"UIBaseView parent was destroyed while loading '{address}'.");
                 if (!prefab)
-                    throw new InvalidOperationException($"UIView prefab '{address}' could not be loaded.");
+                    throw new InvalidOperationException($"UIBaseView prefab '{address}' could not be loaded.");
 
                 var root = InstantiateHidden(prefab, parent, scope);
                 scope.Token.ThrowIfCancellationRequested();
@@ -65,7 +65,7 @@ namespace AstralOath.Client.Common
             }
         }
 
-        public static void ValidatePrefab<T>(GameObject prefab) where T : UIView, new()
+        public static void ValidatePrefab<T>(GameObject prefab) where T : UIBaseView, new()
         {
             if (!prefab)
                 throw new ArgumentNullException(nameof(prefab));
@@ -81,7 +81,7 @@ namespace AstralOath.Client.Common
                 if (prefab.activeSelf)
                 {
                     // Keep an active source's clone inactive before Unity can call OnEnable.
-                    staging = new GameObject("UIView Staging", typeof(RectTransform));
+                    staging = new GameObject("UIBaseView Staging", typeof(RectTransform));
                     staging.SetActive(false);
                     initialParent = staging.transform;
                 }

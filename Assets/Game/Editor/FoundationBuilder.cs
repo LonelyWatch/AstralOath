@@ -55,7 +55,7 @@ namespace AstralOath.Editor
         [MenuItem("AstralOath/Foundation/Generate Binder Bridge")]
         public static void GenerateBinderBridge()
         {
-            const string contract = Module + "/Lua/DemoBinder.exports.txt";
+            const string contract = Module + "/Lua/FoundationWindowBinder.exports.txt";
             string[] names = File.ReadAllLines(contract).Where(line => line.Length > 0).ToArray();
             if (names.Length == 0 || names.Distinct(StringComparer.Ordinal).Count() != names.Length ||
                 names.Any(name => name.Any(ch => ch < 'a' || ch > 'z')))
@@ -74,10 +74,10 @@ namespace AstralOath.Editor
         public static void ValidateDemo()
         {
             var prefab = RequireAsset<GameObject>(PrefabPath);
-            UIViewRegistry.ValidatePrefab<FoundationView>(prefab);
+            UIViewRegistry.ValidatePrefab<FoundationWindow>(prefab);
             if (prefab.GetComponentsInChildren<MonoBehaviour>(true).Any(component => !component))
                 throw new BuildFailedException("Foundation window prefab contains a missing script. Run CreateDemo.");
-            using var binder = new FoundationLua(RequireAsset<TextAsset>(Module + "/Lua/DemoBinder.lua.txt").text);
+            using var binder = new FoundationLua(RequireAsset<TextAsset>(Module + "/Lua/FoundationWindowBinder.lua.txt").text);
             var font = RequireAsset<TMP_FontAsset>(FontPath);
             ValidateFonts(prefab.GetComponentsInChildren<TextMeshProUGUI>(true), font);
             _ = RequireAsset<SceneAsset>(ScenePath);
@@ -102,9 +102,9 @@ namespace AstralOath.Editor
             }
             var collected = AssetBundleCollectorSettingData.Setting.BeginCollect(YooAssetService.PackageName,
                 simulateBuild: true, useAssetDependencyDB: false);
-            if (!collected.CollectAssets.Any(asset => asset.Address == FoundationView.PrefabAddress &&
+            if (!collected.CollectAssets.Any(asset => asset.Address == FoundationWindow.PrefabAddress &&
                     asset.AssetInfo.AssetPath == PrefabPath))
-                throw new BuildFailedException($"Foundation package does not collect '{FoundationView.PrefabAddress}'. Run CreateDemo.");
+                throw new BuildFailedException($"Foundation package does not collect '{FoundationWindow.PrefabAddress}'. Run CreateDemo.");
             GameAssetImportRules.ValidateTextureDefaults();
         }
 
@@ -115,7 +115,7 @@ namespace AstralOath.Editor
                 return;
             EnsureFolders();
             TMP_FontAsset font = GetFont();
-            using (var validation = new FoundationLua(RequireAsset<TextAsset>(Module + "/Lua/DemoBinder.lua.txt").text)) { }
+            using (var validation = new FoundationLua(RequireAsset<TextAsset>(Module + "/Lua/FoundationWindowBinder.lua.txt").text)) { }
 
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             var cameraObject = new GameObject("Main Camera", typeof(Camera), typeof(AudioListener));
@@ -220,7 +220,7 @@ namespace AstralOath.Editor
                 entry.FindPropertyRelative("component").objectReferenceValue = values[i].component;
             }
             bindings.ApplyModifiedPropertiesWithoutUndo();
-            UIViewRegistry.ValidatePrefab<FoundationView>(panel.gameObject);
+            UIViewRegistry.ValidatePrefab<FoundationWindow>(panel.gameObject);
             panel.gameObject.SetActive(false);
             return panel.gameObject;
         }
@@ -342,7 +342,7 @@ namespace AstralOath.Editor
                 ?? AssetBundleCollectorSettingData.CreateGroup(package, "FoundationDemo");
             group.Collectors.Clear();
             foreach (string path in new[] { Module + "/Configs/demo-config.json", Module + "/Configs/demo-localization.json",
-                Module + "/Res/Text/demo-resource.txt", Module + "/Lua/DemoBinder.lua.txt", PrefabPath })
+                Module + "/Res/Text/demo-resource.txt", Module + "/Lua/FoundationWindowBinder.lua.txt", PrefabPath })
             {
                 _ = RequireAsset<UnityEngine.Object>(path);
                 AssetBundleCollectorSettingData.CreateCollector(group, new AssetBundleCollector
@@ -464,8 +464,8 @@ namespace AstralOath.Editor
         public string GetAssetAddress(AddressRuleData data)
         {
             if (data.AssetPath == FoundationBuilder.PrefabPath)
-                return FoundationView.PrefabAddress;
-            if (data.AssetPath.EndsWith("/DemoBinder.lua.txt", StringComparison.Ordinal))
+                return FoundationWindow.PrefabAddress;
+            if (data.AssetPath.EndsWith("/FoundationWindowBinder.lua.txt", StringComparison.Ordinal))
                 return DemoWindow.BinderAddress;
             return "foundation/" + Path.GetFileNameWithoutExtension(data.AssetPath);
         }

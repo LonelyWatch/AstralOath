@@ -4,10 +4,10 @@
 
 YooAsset 包 `Foundation` 提供五个地址。
 
-- `foundation/demo-binder` 提供 xLua 文本与白名单导出。
+- `foundation/demo-binder` 提供 `FoundationWindowBinder.lua.txt` 的 xLua 文本与白名单导出，契约为 `FoundationWindowBinder.exports.txt`。
 - `foundation/demo-config` 提供 Luban 生成的演示行。
 - `foundation/demo-localization` 提供 Luban 生成的简体中文业务文案。
 - `foundation/demo-resource` 提供可见的文本资源。
-- `foundation/foundation-window` 提供只挂通用 BindingMap 的窗口预制体；普通 C# FoundationView 通过 UIViewRegistry 注册、加载并访问其组件。
+- `foundation/foundation-window` 提供只挂通用 BindingMap 的窗口预制体；普通 C# FoundationWindow 通过 UIViewRegistry 注册、加载并访问其组件。
 
 窗口每次打开建立新作用域，关闭时取消请求并释放资源、事件和动画。演示文案使用 key，默认为简体中文，语音选择独立。详细启动、更新和构建步骤见 `docs/architecture/client.md`。

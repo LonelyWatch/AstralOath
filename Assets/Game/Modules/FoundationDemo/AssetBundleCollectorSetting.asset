@@ -54,7 +54,7 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 
-      - CollectPath: Assets/Game/Modules/FoundationDemo/Lua/DemoBinder.lua.txt
+      - CollectPath: Assets/Game/Modules/FoundationDemo/Lua/FoundationWindowBinder.lua.txt
         CollectorGUID: 77db653e988310849a9b55c93e5d6781
         CollectorType: 0
         AddressRuleName: FoundationDemoAddressRule
