@@ -1,3 +1,11 @@
 ##,key,zhCn
 ,foundation.title,基础设施演示
 ,foundation.message,配置加载成功
+,foundation.open,打开演示
+,foundation.close,关闭
+,foundation.echo,发送回显
+,foundation.ready,"已加载 {0}，配置时长 {1} 秒"
+,foundation.pending,正在请求服务端…
+,foundation.echo.ok,服务端返回 {0} · 序号 {1}
+,foundation.echo.error,回显请求失败，请检查开发服务地址及日志。
+,foundation.update.recovered,更新失败，已使用上个有效版本。

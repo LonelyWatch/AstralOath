@@ -21,8 +21,10 @@ try {
     if ($LASTEXITCODE) { throw 'Server tests failed.' }
     & $dotnet run --project Tests/Content -c Release
     if ($LASTEXITCODE) { throw 'Content tests failed.' }
-    & pwsh -NoProfile -File Tools/Config/Generate.ps1 -Dotnet $dotnet -VerifyAccessors
+    & pwsh -NoProfile -File Tools/Config/Generate.ps1 -Dotnet $dotnet -VerifyAccessors -CheckClient
     if ($LASTEXITCODE) { throw 'Config generation failed.' }
+    & pwsh -NoProfile -File Tests/Content/ConfigSmoke.ps1
+    if ($LASTEXITCODE) { throw 'Config editing regression failed.' }
     & pwsh -NoProfile -File Tools/Protocol/Generate.ps1 -Dotnet $dotnet
     if ($LASTEXITCODE) { throw 'Protocol generation failed.' }
     & pwsh -NoProfile -File Tests/Content/ReleaseSmoke.ps1

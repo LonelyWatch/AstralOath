@@ -1,0 +1,42 @@
+[
+  {
+    "key": "foundation.title",
+    "zhCn": "基础设施演示"
+  },
+  {
+    "key": "foundation.message",
+    "zhCn": "配置加载成功"
+  },
+  {
+    "key": "foundation.open",
+    "zhCn": "打开演示"
+  },
+  {
+    "key": "foundation.close",
+    "zhCn": "关闭"
+  },
+  {
+    "key": "foundation.echo",
+    "zhCn": "发送回显"
+  },
+  {
+    "key": "foundation.ready",
+    "zhCn": "已加载 {0}，配置时长 {1} 秒"
+  },
+  {
+    "key": "foundation.pending",
+    "zhCn": "正在请求服务端…"
+  },
+  {
+    "key": "foundation.echo.ok",
+    "zhCn": "服务端返回 {0} · 序号 {1}"
+  },
+  {
+    "key": "foundation.echo.error",
+    "zhCn": "回显请求失败，请检查开发服务地址及日志。"
+  },
+  {
+    "key": "foundation.update.recovered",
+    "zhCn": "更新失败，已使用上个有效版本。"
+  }
+]

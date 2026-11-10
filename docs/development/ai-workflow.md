@@ -10,15 +10,19 @@
 
 根规则适用于全工程；模块职责、输入输出、生命周期、资源与配置 key 应写入模块 README。新模块用 `pwsh -File Tools/New-Module.ps1 -Name Inventory` 创建标准目录，再由 Unity 导入 meta。禁止让生成器覆盖已存在模块。
 
+按[任务与交接模板](task-template.md)记录每次工作。不同 Agent 的“完成”消息需要由协调者核对改动和实际验证结果，不能自动当作验收通过。
+
 ## 检查入口
 
 - `pwsh -File Tools/Check-Foundation.ps1 -RequireMySql -UnityTests`：本地总入口。需先设置隔离测试库连接串；服务端现场回显测试另设 `ASTRAL_FOUNDATION_LIVE_TEST=1` 并启动服务端。
 - `node --test Tools/Tests/validate.test.mjs`：模块依赖验证器回归。
 - `node Tools/validate.mjs`：内部引用、依赖环、Common 边界、MCP 编辑器隔离和依赖 pin。
 - `node Tools/validate.mjs --staged`：额外检查暂存区私钥、缓存和过大文件。
-- `pwsh -File Tools/Config/Generate.ps1 -VerifyAccessors`：真实 Luban 生成、严格引用检查和二进制访问器读回。
+- `pwsh -File Tools/Config/Generate.ps1 -VerifyAccessors -SyncClient`：真实 Luban 生成、严格引用检查、二进制访问器读回及客户端快照同步。CI 使用 `-CheckClient` 检测遗漏生成物。
 - 服务端与更新器测试命令见各模块 README；真实数据库用例需要隔离 MySQL，不得以跳过结果冒充通过。
 - `pwsh -File Tools/Invoke-Unity.ps1 -Mode EditMode`、`-Mode PlayMode`：隔离 Unity 副本测试。`-Mode Windows`、`-Mode AndroidAstc`、`-Mode AndroidEtc2`：构建。
+
+同时构建不同平台时可传 `-ProjectName UnityWindows` 等独立副本名称。每个副本只运行一个 Unity；`-NoSync` 用于保留该副本的临时构建配置。回同步工具默认只读取 UnityProject，测试用更新公钥和端点不要回写正式场景。
 
 ## Unity MCP
 

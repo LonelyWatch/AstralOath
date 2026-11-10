@@ -1,7 +1,7 @@
 {
   "name": "AstralOath.Client.EditMode",
   "references": [
-    "AstralOath.Client.Core", "AstralOath.Client.FoundationDemo"
+    "AstralOath.Client.Core", "AstralOath.Client.FoundationDemo", "AstralOath.Client.Bootstrap"
   ],
   "optionalUnityReferences": [
     "TestAssemblies"

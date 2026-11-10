@@ -28,7 +28,7 @@ namespace AstralOath.Client.FoundationDemo
             public int id;
             public string titleKey;
             public string messageKey;
-            public float displaySeconds;
+            public int displaySeconds;
             public string assetAddress;
         }
 
@@ -89,22 +89,19 @@ namespace AstralOath.Client.FoundationDemo
 
             var scope = new BindingScope(owner);
             current = scope;
-            view.Show();
-            view.Title.Bind(locale, scope, "foundation.title");
-            view.Status.Bind(locale, scope, "foundation.loading");
-            view.CloseLabel.Bind(locale, scope, "foundation.close");
-            view.Close.Bind(scope, _ =>
-            {
-                Close();
-                return Task.CompletedTask;
-            });
-
             try
             {
-                var result = await ReadOpenModelAsync(assets, config, lua, scope);
+                var result = await ReadOpenModelAsync(assets, config, lua, locale, scope);
+                view.Show();
                 result.title.Bind(view.Title, locale, scope);
                 result.description.Bind(view.Description, locale, scope);
                 result.status.Bind(view.Status, locale, scope);
+                view.CloseLabel.Bind(locale, scope, "foundation.close");
+                view.Close.Bind(scope, _ =>
+                {
+                    Close();
+                    return Task.CompletedTask;
+                });
                 view.EchoLabel.Bind(locale, scope, "foundation.echo");
                 view.Echo.Bind(scope, async token => { await EchoAsync(scope, token); });
             }
@@ -112,7 +109,7 @@ namespace AstralOath.Client.FoundationDemo
             catch
             {
                 if (current == scope)
-                    view.Status.Bind(locale, scope, "foundation.load.error");
+                    Close();
                 throw;
             }
         }
@@ -120,7 +117,11 @@ namespace AstralOath.Client.FoundationDemo
         public static async Task ValidateContentAsync(IAssetService assets, IConfigService config,
             FoundationLua lua, ILocaleService locale, BindingScope scope)
         {
-            var model = await ReadOpenModelAsync(assets, config, lua, scope);
+            new Display("foundation.open").Validate(locale);
+            new Display("foundation.close").Validate(locale);
+            new Display("foundation.echo").Validate(locale);
+            new Display("foundation.update.recovered").Validate(locale);
+            var model = await ReadOpenModelAsync(assets, config, lua, locale, scope);
             model.title.Validate(locale);
             model.description.Validate(locale);
             model.status.Validate(locale);
@@ -149,15 +150,18 @@ namespace AstralOath.Client.FoundationDemo
         }
 
         private static async Task<(Display title, Display description, Display status)> ReadOpenModelAsync(
-            IAssetService assets, IConfigService config, FoundationLua lua, BindingScope scope)
+            IAssetService assets, IConfigService config, FoundationLua lua, ILocaleService locale, BindingScope scope)
         {
             var table = await config.ReadAsync<ConfigRows>(ConfigAddress, scope);
             scope.Token.ThrowIfCancellationRequested();
-            if (table.rows == null || table.rows.Length != 1 || table.rows[0].id != 1)
+            if (table.rows == null || table.rows.Length != 1 || table.rows[0]?.id != 1)
                 throw new InvalidDataException("Demo config must contain row 1.");
             ConfigRow row = table.rows[0];
-            if (row.assetAddress != ConfigAddress || !(row.displaySeconds > 0) || float.IsInfinity(row.displaySeconds))
+            if (row.assetAddress != ConfigAddress || row.displaySeconds < 1 || row.displaySeconds > 30 ||
+                string.IsNullOrWhiteSpace(row.titleKey) || string.IsNullOrWhiteSpace(row.messageKey))
                 throw new InvalidDataException("Demo config references an invalid address or duration.");
+            new Display(row.titleKey).Validate(locale);
+            new Display(row.messageKey).Validate(locale);
 
             var sample = await assets.LoadAsync<TextAsset>(SampleAddress, scope);
             scope.Token.ThrowIfCancellationRequested();

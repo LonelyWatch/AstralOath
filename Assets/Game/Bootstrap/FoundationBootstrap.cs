@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using AstralOath.Client.Common;
 using AstralOath.Client.Core;
 using AstralOath.Client.FoundationDemo;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace AstralOath.Client.Bootstrap
 {
@@ -23,6 +25,15 @@ namespace AstralOath.Client.Bootstrap
         [SerializeField] private TextAsset contentPublicKey;
 
         private const string Demo = "foundation";
+        private static readonly IReadOnlyDictionary<string, IReadOnlyDictionary<string, string>> BootMessages =
+            new Dictionary<string, IReadOnlyDictionary<string, string>>
+            {
+                ["zh-Hans"] = new Dictionary<string, string>
+                {
+                    ["foundation.loading"] = "正在加载演示资源…",
+                    ["foundation.load.error"] = "地基初始化失败，请查看日志。"
+                }
+            };
         private BindingScope lifetime;
         private FoundationLua lua;
 
@@ -30,16 +41,15 @@ namespace AstralOath.Client.Bootstrap
         {
             bool automation = Array.Exists(Environment.GetCommandLineArgs(), arg => arg == "-astral-demo-echo");
             var scope = new BindingScope(default);
+            var bootLocale = new LocaleService(BootMessages, "zh-Hans", "ja", "ja");
             lifetime = scope;
             try
             {
                 var services = new ServiceRegistry(scope.Token);
                 scope.Add(services.Dispose);
-                services.Add<ILocaleService>(new LocaleService(DemoMessages.Text, textLocale, voiceLocale, "ja", "zh-Hans"));
-                var locale = services.Get<ILocaleService>();
-                startupStatus.Bind(locale, scope, "foundation.loading");
+                startupStatus.Bind(bootLocale, scope, "foundation.loading");
                 bool recovered = false;
-                var content = await StartupContent.OpenAsync(manifestUrl, signatureUrl, contentPublicKey, locale,
+                var content = await StartupContent.OpenAsync(manifestUrl, signatureUrl, contentPublicKey, textLocale, voiceLocale,
                     scope.Token, message =>
                     {
                         recovered = true;
@@ -52,6 +62,8 @@ namespace AstralOath.Client.Bootstrap
                 }
 
                 services.Add(content);
+                var locale = content.Locale;
+                services.Add<ILocaleService>(locale);
                 if (content.ReleaseVersion.HasValue)
                     Debug.Log($"ASTRAL_CONTENT_ACTIVE version={content.ReleaseVersion.Value} recovered={recovered}");
                 lua = content.Lua;
@@ -95,8 +107,7 @@ namespace AstralOath.Client.Bootstrap
                 if (scope.Token.IsCancellationRequested)
                     return;
                 startupStatus.gameObject.SetActive(true);
-                var locale = new LocaleService(DemoMessages.Text, "zh-Hans", "ja", "ja");
-                startupStatus.Bind(locale, scope, "foundation.load.error");
+                startupStatus.Bind(bootLocale, scope, "foundation.load.error");
                 Debug.LogException(error, this);
                 if (automation)
                 {
@@ -108,6 +119,16 @@ namespace AstralOath.Client.Bootstrap
 
         private static IEnumerator CaptureSmokeScreenshot(string destination)
         {
+            float deadline = Time.realtimeSinceStartup + 15;
+            while (!SplashScreen.isFinished && Time.realtimeSinceStartup < deadline)
+                yield return null;
+            if (!SplashScreen.isFinished)
+            {
+                Debug.LogError("Foundation screenshot timed out waiting for the splash screen.");
+                Quit(1);
+                yield break;
+            }
+            yield return null;
             yield return new WaitForEndOfFrame();
             Texture2D frame = null;
             int exitCode = 0;
@@ -116,6 +137,10 @@ namespace AstralOath.Client.Bootstrap
                 string path = Path.GetFullPath(destination);
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
                 frame = ScreenCapture.CaptureScreenshotAsTexture();
+                var pixels = frame.GetPixels32();
+                Color32 first = pixels[0];
+                if (!Array.Exists(pixels, pixel => pixel.r != first.r || pixel.g != first.g || pixel.b != first.b))
+                    throw new InvalidDataException("Foundation screenshot has no visible detail.");
                 File.WriteAllBytes(path, frame.EncodeToPNG());
                 Debug.Log("ASTRAL_SCREENSHOT_OK " + path);
             }

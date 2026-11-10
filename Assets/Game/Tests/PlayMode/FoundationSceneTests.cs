@@ -16,20 +16,55 @@ namespace AstralOath.Client.Tests
 {
     public sealed class FoundationSceneTests
     {
-        private const string ScenePath = "Assets/Game/Modules/FoundationDemo/Scenes/FoundationDemo.unity";
+        private const string Module = "Assets/Game/Modules/FoundationDemo/";
+        private const string ScenePath = Module + "Scenes/FoundationDemo.unity";
+
+        [Serializable]
+        private sealed class Rows<T>
+        {
+            public T[] rows;
+        }
+
+        [Serializable]
+        private sealed class DemoRow
+        {
+            public int id;
+            public string titleKey;
+            public string messageKey;
+            public int displaySeconds;
+        }
+
+        [Serializable]
+        private sealed class MessageRow
+        {
+            public string key;
+            public string zhCn;
+        }
+
+        private static T[] ReadRows<T>(string path)
+        {
+            string json = AssetDatabase.LoadAssetAtPath<TextAsset>(Module + path).text;
+            return JsonUtility.FromJson<Rows<T>>("{\"rows\":" + json + "}").rows;
+        }
 
         [UnityTest]
         public IEnumerator DemoLoadsBundledContentAndReopens()
         {
+            var demo = ReadRows<DemoRow>("Configs/demo-config.json").Single(row => row.id == 1);
+            var locale = ReadRows<MessageRow>("Configs/demo-localization.json").ToDictionary(row => row.key, row => row.zhCn);
+            string sample = AssetDatabase.LoadAssetAtPath<TextAsset>(Module + "Res/Text/demo-resource.txt").text.Trim();
+            string ready = string.Format(locale["foundation.ready"], sample, demo.displaySeconds);
             var scene = EditorSceneManager.LoadSceneInPlayMode(ScenePath, new LoadSceneParameters(LoadSceneMode.Additive));
             try
             {
                 yield return null;
                 var view = scene.GetRootGameObjects().SelectMany(go => go.GetComponentsInChildren<FoundationView>(true)).Single();
                 var status = view.Status.GetComponent<TextMeshProUGUI>();
-                yield return WaitFor(() => status.text.StartsWith("已加载 ", StringComparison.Ordinal));
-                Assert.That(status.text, Does.Contain("AstralOath"));
-                Assert.That(view.Title.GetComponent<TextMeshProUGUI>().text, Does.Contain("客户端地基"));
+                yield return WaitFor(() => status.text == ready);
+                Assert.That(view.Title.GetComponent<TextMeshProUGUI>().text, Is.EqualTo(locale[demo.titleKey]));
+                Assert.That(view.Description.GetComponent<TextMeshProUGUI>().text, Is.EqualTo(locale[demo.messageKey]));
+                Assert.That(scene.GetRootGameObjects().Select(go => go.GetComponent<Camera>())
+                    .Count(camera => camera && camera.isActiveAndEnabled), Is.EqualTo(1));
                 const string fontPath = "Assets/Game/Modules/FoundationDemo/Res/Fonts/FoundationFont.asset";
                 var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(fontPath);
                 Assert.That(font, Is.Not.Null);
@@ -51,8 +86,8 @@ namespace AstralOath.Client.Tests
                 if (Environment.GetEnvironmentVariable("ASTRAL_FOUNDATION_LIVE_TEST") == "1")
                 {
                     view.Echo.GetComponent<Button>().onClick.Invoke();
-                    yield return WaitFor(() => status.text.StartsWith("服务端返回 ", StringComparison.Ordinal));
-                    Assert.That(status.text, Does.Contain("序号 "));
+                    yield return WaitFor(() => status.text != ready && status.text != locale["foundation.pending"]);
+                    Assert.That(status.text, Is.Not.EqualTo(locale["foundation.echo.error"]));
                     Debug.Log("ASTRAL_EDITOR_ECHO_OK " + status.text);
                 }
 
@@ -67,7 +102,7 @@ namespace AstralOath.Client.Tests
                 Assert.That(WorldBottom((RectTransform)open.transform), Is.GreaterThan(WorldTop(startup)));
                 open.onClick.Invoke();
                 yield return WaitFor(() => view.gameObject.activeSelf &&
-                    status.text.StartsWith("已加载 ", StringComparison.Ordinal));
+                    status.text == ready);
             }
             finally
             {

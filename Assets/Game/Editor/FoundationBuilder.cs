@@ -39,11 +39,17 @@ namespace AstralOath.Editor
         [MenuItem("AstralOath/Foundation/Import Generated Demo Config")]
         public static void ImportGeneratedDemoConfig()
         {
-            const string source = ".artifacts/config/json/demo_ui.json";
-            if (!File.Exists(source))
-                throw new FileNotFoundException("Generate the Luban config before importing.", source);
-            File.Copy(source, Module + "/Configs/demo-config.json", overwrite: true);
-            AssetDatabase.ImportAsset(Module + "/Configs/demo-config.json", ImportAssetOptions.ForceSynchronousImport);
+            const string argument = "-astral-generated-config";
+            string root = Environment.GetCommandLineArgs().Contains(argument)
+                ? RequiredArgument(argument) : ".artifacts/config/json";
+            var ui = File.ReadAllBytes(Path.Combine(root, "demo_ui.json"));
+            var locale = File.ReadAllBytes(Path.Combine(root, "demo_localizationkeys.json"));
+            const string uiPath = Module + "/Configs/demo-config.json";
+            const string localePath = Module + "/Configs/demo-localization.json";
+            File.WriteAllBytes(uiPath, ui);
+            File.WriteAllBytes(localePath, locale);
+            AssetDatabase.ImportAsset(uiPath, ImportAssetOptions.ForceSynchronousImport);
+            AssetDatabase.ImportAsset(localePath, ImportAssetOptions.ForceSynchronousImport);
         }
 
         [MenuItem("AstralOath/Foundation/Generate Binder Bridge")]
@@ -83,6 +89,8 @@ namespace AstralOath.Editor
             try
             {
                 ValidateFonts(scene.GetRootGameObjects().SelectMany(go => go.GetComponentsInChildren<TextMeshProUGUI>(true)), font);
+                if (!scene.GetRootGameObjects().Any(go => go.TryGetComponent<Camera>(out var camera) && camera.isActiveAndEnabled))
+                    throw new BuildFailedException("Foundation demo requires an enabled scene camera. Run CreateDemo.");
             }
             finally
             {
@@ -90,6 +98,7 @@ namespace AstralOath.Editor
                     EditorSceneManager.CloseScene(scene, removeScene: true);
             }
             AssetBundleCollectorSettingData.Setting.CheckPackageConfigError(YooAssetService.PackageName);
+            GameAssetImportRules.ValidateTextureDefaults();
         }
 
         [MenuItem("AstralOath/Foundation/Create Demo Scene")]
@@ -103,6 +112,12 @@ namespace AstralOath.Editor
             using (var validation = new FoundationLua(RequireAsset<TextAsset>(Module + "/Lua/DemoBinder.lua.txt").text)) { }
 
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            var cameraObject = new GameObject("Main Camera", typeof(Camera), typeof(AudioListener));
+            cameraObject.tag = "MainCamera";
+            var camera = cameraObject.GetComponent<Camera>();
+            camera.clearFlags = CameraClearFlags.SolidColor;
+            camera.backgroundColor = new Color32(17, 24, 39, 255);
+            camera.cullingMask = 0;
             var canvas = new GameObject("Foundation Canvas", typeof(RectTransform), typeof(Canvas),
                 typeof(CanvasScaler), typeof(GraphicRaycaster));
             canvas.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
@@ -278,9 +293,8 @@ namespace AstralOath.Editor
             var asset = TMP_FontAsset.CreateFontAsset(font, 60, 6, GlyphRenderMode.SDFAA, 1024, 1024)
                 ?? throw new InvalidOperationException("Could not initialize the Noto Sans SC font.");
             asset.name = "FoundationFont";
-            string letters = new string(string.Concat(DemoMessages.Text["zh-Hans"].Values)
-                .Concat("AstralOath0123456789").Distinct().ToArray());
-            if (!asset.TryAddCharacters(letters, out string missing))
+            // The dynamic atlas adds glyphs from active package text when labels bind.
+            if (!asset.TryAddCharacters("AstralOath0123456789", out string missing))
                 throw new InvalidOperationException("Missing demo font glyphs: " + missing);
             AssetDatabase.CreateAsset(asset, FontPath);
             foreach (var atlas in asset.atlasTextures.Where(texture => texture))
@@ -323,7 +337,8 @@ namespace AstralOath.Editor
             var group = package.Groups.SingleOrDefault(entry => entry.GroupName == "FoundationDemo")
                 ?? AssetBundleCollectorSettingData.CreateGroup(package, "FoundationDemo");
             group.Collectors.Clear();
-            foreach (string file in new[] { "Configs/demo-config.json", "Res/Text/demo-resource.txt", "Lua/DemoBinder.lua.txt" })
+            foreach (string file in new[] { "Configs/demo-config.json", "Configs/demo-localization.json",
+                "Res/Text/demo-resource.txt", "Lua/DemoBinder.lua.txt" })
             {
                 string path = Module + "/" + file;
                 _ = RequireAsset<TextAsset>(path);

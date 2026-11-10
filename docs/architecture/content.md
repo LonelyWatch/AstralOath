@@ -44,14 +44,15 @@ pwsh -File Tools/Content/Package-Unity.ps1 -PackageDirectory .artifacts/UnityPro
 
 更新器先验证清单签名，然后读取版本和路径。客户端协议与配置版本均须精确匹配。每份清单和每个文件有独立的响应大小上限。相同清单的断点文件保存在 staging，重启重试时重新检查偏移、总大小及最终哈希。清单请求最长 30 秒，文件请求闲置超过 60 秒取消。客户端提供会话取消令牌，并复用自己持有的 HttpClient 和可信 RSA 公钥。
 
-更新器以同卷的剩余负载加 8 MiB 安全余量作磁盘准入检查。它通过文件锁串行化更新，避免本更新器的并行任务重复占用预算。其他进程仍可占用磁盘空间。有效负载完整后移动到按版本命名的独立目录，再原子替换记录当前和上一个版本的指针。进程中断后旧指针仍可读取，已下载内容可由下一次安装重用。指针操作依赖文件系统的同卷原子替换，断电持久性取决于系统和文件系统。
+更新器以同卷的剩余负载加 8 MiB 安全余量作磁盘准入检查。Unity 客户端对安装目录调用 Windows `GetDiskFreeSpaceExW` 或 Android `StatFs.getAvailableBytes` 查询可用空间。它通过文件锁串行化更新，避免本更新器的并行任务重复占用预算。其他进程仍可占用磁盘空间。有效负载完整后移动到按版本命名的独立目录，再原子替换记录当前和上一个版本的指针。进程中断后旧指针仍可读取，已下载内容可由下一次安装重用。指针操作依赖文件系统的同卷原子替换，断电持久性取决于系统和文件系统。
 
 启动用 `GetActiveRelease(token)` 读取已签名的安装版本，加载时保持该目录只读。对大包应在后台读取和验证，再由 Unity 主线程切换加载入口。安装时可传入候选校验回调，先验证包能否加载 Lua 和配置。回调失败或取消会保留旧指针。显式回滚重新验证旧版内容和兼容性，仅切换内容指针。同一发布版本的本地文件损坏时，可用相同的签名清单重新下载。完整校验后，旧目录移入隔离区，原版本号和回滚指针保持不变。源清单损坏导致无法核对发布身份时，安装会拒绝覆盖。旧版本及隔离目录由运维控制磁盘清理。
 
 ## 验证
 
 ```powershell
-./Tools/Config/Generate.ps1 -VerifyAccessors
+./Tools/Config/Generate.ps1 -VerifyAccessors -CheckClient
+pwsh -File Tests/Content/ConfigSmoke.ps1
 dotnet run --project Tests/Content
 pwsh -File Tests/Content/ReleaseSmoke.ps1
 ```

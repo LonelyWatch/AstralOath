@@ -38,6 +38,14 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 
+      - CollectPath: Assets/Game/Modules/FoundationDemo/Configs/demo-localization.json
+        CollectorGUID: 8efd66b481424c15a6ea69aa63578e02
+        CollectorType: 0
+        AddressRuleName: FoundationDemoAddressRule
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
       - CollectPath: Assets/Game/Modules/FoundationDemo/Res/Text/demo-resource.txt
         CollectorGUID: 251e24655c7c41e49b0865a0fa747c5b
         CollectorType: 0

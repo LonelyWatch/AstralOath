@@ -1,6 +1,6 @@
 #requires -Version 5.1
 [CmdletBinding()]
-param([string]$Dotnet, [switch]$VerifyAccessors)
+param([string]$Dotnet, [switch]$VerifyAccessors, [switch]$SyncClient, [switch]$CheckClient)
 
 $ErrorActionPreference = 'Stop'
 $repo = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
@@ -11,6 +11,12 @@ $staging = Join-Path $work 'output'
 $backup = Join-Path $work 'previous'
 $published = $false
 $version = 'v5.1.0'
+if ($SyncClient -and $CheckClient) { throw 'Choose either -SyncClient or -CheckClient.' }
+$client = Join-Path $repo 'Assets/Game/Modules/FoundationDemo/Configs'
+$clientFiles = @{
+    'demo_ui.json' = 'demo-config.json'
+    'demo_localizationkeys.json' = 'demo-localization.json'
+}
 if (-not $Dotnet) {
     $local = Join-Path $repo '.tools/dotnet/dotnet.exe'
     $Dotnet = if (Test-Path -LiteralPath $local) { $local } else { 'dotnet' }
@@ -72,12 +78,23 @@ try {
             Get-PinnedFile "$upstream/$runtime/$file" (Join-Path $runtimeDir $file) $files[$file]
         }
         Get-PinnedFile "$upstream/LICENSE" (Join-Path $runtimeDir 'LICENSE') '97C4A8162A1D5B28E06F9B4FF9EB5B054231D2BFF1E0A6A272F5E8D74FE39FC1'
-        & $Dotnet run --project (Join-Path $PSScriptRoot 'VerifyAccessor') "-p:GeneratedSourceDirectory=$staging/csharp" -- (Join-Path $staging 'bin')
+        & $Dotnet run --project (Join-Path $PSScriptRoot 'VerifyAccessor') "-p:GeneratedSourceDirectory=$staging/csharp" -- (Join-Path $staging 'bin') (Join-Path $staging 'json')
         if ($LASTEXITCODE -ne 0) { throw 'Luban accessor verification failed.' }
     }
     $lockPath = Join-Path $repo '.artifacts/config.lock'
     $lock = [IO.File]::Open($lockPath, [IO.FileMode]::OpenOrCreate, [IO.FileAccess]::ReadWrite, [IO.FileShare]::None)
     try {
+        if ($CheckClient) {
+            foreach ($name in $clientFiles.Keys) {
+                $snapshot = Join-Path $client $clientFiles[$name]
+                $generated = Join-Path $staging "json/$name"
+                if (-not (Test-Path -LiteralPath $snapshot -PathType Leaf) -or
+                    ([IO.File]::ReadAllText($snapshot) -replace '\r\n', "`n") -cne
+                    ([IO.File]::ReadAllText($generated) -replace '\r\n', "`n")) {
+                    throw "Client snapshot '$snapshot' is stale. Regenerate with -VerifyAccessors -SyncClient."
+                }
+            }
+        }
         if (Test-Path -LiteralPath $output) {
             $old = Get-Item -LiteralPath $output -Force
             if (-not $old.PSIsContainer -or ($old.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
@@ -91,6 +108,12 @@ try {
         } catch {
             if (Test-Path -LiteralPath $backup) { [IO.Directory]::Move($backup, $output) }
             throw
+        }
+        if ($SyncClient) {
+            [void][IO.Directory]::CreateDirectory($client)
+            foreach ($name in $clientFiles.Keys) {
+                [IO.File]::Copy((Join-Path $output "json/$name"), (Join-Path $client $clientFiles[$name]), $true)
+            }
         }
     } finally {
         $lock.Dispose()
