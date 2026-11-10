@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MySqlConnector" Version="[2.6.2]" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="[10.0.9]" />
+    <ProjectReference Include="../../Shared/com.astraloath.shared/AstralOath.Shared.csproj" />
+    <EmbeddedResource Include="Foundation/Migrations/*.sql" />
+  </ItemGroup>
+</Project>

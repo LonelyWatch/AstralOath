@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package astraloath.foundation;
+
+option csharp_namespace = "AstralOath.Protocol";
+
+message EchoRequest {
+  string request_id = 1;
+  uint32 protocol_version = 2;
+  string message = 3;
+}
+
+message EchoResponse {
+  string request_id = 1;
+  uint32 protocol_version = 2;
+  string message = 3;
+  uint64 sequence = 4;
+}
