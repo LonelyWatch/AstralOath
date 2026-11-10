@@ -22,6 +22,8 @@ namespace AstralOath.Editor
 
             EditorGUILayout.LabelField("绑定列表", EditorStyles.boldLabel);
             var entries = BindingMapEditorOperations.Entries(serializedObject);
+            int requestedCount = Mathf.Max(0, EditorGUILayout.DelayedIntField("绑定总数", entries.arraySize));
+            bool resize = requestedCount != entries.arraySize;
             int removeIndex = -1;
             int typeIndex = -1;
             Object typeReference = null;
@@ -49,7 +51,11 @@ namespace AstralOath.Editor
 
             bool add = GUILayout.Button("+ 添加绑定");
             bool changed = serializedObject.ApplyModifiedProperties();
-            if (removeIndex >= 0)
+            if (resize)
+            {
+                changed |= BindingMapEditorOperations.Resize(binder, requestedCount);
+            }
+            else if (removeIndex >= 0)
             {
                 BindingMapEditorOperations.RemoveAt(binder, removeIndex);
                 changed = true;
@@ -67,6 +73,7 @@ namespace AstralOath.Editor
             if (changed)
             {
                 serializedObject.Update();
+                entries = BindingMapEditorOperations.Entries(serializedObject);
                 EditorApplication.RepaintHierarchyWindow();
             }
             DrawValidation(entries, binder);

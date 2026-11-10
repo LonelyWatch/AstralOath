@@ -24,9 +24,9 @@ namespace AstralOath.Editor
             return reference is Component component && component ? component.gameObject : null;
         }
 
-        internal static bool GetHierarchyState(GameObject gameObject, out bool bound)
+        public static bool TryGetHierarchyBindings(GameObject gameObject, out string[] keys)
         {
-            bound = false;
+            keys = Array.Empty<string>();
             if (!IsSceneObject(gameObject))
                 return false;
 
@@ -35,8 +35,37 @@ namespace AstralOath.Editor
                 return PrefabRoot(gameObject);
 
             using var serialized = new SerializedObject(binder);
-            bound = ContainsObject(Entries(serialized), gameObject);
+            var entries = Entries(serialized);
+            var matches = new List<string>();
+            for (int index = 0; index < entries.arraySize; index++)
+            {
+                var entry = entries.GetArrayElementAtIndex(index);
+                var reference = entry.FindPropertyRelative(ReferenceField).objectReferenceValue;
+                if (ReferenceOwner(reference) == gameObject)
+                    matches.Add(entry.FindPropertyRelative(KeyField).stringValue);
+            }
+            keys = matches.ToArray();
             return true;
+        }
+
+        public static bool Resize(BindingMap binder, int count)
+        {
+            using var serialized = new SerializedObject(binder);
+            var entries = Entries(serialized);
+            count = Mathf.Max(0, count);
+            int previousCount = entries.arraySize;
+            if (count == previousCount)
+                return false;
+
+            entries.arraySize = count;
+            // Unity copies the final element when growing arrays; new binding rows must be blank.
+            for (int index = previousCount; index < count; index++)
+            {
+                var entry = entries.GetArrayElementAtIndex(index);
+                entry.FindPropertyRelative(KeyField).stringValue = string.Empty;
+                entry.FindPropertyRelative(ReferenceField).objectReferenceValue = null;
+            }
+            return Apply(serialized, "修改绑定总数");
         }
 
         public static bool Add(GameObject gameObject)

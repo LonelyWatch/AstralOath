@@ -16,9 +16,10 @@
 
 1. 在 Unity 中双击预制体，进入 Prefab Mode。在根节点添加 `BindingMap`，或用子对象 Hierarchy 右侧的 `+` 自动创建根 Binder。
 2. 对需要使用的节点点击 `+`，绑定到最近的 Binder。已有 Binder 的普通场景实例也支持此操作。嵌套 Binder 各自管理自己的子树。
-3. 选择 Binder 根节点。Inspector 的绑定项每行展示 key、对象引用、类型选择和删除按钮，没有逐项折叠。类型可选 GameObject 或对象上的具体组件。
+3. 选择 Binder 根节点。Inspector 顶部的“绑定总数”可编辑，按 Enter 或移开焦点后生效：增加时补充空绑定行，减少时从列表末尾移除，支持 Undo/Redo；总数包含尚未填写完整的行。绑定项每行展示 key、对象引用、类型选择和删除按钮，没有逐项折叠。类型可选 GameObject 或对象上的具体组件。
 4. 修改 key 为稳定业务名称，例如 `title`、`confirm`。同名节点自动生成不同 key；手工重复 key、缺失对象和外部引用仍需修正。
 5. Hierarchy 的 `−` 移除对应对象的绑定。Inspector 删除单个绑定项。操作支持 Unity Undo/Redo；保存预制体以持久化修改。
+6. 已绑定对象在 Hierarchy 增删按钮左侧显示绿色 Key，取自最近的 Binder；同一对象绑定多个组件时按列表顺序显示全部 Key。修改 Key 后自动刷新。空间不足时文字截断，悬停可查看完整名称；空 Key 显示“未命名”，并继续由 Inspector 提示校验错误。
 
 Hierarchy 的增删按钮仅在编辑状态显示，运行模式下不修改绑定。普通场景中不属于任何 Binder 的对象不显示按钮；制作新界面时先进入 Prefab Mode。
 
@@ -65,3 +66,7 @@ public sealed class InventoryWindow : UIBaseView
 ## 命名统一复验（2026-11-11）
 
 基类统一为 `UIBaseView`，示例 View/Binder 按预制体名同步重命名，保留四组资产 GUID、资源地址与内容 schema 2。新增命名契约检查后 EditMode 36/36、PlayMode 6/6 通过，后者启用本地服务器回显；模块验证器 4/4 通过，依赖检查与独立代码审查通过。此次仅命名调整，未重新构建 Windows/Android Player。
+
+## 数量与参数名显示复验（2026-11-11）
+
+编辑器新增可编辑绑定总数与 Hierarchy 绿色 Key。回归先确认 6 项预期失败，再完成实现，最终 EditMode 41/41 通过，覆盖新增空行、尾部缩减、Undo/Redo、Prefab 覆盖与保存、同对象多 Key、重命名及最近 Binder 隔离。独立审查通过。已实际观察到 Hierarchy 绿色参数名；用户按 Escape 停止了界面操作，因此未继续人工修改总数字段。此次只修改 Editor 工具，未重跑 PlayMode 或构建 Player。

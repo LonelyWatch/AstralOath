@@ -156,6 +156,121 @@ namespace AstralOath.Client.Tests
         }
 
         [Test]
+        public void ResizePreservesExistingRowsAndAddsBlankRowsInOneUndo()
+        {
+            var binder = CreateRoot().AddComponent<BindingMap>();
+            var child = CreateChild(binder.transform, "Target");
+            Assert.That(Add(child), Is.True);
+
+            Assert.That(Resize(binder, 3), Is.True);
+            Assert.That(Read(binder), Is.EqualTo(new (string, Object)[]
+            {
+                ("Target", child.transform), (string.Empty, null), (string.Empty, null)
+            }));
+            Assert.That(Resize(binder, 3), Is.False);
+            Undo.FlushUndoRecordObjects();
+            Undo.PerformUndo();
+            Assert.That(Read(binder), Is.EqualTo(new[] { ("Target", (Object)child.transform) }));
+            Undo.PerformRedo();
+            Assert.That(Read(binder), Has.Length.EqualTo(3));
+            Assert.That(Read(binder)[2], Is.EqualTo((string.Empty, (Object)null)));
+        }
+
+        [Test]
+        public void ResizeRemovesTailRowsAndClampsNegativeCountsToZero()
+        {
+            var binder = CreateRoot().AddComponent<BindingMap>();
+            var first = CreateChild(binder.transform, "First");
+            var second = CreateChild(binder.transform, "Second");
+            Assert.That(Add(first), Is.True);
+            Assert.That(Add(second), Is.True);
+            var before = Read(binder);
+
+            Assert.That(Resize(binder, 1), Is.True);
+            Assert.That(Read(binder), Is.EqualTo(new[] { ("First", (Object)first.transform) }));
+            Undo.FlushUndoRecordObjects();
+            Undo.PerformUndo();
+            Assert.That(Read(binder), Is.EqualTo(before));
+            Undo.PerformRedo();
+            Assert.That(Read(binder), Has.Length.EqualTo(1));
+
+            Assert.That(Resize(binder, -2), Is.True);
+            Assert.That(Read(binder), Is.Empty);
+            Assert.That(Resize(binder, -1), Is.False);
+            Undo.FlushUndoRecordObjects();
+            Undo.PerformUndo();
+            Assert.That(Read(binder), Is.EqualTo(new[] { ("First", (Object)first.transform) }));
+        }
+
+        [Test]
+        public void HierarchyBindingKeysFollowListOrderAndRefreshAfterRename()
+        {
+            var binder = CreateRoot().AddComponent<BindingMap>();
+            var child = CreateChild(binder.transform, "Target", typeof(BoxCollider));
+            var other = CreateChild(binder.transform, "Other");
+            Write(binder, ("object", child), ("other", other),
+                ("collider", child.GetComponent<BoxCollider>()), (string.Empty, child.transform));
+
+            Assert.That(TryGetHierarchyBindings(child, out var keys), Is.True);
+            Assert.That(keys, Is.EqualTo(new[] { "object", "collider", string.Empty }));
+            Write(binder, ("renamed", child), ("other", other));
+            Assert.That(TryGetHierarchyBindings(child, out keys), Is.True);
+            Assert.That(keys, Is.EqualTo(new[] { "renamed" }));
+        }
+
+        [Test]
+        public void HierarchyBindingKeysUseNearestBinderAndKeepUnboundChildrenEligible()
+        {
+            var outer = CreateRoot().AddComponent<BindingMap>();
+            var inner = CreateChild(outer.transform, "Nested").AddComponent<BindingMap>();
+            var child = CreateChild(inner.transform, "Target");
+            Write(outer, ("outerKey", child));
+
+            Assert.That(TryGetHierarchyBindings(child, out var keys), Is.True);
+            Assert.That(keys, Is.Empty, "An ancestor Binder must not leak keys into a nested Binder.");
+            Write(inner, ("innerKey", child));
+            Assert.That(TryGetHierarchyBindings(child, out keys), Is.True);
+            Assert.That(keys, Is.EqualTo(new[] { "innerKey" }));
+            Assert.That(TryGetHierarchyBindings(CreateRoot(), out keys), Is.False);
+            Assert.That(keys, Is.Empty);
+            Assert.That(TryGetHierarchyBindings(null, out keys), Is.False);
+            Assert.That(keys, Is.Empty);
+        }
+
+        [Test]
+        public void ResizeCreatesPrefabOverrideAndPersistsCountOnSave()
+        {
+            var root = CreateRoot();
+            var binder = root.AddComponent<BindingMap>();
+            var child = CreateChild(root.transform, "Target");
+            Assert.That(Add(child), Is.True);
+            var asset = SavePrefab(root);
+            var instance = (GameObject)PrefabUtility.InstantiatePrefab(asset);
+            roots.Add(instance);
+            var instanceBinder = instance.GetComponent<BindingMap>();
+
+            Assert.That(Resize(instanceBinder, 3), Is.True);
+            Assert.That(PrefabUtility.HasPrefabInstanceAnyOverrides(instance, false), Is.True);
+            Assert.That(Read(asset.GetComponent<BindingMap>()), Has.Length.EqualTo(1));
+            PrefabUtility.SaveAsPrefabAsset(instance, prefabPath, out bool saved);
+            Assert.That(saved, Is.True);
+
+            var reloaded = PrefabUtility.LoadPrefabContents(prefabPath);
+            try
+            {
+                var reloadedChild = reloaded.transform.Find("Target").gameObject;
+                Assert.That(Read(reloaded.GetComponent<BindingMap>()), Is.EqualTo(new (string, Object)[]
+                {
+                    ("Target", reloadedChild.transform), (string.Empty, null), (string.Empty, null)
+                }));
+            }
+            finally
+            {
+                PrefabUtility.UnloadPrefabContents(reloaded);
+            }
+        }
+
+        [Test]
         public void PrefabStageCreatesRootBinderInOneUndoAndPersistsBindings()
         {
             var root = CreateRoot();
@@ -166,6 +281,8 @@ namespace AstralOath.Client.Tests
             Assert.That(stage, Is.Not.Null);
             var stageRoot = stage.prefabContentsRoot;
             var child = stageRoot.transform.Find("Target").gameObject;
+            Assert.That(TryGetHierarchyBindings(child, out var keys), Is.True);
+            Assert.That(keys, Is.Empty, "Unbound objects in Prefab Mode must retain the add button.");
             Assert.That(Add(child), Is.True);
             Undo.FlushUndoRecordObjects();
             Assert.That(Read(stageRoot.GetComponent<BindingMap>()),
@@ -254,6 +371,20 @@ namespace AstralOath.Client.Tests
                     entry.FindPropertyRelative("component").objectReferenceValue);
             }
             return result;
+        }
+
+        private static void Write(BindingMap binder, params (string key, Object value)[] values)
+        {
+            using var serialized = new SerializedObject(binder);
+            var entries = serialized.FindProperty("entries");
+            entries.arraySize = values.Length;
+            for (int index = 0; index < values.Length; index++)
+            {
+                var entry = entries.GetArrayElementAtIndex(index);
+                entry.FindPropertyRelative("key").stringValue = values[index].key;
+                entry.FindPropertyRelative("component").objectReferenceValue = values[index].value;
+            }
+            serialized.ApplyModifiedPropertiesWithoutUndo();
         }
 
     }
