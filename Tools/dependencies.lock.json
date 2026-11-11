@@ -69,7 +69,8 @@
       "url": "https://codeload.github.com/focus-creative-games/hybridclr_unity/zip/6cadd24d101f4cbd00cd80190106f6621132d24d",
       "sha256": "cf1fd32f306008bc1e90d5aed53abae02e5c6ef13593de09600587680c675662",
       "version": "9.0.3",
-      "commit": "6cadd24d101f4cbd00cd80190106f6621132d24d"
+      "commit": "6cadd24d101f4cbd00cd80190106f6621132d24d",
+      "localAdjustments": ["Unity 2022.3.62f3 补全 AddLil2cppSourceCodeToXcodeproj2023OrNewer.cs.meta 的默认 MonoImporter；保留原 GUID，不修改插件源码。"]
     },
     {
       "file": "hybridclr-runtime-v9.0.1.zip",

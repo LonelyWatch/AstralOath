@@ -8,6 +8,7 @@
 - .NET 内容行为测试 18 项。
 - .NET 服务端测试 10 项。另有 1 项 MySQL 集成测试因未提供测试连接串而跳过。
 - Unity 2022.3.62f3 批处理 Compile 和项目本地 InstallHybridCLR 通过。
+- 用户工程 `D:\UnityProjects\AstralOath` 同步后实际编译并完成项目局部 HybridCLR 安装；全局 Unity 安装保持不变。
 - Unity EditMode 55/55，包括入口加载失败后的同进程重试拒绝，以及 AOT 泛型需求分析未收敛时拒绝构建。
 - Unity PlayMode 7/7。
 
