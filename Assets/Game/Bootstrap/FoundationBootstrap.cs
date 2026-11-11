@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using AstralOath.Client.Common;
 using AstralOath.Client.Core;
-using AstralOath.Client.FoundationDemo;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -24,7 +23,6 @@ namespace AstralOath.Client.Bootstrap
         [SerializeField] private string signatureUrl;
         [SerializeField] private TextAsset contentPublicKey;
 
-        private const string Demo = "foundation";
         private static readonly IReadOnlyDictionary<string, IReadOnlyDictionary<string, string>> BootMessages =
             new Dictionary<string, IReadOnlyDictionary<string, string>>
             {
@@ -35,11 +33,12 @@ namespace AstralOath.Client.Bootstrap
                 }
             };
         private BindingScope lifetime;
-        private FoundationLua lua;
+        private IHotUpdateEntry entry;
 
         private async void Start()
         {
-            bool automation = Array.Exists(Environment.GetCommandLineArgs(), arg => arg == "-astral-demo-echo");
+            bool startupSmoke = Array.Exists(Environment.GetCommandLineArgs(), arg => arg == "-astral-startup-smoke");
+            bool automation = startupSmoke || Array.Exists(Environment.GetCommandLineArgs(), arg => arg == "-astral-demo-echo");
             var scope = new BindingScope(default);
             var bootLocale = new LocaleService(BootMessages, "zh-Hans", "ja", "ja");
             lifetime = scope;
@@ -49,7 +48,7 @@ namespace AstralOath.Client.Bootstrap
                 scope.Add(services.Dispose);
                 startupStatus.Bind(bootLocale, scope, "foundation.loading");
                 bool recovered = false;
-                var content = await StartupContent.OpenAsync(manifestUrl, signatureUrl, contentPublicKey, textLocale, voiceLocale,
+                var content = await StartupContent.OpenAsync(manifestUrl, signatureUrl, contentPublicKey,
                     scope.Token, message =>
                     {
                         recovered = true;
@@ -62,36 +61,29 @@ namespace AstralOath.Client.Bootstrap
                 }
 
                 services.Add(content);
-                var locale = content.Locale;
-                services.Add<ILocaleService>(locale);
-                if (content.ReleaseVersion.HasValue)
-                    Debug.Log($"ASTRAL_CONTENT_ACTIVE version={content.ReleaseVersion.Value} recovered={recovered}");
-                lua = content.Lua;
+                services.Add<IAssetService>(content.Assets);
                 services.Add<IConfigService>(new JsonConfigService(content.Assets));
                 services.Add<IAnimationService>(new DotweenAnimations());
-                services.Add<IAudioService>(new VoiceService(audioOutput, content.Assets, locale));
                 string url = Environment.GetEnvironmentVariable("ASTRAL_FOUNDATION_URL");
                 services.Add<IEchoService>(new ProtobufEchoService(string.IsNullOrWhiteSpace(url) ? baseUrl : url));
-                var views = new UIViewRegistry();
-                views.Register<FoundationWindow>();
-                var view = await views.CreateAsync<FoundationWindow>(content.Assets, viewRoot, scope);
+                entry = content.CreateEntry();
+                scope.Add(entry.Dispose);
+                await entry.StartAsync(new GameLaunchContext(services, scope, viewRoot, open, openLabel,
+                    startupStatus, textLocale, voiceLocale, recovered));
                 scope.Token.ThrowIfCancellationRequested();
-                var windows = new WindowCoordinator(scope.Token);
-                scope.Add(windows.Dispose);
-                var window = new DemoWindow(view, lua, content.Assets, services.Get<IConfigService>(), locale,
-                    services.Get<IEchoService>(), services.Get<IAnimationService>(), scope.Token);
-                windows.Register(Demo, window);
-                openLabel.Bind(locale, scope, "foundation.open");
-                open.Bind(scope, _ => windows.OpenAsync(Demo));
-                if (recovered)
-                    startupStatus.Bind(locale, scope, "foundation.update.recovered");
-                else
-                    startupStatus.gameObject.SetActive(false);
-                await windows.OpenAsync(Demo);
-
+                services.Add<IAudioService>(new VoiceService(audioOutput, content.Assets, services.Get<ILocaleService>()));
+                content.ConfirmStartup();
+                Debug.Log($"ASTRAL_CODE_BOOT_OK release={content.ReleaseVersion?.ToString() ?? "builtin"} recovered={recovered}");
+                if (content.ReleaseVersion.HasValue)
+                    Debug.Log($"ASTRAL_CONTENT_ACTIVE version={content.ReleaseVersion.Value} recovered={recovered}");
+                if (startupSmoke)
+                {
+                    Quit(0);
+                    return;
+                }
                 if (automation && !scope.Token.IsCancellationRequested)
                 {
-                    EchoResult echo = await window.EchoAsync();
+                    EchoResult echo = await entry.EchoAsync();
                     if (echo == null)
                         throw new InvalidOperationException("Echo request failed.");
                     Debug.Log($"ASTRAL_ECHO_OK sequence={echo.Sequence}");
@@ -161,11 +153,11 @@ namespace AstralOath.Client.Bootstrap
             Quit(exitCode);
         }
 
-        private void Update() => lua?.Tick();
+
 
         private void OnDestroy()
         {
-            lua = null;
+            entry = null;
             try { lifetime?.Dispose(); }
             catch (Exception error) { Debug.LogException(error); }
         }

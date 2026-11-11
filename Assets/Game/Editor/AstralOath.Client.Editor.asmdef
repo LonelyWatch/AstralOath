@@ -8,7 +8,9 @@
     "UnityEngine.UI",
     "Unity.TextMeshPro",
     "YooAsset",
-    "YooAsset.Editor"
+    "YooAsset.Editor",
+    "AstralOath.Shared",
+    "HybridCLR.Editor"
   ],
   "includePlatforms": [
     "Editor"

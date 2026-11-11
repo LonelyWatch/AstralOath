@@ -19,7 +19,9 @@ await fixture.UnsignedFileRejected();
 await fixture.CandidateRejectedBeforeActivation();
 await fixture.RepairSameVersion();
 await fixture.RejectReplacementWhenInstalledIdentityIsMissing();
-Console.WriteLine("All 10 content scenarios passed");
+await fixture.ActivateVerifiedHistoricalRelease();
+CodeUpdateTests.Run();
+Console.WriteLine("All content and code update scenarios passed");
 
 sealed class Fixture : IAsyncDisposable
 {
@@ -212,6 +214,44 @@ sealed class Fixture : IAsyncDisposable
         Require((await Updater(schema: 2).RollbackAsync(default)).Version == 9, "missing identity left previous release available");
         await Expect<InvalidDataException>(() => Install(Updater(schema: 2)));
         Require(Updater(schema: 2).GetActiveRelease().Version == 9, "missing previous identity left active release intact");
+    }
+
+    public async Task ActivateVerifiedHistoricalRelease()
+    {
+        var updater = Updater(schema: 2);
+        SetRelease(12, schema: 2);
+        var historical = await Install(updater);
+        SetRelease(13, schema: 2);
+        await Install(updater);
+        SetRelease(14, schema: 2);
+        await Install(updater);
+
+        Require(updater.GetRelease(12).Version == 12, "explicit read works beyond the previous pointer");
+        Require(updater.GetActiveRelease().Version == 14, "explicit read left the pointer intact");
+        await Expect<InvalidDataException>(() => updater.ActivateReleaseAsync(4, default));
+
+        using var cancellation = new CancellationTokenSource();
+        cancellation.Cancel();
+        await Expect<OperationCanceledException>(() => updater.ActivateReleaseAsync(12, cancellation.Token));
+        Require(updater.GetActiveRelease().Version == 14, "incompatible or cancelled recovery kept the current release");
+
+        string signaturePath = Path.Combine(Path.GetDirectoryName(historical.DirectoryPath), "manifest.sig");
+        byte[] validSignature = File.ReadAllBytes(signaturePath);
+        File.WriteAllBytes(signaturePath, new byte[validSignature.Length]);
+        await Expect<InvalidDataException>(() => Task.FromResult(updater.GetRelease(12)));
+        await Expect<InvalidDataException>(() => updater.ActivateReleaseAsync(12, default));
+        File.WriteAllBytes(signaturePath, validSignature);
+
+        string payloadPath = Path.Combine(historical.DirectoryPath, FilePath);
+        File.WriteAllBytes(payloadPath, new byte[Body.Length]);
+        await Expect<InvalidDataException>(() => updater.ActivateReleaseAsync(12, default));
+        Require(updater.GetActiveRelease().Version == 14, "damaged historical release did not activate");
+        File.WriteAllBytes(payloadPath, Body);
+
+        Require((await updater.ActivateReleaseAsync(12, default)).Version == 12, "verified history activated explicitly");
+        Require(Updater(schema: 2).GetActiveRelease().Version == 12, "explicit activation survived restart");
+        await updater.ActivateReleaseAsync(12, default);
+        Require((await updater.RollbackAsync(default)).Version == 14, "repeated activation preserved rollback");
     }
 
     private async Task SendContent(HttpContext context)

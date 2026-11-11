@@ -54,14 +54,6 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 
-      - CollectPath: Assets/Game/Modules/FoundationDemo/Lua/FoundationWindowBinder.lua.txt
-        CollectorGUID: 77db653e988310849a9b55c93e5d6781
-        CollectorType: 0
-        AddressRuleName: FoundationDemoAddressRule
-        PackRuleName: PackDirectory
-        FilterRuleName: CollectAll
-        AssetTags: 
-        UserData: 
       - CollectPath: Assets/Game/Modules/FoundationDemo/Res/Prefab/FoundationWindow.prefab
         CollectorGUID: 4d72dda201daf3345b029b38c1162fb6
         CollectorType: 0
@@ -69,4 +61,4 @@ MonoBehaviour:
         PackRuleName: PackDirectory
         FilterRuleName: CollectAll
         AssetTags: 
-        UserData: 
+        UserData:

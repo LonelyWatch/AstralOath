@@ -53,6 +53,25 @@ namespace AstralOath.Shared.Updates
             }
         }
 
+        public ContentRelease GetRelease(long version, CancellationToken token = default)
+        {
+            using (AcquireStore())
+                return ReadRelease(version, token);
+        }
+
+        public Task<ContentRelease> ActivateReleaseAsync(long version, CancellationToken token)
+        {
+            using (AcquireStore())
+            {
+                var release = ReadRelease(version, token);
+                var pointer = ReadPointer();
+                token.ThrowIfCancellationRequested();
+                if (pointer.active != version)
+                    SwitchPointer(version, pointer.active, token);
+                return Task.FromResult(release);
+            }
+        }
+
         public async Task<ContentRelease> InstallAsync(Uri manifestUri, Uri signatureUri, CancellationToken token,
             Func<ContentRelease, CancellationToken, Task> validateCandidate = null)
         {
@@ -191,6 +210,9 @@ namespace AstralOath.Shared.Updates
 
         private ContentRelease ReadRelease(long version, CancellationToken token)
         {
+            if (version < 1)
+                throw new ArgumentOutOfRangeException(nameof(version));
+            token.ThrowIfCancellationRequested();
             string path = SafePath(SafePath(store, "releases"), VersionName(version));
             var manifest = ParseVerified(ReadBounded(SafePath(path, "manifest.json"), MaxManifestBytes),
                 ReadBounded(SafePath(path, "manifest.sig"), trustedKey.KeySize / 8));

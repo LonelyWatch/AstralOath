@@ -9,6 +9,7 @@
     <PackageReference Include="MySqlConnector" Version="[2.6.2]" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="[10.0.9]" />
     <ProjectReference Include="../../Shared/com.astraloath.shared/AstralOath.Shared.csproj" />
+    <ProjectReference Include="../../Shared/com.astraloath.shared/Runtime/Battle/AstralOath.Battle.csproj" />
     <EmbeddedResource Include="Foundation/Migrations/*.sql" />
   </ItemGroup>
 </Project>

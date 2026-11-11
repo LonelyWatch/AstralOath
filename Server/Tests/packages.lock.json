@@ -430,9 +430,13 @@
           "xunit.extensibility.core": "[2.9.3]"
         }
       },
+      "astraloath.battle": {
+        "type": "Project"
+      },
       "astraloath.server": {
         "type": "Project",
         "dependencies": {
+          "AstralOath.Battle": "[1.0.0, )",
           "AstralOath.Shared": "[1.0.0, )",
           "Microsoft.Extensions.Hosting.WindowsServices": "[10.0.9, 10.0.9]",
           "MySqlConnector": "[2.6.2, 2.6.2]"

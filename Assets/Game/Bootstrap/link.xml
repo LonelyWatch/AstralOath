@@ -2,5 +2,9 @@
   <assembly fullname="AstralOath.Shared">
     <type fullname="AstralOath.Shared.Updates.ContentManifest" preserve="all" />
     <type fullname="AstralOath.Shared.Updates.ContentEntry" preserve="all" />
+    <type fullname="AstralOath.Shared.Updates.HotUpdateManifest" preserve="all" />
+    <type fullname="AstralOath.Shared.Updates.HotUpdateAssembly" preserve="all" />
+    <type fullname="AstralOath.Shared.Updates.HotUpdateFile" preserve="all" />
+    <type fullname="AstralOath.Shared.Updates.PlayerBaseline" preserve="all" />
   </assembly>
 </linker>

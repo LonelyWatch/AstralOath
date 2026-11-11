@@ -6,6 +6,12 @@
       "source": "local",
       "dependencies": {}
     },
+    "com.code-philosophy.hybridclr": {
+      "version": "file:com.code-philosophy.hybridclr",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.coplaydev.unity-mcp": {
       "version": "file:com.coplaydev.unity-mcp",
       "depth": 0,

@@ -18,6 +18,16 @@
 /[Bb]uilds/
 # YooAsset default build output, including Editor simulation manifests
 /Bundles/
+# HybridCLR build-specific code payloads and generated AOT references
+/Assets/Game/HotUpdate/Generated/
+/Assets/Game/HotUpdate/Generated.meta
+/Assets/Game/HotUpdate.meta
+/Assets/HybridCLR/Generate/
+/Assets/HybridCLR/Generate.meta
+/Assets/HybridCLR.meta
+/Assets/Game/Bootstrap/Resources.meta
+/Assets/Game/Bootstrap/Resources/AstralOathPlayerBaseline.json
+/Assets/Game/Bootstrap/Resources/AstralOathPlayerBaseline.json.meta
 /*.apk
 /*.aab
 /*.app/

@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <BaseOutputPath>$(MSBuildThisFileDirectory)../../.artifacts/dotnet/AstralOath.Shared/bin/</BaseOutputPath>
-    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)../../.artifacts/dotnet/AstralOath.Shared/obj/</BaseIntermediateOutputPath>
+    <BaseOutputPath>$(MSBuildThisFileDirectory)../../.artifacts/dotnet/$(MSBuildProjectName)/bin/</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)../../.artifacts/dotnet/$(MSBuildProjectName)/obj/</BaseIntermediateOutputPath>
   </PropertyGroup>
 </Project>

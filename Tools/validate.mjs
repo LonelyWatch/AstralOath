@@ -3,15 +3,24 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 
-export function validateAssemblyGraph(definitions) {
+export function validateAssemblyGraph(definitions, hotUpdateNames = []) {
   const errors = [];
   const byName = new Map();
+  const hotUpdates = new Set(hotUpdateNames);
   for (const definition of definitions) {
     if (byName.has(definition.name)) errors.push(`Duplicate assembly: ${definition.name}`);
     byName.set(definition.name, definition);
   }
   for (const definition of definitions) {
+    const editorOnly = (definition.includePlatforms?.length === 1 && definition.includePlatforms[0] === 'Editor') ||
+      definition.optionalUnityReferences?.includes('TestAssemblies');
+    if (definition.name === 'AstralOath.Battle' && definition.noEngineReferences !== true)
+      errors.push('Battle must remain engine-free');
     for (const reference of definition.references ?? []) {
+      if (!editorOnly && !hotUpdates.has(definition.name) && hotUpdates.has(reference))
+        errors.push(`AOT cannot depend on hot update: ${definition.name} -> ${reference}`);
+      if (definition.name === 'AstralOath.Battle')
+        errors.push(`Battle cannot depend on external assemblies: ${reference}`);
       if (reference.startsWith('AstralOath.') && !byName.has(reference)) errors.push(`Missing reference: ${definition.name} -> ${reference}`);
       if (definition.path.replaceAll('\\', '/').includes('/Common/') && byName.get(reference)?.path.replaceAll('\\', '/').includes('/Modules/')) {
         errors.push(`Common cannot depend on business modules: ${definition.name} -> ${reference}`);
@@ -46,7 +55,13 @@ export function validateProject(root, staged = false) {
   const definitions = [path.join(root, 'Assets/Game'), path.join(root, 'Shared')].flatMap(files)
     .filter(name => name.endsWith('.asmdef'))
     .map(name => ({ ...JSON.parse(fs.readFileSync(name, 'utf8').replace(/^\uFEFF/, '')), path: path.relative(root, name) }));
-  errors.push(...validateAssemblyGraph(definitions));
+  const hotUpdateNames = JSON.parse(fs.readFileSync(path.join(root, 'Config/HotUpdate/assemblies.json'), 'utf8')).assemblies;
+  errors.push(...validateAssemblyGraph(definitions, hotUpdateNames));
+  for (const name of hotUpdateNames) {
+    const assembly = definitions.find(x => x.name === name);
+    if (!assembly) errors.push(`Missing hot update assembly: ${name}`);
+    else if (assembly.autoReferenced !== false) errors.push(`Hot update assembly must disable autoReferenced: ${name}`);
+  }
   const mcp = JSON.parse(fs.readFileSync(path.join(root, 'Packages/com.coplaydev.unity-mcp/Runtime/MCPForUnity.Runtime.asmdef'), 'utf8').replace(/^\uFEFF/, ''));
   if (!mcp.includePlatforms?.includes('Editor') || mcp.includePlatforms.length !== 1) errors.push('MCP helpers must remain Editor-only');
   const manifest = JSON.parse(fs.readFileSync(path.join(root, 'Packages/manifest.json'), 'utf8').replace(/^\uFEFF/, ''));

@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using AstralOath.Client.Common;
 using AstralOath.Client.Core;
-using AstralOath.Client.FoundationDemo;
 using AstralOath.Shared;
 using AstralOath.Shared.Updates;
 using UnityEngine;
@@ -17,82 +16,108 @@ namespace AstralOath.Client.Bootstrap
 {
     internal sealed class StartupContent : IDisposable
     {
-        private const int SchemaVersion = 2;
-
+        private const int SchemaVersion = 3;
         [Serializable, Preserve]
-        private sealed class PublicKey
-        {
-            public string modulus;
-            public string exponent;
-        }
-
-        private StartupContent(YooAssetService assets, FoundationLua lua, ILocaleService locale, long? releaseVersion)
+        private sealed class PublicKey { public string modulus; public string exponent; }
+        private readonly HotUpdateCodeLoader code;
+        private readonly CodeBootJournal journal;
+        private StartupContent(YooAssetService assets, HotUpdateCodeLoader code, CodeBootJournal journal, long? version)
         {
             Assets = assets;
-            Lua = lua;
-            Locale = locale;
-            ReleaseVersion = releaseVersion;
+            this.code = code;
+            this.journal = journal;
+            ReleaseVersion = version;
         }
-
         internal YooAssetService Assets { get; }
-        internal FoundationLua Lua { get; }
-        internal ILocaleService Locale { get; }
         internal long? ReleaseVersion { get; }
-
-        internal static async Task<StartupContent> OpenAsync(string manifest, string signature, TextAsset key,
-            string textLocale, string voiceLocale, CancellationToken lifetime, Action<string> failedUpdate)
+        internal IHotUpdateEntry CreateEntry()
         {
-            if (string.IsNullOrWhiteSpace(manifest) && string.IsNullOrWhiteSpace(signature) && !key)
-                return await LoadAsync(null, textLocale, voiceLocale, lifetime);
+#if UNITY_EDITOR
+            return HotUpdateCodeLoader.CreateEditorEntry();
+#else
+            if (ReleaseVersion.HasValue) journal.Begin(ReleaseVersion.Value);
+            return code.CreateEntry();
+#endif
+        }
+        internal void ConfirmStartup()
+        {
+            if (ReleaseVersion.HasValue) journal.Confirm(ReleaseVersion.Value);
+        }
+        internal static async Task<StartupContent> OpenAsync(string manifest, string signature, TextAsset key,
+            CancellationToken lifetime, Action<string> failedUpdate)
+        {
+            bool remote = !string.IsNullOrWhiteSpace(manifest) || !string.IsNullOrWhiteSpace(signature) || key;
+#if UNITY_EDITOR
+            if (remote)
+                throw new InvalidOperationException("远端 C# 热更必须使用 IL2CPP Player 验证；编辑器直接使用已编译的 C#，请清空演示场景更新地址。");
+            return await LoadAsync(null, null, null, lifetime);
+#else
+            var asset = Resources.Load<TextAsset>(PlayerBaseline.ResourceName);
+            if (!asset) throw new InvalidDataException("Missing player baseline. Build using Tools/AstralOath/强更包.");
+            var baseline = JsonUtility.FromJson<PlayerBaseline>(asset.text);
+            if (baseline == null || baseline.formatVersion != 1 || string.IsNullOrWhiteSpace(baseline.baselineId) ||
+                baseline.baselineId.IndexOfAny(new[] { '/', '\\', ':' }) >= 0 || baseline.baselineId == "." || baseline.baselineId == "..")
+                throw new InvalidDataException("Invalid built-in player baseline.");
+            string storePath = Path.Combine(Application.persistentDataPath, "FoundationContent", baseline.baselineId);
+            var journal = new CodeBootJournal(Path.Combine(storePath, "code-boot.state"));
+            long? interrupted = journal.RecoverInterruptedBoot();
+            if (interrupted.HasValue)
+                failedUpdate("上次 C# 启动未完成，已隔离版本 " + interrupted.Value);
+            if (!remote)
+                return await LoadAsync(null, baseline, journal, lifetime);
             if (!Uri.TryCreate(manifest, UriKind.Absolute, out var manifestUri) ||
                 !Uri.TryCreate(signature, UriKind.Absolute, out var signatureUri) ||
                 !IsTrustedTransport(manifestUri) || !IsTrustedTransport(signatureUri) || !key)
-                throw new InvalidDataException("Content update requires HTTPS manifest and signature URLs and a pinned RSA public key.");
-
+                throw new InvalidDataException("Content update requires HTTPS URLs and a pinned RSA public key.");
             var parameters = JsonUtility.FromJson<PublicKey>(key.text);
             using var rsa = RSA.Create();
-            rsa.ImportParameters(new RSAParameters
-            {
-                Modulus = Convert.FromBase64String(parameters.modulus),
-                Exponent = Convert.FromBase64String(parameters.exponent)
-            });
-            using var http = new HttpClient(new HttpClientHandler { AllowAutoRedirect = false })
-            {
-                Timeout = TimeSpan.FromSeconds(20)
-            };
-            string storePath = Path.Combine(Application.persistentDataPath, "FoundationContent");
-            var unityContext = SynchronizationContext.Current ??
-                throw new InvalidOperationException("Content must start from the Unity main thread.");
+            rsa.ImportParameters(new RSAParameters { Modulus = Convert.FromBase64String(parameters.modulus),
+                Exponent = Convert.FromBase64String(parameters.exponent) });
+            using var http = new HttpClient(new HttpClientHandler { AllowAutoRedirect = false }) { Timeout = TimeSpan.FromSeconds(20) };
+            var unityContext = SynchronizationContext.Current ?? throw new InvalidOperationException("Start content on the Unity main thread.");
             var updater = new ContentUpdater(storePath, http, rsa, (int)FoundationProtocol.Version, SchemaVersion,
                 () => AvailableBytes(storePath, unityContext));
             using var deadline = CancellationTokenSource.CreateLinkedTokenSource(lifetime);
             deadline.CancelAfter(TimeSpan.FromSeconds(60));
-            StartupContent loaded = null;
+            StartupContent candidate = null;
             try
             {
+                if (interrupted.HasValue && journal.LastHealthyVersion.HasValue)
+                    await Task.Run(() => updater.ActivateReleaseAsync(journal.LastHealthyVersion.Value, deadline.Token), deadline.Token);
                 await Task.Run(() => updater.InstallAsync(manifestUri, signatureUri, deadline.Token,
                     (release, token) => OnUnityThread(unityContext, async () =>
                     {
-                        loaded = await LoadAsync(release, textLocale, voiceLocale, token);
+                        if (journal.IsRejected(release.Version))
+                            throw new InvalidDataException("This release previously failed startup and is quarantined. Publish a new version.");
+                        candidate = await LoadAsync(release, baseline, journal, token);
                     })), deadline.Token);
                 lifetime.ThrowIfCancellationRequested();
-                return loaded ?? throw new InvalidOperationException("Candidate content was not validated.");
+                return candidate ?? throw new InvalidOperationException("Candidate was not preflighted.");
             }
             catch (Exception error)
             {
-                loaded?.Dispose();
+                candidate?.Dispose();
                 lifetime.ThrowIfCancellationRequested();
                 failedUpdate(error.Message);
-
                 using var recovery = CancellationTokenSource.CreateLinkedTokenSource(lifetime);
                 recovery.CancelAfter(TimeSpan.FromSeconds(30));
-                ContentRelease active = await Task.Run(() => updater.GetActiveRelease(recovery.Token), recovery.Token);
-                if (active == null)
-                    throw new InvalidOperationException("No verified content release is available.", error);
-                return await LoadAsync(active, textLocale, voiceLocale, recovery.Token);
+                try
+                {
+                    long? healthy = journal.LastHealthyVersion;
+                    var active = healthy.HasValue
+                        ? await Task.Run(() => updater.ActivateReleaseAsync(healthy.Value, recovery.Token), recovery.Token)
+                        : await Task.Run(() => updater.GetActiveRelease(recovery.Token), recovery.Token);
+                    if (active != null && !journal.IsRejected(active.Version))
+                        return await LoadAsync(active, baseline, journal, recovery.Token);
+                }
+                catch (Exception recoveryError) when (!(recoveryError is OperationCanceledException))
+                {
+                    failedUpdate("本地更新不可用，回到安装包内容：" + recoveryError.Message);
+                }
+                return await LoadAsync(null, baseline, journal, recovery.Token);
             }
+#endif
         }
-
         private static bool IsTrustedTransport(Uri uri) =>
             uri.Scheme == Uri.UriSchemeHttps || (Debug.isDebugBuild && uri.Scheme == Uri.UriSchemeHttp && uri.IsLoopback);
 
@@ -136,42 +161,33 @@ namespace AstralOath.Client.Bootstrap
             return result.Task;
         }
 
-        private static async Task<StartupContent> LoadAsync(ContentRelease release, string textLocale, string voiceLocale,
-            CancellationToken token)
+        private static async Task<StartupContent> LoadAsync(ContentRelease release, PlayerBaseline baseline,
+            CodeBootJournal journal, CancellationToken token)
         {
             token.ThrowIfCancellationRequested();
             string root = release == null ? null : Path.Combine(release.DirectoryPath, "yooasset", YooAssetService.PackageName);
             var assets = new YooAssetService();
-            FoundationLua lua = null;
+            HotUpdateCodeLoader code = null;
             try
             {
                 await assets.InitializeAsync(token, root);
+#if !UNITY_EDITOR
                 using var scope = new BindingScope(token);
-                var prefab = await assets.LoadAsync<GameObject>(FoundationWindow.PrefabAddress, scope);
-                scope.Token.ThrowIfCancellationRequested();
-                UIViewRegistry.ValidatePrefab<FoundationWindow>(prefab);
-                var config = new JsonConfigService(assets);
-                var messages = await DemoMessages.LoadAsync(config, scope);
-                var locale = new LocaleService(messages, textLocale, voiceLocale, "ja", "zh-Hans");
-                var binder = await assets.LoadAsync<TextAsset>(DemoWindow.BinderAddress, scope);
-                string source = binder.text;
-                using (var validation = new FoundationLua(source))
-                    await DemoWindow.ValidateContentAsync(assets, config, validation, locale, scope);
-                lua = new FoundationLua(source);
-                return new StartupContent(assets, lua, locale, release?.Version);
+                code = await HotUpdateCodeLoader.PrepareAsync(assets, baseline, scope);
+#endif
+                return new StartupContent(assets, code, journal, release?.Version);
             }
             catch
             {
-                try { lua?.Dispose(); }
-                finally { assets.Dispose(); }
+                code?.Dispose();
+                assets.Dispose();
                 throw;
             }
         }
-
         public void Dispose()
         {
-            try { Lua.Dispose(); }
-            finally { Assets.Dispose(); }
+            code?.Dispose();
+            Assets.Dispose();
         }
     }
 }

@@ -6,7 +6,7 @@
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Runtime/**/*.cs" />
+    <Compile Include="Runtime/**/*.cs" Exclude="Runtime/Battle/**/*.cs" />
     <PackageReference Include="Google.Protobuf" Version="[3.33.5]" />
   </ItemGroup>
 </Project>

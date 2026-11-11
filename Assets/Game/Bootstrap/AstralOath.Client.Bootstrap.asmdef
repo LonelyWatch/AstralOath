@@ -3,9 +3,8 @@
   "references": [
     "AstralOath.Client.Core",
     "AstralOath.Client.Common",
-    "AstralOath.Client.FoundationDemo",
     "AstralOath.Shared",
     "YooAsset",
-    "XLua.Runtime"
+    "HybridCLR.Runtime"
   ]
 }

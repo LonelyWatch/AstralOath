@@ -1,10 +1,9 @@
 # FoundationDemo
 
-`Scripts` 定义窗口与 DTO 适配，`Lua` 保存演示 Binder 及导出契约，`Configs` 保存 Luban 演示生成物，`Res` 保存字体、窗口预制体与示例资源。场景位于 `Scenes/FoundationDemo.unity`。
+`Scripts` 定义 `FoundationEntry`、普通 C# `FoundationWindow` 与 `FoundationWindowBinder`，`Configs` 保存 Luban 演示生成物，`Res` 保存字体、窗口预制体与示例资源。场景位于 `Scenes/FoundationDemo.unity`。
 
-YooAsset 包 `Foundation` 提供五个地址。
+YooAsset 包 `Foundation` 提供下列业务资源。构建另外生成代码清单、业务程序集和母包 AOT 补充元数据。
 
-- `foundation/demo-binder` 提供 `FoundationWindowBinder.lua.txt` 的 xLua 文本与白名单导出，契约为 `FoundationWindowBinder.exports.txt`。
 - `foundation/demo-config` 提供 Luban 生成的演示行。
 - `foundation/demo-localization` 提供 Luban 生成的简体中文业务文案。
 - `foundation/demo-resource` 提供可见的文本资源。

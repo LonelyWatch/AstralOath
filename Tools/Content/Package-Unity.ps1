@@ -1,10 +1,11 @@
 #requires -Version 7.0
-[CmdletBinding()]
+[CmdletBinding(DefaultParameterSetName = 'Legacy')]
 param(
-    [Parameter(Mandatory)][string]$PackageDirectory,
-    [Parameter(Mandatory)][string]$Key,
+    [Parameter(Mandatory, ParameterSetName = 'Legacy')][string]$PackageDirectory,
+    [Parameter(Mandatory, ParameterSetName = 'BuildOutput')][string]$BuildOutput,
+    [string]$Key = $env:ASTRAL_SIGNING_KEY,
     [Parameter(Mandatory)][string]$Release,
-    [Parameter(Mandatory)][long]$Version,
+    [Parameter(Mandatory, ParameterSetName = 'Legacy')][long]$Version,
     [int]$ProtocolVersion = 1,
     [int]$SchemaVersion = 2
 )
@@ -13,6 +14,27 @@ $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 . (Join-Path $PSScriptRoot 'SourcePath.ps1')
 $repo = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
+$snapshot = $null
+if (-not $Key) { throw 'Provide a signing key via -Key or ASTRAL_SIGNING_KEY.' }
+if ($PSCmdlet.ParameterSetName -eq 'BuildOutput') {
+    $output = (Resolve-Path -LiteralPath $BuildOutput).Path
+    $receiptFile = Resolve-ContentSourceFile $output 'package.complete.json'
+    if ((Get-Item -LiteralPath $receiptFile).Length -gt 4096) { throw 'Oversized build receipt.' }
+    $receipt = Get-Content -LiteralPath $receiptFile -Raw | ConvertFrom-Json -AsHashtable
+    if ($receipt.contentVersion -isnot [long] -or $receipt.contentVersion -lt 1 -or
+        $receipt.packageDirectory -cnotmatch '\Abundles/(StandaloneWindows64|Android)/Foundation/foundation-[1-9][0-9]*\z') {
+        throw 'Invalid build receipt.'
+    }
+    if ($PSBoundParameters.ContainsKey('SchemaVersion') -and $SchemaVersion -ne 3) {
+        throw 'Completed HybridCLR builds require schema 3.'
+    }
+    $SchemaVersion = 3
+    $Version = $receipt.contentVersion
+    $PackageDirectory = Join-Path $output $receipt.packageDirectory
+    $snapshot = Join-Path $output 'sources'
+} elseif ($SchemaVersion -ge 3) {
+    throw 'Schema 3 releases require -BuildOutput and a completed HybridCLR build receipt.'
+}
 $package = (Resolve-Path -LiteralPath $PackageDirectory).Path
 $prefix = 'yooasset/Foundation/'
 $buildSource = 'Assets/Game/Editor/FoundationBuilder.cs'
@@ -29,9 +51,10 @@ function Get-PackageFile([string]$Name) {
 }
 
 function New-Provenance([string]$Name, [string]$Source, [string[]]$Dependencies) {
-    if ($Source -cnotmatch '\AAssets/') {
+    if ($Source -cnotmatch '\A(?:Assets|Config)/') {
         throw "Expected a project asset source: $Source"
     }
+    # Generated code assets are archived with this build. Use the versioned assembly list as the project input.
     $sourceFile = Resolve-ContentSourceFile $repo $Source
     return @{
         path = $prefix + $Name
@@ -46,6 +69,7 @@ $versionFile = Get-PackageFile 'Foundation.version'
 if ($versionFile.Length -gt 128) { throw 'YooAsset version marker exceeded its size limit.' }
 $packageVersion = (Get-Content -LiteralPath $versionFile.FullName -Raw).Trim()
 if ($packageVersion -cnotmatch '\A[A-Za-z0-9_][A-Za-z0-9_.-]{0,63}\z') { throw 'Invalid YooAsset package version.' }
+if ($snapshot -and $packageVersion -cne "foundation-$Version") { throw 'Build receipt and YooAsset versions disagree.' }
 $manifestName = "Foundation_$packageVersion.bytes"
 $hashName = "Foundation_$packageVersion.hash"
 $null = Get-PackageFile $manifestName
@@ -77,10 +101,15 @@ $entries = @(
         }
         $sources = @($bundle.BundleContents | ForEach-Object { $_.AssetPath })
         if ($sources.Count -eq 0) { throw "YooAsset bundle has no recorded source: $($bundle.FileName)" }
-        $entry = New-Provenance $bundle.FileName $sources[0] @($dependencies)
+        $primary = $sources[0]
+        if ($snapshot -and $primary.StartsWith('Assets/Game/HotUpdate/Generated/', [StringComparison]::Ordinal)) {
+            $primary = 'Config/HotUpdate/assemblies.json'
+        }
+        $entry = New-Provenance $bundle.FileName $primary @($dependencies)
         $entry.sourceAssets = @($sources | ForEach-Object {
-            $asset = New-Provenance $bundle.FileName $_ @()
-            @{ path = $_; sha256 = $asset.sourceSha256 }
+            $sourceRoot = if ($snapshot -and $_.StartsWith('Assets/Game/HotUpdate/Generated/', [StringComparison]::Ordinal)) { $snapshot } else { $repo }
+            $sourceFile = Resolve-ContentSourceFile $sourceRoot $_
+            @{ path = $_; sha256 = (Get-FileHash -LiteralPath $sourceFile).Hash.ToLowerInvariant() }
         })
         $entry
     }

@@ -28,10 +28,10 @@ namespace AstralOath.Client.Tests
             Assert.That(typeof(FoundationWindow).Name, Is.EqualTo(prefabName));
             Assert.That(AssetDatabase.LoadAssetAtPath<MonoScript>($"{modulePath}/Scripts/{prefabName}.cs"),
                 Is.Not.Null, "The View source file must use the prefab name.");
-            Assert.That(AssetDatabase.LoadAssetAtPath<TextAsset>($"{modulePath}/Lua/{prefabName}Binder.lua.txt"),
-                Is.Not.Null, "The business Binder must use the prefab name plus Binder.");
-            Assert.That(AssetDatabase.LoadAssetAtPath<TextAsset>($"{modulePath}/Lua/{prefabName}Binder.exports.txt"),
-                Is.Not.Null, "The Binder export contract must use the same stem.");
+            var binder = AssetDatabase.LoadAssetAtPath<MonoScript>($"{modulePath}/Scripts/{prefabName}Binder.cs");
+            Assert.That(binder, Is.Not.Null, "The business Binder must use the prefab name plus Binder.");
+            Assert.That(typeof(FoundationWindowBinder).Name, Is.EqualTo(prefabName + "Binder"));
+            Assert.That(typeof(MonoBehaviour).IsAssignableFrom(typeof(FoundationWindowBinder)), Is.False);
         }
 
         [Test]

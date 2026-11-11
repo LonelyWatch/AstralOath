@@ -2,7 +2,10 @@
 using System;
 using System.Collections;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using AstralOath.Client.Common;
+using AstralOath.Client.Core;
 using NUnit.Framework;
 using TMPro;
 using UnityEditor;
@@ -110,6 +113,135 @@ namespace AstralOath.Client.Tests
                 SceneManager.UnloadSceneAsync(scene);
             }
             yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator EntryLoadsWindowAndCloseCancelsOnePendingEcho()
+        {
+            const string entryType = "AstralOath.Client.FoundationDemo.FoundationEntry, AstralOath.Client.FoundationDemo";
+            var type = Type.GetType(entryType);
+            Assert.That(type, Is.Not.Null, "The bootstrap must be able to resolve the C# entry by name.");
+            using var entry = (IHotUpdateEntry)Activator.CreateInstance(type);
+            using var lifetime = new BindingScope(default);
+            using var services = new ServiceRegistry(lifetime.Token);
+            var owner = new GameObject("Foundation entry test", typeof(RectTransform));
+            try
+            {
+                var open = new GameObject("Open", typeof(RectTransform), typeof(Button), typeof(GameButton));
+                var label = new GameObject("Open label", typeof(RectTransform), typeof(TextMeshProUGUI), typeof(GameText));
+                var startup = new GameObject("Startup status", typeof(RectTransform), typeof(TextMeshProUGUI), typeof(GameText));
+                foreach (var item in new[] { open, label, startup })
+                    item.transform.SetParent(owner.transform, false);
+
+                var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(Module + "Res/Fonts/FoundationFont.asset");
+                label.GetComponent<TMP_Text>().font = font;
+                startup.GetComponent<TMP_Text>().font = font;
+                var echo = new PendingEcho();
+                services.Add<IAssetService>(new LocalAssets());
+                services.Add<IConfigService>(new LocalConfig());
+                services.Add<IAnimationService>(new DotweenAnimations());
+                services.Add<IEchoService>(echo);
+
+                var started = entry.StartAsync(new GameLaunchContext(services, lifetime, owner.transform,
+                    open.GetComponent<GameButton>(), label.GetComponent<GameText>(), startup.GetComponent<GameText>(),
+                    "zh-Hans", "ja", true));
+                yield return WaitFor(() => started.IsCompleted);
+                started.GetAwaiter().GetResult();
+
+                var view = owner.GetComponentInChildren<BindingMap>();
+                Assert.That(view.Require<GameText>("title").GetComponent<TMP_Text>().text, Is.EqualTo("基础设施演示"));
+                Assert.That(label.GetComponent<TMP_Text>().text, Is.EqualTo("打开演示"));
+                Assert.That(startup.GetComponent<TMP_Text>().text, Is.EqualTo("更新失败，已使用上个有效版本。"));
+                Assert.That(services.Get<ILocaleService>().VoiceLocale, Is.EqualTo("ja"));
+                var status = view.Require<GameText>("status").GetComponent<TMP_Text>();
+                string ready = status.text;
+
+                var echoButton = view.Require<GameButton>("echo").GetComponent<Button>();
+                echoButton.onClick.Invoke();
+                echoButton.onClick.Invoke();
+                var request = entry.EchoAsync();
+                Assert.That(echo.Calls, Is.EqualTo(1));
+                Assert.That(echo.Message, Is.EqualTo("AstralOath"));
+                Assert.That(status.text, Is.EqualTo("正在请求服务端…"));
+                Assert.That(echoButton.interactable, Is.False);
+
+                view.Require<GameButton>("close").GetComponent<Button>().onClick.Invoke();
+                Assert.That(view.gameObject.activeSelf, Is.False);
+                Assert.That(echo.Token.IsCancellationRequested, Is.True);
+                Assert.That(echoButton.interactable, Is.True);
+                open.GetComponent<Button>().onClick.Invoke();
+                yield return WaitFor(() => view.gameObject.activeSelf && status.text == ready);
+                echo.Complete();
+                yield return WaitFor(() => request.IsCompleted);
+                Assert.That(request.IsCanceled, Is.True);
+                Assert.That(status.text, Is.EqualTo(ready));
+
+                var next = entry.EchoAsync();
+                yield return WaitFor(() => next.IsCompleted);
+                Assert.That(next.GetAwaiter().GetResult().Sequence, Is.EqualTo(7));
+                Assert.That(echo.Calls, Is.EqualTo(2));
+                Assert.That(status.text, Is.EqualTo("服务端返回 AstralOath · 序号 7"));
+
+                entry.Dispose();
+                open.GetComponent<Button>().onClick.Invoke();
+                Assert.That(view.gameObject.activeSelf, Is.False);
+            }
+            finally
+            {
+                entry.Dispose();
+                UnityEngine.Object.Destroy(owner);
+            }
+            yield return null;
+        }
+
+        private sealed class LocalAssets : IAssetService
+        {
+            public Task<T> LoadAsync<T>(string address, BindingScope scope) where T : UnityEngine.Object
+            {
+                scope.Token.ThrowIfCancellationRequested();
+                string path = address switch
+                {
+                    "foundation/foundation-window" => "Res/Prefab/FoundationWindow.prefab",
+                    "foundation/demo-resource" => "Res/Text/demo-resource.txt",
+                    _ => throw new ArgumentOutOfRangeException(nameof(address), address, null)
+                };
+                return Task.FromResult(AssetDatabase.LoadAssetAtPath<T>(Module + path));
+            }
+        }
+
+        private sealed class LocalConfig : IConfigService
+        {
+            public Task<T> ReadAsync<T>(string address, BindingScope scope) where T : class
+            {
+                scope.Token.ThrowIfCancellationRequested();
+                string path = address switch
+                {
+                    "foundation/demo-localization" => "Configs/demo-localization.json",
+                    "foundation/demo-config" => "Configs/demo-config.json",
+                    _ => throw new ArgumentOutOfRangeException(nameof(address), address, null)
+                };
+                string json = AssetDatabase.LoadAssetAtPath<TextAsset>(Module + path).text.Trim();
+                return Task.FromResult(JsonUtility.FromJson<T>("{\"rows\":" + json + "}"));
+            }
+        }
+
+        private sealed class PendingEcho : IEchoService
+        {
+            private readonly TaskCompletionSource<EchoResult> pending = new TaskCompletionSource<EchoResult>();
+
+            public int Calls { get; private set; }
+            public CancellationToken Token { get; private set; }
+            public string Message { get; private set; }
+
+            public Task<EchoResult> EchoAsync(string message, CancellationToken cancellation)
+            {
+                Calls++;
+                Token = cancellation;
+                Message = message;
+                return pending.Task;
+            }
+
+            public void Complete() => pending.SetResult(new EchoResult("AstralOath", 7));
         }
 
         private static float WorldBottom(RectTransform rect)
