@@ -37,6 +37,15 @@ function Get-PinnedFile([string]$Url, [string]$Path, [string]$Hash) {
 [void](New-Item -ItemType Directory -Path $toolRoot -Force)
 $archive = Join-Path $toolRoot 'Luban.7z'
 Get-PinnedFile "https://github.com/focus-creative-games/luban/releases/download/$version/Luban.7z" $archive 'BAC9A1B8D69CFEAA7EF1D8C67B34A007324D1CD158E0B14294521B3879BA5213'
+# Windows Server 2022 tar lacks LZMA support. Use the same verified extractor on CI and developer PCs.
+$dependencies = Get-Content -LiteralPath (Join-Path $repo 'Tools/dependencies.lock.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+$extractor = @($dependencies.dependencies | Where-Object name -eq '7zip-reduced')
+if ($extractor.Count -ne 1) { throw 'Expected exactly one pinned 7zip-reduced dependency.' }
+$extractor = $extractor[0]
+$extractorRoot = Join-Path $repo ".tools/7zip-$($extractor.version)"
+[void][IO.Directory]::CreateDirectory($extractorRoot)
+$sevenZip = Join-Path $extractorRoot $extractor.file
+Get-PinnedFile $extractor.url $sevenZip $extractor.sha256.ToUpperInvariant()
 $artifactRoot = [IO.Directory]::CreateDirectory((Join-Path $repo '.artifacts'))
 if ($artifactRoot.Attributes -band [IO.FileAttributes]::ReparsePoint) {
     throw 'Expected a regular .artifacts directory.'
@@ -44,7 +53,7 @@ if ($artifactRoot.Attributes -band [IO.FileAttributes]::ReparsePoint) {
 Push-Location $repo
 try {
     [void][IO.Directory]::CreateDirectory($work)
-    & tar -xf $archive -C $work
+    & $sevenZip x $archive "-o$work" -y -bso0 -bsp0
     $dll = Join-Path $work 'Luban/Luban.dll'
     if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $dll -PathType Leaf)) { throw 'Luban extraction failed.' }
     & $Dotnet --roll-forward Major $dll --conf Config/luban.conf -t client -d json --strict -x "outputDataDir=$staging/json"

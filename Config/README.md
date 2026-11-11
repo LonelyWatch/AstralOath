@@ -2,6 +2,8 @@
 
 `Schema/foundation.xml` 定义三张表和引用关系，每张表只有一个 `Tables/*.csv` 数据源。改动后从仓库根目录运行 `./Tools/Config/Generate.ps1 -VerifyAccessors -SyncClient`。脚本使用锁定 SHA-256 的 Luban v5.1.0，首次运行需要 GitHub 下载权限。它以 .NET 10 运行，允许 Luban 的 .NET 8 入口跨主版本运行。
 
+Luban 的 `.7z` 包由项目内的 7-Zip reduced console 解压，版本、官方地址与 SHA-256 固定在 `Tools/dependencies.lock.json`。导表时按需下载至 `.tools/7zip-<版本>/7zr.exe`，每次执行前校验哈希，无需全局安装。Windows Server 2022 自带 `tar` 不支持该包的 LZMA 编码，因此本地与 CI 均使用这一固定解压器。
+
 - `demo_ui.csv` 的记录 1 是演示界面。修改停留秒数时保持在 1–30。标题、消息和资源使用表内引用。
 - `demo_localization.csv` 维护演示界面、按钮及业务状态的简体中文文本。稳定 key 由配表或 C# Binder 引用。保留带参文案的格式占位符。语音选择由客户端单独管理。
 - `demo_assets.csv` 维护演示地址和对应的项目源文件。新增地址时应在 YooAsset 收集配置中使用同一地址。
