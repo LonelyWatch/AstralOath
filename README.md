@@ -4,14 +4,16 @@ Unity 客户端、.NET 服务端及共享 C# 的单仓库地基。当前交付�
 
 ## 启动
 
-需要 Windows、PowerShell 7、Node.js 22+、Unity **2022.3.62f3**。安装 Unity 的 Windows IL2CPP、Android Build Support、SDK/NDK/OpenJDK；Windows 原生构建还需 Visual Studio C++ 工具链和 Windows SDK。首次执行：
+需要 Windows、Node.js 22+、Unity **2022.3.62f3**。项目工具使用 PowerShell 7，首次初始化可由 Windows 自带的 PowerShell 5.1 引导安装。安装 Unity 的 Windows IL2CPP、Android Build Support、SDK/NDK/OpenJDK；Windows 原生构建还需 Visual Studio C++ 工具链和 Windows SDK。
 
 本次 Android 构建环境：SDK platform 36、Build Tools 34.0.0、NDK 23.1.7779620、Unity 自带 OpenJDK/Gradle 7.5.1；项目固定 target API 36、minimum API 29。升级这些依赖需单独复验。
 
 ```powershell
-pwsh -File Tools/Setup-Toolchain.ps1 -WithMySql -WithMcp
-pwsh -File Tools/Config/Generate.ps1 -VerifyAccessors -SyncClient
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Tools\Setup-Toolchain.ps1 -WithMySql -WithMcp
+& .\.tools\powershell\pwsh.exe -NoProfile -File .\Tools\Config\Generate.ps1 -VerifyAccessors -SyncClient
 ```
+
+初始化按 `Tools/dependencies.lock.json` 的固定版本和 SHA256 安装 PowerShell 至 `.tools/powershell`，不修改全局 PATH。Unity 的导表、签名和 HybridCLR 安装入口优先使用该项目副本，因此不依赖 Unity Hub 启动时继承的 PATH。离线 ZIP 或下载代理可先通过 `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Tools\Setup-PowerShell.ps1 -ArchivePath <ZIP路径>` 或 `-Proxy <代理地址>` 安装，再执行上面的工具链初始化。下文的 `pwsh` 命令也可替换为 `& .\.tools\powershell\pwsh.exe`。
 
 用 Unity 打开仓库，加载 `Assets/Game/Modules/FoundationDemo/Scenes/FoundationDemo.unity` 后播放。场景与 TMP 必需资源已经入库；重建演示可执行编辑器入口 `AstralOath.Editor.FoundationBuilder.CreateDemo`，或 `pwsh -File Tools/Invoke-Unity.ps1 -Mode Generate` 在隔离副本生成并用 `Tools/Sync-UnityGenerated.ps1` 同步回来。
 

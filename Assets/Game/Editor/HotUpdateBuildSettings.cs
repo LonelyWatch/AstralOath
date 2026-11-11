@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEngine;
@@ -63,7 +65,7 @@ namespace AstralOath.Editor
                 throw new BuildFailedException("请在构建设置中选择 RSA 私钥文件。");
             string release = Path.Combine(ToolRoot, ".artifacts", "releases", Path.GetFileName(output));
             RunScript("Content/Package-Unity.ps1", Path.GetFullPath(options.signingKey), 300,
-                "-BuildOutput", Path.GetFullPath(output), "-Release", release);
+                ("-BuildOutput", Path.GetFullPath(output)), ("-Release", release));
             Debug.Log("ASTRAL_SIGNED_RELEASE " + release);
             return release;
         }
@@ -71,21 +73,58 @@ namespace AstralOath.Editor
         internal static string ToolRoot => Environment.GetEnvironmentVariable("ASTRAL_BUILD_TOOL_ROOT") ??
             Directory.GetParent(Application.dataPath).FullName;
 
-        internal static string RunScript(string relative, string privateKey, int timeoutSeconds, params string[] args)
+        internal static string ResolvePowerShell(string root, string searchPath, string programFiles)
+        {
+            string executable = Application.platform == RuntimePlatform.WindowsEditor ? "pwsh.exe" : "pwsh";
+            var candidates = new List<string> { Path.Combine(root, ".tools", "powershell", executable) };
+            if (!string.IsNullOrWhiteSpace(programFiles))
+                candidates.Add(Path.Combine(programFiles, "PowerShell", "7", executable));
+            foreach (string entry in (searchPath ?? "").Split(Path.PathSeparator))
+            {
+                string directory = Environment.ExpandEnvironmentVariables(entry.Trim().Trim('"'));
+                if (Path.IsPathRooted(directory))
+                    candidates.Add(Path.Combine(directory, executable));
+            }
+            foreach (string candidate in candidates)
+            {
+                if (File.Exists(candidate))
+                    return Path.GetFullPath(candidate);
+            }
+            throw new BuildFailedException("找不到 PowerShell 7。请在项目根目录运行：" +
+                "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\Tools\\Setup-PowerShell.ps1");
+        }
+
+        internal static string RunScript(string relative, string privateKey, int timeoutSeconds,
+            params (string name, string value)[] args)
         {
             string path = Path.Combine(ToolRoot, "Tools", relative);
             if (!File.Exists(path))
                 throw new BuildFailedException("找不到工具脚本：" + path);
-            var arguments = new[] { "-NoProfile", "-NonInteractive", "-File", path }.Concat(args);
+            // A hidden Windows process may default to the local ANSI code page. Set both ends to UTF-8.
+            string command = "$ErrorActionPreference='Stop'; [Console]::OutputEncoding=[Text.UTF8Encoding]::new($false); " +
+                "$OutputEncoding=[Console]::OutputEncoding; & " + PowerShellValue(path);
+            foreach (var argument in args)
+            {
+                if (!Regex.IsMatch(argument.name ?? "", @"\A-[A-Za-z][A-Za-z0-9]*\z"))
+                    throw new BuildFailedException("无效的工具参数名。");
+                command += " " + argument.name;
+                if (argument.value != null)
+                    command += " " + PowerShellValue(argument.value);
+            }
+            command += "; if ($LASTEXITCODE) { exit $LASTEXITCODE }";
             var info = new ProcessStartInfo
             {
-                FileName = "pwsh",
-                Arguments = string.Join(" ", arguments.Select(Quote)),
+                FileName = ResolvePowerShell(ToolRoot, Environment.GetEnvironmentVariable("PATH"),
+                    Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles)),
+                Arguments = "-NoProfile -NonInteractive -OutputFormat Text -EncodedCommand " +
+                    Convert.ToBase64String(Encoding.Unicode.GetBytes(command)),
                 WorkingDirectory = ToolRoot,
                 UseShellExecute = false,
                 CreateNoWindow = true,
                 RedirectStandardOutput = true,
-                RedirectStandardError = true
+                RedirectStandardError = true,
+                StandardOutputEncoding = Encoding.UTF8,
+                StandardErrorEncoding = Encoding.UTF8
             };
             if (privateKey != null)
                 info.EnvironmentVariables["ASTRAL_SIGNING_KEY"] = privateKey;
@@ -102,13 +141,10 @@ namespace AstralOath.Editor
             return stdout.GetAwaiter().GetResult();
         }
 
-        private static string Quote(string argument)
-        {
-            if (argument.IndexOfAny(new[] { '"', '\r', '\n' }) >= 0)
-                throw new BuildFailedException("参数不能包含引号或换行。");
-            int trailingSlashes = argument.Length - argument.TrimEnd('\\').Length;
-            return "\"" + argument + new string('\\', trailingSlashes) + "\"";
-        }
+        // Base64 keeps paths/values as data, including quotes, dollar signs and leading hyphens.
+        private static string PowerShellValue(string value) =>
+            "([Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('" +
+            Convert.ToBase64String(Encoding.UTF8.GetBytes(value)) + "')))";
 
         private static string ReadArg(IReadOnlyList<string> args, string name, string fallback)
         {
@@ -134,7 +170,8 @@ namespace AstralOath.Editor
         [MenuItem("Tools/导表")]
         private static void GenerateConfig()
         {
-            string output = HotUpdateBuildSettings.RunScript("Config/Generate.ps1", null, 600, "-VerifyAccessors", "-SyncClient");
+            string output = HotUpdateBuildSettings.RunScript("Config/Generate.ps1", null, 600,
+                ("-VerifyAccessors", null), ("-SyncClient", null));
             AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
             Debug.Log(output);
         }

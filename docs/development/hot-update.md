@@ -6,6 +6,8 @@
 
 ## Unity 菜单
 
+首次使用先在仓库根目录运行 `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Tools\Setup-Toolchain.ps1`。它用 Windows 自带 PowerShell 5.1 引导安装锁定的 PowerShell 7 至 `.tools/powershell`，并准备本地 .NET SDK。Unity 的导表、签名和 HybridCLR 安装共用脚本入口，依次查找项目副本、常规安装目录和当前 PATH，不依赖 Unity Hub 是否已刷新 PATH，也不会回退到 Windows PowerShell 5.1 执行业务脚本。离线安装或代理下载见 [启动说明](../../README.md#启动)。
+
 先切换 Unity 当前目标到 Windows 或 Android。使用 `Tools/构建设置` 保存母包归档、应用版本、Android versionCode、资源版本及输出目录。选择母包归档后，窗口显示只读母包 ID。按需设置本地 RSA 私钥、离线 libil2cpp 源和开发选项。
 
 1. 使用 `环境/从固定源码安装 HybridCLR` 和 `环境/检查` 安装并检查项目本地环境。安装版本为包 9.0.3 / runtime 9.0.1。用 `导表` 同步 Luban 配置。
@@ -15,7 +17,7 @@
 
 ## PowerShell 批处理
 
-在仓库根目录使用 PowerShell 7。示例使用 Windows x64，默认输出至 `.artifacts/builds`。从 `ASTRAL_BUILD_OK` 日志取得对应的实际构建目录。
+在仓库根目录使用 PowerShell 7；未配置全局 PATH 时，把下文的 `pwsh` 替换为 `& .\.tools\powershell\pwsh.exe`。示例使用 Windows x64，默认输出至 `.artifacts/builds`。从 `ASTRAL_BUILD_OK` 日志取得对应的实际构建目录。
 
 ```powershell
 $offline = pwsh -File Tools/Setup-HybridCLR.ps1

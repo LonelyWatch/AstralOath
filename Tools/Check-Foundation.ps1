@@ -1,6 +1,9 @@
+#requires -Version 7.0
 [CmdletBinding()]
 param([switch]$RequireMySql, [switch]$UnityTests)
 $ErrorActionPreference = 'Stop'
+$pwsh = Join-Path $PSHOME 'pwsh.exe'
+if (-not (Test-Path -LiteralPath $pwsh)) { $pwsh = Join-Path $PSHOME 'pwsh' }
 $repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $dotnet = Join-Path $repo '.tools/dotnet/dotnet.exe'
 if (-not (Test-Path -LiteralPath $dotnet)) { throw 'Run Tools/Setup-Toolchain.ps1 first.' }
@@ -21,17 +24,17 @@ try {
     if ($LASTEXITCODE) { throw 'Server tests failed.' }
     & $dotnet run --project Tests/Content -c Release
     if ($LASTEXITCODE) { throw 'Content tests failed.' }
-    & pwsh -NoProfile -File Tools/Config/Generate.ps1 -Dotnet $dotnet -VerifyAccessors -CheckClient
+    & $pwsh -NoProfile -File Tools/Config/Generate.ps1 -Dotnet $dotnet -VerifyAccessors -CheckClient
     if ($LASTEXITCODE) { throw 'Config generation failed.' }
-    & pwsh -NoProfile -File Tests/Content/ConfigSmoke.ps1
+    & $pwsh -NoProfile -File Tests/Content/ConfigSmoke.ps1
     if ($LASTEXITCODE) { throw 'Config editing regression failed.' }
-    & pwsh -NoProfile -File Tools/Protocol/Generate.ps1 -Dotnet $dotnet
+    & $pwsh -NoProfile -File Tools/Protocol/Generate.ps1 -Dotnet $dotnet
     if ($LASTEXITCODE) { throw 'Protocol generation failed.' }
-    & pwsh -NoProfile -File Tests/Content/ReleaseSmoke.ps1
+    & $pwsh -NoProfile -File Tests/Content/ReleaseSmoke.ps1
     if ($LASTEXITCODE) { throw 'Release smoke failed.' }
     if ($UnityTests) {
         foreach ($mode in @('EditMode','PlayMode')) {
-            & pwsh -NoProfile -File Tools/Invoke-Unity.ps1 -Mode $mode
+            & $pwsh -NoProfile -File Tools/Invoke-Unity.ps1 -Mode $mode
             if ($LASTEXITCODE) { throw "Unity $mode failed." }
         }
     }

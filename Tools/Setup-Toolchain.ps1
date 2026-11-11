@@ -1,11 +1,21 @@
+#requires -Version 5.1
 [CmdletBinding()]
 param([switch]$WithMySql, [switch]$WithMcp)
 $ErrorActionPreference = 'Stop'
+$powerShell = & (Join-Path $PSScriptRoot 'Setup-PowerShell.ps1')
+if ($PSVersionTable.PSVersion.Major -lt 7) {
+    $setupArguments = @()
+    if ($WithMySql) { $setupArguments += '-WithMySql' }
+    if ($WithMcp) { $setupArguments += '-WithMcp' }
+    & $powerShell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File $PSCommandPath @setupArguments
+    if ($LASTEXITCODE -ne 0) { throw "Toolchain setup failed with exit code $LASTEXITCODE." }
+    return
+}
 $repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $localTools = Join-Path $repo '.tools'
 $downloads = Join-Path $localTools 'downloads'
 New-Item -ItemType Directory -Force $downloads | Out-Null
-$lock = Get-Content (Join-Path $PSScriptRoot 'dependencies.lock.json') -Raw | ConvertFrom-Json
+$lock = Get-Content -LiteralPath (Join-Path $PSScriptRoot 'dependencies.lock.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 function Expand-PinnedTool([string]$name, [string]$directory) {
     $item = @($lock.dependencies | Where-Object name -eq $name)
     if ($item.Count -ne 1) { throw "Dependency lock entry missing or duplicated: $name" }
