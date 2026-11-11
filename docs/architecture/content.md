@@ -32,16 +32,9 @@ pwsh -File Tools/Content/Release.ps1 -Action Verify -Key .artifacts/keys/dev/pub
 
 发布目录中，`manifest.json` 的原始 UTF-8 字节使用 RSA-PKCS#1 v1.5 / SHA-256 签名，`manifest.sig` 保存原始二进制签名。清单见 [release-manifest.schema.json](../../Tools/Content/release-manifest.schema.json)。文件相对于清单 URL 所在目录发布。服务端可支持 HTTP Range，客户端也接受服务器忽略 Range 后返回的完整响应。生产端点使用 HTTPS。
 
-Unity Foundation 的发布用包构建报告限制签名范围，核对暂存 YooAsset 清单与包内哈希、bundle 大小和哈希、源资产与依赖。下例以 Windows 包为例，Android 使用自己的 BuildTarget 产物和发布路径。
+Unity 发布从完成的构建目录读取 `package.complete.json`，核对构建报告、YooAsset 清单、bundle 哈希及来源。可运行文件发布到 `yooasset/Foundation/`。命令见[热更与强更构建](../development/hot-update.md)。
 
-```powershell
-pwsh -File Tools/Content/Package-Unity.ps1 -PackageDirectory .artifacts/UnityProject/.artifacts/yooasset/StandaloneWindows64/Foundation/foundation-1 -Key .artifacts/keys/dev/private.key -Release .artifacts/releases/foundation-win-3 -Version 3
-pwsh -File Tools/Content/Release.ps1 -Action Verify -Key .artifacts/keys/dev/public.pem -Release .artifacts/releases/foundation-win-3 -SchemaVersion 2
-```
-
-该命令将可运行文件发布到 `yooasset/Foundation/`。客户端把已校验版本的这一目录传为 YooAsset 的 packageRoot。JSON 公钥包含 Base64 编码的 `modulus` 和 `exponent`，签名和验证仍使用同一把 RSA 公钥。演示协议为 1；UIBaseView 改造后内容 schema 为 2，要求包内包含窗口预制体，旧 schema 1 包需重建。Package-Unity 默认生成 schema 2，通用 Release.ps1 的 Verify 应显式传入 2。整数发布版本独立于 YooAsset 的包版本字符串。
-
-示例版本 3 仅适用于历史发布版本不超过 2 的情况。schema 升级不重置发布版本号：每次发布必须选择大于已发布版本的新整数与新目录，已有版本清单不可覆盖。客户端程序与 schema 2 资源需配套发布，schema 1 客户端继续使用其兼容发布地址。
+协议版本为 1，外层签名清单使用 schema 3，验签时显式传入 `-SchemaVersion 3`。包内 `code/manifest` 格式版本为 1，记录母包 ID、平台、架构、入口、依赖和文件哈希。旧 schema 客户端需保留兼容发布地址。每次发布使用高于已发布值的新整数版本和新目录。
 
 ## 安装和恢复
 
@@ -49,7 +42,7 @@ pwsh -File Tools/Content/Release.ps1 -Action Verify -Key .artifacts/keys/dev/pub
 
 更新器以同卷的剩余负载加 8 MiB 安全余量作磁盘准入检查。Unity 客户端对安装目录调用 Windows `GetDiskFreeSpaceExW` 或 Android `StatFs.getAvailableBytes` 查询可用空间。它通过文件锁串行化更新，避免本更新器的并行任务重复占用预算。其他进程仍可占用磁盘空间。有效负载完整后移动到按版本命名的独立目录，再原子替换记录当前和上一个版本的指针。进程中断后旧指针仍可读取，已下载内容可由下一次安装重用。指针操作依赖文件系统的同卷原子替换，断电持久性取决于系统和文件系统。
 
-启动用 `GetActiveRelease(token)` 读取已签名的安装版本，加载时保持该目录只读。对大包应在后台读取和验证，再由 Unity 主线程切换加载入口。安装时可传入候选校验回调，先验证包能否加载 Lua 和配置。回调失败或取消会保留旧指针。显式回滚重新验证旧版内容和兼容性，仅切换内容指针。同一发布版本的本地文件损坏时，可用相同的签名清单重新下载。完整校验后，旧目录移入隔离区，原版本号和回滚指针保持不变。源清单损坏导致无法核对发布身份时，安装会拒绝覆盖。旧版本及隔离目录由运维控制磁盘清理。
+启动用 `GetActiveRelease(token)` 读取已签名的安装版本，加载时保持该目录只读。对大包应在后台读取和验证，再由 Unity 主线程切换加载入口。安装时可传入候选校验回调，预检代码清单、程序集文件、配置和资源。回调失败或取消会保留旧指针。显式回滚重新验证旧版内容和兼容性。代码开始载入前写入启动尝试，业务入口启动成功后确认。未确认的尝试在下一次进程启动时隔离，恢复只选择仍可验签且与母包兼容的版本。同一发布版本的本地文件损坏时，可用相同的签名清单重新下载。完整校验后，旧目录移入隔离区，原版本号和回滚指针保持不变。源清单损坏导致无法核对发布身份时，安装会拒绝覆盖。旧版本及隔离目录由运维控制磁盘清理。
 
 ## 验证
 

@@ -1,6 +1,6 @@
 # AstralOath
 
-Unity 客户端、.NET 服务端及共享 C# 的单仓库地基。当前交付为基础设施演示：中文界面、Lua Binder、DOTween 动画、Luban 配置、YooAsset 资源、Protobuf 回显、MySQL 幂等持久化及签名更新。真实战斗、角色技能、BP 与原作表现尚未实现或验收。
+Unity 客户端、.NET 服务端及共享 C# 的单仓库地基。当前交付为基础设施演示：中文界面、C# Binder、HybridCLR 冷启动热更、DOTween 动画、Luban 配置、YooAsset 资源、Protobuf 回显、MySQL 幂等持久化及签名更新。真实战斗、角色技能、BP 与原作表现尚未实现或验收。
 
 ## 启动
 
@@ -32,23 +32,21 @@ $env:DOTNET_ROOT = "$PWD/.tools/dotnet"
 ```powershell
 # 数据库测试连接串指向专用测试库，不得指向正式库。
 pwsh -File Tools/Check-Foundation.ps1 -RequireMySql -UnityTests
-pwsh -File Tools/Invoke-Unity.ps1 -Mode Windows -DevelopmentHttp
-pwsh -File Tools/Invoke-Unity.ps1 -Mode AndroidAstc
-pwsh -File Tools/Invoke-Unity.ps1 -Mode AndroidEtc2
 ```
 
-需要实际 Windows 回显及截图时，将 Windows 构建命令附加 `-ProjectName UnityWindows`，然后执行 `pwsh -File Tools/Test-WindowsPlayer.ps1 -Screenshot -Visible`。它会短暂显示演示窗口，默认连接 `http://localhost:5080`；本机隐藏窗口不呈现，数值 `127.0.0.1` 在 Player 中出现 502，而 Editor 中正常。正式环境仍使用 HTTPS。
+Windows x64、Android ARM64 ASTC/ETC2 的强更包、热更包和签名命令见[热更与强更构建](docs/development/hot-update.md)。首次迁移需安装对应平台的新母包。
 
-总入口要求先提供 `ASTRALOATH_MYSQL_TEST`；现场界面回显另设 `ASTRAL_FOUNDATION_LIVE_TEST=1`，并保持开发服务运行。省略 `-RequireMySql` 可做无数据库检查，但数据库测试可能显示跳过。Unity 脚本使用 `.artifacts/UnityProject` 副本，日志在 `.artifacts/unity`，Player 位于副本内的 `.artifacts/builds`，避免锁住正在编辑的工程。
+总入口要求先提供 `ASTRALOATH_MYSQL_TEST`；现场界面回显另设 `ASTRAL_FOUNDATION_LIVE_TEST=1`，并保持开发服务运行。省略 `-RequireMySql` 可做无数据库检查，但数据库测试可能显示跳过。Unity 脚本使用 `.artifacts/UnityProject` 副本，日志在 `.artifacts/unity`，构建默认输出至仓库的 `.artifacts/builds`，避免锁住正在编辑的工程。
 
-修改表后运行 `Generate.ps1 -VerifyAccessors -SyncClient` 更新客户端生成快照并一并提交；检查入口使用 `-CheckClient` 拒绝源表与快照不一致。签名更新必须包含同批 Lua、配置、本地化及依赖资源。
+修改表后运行 `Generate.ps1 -VerifyAccessors -SyncClient` 更新客户端生成快照并一并提交；检查入口使用 `-CheckClient` 拒绝源表与快照不一致。签名更新必须包含同批业务程序集、配置、本地化及依赖资源。
 
 GitHub Actions 执行源码边界、协议生成、配表及更新器检查；MySQL、Unity 授权、原生构建和设备运行另行验收。流水线不会部署服务或追踪国际服版本。
 
 ## 文档导航
 
-- [交付验证记录](docs/delivery/foundation.md)：通过、阻塞和未执行项。
-- [地基决策](docs/architecture/foundation-decisions.md)、[客户端](docs/architecture/client.md)、[服务端](docs/architecture/server.md)、[配表与更新](docs/architecture/content.md)。
+- [历史地基交付验证记录](docs/delivery/foundation.md)：通过、阻塞和未执行项。
+- [HybridCLR 迁移验证记录](docs/development/hybridclr-validation.md)：本轮构建、旧包更新和冷启动恢复实测及未验收项。
+- [地基决策](docs/architecture/foundation-decisions.md)、[HybridCLR 决策](docs/architecture/adr/007-hybridclr.md)、[客户端](docs/architecture/client.md)、[服务端](docs/architecture/server.md)、[配表与更新](docs/architecture/content.md)。
 - [AI 开发与 MCP](docs/development/ai-workflow.md)、[项目规则](AGENTS.md)、[依赖版本与来源](Tools/dependencies.lock.json)。
 - [UIBaseView 与预制体 Binder](docs/development/ui-binder.md)：统一命名、路径注册、单行绑定与 Hierarchy 快捷增删。
 - [原始资源证据边界](docs/architecture/resource-evidence.md)、[下一阶段战斗验收](docs/delivery/battle-acceptance.md)。

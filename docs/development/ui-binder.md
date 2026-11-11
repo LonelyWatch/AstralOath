@@ -1,16 +1,16 @@
 # UIBaseView 与预制体 Binder
 
-业务界面类继承普通 C# `UIBaseView`，不挂在预制体上。预制体根节点保留通用 `BindingMap`，按 key 保存 GameObject 或 Component 引用；Lua Binder 继续管理可热更新的界面业务。
+业务界面类继承普通 C# `UIBaseView`，不挂在预制体上。预制体根节点保留通用 `BindingMap`，按 key 保存 GameObject 或 Component 引用；C# Binder管理可热更新的界面业务。
 
 ## 项目通用命名约束
 
 以预制体的文件名（不含 `.prefab`）为唯一命名依据，文件名与 C# 类型名大小写一致。对 `InventoryWindow.prefab`：
 
 - View 文件为 `Scripts/InventoryWindow.cs`，类型为 `InventoryWindow : UIBaseView`，不另加 View 后缀。
-- 业务 Binder 名为 `InventoryWindowBinder`，当前 Lua 文件为 `Lua/InventoryWindowBinder.lua.txt`，导出契约为 `Lua/InventoryWindowBinder.exports.txt`。`.lua.txt` 是 Unity TextAsset 导入后缀，不属于 Binder 名。
+- 业务 Binder 名为 `InventoryWindowBinder`，文件为 `Scripts/InventoryWindowBinder.cs`。
 - 业务 View 重写 `PrefabPath` 并由 `UIViewRegistry` 注册。资源地址可继续采用 `inventory/main-window` 等稳定地址，不要求等于物理文件路径。
 
-此约束适用于项目所有业务 UI 的预制体、View 和 Binder。通用 `UIBaseView`、`UIViewRegistry`、`BindingMap` 及加载/桥接工具保留各自职责名称；静态美术预制体不因此新增业务脚本。重命名时同步调用点、生成器、资源收集路径、Lua 契约和测试，并移动已有 `.meta` 保留 GUID。业务脚本仍不挂到预制体上。
+此约束适用于项目所有业务 UI 的预制体、View 和 Binder。通用 `UIBaseView`、`UIViewRegistry`、`BindingMap` 及加载/桥接工具保留各自职责名称；静态美术预制体不因此新增业务脚本。重命名时同步调用点、生成器、资源收集路径和测试，并移动已有 `.meta` 保留 GUID。业务脚本仍不挂到预制体上。
 
 ## 制作界面
 
@@ -47,13 +47,13 @@ public sealed class InventoryWindow : UIBaseView
 
 在模块启动处注册 `registry.Register<InventoryWindow>()`，然后使用 `await registry.CreateAsync<InventoryWindow>(assets, parent, owner)`。注册表从 View 记录 `PrefabPath`，统一经 `IAssetService` 加载预制体、实例化并检查 Binder。`parent` 是 UI 容器；`owner` 是拥有该实例及资源的 `BindingScope`。窗口暂时关闭用 `Hide()`，重新打开可复用实例；销毁拥有者时释放实例和资源。
 
-`UIBaseView` 提供显示和组件访问；订阅、按钮行为、网络请求等继续由窗口控制器/Lua 层组织，并用当前窗口的 BindingScope 取消与解绑。不要把业务类重新挂到预制体上，也不要把层级名称当作运行时查找路径。
+`UIBaseView` 提供显示和组件访问；订阅、按钮行为、网络请求等继续由C# Binder组织，并用当前窗口的 BindingScope 取消与解绑。不要把业务类重新挂到预制体上，也不要把层级名称当作运行时查找路径。
 
 ## 演示与内容兼容性
 
-现有示例统一为 `FoundationWindow.prefab`、`FoundationWindow.cs` 和 `FoundationWindowBinder.lua.txt`，导出契约为 `FoundationWindowBinder.exports.txt`。View 的地址仍是 `foundation/foundation-window`，Binder 地址仍是 `foundation/demo-binder`。演示场景 `Assets/Game/Modules/FoundationDemo/Scenes/FoundationDemo.unity` 在启动时动态加载窗口；场景只记录 UI 父节点。预制体不挂 `FoundationWindow`。
+演示使用 `FoundationWindow.prefab`、`FoundationWindow.cs` 和 `FoundationWindowBinder.cs`。View 地址为 `foundation/foundation-window`，由 `FoundationEntry` 注册并加载。签名内容使用 schema 3，协议版本为 1。发布命令见[热更与强更构建](hot-update.md)。
 
-新窗口预制体进入 Foundation 的资源收集和签名候选验证。本次内容 schema 升为 **2**，协议仍是 1；旧 schema 1 的演示发布物没有该预制体，不能混用。重新构建资源后使用 `Tools/Content/Package-Unity.ps1`（默认 schema 2）生成大于历史发布版本的新整数版本与新目录；schema 升级不重置发布版本号，不能覆盖已有清单。调用通用 `Release.ps1 -Action Verify` 验证时加 `-SchemaVersion 2`。这次没有更换正式更新地址或部署远端资源。
+以下三次复验记录的是 HybridCLR 迁移前的 UI 和编辑器改造。
 
 ## 预制体解耦改造验证（2026-11-11）
 

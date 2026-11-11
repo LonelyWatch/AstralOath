@@ -10,7 +10,7 @@
 
 根规则适用于全工程；模块职责、输入输出、生命周期、资源与配置 key 应写入模块 README。新模块用 `pwsh -File Tools/New-Module.ps1 -Name Inventory` 创建标准目录，再由 Unity 导入 meta。禁止让生成器覆盖已存在模块。
 
-新增或修改业务 UI 时，核对 `Foo.prefab`、`Foo.cs`（`Foo : UIBaseView`）与 `FooBinder.lua.txt` / `FooBinder.exports.txt` 同名关系，并按 [UI 命名约束](ui-binder.md)维护路径注册与 GUID。业务 View/Binder 不挂到预制体上。
+新增或修改业务 UI 时，核对 `Foo.prefab`、`Foo.cs`（`Foo : UIBaseView`）与 `FooBinder.cs` 同名关系，并按 [UI 命名约束](ui-binder.md)维护路径注册与 GUID。业务 View/Binder 不挂到预制体上。
 
 按[任务与交接模板](task-template.md)记录每次工作。不同 Agent 的“完成”消息需要由协调者核对改动和实际验证结果，不能自动当作验收通过。
 
