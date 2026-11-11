@@ -128,10 +128,10 @@ namespace AstralOath.Editor
     {
         private HotUpdateBuildSettings settings;
 
-        [MenuItem("Tools/AstralOath/构建设置")]
+        [MenuItem("Tools/构建设置")]
         private static void ShowWindow() => GetWindow<HotUpdateBuildWindow>("AstralOath 构建设置");
 
-        [MenuItem("Tools/AstralOath/导表")]
+        [MenuItem("Tools/导表")]
         private static void GenerateConfig()
         {
             string output = HotUpdateBuildSettings.RunScript("Config/Generate.ps1", null, 600, "-VerifyAccessors", "-SyncClient");
@@ -139,7 +139,7 @@ namespace AstralOath.Editor
             Debug.Log(output);
         }
 
-        [MenuItem("Tools/AstralOath/签名发布…")]
+        [MenuItem("Tools/签名发布…")]
         private static void SignRelease()
         {
             var options = HotUpdateBuildSettings.LoadLocal();
@@ -151,7 +151,7 @@ namespace AstralOath.Editor
             HotUpdateBuildSettings.Sign(Path.GetDirectoryName(file), options);
         }
 
-        [MenuItem("Tools/AstralOath/打开构建输出")]
+        [MenuItem("Tools/打开构建输出")]
         private static void OpenOutput()
         {
             string output = Path.GetFullPath(HotUpdateBuildSettings.LoadLocal().outputRoot);

@@ -2,11 +2,11 @@
 
 首次迁移需要分发对应平台的新 IL2CPP 母包。之后同一母包的兼容业务代码、配置和资源可随独立热更包发布，在应用完全退出后的下一次启动激活。已经载入的程序集无法在同一进程卸载，启动失败后的恢复也需要新进程。
 
-新业务模块的 asmdef 由 `Tools/New-Module.ps1` 设为 `autoReferenced: false`。完成首个运行时代码后，将程序集加入 `Config/HotUpdate/assemblies.json` 的 `assemblies` 列表，再运行 `Tools/AstralOath/检查母包兼容性`。该清单是热更程序集的登记入口。模板创建时保留清单原样，登记前模块尚未纳入热更构建。
+新业务模块的 asmdef 由 `Tools/New-Module.ps1` 设为 `autoReferenced: false`。完成首个运行时代码后，将程序集加入 `Config/HotUpdate/assemblies.json` 的 `assemblies` 列表，再运行 `Tools/检查母包兼容性`。该清单是热更程序集的登记入口。模板创建时保留清单原样，登记前模块尚未纳入热更构建。
 
 ## Unity 菜单
 
-先切换 Unity 当前目标到 Windows 或 Android。使用 `Tools/AstralOath/构建设置` 保存母包归档、应用版本、Android versionCode、资源版本及输出目录。选择母包归档后，窗口显示只读母包 ID。按需设置本地 RSA 私钥、离线 libil2cpp 源和开发选项。
+先切换 Unity 当前目标到 Windows 或 Android。使用 `Tools/构建设置` 保存母包归档、应用版本、Android versionCode、资源版本及输出目录。选择母包归档后，窗口显示只读母包 ID。按需设置本地 RSA 私钥、离线 libil2cpp 源和开发选项。
 
 1. 使用 `环境/从固定源码安装 HybridCLR` 和 `环境/检查` 安装并检查项目本地环境。安装版本为包 9.0.3 / runtime 9.0.1。用 `导表` 同步 Luban 配置。
 2. 在 `强更包` 下选择 `Windows x64`、`Android ARM64 ASTC` 或 `Android ARM64 ETC2`。每次构建自动生成新 GUID 作为母包 ID，成功后记录在 `ASTRAL_PLAYER_BASELINE` 日志。完成目录包含安装包、内置内容、`package.complete.json`、`baseline.complete.json`、`player-baseline.json` 和 `stripped-aot`。按平台及变体封存完整目录。

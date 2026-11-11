@@ -64,7 +64,7 @@ namespace AstralOath.Editor
             public long contentVersion;
         }
 
-        [MenuItem("Tools/AstralOath/环境/检查")]
+        [MenuItem("Tools/环境/检查")]
         public static void CheckEnvironment()
         {
             var target = EditorUserBuildSettings.activeBuildTarget;
@@ -73,7 +73,7 @@ namespace AstralOath.Editor
             Debug.Log($"ASTRAL_HYBRIDCLR_READY {Application.unityVersion} HybridCLR {PackageVersion}/{RuntimeVersion} {target}");
         }
 
-        [MenuItem("Tools/AstralOath/环境/从固定源码安装 HybridCLR")]
+        [MenuItem("Tools/环境/从固定源码安装 HybridCLR")]
         public static void Install()
         {
             var options = HotUpdateBuildSettings.Load();
@@ -88,25 +88,25 @@ namespace AstralOath.Editor
             CheckInstalled(EditorUserBuildSettings.activeBuildTarget);
         }
 
-        [MenuItem("Tools/AstralOath/强更包/Windows x64")]
+        [MenuItem("Tools/强更包/Windows x64")]
         public static void BuildWindows() => Build(BuildTarget.StandaloneWindows64, 0, true);
 
-        [MenuItem("Tools/AstralOath/强更包/Android ARM64 ASTC")]
+        [MenuItem("Tools/强更包/Android ARM64 ASTC")]
         public static void BuildAndroidAstc() => Build(BuildTarget.Android, (int)MobileTextureSubtarget.ASTC, true);
 
-        [MenuItem("Tools/AstralOath/强更包/Android ARM64 ETC2")]
+        [MenuItem("Tools/强更包/Android ARM64 ETC2")]
         public static void BuildAndroidEtc2() => Build(BuildTarget.Android, (int)MobileTextureSubtarget.ETC2, true);
 
-        [MenuItem("Tools/AstralOath/热更包/Windows x64")]
+        [MenuItem("Tools/热更包/Windows x64")]
         public static void BuildHotWindows() => Build(BuildTarget.StandaloneWindows64, 0, false);
 
-        [MenuItem("Tools/AstralOath/热更包/Android ARM64 ASTC")]
+        [MenuItem("Tools/热更包/Android ARM64 ASTC")]
         public static void BuildHotAndroidAstc() => Build(BuildTarget.Android, (int)MobileTextureSubtarget.ASTC, false);
 
-        [MenuItem("Tools/AstralOath/热更包/Android ARM64 ETC2")]
+        [MenuItem("Tools/热更包/Android ARM64 ETC2")]
         public static void BuildHotAndroidEtc2() => Build(BuildTarget.Android, (int)MobileTextureSubtarget.ETC2, false);
 
-        [MenuItem("Tools/AstralOath/检查母包兼容性")]
+        [MenuItem("Tools/检查母包兼容性")]
         public static void CheckCompatibility()
         {
             var target = EditorUserBuildSettings.activeBuildTarget;

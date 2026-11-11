@@ -38,5 +38,5 @@ if (-not (Test-Path -LiteralPath $source -PathType Container) -or
     -not (Test-Path -LiteralPath $destination -PathType Container)) { throw 'Unexpected official source archive layout.' }
 Copy-Item -LiteralPath $source -Destination (Join-Path $destination 'hybridclr') -Recurse
 # The only output is the source directory consumed by InstallerController.InstallFromLocal.
-# Installation is project-local and is performed by Tools/AstralOath or Invoke-Unity.
+# Installation is project-local and is performed by Tools or Invoke-Unity.
 Write-Output ([IO.Path]::GetFullPath($destination))

@@ -67,7 +67,7 @@ CodeBootJournal：Begin(long version)、Confirm(long version)、RecoverInterrupt
 
 ### 4. 构建与 Tools 菜单
 - [x] 增加构建参数、基线完整性、兼容检查的失败测试。
-- [x] 提供 Tools/AstralOath 菜单：构建设置、环境安装/检查、导表、强更包 Windows/Android ASTC/ETC2、热更包同平台、兼容检查、打开产物。
+- [x] 提供 Tools 菜单：构建设置、环境安装/检查、导表、强更包 Windows/Android ASTC/ETC2、热更包同平台、兼容检查、打开产物。
 - [x] 菜单与命令行共用实现；输出新目录，失败中止，热更不重建母包、不自动上传。
 - [x] 将 DLL/代码清单加入 YooAsset 收集；更新签名打包工具支持 schema 3。
 

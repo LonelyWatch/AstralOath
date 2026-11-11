@@ -53,7 +53,7 @@ namespace AstralOath.Client.Bootstrap
             return await LoadAsync(null, null, null, lifetime);
 #else
             var asset = Resources.Load<TextAsset>(PlayerBaseline.ResourceName);
-            if (!asset) throw new InvalidDataException("Missing player baseline. Build using Tools/AstralOath/强更包.");
+            if (!asset) throw new InvalidDataException("Missing player baseline. Build using Tools/强更包.");
             var baseline = JsonUtility.FromJson<PlayerBaseline>(asset.text);
             if (baseline == null || baseline.formatVersion != 1 || string.IsNullOrWhiteSpace(baseline.baselineId) ||
                 baseline.baselineId.IndexOfAny(new[] { '/', '\\', ':' }) >= 0 || baseline.baselineId == "." || baseline.baselineId == "..")
