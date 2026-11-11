@@ -11,14 +11,17 @@ namespace AstralOath.Client.Bootstrap
     {
         public const string PackageName = "Foundation";
         private readonly ResourcePackage package;
+        private readonly string packageId;
         private bool disposed;
 
-        public YooAssetService()
+        public YooAssetService(string packageName = PackageName)
         {
             if (YooAssets.Initialized)
                 throw new InvalidOperationException("YooAsset already has an owner.");
+            if (string.IsNullOrWhiteSpace(packageName)) throw new ArgumentException("Package name is required.", nameof(packageName));
+            packageId = packageName;
             YooAssets.Initialize();
-            package = YooAssets.CreatePackage(PackageName);
+            package = YooAssets.CreatePackage(packageId);
         }
 
         public async Task InitializeAsync(CancellationToken token, string verifiedPackageRoot)
@@ -38,7 +41,7 @@ namespace AstralOath.Client.Bootstrap
             else
             {
 #if UNITY_EDITOR
-                var build = EditorSimulateModeHelper.SimulateBuild(PackageName);
+                var build = EditorSimulateModeHelper.SimulateBuild(packageId);
                 parameters = new EditorSimulateModeParameters
                 {
                     EditorFileSystemParameters = FileSystemParameters.CreateDefaultEditorFileSystemParameters(build.PackageRootDirectory),

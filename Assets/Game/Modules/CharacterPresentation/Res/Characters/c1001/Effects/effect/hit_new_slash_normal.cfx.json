@@ -1,0 +1,18 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "hit_new_slash_01",
+      "ani": "red",
+      "scale": "0.6~0.85",
+      "rotate": "-5~30",
+      "format": "spine"
+    },
+    {
+      "source": "hit_new_slash_yellow_nm_pati",
+      "z": "5",
+      "rotate": "-35~10",
+      "format": "particle"
+    }
+  ]
+}

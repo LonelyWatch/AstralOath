@@ -1,0 +1,23 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "mage_sk3_eff_f",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "mage_sk3_eff_b",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "magician_pat",
+      "x": "1400",
+      "y": "420",
+      "scale": "0.6",
+      "delay": "3200",
+      "format": "particle"
+    }
+  ]
+}

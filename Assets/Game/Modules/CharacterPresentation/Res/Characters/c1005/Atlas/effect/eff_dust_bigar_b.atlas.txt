@@ -1,0 +1,62 @@
+
+eff_dust_bigar_b.sct
+size: 574,240
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cloud_09
+  rotate: false
+  xy: 211, 186
+  size: 89, 50
+  orig: 89, 50
+  offset: 0, 0
+  index: -1
+cloud_crack_02
+  rotate: false
+  xy: 302, 186
+  size: 59, 52
+  orig: 59, 52
+  offset: 0, 0
+  index: -1
+cloud_crack_06
+  rotate: true
+  xy: 363, 186
+  size: 47, 43
+  orig: 47, 43
+  offset: 0, 0
+  index: -1
+dust_soft_1
+  rotate: false
+  xy: 2, 2
+  size: 279, 144
+  orig: 279, 144
+  offset: 0, 0
+  index: -1
+ground_smoke4
+  rotate: false
+  xy: 211, 148
+  size: 240, 36
+  orig: 240, 36
+  offset: 0, 0
+  index: -1
+ground_smoke5
+  rotate: false
+  xy: 283, 2
+  size: 289, 110
+  orig: 289, 110
+  offset: 0, 0
+  index: -1
+smoke_1
+  rotate: true
+  xy: 453, 114
+  size: 120, 119
+  orig: 120, 119
+  offset: 0, 0
+  index: -1
+tornado_wave_01
+  rotate: false
+  xy: 2, 148
+  size: 207, 86
+  orig: 207, 86
+  offset: 0, 0
+  index: -1

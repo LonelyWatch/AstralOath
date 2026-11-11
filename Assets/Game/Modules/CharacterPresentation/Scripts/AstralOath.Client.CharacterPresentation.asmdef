@@ -1,0 +1,10 @@
+{
+  "name": "AstralOath.Client.CharacterPresentation",
+  "rootNamespace": "AstralOath.Client.CharacterPresentation",
+  "references": [
+    "AstralOath.Client.Core",
+    "AstralOath.Client.Common",
+    "AstralOath.Client.Skeletons"
+  ],
+  "autoReferenced": false
+}

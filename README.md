@@ -1,6 +1,6 @@
 # AstralOath
 
-Unity 客户端、.NET 服务端及共享 C# 的单仓库地基。当前交付为基础设施演示：中文界面、C# Binder、HybridCLR 冷启动热更、DOTween 动画、Luban 配置、YooAsset 资源、Protobuf 回显、MySQL 幂等持久化及签名更新。真实战斗、角色技能、BP 与原作表现尚未实现或验收。
+Unity 客户端、.NET 服务端及共享 C# 的单仓库地基。当前交付为基础设施演示：中文界面、C# Binder、HybridCLR 冷启动热更、DOTween 动画、Luban 配置、YooAsset 资源、Protobuf 回显、MySQL 幂等持久化及签名更新。另提供离线角色实验室，浏览首批角色骨骼、动态立绘、日语语音与技能演出。真实战斗规则、BP 与原作表现一致性仍待后续验收。
 
 ## 启动
 
@@ -44,6 +44,10 @@ Windows x64、Android ARM64 ASTC/ETC2 的强更包、热更包和签名命令见
 
 GitHub Actions 执行源码边界、协议生成、配表及更新器检查；MySQL、Unity 授权、原生构建和设备运行另行验收。流水线不会部署服务或追踪国际服版本。
 
+## 角色实验室
+
+先执行 `git lfs pull` 获取角色资产及 FMOD 原生库，再选择 Unity `Tools/角色实验室/打开场景` 并运行。此场景独立于 FoundationDemo，不需要启动服务端。详细操作、配表、导入和 Windows 构建见[角色实验室手册](docs/development/character-lab.md)，已通过与未验证项见[执行台账](docs/plans/2026-11-12-character-lab.md)。
+
 ## 文档导航
 
 - [历史地基交付验证记录](docs/delivery/foundation.md)：通过、阻塞和未执行项。
@@ -53,4 +57,4 @@ GitHub Actions 执行源码边界、协议生成、配表及更新器检查；My
 - [UIBaseView 与预制体 Binder](docs/development/ui-binder.md)：统一命名、路径注册、单行绑定与 Hierarchy 快捷增删。
 - [原始资源证据边界](docs/architecture/resource-evidence.md)、[下一阶段战斗验收](docs/delivery/battle-acceptance.md)。
 
-界面语言与语音语言分别配置，默认中文与日语。`D:\sevenepic` 保持只读，本阶段未导入原作资源。国际服版本追踪仅在用户明确提出时执行。
+界面语言与语音语言分别配置，默认中文与日语。`D:\sevenepic` 保持只读，仅导入首批三角色及其依赖，不提交完整解包目录。国际服版本追踪仅在用户明确提出时执行。

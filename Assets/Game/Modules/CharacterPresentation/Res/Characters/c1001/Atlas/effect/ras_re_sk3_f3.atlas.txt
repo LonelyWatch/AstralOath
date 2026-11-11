@@ -1,0 +1,20 @@
+
+ras_re_sk3_f3.sct
+size: 532,534
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+ras/blink_1
+  rotate: false
+  xy: 2, 2
+  size: 528, 264
+  orig: 528, 264
+  offset: 0, 0
+  index: -1
+ras/blink_2
+  rotate: false
+  xy: 2, 268
+  size: 528, 264
+  orig: 528, 264
+  offset: 0, 0
+  index: -1

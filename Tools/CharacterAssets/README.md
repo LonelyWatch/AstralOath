@@ -1,0 +1,38 @@
+# 角色资源白名单导入
+
+本工具只接受已批准的 c1001（ras）、c1005（mercedes）、c1062（angelica）。`D:/sevenepic/原始资源` 仅以只读方式访问；不得把整个外部目录复制进仓库。三个骨骼和立绘、九份技能 STG 为根，递归引入其真实 atlas/纹理、CFX、particle、camera、cutin，以及实际存在的 timeline。五份指定 FMOD bank 公共保存一次。Ras 没有 timeline 是源布局信息，不伪造空文件。
+
+## 固定环境与命令
+
+专用环境 `.tools/character-assets`；依赖由同目录 requirements-lock.txt 固定，禁止安装到全局 Python。Windows 示例（在工程根执行）：
+
+```powershell
+& ./.tools/character-assets/Scripts/python.exe -X utf8 -B -m unittest discover -s Tests/CharacterAssets -v
+& ./.tools/character-assets/Scripts/python.exe -X utf8 -B Tools/CharacterAssets/import_characters.py --closure-only
+& ./.tools/character-assets/Scripts/python.exe -X utf8 -B Tools/CharacterAssets/import_characters.py
+& ./.tools/character-assets/Scripts/python.exe -X utf8 -B Tools/CharacterAssets/import_characters.py --verify
+```
+
+`--source` 可指定本地只读来源，`--project` 指定输出工程；默认就是本工程。输出前验证白名单、所有依赖路径和扩展名。拒绝绝对路径、父目录逃逸、符号链接越界、atlas别名循环。只导入选中根的依赖闭包，不扫描导入整个解包目录。重复运行使用稳定路径，保留已有 `.meta`。改变选择集不会自动删除旧资源，清理需要明确审核。
+
+## API 和资源契约
+
+`convert.py` 提供 `convert_scsp(source: Path, destination: Path) -> dict`、`convert_sct(...) -> dict`；失败抛异常。`decode_scsp(bytes)` 返回 `(标准Spine对象, 诊断)`；`decode_sct(bytes)` 返回 `(Pillow RGBA图像, 诊断)`。未知格式、压缩/段长度不符、未消费尾部、未知时间线、重复动画名、非法索引必须失败，不能静态降级或跳过动画。
+
+SCSP 保留 `2.1.27` / `3.8.99` 原版本。2.1 的 type5/type6 分别按真实事件和完整 draw-order 记录解析，不套用参考查看器的 FlipX/Y 推断。2.1 曲线、FFD、源浮点精度均保留，不添加关键帧或修补旋转。3.8 缓存曲线的九个采样点经三次方程恢复控制点，并检查所有采样点残差（≤0.00002），输出官方3.8的 `curve/c2/c3/c4` 字段。源引擎特有辅助draw-order与保留缓存字段输出到 `.artifacts/character-import/conversion-reports.json`，这不表示未知引擎字段的玩法语义已还原。
+
+纹理解码支持 SCT1 format4 RGB565+A8、format2 RGBA8888；SCT2支持明确编号的ASTC4x4/8x8、ETC2 RGBA8、原RGBA。未知编号不猜测。首批实际37张是SCT1；SCT2仅经过合成数据校验，没有本批真实样本。保留源RGB/alpha，六张主纹理的半透明像素检测符合PMA，因此SkeletonDescriptor明确 `premultipliedAlpha:true`，需配合对应PMA渲染。Unity纹理应 `sRGBTexture=true`、`alphaIsTransparency=false`，避免改写透明边缘RGB。粒子format2首批七张均为等值RGBA灰度数据，不能据此宣称所有未知彩色变种已验证。
+
+`.scsp` 的地址 `characterlab/source/<原相对路径>` 指向 SkeletonDescriptor，内部 JSON 地址追加 `/json`。atlas 保存 `.atlas.txt`，保持页名原 `.sct`；别名 atlas 展开到真实 atlas 文本，pages映射原页名到PNG资源地址。camera 可以没有图集，但必须没有渲染附件。STG graph保存原始实体、连接、entrypoint、eventlisteners，不把未知when/location摊平为确定时间；CFX/particle保留plist结构；timeline保留原JSON。
+
+动画WebP通过Pillow逐帧seek得到已合成RGBA帧，保留每帧毫秒时长；没有时长的帧拒绝输出。FMOD bank保存 `.bank.bytes`，禁止当AudioClip播放。语音事件路径依据源YML，不拼接虚构前缀。
+
+## 清单与验证范围
+
+`Assets/Game/Modules/CharacterPresentation/Configs/import-manifest.json` 包含 `entries`，每项记录 `source/sourceSha256/path/address/type/dependencies/outputSha256/conversion`。共享引用计数大于1的资源位于 `Res/Shared`；银行始终公共。目录生成源为 `Config/CharacterAssets/catalog.generated.json`，临时副本为 `.artifacts/character-import/catalog.json`；Luban结合中文文案与角色展示表生成正式catalog。
+
+本次导入实测174源文件→254产物；44骨骼均完整消费二进制，9技能图、40 atlas（含别名）、37源纹理、21CFX、14particle、2timeline、5bank。两个cutin分别16帧/1.25秒、20帧/1.28秒。导入/哈希校验不能替代Unity视觉、音频、真实事件时机或玩法验收。
+
+MIT参考解析结构隔离在 `ThirdParty/scsp_viewer`，固定来源、许可和本地改动见其NOTICE与LICENSE；未保留上游启发式动画扫描、自动版本升级、容错输出入口。
+
+按 SHA256 登记的生成 JSON/atlas 和未改动的 FMOD 源文件使用 `.gitattributes` 保留原字节，禁止 Git 自动转换换行。提交前同时验证工作目录、暂存区与一次独立检出的校验值；不能只验证当前机器的工作目录。

@@ -23,7 +23,6 @@ namespace AstralOath.Editor
     {
         internal const string Generated = "Assets/Game/HotUpdate/Generated";
         internal const string BuildReceiptName = "package.complete.json";
-        private const string AssemblyConfigPath = "Config/HotUpdate/assemblies.json";
         private const ApiCompatibilityLevel BuildApiLevel = ApiCompatibilityLevel.NET_Unity_4_8;
         private const string RuntimeVersion = "9.0.1";
         private const string PackageVersion = "9.0.3";
@@ -43,6 +42,7 @@ namespace AstralOath.Editor
         [Serializable]
         private sealed class BaselineArchive
         {
+            public string profileId, packageName, entryAssembly, entryType;
             public PlayerBaseline player;
             public string unityVersion;
             public string packageVersion;
@@ -59,6 +59,7 @@ namespace AstralOath.Editor
         [Serializable]
         internal sealed class PackageReceipt
         {
+            public string profileId, packageName, entryAssembly, entryType;
             public string packageDirectory;
             public string baselineId;
             public long contentVersion;
@@ -111,14 +112,15 @@ namespace AstralOath.Editor
         {
             var target = EditorUserBuildSettings.activeBuildTarget;
             var options = HotUpdateBuildSettings.Load();
-            var config = ReadAssemblyConfig();
-            var archive = ReadBaseline(options, target, null);
+            var profile = CharacterLabBuildProfile.Foundation;
+            var config = ReadAssemblyConfig(profile);
+            var archive = ReadBaseline(profile, options, target, null);
             string compiled = Path.Combine("Temp", "AstralOath", Guid.NewGuid().ToString("N"));
             try
             {
                 CompileHotAssemblies(compiled, target, archive.development);
                 string aot = AotDirectory(options.baselinePath);
-                CheckAssemblies(config, compiled, aot);
+                CheckAssemblies(profile, config, compiled, aot);
                 RequiredHotMetadata(compiled, config, aot, archive);
                 Debug.Log("ASTRAL_COMPATIBILITY_OK " + archive.player.baselineId);
             }
@@ -129,25 +131,29 @@ namespace AstralOath.Editor
             }
         }
 
-        private static void Build(BuildTarget target, int subtarget, bool full)
+        private static void Build(BuildTarget target, int subtarget, bool full) =>
+            Build(CharacterLabBuildProfile.Foundation, target, subtarget, full);
+
+        internal static void Build(CharacterLabBuildProfile profile, BuildTarget target, int subtarget, bool full)
         {
             RequireActiveTarget(target);
-            var options = HotUpdateBuildSettings.Load();
-            var config = ReadAssemblyConfig();
+            var options = profile.LoadSettings();
+            var config = ReadAssemblyConfig(profile);
             string variant = Variant(target, subtarget);
             ValidateOptions(options, full);
-            var archive = full ? null : ReadBaseline(options, target, variant);
+            var archive = full ? null : ReadBaseline(profile, options, target, variant);
             if (full)
                 CheckInstalled(target);
             else if (options.contentVersion <= archive.contentVersion)
                 throw new BuildFailedException("热更资源版本必须高于母包内置版本。");
-            FoundationBuilder.ValidateDemo();
+            if (profile == CharacterLabBuildProfile.Foundation) FoundationBuilder.ValidateDemo();
+            else CharacterLabBuild.Validate();
 
             string output = Path.GetFullPath(Path.Combine(options.outputRoot, variant,
                 (full ? "player" : "hot") + "-v" + options.contentVersion.ToString(CultureInfo.InvariantCulture) + "-" +
                 Guid.NewGuid().ToString("N")));
             string bundleCachePrefix = Path.Combine(output, "bundles", target.ToString(),
-                YooAssetService.PackageName, "OutputCache") + Path.DirectorySeparatorChar;
+                profile.PackageName, "OutputCache") + Path.DirectorySeparatorChar;
             if (Application.platform == RuntimePlatform.WindowsEditor &&
                 !HotUpdateBuildInputs.FitsWindowsPathBudget(bundleCachePrefix, 64))
                 throw new BuildFailedException("输出目录太长，YooAsset 需要在其下创建缓存文件。请选择较短的目录，例如 .artifacts/b：" + output);
@@ -160,17 +166,17 @@ namespace AstralOath.Editor
                     EditorUserBuildSettings.androidBuildSubtarget = (MobileTextureSubtarget)subtarget;
                 PackageReceipt receipt;
                 if (full)
-                    receipt = BuildPlayer(target, variant, options, config, output, development);
+                    receipt = BuildPlayer(profile, target, variant, options, config, output, development);
                 else
-                    receipt = BuildHotPackage(target, options, config, output, archive);
+                    receipt = BuildHotPackage(profile, target, options, config, output, archive);
 
                 WriteJson(Path.Combine(output, BuildReceiptName), receipt);
                 if (full)
                 {
-                    HotUpdateBuildWindow.RememberBaseline(receipt.baselineId, output);
+                    profile.RememberBaseline(receipt.baselineId, output);
                     Debug.Log("ASTRAL_PLAYER_BASELINE " + receipt.baselineId);
                 }
-                if (!string.IsNullOrEmpty(options.signingKey))
+                if (profile == CharacterLabBuildProfile.Foundation && !string.IsNullOrEmpty(options.signingKey))
                     HotUpdateBuildSettings.Sign(output, options);
                 Debug.Log("ASTRAL_BUILD_OK " + output);
             }
@@ -186,21 +192,28 @@ namespace AstralOath.Editor
             }
         }
 
-        private static PackageReceipt BuildHotPackage(BuildTarget target, HotUpdateBuildSettings options,
+        private static PackageReceipt BuildHotPackage(CharacterLabBuildProfile profile, BuildTarget target, HotUpdateBuildSettings options,
             AssemblyConfig config, string output, BaselineArchive archive)
         {
             string compiled = Path.Combine(output, "compiled");
             CompileHotAssemblies(compiled, target, archive.development);
             string aot = AotDirectory(options.baselinePath);
-            var assemblies = CheckAssemblies(config, compiled, aot);
-            return BuildPackage(output, target, options.contentVersion, archive.player, config, assemblies,
+            var assemblies = CheckAssemblies(profile, config, compiled, aot);
+            return BuildPackage(profile, output, target, options.contentVersion, archive.player, config, assemblies,
                 compiled, aot, RequiredHotMetadata(compiled, config, aot, archive), false);
         }
 
-        private static PackageReceipt BuildPlayer(BuildTarget target, string variant, HotUpdateBuildSettings options,
+        private static PackageReceipt BuildPlayer(CharacterLabBuildProfile profile, BuildTarget target, string variant, HotUpdateBuildSettings options,
             AssemblyConfig config, string output, bool development)
         {
             var namedTarget = NamedBuildTarget.FromBuildTargetGroup(BuildPipeline.GetBuildTargetGroup(target));
+            var hybridClrScope = new CharacterLabBuildSettingsScope();
+            byte[] previousBaseline = File.Exists(BaselineAsset) ? File.ReadAllBytes(BaselineAsset) : null;
+            bool previousBaselineMeta = File.Exists(BaselineAsset + ".meta");
+            string previousPlayerPath = FoundationStreamingAssets.PlayerPath;
+            string previousStagedRoot = FoundationStreamingAssets.StagedRoot;
+            string previousPackage = FoundationStreamingAssets.PackageName;
+            bool previousInjected = FoundationStreamingAssets.Injected;
             var previousBackend = PlayerSettings.GetScriptingBackend(namedTarget);
             var previousApi = PlayerSettings.GetApiCompatibilityLevel(namedTarget);
             var previousArchitectures = PlayerSettings.Android.targetArchitectures;
@@ -231,7 +244,7 @@ namespace AstralOath.Editor
                 PlayerSettings.bundleVersion = options.appVersion;
                 PlayerSettings.defaultInterfaceOrientation = UIOrientation.LandscapeLeft;
                 EditorUserBuildSettings.development = development;
-                EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(FoundationBuilder.ScenePath, true) };
+                EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(profile.ScenePath, true) };
                 if (options.developmentHttp)
                     PlayerSettings.insecureHttpOption = InsecureHttpOption.DevelopmentOnly;
                 if (target == BuildTarget.Android)
@@ -255,21 +268,23 @@ namespace AstralOath.Editor
                 PrebuildCommand.GenerateAll();
 
                 string generatedAot = SettingsUtil.GetAssembliesPostIl2CppStripDir(target);
-                var assemblies = CheckAssemblies(config, compiled, generatedAot);
+                var assemblies = CheckAssemblies(profile, config, compiled, generatedAot);
                 var metadataNames = HotUpdateAotMetadata.GetRequiredNames(compiled, config.assemblies, generatedAot,
                     Directory.EnumerateFiles(generatedAot, "*.dll").Select(Path.GetFileNameWithoutExtension), new[] { "mscorlib" });
                 var metadata = ReadMetadata(generatedAot, metadataNames);
-                var receipt = BuildPackage(output, target, options.contentVersion, player, config, assemblies,
+                var receipt = BuildPackage(profile, output, target, options.contentVersion, player, config, assemblies,
                     compiled, generatedAot, metadataNames, true);
-                var playerFile = Path.Combine(output, target == BuildTarget.Android ? "AstralOath.apk" : "AstralOath.exe");
+                var playerFile = Path.Combine(output, profile.ExecutableName + (target == BuildTarget.Android ? ".apk" : ".exe"));
                 FoundationStreamingAssets.PlayerPath = playerFile;
+                FoundationStreamingAssets.PackageName = profile.PackageName;
+                FoundationStreamingAssets.Injected = false;
                 FoundationStreamingAssets.StagedRoot = Path.Combine(output, "embedded");
                 var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
                 {
                     target = target,
                     targetGroup = BuildPipeline.GetBuildTargetGroup(target),
                     subtarget = target == BuildTarget.StandaloneWindows64 ? (int)StandaloneBuildSubtarget.Player : 0,
-                    scenes = new[] { FoundationBuilder.ScenePath },
+                    scenes = new[] { profile.ScenePath },
                     locationPathName = playerFile,
                     options = development ? BuildOptions.Development : BuildOptions.None
                 });
@@ -279,12 +294,14 @@ namespace AstralOath.Editor
 
                 // HybridCLR resets the stripped directory at the start of each real player build.
                 RequireMatchingMetadata(generatedAot, metadata);
-                CheckAssemblies(config, compiled, generatedAot);
+                CheckAssemblies(profile, config, compiled, generatedAot);
                 var stripped = ArchiveStripped(generatedAot, AotDirectory(output), config.assemblies);
                 RequireMatchingMetadata(AotDirectory(output), metadata);
                 WriteJson(Path.Combine(output, "player-baseline.json"), player);
                 WriteJson(Path.Combine(output, HotUpdateBuildInputs.CompletionFile), new BaselineArchive
                 {
+                    profileId = profile.Id, packageName = profile.PackageName,
+                    entryAssembly = config.entryAssembly, entryType = config.entryType,
                     player = player,
                     unityVersion = Application.unityVersion,
                     packageVersion = PackageVersion,
@@ -301,22 +318,36 @@ namespace AstralOath.Editor
             }
             finally
             {
-                FoundationStreamingAssets.StagedRoot = null;
-                FoundationStreamingAssets.PlayerPath = null;
-                FoundationStreamingAssets.Injected = false;
-                AssetDatabase.DeleteAsset(BaselineAsset);
-                PlayerSettings.SetScriptingBackend(namedTarget, previousBackend);
-                PlayerSettings.SetApiCompatibilityLevel(namedTarget, previousApi);
-                PlayerSettings.Android.targetArchitectures = previousArchitectures;
-                PlayerSettings.Android.minSdkVersion = previousMinSdk;
-                PlayerSettings.Android.bundleVersionCode = previousVersionCode;
-                PlayerSettings.bundleVersion = previousAppVersion;
-                PlayerSettings.defaultInterfaceOrientation = previousOrientation;
-                PlayerSettings.insecureHttpOption = previousInsecureHttp;
-                EditorUserBuildSettings.development = previousDevelopment;
-                EditorBuildSettings.scenes = previousScenes;
-                EditorUserBuildSettings.buildAppBundle = previousAppBundle;
-                EditorUserBuildSettings.exportAsGoogleAndroidProject = previousExport;
+                try
+                {
+                    FoundationStreamingAssets.StagedRoot = previousStagedRoot;
+                    FoundationStreamingAssets.PlayerPath = previousPlayerPath;
+                    FoundationStreamingAssets.PackageName = previousPackage;
+                    FoundationStreamingAssets.Injected = previousInjected;
+                    PlayerSettings.SetScriptingBackend(namedTarget, previousBackend);
+                    PlayerSettings.SetApiCompatibilityLevel(namedTarget, previousApi);
+                    PlayerSettings.Android.targetArchitectures = previousArchitectures;
+                    PlayerSettings.Android.minSdkVersion = previousMinSdk;
+                    PlayerSettings.Android.bundleVersionCode = previousVersionCode;
+                    PlayerSettings.bundleVersion = previousAppVersion;
+                    PlayerSettings.defaultInterfaceOrientation = previousOrientation;
+                    PlayerSettings.insecureHttpOption = previousInsecureHttp;
+                    EditorUserBuildSettings.development = previousDevelopment;
+                    EditorBuildSettings.scenes = previousScenes;
+                    EditorUserBuildSettings.buildAppBundle = previousAppBundle;
+                    EditorUserBuildSettings.exportAsGoogleAndroidProject = previousExport;
+                }
+                finally
+                {
+                    try
+                    {
+                        if (previousBaseline != null) File.WriteAllBytes(BaselineAsset, previousBaseline);
+                        else if (previousBaselineMeta) File.Delete(BaselineAsset);
+                        else AssetDatabase.DeleteAsset(BaselineAsset);
+                        AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+                    }
+                    finally { hybridClrScope.Dispose(); }
+                }
             }
         }
 
@@ -335,7 +366,7 @@ namespace AstralOath.Editor
             }
         }
 
-        private static HotUpdateAssembly[] CheckAssemblies(AssemblyConfig config, string compiled, string aot)
+        private static HotUpdateAssembly[] CheckAssemblies(CharacterLabBuildProfile profile, AssemblyConfig config, string compiled, string aot)
         {
             var checker = new MissingMetadataChecker(aot, config.assemblies);
             var result = new List<HotUpdateAssembly>();
@@ -347,10 +378,8 @@ namespace AstralOath.Editor
                 using var module = ModuleDefMD.Load(File.ReadAllBytes(path));
                 if (module.Assembly?.Name?.String != name)
                     throw new BuildFailedException("热更程序集身份与配置不一致：" + name);
-                if (name == config.entryAssembly && !module.GetTypes().Any(type =>
-                    type.FullName == config.entryType && type.IsPublic && !type.IsAbstract &&
-                    type.Methods.Any(method => method.IsInstanceConstructor && method.IsPublic && method.MethodSig.Params.Count == 0)))
-                    throw new BuildFailedException("缺少具有公共无参构造函数的热更入口：" + config.entryType);
+                if (name == config.entryAssembly && !module.GetTypes().Any(profile.AcceptsEntry))
+                    throw new BuildFailedException("热更入口须有公共无参构造函数并实现 " + profile.EntryContract + "：" + config.entryType);
                 result.Add(new HotUpdateAssembly
                 {
                     name = name,
@@ -428,7 +457,7 @@ namespace AstralOath.Editor
             }
         }
 
-        private static BaselineArchive ReadBaseline(HotUpdateBuildSettings options, BuildTarget target, string variant)
+        private static BaselineArchive ReadBaseline(CharacterLabBuildProfile profile, HotUpdateBuildSettings options, BuildTarget target, string variant)
         {
             if (string.IsNullOrWhiteSpace(options.baselinePath) ||
                 !HotUpdateBuildInputs.HasCompletedBaseline(options.baselinePath) ||
@@ -436,7 +465,13 @@ namespace AstralOath.Editor
                 throw new BuildFailedException("请选择已完成的母包归档。");
             var archive = JsonUtility.FromJson<BaselineArchive>(
                 File.ReadAllText(Path.Combine(options.baselinePath, HotUpdateBuildInputs.CompletionFile)));
-            var player = archive?.player;
+            var receipt = JsonUtility.FromJson<PackageReceipt>(File.ReadAllText(Path.Combine(options.baselinePath, BuildReceiptName)));
+            if (archive == null || receipt == null ||
+                !profile.AcceptsBaseline(archive.profileId, archive.packageName, archive.entryAssembly, archive.entryType) ||
+                !profile.AcceptsBaseline(receipt.profileId, receipt.packageName, receipt.entryAssembly, receipt.entryType) ||
+                receipt.baselineId != archive.player?.baselineId || receipt.contentVersion != archive.contentVersion)
+                throw new BuildFailedException("母包归档与当前构建 profile 或包回执不一致。");
+            var player = archive.player;
             if (player == null || player.formatVersion != 1 || !Guid.TryParseExact(player.baselineId, "N", out _) ||
                 (options.expectedBaselineId != null && player.baselineId != options.expectedBaselineId) ||
                 !HotUpdateBuildInputs.SupportsTarget(player.platform, player.architecture, archive.variant, target.ToString(), variant) ||
@@ -457,11 +492,11 @@ namespace AstralOath.Editor
             return archive;
         }
 
-        private static PackageReceipt BuildPackage(string output, BuildTarget target, long contentVersion,
+        private static PackageReceipt BuildPackage(CharacterLabBuildProfile profile, string output, BuildTarget target, long contentVersion,
             PlayerBaseline player, AssemblyConfig config, HotUpdateAssembly[] assemblies,
             string compiled, string aot, IEnumerable<string> metadataNames, bool embed)
         {
-            string packageVersion = "foundation-" + contentVersion.ToString(CultureInfo.InvariantCulture);
+            string packageVersion = profile.VersionPrefix + contentVersion.ToString(CultureInfo.InvariantCulture);
             var manifest = new HotUpdateManifest
             {
                 formatVersion = 1,
@@ -493,7 +528,7 @@ namespace AstralOath.Editor
 
             string bundleRoot = Path.Combine(output, "bundles");
             string embeddedRoot = Path.Combine(output, "embedded");
-            var package = AssetBundleCollectorSettingData.Setting.Packages.Single(entry => entry.PackageName == YooAssetService.PackageName);
+            var package = AssetBundleCollectorSettingData.Setting.Packages.Single(entry => entry.PackageName == profile.PackageName);
             var collector = new AssetBundleCollectorGroup { GroupName = "HotUpdate" };
             collector.Collectors.Add(new AssetBundleCollector
             {
@@ -512,7 +547,7 @@ namespace AstralOath.Editor
                     BuildPipeline = EBuildPipeline.BuiltinBuildPipeline.ToString(),
                     BuildBundleType = (int)EBuildBundleType.AssetBundle,
                     BuildTarget = target,
-                    PackageName = YooAssetService.PackageName,
+                    PackageName = profile.PackageName,
                     PackageVersion = packageVersion,
                     CompressOption = ECompressOption.LZ4,
                     BuildinFileCopyOption = embed ? EBuildinFileCopyOption.ClearAndCopyAll : EBuildinFileCopyOption.None,
@@ -523,6 +558,8 @@ namespace AstralOath.Editor
                 Debug.Log("ASTRAL_YOOASSET_PACKAGE " + result.OutputPackageDirectory);
                 return new PackageReceipt
                 {
+                    profileId = profile.Id, packageName = profile.PackageName,
+                    entryAssembly = config.entryAssembly, entryType = config.entryType,
                     packageDirectory = Path.GetRelativePath(output, result.OutputPackageDirectory).Replace('\\', '/'),
                     baselineId = player.baselineId,
                     contentVersion = contentVersion
@@ -543,14 +580,15 @@ namespace AstralOath.Editor
             File.WriteAllBytes(path, bytes);
         }
 
-        private static AssemblyConfig ReadAssemblyConfig()
+        private static AssemblyConfig ReadAssemblyConfig(CharacterLabBuildProfile profile = null)
         {
-            var config = JsonUtility.FromJson<AssemblyConfig>(File.ReadAllText(AssemblyConfigPath));
+            profile = profile ?? CharacterLabBuildProfile.Foundation;
+            var config = JsonUtility.FromJson<AssemblyConfig>(File.ReadAllText(profile.AssemblyConfigPath));
             if (config?.assemblies == null || config.assemblies.Length == 0 ||
                 config.assemblies.Any(name => !HotUpdateBuildInputs.IsSafeId(name)) ||
                 config.assemblies.Distinct(StringComparer.Ordinal).Count() != config.assemblies.Length ||
-                !config.assemblies.Contains(config.entryAssembly) || string.IsNullOrWhiteSpace(config.entryType))
-                throw new BuildFailedException("Config/HotUpdate/assemblies.json 无效。");
+                !config.assemblies.Contains(config.entryAssembly) || config.entryAssembly != profile.EntryAssembly || config.entryType != profile.EntryType)
+                throw new BuildFailedException(profile.AssemblyConfigPath + " 无效或入口不属于当前 profile。");
             return config;
         }
 
@@ -640,16 +678,17 @@ namespace AstralOath.Editor
         internal static string PlayerPath { get; set; }
         internal static string StagedRoot { get; set; }
         internal static bool Injected { get; set; }
+        internal static string PackageName { get; set; } = YooAssetService.PackageName;
 
         public override void PrepareForBuild(BuildPlayerContext context)
         {
             if (StagedRoot == null || !string.Equals(Path.GetFullPath(context.BuildPlayerOptions.locationPathName), PlayerPath, StringComparison.OrdinalIgnoreCase))
                 return;
-            string path = Path.Combine(StagedRoot, YooAssetService.PackageName);
+            string path = Path.Combine(StagedRoot, PackageName);
             string yooRoot = Path.GetRelativePath(Application.streamingAssetsPath, AssetBundleBuilderHelper.GetStreamingAssetsRoot());
             foreach (string file in Directory.GetFiles(path))
             {
-                string destination = Path.Combine(yooRoot, YooAssetService.PackageName, Path.GetFileName(file)).Replace('\\', '/');
+                string destination = Path.Combine(yooRoot, PackageName, Path.GetFileName(file)).Replace('\\', '/');
                 context.AddAdditionalPathToStreamingAssets(file, destination);
                 Injected = true;
             }

@@ -1,0 +1,31 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "ras_re_sk2_f",
+      "z": "30",
+      "format": "spine"
+    },
+    {
+      "source": "ras_re_sk2_b",
+      "z": "-30",
+      "format": "spine"
+    },
+    {
+      "source": "ras_new_sk2_pat1",
+      "y": "370",
+      "z": "40",
+      "delay": "2310",
+      "format": "particle"
+    },
+    {
+      "source": "ras_new_sk2_pat2",
+      "x": "-20",
+      "y": "330",
+      "z": "40",
+      "scale": "1.2",
+      "delay": "264",
+      "format": "particle"
+    }
+  ]
+}

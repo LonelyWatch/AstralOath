@@ -10,7 +10,9 @@
     "YooAsset",
     "YooAsset.Editor",
     "AstralOath.Shared",
-    "HybridCLR.Editor"
+    "HybridCLR.Editor",
+    "AstralOath.Client.CharacterLab",
+    "AstralOath.Client.Skeletons"
   ],
   "includePlatforms": [
     "Editor"

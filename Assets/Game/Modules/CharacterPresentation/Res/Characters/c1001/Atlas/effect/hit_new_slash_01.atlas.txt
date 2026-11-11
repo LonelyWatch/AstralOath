@@ -1,0 +1,34 @@
+
+hit_new_slash_01.sct
+size: 344,373
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+ball
+  rotate: false
+  xy: 202, 2
+  size: 124, 124
+  orig: 124, 124
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 202
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+impact1
+  rotate: false
+  xy: 2, 2
+  size: 198, 198
+  orig: 198, 198
+  offset: 0, 0
+  index: -1
+shockwave_01
+  rotate: false
+  xy: 173, 202
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1

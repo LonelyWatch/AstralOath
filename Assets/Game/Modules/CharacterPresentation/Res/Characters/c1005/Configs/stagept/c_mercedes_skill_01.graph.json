@@ -1,0 +1,352 @@
+{
+  "id": "c_mercedes_skill_01",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 6
+    },
+    "eventlisteners": [
+      16
+    ],
+    "entities": [
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "mercedes_cm_sk1",
+        "guid": 1,
+        "etty": "SHAKE"
+      },
+      {
+        "ani": "skill1",
+        "guid": 2,
+        "etty": "ANI"
+      },
+      {
+        "source": "eff_magic_thunder_01.cfx",
+        "scale": 1.2,
+        "location": 6,
+        "locationParam": "shadow",
+        "guid": 3,
+        "etty": "EFFECT"
+      },
+      {
+        "targetId": "d1",
+        "guid": 4,
+        "etty": "STOP"
+      },
+      {
+        "guid": 5,
+        "etty": "IDLE"
+      },
+      {
+        "state": "start",
+        "guid": 6,
+        "etty": "ENTRY"
+      },
+      {
+        "color": "0,0,0,255",
+        "accel": 1.0,
+        "opacity": 0.7,
+        "duration": -1,
+        "localZ": -1,
+        "fadeIn": 200,
+        "fadeOut": 200,
+        "id": "d1",
+        "guid": 7,
+        "etty": "DARK"
+      },
+      {
+        "location": 11,
+        "x": 200.0,
+        "curve": "0,1,1,1",
+        "time": 300,
+        "guid": 8,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.4",
+        "curve": "0,1,1,1",
+        "time": 300,
+        "guid": 9,
+        "etty": "ZOOM"
+      },
+      {
+        "curve": "0.8697318,0.3680555,1,1",
+        "time": 600,
+        "guid": 10,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1",
+        "curve": "0.8505747,0.3576389,1,1",
+        "time": 600,
+        "guid": 11,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.2",
+        "curve": "0,1,1,1",
+        "time": 300,
+        "guid": 12,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 16,
+        "x": -150.0,
+        "curve": "0,1,1,1",
+        "time": 300,
+        "guid": 13,
+        "etty": "CAM"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 14,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 15,
+        "etty": "HIT"
+      },
+      {
+        "ani": "skill1",
+        "name": "hit",
+        "handled": true,
+        "guid": 16,
+        "etty": "ONEVENT"
+      },
+      {
+        "source": "mercedes_skeff_sk1_magicring.cfx",
+        "scale": 1.2,
+        "location": 6,
+        "locationParam": "shadow",
+        "guid": 17,
+        "etty": "EFFECT"
+      }
+    ],
+    "connections": [
+      {
+        "from": 2,
+        "to": 3,
+        "delay": 1060,
+        "when": 1,
+        "Desc": "1060",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 7,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 4,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 5,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 1,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 8,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 9,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 13,
+        "delay": 600,
+        "Desc": "600",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 12,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 12,
+        "to": 11,
+        "delay": 300,
+        "Desc": "300",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 10,
+        "delay": 300,
+        "Desc": "300",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 14,
+        "delay": 165,
+        "when": 1,
+        "Desc": "165",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 15,
+        "delay": 396,
+        "when": 1,
+        "Desc": "396",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 17,
+        "delay": 893,
+        "when": 1,
+        "Desc": "893",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/mercedes_cm_sk1.scsp",
+      "address": "characterlab/source/camera/mercedes_cm_sk1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/eff_magic_thunder_01.atlas",
+      "address": "characterlab/source/effect/eff_magic_thunder_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/eff_magic_thunder_01.cfx",
+      "address": "characterlab/source/effect/eff_magic_thunder_01.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/eff_magic_thunder_01.scsp",
+      "address": "characterlab/source/effect/eff_magic_thunder_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/eff_magic_thunder_01.sct",
+      "address": "characterlab/source/effect/eff_magic_thunder_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/eff_magic_thunder_01_gr.atlas",
+      "address": "characterlab/source/effect/eff_magic_thunder_01_gr.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/eff_magic_thunder_01_gr.scsp",
+      "address": "characterlab/source/effect/eff_magic_thunder_01_gr.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/eff_magic_thunder_01_gr.sct",
+      "address": "characterlab/source/effect/eff_magic_thunder_01_gr.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.atlas",
+      "address": "characterlab/source/effect/hit_new_blunt_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.scsp",
+      "address": "characterlab/source/effect/hit_new_blunt_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.sct",
+      "address": "characterlab/source/effect/hit_new_blunt_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_blunt_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_blunt_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_blunt_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/mercedes_skeff_sk1_magicring.atlas",
+      "address": "characterlab/source/effect/mercedes_skeff_sk1_magicring.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/mercedes_skeff_sk1_magicring.cfx",
+      "address": "characterlab/source/effect/mercedes_skeff_sk1_magicring.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/mercedes_skeff_sk1_magicring.scsp",
+      "address": "characterlab/source/effect/mercedes_skeff_sk1_magicring.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/mercedes_skeff_sk1_magicring.sct",
+      "address": "characterlab/source/effect/mercedes_skeff_sk1_magicring.sct",
+      "type": "texture"
+    },
+    {
+      "source": "model/mercedes.timeline",
+      "address": "characterlab/source/model/mercedes.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

@@ -1,0 +1,4241 @@
+{
+  "schemaVersion": 1,
+  "sourceRoot": "D:\\sevenepic\\原始资源",
+  "characters": [
+    "c1001",
+    "c1005",
+    "c1062"
+  ],
+  "entries": [
+    {
+      "source": "camera/angelica_cm.scsp",
+      "sourceSha256": "4378da26bf4b75653631f1539027f0ec469750e6d48e40dce1985ab635ed85fe",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/camera/angelica_cm.spine.json",
+      "address": "characterlab/source/camera/angelica_cm.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "07f3abcd983bcbb52bbce28db4798dedd3423484ad64c90a4e2592f1b4751244",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 414,
+        "consumedBytes": 414
+      }
+    },
+    {
+      "source": "camera/angelica_cm.scsp",
+      "sourceSha256": "4378da26bf4b75653631f1539027f0ec469750e6d48e40dce1985ab635ed85fe",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/camera/angelica_cm.skeleton.json",
+      "address": "characterlab/source/camera/angelica_cm.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/camera/angelica_cm.scsp/json"
+      ],
+      "outputSha256": "5bd9b73e13eb6935ed13c91475e799dd22cae2388facbac9fa13fa0e7e697233",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "camera/cm_magic_lightningball.scsp",
+      "sourceSha256": "189a7ffbeabf53c6e192860a3ae738e1c011031a4cf6c05e1ca8a5546220f494",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/camera/cm_magic_lightningball.spine.json",
+      "address": "characterlab/source/camera/cm_magic_lightningball.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "a9b933605bb69eb832bb16f39da7770c0fe6de189cdc8387210cbe4ffb841643",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 864,
+        "consumedBytes": 864
+      }
+    },
+    {
+      "source": "camera/cm_magic_lightningball.scsp",
+      "sourceSha256": "189a7ffbeabf53c6e192860a3ae738e1c011031a4cf6c05e1ca8a5546220f494",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/camera/cm_magic_lightningball.skeleton.json",
+      "address": "characterlab/source/camera/cm_magic_lightningball.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/camera/cm_magic_lightningball.scsp/json"
+      ],
+      "outputSha256": "9c15ffd9780f09cdfe4be977b59e4a2ec41afe434d561807fdf66874c9d0eb1a",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "camera/mage_sk3_cm.scsp",
+      "sourceSha256": "e98347e640d4b848d0854bba603cd46b2ba915f6eea089f9e5e11897b167908d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/camera/mage_sk3_cm.spine.json",
+      "address": "characterlab/source/camera/mage_sk3_cm.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "ced2c4a2592c35f945f5fbd3813fccd52de286b590cfea5a67e90d4b6ff30f60",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 952,
+        "consumedBytes": 952
+      }
+    },
+    {
+      "source": "camera/mage_sk3_cm.scsp",
+      "sourceSha256": "e98347e640d4b848d0854bba603cd46b2ba915f6eea089f9e5e11897b167908d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/camera/mage_sk3_cm.skeleton.json",
+      "address": "characterlab/source/camera/mage_sk3_cm.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/camera/mage_sk3_cm.scsp/json"
+      ],
+      "outputSha256": "6a272db8a5aeb1eb18f610f7312f94c6105ce690427222dd54634448ac21713f",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "camera/mercedes_cm_sk1.scsp",
+      "sourceSha256": "7f1b8730775212765ef916b20dac70b3794300035205487160c61702bf2f6a60",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/camera/mercedes_cm_sk1.spine.json",
+      "address": "characterlab/source/camera/mercedes_cm_sk1.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "64d3f86efe72cf26f32607d9fac2ae18be123feac48e6d91c6f3c986109c0c32",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 536,
+        "consumedBytes": 536
+      }
+    },
+    {
+      "source": "camera/mercedes_cm_sk1.scsp",
+      "sourceSha256": "7f1b8730775212765ef916b20dac70b3794300035205487160c61702bf2f6a60",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/camera/mercedes_cm_sk1.skeleton.json",
+      "address": "characterlab/source/camera/mercedes_cm_sk1.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/camera/mercedes_cm_sk1.scsp/json"
+      ],
+      "outputSha256": "a93385c7c7231bf07cc44c5c07ae5f77db6cbddf90153ca16cab251753b3d381",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "camera/ras_re_cm_sk1.scsp",
+      "sourceSha256": "bee80b52ca2caf0f1c4d2b5e1f0e26e034c7353dea44b3e680b0f22e22cee1aa",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/camera/ras_re_cm_sk1.spine.json",
+      "address": "characterlab/source/camera/ras_re_cm_sk1.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "4d58f6696a89a82e35cbc2383c5da47ad95f03f2c538e11f737311584c4bc890",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 497,
+        "consumedBytes": 497
+      }
+    },
+    {
+      "source": "camera/ras_re_cm_sk1.scsp",
+      "sourceSha256": "bee80b52ca2caf0f1c4d2b5e1f0e26e034c7353dea44b3e680b0f22e22cee1aa",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/camera/ras_re_cm_sk1.skeleton.json",
+      "address": "characterlab/source/camera/ras_re_cm_sk1.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/camera/ras_re_cm_sk1.scsp/json"
+      ],
+      "outputSha256": "0d5685e41b6d7582ee2a74a1ab8a46e851a94eb8dc075e2b92ed452519963aaa",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "camera/ras_re_cm_sk2.scsp",
+      "sourceSha256": "5194b5cf7e6358ee176a701f6bc4ed059200bd3fb6906f6c18868a889325658e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/camera/ras_re_cm_sk2.spine.json",
+      "address": "characterlab/source/camera/ras_re_cm_sk2.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "d15da1426102c7b9068f7c1e8e073b2200dba18c056e2a1992309a7b378c4074",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 718,
+        "consumedBytes": 718
+      }
+    },
+    {
+      "source": "camera/ras_re_cm_sk2.scsp",
+      "sourceSha256": "5194b5cf7e6358ee176a701f6bc4ed059200bd3fb6906f6c18868a889325658e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/camera/ras_re_cm_sk2.skeleton.json",
+      "address": "characterlab/source/camera/ras_re_cm_sk2.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/camera/ras_re_cm_sk2.scsp/json"
+      ],
+      "outputSha256": "0a2491ba7877e924b85d926148b93d978684fb9c18b6f0e821cea98c6a7bf324",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "camera/ras_re_cm_sk3.scsp",
+      "sourceSha256": "bc7acf6b9e2cf31fb15582f0df3f570b98d4f3ddfab8982b6d26c8b1b96f4880",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/camera/ras_re_cm_sk3.spine.json",
+      "address": "characterlab/source/camera/ras_re_cm_sk3.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "f79bdf5c5aab8e370220f52d55754dec78d9cc0b8d337eca4243a8928ba8e99f",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 1969,
+        "consumedBytes": 1969
+      }
+    },
+    {
+      "source": "camera/ras_re_cm_sk3.scsp",
+      "sourceSha256": "bc7acf6b9e2cf31fb15582f0df3f570b98d4f3ddfab8982b6d26c8b1b96f4880",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/camera/ras_re_cm_sk3.skeleton.json",
+      "address": "characterlab/source/camera/ras_re_cm_sk3.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/camera/ras_re_cm_sk3.scsp/json"
+      ],
+      "outputSha256": "65b4d532efddb1293650ae17e5bed9b00ac739bdc0498e8f4dd2c62d87bf9082",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1001_3.webp",
+      "sourceSha256": "4d324175aff7e8bb858f7f4b8be1e4df3e522bde769810091e19fb1da85d6ab0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0000.png",
+      "address": "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0000",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "7635dde68bfcf0862f77d5db37476c58d0e755cfc55b49f2c8a41587c0cadd38",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 0
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1001_3.webp",
+      "sourceSha256": "4d324175aff7e8bb858f7f4b8be1e4df3e522bde769810091e19fb1da85d6ab0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0001.png",
+      "address": "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0001",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "6746beed857db01e953255e046cfbf3c62aa6fda7ad24d0324b8a2ac16aa2d9e",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 1
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1001_3.webp",
+      "sourceSha256": "4d324175aff7e8bb858f7f4b8be1e4df3e522bde769810091e19fb1da85d6ab0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0002.png",
+      "address": "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0002",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "7de68ada8db1d5cb2c9d37bae5ccf299e491222f66a1a3727014c52c8e1f6b6b",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 2
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1001_3.webp",
+      "sourceSha256": "4d324175aff7e8bb858f7f4b8be1e4df3e522bde769810091e19fb1da85d6ab0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0003.png",
+      "address": "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0003",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "6e82075662c5a8b74d2f92fb61ca61648a96c1a1d21a990c7ddf0ea753dc60ab",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 3
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1001_3.webp",
+      "sourceSha256": "4d324175aff7e8bb858f7f4b8be1e4df3e522bde769810091e19fb1da85d6ab0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0004.png",
+      "address": "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0004",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "43af4a825b6ea3fc11e45339f32a1890668de113d120e9d9436fadfb4cf62443",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 4
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1001_3.webp",
+      "sourceSha256": "4d324175aff7e8bb858f7f4b8be1e4df3e522bde769810091e19fb1da85d6ab0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0005.png",
+      "address": "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0005",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "dba9ba214e74bb80381525ad41a0726e4643702d65deca0955710f7ec3b78034",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 5
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1001_3.webp",
+      "sourceSha256": "4d324175aff7e8bb858f7f4b8be1e4df3e522bde769810091e19fb1da85d6ab0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0006.png",
+      "address": "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0006",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "39397544dc9e852ce266d0d45dcdac1a0ab0b4bf512f13a6222b247b23dab157",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 6
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1001_3.webp",
+      "sourceSha256": "4d324175aff7e8bb858f7f4b8be1e4df3e522bde769810091e19fb1da85d6ab0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0007.png",
+      "address": "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0007",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "62456dfa28e45a4aea48758a375ea9feea2443ed03ca65b14675b68dbd0f7411",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 7
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1001_3.webp",
+      "sourceSha256": "4d324175aff7e8bb858f7f4b8be1e4df3e522bde769810091e19fb1da85d6ab0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0008.png",
+      "address": "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0008",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "456cf48e2ebeae08e6b284488412ffc37d175483847bef62bfa56d6e16cac057",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 8
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1001_3.webp",
+      "sourceSha256": "4d324175aff7e8bb858f7f4b8be1e4df3e522bde769810091e19fb1da85d6ab0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0009.png",
+      "address": "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0009",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "bb0ca3af9c5cdc5530cdb0a4b8b3c1864ce394c282688334492413fb00fcabc5",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 9
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1001_3.webp",
+      "sourceSha256": "4d324175aff7e8bb858f7f4b8be1e4df3e522bde769810091e19fb1da85d6ab0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0010.png",
+      "address": "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0010",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "360ab7d3cad3aa41b4e24787cdfb801150490daae358e531912299f111d1b22f",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 10
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1001_3.webp",
+      "sourceSha256": "4d324175aff7e8bb858f7f4b8be1e4df3e522bde769810091e19fb1da85d6ab0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0011.png",
+      "address": "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0011",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "27b2ef16320a3aeaeda4ca8e57cef36bf69806fd6d5cbf75759047b8e5ab33df",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 11
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1001_3.webp",
+      "sourceSha256": "4d324175aff7e8bb858f7f4b8be1e4df3e522bde769810091e19fb1da85d6ab0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0012.png",
+      "address": "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0012",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "cfe1170acb9ab2dd339f5410a78cc430aeef2b68213a68950526b80407e80274",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 12
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1001_3.webp",
+      "sourceSha256": "4d324175aff7e8bb858f7f4b8be1e4df3e522bde769810091e19fb1da85d6ab0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0013.png",
+      "address": "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0013",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "c026e9e1789bb4f91b217cc83efd0909d85251c1924608c6d0087df649cb9ce6",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 13
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1001_3.webp",
+      "sourceSha256": "4d324175aff7e8bb858f7f4b8be1e4df3e522bde769810091e19fb1da85d6ab0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0014.png",
+      "address": "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0014",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "cc092caef9f291a60c8b243b6e209bd4a5162c685b9c79cdf2291d2d841b90b0",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 14
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1001_3.webp",
+      "sourceSha256": "4d324175aff7e8bb858f7f4b8be1e4df3e522bde769810091e19fb1da85d6ab0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0015.png",
+      "address": "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0015",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "bfa2dd167065ebe02be68baa335e2084bad7e583d222e0b48aa5f5707ad2aa57",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 15
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1001_3.webp",
+      "sourceSha256": "4d324175aff7e8bb858f7f4b8be1e4df3e522bde769810091e19fb1da85d6ab0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3.cutin.json",
+      "address": "characterlab/source/cut/fhd/sk_c1001_3.webp",
+      "type": "cutin",
+      "dependencies": [
+        "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0000",
+        "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0001",
+        "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0002",
+        "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0003",
+        "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0004",
+        "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0005",
+        "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0006",
+        "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0007",
+        "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0008",
+        "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0009",
+        "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0010",
+        "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0011",
+        "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0012",
+        "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0013",
+        "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0014",
+        "characterlab/source/cut/fhd/sk_c1001_3.webp/frame/0015"
+      ],
+      "outputSha256": "04e0ac8fd855b86634c6240482bf3531e6f3410a691def94836f822b4e1c9ac9",
+      "conversion": {
+        "status": "converted",
+        "frameCount": 16,
+        "durationSeconds": 1.25
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1062_3.webp",
+      "sourceSha256": "104511cc4ae6fb9b2570708f4cbf23f9366a4093f611bd5f5b42a310ae46252e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0000.png",
+      "address": "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0000",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "fa2a2455ebe69b72e7665a3ef8ab7a7caff987dcdfbb7dc0434d7a53691d4468",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 0
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1062_3.webp",
+      "sourceSha256": "104511cc4ae6fb9b2570708f4cbf23f9366a4093f611bd5f5b42a310ae46252e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0001.png",
+      "address": "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0001",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "c862805bbcd687842ff41052cc847a6406e8eb4702080957195876c5190135aa",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 1
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1062_3.webp",
+      "sourceSha256": "104511cc4ae6fb9b2570708f4cbf23f9366a4093f611bd5f5b42a310ae46252e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0002.png",
+      "address": "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0002",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "05d6e14c002d812358bfc75691fdb2d0d42eb1bcdf915a39d17df91540919d7c",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 2
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1062_3.webp",
+      "sourceSha256": "104511cc4ae6fb9b2570708f4cbf23f9366a4093f611bd5f5b42a310ae46252e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0003.png",
+      "address": "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0003",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "81d63b334142229b562bd3a01e8956b027e9bacff4d6510fb51d1ac4bd3389e8",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 3
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1062_3.webp",
+      "sourceSha256": "104511cc4ae6fb9b2570708f4cbf23f9366a4093f611bd5f5b42a310ae46252e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0004.png",
+      "address": "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0004",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "75809de52332d420e3381bdc855e1e562f3e7ca46eccc7730c78b39039757953",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 4
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1062_3.webp",
+      "sourceSha256": "104511cc4ae6fb9b2570708f4cbf23f9366a4093f611bd5f5b42a310ae46252e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0005.png",
+      "address": "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0005",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "23a5cf579a0e2f58905ccd8d28cee07035ade8a7e250dc8f6ea723ccee886be0",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 5
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1062_3.webp",
+      "sourceSha256": "104511cc4ae6fb9b2570708f4cbf23f9366a4093f611bd5f5b42a310ae46252e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0006.png",
+      "address": "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0006",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "9d7c4fc78a3a4c3be7d2596a334f616323e7f742e523656d88982a9e0fe77f9a",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 6
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1062_3.webp",
+      "sourceSha256": "104511cc4ae6fb9b2570708f4cbf23f9366a4093f611bd5f5b42a310ae46252e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0007.png",
+      "address": "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0007",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "d06eb596561601825e19cae4ba502db5c9b0392859db8afe67001f1998028b72",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 7
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1062_3.webp",
+      "sourceSha256": "104511cc4ae6fb9b2570708f4cbf23f9366a4093f611bd5f5b42a310ae46252e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0008.png",
+      "address": "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0008",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "3f43e358b4b9e9819a79197bcb1e21c5aa8d21b3af9aac5af601a3a1432536e6",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 8
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1062_3.webp",
+      "sourceSha256": "104511cc4ae6fb9b2570708f4cbf23f9366a4093f611bd5f5b42a310ae46252e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0009.png",
+      "address": "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0009",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "9f2ae89e5745b6197dfd7a8943bb92b0e3578d25c17802017b927a100f5a083f",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 9
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1062_3.webp",
+      "sourceSha256": "104511cc4ae6fb9b2570708f4cbf23f9366a4093f611bd5f5b42a310ae46252e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0010.png",
+      "address": "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0010",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "67dc9fbde8215dd0cf0f1bccb270dae1e03151424b77c5046c81680ecfb8eb74",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 10
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1062_3.webp",
+      "sourceSha256": "104511cc4ae6fb9b2570708f4cbf23f9366a4093f611bd5f5b42a310ae46252e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0011.png",
+      "address": "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0011",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "c91723401a9fbdaecc5020dcd3e5feee269de88a2f0c24ac24250531bbe5be3c",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 11
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1062_3.webp",
+      "sourceSha256": "104511cc4ae6fb9b2570708f4cbf23f9366a4093f611bd5f5b42a310ae46252e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0012.png",
+      "address": "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0012",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "248aa34141a5fdc5f884f7a75649045cafaebef794693ceff7a08a82ce735bed",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 12
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1062_3.webp",
+      "sourceSha256": "104511cc4ae6fb9b2570708f4cbf23f9366a4093f611bd5f5b42a310ae46252e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0013.png",
+      "address": "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0013",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "05b9aa7c15cda54d9784e50acc9d45e12baf3144e8c891ca0b17b19eb4d88f5a",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 13
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1062_3.webp",
+      "sourceSha256": "104511cc4ae6fb9b2570708f4cbf23f9366a4093f611bd5f5b42a310ae46252e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0014.png",
+      "address": "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0014",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "31fcce1153dd13a16cc97d97d6525d46cea95f8f6f2d239230c0ea99754015bf",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 14
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1062_3.webp",
+      "sourceSha256": "104511cc4ae6fb9b2570708f4cbf23f9366a4093f611bd5f5b42a310ae46252e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0015.png",
+      "address": "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0015",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "3db64a755f4667006034b952a4c9157870c5d382420935b0239106ffc1cfa2b2",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 15
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1062_3.webp",
+      "sourceSha256": "104511cc4ae6fb9b2570708f4cbf23f9366a4093f611bd5f5b42a310ae46252e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0016.png",
+      "address": "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0016",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "2403f55219b2c03eaf6272ef82b3141a527675bdb2ac56ddfbe7505cf8494df5",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 16
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1062_3.webp",
+      "sourceSha256": "104511cc4ae6fb9b2570708f4cbf23f9366a4093f611bd5f5b42a310ae46252e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0017.png",
+      "address": "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0017",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "c00175d279cdb4aad0c71dc578890a682f67f03663e7eb96db2cc66424c259ee",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 17
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1062_3.webp",
+      "sourceSha256": "104511cc4ae6fb9b2570708f4cbf23f9366a4093f611bd5f5b42a310ae46252e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0018.png",
+      "address": "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0018",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "b656e254ff33d7bd28f07ca8c4fafd839c61b29ce0c0a69a019be6383eb8a28e",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 18
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1062_3.webp",
+      "sourceSha256": "104511cc4ae6fb9b2570708f4cbf23f9366a4093f611bd5f5b42a310ae46252e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0019.png",
+      "address": "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0019",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "e4159cbd1bb41aa05e713f25a06589fabfe86067aab695eadc96f2982ec8c7c5",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 19
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1062_3.webp",
+      "sourceSha256": "104511cc4ae6fb9b2570708f4cbf23f9366a4093f611bd5f5b42a310ae46252e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3.cutin.json",
+      "address": "characterlab/source/cut/fhd/sk_c1062_3.webp",
+      "type": "cutin",
+      "dependencies": [
+        "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0000",
+        "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0001",
+        "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0002",
+        "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0003",
+        "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0004",
+        "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0005",
+        "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0006",
+        "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0007",
+        "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0008",
+        "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0009",
+        "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0010",
+        "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0011",
+        "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0012",
+        "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0013",
+        "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0014",
+        "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0015",
+        "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0016",
+        "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0017",
+        "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0018",
+        "characterlab/source/cut/fhd/sk_c1062_3.webp/frame/0019"
+      ],
+      "outputSha256": "275a9b869ade79b48faa915793c56a0238360fe21eb04f784a2be8640d090ed2",
+      "conversion": {
+        "status": "converted",
+        "frameCount": 20,
+        "durationSeconds": 1.28
+      }
+    },
+    {
+      "source": "effect/achieve_bar_pati.particle",
+      "sourceSha256": "aa31a7cb74626c76e03adac4809e842017d0ed4f1eee921260dc1a438e0fbde5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/effect/achieve_bar_pati.particle.json",
+      "address": "characterlab/source/effect/achieve_bar_pati.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/zodiac_star1.sct"
+      ],
+      "outputSha256": "46f39f8b10803dc59aa871d29b94685e457b0b3de64cfa9258aabb1d6b670eda",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/angelica_b_idle.cfx",
+      "sourceSha256": "d76e332f35f29bf7dceda1218a45099885ca922e286c189f4de3008a0ac39806",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/effect/angelica_b_idle.cfx.json",
+      "address": "characterlab/source/effect/angelica_b_idle.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/angelica_b_idle_eff_b.scsp",
+        "characterlab/source/effect/angelica_b_idle_eff_f.scsp"
+      ],
+      "outputSha256": "7f09d832cace300d41eb4f6337b7a956560fc274f27348725d7187ba265d61ef",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/angelica_b_idle_eff_b.atlas",
+      "sourceSha256": "e7400160b3271cb6c17c5066de24b5a50e797d40b865aa3a448df586d3fd6c5b",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/effect/angelica_b_idle_eff_b.atlas.txt",
+      "address": "characterlab/source/effect/angelica_b_idle_eff_b.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/angelica_b_idleeffatlas.atlas",
+        "characterlab/source/effect/angelica_b_idleeffatlas.sct"
+      ],
+      "outputSha256": "7d5fc285e4b3612cdedf048b44c6c025bead25e347ae814cc2d7494c3dcd968a",
+      "conversion": {
+        "status": "converted",
+        "resolvedAtlas": "effect/angelica_b_idleeffatlas.atlas"
+      }
+    },
+    {
+      "source": "effect/angelica_b_idle_eff_b.scsp",
+      "sourceSha256": "154aa1327d030680c72296270a26034de0b8b2e09b5c789384d097903049d74b",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_b_idle_eff_b.spine.json",
+      "address": "characterlab/source/effect/angelica_b_idle_eff_b.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "32ce3afaec7d6da91f3571ef9d33afeba0541485ea2f29a3b65e86a33e6b9255",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 2777,
+        "consumedBytes": 2777
+      }
+    },
+    {
+      "source": "effect/angelica_b_idle_eff_b.scsp",
+      "sourceSha256": "154aa1327d030680c72296270a26034de0b8b2e09b5c789384d097903049d74b",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_b_idle_eff_b.skeleton.json",
+      "address": "characterlab/source/effect/angelica_b_idle_eff_b.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/angelica_b_idle_eff_b.scsp/json",
+        "characterlab/source/effect/angelica_b_idle_eff_b.atlas",
+        "characterlab/source/effect/angelica_b_idleeffatlas.sct"
+      ],
+      "outputSha256": "520e33f2c22415db2addbb9c68a5aaf8b339c12f033376de32ed89c7604ec6c6",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/angelica_b_idle_eff_f.atlas",
+      "sourceSha256": "e7400160b3271cb6c17c5066de24b5a50e797d40b865aa3a448df586d3fd6c5b",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/effect/angelica_b_idle_eff_f.atlas.txt",
+      "address": "characterlab/source/effect/angelica_b_idle_eff_f.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/angelica_b_idleeffatlas.atlas",
+        "characterlab/source/effect/angelica_b_idleeffatlas.sct"
+      ],
+      "outputSha256": "7d5fc285e4b3612cdedf048b44c6c025bead25e347ae814cc2d7494c3dcd968a",
+      "conversion": {
+        "status": "converted",
+        "resolvedAtlas": "effect/angelica_b_idleeffatlas.atlas"
+      }
+    },
+    {
+      "source": "effect/angelica_b_idle_eff_f.scsp",
+      "sourceSha256": "d6d8a91c02937af26717577c83b82729745a7b01e39ce362b28bcc046bf4c3ba",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_b_idle_eff_f.spine.json",
+      "address": "characterlab/source/effect/angelica_b_idle_eff_f.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "053c911b38ba91c2cf99b55c26c761372f9d759bdf69fd9de60131a078a9a42e",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 14643,
+        "consumedBytes": 14643
+      }
+    },
+    {
+      "source": "effect/angelica_b_idle_eff_f.scsp",
+      "sourceSha256": "d6d8a91c02937af26717577c83b82729745a7b01e39ce362b28bcc046bf4c3ba",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_b_idle_eff_f.skeleton.json",
+      "address": "characterlab/source/effect/angelica_b_idle_eff_f.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/angelica_b_idle_eff_f.scsp/json",
+        "characterlab/source/effect/angelica_b_idle_eff_f.atlas",
+        "characterlab/source/effect/angelica_b_idleeffatlas.sct"
+      ],
+      "outputSha256": "74641989a4f86fa59873d5bca1df2ee00174df0ae05ef67decfdc317d1598fa9",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/angelica_b_idleeffatlas.atlas",
+      "sourceSha256": "7d5fc285e4b3612cdedf048b44c6c025bead25e347ae814cc2d7494c3dcd968a",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/effect/angelica_b_idleeffatlas.atlas.txt",
+      "address": "characterlab/source/effect/angelica_b_idleeffatlas.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/angelica_b_idleeffatlas.sct"
+      ],
+      "outputSha256": "7d5fc285e4b3612cdedf048b44c6c025bead25e347ae814cc2d7494c3dcd968a",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/angelica_b_idleeffatlas.sct",
+      "sourceSha256": "cb7e676fcb5633f98ebd46142ab0257f491bdaa767cc7f58da0d4331b9f3c6d6",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Textures/effect/angelica_b_idleeffatlas.png",
+      "address": "characterlab/source/effect/angelica_b_idleeffatlas.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "8e8768b87e0dcbc68d6798f4ded4a76715f422796317de541ac67a9d1916d2b8",
+      "conversion": {
+        "status": "converted",
+        "width": 209,
+        "height": 1446,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "cb7e676fcb5633f98ebd46142ab0257f491bdaa767cc7f58da0d4331b9f3c6d6",
+        "outputSha256": "8e8768b87e0dcbc68d6798f4ded4a76715f422796317de541ac67a9d1916d2b8"
+      }
+    },
+    {
+      "source": "effect/angelica_sk1eff_b.atlas",
+      "sourceSha256": "d587c4701904f072e277a78b3e1cb211437f2724024e3965e09ecbb1cd9249c8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/effect/angelica_sk1eff_b.atlas.txt",
+      "address": "characterlab/source/effect/angelica_sk1eff_b.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/angelica_sk1effatlas.atlas",
+        "characterlab/source/effect/angelica_sk1effatlas.sct"
+      ],
+      "outputSha256": "54f595993245222891976d9beb9933c0ab81b7a211b2048c14a40ac4f52bb5ca",
+      "conversion": {
+        "status": "converted",
+        "resolvedAtlas": "effect/angelica_sk1effatlas.atlas"
+      }
+    },
+    {
+      "source": "effect/angelica_sk1eff_b.scsp",
+      "sourceSha256": "04b788face41e2d3314ef12daef3582516f80e5c8a73aed8e6108e8dc45c83dd",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk1eff_b.spine.json",
+      "address": "characterlab/source/effect/angelica_sk1eff_b.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "93cdfd71bb0f1ff487be42a497ae47386a92fce772e9378c155ad15331a9da97",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 2343,
+        "consumedBytes": 2343
+      }
+    },
+    {
+      "source": "effect/angelica_sk1eff_b.scsp",
+      "sourceSha256": "04b788face41e2d3314ef12daef3582516f80e5c8a73aed8e6108e8dc45c83dd",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk1eff_b.skeleton.json",
+      "address": "characterlab/source/effect/angelica_sk1eff_b.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/angelica_sk1eff_b.scsp/json",
+        "characterlab/source/effect/angelica_sk1eff_b.atlas",
+        "characterlab/source/effect/angelica_sk1effatlas.sct"
+      ],
+      "outputSha256": "07016e97579025707d7de83926b19bbbd3f2b42de6281563b1f21fcde1e5297f",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/angelica_sk1eff_f.atlas",
+      "sourceSha256": "d587c4701904f072e277a78b3e1cb211437f2724024e3965e09ecbb1cd9249c8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/effect/angelica_sk1eff_f.atlas.txt",
+      "address": "characterlab/source/effect/angelica_sk1eff_f.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/angelica_sk1effatlas.atlas",
+        "characterlab/source/effect/angelica_sk1effatlas.sct"
+      ],
+      "outputSha256": "54f595993245222891976d9beb9933c0ab81b7a211b2048c14a40ac4f52bb5ca",
+      "conversion": {
+        "status": "converted",
+        "resolvedAtlas": "effect/angelica_sk1effatlas.atlas"
+      }
+    },
+    {
+      "source": "effect/angelica_sk1eff_f.scsp",
+      "sourceSha256": "3ee82bd0502fe465c025410200334768d83a7c11eb18c113d46b838106748a03",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk1eff_f.spine.json",
+      "address": "characterlab/source/effect/angelica_sk1eff_f.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "26b1f24275fb28cfb5b98dd4fcdb21449ad2fc1635271ade7f46ab4d96d649c8",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 5381,
+        "consumedBytes": 5381
+      }
+    },
+    {
+      "source": "effect/angelica_sk1eff_f.scsp",
+      "sourceSha256": "3ee82bd0502fe465c025410200334768d83a7c11eb18c113d46b838106748a03",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk1eff_f.skeleton.json",
+      "address": "characterlab/source/effect/angelica_sk1eff_f.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/angelica_sk1eff_f.scsp/json",
+        "characterlab/source/effect/angelica_sk1eff_f.atlas",
+        "characterlab/source/effect/angelica_sk1effatlas.sct"
+      ],
+      "outputSha256": "a43d5bc89f953606a3561f879f570b768c698a29ced8b0bff221face30b5ee28",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/angelica_sk1effatlas.atlas",
+      "sourceSha256": "54f595993245222891976d9beb9933c0ab81b7a211b2048c14a40ac4f52bb5ca",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/effect/angelica_sk1effatlas.atlas.txt",
+      "address": "characterlab/source/effect/angelica_sk1effatlas.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/angelica_sk1effatlas.sct"
+      ],
+      "outputSha256": "54f595993245222891976d9beb9933c0ab81b7a211b2048c14a40ac4f52bb5ca",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/angelica_sk1effatlas.sct",
+      "sourceSha256": "335089be11521b4b7f4bae442bb325d33f3b40ee4a38075caaa7b8a5de6e7c36",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Textures/effect/angelica_sk1effatlas.png",
+      "address": "characterlab/source/effect/angelica_sk1effatlas.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "619b9515798bbbde967a4bf357ccdcb11a206ab3199619a4e3e0229e12e8d8ba",
+      "conversion": {
+        "status": "converted",
+        "width": 1142,
+        "height": 254,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "335089be11521b4b7f4bae442bb325d33f3b40ee4a38075caaa7b8a5de6e7c36",
+        "outputSha256": "619b9515798bbbde967a4bf357ccdcb11a206ab3199619a4e3e0229e12e8d8ba"
+      }
+    },
+    {
+      "source": "effect/angelica_sk2eff_self.atlas",
+      "sourceSha256": "6feff83afa62e49e60610ca908604854768fe15d0237b0e998c3607d3b2f2be8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/effect/angelica_sk2eff_self.atlas.txt",
+      "address": "characterlab/source/effect/angelica_sk2eff_self.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/angelica_sk2effatlas.atlas",
+        "characterlab/source/effect/angelica_sk2effatlas.sct"
+      ],
+      "outputSha256": "33b4f8548887a763272836b0f2483a16741895a5016c03608154d7de1e3ca275",
+      "conversion": {
+        "status": "converted",
+        "resolvedAtlas": "effect/angelica_sk2effatlas.atlas"
+      }
+    },
+    {
+      "source": "effect/angelica_sk2eff_self.scsp",
+      "sourceSha256": "763efc206cd69e4053ec7f70a24dd381901d8a09bf61725914830c3706770efc",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk2eff_self.spine.json",
+      "address": "characterlab/source/effect/angelica_sk2eff_self.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "cc0cfe707fdb430eede54e5f8193a7fd07242c75874c3cd70f82e166bd8e069f",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 14022,
+        "consumedBytes": 14022
+      }
+    },
+    {
+      "source": "effect/angelica_sk2eff_self.scsp",
+      "sourceSha256": "763efc206cd69e4053ec7f70a24dd381901d8a09bf61725914830c3706770efc",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk2eff_self.skeleton.json",
+      "address": "characterlab/source/effect/angelica_sk2eff_self.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/angelica_sk2eff_self.scsp/json",
+        "characterlab/source/effect/angelica_sk2eff_self.atlas",
+        "characterlab/source/effect/angelica_sk2effatlas.sct"
+      ],
+      "outputSha256": "7ca31f7ee8544c5846ba73535c37ffb49a6c93ea71b130d595f00dd693477ceb",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/angelica_sk2eff_target_b.atlas",
+      "sourceSha256": "6feff83afa62e49e60610ca908604854768fe15d0237b0e998c3607d3b2f2be8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/effect/angelica_sk2eff_target_b.atlas.txt",
+      "address": "characterlab/source/effect/angelica_sk2eff_target_b.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/angelica_sk2effatlas.atlas",
+        "characterlab/source/effect/angelica_sk2effatlas.sct"
+      ],
+      "outputSha256": "33b4f8548887a763272836b0f2483a16741895a5016c03608154d7de1e3ca275",
+      "conversion": {
+        "status": "converted",
+        "resolvedAtlas": "effect/angelica_sk2effatlas.atlas"
+      }
+    },
+    {
+      "source": "effect/angelica_sk2eff_target_b.scsp",
+      "sourceSha256": "a1280fa8f4e1d286f34d529a028a8b59296daf716881bf8a36a5757e087706cb",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk2eff_target_b.spine.json",
+      "address": "characterlab/source/effect/angelica_sk2eff_target_b.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "8a7e8ab362c28940fd7f45714cdd1471fcc9fb5c33f9504ab1642d4cfb6068c7",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 2693,
+        "consumedBytes": 2693
+      }
+    },
+    {
+      "source": "effect/angelica_sk2eff_target_b.scsp",
+      "sourceSha256": "a1280fa8f4e1d286f34d529a028a8b59296daf716881bf8a36a5757e087706cb",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk2eff_target_b.skeleton.json",
+      "address": "characterlab/source/effect/angelica_sk2eff_target_b.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/angelica_sk2eff_target_b.scsp/json",
+        "characterlab/source/effect/angelica_sk2eff_target_b.atlas",
+        "characterlab/source/effect/angelica_sk2effatlas.sct"
+      ],
+      "outputSha256": "ee558f4b17174fbfea21d6f4615c98ff3f5ef77130c478445b146e74ec36a03e",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/angelica_sk2eff_target_f.atlas",
+      "sourceSha256": "6feff83afa62e49e60610ca908604854768fe15d0237b0e998c3607d3b2f2be8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/effect/angelica_sk2eff_target_f.atlas.txt",
+      "address": "characterlab/source/effect/angelica_sk2eff_target_f.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/angelica_sk2effatlas.atlas",
+        "characterlab/source/effect/angelica_sk2effatlas.sct"
+      ],
+      "outputSha256": "33b4f8548887a763272836b0f2483a16741895a5016c03608154d7de1e3ca275",
+      "conversion": {
+        "status": "converted",
+        "resolvedAtlas": "effect/angelica_sk2effatlas.atlas"
+      }
+    },
+    {
+      "source": "effect/angelica_sk2eff_target_f.scsp",
+      "sourceSha256": "324a65d912b28dec25191b7798a9c18ed8cc24e5c073e63c9958860310d8a9aa",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk2eff_target_f.spine.json",
+      "address": "characterlab/source/effect/angelica_sk2eff_target_f.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "3dca8364d351b1a10308a2cbe24ad83981e60fa0ddae1012ab9cd4ae5361efb7",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 41740,
+        "consumedBytes": 41740
+      }
+    },
+    {
+      "source": "effect/angelica_sk2eff_target_f.scsp",
+      "sourceSha256": "324a65d912b28dec25191b7798a9c18ed8cc24e5c073e63c9958860310d8a9aa",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk2eff_target_f.skeleton.json",
+      "address": "characterlab/source/effect/angelica_sk2eff_target_f.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/angelica_sk2eff_target_f.scsp/json",
+        "characterlab/source/effect/angelica_sk2eff_target_f.atlas",
+        "characterlab/source/effect/angelica_sk2effatlas.sct"
+      ],
+      "outputSha256": "dcadd14f0174d732406a0060dfc70f9a82ea5e7215422d4f8e334fe8f6225b2a",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/angelica_sk2effatlas.atlas",
+      "sourceSha256": "33b4f8548887a763272836b0f2483a16741895a5016c03608154d7de1e3ca275",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/effect/angelica_sk2effatlas.atlas.txt",
+      "address": "characterlab/source/effect/angelica_sk2effatlas.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/angelica_sk2effatlas.sct"
+      ],
+      "outputSha256": "33b4f8548887a763272836b0f2483a16741895a5016c03608154d7de1e3ca275",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/angelica_sk2effatlas.sct",
+      "sourceSha256": "1202720b5f7cd610826e0c23472e6c71da094848fa6346bd4b67b200bb65220a",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Textures/effect/angelica_sk2effatlas.png",
+      "address": "characterlab/source/effect/angelica_sk2effatlas.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "21321a71ba304c1cc67755e9a698e04518ca5f11559ff1f3eeabe73216e1ce77",
+      "conversion": {
+        "status": "converted",
+        "width": 471,
+        "height": 1268,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "1202720b5f7cd610826e0c23472e6c71da094848fa6346bd4b67b200bb65220a",
+        "outputSha256": "21321a71ba304c1cc67755e9a698e04518ca5f11559ff1f3eeabe73216e1ce77"
+      }
+    },
+    {
+      "source": "effect/angelica_sk3eff_self.atlas",
+      "sourceSha256": "6feff83afa62e49e60610ca908604854768fe15d0237b0e998c3607d3b2f2be8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/effect/angelica_sk3eff_self.atlas.txt",
+      "address": "characterlab/source/effect/angelica_sk3eff_self.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/angelica_sk2effatlas.atlas",
+        "characterlab/source/effect/angelica_sk2effatlas.sct"
+      ],
+      "outputSha256": "33b4f8548887a763272836b0f2483a16741895a5016c03608154d7de1e3ca275",
+      "conversion": {
+        "status": "converted",
+        "resolvedAtlas": "effect/angelica_sk2effatlas.atlas"
+      }
+    },
+    {
+      "source": "effect/angelica_sk3eff_self.scsp",
+      "sourceSha256": "521648fe24306bbae1dc9c55936734cb5ae3d3aba6587c07f16d22913cd69d9c",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk3eff_self.spine.json",
+      "address": "characterlab/source/effect/angelica_sk3eff_self.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "119b4fdb904882aca6ea3175b02dd5f66ea65f504ac83e022cd52a4677945894",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 19629,
+        "consumedBytes": 19629
+      }
+    },
+    {
+      "source": "effect/angelica_sk3eff_self.scsp",
+      "sourceSha256": "521648fe24306bbae1dc9c55936734cb5ae3d3aba6587c07f16d22913cd69d9c",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk3eff_self.skeleton.json",
+      "address": "characterlab/source/effect/angelica_sk3eff_self.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/angelica_sk3eff_self.scsp/json",
+        "characterlab/source/effect/angelica_sk3eff_self.atlas",
+        "characterlab/source/effect/angelica_sk2effatlas.sct"
+      ],
+      "outputSha256": "8908ac0894f63a2c41362d9ba39132b6bbaa1c66c57fcaa45f2cb7df89a61e34",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/angelica_sk3eff_target_b.atlas",
+      "sourceSha256": "6feff83afa62e49e60610ca908604854768fe15d0237b0e998c3607d3b2f2be8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/effect/angelica_sk3eff_target_b.atlas.txt",
+      "address": "characterlab/source/effect/angelica_sk3eff_target_b.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/angelica_sk2effatlas.atlas",
+        "characterlab/source/effect/angelica_sk2effatlas.sct"
+      ],
+      "outputSha256": "33b4f8548887a763272836b0f2483a16741895a5016c03608154d7de1e3ca275",
+      "conversion": {
+        "status": "converted",
+        "resolvedAtlas": "effect/angelica_sk2effatlas.atlas"
+      }
+    },
+    {
+      "source": "effect/angelica_sk3eff_target_b.scsp",
+      "sourceSha256": "05d12444c111f0d484f0ae3fd51ac3a6a98a7c1ba4a8300be7f36f7ae48adc27",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk3eff_target_b.spine.json",
+      "address": "characterlab/source/effect/angelica_sk3eff_target_b.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "d53b02557cde9a03e18c3a441df69ada8accdc1a4416c7ea626a080a902ca7cf",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 2,
+        "binaryBytes": 22934,
+        "consumedBytes": 22934
+      }
+    },
+    {
+      "source": "effect/angelica_sk3eff_target_b.scsp",
+      "sourceSha256": "05d12444c111f0d484f0ae3fd51ac3a6a98a7c1ba4a8300be7f36f7ae48adc27",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk3eff_target_b.skeleton.json",
+      "address": "characterlab/source/effect/angelica_sk3eff_target_b.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/angelica_sk3eff_target_b.scsp/json",
+        "characterlab/source/effect/angelica_sk3eff_target_b.atlas",
+        "characterlab/source/effect/angelica_sk2effatlas.sct"
+      ],
+      "outputSha256": "d4be3420d658363109516632806ed51371b6deff8eb90a40db5fc77f5b0f52f3",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 2
+      }
+    },
+    {
+      "source": "effect/angelica_sk3eff_target_f.atlas",
+      "sourceSha256": "6feff83afa62e49e60610ca908604854768fe15d0237b0e998c3607d3b2f2be8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/effect/angelica_sk3eff_target_f.atlas.txt",
+      "address": "characterlab/source/effect/angelica_sk3eff_target_f.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/angelica_sk2effatlas.atlas",
+        "characterlab/source/effect/angelica_sk2effatlas.sct"
+      ],
+      "outputSha256": "33b4f8548887a763272836b0f2483a16741895a5016c03608154d7de1e3ca275",
+      "conversion": {
+        "status": "converted",
+        "resolvedAtlas": "effect/angelica_sk2effatlas.atlas"
+      }
+    },
+    {
+      "source": "effect/angelica_sk3eff_target_f.scsp",
+      "sourceSha256": "e10c522d7ae810d8be0598620d014828612e53bed3882666725c7c07748a273d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk3eff_target_f.spine.json",
+      "address": "characterlab/source/effect/angelica_sk3eff_target_f.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "631fd4a2939b1a27faa5d184e43c0e66800ce23817697e859dbf417e407296b8",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 99023,
+        "consumedBytes": 99023
+      }
+    },
+    {
+      "source": "effect/angelica_sk3eff_target_f.scsp",
+      "sourceSha256": "e10c522d7ae810d8be0598620d014828612e53bed3882666725c7c07748a273d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk3eff_target_f.skeleton.json",
+      "address": "characterlab/source/effect/angelica_sk3eff_target_f.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/angelica_sk3eff_target_f.scsp/json",
+        "characterlab/source/effect/angelica_sk3eff_target_f.atlas",
+        "characterlab/source/effect/angelica_sk2effatlas.sct"
+      ],
+      "outputSha256": "6b3dc21e89ba1f83487da95807d840df4f25516ac76856b511c0df877fb2b369",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/angelica_skill_01.cfx",
+      "sourceSha256": "258b3d3c6b3685dbe33c250dd78f2378e33348d5f63255283e51d67536ea5593",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/effect/angelica_skill_01.cfx.json",
+      "address": "characterlab/source/effect/angelica_skill_01.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/angelica_sk1eff_b.scsp",
+        "characterlab/source/effect/angelica_sk1eff_f.scsp",
+        "characterlab/source/effect/angelica_skill_01_pati1.particle"
+      ],
+      "outputSha256": "0a8b5fb23b2e651bbf9fa072734cca7f522b5d54d18581b82fe91f0287ed0d14",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/angelica_skill_01_pati1.particle",
+      "sourceSha256": "49ef1d2a471db372cef880703a885624539d3729204269b2ebd6708805cc6487",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/effect/angelica_skill_01_pati1.particle.json",
+      "address": "characterlab/source/effect/angelica_skill_01_pati1.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/cross_02.sct",
+        "characterlab/source/particle/zodiac_star1.sct"
+      ],
+      "outputSha256": "dfdbd189e2b5f7c6727742d077e4e478c42dc932e243a2c662d19c3a084cd71a",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/angelica_skill_02_pati.particle",
+      "sourceSha256": "4f6f5111608212b54878fc058f06c76e3f3a7950f2820389e68d60d790c13ffe",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/effect/angelica_skill_02_pati.particle.json",
+      "address": "characterlab/source/effect/angelica_skill_02_pati.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/orb_02.sct",
+        "characterlab/source/particle/pati_01.sct"
+      ],
+      "outputSha256": "6641a641899508343e925c4d2d042d3209e6b28a54dc29904ce12403394edab4",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/angelica_skill_02_self.cfx",
+      "sourceSha256": "2f7a4fdfdbecbbcb50f567e40c504dd9419bbac5d930376c28545c5340430e1a",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/effect/angelica_skill_02_self.cfx.json",
+      "address": "characterlab/source/effect/angelica_skill_02_self.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/angelica_sk2eff_self.scsp"
+      ],
+      "outputSha256": "9effa67d60eccae6462b7c289dae4abdea0de24cfa7b21562a99416c65d8b15a",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/angelica_skill_02_target.cfx",
+      "sourceSha256": "3b25bb09de44320a886c352b97ffa730a583e61f66fc51593ca5bab39ed02462",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/effect/angelica_skill_02_target.cfx.json",
+      "address": "characterlab/source/effect/angelica_skill_02_target.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/achieve_bar_pati.particle",
+        "characterlab/source/effect/angelica_sk2eff_target_b.scsp",
+        "characterlab/source/effect/angelica_sk2eff_target_f.scsp",
+        "characterlab/source/effect/angelica_skill_02_pati.particle",
+        "characterlab/source/effect/angelica_skill_2_pati2.particle"
+      ],
+      "outputSha256": "efc93a8c948e4a0f28430b8056b3a0e7c3d50bcc75ddf82c6424aa7d7afec432",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/angelica_skill_03_self.cfx",
+      "sourceSha256": "bcc81388dac8bb96495aa7061bd03dbe9b340f5ae1ca89fb96544e61cdad9430",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/effect/angelica_skill_03_self.cfx.json",
+      "address": "characterlab/source/effect/angelica_skill_03_self.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/angelica_sk3eff_self.scsp"
+      ],
+      "outputSha256": "1e02d8ad4afa0e8c6c65c8b60b5fa4a5dd8f2838c95f3f8370db408f417ab1e0",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/angelica_skill_03_target.cfx",
+      "sourceSha256": "cd96ae5af0d381412f735f9a60db90e043bad599d829b07166b7790cf3aeefa9",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/effect/angelica_skill_03_target.cfx.json",
+      "address": "characterlab/source/effect/angelica_skill_03_target.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/achieve_bar_pati.particle",
+        "characterlab/source/effect/angelica_sk3eff_target_b.scsp",
+        "characterlab/source/effect/angelica_sk3eff_target_f.scsp"
+      ],
+      "outputSha256": "74e17d4fc22246d1f848d587a91d3b746c6add2886e9d9445d15287a7d997a1e",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/angelica_skill_2_pati2.particle",
+      "sourceSha256": "cb6d2d1f9b074ecf6e2e44aeca1a1310b3ed93d85393b60298dd0a86c3d95596",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/effect/angelica_skill_2_pati2.particle.json",
+      "address": "characterlab/source/effect/angelica_skill_2_pati2.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/zodiac_star1.sct"
+      ],
+      "outputSha256": "84223ed4cd3efcfcb0dcc1be00138fbe64aa5e28c4ef0408f4572f8cb7e17edb",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/eff_dust_bigar_b.atlas",
+      "sourceSha256": "d07dcf5b39488837e6102ed23dc6202d212e81d7a92c8bde6cd5c86d1cff3aa8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Atlas/effect/eff_dust_bigar_b.atlas.txt",
+      "address": "characterlab/source/effect/eff_dust_bigar_b.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/eff_dust_bigar_b.sct"
+      ],
+      "outputSha256": "d07dcf5b39488837e6102ed23dc6202d212e81d7a92c8bde6cd5c86d1cff3aa8",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/eff_dust_bigar_b.scsp",
+      "sourceSha256": "6429d333ecaec7140acbc624878324ed9f9ca807eae78f961df2fe717339cb14",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_dust_bigar_b.spine.json",
+      "address": "characterlab/source/effect/eff_dust_bigar_b.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "2402c0634948352e9398512ced9f7a581a44d5c4bcb3d21500c3dc13a2fd0f57",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 20017,
+        "consumedBytes": 20017
+      }
+    },
+    {
+      "source": "effect/eff_dust_bigar_b.scsp",
+      "sourceSha256": "6429d333ecaec7140acbc624878324ed9f9ca807eae78f961df2fe717339cb14",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_dust_bigar_b.skeleton.json",
+      "address": "characterlab/source/effect/eff_dust_bigar_b.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/eff_dust_bigar_b.scsp/json",
+        "characterlab/source/effect/eff_dust_bigar_b.atlas",
+        "characterlab/source/effect/eff_dust_bigar_b.sct"
+      ],
+      "outputSha256": "a7ac090d3f8ff0cd43c06b511a4af036027d3746499d446a6a4379b46e45fdf5",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/eff_dust_bigar_b.sct",
+      "sourceSha256": "a926d8c2e5d64b025ec0a43e00f88a1e72309253899bdf2217b615d5f2755f93",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Textures/effect/eff_dust_bigar_b.png",
+      "address": "characterlab/source/effect/eff_dust_bigar_b.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "853d21c7a26c0fb295e4daf13cae2a2a6a0140c966e6e4259f98399188b31089",
+      "conversion": {
+        "status": "converted",
+        "width": 574,
+        "height": 240,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "a926d8c2e5d64b025ec0a43e00f88a1e72309253899bdf2217b615d5f2755f93",
+        "outputSha256": "853d21c7a26c0fb295e4daf13cae2a2a6a0140c966e6e4259f98399188b31089"
+      }
+    },
+    {
+      "source": "effect/eff_dust_bigar_f.atlas",
+      "sourceSha256": "b7f9a3f2bfa2f223200359433132e11cd7a451a0f74ba872624fccb44d080f9b",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Atlas/effect/eff_dust_bigar_f.atlas.txt",
+      "address": "characterlab/source/effect/eff_dust_bigar_f.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/eff_dust_bigar_f.sct"
+      ],
+      "outputSha256": "b7f9a3f2bfa2f223200359433132e11cd7a451a0f74ba872624fccb44d080f9b",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/eff_dust_bigar_f.scsp",
+      "sourceSha256": "a41cd2564a4229ed8b2b885f334bd5250b0a2ba79428b9a31923f8d49e9ddc96",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_dust_bigar_f.spine.json",
+      "address": "characterlab/source/effect/eff_dust_bigar_f.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "3c677c2d369cf69af4414eaae64d90806c2b25bfcbdabddeab4c308f542aabda",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 31186,
+        "consumedBytes": 31186
+      }
+    },
+    {
+      "source": "effect/eff_dust_bigar_f.scsp",
+      "sourceSha256": "a41cd2564a4229ed8b2b885f334bd5250b0a2ba79428b9a31923f8d49e9ddc96",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_dust_bigar_f.skeleton.json",
+      "address": "characterlab/source/effect/eff_dust_bigar_f.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/eff_dust_bigar_f.scsp/json",
+        "characterlab/source/effect/eff_dust_bigar_f.atlas",
+        "characterlab/source/effect/eff_dust_bigar_f.sct"
+      ],
+      "outputSha256": "b2a873c86be3d60eb490c5e261263087ba5aad926ae9d1a5888e58c837422f31",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/eff_dust_bigar_f.sct",
+      "sourceSha256": "e5c1ab7586e57e5b6389de80b90fe6efff702a5e4e9b34fc4998326c3ad736b1",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Textures/effect/eff_dust_bigar_f.png",
+      "address": "characterlab/source/effect/eff_dust_bigar_f.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "d8b7c9558c4b8432779642e6c6b6caba31eac54df151952ab480e4618bdf981e",
+      "conversion": {
+        "status": "converted",
+        "width": 794,
+        "height": 250,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "e5c1ab7586e57e5b6389de80b90fe6efff702a5e4e9b34fc4998326c3ad736b1",
+        "outputSha256": "d8b7c9558c4b8432779642e6c6b6caba31eac54df151952ab480e4618bdf981e"
+      }
+    },
+    {
+      "source": "effect/eff_dust_roundbig.cfx",
+      "sourceSha256": "cfb3fde74a2331b834a70fc1b82041bbc7049f7b639ee8eed778e02d3769aaaf",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Effects/effect/eff_dust_roundbig.cfx.json",
+      "address": "characterlab/source/effect/eff_dust_roundbig.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/eff_dust_bigar_b.scsp",
+        "characterlab/source/effect/eff_dust_bigar_f.scsp"
+      ],
+      "outputSha256": "a3dfd119513540702472a983fd95f33895d8ec0b9fd19ed209a0ffc4bf056e8c",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/eff_magic_lightningball.atlas",
+      "sourceSha256": "04cca0a99437bd093aa52a0fbde067e0631750133aa57c8c52703b5b0bb82243",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Atlas/effect/eff_magic_lightningball.atlas.txt",
+      "address": "characterlab/source/effect/eff_magic_lightningball.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/eff_magic_lightningball.sct"
+      ],
+      "outputSha256": "04cca0a99437bd093aa52a0fbde067e0631750133aa57c8c52703b5b0bb82243",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/eff_magic_lightningball.cfx",
+      "sourceSha256": "73f36e2b864982c107ae15ee32564f38da99211b09158a2676844bb539c83176",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Effects/effect/eff_magic_lightningball.cfx.json",
+      "address": "characterlab/source/effect/eff_magic_lightningball.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/eff_magic_lightningball.scsp",
+        "characterlab/source/effect/eff_magic_lightningball_F.scsp",
+        "characterlab/source/effect/eff_magic_lightningball_gr.scsp"
+      ],
+      "outputSha256": "0b5c979fb46b0f3ad4d49dea65dae3b197f8f3c60cabec3b96c8b079186213db",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/eff_magic_lightningball.scsp",
+      "sourceSha256": "80824f322e970529e62d543035b11a42db89814f6448932653ed788d0db9cead",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_magic_lightningball.spine.json",
+      "address": "characterlab/source/effect/eff_magic_lightningball.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "24cf3add477ec51c8c4e8f19cc8b841e2a750108977142812a405cb7613bf39b",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 17030,
+        "consumedBytes": 17030
+      }
+    },
+    {
+      "source": "effect/eff_magic_lightningball.scsp",
+      "sourceSha256": "80824f322e970529e62d543035b11a42db89814f6448932653ed788d0db9cead",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_magic_lightningball.skeleton.json",
+      "address": "characterlab/source/effect/eff_magic_lightningball.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/eff_magic_lightningball.scsp/json",
+        "characterlab/source/effect/eff_magic_lightningball.atlas",
+        "characterlab/source/effect/eff_magic_lightningball.sct"
+      ],
+      "outputSha256": "cac1d67104fbd9ff503560a734700c792aadf0da0d0b938a3e95b5417499f76b",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/eff_magic_lightningball.sct",
+      "sourceSha256": "f45ed12ab203998affc5a8ecb70cf902383b916a6219b4eadc200be3fb4d1da6",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Textures/effect/eff_magic_lightningball.png",
+      "address": "characterlab/source/effect/eff_magic_lightningball.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "3e80729085f17c3156c475096a6612f2db53a06e760d5b8e8bf3e07fd029df7e",
+      "conversion": {
+        "status": "converted",
+        "width": 1345,
+        "height": 512,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "f45ed12ab203998affc5a8ecb70cf902383b916a6219b4eadc200be3fb4d1da6",
+        "outputSha256": "3e80729085f17c3156c475096a6612f2db53a06e760d5b8e8bf3e07fd029df7e"
+      }
+    },
+    {
+      "source": "effect/eff_magic_lightningball_F.atlas",
+      "sourceSha256": "33ef5ba6e6d6df0b830bb7ce7939a5cf1d5b93bf88021677f18d2166d57d8b37",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Atlas/effect/eff_magic_lightningball_F.atlas.txt",
+      "address": "characterlab/source/effect/eff_magic_lightningball_F.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/eff_magic_lightningball_F.sct"
+      ],
+      "outputSha256": "33ef5ba6e6d6df0b830bb7ce7939a5cf1d5b93bf88021677f18d2166d57d8b37",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/eff_magic_lightningball_F.scsp",
+      "sourceSha256": "ce23ac9c453085c9214fed1fc14d6918aa7a0bdfa632b6a5f2a608bb09da19a8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_magic_lightningball_F.spine.json",
+      "address": "characterlab/source/effect/eff_magic_lightningball_F.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "b21810a46b2fbe8ce1a47199b506987205c1c7cc8f3d294f27d307b04f8dc4a5",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 2398,
+        "consumedBytes": 2398
+      }
+    },
+    {
+      "source": "effect/eff_magic_lightningball_F.scsp",
+      "sourceSha256": "ce23ac9c453085c9214fed1fc14d6918aa7a0bdfa632b6a5f2a608bb09da19a8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_magic_lightningball_F.skeleton.json",
+      "address": "characterlab/source/effect/eff_magic_lightningball_F.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/eff_magic_lightningball_F.scsp/json",
+        "characterlab/source/effect/eff_magic_lightningball_F.atlas",
+        "characterlab/source/effect/eff_magic_lightningball_F.sct"
+      ],
+      "outputSha256": "25d43624e76bf3d0920df90de8247ba0b3c9f1de4c2fde48736686421c838c1e",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/eff_magic_lightningball_F.sct",
+      "sourceSha256": "b464566e30f93d7d35fa6b2e60cb876b1f38e56fdc2f54a8fc89c4a4d4eec205",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Textures/effect/eff_magic_lightningball_F.png",
+      "address": "characterlab/source/effect/eff_magic_lightningball_F.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "fb0a805a6a47ec862fd381422559face98e10567d9071d6817b92d994ad4efce",
+      "conversion": {
+        "status": "converted",
+        "width": 484,
+        "height": 189,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "b464566e30f93d7d35fa6b2e60cb876b1f38e56fdc2f54a8fc89c4a4d4eec205",
+        "outputSha256": "fb0a805a6a47ec862fd381422559face98e10567d9071d6817b92d994ad4efce"
+      }
+    },
+    {
+      "source": "effect/eff_magic_lightningball_gr.atlas",
+      "sourceSha256": "ae02e2506e7940491319a99b32431edb349bd9b19a8d3896fd641978413466ba",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Atlas/effect/eff_magic_lightningball_gr.atlas.txt",
+      "address": "characterlab/source/effect/eff_magic_lightningball_gr.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/eff_magic_lightningball_gr.sct"
+      ],
+      "outputSha256": "ae02e2506e7940491319a99b32431edb349bd9b19a8d3896fd641978413466ba",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/eff_magic_lightningball_gr.scsp",
+      "sourceSha256": "266f28c9ca72996544137dc014dc464998dbc0f82287cacea84c3ee30254fa25",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_magic_lightningball_gr.spine.json",
+      "address": "characterlab/source/effect/eff_magic_lightningball_gr.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "a68c4137a770b289122c36392b6abc5e21d841659859f2349bbf48be87232c13",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 3608,
+        "consumedBytes": 3608
+      }
+    },
+    {
+      "source": "effect/eff_magic_lightningball_gr.scsp",
+      "sourceSha256": "266f28c9ca72996544137dc014dc464998dbc0f82287cacea84c3ee30254fa25",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_magic_lightningball_gr.skeleton.json",
+      "address": "characterlab/source/effect/eff_magic_lightningball_gr.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/eff_magic_lightningball_gr.scsp/json",
+        "characterlab/source/effect/eff_magic_lightningball_gr.atlas",
+        "characterlab/source/effect/eff_magic_lightningball_gr.sct"
+      ],
+      "outputSha256": "f445a4f215f6234574ab255a822a6c55452b48b97c55bfe8e7633260b3da0456",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/eff_magic_lightningball_gr.sct",
+      "sourceSha256": "3a36e368817368a6d4b9f9b51d465448500eef5da30db8810aaa8469720af9a2",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Textures/effect/eff_magic_lightningball_gr.png",
+      "address": "characterlab/source/effect/eff_magic_lightningball_gr.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "1f75235431699ea9ce15853f05b4b87e9a4265f612774ff21964f4eb0ff59adb",
+      "conversion": {
+        "status": "converted",
+        "width": 464,
+        "height": 668,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "3a36e368817368a6d4b9f9b51d465448500eef5da30db8810aaa8469720af9a2",
+        "outputSha256": "1f75235431699ea9ce15853f05b4b87e9a4265f612774ff21964f4eb0ff59adb"
+      }
+    },
+    {
+      "source": "effect/eff_magic_thunder_01.atlas",
+      "sourceSha256": "f5e5248af8f3f83fe0a18a4a00da13f911af68611371aa19c922e96769867911",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Atlas/effect/eff_magic_thunder_01.atlas.txt",
+      "address": "characterlab/source/effect/eff_magic_thunder_01.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/eff_magic_thunder_01.sct"
+      ],
+      "outputSha256": "f5e5248af8f3f83fe0a18a4a00da13f911af68611371aa19c922e96769867911",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/eff_magic_thunder_01.cfx",
+      "sourceSha256": "bb4d12b60b453d1686b27b3336e2a9a1bd9651c2ef62896f7daef746179f26a6",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Effects/effect/eff_magic_thunder_01.cfx.json",
+      "address": "characterlab/source/effect/eff_magic_thunder_01.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/eff_magic_thunder_01.scsp",
+        "characterlab/source/effect/eff_magic_thunder_01_gr.scsp"
+      ],
+      "outputSha256": "2bc13a126b64a846ac63794a6ee78f15effcbf1d1479d230812c1c108e06659c",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/eff_magic_thunder_01.scsp",
+      "sourceSha256": "e2a125cd3d962521cab4e911ae1e798c22f44634203ce784a199b0f1acacf0ad",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_magic_thunder_01.spine.json",
+      "address": "characterlab/source/effect/eff_magic_thunder_01.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "efa5f78da9ad3a6c6e4e1bf98d07454a86b8637b3b79e823cdd8822e3fd798da",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 16007,
+        "consumedBytes": 16007
+      }
+    },
+    {
+      "source": "effect/eff_magic_thunder_01.scsp",
+      "sourceSha256": "e2a125cd3d962521cab4e911ae1e798c22f44634203ce784a199b0f1acacf0ad",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_magic_thunder_01.skeleton.json",
+      "address": "characterlab/source/effect/eff_magic_thunder_01.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/eff_magic_thunder_01.scsp/json",
+        "characterlab/source/effect/eff_magic_thunder_01.atlas",
+        "characterlab/source/effect/eff_magic_thunder_01.sct"
+      ],
+      "outputSha256": "bd03f4927fb178e7dd545cef0ce08217c5f2efa051ffd25cc462d180fb4408d7",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/eff_magic_thunder_01.sct",
+      "sourceSha256": "14055c31180b1e289b66de2540e78d1e4264d5f34b9ff0d722f6942f0583261d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Textures/effect/eff_magic_thunder_01.png",
+      "address": "characterlab/source/effect/eff_magic_thunder_01.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "570b6644bf7ebca7782d6224523ab54eb769f3b05d96a0bd7e4af010b30c2577",
+      "conversion": {
+        "status": "converted",
+        "width": 507,
+        "height": 1416,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "14055c31180b1e289b66de2540e78d1e4264d5f34b9ff0d722f6942f0583261d",
+        "outputSha256": "570b6644bf7ebca7782d6224523ab54eb769f3b05d96a0bd7e4af010b30c2577"
+      }
+    },
+    {
+      "source": "effect/eff_magic_thunder_01_gr.atlas",
+      "sourceSha256": "ce0404a288e6b455b2ba888072d64b4288ef174f62092a5692097741ec2522c1",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Atlas/effect/eff_magic_thunder_01_gr.atlas.txt",
+      "address": "characterlab/source/effect/eff_magic_thunder_01_gr.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/eff_magic_thunder_01_gr.sct"
+      ],
+      "outputSha256": "ce0404a288e6b455b2ba888072d64b4288ef174f62092a5692097741ec2522c1",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/eff_magic_thunder_01_gr.scsp",
+      "sourceSha256": "f89511b53b23664c2067642b668e01f87ad12a0735782a339385b1f220ec5c09",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_magic_thunder_01_gr.spine.json",
+      "address": "characterlab/source/effect/eff_magic_thunder_01_gr.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "c1031ef2d06a6f74174d27a8a22c774423eb1f6aa230cfc093620540f6e90efa",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 3591,
+        "consumedBytes": 3591
+      }
+    },
+    {
+      "source": "effect/eff_magic_thunder_01_gr.scsp",
+      "sourceSha256": "f89511b53b23664c2067642b668e01f87ad12a0735782a339385b1f220ec5c09",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_magic_thunder_01_gr.skeleton.json",
+      "address": "characterlab/source/effect/eff_magic_thunder_01_gr.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/eff_magic_thunder_01_gr.scsp/json",
+        "characterlab/source/effect/eff_magic_thunder_01_gr.atlas",
+        "characterlab/source/effect/eff_magic_thunder_01_gr.sct"
+      ],
+      "outputSha256": "2b975395bc62bae197a31687f981963c79eaa160b31e7636e6246113682f916a",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/eff_magic_thunder_01_gr.sct",
+      "sourceSha256": "ec9d2a73669e744ca6c0e255b6a94768df25f02066ca60a26da907483bb7a01f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Textures/effect/eff_magic_thunder_01_gr.png",
+      "address": "characterlab/source/effect/eff_magic_thunder_01_gr.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "75701eb9ae8921a5a99debc5e7ba6318fd3e814987f709ee2336ae11c86c182b",
+      "conversion": {
+        "status": "converted",
+        "width": 462,
+        "height": 588,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "ec9d2a73669e744ca6c0e255b6a94768df25f02066ca60a26da907483bb7a01f",
+        "outputSha256": "75701eb9ae8921a5a99debc5e7ba6318fd3e814987f709ee2336ae11c86c182b"
+      }
+    },
+    {
+      "source": "effect/hit_new_blunt_01.atlas",
+      "sourceSha256": "1eb38bd13ec487858ea63e82cd7ce4a7dd49d425e8ca05ece4749cebd268bdf7",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Shared/Atlas/effect/hit_new_blunt_01.atlas.txt",
+      "address": "characterlab/source/effect/hit_new_blunt_01.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/hit_new_blunt_01.sct"
+      ],
+      "outputSha256": "1eb38bd13ec487858ea63e82cd7ce4a7dd49d425e8ca05ece4749cebd268bdf7",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/hit_new_blunt_01.scsp",
+      "sourceSha256": "891a64dec7f67f9ff76ab1664b10e7a3f13a482284d99eb55017d3dfba6db687",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Shared/Animations/effect/hit_new_blunt_01.spine.json",
+      "address": "characterlab/source/effect/hit_new_blunt_01.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "089944c8827b0454083b40966c392f645d461d6d7775e38aee1e07f6d4762828",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 11507,
+        "consumedBytes": 11507
+      }
+    },
+    {
+      "source": "effect/hit_new_blunt_01.scsp",
+      "sourceSha256": "891a64dec7f67f9ff76ab1664b10e7a3f13a482284d99eb55017d3dfba6db687",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Shared/Animations/effect/hit_new_blunt_01.skeleton.json",
+      "address": "characterlab/source/effect/hit_new_blunt_01.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/hit_new_blunt_01.scsp/json",
+        "characterlab/source/effect/hit_new_blunt_01.atlas",
+        "characterlab/source/effect/hit_new_blunt_01.sct"
+      ],
+      "outputSha256": "1c7db741e4a38d07d6b7bb170f2b8bfd39122836e05a6458381127747c5c76b5",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/hit_new_blunt_01.sct",
+      "sourceSha256": "17a51b3c75ba8ab1b148c75ebe3bda15df301d8e3b4929031c105d1f81acb3c4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Shared/Textures/effect/hit_new_blunt_01.png",
+      "address": "characterlab/source/effect/hit_new_blunt_01.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "7e2ed9173d8794820b0e4917b85e2c3c55eaf1fc6fdddf24d1e0f9727863d929",
+      "conversion": {
+        "status": "converted",
+        "width": 443,
+        "height": 1491,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "17a51b3c75ba8ab1b148c75ebe3bda15df301d8e3b4929031c105d1f81acb3c4",
+        "outputSha256": "7e2ed9173d8794820b0e4917b85e2c3c55eaf1fc6fdddf24d1e0f9727863d929"
+      }
+    },
+    {
+      "source": "effect/hit_new_blunt_mult_normal.cfx",
+      "sourceSha256": "dd0ef95b3d6f68fd5f8dec3e32ae4f16e39ec41a18fcd7162fdff5cd40c2f161",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Effects/effect/hit_new_blunt_mult_normal.cfx.json",
+      "address": "characterlab/source/effect/hit_new_blunt_mult_normal.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/hit_new_blunt_01.scsp",
+        "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle"
+      ],
+      "outputSha256": "f23984471c09f85210041c56ed4978d327f20cc9f61bdbf1b8bc8adae54aea3b",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/hit_new_blunt_normal.cfx",
+      "sourceSha256": "6d0cfdbe7e0768b524abee49c271aa61f8608b610bc20080c140dc71d2e33b5d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Shared/Effects/effect/hit_new_blunt_normal.cfx.json",
+      "address": "characterlab/source/effect/hit_new_blunt_normal.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/hit_new_blunt_01.scsp",
+        "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle"
+      ],
+      "outputSha256": "70f6ad2f67c87cd1c823494313440fd2b537f0406635282c13bcd480d9eb20b1",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/hit_new_blunt_yellow_nm_pati.particle",
+      "sourceSha256": "8ebff28ba5a2f7699ea7edf8b92541ef5e9b8196b60f60984cab1fbe8a4342f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Shared/Effects/effect/hit_new_blunt_yellow_nm_pati.particle.json",
+      "address": "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/ticle_02.sct"
+      ],
+      "outputSha256": "8a28f055d8e17d3ea4914b484cea233bd184677c355030109332567af2bae258",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/hit_new_pierce_normal.atlas",
+      "sourceSha256": "a1c34bf85c4219518b109fa2841da26497214195ce844e3758f71cb1a22d2910",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Atlas/effect/hit_new_pierce_normal.atlas.txt",
+      "address": "characterlab/source/effect/hit_new_pierce_normal.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/hit_new_pierce_normal.sct"
+      ],
+      "outputSha256": "a1c34bf85c4219518b109fa2841da26497214195ce844e3758f71cb1a22d2910",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/hit_new_pierce_normal.cfx",
+      "sourceSha256": "3f5f0c77b85c485aa6ef5d43bacb5c767e8d351205cbbc4538026a5fc8d3f0d5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/hit_new_pierce_normal.cfx.json",
+      "address": "characterlab/source/effect/hit_new_pierce_normal.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/hit_new_pierce_normal.scsp",
+        "characterlab/source/effect/hit_new_pierce_yellow_nm_pati.particle"
+      ],
+      "outputSha256": "7053fa9c97619aedcf7c7b2952e4fec9571f098ca7a8dbd3accc25209db4653d",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/hit_new_pierce_normal.scsp",
+      "sourceSha256": "ff5791b5d01da3f0f457f991ca1219a48b47eefdc32992f0d013d4aff27e5c77",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/hit_new_pierce_normal.spine.json",
+      "address": "characterlab/source/effect/hit_new_pierce_normal.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "8417a155b9d45ccca4c09e4226025b634e840d0c18a1531d4ad3577ff0f01fdb",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 9180,
+        "consumedBytes": 9180
+      }
+    },
+    {
+      "source": "effect/hit_new_pierce_normal.scsp",
+      "sourceSha256": "ff5791b5d01da3f0f457f991ca1219a48b47eefdc32992f0d013d4aff27e5c77",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/hit_new_pierce_normal.skeleton.json",
+      "address": "characterlab/source/effect/hit_new_pierce_normal.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/hit_new_pierce_normal.scsp/json",
+        "characterlab/source/effect/hit_new_pierce_normal.atlas",
+        "characterlab/source/effect/hit_new_pierce_normal.sct"
+      ],
+      "outputSha256": "e4df50d8488a41ccd3c191d4f60025911557f2db5fc9145021938531cad58620",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/hit_new_pierce_normal.sct",
+      "sourceSha256": "82e72dead90f2f436d7e70eb13125fef2722dc9384eba0e2fec1ac73257135eb",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/effect/hit_new_pierce_normal.png",
+      "address": "characterlab/source/effect/hit_new_pierce_normal.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "ab3be0579bebd963ab827303a685c3db02fdfea28032e52ee313e669900b8af1",
+      "conversion": {
+        "status": "converted",
+        "width": 401,
+        "height": 877,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "82e72dead90f2f436d7e70eb13125fef2722dc9384eba0e2fec1ac73257135eb",
+        "outputSha256": "ab3be0579bebd963ab827303a685c3db02fdfea28032e52ee313e669900b8af1"
+      }
+    },
+    {
+      "source": "effect/hit_new_pierce_yellow_nm_pati.particle",
+      "sourceSha256": "4a448e76c52037fda04ecc0ebb7bd8591ecf42e50c2f15fe457e851f28f8d1ea",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/hit_new_pierce_yellow_nm_pati.particle.json",
+      "address": "characterlab/source/effect/hit_new_pierce_yellow_nm_pati.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/ticle_02.sct"
+      ],
+      "outputSha256": "6d59c4dc9485a67f595d15d31eaf85ae2f491c98ed7afe81d3725f0c3651ec02",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/hit_new_slash_01.atlas",
+      "sourceSha256": "cdc2367b94e56422ff017cfc6f72b88266086d7dda1fba410695069767cea958",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Atlas/effect/hit_new_slash_01.atlas.txt",
+      "address": "characterlab/source/effect/hit_new_slash_01.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/hit_new_slash_01.sct"
+      ],
+      "outputSha256": "cdc2367b94e56422ff017cfc6f72b88266086d7dda1fba410695069767cea958",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/hit_new_slash_01.scsp",
+      "sourceSha256": "a562d8ed28d1baf9f92a84b7b407e2fb95fcde78b6ec25379bb72398bbbc7a80",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/hit_new_slash_01.spine.json",
+      "address": "characterlab/source/effect/hit_new_slash_01.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "c6f15b72eb30acc19175dee84f76c9c05097a808f86f717443806496758a3a48",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 4,
+        "binaryBytes": 14460,
+        "consumedBytes": 14460
+      }
+    },
+    {
+      "source": "effect/hit_new_slash_01.scsp",
+      "sourceSha256": "a562d8ed28d1baf9f92a84b7b407e2fb95fcde78b6ec25379bb72398bbbc7a80",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/hit_new_slash_01.skeleton.json",
+      "address": "characterlab/source/effect/hit_new_slash_01.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/hit_new_slash_01.scsp/json",
+        "characterlab/source/effect/hit_new_slash_01.atlas",
+        "characterlab/source/effect/hit_new_slash_01.sct"
+      ],
+      "outputSha256": "6881f53dd5237eaf0747d817c59528bc4e7d04a332a6b2959be5f7cbacf4c99b",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 4
+      }
+    },
+    {
+      "source": "effect/hit_new_slash_01.sct",
+      "sourceSha256": "d00cbe192711beb75bd77237a59cee0c78216de22e7a43723e12e6da6af30416",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/effect/hit_new_slash_01.png",
+      "address": "characterlab/source/effect/hit_new_slash_01.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "41cba9f9e7612ad44f6946eb2faef1edb9b45833a02ac14ccac9f79a77e5b4d2",
+      "conversion": {
+        "status": "converted",
+        "width": 344,
+        "height": 373,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "d00cbe192711beb75bd77237a59cee0c78216de22e7a43723e12e6da6af30416",
+        "outputSha256": "41cba9f9e7612ad44f6946eb2faef1edb9b45833a02ac14ccac9f79a77e5b4d2"
+      }
+    },
+    {
+      "source": "effect/hit_new_slash_normal.cfx",
+      "sourceSha256": "a03c7a6f0f5404afc80dc3054ebd73fee211d1660223071b87bd4544054b9418",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/hit_new_slash_normal.cfx.json",
+      "address": "characterlab/source/effect/hit_new_slash_normal.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/hit_new_slash_01.scsp",
+        "characterlab/source/effect/hit_new_slash_yellow_nm_pati.particle"
+      ],
+      "outputSha256": "b1e82b43db9bb019801c5863b75edcda6873b0bc48212a599cf8f2e3c4717dd6",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/hit_new_slash_yellow_nm_pati.particle",
+      "sourceSha256": "60740f7daa873413fe63e3b26e174ab109e28954b87f6a99e4823f62f12b41b9",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/hit_new_slash_yellow_nm_pati.particle.json",
+      "address": "characterlab/source/effect/hit_new_slash_yellow_nm_pati.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/ticle_02.sct"
+      ],
+      "outputSha256": "06e97761e99039c851cc829d8bb9a7a42d6239c01a33c09fd16c4341fceab08f",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/mage_sk3_eff_b.atlas",
+      "sourceSha256": "71fb67beefa321409333b77f1dd3839fd8a138298100a8e1157090b23d69050b",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Atlas/effect/mage_sk3_eff_b.atlas.txt",
+      "address": "characterlab/source/effect/mage_sk3_eff_b.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/mage_sk3_eff_b.sct"
+      ],
+      "outputSha256": "71fb67beefa321409333b77f1dd3839fd8a138298100a8e1157090b23d69050b",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/mage_sk3_eff_b.scsp",
+      "sourceSha256": "2cad2b1d6afc56da4401783a125bc739adee806fea762163db8f824bb62882ff",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/mage_sk3_eff_b.spine.json",
+      "address": "characterlab/source/effect/mage_sk3_eff_b.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "af3199c9ce3c649da0e25b8b32d57f8957000c9044ee5521f30f4fde51a3c6ef",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 12872,
+        "consumedBytes": 12872
+      }
+    },
+    {
+      "source": "effect/mage_sk3_eff_b.scsp",
+      "sourceSha256": "2cad2b1d6afc56da4401783a125bc739adee806fea762163db8f824bb62882ff",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/mage_sk3_eff_b.skeleton.json",
+      "address": "characterlab/source/effect/mage_sk3_eff_b.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/mage_sk3_eff_b.scsp/json",
+        "characterlab/source/effect/mage_sk3_eff_b.atlas",
+        "characterlab/source/effect/mage_sk3_eff_b.sct"
+      ],
+      "outputSha256": "9b512e6fe2c4817ddaca291aff47bc6fe3a4c2b67d7aa3c5a71532dd12b8ba7a",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/mage_sk3_eff_b.sct",
+      "sourceSha256": "bc1d74b9e23d7c11931a20c73141aee85e8dffe75f2e6e4ab8944c9569539773",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Textures/effect/mage_sk3_eff_b.png",
+      "address": "characterlab/source/effect/mage_sk3_eff_b.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "5274c88ab2708a399fe1a93c1b60f68b69e3160ac06b8f607fafac45cf9c2223",
+      "conversion": {
+        "status": "converted",
+        "width": 247,
+        "height": 553,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "bc1d74b9e23d7c11931a20c73141aee85e8dffe75f2e6e4ab8944c9569539773",
+        "outputSha256": "5274c88ab2708a399fe1a93c1b60f68b69e3160ac06b8f607fafac45cf9c2223"
+      }
+    },
+    {
+      "source": "effect/mage_sk3_eff_f.atlas",
+      "sourceSha256": "bbd33d0e84b3931898a0e9ea3fbe905044c1aea4017a1cd7fe64c84d4546f644",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Atlas/effect/mage_sk3_eff_f.atlas.txt",
+      "address": "characterlab/source/effect/mage_sk3_eff_f.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/mage_sk3_eff_f.sct"
+      ],
+      "outputSha256": "bbd33d0e84b3931898a0e9ea3fbe905044c1aea4017a1cd7fe64c84d4546f644",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/mage_sk3_eff_f.scsp",
+      "sourceSha256": "00a403d430a2edd7abcae28a3ebc0609086bb6a22d0220cf26e94a3c7230f051",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/mage_sk3_eff_f.spine.json",
+      "address": "characterlab/source/effect/mage_sk3_eff_f.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "2765e62fddbdd2b55590b7ff94eacc7b823e995d152cf90bab4da8cb22b80235",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 134156,
+        "consumedBytes": 134156
+      }
+    },
+    {
+      "source": "effect/mage_sk3_eff_f.scsp",
+      "sourceSha256": "00a403d430a2edd7abcae28a3ebc0609086bb6a22d0220cf26e94a3c7230f051",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/mage_sk3_eff_f.skeleton.json",
+      "address": "characterlab/source/effect/mage_sk3_eff_f.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/mage_sk3_eff_f.scsp/json",
+        "characterlab/source/effect/mage_sk3_eff_f.atlas",
+        "characterlab/source/effect/mage_sk3_eff_f.sct"
+      ],
+      "outputSha256": "0842aabdc107a826197049a08aa9b08490058b3c3f2e0ff5f8c945a2d0978336",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/mage_sk3_eff_f.sct",
+      "sourceSha256": "2de8e8f5937c6a44e3e143b671584d46f0a7d907f528e199a760a9dbd96f283b",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Textures/effect/mage_sk3_eff_f.png",
+      "address": "characterlab/source/effect/mage_sk3_eff_f.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "d2f72ec134cd285f9ac6ed206729fa0fa9d2be4ea21f7f24ddfb5555ccc17bcd",
+      "conversion": {
+        "status": "converted",
+        "width": 1247,
+        "height": 951,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "2de8e8f5937c6a44e3e143b671584d46f0a7d907f528e199a760a9dbd96f283b",
+        "outputSha256": "d2f72ec134cd285f9ac6ed206729fa0fa9d2be4ea21f7f24ddfb5555ccc17bcd"
+      }
+    },
+    {
+      "source": "effect/magician_pat.particle",
+      "sourceSha256": "06e0e3a4d271674734f70842709f65e2cd4e53a7f47308d2998fca958431dd82",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Effects/effect/magician_pat.particle.json",
+      "address": "characterlab/source/effect/magician_pat.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/pati_01.sct"
+      ],
+      "outputSha256": "182d8f86a4b73b192db4c0bd4a79d2f4cfeb06a155bc3b712656723918c5e1ba",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/magician_sk3_eff.cfx",
+      "sourceSha256": "f46f3b0a95214702b13e4cc665e9bb53767c1d3f358c52626cd40d81a4c14929",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Effects/effect/magician_sk3_eff.cfx.json",
+      "address": "characterlab/source/effect/magician_sk3_eff.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/mage_sk3_eff_b.scsp",
+        "characterlab/source/effect/mage_sk3_eff_f.scsp",
+        "characterlab/source/effect/magician_pat.particle"
+      ],
+      "outputSha256": "40d6a51294151a55c9c11212943fad9f3ff031f05ef19c326e2b174464dfce2a",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/mercedes_skeff_sk1_magicring.atlas",
+      "sourceSha256": "00bbd17599465f14bad64fcd4d89cddeb6b005abbf8d40f6928cd437f00876d0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Atlas/effect/mercedes_skeff_sk1_magicring.atlas.txt",
+      "address": "characterlab/source/effect/mercedes_skeff_sk1_magicring.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/mercedes_skeff_sk1_magicring.sct"
+      ],
+      "outputSha256": "00bbd17599465f14bad64fcd4d89cddeb6b005abbf8d40f6928cd437f00876d0",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/mercedes_skeff_sk1_magicring.cfx",
+      "sourceSha256": "f03959e3f7b38b9805f70b90f771fbee5579bab1f656919ab8345a73c63ffe33",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Effects/effect/mercedes_skeff_sk1_magicring.cfx.json",
+      "address": "characterlab/source/effect/mercedes_skeff_sk1_magicring.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/mercedes_skeff_sk1_magicring.scsp"
+      ],
+      "outputSha256": "5b0d542b000933c754dc8af6e25634d92b15ef00a4d150c1248d136071bef9f5",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/mercedes_skeff_sk1_magicring.scsp",
+      "sourceSha256": "8b6ca0cb940680d4eaa377ed9ceb99b03d6f2866ca708c5346c2cdbe928fe171",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/mercedes_skeff_sk1_magicring.spine.json",
+      "address": "characterlab/source/effect/mercedes_skeff_sk1_magicring.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "109e22d9f4ec6b00f71363b8aa925e567d39cb45e546a0fffa1a129da0dd653a",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 4219,
+        "consumedBytes": 4219
+      }
+    },
+    {
+      "source": "effect/mercedes_skeff_sk1_magicring.scsp",
+      "sourceSha256": "8b6ca0cb940680d4eaa377ed9ceb99b03d6f2866ca708c5346c2cdbe928fe171",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/mercedes_skeff_sk1_magicring.skeleton.json",
+      "address": "characterlab/source/effect/mercedes_skeff_sk1_magicring.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/mercedes_skeff_sk1_magicring.scsp/json",
+        "characterlab/source/effect/mercedes_skeff_sk1_magicring.atlas",
+        "characterlab/source/effect/mercedes_skeff_sk1_magicring.sct"
+      ],
+      "outputSha256": "ae9b151f60ceaf0ca1604cc60b79b85be4071af0e43700e83cd7cc3d3c39a6f0",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/mercedes_skeff_sk1_magicring.sct",
+      "sourceSha256": "1b4d85102feee9bcc9833aebcf233a796045629a5aa8fd097bb1d6821e04b739",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Textures/effect/mercedes_skeff_sk1_magicring.png",
+      "address": "characterlab/source/effect/mercedes_skeff_sk1_magicring.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "54fd81afbe854937eec51ce2639316a98e6aff335eab609300a6a4c7c2406c26",
+      "conversion": {
+        "status": "converted",
+        "width": 378,
+        "height": 485,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "1b4d85102feee9bcc9833aebcf233a796045629a5aa8fd097bb1d6821e04b739",
+        "outputSha256": "54fd81afbe854937eec51ce2639316a98e6aff335eab609300a6a4c7c2406c26"
+      }
+    },
+    {
+      "source": "effect/ras_new_sk2_pat1.particle",
+      "sourceSha256": "6fab81268327d77548c57fe2293baf4a7f9347239b638bb9554a164dec3406a0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/ras_new_sk2_pat1.particle.json",
+      "address": "characterlab/source/effect/ras_new_sk2_pat1.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/pati_01.sct"
+      ],
+      "outputSha256": "d584d1240700a36cf1cbbac00451b5267690f86bd18b5de017a5b9ef0eaa3271",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/ras_new_sk2_pat2.particle",
+      "sourceSha256": "1e1ab4cbd68b4459a4f6d95c5a038c8ffc2735a9981c7fbf6b5c1544ec640bcf",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/ras_new_sk2_pat2.particle.json",
+      "address": "characterlab/source/effect/ras_new_sk2_pat2.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/pati_01.sct"
+      ],
+      "outputSha256": "b3a104d60b05e657597c5c23ccf156a2e350dc6887d205c73b18d15af81cc320",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/ras_new_skeff_pat3.particle",
+      "sourceSha256": "f349e131ec58d2a9329be61a524df0682a3a88f29f10b26d27bea634e114cc5a",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/ras_new_skeff_pat3.particle.json",
+      "address": "characterlab/source/effect/ras_new_skeff_pat3.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/aura_04.sct",
+        "characterlab/source/particle/flash.sct",
+        "characterlab/source/particle/pati_01.sct"
+      ],
+      "outputSha256": "50e85007e3a7a0474f2d68b17051a01992379917bc3d500e01231ab45c68b5fe",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/ras_new_skeff_sk1.cfx",
+      "sourceSha256": "23d610f064f74cc229412daeb8f412b03beb67080644b91e65d19d42f87d358f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/ras_new_skeff_sk1.cfx.json",
+      "address": "characterlab/source/effect/ras_new_skeff_sk1.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/ras_re_sk1_b.scsp",
+        "characterlab/source/effect/ras_re_sk1_f.scsp"
+      ],
+      "outputSha256": "84c3ae7e932a5154bac08f8a5d2fc2b48d2a71b5b5e5593145d54aac2975646c",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/ras_new_skeff_sk2.cfx",
+      "sourceSha256": "70f97ba78a04d3fdd497a0dbc33131cb84d3a573f641f31be6cd467a5dfa1e20",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/ras_new_skeff_sk2.cfx.json",
+      "address": "characterlab/source/effect/ras_new_skeff_sk2.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/ras_new_sk2_pat1.particle",
+        "characterlab/source/effect/ras_new_sk2_pat2.particle",
+        "characterlab/source/effect/ras_re_sk2_b.scsp",
+        "characterlab/source/effect/ras_re_sk2_f.scsp"
+      ],
+      "outputSha256": "6cca8e11fb294cedb46a9f28d6e28889fb63765f5bd0be755c8de4a517145588",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/ras_new_skeff_sk2_2.cfx",
+      "sourceSha256": "d094c663c3fb65ecff5e8754ad2a05580c77c06de5b6539558fa095b0292c780",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/ras_new_skeff_sk2_2.cfx.json",
+      "address": "characterlab/source/effect/ras_new_skeff_sk2_2.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/ras_re_sk2_f2.scsp"
+      ],
+      "outputSha256": "854ed8939a9f4a3291af0c984b8e685cc7e20a23eeb03d0cd9f30bc532628a2e",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/ras_new_skeff_sk2_end.cfx",
+      "sourceSha256": "feabe50579958d47f722b8ff721a0dc74d9d6e65ae69fce37c36c3fdb6b82c7f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/ras_new_skeff_sk2_end.cfx.json",
+      "address": "characterlab/source/effect/ras_new_skeff_sk2_end.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/ras_new_skeff_pat3.particle",
+        "characterlab/source/effect/rass_skill_02_renew_pati1.particle"
+      ],
+      "outputSha256": "78395bf1c1f84cd74e5f4c6b0fb7c603a6a75b68c4d9b288b9ca2f67c6ad059a",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/ras_new_skeff_sk3.cfx",
+      "sourceSha256": "663245c6207bbc72497ec479d2e05231075a3a22785e3580704e6eea53168094",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/ras_new_skeff_sk3.cfx.json",
+      "address": "characterlab/source/effect/ras_new_skeff_sk3.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/ras_re_sk3_f.scsp",
+        "characterlab/source/effect/ras_re_sk3_f3.scsp",
+        "characterlab/source/effect/rass_skill_03_renew_pati1.particle",
+        "characterlab/source/effect/rass_skill_03_renew_pati2.particle"
+      ],
+      "outputSha256": "ab8762528311bb946af019db87316532db0a0fcb873c45c0101a1397adeba755",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/ras_re_sk1_b.atlas",
+      "sourceSha256": "8f46fb04b14144e0207f986255451af2ec7b8ff5e3e688b4d49630ea329de319",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Atlas/effect/ras_re_sk1_b.atlas.txt",
+      "address": "characterlab/source/effect/ras_re_sk1_b.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/ras_re_sk1_b.sct"
+      ],
+      "outputSha256": "8f46fb04b14144e0207f986255451af2ec7b8ff5e3e688b4d49630ea329de319",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/ras_re_sk1_b.scsp",
+      "sourceSha256": "0c7298d6180113a496ed0e1bd7b5c71a95c2139cb49d2db8298a6aa61352d4d7",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk1_b.spine.json",
+      "address": "characterlab/source/effect/ras_re_sk1_b.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "c8ab9b7155ad012b85b976ad0410d8ed71632a7a10aff26f6bc1b6483372737f",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 37399,
+        "consumedBytes": 37399
+      }
+    },
+    {
+      "source": "effect/ras_re_sk1_b.scsp",
+      "sourceSha256": "0c7298d6180113a496ed0e1bd7b5c71a95c2139cb49d2db8298a6aa61352d4d7",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk1_b.skeleton.json",
+      "address": "characterlab/source/effect/ras_re_sk1_b.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/ras_re_sk1_b.scsp/json",
+        "characterlab/source/effect/ras_re_sk1_b.atlas",
+        "characterlab/source/effect/ras_re_sk1_b.sct"
+      ],
+      "outputSha256": "ca9cccb1e0be0204cf01e3371e6d9158b41ea5dab66d835814180f162cd36830",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/ras_re_sk1_b.sct",
+      "sourceSha256": "6b5ad9634996bb8cf70a5c3538ce8df202110f89a9a3bba6df749da93bec1af2",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/effect/ras_re_sk1_b.png",
+      "address": "characterlab/source/effect/ras_re_sk1_b.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "91488c51a56b341195569b36a5121a2953649336fe287a5f5f987993f907702a",
+      "conversion": {
+        "status": "converted",
+        "width": 252,
+        "height": 425,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "6b5ad9634996bb8cf70a5c3538ce8df202110f89a9a3bba6df749da93bec1af2",
+        "outputSha256": "91488c51a56b341195569b36a5121a2953649336fe287a5f5f987993f907702a"
+      }
+    },
+    {
+      "source": "effect/ras_re_sk1_f.atlas",
+      "sourceSha256": "98dead4d8edfb623bf7dcc6344777f9e2d4e56b98219487579e25ff8c5f2cfdf",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Atlas/effect/ras_re_sk1_f.atlas.txt",
+      "address": "characterlab/source/effect/ras_re_sk1_f.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/ras_re_sk1_f.sct"
+      ],
+      "outputSha256": "98dead4d8edfb623bf7dcc6344777f9e2d4e56b98219487579e25ff8c5f2cfdf",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/ras_re_sk1_f.scsp",
+      "sourceSha256": "ce50450757586f2eb7b22609cd46aa7c10219cf161b2b4066e09ca8cb4b998a1",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk1_f.spine.json",
+      "address": "characterlab/source/effect/ras_re_sk1_f.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "99d497f0385d1ce7e2c00cdf5ce078f4ce23033b57fbe1d15c94a3fe5d2281cd",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 32198,
+        "consumedBytes": 32198
+      }
+    },
+    {
+      "source": "effect/ras_re_sk1_f.scsp",
+      "sourceSha256": "ce50450757586f2eb7b22609cd46aa7c10219cf161b2b4066e09ca8cb4b998a1",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk1_f.skeleton.json",
+      "address": "characterlab/source/effect/ras_re_sk1_f.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/ras_re_sk1_f.scsp/json",
+        "characterlab/source/effect/ras_re_sk1_f.atlas",
+        "characterlab/source/effect/ras_re_sk1_f.sct"
+      ],
+      "outputSha256": "7504d6f403b7211cda546e27f9123c42d7351976a2e9a1ba4def77d29b237ee2",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/ras_re_sk1_f.sct",
+      "sourceSha256": "1c2c8bbc0e74326682061d41765e513b7bc583dff905d8b78debe231403c4ce9",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/effect/ras_re_sk1_f.png",
+      "address": "characterlab/source/effect/ras_re_sk1_f.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "24029d1e8be5632af5ac627012d74105761e92e7c49fd09e6bbfdf0ea650a527",
+      "conversion": {
+        "status": "converted",
+        "width": 486,
+        "height": 254,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "1c2c8bbc0e74326682061d41765e513b7bc583dff905d8b78debe231403c4ce9",
+        "outputSha256": "24029d1e8be5632af5ac627012d74105761e92e7c49fd09e6bbfdf0ea650a527"
+      }
+    },
+    {
+      "source": "effect/ras_re_sk2_b.atlas",
+      "sourceSha256": "bac4817398b8495ae4053abd4aead925dca857ab302442a22616e5da4cc9336b",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Atlas/effect/ras_re_sk2_b.atlas.txt",
+      "address": "characterlab/source/effect/ras_re_sk2_b.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/ras_re_sk2_b.sct"
+      ],
+      "outputSha256": "bac4817398b8495ae4053abd4aead925dca857ab302442a22616e5da4cc9336b",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/ras_re_sk2_b.scsp",
+      "sourceSha256": "89d54856f3f419dd069e43184c6cac46589756f8d55ff9eb6dd3c386b31c07ac",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk2_b.spine.json",
+      "address": "characterlab/source/effect/ras_re_sk2_b.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "2c4a17fd8f295ff3d2c7c22f43923a230794daed5b2244e7a60f5f3ce398d80b",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 39871,
+        "consumedBytes": 39871
+      }
+    },
+    {
+      "source": "effect/ras_re_sk2_b.scsp",
+      "sourceSha256": "89d54856f3f419dd069e43184c6cac46589756f8d55ff9eb6dd3c386b31c07ac",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk2_b.skeleton.json",
+      "address": "characterlab/source/effect/ras_re_sk2_b.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/ras_re_sk2_b.scsp/json",
+        "characterlab/source/effect/ras_re_sk2_b.atlas",
+        "characterlab/source/effect/ras_re_sk2_b.sct"
+      ],
+      "outputSha256": "193c2a5a988156f1647cbfddeafa92fec917930d64d1c1c274a88b073c0d3a6d",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/ras_re_sk2_b.sct",
+      "sourceSha256": "f932addddae5959a6e47826c1ce2c8a8be76a01ac590c1e4e5b4682fc9adb6ce",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/effect/ras_re_sk2_b.png",
+      "address": "characterlab/source/effect/ras_re_sk2_b.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "a644c60d19ac504cdfe588712c101229daf7ed4f6a455e7e95ad30ee68ac7642",
+      "conversion": {
+        "status": "converted",
+        "width": 1048,
+        "height": 256,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "f932addddae5959a6e47826c1ce2c8a8be76a01ac590c1e4e5b4682fc9adb6ce",
+        "outputSha256": "a644c60d19ac504cdfe588712c101229daf7ed4f6a455e7e95ad30ee68ac7642"
+      }
+    },
+    {
+      "source": "effect/ras_re_sk2_f.atlas",
+      "sourceSha256": "f01d60df48d06a457ffc5838f1224b09a74010addf216e050392fb47d1254b16",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Atlas/effect/ras_re_sk2_f.atlas.txt",
+      "address": "characterlab/source/effect/ras_re_sk2_f.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/ras_re_sk2_f.sct"
+      ],
+      "outputSha256": "f01d60df48d06a457ffc5838f1224b09a74010addf216e050392fb47d1254b16",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/ras_re_sk2_f.scsp",
+      "sourceSha256": "eb0d1b17bc31de5fa164e0fc9e8473b97fb87e015610af496fd580ec01e28815",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk2_f.spine.json",
+      "address": "characterlab/source/effect/ras_re_sk2_f.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "bfc93be9289d3a6a74970eeb1c9b918586416d8efe7de630d28590fcbb54c07e",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 73023,
+        "consumedBytes": 73023
+      }
+    },
+    {
+      "source": "effect/ras_re_sk2_f.scsp",
+      "sourceSha256": "eb0d1b17bc31de5fa164e0fc9e8473b97fb87e015610af496fd580ec01e28815",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk2_f.skeleton.json",
+      "address": "characterlab/source/effect/ras_re_sk2_f.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/ras_re_sk2_f.scsp/json",
+        "characterlab/source/effect/ras_re_sk2_f.atlas",
+        "characterlab/source/effect/ras_re_sk2_f.sct"
+      ],
+      "outputSha256": "cde9236d963db98015002fb1736b1f43eb70d0d0187c96aecff57c0695932248",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/ras_re_sk2_f.sct",
+      "sourceSha256": "d3c6fd854bfa38fe85eb56b10f7ec8533e569d5d9e089b3c53598b228e16675a",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/effect/ras_re_sk2_f.png",
+      "address": "characterlab/source/effect/ras_re_sk2_f.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "7268b799ec58cabca8e914756bd83b0a14c369ab2f0ad73ab293cd74fa1eb8fb",
+      "conversion": {
+        "status": "converted",
+        "width": 1216,
+        "height": 512,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "d3c6fd854bfa38fe85eb56b10f7ec8533e569d5d9e089b3c53598b228e16675a",
+        "outputSha256": "7268b799ec58cabca8e914756bd83b0a14c369ab2f0ad73ab293cd74fa1eb8fb"
+      }
+    },
+    {
+      "source": "effect/ras_re_sk2_f2.atlas",
+      "sourceSha256": "a4d35eda43871835c76ebd2c71350770abdd0491b182df576d4eb607596494b4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Atlas/effect/ras_re_sk2_f2.atlas.txt",
+      "address": "characterlab/source/effect/ras_re_sk2_f2.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/ras_re_sk2_f2.sct"
+      ],
+      "outputSha256": "a4d35eda43871835c76ebd2c71350770abdd0491b182df576d4eb607596494b4",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/ras_re_sk2_f2.scsp",
+      "sourceSha256": "61187868d39ea9e8142eb8759c0cb14fefd9ecad800f6cefea9c57e757b21deb",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk2_f2.spine.json",
+      "address": "characterlab/source/effect/ras_re_sk2_f2.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "71b5f305d0882f4bb141371006e4e15ddb89228449ed9e371c61050c24ba2681",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 51120,
+        "consumedBytes": 51120
+      }
+    },
+    {
+      "source": "effect/ras_re_sk2_f2.scsp",
+      "sourceSha256": "61187868d39ea9e8142eb8759c0cb14fefd9ecad800f6cefea9c57e757b21deb",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk2_f2.skeleton.json",
+      "address": "characterlab/source/effect/ras_re_sk2_f2.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/ras_re_sk2_f2.scsp/json",
+        "characterlab/source/effect/ras_re_sk2_f2.atlas",
+        "characterlab/source/effect/ras_re_sk2_f2.sct"
+      ],
+      "outputSha256": "c9d0afca28c5b59ca46215fdc25ad094f6a4f93ecb4f2a6a3f4b1e2d3c97aecd",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/ras_re_sk2_f2.sct",
+      "sourceSha256": "d3c6fd854bfa38fe85eb56b10f7ec8533e569d5d9e089b3c53598b228e16675a",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/effect/ras_re_sk2_f2.png",
+      "address": "characterlab/source/effect/ras_re_sk2_f2.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "7268b799ec58cabca8e914756bd83b0a14c369ab2f0ad73ab293cd74fa1eb8fb",
+      "conversion": {
+        "status": "converted",
+        "width": 1216,
+        "height": 512,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "d3c6fd854bfa38fe85eb56b10f7ec8533e569d5d9e089b3c53598b228e16675a",
+        "outputSha256": "7268b799ec58cabca8e914756bd83b0a14c369ab2f0ad73ab293cd74fa1eb8fb"
+      }
+    },
+    {
+      "source": "effect/ras_re_sk3_f.atlas",
+      "sourceSha256": "db61f5f5a72d8c808d79ab134b6451b08011346b3a8f9b7b96af239f6e3cfeda",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Atlas/effect/ras_re_sk3_f.atlas.txt",
+      "address": "characterlab/source/effect/ras_re_sk3_f.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/ras_re_sk3_f.sct"
+      ],
+      "outputSha256": "db61f5f5a72d8c808d79ab134b6451b08011346b3a8f9b7b96af239f6e3cfeda",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/ras_re_sk3_f.scsp",
+      "sourceSha256": "a34968f38c535c27b11c1410a5f0aedaac06250f70719ad1891bc46b980026c4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk3_f.spine.json",
+      "address": "characterlab/source/effect/ras_re_sk3_f.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "01ef079306a5729ca83fb279395a790d49303a3130727c6daa9d61e1134c2cbd",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 140794,
+        "consumedBytes": 140794
+      }
+    },
+    {
+      "source": "effect/ras_re_sk3_f.scsp",
+      "sourceSha256": "a34968f38c535c27b11c1410a5f0aedaac06250f70719ad1891bc46b980026c4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk3_f.skeleton.json",
+      "address": "characterlab/source/effect/ras_re_sk3_f.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/ras_re_sk3_f.scsp/json",
+        "characterlab/source/effect/ras_re_sk3_f.atlas",
+        "characterlab/source/effect/ras_re_sk3_f.sct"
+      ],
+      "outputSha256": "353db0020aa0c9193a57c29d7c0fa93cf9ae88ab5718f484cc2de27dc325ac48",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/ras_re_sk3_f.sct",
+      "sourceSha256": "e165f11f8f919f8984861e471e53331c02ce324b3ec25c90c7d9c9565876c7a1",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/effect/ras_re_sk3_f.png",
+      "address": "characterlab/source/effect/ras_re_sk3_f.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "3d60b167f003bd948e3f06db84e69ea526e672988309afc283d643ebc73b3b1d",
+      "conversion": {
+        "status": "converted",
+        "width": 1792,
+        "height": 1023,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "e165f11f8f919f8984861e471e53331c02ce324b3ec25c90c7d9c9565876c7a1",
+        "outputSha256": "3d60b167f003bd948e3f06db84e69ea526e672988309afc283d643ebc73b3b1d"
+      }
+    },
+    {
+      "source": "effect/ras_re_sk3_f3.atlas",
+      "sourceSha256": "1969b265a6dc4d7e4f69b52d38a126fdd5508e052f790de90559127f93256225",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Atlas/effect/ras_re_sk3_f3.atlas.txt",
+      "address": "characterlab/source/effect/ras_re_sk3_f3.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/ras_re_sk3_f3.sct"
+      ],
+      "outputSha256": "1969b265a6dc4d7e4f69b52d38a126fdd5508e052f790de90559127f93256225",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/ras_re_sk3_f3.scsp",
+      "sourceSha256": "78d771b1343c90097a7b4acf572ad65cb8791f49d993e3cb3484798e4400b539",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk3_f3.spine.json",
+      "address": "characterlab/source/effect/ras_re_sk3_f3.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "1bfc762853bee3c10103f659d9438fc9ded8309108267457d794c2fe93b8fa70",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 802,
+        "consumedBytes": 802
+      }
+    },
+    {
+      "source": "effect/ras_re_sk3_f3.scsp",
+      "sourceSha256": "78d771b1343c90097a7b4acf572ad65cb8791f49d993e3cb3484798e4400b539",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk3_f3.skeleton.json",
+      "address": "characterlab/source/effect/ras_re_sk3_f3.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/ras_re_sk3_f3.scsp/json",
+        "characterlab/source/effect/ras_re_sk3_f3.atlas",
+        "characterlab/source/effect/ras_re_sk3_f3.sct"
+      ],
+      "outputSha256": "9d871cdbc54bec8b6c052d502f50393de21fb68ddf53bdc3422cb422971b5a74",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/ras_re_sk3_f3.sct",
+      "sourceSha256": "d66cbd8a9a790290cb7808234d44044f7c5ce4f8b7bd142e28eb9cd8f900619f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/effect/ras_re_sk3_f3.png",
+      "address": "characterlab/source/effect/ras_re_sk3_f3.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "b5b35c333534ea601d953e8e3f8f1ea358e86659a3ddef6735a3794b84d6ea45",
+      "conversion": {
+        "status": "converted",
+        "width": 532,
+        "height": 534,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "d66cbd8a9a790290cb7808234d44044f7c5ce4f8b7bd142e28eb9cd8f900619f",
+        "outputSha256": "b5b35c333534ea601d953e8e3f8f1ea358e86659a3ddef6735a3794b84d6ea45"
+      }
+    },
+    {
+      "source": "effect/ras_re_sk3_ready.atlas",
+      "sourceSha256": "4a848d65efb0f70774476ee48626b6f8d180c375ed7a318d6c042156282ac101",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Atlas/effect/ras_re_sk3_ready.atlas.txt",
+      "address": "characterlab/source/effect/ras_re_sk3_ready.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/ras_re_sk3_ready.sct"
+      ],
+      "outputSha256": "4a848d65efb0f70774476ee48626b6f8d180c375ed7a318d6c042156282ac101",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/ras_re_sk3_ready.cfx",
+      "sourceSha256": "0199c6f81d6a01e35425758daaee70e0bd2e7fd5ba125ce570485080573b01e7",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/ras_re_sk3_ready.cfx.json",
+      "address": "characterlab/source/effect/ras_re_sk3_ready.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/ras_re_sk3_ready.scsp"
+      ],
+      "outputSha256": "a8b50e84e90e9838cc3f2848eba0bfcd567ec5551f1cec8ed40c4ab1132ec96e",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/ras_re_sk3_ready.scsp",
+      "sourceSha256": "3e14c6b83191bef82c6b5700a78855508305dd437debeb71409537566171fde1",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk3_ready.spine.json",
+      "address": "characterlab/source/effect/ras_re_sk3_ready.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "ad67aec213dbc88acfcff78c62af1184e896fb5899780bbc4cae30a778aaf152",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 10382,
+        "consumedBytes": 10382
+      }
+    },
+    {
+      "source": "effect/ras_re_sk3_ready.scsp",
+      "sourceSha256": "3e14c6b83191bef82c6b5700a78855508305dd437debeb71409537566171fde1",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk3_ready.skeleton.json",
+      "address": "characterlab/source/effect/ras_re_sk3_ready.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/ras_re_sk3_ready.scsp/json",
+        "characterlab/source/effect/ras_re_sk3_ready.atlas",
+        "characterlab/source/effect/ras_re_sk3_ready.sct"
+      ],
+      "outputSha256": "d7195b60c3d2d1420ee0b15d11b12f6dbd8699564f1c03f6349b299732650a0b",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/ras_re_sk3_ready.sct",
+      "sourceSha256": "b53058d813a400626a4976106f857cf45573bb8dbf52e1acdd042606bb89c678",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/effect/ras_re_sk3_ready.png",
+      "address": "characterlab/source/effect/ras_re_sk3_ready.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "94a3973bf9e51c4c0de12a9fc912f7e31bf52ef03e070fed2cd1f9148835cde9",
+      "conversion": {
+        "status": "converted",
+        "width": 1022,
+        "height": 255,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "b53058d813a400626a4976106f857cf45573bb8dbf52e1acdd042606bb89c678",
+        "outputSha256": "94a3973bf9e51c4c0de12a9fc912f7e31bf52ef03e070fed2cd1f9148835cde9"
+      }
+    },
+    {
+      "source": "effect/rass_skill_02_renew_pati1.particle",
+      "sourceSha256": "6332baf1eb11acd31b3883ff4dfb75c05fc82db2e851f0b2b44af4342eb60743",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/rass_skill_02_renew_pati1.particle.json",
+      "address": "characterlab/source/effect/rass_skill_02_renew_pati1.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/ticle_02.sct"
+      ],
+      "outputSha256": "5cf30c137e6fbebc9c378d247aa8ced1423f82ee08c8d0513f916e02210f1577",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/rass_skill_03_renew_pati1.particle",
+      "sourceSha256": "960dc5d3ae70987a73dd21799c981004910b0eebbfe7ac9d13bff798a52f83fa",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/rass_skill_03_renew_pati1.particle.json",
+      "address": "characterlab/source/effect/rass_skill_03_renew_pati1.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/pati_01.sct",
+        "characterlab/source/particle/ticle_02.sct"
+      ],
+      "outputSha256": "6a32cb78396c6d8429f0e5a6bc6bce2ed728e377caf813739e5a51c65dc7c465",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/rass_skill_03_renew_pati2.particle",
+      "sourceSha256": "eb4da03e3ac22b2346561e65d7e2c3c824bb80a11c17d8ce8ddbd60042080873",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/rass_skill_03_renew_pati2.particle.json",
+      "address": "characterlab/source/effect/rass_skill_03_renew_pati2.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/pati_01.sct"
+      ],
+      "outputSha256": "e163883839721485542e077a29afd0c430aa88eb386e95c00342ccc655c1e396",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "model/angelica.atlas",
+      "sourceSha256": "45b3055d875988637d5c3f3978ced5bd5033159bf2b7e47f07c0172e5e5a84db",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/model/angelica.atlas.txt",
+      "address": "characterlab/source/model/angelica.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/model/angelica.sct"
+      ],
+      "outputSha256": "45b3055d875988637d5c3f3978ced5bd5033159bf2b7e47f07c0172e5e5a84db",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "model/angelica.scsp",
+      "sourceSha256": "caa641aa7dbbaeb512e081a3a43e27a54e9ac2bfe35c01572d501dcaabb0a4c6",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/model/angelica.spine.json",
+      "address": "characterlab/source/model/angelica.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "a8844e558d544ac688749cec5de4b4a75543b53d6f2ad1cac56f4967b0fbdded",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 20,
+        "binaryBytes": 11896166,
+        "consumedBytes": 11896166
+      }
+    },
+    {
+      "source": "model/angelica.scsp",
+      "sourceSha256": "caa641aa7dbbaeb512e081a3a43e27a54e9ac2bfe35c01572d501dcaabb0a4c6",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/model/angelica.skeleton.json",
+      "address": "characterlab/source/model/angelica.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/model/angelica.scsp/json",
+        "characterlab/source/model/angelica.atlas",
+        "characterlab/source/model/angelica.sct"
+      ],
+      "outputSha256": "797f746d925d1c479fccef7e550b3f36bd05058865b96070e47090407d1b6452",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 20
+      }
+    },
+    {
+      "source": "model/angelica.sct",
+      "sourceSha256": "370126910db8246c69a989762344e7a78c5f39bcad5424e6c0bf1458627cfdc6",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Textures/model/angelica.png",
+      "address": "characterlab/source/model/angelica.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "3b2234e6ee46fc62702f35d4774ec377722bc93c0c8ff8d4d8995e3ca97380a7",
+      "conversion": {
+        "status": "converted",
+        "width": 256,
+        "height": 1340,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "370126910db8246c69a989762344e7a78c5f39bcad5424e6c0bf1458627cfdc6",
+        "outputSha256": "3b2234e6ee46fc62702f35d4774ec377722bc93c0c8ff8d4d8995e3ca97380a7"
+      }
+    },
+    {
+      "source": "model/angelica.timeline",
+      "sourceSha256": "ea545cdb9ecc40216df5df7958caf24b1a6cb5cf8d62e35f32d41306f2daeae1",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Configs/model/angelica.timeline.json",
+      "address": "characterlab/source/model/angelica.timeline",
+      "type": "timeline",
+      "dependencies": [
+        "characterlab/source/effect/angelica_b_idle.cfx",
+        "characterlab/source/effect/angelica_skill_01.cfx",
+        "characterlab/source/effect/angelica_skill_02_self.cfx",
+        "characterlab/source/effect/angelica_skill_03_self.cfx"
+      ],
+      "outputSha256": "280216cf9731d922ece2f3dd5ebc2ac996b691a13aa1ae43ac8472752175bb15",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "model/mercedes.atlas",
+      "sourceSha256": "d2e5c9a2c4025361a140b3746bf1f43a9a88463635fd65fe8ced33189b883fac",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Atlas/model/mercedes.atlas.txt",
+      "address": "characterlab/source/model/mercedes.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/model/mercedes.sct"
+      ],
+      "outputSha256": "d2e5c9a2c4025361a140b3746bf1f43a9a88463635fd65fe8ced33189b883fac",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "model/mercedes.scsp",
+      "sourceSha256": "85489ffb2dbcef25e1072a3c172d85d8b7692dbbf5b18c77fed1d09a1b540fa0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/model/mercedes.spine.json",
+      "address": "characterlab/source/model/mercedes.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "971843d85ae0035d8a7be586f30abc6f00f5fe0f1955450b22dbfb608769488d",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 16,
+        "binaryBytes": 1025850,
+        "consumedBytes": 1025850
+      }
+    },
+    {
+      "source": "model/mercedes.scsp",
+      "sourceSha256": "85489ffb2dbcef25e1072a3c172d85d8b7692dbbf5b18c77fed1d09a1b540fa0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/model/mercedes.skeleton.json",
+      "address": "characterlab/source/model/mercedes.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/model/mercedes.scsp/json",
+        "characterlab/source/model/mercedes.atlas",
+        "characterlab/source/model/mercedes.sct"
+      ],
+      "outputSha256": "fa8006b58e1f4b11d9da6058d05c0824c876426da5066ead1cc718420161afbe",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 16
+      }
+    },
+    {
+      "source": "model/mercedes.sct",
+      "sourceSha256": "35abc28971aa8140cfdea136689b62d0b337fba65c53faba36f16866b1b36227",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Textures/model/mercedes.png",
+      "address": "characterlab/source/model/mercedes.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "10a7cb98b8671bac7336a427ba0b2d84bb9debc934314d3a721a359c5df11216",
+      "conversion": {
+        "status": "converted",
+        "width": 1479,
+        "height": 128,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "35abc28971aa8140cfdea136689b62d0b337fba65c53faba36f16866b1b36227",
+        "outputSha256": "10a7cb98b8671bac7336a427ba0b2d84bb9debc934314d3a721a359c5df11216"
+      }
+    },
+    {
+      "source": "model/mercedes.timeline",
+      "sourceSha256": "769d784cf0802a3e589ee29d60880a6ed37648702c8e2085047e6bedf19dc6f6",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Configs/model/mercedes.timeline.json",
+      "address": "characterlab/source/model/mercedes.timeline",
+      "type": "timeline",
+      "dependencies": [],
+      "outputSha256": "a0474689f1cc18c41b1572149aabad57da770ba5ab6c32e1c2d635b802228a8a",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "model/ras.atlas",
+      "sourceSha256": "adac4e41fdf0cc06e07b5af79023f71b273099b69f3b4f7aa896baf0adbe1949",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Atlas/model/ras.atlas.txt",
+      "address": "characterlab/source/model/ras.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/model/ras.sct"
+      ],
+      "outputSha256": "adac4e41fdf0cc06e07b5af79023f71b273099b69f3b4f7aa896baf0adbe1949",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "model/ras.scsp",
+      "sourceSha256": "24d0af3b806440f282f8e8e804d9628e9780e1de6c0a5b4ca62118e409bff75d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/model/ras.spine.json",
+      "address": "characterlab/source/model/ras.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "b2a04a57d33722fca9c06578b0d30e87e758607643a41ed29c32757f00158682",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 19,
+        "binaryBytes": 4390086,
+        "consumedBytes": 4390086
+      }
+    },
+    {
+      "source": "model/ras.scsp",
+      "sourceSha256": "24d0af3b806440f282f8e8e804d9628e9780e1de6c0a5b4ca62118e409bff75d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/model/ras.skeleton.json",
+      "address": "characterlab/source/model/ras.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/model/ras.scsp/json",
+        "characterlab/source/model/ras.atlas",
+        "characterlab/source/model/ras.sct"
+      ],
+      "outputSha256": "c157d20a6aeb708b81ea768d8912031cf58d52153ad0a7491111448383d13e4a",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 19
+      }
+    },
+    {
+      "source": "model/ras.sct",
+      "sourceSha256": "5b77d1b95e36b98af340d4c438c391420d3a7acc4d7b477f47e349c6943a81a7",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/model/ras.png",
+      "address": "characterlab/source/model/ras.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "81318a6ee5ed3fb7a35705c17f379ad07176bdaf922bada75170d71b50e85610",
+      "conversion": {
+        "status": "converted",
+        "width": 1476,
+        "height": 396,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "5b77d1b95e36b98af340d4c438c391420d3a7acc4d7b477f47e349c6943a81a7",
+        "outputSha256": "81318a6ee5ed3fb7a35705c17f379ad07176bdaf922bada75170d71b50e85610"
+      }
+    },
+    {
+      "source": "particle/aura_04.sct",
+      "sourceSha256": "64e3d4e72158a90a11eaac129ad00f0d6f9a22a0859fc04b2a27ffe15a9b63a1",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/particle/aura_04.png",
+      "address": "characterlab/source/particle/aura_04.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "27ea6b15b4f9f7b0fe98760741f7cd79061514d3b48029e10e0eb034a03da5f4",
+      "conversion": {
+        "status": "converted",
+        "width": 128,
+        "height": 128,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved",
+        "sourceSha256": "64e3d4e72158a90a11eaac129ad00f0d6f9a22a0859fc04b2a27ffe15a9b63a1",
+        "outputSha256": "27ea6b15b4f9f7b0fe98760741f7cd79061514d3b48029e10e0eb034a03da5f4"
+      }
+    },
+    {
+      "source": "particle/cross_02.sct",
+      "sourceSha256": "51cefc789db01e0c6461f571eb6df75d21f285797b1f407612c69d3da0dad05d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Textures/particle/cross_02.png",
+      "address": "characterlab/source/particle/cross_02.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "d3d0ed6042d397b03ec8149e5931e4b2e0070c88891f26585cb8d9df9586b1f8",
+      "conversion": {
+        "status": "converted",
+        "width": 103,
+        "height": 103,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved",
+        "sourceSha256": "51cefc789db01e0c6461f571eb6df75d21f285797b1f407612c69d3da0dad05d",
+        "outputSha256": "d3d0ed6042d397b03ec8149e5931e4b2e0070c88891f26585cb8d9df9586b1f8"
+      }
+    },
+    {
+      "source": "particle/flash.sct",
+      "sourceSha256": "8dace73fcd75d8a7e93906cf39f1e763e7411da502eba2bee09b31f2acd61e62",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/particle/flash.png",
+      "address": "characterlab/source/particle/flash.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "d7ff6211ef9fb2b48807c040e8acf7b85fb7fa32812a43c90cf7ae29170254ae",
+      "conversion": {
+        "status": "converted",
+        "width": 256,
+        "height": 256,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved",
+        "sourceSha256": "8dace73fcd75d8a7e93906cf39f1e763e7411da502eba2bee09b31f2acd61e62",
+        "outputSha256": "d7ff6211ef9fb2b48807c040e8acf7b85fb7fa32812a43c90cf7ae29170254ae"
+      }
+    },
+    {
+      "source": "particle/orb_02.sct",
+      "sourceSha256": "abff4fcf93d4792fa77e355d8cf3ed5bb79e5d0a8792193a2a653014c53974d1",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Textures/particle/orb_02.png",
+      "address": "characterlab/source/particle/orb_02.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "b0251c05848450363f134e0f76074f23277e72660e525040940e30a8de5a6f03",
+      "conversion": {
+        "status": "converted",
+        "width": 244,
+        "height": 244,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved",
+        "sourceSha256": "abff4fcf93d4792fa77e355d8cf3ed5bb79e5d0a8792193a2a653014c53974d1",
+        "outputSha256": "b0251c05848450363f134e0f76074f23277e72660e525040940e30a8de5a6f03"
+      }
+    },
+    {
+      "source": "particle/pati_01.sct",
+      "sourceSha256": "c54340504fd79d0844917fd4e69d46ba4261e31061c3f1edfaf005263410db59",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Shared/Textures/particle/pati_01.png",
+      "address": "characterlab/source/particle/pati_01.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "b781ef81c5198b0e2f2124edba9756e7de944947f1edc54eba66672bf2251fd5",
+      "conversion": {
+        "status": "converted",
+        "width": 120,
+        "height": 120,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved",
+        "sourceSha256": "c54340504fd79d0844917fd4e69d46ba4261e31061c3f1edfaf005263410db59",
+        "outputSha256": "b781ef81c5198b0e2f2124edba9756e7de944947f1edc54eba66672bf2251fd5"
+      }
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "sourceSha256": "8f536d32d8984e0370e17ab9f1291be45b3908afce37ea8cb057ae1df4d2b9d2",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Shared/Textures/particle/ticle_02.png",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "1be5fa2daba5583e21856ff31fff66b5a72d5e5ba8f1bcc15b9448a065e43007",
+      "conversion": {
+        "status": "converted",
+        "width": 66,
+        "height": 66,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved",
+        "sourceSha256": "8f536d32d8984e0370e17ab9f1291be45b3908afce37ea8cb057ae1df4d2b9d2",
+        "outputSha256": "1be5fa2daba5583e21856ff31fff66b5a72d5e5ba8f1bcc15b9448a065e43007"
+      }
+    },
+    {
+      "source": "particle/zodiac_star1.sct",
+      "sourceSha256": "9f80904f690d2233af3390fc2aa9b406798758362d86e37d80d999fed5a84cee",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Textures/particle/zodiac_star1.png",
+      "address": "characterlab/source/particle/zodiac_star1.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "4bb7595a4f506b6928ce6e7e384b990365353f79bdbe6751a94566ecb228f4d4",
+      "conversion": {
+        "status": "converted",
+        "width": 128,
+        "height": 128,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved",
+        "sourceSha256": "9f80904f690d2233af3390fc2aa9b406798758362d86e37d80d999fed5a84cee",
+        "outputSha256": "4bb7595a4f506b6928ce6e7e384b990365353f79bdbe6751a94566ecb228f4d4"
+      }
+    },
+    {
+      "source": "portrait/c1001.atlas",
+      "sourceSha256": "ff3139d57bd0d4bd61fb6f77d425fe10e028658602810f2fd2a0210bb59f415f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Atlas/portrait/c1001.atlas.txt",
+      "address": "characterlab/source/portrait/c1001.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/portrait/c1001.sct"
+      ],
+      "outputSha256": "ff3139d57bd0d4bd61fb6f77d425fe10e028658602810f2fd2a0210bb59f415f",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "portrait/c1001.scsp",
+      "sourceSha256": "0a2ccaceb6cb5a566c2c67b9b9803fedb9cb86d32cae4f77a2bd5d09f50ee73c",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/portrait/c1001.spine.json",
+      "address": "characterlab/source/portrait/c1001.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "bef4f7535bbb6a04fe95344391204bf919d6da4035bf99c83e1202e172fc21ee",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "3.8.99",
+        "animationCount": 1,
+        "binaryBytes": 87271,
+        "consumedBytes": 87271
+      }
+    },
+    {
+      "source": "portrait/c1001.scsp",
+      "sourceSha256": "0a2ccaceb6cb5a566c2c67b9b9803fedb9cb86d32cae4f77a2bd5d09f50ee73c",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/portrait/c1001.skeleton.json",
+      "address": "characterlab/source/portrait/c1001.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/portrait/c1001.scsp/json",
+        "characterlab/source/portrait/c1001.atlas",
+        "characterlab/source/portrait/c1001.sct"
+      ],
+      "outputSha256": "a01be14eb6473656ab19aeef7c1e7a3665428d38c8c76cea746a86da6016f279",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "3.8.99",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "portrait/c1001.sct",
+      "sourceSha256": "0a1f5c1d65a36c8c0de6a9dc78cfcfd02bee583ab8624ea6026775a8f4487678",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/portrait/c1001.png",
+      "address": "characterlab/source/portrait/c1001.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "beb3a7a4e4e5577ab987c9f507ed7160d66c3991f60abf506bd8ef603469ec78",
+      "conversion": {
+        "status": "converted",
+        "width": 1016,
+        "height": 1032,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "0a1f5c1d65a36c8c0de6a9dc78cfcfd02bee583ab8624ea6026775a8f4487678",
+        "outputSha256": "beb3a7a4e4e5577ab987c9f507ed7160d66c3991f60abf506bd8ef603469ec78"
+      }
+    },
+    {
+      "source": "portrait/c1005.atlas",
+      "sourceSha256": "9c849881a182cbf400d23733d3cb40fd42b0ae153f7b7472c315d7dd7e8f7015",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Atlas/portrait/c1005.atlas.txt",
+      "address": "characterlab/source/portrait/c1005.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/portrait/c1005.sct"
+      ],
+      "outputSha256": "9c849881a182cbf400d23733d3cb40fd42b0ae153f7b7472c315d7dd7e8f7015",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "portrait/c1005.scsp",
+      "sourceSha256": "0e2ece280e031ee58609dc1f829701e938dd906d30b0abcae4fced0a0c9c2d05",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/portrait/c1005.spine.json",
+      "address": "characterlab/source/portrait/c1005.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "43e822c9c417ff53cbf5a30541c6418ac28b4629963b7dd704775971f42c18ae",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 2,
+        "binaryBytes": 280924,
+        "consumedBytes": 280924
+      }
+    },
+    {
+      "source": "portrait/c1005.scsp",
+      "sourceSha256": "0e2ece280e031ee58609dc1f829701e938dd906d30b0abcae4fced0a0c9c2d05",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/portrait/c1005.skeleton.json",
+      "address": "characterlab/source/portrait/c1005.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/portrait/c1005.scsp/json",
+        "characterlab/source/portrait/c1005.atlas",
+        "characterlab/source/portrait/c1005.sct"
+      ],
+      "outputSha256": "a218fd69e945d91a9350ac16d366ad28c933d17e7f5afa5b4e5fee0795e1ca07",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 2
+      }
+    },
+    {
+      "source": "portrait/c1005.sct",
+      "sourceSha256": "89031e2d6bca6d793b5735ac2b42703659f2ee3d7a8f5782d4d250e541314af3",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Textures/portrait/c1005.png",
+      "address": "characterlab/source/portrait/c1005.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "b8ffb755a279bf20496078d07ebf1fb44813458161c7a1011aa20dd0489b7c88",
+      "conversion": {
+        "status": "converted",
+        "width": 1918,
+        "height": 443,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "89031e2d6bca6d793b5735ac2b42703659f2ee3d7a8f5782d4d250e541314af3",
+        "outputSha256": "b8ffb755a279bf20496078d07ebf1fb44813458161c7a1011aa20dd0489b7c88"
+      }
+    },
+    {
+      "source": "portrait/c1062.atlas",
+      "sourceSha256": "52ca748c84a506050a880601da5719def118301b5de381d4d815bd3874b110c4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/portrait/c1062.atlas.txt",
+      "address": "characterlab/source/portrait/c1062.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/portrait/c1062.sct"
+      ],
+      "outputSha256": "52ca748c84a506050a880601da5719def118301b5de381d4d815bd3874b110c4",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "portrait/c1062.scsp",
+      "sourceSha256": "9746557b18eb38b2af9b8016881b4306cf361613dc5abc341965570d0a220bb1",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/portrait/c1062.spine.json",
+      "address": "characterlab/source/portrait/c1062.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "33e19d02b6620cae5b0637db9e1b175c97ccee86c4723aceb49c3b256f77702a",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 155130,
+        "consumedBytes": 155130
+      }
+    },
+    {
+      "source": "portrait/c1062.scsp",
+      "sourceSha256": "9746557b18eb38b2af9b8016881b4306cf361613dc5abc341965570d0a220bb1",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/portrait/c1062.skeleton.json",
+      "address": "characterlab/source/portrait/c1062.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/portrait/c1062.scsp/json",
+        "characterlab/source/portrait/c1062.atlas",
+        "characterlab/source/portrait/c1062.sct"
+      ],
+      "outputSha256": "1e08e9f309a0fbd2e4f73c04e39797017ee1dfc58ee0c5bffc74cbeaa9beec5b",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "portrait/c1062.sct",
+      "sourceSha256": "e6e8013d799727ec26971c0670817f6ca7c8631563683a3ba88e8f8e7c4c6304",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Textures/portrait/c1062.png",
+      "address": "characterlab/source/portrait/c1062.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "7ca53d8061e13cd1a1c82d0ed7466283c1957747481b4a8f9406a649a4708ef8",
+      "conversion": {
+        "status": "converted",
+        "width": 1746,
+        "height": 777,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "e6e8013d799727ec26971c0670817f6ca7c8631563683a3ba88e8f8e7c4c6304",
+        "outputSha256": "7ca53d8061e13cd1a1c82d0ed7466283c1957747481b4a8f9406a649a4708ef8"
+      }
+    },
+    {
+      "source": "sound/ja/voc1.audio_ja.bank",
+      "sourceSha256": "0ce45d4f6ad15836fdc42a4c7644e67aa01ae68f4a15630958c41ecb5c48076b",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Shared/Sounds/sound/ja/voc1.audio_ja.bank.bytes",
+      "address": "characterlab/source/sound/ja/voc1.audio_ja.bank",
+      "type": "bank",
+      "dependencies": [],
+      "outputSha256": "0ce45d4f6ad15836fdc42a4c7644e67aa01ae68f4a15630958c41ecb5c48076b",
+      "conversion": {
+        "status": "copied"
+      }
+    },
+    {
+      "source": "sound/master.bank",
+      "sourceSha256": "c00f5f04d84c640e27324429ae97f51d45593a98d0239da9bf4b986376f7db97",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Shared/Sounds/sound/master.bank.bytes",
+      "address": "characterlab/source/sound/master.bank",
+      "type": "bank",
+      "dependencies": [],
+      "outputSha256": "c00f5f04d84c640e27324429ae97f51d45593a98d0239da9bf4b986376f7db97",
+      "conversion": {
+        "status": "copied"
+      }
+    },
+    {
+      "source": "sound/master.strings.bank",
+      "sourceSha256": "45509040a16b108a5a3090ab300e71cee4876a5fc16140f49411ea12d53cc8e2",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Shared/Sounds/sound/master.strings.bank.bytes",
+      "address": "characterlab/source/sound/master.strings.bank",
+      "type": "bank",
+      "dependencies": [],
+      "outputSha256": "45509040a16b108a5a3090ab300e71cee4876a5fc16140f49411ea12d53cc8e2",
+      "conversion": {
+        "status": "copied"
+      }
+    },
+    {
+      "source": "sound/sfx1.bank",
+      "sourceSha256": "6a01d3cded5e30df49107f1940ea06279990d85278ca69bfa9832a76a17fc361",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Shared/Sounds/sound/sfx1.bank.bytes",
+      "address": "characterlab/source/sound/sfx1.bank",
+      "type": "bank",
+      "dependencies": [],
+      "outputSha256": "6a01d3cded5e30df49107f1940ea06279990d85278ca69bfa9832a76a17fc361",
+      "conversion": {
+        "status": "copied"
+      }
+    },
+    {
+      "source": "sound/voc.event.bank",
+      "sourceSha256": "1f2ddf6409e60b9aabeb19fe3e1267f4abafebece3a189a5d49f32220a9c48dd",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Shared/Sounds/sound/voc.event.bank.bytes",
+      "address": "characterlab/source/sound/voc.event.bank",
+      "type": "bank",
+      "dependencies": [],
+      "outputSha256": "1f2ddf6409e60b9aabeb19fe3e1267f4abafebece3a189a5d49f32220a9c48dd",
+      "conversion": {
+        "status": "copied"
+      }
+    },
+    {
+      "source": "stagept/c_angelica_skill_01.stg",
+      "sourceSha256": "def24a7e1ddd86774305aa342d49f80d2dcc6e3621bd1163aa61a65e7fb90103",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Configs/stagept/c_angelica_skill_01.graph.json",
+      "address": "characterlab/source/stagept/c_angelica_skill_01.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/camera/angelica_cm.scsp",
+        "characterlab/source/effect/angelica_b_idle.cfx",
+        "characterlab/source/effect/angelica_b_idle_eff_b.atlas",
+        "characterlab/source/effect/angelica_b_idle_eff_b.scsp",
+        "characterlab/source/effect/angelica_b_idle_eff_f.atlas",
+        "characterlab/source/effect/angelica_b_idle_eff_f.scsp",
+        "characterlab/source/effect/angelica_b_idleeffatlas.atlas",
+        "characterlab/source/effect/angelica_b_idleeffatlas.sct",
+        "characterlab/source/effect/angelica_sk1eff_b.atlas",
+        "characterlab/source/effect/angelica_sk1eff_b.scsp",
+        "characterlab/source/effect/angelica_sk1eff_f.atlas",
+        "characterlab/source/effect/angelica_sk1eff_f.scsp",
+        "characterlab/source/effect/angelica_sk1effatlas.atlas",
+        "characterlab/source/effect/angelica_sk1effatlas.sct",
+        "characterlab/source/effect/angelica_sk2eff_self.atlas",
+        "characterlab/source/effect/angelica_sk2eff_self.scsp",
+        "characterlab/source/effect/angelica_sk2effatlas.atlas",
+        "characterlab/source/effect/angelica_sk2effatlas.sct",
+        "characterlab/source/effect/angelica_sk3eff_self.atlas",
+        "characterlab/source/effect/angelica_sk3eff_self.scsp",
+        "characterlab/source/effect/angelica_skill_01.cfx",
+        "characterlab/source/effect/angelica_skill_01_pati1.particle",
+        "characterlab/source/effect/angelica_skill_02_self.cfx",
+        "characterlab/source/effect/angelica_skill_03_self.cfx",
+        "characterlab/source/effect/hit_new_blunt_01.atlas",
+        "characterlab/source/effect/hit_new_blunt_01.scsp",
+        "characterlab/source/effect/hit_new_blunt_01.sct",
+        "characterlab/source/effect/hit_new_blunt_normal.cfx",
+        "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+        "characterlab/source/model/angelica.timeline",
+        "characterlab/source/particle/cross_02.sct",
+        "characterlab/source/particle/ticle_02.sct",
+        "characterlab/source/particle/zodiac_star1.sct"
+      ],
+      "outputSha256": "77243fea8d231b19861e0db4b38a791532a3b1513eecae274bd8d56e04d49bde",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "stagept/c_angelica_skill_02.stg",
+      "sourceSha256": "b76574ea0f3640a306c0650785ca2f90005b2369254146110b9877314dfdbada",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Configs/stagept/c_angelica_skill_02.graph.json",
+      "address": "characterlab/source/stagept/c_angelica_skill_02.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/effect/achieve_bar_pati.particle",
+        "characterlab/source/effect/angelica_b_idle.cfx",
+        "characterlab/source/effect/angelica_b_idle_eff_b.atlas",
+        "characterlab/source/effect/angelica_b_idle_eff_b.scsp",
+        "characterlab/source/effect/angelica_b_idle_eff_f.atlas",
+        "characterlab/source/effect/angelica_b_idle_eff_f.scsp",
+        "characterlab/source/effect/angelica_b_idleeffatlas.atlas",
+        "characterlab/source/effect/angelica_b_idleeffatlas.sct",
+        "characterlab/source/effect/angelica_sk1eff_b.atlas",
+        "characterlab/source/effect/angelica_sk1eff_b.scsp",
+        "characterlab/source/effect/angelica_sk1eff_f.atlas",
+        "characterlab/source/effect/angelica_sk1eff_f.scsp",
+        "characterlab/source/effect/angelica_sk1effatlas.atlas",
+        "characterlab/source/effect/angelica_sk1effatlas.sct",
+        "characterlab/source/effect/angelica_sk2eff_self.atlas",
+        "characterlab/source/effect/angelica_sk2eff_self.scsp",
+        "characterlab/source/effect/angelica_sk2eff_target_b.atlas",
+        "characterlab/source/effect/angelica_sk2eff_target_b.scsp",
+        "characterlab/source/effect/angelica_sk2eff_target_f.atlas",
+        "characterlab/source/effect/angelica_sk2eff_target_f.scsp",
+        "characterlab/source/effect/angelica_sk2effatlas.atlas",
+        "characterlab/source/effect/angelica_sk2effatlas.sct",
+        "characterlab/source/effect/angelica_sk3eff_self.atlas",
+        "characterlab/source/effect/angelica_sk3eff_self.scsp",
+        "characterlab/source/effect/angelica_skill_01.cfx",
+        "characterlab/source/effect/angelica_skill_01_pati1.particle",
+        "characterlab/source/effect/angelica_skill_02_pati.particle",
+        "characterlab/source/effect/angelica_skill_02_self.cfx",
+        "characterlab/source/effect/angelica_skill_02_target.cfx",
+        "characterlab/source/effect/angelica_skill_03_self.cfx",
+        "characterlab/source/effect/angelica_skill_2_pati2.particle",
+        "characterlab/source/model/angelica.timeline",
+        "characterlab/source/particle/cross_02.sct",
+        "characterlab/source/particle/orb_02.sct",
+        "characterlab/source/particle/pati_01.sct",
+        "characterlab/source/particle/zodiac_star1.sct"
+      ],
+      "outputSha256": "a22a491a9c092e81d1a9f9ae0348a51597f4cca7887a052fa1bb6548089afaf9",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "stagept/c_angelica_skill_03.stg",
+      "sourceSha256": "9fbd2a51eb7e10361dc52461f5fadd5a5df9009b6570ccdcd1db0f712bc9f468",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Configs/stagept/c_angelica_skill_03.graph.json",
+      "address": "characterlab/source/stagept/c_angelica_skill_03.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/cut/fhd/sk_c1062_3.webp",
+        "characterlab/source/effect/achieve_bar_pati.particle",
+        "characterlab/source/effect/angelica_b_idle.cfx",
+        "characterlab/source/effect/angelica_b_idle_eff_b.atlas",
+        "characterlab/source/effect/angelica_b_idle_eff_b.scsp",
+        "characterlab/source/effect/angelica_b_idle_eff_f.atlas",
+        "characterlab/source/effect/angelica_b_idle_eff_f.scsp",
+        "characterlab/source/effect/angelica_b_idleeffatlas.atlas",
+        "characterlab/source/effect/angelica_b_idleeffatlas.sct",
+        "characterlab/source/effect/angelica_sk1eff_b.atlas",
+        "characterlab/source/effect/angelica_sk1eff_b.scsp",
+        "characterlab/source/effect/angelica_sk1eff_f.atlas",
+        "characterlab/source/effect/angelica_sk1eff_f.scsp",
+        "characterlab/source/effect/angelica_sk1effatlas.atlas",
+        "characterlab/source/effect/angelica_sk1effatlas.sct",
+        "characterlab/source/effect/angelica_sk2eff_self.atlas",
+        "characterlab/source/effect/angelica_sk2eff_self.scsp",
+        "characterlab/source/effect/angelica_sk2effatlas.atlas",
+        "characterlab/source/effect/angelica_sk2effatlas.sct",
+        "characterlab/source/effect/angelica_sk3eff_self.atlas",
+        "characterlab/source/effect/angelica_sk3eff_self.scsp",
+        "characterlab/source/effect/angelica_sk3eff_target_b.atlas",
+        "characterlab/source/effect/angelica_sk3eff_target_b.scsp",
+        "characterlab/source/effect/angelica_sk3eff_target_f.atlas",
+        "characterlab/source/effect/angelica_sk3eff_target_f.scsp",
+        "characterlab/source/effect/angelica_skill_01.cfx",
+        "characterlab/source/effect/angelica_skill_01_pati1.particle",
+        "characterlab/source/effect/angelica_skill_02_self.cfx",
+        "characterlab/source/effect/angelica_skill_03_self.cfx",
+        "characterlab/source/effect/angelica_skill_03_target.cfx",
+        "characterlab/source/model/angelica.timeline",
+        "characterlab/source/particle/cross_02.sct",
+        "characterlab/source/particle/zodiac_star1.sct"
+      ],
+      "outputSha256": "fc97d5bcdaeb5155688e3dc2b8a4625ef01e703516d6f46a46e2cef7a6f0952f",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "stagept/c_mercedes_skill_01.stg",
+      "sourceSha256": "a9d01db2218ee658005bfded288965773cdcdf07a932a54978062095812ea4af",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Configs/stagept/c_mercedes_skill_01.graph.json",
+      "address": "characterlab/source/stagept/c_mercedes_skill_01.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/camera/mercedes_cm_sk1.scsp",
+        "characterlab/source/effect/eff_magic_thunder_01.atlas",
+        "characterlab/source/effect/eff_magic_thunder_01.cfx",
+        "characterlab/source/effect/eff_magic_thunder_01.scsp",
+        "characterlab/source/effect/eff_magic_thunder_01.sct",
+        "characterlab/source/effect/eff_magic_thunder_01_gr.atlas",
+        "characterlab/source/effect/eff_magic_thunder_01_gr.scsp",
+        "characterlab/source/effect/eff_magic_thunder_01_gr.sct",
+        "characterlab/source/effect/hit_new_blunt_01.atlas",
+        "characterlab/source/effect/hit_new_blunt_01.scsp",
+        "characterlab/source/effect/hit_new_blunt_01.sct",
+        "characterlab/source/effect/hit_new_blunt_normal.cfx",
+        "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+        "characterlab/source/effect/mercedes_skeff_sk1_magicring.atlas",
+        "characterlab/source/effect/mercedes_skeff_sk1_magicring.cfx",
+        "characterlab/source/effect/mercedes_skeff_sk1_magicring.scsp",
+        "characterlab/source/effect/mercedes_skeff_sk1_magicring.sct",
+        "characterlab/source/model/mercedes.timeline",
+        "characterlab/source/particle/ticle_02.sct"
+      ],
+      "outputSha256": "97e43bc2015497709660b1ac92883fd825f3238298e1ab47b8f4699b99bbb3bc",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "stagept/c_mercedes_skill_02.stg",
+      "sourceSha256": "a904de367d7c9353e7f32eab962b4c8992f513f12ed7f4aeac8867d0634602f8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Configs/stagept/c_mercedes_skill_02.graph.json",
+      "address": "characterlab/source/stagept/c_mercedes_skill_02.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/camera/cm_magic_lightningball.scsp",
+        "characterlab/source/effect/eff_dust_bigar_b.atlas",
+        "characterlab/source/effect/eff_dust_bigar_b.scsp",
+        "characterlab/source/effect/eff_dust_bigar_b.sct",
+        "characterlab/source/effect/eff_dust_bigar_f.atlas",
+        "characterlab/source/effect/eff_dust_bigar_f.scsp",
+        "characterlab/source/effect/eff_dust_bigar_f.sct",
+        "characterlab/source/effect/eff_dust_roundbig.cfx",
+        "characterlab/source/effect/eff_magic_lightningball.atlas",
+        "characterlab/source/effect/eff_magic_lightningball.cfx",
+        "characterlab/source/effect/eff_magic_lightningball.scsp",
+        "characterlab/source/effect/eff_magic_lightningball.sct",
+        "characterlab/source/effect/eff_magic_lightningball_F.atlas",
+        "characterlab/source/effect/eff_magic_lightningball_F.scsp",
+        "characterlab/source/effect/eff_magic_lightningball_F.sct",
+        "characterlab/source/effect/eff_magic_lightningball_gr.atlas",
+        "characterlab/source/effect/eff_magic_lightningball_gr.scsp",
+        "characterlab/source/effect/eff_magic_lightningball_gr.sct",
+        "characterlab/source/effect/hit_new_blunt_01.atlas",
+        "characterlab/source/effect/hit_new_blunt_01.scsp",
+        "characterlab/source/effect/hit_new_blunt_01.sct",
+        "characterlab/source/effect/hit_new_blunt_mult_normal.cfx",
+        "characterlab/source/effect/hit_new_blunt_normal.cfx",
+        "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+        "characterlab/source/model/mercedes.timeline",
+        "characterlab/source/particle/ticle_02.sct"
+      ],
+      "outputSha256": "2c6404be693f46c00331874c671bbe9f6a523b8a4b3e795d371698676dbaba30",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "stagept/c_mercedes_skill_03.stg",
+      "sourceSha256": "81f9f19b8152b66ca0ce12793509de9dfd5481cba12f86c56916e9780b8938f6",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Configs/stagept/c_mercedes_skill_03.graph.json",
+      "address": "characterlab/source/stagept/c_mercedes_skill_03.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/camera/mage_sk3_cm.scsp",
+        "characterlab/source/effect/hit_new_blunt_01.atlas",
+        "characterlab/source/effect/hit_new_blunt_01.scsp",
+        "characterlab/source/effect/hit_new_blunt_01.sct",
+        "characterlab/source/effect/hit_new_blunt_mult_normal.cfx",
+        "characterlab/source/effect/hit_new_blunt_normal.cfx",
+        "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+        "characterlab/source/effect/mage_sk3_eff_b.atlas",
+        "characterlab/source/effect/mage_sk3_eff_b.scsp",
+        "characterlab/source/effect/mage_sk3_eff_b.sct",
+        "characterlab/source/effect/mage_sk3_eff_f.atlas",
+        "characterlab/source/effect/mage_sk3_eff_f.scsp",
+        "characterlab/source/effect/mage_sk3_eff_f.sct",
+        "characterlab/source/effect/magician_pat.particle",
+        "characterlab/source/effect/magician_sk3_eff.cfx",
+        "characterlab/source/model/mercedes.timeline",
+        "characterlab/source/particle/pati_01.sct",
+        "characterlab/source/particle/ticle_02.sct"
+      ],
+      "outputSha256": "61a620bcf8a67bab37b635dd517f5b2cce2864fb8b7903ac0246b0c248876864",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "stagept/c_ras_skill_01.stg",
+      "sourceSha256": "bd0fec1f326a64b00bfa4ab8dc2c9035a3e5c6fd752c92b35b08718af8966e1c",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Configs/stagept/c_ras_skill_01.graph.json",
+      "address": "characterlab/source/stagept/c_ras_skill_01.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/camera/ras_re_cm_sk1.scsp",
+        "characterlab/source/effect/hit_new_slash_01.atlas",
+        "characterlab/source/effect/hit_new_slash_01.scsp",
+        "characterlab/source/effect/hit_new_slash_01.sct",
+        "characterlab/source/effect/hit_new_slash_normal.cfx",
+        "characterlab/source/effect/hit_new_slash_yellow_nm_pati.particle",
+        "characterlab/source/effect/ras_new_skeff_sk1.cfx",
+        "characterlab/source/effect/ras_re_sk1_b.atlas",
+        "characterlab/source/effect/ras_re_sk1_b.scsp",
+        "characterlab/source/effect/ras_re_sk1_b.sct",
+        "characterlab/source/effect/ras_re_sk1_f.atlas",
+        "characterlab/source/effect/ras_re_sk1_f.scsp",
+        "characterlab/source/effect/ras_re_sk1_f.sct",
+        "characterlab/source/particle/ticle_02.sct"
+      ],
+      "outputSha256": "de2f397ef8f4cf953198246dae2603ee1d3f8feb191d0aab0a515c11239eed2d",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "stagept/c_ras_skill_02.stg",
+      "sourceSha256": "6a002e14e770115808212bb4ed2837e8e0a62b5b8c43429aeaf23afe09175094",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Configs/stagept/c_ras_skill_02.graph.json",
+      "address": "characterlab/source/stagept/c_ras_skill_02.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/camera/ras_re_cm_sk2.scsp",
+        "characterlab/source/effect/hit_new_pierce_normal.atlas",
+        "characterlab/source/effect/hit_new_pierce_normal.cfx",
+        "characterlab/source/effect/hit_new_pierce_normal.scsp",
+        "characterlab/source/effect/hit_new_pierce_normal.sct",
+        "characterlab/source/effect/hit_new_pierce_yellow_nm_pati.particle",
+        "characterlab/source/effect/hit_new_slash_01.atlas",
+        "characterlab/source/effect/hit_new_slash_01.scsp",
+        "characterlab/source/effect/hit_new_slash_01.sct",
+        "characterlab/source/effect/hit_new_slash_normal.cfx",
+        "characterlab/source/effect/hit_new_slash_yellow_nm_pati.particle",
+        "characterlab/source/effect/ras_new_sk2_pat1.particle",
+        "characterlab/source/effect/ras_new_sk2_pat2.particle",
+        "characterlab/source/effect/ras_new_skeff_pat3.particle",
+        "characterlab/source/effect/ras_new_skeff_sk2.cfx",
+        "characterlab/source/effect/ras_new_skeff_sk2_2.cfx",
+        "characterlab/source/effect/ras_new_skeff_sk2_end.cfx",
+        "characterlab/source/effect/ras_re_sk2_b.atlas",
+        "characterlab/source/effect/ras_re_sk2_b.scsp",
+        "characterlab/source/effect/ras_re_sk2_b.sct",
+        "characterlab/source/effect/ras_re_sk2_f.atlas",
+        "characterlab/source/effect/ras_re_sk2_f.scsp",
+        "characterlab/source/effect/ras_re_sk2_f.sct",
+        "characterlab/source/effect/ras_re_sk2_f2.atlas",
+        "characterlab/source/effect/ras_re_sk2_f2.scsp",
+        "characterlab/source/effect/ras_re_sk2_f2.sct",
+        "characterlab/source/effect/rass_skill_02_renew_pati1.particle",
+        "characterlab/source/particle/aura_04.sct",
+        "characterlab/source/particle/flash.sct",
+        "characterlab/source/particle/pati_01.sct",
+        "characterlab/source/particle/ticle_02.sct"
+      ],
+      "outputSha256": "654cfd5941e518a0b4bbd7d52a8f2b01e0b87c112d9b87612308769b631cea9c",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "stagept/c_ras_skill_03.stg",
+      "sourceSha256": "349e04e85ef8a5b3e8605a305cf45635d5222938f505a211d685521f676b9309",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Configs/stagept/c_ras_skill_03.graph.json",
+      "address": "characterlab/source/stagept/c_ras_skill_03.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/camera/ras_re_cm_sk3.scsp",
+        "characterlab/source/cut/fhd/sk_c1001_3.webp",
+        "characterlab/source/effect/hit_new_blunt_01.atlas",
+        "characterlab/source/effect/hit_new_blunt_01.scsp",
+        "characterlab/source/effect/hit_new_blunt_01.sct",
+        "characterlab/source/effect/hit_new_blunt_normal.cfx",
+        "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+        "characterlab/source/effect/ras_new_skeff_sk3.cfx",
+        "characterlab/source/effect/ras_re_sk3_f.atlas",
+        "characterlab/source/effect/ras_re_sk3_f.scsp",
+        "characterlab/source/effect/ras_re_sk3_f.sct",
+        "characterlab/source/effect/ras_re_sk3_f3.atlas",
+        "characterlab/source/effect/ras_re_sk3_f3.scsp",
+        "characterlab/source/effect/ras_re_sk3_f3.sct",
+        "characterlab/source/effect/ras_re_sk3_ready.atlas",
+        "characterlab/source/effect/ras_re_sk3_ready.cfx",
+        "characterlab/source/effect/ras_re_sk3_ready.scsp",
+        "characterlab/source/effect/ras_re_sk3_ready.sct",
+        "characterlab/source/effect/rass_skill_03_renew_pati1.particle",
+        "characterlab/source/effect/rass_skill_03_renew_pati2.particle",
+        "characterlab/source/particle/pati_01.sct",
+        "characterlab/source/particle/ticle_02.sct"
+      ],
+      "outputSha256": "449c0b01a05e40ba2a3694277bdaa68fe01994be4315fc4ae9b9f46c0c97dc5d",
+      "conversion": {
+        "status": "converted"
+      }
+    }
+  ],
+  "diagnostics": [
+    {
+      "severity": "info",
+      "source": "model/ras.timeline",
+      "code": "timeline-not-provided",
+      "message": "Source uses STG and skeleton events independently."
+    }
+  ]
+}

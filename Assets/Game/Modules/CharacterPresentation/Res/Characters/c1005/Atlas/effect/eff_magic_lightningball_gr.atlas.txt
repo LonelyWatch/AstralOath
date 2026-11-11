@@ -1,0 +1,76 @@
+
+eff_magic_lightningball_gr.sct
+size: 464,668
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+fire_ground_1
+  rotate: false
+  xy: 2, 2
+  size: 438, 173
+  orig: 438, 173
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 497
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+ring_wave
+  rotate: false
+  xy: 173, 497
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+ring_wave_g
+  rotate: false
+  xy: 307, 497
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+thunder_grlight_01
+  rotate: false
+  xy: 226, 397
+  size: 171, 98
+  orig: 171, 98
+  offset: 0, 0
+  index: -1
+thunder_ground_03
+  rotate: false
+  xy: 2, 290
+  size: 223, 100
+  orig: 223, 100
+  offset: 0, 0
+  index: -1
+thunder_ground_04
+  rotate: false
+  xy: 2, 392
+  size: 222, 103
+  orig: 222, 103
+  offset: 0, 0
+  index: -1
+thunder_ground_05
+  rotate: false
+  xy: 2, 177
+  size: 230, 111
+  orig: 230, 111
+  offset: 0, 0
+  index: -1
+thunder_ground_06
+  rotate: false
+  xy: 234, 177
+  size: 228, 110
+  orig: 228, 110
+  offset: 0, 0
+  index: -1
+thunder_ground_07
+  rotate: false
+  xy: 234, 289
+  size: 226, 106
+  orig: 226, 106
+  offset: 0, 0
+  index: -1

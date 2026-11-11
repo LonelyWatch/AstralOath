@@ -1,11 +1,12 @@
 [CmdletBinding()]
 param(
-    [ValidateSet('Prepare','Compile','ImportTmp','Generate','EditMode','PlayMode','Windows','AndroidAstc','AndroidEtc2','HotWindows','HotAndroidAstc','HotAndroidEtc2','InstallHybridCLR','CheckHybridCLR','CheckCompatibility')]
+    [ValidateSet('Prepare','Compile','ImportTmp','Generate','EditMode','PlayMode','Windows','AndroidAstc','AndroidEtc2','HotWindows','HotAndroidAstc','HotAndroidEtc2','InstallHybridCLR','CheckHybridCLR','CheckCompatibility','CharacterLabWindows','GenerateCharacterLab','ValidateCharacterLab')]
     [string]$Mode = 'Compile',
     [string]$Unity = 'C:\Program Files\Unity\Hub\Editor\2022.3.62f3\Editor\Unity.exe',
     [ValidatePattern('^Unity[A-Za-z0-9_-]*$')]
     [string]$ProjectName = 'UnityProject',
     [switch]$NoSync,
+    [switch]$Graphics,
     [switch]$DevelopmentHttp,
     [switch]$Development,
     [string]$BaselineId,
@@ -20,6 +21,9 @@ param(
     [ValidateRange(1, 14400)][int]$TimeoutSeconds = 3600
 )
 $ErrorActionPreference = 'Stop'
+$isCharacterLab = $Mode -in 'CharacterLabWindows','GenerateCharacterLab','ValidateCharacterLab'
+if ($isCharacterLab -and $SigningKey) { throw 'CharacterLab test packages do not use the Foundation release signer.' }
+if ($isCharacterLab -and -not $PSBoundParameters.ContainsKey('ProjectName')) { $ProjectName = 'UnityCharacterLab' }
 $repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $project = Join-Path $repo ".artifacts/$ProjectName"
 $reports = Join-Path $repo '.artifacts/unity'
@@ -59,13 +63,14 @@ if ($Mode -in 'EditMode','PlayMode') {
     $oldResult = Join-Path $reports "$Mode.xml"
     if (Test-Path -LiteralPath $oldResult) { Remove-Item -LiteralPath $oldResult -Force }
 }
-$arguments = @('-batchmode','-nographics','-projectPath',"`"$project`"",'-logFile',"`"$log`"")
-if ($Mode -in 'Windows','HotWindows') { $BuildTarget = 'Win64' }
+$arguments = @('-batchmode','-projectPath',"`"$project`"",'-logFile',"`"$log`"")
+if (-not $Graphics) { $arguments += '-nographics' }
+if ($Mode -in 'Windows','HotWindows','CharacterLabWindows') { $BuildTarget = 'Win64' }
 if ($Mode -in 'AndroidAstc','AndroidEtc2','HotAndroidAstc','HotAndroidEtc2') { $BuildTarget = 'Android' }
 if ($BuildTarget) { $arguments += @('-buildTarget', $BuildTarget) }
 if ($DevelopmentHttp) { $arguments += '-astral-dev-http' }
 if ($Development) { $arguments += '-astral-development' }
-if (-not $OutputRoot) { $OutputRoot = Join-Path $repo '.artifacts/builds' }
+if (-not $OutputRoot) { $OutputRoot = Join-Path $repo $(if ($isCharacterLab) { '.artifacts/characterlab-builds' } else { '.artifacts/builds' }) }
 $bindings = @{
     '-astral-baseline-id' = $BaselineId
     '-astral-baseline-path' = $BaselinePath
@@ -98,7 +103,12 @@ switch ($Mode) {
             CheckHybridCLR='CheckEnvironment'
             CheckCompatibility='CheckCompatibility'
         }[$Mode]
-        $execute = if ($legacyMethod) { "AstralOath.Editor.FoundationBuilder.$legacyMethod" }
+        $characterMethod = @{
+            CharacterLabWindows='AstralOath.Editor.CharacterLabBuild.BuildWindows'
+            GenerateCharacterLab='AstralOath.Editor.CharacterLabSceneBuilder.CreateScene'
+            ValidateCharacterLab='AstralOath.Editor.CharacterLabBuild.Validate'
+        }[$Mode]
+        $execute = if ($characterMethod) { $characterMethod } elseif ($legacyMethod) { "AstralOath.Editor.FoundationBuilder.$legacyMethod" }
             else { "AstralOath.Editor.HotUpdateBuilder.$builderMethod" }
         $arguments += @('-quit','-executeMethod', $execute)
     }
@@ -107,7 +117,7 @@ $oldToolRoot = $env:ASTRAL_BUILD_TOOL_ROOT
 $oldSigningKey = $env:ASTRAL_SIGNING_KEY
 try {
     $env:ASTRAL_BUILD_TOOL_ROOT = $repo
-    if ($SigningKey) { $env:ASTRAL_SIGNING_KEY = [IO.Path]::GetFullPath($SigningKey, (Get-Location).ProviderPath) }
+    if ($isCharacterLab) { $env:ASTRAL_SIGNING_KEY = $null } elseif ($SigningKey) { $env:ASTRAL_SIGNING_KEY = [IO.Path]::GetFullPath($SigningKey, (Get-Location).ProviderPath) }
     $process = Start-Process -FilePath $Unity -ArgumentList $arguments -WindowStyle Hidden -PassThru
 } finally {
     $env:ASTRAL_BUILD_TOOL_ROOT = $oldToolRoot

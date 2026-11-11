@@ -1,10 +1,17 @@
 [CmdletBinding()]
-param()
+param([ValidateSet('Foundation','CharacterLab')][string]$Profile = 'Foundation')
 $ErrorActionPreference = 'Stop'
 $repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
-$project = Join-Path $repo '.artifacts/UnityProject'
+$project = Join-Path $repo $(if ($Profile -eq 'CharacterLab') { '.artifacts/UnityCharacterLab' } else { '.artifacts/UnityProject' })
 if (-not (Test-Path (Join-Path $project 'Assets/Game'))) { throw 'Generate the isolated Unity project first.' }
-$generated = @(Get-ChildItem (Join-Path $project 'Assets/Game') -File -Recurse | Where-Object { $_.Extension -in @('.unity','.prefab','.asset','.mat','.png') })
+$generated = if ($Profile -eq 'CharacterLab') {
+    @('Assets/Game/Modules/CharacterLab/Scenes/CharacterLab.unity',
+      'Assets/Game/Modules/CharacterLab/Res/Prefab/CharacterLabWindow.prefab',
+      'Assets/Game/Modules/CharacterPresentation/Res/Materials/CharacterSpriteBlur.mat',
+      'Assets/Game/Modules/FoundationDemo/AssetBundleCollectorSetting.asset') | ForEach-Object {
+        Get-Item -LiteralPath (Join-Path $project $_)
+    }
+} else { @(Get-ChildItem (Join-Path $project 'Assets/Game') -File -Recurse | Where-Object { $_.Extension -in @('.unity','.prefab','.asset','.mat','.png') }) }
 
 # Write metadata BEFORE new assets: a live Editor must never invent a different GUID in between.
 foreach ($file in $generated) {
@@ -30,5 +37,18 @@ foreach ($tree in @('Assets','Packages','Shared')) {
         }
     }
 }
-Copy-Item (Join-Path $project 'ProjectSettings/EditorBuildSettings.asset') (Join-Path $repo 'ProjectSettings/EditorBuildSettings.asset') -Force
+if ($Profile -eq 'CharacterLab') {
+    # Only these imported textures receive the explicit PMA validation profile.
+    $manifest = Get-Content -LiteralPath (Join-Path $repo 'Assets/Game/Modules/CharacterPresentation/Configs/import-manifest.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+    foreach ($entry in $manifest.entries | Where-Object { $_.path.EndsWith('.png') }) {
+        $relative = $entry.path
+        if (-not $relative.StartsWith('Assets/Game/Modules/CharacterPresentation/Res/') -or $relative.Split('/') -contains '..' -or $relative.Contains('\')) { throw 'Unsafe character texture path.' }
+        $sourceMeta = Join-Path $project ($relative + '.meta')
+        $targetMeta = Join-Path $repo ($relative + '.meta')
+        if ((Select-String '^guid: ' -LiteralPath $sourceMeta).Line -ne (Select-String '^guid: ' -LiteralPath $targetMeta).Line) { throw "Texture GUID conflict: $relative" }
+        Copy-Item -LiteralPath $sourceMeta -Destination $targetMeta -Force
+    }
+} else {
+    Copy-Item (Join-Path $project 'ProjectSettings/EditorBuildSettings.asset') (Join-Path $repo 'ProjectSettings/EditorBuildSettings.asset') -Force
+}
 Write-Output "Synchronized $($generated.Count) generated Unity assets and missing metadata; source code was not overwritten."

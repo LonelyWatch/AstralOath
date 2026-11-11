@@ -1,0 +1,13 @@
+{
+  "version": "2.1.27",
+  "jsonAddress": "characterlab/source/model/mercedes.scsp/json",
+  "atlasAddress": "characterlab/source/model/mercedes.atlas",
+  "pages": [
+    {
+      "name": "mercedes.sct",
+      "address": "characterlab/source/model/mercedes.sct"
+    }
+  ],
+  "premultipliedAlpha": true,
+  "scale": 0.01
+}

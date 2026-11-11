@@ -1,0 +1,56 @@
+{
+  "timeline": {
+    "default": {
+      "skill3": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "param": {}
+          }
+        ]
+      },
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 1093,
+            "func": "sound",
+            "param": {}
+          }
+        ]
+      },
+      "knock_down": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 1,
+            "func": "sound",
+            "param": {}
+          }
+        ]
+      },
+      "shock": {
+        "duration": 0,
+        "frames": []
+      },
+      "attacked": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 1,
+            "func": "sound",
+            "param": {}
+          }
+        ]
+      },
+      "down": {
+        "duration": 0,
+        "frames": []
+      }
+    }
+  }
+}

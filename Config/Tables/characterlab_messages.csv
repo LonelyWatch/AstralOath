@@ -1,0 +1,145 @@
+##,key,zhCn
+,lab.title,角色实验室
+,lab.close,关闭
+,lab.subtitle,原版骨骼 · 中文界面 / 日语语音
+,lab.search,搜索角色 / 编号
+,lab.animations,动画
+,lab.voices,日语语音 · 点击重新抽样
+,lab.skills,技能演出
+,lab.diagnostics,诊断 / 源数据
+,lab.battle,战斗骨骼
+,lab.portrait,动态立绘
+,lab.play,播放
+,lab.pause,暂停
+,lab.stop,停止
+,lab.step,逐帧 +1/30
+,lab.loop,循环：{0}
+,lab.on,开
+,lab.off,关
+,lab.slower,减速
+,lab.faster,加速
+,lab.zoom_in,放大
+,lab.zoom_out,缩小
+,lab.flip,朝向
+,lab.background,背景
+,lab.reset,复位 / 有声重播
+,lab.skin,皮肤：{0}
+,lab.skin_empty,无可选皮肤
+,lab.loading,正在加载：{0}
+,lab.ready,{0}  /  Spine {1}
+,lab.missing,缺少资源：{0}
+,lab.error,加载 / 播放失败：{0}
+,lab.transport,{0:F2}s  ·  {1:F2}x  ·  {2}
+,lab.sound,有声
+,lab.silent,静音检查（复位恢复有声）
+,lab.raw,{0}
+,lab.voice_status,语音：{0}
+,lab.unavailable,音频不可用：{0}
+,lab.choose_animation,请选择动画
+,lab.empty,无可用条目
+,lab.skill,技能 {0}
+,lab.skill_diagnostic,演出预览：{0}。未验证的节点仅报告，不视为还原。
+,lab.not_supported,未支持：{0}
+,lab.selection,角色 {0}
+,lab.targets,试验队伍仅用于演出；协攻同伴：梅赛德丝；安洁莉卡 S2 治疗2人 / S3 全队4人
+,lab.experimental,条件映射预览：{0}
+,lab.experimental_warning,实验映射：when=1 起始，缺省连接完成；位置编码仍未验证。此模式不代表原作还原。
+,lab.seek_back,后退 0.5s
+,lab.seek_forward,前进 0.5s
+,character.ras.name,拉斯
+,character.ras.skill1,拉斯 · 技能1
+,character.ras.skill2,拉斯 · 技能2
+,character.ras.skill3,拉斯 · 技能3
+,character.voice.voc_c1001_answer_1,voc_c1001_answer_1
+,character.voice.voc_c1001_answer_2,voc_c1001_answer_2
+,character.voice.voc_c1001_call_1,voc_c1001_call_1
+,character.voice.voc_c1001_call_2,voc_c1001_call_2
+,character.voice.voc_c1001_dead_1,voc_c1001_dead_1
+,character.voice.voc_c1001_dead_2,voc_c1001_dead_2
+,character.voice.voc_c1001_defeat,voc_c1001_defeat
+,character.voice.voc_c1001_dmg_1,voc_c1001_dmg_1
+,character.voice.voc_c1001_dmg_2,voc_c1001_dmg_2
+,character.voice.voc_c1001_dmg_3,voc_c1001_dmg_3
+,character.voice.voc_c1001_get,voc_c1001_get
+,character.voice.voc_c1001_idle_1,voc_c1001_idle_1
+,character.voice.voc_c1001_idle_2,voc_c1001_idle_2
+,character.voice.voc_c1001_idle_3,voc_c1001_idle_3
+,character.voice.voc_c1001_lv_1,voc_c1001_lv_1
+,character.voice.voc_c1001_shout_1,voc_c1001_shout_1
+,character.voice.voc_c1001_shout_2,voc_c1001_shout_2
+,character.voice.voc_c1001_sk2_2,voc_c1001_sk2_2
+,character.voice.voc_c1001_sk2_3,voc_c1001_sk2_3
+,character.voice.voc_c1001_sk3_1_1,voc_c1001_sk3_1_1
+,character.voice.voc_c1001_sk3_1_2,voc_c1001_sk3_1_2
+,character.voice.voc_c1001_sk3_2_1,voc_c1001_sk3_2_1
+,character.voice.voc_c1001_sk3_2_2,voc_c1001_sk3_2_2
+,character.voice.voc_c1001_sk3_3_1,voc_c1001_sk3_3_1
+,character.voice.voc_c1001_sk3_3_2,voc_c1001_sk3_3_2
+,character.voice.voc_c1001_utterance_1,voc_c1001_utterance_1
+,character.voice.voc_c1001_utterance_2,voc_c1001_utterance_2
+,character.voice.voc_c1001_win_1,voc_c1001_win_1
+,character.voice.voc_c1001_win_2,voc_c1001_win_2
+,character.mercedes.name,梅赛德丝
+,character.mercedes.skill1,梅赛德丝 · 技能1
+,character.mercedes.skill2,梅赛德丝 · 技能2
+,character.mercedes.skill3,梅赛德丝 · 技能3
+,character.voice.voc_c1005_answer_1,voc_c1005_answer_1
+,character.voice.voc_c1005_answer_3,voc_c1005_answer_3
+,character.voice.voc_c1005_attacked_1,voc_c1005_attacked_1
+,character.voice.voc_c1005_attacked_2,voc_c1005_attacked_2
+,character.voice.voc_c1005_attacked_3,voc_c1005_attacked_3
+,character.voice.voc_c1005_call_1,voc_c1005_call_1
+,character.voice.voc_c1005_call_2,voc_c1005_call_2
+,character.voice.voc_c1005_dead_1,voc_c1005_dead_1
+,character.voice.voc_c1005_dead_1_1,voc_c1005_dead_1_1
+,character.voice.voc_c1005_get_1,voc_c1005_get_1
+,character.voice.voc_c1005_idle_1,voc_c1005_idle_1
+,character.voice.voc_c1005_idle_2,voc_c1005_idle_2
+,character.voice.voc_c1005_idle_3_2,voc_c1005_idle_3_2
+,character.voice.voc_c1005_lose_1,voc_c1005_lose_1
+,character.voice.voc_c1005_lvup_1,voc_c1005_lvup_1
+,character.voice.voc_c1005_skill1_1_1,voc_c1005_skill1_1_1
+,character.voice.voc_c1005_skill1_1_2,voc_c1005_skill1_1_2
+,character.voice.voc_c1005_skill2_2,voc_c1005_skill2_2
+,character.voice.voc_c1005_skill3_1_1,voc_c1005_skill3_1_1
+,character.voice.voc_c1005_skill3_1_2,voc_c1005_skill3_1_2
+,character.voice.voc_c1005_skill3_2,voc_c1005_skill3_2
+,character.voice.voc_c1005_skill3_3_1,voc_c1005_skill3_3_1
+,character.voice.voc_c1005_skill3_3_2,voc_c1005_skill3_3_2
+,character.voice.voc_c1005_utterance_1,voc_c1005_utterance_1
+,character.voice.voc_c1005_utterance_2,voc_c1005_utterance_2
+,character.voice.voc_c1005_win_1,voc_c1005_win_1
+,character.angelica.name,安洁莉卡
+,character.angelica.skill1,安洁莉卡 · 技能1
+,character.angelica.skill2,安洁莉卡 · 技能2
+,character.angelica.skill3,安洁莉卡 · 技能3
+,character.voice.voc_c1062_answer_2,voc_c1062_answer_2
+,character.voice.voc_c1062_answer_3,voc_c1062_answer_3
+,character.voice.voc_c1062_attacked_1,voc_c1062_attacked_1
+,character.voice.voc_c1062_attacked_2,voc_c1062_attacked_2
+,character.voice.voc_c1062_attacked_4,voc_c1062_attacked_4
+,character.voice.voc_c1062_call_1,voc_c1062_call_1
+,character.voice.voc_c1062_call_2,voc_c1062_call_2
+,character.voice.voc_c1062_dead_2,voc_c1062_dead_2
+,character.voice.voc_c1062_dead_3,voc_c1062_dead_3
+,character.voice.voc_c1062_get_1,voc_c1062_get_1
+,character.voice.voc_c1062_idle_1,voc_c1062_idle_1
+,character.voice.voc_c1062_idle_2,voc_c1062_idle_2
+,character.voice.voc_c1062_idle_4,voc_c1062_idle_4
+,character.voice.voc_c1062_lose_1,voc_c1062_lose_1
+,character.voice.voc_c1062_lvup_1,voc_c1062_lvup_1
+,character.voice.voc_c1062_skill1_1,voc_c1062_skill1_1
+,character.voice.voc_c1062_skill1_2,voc_c1062_skill1_2
+,character.voice.voc_c1062_skill1_3,voc_c1062_skill1_3
+,character.voice.voc_c1062_skill2_1_1,voc_c1062_skill2_1_1
+,character.voice.voc_c1062_skill2_1_2,voc_c1062_skill2_1_2
+,character.voice.voc_c1062_skill2_2_3,voc_c1062_skill2_2_3
+,character.voice.voc_c1062_skill3_1_1,voc_c1062_skill3_1_1
+,character.voice.voc_c1062_skill3_1_2,voc_c1062_skill3_1_2
+,character.voice.voc_c1062_skill3_2_1,voc_c1062_skill3_2_1
+,character.voice.voc_c1062_skill3_2_2,voc_c1062_skill3_2_2
+,character.voice.voc_c1062_skill3_3_1,voc_c1062_skill3_3_1
+,character.voice.voc_c1062_skill3_3_2,voc_c1062_skill3_3_2
+,character.voice.voc_c1062_utterance_1,voc_c1062_utterance_1
+,character.voice.voc_c1062_utterance_2,voc_c1062_utterance_2
+,character.voice.voc_c1062_win_1,voc_c1062_win_1

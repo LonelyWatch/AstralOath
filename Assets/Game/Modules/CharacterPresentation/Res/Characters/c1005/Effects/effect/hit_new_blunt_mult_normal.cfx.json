@@ -1,0 +1,19 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "hit_new_blunt_01",
+      "z": "0",
+      "scale": "0.25~0.4",
+      "rotate": "0~360",
+      "format": "spine"
+    },
+    {
+      "source": "hit_new_blunt_yellow_nm_pati",
+      "z": "5",
+      "scale": "0.3",
+      "delay": "70",
+      "format": "particle"
+    }
+  ]
+}

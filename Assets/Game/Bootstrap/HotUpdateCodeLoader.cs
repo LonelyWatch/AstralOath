@@ -51,7 +51,11 @@ namespace AstralOath.Client.Bootstrap
             }
         }
 
-        internal IHotUpdateEntry CreateEntry()
+        internal IHotUpdateEntry CreateEntry() => CreateEntryFor<IHotUpdateEntry>();
+
+        internal ICharacterLabEntry CreateCharacterLabEntry() => CreateEntryFor<ICharacterLabEntry>();
+
+        private T CreateEntryFor<T>() where T : class
         {
             if (loadAttempted)
                 throw new InvalidOperationException("C# code was already loaded or failed in this process. Restart is required.");
@@ -74,7 +78,7 @@ namespace AstralOath.Client.Bootstrap
                         loadedEntry = assembly;
                 }
                 Debug.Log($"ASTRAL_CODE_LOADED baseline={manifest.baselineId} entry={manifest.entryAssembly}");
-                return InstantiateEntry(loadedEntry, manifest.entryType);
+                return InstantiateEntry<T>(loadedEntry, manifest.entryType);
             }
             finally { Dispose(); }
         }
@@ -84,15 +88,23 @@ namespace AstralOath.Client.Bootstrap
             const string name = "AstralOath.Client.FoundationDemo";
             var assembly = AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(a => a.GetName().Name == name)
                 ?? throw new InvalidOperationException("The FoundationDemo assembly was not compiled by the Editor.");
-            return InstantiateEntry(assembly, name + ".FoundationEntry");
+            return InstantiateEntry<IHotUpdateEntry>(assembly, name + ".FoundationEntry");
         }
 
-        private static IHotUpdateEntry InstantiateEntry(Assembly assembly, string typeName)
+        internal static ICharacterLabEntry CreateEditorCharacterLabEntry()
+        {
+            const string name = "AstralOath.Client.CharacterLab";
+            var assembly = AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(a => a.GetName().Name == name)
+                ?? throw new InvalidOperationException("CharacterLab has not been compiled by the Editor.");
+            return InstantiateEntry<ICharacterLabEntry>(assembly, name + ".CharacterLabEntry");
+        }
+
+        private static T InstantiateEntry<T>(Assembly assembly, string typeName) where T : class
         {
             var type = assembly?.GetType(typeName, true);
-            if (type == null || !typeof(IHotUpdateEntry).IsAssignableFrom(type) || type.IsAbstract)
-                throw new InvalidDataException("Code entry does not implement IHotUpdateEntry.");
-            return (IHotUpdateEntry)Activator.CreateInstance(type);
+            if (type == null || !typeof(T).IsAssignableFrom(type) || type.IsAbstract)
+                throw new InvalidDataException("Code entry does not implement " + typeof(T).Name + ".");
+            return (T)Activator.CreateInstance(type);
         }
 
         public void Dispose() => bytes.Clear();

@@ -1,7 +1,17 @@
 {
   "name": "AstralOath.Client.EditMode",
   "references": [
-    "AstralOath.Client.Core", "AstralOath.Client.Common", "AstralOath.Client.FoundationDemo", "AstralOath.Client.Bootstrap", "AstralOath.Client.Editor", "AstralOath.Shared"
+    "AstralOath.Client.Core",
+    "AstralOath.Client.Common",
+    "AstralOath.Client.FoundationDemo",
+    "AstralOath.Client.Bootstrap",
+    "AstralOath.Client.Editor",
+    "YooAsset.Editor",
+    "AstralOath.Shared",
+    "AstralOath.Client.Skeletons",
+    "AstralOath.Client.CharacterLab",
+    "AstralOath.Client.CharacterPresentation",
+    "AstralOath.ThirdParty.Fmod"
   ],
   "optionalUnityReferences": [
     "TestAssemblies"
@@ -9,7 +19,8 @@
   "overrideReferences": true,
   "precompiledReferences": [
     "nunit.framework.dll",
-    "dnlib.dll"
+    "dnlib.dll",
+    "Newtonsoft.Json.dll"
   ],
   "includePlatforms": [
     "Editor"

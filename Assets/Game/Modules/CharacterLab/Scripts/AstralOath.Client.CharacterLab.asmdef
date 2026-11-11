@@ -1,0 +1,13 @@
+{
+  "name": "AstralOath.Client.CharacterLab",
+  "rootNamespace": "AstralOath.Client.CharacterLab",
+  "references": [
+    "AstralOath.Client.Core",
+    "AstralOath.Client.Common",
+    "AstralOath.Client.Skeletons",
+    "AstralOath.Client.CharacterPresentation",
+    "Unity.TextMeshPro",
+    "UnityEngine.UI"
+  ],
+  "autoReferenced": false
+}

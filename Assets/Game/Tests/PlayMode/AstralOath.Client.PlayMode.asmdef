@@ -5,7 +5,11 @@
     "AstralOath.Client.Common",
     "AstralOath.Client.FoundationDemo",
     "UnityEngine.UI",
-    "Unity.TextMeshPro"
+    "Unity.TextMeshPro",
+    "AstralOath.Client.Bootstrap",
+    "AstralOath.Client.CharacterLab",
+    "AstralOath.Client.Skeletons",
+    "AstralOath.ThirdParty.Fmod"
   ],
   "optionalUnityReferences": [
     "TestAssemblies"

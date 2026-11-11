@@ -61,4 +61,2082 @@ MonoBehaviour:
         PackRuleName: PackDirectory
         FilterRuleName: CollectAll
         AssetTags: 
-        UserData:
+        UserData: 
+  - PackageName: CharacterLab
+    PackageDesc: 
+    EnableAddressable: 1
+    SupportExtensionless: 1
+    LocationToLower: 0
+    IncludeAssetGUID: 0
+    AutoCollectShaders: 1
+    IgnoreRuleName: NormalIgnoreRule
+    Groups:
+    - GroupName: CharacterLabAssets
+      GroupDesc: 
+      AssetTags: 
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Game/Modules/CharacterLab/Configs/catalog.json
+        CollectorGUID: c0e9bd68f30f77b43a84e4c1337460f8
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterLab/Configs/localization.json
+        CollectorGUID: 90f69058d6b85b84f8548feb572e594b
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterLab/Res/Prefab/CharacterLabWindow.prefab
+        CollectorGUID: 688773227fb74ac45aef01a953e49b36
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/camera/ras_re_cm_sk1.skeleton.json
+        CollectorGUID: d6094918dba48234c9acb094f4b9a567
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/camera/ras_re_cm_sk1.spine.json
+        CollectorGUID: 810130ceaf73ac1499cf4132279eae63
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/camera/ras_re_cm_sk2.skeleton.json
+        CollectorGUID: 5244cd50bc7ea174698f7f4141fcac86
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/camera/ras_re_cm_sk2.spine.json
+        CollectorGUID: 71b3cbc2eb6e98942a65a185c9e98d1b
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/camera/ras_re_cm_sk3.skeleton.json
+        CollectorGUID: 980bb87079ec6b24a9950323f28748f4
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/camera/ras_re_cm_sk3.spine.json
+        CollectorGUID: e627c2a4ae023eb41a6b34afe2456f8b
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/hit_new_pierce_normal.skeleton.json
+        CollectorGUID: cc6aa13eb4023f04580b203ec446987e
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/hit_new_pierce_normal.spine.json
+        CollectorGUID: 25a53e5758caccd40b1d7f99ff62c8ca
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/hit_new_slash_01.skeleton.json
+        CollectorGUID: c4097c309842e2c4584f958a0c388691
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/hit_new_slash_01.spine.json
+        CollectorGUID: 9c942a94ca2840341a57ec567f0ed191
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk1_b.skeleton.json
+        CollectorGUID: 0a9b32f82b5ad3347bf930545d4f928c
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk1_b.spine.json
+        CollectorGUID: f73803d97af1f794ca8f6d22a11a0c03
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk1_f.skeleton.json
+        CollectorGUID: a57459ba51056d142a9c0606416b6f80
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk1_f.spine.json
+        CollectorGUID: d1e66149148f82040b130b962b0074d6
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk2_b.skeleton.json
+        CollectorGUID: e76633734d150f6449a5c7868855eb16
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk2_b.spine.json
+        CollectorGUID: 70e333c98fb5c5a41af46f82572ee253
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk2_f.skeleton.json
+        CollectorGUID: b5c3a9a41ac70a049a15a358e4a272a4
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk2_f.spine.json
+        CollectorGUID: fe4c56d8eddc63c498b736491af1a2e7
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk2_f2.skeleton.json
+        CollectorGUID: 9d87180d653e964498a1706a186ac5a5
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk2_f2.spine.json
+        CollectorGUID: 039c39153d90d414f8a950ce56afff49
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk3_f.skeleton.json
+        CollectorGUID: 3a1981b9f0dd6a34282020c67f97ae4e
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk3_f.spine.json
+        CollectorGUID: 2057b8c6a11be0f47825d2812950fee2
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk3_f3.skeleton.json
+        CollectorGUID: 9e82033e438bc974dbfc2a354daf6f63
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk3_f3.spine.json
+        CollectorGUID: 627eecf1b728f1f49a29a749ef98f23e
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk3_ready.skeleton.json
+        CollectorGUID: f77fd50397c00534f98b7d0d2c30c9f6
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/effect/ras_re_sk3_ready.spine.json
+        CollectorGUID: 99bd531afb74c2e4392d8396d2c534eb
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/model/ras.skeleton.json
+        CollectorGUID: 14ebdb673c8607a40b6fa10bcbe031a2
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/model/ras.spine.json
+        CollectorGUID: b6e25bc4dd82cd441a648a747d527fa4
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/portrait/c1001.skeleton.json
+        CollectorGUID: 6154d56a8dbc03b4c8157978d7ddb39b
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Animations/portrait/c1001.spine.json
+        CollectorGUID: db8688112d998024899828f50dcd1130
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Atlas/effect/hit_new_pierce_normal.atlas.txt
+        CollectorGUID: 725d00256f7b65542b13c3ff90392912
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Atlas/effect/hit_new_slash_01.atlas.txt
+        CollectorGUID: 7575ead430bd9e74c84fbe6b38c6c454
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Atlas/effect/ras_re_sk1_b.atlas.txt
+        CollectorGUID: 564776efa4c7acf4a93dcbf2a0824834
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Atlas/effect/ras_re_sk1_f.atlas.txt
+        CollectorGUID: 28d31e0f477d23146929d00c24b8ed0f
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Atlas/effect/ras_re_sk2_b.atlas.txt
+        CollectorGUID: 15a834aadd1d3434ca77951bdb9233b9
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Atlas/effect/ras_re_sk2_f.atlas.txt
+        CollectorGUID: 8576548477b8a8e44bf245a346af6f9f
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Atlas/effect/ras_re_sk2_f2.atlas.txt
+        CollectorGUID: 849e502be920dac468b668e69283ff95
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Atlas/effect/ras_re_sk3_f.atlas.txt
+        CollectorGUID: 2f00a04f8ec8f654cb1c0b240fcad0f9
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Atlas/effect/ras_re_sk3_f3.atlas.txt
+        CollectorGUID: f018ac3cf97ac3e4db703c60b7a8c624
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Atlas/effect/ras_re_sk3_ready.atlas.txt
+        CollectorGUID: f405d4b73d2defc4193749a0adf348b5
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Atlas/model/ras.atlas.txt
+        CollectorGUID: 5a996d4f61ee77246abea1aaa51036f8
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Atlas/portrait/c1001.atlas.txt
+        CollectorGUID: c38307dfb5200954d99a8c9baa665b53
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Configs/stagept/c_ras_skill_01.graph.json
+        CollectorGUID: 85951465e6b8b41428c32ceadb018dc6
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Configs/stagept/c_ras_skill_02.graph.json
+        CollectorGUID: 5e9b8ec03d800ad41ba8566f29c9723f
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Configs/stagept/c_ras_skill_03.graph.json
+        CollectorGUID: a8be9997eb93f4b4dbc26427b0a0a447
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3.cutin.json
+        CollectorGUID: bfe3f8ee9a803d74b84058958865046d
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0000.png
+        CollectorGUID: ef707057e7d0eeb4b9744b9ec91b59cb
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0001.png
+        CollectorGUID: 2419949818fd8b647acfda7571504a6a
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0002.png
+        CollectorGUID: eaa246112cb85d8448ac57ae3648637c
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0003.png
+        CollectorGUID: e88aca2dda0d41a4598a1f4111b9966c
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0004.png
+        CollectorGUID: 86603088c5581b2498518ba2e486537c
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0005.png
+        CollectorGUID: 62180f254de521c409717396f804a00e
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0006.png
+        CollectorGUID: f466f3354bf35944eb587d7bb8080869
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0007.png
+        CollectorGUID: 784cdbea8af65db40bf323269ee33579
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0008.png
+        CollectorGUID: 61e9111f670fd0d4c94b5a364e95131e
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0009.png
+        CollectorGUID: f2847f49c728e9d41a5e1ec5a0ef809f
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0010.png
+        CollectorGUID: 0522ac9f83b2c4845b54262bed075aad
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0011.png
+        CollectorGUID: 9aef123aa583d7d468fe7eb8c7129f95
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0012.png
+        CollectorGUID: ad30d199af085bb4b834ec034b959fc8
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0013.png
+        CollectorGUID: e6556f2ab9f7b4a489d165889f1e19c3
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0014.png
+        CollectorGUID: a6915fd344da67448999de64d8ddd921
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/cut/fhd/sk_c1001_3_frames/0015.png
+        CollectorGUID: f5b7f56e0be7b3f449cf8f6c3de07a58
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/hit_new_pierce_normal.cfx.json
+        CollectorGUID: 1a49b3ffa9a8e294b987934c4186ec82
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/hit_new_pierce_yellow_nm_pati.particle.json
+        CollectorGUID: 9fef958ef579f834a87400f32a3dfaaf
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/hit_new_slash_normal.cfx.json
+        CollectorGUID: fad00d08300f9d140b6a75ff53470c7a
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/hit_new_slash_yellow_nm_pati.particle.json
+        CollectorGUID: 75c84a0be2722474eb279db4180ee1a2
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/ras_new_sk2_pat1.particle.json
+        CollectorGUID: 3cd2efc33c985334d8fb669a0f407b69
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/ras_new_sk2_pat2.particle.json
+        CollectorGUID: 824090cabb02bc642a0cc20c1149913f
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/ras_new_skeff_pat3.particle.json
+        CollectorGUID: d92934014a5dc9340bc57ba417e4348d
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/ras_new_skeff_sk1.cfx.json
+        CollectorGUID: 8a22eaeae6da78249a06b58db920351d
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/ras_new_skeff_sk2.cfx.json
+        CollectorGUID: 0a1f406e9d740ca429cd2b16bb0eeafc
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/ras_new_skeff_sk2_2.cfx.json
+        CollectorGUID: 3ecb9276b30c0c448a75f9a3a2247b55
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/ras_new_skeff_sk2_end.cfx.json
+        CollectorGUID: 0cf95b6575e865b40b4ce218a6e9aad7
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/ras_new_skeff_sk3.cfx.json
+        CollectorGUID: e14956ddfbaa9074187bdb114beca5bb
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/ras_re_sk3_ready.cfx.json
+        CollectorGUID: fe8f8ee73a7b57a42a21ebf807f270fa
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/rass_skill_02_renew_pati1.particle.json
+        CollectorGUID: 8388bf716146ffc4a87ec941d6768be3
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/rass_skill_03_renew_pati1.particle.json
+        CollectorGUID: 88dbeb03112edd848a9e304cd597f664
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Effects/effect/rass_skill_03_renew_pati2.particle.json
+        CollectorGUID: f3f1f7d9a6fadcc4fa88f36209cc1a72
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/effect/hit_new_pierce_normal.png
+        CollectorGUID: fd2b467a8b656dd47be23ded6f355621
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/effect/hit_new_slash_01.png
+        CollectorGUID: 0d5d6834f19766c4887e54048c463bef
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/effect/ras_re_sk1_b.png
+        CollectorGUID: da604a5418c4edb44b9dd77a7d7bad0c
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/effect/ras_re_sk1_f.png
+        CollectorGUID: 26773914cfcf5094889aca77043da1f3
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/effect/ras_re_sk2_b.png
+        CollectorGUID: 06118e58e64e5264794fbec83b7def00
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/effect/ras_re_sk2_f.png
+        CollectorGUID: 283c1f3992b9e4a479fd66c437a8e129
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/effect/ras_re_sk2_f2.png
+        CollectorGUID: c4c930de19f568943b032a6e61971777
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/effect/ras_re_sk3_f.png
+        CollectorGUID: 371f428c1402a3a4eb37039b71062dfc
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/effect/ras_re_sk3_f3.png
+        CollectorGUID: c77f7edc13058b34d832b5a13cae9b00
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/effect/ras_re_sk3_ready.png
+        CollectorGUID: e06d59d9bde3c03478002fd2bb0d7bda
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/model/ras.png
+        CollectorGUID: a278d9cad861bc94bb2f2e2da7dad2b4
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/particle/aura_04.png
+        CollectorGUID: e8f5f77199c52df49861bf17605df469
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/particle/flash.png
+        CollectorGUID: 180d8bd4011f3114a8e8a387f279889c
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/Textures/portrait/c1001.png
+        CollectorGUID: 3c9c288cc874cb04394b8382954764cf
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/camera/cm_magic_lightningball.skeleton.json
+        CollectorGUID: dbb22527d0d9c0441ab163cc7df14b6b
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/camera/cm_magic_lightningball.spine.json
+        CollectorGUID: 9601eec6adce78d4b90918da3b15b771
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/camera/mage_sk3_cm.skeleton.json
+        CollectorGUID: 505d124c4d7ae0e49b1613f8bf2affad
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/camera/mage_sk3_cm.spine.json
+        CollectorGUID: 3aebb8dc9deb98043b924025a7955416
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/camera/mercedes_cm_sk1.skeleton.json
+        CollectorGUID: 7c49b1fe40dc3ac48b288551048f59e6
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/camera/mercedes_cm_sk1.spine.json
+        CollectorGUID: d0a16429a1e731e49b216d1c33e75e25
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_dust_bigar_b.skeleton.json
+        CollectorGUID: 954d8dda04faab54da74590fb6b1fb24
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_dust_bigar_b.spine.json
+        CollectorGUID: 530eeb67e0faca342ad582018f67d062
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_dust_bigar_f.skeleton.json
+        CollectorGUID: 5ff1e1bd9cafdda45af90f5aadbe5809
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_dust_bigar_f.spine.json
+        CollectorGUID: ae2e78053ee2e724ab144fb27f72f1c5
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_magic_lightningball.skeleton.json
+        CollectorGUID: 25b9cf61b2b163348a729b2afd0a04b1
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_magic_lightningball.spine.json
+        CollectorGUID: 05a6e22b793c5c741a2a826c91d2672c
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_magic_lightningball_F.skeleton.json
+        CollectorGUID: a51e1b48789282245a7007164e36c35a
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_magic_lightningball_F.spine.json
+        CollectorGUID: 40ee6fbbf5c2133428431a5f8bac75fc
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_magic_lightningball_gr.skeleton.json
+        CollectorGUID: f9d90cdea8bbad6459cfa9e29a02917e
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_magic_lightningball_gr.spine.json
+        CollectorGUID: 231681495b719594983d1453d0a3e3a0
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_magic_thunder_01.skeleton.json
+        CollectorGUID: 690ec1f3c02792a4a93154467a57da70
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_magic_thunder_01.spine.json
+        CollectorGUID: a809b84b7eb21794a88e4e4539156b9b
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_magic_thunder_01_gr.skeleton.json
+        CollectorGUID: b56da80d9eee06040ad434347e00d2f3
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/eff_magic_thunder_01_gr.spine.json
+        CollectorGUID: 06e15f23969427a489dd52055311a953
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/mage_sk3_eff_b.skeleton.json
+        CollectorGUID: 1b789e2a57838004092dd21cf6f9f31d
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/mage_sk3_eff_b.spine.json
+        CollectorGUID: feca6070ec454874680345f1c563d151
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/mage_sk3_eff_f.skeleton.json
+        CollectorGUID: 897740f519239c8408001ae0398d414e
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/mage_sk3_eff_f.spine.json
+        CollectorGUID: a39c672eea90b1b4f9f0b34e9db65628
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/mercedes_skeff_sk1_magicring.skeleton.json
+        CollectorGUID: 9c7a2072a613dac43b7e833f0dde4229
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/effect/mercedes_skeff_sk1_magicring.spine.json
+        CollectorGUID: 539d12e76bef93143a864a24daa92902
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/model/mercedes.skeleton.json
+        CollectorGUID: 77ed3d0c21dc4d34b9f7220d07de5692
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/model/mercedes.spine.json
+        CollectorGUID: 8c1822d6d56ea9949a69b5a19d825a75
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/portrait/c1005.skeleton.json
+        CollectorGUID: 3a045f2af0f73f84aa8a476a868da756
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Animations/portrait/c1005.spine.json
+        CollectorGUID: c46f783fa76fa9146a56e54636954697
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Atlas/effect/eff_dust_bigar_b.atlas.txt
+        CollectorGUID: bc66bfcdb35dd62439fc5a84eafbb393
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Atlas/effect/eff_dust_bigar_f.atlas.txt
+        CollectorGUID: 6b209361e8f48854184bc035f06d53e0
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Atlas/effect/eff_magic_lightningball.atlas.txt
+        CollectorGUID: 4cd60a06fa9d9a74597837f8cb01210b
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Atlas/effect/eff_magic_lightningball_F.atlas.txt
+        CollectorGUID: f25f95899a958fc4f9670b50fca90c67
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Atlas/effect/eff_magic_lightningball_gr.atlas.txt
+        CollectorGUID: 96635e573cdc11140a592b6b2ab5457a
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Atlas/effect/eff_magic_thunder_01.atlas.txt
+        CollectorGUID: 5db6cb32382956d43bdd08a0493d3d24
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Atlas/effect/eff_magic_thunder_01_gr.atlas.txt
+        CollectorGUID: c807b7821f3452c4f8167313ccdc9861
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Atlas/effect/mage_sk3_eff_b.atlas.txt
+        CollectorGUID: 7380d12481e7ee9469e06c36a8b02256
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Atlas/effect/mage_sk3_eff_f.atlas.txt
+        CollectorGUID: 844da4994774d5b46982164b8de3d85d
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Atlas/effect/mercedes_skeff_sk1_magicring.atlas.txt
+        CollectorGUID: ce4ec3661eafe2644815c250c5baad0c
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Atlas/model/mercedes.atlas.txt
+        CollectorGUID: 44253665a66244b47b5c2ac6f0d62d36
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Atlas/portrait/c1005.atlas.txt
+        CollectorGUID: 089d9a10b5cc26c4fb9bc994f58bdbb8
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Configs/model/mercedes.timeline.json
+        CollectorGUID: 8c085609693bc49438e5d0e5309f2606
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Configs/stagept/c_mercedes_skill_01.graph.json
+        CollectorGUID: b9019fdc417db044e909ff37293493c3
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Configs/stagept/c_mercedes_skill_02.graph.json
+        CollectorGUID: 604dcd55905ee624cb23d207b88d78f6
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Configs/stagept/c_mercedes_skill_03.graph.json
+        CollectorGUID: 6892eed278c6de944be69f772b9f4b55
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Effects/effect/eff_dust_roundbig.cfx.json
+        CollectorGUID: 3d9333d83bb44e549b09505c2ee7ee31
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Effects/effect/eff_magic_lightningball.cfx.json
+        CollectorGUID: 04b1c82c04cc39640be7e3a8853f1b97
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Effects/effect/eff_magic_thunder_01.cfx.json
+        CollectorGUID: c1614aa61f6a6014c960a07dbf17cdb4
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Effects/effect/hit_new_blunt_mult_normal.cfx.json
+        CollectorGUID: 33da2e5f4f207884eb9cf8880c20002e
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Effects/effect/magician_pat.particle.json
+        CollectorGUID: 80ce8343272d9724f8ccafe52b569501
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Effects/effect/magician_sk3_eff.cfx.json
+        CollectorGUID: 6ecb8bb47df06614c9954e6d6d71ecf6
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Effects/effect/mercedes_skeff_sk1_magicring.cfx.json
+        CollectorGUID: b4854856f9fa3fb44969e2c937598aef
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Textures/effect/eff_dust_bigar_b.png
+        CollectorGUID: 812f450caf5f48a4a97190d20be54d8d
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Textures/effect/eff_dust_bigar_f.png
+        CollectorGUID: 2567d826c3188274e81ac2cca45f77e3
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Textures/effect/eff_magic_lightningball.png
+        CollectorGUID: aca0a4c60b9e8ce46b87cbc161f45fcc
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Textures/effect/eff_magic_lightningball_F.png
+        CollectorGUID: 70afffe5ea2bbeb488df653276ad46f8
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Textures/effect/eff_magic_lightningball_gr.png
+        CollectorGUID: 554172a779de2e242ac75ff664abc3b2
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Textures/effect/eff_magic_thunder_01.png
+        CollectorGUID: 0d71229353206c74483078bb77b2f050
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Textures/effect/eff_magic_thunder_01_gr.png
+        CollectorGUID: bda02b4be1155974489173cb12aa2165
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Textures/effect/mage_sk3_eff_b.png
+        CollectorGUID: c4109a0ca06a3a04c9f5c9c39bd3c083
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Textures/effect/mage_sk3_eff_f.png
+        CollectorGUID: 2e10c7f96818edc448115730aff90392
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Textures/effect/mercedes_skeff_sk1_magicring.png
+        CollectorGUID: 79faf37baab410b43a4e5fd43d4ce29b
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Textures/model/mercedes.png
+        CollectorGUID: 4e0f8ce6ae0351b4b98f350ef0075f4f
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Textures/portrait/c1005.png
+        CollectorGUID: d2ba732c80932174a8780c4d2bfedcd0
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/camera/angelica_cm.skeleton.json
+        CollectorGUID: 25f06cc55bae621438b0862977e31a2e
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/camera/angelica_cm.spine.json
+        CollectorGUID: dfeb1951a2e89794499ad947fec7f47f
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_b_idle_eff_b.skeleton.json
+        CollectorGUID: 864cf694d42bf2d43ae44bddbf71c29b
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_b_idle_eff_b.spine.json
+        CollectorGUID: 85790ea1bfcee18499daac4f676eae36
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_b_idle_eff_f.skeleton.json
+        CollectorGUID: 6527c75755f67a9439805b9720658e15
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_b_idle_eff_f.spine.json
+        CollectorGUID: 75333d1862f9b9d45895fdae3255f263
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk1eff_b.skeleton.json
+        CollectorGUID: 856c0e73a563423498b7e77a8a4fdd0b
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk1eff_b.spine.json
+        CollectorGUID: 4db79e2586bce4b49989b733cf7d7a7a
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk1eff_f.skeleton.json
+        CollectorGUID: 7f64d8d06a5c8a347a00c6e676f4d3e8
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk1eff_f.spine.json
+        CollectorGUID: 922a1f5ab6089d2479b46533061c10f8
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk2eff_self.skeleton.json
+        CollectorGUID: 3c7197a43a4e4bb4dbf83d981069b0e6
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk2eff_self.spine.json
+        CollectorGUID: b6fb3b48cc8e51f4f800b9b08f927870
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk2eff_target_b.skeleton.json
+        CollectorGUID: 9ccd1af3e00a1cb44a33aa1ac7c8ee8a
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk2eff_target_b.spine.json
+        CollectorGUID: 3ccaa53bc14db424f8ea600786139d04
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk2eff_target_f.skeleton.json
+        CollectorGUID: 79bfc8fd77cdddb409f944bc12afdb26
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk2eff_target_f.spine.json
+        CollectorGUID: 44855c9eb07149444a39f59f6e213247
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk3eff_self.skeleton.json
+        CollectorGUID: bba8017557ab6394d86076fd95ee3eff
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk3eff_self.spine.json
+        CollectorGUID: 0327ac68e1d59cd4aa89ec4bf3733c38
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk3eff_target_b.skeleton.json
+        CollectorGUID: 7f248aa307ce966498b6f886a0b57d32
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk3eff_target_b.spine.json
+        CollectorGUID: a0a0efab483bef446a13508c877f472f
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk3eff_target_f.skeleton.json
+        CollectorGUID: 304cffe30b81c494a9855897c3011ffa
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/effect/angelica_sk3eff_target_f.spine.json
+        CollectorGUID: 2add89ea77439f44fb2b48de58554ad4
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/model/angelica.skeleton.json
+        CollectorGUID: f0706eccfd2e62b409fecedafad05c0d
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/model/angelica.spine.json
+        CollectorGUID: 11819ff6121a6ce48ae6202698c28558
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/portrait/c1062.skeleton.json
+        CollectorGUID: cfa97335577959d43be85be9e6895c30
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/portrait/c1062.spine.json
+        CollectorGUID: 5de454b7253bdd34f87d353784031d06
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/effect/angelica_b_idle_eff_b.atlas.txt
+        CollectorGUID: 369a94b42b7601749ae260ce4feaf6f4
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/effect/angelica_b_idle_eff_f.atlas.txt
+        CollectorGUID: d7ec3a41ef6c436408fb3460168653ef
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/effect/angelica_b_idleeffatlas.atlas.txt
+        CollectorGUID: 0e431562b502cb94182caf8b5f37f1ae
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/effect/angelica_sk1eff_b.atlas.txt
+        CollectorGUID: c3112939babae0242a4095c358be69c6
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/effect/angelica_sk1eff_f.atlas.txt
+        CollectorGUID: ffe7b49158805f341ad81aa22324364c
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/effect/angelica_sk1effatlas.atlas.txt
+        CollectorGUID: 689b642d286b628489492a61129f0db6
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/effect/angelica_sk2eff_self.atlas.txt
+        CollectorGUID: 379a98cd7b8ac9444a71572e387fab83
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/effect/angelica_sk2eff_target_b.atlas.txt
+        CollectorGUID: 06557ceabd879134798d074c9bf9fd44
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/effect/angelica_sk2eff_target_f.atlas.txt
+        CollectorGUID: 01d538a12cea2ac4ca249aa5a2f9be4a
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/effect/angelica_sk2effatlas.atlas.txt
+        CollectorGUID: e3c76efb6db87be44a0846755e9e506e
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/effect/angelica_sk3eff_self.atlas.txt
+        CollectorGUID: 536582f5141aad548baf050868494661
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/effect/angelica_sk3eff_target_b.atlas.txt
+        CollectorGUID: fdaadcbf00e48e249a84ba9221d155b0
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/effect/angelica_sk3eff_target_f.atlas.txt
+        CollectorGUID: f70c70ae4e312a140b855d75e5d46454
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/model/angelica.atlas.txt
+        CollectorGUID: 9cad130ffe4a5f848a63740f62a24665
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/portrait/c1062.atlas.txt
+        CollectorGUID: 5e3bcab32e9f7cf42844fb4e784f773c
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Configs/model/angelica.timeline.json
+        CollectorGUID: 5c368af61399a8d4d94cb0e1c8c8b7e6
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Configs/stagept/c_angelica_skill_01.graph.json
+        CollectorGUID: e4a2eb5fd2069b94584f61e7f9810b42
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Configs/stagept/c_angelica_skill_02.graph.json
+        CollectorGUID: 5bf209fc9e2423048a04709610d08bf3
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Configs/stagept/c_angelica_skill_03.graph.json
+        CollectorGUID: 6a9d59855e3a72a47ac1a4f3b77433a9
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3.cutin.json
+        CollectorGUID: 0d8204bde8263144ba478081de1216fb
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0000.png
+        CollectorGUID: b936a26157fbccb408297f27c14c93f2
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0001.png
+        CollectorGUID: 63853a873a2cedb41b93be2a2a414a3a
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0002.png
+        CollectorGUID: f840fe02533ccc640b841b4e7bcdba38
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0003.png
+        CollectorGUID: adfa7689228fad842ad08b340a79b859
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0004.png
+        CollectorGUID: 534d05c0a0222034489f852134cb39d2
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0005.png
+        CollectorGUID: ac2cab09ec5d7c341b3bb94b76429058
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0006.png
+        CollectorGUID: d7d246ad544b1d64697003c2920e3cfa
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0007.png
+        CollectorGUID: ca26aa180f5eb8d4fb1b910498b26e63
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0008.png
+        CollectorGUID: 80d070d339c49b54a9a67e2c6f17f057
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0009.png
+        CollectorGUID: b18d362745efa2044a5acc3b8ddd8f1f
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0010.png
+        CollectorGUID: 06f3cde07815275498e6df24a9b22922
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0011.png
+        CollectorGUID: 9037ad6b093f0ac4cb9d7f92b22ff5db
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0012.png
+        CollectorGUID: c462a3de81d127645acad852f6cab1bd
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0013.png
+        CollectorGUID: 2f31fbe3aa7dd134a9cedfd9ede432b5
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0014.png
+        CollectorGUID: 57c13d197e61dba4eb671c032756c6fb
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0015.png
+        CollectorGUID: 3345b2c6e8da83d4c9d6cfd943eba821
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0016.png
+        CollectorGUID: 49a8785f2d017444b80c389fe0f84271
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0017.png
+        CollectorGUID: 5c6a0b1fea5f4f24eae490677168ba04
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0018.png
+        CollectorGUID: 703c653076951354baf82a244ebc93e1
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0019.png
+        CollectorGUID: 786f8171e64a19e42807897c151c61cc
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/effect/achieve_bar_pati.particle.json
+        CollectorGUID: 2753b3ce079805f41895a6b81a810be3
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/effect/angelica_b_idle.cfx.json
+        CollectorGUID: 2078a88bac57a41488425ebbf8c0ff06
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/effect/angelica_skill_01.cfx.json
+        CollectorGUID: 89c365634358a35449dfd06b7e93ff23
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/effect/angelica_skill_01_pati1.particle.json
+        CollectorGUID: 2f5ec909f1abba048afa5d6cd1e1078c
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/effect/angelica_skill_02_pati.particle.json
+        CollectorGUID: e56e530d46cca5e44a13286981df47c5
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/effect/angelica_skill_02_self.cfx.json
+        CollectorGUID: 574c3c9c4f50a8642b0a983f86904599
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/effect/angelica_skill_02_target.cfx.json
+        CollectorGUID: 250b8e2bfa3588342ac48ced2886aff0
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/effect/angelica_skill_03_self.cfx.json
+        CollectorGUID: 404cf419960971e4c982e563abdc5af9
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/effect/angelica_skill_03_target.cfx.json
+        CollectorGUID: 5029180f8eac6964982413919e26be73
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/effect/angelica_skill_2_pati2.particle.json
+        CollectorGUID: 73cb718c84bafdc46b043ed352956127
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Textures/effect/angelica_b_idleeffatlas.png
+        CollectorGUID: fc378242aa4f76740aed67829d94a2da
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Textures/effect/angelica_sk1effatlas.png
+        CollectorGUID: 13b7f5148a929b1458ab560019edf708
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Textures/effect/angelica_sk2effatlas.png
+        CollectorGUID: aacb48abb71ccdc4ba4c902c1bca589f
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Textures/model/angelica.png
+        CollectorGUID: db1573e9fb447434abfe032107dc2a4d
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Textures/particle/cross_02.png
+        CollectorGUID: 92acd30f81cc8ee4d9a3f2707e1063c5
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Textures/particle/orb_02.png
+        CollectorGUID: d343097988445554fa28241120a801ec
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Textures/particle/zodiac_star1.png
+        CollectorGUID: 1f262cd185fb0c44f88a216fff54d305
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Textures/portrait/c1062.png
+        CollectorGUID: ea32c45f2505c5044b116e5055435f07
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Materials/CharacterSpriteBlur.mat
+        CollectorGUID: a0f97d7bf89766e41b20723ed9382831
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Shared/Animations/effect/hit_new_blunt_01.skeleton.json
+        CollectorGUID: 360d2f42bddb9f340a755ef877744bae
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Shared/Animations/effect/hit_new_blunt_01.spine.json
+        CollectorGUID: 68b12416106d5b64db7782a663760eb3
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Shared/Atlas/effect/hit_new_blunt_01.atlas.txt
+        CollectorGUID: 3c30954438e454849a4df0cb8b984851
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Shared/Effects/effect/hit_new_blunt_normal.cfx.json
+        CollectorGUID: 1d36e6e5e5fdcb449bdee7d6d7281c8f
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Shared/Effects/effect/hit_new_blunt_yellow_nm_pati.particle.json
+        CollectorGUID: 5105968325c68b24e9da888992674855
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Shared/Sounds/sound/ja/voc1.audio_ja.bank.bytes
+        CollectorGUID: eb272ed47e6b441419b658577907a6da
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Shared/Sounds/sound/master.bank.bytes
+        CollectorGUID: 8ce39ee0470274746bd7081d980abe12
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Shared/Sounds/sound/master.strings.bank.bytes
+        CollectorGUID: 437dd1d997b4b6741b70487fe4084088
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Shared/Sounds/sound/sfx1.bank.bytes
+        CollectorGUID: 00323a0bf0cdfa041813dad89dc16f72
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Shared/Sounds/sound/voc.event.bank.bytes
+        CollectorGUID: 5eaad99642daaa24ab025119b4ffa32a
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Shared/Textures/effect/hit_new_blunt_01.png
+        CollectorGUID: a1af46382ea7daf4b8d3dc584261292f
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Shared/Textures/particle/pati_01.png
+        CollectorGUID: 0c49e339a4938394aad8434f754c275f
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Shared/Textures/particle/ticle_02.png
+        CollectorGUID: 2df7e5700b9d1f540a4f247c024ca21e
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 

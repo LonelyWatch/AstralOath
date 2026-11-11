@@ -1,0 +1,48 @@
+
+mercedes_skeff_sk1_magicring.sct
+size: 378,485
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 207, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+global_glow
+  rotate: false
+  xy: 2, 399
+  size: 84, 84
+  orig: 84, 84
+  offset: 0, 0
+  index: -1
+magic_circle/magiccircle_03
+  rotate: false
+  xy: 2, 207
+  size: 191, 190
+  orig: 191, 190
+  offset: 0, 0
+  index: -1
+magic_circle/magiccircle_04
+  rotate: false
+  xy: 207, 173
+  size: 131, 131
+  orig: 131, 131
+  offset: 0, 0
+  index: -1
+ring&circle/hand_circle1
+  rotate: false
+  xy: 195, 306
+  size: 177, 177
+  orig: 177, 177
+  offset: 0, 0
+  index: -1
+ring&circle/se_light_2
+  rotate: false
+  xy: 2, 2
+  size: 203, 203
+  orig: 203, 203
+  offset: 0, 0
+  index: -1

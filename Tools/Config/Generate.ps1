@@ -12,10 +12,12 @@ $backup = Join-Path $work 'previous'
 $published = $false
 $version = 'v5.1.0'
 if ($SyncClient -and $CheckClient) { throw 'Choose either -SyncClient or -CheckClient.' }
-$client = Join-Path $repo 'Assets/Game/Modules/FoundationDemo/Configs'
+$client = Join-Path $repo 'Assets/Game/Modules'
 $clientFiles = @{
-    'demo_ui.json' = 'demo-config.json'
-    'demo_localizationkeys.json' = 'demo-localization.json'
+    'demo_ui.json' = 'FoundationDemo/Configs/demo-config.json'
+    'demo_localizationkeys.json' = 'FoundationDemo/Configs/demo-localization.json'
+    'characterlab-catalog-runtime.json' = 'CharacterLab/Configs/catalog.json'
+    'characterlab-localization-runtime.json' = 'CharacterLab/Configs/localization.json'
 }
 if (-not $Dotnet) {
     $local = Join-Path $repo '.tools/dotnet/dotnet.exe'
@@ -69,6 +71,28 @@ try {
             throw "Invalid localization entry '$($entry.key)'."
         }
     }
+    $labMessages = @(Get-Content -LiteralPath (Join-Path $staging 'json/characterlab_messages.json') -Raw -Encoding UTF8 | ConvertFrom-Json)
+    $labRows = @(Get-Content -LiteralPath (Join-Path $staging 'json/characterlab_characters.json') -Raw -Encoding UTF8 | ConvertFrom-Json)
+    $catalog = Get-Content -LiteralPath (Join-Path $repo 'Config/CharacterAssets/catalog.generated.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+    $labels = @{}
+    foreach ($message in $labMessages) {
+        if ($message.key -cnotmatch '\A[a-z][a-z0-9_]*(?:\.[a-z][a-z0-9_]*)+\z' -or [string]::IsNullOrWhiteSpace($message.zhCn)) { throw "Invalid CharacterLab localization key: $($message.key)" }
+        $labels[$message.key] = $message.zhCn
+    }
+    if ($labRows.Count -ne @($catalog.characters).Count) { throw 'CharacterLab source table and imported catalog disagree. Run character import after changing the roster.' }
+    $catalog.characters = @($labRows | Sort-Object sortOrder | ForEach-Object {
+        $row = $_
+        $match = @($catalog.characters | Where-Object id -CEQ $row.id)
+        if ($match.Count -ne 1 -or -not $labels.ContainsKey($row.nameKey)) { throw "Missing imported character or label: $($row.id)" }
+        if ([string]::IsNullOrWhiteSpace($row.battleSkin) -or [string]::IsNullOrWhiteSpace($row.portraitSkin)) { throw "CharacterLab requires explicit battleSkin and portraitSkin: $($row.id)" }
+        $match[0] | Add-Member -NotePropertyName battleSkin -NotePropertyValue $row.battleSkin -Force
+        $match[0] | Add-Member -NotePropertyName portraitSkin -NotePropertyValue $row.portraitSkin -Force
+        $match[0].displayNameKey = $row.nameKey
+        $match[0].name = $labels[$row.nameKey]
+        $match[0]
+    })
+    [IO.File]::WriteAllText((Join-Path $staging 'json/characterlab-catalog-runtime.json'), ($catalog | ConvertTo-Json -Depth 80) + "`n", [Text.UTF8Encoding]::new($false))
+    [IO.File]::WriteAllText((Join-Path $staging 'json/characterlab-localization-runtime.json'), (@{rows=$labMessages} | ConvertTo-Json -Depth 10) + "`n", [Text.UTF8Encoding]::new($false))
     & $Dotnet --roll-forward Major $dll --conf Config/luban.conf -t client -c cs-bin -d bin --strict -x "outputCodeDir=$staging/csharp" -x "outputDataDir=$staging/bin"
     if ($LASTEXITCODE -ne 0) { throw 'Luban binary and C# generation failed.' }
 
@@ -121,7 +145,9 @@ try {
         if ($SyncClient) {
             [void][IO.Directory]::CreateDirectory($client)
             foreach ($name in $clientFiles.Keys) {
-                [IO.File]::Copy((Join-Path $output "json/$name"), (Join-Path $client $clientFiles[$name]), $true)
+                $target = Join-Path $client $clientFiles[$name]
+                [void][IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($target))
+                [IO.File]::Copy((Join-Path $output "json/$name"), $target, $true)
             }
         }
     } finally {

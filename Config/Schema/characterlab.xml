@@ -1,0 +1,12 @@
+<module name="characterlab">
+  <bean name="Message"><var name="key" type="string"/><var name="zhCn" type="string"/></bean>
+  <bean name="CharacterRow">
+    <var name="id" type="string"/>
+    <var name="nameKey" type="string#ref=characterlab.Messages"/>
+    <var name="sortOrder" type="int#range=[1,9999]"/>
+    <var name="battleSkin" type="string"/>
+    <var name="portraitSkin" type="string"/>
+  </bean>
+  <table name="Messages" value="Message" input="characterlab_messages.csv"/>
+  <table name="Characters" value="CharacterRow" input="characterlab_characters.csv"/>
+</module>

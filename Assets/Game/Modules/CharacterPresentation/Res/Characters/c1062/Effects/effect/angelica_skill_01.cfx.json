@@ -1,0 +1,30 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "angelica_sk1eff_b",
+      "z": "-1",
+      "delay": "0",
+      "format": "spine"
+    },
+    {
+      "source": "angelica_sk1eff_f",
+      "z": "1",
+      "delay": "0",
+      "format": "spine",
+      "actions": [
+        {
+          "action": "Fire",
+          "delay": "0"
+        }
+      ]
+    },
+    {
+      "source": "angelica_skill_01_pati1",
+      "x": "50",
+      "y": "350",
+      "delay": "0",
+      "format": "particle"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": "2.1.27",
+  "jsonAddress": "characterlab/source/model/ras.scsp/json",
+  "atlasAddress": "characterlab/source/model/ras.atlas",
+  "pages": [
+    {
+      "name": "ras.sct",
+      "address": "characterlab/source/model/ras.sct"
+    }
+  ],
+  "premultipliedAlpha": true,
+  "scale": 0.01
+}

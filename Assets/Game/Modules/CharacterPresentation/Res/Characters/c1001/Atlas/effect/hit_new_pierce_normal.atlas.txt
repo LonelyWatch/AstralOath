@@ -1,0 +1,90 @@
+
+hit_new_pierce_normal.sct
+size: 401,877
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 2, 706
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+imp_p1
+  rotate: false
+  xy: 2, 2
+  size: 198, 174
+  orig: 198, 174
+  offset: 0, 0
+  index: -1
+imp_p2
+  rotate: false
+  xy: 2, 178
+  size: 198, 174
+  orig: 198, 174
+  offset: 0, 0
+  index: -1
+imp_p3
+  rotate: false
+  xy: 2, 354
+  size: 198, 174
+  orig: 198, 174
+  offset: 0, 0
+  index: -1
+imp_p4
+  rotate: false
+  xy: 2, 530
+  size: 198, 174
+  orig: 198, 174
+  offset: 0, 0
+  index: -1
+imp_p5
+  rotate: true
+  xy: 202, 378
+  size: 198, 174
+  orig: 198, 174
+  offset: 0, 0
+  index: -1
+imp_p6
+  rotate: true
+  xy: 202, 578
+  size: 198, 174
+  orig: 198, 174
+  offset: 0, 0
+  index: -1
+p_circle1
+  rotate: true
+  xy: 202, 96
+  size: 92, 197
+  orig: 92, 197
+  offset: 0, 0
+  index: -1
+p_circle2
+  rotate: true
+  xy: 202, 190
+  size: 92, 197
+  orig: 92, 197
+  offset: 0, 0
+  index: -1
+p_circle3
+  rotate: true
+  xy: 202, 284
+  size: 92, 197
+  orig: 92, 197
+  offset: 0, 0
+  index: -1
+p_circle4
+  rotate: true
+  xy: 202, 2
+  size: 92, 197
+  orig: 92, 197
+  offset: 0, 0
+  index: -1
+pierce_line
+  rotate: false
+  xy: 173, 778
+  size: 219, 83
+  orig: 219, 83
+  offset: 0, 0
+  index: -1

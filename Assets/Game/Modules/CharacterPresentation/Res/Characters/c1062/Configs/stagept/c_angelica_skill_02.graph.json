@@ -1,0 +1,357 @@
+{
+  "id": "c_angelica_skill_02",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [
+      11
+    ],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "ani": "skill2",
+        "guid": 2,
+        "etty": "ANI"
+      },
+      {
+        "location": 31,
+        "x": -200.0,
+        "y": -20.0,
+        "curve": "0,0.5312499,1,1",
+        "time": 200,
+        "guid": 3,
+        "etty": "CAM"
+      },
+      {
+        "source": "angelica_skill_02_target.cfx",
+        "scale": 1.0,
+        "location": 6,
+        "guid": 4,
+        "etty": "EFFECT"
+      },
+      {
+        "guid": 5,
+        "etty": "IDLE"
+      },
+      {
+        "scale": "1.3",
+        "curve": "0,0.6041666,1,1",
+        "time": 200,
+        "guid": 6,
+        "etty": "ZOOM"
+      },
+      {
+        "time": 200,
+        "guid": 7,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1",
+        "time": 200,
+        "guid": 8,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.4",
+        "curve": "0,1.038194,0.3908046,1",
+        "time": 700,
+        "guid": 9,
+        "etty": "ZOOM"
+      },
+      {
+        "color": "0,0,0,255",
+        "accel": 1.0,
+        "opacity": 0.9,
+        "duration": 1800,
+        "localZ": -1,
+        "globalZ": -1,
+        "fadeIn": 200,
+        "fadeOut": 200,
+        "guid": 10,
+        "etty": "DARK"
+      },
+      {
+        "ani": "skill2",
+        "name": "hit",
+        "handled": true,
+        "guid": 11,
+        "etty": "ONEVENT"
+      },
+      {
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 12,
+        "etty": "HIT"
+      }
+    ],
+    "connections": [
+      {
+        "from": 1,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 3,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 4,
+        "delay": 900,
+        "when": 1,
+        "Desc": "900",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 5,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 6,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 7,
+        "delay": 400,
+        "when": 1,
+        "Desc": "400",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 8,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 9,
+        "delay": 700,
+        "Desc": "700",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 10,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 12,
+        "delay": 1600,
+        "when": 1,
+        "Desc": "1600",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "effect/achieve_bar_pati.particle",
+      "address": "characterlab/source/effect/achieve_bar_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/angelica_b_idle.cfx",
+      "address": "characterlab/source/effect/angelica_b_idle.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/angelica_b_idle_eff_b.atlas",
+      "address": "characterlab/source/effect/angelica_b_idle_eff_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/angelica_b_idle_eff_b.scsp",
+      "address": "characterlab/source/effect/angelica_b_idle_eff_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/angelica_b_idle_eff_f.atlas",
+      "address": "characterlab/source/effect/angelica_b_idle_eff_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/angelica_b_idle_eff_f.scsp",
+      "address": "characterlab/source/effect/angelica_b_idle_eff_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/angelica_b_idleeffatlas.atlas",
+      "address": "characterlab/source/effect/angelica_b_idleeffatlas.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/angelica_b_idleeffatlas.sct",
+      "address": "characterlab/source/effect/angelica_b_idleeffatlas.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/angelica_sk1eff_b.atlas",
+      "address": "characterlab/source/effect/angelica_sk1eff_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/angelica_sk1eff_b.scsp",
+      "address": "characterlab/source/effect/angelica_sk1eff_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/angelica_sk1eff_f.atlas",
+      "address": "characterlab/source/effect/angelica_sk1eff_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/angelica_sk1eff_f.scsp",
+      "address": "characterlab/source/effect/angelica_sk1eff_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/angelica_sk1effatlas.atlas",
+      "address": "characterlab/source/effect/angelica_sk1effatlas.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/angelica_sk1effatlas.sct",
+      "address": "characterlab/source/effect/angelica_sk1effatlas.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/angelica_sk2eff_self.atlas",
+      "address": "characterlab/source/effect/angelica_sk2eff_self.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/angelica_sk2eff_self.scsp",
+      "address": "characterlab/source/effect/angelica_sk2eff_self.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/angelica_sk2eff_target_b.atlas",
+      "address": "characterlab/source/effect/angelica_sk2eff_target_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/angelica_sk2eff_target_b.scsp",
+      "address": "characterlab/source/effect/angelica_sk2eff_target_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/angelica_sk2eff_target_f.atlas",
+      "address": "characterlab/source/effect/angelica_sk2eff_target_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/angelica_sk2eff_target_f.scsp",
+      "address": "characterlab/source/effect/angelica_sk2eff_target_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/angelica_sk2effatlas.atlas",
+      "address": "characterlab/source/effect/angelica_sk2effatlas.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/angelica_sk2effatlas.sct",
+      "address": "characterlab/source/effect/angelica_sk2effatlas.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/angelica_sk3eff_self.atlas",
+      "address": "characterlab/source/effect/angelica_sk3eff_self.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/angelica_sk3eff_self.scsp",
+      "address": "characterlab/source/effect/angelica_sk3eff_self.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/angelica_skill_01.cfx",
+      "address": "characterlab/source/effect/angelica_skill_01.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/angelica_skill_01_pati1.particle",
+      "address": "characterlab/source/effect/angelica_skill_01_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/angelica_skill_02_pati.particle",
+      "address": "characterlab/source/effect/angelica_skill_02_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/angelica_skill_02_self.cfx",
+      "address": "characterlab/source/effect/angelica_skill_02_self.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/angelica_skill_02_target.cfx",
+      "address": "characterlab/source/effect/angelica_skill_02_target.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/angelica_skill_03_self.cfx",
+      "address": "characterlab/source/effect/angelica_skill_03_self.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/angelica_skill_2_pati2.particle",
+      "address": "characterlab/source/effect/angelica_skill_2_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "model/angelica.timeline",
+      "address": "characterlab/source/model/angelica.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/cross_02.sct",
+      "address": "characterlab/source/particle/cross_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/orb_02.sct",
+      "address": "characterlab/source/particle/orb_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/pati_01.sct",
+      "address": "characterlab/source/particle/pati_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/zodiac_star1.sct",
+      "address": "characterlab/source/particle/zodiac_star1.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

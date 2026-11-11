@@ -1,0 +1,73 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "angelica_sk3eff_target_b",
+      "z": "-1",
+      "format": "spine"
+    },
+    {
+      "source": "angelica_sk3eff_target_f",
+      "z": "1",
+      "format": "spine"
+    },
+    {
+      "source": "achieve_bar_pati",
+      "y": "200",
+      "scale": "1.2",
+      "rotate": "-90",
+      "delay": "1400",
+      "format": "particle"
+    },
+    {
+      "source": "achieve_bar_pati",
+      "y": "200",
+      "scale": "1.2",
+      "rotate": "-90",
+      "delay": "1600",
+      "format": "particle"
+    },
+    {
+      "source": "angelica_sk3eff_target_b",
+      "ani": "animation2",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "achieve_bar_pati",
+      "x": "-100",
+      "y": "200",
+      "scale": "1",
+      "rotate": "-90",
+      "delay": "1200",
+      "format": "particle"
+    },
+    {
+      "source": "achieve_bar_pati",
+      "x": "100",
+      "y": "200",
+      "scale": "1",
+      "rotate": "-90",
+      "delay": "1200",
+      "format": "particle"
+    },
+    {
+      "source": "achieve_bar_pati",
+      "x": "-200",
+      "y": "200",
+      "scale": "1.2",
+      "rotate": "-90",
+      "delay": "1000",
+      "format": "particle"
+    },
+    {
+      "source": "achieve_bar_pati",
+      "x": "200",
+      "y": "200",
+      "scale": "1.2",
+      "rotate": "-90",
+      "delay": "1000",
+      "format": "particle"
+    }
+  ]
+}

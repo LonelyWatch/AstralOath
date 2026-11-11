@@ -1,0 +1,47 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "ras_re_sk3_f",
+      "scale": "0.5",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "rass_skill_03_renew_pati1",
+      "delay": "100",
+      "format": "particle",
+      "globalZ": 1.2
+    },
+    {
+      "source": "rass_skill_03_renew_pati2",
+      "y": "570",
+      "scale": "1.4,0.45",
+      "delay": "1500",
+      "format": "particle",
+      "globalZ": 1.4
+    },
+    {
+      "source": "rass_skill_03_renew_pati2",
+      "y": "800",
+      "scale": "1.3,0.4",
+      "delay": "1500",
+      "format": "particle",
+      "globalZ": 1.4
+    },
+    {
+      "source": "rass_skill_03_renew_pati2",
+      "y": "1070",
+      "scale": "1.2,0.3",
+      "delay": "1500",
+      "format": "particle",
+      "globalZ": 1.4
+    },
+    {
+      "source": "ras_re_sk3_f3",
+      "scale": "0.5",
+      "format": "spine",
+      "globalZ": 2.0
+    }
+  ]
+}

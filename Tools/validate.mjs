@@ -52,10 +52,10 @@ function files(directory) {
 
 export function validateProject(root, staged = false) {
   const errors = [];
-  const definitions = [path.join(root, 'Assets/Game'), path.join(root, 'Shared')].flatMap(files)
+  const definitions = [path.join(root, 'Assets/Game'), path.join(root, 'Assets/ThirdParty/FMOD'), path.join(root, 'Shared'), path.join(root, 'Packages/com.astraloath.spine21'), path.join(root, 'Packages/com.astraloath.spine38')].flatMap(files)
     .filter(name => name.endsWith('.asmdef'))
     .map(name => ({ ...JSON.parse(fs.readFileSync(name, 'utf8').replace(/^\uFEFF/, '')), path: path.relative(root, name) }));
-  const hotUpdateNames = JSON.parse(fs.readFileSync(path.join(root, 'Config/HotUpdate/assemblies.json'), 'utf8')).assemblies;
+  const hotUpdateNames = [...new Set(['assemblies.json', 'characterlab-assemblies.json'].filter(file => fs.existsSync(path.join(root, 'Config/HotUpdate', file))).flatMap(file => JSON.parse(fs.readFileSync(path.join(root, 'Config/HotUpdate', file), 'utf8')).assemblies))];
   errors.push(...validateAssemblyGraph(definitions, hotUpdateNames));
   for (const name of hotUpdateNames) {
     const assembly = definitions.find(x => x.name === name);

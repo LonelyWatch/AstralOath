@@ -1,0 +1,90 @@
+
+ras_re_sk3_ready.sct
+size: 1022,255
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+eff_wind_twist_01
+  rotate: true
+  xy: 976, 166
+  size: 50, 44
+  orig: 50, 44
+  offset: 0, 0
+  index: -1
+eff_wind_twist_02
+  rotate: false
+  xy: 223, 136
+  size: 106, 108
+  orig: 106, 108
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 596, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+heal_3
+  rotate: true
+  xy: 422, 2
+  size: 159, 172
+  orig: 159, 172
+  offset: 0, 0
+  index: -1
+light_halfcicle_01
+  rotate: false
+  xy: 2, 2
+  size: 211, 136
+  orig: 211, 136
+  offset: 0, 0
+  index: -1
+lightning_under_1
+  rotate: false
+  xy: 767, 85
+  size: 214, 79
+  orig: 214, 79
+  offset: 0, 0
+  index: -1
+lightning_under_2
+  rotate: false
+  xy: 767, 2
+  size: 218, 81
+  orig: 218, 81
+  offset: 0, 0
+  index: -1
+lightning_under_3
+  rotate: false
+  xy: 2, 173
+  size: 219, 80
+  orig: 219, 80
+  offset: 0, 0
+  index: -1
+lightning_under_4
+  rotate: false
+  xy: 535, 173
+  size: 199, 78
+  orig: 199, 78
+  offset: 0, 0
+  index: -1
+tornado_wave_01
+  rotate: false
+  xy: 767, 166
+  size: 207, 86
+  orig: 207, 86
+  offset: 0, 0
+  index: -1
+wind_01
+  rotate: false
+  xy: 215, 2
+  size: 205, 132
+  orig: 205, 132
+  offset: 0, 0
+  index: -1
+wind_02
+  rotate: false
+  xy: 331, 163
+  size: 202, 83
+  orig: 202, 83
+  offset: 0, 0
+  index: -1
