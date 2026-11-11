@@ -6,6 +6,18 @@
       "source": "local",
       "dependencies": {}
     },
+    "com.astraloath.spine21": {
+      "version": "file:com.astraloath.spine21",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.astraloath.spine38": {
+      "version": "file:com.astraloath.spine38",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.code-philosophy.hybridclr": {
       "version": "file:com.code-philosophy.hybridclr",
       "depth": 0,

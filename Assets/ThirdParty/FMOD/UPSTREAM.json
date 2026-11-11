@@ -1,0 +1,53 @@
+{
+  "version": "2.03.15",
+  "source": "FMOD official Unity package supplied by user",
+  "packageSha256": "9f2dd37e69d136737beade30bb7b5eedd64da54e5080a83dadba1d44556ebc14",
+  "gitCommit": "5097b9ee7cacb944205914362becaff4d00869a5",
+  "files": [
+    {
+      "source": "Assets/Plugins/FMOD/LICENSE.txt",
+      "path": "Assets/ThirdParty/FMOD/LICENSE.txt",
+      "sha256": "7e68351c9fc6005c644a57668ef064c205ce2f75b0efba2d311420854c3973f1",
+      "size": 62882
+    },
+    {
+      "source": "Assets/Plugins/FMOD/platforms/win/lib/x86_64/fmodstudio.dll",
+      "path": "Assets/ThirdParty/FMOD/Plugins/x86_64/fmodstudio.dll",
+      "sha256": "a3ef8653da204696d1114f6c7cb58f10d53ec4132aef4505315aebf1b2f94382",
+      "size": 3278336
+    },
+    {
+      "source": "Assets/Plugins/FMOD/src/fmod_errors.cs",
+      "path": "Assets/ThirdParty/FMOD/Runtime/fmod_errors.cs",
+      "sha256": "6a72879b4b2cd8c80f07d4533586df2deebd8e29fd49f2b5b2de91709ae5809b",
+      "size": 13652
+    },
+    {
+      "source": "Assets/Plugins/FMOD/staging/win/lib/x86_64/fmodstudioL.dll",
+      "path": "Assets/ThirdParty/FMOD/Plugins/x86_64/fmodstudioL.dll",
+      "sha256": "b0590ba7944cb4a65480ab28463357a187908926d615fcee58aece6c46938671",
+      "size": 4395008
+    },
+    {
+      "source": "Assets/Plugins/FMOD/src/fmod_studio.cs",
+      "path": "Assets/ThirdParty/FMOD/Runtime/fmod_studio.cs",
+      "sha256": "22cd36e33ab62843d72808b95a87396cfe0b03f4312052c32d60cec4046beaa4",
+      "size": 104568
+    },
+    {
+      "source": "Assets/Plugins/FMOD/src/fmod_dsp.cs",
+      "path": "Assets/ThirdParty/FMOD/Runtime/fmod_dsp.cs",
+      "sha256": "12bc000105f35844492111ef8476a80ab7166dd4a6225be7ca563f6009c10fa4",
+      "size": 32752
+    },
+    {
+      "source": "Assets/Plugins/FMOD/src/fmod.cs",
+      "path": "Assets/ThirdParty/FMOD/Runtime/fmod.cs",
+      "sha256": "1d63c4d444a8bb3264fc02a75b14c171fc4a0ad3aada00bcd5347c584b2a2a37",
+      "size": 196040
+    }
+  ],
+  "patches": [
+    "Original managed wrappers unchanged. Project library-name partial class uses combined Core/Studio binary. Native importer limited to Windows x64 and Editor. Original asset GUIDs preserved."
+  ]
+}

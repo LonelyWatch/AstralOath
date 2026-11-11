@@ -1,5 +1,6 @@
 * text=auto
 *.cs text eol=lf
+*.shader text eol=lf
 *.lua text eol=lf
 *.md text eol=lf
 *.json text eol=lf
@@ -14,3 +15,14 @@
 *.ttf binary
 *.png binary
 *.bytes binary
+
+# Character assets and native libraries: Git LFS, preserving meta GUIDs as text.
+Assets/Game/Modules/CharacterPresentation/Res/**/*.png filter=lfs diff=lfs merge=lfs -text
+*.bank.bytes filter=lfs diff=lfs merge=lfs -text
+Assets/ThirdParty/FMOD/Plugins/**/*.dll filter=lfs diff=lfs merge=lfs -text
+
+# Hashed import outputs and unmodified upstream files keep their exact recorded bytes.
+Assets/Game/Modules/CharacterPresentation/Res/**/*.json -text !eol
+Assets/Game/Modules/CharacterPresentation/Res/**/*.atlas.txt -text !eol
+Assets/ThirdParty/FMOD/Runtime/fmod*.cs -text !eol
+Assets/ThirdParty/FMOD/LICENSE.txt -text !eol

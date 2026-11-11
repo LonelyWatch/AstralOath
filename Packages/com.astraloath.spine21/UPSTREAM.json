@@ -1,0 +1,146 @@
+{
+  "repository": "https://github.com/EsotericSoftware/spine-runtimes",
+  "commit": "142e770e5b4b42395a3a0a68ff3c8a21ba2774eb",
+  "source": "spine-csharp/src",
+  "namespace": "AstralOath.ThirdParty.Spine21",
+  "patches": [
+    "Scope Spine and SharpJson namespaces to avoid two-version type collisions."
+  ],
+  "files": [
+    {
+      "path": "Runtime/Animation.cs",
+      "upstreamSha256": "0bbacec77c058fd24d480033ade1d32211a6dc2f3e27cc6130848a95dd0c3473",
+      "sha256": "8999cc014a3f8cd05bd1179db0223e3cf7f07ead7d1a46d5bd51be73479d33c2"
+    },
+    {
+      "path": "Runtime/AnimationState.cs",
+      "upstreamSha256": "d6f02b75c7c87b7fcb9625a44de880fb5e53bde9440c8290b00701516d992675",
+      "sha256": "ea4ee8aadc5f386eb417cb0adb53979fbe0632b000f0c9ce6714bf5202d90566"
+    },
+    {
+      "path": "Runtime/AnimationStateData.cs",
+      "upstreamSha256": "7f6a8f8b2296a2d9646668f305e5f27e4856ff136229d8c57dc37ba800c67844",
+      "sha256": "10b77ae04308b2120abef08dced7b3aa92e6c5d6173ef0f4ae08cc96d347b198"
+    },
+    {
+      "path": "Runtime/Atlas.cs",
+      "upstreamSha256": "67d08202593975135fa64c820daece92f55cd509c6a411b660c3f2ccd63ba706",
+      "sha256": "be3e489ccc6095c8e1e3dcd99022fdcbbd783d861f05f2bcb99c2a8a3db4d656"
+    },
+    {
+      "path": "Runtime/Attachments/AtlasAttachmentLoader.cs",
+      "upstreamSha256": "04d868404f4a478d7b616fbf6f05b8af177bab073e40a4deb6a2b8e06e3ab292",
+      "sha256": "f32791305a0aeb9a686e95e5f00ee66a33861b5583e816f1f1446359b00a62cb"
+    },
+    {
+      "path": "Runtime/Attachments/Attachment.cs",
+      "upstreamSha256": "43f9a7e0bab82b0ee160f634950fab1508638a01a7f6ac8f270d2a8a146e8e47",
+      "sha256": "96a1b3c5dfb7e46af816b3d2f4cff4fd7704ee92410fe37a5dc106655f0e4063"
+    },
+    {
+      "path": "Runtime/Attachments/AttachmentLoader.cs",
+      "upstreamSha256": "ea4d87d16998e521ed80e1419b9c2ec09ca9b93f17185ffed5bb1aa483dad8c6",
+      "sha256": "216534795c3be946677bd2f6fbd2bc7641d0c9e807b4d36335e5550981094201"
+    },
+    {
+      "path": "Runtime/Attachments/AttachmentType.cs",
+      "upstreamSha256": "125800cf8e49c60516c97571ef15918f4e3c5e296c002f97e31f90022337997d",
+      "sha256": "50af974115eb183f6dfc0499e03d180e2826567e0be8dae8782a92828e5596fa"
+    },
+    {
+      "path": "Runtime/Attachments/BoundingBoxAttachment.cs",
+      "upstreamSha256": "f2020403753870b642dd74d076b9253ed33196f6ec59a8ff7e93c48eae746d49",
+      "sha256": "73ac79923392e73088beffe9c18c0cd8aedee87bd39fbc9984eb2506f97537fe"
+    },
+    {
+      "path": "Runtime/Attachments/MeshAttachment.cs",
+      "upstreamSha256": "abae0ac977572f814e09c1bccb995fbc614b238e2f5acd53a175f4f0016ef4f3",
+      "sha256": "4e1687a6b771a8880c45dc8b4b4bc472aa52a469943ae8ead7ddec49861a7dea"
+    },
+    {
+      "path": "Runtime/Attachments/RegionAttachment.cs",
+      "upstreamSha256": "fd5bb8ce67587aa28071925bb82a9e526c5e6f3d875607b3931713e6cefd41f8",
+      "sha256": "b5a97223d58460419590a685b3443d4c8ac1a300d255de846c50177519c534c3"
+    },
+    {
+      "path": "Runtime/Attachments/SkinnedMeshAttachment.cs",
+      "upstreamSha256": "b0c9e8b62db925f19a163d09a56f3be390968c1b7721b7f1f4d9c867966b19b8",
+      "sha256": "8f48334d5a7906fd6c66a6e8b4bdf3172f081005176d38c76ac64fcc2ccef101"
+    },
+    {
+      "path": "Runtime/Bone.cs",
+      "upstreamSha256": "2993d3fb2e26bb26661fd6f58810a6a5f7ae4f22af16f8df3c60bd9045c9c255",
+      "sha256": "a431578c0957c8f9454ccfa0b60ce8c533f82f380a02033192d4077b8fc3917f"
+    },
+    {
+      "path": "Runtime/BoneData.cs",
+      "upstreamSha256": "063d24e468d41ea415bd1b3b615958cde52235b7fe03505234042e3dbf8de876",
+      "sha256": "e1889f637222e214da44670aa8ae9887c0aaf5fdcde8b318c140e5a7de340e17"
+    },
+    {
+      "path": "Runtime/Event.cs",
+      "upstreamSha256": "5ceba8e60ea5b82d45a80e002e2a74b00e65a17fb79141130d91376c2ef5c5e3",
+      "sha256": "4121dc6dc9cb077a3792b1d53a4587830693d50ee5061f4ed7efc66691c57742"
+    },
+    {
+      "path": "Runtime/EventData.cs",
+      "upstreamSha256": "d1cf22692e053ec2ee7c97375b8fa8b42b78773f8d2680776383358f35ffc79f",
+      "sha256": "2eb48bc9be15894ac787b2a4bbde59e161124fea18271f0f749438cf880d8142"
+    },
+    {
+      "path": "Runtime/IkConstraint.cs",
+      "upstreamSha256": "1392fbc45839bbb686bf3b148dbe15701790d05dd916534c788b8c642b88febb",
+      "sha256": "98d2153e8d8edb0c0e8649669979782988dadea32993bea3cec4e19911fcd3c2"
+    },
+    {
+      "path": "Runtime/IkConstraintData.cs",
+      "upstreamSha256": "d81edb11673626d1fb397493198597d2f51a0d78972aa60a659a5a60cd93dea5",
+      "sha256": "6cdeb200088156b35f75e9905e4d96854888d151594e28205bb953319f8fb85c"
+    },
+    {
+      "path": "Runtime/Json.cs",
+      "upstreamSha256": "5930d4ab89cd1438b0653404b13fd98cae03c45fc1eac425aeb1c43613bb9dec",
+      "sha256": "d56a14d2a91c448d858c0ef0b16293f023c1c27b0ce6e12345ea02e21ebf95fc"
+    },
+    {
+      "path": "Runtime/Skeleton.cs",
+      "upstreamSha256": "e8f061eea411a8ec93dbb06e2224c179b3ea8480512226b779f274fcd752a067",
+      "sha256": "363f674cf0927852cdacc3ffd51314cb63a264e0e67f21ba04dc6e2d40d0aea4"
+    },
+    {
+      "path": "Runtime/SkeletonBinary.cs",
+      "upstreamSha256": "6cb170e33606705f1073b70df1622c4d0e32c2761d1553cba502d8fede4d7e72",
+      "sha256": "d848c6755f18ecc9a36f1d471aa005917bfd8ef249436aa4ef4b026ef544e389"
+    },
+    {
+      "path": "Runtime/SkeletonBounds.cs",
+      "upstreamSha256": "f65b2695bd891536697cbf09e29a3f497f56f96e09c211de956a94aa5e4fe037",
+      "sha256": "e2b070f70d976c60165a52f262d3a175ed549c94e72f280f7e793ef5a2afea4c"
+    },
+    {
+      "path": "Runtime/SkeletonData.cs",
+      "upstreamSha256": "1dad15d3dd48cd26183901242e26b454767b5fed3901c8489e1a6b4a956ced98",
+      "sha256": "ea2442116f1a333655f211798a653133b3bc15c3f3bb425affd433dc65734077"
+    },
+    {
+      "path": "Runtime/SkeletonJson.cs",
+      "upstreamSha256": "5454ee540315e441c86a318517309b47c810ad365894f99f50ac1a642d564a69",
+      "sha256": "6d63cabad603525185002f8b05d1ca6a71628efb3fd0ebd435e89b587708f48f"
+    },
+    {
+      "path": "Runtime/Skin.cs",
+      "upstreamSha256": "61ff2f2356d499eaafe1d162e6867bf446013b4242834c99ad776feee0a4ca09",
+      "sha256": "c7f8d469f239e4953124b2c3cc356c9fd1ff7f7ab9abb51ebcb14d07a4a204ce"
+    },
+    {
+      "path": "Runtime/Slot.cs",
+      "upstreamSha256": "bc71396479486ee298c863334265d5dc62265fd56ac671902e8c15168051f458",
+      "sha256": "2f40f5328efa9af86c58291762ac628f02cf3a67d013eadc4f63c44f1ba7db3c"
+    },
+    {
+      "path": "Runtime/SlotData.cs",
+      "upstreamSha256": "e9ca4c06b3bdd6e6104b495af02d0f647086acc23d0d5a4cd6d2a84c45f2c7bf",
+      "sha256": "29b0055fe1151f3013300b88ad679bc09ddc4b2cbb01860e5d27ef9e15ed9ed8"
+    }
+  ]
+}

@@ -84,7 +84,9 @@
       "sha256": "cf1fd32f306008bc1e90d5aed53abae02e5c6ef13593de09600587680c675662",
       "version": "9.0.3",
       "commit": "6cadd24d101f4cbd00cd80190106f6621132d24d",
-      "localAdjustments": ["Unity 2022.3.62f3 补全 AddLil2cppSourceCodeToXcodeproj2023OrNewer.cs.meta 的默认 MonoImporter；保留原 GUID，不修改插件源码。"]
+      "localAdjustments": [
+        "Unity 2022.3.62f3 补全 AddLil2cppSourceCodeToXcodeproj2023OrNewer.cs.meta 的默认 MonoImporter；保留原 GUID，不修改插件源码。"
+      ]
     },
     {
       "file": "hybridclr-runtime-v9.0.1.zip",
@@ -101,6 +103,29 @@
       "sha256": "df33bc5b7dcc7314628d93b779a3e10db3e850bb6fe41d8285ea838edaf9fa02",
       "version": "2022.3.x-9.0.1",
       "commit": "ba3a76c9979d14cee404fb5d44301773e0768866"
+    },
+    {
+      "name": "Spine21",
+      "version": "2.1.25",
+      "commit": "142e770e5b4b42395a3a0a68ff3c8a21ba2774eb",
+      "provenance": "Packages/com.astraloath.spine21/UPSTREAM.json",
+      "distribution": "vendored; no automatic download or upgrade"
+    },
+    {
+      "name": "Spine38",
+      "version": "3.8",
+      "commit": "8b4844bd4b193ba9e54487ed397a777993cbad56",
+      "provenance": "Packages/com.astraloath.spine38/UPSTREAM.json",
+      "distribution": "vendored; no automatic download or upgrade"
+    },
+    {
+      "name": "FMOD",
+      "version": "2.03.15",
+      "commit": "5097b9ee7cacb944205914362becaff4d00869a5",
+      "provenance": "Assets/ThirdParty/FMOD/UPSTREAM.json",
+      "distribution": "vendored; no automatic download or upgrade",
+      "file": "fmodstudio20315.unitypackage",
+      "sha256": "9f2dd37e69d136737beade30bb7b5eedd64da54e5080a83dadba1d44556ebc14"
     }
   ],
   "schema": 1,
