@@ -8,7 +8,7 @@ namespace AstralOath.Editor
     // Pure JSON checks shared by the Editor build gate and standalone validation.
     public static class CharacterLabAssetValidation
     {
-        private const string RequiredUiKeys = "lab.title lab.close lab.subtitle lab.search lab.animations lab.voices lab.skills lab.diagnostics lab.battle lab.portrait lab.play lab.pause lab.stop lab.step lab.loop lab.on lab.off lab.slower lab.faster lab.zoom_in lab.zoom_out lab.flip lab.background lab.reset lab.skin lab.skin_empty lab.loading lab.ready lab.missing lab.error lab.transport lab.sound lab.silent lab.raw lab.voice_status lab.unavailable lab.choose_animation lab.empty lab.skill lab.skill_diagnostic lab.not_supported lab.selection lab.targets lab.experimental lab.experimental_warning lab.seek_back lab.seek_forward";
+        private const string RequiredUiKeys = "lab.title lab.close lab.subtitle lab.search lab.animations lab.voices lab.skills lab.diagnostics lab.battle lab.portrait lab.play lab.pause lab.stop lab.step lab.loop lab.on lab.off lab.slower lab.faster lab.zoom_in lab.zoom_out lab.flip lab.background lab.reset lab.skin lab.skin_empty lab.loading lab.ready lab.missing lab.error lab.transport lab.sound lab.silent lab.raw lab.voice_status lab.unavailable lab.choose_animation lab.empty lab.skill lab.skill_diagnostic lab.not_supported lab.selection lab.targets lab.experimental lab.experimental_warning lab.seek_back lab.seek_forward lab.static_pose";
         public static void Validate(string catalogJson, string localizationJson, IReadOnlyDictionary<string, string> resources,
             Func<string, string> readResourceJson)
         {

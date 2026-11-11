@@ -19,6 +19,7 @@ from ThirdParty.scsp_viewer import scsp_v3 as v3
 from ThirdParty.scsp_viewer import scsp2json as writer
 
 MAX_DECODED = 256 * 1024 * 1024
+SCSP_CONVERTER_VERSION = "astraloath-scsp/2"
 
 
 def _unpack_block(data: bytes) -> bytes:
@@ -93,8 +94,62 @@ def _draw_order(order, slots):
             for index,slot in enumerate(slots)]
 
 
+def _flip_v2(reader, skeleton, animation, kind):
+    # Official spine-c 2.1: Animation.h spTimelineType 9/10 = FLIPX/FLIPY,
+    # spFlipTimeline stores x, framesCount and interleaved time/flip floats.
+    # https://github.com/EsotericSoftware/spine-runtimes/blob/142e770e5b4b42395a3a0a68ff3c8a21ba2774eb/spine-c/include/spine/Animation.h
+    bone_index = reader.read_u32()
+    is_x = reader.read_u32()
+    count = reader.read_u32()
+    if bone_index >= len(skeleton.bones) or is_x != int(kind == 9):
+        raise ValueError("Invalid flip bone index or axis marker")
+    if count == 0 or count % 2 or count > (len(reader.data) - reader.pos) // 4:
+        raise ValueError("Invalid flip frame array length")
+    bone = skeleton.bones[bone_index].name
+    axis, field = ("flipX", "x") if kind == 9 else ("flipY", "y")
+    timelines = animation.bones.setdefault(bone, {})
+    if axis in timelines:
+        raise ValueError(f"Duplicate flip timeline: {animation.name}/{bone}/{axis}")
+    frames = []
+    previous = -1.0
+    for _ in range(count // 2):
+        time, value = reader.read_f32(), reader.read_f32()
+        if not math.isfinite(time) or time < 0 or time < previous or value not in (0.0, 1.0):
+            raise ValueError("Invalid flip time or boolean value")
+        frames.append({"time": time, field: bool(value)})
+        previous = time
+    timelines[axis] = frames
+    # Keep independent immutable evidence so the writer cannot drop/mutate a track unnoticed.
+    skeleton.flipSource[(animation.name, bone, axis)] = tuple((f["time"], f[field]) for f in frames)
+
+
+def _validate_flips_v2(document, skeleton):
+    actual = {}
+    for name, animation in document.get("animations", {}).items():
+        for bone, timelines in animation.get("bones", {}).items():
+            for axis, field in (("flipX", "x"), ("flipY", "y")):
+                if axis in timelines:
+                    actual[(name, bone, axis)] = tuple((f.get("time", 0), f.get(field)) for f in timelines[axis])
+    if actual != skeleton.flipSource:
+        raise ValueError("Flip timeline mapping mismatch between source records and JSON")
+
+
+def _flip_report(skeleton):
+    result = {}
+    for (animation, bone, axis), frames in getattr(skeleton, "flipSource", {}).items():
+        axes = result.setdefault(animation, {key: {"tracks": 0, "frames": 0, "bones": {}}
+                                             for key in ("flipX", "flipY")})
+        item = axes[axis]
+        item["tracks"] += 1
+        item["frames"] += len(frames)
+        item["bones"][bone] = len(frames)
+    return result
+
+
 def _animations_v2(reader, skeleton):
     result = []
+    skeleton.sourceTimelineCounts = {}
+    skeleton.flipSource = {}
     for ai in range(skeleton.v2_anim_count):
         animation = common.AnimationData()
         animation.name = _string(reader.read_u32(), skeleton)
@@ -102,9 +157,15 @@ def _animations_v2(reader, skeleton):
         elements = reader.read_u32()
         if not animation.name or elements > 100000 or not math.isfinite(animation.duration):
             raise ValueError(f"Invalid animation header #{ai} at {reader.pos-12}")
+        counts = {}
+        skeleton.sourceTimelineCounts[animation.name] = counts
         for ti in range(elements):
             start = reader.pos
             kind = reader.read_u32()
+            counts[str(kind)] = counts.get(str(kind), 0) + 1
+            if kind in (9, 10):
+                _flip_v2(reader, skeleton, animation, kind)
+                continue
             # The engine's terminal type 6 is a precomputed draw-order timeline,
             # encoded as slotCount, frameCount, times, presence+permutation pairs.
             if kind == 5:
@@ -131,14 +192,10 @@ def _animations_v2(reader, skeleton):
                     elif flag != 0: raise ValueError(f"Unknown draw-order flag {flag}")
                     animation.drawOrder.append(frame)
                 continue
-            if not v2._parse_v2_timeline_entry(reader,skeleton,animation,kind):
+            # The vendored reference mislabels native 5/6/9/10. Never delegate these
+            # or unknown IDs to its permissive fallback branches.
+            if kind not in (0, 1, 2, 3, 4, 7, 8) or not v2._parse_v2_timeline_entry(reader,skeleton,animation,kind):
                 raise ValueError(f"Unsupported/incomplete timeline {kind} in {animation.name} at {start}")
-        if animation._v2_draworder_raw:
-            # Engine auxiliary visibility/order state is retained for diagnosis;
-            # terminal permutation frames are the authoritative compiled order.
-            if not animation.drawOrder:
-                raise ValueError(f"Draw-order auxiliary data lacks permutation timeline: {animation.name}")
-            skeleton.engineDrawOrder[animation.name] = animation._v2_draworder_raw
         result.append(animation)
     skeleton.animations = result
 
@@ -230,15 +287,18 @@ def decode_scsp(data: bytes):
         if sk.version!=expected_version: raise ValueError(f"Unsupported Spine version {sk.version}")
         if len({a.name for a in sk.animations})!=len(sk.animations): raise ValueError("Duplicate animation names")
         document=writer.write_json_data(sk)
+        if version != 30001: _validate_flips_v2(document, sk)
         _validate_json(document)
         if len(document.get("animations",{}))!=len(sk.animations): raise ValueError("Animation count mismatch")
     except (struct.error,IndexError,KeyError,OverflowError,UnicodeError) as exc:
         raise ValueError(f"Invalid SCSP record at byte {reader.pos}: {exc}") from exc
-    report={"spineVersion":sk.version,"bones":len(sk.bones),"slots":len(sk.slots),
+    report={"converterVersion":SCSP_CONVERTER_VERSION,"spineVersion":sk.version,"bones":len(sk.bones),"slots":len(sk.slots),
             "renderAttachments":sum(isinstance(a,(common.RegionAttachment,common.MeshAttachment,common.SkinnedMeshAttachment,common.LinkedMeshAttachment)) for skin in sk.skins for slots in skin.attachments.values() for a in slots.values()),
             "animationCount":len(sk.animations),"animations":[{"name":a.name,"duration":a.duration} for a in sk.animations],
             "binaryBytes":binary_size,"consumedBytes":reader.pos,"opaqueFields":reader.opaque,
-            "engineDrawOrder":sk.engineDrawOrder}
+            "engineDrawOrder":sk.engineDrawOrder,
+            "sourceTimelineCounts":getattr(sk, "sourceTimelineCounts", {}),
+            "boneFlipTimelines":_flip_report(sk)}
     return document,report
 
 

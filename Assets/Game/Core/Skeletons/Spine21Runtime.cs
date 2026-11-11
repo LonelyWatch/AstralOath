@@ -44,7 +44,8 @@ namespace AstralOath.Client.Skeletons
             {
                 S21.SkeletonData data;
                 using (var reader = new StringReader(source.Json)) data = new S21.SkeletonJson(atlas) { Scale = source.Scale }.ReadSkeletonData(reader);
-                skeleton = new S21.Skeleton(data); state = new S21.AnimationState(new S21.AnimationStateData(data));
+                CompleteSkinLookups(data);
+                skeleton = new S21.Skeleton(data); skeleton.SetSkin(data.DefaultSkin); state = new S21.AnimationState(new S21.AnimationStateData(data));
                 foreach (var item in data.Animations) Animations.Add(new SkeletonAnimationInfo(item.Name, item.Duration));
                 foreach (var skin in data.Skins) Skins.Add(skin.Name);
                 state.Event += OnEvent; state.Complete += OnComplete;
@@ -57,6 +58,11 @@ namespace AstralOath.Client.Skeletons
         { Events.Enqueue(new SkeletonPlaybackEvent(SkeletonPlaybackEventKind.Complete, animation, count)); }
         internal override void Play(string name, bool looping, float mix)
         {
+            if (mix == 0)
+            {
+                // A new unblended clip must not inherit unkeyed attachments, bones or deformation.
+                state.ClearTracks(); skeleton.SetToSetupPose();
+            }
             if (animation != null) state.Data.SetMix(animation, name, mix);
             animation = name; loop = looping; state.SetAnimation(0, name, looping); state.Apply(skeleton);
         }
@@ -64,13 +70,87 @@ namespace AstralOath.Client.Skeletons
         internal override void Seek(float seconds)
         {
             state.ClearTracks(); skeleton.SetToSetupPose();
-            var entry = state.SetAnimation(0, animation, loop); entry.Time = seconds; entry.LastTime = seconds;
+            // Attachment keys before the target must be applied; the event queue is discarded below.
+            var entry = state.SetAnimation(0, animation, loop); entry.Time = seconds; entry.LastTime = -1;
             skeleton.Time = seconds; state.Apply(skeleton); Events.Clear();
         }
         internal override void Stop() { state.ClearTracks(); animation = null; skeleton.SetToSetupPose(); skeleton.Time = 0; }
+        // A missing named attachment must remain distinguishable from an animation's explicit null.
+        // These per-player lookup entries have no geometry and preserve the original attachment identities.
+        private sealed class MissingSkinAttachment : S21.Attachment
+        {
+            internal MissingSkinAttachment(string name) : base(name) { }
+        }
+        private static void CompleteSkinLookups(S21.SkeletonData data)
+        {
+            var skins = new List<S21.Skin>(data.Skins);
+            if (data.DefaultSkin == null)
+            {
+                data.DefaultSkin = new S21.Skin("<runtime-default>");
+                skins.Add(data.DefaultSkin); // Internal fallback, not an extra user-selectable skin.
+            }
+            for (int slot = 0; slot < data.Slots.Count; slot++)
+            {
+                var names = new List<string>();
+                if (data.Slots[slot].AttachmentName != null) names.Add(data.Slots[slot].AttachmentName);
+                foreach (var skin in skins) skin.FindNamesForSlot(slot, names);
+                foreach (var name in new HashSet<string>(names, StringComparer.Ordinal))
+                {
+                    var fallback = data.DefaultSkin?.GetAttachment(slot, name) ?? new MissingSkinAttachment(name);
+                    foreach (var skin in skins)
+                        if (skin.GetAttachment(slot, name) == null) skin.AddAttachment(slot, name, fallback);
+                }
+            }
+        }
         internal override void Skin(string name)
         {
-            skeleton.SetSkin(name); skeleton.SetSlotsToSetupPose(); state.Apply(skeleton); Events.Clear();
+            var selected = skeleton.Data.FindSkin(name);
+            if (selected == null) throw new ArgumentException("Skin not found: " + name, nameof(name));
+            if (skeleton.Skin == selected) return;
+            var attachments = new S21.Attachment[skeleton.Slots.Count];
+            var counts = new int[attachments.Length];
+            var times = new float[attachments.Length];
+            for (int i = 0; i < attachments.Length; i++)
+            {
+                var slot = skeleton.Slots[i]; attachments[i] = slot.Attachment;
+                counts[i] = slot.AttachmentVerticesCount; times[i] = slot.AttachmentTime;
+            }
+            skeleton.SetSkin(selected);
+            var changedMeshes = new List<int>();
+            for (int i = 0; i < attachments.Length; i++)
+            {
+                var slot = skeleton.Slots[i];
+                if (slot.Attachment == attachments[i])
+                {
+                    // Native AttachAll clears FFD even when the fallback object did not change.
+                    slot.AttachmentVerticesCount = counts[i]; slot.AttachmentTime = times[i];
+                }
+                else if (slot.Attachment is S21.MeshAttachment || slot.Attachment is S21.SkinnedMeshAttachment)
+                    changedMeshes.Add(i);
+            }
+            if (changedMeshes.Count == 0) return;
+            // A new mesh uses only the current animation/mix (or completed last frame), not retired-track FFD.
+            // Evaluate only newly selected meshes off-screen: applying the mix again to the real
+            // skeleton would re-blend bones/IK/colors when the previous clip lacks those properties.
+            var deformationPose = new S21.Skeleton(skeleton.Data);
+            deformationPose.SetSkin(skeleton.Skin);
+            for (int i = 0; i < attachments.Length; i++)
+                deformationPose.Slots[i].Attachment = skeleton.Slots[i].Attachment;
+            if (state.GetCurrent(0) != null) state.Apply(deformationPose);
+            else if (animation != null)
+            {
+                // Non-looping tracks are retired after completion; the player still displays their last pose.
+                var completed = skeleton.Data.FindAnimation(animation);
+                completed.Apply(deformationPose, -1, completed.Duration, false, null);
+            }
+            Events.Clear();
+            foreach (int i in changedMeshes)
+            {
+                var from = deformationPose.Slots[i]; var to = skeleton.Slots[i];
+                if (from.Attachment != to.Attachment) continue;
+                to.AttachmentVertices = from.AttachmentVertices;
+                to.AttachmentVerticesCount = from.AttachmentVerticesCount;
+            }
         }
         internal override void Flip(bool x, bool y) { skeleton.FlipX = x; skeleton.FlipY = y; }
         internal override bool TryGetBonePose(string name, out SkeletonBonePose pose)

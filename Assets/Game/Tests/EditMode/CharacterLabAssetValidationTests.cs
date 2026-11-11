@@ -23,7 +23,7 @@ namespace AstralOath.Client.Tests
         };
         public static string Locale()
         {
-            const string keys = "hero voice skill lab.title lab.close lab.subtitle lab.search lab.animations lab.voices lab.skills lab.diagnostics lab.battle lab.portrait lab.play lab.pause lab.stop lab.step lab.loop lab.on lab.off lab.slower lab.faster lab.zoom_in lab.zoom_out lab.flip lab.background lab.reset lab.skin lab.skin_empty lab.loading lab.ready lab.missing lab.error lab.transport lab.sound lab.silent lab.raw lab.voice_status lab.unavailable lab.choose_animation lab.empty lab.skill lab.skill_diagnostic lab.not_supported lab.selection lab.targets lab.experimental lab.experimental_warning lab.seek_back lab.seek_forward";
+            const string keys = "hero voice skill lab.title lab.close lab.subtitle lab.search lab.animations lab.voices lab.skills lab.diagnostics lab.battle lab.portrait lab.play lab.pause lab.stop lab.step lab.loop lab.on lab.off lab.slower lab.faster lab.zoom_in lab.zoom_out lab.flip lab.background lab.reset lab.skin lab.skin_empty lab.loading lab.ready lab.missing lab.error lab.transport lab.sound lab.silent lab.raw lab.voice_status lab.unavailable lab.choose_animation lab.empty lab.skill lab.skill_diagnostic lab.not_supported lab.selection lab.targets lab.experimental lab.experimental_warning lab.seek_back lab.seek_forward lab.static_pose";
             return "{\"rows\":[" + string.Join(",",keys.Split(' ').Select(key=>"{\"key\":\""+key+"\",\"zhCn\":\"Text\"}")) + "]}";
         }
         [Test] public void ValidCatalogResolvesTypedResourcesAndLocaleKeys()

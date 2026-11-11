@@ -202,7 +202,7 @@ def import_assets(source_root,project,ids,include_banks=True):
         if suffix==".scsp":
             json_relative=relative.with_suffix(".spine.json");summary=convert_scsp(source_path,project/json_relative)
             conversion_reports[source]=summary
-            entry(source,json_relative,address(source)+"/json","spine-json",[],{"status":"converted","spineVersion":summary["spineVersion"],"animationCount":summary["animationCount"],"binaryBytes":summary["binaryBytes"],"consumedBytes":summary["consumedBytes"]})
+            entry(source,json_relative,address(source)+"/json","spine-json",[],{"status":"converted","spineVersion":summary["spineVersion"],"animationCount":summary["animationCount"],"binaryBytes":summary["binaryBytes"],"consumedBytes":summary["consumedBytes"],"converterVersion":summary["converterVersion"],"boneFlipTimelines":summary["boneFlipTimelines"]})
             atlas=next((p for p in closure.dependencies[source] if p.endswith(".atlas")),None)
             if not atlas and summary["renderAttachments"]:raise ValueError(f"Camera-only skeleton has render slots without atlas: {source}")
             pages=atlas_pages(closure.root,atlas) if atlas else []

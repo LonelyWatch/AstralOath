@@ -19,7 +19,7 @@
 
 `convert.py` 提供 `convert_scsp(source: Path, destination: Path) -> dict`、`convert_sct(...) -> dict`；失败抛异常。`decode_scsp(bytes)` 返回 `(标准Spine对象, 诊断)`；`decode_sct(bytes)` 返回 `(Pillow RGBA图像, 诊断)`。未知格式、压缩/段长度不符、未消费尾部、未知时间线、重复动画名、非法索引必须失败，不能静态降级或跳过动画。
 
-SCSP 保留 `2.1.27` / `3.8.99` 原版本。2.1 的 type5/type6 分别按真实事件和完整 draw-order 记录解析，不套用参考查看器的 FlipX/Y 推断。2.1 曲线、FFD、源浮点精度均保留，不添加关键帧或修补旋转。3.8 缓存曲线的九个采样点经三次方程恢复控制点，并检查所有采样点残差（≤0.00002），输出官方3.8的 `curve/c2/c3/c4` 字段。源引擎特有辅助draw-order与保留缓存字段输出到 `.artifacts/character-import/conversion-reports.json`，这不表示未知引擎字段的玩法语义已还原。
+SCSP 保留 `2.1.27` / `3.8.99` 原版本。2.1 的 type5/type6 分别为事件和完整 draw-order；type9/type10 分别为骨骼 FlipX/FlipY，依据固定官方 2.1 C 核心枚举和 spFlipTimeline 结构解析。参考查看器对这四个编号的命名错误，严格入口不调用它们的相关分支。翻转帧的骨骼索引、轴标记、时间、布尔值、重复轨道及原始到 JSON 的完整映射全部校验，禁止把这些轨道当作辅助排序或事件丢弃。2.1 曲线、FFD、源浮点精度均保留，不添加关键帧或修补旋转。3.8 缓存曲线的九个采样点经三次方程恢复控制点，并检查所有采样点残差（≤0.00002），输出官方3.8的 `curve/c2/c3/c4` 字段。保留缓存字段输出到 `.artifacts/character-import/conversion-reports.json`；旧报告将 type9 称为 engineDrawOrder 的判断已废止，兼容字段保持为空。本轮 SCSP 转换器标记为 `astraloath-scsp/2`，清单记录版本与逐动画、逐骨骼翻转轨/帧数；报告另保留所有原始时间线类型计数。未识别的引擎字段仍不宣称已还原。
 
 纹理解码支持 SCT1 format4 RGB565+A8、format2 RGBA8888；SCT2支持明确编号的ASTC4x4/8x8、ETC2 RGBA8、原RGBA。未知编号不猜测。首批实际37张是SCT1；SCT2仅经过合成数据校验，没有本批真实样本。保留源RGB/alpha，六张主纹理的半透明像素检测符合PMA，因此SkeletonDescriptor明确 `premultipliedAlpha:true`，需配合对应PMA渲染。Unity纹理应 `sRGBTexture=true`、`alphaIsTransparency=false`，避免改写透明边缘RGB。粒子format2首批七张均为等值RGBA灰度数据，不能据此宣称所有未知彩色变种已验证。
 

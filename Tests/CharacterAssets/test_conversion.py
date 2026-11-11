@@ -31,7 +31,7 @@ class ConversionTests(unittest.TestCase):
         with self.assertRaises(ValueError): convert.decode_scsp(data+b"extra")
 
 
-def fixture_v2(timeline=None):
+def fixture_v2(timeline=None, timeline_count=1):
     import lz4.block
     strings=["hash","2.1.27.scsp","root","ping","idle"]
     pool=b""; offsets={}
@@ -41,7 +41,7 @@ def fixture_v2(timeline=None):
     binary+=struct.pack("<IIifI",0xffffffff,offsets["ping"],7,2.5,0xffffffff)
     if timeline is None:
         timeline=struct.pack("<IIfifIH",5,1,0.25,42,3.75,0xffffffff,0)
-    binary+=struct.pack("<IfI",offsets["idle"],1,1)+timeline
+    binary+=struct.pack("<IfI",offsets["idle"],1,timeline_count)+timeline
     raw=struct.pack("<II",len(binary),len(pool))+binary+pool
     packed=lz4.block.compress(raw,store_size=False)
     return struct.pack("<II",len(raw),len(packed))+packed

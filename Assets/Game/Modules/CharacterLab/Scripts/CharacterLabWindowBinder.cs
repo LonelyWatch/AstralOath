@@ -163,7 +163,7 @@ namespace AstralOath.Client.CharacterLab
             player=loaded; player.Root.transform.localPosition=new Vector3(0,-2,0); player.SetFlip(flipped,false);
             FitPreview();
             player.Event+=OnSkeletonEvent; owner.Add(() => loaded.Event-=OnSkeletonEvent);
-            Rows("animations",player.Animations.Select(a=>(a.Name+"  "+a.Duration.ToString("F2")+"s",(Func<Task>)(() => {SelectAnimation(a.Name);return Task.CompletedTask;}))));
+            Rows("animations",player.Animations.Select(a=>(a.Name+"  "+(a.Duration==0?locale.Resolve("lab.static_pose"):a.Duration.ToString("F2")+"s"),(Func<Task>)(() => {SelectAnimation(a.Name);return Task.CompletedTask;}))));
             Show("skinLabel","lab.skin",player.Skins[skinIndex]);
             Show("status","lab.ready",Name(character),player.Version);
             animation=player.Animations.FirstOrDefault(a=>a.Name=="idle" || a.Name=="b_idle")?.Name ?? player.Animations.FirstOrDefault()?.Name;
