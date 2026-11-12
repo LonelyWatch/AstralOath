@@ -164,10 +164,18 @@ namespace AstralOath.Shared.Updates
                         if (quarantined != null || Directory.Exists(recovery))
                             stagedRepair = staging;
                     }
-                    catch
+                    catch (Exception installError)
                     {
-                        if (quarantined != null)
-                            Directory.Move(quarantined, target);
+                        try
+                        {
+                            if (quarantined != null)
+                                await ContentDirectoryRollback.MoveAsync(quarantined, target).ConfigureAwait(false);
+                        }
+                        catch (Exception rollbackError)
+                        {
+                            throw new AggregateException("Content installation and directory recovery both failed; local directories were retained.",
+                                installError, rollbackError);
+                        }
                         throw;
                     }
                     release = new ContentRelease(manifest.Version, SafePath(target, "files"));
@@ -181,13 +189,21 @@ namespace AstralOath.Shared.Updates
                     if (pointer.active != manifest.Version)
                         SwitchPointer(manifest.Version, pointer.active, token);
                 }
-                catch
+                catch (Exception activationError)
                 {
-                    if (stagedRepair != null)
+                    try
                     {
-                        Directory.Move(target, stagedRepair);
-                        if (quarantined != null)
-                            Directory.Move(quarantined, target);
+                        if (stagedRepair != null)
+                        {
+                            await ContentDirectoryRollback.MoveAsync(target, stagedRepair).ConfigureAwait(false);
+                            if (quarantined != null)
+                                await ContentDirectoryRollback.MoveAsync(quarantined, target).ConfigureAwait(false);
+                        }
+                    }
+                    catch (Exception rollbackError)
+                    {
+                        throw new AggregateException("Content activation and directory recovery both failed; local directories were retained.",
+                            activationError, rollbackError);
                     }
                     throw;
                 }

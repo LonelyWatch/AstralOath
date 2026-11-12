@@ -20,10 +20,14 @@ await fixture.CandidateRejectedBeforeActivation();
 await fixture.RepairSameVersion();
 await fixture.RejectReplacementWhenInstalledIdentityIsMissing();
 await fixture.ActivateVerifiedHistoricalRelease();
+await fixture.RepairRestoresAfterTransientRollbackLock(lockCandidate: false);
+await fixture.RepairRestoresAfterTransientRollbackLock(lockCandidate: true);
+await fixture.RepairFailsBoundedlyUnderPersistentRollbackLock();
+await fixture.PermanentRollbackErrorKeepsBothFailures();
 CodeUpdateTests.Run();
 Console.WriteLine("All content and code update scenarios passed");
 
-sealed class Fixture : IAsyncDisposable
+sealed partial class Fixture : IAsyncDisposable
 {
     private const string FilePath = "yooasset/demo.bundle";
     private static readonly byte[] Body = Enumerable.Range(0, 64).Select(value => (byte)value).ToArray();

@@ -66,3 +66,9 @@ pwsh -File Tools/Content/Release.ps1 -Action Verify -Key .artifacts/keys/dev/pub
 Windows IL2CPP 和 Android ARM64 需分别演练。先用新母包验证内置内容，再签名发布更高资源版本，保留该安装包并冷启动，验证可见的 C# 业务变化、回显和关闭清理。分别验证错签名、错误母包或平台、损坏程序集和入口启动失败后的下次冷启动恢复。Editor、共享测试及兼容检查的结果不能充当目标 Player 热更验收。实际结果以交付验证记录为准。
 
 2026-11-11 迁移时的实际结果见 [HybridCLR 迁移验证记录](hybridclr-validation.md)，属于当时源码与母包的历史证据。2026-11-12 [通用控件迁移](../delivery/2026-11-12-ui-controls.md)改变 Common/AOT 基类，该轮只验证 Editor，未重建 Windows/Android Player。历史母包结果不能证明当前源码的 Player 已通过；新母包需重新构建并执行对应平台验收。CharacterLab 的离线包结果另见其[手册及专项记录](character-lab.md)，不代替 Foundation 冷启动热更验收。
+
+## Windows回滚与文件占用
+
+同版本资源修复若候选验证失败或取消，必须恢复原隔离目录。Windows短暂目录占用会使重命名返回访问/共享/锁冲突，恢复路径执行有时限的等待重试；不重试目标已存在等无关错误、不修改ACL。回滚不接受已经取消的安装token，持续失败保留安装与回滚两项异常及原/新资源目录，禁止清理脚本把它们当作无用缓存删除。
+
+2026-11-13的保护属于Shared.Updates/AOT变更，需新母包才能交付旧客户端；不能仅用业务热更覆盖更新器。[触发经过与验证](../delivery/2026-11-13-battle-presentation.md)。
