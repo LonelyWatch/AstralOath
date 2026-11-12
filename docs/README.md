@@ -21,6 +21,8 @@
 - 热更/强更：[构建操作](development/hot-update.md)、[更新能力核对](delivery/2026-11-12-foundation-reaudit.md)、[HybridCLR 决策](architecture/adr/007-hybridclr.md)。
 - 服务端/数据库：[开发运维](development/server.md)、[服务端架构](architecture/server.md)。
 - 角色资源：[角色实验室](development/character-lab.md)、[通用导入规则](development/character-asset-import.md)、[CharacterPresentation](../Assets/Game/Modules/CharacterPresentation/README.md)、[CharacterLab](../Assets/Game/Modules/CharacterLab/README.md)。
+- 本机磁盘与缓存：[D盘资料与启动规则](development/local-storage.md)。
+- 战斗演出通用规则：[源数据、镜头与飘字](development/battle-source-presentation.md)。
 - 战斗：[场景模块](../Assets/Game/Modules/BattleScene/README.md)、[原作研究和截图](development/epic-seven-battle-reference.md)、[角色配表](development/battle-character-data.md)、[等级面板与战斗单位](development/battle-growth.md)、[战斗第三步与双人验证](development/battle-execution.md)、[场景验收](delivery/2026-11-12-battle-scene.md)。
 - 最近发生了什么：[变更与交接日志](development/change-log.md)、[当前状态](project-status.md)。
 - 版本固定来源：`Tools/dependencies.lock.json`、`Packages/manifest.json`/`packages-lock.json`、各 .NET `packages.lock.json`。

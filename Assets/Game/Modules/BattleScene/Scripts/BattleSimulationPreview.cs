@@ -27,11 +27,15 @@ namespace AstralOath.Client.BattleScene
         private readonly BattleTurnHud turnHud;
         private readonly Dictionary<string, View> views = new Dictionary<string, View>(StringComparer.Ordinal);
         private readonly Queue<BattleFlowEvent> playback = new Queue<BattleFlowEvent>();
+        private readonly List<(float At, string TargetId, Action Show)> pendingFeedback =
+            new List<(float, string, Action)>();
         private readonly GameText banner;
         private BattleUnitSnapshot displayedActor;
         private readonly Action restore;
-        private float pause;
-        private float recovery;
+        private float actionElapsed;
+        private float impactSeconds;
+        private float actionDuration;
+        private float[] hitTimes = Array.Empty<float>();
         private int selected;
         private int previousSelection;
         private bool useSoulBurn;
@@ -106,6 +110,7 @@ namespace AstralOath.Client.BattleScene
             skillPresentation = new BattleSkillPresentation(units, graphs, skillAssets, camera, SetCinematicVisible, stageBackground);
             voice = new BattleVoice(audioCatalog, audioBanks, impactBank);
             turnHud = new BattleTurnHud(hud, unit => Label(unit.NameKey), sprites, damageFont);
+            turnHud.SetMissFeedbackLabel(Label("battle.feedback.miss"));
             foreach (var view in views.Values) view.AddLabels(text, hp);
             Refresh();
         }
@@ -117,33 +122,19 @@ namespace AstralOath.Client.BattleScene
         public bool IsCinematicVisible => cinematicVisible;
 
         private BattleUnitSnapshot Actor => Snapshot.GetUnit(Snapshot.CurrentActorId);
-        private bool Busy => playback.Count != 0 || pause > 0f || recovery > 0f;
+        private bool HasActionPresentation => actionElapsed < actionDuration || pendingFeedback.Count != 0;
+        private bool Busy => playback.Count != 0 || HasActionPresentation;
         private bool CanAct => !Busy && Actor?.Slot.Side == BattleSide.Ally;
 
         public void Tick(float delta)
         {
-            skillPresentation.Tick(delta);
+            bool wasBusy = Busy;
             voice.Tick();
-            turnHud.Tick(delta);
-            if (pause > 0f)
+            AdvancePresentation(Mathf.Max(0f, delta));
+            if (Busy) return;
+            if (wasBusy)
             {
-                pause = Mathf.Max(0f, pause - delta);
-                if (pause > 0f) return;
-            }
-            while (playback.Count > 0)
-            {
-                var item = playback.Peek();
-                if (recovery > 0f && item.Kind == BattleFlowEventKind.Action)
-                    break;
-                playback.Dequeue();
-                Present(item);
-                if (pause > 0f) return;
-            }
-            if (recovery > 0f)
-            {
-                recovery = Mathf.Max(0f, recovery - delta);
-                if (recovery > 0f) return;
-                if (playback.Count == 0) Refresh();
+                Refresh();
                 return;
             }
             if (Snapshot.Outcome != BattleOutcome.InProgress) return;
@@ -161,6 +152,44 @@ namespace AstralOath.Client.BattleScene
                     .OrderBy(pair => (camera.WorldToScreenPoint(pair.Value.Center) - Input.mousePosition).sqrMagnitude)
                     .Select(pair => pair.Key).FirstOrDefault();
                 if (target != null) ChooseTarget(target);
+            }
+        }
+
+        private void AdvancePresentation(float remaining)
+        {
+            while (true)
+            {
+                ShowDueFeedback();
+                PresentReadyEvents();
+                ShowDueFeedback();
+                if (remaining <= 0f) return;
+
+                // Advance the STG pose to each cue before sampling that cue's world anchor.
+                float nextTime = actionElapsed < actionDuration ? actionDuration : float.PositiveInfinity;
+                if (playback.Count != 0 && actionElapsed < impactSeconds)
+                    nextTime = Mathf.Min(nextTime, impactSeconds);
+                if (pendingFeedback.Count != 0)
+                    nextTime = Mathf.Min(nextTime, pendingFeedback[0].At);
+                float untilNext = nextTime - actionElapsed;
+                float step = Mathf.Min(remaining, untilNext);
+
+                skillPresentation.Tick(step);
+                turnHud.Tick(step);
+                if (float.IsPositiveInfinity(nextTime)) return;
+                actionElapsed = step == untilNext ? nextTime : actionElapsed + step;
+                remaining -= step;
+            }
+        }
+
+        private void PresentReadyEvents()
+        {
+            while (playback.Count != 0)
+            {
+                var item = playback.Peek();
+                if (item.Kind == BattleFlowEventKind.Action ? HasActionPresentation : actionElapsed < impactSeconds)
+                    return;
+                playback.Dequeue();
+                Present(item);
             }
         }
 
@@ -218,6 +247,7 @@ namespace AstralOath.Client.BattleScene
                 banner.text = "当前无法使用该技能";
                 return false;
             }
+            turnHud.ResetFeedbackCombo();
             binder.SetSimulationSelection(-1);
             foreach (var button in SkillButtons()) button.interactable = false;
             hud.Require<GameButton>("soulBurn").interactable = false;
@@ -230,6 +260,10 @@ namespace AstralOath.Client.BattleScene
             switch (item.Kind)
             {
                 case BattleFlowEventKind.Action:
+                    if (item.Origin != BattleActionOrigin.DualAttack && item.Origin != BattleActionOrigin.ExtraAttack)
+                        turnHud.BeginFeedbackAction();
+                    if (item.Origin == BattleActionOrigin.Counter)
+                        turnHud.ResetFeedbackCombo();
                     SetPlayerControlsVisible(Snapshot.GetUnit(item.SourceId).Slot.Side == BattleSide.Ally);
                     var primary = item.TargetId != null && views.TryGetValue(item.TargetId, out var target)
                         ? target.Actor : null;
@@ -240,24 +274,19 @@ namespace AstralOath.Client.BattleScene
                     var timing = skillPresentation.Begin(item.PresentationId, views[item.SourceId].Actor, primary, targets);
                     presentedSkillId = item.SkillId;
                     voice.Play(string.IsNullOrEmpty(item.PresentationId) ? item.SkillId : item.PresentationId);
-                    pause = timing.ImpactSeconds;
-                    recovery = Math.Max(0.15f, timing.Duration - pause);
+                    actionElapsed = 0f;
+                    impactSeconds = timing.ImpactSeconds;
+                    hitTimes = skillPresentation.HitTimes.ToArray();
+                    float lastHit = hitTimes.Length == 0 ? impactSeconds : hitTimes[hitTimes.Length - 1];
+                    actionDuration = Mathf.Max(timing.Duration, lastHit + 0.15f);
                     string name = skills.TryGetValue(item.SkillId, out var skill) ? Label(skill.nameKey) : "史莱姆攻击";
                     banner.text = name;
                     break;
                 case BattleFlowEventKind.Damage:
+                    ScheduleDamage(item);
+                    break;
                 case BattleFlowEventKind.Healing:
-                    var view = views[item.TargetId];
-                    view.Health.fillAmount = item.RemainingHealth.GetValueOrDefault() /
-                        (float)Snapshot.GetUnit(item.TargetId).Stats.MaxHealth;
-                    if (item.Amount > 0)
-                        turnHud.ShowImpact(item, view.FeedbackAnchor, view.Actor.Bounds.center, camera);
-                    // Damage is emitted after barrier absorption; zero health loss still represents a hit.
-                    if (item.Kind == BattleFlowEventKind.Damage)
-                    {
-                        voice.PlayHit(Snapshot.GetUnit(item.TargetId).DefinitionId, presentedSkillId);
-                        if (item.RemainingHealth > 0) view.Actor.PlayBattleAnimation("attacked");
-                    }
+                    ScheduleFeedback(LastFeedbackAt(item.TargetId), item.TargetId, () => ShowHealing(item));
                     break;
                 case BattleFlowEventKind.CooldownChanged:
                     if (displayedActor?.InstanceId == item.TargetId)
@@ -273,12 +302,74 @@ namespace AstralOath.Client.BattleScene
                     turnHud.SetReadiness(item.SourceId, 0);
                     break;
                 case BattleFlowEventKind.UnitDefeated:
-                    turnHud.RemoveUnit(item.TargetId);
-                    views[item.TargetId].Show(false);
+                    ScheduleFeedback(LastFeedbackAt(item.TargetId), item.TargetId, () =>
+                    {
+                        turnHud.RemoveUnit(item.TargetId);
+                        views[item.TargetId].Show(false);
+                    });
                     break;
                 case BattleFlowEventKind.TurnSkipped:
                     banner.text = $"{Label(Snapshot.GetUnit(item.SourceId).NameKey)} · 眩晕";
                     break;
+            }
+        }
+
+        private void ScheduleDamage(BattleFlowEvent item)
+        {
+            var view = views[item.TargetId];
+            var unit = Snapshot.GetUnit(item.TargetId);
+            var hits = BattleDamageSequence.Build(item.Amount, hitTimes, impactSeconds);
+            for (int index = 0; index < hits.Length; index++)
+            {
+                var hit = hits[index];
+                bool first = index == 0;
+                ScheduleFeedback(hit.At, item.TargetId, () =>
+                {
+                    // A hit absorbed by a barrier still plays its first-impact reaction.
+                    if (first)
+                    {
+                        voice.PlayHit(unit.DefinitionId, presentedSkillId);
+                        if (item.RemainingHealth > 0 || hits.Length > 1)
+                            view.Actor.PlayBattleAnimation("attacked");
+                    }
+                    view.AdjustHealth(-hit.Amount, unit.Stats.MaxHealth);
+                    var bounds = view.Actor.Bounds;
+                    var world = bounds.center;
+                    world.y = bounds.min.y + 0.27f * bounds.size.y;
+                    turnHud.ShowDamageHit(item.TargetId, hit.Amount, item.HitKind, view.FeedbackAnchor, world, camera);
+                });
+            }
+        }
+
+        private void ShowHealing(BattleFlowEvent item)
+        {
+            var view = views[item.TargetId];
+            view.AdjustHealth(item.Amount, Snapshot.GetUnit(item.TargetId).Stats.MaxHealth);
+            if (item.Amount > 0)
+                turnHud.ShowImpact(item, view.FeedbackAnchor, view.Actor.Bounds.center, camera);
+        }
+
+        private float LastFeedbackAt(string targetId)
+        {
+            int index = pendingFeedback.FindLastIndex(cue => cue.TargetId == targetId);
+            return index < 0 ? impactSeconds : pendingFeedback[index].At;
+        }
+
+        private void ScheduleFeedback(float at, string targetId, Action show)
+        {
+            // Preserve authoritative event order for cues that share a time.
+            int index = pendingFeedback.FindIndex(cue => cue.At > at);
+            if (index < 0) pendingFeedback.Add((at, targetId, show));
+            else pendingFeedback.Insert(index, (at, targetId, show));
+        }
+
+        private void ShowDueFeedback()
+        {
+            while (pendingFeedback.Count != 0 && pendingFeedback[0].At <= actionElapsed)
+            {
+                var cue = pendingFeedback[0];
+                pendingFeedback.RemoveAt(0);
+                cue.Show();
             }
         }
 
@@ -288,7 +379,7 @@ namespace AstralOath.Client.BattleScene
             {
                 var view = views[state.InstanceId];
                 view.Show(state.IsAlive);
-                view.Health.fillAmount = state.CurrentHealth / (float)state.Stats.MaxHealth;
+                view.SetHealth(state.CurrentHealth, state.Stats.MaxHealth);
                 view.Readiness.fillAmount = Mathf.Clamp01(state.ReadinessBp / 10000f);
                 view.UpdateLabels(state);
             }
@@ -424,6 +515,8 @@ namespace AstralOath.Client.BattleScene
 
         public void Dispose()
         {
+            playback.Clear();
+            pendingFeedback.Clear();
             skillPresentation.Dispose();
             voice.Dispose();
             turnHud.Dispose();
@@ -439,6 +532,7 @@ namespace AstralOath.Client.BattleScene
             private readonly Image readiness;
             private readonly float originalHealth;
             private readonly float originalReadiness;
+            private long presentedHealth;
             private GameText statusLabel;
             private GameText levelLabel;
             private Image levelBadge;
@@ -465,6 +559,14 @@ namespace AstralOath.Client.BattleScene
             {
                 slot.gameObject.SetActive(value);
                 marker.SetActive(value);
+            }
+
+            public void AdjustHealth(int delta, int maximum) => SetHealth(presentedHealth + delta, maximum);
+
+            public void SetHealth(long health, int maximum)
+            {
+                presentedHealth = health;
+                Health.fillAmount = Mathf.Clamp01(health / (float)maximum);
             }
 
             public void AddLabels(GameText font, GameText digits)

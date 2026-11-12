@@ -2,6 +2,9 @@
 [CmdletBinding()]
 param([switch]$WithMySql, [switch]$WithMcp)
 $ErrorActionPreference = 'Stop'
+$repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
+. (Join-Path $repo 'Tools/ProjectEnvironment.ps1')
+Initialize-AstralProjectEnvironment -RepositoryRoot $repo | Out-Null
 $powerShell = & (Join-Path $PSScriptRoot 'Setup-PowerShell.ps1')
 if ($PSVersionTable.PSVersion.Major -lt 7) {
     $setupArguments = @()
@@ -11,7 +14,6 @@ if ($PSVersionTable.PSVersion.Major -lt 7) {
     if ($LASTEXITCODE -ne 0) { throw "Toolchain setup failed with exit code $LASTEXITCODE." }
     return
 }
-$repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $localTools = Join-Path $repo '.tools'
 $downloads = Join-Path $localTools 'downloads'
 New-Item -ItemType Directory -Force $downloads | Out-Null

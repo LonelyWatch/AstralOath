@@ -59,7 +59,8 @@ namespace AstralOath.Client.BattleScene.Editor
 
                 var descriptor = JObject.Parse(Load<TextAsset>(address).text);
                 row.FindPropertyRelative("document").objectReferenceValue = Load<TextAsset>((string)descriptor["jsonAddress"]);
-                row.FindPropertyRelative("atlas").objectReferenceValue = Load<TextAsset>((string)descriptor["atlasAddress"]);
+                string atlasAddress = (string)descriptor["atlasAddress"];
+                row.FindPropertyRelative("atlas").objectReferenceValue = string.IsNullOrEmpty(atlasAddress) ? null : Load<TextAsset>(atlasAddress);
                 row.FindPropertyRelative("premultipliedAlpha").boolValue = (bool)descriptor["premultipliedAlpha"];
                 row.FindPropertyRelative("scale").floatValue = (float)descriptor["scale"];
                 var pages = descriptor["pages"].ToArray();
@@ -102,7 +103,7 @@ namespace AstralOath.Client.BattleScene.Editor
             string source = (string)item["source"];
             string type = (string)item["type"];
             return type == "effect" || type == "particle" || type == "timeline" || type == "cutin" ||
-                (type == "skeleton" && source.StartsWith("effect/", StringComparison.Ordinal)) ||
+                (type == "skeleton" && (source.StartsWith("effect/", StringComparison.Ordinal) || source.StartsWith("camera/", StringComparison.Ordinal))) ||
                 (type == "texture" && source.StartsWith("particle/", StringComparison.Ordinal));
         }
     }

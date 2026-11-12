@@ -4,6 +4,8 @@ param([string]$Dotnet, [switch]$VerifyAccessors, [switch]$SyncClient, [switch]$C
 
 $ErrorActionPreference = 'Stop'
 $repo = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
+. (Join-Path $repo 'Tools/ProjectEnvironment.ps1')
+Initialize-AstralProjectEnvironment -RepositoryRoot $repo | Out-Null
 $toolRoot = Join-Path $repo '.tools/luban-v5.1.0'
 $output = Join-Path $repo '.artifacts/config'
 $work = Join-Path $repo ('.artifacts/config-pending-' + [Guid]::NewGuid().ToString('N'))

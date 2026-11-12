@@ -5,15 +5,18 @@ $ErrorActionPreference = 'Stop'
 $pwsh = Join-Path $PSHOME 'pwsh.exe'
 if (-not (Test-Path -LiteralPath $pwsh)) { $pwsh = Join-Path $PSHOME 'pwsh' }
 $repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
+. (Join-Path $repo 'Tools/ProjectEnvironment.ps1')
+Initialize-AstralProjectEnvironment -RepositoryRoot $repo | Out-Null
 $dotnet = Join-Path $repo '.tools/dotnet/dotnet.exe'
 if (-not (Test-Path -LiteralPath $dotnet)) { throw 'Run Tools/Setup-Toolchain.ps1 first.' }
 if ($RequireMySql -and [string]::IsNullOrWhiteSpace($env:ASTRALOATH_MYSQL_TEST)) {
     throw 'RequireMySql needs ASTRALOATH_MYSQL_TEST for a disposable MySQL 8.4 database.'
 }
 $env:DOTNET_ROOT = Split-Path $dotnet
-$env:NUGET_PACKAGES = Join-Path $repo '.tools/nuget'
 Push-Location $repo
 try {
+    & $pwsh -NoProfile -File Tools/Tests/project-environment.test.ps1
+    if ($LASTEXITCODE) { throw 'Project cache environment tests failed.' }
     & node --test Tools/Tests/validate.test.mjs Tools/Tests/check-docs.test.mjs
     if ($LASTEXITCODE) { throw 'Validator tests failed.' }
     & node Tools/validate.mjs

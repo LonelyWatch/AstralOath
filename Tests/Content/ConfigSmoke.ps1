@@ -27,7 +27,8 @@ function Write-LubanRows([string]$Path, [object[]]$Rows) {
 try {
     Copy-Item -LiteralPath (Join-Path $repo 'Config') -Destination $work -Recurse
     foreach ($file in @('Tools/Config/Generate.ps1', 'Tools/Config/ValidateBattleCatalog.ps1',
-        'Tools/dependencies.lock.json', 'Tools/Config/VerifyAccessor/Program.cs',
+        'Tools/ProjectEnvironment.ps1', 'Tools/dependencies.lock.json',
+        'Tools/Config/VerifyAccessor/Program.cs',
         'Tools/Config/VerifyAccessor/VerifyAccessor.csproj',
         'Shared/com.astraloath.shared/Runtime/Battle/BattleStats.cs',
         'Shared/com.astraloath.shared/Runtime/Battle/HeroGrowthPreset.cs',

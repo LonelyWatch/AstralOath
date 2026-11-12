@@ -25,3 +25,5 @@
 - 每完成一个可验收改动就同步相应模块 README 与 `docs/development/change-log.md`，接口/配置/资源/构建行为改变必须与文档同批提交。状态或边界变化同步 `docs/project-status.md`，新增架构决策写 ADR；禁止只把交接留在聊天中。
 - 提交前执行 `node Tools/check-docs.mjs --staged`。源码/配置/资源/构建改动缺变更日志，业务模块缺对应 README 时拒绝提交；机械检查不替代语义审查。
 - 区分“热更底层”“完整包构建”“强制升级准入”“正式环境部署”四种状态；没有代码和目标平台证据不能互相代替。当前强更策略缺口见地基复核报告。
+
+- 本机新增项目资料、工具缓存、截图/视频参考和构建产物统一放 D 盘主工作区 .artifacts/.tools 或 D:/AstralOathData；禁止继续向 C 盘历史工作区/Downloads/Temp 增加大文件。工具先初始化 Tools/ProjectEnvironment.ps1，编辑器使用 Tools/Open-Unity.ps1。迁移事实与现存安装例外见 docs/development/local-storage.md。

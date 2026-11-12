@@ -62,6 +62,27 @@ namespace AstralOath.Tests
             Assert.That(duration, Is.EqualTo(descriptor["frames"].Sum(frame => (float)frame["durationSeconds"])).Within(.0001f));
             Assert.That(duration, Is.GreaterThan(1f));
         }
+        [Test] public void CutinIsExcludedFromTheWorldBlurCapture()
+        {
+            root = new GameObject("Overlay composition test");
+            var camera = root.AddComponent<Camera>(); camera.orthographic = true;
+            var type = Type.GetType("AstralOath.Client.BattleScene.BattleCinematicStage, " + RuntimeAssembly, true);
+            var assetType = Type.GetType("AstralOath.Client.BattleScene.BattleSkillPresentationAsset, " + RuntimeAssembly, true);
+            var asset = Activator.CreateInstance(assetType);
+            var descriptor = new TextAsset("{\"frames\":[{\"durationSeconds\":0.2}]}");
+            assetType.GetField("document").SetValue(asset, descriptor);
+            assetType.GetField("pages").SetValue(asset, new[] { Texture2D.whiteTexture });
+            stage = Activator.CreateInstance(type, new object[] { camera, null, null });
+            try
+            {
+                Call("Begin", root.transform, Array.Empty<Transform>(), true);
+                Call("PlayCutin", asset);
+                var overlay = root.GetComponentsInChildren<MeshRenderer>().Single(item => item.name.StartsWith("CUTIN "));
+                Assert.That(overlay.gameObject.layer, Is.EqualTo(5), "CUTIN must be composited once above world blur.");
+            }
+            finally { UnityEngine.Object.DestroyImmediate(descriptor); }
+        }
+
         [Test] public void FarAwaySourceLayoutRestoresRendererVisibilityWithoutMovingSlots()
         {
             root = new GameObject("Source layout test");
@@ -93,12 +114,12 @@ namespace AstralOath.Tests
             stage=Activator.CreateInstance(type,new object[]{camera,(Action<bool>)(_=>{}),null});
             Call("Begin",target.transform,new[]{target.transform},true);
             Call("Play",JObject.Parse("{'etty':'CAM','location':42,'x':-300,'y':200}"));
-            Assert.That(camera.transform.position,Is.EqualTo(new Vector3(1,3,-10)),"Zero-duration CAM completes before its outgoing connection.");
+            Assert.That(camera.transform.position,Is.EqualTo(new Vector3(1,2,-10)),"Zero-duration CAM preserves ground framing before its outgoing connection.");
             Call("Play",JObject.Parse("{'etty':'CAM','location':42,'y':-50,'time':200}"));
             Call("Tick",.1f);
-            Assert.That(camera.transform.position,Is.EqualTo(new Vector3(2.5f,1.75f,-10)));
+            Assert.That(camera.transform.position,Is.EqualTo(new Vector3(2.5f,.75f,-10)));
             Call("Tick",.11f);
-            Assert.That(camera.transform.position,Is.EqualTo(new Vector3(4,.5f,-10)));
+            Assert.That(camera.transform.position,Is.EqualTo(new Vector3(4,-.5f,-10)));
         }
         [Test] public void LargeFrameAdvancesNewCueFromItsSourceTime()
         {

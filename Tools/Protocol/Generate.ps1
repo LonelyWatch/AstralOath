@@ -1,6 +1,9 @@
 param([string]$Dotnet = 'dotnet')
 
 $ErrorActionPreference = 'Stop'
+$repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
+. (Join-Path $repo 'Tools/ProjectEnvironment.ps1')
+Initialize-AstralProjectEnvironment -RepositoryRoot $repo | Out-Null
 $project = Join-Path $PSScriptRoot 'Protocol.Tools.csproj'
 & $Dotnet restore $project --locked-mode
 if ($LASTEXITCODE -ne 0) { throw 'Protocol tool restore failed.' }

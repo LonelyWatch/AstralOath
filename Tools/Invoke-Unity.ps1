@@ -25,6 +25,8 @@ $isCharacterLab = $Mode -in 'CharacterLabWindows','GenerateCharacterLab','Valida
 if ($isCharacterLab -and $SigningKey) { throw 'CharacterLab test packages do not use the Foundation release signer.' }
 if ($isCharacterLab -and -not $PSBoundParameters.ContainsKey('ProjectName')) { $ProjectName = 'UnityCharacterLab' }
 $repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
+. (Join-Path $repo 'Tools/ProjectEnvironment.ps1')
+Initialize-AstralProjectEnvironment -RepositoryRoot $repo | Out-Null
 $project = Join-Path $repo ".artifacts/$ProjectName"
 $reports = Join-Path $repo '.artifacts/unity'
 New-Item -ItemType Directory -Force $project,$reports | Out-Null

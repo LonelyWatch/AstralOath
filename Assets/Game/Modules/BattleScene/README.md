@@ -55,3 +55,11 @@ Luban 快照 `Configs/battle-catalog.json` 含三名英雄、成长模板、觉�
 素材校验与恢复入口分别为 Tools/BattleScene/ImportBattleAudio.py、ImportReadinessHud.py、PreparePreviewArt.py，使用项目的 .tools/character-assets/Scripts/python.exe。场景序列化更新仍使用 InstallHudEffects，保留作者布局和现有 GUID。[完整调用、复现与限制](../../../../docs/development/battle-execution.md#2026-11-12-演出对照修订)
 
 本轮网络参考限定近期实际查看的画面，并明确录像版本不可确认的范围；详情面板以本地原版 CSB 为结构依据。[参考记录](../../../../docs/delivery/2026-11-12-battle-presentation-reference.md)。部分后处理、镜头锚点、移动曲线和精细布局仍有诊断，不能称所有技能逐帧还原通过。
+
+## 2026-11-13 通用演出规则
+
+源 ANI_SCOPE 的 jump/landing 驱动接近与归位；camera Spine 曲线与基础镜头分离，原脚点构图和可见地图边界约束统一处理。PPEFFECT sprite_blur 使用短时世界相机合成，CUTIN 与HUD独立叠加；SINE调制为明确标记的重建公式。角色和地面影子分别移动，不按角色ID修补。
+
+原 damage.fnt 位图字形按实际片段逐字弹跳、渐变和短暂停留；每段显示额按原 HIT 时间从权威总额分配，协攻继续累计，死亡显示等待末击。ImportDamageFeedback.py --check 校验12张原 combo 图及字体/CSB来源，InstallHudEffects 更新资源引用并保留场景布局。
+
+新增角色必须遵守[源演出通用规则](../../../../docs/development/battle-source-presentation.md)，证据和推断见[镜头调查](../../../../docs/delivery/2026-11-13-camera-source-audit.md)。本轮无需新增外部插件。Shader/内置资源更新仍遵守母包与热更边界，Player平台另行验收；EditMode/Editor画面不能替代目标平台构建。

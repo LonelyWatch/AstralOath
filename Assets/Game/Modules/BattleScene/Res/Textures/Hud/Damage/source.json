@@ -1,0 +1,107 @@
+{
+  "sourceRoot": "D:/sevenepic",
+  "transfer": "Byte-identical PNG and BMFont copies. combo.csb is layout evidence only.",
+  "comboLayout": {
+    "layerSize": [
+      320,
+      100
+    ],
+    "tens": [
+      90,
+      42
+    ],
+    "ones": [
+      130,
+      42
+    ],
+    "caption": [
+      215,
+      42
+    ],
+    "backdrop": [
+      205,
+      50
+    ],
+    "pivot": [
+      0.5,
+      0.5
+    ],
+    "timelines": 0
+  },
+  "assets": [
+    {
+      "source": "原始资源/img/game_eff_dmg_p0.png",
+      "sha256": "6348f69bdb6f2548e21a5444aef29561bfd42aec03fc50817c98e3c1809962ca",
+      "asset": "Damage/game_eff_dmg_p0.png"
+    },
+    {
+      "source": "原始资源/img/game_eff_dmg_p1.png",
+      "sha256": "8ebad28f94780fc3e2f498cf502b8e7ba7c4ceffad9fe4dcfc9b6b2d056a735c",
+      "asset": "Damage/game_eff_dmg_p1.png"
+    },
+    {
+      "source": "原始资源/img/game_eff_dmg_p2.png",
+      "sha256": "6006781da7cc2d350ec14a9a6b747e4388461b74e306f1320e5db895bedffee0",
+      "asset": "Damage/game_eff_dmg_p2.png"
+    },
+    {
+      "source": "原始资源/img/game_eff_dmg_p3.png",
+      "sha256": "b9d3d0eec98f68a29810ebd3346c9b107b847077045a0ecc355fde12cbce058e",
+      "asset": "Damage/game_eff_dmg_p3.png"
+    },
+    {
+      "source": "原始资源/img/game_eff_dmg_p4.png",
+      "sha256": "e8e746439750ced6ca6c0f242a5b19387563183b9b1515117de95bd51e3e67af",
+      "asset": "Damage/game_eff_dmg_p4.png"
+    },
+    {
+      "source": "原始资源/img/game_eff_dmg_p5.png",
+      "sha256": "5219dd3d9c21a0b58604f1d348c105cbdd1be302dc7cda3fe8deb5e91fca6071",
+      "asset": "Damage/game_eff_dmg_p5.png"
+    },
+    {
+      "source": "原始资源/img/game_eff_dmg_p6.png",
+      "sha256": "39a63fdc31a2e1b949b61be663aa61c2d0ad61c211cf36f5011e30e183e7e99f",
+      "asset": "Damage/game_eff_dmg_p6.png"
+    },
+    {
+      "source": "原始资源/img/game_eff_dmg_p7.png",
+      "sha256": "8d3be776f613854dd84c51225703fb590e6fb778c2efbad2b2e41396ede813b4",
+      "asset": "Damage/game_eff_dmg_p7.png"
+    },
+    {
+      "source": "原始资源/img/game_eff_dmg_p8.png",
+      "sha256": "67da35a025dd31990b75c6ede21ef7da23a4f642303dc909d5eff897b1684ba4",
+      "asset": "Damage/game_eff_dmg_p8.png"
+    },
+    {
+      "source": "原始资源/img/game_eff_dmg_p9.png",
+      "sha256": "a60dd893a29616f45b02ed217d7de47ec4bc67c5bc03fa4970b13e94da4fd1c6",
+      "asset": "Damage/game_eff_dmg_p9.png"
+    },
+    {
+      "source": "原始资源/img/game_eff_dmg_hits.png",
+      "sha256": "f007b433bd1c02f624739666d913c5dc4fc2ceaf3025fa9a70497659c9649eeb",
+      "asset": "Damage/game_eff_dmg_hits.png"
+    },
+    {
+      "source": "原始资源/img/ef_blood03.png",
+      "sha256": "0b8785776c8da4d26c26e58c3ecac2263c06384cf62107f6006b6e4d7fecd587",
+      "asset": "Damage/ef_blood03.png"
+    },
+    {
+      "source": "原始资源/font/damage.fnt",
+      "sha256": "5551f51d2232f8ccaaf9a21bf88aa293910da184d353a0708d86cebd590befc5",
+      "asset": "Fonts/damage.fnt.txt"
+    },
+    {
+      "source": "原始资源/font/damage_0.png",
+      "sha256": "5dc074f79889263741d6a84b2f156e1189d97c15ca0dd5c6bf39b3dcb3794073",
+      "asset": "Fonts/damage_0.png"
+    },
+    {
+      "source": "原始资源/wnd/combo.csb",
+      "sha256": "9307c6d25f5c1d45f510d70537455063ac95a31ea9715ffa9457d76fd3f927e0"
+    }
+  ]
+}

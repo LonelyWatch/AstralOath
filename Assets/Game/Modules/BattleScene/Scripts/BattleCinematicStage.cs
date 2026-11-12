@@ -9,7 +9,7 @@ using Object = UnityEngine.Object;
 namespace AstralOath.Client.BattleScene
 {
     // Owns presentation only. Source descriptors use milliseconds; Tick receives seconds.
-    public sealed class BattleCinematicStage : IDisposable
+    public sealed partial class BattleCinematicStage : IDisposable
     {
         private sealed class Layer
         {
@@ -24,6 +24,7 @@ namespace AstralOath.Client.BattleScene
         }
 
         private readonly Camera camera;
+        private readonly BattleSourcePostEffect postEffects;
         private readonly Action<bool> cinematicChanged;
         private readonly GameObject background;
         private readonly List<Layer> layers = new List<Layer>();
@@ -38,16 +39,28 @@ namespace AstralOath.Client.BattleScene
         private bool running;
         private bool hidden;
         private float time;
-        private (Vector3 From, Vector3 To, float Start, float Duration, string Curve)? pan;
+        private (Vector3 From, int Location, Vector3 Offset, float GroundOffset, float Start, float Duration, string Curve)? pan;
+        private Vector3 basePosition;
+        private int activeFocusLocation;
+        private Vector3 activeFocusOffset;
+        private float requestedSize;
+        private float activeGroundOffset;
+        private bool hasFocus;
+        private readonly Dictionary<Transform, float> groundOffsets = new Dictionary<Transform, float>();
+        private Bounds mapBounds;
+        private bool hasMapBounds;
         private (float From, float To, float Start, float Duration, string Curve)? zoom;
         private Texture2D[] hatchTextures;
 
         public BattleCinematicStage(Camera camera, Action<bool> cinematicChanged, GameObject background)
         {
             this.camera = camera;
+            postEffects = new BattleSourcePostEffect(camera);
             this.cinematicChanged = cinematicChanged;
             this.background = background;
         }
+
+        public bool PlayPostEffect(JObject node, JObject[] modulators) => running && postEffects.Play(node, modulators);
 
         public void SetHatchTextures(Texture2D[] textures) => hatchTextures = textures;
         public void SetParticipants(Transform[] actors) => participants = actors;
@@ -64,6 +77,13 @@ namespace AstralOath.Client.BattleScene
             originalClear = camera.backgroundColor;
             originalBackground = background && background.activeSelf;
             time = 0f;
+            basePosition = originalPosition;
+            requestedSize = originalSize;
+            hasFocus = false;
+            groundOffsets.Clear();
+            foreach (var participant in targets.Concat(new[] { caster }).Where(item => item).Distinct())
+                groundOffsets[participant] = originalPosition.y - participant.position.y;
+            CaptureBackdrop();
             running = true;
             hidden = hideHud;
             if (hidden) cinematicChanged?.Invoke(true);
@@ -75,30 +95,34 @@ namespace AstralOath.Client.BattleScene
             switch ((string)node["etty"])
             {
                 case "CAM":
-                    Vector3 target = Anchor((int?)node["location"] ?? 0);
-                    target += new Vector3(Number(node, "x") * .01f, Number(node, "y") * .01f, 0f);
-                    target.z = originalPosition.z;
+                    int location = (int?)node["location"] ?? 0;
+
+                    float ground = GroundOffset(location);
+                    float facing = caster && caster.TryGetComponent<BattlePreviewActor>(out var actor) ? actor.FacingDirection : 1f;
+                    Vector3 offset = new Vector3(Number(node, "x") * .01f * facing, Number(node, "y") * .01f, 0f);
+                    hasFocus = false;
                     if (Number(node, "time") <= 0f)
                     {
-                        camera.transform.position = target;
+                        activeFocusLocation = location;
+                        activeFocusOffset = offset;
+                        activeGroundOffset = ground;
+                        hasFocus = true;
+                        basePosition = Framed(FocusPoint(location, offset), ground);
                         pan = null;
                     }
                     else
-                    {
-                        pan = (camera.transform.position, target, time,
-                            Number(node, "time") / 1000f, (string)node["curve"]);
-                    }
+                        pan = (basePosition, location, offset, ground, time, Number(node, "time") / 1000f, (string)node["curve"]);
                     break;
                 case "ZOOM":
                     float targetSize = originalSize / Mathf.Max(.01f, Number(node, "scale", 1f));
                     if (Number(node, "time") <= 0f)
                     {
-                        camera.orthographicSize = targetSize;
+                        requestedSize = targetSize;
                         zoom = null;
                     }
                     else
                     {
-                        zoom = (camera.orthographicSize, targetSize, time,
+                        zoom = (requestedSize, targetSize, time,
                             Number(node, "time") / 1000f, (string)node["curve"]);
                     }
                     break;
@@ -117,6 +141,7 @@ namespace AstralOath.Client.BattleScene
                     dark.Material.mainTexture = Texture2D.whiteTexture;
                     break;
                 case "STOP":
+                    postEffects.Stop((string)node["targetId"]);
                     foreach (var layer in layers.Where(item => (string)item.Node?["id"] == (string)node["targetId"]))
                         layer.Stop = time;
                     break;
@@ -136,6 +161,7 @@ namespace AstralOath.Client.BattleScene
                         hatch.Material.SetColor("_FragColor" + index, ColorValue((string)node["color" + index]));
                     break;
             }
+            ApplyCameraPose();
             UpdateLayers();
         }
 
@@ -178,6 +204,8 @@ namespace AstralOath.Client.BattleScene
                 throw new InvalidOperationException("Incomplete original CUTIN frames: " + asset.source);
 
             var layer = AddLayer("CUTIN " + asset.source, 30000, "CharacterLabUnlit");
+            // CUTIN remains a single overlay above the captured world and is excluded from sprite blur.
+            layer.Root.layer = 5;
             layer.Cutin = asset;
             layer.Node = descriptor;
             layer.Duration = CutinDuration(descriptor);
@@ -191,18 +219,26 @@ namespace AstralOath.Client.BattleScene
         {
             if (!running || !camera) return;
             time += Mathf.Max(0f, delta);
-            if (pan is { } move)
-            {
-                float progress = Progress(move.Start, move.Duration);
-                camera.transform.position = Vector3.LerpUnclamped(move.From, move.To, Curve(progress, move.Curve));
-                if (progress >= 1f) pan = null;
-            }
             if (zoom is { } scale)
             {
                 float progress = Progress(scale.Start, scale.Duration);
-                camera.orthographicSize = Mathf.LerpUnclamped(scale.From, scale.To, Curve(progress, scale.Curve));
+                requestedSize = Mathf.LerpUnclamped(scale.From, scale.To, Curve(progress, scale.Curve));
                 if (progress >= 1f) zoom = null;
             }
+            camera.orthographicSize = EffectiveSize();
+            if (pan is { } move)
+            {
+                float progress = Progress(move.Start, move.Duration);
+                basePosition = Vector3.LerpUnclamped(move.From, Framed(FocusPoint(move.Location, move.Offset), move.GroundOffset), Curve(progress, move.Curve));
+                if (progress >= 1f)
+                {
+                    activeFocusLocation = move.Location; activeFocusOffset = move.Offset; activeGroundOffset = move.GroundOffset; hasFocus = true; pan = null;
+                }
+            }
+            else if (hasFocus) basePosition = Framed(FocusPoint(activeFocusLocation, activeFocusOffset), activeGroundOffset);
+            TickShakes(delta);
+            ApplyCameraPose();
+            postEffects.Tick(delta);
             UpdateLayers();
         }
 
@@ -371,6 +407,8 @@ namespace AstralOath.Client.BattleScene
         public void Reset()
         {
             RestoreLayout();
+            postEffects.Reset();
+            ReleaseCameraMotion();
             foreach (var layer in layers) Release(layer);
             layers.Clear();
             pan = null;

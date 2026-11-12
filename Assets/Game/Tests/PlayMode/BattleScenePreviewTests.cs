@@ -289,7 +289,10 @@ namespace AstralOath.Client.Tests
                 yield return null;
             Assert.That(health.fillAmount, Is.LessThan(originalFill), "The skill impact updates the HUD.");
             var feedback = map.transform.Find("Battle Feedback/enemy-1/Impact").GetComponent<GameText>();
-            Assert.That(feedback.text, Is.Not.Empty);
+            var digits = feedback.transform.parent.GetComponentsInChildren<RawImage>();
+            Assert.That(digits.Length, Is.GreaterThan(0), "Original bitmap glyphs display the hit amount.");
+            Assert.That(digits.All(digit => digit.texture && digit.uvRect.width > 0f), Is.True);
+            Assert.That(digits.Any(digit => Mathf.Abs(digit.rectTransform.anchoredPosition.y) > 0.01f), Is.True, "The impact starts a digit bounce.");
             var targetActor = roots.Single(root => root.name == "Units").transform.Find("Enemies").GetChild(0)
                 .GetComponentInChildren<BattlePreviewActor>();
             var worldCamera = preview.GetComponent<Canvas>().worldCamera;
@@ -301,7 +304,7 @@ namespace AstralOath.Client.Tests
             var feedbackPosition = feedback.rectTransform.position;
             yield return null;
             yield return null;
-            Assert.That(Vector3.Distance(feedback.rectTransform.position, feedbackPosition), Is.GreaterThan(0.001f));
+            Assert.That(digits.All(digit => float.IsFinite(digit.rectTransform.anchoredPosition.y)), Is.True);
             var effects = roots.Single(root => root.name == "Units").transform.Find("Battle Skill Effects");
             Assert.That(effects.GetComponentsInChildren<MeshFilter>().Any(mesh => mesh.sharedMesh && mesh.sharedMesh.vertexCount > 0),
                 Is.True, "Original CFX must be rendered by the battle scene.");
@@ -481,6 +484,8 @@ namespace AstralOath.Client.Tests
             present.Invoke(simulation, new object[] { action });
             int beforeImpact = preview.StartedHitSounds;
             present.Invoke(simulation, new object[] { absorbedHit });
+            float impactAt = (float)simulation.GetType().GetField("impactSeconds", flags).GetValue(simulation);
+            simulation.GetType().GetMethod("Tick").Invoke(simulation, new object[] { impactAt + .001f });
 
 #if UNITY_EDITOR_WIN
             Assert.That(preview.StartedHitSounds, Is.EqualTo(beforeImpact + 2),
@@ -488,8 +493,13 @@ namespace AstralOath.Client.Tests
 #endif
             Assert.That(player.GetType().GetProperty("CurrentAnimation").GetValue(player), Is.EqualTo("attacked"),
                 "A fully absorbed hit still plays the target's reaction animation.");
-            Assert.That(map.transform.Find("Battle Feedback").childCount, Is.Zero,
+            var feedbackRoot = map.transform.Find("Battle Feedback");
+            Assert.That(feedbackRoot.GetComponentsInChildren<RawImage>().Length, Is.Zero,
                 "Fully absorbed damage must not create a zero-damage floating number.");
+            Assert.That(feedbackRoot.GetComponentsInChildren<GameText>().Any(text => text.text == "0"), Is.False);
+            if (absorbedHit.HitKind == BattleHitKind.Miss)
+                Assert.That(feedbackRoot.GetComponentsInChildren<GameText>().Any(text => text.text == "未命中"), Is.True,
+                    "An absorbed miss still shows its localized caption.");
         }
 
         [UnityTest]
@@ -540,6 +550,8 @@ namespace AstralOath.Client.Tests
                     yield return null;
                 }
                 Assert.That(submitted, Is.True, wanted + " reaches its real playable turn.");
+                yield return null;
+
                 deadline = Time.realtimeSinceStartup + 2f;
                 while (!preview.IsCinematicVisible && Time.realtimeSinceStartup < deadline) yield return null;
                 Assert.That(preview.IsCinematicVisible, Is.True, wanted + " enters its source cinematic.");

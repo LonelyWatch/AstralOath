@@ -24,6 +24,34 @@ namespace AstralOath.Client.BattleScene
         public Bounds Bounds => player != null
             ? player.Root.GetComponent<MeshRenderer>().bounds : new Bounds(transform.position, Vector3.zero);
 
+        internal float FacingDirection => faceLeft ? -1f : 1f;
+
+        internal Transform PresentationShadow => transform.parent
+            ? transform.parent.GetComponentInChildren<SpriteRenderer>(true)?.transform : null;
+
+        internal bool TryGetPresentationAnchor(string anchor, out Vector3 position)
+        {
+            position = transform.position;
+            if (string.IsNullOrEmpty(anchor)) return true;
+            if (anchor == "shadow")
+            {
+                var shadow = PresentationShadow;
+                if (!shadow) return false;
+                position = shadow.position;
+                return true;
+            }
+            if (player == null || !player.TryGetBonePose(anchor, out var pose)) return false;
+            position = player.Root.transform.TransformPoint(pose.LocalPosition);
+            return true;
+        }
+
+        internal void PlayBattleIdle()
+        {
+            if (player == null || !playingBattleAnimation) return;
+            playingBattleAnimation = false;
+            player.Play(idleAnimation, true);
+        }
+
         internal float GetBattleAnimationDuration(string animation)
         {
             if (player != null)
@@ -119,10 +147,7 @@ namespace AstralOath.Client.BattleScene
             if (player == null) return;
             player.Tick(playingBattleAnimation ? Time.unscaledDeltaTime : Time.deltaTime);
             if (playingBattleAnimation && player.Time >= player.Duration)
-            {
-                playingBattleAnimation = false;
-                player.Play(idleAnimation, true);
-            }
+                PlayBattleIdle();
         }
 
         private void OnDisable()

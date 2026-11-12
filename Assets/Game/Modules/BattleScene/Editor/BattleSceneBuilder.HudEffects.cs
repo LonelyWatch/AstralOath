@@ -161,7 +161,7 @@ namespace AstralOath.Client.BattleScene.Editor
                     "cm_icon_role_manauser", "_hero_s_bg_ally", "_hero_s_bg_enemy", "_hero_s_frame_ally",
                     "_hero_s_frame_enemy", "cm_hero_circool1", "game_hud_arrow", "Faces/pet_slime1_n_grade1_1_s" }
                     .Select(name => Asset<Sprite>(HudTextures + name + ".png")))
-                .Concat(BattleTurnHudAssets.Sprites()).ToArray());
+                .Concat(BattleTurnHudAssets.Sprites()).Concat(BattleDamageFeedbackAssets.Sprites()).ToArray());
             SetObject("burnPressed", Asset<Sprite>(HudTextures + "game_hud_btn_burn_p.png"));
             SetObject("cancelNormal", Asset<Sprite>(HudEffects + "game_hud_btn_burnc_d.png"));
             SetObject("cancelPressed", Asset<Sprite>(HudEffects + "game_hud_btn_burnc_p.png"));
