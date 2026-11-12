@@ -15,7 +15,7 @@
 
 - `BattleHud` 继承 `UIBaseView` 并验证 BindingMap。场景 Canvas 上的 `BattleHudPreview` 管理普通 C# `BattleHudBinder` 生命周期。预制体使用 GameText、GameButton 和 BindingMap。Burn 与三枚技能按钮接受点击，预览的魂力与角色固定为当前拉斯。
 - `BattlePreviewActor` 通过现有 SkeletonPlayerFactory 读取原版骨骼及图集，进入 Play 时生成，禁用或卸载时释放网格和材质。三名英雄直接引用 CharacterPresentation 的现有资产。
-- `BattlePreviewViewport` 在安全区内保持 16:9，世界与 Screen Space Camera HUD 使用同一摄像机。HUD 作者坐标以 1280×720 左下原点记录，生成时乘 1.5。地图图层位置和站位来自对照后的手调。
+- `BattlePreviewViewport` 在安全区内保持 16:9，世界与 Screen Space Camera HUD 使用同一摄像机。HUD 作者坐标以 1280×720 左下原点记录，生成时乘 1.5。地图图层位置和站位来自对照后的手调。Forest2／3 的草地按原宽高比布置，底边固定在设计坐标 Y=-2，连续草带覆盖八个站位及其影子。替换舞台时用各槽位的世界坐标核对可站草带。梅赛德丝的待机保留原骨骼悬浮。
 - 预览场景使用直接资产引用和独立程序集，未纳入正式启动场景、YooAsset 发布收集或 HybridCLR 业务登记。正式流程接入时另定资源地址、数据契约和服务端准入。
 
 ## Burn 和技能选中预览

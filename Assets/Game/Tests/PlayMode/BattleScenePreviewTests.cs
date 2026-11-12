@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using AstralOath.Client.Common;
 using NUnit.Framework;
+using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -68,14 +69,55 @@ namespace AstralOath.Client.Tests
                 Assert.That(point.y, Is.InRange(0f, 1f), actor.transform.parent.name);
             }
 
+            var day = roots.Single(root => root.name == "Forest2Stage");
+            AssertSlotsOnGrass(day, units);
             string output = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_CAPTURE_DIR");
             if (!string.IsNullOrWhiteSpace(output))
                 Capture(camera, output);
+
+            var duskPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(
+                "Assets/Game/Modules/BattleScene/Res/Prefab/Forest3Stage.prefab");
+            Assert.That(duskPrefab, Is.Not.Null);
+            var dusk = UnityEngine.Object.Instantiate(duskPrefab);
+            SceneManager.MoveGameObjectToScene(dusk, scene);
+            try
+            {
+                day.SetActive(false);
+                AssertSlotsOnGrass(dusk, units);
+                if (!string.IsNullOrWhiteSpace(output))
+                    Capture(camera, output, "forest3-ground.png");
+            }
+            finally
+            {
+                dusk.SetActive(false);
+                UnityEngine.Object.Destroy(dusk);
+                day.SetActive(true);
+            }
 
             var first = actors[0];
             first.transform.parent.gameObject.SetActive(false);
             yield return null;
             Assert.That(!first, Is.True, "Disabling an actor must dispose its Spine mesh object.");
+        }
+
+        private static void AssertSlotsOnGrass(GameObject stage, Transform units)
+        {
+            var ground = stage.transform.Find("Ground").GetComponent<SpriteRenderer>();
+            Bounds bounds = ground.bounds;
+            // Both atlas cuts have rocks and shrubs in their upper rows. Use the lower
+            // 160 of 256 rows where the grass spans the playable width.
+            float grassTop = bounds.min.y + bounds.size.y * (160f / 256f);
+            Assert.That(bounds.size.x / bounds.size.y,
+                Is.EqualTo(ground.sprite.rect.width / ground.sprite.rect.height).Within(0.02f));
+            foreach (Transform side in units)
+            foreach (Transform slot in side)
+            {
+                Assert.That(slot.position.x, Is.InRange(bounds.min.x, bounds.max.x), $"{stage.name} {side.name} {slot.name}");
+                Assert.That(slot.position.y, Is.InRange(bounds.min.y, grassTop), $"{stage.name} {side.name} {slot.name}");
+                var shadow = slot.GetComponentInChildren<SpriteRenderer>();
+                Assert.That(shadow.bounds.center.y, Is.InRange(bounds.min.y, grassTop),
+                    $"{stage.name} {side.name} {slot.name} shadow");
+            }
         }
 
         [UnityTest]

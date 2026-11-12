@@ -63,7 +63,14 @@ namespace AstralOath.Client.BattleScene.Editor
             PlaceSprite("Sky", root.transform, sky, 640, 466, 1282, 512, -90);
             var shrubs = Layer(4);
             PlaceSprite("Distant Shrubs", root.transform, shrubs, 640, 248, 1282, 291, -85);
-            PlaceSprite("Ground", root.transform, Layer(0), 640, 168, 1282, 340, -70);
+            var ground = Layer(0);
+            // The atlas has shrubs above the playable grass. Frame the floor from
+            // the bottom edge so the rear row also lands on continuous grass.
+            const float groundHeight = 488f;
+            const float groundBottom = -2f;
+            float groundWidth = groundHeight * ground.rect.width / ground.rect.height;
+            PlaceSprite("Ground", root.transform, ground, 640, groundBottom + groundHeight * 0.5f,
+                groundWidth, groundHeight, -70);
             PlaceSprite("Canopy Left", root.transform, Layer(3), 89, 510, 751, 553, -64);
             PlaceSprite("Medium Tree Right", root.transform, Layer(2), 1192, 398, 385, 325, -65);
             PlaceSprite("Round Tree Right", root.transform, Layer(6), 991, 357, 141, 160, -66);
