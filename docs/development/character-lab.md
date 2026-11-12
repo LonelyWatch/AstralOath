@@ -14,6 +14,8 @@
 
 ## 编辑源与目录
 
+角色进入 Unity 的共同要求见 [通用资源导入规则](character-asset-import.md)，包含源曲线、骨骼继承、纹理、审计门禁及完整周期验收。旧转换产物被拒绝时重新执行导入，不能手改清单审计标志绕过。
+
 - `Config/Tables/characterlab_characters.csv`：角色展示顺序、名称 key、battleSkin 和 portraitSkin；由 Luban 检查字段及本地化引用，构建前验证皮肤确实存在。首批战斗皮肤为 default，立绘初始表情为 normal，不能使用只含共享附件的 default 立绘皮肤。
 - `Config/Tables/characterlab_messages.csv`：中文 UI、角色名、技能名与语音标签。稳定 key 使用小写、下划线和点。
 - `Config/CharacterAssets/catalog.generated.json`：导入器生成的资源目录及声音事件；不要手改。

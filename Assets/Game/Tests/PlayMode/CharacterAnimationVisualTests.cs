@@ -27,6 +27,7 @@ namespace AstralOath.Client.Tests
         private FmodCharacterAudioService audio;
         private BindingMap map;
         private object binder;
+        private ICharacterLabEntry entry;
         private Camera camera;
         private RenderTexture previousTarget,captureTarget;
         private float previousAspect;
@@ -70,7 +71,8 @@ namespace AstralOath.Client.Tests
             Assert.That(bootstrap.IsReady,Is.True,bootstrap.StartupError);
             // Asset package updates and SRP rendering continue; only the owner animation clock stops.
             bootstrap.enabled=false;
-            binder=Read(Read(bootstrap,"entry"),"binder");
+            entry=(ICharacterLabEntry)Read(bootstrap,"entry");
+            binder=Read(entry,"binder");
             camera=(Camera)Read(bootstrap,"previewCamera");
             previousTarget=camera.targetTexture;previousAspect=camera.aspect;
             captureTarget=new RenderTexture(1920,1080,24,RenderTextureFormat.ARGB32)
@@ -81,6 +83,14 @@ namespace AstralOath.Client.Tests
             audio=(FmodCharacterAudioService)Read(bootstrap,"audio");
             Assert.That(audio.IsAvailable,Is.True,audio.Diagnostic);
             Assert.That(((FMOD.System)Read(audio,"core")).setOutput(FMOD.OUTPUTTYPE.NOSOUND),Is.EqualTo(FMOD.RESULT.OK));
+            string group=Environment.GetEnvironmentVariable("ASTRAL_ANIMATION_CAPTURE_GROUP");
+            if(group=="mercedes-s3")
+            {
+                yield return CaptureMercedesS3LoopAndStrictSkill();
+                Debug.Log("ASTRAL_ANIMATION_CAPTURE_COMPLETE "+output+"; Mercedes S3 diagnostic, not original-game validation.");
+                yield break;
+            }
+            Assert.That(string.IsNullOrEmpty(group),Is.True,"Unknown ASTRAL_ANIMATION_CAPTURE_GROUP: "+group);
             if((bool)Read(binder,"loop"))Click("loop");
 
             yield return SelectCharacter(0);
@@ -149,6 +159,76 @@ namespace AstralOath.Client.Tests
             Assert.That(Directory.GetFiles(output,"*.png").Length,Is.EqualTo(54));
             Debug.Log("ASTRAL_ANIMATION_CAPTURE_COMPLETE "+output+"; diagnostic frames only, not original-game validation.");
         }
+        private double ClockTime=>Convert.ToDouble(Read(Read(binder,"clock"),"Time"),CultureInfo.InvariantCulture);
+        private IEnumerator CaptureMercedesS3LoopAndStrictSkill()
+        {
+            if(!(bool)Read(binder,"loop"))Click("loop");
+            if((bool)Read(binder,"experimental"))Click("experimental");
+            yield return SelectCharacter(1);
+            yield return SelectAnimation("skill3",true);
+            float duration=Player.Duration;
+            Assert.That(duration,Is.GreaterThan(4));
+            var samples=Enumerable.Range(0,(int)(duration/.2f)+1).Select(i=>i*.2f)
+                .Concat(new[]{1.081f,1.36f,duration}).Distinct().OrderBy(t=>t).ToArray();
+            // Independent source poses across the entire clip, including its looping end boundary.
+            foreach(float time in samples)
+            {
+                yield return SelectAnimation("skill3",true);
+                entry.Tick(time);
+                yield return Capture("mercedes-s3-loop-fresh-single",time);
+            }
+            // A loop wraps at Duration. Also retain the actual non-looping terminal pose explicitly.
+            Click("loop");yield return SelectAnimation("skill3",true);entry.Tick(duration);
+            yield return Capture("mercedes-s3-nonloop-terminal",duration);
+            Click("loop");yield return SelectAnimation("skill3",true);
+            const float step=1f/60;
+            const double end=62.08;
+            // No reset/seek across these 3,724 steps. Rendering pauses do not advance the owner clock.
+            for(int frame=1;(frame*(double)step)<=end;frame++)
+            {
+                Player.Pause(false);entry.Tick(step);
+                if(frame%60==0)yield return Capture("mercedes-s3-loop-continuous-60hz",frame/60f);
+            }
+            Player.Pause(false);entry.Tick((float)(end-ClockTime));
+            Assert.That(ClockTime,Is.EqualTo(end).Within(.000001));
+            float phase=Player.Time;
+            yield return Capture("mercedes-s3-loop-continuous-60hz",(float)end);
+            yield return SelectAnimation("skill3",true);entry.Tick(phase);
+            yield return Capture("mercedes-s3-loop-final-phase-fresh",phase);
+            Player.Seek(phase);
+            yield return Capture("mercedes-s3-loop-final-phase-seek",phase);
+
+            // Real skill button, strict mapping; the visible Loop toggle remains on but STG ANI is single-shot.
+            Click("stop");
+            var skill=Rows("skills")[2];skill.onClick.Invoke();
+            yield return Until(()=>Read(binder,"performance")!=null&&skill.interactable,"Mercedes S3 UI did not start a strict STG session.");
+            Assert.That((string)Read(Read(binder,"selectedSkill"),"id"),Is.EqualTo("c_mercedes_skill_03"));
+            Assert.That((bool)Read(binder,"experimental"),Is.False);
+            Assert.That((bool)Read(binder,"loop"),Is.True);
+            Assert.That(ClockTime,Is.EqualTo(0));
+            foreach(float time in samples)
+            {
+                yield return AdvanceUiTo(time);
+                yield return Capture("mercedes-s3-strict-skill-60hz",time);
+            }
+            yield return AdvanceUiTo(end);
+            yield return Capture("mercedes-s3-strict-skill-60hz",(float)end);
+            int expected=samples.Length*2+67;
+            Assert.That(Directory.GetFiles(output,"*.png").Length,Is.EqualTo(expected));
+        }
+        private IEnumerator AdvanceUiTo(double target)
+        {
+            const float step=1f/60;
+            int frames=0;
+            // Exact requested checkpoints use a final partial step; all other deltas are 1/60 second.
+            while(ClockTime+step<target)
+            {
+                Player.Pause(false);entry.Tick(step);
+                if(++frames%240==0)yield return null;
+            }
+            Player.Pause(false);entry.Tick((float)Math.Max(0,target-ClockTime));
+            Assert.That(ClockTime,Is.EqualTo(target).Within(.000001));
+        }
         private IEnumerator SelectCharacter(int index)
         {
             var old=Player;
@@ -210,12 +290,20 @@ namespace AstralOath.Client.Tests
         {using(var file=new FileStream(path,FileMode.CreateNew,FileAccess.Write,FileShare.None))file.Write(bytes,0,bytes.Length);}
         private Frame Describe(ISkeletonPlayer player,string scenario,float requested,RenderTexture target)
         {
-            var skeleton=Read(Read(player,"runtime"),"skeleton");
+            var runtime=Read(player,"runtime");
+            var skeleton=Read(runtime,"skeleton");
+            var state=Read(runtime,"state");
+            var track=state.GetType().GetMethod("GetCurrent",Members).Invoke(state,new object[]{0});
+            bool legacy=player.Version.StartsWith("2.1",StringComparison.Ordinal);
+            var selectedSkill=Read(binder,"selectedSkill");
             var bones=((IEnumerable)Read(skeleton,"Bones")).Cast<object>().Select(bone=>{
                 var xy=new Vector2(Number(bone,"WorldX"),Number(bone,"WorldY"));
                 return new BoneFrame {name=(string)Read(Read(bone,"Data"),"Name"),localPosition=new Vector2(Number(bone,"X"),Number(bone,"Y")),
                     localRotation=Number(bone,"Rotation"),localScale=new Vector2(Number(bone,"ScaleX"),Number(bone,"ScaleY")),
-                    skeletonPosition=xy,worldPosition=player.Root.transform.TransformPoint(new Vector3(xy.x,xy.y,0))};
+                    skeletonPosition=xy,worldPosition=player.Root.transform.TransformPoint(new Vector3(xy.x,xy.y,0)),
+                    skeletonMatrix=new Vector4(Number(bone,legacy?"M00":"A"),Number(bone,legacy?"M01":"B"),Number(bone,legacy?"M10":"C"),Number(bone,legacy?"M11":"D")),
+                    localFlipX=legacy&&(bool)Read(bone,"FlipX"),localFlipY=legacy&&(bool)Read(bone,"FlipY"),
+                    worldFlipX=legacy&&(bool)Read(bone,"WorldFlipX"),worldFlipY=legacy&&(bool)Read(bone,"WorldFlipY")};
             }).ToArray();
             var slots=((IEnumerable)Read(skeleton,"Slots")).Cast<object>().Select(slot=>{
                 var attachment=Read(slot,"Attachment");
@@ -223,6 +311,9 @@ namespace AstralOath.Client.Tests
                     attachment=attachment==null?null:(string)Read(attachment,"Name"),alpha=Number(slot,"A")};
             }).ToArray();
             return new Frame {scenario=scenario,requestedTime=requested,animation=player.CurrentAnimation,time=player.Time,duration=player.Duration,version=player.Version,
+                clockTime=ClockTime,clockSpeed=Number(Read(binder,"clock"),"Speed"),uiLoop=(bool)Read(binder,"loop"),experimental=(bool)Read(binder,"experimental"),
+                skillSession=Read(binder,"performance")!=null,selectedSkillId=selectedSkill==null?null:(string)Read(selectedSkill,"id"),
+                runtimeTrackTime=Number(track,legacy?"Time":"TrackTime"),runtimeLoop=(bool)Read(track,"Loop"),
                 characterId=(string)Read(Read(binder,"selected"),"id"),rootPosition=player.Root.transform.position,rootScale=player.Root.transform.lossyScale,
                 cameraPosition=camera.transform.position,cameraRotation=camera.transform.rotation,cameraSize=camera.orthographicSize,cameraAspect=camera.aspect,
                 width=target.width,height=target.height,graphicsDevice=SystemInfo.graphicsDeviceType.ToString(),bones=bones,slots=slots,
@@ -232,14 +323,20 @@ namespace AstralOath.Client.Tests
         [Serializable] private sealed class Frame
         {
             public string scenario,characterId,animation,version,graphicsDevice;
-            public float requestedTime,time,duration,cameraSize,cameraAspect;
+            public float requestedTime,time,duration,cameraSize,cameraAspect,clockSpeed,runtimeTrackTime;
+            public double clockTime;
+            public bool uiLoop,experimental,skillSession,runtimeLoop;
+            public string selectedSkillId;
             public int width,height;
             public Vector3 rootPosition,rootScale,cameraPosition;
             public Quaternion cameraRotation;
             public BoneFrame[] bones;public SlotFrame[] slots;public MeshFrame[] meshes;
         }
         [Serializable] private sealed class BoneFrame
-        {public string name;public Vector2 localPosition,localScale,skeletonPosition;public float localRotation;public Vector3 worldPosition;}
+        {
+            public string name;public Vector2 localPosition,localScale,skeletonPosition;public float localRotation;public Vector3 worldPosition;
+            public Vector4 skeletonMatrix;public bool localFlipX,localFlipY,worldFlipX,worldFlipY;
+        }
         [Serializable] private sealed class SlotFrame {public string name,bone,attachment;public float alpha;}
         [Serializable] private sealed class MeshFrame {public string name;public int vertices;public Bounds localBounds,worldBounds;}
         [UnityTearDown] public IEnumerator Cleanup()
@@ -256,7 +353,7 @@ namespace AstralOath.Client.Tests
             if(scene.IsValid()&&scene.isLoaded)yield return SceneManager.UnloadSceneAsync(scene);
             yield return null;
             Assert.That(audio==null||!audio.IsAvailable,Is.True,"Capture left native audio alive.");
-            scene=default;bootstrap=null;audio=null;map=null;binder=null;camera=null;
+            scene=default;bootstrap=null;audio=null;map=null;binder=null;entry=null;camera=null;
         }
     }
 }

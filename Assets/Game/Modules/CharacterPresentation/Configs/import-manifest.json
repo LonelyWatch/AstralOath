@@ -21,8 +21,26 @@
         "animationCount": 1,
         "binaryBytes": 414,
         "consumedBytes": 414,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 6,
+            "frames": 12,
+            "segments": 6,
+            "sourceMarkers": {
+              "allLinear": 5,
+              "allStepped": 0,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 5,
+              "stepped": 1,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -55,8 +73,26 @@
         "animationCount": 1,
         "binaryBytes": 864,
         "consumedBytes": 864,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 1,
+            "frames": 51,
+            "segments": 50,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 0,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 49,
+              "stepped": 1,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -89,8 +125,26 @@
         "animationCount": 1,
         "binaryBytes": 952,
         "consumedBytes": 952,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 1,
+            "frames": 55,
+            "segments": 54,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 0,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 53,
+              "stepped": 1,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -123,8 +177,26 @@
         "animationCount": 1,
         "binaryBytes": 536,
         "consumedBytes": 536,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 1,
+            "frames": 23,
+            "segments": 22,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 0,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 20,
+              "stepped": 2,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -157,8 +229,26 @@
         "animationCount": 1,
         "binaryBytes": 497,
         "consumedBytes": 497,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 1,
+            "frames": 20,
+            "segments": 19,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 0,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 17,
+              "stepped": 2,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -191,8 +281,26 @@
         "animationCount": 1,
         "binaryBytes": 718,
         "consumedBytes": 718,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 1,
+            "frames": 37,
+            "segments": 36,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 0,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 32,
+              "stepped": 4,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -225,8 +333,26 @@
         "animationCount": 1,
         "binaryBytes": 1969,
         "consumedBytes": 1969,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 1,
+            "frames": 56,
+            "segments": 55,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 0,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 3,
+              "bezier": 52
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -831,15 +957,33 @@
       "address": "characterlab/source/effect/angelica_b_idle_eff_b.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "32ce3afaec7d6da91f3571ef9d33afeba0541485ea2f29a3b65e86a33e6b9255",
+      "outputSha256": "03d13b6af39684a9fac143840e537ca5e2194ba353e6f34ecb4239292c36afd9",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 1,
         "binaryBytes": 2777,
         "consumedBytes": 2777,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 14,
+            "frames": 39,
+            "segments": 25,
+            "sourceMarkers": {
+              "allLinear": 6,
+              "allStepped": 1,
+              "explicit": 7
+            },
+            "modes": {
+              "linear": 17,
+              "stepped": 5,
+              "bezier": 3
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -883,15 +1027,33 @@
       "address": "characterlab/source/effect/angelica_b_idle_eff_f.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "053c911b38ba91c2cf99b55c26c761372f9d759bdf69fd9de60131a078a9a42e",
+      "outputSha256": "f754c65fe7d338295a22e2a440650aa74fc785c83af97bfabdd42035a9c1fd48",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 1,
         "binaryBytes": 14643,
         "consumedBytes": 14643,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 67,
+            "frames": 189,
+            "segments": 122,
+            "sourceMarkers": {
+              "allLinear": 26,
+              "allStepped": 1,
+              "explicit": 40
+            },
+            "modes": {
+              "linear": 74,
+              "stepped": 33,
+              "bezier": 15
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -974,8 +1136,26 @@
         "animationCount": 1,
         "binaryBytes": 2343,
         "consumedBytes": 2343,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 15,
+            "frames": 38,
+            "segments": 23,
+            "sourceMarkers": {
+              "allLinear": 10,
+              "allStepped": 0,
+              "explicit": 5
+            },
+            "modes": {
+              "linear": 18,
+              "stepped": 4,
+              "bezier": 1
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -1026,8 +1206,26 @@
         "animationCount": 1,
         "binaryBytes": 5381,
         "consumedBytes": 5381,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 36,
+            "frames": 76,
+            "segments": 40,
+            "sourceMarkers": {
+              "allLinear": 15,
+              "allStepped": 0,
+              "explicit": 21
+            },
+            "modes": {
+              "linear": 19,
+              "stepped": 13,
+              "bezier": 8
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -1103,15 +1301,33 @@
       "address": "characterlab/source/effect/angelica_sk2eff_self.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "cc0cfe707fdb430eede54e5f8193a7fd07242c75874c3cd70f82e166bd8e069f",
+      "outputSha256": "2ae074abd9a5852db83b31121fe020ff0939c92bcc9558b0d13c964f2df2124b",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 1,
         "binaryBytes": 14022,
         "consumedBytes": 14022,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 72,
+            "frames": 180,
+            "segments": 108,
+            "sourceMarkers": {
+              "allLinear": 40,
+              "allStepped": 5,
+              "explicit": 27
+            },
+            "modes": {
+              "linear": 65,
+              "stepped": 27,
+              "bezier": 16
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -1155,15 +1371,33 @@
       "address": "characterlab/source/effect/angelica_sk2eff_target_b.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "8a7e8ab362c28940fd7f45714cdd1471fcc9fb5c33f9504ab1642d4cfb6068c7",
+      "outputSha256": "5b86943b836c61d5b88de778d9c8c8afd4b059df48397d4b17b49efd3d89fb4e",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 1,
         "binaryBytes": 2693,
         "consumedBytes": 2693,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 19,
+            "frames": 39,
+            "segments": 20,
+            "sourceMarkers": {
+              "allLinear": 10,
+              "allStepped": 2,
+              "explicit": 7
+            },
+            "modes": {
+              "linear": 11,
+              "stepped": 7,
+              "bezier": 2
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -1207,15 +1441,33 @@
       "address": "characterlab/source/effect/angelica_sk2eff_target_f.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "3dca8364d351b1a10308a2cbe24ad83981e60fa0ddae1012ab9cd4ae5361efb7",
+      "outputSha256": "d4b7298a52556cb6cdcf5d42c69f07d993252b02f13878f217f3a96262e390b4",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 1,
         "binaryBytes": 41740,
         "consumedBytes": 41740,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 165,
+            "frames": 474,
+            "segments": 309,
+            "sourceMarkers": {
+              "allLinear": 90,
+              "allStepped": 5,
+              "explicit": 70
+            },
+            "modes": {
+              "linear": 218,
+              "stepped": 75,
+              "bezier": 16
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -1291,15 +1543,33 @@
       "address": "characterlab/source/effect/angelica_sk3eff_self.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "119b4fdb904882aca6ea3175b02dd5f66ea65f504ac83e022cd52a4677945894",
+      "outputSha256": "c0bc87ca76a0a6009d3d52d89bcb4dbc529422fad981b891b735a7dd47ef93fb",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 1,
         "binaryBytes": 19629,
         "consumedBytes": 19629,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 111,
+            "frames": 295,
+            "segments": 184,
+            "sourceMarkers": {
+              "allLinear": 52,
+              "allStepped": 12,
+              "explicit": 47
+            },
+            "modes": {
+              "linear": 119,
+              "stepped": 36,
+              "bezier": 29
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -1343,15 +1613,48 @@
       "address": "characterlab/source/effect/angelica_sk3eff_target_b.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "d53b02557cde9a03e18c3a441df69ada8accdc1a4416c7ea626a080a902ca7cf",
+      "outputSha256": "d4126b8af4c4cef3c5089143060c1a00b3340991e72c4bb3f1d0180802467705",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 2,
         "binaryBytes": 22934,
         "consumedBytes": 22934,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 50,
+            "frames": 165,
+            "segments": 115,
+            "sourceMarkers": {
+              "allLinear": 30,
+              "allStepped": 2,
+              "explicit": 18
+            },
+            "modes": {
+              "linear": 35,
+              "stepped": 69,
+              "bezier": 11
+            }
+          },
+          "animation2": {
+            "tracks": 46,
+            "frames": 104,
+            "segments": 58,
+            "sourceMarkers": {
+              "allLinear": 37,
+              "allStepped": 1,
+              "explicit": 8
+            },
+            "modes": {
+              "linear": 38,
+              "stepped": 11,
+              "bezier": 9
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -1395,15 +1698,33 @@
       "address": "characterlab/source/effect/angelica_sk3eff_target_f.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "631fd4a2939b1a27faa5d184e43c0e66800ce23817697e859dbf417e407296b8",
+      "outputSha256": "38d199c037c86b4a0d4e15f6fd1610820c9b925f149166fdc774127e89a89182",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 1,
         "binaryBytes": 99023,
         "consumedBytes": 99023,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 275,
+            "frames": 1101,
+            "segments": 826,
+            "sourceMarkers": {
+              "allLinear": 92,
+              "allStepped": 40,
+              "explicit": 143
+            },
+            "modes": {
+              "linear": 375,
+              "stepped": 360,
+              "bezier": 91
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -1574,8 +1895,26 @@
         "animationCount": 1,
         "binaryBytes": 20017,
         "consumedBytes": 20017,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 78,
+            "frames": 120,
+            "segments": 42,
+            "sourceMarkers": {
+              "allLinear": 53,
+              "allStepped": 0,
+              "explicit": 25
+            },
+            "modes": {
+              "linear": 17,
+              "stepped": 8,
+              "bezier": 17
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -1642,8 +1981,26 @@
         "animationCount": 1,
         "binaryBytes": 31186,
         "consumedBytes": 31186,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 120,
+            "frames": 232,
+            "segments": 112,
+            "sourceMarkers": {
+              "allLinear": 62,
+              "allStepped": 0,
+              "explicit": 58
+            },
+            "modes": {
+              "linear": 53,
+              "stepped": 18,
+              "bezier": 41
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -1734,15 +2091,33 @@
       "address": "characterlab/source/effect/eff_magic_lightningball.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "24cf3add477ec51c8c4e8f19cc8b841e2a750108977142812a405cb7613bf39b",
+      "outputSha256": "c7ff4a3d40e4822170f7cbbc092194c839967589b1da8f816ca1082e094294c7",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 1,
         "binaryBytes": 17030,
         "consumedBytes": 17030,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 104,
+            "frames": 313,
+            "segments": 209,
+            "sourceMarkers": {
+              "allLinear": 63,
+              "allStepped": 5,
+              "explicit": 36
+            },
+            "modes": {
+              "linear": 140,
+              "stepped": 45,
+              "bezier": 24
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -1809,8 +2184,26 @@
         "animationCount": 1,
         "binaryBytes": 2398,
         "consumedBytes": 2398,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 17,
+            "frames": 22,
+            "segments": 5,
+            "sourceMarkers": {
+              "allLinear": 17,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 5,
+              "stepped": 0,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -1877,8 +2270,26 @@
         "animationCount": 1,
         "binaryBytes": 3608,
         "consumedBytes": 3608,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 21,
+            "frames": 58,
+            "segments": 37,
+            "sourceMarkers": {
+              "allLinear": 16,
+              "allStepped": 0,
+              "explicit": 5
+            },
+            "modes": {
+              "linear": 32,
+              "stepped": 4,
+              "bezier": 1
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -1953,15 +2364,33 @@
       "address": "characterlab/source/effect/eff_magic_thunder_01.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "efa5f78da9ad3a6c6e4e1bf98d07454a86b8637b3b79e823cdd8822e3fd798da",
+      "outputSha256": "7168c1d3c7a532f2e6bebb644b8eb5c892d2109a5005d25194d150553a90e2c6",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 1,
         "binaryBytes": 16007,
         "consumedBytes": 16007,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 109,
+            "frames": 325,
+            "segments": 216,
+            "sourceMarkers": {
+              "allLinear": 70,
+              "allStepped": 2,
+              "explicit": 37
+            },
+            "modes": {
+              "linear": 159,
+              "stepped": 38,
+              "bezier": 19
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -2021,15 +2450,33 @@
       "address": "characterlab/source/effect/eff_magic_thunder_01_gr.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "c1031ef2d06a6f74174d27a8a22c774423eb1f6aa230cfc093620540f6e90efa",
+      "outputSha256": "385119e7326be0ef5c33d98d3171a346facc8a1883d34cbfa004f34b8d50924a",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 1,
         "binaryBytes": 3591,
         "consumedBytes": 3591,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 24,
+            "frames": 67,
+            "segments": 43,
+            "sourceMarkers": {
+              "allLinear": 20,
+              "allStepped": 1,
+              "explicit": 3
+            },
+            "modes": {
+              "linear": 38,
+              "stepped": 2,
+              "bezier": 3
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -2089,15 +2536,33 @@
       "address": "characterlab/source/effect/hit_new_blunt_01.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "089944c8827b0454083b40966c392f645d461d6d7775e38aee1e07f6d4762828",
+      "outputSha256": "b23d18be8f1b3a77ce3eabd06cfb531ad04c067639ef001760287764cb019b90",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 1,
         "binaryBytes": 11507,
         "consumedBytes": 11507,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 70,
+            "frames": 234,
+            "segments": 164,
+            "sourceMarkers": {
+              "allLinear": 13,
+              "allStepped": 20,
+              "explicit": 37
+            },
+            "modes": {
+              "linear": 27,
+              "stepped": 125,
+              "bezier": 12
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -2216,15 +2681,33 @@
       "address": "characterlab/source/effect/hit_new_pierce_normal.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "8417a155b9d45ccca4c09e4226025b634e840d0c18a1531d4ad3577ff0f01fdb",
+      "outputSha256": "a58e53a3a39cc91830ff965ec18107afd3ac4edd26e5ce64cdb3b52a195d8509",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 1,
         "binaryBytes": 9180,
         "consumedBytes": 9180,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 52,
+            "frames": 182,
+            "segments": 130,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 21,
+              "explicit": 31
+            },
+            "modes": {
+              "linear": 22,
+              "stepped": 98,
+              "bezier": 10
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -2298,15 +2781,78 @@
       "address": "characterlab/source/effect/hit_new_slash_01.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "c6f15b72eb30acc19175dee84f76c9c05097a808f86f717443806496758a3a48",
+      "outputSha256": "29c1203732dc625c4ac8991ff030e65bef1134e551fc0731145a9be314873b19",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 4,
         "binaryBytes": 14460,
         "consumedBytes": 14460,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "blue_critical": {
+            "tracks": 33,
+            "frames": 97,
+            "segments": 64,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 17,
+              "explicit": 16
+            },
+            "modes": {
+              "linear": 16,
+              "stepped": 41,
+              "bezier": 7
+            }
+          },
+          "blue_normal": {
+            "tracks": 33,
+            "frames": 76,
+            "segments": 43,
+            "sourceMarkers": {
+              "allLinear": 11,
+              "allStepped": 11,
+              "explicit": 11
+            },
+            "modes": {
+              "linear": 14,
+              "stepped": 25,
+              "bezier": 4
+            }
+          },
+          "red": {
+            "tracks": 37,
+            "frames": 86,
+            "segments": 49,
+            "sourceMarkers": {
+              "allLinear": 11,
+              "allStepped": 13,
+              "explicit": 13
+            },
+            "modes": {
+              "linear": 13,
+              "stepped": 32,
+              "bezier": 4
+            }
+          },
+          "yellow_normal": {
+            "tracks": 33,
+            "frames": 76,
+            "segments": 43,
+            "sourceMarkers": {
+              "allLinear": 11,
+              "allStepped": 11,
+              "explicit": 11
+            },
+            "modes": {
+              "linear": 14,
+              "stepped": 25,
+              "bezier": 4
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -2395,15 +2941,33 @@
       "address": "characterlab/source/effect/mage_sk3_eff_b.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "af3199c9ce3c649da0e25b8b32d57f8957000c9044ee5521f30f4fde51a3c6ef",
+      "outputSha256": "194744f2a013d85fb4c84664419636795805ab51d5f26840002b4349b90c859b",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 1,
         "binaryBytes": 12872,
         "consumedBytes": 12872,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 53,
+            "frames": 124,
+            "segments": 71,
+            "sourceMarkers": {
+              "allLinear": 31,
+              "allStepped": 1,
+              "explicit": 21
+            },
+            "modes": {
+              "linear": 40,
+              "stepped": 9,
+              "bezier": 22
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -2463,15 +3027,33 @@
       "address": "characterlab/source/effect/mage_sk3_eff_f.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "2765e62fddbdd2b55590b7ff94eacc7b823e995d152cf90bab4da8cb22b80235",
+      "outputSha256": "0bf7c1eee22924fc820f9127b769017b42a0b1f8ca3bf54196819146afe48a82",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 1,
         "binaryBytes": 134156,
         "consumedBytes": 134156,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 572,
+            "frames": 1867,
+            "segments": 1295,
+            "sourceMarkers": {
+              "allLinear": 359,
+              "allStepped": 44,
+              "explicit": 169
+            },
+            "modes": {
+              "linear": 816,
+              "stepped": 376,
+              "bezier": 103
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -2575,15 +3157,33 @@
       "address": "characterlab/source/effect/mercedes_skeff_sk1_magicring.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "109e22d9f4ec6b00f71363b8aa925e567d39cb45e546a0fffa1a129da0dd653a",
+      "outputSha256": "a6bf723a12defb476dbc40813aa0c934284bd8b4217c1bce607d6c74ae1727ed",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 1,
         "binaryBytes": 4219,
         "consumedBytes": 4219,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 34,
+            "frames": 111,
+            "segments": 77,
+            "sourceMarkers": {
+              "allLinear": 10,
+              "allStepped": 7,
+              "explicit": 17
+            },
+            "modes": {
+              "linear": 52,
+              "stepped": 17,
+              "bezier": 8
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -2765,15 +3365,33 @@
       "address": "characterlab/source/effect/ras_re_sk1_b.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "c8ab9b7155ad012b85b976ad0410d8ed71632a7a10aff26f6bc1b6483372737f",
+      "outputSha256": "2e3f1e4b2b52d86e99d0443058a247a8b1fac1dfac2b99265fe4ea911c5dbbb8",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 1,
         "binaryBytes": 37399,
         "consumedBytes": 37399,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 173,
+            "frames": 358,
+            "segments": 185,
+            "sourceMarkers": {
+              "allLinear": 114,
+              "allStepped": 6,
+              "explicit": 53
+            },
+            "modes": {
+              "linear": 115,
+              "stepped": 33,
+              "bezier": 37
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -2833,15 +3451,33 @@
       "address": "characterlab/source/effect/ras_re_sk1_f.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "99d497f0385d1ce7e2c00cdf5ce078f4ce23033b57fbe1d15c94a3fe5d2281cd",
+      "outputSha256": "1ff1556cf13045fd5017b4cca4907575bd3314c2f28708ecb947beb23cf49c17",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 1,
         "binaryBytes": 32198,
         "consumedBytes": 32198,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 180,
+            "frames": 346,
+            "segments": 166,
+            "sourceMarkers": {
+              "allLinear": 124,
+              "allStepped": 4,
+              "explicit": 52
+            },
+            "modes": {
+              "linear": 108,
+              "stepped": 25,
+              "bezier": 33
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -2901,15 +3537,33 @@
       "address": "characterlab/source/effect/ras_re_sk2_b.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "2c4a17fd8f295ff3d2c7c22f43923a230794daed5b2244e7a60f5f3ce398d80b",
+      "outputSha256": "968b6aff71d51e87bad2ac98019df1f26d16de0df8fe083ed423dc8998b78a40",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 1,
         "binaryBytes": 39871,
         "consumedBytes": 39871,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 187,
+            "frames": 387,
+            "segments": 200,
+            "sourceMarkers": {
+              "allLinear": 122,
+              "allStepped": 6,
+              "explicit": 59
+            },
+            "modes": {
+              "linear": 124,
+              "stepped": 38,
+              "bezier": 38
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -2969,15 +3623,33 @@
       "address": "characterlab/source/effect/ras_re_sk2_f.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "bfc93be9289d3a6a74970eeb1c9b918586416d8efe7de630d28590fcbb54c07e",
+      "outputSha256": "8a9f64cb2487804438023c61758078d427afa84d54902f467b41476269e41c2c",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 1,
         "binaryBytes": 73023,
         "consumedBytes": 73023,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 395,
+            "frames": 1269,
+            "segments": 874,
+            "sourceMarkers": {
+              "allLinear": 24,
+              "allStepped": 108,
+              "explicit": 263
+            },
+            "modes": {
+              "linear": 328,
+              "stepped": 455,
+              "bezier": 91
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -3044,8 +3716,26 @@
         "animationCount": 1,
         "binaryBytes": 51120,
         "consumedBytes": 51120,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 379,
+            "frames": 418,
+            "segments": 39,
+            "sourceMarkers": {
+              "allLinear": 363,
+              "allStepped": 0,
+              "explicit": 16
+            },
+            "modes": {
+              "linear": 23,
+              "stepped": 0,
+              "bezier": 16
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -3105,15 +3795,33 @@
       "address": "characterlab/source/effect/ras_re_sk3_f.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "01ef079306a5729ca83fb279395a790d49303a3130727c6daa9d61e1134c2cbd",
+      "outputSha256": "a5e75ee040f745c58a6c6a35b2949fe25a62fd8d9a86eac9d792dd7714d0eb94",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 1,
         "binaryBytes": 140794,
         "consumedBytes": 140794,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 717,
+            "frames": 1497,
+            "segments": 780,
+            "sourceMarkers": {
+              "allLinear": 549,
+              "allStepped": 12,
+              "explicit": 156
+            },
+            "modes": {
+              "linear": 550,
+              "stepped": 107,
+              "bezier": 123
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -3180,8 +3888,26 @@
         "animationCount": 1,
         "binaryBytes": 802,
         "consumedBytes": 802,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 6,
+            "frames": 8,
+            "segments": 2,
+            "sourceMarkers": {
+              "allLinear": 6,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 2,
+              "stepped": 0,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -3262,8 +3988,26 @@
         "animationCount": 1,
         "binaryBytes": 10382,
         "consumedBytes": 10382,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 69,
+            "frames": 139,
+            "segments": 70,
+            "sourceMarkers": {
+              "allLinear": 50,
+              "allStepped": 0,
+              "explicit": 19
+            },
+            "modes": {
+              "linear": 48,
+              "stepped": 6,
+              "bezier": 16
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -3366,14 +4110,14 @@
       "address": "characterlab/source/model/angelica.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "50ef4e67a926169a29d39b36bde90be951b25b8ee4b72a833999c83dc735b0a6",
+      "outputSha256": "9224277e7e2eb6ad82c0454592f366ced996f1404b0b9185dcfacc7c321e4070",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 20,
         "binaryBytes": 11896166,
         "consumedBytes": 11896166,
-        "converterVersion": "astraloath-scsp/2",
+        "converterVersion": "astraloath-scsp/3",
         "boneFlipTimelines": {
           "appear": {
             "flipX": {
@@ -3622,7 +4366,310 @@
               "bones": {}
             }
           }
-        }
+        },
+        "curveTimelines": {
+          "appear": {
+            "tracks": 1036,
+            "frames": 1036,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 1036,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "attacked": {
+            "tracks": 1132,
+            "frames": 4669,
+            "segments": 3537,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 1132,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 3537,
+              "bezier": 0
+            }
+          },
+          "attacked_damage": {
+            "tracks": 1033,
+            "frames": 1033,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 1033,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "b_idle": {
+            "tracks": 1084,
+            "frames": 10049,
+            "segments": 8965,
+            "sourceMarkers": {
+              "allLinear": 36,
+              "allStepped": 1048,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 8965,
+              "bezier": 0
+            }
+          },
+          "b_idle_ready": {
+            "tracks": 1067,
+            "frames": 5366,
+            "segments": 4299,
+            "sourceMarkers": {
+              "allLinear": 22,
+              "allStepped": 1045,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 3,
+              "stepped": 4296,
+              "bezier": 0
+            }
+          },
+          "camping": {
+            "tracks": 1055,
+            "frames": 18807,
+            "segments": 17752,
+            "sourceMarkers": {
+              "allLinear": 10,
+              "allStepped": 1045,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 17752,
+              "bezier": 0
+            }
+          },
+          "down": {
+            "tracks": 1046,
+            "frames": 2992,
+            "segments": 1946,
+            "sourceMarkers": {
+              "allLinear": 6,
+              "allStepped": 1040,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 1946,
+              "bezier": 0
+            }
+          },
+          "flying": {
+            "tracks": 1024,
+            "frames": 2938,
+            "segments": 1914,
+            "sourceMarkers": {
+              "allLinear": 10,
+              "allStepped": 1014,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 1914,
+              "bezier": 0
+            }
+          },
+          "flying_damage": {
+            "tracks": 1023,
+            "frames": 1023,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 1023,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "groggy": {
+            "tracks": 1016,
+            "frames": 9340,
+            "segments": 8324,
+            "sourceMarkers": {
+              "allLinear": 9,
+              "allStepped": 1007,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 8324,
+              "bezier": 0
+            }
+          },
+          "idle": {
+            "tracks": 1042,
+            "frames": 11444,
+            "segments": 10402,
+            "sourceMarkers": {
+              "allLinear": 5,
+              "allStepped": 1037,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 10402,
+              "bezier": 0
+            }
+          },
+          "jump_back": {
+            "tracks": 1048,
+            "frames": 5204,
+            "segments": 4156,
+            "sourceMarkers": {
+              "allLinear": 53,
+              "allStepped": 995,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 4156,
+              "bezier": 0
+            }
+          },
+          "jump_forward": {
+            "tracks": 1078,
+            "frames": 5770,
+            "segments": 4692,
+            "sourceMarkers": {
+              "allLinear": 80,
+              "allStepped": 998,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 4692,
+              "bezier": 0
+            }
+          },
+          "knock_down": {
+            "tracks": 1048,
+            "frames": 3265,
+            "segments": 2217,
+            "sourceMarkers": {
+              "allLinear": 5,
+              "allStepped": 1043,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 2217,
+              "bezier": 0
+            }
+          },
+          "rise": {
+            "tracks": 1062,
+            "frames": 3704,
+            "segments": 2642,
+            "sourceMarkers": {
+              "allLinear": 23,
+              "allStepped": 1039,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 2642,
+              "bezier": 0
+            }
+          },
+          "run": {
+            "tracks": 1036,
+            "frames": 4094,
+            "segments": 3058,
+            "sourceMarkers": {
+              "allLinear": 3,
+              "allStepped": 1033,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 3058,
+              "bezier": 0
+            }
+          },
+          "run_start": {
+            "tracks": 1040,
+            "frames": 1040,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 1040,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "skill1": {
+            "tracks": 1041,
+            "frames": 4382,
+            "segments": 3341,
+            "sourceMarkers": {
+              "allLinear": 37,
+              "allStepped": 1004,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 3341,
+              "bezier": 0
+            }
+          },
+          "skill2": {
+            "tracks": 1110,
+            "frames": 9079,
+            "segments": 7969,
+            "sourceMarkers": {
+              "allLinear": 41,
+              "allStepped": 1069,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 7969,
+              "bezier": 0
+            }
+          },
+          "skill3": {
+            "tracks": 1093,
+            "frames": 11791,
+            "segments": 10698,
+            "sourceMarkers": {
+              "allLinear": 34,
+              "allStepped": 1059,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 10698,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -3699,14 +4746,14 @@
       "address": "characterlab/source/model/mercedes.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "bc9c98ac068c51fbc831f5ac439138447eb1277420e6c6c5f47e89aab49ba651",
+      "outputSha256": "a01d4638bb3f951cdd8fbade08ea5f859a7c1f3b237f22c33327e301ff7a4a75",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 16,
         "binaryBytes": 1025850,
         "consumedBytes": 1025850,
-        "converterVersion": "astraloath-scsp/2",
+        "converterVersion": "astraloath-scsp/3",
         "boneFlipTimelines": {
           "appear": {
             "flipX": {
@@ -3969,7 +5016,250 @@
               "bones": {}
             }
           }
-        }
+        },
+        "curveTimelines": {
+          "appear": {
+            "tracks": 309,
+            "frames": 309,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 309,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "attacked": {
+            "tracks": 410,
+            "frames": 1384,
+            "segments": 974,
+            "sourceMarkers": {
+              "allLinear": 1,
+              "allStepped": 409,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 974,
+              "bezier": 0
+            }
+          },
+          "attacked_damage": {
+            "tracks": 322,
+            "frames": 322,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 322,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "b_idle": {
+            "tracks": 388,
+            "frames": 2558,
+            "segments": 2170,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 388,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 2170,
+              "bezier": 0
+            }
+          },
+          "b_idle_ready": {
+            "tracks": 401,
+            "frames": 3602,
+            "segments": 3201,
+            "sourceMarkers": {
+              "allLinear": 12,
+              "allStepped": 388,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 90,
+              "stepped": 3111,
+              "bezier": 0
+            }
+          },
+          "camping": {
+            "tracks": 298,
+            "frames": 1702,
+            "segments": 1404,
+            "sourceMarkers": {
+              "allLinear": 42,
+              "allStepped": 256,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 1404,
+              "bezier": 0
+            }
+          },
+          "down": {
+            "tracks": 406,
+            "frames": 1337,
+            "segments": 931,
+            "sourceMarkers": {
+              "allLinear": 2,
+              "allStepped": 404,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 931,
+              "bezier": 0
+            }
+          },
+          "flying": {
+            "tracks": 315,
+            "frames": 1170,
+            "segments": 855,
+            "sourceMarkers": {
+              "allLinear": 1,
+              "allStepped": 314,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 855,
+              "bezier": 0
+            }
+          },
+          "flying_damage": {
+            "tracks": 315,
+            "frames": 315,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 315,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "groggy": {
+            "tracks": 280,
+            "frames": 1606,
+            "segments": 1326,
+            "sourceMarkers": {
+              "allLinear": 17,
+              "allStepped": 263,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 1326,
+              "bezier": 0
+            }
+          },
+          "idle": {
+            "tracks": 397,
+            "frames": 2414,
+            "segments": 2017,
+            "sourceMarkers": {
+              "allLinear": 145,
+              "allStepped": 252,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 2017,
+              "bezier": 0
+            }
+          },
+          "knock_down": {
+            "tracks": 416,
+            "frames": 1329,
+            "segments": 913,
+            "sourceMarkers": {
+              "allLinear": 11,
+              "allStepped": 405,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 913,
+              "bezier": 0
+            }
+          },
+          "rise": {
+            "tracks": 434,
+            "frames": 2695,
+            "segments": 2261,
+            "sourceMarkers": {
+              "allLinear": 21,
+              "allStepped": 413,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 1,
+              "stepped": 2260,
+              "bezier": 0
+            }
+          },
+          "run": {
+            "tracks": 309,
+            "frames": 1019,
+            "segments": 710,
+            "sourceMarkers": {
+              "allLinear": 47,
+              "allStepped": 262,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 710,
+              "bezier": 0
+            }
+          },
+          "skill1": {
+            "tracks": 691,
+            "frames": 4809,
+            "segments": 4118,
+            "sourceMarkers": {
+              "allLinear": 31,
+              "allStepped": 660,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 4118,
+              "bezier": 0
+            }
+          },
+          "skill3": {
+            "tracks": 708,
+            "frames": 5997,
+            "segments": 5289,
+            "sourceMarkers": {
+              "allLinear": 74,
+              "allStepped": 634,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 1,
+              "stepped": 5288,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -4041,14 +5331,14 @@
       "address": "characterlab/source/model/ras.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "751921ff92b48e3c6bb6f88e3015a40e4f80fd13375765941874408bdeee93de",
+      "outputSha256": "cfc376dd511389ca90de6da454d0528137818c20eda3e8cabf193b9e98a67af7",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 19,
         "binaryBytes": 4390086,
         "consumedBytes": 4390086,
-        "converterVersion": "astraloath-scsp/2",
+        "converterVersion": "astraloath-scsp/3",
         "boneFlipTimelines": {
           "appear": {
             "flipX": {
@@ -4557,7 +5847,295 @@
               "bones": {}
             }
           }
-        }
+        },
+        "curveTimelines": {
+          "appear": {
+            "tracks": 810,
+            "frames": 810,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 810,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "attacked": {
+            "tracks": 834,
+            "frames": 3127,
+            "segments": 2293,
+            "sourceMarkers": {
+              "allLinear": 7,
+              "allStepped": 826,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 1,
+              "stepped": 2292,
+              "bezier": 0
+            }
+          },
+          "attacked_damage": {
+            "tracks": 834,
+            "frames": 834,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 834,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "b_idle": {
+            "tracks": 835,
+            "frames": 3551,
+            "segments": 2716,
+            "sourceMarkers": {
+              "allLinear": 4,
+              "allStepped": 831,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 2716,
+              "bezier": 0
+            }
+          },
+          "b_idle_ready": {
+            "tracks": 831,
+            "frames": 4237,
+            "segments": 3406,
+            "sourceMarkers": {
+              "allLinear": 6,
+              "allStepped": 825,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 3406,
+              "bezier": 0
+            }
+          },
+          "camping": {
+            "tracks": 768,
+            "frames": 6313,
+            "segments": 5545,
+            "sourceMarkers": {
+              "allLinear": 9,
+              "allStepped": 759,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 5545,
+              "bezier": 0
+            }
+          },
+          "down": {
+            "tracks": 811,
+            "frames": 1853,
+            "segments": 1042,
+            "sourceMarkers": {
+              "allLinear": 9,
+              "allStepped": 802,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 1042,
+              "bezier": 0
+            }
+          },
+          "flying": {
+            "tracks": 811,
+            "frames": 1926,
+            "segments": 1115,
+            "sourceMarkers": {
+              "allLinear": 9,
+              "allStepped": 802,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 1115,
+              "bezier": 0
+            }
+          },
+          "flying_damage": {
+            "tracks": 811,
+            "frames": 811,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 811,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "groggy": {
+            "tracks": 778,
+            "frames": 5043,
+            "segments": 4265,
+            "sourceMarkers": {
+              "allLinear": 9,
+              "allStepped": 769,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 4265,
+              "bezier": 0
+            }
+          },
+          "idle": {
+            "tracks": 833,
+            "frames": 5047,
+            "segments": 4214,
+            "sourceMarkers": {
+              "allLinear": 24,
+              "allStepped": 809,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 4214,
+              "bezier": 0
+            }
+          },
+          "jump_back": {
+            "tracks": 838,
+            "frames": 3836,
+            "segments": 2998,
+            "sourceMarkers": {
+              "allLinear": 7,
+              "allStepped": 831,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 2998,
+              "bezier": 0
+            }
+          },
+          "jump_forward": {
+            "tracks": 841,
+            "frames": 3864,
+            "segments": 3023,
+            "sourceMarkers": {
+              "allLinear": 61,
+              "allStepped": 780,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 3023,
+              "bezier": 0
+            }
+          },
+          "knock_down": {
+            "tracks": 811,
+            "frames": 2121,
+            "segments": 1310,
+            "sourceMarkers": {
+              "allLinear": 82,
+              "allStepped": 729,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 1310,
+              "bezier": 0
+            }
+          },
+          "rise": {
+            "tracks": 842,
+            "frames": 3628,
+            "segments": 2786,
+            "sourceMarkers": {
+              "allLinear": 34,
+              "allStepped": 808,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 2786,
+              "bezier": 0
+            }
+          },
+          "run": {
+            "tracks": 810,
+            "frames": 2581,
+            "segments": 1771,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 810,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 1771,
+              "bezier": 0
+            }
+          },
+          "skill1": {
+            "tracks": 841,
+            "frames": 4824,
+            "segments": 3983,
+            "sourceMarkers": {
+              "allLinear": 23,
+              "allStepped": 818,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 3983,
+              "bezier": 0
+            }
+          },
+          "skill2": {
+            "tracks": 847,
+            "frames": 10665,
+            "segments": 9818,
+            "sourceMarkers": {
+              "allLinear": 2,
+              "allStepped": 845,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 9818,
+              "bezier": 0
+            }
+          },
+          "skill3": {
+            "tracks": 845,
+            "frames": 4596,
+            "segments": 3751,
+            "sourceMarkers": {
+              "allLinear": 31,
+              "allStepped": 814,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 3751,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -4750,8 +6328,9 @@
         "animationCount": 1,
         "binaryBytes": 87271,
         "consumedBytes": 87271,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {}
       }
     },
     {
@@ -4811,15 +6390,48 @@
       "address": "characterlab/source/portrait/c1005.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "43e822c9c417ff53cbf5a30541c6418ac28b4629963b7dd704775971f42c18ae",
+      "outputSha256": "33da511076641349f3b19746afc4d951e236cb91e109eab3e69d26bc08952de7",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 2,
         "binaryBytes": 280924,
         "consumedBytes": 280924,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "idle": {
+            "tracks": 573,
+            "frames": 2924,
+            "segments": 2351,
+            "sourceMarkers": {
+              "allLinear": 23,
+              "allStepped": 343,
+              "explicit": 207
+            },
+            "modes": {
+              "linear": 261,
+              "stepped": 989,
+              "bezier": 1101
+            }
+          },
+          "idle2": {
+            "tracks": 571,
+            "frames": 2854,
+            "segments": 2283,
+            "sourceMarkers": {
+              "allLinear": 22,
+              "allStepped": 342,
+              "explicit": 207
+            },
+            "modes": {
+              "linear": 261,
+              "stepped": 955,
+              "bezier": 1067
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {
@@ -4879,15 +6491,33 @@
       "address": "characterlab/source/portrait/c1062.scsp/json",
       "type": "spine-json",
       "dependencies": [],
-      "outputSha256": "33e19d02b6620cae5b0637db9e1b175c97ccee86c4723aceb49c3b256f77702a",
+      "outputSha256": "4f7f498d7a87676560951caaea79bed57e88ad74e6527b784b3577a84355699a",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 1,
         "binaryBytes": 155130,
         "consumedBytes": 155130,
-        "converterVersion": "astraloath-scsp/2",
-        "boneFlipTimelines": {}
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "idle": {
+            "tracks": 584,
+            "frames": 1851,
+            "segments": 1267,
+            "sourceMarkers": {
+              "allLinear": 9,
+              "allStepped": 366,
+              "explicit": 209
+            },
+            "modes": {
+              "linear": 67,
+              "stepped": 420,
+              "bezier": 780
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
       }
     },
     {

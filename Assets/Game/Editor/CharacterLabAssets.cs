@@ -117,7 +117,7 @@ namespace AstralOath.Editor
             foreach (string expected in AddressMap(entries).Values)
                 if (!collectedAddresses.Contains(expected)) throw new BuildFailedException("资源包未收集地址：" + expected);
             var report = new JObject { ["utc"] = DateTime.UtcNow.ToString("O"), ["resourceCount"] = entries.Count,
-                ["result"] = "passed", ["scope"] = "hashes, dependency closure, catalog schema and typed references, locale keys, texture import, package addresses; playback and source fidelity are separate" };
+                ["result"] = "passed", ["scope"] = "hashes, Spine 2.1 curve semantic audit markers, dependency closure, catalog schema and typed references, locale keys, texture import, package addresses; playback and source fidelity are separate" };
             Directory.CreateDirectory(Path.GetDirectoryName(ReportPath));
             File.WriteAllText(ReportPath, report.ToString());
             Debug.Log($"ASTRAL_CHARACTERLAB_RESOURCES_VALID count={entries.Count}");
@@ -142,10 +142,20 @@ namespace AstralOath.Editor
                     path.Contains('\\') || path.Split('/').Any(p => p is "." or "..") ||
                     string.IsNullOrEmpty(address) || !address.StartsWith("characterlab/source/", StringComparison.Ordinal))
                     throw new BuildFailedException("角色清单包含无效路径或地址。");
+                ValidateSkeletonConversion(entry);
             }
             return entries;
         }
 
+        internal static void ValidateSkeletonConversion(JObject entry)
+        {
+            if ((string)entry["type"] != "spine-json" || entry["conversion"] is not JObject conversion ||
+                (string)conversion["spineVersion"] != "2.1.27") return;
+            var semantics = conversion["curveSemantics"];
+            if (semantics?.Type != JTokenType.String || (string)semantics != "scsp-v2-sentinel/1" ||
+                conversion["curveTimelines"] is not JObject)
+                throw new BuildFailedException("Spine 2.1 曲线语义审计缺失或不兼容（需 curveSemantics=scsp-v2-sentinel/1 且 curveTimelines 为对象），请重新导入：" + entry["path"]);
+        }
         internal static Dictionary<string, string> AddressMap(JArray entries)
         {
             var map = new Dictionary<string, string>(StringComparer.Ordinal);

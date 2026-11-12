@@ -18,7 +18,7 @@ class NativeFlipTimelineTests(unittest.TestCase):
                          [{'time':0.,'x':False},{'time':.25,'x':True},{'time':1.,'x':False}])
         self.assertEqual(report['sourceTimelineCounts'],{'idle':{'9':1}})
         self.assertEqual(report['engineDrawOrder'],{})
-        self.assertEqual(report['converterVersion'],'astraloath-scsp/2')
+        self.assertEqual(report['converterVersion'],'astraloath-scsp/3')
         self.assertEqual(report['boneFlipTimelines'],{'idle':{'flipX':{'tracks':1,'frames':3,'bones':{'root':3}},'flipY':{'tracks':0,'frames':0,'bones':{}}}})
     def test_flip_y_is_not_an_event_and_preserves_axis(self):
         doc,report=convert.decode_scsp(fixture_v2(flip(10)))

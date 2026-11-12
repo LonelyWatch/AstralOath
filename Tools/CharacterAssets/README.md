@@ -19,7 +19,7 @@
 
 `convert.py` 提供 `convert_scsp(source: Path, destination: Path) -> dict`、`convert_sct(...) -> dict`；失败抛异常。`decode_scsp(bytes)` 返回 `(标准Spine对象, 诊断)`；`decode_sct(bytes)` 返回 `(Pillow RGBA图像, 诊断)`。未知格式、压缩/段长度不符、未消费尾部、未知时间线、重复动画名、非法索引必须失败，不能静态降级或跳过动画。
 
-SCSP 保留 `2.1.27` / `3.8.99` 原版本。2.1 的 type5/type6 分别为事件和完整 draw-order；type9/type10 分别为骨骼 FlipX/FlipY，依据固定官方 2.1 C 核心枚举和 spFlipTimeline 结构解析。参考查看器对这四个编号的命名错误，严格入口不调用它们的相关分支。翻转帧的骨骼索引、轴标记、时间、布尔值、重复轨道及原始到 JSON 的完整映射全部校验，禁止把这些轨道当作辅助排序或事件丢弃。2.1 曲线、FFD、源浮点精度均保留，不添加关键帧或修补旋转。3.8 缓存曲线的九个采样点经三次方程恢复控制点，并检查所有采样点残差（≤0.00002），输出官方3.8的 `curve/c2/c3/c4` 字段。保留缓存字段输出到 `.artifacts/character-import/conversion-reports.json`；旧报告将 type9 称为 engineDrawOrder 的判断已废止，兼容字段保持为空。本轮 SCSP 转换器标记为 `astraloath-scsp/2`，清单记录版本与逐动画、逐骨骼翻转轨/帧数；报告另保留所有原始时间线类型计数。未识别的引擎字段仍不宣称已还原。
+SCSP 保留 `2.1.27` / `3.8.99` 原版本。2.1 的 type5/type6 分别为事件和完整 draw-order；type9/type10 分别为骨骼 FlipX/FlipY，依据固定官方 2.1 C 核心枚举和 spFlipTimeline 结构解析。参考查看器对这四个编号的命名错误，严格入口不调用它们的相关分支。翻转帧的骨骼索引、轴标记、时间、布尔值、重复轨道及原始到 JSON 的完整映射全部校验，禁止把这些轨道当作辅助排序或事件丢弃。2.1 曲线、FFD、源浮点精度均保留，不添加关键帧或修补旋转。3.8 缓存曲线的九个采样点经三次方程恢复控制点，并检查所有采样点残差（≤0.00002），输出官方3.8的 `curve/c2/c3/c4` 字段。保留缓存字段输出到 `.artifacts/character-import/conversion-reports.json`；旧报告将 type9 称为 engineDrawOrder 的判断已废止，兼容字段保持为空。当前 SCSP 转换器标记为 `astraloath-scsp/3`，清单记录版本与逐动画、逐骨骼翻转轨/帧数；报告另保留所有原始时间线类型计数。未识别的引擎字段仍不宣称已还原。
 
 纹理解码支持 SCT1 format4 RGB565+A8、format2 RGBA8888；SCT2支持明确编号的ASTC4x4/8x8、ETC2 RGBA8、原RGBA。未知编号不猜测。首批实际37张是SCT1；SCT2仅经过合成数据校验，没有本批真实样本。保留源RGB/alpha，六张主纹理的半透明像素检测符合PMA，因此SkeletonDescriptor明确 `premultipliedAlpha:true`，需配合对应PMA渲染。Unity纹理应 `sRGBTexture=true`、`alphaIsTransparency=false`，避免改写透明边缘RGB。粒子format2首批七张均为等值RGBA灰度数据，不能据此宣称所有未知彩色变种已验证。
 
@@ -36,3 +36,9 @@ SCSP 保留 `2.1.27` / `3.8.99` 原版本。2.1 的 type5/type6 分别为事件�
 MIT参考解析结构隔离在 `ThirdParty/scsp_viewer`，固定来源、许可和本地改动见其NOTICE与LICENSE；未保留上游启发式动画扫描、自动版本升级、容错输出入口。
 
 按 SHA256 登记的生成 JSON/atlas 和未改动的 FMOD 源文件使用 `.gitattributes` 保留原字节，禁止 Git 自动转换换行。提交前同时验证工作目录、暂存区与一次独立检出的校验值；不能只验证当前机器的工作目录。
+
+## 曲线语义与后续角色
+
+SCSP 2.1 的 `0xFFFF` 是线性、`0xFFFE` 是阶梯，显式 Bezier 首个 float 是目标帧索引。按源记录保留三种插值，禁止全局强制平滑或强制阶梯。逐轨逐段写出校验与 `curveTimelines` 报告保证曲线未丢失；旧错误转换产物会被 Python 验证和 Unity 构建门禁拒绝。
+
+新增角色必须遵循 [角色资源进入 Unity 的通用规则](../../docs/development/character-asset-import.md)。格式证据、复现与验收见 [梅赛德丝 S3 修复报告](../../docs/delivery/2026-11-12-mercedes-curve-correctness.md)。本轮本机原游戏静态核验支持该语义，不根据“画面看起来顺眼”修改角色偏移。

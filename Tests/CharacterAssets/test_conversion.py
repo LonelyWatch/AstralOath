@@ -58,9 +58,8 @@ class SpineRegressionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"timeline"):
             convert.decode_scsp(fixture_v2(struct.pack("<I",1234)))
     def test_bezier_and_linear_curves_are_not_forced_stepped(self):
-        curve=struct.pack("<HBIf4f",0,2,0,0.25,0.1,0.2,0.8,0.9)
-        # Curve carries four controls after the cached 4-byte segment field.
-        reader=convert.Reader(struct.pack("<HBI4f",0,2,0,0.1,0.2,0.8,0.9))
+        # Explicit curve count followed by float target frame index and four controls.
+        reader=convert.Reader(struct.pack("<HB5f",2,2,0,0.1,0.2,0.8,0.9))
         values=convert._curves_v2(reader,2)[0]["curve"]
         for actual,expected in zip(values,[0.1,0.2,0.8,0.9]): self.assertAlmostEqual(actual,expected,6)
         self.assertEqual(convert._curves_v2(convert.Reader(b"\xff\xff"),2),[{}])
@@ -77,7 +76,7 @@ class SpineRegressionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"cubic"):
             convert._curve_v3([2]+[.9,.1]*9,0)
     def test_rejects_unknown_curve(self):
-        with self.assertRaises(ValueError): convert._curves_v2(convert.Reader(b"\0\0\x09"),2)
+        with self.assertRaises(ValueError): convert._curves_v2(convert.Reader(b"\x02\0\x09"),2)
     def test_draw_order_preserves_permutation(self):
         from types import SimpleNamespace
         slots=[SimpleNamespace(name=n) for n in ["a","b","c"]]

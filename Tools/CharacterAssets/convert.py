@@ -19,7 +19,7 @@ from ThirdParty.scsp_viewer import scsp_v3 as v3
 from ThirdParty.scsp_viewer import scsp2json as writer
 
 MAX_DECODED = 256 * 1024 * 1024
-SCSP_CONVERTER_VERSION = "astraloath-scsp/2"
+SCSP_CONVERTER_VERSION = "astraloath-scsp/3"
 
 
 def _unpack_block(data: bytes) -> bytes:
@@ -41,6 +41,7 @@ class Reader(common.SpineBinaryReader):
     def __init__(self, data):
         super().__init__(data)
         self.opaque = []
+        self.curveBlocks = []
 
     def reset_pos(self, pos):
         if pos < 0 or pos > len(self.data): raise ValueError("Seek outside binary")
@@ -69,19 +70,98 @@ def _string(offset, skeleton):
 
 
 def _curves_v2(reader, count):
+    # E7's native 2.1.27 loader uses two distinct pointer sentinels:
+    # FFFF -> -1 -> linear; FFFE -> NULL -> stepped. Explicit Beziers carry
+    # a float FRAME INDEX, then four control points (not cached sample data).
+    # Independently documented from FUN_14032bc30 / FUN_140b71470 at:
+    # https://github.com/Aikiooo/e7codex/blob/1edf249f5b8dbda734ea96432e22ab108a8e308c/convert/vendor/epic7_scsp2json_v1_0/_epic7_scsp2json_v2_1_27.py#L344-L359
+    start = reader.pos
+    if count < 1: raise ValueError("Empty 2.1 curve timeline")
     marker = reader.read_u16()
-    if marker in (0xffff, 0xfffe):
-        return [{} for _ in range(max(0, count - 1))]
-    curves = []
-    for _ in range(count - 1):
-        kind = reader.read_u8()
-        if kind == 0: curves.append({})
-        elif kind == 1: curves.append({"curve": "stepped"})
-        elif kind == 2:
-            reader.skip(4)  # cached curve segment count
-            curves.append({"curve": [reader.read_f32() for _ in range(4)]})
-        else: raise ValueError(f"Unknown 2.1 curve type {kind} at {reader.pos-1}")
+    curves = [{} for _ in range(count - 1)]
+    if marker == 0xfffe:
+        curves = [{"curve": "stepped"} for _ in curves]
+    elif marker != 0xffff:
+        if marker != count:
+            raise ValueError(f"2.1 curve count mismatch at {start}: {marker}/{count}")
+        for index in range(marker - 1):
+            kind = reader.read_u8()
+            if kind == 0:
+                continue  # Native zero-filled cache: no write to another target.
+            if kind == 1:
+                curves[index] = {"curve": "stepped"}
+            elif kind == 2:
+                target = reader.read_f32()
+                if not math.isfinite(target) or not target.is_integer() or not 0 <= target < count - 1:
+                    raise ValueError(f"Invalid 2.1 curve target index at {reader.pos-4}: {target}")
+                controls = [reader.read_f32() for _ in range(4)]
+                if not all(math.isfinite(v) for v in controls):
+                    raise ValueError("Nonfinite 2.1 curve control point")
+                curves[int(target)] = {"curve": controls}
+            else:
+                raise ValueError(f"Unknown 2.1 curve type {kind} at {reader.pos-1}")
+    # Immutable copy: writer mutations cannot alter the source evidence.
+    reader.curveBlocks.append({"offset": start, "end": reader.pos, "marker": marker,
+                               "frames": count, "values": tuple(_curve_value(f) for f in curves)})
     return curves
+
+
+def _curve_value(frame):
+    value = frame.get("curve")
+    return tuple(value) if isinstance(value, list) else value
+
+
+def _record_curve_source(reader, skeleton, animation, kind, start, previous_blocks):
+    if kind == 4:
+        return
+    if len(reader.curveBlocks) != previous_blocks + 1:
+        raise ValueError("Missing or duplicated source curve block")
+    block = reader.curveBlocks[-1]
+    index = struct.unpack_from("<I", reader.data, start + 4)[0]
+    if kind in (0, 1, 2):
+        path = (animation.name, "bones", skeleton.bones[index].name, {0:"scale", 1:"rotate", 2:"translate"}[kind])
+    elif kind == 3:
+        path = (animation.name, "slots", skeleton.slots[index].name, "color")
+    elif kind == 8:
+        path = (animation.name, "ik", skeleton.ikConstraints[index].name)
+    elif kind == 7:
+        record_index = struct.unpack_from("<I", reader.data, block["end"])[0]
+        record = skeleton.v2_skin_records[record_index]
+        path = (animation.name, "ffd", record["skin"], record["skin_slot"], record["skin_attachment"])
+    else:
+        raise ValueError(f"Unsupported curve timeline {kind}")
+    if path in skeleton.curveSource:
+        raise ValueError(f"Duplicate curve timeline: {path}")
+    skeleton.curveSource[path] = block
+
+
+def _validate_curves_v2(document, skeleton):
+    for path, block in skeleton.curveSource.items():
+        frames = document["animations"]
+        try:
+            for key in path: frames = frames[key]
+        except (KeyError, TypeError) as exc:
+            raise ValueError(f"Missing converted curve timeline: {path}") from exc
+        if len(frames) != block["frames"] or tuple(_curve_value(f) for f in frames[:-1]) != block["values"]:
+            raise ValueError(f"Curve mapping mismatch between source and JSON: {path}")
+        if "curve" in frames[-1]:
+            raise ValueError(f"Unexpected terminal curve in JSON: {path}")
+
+
+def _curve_report(skeleton):
+    result = {}
+    for path, block in getattr(skeleton, "curveSource", {}).items():
+        row = result.setdefault(path[0], {"tracks":0, "frames":0, "segments":0,
+            "sourceMarkers":{"allLinear":0,"allStepped":0,"explicit":0},
+            "modes":{"linear":0,"stepped":0,"bezier":0}})
+        row["tracks"] += 1
+        row["frames"] += block["frames"]
+        row["segments"] += len(block["values"])
+        mode = {0xffff:"allLinear", 0xfffe:"allStepped"}.get(block["marker"], "explicit")
+        row["sourceMarkers"][mode] += 1
+        for value in block["values"]:
+            row["modes"]["linear" if value is None else "stepped" if value == "stepped" else "bezier"] += 1
+    return result
 
 
 def _draw_order(order, slots):
@@ -150,6 +230,7 @@ def _animations_v2(reader, skeleton):
     result = []
     skeleton.sourceTimelineCounts = {}
     skeleton.flipSource = {}
+    skeleton.curveSource = {}
     for ai in range(skeleton.v2_anim_count):
         animation = common.AnimationData()
         animation.name = _string(reader.read_u32(), skeleton)
@@ -194,8 +275,10 @@ def _animations_v2(reader, skeleton):
                 continue
             # The vendored reference mislabels native 5/6/9/10. Never delegate these
             # or unknown IDs to its permissive fallback branches.
+            previous_blocks = len(reader.curveBlocks)
             if kind not in (0, 1, 2, 3, 4, 7, 8) or not v2._parse_v2_timeline_entry(reader,skeleton,animation,kind):
                 raise ValueError(f"Unsupported/incomplete timeline {kind} in {animation.name} at {start}")
+            _record_curve_source(reader, skeleton, animation, kind, start, previous_blocks)
         result.append(animation)
     skeleton.animations = result
 
@@ -287,7 +370,9 @@ def decode_scsp(data: bytes):
         if sk.version!=expected_version: raise ValueError(f"Unsupported Spine version {sk.version}")
         if len({a.name for a in sk.animations})!=len(sk.animations): raise ValueError("Duplicate animation names")
         document=writer.write_json_data(sk)
-        if version != 30001: _validate_flips_v2(document, sk)
+        if version != 30001:
+            _validate_flips_v2(document, sk)
+            _validate_curves_v2(document, sk)
         _validate_json(document)
         if len(document.get("animations",{}))!=len(sk.animations): raise ValueError("Animation count mismatch")
     except (struct.error,IndexError,KeyError,OverflowError,UnicodeError) as exc:
@@ -298,7 +383,8 @@ def decode_scsp(data: bytes):
             "binaryBytes":binary_size,"consumedBytes":reader.pos,"opaqueFields":reader.opaque,
             "engineDrawOrder":sk.engineDrawOrder,
             "sourceTimelineCounts":getattr(sk, "sourceTimelineCounts", {}),
-            "boneFlipTimelines":_flip_report(sk)}
+            "boneFlipTimelines":_flip_report(sk),
+            "curveTimelines":_curve_report(sk)}
     return document,report
 
 

@@ -202,7 +202,11 @@ def import_assets(source_root,project,ids,include_banks=True):
         if suffix==".scsp":
             json_relative=relative.with_suffix(".spine.json");summary=convert_scsp(source_path,project/json_relative)
             conversion_reports[source]=summary
-            entry(source,json_relative,address(source)+"/json","spine-json",[],{"status":"converted","spineVersion":summary["spineVersion"],"animationCount":summary["animationCount"],"binaryBytes":summary["binaryBytes"],"consumedBytes":summary["consumedBytes"],"converterVersion":summary["converterVersion"],"boneFlipTimelines":summary["boneFlipTimelines"]})
+            conversion={"status":"converted",**{key:summary[key] for key in (
+                "spineVersion","animationCount","binaryBytes","consumedBytes",
+                "converterVersion","boneFlipTimelines","curveTimelines")}}
+            if summary["spineVersion"]=="2.1.27": conversion["curveSemantics"]="scsp-v2-sentinel/1"
+            entry(source,json_relative,address(source)+"/json","spine-json",[],conversion)
             atlas=next((p for p in closure.dependencies[source] if p.endswith(".atlas")),None)
             if not atlas and summary["renderAttachments"]:raise ValueError(f"Camera-only skeleton has render slots without atlas: {source}")
             pages=atlas_pages(closure.root,atlas) if atlas else []
@@ -284,6 +288,10 @@ def verify_manifest(project,manifest,source_root=None):
     for item in manifest["entries"]:
         if item["address"] in addresses:raise ValueError("Duplicate asset address "+item["address"])
         addresses.add(item["address"])
+        conversion=item.get("conversion",{})
+        if item.get("type")=="spine-json" and conversion.get("spineVersion")=="2.1.27":
+            if conversion.get("curveSemantics")!="scsp-v2-sentinel/1" or not isinstance(conversion.get("curveTimelines"),dict):
+                raise ValueError("Missing SCSP v2 curve audit; reimport source: "+item["path"])
         output=(project/item["path"]).resolve()
         if not output.is_relative_to((project/RES).resolve()):raise ValueError("Manifest output outside Res")
         if hash_file(output)!=item["outputSha256"]:raise ValueError("Output hash mismatch: "+item["path"])
