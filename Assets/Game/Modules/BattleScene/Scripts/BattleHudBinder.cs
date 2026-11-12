@@ -27,6 +27,8 @@ namespace AstralOath.Client.BattleScene
 
         private readonly BindingScope scope;
         private readonly GameButton startPreview;
+        private readonly GameButton pause;
+        private readonly BattleHud.PauseControls pauseControls;
         private readonly GameButton burn;
         private readonly GameButton[] skills;
         private readonly Image[] selectedArtwork;
@@ -49,9 +51,10 @@ namespace AstralOath.Client.BattleScene
 
         internal BattleHudBinder(BindingMap map, Sprite burnPressed, Sprite cancelNormal, Sprite cancelPressed,
             SpineEffect burnButton, SpineEffect selection, SpineEffect intro, SpineEffect soulUse,
-            TextAsset[] particleDefinitions, Texture2D[] particleTextures, UnityAction startBattle)
+            TextAsset[] particleDefinitions, Texture2D[] particleTextures, UnityAction startBattle, Func<string, string> label)
         {
             startPreview = map.Require<GameButton>("startPreview");
+            pause = map.Require<GameButton>("pause");
             burn = map.Require<GameButton>("soulBurn");
             skills = new[] { map.Require<GameButton>("skill1"), map.Require<GameButton>("skill2"), map.Require<GameButton>("skill3") };
             selectedArtwork = new[] { map.Require<Image>("skillSelected1"), map.Require<Image>("skillSelected2"),
@@ -65,6 +68,12 @@ namespace AstralOath.Client.BattleScene
 
             try
             {
+                pauseControls = BattleHud.CreatePauseControls(map, label);
+                scope.Add(pauseControls.Dispose);
+                pause.interactable = false;
+                Bind(pause, PauseBattle);
+                Bind(pauseControls.Continue, ResumeBattle);
+                if (startBattle != null) Bind(pauseControls.Restart, startBattle);
                 var burnSkill = skills[burnSkillIndex].transform;
                 var canvas = map.GetComponentInParent<Canvas>();
                 int aboveHud = canvas.sortingOrder + 1;
@@ -112,6 +121,12 @@ namespace AstralOath.Client.BattleScene
                     foreach (var artwork in selectedArtwork)
                         if (artwork)
                             artwork.gameObject.SetActive(false);
+                    foreach (var skill in skills)
+                        if (skill)
+                        {
+                            skill.interactable = true;
+                            skill.targetGraphic.color = Color.white;
+                        }
                 });
                 SetBurnArtwork(false);
                 Play(buttonEffect, "burn_intro", false);
@@ -128,6 +143,7 @@ namespace AstralOath.Client.BattleScene
                 }
                 Bind(burn, () =>
                 {
+                    if (!burn.interactable) return;
                     if (Simulation == null) ToggleBurn();
                     else Simulation.ToggleBurn();
                 });
@@ -136,6 +152,7 @@ namespace AstralOath.Client.BattleScene
                     int index = i;
                     Bind(skills[i], () =>
                     {
+                        if (!skills[index].interactable) return;
                         if (Simulation == null) SelectSkill(index);
                         else Simulation.ChooseSkill(index);
                     });
@@ -159,6 +176,7 @@ namespace AstralOath.Client.BattleScene
 
         internal void Tick(float delta)
         {
+            if (Simulation?.IsPaused == true) return;
             buttonEffect.Tick(delta);
             if (buttonEffect.CurrentAnimation == "burn_intro" && buttonEffect.Time >= buttonEffect.Duration)
                 Play(buttonEffect, "burn_loop", true);
@@ -190,9 +208,28 @@ namespace AstralOath.Client.BattleScene
         {
             Simulation = simulation;
             startPreview.gameObject.SetActive(false);
+            pause.interactable = true;
         }
 
-        internal void SetSimulationSelection(int index) => SelectSkill(index);
+        internal void PauseBattle()
+        {
+            if (Simulation == null || Simulation.IsPaused) return;
+            Simulation.SetPaused(true);
+            pauseControls.Show(true);
+        }
+
+        internal void ResumeBattle()
+        {
+            if (Simulation == null) return;
+            Simulation.SetPaused(false);
+            pauseControls.Show(false);
+        }
+
+        internal void SetSimulationSelection(int index)
+        {
+            if (armed) SetArmed(false);
+            SelectSkill(index);
+        }
 
         internal void ArmSimulationBurn(int index)
         {
@@ -223,8 +260,7 @@ namespace AstralOath.Client.BattleScene
 
         private void SelectSkill(int index)
         {
-            if (armed)
-                SetArmed(false);
+            if (armed) return;
             ClearSelection();
             selected = index;
             ShowSelection(false);
@@ -234,6 +270,13 @@ namespace AstralOath.Client.BattleScene
         {
             armed = value;
             SetBurnArtwork(value);
+            if (Simulation == null)
+                for (int index = 0; index < skills.Length; index++)
+                {
+                    skills[index].interactable = !value || index == burnSkillIndex;
+                    skills[index].targetGraphic.color = skills[index].interactable
+                        ? Color.white : new Color(0.45f, 0.45f, 0.45f, 1f);
+                }
             Play(buttonEffect, value ? "cancel_loop" : "burn_loop", true);
             if (value)
                 return;

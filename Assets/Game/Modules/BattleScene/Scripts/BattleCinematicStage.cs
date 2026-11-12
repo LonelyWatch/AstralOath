@@ -21,6 +21,7 @@ namespace AstralOath.Client.BattleScene
             public float Duration;
             public float Stop = -1f;
             public BattleSkillPresentationAsset Cutin;
+            public bool IsCutinCurtain;
         }
 
         private readonly Camera camera;
@@ -39,6 +40,7 @@ namespace AstralOath.Client.BattleScene
         private bool running;
         private bool hidden;
         private float time;
+        private float cutinTime;
         private (Vector3 From, int Location, Vector3 Offset, float GroundOffset, float Start, float Duration, string Curve)? pan;
         private Vector3 basePosition;
         private int activeFocusLocation;
@@ -67,23 +69,27 @@ namespace AstralOath.Client.BattleScene
 
         public void Begin(Transform actor, Transform[] recipients, bool hideHud)
         {
+            var inherited = pendingHandoff;
+            pendingHandoff = null;
             Reset();
             if (!camera) return;
 
             caster = actor;
             targets = recipients ?? Array.Empty<Transform>();
-            originalPosition = camera.transform.position;
-            originalSize = camera.orthographicSize;
-            originalClear = camera.backgroundColor;
-            originalBackground = background && background.activeSelf;
+            originalPosition = inherited?.Position ?? camera.transform.position;
+            originalSize = inherited?.Size ?? camera.orthographicSize;
+            originalClear = inherited?.Clear ?? camera.backgroundColor;
+            originalBackground = inherited?.Background ?? (background && background.activeSelf);
             time = 0f;
-            basePosition = originalPosition;
-            requestedSize = originalSize;
+            cutinTime = 0f;
+            basePosition = camera.transform.position;
+            requestedSize = camera.orthographicSize;
             hasFocus = false;
             groundOffsets.Clear();
             foreach (var participant in targets.Concat(new[] { caster }).Where(item => item).Distinct())
                 groundOffsets[participant] = originalPosition.y - participant.position.y;
-            CaptureBackdrop();
+            if (inherited == null) CaptureBackdrop();
+            else AdoptBackdrop(inherited);
             running = true;
             hidden = hideHud;
             if (hidden) cinematicChanged?.Invoke(true);
@@ -111,7 +117,8 @@ namespace AstralOath.Client.BattleScene
                         pan = null;
                     }
                     else
-                        pan = (basePosition, location, offset, ground, time, Number(node, "time") / 1000f, (string)node["curve"]);
+                        pan = (camera.transform.position - shakeOffset, location, offset, ground, time,
+                            Number(node, "time") / 1000f, (string)node["curve"]);
                     break;
                 case "ZOOM":
                     float targetSize = originalSize / Mathf.Max(.01f, Number(node, "scale", 1f));
@@ -122,7 +129,7 @@ namespace AstralOath.Client.BattleScene
                     }
                     else
                     {
-                        zoom = (requestedSize, targetSize, time,
+                        zoom = (camera.orthographicSize, targetSize, time,
                             Number(node, "time") / 1000f, (string)node["curve"]);
                     }
                     break;
@@ -196,29 +203,69 @@ namespace AstralOath.Client.BattleScene
         private static bool ContainsActor(Transform participant, Transform actor) =>
             actor && (actor == participant || actor.IsChildOf(participant));
 
-        public void PlayCutin(BattleSkillPresentationAsset asset)
+        public void PlayCutin(BattleSkillPresentationAsset asset) => PlayCutinWithNode(asset, null);
+
+        public void PlayCutinWithNode(BattleSkillPresentationAsset asset, JObject node)
         {
             if (!running || asset?.document == null) return;
             var descriptor = JObject.Parse(asset.document.text);
             if (asset.pages == null || asset.pages.Length != ((JArray)descriptor["frames"]).Count)
                 throw new InvalidOperationException("Incomplete original CUTIN frames: " + asset.source);
 
+            float duration = CutinDuration(descriptor);
+            string curtainColor = (string)node?["curtain_color"];
+            if (string.IsNullOrEmpty(curtainColor)) curtainColor = "0,0,0,255";
+            float curtainOpacity = Mathf.Clamp01(Number(node, "curtain_opacity", 1f));
+            if (ColorValue(curtainColor).a * curtainOpacity > 0f)
+            {
+                // Source curtain composites behind transparent Cut-in pixels, including ordinary
+                // HUD. Pause controls remain above both at 31000; world actors retain visibility.
+                var curtain = AddLayer("Cut-in curtain " + asset.source, 29999, "CharacterLabUnlit");
+                curtain.Root.layer = 5;
+                curtain.IsCutinCurtain = true;
+                curtain.Start = cutinTime;
+                curtain.Duration = duration;
+                curtain.Node = new JObject { ["color"] = curtainColor, ["opacity"] = curtainOpacity };
+                curtain.Material.mainTexture = Texture2D.whiteTexture;
+            }
             var layer = AddLayer("CUTIN " + asset.source, 30000, "CharacterLabUnlit");
             // CUTIN remains a single overlay above the captured world and is excluded from sprite blur.
             layer.Root.layer = 5;
             layer.Cutin = asset;
+            layer.Start = cutinTime;
             layer.Node = descriptor;
-            layer.Duration = CutinDuration(descriptor);
+            layer.Duration = duration;
             UpdateLayers();
         }
 
         public static float CutinDuration(JObject descriptor) =>
             descriptor?["frames"]?.Sum(frame => (float?)frame["durationSeconds"] ?? 0f) ?? 0f;
 
+        public float CutinRemainingSeconds
+        {
+            get
+            {
+                float remaining = 0f;
+                foreach (var layer in layers)
+                    if (layer.Cutin != null)
+                        remaining = Mathf.Max(remaining, layer.Start + layer.Duration - cutinTime);
+                return remaining;
+            }
+        }
+
+        // Cut-in consumes wall time while source-clock motion, DARK and world effects are paused.
+        public void TickCutin(float delta)
+        {
+            if (!running || !camera) return;
+            cutinTime += Mathf.Max(0f, delta);
+            UpdateLayers();
+        }
+
         public void Tick(float delta)
         {
             if (!running || !camera) return;
             time += Mathf.Max(0f, delta);
+            cutinTime += Mathf.Max(0f, delta);
             if (zoom is { } scale)
             {
                 float progress = Progress(scale.Start, scale.Duration);
@@ -292,9 +339,13 @@ namespace AstralOath.Client.BattleScene
         {
             foreach (var layer in layers.ToArray())
             {
-                float elapsed = time - layer.Start;
-                float fadeOut = Number(layer.Node, "fadeOut") / 1000f;
-                if ((layer.Duration >= 0f && elapsed >= layer.Duration) ||
+                float elapsed = (layer.Cutin != null || layer.IsCutinCurtain ? cutinTime : time) - layer.Start;
+                float fadeOut = Mathf.Max(0f, Number(layer.Node, "fadeOut") / 1000f);
+                bool dark = (string)layer.Node?["etty"] == "DARK";
+                // DARK duration ends its hold; fadeOut is a separate interval. CUTIN and
+                // BGHATCH retain their source total durations and their own clock semantics.
+                float lifetime = layer.Duration + (dark ? fadeOut : 0f);
+                if ((layer.Duration >= 0f && elapsed >= lifetime) ||
                     (layer.Stop >= 0f && time >= layer.Stop + fadeOut))
                 {
                     Release(layer);
@@ -325,11 +376,13 @@ namespace AstralOath.Client.BattleScene
                 float alpha = Number(layer.Node, "opacity", 1f);
                 float fadeIn = Number(layer.Node, "fadeIn") / 1000f;
                 if (fadeIn > 0f) alpha *= Mathf.Clamp01(elapsed / fadeIn);
-                if (fadeOut > 0f && layer.Duration >= 0f)
-                    alpha *= Mathf.Clamp01((layer.Duration - elapsed) / fadeOut);
-                if (layer.Stop >= 0f)
-                    alpha *= fadeOut > 0f ? Mathf.Clamp01(1f - (time - layer.Stop) / fadeOut) : 0f;
-                Color color = (string)layer.Node?["etty"] == "DARK"
+                float fadeStart = layer.Duration >= 0f
+                    ? layer.Duration - (dark ? 0f : fadeOut) : float.PositiveInfinity;
+                if (layer.Stop >= 0f) fadeStart = Mathf.Min(fadeStart, layer.Stop - layer.Start);
+                if (fadeOut > 0f)
+                    alpha *= Mathf.Clamp01(1f - (elapsed - fadeStart) / fadeOut);
+                else if (elapsed >= fadeStart) alpha = 0f;
+                Color color = dark || layer.IsCutinCurtain
                     ? ColorValue((string)layer.Node["color"])
                     : Color.white;
                 color.a *= alpha;
@@ -406,6 +459,16 @@ namespace AstralOath.Client.BattleScene
 
         public void Reset()
         {
+            if (pendingHandoff != null)
+            {
+                originalPosition = pendingHandoff.Position;
+                originalSize = pendingHandoff.Size;
+                originalClear = pendingHandoff.Clear;
+                originalBackground = pendingHandoff.Background;
+                AdoptBackdrop(pendingHandoff);
+                pendingHandoff = null;
+                running = true;
+            }
             RestoreLayout();
             postEffects.Reset();
             ReleaseCameraMotion();

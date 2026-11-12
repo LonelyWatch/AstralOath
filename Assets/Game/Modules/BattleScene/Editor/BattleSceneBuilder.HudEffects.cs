@@ -44,7 +44,11 @@ namespace AstralOath.Client.BattleScene.Editor
 
         private static void ConfigureHudButtons(BindingMap map)
         {
-            foreach (string key in new[] { "soulBurn", "skill1", "skill2", "skill3" })
+            var active = map.Require<Image>("activePortrait").transform.parent;
+            var readiness = map.Require<Image>("orderHourglass").transform.parent;
+            if (active.GetSiblingIndex() > readiness.GetSiblingIndex())
+                active.SetSiblingIndex(readiness.GetSiblingIndex());
+            foreach (string key in new[] { "pause", "soulBurn", "skill1", "skill2", "skill3" })
             {
                 var button = map.Require<GameButton>(key);
                 button.targetGraphic.raycastTarget = true;

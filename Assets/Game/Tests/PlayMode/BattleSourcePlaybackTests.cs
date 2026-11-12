@@ -51,6 +51,9 @@ namespace AstralOath.Client.Tests
 
             var roots = scene.GetRootGameObjects();
             var host = roots.Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            host.AutoStartBattle = false;
+            host.enabled = false; // Isolate direct source playback from the automatically started match.
+            yield return null;
             graphs = HostField<TextAsset[]>(host, "battleGraphs");
             assets = HostField<BattleSkillPresentationAsset[]>(host, "skillAssets");
             background = HostField<GameObject>(host, "stageBackground");
@@ -211,7 +214,7 @@ namespace AstralOath.Client.Tests
                 yield return null;
                 float delta = Time.unscaledDeltaTime;
                 Tick.Invoke(playback, new object[] { delta });
-                elapsed += delta;
+                elapsed = (float)PresentationType.GetProperty("StageTime").GetValue(playback);
             }
             while (elapsed < timing.Duration + 0.05f);
 

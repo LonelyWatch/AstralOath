@@ -22,7 +22,8 @@ namespace AstralOath.Client.BattleScene
         private readonly Dictionary<string, string> messages;
         private readonly Dictionary<string, string> classes;
         private readonly Dictionary<string, Sprite> sprites;
-        private readonly BattleSkillPresentation skillPresentation;
+        private BattleSkillPresentation skillPresentation;
+        private readonly List<(BattleSkillPresentation Stage, float Duration)> recoveryStages = new List<(BattleSkillPresentation, float)>();
         private readonly BattleVoice voice;
         private readonly BattleTurnHud turnHud;
         private readonly Dictionary<string, View> views = new Dictionary<string, View>(StringComparer.Ordinal);
@@ -108,6 +109,11 @@ namespace AstralOath.Client.BattleScene
             banner = CreateText(hud.transform, text, "Battle State", new Vector2(0.5f, 1),
                 new Vector2(0, -46), new Vector2(720, 40), 24);
             skillPresentation = new BattleSkillPresentation(units, graphs, skillAssets, camera, SetCinematicVisible, stageBackground);
+            // Resolve the active roster before exposing inputs: no source DOM/Spine parse on an attack click.
+            foreach (var state in Snapshot.Units)
+                foreach (string skillId in state.Form.SkillIds)
+                    skillPresentation.Prepare(views[state.InstanceId].Actor,
+                        skills.TryGetValue(skillId, out var row) ? row.presentationId : skillId);
             voice = new BattleVoice(audioCatalog, audioBanks, impactBank);
             turnHud = new BattleTurnHud(hud, unit => Label(unit.NameKey), sprites, damageFont);
             turnHud.SetMissFeedbackLabel(Label("battle.feedback.miss"));
@@ -120,14 +126,27 @@ namespace AstralOath.Client.BattleScene
         public int StartedSkillSounds => voice.StartedEffectCount;
         public int StartedHitSounds => voice.StartedHitCount;
         public bool IsCinematicVisible => cinematicVisible;
+        public bool IsPaused { get; private set; }
+
+        public void SetPaused(bool value)
+        {
+            if (IsPaused == value) return;
+            IsPaused = value;
+            foreach (var view in views.Values) view.Actor.SetPaused(value);
+            voice.SetPaused(value);
+            UpdateSkillAvailability();
+            hud.Require<GameButton>("soulBurn").interactable = CanAct && BurnSlot() >= 0;
+        }
 
         private BattleUnitSnapshot Actor => Snapshot.GetUnit(Snapshot.CurrentActorId);
-        private bool HasActionPresentation => actionElapsed < actionDuration || pendingFeedback.Count != 0;
+        private bool HasActionPresentation => actionElapsed < actionDuration || pendingFeedback.Count != 0 ||
+            (recoveryStages != null && recoveryStages.Count != 0);
         private bool Busy => playback.Count != 0 || HasActionPresentation;
-        private bool CanAct => !Busy && Actor?.Slot.Side == BattleSide.Ally;
+        private bool CanAct => !IsPaused && !Busy && Actor?.Slot.Side == BattleSide.Ally;
 
         public void Tick(float delta)
         {
+            if (IsPaused) return;
             bool wasBusy = Busy;
             voice.Tick();
             AdvancePresentation(Mathf.Max(0f, delta));
@@ -173,11 +192,27 @@ namespace AstralOath.Client.BattleScene
                 float untilNext = nextTime - actionElapsed;
                 float step = Mathf.Min(remaining, untilNext);
 
+                float before = skillPresentation.StageTime;
                 skillPresentation.Tick(step);
-                turnHud.Tick(step);
+                float advanced = Mathf.Max(0f, skillPresentation.StageTime - before);
+                TickRecoveries(advanced);
+                turnHud.Tick(advanced);
                 if (float.IsPositiveInfinity(nextTime)) return;
-                actionElapsed = step == untilNext ? nextTime : actionElapsed + step;
+                actionElapsed = advanced >= untilNext ? nextTime : actionElapsed + advanced;
                 remaining -= step;
+            }
+        }
+
+        private void TickRecoveries(float delta)
+        {
+            if (recoveryStages == null) return;
+            for (int index = recoveryStages.Count - 1; index >= 0; index--)
+            {
+                var tail = recoveryStages[index];
+                tail.Stage.Tick(delta);
+                if (tail.Stage.StageTime < tail.Duration) continue;
+                tail.Stage.Dispose();
+                recoveryStages.RemoveAt(index);
             }
         }
 
@@ -186,8 +221,20 @@ namespace AstralOath.Client.BattleScene
             while (playback.Count != 0)
             {
                 var item = playback.Peek();
-                if (item.Kind == BattleFlowEventKind.Action ? HasActionPresentation : actionElapsed < impactSeconds)
-                    return;
+                if (item.Kind == BattleFlowEventKind.Action)
+                {
+                    bool handoff = item.Origin == BattleActionOrigin.DualAttack &&
+                        actionElapsed >= (hitTimes.Length == 0 ? impactSeconds : hitTimes[hitTimes.Length - 1]) &&
+                        pendingFeedback.Count == 0;
+                    if (HasActionPresentation && !handoff) return;
+                    if (handoff && actionElapsed < actionDuration)
+                    {
+                        var previous = skillPresentation;
+                        skillPresentation = previous.CreateSuccessor();
+                        recoveryStages.Add((previous, actionDuration));
+                    }
+                }
+                else if (actionElapsed < impactSeconds) return;
                 playback.Dequeue();
                 Present(item);
             }
@@ -196,8 +243,9 @@ namespace AstralOath.Client.BattleScene
         public void ChooseSkill(int index)
         {
             if (!CanAct || !TrySkill(index, out var skill) || Actor.GetCooldown(skill.id) > 0) return;
+            // Once armed, only the dedicated Cancel control may clear Soul Burn.
+            if (useSoulBurn) return;
             selected = index;
-            useSoulBurn = false;
             binder.SetSimulationSelection(index);
             ShowPrompt();
         }
@@ -220,7 +268,22 @@ namespace AstralOath.Client.BattleScene
                 useSoulBurn = true;
                 binder.ArmSimulationBurn(index);
             }
+            UpdateSkillAvailability();
             ShowPrompt();
+        }
+
+        private void UpdateSkillAvailability()
+        {
+            int index = 0;
+            foreach (var button in SkillButtons())
+            {
+                bool available = CanAct && TrySkill(index, out var skill) && Actor.GetCooldown(skill.id) == 0 &&
+                    (!useSoulBurn || index == selected);
+                button.interactable = available;
+                ((Image)button.targetGraphic).color = useSoulBurn && index != selected
+                    ? new Color(.35f, .35f, .35f, 1f) : Color.white;
+                index++;
+            }
         }
 
         public bool ChooseTarget(string id)
@@ -518,11 +581,22 @@ namespace AstralOath.Client.BattleScene
             playback.Clear();
             pendingFeedback.Clear();
             skillPresentation.Dispose();
+            foreach (var tail in recoveryStages) tail.Stage.Dispose();
+            recoveryStages.Clear();
+            foreach (var view in views.Values) view.Actor.SetPaused(false);
             voice.Dispose();
             turnHud.Dispose();
             foreach (var view in views.Values) view.Restore();
-            if (banner) UnityEngine.Object.Destroy(banner.gameObject);
+            RemoveOwnedObject(banner ? banner.gameObject : null);
             restore();
+        }
+
+        private static void RemoveOwnedObject(GameObject item)
+        {
+            if (!item) return;
+            item.SetActive(false);
+            item.transform.SetParent(null, false);
+            UnityEngine.Object.Destroy(item);
         }
 
         private sealed class View
@@ -597,8 +671,8 @@ namespace AstralOath.Client.BattleScene
 
             public void Restore()
             {
-                if (statusLabel) UnityEngine.Object.Destroy(statusLabel.gameObject);
-                if (levelLabel) UnityEngine.Object.Destroy(levelLabel.gameObject);
+                RemoveOwnedObject(statusLabel ? statusLabel.gameObject : null);
+                RemoveOwnedObject(levelLabel ? levelLabel.gameObject : null);
                 if (levelBadge) levelBadge.enabled = true;
                 if (slot) slot.gameObject.SetActive(true);
                 if (!marker) return;

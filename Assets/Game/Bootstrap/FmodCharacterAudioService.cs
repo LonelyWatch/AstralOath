@@ -101,6 +101,14 @@ namespace AstralOath.Client.Bootstrap
             catch { sound.release(); throw; }
         }
 
+        // Pause only this scene-owned audio system, never global Unity or other FMOD sessions.
+        public void PauseAll(bool paused)
+        {
+            if (!IsAvailable || disposed) return;
+            foreach (var playback in active) playback.Pause(paused);
+            Check(studio.update(), "pause update");
+        }
+
         public void Tick()
         {
             if (!IsAvailable || disposed) return;

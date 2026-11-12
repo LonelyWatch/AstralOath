@@ -6,6 +6,9 @@ namespace AstralOath.Client.Skeletons
     // Textures are borrowed. The caller keeps their asset handles alive until Dispose.
     public sealed class SkeletonPlayerSource
     {
+        // Source-owned immutable parse cache. No static references or live playback state.
+        internal object ParsedData;
+        internal string ExportVersion;
         public string Json { get; }
         public string Atlas { get; }
         public IReadOnlyDictionary<string, Texture2D> Textures { get; }

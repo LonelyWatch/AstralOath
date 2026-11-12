@@ -125,9 +125,20 @@ namespace AstralOath.Client.Tests
         [UnityTest]
         public IEnumerator SkillSelectionAndBurnEffectsFollowPointerClicksAndReset()
         {
-            scene = EditorSceneManager.LoadSceneInPlayMode(ScenePath, new LoadSceneParameters(LoadSceneMode.Additive));
-            yield return null;
-            yield return null;
+            SceneManager.sceneLoaded += LayoutOnly;
+            try
+            {
+                scene = EditorSceneManager.LoadSceneInPlayMode(ScenePath, new LoadSceneParameters(LoadSceneMode.Additive));
+                yield return null;
+                yield return null;
+            }
+            finally { SceneManager.sceneLoaded -= LayoutOnly; }
+
+            void LayoutOnly(Scene loaded, LoadSceneMode mode)
+            {
+                if (loaded.path != ScenePath) return;
+                loaded.GetRootGameObjects().Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item).AutoStartBattle = false;
+            }
 
             var roots = scene.GetRootGameObjects();
             var map = roots.SelectMany(root => root.GetComponentsInChildren<BindingMap>()).Single();
@@ -213,9 +224,14 @@ namespace AstralOath.Client.Tests
             Click(burn, raycaster, eventSystem);
             yield return new WaitForSecondsRealtime(0.6f);
             Assert.That(EffectVisible(burn.transform, "Soul Burn Use"), Is.False);
+            bool introBeforeClick = EffectVisible(skill2.transform, "Burn Intro");
             Click(skill2, raycaster, eventSystem);
             Assert.That(EffectVisible(burn.transform, "Soul Burn Use"), Is.False, "Selecting the skill does not replay the Burn flash.");
-            Assert.That(EffectVisible(skill2.transform, "Burn Intro"), Is.False);
+            Assert.That(EffectVisible(skill2.transform, "Burn Intro"), Is.EqualTo(introBeforeClick), "Selecting the armed skill neither cancels nor restarts its effect.");
+            Assert.That(selected2.gameObject.activeSelf, Is.False, "Clicking the armed skill preserves Soul Burn.");
+            Assert.That(burn.spriteState.pressedSprite.name, Is.EqualTo("game_hud_btn_burnc_p"));
+            Click(burn, raycaster, eventSystem);
+            Click(skill2, raycaster, eventSystem);
             Assert.That(selected2.gameObject.activeSelf, Is.True);
 
             map.gameObject.SetActive(false);
@@ -246,13 +262,12 @@ namespace AstralOath.Client.Tests
             var start = map.Require<GameButton>("startPreview");
             var raycaster = map.GetComponentInParent<GraphicRaycaster>();
             var eventSystem = roots.Select(root => root.GetComponent<EventSystem>()).Single(item => item);
-            Assert.That(preview.SimulationSnapshot, Is.Null, "Opening the scene shows the layout until the player clicks.");
-            Assert.That(start.gameObject.activeInHierarchy, Is.True, "The Game view needs a visible way to start.");
+            Assert.That(preview.SimulationSnapshot, Is.Not.Null, "Opening the scene enters the playable battle automatically.");
+            Assert.That(start.gameObject.activeInHierarchy, Is.False);
             string output = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_CAPTURE_DIR");
             if (!string.IsNullOrWhiteSpace(output))
                 Capture(raycaster.eventCamera, output, "battle-start.png");
-            Click(start, raycaster, eventSystem);
-            Assert.That(start.gameObject.activeInHierarchy, Is.False, "The entry button hides during the fight.");
+            Assert.That(start.gameObject.activeInHierarchy, Is.False, "The obsolete entry button stays hidden during the fight.");
             var initial = preview.SimulationSnapshot;
             Assert.That(initial.Units, Has.Count.EqualTo(8));
             var readiness = map.transform.Find("Combat Readiness/Live Readiness/Readiness Portraits");
@@ -322,8 +337,8 @@ namespace AstralOath.Client.Tests
             canvas.gameObject.SetActive(true);
             yield return null;
             yield return null;
-            Assert.That(start.gameObject.activeInHierarchy, Is.True, "Reopening the HUD restores the entry.");
-            Click(start, raycaster, eventSystem);
+            Assert.That(start.gameObject.activeInHierarchy, Is.False, "Reopening the HUD automatically starts a new battle.");
+            Assert.That(preview.SimulationSnapshot, Is.Not.Null);
             Assert.That(preview.SimulationSnapshot.LastCommandSequence, Is.Zero);
             yield return null;
             var secondSkill = map.Require<GameButton>("skill2");
@@ -532,6 +547,17 @@ namespace AstralOath.Client.Tests
                 Vector3 originalPosition = camera.transform.position;
                 float originalSize = camera.orthographicSize;
                 preview.StartBattle();
+                // Scene loading and synchronous preparation can occupy the frame before this
+                // test's synthetic click. Wait for visible frames, as a real user would, so the
+                // next LateUpdate cannot consume the loading interval as the entire skill.
+                int stableFrames = 0;
+                float readyDeadline = Time.realtimeSinceStartup + 10f;
+                while (stableFrames < 2)
+                {
+                    yield return null;
+                    Assert.That(Time.realtimeSinceStartup, Is.LessThan(readyDeadline), "The battle must become ready for an observable input frame.");
+                    stableFrames = Time.unscaledDeltaTime > 0f && Time.unscaledDeltaTime < .05f ? stableFrames + 1 : 0;
+                }
                 bool submitted = false;
                 float deadline = Time.realtimeSinceStartup + 45f;
                 while (!submitted && Time.realtimeSinceStartup < deadline)

@@ -302,6 +302,7 @@ namespace AstralOath.Client.BattleScene
         {
             if (!component) return;
             component.gameObject.SetActive(false);
+            component.transform.SetParent(null, false);
             Object.Destroy(component.gameObject);
         }
 

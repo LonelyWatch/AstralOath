@@ -52,6 +52,7 @@ namespace AstralOath.Client.BattleScene.Editor
             }
 
             var active = Group("Active Unit", rect);
+            active.SetSiblingIndex(order.GetSiblingIndex());
             var strip = Picture(active, "Information Strip", "_game_hud_timebg2", 261.5f, 49.5f, 471, 87);
             strip.color = new Color(1f, 1f, 1f, 153f / 255f);
             bindings.Add("activePortrait", Picture(active, "Ras Portrait", "Faces/c1001_su", 218, 103, 436, 206));

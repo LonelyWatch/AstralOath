@@ -8,6 +8,77 @@ namespace AstralOath.Client.BattleScene
 {
     public sealed partial class BattleCinematicStage
     {
+        private sealed class HandoffState
+        {
+            internal Vector3 Position;
+            internal float Size;
+            internal Color Clear;
+            internal bool Background;
+            internal SpriteRenderer Backdrop;
+            internal Vector3 BackdropPosition, BackdropScale;
+            internal Bounds BackdropBounds, MapBounds;
+            internal bool HasMapBounds;
+        }
+        private HandoffState pendingHandoff;
+
+        // Transfer ownership once. The retiring stage may still receive source cues, but no longer
+        // has authority to move the camera, show overlays or restore the incoming action's state.
+        public void HandoffTo(BattleCinematicStage next)
+        {
+            if (next == null) throw new ArgumentNullException(nameof(next));
+            if (next == this || next.camera != camera || next.background != background)
+                throw new ArgumentException("Camera handoff requires another stage on the same scene.", nameof(next));
+            if (next.running || next.pendingHandoff != null)
+                throw new InvalidOperationException("The receiving stage already owns a presentation.");
+            if (!running || !camera) return;
+            var inherited = new HandoffState
+            {
+                Position = originalPosition, Size = originalSize, Clear = originalClear,
+                Background = originalBackground, Backdrop = farBackdrop,
+                BackdropPosition = backdropPosition, BackdropScale = backdropScale,
+                BackdropBounds = backdropBounds, MapBounds = mapBounds, HasMapBounds = hasMapBounds
+            };
+            Vector3 position = camera.transform.position;
+            float size = camera.orthographicSize;
+            Color clear = camera.backgroundColor;
+            bool visible = background && background.activeSelf;
+            var backdrop = farBackdrop;
+            Vector3 displayedPosition = backdrop ? backdrop.transform.position : Vector3.zero;
+            Vector3 displayedScale = backdrop ? backdrop.transform.localScale : Vector3.one;
+            Reset();
+            camera.transform.position = position;
+            camera.orthographicSize = size;
+            camera.backgroundColor = clear;
+            if (background) background.SetActive(visible);
+            if (backdrop)
+            {
+                backdrop.transform.position = displayedPosition;
+                backdrop.transform.localScale = displayedScale;
+            }
+            next.pendingHandoff = inherited;
+        }
+
+        private void AdoptBackdrop(HandoffState inherited)
+        {
+            farBackdrop = inherited.Backdrop;
+            backdropPosition = inherited.BackdropPosition;
+            backdropScale = inherited.BackdropScale;
+            backdropBounds = inherited.BackdropBounds;
+            mapBounds = inherited.MapBounds;
+            hasMapBounds = inherited.HasMapBounds;
+        }
+
+        // Project fallback for actions without a source CAM/ZOOM return. Source cuts stay explicit.
+        public void ReturnToBaseline(float seconds)
+        {
+            if (!running || !camera) return;
+            float duration = Mathf.Max(0f, seconds);
+            hasFocus = false;
+            pan = (camera.transform.position - shakeOffset, 0, Vector3.zero, 0f, time, duration, "0.42,0,0.58,1");
+            zoom = (camera.orthographicSize, originalSize, time, duration, "0.42,0,0.58,1");
+            if (duration <= 0f) Tick(0f);
+        }
+
         private sealed class CameraShake
         {
             internal ISkeletonPlayer Player;

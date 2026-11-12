@@ -96,6 +96,13 @@ namespace AstralOath.Client.BattleScene
                 StartedHitCount++;
         }
 
+        public void SetPaused(bool value)
+        {
+            if (!IsAvailable) return;
+            try { service.PauseAll(value); }
+            catch (Exception error) { Disable(error.Message); }
+        }
+
         public void Tick()
         {
             if (service == null) return;

@@ -6,7 +6,6 @@ namespace AstralOath.Client.Skeletons
 {
     internal sealed class Spine38Runtime : SkeletonRuntime
     {
-        private readonly S.Atlas atlas;
         private readonly S.Skeleton skeleton;
         private readonly S.AnimationState state;
         private readonly S.SkeletonClipping clipping = new S.SkeletonClipping();
@@ -14,6 +13,16 @@ namespace AstralOath.Client.Skeletons
         private bool loop;
         internal Spine38Runtime(SkeletonPlayerSource source)
         {
+            var data = Prepare(source);
+            skeleton = new S.Skeleton(data); state = new S.AnimationState(new S.AnimationStateData(data));
+            foreach (var item in data.Animations) Animations.Add(new SkeletonAnimationInfo(item.Name, item.Duration));
+            foreach (var skin in data.Skins) Skins.Add(skin.Name);
+            state.Event += OnEvent; state.Complete += OnComplete;
+        }
+        internal static S.SkeletonData Prepare(SkeletonPlayerSource source)
+        {
+            if (source.ParsedData is S.SkeletonData cached) return cached;
+            S.Atlas atlas;
             using (var reader = new StringReader(source.Atlas)) atlas = new S.Atlas(reader, "", new SkeletonTextureLoader(source.Textures));
             try
             {
@@ -24,12 +33,10 @@ namespace AstralOath.Client.Skeletons
                         throw new NotSupportedException("Unsupported Spine 3.8 atlas rotation " + region.degrees + " for " + region.name);
                 S.SkeletonData data;
                 using (var reader = new StringReader(source.Json)) data = new S.SkeletonJson(atlas) { Scale = source.Scale }.ReadSkeletonData(reader);
-                skeleton = new S.Skeleton(data); state = new S.AnimationState(new S.AnimationStateData(data));
-                foreach (var item in data.Animations) Animations.Add(new SkeletonAnimationInfo(item.Name, item.Duration));
-                foreach (var skin in data.Skins) Skins.Add(skin.Name);
-                state.Event += OnEvent; state.Complete += OnComplete;
+                source.ParsedData = data;
+                return data;
             }
-            catch { atlas.Dispose(); throw; }
+            finally { atlas.Dispose(); } // Loader borrows textures; parsed attachments retain their atlas regions.
         }
         private void OnEvent(S.TrackEntry entry, S.Event value)
         { Events.Enqueue(new SkeletonPlaybackEvent(SkeletonPlaybackEventKind.Event, value.Data.Name, value.Int, value.Float, value.String)); }
@@ -110,6 +117,6 @@ namespace AstralOath.Client.Skeletons
             }
         }
         public override void Dispose()
-        { state.Event -= OnEvent; state.Complete -= OnComplete; state.ClearTracks(); Events.Clear(); clipping.ClipEnd(); atlas.Dispose(); }
+        { state.Event -= OnEvent; state.Complete -= OnComplete; state.ClearTracks(); Events.Clear(); clipping.ClipEnd(); }
     }
 }

@@ -29,13 +29,13 @@
 
 ## 战斗试玩
 
-进入 Play 后，在 Game 画面右上方点击「开始试玩」。按钮随即收起。点击技能，再在场景中选择友军或敌军。敌方自动行动，技能冷却、生命、状态和魂力按共享规则更新。编辑器菜单 `Tools/战斗场景/开始试玩` 可用于重开。退出并重新进入 Play 会恢复入口和原布局预览。
+进入 Play 后自动开始本地试玩，无需点击入口按钮。点击技能，再在场景中选择友军或敌军。敌方自动行动，技能冷却、生命、状态和魂力按共享规则更新。右上暂停提供继续与重新开始；编辑器菜单 `Tools/战斗场景/开始试玩` 仍可用于重开。退出并重新进入 Play 会创建新局。
 
 已导入的 STG、CFX、Spine、粒子与角色 timeline 驱动动作、位移和命中特效，FMOD 在 Windows 播放原版技能音效和日语语音。敌方回合隐藏技能组和 Burn。行动条头像按行动值从上向下移动，当前行动者在下端；点击左侧沙漏展开原版行结构的行动值、生命、技能冷却与状态，点击空白关闭。技能冷却使用贴合图标的遮罩与回合数，伤害与治疗使用独立浮字。动画消费有序事件，状态由同源规则决定。试玩场景依赖共享战斗程序集，`BattleScene` 已登记为 HybridCLR 业务程序集。双人 HTTP 验证、规则口径及当前差异见[战斗第三步](../../../../docs/development/battle-execution.md)。
 
 ## 角色配置
 
-Luban 快照 `Configs/battle-catalog.json` 含三名英雄、成长模板、觉醒节点、九技能、强化与文案。编辑入口及来源见[战斗角色数据](../../../../docs/development/battle-character-data.md)。Shared Battle 现已支持[面板计算、单位创建与站位](../../../../docs/development/battle-growth.md)。布局预览显示作者预设。开始试玩后按队伍与 1–4 号槽映射世界单位和实时快照。
+Luban 快照 `Configs/battle-catalog.json` 含三名英雄、成长模板、觉醒节点、九技能、强化与文案。编辑入口及来源见[战斗角色数据](../../../../docs/development/battle-character-data.md)。Shared Battle 现已支持[面板计算、单位创建与站位](../../../../docs/development/battle-growth.md)。编辑态布局显示作者预设；运行时按队伍与 1–4 号槽映射世界单位和实时快照，四个史莱姆均为60级。
 
 ## 素材和验证
 
@@ -63,3 +63,11 @@ Luban 快照 `Configs/battle-catalog.json` 含三名英雄、成长模板、觉�
 原 damage.fnt 位图字形按实际片段逐字弹跳、渐变和短暂停留；每段显示额按原 HIT 时间从权威总额分配，协攻继续累计，死亡显示等待末击。ImportDamageFeedback.py --check 校验12张原 combo 图及字体/CSB来源，InstallHudEffects 更新资源引用并保留场景布局。
 
 新增角色必须遵守[源演出通用规则](../../../../docs/development/battle-source-presentation.md)，证据和推断见[镜头调查](../../../../docs/delivery/2026-11-13-camera-source-audit.md)。本轮无需新增外部插件。Shader/内置资源更新仍遵守母包与热更边界，Player平台另行验收；EditMode/Editor画面不能替代目标平台构建。
+
+## 自动试玩与连续表现（2026-11-13）
+
+直接运行BattleScene进入本地实战，敌方读取真实60级实体。右上暂停提供继续/重新开始，暂停保留选技和燃魂；燃魂后仅对应技能可操作，其他图标变暗，只有Cancel撤销。大行动头像在行动条后方。AutoStartBattle=false仅用于编辑布局和独立源演出测试。
+
+源数据预备在进入交互前执行。Cut-in有独立时钟，舞台和命中等待其结束；夹攻在主末击开始，旧演员回位和新动作并行，只有新舞台拥有镜头。角色、镜头、粒子和反馈使用源时间；暂停不修改全局时间或权威状态。音频暂停限定本场FMOD。操作和时序规则见[源演出规范](../../../../docs/development/battle-source-presentation.md)与[录像复核](../../../../docs/delivery/2026-11-13-angelica-timing-reference.md)。最终测试和性能数值以本轮交付记录为准。
+
+本次通用时序还包括：CFX primitive显式ani与寿命一致、有限DARK的duration后追加fadeOut、CUTIN按源幕布颜色/透明度覆盖普通HUD但保留暂停层。完整失败回归、实帧和性能条件见[时序与试玩验收](../../../../docs/delivery/2026-11-13-battle-timing.md)。

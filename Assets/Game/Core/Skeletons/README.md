@@ -2,7 +2,7 @@
 
 本目录独立 AOT 程序集 `AstralOath.Client.Skeletons`，静态引用隔离后的官方 Spine 2.1.25 / 3.8 core；无业务程序集引用，不装旧版 spine-unity。新增或修改本桥接能力需重新构建母包。
 
-`SkeletonPlayerFactory.Create(source, parent)` 只根据 JSON 的 `skeleton.spine` 派发。source 包含标准 JSON、atlas 文本和以 atlas 页名为键的纹理映射。每实例独立解析数据、骨架和 AnimationState；不跨角色共享可变 runtime 状态。坐标单位由 source.Scale 控制，默认每像素 0.01 Unity 单位。
+`SkeletonPlayerFactory.Create(source, parent)` 只根据 JSON 的 `skeleton.spine` 派发。source 包含标准 JSON、atlas 文本和以 atlas 页名为键的纹理映射。同一 SkeletonPlayerSource 缓存不可变解析数据；Prepare 可在进入交互前预解析。每实例仍有独立骨架、AnimationState、皮肤选择、变形和事件队列；不共享可变播放状态。源对象及借入纹理由调用场景持有，退出时释放，不使用全局静态缓存。坐标单位由 source.Scale 控制，默认每像素 0.01 Unity 单位。
 
 资源调用方必须保持纹理资产句柄的 BindingScope 存活。播放器拥有自己的 GameObject、Mesh、Material；Dispose 不释放借入的纹理。创建失败回滚自有对象；Dispose 可重复调用。所有 API 在 Unity 主线程调用。没有自动 Update、异步任务或全局注册，Binder 在自己的生命周期内调用 Tick，并在关闭时 Dispose。
 
@@ -20,6 +20,7 @@ TryGetBonePose 返回官方内核计算后的只读局部位置（已按 source.
 
 切换皮肤保留当前骨骼姿态、混合进度、颜色、绘制顺序和显式隐藏状态。同一附件对象（包括共享 default 回退）保留已有变形；不同对象按当前有效动画重新计算该网格的变形。新网格不回放换肤前的逐帧混合历史，也不继承已经退出的历史动画未被当前动画定义的跨网格变形。播放结束后切换皮肤仍保持末帧，不重新启动播放或再次触发完成事件。
 
-2.1 的缺失命名附件在每个播放器内部使用不可渲染标记，与动画显式设置的 null 区分；补全 skin 查询时复用原附件对象，不修改导出的 JSON、图集、第三方源码或用户可选皮肤列表。新网格变形在临时 Skeleton 求值，不把同一混合权重再次应用到当前骨骼。
+2.1 的缺失命名附件在源对象解析结果中使用不可变、不可渲染标记，与动画显式设置的 null 区分；补全 skin 查询时复用原附件对象，不修改导出的 JSON、图集、第三方源码或用户可选皮肤列表。新网格变形在临时 Skeleton 求值，不把同一混合权重再次应用到当前骨骼。
 
 针对性回归见 `SkeletonAnimationIsolationTests`，覆盖实际三角色的全部 1,017 组动画切换、定位、皮肤、翻转、混合和事件边界。54 帧 GPU 前后对照工具为 `CharacterAnimationVisualTests`；详细结果与局限见 `docs/delivery/2026-11-12-animation-correctness.md`。
+2026-11-13同源解析复用见 SkeletonSourceReuseTests；来源相同的实例需要验证不同播放时间、翻转、换肤和一方释放不影响另一方。该变更与源预热接口需重新构建AOT母包。

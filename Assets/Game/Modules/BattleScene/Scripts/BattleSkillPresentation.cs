@@ -31,14 +31,14 @@ namespace AstralOath.Client.BattleScene
         private readonly Transform root;
         private readonly BattleCinematicStage cinematic;
         private readonly Dictionary<string, JObject> graphs;
-        private readonly Dictionary<string, JObject> documents = new Dictionary<string, JObject>(StringComparer.Ordinal);
+        private Dictionary<string, JObject> documents => cache.Documents;
         private readonly Dictionary<string, BattleSkillPresentationAsset> assets;
-        private readonly Dictionary<string, SkeletonPlayerSource> skeletons = new Dictionary<string, SkeletonPlayerSource>(StringComparer.Ordinal);
-        private readonly Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>(StringComparer.Ordinal);
+        private Dictionary<string, SkeletonPlayerSource> skeletons => cache.Skeletons;
+        private Dictionary<string, Texture2D> textures => cache.Textures;
         private readonly List<(float At, Action Run)> pending = new List<(float, Action)>();
         private readonly List<(float Until, Action<float> Tick, Action Dispose)> active =
             new List<(float, Action<float>, Action)>();
-        private readonly HashSet<string> diagnostics = new HashSet<string>(StringComparer.Ordinal);
+        private HashSet<string> diagnostics => cache.Diagnostics;
         private readonly SkeletonPlayerFactory skeletonFactory = new SkeletonPlayerFactory();
         private readonly System.Random cosmeticRandom = new System.Random(137);
         private BattlePreviewActor caster;
@@ -49,29 +49,117 @@ namespace AstralOath.Client.BattleScene
         private (Vector3 From, Vector3 GroundFrom, Vector3 To, float Start, float Duration, float Arc)? motion;
         private float time;
 
+        // One battle owns parsed data. Successive actions share it, never their clocks or live visuals.
+        private sealed class SessionCache
+        {
+            internal readonly Dictionary<string, JObject> Documents = new Dictionary<string, JObject>(StringComparer.Ordinal);
+            internal readonly Dictionary<string, SkeletonPlayerSource> Skeletons = new Dictionary<string, SkeletonPlayerSource>(StringComparer.Ordinal);
+            internal readonly Dictionary<string, BattleSkeletonMetadata> Metadata = new Dictionary<string, BattleSkeletonMetadata>(StringComparer.Ordinal);
+            internal readonly Dictionary<string, Texture2D> Textures = new Dictionary<string, Texture2D>(StringComparer.Ordinal);
+            internal readonly Dictionary<(BattlePreviewActor, string), (float At, JObject Node, float Duration, JObject[] Modulators)[]> Cues =
+                new Dictionary<(BattlePreviewActor, string), (float, JObject, float, JObject[])[]>();
+            internal readonly HashSet<string> Diagnostics = new HashSet<string>(StringComparer.Ordinal);
+            internal readonly HashSet<string> PreparedAssets = new HashSet<string>(StringComparer.Ordinal);
+        }
+        private readonly SessionCache cache;
+        private readonly Transform worldRoot;
+        private readonly Camera camera;
+        private readonly Action<bool> cinematicChanged;
+        private readonly GameObject background;
+        private readonly BattlePreviewActor[] participants;
+        private bool cutinPaused;
+        private bool incomingHandoff;
+        public float StageTime => time;
         public IReadOnlyList<float> HitTimes { get; private set; } = Array.Empty<float>();
 
         public BattleSkillPresentation(Transform worldRoot, TextAsset[] graphs, BattleSkillPresentationAsset[] assets,
             Camera camera = null, Action<bool> cinematicChanged = null, GameObject background = null)
+            : this(worldRoot, graphs.Where(graph => graph).Select(graph => JObject.Parse(graph.text))
+                .ToDictionary(graph => (string)graph["id"], StringComparer.Ordinal),
+                (assets ?? Array.Empty<BattleSkillPresentationAsset>()).ToDictionary(asset => asset.source, StringComparer.Ordinal),
+                new SessionCache(), camera, cinematicChanged, background) { }
+
+        private BattleSkillPresentation(Transform worldRoot, Dictionary<string, JObject> graphs,
+            Dictionary<string, BattleSkillPresentationAsset> assets, SessionCache cache,
+            Camera camera, Action<bool> cinematicChanged, GameObject background)
         {
+            this.worldRoot = worldRoot; this.graphs = graphs; this.assets = assets; this.cache = cache;
+            this.camera = camera; this.cinematicChanged = cinematicChanged; this.background = background;
             root = new GameObject("Battle Skill Effects").transform;
             root.SetParent(worldRoot, false);
-            this.graphs = graphs.Where(graph => graph).Select(graph => JObject.Parse(graph.text))
-                .ToDictionary(graph => (string)graph["id"], StringComparer.Ordinal);
-            this.assets = (assets ?? Array.Empty<BattleSkillPresentationAsset>()).ToDictionary(asset => asset.source,
-                StringComparer.Ordinal);
             cinematic = new BattleCinematicStage(camera, cinematicChanged, background);
-            cinematic.SetParticipants(worldRoot.GetComponentsInChildren<BattlePreviewActor>(true).Select(actor => actor.transform.parent).ToArray());
-            cinematic.SetHatchTextures(Enumerable.Range(1, 3).Select(index => this.assets.TryGetValue("effect/bg_hatch_" + index + ".png", out var asset) ? asset.texture : null).ToArray());
-            foreach (var item in this.assets.Values)
-                if (item.texture) textures.Add(item.source, item.texture);
+            participants = worldRoot.GetComponentsInChildren<BattlePreviewActor>(true);
+            cinematic.SetParticipants(participants.Select(actor => actor.transform.parent).ToArray());
+            cinematic.SetHatchTextures(Enumerable.Range(1, 3).Select(index => assets.TryGetValue("effect/bg_hatch_" + index + ".png", out var asset) ? asset.texture : null).ToArray());
+            foreach (var item in assets.Values)
+                if (item.texture) textures[item.source] = item.texture;
+        }
+
+        public BattleSkillPresentation CreateSuccessor()
+        {
+            var next = new BattleSkillPresentation(worldRoot, graphs, assets, cache, camera, cinematicChanged, background);
+            cinematic.HandoffTo(next.cinematic);
+            next.incomingHandoff = true;
+            return next;
+        }
+
+        // Called while entering the battle, before input is enabled; no animation or scene mutation.
+        public void Prepare(BattlePreviewActor actor, string presentationId)
+        {
+            actor.PreparePresentation();
+            PrepareFallbackHit();
+            if (!graphs.TryGetValue(presentationId ?? "", out var graph) || cache.Cues.ContainsKey((actor, presentationId))) return;
+            if (!cache.PreparedAssets.Contains(presentationId))
+            {
+                foreach (var dependency in graph["assets"])
+                {
+                    string key = (string)dependency["source"];
+                    string kind = (string)dependency["type"];
+                    if (!assets.TryGetValue(key, out var asset) || !asset.document) continue;
+                    if (kind == "skeleton" && (key.StartsWith("effect/", StringComparison.Ordinal) || key.StartsWith("camera/", StringComparison.Ordinal)))
+                    {
+                        skeletonFactory.Prepare(Skeleton(key, asset));
+                        Metadata(key);
+                    }
+                    else if (kind == "effect" || kind == "particle" || kind == "timeline" || kind == "cutin") Document(key);
+                }
+                cache.PreparedAssets.Add(presentationId);
+            }
+            var previous = caster;
+            string previousId = currentPresentationId;
+            try
+            {
+                caster = actor; currentPresentationId = presentationId;
+                cache.Cues.Add((actor, presentationId), ReadCues(graph, graph["source"]["entities"].OfType<JObject>().ToArray()).ToArray());
+            }
+            finally { caster = previous; currentPresentationId = previousId; }
+        }
+
+        private void PrepareFallbackHit()
+        {
+            string key = EffectPath + BasicHit;
+            if (cache.PreparedAssets.Contains(key) || !assets.ContainsKey(key)) return;
+            if (Document(key)?["primitive"] is JArray primitives)
+                foreach (var part in primitives.OfType<JObject>())
+                {
+                    string source = EffectPath + (string)part["source"];
+                    if ((string)part["format"] == "spine" && assets.TryGetValue(source + ".scsp", out var asset))
+                    {
+                        skeletonFactory.Prepare(Skeleton(source + ".scsp", asset));
+                        Metadata(source + ".scsp");
+                    }
+                    else if ((string)part["format"] == "particle") Document(source + ".particle");
+                }
+            cache.PreparedAssets.Add(key);
         }
 
         public (float ImpactSeconds, float Duration) Begin(string presentationId, BattlePreviewActor actor,
             BattlePreviewActor primaryTarget, IReadOnlyList<BattlePreviewActor> targets)
         {
-            EndAction();
+            EndAction(incomingHandoff);
+            incomingHandoff = false;
             caster = actor;
+            actor.BeginPresentationControl();
             currentPresentationId = string.IsNullOrEmpty(presentationId) ? actor.name : presentationId;
             home = actor.transform.localPosition;
             casterShadow = actor.PresentationShadow;
@@ -88,6 +176,10 @@ namespace AstralOath.Client.BattleScene
                 float sourceHit = actor.GetBattleAnimationEventTime("skill1", "hit");
                 float impact = sourceHit >= 0f ? sourceHit : Mathf.Clamp(duration * 0.5f, 0.12f, 0.45f);
                 HitTimes = new[] { impact };
+                cinematic.Begin(actor.transform, recipients.Select(target => target.transform).ToArray(), false);
+                cinematic.ReturnToBaseline(.2f);
+                float end = Mathf.Max(duration, impact + .15f);
+                Schedule(end, EndAction);
                 if (primary) Schedule(impact, () => Cfx(BasicHit, primary, recipients, 5, 1f, Vector2.zero, true));
                 return (impact, Mathf.Max(duration, impact + 0.15f));
             }
@@ -101,7 +193,8 @@ namespace AstralOath.Client.BattleScene
                 ((string)node["ani"]).StartsWith("skill", StringComparison.Ordinal));
             string animation = (string)main["ani"];
             float clipDuration = Mathf.Max(0.1f, actor.GetBattleAnimationDuration(animation));
-            var cues = ReadCues(graph, nodes).ToArray();
+            Prepare(actor, presentationId);
+            var cues = cache.Cues[(actor, presentationId)];
             float lead = cues.First(cue => cue.Node == main).At;
             float[] hits = cues.Where(cue => Kind(cue.Node) == "HIT").Select(cue => cue.At).Distinct().ToArray();
             float impactTime = hits.Length == 0 ? lead + Mathf.Min(.65f, clipDuration * .8f) : hits[0];
@@ -109,6 +202,7 @@ namespace AstralOath.Client.BattleScene
             float actionEnd = Mathf.Max(lead + clipDuration, hits.Length == 0 ? impactTime + .15f : hits[hits.Length - 1] + .15f);
             cinematic.Begin(actor.transform, recipients.Select(target => target.transform).ToArray(),
                 cues.Any(cue => Kind(cue.Node) == "CAM" || Kind(cue.Node) == "CUTIN" || Kind(cue.Node) == "BGHATCH"));
+            if (!cues.Any(cue => Kind(cue.Node) == "CAM" || Kind(cue.Node) == "ZOOM")) cinematic.ReturnToBaseline(.2f);
             foreach (var cue in cues)
             {
                 var node = cue.Node;
@@ -134,7 +228,7 @@ namespace AstralOath.Client.BattleScene
                         break;
                     case "CUTIN":
                         string key = "cut/fhd/" + (string)node["args"] + ".webp";
-                        if (assets.TryGetValue(key, out var cutin)) Schedule(at, () => cinematic.PlayCutin(cutin));
+                        if (assets.TryGetValue(key, out var cutin)) Schedule(at, () => cinematic.PlayCutinWithNode(cutin, node));
                         else Warn("Missing original CUTIN " + key);
                         break;
                     case "CAM": case "ZOOM": case "DARK": case "STOP": case "BGSHOW": case "BGHATCH": case "LAYOUT":
@@ -263,7 +357,8 @@ namespace AstralOath.Client.BattleScene
             switch (Kind(node))
             {
                 case "ANI": return caster.GetBattleAnimationDuration((string)node["ani"]);
-                case "CUTIN": return BattleCinematicStage.CutinDuration(Document("cut/fhd/" + (string)node["args"] + ".webp"));
+                case "CUTIN": return 0f; // Wall-clock suspension; source successors remain at the same stage time.
+                case "DARK": return Number(node, "duration", -1f) < 0f ? 0f : Seconds(node, "duration") + Seconds(node, "fadeOut");
                 case "EFFECT": return EffectDuration((string)node["source"]);
                 case "SHAKE": return ShakeDuration(node);
                 case "PPEFFECT": return Seconds(node, "duration");
@@ -284,17 +379,21 @@ namespace AstralOath.Client.BattleScene
         private float PrimitiveDuration(JObject part)
         {
             float lifetime = UpperNumber(part, "lifeTime", -1f);
-            if (lifetime >= 0f) return lifetime / 1000f;
             string source = EffectPath + (string)part["source"];
             if ((string)part["format"] == "spine")
             {
-                var skeleton = Document(source + ".scsp");
-                float duration = SkeletonAnimationDuration(skeleton);
+                string key = source + ".scsp";
+                var skeleton = Metadata(key);
+                string animation = InitialSpineAnimation(part, key, skeleton);
+                if (animation == null) return 0f;
+                if (lifetime >= 0f) return lifetime / 1000f;
+                float duration = skeleton.Duration(animation);
                 foreach (var action in (part["actions"] as JArray ?? new JArray()).OfType<JObject>())
-                    duration = Mathf.Max(duration, Seconds(action, "delay") +
-                        SkeletonAnimationDuration(skeleton, (string)action["action"]));
+                    if (HasSpineAction(key, skeleton, (string)action["action"]))
+                        duration = Mathf.Max(duration, Seconds(action, "delay") + skeleton.Duration((string)action["action"]));
                 return duration;
             }
+            if (lifetime >= 0f) return lifetime / 1000f;
             if ((string)part["format"] != "particle") return 0f;
 
             var emitters = Document(source + ".particle")?["emitters"] as JArray;
@@ -317,6 +416,32 @@ namespace AstralOath.Client.BattleScene
             return end;
         }
 
+        // CFX ani selects the initial clip; actions remain separately delayed transitions.
+        // Use the same choice for graph completion and native playback so the visual is not retired early.
+        private string InitialSpineAnimation(JObject part, string key, BattleSkeletonMetadata skeleton)
+        {
+            string requested = (string)part["ani"];
+            if (requested != null)
+            {
+                if (skeleton.Durations.ContainsKey(requested)) return requested;
+                WarnSource($"Unknown CFX animation '{requested}' in '{key}'.");
+                return null;
+            }
+            if (skeleton.Duration("animation") > 0f) return "animation";
+            if (skeleton.Duration("idle") > 0f) return "idle";
+            foreach (var clip in skeleton.Durations)
+                if (clip.Value > 0f) return clip.Key;
+            WarnSource($"No playable CFX animation in '{key}'.");
+            return null;
+        }
+
+        private bool HasSpineAction(string key, BattleSkeletonMetadata skeleton, string name)
+        {
+            if (name != null && skeleton.Durations.ContainsKey(name)) return true;
+            WarnSource($"Unmapped CFX action '{name}' in '{key}'.");
+            return false;
+        }
+
         private static float UpperNumber(JObject node, string name, float fallback = 0f)
         {
             string text = node[name]?.ToString();
@@ -326,13 +451,13 @@ namespace AstralOath.Client.BattleScene
                 ? Mathf.Max(a, b) : fallback;
         }
 
-        private static float SkeletonAnimationDuration(JObject skeleton, string name = null)
+        private BattleSkeletonMetadata Metadata(string key)
         {
-            var animations = skeleton?["animations"] as JObject;
-            var animation = name == null
-                ? animations?["animation"] ?? animations?["idle"] ?? animations?.Properties().FirstOrDefault()?.Value
-                : animations?[name];
-            return animation?.SelectTokens("$..time").Select(item => (float?)item ?? 0f).DefaultIfEmpty(0f).Max() ?? 0f;
+            if (cache.Metadata.TryGetValue(key, out var value)) return value;
+            value = assets.TryGetValue(key, out var asset) && asset.document
+                ? BattleSkeletonMetadata.Read(asset.document.text) : new BattleSkeletonMetadata();
+            cache.Metadata.Add(key, value);
+            return value;
         }
 
         private static string ShakeSource(JObject node)
@@ -349,7 +474,7 @@ namespace AstralOath.Client.BattleScene
             if (duration >= 0f) return duration / 1000f;
             string key = ShakeSource(node);
             float speed = Number(node, "timeScale", 1f);
-            return key != null && speed > 0f ? SkeletonAnimationDuration(Document(key)) / speed : 0f;
+            return key != null && speed > 0f ? Metadata(key).Duration() / speed : 0f;
         }
 
         private void PlayShake(JObject node)
@@ -364,20 +489,46 @@ namespace AstralOath.Client.BattleScene
         }
         public void Tick(float delta)
         {
-            float frameEnd = time + Mathf.Max(0f, delta);
-            while (pending.Count > 0 && pending[0].At <= frameEnd)
+            float remaining = Mathf.Max(0f, delta);
+            while (true)
             {
-                Advance(Mathf.Max(0f, pending[0].At - time));
-                var task = pending[0];
-                pending.RemoveAt(0);
-                task.Run();
+                float cutin = cinematic.CutinRemainingSeconds;
+                SetCutinPaused(cutin > 0f);
+                if (cutin > 0f)
+                {
+                    if (remaining <= 0f) break;
+                    float consumed = Mathf.Min(remaining, cutin);
+                    cinematic.TickCutin(consumed);
+                    remaining -= consumed;
+                    SetCutinPaused(cinematic.CutinRemainingSeconds > 0f);
+                    if (cutinPaused) break;
+                    continue;
+                }
+                if (pending.Count > 0 && pending[0].At <= time)
+                {
+                    var task = pending[0];
+                    pending.RemoveAt(0);
+                    task.Run();
+                    continue;
+                }
+                if (remaining <= 0f) break;
+                float step = pending.Count > 0 ? Mathf.Min(remaining, Mathf.Max(0f, pending[0].At - time)) : remaining;
+                Advance(step);
+                remaining -= step;
             }
-            Advance(Mathf.Max(0f, frameEnd - time));
+        }
+
+        private void SetCutinPaused(bool value)
+        {
+            if (cutinPaused == value) return;
+            cutinPaused = value;
+            foreach (var actor in participants) if (actor) actor.SetPresentationPaused(value);
         }
 
         private void Advance(float delta)
         {
             time += delta;
+            if (caster) caster.AdvancePresentation(delta);
             if (motion is { } movement && caster)
             {
                 float progress = Mathf.Clamp01((time - movement.Start) / movement.Duration);
@@ -607,25 +758,20 @@ namespace AstralOath.Client.BattleScene
         private void SpawnSpine(string source, JObject part, Transform group, float size, int order, float side, Action follow)
         {
             string key = EffectPath + source + ".scsp";
+            var metadata = Metadata(key);
+            string animation = InitialSpineAnimation(part, key, metadata);
+            if (animation == null) throw new FormatException($"Unplayable CFX animation '{(string)part["ani"] ?? "(default)"}' in '{key}'.");
             var player = skeletonFactory.Create(Skeleton(key, assets[key]), group);
             try
             {
                 player.Root.name = source;
                 player.Root.transform.localScale = new Vector3(side * size, size, size);
                 player.Root.GetComponent<MeshRenderer>().sortingOrder = order;
-                string animation = player.Animations.FirstOrDefault(clip => clip.Duration > 0f &&
-                    (clip.Name == "animation" || clip.Name == "idle"))?.Name ??
-                    player.Animations.FirstOrDefault(clip => clip.Duration > 0f)?.Name;
-                if (animation == null) throw new FormatException("No playable CFX animation");
                 player.Play(animation, false);
                 foreach (var action in (part["actions"] as JArray ?? new JArray()).OfType<JObject>())
                 {
                     string name = (string)action["action"];
-                    if (!player.Animations.Any(clip => clip.Name == name && clip.Duration > 0f))
-                    {
-                        Warn(source + " has an unmapped CFX action " + name);
-                        continue;
-                    }
+                    if (!HasSpineAction(key, metadata, name)) continue;
                     Schedule(time + Seconds(action, "delay"), () =>
                     {
                         if (player.Root) player.Play(name, false);
@@ -698,13 +844,17 @@ namespace AstralOath.Client.BattleScene
             if (diagnostics.Add(message)) Debug.LogWarning(message);
         }
 
-        private void EndAction()
+        private void EndAction() => EndAction(false);
+
+        private void EndAction(bool preserveHandoff)
         {
-            cinematic.Reset();
+            SetCutinPaused(false);
+            if (!preserveHandoff) cinematic.Reset();
             if (caster)
             {
                 caster.transform.localPosition = home;
                 caster.PlayBattleIdle();
+                caster.EndPresentationControl();
             }
             if (casterShadow) casterShadow.localPosition = shadowHome;
             casterShadow = null;

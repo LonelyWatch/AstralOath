@@ -32,25 +32,32 @@ namespace AstralOath.Client.Skeletons
     }
     internal sealed class Spine21Runtime : SkeletonRuntime
     {
-        private readonly S21.Atlas atlas;
         private readonly S21.Skeleton skeleton;
         private readonly S21.AnimationState state;
         private string animation;
         private bool loop;
         internal Spine21Runtime(SkeletonPlayerSource source)
         {
+            var data = Prepare(source);
+            skeleton = new S21.Skeleton(data); skeleton.SetSkin(data.DefaultSkin); state = new S21.AnimationState(new S21.AnimationStateData(data));
+            foreach (var item in data.Animations) Animations.Add(new SkeletonAnimationInfo(item.Name, item.Duration));
+            foreach (var skin in data.Skins) Skins.Add(skin.Name);
+            state.Event += OnEvent; state.Complete += OnComplete;
+        }
+        internal static S21.SkeletonData Prepare(SkeletonPlayerSource source)
+        {
+            if (source.ParsedData is S21.SkeletonData cached) return cached;
+            S21.Atlas atlas;
             using (var reader = new StringReader(source.Atlas)) atlas = new S21.Atlas(reader, "", new SkeletonTextureLoader(source.Textures));
             try
             {
                 S21.SkeletonData data;
                 using (var reader = new StringReader(source.Json)) data = new S21.SkeletonJson(atlas) { Scale = source.Scale }.ReadSkeletonData(reader);
                 CompleteSkinLookups(data);
-                skeleton = new S21.Skeleton(data); skeleton.SetSkin(data.DefaultSkin); state = new S21.AnimationState(new S21.AnimationStateData(data));
-                foreach (var item in data.Animations) Animations.Add(new SkeletonAnimationInfo(item.Name, item.Duration));
-                foreach (var skin in data.Skins) Skins.Add(skin.Name);
-                state.Event += OnEvent; state.Complete += OnComplete;
+                source.ParsedData = data;
+                return data;
             }
-            catch { atlas.Dispose(); throw; }
+            finally { atlas.Dispose(); } // Loader borrows textures; parsed attachments retain their atlas regions.
         }
         private void OnEvent(S21.AnimationState sender, int track, S21.Event value)
         { Events.Enqueue(new SkeletonPlaybackEvent(SkeletonPlaybackEventKind.Event, value.Data.Name, value.Int, value.Float, value.String)); }
@@ -192,7 +199,7 @@ namespace AstralOath.Client.Skeletons
         }
         public override void Dispose()
         {
-            state.Event -= OnEvent; state.Complete -= OnComplete; state.ClearTracks(); Events.Clear(); atlas.Dispose();
+            state.Event -= OnEvent; state.Complete -= OnComplete; state.ClearTracks(); Events.Clear();
         }
     }
 }

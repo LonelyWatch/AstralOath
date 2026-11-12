@@ -10,6 +10,26 @@ namespace AstralOath.Client.Skeletons
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (parent == null) throw new ArgumentNullException(nameof(parent));
+            string version = ReadVersion(source);
+            // Decide from the actual export header, never a filename or caller-supplied guess.
+            SkeletonRuntime runtime;
+            if (version == "2.1" || version.StartsWith("2.1.", StringComparison.Ordinal)) runtime = new Spine21Runtime(source);
+            else if (version == "3.8" || version.StartsWith("3.8.", StringComparison.Ordinal)) runtime = new Spine38Runtime(source);
+            else throw new NotSupportedException("Unsupported Spine export version: " + version);
+            try { return new SkeletonPlayer(runtime, source.PremultipliedAlpha, version, parent); }
+            catch { runtime.Dispose(); throw; }
+        }
+        public void Prepare(SkeletonPlayerSource source)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            string version = ReadVersion(source);
+            if (version == "2.1" || version.StartsWith("2.1.", StringComparison.Ordinal)) Spine21Runtime.Prepare(source);
+            else if (version == "3.8" || version.StartsWith("3.8.", StringComparison.Ordinal)) Spine38Runtime.Prepare(source);
+            else throw new NotSupportedException("Unsupported Spine export version: " + version);
+        }
+        private static string ReadVersion(SkeletonPlayerSource source)
+        {
+            if (source.ExportVersion != null) return source.ExportVersion;
             string version;
             using (var reader = new StringReader(source.Json))
             {
@@ -20,13 +40,7 @@ namespace AstralOath.Client.Skeletons
                     throw new ArgumentException("Skeleton JSON must declare skeleton.spine.", nameof(source));
                 version = text;
             }
-            // Decide from the actual export header, never a filename or caller-supplied guess.
-            SkeletonRuntime runtime;
-            if (version == "2.1" || version.StartsWith("2.1.", StringComparison.Ordinal)) runtime = new Spine21Runtime(source);
-            else if (version == "3.8" || version.StartsWith("3.8.", StringComparison.Ordinal)) runtime = new Spine38Runtime(source);
-            else throw new NotSupportedException("Unsupported Spine export version: " + version);
-            try { return new SkeletonPlayer(runtime, source.PremultipliedAlpha, version, parent); }
-            catch { runtime.Dispose(); throw; }
+            return source.ExportVersion = version;
         }
     }
     internal abstract class SkeletonRuntime : IDisposable
