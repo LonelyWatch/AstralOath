@@ -1,15 +1,15 @@
 # BattleScene
 
-战斗子任务一。独立冒险战斗布局预览，使用原作 HUD、两套森林分层素材，以及拉斯、梅赛德丝、安洁莉卡和两只史莱姆的 Spine 待机。阵容、等级、生命、魂力和行动条为场景展示数据。相关规则及画面证据见[战斗资料](../../../../docs/development/epic-seven-battle-reference.md)。
+战斗子任务一。独立冒险战斗布局预览，使用原作 HUD、两套森林分层素材，以及双方各四个站位的 Spine 待机。我方重复使用拉斯补满，敌方使用冰、火、风、暗史莱姆。阵容、等级、生命、魂力和行动条为场景展示数据。相关规则及画面证据见[战斗资料](../../../../docs/development/epic-seven-battle-reference.md)。
 
 ## 打开与编辑
 
 1. 在 Unity 使用 `Tools/战斗场景/打开场景`，或打开 `Scenes/BattleScene.unity`。
 2. 将 Game 视图设为 16:9，点击 Play。静态舞台和界面在编辑时可见，Spine 网格在 Play 时创建。
 3. 双击 `Res/Prefab/BattleHud.prefab` 可直接编辑。顶部按钮、行动条、单位血条、当前角色、魂力和技能分组排列。通过 `Tools/战斗场景/验证 HUD 绑定` 检查引用。
-4. 白天舞台使用 `Res/Prefab/Forest2Stage.prefab`，暮色舞台使用 `Forest3Stage.prefab`。替换场景中舞台实例即可换景。每个图层可单独调整。角色脚点在 `Units` 下，当前血条使用 HUD 内独立的静态摆位。
+4. 白天舞台使用 `Res/Prefab/Forest2Stage.prefab`，暮色舞台使用 `Forest3Stage.prefab`。替换场景中舞台实例即可换景。每个图层可单独调整。角色脚点在 `Units/Allies` 与 `Units/Enemies`，每方有前、下、上、后四个组。当前头顶血条使用 HUD 内同名分组的静态摆位。
 
-`BattleSceneBuilder.Generate` 是可从隔离工程调用的作者工具，会重建示例场景和三个预制体。编辑好的正式布局以保存的 Unity 资产为准。其完整批处理方法名是 `AstralOath.Client.BattleScene.Editor.BattleSceneBuilder.Generate`。
+`BattleSceneBuilder.Generate` 是可从隔离工程调用的作者工具，会重建示例场景、三个预制体和生命数字位图字体。编辑好的正式布局以保存的 Unity 资产为准。其完整批处理方法名是 `AstralOath.Client.BattleScene.Editor.BattleSceneBuilder.Generate`。
 
 ## 结构和后续接入
 
@@ -21,7 +21,8 @@
 ## 素材和验证
 
 - `Res/Textures/Hud` 含原图、三人头像和九张技能图标。来源清单记录 13 份原始 CSB 布局证据和 PNG 的尺寸、透明边界、SHA-256。燃魂按钮的英文是原图的一部分。
+- `Res/Fonts/BattleHpDigits.asset` 用本地原版 epic7num 图集和度量生成。原作行动者动态节点的实际字体绑定尚未证实。沙漏、完整头顶条、技能框与半透明底条的源图和摆放依据见[HUD 复核](../../../../docs/delivery/2026-11-12-battle-hud-fidelity.md)。
 - `Res/Textures/Backgrounds` 含 Forest2/Forest3 各六层。裁块保持原尺寸，PMA 边缘转换为常规透明，适用于 Unity SpriteRenderer。完整原图集及其余关卡留在只读来源。
 - `Res/Units/Slime` 含一个怪物的 SCSP/图集/SCT 转换产物，保留原骨骼版本。其 PMA 图集保持无压缩且关闭透明边缘扩展，复用现有 Spine 渲染桥接。
 - 用项目角色素材 Python 环境执行 `Tools/BattleScene/PreparePreviewArt.py` 可核对 HUD/背景；加 `--restore` 按同一来源复现。怪物导入入口为 `Tools/BattleScene/ImportPreviewUnit.py`。原始目录始终只读，GUID 由已提交的 meta 保持。
-- 实际执行与对照差异见[首阶段验收](../../../../docs/delivery/2026-11-12-battle-scene.md)。下一阶段填写三人数据表，随后接入选目标、回合、技能演出及权威结算。
+- 实际执行见[HUD 复核](../../../../docs/delivery/2026-11-12-battle-hud-fidelity.md)和[首次场景验收](../../../../docs/delivery/2026-11-12-battle-scene.md)。下一阶段填写三人数据表，随后接入选目标、回合、技能演出及权威结算。

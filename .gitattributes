@@ -26,3 +26,4 @@ Assets/Game/Modules/CharacterPresentation/Res/**/*.json -text !eol
 Assets/Game/Modules/CharacterPresentation/Res/**/*.atlas.txt -text !eol
 Assets/ThirdParty/FMOD/Runtime/fmod*.cs -text !eol
 Assets/ThirdParty/FMOD/LICENSE.txt -text !eol
+Assets/Game/Modules/BattleScene/Res/Textures/Hud/Fonts/*.fnt.txt -text !eol

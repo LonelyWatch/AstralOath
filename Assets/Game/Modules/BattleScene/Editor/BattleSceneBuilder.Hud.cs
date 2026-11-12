@@ -28,29 +28,43 @@ namespace AstralOath.Client.BattleScene.Editor
             Button(top, bindings, "pause", "cm_hud_top_btn_pause", 1245, 687, 56, 62);
 
             var order = Group("Combat Readiness", rect);
-            Picture(order, "Track", "_game_hud_timebg1", 32.5f, 351, 15, 516);
-            OrderFace(order, "Mercedes", "c1005", 32, 254);
-            OrderFace(order, "Angelica", "c1062", 32, 312);
-            OrderFace(order, "Ras", "c1001", 32, 192);
+            var track = Picture(order, "Track", "_game_hud_timebg1", 32.5f, 351, 15, 516);
+            track.color = new Color(1f, 1f, 1f, 153f / 255f);
+            var details = Picture(order, "Details Background", "_btn_small_black", 34.5f, 641.5f, 52, 52);
+            details.type = Image.Type.Sliced;
+            details.pixelsPerUnitMultiplier = 1f / PixelScale;
+            bindings.Add("orderHourglass", Picture(order, "Hourglass", "cm_icon_etctime2", 33.5f, 643.5f, 16.16f, 22.22f));
+            for (int i = Allies.Length - 1; i >= 0; i--)
+                OrderFace(order, Allies[i].Name, Allies[i].Id, 32, 184 + i * 47);
 
             var markers = Group("Unit Status", rect);
-            UnitStatus(markers, "Mercedes", 217, 474, false, 0.86f, 0.59f);
-            UnitStatus(markers, "Angelica", 260, 394, false, 0.92f, 0.74f);
-            UnitStatus(markers, "Ras", 424, 434, false, 1f, 1f);
-            UnitStatus(markers, "Wind Slime", 864, 389, true, 0.8f, 0.48f);
-            UnitStatus(markers, "Fire Slime", 999, 321, true, 0.69f, 0.77f);
+            var allyMarkers = Group("Allies", markers);
+            var enemyMarkers = Group("Enemies", markers);
+            for (int i = 0; i < Allies.Length; i++)
+            {
+                var unit = Allies[i];
+                UnitStatus(allyMarkers, unit.Position, unit.X, unit.MarkerY, unit.Element, 1f - i * 0.07f, 1f - i * 0.13f);
+            }
+            for (int i = 0; i < Enemies.Length; i++)
+            {
+                var unit = Enemies[i];
+                UnitStatus(enemyMarkers, unit.Position, unit.X, unit.MarkerY, unit.Skin, 0.94f - i * 0.08f, 0.79f - i * 0.12f);
+            }
 
             var active = Group("Active Unit", rect);
+            var strip = Picture(active, "Information Strip", "_game_hud_timebg2", 261.5f, 49.5f, 471, 87);
+            strip.color = new Color(1f, 1f, 1f, 153f / 255f);
             bindings.Add("activePortrait", Picture(active, "Ras Portrait", "Faces/c1001_su", 218, 103, 436, 206));
-            Picture(active, "Information Strip", "_game_hud_timebg2", 261.5f, 49.5f, 471, 87);
-            Picture(active, "Element", "cm_icon_promfire", 292, 38, 28, 28);
-            Picture(active, "Class", "cm_icon_role_knight", 320, 38, 26, 26);
-            bindings.Add("activeName", Text(active, "Active Name", "拉斯", 409, 42, 134, 24, 20, TextAlignmentOptions.MidlineLeft));
-            Picture(active, "Active HP Track", "game_hud_bar_bg", 408, 12, 130, 9);
-            var activeHp = Picture(active, "Active HP Fill", "game_hud_bar_hp", 408, 12, 126, 5);
+            Picture(active, "Element", "cm_icon_promfire", 418, 66, 28, 28);
+            Picture(active, "Class", "cm_icon_role_knight", 450, 66, 26, 26);
+            bindings.Add("activeName", Text(active, "Active Name", "拉斯", 338, 66, 136, 28, 20, TextAlignmentOptions.MidlineRight));
+            var activeHp = Picture(active, "Active HP Fill", "game_hud_bar_hp", 437, 34, 85, 6);
             SetFill(activeHp, 1f);
             bindings.Add("activeHpFill", activeHp);
-            bindings.Add("activeHp", Text(active, "Active HP", "1,260 / 1,260", 408, 23, 130, 20, 12));
+            var hpText = Text(active, "Active HP", "1260/1260", 325, 34, 116, 27, 17, TextAlignmentOptions.MidlineRight);
+            ApplyFont(hpText, healthFont);
+            hpText.color = new Color32(153, 195, 42, 255);
+            bindings.Add("activeHp", hpText);
 
             var soul = Group("Soul Gauge", rect);
             Picture(soul, "Ornament", "_game_hud_soulbg1", 729, 56, 471, 114);
@@ -65,8 +79,10 @@ namespace AstralOath.Client.BattleScene.Editor
             for (int index = 1; index <= 3; index++)
             {
                 float x = 1023 + 99 * (index - 1);
-                Button(skills, bindings, "skill" + index, "Skills/sk_c1001_" + index, x, 57, 92, 92);
-                Picture(skills, "Skill " + index + " Frame", "_cm_skill_frm", x, 57, 103, 106);
+                string file = "Skills/sk_c1001_" + index;
+                Rect icon = Asset<Sprite>(HudTextures + file + ".png").rect;
+                Button(skills, bindings, "skill" + index, file, x + 3.5f, 54.5f, icon.width * 1.25f, icon.height * 1.25f);
+                Picture(skills, "Skill " + index + " Frame", "_cm_skill_frm", x, 57, 104, 107);
             }
 
             var map = new SerializedObject(root.GetComponent<BindingMap>());
@@ -90,16 +106,15 @@ namespace AstralOath.Client.BattleScene.Editor
             Picture(parent, name + " Frame", "_hero_s_frame_ally", x, y, 57, 57);
         }
 
-        private static void UnitStatus(RectTransform parent, string name, float x, float y, bool enemy, float hp, float readiness)
+        private static void UnitStatus(RectTransform parent, string position, float x, float y,
+            string element, float hp, float readiness)
         {
-            var group = Group(name, parent);
-            Picture(group, "Frame", "game_hud_bar_norm", x, y, 72, 19);
-            Picture(group, "Track", "game_hud_bar_bg", x + 1, y + 2, 56, 7);
-            SetFill(Picture(group, "HP", enemy ? "game_hud_bar_hp_red" : "game_hud_bar_hp", x + 1, y + 2, 55, 6), hp);
-            SetFill(Picture(group, "Combat Readiness", "game_hud_bar_mp", x + 1, y - 5, 55, 4), readiness);
-            Picture(group, "Level Plate", "game_hud_bar_bg", x - 42, y, 20, 17)
-                .color = new Color(1f, 1f, 1f, 0.9f);
-            Text(group, "Level", "5", x - 42, y, 22, 18, 14);
+            var group = Group(position, parent);
+            Picture(group, "Frame", "game_hud_bar_bg", x, y, 86, 26);
+            Picture(group, "Element", "game_hud_bar_" + element, x - 29, y + 0.5f, 24, 21);
+            Picture(group, "Level", "itxt_num5_b", x - 29, y, 26 * 0.53f, 34 * 0.53f);
+            SetFill(Picture(group, "HP", "game_hud_bar_hp", x + 11, y + 7, 56, 6), hp);
+            SetFill(Picture(group, "Combat Readiness", "game_hud_bar_mp", x + 11, y + 1, 56, 4), readiness);
         }
 
         private static void SetFill(Image image, float fill)
@@ -159,11 +174,16 @@ namespace AstralOath.Client.BattleScene.Editor
             label.richText = false;
             label.enableWordWrapping = false;
             label.overflowMode = TextOverflowModes.Overflow;
-            var serialized = new SerializedObject(label);
-            serialized.FindProperty("m_fontAsset").objectReferenceValue = font;
-            serialized.FindProperty("m_sharedMaterial").objectReferenceValue = font.material;
-            serialized.ApplyModifiedPropertiesWithoutUndo();
+            ApplyFont(label, font);
             return label;
+        }
+
+        private static void ApplyFont(GameText label, TMP_FontAsset asset)
+        {
+            var serialized = new SerializedObject(label);
+            serialized.FindProperty("m_fontAsset").objectReferenceValue = asset;
+            serialized.FindProperty("m_sharedMaterial").objectReferenceValue = asset.material;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
         }
     }
 }

@@ -94,7 +94,7 @@ def main():
         restore_background(source, entry, args.restore)
 
     verb = "Restored" if args.restore else "Verified"
-    print(f"{verb} {len(hud)} HUD textures and {len(backgrounds)} forest layers.")
+    print(f"{verb} {len(hud)} HUD source files and {len(backgrounds)} forest layers.")
 
 
 if __name__ == "__main__":

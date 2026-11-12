@@ -1,6 +1,6 @@
 {
   "sourceRoot": "D:/sevenepic",
-  "transfer": "Byte-identical PNG copy, original alpha and padding retained. No atlas slicing. Alpha bounds are measured on RGBA PNG decode as [left, top, rightExclusive, bottomExclusive] with top-left origin.",
+  "transfer": "Byte-identical copies. PNGs retain original alpha and padding. No atlas slicing. Alpha bounds are measured on RGBA PNG decode as [left, top, rightExclusive, bottomExclusive] with top-left origin. The BMFont .fnt file uses a Unity TextAsset filename suffix.",
   "decoder": "Pillow 12.0.0",
   "layoutEvidence": [
     {
@@ -1017,6 +1017,258 @@
         2,
         43,
         43
+      ]
+    },
+    {
+      "asset": "cm_icon_etctime2.png",
+      "source": "原始资源/img/cm_icon_etctime2.png",
+      "sha256": "e877ed74f29040ad4bd6800a7cfac7b1f170d3f7ba3805a1c49f84a980c14c8d",
+      "width": 16,
+      "height": 22,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        16,
+        22
+      ]
+    },
+    {
+      "asset": "_btn_small_black.png",
+      "source": "原始资源/img/_btn_small_black.png",
+      "sha256": "5d2458be3abf2d92a1f75d77b58d741d69c62571052ae80c4524c7ed0969a966",
+      "width": 36,
+      "height": 34,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        32,
+        32
+      ]
+    },
+    {
+      "asset": "_btn_small_black_p.png",
+      "source": "原始资源/img/_btn_small_black_p.png",
+      "sha256": "a890885cd4d3c14f36114f4877771d47618eb31164ef388aaa298b03008f4df7",
+      "width": 36,
+      "height": 34,
+      "alphaBoundsLTRB": [
+        0,
+        2,
+        36,
+        34
+      ]
+    },
+    {
+      "asset": "game_hud_bar_fire.png",
+      "source": "原始资源/img/game_hud_bar_fire.png",
+      "sha256": "5292b46acb8a9e52055de14b95d2008b7176ec6223d6adfdb8ead9e182e15598",
+      "width": 24,
+      "height": 21,
+      "alphaBoundsLTRB": [
+        1,
+        1,
+        23,
+        20
+      ]
+    },
+    {
+      "asset": "game_hud_bar_ice.png",
+      "source": "原始资源/img/game_hud_bar_ice.png",
+      "sha256": "33edd3d452e5ac3a4ade6d2f85afdd547842bc0667fcf8fa7952155e22688cbc",
+      "width": 24,
+      "height": 21,
+      "alphaBoundsLTRB": [
+        1,
+        1,
+        23,
+        20
+      ]
+    },
+    {
+      "asset": "game_hud_bar_wind.png",
+      "source": "原始资源/img/game_hud_bar_wind.png",
+      "sha256": "6fb05ad25d7b4da358719cb396f5c6e1f24fcf47ab2475558740051cf52cd1f5",
+      "width": 24,
+      "height": 21,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        24,
+        21
+      ]
+    },
+    {
+      "asset": "game_hud_bar_light.png",
+      "source": "原始资源/img/game_hud_bar_light.png",
+      "sha256": "81c65cbca3472114ecda4925644d83a8605db5955203659f96a6f5019a454bcb",
+      "width": 24,
+      "height": 21,
+      "alphaBoundsLTRB": [
+        1,
+        1,
+        23,
+        20
+      ]
+    },
+    {
+      "asset": "game_hud_bar_dark.png",
+      "source": "原始资源/img/game_hud_bar_dark.png",
+      "sha256": "d168cd5b9b67b82c06b40f8fe39aaa6b6f4dd3febf249ead689d7491042e0c24",
+      "width": 24,
+      "height": 21,
+      "alphaBoundsLTRB": [
+        1,
+        1,
+        23,
+        20
+      ]
+    },
+    {
+      "asset": "itxt_num0_b.png",
+      "source": "原始资源/img/itxt_num0_b.png",
+      "sha256": "fc7e7edd711d183424c7b05232781485b5505d31460cd828e7f006cf23c34167",
+      "width": 26,
+      "height": 34,
+      "alphaBoundsLTRB": [
+        2,
+        2,
+        23,
+        31
+      ]
+    },
+    {
+      "asset": "itxt_num1_b.png",
+      "source": "原始资源/img/itxt_num1_b.png",
+      "sha256": "5c9586715bd568a6a7ca1d7ad1e7786d2ef91de2fbb606c01a561020f9729bea",
+      "width": 26,
+      "height": 34,
+      "alphaBoundsLTRB": [
+        5,
+        2,
+        20,
+        31
+      ]
+    },
+    {
+      "asset": "itxt_num2_b.png",
+      "source": "原始资源/img/itxt_num2_b.png",
+      "sha256": "70ebd8d314fe8882669c44a2abdb8d5c74b919d960a9467b7299faf3e53df872",
+      "width": 26,
+      "height": 34,
+      "alphaBoundsLTRB": [
+        2,
+        2,
+        23,
+        31
+      ]
+    },
+    {
+      "asset": "itxt_num3_b.png",
+      "source": "原始资源/img/itxt_num3_b.png",
+      "sha256": "f2488444e7ab0b0ea3e3430346107a1f08fcc70e17d2eb16b18a0025ec02ec7e",
+      "width": 26,
+      "height": 34,
+      "alphaBoundsLTRB": [
+        2,
+        2,
+        23,
+        31
+      ]
+    },
+    {
+      "asset": "itxt_num4_b.png",
+      "source": "原始资源/img/itxt_num4_b.png",
+      "sha256": "d68a81c696f07678cb9a943b0408a3ab8aa106dc79295c9515e2093c428f2ce7",
+      "width": 26,
+      "height": 34,
+      "alphaBoundsLTRB": [
+        2,
+        2,
+        24,
+        31
+      ]
+    },
+    {
+      "asset": "itxt_num5_b.png",
+      "source": "原始资源/img/itxt_num5_b.png",
+      "sha256": "cde6b8a2b7aa28a273ac15b77dbfecbdf903387376edb9d0650b1c5e387c5058",
+      "width": 26,
+      "height": 34,
+      "alphaBoundsLTRB": [
+        2,
+        2,
+        23,
+        31
+      ]
+    },
+    {
+      "asset": "itxt_num6_b.png",
+      "source": "原始资源/img/itxt_num6_b.png",
+      "sha256": "3db7897b1c96b88ed6354a0f1276736b26d3b5fa89a8dfb23bf0a4c5562f1887",
+      "width": 26,
+      "height": 34,
+      "alphaBoundsLTRB": [
+        2,
+        2,
+        23,
+        31
+      ]
+    },
+    {
+      "asset": "itxt_num7_b.png",
+      "source": "原始资源/img/itxt_num7_b.png",
+      "sha256": "f40a554eafd18e4d0e8fd7abae453c26986ba1aac0060674aad5bebc9549310f",
+      "width": 26,
+      "height": 34,
+      "alphaBoundsLTRB": [
+        2,
+        2,
+        23,
+        31
+      ]
+    },
+    {
+      "asset": "itxt_num8_b.png",
+      "source": "原始资源/img/itxt_num8_b.png",
+      "sha256": "51ed552921675daab696b366a9e2974af9f6e03785bc329834e100cbb8ca5381",
+      "width": 26,
+      "height": 34,
+      "alphaBoundsLTRB": [
+        2,
+        2,
+        23,
+        31
+      ]
+    },
+    {
+      "asset": "itxt_num9_b.png",
+      "source": "原始资源/img/itxt_num9_b.png",
+      "sha256": "85aeb4ae399d9f5a962c057b1aab3ea5dd90d01204bf38ebbbe4a6e04e9bca61",
+      "width": 26,
+      "height": 34,
+      "alphaBoundsLTRB": [
+        2,
+        2,
+        23,
+        31
+      ]
+    },
+    {
+      "asset": "Fonts/epic7num.fnt.txt",
+      "source": "原始资源/font/epic7num.fnt",
+      "sha256": "059e7e6503c3009345946e4f7c0f5f1b495a48a58ea19171a7be810af22a2ef9"
+    },
+    {
+      "asset": "Fonts/epic7num_0.png",
+      "source": "原始资源/font/epic7num_0.png",
+      "sha256": "b0bfabb88949d1c304b3876c453b9ed5a54239ef527aecb3e06f6e8ade6c5c5d",
+      "width": 126,
+      "height": 126,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        125,
+        125
       ]
     }
   ],

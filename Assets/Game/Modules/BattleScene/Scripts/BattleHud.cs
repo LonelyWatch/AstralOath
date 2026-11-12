@@ -13,6 +13,7 @@ namespace AstralOath.Client.BattleScene
                 Bindings.Require<GameButton>(key);
             foreach (string key in new[] { "wave", "activeName", "activeHp", "soulCount" })
                 Bindings.Require<GameText>(key);
+            Bindings.Require<Image>("orderHourglass");
             Bindings.Require<Image>("activePortrait");
             Bindings.Require<Image>("activeHpFill");
             Bindings.Require<Image>("soulFill");

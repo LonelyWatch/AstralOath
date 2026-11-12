@@ -29,15 +29,32 @@ namespace AstralOath.Client.Tests
             var roots = scene.GetRootGameObjects();
             var actors = roots.SelectMany(root => root.GetComponentsInChildren<MeshFilter>())
                 .Where(mesh => mesh.sharedMesh && mesh.sharedMesh.name == "Skeleton dynamic mesh").ToArray();
-            Assert.That(actors.Length, Is.GreaterThanOrEqualTo(5));
+            Assert.That(actors.Length, Is.EqualTo(8), "Four slots on each side must have a visible preview actor.");
+            var units = roots.Single(root => root.name == "Units").transform;
+            Assert.That(units.Find("Allies").childCount, Is.EqualTo(4));
+            Assert.That(units.Find("Enemies").childCount, Is.EqualTo(4));
             foreach (var actor in actors)
                 Assert.That(actor.sharedMesh.vertexCount, Is.GreaterThan(0), actor.transform.parent.name);
+
+            var hudCanvas = roots.Single(root => root.name == "Battle Canvas").GetComponent<Canvas>();
+            foreach (var actor in actors)
+                Assert.That(actor.GetComponent<MeshRenderer>().sortingOrder, Is.LessThan(hudCanvas.sortingOrder),
+                    "A world actor must not cover the HUD.");
 
             var map = roots.SelectMany(root => root.GetComponentsInChildren<BindingMap>()).Single();
             map.Validate();
             foreach (string key in new[] { "skill1", "skill2", "skill3", "auto", "speed", "pause", "soulBurn" })
                 Assert.That(map.Require<GameButton>(key).targetGraphic, Is.Not.Null, key);
             Assert.That(map.Require<Image>("activePortrait").sprite, Is.Not.Null);
+            Assert.That(map.Require<Image>("orderHourglass").sprite.name, Is.EqualTo("cm_icon_etctime2"));
+            Assert.That(map.Require<GameText>("activeHp").font.name, Is.EqualTo("BattleHpDigits"));
+            foreach (string side in new[] { "Allies", "Enemies" })
+            {
+                var bars = map.transform.Find("Unit Status/" + side);
+                Assert.That(bars.childCount, Is.EqualTo(4));
+                foreach (Transform bar in bars)
+                    Assert.That(bar.Find("Frame").GetComponent<Image>().sprite.name, Is.EqualTo("game_hud_bar_bg"));
+            }
             Assert.That(map.Require<GameText>("wave").text, Is.Not.Empty);
 
             var camera = roots.SelectMany(root => root.GetComponentsInChildren<Camera>())

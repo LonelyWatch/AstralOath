@@ -15,7 +15,7 @@
 1. [Smilegate 官方 Steam 产品页](https://store.steampowered.com/app/5019180/Epic_Seven/)：确认回合制、属性与技能组合、效果命中/效果抗性、技能演出、World Arena 实时PVP及BP的产品定位。它不提供伤害公式或完整BP时序。
 2. [Smilegate 官方 Google Play 产品页](https://play.google.com/store/apps/details?id=com.stove.epic7.google)：确认迷宫、竞技场、公会战、世界首领、实时世界竞技场等不同模式。页面描述公会战为3v3，世界首领使用至多16名英雄；不能把这两种模式直接套成常规4人战斗。
 3. [官方 Strategy Guide](https://epic7.onstove.com/en/guide/home)，及 [Hunt](https://epic7.onstove.com/en/guide/hunt)、[Abyss](https://epic7.onstove.com/en/guide/abyss)、[Expedition](https://epic7.onstove.com/en/guide/expedition)、[Rift](https://epic7.onstove.com/en/guide/rift)：网页依赖动态显示。普通网页抽取仅返回外壳；本次通过只读HTTP读取服务器返回的 `__NUXT_DATA__` JSON，确认模式词条与英文远征首领提示，未执行网页脚本、未登录。
-4. [官方品牌页](https://epic7.onstove.com/en/brand) 指向 [EpicSeven 官方视频频道](https://www.youtube.com/channel/UCa1C3tWzsn4FFRR7t3LqU5w) 及 [角色介绍播放列表](https://youtube.com/playlist?list=PL-7GrDKcrUlN4r-4la_v4GbA9Znan-HQe)。本次未完整播放视频，未核实任何视频时间戳，因此没有伪造“已逐帧对照”的视频证据。
+4. [官方品牌页](https://epic7.onstove.com/en/brand) 指向 [EpicSeven 官方视频频道](https://www.youtube.com/channel/UCa1C3tWzsn4FFRR7t3LqU5w) 及 [角色介绍播放列表](https://youtube.com/playlist?list=PL-7GrDKcrUlN4r-4la_v4GbA9Znan-HQe)。首次研究未完整播放视频或核实时间戳；用户随后明确要求的一次性近期实机帧核对见R10，不能把公开视频发布时间当作客户端版本证明。
 5. 本地官方客户端教程图片、`verify_info.txt`、`bin/game32_bin.txt`、分表索引和手柄路径映射：见下文。图片的来源链由解包记录和文件清单说明；本次重新比对了纳入仓库的三张图片的字节数和SHA256。
 
 STOVE社区公告页面在本次普通网页访问中只给出JavaScript外壳；尝试公开文章读取接口得到404。本次不把未取得正文的公告算成规则证据，也不依赖社区转载来批准数值规则。
@@ -76,7 +76,7 @@ STOVE社区公告页面在本次普通网页访问中只给出JavaScript外壳�
 - [Steam官方截图1](https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5019180/5a0706801756b9841f84fac9d0428bbf4a11e69c/ss_5a0706801756b9841f84fac9d0428bbf4a11e69c.1920x1080.jpg?t=1793256460)。
 - [Steam官方截图2](https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5019180/d8e78e6f1164ae15741151912ce28367934ad9c7/ss_d8e78e6f1164ae15741151912ce28367934ad9c7.1920x1080.jpg?t=1793256460)。
 - 地址读取依据：[Steam公开产品资料](https://store.steampowered.com/api/appdetails?appids=5019180&l=english) 中 `screenshots`，发行商为Smilegate。营销截图可能合成或省略HUD，不能自动作为实机帧。
-- [官方角色视频播放列表](https://youtube.com/playlist?list=PL-7GrDKcrUlN4r-4la_v4GbA9Znan-HQe) 可供后续逐技能对照。本次没有已验证的片段时间戳；正式验收应补“视频标题、角色/技能、开始与结束秒数、对应版本、差异”，不能仅贴频道地址就声称演出一致。
+- [官方角色视频播放列表](https://youtube.com/playlist?list=PL-7GrDKcrUlN4r-4la_v4GbA9Znan-HQe) 可供后续逐技能对照。此官方播放列表本次没有已验证的片段时间戳；独立实机录像的抽样核对见R10。正式演出验收应补“视频标题、角色/技能、开始与结束秒数、对应版本、差异”，不能仅贴频道地址就声称演出一致。
 
 ## 全模块研究清单
 
@@ -173,6 +173,56 @@ STOVE社区公告页面在本次普通网页访问中只给出JavaScript外壳�
 ## 本次检查记账
 
 - 实际完成：现行AGENTS/入口/状态/规范及相关模块README阅读；官方公开产品页/攻略数据一次性读取；R01—R08本地原图目检；三张副本字节和SHA256比对；相关规则文件存在性核对。
-- 未执行：任何未知资源代码、game.bin、模型推理、Unity/Player、战斗规则测试、原作实机操作或视频逐帧验收。
+- 未执行：任何未知资源代码、game.bin、模型推理、Unity/Player、战斗规则测试、原作实机操作或全分辨率视频逐帧验收。R10仅完成注明分辨率和间隔的实际视频预览帧目检。
 - 环境限制：网页抽取不执行动态站点，STOVE公开文章接口尝试返回404。最终结论只依赖实际读到的内容。
 - 文件所有权：本研究子任务仅写本文及 `docs/reference/battle/help_contents_{6,7,8}_1_image.png`。文档入口、当前状态、变更日志及Git操作由协调者统一处理。
+## R10：用户明确要求的近期PVE画面一次性复核
+
+复核日期：2026-11-12。本节补充近期公开视频样本，不开启后台追踪，也不改变规则解码的待验证状态。以下来源为玩家/创作者亲自录制的实机画面，不标成官方录像；只能确认样本画面，发布日期不等于录制日期或客户端版本。
+
+### 读取与可复查方法
+
+只读获取YouTube公开视频页的 `ytInitialPlayerResponse`，核对 `videoDetails`、`microformat.playerMicroformatRenderer.publishDate` 与 `storyboards.playerStoryboardSpecRenderer.spec`。随后在内存中读取YouTube提供的storyboard实际预览帧并目检，未下载/保存完整视频，未新增媒体文件。
+
+storyboard中的帧序号、采样间隔与网格排列可还原到视频秒数。它是平台压缩的定时抽样，不是原始全分辨率帧，也不能用相邻样本冒充某个未取得的精确时刻。文档保留稳定的视频及时间戳链接，不固化可能失效的带签名预览图URL。
+
+### R10-A：先排除“10:17 Hunt”误当成HUD
+
+- [Crus7man：Tips and Tricks for New and Returning Players，10:17章节](https://www.youtube.com/watch?v=qkExYGqwFT8&t=617s)。时长13:02；视频描述标出 `10:17 Battle - Hunt`。
+- 原始发布时间：2026-10-31 11:08:58 PDT；同一时刻为2026-11-01 02:08:58（UTC+8）。不要将两个时区误判成两个发布日期。
+- 已目检采样：单帧320×180、每5秒；第13张3×3网格覆盖9:45—10:25。9:55为迷宫探索；10:15为Battle模式入口卡片；10:20、10:25为Hunt选择页。没有取得10:17的精确帧。
+- 结论：这个章节链接不足以证明战斗HUD，不能用它支持“最新左下血条、沙漏或技能图纹”。标题里的Battle/Hunt不能替代画面核验。
+
+### R10-B：11月1日深渊实际战斗，左下部分被摄像头遮挡
+
+- [Tap B For Bacon：Foundry Server Progress - GREAT Time to Try E7!，23:30](https://www.youtube.com/watch?v=xpziWL0BXX0&t=1410s)。发布时间2026-11-01 11:00:20（UTC+8），时长25:34。
+- 已目检采样：单帧320×180、每10秒；第15张3×3网格覆盖22:30—23:50。22:30为Abyss Floor 33准备；随后是背包容量弹窗；23:00—23:50为实际PVE战斗及技能演出。
+- [23:10样本](https://www.youtube.com/watch?v=xpziWL0BXX0&t=1390s)：左下能辨认当前行动者名称Victorika及细绿色HP，作者摄像头遮住更左的部分。不能据此还原完整头像尺寸。
+- [23:30样本](https://www.youtube.com/watch?v=xpziWL0BXX0&t=1410s)与[23:50样本](https://www.youtube.com/watch?v=xpziWL0BXX0&t=1430s)：红色洞窟背景、左右双方、单位头顶血条、左边CR头像列、左上波次 `1/2`、右上战斗控制区可辨认；首领段另有上方大血条。
+- **模式差异**：这段是自动战斗，右下显示四名队员圆头像及自动技能控制。它不是手动施法的三张技能图标；不能照抄为手动HUD。
+
+### R10-C：11月5日无摄像头遮挡的深渊120全自动录像
+
+- [rnnel：Epic Seven: Abyss Floor 120 Full Auto，00:35](https://www.youtube.com/watch?v=LDnoGRK7M50&t=35s)。发布时间2026-11-05 15:34:16（UTC+8），时长7:46。
+- 已目检采样：超宽画面，单帧378×180、每5秒；第0张3×3网格覆盖00:00—00:40。00:05—00:40包含实际战斗和技能演出，00:35/00:40为适合看整体HUD的场上画面；00:00黑帧不是参考图。
+- **左下HP**：当前行动英雄的大头像、名字/身份图标和细绿色HP信息区域位于左下。它与场上各单位头顶的小血条同时存在。只放头顶条会漏掉当前行动者状态，给底部添加一排完整卡片也不等同于这个画面。
+- **沙漏与CR**：左侧是一条窄竖直行动条，头像沿条排列；行动条顶部有独立小方形沙漏入口。它不是左上波次文字的一部分，也不是底部技能按钮。受预览分辨率限制，本次不确认沙漏内部线条、尺寸或点击后弹窗行为。
+- **单位条**：角色上方可见短条和状态图标，首领另有顶部宽血条/名称/状态区域。截图不能证明短条的每种颜色语义、护盾分层或隐藏条件。
+- **技能与自动区**：右下为四名队员圆头像的自动控制区；底部中段可见魂/守护者相关区。不能把队员头像当成技能插画，更不能把此处圆形底框套给手动技能。
+- 这段证明近期PVE仍具备上述区域与模式差异，但不证明所有关卡/分辨率相同。正式美术尺寸、完整技能图纹和像素级比例应取全分辨率原作实机图；不能放大378×180预览后宣称精准测量。
+
+### 对当前场景制作的直接约束
+
+1. 保留左下当前行动者姓名/身份及HP区，同时保留单位头顶条；两者不能互相替代。
+2. 把沙漏作为左侧CR的独立入口，与左上波次分开定位。
+3. 技能展示使用对应英雄真实技能美术；不要用普通图标、队员头像或通用渐变圆盘替代。此次近期样本主要是AUTO，手动三技能的近期高清画面仍待补，不以旧R03直接声称当前像素一致。
+4. 教程R01—R03继续作为源文件可追溯的布局参考；本节录像用于复核近期仍存在的区域和AUTO差异。两种证据互补，均不能证明技能规则或完整交互已实现。
+5. 官方Steam预告片本次没有完成可复查的实际战斗时间戳抽帧；营销截图和预告片封面不加入HUD验收依据。没有为此安装解码工具或另外保存视频。
+
+### 本轮4v4布局修正与证据范围
+
+上文“当前子任务边界与验收”保留首轮三英雄/两史莱姆样例的历史范围；本次R10复核服务于协调者正在制作的4v4布局修正。原生血条、沙漏及左下当前行动者状态区可依据近期样本检查是否齐全；技能图的相对尺寸仍需结合原生UI资源和手动战斗证据，不从AUTO队员头像反推。
+
+CSB的alpha `153/255` 属于本轮本地资源对照/制作约束，不是这两段视频抽样独立测出的数值。当前行动者HP采用原版 `epic7num` 位图字体的绿色紧凑样式是本轮明确选择；本次180像素高的视频预览没有核实原作该数字的动态字体切换、字号或所有状态颜色，不能把制作选择记为已证实的像素一致性。
+
+本节核对范围到上述公开样本为止。“近期样本已复核”不能表述为“已证明全服最新版本HUD全部不变”。

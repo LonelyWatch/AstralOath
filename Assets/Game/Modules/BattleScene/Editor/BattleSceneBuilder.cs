@@ -19,6 +19,7 @@ namespace AstralOath.Client.BattleScene.Editor
         private const float PixelScale = 1.5f;
         private const float WorldScale = 0.015f;
         private static TMP_FontAsset font;
+        private static TMP_FontAsset healthFont;
 
         [MenuItem("Tools/战斗场景/打开场景")]
         public static void OpenScene()
@@ -37,13 +38,16 @@ namespace AstralOath.Client.BattleScene.Editor
         public static void Generate()
         {
             Directory.CreateDirectory(Prefabs);
+            Directory.CreateDirectory(HealthFontDirectory);
             Directory.CreateDirectory(Path.GetDirectoryName(ScenePath));
             AssetDatabase.Refresh();
             ImportSprites(HudTextures);
             ImportSprites(BackgroundTextures);
+            ImportOrderDetailsBorder();
             ImportSlimePage();
 
             font = Asset<TMP_FontAsset>("Assets/Game/Modules/FoundationDemo/Res/Fonts/FoundationFont.asset");
+            healthFont = BuildHealthDigits();
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             var frameCamera = new GameObject("Frame Camera", typeof(Camera)).GetComponent<Camera>();
             frameCamera.depth = -10;
@@ -71,12 +75,7 @@ namespace AstralOath.Client.BattleScene.Editor
             SavePrefab(CreateForest("Forest3", "forest3"), "Forest3Stage");
             PrefabUtility.InstantiatePrefab(daytime, scene);
 
-            var units = new GameObject("Units").transform;
-            Hero(units, "Mercedes", "c1005", "mercedes", 217, 282, 10, 0.58f);
-            Hero(units, "Angelica", "c1062", "angelica", 260, 205, 20, 0.59f);
-            Hero(units, "Ras", "c1001", "ras", 424, 234, 16, 0.64f);
-            Slime(units, "Wind Slime", "wind", 864, 279, 11);
-            Slime(units, "Fire Slime", "fire", 999, 208, 19);
+            CreateFormation();
 
             var canvas = new GameObject("Battle Canvas", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler));
             var screenCanvas = canvas.GetComponent<Canvas>();
