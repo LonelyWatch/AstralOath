@@ -1,0 +1,24 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "hud_icon_select",
+      "ani": "normal",
+      "z": "1",
+      "format": "spine",
+      "loop": 1
+    },
+    {
+      "source": "hud_icon_select_pati1",
+      "y": "110",
+      "z": "2",
+      "format": "particle"
+    },
+    {
+      "source": "hud_icon_select_pati2",
+      "y": "-118",
+      "z": "2",
+      "format": "particle"
+    }
+  ]
+}

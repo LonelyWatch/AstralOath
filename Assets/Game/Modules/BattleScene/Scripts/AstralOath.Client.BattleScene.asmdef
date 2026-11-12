@@ -3,6 +3,7 @@
   "rootNamespace": "AstralOath.Client.BattleScene",
   "references": [
     "AstralOath.Client.Common",
+    "AstralOath.Client.Core",
     "AstralOath.Client.Skeletons",
     "UnityEngine.UI",
     "Unity.TextMeshPro"

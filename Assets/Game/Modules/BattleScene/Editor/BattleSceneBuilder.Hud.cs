@@ -96,6 +96,7 @@ namespace AstralOath.Client.BattleScene.Editor
                 entry.FindPropertyRelative("component").objectReferenceValue = item.Value;
             }
             map.ApplyModifiedPropertiesWithoutUndo();
+            ConfigureHudButtons(root.GetComponent<BindingMap>());
             return root;
         }
 

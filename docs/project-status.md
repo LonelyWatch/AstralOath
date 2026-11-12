@@ -14,7 +14,7 @@ Unity 2022.3.62f3 / URP / UGUI / TMP；Common/AOT 通用设施；普通 C# UIBas
 - 构建工具：Windows x64、Android ARM64 ASTC/ETC2 的完整母包和独立热更包，母包归档与签名发布工具。
 - CharacterLab：独立离线角色实验室，首批拉斯/梅赛德丝/安洁莉卡；双版本 Spine 与 FMOD 已集成。该入口只读取内置实验室内容，不等于 Foundation 远端更新入口。
 
-- BattleScene：首阶段独立冒险布局预览。两套原图分层森林、原作 HUD、双方各四个可编辑脚点及 Spine 待机；已按近期实战和本地原版布局修订 HUD。见[HUD 复核](delivery/2026-11-12-battle-hud-fidelity.md)。
+- BattleScene：首阶段独立冒险布局预览。两套原图分层森林、原作 HUD、双方各四个可编辑脚点及 Spine 待机；已按近期实战和本地原版布局修订 HUD，可交互预览 Burn、燃魂 S2 和技能选中效果。见[HUD 复核](delivery/2026-11-12-battle-hud-fidelity.md)。
 
 - Battle 配表：三名普通形态英雄、九技能、45 段强化、成长模板与觉醒节点已导出。Shared Battle 提供任意合法等级、星级与觉醒的裸面板计算，以及英雄、怪物、入场与四对四站位校验。见[等级与站位](development/battle-growth.md)和[配表来源](development/battle-character-data.md)。
 

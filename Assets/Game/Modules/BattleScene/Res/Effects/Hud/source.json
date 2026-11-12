@@ -1,0 +1,382 @@
+{
+  "schemaVersion": 1,
+  "converterSha256": "7c22fb298a6eb8403a1fe9f7367d13a38dffa2af96a7b95b80658345a9478c25",
+  "roots": [
+    "effect/soul_burn_bt.scsp",
+    "effect/hud_skill_select_nomal.cfx",
+    "effect/hud_skill_select_burn.cfx",
+    "effect/ui_soul_burn_use.cfx",
+    "img/game_hud_btn_burnc_d.png",
+    "img/game_hud_btn_burnc_p.png"
+  ],
+  "files": [
+    {
+      "source": "原始资源/effect/hud_icon_burneff.atlas",
+      "sourceSha256": "bf132ba6d7c0319b1275456d35617982fb82ffb440ab0bc006c115348f2efe4e",
+      "asset": "hud_icon_burneff.atlas.txt",
+      "dependencies": [
+        "hud_icon_burneff.png"
+      ],
+      "assetSha256": "bf132ba6d7c0319b1275456d35617982fb82ffb440ab0bc006c115348f2efe4e"
+    },
+    {
+      "source": "原始资源/effect/hud_icon_burneff.scsp",
+      "sourceSha256": "4ceb8fedf01abb56debac20831dde55acaba12ce20a7f484c9af1abb03469687",
+      "asset": "hud_icon_burneff.spine.json",
+      "dependencies": [
+        "hud_icon_burneff.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "on_intro",
+          "duration": 1.0
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "hud_icon_burneff.sct",
+          "asset": "hud_icon_burneff.png"
+        }
+      ],
+      "assetSha256": "b8912376b359aff58174476bb2ca7bb5a54be05d3b89a9d5490f7314af421e42"
+    },
+    {
+      "source": "原始资源/effect/hud_icon_burneff.sct",
+      "sourceSha256": "857a849f4cb8470e54b3a3322af7e7d732040a9dfce506ab6de09fa1c9e4dbf1",
+      "asset": "hud_icon_burneff.png",
+      "dependencies": [],
+      "texture": {
+        "width": 207,
+        "height": 956,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "5e66ec53c306db243477ebf81e361349ed50db2fda175c713d77f78a17771c36"
+    },
+    {
+      "source": "原始资源/effect/hud_icon_select.atlas",
+      "sourceSha256": "8bdab738bedbabd2bf897d8d9614b2e4e9c29bd1c9ae2bda71d42c410e9ea493",
+      "asset": "hud_icon_select.atlas.txt",
+      "dependencies": [
+        "hud_icon_select.png"
+      ],
+      "assetSha256": "8bdab738bedbabd2bf897d8d9614b2e4e9c29bd1c9ae2bda71d42c410e9ea493"
+    },
+    {
+      "source": "原始资源/effect/hud_icon_select.scsp",
+      "sourceSha256": "b139179830b6c5da192dccaf24a88967321f316a92a445d44f1444868546c3da",
+      "asset": "hud_icon_select.spine.json",
+      "dependencies": [
+        "hud_icon_select.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "burn",
+          "duration": 1.333299994468689
+        },
+        {
+          "name": "normal",
+          "duration": 1.333299994468689
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "hud_icon_select.sct",
+          "asset": "hud_icon_select.png"
+        }
+      ],
+      "assetSha256": "44cc61c37c3e1adb2bd0594ee77beb6d045d3a99403ac91416ab4d610a7ee11f"
+    },
+    {
+      "source": "原始资源/effect/hud_icon_select.sct",
+      "sourceSha256": "e2887cf91da3fcbc66616957cdaa7f14e3af48c11ac3d1a6df3061e35c61b6c1",
+      "asset": "hud_icon_select.png",
+      "dependencies": [],
+      "texture": {
+        "width": 81,
+        "height": 83,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "ab9be25a210c9faab5b1a577eb82a0bd8740316e5924d1a3be1da388b801c425"
+    },
+    {
+      "source": "原始资源/effect/hud_icon_select_pati1.particle",
+      "sourceSha256": "b47d9eee34c166982d42eac6fa2e4ef87fbd03838377f614ad852d802548a198",
+      "asset": "Particles/hud_icon_select_pati1.particle.json",
+      "dependencies": [
+        "Particles/orb_04.png"
+      ],
+      "assetSha256": "ec557c7d467717bcc3f06551ee90f949a17b617e69798f3f902bd4e2529b96eb"
+    },
+    {
+      "source": "原始资源/effect/hud_icon_select_pati2.particle",
+      "sourceSha256": "25b5684bd90adae00aec78c3a823a625a51e66f5a658d479c9712131ad173ffa",
+      "asset": "Particles/hud_icon_select_pati2.particle.json",
+      "dependencies": [
+        "Particles/orb_04.png"
+      ],
+      "assetSha256": "8c5dde0b1a9c499b4fc2979ad4cdb2862eb6fe657e1bb0353805a86504693484"
+    },
+    {
+      "source": "原始资源/effect/hud_icon_select_pati3.particle",
+      "sourceSha256": "b3934aec87f807f345edf238388301f125b29e04b1bc5cc6e696cb9f1b059a11",
+      "asset": "Particles/hud_icon_select_pati3.particle.json",
+      "dependencies": [
+        "Particles/aura_04.png"
+      ],
+      "assetSha256": "346a77fcff7def65381a2986075c2f60af4fc3b037cd7b7c2d39a3c45748e6c5"
+    },
+    {
+      "source": "原始资源/effect/hud_icon_select_pati4.particle",
+      "sourceSha256": "1500b86facb37a3e76f234dcbcc8837dd12d0a12312c8b7150f761ad78eb2768",
+      "asset": "Particles/hud_icon_select_pati4.particle.json",
+      "dependencies": [
+        "Particles/orb_04.png"
+      ],
+      "assetSha256": "cb7a1610a55d6a799c3ba540d8fe6477fdf6918620902d66c7fcc0a7c566e952"
+    },
+    {
+      "source": "原始资源/effect/hud_skill_select_burn.cfx",
+      "sourceSha256": "17e88d00dc13e8bf3ec08ce054195ce15bbaf46da62707d8f34ad4c205d802e0",
+      "asset": "hud_skill_select_burn.cfx.json",
+      "dependencies": [
+        "hud_icon_burneff.spine.json",
+        "hud_icon_select.spine.json",
+        "Particles/hud_icon_select_pati3.particle.json",
+        "Particles/hud_icon_select_pati4.particle.json",
+        "Particles/soul_burn_loop_pati.particle.json",
+        "Particles/soul_burn_pati_01.particle.json"
+      ],
+      "assetSha256": "05cd362e54e5037d741544f2b3cc597d1c0d4243fc723d1fdb0e5f9ab385edaf"
+    },
+    {
+      "source": "原始资源/effect/hud_skill_select_nomal.cfx",
+      "sourceSha256": "be44500f8ae0281f16c6757fabf319818448e2339938076b98ea4ccf563fe540",
+      "asset": "hud_skill_select_nomal.cfx.json",
+      "dependencies": [
+        "hud_icon_select.spine.json",
+        "Particles/hud_icon_select_pati1.particle.json",
+        "Particles/hud_icon_select_pati2.particle.json"
+      ],
+      "assetSha256": "109e53e9e7e1c7568352f9191a27a54ddac65f03787306788b8ee1fea81e9f9d"
+    },
+    {
+      "source": "原始资源/effect/soul_burn_bt.atlas",
+      "sourceSha256": "c0ea9773a506f25bec6906b859b6dc4f68b60fe9a7d8da31818e833c033de7ed",
+      "asset": "soul_burn_bt.atlas.txt",
+      "dependencies": [
+        "soul_burn_bt.png"
+      ],
+      "assetSha256": "c0ea9773a506f25bec6906b859b6dc4f68b60fe9a7d8da31818e833c033de7ed"
+    },
+    {
+      "source": "原始资源/effect/soul_burn_bt.scsp",
+      "sourceSha256": "51f3a053e6697ac9c069aa20b42d19749726ba7bdf71520342770a4d8f245dac",
+      "asset": "soul_burn_bt.spine.json",
+      "dependencies": [
+        "soul_burn_bt.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "burn_intro",
+          "duration": 0.6665999889373779
+        },
+        {
+          "name": "burn_loop",
+          "duration": 0.6665999889373779
+        },
+        {
+          "name": "cancel_loop",
+          "duration": 0.6665999889373779
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "soul_burn_bt.sct",
+          "asset": "soul_burn_bt.png"
+        }
+      ],
+      "assetSha256": "574169fe932bd855d31fbb30ee5b277d5eaa00cdfefcabf197556869a214616c"
+    },
+    {
+      "source": "原始资源/effect/soul_burn_bt.sct",
+      "sourceSha256": "cd1a582e107f9fe3c703cb2d80728db10035585f4c3bacb5c3e354cdf08e03a6",
+      "asset": "soul_burn_bt.png",
+      "dependencies": [],
+      "texture": {
+        "width": 193,
+        "height": 380,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "5e6b8211f9b98273af7691a1c1d89c58fb804a844f9954e025917b77a80b5187"
+    },
+    {
+      "source": "原始资源/effect/soul_burn_loop_pati.particle",
+      "sourceSha256": "279c5eecccd6322b9210839f01adf59423c7dc902cf1d8a33c28a25e61a4cb67",
+      "asset": "Particles/soul_burn_loop_pati.particle.json",
+      "dependencies": [
+        "Particles/aura_04.png",
+        "Particles/pati_01.png"
+      ],
+      "assetSha256": "a67d4995e39b2b9a4bc123640cb438241f7c8976aaa52104fd56c86bbee7cf8e"
+    },
+    {
+      "source": "原始资源/effect/soul_burn_pati_01.particle",
+      "sourceSha256": "b9024b12c6d3d6ddbcbca51fd0bc42eb26419f56352a5ed1d9ca834dbe8e83d6",
+      "asset": "Particles/soul_burn_pati_01.particle.json",
+      "dependencies": [
+        "Particles/aura_04.png",
+        "Particles/ice_pati_01.png",
+        "Particles/pati_01.png"
+      ],
+      "assetSha256": "85535c25a10f24a0e4f73463b7f3c059b34469086e45ec5059c093ef308f2bfd"
+    },
+    {
+      "source": "原始资源/effect/ui_soul_burn_use.atlas",
+      "sourceSha256": "f4a356ccb0cc556bf3ca81996f8a26b23c0850d384f137f327431a24b0de4060",
+      "asset": "ui_soul_burn_use.atlas.txt",
+      "dependencies": [
+        "ui_soul_burn_use.png"
+      ],
+      "assetSha256": "f4a356ccb0cc556bf3ca81996f8a26b23c0850d384f137f327431a24b0de4060"
+    },
+    {
+      "source": "原始资源/effect/ui_soul_burn_use.cfx",
+      "sourceSha256": "1022e3b34def75c3044ef717de3d67992a23b992dff1d5a947ed16f624436d0b",
+      "asset": "ui_soul_burn_use.cfx.json",
+      "dependencies": [
+        "ui_soul_burn_use.spine.json",
+        "Particles/ui_soul_burn_use_pati.particle.json"
+      ],
+      "assetSha256": "9a8a31d8e62cd249ffb548082167fc7ae907e6b4dfb283589b94003710fffaa6"
+    },
+    {
+      "source": "原始资源/effect/ui_soul_burn_use.scsp",
+      "sourceSha256": "86488fd9281f8788ccb03fd9faad1aa5ec31c3a3bb257e063a64d50b789f488a",
+      "asset": "ui_soul_burn_use.spine.json",
+      "dependencies": [
+        "ui_soul_burn_use.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 0.4666000008583069
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "ui_soul_burn_use.sct",
+          "asset": "ui_soul_burn_use.png"
+        }
+      ],
+      "assetSha256": "984f2551e0758cb769a8ba9e4867ccdfd4aba7aa5ae9c64703d0a0dccfd11969"
+    },
+    {
+      "source": "原始资源/effect/ui_soul_burn_use.sct",
+      "sourceSha256": "c5bbe5f8a5183da7d423dc86d5d032300177a209fd3d31adb7a045f0b94457f0",
+      "asset": "ui_soul_burn_use.png",
+      "dependencies": [],
+      "texture": {
+        "width": 440,
+        "height": 952,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "ecf12d805cd9839cc267dfe9f982e0e4ceaef9e9b142808a7ef7c0c476dee53e"
+    },
+    {
+      "source": "原始资源/effect/ui_soul_burn_use_pati.particle",
+      "sourceSha256": "7e096b72b678aa074d7ea230c52394f977a2c942f26b9dfcb000f16d3633530b",
+      "asset": "Particles/ui_soul_burn_use_pati.particle.json",
+      "dependencies": [
+        "Particles/ticle_02.png"
+      ],
+      "assetSha256": "f7e041db0548ce0094a43d6ebe7dd0ac76c84bc54aec5af7c905ef62703e25b8"
+    },
+    {
+      "source": "原始资源/img/game_hud_btn_burnc_d.png",
+      "sourceSha256": "a73ab5344d113f15c84432b8819ebb1376802061d5c604cac705d4b98f6303e4",
+      "asset": "game_hud_btn_burnc_d.png",
+      "dependencies": [],
+      "assetSha256": "a73ab5344d113f15c84432b8819ebb1376802061d5c604cac705d4b98f6303e4"
+    },
+    {
+      "source": "原始资源/img/game_hud_btn_burnc_p.png",
+      "sourceSha256": "55d3334465b53497b28134b09f2c9c9b1ad075a179f16769ff11629ee0a919c7",
+      "asset": "game_hud_btn_burnc_p.png",
+      "dependencies": [],
+      "assetSha256": "55d3334465b53497b28134b09f2c9c9b1ad075a179f16769ff11629ee0a919c7"
+    },
+    {
+      "source": "原始资源/particle/aura_04.sct",
+      "sourceSha256": "64e3d4e72158a90a11eaac129ad00f0d6f9a22a0859fc04b2a27ffe15a9b63a1",
+      "asset": "Particles/aura_04.png",
+      "dependencies": [],
+      "texture": {
+        "width": 128,
+        "height": 128,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "27ea6b15b4f9f7b0fe98760741f7cd79061514d3b48029e10e0eb034a03da5f4"
+    },
+    {
+      "source": "原始资源/particle/ice_pati_01.sct",
+      "sourceSha256": "8b9f4b62393d3841beced88a335376d3a4cded353c75cace77f9e6685f9038eb",
+      "asset": "Particles/ice_pati_01.png",
+      "dependencies": [],
+      "texture": {
+        "width": 128,
+        "height": 128,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "89e7fcdfeb59fb332134240d2337da493cb78a6faae24cdd65650e49d6664e09"
+    },
+    {
+      "source": "原始资源/particle/orb_04.sct",
+      "sourceSha256": "be1206ba0db3629e69e71c779fea6dad57eba6e93d59a61fa0638557562fd06c",
+      "asset": "Particles/orb_04.png",
+      "dependencies": [],
+      "texture": {
+        "width": 216,
+        "height": 216,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "b09133433c1b1232b1f4b47ff6b64426843bd5734d1c398ba5e2b00e9ce665a9"
+    },
+    {
+      "source": "原始资源/particle/pati_01.sct",
+      "sourceSha256": "c54340504fd79d0844917fd4e69d46ba4261e31061c3f1edfaf005263410db59",
+      "asset": "Particles/pati_01.png",
+      "dependencies": [],
+      "texture": {
+        "width": 120,
+        "height": 120,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "b781ef81c5198b0e2f2124edba9756e7de944947f1edc54eba66672bf2251fd5"
+    },
+    {
+      "source": "原始资源/particle/ticle_02.sct",
+      "sourceSha256": "8f536d32d8984e0370e17ab9f1291be45b3908afce37ea8cb057ae1df4d2b9d2",
+      "asset": "Particles/ticle_02.png",
+      "dependencies": [],
+      "texture": {
+        "width": 66,
+        "height": 66,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "1be5fa2daba5583e21856ff31fff66b5a72d5e5ba8f1bcc15b9448a065e43007"
+    }
+  ]
+}

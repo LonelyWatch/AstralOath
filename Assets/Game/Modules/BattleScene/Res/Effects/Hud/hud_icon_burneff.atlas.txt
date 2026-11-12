@@ -1,0 +1,104 @@
+
+hud_icon_burneff.sct
+size: 207,956
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 115, 425
+  size: 86, 86
+  orig: 86, 86
+  offset: 0, 0
+  index: -1
+flash2
+  rotate: false
+  xy: 115, 328
+  size: 73, 95
+  orig: 73, 95
+  offset: 0, 0
+  index: -1
+icon_glow
+  rotate: false
+  xy: 96, 701
+  size: 71, 74
+  orig: 71, 74
+  offset: 0, 0
+  index: -1
+icon_glow_e
+  rotate: false
+  xy: 96, 777
+  size: 71, 74
+  orig: 71, 74
+  offset: 0, 0
+  index: -1
+icon_glow_s
+  rotate: false
+  xy: 64, 853
+  size: 71, 74
+  orig: 71, 74
+  offset: 0, 0
+  index: -1
+impact_shock
+  rotate: false
+  xy: 2, 2
+  size: 203, 203
+  orig: 203, 203
+  offset: 0, 0
+  index: -1
+soul_blast1
+  rotate: true
+  xy: 2, 533
+  size: 154, 111
+  orig: 154, 111
+  offset: 0, 0
+  index: -1
+soul_blast2
+  rotate: true
+  xy: 2, 689
+  size: 144, 92
+  orig: 144, 92
+  offset: 0, 0
+  index: -1
+soul_impact1
+  rotate: false
+  xy: 2, 207
+  size: 111, 161
+  orig: 111, 161
+  offset: 0, 0
+  index: -1
+soul_impact1_g
+  rotate: false
+  xy: 2, 370
+  size: 111, 161
+  orig: 111, 161
+  offset: 0, 0
+  index: -1
+soul_impact2
+  rotate: false
+  xy: 115, 207
+  size: 60, 119
+  orig: 60, 119
+  offset: 0, 0
+  index: -1
+soul_impact2_g
+  rotate: false
+  xy: 2, 835
+  size: 60, 119
+  orig: 60, 119
+  offset: 0, 0
+  index: -1
+soul_impact3
+  rotate: false
+  xy: 115, 513
+  size: 61, 92
+  orig: 61, 92
+  offset: 0, 0
+  index: -1
+soul_impact3_g
+  rotate: false
+  xy: 115, 607
+  size: 61, 92
+  orig: 61, 92
+  offset: 0, 0
+  index: -1

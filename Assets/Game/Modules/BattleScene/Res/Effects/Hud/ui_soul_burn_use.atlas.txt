@@ -1,0 +1,34 @@
+
+ui_soul_burn_use.sct
+size: 440,952
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+b_circle1
+  rotate: false
+  xy: 2, 2
+  size: 436, 436
+  orig: 436, 436
+  offset: 0, 0
+  index: -1
+b_circle2
+  rotate: false
+  xy: 2, 440
+  size: 422, 422
+  orig: 422, 422
+  offset: 0, 0
+  index: -1
+b_line_light
+  rotate: false
+  xy: 2, 864
+  size: 191, 36
+  orig: 191, 36
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 195, 864
+  size: 86, 86
+  orig: 86, 86
+  offset: 0, 0
+  index: -1

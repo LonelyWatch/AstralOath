@@ -42,6 +42,7 @@ namespace AstralOath.Client.BattleScene.Editor
             Directory.CreateDirectory(Path.GetDirectoryName(ScenePath));
             AssetDatabase.Refresh();
             ImportSprites(HudTextures);
+            ImportHudEffectTextures();
             ImportSprites(BackgroundTextures);
             ImportOrderDetailsBorder();
             ImportSlimePage();
@@ -88,7 +89,8 @@ namespace AstralOath.Client.BattleScene.Editor
             scaler.referenceResolution = new Vector2(1920, 1080);
             scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
             var hud = SavePrefab(CreateHud(), "BattleHud");
-            PrefabUtility.InstantiatePrefab(hud, canvas.transform);
+            var hudInstance = (GameObject)PrefabUtility.InstantiatePrefab(hud, canvas.transform);
+            ConfigureHudScene(hudInstance.GetComponent<BindingMap>());
             ValidateHud();
 
             if (!EditorSceneManager.SaveScene(scene, ScenePath))

@@ -1,0 +1,281 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using AstralOath.Client.Common;
+using AstralOath.Client.Core;
+using AstralOath.Client.Skeletons;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
+using SpineEffect = AstralOath.Client.BattleScene.BattleHudPreview.SpineEffect;
+
+namespace AstralOath.Client.BattleScene
+{
+    internal sealed class BattleHudBinder : IDisposable
+    {
+        // The authored 1280x720 coordinates map to a 1920x1080 Canvas.
+        // The legacy HUD Spine exports include a 2.24x attachment scale.
+        private const float EffectScale = 1.5f / 2.24f;
+        private const float SkillOutlineScale = EffectScale * 0.94f;
+        // Skill icons sit 3.5 authoring pixels right and 2.5 below their frames.
+        private static readonly Vector3 SkillFrameOffset = new Vector3(-5.25f, 3.75f, 0f);
+        private const float BurnSelectionDelay = 0.231f;
+        // The preview's acting Ras can Soul Burn S2. Live combat will supply this state.
+        private const int BurnSkillIndex = 1;
+
+        private readonly BindingScope scope;
+        private readonly GameButton burn;
+        private readonly GameButton[] skills;
+        private readonly Image burnImage;
+        private readonly Sprite burnNormal;
+        private readonly Sprite burnPressed;
+        private readonly Sprite cancelNormal;
+        private readonly Sprite cancelPressed;
+        private readonly ISkeletonPlayer buttonEffect;
+        private readonly ISkeletonPlayer selectionEffect;
+        private readonly ISkeletonPlayer introEffect;
+        private readonly ISkeletonPlayer useEffect;
+        private readonly Transform particleAnchor;
+        private readonly BattleHudParticles[] normalParticles;
+        private readonly BattleHudParticles[] burnParticles;
+        private readonly BattleHudParticles useParticles;
+        private int selected = -1;
+        private bool armed;
+        private float pendingBurnSelection = -1f;
+
+        internal BattleHudBinder(BindingMap map, Sprite burnPressed, Sprite cancelNormal, Sprite cancelPressed,
+            SpineEffect burnButton, SpineEffect selection, SpineEffect intro, SpineEffect soulUse,
+            TextAsset[] particleDefinitions, Texture2D[] particleTextures)
+        {
+            burn = map.Require<GameButton>("soulBurn");
+            skills = new[] { map.Require<GameButton>("skill1"), map.Require<GameButton>("skill2"), map.Require<GameButton>("skill3") };
+            burnImage = (Image)burn.targetGraphic;
+            burnNormal = burnImage.sprite;
+            this.burnPressed = burnPressed;
+            this.cancelNormal = cancelNormal;
+            this.cancelPressed = cancelPressed;
+            scope = new BindingScope(CancellationToken.None);
+
+            try
+            {
+                var burnSkill = skills[BurnSkillIndex].transform;
+                var canvas = map.GetComponentInParent<Canvas>();
+                int aboveHud = canvas.sortingOrder + 1;
+                buttonEffect = Create(burnButton, burn.transform, "Burn Button", aboveHud + 1);
+                selectionEffect = Create(selection, burnSkill, "Skill Selection", aboveHud + 1, SkillOutlineScale);
+                selectionEffect.Root.transform.localPosition = SkillFrameOffset;
+                introEffect = Create(intro, burnSkill, "Burn Intro", aboveHud + 3);
+                introEffect.Root.transform.localPosition = SkillFrameOffset;
+                useEffect = Create(soulUse, burn.transform, "Soul Burn Use", aboveHud + 1);
+
+                var source = particleDefinitions.ToDictionary(item => item.name, StringComparer.Ordinal);
+                var textures = particleTextures.ToDictionary(item => item.name + ".sct", StringComparer.Ordinal);
+                particleAnchor = new GameObject("Skill Selection Particles").transform;
+                particleAnchor.SetParent(burnSkill, false);
+                particleAnchor.localPosition = SkillFrameOffset;
+                scope.Add(() =>
+                {
+                    if (particleAnchor)
+                        UnityEngine.Object.Destroy(particleAnchor.gameObject);
+                });
+                normalParticles = new[]
+                {
+                    Particle("hud_icon_select_pati1", particleAnchor, 110, 2),
+                    Particle("hud_icon_select_pati2", particleAnchor, -118, 2)
+                };
+                burnParticles = new[]
+                {
+                    Particle("soul_burn_loop_pati", particleAnchor, 0, -1),
+                    Particle("hud_icon_select_pati3", particleAnchor, 110, 2),
+                    Particle("hud_icon_select_pati4", particleAnchor, -118, 2),
+                    Particle("soul_burn_pati_01", particleAnchor, 0, 4)
+                };
+                useParticles = Particle("ui_soul_burn_use_pati", burn.transform, 0, 2);
+
+                scope.Add(() =>
+                {
+                    if (burn && burnImage)
+                    {
+                        SetBurnArtwork(false);
+                        burnImage.canvasRenderer.SetAlpha(1f);
+                    }
+                });
+                SetBurnArtwork(false);
+                Play(buttonEffect, "burn_intro", false);
+                UpdateBurnButtonVisual();
+                Bind(burn, ToggleBurn);
+                for (int i = 0; i < skills.Length; i++)
+                {
+                    int index = i;
+                    Bind(skills[i], () => SelectSkill(index));
+                }
+
+                BattleHudParticles Particle(string name, Transform anchor, float y, int layer)
+                {
+                    // Map CFX z=-1 to just above the HUD, behind the other effect layers.
+                    var effect = new BattleHudParticles(source[name + ".particle"], textures, anchor,
+                        new Vector2(0, y), EffectScale, aboveHud + Mathf.Max(0, layer));
+                    scope.Add(effect.Dispose);
+                    return effect;
+                }
+            }
+            catch
+            {
+                scope.Dispose();
+                throw;
+            }
+        }
+
+        internal void Tick(float delta)
+        {
+            buttonEffect.Tick(delta);
+            if (buttonEffect.CurrentAnimation == "burn_intro" && buttonEffect.Time >= buttonEffect.Duration)
+                Play(buttonEffect, "burn_loop", true);
+            UpdateBurnButtonVisual();
+
+            TickOneShot(introEffect, delta);
+            TickOneShot(useEffect, delta);
+            if (selectionEffect.Root.activeSelf)
+                selectionEffect.Tick(delta);
+
+            if (pendingBurnSelection >= 0f)
+            {
+                pendingBurnSelection -= delta;
+                if (pendingBurnSelection <= 0f)
+                {
+                    pendingBurnSelection = -1f;
+                    ShowSelection(true);
+                }
+            }
+
+            foreach (var effect in normalParticles)
+                effect.Tick(delta);
+            foreach (var effect in burnParticles)
+                effect.Tick(delta);
+            useParticles.Tick(delta);
+        }
+
+        private void ToggleBurn()
+        {
+            if (armed)
+            {
+                SetArmed(false);
+                ShowSelection(false);
+                return;
+            }
+            ClearSelection();
+            useEffect.Root.SetActive(false);
+            useParticles.Stop();
+            SetArmed(true);
+            Play(introEffect, "on_intro", false);
+            pendingBurnSelection = BurnSelectionDelay;
+        }
+
+        private void SelectSkill(int index)
+        {
+            if (armed)
+            {
+                bool confirm = index == BurnSkillIndex;
+                SetArmed(false);
+                if (confirm)
+                {
+                    Play(useEffect, "animation", false);
+                    useParticles.Play();
+                }
+            }
+            ClearSelection();
+            selected = index;
+            ShowSelection(false);
+        }
+
+        private void SetArmed(bool value)
+        {
+            armed = value;
+            SetBurnArtwork(value);
+            Play(buttonEffect, value ? "cancel_loop" : "burn_loop", true);
+            if (value)
+                return;
+
+            pendingBurnSelection = -1f;
+            introEffect.Root.SetActive(false);
+            selectionEffect.Root.SetActive(false);
+            foreach (var effect in burnParticles)
+                effect.Stop();
+        }
+
+        private void SetBurnArtwork(bool cancel)
+        {
+            // Reset a pressed override before swapping the normal and pressed artwork.
+            burnImage.overrideSprite = null;
+            burnImage.sprite = cancel ? cancelNormal : burnNormal;
+            var state = burn.spriteState;
+            state.pressedSprite = cancel ? cancelPressed : burnPressed;
+            burn.spriteState = state;
+        }
+
+        private void UpdateBurnButtonVisual()
+        {
+            // The Spine animation already contains the button and its caption.
+            // Keep the static Image as the raycast target and reveal its art only while pressed.
+            bool pressed = burnImage.overrideSprite == burn.spriteState.pressedSprite;
+            burnImage.canvasRenderer.SetAlpha(pressed ? 1f : 0f);
+            buttonEffect.Root.SetActive(!pressed);
+        }
+
+        private void ShowSelection(bool burnSelection)
+        {
+            int index = burnSelection ? BurnSkillIndex : selected;
+            if (index < 0)
+                return;
+
+            Transform anchor = skills[index].transform;
+            selectionEffect.Root.transform.SetParent(anchor, false);
+            particleAnchor.SetParent(anchor, false);
+            Play(selectionEffect, burnSelection ? "burn" : "normal", true);
+            foreach (var effect in burnSelection ? burnParticles : normalParticles)
+                effect.Play();
+        }
+
+        private void ClearSelection()
+        {
+            selectionEffect.Root.SetActive(false);
+            foreach (var effect in normalParticles)
+                effect.Stop();
+        }
+
+        private ISkeletonPlayer Create(SpineEffect effect, Transform parent, string name, int sortingOrder, float scale = EffectScale)
+        {
+            var player = effect.Create(parent, name, scale, sortingOrder);
+            scope.Add(player.Dispose);
+            return player;
+        }
+
+        private void Bind(GameButton button, UnityAction listener)
+        {
+            button.onClick.AddListener(listener);
+            scope.Add(() =>
+            {
+                if (button)
+                    button.onClick.RemoveListener(listener);
+            });
+        }
+
+        private static void Play(ISkeletonPlayer player, string animation, bool loop)
+        {
+            player.Play(animation, loop);
+            player.Root.SetActive(true);
+        }
+
+        private static void TickOneShot(ISkeletonPlayer player, float delta)
+        {
+            if (!player.Root.activeSelf)
+                return;
+            player.Tick(delta);
+            if (player.Time >= player.Duration)
+                player.Root.SetActive(false);
+        }
+
+        public void Dispose() => scope.Dispose();
+    }
+}

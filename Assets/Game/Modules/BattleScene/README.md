@@ -13,10 +13,19 @@
 
 ## 结构和后续接入
 
-- `BattleHud` 继承 `UIBaseView` 并验证 BindingMap。预制体使用 GameText/GameButton，按钮现在用于布局展示。接入实际命令时由 `BattleHudBinder` 消费战斗快照并管理订阅。
+- `BattleHud` 继承 `UIBaseView` 并验证 BindingMap。场景 Canvas 上的 `BattleHudPreview` 管理普通 C# `BattleHudBinder` 生命周期。预制体使用 GameText、GameButton 和 BindingMap。Burn 与三枚技能按钮接受点击，预览的魂力与角色固定为当前拉斯。
 - `BattlePreviewActor` 通过现有 SkeletonPlayerFactory 读取原版骨骼及图集，进入 Play 时生成，禁用或卸载时释放网格和材质。三名英雄直接引用 CharacterPresentation 的现有资产。
 - `BattlePreviewViewport` 在安全区内保持 16:9，世界与 Screen Space Camera HUD 使用同一摄像机。HUD 作者坐标以 1280×720 左下原点记录，生成时乘 1.5。地图图层位置和站位来自对照后的手调。
 - 预览场景使用直接资产引用和独立程序集，未纳入正式启动场景、YooAsset 发布收集或 HybridCLR 业务登记。正式流程接入时另定资源地址、数据契约和服务端准入。
+
+## Burn 和技能选中预览
+
+- 进入 Play，Burn 播放原版入场和 0.6666 秒闪动。点击技能会在当前技能图标上循环播放金色描边与粒子，切换时清除上一枚的效果。
+- 点击 Burn 切换为 Cancel，拉斯的 S2 播放燃魂起手。231 毫秒后出现蓝色燃魂描边与粒子。再次点击 Cancel 可退出并恢复之前的普通选中，点击其他技能退出燃魂状态并选中该技能。
+- 燃魂状态点击 S2 可以预览魂力使用闪光。此预览只展示 HUD，消耗、选目标和技能执行由后续服务端流程负责。关闭或隐藏 HUD 时释放粒子、骨骼与按钮监听。
+- `Res/Effects/Hud/source.json` 记录原版 SCSP、SCT、atlas、CFX、粒子和按钮 PNG 的来源及哈希。使用项目素材 Python 环境运行 `Tools/BattleScene/ImportHudEffects.py --check` 验证，去掉 `--check` 复现素材。Unity 编辑器批处理入口 `AstralOath.Client.BattleScene.Editor.BattleSceneBuilder.InstallHudEffects` 只更新 HUD 点击配置与场景组件，可用于保留已编辑的站位和布局。
+- 源 CFX 的顺序、描边颜色和 Spine 曲线沿用原数据。粒子在 Unity 中按原参数播放，专有的发射模式按爆发与持续发射重建。视觉外观参考原版战斗截图，按钮和技能锚点按当前布局对齐，原作连续录像逐帧对照仍待验证。[原作战斗截图](https://d3kxs6kpbh59hp.cloudfront.net/community/COMMUNITY/718883b8c9f34eaca8e89ee116e1e29d/1f0480fa6b5144a584877ad1c1d10df7_1617085685.png)
+- Unity 2022.3.62f3 实际 HUD PlayMode 回归 2/2，EditMode 215/215。PlayMode 带图形运行 `BattleScenePreviewTests`，设置 `ASTRAL_BATTLE_CAPTURE_DIR` 可导出 Burn、技能选中和使用反馈的 1920×1080 截帧。
 
 ## 角色配置
 

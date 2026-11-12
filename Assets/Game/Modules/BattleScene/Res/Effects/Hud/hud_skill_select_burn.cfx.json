@@ -1,0 +1,45 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "soul_burn_pati_01",
+      "z": "4",
+      "delay": "231",
+      "format": "particle"
+    },
+    {
+      "source": "hud_icon_burneff",
+      "ani": "on_intro",
+      "z": "3",
+      "format": "spine"
+    },
+    {
+      "source": "hud_icon_select",
+      "ani": "burn",
+      "z": "1",
+      "delay": "231",
+      "format": "spine",
+      "loop": 1
+    },
+    {
+      "source": "hud_icon_select_pati3",
+      "y": "110",
+      "z": "2",
+      "delay": "231",
+      "format": "particle"
+    },
+    {
+      "source": "hud_icon_select_pati4",
+      "y": "-118",
+      "z": "2",
+      "delay": "231",
+      "format": "particle"
+    },
+    {
+      "source": "soul_burn_loop_pati",
+      "z": "-1",
+      "delay": "231",
+      "format": "particle"
+    }
+  ]
+}
