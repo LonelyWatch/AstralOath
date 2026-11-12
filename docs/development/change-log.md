@@ -6,6 +6,7 @@
 
 - 战斗修订推送后，Windows托管CI连续两次在同版本修复取消后的隔离目录恢复返回Access denied。本地原有内容测试追加三次通过；未确认外部占用进程，不能认定具体安全软件。
 - 新增真实文件占用回归，回滚重命名仅对Windows临时访问/共享/锁冲突进行有界等待。恢复不受已取消的安装token打断；持续失败保留原始安装异常、回滚异常和两个恢复目录，不修改ACL、不删除备份、不放宽验签。
+- 修复后的远端[Foundation checks](https://github.com/LonelyWatch/AstralOath/actions/runs/43272512938)已通过（8b509d3）。此前两次失败保留历史记录，未删除或放宽检查。
 - 此为Shared.Updates的AOT代码变化，后续发布需要新母包；本轮未构建或部署Player。最终执行结果见[本轮交付](../delivery/2026-11-13-battle-presentation.md)。
 
 ## 2026-11-13 — 源演出通用规则与D盘资料
@@ -14,7 +15,7 @@
 - 相机区分请求构图、地图限制和原camera骨骼震动，随移动角色保持脚点高度；隐藏地图时允许源广角，动作中断恢复镜头及远景。源ANI_SCOPE、纵向MOVE、影子轨迹、CFX寿命与稳定朝向统一解析；未知节点连接、位置和后处理失败报告上下文。
 - 原damage.fnt的逐字弹跳/渐变、12张原combo素材和HIT分段累计已接入；总显示额守恒、协攻延续、末击后隐藏死亡目标。帧跨HIT时按源世界时钟分步采样。0伤害Miss仅显示本地化字样，普通护盾全吸收不显示0。视听播放不改变服务端权威。
 - sprite_blur按原shader方向/三角核接入，SINE包络仍为记录清楚的推断。CUTIN在世界采集之外单次叠加，临时相机/RT可释放；没有角色ID补丁或新增插件。有限LAYOUT、倍率和非零命中锚点仍须扩展原帧证据。
-- C盘旧工作区.tools/.artifacts与三个项目安装包经逐文件哈希迁往D盘，释放19.05GiB。项目工具统一进程级缓存环境，新Open-Unity入口保护已开的Editor。现有Unity安装及其他项目共享缓存保持不动。
+- C盘旧工作区.tools/.artifacts与三个项目安装包经逐文件哈希迁往D盘，初批释放19.05GiB；随后产品LocalLow运行缓存经38文件哈希迁移并链接，累计19.08GiB。项目工具统一进程级缓存环境，新Open-Unity入口保护已开的Editor。现有Unity安装及其他项目共享缓存保持不动。
 - 实测、命令及仍未验证项目见[本轮验收](../delivery/2026-11-13-battle-presentation.md)，新角色遵守[源演出规范](battle-source-presentation.md)，新会话遵守[D盘存储](local-storage.md)。本轮不构建Player或发布生产热更。
 
 ## 2026-11-12 — 战斗原版演出与回合显示修订

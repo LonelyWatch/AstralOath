@@ -12,6 +12,12 @@ fmodstudio20315.unitypackage、UnityHubSetup-x64.exe、UnityHubSetup-x64 (1).exe
 
 原始验证记录在主工程 .artifacts/disk-migration：legacy-migration-20261112-161856.log、artifacts-verified-sha256.tsv、tools-verified-sha256.tsv、installers-verified.json。巨量文件清单不进入Git。删除junction必须针对链接本身，不能递归删除其目标。
 
+## 运行缓存补迁
+
+C:/Users/Admin/AppData/LocalLow/AstralOath/AstralOath 已迁至 D:/AstralOathData/runtime/AstralOath，原产品路径为junction，未来persistentDataPath写入通过该链接落D盘。仅此产品目录，未移动整个LocalLow或其他项目数据。38个文件、28441884逻辑字节，复制前独占可读检查、双端SHA-256校验及切换后通过旧链接重验均通过。Editor保持运行，无强制终止进程。
+
+该次实测额外释放28512256字节（27.19 MiB），连前期合计20488323072字节（19.08 GiB）。记录为 .artifacts/disk-migration/runtime-verified.json。Unity安装与系统共享缓存仍是上述例外。
+
 ## 后续启动
 
 使用项目PowerShell执行 Tools/Open-Unity.ps1（工作目录 D:/UnityProjects/AstralOath）。此入口检查同工程已运行时仅报告，不开第二实例。当前Editor不被追溯修改环境；保存并正常退出后，下一次从新入口启动才继承缓存位置。不要用结束进程代替保存退出。

@@ -32,7 +32,7 @@ Unity 2022.3.62f3 / URP / UGUI / TMP；Common/AOT 通用设施；普通 C# UIBas
 ## 最近验证与后续入口
 
 - 2026-11-13演出修订：[通用规则](development/battle-source-presentation.md)、[本轮验收](delivery/2026-11-13-battle-presentation.md)。本轮无新增外部插件。
-- 本机资料迁移释放C盘19.05GiB；主工程及新缓存均走D盘，旧缓存目录保留junction。继续使用C盘的已安装Editor不在迁移范围。[启动与路径规则](development/local-storage.md)
+- 本机资料与运行缓存迁移累计释放C盘19.08GiB；主工程及新缓存均走D盘，旧缓存目录保留junction。继续使用C盘的已安装Editor不在迁移范围。[启动与路径规则](development/local-storage.md)
 
 - 控件变更：Unity EditMode 215/215、PlayMode 16/16；见[控件验收](delivery/2026-11-12-ui-controls.md)。本次文档/工具核对没有重跑 Unity。
 - 本次服务/内容/配置/协议检查结果：[地基复核](delivery/2026-11-12-foundation-reaudit.md)。MySQL真实集成需专用连接串，本次未重新验证。

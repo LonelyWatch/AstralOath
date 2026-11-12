@@ -28,7 +28,7 @@
 
 本轮的Unity图形/自动测试是编辑器证据，未构建Windows/Android Player、未部署生产更新、未重新验证专用MySQL。未宣称全部E7角色或所有技能逐帧等同原作。有限LAYOUT坐标、MOVE原插值、SHAKE倍率字段、SINE原公式和完整遮罩、部分CFX排序与命中偏移仍需源证据/同版本录像；影响具体新角色时必须诊断并补测试。
 
-C盘资料已释放19.05GiB，详见[迁移与启动规则](../development/local-storage.md)。正在使用的Unity安装留在C盘，不把“项目输出迁D”说成“系统盘从此零写入”。原有用户damage_0.png.meta压缩修改保留且不纳入本轮提交。
+C盘资料及运行缓存累计释放19.08GiB，详见[迁移与启动规则](../development/local-storage.md)。正在使用的Unity安装留在C盘，不把“项目输出迁D”说成“系统盘从此零写入”。原有用户damage_0.png.meta压缩修改保留且不纳入本轮提交。
 
 
 ## 推送后Windows恢复回归
@@ -42,3 +42,5 @@ C盘资料已释放19.05GiB，详见[迁移与启动规则](../development/local
 原有状态机边界：若第一步回滚永久失败，候选仍可能占据同版本目录，GetActiveRelease仅验签/哈希，不能作为消费方校验成功的证明。现行StartupContent恢复会再次LoadAsync预检，调用方不得绕过该检查。恢复失败后需要保留目录并处理异常，不能宣称取消后任何文件占用条件下活动目录必然已回原样。此补丁不重构活动版本状态机。
 
 ContentUpdater属于AOT，此保护需要重新构建母包后才能交付旧客户端。本轮未构建Player或部署线上更新。
+
+最终远端验证：8b509d3的[Foundation checks](https://github.com/LonelyWatch/AstralOath/actions/runs/43272512938)已Success。新增目录占用回归在托管Windows运行通过；不通过历史的具体外部占用者仍未知。最后补迁38文件的产品运行缓存并通过旧路径哈希重验，统计见存储文档；不涉及新的生产代码变化。
