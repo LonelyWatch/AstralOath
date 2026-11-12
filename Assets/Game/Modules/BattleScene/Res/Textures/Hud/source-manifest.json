@@ -1,0 +1,1024 @@
+{
+  "sourceRoot": "D:/sevenepic",
+  "transfer": "Byte-identical PNG copy, original alpha and padding retained. No atlas slicing. Alpha bounds are measured on RGBA PNG decode as [left, top, rightExclusive, bottomExclusive] with top-left origin.",
+  "decoder": "Pillow 12.0.0",
+  "layoutEvidence": [
+    {
+      "source": "原始资源/wnd/inbattle_hud.csb",
+      "sha256": "5dca9cf4c7abfc3cc3c80f9edf72ca9627128f52a21cc416ce45fc4de55fbc07"
+    },
+    {
+      "source": "原始资源/wnd/inbattle_order.csb",
+      "sha256": "6d617a091271c5c0df84005c3842adffd5e2f999f948dbcac6f2537013bfdf0d"
+    },
+    {
+      "source": "原始资源/wnd/hud_order.csb",
+      "sha256": "bd9c747ee54253df9420370b417e89318c4e0a97c57d764e6018ccf06b2dc74b"
+    },
+    {
+      "source": "原始资源/wnd/hud_face.csb",
+      "sha256": "f68b58068bd7cca7f61d713b2e20778bdae109bbad8fe41fe0f4a905728612d4"
+    },
+    {
+      "source": "原始资源/wnd/inbattle_topbar.csb",
+      "sha256": "c510f8c9e8d7f6fe4f2887299b1bd5d52496ae172c2781ef78cadc59c966564b"
+    },
+    {
+      "source": "原始资源/wnd/game_hud_battle_step.csb",
+      "sha256": "0cfacc9e58fd0c772f3b7ac652c0d04b0d70267f45e8ecb8a9abefac2f664969"
+    },
+    {
+      "source": "原始资源/wnd/hud_skill.csb",
+      "sha256": "ed922052f5a1557e9fb51eeccae634d6cd2dc7081b7a359c3d2e4746c1ca6dee"
+    },
+    {
+      "source": "原始资源/wnd/hp_bar.csb",
+      "sha256": "71c1c2d8e5f14af3fc127ed31f1e3037cc65756d67a0689660af053d4507e75a"
+    },
+    {
+      "source": "原始资源/wnd/hp_bar_norm.csb",
+      "sha256": "3a0e2a6840d6352417a019666dbb2deef73ec3d18fc0b810c56e9c9713c7ea96"
+    },
+    {
+      "source": "原始资源/wnd/hp_bar_norm_2.csb",
+      "sha256": "e49b4d2b394d5cd712b3de82fcc310f3bca9c563309a17c9aaa1abdac820d5ac"
+    },
+    {
+      "source": "原始资源/wnd/hud_soulburn.csb",
+      "sha256": "428f5f7875621a1edd727fd140bb1f4a7bfdef198770bfa6c8e3b9a71315eb8a"
+    },
+    {
+      "source": "原始资源/wnd/hud_auto.csb",
+      "sha256": "f76facee05eef6ffc7401ef4562e66a712bd2d64dd9e5fe5e2c8212342967b35"
+    },
+    {
+      "source": "原始资源/wnd/inbattle_hud_0.csb",
+      "sha256": "c45d1f33d9b3ab3c968cdfd582ac9946c7312bfb90bfd1049034e1795c868f86"
+    }
+  ],
+  "assets": [
+    {
+      "asset": "_game_hud_timebg1.png",
+      "source": "原始资源/img/_game_hud_timebg1.png",
+      "sha256": "a96f5108719291739a642d4f003a3b4a1f7e60b6df3d4cf345dfa3b8e5421320",
+      "width": 15,
+      "height": 516,
+      "alphaBoundsLTRB": [
+        2,
+        0,
+        13,
+        516
+      ]
+    },
+    {
+      "asset": "_game_hud_timebg2.png",
+      "source": "原始资源/img/_game_hud_timebg2.png",
+      "sha256": "704da9d45187b6a2be642328e336502caf7a942696e684847959a40f08e167f4",
+      "width": 471,
+      "height": 87,
+      "alphaBoundsLTRB": [
+        1,
+        0,
+        468,
+        85
+      ]
+    },
+    {
+      "asset": "_game_hud_timebg2_notch.png",
+      "source": "原始资源/img/_game_hud_timebg2_notch.png",
+      "sha256": "8cdaa6ac39a1addbf73c565d09db9778b9480128d667b89988d5c94de4f1055a",
+      "width": 411,
+      "height": 87,
+      "alphaBoundsLTRB": [
+        1,
+        0,
+        409,
+        85
+      ]
+    },
+    {
+      "asset": "_hero_s_bg_ally.png",
+      "source": "原始资源/img/_hero_s_bg_ally.png",
+      "sha256": "5ff52755be6568efb40c8e94f3371cac9706b4d7ebce2f40a13d6e84732c3817",
+      "width": 112,
+      "height": 112,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        112,
+        112
+      ]
+    },
+    {
+      "asset": "_hero_s_bg_enemy.png",
+      "source": "原始资源/img/_hero_s_bg_enemy.png",
+      "sha256": "503a2f7eaa8f7e08a297f845ed67c64cf1a080c7e1223cb913615d34530d9163",
+      "width": 112,
+      "height": 112,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        112,
+        112
+      ]
+    },
+    {
+      "asset": "_hero_s_frame_ally.png",
+      "source": "原始资源/img/_hero_s_frame_ally.png",
+      "sha256": "2f6c420bf7f6f60be177f87d1cfae9a11d69bc0fd8961b1df6181f6ae51dd48b",
+      "width": 126,
+      "height": 126,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        126,
+        126
+      ]
+    },
+    {
+      "asset": "_hero_s_frame_enemy.png",
+      "source": "原始资源/img/_hero_s_frame_enemy.png",
+      "sha256": "ce31c8f212041d1b47a41eb729d3f0ec133fd397cf7338222a669c1580d5bd76",
+      "width": 126,
+      "height": 126,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        126,
+        126
+      ]
+    },
+    {
+      "asset": "cm_hero_circool1.png",
+      "source": "原始资源/img/cm_hero_circool1.png",
+      "sha256": "34c473e7a1061d822331d2a7cb8e394b29fcb0ab3f97ed06e6302f3a325257f4",
+      "width": 82,
+      "height": 82,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        82,
+        82
+      ]
+    },
+    {
+      "asset": "game_hud_target2.png",
+      "source": "原始资源/img/game_hud_target2.png",
+      "sha256": "a46fa4eaee2620d909b6cf1d3c436f9a6ae2c24eebde13ca4a5f0968c96ce11b",
+      "width": 34,
+      "height": 39,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        34,
+        39
+      ]
+    },
+    {
+      "asset": "game_hud_target1.png",
+      "source": "原始资源/img/game_hud_target1.png",
+      "sha256": "8d534ac2b3733100599cb02083e3edaf7915ec96475b6c08c95042770d33584e",
+      "width": 40,
+      "height": 39,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        40,
+        39
+      ]
+    },
+    {
+      "asset": "game_hud_target_c1.png",
+      "source": "原始资源/img/game_hud_target_c1.png",
+      "sha256": "9d5827f1ed6291d04871f7e6e08526998cc23c2c5344a64fcec2870ba1353d7f",
+      "width": 111,
+      "height": 111,
+      "alphaBoundsLTRB": [
+        3,
+        3,
+        107,
+        107
+      ]
+    },
+    {
+      "asset": "game_hud_target_c2.png",
+      "source": "原始资源/img/game_hud_target_c2.png",
+      "sha256": "2626b51ff68a004f690723473ea174c29dd3aea1cf634069a4eb0dd893c9535d",
+      "width": 195,
+      "height": 195,
+      "alphaBoundsLTRB": [
+        3,
+        3,
+        191,
+        191
+      ]
+    },
+    {
+      "asset": "game_hud_arrow.png",
+      "source": "原始资源/img/game_hud_arrow.png",
+      "sha256": "1fb862a68db002a35c66fb369e09109e4161a49fa340672236452534cd39c465",
+      "width": 118,
+      "height": 126,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        118,
+        126
+      ]
+    },
+    {
+      "asset": "_cm_skill_frm.png",
+      "source": "原始资源/img/_cm_skill_frm.png",
+      "sha256": "bfae5e608cd432ce264d45666a2cf7d9ddb560252e66c7e1107713a18a0487cf",
+      "width": 104,
+      "height": 107,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        104,
+        107
+      ]
+    },
+    {
+      "asset": "cm_select_skill.png",
+      "source": "原始资源/img/cm_select_skill.png",
+      "sha256": "fa127d2d552471240d18b12a7a36193fb3aaeb01818161133fd0e2dfe7691423",
+      "width": 114,
+      "height": 120,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        114,
+        120
+      ]
+    },
+    {
+      "asset": "game_hud_skillauto_on.png",
+      "source": "原始资源/img/game_hud_skillauto_on.png",
+      "sha256": "a61eeaa0848ce2c0e95afc196f19ab51e803324092701c9c171c9c8a7cd4cfc8",
+      "width": 79,
+      "height": 111,
+      "alphaBoundsLTRB": [
+        0,
+        2,
+        79,
+        109
+      ]
+    },
+    {
+      "asset": "game_hud_skillauto_off.png",
+      "source": "原始资源/img/game_hud_skillauto_off.png",
+      "sha256": "26e5fc1fdf8e5bdfacdcdd44d75150dac9bda5a06e2afc0fc34a35a6db1d15c8",
+      "width": 79,
+      "height": 111,
+      "alphaBoundsLTRB": [
+        0,
+        2,
+        79,
+        109
+      ]
+    },
+    {
+      "asset": "game_hud_bar_norm.png",
+      "source": "原始资源/img/game_hud_bar_norm.png",
+      "sha256": "6016ceffcefc9794441286d51086703f310e5dec99c51ae06497b75b104d6335",
+      "width": 62,
+      "height": 16,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        62,
+        16
+      ]
+    },
+    {
+      "asset": "game_hud_bar_norm_n.png",
+      "source": "原始资源/img/game_hud_bar_norm_n.png",
+      "sha256": "98e2a3a5b83fdbccfda50415821ce0cb2c836f4c4ea2ecd30d59347999202209",
+      "width": 62,
+      "height": 16,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        62,
+        14
+      ]
+    },
+    {
+      "asset": "game_hud_bar_bg.png",
+      "source": "原始资源/img/game_hud_bar_bg.png",
+      "sha256": "96a6d236f6af052b754793e9cedbe45e01f027a5a2f699427d94e68fedfabad3",
+      "width": 86,
+      "height": 26,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        86,
+        26
+      ]
+    },
+    {
+      "asset": "game_hud_bar_hp.png",
+      "source": "原始资源/img/game_hud_bar_hp.png",
+      "sha256": "9b7a04a735bf1a71655de4b325b6c68e04fa69eb710dff2011cae3baf5029466",
+      "width": 2,
+      "height": 6,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        2,
+        6
+      ]
+    },
+    {
+      "asset": "game_hud_bar_hp_red.png",
+      "source": "原始资源/img/game_hud_bar_hp_red.png",
+      "sha256": "c1f1249647b9d39373cfbf7ca9333f61295e5c6b68eabe84d55f54f5be05a4a6",
+      "width": 2,
+      "height": 6,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        2,
+        6
+      ]
+    },
+    {
+      "asset": "game_hud_bar_mp.png",
+      "source": "原始资源/img/game_hud_bar_mp.png",
+      "sha256": "5001069644848057450c5bb480008c8012412368f0526cfdf39445c0e0dc022c",
+      "width": 2,
+      "height": 4,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        2,
+        3
+      ]
+    },
+    {
+      "asset": "game_hud_bar_sh.png",
+      "source": "原始资源/img/game_hud_bar_sh.png",
+      "sha256": "1e39c88c774cebeec7e588084257e844cd30d3833c906974dc3b0c0638a5f0a8",
+      "width": 2,
+      "height": 6,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        2,
+        6
+      ]
+    },
+    {
+      "asset": "game_hud_element_good.png",
+      "source": "原始资源/img/game_hud_element_good.png",
+      "sha256": "838228249a7b4e631badbfe492de908ee5ce61a4aab8be766c8a999be22a424b",
+      "width": 28,
+      "height": 20,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        27,
+        19
+      ]
+    },
+    {
+      "asset": "game_hud_element_bad.png",
+      "source": "原始资源/img/game_hud_element_bad.png",
+      "sha256": "70267f074fb7ce7f9bf0294d04dedd794d2115258bdf5d275821d4ac040aa599",
+      "width": 28,
+      "height": 20,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        27,
+        19
+      ]
+    },
+    {
+      "asset": "_game_hud_soulbg1.png",
+      "source": "原始资源/img/_game_hud_soulbg1.png",
+      "sha256": "54cf3a326129e4b54b989a5dc5a8313374b1e4e47f6a21e0f90e2a5688839ead",
+      "width": 471,
+      "height": 114,
+      "alphaBoundsLTRB": [
+        1,
+        0,
+        468,
+        112
+      ]
+    },
+    {
+      "asset": "game_hud_soulbg1.png",
+      "source": "原始资源/img/game_hud_soulbg1.png",
+      "sha256": "7cc7dea028feb978a9c4be92e05eaff832cc5c1fb3a047d983b67898c1c5b15c",
+      "width": 471,
+      "height": 114,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        471,
+        114
+      ]
+    },
+    {
+      "asset": "game_hud_soulbg2.png",
+      "source": "原始资源/img/game_hud_soulbg2.png",
+      "sha256": "321b5f5c5ae7f96f3890458604c55d1596a03d7f72cc5f8bf651ed6c05a7d499",
+      "width": 390,
+      "height": 37,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        385,
+        37
+      ]
+    },
+    {
+      "asset": "game_hud_soulbg3.png",
+      "source": "原始资源/img/game_hud_soulbg3.png",
+      "sha256": "22e695b2e39ac2853aa1cd2d17117b984dca009df45ca89f021ce0eeaf16d498",
+      "width": 368,
+      "height": 19,
+      "alphaBoundsLTRB": [
+        2,
+        7,
+        365,
+        19
+      ]
+    },
+    {
+      "asset": "game_hud_soul_dot.png",
+      "source": "原始资源/img/game_hud_soul_dot.png",
+      "sha256": "93f4c4935dc6ac4e4e823a49c1f9a9271ad6105c0e07822984454c1eccf78a8a",
+      "width": 7,
+      "height": 6,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        7,
+        6
+      ]
+    },
+    {
+      "asset": "game_hud_btn_burn_d.png",
+      "source": "原始资源/img/game_hud_btn_burn_d.png",
+      "sha256": "c1656e77e36767fafec3f427299256701f2d35472cb17f4494a4a8c3f4115408",
+      "width": 228,
+      "height": 102,
+      "alphaBoundsLTRB": [
+        6,
+        0,
+        221,
+        102
+      ]
+    },
+    {
+      "asset": "game_hud_btn_burn_p.png",
+      "source": "原始资源/img/game_hud_btn_burn_p.png",
+      "sha256": "f5830b84e08dcbdc056009c307757c127cd241ede3f666625e23c2d9a5ab6fe6",
+      "width": 228,
+      "height": 102,
+      "alphaBoundsLTRB": [
+        6,
+        0,
+        222,
+        102
+      ]
+    },
+    {
+      "asset": "game_wave_bg.png",
+      "source": "原始资源/img/game_wave_bg.png",
+      "sha256": "be0fa8a688865ac7db67fdc918f9adde1f3c62bf3b66881bb331c5d3ee838347",
+      "width": 96,
+      "height": 61,
+      "alphaBoundsLTRB": [
+        1,
+        0,
+        96,
+        61
+      ]
+    },
+    {
+      "asset": "game_hud_mapc_bg.png",
+      "source": "原始资源/img/game_hud_mapc_bg.png",
+      "sha256": "d8b11b603294171324733c4c7f64aafcb800b31f0a3fb984c2194a2c3fa0675f",
+      "width": 284,
+      "height": 284,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        284,
+        284
+      ]
+    },
+    {
+      "asset": "cm_icon_battlemission.png",
+      "source": "原始资源/img/cm_icon_battlemission.png",
+      "sha256": "86b0f605a2146d1360fc4c708bb4447fa01e98de9aa641c99ea5ea0f2cbe1837",
+      "width": 100,
+      "height": 100,
+      "alphaBoundsLTRB": [
+        10,
+        7,
+        91,
+        91
+      ]
+    },
+    {
+      "asset": "cm_hud_top_btn_auto.png",
+      "source": "原始资源/img/cm_hud_top_btn_auto.png",
+      "sha256": "b6dc78c1642fc9ca1f3c6c960c3fe75db9c78ef8d331f516d7408df5b7f6445b",
+      "width": 60,
+      "height": 66,
+      "alphaBoundsLTRB": [
+        9,
+        14,
+        51,
+        52
+      ]
+    },
+    {
+      "asset": "cm_hud_top_btn_auto_p.png",
+      "source": "原始资源/img/cm_hud_top_btn_auto_p.png",
+      "sha256": "66d4593be08f80074606a9fcddff98b6cf4f8e47735fc34f7305f7c06c817f2e",
+      "width": 60,
+      "height": 66,
+      "alphaBoundsLTRB": [
+        10,
+        19,
+        50,
+        55
+      ]
+    },
+    {
+      "asset": "cm_hud_top_btn_speed.png",
+      "source": "原始资源/img/cm_hud_top_btn_speed.png",
+      "sha256": "7ed906dbdc5a3768ea0d5de09a03e17d7cb3fc818afdfca9872719b1dfcc8c77",
+      "width": 59,
+      "height": 66,
+      "alphaBoundsLTRB": [
+        17,
+        13,
+        50,
+        53
+      ]
+    },
+    {
+      "asset": "cm_hud_top_btn_speed_p.png",
+      "source": "原始资源/img/cm_hud_top_btn_speed_p.png",
+      "sha256": "64eb01d5119cea785718b611ae82458f5f6e9d9927c79efd73e0236e6168493a",
+      "width": 59,
+      "height": 66,
+      "alphaBoundsLTRB": [
+        18,
+        18,
+        49,
+        56
+      ]
+    },
+    {
+      "asset": "cm_hud_top_btn_speed2.png",
+      "source": "原始资源/img/cm_hud_top_btn_speed2.png",
+      "sha256": "7a7761e185fe2b4ec939611eda7107971ed99203479d7b794846f95521c029d5",
+      "width": 59,
+      "height": 66,
+      "alphaBoundsLTRB": [
+        10,
+        13,
+        50,
+        53
+      ]
+    },
+    {
+      "asset": "cm_hud_top_btn_speed2_p.png",
+      "source": "原始资源/img/cm_hud_top_btn_speed2_p.png",
+      "sha256": "82f66b326f18cd7b45902425b7c2dfb41501800937a9b9141d7bab58133e49d9",
+      "width": 59,
+      "height": 66,
+      "alphaBoundsLTRB": [
+        11,
+        18,
+        49,
+        56
+      ]
+    },
+    {
+      "asset": "cm_hud_top_btn_esc.png",
+      "source": "原始资源/img/cm_hud_top_btn_esc.png",
+      "sha256": "fdfca32166e75a427776140ee17a3f022ff5c27017a1730a896f8d0562473c45",
+      "width": 59,
+      "height": 66,
+      "alphaBoundsLTRB": [
+        12,
+        15,
+        47,
+        50
+      ]
+    },
+    {
+      "asset": "cm_hud_top_btn_esc_p.png",
+      "source": "原始资源/img/cm_hud_top_btn_esc_p.png",
+      "sha256": "22fb0059c2c7b2a64488049544341282866d87260f11334e78e32472900e49c5",
+      "width": 59,
+      "height": 66,
+      "alphaBoundsLTRB": [
+        13,
+        20,
+        46,
+        53
+      ]
+    },
+    {
+      "asset": "cm_hud_top_btn_pause.png",
+      "source": "原始资源/img/cm_hud_top_btn_pause.png",
+      "sha256": "d55621fb3de6d485686a6bd3b649d147869a7275c3edaca9d61d31270060939b",
+      "width": 59,
+      "height": 66,
+      "alphaBoundsLTRB": [
+        17,
+        16,
+        42,
+        50
+      ]
+    },
+    {
+      "asset": "cm_hud_top_btn_pause_p.png",
+      "source": "原始资源/img/cm_hud_top_btn_pause_p.png",
+      "sha256": "36b34d4ad0315ca9effe612f232e2dc1b739c9a0e6d4727cb9bc3e5aae0601d2",
+      "width": 59,
+      "height": 66,
+      "alphaBoundsLTRB": [
+        18,
+        21,
+        41,
+        53
+      ]
+    },
+    {
+      "asset": "cm_hud_top_btn_chatting.png",
+      "source": "原始资源/img/cm_hud_top_btn_chatting.png",
+      "sha256": "873b84a9a7c53fcc5b220e4ada258dd95ff219c6f0a2314700eabfb331c31344",
+      "width": 59,
+      "height": 66,
+      "alphaBoundsLTRB": [
+        11,
+        14,
+        48,
+        51
+      ]
+    },
+    {
+      "asset": "cm_hud_top_btn_chatting_p.png",
+      "source": "原始资源/img/cm_hud_top_btn_chatting_p.png",
+      "sha256": "8fe512c56e3660c216a23f1b781fa13d1c5fcbef4ffbe6c55ff93a0c7dfa8941",
+      "width": 59,
+      "height": 66,
+      "alphaBoundsLTRB": [
+        12,
+        19,
+        47,
+        54
+      ]
+    },
+    {
+      "asset": "cm_hud_top_btn_help.png",
+      "source": "原始资源/img/cm_hud_top_btn_help.png",
+      "sha256": "6c4aa9a9fbef37eaa99ce2ca61e5f9c816a44552c01daa4b9fefdf048fa668c7",
+      "width": 60,
+      "height": 66,
+      "alphaBoundsLTRB": [
+        9,
+        12,
+        52,
+        54
+      ]
+    },
+    {
+      "asset": "cm_hud_top_btn_help_p.png",
+      "source": "原始资源/img/cm_hud_top_btn_help_p.png",
+      "sha256": "53853def2ee0ff49e9960a5f0317afccb2f75c7a752b6d6e570d1dc808abd17b",
+      "width": 60,
+      "height": 66,
+      "alphaBoundsLTRB": [
+        10,
+        17,
+        51,
+        57
+      ]
+    },
+    {
+      "asset": "Faces/c1001_s.png",
+      "source": "原始资源/face/c1001_s.png",
+      "sha256": "6ce6d389ace800dc8b123372c08ffa5145ebbd1bdda4218de3f3aea5a523842b",
+      "width": 112,
+      "height": 112,
+      "alphaBoundsLTRB": [
+        3,
+        0,
+        112,
+        112
+      ]
+    },
+    {
+      "asset": "Faces/c1005_s.png",
+      "source": "原始资源/face/c1005_s.png",
+      "sha256": "1175c518974de77d3763c81918818fc502582b30bfd396c5a0f3ef7c5c9a5242",
+      "width": 112,
+      "height": 112,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        112,
+        112
+      ]
+    },
+    {
+      "asset": "Faces/c1062_s.png",
+      "source": "原始资源/face/c1062_s.png",
+      "sha256": "3ca54f9f2eb02fdeb93c6a75f6774643cfa541117782d822c5d8574bdf9b5060",
+      "width": 112,
+      "height": 112,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        112,
+        112
+      ]
+    },
+    {
+      "asset": "Skills/sk_c1001_1.png",
+      "source": "原始资源/skill/sk_c1001_1.png",
+      "sha256": "a6aaa743a0cccbfd27f7e50ff64564eb7b06b77cb9bd5663d245ab8fd734895c",
+      "width": 81,
+      "height": 84,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        81,
+        84
+      ]
+    },
+    {
+      "asset": "Skills/sk_c1001_2.png",
+      "source": "原始资源/skill/sk_c1001_2.png",
+      "sha256": "7ee764437d9c0c0b6abab67e0c2dafe41699aab1a233a37551ce4f48c6bf8ad2",
+      "width": 82,
+      "height": 84,
+      "alphaBoundsLTRB": [
+        1,
+        1,
+        80,
+        83
+      ]
+    },
+    {
+      "asset": "Skills/sk_c1001_3.png",
+      "source": "原始资源/skill/sk_c1001_3.png",
+      "sha256": "12245ef067fafe804b339d9e3590051895b063b3507387ba98fc2c01a6db2eb1",
+      "width": 81,
+      "height": 84,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        81,
+        84
+      ]
+    },
+    {
+      "asset": "Skills/sk_c1005_1.png",
+      "source": "原始资源/skill/sk_c1005_1.png",
+      "sha256": "b94058a27c27aed9e874c3a56857e191b119cbed0fe1994da4e6c91fe906d23e",
+      "width": 82,
+      "height": 84,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        81,
+        84
+      ]
+    },
+    {
+      "asset": "Skills/sk_c1005_2.png",
+      "source": "原始资源/skill/sk_c1005_2.png",
+      "sha256": "d6b26c59830e07292c6125738c7665a802ddb21b1cf7e26fca513b427c277530",
+      "width": 82,
+      "height": 84,
+      "alphaBoundsLTRB": [
+        1,
+        1,
+        80,
+        83
+      ]
+    },
+    {
+      "asset": "Skills/sk_c1005_3.png",
+      "source": "原始资源/skill/sk_c1005_3.png",
+      "sha256": "6b1deaae24c5391b2b79c852087f4bcce3c3fc1944a860d207496bab34bfe804",
+      "width": 82,
+      "height": 84,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        81,
+        84
+      ]
+    },
+    {
+      "asset": "Skills/sk_c1062_1.png",
+      "source": "原始资源/skill/sk_c1062_1.png",
+      "sha256": "8c0ae0a778566c04591dc3b47367646dc3313b444cfaefa31671d7ed133b40e1",
+      "width": 82,
+      "height": 84,
+      "alphaBoundsLTRB": [
+        1,
+        1,
+        80,
+        83
+      ]
+    },
+    {
+      "asset": "Skills/sk_c1062_2.png",
+      "source": "原始资源/skill/sk_c1062_2.png",
+      "sha256": "b589d17573dc52af5b105817127a31d7701fa6bfffe1bf6c457400073c788776",
+      "width": 82,
+      "height": 84,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        82,
+        84
+      ]
+    },
+    {
+      "asset": "Skills/sk_c1062_3.png",
+      "source": "原始资源/skill/sk_c1062_3.png",
+      "sha256": "3fa1a9d86aea26d15c03e63ef8d220666eda0002a89b122357dffcbbb0c7c677",
+      "width": 82,
+      "height": 84,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        82,
+        84
+      ]
+    },
+    {
+      "asset": "UnitShadow.png",
+      "source": "原始资源/model/default/shadow.png",
+      "sha256": "228ab8ccb5c41def03966b138bd61d5e5097cdf4a4d9e20a98c6a07fa973f381",
+      "width": 32,
+      "height": 16,
+      "alphaBoundsLTRB": [
+        0,
+        1,
+        32,
+        15
+      ]
+    },
+    {
+      "asset": "Skills/frame_skillup.png",
+      "source": "原始资源/skill/frame_skillup.png",
+      "sha256": "97394bf71cc8c4f310cb178bc6d84019c6dddac25a3a52cef22029b86094374f",
+      "width": 82,
+      "height": 84,
+      "alphaBoundsLTRB": [
+        2,
+        1,
+        73,
+        76
+      ]
+    },
+    {
+      "asset": "Skills/frame_skillup_passive.png",
+      "source": "原始资源/skill/frame_skillup_passive.png",
+      "sha256": "aa7ac2bc4efb923d86dbe7c71749ba06b432f1c499ef30c017d0980ce1f6153b",
+      "width": 82,
+      "height": 84,
+      "alphaBoundsLTRB": [
+        3,
+        2,
+        72,
+        75
+      ]
+    },
+    {
+      "asset": "Skills/frame_skillenchant.png",
+      "source": "原始资源/skill/frame_skillenchant.png",
+      "sha256": "1f195f0dd76aa992d18dec227920aac8a5d2acab62a7a54c7e476f634d30e870",
+      "width": 82,
+      "height": 84,
+      "alphaBoundsLTRB": [
+        1,
+        1,
+        75,
+        77
+      ]
+    },
+    {
+      "asset": "Faces/c1001_su.png",
+      "source": "原始资源/face/c1001_su.png",
+      "sha256": "f7063b80a972e565563dbea194ff982f181d23ef14a8a538fb98c3ede4584063",
+      "width": 436,
+      "height": 206,
+      "alphaBoundsLTRB": [
+        22,
+        14,
+        237,
+        206
+      ]
+    },
+    {
+      "asset": "Faces/c1005_su.png",
+      "source": "原始资源/face/c1005_su.png",
+      "sha256": "5e5dc1b065c627b04120a4051f63e069e684d37bd85db64d34118d99fc300c7a",
+      "width": 436,
+      "height": 206,
+      "alphaBoundsLTRB": [
+        0,
+        21,
+        227,
+        206
+      ]
+    },
+    {
+      "asset": "Faces/c1062_su.png",
+      "source": "原始资源/face/c1062_su.png",
+      "sha256": "10e46f9dfe5f8927e1e7244ae0d808563a1562f94433448d921efefcb1a87578",
+      "width": 436,
+      "height": 206,
+      "alphaBoundsLTRB": [
+        0,
+        5,
+        428,
+        206
+      ]
+    },
+    {
+      "asset": "cm_icon_promfire.png",
+      "source": "原始资源/img/cm_icon_promfire.png",
+      "sha256": "373421986f6332a9d2913862bfdac2dc1b2605cab2223bb8f3514709c86c18ca",
+      "width": 34,
+      "height": 34,
+      "alphaBoundsLTRB": [
+        1,
+        1,
+        32,
+        32
+      ]
+    },
+    {
+      "asset": "cm_icon_promice.png",
+      "source": "原始资源/img/cm_icon_promice.png",
+      "sha256": "9439629880c8cdc37620f190b59e5bd51862a518f8f1a69bcbb1abcfbf5ef13b",
+      "width": 34,
+      "height": 34,
+      "alphaBoundsLTRB": [
+        1,
+        1,
+        32,
+        32
+      ]
+    },
+    {
+      "asset": "cm_icon_role_knight.png",
+      "source": "原始资源/img/cm_icon_role_knight.png",
+      "sha256": "60c3726db162bbf110bc2efd77b95e993d9ee4c50c26474dbed758c33b33c865",
+      "width": 46,
+      "height": 46,
+      "alphaBoundsLTRB": [
+        3,
+        2,
+        44,
+        45
+      ]
+    },
+    {
+      "asset": "cm_icon_role_mage.png",
+      "source": "原始资源/img/cm_icon_role_mage.png",
+      "sha256": "89265e1f1a814291c1d2d406f010fa3f68cac1d8d21bc367a35b381dfa3083b9",
+      "width": 46,
+      "height": 46,
+      "alphaBoundsLTRB": [
+        0,
+        3,
+        46,
+        44
+      ]
+    },
+    {
+      "asset": "cm_icon_role_manauser.png",
+      "source": "原始资源/img/cm_icon_role_manauser.png",
+      "sha256": "e91413f8640d8f8eb4ecb256dc066c43b206e08ae13c32240146958a3438bb60",
+      "width": 46,
+      "height": 46,
+      "alphaBoundsLTRB": [
+        2,
+        2,
+        43,
+        43
+      ]
+    }
+  ],
+  "layoutSchemaReference": "https://raw.githubusercontent.com/cocos2d/cocos2d-x/v3/cocos/editor-support/cocostudio/fbs-files/CSParseBinary.fbs"
+}

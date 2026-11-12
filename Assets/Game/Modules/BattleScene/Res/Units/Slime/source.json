@@ -1,0 +1,23 @@
+{
+  "converterSha256": "7c22fb298a6eb8403a1fe9f7367d13a38dffa2af96a7b95b80658345a9478c25",
+  "files": [
+    {
+      "source": "原始资源/model/slime.scsp",
+      "sourceSha256": "d159892ea0ef07453289a46c4d07a4cb288c6f7c570cd1f86ab2416f91234cd5",
+      "asset": "Res/Units/Slime/slime.spine.json",
+      "assetSha256": "7e773add5e22d7ce25c9d17f3f5dc774b58e543a6177997bfd77c2e91b37c58e"
+    },
+    {
+      "source": "原始资源/model/slime.sct",
+      "sourceSha256": "3706a2eac5526eea06f77e0066131a8ee7ae32b9bbe58f06fc587aee2dad391b",
+      "asset": "Res/Units/Slime/slime.png",
+      "assetSha256": "bb165afd7c560128bcab5b3eea28a3cf59f2d74a7e5c16eb8d60e02710e226de"
+    },
+    {
+      "source": "原始资源/model/slime.atlas",
+      "sourceSha256": "6421ee41a172e96f7ef0455e44c391fbe35fe896d8216a6b768a75ebac356f19",
+      "asset": "Res/Units/Slime/slime.atlas.txt",
+      "assetSha256": "6421ee41a172e96f7ef0455e44c391fbe35fe896d8216a6b768a75ebac356f19"
+    }
+  ]
+}

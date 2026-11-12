@@ -1,0 +1,14 @@
+{
+  "name": "AstralOath.Client.BattleScene.Editor",
+  "rootNamespace": "AstralOath.Client.BattleScene.Editor",
+  "references": [
+    "AstralOath.Client.BattleScene",
+    "AstralOath.Client.Common",
+    "UnityEngine.UI",
+    "Unity.TextMeshPro"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "autoReferenced": false
+}

@@ -1,6 +1,6 @@
 # 当前项目状态
 
-核对日期：2026-11-12。运行时代码核对基线：`3fd85ca`。这是事实快照；修改能力、边界、验收状态或后续重点时立即更新。逐次变化见[变更日志](development/change-log.md)。
+核对日期：2026-11-12。更新链路核对基线：`3fd85ca`，战斗场景现状另见下文。这是事实快照；修改能力、边界、验收状态或后续重点时立即更新。逐次变化见[变更日志](development/change-log.md)。
 
 ## 已确定选型
 
@@ -13,6 +13,8 @@ Unity 2022.3.62f3 / URP / UGUI / TMP；Common/AOT 通用设施；普通 C# UIBas
 - Foundation 更新器：签名清单、哈希、断点、空间预检、原子版本切换、兼容预检、失败版本隔离及下次进程恢复。客户端可从配置的内容服务器取得兼容资源与 C# 业务 DLL。
 - 构建工具：Windows x64、Android ARM64 ASTC/ETC2 的完整母包和独立热更包，母包归档与签名发布工具。
 - CharacterLab：独立离线角色实验室，首批拉斯/梅赛德丝/安洁莉卡；双版本 Spine 与 FMOD 已集成。该入口只读取内置实验室内容，不等于 Foundation 远端更新入口。
+
+- BattleScene：首阶段独立冒险布局预览。两套原图分层森林、原作 HUD、三名英雄与两只史莱姆的 Spine 待机；Unity 可直接打开与编辑。见[场景验收](delivery/2026-11-12-battle-scene.md)。
 
 ## 必须知道的缺口
 
@@ -28,6 +30,6 @@ Unity 2022.3.62f3 / URP / UGUI / TMP；Common/AOT 通用设施；普通 C# UIBas
 - 控件变更：Unity EditMode 215/215、PlayMode 16/16；见[控件验收](delivery/2026-11-12-ui-controls.md)。本次文档/工具核对没有重跑 Unity。
 - 本次服务/内容/配置/协议检查结果：[地基复核](delivery/2026-11-12-foundation-reaudit.md)。MySQL真实集成需专用连接串，本次未重新验证。
 - 下一项更新工作：实现无UI的启动策略契约、服务端业务准入与客户端AOT预检；再接更新界面。顺序及验收见[复核记录](delivery/2026-11-12-foundation-reaudit.md)。
-- 下一项角色工作：按[战斗验收](delivery/battle-acceptance.md)及 CharacterPresentation README 中的明确缺口推进，由用户监督原作对照。
+- 下一项战斗工作：填拉斯、梅赛德丝、安洁莉卡的数据表，随后接权威战斗流程。研究证据见[原作战斗资料](development/epic-seven-battle-reference.md)，演出仍按[战斗验收](delivery/battle-acceptance.md)与 CharacterPresentation 的缺口由用户监督对照。
 
 没有持续外服追踪、自动生产部署或自动依赖升级。需要追踪国际服时等待用户明确指令。

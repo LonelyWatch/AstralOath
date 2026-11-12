@@ -1,0 +1,523 @@
+{
+  "formatVersion": 1,
+  "converter": "astraloath-background-extract/1",
+  "sourceRevision": "pack-15-r4262",
+  "alphaMode": "straight",
+  "conversion": "Decode SCT with Tools/CharacterAssets/convert.py; crop exact unrotated atlas rect; for A>0 C_out=min(255,floor((C_in*255+floor(A/2))/A)); for A=0 RGB=0; preserve A; no resize/repaint on exported layers.",
+  "decoderPath": "Tools/CharacterAssets/convert.py",
+  "decoderSourceSha256": "7c22fb298a6eb8403a1fe9f7367d13a38dffa2af96a7b95b80658345a9478c25",
+  "reproducer": "Tools/BattleScene/PreparePreviewArt.py",
+  "entries": [
+    {
+      "path": "Assets/Game/Modules/BattleScene/Res/Textures/Backgrounds/Forest2/forest2_0.png",
+      "region": "forest2_0",
+      "role": "ground",
+      "size": [
+        963,
+        256
+      ],
+      "source": "原始资源/bg/forest2.sct",
+      "sourceSha256": "9ecd5e7296dcea2d56d72f0aafaa05766bd4485c47328d323978fa130a58e5a8",
+      "atlasSource": "原始资源/bg/forest2.atlas",
+      "atlasSha256": "55c242f3114483d013bba4285c1cfe3d6f03ae0d1d1725afb74bf4fc1a9b8a6e",
+      "cropTopLeft": [
+        1,
+        1
+      ],
+      "cropSize": [
+        963,
+        256
+      ],
+      "sourceCropRgbaSha256": "090100f00ac1741befe3ba7d42500faf2abfdf6366cb13b579cf05f739ec0942",
+      "outputRgbaSha256": "f90beb06bd512dc5f2eeb99420a4dc4eb7d12c15a60a85c06edd03f49dc7d7bc",
+      "outputSha256": "eaa19e8940c8588529002e9bffbc3d591a6f351ac1c9c33e9cae1d86180a6eee",
+      "semiTransparentPixelCount": 8321,
+      "opaquePixelsUnchanged": true,
+      "alphaChannelUnchanged": true,
+      "transparentRgbZero": true
+    },
+    {
+      "path": "Assets/Game/Modules/BattleScene/Res/Textures/Backgrounds/Forest2/forest2_2.png",
+      "region": "forest2_2",
+      "role": "tree-medium",
+      "size": [
+        444,
+        375
+      ],
+      "source": "原始资源/bg/forest2.sct",
+      "sourceSha256": "9ecd5e7296dcea2d56d72f0aafaa05766bd4485c47328d323978fa130a58e5a8",
+      "atlasSource": "原始资源/bg/forest2.atlas",
+      "atlasSha256": "55c242f3114483d013bba4285c1cfe3d6f03ae0d1d1725afb74bf4fc1a9b8a6e",
+      "cropTopLeft": [
+        1,
+        656
+      ],
+      "cropSize": [
+        444,
+        375
+      ],
+      "sourceCropRgbaSha256": "ee27e61e9a1d9176600ef90695127c52696d22a3f930bfcdf34039a5bdf0bcaa",
+      "outputRgbaSha256": "66d38b266a0bc1aaef3df948ddd8b03f3f211248a7b5abbb27a0bd6101e10d56",
+      "outputSha256": "dce1e786f29185608acdaadd0e77115bbfa6150735a1243125d0643f44860c72",
+      "semiTransparentPixelCount": 8121,
+      "opaquePixelsUnchanged": true,
+      "alphaChannelUnchanged": true,
+      "transparentRgbZero": true
+    },
+    {
+      "path": "Assets/Game/Modules/BattleScene/Res/Textures/Backgrounds/Forest2/forest2_3.png",
+      "region": "forest2_3",
+      "role": "tree-large",
+      "size": [
+        536,
+        395
+      ],
+      "source": "原始资源/bg/forest2.sct",
+      "sourceSha256": "9ecd5e7296dcea2d56d72f0aafaa05766bd4485c47328d323978fa130a58e5a8",
+      "atlasSource": "原始资源/bg/forest2.atlas",
+      "atlasSha256": "55c242f3114483d013bba4285c1cfe3d6f03ae0d1d1725afb74bf4fc1a9b8a6e",
+      "cropTopLeft": [
+        1,
+        259
+      ],
+      "cropSize": [
+        536,
+        395
+      ],
+      "sourceCropRgbaSha256": "3db4abe02983d7a00abf77fe90ab2e6c3dc3243803c341fa1eef237d888bff38",
+      "outputRgbaSha256": "85a8c9fcc9e70323437ceb1a2eb14804f58462eea7cafb3b253a2de2427db041",
+      "outputSha256": "cc653fe46b71cb1c1eeeaf8e74eaddc10947801d8ce1c826866d882fde06a2ae",
+      "semiTransparentPixelCount": 13192,
+      "opaquePixelsUnchanged": true,
+      "alphaChannelUnchanged": true,
+      "transparentRgbZero": true
+    },
+    {
+      "path": "Assets/Game/Modules/BattleScene/Res/Textures/Backgrounds/Forest2/forest2_4.png",
+      "region": "forest2_4",
+      "role": "distant-shrubs",
+      "size": [
+        493,
+        112
+      ],
+      "source": "原始资源/bg/forest2.sct",
+      "sourceSha256": "9ecd5e7296dcea2d56d72f0aafaa05766bd4485c47328d323978fa130a58e5a8",
+      "atlasSource": "原始资源/bg/forest2.atlas",
+      "atlasSha256": "55c242f3114483d013bba4285c1cfe3d6f03ae0d1d1725afb74bf4fc1a9b8a6e",
+      "cropTopLeft": [
+        1,
+        1196
+      ],
+      "cropSize": [
+        493,
+        112
+      ],
+      "sourceCropRgbaSha256": "6ee55d7b37490bb35f7302531559ab2602bf4be00dc571dec4281c9789636944",
+      "outputRgbaSha256": "70e14bb98976faf5f3e325e03098019c0c3ef6c908e41067e115a2feff8bf3f6",
+      "outputSha256": "cb431d3ab24c06898eea44f2eff95369a6cc12e674e7f95d5bee32ebbd820835",
+      "semiTransparentPixelCount": 5309,
+      "opaquePixelsUnchanged": true,
+      "alphaChannelUnchanged": true,
+      "transparentRgbZero": true
+    },
+    {
+      "path": "Assets/Game/Modules/BattleScene/Res/Textures/Backgrounds/Forest2/forest2_6.png",
+      "region": "forest2_6",
+      "role": "tree-round",
+      "size": [
+        302,
+        343
+      ],
+      "source": "原始资源/bg/forest2.sct",
+      "sourceSha256": "9ecd5e7296dcea2d56d72f0aafaa05766bd4485c47328d323978fa130a58e5a8",
+      "atlasSource": "原始资源/bg/forest2.atlas",
+      "atlasSha256": "55c242f3114483d013bba4285c1cfe3d6f03ae0d1d1725afb74bf4fc1a9b8a6e",
+      "cropTopLeft": [
+        539,
+        259
+      ],
+      "cropSize": [
+        302,
+        343
+      ],
+      "sourceCropRgbaSha256": "6ce78b71312c7b7a5517b486a970a001c79d6b9db55438041637be106853b234",
+      "outputRgbaSha256": "85940ea2e2ddbea686f3e37d0360a680899b92cdcc7aa3c0a67eadb3b8aa6457",
+      "outputSha256": "47b2916dfd7e0e10c054ff8df2dacc98b1a2de5df352f7738c5d54b90644a9e6",
+      "semiTransparentPixelCount": 5782,
+      "opaquePixelsUnchanged": true,
+      "alphaChannelUnchanged": true,
+      "transparentRgbZero": true
+    },
+    {
+      "path": "Assets/Game/Modules/BattleScene/Res/Textures/Backgrounds/Forest2/forest2_11.png",
+      "region": "forest2_11",
+      "role": "sky",
+      "size": [
+        467,
+        161
+      ],
+      "source": "原始资源/bg/forest2.sct",
+      "sourceSha256": "9ecd5e7296dcea2d56d72f0aafaa05766bd4485c47328d323978fa130a58e5a8",
+      "atlasSource": "原始资源/bg/forest2.atlas",
+      "atlasSha256": "55c242f3114483d013bba4285c1cfe3d6f03ae0d1d1725afb74bf4fc1a9b8a6e",
+      "cropTopLeft": [
+        1,
+        1033
+      ],
+      "cropSize": [
+        467,
+        161
+      ],
+      "sourceCropRgbaSha256": "6c1ec9062cc829ca420cad4b0decf60ac23a77db8732d34417b2ebe4d8b7844f",
+      "outputRgbaSha256": "6c1ec9062cc829ca420cad4b0decf60ac23a77db8732d34417b2ebe4d8b7844f",
+      "outputSha256": "12727c48bf444a8bc2a1bac9442a70e6340297a2f12c8ea7c95e173af17ba24c",
+      "semiTransparentPixelCount": 0,
+      "opaquePixelsUnchanged": true,
+      "alphaChannelUnchanged": true,
+      "transparentRgbZero": true
+    },
+    {
+      "path": "Assets/Game/Modules/BattleScene/Res/Textures/Backgrounds/Forest3/forest3_0.png",
+      "region": "forest3_0",
+      "role": "ground",
+      "size": [
+        963,
+        256
+      ],
+      "source": "原始资源/bg/forest3.sct",
+      "sourceSha256": "01f9886ef2ab12a22d38e2d9b0a07a33b1ee34d6dbb60793feaa03d3d62b2b60",
+      "atlasSource": "原始资源/bg/forest3.atlas",
+      "atlasSha256": "414c2c155e6aec103e27b3da6982c9a02b4b0c3b08f0b47a00c83303d03093c9",
+      "cropTopLeft": [
+        1,
+        1
+      ],
+      "cropSize": [
+        963,
+        256
+      ],
+      "sourceCropRgbaSha256": "c3c5035df53118f8aba9a43f1ee457b54d26a331411a0481fb52290f6231f131",
+      "outputRgbaSha256": "b45e2854e3ed4ca481849f1cb87bc8fd91faf361202ebc08a20430cf58ec931e",
+      "outputSha256": "3dcaad790dcfeb9ecb6f7547c09cc314ecd397352ac2e43d0654491bf9c8857a",
+      "semiTransparentPixelCount": 5772,
+      "opaquePixelsUnchanged": true,
+      "alphaChannelUnchanged": true,
+      "transparentRgbZero": true
+    },
+    {
+      "path": "Assets/Game/Modules/BattleScene/Res/Textures/Backgrounds/Forest3/forest3_2.png",
+      "region": "forest3_2",
+      "role": "tree-medium",
+      "size": [
+        444,
+        375
+      ],
+      "source": "原始资源/bg/forest3.sct",
+      "sourceSha256": "01f9886ef2ab12a22d38e2d9b0a07a33b1ee34d6dbb60793feaa03d3d62b2b60",
+      "atlasSource": "原始资源/bg/forest3.atlas",
+      "atlasSha256": "414c2c155e6aec103e27b3da6982c9a02b4b0c3b08f0b47a00c83303d03093c9",
+      "cropTopLeft": [
+        1,
+        656
+      ],
+      "cropSize": [
+        444,
+        375
+      ],
+      "sourceCropRgbaSha256": "52d400e415221672c7e1107f380b3dfbf285827ad6fb3676f0f0deba51048fe8",
+      "outputRgbaSha256": "baf14ab5378a63a337229a49b6589da6e6cb86e79facede2d563579575f877f6",
+      "outputSha256": "ef126bc68b7f8e46d7bbb344787fe5168cde71bc15847a868bd538667970dfeb",
+      "semiTransparentPixelCount": 5052,
+      "opaquePixelsUnchanged": true,
+      "alphaChannelUnchanged": true,
+      "transparentRgbZero": true
+    },
+    {
+      "path": "Assets/Game/Modules/BattleScene/Res/Textures/Backgrounds/Forest3/forest3_3.png",
+      "region": "forest3_3",
+      "role": "tree-large",
+      "size": [
+        536,
+        395
+      ],
+      "source": "原始资源/bg/forest3.sct",
+      "sourceSha256": "01f9886ef2ab12a22d38e2d9b0a07a33b1ee34d6dbb60793feaa03d3d62b2b60",
+      "atlasSource": "原始资源/bg/forest3.atlas",
+      "atlasSha256": "414c2c155e6aec103e27b3da6982c9a02b4b0c3b08f0b47a00c83303d03093c9",
+      "cropTopLeft": [
+        1,
+        259
+      ],
+      "cropSize": [
+        536,
+        395
+      ],
+      "sourceCropRgbaSha256": "6cb306e5839681ba9da6967dd8c1e2484b3904157c5ae46a67adde48ab5ffd1a",
+      "outputRgbaSha256": "c3cc7e9394f57681e225ca6f344fbd04aff550050f37f75f7b3622c5b9a14070",
+      "outputSha256": "7febe3dcc01cb0965d4b651d51e5530d6e18be471e7396d5ddb2a129a25d28d3",
+      "semiTransparentPixelCount": 12859,
+      "opaquePixelsUnchanged": true,
+      "alphaChannelUnchanged": true,
+      "transparentRgbZero": true
+    },
+    {
+      "path": "Assets/Game/Modules/BattleScene/Res/Textures/Backgrounds/Forest3/forest3_4.png",
+      "region": "forest3_4",
+      "role": "distant-shrubs",
+      "size": [
+        493,
+        112
+      ],
+      "source": "原始资源/bg/forest3.sct",
+      "sourceSha256": "01f9886ef2ab12a22d38e2d9b0a07a33b1ee34d6dbb60793feaa03d3d62b2b60",
+      "atlasSource": "原始资源/bg/forest3.atlas",
+      "atlasSha256": "414c2c155e6aec103e27b3da6982c9a02b4b0c3b08f0b47a00c83303d03093c9",
+      "cropTopLeft": [
+        1,
+        1196
+      ],
+      "cropSize": [
+        493,
+        112
+      ],
+      "sourceCropRgbaSha256": "c28fafc9c7b28bda78023056402fd2935a8c4e41b72d01a5852b4510572311bc",
+      "outputRgbaSha256": "e526d7ad9a428432b9ff60e6df7c7c4bc823605d61f27ebce86594f13f202a50",
+      "outputSha256": "74e77c5b9f4a8bc9a8dd956ca83ab8065da6ae9437df5ac7fb0bd92f22670610",
+      "semiTransparentPixelCount": 2231,
+      "opaquePixelsUnchanged": true,
+      "alphaChannelUnchanged": true,
+      "transparentRgbZero": true
+    },
+    {
+      "path": "Assets/Game/Modules/BattleScene/Res/Textures/Backgrounds/Forest3/forest3_6.png",
+      "region": "forest3_6",
+      "role": "tree-round",
+      "size": [
+        302,
+        343
+      ],
+      "source": "原始资源/bg/forest3.sct",
+      "sourceSha256": "01f9886ef2ab12a22d38e2d9b0a07a33b1ee34d6dbb60793feaa03d3d62b2b60",
+      "atlasSource": "原始资源/bg/forest3.atlas",
+      "atlasSha256": "414c2c155e6aec103e27b3da6982c9a02b4b0c3b08f0b47a00c83303d03093c9",
+      "cropTopLeft": [
+        539,
+        259
+      ],
+      "cropSize": [
+        302,
+        343
+      ],
+      "sourceCropRgbaSha256": "cd049364a331eb1d670c86f9ac9bbc341c03507eb8e63caa1dbe490330038d05",
+      "outputRgbaSha256": "995db53751e845f374037845dcbdcb4aac80431a46317656c336f69aa34635e6",
+      "outputSha256": "cff34b1fe2b9fca1d02c62a73b47d892ff8e6e404040b7091545e88e9bc4ea4a",
+      "semiTransparentPixelCount": 5950,
+      "opaquePixelsUnchanged": true,
+      "alphaChannelUnchanged": true,
+      "transparentRgbZero": true
+    },
+    {
+      "path": "Assets/Game/Modules/BattleScene/Res/Textures/Backgrounds/Forest3/forest3_11.png",
+      "region": "forest3_11",
+      "role": "sky",
+      "size": [
+        467,
+        161
+      ],
+      "source": "原始资源/bg/forest3.sct",
+      "sourceSha256": "01f9886ef2ab12a22d38e2d9b0a07a33b1ee34d6dbb60793feaa03d3d62b2b60",
+      "atlasSource": "原始资源/bg/forest3.atlas",
+      "atlasSha256": "414c2c155e6aec103e27b3da6982c9a02b4b0c3b08f0b47a00c83303d03093c9",
+      "cropTopLeft": [
+        1,
+        1033
+      ],
+      "cropSize": [
+        467,
+        161
+      ],
+      "sourceCropRgbaSha256": "2add01873c30ebc2a8b6b376b16218056c15ceb9b8502059647123d147a5284e",
+      "outputRgbaSha256": "6b26eda120a9304eedb312c1cb96b9b2a32c539fb3afd1809c7035ec0156e5c6",
+      "outputSha256": "8fe5a1e527b2f3b3e8c1a881eb97acf22cb7ee3eeb63f7c062ee1af1fb563833",
+      "semiTransparentPixelCount": 490,
+      "opaquePixelsUnchanged": true,
+      "alphaChannelUnchanged": true,
+      "transparentRgbZero": true
+    }
+  ],
+  "themes": [
+    {
+      "assetId": "forest2",
+      "label": "晴天森林",
+      "atlasSize": [
+        991,
+        1309
+      ],
+      "decoder": {
+        "width": 991,
+        "height": 1309,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved"
+      },
+      "previewPlacements": [
+        {
+          "region": "forest2_11",
+          "size": [
+            1920,
+            662
+          ],
+          "topLeft": [
+            0,
+            0
+          ]
+        },
+        {
+          "region": "forest2_4",
+          "size": [
+            1920,
+            436
+          ],
+          "topLeft": [
+            0,
+            490
+          ]
+        },
+        {
+          "region": "forest2_0",
+          "size": [
+            1920,
+            510
+          ],
+          "topLeft": [
+            0,
+            570
+          ]
+        },
+        {
+          "region": "forest2_3",
+          "size": [
+            1126,
+            830
+          ],
+          "topLeft": [
+            -430,
+            -100
+          ]
+        },
+        {
+          "region": "forest2_2",
+          "size": [
+            577,
+            487
+          ],
+          "topLeft": [
+            1500,
+            240
+          ]
+        },
+        {
+          "region": "forest2_6",
+          "size": [
+            211,
+            240
+          ],
+          "topLeft": [
+            1380,
+            420
+          ]
+        }
+      ]
+    },
+    {
+      "assetId": "forest3",
+      "label": "暮色森林",
+      "atlasSize": [
+        991,
+        1309
+      ],
+      "decoder": {
+        "width": 991,
+        "height": 1309,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved"
+      },
+      "previewPlacements": [
+        {
+          "region": "forest3_11",
+          "size": [
+            1920,
+            662
+          ],
+          "topLeft": [
+            0,
+            0
+          ]
+        },
+        {
+          "region": "forest3_4",
+          "size": [
+            1920,
+            436
+          ],
+          "topLeft": [
+            0,
+            490
+          ]
+        },
+        {
+          "region": "forest3_0",
+          "size": [
+            1920,
+            510
+          ],
+          "topLeft": [
+            0,
+            570
+          ]
+        },
+        {
+          "region": "forest3_3",
+          "size": [
+            1126,
+            830
+          ],
+          "topLeft": [
+            -430,
+            -100
+          ]
+        },
+        {
+          "region": "forest3_2",
+          "size": [
+            577,
+            487
+          ],
+          "topLeft": [
+            1500,
+            240
+          ]
+        },
+        {
+          "region": "forest3_6",
+          "size": [
+            211,
+            240
+          ],
+          "topLeft": [
+            1380,
+            420
+          ]
+        }
+      ]
+    }
+  ],
+  "sourceLayoutStatus": "Unverified: no forest2/forest3 layout found in available plaintext CSB/JSON/TSV search. background_main.db/background_sub_*.db are unparsed. SCA/SCSP geometry and animations not imported. Preview positions are hand-authored staging suggestions, not original game layout.",
+  "importRecommendation": {
+    "sRGBTexture": true,
+    "alphaIsTransparency": true,
+    "alphaMode": "straight",
+    "mipmaps": false,
+    "readWrite": false,
+    "spritePivot": "center unless stage layout specifies otherwise"
+  }
+}

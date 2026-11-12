@@ -1,0 +1,11 @@
+{
+  "name": "AstralOath.Client.BattleScene",
+  "rootNamespace": "AstralOath.Client.BattleScene",
+  "references": [
+    "AstralOath.Client.Common",
+    "AstralOath.Client.Skeletons",
+    "UnityEngine.UI",
+    "Unity.TextMeshPro"
+  ],
+  "autoReferenced": false
+}
