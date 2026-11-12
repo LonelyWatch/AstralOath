@@ -5,7 +5,7 @@
 ## 2026-11-12 — 战斗 HUD 燃魂与技能选中
 
 - 导入原作 Burn/Cancel、普通及燃魂技能描边、起手与魂力使用动效。补齐战斗场景的点击链和 Binder 生命周期。拉斯 S2 的燃魂描边在起手后 231 毫秒出现。
-- 29 项素材可复现，Unity 场景回归 2/2、EditMode 215/215。截图复核后修正 Burn 字样叠绘和右侧描边的对齐。当前为 HUD 交互预览，操作和复现见[战斗场景 README](../../Assets/Game/Modules/BattleScene/README.md)。
+- 29 项素材通过源文件与 Git 索引哈希核对，原版 atlas 保留原始换行。Unity 场景回归 2/2、EditMode 215/215。截图复核后修正 Burn 字样叠绘和右侧描边的对齐。当前为 HUD 交互预览，操作和复现见[战斗场景 README](../../Assets/Game/Modules/BattleScene/README.md)。
 
 ## 2026-11-12 — 等级面板与战斗单位
 
