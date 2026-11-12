@@ -55,3 +55,7 @@ Unity2022.3.62f3 Windows Editor隔离工程，真实本地资产。三名角色�
 通用接入见[源演出规范](../development/battle-source-presentation.md)和[ADR012](../architecture/adr/012-battle-presentation-clock.md)。新增角色先核对同版本闭包、显式动画名、源时序/坐标/生命周期，再录取阶段帧和性能数据；禁止按角色ID补速率、隐藏队友或固定偏移掩盖解析错误。重要发现、决策、测量和未验证差异即时写文档已加入AGENTS及通用规范。
 
 首批九技能可播放与回归通过不等于全E7逐像素还原。有限LAYOUT、MOVE参数、shake powerX/powerY、SINE相位、DARK accel、未映射Fire动作以及原版每击权重仍需补证；本轮没有静默宣布这些语义已确定。场景使用当前共享规则的本地权威模拟；无新增联机协议或服务端结算行为。
+
+## 提交与远端检查
+
+实现提交 `5a8da7f489d7437bf6d9f0a19fe1bd0e95804b29` 已推送origin/main，[Foundation checks](https://github.com/LonelyWatch/AstralOath/actions/runs/43291919658)实际完成并通过。此后仅补本文及实施计划的验收状态，不改变运行时代码。远端检查不包含Unity许可、Player或MySQL设备环境；本机测试结果仍以上述独立日志为准。
