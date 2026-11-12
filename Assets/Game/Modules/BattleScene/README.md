@@ -20,7 +20,7 @@
 
 ## 角色配置
 
-三人裸面板、九技能、强化增量及文案已由 Luban 生成至 `Configs/battle-catalog.json`。编辑入口及来源见[战斗角色数据](../../../../docs/development/battle-character-data.md)。场景仍显示布局样例，正式战斗接入时从指定配置版本读取数据。
+Luban 快照 `Configs/battle-catalog.json` 含三名英雄、成长模板、觉醒节点、九技能、强化与文案。编辑入口及来源见[战斗角色数据](../../../../docs/development/battle-character-data.md)。Shared Battle 现已支持[面板计算、单位创建与站位](../../../../docs/development/battle-growth.md)。当前场景继续显示作者预设。正式接入时，按队伍与 1–4 号槽映射脚点，并通过服务端快照更新界面。
 
 ## 素材和验证
 

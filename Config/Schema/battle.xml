@@ -5,6 +5,7 @@
     <var name="element" type="string"/>
     <var name="heroClass" type="string"/>
     <var name="zodiac" type="string"/>
+    <var name="growthPresetId" type="string#ref=battle.BattleGrowthPresets"/>
     <var name="baseStars" type="int#range=[1,6]"/>
     <var name="level" type="int#range=[1,60]"/>
     <var name="stars" type="int#range=[1,6]"/>
@@ -16,6 +17,33 @@
     <var name="speed" type="int#range=[1,1000]"/>
     <var name="critChanceBp" type="int#range=[0,10000]"/>
     <var name="critDamageBp" type="int#range=[10000,35000]"/>
+    <var name="effectivenessBp" type="int#range=[0,100000]"/>
+    <var name="effectResistanceBp" type="int#range=[0,100000]"/>
+  </bean>
+
+  <bean name="GrowthPresetRow">
+    <var name="id" type="string"/>
+    <var name="nativeStars" type="int#range=[1,6]"/>
+    <var name="heroClass" type="string"/>
+    <var name="zodiac" type="string"/>
+    <var name="attackCoefficientMilli" type="int#range=[1,10000000]"/>
+    <var name="healthCoefficientMilli" type="int#range=[1,10000000]"/>
+    <var name="defenseCoefficientMilli" type="int#range=[1,10000000]"/>
+    <var name="speedMilli" type="int#range=[1,1000000]"/>
+  </bean>
+
+  <bean name="AwakeningStepRow">
+    <var name="id" type="string"/>
+    <var name="heroId" type="string#ref=battle.BattleHeroes"/>
+    <var name="rank" type="int#range=[1,6]"/>
+    <var name="attackFlat" type="int#range=[0,100000]"/>
+    <var name="healthFlat" type="int#range=[0,1000000]"/>
+    <var name="attackPercentBp" type="int#range=[0,100000]"/>
+    <var name="healthPercentBp" type="int#range=[0,100000]"/>
+    <var name="defensePercentBp" type="int#range=[0,100000]"/>
+    <var name="speedFlat" type="int#range=[0,1000]"/>
+    <var name="critChanceBp" type="int#range=[0,10000]"/>
+    <var name="critDamageBp" type="int#range=[0,35000]"/>
     <var name="effectivenessBp" type="int#range=[0,100000]"/>
     <var name="effectResistanceBp" type="int#range=[0,100000]"/>
   </bean>
@@ -56,6 +84,8 @@
   </bean>
 
   <table name="BattleHeroes" value="HeroRow" input="battle_heroes.csv"/>
+  <table name="BattleGrowthPresets" value="GrowthPresetRow" input="battle_growth_presets.csv"/>
+  <table name="BattleAwakeningSteps" value="AwakeningStepRow" input="battle_awakening_steps.csv"/>
   <table name="BattleSkills" value="SkillRow" input="battle_skills.csv"/>
   <table name="BattleSkillEnhancements" value="EnhancementRow" input="battle_skill_enhancements.csv"/>
   <table name="BattleMessages" value="MessageRow" input="battle_messages.csv"/>

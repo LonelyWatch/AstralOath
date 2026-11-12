@@ -29,6 +29,9 @@ try {
     foreach ($file in @('Tools/Config/Generate.ps1', 'Tools/Config/ValidateBattleCatalog.ps1',
         'Tools/dependencies.lock.json', 'Tools/Config/VerifyAccessor/Program.cs',
         'Tools/Config/VerifyAccessor/VerifyAccessor.csproj',
+        'Shared/com.astraloath.shared/Runtime/Battle/BattleStats.cs',
+        'Shared/com.astraloath.shared/Runtime/Battle/HeroGrowthPreset.cs',
+        'Shared/com.astraloath.shared/Runtime/Battle/HeroStatCalculator.cs',
         'Assets/Game/Modules/FoundationDemo/Res/Text/demo-resource.txt')) {
         $destination = Join-Path $work $file
         [void][IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($destination))
@@ -66,9 +69,18 @@ try {
     $heroTable = Join-Path $work 'Config/Tables/battle_heroes.csv'
     $heroRows = @(Read-LubanRows $heroTable)
     $changedHeroId = $heroRows[0].id
-    $changedAttack = [int]$heroRows[0].attack + 1
-    $heroRows[0].attack = [string]$changedAttack
+    $changedSpeed = [int]$heroRows[0].speed + 1
+    $heroRows[0].speed = [string]$changedSpeed
     Write-LubanRows $heroTable $heroRows
+    $validHeroes = Get-Content -LiteralPath $heroTable -Raw -Encoding utf8
+    $presetTable = Join-Path $work 'Config/Tables/battle_growth_presets.csv'
+    $presetRows = @(Read-LubanRows $presetTable)
+    $changedPreset = @($presetRows | Where-Object id -CEQ $heroRows[0].growthPresetId)
+    if ($changedPreset.Count -ne 1) { throw 'The battle fixture needs one matching growth preset.' }
+    $changedPreset[0].speedMilli = [string]([int]$changedPreset[0].speedMilli + 1000)
+    Write-LubanRows $presetTable $presetRows
+    $awakeningTable = Join-Path $work 'Config/Tables/battle_awakening_steps.csv'
+    $validAwakenings = Get-Content -LiteralPath $awakeningTable -Raw -Encoding utf8
     $skillTable = Join-Path $work 'Config/Tables/battle_skills.csv'
     $originalSkills = Get-Content -LiteralPath $skillTable -Raw -Encoding utf8
     $generate = Join-Path $work 'Tools/Config/Generate.ps1'
@@ -96,11 +108,13 @@ function global:tar { throw 'System tar is unavailable: LZMA codec is unsupporte
     $battleText = Get-Content -LiteralPath $battlePath -Raw -Encoding utf8
     $battle = $battleText | ConvertFrom-Json
     if ($battle.schemaVersion -ne 1 -or
-        @($battle.heroes | Where-Object id -CEQ $changedHeroId)[0].attack -ne $changedAttack) {
+        @($battle.heroes | Where-Object id -CEQ $changedHeroId)[0].speed -ne $changedSpeed) {
         throw 'The BattleScene snapshot did not pick up the edited hero source row.'
     }
     foreach ($table in @(
         @{ Group = 'heroes'; File = 'battle_battleheroes.json' },
+        @{ Group = 'growthPresets'; File = 'battle_battlegrowthpresets.json' },
+        @{ Group = 'awakeningSteps'; File = 'battle_battleawakeningsteps.json' },
         @{ Group = 'skills'; File = 'battle_battleskills.json' },
         @{ Group = 'enhancements'; File = 'battle_battleskillenhancements.json' },
         @{ Group = 'messages'; File = 'battle_battlemessages.json' }
@@ -143,6 +157,35 @@ function global:tar { throw 'System tar is unavailable: LZMA codec is unsupporte
         }
         Set-Content -LiteralPath $skillTable -Value $originalSkills -NoNewline -Encoding utf8
     }
+    foreach ($invalid in @('growth-profile', 'growth-panel', 'awakening-rank')) {
+        if ($invalid -eq 'awakening-rank') {
+            $awakeningRows = @(Read-LubanRows $awakeningTable)
+            $sameHero = @($awakeningRows | Where-Object heroId -CEQ $awakeningRows[0].heroId)
+            $sameHero[1].rank = $sameHero[0].rank
+            Write-LubanRows $awakeningTable $awakeningRows
+            $expectedError = 'Battle awakening rank'
+        } else {
+            $heroRows = @(Read-LubanRows $heroTable)
+            if ($invalid -eq 'growth-profile') {
+                $otherPreset = @($presetRows | Where-Object id -CNE $heroRows[0].growthPresetId)[0]
+                $heroRows[0].growthPresetId = $otherPreset.id
+                $expectedError = 'Battle hero growth preset'
+            } else {
+                $heroRows[0].attack = [string]([int]$heroRows[0].attack + 1)
+                $expectedError = 'Battle hero growth stats'
+            }
+            Write-LubanRows $heroTable $heroRows
+        }
+        $invalidLog = & $pwsh -NoProfile -File $generate -Dotnet $dotnet -SyncClient 2>&1
+        if ($LASTEXITCODE -eq 0 -or ($invalidLog -join "`n") -notmatch [regex]::Escape($expectedError)) {
+            throw "Invalid battle $invalid was not rejected by the expected validator: $($invalidLog -join "`n")"
+        }
+        if ((Get-Content -LiteralPath $battlePath -Raw -Encoding utf8) -cne $battleText) {
+            throw "Rejected battle $invalid changed the published client snapshot."
+        }
+        Set-Content -LiteralPath $heroTable -Value $validHeroes -NoNewline -Encoding utf8
+        Set-Content -LiteralPath $awakeningTable -Value $validAwakenings -NoNewline -Encoding utf8
+    }
     foreach ($invalid in @('0', '31')) {
         Set-Content -LiteralPath $ui -Value ($changed.Replace(',10,', ",$invalid,")) -NoNewline -Encoding utf8
         & $pwsh -NoProfile -File $generate -Dotnet $dotnet -VerifyAccessors -SyncClient
@@ -154,7 +197,7 @@ function global:tar { throw 'System tar is unavailable: LZMA codec is unsupporte
     if ($LASTEXITCODE -eq 0 -or ($corruptLog -join "`n") -notmatch 'Checksum mismatch') {
         throw 'A corrupted extractor was not rejected before execution.'
     }
-    Write-Host 'Config fixture passed generation without tar, edited demo and battle snapshots, binary accessors, invalid presentation/slot/empty coefficient/bounds rejection and extractor checksum rejection.'
+    Write-Host 'Config fixture passed generation without tar, edited demo and battle snapshots, binary accessors, invalid presentation/slot/empty coefficient/growth preset/growth panel/awakening rank/bounds rejection and extractor checksum rejection.'
 } finally {
     $item = Get-Item -LiteralPath $work
     if ($item.Parent.FullName -ne (Join-Path $repo '.artifacts') -or

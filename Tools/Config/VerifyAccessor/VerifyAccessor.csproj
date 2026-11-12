@@ -9,5 +9,8 @@
   <ItemGroup>
     <Compile Include="$(GeneratedSourceDirectory)/**/*.cs" />
     <Compile Include="../../../.tools/luban-v5.1.0/runtime/*.cs" />
+    <Compile Include="../../../Shared/com.astraloath.shared/Runtime/Battle/BattleStats.cs" Link="Battle/BattleStats.cs" />
+    <Compile Include="../../../Shared/com.astraloath.shared/Runtime/Battle/HeroGrowthPreset.cs" Link="Battle/HeroGrowthPreset.cs" />
+    <Compile Include="../../../Shared/com.astraloath.shared/Runtime/Battle/HeroStatCalculator.cs" Link="Battle/HeroStatCalculator.cs" />
   </ItemGroup>
 </Project>

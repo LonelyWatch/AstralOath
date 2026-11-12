@@ -2,16 +2,17 @@
 
 ## 维护入口
 
-战斗第二步固定三名普通形态英雄。初始配置采用 **Lv60、六星、六觉醒、技能 +0**，不叠加装备、神器、刻印、专属装备、转职和剧情强化。角色的初始星级与这一面板档位分别保存。当前每个 ID 只有一个面板档位；等级成长、变体和升星后的中间档位需要各自的数据证据。
+战斗第二步固定三名普通形态英雄。初始配置采用 **Lv60、六星、六觉醒、技能 +0**，不叠加装备、神器、刻印、专属装备、转职和剧情强化。角色的初始星级与这一面板档位分别保存。此档位用作验收锚点。任意合法等级、星级和觉醒档由共享公式计算，详细口径与证据见[等级面板与战斗单位](battle-growth.md)。
 
-- `Config/Tables/battle_heroes.csv` 管理三人的身份、属性、职业、星座和裸面板。名称键复用 CharacterLab 源表。
+- `Config/Tables/battle_heroes.csv` 管理三人的身份、属性、职业、星座、成长模板引用和验收面板。名称键复用 CharacterLab 源表。
+- `Config/Tables/battle_growth_presets.csv` 维护可复用的成长系数，`battle_awakening_steps.csv` 按英雄记录各阶觉醒增量。
 - `Config/Tables/battle_skills.csv` 管理九个主动技能的目标类型、冷却、魂力、魂燃与参考系数。技能 ID 为 `角色ID.s槽位`。`presentationId` 与本地导入的 STG 对应，`iconAsset` 为 Unity 源资源路径。
 - `Config/Tables/battle_skill_enhancements.csv` 管理 45 段 +1 至 +5 的战斗属性增量。正的 `cooldown_turns` 表示减少的回合数；强化材料与费用属于成长系统。
 - `Config/Tables/battle_messages.csv` 管理九个技能的中文工作译名与效果摘要。战斗逻辑应消费经核实的类型和参数，技能说明供人阅读。
 
 `Bp` 后缀使用万分比，10000 表示 100%。例如攻击倍率 0.9 写 9000，暴伤 150% 写 15000。技能 `powerBp` 是独立的技能系数；伤害公式中的全局常数、结算顺序、命中、抗性、取整与伤害修正另行验证。CSV 中可空倍率明确写 `null`。锁定版本的 Luban 会把空 CSV 数值单元格读作 0，导表拒绝把 0 当成一个已填写系数。安洁莉卡 S2/S3 的攻击倍率与 Power 不适用。
 
-在仓库根运行 `& ./.tools/powershell/pwsh.exe -NoProfile -File Tools/Config/Generate.ps1 -VerifyAccessors -SyncClient`。客户端快照写入 `Assets/Game/Modules/BattleScene/Configs/battle-catalog.json`，包含 3 英雄、9 技能、45 强化和 21 条文案（18 条技能文案加 3 个复用角色名）。同次生成 `.artifacts/config/json`、`bin` 与 `csharp`；C# 访问器已在 .NET 中逐字段读回二进制。客户端快照和 .NET 产物都由同一批 CSV 生成。第三步再接场景和权威服务，正式发布时绑定所使用的内容版本。请勿手改生成文件。
+在仓库根运行 `& ./.tools/powershell/pwsh.exe -NoProfile -File Tools/Config/Generate.ps1 -VerifyAccessors -SyncClient`。客户端快照写入 `Assets/Game/Modules/BattleScene/Configs/battle-catalog.json`，包含 3 英雄、3 成长模板、18 觉醒节点、9 技能、45 强化和 21 条文案（18 条技能文案加 3 个复用角色名）。同次生成 `.artifacts/config/json`、`bin` 与 `csharp`；C# 访问器已在 .NET 中逐字段读回二进制。客户端快照和 .NET 产物都由同一批 CSV 生成。第三步再接场景和权威服务，正式发布时绑定所使用的内容版本。请勿手改生成文件。
 
 ## 身份和面板的证据
 
@@ -34,7 +35,7 @@ Smilegate 公布的角色索引确认了 `c1001`、`c1005`、`c1062` 三个 ID�
 官方两个更新页面本次只返回脚本外壳；版本差异使用公告镜像正文交叉核对。全局属性克制、伤害结算、暴击、驱散顺序、夹攻、追加攻击和技能动画都应有独立验收，STG 事件和动画次数不决定权威结果。
 
 
-## 本次验证
+## 首次角色配表验收
 
 - Luban JSON、二进制、C# 访问器和客户端快照生成通过。读回逐字段核对，英雄、文案、技能和强化引用均可解析。
 - 改表回归验证攻击变更透传、快照与生成结果一致，错误技能演出、重复技能槽与空系数被拒绝。拒绝后保留已发布快照。

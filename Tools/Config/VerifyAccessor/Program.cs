@@ -1,4 +1,5 @@
 using AstralOath.Config;
+using AstralOath.Shared.Battle;
 using Luban;
 using System.Text.Json;
 
@@ -30,13 +31,22 @@ if (!messages.SequenceEqual(tables.Messages.DataList.Select(row => new LocaleDat
     tables.Characters.DataList.Any(row => row.NameKey_Ref?.Key != row.NameKey || row.SortOrder is < 1 or > 9999))
     throw new InvalidDataException("CharacterLab binary rows or resolved localization references differ from JSON.");
 var battleHeroes = Read<BattleHeroData>("battle_battleheroes");
+var growthPresets = Read<BattleGrowthPresetData>("battle_battlegrowthpresets");
+var awakeningSteps = Read<BattleAwakeningStepData>("battle_battleawakeningsteps");
 var battleSkills = Read<BattleSkillData>("battle_battleskills");
 var battleEnhancements = Read<BattleSkillEnhancementData>("battle_battleskillenhancements");
 var battleMessages = Read<LocaleData>("battle_battlemessages");
 if (!battleHeroes.SequenceEqual(tables.BattleHeroes.DataList.Select(row => new BattleHeroData(
-        row.Id, row.NameKey, row.Element, row.HeroClass, row.Zodiac, row.BaseStars, row.Level, row.Stars,
+        row.Id, row.NameKey, row.Element, row.HeroClass, row.Zodiac, row.GrowthPresetId, row.BaseStars, row.Level, row.Stars,
         row.Awakenings, row.Variant, row.Attack, row.Health, row.Defense, row.Speed, row.CritChanceBp,
         row.CritDamageBp, row.EffectivenessBp, row.EffectResistanceBp))) ||
+    !growthPresets.SequenceEqual(tables.BattleGrowthPresets.DataList.Select(row => new BattleGrowthPresetData(
+        row.Id, row.NativeStars, row.HeroClass, row.Zodiac, row.AttackCoefficientMilli,
+        row.HealthCoefficientMilli, row.DefenseCoefficientMilli, row.SpeedMilli))) ||
+    !awakeningSteps.SequenceEqual(tables.BattleAwakeningSteps.DataList.Select(row => new BattleAwakeningStepData(
+        row.Id, row.HeroId, row.Rank, row.AttackFlat, row.HealthFlat, row.AttackPercentBp,
+        row.HealthPercentBp, row.DefensePercentBp, row.SpeedFlat, row.CritChanceBp, row.CritDamageBp,
+        row.EffectivenessBp, row.EffectResistanceBp))) ||
     !battleSkills.SequenceEqual(tables.BattleSkills.DataList.Select(row => new BattleSkillData(
         row.Id, row.HeroId, row.Slot, row.NameKey, row.DescriptionKey, row.PresentationId, row.IconAsset,
         row.Target, row.CooldownTurns, row.SoulGain, row.SoulBurnCost, row.SoulBurnKind, row.SoulBurnTurns,
@@ -47,12 +57,33 @@ if (!battleHeroes.SequenceEqual(tables.BattleHeroes.DataList.Select(row => new B
     !battleMessages.SequenceEqual(tables.BattleMessages.DataList.Select(row => new LocaleData(row.Key, row.ZhCn))))
     throw new InvalidDataException("Battle binary rows differ from the generated Luban JSON.");
 
-if (tables.BattleHeroes.DataList.Any(row => row.NameKey_Ref?.Key != row.NameKey) ||
+if (tables.BattleHeroes.DataList.Any(row => row.NameKey_Ref?.Key != row.NameKey ||
+        row.GrowthPresetId_Ref?.Id != row.GrowthPresetId) ||
+    tables.BattleAwakeningSteps.DataList.Any(row => row.HeroId_Ref?.Id != row.HeroId) ||
     tables.BattleSkills.DataList.Any(row => row.HeroId_Ref?.Id != row.HeroId ||
         row.NameKey_Ref?.Key != row.NameKey || row.DescriptionKey_Ref?.Key != row.DescriptionKey) ||
     tables.BattleSkillEnhancements.DataList.Any(row => row.SkillId_Ref?.Id != row.SkillId))
     throw new InvalidDataException("Battle accessors could not resolve hero, skill or localization references.");
-Console.WriteLine("Generated C# accessors match the current Luban JSON and resolve all localization and asset references.");
+foreach (var hero in tables.BattleHeroes.DataList)
+{
+    var row = hero.GrowthPresetId_Ref;
+    var preset = new HeroGrowthPreset(row.Id, row.NativeStars, row.AttackCoefficientMilli,
+        row.HealthCoefficientMilli, row.DefenseCoefficientMilli, row.SpeedMilli);
+    var steps = tables.BattleAwakeningSteps.DataList.Where(step => step.HeroId == hero.Id)
+        .OrderBy(step => step.Rank).Select(step => new HeroAwakeningStep(step.Rank, step.AttackFlat,
+            step.HealthFlat, step.AttackPercentBp, step.HealthPercentBp, step.DefensePercentBp,
+            step.SpeedFlat, step.CritChanceBp, step.CritDamageBp, step.EffectivenessBp,
+            step.EffectResistanceBp)).ToArray();
+    var stats = HeroStatCalculator.Calculate(preset, hero.Level, hero.Stars, hero.Awakenings, steps);
+    if (stats.Attack != hero.Attack || stats.MaxHealth != hero.Health || stats.Defense != hero.Defense ||
+        stats.Speed != hero.Speed || stats.CritChanceBp != hero.CritChanceBp ||
+        stats.CritDamageBp != hero.CritDamageBp || stats.EffectivenessBp != hero.EffectivenessBp ||
+        stats.EffectResistanceBp != hero.EffectResistanceBp)
+        throw new InvalidDataException($"Battle hero growth stats do not match the source panel for {hero.Id} " +
+            $"at level {hero.Level}, stars {hero.Stars}, awakenings {hero.Awakenings}. " +
+            $"Calculated attack/health/defense/speed: {stats.Attack}/{stats.MaxHealth}/{stats.Defense}/{stats.Speed}.");
+}
+Console.WriteLine("Generated C# accessors match the current Luban JSON. Content references and hero growth panels were verified.");
 
 record UiData(int Id, string TitleKey, string MessageKey, int DisplaySeconds, string AssetAddress);
 record LocaleData(string Key, string ZhCn);
@@ -61,10 +92,16 @@ record AssetData(string Address, string SourcePath);
 record CharacterData(string Id, string NameKey, int SortOrder, string BattleSkin, string PortraitSkin);
 
 record BattleHeroData(string Id, string NameKey, string Element, string HeroClass, string Zodiac,
-    int BaseStars, int Level, int Stars, int Awakenings, string Variant, int Attack, int Health, int Defense,
+    string GrowthPresetId, int BaseStars, int Level, int Stars, int Awakenings, string Variant, int Attack, int Health, int Defense,
     int Speed, int CritChanceBp, int CritDamageBp, int EffectivenessBp, int EffectResistanceBp);
 record BattleSkillData(string Id, string HeroId, int Slot, string NameKey, string DescriptionKey,
     string PresentationId, string IconAsset, string Target, int CooldownTurns, int SoulGain, int SoulBurnCost,
     string SoulBurnKind, int SoulBurnTurns, int? AttackRateBp, int? PowerBp, int? CasterHealthDamageBp,
     int? CasterHealthHealBp, int? CasterHealthBarrierBp, int? BurnAttackRateBp);
 record BattleSkillEnhancementData(string Id, string SkillId, int Step, string Kind, int Value);
+
+record BattleGrowthPresetData(string Id, int NativeStars, string HeroClass, string Zodiac,
+    int AttackCoefficientMilli, int HealthCoefficientMilli, int DefenseCoefficientMilli, int SpeedMilli);
+record BattleAwakeningStepData(string Id, string HeroId, int Rank, int AttackFlat, int HealthFlat,
+    int AttackPercentBp, int HealthPercentBp, int DefensePercentBp, int SpeedFlat, int CritChanceBp,
+    int CritDamageBp, int EffectivenessBp, int EffectResistanceBp);

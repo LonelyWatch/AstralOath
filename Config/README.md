@@ -1,6 +1,6 @@
 # 配置源表与生成
 
-配置入口为 `Config/luban.conf`；`Config/Schema/` 定义字段和引用，`Config/Tables/*.csv` 是当前九张表的唯一数据编辑源。新增表同时维护 schema、源表、生成校验及消费模块说明。不要手改生成 C#、二进制、客户端 JSON 快照或角色导入目录；未来改用 Excel 时，每张表仍只能保留一个权威编辑源。
+配置入口为 `Config/luban.conf`；`Config/Schema/` 定义字段和引用，`Config/Tables/*.csv` 是当前十一张表的唯一数据编辑源。新增表同时维护 schema、源表、生成校验及消费模块说明。不要手改生成 C#、二进制、客户端 JSON 快照或角色导入目录；未来改用 Excel 时，每张表仍只能保留一个权威编辑源。
 
 ## 当前源表
 
@@ -19,7 +19,7 @@ CharacterLab 的两张表由 `Schema/characterlab.xml` 定义：
 
 `Config/CharacterAssets/catalog.generated.json` 是角色导入器生成的资源目录与声音事件，不是手工配表源。导表把角色行和文案合入该目录，生成运行时 catalog；角色数量、ID、名称引用或必要皮肤字段不一致会失败。增加角色先按[角色资源通用规则](../docs/development/character-asset-import.md)扩展白名单、导入已批准依赖，再补齐角色源表。导表本身不读取 `D:/sevenepic`，也不触发外服追踪。
 
-Battle 的四张表由 `Schema/battle.xml` 定义，编辑源为 `Tables/battle_heroes.csv`、`battle_skills.csv`、`battle_skill_enhancements.csv` 与 `battle_messages.csv`。涵盖三人裸面板、九个主动技能、强化增量及简体中文文案。导表检查槽位、角色与本地技能演出图、图标、文案、魂燃及强化序列。口径、系数的可空写法与来源见[战斗角色数据](../docs/development/battle-character-data.md)。
+Battle 的六张表由 `Schema/battle.xml` 定义。英雄通过 `battle_heroes.csv` 的 `growthPresetId` 引用 `battle_growth_presets.csv`，并按英雄 ID 在 `battle_awakening_steps.csv` 配置觉醒。现有面板列是导表的验收锚点。其余三张为 `battle_skills.csv`、`battle_skill_enhancements.csv`、`battle_messages.csv`。导表检查模板、觉醒序列、槽位、角色、演出、图标、文案、魂燃和强化序列。见[等级与站位](../docs/development/battle-growth.md)和[技能配表](../docs/development/battle-character-data.md)。
 
 ## 生成和检查
 
@@ -34,7 +34,7 @@ pwsh -File Tools/Config/Generate.ps1 -VerifyAccessors -CheckClient
 
 脚本使用固定 SHA-256 的 Luban v5.1.0，以 .NET 10 运行并允许其 .NET 8 入口跨主版本启动。首次运行需要下载锁定工具。Luban 的 `.7z` 包由项目内固定版本的 7-Zip reduced console 解压，官方地址与 SHA-256 记录于 `Tools/dependencies.lock.json`；按需下载至 `.tools/7zip-<版本>/7zr.exe` 并在每次使用前校验，无需全局安装。
 
-Luban 严格校验范围、引用和主键；脚本继续检查文案 key、非空中文文本、项目资源路径及角色导入目录一致性。输出为 `.artifacts/config/{json,bin,csharp}`。C# 入口 `AstralOath.Config.Tables` 接收按表名打开 Luban `ByteBuf` 的委托。`-VerifyAccessors` 使用固定提交的官方运行时源码，逐表比较二进制读回与本次 JSON，并检查 UI、资源和角色文案引用。
+Luban 严格校验范围、引用和主键；脚本继续检查文案 key、非空中文文本、项目资源路径及角色导入目录一致性。输出为 `.artifacts/config/{json,bin,csharp}`。C# 入口 `AstralOath.Config.Tables` 接收按表名打开 Luban `ByteBuf` 的委托。`-VerifyAccessors` 使用固定提交的官方运行时源码，逐表比较二进制读回与本次 JSON，并检查引用与共享成长公式的面板锚点。使用 `-SyncClient` 或 `-CheckClient` 时自动运行此验证。
 
 ## 客户端快照
 
@@ -47,7 +47,7 @@ Luban 严格校验范围、引用和主键；脚本继续检查文案 key、非�
 
 - `battle-catalog.json` → `Assets/Game/Modules/BattleScene/Configs/battle-catalog.json`。
 
-源表、schema、生成器及受影响的客户端快照应在同次修改中保持一致；Unity 已有 `.meta` 保留 GUID。新增配置消费方式时同步更新本说明与模块 README。配表回归入口 `pwsh -File Tests/Content/ConfigSmoke.ps1` 在独立副本检查引用、文案变更及非法时长；角色皮肤、实际资源加载和显示另按[角色实验室手册](../docs/development/character-lab.md)验收。
+源表、schema、生成器及受影响的客户端快照应在同次修改中保持一致；Unity 已有 `.meta` 保留 GUID。新增配置消费方式时同步更新本说明与模块 README。配表回归入口 `pwsh -File Tests/Content/ConfigSmoke.ps1` 在独立副本检查引用、配表变更、非法时长及错误成长面板拒绝；角色皮肤、实际资源加载和显示另按[角色实验室手册](../docs/development/character-lab.md)验收。
 
 ## 代码清单
 

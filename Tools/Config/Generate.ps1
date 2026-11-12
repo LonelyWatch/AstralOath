@@ -99,7 +99,7 @@ try {
     & $Dotnet --roll-forward Major $dll --conf Config/luban.conf -t client -c cs-bin -d bin --strict -x "outputCodeDir=$staging/csharp" -x "outputDataDir=$staging/bin"
     if ($LASTEXITCODE -ne 0) { throw 'Luban binary and C# generation failed.' }
 
-    if ($VerifyAccessors) {
+    if ($VerifyAccessors -or $SyncClient -or $CheckClient) {
         $runtimeDir = Join-Path $toolRoot 'runtime'
         [void](New-Item -ItemType Directory -Path $runtimeDir -Force)
         $upstream = 'https://raw.githubusercontent.com/focus-creative-games/luban_examples/c52e273f1f50a263e9257dddb35c8e222d9777b8'

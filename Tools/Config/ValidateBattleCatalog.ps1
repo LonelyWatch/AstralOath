@@ -2,6 +2,8 @@ function Export-BattleCatalog {
     param([string]$Repo, [string]$JsonDir, $CharacterCatalog, [object[]]$CharacterMessages)
 
     $heroes = @(Get-Content -LiteralPath (Join-Path $JsonDir 'battle_battleheroes.json') -Raw -Encoding UTF8 | ConvertFrom-Json)
+    $growthPresets = @(Get-Content -LiteralPath (Join-Path $JsonDir 'battle_battlegrowthpresets.json') -Raw -Encoding UTF8 | ConvertFrom-Json)
+    $awakeningSteps = @(Get-Content -LiteralPath (Join-Path $JsonDir 'battle_battleawakeningsteps.json') -Raw -Encoding UTF8 | ConvertFrom-Json)
     $skills = @(Get-Content -LiteralPath (Join-Path $JsonDir 'battle_battleskills.json') -Raw -Encoding UTF8 | ConvertFrom-Json)
     $enhancements = @(Get-Content -LiteralPath (Join-Path $JsonDir 'battle_battleskillenhancements.json') -Raw -Encoding UTF8 | ConvertFrom-Json)
     $messages = @(Get-Content -LiteralPath (Join-Path $JsonDir 'battle_battlemessages.json') -Raw -Encoding UTF8 | ConvertFrom-Json)
@@ -14,14 +16,32 @@ function Export-BattleCatalog {
         }
     }
 
+    $heroClasses = @('knight','warrior','thief','ranger','mage','soul_weaver')
+    $zodiacs = @('aries','taurus','gemini','cancer','leo','virgo','libra','scorpio','sagittarius','capricorn','aquarius','pisces')
+    foreach ($preset in $growthPresets) {
+        if ($preset.id -cnotmatch '\A[a-z][a-z0-9_]*\z' -or
+            $preset.heroClass -cnotin $heroClasses -or $preset.zodiac -cnotin $zodiacs) {
+            throw "Battle growth preset is invalid: $($preset.id)."
+        }
+    }
+
     $heroNames = foreach ($hero in $heroes) {
         $id = $hero.id
         if ($id -cnotmatch '\Ac[0-9]{4}\z' -or $hero.element -cnotin @('fire','ice','wind','light','dark') -or
-            $hero.heroClass -cnotin @('knight','warrior','thief','ranger','mage','soul_weaver') -or
-            $hero.zodiac -cnotin @('aries','taurus','gemini','cancer','leo','virgo','libra','scorpio','sagittarius','capricorn','aquarius','pisces') -or
+            $hero.heroClass -cnotin $heroClasses -or
+            $hero.zodiac -cnotin $zodiacs -or
             $hero.variant -cnotmatch '\A[a-z][a-z0-9_]*\z' -or
             $hero.baseStars -gt $hero.stars -or $hero.awakenings -gt $hero.stars) {
             throw "Battle hero profile is invalid: $id."
+        }
+        $preset = @($growthPresets | Where-Object id -CEQ $hero.growthPresetId)
+        if ($preset.Count -ne 1 -or $preset[0].nativeStars -ne $hero.baseStars -or
+            $preset[0].heroClass -cne $hero.heroClass -or $preset[0].zodiac -cne $hero.zodiac) {
+            throw "Battle hero growth preset does not match native stars, class and zodiac for $id."
+        }
+        $ranks = @($awakeningSteps | Where-Object heroId -CEQ $id | Select-Object -ExpandProperty rank | Sort-Object)
+        if (($ranks -join ',') -cne '1,2,3,4,5,6') {
+            throw "Battle awakening rank set must be 1 through 6 exactly once for $id."
         }
         $imported = @($CharacterCatalog.characters | Where-Object id -CEQ $id)
         if ($imported.Count -ne 1 -or $imported[0].displayNameKey -cne $hero.nameKey) {
@@ -85,6 +105,8 @@ function Export-BattleCatalog {
     $runtime = [ordered]@{
         schemaVersion = 1
         heroes = $heroes
+        growthPresets = $growthPresets
+        awakeningSteps = $awakeningSteps
         skills = $skills
         enhancements = $enhancements
         messages = @($messages) + @($heroNames)
