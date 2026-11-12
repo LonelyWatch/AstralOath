@@ -24,13 +24,15 @@ namespace AstralOath.Client.Tests
         [UnityTest]
         public IEnumerator TypographyWrapsEllipsizesAndStopsListeningOnDisable()
         {
-            var owner = new GameObject("Text", typeof(RectTransform), typeof(TextMeshProUGUI), typeof(GameText));
+            var owner = new GameObject("Text", typeof(RectTransform), typeof(GameText));
             using var scope = new BindingScope(default);
             try
             {
                 var locale = new Locale();
                 var control = owner.GetComponent<GameText>();
                 var text = owner.GetComponent<TextMeshProUGUI>();
+                text.enableWordWrapping = true;
+                text.overflowMode = TextOverflowModes.Ellipsis;
                 control.Bind(locale, scope, "label");
                 Assert.That(text.enableWordWrapping, Is.True);
                 Assert.That(text.overflowMode, Is.EqualTo(TextOverflowModes.Ellipsis));

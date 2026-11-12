@@ -70,3 +70,13 @@ public sealed class InventoryWindow : UIBaseView
 ## 数量与参数名显示复验（2026-11-11）
 
 编辑器新增可编辑绑定总数与 Hierarchy 绿色 Key。回归先确认 6 项预期失败，再完成实现，最终 EditMode 41/41 通过，覆盖新增空行、尾部缩减、Undo/Redo、Prefab 覆盖与保存、同对象多 Key、重命名及最近 Binder 隔离。独立审查通过。已实际观察到 Hierarchy 绿色参数名；用户按 Escape 停止了界面操作，因此未继续人工修改总数字段。此次只修改 Editor 工具，未重跑 PlayMode 或构建 Player。
+
+## 项目文本与按钮
+
+在 Hierarchy 空白处或目标父节点上右键，选择 `UI/项目文本 (GameText)` 或 `UI/项目按钮 (GameButton)`；顶部 `GameObject/UI` 也有相同入口。菜单会创建可用的显示组件、设置父节点，并按需要补 Canvas / EventSystem，支持撤销与重做。Prefab Mode 创建内容限定在当前预制体内。
+
+`GameText : TextMeshProUGUI` 本身就是 TMP 文本，`GameButton : Button` 本身就是按钮；不再额外挂原版组件。Inspector 保留官方文本排版和按钮导航/状态设置。通过 Add Component 也可添加 `UI/Game Text` / `UI/Game Button`；该入口只添加组件，不生成按钮背景和子文本，完整控件应使用右键 UI 菜单。
+
+View 继续绑定 GameText / GameButton，普通 C# Binder 继续调用 Bind。GameText 绑定仅更新文本和语言订阅，保持 Inspector 中的换行、溢出和富文本选择；新建文本默认不阻挡射线。菜单的 New Text / Button 仅是编辑器占位内容，业务界面必须通过稳定文案 key 设置本地化内容。
+
+关闭/销毁控件会解绑事件、取消所属操作，并执行原生 TMP / Selectable 的生命周期清理。更换通用控件代码需要按 Common/AOT 边界重新构建母包，不能只推资源热更。决策见 [ADR 009](../architecture/adr/009-ui-controls.md)。

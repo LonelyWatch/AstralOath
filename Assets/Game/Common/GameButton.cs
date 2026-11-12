@@ -8,17 +8,18 @@ using UnityEngine.UI;
 
 namespace AstralOath.Client.Common
 {
-    [DisallowMultipleComponent, RequireComponent(typeof(Button))]
-    public sealed class GameButton : MonoBehaviour
+    [DisallowMultipleComponent, AddComponentMenu("UI/Game Button")]
+    public sealed class GameButton : Button
     {
         private BindingScope current;
 
         public void Bind(BindingScope owner, Func<CancellationToken, Task> handler)
         {
             Unbind();
+            owner.Token.ThrowIfCancellationRequested();
             var binding = new BindingScope(owner.Token);
             current = binding;
-            Button button = GetComponent<Button>();
+            Button button = this;
             bool wasInteractable = button.interactable;
             bool busy = false;
 
@@ -58,7 +59,17 @@ namespace AstralOath.Client.Common
             }));
         }
 
-        private void OnDisable() => Unbind();
+        protected override void OnDisable()
+        {
+            try { Unbind(); }
+            finally { base.OnDisable(); }
+        }
+
+        protected override void OnDestroy()
+        {
+            try { Unbind(); }
+            finally { base.OnDestroy(); }
+        }
 
         private void Unbind()
         {

@@ -7,8 +7,8 @@ using UnityEngine;
 
 namespace AstralOath.Client.Common
 {
-    [DisallowMultipleComponent, RequireComponent(typeof(TextMeshProUGUI))]
-    public sealed class GameText : MonoBehaviour
+    [DisallowMultipleComponent, AddComponentMenu("UI/Game Text")]
+    public sealed class GameText : TextMeshProUGUI
     {
         private readonly HashSet<uint> warnedGlyphs = new HashSet<uint>();
         private BindingScope current;
@@ -17,14 +17,11 @@ namespace AstralOath.Client.Common
         {
             Unbind();
             owner.Token.ThrowIfCancellationRequested();
-            var label = GetComponent<TextMeshProUGUI>();
+            var label = this;
             if (!label.font)
                 label.font = TMP_Settings.defaultFontAsset;
             if (!label.font)
                 throw new InvalidOperationException("GameText requires a TMP font.");
-            label.enableWordWrapping = true;
-            label.overflowMode = TextOverflowModes.Ellipsis;
-            label.richText = false;
 
             void Refresh() => label.text = Render(label, Format(locale, key, arguments));
             Refresh();
@@ -80,7 +77,28 @@ namespace AstralOath.Client.Common
                     label.fontStyle, label.fontWeight, out _) != null;
         }
 
-        private void OnDisable() => Unbind();
+        protected override void OnDisable()
+        {
+            try { Unbind(); }
+            finally { base.OnDisable(); }
+        }
+
+        protected override void OnDestroy()
+        {
+            try { Unbind(); }
+            finally { base.OnDestroy(); }
+        }
+
+#if UNITY_EDITOR
+        protected override void Reset()
+        {
+            base.Reset();
+            enableWordWrapping = true;
+            overflowMode = TextOverflowModes.Ellipsis;
+            richText = false;
+            raycastTarget = false;
+        }
+#endif
 
         private void Unbind()
         {

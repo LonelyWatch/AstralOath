@@ -127,9 +127,9 @@ namespace AstralOath.Client.Tests
             var owner = new GameObject("Foundation entry test", typeof(RectTransform));
             try
             {
-                var open = new GameObject("Open", typeof(RectTransform), typeof(Button), typeof(GameButton));
-                var label = new GameObject("Open label", typeof(RectTransform), typeof(TextMeshProUGUI), typeof(GameText));
-                var startup = new GameObject("Startup status", typeof(RectTransform), typeof(TextMeshProUGUI), typeof(GameText));
+                var open = new GameObject("Open", typeof(RectTransform), typeof(GameButton));
+                var label = new GameObject("Open label", typeof(RectTransform), typeof(GameText));
+                var startup = new GameObject("Startup status", typeof(RectTransform), typeof(GameText));
                 foreach (var item in new[] { open, label, startup })
                     item.transform.SetParent(owner.transform, false);
 

@@ -1,8 +1,8 @@
 # 客户端地基
 
-Bootstrap 是场景内的组合入口，通过实例级 ServiceRegistry 按逆序释放服务。YooAsset 包及 DOTween 包装器的生命周期随 Bootstrap。Core 定义服务接口和绑定作用域。Common 提供 BindingMap、GameText、GameButton 和安全区适配。FoundationDemo 持有演示流程、文案和显示绑定，Common 不引用业务模块。
+Bootstrap 是场景内的组合入口，通过实例级 ServiceRegistry 按逆序释放服务。YooAsset 包及 DOTween 包装器的生命周期随 Bootstrap。Core 定义服务接口和绑定作用域。Common 提供 BindingMap、直接继承 TMP 的 GameText、直接继承 Button 的 GameButton 和安全区适配。FoundationDemo 持有演示流程、文案和显示绑定，Common 不引用业务模块。
 
-窗口每次打开都新建 BindingScope。关闭先取消操作，再按逆序解除监听、释放资源句柄和复位动画。GameButton 的单次点击在等待期间锁定交互，禁用时取消监听和请求。GameText 按文案 key 订阅文字语言变动，统一使用 TMP 字体及其回退，超长文案按行换行和省略。缺字显示问号并记录码点，语音语言单独选择。演示文字默认为 zh-Hans，语音默认为 ja，演示无需语音素材。
+窗口每次打开都新建 BindingScope。关闭先取消操作，再按逆序解除监听、释放资源句柄和复位动画。GameButton 的单次点击在等待期间锁定交互，禁用时取消监听和请求。GameText 按文案 key 订阅文字语言变动，统一使用 TMP 字体及其回退，新建文本默认换行和省略；绑定时保留 Inspector 中的排版选择。缺字显示问号并记录码点，语音语言单独选择。演示文字默认为 zh-Hans，语音默认为 ja，演示无需语音素材。
 
 FoundationWindow 继承普通 C# UIBaseView，不作为 MonoBehaviour 挂在预制体上。UIViewRegistry 记录 View 类型与重写的 PrefabPath，并通过 IAssetService 加载预制体。预制体仅用通用 BindingMap 保存引用；Inspector 每项单行展示，Hierarchy 支持 + / − 增删和撤销。使用方式见 [UIBaseView 与 Binder](../development/ui-binder.md)。普通 C# `FoundationWindowBinder` 负责界面状态、事件、异步回显和清理。`FoundationEntry` 实现 Common 的 `IHotUpdateEntry`，通过 `GameLaunchContext` 接收稳定服务和场景引用，并注册业务窗口。Bootstrap 按清单入口加载业务程序集，Editor 使用已编译程序集。
 

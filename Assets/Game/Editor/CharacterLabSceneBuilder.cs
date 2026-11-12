@@ -155,18 +155,18 @@ namespace AstralOath.Editor
         private static GameButton ButtonControl(string name,Transform parent,TMP_FontAsset font,Vector2 pos,Vector2 size,out GameText label)
         {
             var root=Panel(name,parent,pos,size);root.GetComponent<Image>().color=new Color32(43,64,87,255);
-            var button=root.gameObject.AddComponent<Button>();button.targetGraphic=root.GetComponent<Image>();
+            var button=root.gameObject.AddComponent<GameButton>();button.targetGraphic=root.GetComponent<Image>();
             label=Label("Label",root,font,Vector2.zero,size-new Vector2(16,0),19);
             var rect=label.GetComponent<RectTransform>();Stretch(rect);rect.offsetMin=new Vector2(8,0);rect.offsetMax=new Vector2(-8,0);
-            return root.gameObject.AddComponent<GameButton>();
+            return button;
         }
         private static GameText Label(string name,Transform parent,TMP_FontAsset font,Vector2 pos,Vector2 size,float point)
         {
             var rect=Rect(name,parent);Size(rect,pos,size);
-            var label=rect.gameObject.AddComponent<TextMeshProUGUI>();
+            var label=rect.gameObject.AddComponent<GameText>();
             label.fontSize=point;label.color=new Color32(231,238,247,255);label.alignment=TextAlignmentOptions.MidlineLeft;
             label.raycastTarget=false;label.richText=false;
-            var control=rect.gameObject.AddComponent<GameText>();
+            var control=label;
             // TMP initialization can overwrite its asset; persist the font/material pair last.
             var serialized=new SerializedObject(label);
             serialized.FindProperty("m_fontAsset").objectReferenceValue=font;

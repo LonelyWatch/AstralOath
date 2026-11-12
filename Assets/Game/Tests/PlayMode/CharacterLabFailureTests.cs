@@ -38,7 +38,7 @@ namespace AstralOath.Client.Tests
         {
             root = new GameObject("failure-bootstrap"); root.SetActive(false);
             bootstrap = root.AddComponent<CharacterLabBootstrap>();
-            statusObject = new GameObject("failure-status", typeof(RectTransform), typeof(TextMeshProUGUI), typeof(GameText));
+            statusObject = new GameObject("failure-status", typeof(RectTransform), typeof(GameText));
             var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>("Assets/Game/Modules/FoundationDemo/Res/Fonts/FoundationFont.asset");
             Assert.That(font, Is.Not.Null, "Use the project's actual localized font.");
             statusObject.GetComponent<TextMeshProUGUI>().font = font;

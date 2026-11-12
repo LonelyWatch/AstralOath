@@ -37,7 +37,7 @@ namespace AstralOath.Client.Tests
             var expectedMaterial = new SerializedObject(expectedFont).FindProperty("material").objectReferenceValue;
             Assert.That(expectedMaterial, Is.Not.Null);
             var labels = roots.SelectMany(root => root.GetComponentsInChildren<MonoBehaviour>(true))
-                .Where(component => component && component.GetType().FullName == "TMPro.TextMeshProUGUI").ToArray();
+                .Where(component => component && component is TMPro.TextMeshProUGUI).ToArray();
             Assert.That(labels, Is.Not.Empty);
             foreach (var label in labels)
             {

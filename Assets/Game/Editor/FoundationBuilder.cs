@@ -209,10 +209,10 @@ namespace AstralOath.Editor
         {
             var rect = Panel(name, parent, new Color32(39, 93, 139, 255));
             Size(rect, position, size);
-            var button = rect.gameObject.AddComponent<Button>();
+            var button = rect.gameObject.AddComponent<GameButton>();
             button.targetGraphic = rect.GetComponent<Image>();
             label = Label("Label", rect, font, Vector2.zero, size, 26);
-            return rect.gameObject.AddComponent<GameButton>();
+            return button;
         }
 
         private static GameText Label(string name, Transform parent, TMP_FontAsset font,
@@ -220,13 +220,13 @@ namespace AstralOath.Editor
         {
             var rect = Rect(name, parent);
             Size(rect, position, size);
-            var label = rect.gameObject.AddComponent<TextMeshProUGUI>();
+            var label = rect.gameObject.AddComponent<GameText>();
             label.fontSize = pointSize;
             label.color = new Color32(233, 242, 255, 255);
             label.alignment = TextAlignmentOptions.Center;
             label.raycastTarget = false;
             label.richText = false;
-            var control = rect.gameObject.AddComponent<GameText>();
+            var control = label;
 
             // TMP sets its default asset and material during component initialization.
             // Apply the persistent asset pair after adding the label and its binding.
