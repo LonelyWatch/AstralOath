@@ -2,7 +2,7 @@
 
 ## 日常任务
 
-1. 人确定目标、验收行为和影响模块。AI 先读根 AGENTS 与模块文档，核对工作区和当前测试结果。
+1. 人确定目标、验收行为和影响模块。AI 先读根 AGENTS、docs/README.md、docs/project-status.md、通用规范与模块文档，核对工作区和当前测试结果。
 2. 默认直接在主工作区的 `main` 分支开发、提交并推送到 `origin/main`，只有用户明确要求时才另建分支。开始前核对分支、工作区状态和远端进度；若 `main` 已被另一工作区检出，就在该工作区执行修改与提交。按模块声明所有权；协议、配表、共享类型先约定再并行。只有一个 Agent 写同一 Unity Editor，代码任务可在不同模块并行。
 3. 重要行为先写能失败的测试。先修复具体失败，再做最小实现；资源生成、场景绑定和运行结果不能用“文件已创建”代替。
 4. 执行下述检查。独立审查关注竞态、取消、资源释放、网络幂等、兼容版本和资产引用；修复后复跑相关检查。
@@ -17,7 +17,7 @@
 ## 检查入口
 
 - `pwsh -File Tools/Check-Foundation.ps1 -RequireMySql -UnityTests`：本地总入口。需先设置隔离测试库连接串；服务端现场回显测试另设 `ASTRAL_FOUNDATION_LIVE_TEST=1` 并启动服务端。
-- `node --test Tools/Tests/validate.test.mjs`：模块依赖验证器回归。
+- `node --test Tools/Tests/validate.test.mjs Tools/Tests/check-docs.test.mjs`：模块依赖与文档同步检查器回归。
 - `node Tools/validate.mjs`：内部引用、依赖环、Common 边界、MCP 编辑器隔离和依赖 pin。
 - `node Tools/validate.mjs --staged`：额外检查暂存区私钥、缓存和过大文件。
 - `pwsh -File Tools/Config/Generate.ps1 -VerifyAccessors -SyncClient`：真实 Luban 生成、严格引用检查、二进制访问器读回及客户端快照同步。CI 使用 `-CheckClient` 检测遗漏生成物。
@@ -49,3 +49,20 @@ MCP 配置依据 [官方配置说明](https://learn.chatgpt.com/docs/extend/mcp?
 构建/检查可以在提交时运行；国际服数据追踪仅在用户明确提出后开展，禁止定时任务或后台持续采集。一次追踪记录原版本、目标版本、证据、配表差异、资源闭包、协议影响和验收结果。核心战斗行为变化由 C# 应用版本承载；新旧内核不兼容时走维护更新。
 
 生产密钥、云主机凭据和支付功能不进入 AI 上下文或仓库。日常改动推送 `origin/main` 并核对远端检查；生产部署是独立操作。
+
+
+## 文档与代码同步门禁
+
+每完成一个可验收小步，立即更新对应文档，不延期到整个系统完成。提交必须包括：
+
+- docs/development/change-log.md：变化、兼容性、实际验证和未完成项。
+- 受影响业务模块README：实际职责、入口/契约、配置/资源及释放方式。删除整个模块在日志说明即可。
+- 操作步骤改变更新development；状态或验收边界改变更新project-status；架构改变记录ADR。历史delivery保留日期，不改写成当前版本通过。
+
+提交前运行 `node Tools/check-docs.mjs --staged`；它检查暂存快照。文档只改工作区但未暂存不能满足要求。CI用 `--ci` 检查推送/PR的路径集合：普通推送比较before与HEAD，PR比较base与HEAD，新分支首次推送比较远端默认分支与HEAD的共同祖先，手动运行只检查最近提交；无有效基准时明确失败。也可手动使用 `--base <提交>`。重命名核对旧/新两条路径。纯Markdown、meta或Tools/Tests变更不额外要求日志；根global.json、.gitattributes、.gitignore、.vsconfig也纳入，其他路径按所属规则处理。机械门禁不能判断内容质量，审查仍须核对文档语义。
+
+新工具测试纳入Check-Foundation总入口。`-UnityTests`需图形设备；如需全部PlayMode通过，应设置 `ASTRAL_ANIMATION_CAPTURE_DIR` 为忽略目录并在单独命令使用 `Tools/Invoke-Unity.ps1 -Mode PlayMode -Graphics`。按需截图未设置输出会跳过，严格入口不把跳过当成全通过。
+
+## 中断和新会话
+
+结束或中断前，按任务模板写清工作区/分支、未提交改动、最后通过的检查、待处理失败、临时进程与下一步。新会话重新读取入口和Git状态，历史聊天只作线索，不自动复用未经核对的路径、母包或测试结论。不得把凭据写入交接。

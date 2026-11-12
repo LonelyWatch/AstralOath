@@ -1,7 +1,7 @@
 # AstralOath 开发约定
 
 - 本工程是 Unity 2022.3.62f3 + .NET 10 + MySQL 8.4 的客户端/服务端仓库。
-- 先阅读 `docs/plans/2026-11-10-foundation.md`、相关模块 README 和开发文档。涉及热更时阅读 `docs/plans/2026-11-11-hybridclr.md` 与 `docs/development/hot-update.md`。
+- 每次会话先读 `docs/README.md`、`docs/project-status.md`、`docs/development/project-standards.md`，再读相关模块 README 和专题文档。地基与 HybridCLR 历史计划用于了解沿革，不能替代现行状态或验收。涉及热更必读 `docs/development/hot-update.md`。
 - 国际服版本追踪仅由用户明确要求触发；禁止后台轮询、定时跟踪或自动升级依赖。
 - `D:\sevenepic` 是只读外部来源；不得修改、批量导入或提交整个解包目录。
 - 业务模块独立；Common 不得引用业务模块。共享战斗逻辑不得依赖 Unity、网络或数据库。
@@ -21,4 +21,7 @@
 - 后续默认直接在 `main` 修改、提交并推送到 `origin/main`，不自行新建开发分支；用户另有明确要求时例外。若 `main` 已在另一工作区检出，使用该主工作区执行修改与提交，不强制让两个工作区同时检出 `main`。历史计划中的开发分支约定已由此规则取代。
 - Git 提交标题和正文统一使用中文撰写，清楚说明改动及目的；代码标识符、文件路径和专有名称保留原文。例如：`规范：统一 Git 提交信息使用中文`。
 - 需要新增基础架构决策时记录 ADR；用户已经决定的选型不得静默替换。
-
+- 通用文本与按钮使用直接继承原控件的 GameText / GameButton，不再叠加对应原版组件；保留基类生命周期与现有 GUID，业务继续归普通 C# Binder。
+- 每完成一个可验收改动就同步相应模块 README 与 `docs/development/change-log.md`，接口/配置/资源/构建行为改变必须与文档同批提交。状态或边界变化同步 `docs/project-status.md`，新增架构决策写 ADR；禁止只把交接留在聊天中。
+- 提交前执行 `node Tools/check-docs.mjs --staged`。源码/配置/资源/构建改动缺变更日志，业务模块缺对应 README 时拒绝提交；机械检查不替代语义审查。
+- 区分“热更底层”“完整包构建”“强制升级准入”“正式环境部署”四种状态；没有代码和目标平台证据不能互相代替。当前强更策略缺口见地基复核报告。

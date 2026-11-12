@@ -1,13 +1,50 @@
-# 演示配置
+# 配置源表与生成
 
-`Schema/foundation.xml` 定义三张表和引用关系，每张表只有一个 `Tables/*.csv` 数据源。改动后从仓库根目录运行 `./Tools/Config/Generate.ps1 -VerifyAccessors -SyncClient`。脚本使用锁定 SHA-256 的 Luban v5.1.0，首次运行需要 GitHub 下载权限。它以 .NET 10 运行，允许 Luban 的 .NET 8 入口跨主版本运行。
+配置入口为 `Config/luban.conf`；`Config/Schema/` 定义字段和引用，`Config/Tables/*.csv` 是当前五张表的唯一数据编辑源。新增表同时维护 schema、源表、生成校验及消费模块说明。不要手改生成 C#、二进制、客户端 JSON 快照或角色导入目录；未来改用 Excel 时，每张表仍只能保留一个权威编辑源。
 
-Luban 的 `.7z` 包由项目内的 7-Zip reduced console 解压，版本、官方地址与 SHA-256 固定在 `Tools/dependencies.lock.json`。导表时按需下载至 `.tools/7zip-<版本>/7zr.exe`，每次执行前校验哈希，无需全局安装。Windows Server 2022 自带 `tar` 不支持该包的 LZMA 编码，因此本地与 CI 均使用这一固定解压器。
+## 当前源表
 
-- `demo_ui.csv` 的记录 1 是演示界面。修改停留秒数时保持在 1–30。标题、消息和资源使用表内引用。
-- `demo_localization.csv` 维护演示界面、按钮及业务状态的简体中文文本。稳定 key 由配表或 C# Binder 引用。保留带参文案的格式占位符。语音选择由客户端单独管理。
-- `demo_assets.csv` 维护演示地址和对应的项目源文件。新增地址时应在 YooAsset 收集配置中使用同一地址。
+Foundation 的三张表由 `Schema/foundation.xml` 定义：
 
-Luban 以严格模式校验范围、引用与主键。脚本另外校验文案 key 格式、中文文本和项目资源路径。输出位于 `.artifacts/config` 的 `json`、`bin` 和 `csharp`。C# 入口是 `AstralOath.Config.Tables`，接收按表名打开 Luban `ByteBuf` 的委托。访问器验收用官方示例中固定提交的运行时源码编译，逐表对照本次生成的 JSON 检查二进制读回数据，并检查 UI 行引用。
+- `Tables/demo_ui.csv`：演示界面记录，记录 1 必须存在；停留秒数为 1–30，标题、消息与资源通过表内引用关联。
+- `Tables/demo_localization.csv`：演示标题、按钮和业务状态的简体中文文本。
+- `Tables/demo_assets.csv`：稳定资源地址与项目源文件路径；新增地址须与 YooAsset 收集配置一致。
 
-`-SyncClient` 将生成的 UI 与本地化 JSON 同步到 FoundationDemo 的 `Configs`，供 Unity 导入和 YooAsset 收集。`-CheckClient` 检查仓库快照与生成结果一致。配表回归入口为 `pwsh -File Tests/Content/ConfigSmoke.ps1`，在独立副本验证新增引用、文案修改及非法时长。
+CharacterLab 的两张表由 `Schema/characterlab.xml` 定义：
+
+- `Tables/characterlab_characters.csv`：角色 ID、名称 key、显示顺序、`battleSkin` 与 `portraitSkin`。皮肤名显式配置；是否存在于对应骨骼由 Unity 资源验证和构建检查确认。
+- `Tables/characterlab_messages.csv`：实验室中文界面、角色名、技能名和语音标签。文字语言与语音选择独立。
+
+两组文案 key 都使用点分的小写名称，各段允许数字和下划线，例如 `foundation.title`、`lab.static_pose`、`character.ras.name`；生成器要求至少两个点分段。保留带参文案的格式占位符，业务代码引用稳定 key。
+
+`Config/CharacterAssets/catalog.generated.json` 是角色导入器生成的资源目录与声音事件，不是手工配表源。导表把角色行和文案合入该目录，生成运行时 catalog；角色数量、ID、名称引用或必要皮肤字段不一致会失败。增加角色先按[角色资源通用规则](../docs/development/character-asset-import.md)扩展白名单、导入已批准依赖，再补齐角色源表。导表本身不读取 `D:/sevenepic`，也不触发外服追踪。
+
+## 生成和检查
+
+在仓库根目录使用 PowerShell 7：
+
+```powershell
+pwsh -File Tools/Config/Generate.ps1 -VerifyAccessors -SyncClient
+pwsh -File Tools/Config/Generate.ps1 -VerifyAccessors -CheckClient
+```
+
+`-SyncClient` 更新快照；`-CheckClient` 用于 CI 或提交前检查快照与当前源表一致，两参数不能同时使用。未配置全局 PATH 时，把 `pwsh` 替换为 `& ./.tools/powershell/pwsh.exe`。
+
+脚本使用固定 SHA-256 的 Luban v5.1.0，以 .NET 10 运行并允许其 .NET 8 入口跨主版本启动。首次运行需要下载锁定工具。Luban 的 `.7z` 包由项目内固定版本的 7-Zip reduced console 解压，官方地址与 SHA-256 记录于 `Tools/dependencies.lock.json`；按需下载至 `.tools/7zip-<版本>/7zr.exe` 并在每次使用前校验，无需全局安装。
+
+Luban 严格校验范围、引用和主键；脚本继续检查文案 key、非空中文文本、项目资源路径及角色导入目录一致性。输出为 `.artifacts/config/{json,bin,csharp}`。C# 入口 `AstralOath.Config.Tables` 接收按表名打开 Luban `ByteBuf` 的委托。`-VerifyAccessors` 使用固定提交的官方运行时源码，逐表比较二进制读回与本次 JSON，并检查 UI、资源和角色文案引用。
+
+## 客户端快照
+
+`-SyncClient` 同步以下四份生成物，Unity 导入后由各自 YooAsset 包收集：
+
+- `demo_ui.json` → `Assets/Game/Modules/FoundationDemo/Configs/demo-config.json`。
+- `demo_localizationkeys.json` → `Assets/Game/Modules/FoundationDemo/Configs/demo-localization.json`。
+- `characterlab-catalog-runtime.json` → `Assets/Game/Modules/CharacterLab/Configs/catalog.json`。
+- `characterlab-localization-runtime.json` → `Assets/Game/Modules/CharacterLab/Configs/localization.json`。
+
+源表、schema、生成器及受影响的客户端快照应在同次修改中保持一致；Unity 已有 `.meta` 保留 GUID。新增配置消费方式时同步更新本说明与模块 README。配表回归入口 `pwsh -File Tests/Content/ConfigSmoke.ps1` 在独立副本检查引用、文案变更及非法时长；角色皮肤、实际资源加载和显示另按[角色实验室手册](../docs/development/character-lab.md)验收。
+
+## 代码清单
+
+`Config/HotUpdate/assemblies.json` 与 `Config/HotUpdate/characterlab-assemblies.json` 是两套构建配置的代码清单，不参与 Luban 生成。前者用于 Foundation 签名更新，后者用于独立 CharacterLab 离线 Windows 测试包；不能互换入口、包名或母包归档。登记和发布边界见[热更与强更构建](../docs/development/hot-update.md)。

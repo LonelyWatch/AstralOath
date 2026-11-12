@@ -2,6 +2,8 @@
 
 > 历史计划。2026-11-11 用户已授权将全部开发内容合并到 `main`，后续直接在 `main` 修改、提交并推送。下文的开发分支及“不合并 main”仅记录首次交付安排，现行规则以根 `AGENTS.md` 为准。
 
+> 本文的 xLua / Lua Binder 已由 2026-11-11 HybridCLR / C# Binder 决策替代。现行实现与未完成项见 [当前状态](../project-status.md)，不要照此历史计划重新安装 xLua。
+
 用户已批准实施并推送 `origin/codex/foundation`。地基完成后才进入真实战斗场景及用户监督验收。
 
 ## 全局约束

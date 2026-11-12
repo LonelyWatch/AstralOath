@@ -1,0 +1,33 @@
+# 当前项目状态
+
+核对日期：2026-11-12。运行时代码核对基线：`3fd85ca`。这是事实快照；修改能力、边界、验收状态或后续重点时立即更新。逐次变化见[变更日志](development/change-log.md)。
+
+## 已确定选型
+
+Unity 2022.3.62f3 / URP / UGUI / TMP；Common/AOT 通用设施；普通 C# UIBaseView + C# Binder + BindingMap；HybridCLR 冷启动业务代码更新；YooAsset；Luban 本地源表；免费 DOTween；.NET 10 模块化单体；MySQL 8.4。具体固定版本以锁文件为准，不自动升级。中文界面和日语语音独立。Windows 与 Android ARM64 为客户端目标；云主机 Windows Server 2022、2核4GB、100人以内为容量目标而非压测结论。
+
+## 当前可用
+
+- FoundationDemo：界面绑定、本地化、配置、资源、动画、网络回显和生命周期演示。服务端与客户端分别位于 Server 与 Assets/Game，共享契约在 Shared。
+- GameText / GameButton 直接继承 TMP / Button，右键 UI 提供创建入口；63对已有控件已迁移，GUID和配置保留。
+- Foundation 更新器：签名清单、哈希、断点、空间预检、原子版本切换、兼容预检、失败版本隔离及下次进程恢复。客户端可从配置的内容服务器取得兼容资源与 C# 业务 DLL。
+- 构建工具：Windows x64、Android ARM64 ASTC/ETC2 的完整母包和独立热更包，母包归档与签名发布工具。
+- CharacterLab：独立离线角色实验室，首批拉斯/梅赛德丝/安洁莉卡；双版本 Spine 与 FMOD 已集成。该入口只读取内置实验室内容，不等于 Foundation 远端更新入口。
+
+## 必须知道的缺口
+
+1. 当前 Foundation 场景远端清单 URL、签名 URL 和公钥为空；正式内容服务/CDN未部署。游戏 API 不承担发布资源的静态托管。
+2. **强更完整包构建已具备；服务器决定最低应用版本/维护/安装包地址、客户端阻断旧包的闭环未实现。** 现有 Echo 只检查协议版本，更新失败允许回退健康包/内置包。不能把它说成已强制升级。
+3. 最近 Common/AOT 控件继承变更需要重建母包。2026-11-11 Windows 热更成功是旧母包的本机 HTTP 演练，不能证明当前母包或生产 HTTPS 全链路。
+4. Android 历史 APK/热更包构建通过，真机安装、热更与性能仍未验。Windows/Android 本轮未重建 Player。
+5. 真正战斗规则、BP、联网战斗、账号准入尚未完成；演出事件不计算伤害/奖励。角色演出仍存在已列明的条件/镜头/粒子语义缺口，三角色样本不能代表全部原作资产。
+6. 安全区和窗口尺寸变化已有基础适配；平板/PC断点布局、全设备视觉验收由具体界面负责，不能认为一个 SafeAreaLayout 覆盖全部适配。
+
+## 最近验证与后续入口
+
+- 控件变更：Unity EditMode 215/215、PlayMode 16/16；见[控件验收](delivery/2026-11-12-ui-controls.md)。本次文档/工具核对没有重跑 Unity。
+- 本次服务/内容/配置/协议检查结果：[地基复核](delivery/2026-11-12-foundation-reaudit.md)。MySQL真实集成需专用连接串，本次未重新验证。
+- 下一项更新工作：实现无UI的启动策略契约、服务端业务准入与客户端AOT预检；再接更新界面。顺序及验收见[复核记录](delivery/2026-11-12-foundation-reaudit.md)。
+- 下一项角色工作：按[战斗验收](delivery/battle-acceptance.md)及 CharacterPresentation README 中的明确缺口推进，由用户监督原作对照。
+
+没有持续外服追踪、自动生产部署或自动依赖升级。需要追踪国际服时等待用户明确指令。

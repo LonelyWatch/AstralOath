@@ -55,6 +55,8 @@ public sealed class InventoryWindow : UIBaseView
 
 以下三次复验记录的是 HybridCLR 迁移前的 UI 和编辑器改造。
 
+> 下述旧 schema 2 / Lua 迁移前记录只保留历史证据；现行更新使用 schema 3 和 C# Binder，最新控件记录见 docs/delivery/2026-11-12-ui-controls.md。
+
 ## 预制体解耦改造验证（2026-11-11）
 
 - Unity 2022.3.62f3：EditMode 35/35、PlayMode 6/6 通过，覆盖绑定、Undo/Redo、预制体持久化、取消与释放、激活前校验及布局保留。

@@ -28,7 +28,7 @@
 
 拉斯 S2 的实验协攻同伴明确为梅赛德丝，只播放动作、不结算战斗。安洁莉卡 S2 选己方两个试验角色，S3 显示四个己方试验角色。梅赛德丝 S2 保留 ANI=skill1 与 ONEVENT ani=skill2 的源不一致，不擅自改写；梅赛德丝 S3 没有源 CUTIN 时不会添加。
 
-界面文案经 characterlab/localization 读取 Luban 生成资源，key 统一小写 snake_case，BindingMap 组件 key 保持原名。界面中文与语音 ja 分开。资源导入器/生成目录不作为手工编辑入口。
+界面文案经 characterlab/localization 读取 Luban 生成资源，key 使用点分命名，各段统一小写 snake_case，BindingMap 组件 key 保持原名。界面中文与语音 ja 分开。资源导入器/生成目录不作为手工编辑入口。
 
 ## 检查
 

@@ -14,7 +14,7 @@ $env:DOTNET_ROOT = Split-Path $dotnet
 $env:NUGET_PACKAGES = Join-Path $repo '.tools/nuget'
 Push-Location $repo
 try {
-    & node --test Tools/Tests/validate.test.mjs
+    & node --test Tools/Tests/validate.test.mjs Tools/Tests/check-docs.test.mjs
     if ($LASTEXITCODE) { throw 'Validator tests failed.' }
     & node Tools/validate.mjs
     if ($LASTEXITCODE) { throw 'Project boundaries failed.' }

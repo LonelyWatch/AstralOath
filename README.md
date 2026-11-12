@@ -2,6 +2,10 @@
 
 Unity 客户端、.NET 服务端及共享 C# 的单仓库地基。当前交付为基础设施演示：中文界面、C# Binder、HybridCLR 冷启动热更、DOTween 动画、Luban 配置、YooAsset 资源、Protobuf 回显、MySQL 幂等持久化及签名更新。另提供离线角色实验室，浏览首批角色骨骼、动态立绘、日语语音与技能演出。真实战斗规则、BP 与原作表现一致性仍待后续验收。
 
+## 新会话与现行规则
+
+从[文档接手入口](docs/README.md)开始，先读[当前状态](docs/project-status.md)与[通用规范](docs/development/project-standards.md)。功能改动必须同步模块说明和[变更日志](docs/development/change-log.md)。更新能力的已实现、历史实测和缺口见[地基复核](docs/delivery/2026-11-12-foundation-reaudit.md)。
+
 ## 启动
 
 需要 Windows、Node.js 22+、Unity **2022.3.62f3**。项目工具使用 PowerShell 7，首次初始化可由 Windows 自带的 PowerShell 5.1 引导安装。安装 Unity 的 Windows IL2CPP、Android Build Support、SDK/NDK/OpenJDK；Windows 原生构建还需 Visual Studio C++ 工具链和 Windows SDK。
