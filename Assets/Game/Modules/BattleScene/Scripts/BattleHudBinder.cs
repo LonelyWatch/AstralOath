@@ -23,9 +23,10 @@ namespace AstralOath.Client.BattleScene
         private const float BurnSelectionDelay = 0.231f;
         // The preview's acting Ras can Soul Burn S2. Live combat will supply this state.
         private int burnSkillIndex = 1;
-        internal BattleSimulationPreview Simulation { get; set; }
+        internal BattleSimulationPreview Simulation { get; private set; }
 
         private readonly BindingScope scope;
+        private readonly GameButton startPreview;
         private readonly GameButton burn;
         private readonly GameButton[] skills;
         private readonly Image[] selectedArtwork;
@@ -48,8 +49,9 @@ namespace AstralOath.Client.BattleScene
 
         internal BattleHudBinder(BindingMap map, Sprite burnPressed, Sprite cancelNormal, Sprite cancelPressed,
             SpineEffect burnButton, SpineEffect selection, SpineEffect intro, SpineEffect soulUse,
-            TextAsset[] particleDefinitions, Texture2D[] particleTextures)
+            TextAsset[] particleDefinitions, Texture2D[] particleTextures, UnityAction startBattle)
         {
+            startPreview = map.Require<GameButton>("startPreview");
             burn = map.Require<GameButton>("soulBurn");
             skills = new[] { map.Require<GameButton>("skill1"), map.Require<GameButton>("skill2"), map.Require<GameButton>("skill3") };
             selectedArtwork = new[] { map.Require<Image>("skillSelected1"), map.Require<Image>("skillSelected2"),
@@ -114,6 +116,16 @@ namespace AstralOath.Client.BattleScene
                 SetBurnArtwork(false);
                 Play(buttonEffect, "burn_intro", false);
                 UpdateBurnButtonVisual();
+                if (startBattle != null)
+                {
+                    Bind(startPreview, startBattle);
+                    scope.Add(() =>
+                    {
+                        if (startPreview)
+                            startPreview.gameObject.SetActive(false);
+                    });
+                    startPreview.gameObject.SetActive(true);
+                }
                 Bind(burn, () =>
                 {
                     if (Simulation == null) ToggleBurn();
@@ -172,6 +184,12 @@ namespace AstralOath.Client.BattleScene
             foreach (var effect in burnParticles)
                 effect.Tick(delta);
             useParticles.Tick(delta);
+        }
+
+        internal void AttachSimulation(BattleSimulationPreview simulation)
+        {
+            Simulation = simulation;
+            startPreview.gameObject.SetActive(false);
         }
 
         internal void SetSimulationSelection(int index) => SelectSkill(index);

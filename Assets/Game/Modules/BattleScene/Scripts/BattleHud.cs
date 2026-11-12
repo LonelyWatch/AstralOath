@@ -9,7 +9,7 @@ namespace AstralOath.Client.BattleScene
 
         public override void Validate()
         {
-            foreach (string key in new[] { "skill1", "skill2", "skill3", "pause", "speed", "auto", "soulBurn" })
+            foreach (string key in new[] { "skill1", "skill2", "skill3", "pause", "speed", "auto", "soulBurn", "startPreview" })
                 Bindings.Require<GameButton>(key);
             foreach (string key in new[] { "wave", "activeName", "activeHp", "soulCount" })
                 Bindings.Require<GameText>(key);

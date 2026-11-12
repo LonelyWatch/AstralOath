@@ -165,7 +165,8 @@ namespace AstralOath.Client.BattleScene.Editor
         }
 
         private static GameText Text(RectTransform parent, string name, string text, float x, float y,
-            float width, float height, float point, TextAlignmentOptions alignment = TextAlignmentOptions.Center)
+            float width, float height, float point, TextAlignmentOptions alignment = TextAlignmentOptions.Center,
+            TMP_FontAsset fontOverride = null)
         {
             var label = Item(parent, name, x, y, width, height).gameObject.AddComponent<GameText>();
             label.text = text;
@@ -175,7 +176,7 @@ namespace AstralOath.Client.BattleScene.Editor
             label.richText = false;
             label.enableWordWrapping = false;
             label.overflowMode = TextOverflowModes.Overflow;
-            ApplyFont(label, font);
+            ApplyFont(label, fontOverride ? fontOverride : font);
             return label;
         }
 

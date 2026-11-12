@@ -56,6 +56,36 @@ namespace AstralOath.Client.BattleScene.Editor
             sprites.pressedSprite = Asset<Sprite>(HudTextures + "game_hud_btn_burn_p.png");
             burn.spriteState = sprites;
             ConfigureSkillSelectionArtwork(map);
+            ConfigurePreviewEntry(map);
+        }
+
+        private static void ConfigurePreviewEntry(BindingMap map)
+        {
+            const string key = "startPreview";
+            var serialized = new SerializedObject(map);
+            var entries = serialized.FindProperty("entries");
+            for (int i = 0; i < entries.arraySize; i++)
+                if (entries.GetArrayElementAtIndex(i).FindPropertyRelative("key").stringValue == key)
+                    return;
+
+            var background = Picture((RectTransform)map.transform, "Start Preview", "_btn_small_black",
+                1190f, 621f, 148f, 48f);
+            background.type = Image.Type.Sliced;
+            background.pixelsPerUnitMultiplier = 1f / PixelScale;
+            background.raycastTarget = true;
+            var button = background.gameObject.AddComponent<GameButton>();
+            button.targetGraphic = background;
+
+            var label = Text(background.rectTransform, "Caption", "开始试玩", 0f, 0f, 142f, 40f, 21f,
+                fontOverride: map.Require<GameText>("wave").font);
+            label.rectTransform.anchorMin = label.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+            label.rectTransform.anchoredPosition = Vector2.zero;
+            background.gameObject.SetActive(false);
+
+            var entry = entries.GetArrayElementAtIndex(entries.arraySize++);
+            entry.FindPropertyRelative("key").stringValue = key;
+            entry.FindPropertyRelative("component").objectReferenceValue = button;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
         }
 
         private static void ConfigureSkillSelectionArtwork(BindingMap map)

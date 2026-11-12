@@ -60,12 +60,10 @@ namespace AstralOath.Client.BattleScene
             UpdateBinding();
             var catalog = JsonConvert.DeserializeObject<BattleCatalogData>(battleCatalog.text);
             simulation = new BattleSimulationPreview(gameObject.scene, hud, binder, catalog, battleSprites, battleGraphs);
-            binder.Simulation = simulation;
+            binder.AttachSimulation(simulation);
         }
 
         public bool TrySelectBattleTarget(string instanceId) => simulation?.ChooseTarget(instanceId) == true;
-
-        private void OnEnable() => UpdateBinding();
 
         private void Update()
         {
@@ -86,7 +84,7 @@ namespace AstralOath.Client.BattleScene
 
             UIViewRegistry.ValidatePrefab<BattleHud>(hud.gameObject);
             binder = new BattleHudBinder(hud, burnPressed, cancelNormal, cancelPressed,
-                burnButton, skillSelection, burnIntro, soulUse, particles, particleTextures);
+                burnButton, skillSelection, burnIntro, soulUse, particles, particleTextures, battleCatalog ? StartBattle : null);
         }
 
         private void OnDisable() => ClearBinding();

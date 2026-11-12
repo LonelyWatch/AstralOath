@@ -242,11 +242,20 @@ namespace AstralOath.Client.Tests
 
             var roots = scene.GetRootGameObjects();
             var preview = roots.Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
-            preview.StartBattle();
+            var map = roots.SelectMany(root => root.GetComponentsInChildren<BindingMap>()).Single();
+            var start = map.Require<GameButton>("startPreview");
+            var raycaster = map.GetComponentInParent<GraphicRaycaster>();
+            var eventSystem = roots.Select(root => root.GetComponent<EventSystem>()).Single(item => item);
+            Assert.That(preview.SimulationSnapshot, Is.Null, "Opening the scene shows the layout until the player clicks.");
+            Assert.That(start.gameObject.activeInHierarchy, Is.True, "The Game view needs a visible way to start.");
+            string output = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_CAPTURE_DIR");
+            if (!string.IsNullOrWhiteSpace(output))
+                Capture(raycaster.eventCamera, output, "battle-start.png");
+            Click(start, raycaster, eventSystem);
+            Assert.That(start.gameObject.activeInHierarchy, Is.False, "The entry button hides during the fight.");
             var initial = preview.SimulationSnapshot;
             Assert.That(initial.Units, Has.Count.EqualTo(8));
             Assert.That(initial.GetUnit(initial.CurrentActorId).Slot.Side, Is.EqualTo(BattleSide.Ally));
-            var map = roots.SelectMany(root => root.GetComponentsInChildren<BindingMap>()).Single();
             Assert.That(map.transform.Find("Active Unit/Class").GetComponent<Image>().sprite.name,
                 Is.EqualTo("cm_icon_role_mage"));
             var marker = map.transform.Find("Unit Status/Enemies").GetChild(0);
@@ -268,12 +277,17 @@ namespace AstralOath.Client.Tests
             Assert.That(marker.Find("Impact").GetComponent<GameText>().text, Is.Not.Empty);
 
             var canvas = preview.GetComponent<Canvas>();
-            string output = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_CAPTURE_DIR");
             if (!string.IsNullOrWhiteSpace(output))
                 Capture(canvas.worldCamera, output, "battle-simulation.png");
             canvas.gameObject.SetActive(false);
             yield return null;
             Assert.That(preview.SimulationSnapshot, Is.Null);
+            canvas.gameObject.SetActive(true);
+            yield return null;
+            yield return null;
+            Assert.That(start.gameObject.activeInHierarchy, Is.True, "Reopening the HUD restores the entry.");
+            Click(start, raycaster, eventSystem);
+            Assert.That(preview.SimulationSnapshot.LastCommandSequence, Is.Zero);
         }
 
         private static void Click(GameButton button, GraphicRaycaster raycaster, EventSystem eventSystem)
