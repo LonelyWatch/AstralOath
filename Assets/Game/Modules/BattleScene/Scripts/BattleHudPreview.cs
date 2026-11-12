@@ -4,6 +4,7 @@ using AstralOath.Client.Common;
 using AstralOath.Client.Skeletons;
 using AstralOath.Shared.Battle;
 using Newtonsoft.Json;
+using TMPro;
 using UnityEngine;
 
 namespace AstralOath.Client.BattleScene
@@ -45,12 +46,18 @@ namespace AstralOath.Client.BattleScene
         [SerializeField] private TextAsset[] particles;
         [SerializeField] private Texture2D[] particleTextures;
         [SerializeField] private TextAsset battleCatalog;
+        [SerializeField] private TMP_FontAsset battleDamageFont;
         [SerializeField] private TextAsset[] battleGraphs;
         [SerializeField] private Sprite[] battleSprites;
+        [SerializeField] private BattleSkillPresentationAsset[] skillAssets;
+        [SerializeField] private TextAsset audioCatalog;
+        [SerializeField] private TextAsset[] audioBanks;
         private BattleHudBinder binder;
         private BattleSimulationPreview simulation;
 
         public BattleSnapshot SimulationSnapshot => simulation?.Snapshot;
+        public int StartedSkillVoices => simulation?.StartedSkillVoices ?? 0;
+        public int StartedSkillSounds => simulation?.StartedSkillSounds ?? 0;
 
         public void StartBattle()
         {
@@ -59,7 +66,8 @@ namespace AstralOath.Client.BattleScene
             ClearBinding();
             UpdateBinding();
             var catalog = JsonConvert.DeserializeObject<BattleCatalogData>(battleCatalog.text);
-            simulation = new BattleSimulationPreview(gameObject.scene, hud, binder, catalog, battleSprites, battleGraphs);
+            simulation = new BattleSimulationPreview(gameObject.scene, hud, binder, catalog, battleSprites, battleGraphs,
+                skillAssets, audioCatalog, audioBanks, battleDamageFont);
             binder.AttachSimulation(simulation);
         }
 

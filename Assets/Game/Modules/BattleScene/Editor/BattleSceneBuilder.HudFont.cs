@@ -27,15 +27,27 @@ namespace AstralOath.Client.BattleScene.Editor
             }
         }
 
-        private static TMP_FontAsset BuildHealthDigits()
+        private static TMP_FontAsset BuildHealthDigits() =>
+            BuildDigits("BattleHpDigits", "epic7num", "TMP_Bitmap.shader", "0123456789/", preserveColor: false);
+
+        private static TMP_FontAsset BuildDamageDigits() =>
+            BuildDigits("BattleDamageDigits", "damage", "TMP_Sprite.shader", "0123456789+", preserveColor: true);
+
+        private static TMP_FontAsset BuildDigits(string assetName, string sourceName, string shaderName,
+            string requiredCharacters, bool preserveColor)
         {
-            string path = HealthFontDirectory + "/BattleHpDigits.asset";
-            var atlas = Asset<Texture2D>(HudTextures + "Fonts/epic7num_0.png");
-            var description = Asset<TextAsset>(HudTextures + "Fonts/epic7num.fnt.txt");
+            string path = HealthFontDirectory + "/" + assetName + ".asset";
+            var atlas = Asset<Texture2D>(HudTextures + "Fonts/" + sourceName + "_0.png");
+            var description = Asset<TextAsset>(HudTextures + "Fonts/" + sourceName + ".fnt.txt");
             string[] lines = description.text.Split('\n');
             string common = lines.Single(line => line.StartsWith("common ", StringComparison.Ordinal));
             int lineHeight = Metric(common, "lineHeight");
             int baseline = Metric(common, "base");
+            var glyphLines = lines.Where(line => line.StartsWith("char ", StringComparison.Ordinal)).ToArray();
+            // The damage atlas contains 73-pixel digits but the source reports a 32-pixel line.
+            // Fit the TMP face to its actual bitmap extents so centering preserves the original pixels.
+            if (preserveColor)
+                baseline = lineHeight = glyphLines.Max(line => Metric(line, "yoffset") + Metric(line, "height"));
             if (atlas.width != Metric(common, "scaleW") || atlas.height != Metric(common, "scaleH"))
                 throw new InvalidDataException("The numeric atlas dimensions do not match the BMFont metadata.");
 
@@ -43,13 +55,13 @@ namespace AstralOath.Client.BattleScene.Editor
             if (!asset)
             {
                 asset = ScriptableObject.CreateInstance<TMP_FontAsset>();
-                asset.name = "BattleHpDigits";
+                asset.name = assetName;
                 AssetDatabase.CreateAsset(asset, path);
             }
             if (!asset.material)
             {
-                var shader = Asset<Shader>("Assets/TextMesh Pro/Shaders/TMP_Bitmap.shader");
-                var material = new Material(shader) { name = "BattleHpDigits Material" };
+                var shader = Asset<Shader>("Assets/TextMesh Pro/Shaders/" + shaderName);
+                var material = new Material(shader) { name = assetName + " Material" };
                 AssetDatabase.AddObjectToAsset(material, asset);
                 asset.material = material;
             }
@@ -63,13 +75,13 @@ namespace AstralOath.Client.BattleScene.Editor
                 pointSize = lineHeight,
                 lineHeight = lineHeight,
                 ascentLine = baseline,
-                capLine = 30,
+                capLine = preserveColor ? baseline : 30,
                 descentLine = baseline - lineHeight,
                 scale = 1
             };
             asset.glyphTable.Clear();
             asset.characterTable.Clear();
-            foreach (string line in lines.Where(line => line.StartsWith("char ", StringComparison.Ordinal)))
+            foreach (string line in glyphLines)
             {
                 uint unicode = checked((uint)Metric(line, "id"));
                 int width = Metric(line, "width");
@@ -90,8 +102,8 @@ namespace AstralOath.Client.BattleScene.Editor
             serialized.FindProperty("m_AtlasRenderMode").intValue = (int)GlyphRenderMode.SMOOTH;
             serialized.ApplyModifiedPropertiesWithoutUndo();
             asset.ReadFontAssetDefinition();
-            if ("0123456789/".Any(c => !asset.HasCharacter(c)))
-                throw new InvalidDataException("The battle numeric atlas is missing a digit or slash.");
+            if (requiredCharacters.Any(c => !asset.HasCharacter(c)))
+                throw new InvalidDataException("The battle numeric atlas is missing a required glyph: " + assetName);
             EditorUtility.SetDirty(asset);
             return asset;
         }

@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using AstralOath.Client.Common;
 using AstralOath.Shared.Battle;
-using Newtonsoft.Json.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -23,11 +22,13 @@ namespace AstralOath.Client.BattleScene
         private readonly Dictionary<string, string> messages;
         private readonly Dictionary<string, string> classes;
         private readonly Dictionary<string, Sprite> sprites;
-        private readonly Dictionary<string, Cue> cues;
+        private readonly BattleSkillPresentation skillPresentation;
+        private readonly BattleVoice voice;
+        private readonly BattleTurnHud turnHud;
         private readonly Dictionary<string, View> views = new Dictionary<string, View>(StringComparer.Ordinal);
         private readonly Queue<BattleFlowEvent> playback = new Queue<BattleFlowEvent>();
         private readonly GameText banner;
-        private readonly GameText[] cooldowns;
+        private BattleUnitSnapshot displayedActor;
         private readonly Action restore;
         private float pause;
         private float recovery;
@@ -36,7 +37,8 @@ namespace AstralOath.Client.BattleScene
         private bool useSoulBurn;
 
         public BattleSimulationPreview(Scene scene, BindingMap hud, BattleHudBinder binder, BattleCatalogData catalog,
-            Sprite[] icons, TextAsset[] graphs)
+            Sprite[] icons, TextAsset[] graphs, BattleSkillPresentationAsset[] skillAssets, TextAsset audioCatalog,
+            TextAsset[] audioBanks, TMP_FontAsset damageFont)
         {
             this.hud = hud;
             this.binder = binder;
@@ -45,7 +47,6 @@ namespace AstralOath.Client.BattleScene
             classes = catalog.heroes.ToDictionary(hero => hero.id, hero => hero.heroClass, StringComparer.Ordinal);
             messages = catalog.messages.ToDictionary(item => item.key, item => item.zhCn, StringComparer.Ordinal);
             sprites = icons.ToDictionary(sprite => sprite.name, StringComparer.Ordinal);
-            cues = graphs.Select(asset => Cue.Read(JObject.Parse(asset.text))).ToDictionary(cue => cue.Id, StringComparer.Ordinal);
             match = BattlePreviewFactory.Create("local", 271828UL, catalog);
             var units = scene.GetRootGameObjects().Single(root => root.name == "Units").transform;
             foreach (var state in match.Snapshot.Units)
@@ -94,13 +95,16 @@ namespace AstralOath.Client.BattleScene
 
             banner = CreateText(hud.transform, text, "Battle State", new Vector2(0.5f, 1),
                 new Vector2(0, -46), new Vector2(720, 40), 24);
-            cooldowns = buttons.Select(item => CreateText(item.button.transform, text, "Cooldown",
-                new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(128, 55), 32)).ToArray();
+            skillPresentation = new BattleSkillPresentation(units, graphs, skillAssets);
+            voice = new BattleVoice(audioCatalog, audioBanks);
+            turnHud = new BattleTurnHud(hud, unit => Label(unit.NameKey), sprites, damageFont);
             foreach (var view in views.Values) view.AddLabels(text, hp);
             Refresh();
         }
 
         public BattleSnapshot Snapshot => match.Snapshot;
+        public int StartedSkillVoices => voice.StartedVoiceCount;
+        public int StartedSkillSounds => voice.StartedEffectCount;
 
         private BattleUnitSnapshot Actor => Snapshot.GetUnit(Snapshot.CurrentActorId);
         private bool Busy => playback.Count != 0 || pause > 0f || recovery > 0f;
@@ -108,7 +112,9 @@ namespace AstralOath.Client.BattleScene
 
         public void Tick(float delta)
         {
-            foreach (var view in views.Values) view.TickFeedback(delta);
+            skillPresentation.Tick(delta);
+            voice.Tick();
+            turnHud.Tick(delta);
             if (pause > 0f)
             {
                 pause = Mathf.Max(0f, pause - delta);
@@ -214,12 +220,16 @@ namespace AstralOath.Client.BattleScene
             switch (item.Kind)
             {
                 case BattleFlowEventKind.Action:
-                    cues.TryGetValue(item.PresentationId ?? "", out var cue);
-                    var source = views[item.SourceId];
-                    float duration = source.Actor.PlayBattleAnimation(cue?.Animation ?? "skill1");
-                    float impact = cue?.ImpactSeconds ?? Math.Min(0.45f, duration * 0.5f);
-                    pause = impact;
-                    recovery = Math.Max(0.15f, duration - impact);
+                    var primary = item.TargetId != null && views.TryGetValue(item.TargetId, out var target)
+                        ? target.Actor : null;
+                    var targets = playback.TakeWhile(next => next.Kind != BattleFlowEventKind.Action)
+                        .Where(next => next.Kind == BattleFlowEventKind.Damage || next.Kind == BattleFlowEventKind.Healing)
+                        .Select(next => next.TargetId).Distinct(StringComparer.Ordinal)
+                        .Select(id => views[id].Actor).ToArray();
+                    var timing = skillPresentation.Begin(item.PresentationId, views[item.SourceId].Actor, primary, targets);
+                    voice.Play(item.PresentationId);
+                    pause = timing.ImpactSeconds;
+                    recovery = Math.Max(0.15f, timing.Duration - pause);
                     string name = skills.TryGetValue(item.SkillId, out var skill) ? Label(skill.nameKey) : "史莱姆攻击";
                     banner.text = name;
                     break;
@@ -229,11 +239,25 @@ namespace AstralOath.Client.BattleScene
                     view.Health.fillAmount = item.RemainingHealth.GetValueOrDefault() /
                         (float)Snapshot.GetUnit(item.TargetId).Stats.MaxHealth;
                     if (item.Amount > 0)
-                        view.ShowFeedback(item);
+                        turnHud.ShowImpact(item, view.FeedbackAnchor);
                     if (item.Kind == BattleFlowEventKind.Damage && item.Amount > 0 && item.RemainingHealth > 0)
                         view.Actor.PlayBattleAnimation("attacked");
                     break;
+                case BattleFlowEventKind.CooldownChanged:
+                    if (displayedActor?.InstanceId == item.TargetId)
+                    {
+                        int index = Array.IndexOf(displayedActor.Form.SkillIds.ToArray(), item.SkillId);
+                        if (index >= 0) turnHud.SetCooldown(index, item.Amount);
+                    }
+                    break;
+                case BattleFlowEventKind.ReadinessChanged:
+                    turnHud.SetReadiness(item.TargetId, item.Amount);
+                    break;
+                case BattleFlowEventKind.TurnEnded:
+                    turnHud.SetReadiness(item.SourceId, 0);
+                    break;
                 case BattleFlowEventKind.UnitDefeated:
+                    turnHud.RemoveUnit(item.TargetId);
                     views[item.TargetId].Show(false);
                     break;
                 case BattleFlowEventKind.TurnSkipped:
@@ -255,7 +279,9 @@ namespace AstralOath.Client.BattleScene
             int soul = Snapshot.GetSoul(BattleSide.Ally);
             hud.Require<GameText>("soulCount").text = $"{soul} / 20";
             hud.Require<Image>("soulFill").fillAmount = soul / 20f;
+            turnHud.Refresh(Snapshot);
             var actor = Actor;
+            displayedActor = actor;
             if (actor != null)
             {
                 hud.Require<GameText>("activeName").text = Label(actor.NameKey);
@@ -279,8 +305,8 @@ namespace AstralOath.Client.BattleScene
                     image.sprite = icon;
                 int turns = TrySkill(index, out skill) ? actor.GetCooldown(skill.id) : 0;
                 button.interactable = CanAct && skill != null && turns == 0;
-                image.color = button.interactable ? Color.white : new Color(0.45f, 0.45f, 0.45f, 1f);
-                cooldowns[index++].text = turns > 0 ? turns.ToString() : "";
+                image.color = button.interactable || turns > 0 ? Color.white : new Color(0.45f, 0.45f, 0.45f, 1f);
+                turnHud.SetCooldown(index++, turns);
             }
             hud.Require<GameButton>("soulBurn").interactable = CanAct && BurnSlot() >= 0;
             ShowPrompt();
@@ -346,10 +372,11 @@ namespace AstralOath.Client.BattleScene
 
         public void Dispose()
         {
+            skillPresentation.Dispose();
+            voice.Dispose();
+            turnHud.Dispose();
             foreach (var view in views.Values) view.Restore();
             if (banner) UnityEngine.Object.Destroy(banner.gameObject);
-            foreach (var label in cooldowns)
-                if (label) UnityEngine.Object.Destroy(label.gameObject);
             restore();
         }
 
@@ -362,9 +389,7 @@ namespace AstralOath.Client.BattleScene
             private readonly float originalReadiness;
             private GameText statusLabel;
             private GameText levelLabel;
-            private GameText feedback;
             private Image levelBadge;
-            private float feedbackTime;
 
             public View(Transform slot, GameObject marker)
             {
@@ -373,12 +398,14 @@ namespace AstralOath.Client.BattleScene
                 Actor = slot.GetComponentInChildren<BattlePreviewActor>();
                 Health = marker.transform.Find("HP").GetComponent<Image>();
                 readiness = marker.transform.Find("Combat Readiness").GetComponent<Image>();
+                FeedbackAnchor = (RectTransform)marker.transform.Find("Frame");
                 originalHealth = Health.fillAmount;
                 originalReadiness = readiness.fillAmount;
             }
             public BattlePreviewActor Actor { get; }
             public Image Health { get; }
             public Image Readiness => readiness;
+            public RectTransform FeedbackAnchor { get; }
             public Vector3 Center => Actor.Bounds.center;
             public bool Contains(Ray ray) => slot.gameObject.activeInHierarchy && Actor.Bounds.IntersectRay(ray);
 
@@ -390,39 +417,18 @@ namespace AstralOath.Client.BattleScene
 
             public void AddLabels(GameText font, GameText digits)
             {
-                var frame = (RectTransform)marker.transform.Find("Frame");
                 statusLabel = CreateText(marker.transform, font, "Statuses", Vector2.zero,
-                    frame.anchoredPosition + Vector2.up * 24f, new Vector2(180, 24), 16);
+                    FeedbackAnchor.anchoredPosition + Vector2.up * 24f, new Vector2(180, 24), 16);
                 levelBadge = marker.transform.Find("Level").GetComponent<Image>();
                 levelBadge.enabled = false;
                 levelLabel = CreateText(marker.transform, digits, "Level Value", Vector2.zero,
                     levelBadge.rectTransform.anchoredPosition, new Vector2(34, 29), 19);
-                feedback = CreateText(marker.transform, font, "Impact", Vector2.zero,
-                    frame.anchoredPosition + Vector2.up * 53f, new Vector2(180, 36), 29);
-                feedback.text = "";
             }
 
             public void UpdateLabels(BattleUnitSnapshot state)
             {
                 levelLabel.text = state.Level.ToString();
                 statusLabel.text = string.Join(" ", state.Statuses.Select(status => $"{StatusName(status.Kind)}{status.RemainingTurns}"));
-            }
-
-            public void ShowFeedback(BattleFlowEvent item)
-            {
-                bool healing = item.Kind == BattleFlowEventKind.Healing;
-                feedback.color = healing ? new Color(0.65f, 1f, 0.45f) :
-                    item.HitKind == BattleHitKind.Critical ? new Color(1f, 0.78f, 0.3f) : Color.white;
-                feedback.text = healing ? $"+{item.Amount}" :
-                    item.HitKind == BattleHitKind.Miss ? $"未命中 {item.Amount}" : item.Amount.ToString();
-                feedbackTime = 0.7f;
-            }
-
-            public void TickFeedback(float delta)
-            {
-                if (feedbackTime <= 0f) return;
-                feedbackTime -= delta;
-                if (feedbackTime <= 0f) feedback.text = "";
             }
 
             private static string StatusName(BattleStatusKind kind) => kind switch
@@ -439,7 +445,6 @@ namespace AstralOath.Client.BattleScene
             {
                 if (statusLabel) UnityEngine.Object.Destroy(statusLabel.gameObject);
                 if (levelLabel) UnityEngine.Object.Destroy(levelLabel.gameObject);
-                if (feedback) UnityEngine.Object.Destroy(feedback.gameObject);
                 if (levelBadge) levelBadge.enabled = true;
                 if (slot) slot.gameObject.SetActive(true);
                 if (!marker) return;
@@ -449,46 +454,5 @@ namespace AstralOath.Client.BattleScene
             }
         }
 
-        private sealed class Cue
-        {
-            public string Id { get; private set; }
-            public string Animation { get; private set; }
-            public float ImpactSeconds { get; private set; }
-
-            public static Cue Read(JObject graph)
-            {
-                var source = (JObject)graph["source"];
-                var nodes = source["entities"].ToDictionary(node => (int)node["guid"]);
-                var edges = source["connections"].Where(edge => (int?)edge["when"] == 1)
-                    .ToLookup(edge => (int)edge["from"]);
-                var clip = nodes.Values.First(node => (string)node["etty"] == "ANI" &&
-                    ((string)node["ani"]).StartsWith("skill", StringComparison.Ordinal));
-                float? FirstHit(int id, HashSet<int> seen)
-                {
-                    if ((string)nodes[id]["etty"] == "HIT") return 0f;
-                    if (!seen.Add(id)) return null;
-                    float? first = null;
-                    foreach (var edge in edges[id])
-                    {
-                        float? next = FirstHit((int)edge["to"], seen);
-                        if (next.HasValue)
-                        {
-                            float candidate = next.Value + ((float?)edge["delay"] ?? 0);
-                            first = Math.Min(first ?? candidate, candidate);
-                        }
-                    }
-                    seen.Remove(id);
-                    return first;
-                }
-
-                float? milliseconds = FirstHit((int)clip["guid"], new HashSet<int>());
-                return new Cue
-                {
-                    Id = (string)graph["id"],
-                    Animation = (string)clip["ani"],
-                    ImpactSeconds = (milliseconds ?? 650f) / 1000f
-                };
-            }
-        }
     }
 }

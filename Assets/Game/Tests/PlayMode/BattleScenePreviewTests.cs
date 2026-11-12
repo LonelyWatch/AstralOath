@@ -255,6 +255,20 @@ namespace AstralOath.Client.Tests
             Assert.That(start.gameObject.activeInHierarchy, Is.False, "The entry button hides during the fight.");
             var initial = preview.SimulationSnapshot;
             Assert.That(initial.Units, Has.Count.EqualTo(8));
+            var readiness = map.transform.Find("Combat Readiness/Live Readiness/Readiness Portraits");
+            Assert.That(readiness, Is.Not.Null, "The battle must show live readiness portraits.");
+            Assert.That(readiness.childCount, Is.EqualTo(initial.Units.Count));
+            yield return null;
+            yield return null;
+            var detailsButton = map.transform.Find("Combat Readiness/Live Readiness/Readiness Details Button").GetComponent<GameButton>();
+            var details = map.transform.Find("Combat Readiness/Live Readiness/Readiness Details");
+            Click(detailsButton, raycaster, eventSystem);
+            Assert.That(details.gameObject.activeInHierarchy, Is.True);
+            Assert.That(details.GetComponentsInChildren<GameText>().Any(text => text.text.Contains("100")), Is.True);
+            if (!string.IsNullOrWhiteSpace(output))
+                Capture(raycaster.eventCamera, output, "battle-readiness-details.png");
+            Click(detailsButton, raycaster, eventSystem);
+            Assert.That(details.gameObject.activeInHierarchy, Is.False);
             Assert.That(initial.GetUnit(initial.CurrentActorId).Slot.Side, Is.EqualTo(BattleSide.Ally));
             Assert.That(map.transform.Find("Active Unit/Class").GetComponent<Image>().sprite.name,
                 Is.EqualTo("cm_icon_role_mage"));
@@ -274,7 +288,20 @@ namespace AstralOath.Client.Tests
             while (health.fillAmount >= originalFill && Time.realtimeSinceStartup < deadline)
                 yield return null;
             Assert.That(health.fillAmount, Is.LessThan(originalFill), "The skill impact updates the HUD.");
-            Assert.That(marker.Find("Impact").GetComponent<GameText>().text, Is.Not.Empty);
+            var feedback = map.transform.Find("Battle Feedback/enemy-1/Impact").GetComponent<GameText>();
+            Assert.That(feedback.text, Is.Not.Empty);
+            Assert.That(feedback.font.name, Is.EqualTo("BattleDamageDigits"));
+            var feedbackPosition = feedback.rectTransform.position;
+            yield return null;
+            yield return null;
+            Assert.That(Vector3.Distance(feedback.rectTransform.position, feedbackPosition), Is.GreaterThan(0.001f));
+            var effects = roots.Single(root => root.name == "Units").transform.Find("Battle Skill Effects");
+            Assert.That(effects.GetComponentsInChildren<MeshFilter>().Any(mesh => mesh.sharedMesh && mesh.sharedMesh.vertexCount > 0),
+                Is.True, "Original CFX must be rendered by the battle scene.");
+#if UNITY_EDITOR_WIN
+            Assert.That(preview.StartedSkillVoices, Is.EqualTo(1));
+            Assert.That(preview.StartedSkillSounds, Is.EqualTo(1));
+#endif
 
             var canvas = preview.GetComponent<Canvas>();
             if (!string.IsNullOrWhiteSpace(output))
@@ -288,6 +315,63 @@ namespace AstralOath.Client.Tests
             Assert.That(start.gameObject.activeInHierarchy, Is.True, "Reopening the HUD restores the entry.");
             Click(start, raycaster, eventSystem);
             Assert.That(preview.SimulationSnapshot.LastCommandSequence, Is.Zero);
+            yield return null;
+            var secondSkill = map.Require<GameButton>("skill2");
+            Click(secondSkill, raycaster, eventSystem);
+            Assert.That(preview.TrySelectBattleTarget("enemy-1"), Is.True);
+            var cooldown = secondSkill.transform.Find("Cooldown Overlay");
+            deadline = Time.realtimeSinceStartup + 5f;
+            while (!cooldown.gameObject.activeInHierarchy && Time.realtimeSinceStartup < deadline)
+                yield return null;
+            Assert.That(cooldown.gameObject.activeInHierarchy, Is.True, "A used skill needs a visible cooldown mask.");
+            Assert.That(cooldown.Find("Cooldown Number").GetComponent<GameText>().text, Is.Not.Empty);
+            Assert.That(secondSkill.IsInteractable(), Is.False);
+            if (!string.IsNullOrWhiteSpace(output))
+                Capture(canvas.worldCamera, output, "battle-cooldown.png");
+        }
+
+        [UnityTest]
+        public IEnumerator MeleeActorsMoveToTheTargetAndReturnToTheirSlot()
+        {
+            scene = EditorSceneManager.LoadSceneInPlayMode(ScenePath, new LoadSceneParameters(LoadSceneMode.Additive));
+            yield return null;
+            yield return null;
+            var roots = scene.GetRootGameObjects();
+            var preview = roots.Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            var units = roots.Single(root => root.name == "Units").transform;
+            preview.StartBattle();
+
+            BattlePreviewActor mover = null;
+            Vector3 home = Vector3.zero;
+            float deadline = Time.realtimeSinceStartup + 22f;
+            while (!mover && Time.realtimeSinceStartup < deadline)
+            {
+                var snapshot = preview.SimulationSnapshot;
+                var actor = snapshot.GetUnit(snapshot.CurrentActorId);
+                var target = snapshot.Units.FirstOrDefault(unit => unit.IsAlive && unit.Slot.Side == BattleSide.Enemy);
+                if (actor?.Slot.Side == BattleSide.Ally && target != null &&
+                    preview.TrySelectBattleTarget(target.InstanceId) && actor.DefinitionId == "c1001")
+                {
+                    mover = units.Find("Allies").GetChild(actor.Slot.Position - 1).GetComponentInChildren<BattlePreviewActor>();
+                    home = mover.transform.localPosition;
+                }
+                yield return null;
+            }
+            Assert.That(mover, Is.Not.Null, "Ras must reach a playable turn.");
+            var slotPosition = mover.transform.parent.position;
+            deadline = Time.realtimeSinceStartup + 4f;
+            while (mover.transform.localPosition.x - home.x < 0.25f && Time.realtimeSinceStartup < deadline)
+                yield return null;
+            Assert.That(mover.transform.localPosition.x - home.x, Is.GreaterThan(0.24f));
+            Assert.That(mover.transform.parent.position, Is.EqualTo(slotPosition));
+            string output = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_CAPTURE_DIR");
+            if (!string.IsNullOrWhiteSpace(output))
+                Capture(preview.GetComponent<Canvas>().worldCamera, output, "battle-melee-approach.png");
+
+            deadline = Time.realtimeSinceStartup + 5f;
+            while (!mover.transform.localPosition.Equals(home) && Time.realtimeSinceStartup < deadline)
+                yield return null;
+            Assert.That(mover.transform.localPosition, Is.EqualTo(home));
         }
 
         private static void Click(GameButton button, GraphicRaycaster raycaster, EventSystem eventSystem)

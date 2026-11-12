@@ -22,6 +22,15 @@ namespace AstralOath.Client.BattleScene
         public Bounds Bounds => player != null
             ? player.Root.GetComponent<MeshRenderer>().bounds : new Bounds(transform.position, Vector3.zero);
 
+        internal float GetBattleAnimationDuration(string animation)
+        {
+            if (player != null)
+                foreach (var clip in player.Animations)
+                    if (clip.Name == animation && clip.Duration > 0f)
+                        return clip.Duration;
+            return 0f;
+        }
+
         public float PlayBattleAnimation(string animation)
         {
             if (player == null) return 0f;

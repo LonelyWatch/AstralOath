@@ -1,0 +1,159 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+using AstralOath.Client.Bootstrap;
+using AstralOath.Client.Core;
+using UnityEngine;
+using UnityEngine.Scripting;
+
+namespace AstralOath.Client.BattleScene
+{
+    // Audio follows the rendered action. FMOD owns random voice selection and each event's internal timing.
+    internal sealed class BattleVoice : IDisposable
+    {
+        private readonly Dictionary<string, SkillAudio> skills = new Dictionary<string, SkillAudio>(StringComparer.Ordinal);
+        private readonly HashSet<string> failedEvents = new HashSet<string>(StringComparer.Ordinal);
+        private FmodCharacterAudioService service;
+
+        public bool IsAvailable => service?.IsAvailable == true;
+        public int StartedVoiceCount { get; private set; }
+        public int StartedEffectCount { get; private set; }
+
+        public BattleVoice(TextAsset audioCatalog, TextAsset[] banks)
+        {
+            try
+            {
+                if (!audioCatalog)
+                    throw new InvalidDataException("Missing character audio catalog.");
+                var catalog = JsonUtility.FromJson<AudioCatalog>(audioCatalog.text);
+                if (catalog?.characters == null || catalog.sharedBanks == null)
+                    throw new InvalidDataException("Invalid character audio catalog.");
+                foreach (var character in catalog.characters)
+                    foreach (var skill in character.skills ?? Array.Empty<SkillAudio>())
+                        skills.Add(skill.id, skill);
+
+                var assets = new SceneBanks(catalog.sharedBanks, banks);
+                service = new FmodCharacterAudioService(CancellationToken.None);
+                // Scene banks are already loaded TextAssets; the asset adapter always completes inline.
+                service.InitializeAsync(assets, catalog.sharedBanks).GetAwaiter().GetResult();
+            }
+            catch (Exception error)
+            {
+                Disable(error.Message);
+            }
+        }
+
+        public void Play(string presentationId)
+        {
+            if (!IsAvailable || string.IsNullOrWhiteSpace(presentationId)) return;
+            if (!skills.TryGetValue(presentationId, out var cue))
+            {
+                WarnOnce(presentationId, "No skill audio mapping for " + presentationId);
+                return;
+            }
+
+            // The catalog maps one timeline event and one randomized voice event.
+            // Individual audio-table variants are selected in the bank, never launched together.
+            if (Start(cue.eventPath)) StartedEffectCount++;
+            if (Start(cue.voiceEventPath)) StartedVoiceCount++;
+        }
+
+        public void Tick()
+        {
+            if (service == null) return;
+            try
+            {
+                service.Tick();
+                if (!service.IsAvailable) Disable(service.Diagnostic);
+            }
+            catch (Exception error)
+            {
+                Disable(error.Message);
+            }
+        }
+
+        private bool Start(string eventPath)
+        {
+            if (string.IsNullOrWhiteSpace(eventPath) || failedEvents.Contains(eventPath)) return false;
+            try
+            {
+                // The audio service keeps the native instance alive until it finishes or is disposed.
+                service.PlayEvent(eventPath);
+                return true;
+            }
+            catch (Exception error)
+            {
+                WarnOnce(eventPath, eventPath + " " + error.Message);
+                return false;
+            }
+        }
+
+        private void WarnOnce(string key, string diagnostic)
+        {
+            if (failedEvents.Add(key)) Debug.LogWarning("ASTRAL_BATTLE_AUDIO " + diagnostic);
+        }
+
+        private void Disable(string diagnostic)
+        {
+            Debug.LogWarning("ASTRAL_BATTLE_AUDIO_UNAVAILABLE " + diagnostic);
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            var audio = service;
+            service = null;
+            audio?.Dispose();
+        }
+
+        private sealed class SceneBanks : IAssetService
+        {
+            private readonly Dictionary<string, TextAsset> banks = new Dictionary<string, TextAsset>(StringComparer.Ordinal);
+
+            public SceneBanks(string[] addresses, TextAsset[] assets)
+            {
+                if (addresses.Length == 0 || assets == null || addresses.Length != assets.Length)
+                    throw new InvalidDataException("Battle scene audio banks do not match the catalog.");
+                for (int i = 0; i < addresses.Length; i++)
+                {
+                    var bank = assets[i];
+                    string filename = Path.GetFileName(addresses[i]);
+                    if (!bank || (bank.name != filename && bank.name != filename + ".bytes"))
+                        throw new InvalidDataException("Missing or out-of-order battle scene audio bank " + addresses[i]);
+                    banks.Add(addresses[i], bank);
+                }
+            }
+
+            public Task<T> LoadAsync<T>(string address, BindingScope scope) where T : UnityEngine.Object
+            {
+                scope.Token.ThrowIfCancellationRequested();
+                if (banks.TryGetValue(address, out var asset) && asset is T value)
+                    return Task.FromResult(value);
+                throw new InvalidDataException("Missing battle scene audio bank " + address);
+            }
+        }
+
+        [Serializable, Preserve]
+        private sealed class AudioCatalog
+        {
+            public AudioCharacter[] characters;
+            public string[] sharedBanks;
+        }
+
+        [Serializable, Preserve]
+        private sealed class AudioCharacter
+        {
+            public SkillAudio[] skills;
+        }
+
+        [Serializable, Preserve]
+        private sealed class SkillAudio
+        {
+            public string id;
+            public string eventPath;
+            public string voiceEventPath;
+        }
+    }
+}

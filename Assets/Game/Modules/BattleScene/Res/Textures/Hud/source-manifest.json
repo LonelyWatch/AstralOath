@@ -54,6 +54,14 @@
     {
       "source": "原始资源/wnd/inbattle_hud_0.csb",
       "sha256": "c45d1f33d9b3ab3c968cdfd582ac9946c7312bfb90bfd1049034e1795c868f86"
+    },
+    {
+      "source": "原始资源/tutorial/help_contents_6_1_image.png",
+      "sha256": "0284dc184f9b9c493aa986853a15d4e9a8f4873850e6e9ddf91bce152ee77498"
+    },
+    {
+      "source": "原始资源/tutorial/help_contents_8_1_image.png",
+      "sha256": "f194ccfda92b534fb507d19c1be65491e4429d5495ad2bcf6fd697170eab48a1"
     }
   ],
   "assets": [
@@ -1254,6 +1262,19 @@
       ]
     },
     {
+      "asset": "Fonts/damage.fnt.txt",
+      "source": "原始资源/font/damage.fnt",
+      "sha256": "5551f51d2232f8ccaaf9a21bf88aa293910da184d353a0708d86cebd590befc5"
+    },
+    {
+      "asset": "Fonts/damage_0.png",
+      "source": "原始资源/font/damage_0.png",
+      "sha256": "5dc074f79889263741d6a84b2f156e1189d97c15ca0dd5c6bf39b3dcb3794073",
+      "width": 512,
+      "height": 512,
+      "alphaBoundsLTRB": [0, 0, 508, 148]
+    },
+    {
       "asset": "Fonts/epic7num.fnt.txt",
       "source": "原始资源/font/epic7num.fnt",
       "sha256": "059e7e6503c3009345946e4f7c0f5f1b495a48a58ea19171a7be810af22a2ef9"
@@ -1269,6 +1290,19 @@
         0,
         125,
         125
+      ]
+    },
+    {
+      "asset": "Faces/pet_slime1_n_grade1_1_s.png",
+      "source": "原始资源/face/pet_slime1_n_grade1_1_s.png",
+      "sha256": "a0fdddef10f2dd81feedd84129faa7148453fd92a15e321e260c3b64dfaec1ac",
+      "width": 119,
+      "height": 107,
+      "alphaBounds": [
+        10,
+        0,
+        109,
+        107
       ]
     }
   ],
