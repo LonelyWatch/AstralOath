@@ -16,7 +16,7 @@ Unity 2022.3.62f3 / URP / UGUI / TMP；Common/AOT 通用设施；普通 C# UIBas
 
 - BattleScene：首阶段独立冒险布局预览。两套原图分层森林、原作 HUD、双方各四个可编辑脚点及 Spine 待机；已按近期实战和本地原版布局修订 HUD，可交互预览 Burn、燃魂 S2 和技能选中效果。见[HUD 复核](delivery/2026-11-12-battle-hud-fidelity.md)。
 
-- 战斗第三步：共享回合与技能事件内核、本地 Unity 实战试玩和开发态双人 HTTP 房间已接入。试玩包含三角色技能特效、Windows 日语 FMOD、近战位移、浮字、行动条详情与冷却遮罩。[规则和操作](development/battle-execution.md)
+- 战斗第三步：共享回合与技能事件内核、本地 Unity 实战试玩和开发态双人 HTTP 房间已接入。试玩包含三角色技能特效、原始 S3 Cut-in/全屏背景与镜头、Windows 日语 FMOD 和史莱姆攻击/受击、近战位移、随镜头定位的浮字、向下行动条及原版行结构详情与冷却遮罩。敌方回合技能组隐藏；精细布局、后处理和部分曲线仍未完成原作逐帧验收。[规则和操作](development/battle-execution.md)
 
 - Battle 配表：三名普通形态英雄、九技能、45 段强化、成长模板与觉醒节点已导出。Shared Battle 提供任意合法等级、星级与觉醒的裸面板计算，以及英雄、怪物、入场与四对四站位校验。见[等级与站位](development/battle-growth.md)和[配表来源](development/battle-character-data.md)。
 

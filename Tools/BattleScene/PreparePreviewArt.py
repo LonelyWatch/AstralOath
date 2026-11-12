@@ -93,8 +93,15 @@ def main():
     for entry in backgrounds:
         restore_background(source, entry, args.restore)
 
+    cinematic = read_manifest(REPO / "Assets/Game/Modules/BattleScene/Res/Effects/Cinematic/source.json")["entries"]
+    for entry in cinematic:
+        relative = Path(entry["source"]).relative_to(Path("D:/sevenepic"))
+        data = verified_read(source, relative, entry["sha256"])
+        if "destination" in entry:
+            write_or_verify(within(REPO, entry["destination"]), data, entry["sha256"], args.restore)
+
     verb = "Restored" if args.restore else "Verified"
-    print(f"{verb} {len(hud)} HUD source files and {len(backgrounds)} forest layers.")
+    print(f"{verb} {len(hud)} HUD source files and {len(backgrounds)} forest layers; checked 3 cinematic textures and source shader provenance.")
 
 
 if __name__ == "__main__":

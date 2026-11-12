@@ -1,0 +1,85 @@
+{
+  "sourceRoot": "D:/sevenepic",
+  "transfer": "Byte-identical selected PNGs; CSB files are evidence only, never imported.",
+  "assets": [
+    {
+      "source": "原始资源/img/_grow_s_white.png",
+      "sha256": "0b59b48e0f453c38b1c35529d58f19459ac3465ec5e156ea6b576a73b5491e04",
+      "asset": "_grow_s_white.png"
+    },
+    {
+      "source": "原始资源/img/_btn_small_white.png",
+      "sha256": "3b85ccabaa3c1c8de92be4aba6cb51f7ae3371bc96be84d4e9d0b9bfe090f077",
+      "asset": "_btn_small_white.png"
+    },
+    {
+      "source": "原始资源/img/cm_icon_etctime_b2.png",
+      "sha256": "ccbfa82592873fd2e5cfbf055f186f94e3dbb1014cd14a1407e8c09ce0d98eaa",
+      "asset": "cm_icon_etctime_b2.png"
+    },
+    {
+      "source": "原始资源/buff/stic_att_up.png",
+      "sha256": "183385724a64d4cb38357dc4ff3f2bd380fd76eb26acbf4697d825bce2e6d94b",
+      "asset": "stic_att_up.png"
+    },
+    {
+      "source": "原始资源/buff/stic_def_up.png",
+      "sha256": "7d050e80adfc516d09c5b25d4eafe95f1cea652cb5f13172779438c33dd73006",
+      "asset": "stic_def_up.png"
+    },
+    {
+      "source": "原始资源/buff/stic_debuf_impossible.png",
+      "sha256": "2624015ebc5d6888940f0d3d9cfdc660db71b84a7befae12fc245a94cc8b21b4",
+      "asset": "stic_debuf_impossible.png"
+    },
+    {
+      "source": "原始资源/buff/stic_protect.png",
+      "sha256": "6fb47c7cadfd94d7452eb847c22392f2feb8b91a7977d3d0b1f35caa744be95d",
+      "asset": "stic_protect.png"
+    },
+    {
+      "source": "原始资源/buff/stic_stun.png",
+      "sha256": "56363fd02f0fecb53019d9e8080be404b6a949577c5d1060d044d0ee40058e95",
+      "asset": "stic_stun.png"
+    },
+    {
+      "source": "原始资源/face/m0001_s.png",
+      "sha256": "0d97ae41a0ddd4e20ffd9b5a6ccb627659b4234b9bccc6bb975bdf0b122ce1e4",
+      "asset": "m0001_s.png"
+    },
+    {
+      "source": "原始资源/face/m0002_s.png",
+      "sha256": "342648fb5847baa48d525569dc6eba9f9b23bcc1a3d4abe2bfc0558bafa2c7d3",
+      "asset": "m0002_s.png"
+    },
+    {
+      "source": "原始资源/face/m0003_s.png",
+      "sha256": "1b5495d1a37edc5d31cb869b093883e01eccd9ead8c9369c5051b756a6f83b6d",
+      "asset": "m0003_s.png"
+    },
+    {
+      "source": "原始资源/face/m0005_s.png",
+      "sha256": "6b290dc391e3e3f348cc4fa1508f22ec8b1b92dba73cf2b9f3b5f9d71ba83770",
+      "asset": "m0005_s.png"
+    },
+    {
+      "source": "原始资源/wnd/inbattle_order_detail.csb",
+      "sha256": "d8cef083be025df41f074eb0f26b9b8fb8b16832c3d5e5fc928f315130564877"
+    },
+    {
+      "source": "原始资源/wnd/inbattle_detail.csb",
+      "sha256": "40009605782f1fca3cd40d641addd7310a383e2c02175b9afc936a6adfc54ba1"
+    },
+    {
+      "source": "原始资源/wnd/hud_face.csb",
+      "sha256": "f68b58068bd7cca7f61d713b2e20778bdae109bbad8fe41fe0f4a905728612d4"
+    }
+  ],
+  "previewSlimeFaces": {
+    "basis": "Visual comparison of local slime skin attachments and original face PNGs; not decoded monster database records.",
+    "fire": "m0001_s.png",
+    "ice": "m0002_s.png",
+    "wind": "m0003_s.png",
+    "dark": "m0005_s.png"
+  }
+}

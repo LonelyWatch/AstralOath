@@ -21,7 +21,7 @@ namespace AstralOath.Client.BattleScene.Editor
                 .Where(IsBattleAsset).GroupBy(item => (string)item["source"], StringComparer.Ordinal)
                 .Select(group => group.First()).OrderBy(item => (string)item["source"], StringComparer.Ordinal).ToArray();
 
-            property.arraySize = sources.Length;
+            property.arraySize = sources.Length + 3;
             for (int i = 0; i < sources.Length; i++)
             {
                 var dependency = sources[i];
@@ -29,6 +29,10 @@ namespace AstralOath.Client.BattleScene.Editor
                 string source = (string)dependency["source"];
                 string type = (string)dependency["type"];
                 string address = (string)dependency["address"];
+                row.FindPropertyRelative("document").objectReferenceValue = null;
+                row.FindPropertyRelative("atlas").objectReferenceValue = null;
+                row.FindPropertyRelative("pages").arraySize = 0;
+                row.FindPropertyRelative("pageNames").arraySize = 0;
                 row.FindPropertyRelative("source").stringValue = source;
                 if (type == "texture")
                 {
@@ -36,6 +40,17 @@ namespace AstralOath.Client.BattleScene.Editor
                     continue;
                 }
                 row.FindPropertyRelative("texture").objectReferenceValue = null;
+                if (type == "cutin")
+                {
+                    var document = Load<TextAsset>(address);
+                    row.FindPropertyRelative("document").objectReferenceValue = document;
+                    var frames = JObject.Parse(document.text)["frames"].ToArray();
+                    var frameTextures = row.FindPropertyRelative("pages");
+                    frameTextures.arraySize = frames.Length;
+                    for (int frame = 0; frame < frames.Length; frame++)
+                        frameTextures.GetArrayElementAtIndex(frame).objectReferenceValue = Load<Texture2D>((string)frames[frame]["address"]);
+                    continue;
+                }
                 if (type != "skeleton")
                 {
                     row.FindPropertyRelative("document").objectReferenceValue = Load<TextAsset>(address);
@@ -58,6 +73,20 @@ namespace AstralOath.Client.BattleScene.Editor
                 }
             }
 
+            for (int index = 0; index < 3; index++)
+            {
+                var row = property.GetArrayElementAtIndex(sources.Length + index);
+                row.FindPropertyRelative("document").objectReferenceValue = null;
+                row.FindPropertyRelative("atlas").objectReferenceValue = null;
+                row.FindPropertyRelative("pages").arraySize = 0;
+                row.FindPropertyRelative("pageNames").arraySize = 0;
+                string filename = "bg_hatch_" + (index + 1) + ".png";
+                row.FindPropertyRelative("source").stringValue = "effect/" + filename;
+                var texture = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Game/Modules/BattleScene/Res/Effects/Cinematic/" + filename);
+                if (!texture) throw new InvalidOperationException("Missing original cinematic background " + filename);
+                row.FindPropertyRelative("texture").objectReferenceValue = texture;
+            }
+
             T Load<T>(string address) where T : UnityEngine.Object
             {
                 if (!paths.TryGetValue(address, out var path))
@@ -72,7 +101,7 @@ namespace AstralOath.Client.BattleScene.Editor
         {
             string source = (string)item["source"];
             string type = (string)item["type"];
-            return type == "effect" || type == "particle" || type == "timeline" ||
+            return type == "effect" || type == "particle" || type == "timeline" || type == "cutin" ||
                 (type == "skeleton" && source.StartsWith("effect/", StringComparison.Ordinal)) ||
                 (type == "texture" && source.StartsWith("particle/", StringComparison.Ordinal));
         }

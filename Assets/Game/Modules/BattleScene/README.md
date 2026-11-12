@@ -31,7 +31,7 @@
 
 进入 Play 后，在 Game 画面右上方点击「开始试玩」。按钮随即收起。点击技能，再在场景中选择友军或敌军。敌方自动行动，技能冷却、生命、状态和魂力按共享规则更新。编辑器菜单 `Tools/战斗场景/开始试玩` 可用于重开。退出并重新进入 Play 会恢复入口和原布局预览。
 
-已导入的 STG、CFX、Spine、粒子与角色 timeline 驱动动作、位移和命中特效，FMOD 在 Windows 播放原版技能音效和日语语音。行动条头像按快照移动，点击左侧沙漏查看行动值和冷却。技能冷却使用贴合图标的遮罩与回合数，伤害与治疗使用独立浮字。动画消费有序事件，状态由同源规则决定。试玩场景依赖共享战斗程序集，`BattleScene` 已登记为 HybridCLR 业务程序集。双人 HTTP 验证、规则口径及当前差异见[战斗第三步](../../../../docs/development/battle-execution.md)。
+已导入的 STG、CFX、Spine、粒子与角色 timeline 驱动动作、位移和命中特效，FMOD 在 Windows 播放原版技能音效和日语语音。敌方回合隐藏技能组和 Burn。行动条头像按行动值从上向下移动，当前行动者在下端；点击左侧沙漏展开原版行结构的行动值、生命、技能冷却与状态，点击空白关闭。技能冷却使用贴合图标的遮罩与回合数，伤害与治疗使用独立浮字。动画消费有序事件，状态由同源规则决定。试玩场景依赖共享战斗程序集，`BattleScene` 已登记为 HybridCLR 业务程序集。双人 HTTP 验证、规则口径及当前差异见[战斗第三步](../../../../docs/development/battle-execution.md)。
 
 ## 角色配置
 
@@ -45,3 +45,13 @@ Luban 快照 `Configs/battle-catalog.json` 含三名英雄、成长模板、觉�
 - `Res/Units/Slime` 含一个怪物的 SCSP/图集/SCT 转换产物，保留原骨骼版本。其 PMA 图集保持无压缩且关闭透明边缘扩展，复用现有 Spine 渲染桥接。
 - 用项目角色素材 Python 环境执行 `Tools/BattleScene/PreparePreviewArt.py` 可核对 HUD/背景；加 `--restore` 按同一来源复现。怪物导入入口为 `Tools/BattleScene/ImportPreviewUnit.py`。原始目录始终只读，GUID 由已提交的 meta 保持。
 - 实际执行见[HUD 复核](../../../../docs/delivery/2026-11-12-battle-hud-fidelity.md)和[首次场景验收](../../../../docs/delivery/2026-11-12-battle-scene.md)。试玩验收记录见[战斗第三步](../../../../docs/development/battle-execution.md)。
+
+## 全屏演出与音频维护
+
+战斗读取现有角色的原始 CUTIN 帧、镜头、背景、CFX与骨骼事件。拉斯和安洁莉卡 S3 播放各自的 Cut-in，梅赛德丝 S3 采用源背景与镜头；部分 S2 的镜头/压暗也由各自源数据驱动。有 LAYOUT 的特写暂隐非参与单位的 Renderer，完成或中断恢复，不改站位及权威结算。镜头期间浮字投影到实际目标位置。
+
+史莱姆攻击使用原始 model/slime/ani/skill1，命中按原 hit 时间0.7秒播放钝击和目标自己的日语受击事件。新增 Res/Sounds/gerneal.bank.bytes 通过 Git LFS 保存，来源在相邻 source.json。行动条四种史莱姆头像与本场皮肤目检匹配，记录于 Hud/Readiness/source.json，不等同于原版怪物数据库已解码。
+
+素材校验与恢复入口分别为 Tools/BattleScene/ImportBattleAudio.py、ImportReadinessHud.py、PreparePreviewArt.py，使用项目的 .tools/character-assets/Scripts/python.exe。场景序列化更新仍使用 InstallHudEffects，保留作者布局和现有 GUID。[完整调用、复现与限制](../../../../docs/development/battle-execution.md#2026-11-12-演出对照修订)
+
+本轮网络参考限定近期实际查看的画面，并明确录像版本不可确认的范围；详情面板以本地原版 CSB 为结构依据。[参考记录](../../../../docs/delivery/2026-11-12-battle-presentation-reference.md)。部分后处理、镜头锚点、移动曲线和精细布局仍有诊断，不能称所有技能逐帧还原通过。

@@ -130,6 +130,7 @@ namespace AstralOath.Client.BattleScene.Editor
 
         private static void ConfigureHudScene(BindingMap hud)
         {
+            BattleTurnHudAssets.Import();
             var canvas = hud.GetComponentInParent<Canvas>();
             if (!canvas.GetComponent<GraphicRaycaster>())
                 canvas.gameObject.AddComponent<GraphicRaycaster>();
@@ -140,6 +141,9 @@ namespace AstralOath.Client.BattleScene.Editor
             SetObject("hud", hud);
             SetObject("battleCatalog", Asset<TextAsset>(Module + "/Configs/battle-catalog.json"));
             SetObject("battleDamageFont", BuildDamageDigits());
+            SetObject("impactBank", Asset<TextAsset>(Module + "/Res/Sounds/gerneal.bank.bytes"));
+            SetObject("stageBackground", canvas.gameObject.scene.GetRootGameObjects()
+                .Single(root => root.name == "Forest2Stage" || root.name == "Forest3Stage"));
             var heroes = new[] { (Id: "c1001", Stem: "ras"), (Id: "c1005", Stem: "mercedes"), (Id: "c1062", Stem: "angelica") };
             var graphs = heroes.SelectMany(hero => Enumerable.Range(1, 3).Select(slot => Asset<TextAsset>(
                 $"Assets/Game/Modules/CharacterPresentation/Res/Characters/{hero.Id}/Configs/stagept/c_{hero.Stem}_skill_0{slot}.graph.json"))).ToArray();
@@ -156,7 +160,8 @@ namespace AstralOath.Client.BattleScene.Editor
                 .Concat(new[] { "cm_icon_promfire", "cm_icon_promice", "cm_icon_role_knight", "cm_icon_role_mage",
                     "cm_icon_role_manauser", "_hero_s_bg_ally", "_hero_s_bg_enemy", "_hero_s_frame_ally",
                     "_hero_s_frame_enemy", "cm_hero_circool1", "game_hud_arrow", "Faces/pet_slime1_n_grade1_1_s" }
-                    .Select(name => Asset<Sprite>(HudTextures + name + ".png"))).ToArray());
+                    .Select(name => Asset<Sprite>(HudTextures + name + ".png")))
+                .Concat(BattleTurnHudAssets.Sprites()).ToArray());
             SetObject("burnPressed", Asset<Sprite>(HudTextures + "game_hud_btn_burn_p.png"));
             SetObject("cancelNormal", Asset<Sprite>(HudEffects + "game_hud_btn_burnc_d.png"));
             SetObject("cancelPressed", Asset<Sprite>(HudEffects + "game_hud_btn_burnc_p.png"));

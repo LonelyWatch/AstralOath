@@ -18,10 +18,10 @@ Unity 进入战斗场景 Play 后，在 Game 画面右上方点击「开始试�
 
 ## 战斗演出与 HUD
 
-- 三名英雄的九个技能从既有导入清单读取 STG、CFX、Spine、粒子及角色动画 timeline。近战读取接近目标的 MOVE 与跳跃动画，移动角色的显示节点并在结束后回到原站位。范围技能的演出目标取自已接受的伤害／治疗事件。第一个可达的 HIT 推进本项目的数值反馈，后续源 HIT 可以播放特效。原版逐段数值、镜头、Cut-in、后处理、个别锚点及插值仍待原作逐帧复核。
+- 三名英雄的九个技能从既有导入清单读取 STG、CFX、Spine、粒子及角色动画 timeline。近战读取接近目标的 MOVE 与跳跃动画，移动角色的显示节点并在结束后回到原站位。范围技能的演出目标取自已接受的伤害／治疗事件。第一个可达的 HIT 推进本项目的数值反馈，后续源 HIT 可以播放特效。本轮已加入源镜头与 Cut-in，见下方修订记录。逐段数值、后处理、个别锚点及插值仍待原作逐帧复核。
 - 日语语音和技能音效复用角色实验室所用的 FMOD 事件、随机日语 Audio Table 与五份本地 bank。STG 与 Spine 样本未找到独立音频标记，当前在动作开始提交事件，事件内部时序由 FMOD 保留。Windows 支持原生播放，其他目标缺少对应插件会记诊断并继续演出。现有 bank 合计约 215 MiB，正式客户端需要按平台做分包和内存预算。
-- 行动条头像按权威行动值插值移动。沙漏弹出全场行动值、技能剩余回合和当前状态。冷却按原作教程图采用贴合图标的黑色遮罩和居中剩余回合，保留外框。伤害数字复用原版 damage.fnt 和描边图集。暴击用红色，重击放大，未命中附提示，治疗用绿色；浮字随时间上移、缩放并淡出。浮字不随被击倒单位隐藏。试玩史莱姆使用带来源记录的宠物头像代用。
-- HUD 依据本地解包的 tutorial/help_contents_6_1_image.png、tutorial/help_contents_8_1_image.png、wnd/hud_skill.csb 与 wnd/hud_order.csb。原图哈希记录在 HUD 来源清单。行动条避让、详情版式、数字动效曲线以及未确认的位移坐标是本项目重建参数。[原作画面索引](../delivery/2026-11-12-battle-hud-fidelity.md) · [梅赛德丝技能画面对照](https://www.youtube.com/watch?v=qX0K4plyvl8&t=289s)
+- 行动条头像按权威行动值插值移动。沙漏展开左侧队列详情，包括原头像、行动值、生命、技能冷却和状态图标。冷却按原作教程图采用贴合图标的黑色遮罩和居中剩余回合，保留外框。伤害数字复用原版 damage.fnt 和描边图集。暴击用红色，重击放大，未命中附提示，治疗用绿色；浮字随时间上移、缩放并淡出。浮字不随被击倒单位隐藏。试玩史莱姆使用经原图与模型皮肤目检匹配的 m0001/2/3/5 头像；这属于本项目美术映射，原版怪物数据库尚未解码。
+- HUD 依据本地解包的 tutorial/help_contents_6_1_image.png、tutorial/help_contents_8_1_image.png、wnd/hud_skill.csb 与 wnd/hud_order.csb。原图哈希记录在 HUD 来源清单。行动条已改为向下线性映射，详情采用本地原版 CSB 的行结构。数字动效曲线、精确头像重叠规则和未确认的位移坐标仍为本项目重建参数。[原作画面索引](../delivery/2026-11-12-battle-hud-fidelity.md) · [梅赛德丝技能画面对照](https://www.youtube.com/watch?v=qX0K4plyvl8&t=289s)
 
 ## 服务端双人验证
 
@@ -38,10 +38,34 @@ $env:ASPNETCORE_ENVIRONMENT = 'Development'
 
 当前战斗内容范围为三名标准形态英雄的九技能、样例史莱姆与本地双人验证。真实 PvP 还需账号和匹配接入、行动超时与投降、BP、赛季规则、持久恢复与客户端联网画面。多波次、装备、神器、剧情强化和完整被动库也需要独立证据和回归。
 
-## 验证记录
+## 前序交付验证记录
 
 - 本地 Foundation 检查通过。导表、生成访问器、协议和发布校验通过。服务端与共享规则自动化 56 项通过，MySQL 集成用例因未提供测试数据库而跳过。
 - Unity 2022.3.62f3 EditMode 215 项通过。全量 PlayMode 18 项通过、1 项未启用角色实验室截帧用例。战斗 PlayMode 3 项均通过，验证八槽布局与资产、Burn 和技能选中、实际选目标并执行攻击，以及权威命令已应用后血条仍在 STG 命中时点才变化。
 - 本轮演出回归通过 Unity EditMode 215 项和 PlayMode 19 项，1 项角色实验室截帧跳过。战斗 4 项覆盖原布局、Burn、实际点击开局和沙漏、原版 CFX 和 FMOD 播放、冷却遮罩、飘字位移，以及拉斯接近目标与精确归位。Windows 原生 FMOD 探针解析 18 个事件，九个日语事件均触发日语音频回调。
 - 本地 Kestrel 双人实测完整对局，47 条有效指令至胜负，最后事件序号为 288。验证跨座位代发被拒绝、命令重发幂等和事件游标补读。
 - Windows 和 Android Player 构建、本场景正式发布链和原作逐帧对照留待后续验收。
+
+## 2026-11-12 演出对照修订
+
+- **回合与可见性**：显示跟随正在呈现的 Action.SourceId，不能直接把服务端已推进到下一回合的 Snapshot 当成当前画面。敌方行动隐藏整个 Skills 分组和 Burn，包含边框、选中、冷却层。源镜头演出收起技能与场上固定血条，保留顶栏、行动条及当前角色栏；动作完成、重开或卸载恢复原状态。Cut-in 置于 HUD 上方，保留原图透明合成。
+- **攻击与受击音频**：Action 的 PresentationId 为空时回退到 SkillId，史莱姆使用原版 model/slime/ani/skill1。源骨骼 hit 与原 STG 均为0.7秒。已接受的 Damage 呈现时（包括护盾完整吸收、实际掉血为0的命中），PlayHit(targetDefinitionId, sourceSkillId)播放原版 hit_new_blunt_normal 和目标自己的日语 ani/attacked 事件。随机语音仍由 FMOD 原事件决定。新增 sound/gerneal.bank 约14.1 MiB，经 Git LFS 保存，其余五份 bank 复用既有角色资源。
+- **源时间线**：从 ENTRY 而非第一个 ANI 开始遍历，保留开始/完成连线、延迟、骨骼事件及同一时刻的源拓扑顺序。零时长 CAM/ZOOM 立即完成，帧时间跨过多个 cue 时分段推进，避免低帧率把 Cut-in 和后继命中推迟到帧末。拉斯16帧 Cut-in 共1.25秒，安洁莉卡20帧共1.28秒；以原 descriptor 的每帧时长为准，等比铺满视口。
+- **舞台**：CAM/ZOOM 使用源值和贝塞尔，DARK/BGSHOW/BGHATCH 控制原背景和三张原版背景纹理。BGHATCH shader 采样及混色公式从本地源 shader 移植。出现 LAYOUT 的特写按已接受动作的施法者和实际目标确定显示参与者，旁观单位及影子仅暂隐 Renderer；mode1、动作结束、中断、下一动作和释放恢复原 enabled，不移动逻辑站位或激活已击倒单位。源 away_x 超出整个源画幅时保留非施法者离屏阶段。此隔离规则由源指令和画面对照推导，有限 self_x/away_x 的精确坐标、淡入淡出和移动曲线仍未证实。
+- **行动条与浮字**：0%在上、100%在下，当前行动者置于下端，超过100%的真实值仍在详情中显示。取消与存活人数相关的强制纵向间距。详情按本地原版全屏关闭层及左侧队列重建，显示角色、行动值、生命、三技能/冷却/沙漏、五类已支持状态原图；点击行保留面板，点击空白关闭。浮字从实际角色 Bounds 经当前镜头投影到 HUD，避免镜头移动时偏离目标。
+
+本轮可实际查看的最近资料为2026-11-11发布的 RTA #901 时间轴帧。它没有显示客户端版本号，无法证明录制时是精确最新版。标题与画面年份冲突的赛事录像已排除。最近实帧未展示详情展开，详情的依据为本地 CSB，不能宣称已与最新实机逐像素一致。[检索及画面证据](../delivery/2026-11-12-battle-presentation-reference.md)
+
+### 维护与复现
+
+- BattleScene 的 scene-only host 序列化 impactBank、stageBackground、skillAssets 和 battleSprites。预制体仍只有通用 BindingMap/GameButton/GameText；业务不挂在预制体上。
+- 运行 Tools/BattleScene/ImportBattleAudio.py --check、ImportReadinessHud.py --check、PreparePreviewArt.py 校验源字节。前两者去掉 --check 导入选定素材；后者 --restore 按固定源哈希恢复背景/字体/图标/演出背景，不重建已有 meta。
+- 使用隔离工程执行 AstralOath.Client.BattleScene.Editor.BattleSceneBuilder.InstallHudEffects 安装引用。核对已有场景对象 ID 与 meta GUID，再回传实际变更的场景及首次导入 meta，不能执行 Generate 覆盖已调整的作者场景。
+- Windows 音频诊断运行 Tools/BattleScene/AudioProbe，实际生产代码＋原生 FMOD 使用 NOSOUND 输出到 DSP 测量，无需扬声器和服务器。它不代替实际听感和 Android 原生插件验证。
+- 业务仍在现有 HybridCLR 模块；新增 shader 使用内置 Resources，本轮独立测试场景不代表已验证正式母包或远程内容包。正式发布需确保目标母包包含 shader 并验证资产收集。
+
+### 尚未证明的原版细节
+
+SHAKE、PPEFFECT、SINE_VALUE、部分 MOVE style2/3 与有限 LAYOUT 坐标仍以每技能/类型一次诊断报告。背景速度驱动、CAM锚点及状态详情的所有交互仍待原作连续录像对照；源 STOP 位于动作终点时的背景淡出尾段当前会被动作重置截断（例如梅赛德丝S1的200ms），尚未建模为独立的收尾阶段。当前三英雄样本不能外推全部 E7 角色，播放、编译和自动测试也不能替代还原度验收。
+
+完整 Unity 回归和本轮检查结果见本次提交的变更日志。Player构建、Android设备、本场景正式更新发布、生产PvP联机不属于此次已验证结果。

@@ -290,6 +290,13 @@ namespace AstralOath.Client.Tests
             Assert.That(health.fillAmount, Is.LessThan(originalFill), "The skill impact updates the HUD.");
             var feedback = map.transform.Find("Battle Feedback/enemy-1/Impact").GetComponent<GameText>();
             Assert.That(feedback.text, Is.Not.Empty);
+            var targetActor = roots.Single(root => root.name == "Units").transform.Find("Enemies").GetChild(0)
+                .GetComponentInChildren<BattlePreviewActor>();
+            var worldCamera = preview.GetComponent<Canvas>().worldCamera;
+            float targetScreenX = worldCamera.WorldToScreenPoint(targetActor.Bounds.center).x;
+            float feedbackScreenX = RectTransformUtility.WorldToScreenPoint(worldCamera, feedback.rectTransform.position).x;
+            Assert.That(feedbackScreenX, Is.EqualTo(targetScreenX).Within(4f),
+                "Damage follows the rendered target through source camera motion instead of a fixed HUD marker.");
             Assert.That(feedback.font.name, Is.EqualTo("BattleDamageDigits"));
             var feedbackPosition = feedback.rectTransform.position;
             yield return null;
@@ -321,13 +328,13 @@ namespace AstralOath.Client.Tests
             Assert.That(preview.TrySelectBattleTarget("enemy-1"), Is.True);
             var cooldown = secondSkill.transform.Find("Cooldown Overlay");
             deadline = Time.realtimeSinceStartup + 5f;
-            while (!cooldown.gameObject.activeInHierarchy && Time.realtimeSinceStartup < deadline)
+            while (!cooldown.gameObject.activeSelf && Time.realtimeSinceStartup < deadline)
                 yield return null;
-            Assert.That(cooldown.gameObject.activeInHierarchy, Is.True, "A used skill needs a visible cooldown mask.");
+            Assert.That(cooldown.gameObject.activeSelf, Is.True, "A used skill retains its cooldown state while the source cinematic hides the controls.");
             Assert.That(cooldown.Find("Cooldown Number").GetComponent<GameText>().text, Is.Not.Empty);
             Assert.That(secondSkill.IsInteractable(), Is.False);
             if (!string.IsNullOrWhiteSpace(output))
-                Capture(canvas.worldCamera, output, "battle-cooldown.png");
+                Capture(canvas.worldCamera, output, "battle-skill-cast.png");
         }
 
         [UnityTest]
@@ -372,6 +379,201 @@ namespace AstralOath.Client.Tests
             while (!mover.transform.localPosition.Equals(home) && Time.realtimeSinceStartup < deadline)
                 yield return null;
             Assert.That(mover.transform.localPosition, Is.EqualTo(home));
+        }
+
+        [UnityTest]
+        public IEnumerator EnemyActionHidesSkillsAndRestoresTheNextAlliedTurn()
+        {
+            scene = EditorSceneManager.LoadSceneInPlayMode(ScenePath, new LoadSceneParameters(LoadSceneMode.Additive));
+            yield return null;
+            yield return null;
+            var roots = scene.GetRootGameObjects();
+            var preview = roots.Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            var map = roots.SelectMany(root => root.GetComponentsInChildren<BindingMap>()).Single();
+            preview.StartBattle();
+            var banner = map.transform.Find("Battle State").GetComponent<GameText>();
+            float deadline = Time.realtimeSinceStartup + 40f;
+            int soundsBeforeEnemy = preview.StartedSkillSounds;
+            while (banner.text != "史莱姆攻击" && Time.realtimeSinceStartup < deadline)
+            {
+                soundsBeforeEnemy = preview.StartedSkillSounds;
+                var snapshot = preview.SimulationSnapshot;
+                var target = snapshot.Units.First(unit => unit.IsAlive && unit.Slot.Side == BattleSide.Enemy);
+                preview.TrySelectBattleTarget(target.InstanceId);
+                yield return null;
+            }
+            Assert.That(banner.text, Is.EqualTo("史莱姆攻击"), "Reach an enemy action through normal turn progression.");
+            foreach (string key in new[] { "skill1", "skill2", "skill3", "soulBurn" })
+                Assert.That(map.Require<GameButton>(key).gameObject.activeInHierarchy, Is.False,
+                    "Enemy actions must hide the entire player skill group: " + key);
+            Assert.That(map.transform.Find("Skills").gameObject.activeSelf, Is.False,
+                "Skill borders and overlays must be hidden as well.");
+#if UNITY_EDITOR_WIN
+            Assert.That(preview.StartedSkillSounds, Is.GreaterThan(soundsBeforeEnemy),
+                "The enemy action starts its original model sound.");
+            int beforeImpact = preview.StartedHitSounds;
+            deadline = Time.realtimeSinceStartup + 2f;
+            while (preview.StartedHitSounds == beforeImpact && Time.realtimeSinceStartup < deadline)
+                yield return null;
+            Assert.That(preview.StartedHitSounds, Is.GreaterThanOrEqualTo(beforeImpact + 2),
+                "The enemy impact plays both its blunt hit and the target's Japanese reaction.");
+#endif
+            string output = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_CAPTURE_DIR");
+            if (!string.IsNullOrWhiteSpace(output))
+                Capture(preview.GetComponent<Canvas>().worldCamera, output, "battle-enemy-turn.png");
+            deadline = Time.realtimeSinceStartup + 15f;
+            while (!map.Require<GameButton>("skill1").IsInteractable() && Time.realtimeSinceStartup < deadline)
+                yield return null;
+            Assert.That(map.Require<GameButton>("skill1").gameObject.activeInHierarchy, Is.True);
+            Assert.That(map.Require<GameButton>("skill1").IsInteractable(), Is.True);
+            Assert.That(map.transform.Find("Skills").gameObject.activeSelf, Is.True);
+        }
+
+        [UnityTest]
+        public IEnumerator FullyAbsorbedSlimeHitStillPlaysImpactAudioAndReaction()
+        {
+            scene = EditorSceneManager.LoadSceneInPlayMode(ScenePath, new LoadSceneParameters(LoadSceneMode.Additive));
+            yield return null;
+            yield return null;
+            var roots = scene.GetRootGameObjects();
+            var preview = roots.Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            var map = roots.SelectMany(root => root.GetComponentsInChildren<BindingMap>()).Single();
+            preview.StartBattle();
+            const System.Reflection.BindingFlags flags = System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance;
+            var simulation = typeof(BattleHudPreview).GetField("simulation", flags).GetValue(preview);
+            var match = (BattleMatch)simulation.GetType().GetField("match", flags).GetValue(simulation);
+            BattleFlowEvent absorbedHit = null;
+            BattleFlowEvent action = null;
+
+            // Advance the real rules synchronously until Angelica's shield fully absorbs a slime hit.
+            // Present only that accepted action and impact, without waiting through unrelated animations.
+            for (int turn = 0; turn < 32 && absorbedHit == null; turn++)
+            {
+                var snapshot = match.Snapshot;
+                var actor = snapshot.GetUnit(snapshot.CurrentActorId);
+                bool shield = actor.DefinitionId == "c1062" && actor.GetCooldown("c1062.s3") == 0;
+                var side = shield ? BattleSide.Ally :
+                    actor.Slot.Side == BattleSide.Ally ? BattleSide.Enemy : BattleSide.Ally;
+                var target = snapshot.Units.Where(unit => unit.IsAlive && unit.Slot.Side == side)
+                    .OrderByDescending(unit => unit.Barrier).First();
+                string skill = shield ? "c1062.s3" : actor.Form.SkillIds[0];
+                ulong sequence = snapshot.LastCommandSequence + 1;
+                var result = match.Submit(new BattleSkillCommand(snapshot.BattleId, snapshot.RulesVersion,
+                    sequence, "shield-audio-" + sequence, actor.InstanceId, skill, target.InstanceId));
+                Assert.That(result.Status, Is.EqualTo(BattleCommandStatus.Accepted));
+                if (actor.Slot.Side != BattleSide.Enemy || target.Barrier == 0) continue;
+                absorbedHit = result.Events.SingleOrDefault(item => item.Kind == BattleFlowEventKind.Damage &&
+                    item.TargetId == target.InstanceId && item.Amount == 0);
+                if (absorbedHit == null) continue;
+                Assert.That(result.Events.Any(item => item.Kind == BattleFlowEventKind.BarrierAbsorbed &&
+                    item.TargetId == target.InstanceId && item.Amount > 0), Is.True);
+                Assert.That(absorbedHit.RemainingHealth, Is.EqualTo(target.CurrentHealth));
+                action = result.Events.First(item => item.Kind == BattleFlowEventKind.Action);
+            }
+            Assert.That(absorbedHit, Is.Not.Null, "A real shield must absorb the entire accepted slime attack.");
+
+            var hitTarget = match.Snapshot.GetUnit(absorbedHit.TargetId);
+            var units = roots.Single(root => root.name == "Units").transform;
+            var targetActor = units.Find("Allies").GetChild(hitTarget.Slot.Position - 1)
+                .GetComponentInChildren<BattlePreviewActor>();
+            var player = typeof(BattlePreviewActor).GetField("player", flags).GetValue(targetActor);
+            var present = simulation.GetType().GetMethod("Present", flags);
+            present.Invoke(simulation, new object[] { action });
+            int beforeImpact = preview.StartedHitSounds;
+            present.Invoke(simulation, new object[] { absorbedHit });
+
+#if UNITY_EDITOR_WIN
+            Assert.That(preview.StartedHitSounds, Is.EqualTo(beforeImpact + 2),
+                "A shield blocks health loss, not the original blunt hit and Japanese attacked voice.");
+#endif
+            Assert.That(player.GetType().GetProperty("CurrentAnimation").GetValue(player), Is.EqualTo("attacked"),
+                "A fully absorbed hit still plays the target's reaction animation.");
+            Assert.That(map.transform.Find("Battle Feedback").childCount, Is.Zero,
+                "Fully absorbed damage must not create a zero-damage floating number.");
+        }
+
+        [UnityTest]
+        public IEnumerator OriginalSlimeSkeletonExposesItsHitEventTiming()
+        {
+            scene = EditorSceneManager.LoadSceneInPlayMode(ScenePath, new LoadSceneParameters(LoadSceneMode.Additive));
+            yield return null;
+            var units = scene.GetRootGameObjects().Single(root => root.name == "Units").transform;
+            var actor = units.Find("Enemies").GetChild(0).GetComponentInChildren<BattlePreviewActor>();
+            var method = typeof(BattlePreviewActor).GetMethod("GetBattleAnimationEventTime",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            Assert.That(method, Is.Not.Null, "Impact scheduling needs the original animation's hit timing.");
+            Assert.That((float)method.Invoke(actor, new object[] { "skill1", "hit" }), Is.EqualTo(.7f).Within(.0001f));
+            Assert.That((float)method.Invoke(actor, new object[] { "skill1", "missing" }), Is.EqualTo(-1f));
+        }
+
+        [UnityTest]
+        public IEnumerator ThreeOriginalUltimatePresentationsRenderAndRestoreTheStage()
+        {
+            foreach (string wanted in new[] { "c1005", "c1001", "c1062" })
+            {
+                scene = EditorSceneManager.LoadSceneInPlayMode(ScenePath, new LoadSceneParameters(LoadSceneMode.Additive));
+                yield return null;
+                yield return null;
+                var roots = scene.GetRootGameObjects();
+                var preview = roots.Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+                var map = roots.SelectMany(root => root.GetComponentsInChildren<BindingMap>()).Single();
+                var camera = preview.GetComponent<Canvas>().worldCamera;
+                var background = roots.Single(root => root.name == "Forest2Stage");
+                Vector3 originalPosition = camera.transform.position;
+                float originalSize = camera.orthographicSize;
+                preview.StartBattle();
+                bool submitted = false;
+                float deadline = Time.realtimeSinceStartup + 45f;
+                while (!submitted && Time.realtimeSinceStartup < deadline)
+                {
+                    var snapshot = preview.SimulationSnapshot;
+                    var actor = snapshot.GetUnit(snapshot.CurrentActorId);
+                    var first = map.Require<GameButton>("skill1");
+                    if (actor?.Slot.Side == BattleSide.Ally && first.gameObject.activeInHierarchy && first.IsInteractable())
+                    {
+                        bool ultimate = actor.DefinitionId == wanted;
+                        map.Require<GameButton>(ultimate ? "skill3" : "skill1").onClick.Invoke();
+                        var targetSide = ultimate && wanted == "c1062" ? BattleSide.Ally : BattleSide.Enemy;
+                        string target = snapshot.Units.First(unit => unit.IsAlive && unit.Slot.Side == targetSide).InstanceId;
+                        submitted = preview.TrySelectBattleTarget(target) && ultimate;
+                    }
+                    yield return null;
+                }
+                Assert.That(submitted, Is.True, wanted + " reaches its real playable turn.");
+                deadline = Time.realtimeSinceStartup + 2f;
+                while (!preview.IsCinematicVisible && Time.realtimeSinceStartup < deadline) yield return null;
+                Assert.That(preview.IsCinematicVisible, Is.True, wanted + " enters its source cinematic.");
+                Assert.That(map.transform.Find("Skills").gameObject.activeInHierarchy, Is.False);
+                bool sawCutin = false, sawStageReplacement = false, captured = false;
+                string output = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_CAPTURE_DIR");
+                deadline = Time.realtimeSinceStartup + 15f;
+                while (preview.IsCinematicVisible && Time.realtimeSinceStartup < deadline)
+                {
+                    var cutin = camera.GetComponentsInChildren<MeshRenderer>().FirstOrDefault(item => item.name.StartsWith("CUTIN "));
+                    sawCutin |= cutin && cutin.sharedMaterial.mainTexture;
+                    if (cutin)
+                    {
+                        Assert.That(cutin.bounds.size.x + .001f, Is.GreaterThanOrEqualTo(camera.orthographicSize * 2 * camera.aspect));
+                        Assert.That(cutin.bounds.size.y + .001f, Is.GreaterThanOrEqualTo(camera.orthographicSize * 2));
+                    }
+                    sawStageReplacement |= !background.activeSelf;
+                    if (!captured && ((wanted == "c1005" && !background.activeSelf &&
+                        camera.transform.Find("BGHATCH")) || cutin))
+                    {
+                        captured = true;
+                        if (!string.IsNullOrWhiteSpace(output)) Capture(camera, output, "battle-" + wanted + "-s3.png");
+                    }
+                    yield return null;
+                }
+                Assert.That(preview.IsCinematicVisible, Is.False, "The cinematic ends without blocking the next turn.");
+                if (wanted == "c1005") Assert.That(sawStageReplacement, Is.True, "Mercedes replaces the stage instead of using a CUTIN.");
+                else Assert.That(sawCutin, Is.True, wanted + " renders its original CUTIN frames.");
+                Assert.That(camera.transform.position, Is.EqualTo(originalPosition));
+                Assert.That(camera.orthographicSize, Is.EqualTo(originalSize));
+                Assert.That(background.activeSelf, Is.True);
+                yield return SceneManager.UnloadSceneAsync(scene);
+                scene = default;
+            }
         }
 
         private static void Click(GameButton button, GraphicRaycaster raycaster, EventSystem eventSystem)

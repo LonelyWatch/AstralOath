@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "importerSha256": "52f1f558dd6b3d0a350a4c2f9815c12f43f988d7d829718049c073ae2b1dd1e2",
+  "files": [
+    {
+      "source": "原始资源/sound/gerneal.bank",
+      "sourceSha256": "664b396d1e5c6e3b7f238af8dd9fdcd46884881c9a22eb371fe1bda635b14b9e",
+      "asset": "gerneal.bank.bytes",
+      "assetSha256": "664b396d1e5c6e3b7f238af8dd9fdcd46884881c9a22eb371fe1bda635b14b9e"
+    }
+  ],
+  "evidence": [
+    {
+      "source": "原始资源/stagept/m_slime_skill_01.stg",
+      "sourceSha256": "364230a2ac0a521044986d2085702ff9455025d096585a5031632c56446cb62c"
+    },
+    {
+      "source": "原始资源/model/slime.scsp",
+      "sourceSha256": "d159892ea0ef07453289a46c4d07a4cb288c6f7c570cd1f86ab2416f91234cd5"
+    },
+    {
+      "source": "原始资源/sound/master.strings.bank",
+      "sourceSha256": "45509040a16b108a5a3090ab300e71cee4876a5fc16140f49411ea12d53cc8e2"
+    },
+    {
+      "source": "原始资源/sound/sfx1.bank",
+      "sourceSha256": "6a01d3cded5e30df49107f1940ea06279990d85278ca69bfa9832a76a17fc361"
+    },
+    {
+      "source": "原始资源/sound/voc.event.bank",
+      "sourceSha256": "1f2ddf6409e60b9aabeb19fe3e1267f4abafebece3a189a5d49f32220a9c48dd"
+    },
+    {
+      "source": "原始资源/sound/ja/voc1.audio_ja.bank",
+      "sourceSha256": "0ce45d4f6ad15836fdc42a4c7644e67aa01ae68f4a15630958c41ecb5c48076b"
+    }
+  ],
+  "events": {
+    "preview.slime.s1": {
+      "attack": "event:/model/slime/ani/skill1",
+      "bank": "sfx1.bank",
+      "impact": "event:/effect/hit_new_blunt_normal",
+      "impactBank": "gerneal.bank",
+      "sourceHitEffect": "hit_new_blunt_normal.cfx",
+      "sourceHitSeconds": 0.7
+    },
+    "targetReactions": {
+      "source": "CharacterLab/Configs/catalog.json characters[].voices[].eventPath",
+      "suffix": "/ani/attacked",
+      "banks": [
+        "voc.event.bank",
+        "ja/voc1.audio_ja.bank"
+      ]
+    }
+  }
+}

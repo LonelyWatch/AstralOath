@@ -29,6 +29,7 @@ namespace AstralOath.Client.BattleScene
         private const string EffectPath = "effect/";
         private const string BasicHit = "hit_new_blunt_normal.cfx";
         private readonly Transform root;
+        private readonly BattleCinematicStage cinematic;
         private readonly Dictionary<string, JObject> graphs;
         private readonly Dictionary<string, JObject> documents = new Dictionary<string, JObject>(StringComparer.Ordinal);
         private readonly Dictionary<string, BattleSkillPresentationAsset> assets;
@@ -45,7 +46,8 @@ namespace AstralOath.Client.BattleScene
         private (Vector3 From, Vector3 To, float Start, float Duration, float Arc)? motion;
         private float time;
 
-        public BattleSkillPresentation(Transform worldRoot, TextAsset[] graphs, BattleSkillPresentationAsset[] assets)
+        public BattleSkillPresentation(Transform worldRoot, TextAsset[] graphs, BattleSkillPresentationAsset[] assets,
+            Camera camera = null, Action<bool> cinematicChanged = null, GameObject background = null)
         {
             root = new GameObject("Battle Skill Effects").transform;
             root.SetParent(worldRoot, false);
@@ -53,6 +55,9 @@ namespace AstralOath.Client.BattleScene
                 .ToDictionary(graph => (string)graph["id"], StringComparer.Ordinal);
             this.assets = (assets ?? Array.Empty<BattleSkillPresentationAsset>()).ToDictionary(asset => asset.source,
                 StringComparer.Ordinal);
+            cinematic = new BattleCinematicStage(camera, cinematicChanged, background);
+            cinematic.SetParticipants(worldRoot.GetComponentsInChildren<BattlePreviewActor>(true).Select(actor => actor.transform.parent).ToArray());
+            cinematic.SetHatchTextures(Enumerable.Range(1, 3).Select(index => this.assets.TryGetValue("effect/bg_hatch_" + index + ".png", out var asset) ? asset.texture : null).ToArray());
             foreach (var item in this.assets.Values)
                 if (item.texture) textures.Add(item.source, item.texture);
         }
@@ -72,46 +77,59 @@ namespace AstralOath.Client.BattleScene
             if (!graphs.TryGetValue(presentationId ?? "", out var graph))
             {
                 float duration = actor.PlayBattleAnimation("skill1");
-                float impact = Mathf.Clamp(duration * 0.5f, 0.12f, 0.45f);
+                float sourceHit = actor.GetBattleAnimationEventTime("skill1", "hit");
+                float impact = sourceHit >= 0f ? sourceHit : Mathf.Clamp(duration * 0.5f, 0.12f, 0.45f);
                 if (primary) Schedule(impact, () => Cfx(BasicHit, primary, recipients, 5, 1f, Vector2.zero, true));
                 return (impact, Mathf.Max(duration, impact + 0.15f));
             }
 
             var nodes = ((JObject)graph["source"])["entities"].OfType<JObject>().ToArray();
+            foreach (string kind in nodes.Select(Kind).Distinct().Where(kind =>
+                kind == "PPEFFECT" || kind == "SINE_VALUE" || kind == "SHAKE"))
+                Warn(presentationId + ": source " + kind + " is retained but not yet executed by BattleScene.");
+            if (nodes.Any(node => Kind(node) == "LAYOUT" && (int?)node["mode"] != 1 && Number(node, "away_x") < 1280f))
+                Warn(presentationId + ": source LAYOUT uses a participant visibility mask; self_x/away_x placement and fade curves remain unverified and authored slots are retained.");
+            if (nodes.Any(node => Kind(node) == "MOVE" && ((int?)node["style"] == 2 || (int?)node["style"] == 3 || node["h"] != null)))
+                Warn(presentationId + ": source MOVE style/height curves are not reproduced; the existing approach and return approximation remains active.");
             var main = nodes.First(node => Kind(node) == "ANI" &&
                 ((string)node["ani"]).StartsWith("skill", StringComparison.Ordinal));
             string animation = (string)main["ani"];
             float clipDuration = Mathf.Max(0.1f, actor.GetBattleAnimationDuration(animation));
-            float jumpDuration = actor.GetBattleAnimationDuration("jump_forward");
+            var cues = ReadCues(graph, nodes).ToArray();
+            float lead = cues.First(cue => cue.Node == main).At;
             bool rush = nodes.Any(node => Kind(node) == "MOVE" && (int?)node["location"] == 16) && primary && primary != actor;
             bool jumpLead = rush && nodes.Any(node => Kind(node) == "ANI" && (string)node["ani"] == "jump_forward");
-            float lead = jumpLead ? Mathf.Clamp(jumpDuration, 0.18f, 0.65f) : 0f;
             float direction = Facing(primary);
-            if (jumpLead)
-            {
-                actor.PlayBattleAnimation("jump_forward");
-                Schedule(0f, () => MoveNear(primary, direction, lead));
-            }
-            Schedule(lead, () => actor.PlayBattleAnimation(animation));
-
-            var cues = ReadCues(graph, nodes, main, clipDuration).ToArray();
             float[] hits = cues.Where(cue => Kind(cue.Node) == "HIT").Select(cue => cue.At).ToArray();
-            float impactTime = lead + (hits.Length == 0 ? Mathf.Min(0.65f, clipDuration * 0.8f) : hits[0]);
-            float lastHit = hits.Length == 0 ? impactTime : lead + hits[hits.Length - 1];
-            float actionEnd = Mathf.Max(lead + clipDuration, lastHit + 0.15f);
+            float impactTime = hits.Length == 0 ? lead + Mathf.Min(.65f, clipDuration * .8f) : hits[0];
+            float actionEnd = Mathf.Max(lead + clipDuration, hits.Length == 0 ? impactTime + .15f : hits[hits.Length - 1] + .15f);
+            cinematic.Begin(actor.transform, recipients.Select(target => target.transform).ToArray(),
+                cues.Any(cue => Kind(cue.Node) == "CAM" || Kind(cue.Node) == "CUTIN" || Kind(cue.Node) == "BGHATCH"));
+            if (jumpLead) Schedule(0f, () => MoveNear(primary, direction, Mathf.Max(.18f, lead)));
             if (rush && !jumpLead)
             {
                 var move = nodes.First(node => Kind(node) == "MOVE" && (int?)node["location"] == 16);
-                float duration = Seconds(move, "time", 0.3f);
-                Schedule(Mathf.Max(0f, impactTime - duration - 0.12f), () => MoveNear(primary, direction, duration));
+                float duration = Seconds(move, "time", .3f);
+                Schedule(Mathf.Max(0f, impactTime - duration - .12f), () => MoveNear(primary, direction, duration));
             }
             bool moved = rush;
+            bool sourceReturn = false;
             foreach (var cue in cues)
             {
                 var node = cue.Node;
-                float at = lead + cue.At;
+                float at = cue.At;
+                actionEnd = Mathf.Max(actionEnd, at + Completion(node));
                 switch (Kind(node))
                 {
+                    case "ANI":
+                        Schedule(at, () => actor.PlayBattleAnimation((string)node["ani"]));
+                        if ((string)node["ani"] == "jump_back" && rush)
+                        {
+                            sourceReturn = true;
+                            float duration = Mathf.Max(.22f, actor.GetBattleAnimationDuration("jump_back"));
+                            Schedule(at, () => Move(home, duration, .24f));
+                        }
+                        break;
                     case "HIT":
                         string hit = (string)node["effect"];
                         if (!string.IsNullOrEmpty(hit))
@@ -121,16 +139,22 @@ namespace AstralOath.Client.BattleScene
                         break;
                     case "EFFECT":
                         Schedule(at, () => Effect(node, primary, recipients));
-                        actionEnd = Mathf.Max(actionEnd, at + 0.25f);
+                        break;
+                    case "CUTIN":
+                        string key = "cut/fhd/" + (string)node["args"] + ".webp";
+                        if (assets.TryGetValue(key, out var cutin)) Schedule(at, () => cinematic.PlayCutin(cutin));
+                        else Warn("Missing original CUTIN " + key);
+                        break;
+                    case "CAM": case "ZOOM": case "DARK": case "STOP": case "BGSHOW": case "BGHATCH": case "LAYOUT":
+                        Schedule(at, () => cinematic.Play(node));
                         break;
                     case "MOVE" when (int?)node["location"] == 11 && node["x"] != null:
                         moved = true;
                         Schedule(at, () => Move(home + new Vector3(Number(node, "x") * SourcePixel * direction, 0f),
-                            Seconds(node, "time", 0.2f), 0f));
+                            Seconds(node, "time", .2f), 0f));
                         break;
                 }
             }
-
             foreach (var dependency in graph["assets"].Where(item => (string)item["type"] == "timeline"))
             {
                 var timeline = Document((string)dependency["source"]);
@@ -142,7 +166,7 @@ namespace AstralOath.Client.BattleScene
                 }
             }
 
-            if (moved)
+            if (moved && !sourceReturn)
             {
                 float returnDuration = Mathf.Clamp(actor.GetBattleAnimationDuration("jump_back"), 0.22f, 0.55f);
                 Schedule(actionEnd, () =>
@@ -152,46 +176,98 @@ namespace AstralOath.Client.BattleScene
                 });
                 actionEnd += returnDuration;
             }
+            Schedule(actionEnd, EndAction);
             Tick(0f);
             return (impactTime, actionEnd);
         }
 
-        private static IEnumerable<(float At, JObject Node)> ReadCues(JObject graph, JObject[] nodes, JObject main,
-            float clipDuration)
+        private IEnumerable<(float At, JObject Node)> ReadCues(JObject graph, JObject[] nodes)
         {
             var byId = nodes.ToDictionary(node => (int)node["guid"]);
             var edges = graph["source"]["connections"].OfType<JObject>().ToLookup(edge => (int)edge["from"]);
             var earliest = new Dictionary<int, float>();
-            void Visit(JObject node, float at, HashSet<int> path)
+            var sourceOrder = new Dictionary<int, int>();
+            int ordinal = 0;
+            void Visit(JObject node, float at, HashSet<int> path, string animation = null, float animationStart = 0)
             {
                 int id = (int)node["guid"];
                 if (path.Contains(id) || (earliest.TryGetValue(id, out float old) && old <= at)) return;
                 earliest[id] = at;
+                sourceOrder[id] = ordinal++;
                 path.Add(id);
+                if (Kind(node) == "ANI") { animation = (string)node["ani"]; animationStart = at; }
+                float finish = at + Completion(node);
+                if (Kind(node) == "ANI_SCOPE")
+                {
+                    float end = caster.GetBattleAnimationEventTime(animation, (string)node["to"]);
+                    if (end >= 0) finish = Mathf.Max(at, animationStart + end);
+                    else Warn("Missing source ANI_SCOPE event " + animation + "/" + node["to"]);
+                }
                 foreach (var edge in edges[id])
                 {
                     int when = (int?)edge["when"] ?? 0;
                     if (when != 0 && when != 1) continue;
-                    float completion = when == 0 ? Completion(node, main, clipDuration) : 0f;
-                    Visit(byId[(int)edge["to"]], at + completion + Seconds(edge, "delay"), path);
+                    Visit(byId[(int)edge["to"]], (when == 0 ? finish : at) + Seconds(edge, "delay"), path, animation, animationStart);
                 }
+                if (Kind(node) == "ANI")
+                    foreach (var listener in nodes.Where(item => Kind(item) == "ONEVENT" && (string)item["ani"] == animation))
+                    {
+                        float eventTime = caster.GetBattleAnimationEventTime(animation, (string)listener["name"]);
+                        if (eventTime >= 0) Visit(listener, at + eventTime, path, animation, at);
+                    }
                 path.Remove(id);
             }
-            Visit(main, 0f, new HashSet<int>());
-            return earliest.OrderBy(cue => cue.Value).ThenBy(cue => cue.Key)
-                .Select(cue => (cue.Value, byId[cue.Key]));
+            Visit(byId[(int)graph["source"]["entrypoint"]["start"]], 0f, new HashSet<int>());
+            return earliest.OrderBy(cue => cue.Value).ThenBy(cue => sourceOrder[cue.Key]).Select(cue => (cue.Value, byId[cue.Key]));
         }
 
-        private static float Completion(JObject node, JObject main, float clipDuration)
+        private float Completion(JObject node)
         {
-            if (node == main) return clipDuration;
-            if (Kind(node) == "CUTIN") return 0.45f;
-            return Seconds(node, "time");
+            switch (Kind(node))
+            {
+                case "ANI": return caster.GetBattleAnimationDuration((string)node["ani"]);
+                case "CUTIN": return BattleCinematicStage.CutinDuration(Document("cut/fhd/" + (string)node["args"] + ".webp"));
+                case "EFFECT": return EffectDuration((string)node["source"]);
+                default: return Seconds(node, "time");
+            }
         }
 
+        private float EffectDuration(string source)
+        {
+            string key = source.StartsWith(EffectPath, StringComparison.Ordinal) ? source : EffectPath + source;
+            if (!key.EndsWith(".cfx", StringComparison.Ordinal)) key += ".cfx";
+            float end = 0;
+            foreach (var part in (Document(key)?["primitive"] as JArray ?? new JArray()).OfType<JObject>())
+            {
+                float duration = Seconds(part, "lifeTime");
+                if (duration <= 0 && (string)part["format"] == "spine")
+                {
+                    var animations = Document(EffectPath + (string)part["source"] + ".scsp")?["animations"] as JObject;
+                    var animation = animations?["animation"] ?? animations?["idle"] ?? animations?.Properties().FirstOrDefault()?.Value;
+                    duration = animation?.SelectTokens("$..time").Select(item => (float?)item ?? 0).DefaultIfEmpty(0).Max() ?? 0;
+                }
+                if (duration <= 0 && (string)part["format"] == "particle") duration = 1.8f;
+                end = Mathf.Max(end, Seconds(part, "delay") + duration);
+            }
+            return end;
+        }
         public void Tick(float delta)
         {
+            float frameEnd = time + Mathf.Max(0f, delta);
+            while (pending.Count > 0 && pending[0].At <= frameEnd)
+            {
+                Advance(Mathf.Max(0f, pending[0].At - time));
+                var task = pending[0];
+                pending.RemoveAt(0);
+                task.Run();
+            }
+            Advance(Mathf.Max(0f, frameEnd - time));
+        }
+
+        private void Advance(float delta)
+        {
             time += delta;
+            cinematic.Tick(delta);
             if (motion is { } movement && caster)
             {
                 float progress = Mathf.Clamp01((time - movement.Start) / movement.Duration);
@@ -214,12 +290,7 @@ namespace AstralOath.Client.BattleScene
                 }
                 else visual.Tick(delta);
             }
-            while (pending.Count > 0 && pending[0].At <= time)
-            {
-                var task = pending[0];
-                pending.RemoveAt(0);
-                task.Run();
-            }
+
         }
 
         private void Schedule(float at, Action run)
@@ -478,6 +549,7 @@ namespace AstralOath.Client.BattleScene
 
         private void EndAction()
         {
+            cinematic.Reset();
             if (caster) caster.transform.localPosition = home;
             motion = null;
             pending.Clear();
@@ -488,7 +560,11 @@ namespace AstralOath.Client.BattleScene
         public void Dispose()
         {
             EndAction();
-            if (root) Object.Destroy(root.gameObject);
+            if (root)
+            {
+                if (Application.isPlaying) Object.Destroy(root.gameObject);
+                else Object.DestroyImmediate(root.gameObject);
+            }
         }
 
         private static string Kind(JObject node) => (string)node["etty"];

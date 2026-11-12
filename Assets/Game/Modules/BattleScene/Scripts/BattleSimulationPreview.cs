@@ -35,10 +35,13 @@ namespace AstralOath.Client.BattleScene
         private int selected;
         private int previousSelection;
         private bool useSoulBurn;
+        private string presentedSkillId;
+        private bool cinematicVisible;
+        private readonly Dictionary<GameObject, bool> cinematicHudStates = new Dictionary<GameObject, bool>();
 
         public BattleSimulationPreview(Scene scene, BindingMap hud, BattleHudBinder binder, BattleCatalogData catalog,
             Sprite[] icons, TextAsset[] graphs, BattleSkillPresentationAsset[] skillAssets, TextAsset audioCatalog,
-            TextAsset[] audioBanks, TMP_FontAsset damageFont)
+            TextAsset[] audioBanks, TMP_FontAsset damageFont, TextAsset impactBank, GameObject stageBackground)
         {
             this.hud = hud;
             this.binder = binder;
@@ -69,11 +72,16 @@ namespace AstralOath.Client.BattleScene
             string oldName = text.text, oldHp = hp.text, oldSoul = soul.text;
             var oldPortrait = portrait.sprite;
             float oldHpFill = hpFill.fillAmount, oldSoulFill = soulFill.fillAmount;
+            var skillGroup = hud.transform.Find("Skills").gameObject;
+            var burnButton = hud.Require<GameButton>("soulBurn").gameObject;
+            bool oldSkillVisibility = skillGroup.activeSelf, oldBurnVisibility = burnButton.activeSelf;
             var buttons = SkillButtons().Select(button => (button, image: (Image)button.targetGraphic)).ToArray();
             var oldIcons = buttons.Select(item => item.image.sprite).ToArray();
             restore = () =>
             {
                 if (!hud) return;
+                skillGroup.SetActive(oldSkillVisibility);
+                burnButton.SetActive(oldBurnVisibility);
                 text.text = oldName;
                 hp.text = oldHp;
                 soul.text = oldSoul;
@@ -95,8 +103,8 @@ namespace AstralOath.Client.BattleScene
 
             banner = CreateText(hud.transform, text, "Battle State", new Vector2(0.5f, 1),
                 new Vector2(0, -46), new Vector2(720, 40), 24);
-            skillPresentation = new BattleSkillPresentation(units, graphs, skillAssets);
-            voice = new BattleVoice(audioCatalog, audioBanks);
+            skillPresentation = new BattleSkillPresentation(units, graphs, skillAssets, camera, SetCinematicVisible, stageBackground);
+            voice = new BattleVoice(audioCatalog, audioBanks, impactBank);
             turnHud = new BattleTurnHud(hud, unit => Label(unit.NameKey), sprites, damageFont);
             foreach (var view in views.Values) view.AddLabels(text, hp);
             Refresh();
@@ -105,6 +113,8 @@ namespace AstralOath.Client.BattleScene
         public BattleSnapshot Snapshot => match.Snapshot;
         public int StartedSkillVoices => voice.StartedVoiceCount;
         public int StartedSkillSounds => voice.StartedEffectCount;
+        public int StartedHitSounds => voice.StartedHitCount;
+        public bool IsCinematicVisible => cinematicVisible;
 
         private BattleUnitSnapshot Actor => Snapshot.GetUnit(Snapshot.CurrentActorId);
         private bool Busy => playback.Count != 0 || pause > 0f || recovery > 0f;
@@ -220,6 +230,7 @@ namespace AstralOath.Client.BattleScene
             switch (item.Kind)
             {
                 case BattleFlowEventKind.Action:
+                    SetPlayerControlsVisible(Snapshot.GetUnit(item.SourceId).Slot.Side == BattleSide.Ally);
                     var primary = item.TargetId != null && views.TryGetValue(item.TargetId, out var target)
                         ? target.Actor : null;
                     var targets = playback.TakeWhile(next => next.Kind != BattleFlowEventKind.Action)
@@ -227,7 +238,8 @@ namespace AstralOath.Client.BattleScene
                         .Select(next => next.TargetId).Distinct(StringComparer.Ordinal)
                         .Select(id => views[id].Actor).ToArray();
                     var timing = skillPresentation.Begin(item.PresentationId, views[item.SourceId].Actor, primary, targets);
-                    voice.Play(item.PresentationId);
+                    presentedSkillId = item.SkillId;
+                    voice.Play(string.IsNullOrEmpty(item.PresentationId) ? item.SkillId : item.PresentationId);
                     pause = timing.ImpactSeconds;
                     recovery = Math.Max(0.15f, timing.Duration - pause);
                     string name = skills.TryGetValue(item.SkillId, out var skill) ? Label(skill.nameKey) : "史莱姆攻击";
@@ -239,9 +251,13 @@ namespace AstralOath.Client.BattleScene
                     view.Health.fillAmount = item.RemainingHealth.GetValueOrDefault() /
                         (float)Snapshot.GetUnit(item.TargetId).Stats.MaxHealth;
                     if (item.Amount > 0)
-                        turnHud.ShowImpact(item, view.FeedbackAnchor);
-                    if (item.Kind == BattleFlowEventKind.Damage && item.Amount > 0 && item.RemainingHealth > 0)
-                        view.Actor.PlayBattleAnimation("attacked");
+                        turnHud.ShowImpact(item, view.FeedbackAnchor, view.Actor.Bounds.center, camera);
+                    // Damage is emitted after barrier absorption; zero health loss still represents a hit.
+                    if (item.Kind == BattleFlowEventKind.Damage)
+                    {
+                        voice.PlayHit(Snapshot.GetUnit(item.TargetId).DefinitionId, presentedSkillId);
+                        if (item.RemainingHealth > 0) view.Actor.PlayBattleAnimation("attacked");
+                    }
                     break;
                 case BattleFlowEventKind.CooldownChanged:
                     if (displayedActor?.InstanceId == item.TargetId)
@@ -282,6 +298,7 @@ namespace AstralOath.Client.BattleScene
             turnHud.Refresh(Snapshot);
             var actor = Actor;
             displayedActor = actor;
+            SetPlayerControlsVisible(actor?.Slot.Side == BattleSide.Ally && Snapshot.Outcome == BattleOutcome.InProgress);
             if (actor != null)
             {
                 hud.Require<GameText>("activeName").text = Label(actor.NameKey);
@@ -310,6 +327,41 @@ namespace AstralOath.Client.BattleScene
             }
             hud.Require<GameButton>("soulBurn").interactable = CanAct && BurnSlot() >= 0;
             ShowPrompt();
+        }
+
+        private void SetPlayerControlsVisible(bool visible)
+        {
+            SetHudObjectVisible(hud.transform.Find("Skills").gameObject, visible);
+            SetHudObjectVisible(hud.Require<GameButton>("soulBurn").gameObject, visible);
+        }
+
+        private void SetHudObjectVisible(GameObject item, bool visible)
+        {
+            if (cinematicVisible && cinematicHudStates.ContainsKey(item))
+                cinematicHudStates[item] = visible;
+            else
+                item.SetActive(visible);
+        }
+
+        private void SetCinematicVisible(bool value)
+        {
+            if (cinematicVisible == value) return;
+            cinematicVisible = value;
+            if (value)
+            {
+                foreach (var item in new[] { hud.transform.Find("Skills").gameObject,
+                    hud.Require<GameButton>("soulBurn").gameObject, hud.transform.Find("Unit Status").gameObject })
+                {
+                    cinematicHudStates.Add(item, item.activeSelf);
+                    item.SetActive(false);
+                }
+            }
+            else
+            {
+                foreach (var item in cinematicHudStates)
+                    if (item.Key) item.Key.SetActive(item.Value);
+                cinematicHudStates.Clear();
+            }
         }
 
         private void SetActorArt(string name, string spriteName)

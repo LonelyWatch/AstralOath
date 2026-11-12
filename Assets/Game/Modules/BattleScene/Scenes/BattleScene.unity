@@ -1231,6 +1231,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 804e0cc4549097c43a8257524736c8f6, type: 3}
+--- !u!1 &1259719517 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8069187316828005085, guid: 804e0cc4549097c43a8257524736c8f6, type: 3}
+  m_PrefabInstance: {fileID: 1259719516}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1294712375
 GameObject:
   m_ObjectHideFlags: 0
@@ -2072,23 +2077,87 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a1293198488294847ab4b9a13effc1f1, type: 3}
   - {fileID: 21300000, guid: 11ef83e9273d60d4582750ba963e2f64, type: 3}
   - {fileID: 21300000, guid: a85a388864e5fe84eb16762e19127b5a, type: 3}
+  - {fileID: 21300000, guid: 97d16f43a11a5e047b00fd17526ea828, type: 3}
+  - {fileID: 21300000, guid: e1bf1971466ba714ba2265d7c781bed1, type: 3}
+  - {fileID: 21300000, guid: c616b14c8c0ffec4dadb727f83958e1f, type: 3}
+  - {fileID: 21300000, guid: 12b6a3ac1d8ed544e816b5b85e239795, type: 3}
+  - {fileID: 21300000, guid: 23e83cb2a9961964b9ef959fe0cfdd27, type: 3}
+  - {fileID: 21300000, guid: 1231a7163e7842b4eb64455776b10c54, type: 3}
+  - {fileID: 21300000, guid: 748235317f5bc1c43909f2c6186c589f, type: 3}
+  - {fileID: 21300000, guid: dd18a87a875c70149898c166094c2853, type: 3}
+  - {fileID: 21300000, guid: 35fa859053739244aaae3a5b92082092, type: 3}
+  - {fileID: 21300000, guid: b77a21d9ea07a5e4582bb066776ad44d, type: 3}
+  - {fileID: 21300000, guid: 06f8e8db729a6ea4c85c4638e0ba76f5, type: 3}
+  - {fileID: 21300000, guid: 32939fcbd143f4345a2e36eed3e2acdf, type: 3}
   skillAssets:
+  - source: cut/fhd/sk_c1001_3.webp
+    document: {fileID: 4900000, guid: bfe3f8ee9a803d74b84058958865046d, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages:
+    - {fileID: 2800000, guid: ef707057e7d0eeb4b9744b9ec91b59cb, type: 3}
+    - {fileID: 2800000, guid: 2419949818fd8b647acfda7571504a6a, type: 3}
+    - {fileID: 2800000, guid: eaa246112cb85d8448ac57ae3648637c, type: 3}
+    - {fileID: 2800000, guid: e88aca2dda0d41a4598a1f4111b9966c, type: 3}
+    - {fileID: 2800000, guid: 86603088c5581b2498518ba2e486537c, type: 3}
+    - {fileID: 2800000, guid: 62180f254de521c409717396f804a00e, type: 3}
+    - {fileID: 2800000, guid: f466f3354bf35944eb587d7bb8080869, type: 3}
+    - {fileID: 2800000, guid: 784cdbea8af65db40bf323269ee33579, type: 3}
+    - {fileID: 2800000, guid: 61e9111f670fd0d4c94b5a364e95131e, type: 3}
+    - {fileID: 2800000, guid: f2847f49c728e9d41a5e1ec5a0ef809f, type: 3}
+    - {fileID: 2800000, guid: 0522ac9f83b2c4845b54262bed075aad, type: 3}
+    - {fileID: 2800000, guid: 9aef123aa583d7d468fe7eb8c7129f95, type: 3}
+    - {fileID: 2800000, guid: ad30d199af085bb4b834ec034b959fc8, type: 3}
+    - {fileID: 2800000, guid: e6556f2ab9f7b4a489d165889f1e19c3, type: 3}
+    - {fileID: 2800000, guid: a6915fd344da67448999de64d8ddd921, type: 3}
+    - {fileID: 2800000, guid: f5b7f56e0be7b3f449cf8f6c3de07a58, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: cut/fhd/sk_c1062_3.webp
+    document: {fileID: 4900000, guid: 0d8204bde8263144ba478081de1216fb, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages:
+    - {fileID: 2800000, guid: b936a26157fbccb408297f27c14c93f2, type: 3}
+    - {fileID: 2800000, guid: 63853a873a2cedb41b93be2a2a414a3a, type: 3}
+    - {fileID: 2800000, guid: f840fe02533ccc640b841b4e7bcdba38, type: 3}
+    - {fileID: 2800000, guid: adfa7689228fad842ad08b340a79b859, type: 3}
+    - {fileID: 2800000, guid: 534d05c0a0222034489f852134cb39d2, type: 3}
+    - {fileID: 2800000, guid: ac2cab09ec5d7c341b3bb94b76429058, type: 3}
+    - {fileID: 2800000, guid: d7d246ad544b1d64697003c2920e3cfa, type: 3}
+    - {fileID: 2800000, guid: ca26aa180f5eb8d4fb1b910498b26e63, type: 3}
+    - {fileID: 2800000, guid: 80d070d339c49b54a9a67e2c6f17f057, type: 3}
+    - {fileID: 2800000, guid: b18d362745efa2044a5acc3b8ddd8f1f, type: 3}
+    - {fileID: 2800000, guid: 06f3cde07815275498e6df24a9b22922, type: 3}
+    - {fileID: 2800000, guid: 9037ad6b093f0ac4cb9d7f92b22ff5db, type: 3}
+    - {fileID: 2800000, guid: c462a3de81d127645acad852f6cab1bd, type: 3}
+    - {fileID: 2800000, guid: 2f31fbe3aa7dd134a9cedfd9ede432b5, type: 3}
+    - {fileID: 2800000, guid: 57c13d197e61dba4eb671c032756c6fb, type: 3}
+    - {fileID: 2800000, guid: 3345b2c6e8da83d4c9d6cfd943eba821, type: 3}
+    - {fileID: 2800000, guid: 49a8785f2d017444b80c389fe0f84271, type: 3}
+    - {fileID: 2800000, guid: 5c6a0b1fea5f4f24eae490677168ba04, type: 3}
+    - {fileID: 2800000, guid: 703c653076951354baf82a244ebc93e1, type: 3}
+    - {fileID: 2800000, guid: 786f8171e64a19e42807897c151c61cc, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
   - source: effect/achieve_bar_pati.particle
     document: {fileID: 4900000, guid: 2753b3ce079805f41895a6b81a810be3, type: 3}
     atlas: {fileID: 0}
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 0
-    scale: 0
+    premultipliedAlpha: 1
+    scale: 0.01
   - source: effect/angelica_b_idle.cfx
     document: {fileID: 4900000, guid: 2078a88bac57a41488425ebbf8c0ff06, type: 3}
     atlas: {fileID: 0}
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 0
-    scale: 0
+    premultipliedAlpha: 1
+    scale: 0.01
   - source: effect/angelica_b_idle_eff_b.scsp
     document: {fileID: 4900000, guid: 85790ea1bfcee18499daac4f676eae36, type: 3}
     atlas: {fileID: 4900000, guid: 369a94b42b7601749ae260ce4feaf6f4, type: 3}
@@ -2243,16 +2312,16 @@ MonoBehaviour:
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 0
-    scale: 0
+    premultipliedAlpha: 1
+    scale: 0.01
   - source: effect/angelica_skill_2_pati2.particle
     document: {fileID: 4900000, guid: 73cb718c84bafdc46b043ed352956127, type: 3}
     atlas: {fileID: 0}
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 0
-    scale: 0
+    premultipliedAlpha: 1
+    scale: 0.01
   - source: effect/eff_dust_bigar_b.scsp
     document: {fileID: 4900000, guid: 530eeb67e0faca342ad582018f67d062, type: 3}
     atlas: {fileID: 4900000, guid: bc66bfcdb35dd62439fc5a84eafbb393, type: 3}
@@ -2279,16 +2348,16 @@ MonoBehaviour:
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 0
-    scale: 0
+    premultipliedAlpha: 1
+    scale: 0.01
   - source: effect/eff_magic_lightningball.cfx
     document: {fileID: 4900000, guid: 04b1c82c04cc39640be7e3a8853f1b97, type: 3}
     atlas: {fileID: 0}
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 0
-    scale: 0
+    premultipliedAlpha: 1
+    scale: 0.01
   - source: effect/eff_magic_lightningball.scsp
     document: {fileID: 4900000, guid: 05a6e22b793c5c741a2a826c91d2672c, type: 3}
     atlas: {fileID: 4900000, guid: 4cd60a06fa9d9a74597837f8cb01210b, type: 3}
@@ -2325,8 +2394,8 @@ MonoBehaviour:
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 0
-    scale: 0
+    premultipliedAlpha: 1
+    scale: 0.01
   - source: effect/eff_magic_thunder_01.scsp
     document: {fileID: 4900000, guid: a809b84b7eb21794a88e4e4539156b9b, type: 3}
     atlas: {fileID: 4900000, guid: 5db6cb32382956d43bdd08a0493d3d24, type: 3}
@@ -2379,8 +2448,8 @@ MonoBehaviour:
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 0
-    scale: 0
+    premultipliedAlpha: 1
+    scale: 0.01
   - source: effect/hit_new_pierce_normal.cfx
     document: {fileID: 4900000, guid: 1a49b3ffa9a8e294b987934c4186ec82, type: 3}
     atlas: {fileID: 0}
@@ -2423,16 +2492,16 @@ MonoBehaviour:
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 0
-    scale: 0
+    premultipliedAlpha: 1
+    scale: 0.01
   - source: effect/hit_new_slash_yellow_nm_pati.particle
     document: {fileID: 4900000, guid: 75c84a0be2722474eb279db4180ee1a2, type: 3}
     atlas: {fileID: 0}
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 0
-    scale: 0
+    premultipliedAlpha: 1
+    scale: 0.01
   - source: effect/mage_sk3_eff_b.scsp
     document: {fileID: 4900000, guid: feca6070ec454874680345f1c563d151, type: 3}
     atlas: {fileID: 4900000, guid: 7380d12481e7ee9469e06c36a8b02256, type: 3}
@@ -2467,8 +2536,8 @@ MonoBehaviour:
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 0
-    scale: 0
+    premultipliedAlpha: 1
+    scale: 0.01
   - source: effect/mercedes_skeff_sk1_magicring.cfx
     document: {fileID: 4900000, guid: b4854856f9fa3fb44969e2c937598aef, type: 3}
     atlas: {fileID: 0}
@@ -2541,16 +2610,16 @@ MonoBehaviour:
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 0
-    scale: 0
+    premultipliedAlpha: 1
+    scale: 0.01
   - source: effect/ras_new_skeff_sk3.cfx
     document: {fileID: 4900000, guid: e14956ddfbaa9074187bdb114beca5bb, type: 3}
     atlas: {fileID: 0}
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 0
-    scale: 0
+    premultipliedAlpha: 1
+    scale: 0.01
   - source: effect/ras_re_sk1_b.scsp
     document: {fileID: 4900000, guid: f73803d97af1f794ca8f6d22a11a0c03, type: 3}
     atlas: {fileID: 4900000, guid: 564776efa4c7acf4a93dcbf2a0824834, type: 3}
@@ -2735,6 +2804,30 @@ MonoBehaviour:
     texture: {fileID: 2800000, guid: 1f262cd185fb0c44f88a216fff54d305, type: 3}
     premultipliedAlpha: 0
     scale: 0
+  - source: effect/bg_hatch_1.png
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: 5bb8a89efd2e4ed98547e7ca8cfa4e39, type: 3}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/bg_hatch_2.png
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: a30cb95108394e7e81f8d6af4b70a5af, type: 3}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/bg_hatch_3.png
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: a6a17aac7e874edca6f7190adcb07cd0, type: 3}
+    premultipliedAlpha: 0
+    scale: 0
   audioCatalog: {fileID: 4900000, guid: c0e9bd68f30f77b43a84e4c1337460f8, type: 3}
   audioBanks:
   - {fileID: 4900000, guid: 8ce39ee0470274746bd7081d980abe12, type: 3}
@@ -2742,6 +2835,8 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 00323a0bf0cdfa041813dad89dc16f72, type: 3}
   - {fileID: 4900000, guid: 5eaad99642daaa24ab025119b4ffa32a, type: 3}
   - {fileID: 4900000, guid: eb272ed47e6b441419b658577907a6da, type: 3}
+  impactBank: {fileID: 4900000, guid: 7e9a2359d30d4bb2ba88ea36c02fbe52, type: 3}
+  stageBackground: {fileID: 1259719517}
 --- !u!114 &1820183974
 MonoBehaviour:
   m_ObjectHideFlags: 0

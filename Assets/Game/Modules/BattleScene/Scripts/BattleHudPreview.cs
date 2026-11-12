@@ -52,12 +52,16 @@ namespace AstralOath.Client.BattleScene
         [SerializeField] private BattleSkillPresentationAsset[] skillAssets;
         [SerializeField] private TextAsset audioCatalog;
         [SerializeField] private TextAsset[] audioBanks;
+        [SerializeField] private TextAsset impactBank;
+        [SerializeField] private GameObject stageBackground;
         private BattleHudBinder binder;
         private BattleSimulationPreview simulation;
 
         public BattleSnapshot SimulationSnapshot => simulation?.Snapshot;
         public int StartedSkillVoices => simulation?.StartedSkillVoices ?? 0;
         public int StartedSkillSounds => simulation?.StartedSkillSounds ?? 0;
+        public int StartedHitSounds => simulation?.StartedHitSounds ?? 0;
+        public bool IsCinematicVisible => simulation?.IsCinematicVisible ?? false;
 
         public void StartBattle()
         {
@@ -67,7 +71,7 @@ namespace AstralOath.Client.BattleScene
             UpdateBinding();
             var catalog = JsonConvert.DeserializeObject<BattleCatalogData>(battleCatalog.text);
             simulation = new BattleSimulationPreview(gameObject.scene, hud, binder, catalog, battleSprites, battleGraphs,
-                skillAssets, audioCatalog, audioBanks, battleDamageFont);
+                skillAssets, audioCatalog, audioBanks, battleDamageFont, impactBank, stageBackground);
             binder.AttachSimulation(simulation);
         }
 

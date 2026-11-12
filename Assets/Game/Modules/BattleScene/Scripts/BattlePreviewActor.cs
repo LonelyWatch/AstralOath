@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using AstralOath.Client.Skeletons;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 
 namespace AstralOath.Client.BattleScene
@@ -18,6 +19,7 @@ namespace AstralOath.Client.BattleScene
         private ISkeletonPlayer player;
         private string idleAnimation;
         private bool playingBattleAnimation;
+        private Dictionary<string, Dictionary<string, float>> eventTimes;
 
         public Bounds Bounds => player != null
             ? player.Root.GetComponent<MeshRenderer>().bounds : new Bounds(transform.position, Vector3.zero);
@@ -29,6 +31,31 @@ namespace AstralOath.Client.BattleScene
                     if (clip.Name == animation && clip.Duration > 0f)
                         return clip.Duration;
             return 0f;
+        }
+
+        internal float GetBattleAnimationEventTime(string animation, string eventName)
+        {
+            if (eventTimes == null)
+            {
+                // Retain only event timings. The source skeleton can contain megabytes of mesh keys.
+                eventTimes = new Dictionary<string, Dictionary<string, float>>(StringComparer.Ordinal);
+                var animations = (JObject)JObject.Parse(skeleton.text)["animations"];
+                foreach (var clip in animations.Properties())
+                {
+                    var times = new Dictionary<string, float>(StringComparer.Ordinal);
+                    if (clip.Value["events"] is JArray events)
+                        foreach (var item in events)
+                        {
+                            string name = (string)item["name"];
+                            float at = (float?)item["time"] ?? 0f;
+                            if (name != null && (!times.TryGetValue(name, out float previous) || at < previous))
+                                times[name] = at;
+                        }
+                    eventTimes.Add(clip.Name, times);
+                }
+            }
+            return eventTimes.TryGetValue(animation, out var values) && values.TryGetValue(eventName, out float value)
+                ? value : -1f;
         }
 
         public float PlayBattleAnimation(string animation)
@@ -46,6 +73,7 @@ namespace AstralOath.Client.BattleScene
 
         private void OnEnable()
         {
+            eventTimes = null;
             if (!skeleton || !atlas || !page || string.IsNullOrWhiteSpace(pageName))
                 throw new InvalidOperationException($"Battle preview actor {name} has incomplete Spine data.");
 

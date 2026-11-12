@@ -1,0 +1,28 @@
+{
+  "provenance": "User-provided local Epic Seven extraction; original asset rights retained; no license change inferred.",
+  "entries": [
+    {
+      "destination": "Assets/Game/Modules/BattleScene/Res/Effects/Cinematic/bg_hatch_1.png",
+      "transform": "Unmodified source PNG; repeat U, clamp V, no compression; source shader samples all three original textures.",
+      "sha256": "a888b77ecb602ad0b7367b629fa0b03e3f061c0fbf70c70b96a747da028ecbf6",
+      "source": "D:/sevenepic/原始资源/effect/bg_hatch_1.png"
+    },
+    {
+      "destination": "Assets/Game/Modules/BattleScene/Res/Effects/Cinematic/bg_hatch_2.png",
+      "transform": "Unmodified source PNG; repeat U, clamp V, no compression; source shader samples all three original textures.",
+      "sha256": "1a79aef6370d77b72ccc3f9f4e3ae67f0047dd0dd076ae4f5c6f02fe204c0341",
+      "source": "D:/sevenepic/原始资源/effect/bg_hatch_2.png"
+    },
+    {
+      "destination": "Assets/Game/Modules/BattleScene/Res/Effects/Cinematic/bg_hatch_3.png",
+      "transform": "Unmodified source PNG; repeat U, clamp V, no compression; source shader samples all three original textures.",
+      "sha256": "e11233169955043b741366a331509d906a99c57f8a42635ba4e1fdcfd7db06ae",
+      "source": "D:/sevenepic/原始资源/effect/bg_hatch_3.png"
+    },
+    {
+      "transform": "GLSL texture sampling and additive tint equation ported to URP HLSL. Speed uniform driver and BGHATCH layout semantics remain unverified against original engine.",
+      "sha256": "e46052b9c5a37e1b117a2bacb9d45541af80cd6587c34c113cee683bb8077546",
+      "source": "D:/sevenepic/原始资源/system/program/sprite_hatch.frag"
+    }
+  ]
+}

@@ -10,7 +10,7 @@ namespace AstralOath.Client.BattleScene
         private const float FeedbackDuration = 0.86f;
         private readonly List<Feedback> impactLabels = new List<Feedback>();
 
-        internal void ShowImpact(BattleFlowEvent item, RectTransform anchor)
+        internal void ShowImpact(BattleFlowEvent item, RectTransform anchor, Vector3 targetWorld, Camera worldCamera)
         {
             if (!anchor || item.Amount <= 0)
                 return;
@@ -41,7 +41,11 @@ namespace AstralOath.Client.BattleScene
 
             popup.TargetId = item.TargetId;
             popup.Root.name = item.TargetId;
-            popup.Root.position = anchor.position;
+            // The camera may be panning or zooming during a skill. Static healthbar authoring
+            // coordinates no longer describe the rendered target's position in that frame.
+            Vector2 screenPoint = worldCamera.WorldToScreenPoint(targetWorld);
+            popup.Root.position = RectTransformUtility.ScreenPointToWorldPointInRectangle(
+                feedbackLayer, screenPoint, worldCamera, out var uiPoint) ? uiPoint : anchor.position;
             popup.Origin = popup.Root.anchoredPosition + new Vector2(offset, 43f + (existing % 3) * 16f);
             popup.Elapsed = 0f;
             bool healing = item.Kind == BattleFlowEventKind.Healing;

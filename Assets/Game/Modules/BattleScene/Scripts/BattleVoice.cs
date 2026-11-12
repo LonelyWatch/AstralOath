@@ -14,14 +14,18 @@ namespace AstralOath.Client.BattleScene
     internal sealed class BattleVoice : IDisposable
     {
         private readonly Dictionary<string, SkillAudio> skills = new Dictionary<string, SkillAudio>(StringComparer.Ordinal);
+        private const string SlimeSkillId = "preview.slime.s1";
+        private const string ImpactBankAddress = "battlescene/source/sound/gerneal.bank";
+        private readonly Dictionary<string, string> hitVoices = new Dictionary<string, string>(StringComparer.Ordinal);
         private readonly HashSet<string> failedEvents = new HashSet<string>(StringComparer.Ordinal);
         private FmodCharacterAudioService service;
 
         public bool IsAvailable => service?.IsAvailable == true;
         public int StartedVoiceCount { get; private set; }
         public int StartedEffectCount { get; private set; }
+        public int StartedHitCount { get; private set; }
 
-        public BattleVoice(TextAsset audioCatalog, TextAsset[] banks)
+        public BattleVoice(TextAsset audioCatalog, TextAsset[] banks, TextAsset impactBank = null)
         {
             try
             {
@@ -31,13 +35,33 @@ namespace AstralOath.Client.BattleScene
                 if (catalog?.characters == null || catalog.sharedBanks == null)
                     throw new InvalidDataException("Invalid character audio catalog.");
                 foreach (var character in catalog.characters)
+                {
                     foreach (var skill in character.skills ?? Array.Empty<SkillAudio>())
                         skills.Add(skill.id, skill);
+                    foreach (var voice in character.voices ?? Array.Empty<CharacterVoice>())
+                        if (voice.eventPath?.EndsWith("/ani/attacked", StringComparison.Ordinal) == true)
+                            hitVoices[character.id] = voice.eventPath;
+                }
+                // The source slime STG uses the skill1 model animation, not a skill/m_slime event.
+                skills.Add(SlimeSkillId, new SkillAudio
+                {
+                    id = SlimeSkillId,
+                    eventPath = "event:/model/slime/ani/skill1"
+                });
 
-                var assets = new SceneBanks(catalog.sharedBanks, banks);
+                if (banks == null || banks.Length != catalog.sharedBanks.Length)
+                    throw new InvalidDataException("Battle scene audio banks do not match the catalog.");
+                var addresses = new List<string>(catalog.sharedBanks);
+                var bankAssets = new List<TextAsset>(banks);
+                if (impactBank)
+                {
+                    addresses.Add(ImpactBankAddress);
+                    bankAssets.Add(impactBank);
+                }
+                var assets = new SceneBanks(addresses.ToArray(), bankAssets.ToArray());
                 service = new FmodCharacterAudioService(CancellationToken.None);
                 // Scene banks are already loaded TextAssets; the asset adapter always completes inline.
-                service.InitializeAsync(assets, catalog.sharedBanks).GetAwaiter().GetResult();
+                service.InitializeAsync(assets, addresses).GetAwaiter().GetResult();
             }
             catch (Exception error)
             {
@@ -58,6 +82,18 @@ namespace AstralOath.Client.BattleScene
             // Individual audio-table variants are selected in the bank, never launched together.
             if (Start(cue.eventPath)) StartedEffectCount++;
             if (Start(cue.voiceEventPath)) StartedVoiceCount++;
+        }
+
+        // Called only when presenting accepted damage at its impact time, never by an animation callback.
+        public void PlayHit(string targetDefinitionId, string sourceSkillId = null)
+        {
+            if (!IsAvailable) return;
+            // m_slime_skill_01.stg HIT -> hit_new_blunt_normal.cfx -> this original FMOD effect.
+            // Hero skill events already own their attack timelines, so do not add a generic impact to them.
+            if (sourceSkillId == SlimeSkillId && Start("event:/effect/hit_new_blunt_normal"))
+                StartedHitCount++;
+            if (targetDefinitionId != null && hitVoices.TryGetValue(targetDefinitionId, out var path) && Start(path))
+                StartedHitCount++;
         }
 
         public void Tick()
@@ -145,7 +181,15 @@ namespace AstralOath.Client.BattleScene
         [Serializable, Preserve]
         private sealed class AudioCharacter
         {
+            public string id;
             public SkillAudio[] skills;
+            public CharacterVoice[] voices;
+        }
+
+        [Serializable, Preserve]
+        private sealed class CharacterVoice
+        {
+            public string eventPath;
         }
 
         [Serializable, Preserve]
