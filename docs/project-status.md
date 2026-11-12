@@ -16,6 +16,8 @@ Unity 2022.3.62f3 / URP / UGUI / TMP；Common/AOT 通用设施；普通 C# UIBas
 
 - BattleScene：首阶段独立冒险布局预览。两套原图分层森林、原作 HUD、双方各四个可编辑脚点及 Spine 待机；已按近期实战和本地原版布局修订 HUD。见[HUD 复核](delivery/2026-11-12-battle-hud-fidelity.md)。
 
+- Battle 配表：三名普通形态英雄、九技能及 45 段强化已落表并导出。见[配表口径与来源](development/battle-character-data.md)。
+
 ## 必须知道的缺口
 
 1. 当前 Foundation 场景远端清单 URL、签名 URL 和公钥为空；正式内容服务/CDN未部署。游戏 API 不承担发布资源的静态托管。
@@ -30,6 +32,6 @@ Unity 2022.3.62f3 / URP / UGUI / TMP；Common/AOT 通用设施；普通 C# UIBas
 - 控件变更：Unity EditMode 215/215、PlayMode 16/16；见[控件验收](delivery/2026-11-12-ui-controls.md)。本次文档/工具核对没有重跑 Unity。
 - 本次服务/内容/配置/协议检查结果：[地基复核](delivery/2026-11-12-foundation-reaudit.md)。MySQL真实集成需专用连接串，本次未重新验证。
 - 下一项更新工作：实现无UI的启动策略契约、服务端业务准入与客户端AOT预检；再接更新界面。顺序及验收见[复核记录](delivery/2026-11-12-foundation-reaudit.md)。
-- 下一项战斗工作：填拉斯、梅赛德丝、安洁莉卡的数据表，随后接权威战斗流程。研究证据见[原作战斗资料](development/epic-seven-battle-reference.md)，演出仍按[战斗验收](delivery/battle-acceptance.md)与 CharacterPresentation 的缺口由用户监督对照。
+- 下一项战斗工作：使用已生成的三角色配置接权威战斗流程，先核验目标、回合与技能结算。研究证据见[原作战斗资料](development/epic-seven-battle-reference.md)，演出仍按[战斗验收](delivery/battle-acceptance.md)与 CharacterPresentation 的缺口由用户监督对照。
 
 没有持续外服追踪、自动生产部署或自动依赖升级。需要追踪国际服时等待用户明确指令。

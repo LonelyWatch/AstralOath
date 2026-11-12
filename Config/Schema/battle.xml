@@ -1,0 +1,62 @@
+<module name="battle">
+  <bean name="HeroRow">
+    <var name="id" type="string"/>
+    <var name="nameKey" type="string#ref=characterlab.Messages"/>
+    <var name="element" type="string"/>
+    <var name="heroClass" type="string"/>
+    <var name="zodiac" type="string"/>
+    <var name="baseStars" type="int#range=[1,6]"/>
+    <var name="level" type="int#range=[1,60]"/>
+    <var name="stars" type="int#range=[1,6]"/>
+    <var name="awakenings" type="int#range=[0,6]"/>
+    <var name="variant" type="string"/>
+    <var name="attack" type="int#range=[1,100000]"/>
+    <var name="health" type="int#range=[1,1000000]"/>
+    <var name="defense" type="int#range=[1,100000]"/>
+    <var name="speed" type="int#range=[1,1000]"/>
+    <var name="critChanceBp" type="int#range=[0,10000]"/>
+    <var name="critDamageBp" type="int#range=[10000,35000]"/>
+    <var name="effectivenessBp" type="int#range=[0,100000]"/>
+    <var name="effectResistanceBp" type="int#range=[0,100000]"/>
+  </bean>
+
+  <bean name="SkillRow">
+    <var name="id" type="string"/>
+    <var name="heroId" type="string#ref=battle.BattleHeroes"/>
+    <var name="slot" type="int#range=[1,3]"/>
+    <var name="nameKey" type="string#ref=battle.BattleMessages"/>
+    <var name="descriptionKey" type="string#ref=battle.BattleMessages"/>
+    <var name="presentationId" type="string"/>
+    <var name="iconAsset" type="string"/>
+    <var name="target" type="string"/>
+    <var name="cooldownTurns" type="int#range=[0,30]"/>
+    <var name="soulGain" type="int#range=[0,30]"/>
+    <var name="soulBurnCost" type="int#range=[0,30]"/>
+    <var name="soulBurnKind" type="string"/>
+    <var name="soulBurnTurns" type="int#range=[0,30]"/>
+    <var name="attackRateBp" type="int?"/>
+    <var name="powerBp" type="int?"/>
+    <var name="casterHealthDamageBp" type="int?"/>
+    <var name="casterHealthHealBp" type="int?"/>
+    <var name="casterHealthBarrierBp" type="int?"/>
+    <var name="burnAttackRateBp" type="int?"/>
+  </bean>
+
+  <bean name="EnhancementRow">
+    <var name="id" type="string"/>
+    <var name="skillId" type="string#ref=battle.BattleSkills"/>
+    <var name="step" type="int#range=[1,15]"/>
+    <var name="kind" type="string"/>
+    <var name="value" type="int#range=[1,10000]"/>
+  </bean>
+
+  <bean name="MessageRow">
+    <var name="key" type="string"/>
+    <var name="zhCn" type="string"/>
+  </bean>
+
+  <table name="BattleHeroes" value="HeroRow" input="battle_heroes.csv"/>
+  <table name="BattleSkills" value="SkillRow" input="battle_skills.csv"/>
+  <table name="BattleSkillEnhancements" value="EnhancementRow" input="battle_skill_enhancements.csv"/>
+  <table name="BattleMessages" value="MessageRow" input="battle_messages.csv"/>
+</module>

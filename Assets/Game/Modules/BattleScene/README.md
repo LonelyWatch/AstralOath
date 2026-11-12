@@ -18,6 +18,10 @@
 - `BattlePreviewViewport` 在安全区内保持 16:9，世界与 Screen Space Camera HUD 使用同一摄像机。HUD 作者坐标以 1280×720 左下原点记录，生成时乘 1.5。地图图层位置和站位来自对照后的手调。
 - 预览场景使用直接资产引用和独立程序集，未纳入正式启动场景、YooAsset 发布收集或 HybridCLR 业务登记。正式流程接入时另定资源地址、数据契约和服务端准入。
 
+## 角色配置
+
+三人裸面板、九技能、强化增量及文案已由 Luban 生成至 `Configs/battle-catalog.json`。编辑入口及来源见[战斗角色数据](../../../../docs/development/battle-character-data.md)。场景仍显示布局样例，正式战斗接入时从指定配置版本读取数据。
+
 ## 素材和验证
 
 - `Res/Textures/Hud` 含原图、三人头像和九张技能图标。来源清单记录 13 份原始 CSB 布局证据和 PNG 的尺寸、透明边界、SHA-256。燃魂按钮的英文是原图的一部分。
@@ -25,4 +29,4 @@
 - `Res/Textures/Backgrounds` 含 Forest2/Forest3 各六层。裁块保持原尺寸，PMA 边缘转换为常规透明，适用于 Unity SpriteRenderer。完整原图集及其余关卡留在只读来源。
 - `Res/Units/Slime` 含一个怪物的 SCSP/图集/SCT 转换产物，保留原骨骼版本。其 PMA 图集保持无压缩且关闭透明边缘扩展，复用现有 Spine 渲染桥接。
 - 用项目角色素材 Python 环境执行 `Tools/BattleScene/PreparePreviewArt.py` 可核对 HUD/背景；加 `--restore` 按同一来源复现。怪物导入入口为 `Tools/BattleScene/ImportPreviewUnit.py`。原始目录始终只读，GUID 由已提交的 meta 保持。
-- 实际执行见[HUD 复核](../../../../docs/delivery/2026-11-12-battle-hud-fidelity.md)和[首次场景验收](../../../../docs/delivery/2026-11-12-battle-scene.md)。下一阶段填写三人数据表，随后接入选目标、回合、技能演出及权威结算。
+- 实际执行见[HUD 复核](../../../../docs/delivery/2026-11-12-battle-hud-fidelity.md)和[首次场景验收](../../../../docs/delivery/2026-11-12-battle-scene.md)。下一阶段接入选目标、回合、技能演出及权威结算。

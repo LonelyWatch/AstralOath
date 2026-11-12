@@ -18,6 +18,7 @@ $clientFiles = @{
     'demo_localizationkeys.json' = 'FoundationDemo/Configs/demo-localization.json'
     'characterlab-catalog-runtime.json' = 'CharacterLab/Configs/catalog.json'
     'characterlab-localization-runtime.json' = 'CharacterLab/Configs/localization.json'
+    'battle-catalog.json' = 'BattleScene/Configs/battle-catalog.json'
 }
 if (-not $Dotnet) {
     $local = Join-Path $repo '.tools/dotnet/dotnet.exe'
@@ -93,6 +94,8 @@ try {
     })
     [IO.File]::WriteAllText((Join-Path $staging 'json/characterlab-catalog-runtime.json'), ($catalog | ConvertTo-Json -Depth 80) + "`n", [Text.UTF8Encoding]::new($false))
     [IO.File]::WriteAllText((Join-Path $staging 'json/characterlab-localization-runtime.json'), (@{rows=$labMessages} | ConvertTo-Json -Depth 10) + "`n", [Text.UTF8Encoding]::new($false))
+    . (Join-Path $PSScriptRoot 'ValidateBattleCatalog.ps1')
+    Export-BattleCatalog -Repo $repo -JsonDir (Join-Path $staging 'json') -CharacterCatalog $catalog -CharacterMessages $labMessages
     & $Dotnet --roll-forward Major $dll --conf Config/luban.conf -t client -c cs-bin -d bin --strict -x "outputCodeDir=$staging/csharp" -x "outputDataDir=$staging/bin"
     if ($LASTEXITCODE -ne 0) { throw 'Luban binary and C# generation failed.' }
 

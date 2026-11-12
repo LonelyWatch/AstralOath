@@ -1,0 +1,624 @@
+{
+  "schemaVersion": 1,
+  "heroes": [
+    {
+      "id": "c1001",
+      "nameKey": "character.ras.name",
+      "element": "fire",
+      "heroClass": "knight",
+      "zodiac": "libra",
+      "baseStars": 3,
+      "level": 60,
+      "stars": 6,
+      "awakenings": 6,
+      "variant": "standard",
+      "attack": 758,
+      "health": 5826,
+      "defense": 672,
+      "speed": 95,
+      "critChanceBp": 1500,
+      "critDamageBp": 15000,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 1200
+    },
+    {
+      "id": "c1005",
+      "nameKey": "character.mercedes.name",
+      "element": "fire",
+      "heroClass": "mage",
+      "zodiac": "scorpio",
+      "baseStars": 4,
+      "level": 60,
+      "stars": 6,
+      "awakenings": 6,
+      "variant": "standard",
+      "attack": 1187,
+      "health": 4491,
+      "defense": 627,
+      "speed": 101,
+      "critChanceBp": 2700,
+      "critDamageBp": 16000,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1062",
+      "nameKey": "character.angelica.name",
+      "element": "ice",
+      "heroClass": "soul_weaver",
+      "zodiac": "cancer",
+      "baseStars": 4,
+      "level": 60,
+      "stars": 6,
+      "awakenings": 6,
+      "variant": "standard",
+      "attack": 576,
+      "health": 5700,
+      "defense": 743,
+      "speed": 98,
+      "critChanceBp": 1500,
+      "critDamageBp": 15000,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    }
+  ],
+  "skills": [
+    {
+      "id": "c1001.s1",
+      "heroId": "c1001",
+      "slot": 1,
+      "nameKey": "battle.skill.c1001.s1.name",
+      "descriptionKey": "battle.skill.c1001.s1.description",
+      "presentationId": "c_ras_skill_01",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1001_1.png",
+      "target": "one_enemy",
+      "cooldownTurns": 0,
+      "soulGain": 1,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 9000,
+      "powerBp": 10000,
+      "casterHealthDamageBp": 800
+    },
+    {
+      "id": "c1001.s2",
+      "heroId": "c1001",
+      "slot": 2,
+      "nameKey": "battle.skill.c1001.s2.name",
+      "descriptionKey": "battle.skill.c1001.s2.description",
+      "presentationId": "c_ras_skill_02",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1001_2.png",
+      "target": "one_enemy",
+      "cooldownTurns": 3,
+      "soulGain": 2,
+      "soulBurnCost": 10,
+      "soulBurnKind": "reduce_cooldown",
+      "soulBurnTurns": 2,
+      "attackRateBp": 15000,
+      "powerBp": 10000
+    },
+    {
+      "id": "c1001.s3",
+      "heroId": "c1001",
+      "slot": 3,
+      "nameKey": "battle.skill.c1001.s3.name",
+      "descriptionKey": "battle.skill.c1001.s3.description",
+      "presentationId": "c_ras_skill_03",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1001_3.png",
+      "target": "all_enemies",
+      "cooldownTurns": 4,
+      "soulGain": 2,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 9000,
+      "powerBp": 10000,
+      "casterHealthDamageBp": 1200
+    },
+    {
+      "id": "c1005.s1",
+      "heroId": "c1005",
+      "slot": 1,
+      "nameKey": "battle.skill.c1005.s1.name",
+      "descriptionKey": "battle.skill.c1005.s1.description",
+      "presentationId": "c_mercedes_skill_01",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1005_1.png",
+      "target": "two_enemies",
+      "cooldownTurns": 0,
+      "soulGain": 1,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 10000,
+      "powerBp": 9500
+    },
+    {
+      "id": "c1005.s2",
+      "heroId": "c1005",
+      "slot": 2,
+      "nameKey": "battle.skill.c1005.s2.name",
+      "descriptionKey": "battle.skill.c1005.s2.description",
+      "presentationId": "c_mercedes_skill_02",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1005_2.png",
+      "target": "all_enemies",
+      "cooldownTurns": 3,
+      "soulGain": 1,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 7500,
+      "powerBp": 10000
+    },
+    {
+      "id": "c1005.s3",
+      "heroId": "c1005",
+      "slot": 3,
+      "nameKey": "battle.skill.c1005.s3.name",
+      "descriptionKey": "battle.skill.c1005.s3.description",
+      "presentationId": "c_mercedes_skill_03",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1005_3.png",
+      "target": "all_enemies",
+      "cooldownTurns": 4,
+      "soulGain": 2,
+      "soulBurnCost": 10,
+      "soulBurnKind": "extend_granted_buffs",
+      "soulBurnTurns": 1,
+      "attackRateBp": 12000,
+      "powerBp": 9500
+    },
+    {
+      "id": "c1062.s1",
+      "heroId": "c1062",
+      "slot": 1,
+      "nameKey": "battle.skill.c1062.s1.name",
+      "descriptionKey": "battle.skill.c1062.s1.description",
+      "presentationId": "c_angelica_skill_01",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1062_1.png",
+      "target": "one_enemy",
+      "cooldownTurns": 0,
+      "soulGain": 1,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 10000,
+      "powerBp": 10000
+    },
+    {
+      "id": "c1062.s2",
+      "heroId": "c1062",
+      "slot": 2,
+      "nameKey": "battle.skill.c1062.s2.name",
+      "descriptionKey": "battle.skill.c1062.s2.description",
+      "presentationId": "c_angelica_skill_02",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1062_2.png",
+      "target": "one_ally",
+      "cooldownTurns": 2,
+      "soulGain": 1,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "casterHealthHealBp": 2000
+    },
+    {
+      "id": "c1062.s3",
+      "heroId": "c1062",
+      "slot": 3,
+      "nameKey": "battle.skill.c1062.s3.name",
+      "descriptionKey": "battle.skill.c1062.s3.description",
+      "presentationId": "c_angelica_skill_03",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1062_3.png",
+      "target": "all_allies",
+      "cooldownTurns": 5,
+      "soulGain": 2,
+      "soulBurnCost": 20,
+      "soulBurnKind": "extend_granted_buffs",
+      "soulBurnTurns": 2,
+      "casterHealthHealBp": 1500,
+      "casterHealthBarrierBp": 1500
+    }
+  ],
+  "enhancements": [
+    {
+      "id": "c1001.s1.e1",
+      "skillId": "c1001.s1",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1001.s1.e2",
+      "skillId": "c1001.s1",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1001.s1.e3",
+      "skillId": "c1001.s1",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1001.s1.e4",
+      "skillId": "c1001.s1",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1001.s1.e5",
+      "skillId": "c1001.s1",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1001.s2.e1",
+      "skillId": "c1001.s2",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1001.s2.e2",
+      "skillId": "c1001.s2",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1001.s2.e3",
+      "skillId": "c1001.s2",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1001.s2.e4",
+      "skillId": "c1001.s2",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1001.s2.e5",
+      "skillId": "c1001.s2",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1001.s3.e1",
+      "skillId": "c1001.s3",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1001.s3.e2",
+      "skillId": "c1001.s3",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1001.s3.e3",
+      "skillId": "c1001.s3",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1001.s3.e4",
+      "skillId": "c1001.s3",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1001.s3.e5",
+      "skillId": "c1001.s3",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1005.s1.e1",
+      "skillId": "c1005.s1",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1005.s1.e2",
+      "skillId": "c1005.s1",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1005.s1.e3",
+      "skillId": "c1005.s1",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1005.s1.e4",
+      "skillId": "c1005.s1",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1005.s1.e5",
+      "skillId": "c1005.s1",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1005.s2.e1",
+      "skillId": "c1005.s2",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1005.s2.e2",
+      "skillId": "c1005.s2",
+      "step": 2,
+      "kind": "effect_chance_bp",
+      "value": 500
+    },
+    {
+      "id": "c1005.s2.e3",
+      "skillId": "c1005.s2",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1005.s2.e4",
+      "skillId": "c1005.s2",
+      "step": 4,
+      "kind": "effect_chance_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1005.s2.e5",
+      "skillId": "c1005.s2",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1005.s3.e1",
+      "skillId": "c1005.s3",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1005.s3.e2",
+      "skillId": "c1005.s3",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1005.s3.e3",
+      "skillId": "c1005.s3",
+      "step": 3,
+      "kind": "cooldown_turns",
+      "value": 1
+    },
+    {
+      "id": "c1005.s3.e4",
+      "skillId": "c1005.s3",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1005.s3.e5",
+      "skillId": "c1005.s3",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1062.s1.e1",
+      "skillId": "c1062.s1",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1062.s1.e2",
+      "skillId": "c1062.s1",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1062.s1.e3",
+      "skillId": "c1062.s1",
+      "step": 3,
+      "kind": "effect_chance_bp",
+      "value": 500
+    },
+    {
+      "id": "c1062.s1.e4",
+      "skillId": "c1062.s1",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1062.s1.e5",
+      "skillId": "c1062.s1",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1062.s2.e1",
+      "skillId": "c1062.s2",
+      "step": 1,
+      "kind": "healing_bp",
+      "value": 500
+    },
+    {
+      "id": "c1062.s2.e2",
+      "skillId": "c1062.s2",
+      "step": 2,
+      "kind": "healing_bp",
+      "value": 500
+    },
+    {
+      "id": "c1062.s2.e3",
+      "skillId": "c1062.s2",
+      "step": 3,
+      "kind": "healing_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1062.s2.e4",
+      "skillId": "c1062.s2",
+      "step": 4,
+      "kind": "healing_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1062.s2.e5",
+      "skillId": "c1062.s2",
+      "step": 5,
+      "kind": "healing_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1062.s3.e1",
+      "skillId": "c1062.s3",
+      "step": 1,
+      "kind": "healing_bp",
+      "value": 500
+    },
+    {
+      "id": "c1062.s3.e2",
+      "skillId": "c1062.s3",
+      "step": 2,
+      "kind": "healing_bp",
+      "value": 500
+    },
+    {
+      "id": "c1062.s3.e3",
+      "skillId": "c1062.s3",
+      "step": 3,
+      "kind": "cooldown_turns",
+      "value": 1
+    },
+    {
+      "id": "c1062.s3.e4",
+      "skillId": "c1062.s3",
+      "step": 4,
+      "kind": "healing_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1062.s3.e5",
+      "skillId": "c1062.s3",
+      "step": 5,
+      "kind": "healing_bp",
+      "value": 1000
+    }
+  ],
+  "messages": [
+    {
+      "key": "battle.skill.c1001.s1.name",
+      "zhCn": "十字斩"
+    },
+    {
+      "key": "battle.skill.c1001.s1.description",
+      "zhCn": "攻击一名敌人，有75%概率解除其一个增益。伤害随施术者最大生命提高。"
+    },
+    {
+      "key": "battle.skill.c1001.s2.name",
+      "zhCn": "指挥一击"
+    },
+    {
+      "key": "battle.skill.c1001.s2.description",
+      "zhCn": "攻击一名敌人，随后由攻击最高的可用友军发动夹攻。魂燃消耗10魂，使本技能冷却减少2回合。"
+    },
+    {
+      "key": "battle.skill.c1001.s3.name",
+      "zhCn": "继承者之剑"
+    },
+    {
+      "key": "battle.skill.c1001.s3.description",
+      "zhCn": "攻击全体敌人，随后使全体友军防御提升2回合。伤害随施术者最大生命提高。"
+    },
+    {
+      "key": "battle.skill.c1005.s1.name",
+      "zhCn": "神圣闪电"
+    },
+    {
+      "key": "battle.skill.c1005.s1.description",
+      "zhCn": "攻击两名敌人，随后使自身行动条提高15%。"
+    },
+    {
+      "key": "battle.skill.c1005.s2.name",
+      "zhCn": "次元裂隙"
+    },
+    {
+      "key": "battle.skill.c1005.s2.description",
+      "zhCn": "攻击全体敌人，对目标有55%概率解除一个增益。自身有攻击提升时，追加一次同技能攻击。"
+    },
+    {
+      "key": "battle.skill.c1005.s3.name",
+      "zhCn": "卡尔的炽焰之眼"
+    },
+    {
+      "key": "battle.skill.c1005.s3.description",
+      "zhCn": "攻击全体敌人，随后使全体友军攻击提升2回合。魂燃消耗10魂，使本技能赋予的增益延长1回合。"
+    },
+    {
+      "key": "battle.skill.c1062.s1.name",
+      "zhCn": "神圣打击"
+    },
+    {
+      "key": "battle.skill.c1062.s1.description",
+      "zhCn": "攻击一名敌人，有20%概率使其眩晕1回合。"
+    },
+    {
+      "key": "battle.skill.c1062.s2.name",
+      "zhCn": "生命起源"
+    },
+    {
+      "key": "battle.skill.c1062.s2.description",
+      "zhCn": "治疗选定友军及生命最低的友军，治疗量随施术者最大生命提高。"
+    },
+    {
+      "key": "battle.skill.c1062.s3.name",
+      "zhCn": "女神的指引"
+    },
+    {
+      "key": "battle.skill.c1062.s3.description",
+      "zhCn": "治疗全体友军并赋予免疫及屏障2回合。治疗及屏障随施术者最大生命提高。魂燃消耗20魂，使本技能赋予的增益延长2回合。"
+    },
+    {
+      "key": "character.ras.name",
+      "zhCn": "拉斯"
+    },
+    {
+      "key": "character.mercedes.name",
+      "zhCn": "梅赛德丝"
+    },
+    {
+      "key": "character.angelica.name",
+      "zhCn": "安洁莉卡"
+    }
+  ]
+}

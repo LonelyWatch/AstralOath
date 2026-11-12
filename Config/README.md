@@ -1,6 +1,6 @@
 # 配置源表与生成
 
-配置入口为 `Config/luban.conf`；`Config/Schema/` 定义字段和引用，`Config/Tables/*.csv` 是当前五张表的唯一数据编辑源。新增表同时维护 schema、源表、生成校验及消费模块说明。不要手改生成 C#、二进制、客户端 JSON 快照或角色导入目录；未来改用 Excel 时，每张表仍只能保留一个权威编辑源。
+配置入口为 `Config/luban.conf`；`Config/Schema/` 定义字段和引用，`Config/Tables/*.csv` 是当前九张表的唯一数据编辑源。新增表同时维护 schema、源表、生成校验及消费模块说明。不要手改生成 C#、二进制、客户端 JSON 快照或角色导入目录；未来改用 Excel 时，每张表仍只能保留一个权威编辑源。
 
 ## 当前源表
 
@@ -19,6 +19,8 @@ CharacterLab 的两张表由 `Schema/characterlab.xml` 定义：
 
 `Config/CharacterAssets/catalog.generated.json` 是角色导入器生成的资源目录与声音事件，不是手工配表源。导表把角色行和文案合入该目录，生成运行时 catalog；角色数量、ID、名称引用或必要皮肤字段不一致会失败。增加角色先按[角色资源通用规则](../docs/development/character-asset-import.md)扩展白名单、导入已批准依赖，再补齐角色源表。导表本身不读取 `D:/sevenepic`，也不触发外服追踪。
 
+Battle 的四张表由 `Schema/battle.xml` 定义，编辑源为 `Tables/battle_heroes.csv`、`battle_skills.csv`、`battle_skill_enhancements.csv` 与 `battle_messages.csv`。涵盖三人裸面板、九个主动技能、强化增量及简体中文文案。导表检查槽位、角色与本地技能演出图、图标、文案、魂燃及强化序列。口径、系数的可空写法与来源见[战斗角色数据](../docs/development/battle-character-data.md)。
+
 ## 生成和检查
 
 在仓库根目录使用 PowerShell 7：
@@ -36,12 +38,14 @@ Luban 严格校验范围、引用和主键；脚本继续检查文案 key、非�
 
 ## 客户端快照
 
-`-SyncClient` 同步以下四份生成物，Unity 导入后由各自 YooAsset 包收集：
+`-SyncClient` 同步以下五份生成物。FoundationDemo 与 CharacterLab 使用各自 YooAsset 包；BattleScene 快照用于后续战斗接入。
 
 - `demo_ui.json` → `Assets/Game/Modules/FoundationDemo/Configs/demo-config.json`。
 - `demo_localizationkeys.json` → `Assets/Game/Modules/FoundationDemo/Configs/demo-localization.json`。
 - `characterlab-catalog-runtime.json` → `Assets/Game/Modules/CharacterLab/Configs/catalog.json`。
 - `characterlab-localization-runtime.json` → `Assets/Game/Modules/CharacterLab/Configs/localization.json`。
+
+- `battle-catalog.json` → `Assets/Game/Modules/BattleScene/Configs/battle-catalog.json`。
 
 源表、schema、生成器及受影响的客户端快照应在同次修改中保持一致；Unity 已有 `.meta` 保留 GUID。新增配置消费方式时同步更新本说明与模块 README。配表回归入口 `pwsh -File Tests/Content/ConfigSmoke.ps1` 在独立副本检查引用、文案变更及非法时长；角色皮肤、实际资源加载和显示另按[角色实验室手册](../docs/development/character-lab.md)验收。
 

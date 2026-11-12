@@ -29,6 +29,29 @@ if (!messages.SequenceEqual(tables.Messages.DataList.Select(row => new LocaleDat
     !characters.SequenceEqual(tables.Characters.DataList.Select(row => new CharacterData(row.Id, row.NameKey, row.SortOrder, row.BattleSkin, row.PortraitSkin))) ||
     tables.Characters.DataList.Any(row => row.NameKey_Ref?.Key != row.NameKey || row.SortOrder is < 1 or > 9999))
     throw new InvalidDataException("CharacterLab binary rows or resolved localization references differ from JSON.");
+var battleHeroes = Read<BattleHeroData>("battle_battleheroes");
+var battleSkills = Read<BattleSkillData>("battle_battleskills");
+var battleEnhancements = Read<BattleSkillEnhancementData>("battle_battleskillenhancements");
+var battleMessages = Read<LocaleData>("battle_battlemessages");
+if (!battleHeroes.SequenceEqual(tables.BattleHeroes.DataList.Select(row => new BattleHeroData(
+        row.Id, row.NameKey, row.Element, row.HeroClass, row.Zodiac, row.BaseStars, row.Level, row.Stars,
+        row.Awakenings, row.Variant, row.Attack, row.Health, row.Defense, row.Speed, row.CritChanceBp,
+        row.CritDamageBp, row.EffectivenessBp, row.EffectResistanceBp))) ||
+    !battleSkills.SequenceEqual(tables.BattleSkills.DataList.Select(row => new BattleSkillData(
+        row.Id, row.HeroId, row.Slot, row.NameKey, row.DescriptionKey, row.PresentationId, row.IconAsset,
+        row.Target, row.CooldownTurns, row.SoulGain, row.SoulBurnCost, row.SoulBurnKind, row.SoulBurnTurns,
+        row.AttackRateBp, row.PowerBp, row.CasterHealthDamageBp, row.CasterHealthHealBp,
+        row.CasterHealthBarrierBp, row.BurnAttackRateBp))) ||
+    !battleEnhancements.SequenceEqual(tables.BattleSkillEnhancements.DataList.Select(row =>
+        new BattleSkillEnhancementData(row.Id, row.SkillId, row.Step, row.Kind, row.Value))) ||
+    !battleMessages.SequenceEqual(tables.BattleMessages.DataList.Select(row => new LocaleData(row.Key, row.ZhCn))))
+    throw new InvalidDataException("Battle binary rows differ from the generated Luban JSON.");
+
+if (tables.BattleHeroes.DataList.Any(row => row.NameKey_Ref?.Key != row.NameKey) ||
+    tables.BattleSkills.DataList.Any(row => row.HeroId_Ref?.Id != row.HeroId ||
+        row.NameKey_Ref?.Key != row.NameKey || row.DescriptionKey_Ref?.Key != row.DescriptionKey) ||
+    tables.BattleSkillEnhancements.DataList.Any(row => row.SkillId_Ref?.Id != row.SkillId))
+    throw new InvalidDataException("Battle accessors could not resolve hero, skill or localization references.");
 Console.WriteLine("Generated C# accessors match the current Luban JSON and resolve all localization and asset references.");
 
 record UiData(int Id, string TitleKey, string MessageKey, int DisplaySeconds, string AssetAddress);
@@ -36,3 +59,12 @@ record LocaleData(string Key, string ZhCn);
 record AssetData(string Address, string SourcePath);
 
 record CharacterData(string Id, string NameKey, int SortOrder, string BattleSkin, string PortraitSkin);
+
+record BattleHeroData(string Id, string NameKey, string Element, string HeroClass, string Zodiac,
+    int BaseStars, int Level, int Stars, int Awakenings, string Variant, int Attack, int Health, int Defense,
+    int Speed, int CritChanceBp, int CritDamageBp, int EffectivenessBp, int EffectResistanceBp);
+record BattleSkillData(string Id, string HeroId, int Slot, string NameKey, string DescriptionKey,
+    string PresentationId, string IconAsset, string Target, int CooldownTurns, int SoulGain, int SoulBurnCost,
+    string SoulBurnKind, int SoulBurnTurns, int? AttackRateBp, int? PowerBp, int? CasterHealthDamageBp,
+    int? CasterHealthHealBp, int? CasterHealthBarrierBp, int? BurnAttackRateBp);
+record BattleSkillEnhancementData(string Id, string SkillId, int Step, string Kind, int Value);
