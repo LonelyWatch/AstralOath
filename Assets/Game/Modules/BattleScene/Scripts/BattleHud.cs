@@ -17,6 +17,8 @@ namespace AstralOath.Client.BattleScene
             Bindings.Require<Image>("activePortrait");
             Bindings.Require<Image>("activeHpFill");
             Bindings.Require<Image>("soulFill");
+            for (int slot = 1; slot <= 3; slot++)
+                Bindings.Require<Image>("skillSelected" + slot);
         }
     }
 }

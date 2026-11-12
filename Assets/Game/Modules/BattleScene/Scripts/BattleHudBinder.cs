@@ -27,6 +27,7 @@ namespace AstralOath.Client.BattleScene
         private readonly BindingScope scope;
         private readonly GameButton burn;
         private readonly GameButton[] skills;
+        private readonly Image[] selectedArtwork;
         private readonly Image burnImage;
         private readonly Sprite burnNormal;
         private readonly Sprite burnPressed;
@@ -50,6 +51,8 @@ namespace AstralOath.Client.BattleScene
         {
             burn = map.Require<GameButton>("soulBurn");
             skills = new[] { map.Require<GameButton>("skill1"), map.Require<GameButton>("skill2"), map.Require<GameButton>("skill3") };
+            selectedArtwork = new[] { map.Require<Image>("skillSelected1"), map.Require<Image>("skillSelected2"),
+                map.Require<Image>("skillSelected3") };
             burnImage = (Image)burn.targetGraphic;
             burnNormal = burnImage.sprite;
             this.burnPressed = burnPressed;
@@ -100,6 +103,12 @@ namespace AstralOath.Client.BattleScene
                         SetBurnArtwork(false);
                         burnImage.canvasRenderer.SetAlpha(1f);
                     }
+                });
+                scope.Add(() =>
+                {
+                    foreach (var artwork in selectedArtwork)
+                        if (artwork)
+                            artwork.gameObject.SetActive(false);
                 });
                 SetBurnArtwork(false);
                 Play(buttonEffect, "burn_intro", false);
@@ -161,13 +170,15 @@ namespace AstralOath.Client.BattleScene
             if (armed)
             {
                 SetArmed(false);
+                useEffect.Root.SetActive(false);
+                useParticles.Stop();
                 ShowSelection(false);
                 return;
             }
             ClearSelection();
-            useEffect.Root.SetActive(false);
-            useParticles.Stop();
             SetArmed(true);
+            Play(useEffect, "animation", false);
+            useParticles.Play();
             Play(introEffect, "on_intro", false);
             pendingBurnSelection = BurnSelectionDelay;
         }
@@ -175,15 +186,7 @@ namespace AstralOath.Client.BattleScene
         private void SelectSkill(int index)
         {
             if (armed)
-            {
-                bool confirm = index == BurnSkillIndex;
                 SetArmed(false);
-                if (confirm)
-                {
-                    Play(useEffect, "animation", false);
-                    useParticles.Play();
-                }
-            }
             ClearSelection();
             selected = index;
             ShowSelection(false);
@@ -232,6 +235,8 @@ namespace AstralOath.Client.BattleScene
             Transform anchor = skills[index].transform;
             selectionEffect.Root.transform.SetParent(anchor, false);
             particleAnchor.SetParent(anchor, false);
+            if (!burnSelection)
+                selectedArtwork[index].gameObject.SetActive(true);
             Play(selectionEffect, burnSelection ? "burn" : "normal", true);
             foreach (var effect in burnSelection ? burnParticles : normalParticles)
                 effect.Play();
@@ -239,6 +244,8 @@ namespace AstralOath.Client.BattleScene
 
         private void ClearSelection()
         {
+            if (selected >= 0)
+                selectedArtwork[selected].gameObject.SetActive(false);
             selectionEffect.Root.SetActive(false);
             foreach (var effect in normalParticles)
                 effect.Stop();

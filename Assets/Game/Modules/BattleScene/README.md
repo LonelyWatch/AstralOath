@@ -20,9 +20,9 @@
 
 ## Burn 和技能选中预览
 
-- 进入 Play，Burn 播放原版入场和 0.6666 秒闪动。点击技能会在当前技能图标上循环播放金色描边与粒子，切换时清除上一枚的效果。
-- 点击 Burn 切换为 Cancel，拉斯的 S2 播放燃魂起手。231 毫秒后出现蓝色燃魂描边与粒子。再次点击 Cancel 可退出并恢复之前的普通选中，点击其他技能退出燃魂状态并选中该技能。
-- 燃魂状态点击 S2 可以预览魂力使用闪光。此预览只展示 HUD，消耗、选目标和技能执行由后续服务端流程负责。关闭或隐藏 HUD 时释放粒子、骨骼与按钮监听。
+- 进入 Play，Burn 播放原版入场和 0.6666 秒闪动。普通技能选中叠加 `hud_skill.csb` 的 `selected` 图层（`cm_select_skill.png`，114×120，中心相对技能图标左 3、上 4 个设计像素）、Spine 闪动和粒子。切换时清除上一枚的效果。
+- 点击 Burn 立刻播放魂力闪光并切换为 Cancel，同时拉斯的 S2 播放燃魂起手。231 毫秒后出现蓝色燃魂描边与粒子。点击 Cancel 中断闪光并恢复之前的普通选中。之后点技能会恢复普通选中。
+- 此预览只展示 HUD，消耗、选目标和技能执行由后续服务端流程负责。关闭或隐藏 HUD 时释放粒子、骨骼与按钮监听。
 - `Res/Effects/Hud/source.json` 记录原版 SCSP、SCT、atlas、CFX、粒子和按钮 PNG 的来源及哈希。Git 保留原版 atlas 的字节及换行。使用项目素材 Python 环境运行 `Tools/BattleScene/ImportHudEffects.py --check` 验证，去掉 `--check` 复现素材。Unity 编辑器批处理入口 `AstralOath.Client.BattleScene.Editor.BattleSceneBuilder.InstallHudEffects` 只更新 HUD 点击配置与场景组件，可用于保留已编辑的站位和布局。
 - 源 CFX 的顺序、描边颜色和 Spine 曲线沿用原数据。粒子在 Unity 中按原参数播放，专有的发射模式按爆发与持续发射重建。视觉外观参考原版战斗截图，按钮和技能锚点按当前布局对齐，原作连续录像逐帧对照仍待验证。[原作战斗截图](https://d3kxs6kpbh59hp.cloudfront.net/community/COMMUNITY/718883b8c9f34eaca8e89ee116e1e29d/1f0480fa6b5144a584877ad1c1d10df7_1617085685.png)
 - Unity 2022.3.62f3 实际 HUD PlayMode 回归 2/2，EditMode 215/215。PlayMode 带图形运行 `BattleScenePreviewTests`，设置 `ASTRAL_BATTLE_CAPTURE_DIR` 可导出 Burn、技能选中和使用反馈的 1920×1080 截帧。

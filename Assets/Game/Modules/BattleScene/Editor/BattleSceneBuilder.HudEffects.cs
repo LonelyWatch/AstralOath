@@ -55,6 +55,46 @@ namespace AstralOath.Client.BattleScene.Editor
             var sprites = burn.spriteState;
             sprites.pressedSprite = Asset<Sprite>(HudTextures + "game_hud_btn_burn_p.png");
             burn.spriteState = sprites;
+            ConfigureSkillSelectionArtwork(map);
+        }
+
+        private static void ConfigureSkillSelectionArtwork(BindingMap map)
+        {
+            var serialized = new SerializedObject(map);
+            var entries = serialized.FindProperty("entries");
+            for (int slot = 1; slot <= 3; slot++)
+            {
+                string key = "skillSelected" + slot;
+                SerializedProperty entry = null;
+                for (int i = 0; i < entries.arraySize; i++)
+                {
+                    var candidate = entries.GetArrayElementAtIndex(i);
+                    if (candidate.FindPropertyRelative("key").stringValue == key)
+                    {
+                        entry = candidate;
+                        break;
+                    }
+                }
+
+                var artwork = entry?.FindPropertyRelative("component").objectReferenceValue as Image;
+                if (!artwork)
+                {
+                    var icon = (RectTransform)map.Require<GameButton>("skill" + slot).transform;
+                    // hud_skill.csb draws the 114×120 selected layer 3 px left and 4 px above the icon.
+                    Vector2 center = icon.anchoredPosition / PixelScale + new Vector2(-3f, 4f);
+                    artwork = Picture((RectTransform)icon.parent, $"Skill {slot} Selected", "cm_select_skill",
+                        center.x, center.y, 114f, 120f);
+                    if (entry == null)
+                    {
+                        int index = entries.arraySize++;
+                        entry = entries.GetArrayElementAtIndex(index);
+                    }
+                    entry.FindPropertyRelative("key").stringValue = key;
+                    entry.FindPropertyRelative("component").objectReferenceValue = artwork;
+                }
+                artwork.gameObject.SetActive(false);
+            }
+            serialized.ApplyModifiedPropertiesWithoutUndo();
         }
 
         private static void ConfigureHudScene(BindingMap hud)

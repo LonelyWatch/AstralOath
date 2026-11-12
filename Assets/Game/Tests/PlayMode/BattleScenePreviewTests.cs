@@ -106,10 +106,19 @@ namespace AstralOath.Client.Tests
                 Capture(camera, output, "burn-ready.png");
             }
 
+            var selected1 = map.Require<Image>("skillSelected1");
+            var selected2 = map.Require<Image>("skillSelected2");
+            var selected3 = map.Require<Image>("skillSelected3");
+            Assert.That(selected1.sprite.name, Is.EqualTo("cm_select_skill"));
+            Assert.That(selected1.raycastTarget, Is.False);
+
             Click(skill1, raycaster, eventSystem);
+            Assert.That(selected1.gameObject.activeSelf, Is.True);
             Assert.That(EffectVisible(skill1.transform, "Skill Selection"), Is.True);
             Click(skill3, raycaster, eventSystem);
             Assert.That(EffectVisible(skill1.transform, "Skill Selection"), Is.False);
+            Assert.That(selected1.gameObject.activeSelf, Is.False);
+            Assert.That(selected3.gameObject.activeSelf, Is.True);
             Assert.That(EffectVisible(skill3.transform, "Skill Selection"), Is.True);
             if (!string.IsNullOrWhiteSpace(output))
             {
@@ -118,11 +127,19 @@ namespace AstralOath.Client.Tests
             }
 
             Click(burn, raycaster, eventSystem);
+            Assert.That(EffectVisible(burn.transform, "Soul Burn Use"), Is.True, "The flash starts with the Burn click.");
             Assert.That(EffectVisible(skill2.transform, "Burn Intro"), Is.True);
             Assert.That(EffectVisible(skill3.transform, "Skill Selection"), Is.False);
             Assert.That(burn.spriteState.pressedSprite.name, Is.EqualTo("game_hud_btn_burnc_p"));
+            Assert.That(selected3.gameObject.activeSelf, Is.False);
+            if (!string.IsNullOrWhiteSpace(output))
+            {
+                yield return new WaitForSecondsRealtime(0.15f);
+                Capture(camera, output, "burn-use.png");
+            }
             yield return new WaitForSecondsRealtime(0.26f);
             Assert.That(EffectVisible(skill2.transform, "Skill Selection"), Is.True);
+            Assert.That(selected2.gameObject.activeSelf, Is.False);
             if (!string.IsNullOrWhiteSpace(output))
             {
                 Capture(camera, output, "burn-impact.png");
@@ -131,6 +148,12 @@ namespace AstralOath.Client.Tests
             }
             Click(burn, raycaster, eventSystem);
             Assert.That(EffectVisible(skill2.transform, "Burn Intro"), Is.False);
+            Assert.That(selected3.gameObject.activeSelf, Is.True);
+
+            Click(burn, raycaster, eventSystem);
+            Assert.That(EffectVisible(burn.transform, "Soul Burn Use"), Is.True);
+            Click(burn, raycaster, eventSystem);
+            Assert.That(EffectVisible(burn.transform, "Soul Burn Use"), Is.False);
 
             Click(burn, raycaster, eventSystem);
             canvas.gameObject.SetActive(false);
@@ -144,14 +167,12 @@ namespace AstralOath.Client.Tests
             Assert.That(EffectVisible(skill3.transform, "Skill Selection"), Is.True);
 
             Click(burn, raycaster, eventSystem);
+            yield return new WaitForSecondsRealtime(0.6f);
+            Assert.That(EffectVisible(burn.transform, "Soul Burn Use"), Is.False);
             Click(skill2, raycaster, eventSystem);
-            Assert.That(EffectVisible(burn.transform, "Soul Burn Use"), Is.True);
+            Assert.That(EffectVisible(burn.transform, "Soul Burn Use"), Is.False, "Selecting the skill does not replay the Burn flash.");
             Assert.That(EffectVisible(skill2.transform, "Burn Intro"), Is.False);
-            if (!string.IsNullOrWhiteSpace(output))
-            {
-                yield return new WaitForSecondsRealtime(0.15f);
-                Capture(camera, output, "burn-use.png");
-            }
+            Assert.That(selected2.gameObject.activeSelf, Is.True);
 
             map.gameObject.SetActive(false);
             yield return null;
@@ -159,6 +180,7 @@ namespace AstralOath.Client.Tests
             yield return null;
             Assert.That(EffectVisible(burn.transform, "Soul Burn Use"), Is.False);
             Assert.That(EffectVisible(burn.transform, "Burn Button"), Is.True);
+            Assert.That(selected2.gameObject.activeSelf, Is.False);
 
             // The battle screen may replace the HUD under the same Canvas.
             UnityEngine.Object.Destroy(map.gameObject);
