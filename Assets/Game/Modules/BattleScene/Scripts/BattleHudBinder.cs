@@ -22,7 +22,8 @@ namespace AstralOath.Client.BattleScene
         private static readonly Vector3 SkillFrameOffset = new Vector3(-5.25f, 3.75f, 0f);
         private const float BurnSelectionDelay = 0.231f;
         // The preview's acting Ras can Soul Burn S2. Live combat will supply this state.
-        private const int BurnSkillIndex = 1;
+        private int burnSkillIndex = 1;
+        internal BattleSimulationPreview Simulation { get; set; }
 
         private readonly BindingScope scope;
         private readonly GameButton burn;
@@ -62,7 +63,7 @@ namespace AstralOath.Client.BattleScene
 
             try
             {
-                var burnSkill = skills[BurnSkillIndex].transform;
+                var burnSkill = skills[burnSkillIndex].transform;
                 var canvas = map.GetComponentInParent<Canvas>();
                 int aboveHud = canvas.sortingOrder + 1;
                 buttonEffect = Create(burnButton, burn.transform, "Burn Button", aboveHud + 1);
@@ -113,11 +114,19 @@ namespace AstralOath.Client.BattleScene
                 SetBurnArtwork(false);
                 Play(buttonEffect, "burn_intro", false);
                 UpdateBurnButtonVisual();
-                Bind(burn, ToggleBurn);
+                Bind(burn, () =>
+                {
+                    if (Simulation == null) ToggleBurn();
+                    else Simulation.ToggleBurn();
+                });
                 for (int i = 0; i < skills.Length; i++)
                 {
                     int index = i;
-                    Bind(skills[i], () => SelectSkill(index));
+                    Bind(skills[i], () =>
+                    {
+                        if (Simulation == null) SelectSkill(index);
+                        else Simulation.ChooseSkill(index);
+                    });
                 }
 
                 BattleHudParticles Particle(string name, Transform anchor, float y, int layer)
@@ -164,6 +173,17 @@ namespace AstralOath.Client.BattleScene
                 effect.Tick(delta);
             useParticles.Tick(delta);
         }
+
+        internal void SetSimulationSelection(int index) => SelectSkill(index);
+
+        internal void ArmSimulationBurn(int index)
+        {
+            burnSkillIndex = index;
+            introEffect.Root.transform.SetParent(skills[index].transform, false);
+            ToggleBurn();
+        }
+
+        internal void CancelSimulationBurn() => ToggleBurn();
 
         private void ToggleBurn()
         {
@@ -223,12 +243,12 @@ namespace AstralOath.Client.BattleScene
             // Keep the static Image as the raycast target and reveal its art only while pressed.
             bool pressed = burnImage.overrideSprite == burn.spriteState.pressedSprite;
             burnImage.canvasRenderer.SetAlpha(pressed ? 1f : 0f);
-            buttonEffect.Root.SetActive(!pressed);
+            buttonEffect.Root.SetActive(!pressed && (Simulation == null || burn.interactable));
         }
 
         private void ShowSelection(bool burnSelection)
         {
-            int index = burnSelection ? BurnSkillIndex : selected;
+            int index = burnSelection ? burnSkillIndex : selected;
             if (index < 0)
                 return;
 

@@ -1,4 +1,5 @@
 using System.Net;
+using AstralOath.Server.Battle;
 using AstralOath.Server.Foundation;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -66,6 +67,12 @@ app.UseRequestTimeouts();
 app.MapHealthChecks("/health/live", new HealthCheckOptions { Predicate = _ => false });
 app.MapHealthChecks("/health/ready", new HealthCheckOptions { Predicate = check => check.Tags.Contains("ready") });
 app.MapFoundationEcho(isDevelopment);
+if (app.Configuration.GetValue<bool>("BattlePreview:Enabled"))
+{
+    if (!isDevelopment || !IPAddress.IsLoopback(bindAddress))
+        throw new InvalidOperationException("The battle preview room is available only in loopback Development.");
+    app.MapBattlePreview();
+}
 app.Run();
 
 public partial class Program { }

@@ -34,6 +34,7 @@ var battleHeroes = Read<BattleHeroData>("battle_battleheroes");
 var growthPresets = Read<BattleGrowthPresetData>("battle_battlegrowthpresets");
 var awakeningSteps = Read<BattleAwakeningStepData>("battle_battleawakeningsteps");
 var battleSkills = Read<BattleSkillData>("battle_battleskills");
+var battleEffects = Read<BattleSkillEffectData>("battle_battleskilleffects");
 var battleEnhancements = Read<BattleSkillEnhancementData>("battle_battleskillenhancements");
 var battleMessages = Read<LocaleData>("battle_battlemessages");
 if (!battleHeroes.SequenceEqual(tables.BattleHeroes.DataList.Select(row => new BattleHeroData(
@@ -52,6 +53,8 @@ if (!battleHeroes.SequenceEqual(tables.BattleHeroes.DataList.Select(row => new B
         row.Target, row.CooldownTurns, row.SoulGain, row.SoulBurnCost, row.SoulBurnKind, row.SoulBurnTurns,
         row.AttackRateBp, row.PowerBp, row.CasterHealthDamageBp, row.CasterHealthHealBp,
         row.CasterHealthBarrierBp, row.BurnAttackRateBp))) ||
+    !battleEffects.SequenceEqual(tables.BattleSkillEffects.DataList.Select(row => new BattleSkillEffectData(
+        row.Id, row.SkillId, row.Order, row.Phase, row.Operation, row.Recipient, row.Status, row.ChanceBp, row.Turns, row.Value))) ||
     !battleEnhancements.SequenceEqual(tables.BattleSkillEnhancements.DataList.Select(row =>
         new BattleSkillEnhancementData(row.Id, row.SkillId, row.Step, row.Kind, row.Value))) ||
     !battleMessages.SequenceEqual(tables.BattleMessages.DataList.Select(row => new LocaleData(row.Key, row.ZhCn))))
@@ -62,6 +65,7 @@ if (tables.BattleHeroes.DataList.Any(row => row.NameKey_Ref?.Key != row.NameKey 
     tables.BattleAwakeningSteps.DataList.Any(row => row.HeroId_Ref?.Id != row.HeroId) ||
     tables.BattleSkills.DataList.Any(row => row.HeroId_Ref?.Id != row.HeroId ||
         row.NameKey_Ref?.Key != row.NameKey || row.DescriptionKey_Ref?.Key != row.DescriptionKey) ||
+    tables.BattleSkillEffects.DataList.Any(row => row.SkillId_Ref?.Id != row.SkillId) ||
     tables.BattleSkillEnhancements.DataList.Any(row => row.SkillId_Ref?.Id != row.SkillId))
     throw new InvalidDataException("Battle accessors could not resolve hero, skill or localization references.");
 foreach (var hero in tables.BattleHeroes.DataList)
@@ -98,6 +102,8 @@ record BattleSkillData(string Id, string HeroId, int Slot, string NameKey, strin
     string PresentationId, string IconAsset, string Target, int CooldownTurns, int SoulGain, int SoulBurnCost,
     string SoulBurnKind, int SoulBurnTurns, int? AttackRateBp, int? PowerBp, int? CasterHealthDamageBp,
     int? CasterHealthHealBp, int? CasterHealthBarrierBp, int? BurnAttackRateBp);
+record BattleSkillEffectData(string Id, string SkillId, int Order, string Phase, string Operation, string Recipient,
+    string Status, int ChanceBp, int Turns, int Value);
 record BattleSkillEnhancementData(string Id, string SkillId, int Step, string Kind, int Value);
 
 record BattleGrowthPresetData(string Id, int NativeStars, string HeroClass, string Zodiac,

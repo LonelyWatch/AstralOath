@@ -28,6 +28,19 @@ namespace AstralOath.Client.BattleScene.Editor
                 EditorSceneManager.OpenScene(ScenePath);
         }
 
+        [MenuItem("Tools/战斗场景/开始试玩")]
+        public static void StartBattlePreview()
+        {
+            var preview = UnityEngine.Object.FindObjectOfType<BattleHudPreview>();
+            if (!Application.isPlaying || !preview)
+                throw new InvalidOperationException("请先打开战斗场景并进入 Play Mode。");
+            preview.StartBattle();
+        }
+
+        [MenuItem("Tools/战斗场景/开始试玩", true)]
+        private static bool CanStartBattlePreview() =>
+            Application.isPlaying && UnityEngine.Object.FindObjectOfType<BattleHudPreview>();
+
         [MenuItem("Tools/战斗场景/验证 HUD 绑定")]
         public static void ValidateHud()
         {

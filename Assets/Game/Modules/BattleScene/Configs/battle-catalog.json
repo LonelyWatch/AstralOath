@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "heroes": [
     {
       "id": "c1001",
@@ -523,6 +523,236 @@
       "soulBurnTurns": 2,
       "casterHealthHealBp": 1500,
       "casterHealthBarrierBp": 1500
+    }
+  ],
+  "effects": [
+    {
+      "id": "c1001.s1.1",
+      "skillId": "c1001.s1",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0
+    },
+    {
+      "id": "c1001.s1.2",
+      "skillId": "c1001.s1",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "dispel",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 7500,
+      "turns": 0,
+      "value": 1
+    },
+    {
+      "id": "c1001.s2.1",
+      "skillId": "c1001.s2",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0
+    },
+    {
+      "id": "c1001.s2.2",
+      "skillId": "c1001.s2",
+      "order": 2,
+      "phase": "after_attack",
+      "operation": "dual_attack",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0
+    },
+    {
+      "id": "c1001.s3.1",
+      "skillId": "c1001.s3",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0
+    },
+    {
+      "id": "c1001.s3.2",
+      "skillId": "c1001.s3",
+      "order": 2,
+      "phase": "after_attack",
+      "operation": "apply_status",
+      "recipient": "allies",
+      "status": "DefenseUp",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 6000
+    },
+    {
+      "id": "c1005.s1.1",
+      "skillId": "c1005.s1",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0
+    },
+    {
+      "id": "c1005.s1.2",
+      "skillId": "c1005.s1",
+      "order": 2,
+      "phase": "after_attack",
+      "operation": "readiness",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 1500
+    },
+    {
+      "id": "c1005.s2.1",
+      "skillId": "c1005.s2",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0
+    },
+    {
+      "id": "c1005.s2.2",
+      "skillId": "c1005.s2",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "dispel",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 5500,
+      "turns": 0,
+      "value": 1
+    },
+    {
+      "id": "c1005.s2.3",
+      "skillId": "c1005.s2",
+      "order": 3,
+      "phase": "after_attack",
+      "operation": "repeat_if_status",
+      "recipient": "self",
+      "status": "AttackUp",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0
+    },
+    {
+      "id": "c1005.s3.1",
+      "skillId": "c1005.s3",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0
+    },
+    {
+      "id": "c1005.s3.2",
+      "skillId": "c1005.s3",
+      "order": 2,
+      "phase": "after_attack",
+      "operation": "apply_status",
+      "recipient": "allies",
+      "status": "AttackUp",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 5000
+    },
+    {
+      "id": "c1062.s1.1",
+      "skillId": "c1062.s1",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0
+    },
+    {
+      "id": "c1062.s1.2",
+      "skillId": "c1062.s1",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Stun",
+      "chanceBp": 2000,
+      "turns": 1,
+      "value": 0
+    },
+    {
+      "id": "c1062.s2.1",
+      "skillId": "c1062.s2",
+      "order": 1,
+      "phase": "impact",
+      "operation": "heal",
+      "recipient": "target_and_lowest_ally",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0
+    },
+    {
+      "id": "c1062.s3.1",
+      "skillId": "c1062.s3",
+      "order": 1,
+      "phase": "impact",
+      "operation": "heal",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0
+    },
+    {
+      "id": "c1062.s3.2",
+      "skillId": "c1062.s3",
+      "order": 2,
+      "phase": "after_attack",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Immunity",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 0
+    },
+    {
+      "id": "c1062.s3.3",
+      "skillId": "c1062.s3",
+      "order": 3,
+      "phase": "after_attack",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Barrier",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 0
     }
   ],
   "enhancements": [

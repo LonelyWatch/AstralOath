@@ -2032,6 +2032,35 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 61a75754288ab644db34c1b818f01c72, type: 3}
   - {fileID: 2800000, guid: 557bcd29ac72a944e898fbd8d80b60c6, type: 3}
   - {fileID: 2800000, guid: 49173b9a5cfeb454ca0ab1aed285427e, type: 3}
+  battleCatalog: {fileID: 4900000, guid: 185ea52860ab58540a6da439c21d8dad, type: 3}
+  battleGraphs:
+  - {fileID: 4900000, guid: 85951465e6b8b41428c32ceadb018dc6, type: 3}
+  - {fileID: 4900000, guid: 5e9b8ec03d800ad41ba8566f29c9723f, type: 3}
+  - {fileID: 4900000, guid: a8be9997eb93f4b4dbc26427b0a0a447, type: 3}
+  - {fileID: 4900000, guid: b9019fdc417db044e909ff37293493c3, type: 3}
+  - {fileID: 4900000, guid: 604dcd55905ee624cb23d207b88d78f6, type: 3}
+  - {fileID: 4900000, guid: 6892eed278c6de944be69f772b9f4b55, type: 3}
+  - {fileID: 4900000, guid: e4a2eb5fd2069b94584f61e7f9810b42, type: 3}
+  - {fileID: 4900000, guid: 5bf209fc9e2423048a04709610d08bf3, type: 3}
+  - {fileID: 4900000, guid: 6a9d59855e3a72a47ac1a4f3b77433a9, type: 3}
+  battleSprites:
+  - {fileID: 21300000, guid: 33e47b64c0c95444e9c984922136807b, type: 3}
+  - {fileID: 21300000, guid: 41a68f0a126863f4282516701892f15d, type: 3}
+  - {fileID: 21300000, guid: f2563a9aac1b9674bb7a527ddd6941fd, type: 3}
+  - {fileID: 21300000, guid: 4401102607b685f4ebc52906147e3def, type: 3}
+  - {fileID: 21300000, guid: 2d9b5ade28c22824c98936f6d335af51, type: 3}
+  - {fileID: 21300000, guid: 958d0a17deec26140bf0db9084334ea5, type: 3}
+  - {fileID: 21300000, guid: e7081998ed083854dbf8e15ddb0c3e0f, type: 3}
+  - {fileID: 21300000, guid: aa3ee5ac128ead440951ae7973b20acf, type: 3}
+  - {fileID: 21300000, guid: 9e598405e9551b945bc1f4afd01d3a1c, type: 3}
+  - {fileID: 21300000, guid: 182bfa95d2acb5d4f93e7e3cc061f1ef, type: 3}
+  - {fileID: 21300000, guid: 4d9e2c646187b2a4ea36a6e9c30c73c2, type: 3}
+  - {fileID: 21300000, guid: 25325282fc2a3864eb21c1f3547c71f3, type: 3}
+  - {fileID: 21300000, guid: 0c628788b569a3b48a97d60c9b405e67, type: 3}
+  - {fileID: 21300000, guid: c4381d6a80c91cb4d86a72515d4df803, type: 3}
+  - {fileID: 21300000, guid: 50a1bc58c7b135e4496e9b70e5062a87, type: 3}
+  - {fileID: 21300000, guid: 093bf47c26044c24c9dfdb2e13c755cf, type: 3}
+  - {fileID: 21300000, guid: c99872c1997abca4085510777ee17d9e, type: 3}
 --- !u!114 &1820183974
 MonoBehaviour:
   m_ObjectHideFlags: 0

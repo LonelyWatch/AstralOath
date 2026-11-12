@@ -107,6 +107,16 @@ namespace AstralOath.Client.BattleScene.Editor
 
             var properties = new SerializedObject(preview);
             SetObject("hud", hud);
+            SetObject("battleCatalog", Asset<TextAsset>(Module + "/Configs/battle-catalog.json"));
+            var heroes = new[] { (Id: "c1001", Stem: "ras"), (Id: "c1005", Stem: "mercedes"), (Id: "c1062", Stem: "angelica") };
+            var graphs = heroes.SelectMany(hero => Enumerable.Range(1, 3).Select(slot => Asset<TextAsset>(
+                $"Assets/Game/Modules/CharacterPresentation/Res/Characters/{hero.Id}/Configs/stagept/c_{hero.Stem}_skill_0{slot}.graph.json")));
+            SetArray("battleGraphs", graphs.ToArray());
+            SetArray("battleSprites", heroes.SelectMany(hero => Enumerable.Range(1, 3).Select(slot =>
+                Asset<Sprite>(HudTextures + $"Skills/sk_{hero.Id}_{slot}.png")))
+                .Concat(heroes.Select(hero => Asset<Sprite>(HudTextures + $"Faces/{hero.Id}_su.png")))
+                .Concat(new[] { "cm_icon_promfire", "cm_icon_promice", "cm_icon_role_knight", "cm_icon_role_mage",
+                    "cm_icon_role_manauser" }.Select(name => Asset<Sprite>(HudTextures + name + ".png"))).ToArray());
             SetObject("burnPressed", Asset<Sprite>(HudTextures + "game_hud_btn_burn_p.png"));
             SetObject("cancelNormal", Asset<Sprite>(HudEffects + "game_hud_btn_burnc_d.png"));
             SetObject("cancelPressed", Asset<Sprite>(HudEffects + "game_hud_btn_burnc_p.png"));

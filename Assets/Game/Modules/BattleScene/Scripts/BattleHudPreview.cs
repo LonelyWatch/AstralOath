@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using AstralOath.Client.Common;
 using AstralOath.Client.Skeletons;
+using AstralOath.Shared.Battle;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace AstralOath.Client.BattleScene
@@ -42,13 +44,33 @@ namespace AstralOath.Client.BattleScene
         [SerializeField] private SpineEffect soulUse;
         [SerializeField] private TextAsset[] particles;
         [SerializeField] private Texture2D[] particleTextures;
+        [SerializeField] private TextAsset battleCatalog;
+        [SerializeField] private TextAsset[] battleGraphs;
+        [SerializeField] private Sprite[] battleSprites;
         private BattleHudBinder binder;
+        private BattleSimulationPreview simulation;
+
+        public BattleSnapshot SimulationSnapshot => simulation?.Snapshot;
+
+        public void StartBattle()
+        {
+            if (!Application.isPlaying || !hud || !hud.isActiveAndEnabled || !battleCatalog)
+                throw new InvalidOperationException("Open the battle scene in Play mode before starting.");
+            ClearBinding();
+            UpdateBinding();
+            var catalog = JsonConvert.DeserializeObject<BattleCatalogData>(battleCatalog.text);
+            simulation = new BattleSimulationPreview(gameObject.scene, hud, binder, catalog, battleSprites, battleGraphs);
+            binder.Simulation = simulation;
+        }
+
+        public bool TrySelectBattleTarget(string instanceId) => simulation?.ChooseTarget(instanceId) == true;
 
         private void OnEnable() => UpdateBinding();
 
         private void Update()
         {
             UpdateBinding();
+            simulation?.Tick(Time.unscaledDeltaTime);
             binder?.Tick(Time.unscaledDeltaTime);
         }
 
@@ -71,6 +93,9 @@ namespace AstralOath.Client.BattleScene
 
         private void ClearBinding()
         {
+            var battle = simulation;
+            simulation = null;
+            battle?.Dispose();
             var binding = binder;
             binder = null;
             binding?.Dispose();

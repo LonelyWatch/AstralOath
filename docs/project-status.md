@@ -16,6 +16,8 @@ Unity 2022.3.62f3 / URP / UGUI / TMP；Common/AOT 通用设施；普通 C# UIBas
 
 - BattleScene：首阶段独立冒险布局预览。两套原图分层森林、原作 HUD、双方各四个可编辑脚点及 Spine 待机；已按近期实战和本地原版布局修订 HUD，可交互预览 Burn、燃魂 S2 和技能选中效果。见[HUD 复核](delivery/2026-11-12-battle-hud-fidelity.md)。
 
+- 战斗第三步：共享回合与技能事件内核、本地 Unity 实战试玩和开发态双人 HTTP 房间已接入。[规则和操作](development/battle-execution.md)
+
 - Battle 配表：三名普通形态英雄、九技能、45 段强化、成长模板与觉醒节点已导出。Shared Battle 提供任意合法等级、星级与觉醒的裸面板计算，以及英雄、怪物、入场与四对四站位校验。见[等级与站位](development/battle-growth.md)和[配表来源](development/battle-character-data.md)。
 
 ## 必须知道的缺口
@@ -24,7 +26,7 @@ Unity 2022.3.62f3 / URP / UGUI / TMP；Common/AOT 通用设施；普通 C# UIBas
 2. **强更完整包构建已具备；服务器决定最低应用版本/维护/安装包地址、客户端阻断旧包的闭环未实现。** 现有 Echo 只检查协议版本，更新失败允许回退健康包/内置包。不能把它说成已强制升级。
 3. 最近 Common/AOT 控件继承变更需要重建母包。2026-11-11 Windows 热更成功是旧母包的本机 HTTP 演练，不能证明当前母包或生产 HTTPS 全链路。
 4. Android 历史 APK/热更包构建通过，真机安装、热更与性能仍未验。Windows/Android 本轮未重建 Player。
-5. 真正战斗规则、BP、联网战斗、账号准入尚未完成；演出事件不计算伤害/奖励。角色演出仍存在已列明的条件/镜头/粒子语义缺口，三角色样本不能代表全部原作资产。
+5. 生产 PvP 的 BP、账号准入、排位、断线裁决和 Unity 联机呈现待接入。演出按战斗结果播放。角色演出仍存在已列明的条件/镜头/粒子语义缺口，三角色样本不能代表全部原作资产。
 6. 安全区和窗口尺寸变化已有基础适配；平板/PC断点布局、全设备视觉验收由具体界面负责，不能认为一个 SafeAreaLayout 覆盖全部适配。
 
 ## 最近验证与后续入口
@@ -32,6 +34,6 @@ Unity 2022.3.62f3 / URP / UGUI / TMP；Common/AOT 通用设施；普通 C# UIBas
 - 控件变更：Unity EditMode 215/215、PlayMode 16/16；见[控件验收](delivery/2026-11-12-ui-controls.md)。本次文档/工具核对没有重跑 Unity。
 - 本次服务/内容/配置/协议检查结果：[地基复核](delivery/2026-11-12-foundation-reaudit.md)。MySQL真实集成需专用连接串，本次未重新验证。
 - 下一项更新工作：实现无UI的启动策略契约、服务端业务准入与客户端AOT预检；再接更新界面。顺序及验收见[复核记录](delivery/2026-11-12-foundation-reaudit.md)。
-- 下一项战斗工作：从固定版本配置构造战斗单位与阵型，接入权威战斗流程，先核验目标、回合与技能结算。研究证据见[原作战斗资料](development/epic-seven-battle-reference.md)，演出仍按[战斗验收](delivery/battle-acceptance.md)与 CharacterPresentation 的缺口由用户监督对照。
+- 下一项战斗工作：逐项复验首批技能的取整、抗性、反应顺序和演出，之后扩展配置、模式和生产联网。研究证据见[原作战斗资料](development/epic-seven-battle-reference.md)，演出仍按[战斗验收](delivery/battle-acceptance.md)与 CharacterPresentation 的缺口由用户监督对照。
 
 没有持续外服追踪、自动生产部署或自动依赖升级。需要追踪国际服时等待用户明确指令。

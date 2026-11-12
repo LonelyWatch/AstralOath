@@ -16,6 +16,24 @@ namespace AstralOath.Client.BattleScene
         [SerializeField] private bool faceLeft;
         [SerializeField] private int drawOrder;
         private ISkeletonPlayer player;
+        private string idleAnimation;
+        private bool playingBattleAnimation;
+
+        public Bounds Bounds => player != null
+            ? player.Root.GetComponent<MeshRenderer>().bounds : new Bounds(transform.position, Vector3.zero);
+
+        public float PlayBattleAnimation(string animation)
+        {
+            if (player == null) return 0f;
+            foreach (var clip in player.Animations)
+                if (clip.Name == animation && clip.Duration > 0)
+                {
+                    player.Play(animation, false);
+                    playingBattleAnimation = true;
+                    return clip.Duration;
+                }
+            return 0f;
+        }
 
         private void OnEnable()
         {
@@ -47,6 +65,8 @@ namespace AstralOath.Client.BattleScene
                 instance.Root.GetComponent<MeshRenderer>().sortingOrder = drawOrder;
                 if (faceLeft)
                     instance.Root.transform.localScale = new Vector3(-1, 1, 1);
+                idleAnimation = idle;
+                playingBattleAnimation = false;
                 instance.Play(idle, true);
                 player = instance;
             }
@@ -57,7 +77,16 @@ namespace AstralOath.Client.BattleScene
             }
         }
 
-        private void Update() => player?.Tick(Time.deltaTime);
+        private void Update()
+        {
+            if (player == null) return;
+            player.Tick(playingBattleAnimation ? Time.unscaledDeltaTime : Time.deltaTime);
+            if (playingBattleAnimation && player.Time >= player.Duration)
+            {
+                playingBattleAnimation = false;
+                player.Play(idleAnimation, true);
+            }
+        }
 
         private void OnDisable()
         {

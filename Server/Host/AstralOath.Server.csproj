@@ -11,5 +11,7 @@
     <ProjectReference Include="../../Shared/com.astraloath.shared/AstralOath.Shared.csproj" />
     <ProjectReference Include="../../Shared/com.astraloath.shared/Runtime/Battle/AstralOath.Battle.csproj" />
     <EmbeddedResource Include="Foundation/Migrations/*.sql" />
+    <EmbeddedResource Include="../../Assets/Game/Modules/BattleScene/Configs/battle-catalog.json"
+                      LogicalName="AstralOath.BattleCatalog" />
   </ItemGroup>
 </Project>

@@ -107,7 +107,7 @@ function global:tar { throw 'System tar is unavailable: LZMA codec is unsupporte
     $battlePath = Join-Path $work 'Assets/Game/Modules/BattleScene/Configs/battle-catalog.json'
     $battleText = Get-Content -LiteralPath $battlePath -Raw -Encoding utf8
     $battle = $battleText | ConvertFrom-Json
-    if ($battle.schemaVersion -ne 1 -or
+    if ($battle.schemaVersion -ne 2 -or
         @($battle.heroes | Where-Object id -CEQ $changedHeroId)[0].speed -ne $changedSpeed) {
         throw 'The BattleScene snapshot did not pick up the edited hero source row.'
     }
@@ -116,6 +116,7 @@ function global:tar { throw 'System tar is unavailable: LZMA codec is unsupporte
         @{ Group = 'growthPresets'; File = 'battle_battlegrowthpresets.json' },
         @{ Group = 'awakeningSteps'; File = 'battle_battleawakeningsteps.json' },
         @{ Group = 'skills'; File = 'battle_battleskills.json' },
+        @{ Group = 'effects'; File = 'battle_battleskilleffects.json' },
         @{ Group = 'enhancements'; File = 'battle_battleskillenhancements.json' },
         @{ Group = 'messages'; File = 'battle_battlemessages.json' }
     )) {

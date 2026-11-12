@@ -6,7 +6,7 @@
 
 当前有两套独立配置，不能互换入口、YooAsset 包、签名设置或母包归档：
 
-- Foundation：`Config/HotUpdate/assemblies.json` 登记 `AstralOath.Battle` 与 `AstralOath.Client.FoundationDemo`，入口为 `AstralOath.Client.FoundationDemo.FoundationEntry`，通过 `IHotUpdateEntry` 启动，资源包名为 `Foundation`。支持本页下述签名发布及冷启动远端更新。
+- Foundation：`Config/HotUpdate/assemblies.json` 登记 `AstralOath.Battle`、`AstralOath.Client.BattleScene` 与 `AstralOath.Client.FoundationDemo`，入口为 `AstralOath.Client.FoundationDemo.FoundationEntry`，通过 `IHotUpdateEntry` 启动，资源包名为 `Foundation`。支持本页下述签名发布及冷启动远端更新。
 - CharacterLab：`Config/HotUpdate/characterlab-assemblies.json` 登记 `AstralOath.Client.CharacterPresentation` 与 `AstralOath.Client.CharacterLab`，入口为 `AstralOath.Client.CharacterLab.CharacterLabEntry`，通过 `ICharacterLabEntry` 启动，资源包名为 `CharacterLab`。当前提供离线 Windows x64 测试包，使用内置代码和资源，不连接 Foundation 服务端、数据库或远端更新服务。
 
 新模块通过 `Tools/New-Module.ps1` 创建，其运行时 asmdef 使用 `autoReferenced: false`；脚本不会自动改写上述代码清单。完成首个运行时代码后，按实际消费方登记到对应配置的 `assemblies`，并明确依赖与入口。Foundation 使用 `Tools/检查母包兼容性` 检查选定归档；该菜单和 `CheckCompatibility` 批处理目前只面向 Foundation，不作为 CharacterLab 发布验收入口。

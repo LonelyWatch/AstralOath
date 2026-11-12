@@ -70,6 +70,19 @@
     <var name="burnAttackRateBp" type="int?"/>
   </bean>
 
+  <bean name="SkillEffectRow">
+    <var name="id" type="string"/>
+    <var name="skillId" type="string#ref=battle.BattleSkills"/>
+    <var name="order" type="int#range=[1,64]"/>
+    <var name="phase" type="string"/>
+    <var name="operation" type="string"/>
+    <var name="recipient" type="string"/>
+    <var name="status" type="string"/>
+    <var name="chanceBp" type="int#range=[1,10000]"/>
+    <var name="turns" type="int#range=[0,30]"/>
+    <var name="value" type="int#range=[0,100000]"/>
+  </bean>
+
   <bean name="EnhancementRow">
     <var name="id" type="string"/>
     <var name="skillId" type="string#ref=battle.BattleSkills"/>
@@ -87,6 +100,7 @@
   <table name="BattleGrowthPresets" value="GrowthPresetRow" input="battle_growth_presets.csv"/>
   <table name="BattleAwakeningSteps" value="AwakeningStepRow" input="battle_awakening_steps.csv"/>
   <table name="BattleSkills" value="SkillRow" input="battle_skills.csv"/>
+  <table name="BattleSkillEffects" value="SkillEffectRow" input="battle_skill_effects.csv"/>
   <table name="BattleSkillEnhancements" value="EnhancementRow" input="battle_skill_enhancements.csv"/>
   <table name="BattleMessages" value="MessageRow" input="battle_messages.csv"/>
 </module>

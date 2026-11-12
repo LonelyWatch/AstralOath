@@ -5,6 +5,7 @@ function Export-BattleCatalog {
     $growthPresets = @(Get-Content -LiteralPath (Join-Path $JsonDir 'battle_battlegrowthpresets.json') -Raw -Encoding UTF8 | ConvertFrom-Json)
     $awakeningSteps = @(Get-Content -LiteralPath (Join-Path $JsonDir 'battle_battleawakeningsteps.json') -Raw -Encoding UTF8 | ConvertFrom-Json)
     $skills = @(Get-Content -LiteralPath (Join-Path $JsonDir 'battle_battleskills.json') -Raw -Encoding UTF8 | ConvertFrom-Json)
+    $effects = @(Get-Content -LiteralPath (Join-Path $JsonDir 'battle_battleskilleffects.json') -Raw -Encoding UTF8 | ConvertFrom-Json)
     $enhancements = @(Get-Content -LiteralPath (Join-Path $JsonDir 'battle_battleskillenhancements.json') -Raw -Encoding UTF8 | ConvertFrom-Json)
     $messages = @(Get-Content -LiteralPath (Join-Path $JsonDir 'battle_battlemessages.json') -Raw -Encoding UTF8 | ConvertFrom-Json)
 
@@ -85,6 +86,31 @@ function Export-BattleCatalog {
     }
 
     foreach ($skill in $skills) {
+        $program = @($effects | Where-Object skillId -CEQ $skill.id | Sort-Object order)
+        if ($program.Count -eq 0) { throw "Battle skill effect program is missing for $($skill.id)." }
+        $stages = @('impact','after_hit','after_attack')
+        $lastPhase = 0
+        $hasDamage = $false
+        for ($index = 0; $index -lt $program.Count; $index++) {
+            $effect = $program[$index]
+            $order = $index + 1
+            $phase = [array]::IndexOf($stages, $effect.phase)
+            $usesStatus = $effect.operation -cin @('apply_status','repeat_if_status')
+            if ($effect.order -ne $order -or $effect.id -cne "$($skill.id).$order" -or $phase -lt $lastPhase -or
+                $effect.operation -cnotin @('damage','heal','dispel','apply_status','readiness','dual_attack','repeat_if_status') -or
+                $effect.recipient -cnotin @('targets','self','allies','target_and_lowest_ally') -or
+                ($usesStatus -ne ($effect.status -cne 'none')) -or
+                $effect.status -cnotin @('none','AttackUp','DefenseUp','Immunity','Barrier','Stun') -or
+                (($effect.turns -gt 0) -ne ($effect.operation -ceq 'apply_status')) -or
+                ($effect.phase -ceq 'after_hit' -and -not $hasDamage) -or
+                ($effect.operation -ceq 'damage' -and ($null -eq $skill.attackRateBp -or $null -eq $skill.powerBp)) -or
+                ($effect.operation -ceq 'heal' -and $null -eq $skill.casterHealthHealBp) -or
+                ($effect.status -ceq 'Barrier' -and $null -eq $skill.casterHealthBarrierBp)) {
+                throw "Battle skill effect sequence or arguments are invalid for $($effect.id)."
+            }
+            $lastPhase = $phase
+            $hasDamage = $hasDamage -or $effect.operation -ceq 'damage'
+        }
         $steps = @($enhancements | Where-Object skillId -CEQ $skill.id | Sort-Object step)
         if ($steps.Count -eq 0) { throw "Battle skill enhancement steps missing for $($skill.id)." }
         $cooldown = [int]$skill.cooldownTurns
@@ -103,11 +129,12 @@ function Export-BattleCatalog {
     }
 
     $runtime = [ordered]@{
-        schemaVersion = 1
+        schemaVersion = 2
         heroes = $heroes
         growthPresets = $growthPresets
         awakeningSteps = $awakeningSteps
         skills = $skills
+        effects = $effects
         enhancements = $enhancements
         messages = @($messages) + @($heroNames)
     }

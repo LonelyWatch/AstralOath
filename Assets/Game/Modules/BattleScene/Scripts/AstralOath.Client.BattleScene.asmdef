@@ -2,6 +2,7 @@
   "name": "AstralOath.Client.BattleScene",
   "rootNamespace": "AstralOath.Client.BattleScene",
   "references": [
+    "AstralOath.Battle",
     "AstralOath.Client.Common",
     "AstralOath.Client.Core",
     "AstralOath.Client.Skeletons",

@@ -1,6 +1,8 @@
 {
   "name": "AstralOath.Client.PlayMode",
   "references": [
+    "AstralOath.Battle",
+    "AstralOath.Client.BattleScene",
     "AstralOath.Client.Core",
     "AstralOath.Client.Common",
     "AstralOath.Client.FoundationDemo",

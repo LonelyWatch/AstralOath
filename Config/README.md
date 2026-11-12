@@ -1,6 +1,6 @@
 # 配置源表与生成
 
-配置入口为 `Config/luban.conf`；`Config/Schema/` 定义字段和引用，`Config/Tables/*.csv` 是当前十一张表的唯一数据编辑源。新增表同时维护 schema、源表、生成校验及消费模块说明。不要手改生成 C#、二进制、客户端 JSON 快照或角色导入目录；未来改用 Excel 时，每张表仍只能保留一个权威编辑源。
+配置入口为 `Config/luban.conf`；`Config/Schema/` 定义字段和引用，`Config/Tables/*.csv` 是当前十二张表的唯一数据编辑源。新增表同时维护 schema、源表、生成校验及消费模块说明。不要手改生成 C#、二进制、客户端 JSON 快照或角色导入目录；未来改用 Excel 时，每张表仍只能保留一个权威编辑源。
 
 ## 当前源表
 
@@ -19,7 +19,7 @@ CharacterLab 的两张表由 `Schema/characterlab.xml` 定义：
 
 `Config/CharacterAssets/catalog.generated.json` 是角色导入器生成的资源目录与声音事件，不是手工配表源。导表把角色行和文案合入该目录，生成运行时 catalog；角色数量、ID、名称引用或必要皮肤字段不一致会失败。增加角色先按[角色资源通用规则](../docs/development/character-asset-import.md)扩展白名单、导入已批准依赖，再补齐角色源表。导表本身不读取 `D:/sevenepic`，也不触发外服追踪。
 
-Battle 的六张表由 `Schema/battle.xml` 定义。英雄通过 `battle_heroes.csv` 的 `growthPresetId` 引用 `battle_growth_presets.csv`，并按英雄 ID 在 `battle_awakening_steps.csv` 配置觉醒。现有面板列是导表的验收锚点。其余三张为 `battle_skills.csv`、`battle_skill_enhancements.csv`、`battle_messages.csv`。导表检查模板、觉醒序列、槽位、角色、演出、图标、文案、魂燃和强化序列。见[等级与站位](../docs/development/battle-growth.md)和[技能配表](../docs/development/battle-character-data.md)。
+Battle 的七张表由 `Schema/battle.xml` 定义。英雄通过 `battle_heroes.csv` 的 `growthPresetId` 引用 `battle_growth_presets.csv`，并按英雄 ID 在 `battle_awakening_steps.csv` 配置觉醒。现有面板列是导表的验收锚点。其余四张为 `battle_skills.csv`、`battle_skill_effects.csv`、`battle_skill_enhancements.csv`、`battle_messages.csv`。有序效果表定义技能的阶段、操作、目标和参数。导表检查模板、觉醒序列、槽位、角色、演出、图标、文案、魂燃和强化序列。见[等级与站位](../docs/development/battle-growth.md)和[技能配表](../docs/development/battle-character-data.md)。
 
 ## 生成和检查
 
@@ -38,7 +38,7 @@ Luban 严格校验范围、引用和主键；脚本继续检查文案 key、非�
 
 ## 客户端快照
 
-`-SyncClient` 同步以下五份生成物。FoundationDemo 与 CharacterLab 使用各自 YooAsset 包；BattleScene 快照用于后续战斗接入。
+`-SyncClient` 同步以下五份生成物。FoundationDemo 与 CharacterLab 使用各自 YooAsset 包；BattleScene 和 .NET 战斗入口共享生成快照，服务端构建时嵌入同一文件。
 
 - `demo_ui.json` → `Assets/Game/Modules/FoundationDemo/Configs/demo-config.json`。
 - `demo_localizationkeys.json` → `Assets/Game/Modules/FoundationDemo/Configs/demo-localization.json`。

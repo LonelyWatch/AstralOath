@@ -3,7 +3,9 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Linq;
+using AstralOath.Client.BattleScene;
 using AstralOath.Client.Common;
+using AstralOath.Shared.Battle;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -229,6 +231,49 @@ namespace AstralOath.Client.Tests
             yield return null;
             yield return null;
             Assert.That(canvas, Is.Not.Null);
+        }
+
+        [UnityTest]
+        public IEnumerator PlayableBattleCommitsOnlyAfterTargetAndPlaysSkill()
+        {
+            scene = EditorSceneManager.LoadSceneInPlayMode(ScenePath, new LoadSceneParameters(LoadSceneMode.Additive));
+            yield return null;
+            yield return null;
+
+            var roots = scene.GetRootGameObjects();
+            var preview = roots.Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            preview.StartBattle();
+            var initial = preview.SimulationSnapshot;
+            Assert.That(initial.Units, Has.Count.EqualTo(8));
+            Assert.That(initial.GetUnit(initial.CurrentActorId).Slot.Side, Is.EqualTo(BattleSide.Ally));
+            var map = roots.SelectMany(root => root.GetComponentsInChildren<BindingMap>()).Single();
+            Assert.That(map.transform.Find("Active Unit/Class").GetComponent<Image>().sprite.name,
+                Is.EqualTo("cm_icon_role_mage"));
+            var marker = map.transform.Find("Unit Status/Enemies").GetChild(0);
+            Assert.That(marker.Find("Level Value").GetComponent<GameText>().text,
+                Is.EqualTo(initial.GetUnit("enemy-1").Level.ToString()));
+            var health = marker.Find("HP").GetComponent<Image>();
+            float originalFill = health.fillAmount;
+            Assert.That(preview.TrySelectBattleTarget("ally-1"), Is.False);
+            Assert.That(preview.SimulationSnapshot.LastCommandSequence, Is.Zero);
+            Assert.That(preview.TrySelectBattleTarget("enemy-1"), Is.True);
+            Assert.That(preview.SimulationSnapshot.LastCommandSequence, Is.EqualTo(1UL));
+            Assert.That(preview.SimulationSnapshot.GetUnit("enemy-1").CurrentHealth,
+                Is.LessThan(initial.GetUnit("enemy-1").CurrentHealth));
+            Assert.That(health.fillAmount, Is.EqualTo(originalFill), "The HUD waits for the skill impact.");
+            float deadline = Time.realtimeSinceStartup + 4f;
+            while (health.fillAmount >= originalFill && Time.realtimeSinceStartup < deadline)
+                yield return null;
+            Assert.That(health.fillAmount, Is.LessThan(originalFill), "The skill impact updates the HUD.");
+            Assert.That(marker.Find("Impact").GetComponent<GameText>().text, Is.Not.Empty);
+
+            var canvas = preview.GetComponent<Canvas>();
+            string output = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_CAPTURE_DIR");
+            if (!string.IsNullOrWhiteSpace(output))
+                Capture(canvas.worldCamera, output, "battle-simulation.png");
+            canvas.gameObject.SetActive(false);
+            yield return null;
+            Assert.That(preview.SimulationSnapshot, Is.Null);
         }
 
         private static void Click(GameButton button, GraphicRaycaster raycaster, EventSystem eventSystem)
