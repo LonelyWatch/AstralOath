@@ -38,13 +38,11 @@ try {
         [void][IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($destination))
         Copy-Item -LiteralPath (Join-Path $repo $file) -Destination $destination
     }
-    foreach ($hero in @('c1001', 'c1005', 'c1062')) {
-        foreach ($slot in 1..3) {
-            $icon = "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_${hero}_${slot}.png"
-            $destination = Join-Path $work $icon
-            [void][IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($destination))
-            Copy-Item -LiteralPath (Join-Path $repo $icon) -Destination $destination
-        }
+    $battleSkills = Read-LubanRows (Join-Path $work 'Config/Tables/battle_skills.csv')
+    foreach ($icon in ($battleSkills.iconAsset | Sort-Object -Unique)) {
+        $destination = Join-Path $work $icon
+        [void][IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($destination))
+        Copy-Item -LiteralPath (Join-Path $repo $icon) -Destination $destination
     }
     $cachedTools = Join-Path $repo '.tools/luban-v5.1.0'
     if (Test-Path -LiteralPath $cachedTools) {
