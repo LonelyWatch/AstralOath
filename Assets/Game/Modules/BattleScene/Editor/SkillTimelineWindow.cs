@@ -29,7 +29,7 @@ namespace AstralOath.Client.BattleScene.Editor
         private sealed class Draft : ScriptableObject { public string patch; }
         private sealed class Skill
         {
-            internal string Hero, Name, Id, Asset, Target;
+            internal string Hero, Name, Id, Asset, Target, SlotLabel;
             internal int Slot;
         }
 
@@ -90,6 +90,8 @@ namespace AstralOath.Client.BattleScene.Editor
             var lab = JObject.Parse(AssetDatabase.LoadAssetAtPath<TextAsset>(LabCatalog).text);
             var battle = JObject.Parse(AssetDatabase.LoadAssetAtPath<TextAsset>(BattleCatalog).text);
             var active = battle["skills"].ToLookup(row => (string)row["heroId"]);
+            var variant = battle["skills"].Where(row => !string.IsNullOrEmpty((string)row["speedUpPresentationId"]))
+                .ToDictionary(row => ((string)row["heroId"], (string)row["speedUpPresentationId"]));
             var targets = lab["characters"].OrderBy(hero => (string)hero["id"], StringComparer.Ordinal).ToArray();
             targetIds = targets.Select(hero => (string)hero["id"]).ToArray();
             targetLabels = targets.Select(hero => $"{hero["name"]} ({hero["id"]})").ToArray();
@@ -102,10 +104,12 @@ namespace AstralOath.Client.BattleScene.Editor
                     var sourceAsset = BattleSkillPresentationAssets.Load<TextAsset>(address, paths);
                     string graph = (string)JObject.Parse(sourceAsset.text)["id"];
                     var authority = active[id].FirstOrDefault(item => (int)item["slot"] == index + 1);
+                    bool alternate = variant.TryGetValue((id, graph), out var parent);
                     return new Skill
                     {
                         Hero = id, Name = (string)hero["name"], Slot = index + 1, Id = graph,
-                        Asset = AssetDatabase.GetAssetPath(sourceAsset), Target = (string)authority?["target"]
+                        SlotLabel = alternate ? $"S{parent["slot"]} · 提速" : $"S{index + 1}",
+                        Asset = AssetDatabase.GetAssetPath(sourceAsset), Target = (string)(alternate ? parent : authority)?["target"]
                     };
                 });
             }).OrderBy(skill => skill.Hero, StringComparer.Ordinal).ThenBy(skill => skill.Slot).ToArray();
@@ -349,7 +353,7 @@ namespace AstralOath.Client.BattleScene.Editor
         {
             using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
             {
-                GUILayout.Label(selected == null ? "技能演出" : $"{selected.Name} / S{selected.Slot}  {selected.Id}", EditorStyles.boldLabel);
+                GUILayout.Label(selected == null ? "技能演出" : $"{selected.Name} / {selected.SlotLabel}  {selected.Id}", EditorStyles.boldLabel);
                 GUILayout.FlexibleSpace();
                 bool original = GUILayout.Toggle(compareOriginal, "对照原图", EditorStyles.toolbarButton);
                 if (original != compareOriginal)
@@ -389,7 +393,7 @@ namespace AstralOath.Client.BattleScene.Editor
                         EditorGUILayout.LabelField(skill.Name + "  " + hero, EditorStyles.boldLabel);
                     }
                     using (new EditorGUI.DisabledScope(selected == skill))
-                        if (GUILayout.Button($"S{skill.Slot}  {skill.Id}", EditorStyles.miniButton)) LoadSkill(skill);
+                        if (GUILayout.Button($"{skill.SlotLabel}  {skill.Id}", EditorStyles.miniButton)) LoadSkill(skill);
                 }
                 EditorGUILayout.EndScrollView();
             }

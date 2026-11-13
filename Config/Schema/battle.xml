@@ -90,6 +90,12 @@
     <var name="resourceCost" type="int#range=[0,100000]"/>
     <var name="resourceGain" type="int#range=[0,100000]"/>
     <var name="resourceGainWhenBuffed" type="int#range=[0,100000]"/>
+    <var name="speedUpPresentationId" type="string"/>
+    <var name="speedUpIconAsset" type="string"/>
+    <var name="speedUpAttackRateBp" type="int?"/>
+    <var name="speedUpPowerBp" type="int?"/>
+    <var name="speedUpNameKey" type="string"/>
+    <var name="speedUpDescriptionKey" type="string"/>
   </bean>
 
   <bean name="SkillEffectRow">

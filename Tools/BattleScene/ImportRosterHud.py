@@ -33,10 +33,13 @@ def roster_art(heroes, skills):
         for name in (f"cm_icon_prom{hero['element']}.png", f"cm_icon_role_{role}.png"):
             files[name] = f"img/{name}"
     for skill in skills:
-        path = Path(skill["iconAsset"]).relative_to(HUD.relative_to(REPO))
-        if path.parent != Path("Skills") or path.suffix != ".png":
-            raise ValueError(f"Skill icon must be a PNG under Skills: {path}")
-        files[path.as_posix()] = f"skill/{path.name}"
+        for field in ("iconAsset", "speedUpIconAsset"):
+            if not skill.get(field):
+                continue
+            path = Path(skill[field]).relative_to(HUD.relative_to(REPO))
+            if path.parent != Path("Skills") or path.suffix != ".png":
+                raise ValueError(f"Skill icon must be a PNG under Skills: {path}")
+            files[path.as_posix()] = f"skill/{path.name}"
     return files
 
 

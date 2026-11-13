@@ -157,3 +157,20 @@
 ,battle.skill.c1013.s2.description,受到攻击时行动值提高 10%。当自身生命值不高于 50% 时，额外提高 10%。
 ,battle.skill.c1013.s3.name,捕食咆哮
 ,battle.skill.c1013.s3.description,攻击全体敌人，有 75% 概率降低攻击力 2 回合。自身获得防御力提升 2 回合，第三阶觉醒后先恢复生命。伤害随自身最大生命值提高，低于 75% 时进一步提高。
+,battle.skill.c1014.s1.name,无情攻击
+,battle.skill.c1014.s1.description,攻击单个敌人。若施放时已有速度提升，则使用旋风，降低目标防御力 1 回合。伤害随自身速度提高。
+,battle.skill.c1014.s2.name,风之决意
+,battle.skill.c1014.s2.description,暴击后自身获得速度提升 1 回合，另有 70% 概率获得一个随机增益 1 回合。每回合最多获得一次随机增益。
+,battle.skill.c1014.s3.name,猛砍
+,battle.skill.c1014.s3.description,攻击单个敌人，击倒目标时获得额外回合。伤害随自身速度提高。第三阶觉醒后，若施放时已有速度提升，则以优势属性攻击。
+,battle.status.greaterspeedup.name,速度大幅提升
+,battle.status.greaterspeedup.description,提高速度，加快行动值累积。与普通速度提升取较高值。
+,battle.status.greaterspeedup.strength,速度提高{0:0.##}%。
+,battle.status.criticaldamageup.name,暴击伤害提升
+,battle.status.criticaldamageup.description,提高暴击时造成的伤害。
+,battle.status.criticaldamageup.strength,暴击伤害提高{0:0.##}个百分点。
+,battle.status.effectivenessup.name,效果命中提升
+,battle.status.effectivenessup.description,提升施加减益和其他可抵抗效果的成功率。
+,battle.status.effectivenessup.strength,效果命中提高{0:0.##}个百分点。
+,battle.skill.c1014.whirlwind.name,旋风
+,battle.skill.c1014.whirlwind.description,连续攻击单个敌人，命中后降低其防御力 1 回合。伤害随自身速度提高。

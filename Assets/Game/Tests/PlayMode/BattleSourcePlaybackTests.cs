@@ -12,6 +12,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
+using UnityEngine.UI;
 
 namespace AstralOath.Client.Tests
 {
@@ -128,7 +129,9 @@ namespace AstralOath.Client.Tests
             Assert.That(added, Does.Contain("c1010"));
             var loadedPresentations = graphs.Select(graph => JsonUtility.FromJson<GraphId>(graph.text).id).ToArray();
             Assert.That(loadedPresentations, Is.Unique);
-            Assert.That(loadedPresentations, Is.EquivalentTo(catalog.skills.Select(skill => skill.presentationId).Distinct()));
+            var expectedPresentations = catalog.skills.SelectMany(skill => new[] { skill.presentationId, skill.speedUpPresentationId })
+                .Where(id => !string.IsNullOrEmpty(id)).Distinct(StringComparer.Ordinal);
+            Assert.That(loadedPresentations, Is.EquivalentTo(expectedPresentations));
             string requested = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_HERO_ID");
             if (!string.IsNullOrWhiteSpace(requested))
             {
@@ -151,6 +154,16 @@ namespace AstralOath.Client.Tests
                 Assert.That(actor.DefinitionId, Is.EqualTo(id));
                 var skill = catalog.skills.Single(row => row.heroId == id && row.slot == 2);
                 Assert.That(map.Require<GameButton>("skill2").interactable, Is.EqualTo(skill.target != "passive"));
+                var basic = catalog.skills.Single(row => row.heroId == id && row.slot == 1);
+                if (!string.IsNullOrEmpty(basic.speedUpPresentationId))
+                {
+                    var sprites = HostField<Sprite[]>(host, "battleSprites");
+                    var image = (Image)map.Require<GameButton>("skill1").targetGraphic;
+                    Assert.That(sprites.Any(sprite => sprite && sprite.name == Path.GetFileNameWithoutExtension(basic.speedUpIconAsset)),
+                        Is.True, "The alternate graphic must be available before the first action.");
+                    Assert.That(image.sprite.name, Is.EqualTo(Path.GetFileNameWithoutExtension(basic.iconAsset)),
+                        "A fresh turn without a speed buff must still show the ordinary attack.");
+                }
                 Assert.That(host.TrySelectBattleTarget("enemy-1"), Is.True, id + " S1 must submit through the real battle controller");
                 TestContext.WriteLine($"{id}: formation and authoritative S1 command passed.");
                 yield return null;
@@ -187,6 +200,10 @@ namespace AstralOath.Client.Tests
                     };
                     yield return Play(skill.presentationId, id + "-s" + skill.slot, front, recipients[0], recipients, Phase.None, Phase.None);
                     TestContext.WriteLine($"{id} S{skill.slot}: {skill.presentationId} passed source playback and reset.");
+                    if (!string.IsNullOrEmpty(skill.speedUpPresentationId) &&
+                        !catalog.skills.Any(row => row.heroId == id && row.presentationId == skill.speedUpPresentationId))
+                        yield return Play(skill.speedUpPresentationId, id + "-s" + skill.slot + "-speed",
+                            front, recipients[0], recipients, Phase.None, Phase.None);
                 }
             }
         }

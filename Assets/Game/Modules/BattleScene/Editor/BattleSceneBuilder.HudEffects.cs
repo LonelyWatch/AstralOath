@@ -198,8 +198,13 @@ namespace AstralOath.Client.BattleScene.Editor
             var graphIds = graphs.Select(graph => (string)JObject.Parse(graph.text)["id"]).ToHashSet(StringComparer.Ordinal);
             var skills = battle["skills"].Where(row => heroIds.Contains((string)row["heroId"])).ToArray();
             foreach (var skill in skills)
+            {
                 if ((string)skill["target"] != "passive" && !graphIds.Contains((string)skill["presentationId"]))
                     throw new InvalidOperationException("Missing original battle graph for " + skill["id"]);
+                string alternate = (string)skill["speedUpPresentationId"];
+                if (!string.IsNullOrWhiteSpace(alternate) && !graphIds.Contains(alternate))
+                    throw new InvalidOperationException("Missing alternate battle graph for " + skill["id"]);
+            }
 
             SetObject("battleCatalog", catalog);
             SetObject("audioCatalog", audio);
@@ -214,7 +219,9 @@ namespace AstralOath.Client.BattleScene.Editor
             var elementIcons = heroes.Select(row => "cm_icon_prom" + (string)row["element"]).Distinct(StringComparer.Ordinal);
             var markerElements = new[] { "fire", "ice", "wind", "light", "dark" }
                 .Select(element => "game_hud_bar_" + element);
-            SetArray("battleSprites", skills.Select(row => Asset<Sprite>(HudTextures + "Skills/" + Path.GetFileName((string)row["iconAsset"])))
+            SetArray("battleSprites", skills.SelectMany(row => new[] { (string)row["iconAsset"], (string)row["speedUpIconAsset"] })
+                .Where(path => !string.IsNullOrEmpty(path)).Distinct(StringComparer.Ordinal)
+                .Select(path => Asset<Sprite>(HudTextures + "Skills/" + Path.GetFileName(path)))
                 .Concat(heroes.SelectMany(row => new[] { Asset<Sprite>(HudTextures + $"Faces/{row["id"]}_su.png"),
                     Asset<Sprite>(HudTextures + $"Faces/{row["id"]}_s.png") }))
                 .Concat(classIcons.Concat(elementIcons).Concat(markerElements).Concat(new[] { "_hero_s_bg_ally", "_hero_s_bg_enemy", "_hero_s_frame_ally",

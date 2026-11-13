@@ -111,3 +111,15 @@
 ,c1013.s3.6,c1013.s3,6,after_hit,apply_status,targets,AttackDown,7500,2,5000,none,none,0
 ,c1013.s3.7,c1013.s3,7,after_attack,heal,self,none,10000,0,0,caster_skill_awakened,none,0
 ,c1013.s3.8,c1013.s3,8,after_attack,apply_status,self,DefenseUp,10000,2,6000,none,none,0
+,c1014.s1.1,c1014.s1,1,impact,damage,targets,none,10000,0,0,none,none,0
+,c1014.s1.2,c1014.s1,2,after_hit,apply_status,targets,DefenseDown,10000,1,7000,caster_speed_buffed,none,0
+,c1014.s2.1,c1014.s2,1,after_caster_critical,apply_status,self,SpeedUp,10000,1,3000,none,none,0
+,c1014.s2.2,c1014.s2,2,after_caster_critical,random_buff,self,none,7000,0,0,none,none,0
+,c1014.s2.3,c1014.s2,3,after_caster_critical,random_buff_option,self,Immunity,10000,1,0,none,none,0
+,c1014.s2.4,c1014.s2,4,after_caster_critical,random_buff_option,self,EvasionUp,10000,1,5000,none,none,0
+,c1014.s2.5,c1014.s2,5,after_caster_critical,random_buff_option,self,CriticalDamageUp,10000,1,7000,none,none,0
+,c1014.s2.6,c1014.s2,6,after_caster_critical,random_buff_option,self,EffectivenessUp,10000,1,5000,none,none,0
+,c1014.s2.7,c1014.s2,7,after_caster_critical,random_buff_option,self,GreaterSpeedUp,10000,1,4500,none,none,0
+,c1014.s3.1,c1014.s3,1,impact,elemental_advantage,self,none,10000,0,1,caster_speed_buffed_after_skill_awakening,none,0
+,c1014.s3.2,c1014.s3,2,impact,damage,targets,none,10000,0,0,none,none,0
+,c1014.s3.3,c1014.s3,3,after_attack,grant_extra_turn,self,none,10000,0,0,defeated_target,none,0

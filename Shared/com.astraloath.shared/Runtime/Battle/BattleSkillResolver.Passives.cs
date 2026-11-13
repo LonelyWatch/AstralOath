@@ -80,6 +80,27 @@ namespace AstralOath.Shared.Battle
                 }
             }
 
+            private void ResolveCriticalPassives(Unit actor)
+            {
+                foreach (var passive in Passives(actor))
+                foreach (var effect in passive.CriticalEffects)
+                {
+                    if (!ConditionMet(effect, actor, actor, false)) continue;
+                    var modifiers = owner.ModifiersFor(actor, passive);
+                    if (effect.operation == "random_buff")
+                    {
+                        if (actor.TriggeredPassives.Contains(effect.id) ||
+                            !Roll(random, Math.Min(Basis, effect.chanceBp + modifiers.ChanceBp))) continue;
+                        actor.TriggeredPassives.Add(effect.id);
+                        var options = passive.CriticalBuffOptions;
+                        var option = options[(int)(random.NextUInt64() % (ulong)options.Length)];
+                        ApplyStatus(actor, actor, ParseStatus(option.status), option.turns, option.value);
+                    }
+                    else ApplyEffect(actor, actor, passive.Row, effect, modifiers, false,
+                        BattleHitKind.None, null, false);
+                }
+            }
+
             private bool RollsCounter(Unit actor)
             {
                 if (Roll(random, actor.Strength(BattleStatusKind.Counter))) return true;
@@ -106,18 +127,20 @@ namespace AstralOath.Shared.Battle
                 return Math.Min(highest, Basis);
             }
 
-            private static int SkillModifier(Program program, string operation, Unit caster, Unit recipient, bool allTargets)
+            private static int SkillModifier(Program program, string operation, Unit caster, Unit recipient, bool allTargets,
+                bool speedBuffed = false)
             {
                 if (program == null) return 0;
                 int amount = 0;
                 foreach (var effect in program.Effects)
-                    if (effect.operation == operation && ConditionMet(effect, caster, recipient, allTargets))
+                    if (effect.operation == operation && ConditionMet(effect, caster, recipient, allTargets, speedBuffed: speedBuffed))
                         amount += effect.value;
                 return amount;
             }
 
             private static bool ConditionMet(BattleCatalogData.EffectRow effect, Unit caster, Unit recipient, bool allTargets,
-                BattleHitKind targetHit = BattleHitKind.None, bool attackCritical = false, bool readinessDrained = false)
+                BattleHitKind targetHit = BattleHitKind.None, bool attackCritical = false, bool readinessDrained = false,
+                bool speedBuffed = false, bool defeatedTarget = false)
             {
                 return effect.condition switch
                 {
@@ -129,6 +152,9 @@ namespace AstralOath.Shared.Battle
                     "caster_health_above_half" => 2L * caster.Health > caster.MaximumHealth,
                     "caster_has_resource" => caster.ResourceAmount >= Math.Max(1, effect.turns),
                     "caster_buffed" => HasBuff(caster),
+                    "caster_speed_buffed" => speedBuffed,
+                    "caster_speed_buffed_after_skill_awakening" => speedBuffed && caster.Source.Awakenings >= 3,
+                    "defeated_target" => defeatedTarget,
                     "caster_indomitable" => caster.Has(BattleStatusKind.Indomitable),
                     "caster_not_indomitable" => !caster.Has(BattleStatusKind.Indomitable),
                     "caster_skill_awakened" => caster.Source.Awakenings >= 3,

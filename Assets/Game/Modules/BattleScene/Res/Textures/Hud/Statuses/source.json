@@ -92,6 +92,21 @@
       "kind": "Indomitable",
       "group": "Buff",
       "asset": "stic_indomitable.png"
+    },
+    {
+      "kind": "GreaterSpeedUp",
+      "group": "Buff",
+      "asset": "stic_speed_up2.png"
+    },
+    {
+      "kind": "CriticalDamageUp",
+      "group": "Buff",
+      "asset": "stic_cridmg_up.png"
+    },
+    {
+      "kind": "EffectivenessUp",
+      "group": "Buff",
+      "asset": "stic_acc_up.png"
     }
   ],
   "files": [
@@ -196,6 +211,24 @@
       "asset": "stic_indomitable.png",
       "sourceSha256": "9a48d04e346e29d2032cf5742f4a27abfc41308d60f9a4ed8b3b6c486746cc33",
       "assetSha256": "dd4136e367c9ebb45af8b1788c43eef87f875a9358def9a8ef0825c26332b440"
+    },
+    {
+      "source": "原始资源/buff/stic_speed_up2.png",
+      "asset": "stic_speed_up2.png",
+      "sourceSha256": "9c258409f0b717dc244acd2a8cd90e3150c329d5cd6782c137da8753f0d2df61",
+      "assetSha256": "31881228111408afde9d6535143929b6fce6464f851ebde526384bc2cd79937f"
+    },
+    {
+      "source": "原始资源/buff/stic_cridmg_up.png",
+      "asset": "stic_cridmg_up.png",
+      "sourceSha256": "efd401aeeacc52ef6c55fa47091d14fd82b3ec3d2ddf528928c6c4845c6bd92e",
+      "assetSha256": "f7f39241e2218c59d44edbcc1712fd67788401b4dec78136e0c081b95ced05dc"
+    },
+    {
+      "source": "原始资源/buff/stic_acc_up.png",
+      "asset": "stic_acc_up.png",
+      "sourceSha256": "9de94b80bd3ab7dfce046bbbbdae5aa14f4703c5d8fa173f9ebaf6d6916a086d",
+      "assetSha256": "796d9eeaeba79250489c32d732e75886adb804a7d753ac37c1fc4d9387bfb1cd"
     },
     {
       "source": "原始资源/img/itxt_num0.png",

@@ -2688,6 +2688,202 @@
       ]
     },
     {
+      "id": "c1014",
+      "name": "席德",
+      "displayNameKey": "character.cedars.name",
+      "battleSkeletonAddress": "characterlab/source/model/cedars.scsp",
+      "portraitSkeletonAddress": "characterlab/source/portrait/c1014.scsp",
+      "voiceBankAddress": "characterlab/source/sound/ja/voc1.audio_ja.bank",
+      "timelineAddress": "",
+      "voices": [
+        {
+          "id": "voc_c1014_answer_1",
+          "audioTableKey": "voc_c1014_answer_1",
+          "eventPath": "event:/voc/skill/c_cedars_skill_01_new_a",
+          "displayNameKey": "character.voice.voc_c1014_answer_1"
+        },
+        {
+          "id": "voc_c1014_answer_2",
+          "audioTableKey": "voc_c1014_answer_2",
+          "eventPath": "event:/voc/skill/c_cedars_skill_01_new_a",
+          "displayNameKey": "character.voice.voc_c1014_answer_2"
+        },
+        {
+          "id": "voc_c1014_attacked_1",
+          "audioTableKey": "voc_c1014_attacked_1",
+          "eventPath": "event:/voc/character/cedars/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1014_attacked_1"
+        },
+        {
+          "id": "voc_c1014_attacked_2",
+          "audioTableKey": "voc_c1014_attacked_2",
+          "eventPath": "event:/voc/character/cedars/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1014_attacked_2"
+        },
+        {
+          "id": "voc_c1014_attacked_3",
+          "audioTableKey": "voc_c1014_attacked_3",
+          "eventPath": "event:/voc/character/cedars/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1014_attacked_3"
+        },
+        {
+          "id": "voc_c1014_call_1",
+          "audioTableKey": "voc_c1014_call_1",
+          "eventPath": "event:/voc/skill/c_cedars_skill_01_new_c",
+          "displayNameKey": "character.voice.voc_c1014_call_1"
+        },
+        {
+          "id": "voc_c1014_call_2",
+          "audioTableKey": "voc_c1014_call_2",
+          "eventPath": "event:/voc/skill/c_cedars_skill_01_new_c",
+          "displayNameKey": "character.voice.voc_c1014_call_2"
+        },
+        {
+          "id": "voc_c1014_dead_1",
+          "audioTableKey": "voc_c1014_dead_1",
+          "eventPath": "event:/voc/character/cedars/evt/dead",
+          "displayNameKey": "character.voice.voc_c1014_dead_1"
+        },
+        {
+          "id": "voc_c1014_dead_2",
+          "audioTableKey": "voc_c1014_dead_2",
+          "eventPath": "event:/voc/character/cedars/evt/dead",
+          "displayNameKey": "character.voice.voc_c1014_dead_2"
+        },
+        {
+          "id": "voc_c1014_get_1",
+          "audioTableKey": "voc_c1014_get_1",
+          "eventPath": "event:/voc/character/cedars/evt/get",
+          "displayNameKey": "character.voice.voc_c1014_get_1"
+        },
+        {
+          "id": "voc_c1014_idle_1",
+          "audioTableKey": "voc_c1014_idle_1",
+          "eventPath": "event:/voc/character/cedars/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1014_idle_1"
+        },
+        {
+          "id": "voc_c1014_idle_2",
+          "audioTableKey": "voc_c1014_idle_2",
+          "eventPath": "event:/voc/character/cedars/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1014_idle_2"
+        },
+        {
+          "id": "voc_c1014_idle_3",
+          "audioTableKey": "voc_c1014_idle_3",
+          "eventPath": "event:/voc/character/cedars/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1014_idle_3"
+        },
+        {
+          "id": "voc_c1014_lose_1",
+          "audioTableKey": "voc_c1014_lose_1",
+          "eventPath": "event:/voc/character/cedars/evt/defeat",
+          "displayNameKey": "character.voice.voc_c1014_lose_1"
+        },
+        {
+          "id": "voc_c1014_lvup_1",
+          "audioTableKey": "voc_c1014_lvup_1",
+          "eventPath": "event:/voc/character/cedars/evt/lvup",
+          "displayNameKey": "character.voice.voc_c1014_lvup_1"
+        },
+        {
+          "id": "voc_c1014_skill1_1",
+          "audioTableKey": "voc_c1014_skill1_1",
+          "eventPath": "event:/voc/skill/c_cedars_skill_01_new",
+          "displayNameKey": "character.voice.voc_c1014_skill1_1"
+        },
+        {
+          "id": "voc_c1014_skill1_2",
+          "audioTableKey": "voc_c1014_skill1_2",
+          "eventPath": "event:/voc/skill/c_cedars_skill_01_new",
+          "displayNameKey": "character.voice.voc_c1014_skill1_2"
+        },
+        {
+          "id": "voc_c1014_skill1_3",
+          "audioTableKey": "voc_c1014_skill1_3",
+          "eventPath": "event:/voc/skill/c_cedars_skill_01_new",
+          "displayNameKey": "character.voice.voc_c1014_skill1_3"
+        },
+        {
+          "id": "voc_c1014_skill2_1",
+          "audioTableKey": "voc_c1014_skill2_1",
+          "eventPath": "event:/voc/skill/c_cedars_skill_02_new",
+          "displayNameKey": "character.voice.voc_c1014_skill2_1"
+        },
+        {
+          "id": "voc_c1014_skill2_2",
+          "audioTableKey": "voc_c1014_skill2_2",
+          "eventPath": "event:/voc/skill/c_cedars_skill_02_new",
+          "displayNameKey": "character.voice.voc_c1014_skill2_2"
+        },
+        {
+          "id": "voc_c1014_skill2_3",
+          "audioTableKey": "voc_c1014_skill2_3",
+          "eventPath": "event:/voc/skill/c_cedars_skill_02_new",
+          "displayNameKey": "character.voice.voc_c1014_skill2_3"
+        },
+        {
+          "id": "voc_c1014_skill3_1_1",
+          "audioTableKey": "voc_c1014_skill3_1_1",
+          "eventPath": "event:/voc/skill/c_cedars_skill_03_new",
+          "displayNameKey": "character.voice.voc_c1014_skill3_1_1"
+        },
+        {
+          "id": "voc_c1014_skill3_2_1",
+          "audioTableKey": "voc_c1014_skill3_2_1",
+          "eventPath": "event:/voc/skill/c_cedars_skill_03_new",
+          "displayNameKey": "character.voice.voc_c1014_skill3_2_1"
+        },
+        {
+          "id": "voc_c1014_utterance_1",
+          "audioTableKey": "voc_c1014_utterance_1",
+          "eventPath": "event:/voc/character/cedars/evt/utterance_01",
+          "displayNameKey": "character.voice.voc_c1014_utterance_1"
+        },
+        {
+          "id": "voc_c1014_utterance_2",
+          "audioTableKey": "voc_c1014_utterance_2",
+          "eventPath": "event:/voc/character/cedars/evt/utterance_02",
+          "displayNameKey": "character.voice.voc_c1014_utterance_2"
+        },
+        {
+          "id": "voc_c1014_win_1",
+          "audioTableKey": "voc_c1014_win_1",
+          "eventPath": "event:/voc/character/cedars/evt/win",
+          "displayNameKey": "character.voice.voc_c1014_win_1"
+        }
+      ],
+      "skills": [
+        {
+          "id": "c_cedars_skill_01_new",
+          "displayNameKey": "character.cedars.skill1",
+          "graphAddress": "characterlab/source/stagept/c_cedars_skill_01_new.stg",
+          "eventPath": "event:/skill/c_cedars_skill_01_new",
+          "voiceEventPath": "event:/voc/skill/c_cedars_skill_01_new",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_cedars_skill_01_new_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_cedars_skill_01_new_a"
+        },
+        {
+          "id": "c_cedars_skill_02_new",
+          "displayNameKey": "character.cedars.skill2",
+          "graphAddress": "characterlab/source/stagept/c_cedars_skill_02_new.stg",
+          "eventPath": "event:/skill/c_cedars_skill_02_new",
+          "voiceEventPath": "event:/voc/skill/c_cedars_skill_02_new",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_cedars_skill_02_new_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_cedars_skill_02_new_a"
+        },
+        {
+          "id": "c_cedars_skill_03_new",
+          "displayNameKey": "character.cedars.skill3",
+          "graphAddress": "characterlab/source/stagept/c_cedars_skill_03_new.stg",
+          "eventPath": "event:/skill/c_cedars_skill_03_new",
+          "voiceEventPath": "event:/voc/skill/c_cedars_skill_03_new",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        }
+      ]
+    },
+    {
       "id": "c1062",
       "name": "安洁莉卡",
       "displayNameKey": "character.angelica.name",
@@ -2922,6 +3118,8 @@
     "voc_c1009_defeat_2",
     "voc_c1009_sk3_1_p2",
     "voc_c1011_skill2_3",
-    "voc_c1013_skill3_3"
+    "voc_c1013_skill3_3",
+    "voc_c1014_skill3_1_2",
+    "voc_c1014_skill3_2_2"
   ]
 }

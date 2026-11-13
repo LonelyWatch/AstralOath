@@ -1,0 +1,266 @@
+{
+  "id": "c_cedars_skill_01_new",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 13
+    },
+    "eventlisteners": [
+      17
+    ],
+    "entities": [
+      {
+        "ver": 2,
+        "power": 50,
+        "location": 11,
+        "style": 2,
+        "guid": 1,
+        "etty": "MOVE"
+      },
+      {
+        "scale": "1",
+        "guid": 2,
+        "etty": "ZOOM"
+      },
+      {
+        "guid": 3,
+        "etty": "CAM"
+      },
+      {
+        "from": "jump",
+        "to": "landing",
+        "guid": 4,
+        "etty": "ANI_SCOPE"
+      },
+      {
+        "scale": "1.3",
+        "curve": "0.2911877,0.9548611,1,1",
+        "guid": 5,
+        "etty": "ZOOM"
+      },
+      {
+        "ver": 2,
+        "power": 50,
+        "location": 16,
+        "style": 2,
+        "x": 60.0,
+        "guid": 6,
+        "etty": "MOVE"
+      },
+      {
+        "from": "jump",
+        "to": "landing",
+        "guid": 7,
+        "etty": "ANI_SCOPE"
+      },
+      {
+        "guid": 8,
+        "etty": "IDLE"
+      },
+      {
+        "ani": "jump_back",
+        "guid": 9,
+        "etty": "ANI"
+      },
+      {
+        "ani": "skill1",
+        "guid": 10,
+        "etty": "ANI"
+      },
+      {
+        "location": 12,
+        "x": -60.0,
+        "y": -30.0,
+        "guid": 11,
+        "etty": "CAM"
+      },
+      {
+        "ani": "jump_forward",
+        "guid": 12,
+        "etty": "ANI"
+      },
+      {
+        "state": "start",
+        "guid": 13,
+        "etty": "ENTRY"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "cedars_skill_01_cm",
+        "guid": 14,
+        "etty": "SHAKE"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 15,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 16,
+        "etty": "HIT"
+      },
+      {
+        "ani": "skill1",
+        "name": "hit",
+        "handled": true,
+        "guid": 17,
+        "etty": "ONEVENT"
+      }
+    ],
+    "connections": [
+      {
+        "from": 4,
+        "to": 1,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 3,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 4,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 5,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 6,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 12,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 8,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 9,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 12,
+        "to": 10,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 11,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 12,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 14,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 15,
+        "delay": 66,
+        "when": 1,
+        "Desc": "66",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 16,
+        "delay": 166,
+        "when": 1,
+        "Desc": "166",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/cedars_skill_01_cm.scsp",
+      "address": "characterlab/source/camera/cedars_skill_01_cm.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_slash_01.atlas",
+      "address": "characterlab/source/effect/hit_new_slash_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_slash_01.scsp",
+      "address": "characterlab/source/effect/hit_new_slash_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_slash_01.sct",
+      "address": "characterlab/source/effect/hit_new_slash_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_slash_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_slash_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_slash_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_slash_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

@@ -11,7 +11,8 @@ namespace AstralOath.Shared.Battle
     public enum BattleStatusKind
     {
         AttackUp, DefenseUp, Immunity, Barrier, Stun, Counter,
-        SpeedUp, SpeedDown, AttackDown, DefenseDown, Unhealable, Silence, EvasionUp, CriticalResistanceUp, Stealth, Provoke, Indomitable
+        SpeedUp, SpeedDown, AttackDown, DefenseDown, Unhealable, Silence, EvasionUp, CriticalResistanceUp, Stealth, Provoke, Indomitable,
+        GreaterSpeedUp, CriticalDamageUp, EffectivenessUp
     }
     public enum BattleFlowEventKind
     {
@@ -154,6 +155,7 @@ namespace AstralOath.Shared.Battle
         public IReadOnlyDictionary<string, int> Cooldowns { get; }
         public IReadOnlyList<BattleStatusSnapshot> Statuses { get; }
         public int GetCooldown(string skillId) => Cooldowns.TryGetValue(skillId, out int turns) ? turns : 0;
+        public bool HasSpeedBuff => GetStatus(BattleStatusKind.SpeedUp) != null || GetStatus(BattleStatusKind.GreaterSpeedUp) != null;
         public BattleStatusSnapshot GetStatus(BattleStatusKind kind) => Statuses.FirstOrDefault(status => status.Kind == kind);
     }
 

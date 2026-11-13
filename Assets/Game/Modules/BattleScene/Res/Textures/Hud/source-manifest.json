@@ -2167,6 +2167,84 @@
         80,
         83
       ]
+    },
+    {
+      "asset": "Faces/c1014_s.png",
+      "source": "原始资源/face/c1014_s.png",
+      "sha256": "03b0205f96baf1d3f8f649f5b2dd233aad5124e609f70209c58dcaf66810e5c8",
+      "width": 112,
+      "height": 112,
+      "alphaBoundsLTRB": [
+        8,
+        0,
+        112,
+        112
+      ]
+    },
+    {
+      "asset": "Faces/c1014_su.png",
+      "source": "原始资源/face/c1014_su.png",
+      "sha256": "a96e4f4f038500a7c19cda735206375e46e4f517687162037e363d63f62af899",
+      "width": 249,
+      "height": 206,
+      "alphaBoundsLTRB": [
+        0,
+        5,
+        246,
+        206
+      ]
+    },
+    {
+      "asset": "Skills/pa_c1014_2.png",
+      "source": "原始资源/skill/pa_c1014_2.png",
+      "sha256": "31fe2a420d8e173ac0f90cfbaa3994c2a37a0e620b771c076dfa5e9b6f4fe33c",
+      "width": 82,
+      "height": 84,
+      "alphaBoundsLTRB": [
+        1,
+        1,
+        79,
+        83
+      ]
+    },
+    {
+      "asset": "Skills/sk_c1014_1.png",
+      "source": "原始资源/skill/sk_c1014_1.png",
+      "sha256": "da9ae8874630c17ff285d14811202b9b906539b7f22b18acfd68e36dcc2b7238",
+      "width": 82,
+      "height": 84,
+      "alphaBoundsLTRB": [
+        1,
+        1,
+        80,
+        83
+      ]
+    },
+    {
+      "asset": "Skills/sk_c1014_2.png",
+      "source": "原始资源/skill/sk_c1014_2.png",
+      "sha256": "4dd8a36005bf1be40c7d37e6fac1f0a3c8d57f4a15c32706ced35882276f94b8",
+      "width": 82,
+      "height": 84,
+      "alphaBoundsLTRB": [
+        1,
+        1,
+        80,
+        83
+      ]
+    },
+    {
+      "asset": "Skills/sk_c1014_3.png",
+      "source": "原始资源/skill/sk_c1014_3.png",
+      "sha256": "074946bbd7ec500d29ef2aa43c3cb7c013796f70aec45c3239ea455882abd662",
+      "width": 82,
+      "height": 84,
+      "alphaBoundsLTRB": [
+        1,
+        1,
+        80,
+        83
+      ]
     }
   ],
   "layoutSchemaReference": "https://raw.githubusercontent.com/cocos2d/cocos2d-x/v3/cocos/editor-support/cocostudio/fbs-files/CSParseBinary.fbs"

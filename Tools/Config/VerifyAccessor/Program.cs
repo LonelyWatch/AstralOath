@@ -57,7 +57,9 @@ if (!battleHeroes.SequenceEqual(tables.BattleHeroes.DataList.Select(row => new B
         row.CasterSpeedDamagePpm, row.BurnSpeedDamagePpm, row.CasterHealthRatioDamageBp, row.DamageAgainstBuffBp,
         row.DefensePenetrationBp, row.StealthPenetrationBp, row.HighestDefensePenetrationBp,
         row.AlwaysCritical, row.AoeWhenBuffed, row.AoeOutsideTurn, row.CasterAttackBarrierBp,
-        row.ResourceCost, row.ResourceGain, row.ResourceGainWhenBuffed))) ||
+        row.ResourceCost, row.ResourceGain, row.ResourceGainWhenBuffed,
+        row.SpeedUpPresentationId, row.SpeedUpIconAsset, row.SpeedUpAttackRateBp, row.SpeedUpPowerBp,
+        row.SpeedUpNameKey, row.SpeedUpDescriptionKey))) ||
     !battleEffects.SequenceEqual(tables.BattleSkillEffects.DataList.Select(row => new BattleSkillEffectData(
         row.Id, row.SkillId, row.Order, row.Phase, row.Operation, row.Recipient, row.Status, row.ChanceBp, row.Turns, row.Value,
         row.Condition, row.ChanceBonusStatus, row.ChanceBonusBp))) ||
@@ -112,7 +114,8 @@ record BattleSkillData(string Id, string HeroId, int Slot, string NameKey, strin
     int? CasterDefenseDamageBp, int? CasterSpeedDamagePpm, int? BurnSpeedDamagePpm, int? CasterHealthRatioDamageBp,
     int? DamageAgainstBuffBp, int? DefensePenetrationBp, int? StealthPenetrationBp, int? HighestDefensePenetrationBp,
     bool AlwaysCritical, bool AoeWhenBuffed, bool AoeOutsideTurn, int? CasterAttackBarrierBp,
-    int ResourceCost, int ResourceGain, int ResourceGainWhenBuffed);
+    int ResourceCost, int ResourceGain, int ResourceGainWhenBuffed, string SpeedUpPresentationId,
+    string SpeedUpIconAsset, int? SpeedUpAttackRateBp, int? SpeedUpPowerBp, string SpeedUpNameKey, string SpeedUpDescriptionKey);
 record BattleSkillEffectData(string Id, string SkillId, int Order, string Phase, string Operation, string Recipient,
     string Status, int ChanceBp, int Turns, int Value, string Condition, string ChanceBonusStatus, int ChanceBonusBp);
 record BattleSkillEnhancementData(string Id, string SkillId, int Step, string Kind, int Value);

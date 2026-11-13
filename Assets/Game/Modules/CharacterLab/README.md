@@ -55,4 +55,4 @@ CFX 的 scale/rotate 等字段包含 "~" 范围时，当前不会推测抽样分
 
 卡琳 c1011 已接入角色内容；三技能、音频及已知缺项见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。
 
-卡尔图哈 c1013 已接入角色内容。S2 源演出可预览，实战为受击被动。规则、表现诊断与音频来源见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。
+席德 c1014 已接入角色内容。原始第二张演出图用于提速后的普攻，S2 在实战为暴击被动。规则、表现诊断与音频来源见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。

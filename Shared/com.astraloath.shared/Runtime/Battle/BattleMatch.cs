@@ -347,7 +347,8 @@ namespace AstralOath.Shared.Battle
             public Dictionary<string, int> Cooldowns { get; } = new Dictionary<string, int>(StringComparer.Ordinal);
             public List<BattleStatusSnapshot> Statuses { get; } = new List<BattleStatusSnapshot>();
             public long Speed => Unit.Stats.Speed * Math.Max(0L, 10000L +
-                (Statuses.FirstOrDefault(item => item.Kind == BattleStatusKind.SpeedUp)?.Strength ?? 0) -
+                Math.Max(Statuses.FirstOrDefault(item => item.Kind == BattleStatusKind.SpeedUp)?.Strength ?? 0,
+                    Statuses.FirstOrDefault(item => item.Kind == BattleStatusKind.GreaterSpeedUp)?.Strength ?? 0) -
                 (Statuses.FirstOrDefault(item => item.Kind == BattleStatusKind.SpeedDown)?.Strength ?? 0)) / 10000L;
 
             public BattleUnitSnapshot Snapshot() => new BattleUnitSnapshot(Unit, Health, Readiness,

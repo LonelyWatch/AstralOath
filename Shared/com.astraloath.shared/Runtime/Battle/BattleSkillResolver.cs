@@ -62,7 +62,7 @@ namespace AstralOath.Shared.Battle
             if (cooldown > 0)
                 work.Changes.Add(BattleChange.Cooldown(actor.Id, actor.Id, program.Row.id, cooldown));
             actor.Readiness = 0;
-            work.Cast(actor, program, selected, command.UseSoulBurn, BattleActionOrigin.Primary);
+            string presentationId = work.Cast(actor, program, selected, command.UseSoulBurn, BattleActionOrigin.Primary);
             if (command.UseSoulBurn && actor.Alive)
             {
                 if (program.Row.soulBurnKind == "extra_turn") work.Changes.Add(BattleChange.ExtraTurn(actor.Id));
@@ -72,7 +72,7 @@ namespace AstralOath.Shared.Battle
             int soulGain = program.Row.soulGain + modifiers.SoulGain;
             if (soulGain > 0)
                 work.Changes.Add(BattleChange.Soul(actor.Id, actor.Side, soulGain));
-            resolution = new BattleActionResolution(work.Changes, program.Row.presentationId);
+            resolution = new BattleActionResolution(work.Changes, presentationId);
             return true;
         }
 
@@ -109,6 +109,8 @@ namespace AstralOath.Shared.Battle
             public readonly BattleCatalogData.EffectRow[] Effects;
             public readonly Modifiers[] Modifiers;
             public readonly BattleCatalogData.EffectRow AllyAttackTrigger;
+            public readonly BattleCatalogData.EffectRow[] CriticalEffects;
+            public readonly BattleCatalogData.EffectRow[] CriticalBuffOptions;
 
             public Program(BattleCatalogData.SkillRow row, IEnumerable<BattleCatalogData.EffectRow> effects,
                 IEnumerable<BattleCatalogData.EnhancementRow> ranks)
@@ -127,6 +129,12 @@ namespace AstralOath.Shared.Battle
                     effect.phase == "after_ally_attack" && effect.operation == "trigger");
                 if (AllyAttackTrigger == null && Effects.Any(effect => effect.phase == "after_ally_attack"))
                     throw new ArgumentException($"Passive attack '{row.id}' has no trigger.");
+                CriticalEffects = Effects.Where(effect => effect.phase == "after_caster_critical" &&
+                    effect.operation != "random_buff_option").ToArray();
+                CriticalBuffOptions = Effects.Where(effect => effect.phase == "after_caster_critical" &&
+                    effect.operation == "random_buff_option").ToArray();
+                if (CriticalEffects.Count(effect => effect.operation == "random_buff") != (CriticalBuffOptions.Length > 0 ? 1 : 0))
+                    throw new ArgumentException($"Passive '{row.id}' has inconsistent random buff options.");
                 var rankRows = ranks.OrderBy(item => item.step).ToArray();
                 Modifiers = new Modifiers[rankRows.Length + 1];
                 for (int i = 0; i < rankRows.Length; i++)
@@ -182,7 +190,12 @@ namespace AstralOath.Shared.Battle
             public decimal Defense => ScaleStat(Source.Stats.Defense, BattleStatusKind.DefenseUp, BattleStatusKind.DefenseDown,
                 Strength(BattleStatusKind.Indomitable));
             public int EffectResistance => Source.Stats.EffectResistanceBp + Strength(BattleStatusKind.Indomitable);
-            public decimal Speed => ScaleStat(Source.Stats.Speed, BattleStatusKind.SpeedUp, BattleStatusKind.SpeedDown);
+            public int Effectiveness => Source.Stats.EffectivenessBp + Strength(BattleStatusKind.EffectivenessUp);
+            public int CriticalDamage => Math.Min(35000, Source.Stats.CritDamageBp + Strength(BattleStatusKind.CriticalDamageUp));
+            public decimal Speed => Source.Stats.Speed * Math.Max(0m, 1m +
+                (Math.Max(Strength(BattleStatusKind.SpeedUp), Strength(BattleStatusKind.GreaterSpeedUp)) -
+                    (decimal)Strength(BattleStatusKind.SpeedDown)) / Basis);
+            public bool HasSpeedBuff => Has(BattleStatusKind.SpeedUp) || Has(BattleStatusKind.GreaterSpeedUp);
             public BattleStatusSnapshot Status(BattleStatusKind kind) => Statuses.FirstOrDefault(item => item.Kind == kind);
             public bool Has(BattleStatusKind kind) => Status(kind) != null;
             public int Strength(BattleStatusKind kind) => Status(kind)?.Strength ?? 0;
@@ -217,12 +230,15 @@ namespace AstralOath.Shared.Battle
                 return other.Length == 0 ? new[] { selected } : new[] { selected, Choose(other) };
             }
 
-            public void Cast(Unit actor, Program program, Unit selected, bool soulBurn, BattleActionOrigin origin,
+            public string Cast(Unit actor, Program program, Unit selected, bool soulBurn, BattleActionOrigin origin,
                 string triggerPhase = null)
             {
                 var skill = program.Row;
-                if (!actor.Alive || actor.ResourceAmount < skill.resourceCost) return;
+                if (!actor.Alive || actor.ResourceAmount < skill.resourceCost) return skill.presentationId;
                 bool buffed = HasBuff(actor);
+                bool speedBuffed = actor.HasSpeedBuff;
+                bool speedVariant = speedBuffed && !string.IsNullOrEmpty(skill.speedUpPresentationId);
+                string presentationId = speedVariant ? skill.speedUpPresentationId : skill.presentationId;
                 string targeting = skill.target;
                 if ((skill.aoeWhenBuffed && origin != BattleActionOrigin.DualAttack && buffed) ||
                     (skill.aoeOutsideTurn && (origin == BattleActionOrigin.Counter || origin == BattleActionOrigin.DualAttack)))
@@ -238,10 +254,11 @@ namespace AstralOath.Shared.Battle
                 var hit = new Dictionary<string, BattleHitKind>(StringComparer.Ordinal);
                 var modifiers = owner.ModifiersFor(actor, program);
                 if (origin != BattleActionOrigin.Primary)
-                    Changes.Add(BattleChange.Action(actor.Id, selected?.Id, program.Row.id, origin, program.Row.presentationId));
+                    Changes.Add(BattleChange.Action(actor.Id, selected?.Id, skill.id, origin, presentationId));
                 ChangeResource(actor, actor, -skill.resourceCost);
 
                 bool attackCritical = false;
+                bool defeatedTarget = false;
                 foreach (var effect in program.Effects)
                 {
                     if (triggerPhase != null && effect.phase != triggerPhase) continue;
@@ -255,10 +272,11 @@ namespace AstralOath.Shared.Battle
                         case "defense_rate_bonus":
                         case "health_rate_bonus":
                         case "burn_health_rate_bonus":
+                        case "elemental_advantage":
                             continue;
                         case "grant_extra_turn":
                             if (origin == BattleActionOrigin.Primary && actor.Alive &&
-                                ConditionMet(effect, actor, actor, multiTargetAttack, attackCritical: attackCritical))
+                                ConditionMet(effect, actor, actor, multiTargetAttack, attackCritical: attackCritical, defeatedTarget: defeatedTarget))
                                 Changes.Add(BattleChange.ExtraTurn(actor.Id));
                             continue;
                         case "dual_attack":
@@ -278,11 +296,11 @@ namespace AstralOath.Shared.Battle
                         bool hasHit = hit.TryGetValue(target.Id, out var lastHit);
                         if (effect.phase == "after_hit" && !hasHit) continue;
                         if (!ConditionMet(effect, actor, target, multiTargetAttack, lastHit, attackCritical,
-                            readinessDrained?.Contains(target.Id) == true))
+                            readinessDrained?.Contains(target.Id) == true, speedBuffed))
                             continue;
                         int previousReadiness = target.Readiness;
                         ApplyEffect(actor, target, skill, effect, modifiers, soulBurn, lastHit, hit, target == highestDefense,
-                            allTargetAttack, program, multiTargetAttack);
+                            allTargetAttack, program, multiTargetAttack, speedVariant, speedBuffed);
                         if (previousReadiness > 0 && target.Readiness == 0)
                         {
                             readinessDrained ??= new HashSet<string>(StringComparer.Ordinal);
@@ -290,6 +308,7 @@ namespace AstralOath.Shared.Battle
                         }
                         if (effect.operation != "damage" || actor.Side == target.Side) continue;
                         attacked.Add(target.Id);
+                        defeatedTarget |= !target.Alive;
                         attackCritical |= hit[target.Id] == BattleHitKind.Critical;
                     }
                 }
@@ -298,11 +317,12 @@ namespace AstralOath.Shared.Battle
                     ? skill.resourceGainWhenBuffed : skill.resourceGain;
                 ChangeResource(actor, actor, resourceGain);
 
+                if (attackCritical && actor.Alive) ResolveCriticalPassives(actor);
                 ResolveAttackedPassives(actor, targets, attacked);
                 if (origin != BattleActionOrigin.Passive) ResolveAllyAttackPassives(actor, targets, attacked);
 
                 // Counters and random Dual Attacks are limited to the primary attack window.
-                if (origin != BattleActionOrigin.Primary || hit.Count == 0) return;
+                if (origin != BattleActionOrigin.Primary || hit.Count == 0) return presentationId;
                 if (actor.Alive && program.Row.slot == 1 && targeting == "one_enemy" && program.Row.heroId != "preview.slime" &&
                     selected?.Alive == true)
                 {
@@ -316,11 +336,13 @@ namespace AstralOath.Shared.Battle
                     if (hit.ContainsKey(target.Id) && CanReact(target) && RollsCounter(target))
                         CastBasic(target, actor, BattleActionOrigin.Counter);
                 }
+                return presentationId;
             }
 
             private void ApplyEffect(Unit actor, Unit target, BattleCatalogData.SkillRow skill, BattleCatalogData.EffectRow effect,
                 Modifiers modifiers, bool soulBurn, BattleHitKind lastHit, Dictionary<string, BattleHitKind> hit,
-                bool highestDefense, bool allTargetAttack = false, Program program = null, bool multiTargetAttack = false)
+                bool highestDefense, bool allTargetAttack = false, Program program = null, bool multiTargetAttack = false,
+                bool speedVariant = false, bool speedBuffed = false)
             {
                 int bonusChance = effect.chanceBonusBp > 0 && target.Has(ParseStatus(effect.chanceBonusStatus))
                     ? effect.chanceBonusBp : 0;
@@ -328,11 +350,13 @@ namespace AstralOath.Shared.Battle
                 switch (effect.operation)
                 {
                     case "damage":
-                        int relation = ElementRelation(actor.Source.Element, target.Source.Element);
+                        int relation = SkillModifier(program, "elemental_advantage", actor, target, multiTargetAttack,
+                            speedBuffed) > 0 ? 1 : ElementRelation(actor.Source.Element, target.Source.Element);
                         var result = RollHit(random, relation, actor.Source.Stats.CritChanceBp,
                             target.Strength(BattleStatusKind.EvasionUp), target.Strength(BattleStatusKind.CriticalResistanceUp),
                             alwaysCritical: skill.alwaysCritical);
-                        int rate = ((soulBurn ? skill.burnAttackRateBp : null) ?? skill.attackRateBp.Value) +
+                        int rate = ((soulBurn ? skill.burnAttackRateBp : null) ??
+                            (speedVariant ? skill.speedUpAttackRateBp : null) ?? skill.attackRateBp.Value) +
                             SkillModifier(program, "attack_rate_bonus", actor, target, multiTargetAttack);
                         int defenseRate = (skill.casterDefenseDamageBp ?? 0) +
                             SkillModifier(program, "defense_rate_bonus", actor, target, multiTargetAttack);
@@ -351,9 +375,10 @@ namespace AstralOath.Shared.Battle
                             (SkillModifier(program, "damage_bonus", actor, target, multiTargetAttack) +
                                 Passives(actor).Sum(passive => SkillModifier(passive, "damage_bonus", actor, target, multiTargetAttack))) / (decimal)Basis;
                         int reduction = DamageReduction(target, multiTargetAttack);
-                        int criticalDamage = actor.Source.Stats.CritDamageBp +
+                        int criticalDamage = actor.CriticalDamage +
                             SkillModifier(program, "critical_damage_bonus", actor, target, multiTargetAttack);
-                        int damage = Damage(actor.Attack, defense, actor.MaximumHealth, rate, skill.powerBp.Value,
+                        int power = (speedVariant ? skill.speedUpPowerBp : null) ?? skill.powerBp.Value;
+                        int damage = Damage(actor.Attack, defense, actor.MaximumHealth, rate, power,
                             healthRate, modifiers.DamageBp, relation, result, criticalDamage,
                             additionalBaseDamage: actor.Defense * defenseRate / Basis,
                             damageMultiplier: (1m + damageBonus) * (1m - reduction / (decimal)Basis) *
@@ -474,7 +499,7 @@ namespace AstralOath.Shared.Battle
                     reason = BattleEffectRejection.Blocked;
                 else if (!Roll(random, chance))
                     reason = BattleEffectRejection.ChanceFailed;
-                else if (hostile && !Roll(random, EffectSuccessBp(source.Source.Stats.EffectivenessBp, target.EffectResistance)))
+                else if (hostile && !Roll(random, EffectSuccessBp(source.Effectiveness, target.EffectResistance)))
                     reason = BattleEffectRejection.Resisted;
                 if (!reason.HasValue) return true;
                 if (reason != BattleEffectRejection.ChanceFailed)
