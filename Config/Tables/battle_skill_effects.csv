@@ -143,3 +143,12 @@
 ,c1016.s3.3,c1016.s3,3,impact,damage,targets,none,10000,0,0,none,none,0
 ,c1016.s3.4,c1016.s3,4,after_attack,grant_extra_turn,self,none,10000,0,0,defeated_target,none,0
 ,c1016.s3.5,c1016.s3,5,after_ally_skill,readiness,self,none,10000,0,2000,enemy_debuffed,none,0
+,c1017.s1.1,c1017.s1,1,impact,damage,targets,none,10000,0,0,none,none,0
+,c1017.s1.2,c1017.s1,2,after_hit,apply_status,targets,AttackDown,3500,2,5000,none,none,0
+,c1017.s2.1,c1017.s2,1,impact,heal,targets,none,10000,0,0,none,none,0
+,c1017.s2.2,c1017.s2,2,impact,apply_status,targets,Barrier,10000,1,0,caster_skill_not_awakened,none,0
+,c1017.s2.3,c1017.s2,3,impact,apply_status,targets,Invincible,10000,1,0,caster_skill_awakened,none,0
+,c1017.s2.4,c1017.s2,4,after_attack,reduce_cooldown,targets,none,10000,0,1,none,none,0
+,c1017.s3.1,c1017.s3,1,impact,burn_healing_rate_bonus,self,none,10000,0,2000,none,none,0
+,c1017.s3.2,c1017.s3,2,impact,cleanse_all,targets,none,10000,0,0,none,none,0
+,c1017.s3.3,c1017.s3,3,impact,heal,targets,none,10000,0,0,none,none,0

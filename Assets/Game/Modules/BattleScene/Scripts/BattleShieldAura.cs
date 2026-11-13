@@ -12,6 +12,7 @@ namespace AstralOath.Client.BattleScene
         private static readonly SkeletonPlayerFactory Factory = new SkeletonPlayerFactory();
         private readonly Definition definition;
         private readonly Vector3 fallbackAnchor;
+        private readonly string objectName;
         private ISkeletonPlayer player;
         private Renderer body;
         private MeshRenderer aura;
@@ -72,8 +73,12 @@ namespace AstralOath.Client.BattleScene
         }
 
         public BattleShieldAura(Definition definition, Transform shadow, Renderer initialBody)
+            : this(definition, shadow, initialBody, "Battle shield aura") { }
+
+        public BattleShieldAura(Definition definition, Transform shadow, Renderer initialBody, string objectName)
         {
             this.definition = definition;
+            this.objectName = objectName;
             // Calibrate to the authored foot point before a skill can separate the actor and its ground shadow.
             if (initialBody && shadow)
                 fallbackAnchor = initialBody.transform.InverseTransformPoint(shadow.position);
@@ -119,7 +124,7 @@ namespace AstralOath.Client.BattleScene
         {
             player = Factory.Create(definition.Source, body.transform);
             var root = player.Root;
-            root.name = "Battle shield aura";
+            root.name = objectName;
             root.transform.localScale = definition.Scale;
             aura = root.GetComponent<MeshRenderer>();
         }

@@ -1,0 +1,41 @@
+
+healer_skill_03_hit.sct
+size: 404,483
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+heal_1
+  rotate: true
+  xy: 240, 174
+  size: 150, 162
+  orig: 150, 162
+  offset: 0, 0
+  index: -1
+heal_2
+  rotate: false
+  xy: 240, 2
+  size: 158, 170
+  orig: 158, 170
+  offset: 0, 0
+  index: -1
+heal_3
+  rotate: true
+  xy: 231, 326
+  size: 155, 167
+  orig: 155, 167
+  offset: 0, 0
+  index: -1
+ring_01
+  rotate: false
+  xy: 2, 240
+  size: 227, 227
+  orig: 227, 227
+  offset: 0, 0
+  index: -1
+star_light2
+  rotate: false
+  xy: 2, 2
+  size: 236, 236
+  orig: 236, 236
+  offset: 0, 0
+  index: -1

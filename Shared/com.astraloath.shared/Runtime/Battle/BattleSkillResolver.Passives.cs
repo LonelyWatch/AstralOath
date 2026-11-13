@@ -183,6 +183,7 @@ namespace AstralOath.Shared.Battle
                     "caster_indomitable" => caster.Has(BattleStatusKind.Indomitable),
                     "caster_not_indomitable" => !caster.Has(BattleStatusKind.Indomitable),
                     "caster_skill_awakened" => caster.Source.Awakenings >= 3,
+                    "caster_skill_not_awakened" => caster.Source.Awakenings < 3,
                     "target_readiness_drained" => readinessDrained,
                     "recipient_buffed" => HasBuff(recipient),
                     "recipient_debuffed_after_skill_awakening" => caster.Source.Awakenings >= 3 &&

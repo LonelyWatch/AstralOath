@@ -1,0 +1,83 @@
+
+achates_pillar.sct
+size: 504,598
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+burst1
+  rotate: true
+  xy: 328, 367
+  size: 90, 57
+  orig: 90, 57
+  offset: 0, 0
+  index: -1
+burst2
+  rotate: true
+  xy: 149, 472
+  size: 124, 80
+  orig: 124, 80
+  offset: 0, 0
+  index: -1
+burst3
+  rotate: true
+  xy: 387, 367
+  size: 200, 69
+  orig: 200, 69
+  offset: 0, 0
+  index: -1
+burst4
+  rotate: false
+  xy: 231, 472
+  size: 138, 119
+  orig: 138, 119
+  offset: 0, 0
+  index: -1
+burst5
+  rotate: false
+  xy: 339, 2
+  size: 163, 185
+  orig: 163, 185
+  offset: 0, 0
+  index: -1
+burst_flash
+  rotate: true
+  xy: 149, 296
+  size: 174, 177
+  orig: 174, 177
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 339, 189
+  size: 163, 163
+  orig: 163, 163
+  offset: 0, 0
+  index: -1
+gold_ring2
+  rotate: true
+  xy: 2, 296
+  size: 295, 145
+  orig: 295, 145
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: false
+  xy: 328, 354
+  size: 149, 11
+  orig: 149, 11
+  offset: 0, 0
+  index: -1
+pillar
+  rotate: true
+  xy: 2, 159
+  size: 135, 335
+  orig: 135, 335
+  offset: 0, 0
+  index: -1
+pillar_flash
+  rotate: true
+  xy: 2, 2
+  size: 155, 335
+  orig: 155, 335
+  offset: 0, 0
+  index: -1

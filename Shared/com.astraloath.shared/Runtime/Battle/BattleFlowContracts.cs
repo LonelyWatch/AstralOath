@@ -12,7 +12,7 @@ namespace AstralOath.Shared.Battle
     {
         AttackUp, DefenseUp, Immunity, Barrier, Stun, Counter,
         SpeedUp, SpeedDown, AttackDown, DefenseDown, Unhealable, Silence, EvasionUp, CriticalResistanceUp, Stealth, Provoke, Indomitable,
-        GreaterSpeedUp, CriticalDamageUp, EffectivenessUp, Poison
+        GreaterSpeedUp, CriticalDamageUp, EffectivenessUp, Poison, Invincible
     }
     public enum BattleFlowEventKind
     {

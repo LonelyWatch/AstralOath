@@ -90,6 +90,9 @@ namespace AstralOath.Client.BattleScene
             var shieldAura = unitPresentation
                 ? BattleShieldAura.Prepare(unitPresentation.ShieldAura, unitPresentation.ShieldAuraEffect)
                 : null;
+            var invincibleAura = unitPresentation
+                ? BattleShieldAura.Prepare(unitPresentation.InvincibleAura, unitPresentation.InvincibleAuraEffect)
+                : null;
             try
             {
                 foreach (var state in match.Snapshot.Units)
@@ -98,7 +101,7 @@ namespace AstralOath.Client.BattleScene
                     var slot = units.Find(team).GetChild(state.Slot.Position - 1);
                     var marker = hud.transform.Find($"Unit Status/{team}/{slot.name}").gameObject;
                     sprites.TryGetValue("game_hud_bar_" + state.Element.ToString().ToLowerInvariant(), out var element);
-                    views.Add(state.InstanceId, new View(slot, marker, camera, unitPresentation, deathTextures, statusArt, shieldAura, element, state.Resource,
+                    views.Add(state.InstanceId, new View(slot, marker, camera, unitPresentation, deathTextures, statusArt, shieldAura, invincibleAura, element, state.Resource,
                         inspection == null ? null : InspectStatus));
                 }
             }
@@ -989,7 +992,8 @@ namespace AstralOath.Client.BattleScene
             private long presentedShield;
             private int maximumHealth;
             private readonly BattleStatusIcons statusIcons;
-            private readonly BattleShieldAura shieldAura;
+            private readonly BattleShieldAura shieldAura, invincibleAura;
+            private bool invincible;
             private readonly BattleUnitLevelBadge levelBadge;
             private static readonly int BodyOpacity = Shader.PropertyToID("_PresentationOpacity");
             private const float StealthOpacity = .55f;
@@ -999,7 +1003,8 @@ namespace AstralOath.Client.BattleScene
 
             public View(Transform slot, GameObject marker, Camera camera, BattleUnitPresentationProfile profile,
                 IReadOnlyDictionary<string, Texture2D> deathTextures, BattleStatusArt statusArt,
-                BattleShieldAura.Definition auraDefinition, Sprite element, BattleResourceSnapshot resource,
+                BattleShieldAura.Definition auraDefinition, BattleShieldAura.Definition invincibleDefinition,
+                Sprite element, BattleResourceSnapshot resource,
                 Action<BattleStatusSnapshot, Image> inspectStatus)
             {
                 this.slot = slot;
@@ -1029,6 +1034,8 @@ namespace AstralOath.Client.BattleScene
                 statusIcons = new BattleStatusIcons(FeedbackAnchor, statusArt,
                     profile ? profile.StatusIconsPerRow : BattleStatusIcons.MaximumColumns, inspectStatus);
                 shieldAura = new BattleShieldAura(auraDefinition, Actor.PresentationShadow, Actor.PresentationRenderer);
+                invincibleAura = new BattleShieldAura(invincibleDefinition, Actor.PresentationShadow,
+                    Actor.PresentationRenderer, "Battle invincibility aura");
                 if (element) elementBadge.sprite = element;
                 if (profile)
                 {
@@ -1039,7 +1046,7 @@ namespace AstralOath.Client.BattleScene
                 }
                 levelBadge = new BattleUnitLevelBadge(marker.transform.Find("Level").GetComponent<Image>(), profile ? profile.LevelDigits : null);
                 try { PrepareDeath(); }
-                catch { shieldAura.Dispose(); statusIcons.Dispose(); status.Dispose(); levelBadge.Dispose(); elementBadge.sprite = originalElement; throw; }
+                catch { shieldAura.Dispose(); invincibleAura.Dispose(); statusIcons.Dispose(); status.Dispose(); levelBadge.Dispose(); elementBadge.sprite = originalElement; throw; }
             }
             public BattlePreviewActor Actor { get; }
             public Image Health { get; }
@@ -1149,6 +1156,7 @@ namespace AstralOath.Client.BattleScene
                 levelBadge.Show(state.Level);
                 statusIcons.Reconcile(state.IsAlive ? state.Statuses : Array.Empty<BattleStatusSnapshot>());
                 SetStealth(state.IsAlive && state.GetStatus(BattleStatusKind.Stealth) != null);
+                invincible = state.IsAlive && state.GetStatus(BattleStatusKind.Invincible) != null;
                 SetShield(state.IsAlive ? state.Barrier : 0);
                 if (state.Resource != null) SetResource(state.Resource.Amount);
             }
@@ -1168,6 +1176,7 @@ namespace AstralOath.Client.BattleScene
                 }
                 statusIcons.Apply(effect);
                 if (effect.Kind == BattleStatusKind.Stealth) SetStealth(true);
+                if (effect.Kind == BattleStatusKind.Invincible) { invincible = true; SyncAura(0f); }
             }
 
             public void UpdateStatusDuration(BattleStatusSnapshot effect)
@@ -1180,6 +1189,7 @@ namespace AstralOath.Client.BattleScene
                 if (kind == BattleStatusKind.Barrier) SetShield(0);
                 statusIcons.Remove(kind);
                 if (kind == BattleStatusKind.Stealth) SetStealth(false);
+                if (kind == BattleStatusKind.Invincible) { invincible = false; SyncAura(0f); }
             }
 
             public void RemoveStatusInstance(BattleStatusSnapshot effect)
@@ -1224,9 +1234,12 @@ namespace AstralOath.Client.BattleScene
             private void SyncAura(float delta)
             {
                 bool shielded = shown && !deathStarted && presentedShield > 0;
-                Vector2? anchor = shielded && Actor.TryGetSkeletonAnchor("shadow", out var position)
+                bool protectedFromDamage = shown && !deathStarted && invincible;
+                Vector2? anchor = (shielded || protectedFromDamage) && Actor.TryGetSkeletonAnchor("shadow", out var position)
                     ? position : (Vector2?)null;
-                shieldAura.Sync(Actor.PresentationRenderer, shielded, delta, anchor);
+                var body = Actor.PresentationRenderer;
+                shieldAura.Sync(body, shielded, delta, anchor);
+                invincibleAura.Sync(body, protectedFromDamage, delta, anchor);
             }
 
             public void Restore()
@@ -1243,6 +1256,7 @@ namespace AstralOath.Client.BattleScene
                 }
                 status.Dispose();
                 shieldAura.Dispose();
+                invincibleAura.Dispose();
                 statusIcons.Dispose();
                 levelBadge.Dispose();
                 if (slot) slot.gameObject.SetActive(true);

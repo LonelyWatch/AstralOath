@@ -279,6 +279,7 @@ namespace AstralOath.Shared.Battle
                         case "defense_rate_bonus":
                         case "health_rate_bonus":
                         case "burn_health_rate_bonus":
+                        case "burn_healing_rate_bonus":
                         case "elemental_advantage":
                             continue;
                         case "grant_extra_turn":
@@ -401,7 +402,11 @@ namespace AstralOath.Shared.Battle
                         if (!target.Has(BattleStatusKind.Unhealable))
                         {
                             int healRate = skill.casterHealthHealBp.Value;
-                            if (soulBurn && skill.soulBurnKind == "increase_healing") healRate *= 2;
+                            if (soulBurn && skill.soulBurnKind == "increase_healing")
+                            {
+                                int bonus = SkillModifier(program, "burn_healing_rate_bonus", actor, target, multiTargetAttack);
+                                healRate += bonus > 0 ? bonus : healRate;
+                            }
                             int healing = ScaleHealth(actor.MaximumHealth, healRate, modifiers.HealingBp);
                             target.Health += Math.Min(healing, target.MaximumHealth - target.Health);
                             Changes.Add(BattleChange.Healing(actor.Id, target.Id, healing));
@@ -444,7 +449,9 @@ namespace AstralOath.Shared.Battle
                         }
                         break;
                     case "cleanse":
-                        foreach (var status in target.Statuses.Where(item => IsHarmful(item.Kind)).Take(effect.value).ToArray())
+                    case "cleanse_all":
+                        int maximum = effect.operation == "cleanse_all" ? int.MaxValue : effect.value;
+                        foreach (var status in target.Statuses.Where(item => IsHarmful(item.Kind)).Take(maximum).ToArray())
                         {
                             target.Statuses.Remove(status);
                             Changes.Add(BattleChange.RemoveStatus(actor.Id, target.Id, status));
@@ -551,6 +558,11 @@ namespace AstralOath.Shared.Battle
 
             private void ProjectDamage(Unit source, Unit target, int damage, BattleHitKind hit)
             {
+                if (target.Has(BattleStatusKind.Invincible))
+                {
+                    Changes.Add(BattleChange.Damage(source.Id, target.Id, 0, hit));
+                    return;
+                }
                 var barrier = target.Status(BattleStatusKind.Barrier);
                 int absorb = Math.Min(damage, barrier?.Strength ?? 0);
                 if (absorb > 0)

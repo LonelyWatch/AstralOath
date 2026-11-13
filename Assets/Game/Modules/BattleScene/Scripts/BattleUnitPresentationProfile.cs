@@ -16,6 +16,8 @@ namespace AstralOath.Client.BattleScene
         [Range(1, BattleStatusIcons.MaximumColumns)] public int StatusIconsPerRow = BattleStatusIcons.MaximumColumns;
         public BattleSkillPresentationAsset ShieldAura;
         public TextAsset ShieldAuraEffect;
+        public BattleSkillPresentationAsset InvincibleAura;
+        public TextAsset InvincibleAuraEffect;
         [Min(.001f)] public float DamageSeconds = .16f, HealSeconds = .18f, TrailSeconds = .50f;
         [Min(0)] public float TrailDelaySeconds = .15f;
         public TextAsset DeathParticles;

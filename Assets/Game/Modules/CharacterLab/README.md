@@ -55,4 +55,4 @@ CFX 的 scale/rotate 等字段包含 "~" 范围时，当前不会推测抽样分
 
 卡琳 c1011 已接入角色内容；三技能、音频及已知缺项见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。
 
-优芬妮 c1016 已接入三技能及日语原声。S2 的三个原始日语键按事件解析，含此映射的新资源需要对应母包。规则、表现诊断与音频来源见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。
+雅卡泰丝 c1017 已接入三技能及日语原声。无敌使用独立原生图标和随角色移动的循环特效。规则、表现诊断与音频来源见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。

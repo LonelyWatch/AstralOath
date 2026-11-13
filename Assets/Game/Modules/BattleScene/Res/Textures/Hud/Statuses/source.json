@@ -112,6 +112,11 @@
       "kind": "Poison",
       "group": "Debuff",
       "asset": "stic_dot.png"
+    },
+    {
+      "kind": "Invincible",
+      "group": "Buff",
+      "asset": "stic_invincible.png"
     }
   ],
   "files": [
@@ -240,6 +245,12 @@
       "asset": "stic_dot.png",
       "sourceSha256": "a129b1578bc7225a3ed102366d08a79aef3eabd337d1d9ba63fa29a3adb6cd4e",
       "assetSha256": "a5b5020020d9528e6f35bb9e409945f9c144e42f96cd8918515a3c9ba100f877"
+    },
+    {
+      "source": "原始资源/buff/stic_invincible.png",
+      "asset": "stic_invincible.png",
+      "sourceSha256": "57a00da491c05c5594ce7d46429c1e1bd771190d1363bc7310b68901a64cc958",
+      "assetSha256": "fee77bea53bfad3704bcc9d93bb4d3aabadc54fb4f7bdb46545c648553ae6899"
     },
     {
       "source": "原始资源/img/itxt_num0.png",

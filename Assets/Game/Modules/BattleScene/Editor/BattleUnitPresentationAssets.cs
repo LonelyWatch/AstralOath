@@ -42,24 +42,32 @@ namespace AstralOath.Client.BattleScene.Editor
                 .Select(digit => AssetDatabase.LoadAssetAtPath<Sprite>(status + "itxt_num" + digit + ".png")).ToArray();
             profile.LevelDigits = Enumerable.Range(0, 10)
                 .Select(digit => AssetDatabase.LoadAssetAtPath<Sprite>(hud + "itxt_num" + digit + "_b.png")).ToArray();
-            profile.ShieldAuraEffect = AssetDatabase.LoadAssetAtPath<TextAsset>(shield + ".cfx.json");
-            profile.ShieldAura = new BattleSkillPresentationAsset
+            profile.ShieldAura = LoadAura(shield, "stse_protect", out profile.ShieldAuraEffect);
+            profile.InvincibleAura = LoadAura(Root + "Res/Effects/Invincible/stse_invincible", "stse_invincible",
+                out profile.InvincibleAuraEffect);
+            if (!profile.Shield || !profile.StatusManifest || profile.StatusGlyphs.Any(sprite => !sprite) ||
+                profile.StatusDigits.Any(sprite => !sprite) || profile.LevelDigits.Any(sprite => !sprite))
+                throw new InvalidOperationException("Run ImportStatusHud.py before updating the unit profile.");
+            profile.ValidateStatusArt();
+        }
+        private static BattleSkillPresentationAsset LoadAura(string path, string stem, out TextAsset effect)
+        {
+            effect = AssetDatabase.LoadAssetAtPath<TextAsset>(path + ".cfx.json");
+            var asset = new BattleSkillPresentationAsset
             {
-                source = "effect/stse_protect.scsp",
-                document = AssetDatabase.LoadAssetAtPath<TextAsset>(shield + ".json"),
-                atlas = AssetDatabase.LoadAssetAtPath<TextAsset>(shield + ".atlas.txt"),
-                pageNames = new[] { "stse_protect.sct" },
-                pages = new[] { AssetDatabase.LoadAssetAtPath<Texture2D>(shield + ".png") },
+                source = "effect/" + stem + ".scsp",
+                document = AssetDatabase.LoadAssetAtPath<TextAsset>(path + ".json"),
+                atlas = AssetDatabase.LoadAssetAtPath<TextAsset>(path + ".atlas.txt"),
+                pageNames = new[] { stem + ".sct" },
+                pages = new[] { AssetDatabase.LoadAssetAtPath<Texture2D>(path + ".png") },
                 premultipliedAlpha = true,
                 scale = .01f
             };
-            if (!profile.Shield || !profile.StatusManifest || profile.StatusGlyphs.Any(sprite => !sprite) ||
-                profile.StatusDigits.Any(sprite => !sprite) || profile.LevelDigits.Any(sprite => !sprite) ||
-                !profile.ShieldAuraEffect || !profile.ShieldAura.document ||
-                !profile.ShieldAura.atlas || !profile.ShieldAura.pages[0])
-                throw new InvalidOperationException("Run ImportStatusHud.py and ImportBattleShieldAura.py before updating the unit profile.");
-            profile.ValidateStatusArt();
+            if (!effect || !asset.document || !asset.atlas || !asset.pages[0])
+                throw new InvalidOperationException("Missing native status aura: " + path);
+            return asset;
         }
+
         static Sprite ImportSprite(string name)
         {
             string path = Root + "Res/Textures/Hud/" + name;

@@ -1,0 +1,139 @@
+{
+  "timeline": {
+    "default": {
+      "b_idle": {
+        "duration": 0,
+        "frames": []
+      },
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 1000,
+            "func": "effect",
+            "param": {
+              "id": "ball",
+              "source": "achates_bidle_pati",
+              "location": 1,
+              "locationBone": "eff_pos",
+              "scale": 1.0,
+              "z": 1
+            }
+          }
+        ]
+      },
+      "attacked": {
+        "duration": 0,
+        "frames": []
+      },
+      "knock_down": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "achates_skill_01",
+              "location": 5,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 267,
+            "func": "effect",
+            "param": {
+              "source": "achates_skill_01_staff_pati",
+              "location": 1,
+              "locationBone": "eff_pos",
+              "scale": 1.0,
+              "z": 1
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "ball"
+            }
+          }
+        ]
+      },
+      "skill3_1": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 500,
+            "func": "remove",
+            "param": {
+              "targetId": "ball"
+            }
+          }
+        ]
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "ball"
+            }
+          }
+        ]
+      },
+      "skill3_2": {
+        "duration": 0,
+        "frames": []
+      },
+      "groggy": {
+        "duration": 0,
+        "frames": []
+      },
+      "idle": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "ball"
+            }
+          }
+        ]
+      },
+      "jump_back": {
+        "duration": 0,
+        "frames": []
+      },
+      "jump_back2": {
+        "duration": 0,
+        "frames": []
+      },
+      "jump_forward": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "ball"
+            }
+          }
+        ]
+      },
+      "rise": {
+        "duration": 0,
+        "frames": []
+      },
+      "run": {
+        "duration": 0,
+        "frames": []
+      },
+      "run_start": {
+        "duration": 0,
+        "frames": []
+      }
+    }
+  }
+}

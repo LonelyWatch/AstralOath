@@ -1,0 +1,27 @@
+
+achates_heal_cross.sct
+size: 167,263
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 2, 98
+  size: 163, 163
+  orig: 163, 163
+  offset: 0, 0
+  index: -1
+gold_ring
+  rotate: false
+  xy: 66, 2
+  size: 94, 94
+  orig: 94, 94
+  offset: 0, 0
+  index: -1
+heal_cross
+  rotate: false
+  xy: 2, 2
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1

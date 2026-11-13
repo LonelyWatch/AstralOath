@@ -129,7 +129,7 @@ function Export-BattleCatalog {
     }
 
     $beneficialStatuses = @('AttackUp','DefenseUp','Immunity','Barrier','Counter','SpeedUp','EvasionUp','CriticalResistanceUp','Stealth','Indomitable',
-        'GreaterSpeedUp','CriticalDamageUp','EffectivenessUp')
+        'GreaterSpeedUp','CriticalDamageUp','EffectivenessUp','Invincible')
     $harmfulStatuses = @('Stun','SpeedDown','AttackDown','DefenseDown','Unhealable','Silence','Provoke','Poison')
     $validStatuses = @('none') + $beneficialStatuses + $harmfulStatuses
     foreach ($skill in $skills) {
@@ -150,8 +150,8 @@ function Export-BattleCatalog {
             battle_start = @('apply_status')
             turn_end = @('apply_status')
         }
-        $activeOperations = @('damage','heal','dispel','cleanse','apply_status','readiness','reduce_readiness','reduce_readiness_double','transfer_debuff',
-            'extend_cooldown','reduce_cooldown','reset_cooldown','grant_extra_turn','dual_attack','repeat_if_status','damage_bonus','damage_bonus_per_debuff','critical_damage_bonus','defense_penetration','attack_rate_bonus','defense_rate_bonus','health_rate_bonus','burn_health_rate_bonus','elemental_advantage')
+        $activeOperations = @('damage','heal','dispel','cleanse','cleanse_all','apply_status','readiness','reduce_readiness','reduce_readiness_double','transfer_debuff',
+            'extend_cooldown','reduce_cooldown','reset_cooldown','grant_extra_turn','dual_attack','repeat_if_status','damage_bonus','damage_bonus_per_debuff','critical_damage_bonus','defense_penetration','attack_rate_bonus','defense_rate_bonus','health_rate_bonus','burn_health_rate_bonus','burn_healing_rate_bonus','elemental_advantage')
         $lastPhase = 0
         $hasDamage = $false
         for ($index = 0; $index -lt $program.Count; $index++) {
@@ -160,7 +160,7 @@ function Export-BattleCatalog {
             $phase = [array]::IndexOf($activeStages, $effect.phase)
             $operation = $effect.operation
             $usesStatus = $operation -cin @('apply_status','repeat_if_status','random_buff_option')
-            $isModifier = $operation -cin @('damage_bonus','damage_bonus_per_debuff','critical_damage_bonus','defense_penetration','attack_rate_bonus','defense_rate_bonus','health_rate_bonus','burn_health_rate_bonus','elemental_advantage')
+            $isModifier = $operation -cin @('damage_bonus','damage_bonus_per_debuff','critical_damage_bonus','defense_penetration','attack_rate_bonus','defense_rate_bonus','health_rate_bonus','burn_health_rate_bonus','burn_healing_rate_bonus','elemental_advantage')
             $usesResourceThreshold = $isModifier -and $effect.condition -ceq 'caster_has_resource'
             $validPhase = if ($passive) {
                 $effect.phase -cin $passiveOperations.Keys -and $operation -cin $passiveOperations[$effect.phase]
@@ -174,7 +174,7 @@ function Export-BattleCatalog {
                 $effect.condition -cnotin @('none','caster_health_below_half','caster_health_at_least_half',
                     'caster_health_above_half','caster_health_at_most_half','caster_has_resource','caster_buffed','recipient_buffed','recipient_debuffed_after_skill_awakening','recipient_health_at_most_half','single_target_attack',
                     'target_hit_critical','attack_critical','attack_critical_after_skill_awakening','caster_indomitable',
-                    'caster_not_indomitable','caster_skill_awakened','target_readiness_drained','caster_health_below_three_quarters',
+                    'caster_not_indomitable','caster_skill_awakened','caster_skill_not_awakened','target_readiness_drained','caster_health_below_three_quarters',
                     'caster_speed_buffed','caster_speed_buffed_after_skill_awakening','defeated_target','enemy_debuffed') -or
                 $effect.chanceBonusStatus -cnotin @('none','AttackDown') -or
                 (($effect.chanceBonusStatus -ceq 'none') -ne ($effect.chanceBonusBp -eq 0)) -or
@@ -198,20 +198,22 @@ function Export-BattleCatalog {
                     $effect.value -lt 1 -or $effect.value -gt 10000 -or
                     ($effect.condition -cnotin @('caster_buffed','caster_has_resource') -and
                         -not ($operation -ceq 'damage_bonus' -and $effect.condition -ceq 'recipient_debuffed_after_skill_awakening') -and
-                        -not ($operation -cin @('critical_damage_bonus','damage_bonus_per_debuff') -and $effect.condition -ceq 'none') -and
+                        -not ($operation -cin @('critical_damage_bonus','damage_bonus_per_debuff','burn_healing_rate_bonus') -and $effect.condition -ceq 'none') -and
                         -not ($operation -ceq 'elemental_advantage' -and $effect.condition -ceq 'caster_speed_buffed_after_skill_awakening') -and
                         -not ($operation -cin @('attack_rate_bonus','defense_rate_bonus') -and
                             $effect.condition -cin @('caster_indomitable','caster_health_below_three_quarters')) -and
                         -not ($operation -cin @('health_rate_bonus','burn_health_rate_bonus') -and
                             $effect.condition -cin @('none','caster_health_below_three_quarters'))))) -or
                 ($operation -ceq 'burn_health_rate_bonus' -and $skill.soulBurnKind -cne 'increase_damage') -or
+                ($operation -ceq 'burn_healing_rate_bonus' -and $skill.soulBurnKind -cne 'increase_healing') -or
+                ($operation -ceq 'cleanse_all' -and ($effect.value -ne 0 -or $effect.chanceBp -ne 10000)) -or
                 ($operation -ceq 'readiness_bonus' -and ($effect.chanceBp -ne 10000 -or $effect.value -le 0)) -or
                 ($effect.condition -ceq 'target_hit_critical' -and
                     ($effect.phase -cne 'after_hit' -or $effect.recipient -cne 'targets')) -or
                 ($effect.condition -cin @('attack_critical','attack_critical_after_skill_awakening') -and
                     ($effect.phase -cne 'after_attack' -or $effect.recipient -cne 'self' -or -not $hasDamage)) -or
                 ($operation -ceq 'reduce_cooldown' -and ($effect.phase -cne 'after_attack' -or
-                    $effect.recipient -cne 'self' -or $effect.value -lt 1 -or $effect.value -gt 4 -or $effect.chanceBp -ne 10000)) -or
+                    $effect.recipient -cnotin @('self','targets') -or $effect.value -lt 1 -or $effect.value -gt 4 -or $effect.chanceBp -ne 10000)) -or
                 ($operation -ceq 'grant_extra_turn' -and ($effect.phase -cne 'after_attack' -or
                     $effect.recipient -cne 'self' -or $effect.value -ne 0 -or $effect.chanceBp -ne 10000)) -or
                 ($operation -ceq 'reset_cooldown' -and ($effect.phase -cne 'after_attack' -or

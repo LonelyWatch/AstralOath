@@ -1,0 +1,34 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "achates_wing_end",
+      "scale": "1",
+      "delay": "1390",
+      "format": "particle",
+      "globalZ": 0.1
+    },
+    {
+      "source": "achates_skill_03_2",
+      "y": "0",
+      "z": "0",
+      "scale": "1.4",
+      "rotate": "0",
+      "format": "spine",
+      "globalZ": 0.2
+    },
+    {
+      "source": "achates_wing1",
+      "scale": "1.3",
+      "format": "particle",
+      "globalZ": 0.3
+    },
+    {
+      "source": "achates_wing2",
+      "scale": "1",
+      "delay": "900",
+      "format": "particle",
+      "globalZ": 0.4
+    }
+  ]
+}

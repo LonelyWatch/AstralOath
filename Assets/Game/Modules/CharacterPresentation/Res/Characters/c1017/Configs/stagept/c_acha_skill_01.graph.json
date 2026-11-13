@@ -1,0 +1,322 @@
+{
+  "id": "c_acha_skill_01",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 13
+    },
+    "eventlisteners": [
+      15
+    ],
+    "entities": [
+      {
+        "scale": "1",
+        "guid": 1,
+        "etty": "ZOOM"
+      },
+      {
+        "ver": 2,
+        "power": 50,
+        "location": 11,
+        "style": 2,
+        "guid": 2,
+        "etty": "MOVE"
+      },
+      {
+        "from": "jump",
+        "to": "landing",
+        "guid": 3,
+        "etty": "ANI_SCOPE"
+      },
+      {
+        "guid": 4,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.3",
+        "curve": "0.2911877,0.9548611,1,1",
+        "guid": 5,
+        "etty": "ZOOM"
+      },
+      {
+        "guid": 6,
+        "etty": "IDLE"
+      },
+      {
+        "ani": "jump_back",
+        "guid": 7,
+        "etty": "ANI"
+      },
+      {
+        "ani": "skill1",
+        "guid": 8,
+        "etty": "ANI"
+      },
+      {
+        "ver": 2,
+        "power": 50,
+        "location": 16,
+        "style": 2,
+        "guid": 9,
+        "etty": "MOVE"
+      },
+      {
+        "from": "jump",
+        "to": "landing",
+        "guid": 10,
+        "etty": "ANI_SCOPE"
+      },
+      {
+        "ani": "jump_forward",
+        "guid": 11,
+        "etty": "ANI"
+      },
+      {
+        "location": 12,
+        "x": -60.0,
+        "y": -30.0,
+        "guid": 12,
+        "etty": "CAM"
+      },
+      {
+        "state": "start",
+        "guid": 13,
+        "etty": "ENTRY"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "achates_skill_01_cm",
+        "guid": 14,
+        "etty": "SHAKE"
+      },
+      {
+        "ani": "skill1",
+        "name": "hit",
+        "handled": true,
+        "guid": 15,
+        "etty": "ONEVENT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 16,
+        "etty": "HIT"
+      }
+    ],
+    "connections": [
+      {
+        "from": 3,
+        "to": 1,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 3,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 4,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 5,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 6,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 7,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 8,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 9,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 10,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 12,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 11,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 14,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 16,
+        "delay": 266,
+        "when": 1,
+        "Desc": "266",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/achates_skill_01_cm.scsp",
+      "address": "characterlab/source/camera/achates_skill_01_cm.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/achates_bidle_pati.cfx",
+      "address": "characterlab/source/effect/achates_bidle_pati.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/achates_bidle_pati.particle",
+      "address": "characterlab/source/effect/achates_bidle_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/achates_skill_01.atlas",
+      "address": "characterlab/source/effect/achates_skill_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/achates_skill_01.cfx",
+      "address": "characterlab/source/effect/achates_skill_01.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/achates_skill_01.scsp",
+      "address": "characterlab/source/effect/achates_skill_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/achates_skill_01.sct",
+      "address": "characterlab/source/effect/achates_skill_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/achates_skill_01_back.atlas",
+      "address": "characterlab/source/effect/achates_skill_01_back.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/achates_skill_01_back.scsp",
+      "address": "characterlab/source/effect/achates_skill_01_back.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/achates_skill_01_back.sct",
+      "address": "characterlab/source/effect/achates_skill_01_back.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/achates_skill_01_pati.particle",
+      "address": "characterlab/source/effect/achates_skill_01_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/achates_skill_01_pati2.particle",
+      "address": "characterlab/source/effect/achates_skill_01_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/achates_skill_01_staff_pati.cfx",
+      "address": "characterlab/source/effect/achates_skill_01_staff_pati.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.atlas",
+      "address": "characterlab/source/effect/hit_new_blunt_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.scsp",
+      "address": "characterlab/source/effect/hit_new_blunt_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.sct",
+      "address": "characterlab/source/effect/hit_new_blunt_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_blunt_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_blunt_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_blunt_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "model/achates.timeline",
+      "address": "characterlab/source/model/achates.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/flash.sct",
+      "address": "characterlab/source/particle/flash.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/zodiac_star1.sct",
+      "address": "characterlab/source/particle/zodiac_star1.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

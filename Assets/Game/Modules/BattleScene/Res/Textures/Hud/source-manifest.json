@@ -2375,6 +2375,71 @@
         80,
         83
       ]
+    },
+    {
+      "asset": "Faces/c1017_s.png",
+      "source": "原始资源/face/c1017_s.png",
+      "sha256": "4326dbede9ca74def4187b2c1fbb9f06adfd19bfc87bba42cf0d0b3f8ccdec70",
+      "width": 112,
+      "height": 112,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        112,
+        112
+      ]
+    },
+    {
+      "asset": "Faces/c1017_su.png",
+      "source": "原始资源/face/c1017_su.png",
+      "sha256": "559311473c94955dfd98e65fbda67847d5b88d8bf64359b3b432c13db59c9d44",
+      "width": 436,
+      "height": 206,
+      "alphaBoundsLTRB": [
+        0,
+        10,
+        308,
+        206
+      ]
+    },
+    {
+      "asset": "Skills/sk_c1017_1.png",
+      "source": "原始资源/skill/sk_c1017_1.png",
+      "sha256": "7b5258db0311a5a657b9272128e3c765a66408b2f5d7ea5fce45eedfcd11e08c",
+      "width": 82,
+      "height": 84,
+      "alphaBoundsLTRB": [
+        1,
+        1,
+        80,
+        84
+      ]
+    },
+    {
+      "asset": "Skills/sk_c1017_2.png",
+      "source": "原始资源/skill/sk_c1017_2.png",
+      "sha256": "890fe3b3c27cafa69272a2e1b7bd2a9e644f6a51d6e5e4bc38f42c1fbcc44b3a",
+      "width": 82,
+      "height": 84,
+      "alphaBoundsLTRB": [
+        1,
+        1,
+        80,
+        83
+      ]
+    },
+    {
+      "asset": "Skills/sk_c1017_3.png",
+      "source": "原始资源/skill/sk_c1017_3.png",
+      "sha256": "f23bfda964ec2981ff1df40a7a9c9807bcf34435d2903c90248224ada48df69f",
+      "width": 82,
+      "height": 84,
+      "alphaBoundsLTRB": [
+        1,
+        1,
+        80,
+        83
+      ]
     }
   ],
   "layoutSchemaReference": "https://raw.githubusercontent.com/cocos2d/cocos2d-x/v3/cocos/editor-support/cocostudio/fbs-files/CSParseBinary.fbs"

@@ -1,0 +1,24 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "achates_skill_01",
+      "z": "1",
+      "format": "spine"
+    },
+    {
+      "source": "achates_skill_01_back",
+      "z": "0",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "achates_skill_01_pati",
+      "x": "200",
+      "y": "310",
+      "z": "2",
+      "delay": "267",
+      "format": "particle"
+    }
+  ]
+}

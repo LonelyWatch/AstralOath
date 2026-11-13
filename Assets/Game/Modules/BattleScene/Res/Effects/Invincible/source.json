@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "source": "原始资源/effect/stse_invincible",
+  "sourceMapping": {
+    "cs_icon": "stic_invincible",
+    "cs_effect": "stse_invincible.cfx",
+    "cs_eff_bone": null,
+    "anchorEvidence": "CFX local y=20. Native status-table bone has not been independently verified."
+  },
+  "premultipliedAlpha": true,
+  "partialAlphaPixels": 123675,
+  "spineVersion": "2.1.27",
+  "animations": [
+    {
+      "name": "animation",
+      "duration": 2.166599988937378
+    }
+  ],
+  "slots": [
+    "shield",
+    "edge",
+    "shield_f",
+    "g1",
+    "g2",
+    "glow",
+    "shine1",
+    "shine2"
+  ],
+  "texture": {
+    "width": 603,
+    "height": 506,
+    "encoding": "SCT1:RGB565+A8",
+    "alpha": "source-preserved"
+  },
+  "files": [
+    {
+      "source": "原始资源/effect/stse_invincible.cfx",
+      "sourceSha256": "febffa50ab170b641002be0052d42f391f680a1ddbaf2fb7d436015116dac947",
+      "asset": "stse_invincible.cfx.json",
+      "assetSha256": "383b1f65efe314a2e830cb88728be23cae1a7930ef70f4248c9edeb64e62569c"
+    },
+    {
+      "source": "原始资源/effect/stse_invincible.scsp",
+      "sourceSha256": "db95a20c46611571d0bdc000722ffcec451940996f75989c9aedb0924d00ce0f",
+      "asset": "stse_invincible.json",
+      "assetSha256": "13e320e1786e06c63d62bd4154a42d0e8e6c3a30bf01f2b244c6bbab9725b40c"
+    },
+    {
+      "source": "原始资源/effect/stse_invincible.atlas",
+      "sourceSha256": "d7e0b026b63ddaed760f7489b7d0ff7e7a0f08c13daa0f2407f0359b8532aa8e",
+      "asset": "stse_invincible.atlas.txt",
+      "assetSha256": "3acece5cf67a2d7216dea6dda253a25097cc06b447ca95d173e1213ea2fd7d17"
+    },
+    {
+      "source": "原始资源/effect/stse_invincible.sct",
+      "sourceSha256": "09e4d635d51929971c0ecec6b6eedfae50e8d40f9bfc9319c9ec9789b59b6e87",
+      "asset": "stse_invincible.png",
+      "assetSha256": "5f8c7c251cbe4928e478572130c1a9c77d5ca3ddb7c802f3be5f5b74c583ce54"
+    }
+  ]
+}

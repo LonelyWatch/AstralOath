@@ -202,7 +202,8 @@ namespace AstralOath.Shared.Battle
         private void ApplyDamage(State unit, string source, int amount, BattleHitKind hit, List<BattleFlowEvent> events,
             BattleStatusSnapshot periodic = null)
         {
-            int damage = Math.Min(unit.Health, Absorb(unit, amount, source, events));
+            int damage = unit.Statuses.Any(item => item.Kind == BattleStatusKind.Invincible)
+                ? 0 : Math.Min(unit.Health, Absorb(unit, amount, source, events));
             unit.Health -= damage;
             Emit(events, BattleFlowEventKind.Damage, source, unit.Id, damage, statusKind: periodic?.Kind,
                 status: periodic, hitKind: hit, remainingHealth: unit.Health);

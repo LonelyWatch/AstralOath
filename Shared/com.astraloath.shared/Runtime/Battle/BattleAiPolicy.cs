@@ -140,21 +140,23 @@ namespace AstralOath.Shared.Battle
             int score = 0;
             foreach (var effect in effects[skill.id])
             {
-                if (effect.operation != "cleanse" || effect.value <= 0 ||
+                bool all = effect.operation == "cleanse_all";
+                if ((!all && (effect.operation != "cleanse" || effect.value <= 0)) ||
                     effect.condition == "caster_health_below_half" && !IsBelowHalf(actor))
                     continue;
+                int maximum = all ? int.MaxValue : effect.value;
                 if (effect.recipient == "self")
-                    score += CountRemovals(actor, effect.value);
+                    score += CountRemovals(actor, maximum);
                 else if (effect.recipient == "allies" || effect.recipient == "targets" && skill.target == "all_allies")
-                    score += allies.Sum(unit => CountRemovals(unit, effect.value));
+                    score += allies.Sum(unit => CountRemovals(unit, maximum));
                 else if (effect.recipient == "targets" || effect.recipient == "target_and_lowest_ally")
                 {
-                    score += CountRemovals(target, effect.value);
+                    score += CountRemovals(target, maximum);
                     if (effect.recipient == "target_and_lowest_ally")
                     {
                         var lowest = allies.OrderBy(HealthRatio).ThenBy(unit => unit.Slot.Position).FirstOrDefault();
                         if (lowest != null && lowest != target)
-                            score += CountRemovals(lowest, effect.value);
+                            score += CountRemovals(lowest, maximum);
                     }
                 }
             }

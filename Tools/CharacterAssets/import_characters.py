@@ -27,10 +27,11 @@ CHARACTERS={
     "c1014":("cedars","席德"),
     "c1015":("baal_sezan","巴尔＆塞尚"),
     "c1016":("yupine","优芬妮"),
+    "c1017":("achates","雅卡泰丝"),
     "c1062":("angelica","安洁莉卡"),
 }
 # Keep source identifiers verbatim even where the model and STG stems differ.
-SKILL_STEMS={"c1002":"c_cecilia_skill_new","c1007":"c_wilderd_skill","c1008":"c_aming_skill","c1010":"c_jerato_skill","c1013":"c_cartuja_skill","c1015":"c_baal_skill"}
+SKILL_STEMS={"c1002":"c_cecilia_skill_new","c1007":"c_wilderd_skill","c1008":"c_aming_skill","c1010":"c_jerato_skill","c1013":"c_cartuja_skill","c1015":"c_baal_skill","c1017":"c_acha_skill"}
 SKILL_VARIANTS={("c1009",3):"c_charlotte_skill_03_05",
                 **{("c1014",index):f"c_cedars_skill_{index:02}_new" for index in range(1,4)}}
 # Base STG omits this cue; the base skeleton marker and skin STG corroborate its timing.

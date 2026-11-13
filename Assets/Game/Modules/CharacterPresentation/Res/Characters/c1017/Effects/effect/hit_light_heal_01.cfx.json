@@ -1,0 +1,20 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "healer_skill_03_hit",
+      "y": "170",
+      "z": "1",
+      "scale": "1.65",
+      "format": "spine"
+    },
+    {
+      "source": "hit_heal_pati",
+      "y": "250",
+      "z": "2",
+      "scale": "0.75",
+      "delay": "150",
+      "format": "particle"
+    }
+  ]
+}

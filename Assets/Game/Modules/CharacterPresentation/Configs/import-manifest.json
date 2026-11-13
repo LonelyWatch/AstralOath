@@ -18,9 +18,62 @@
     "c1014",
     "c1015",
     "c1016",
+    "c1017",
     "c1062"
   ],
   "entries": [
+    {
+      "source": "camera/achates_skill_01_cm.scsp",
+      "sourceSha256": "7e0222ae3eed5fab9ae19fa561686d7a198e99ecfb654900243bc53f119a2ef4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Animations/camera/achates_skill_01_cm.spine.json",
+      "address": "characterlab/source/camera/achates_skill_01_cm.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "1ddb14ef932e1f4ed9c1bffa568ca640383122a435b732daba703d3f455bd82b",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 454,
+        "consumedBytes": 454,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 3,
+            "frames": 15,
+            "segments": 12,
+            "sourceMarkers": {
+              "allLinear": 2,
+              "allStepped": 0,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 11,
+              "stepped": 1,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "camera/achates_skill_01_cm.scsp",
+      "sourceSha256": "7e0222ae3eed5fab9ae19fa561686d7a198e99ecfb654900243bc53f119a2ef4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Animations/camera/achates_skill_01_cm.skeleton.json",
+      "address": "characterlab/source/camera/achates_skill_01_cm.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/camera/achates_skill_01_cm.scsp/json"
+      ],
+      "outputSha256": "c79bca012b0c4355ae37c263bd77d56cdeb03cb95d0291289aefe8cba2e2a4cb",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
     {
       "source": "camera/aming_skill_01_cm.scsp",
       "sourceSha256": "77b90fdfa261e31b0ff94c765f15682b4981b67268a22db58ed0c587b55d4359",
@@ -6102,6 +6155,315 @@
       }
     },
     {
+      "source": "cut/fhd/sk_c1017_3.webp",
+      "sourceSha256": "e10fd9fd5283554e1bd39da166c0fb9a23da28f35b5cebf951979757b876d575",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/cut/fhd/sk_c1017_3_frames/0000.png",
+      "address": "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0000",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "a5f7959dc38a7625da852fffbbd6631ac146fd3bcd4cf19f1ead4ec3a151641d",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 0
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1017_3.webp",
+      "sourceSha256": "e10fd9fd5283554e1bd39da166c0fb9a23da28f35b5cebf951979757b876d575",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/cut/fhd/sk_c1017_3_frames/0001.png",
+      "address": "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0001",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "dc8d4d7f8c401aed4c3b9c93d66484aac484cf55d9cc41d5246a3e3f3f6da0f6",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 1
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1017_3.webp",
+      "sourceSha256": "e10fd9fd5283554e1bd39da166c0fb9a23da28f35b5cebf951979757b876d575",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/cut/fhd/sk_c1017_3_frames/0002.png",
+      "address": "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0002",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "ec660c0d0a18652cb63504d3b43d82d0e2d0ef3849e4ea24594f0b758780e2f2",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 2
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1017_3.webp",
+      "sourceSha256": "e10fd9fd5283554e1bd39da166c0fb9a23da28f35b5cebf951979757b876d575",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/cut/fhd/sk_c1017_3_frames/0003.png",
+      "address": "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0003",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "b97777e77da3f1d4d851c25c8b1e0842afbc7d427426ff8aabf5065e630c6443",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 3
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1017_3.webp",
+      "sourceSha256": "e10fd9fd5283554e1bd39da166c0fb9a23da28f35b5cebf951979757b876d575",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/cut/fhd/sk_c1017_3_frames/0004.png",
+      "address": "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0004",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "8ae9f656475457db178298a0734f810d4708a3953ba167e9f0220ebc52826c67",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 4
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1017_3.webp",
+      "sourceSha256": "e10fd9fd5283554e1bd39da166c0fb9a23da28f35b5cebf951979757b876d575",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/cut/fhd/sk_c1017_3_frames/0005.png",
+      "address": "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0005",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "62cc003b897faaf94da1ba10de4d571dbf32db51a6f1ccdebee4df3b299b83d5",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 5
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1017_3.webp",
+      "sourceSha256": "e10fd9fd5283554e1bd39da166c0fb9a23da28f35b5cebf951979757b876d575",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/cut/fhd/sk_c1017_3_frames/0006.png",
+      "address": "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0006",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "2e4a5756f7258e8f3019136dea20d38cd9c63d47db88361e4232f461910fd18d",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 6
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1017_3.webp",
+      "sourceSha256": "e10fd9fd5283554e1bd39da166c0fb9a23da28f35b5cebf951979757b876d575",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/cut/fhd/sk_c1017_3_frames/0007.png",
+      "address": "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0007",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "588d82b651aa3e4c60081244d047932a36a8dcd7bd2a08fec962ee0625d22586",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 7
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1017_3.webp",
+      "sourceSha256": "e10fd9fd5283554e1bd39da166c0fb9a23da28f35b5cebf951979757b876d575",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/cut/fhd/sk_c1017_3_frames/0008.png",
+      "address": "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0008",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "88efd9720a1a7d1887a3d6e5412c313ca87409692790d15ad96f640153978ae4",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 8
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1017_3.webp",
+      "sourceSha256": "e10fd9fd5283554e1bd39da166c0fb9a23da28f35b5cebf951979757b876d575",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/cut/fhd/sk_c1017_3_frames/0009.png",
+      "address": "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0009",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "807efbe3a0a63bab875dc13de33742e6ac66703e7e7fc0c46adb23f24861924f",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 9
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1017_3.webp",
+      "sourceSha256": "e10fd9fd5283554e1bd39da166c0fb9a23da28f35b5cebf951979757b876d575",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/cut/fhd/sk_c1017_3_frames/0010.png",
+      "address": "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0010",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "799262d1fba0aea78fc71e6538589c578c274020705be7390640be53da1b221a",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 10
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1017_3.webp",
+      "sourceSha256": "e10fd9fd5283554e1bd39da166c0fb9a23da28f35b5cebf951979757b876d575",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/cut/fhd/sk_c1017_3_frames/0011.png",
+      "address": "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0011",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "40b07685ebfbb7ed0144bd4c6461c2ce5b28a778127662d1ba56f930d19a3133",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 11
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1017_3.webp",
+      "sourceSha256": "e10fd9fd5283554e1bd39da166c0fb9a23da28f35b5cebf951979757b876d575",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/cut/fhd/sk_c1017_3_frames/0012.png",
+      "address": "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0012",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "7e1083b2889fc5ca9c88f3d63670dc4b32f1d5db6dcedfa534344d5f8218fdb0",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 12
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1017_3.webp",
+      "sourceSha256": "e10fd9fd5283554e1bd39da166c0fb9a23da28f35b5cebf951979757b876d575",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/cut/fhd/sk_c1017_3_frames/0013.png",
+      "address": "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0013",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "5feb1d1a10c37f800b13828e260f143be4e81f771225426a814dce91b8c1efc5",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 13
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1017_3.webp",
+      "sourceSha256": "e10fd9fd5283554e1bd39da166c0fb9a23da28f35b5cebf951979757b876d575",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/cut/fhd/sk_c1017_3_frames/0014.png",
+      "address": "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0014",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "e60aeb9d36d78bb2d4deaabfe31a5b722256830f85b84f06697d8130b454f5e6",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 14
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1017_3.webp",
+      "sourceSha256": "e10fd9fd5283554e1bd39da166c0fb9a23da28f35b5cebf951979757b876d575",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/cut/fhd/sk_c1017_3_frames/0015.png",
+      "address": "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0015",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "15eed5ebf500d1d284918ad57f3bb6f3c6b0bca0a17dc8fc575a71888e392387",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 15
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1017_3.webp",
+      "sourceSha256": "e10fd9fd5283554e1bd39da166c0fb9a23da28f35b5cebf951979757b876d575",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/cut/fhd/sk_c1017_3_frames/0016.png",
+      "address": "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0016",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "3c823e12851bcf9177edf3bff29d1660eb321beabf1ad3351710decf0ecaaa90",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 16
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1017_3.webp",
+      "sourceSha256": "e10fd9fd5283554e1bd39da166c0fb9a23da28f35b5cebf951979757b876d575",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/cut/fhd/sk_c1017_3_frames/0017.png",
+      "address": "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0017",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "62e401d14966841d06d081babe7613e0fcc8ae21ebd948821a77d7bb8df58e03",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 17
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1017_3.webp",
+      "sourceSha256": "e10fd9fd5283554e1bd39da166c0fb9a23da28f35b5cebf951979757b876d575",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/cut/fhd/sk_c1017_3_frames/0018.png",
+      "address": "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0018",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "2aef28aa57d1edfc3270ebd65027abb7834f854f140fbcf2528f70428e6bab7c",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 18
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1017_3.webp",
+      "sourceSha256": "e10fd9fd5283554e1bd39da166c0fb9a23da28f35b5cebf951979757b876d575",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/cut/fhd/sk_c1017_3_frames/0019.png",
+      "address": "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0019",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "86126152e7b540270fb89aec9367e12a004c1a1fe6b9f41c06f8c92f4277023f",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 19
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1017_3.webp",
+      "sourceSha256": "e10fd9fd5283554e1bd39da166c0fb9a23da28f35b5cebf951979757b876d575",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/cut/fhd/sk_c1017_3_frames/0020.png",
+      "address": "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0020",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "28d94da530bc99fb201cbf9798df3df0592f8553c86e7d17c8ab445119513ce6",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 20
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1017_3.webp",
+      "sourceSha256": "e10fd9fd5283554e1bd39da166c0fb9a23da28f35b5cebf951979757b876d575",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/cut/fhd/sk_c1017_3.cutin.json",
+      "address": "characterlab/source/cut/fhd/sk_c1017_3.webp",
+      "type": "cutin",
+      "dependencies": [
+        "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0000",
+        "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0001",
+        "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0002",
+        "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0003",
+        "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0004",
+        "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0005",
+        "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0006",
+        "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0007",
+        "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0008",
+        "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0009",
+        "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0010",
+        "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0011",
+        "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0012",
+        "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0013",
+        "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0014",
+        "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0015",
+        "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0016",
+        "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0017",
+        "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0018",
+        "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0019",
+        "characterlab/source/cut/fhd/sk_c1017_3.webp/frame/0020"
+      ],
+      "outputSha256": "63a87d2f8119b28426b1e4c8acdbd5c0777ab473db6c7a5449a28665c059b61b",
+      "conversion": {
+        "status": "converted",
+        "frameCount": 21,
+        "durationSeconds": 1.64
+      }
+    },
+    {
       "source": "cut/fhd/sk_c1062_3.webp",
       "sourceSha256": "104511cc4ae6fb9b2570708f4cbf23f9366a4093f611bd5f5b42a310ae46252e",
       "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0000.png",
@@ -7687,6 +8049,669 @@
       }
     },
     {
+      "source": "effect/achates_bidle_pati.cfx",
+      "sourceSha256": "a0b35bf40dc9bed00dff47a412d9a2395a285857247b6dfc3876b773798aa45a",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/effect/achates_bidle_pati.cfx.json",
+      "address": "characterlab/source/effect/achates_bidle_pati.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/achates_bidle_pati.particle"
+      ],
+      "outputSha256": "4049fc3f1736bf44602c92c38fabe511e5bcbb591f5bc43d2880a886c42e4d5f",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/achates_bidle_pati.particle",
+      "sourceSha256": "1c88ebd21c770bdc1f9908962abe7db3b0a7305280f49ad9579a778d54766d50",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/effect/achates_bidle_pati.particle.json",
+      "address": "characterlab/source/effect/achates_bidle_pati.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/flash.sct",
+        "characterlab/source/particle/zodiac_star1.sct"
+      ],
+      "outputSha256": "e7676a2a02d0a50525c8b5c323a59e3a49b0839276a5c100b873673ff04947fc",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/achates_ground.atlas",
+      "sourceSha256": "d8aac0392f85cf4cbb50a627a7267dfe8bcc9887c37805746c69358fc793950c",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Atlas/effect/achates_ground.atlas.txt",
+      "address": "characterlab/source/effect/achates_ground.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/achates_ground.sct"
+      ],
+      "outputSha256": "d8aac0392f85cf4cbb50a627a7267dfe8bcc9887c37805746c69358fc793950c",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/achates_ground.scsp",
+      "sourceSha256": "80e528cc61e756dd1400ecd344076450baf58e27a8fc3e4a31b91c5c787f1883",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Animations/effect/achates_ground.spine.json",
+      "address": "characterlab/source/effect/achates_ground.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "7056344e12a893c3d8fcdf035ceaab1c5516d6f9dcb5402a30d70d93242d5bee",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 1277,
+        "consumedBytes": 1277,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 11,
+            "frames": 36,
+            "segments": 25,
+            "sourceMarkers": {
+              "allLinear": 1,
+              "allStepped": 7,
+              "explicit": 3
+            },
+            "modes": {
+              "linear": 9,
+              "stepped": 16,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/achates_ground.scsp",
+      "sourceSha256": "80e528cc61e756dd1400ecd344076450baf58e27a8fc3e4a31b91c5c787f1883",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Animations/effect/achates_ground.skeleton.json",
+      "address": "characterlab/source/effect/achates_ground.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/achates_ground.scsp/json",
+        "characterlab/source/effect/achates_ground.atlas",
+        "characterlab/source/effect/achates_ground.sct"
+      ],
+      "outputSha256": "62fcf986b2820e36615226c8721b5c462b07e9e312a1871abb0fefe632cd0ea6",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/achates_ground.sct",
+      "sourceSha256": "9f59b86d3fe960d83014a699e2968b85c34e791aa36fa34d3e1e2185f5ce4b46",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Textures/effect/achates_ground.png",
+      "address": "characterlab/source/effect/achates_ground.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "a1a58d4e6a5b903a6f15a166e0fa4119bc3247039724d3367f7d6bedc681908a",
+      "conversion": {
+        "status": "converted",
+        "width": 283,
+        "height": 156,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "9f59b86d3fe960d83014a699e2968b85c34e791aa36fa34d3e1e2185f5ce4b46",
+        "outputSha256": "a1a58d4e6a5b903a6f15a166e0fa4119bc3247039724d3367f7d6bedc681908a"
+      }
+    },
+    {
+      "source": "effect/achates_heal_cross.atlas",
+      "sourceSha256": "1c877741768e1fbde87493cafbef5d1d0fb2deda4ffc868fb88a9c2a11718354",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Atlas/effect/achates_heal_cross.atlas.txt",
+      "address": "characterlab/source/effect/achates_heal_cross.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/achates_heal_cross.sct"
+      ],
+      "outputSha256": "1c877741768e1fbde87493cafbef5d1d0fb2deda4ffc868fb88a9c2a11718354",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/achates_heal_cross.scsp",
+      "sourceSha256": "db91f26c1ca401ee830eb737cc3e3a220653104b8927dd6b7d820899092a2ae0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Animations/effect/achates_heal_cross.spine.json",
+      "address": "characterlab/source/effect/achates_heal_cross.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "9d6490ae699856c8569eb180ac9e3ea48e9da84bc87c9b5696713fb795ca3acb",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 1718,
+        "consumedBytes": 1718,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 15,
+            "frames": 35,
+            "segments": 20,
+            "sourceMarkers": {
+              "allLinear": 9,
+              "allStepped": 0,
+              "explicit": 6
+            },
+            "modes": {
+              "linear": 10,
+              "stepped": 6,
+              "bezier": 4
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/achates_heal_cross.scsp",
+      "sourceSha256": "db91f26c1ca401ee830eb737cc3e3a220653104b8927dd6b7d820899092a2ae0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Animations/effect/achates_heal_cross.skeleton.json",
+      "address": "characterlab/source/effect/achates_heal_cross.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/achates_heal_cross.scsp/json",
+        "characterlab/source/effect/achates_heal_cross.atlas",
+        "characterlab/source/effect/achates_heal_cross.sct"
+      ],
+      "outputSha256": "eafd204c04cd913793277fb039288027ab1e958230f906725c13e802f6b423b0",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/achates_heal_cross.sct",
+      "sourceSha256": "739a8ae0ce8dfb38c45eb0f8cf809428e94ae82850235b40ce7544990899e2fb",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Textures/effect/achates_heal_cross.png",
+      "address": "characterlab/source/effect/achates_heal_cross.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "57eef8cf64aa40a796bbb7925698eb8715e8ead0dd01e47d9349b71f5f713089",
+      "conversion": {
+        "status": "converted",
+        "width": 167,
+        "height": 263,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "739a8ae0ce8dfb38c45eb0f8cf809428e94ae82850235b40ce7544990899e2fb",
+        "outputSha256": "57eef8cf64aa40a796bbb7925698eb8715e8ead0dd01e47d9349b71f5f713089"
+      }
+    },
+    {
+      "source": "effect/achates_heal_pati.particle",
+      "sourceSha256": "f5769f11a0825f9f94a477c0c92813b60659faf1814367cce1629bdb7657e0d2",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/effect/achates_heal_pati.particle.json",
+      "address": "characterlab/source/effect/achates_heal_pati.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/orb_02.sct"
+      ],
+      "outputSha256": "08a4c85918643e4f6601be49227145327a38a2cbffbb3697a6415d172420e870",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/achates_heal_pati2.particle",
+      "sourceSha256": "036a93a5aa4bd88a209cf0bfe2bc01b28666458e8cc658e0d28ed24315f3cacd",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/effect/achates_heal_pati2.particle.json",
+      "address": "characterlab/source/effect/achates_heal_pati2.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/stars.sct"
+      ],
+      "outputSha256": "d1d91bcc0a73bd6beb3160686fb84a9a56a556682118c4d63911093f7a9c17b0",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/achates_pillar.atlas",
+      "sourceSha256": "ac2ed4d1a98c3dc42d2cd2832f7493d6b778dc5c3acb58d30a4b6f855f933f31",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Atlas/effect/achates_pillar.atlas.txt",
+      "address": "characterlab/source/effect/achates_pillar.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/achates_pillar.sct"
+      ],
+      "outputSha256": "ac2ed4d1a98c3dc42d2cd2832f7493d6b778dc5c3acb58d30a4b6f855f933f31",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/achates_pillar.scsp",
+      "sourceSha256": "48c99bf7631527956b716479f51b06a98f51969685a8046886949603d7eed672",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Animations/effect/achates_pillar.spine.json",
+      "address": "characterlab/source/effect/achates_pillar.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "ac3d89c5a97e9c75e69b11c6ad4922a8608d04de40b2db00b61f008337da65a2",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 37470,
+        "consumedBytes": 37470,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 65,
+            "frames": 201,
+            "segments": 136,
+            "sourceMarkers": {
+              "allLinear": 27,
+              "allStepped": 13,
+              "explicit": 25
+            },
+            "modes": {
+              "linear": 78,
+              "stepped": 55,
+              "bezier": 3
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/achates_pillar.scsp",
+      "sourceSha256": "48c99bf7631527956b716479f51b06a98f51969685a8046886949603d7eed672",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Animations/effect/achates_pillar.skeleton.json",
+      "address": "characterlab/source/effect/achates_pillar.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/achates_pillar.scsp/json",
+        "characterlab/source/effect/achates_pillar.atlas",
+        "characterlab/source/effect/achates_pillar.sct"
+      ],
+      "outputSha256": "b1e281e6f336e3ac6ed34d72710fd526270495c7d986e54a0840a627be5a3b32",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/achates_pillar.sct",
+      "sourceSha256": "82562b623e3669da04c30916f88d25e50f894320761ae965f99022f62fe1ae8c",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Textures/effect/achates_pillar.png",
+      "address": "characterlab/source/effect/achates_pillar.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "e28e005f51fa449a8afb8389f68e5ae9a8c1c6c05992f1d77937d38baa993639",
+      "conversion": {
+        "status": "converted",
+        "width": 504,
+        "height": 598,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "82562b623e3669da04c30916f88d25e50f894320761ae965f99022f62fe1ae8c",
+        "outputSha256": "e28e005f51fa449a8afb8389f68e5ae9a8c1c6c05992f1d77937d38baa993639"
+      }
+    },
+    {
+      "source": "effect/achates_skill_01.atlas",
+      "sourceSha256": "d710dd953999ca1c28e0c1f0fbc0b780217bb20481c20ae068535ccb757cdf6b",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Atlas/effect/achates_skill_01.atlas.txt",
+      "address": "characterlab/source/effect/achates_skill_01.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/achates_skill_01.sct"
+      ],
+      "outputSha256": "d710dd953999ca1c28e0c1f0fbc0b780217bb20481c20ae068535ccb757cdf6b",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/achates_skill_01.cfx",
+      "sourceSha256": "a9453571687d0e32bb52954a4815e11cc01826cf00c83fa1edca88ab07f2c00c",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/effect/achates_skill_01.cfx.json",
+      "address": "characterlab/source/effect/achates_skill_01.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/achates_skill_01.scsp",
+        "characterlab/source/effect/achates_skill_01_back.scsp",
+        "characterlab/source/effect/achates_skill_01_pati.particle"
+      ],
+      "outputSha256": "db709b4b3c18cf58b2bc0490b8f24b721405bf6e22516e0bb5d94b3cc99af159",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/achates_skill_01.scsp",
+      "sourceSha256": "1a730471009e0a4cbd247c96d870daed9b919a1efba147622cf989b203260d6c",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Animations/effect/achates_skill_01.spine.json",
+      "address": "characterlab/source/effect/achates_skill_01.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "83258840900dcb20b8fe8316184d4e251bd0f0d14e945e72cdaf99bc9284271d",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 1814,
+        "consumedBytes": 1814,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 13,
+            "frames": 42,
+            "segments": 29,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 7,
+              "explicit": 6
+            },
+            "modes": {
+              "linear": 6,
+              "stepped": 23,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/achates_skill_01.scsp",
+      "sourceSha256": "1a730471009e0a4cbd247c96d870daed9b919a1efba147622cf989b203260d6c",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Animations/effect/achates_skill_01.skeleton.json",
+      "address": "characterlab/source/effect/achates_skill_01.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/achates_skill_01.scsp/json",
+        "characterlab/source/effect/achates_skill_01.atlas",
+        "characterlab/source/effect/achates_skill_01.sct"
+      ],
+      "outputSha256": "fc86e8afc5ac7011b26477c7c27d4fec9092fadd3f0844cee2acfa84f43316ef",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/achates_skill_01.sct",
+      "sourceSha256": "2620316d3a71f8cabe1c6855037074e0eef9010c4363947070ef5de0780d20d6",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Textures/effect/achates_skill_01.png",
+      "address": "characterlab/source/effect/achates_skill_01.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "065c8aaa78f90f2fe5f9ca9115a9c34e104f0c92dafaa358cee78cb044cda38d",
+      "conversion": {
+        "status": "converted",
+        "width": 983,
+        "height": 250,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "2620316d3a71f8cabe1c6855037074e0eef9010c4363947070ef5de0780d20d6",
+        "outputSha256": "065c8aaa78f90f2fe5f9ca9115a9c34e104f0c92dafaa358cee78cb044cda38d"
+      }
+    },
+    {
+      "source": "effect/achates_skill_01_back.atlas",
+      "sourceSha256": "56ef8bc1df6ba38b60abc9601aa7a79ad69ff9f10b241ffc6cdd804f00d178d8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Atlas/effect/achates_skill_01_back.atlas.txt",
+      "address": "characterlab/source/effect/achates_skill_01_back.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/achates_skill_01_back.sct"
+      ],
+      "outputSha256": "56ef8bc1df6ba38b60abc9601aa7a79ad69ff9f10b241ffc6cdd804f00d178d8",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/achates_skill_01_back.scsp",
+      "sourceSha256": "16fb4847b6075591bbb45353336d217688bad5b57a3e55fafecec37ae01df449",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Animations/effect/achates_skill_01_back.spine.json",
+      "address": "characterlab/source/effect/achates_skill_01_back.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "8de82772dd27d39e3e5403f30991f1d5fdec426ed70937d9cfcc2b841a89ca7a",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 793,
+        "consumedBytes": 793,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 7,
+            "frames": 21,
+            "segments": 14,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 4,
+              "explicit": 3
+            },
+            "modes": {
+              "linear": 3,
+              "stepped": 11,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/achates_skill_01_back.scsp",
+      "sourceSha256": "16fb4847b6075591bbb45353336d217688bad5b57a3e55fafecec37ae01df449",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Animations/effect/achates_skill_01_back.skeleton.json",
+      "address": "characterlab/source/effect/achates_skill_01_back.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/achates_skill_01_back.scsp/json",
+        "characterlab/source/effect/achates_skill_01_back.atlas",
+        "characterlab/source/effect/achates_skill_01_back.sct"
+      ],
+      "outputSha256": "7108106eec26bc257178230ebccb17ee316e2ec7f020e72647953b2aa7ae281f",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/achates_skill_01_back.sct",
+      "sourceSha256": "bb05e5da7e2ba073dd5e568ae4e9595b289f0dff45d53dba6bd044157922eb56",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Textures/effect/achates_skill_01_back.png",
+      "address": "characterlab/source/effect/achates_skill_01_back.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "cbdc7eefdd7569ee37d4f178215345006a5a6aea124f8e50680ad873282656a4",
+      "conversion": {
+        "status": "converted",
+        "width": 173,
+        "height": 173,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "bb05e5da7e2ba073dd5e568ae4e9595b289f0dff45d53dba6bd044157922eb56",
+        "outputSha256": "cbdc7eefdd7569ee37d4f178215345006a5a6aea124f8e50680ad873282656a4"
+      }
+    },
+    {
+      "source": "effect/achates_skill_01_pati.particle",
+      "sourceSha256": "3387e928d8ac986dd4df1664aba0be0a1cffad10edf6dcb2702cb227dde4919d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/effect/achates_skill_01_pati.particle.json",
+      "address": "characterlab/source/effect/achates_skill_01_pati.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/zodiac_star1.sct"
+      ],
+      "outputSha256": "70fc095842a11e16776346610307af3bf99b66ef1f666be03a3c346d7cce6646",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/achates_skill_01_pati2.particle",
+      "sourceSha256": "d3f231b8de1157af643fb0831c23e744bc77be9bf6563034cf7bdecfa0d6b3a8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/effect/achates_skill_01_pati2.particle.json",
+      "address": "characterlab/source/effect/achates_skill_01_pati2.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/flash.sct",
+        "characterlab/source/particle/zodiac_star1.sct"
+      ],
+      "outputSha256": "5add03c418e7486539a896772647e32d31be0b5c4340bea7b0a67ade42580034",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/achates_skill_01_staff_pati.cfx",
+      "sourceSha256": "675bb4348879a2def12189e1ee3765c8634a925a1ad5ed9131d8a1bd643ba6b7",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/effect/achates_skill_01_staff_pati.cfx.json",
+      "address": "characterlab/source/effect/achates_skill_01_staff_pati.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/achates_skill_01_pati2.particle"
+      ],
+      "outputSha256": "95eb3728220a70f880471541e1169fdae39812dca32a6e7f87a98f2ae2820050",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/achates_skill_03.cfx",
+      "sourceSha256": "6d4c0c239257fb7c19df464e3b20be323a489b440ebc863eab16e1143233fa4e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/effect/achates_skill_03.cfx.json",
+      "address": "characterlab/source/effect/achates_skill_03.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/achates_skill_03_2.scsp",
+        "characterlab/source/effect/achates_wing1.particle",
+        "characterlab/source/effect/achates_wing2.particle",
+        "characterlab/source/effect/achates_wing_end.particle"
+      ],
+      "outputSha256": "61a0933663e0f5add3f1d86b3bfba08dc8568d0b0fd4252b1c9b2a7ff3f820c4",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/achates_skill_03_2.atlas",
+      "sourceSha256": "bf089e62d91d2e48b82cad8650db0c95adff6233a9196d113c7d73d047a18d32",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Atlas/effect/achates_skill_03_2.atlas.txt",
+      "address": "characterlab/source/effect/achates_skill_03_2.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/achates_skill_03_2.sct"
+      ],
+      "outputSha256": "bf089e62d91d2e48b82cad8650db0c95adff6233a9196d113c7d73d047a18d32",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/achates_skill_03_2.scsp",
+      "sourceSha256": "361787a6e37db564e6b229e54ea4115ad2b60b24938ea677d109a97b78e5e5d0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Animations/effect/achates_skill_03_2.spine.json",
+      "address": "characterlab/source/effect/achates_skill_03_2.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "f966e3c5cb09c6f99b3b57190201e0a1ab0a93b012e6676bb1a56e9f017dc5fc",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 193338,
+        "consumedBytes": 193338,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 266,
+            "frames": 1164,
+            "segments": 898,
+            "sourceMarkers": {
+              "allLinear": 21,
+              "allStepped": 106,
+              "explicit": 139
+            },
+            "modes": {
+              "linear": 330,
+              "stepped": 533,
+              "bezier": 35
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/achates_skill_03_2.scsp",
+      "sourceSha256": "361787a6e37db564e6b229e54ea4115ad2b60b24938ea677d109a97b78e5e5d0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Animations/effect/achates_skill_03_2.skeleton.json",
+      "address": "characterlab/source/effect/achates_skill_03_2.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/achates_skill_03_2.scsp/json",
+        "characterlab/source/effect/achates_skill_03_2.atlas",
+        "characterlab/source/effect/achates_skill_03_2.sct"
+      ],
+      "outputSha256": "0c45e686a14f6f24cff59e292686076c7e0b9eaa82dd9c7aef6f5205c28109e6",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/achates_skill_03_2.sct",
+      "sourceSha256": "abac5e7ccf3de193e91d2762817dfd216bc481925c226545040962b01d151325",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Textures/effect/achates_skill_03_2.png",
+      "address": "characterlab/source/effect/achates_skill_03_2.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "cd38d73067ff17cb2b524b30c668fb55f1aaab7c1fd8fc63fb5031287cd9b48e",
+      "conversion": {
+        "status": "converted",
+        "width": 490,
+        "height": 774,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "abac5e7ccf3de193e91d2762817dfd216bc481925c226545040962b01d151325",
+        "outputSha256": "cd38d73067ff17cb2b524b30c668fb55f1aaab7c1fd8fc63fb5031287cd9b48e"
+      }
+    },
+    {
+      "source": "effect/achates_wing1.particle",
+      "sourceSha256": "2f152739382e56d3cd718c54eb919c4735d23dcca8190cf067b4956359062ba6",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/effect/achates_wing1.particle.json",
+      "address": "characterlab/source/effect/achates_wing1.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/pati_01.sct"
+      ],
+      "outputSha256": "27211acd00c0cc7f2fe4cb137e6969867989eb069e99f75748f2b9e2daf6dd6c",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
       "source": "effect/achates_wing2.particle",
       "sourceSha256": "0efeff2df43b90ccca1878976e1930526eda690338e321c09a951fc0bffc1270",
       "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1008/Effects/effect/achates_wing2.particle.json",
@@ -7696,6 +8721,41 @@
         "characterlab/source/particle/pati_01.sct"
       ],
       "outputSha256": "024403c84238e3c42917b502f409e007048e4a338c43b0009e621c4c9e3b7666",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/achates_wing_end.particle",
+      "sourceSha256": "ee2521e2f4b4ac04bb2d39b6e52f29abbbd3442e310f0bfde3378ebd5eab208a",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/effect/achates_wing_end.particle.json",
+      "address": "characterlab/source/effect/achates_wing_end.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/cross_02.sct",
+        "characterlab/source/particle/flash.sct",
+        "characterlab/source/particle/orb_02.sct",
+        "characterlab/source/particle/pati_01.sct"
+      ],
+      "outputSha256": "de137fc7920c68a1b8789edfaafaae4c81cd09b07dbc902423c09066de835b29",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/achatest_skill_02.cfx",
+      "sourceSha256": "dd8d539cdbb72c8dd7e22ac4a16182c63e0f3c39dcd81b90cdb3a96bbdbce0d5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/effect/achatest_skill_02.cfx.json",
+      "address": "characterlab/source/effect/achatest_skill_02.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/achates_ground.scsp",
+        "characterlab/source/effect/achates_heal_cross.scsp",
+        "characterlab/source/effect/achates_heal_pati.particle",
+        "characterlab/source/effect/achates_heal_pati2.particle",
+        "characterlab/source/effect/achates_pillar.scsp"
+      ],
+      "outputSha256": "acdb6b5606ad36b3fbfcca383d83a8ffd050958aa45f4e21661e19dbfe90d634",
       "conversion": {
         "status": "converted"
       }
@@ -15419,6 +16479,121 @@
         "characterlab/source/particle/stone_02.sct"
       ],
       "outputSha256": "8ef8cbe3f501d90a4427182747022e1e5b49fd2f9807101c89831386ff6e12af",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/healer_skill_03_hit.atlas",
+      "sourceSha256": "8440b10f12f2bb80bce5a75b668097e711a4164f7157a74e6f96f75f8816836f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Atlas/effect/healer_skill_03_hit.atlas.txt",
+      "address": "characterlab/source/effect/healer_skill_03_hit.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/healer_skill_03_hit.sct"
+      ],
+      "outputSha256": "8440b10f12f2bb80bce5a75b668097e711a4164f7157a74e6f96f75f8816836f",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/healer_skill_03_hit.scsp",
+      "sourceSha256": "69714786405b99d553f463e83c7911a5fd06f5584d3046eefaab6c76a83ca547",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Animations/effect/healer_skill_03_hit.spine.json",
+      "address": "characterlab/source/effect/healer_skill_03_hit.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "f2bd6572599485206799fc87864a8a92d5dba2d43ead3bbc1cf31cf69487efd8",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 2383,
+        "consumedBytes": 2383,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 17,
+            "frames": 56,
+            "segments": 39,
+            "sourceMarkers": {
+              "allLinear": 6,
+              "allStepped": 2,
+              "explicit": 9
+            },
+            "modes": {
+              "linear": 22,
+              "stepped": 16,
+              "bezier": 1
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/healer_skill_03_hit.scsp",
+      "sourceSha256": "69714786405b99d553f463e83c7911a5fd06f5584d3046eefaab6c76a83ca547",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Animations/effect/healer_skill_03_hit.skeleton.json",
+      "address": "characterlab/source/effect/healer_skill_03_hit.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/healer_skill_03_hit.scsp/json",
+        "characterlab/source/effect/healer_skill_03_hit.atlas",
+        "characterlab/source/effect/healer_skill_03_hit.sct"
+      ],
+      "outputSha256": "bb332d1a9bea393f0c5c813a86f80b5e0c654eb43a4faade81967e4c320fd385",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/healer_skill_03_hit.sct",
+      "sourceSha256": "b650600c6dd15ebb75e637fc9fad2aa30cdc0c95ce88ac1747071076d764a123",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Textures/effect/healer_skill_03_hit.png",
+      "address": "characterlab/source/effect/healer_skill_03_hit.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "664810940ec96c4f7808beb2b1c1d834af7f29a904815851974ee3a18acee1ad",
+      "conversion": {
+        "status": "converted",
+        "width": 404,
+        "height": 483,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "b650600c6dd15ebb75e637fc9fad2aa30cdc0c95ce88ac1747071076d764a123",
+        "outputSha256": "664810940ec96c4f7808beb2b1c1d834af7f29a904815851974ee3a18acee1ad"
+      }
+    },
+    {
+      "source": "effect/hit_heal_pati.particle",
+      "sourceSha256": "4b98941bff9b54dd1f1ab67461e85ae64f892bbb5b8831528ffb1d67d3037606",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/effect/hit_heal_pati.particle.json",
+      "address": "characterlab/source/effect/hit_heal_pati.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/pati_01.sct"
+      ],
+      "outputSha256": "be5b655da46640142d7c88c3ee456411ea81001f4a7a231388ec97346e0b5308",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/hit_light_heal_01.cfx",
+      "sourceSha256": "388c621839c9961579f23cfd5798fb4a7c503ac752d7950f8f931dbc803fef4d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Effects/effect/hit_light_heal_01.cfx.json",
+      "address": "characterlab/source/effect/hit_light_heal_01.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/healer_skill_03_hit.scsp",
+        "characterlab/source/effect/hit_heal_pati.particle"
+      ],
+      "outputSha256": "99b146ca460be0f747bec299f75cb41126249d304e1ca7c8205ca29c2f9f4556",
       "conversion": {
         "status": "converted"
       }
@@ -23776,6 +24951,957 @@
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 2
+      }
+    },
+    {
+      "source": "model/achates.atlas",
+      "sourceSha256": "e094ad8c621e272694b0a778aee6972da901f4ff6902d51387486020995abdd3",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Atlas/model/achates.atlas.txt",
+      "address": "characterlab/source/model/achates.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/model/achates.sct"
+      ],
+      "outputSha256": "e094ad8c621e272694b0a778aee6972da901f4ff6902d51387486020995abdd3",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "model/achates.scsp",
+      "sourceSha256": "6465fea3b73f9dfd225f5293643d094b17f4e02d70ffe552ea123cc15991f68a",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Animations/model/achates.spine.json",
+      "address": "characterlab/source/model/achates.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "a55943b70d0a3a22e59b236aa4b7a7cc84b74d602c1ca0f4943d2841f5a35d24",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 21,
+        "binaryBytes": 2565046,
+        "consumedBytes": 2565046,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {
+          "appear": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 3,
+              "bones": {
+                "Head": 1,
+                "Ribbon": 1,
+                "Shirts_FF": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "attacked": {
+            "flipX": {
+              "tracks": 18,
+              "frames": 46,
+              "bones": {
+                "Boots_R_FU": 3,
+                "Hand_R": 3,
+                "Boots_L_D": 3,
+                "bone139": 2,
+                "Skirt_B": 3,
+                "Leg_R": 2,
+                "ChestF_Center": 2,
+                "Glove_R_U": 3,
+                "Hair_Tail_L": 2,
+                "Leg_L_02": 3,
+                "Abdomen": 2,
+                "Head": 3,
+                "Chest_Broach": 2,
+                "Leg_L": 2,
+                "Hair_Tail_R": 2,
+                "Boots_L_U": 3,
+                "Boots_R_D": 3,
+                "Belt_L_C": 3
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "attacked_damage": {
+            "flipX": {
+              "tracks": 10,
+              "frames": 10,
+              "bones": {
+                "Boots_L_U": 1,
+                "Boots_R_D": 1,
+                "Skirt_B": 1,
+                "Head": 1,
+                "Belt_L_C": 1,
+                "Boots_L_D": 1,
+                "Leg_L_02": 1,
+                "Glove_R_U": 1,
+                "Boots_R_FU": 1,
+                "Hand_R": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "b_idle": {
+            "flipX": {
+              "tracks": 17,
+              "frames": 35,
+              "bones": {
+                "bone139": 2,
+                "Hand_R": 3,
+                "Shirts_FF": 1,
+                "Leg_L_02": 3,
+                "Belt_L_C": 2,
+                "Boots_R_FU": 3,
+                "Skirt_B": 3,
+                "ChestF_Center": 1,
+                "Head": 3,
+                "Boots_R_D": 2,
+                "Boots_L_D": 2,
+                "Chest_Broach": 1,
+                "Glove_R_U": 3,
+                "Boots_L_U": 3,
+                "Ribbon": 1,
+                "Hip": 1,
+                "Hair_Tail_L": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "b_idle_ready": {
+            "flipX": {
+              "tracks": 22,
+              "frames": 65,
+              "bones": {
+                "Hip": 1,
+                "Leg_L": 4,
+                "Leg_L_02": 5,
+                "Boots_L_U": 4,
+                "Glove_L_U": 2,
+                "Glove_R_U": 3,
+                "bone139": 2,
+                "Boots_L_D": 2,
+                "Abdomen": 5,
+                "Boots_R_FU": 2,
+                "Head": 8,
+                "Shirts_FF": 1,
+                "Boots_R_D": 2,
+                "Hand_R": 3,
+                "Leg_R": 5,
+                "Ribbon": 1,
+                "Chest_Broach": 4,
+                "ChestF_Center": 4,
+                "Skirt_B": 2,
+                "Hair_Tail_L": 2,
+                "Hair_Tail_R": 1,
+                "Belt_L_C": 2
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "camping": {
+            "flipX": {
+              "tracks": 6,
+              "frames": 13,
+              "bones": {
+                "Head": 2,
+                "Ribbon": 2,
+                "Shirts_FF": 2,
+                "Hair_Tail_R": 3,
+                "Hair_Tail_L": 3,
+                "root": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "down": {
+            "flipX": {
+              "tracks": 13,
+              "frames": 17,
+              "bones": {
+                "bone139": 1,
+                "Glove_R_U": 1,
+                "Boots_R_FU": 1,
+                "Boots_L_U": 1,
+                "Boots_L_D": 1,
+                "Hair_Tail_L": 3,
+                "Head": 2,
+                "Hand_R": 1,
+                "Belt_L_C": 1,
+                "Hair_Tail_R": 2,
+                "Boots_R_D": 1,
+                "Hip": 1,
+                "Leg_L_02": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "flying": {
+            "flipX": {
+              "tracks": 14,
+              "frames": 18,
+              "bones": {
+                "bone139": 1,
+                "Glove_R_U": 1,
+                "Boots_R_FU": 1,
+                "Boots_L_U": 1,
+                "Boots_L_D": 1,
+                "Hair_Tail_L": 3,
+                "Skirt_B": 1,
+                "Skirt_F_01_Center": 1,
+                "Head": 1,
+                "Hand_R": 1,
+                "Hair_Tail_R": 2,
+                "Boots_R_D": 1,
+                "Hip": 2,
+                "Leg_L_02": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "flying_damage": {
+            "flipX": {
+              "tracks": 14,
+              "frames": 14,
+              "bones": {
+                "Hand_R": 1,
+                "Boots_R_FU": 1,
+                "Glove_R_U": 1,
+                "Leg_L_02": 1,
+                "Boots_L_D": 1,
+                "Skirt_F_01_Center": 1,
+                "Skirt_B": 1,
+                "Boots_L_U": 1,
+                "Boots_R_D": 1,
+                "Hair_Tail_R": 1,
+                "bone139": 1,
+                "Head": 1,
+                "Hip": 1,
+                "Hair_Tail_L": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "groggy": {
+            "flipX": {
+              "tracks": 14,
+              "frames": 22,
+              "bones": {
+                "Leg_L_02": 2,
+                "Hair_Tail_R": 2,
+                "Hand_R": 1,
+                "Skirt_B": 1,
+                "Head": 1,
+                "Hair_Tail_L": 4,
+                "Boots_L_U": 1,
+                "Shirts_FF": 1,
+                "Boots_R_D": 2,
+                "Glove_R_U": 1,
+                "Boots_R_FU": 1,
+                "Boots_L_D": 2,
+                "bone139": 1,
+                "Ribbon": 2
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "idle": {
+            "flipX": {
+              "tracks": 18,
+              "frames": 30,
+              "bones": {
+                "Glove_R_U": 2,
+                "Boots_R_FU": 2,
+                "Boots_L_U": 2,
+                "Leg_L_02": 2,
+                "Head": 2,
+                "Belt_L_C": 2,
+                "Boots_R_D": 3,
+                "Boots_L_D": 2,
+                "Leg_R": 1,
+                "Chest_Broach": 1,
+                "Hand_R": 2,
+                "Abdomen": 1,
+                "Skirt_B": 2,
+                "bone139": 2,
+                "ChestF_Center": 1,
+                "Leg_L": 1,
+                "Hair_Tail_R": 1,
+                "Hair_Tail_L": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "jump_back": {
+            "flipX": {
+              "tracks": 22,
+              "frames": 47,
+              "bones": {
+                "Hair_Tail_R": 4,
+                "Hand_R": 1,
+                "Leg_L": 2,
+                "Belt_L_C": 1,
+                "Leg_R": 2,
+                "Leg_L_02": 2,
+                "Hand_L": 2,
+                "bone139": 1,
+                "ChestF_Center": 1,
+                "Shirts_FF": 5,
+                "Chest_Broach": 1,
+                "Boots_R_FU": 1,
+                "Leg_R_02": 2,
+                "Head": 7,
+                "Boots_L_D": 2,
+                "Boots_R_D": 3,
+                "Glove_R_U": 1,
+                "Hair_Tail_L": 4,
+                "Abdomen": 2,
+                "Boots_L_U": 1,
+                "Ribbon": 1,
+                "Skirt_B": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "jump_forward": {
+            "flipX": {
+              "tracks": 8,
+              "frames": 18,
+              "bones": {
+                "Shirts_FF": 3,
+                "Hair_Tail_R": 1,
+                "Chest_Broach": 1,
+                "Ribbon": 2,
+                "Hip": 2,
+                "ChestF_Center": 3,
+                "Head": 5,
+                "Hair_Tail_L": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "knock_down": {
+            "flipX": {
+              "tracks": 14,
+              "frames": 37,
+              "bones": {
+                "Boots_L_D": 3,
+                "Hand_R": 3,
+                "Leg_L_02": 3,
+                "Boots_R_D": 3,
+                "Hair_Tail_L": 2,
+                "ChestF_Center": 2,
+                "Chest_Broach": 2,
+                "Head": 3,
+                "Hair_Tail_R": 2,
+                "Glove_R_U": 3,
+                "Boots_L_U": 3,
+                "Hip": 2,
+                "bone139": 3,
+                "Boots_R_FU": 3
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "rise": {
+            "flipX": {
+              "tracks": 21,
+              "frames": 62,
+              "bones": {
+                "Leg_R": 1,
+                "Belt_L_C": 1,
+                "Leg_L_02": 4,
+                "Hand_R": 4,
+                "Shirts_FF": 1,
+                "Chest_Broach": 3,
+                "Skirt_B": 1,
+                "Leg_L": 1,
+                "Boots_L_U": 4,
+                "Hair_Tail_L": 4,
+                "Ribbon": 2,
+                "Head": 4,
+                "Glove_R_U": 4,
+                "Abdomen": 1,
+                "Hip": 4,
+                "Hair_Tail_R": 4,
+                "Boots_R_FU": 4,
+                "bone139": 4,
+                "Boots_L_D": 4,
+                "Boots_R_D": 4,
+                "ChestF_Center": 3
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "run": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 7,
+              "bones": {
+                "Head": 2,
+                "Ribbon": 3,
+                "Shirts_FF": 2
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "run_start": {
+            "flipX": {
+              "tracks": 15,
+              "frames": 21,
+              "bones": {
+                "Leg_L": 1,
+                "Head": 2,
+                "Hair_Tail_R": 1,
+                "Skirt_B": 1,
+                "Abdomen": 1,
+                "Leg_R": 1,
+                "Boots_L_U": 1,
+                "Ribbon": 3,
+                "Shirts_FF": 2,
+                "ChestF_Center": 1,
+                "Leg_L_02": 2,
+                "Belt_L_C": 1,
+                "Chest_Broach": 1,
+                "Hair_Tail_L": 2,
+                "Boots_R_D": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "skill1": {
+            "flipX": {
+              "tracks": 4,
+              "frames": 7,
+              "bones": {
+                "Ribbon": 1,
+                "Shirts_FF": 1,
+                "Chest_Broach": 3,
+                "ChestF_Center": 2
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "skill2": {
+            "flipX": {
+              "tracks": 26,
+              "frames": 150,
+              "bones": {
+                "Glove_L_U": 2,
+                "Leg_L": 1,
+                "Shirts_FF": 13,
+                "Head": 16,
+                "Boots_R_D": 4,
+                "Boots_L_D": 11,
+                "Leg_L_02": 4,
+                "Leg_R": 10,
+                "bone139": 4,
+                "Glove_R_U": 4,
+                "Hand_R": 4,
+                "Boots_R_FU": 6,
+                "Boots_L_U": 4,
+                "Abdomen": 6,
+                "Hip": 11,
+                "Chest_Broach": 3,
+                "Hair_Tail_R": 4,
+                "Skirt_B": 10,
+                "ChestF_Center": 5,
+                "Hair_Tail_L": 2,
+                "Chest_Center": 6,
+                "Hat": 1,
+                "Belt_L_C": 5,
+                "Hat_broach": 5,
+                "Skirt_F_01_Center": 7,
+                "Ribbon": 2
+              }
+            },
+            "flipY": {
+              "tracks": 2,
+              "frames": 11,
+              "bones": {
+                "Glove_L_U": 2,
+                "Boots_L_D": 9
+              }
+            }
+          },
+          "skill3_1": {
+            "flipX": {
+              "tracks": 8,
+              "frames": 14,
+              "bones": {
+                "Shirts_FF": 3,
+                "Chest_Broach": 1,
+                "Hair_Tail_R": 1,
+                "ChestF_Center": 1,
+                "Head": 4,
+                "Ribbon": 2,
+                "Hair_Tail_L": 1,
+                "Hip": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "skill3_2": {
+            "flipX": {
+              "tracks": 2,
+              "frames": 9,
+              "bones": {
+                "Hip": 4,
+                "Head": 5
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          }
+        },
+        "curveTimelines": {
+          "appear": {
+            "tracks": 620,
+            "frames": 620,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 620,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "attacked": {
+            "tracks": 669,
+            "frames": 3736,
+            "segments": 3067,
+            "sourceMarkers": {
+              "allLinear": 3,
+              "allStepped": 666,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 3067,
+              "bezier": 0
+            }
+          },
+          "attacked_damage": {
+            "tracks": 625,
+            "frames": 625,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 625,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "b_idle": {
+            "tracks": 664,
+            "frames": 5657,
+            "segments": 4993,
+            "sourceMarkers": {
+              "allLinear": 34,
+              "allStepped": 621,
+              "explicit": 9
+            },
+            "modes": {
+              "linear": 8,
+              "stepped": 4984,
+              "bezier": 1
+            }
+          },
+          "b_idle_ready": {
+            "tracks": 682,
+            "frames": 6650,
+            "segments": 5968,
+            "sourceMarkers": {
+              "allLinear": 15,
+              "allStepped": 667,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 5968,
+              "bezier": 0
+            }
+          },
+          "camping": {
+            "tracks": 660,
+            "frames": 2698,
+            "segments": 2038,
+            "sourceMarkers": {
+              "allLinear": 83,
+              "allStepped": 576,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 2036,
+              "bezier": 2
+            }
+          },
+          "down": {
+            "tracks": 638,
+            "frames": 2131,
+            "segments": 1493,
+            "sourceMarkers": {
+              "allLinear": 32,
+              "allStepped": 606,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 1493,
+              "bezier": 0
+            }
+          },
+          "flying": {
+            "tracks": 637,
+            "frames": 1769,
+            "segments": 1132,
+            "sourceMarkers": {
+              "allLinear": 29,
+              "allStepped": 608,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 1132,
+              "bezier": 0
+            }
+          },
+          "flying_damage": {
+            "tracks": 637,
+            "frames": 637,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 637,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "groggy": {
+            "tracks": 642,
+            "frames": 6709,
+            "segments": 6067,
+            "sourceMarkers": {
+              "allLinear": 30,
+              "allStepped": 612,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 6067,
+              "bezier": 0
+            }
+          },
+          "idle": {
+            "tracks": 670,
+            "frames": 10205,
+            "segments": 9535,
+            "sourceMarkers": {
+              "allLinear": 11,
+              "allStepped": 659,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 9535,
+              "bezier": 0
+            }
+          },
+          "jump_back": {
+            "tracks": 671,
+            "frames": 3660,
+            "segments": 2989,
+            "sourceMarkers": {
+              "allLinear": 54,
+              "allStepped": 617,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 1,
+              "stepped": 2988,
+              "bezier": 0
+            }
+          },
+          "jump_forward": {
+            "tracks": 665,
+            "frames": 3915,
+            "segments": 3250,
+            "sourceMarkers": {
+              "allLinear": 36,
+              "allStepped": 629,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 3250,
+              "bezier": 0
+            }
+          },
+          "knock_down": {
+            "tracks": 643,
+            "frames": 1895,
+            "segments": 1252,
+            "sourceMarkers": {
+              "allLinear": 1,
+              "allStepped": 642,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 1252,
+              "bezier": 0
+            }
+          },
+          "rise": {
+            "tracks": 673,
+            "frames": 3908,
+            "segments": 3235,
+            "sourceMarkers": {
+              "allLinear": 13,
+              "allStepped": 660,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 3235,
+              "bezier": 0
+            }
+          },
+          "run": {
+            "tracks": 621,
+            "frames": 4274,
+            "segments": 3653,
+            "sourceMarkers": {
+              "allLinear": 4,
+              "allStepped": 617,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 3653,
+              "bezier": 0
+            }
+          },
+          "run_start": {
+            "tracks": 666,
+            "frames": 2014,
+            "segments": 1348,
+            "sourceMarkers": {
+              "allLinear": 39,
+              "allStepped": 627,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 1348,
+              "bezier": 0
+            }
+          },
+          "skill1": {
+            "tracks": 683,
+            "frames": 3071,
+            "segments": 2388,
+            "sourceMarkers": {
+              "allLinear": 74,
+              "allStepped": 609,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 2388,
+              "bezier": 0
+            }
+          },
+          "skill2": {
+            "tracks": 694,
+            "frames": 18763,
+            "segments": 18069,
+            "sourceMarkers": {
+              "allLinear": 8,
+              "allStepped": 684,
+              "explicit": 2
+            },
+            "modes": {
+              "linear": 2,
+              "stepped": 18067,
+              "bezier": 0
+            }
+          },
+          "skill3_1": {
+            "tracks": 661,
+            "frames": 3502,
+            "segments": 2841,
+            "sourceMarkers": {
+              "allLinear": 37,
+              "allStepped": 624,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 2841,
+              "bezier": 0
+            }
+          },
+          "skill3_2": {
+            "tracks": 623,
+            "frames": 5976,
+            "segments": 5353,
+            "sourceMarkers": {
+              "allLinear": 9,
+              "allStepped": 614,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 5353,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "model/achates.scsp",
+      "sourceSha256": "6465fea3b73f9dfd225f5293643d094b17f4e02d70ffe552ea123cc15991f68a",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Animations/model/achates.skeleton.json",
+      "address": "characterlab/source/model/achates.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/model/achates.scsp/json",
+        "characterlab/source/model/achates.atlas",
+        "characterlab/source/model/achates.sct"
+      ],
+      "outputSha256": "b7a6d043a979826147ed3fedf6d7ea5e1490f1080c1b4b3270d328c6f8a8a6ae",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 21
+      }
+    },
+    {
+      "source": "model/achates.sct",
+      "sourceSha256": "d35f8fcddae46ccb9900dbf97e7b4c1d8d07d21c753b173730ba26850fe57de7",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Textures/model/achates.png",
+      "address": "characterlab/source/model/achates.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "da0f30b29b95fc49324c9f6b254bc1e4c968b30348ef8a1f48edf02e52673d42",
+      "conversion": {
+        "status": "converted",
+        "width": 1814,
+        "height": 512,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "d35f8fcddae46ccb9900dbf97e7b4c1d8d07d21c753b173730ba26850fe57de7",
+        "outputSha256": "da0f30b29b95fc49324c9f6b254bc1e4c968b30348ef8a1f48edf02e52673d42"
+      }
+    },
+    {
+      "source": "model/achates.timeline",
+      "sourceSha256": "b4582934ce801cf90dda9ba7a6fd55e9462ea439469cf70ed895ca078a89958e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Configs/model/achates.timeline.json",
+      "address": "characterlab/source/model/achates.timeline",
+      "type": "timeline",
+      "dependencies": [
+        "characterlab/source/effect/achates_bidle_pati.cfx",
+        "characterlab/source/effect/achates_skill_01.cfx",
+        "characterlab/source/effect/achates_skill_01_staff_pati.cfx"
+      ],
+      "outputSha256": "dcaae9a1b01b78b2961fd1fd65f95c6f507730f4c5d6ba08afdf45aad2d6b25d",
+      "conversion": {
+        "status": "converted"
       }
     },
     {
@@ -35727,6 +37853,24 @@
       }
     },
     {
+      "source": "particle/stars.sct",
+      "sourceSha256": "1243a1dbe4bc284de618109e432c8ec9ecfeb8b5747f09bc714c19b0a3d33eea",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Textures/particle/stars.png",
+      "address": "characterlab/source/particle/stars.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "bc90626b57420789a44e84411139a9c579fa3098cb3fe81d9862f49af182520d",
+      "conversion": {
+        "status": "converted",
+        "width": 32,
+        "height": 32,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved",
+        "sourceSha256": "1243a1dbe4bc284de618109e432c8ec9ecfeb8b5747f09bc714c19b0a3d33eea",
+        "outputSha256": "bc90626b57420789a44e84411139a9c579fa3098cb3fe81d9862f49af182520d"
+      }
+    },
+    {
       "source": "particle/stone_01.sct",
       "sourceSha256": "649bfc28cd11664e69ab36c618b0afb89df2956b25a6920690fd8571bb0438b3",
       "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1006/Textures/particle/stone_01.png",
@@ -37312,6 +39456,137 @@
       }
     },
     {
+      "source": "portrait/c1017.atlas",
+      "sourceSha256": "60ca802e6f588b1be3047b3da4218ba0b02652d5eb33affb337d2c3f6539f5cc",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Atlas/portrait/c1017.atlas.txt",
+      "address": "characterlab/source/portrait/c1017.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/portrait/c1017.sct"
+      ],
+      "outputSha256": "60ca802e6f588b1be3047b3da4218ba0b02652d5eb33affb337d2c3f6539f5cc",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "portrait/c1017.scsp",
+      "sourceSha256": "68883d0778055b2815a12351fbb450b9c48695ccd919a6770a0e9f189c520556",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Animations/portrait/c1017.spine.json",
+      "address": "characterlab/source/portrait/c1017.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "a012cff8144552c2111f7e24cf677bc1670d3d3887d0abd30211d76f8ca63e6c",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 4,
+        "binaryBytes": 352424,
+        "consumedBytes": 352424,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "idle": {
+            "tracks": 543,
+            "frames": 3518,
+            "segments": 2975,
+            "sourceMarkers": {
+              "allLinear": 19,
+              "allStepped": 319,
+              "explicit": 205
+            },
+            "modes": {
+              "linear": 138,
+              "stepped": 1344,
+              "bezier": 1493
+            }
+          },
+          "idle2": {
+            "tracks": 475,
+            "frames": 1389,
+            "segments": 914,
+            "sourceMarkers": {
+              "allLinear": 64,
+              "allStepped": 237,
+              "explicit": 174
+            },
+            "modes": {
+              "linear": 42,
+              "stepped": 385,
+              "bezier": 487
+            }
+          },
+          "idle3": {
+            "tracks": 478,
+            "frames": 1311,
+            "segments": 833,
+            "sourceMarkers": {
+              "allLinear": 71,
+              "allStepped": 232,
+              "explicit": 175
+            },
+            "modes": {
+              "linear": 2,
+              "stepped": 349,
+              "bezier": 482
+            }
+          },
+          "idle33": {
+            "tracks": 518,
+            "frames": 1496,
+            "segments": 978,
+            "sourceMarkers": {
+              "allLinear": 97,
+              "allStepped": 237,
+              "explicit": 184
+            },
+            "modes": {
+              "linear": 64,
+              "stepped": 398,
+              "bezier": 516
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "portrait/c1017.scsp",
+      "sourceSha256": "68883d0778055b2815a12351fbb450b9c48695ccd919a6770a0e9f189c520556",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Animations/portrait/c1017.skeleton.json",
+      "address": "characterlab/source/portrait/c1017.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/portrait/c1017.scsp/json",
+        "characterlab/source/portrait/c1017.atlas",
+        "characterlab/source/portrait/c1017.sct"
+      ],
+      "outputSha256": "7d6b38c34fa41a6e586fe2f9e9afbb9da5786e25569702f5436ba615a27958b0",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 4
+      }
+    },
+    {
+      "source": "portrait/c1017.sct",
+      "sourceSha256": "f14604bf9d9b178026f0a7eb0f0202f9015a8fc0c98819b7e37d30119a6c469b",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Textures/portrait/c1017.png",
+      "address": "characterlab/source/portrait/c1017.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "d670155094fd36822391e95610085dc0a0ee4ee38248afb01a3a8847306dc650",
+      "conversion": {
+        "status": "converted",
+        "width": 1682,
+        "height": 1032,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "f14604bf9d9b178026f0a7eb0f0202f9015a8fc0c98819b7e37d30119a6c469b",
+        "outputSha256": "d670155094fd36822391e95610085dc0a0ee4ee38248afb01a3a8847306dc650"
+      }
+    },
+    {
       "source": "portrait/c1062.atlas",
       "sourceSha256": "52ca748c84a506050a880601da5719def118301b5de381d4d815bd3874b110c4",
       "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/portrait/c1062.atlas.txt",
@@ -37623,6 +39898,127 @@
         "status": "converted",
         "spineVersion": "2.1.27",
         "animationCount": 1
+      }
+    },
+    {
+      "source": "stagept/c_acha_skill_01.stg",
+      "sourceSha256": "b3a61e2a4db2d4386ece390c7e5e14768436d978e96026eb3c96bcc0b607285d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Configs/stagept/c_acha_skill_01.graph.json",
+      "address": "characterlab/source/stagept/c_acha_skill_01.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/camera/achates_skill_01_cm.scsp",
+        "characterlab/source/effect/achates_bidle_pati.cfx",
+        "characterlab/source/effect/achates_bidle_pati.particle",
+        "characterlab/source/effect/achates_skill_01.atlas",
+        "characterlab/source/effect/achates_skill_01.cfx",
+        "characterlab/source/effect/achates_skill_01.scsp",
+        "characterlab/source/effect/achates_skill_01.sct",
+        "characterlab/source/effect/achates_skill_01_back.atlas",
+        "characterlab/source/effect/achates_skill_01_back.scsp",
+        "characterlab/source/effect/achates_skill_01_back.sct",
+        "characterlab/source/effect/achates_skill_01_pati.particle",
+        "characterlab/source/effect/achates_skill_01_pati2.particle",
+        "characterlab/source/effect/achates_skill_01_staff_pati.cfx",
+        "characterlab/source/effect/hit_new_blunt_01.atlas",
+        "characterlab/source/effect/hit_new_blunt_01.scsp",
+        "characterlab/source/effect/hit_new_blunt_01.sct",
+        "characterlab/source/effect/hit_new_blunt_normal.cfx",
+        "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+        "characterlab/source/model/achates.timeline",
+        "characterlab/source/particle/flash.sct",
+        "characterlab/source/particle/ticle_02.sct",
+        "characterlab/source/particle/zodiac_star1.sct"
+      ],
+      "outputSha256": "b6c8c5a6c34e3ce400e22c7558bfded32982d44c91381aacf3e854f883edf2ab",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "stagept/c_acha_skill_02.stg",
+      "sourceSha256": "dd78571eec05f3c98b9cf182e32faef9c241adb3b891e680d5dc2a52bc5a502c",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Configs/stagept/c_acha_skill_02.graph.json",
+      "address": "characterlab/source/stagept/c_acha_skill_02.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/effect/achates_bidle_pati.cfx",
+        "characterlab/source/effect/achates_bidle_pati.particle",
+        "characterlab/source/effect/achates_ground.atlas",
+        "characterlab/source/effect/achates_ground.scsp",
+        "characterlab/source/effect/achates_ground.sct",
+        "characterlab/source/effect/achates_heal_cross.atlas",
+        "characterlab/source/effect/achates_heal_cross.scsp",
+        "characterlab/source/effect/achates_heal_cross.sct",
+        "characterlab/source/effect/achates_heal_pati.particle",
+        "characterlab/source/effect/achates_heal_pati2.particle",
+        "characterlab/source/effect/achates_pillar.atlas",
+        "characterlab/source/effect/achates_pillar.scsp",
+        "characterlab/source/effect/achates_pillar.sct",
+        "characterlab/source/effect/achates_skill_01.atlas",
+        "characterlab/source/effect/achates_skill_01.cfx",
+        "characterlab/source/effect/achates_skill_01.scsp",
+        "characterlab/source/effect/achates_skill_01.sct",
+        "characterlab/source/effect/achates_skill_01_back.atlas",
+        "characterlab/source/effect/achates_skill_01_back.scsp",
+        "characterlab/source/effect/achates_skill_01_back.sct",
+        "characterlab/source/effect/achates_skill_01_pati.particle",
+        "characterlab/source/effect/achates_skill_01_pati2.particle",
+        "characterlab/source/effect/achates_skill_01_staff_pati.cfx",
+        "characterlab/source/effect/achatest_skill_02.cfx",
+        "characterlab/source/model/achates.timeline",
+        "characterlab/source/particle/flash.sct",
+        "characterlab/source/particle/orb_02.sct",
+        "characterlab/source/particle/stars.sct",
+        "characterlab/source/particle/zodiac_star1.sct"
+      ],
+      "outputSha256": "1b6b7b17576821c30152f15369d89d5cad9c56120667bd829bb1917bfe92a50a",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "stagept/c_acha_skill_03.stg",
+      "sourceSha256": "97491040695314fd9b6830e03969ba8d465285dd94196546875396fc1a5ce65e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1017/Configs/stagept/c_acha_skill_03.graph.json",
+      "address": "characterlab/source/stagept/c_acha_skill_03.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/cut/fhd/sk_c1017_3.webp",
+        "characterlab/source/effect/achates_bidle_pati.cfx",
+        "characterlab/source/effect/achates_bidle_pati.particle",
+        "characterlab/source/effect/achates_skill_01.atlas",
+        "characterlab/source/effect/achates_skill_01.cfx",
+        "characterlab/source/effect/achates_skill_01.scsp",
+        "characterlab/source/effect/achates_skill_01.sct",
+        "characterlab/source/effect/achates_skill_01_back.atlas",
+        "characterlab/source/effect/achates_skill_01_back.scsp",
+        "characterlab/source/effect/achates_skill_01_back.sct",
+        "characterlab/source/effect/achates_skill_01_pati.particle",
+        "characterlab/source/effect/achates_skill_01_pati2.particle",
+        "characterlab/source/effect/achates_skill_01_staff_pati.cfx",
+        "characterlab/source/effect/achates_skill_03.cfx",
+        "characterlab/source/effect/achates_skill_03_2.atlas",
+        "characterlab/source/effect/achates_skill_03_2.scsp",
+        "characterlab/source/effect/achates_skill_03_2.sct",
+        "characterlab/source/effect/achates_wing1.particle",
+        "characterlab/source/effect/achates_wing2.particle",
+        "characterlab/source/effect/achates_wing_end.particle",
+        "characterlab/source/effect/healer_skill_03_hit.atlas",
+        "characterlab/source/effect/healer_skill_03_hit.scsp",
+        "characterlab/source/effect/healer_skill_03_hit.sct",
+        "characterlab/source/effect/hit_heal_pati.particle",
+        "characterlab/source/effect/hit_light_heal_01.cfx",
+        "characterlab/source/model/achates.timeline",
+        "characterlab/source/particle/cross_02.sct",
+        "characterlab/source/particle/flash.sct",
+        "characterlab/source/particle/orb_02.sct",
+        "characterlab/source/particle/pati_01.sct",
+        "characterlab/source/particle/zodiac_star1.sct"
+      ],
+      "outputSha256": "97bf3bf3dd4dba6da195a5a1cd54eb706d1f5c2246847e25a24b9a47b4addb51",
+      "conversion": {
+        "status": "converted"
       }
     },
     {

@@ -1,0 +1,72 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "achates_heal_cross",
+      "x": "-50~50",
+      "y": "120~170",
+      "z": "5",
+      "scale": "1~1.8",
+      "delay": "350",
+      "repeat": "6;55~85",
+      "format": "spine",
+      "actions": [
+        {
+          "action": "Move",
+          "delay": "297",
+          "interval": "695",
+          "from": "0,0",
+          "to": "-80~80,0~100"
+        }
+      ]
+    },
+    {
+      "source": "achates_ground",
+      "y": "-15",
+      "z": "-1",
+      "scale": "1.6",
+      "format": "spine",
+      "actions": [
+        {
+          "action": "ScaleY",
+          "from": "0.8",
+          "to": "0.8"
+        }
+      ]
+    },
+    {
+      "source": "achates_pillar",
+      "z": "2",
+      "scale": "1",
+      "format": "spine",
+      "actions": [
+        {
+          "action": "Fire",
+          "delay": "900"
+        }
+      ]
+    },
+    {
+      "source": "achates_heal_pati",
+      "z": "3",
+      "scale": "1",
+      "delay": "350",
+      "format": "particle",
+      "actions": [
+        {
+          "action": "ScaleX",
+          "delay": "200",
+          "interval": "1200",
+          "from": "1.0",
+          "to": "0.5"
+        }
+      ]
+    },
+    {
+      "source": "achates_heal_pati2",
+      "z": "4",
+      "scale": "1",
+      "format": "particle"
+    }
+  ]
+}

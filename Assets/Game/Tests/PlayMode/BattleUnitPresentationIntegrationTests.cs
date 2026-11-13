@@ -536,6 +536,36 @@ Assert.That(RedWidth(), Is.Zero, "The red segment is cleared after the transitio
         }
 
         [UnityTest]
+        public IEnumerator NativeInvincibilityAuraFollowsItsStatusWithoutShowingShieldHealth()
+        {
+            var simulation = typeof(BattleHudPreview).GetField("simulation", Private).GetValue(host);
+            var view = ((IDictionary)simulation.GetType().GetField("views", Private).GetValue(simulation))["ally-1"];
+            var actor = (BattlePreviewActor)view.GetType().GetProperty("Actor").GetValue(view);
+            var body = (Renderer)typeof(BattlePreviewActor).GetProperty("PresentationRenderer", Private).GetValue(actor);
+            var status = Activator.CreateInstance(typeof(BattleStatusSnapshot), Private, null,
+                new object[] { BattleStatusKind.Invincible, 1, 0 }, null);
+            view.GetType().GetMethod("ApplyStatus").Invoke(view, new[] { status });
+            var aura = body.transform.Find("Battle invincibility aura");
+            Assert.That(aura && aura.gameObject.activeSelf, Is.True);
+            Assert.That(aura.GetComponent<MeshFilter>().sharedMesh.vertexCount, Is.GreaterThan(0));
+            Assert.That(body.transform.Find("Battle shield aura"), Is.Null);
+            var previous = aura.position;
+            body.transform.position += Vector3.right;
+            Assert.That(aura.position.x - previous.x, Is.EqualTo(1f).Within(.001f));
+            body.enabled = false;
+            var tick = view.GetType().GetMethod("LateTick");
+            var camera = map.GetComponentInParent<Canvas>().worldCamera;
+            tick.Invoke(view, new object[] { camera });
+            Assert.That(aura.gameObject.activeSelf, Is.False);
+            body.enabled = true;
+            tick.Invoke(view, new object[] { camera });
+            Assert.That(aura.gameObject.activeSelf, Is.True);
+            view.GetType().GetMethod("RemoveStatus").Invoke(view, new object[] { BattleStatusKind.Invincible });
+            Assert.That(aura.gameObject.activeSelf, Is.False);
+            yield return null;
+        }
+
+        [UnityTest]
         public IEnumerator PoisonDamageUsesOneHealthChangeWithoutAuthoredHitFeedback()
         {
             var simulation = typeof(BattleHudPreview).GetField("simulation", Private).GetValue(host);
