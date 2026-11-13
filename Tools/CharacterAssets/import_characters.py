@@ -28,12 +28,15 @@ CHARACTERS={
     "c1015":("baal_sezan","巴尔＆塞尚"),
     "c1016":("yupine","优芬妮"),
     "c1017":("achates","雅卡泰丝"),
+    "c1018":("aither","埃德勒"),
     "c1062":("angelica","安洁莉卡"),
 }
 # Keep source identifiers verbatim even where the model and STG stems differ.
-SKILL_STEMS={"c1002":"c_cecilia_skill_new","c1007":"c_wilderd_skill","c1008":"c_aming_skill","c1010":"c_jerato_skill","c1013":"c_cartuja_skill","c1015":"c_baal_skill","c1017":"c_acha_skill"}
+SKILL_STEMS={"c1002":"c_cecilia_skill_new","c1007":"c_wilderd_skill","c1008":"c_aming_skill","c1010":"c_jerato_skill","c1013":"c_cartuja_skill","c1015":"c_baal_skill","c1017":"c_acha_skill","c1018":"c_iterre_skill"}
 SKILL_VARIANTS={("c1009",3):"c_charlotte_skill_03_05",
                 **{("c1014",index):f"c_cedars_skill_{index:02}_new" for index in range(1,4)}}
+# Base S1 has an explicit skill1 listener and matching model timeline event.
+GRAPH_ANIMATION_INDEX = {"stagept/c_iterre_skill_01.stg": 1}
 # Base STG omits this cue; the base skeleton marker and skin STG corroborate its timing.
 ANIMATION_CUTINS={
     "stagept/c_mercedes_skill_03.stg": ("model/mercedes.scsp", "skill3", "cutin", "sk_c1005_3"),
@@ -41,6 +44,7 @@ ANIMATION_CUTINS={
     "stagept/c_karin_skill_03.stg": ("model/karin.scsp", "skill3_2", "cutin", "sk_c1011_3"),
     "stagept/c_cartuja_skill_03.stg": ("model/kartua.scsp", "skill3", "cutin", "sk_c1013_3"),
     "stagept/c_baal_skill_03.stg": ("model/baal_sezan.scsp", "skill3", "cutin", "sk_c1015_3"),
+    "stagept/c_iterre_skill_03.stg": ("model/aither.scsp", "skill3", "cutin", "sk_c1018_3"),
 }
 
 
@@ -309,6 +313,16 @@ def json_write(path,data):
     if not path.exists() or path.read_text(encoding="utf-8")!=text:path.write_text(text,encoding="utf-8")
 
 
+def apply_graph_animation_index(source, graph):
+    index = GRAPH_ANIMATION_INDEX.get(source)
+    if index is None:
+        return
+    nodes = graph["source"]["entities"]
+    if not any(node.get("etty") == "ANI" and "{idx}" in node.get("ani", "") for node in nodes):
+        raise ValueError(f"No animation index token in reviewed graph: {source}")
+    graph["animationIndex"] = index
+
+
 def import_assets(source_root,project,ids,include_banks=True):
     characters=select_characters(ids);project=Path(project).resolve();closure=Closure(source_root).build(characters,include_banks)
     entries=[];conversion_reports={};source_hashes={}
@@ -369,6 +383,7 @@ def import_assets(source_root,project,ids,include_banks=True):
             deps=sorted(set(deps)|{address(p) for p in graph_sources})
             graph={"id":PurePosixPath(source).stem,"sourceFormat":"e7-stg","source":document,"assets":[{"source":dep,"address":address(dep),"type":asset_type(dep)} for dep in sorted(graph_sources)],"diagnostics":[]}
             if source in closure.graph_additions:graph["additions"]=closure.graph_additions[source]
+            apply_graph_animation_index(source, graph)
             json_write(project/relative,graph)
         elif suffix==".webp":
             frames=[]

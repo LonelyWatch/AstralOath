@@ -9,7 +9,7 @@ class ImportBoundaryTests(unittest.TestCase):
         with self.assertRaises(ValueError): importer.select_characters(["c9999"])
         self.assertEqual(len(importer.select_characters(["c1001"])),1)
     def test_base_roster_uses_exact_graph_roots_in_id_order(self):
-        self.assertEqual(list(importer.CHARACTERS), [f"c100{i}" for i in range(1, 10)] + ["c1010", "c1011", "c1012", "c1013", "c1014", "c1015", "c1016", "c1017", "c1062"])
+        self.assertEqual(list(importer.CHARACTERS), [f"c100{i}" for i in range(1, 10)] + ["c1010", "c1011", "c1012", "c1013", "c1014", "c1015", "c1016", "c1017", "c1018", "c1062"])
         self.assertEqual(importer.skill_ids("c1007"), [f"c_wilderd_skill_{i:02}" for i in range(1, 4)])
         self.assertEqual(importer.skill_ids("c1009")[-1], "c_charlotte_skill_03_05")
         self.assertEqual(importer.skill_ids("c1010"), [f"c_jerato_skill_{i:02}" for i in range(1, 4)])
@@ -18,10 +18,25 @@ class ImportBoundaryTests(unittest.TestCase):
         self.assertNotIn("stagept/c_cedars_skill_03_new.stg", importer.ANIMATION_CUTINS)
         self.assertEqual(importer.skill_ids("c1017"), [f"c_acha_skill_{i:02}" for i in range(1, 4)])
         self.assertNotIn("stagept/c_acha_skill_03.stg", importer.ANIMATION_CUTINS)
+        self.assertEqual(importer.skill_ids("c1018"), [f"c_iterre_skill_{i:02}" for i in range(1, 4)])
+        self.assertEqual(importer.ANIMATION_CUTINS["stagept/c_iterre_skill_03.stg"],
+                         ("model/aither.scsp", "skill3", "cutin", "sk_c1018_3"))
         self.assertEqual(importer.ANIMATION_CUTINS["stagept/c_cartuja_skill_03.stg"],
                          ("model/kartua.scsp", "skill3", "cutin", "sk_c1013_3"))
         self.assertEqual(importer.ANIMATION_CUTINS["stagept/c_jerato_skill_03.stg"],
                          ("model/zerato.scsp", "skill3", "cutin", "sk_c1010_3"))
+
+    def test_animation_index_is_derived_only_for_the_evidenced_graph_and_keeps_raw_fields(self):
+        raw = {"entities": [{"etty": "ANI", "ani": "skill{idx}"}]}
+        graph = {"source": raw}
+        importer.apply_graph_animation_index("stagept/c_iterre_skill_01.stg", graph)
+        self.assertEqual(graph, {"source": {"entities": [{"etty": "ANI", "ani": "skill{idx}"}]}, "animationIndex": 1})
+        other = {"source": raw}
+        importer.apply_graph_animation_index("stagept/c_iterre_m_skill_01.stg", other)
+        self.assertEqual(other, {"source": raw})
+        with self.assertRaisesRegex(ValueError, "No animation index token"):
+            importer.apply_graph_animation_index("stagept/c_iterre_skill_01.stg",
+                                                 {"source": {"entities": [{"etty": "ANI", "ani": "skill1"}]}})
 
     def test_node_animation_uses_bone_only_spani_dependency(self):
         with tempfile.TemporaryDirectory() as folder:

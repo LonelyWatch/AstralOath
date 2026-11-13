@@ -8,7 +8,7 @@
 
 ## 角色接入
 
-角色实验室和战斗试玩可选择 18 名角色，接入至雅卡泰丝。埃德勒为下一名。进度见[角色扩充手册](development/battle-roster-expansion.md)。战斗场景双方各四个位置使用同一个通用角色 Prefab，按实例 `Hero Id` 换人。默认八人互不重复，敌方按共享 AI 选择可用技能，详见[八英雄战斗场景](delivery/2026-11-13-eight-hero-battle.md)。规则版本 9 支持无敌、全净化、独立魂燃治疗增量及友军冷却缩减。当前技能覆盖、客户端表现、开发双人房间的挑衅自动指令及未验证原作边界见[战斗机制交付](delivery/2026-11-14-battle-mechanics.md)。Windows IL2CPP 实验室已用新母包通过十人及 30 个技能入口检查。旧母包需重建以使用 Spine 乘色与 FMOD 日语缺录音处理。操作和验证见[十名角色接入](delivery/2026-11-13-ten-hero-roster.md)。
+角色实验室和战斗试玩可选择 19 名角色，接入至埃德勒。萝菲为下一名。进度见[角色扩充手册](development/battle-roster-expansion.md)。战斗场景双方各四个位置使用同一个通用角色 Prefab，按实例 `Hero Id` 换人。默认八人互不重复，敌方按共享 AI 选择可用技能，详见[八英雄战斗场景](delivery/2026-11-13-eight-hero-battle.md)。规则版本 10 支持按每名受术者最大生命结算治疗与护盾。当前技能覆盖、客户端表现、开发双人房间的挑衅自动指令及未验证原作边界见[战斗机制交付](delivery/2026-11-14-battle-mechanics.md)。Windows IL2CPP 实验室已用新母包通过十人及 30 个技能入口检查。旧母包需重建以使用 Spine 乘色与 FMOD 日语缺录音处理。操作和验证见[十名角色接入](delivery/2026-11-13-ten-hero-roster.md)。
 
 ## 魂槽、说明与全面屏
 
@@ -52,7 +52,7 @@ Unity 2022.3.62f3 / URP / UGUI / TMP；Common/AOT 通用设施；普通 C# UIBas
 - GameText / GameButton 直接继承 TMP / Button，右键 UI 提供创建入口；63对已有控件已迁移，GUID和配置保留。
 - Foundation 更新器：签名清单、哈希、断点、空间预检、原子版本切换、兼容预检、失败版本隔离及下次进程恢复。客户端可从配置的内容服务器取得兼容资源与 C# 业务 DLL。
 - 构建工具：Windows x64、Android ARM64 ASTC/ETC2 的完整母包和独立热更包，母包归档与签名发布工具。
-- CharacterLab：独立离线角色实验室，18 名普通角色；双版本 Spine 与 FMOD 已集成。该入口只读取内置实验室内容，不等于 Foundation 远端更新入口。
+- CharacterLab：独立离线角色实验室，19 名普通角色；双版本 Spine 与 FMOD 已集成。该入口只读取内置实验室内容，不等于 Foundation 远端更新入口。
 
 - BattleScene：首阶段独立冒险布局预览。两套原图分层森林、原作 HUD、双方各四个可编辑脚点及 Spine 待机；已按近期实战和本地原版布局修订 HUD，可交互预览 Burn、燃魂 S2 和技能选中效果。见[HUD 复核](delivery/2026-11-12-battle-hud-fidelity.md)。
 

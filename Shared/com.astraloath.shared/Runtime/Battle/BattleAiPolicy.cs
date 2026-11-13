@@ -128,7 +128,7 @@ namespace AstralOath.Shared.Battle
         private BattleUnitSnapshot BestAllyTarget(BattleCatalogData.SkillRow skill, BattleUnitSnapshot actor,
             BattleUnitSnapshot[] allies)
         {
-            bool heals = effects[skill.id].Any(effect => effect.operation == "heal");
+            bool heals = effects[skill.id].Any(effect => IsHealing(effect.operation));
             return allies.OrderByDescending(unit => CleanseScore(skill, actor, unit, allies))
                 .ThenBy(unit => heals && unit.GetStatus(BattleStatusKind.Unhealable) != null)
                 .ThenBy(HealthRatio).ThenBy(unit => unit.Slot.Position).FirstOrDefault();
@@ -166,6 +166,7 @@ namespace AstralOath.Shared.Battle
         private static int CountRemovals(BattleUnitSnapshot unit, int maximum) =>
             Math.Min(maximum, unit.Statuses.Count(status => BattleSkillResolver.IsHarmful(status.Kind)));
 
+        private static bool IsHealing(string operation) => operation == "heal" || operation == "heal_target_health";
         private static bool TargetsAllies(string target) => target == "one_ally" || target == "all_allies" || target == "self";
         private static bool IsBelowHalf(BattleUnitSnapshot unit) => 2L * unit.CurrentHealth < unit.Stats.MaxHealth;
         private static decimal HealthRatio(BattleUnitSnapshot unit) => unit.CurrentHealth / (decimal)unit.Stats.MaxHealth;

@@ -48,7 +48,15 @@ namespace AstralOath.Client.CharacterPresentation
             {
                 int id=RequiredId(node["guid"]);
                 if(nodes.ContainsKey(id))throw new FormatException("Duplicate STG guid "+id);
-                nodes.Add(id,node);
+                var resolved = node;
+                if ((int?)graph["animationIndex"] is int animationIndex && ((string)node["ani"])?.Contains("{idx}") == true)
+                {
+                    if (animationIndex < 1 || animationIndex > 3)
+                        throw new FormatException("Unsupported source skill animation index " + animationIndex);
+                    resolved = (JObject)node.DeepClone();
+                    resolved["ani"] = ((string)node["ani"]).Replace("{idx}", animationIndex.ToString(CultureInfo.InvariantCulture));
+                }
+                nodes.Add(id,resolved);
             }
             foreach(var edge in (source["connections"]??new JArray()).OfType<JObject>()
                 .Concat((additions?["connections"]??new JArray()).OfType<JObject>()))
@@ -148,7 +156,8 @@ namespace AstralOath.Client.CharacterPresentation
                 case "EFFECT": case "HIT": case "CUTIN": case "DARK": case "STOP": case "SHAKE": case "PPEFFECT": Effect?.Invoke(node);Complete(id);break;
                 case "DELAY":
                     FinishAfter(id, Number(node["time"], 0)/1000d);break;
-                case "SHOT" when string.IsNullOrEmpty((string)node["source"]):
+                case "SHOT":
+                    if (!string.IsNullOrEmpty((string)node["source"])) Report("Use the battle timeline to inspect authored SHOT movement.");
                     FinishAfter(id, Number(node["time"], 0)/1000d);break;
                 case "SINE_VALUE":
                     Report("Unverified "+kind+" "+node.ToString(Newtonsoft.Json.Formatting.None));Complete(id);break;

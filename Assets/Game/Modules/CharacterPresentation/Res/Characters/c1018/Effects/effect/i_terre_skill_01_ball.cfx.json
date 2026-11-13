@@ -1,0 +1,18 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "i_terre_skill_01_ball",
+      "ani": "intro,loop",
+      "z": "2",
+      "format": "spine",
+      "loop": 1
+    },
+    {
+      "source": "i_terre_ball_pati",
+      "z": "-1",
+      "format": "particle",
+      "attach": "i_terre_skill_01_ball/pivot"
+    }
+  ]
+}

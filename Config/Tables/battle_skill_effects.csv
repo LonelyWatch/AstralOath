@@ -152,3 +152,11 @@
 ,c1017.s3.1,c1017.s3,1,impact,burn_healing_rate_bonus,self,none,10000,0,2000,none,none,0
 ,c1017.s3.2,c1017.s3,2,impact,cleanse_all,targets,none,10000,0,0,none,none,0
 ,c1017.s3.3,c1017.s3,3,impact,heal,targets,none,10000,0,0,none,none,0
+,c1018.s1.1,c1018.s1,1,impact,damage,targets,none,10000,0,0,none,none,0
+,c1018.s1.2,c1018.s1,2,after_hit,apply_status,targets,SpeedDown,4000,2,3000,none,none,0
+,c1018.s2.1,c1018.s2,1,impact,burn_healing_rate_bonus,self,none,10000,0,1000,none,none,0
+,c1018.s2.2,c1018.s2,2,impact,cleanse,targets,none,10000,0,2,none,none,0
+,c1018.s2.3,c1018.s2,3,impact,heal_target_health,targets,none,10000,0,1900,none,none,0
+,c1018.s2.4,c1018.s2,4,after_attack,readiness,self,none,10000,0,2000,caster_skill_awakened,none,0
+,c1018.s3.1,c1018.s3,1,impact,heal_target_health,targets,none,10000,0,1500,none,none,0
+,c1018.s3.2,c1018.s3,2,impact,target_health_barrier,targets,none,10000,2,1500,none,none,0

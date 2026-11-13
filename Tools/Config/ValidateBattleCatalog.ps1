@@ -105,7 +105,6 @@ function Export-BattleCatalog {
                 (($turns -gt 0) -ne ($burn -cin @('reduce_cooldown','extend_granted_buffs'))) -or
                 ($burn -ceq 'refill_resource' -and ($skill.resourceCost -le 0 -or $hero.resourceMaximum -eq 0)) -or
                 ($burn -ceq 'reduce_cooldown' -and $turns -gt $skill.cooldownTurns) -or
-                ($burn -ceq 'increase_healing' -and $null -eq $skill.casterHealthHealBp) -or
                 ($null -ne $skill.burnAttackRateBp -and $burn -cne 'increase_damage')) {
                 throw "Battle skill soul burn is invalid for $key."
             }
@@ -150,7 +149,7 @@ function Export-BattleCatalog {
             battle_start = @('apply_status')
             turn_end = @('apply_status')
         }
-        $activeOperations = @('damage','heal','dispel','cleanse','cleanse_all','apply_status','readiness','reduce_readiness','reduce_readiness_double','transfer_debuff',
+        $activeOperations = @('damage','heal','heal_target_health','target_health_barrier','dispel','cleanse','cleanse_all','apply_status','readiness','reduce_readiness','reduce_readiness_double','transfer_debuff',
             'extend_cooldown','reduce_cooldown','reset_cooldown','grant_extra_turn','dual_attack','repeat_if_status','damage_bonus','damage_bonus_per_debuff','critical_damage_bonus','defense_penetration','attack_rate_bonus','defense_rate_bonus','health_rate_bonus','burn_health_rate_bonus','burn_healing_rate_bonus','elemental_advantage')
         $lastPhase = 0
         $hasDamage = $false
@@ -184,10 +183,12 @@ function Export-BattleCatalog {
                     ($effect.phase -cne 'after_hit' -or $effect.recipient -cne 'targets')) -or
                 ($effect.condition -ceq 'target_readiness_drained' -and
                     ($effect.phase -cne 'after_hit' -or $effect.recipient -cne 'targets')) -or
-                (($effect.turns -gt 0) -ne ($operation -cin @('apply_status','random_buff_option') -or $usesResourceThreshold)) -or
+                (($effect.turns -gt 0) -ne ($operation -cin @('apply_status','target_health_barrier','random_buff_option') -or $usesResourceThreshold)) -or
                 ($effect.phase -ceq 'after_hit' -and -not $hasDamage) -or
                 ($operation -ceq 'damage' -and ($null -eq $skill.attackRateBp -or $null -eq $skill.powerBp)) -or
                 ($operation -ceq 'heal' -and $null -eq $skill.casterHealthHealBp) -or
+                ($operation -cin @('heal_target_health','target_health_barrier') -and
+                    ($effect.value -lt 1 -or $effect.value -gt 10000 -or $effect.chanceBp -ne 10000)) -or
                 ($effect.status -ceq 'Barrier' -and
                     @(@($skill.casterHealthBarrierBp,$skill.casterDefenseBarrierBp,$skill.casterAttackBarrierBp) |
                         Where-Object { $null -ne $_ }).Count -ne 1)) {
@@ -248,6 +249,10 @@ function Export-BattleCatalog {
             $lastPhase = $phase
             $hasDamage = $hasDamage -or $operation -ceq 'damage'
         }
+        if ($skill.soulBurnKind -ceq 'increase_healing' -and
+            @($program | Where-Object { $_.operation -cin @('heal','heal_target_health') }).Count -eq 0) {
+            throw "Battle healing Soul Burn requires a healing effect for $($skill.id)."
+        }
         if ($triggersAttack -and ($program[0].operation -cne 'trigger' -or -not $hasDamage)) {
             throw "Passive attack requires a trigger and a damage effect for $($skill.id)."
         }
@@ -268,7 +273,7 @@ function Export-BattleCatalog {
                 throw "Battle skill enhancement sequence is invalid for $($skill.id)."
             }
             if (($row.kind -ceq 'counter_chance_bp' -and -not @($program | Where-Object operation -CEQ 'counterattack').Count) -or
-                ($row.kind -ceq 'barrier_bp' -and -not @($program | Where-Object status -CEQ 'Barrier').Count)) {
+                ($row.kind -ceq 'barrier_bp' -and -not @($program | Where-Object { $_.status -ceq 'Barrier' -or $_.operation -ceq 'target_health_barrier' }).Count)) {
                 throw "Battle enhancement has no matching effect for $($row.id)."
             }
             if ($row.kind -ceq 'cooldown_turns') {

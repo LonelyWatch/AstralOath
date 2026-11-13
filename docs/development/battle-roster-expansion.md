@@ -52,7 +52,7 @@
 - .NET 专属回归 12/12，覆盖开局及多段受击斗志、额外回合、目标限制、觉醒与魂燃治疗、强化后不屈减条、独立抗性、减益转移成功与抵抗、不可驱散。服务端全量 128 项通过，MySQL 集成跳过 1 项。Windows FMOD 24/24，三个技能各观察到三个日语取样，均实际有音效事件和 DSP 输出。Unity 战斗场景与角色实验室 PlayMode 2/2，覆盖 S1–S3 三图播放和收尾复位，技能时间轴 EditMode 9/9。
 - S2 的 CFX 动作 `Fire` 未映射，S3 的第 15 号混色方式仍待比对。原作同版逐帧、Player 构建、Android 及实机复核未执行。
 
-百人清单用 `Tools/CharacterAssets/ExportRosterQueue.py` 从固定官方索引和当前配表导出到 `.artifacts/roster-data/roster-100.json`。当前 18 人已入表、82 人待入表。状态仅反映配表，逐人通过及实机边界以本页为准。
+百人清单用 `Tools/CharacterAssets/ExportRosterQueue.py` 从固定官方索引和当前配表导出到 `.artifacts/roster-data/roster-100.json`。当前 19 人已入表、81 人待入表。状态仅反映配表，逐人通过及实机边界以本页为准。
 
 ## #14 卡尔图哈 c1013
 
@@ -95,3 +95,12 @@
 - Windows 原生 FMOD 24/24，三个技能分别观察到 2、4、4 套日语取样。日语表有 28 个真实键，S3 的两个无后缀请求属于其他语言的占位分支，原事件仍播放同组两段日语。沿用原事件与实际日语键。原作同版逐帧、Player 构建和真机验证未执行。
 
 - Unity PlayMode 3/3，覆盖入队、权威 S1、三图播放及复位、角色实验室和独立无敌环的 Mesh、角色位移、遮罩、解除及护盾隔离。无敌环使用原版 CFX、八层骨骼及图集，暂沿用通用 `shadow` 挂点，原始状态表挂点尚未确认。S2 的 CFX 动作 Move／ScaleY／Fire 和 S3 的 COLOR_BLEND 28、MOVE 曲线仍待同版画面对照。 [源演出及机制证据](../delivery/2026-11-14-roster18-preflight.md)
+
+## #19 埃德勒 c1018
+
+- 三星冰属性精灵使、天秤座。满级满觉醒无装备攻 712、血 4592、防 672、速 103。S1 单体，40% 至 50% 概率降速两回合。S2 净化一名友军的两个减益，按受术者最大生命的 19% 治疗，10 魂燃烧后改为 29%；第三阶觉醒后另推进施法者 20% 行动值。S3 按每名友军自己的最大生命计算 15% 基础治疗与 15% 两回合护盾，技能强化只提高治疗。 [2024 调整原公告](https://page.onstove.com/epicseven/global/view/10316318) · [公告镜像](https://epic7db.com/news/718-thu-update-content) · [调整后倍率](https://www.reddit.com/r/EpicSeven/comments/1e6bo8c/datamine_20240718_balance_patch_multipliers/)
+- 权威规则版本 10。受术者生命值治疗和护盾复用原有治疗、禁疗、护盾与 AI 链，系数来自技能效果行。S2 当前先净化再治疗，官方描述仅明确行动值后置。禁疗时的治疗与驱散先后需同版原作确认。 [面板和觉醒](https://www.gacha.gg/epic-seven/characters/aither)
+- 基础模型为 `model/aither.scsp`，三个源图为 `c_iterre_skill_01/02/03`。S3 原 STG 无 CUTIN，按同形态骨骼在 1.200 s 的 `cutin` 连接 `sk_c1018_3.webp`。立绘 1280×723，19 帧，1.66 秒。S1 原图在 1.400 s 的模型 `shot` 事件发射，1.700 s 到达命中；挂点、源偏移和表现证据见预检。 [素材及弹道预检](../delivery/2026-11-14-aither-preflight.md)
+- 角色清单 1533→1618，新增 85 个地址，既有条目无变化。Luban 访问器读回与裸面板、阵容 HUD 105/105 通过。.NET 专属 8/8，全量 187 项通过，1 项 MySQL 集成跳过。原作同版逐帧、Player 构建和真机验证未执行。
+
+- Windows 原生 FMOD 24/24，三技能各观察到 3 套原声，技能事件无缺键。Unity PlayMode 2/2，覆盖入场、真实指令、三张源图和角色实验室。S2 和 S3 的 Fire 指令仍有诊断。EditMode 时间轴与 CFX 共 22/22，实际渲染弹体本体，验证发射、命中边、双侧镜像、回退与销毁。角色实验室可播放源动作和效果；完整飞行使用战斗与技能时间轴。弹道当前用目标 Bounds 中心和源 Y 偏移，原版落点锚点、尾迹挂点与 Y 语义待实录确认。下一位萝菲涉及新的日语银行和裂伤的有效最大生命契约。 [萝菲预检](../delivery/2026-11-14-roster20-preflight.md)

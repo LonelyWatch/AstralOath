@@ -590,7 +590,7 @@ namespace AstralOath.Client.BattleScene.Editor
         {
             "ANI" or "ANI_SCOPE" or "IDLE" or "MOVE" or "NODE_ANI" => 0,
             "CAM" or "ZOOM" or "SHAKE" => 1,
-            "HIT" or "EFFECT" or "PPEFFECT" => 2,
+            "HIT" or "SHOT" or "EFFECT" or "PPEFFECT" => 2,
             "CUTIN" or "DARK" or "BGHATCH" or "BGSHOW" or "LAYOUT" => 3,
             _ => 4
         };

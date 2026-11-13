@@ -1,0 +1,28 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "i_terre_skill_01_shot",
+      "z": "2",
+      "scale": "0.5,1",
+      "format": "spine"
+    },
+    {
+      "source": "i_terre_skill_01_shot_pati1",
+      "x": "80",
+      "y": "305",
+      "z": "3",
+      "scale": "0.5,1",
+      "delay": "700",
+      "format": "particle"
+    },
+    {
+      "source": "i_terre_skill_01_shot_pati2",
+      "x": "80",
+      "y": "305",
+      "scale": "0.6,1",
+      "delay": "1400",
+      "format": "particle"
+    }
+  ]
+}

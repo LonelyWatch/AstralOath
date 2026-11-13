@@ -1,0 +1,44 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "i_terre_skill_first_tale",
+      "y": "200",
+      "z": "1",
+      "scale": "1.3,0.5",
+      "format": "spine"
+    },
+    {
+      "source": "i_terre_skill_02_sub",
+      "z": "3",
+      "format": "spine"
+    },
+    {
+      "source": "i_terre_skill_02",
+      "y": "5",
+      "z": "2",
+      "scale": "1",
+      "format": "spine",
+      "actions": [
+        {
+          "action": "Fire",
+          "delay": "1485"
+        }
+      ]
+    },
+    {
+      "source": "i_terre_skill_01_pati2",
+      "y": "230",
+      "z": "4",
+      "delay": "1370",
+      "format": "particle"
+    },
+    {
+      "source": "i_terre_skill_first_pati",
+      "x": "36",
+      "y": "280",
+      "z": "3",
+      "format": "particle"
+    }
+  ]
+}

@@ -175,6 +175,54 @@ namespace AstralOath.Tests
             }
         }
 
+        [Test]
+        public void AitherShotUsesTheOriginalLaunchWindowAndExpiresAtHitOnEitherSide()
+        {
+            var type = Type.GetType(PreviewTypeName, throwOnError: true);
+            var asset = AssetDatabase.LoadAssetAtPath<TextAsset>(HeroDirectory +
+                "c1018/Configs/stagept/c_iterre_skill_01.graph.json");
+            Assert.That(asset, Is.Not.Null);
+            var raw = JObject.Parse(asset.text);
+            Assert.That((string)raw["source"]["entities"].OfType<JObject>().Single(node => (int)node["guid"] == 3)["ani"],
+                Is.EqualTo("skill{idx}"));
+            using var session = (IDisposable)Activator.CreateInstance(type, nonPublic: true);
+            var load = type.GetMethod("Load", Instance);
+            var seek = type.GetMethod("Seek", Instance);
+            foreach (bool flip in new[] { false, true })
+            {
+                load.Invoke(session, new object[] { "c1018", "c_iterre_skill_01", asset.text, "c1001", flip, false, false });
+                var cues = (IReadOnlyList<(float At, JObject Node, float Duration, JObject[] Modulators)>)
+                    type.GetProperty("Cues", Instance).GetValue(session);
+                var shot = cues.Single(cue => (string)cue.Node["etty"] == "SHOT");
+                Assert.That(shot.At, Is.EqualTo(1.4f).Within(.001f));
+                Assert.That(shot.Duration, Is.EqualTo(.3f).Within(.001f));
+                var hits = (IReadOnlyList<float>)type.GetProperty("HitTimes", Instance).GetValue(session);
+                Assert.That(hits[0], Is.EqualTo(1.7f).Within(.001f));
+
+                Transform Ball()
+                {
+                    var playback = type.GetField("playback", Instance).GetValue(session);
+                    var root = (Transform)playback.GetType().GetField("root", Instance).GetValue(playback);
+                    return root.Find("Skill CFX i_terre_skill_01_ball.cfx");
+                }
+
+                seek.Invoke(session, new object[] { 1.38f });
+                Assert.That(Ball(), Is.Null);
+                seek.Invoke(session, new object[] { 1.43f });
+                Assert.That(Ball(), Is.Not.Null);
+                var mesh = Ball().GetComponentInChildren<MeshFilter>()?.sharedMesh;
+                Assert.That(mesh && mesh.vertexCount > 0, Is.True, "The moving layer includes the original Spine projectile.");
+                float firstX = Ball().position.x;
+                seek.Invoke(session, new object[] { 1.60f });
+                Assert.That(Ball(), Is.Not.Null);
+                Assert.That((Ball().position.x - firstX) * (flip ? -1f : 1f), Is.GreaterThan(.25f));
+                seek.Invoke(session, new object[] { 1.73f });
+                Assert.That(Ball(), Is.Null);
+                seek.Invoke(session, new object[] { 1.43f });
+                Assert.That(Ball().position.x, Is.EqualTo(firstX).Within(.001f));
+            }
+        }
+
         private sealed class SceneAllocationProbe : IDisposable
         {
             internal readonly GameObject Object = new GameObject("Preview allocation probe") { hideFlags = HideFlags.HideAndDontSave };

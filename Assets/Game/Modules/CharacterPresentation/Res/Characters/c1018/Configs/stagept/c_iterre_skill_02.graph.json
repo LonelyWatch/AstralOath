@@ -1,0 +1,378 @@
+{
+  "id": "c_iterre_skill_02",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "color": "0,0,0,255",
+        "accel": 1.0,
+        "opacity": 0.7,
+        "duration": -1,
+        "localZ": -1,
+        "fadeIn": 200,
+        "fadeOut": 300,
+        "id": "dark",
+        "guid": 2,
+        "etty": "DARK"
+      },
+      {
+        "ani": "skill2",
+        "guid": 3,
+        "etty": "ANI"
+      },
+      {
+        "time": 200,
+        "guid": 4,
+        "etty": "CAM"
+      },
+      {
+        "guid": 5,
+        "etty": "IDLE"
+      },
+      {
+        "scale": "1",
+        "time": 200,
+        "guid": 6,
+        "etty": "ZOOM"
+      },
+      {
+        "targetId": "dark",
+        "guid": 7,
+        "etty": "STOP"
+      },
+      {
+        "scale": "1.5",
+        "curve": "0.3754789,0.9652778,0.6245211,0.9583333",
+        "time": 1340,
+        "guid": 8,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "x": 60.0,
+        "y": -30.0,
+        "curve": "0.3524904,0.7013888,0.5670498,0.9722222",
+        "time": 1340,
+        "guid": 9,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.1",
+        "curve": "0.2835249,0.9826389,0.4674329,0.9930555",
+        "time": 300,
+        "guid": 10,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.3",
+        "curve": "0.3563218,0.04513886,0.5747126,0.9756944",
+        "time": 200,
+        "guid": 11,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.2",
+        "curve": "0.3563218,0.04513886,0.5747126,0.9756944",
+        "time": 500,
+        "guid": 12,
+        "etty": "ZOOM"
+      },
+      {
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 13,
+        "etty": "HIT"
+      }
+    ],
+    "connections": [
+      {
+        "from": 1,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 3,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 5,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 6,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 8,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 9,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 10,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 11,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 12,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 12,
+        "to": 4,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 12,
+        "to": 7,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 13,
+        "delay": 1485,
+        "when": 1,
+        "Desc": "1485",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/i_terre_skill_03_cm.scsp",
+      "address": "characterlab/source/camera/i_terre_skill_03_cm.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/i_terre_bidle_eff.atlas",
+      "address": "characterlab/source/effect/i_terre_bidle_eff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/i_terre_bidle_eff.cfx",
+      "address": "characterlab/source/effect/i_terre_bidle_eff.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/i_terre_bidle_eff.scsp",
+      "address": "characterlab/source/effect/i_terre_bidle_eff.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/i_terre_bidle_eff.sct",
+      "address": "characterlab/source/effect/i_terre_bidle_eff.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/i_terre_skill_01_burst.atlas",
+      "address": "characterlab/source/effect/i_terre_skill_01_burst.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/i_terre_skill_01_burst.cfx",
+      "address": "characterlab/source/effect/i_terre_skill_01_burst.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/i_terre_skill_01_burst.scsp",
+      "address": "characterlab/source/effect/i_terre_skill_01_burst.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/i_terre_skill_01_burst.sct",
+      "address": "characterlab/source/effect/i_terre_skill_01_burst.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/i_terre_skill_01_pati2.particle",
+      "address": "characterlab/source/effect/i_terre_skill_01_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/i_terre_skill_01_shot.atlas",
+      "address": "characterlab/source/effect/i_terre_skill_01_shot.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/i_terre_skill_01_shot.cfx",
+      "address": "characterlab/source/effect/i_terre_skill_01_shot.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/i_terre_skill_01_shot.scsp",
+      "address": "characterlab/source/effect/i_terre_skill_01_shot.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/i_terre_skill_01_shot.sct",
+      "address": "characterlab/source/effect/i_terre_skill_01_shot.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/i_terre_skill_01_shot_pati1.particle",
+      "address": "characterlab/source/effect/i_terre_skill_01_shot_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/i_terre_skill_01_shot_pati2.particle",
+      "address": "characterlab/source/effect/i_terre_skill_01_shot_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/i_terre_skill_02.atlas",
+      "address": "characterlab/source/effect/i_terre_skill_02.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/i_terre_skill_02.cfx",
+      "address": "characterlab/source/effect/i_terre_skill_02.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/i_terre_skill_02.scsp",
+      "address": "characterlab/source/effect/i_terre_skill_02.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/i_terre_skill_02.sct",
+      "address": "characterlab/source/effect/i_terre_skill_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/i_terre_skill_02_sub.atlas",
+      "address": "characterlab/source/effect/i_terre_skill_02_sub.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/i_terre_skill_02_sub.scsp",
+      "address": "characterlab/source/effect/i_terre_skill_02_sub.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/i_terre_skill_02_sub.sct",
+      "address": "characterlab/source/effect/i_terre_skill_02_sub.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/i_terre_skill_03.atlas",
+      "address": "characterlab/source/effect/i_terre_skill_03.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/i_terre_skill_03.cfx",
+      "address": "characterlab/source/effect/i_terre_skill_03.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/i_terre_skill_03.scsp",
+      "address": "characterlab/source/effect/i_terre_skill_03.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/i_terre_skill_03.sct",
+      "address": "characterlab/source/effect/i_terre_skill_03.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/i_terre_skill_03_02.atlas",
+      "address": "characterlab/source/effect/i_terre_skill_03_02.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/i_terre_skill_03_02.scsp",
+      "address": "characterlab/source/effect/i_terre_skill_03_02.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/i_terre_skill_03_02.sct",
+      "address": "characterlab/source/effect/i_terre_skill_03_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/i_terre_skill_03_pati1.particle",
+      "address": "characterlab/source/effect/i_terre_skill_03_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/i_terre_skill_first_pati.particle",
+      "address": "characterlab/source/effect/i_terre_skill_first_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/i_terre_skill_first_tale.atlas",
+      "address": "characterlab/source/effect/i_terre_skill_first_tale.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/i_terre_skill_first_tale.scsp",
+      "address": "characterlab/source/effect/i_terre_skill_first_tale.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/i_terre_skill_first_tale.sct",
+      "address": "characterlab/source/effect/i_terre_skill_first_tale.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/iterre_bidle_pati.particle",
+      "address": "characterlab/source/effect/iterre_bidle_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "model/aither.timeline",
+      "address": "characterlab/source/model/aither.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/orb_02.sct",
+      "address": "characterlab/source/particle/orb_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/pati_01.sct",
+      "address": "characterlab/source/particle/pati_01.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

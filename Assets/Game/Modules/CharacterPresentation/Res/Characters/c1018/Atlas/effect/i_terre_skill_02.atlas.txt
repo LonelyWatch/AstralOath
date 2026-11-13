@@ -1,0 +1,55 @@
+
+i_terre_skill_02.sct
+size: 437,790
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+circle_wave1
+  rotate: false
+  xy: 2, 313
+  size: 425, 116
+  orig: 425, 116
+  offset: 0, 0
+  index: -1
+circle_wave2
+  rotate: false
+  xy: 2, 74
+  size: 310, 85
+  orig: 310, 85
+  offset: 0, 0
+  index: -1
+circle_wave3
+  rotate: false
+  xy: 2, 2
+  size: 257, 70
+  orig: 257, 70
+  offset: 0, 0
+  index: -1
+ring1
+  rotate: false
+  xy: 2, 431
+  size: 343, 167
+  orig: 343, 167
+  offset: 0, 0
+  index: -1
+ring2
+  rotate: false
+  xy: 2, 600
+  size: 387, 188
+  orig: 387, 188
+  offset: 0, 0
+  index: -1
+ring3
+  rotate: true
+  xy: 314, 2
+  size: 255, 121
+  orig: 255, 121
+  offset: 0, 0
+  index: -1
+ring_glow
+  rotate: false
+  xy: 2, 161
+  size: 275, 150
+  orig: 275, 150
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,36 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "i_terre_skill_03",
+      "ani": "intro",
+      "z": "1",
+      "scale": "1",
+      "format": "spine",
+      "actions": [
+        {
+          "action": "Fire",
+          "delay": "2475"
+        }
+      ]
+    },
+    {
+      "source": "i_terre_skill_03_02",
+      "format": "spine",
+      "globalZ": -0.1
+    },
+    {
+      "source": "i_terre_skill_01_pati2",
+      "x": "25",
+      "y": "340",
+      "z": "2",
+      "delay": "333",
+      "format": "particle"
+    },
+    {
+      "source": "i_terre_skill_03_pati1",
+      "format": "particle",
+      "globalZ": 1.0
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+
+i_terre_skill_03.sct
+size: 456,612
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+ball0
+  rotate: false
+  xy: 399, 2
+  size: 51, 51
+  orig: 51, 51
+  offset: 0, 0
+  index: -1
+balls
+  rotate: false
+  xy: 2, 438
+  size: 39, 39
+  orig: 39, 39
+  offset: 0, 0
+  index: -1
+burst_circle1
+  rotate: false
+  xy: 86, 328
+  size: 186, 186
+  orig: 186, 186
+  offset: 0, 0
+  index: -1
+burst_circle2
+  rotate: false
+  xy: 86, 136
+  size: 190, 190
+  orig: 190, 190
+  offset: 0, 0
+  index: -1
+burst_circle3
+  rotate: false
+  xy: 278, 127
+  size: 176, 176
+  orig: 176, 176
+  offset: 0, 0
+  index: -1
+burst_flash
+  rotate: false
+  xy: 276, 2
+  size: 121, 123
+  orig: 121, 123
+  offset: 0, 0
+  index: -1
+circle_wave1
+  rotate: true
+  xy: 2, 136
+  size: 300, 82
+  orig: 300, 82
+  offset: 0, 0
+  index: -1
+circle_wave2
+  rotate: true
+  xy: 274, 328
+  size: 216, 59
+  orig: 216, 59
+  offset: 0, 0
+  index: -1
+circle_wave3
+  rotate: false
+  xy: 237, 546
+  size: 180, 49
+  orig: 180, 49
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 335, 423
+  size: 113, 113
+  orig: 113, 113
+  offset: 0, 0
+  index: -1
+pillar
+  rotate: true
+  xy: 2, 516
+  size: 94, 233
+  orig: 94, 233
+  offset: 0, 0
+  index: -1
+ring2
+  rotate: false
+  xy: 2, 2
+  size: 272, 132
+  orig: 272, 132
+  offset: 0, 0
+  index: -1
+wind_shock
+  rotate: false
+  xy: 335, 305
+  size: 116, 116
+  orig: 116, 116
+  offset: 0, 0
+  index: -1

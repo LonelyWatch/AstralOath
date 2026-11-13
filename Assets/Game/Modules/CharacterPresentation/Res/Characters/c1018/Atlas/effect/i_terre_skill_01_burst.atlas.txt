@@ -1,0 +1,83 @@
+
+i_terre_skill_01_burst.sct
+size: 878,502
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+burst_circle1
+  rotate: false
+  xy: 2, 2
+  size: 290, 290
+  orig: 290, 290
+  offset: 0, 0
+  index: -1
+burst_circle2
+  rotate: false
+  xy: 294, 2
+  size: 290, 290
+  orig: 290, 290
+  offset: 0, 0
+  index: -1
+burst_circle3
+  rotate: false
+  xy: 586, 2
+  size: 290, 290
+  orig: 290, 290
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 581, 294
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+water_ball1
+  rotate: false
+  xy: 752, 378
+  size: 56, 56
+  orig: 56, 56
+  offset: 0, 0
+  index: -1
+water_ball2
+  rotate: true
+  xy: 410, 465
+  size: 35, 39
+  orig: 35, 39
+  offset: 0, 0
+  index: -1
+water_ball3
+  rotate: false
+  xy: 752, 436
+  size: 42, 44
+  orig: 42, 44
+  offset: 0, 0
+  index: -1
+water_circle2
+  rotate: false
+  xy: 210, 294
+  size: 198, 198
+  orig: 198, 198
+  offset: 0, 0
+  index: -1
+water_line_s1
+  rotate: false
+  xy: 752, 294
+  size: 82, 82
+  orig: 82, 82
+  offset: 0, 0
+  index: -1
+water_tornade
+  rotate: false
+  xy: 2, 294
+  size: 206, 206
+  orig: 206, 206
+  offset: 0, 0
+  index: -1
+wind_shock
+  rotate: false
+  xy: 410, 294
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1

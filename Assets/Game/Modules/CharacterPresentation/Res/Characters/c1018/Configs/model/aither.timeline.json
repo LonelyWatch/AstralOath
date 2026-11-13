@@ -1,0 +1,159 @@
+{
+  "timeline": {
+    "default": {
+      "b_idle": {
+        "duration": 0,
+        "frames": []
+      },
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "i_terre_bidle_eff",
+              "location": 1,
+              "locationBone": "eff_pos",
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "i_terre_bidle_eff"
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "i_terre_skill_01_burst",
+              "location": 5,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "i_terre_skill_01_shot",
+              "location": 5,
+              "locationBone": "root",
+              "x": 100,
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 1400,
+            "func": "event",
+            "param": {
+              "name": "shot",
+              "param": "shot"
+            }
+          }
+        ]
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "i_terre_skill_02",
+              "location": 5,
+              "locationBone": "shadow",
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 1220,
+            "func": "sound",
+            "param": {}
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "i_terre_bidle_eff"
+            }
+          }
+        ]
+      },
+      "skill3": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "i_terre_skill_03",
+              "location": 5,
+              "locationBone": "shadow",
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "shake",
+            "param": {
+              "duration": -1,
+              "powerX": 10,
+              "powerY": 10,
+              "timeScale": 1.0,
+              "type": 1,
+              "source": "i_terre_skill_03_cm"
+            }
+          },
+          {
+            "time": 363,
+            "func": "remove",
+            "param": {
+              "targetId": "i_terre_bidle_eff"
+            }
+          },
+          {
+            "time": 1245,
+            "func": "sound",
+            "param": {}
+          }
+        ]
+      },
+      "attacked": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 1,
+            "func": "sound",
+            "param": {}
+          }
+        ]
+      },
+      "knock_down": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 1,
+            "func": "sound",
+            "param": {}
+          }
+        ]
+      },
+      "shock": {
+        "duration": 0,
+        "frames": []
+      },
+      "idle": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "i_terre_bidle_eff"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

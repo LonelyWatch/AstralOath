@@ -1,0 +1,55 @@
+
+i_terre_skill_01_ball.sct
+size: 470,231
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 210, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+water_ball1
+  rotate: false
+  xy: 210, 173
+  size: 56, 56
+  orig: 56, 56
+  offset: 0, 0
+  index: -1
+water_ball2
+  rotate: false
+  xy: 312, 175
+  size: 35, 39
+  orig: 35, 39
+  offset: 0, 0
+  index: -1
+water_ball3
+  rotate: false
+  xy: 268, 175
+  size: 42, 44
+  orig: 42, 44
+  offset: 0, 0
+  index: -1
+water_line1
+  rotate: false
+  xy: 381, 2
+  size: 87, 87
+  orig: 87, 87
+  offset: 0, 0
+  index: -1
+water_line_s1
+  rotate: false
+  xy: 381, 91
+  size: 82, 82
+  orig: 82, 82
+  offset: 0, 0
+  index: -1
+water_tornade
+  rotate: false
+  xy: 2, 2
+  size: 206, 206
+  orig: 206, 206
+  offset: 0, 0
+  index: -1

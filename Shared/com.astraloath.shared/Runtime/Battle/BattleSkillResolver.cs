@@ -399,15 +399,18 @@ namespace AstralOath.Shared.Battle
                         ProjectDamage(actor, target, damage, result);
                         break;
                     case "heal":
+                    case "heal_target_health":
                         if (!target.Has(BattleStatusKind.Unhealable))
                         {
-                            int healRate = skill.casterHealthHealBp.Value;
+                            bool scalesFromTarget = effect.operation == "heal_target_health";
+                            int healRate = scalesFromTarget ? effect.value : skill.casterHealthHealBp.Value;
                             if (soulBurn && skill.soulBurnKind == "increase_healing")
                             {
                                 int bonus = SkillModifier(program, "burn_healing_rate_bonus", actor, target, multiTargetAttack);
                                 healRate += bonus > 0 ? bonus : healRate;
                             }
-                            int healing = ScaleHealth(actor.MaximumHealth, healRate, modifiers.HealingBp);
+                            int maximumHealth = scalesFromTarget ? target.MaximumHealth : actor.MaximumHealth;
+                            int healing = ScaleHealth(maximumHealth, healRate, modifiers.HealingBp);
                             target.Health += Math.Min(healing, target.MaximumHealth - target.Health);
                             Changes.Add(BattleChange.Healing(actor.Id, target.Id, healing));
                         }
@@ -474,13 +477,17 @@ namespace AstralOath.Shared.Battle
                             Changes.Add(BattleChange.RemoveStatus(actor.Id, actor.Id, status));
                         }
                         break;
+                    case "target_health_barrier":
                     case "apply_status":
-                        var kind = ParseStatus(effect.status);
+                        bool targetHealthBarrier = effect.operation == "target_health_barrier";
+                        var kind = targetHealthBarrier ? BattleStatusKind.Barrier : ParseStatus(effect.status);
                         bool harmful = IsHarmful(kind);
                         if (!CheckEffect(actor, target, kind, chance, lastHit, harmful, harmful, ignoresResistance)) break;
                         int duration = effect.turns;
                         if (soulBurn && !harmful && skill.soulBurnKind == "extend_granted_buffs") duration += skill.soulBurnTurns;
-                        int strength = kind == BattleStatusKind.Barrier ? BarrierStrength(actor, skill, modifiers.BarrierBp) : effect.value;
+                        int strength = effect.value;
+                        if (targetHealthBarrier) strength = ScaleHealth(target.MaximumHealth, effect.value + modifiers.BarrierBp);
+                        else if (kind == BattleStatusKind.Barrier) strength = BarrierStrength(actor, skill, modifiers.BarrierBp);
                         ApplyStatus(actor, target, kind, duration, strength);
                         break;
                     default: throw new InvalidOperationException($"Unknown skill effect '{effect.operation}'.");

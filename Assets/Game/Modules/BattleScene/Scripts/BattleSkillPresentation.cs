@@ -245,13 +245,13 @@ namespace AstralOath.Client.BattleScene
                 Warn(presentationId + ": source LAYOUT uses a participant visibility mask; self_x/away_x placement and fade curves remain unverified and authored slots are retained.");
             if (nodes.Any(node => Kind(node) == "MOVE"))
                 Warn(presentationId + ": source MOVE timing and anchors are used with reconstructed movement curves.");
-            var main = nodes.First(node => Kind(node) == "ANI" &&
-                ((string)node["ani"]).StartsWith("skill", StringComparison.Ordinal));
-            string animation = (string)main["ani"];
-            float clipDuration = Mathf.Max(0.1f, actor.GetBattleAnimationDuration(animation));
             Prepare(actor, presentationId);
             var cues = cache.Cues[(actor, presentationId)];
-            float lead = cues.First(cue => cue.Node == main).At;
+            var main = cues.First(cue => Kind(cue.Node) == "ANI" &&
+                ((string)cue.Node["ani"]).StartsWith("skill", StringComparison.Ordinal));
+            string animation = (string)main.Node["ani"];
+            float clipDuration = Mathf.Max(0.1f, actor.GetBattleAnimationDuration(animation));
+            float lead = main.At;
             float[] hits = cues.Where(cue => Kind(cue.Node) == "HIT").Select(cue => cue.At).Distinct().ToArray();
             float impactTime = hits.Length == 0 ? lead + Mathf.Min(.65f, clipDuration * .8f) : hits[0];
             HitTimes = hits.Length == 0 ? new[] { impactTime } : hits;
@@ -278,6 +278,9 @@ namespace AstralOath.Client.BattleScene
                             Schedule(at, () => Cfx(hit, primary, recipients, 6, 1f,
                                 new Vector2(Number(node, "offset_x"), Number(node, "offset_y")), true,
                                 new Vector2(Number(node, "rand_x"), Number(node, "rand_y"))));
+                        break;
+                    case "SHOT":
+                        Schedule(at, () => PlayShot(node, primary, cue.Duration));
                         break;
                     case "EFFECT":
                         Schedule(at, () => Effect(node, primary, recipients));
@@ -349,6 +352,19 @@ namespace AstralOath.Client.BattleScene
             var additions = graph["additions"];
             var nodes = source["entities"].OfType<JObject>()
                 .Concat(additions?["entities"]?.OfType<JObject>() ?? Enumerable.Empty<JObject>()).ToArray();
+            if ((int?)graph["animationIndex"] is int animationIndex)
+            {
+                if (animationIndex < 1 || animationIndex > 3)
+                    throw new FormatException("Unsupported source skill animation index " + animationIndex);
+                for (int index = 0; index < nodes.Length; index++)
+                {
+                    string name = (string)nodes[index]["ani"];
+                    if (name == null || !name.Contains("{idx}")) continue;
+                    var resolved = (JObject)nodes[index].DeepClone();
+                    resolved["ani"] = name.Replace("{idx}", animationIndex.ToString(CultureInfo.InvariantCulture));
+                    nodes[index] = resolved;
+                }
+            }
             var byId = nodes.ToDictionary(node => (int)node["guid"]);
             var edges = source["connections"].OfType<JObject>()
                 .Concat(additions?["connections"]?.OfType<JObject>() ?? Enumerable.Empty<JObject>()).ToLookup(edge => (int)edge["from"]);
@@ -492,6 +508,7 @@ namespace AstralOath.Client.BattleScene
                 if (animation == null) return 0f;
                 if (lifetime >= 0f) return lifetime / 1000f;
                 float duration = skeleton.Duration(animation);
+                if (UsesIntroLoop(part, skeleton)) duration += skeleton.Duration("loop");
                 foreach (var action in (part["actions"] as JArray ?? new JArray()).OfType<JObject>())
                     if (HasSpineAction(key, skeleton, (string)action["action"]))
                         duration = Mathf.Max(duration, Seconds(action, "delay") + skeleton.Duration((string)action["action"]));
@@ -528,6 +545,7 @@ namespace AstralOath.Client.BattleScene
             if (requested != null)
             {
                 if (skeleton.Durations.ContainsKey(requested)) return requested;
+                if (UsesIntroLoop(part, skeleton)) return "intro";
                 WarnSource($"Unknown CFX animation '{requested}' in '{key}'.");
                 return null;
             }
@@ -538,6 +556,9 @@ namespace AstralOath.Client.BattleScene
             WarnSource($"No playable CFX animation in '{key}'.");
             return null;
         }
+
+        private static bool UsesIntroLoop(JObject part, BattleSkeletonMetadata skeleton) =>
+            (string)part["ani"] == "intro,loop" && skeleton.Duration("intro") > 0f && skeleton.Duration("loop") > 0f;
 
         private bool HasSpineAction(string key, BattleSkeletonMetadata skeleton, string name)
         {
@@ -731,6 +752,42 @@ namespace AstralOath.Client.BattleScene
 
         private static Vector3 TargetCenter(BattlePreviewActor[] targets) =>
             targets.Aggregate(Vector3.zero, (sum, target) => sum + target.transform.position) / targets.Length;
+
+        private void PlayShot(JObject node, BattlePreviewActor target, float duration)
+        {
+            string source = (string)node["source"];
+            if (string.IsNullOrEmpty(source)) return;
+            string bone = (string)node["selfBone"];
+            if (!target || duration <= 0f || string.IsNullOrWhiteSpace(bone) ||
+                !caster.TryGetPresentationAnchor(bone, out var launch))
+            {
+                WarnSource($"SHOT {node["guid"]} has no verified launch bone, target or duration.");
+                return;
+            }
+
+            string key = source.StartsWith(EffectPath, StringComparison.Ordinal) ? source : EffectPath + source;
+            if (!key.EndsWith(".cfx", StringComparison.Ordinal)) key += ".cfx";
+            if (!(Document(key)?["primitive"] is JArray primitives)) return;
+
+            // The native graph provides a launch bone and travel time. The target's visual center is
+            // the preview convention until the default target bone and SHOT y semantics are verified.
+            Vector3 arrival = target.Bounds.center + Vector3.up * (Number(node, "y") * SourcePixel);
+            WarnSource($"SHOT {node["guid"]} uses the target bounds and authored y offset; original landing anchor is unverified.");
+            float started = time;
+            Vector3 Position() => Vector3.Lerp(launch, arrival, Mathf.Clamp01((time - started) / duration));
+            float side = caster.FacingDirection;
+            var sourceActor = caster;
+            foreach (var raw in primitives.OfType<JObject>())
+            {
+                var part = ReadPrimitive(raw);
+                if (part == null) continue;
+                float delay = Seconds(part, "delay");
+                if (delay >= duration) continue;
+                float remaining = duration - delay;
+                part["lifeTime"] = Mathf.Min(PrimitiveDuration(part), remaining) * 1000f;
+                Schedule(time + delay, () => Spawn(key, part, Position, sourceActor, 1f, Vector2.zero, side, true));
+            }
+        }
 
         private void Effect(JObject node, BattlePreviewActor primary, BattlePreviewActor[] targets)
         {
@@ -936,6 +993,12 @@ namespace AstralOath.Client.BattleScene
                 player.Root.transform.localScale = new Vector3(side * size, size, size);
                 player.Root.GetComponent<MeshRenderer>().sortingOrder = order;
                 player.Play(animation, false);
+                float lifetime = PrimitiveDuration(part);
+                if (UsesIntroLoop(part, metadata) && metadata.Duration("intro") < lifetime)
+                    Schedule(time + metadata.Duration("intro"), () =>
+                    {
+                        if (player.Root) player.Play("loop", true);
+                    });
                 foreach (var action in (part["actions"] as JArray ?? new JArray()).OfType<JObject>())
                 {
                     string name = (string)action["action"];
@@ -945,7 +1008,6 @@ namespace AstralOath.Client.BattleScene
                         if (player.Root) player.Play(name, false);
                     });
                 }
-                float lifetime = PrimitiveDuration(part);
                 active.Add((time + lifetime, delta =>
                 {
                     follow();

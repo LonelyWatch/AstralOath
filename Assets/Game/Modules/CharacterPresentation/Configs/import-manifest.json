@@ -19,6 +19,7 @@
     "c1015",
     "c1016",
     "c1017",
+    "c1018",
     "c1062"
   ],
   "entries": [
@@ -1264,6 +1265,110 @@
         "characterlab/source/camera/elf_cm.scsp/json"
       ],
       "outputSha256": "b8fc26eabd99e2d06452dc0d8b9210428c42b918224b0fc4260a17ceb19c606f",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "camera/i_terre_skill_01_cm.scsp",
+      "sourceSha256": "265677dc41f47be32ba369585a5fc15ff6561236f04fec9f46607dce455b69c0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Animations/camera/i_terre_skill_01_cm.spine.json",
+      "address": "characterlab/source/camera/i_terre_skill_01_cm.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "20729f81dbfad643258abe863e7069297ae135a7fcb7043c25b9b96f29993066",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 454,
+        "consumedBytes": 454,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 3,
+            "frames": 16,
+            "segments": 13,
+            "sourceMarkers": {
+              "allLinear": 3,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 13,
+              "stepped": 0,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "camera/i_terre_skill_01_cm.scsp",
+      "sourceSha256": "265677dc41f47be32ba369585a5fc15ff6561236f04fec9f46607dce455b69c0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Animations/camera/i_terre_skill_01_cm.skeleton.json",
+      "address": "characterlab/source/camera/i_terre_skill_01_cm.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/camera/i_terre_skill_01_cm.scsp/json"
+      ],
+      "outputSha256": "5d2baf39bbf34a65a855c556fb754eeb0ac59a34a5c07a6c3b4e2eb128b50a01",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "camera/i_terre_skill_03_cm.scsp",
+      "sourceSha256": "536d713688011090711a08bf11b9650588fd0eea7a1d7e13e82874952d927c81",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Animations/camera/i_terre_skill_03_cm.spine.json",
+      "address": "characterlab/source/camera/i_terre_skill_03_cm.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "97564c5fb58df9dcc93c3adbcc6c90d59d3dfc5dddfee95a4e852ef6abfef9a7",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 552,
+        "consumedBytes": 552,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 1,
+            "frames": 27,
+            "segments": 26,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 0,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 24,
+              "stepped": 2,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "camera/i_terre_skill_03_cm.scsp",
+      "sourceSha256": "536d713688011090711a08bf11b9650588fd0eea7a1d7e13e82874952d927c81",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Animations/camera/i_terre_skill_03_cm.skeleton.json",
+      "address": "characterlab/source/camera/i_terre_skill_03_cm.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/camera/i_terre_skill_03_cm.scsp/json"
+      ],
+      "outputSha256": "f72549d63d96b8ade497130c16c99653b470aed5eb6c638dc4e6de4994a73ead",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
@@ -6461,6 +6566,287 @@
         "status": "converted",
         "frameCount": 21,
         "durationSeconds": 1.64
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1018_3.webp",
+      "sourceSha256": "171f132ad9954ed067a89ba95cb082875b38b8be848df42d6c2d59b631216df5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/cut/fhd/sk_c1018_3_frames/0000.png",
+      "address": "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0000",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "0ca5e1bf76f78ce03c3f2fc9df85f080ae56e701888beca8027c245d244fec36",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 0
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1018_3.webp",
+      "sourceSha256": "171f132ad9954ed067a89ba95cb082875b38b8be848df42d6c2d59b631216df5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/cut/fhd/sk_c1018_3_frames/0001.png",
+      "address": "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0001",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "2c5302f2c8ca8021ac0d604b2eb5da1c06069dc6351fd6ada2e325102cc5afd7",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 1
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1018_3.webp",
+      "sourceSha256": "171f132ad9954ed067a89ba95cb082875b38b8be848df42d6c2d59b631216df5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/cut/fhd/sk_c1018_3_frames/0002.png",
+      "address": "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0002",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "8eedce706a3f6063746187ce7a71f3a8d826c5871a7b5756eb9c85b31a213a33",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 2
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1018_3.webp",
+      "sourceSha256": "171f132ad9954ed067a89ba95cb082875b38b8be848df42d6c2d59b631216df5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/cut/fhd/sk_c1018_3_frames/0003.png",
+      "address": "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0003",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "91c32def1dd5044d984597f6288e9d4c998d5913002dc2044c85f98876e881cc",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 3
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1018_3.webp",
+      "sourceSha256": "171f132ad9954ed067a89ba95cb082875b38b8be848df42d6c2d59b631216df5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/cut/fhd/sk_c1018_3_frames/0004.png",
+      "address": "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0004",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "33bf66a5d0d8678a396b66643439d4a267caecff7f62de973f833f8f0c9b6e89",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 4
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1018_3.webp",
+      "sourceSha256": "171f132ad9954ed067a89ba95cb082875b38b8be848df42d6c2d59b631216df5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/cut/fhd/sk_c1018_3_frames/0005.png",
+      "address": "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0005",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "c82edc50dc832f00e7ab8fc0ff0bc4b6fe372a370a3ec157c626f405985ece04",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 5
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1018_3.webp",
+      "sourceSha256": "171f132ad9954ed067a89ba95cb082875b38b8be848df42d6c2d59b631216df5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/cut/fhd/sk_c1018_3_frames/0006.png",
+      "address": "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0006",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "559b1648eb0008822162633fe87a166f9250094496dae77414af20fc0dd73dbb",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 6
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1018_3.webp",
+      "sourceSha256": "171f132ad9954ed067a89ba95cb082875b38b8be848df42d6c2d59b631216df5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/cut/fhd/sk_c1018_3_frames/0007.png",
+      "address": "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0007",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "c0a586653b8566039416058f1333369c4e10f25df311eb189e4497f7cc59fb0d",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 7
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1018_3.webp",
+      "sourceSha256": "171f132ad9954ed067a89ba95cb082875b38b8be848df42d6c2d59b631216df5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/cut/fhd/sk_c1018_3_frames/0008.png",
+      "address": "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0008",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "9fc6ab1c9b3d1a2b989a05a59fbdadce9f737ff6ef3016e22c4b67fa79b4557d",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 8
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1018_3.webp",
+      "sourceSha256": "171f132ad9954ed067a89ba95cb082875b38b8be848df42d6c2d59b631216df5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/cut/fhd/sk_c1018_3_frames/0009.png",
+      "address": "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0009",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "0a1af211988beef9db263ba7ab037601090760e20b33b2ea06116060d0122cb1",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 9
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1018_3.webp",
+      "sourceSha256": "171f132ad9954ed067a89ba95cb082875b38b8be848df42d6c2d59b631216df5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/cut/fhd/sk_c1018_3_frames/0010.png",
+      "address": "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0010",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "a8b0437f04d515f271eccafa9da8150e285b0a405b31e6a55f073bb6ea520d60",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 10
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1018_3.webp",
+      "sourceSha256": "171f132ad9954ed067a89ba95cb082875b38b8be848df42d6c2d59b631216df5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/cut/fhd/sk_c1018_3_frames/0011.png",
+      "address": "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0011",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "a34eca5b827872ad6dfd5912df88a1c741e8e9a12ff448b86e327a1652d6b0eb",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 11
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1018_3.webp",
+      "sourceSha256": "171f132ad9954ed067a89ba95cb082875b38b8be848df42d6c2d59b631216df5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/cut/fhd/sk_c1018_3_frames/0012.png",
+      "address": "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0012",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "57333af5540f2f3230e704540fd342a5e6727f525e73b3b4a2068f553bc27861",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 12
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1018_3.webp",
+      "sourceSha256": "171f132ad9954ed067a89ba95cb082875b38b8be848df42d6c2d59b631216df5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/cut/fhd/sk_c1018_3_frames/0013.png",
+      "address": "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0013",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "52eec03f4806ef9a8be4aa2907c7f668245e95afecc295bdfce26cdd40da799f",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 13
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1018_3.webp",
+      "sourceSha256": "171f132ad9954ed067a89ba95cb082875b38b8be848df42d6c2d59b631216df5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/cut/fhd/sk_c1018_3_frames/0014.png",
+      "address": "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0014",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "43a10179210234b644aa95c0dd7ec67d2361a9771450380958e46d7c7bb71136",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 14
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1018_3.webp",
+      "sourceSha256": "171f132ad9954ed067a89ba95cb082875b38b8be848df42d6c2d59b631216df5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/cut/fhd/sk_c1018_3_frames/0015.png",
+      "address": "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0015",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "9a30c0f9be7e9534c8da8786b68e38e981e2d6113ea476c0cd7eb701e398058a",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 15
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1018_3.webp",
+      "sourceSha256": "171f132ad9954ed067a89ba95cb082875b38b8be848df42d6c2d59b631216df5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/cut/fhd/sk_c1018_3_frames/0016.png",
+      "address": "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0016",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "27974d4978347da293731a152f1910a734c29a59c8833bcea1aae0552bb20987",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 16
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1018_3.webp",
+      "sourceSha256": "171f132ad9954ed067a89ba95cb082875b38b8be848df42d6c2d59b631216df5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/cut/fhd/sk_c1018_3_frames/0017.png",
+      "address": "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0017",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "e44c024998077b3b39a467c5d14b9cbd285441ca17c110f81fd2228a9ad25ab8",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 17
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1018_3.webp",
+      "sourceSha256": "171f132ad9954ed067a89ba95cb082875b38b8be848df42d6c2d59b631216df5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/cut/fhd/sk_c1018_3_frames/0018.png",
+      "address": "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0018",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "99f256716e20251e82e6074f5a7ae2d918bb2d4e82ac8738107a84347f825dca",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 18
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1018_3.webp",
+      "sourceSha256": "171f132ad9954ed067a89ba95cb082875b38b8be848df42d6c2d59b631216df5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/cut/fhd/sk_c1018_3.cutin.json",
+      "address": "characterlab/source/cut/fhd/sk_c1018_3.webp",
+      "type": "cutin",
+      "dependencies": [
+        "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0000",
+        "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0001",
+        "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0002",
+        "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0003",
+        "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0004",
+        "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0005",
+        "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0006",
+        "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0007",
+        "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0008",
+        "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0009",
+        "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0010",
+        "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0011",
+        "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0012",
+        "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0013",
+        "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0014",
+        "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0015",
+        "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0016",
+        "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0017",
+        "characterlab/source/cut/fhd/sk_c1018_3.webp/frame/0018"
+      ],
+      "outputSha256": "02bdbdea370775aeeb25f713971727d54845d13e1532fb6cfc00db0f7442d75a",
+      "conversion": {
+        "status": "converted",
+        "frameCount": 19,
+        "durationSeconds": 1.66
       }
     },
     {
@@ -17004,6 +17390,1004 @@
       }
     },
     {
+      "source": "effect/i_terre_ball_pati.particle",
+      "sourceSha256": "d7f562b8723d8b7cfb948349a3cac89562a1d7f3730b39038db2026bce06031b",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/effect/i_terre_ball_pati.particle.json",
+      "address": "characterlab/source/effect/i_terre_ball_pati.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/pati_01.sct"
+      ],
+      "outputSha256": "63468c781b484d2edafc222b251fd2977ae4f1a2d4a5dd170fd17f25c6efe7df",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/i_terre_bidle_eff.atlas",
+      "sourceSha256": "1e7c46c9f218959e5a110791282eaeb8239a983100be0031265c1ebc0ea1e59c",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Atlas/effect/i_terre_bidle_eff.atlas.txt",
+      "address": "characterlab/source/effect/i_terre_bidle_eff.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/i_terre_bidle_eff.sct"
+      ],
+      "outputSha256": "1e7c46c9f218959e5a110791282eaeb8239a983100be0031265c1ebc0ea1e59c",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/i_terre_bidle_eff.cfx",
+      "sourceSha256": "994a6d529a7aaafee7d7f18b5892349f62eac4427be127dd24a0628dcd3a7fc9",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/effect/i_terre_bidle_eff.cfx.json",
+      "address": "characterlab/source/effect/i_terre_bidle_eff.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/i_terre_bidle_eff.scsp",
+        "characterlab/source/effect/iterre_bidle_pati.particle"
+      ],
+      "outputSha256": "96457cf30661bdb7286cdd7ccce5e0b0a4ba132b872c328741d75e94c2cf1552",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/i_terre_bidle_eff.scsp",
+      "sourceSha256": "0ec80efdde8b6d40bdb05caa31d6c1f72e44cc490f12316e0c4106857f013e9d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Animations/effect/i_terre_bidle_eff.spine.json",
+      "address": "characterlab/source/effect/i_terre_bidle_eff.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "9a28003f58ee458f2d40c379c774fde81fe8dfa1554fa32659d1468386f1edbb",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 2,
+        "binaryBytes": 14459,
+        "consumedBytes": 14459,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "intro": {
+            "tracks": 48,
+            "frames": 245,
+            "segments": 197,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 20,
+              "explicit": 28
+            },
+            "modes": {
+              "linear": 85,
+              "stepped": 111,
+              "bezier": 1
+            }
+          },
+          "loop": {
+            "tracks": 48,
+            "frames": 108,
+            "segments": 60,
+            "sourceMarkers": {
+              "allLinear": 5,
+              "allStepped": 42,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 14,
+              "stepped": 42,
+              "bezier": 4
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/i_terre_bidle_eff.scsp",
+      "sourceSha256": "0ec80efdde8b6d40bdb05caa31d6c1f72e44cc490f12316e0c4106857f013e9d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Animations/effect/i_terre_bidle_eff.skeleton.json",
+      "address": "characterlab/source/effect/i_terre_bidle_eff.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/i_terre_bidle_eff.scsp/json",
+        "characterlab/source/effect/i_terre_bidle_eff.atlas",
+        "characterlab/source/effect/i_terre_bidle_eff.sct"
+      ],
+      "outputSha256": "b90af72efba1792f3cdb7b01a4e7d491e51e71a9ccdef611687ebc2e44d60b53",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 2
+      }
+    },
+    {
+      "source": "effect/i_terre_bidle_eff.sct",
+      "sourceSha256": "4bdb4596c04869f393379da40c1d173309842d6d4726764ed1ff5fd0b49edda6",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Textures/effect/i_terre_bidle_eff.png",
+      "address": "characterlab/source/effect/i_terre_bidle_eff.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "389640f0bfd8b562ac48740fa0218a2c6c10909ffd8a85764ad5503f0897eb26",
+      "conversion": {
+        "status": "converted",
+        "width": 454,
+        "height": 196,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "4bdb4596c04869f393379da40c1d173309842d6d4726764ed1ff5fd0b49edda6",
+        "outputSha256": "389640f0bfd8b562ac48740fa0218a2c6c10909ffd8a85764ad5503f0897eb26"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_01_ball.atlas",
+      "sourceSha256": "0cae3b248dbb55fc9244af973764556aa7cebfe81ea4d6d4447e678730999ec0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Atlas/effect/i_terre_skill_01_ball.atlas.txt",
+      "address": "characterlab/source/effect/i_terre_skill_01_ball.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/i_terre_skill_01_ball.sct"
+      ],
+      "outputSha256": "0cae3b248dbb55fc9244af973764556aa7cebfe81ea4d6d4447e678730999ec0",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_01_ball.cfx",
+      "sourceSha256": "f4d67e3ea340ca4e84673731e696887839ad685d468f5d97cd21d39713320607",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/effect/i_terre_skill_01_ball.cfx.json",
+      "address": "characterlab/source/effect/i_terre_skill_01_ball.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/i_terre_ball_pati.particle",
+        "characterlab/source/effect/i_terre_skill_01_ball.scsp"
+      ],
+      "outputSha256": "438bec267e984af10791d04183f812145250907e3c3757fe72fd1089d02176cf",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_01_ball.scsp",
+      "sourceSha256": "ae09f1b63f34b429ccb3a4d83755fd1aed9a7ff21a6965e5513c21895486e4cc",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Animations/effect/i_terre_skill_01_ball.spine.json",
+      "address": "characterlab/source/effect/i_terre_skill_01_ball.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "d4f407044b20743af7713fe9da5e5bd2becc205ee193143c0ddc744b70a16a59",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 2,
+        "binaryBytes": 11920,
+        "consumedBytes": 11920,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "intro": {
+            "tracks": 48,
+            "frames": 109,
+            "segments": 61,
+            "sourceMarkers": {
+              "allLinear": 5,
+              "allStepped": 41,
+              "explicit": 2
+            },
+            "modes": {
+              "linear": 14,
+              "stepped": 42,
+              "bezier": 5
+            }
+          },
+          "loop": {
+            "tracks": 48,
+            "frames": 108,
+            "segments": 60,
+            "sourceMarkers": {
+              "allLinear": 5,
+              "allStepped": 42,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 14,
+              "stepped": 42,
+              "bezier": 4
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_01_ball.scsp",
+      "sourceSha256": "ae09f1b63f34b429ccb3a4d83755fd1aed9a7ff21a6965e5513c21895486e4cc",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Animations/effect/i_terre_skill_01_ball.skeleton.json",
+      "address": "characterlab/source/effect/i_terre_skill_01_ball.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/i_terre_skill_01_ball.scsp/json",
+        "characterlab/source/effect/i_terre_skill_01_ball.atlas",
+        "characterlab/source/effect/i_terre_skill_01_ball.sct"
+      ],
+      "outputSha256": "6a3609acfbf7b8e0b4f371d6acbd818235ab8c9573dd13d08ba41818f7a87e8f",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 2
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_01_ball.sct",
+      "sourceSha256": "f82e210bab5c7278b6da9348cbd47ef9e380a6ce26b62259e8339c3181655c94",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Textures/effect/i_terre_skill_01_ball.png",
+      "address": "characterlab/source/effect/i_terre_skill_01_ball.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "b9f561b0f75ff553b19ed9086644e0edb402b4e392dcb397e9a90838fa98f640",
+      "conversion": {
+        "status": "converted",
+        "width": 470,
+        "height": 231,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "f82e210bab5c7278b6da9348cbd47ef9e380a6ce26b62259e8339c3181655c94",
+        "outputSha256": "b9f561b0f75ff553b19ed9086644e0edb402b4e392dcb397e9a90838fa98f640"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_01_burst.atlas",
+      "sourceSha256": "c9f95c9753bd8e9471034112f25fc898e759af8d9741771ae824b4a2495562e0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Atlas/effect/i_terre_skill_01_burst.atlas.txt",
+      "address": "characterlab/source/effect/i_terre_skill_01_burst.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/i_terre_skill_01_burst.sct"
+      ],
+      "outputSha256": "c9f95c9753bd8e9471034112f25fc898e759af8d9741771ae824b4a2495562e0",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_01_burst.cfx",
+      "sourceSha256": "5fa77eee231457b5de428249caa74da3bb98caa5e1554fa7b17c43ec7294c86b",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/effect/i_terre_skill_01_burst.cfx.json",
+      "address": "characterlab/source/effect/i_terre_skill_01_burst.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/i_terre_skill_01_burst.scsp",
+        "characterlab/source/effect/i_terre_skill_first_pati.particle"
+      ],
+      "outputSha256": "6e30838bf7b1f61caf2fc4f09cd1d0f9c0b5c5c5848c4a56a9f16bbcbed982bf",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_01_burst.scsp",
+      "sourceSha256": "270c70a9822490e1527629021fa3d53cd9e543bdd34b286c6c25fa302bf3bef5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Animations/effect/i_terre_skill_01_burst.spine.json",
+      "address": "characterlab/source/effect/i_terre_skill_01_burst.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "5e8fef58a90939c1e8f051cb9e5718982caa26f127323e59ac95bb24ed01ea98",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 10624,
+        "consumedBytes": 10624,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 67,
+            "frames": 93,
+            "segments": 26,
+            "sourceMarkers": {
+              "allLinear": 56,
+              "allStepped": 4,
+              "explicit": 7
+            },
+            "modes": {
+              "linear": 13,
+              "stepped": 13,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_01_burst.scsp",
+      "sourceSha256": "270c70a9822490e1527629021fa3d53cd9e543bdd34b286c6c25fa302bf3bef5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Animations/effect/i_terre_skill_01_burst.skeleton.json",
+      "address": "characterlab/source/effect/i_terre_skill_01_burst.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/i_terre_skill_01_burst.scsp/json",
+        "characterlab/source/effect/i_terre_skill_01_burst.atlas",
+        "characterlab/source/effect/i_terre_skill_01_burst.sct"
+      ],
+      "outputSha256": "7b9ef4a878e46081bcfaf521122f03ff00d1c8a6b2edba6c4d117fd817d7689c",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_01_burst.sct",
+      "sourceSha256": "1760648a2f295a1b4e11c4fd6d575e6d8dbec8ef9466387454882e60e8059354",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Textures/effect/i_terre_skill_01_burst.png",
+      "address": "characterlab/source/effect/i_terre_skill_01_burst.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "d14063080a5ce07f7882baa617b1e94a1936190746960362e37c541da9953ac5",
+      "conversion": {
+        "status": "converted",
+        "width": 878,
+        "height": 502,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "1760648a2f295a1b4e11c4fd6d575e6d8dbec8ef9466387454882e60e8059354",
+        "outputSha256": "d14063080a5ce07f7882baa617b1e94a1936190746960362e37c541da9953ac5"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_01_pati2.particle",
+      "sourceSha256": "b668fbd9b63ba0ba3b6a54aeb9e518e460a378b366a7babae96617c9111e6534",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/effect/i_terre_skill_01_pati2.particle.json",
+      "address": "characterlab/source/effect/i_terre_skill_01_pati2.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/pati_01.sct"
+      ],
+      "outputSha256": "82fa3dbd3d8075c9d937336596fffb06ffd134c0ed55b97bced8b300fe8d80fb",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_01_shot.atlas",
+      "sourceSha256": "1a8fe5e5a504e08cd0779a6fbc8c82dc6436182f19d3daa096d0eea3a5f574a5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Atlas/effect/i_terre_skill_01_shot.atlas.txt",
+      "address": "characterlab/source/effect/i_terre_skill_01_shot.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/i_terre_skill_01_shot.sct"
+      ],
+      "outputSha256": "1a8fe5e5a504e08cd0779a6fbc8c82dc6436182f19d3daa096d0eea3a5f574a5",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_01_shot.cfx",
+      "sourceSha256": "45dd305de9ba58ddae8ada2b91ec42a639f4914320384933fe071293e85be42a",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/effect/i_terre_skill_01_shot.cfx.json",
+      "address": "characterlab/source/effect/i_terre_skill_01_shot.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/i_terre_skill_01_shot.scsp",
+        "characterlab/source/effect/i_terre_skill_01_shot_pati1.particle",
+        "characterlab/source/effect/i_terre_skill_01_shot_pati2.particle"
+      ],
+      "outputSha256": "96236848ad86503e3cb6ec56c85c34f67b3e5dec7fe398703166d5566d6a4021",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_01_shot.scsp",
+      "sourceSha256": "805678778994aa3f6444e9878eb927cd1c368e4a78483acf572f32658b4561b5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Animations/effect/i_terre_skill_01_shot.spine.json",
+      "address": "characterlab/source/effect/i_terre_skill_01_shot.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "03d293837b193314f803aadbca2b469a1b0971ff46c04e678a9aa5ebbe34b814",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 13879,
+        "consumedBytes": 13879,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 67,
+            "frames": 204,
+            "segments": 137,
+            "sourceMarkers": {
+              "allLinear": 14,
+              "allStepped": 22,
+              "explicit": 31
+            },
+            "modes": {
+              "linear": 67,
+              "stepped": 68,
+              "bezier": 2
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_01_shot.scsp",
+      "sourceSha256": "805678778994aa3f6444e9878eb927cd1c368e4a78483acf572f32658b4561b5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Animations/effect/i_terre_skill_01_shot.skeleton.json",
+      "address": "characterlab/source/effect/i_terre_skill_01_shot.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/i_terre_skill_01_shot.scsp/json",
+        "characterlab/source/effect/i_terre_skill_01_shot.atlas",
+        "characterlab/source/effect/i_terre_skill_01_shot.sct"
+      ],
+      "outputSha256": "d71f8c19675bd39766492330441e030108ec1669965a0be0478d32d9ce1ad9d3",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_01_shot.sct",
+      "sourceSha256": "1760648a2f295a1b4e11c4fd6d575e6d8dbec8ef9466387454882e60e8059354",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Textures/effect/i_terre_skill_01_shot.png",
+      "address": "characterlab/source/effect/i_terre_skill_01_shot.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "d14063080a5ce07f7882baa617b1e94a1936190746960362e37c541da9953ac5",
+      "conversion": {
+        "status": "converted",
+        "width": 878,
+        "height": 502,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "1760648a2f295a1b4e11c4fd6d575e6d8dbec8ef9466387454882e60e8059354",
+        "outputSha256": "d14063080a5ce07f7882baa617b1e94a1936190746960362e37c541da9953ac5"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_01_shot_pati1.particle",
+      "sourceSha256": "43c223f9075435385540d27b89454f1d26c3d6c0c3c0bd4a973fe157f4328c22",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/effect/i_terre_skill_01_shot_pati1.particle.json",
+      "address": "characterlab/source/effect/i_terre_skill_01_shot_pati1.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/pati_01.sct"
+      ],
+      "outputSha256": "54b277492c58d1782d1b90a0ddd4f58810028068a6588830c93dc167a24a9377",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_01_shot_pati2.particle",
+      "sourceSha256": "f46887106615388c0ff6101faf949eb9faa2134c97384a610f41082c12d3e3a3",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/effect/i_terre_skill_01_shot_pati2.particle.json",
+      "address": "characterlab/source/effect/i_terre_skill_01_shot_pati2.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/pati_01.sct"
+      ],
+      "outputSha256": "59155ba1c49663908089af17ef203c47db51e6975793e3811199fa1a24554295",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_02.atlas",
+      "sourceSha256": "f76f091e7b44c4576138f4342ba51731ff2a905f116a0aa246fcdc6873969879",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Atlas/effect/i_terre_skill_02.atlas.txt",
+      "address": "characterlab/source/effect/i_terre_skill_02.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/i_terre_skill_02.sct"
+      ],
+      "outputSha256": "f76f091e7b44c4576138f4342ba51731ff2a905f116a0aa246fcdc6873969879",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_02.cfx",
+      "sourceSha256": "3d5d6d5589847359c23c9212b72fb3cf6ffe833c67b6c2a3e1b52b22207e40a0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/effect/i_terre_skill_02.cfx.json",
+      "address": "characterlab/source/effect/i_terre_skill_02.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/i_terre_skill_01_pati2.particle",
+        "characterlab/source/effect/i_terre_skill_02.scsp",
+        "characterlab/source/effect/i_terre_skill_02_sub.scsp",
+        "characterlab/source/effect/i_terre_skill_first_pati.particle",
+        "characterlab/source/effect/i_terre_skill_first_tale.scsp"
+      ],
+      "outputSha256": "1825fd4b1e5b6d4778263a953dc3955636b81f0802c55b7f2ee230ef70ac9c04",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_02.scsp",
+      "sourceSha256": "628f507f7f458a65c5b52d9b5ee76204642e6e34af12d3195c2f97bd83a1fab8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Animations/effect/i_terre_skill_02.spine.json",
+      "address": "characterlab/source/effect/i_terre_skill_02.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "50e5e033d98014535557c6eabc9dd6049bd861f060e07d11c018a22e0debf755",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 44021,
+        "consumedBytes": 44021,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 61,
+            "frames": 217,
+            "segments": 156,
+            "sourceMarkers": {
+              "allLinear": 8,
+              "allStepped": 16,
+              "explicit": 37
+            },
+            "modes": {
+              "linear": 74,
+              "stepped": 82,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_02.scsp",
+      "sourceSha256": "628f507f7f458a65c5b52d9b5ee76204642e6e34af12d3195c2f97bd83a1fab8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Animations/effect/i_terre_skill_02.skeleton.json",
+      "address": "characterlab/source/effect/i_terre_skill_02.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/i_terre_skill_02.scsp/json",
+        "characterlab/source/effect/i_terre_skill_02.atlas",
+        "characterlab/source/effect/i_terre_skill_02.sct"
+      ],
+      "outputSha256": "4f1ebb7ba3fa4af820df9b284c55dafb2519647db7779ad4fcb43165e5309fba",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_02.sct",
+      "sourceSha256": "f0aa414c0cee787348ca1e29a07629b9c7dda9a2a35545e9484e4e755b6b96ff",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Textures/effect/i_terre_skill_02.png",
+      "address": "characterlab/source/effect/i_terre_skill_02.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "c79fc82b63d5930b41ae59af02bb43ddd08e2c770bf83b8163734702c7ff6096",
+      "conversion": {
+        "status": "converted",
+        "width": 437,
+        "height": 790,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "f0aa414c0cee787348ca1e29a07629b9c7dda9a2a35545e9484e4e755b6b96ff",
+        "outputSha256": "c79fc82b63d5930b41ae59af02bb43ddd08e2c770bf83b8163734702c7ff6096"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_02_sub.atlas",
+      "sourceSha256": "6bf18a774b1d4e915dd2228cd102975641003fa4db6071f2d07687283906b1c8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Atlas/effect/i_terre_skill_02_sub.atlas.txt",
+      "address": "characterlab/source/effect/i_terre_skill_02_sub.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/i_terre_skill_02_sub.sct"
+      ],
+      "outputSha256": "6bf18a774b1d4e915dd2228cd102975641003fa4db6071f2d07687283906b1c8",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_02_sub.scsp",
+      "sourceSha256": "d92e076012e6c36a6f24724366e687682405e6369db4da9645ec44965841bfa8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Animations/effect/i_terre_skill_02_sub.spine.json",
+      "address": "characterlab/source/effect/i_terre_skill_02_sub.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "ee7160037ef242110dffe06c1bcc094ef4bb4e37f93677e95fefe9c39a7ef337",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 3289,
+        "consumedBytes": 3289,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 25,
+            "frames": 78,
+            "segments": 53,
+            "sourceMarkers": {
+              "allLinear": 9,
+              "allStepped": 3,
+              "explicit": 13
+            },
+            "modes": {
+              "linear": 29,
+              "stepped": 24,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_02_sub.scsp",
+      "sourceSha256": "d92e076012e6c36a6f24724366e687682405e6369db4da9645ec44965841bfa8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Animations/effect/i_terre_skill_02_sub.skeleton.json",
+      "address": "characterlab/source/effect/i_terre_skill_02_sub.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/i_terre_skill_02_sub.scsp/json",
+        "characterlab/source/effect/i_terre_skill_02_sub.atlas",
+        "characterlab/source/effect/i_terre_skill_02_sub.sct"
+      ],
+      "outputSha256": "2b9ff86c2681c295b23f866f7aa4db6b2464071b4dccbebb94ad90e5858e1733",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_02_sub.sct",
+      "sourceSha256": "cecd5e9951312b565e4d8fcc64a10ff0ba15a7b285a20b444772bd2c5308bc34",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Textures/effect/i_terre_skill_02_sub.png",
+      "address": "characterlab/source/effect/i_terre_skill_02_sub.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "7d2004f1729c74ef96d8af42248525e7c2bca38e2f4fa75fb7d5faebd5d6312b",
+      "conversion": {
+        "status": "converted",
+        "width": 333,
+        "height": 964,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "cecd5e9951312b565e4d8fcc64a10ff0ba15a7b285a20b444772bd2c5308bc34",
+        "outputSha256": "7d2004f1729c74ef96d8af42248525e7c2bca38e2f4fa75fb7d5faebd5d6312b"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_03.atlas",
+      "sourceSha256": "27150c7a0aba27acd9ad616d4a6d16bdbe8df568a7c3db79993c8b05d3fa5bb3",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Atlas/effect/i_terre_skill_03.atlas.txt",
+      "address": "characterlab/source/effect/i_terre_skill_03.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/i_terre_skill_03.sct"
+      ],
+      "outputSha256": "27150c7a0aba27acd9ad616d4a6d16bdbe8df568a7c3db79993c8b05d3fa5bb3",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_03.cfx",
+      "sourceSha256": "e4b09bc18b11c3076bb25ea079b9d0be1f67a564d243594370b807017a55ce36",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/effect/i_terre_skill_03.cfx.json",
+      "address": "characterlab/source/effect/i_terre_skill_03.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/i_terre_skill_01_pati2.particle",
+        "characterlab/source/effect/i_terre_skill_03.scsp",
+        "characterlab/source/effect/i_terre_skill_03_02.scsp",
+        "characterlab/source/effect/i_terre_skill_03_pati1.particle"
+      ],
+      "outputSha256": "2e0aac04ea5e91b35d4e8f339e0c34409d938c4ad4b60d3e84523e1ca2c4a57b",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_03.scsp",
+      "sourceSha256": "96ea7543590be92177810faee874f1999e6d5763895f712403f12e8712a35453",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Animations/effect/i_terre_skill_03.spine.json",
+      "address": "characterlab/source/effect/i_terre_skill_03.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "736682904f596dd75f80de8695b0a611ea9e9259fda7dc30cf8dacef03256e30",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 12227,
+        "consumedBytes": 12227,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "intro": {
+            "tracks": 81,
+            "frames": 421,
+            "segments": 340,
+            "sourceMarkers": {
+              "allLinear": 1,
+              "allStepped": 30,
+              "explicit": 50
+            },
+            "modes": {
+              "linear": 198,
+              "stepped": 142,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_03.scsp",
+      "sourceSha256": "96ea7543590be92177810faee874f1999e6d5763895f712403f12e8712a35453",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Animations/effect/i_terre_skill_03.skeleton.json",
+      "address": "characterlab/source/effect/i_terre_skill_03.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/i_terre_skill_03.scsp/json",
+        "characterlab/source/effect/i_terre_skill_03.atlas",
+        "characterlab/source/effect/i_terre_skill_03.sct"
+      ],
+      "outputSha256": "1046acc0326e351393b4404e7d48dfbce7b2b19c920086c814733f52adf68d2a",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_03.sct",
+      "sourceSha256": "b8efa2e05f881f329433fdb3ebf586c01811fd83c3c46ece8f57db936717acc0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Textures/effect/i_terre_skill_03.png",
+      "address": "characterlab/source/effect/i_terre_skill_03.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "18813b80003420efc27191a8228ddfb11e136567bca84ff7c77ae1a2c297d6e5",
+      "conversion": {
+        "status": "converted",
+        "width": 456,
+        "height": 612,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "b8efa2e05f881f329433fdb3ebf586c01811fd83c3c46ece8f57db936717acc0",
+        "outputSha256": "18813b80003420efc27191a8228ddfb11e136567bca84ff7c77ae1a2c297d6e5"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_03_02.atlas",
+      "sourceSha256": "d762feb7c1f9777cb8218f1858940f3f53ef869662438e5b87b1caa54a51fa70",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Atlas/effect/i_terre_skill_03_02.atlas.txt",
+      "address": "characterlab/source/effect/i_terre_skill_03_02.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/i_terre_skill_03_02.sct"
+      ],
+      "outputSha256": "d762feb7c1f9777cb8218f1858940f3f53ef869662438e5b87b1caa54a51fa70",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_03_02.scsp",
+      "sourceSha256": "fdca9bfad1ddbcc05876195f5fff80ae4a411f75395140e886f7ffcac1b15077",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Animations/effect/i_terre_skill_03_02.spine.json",
+      "address": "characterlab/source/effect/i_terre_skill_03_02.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "904c8bdbb26f7c67bdc427bc9c56680a8908e8cf3cefa13e8a49ccd255b29635",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 994,
+        "consumedBytes": 994,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 5,
+            "frames": 19,
+            "segments": 14,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 2,
+              "explicit": 3
+            },
+            "modes": {
+              "linear": 5,
+              "stepped": 9,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_03_02.scsp",
+      "sourceSha256": "fdca9bfad1ddbcc05876195f5fff80ae4a411f75395140e886f7ffcac1b15077",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Animations/effect/i_terre_skill_03_02.skeleton.json",
+      "address": "characterlab/source/effect/i_terre_skill_03_02.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/i_terre_skill_03_02.scsp/json",
+        "characterlab/source/effect/i_terre_skill_03_02.atlas",
+        "characterlab/source/effect/i_terre_skill_03_02.sct"
+      ],
+      "outputSha256": "b4d31e37203fdcd09d79010a92f6551e6f3590e8a42e5b40c685d17f8040522f",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_03_02.sct",
+      "sourceSha256": "c459729e44c6af851dc406b4c16119e6f541f0b300990287c4dcb07f9552a3f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Textures/effect/i_terre_skill_03_02.png",
+      "address": "characterlab/source/effect/i_terre_skill_03_02.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "d8f1c6f6a9d361fa9cfe20ed08806c5828182cf6be822b04b2d7f805fc7022a4",
+      "conversion": {
+        "status": "converted",
+        "width": 240,
+        "height": 240,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "c459729e44c6af851dc406b4c16119e6f541f0b300990287c4dcb07f9552a3f4",
+        "outputSha256": "d8f1c6f6a9d361fa9cfe20ed08806c5828182cf6be822b04b2d7f805fc7022a4"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_03_pati1.particle",
+      "sourceSha256": "898ccc3daec0f957d673084fe6d1f552b4e68cf7eefefeb8a9855e374bbf1db7",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/effect/i_terre_skill_03_pati1.particle.json",
+      "address": "characterlab/source/effect/i_terre_skill_03_pati1.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/pati_01.sct"
+      ],
+      "outputSha256": "068d6e011d86b2ace29db54fc69cf8ec68439a1020a166a0c7b578a09996d433",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_first_pati.particle",
+      "sourceSha256": "60c1cd2670eaaf234657186af2f282d59774c02733f81da852ee4ea5ea7474e6",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/effect/i_terre_skill_first_pati.particle.json",
+      "address": "characterlab/source/effect/i_terre_skill_first_pati.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/orb_02.sct"
+      ],
+      "outputSha256": "c147bc354a03d12dcc166c1b9652f78576e3b4ad27acef7f134b61fb92b7dc9d",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_first_tale.atlas",
+      "sourceSha256": "46ea7eab6886a6b7d1724e7217e354b839c3d05d5aded4ffde4ffef07890e4de",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Atlas/effect/i_terre_skill_first_tale.atlas.txt",
+      "address": "characterlab/source/effect/i_terre_skill_first_tale.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/i_terre_skill_first_tale.sct"
+      ],
+      "outputSha256": "46ea7eab6886a6b7d1724e7217e354b839c3d05d5aded4ffde4ffef07890e4de",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_first_tale.scsp",
+      "sourceSha256": "df194e8952b661e5927a0f29e94c8ce1b8f3ac33ded8207321c22e29913f2317",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Animations/effect/i_terre_skill_first_tale.spine.json",
+      "address": "characterlab/source/effect/i_terre_skill_first_tale.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "966bfa0a4643b85fc9eed964905e68198dc7cee0439e1222b81c8b0af4b788b5",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 5112,
+        "consumedBytes": 5112,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 15,
+            "frames": 29,
+            "segments": 14,
+            "sourceMarkers": {
+              "allLinear": 12,
+              "allStepped": 0,
+              "explicit": 3
+            },
+            "modes": {
+              "linear": 10,
+              "stepped": 4,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_first_tale.scsp",
+      "sourceSha256": "df194e8952b661e5927a0f29e94c8ce1b8f3ac33ded8207321c22e29913f2317",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Animations/effect/i_terre_skill_first_tale.skeleton.json",
+      "address": "characterlab/source/effect/i_terre_skill_first_tale.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/i_terre_skill_first_tale.scsp/json",
+        "characterlab/source/effect/i_terre_skill_first_tale.atlas",
+        "characterlab/source/effect/i_terre_skill_first_tale.sct"
+      ],
+      "outputSha256": "abdf5cf8e82996074bbb1f11c6b47cac250f9d8b0fc5ec701b9d1e9b9afb6f9e",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/i_terre_skill_first_tale.sct",
+      "sourceSha256": "8006142457a562387bee26c46fdcc678103acbb0dfffe0dda697e7e31457c830",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Textures/effect/i_terre_skill_first_tale.png",
+      "address": "characterlab/source/effect/i_terre_skill_first_tale.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "072e9b37c459e8933202decb33700fa59535d235775f34429f88621b4fea2789",
+      "conversion": {
+        "status": "converted",
+        "width": 402,
+        "height": 202,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "8006142457a562387bee26c46fdcc678103acbb0dfffe0dda697e7e31457c830",
+        "outputSha256": "072e9b37c459e8933202decb33700fa59535d235775f34429f88621b4fea2789"
+      }
+    },
+    {
+      "source": "effect/iterre_bidle_pati.particle",
+      "sourceSha256": "bc816458d042dd30abb1975712f0d5f890b1e52b37a3798c7eca82514f45f9f7",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Effects/effect/iterre_bidle_pati.particle.json",
+      "address": "characterlab/source/effect/iterre_bidle_pati.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/pati_01.sct"
+      ],
+      "outputSha256": "06a41a5bd649dbe187c504c9cedb45ac752f2d13d9f98a5951e2ae7883ce18f7",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
       "source": "effect/karin_sk1_eff.cfx",
       "sourceSha256": "a35519045d6be5c90c0c0087bb5cd44fcc36d0a52d39694415ef3b6afc7d1c52",
       "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1011/Effects/effect/karin_sk1_eff.cfx.json",
@@ -25900,6 +27284,716 @@
         "characterlab/source/effect/achates_skill_01_staff_pati.cfx"
       ],
       "outputSha256": "dcaae9a1b01b78b2961fd1fd65f95c6f507730f4c5d6ba08afdf45aad2d6b25d",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "model/aither.atlas",
+      "sourceSha256": "fa1d247bcff3bdc86f7033517fbe2e92629d5eca8eef593ead19ee19f87075b5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Atlas/model/aither.atlas.txt",
+      "address": "characterlab/source/model/aither.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/model/aither.sct"
+      ],
+      "outputSha256": "fa1d247bcff3bdc86f7033517fbe2e92629d5eca8eef593ead19ee19f87075b5",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "model/aither.scsp",
+      "sourceSha256": "a441d58fcd57678f4893af9acde39d6282aec06715f8e9deac0d91d5f0cf827c",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Animations/model/aither.spine.json",
+      "address": "characterlab/source/model/aither.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "2454ec0cdc6aeebcf7b2ea6f6811781319a3145361932c7870902e122a5307ea",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 17,
+        "binaryBytes": 6787589,
+        "consumedBytes": 6787589,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {
+          "appear": {
+            "flipX": {
+              "tracks": 2,
+              "frames": 2,
+              "bones": {
+                "hear6": 1,
+                "cloak2": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "attacked": {
+            "flipX": {
+              "tracks": 11,
+              "frames": 27,
+              "bones": {
+                "bone21": 2,
+                "hear3": 2,
+                "hear5": 2,
+                "hear0": 2,
+                "crown": 2,
+                "l_arm2": 3,
+                "bone15": 2,
+                "hear8": 6,
+                "l_hend": 2,
+                "accessory": 2,
+                "hear4": 2
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "attacked_damage": {
+            "flipX": {
+              "tracks": 10,
+              "frames": 10,
+              "bones": {
+                "hear0": 1,
+                "hear4": 1,
+                "hear8": 1,
+                "bone15": 1,
+                "l_arm2": 1,
+                "hear3": 1,
+                "crown": 1,
+                "bone21": 1,
+                "hear5": 1,
+                "accessory": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "b_idle_ready": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 4,
+              "bones": {
+                "hear8": 2,
+                "l_hend": 1,
+                "l_arm2": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "down": {
+            "flipX": {
+              "tracks": 2,
+              "frames": 4,
+              "bones": {
+                "hear8": 2,
+                "hear6": 2
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "flying": {
+            "flipX": {
+              "tracks": 1,
+              "frames": 3,
+              "bones": {
+                "hear6": 3
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "flying_damage": {
+            "flipX": {
+              "tracks": 1,
+              "frames": 1,
+              "bones": {
+                "hear6": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "idle": {
+            "flipX": {
+              "tracks": 2,
+              "frames": 4,
+              "bones": {
+                "l_hend": 2,
+                "l_arm2": 2
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "knock_down": {
+            "flipX": {
+              "tracks": 2,
+              "frames": 7,
+              "bones": {
+                "hear6": 4,
+                "hear8": 3
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "rise": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 4,
+              "bones": {
+                "l_arm2": 1,
+                "hear6": 2,
+                "l_hend": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "run": {
+            "flipX": {
+              "tracks": 2,
+              "frames": 11,
+              "bones": {
+                "hear6": 7,
+                "cloak2": 4
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "skill1": {
+            "flipX": {
+              "tracks": 6,
+              "frames": 55,
+              "bones": {
+                "l_hend": 5,
+                "r_arm2": 14,
+                "r_arm0": 14,
+                "r_hend": 15,
+                "l_arm2": 5,
+                "l_shoulder0": 2
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "skill2": {
+            "flipX": {
+              "tracks": 6,
+              "frames": 55,
+              "bones": {
+                "l_hend": 5,
+                "r_arm2": 14,
+                "r_arm0": 14,
+                "r_hend": 15,
+                "l_arm2": 5,
+                "l_shoulder0": 2
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "skill3": {
+            "flipX": {
+              "tracks": 131,
+              "frames": 323,
+              "bones": {
+                "bone34": 2,
+                "r_reg3": 2,
+                "hear6": 5,
+                "l_hend": 20,
+                "bone59": 1,
+                "Body": 2,
+                "bone69": 1,
+                "hear5": 2,
+                "cloak1": 3,
+                "r_shoulder1": 2,
+                "bone28": 2,
+                "body0": 2,
+                "bone27": 2,
+                "r_arm2": 6,
+                "r_arm0": 6,
+                "bone2": 2,
+                "bone33": 2,
+                "bone4": 2,
+                "r_hend": 2,
+                "l_reg0": 2,
+                "accessory": 2,
+                "accessory10": 2,
+                "bone29": 2,
+                "bone6": 2,
+                "bone10": 2,
+                "bone46": 2,
+                "accessory2": 2,
+                "l_arm1": 7,
+                "accessory4": 2,
+                "bone": 2,
+                "accessory8": 5,
+                "bone23": 2,
+                "bone19": 2,
+                "bone63": 1,
+                "bone16": 2,
+                "r_arm1": 2,
+                "bone61": 1,
+                "hear8": 17,
+                "bone74": 1,
+                "bone30": 2,
+                "bone57": 2,
+                "cloak0": 2,
+                "head": 3,
+                "bone52": 2,
+                "hear3": 2,
+                "hear0": 2,
+                "bone88": 2,
+                "accessory3": 2,
+                "bone13": 2,
+                "bone44": 2,
+                "r_shoulder0": 2,
+                "bone65": 1,
+                "body1": 2,
+                "brow": 2,
+                "bone12": 2,
+                "hear2": 2,
+                "cloak2": 8,
+                "bone53": 2,
+                "bone55": 2,
+                "bone50": 2,
+                "bone24": 2,
+                "bone75": 1,
+                "bone8": 2,
+                "l_arm2": 11,
+                "bone32": 2,
+                "bone26": 2,
+                "bone3": 2,
+                "bone11": 2,
+                "bone49": 2,
+                "l_leg2": 2,
+                "bone5": 2,
+                "l_arm0": 11,
+                "bone51": 2,
+                "eyes": 2,
+                "bone68": 1,
+                "bone42": 2,
+                "accessory1": 2,
+                "r_reg0": 2,
+                "bone64": 1,
+                "r_reg1": 2,
+                "center": 5,
+                "bone9": 1,
+                "accessory9": 2,
+                "l_shoulder1": 2,
+                "bone71": 1,
+                "jewel": 2,
+                "bone22": 2,
+                "body2": 2,
+                "bone62": 1,
+                "bone84": 2,
+                "bone67": 1,
+                "l_reg1": 2,
+                "l_shoulder0": 2,
+                "bone45": 2,
+                "bone18": 2,
+                "bone14": 2,
+                "bone56": 2,
+                "crown": 2,
+                "bone54": 2,
+                "bone89": 2,
+                "bone25": 2,
+                "r_reg2": 2,
+                "bone17": 2,
+                "hear4": 2,
+                "bone87": 2,
+                "accessory6": 2,
+                "bone15": 2,
+                "bone66": 1,
+                "bone85": 2,
+                "bone72": 1,
+                "body5": 2,
+                "accessory5": 2,
+                "bone76": 1,
+                "accessory7": 2,
+                "bone7": 2,
+                "bone70": 1,
+                "bone31": 1,
+                "bone20": 2,
+                "l_reg3": 2,
+                "face": 2,
+                "bone47": 2,
+                "bone35": 2,
+                "bone43": 2,
+                "bone48": 2,
+                "bone21": 2,
+                "bone86": 2,
+                "bone73": 1,
+                "bone60": 1,
+                "bone58": 2,
+                "body9": 2,
+                "bone36": 2
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          }
+        },
+        "curveTimelines": {
+          "appear": {
+            "tracks": 504,
+            "frames": 504,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 504,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "attacked": {
+            "tracks": 508,
+            "frames": 4616,
+            "segments": 4108,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 508,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 4108,
+              "bezier": 0
+            }
+          },
+          "attacked_damage": {
+            "tracks": 505,
+            "frames": 505,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 505,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "b_idle": {
+            "tracks": 502,
+            "frames": 7292,
+            "segments": 6790,
+            "sourceMarkers": {
+              "allLinear": 1,
+              "allStepped": 500,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 8,
+              "stepped": 6782,
+              "bezier": 0
+            }
+          },
+          "b_idle_ready": {
+            "tracks": 508,
+            "frames": 7218,
+            "segments": 6710,
+            "sourceMarkers": {
+              "allLinear": 11,
+              "allStepped": 495,
+              "explicit": 2
+            },
+            "modes": {
+              "linear": 13,
+              "stepped": 6697,
+              "bezier": 0
+            }
+          },
+          "camping": {
+            "tracks": 504,
+            "frames": 2409,
+            "segments": 1905,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 504,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 1905,
+              "bezier": 0
+            }
+          },
+          "down": {
+            "tracks": 497,
+            "frames": 1788,
+            "segments": 1291,
+            "sourceMarkers": {
+              "allLinear": 21,
+              "allStepped": 476,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 1291,
+              "bezier": 0
+            }
+          },
+          "flying": {
+            "tracks": 497,
+            "frames": 2811,
+            "segments": 2314,
+            "sourceMarkers": {
+              "allLinear": 21,
+              "allStepped": 476,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 2314,
+              "bezier": 0
+            }
+          },
+          "flying_damage": {
+            "tracks": 497,
+            "frames": 497,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 497,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "groggy": {
+            "tracks": 497,
+            "frames": 4215,
+            "segments": 3718,
+            "sourceMarkers": {
+              "allLinear": 14,
+              "allStepped": 483,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 3718,
+              "bezier": 0
+            }
+          },
+          "idle": {
+            "tracks": 508,
+            "frames": 8145,
+            "segments": 7637,
+            "sourceMarkers": {
+              "allLinear": 1,
+              "allStepped": 507,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 7637,
+              "bezier": 0
+            }
+          },
+          "knock_down": {
+            "tracks": 498,
+            "frames": 5122,
+            "segments": 4624,
+            "sourceMarkers": {
+              "allLinear": 12,
+              "allStepped": 486,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 4624,
+              "bezier": 0
+            }
+          },
+          "rise": {
+            "tracks": 508,
+            "frames": 4829,
+            "segments": 4321,
+            "sourceMarkers": {
+              "allLinear": 10,
+              "allStepped": 498,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 4321,
+              "bezier": 0
+            }
+          },
+          "run": {
+            "tracks": 504,
+            "frames": 4379,
+            "segments": 3875,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 504,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 3875,
+              "bezier": 0
+            }
+          },
+          "skill1": {
+            "tracks": 508,
+            "frames": 10020,
+            "segments": 9512,
+            "sourceMarkers": {
+              "allLinear": 9,
+              "allStepped": 499,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 9512,
+              "bezier": 0
+            }
+          },
+          "skill2": {
+            "tracks": 508,
+            "frames": 10020,
+            "segments": 9512,
+            "sourceMarkers": {
+              "allLinear": 9,
+              "allStepped": 499,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 9512,
+              "bezier": 0
+            }
+          },
+          "skill3": {
+            "tracks": 508,
+            "frames": 17545,
+            "segments": 17037,
+            "sourceMarkers": {
+              "allLinear": 7,
+              "allStepped": 501,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 17037,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "model/aither.scsp",
+      "sourceSha256": "a441d58fcd57678f4893af9acde39d6282aec06715f8e9deac0d91d5f0cf827c",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Animations/model/aither.skeleton.json",
+      "address": "characterlab/source/model/aither.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/model/aither.scsp/json",
+        "characterlab/source/model/aither.atlas",
+        "characterlab/source/model/aither.sct"
+      ],
+      "outputSha256": "1ca73a74553a23dd5018aca4ae9bb4a789c9694cd5b7ab9d44373ca250125bd2",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 17
+      }
+    },
+    {
+      "source": "model/aither.sct",
+      "sourceSha256": "b4c11fdfff98d91ec601ac1eeadc53fc45128137c376a85aaaea54db1e7bf762",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Textures/model/aither.png",
+      "address": "characterlab/source/model/aither.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "00897c7bc65494f0791f08b84e2c080e8484d9a6528d86895170816b18d915c3",
+      "conversion": {
+        "status": "converted",
+        "width": 125,
+        "height": 1330,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "b4c11fdfff98d91ec601ac1eeadc53fc45128137c376a85aaaea54db1e7bf762",
+        "outputSha256": "00897c7bc65494f0791f08b84e2c080e8484d9a6528d86895170816b18d915c3"
+      }
+    },
+    {
+      "source": "model/aither.timeline",
+      "sourceSha256": "00afdf7ed5db99f7d31b13593824951c50630fdf2211c5793df87d593b4e0845",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Configs/model/aither.timeline.json",
+      "address": "characterlab/source/model/aither.timeline",
+      "type": "timeline",
+      "dependencies": [
+        "characterlab/source/camera/i_terre_skill_03_cm.scsp",
+        "characterlab/source/effect/i_terre_bidle_eff.cfx",
+        "characterlab/source/effect/i_terre_skill_01_burst.cfx",
+        "characterlab/source/effect/i_terre_skill_01_shot.cfx",
+        "characterlab/source/effect/i_terre_skill_02.cfx",
+        "characterlab/source/effect/i_terre_skill_03.cfx"
+      ],
+      "outputSha256": "407d50056c92bc51029afea229739d2836b10be06453fd13b6079dff1c561c01",
       "conversion": {
         "status": "converted"
       }
@@ -39587,6 +41681,92 @@
       }
     },
     {
+      "source": "portrait/c1018.atlas",
+      "sourceSha256": "a086af5d0ed61b72e92cdef758006a8abbc8b67a25fb6a73c1b95d7cd0f633c1",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Atlas/portrait/c1018.atlas.txt",
+      "address": "characterlab/source/portrait/c1018.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/portrait/c1018.sct"
+      ],
+      "outputSha256": "a086af5d0ed61b72e92cdef758006a8abbc8b67a25fb6a73c1b95d7cd0f633c1",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "portrait/c1018.scsp",
+      "sourceSha256": "c2f65cc747d36742f39510d1a76bfa64fbbaab76242e4df0960b5e45500b4695",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Animations/portrait/c1018.spine.json",
+      "address": "characterlab/source/portrait/c1018.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "8b7399c7e6b9648af8c0fe45d8999b0fff62902927a19ecf9019e4706129bb73",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 90389,
+        "consumedBytes": 90389,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "idle": {
+            "tracks": 290,
+            "frames": 820,
+            "segments": 530,
+            "sourceMarkers": {
+              "allLinear": 3,
+              "allStepped": 182,
+              "explicit": 105
+            },
+            "modes": {
+              "linear": 9,
+              "stepped": 205,
+              "bezier": 316
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "portrait/c1018.scsp",
+      "sourceSha256": "c2f65cc747d36742f39510d1a76bfa64fbbaab76242e4df0960b5e45500b4695",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Animations/portrait/c1018.skeleton.json",
+      "address": "characterlab/source/portrait/c1018.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/portrait/c1018.scsp/json",
+        "characterlab/source/portrait/c1018.atlas",
+        "characterlab/source/portrait/c1018.sct"
+      ],
+      "outputSha256": "afd6ca616e02f78a66fb78b9467ce8e52e5ef26dab108b64be58589848633942",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "portrait/c1018.sct",
+      "sourceSha256": "c4161200fa15a0aee506e08bc6237fcc636b0c5e07e1eb75c7033ddb073ba6f0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Textures/portrait/c1018.png",
+      "address": "characterlab/source/portrait/c1018.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "d14bb786141784558285f48e55fd2c844cb9cbdcd8b984f90ffc1e9ea10a860e",
+      "conversion": {
+        "status": "converted",
+        "width": 650,
+        "height": 523,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "c4161200fa15a0aee506e08bc6237fcc636b0c5e07e1eb75c7033ddb073ba6f0",
+        "outputSha256": "d14bb786141784558285f48e55fd2c844cb9cbdcd8b984f90ffc1e9ea10a860e"
+      }
+    },
+    {
       "source": "portrait/c1062.atlas",
       "sourceSha256": "52ca748c84a506050a880601da5719def118301b5de381d4d815bd3874b110c4",
       "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/portrait/c1062.atlas.txt",
@@ -41317,6 +43497,175 @@
         "characterlab/source/particle/zodiac_star1.sct"
       ],
       "outputSha256": "d1e23526b42c1382afdb3a91a6ef5cdd87504897595173608f92a3533f5f976b",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "stagept/c_iterre_skill_01.stg",
+      "sourceSha256": "1db754ea10746ba5321bfb9f9d65293a7944cc4c06cc2d034a0f222639ee580e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Configs/stagept/c_iterre_skill_01.graph.json",
+      "address": "characterlab/source/stagept/c_iterre_skill_01.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/camera/i_terre_skill_01_cm.scsp",
+        "characterlab/source/camera/i_terre_skill_03_cm.scsp",
+        "characterlab/source/effect/hit_new_blunt_01.atlas",
+        "characterlab/source/effect/hit_new_blunt_01.scsp",
+        "characterlab/source/effect/hit_new_blunt_01.sct",
+        "characterlab/source/effect/hit_new_blunt_normal.cfx",
+        "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+        "characterlab/source/effect/i_terre_ball_pati.particle",
+        "characterlab/source/effect/i_terre_bidle_eff.atlas",
+        "characterlab/source/effect/i_terre_bidle_eff.cfx",
+        "characterlab/source/effect/i_terre_bidle_eff.scsp",
+        "characterlab/source/effect/i_terre_bidle_eff.sct",
+        "characterlab/source/effect/i_terre_skill_01_ball.atlas",
+        "characterlab/source/effect/i_terre_skill_01_ball.cfx",
+        "characterlab/source/effect/i_terre_skill_01_ball.scsp",
+        "characterlab/source/effect/i_terre_skill_01_ball.sct",
+        "characterlab/source/effect/i_terre_skill_01_burst.atlas",
+        "characterlab/source/effect/i_terre_skill_01_burst.cfx",
+        "characterlab/source/effect/i_terre_skill_01_burst.scsp",
+        "characterlab/source/effect/i_terre_skill_01_burst.sct",
+        "characterlab/source/effect/i_terre_skill_01_pati2.particle",
+        "characterlab/source/effect/i_terre_skill_01_shot.atlas",
+        "characterlab/source/effect/i_terre_skill_01_shot.cfx",
+        "characterlab/source/effect/i_terre_skill_01_shot.scsp",
+        "characterlab/source/effect/i_terre_skill_01_shot.sct",
+        "characterlab/source/effect/i_terre_skill_01_shot_pati1.particle",
+        "characterlab/source/effect/i_terre_skill_01_shot_pati2.particle",
+        "characterlab/source/effect/i_terre_skill_02.atlas",
+        "characterlab/source/effect/i_terre_skill_02.cfx",
+        "characterlab/source/effect/i_terre_skill_02.scsp",
+        "characterlab/source/effect/i_terre_skill_02.sct",
+        "characterlab/source/effect/i_terre_skill_02_sub.atlas",
+        "characterlab/source/effect/i_terre_skill_02_sub.scsp",
+        "characterlab/source/effect/i_terre_skill_02_sub.sct",
+        "characterlab/source/effect/i_terre_skill_03.atlas",
+        "characterlab/source/effect/i_terre_skill_03.cfx",
+        "characterlab/source/effect/i_terre_skill_03.scsp",
+        "characterlab/source/effect/i_terre_skill_03.sct",
+        "characterlab/source/effect/i_terre_skill_03_02.atlas",
+        "characterlab/source/effect/i_terre_skill_03_02.scsp",
+        "characterlab/source/effect/i_terre_skill_03_02.sct",
+        "characterlab/source/effect/i_terre_skill_03_pati1.particle",
+        "characterlab/source/effect/i_terre_skill_first_pati.particle",
+        "characterlab/source/effect/i_terre_skill_first_tale.atlas",
+        "characterlab/source/effect/i_terre_skill_first_tale.scsp",
+        "characterlab/source/effect/i_terre_skill_first_tale.sct",
+        "characterlab/source/effect/iterre_bidle_pati.particle",
+        "characterlab/source/model/aither.timeline",
+        "characterlab/source/particle/orb_02.sct",
+        "characterlab/source/particle/pati_01.sct",
+        "characterlab/source/particle/ticle_02.sct"
+      ],
+      "outputSha256": "e04d9f1432e9ab99406e8c3938d1e86a7af5755553ceaba4966b87c0cd3225df",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "stagept/c_iterre_skill_02.stg",
+      "sourceSha256": "a723eab0c04d26e7229be023fe46a36ffd0eb9eda9e18fad60504b3636d6ded7",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Configs/stagept/c_iterre_skill_02.graph.json",
+      "address": "characterlab/source/stagept/c_iterre_skill_02.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/camera/i_terre_skill_03_cm.scsp",
+        "characterlab/source/effect/i_terre_bidle_eff.atlas",
+        "characterlab/source/effect/i_terre_bidle_eff.cfx",
+        "characterlab/source/effect/i_terre_bidle_eff.scsp",
+        "characterlab/source/effect/i_terre_bidle_eff.sct",
+        "characterlab/source/effect/i_terre_skill_01_burst.atlas",
+        "characterlab/source/effect/i_terre_skill_01_burst.cfx",
+        "characterlab/source/effect/i_terre_skill_01_burst.scsp",
+        "characterlab/source/effect/i_terre_skill_01_burst.sct",
+        "characterlab/source/effect/i_terre_skill_01_pati2.particle",
+        "characterlab/source/effect/i_terre_skill_01_shot.atlas",
+        "characterlab/source/effect/i_terre_skill_01_shot.cfx",
+        "characterlab/source/effect/i_terre_skill_01_shot.scsp",
+        "characterlab/source/effect/i_terre_skill_01_shot.sct",
+        "characterlab/source/effect/i_terre_skill_01_shot_pati1.particle",
+        "characterlab/source/effect/i_terre_skill_01_shot_pati2.particle",
+        "characterlab/source/effect/i_terre_skill_02.atlas",
+        "characterlab/source/effect/i_terre_skill_02.cfx",
+        "characterlab/source/effect/i_terre_skill_02.scsp",
+        "characterlab/source/effect/i_terre_skill_02.sct",
+        "characterlab/source/effect/i_terre_skill_02_sub.atlas",
+        "characterlab/source/effect/i_terre_skill_02_sub.scsp",
+        "characterlab/source/effect/i_terre_skill_02_sub.sct",
+        "characterlab/source/effect/i_terre_skill_03.atlas",
+        "characterlab/source/effect/i_terre_skill_03.cfx",
+        "characterlab/source/effect/i_terre_skill_03.scsp",
+        "characterlab/source/effect/i_terre_skill_03.sct",
+        "characterlab/source/effect/i_terre_skill_03_02.atlas",
+        "characterlab/source/effect/i_terre_skill_03_02.scsp",
+        "characterlab/source/effect/i_terre_skill_03_02.sct",
+        "characterlab/source/effect/i_terre_skill_03_pati1.particle",
+        "characterlab/source/effect/i_terre_skill_first_pati.particle",
+        "characterlab/source/effect/i_terre_skill_first_tale.atlas",
+        "characterlab/source/effect/i_terre_skill_first_tale.scsp",
+        "characterlab/source/effect/i_terre_skill_first_tale.sct",
+        "characterlab/source/effect/iterre_bidle_pati.particle",
+        "characterlab/source/model/aither.timeline",
+        "characterlab/source/particle/orb_02.sct",
+        "characterlab/source/particle/pati_01.sct"
+      ],
+      "outputSha256": "f91f94f4657c12719cb79127d90217b8ee765be50f14fcbbcc05c7b295cb750d",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "stagept/c_iterre_skill_03.stg",
+      "sourceSha256": "081deaa5e43713b31efd238990ab84186abae55b7c61064047d4a85696b34dad",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1018/Configs/stagept/c_iterre_skill_03.graph.json",
+      "address": "characterlab/source/stagept/c_iterre_skill_03.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/camera/i_terre_skill_03_cm.scsp",
+        "characterlab/source/cut/fhd/sk_c1018_3.webp",
+        "characterlab/source/effect/i_terre_bidle_eff.atlas",
+        "characterlab/source/effect/i_terre_bidle_eff.cfx",
+        "characterlab/source/effect/i_terre_bidle_eff.scsp",
+        "characterlab/source/effect/i_terre_bidle_eff.sct",
+        "characterlab/source/effect/i_terre_skill_01_burst.atlas",
+        "characterlab/source/effect/i_terre_skill_01_burst.cfx",
+        "characterlab/source/effect/i_terre_skill_01_burst.scsp",
+        "characterlab/source/effect/i_terre_skill_01_burst.sct",
+        "characterlab/source/effect/i_terre_skill_01_pati2.particle",
+        "characterlab/source/effect/i_terre_skill_01_shot.atlas",
+        "characterlab/source/effect/i_terre_skill_01_shot.cfx",
+        "characterlab/source/effect/i_terre_skill_01_shot.scsp",
+        "characterlab/source/effect/i_terre_skill_01_shot.sct",
+        "characterlab/source/effect/i_terre_skill_01_shot_pati1.particle",
+        "characterlab/source/effect/i_terre_skill_01_shot_pati2.particle",
+        "characterlab/source/effect/i_terre_skill_02.atlas",
+        "characterlab/source/effect/i_terre_skill_02.cfx",
+        "characterlab/source/effect/i_terre_skill_02.scsp",
+        "characterlab/source/effect/i_terre_skill_02.sct",
+        "characterlab/source/effect/i_terre_skill_02_sub.atlas",
+        "characterlab/source/effect/i_terre_skill_02_sub.scsp",
+        "characterlab/source/effect/i_terre_skill_02_sub.sct",
+        "characterlab/source/effect/i_terre_skill_03.atlas",
+        "characterlab/source/effect/i_terre_skill_03.cfx",
+        "characterlab/source/effect/i_terre_skill_03.scsp",
+        "characterlab/source/effect/i_terre_skill_03.sct",
+        "characterlab/source/effect/i_terre_skill_03_02.atlas",
+        "characterlab/source/effect/i_terre_skill_03_02.scsp",
+        "characterlab/source/effect/i_terre_skill_03_02.sct",
+        "characterlab/source/effect/i_terre_skill_03_pati1.particle",
+        "characterlab/source/effect/i_terre_skill_first_pati.particle",
+        "characterlab/source/effect/i_terre_skill_first_tale.atlas",
+        "characterlab/source/effect/i_terre_skill_first_tale.scsp",
+        "characterlab/source/effect/i_terre_skill_first_tale.sct",
+        "characterlab/source/effect/iterre_bidle_pati.particle",
+        "characterlab/source/model/aither.timeline",
+        "characterlab/source/particle/orb_02.sct",
+        "characterlab/source/particle/pati_01.sct"
+      ],
+      "outputSha256": "280fa841ec52ed4c5da70e4cb7341a1c0a0bce4f7a212a16835ea344a77337a0",
       "conversion": {
         "status": "converted"
       }

@@ -1,0 +1,41 @@
+
+i_terre_skill_02_sub.sct
+size: 333,964
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+burst_circle1
+  rotate: false
+  xy: 2, 421
+  size: 267, 267
+  orig: 267, 267
+  offset: 0, 0
+  index: -1
+burst_circle2
+  rotate: false
+  xy: 2, 690
+  size: 272, 272
+  orig: 272, 272
+  offset: 0, 0
+  index: -1
+burst_circle3
+  rotate: false
+  xy: 2, 168
+  size: 251, 251
+  orig: 251, 251
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 2
+  size: 163, 163
+  orig: 163, 163
+  offset: 0, 0
+  index: -1
+wind_shock
+  rotate: false
+  xy: 167, 2
+  size: 164, 164
+  orig: 164, 164
+  offset: 0, 0
+  index: -1

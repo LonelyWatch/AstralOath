@@ -2536,6 +2536,9 @@ MonoBehaviour:
   - {fileID: 4900000, guid: d691b3cc50a3a8e43b572790ffe58653, type: 3}
   - {fileID: 4900000, guid: 4e6b062f2f60a88478899b478e4e93ef, type: 3}
   - {fileID: 4900000, guid: 6e4709e032794c54d92bb8f3a63aa7f7, type: 3}
+  - {fileID: 4900000, guid: 4ad70b94cc391ed4997167a9af6b9a39, type: 3}
+  - {fileID: 4900000, guid: 87b1f4bc8eacba54aa991bed9b4a04a5, type: 3}
+  - {fileID: 4900000, guid: 6695a3515028d9645b1712ac4daeffd3, type: 3}
   - {fileID: 4900000, guid: 79c3b31a13649a049b3f22c73bc9ad90, type: 3}
   - {fileID: 4900000, guid: 3c14ca1ad28849e4eae484e6140af6bd, type: 3}
   - {fileID: 4900000, guid: 3cda2ce6f74559f4e86389e2d754bfc1, type: 3}
@@ -2619,6 +2622,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: f90173fe7eb25f5d8f7e582dfee942f0, type: 3}
   - {fileID: 21300000, guid: a2b767908a9a50d8ab51b535c166baf4, type: 3}
   - {fileID: 21300000, guid: 2573c9dfa96c542b9cb04e0e9cecdc4f, type: 3}
+  - {fileID: 21300000, guid: ea95a3bbf7ee5172a8454204759642c5, type: 3}
+  - {fileID: 21300000, guid: 6f9fb2edc5955a639a03daa1038575a6, type: 3}
+  - {fileID: 21300000, guid: 5b64141b9c545962b3cc366c188fb1e5, type: 3}
   - {fileID: 21300000, guid: 182bfa95d2acb5d4f93e7e3cc061f1ef, type: 3}
   - {fileID: 21300000, guid: 9202a49f69995d947b4cd2718f213774, type: 3}
   - {fileID: 21300000, guid: 2d5dca1c8bba597c965f8857ffc8da9b, type: 3}
@@ -2653,6 +2659,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b119c892076054aba89f7953e7bdf122, type: 3}
   - {fileID: 21300000, guid: 5c8aa73214b954118caf9c11f2519337, type: 3}
   - {fileID: 21300000, guid: c4e428f1a4cf5b7c86b1a806c48ac3cf, type: 3}
+  - {fileID: 21300000, guid: 28d7996ec6635b70a683084dc51c8c36, type: 3}
+  - {fileID: 21300000, guid: 2286363045d65ea7a622eae835d0e28d, type: 3}
   - {fileID: 21300000, guid: 25325282fc2a3864eb21c1f3547c71f3, type: 3}
   - {fileID: 21300000, guid: 70dd63de62ab84546bb9ad1f6201901a, type: 3}
   - {fileID: 21300000, guid: 50a1bc58c7b135e4496e9b70e5062a87, type: 3}
@@ -2889,6 +2897,22 @@ MonoBehaviour:
     scale: 0.01
   - source: camera/elf_cm.scsp
     document: {fileID: 4900000, guid: c5fbd926f90a9f946b2f42610f7d43d3, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: camera/i_terre_skill_01_cm.scsp
+    document: {fileID: 4900000, guid: 6fd92884f37225342a533cc3edc4e1e7, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: camera/i_terre_skill_03_cm.scsp
+    document: {fileID: 4900000, guid: f3322abd13308e247b24f80aae59f697, type: 3}
     atlas: {fileID: 0}
     pageNames: []
     pages: []
@@ -3474,6 +3498,33 @@ MonoBehaviour:
     - {fileID: 2800000, guid: b4d4221dd4edbcd45b1ecd57f6c7f5da, type: 3}
     - {fileID: 2800000, guid: 558bbadfef4580745a4ee96b6fa62fa1, type: 3}
     - {fileID: 2800000, guid: c99e602b89451a04dbc9d7bc10570e30, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: cut/fhd/sk_c1018_3.webp
+    document: {fileID: 4900000, guid: b8c38f3dec05bbf47aa8cd0d6bf3e2f4, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages:
+    - {fileID: 2800000, guid: 0415df992e1f12242a908abb839bab31, type: 3}
+    - {fileID: 2800000, guid: 605ff6d9cbe8b7e4697179a254d68489, type: 3}
+    - {fileID: 2800000, guid: ee7259c1d0f31b74688b1143a62b3d2c, type: 3}
+    - {fileID: 2800000, guid: fc4d0b7a2ad88b14f9fa774dcf0085a6, type: 3}
+    - {fileID: 2800000, guid: 60466893ae3355e48bfbff0dad9f8647, type: 3}
+    - {fileID: 2800000, guid: 18ea3fc3666b0154584f341b74b14d11, type: 3}
+    - {fileID: 2800000, guid: e2d82e50e11fdd944be6b94d7de377a7, type: 3}
+    - {fileID: 2800000, guid: 130077ec70b4e834db136fc8d6673259, type: 3}
+    - {fileID: 2800000, guid: 3b4a6e27e9c1a6a4fa051815bfd3ac3b, type: 3}
+    - {fileID: 2800000, guid: 39d3cc713e23b9344803602b039f57e1, type: 3}
+    - {fileID: 2800000, guid: 61af716a95afebf4ea2e1f9f74e96973, type: 3}
+    - {fileID: 2800000, guid: 2e541408f5b39c549887fb8551fae240, type: 3}
+    - {fileID: 2800000, guid: 94a36477f40920848be046ccbfe48119, type: 3}
+    - {fileID: 2800000, guid: befd87420384ffa44b1405a8f16d31d5, type: 3}
+    - {fileID: 2800000, guid: c8f110c37f4e54446b565fcc9c2ae1d3, type: 3}
+    - {fileID: 2800000, guid: 0f8f3db34f8ac394fb2b06fe4ea84885, type: 3}
+    - {fileID: 2800000, guid: 93e190393eab0c74d950a75edc942e62, type: 3}
+    - {fileID: 2800000, guid: 332df6081bda2d444ad6f7da2a82426b, type: 3}
+    - {fileID: 2800000, guid: 55964d2d32cde934aa9f2deb88b2fdfb, type: 3}
     texture: {fileID: 0}
     premultipliedAlpha: 1
     scale: 0.01
@@ -5353,6 +5404,200 @@ MonoBehaviour:
     texture: {fileID: 0}
     premultipliedAlpha: 1
     scale: 0.01
+  - source: effect/i_terre_ball_pati.particle
+    document: {fileID: 4900000, guid: 50fd7591899a6864c80d63a6e75aa52a, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/i_terre_bidle_eff.cfx
+    document: {fileID: 4900000, guid: 3c5c6b3cecae13d4aa59a13302cb15e8, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/i_terre_bidle_eff.scsp
+    document: {fileID: 4900000, guid: ddf8f7eeac6fd6848a9aab17ff08dca0, type: 3}
+    atlas: {fileID: 4900000, guid: 68fea9439410ac440976af6d90b9b916, type: 3}
+    pageNames:
+    - i_terre_bidle_eff.sct
+    pages:
+    - {fileID: 2800000, guid: a40977159b2a67345a4d0d451374e7fd, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/i_terre_skill_01_ball.cfx
+    document: {fileID: 4900000, guid: 570258941d0b2e744b1d371f2d838f1f, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/i_terre_skill_01_ball.scsp
+    document: {fileID: 4900000, guid: b28e89d08b175084bb0751650d5dd411, type: 3}
+    atlas: {fileID: 4900000, guid: 71d88cb25985c7a48a6176f83e275ef7, type: 3}
+    pageNames:
+    - i_terre_skill_01_ball.sct
+    pages:
+    - {fileID: 2800000, guid: 55fa139be915bb9488584a4d834a2765, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/i_terre_skill_01_burst.cfx
+    document: {fileID: 4900000, guid: 9bf2fae3ddd5e434ba239c17a6cca85d, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/i_terre_skill_01_burst.scsp
+    document: {fileID: 4900000, guid: 5af06246fa79f0d4093a3db324f3a00f, type: 3}
+    atlas: {fileID: 4900000, guid: 28c4e2b411a8db04196d5057fedcf63b, type: 3}
+    pageNames:
+    - i_terre_skill_01_burst.sct
+    pages:
+    - {fileID: 2800000, guid: a463daebac5c52f4489643de56afba83, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/i_terre_skill_01_pati2.particle
+    document: {fileID: 4900000, guid: 40e35d241ccb3844c86a84ea591b6024, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/i_terre_skill_01_shot.cfx
+    document: {fileID: 4900000, guid: df7500b64cfc1d9449ff6254145556a0, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/i_terre_skill_01_shot.scsp
+    document: {fileID: 4900000, guid: ebd05d4e691cd6447b908c371097c1d3, type: 3}
+    atlas: {fileID: 4900000, guid: a06a6722ce873cf4a911f59598da090d, type: 3}
+    pageNames:
+    - i_terre_skill_01_shot.sct
+    pages:
+    - {fileID: 2800000, guid: b64c00c30af9afb458f7d89cebc17d82, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/i_terre_skill_01_shot_pati1.particle
+    document: {fileID: 4900000, guid: a1de089913ebf7e45af29813a72ddd86, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/i_terre_skill_01_shot_pati2.particle
+    document: {fileID: 4900000, guid: 39ff496f8898d234ea7e0be4ea833e53, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/i_terre_skill_02.cfx
+    document: {fileID: 4900000, guid: 10728af139d5f3043b95929bf43e1a76, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/i_terre_skill_02.scsp
+    document: {fileID: 4900000, guid: 9b8369383e30e744183a4ad3f37b2273, type: 3}
+    atlas: {fileID: 4900000, guid: fd92d9fe56d8e104bb4c69b3e848a84b, type: 3}
+    pageNames:
+    - i_terre_skill_02.sct
+    pages:
+    - {fileID: 2800000, guid: f1644bf85f109154fae45a06d00c122e, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/i_terre_skill_02_sub.scsp
+    document: {fileID: 4900000, guid: 5830725601652ca438cb7ad1d952c506, type: 3}
+    atlas: {fileID: 4900000, guid: cabcbab56d8736b48937cfda6bbeeee1, type: 3}
+    pageNames:
+    - i_terre_skill_02_sub.sct
+    pages:
+    - {fileID: 2800000, guid: ffcdec8440403214ab8003a67241d17f, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/i_terre_skill_03.cfx
+    document: {fileID: 4900000, guid: b07b20dc54c9410439cf68f4078d8e8e, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/i_terre_skill_03.scsp
+    document: {fileID: 4900000, guid: 63ce5832f37cc314c9f21c6ac069706d, type: 3}
+    atlas: {fileID: 4900000, guid: cb723665f356d6d48bbca8c3ffe2f8ba, type: 3}
+    pageNames:
+    - i_terre_skill_03.sct
+    pages:
+    - {fileID: 2800000, guid: 83da49d76da064d4db3a0aca21ec7101, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/i_terre_skill_03_02.scsp
+    document: {fileID: 4900000, guid: 8f1de724d6c68cf4fa00189494db744b, type: 3}
+    atlas: {fileID: 4900000, guid: bc9b97a1e375ca84ab1067004d046b41, type: 3}
+    pageNames:
+    - i_terre_skill_03_02.sct
+    pages:
+    - {fileID: 2800000, guid: 2742a6a1e1fccc04c9c44624f4a286a2, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/i_terre_skill_03_pati1.particle
+    document: {fileID: 4900000, guid: 6d608aa2627b6d245b3b21a7c6e2c652, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/i_terre_skill_first_pati.particle
+    document: {fileID: 4900000, guid: 0f89dbd2ff994254a9aaae9df408dc2b, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/i_terre_skill_first_tale.scsp
+    document: {fileID: 4900000, guid: bfd505092cf50a049ae01eed1b2bdc79, type: 3}
+    atlas: {fileID: 4900000, guid: bee525b9ed66053488d8663a3fab8df9, type: 3}
+    pageNames:
+    - i_terre_skill_first_tale.sct
+    pages:
+    - {fileID: 2800000, guid: 2eb7415983a03f4479dad1f52aedeb7d, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/iterre_bidle_pati.particle
+    document: {fileID: 4900000, guid: bd2c1943466bf66499b09f2545e5c872, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
   - source: effect/karin_sk1_eff.cfx
     document: {fileID: 4900000, guid: 203bf5b11192a094588832904c037b88, type: 3}
     atlas: {fileID: 0}
@@ -5865,16 +6110,16 @@ MonoBehaviour:
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 0
-    scale: 0
+    premultipliedAlpha: 1
+    scale: 0.01
   - source: effect/ras_new_skeff_sk1.cfx
     document: {fileID: 4900000, guid: 8a22eaeae6da78249a06b58db920351d, type: 3}
     atlas: {fileID: 0}
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 1
-    scale: 0.01
+    premultipliedAlpha: 0
+    scale: 0
   - source: effect/ras_new_skeff_sk2.cfx
     document: {fileID: 4900000, guid: 0a1f406e9d740ca429cd2b16bb0eeafc, type: 3}
     atlas: {fileID: 0}
@@ -6099,8 +6344,8 @@ MonoBehaviour:
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 0
-    scale: 0
+    premultipliedAlpha: 1
+    scale: 0.01
   - source: effect/rose_casting_2.particle
     document: {fileID: 4900000, guid: b746f3409a3f44f4789a173b3ab99adc, type: 3}
     atlas: {fileID: 0}
@@ -6301,32 +6546,32 @@ MonoBehaviour:
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 1
-    scale: 0.01
+    premultipliedAlpha: 0
+    scale: 0
   - source: effect/valkyrie_sk3_pati2.cfx
     document: {fileID: 4900000, guid: baf1a66fe2d432848996fed4aa26d4e6, type: 3}
     atlas: {fileID: 0}
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 1
-    scale: 0.01
+    premultipliedAlpha: 0
+    scale: 0
   - source: effect/valkyrie_sk3_pati2.particle
     document: {fileID: 4900000, guid: 2ce789c9de98dd747aa29bf6ede65ceb, type: 3}
     atlas: {fileID: 0}
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 1
-    scale: 0.01
+    premultipliedAlpha: 0
+    scale: 0
   - source: effect/valkyrie_sk3_pati3.particle
     document: {fileID: 4900000, guid: 9a126bc537e90b844bdfcfcc0b762dd9, type: 3}
     atlas: {fileID: 0}
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 1
-    scale: 0.01
+    premultipliedAlpha: 0
+    scale: 0
   - source: effect/valkyrie_sk3eff_back.scsp
     document: {fileID: 4900000, guid: 194a9a95b8d39e64f801dfb5f197e57f, type: 3}
     atlas: {fileID: 4900000, guid: bea39e43b535d6246ae477fd69c040f6, type: 3}
@@ -6381,8 +6626,8 @@ MonoBehaviour:
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 1
-    scale: 0.01
+    premultipliedAlpha: 0
+    scale: 0
   - source: effect/wildred_sk2.scsp
     document: {fileID: 4900000, guid: 02881e4e183b80943aee35a99c65e732, type: 3}
     atlas: {fileID: 4900000, guid: a2aff5bbc0d55554d8338e7cd19cd91c, type: 3}
@@ -6447,8 +6692,8 @@ MonoBehaviour:
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 1
-    scale: 0.01
+    premultipliedAlpha: 0
+    scale: 0
   - source: effect/wildred_sk3_effB.scsp
     document: {fileID: 4900000, guid: 1f9ce01aff048a0498bd96bfeb9369e2, type: 3}
     atlas: {fileID: 4900000, guid: 708d502b2e5a87546bcac7a9f5dbcc77, type: 3}
@@ -6465,8 +6710,8 @@ MonoBehaviour:
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 0
-    scale: 0
+    premultipliedAlpha: 1
+    scale: 0.01
   - source: effect/wildred_sk3_effF.scsp
     document: {fileID: 4900000, guid: f6d1fd8b6739e704b843dbd1e7c937c9, type: 3}
     atlas: {fileID: 4900000, guid: 0987c6d0355ae734792dc704141b450a, type: 3}
@@ -6483,8 +6728,8 @@ MonoBehaviour:
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 1
-    scale: 0.01
+    premultipliedAlpha: 0
+    scale: 0
   - source: effect/wildred_sk3_sword.scsp
     document: {fileID: 4900000, guid: 4b6216f87e3efe94d8c928a7de0de70e, type: 3}
     atlas: {fileID: 4900000, guid: 68c4ccee147c80541af2913dad78c252, type: 3}
@@ -6501,8 +6746,8 @@ MonoBehaviour:
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 0
-    scale: 0
+    premultipliedAlpha: 1
+    scale: 0.01
   - source: effect/wildred_swordineff.scsp
     document: {fileID: 4900000, guid: 1f6b57ac2101e754da1018dade6423d1, type: 3}
     atlas: {fileID: 4900000, guid: 6ee468fa8b6bb5d43bbacdc818aed2f2, type: 3}
@@ -6519,8 +6764,8 @@ MonoBehaviour:
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 1
-    scale: 0.01
+    premultipliedAlpha: 0
+    scale: 0
   - source: effect/yupine_sk3_pat.cfx
     document: {fileID: 4900000, guid: 92d44bb3cdc2cab4ab4246b3e44ab1f0, type: 3}
     atlas: {fileID: 0}
@@ -6621,8 +6866,8 @@ MonoBehaviour:
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 0
-    scale: 0
+    premultipliedAlpha: 1
+    scale: 0.01
   - source: effect/zerato_skeff_sk2_target_F.scsp
     document: {fileID: 4900000, guid: c0de9b909448f214bbddc1164a407040, type: 3}
     atlas: {fileID: 4900000, guid: 88d62ed387eed6f4aaed2cdf74018a37, type: 3}
@@ -6697,8 +6942,8 @@ MonoBehaviour:
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 1
-    scale: 0.01
+    premultipliedAlpha: 0
+    scale: 0
   - source: effect/zerato_slide_2.cfx
     document: {fileID: 4900000, guid: fe0557c448fffa24d9728124bd4a4bb1, type: 3}
     atlas: {fileID: 0}
@@ -6729,6 +6974,14 @@ MonoBehaviour:
     scale: 0.01
   - source: model/achates.timeline
     document: {fileID: 4900000, guid: bb22cd67a28e13d469d72486c98ccf20, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: model/aither.timeline
+    document: {fileID: 4900000, guid: a4a3fb97c9da8b94bbffef999bfac4a0, type: 3}
     atlas: {fileID: 0}
     pageNames: []
     pages: []
@@ -6821,8 +7074,8 @@ MonoBehaviour:
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 0
-    scale: 0
+    premultipliedAlpha: 1
+    scale: 0.01
   - source: model/wildred.timeline
     document: {fileID: 4900000, guid: 0a9a59db936a9b94f9667fcf48bc60c1, type: 3}
     atlas: {fileID: 0}
@@ -6845,8 +7098,8 @@ MonoBehaviour:
     pageNames: []
     pages: []
     texture: {fileID: 0}
-    premultipliedAlpha: 1
-    scale: 0.01
+    premultipliedAlpha: 0
+    scale: 0
   - source: particle/aura_01.sct
     document: {fileID: 0}
     atlas: {fileID: 0}
@@ -7320,6 +7573,20 @@ MonoBehaviour:
       - achates.sct
       pages:
       - {fileID: 2800000, guid: 66c86945e05bc2d499673e83e298c48c, type: 3}
+      texture: {fileID: 0}
+      premultipliedAlpha: 1
+      scale: 0.01
+  - id: c1018
+    label: "\u57C3\u5FB7\u52D2"
+    skin: default
+    skeleton:
+      source: characterlab/source/model/aither.scsp
+      document: {fileID: 4900000, guid: 2c013f600314f2548b2d67cdbb3955d1, type: 3}
+      atlas: {fileID: 4900000, guid: 757fa238f0e2be144832f6c5fa21754a, type: 3}
+      pageNames:
+      - aither.sct
+      pages:
+      - {fileID: 2800000, guid: 36fe3a1000218e743835e9a28f35fb36, type: 3}
       texture: {fileID: 0}
       premultipliedAlpha: 1
       scale: 0.01
