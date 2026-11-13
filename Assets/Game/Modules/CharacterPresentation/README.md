@@ -27,3 +27,5 @@ SCT1 的中性白光遮罩按源 atlas 区域审计和登记，RGB 由未量化�
 杰拉图的原骨骼使用 zerato 拼写，技能演出图使用 jerato。第三技能的立绘由本形态骨骼命名事件定位，作为导入图的附加节点登记。见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。
 
 卡琳 c1011 已接入角色内容；三技能、音频及已知缺项见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。
+
+科尔布思 c1012 已接入角色内容。规则、表现诊断与音频来源见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。

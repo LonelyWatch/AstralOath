@@ -1,0 +1,34 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "corvus_skill_03_ground",
+      "z": "-10",
+      "delay": "100",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "corvus_skill_03_fr_first",
+      "z": "5",
+      "format": "spine"
+    },
+    {
+      "source": "corvus_skill_03_bk_first",
+      "z": "-5",
+      "format": "spine"
+    },
+    {
+      "source": "corvus_skill_03_burst_smoke",
+      "z": "10",
+      "format": "spine"
+    },
+    {
+      "source": "corvus_skill_03_pati1",
+      "y": "150",
+      "delay": "1850",
+      "format": "particle",
+      "globalZ": 10.0
+    }
+  ]
+}

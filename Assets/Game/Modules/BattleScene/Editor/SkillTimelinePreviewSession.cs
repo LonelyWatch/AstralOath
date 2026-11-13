@@ -91,7 +91,11 @@ namespace AstralOath.Client.BattleScene.Editor
             Array.Empty<(float, float)>();
 
         internal void Load(string heroId, string graphId, string graphJson, string targetHeroId = null,
-            bool casterOnRight = false, bool targetAll = false, bool targetAllies = false)
+            bool casterOnRight = false, bool targetAll = false, bool targetAllies = false) =>
+            LoadScenario(heroId, graphId, graphJson, targetHeroId, casterOnRight, targetAll, targetAllies, false);
+
+        internal void LoadScenario(string heroId, string graphId, string graphJson, string targetHeroId,
+            bool casterOnRight, bool targetAll, bool targetAllies, bool targetSelf)
         {
             if (disposed) throw new ObjectDisposedException(nameof(SkillTimelinePreviewSession));
             if (EditorApplication.isPlayingOrWillChangePlaymode)
@@ -111,11 +115,11 @@ namespace AstralOath.Client.BattleScene.Editor
                 var castingSide = world.Find(casterOnRight ? "Enemies" : "Allies");
                 var opposingSide = world.Find(casterOnRight ? "Allies" : "Enemies");
                 caster = ActorAt(castingSide, 0);
-                primaryTarget = ActorAt(targetAllies ? castingSide : opposingSide, targetAllies ? 1 : 0);
-                recipients = targetAll
+                primaryTarget = targetSelf ? caster : ActorAt(targetAllies ? castingSide : opposingSide, targetAllies ? 1 : 0);
+                recipients = targetAll && !targetSelf
                     ? (targetAllies ? castingSide : opposingSide).GetComponentsInChildren<BattlePreviewActor>(true)
                     : new[] { primaryTarget };
-                useHitReactions = !targetAllies;
+                useHitReactions = !targetSelf && !targetAllies;
                 var active = new HashSet<BattlePreviewActor>(recipients) { caster };
                 foreach (var actor in world.GetComponentsInChildren<BattlePreviewActor>(true))
                 {

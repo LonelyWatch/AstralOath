@@ -23,6 +23,8 @@
     <var name="resourceMaximum" type="int#range=[0,100000]"/>
     <var name="resourceTurnGain" type="int#range=[0,100000]"/>
     <var name="resourceAttackedSpend" type="int#range=[0,100000]"/>
+    <var name="resourceOpeningGain" type="int#range=[0,100000]"/>
+    <var name="resourceAttackedGain" type="int#range=[0,100000]"/>
   </bean>
 
   <bean name="GrowthPresetRow">

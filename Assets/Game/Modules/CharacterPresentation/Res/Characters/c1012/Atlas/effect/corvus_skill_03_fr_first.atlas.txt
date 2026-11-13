@@ -1,0 +1,146 @@
+
+corvus_skill_03_fr_first.sct
+size: 1392,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+boom_shock
+  rotate: true
+  xy: 955, 2
+  size: 236, 161
+  orig: 236, 161
+  offset: 0, 0
+  index: -1
+cloud_08
+  rotate: true
+  xy: 906, 173
+  size: 55, 44
+  orig: 55, 44
+  offset: 0, 0
+  index: -1
+cloud_09
+  rotate: false
+  xy: 1202, 173
+  size: 89, 50
+  orig: 89, 50
+  offset: 0, 0
+  index: -1
+cloud_10
+  rotate: true
+  xy: 1350, 91
+  size: 50, 39
+  orig: 50, 39
+  offset: 0, 0
+  index: -1
+cloud_crack_02
+  rotate: true
+  xy: 1293, 173
+  size: 59, 52
+  orig: 59, 52
+  offset: 0, 0
+  index: -1
+cloud_crack_06
+  rotate: true
+  xy: 1347, 173
+  size: 47, 43
+  orig: 47, 43
+  offset: 0, 0
+  index: -1
+dust_soft_1
+  rotate: false
+  xy: 275, 2
+  size: 279, 144
+  orig: 279, 144
+  offset: 0, 0
+  index: -1
+dust_soft_2
+  rotate: false
+  xy: 2, 2
+  size: 271, 150
+  orig: 271, 150
+  offset: 0, 0
+  index: -1
+fr_imp1
+  rotate: true
+  xy: 794, 104
+  size: 133, 110
+  orig: 133, 110
+  offset: 0, 0
+  index: -1
+fr_imp2
+  rotate: true
+  xy: 1118, 2
+  size: 114, 109
+  orig: 114, 109
+  offset: 0, 0
+  index: -1
+fr_imp3
+  rotate: true
+  xy: 1118, 173
+  size: 78, 82
+  orig: 78, 82
+  offset: 0, 0
+  index: -1
+fr_imp4
+  rotate: true
+  xy: 1229, 2
+  size: 87, 136
+  orig: 87, 136
+  offset: 0, 0
+  index: -1
+fr_imp5
+  rotate: false
+  xy: 906, 104
+  size: 38, 67
+  orig: 38, 67
+  offset: 0, 0
+  index: -1
+fr_land_circle
+  rotate: false
+  xy: 1118, 118
+  size: 230, 53
+  orig: 230, 53
+  offset: 0, 0
+  index: -1
+glow_wave_c
+  rotate: false
+  xy: 2, 154
+  size: 184, 100
+  orig: 184, 100
+  offset: 0, 0
+  index: -1
+glow_wave_l
+  rotate: false
+  xy: 188, 154
+  size: 184, 100
+  orig: 184, 100
+  offset: 0, 0
+  index: -1
+glow_wave_r
+  rotate: false
+  xy: 769, 2
+  size: 184, 100
+  orig: 184, 100
+  offset: 0, 0
+  index: -1
+land_glow
+  rotate: false
+  xy: 575, 140
+  size: 217, 112
+  orig: 217, 112
+  offset: 0, 0
+  index: -1
+light_halfcicle_01
+  rotate: false
+  xy: 556, 2
+  size: 211, 136
+  orig: 211, 136
+  offset: 0, 0
+  index: -1
+wind_wave1
+  rotate: false
+  xy: 374, 148
+  size: 199, 101
+  orig: 199, 101
+  offset: 0, 0
+  index: -1

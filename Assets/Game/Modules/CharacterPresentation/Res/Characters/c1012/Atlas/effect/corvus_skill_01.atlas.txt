@@ -1,0 +1,90 @@
+
+corvus_skill_01.sct
+size: 941,247
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+after_burner
+  rotate: false
+  xy: 555, 167
+  size: 336, 78
+  orig: 336, 78
+  offset: 0, 0
+  index: -1
+after_impact1
+  rotate: false
+  xy: 2, 2
+  size: 112, 223
+  orig: 112, 223
+  offset: 0, 0
+  index: -1
+after_impact2
+  rotate: true
+  xy: 412, 2
+  size: 166, 118
+  orig: 166, 118
+  offset: 0, 0
+  index: -1
+after_impact3
+  rotate: false
+  xy: 457, 170
+  size: 96, 71
+  orig: 96, 71
+  offset: 0, 0
+  index: -1
+after_impact4
+  rotate: false
+  xy: 116, 192
+  size: 97, 51
+  orig: 97, 51
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 532, 2
+  size: 163, 163
+  orig: 163, 163
+  offset: 0, 0
+  index: -1
+impact1
+  rotate: false
+  xy: 306, 2
+  size: 104, 187
+  orig: 104, 187
+  offset: 0, 0
+  index: -1
+impact2
+  rotate: true
+  xy: 697, 2
+  size: 137, 134
+  orig: 137, 134
+  offset: 0, 0
+  index: -1
+impact3
+  rotate: true
+  xy: 833, 2
+  size: 109, 106
+  orig: 109, 106
+  offset: 0, 0
+  index: -1
+impact4
+  rotate: false
+  xy: 215, 192
+  size: 71, 38
+  orig: 71, 38
+  offset: 0, 0
+  index: -1
+impact_line
+  rotate: true
+  xy: 288, 192
+  size: 28, 167
+  orig: 28, 167
+  offset: 0, 0
+  index: -1
+impact_wave
+  rotate: false
+  xy: 116, 2
+  size: 188, 188
+  orig: 188, 188
+  offset: 0, 0
+  index: -1

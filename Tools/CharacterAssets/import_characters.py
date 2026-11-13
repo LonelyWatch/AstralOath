@@ -22,6 +22,7 @@ CHARACTERS={
     "c1009":("charlotte","夏绿蒂"),
     "c1010":("zerato","杰拉图"),
     "c1011":("karin","卡琳"),
+    "c1012":("corvus","科尔布思"),
     "c1062":("angelica","安洁莉卡"),
 }
 # Keep source identifiers verbatim even where the model and STG stems differ.

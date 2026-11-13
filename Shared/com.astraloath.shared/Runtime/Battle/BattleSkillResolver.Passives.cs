@@ -52,7 +52,8 @@ namespace AstralOath.Shared.Battle
                         ApplyEffect(target, target, passive.Row, effect, modifiers, false,
                             BattleHitKind.None, null, false);
                     }
-                    ChangeResource(attacker, target, -(target.Source.ResourceRules?.AttackedSpend ?? 0));
+                    var resource = target.Source.ResourceRules;
+                    if (resource != null) ChangeResource(attacker, target, resource.AttackedGain - resource.AttackedSpend);
                 }
             }
 
@@ -114,7 +115,7 @@ namespace AstralOath.Shared.Battle
             }
 
             private static bool ConditionMet(BattleCatalogData.EffectRow effect, Unit caster, Unit recipient, bool allTargets,
-                BattleHitKind targetHit = BattleHitKind.None, bool attackCritical = false)
+                BattleHitKind targetHit = BattleHitKind.None, bool attackCritical = false, bool readinessDrained = false)
             {
                 return effect.condition switch
                 {
@@ -125,6 +126,10 @@ namespace AstralOath.Shared.Battle
                     "caster_health_above_half" => 2L * caster.Health > caster.MaximumHealth,
                     "caster_has_resource" => caster.ResourceAmount >= Math.Max(1, effect.turns),
                     "caster_buffed" => HasBuff(caster),
+                    "caster_indomitable" => caster.Has(BattleStatusKind.Indomitable),
+                    "caster_not_indomitable" => !caster.Has(BattleStatusKind.Indomitable),
+                    "caster_skill_awakened" => caster.Source.Awakenings >= 3,
+                    "target_readiness_drained" => readinessDrained,
                     "recipient_buffed" => HasBuff(recipient),
                     "recipient_debuffed_after_skill_awakening" => caster.Source.Awakenings >= 3 &&
                         recipient.Statuses.Any(status => IsHarmful(status.Kind)),

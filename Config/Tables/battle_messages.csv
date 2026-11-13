@@ -142,3 +142,12 @@
 ,battle.skill.c1011.s2.description,冲向敌人并攻击。暴击时降低目标防御力 1 回合。完成第三阶觉醒后，暴击还会使自身获得额外回合。
 ,battle.skill.c1011.s3.name,居合·雷
 ,battle.skill.c1011.s3.description,以闪电般的速度斩击敌人，暴击时提高伤害。燃魂消耗 10 点魂力并提高本技能伤害。
+,battle.skill.c1012.s1.name,盾牌猛击
+,battle.skill.c1012.s1.description,使用盾牌攻击敌人，有 50% 概率转移自身一项减益。不屈时提高伤害并使目标眩晕 1 回合。伤害随自身防御力提高。
+,battle.skill.c1012.s2.name,铁锤轰击
+,battle.skill.c1012.s2.description,攻击全体敌人，使行动值降低 20%。不屈时使减量加倍。被推至 0 的目标有机会眩晕 1 回合。伤害随自身防御力提高。
+,battle.skill.c1012.s3.name,怒火降临
+,battle.skill.c1012.s3.description,消耗 100 点斗志，赋予自身不屈 3 回合，完成第三阶觉醒后恢复生命值，然后获得额外回合。开局获得 50 点斗志，被攻击时获得 10 点。
+,battle.status.indomitable.name,不屈
+,battle.status.indomitable.description,提高防御力和效果抗性各 30%，无法被驱散。
+,battle.inspect.burn.increase_healing,提高本技能的生命恢复量。

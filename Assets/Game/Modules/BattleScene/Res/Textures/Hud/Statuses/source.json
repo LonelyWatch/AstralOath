@@ -87,6 +87,11 @@
       "kind": "Provoke",
       "group": "Debuff",
       "asset": "stic_provoke.png"
+    },
+    {
+      "kind": "Indomitable",
+      "group": "Buff",
+      "asset": "stic_indomitable.png"
     }
   ],
   "files": [
@@ -185,6 +190,12 @@
       "asset": "stic_provoke.png",
       "sourceSha256": "9f56c1b44f3a77b792b42063e4d65776ec3c0a6058004b2f0ff6a9691d269906",
       "assetSha256": "5c4d0e963fc96e244e148697ba2d1fc7ba3ec6b9d223ee4987d02a4c69c1b26d"
+    },
+    {
+      "source": "原始资源/buff/stic_indomitable.png",
+      "asset": "stic_indomitable.png",
+      "sourceSha256": "9a48d04e346e29d2032cf5742f4a27abfc41308d60f9a4ed8b3b6c486746cc33",
+      "assetSha256": "dd4136e367c9ebb45af8b1788c43eef87f875a9358def9a8ef0825c26332b440"
     },
     {
       "source": "原始资源/img/itxt_num0.png",

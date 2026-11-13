@@ -43,6 +43,8 @@ namespace AstralOath.Shared.Battle
             byId = units.ToDictionary(unit => unit.Id, StringComparer.Ordinal);
             var opening = new List<BattleFlowEvent>();
             Emit(opening, BattleFlowEventKind.BattleStarted);
+            foreach (var unit in units)
+                ChangeResource(unit, unit.Id, unit.Resource?.OpeningGain ?? 0, opening);
             if (resolver is IBattleLifecycleResolver lifecycle) ApplyLifecycle(lifecycle.BattleStart(Capture()), opening);
             Advance(opening);
             OpeningEvents = opening.AsReadOnly();

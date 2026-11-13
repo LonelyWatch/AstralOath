@@ -471,10 +471,11 @@ namespace AstralOath.Client.BattleScene
                     var actionEvents = playback.TakeWhile(next => next.Kind != BattleFlowEventKind.Action).ToArray();
                     var targetEvents = actionEvents.Where(next => next.Kind == BattleFlowEventKind.Damage || next.Kind == BattleFlowEventKind.Healing).ToArray();
                     if (targetEvents.Length == 0 && skills.TryGetValue(item.SkillId, out var support) &&
-                        (support.target == "all_allies" || support.target == "all_enemies"))
+                        (support.target == "all_allies" || support.target == "all_enemies" || support.target == "self"))
                     {
                         var sourceSide = Snapshot.GetUnit(item.SourceId).Slot.Side;
-                        bool allies = support.target == "all_allies";
+                        bool allies = support.target == "all_allies" || support.target == "self";
+                        if (support.target == "self") primary = views[item.SourceId].Actor;
                         targetEvents = actionEvents.Where(next => next.SourceId == item.SourceId && next.TargetId != null &&
                             (next.Kind == BattleFlowEventKind.StatusApplied || next.Kind == BattleFlowEventKind.ReadinessChanged ||
                                 (next.Kind == BattleFlowEventKind.StatusRemoved && next.TargetId != item.SourceId)) &&

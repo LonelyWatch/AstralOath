@@ -37,7 +37,8 @@ function Export-BattleCatalog {
         }
         if ($hero.resourceKind -cnotin @('none','focus','fighting_spirit') -or
             (($hero.resourceKind -ceq 'none') -ne ($hero.resourceMaximum -eq 0)) -or
-            $hero.resourceTurnGain -gt $hero.resourceMaximum -or $hero.resourceAttackedSpend -gt $hero.resourceMaximum) {
+            $hero.resourceTurnGain -gt $hero.resourceMaximum -or $hero.resourceAttackedSpend -gt $hero.resourceMaximum -or
+            $hero.resourceOpeningGain -gt $hero.resourceMaximum -or $hero.resourceAttackedGain -gt $hero.resourceMaximum) {
             throw "Battle hero personal resource is invalid for $id."
         }
         $preset = @($growthPresets | Where-Object id -CEQ $hero.growthPresetId)
@@ -68,7 +69,7 @@ function Export-BattleCatalog {
                 throw "Battle skill icon does not match the imported asset for $key."
             }
             if ($skill.nameKey -cne "battle.skill.$key.name" -or $skill.descriptionKey -cne "battle.skill.$key.description" -or
-                $skill.target -cnotin @('one_enemy','two_enemies','all_enemies','one_ally','all_allies','passive')) {
+                $skill.target -cnotin @('one_enemy','two_enemies','all_enemies','one_ally','all_allies','self','passive')) {
                 throw "Battle skill text or targeting is invalid for $key."
             }
             if ($skill.resourceCost -gt $hero.resourceMaximum -or
@@ -81,11 +82,12 @@ function Export-BattleCatalog {
             }
             $burn = $skill.soulBurnKind
             $turns = $skill.soulBurnTurns
-            if ($burn -cnotin @('none','reduce_cooldown','increase_damage','extend_granted_buffs','extra_turn','refill_resource') -or
+            if ($burn -cnotin @('none','reduce_cooldown','increase_damage','increase_healing','extend_granted_buffs','extra_turn','refill_resource') -or
                 (($skill.soulBurnCost -eq 0) -ne ($burn -ceq 'none')) -or
                 (($turns -gt 0) -ne ($burn -cin @('reduce_cooldown','extend_granted_buffs'))) -or
                 ($burn -ceq 'refill_resource' -and ($skill.resourceCost -le 0 -or $hero.resourceMaximum -eq 0)) -or
                 ($burn -ceq 'reduce_cooldown' -and $turns -gt $skill.cooldownTurns) -or
+                ($burn -ceq 'increase_healing' -and $null -eq $skill.casterHealthHealBp) -or
                 ($null -ne $skill.burnAttackRateBp -and $burn -cne 'increase_damage')) {
                 throw "Battle skill soul burn is invalid for $key."
             }
@@ -107,7 +109,7 @@ function Export-BattleCatalog {
         $CharacterMessages | Where-Object key -CEQ $hero.nameKey
     }
 
-    $beneficialStatuses = @('AttackUp','DefenseUp','Immunity','Barrier','Counter','SpeedUp','EvasionUp','CriticalResistanceUp','Stealth')
+    $beneficialStatuses = @('AttackUp','DefenseUp','Immunity','Barrier','Counter','SpeedUp','EvasionUp','CriticalResistanceUp','Stealth','Indomitable')
     $harmfulStatuses = @('Stun','SpeedDown','AttackDown','DefenseDown','Unhealable','Silence','Provoke')
     $validStatuses = @('none') + $beneficialStatuses + $harmfulStatuses
     foreach ($skill in $skills) {
@@ -127,8 +129,8 @@ function Export-BattleCatalog {
             battle_start = @('apply_status')
             turn_end = @('apply_status')
         }
-        $activeOperations = @('damage','heal','dispel','cleanse','apply_status','readiness','reduce_readiness',
-            'extend_cooldown','reduce_cooldown','grant_extra_turn','dual_attack','repeat_if_status','damage_bonus','critical_damage_bonus','defense_penetration')
+        $activeOperations = @('damage','heal','dispel','cleanse','apply_status','readiness','reduce_readiness','reduce_readiness_double','transfer_debuff',
+            'extend_cooldown','reduce_cooldown','grant_extra_turn','dual_attack','repeat_if_status','damage_bonus','critical_damage_bonus','defense_penetration','attack_rate_bonus','defense_rate_bonus')
         $lastPhase = 0
         $hasDamage = $false
         for ($index = 0; $index -lt $program.Count; $index++) {
@@ -137,7 +139,7 @@ function Export-BattleCatalog {
             $phase = [array]::IndexOf($activeStages, $effect.phase)
             $operation = $effect.operation
             $usesStatus = $operation -cin @('apply_status','repeat_if_status')
-            $isModifier = $operation -cin @('damage_bonus','critical_damage_bonus','defense_penetration')
+            $isModifier = $operation -cin @('damage_bonus','critical_damage_bonus','defense_penetration','attack_rate_bonus','defense_rate_bonus')
             $usesResourceThreshold = $isModifier -and $effect.condition -ceq 'caster_has_resource'
             $validPhase = if ($passive) {
                 $effect.phase -cin $passiveOperations.Keys -and $operation -cin $passiveOperations[$effect.phase]
@@ -150,11 +152,16 @@ function Export-BattleCatalog {
                 $effect.status -cnotin $validStatuses -or
                 $effect.condition -cnotin @('none','caster_health_below_half','caster_health_at_least_half',
                     'caster_health_above_half','caster_health_at_most_half','caster_has_resource','caster_buffed','recipient_buffed','recipient_debuffed_after_skill_awakening','recipient_health_at_most_half','single_target_attack',
-                    'target_hit_critical','attack_critical','attack_critical_after_skill_awakening') -or
+                    'target_hit_critical','attack_critical','attack_critical_after_skill_awakening','caster_indomitable',
+                    'caster_not_indomitable','caster_skill_awakened','target_readiness_drained') -or
                 $effect.chanceBonusStatus -cnotin @('none','AttackDown') -or
                 (($effect.chanceBonusStatus -ceq 'none') -ne ($effect.chanceBonusBp -eq 0)) -or
-                ($operation -cin @('cleanse','dispel','reduce_readiness','extend_cooldown') -and $effect.value -le 0) -or
-                ($operation -ceq 'extend_cooldown' -and $effect.value -gt 4) -or
+                ($operation -cin @('cleanse','dispel','reduce_readiness','reduce_readiness_double','transfer_debuff','extend_cooldown') -and $effect.value -le 0) -or
+                ($operation -cin @('extend_cooldown','transfer_debuff') -and $effect.value -gt 4) -or
+                ($operation -cin @('reduce_readiness_double','transfer_debuff') -and
+                    ($effect.phase -cne 'after_hit' -or $effect.recipient -cne 'targets')) -or
+                ($effect.condition -ceq 'target_readiness_drained' -and
+                    ($effect.phase -cne 'after_hit' -or $effect.recipient -cne 'targets')) -or
                 (($effect.turns -gt 0) -ne ($operation -ceq 'apply_status' -or $usesResourceThreshold)) -or
                 ($effect.phase -ceq 'after_hit' -and -not $hasDamage) -or
                 ($operation -ceq 'damage' -and ($null -eq $skill.attackRateBp -or $null -eq $skill.powerBp)) -or
@@ -169,7 +176,8 @@ function Export-BattleCatalog {
                     $effect.value -lt 1 -or $effect.value -gt 10000 -or
                     ($effect.condition -cnotin @('caster_buffed','caster_has_resource') -and
                         -not ($operation -ceq 'damage_bonus' -and $effect.condition -ceq 'recipient_debuffed_after_skill_awakening') -and
-                        -not ($operation -ceq 'critical_damage_bonus' -and $effect.condition -ceq 'none')))) -or
+                        -not ($operation -ceq 'critical_damage_bonus' -and $effect.condition -ceq 'none') -and
+                        -not ($operation -cin @('attack_rate_bonus','defense_rate_bonus') -and $effect.condition -ceq 'caster_indomitable')))) -or
                 ($effect.condition -ceq 'target_hit_critical' -and
                     ($effect.phase -cne 'after_hit' -or $effect.recipient -cne 'targets')) -or
                 ($effect.condition -cin @('attack_critical','attack_critical_after_skill_awakening') -and

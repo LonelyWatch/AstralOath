@@ -23,7 +23,7 @@ namespace AstralOath.Shared.Battle
             public string id, nameKey, element, heroClass, zodiac, growthPresetId, variant;
             public int level, stars, awakenings;
             public string resourceKind;
-            public int resourceMaximum, resourceTurnGain, resourceAttackedSpend;
+            public int resourceMaximum, resourceTurnGain, resourceAttackedSpend, resourceOpeningGain, resourceAttackedGain;
 
             public BattleResourceDefinition GetResourceDefinition()
             {
@@ -32,13 +32,16 @@ namespace AstralOath.Shared.Battle
                     case "none":
                     case null:
                     case "":
-                        if (resourceMaximum != 0 || resourceTurnGain != 0 || resourceAttackedSpend != 0)
+                        if (resourceMaximum != 0 || resourceTurnGain != 0 || resourceAttackedSpend != 0 ||
+                            resourceOpeningGain != 0 || resourceAttackedGain != 0)
                             throw new ArgumentException($"Hero '{id}' configures resource amounts without a resource kind.");
                         return null;
                     case "focus":
-                        return new BattleResourceDefinition(BattleResourceKind.Focus, resourceMaximum, resourceTurnGain, resourceAttackedSpend);
+                        return new BattleResourceDefinition(BattleResourceKind.Focus, resourceMaximum, resourceTurnGain, resourceAttackedSpend,
+                            resourceOpeningGain, resourceAttackedGain);
                     case "fighting_spirit":
-                        return new BattleResourceDefinition(BattleResourceKind.FightingSpirit, resourceMaximum, resourceTurnGain, resourceAttackedSpend);
+                        return new BattleResourceDefinition(BattleResourceKind.FightingSpirit, resourceMaximum, resourceTurnGain, resourceAttackedSpend,
+                            resourceOpeningGain, resourceAttackedGain);
                     default: throw new ArgumentException($"Unknown resource kind '{resourceKind}' for '{id}'.");
                 }
             }
@@ -97,7 +100,7 @@ namespace AstralOath.Shared.Battle
 
     public static class BattlePreviewFactory
     {
-        public const uint RulesVersion = 3;
+        public const uint RulesVersion = 4;
         public const string SlimeSkillId = "preview.slime.s1";
         public static IReadOnlyList<string> DefaultHeroIds { get; } = Array.AsReadOnly(new[] { "c1001", "c1062", "c1005", "c1001" });
 

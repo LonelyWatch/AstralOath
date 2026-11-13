@@ -1,0 +1,90 @@
+
+corvus_skill_03_ground.sct
+size: 1194,509
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+circle_scan
+  rotate: false
+  xy: 2, 2
+  size: 338, 338
+  orig: 338, 338
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 912, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+ground_glow
+  rotate: false
+  xy: 670, 342
+  size: 145, 145
+  orig: 145, 145
+  offset: 0, 0
+  index: -1
+ground_glow_g
+  rotate: false
+  xy: 1047, 173
+  size: 145, 145
+  orig: 145, 145
+  offset: 0, 0
+  index: -1
+ring_01
+  rotate: false
+  xy: 682, 2
+  size: 228, 228
+  orig: 228, 228
+  offset: 0, 0
+  index: -1
+ring_02
+  rotate: false
+  xy: 817, 232
+  size: 228, 228
+  orig: 228, 228
+  offset: 0, 0
+  index: -1
+ring_flash
+  rotate: false
+  xy: 1047, 320
+  size: 145, 145
+  orig: 145, 145
+  offset: 0, 0
+  index: -1
+scan_glow
+  rotate: false
+  xy: 342, 2
+  size: 338, 338
+  orig: 338, 338
+  offset: 0, 0
+  index: -1
+shield_ball
+  rotate: false
+  xy: 336, 342
+  size: 165, 165
+  orig: 165, 165
+  offset: 0, 0
+  index: -1
+shield_bot
+  rotate: false
+  xy: 503, 342
+  size: 165, 165
+  orig: 165, 165
+  offset: 0, 0
+  index: -1
+shield_side
+  rotate: false
+  xy: 2, 342
+  size: 165, 165
+  orig: 165, 165
+  offset: 0, 0
+  index: -1
+shield_top
+  rotate: false
+  xy: 169, 342
+  size: 165, 165
+  orig: 165, 165
+  offset: 0, 0
+  index: -1

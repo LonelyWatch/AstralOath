@@ -179,6 +179,7 @@ namespace AstralOath.Client.Tests
                     {
                         "all_allies" => allies,
                         "one_ally" => new[] { allies[1] },
+                        "self" => new[] { front },
                         "all_enemies" => enemies,
                         "two_enemies" => enemies.Take(2).ToArray(),
                         "passive" => id == "c1008" || id == "c1007" ? enemies : new[] { enemies[0] },

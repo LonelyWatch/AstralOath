@@ -140,3 +140,5 @@ Luban 快照 `Configs/battle-catalog.json` 含十名英雄、成长模板、觉�
 第 11 名杰拉图 c1010 的场景引用包含三个技能图及递归特效依赖。更新角色资源引用只重建目录，不修改作者已设的八个站位。
 
 卡琳 c1011 已接入角色内容；三技能、音频及已知缺项见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。
+
+科尔布思 c1012 已接入角色内容。规则、表现诊断与音频来源见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。

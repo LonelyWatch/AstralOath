@@ -18,3 +18,5 @@ YooAsset 包 `Foundation` 提供下列业务资源。构建另外生成代码清
 CharacterLab 的 YooAsset 收集设置由编辑器按导入清单维护，本次增量包含 c1010 的依赖。
 
 卡琳 c1011 已接入角色内容；三技能、音频及已知缺项见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。
+
+科尔布思 c1012 已接入角色内容。规则、表现诊断与音频来源见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。

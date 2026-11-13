@@ -29,6 +29,8 @@ namespace AstralOath.Shared.Battle
             var provoker = ActiveProvoker(snapshot, actor);
             if (provoker != null && selected != provoker) return false;
 
+            if (targetRule == "self") return selected == null || selected == actor;
+
             bool allies = targetRule == "one_ally" || targetRule == "all_allies";
             bool area = targetRule == "all_enemies" || targetRule == "all_allies";
             if (selected == null) return area;

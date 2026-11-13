@@ -1,0 +1,83 @@
+
+corvus_skill_03_burst_smoke.sct
+size: 251,916
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+body_glow
+  rotate: true
+  xy: 2, 227
+  size: 194, 199
+  orig: 194, 199
+  offset: 0, 0
+  index: -1
+cloud_09
+  rotate: true
+  xy: 173, 678
+  size: 89, 50
+  orig: 89, 50
+  offset: 0, 0
+  index: -1
+cloud_10
+  rotate: true
+  xy: 202, 424
+  size: 50, 39
+  orig: 50, 39
+  offset: 0, 0
+  index: -1
+cloud_18
+  rotate: false
+  xy: 173, 623
+  size: 75, 53
+  orig: 75, 53
+  offset: 0, 0
+  index: -1
+cloud_crack_06
+  rotate: true
+  xy: 203, 375
+  size: 47, 43
+  orig: 47, 43
+  offset: 0, 0
+  index: -1
+eff_adoutlight_2
+  rotate: false
+  xy: 2, 423
+  size: 198, 198
+  orig: 198, 198
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 623
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+shine_01
+  rotate: false
+  xy: 2, 2
+  size: 223, 223
+  orig: 223, 223
+  offset: 0, 0
+  index: -1
+smoke_1
+  rotate: true
+  xy: 2, 794
+  size: 120, 119
+  orig: 120, 119
+  offset: 0, 0
+  index: -1
+smoke_2
+  rotate: false
+  xy: 123, 794
+  size: 126, 110
+  orig: 126, 110
+  offset: 0, 0
+  index: -1
+spot_light
+  rotate: false
+  xy: 203, 227
+  size: 46, 146
+  orig: 46, 146
+  offset: 0, 0
+  index: -1

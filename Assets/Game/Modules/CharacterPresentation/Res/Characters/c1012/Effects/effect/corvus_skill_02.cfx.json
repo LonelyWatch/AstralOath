@@ -1,0 +1,32 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "corvus_skill_02_b",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "corvus_skill_02_f",
+      "format": "spine",
+      "globalZ": 1.0,
+      "actions": [
+        {
+          "action": "Fire",
+          "delay": "70"
+        },
+        {
+          "action": "Fire",
+          "delay": "1220"
+        }
+      ]
+    },
+    {
+      "source": "fuzzies_skill_03_pati1",
+      "x": "500",
+      "y": "-100",
+      "delay": "1120",
+      "format": "particle"
+    }
+  ]
+}

@@ -25,7 +25,7 @@ Battle 的七张表由 `Schema/battle.xml` 定义。英雄通过 `battle_heroes.
 
 `turns` 在 `apply_status` 行表示持续回合数。对带 `caster_has_resource` 条件的伤害修正行，它表示最低个人资源；受击触发的同名条件使用 `turns=0`，表示个人资源至少为 1。反击概率强化用 `counter_chance_bp`，屏障倍率强化用 `barrier_bp`，两者为直接相加的万分比。额外回合及个人资源回满的魂燃分别使用 `extra_turn`、`refill_resource`。
 
-英雄的个人资源由 `resourceKind`（`none`、`focus`、`fighting_spirit`）、`resourceMaximum`、`resourceTurnGain` 和 `resourceAttackedSpend` 配置。无个人资源的英雄填写 `none,0,0,0`。主动技能使用 `resourceCost`、`resourceGain`、`resourceGainWhenBuffed`；最后一项为有增益且非夹攻时的获取值，0 表示沿用基础获取值。导表检查每个资源值都落在英雄自身上限内，并校验被动槽不填写主动获取或消耗。
+英雄的个人资源由 `resourceKind`（`none`、`focus`、`fighting_spirit`）、`resourceMaximum`、`resourceTurnGain`、`resourceOpeningGain`、`resourceAttackedGain` 和 `resourceAttackedSpend` 配置。开战增量在首次推进回合前写入，受击增减量每次权威攻击执行一次。无个人资源的英雄使用 `none` 并将五个数值字段设为 0。主动技能使用 `resourceCost`、`resourceGain`、`resourceGainWhenBuffed`；最后一项为有增益且非夹攻时的获取值，0 表示沿用基础获取值。导表检查每个资源值都落在英雄自身上限内，并校验被动槽不填写主动获取或消耗。
 
 ## 生成和检查
 

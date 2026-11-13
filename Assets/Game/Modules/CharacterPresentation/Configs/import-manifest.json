@@ -13,6 +13,7 @@
     "c1009",
     "c1010",
     "c1011",
+    "c1012",
     "c1062"
   ],
   "entries": [
@@ -790,6 +791,58 @@
         "characterlab/source/camera/cm_magic_lightningball.scsp/json"
       ],
       "outputSha256": "9c15ffd9780f09cdfe4be977b59e4a2ec41afe434d561807fdf66874c9d0eb1a",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "camera/corvus_sk1eff_cm.scsp",
+      "sourceSha256": "f00add4eae2064c798634ca490c06ea8ed1fd0f34ff2bd61a5b591482d39bc63",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Animations/camera/corvus_sk1eff_cm.spine.json",
+      "address": "characterlab/source/camera/corvus_sk1eff_cm.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "f8df0e72fd4cace8b16e8facf9703a11dd569ed054a90d170e77624fe20c22eb",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 622,
+        "consumedBytes": 622,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 6,
+            "frames": 28,
+            "segments": 22,
+            "sourceMarkers": {
+              "allLinear": 5,
+              "allStepped": 0,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 20,
+              "stepped": 2,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "camera/corvus_sk1eff_cm.scsp",
+      "sourceSha256": "f00add4eae2064c798634ca490c06ea8ed1fd0f34ff2bd61a5b591482d39bc63",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Animations/camera/corvus_sk1eff_cm.skeleton.json",
+      "address": "characterlab/source/camera/corvus_sk1eff_cm.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/camera/corvus_sk1eff_cm.scsp/json"
+      ],
+      "outputSha256": "1c2988ae22bfe0a49a78302df8a1835f11490e3555f0f1a122cebb3c3abdac1c",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
@@ -4079,6 +4132,287 @@
         "status": "converted",
         "frameCount": 17,
         "durationSeconds": 1.32
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1012_3.webp",
+      "sourceSha256": "b2b47fbd46786c6ead319b00fb3741d557d6a4a0fdccd3cd42d0b50be786705e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Effects/cut/fhd/sk_c1012_3_frames/0000.png",
+      "address": "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0000",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "18a6e513e0f3ef4ff06b8fd483b3b02433d5dd602bdfc5159a85d3d7935fd46d",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 0
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1012_3.webp",
+      "sourceSha256": "b2b47fbd46786c6ead319b00fb3741d557d6a4a0fdccd3cd42d0b50be786705e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Effects/cut/fhd/sk_c1012_3_frames/0001.png",
+      "address": "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0001",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "3d716c2d3f2c97e2340a6f24d9fa6941ce40328c38437dfd88378dc9169fef22",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 1
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1012_3.webp",
+      "sourceSha256": "b2b47fbd46786c6ead319b00fb3741d557d6a4a0fdccd3cd42d0b50be786705e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Effects/cut/fhd/sk_c1012_3_frames/0002.png",
+      "address": "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0002",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "3f2271570b41deab76aa05001f8ff03ef30d08e61a9284a853b286e23a7b9cb7",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 2
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1012_3.webp",
+      "sourceSha256": "b2b47fbd46786c6ead319b00fb3741d557d6a4a0fdccd3cd42d0b50be786705e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Effects/cut/fhd/sk_c1012_3_frames/0003.png",
+      "address": "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0003",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "495bb42419e9937fae41af8e7cc9a1e13d90b0211f17b38995aff8a825a15051",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 3
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1012_3.webp",
+      "sourceSha256": "b2b47fbd46786c6ead319b00fb3741d557d6a4a0fdccd3cd42d0b50be786705e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Effects/cut/fhd/sk_c1012_3_frames/0004.png",
+      "address": "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0004",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "414fa4ccceff5b26c078b41e6dc281022f43cdba5b3f16721feb22bf5a2195b5",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 4
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1012_3.webp",
+      "sourceSha256": "b2b47fbd46786c6ead319b00fb3741d557d6a4a0fdccd3cd42d0b50be786705e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Effects/cut/fhd/sk_c1012_3_frames/0005.png",
+      "address": "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0005",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "314a118bfd841287f0d8a7601b0410652e5c4605849e7b15a0261b8ed4450c19",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 5
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1012_3.webp",
+      "sourceSha256": "b2b47fbd46786c6ead319b00fb3741d557d6a4a0fdccd3cd42d0b50be786705e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Effects/cut/fhd/sk_c1012_3_frames/0006.png",
+      "address": "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0006",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "f8034be51abeefcd20aae99a812ad756b95e30df47f0f4604d5ad839d7f4082d",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 6
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1012_3.webp",
+      "sourceSha256": "b2b47fbd46786c6ead319b00fb3741d557d6a4a0fdccd3cd42d0b50be786705e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Effects/cut/fhd/sk_c1012_3_frames/0007.png",
+      "address": "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0007",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "4bee704a8f68658880a77089b5d1970992c8ce001233c3210bb9bd725ed08091",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 7
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1012_3.webp",
+      "sourceSha256": "b2b47fbd46786c6ead319b00fb3741d557d6a4a0fdccd3cd42d0b50be786705e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Effects/cut/fhd/sk_c1012_3_frames/0008.png",
+      "address": "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0008",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "8acc837da4d03aa61bf2f75dafd306553186e88200bdf022e004b059ca7a186c",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 8
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1012_3.webp",
+      "sourceSha256": "b2b47fbd46786c6ead319b00fb3741d557d6a4a0fdccd3cd42d0b50be786705e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Effects/cut/fhd/sk_c1012_3_frames/0009.png",
+      "address": "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0009",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "e404a61adf1cd150a35c76c8cbd2aec02efe4d5481c3f854f55c65dc54ae2736",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 9
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1012_3.webp",
+      "sourceSha256": "b2b47fbd46786c6ead319b00fb3741d557d6a4a0fdccd3cd42d0b50be786705e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Effects/cut/fhd/sk_c1012_3_frames/0010.png",
+      "address": "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0010",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "c8b0021703f7fb975bb74d622719eb47533ae82b308f23604fa9575c58f64fa7",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 10
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1012_3.webp",
+      "sourceSha256": "b2b47fbd46786c6ead319b00fb3741d557d6a4a0fdccd3cd42d0b50be786705e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Effects/cut/fhd/sk_c1012_3_frames/0011.png",
+      "address": "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0011",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "f68d8beca238508570d8353a6857dca5be90faa24c427561236d07536dfa4165",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 11
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1012_3.webp",
+      "sourceSha256": "b2b47fbd46786c6ead319b00fb3741d557d6a4a0fdccd3cd42d0b50be786705e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Effects/cut/fhd/sk_c1012_3_frames/0012.png",
+      "address": "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0012",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "4b9b28b8f726009da5776a7a09f6e7d0c2eae3c84cb657dc4aa6d849a6d37dc0",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 12
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1012_3.webp",
+      "sourceSha256": "b2b47fbd46786c6ead319b00fb3741d557d6a4a0fdccd3cd42d0b50be786705e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Effects/cut/fhd/sk_c1012_3_frames/0013.png",
+      "address": "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0013",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "546192892f9d31f134ce35bb38690640afe566b58bf34cfa9a4614f649bef71e",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 13
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1012_3.webp",
+      "sourceSha256": "b2b47fbd46786c6ead319b00fb3741d557d6a4a0fdccd3cd42d0b50be786705e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Effects/cut/fhd/sk_c1012_3_frames/0014.png",
+      "address": "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0014",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "52826de1e28d389b74454677e277e46a47d2c2931b7a3ae3f9358ce8dbc049ff",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 14
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1012_3.webp",
+      "sourceSha256": "b2b47fbd46786c6ead319b00fb3741d557d6a4a0fdccd3cd42d0b50be786705e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Effects/cut/fhd/sk_c1012_3_frames/0015.png",
+      "address": "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0015",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "6cd3fb6188acde53e27779eeb9b83c14fe5ecafa34f97a2f6dace21e7db58252",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 15
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1012_3.webp",
+      "sourceSha256": "b2b47fbd46786c6ead319b00fb3741d557d6a4a0fdccd3cd42d0b50be786705e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Effects/cut/fhd/sk_c1012_3_frames/0016.png",
+      "address": "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0016",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "58adbf9906cbf6f67e44449bedb4c1a309fc846814f76700f8c78c972ae664df",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 16
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1012_3.webp",
+      "sourceSha256": "b2b47fbd46786c6ead319b00fb3741d557d6a4a0fdccd3cd42d0b50be786705e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Effects/cut/fhd/sk_c1012_3_frames/0017.png",
+      "address": "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0017",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "c4221680910711f917bde44ed60af282e22de5cb49a9dd9a887d45943123dcc5",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 17
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1012_3.webp",
+      "sourceSha256": "b2b47fbd46786c6ead319b00fb3741d557d6a4a0fdccd3cd42d0b50be786705e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Effects/cut/fhd/sk_c1012_3_frames/0018.png",
+      "address": "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0018",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "94ecf03198b4c9afca1e340d0a93764927ae4f60a1e4d7007712e4f18dece844",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 18
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1012_3.webp",
+      "sourceSha256": "b2b47fbd46786c6ead319b00fb3741d557d6a4a0fdccd3cd42d0b50be786705e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Effects/cut/fhd/sk_c1012_3.cutin.json",
+      "address": "characterlab/source/cut/fhd/sk_c1012_3.webp",
+      "type": "cutin",
+      "dependencies": [
+        "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0000",
+        "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0001",
+        "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0002",
+        "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0003",
+        "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0004",
+        "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0005",
+        "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0006",
+        "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0007",
+        "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0008",
+        "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0009",
+        "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0010",
+        "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0011",
+        "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0012",
+        "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0013",
+        "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0014",
+        "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0015",
+        "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0016",
+        "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0017",
+        "characterlab/source/cut/fhd/sk_c1012_3.webp/frame/0018"
+      ],
+      "outputSha256": "db710982c9119928aec720f0bbeff3fb10d896b5fe70575f5d9499296b6c57ae",
+      "conversion": {
+        "status": "converted",
+        "frameCount": 19,
+        "durationSeconds": 1.3
       }
     },
     {
@@ -9016,6 +9350,669 @@
       }
     },
     {
+      "source": "effect/corvus_skill_01.atlas",
+      "sourceSha256": "8bf3f4f4c7d74ba405d98498446ebdccaaf850cef2cbbc489e59d4c97b7daec9",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Atlas/effect/corvus_skill_01.atlas.txt",
+      "address": "characterlab/source/effect/corvus_skill_01.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/corvus_skill_01.sct"
+      ],
+      "outputSha256": "8bf3f4f4c7d74ba405d98498446ebdccaaf850cef2cbbc489e59d4c97b7daec9",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/corvus_skill_01.cfx",
+      "sourceSha256": "dfa3213cd5fafecabdc0d8dfdf8d510815a3d536f56b00359ae871a4c173efea",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Effects/effect/corvus_skill_01.cfx.json",
+      "address": "characterlab/source/effect/corvus_skill_01.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/corvus_skill_01.scsp",
+        "characterlab/source/effect/corvus_skill_01_pati.particle"
+      ],
+      "outputSha256": "a9744dca39a016df28cadd4cbcc9a5479aa2ffbd98274d6cc84d8412c5d6aad8",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/corvus_skill_01.scsp",
+      "sourceSha256": "c1905837e9b42c696f182e01e6cb60d7b2b1126a3668ddcf920690734c513acd",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Animations/effect/corvus_skill_01.spine.json",
+      "address": "characterlab/source/effect/corvus_skill_01.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "feee75bb7814d5da10eb552ab3d099c5b1e9a5d80401e0f76f79c02afce478ea",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 35171,
+        "consumedBytes": 35171,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 79,
+            "frames": 337,
+            "segments": 258,
+            "sourceMarkers": {
+              "allLinear": 10,
+              "allStepped": 19,
+              "explicit": 50
+            },
+            "modes": {
+              "linear": 108,
+              "stepped": 144,
+              "bezier": 6
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/corvus_skill_01.scsp",
+      "sourceSha256": "c1905837e9b42c696f182e01e6cb60d7b2b1126a3668ddcf920690734c513acd",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Animations/effect/corvus_skill_01.skeleton.json",
+      "address": "characterlab/source/effect/corvus_skill_01.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/corvus_skill_01.scsp/json",
+        "characterlab/source/effect/corvus_skill_01.atlas",
+        "characterlab/source/effect/corvus_skill_01.sct"
+      ],
+      "outputSha256": "b7d618bacb9cd9a7f850ed20b5b4994a8d4a9b65e7e3e639a93cebfe3689ce14",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/corvus_skill_01.sct",
+      "sourceSha256": "4122c3c573bf39e8a8b0a2f6b50cfd10574e0950767ef3459ea602bea8fbb33b",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Textures/effect/corvus_skill_01.png",
+      "address": "characterlab/source/effect/corvus_skill_01.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "08b7624ac3eb34370a920e7b5bd2c54b4cae90dad7d8155577d2eb7e405809b1",
+      "conversion": {
+        "status": "converted",
+        "width": 941,
+        "height": 247,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "4122c3c573bf39e8a8b0a2f6b50cfd10574e0950767ef3459ea602bea8fbb33b",
+        "outputSha256": "08b7624ac3eb34370a920e7b5bd2c54b4cae90dad7d8155577d2eb7e405809b1"
+      }
+    },
+    {
+      "source": "effect/corvus_skill_01_pati.particle",
+      "sourceSha256": "c884f674fab3b3871daead75f400ce16eb92efc81ab3f19afa9073b655ea4a80",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Effects/effect/corvus_skill_01_pati.particle.json",
+      "address": "characterlab/source/effect/corvus_skill_01_pati.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/pati_01.sct",
+        "characterlab/source/particle/tri_pati_01.sct"
+      ],
+      "outputSha256": "d0efaa63954b9fc866eaa282616581ab3f976ead887fff234f3a5a325cd6f8c3",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/corvus_skill_02.cfx",
+      "sourceSha256": "b9e96913b6a8d3cbb35892f627a99741a2fc94935c71eab5e884840bd34c311c",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Effects/effect/corvus_skill_02.cfx.json",
+      "address": "characterlab/source/effect/corvus_skill_02.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/corvus_skill_02_b.scsp",
+        "characterlab/source/effect/corvus_skill_02_f.scsp",
+        "characterlab/source/effect/fuzzies_skill_03_pati1.particle"
+      ],
+      "outputSha256": "945b5eb0ce3d3d04162fb815d0753b409884c259629fd89ca319aa7ee638b943",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/corvus_skill_02_b.atlas",
+      "sourceSha256": "752f89da2993f8458674c6c842500a8ad8db926d5b04dbc27367be45a2e8d150",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Atlas/effect/corvus_skill_02_b.atlas.txt",
+      "address": "characterlab/source/effect/corvus_skill_02_b.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/corvus_skill_02_b.sct"
+      ],
+      "outputSha256": "752f89da2993f8458674c6c842500a8ad8db926d5b04dbc27367be45a2e8d150",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/corvus_skill_02_b.scsp",
+      "sourceSha256": "5cb6604580e7ddecef66018143f6d2eca55f2b1df2f018591c72956488cbda69",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Animations/effect/corvus_skill_02_b.spine.json",
+      "address": "characterlab/source/effect/corvus_skill_02_b.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "5bec0b8cd13f1c00d1889f26dde332e306e6289b3353c7b990df2798b5a1a10d",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 4271,
+        "consumedBytes": 4271,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 25,
+            "frames": 97,
+            "segments": 72,
+            "sourceMarkers": {
+              "allLinear": 6,
+              "allStepped": 1,
+              "explicit": 18
+            },
+            "modes": {
+              "linear": 29,
+              "stepped": 29,
+              "bezier": 14
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/corvus_skill_02_b.scsp",
+      "sourceSha256": "5cb6604580e7ddecef66018143f6d2eca55f2b1df2f018591c72956488cbda69",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Animations/effect/corvus_skill_02_b.skeleton.json",
+      "address": "characterlab/source/effect/corvus_skill_02_b.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/corvus_skill_02_b.scsp/json",
+        "characterlab/source/effect/corvus_skill_02_b.atlas",
+        "characterlab/source/effect/corvus_skill_02_b.sct"
+      ],
+      "outputSha256": "38d9e8e3ef86ee80100805fa2111879dd2a4c8d19b102c48c32fe1630416174c",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/corvus_skill_02_b.sct",
+      "sourceSha256": "ee6b7f701e674012ad075b74676b2c869b93527a57cc708c8a54303bbd572b57",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Textures/effect/corvus_skill_02_b.png",
+      "address": "characterlab/source/effect/corvus_skill_02_b.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "a2f1ed02ae95848ba899b8aaebd502842d6c41af7d697aa75a7b38ae537bca05",
+      "conversion": {
+        "status": "converted",
+        "width": 233,
+        "height": 964,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "ee6b7f701e674012ad075b74676b2c869b93527a57cc708c8a54303bbd572b57",
+        "outputSha256": "a2f1ed02ae95848ba899b8aaebd502842d6c41af7d697aa75a7b38ae537bca05"
+      }
+    },
+    {
+      "source": "effect/corvus_skill_02_f.atlas",
+      "sourceSha256": "642022201595d7100176de6fb4f555b7ef486afafac9c25a27460a7ca3088322",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Atlas/effect/corvus_skill_02_f.atlas.txt",
+      "address": "characterlab/source/effect/corvus_skill_02_f.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/corvus_skill_02_f.sct"
+      ],
+      "outputSha256": "642022201595d7100176de6fb4f555b7ef486afafac9c25a27460a7ca3088322",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/corvus_skill_02_f.scsp",
+      "sourceSha256": "7f9f1178de321e4d10be9355f0e771d9a1aea7fb6127941ba57ef1789f6603f6",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Animations/effect/corvus_skill_02_f.spine.json",
+      "address": "characterlab/source/effect/corvus_skill_02_f.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "e9220f0fe94ac2cddb2b3fe9797b1de880c6116815a574e6bb64a5dbfa877f58",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 101222,
+        "consumedBytes": 101222,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 206,
+            "frames": 817,
+            "segments": 611,
+            "sourceMarkers": {
+              "allLinear": 30,
+              "allStepped": 30,
+              "explicit": 146
+            },
+            "modes": {
+              "linear": 195,
+              "stepped": 288,
+              "bezier": 128
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/corvus_skill_02_f.scsp",
+      "sourceSha256": "7f9f1178de321e4d10be9355f0e771d9a1aea7fb6127941ba57ef1789f6603f6",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Animations/effect/corvus_skill_02_f.skeleton.json",
+      "address": "characterlab/source/effect/corvus_skill_02_f.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/corvus_skill_02_f.scsp/json",
+        "characterlab/source/effect/corvus_skill_02_f.atlas",
+        "characterlab/source/effect/corvus_skill_02_f.sct"
+      ],
+      "outputSha256": "e871cebd9ee28c5e86003782dfc81d37aefb3b348049ed603e8b7cd023fd5b99",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/corvus_skill_02_f.sct",
+      "sourceSha256": "a30e0462d56e8b2afb4d783043d3eeed87a9af673748148f1e1df1fa6437c207",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Textures/effect/corvus_skill_02_f.png",
+      "address": "characterlab/source/effect/corvus_skill_02_f.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "96f63e1ba6ea617b66fff111d8a08d8644dd36e7e600f14d5746f144491cddad",
+      "conversion": {
+        "status": "converted",
+        "width": 472,
+        "height": 943,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "a30e0462d56e8b2afb4d783043d3eeed87a9af673748148f1e1df1fa6437c207",
+        "outputSha256": "96f63e1ba6ea617b66fff111d8a08d8644dd36e7e600f14d5746f144491cddad"
+      }
+    },
+    {
+      "source": "effect/corvus_skill_03_bk_first.atlas",
+      "sourceSha256": "9c0ee4b6bfef17663a442cb83ecb88022d197ee96bf9234c0285afdff0d74f88",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Atlas/effect/corvus_skill_03_bk_first.atlas.txt",
+      "address": "characterlab/source/effect/corvus_skill_03_bk_first.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/corvus_skill_03_bk_first.sct"
+      ],
+      "outputSha256": "9c0ee4b6bfef17663a442cb83ecb88022d197ee96bf9234c0285afdff0d74f88",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/corvus_skill_03_bk_first.scsp",
+      "sourceSha256": "262a434c69dbc88f2265a13b4fa2d4d550f0bff5d8d75b08e527f2952b20f69c",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Animations/effect/corvus_skill_03_bk_first.spine.json",
+      "address": "characterlab/source/effect/corvus_skill_03_bk_first.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "0fe61bf7407778cf519110c772e5ba54f865d579d518a2165046231dc09960ad",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 60226,
+        "consumedBytes": 60226,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 80,
+            "frames": 201,
+            "segments": 121,
+            "sourceMarkers": {
+              "allLinear": 40,
+              "allStepped": 6,
+              "explicit": 34
+            },
+            "modes": {
+              "linear": 68,
+              "stepped": 33,
+              "bezier": 20
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/corvus_skill_03_bk_first.scsp",
+      "sourceSha256": "262a434c69dbc88f2265a13b4fa2d4d550f0bff5d8d75b08e527f2952b20f69c",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Animations/effect/corvus_skill_03_bk_first.skeleton.json",
+      "address": "characterlab/source/effect/corvus_skill_03_bk_first.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/corvus_skill_03_bk_first.scsp/json",
+        "characterlab/source/effect/corvus_skill_03_bk_first.atlas",
+        "characterlab/source/effect/corvus_skill_03_bk_first.sct"
+      ],
+      "outputSha256": "8fe7790107d31e9e67f3a151817339be2223554507db62e23543225e90f98000",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/corvus_skill_03_bk_first.sct",
+      "sourceSha256": "29d49ead2b0548447e759e4f5d1aaad77d18a090dafeafa9d6aa5984277db7fd",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Textures/effect/corvus_skill_03_bk_first.png",
+      "address": "characterlab/source/effect/corvus_skill_03_bk_first.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "9fec488dc6b2ef4d1b3245fb740478fd92f74679b25551271ad323fa608438a4",
+      "conversion": {
+        "status": "converted",
+        "width": 563,
+        "height": 128,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "29d49ead2b0548447e759e4f5d1aaad77d18a090dafeafa9d6aa5984277db7fd",
+        "outputSha256": "9fec488dc6b2ef4d1b3245fb740478fd92f74679b25551271ad323fa608438a4"
+      }
+    },
+    {
+      "source": "effect/corvus_skill_03_burst_smoke.atlas",
+      "sourceSha256": "209acd3ce0e5ecd20cb9f282776135a81c68cf9d3430b23180277b165851bea8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Atlas/effect/corvus_skill_03_burst_smoke.atlas.txt",
+      "address": "characterlab/source/effect/corvus_skill_03_burst_smoke.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/corvus_skill_03_burst_smoke.sct"
+      ],
+      "outputSha256": "209acd3ce0e5ecd20cb9f282776135a81c68cf9d3430b23180277b165851bea8",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/corvus_skill_03_burst_smoke.scsp",
+      "sourceSha256": "26eddc1ee822a76691088d89aea9a93f61b5454159f7c3ee6a6e4bb1ebc109d9",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Animations/effect/corvus_skill_03_burst_smoke.spine.json",
+      "address": "characterlab/source/effect/corvus_skill_03_burst_smoke.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "7296f25345688953e842638cbebfb7f37121e960cec996c3c97618e39ed2532a",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 117088,
+        "consumedBytes": 117088,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 236,
+            "frames": 730,
+            "segments": 494,
+            "sourceMarkers": {
+              "allLinear": 8,
+              "allStepped": 109,
+              "explicit": 119
+            },
+            "modes": {
+              "linear": 145,
+              "stepped": 270,
+              "bezier": 79
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/corvus_skill_03_burst_smoke.scsp",
+      "sourceSha256": "26eddc1ee822a76691088d89aea9a93f61b5454159f7c3ee6a6e4bb1ebc109d9",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Animations/effect/corvus_skill_03_burst_smoke.skeleton.json",
+      "address": "characterlab/source/effect/corvus_skill_03_burst_smoke.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/corvus_skill_03_burst_smoke.scsp/json",
+        "characterlab/source/effect/corvus_skill_03_burst_smoke.atlas",
+        "characterlab/source/effect/corvus_skill_03_burst_smoke.sct"
+      ],
+      "outputSha256": "0ca7e0e98252f2b961481d62ce8df530141d87745007dc028348a503853d3681",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/corvus_skill_03_burst_smoke.sct",
+      "sourceSha256": "23e01455c0f358f62a3e5059cc9bd57bd829c974c9a6925d50896f20cc585ef6",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Textures/effect/corvus_skill_03_burst_smoke.png",
+      "address": "characterlab/source/effect/corvus_skill_03_burst_smoke.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "3dd031504fb86be1fa07b3d4fc03038895d25427eed1c0e00ec0136fc98b2613",
+      "conversion": {
+        "status": "converted",
+        "width": 251,
+        "height": 916,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "23e01455c0f358f62a3e5059cc9bd57bd829c974c9a6925d50896f20cc585ef6",
+        "outputSha256": "3dd031504fb86be1fa07b3d4fc03038895d25427eed1c0e00ec0136fc98b2613"
+      }
+    },
+    {
+      "source": "effect/corvus_skill_03_fr_first.atlas",
+      "sourceSha256": "334ffa32be1dd13386d7525a0c559eb34db2bd08dfd18c83bd2b42344f97da7d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Atlas/effect/corvus_skill_03_fr_first.atlas.txt",
+      "address": "characterlab/source/effect/corvus_skill_03_fr_first.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/corvus_skill_03_fr_first.sct"
+      ],
+      "outputSha256": "334ffa32be1dd13386d7525a0c559eb34db2bd08dfd18c83bd2b42344f97da7d",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/corvus_skill_03_fr_first.scsp",
+      "sourceSha256": "17626822499ad1533b5d294a864d71edddeb64fd2bf5a55107cf06dc8bffc9f3",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Animations/effect/corvus_skill_03_fr_first.spine.json",
+      "address": "characterlab/source/effect/corvus_skill_03_fr_first.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "e083e776bf4c68f8109737a1af2d5a6ab3e7d5037a12bddbae59ff357fce2fef",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 79852,
+        "consumedBytes": 79852,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 123,
+            "frames": 523,
+            "segments": 400,
+            "sourceMarkers": {
+              "allLinear": 12,
+              "allStepped": 19,
+              "explicit": 92
+            },
+            "modes": {
+              "linear": 237,
+              "stepped": 160,
+              "bezier": 3
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/corvus_skill_03_fr_first.scsp",
+      "sourceSha256": "17626822499ad1533b5d294a864d71edddeb64fd2bf5a55107cf06dc8bffc9f3",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Animations/effect/corvus_skill_03_fr_first.skeleton.json",
+      "address": "characterlab/source/effect/corvus_skill_03_fr_first.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/corvus_skill_03_fr_first.scsp/json",
+        "characterlab/source/effect/corvus_skill_03_fr_first.atlas",
+        "characterlab/source/effect/corvus_skill_03_fr_first.sct"
+      ],
+      "outputSha256": "65e3f73a08e9156e626963047e5afea1f5cb9a914abdc2a3990b05734e5f2b85",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/corvus_skill_03_fr_first.sct",
+      "sourceSha256": "26135957e9fb1da6a669856f108abf44309ac53e43d8eb28d74016bc01234574",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Textures/effect/corvus_skill_03_fr_first.png",
+      "address": "characterlab/source/effect/corvus_skill_03_fr_first.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "5984d259b10f741b53fcccadf38011bf9e180fdc620a519dc280b854c9be62b4",
+      "conversion": {
+        "status": "converted",
+        "width": 1392,
+        "height": 256,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "26135957e9fb1da6a669856f108abf44309ac53e43d8eb28d74016bc01234574",
+        "outputSha256": "5984d259b10f741b53fcccadf38011bf9e180fdc620a519dc280b854c9be62b4"
+      }
+    },
+    {
+      "source": "effect/corvus_skill_03_ground.atlas",
+      "sourceSha256": "4e47db2f2421a5a3628037f57711bb4c89e7a7ca9c19291c0b036ff7a23b90b2",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Atlas/effect/corvus_skill_03_ground.atlas.txt",
+      "address": "characterlab/source/effect/corvus_skill_03_ground.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/corvus_skill_03_ground.sct"
+      ],
+      "outputSha256": "4e47db2f2421a5a3628037f57711bb4c89e7a7ca9c19291c0b036ff7a23b90b2",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/corvus_skill_03_ground.scsp",
+      "sourceSha256": "abc7b7777a8e26336a02fe9cb1ad47cf5aafdf01b227de822269e6068f463cfe",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Animations/effect/corvus_skill_03_ground.spine.json",
+      "address": "characterlab/source/effect/corvus_skill_03_ground.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "b967883f1ad94878531a5f48793293e014792b0fb7db81181ba6e86ffd4ffc39",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 5624,
+        "consumedBytes": 5624,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 30,
+            "frames": 136,
+            "segments": 106,
+            "sourceMarkers": {
+              "allLinear": 3,
+              "allStepped": 9,
+              "explicit": 18
+            },
+            "modes": {
+              "linear": 39,
+              "stepped": 60,
+              "bezier": 7
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/corvus_skill_03_ground.scsp",
+      "sourceSha256": "abc7b7777a8e26336a02fe9cb1ad47cf5aafdf01b227de822269e6068f463cfe",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Animations/effect/corvus_skill_03_ground.skeleton.json",
+      "address": "characterlab/source/effect/corvus_skill_03_ground.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/corvus_skill_03_ground.scsp/json",
+        "characterlab/source/effect/corvus_skill_03_ground.atlas",
+        "characterlab/source/effect/corvus_skill_03_ground.sct"
+      ],
+      "outputSha256": "832aafeff4f8f4c0a74d6c534bda1fe4a74883ccebbac386f89fb9396f243762",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/corvus_skill_03_ground.sct",
+      "sourceSha256": "1a71ae4829bc96807093f155736a7a6d0218f429b97d47d0cc71dbb2d847510d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Textures/effect/corvus_skill_03_ground.png",
+      "address": "characterlab/source/effect/corvus_skill_03_ground.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "19828ea49fdafdf5d06af83e0278162712b05560e24f8e3c5f04f3968caa4ed6",
+      "conversion": {
+        "status": "converted",
+        "width": 1194,
+        "height": 509,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "1a71ae4829bc96807093f155736a7a6d0218f429b97d47d0cc71dbb2d847510d",
+        "outputSha256": "19828ea49fdafdf5d06af83e0278162712b05560e24f8e3c5f04f3968caa4ed6"
+      }
+    },
+    {
+      "source": "effect/corvus_skill_03_pati1.particle",
+      "sourceSha256": "eb1fb7f0fef9f6cc911ca2b5c2d3e39d35a3d63f459f96b04e28d9b08bb8468a",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Effects/effect/corvus_skill_03_pati1.particle.json",
+      "address": "characterlab/source/effect/corvus_skill_03_pati1.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/flash.sct",
+        "characterlab/source/particle/zodiac_star1.sct"
+      ],
+      "outputSha256": "31104515198b5a5a9fe00d8f7658b6b0432f0df62da791f4fe47ed11d81e18e7",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
       "source": "effect/crack_01.atlas",
       "sourceSha256": "3cea628379cce94f7a720cbde539b94d4fd8c5975ec6ac86ac59d889123de9a3",
       "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1009/Atlas/effect/crack_01.atlas.txt",
@@ -9099,6 +10096,24 @@
         "alpha": "source-preserved",
         "sourceSha256": "6220e50e6d350678d11d0609a51b7cc2bec0e922acbb6968065f8327a5d85543",
         "outputSha256": "d3167b887eccd96121c67db18cff54cef8d3f8989dfa79654298ab6a44b9f4bd"
+      }
+    },
+    {
+      "source": "effect/crovus_skill_03.cfx",
+      "sourceSha256": "078a406297b16b0530ef628be77ff0e5cacdcd78ba0ec18b4f4a6b8d705fb0f5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Effects/effect/crovus_skill_03.cfx.json",
+      "address": "characterlab/source/effect/crovus_skill_03.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/corvus_skill_03_bk_first.scsp",
+        "characterlab/source/effect/corvus_skill_03_burst_smoke.scsp",
+        "characterlab/source/effect/corvus_skill_03_fr_first.scsp",
+        "characterlab/source/effect/corvus_skill_03_ground.scsp",
+        "characterlab/source/effect/corvus_skill_03_pati1.particle"
+      ],
+      "outputSha256": "e63fb3c2bafbafd875d6db7382e53e7edbae41fb3442d06b680535843af8abcb",
+      "conversion": {
+        "status": "converted"
       }
     },
     {
@@ -11403,6 +12418,23 @@
         "alpha": "source-preserved",
         "sourceSha256": "71a7c524d27bfb9007512f78aca75b3a10ca4221c77ce9c38a9f1e8e4b8cdeae",
         "outputSha256": "2e2e78fb47022ca13f16c7090cfee956bc5143c6fb72e069d6056fb2b8596908"
+      }
+    },
+    {
+      "source": "effect/fuzzies_skill_03_pati1.particle",
+      "sourceSha256": "0e575f2bf5debe04345d09396530e5a812671b7f81f719fe4762b3e8e557e167",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Effects/effect/fuzzies_skill_03_pati1.particle.json",
+      "address": "characterlab/source/effect/fuzzies_skill_03_pati1.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/dust_01.sct",
+        "characterlab/source/particle/pati_01.sct",
+        "characterlab/source/particle/stone_01.sct",
+        "characterlab/source/particle/stone_02.sct"
+      ],
+      "outputSha256": "8ef8cbe3f501d90a4427182747022e1e5b49fd2f9807101c89831386ff6e12af",
+      "conversion": {
+        "status": "converted"
       }
     },
     {
@@ -21117,6 +22149,661 @@
       }
     },
     {
+      "source": "model/corvus.atlas",
+      "sourceSha256": "fba0e13dedd02fe7a3ff2fdaf7365f9ed388b365aa8720624709a3f3f63421ed",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Atlas/model/corvus.atlas.txt",
+      "address": "characterlab/source/model/corvus.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/model/corvus.sct"
+      ],
+      "outputSha256": "fba0e13dedd02fe7a3ff2fdaf7365f9ed388b365aa8720624709a3f3f63421ed",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "model/corvus.scsp",
+      "sourceSha256": "09c442e09cebd8bcb2f65c6e157d6104310137795f264077f6898fa73fe2eb19",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Animations/model/corvus.spine.json",
+      "address": "characterlab/source/model/corvus.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "68c1129444ca43842cb2d7187ea7c86e7d8e853e38ed87ef3374e965c2320e4f",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 20,
+        "binaryBytes": 10273246,
+        "consumedBytes": 10273246,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {
+          "attacked": {
+            "flipX": {
+              "tracks": 1,
+              "frames": 5,
+              "bones": {
+                "face": 5
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "attacked_damage": {
+            "flipX": {
+              "tracks": 1,
+              "frames": 1,
+              "bones": {
+                "face": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "b_idle_ready": {
+            "flipX": {
+              "tracks": 2,
+              "frames": 6,
+              "bones": {
+                "pelvis_belt_cen": 5,
+                "waist": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "camping": {
+            "flipX": {
+              "tracks": 4,
+              "frames": 8,
+              "bones": {
+                "center": 2,
+                "face": 2,
+                "weapon": 2,
+                "shield": 2
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "down": {
+            "flipX": {
+              "tracks": 1,
+              "frames": 2,
+              "bones": {
+                "cloak_01": 2
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "flying": {
+            "flipX": {
+              "tracks": 4,
+              "frames": 8,
+              "bones": {
+                "center": 2,
+                "face": 2,
+                "left_foot": 2,
+                "cloak_01": 2
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "flying_damage": {
+            "flipX": {
+              "tracks": 4,
+              "frames": 4,
+              "bones": {
+                "cloak_01": 1,
+                "left_foot": 1,
+                "center": 1,
+                "face": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "groggy": {
+            "flipX": {
+              "tracks": 2,
+              "frames": 4,
+              "bones": {
+                "face": 2,
+                "cloak_01": 2
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "jump_back": {
+            "flipX": {
+              "tracks": 2,
+              "frames": 3,
+              "bones": {
+                "chest_cover": 1,
+                "pelvis_belt_cen": 2
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "jump_forward": {
+            "flipX": {
+              "tracks": 1,
+              "frames": 1,
+              "bones": {
+                "pelvis_belt_cen": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "knock_down": {
+            "flipX": {
+              "tracks": 1,
+              "frames": 1,
+              "bones": {
+                "cloak_01": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "rise": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 12,
+              "bones": {
+                "shield": 2,
+                "face": 5,
+                "center": 5
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "run": {
+            "flipX": {
+              "tracks": 1,
+              "frames": 3,
+              "bones": {
+                "pelvis_belt_cen": 3
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "run_start": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 7,
+              "bones": {
+                "pelvis_belt_cen": 1,
+                "face": 3,
+                "center": 3
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "skill1": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 4,
+              "bones": {
+                "cloak_02": 1,
+                "chest_cover": 1,
+                "pelvis_belt_cen": 2
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "skill2": {
+            "flipX": {
+              "tracks": 8,
+              "frames": 54,
+              "bones": {
+                "face": 3,
+                "shield": 5,
+                "chest_cover": 20,
+                "shoulder_cover_right": 7,
+                "right_foot": 1,
+                "center": 3,
+                "pelvis_belt_cen": 14,
+                "skill2_hammer_ob_skill": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "skill3": {
+            "flipX": {
+              "tracks": 6,
+              "frames": 12,
+              "bones": {
+                "cloak_02": 1,
+                "waist": 1,
+                "shoulder_cover_right": 1,
+                "bone2": 1,
+                "chest_cover": 2,
+                "pelvis_belt_cen": 6
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          }
+        },
+        "curveTimelines": {
+          "appear": {
+            "tracks": 744,
+            "frames": 744,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 744,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "attacked": {
+            "tracks": 747,
+            "frames": 2816,
+            "segments": 2069,
+            "sourceMarkers": {
+              "allLinear": 3,
+              "allStepped": 744,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 2069,
+              "bezier": 0
+            }
+          },
+          "attacked_damage": {
+            "tracks": 747,
+            "frames": 747,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 747,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "b_idle": {
+            "tracks": 750,
+            "frames": 4525,
+            "segments": 3775,
+            "sourceMarkers": {
+              "allLinear": 3,
+              "allStepped": 747,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 3775,
+              "bezier": 0
+            }
+          },
+          "b_idle_ready": {
+            "tracks": 749,
+            "frames": 4476,
+            "segments": 3727,
+            "sourceMarkers": {
+              "allLinear": 3,
+              "allStepped": 746,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 3727,
+              "bezier": 0
+            }
+          },
+          "camping": {
+            "tracks": 744,
+            "frames": 6587,
+            "segments": 5843,
+            "sourceMarkers": {
+              "allLinear": 6,
+              "allStepped": 738,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 5843,
+              "bezier": 0
+            }
+          },
+          "down": {
+            "tracks": 649,
+            "frames": 1544,
+            "segments": 895,
+            "sourceMarkers": {
+              "allLinear": 6,
+              "allStepped": 643,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 895,
+              "bezier": 0
+            }
+          },
+          "flying": {
+            "tracks": 651,
+            "frames": 1502,
+            "segments": 851,
+            "sourceMarkers": {
+              "allLinear": 8,
+              "allStepped": 643,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 851,
+              "bezier": 0
+            }
+          },
+          "flying_damage": {
+            "tracks": 651,
+            "frames": 651,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 651,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "groggy": {
+            "tracks": 749,
+            "frames": 5752,
+            "segments": 5003,
+            "sourceMarkers": {
+              "allLinear": 10,
+              "allStepped": 739,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 5003,
+              "bezier": 0
+            }
+          },
+          "idle": {
+            "tracks": 750,
+            "frames": 5721,
+            "segments": 4971,
+            "sourceMarkers": {
+              "allLinear": 8,
+              "allStepped": 742,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 4971,
+              "bezier": 0
+            }
+          },
+          "jump_back": {
+            "tracks": 747,
+            "frames": 4212,
+            "segments": 3465,
+            "sourceMarkers": {
+              "allLinear": 1,
+              "allStepped": 746,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 3465,
+              "bezier": 0
+            }
+          },
+          "jump_forward": {
+            "tracks": 745,
+            "frames": 4120,
+            "segments": 3375,
+            "sourceMarkers": {
+              "allLinear": 1,
+              "allStepped": 744,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 3375,
+              "bezier": 0
+            }
+          },
+          "knock_down": {
+            "tracks": 744,
+            "frames": 2730,
+            "segments": 1986,
+            "sourceMarkers": {
+              "allLinear": 6,
+              "allStepped": 738,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 1986,
+              "bezier": 0
+            }
+          },
+          "rise": {
+            "tracks": 747,
+            "frames": 3341,
+            "segments": 2594,
+            "sourceMarkers": {
+              "allLinear": 4,
+              "allStepped": 741,
+              "explicit": 2
+            },
+            "modes": {
+              "linear": 8,
+              "stepped": 2586,
+              "bezier": 0
+            }
+          },
+          "run": {
+            "tracks": 746,
+            "frames": 3011,
+            "segments": 2265,
+            "sourceMarkers": {
+              "allLinear": 3,
+              "allStepped": 743,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 2265,
+              "bezier": 0
+            }
+          },
+          "run_start": {
+            "tracks": 746,
+            "frames": 2137,
+            "segments": 1391,
+            "sourceMarkers": {
+              "allLinear": 2,
+              "allStepped": 744,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 1391,
+              "bezier": 0
+            }
+          },
+          "skill1": {
+            "tracks": 750,
+            "frames": 3183,
+            "segments": 2433,
+            "sourceMarkers": {
+              "allLinear": 10,
+              "allStepped": 740,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 2433,
+              "bezier": 0
+            }
+          },
+          "skill2": {
+            "tracks": 751,
+            "frames": 12900,
+            "segments": 12149,
+            "sourceMarkers": {
+              "allLinear": 4,
+              "allStepped": 747,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 12149,
+              "bezier": 0
+            }
+          },
+          "skill3": {
+            "tracks": 751,
+            "frames": 9682,
+            "segments": 8931,
+            "sourceMarkers": {
+              "allLinear": 4,
+              "allStepped": 747,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 8931,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "model/corvus.scsp",
+      "sourceSha256": "09c442e09cebd8bcb2f65c6e157d6104310137795f264077f6898fa73fe2eb19",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Animations/model/corvus.skeleton.json",
+      "address": "characterlab/source/model/corvus.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/model/corvus.scsp/json",
+        "characterlab/source/model/corvus.atlas",
+        "characterlab/source/model/corvus.sct"
+      ],
+      "outputSha256": "5e445a5b39daf700be754c25112b34ae07dfc1143a6da81158d50568270f0c0f",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 20
+      }
+    },
+    {
+      "source": "model/corvus.sct",
+      "sourceSha256": "ca802f8e484f410e01dbc2a0343014066b35afcfe020b4756278a4d644f9d6ac",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Textures/model/corvus.png",
+      "address": "characterlab/source/model/corvus.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "e6bb68aeae5efb6888bc27f60a738194d64060415e3bfd722878e8519533e071",
+      "conversion": {
+        "status": "converted",
+        "width": 2033,
+        "height": 1476,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "ca802f8e484f410e01dbc2a0343014066b35afcfe020b4756278a4d644f9d6ac",
+        "outputSha256": "e6bb68aeae5efb6888bc27f60a738194d64060415e3bfd722878e8519533e071"
+      }
+    },
+    {
+      "source": "model/corvus.timeline",
+      "sourceSha256": "6d32d36bc6abe5971a96393b15e2f26c0f575d933b3ff2d6ecec7d156dab91ba",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Configs/model/corvus.timeline.json",
+      "address": "characterlab/source/model/corvus.timeline",
+      "type": "timeline",
+      "dependencies": [
+        "characterlab/source/effect/corvus_skill_01.cfx",
+        "characterlab/source/effect/crovus_skill_03.cfx"
+      ],
+      "outputSha256": "4cf50811c6d8350286590bf04c9ff07d9faeb6d37c635ad320b7bb3105a06ca8",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
       "source": "model/karin.atlas",
       "sourceSha256": "135568db9f9d20547ec15ed4448f1ffa938089f45576a19e34820579bd9da3de",
       "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1011/Atlas/model/karin.atlas.txt",
@@ -28381,6 +30068,92 @@
       }
     },
     {
+      "source": "portrait/c1012.atlas",
+      "sourceSha256": "db39c005731e6aa86276f2376f5b0f78ada351a742975fd8a0e494fbb6cc7ee3",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Atlas/portrait/c1012.atlas.txt",
+      "address": "characterlab/source/portrait/c1012.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/portrait/c1012.sct"
+      ],
+      "outputSha256": "db39c005731e6aa86276f2376f5b0f78ada351a742975fd8a0e494fbb6cc7ee3",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "portrait/c1012.scsp",
+      "sourceSha256": "bb71041df264b1f96b313a6cd38562e8f46520c62572fe4fa86cd942f35f1381",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Animations/portrait/c1012.spine.json",
+      "address": "characterlab/source/portrait/c1012.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "d5ad0bd3035a87bb914c12ed4327ba91bbc08f63e32cc1e47eef6611e3345e88",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 119150,
+        "consumedBytes": 119150,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "idle": {
+            "tracks": 510,
+            "frames": 1414,
+            "segments": 904,
+            "sourceMarkers": {
+              "allLinear": 56,
+              "allStepped": 257,
+              "explicit": 197
+            },
+            "modes": {
+              "linear": 73,
+              "stepped": 391,
+              "bezier": 440
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "portrait/c1012.scsp",
+      "sourceSha256": "bb71041df264b1f96b313a6cd38562e8f46520c62572fe4fa86cd942f35f1381",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Animations/portrait/c1012.skeleton.json",
+      "address": "characterlab/source/portrait/c1012.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/portrait/c1012.scsp/json",
+        "characterlab/source/portrait/c1012.atlas",
+        "characterlab/source/portrait/c1012.sct"
+      ],
+      "outputSha256": "b3b86f9fc6564d02721e9e7e7aab7be36879132378d62af4c3081c5c17248903",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "portrait/c1012.sct",
+      "sourceSha256": "76eb4e8f79e9909b7700307fe14c5e01607b2335271bf370c71a19024398a177",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Textures/portrait/c1012.png",
+      "address": "characterlab/source/portrait/c1012.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "969f9d8e85e156418d87ca881a183ab7a9a159c5c9d6213b127a10610ec1c358",
+      "conversion": {
+        "status": "converted",
+        "width": 2017,
+        "height": 763,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "76eb4e8f79e9909b7700307fe14c5e01607b2335271bf370c71a19024398a177",
+        "outputSha256": "969f9d8e85e156418d87ca881a183ab7a9a159c5c9d6213b127a10610ec1c358"
+      }
+    },
+    {
       "source": "portrait/c1062.atlas",
       "sourceSha256": "52ca748c84a506050a880601da5719def118301b5de381d4d815bd3874b110c4",
       "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/portrait/c1062.atlas.txt",
@@ -29557,6 +31330,147 @@
         "characterlab/source/particle/ticle_02.sct"
       ],
       "outputSha256": "6e5a65f9942a19b8ee80da073e98a95ca4ed2f2d234bf9a6850a8f1218ddd35f",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "stagept/c_corvus_skill_01.stg",
+      "sourceSha256": "fa80d098825aea68124e455cadfa45f6b7986949ef6eeb0901b7d022efb651a1",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Configs/stagept/c_corvus_skill_01.graph.json",
+      "address": "characterlab/source/stagept/c_corvus_skill_01.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/camera/corvus_sk1eff_cm.scsp",
+        "characterlab/source/effect/corvus_skill_01.atlas",
+        "characterlab/source/effect/corvus_skill_01.cfx",
+        "characterlab/source/effect/corvus_skill_01.scsp",
+        "characterlab/source/effect/corvus_skill_01.sct",
+        "characterlab/source/effect/corvus_skill_01_pati.particle",
+        "characterlab/source/effect/corvus_skill_03_bk_first.atlas",
+        "characterlab/source/effect/corvus_skill_03_bk_first.scsp",
+        "characterlab/source/effect/corvus_skill_03_bk_first.sct",
+        "characterlab/source/effect/corvus_skill_03_burst_smoke.atlas",
+        "characterlab/source/effect/corvus_skill_03_burst_smoke.scsp",
+        "characterlab/source/effect/corvus_skill_03_burst_smoke.sct",
+        "characterlab/source/effect/corvus_skill_03_fr_first.atlas",
+        "characterlab/source/effect/corvus_skill_03_fr_first.scsp",
+        "characterlab/source/effect/corvus_skill_03_fr_first.sct",
+        "characterlab/source/effect/corvus_skill_03_ground.atlas",
+        "characterlab/source/effect/corvus_skill_03_ground.scsp",
+        "characterlab/source/effect/corvus_skill_03_ground.sct",
+        "characterlab/source/effect/corvus_skill_03_pati1.particle",
+        "characterlab/source/effect/crovus_skill_03.cfx",
+        "characterlab/source/effect/hit_new_blunt_01.atlas",
+        "characterlab/source/effect/hit_new_blunt_01.scsp",
+        "characterlab/source/effect/hit_new_blunt_01.sct",
+        "characterlab/source/effect/hit_new_blunt_mult_normal.cfx",
+        "characterlab/source/effect/hit_new_blunt_normal.cfx",
+        "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+        "characterlab/source/model/corvus.timeline",
+        "characterlab/source/particle/flash.sct",
+        "characterlab/source/particle/pati_01.sct",
+        "characterlab/source/particle/ticle_02.sct",
+        "characterlab/source/particle/tri_pati_01.sct",
+        "characterlab/source/particle/zodiac_star1.sct"
+      ],
+      "outputSha256": "1cd5bcf3b729fc2a5aa4035a3e2aa7e35f5814716dc88cefcc129e5d7e7b36a4",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "stagept/c_corvus_skill_02.stg",
+      "sourceSha256": "34995c2433856a312187b12fa9163280bc6828aac268e0a57c126aaf463ff0c2",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Configs/stagept/c_corvus_skill_02.graph.json",
+      "address": "characterlab/source/stagept/c_corvus_skill_02.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/camera/boom_cm_power_up.scsp",
+        "characterlab/source/effect/corvus_skill_01.atlas",
+        "characterlab/source/effect/corvus_skill_01.cfx",
+        "characterlab/source/effect/corvus_skill_01.scsp",
+        "characterlab/source/effect/corvus_skill_01.sct",
+        "characterlab/source/effect/corvus_skill_01_pati.particle",
+        "characterlab/source/effect/corvus_skill_02.cfx",
+        "characterlab/source/effect/corvus_skill_02_b.atlas",
+        "characterlab/source/effect/corvus_skill_02_b.scsp",
+        "characterlab/source/effect/corvus_skill_02_b.sct",
+        "characterlab/source/effect/corvus_skill_02_f.atlas",
+        "characterlab/source/effect/corvus_skill_02_f.scsp",
+        "characterlab/source/effect/corvus_skill_02_f.sct",
+        "characterlab/source/effect/corvus_skill_03_bk_first.atlas",
+        "characterlab/source/effect/corvus_skill_03_bk_first.scsp",
+        "characterlab/source/effect/corvus_skill_03_bk_first.sct",
+        "characterlab/source/effect/corvus_skill_03_burst_smoke.atlas",
+        "characterlab/source/effect/corvus_skill_03_burst_smoke.scsp",
+        "characterlab/source/effect/corvus_skill_03_burst_smoke.sct",
+        "characterlab/source/effect/corvus_skill_03_fr_first.atlas",
+        "characterlab/source/effect/corvus_skill_03_fr_first.scsp",
+        "characterlab/source/effect/corvus_skill_03_fr_first.sct",
+        "characterlab/source/effect/corvus_skill_03_ground.atlas",
+        "characterlab/source/effect/corvus_skill_03_ground.scsp",
+        "characterlab/source/effect/corvus_skill_03_ground.sct",
+        "characterlab/source/effect/corvus_skill_03_pati1.particle",
+        "characterlab/source/effect/crovus_skill_03.cfx",
+        "characterlab/source/effect/fuzzies_skill_03_pati1.particle",
+        "characterlab/source/effect/hit_new_blunt_01.atlas",
+        "characterlab/source/effect/hit_new_blunt_01.scsp",
+        "characterlab/source/effect/hit_new_blunt_01.sct",
+        "characterlab/source/effect/hit_new_blunt_mult_normal.cfx",
+        "characterlab/source/effect/hit_new_blunt_normal.cfx",
+        "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+        "characterlab/source/model/corvus.timeline",
+        "characterlab/source/particle/dust_01.sct",
+        "characterlab/source/particle/flash.sct",
+        "characterlab/source/particle/pati_01.sct",
+        "characterlab/source/particle/stone_01.sct",
+        "characterlab/source/particle/stone_02.sct",
+        "characterlab/source/particle/ticle_02.sct",
+        "characterlab/source/particle/tri_pati_01.sct",
+        "characterlab/source/particle/zodiac_star1.sct"
+      ],
+      "outputSha256": "3f65ab3e7c862905a35f42e524ffe3c00c3e976c003686cc8ff188cdb887f933",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "stagept/c_corvus_skill_03.stg",
+      "sourceSha256": "b30ac0c3c99c289266723bc474350eaf1b675316c67f0b5e0ddd56a6a913e6e2",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1012/Configs/stagept/c_corvus_skill_03.graph.json",
+      "address": "characterlab/source/stagept/c_corvus_skill_03.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/camera/boom_cm_power_dn.scsp",
+        "characterlab/source/camera/boom_cm_power_up.scsp",
+        "characterlab/source/cut/fhd/sk_c1012_3.webp",
+        "characterlab/source/effect/corvus_skill_01.atlas",
+        "characterlab/source/effect/corvus_skill_01.cfx",
+        "characterlab/source/effect/corvus_skill_01.scsp",
+        "characterlab/source/effect/corvus_skill_01.sct",
+        "characterlab/source/effect/corvus_skill_01_pati.particle",
+        "characterlab/source/effect/corvus_skill_03_bk_first.atlas",
+        "characterlab/source/effect/corvus_skill_03_bk_first.scsp",
+        "characterlab/source/effect/corvus_skill_03_bk_first.sct",
+        "characterlab/source/effect/corvus_skill_03_burst_smoke.atlas",
+        "characterlab/source/effect/corvus_skill_03_burst_smoke.scsp",
+        "characterlab/source/effect/corvus_skill_03_burst_smoke.sct",
+        "characterlab/source/effect/corvus_skill_03_fr_first.atlas",
+        "characterlab/source/effect/corvus_skill_03_fr_first.scsp",
+        "characterlab/source/effect/corvus_skill_03_fr_first.sct",
+        "characterlab/source/effect/corvus_skill_03_ground.atlas",
+        "characterlab/source/effect/corvus_skill_03_ground.scsp",
+        "characterlab/source/effect/corvus_skill_03_ground.sct",
+        "characterlab/source/effect/corvus_skill_03_pati1.particle",
+        "characterlab/source/effect/crovus_skill_03.cfx",
+        "characterlab/source/model/corvus.timeline",
+        "characterlab/source/particle/flash.sct",
+        "characterlab/source/particle/pati_01.sct",
+        "characterlab/source/particle/tri_pati_01.sct",
+        "characterlab/source/particle/zodiac_star1.sct"
+      ],
+      "outputSha256": "d1e23526b42c1382afdb3a91a6ef5cdd87504897595173608f92a3533f5f976b",
       "conversion": {
         "status": "converted"
       }

@@ -55,18 +55,25 @@ namespace AstralOath.Shared.Battle
         public int Maximum { get; }
         internal int TurnGain { get; }
         internal int AttackedSpend { get; }
+        internal int OpeningGain { get; }
+        internal int AttackedGain { get; }
 
-        public BattleResourceDefinition(BattleResourceKind kind, int maximum, int turnGain = 0, int attackedSpend = 0)
+        public BattleResourceDefinition(BattleResourceKind kind, int maximum, int turnGain = 0, int attackedSpend = 0,
+            int openingGain = 0, int attackedGain = 0)
         {
             if (!Enum.IsDefined(typeof(BattleResourceKind), kind))
                 throw new ArgumentOutOfRangeException(nameof(kind));
             if (maximum <= 0) throw new ArgumentOutOfRangeException(nameof(maximum));
             if (turnGain < 0 || turnGain > maximum) throw new ArgumentOutOfRangeException(nameof(turnGain));
             if (attackedSpend < 0 || attackedSpend > maximum) throw new ArgumentOutOfRangeException(nameof(attackedSpend));
+            if (openingGain < 0 || openingGain > maximum) throw new ArgumentOutOfRangeException(nameof(openingGain));
+            if (attackedGain < 0 || attackedGain > maximum) throw new ArgumentOutOfRangeException(nameof(attackedGain));
             Kind = kind;
             Maximum = maximum;
             TurnGain = turnGain;
             AttackedSpend = attackedSpend;
+            OpeningGain = openingGain;
+            AttackedGain = attackedGain;
         }
     }
 

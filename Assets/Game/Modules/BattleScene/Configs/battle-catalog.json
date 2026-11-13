@@ -24,7 +24,9 @@
       "resourceKind": "none",
       "resourceMaximum": 0,
       "resourceTurnGain": 0,
-      "resourceAttackedSpend": 0
+      "resourceAttackedSpend": 0,
+      "resourceOpeningGain": 0,
+      "resourceAttackedGain": 0
     },
     {
       "id": "c1002",
@@ -49,7 +51,9 @@
       "resourceKind": "none",
       "resourceMaximum": 0,
       "resourceTurnGain": 0,
-      "resourceAttackedSpend": 0
+      "resourceAttackedSpend": 0,
+      "resourceOpeningGain": 0,
+      "resourceAttackedGain": 0
     },
     {
       "id": "c1003",
@@ -74,7 +78,9 @@
       "resourceKind": "none",
       "resourceMaximum": 0,
       "resourceTurnGain": 0,
-      "resourceAttackedSpend": 0
+      "resourceAttackedSpend": 0,
+      "resourceOpeningGain": 0,
+      "resourceAttackedGain": 0
     },
     {
       "id": "c1004",
@@ -99,7 +105,9 @@
       "resourceKind": "focus",
       "resourceMaximum": 5,
       "resourceTurnGain": 1,
-      "resourceAttackedSpend": 1
+      "resourceAttackedSpend": 1,
+      "resourceOpeningGain": 0,
+      "resourceAttackedGain": 0
     },
     {
       "id": "c1005",
@@ -124,7 +132,9 @@
       "resourceKind": "none",
       "resourceMaximum": 0,
       "resourceTurnGain": 0,
-      "resourceAttackedSpend": 0
+      "resourceAttackedSpend": 0,
+      "resourceOpeningGain": 0,
+      "resourceAttackedGain": 0
     },
     {
       "id": "c1006",
@@ -149,7 +159,9 @@
       "resourceKind": "none",
       "resourceMaximum": 0,
       "resourceTurnGain": 0,
-      "resourceAttackedSpend": 0
+      "resourceAttackedSpend": 0,
+      "resourceOpeningGain": 0,
+      "resourceAttackedGain": 0
     },
     {
       "id": "c1007",
@@ -174,7 +186,9 @@
       "resourceKind": "none",
       "resourceMaximum": 0,
       "resourceTurnGain": 0,
-      "resourceAttackedSpend": 0
+      "resourceAttackedSpend": 0,
+      "resourceOpeningGain": 0,
+      "resourceAttackedGain": 0
     },
     {
       "id": "c1008",
@@ -199,7 +213,9 @@
       "resourceKind": "none",
       "resourceMaximum": 0,
       "resourceTurnGain": 0,
-      "resourceAttackedSpend": 0
+      "resourceAttackedSpend": 0,
+      "resourceOpeningGain": 0,
+      "resourceAttackedGain": 0
     },
     {
       "id": "c1009",
@@ -224,7 +240,9 @@
       "resourceKind": "fighting_spirit",
       "resourceMaximum": 100,
       "resourceTurnGain": 0,
-      "resourceAttackedSpend": 0
+      "resourceAttackedSpend": 0,
+      "resourceOpeningGain": 0,
+      "resourceAttackedGain": 0
     },
     {
       "id": "c1010",
@@ -249,7 +267,9 @@
       "resourceKind": "none",
       "resourceMaximum": 0,
       "resourceTurnGain": 0,
-      "resourceAttackedSpend": 0
+      "resourceAttackedSpend": 0,
+      "resourceOpeningGain": 0,
+      "resourceAttackedGain": 0
     },
     {
       "id": "c1011",
@@ -274,7 +294,36 @@
       "resourceKind": "none",
       "resourceMaximum": 0,
       "resourceTurnGain": 0,
-      "resourceAttackedSpend": 0
+      "resourceAttackedSpend": 0,
+      "resourceOpeningGain": 0,
+      "resourceAttackedGain": 0
+    },
+    {
+      "id": "c1012",
+      "nameKey": "character.corvus.name",
+      "element": "fire",
+      "heroClass": "warrior",
+      "zodiac": "cancer",
+      "growthPresetId": "warrior_cancer_4",
+      "baseStars": 4,
+      "level": 60,
+      "stars": 6,
+      "awakenings": 6,
+      "variant": "standard",
+      "attack": 903,
+      "health": 6635,
+      "defense": 630,
+      "speed": 103,
+      "critChanceBp": 1500,
+      "critDamageBp": 15000,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0,
+      "resourceKind": "fighting_spirit",
+      "resourceMaximum": 100,
+      "resourceTurnGain": 0,
+      "resourceAttackedSpend": 0,
+      "resourceOpeningGain": 50,
+      "resourceAttackedGain": 10
     },
     {
       "id": "c1062",
@@ -299,7 +348,9 @@
       "resourceKind": "none",
       "resourceMaximum": 0,
       "resourceTurnGain": 0,
-      "resourceAttackedSpend": 0
+      "resourceAttackedSpend": 0,
+      "resourceOpeningGain": 0,
+      "resourceAttackedGain": 0
     }
   ],
   "growthPresets": [
@@ -412,6 +463,16 @@
       "healthCoefficientMilli": 153600,
       "defenseCoefficientMilli": 43500,
       "speedMilli": 113750
+    },
+    {
+      "id": "warrior_cancer_4",
+      "nativeStars": 4,
+      "heroClass": "warrior",
+      "zodiac": "cancer",
+      "attackCoefficientMilli": 49800,
+      "healthCoefficientMilli": 187200,
+      "defenseCoefficientMilli": 49500,
+      "speedMilli": 103750
     }
   ],
   "awakeningSteps": [
@@ -1406,6 +1467,96 @@
       "effectResistanceBp": 0
     },
     {
+      "id": "c1012.r1",
+      "heroId": "c1012",
+      "rank": 1,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 300,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1012.r2",
+      "heroId": "c1012",
+      "rank": 2,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 300,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1012.r3",
+      "heroId": "c1012",
+      "rank": 3,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1012.r4",
+      "heroId": "c1012",
+      "rank": 4,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 600,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1012.r5",
+      "heroId": "c1012",
+      "rank": 5,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 600,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1012.r6",
+      "heroId": "c1012",
+      "rank": 6,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 600,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
       "id": "c1062.r1",
       "heroId": "c1062",
       "rank": 1,
@@ -2267,6 +2418,76 @@
       "aoeWhenBuffed": false,
       "aoeOutsideTurn": false,
       "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
+    },
+    {
+      "id": "c1012.s1",
+      "heroId": "c1012",
+      "slot": 1,
+      "nameKey": "battle.skill.c1012.s1.name",
+      "descriptionKey": "battle.skill.c1012.s1.description",
+      "presentationId": "c_corvus_skill_01",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1012_1.png",
+      "target": "one_enemy",
+      "cooldownTurns": 0,
+      "soulGain": 1,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 7000,
+      "powerBp": 10000,
+      "casterDefenseDamageBp": 9000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 10,
+      "resourceGainWhenBuffed": 0
+    },
+    {
+      "id": "c1012.s2",
+      "heroId": "c1012",
+      "slot": 2,
+      "nameKey": "battle.skill.c1012.s2.name",
+      "descriptionKey": "battle.skill.c1012.s2.description",
+      "presentationId": "c_corvus_skill_02",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1012_2.png",
+      "target": "all_enemies",
+      "cooldownTurns": 4,
+      "soulGain": 2,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 3000,
+      "powerBp": 9000,
+      "casterDefenseDamageBp": 7000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 30,
+      "resourceGainWhenBuffed": 0
+    },
+    {
+      "id": "c1012.s3",
+      "heroId": "c1012",
+      "slot": 3,
+      "nameKey": "battle.skill.c1012.s3.name",
+      "descriptionKey": "battle.skill.c1012.s3.description",
+      "presentationId": "c_corvus_skill_03",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1012_3.png",
+      "target": "self",
+      "cooldownTurns": 0,
+      "soulGain": 2,
+      "soulBurnCost": 20,
+      "soulBurnKind": "increase_healing",
+      "soulBurnTurns": 0,
+      "casterHealthHealBp": 5000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 100,
       "resourceGain": 0,
       "resourceGainWhenBuffed": 0
     },
@@ -3571,6 +3792,186 @@
       "chanceBonusBp": 0
     },
     {
+      "id": "c1012.s1.1",
+      "skillId": "c1012.s1",
+      "order": 1,
+      "phase": "impact",
+      "operation": "attack_rate_bonus",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 2000,
+      "condition": "caster_indomitable",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1012.s1.2",
+      "skillId": "c1012.s1",
+      "order": 2,
+      "phase": "impact",
+      "operation": "defense_rate_bonus",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 3000,
+      "condition": "caster_indomitable",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1012.s1.3",
+      "skillId": "c1012.s1",
+      "order": 3,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1012.s1.4",
+      "skillId": "c1012.s1",
+      "order": 4,
+      "phase": "after_hit",
+      "operation": "transfer_debuff",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 5000,
+      "turns": 0,
+      "value": 1,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1012.s1.5",
+      "skillId": "c1012.s1",
+      "order": 5,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Stun",
+      "chanceBp": 10000,
+      "turns": 1,
+      "value": 0,
+      "condition": "caster_indomitable",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1012.s2.1",
+      "skillId": "c1012.s2",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1012.s2.2",
+      "skillId": "c1012.s2",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "reduce_readiness",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 2000,
+      "condition": "caster_not_indomitable",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1012.s2.3",
+      "skillId": "c1012.s2",
+      "order": 3,
+      "phase": "after_hit",
+      "operation": "reduce_readiness_double",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 2000,
+      "condition": "caster_indomitable",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1012.s2.4",
+      "skillId": "c1012.s2",
+      "order": 4,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Stun",
+      "chanceBp": 10000,
+      "turns": 1,
+      "value": 0,
+      "condition": "target_readiness_drained",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1012.s3.1",
+      "skillId": "c1012.s3",
+      "order": 1,
+      "phase": "impact",
+      "operation": "apply_status",
+      "recipient": "self",
+      "status": "Indomitable",
+      "chanceBp": 10000,
+      "turns": 3,
+      "value": 3000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1012.s3.2",
+      "skillId": "c1012.s3",
+      "order": 2,
+      "phase": "impact",
+      "operation": "heal",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "caster_skill_awakened",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1012.s3.3",
+      "skillId": "c1012.s3",
+      "order": 3,
+      "phase": "after_attack",
+      "operation": "grant_extra_turn",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
       "id": "c1062.s1.1",
       "skillId": "c1062.s1",
       "order": 1,
@@ -4790,6 +5191,111 @@
       "value": 1000
     },
     {
+      "id": "c1012.s1.e1",
+      "skillId": "c1012.s1",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1012.s1.e2",
+      "skillId": "c1012.s1",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1012.s1.e3",
+      "skillId": "c1012.s1",
+      "step": 3,
+      "kind": "effect_chance_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1012.s1.e4",
+      "skillId": "c1012.s1",
+      "step": 4,
+      "kind": "effect_chance_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1012.s1.e5",
+      "skillId": "c1012.s1",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1012.s1.e6",
+      "skillId": "c1012.s1",
+      "step": 6,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1012.s2.e1",
+      "skillId": "c1012.s2",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1012.s2.e2",
+      "skillId": "c1012.s2",
+      "step": 2,
+      "kind": "readiness_bp",
+      "value": 200
+    },
+    {
+      "id": "c1012.s2.e3",
+      "skillId": "c1012.s2",
+      "step": 3,
+      "kind": "readiness_bp",
+      "value": 300
+    },
+    {
+      "id": "c1012.s2.e4",
+      "skillId": "c1012.s2",
+      "step": 4,
+      "kind": "cooldown_turns",
+      "value": 1
+    },
+    {
+      "id": "c1012.s2.e5",
+      "skillId": "c1012.s2",
+      "step": 5,
+      "kind": "readiness_bp",
+      "value": 500
+    },
+    {
+      "id": "c1012.s2.e6",
+      "skillId": "c1012.s2",
+      "step": 6,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1012.s2.e7",
+      "skillId": "c1012.s2",
+      "step": 7,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1012.s3.e1",
+      "skillId": "c1012.s3",
+      "step": 1,
+      "kind": "soul_gain",
+      "value": 2
+    },
+    {
+      "id": "c1012.s3.e2",
+      "skillId": "c1012.s3",
+      "step": 2,
+      "kind": "healing_bp",
+      "value": 2000
+    },
+    {
       "id": "c1062.s1.e1",
       "skillId": "c1062.s1",
       "step": 1,
@@ -5469,6 +5975,42 @@
       "zhCn": "以闪电般的速度斩击敌人，暴击时提高伤害。燃魂消耗 10 点魂力并提高本技能伤害。"
     },
     {
+      "key": "battle.skill.c1012.s1.name",
+      "zhCn": "盾牌猛击"
+    },
+    {
+      "key": "battle.skill.c1012.s1.description",
+      "zhCn": "使用盾牌攻击敌人，有 50% 概率转移自身一项减益。不屈时提高伤害并使目标眩晕 1 回合。伤害随自身防御力提高。"
+    },
+    {
+      "key": "battle.skill.c1012.s2.name",
+      "zhCn": "铁锤轰击"
+    },
+    {
+      "key": "battle.skill.c1012.s2.description",
+      "zhCn": "攻击全体敌人，使行动值降低 20%。不屈时使减量加倍。被推至 0 的目标有机会眩晕 1 回合。伤害随自身防御力提高。"
+    },
+    {
+      "key": "battle.skill.c1012.s3.name",
+      "zhCn": "怒火降临"
+    },
+    {
+      "key": "battle.skill.c1012.s3.description",
+      "zhCn": "消耗 100 点斗志，赋予自身不屈 3 回合，完成第三阶觉醒后恢复生命值，然后获得额外回合。开局获得 50 点斗志，被攻击时获得 10 点。"
+    },
+    {
+      "key": "battle.status.indomitable.name",
+      "zhCn": "不屈"
+    },
+    {
+      "key": "battle.status.indomitable.description",
+      "zhCn": "提高防御力和效果抗性各 30%，无法被驱散。"
+    },
+    {
+      "key": "battle.inspect.burn.increase_healing",
+      "zhCn": "提高本技能的生命恢复量。"
+    },
+    {
       "key": "character.ras.name",
       "zhCn": "拉斯"
     },
@@ -5511,6 +6053,10 @@
     {
       "key": "character.karin.name",
       "zhCn": "卡琳"
+    },
+    {
+      "key": "character.corvus.name",
+      "zhCn": "科尔布思"
     },
     {
       "key": "character.angelica.name",

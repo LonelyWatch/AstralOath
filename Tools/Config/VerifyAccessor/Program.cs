@@ -41,7 +41,7 @@ if (!battleHeroes.SequenceEqual(tables.BattleHeroes.DataList.Select(row => new B
         row.Id, row.NameKey, row.Element, row.HeroClass, row.Zodiac, row.GrowthPresetId, row.BaseStars, row.Level, row.Stars,
         row.Awakenings, row.Variant, row.Attack, row.Health, row.Defense, row.Speed, row.CritChanceBp,
         row.CritDamageBp, row.EffectivenessBp, row.EffectResistanceBp, row.ResourceKind, row.ResourceMaximum,
-        row.ResourceTurnGain, row.ResourceAttackedSpend))) ||
+        row.ResourceTurnGain, row.ResourceAttackedSpend, row.ResourceOpeningGain, row.ResourceAttackedGain))) ||
     !growthPresets.SequenceEqual(tables.BattleGrowthPresets.DataList.Select(row => new BattleGrowthPresetData(
         row.Id, row.NativeStars, row.HeroClass, row.Zodiac, row.AttackCoefficientMilli,
         row.HealthCoefficientMilli, row.DefenseCoefficientMilli, row.SpeedMilli))) ||
@@ -104,7 +104,7 @@ record CharacterData(string Id, string NameKey, int SortOrder, string BattleSkin
 record BattleHeroData(string Id, string NameKey, string Element, string HeroClass, string Zodiac,
     string GrowthPresetId, int BaseStars, int Level, int Stars, int Awakenings, string Variant, int Attack, int Health, int Defense,
     int Speed, int CritChanceBp, int CritDamageBp, int EffectivenessBp, int EffectResistanceBp,
-    string ResourceKind, int ResourceMaximum, int ResourceTurnGain, int ResourceAttackedSpend);
+    string ResourceKind, int ResourceMaximum, int ResourceTurnGain, int ResourceAttackedSpend, int ResourceOpeningGain, int ResourceAttackedGain);
 record BattleSkillData(string Id, string HeroId, int Slot, string NameKey, string DescriptionKey,
     string PresentationId, string IconAsset, string Target, int CooldownTurns, int SoulGain, int SoulBurnCost,
     string SoulBurnKind, int SoulBurnTurns, int? AttackRateBp, int? PowerBp, int? CasterHealthDamageBp,

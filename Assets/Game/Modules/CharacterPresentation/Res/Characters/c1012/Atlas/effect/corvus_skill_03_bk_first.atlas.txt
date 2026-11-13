@@ -1,0 +1,55 @@
+
+corvus_skill_03_bk_first.sct
+size: 563,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bk_imp1
+  rotate: false
+  xy: 2, 2
+  size: 168, 108
+  orig: 168, 108
+  offset: 0, 0
+  index: -1
+bk_imp2
+  rotate: true
+  xy: 293, 2
+  size: 118, 100
+  orig: 118, 100
+  offset: 0, 0
+  index: -1
+bk_imp3
+  rotate: true
+  xy: 395, 2
+  size: 72, 71
+  orig: 72, 71
+  offset: 0, 0
+  index: -1
+cloud_09
+  rotate: false
+  xy: 395, 76
+  size: 89, 50
+  orig: 89, 50
+  offset: 0, 0
+  index: -1
+cloud_14
+  rotate: false
+  xy: 468, 2
+  size: 83, 54
+  orig: 83, 54
+  offset: 0, 0
+  index: -1
+cloud_18
+  rotate: false
+  xy: 486, 58
+  size: 75, 53
+  orig: 75, 53
+  offset: 0, 0
+  index: -1
+smoke_1
+  rotate: true
+  xy: 172, 2
+  size: 120, 119
+  orig: 120, 119
+  offset: 0, 0
+  index: -1

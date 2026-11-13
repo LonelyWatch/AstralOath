@@ -31,6 +31,7 @@ STATUSES = (
     ("CriticalResistanceUp", "Buff", "stic_crires_up"),
     ("Stealth", "Buff", "stic_hide"),
     ("Provoke", "Debuff", "stic_provoke"),
+    ("Indomitable", "Buff", "stic_indomitable"),
 )
 
 

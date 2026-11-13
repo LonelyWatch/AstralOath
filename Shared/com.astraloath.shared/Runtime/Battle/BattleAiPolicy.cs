@@ -105,6 +105,9 @@ namespace AstralOath.Shared.Battle
             BattleUnitSnapshot target;
             switch (targetRule)
             {
+                case "self":
+                    target = actor;
+                    break;
                 case "one_ally":
                 case "all_allies":
                     target = BestAllyTarget(skill, actor, AliveOnSide(snapshot, actor.Slot.Side).ToArray());
@@ -161,7 +164,7 @@ namespace AstralOath.Shared.Battle
         private static int CountRemovals(BattleUnitSnapshot unit, int maximum) =>
             Math.Min(maximum, unit.Statuses.Count(status => BattleSkillResolver.IsHarmful(status.Kind)));
 
-        private static bool TargetsAllies(string target) => target == "one_ally" || target == "all_allies";
+        private static bool TargetsAllies(string target) => target == "one_ally" || target == "all_allies" || target == "self";
         private static bool IsBelowHalf(BattleUnitSnapshot unit) => 2L * unit.CurrentHealth < unit.Stats.MaxHealth;
         private static decimal HealthRatio(BattleUnitSnapshot unit) => unit.CurrentHealth / (decimal)unit.Stats.MaxHealth;
 

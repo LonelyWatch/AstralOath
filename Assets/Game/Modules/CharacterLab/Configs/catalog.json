@@ -2550,6 +2550,198 @@
       ],
       "battleSkin": "default",
       "portraitSkin": "normal"
+    },
+    {
+      "id": "c1012",
+      "name": "科尔布思",
+      "displayNameKey": "character.corvus.name",
+      "battleSkeletonAddress": "characterlab/source/model/corvus.scsp",
+      "portraitSkeletonAddress": "characterlab/source/portrait/c1012.scsp",
+      "voiceBankAddress": "characterlab/source/sound/ja/voc1.audio_ja.bank",
+      "timelineAddress": "characterlab/source/model/corvus.timeline",
+      "voices": [
+        {
+          "id": "voc_c1012_answer_1",
+          "audioTableKey": "voc_c1012_answer_1",
+          "eventPath": "event:/voc/skill/c_corvus_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1012_answer_1"
+        },
+        {
+          "id": "voc_c1012_answer_2",
+          "audioTableKey": "voc_c1012_answer_2",
+          "eventPath": "event:/voc/skill/c_corvus_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1012_answer_2"
+        },
+        {
+          "id": "voc_c1012_attacked_1",
+          "audioTableKey": "voc_c1012_attacked_1",
+          "eventPath": "event:/voc/character/corvus/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1012_attacked_1"
+        },
+        {
+          "id": "voc_c1012_attacked_2",
+          "audioTableKey": "voc_c1012_attacked_2",
+          "eventPath": "event:/voc/character/corvus/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1012_attacked_2"
+        },
+        {
+          "id": "voc_c1012_call_1",
+          "audioTableKey": "voc_c1012_call_1",
+          "eventPath": "event:/voc/skill/c_corvus_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1012_call_1"
+        },
+        {
+          "id": "voc_c1012_call_2",
+          "audioTableKey": "voc_c1012_call_2",
+          "eventPath": "event:/voc/skill/c_corvus_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1012_call_2"
+        },
+        {
+          "id": "voc_c1012_dead_1",
+          "audioTableKey": "voc_c1012_dead_1",
+          "eventPath": "event:/voc/character/corvus/evt/dead",
+          "displayNameKey": "character.voice.voc_c1012_dead_1"
+        },
+        {
+          "id": "voc_c1012_dead_2",
+          "audioTableKey": "voc_c1012_dead_2",
+          "eventPath": "event:/voc/character/corvus/evt/dead",
+          "displayNameKey": "character.voice.voc_c1012_dead_2"
+        },
+        {
+          "id": "voc_c1012_get_1",
+          "audioTableKey": "voc_c1012_get_1",
+          "eventPath": "event:/voc/character/corvus/evt/get",
+          "displayNameKey": "character.voice.voc_c1012_get_1"
+        },
+        {
+          "id": "voc_c1012_idle_1",
+          "audioTableKey": "voc_c1012_idle_1",
+          "eventPath": "event:/voc/character/corvus/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1012_idle_1"
+        },
+        {
+          "id": "voc_c1012_idle_2",
+          "audioTableKey": "voc_c1012_idle_2",
+          "eventPath": "event:/voc/character/corvus/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1012_idle_2"
+        },
+        {
+          "id": "voc_c1012_lose_1",
+          "audioTableKey": "voc_c1012_lose_1",
+          "eventPath": "event:/voc/character/corvus/evt/defeat",
+          "displayNameKey": "character.voice.voc_c1012_lose_1"
+        },
+        {
+          "id": "voc_c1012_lvup_1",
+          "audioTableKey": "voc_c1012_lvup_1",
+          "eventPath": "event:/voc/character/corvus/evt/lvup",
+          "displayNameKey": "character.voice.voc_c1012_lvup_1"
+        },
+        {
+          "id": "voc_c1012_skill1_1",
+          "audioTableKey": "voc_c1012_skill1_1",
+          "eventPath": "event:/voc/skill/c_corvus_skill_01",
+          "displayNameKey": "character.voice.voc_c1012_skill1_1"
+        },
+        {
+          "id": "voc_c1012_skill1_2",
+          "audioTableKey": "voc_c1012_skill1_2",
+          "eventPath": "event:/voc/skill/c_corvus_skill_01",
+          "displayNameKey": "character.voice.voc_c1012_skill1_2"
+        },
+        {
+          "id": "voc_c1012_skill1_3",
+          "audioTableKey": "voc_c1012_skill1_3",
+          "eventPath": "event:/voc/skill/c_corvus_skill_01",
+          "displayNameKey": "character.voice.voc_c1012_skill1_3"
+        },
+        {
+          "id": "voc_c1012_skill2_1",
+          "audioTableKey": "voc_c1012_skill2_1",
+          "eventPath": "event:/voc/skill/c_corvus_skill_02",
+          "displayNameKey": "character.voice.voc_c1012_skill2_1"
+        },
+        {
+          "id": "voc_c1012_skill2_2",
+          "audioTableKey": "voc_c1012_skill2_2",
+          "eventPath": "event:/voc/skill/c_corvus_skill_02",
+          "displayNameKey": "character.voice.voc_c1012_skill2_2"
+        },
+        {
+          "id": "voc_c1012_skill2_3",
+          "audioTableKey": "voc_c1012_skill2_3",
+          "eventPath": "event:/voc/skill/c_corvus_skill_02",
+          "displayNameKey": "character.voice.voc_c1012_skill2_3"
+        },
+        {
+          "id": "voc_c1012_skill3_1",
+          "audioTableKey": "voc_c1012_skill3_1",
+          "eventPath": "event:/voc/skill/c_corvus_skill_03",
+          "displayNameKey": "character.voice.voc_c1012_skill3_1"
+        },
+        {
+          "id": "voc_c1012_skill3_2",
+          "audioTableKey": "voc_c1012_skill3_2",
+          "eventPath": "event:/voc/skill/c_corvus_skill_03",
+          "displayNameKey": "character.voice.voc_c1012_skill3_2"
+        },
+        {
+          "id": "voc_c1012_skill3_3",
+          "audioTableKey": "voc_c1012_skill3_3",
+          "eventPath": "event:/voc/skill/c_corvus_skill_03",
+          "displayNameKey": "character.voice.voc_c1012_skill3_3"
+        },
+        {
+          "id": "voc_c1012_utterance_1",
+          "audioTableKey": "voc_c1012_utterance_1",
+          "eventPath": "event:/voc/character/corvus/evt/utterance_01",
+          "displayNameKey": "character.voice.voc_c1012_utterance_1"
+        },
+        {
+          "id": "voc_c1012_utterance_2",
+          "audioTableKey": "voc_c1012_utterance_2",
+          "eventPath": "event:/voc/character/corvus/evt/utterance_02",
+          "displayNameKey": "character.voice.voc_c1012_utterance_2"
+        },
+        {
+          "id": "voc_c1012_win_1",
+          "audioTableKey": "voc_c1012_win_1",
+          "eventPath": "event:/voc/character/corvus/evt/win",
+          "displayNameKey": "character.voice.voc_c1012_win_1"
+        }
+      ],
+      "skills": [
+        {
+          "id": "c_corvus_skill_01",
+          "displayNameKey": "character.corvus.skill1",
+          "graphAddress": "characterlab/source/stagept/c_corvus_skill_01.stg",
+          "eventPath": "event:/skill/c_corvus_skill_01",
+          "voiceEventPath": "event:/voc/skill/c_corvus_skill_01",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_corvus_skill_01_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_corvus_skill_01_a"
+        },
+        {
+          "id": "c_corvus_skill_02",
+          "displayNameKey": "character.corvus.skill2",
+          "graphAddress": "characterlab/source/stagept/c_corvus_skill_02.stg",
+          "eventPath": "event:/skill/c_corvus_skill_02",
+          "voiceEventPath": "event:/voc/skill/c_corvus_skill_02",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        },
+        {
+          "id": "c_corvus_skill_03",
+          "displayNameKey": "character.corvus.skill3",
+          "graphAddress": "characterlab/source/stagept/c_corvus_skill_03.stg",
+          "eventPath": "event:/skill/c_corvus_skill_03",
+          "voiceEventPath": "event:/voc/skill/c_corvus_skill_03",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        }
+      ],
+      "battleSkin": "default",
+      "portraitSkin": "normal"
     }
   ],
   "sharedBanks": [
