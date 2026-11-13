@@ -43,6 +43,9 @@ namespace AstralOath.Client.BattleScene.Editor
                     int handle => handle,
                     _ => throw new InvalidOperationException("无法读取当前 Unity 预览分配范围。")
                 };
+                // Unity returns the active scene when no target override is set. Restoring that
+                // fallback as a fixed target can leave a stale native scene when the editor replaces it.
+                if (previousHandle == SceneManager.GetActiveScene().handle) previousHandle = 0;
                 SetTargetScene.Invoke(null, new object[] { previewScene });
             }
 
@@ -92,10 +95,10 @@ namespace AstralOath.Client.BattleScene.Editor
 
         internal void Load(string heroId, string graphId, string graphJson, string targetHeroId = null,
             bool casterOnRight = false, bool targetAll = false, bool targetAllies = false) =>
-            LoadScenario(heroId, graphId, graphJson, targetHeroId, casterOnRight, targetAll, targetAllies, false);
+            LoadScenario(heroId, graphId, graphJson, targetHeroId, casterOnRight, targetAll, targetAllies, false, false);
 
         internal void LoadScenario(string heroId, string graphId, string graphJson, string targetHeroId,
-            bool casterOnRight, bool targetAll, bool targetAllies, bool targetSelf)
+            bool casterOnRight, bool targetAll, bool targetAllies, bool targetSelf, bool targetTwo)
         {
             if (disposed) throw new ObjectDisposedException(nameof(SkillTimelinePreviewSession));
             if (EditorApplication.isPlayingOrWillChangePlaymode)
@@ -115,10 +118,11 @@ namespace AstralOath.Client.BattleScene.Editor
                 var castingSide = world.Find(casterOnRight ? "Enemies" : "Allies");
                 var opposingSide = world.Find(casterOnRight ? "Allies" : "Enemies");
                 caster = ActorAt(castingSide, 0);
-                primaryTarget = targetSelf ? caster : ActorAt(targetAllies ? castingSide : opposingSide, targetAllies ? 1 : 0);
+                var targetTeam = targetAllies ? castingSide : opposingSide;
+                primaryTarget = targetSelf ? caster : ActorAt(targetTeam, targetAllies ? 1 : 0);
                 recipients = targetAll && !targetSelf
-                    ? (targetAllies ? castingSide : opposingSide).GetComponentsInChildren<BattlePreviewActor>(true)
-                    : new[] { primaryTarget };
+                    ? targetTeam.GetComponentsInChildren<BattlePreviewActor>(true)
+                    : targetTwo && !targetSelf ? new[] { primaryTarget, ActorAt(targetTeam, 1) } : new[] { primaryTarget };
                 useHitReactions = !targetSelf && !targetAllies;
                 var active = new HashSet<BattlePreviewActor>(recipients) { caster };
                 foreach (var actor in world.GetComponentsInChildren<BattlePreviewActor>(true))

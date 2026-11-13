@@ -229,9 +229,10 @@ namespace AstralOath.Client.BattleScene.Editor
                     bool allies = targetMode is 3 or 4 || targetMode == 0 &&
                         (selected.Target is "one_ally" or "all_allies");
                     bool self = targetMode == 5 || targetMode == 0 && selected.Target == "self";
+                    bool two = targetMode == 6 || targetMode == 0 && selected.Target == "two_enemies";
                     preview.LoadScenario(selected.Hero, selected.Id, graph.ToString(Formatting.None),
                         targetHeroId: targetIds.ElementAtOrDefault(targetIndex), casterOnRight: flipped,
-                        targetAll: all, targetAllies: allies, targetSelf: self);
+                        targetAll: all, targetAllies: allies, targetSelf: self, targetTwo: two);
                     preview.Seek(Mathf.Min(current, preview.Duration));
                     if (selectedGuid >= 0)
                         selectedNode = preview.Cues.FirstOrDefault(item => (int?)item.Node["guid"] == selectedGuid).Node;
@@ -429,7 +430,7 @@ namespace AstralOath.Client.BattleScene.Editor
             using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
             {
                 EditorGUI.BeginChangeCheck();
-                targetMode = EditorGUILayout.Popup(targetMode, new[] { "按技能选目标", "单体敌人", "全体敌人", "单体友军", "全体友军", "自身" }, GUILayout.Width(100));
+                targetMode = EditorGUILayout.Popup(targetMode, new[] { "按技能选目标", "单体敌人", "全体敌人", "单体友军", "全体友军", "自身", "两名敌人" }, GUILayout.Width(100));
                 if (targetLabels.Length > 0)
                     targetIndex = EditorGUILayout.Popup(targetIndex, targetLabels, GUILayout.Width(133));
                 if (EditorGUI.EndChangeCheck()) rebuild = true;

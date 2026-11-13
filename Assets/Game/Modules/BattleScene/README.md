@@ -11,7 +11,7 @@
 
 `BattleSceneBuilder.Generate` 是可从隔离工程调用的作者工具，会重建示例场景、三个预制体和生命数字位图字体。编辑好的正式布局以保存的 Unity 资产为准。其完整批处理方法名是 `AstralOath.Client.BattleScene.Editor.BattleSceneBuilder.Generate`。
 
-技能演出编辑器的时间轴按帧显示。重叠片段在同轨道的不同子行可单独点选，悬停同时显示播放帧和源时点。见[编辑器操作](../../../../docs/development/battle-skill-timeline-editor.md)。
+技能演出编辑器的时间轴按帧显示。重叠片段在同轨道的不同子行可单独点选，悬停同时显示播放帧和源时点。双目标演出可换边预览。见[编辑器操作](../../../../docs/development/battle-skill-timeline-editor.md)。
 
 ## 结构和后续接入
 

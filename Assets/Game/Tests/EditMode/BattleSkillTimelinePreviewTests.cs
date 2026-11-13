@@ -99,6 +99,8 @@ namespace AstralOath.Tests
                 Assert.That(EditorSceneManager.previewSceneCount, Is.EqualTo(originalPreviewSceneCount + 1));
             }
             Assert.That(EditorSceneManager.previewSceneCount, Is.EqualTo(originalPreviewSceneCount));
+            using (var probe = new SceneAllocationProbe())
+                Assert.That(EditorSceneManager.IsPreviewScene(probe.Object.scene), Is.False);
         }
 
         [Test]
@@ -152,6 +154,32 @@ namespace AstralOath.Tests
             Assert.That(Add(24, 32), Is.EqualTo(1));
             Assert.That(Add(42, 50), Is.Zero);
             Assert.That(ends, Has.Count.EqualTo(3));
+        }
+
+        [Test]
+        public void TwoTargetSkillPreviewsBothEnemiesOnEitherSide()
+        {
+            var type = Type.GetType(PreviewTypeName, throwOnError: true);
+            var graph = AssetDatabase.LoadAssetAtPath<TextAsset>(HeroDirectory +
+                "c1015/Configs/stagept/c_baal_skill_01.graph.json");
+            Assert.That(graph, Is.Not.Null);
+            using var session = (IDisposable)Activator.CreateInstance(type, nonPublic: true);
+            var method = type.GetMethod("LoadScenario", Instance);
+            foreach (bool flip in new[] { false, true })
+            {
+                method.Invoke(session, new object[] { "c1015", "c_baal_skill_01", graph.text, "c1001", flip, false, false, false, true });
+                var recipients = (Component[])type.GetField("recipients", Instance).GetValue(session);
+                Assert.That(recipients, Has.Length.EqualTo(2));
+                Assert.That(recipients.All(actor => actor.transform.parent.parent.name == (flip ? "Allies" : "Enemies")), Is.True);
+                Assert.That(recipients.Select(actor => actor.transform.parent.GetSiblingIndex()), Is.EquivalentTo(new[] { 0, 1 }));
+            }
+        }
+
+        private sealed class SceneAllocationProbe : IDisposable
+        {
+            internal readonly GameObject Object = new GameObject("Preview allocation probe") { hideFlags = HideFlags.HideAndDontSave };
+
+            public void Dispose() => UnityEngine.Object.DestroyImmediate(Object);
         }
 
         private static Color32[] ReadPixels(RenderTexture texture)
