@@ -217,12 +217,15 @@ namespace AstralOath.Client.BattleScene
         public void Tick(float delta)
         {
             try { TickBattle(delta); }
-            finally { foreach (var view in views.Values) view.LateTick(camera); }
+            finally
+            {
+                foreach (var view in views.Values) view.LateTick(camera);
+                inspection?.Tick();
+            }
         }
 
         private void TickBattle(float delta)
         {
-            inspection?.Tick();
             if (IsPaused) return;
             bool wasBusy = Busy;
             turnEntryEffects.Tick(Mathf.Max(0f, delta));
@@ -789,8 +792,7 @@ namespace AstralOath.Client.BattleScene
                 else related = new InfoPanelBinder.Card(null, title, description,
                     new Color32(64, 45, 35, 237), new Color32(198, 156, 108, 255));
             }
-            inspection.Show(image.rectTransform, primary, related, detailRow,
-                detailRow ? null : (RectTransform)hud.Require<GameButton>("skill1").transform);
+            inspection.Show(image.rectTransform, primary, related, detailRow);
         }
 
         private void InspectStatus(BattleStatusSnapshot status, Image image)

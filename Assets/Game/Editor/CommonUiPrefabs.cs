@@ -84,6 +84,7 @@ namespace AstralOath.Editor
             rect.sizeDelta = new Vector2(560f, 320f);
             var background = root.GetComponent<Image>();
             background.sprite = Load<Sprite>(Root + "Textures/_box_equip_0.png");
+            background.material = Load<Material>(Root + "Materials/InfoPanelSkill.mat");
             background.type = Image.Type.Sliced;
 
             var effectBackground = PanelImage(rect, "Effect Background", "_btn_small_white.png", true);

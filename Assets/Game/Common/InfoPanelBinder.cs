@@ -8,15 +8,21 @@ namespace AstralOath.Client.Common
     // A scene or screen owns one binder and reuses both cards.
     public sealed class InfoPanelBinder : IDisposable
     {
+        private const float SkillWidth = 630f;
+        private const float EffectWidth = 465f;
+        // Align the painted edges inside the skill sprite's transparent shadow.
+        private const float EffectSideOverlap = 36f;
+        private const float EffectTopInset = 29f;
+        private const float StackedCardGap = 8f;
         private readonly RectTransform container;
         private readonly Canvas canvas;
         private readonly InfoPanel main, auxiliary;
         private readonly GameButton close;
         private readonly Vector3[] corners = new Vector3[4];
-        private RectTransform anchor, layoutAnchor;
+        private RectTransform anchor;
         private Card currentCard;
         private Card? currentSecondary;
-        private Rect lastLimits;
+        private Rect lastLimits, lastAnchorBounds;
         private bool opensRight;
         public bool IsOpen => container && container.gameObject.activeSelf;
 
@@ -88,64 +94,81 @@ namespace AstralOath.Client.Common
             return view;
         }
 
-        public void Show(RectTransform source, Card content, Card? secondary = null, bool preferRight = false,
-            RectTransform positionSource = null)
+        public void Show(RectTransform source, Card content, Card? secondary = null, bool preferRight = false)
         {
             if (!source) return;
             anchor = source;
-            layoutAnchor = positionSource ? positionSource : source;
             currentCard = content;
             currentSecondary = secondary;
             opensRight = preferRight;
             container.SetAsLastSibling();
             container.gameObject.SetActive(true);
-            Layout(SafeRect());
+            Layout(SafeRect(), AnchorBounds());
         }
 
-        private void Layout(Rect limits)
+        private void Layout(Rect limits, Rect source)
         {
             lastLimits = limits;
             Card content = currentCard;
             Card? secondary = currentSecondary;
-            float width = content.EffectTint.HasValue ? 385f : 560f;
+            float width = content.EffectTint.HasValue ? EffectWidth : SkillWidth;
             SizeCard(main, content, Mathf.Min(width, limits.width), limits.height * .76f);
             bool paired = secondary.HasValue;
-            if (paired) SizeCard(auxiliary, secondary.Value, Mathf.Min(385f, limits.width), limits.height * .38f);
+            if (paired) SizeCard(auxiliary, secondary.Value, Mathf.Min(EffectWidth, limits.width), limits.height * .38f);
             else auxiliary.Hide();
 
-            var camera = canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera;
-            layoutAnchor.GetWorldCorners(corners);
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(container,
-                RectTransformUtility.WorldToScreenPoint(camera, corners[1]), camera, out var upperLeft);
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(container,
-                RectTransformUtility.WorldToScreenPoint(camera, corners[2]), camera, out var upperRight);
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(container,
-                RectTransformUtility.WorldToScreenPoint(camera, corners[0]), camera, out var lowerLeft);
-
-            const float gap = 6f;
             Vector2 mainSize = main.Frame.sizeDelta;
             Vector2 extraSize = paired ? auxiliary.Frame.sizeDelta : Vector2.zero;
-            bool sideBySide = paired && mainSize.x + gap + extraSize.x <= limits.width;
-            bool relatedOnLeft = !opensRight && sideBySide;
-            float totalWidth = sideBySide ? mainSize.x + gap + extraSize.x : mainSize.x;
-            float x = opensRight ? upperRight.x + gap : upperLeft.x - mainSize.x - gap;
-            if (relatedOnLeft) x -= extraSize.x + gap;
-            if (opensRight && x + totalWidth > limits.xMax) x = upperLeft.x - gap - totalWidth;
-            x = Mathf.Clamp(x, limits.xMin, limits.xMax - totalWidth);
-            float totalHeight = paired && !sideBySide ? mainSize.y + gap + extraSize.y : Mathf.Max(mainSize.y, extraSize.y);
-            if (paired && !sideBySide && totalHeight > limits.height)
+            if (paired && mainSize.x + extraSize.x - EffectSideOverlap > limits.width)
+                SizeCard(main, content, mainSize.x, Mathf.Max(110f, limits.height - extraSize.y - StackedCardGap));
+            Place(limits, source);
+        }
+
+        private void Place(Rect limits, Rect source)
+        {
+            lastAnchorBounds = source;
+            Vector2 primary = main.Frame.sizeDelta;
+            Vector2 related = currentSecondary.HasValue ? auxiliary.Frame.sizeDelta : Vector2.zero;
+            bool effect = currentCard.EffectTint.HasValue;
+            if (effect)
             {
-                SizeCard(main, content, mainSize.x, Mathf.Max(110f, limits.height - extraSize.y - gap));
-                mainSize = main.Frame.sizeDelta;
-                totalHeight = mainSize.y + extraSize.y + gap;
+                float x = source.xMax + 70f;
+                if (x + primary.x > limits.xMax) x = source.xMin - primary.x - 70f;
+                main.Frame.anchoredPosition = new Vector2(
+                    Mathf.Clamp(x, limits.xMin, limits.xMax - primary.x),
+                    Mathf.Clamp(source.center.y + 16f, limits.yMin, limits.yMax - primary.y));
+                return;
             }
-            float y = content.EffectTint.HasValue ? upperRight.y - 34f : lowerLeft.y;
-            y = Mathf.Clamp(y, limits.yMin, Mathf.Max(limits.yMin, limits.yMax - totalHeight));
-            main.Frame.anchoredPosition = new Vector2(relatedOnLeft ? x + extraSize.x + gap : x, y);
+
+            bool paired = currentSecondary.HasValue;
+            bool sideBySide = paired && primary.x + related.x - EffectSideOverlap <= limits.width;
+            float extraWidth = sideBySide ? related.x - EffectSideOverlap : 0f;
+            float left = opensRight ? source.xMax + 12f : source.xMin - primary.x - 10f;
+            float min = limits.xMin + (opensRight ? 0f : extraWidth);
+            float max = limits.xMax - primary.x - (opensRight ? extraWidth : 0f);
+            left = Mathf.Clamp(left, min, max);
+
+            float stackHeight = paired && !sideBySide ? related.y + StackedCardGap : 0f;
+            float above = sideBySide ? Mathf.Max(primary.y, related.y + EffectTopInset) : primary.y + stackHeight;
+            float bottom = opensRight ? source.yMin - 12f : limits.yMin;
+            bottom = Mathf.Clamp(bottom, limits.yMin, Mathf.Max(limits.yMin, limits.yMax - above));
+            main.Frame.anchoredPosition = new Vector2(left, bottom);
             if (paired)
+            {
                 auxiliary.Frame.anchoredPosition = sideBySide
-                    ? new Vector2(relatedOnLeft ? x : x + mainSize.x + gap, y + Mathf.Max(0f, mainSize.y - extraSize.y))
-                    : new Vector2(Mathf.Clamp(x, limits.xMin, limits.xMax - extraSize.x), y + mainSize.y + gap);
+                    ? new Vector2(opensRight ? left + primary.x - EffectSideOverlap : left - extraWidth,
+                        bottom + primary.y - related.y - EffectTopInset)
+                    : new Vector2(Mathf.Clamp(left, limits.xMin, limits.xMax - related.x), bottom + primary.y + StackedCardGap);
+                main.Frame.SetAsLastSibling();
+            }
+        }
+
+        private Rect AnchorBounds()
+        {
+            anchor.GetWorldCorners(corners);
+            Vector3 min = container.InverseTransformPoint(corners[0]);
+            Vector3 max = container.InverseTransformPoint(corners[2]);
+            return Rect.MinMaxRect(min.x, min.y, max.x, max.y);
         }
 
         private static void SizeCard(InfoPanel view, Card card, float width, float maximumHeight)
@@ -158,13 +181,13 @@ namespace AstralOath.Client.Common
             view.Icon.sprite = card.Icon;
             view.Icon.enabled = card.Icon;
 
-            float inset = effect ? 22f : 42f;
+            float inset = effect ? 22f : 70f;
             float iconSize = effect ? 42f : 104f;
             float titleLeft = card.Icon ? inset + iconSize + 12f : inset;
-            Top(view.Icon.rectTransform, inset, effect ? 15f : 26f, iconSize, iconSize);
+            Top(view.Icon.rectTransform, inset, effect ? 15f : 53f, iconSize, iconSize);
             view.Title.text = card.Title;
             view.Title.fontSize = effect ? 24f : 27.5f;
-            Top(view.Title.rectTransform, titleLeft, effect ? 20f : 29f, width - titleLeft - inset, 39f);
+            Top(view.Title.rectTransform, titleLeft, effect ? 20f : 55f, width - titleLeft - inset, 39f);
 
             bool hasSoul = !string.IsNullOrEmpty(card.Soul);
             bool hasCooldown = !string.IsNullOrEmpty(card.Cooldown);
@@ -177,16 +200,16 @@ namespace AstralOath.Client.Common
             float bodyWidth = Mathf.Max(1f, width - inset * 2f);
             float metaAvailable = Mathf.Max(1f, width - titleLeft - inset);
             float soulWidth = hasSoul ? Mathf.Min(view.Metadata.GetPreferredValues().x + 2f, Mathf.Max(1f, metaAvailable * .53f - 18f)) : 0f;
-            Top(view.SoulIcon.rectTransform, titleLeft, 84f, 19f, 27f);
-            Top(view.Metadata.rectTransform, titleLeft + 23f, 84f, soulWidth, 35f);
+            Top(view.SoulIcon.rectTransform, titleLeft, 110f, 19f, 27f);
+            Top(view.Metadata.rectTransform, titleLeft + 23f, 110f, soulWidth, 35f);
             float cooldownLeft = titleLeft + (hasSoul ? 34f + soulWidth : 0f);
             float cooldownWidth = hasCooldown
                 ? Mathf.Clamp(view.Cooldown.GetPreferredValues().x + 3f, 1f, Mathf.Max(1f, width - inset - cooldownLeft - 29f))
                 : 0f;
-            Top(view.Cooldown.rectTransform, cooldownLeft, 84f, cooldownWidth, 35f);
-            Top(view.CooldownIcon.rectTransform, cooldownLeft + cooldownWidth + 3f, 83f, 26f, 28f);
+            Top(view.Cooldown.rectTransform, cooldownLeft, 110f, cooldownWidth, 35f);
+            Top(view.CooldownIcon.rectTransform, cooldownLeft + cooldownWidth + 3f, 109f, 26f, 28f);
 
-            float heading = effect ? (card.Icon ? 64f : 60f) : 144f;
+            float heading = effect ? (card.Icon ? 64f : 60f) : 168f;
             view.Description.color = card.EffectText ?? new Color32(136, 136, 136, 255);
             float bottom = TextSection(view.Description, card.Description, 0f, bodyWidth);
             bool hasBurn = !string.IsNullOrEmpty(card.BurnDescription);
@@ -219,7 +242,7 @@ namespace AstralOath.Client.Common
                 bottom += TextSection(view.Upgrades, card.Upgrades, bottom, bodyWidth);
             }
 
-            float padding = effect ? 18f : 23f;
+            float padding = effect ? 18f : 64f;
             float height = Mathf.Min(maximumHeight, heading + bottom + padding);
             view.Frame.sizeDelta = new Vector2(width, height);
             var scroll = (RectTransform)view.Scroll.transform;
@@ -268,14 +291,18 @@ namespace AstralOath.Client.Common
                 return;
             }
             Rect limits = SafeRect();
-            if (lastLimits != limits) Layout(limits);
+            Rect source = AnchorBounds();
+            if (lastLimits != limits) Layout(limits, source);
+            else if ((source.position - lastAnchorBounds.position).sqrMagnitude > .25f ||
+                (source.size - lastAnchorBounds.size).sqrMagnitude > .25f)
+                Place(limits, source);
         }
 
         private bool IsAnchorVisible() => !anchor.TryGetComponent<Graphic>(out var graphic) || graphic.isActiveAndEnabled;
 
         public void Hide()
         {
-            anchor = layoutAnchor = null;
+            anchor = null;
             currentCard = default;
             currentSecondary = null;
             if (container) container.gameObject.SetActive(false);

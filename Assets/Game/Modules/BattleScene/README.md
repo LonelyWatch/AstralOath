@@ -125,3 +125,5 @@ Luban 快照 `Configs/battle-catalog.json` 含十名英雄、成长模板、觉�
 Battle Canvas 的 `BattleHudPreview` Inspector 为四个友军站位提供角色下拉列表。退出 Play 后选择并重新运行，或在运行中选择后点重新开始。模型、技能图、头像和音频引用由配表与导入清单生成，`Tools/战斗场景/更新角色资源引用` 可更新现有场景的引用。主动技能按权威流程提交，被动槽仅展示。十人名单、使用方式、源差异和回归见[十名角色接入](../../../../docs/delivery/2026-11-13-ten-hero-roster.md)。
 
 技能、头顶状态与行动条长按共用 Common 弹板。折叠行动条时只更新可见头像和进度，展开时刷新详情行。技能和效果卡的字体、底板及分区按原始 CSB，详见 [录屏和素材对照](../../../../docs/delivery/2026-11-14-battle-inspection-ui.md)。梅赛德丝 S3 立绘及入回合的 Spine 扬尘事件分别见 [立绘](../../../../docs/delivery/2026-11-14-mercedes-s3-cutin.md) 和 [交接帧报告](../../../../docs/delivery/2026-11-14-battle-turn-handoff.md)。
+
+长按浮层的世界坐标由角色状态条重投影后传给 Common Binder。独立 Buff 卡在触发图标右上并跟随移动，技能关联效果卡按主框可见边缘对齐。原版帧的测量值与边距见 [长按对照](../../../../docs/delivery/2026-11-14-battle-inspection-ui.md#长按浮层位置和透明度复核)。

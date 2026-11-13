@@ -7,3 +7,5 @@ Common 提供通用组件和资源，业务文案、图标数据、事件和生�
 - `GameLongPress` 统一 EventSystem 鼠标左键和触屏，使用非缩放时钟，默认 0.45 秒。移出、拖离、禁用及失去焦点取消。已消费的长按不会触发 `GameButton` 的点击，短按及键盘提交沿用原生 Button。
 - Unity 菜单 `Tools/UI/生成通用预制体` 由同一编辑器入口重建。预制体只挂标准 UI、项目基础组件和 BindingMap。战斗通过场景直接引用这两个预制体。长按说明默认使用 Common 的 EpicSeven TMP 字体。其他内容包采用地址加载时，在该包内登记相应预制体及字体依赖。
 - 点击声从源 FMOD `event:/ui/btn_normal` 通过原生 WAV 渲染并裁剪静音，播放不依赖场景 FMOD bank。视图贴图与 WAV 的来源见 [本轮验收](../../../docs/delivery/2026-11-14-battle-inspection-ui.md)。
+
+技能说明主卡保留原图透明阴影并由 InfoPanelSkill 材质在 Unity 线性色彩空间校正实心区域。排版参数从可见边框向内留白。跟随锚点移动只更新位置，安全区或内容变化时才重新测量文字。

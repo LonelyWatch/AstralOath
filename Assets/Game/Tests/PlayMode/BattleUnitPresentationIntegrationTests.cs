@@ -415,10 +415,21 @@ namespace AstralOath.Client.Tests
             var secondary = (RectTransform)inspection.GetComponentsInChildren<BindingMap>()
                 .Single(item => item.Require<GameText>("title").text == "夹攻").transform;
             Assert.That(primary.anchoredPosition.x, Is.GreaterThan(secondary.anchoredPosition.x));
-            var firstSkill = (RectTransform)map.Require<GameButton>("skill1").transform;
-            float firstSkillCenter = ((RectTransform)inspection).InverseTransformPoint(firstSkill.position).x;
-            Assert.That(primary.anchoredPosition.x + primary.rect.width, Is.InRange(firstSkillCenter - 135f, firstSkillCenter),
-                "Keep the skill card to the left of the skill bar.");
+            var primaryBounds = BoundsIn(primary, (RectTransform)inspection);
+            var relatedBounds = BoundsIn(secondary, (RectTransform)inspection);
+            Assert.That(primaryBounds.yMax - relatedBounds.yMax, Is.InRange(26f, 32f),
+                "The associated card starts at the main card's top edge.");
+            var viewport = skillCard.Require<ScrollRect>("scroll").viewport;
+            var contentBounds = BoundsIn(viewport, primary);
+            Assert.That(contentBounds.xMin - primary.rect.xMin, Is.GreaterThanOrEqualTo(56f));
+            Assert.That(primary.rect.xMax - contentBounds.xMax, Is.GreaterThanOrEqualTo(56f));
+            Assert.That(contentBounds.yMin - primary.rect.yMin, Is.GreaterThanOrEqualTo(42f));
+            Assert.That(skillCard.Require<Image>("background").material.name, Is.EqualTo("InfoPanelSkill"),
+                "Skill panel must use reference alpha transfer with soft edges.");
+            var heldSkill = (RectTransform)s2.transform;
+            float heldSkillCenter = ((RectTransform)inspection).InverseTransformPoint(heldSkill.position).x;
+            Assert.That(primary.anchoredPosition.x + primary.rect.width, Is.InRange(heldSkillCenter - 135f, heldSkillCenter),
+                "Keep the skill card to the left of the selected skill.");
             Assert.That(labels.Any(label => label.text.Contains("灵魂燃烧效果")), Is.True);
             Assert.That(labels.Any(label => label.text == "夹攻"), Is.True);
             Assert.That(labels.Any(label => label.text.Contains("强化技能")), Is.True);
@@ -443,10 +454,33 @@ namespace AstralOath.Client.Tests
             Assert.That(labels.Any(label => label.text == "防御力提升"), Is.True);
             Assert.That(labels.Any(label => label.text.Contains("60%") && label.font.faceInfo.familyName == "EpicSeven"), Is.True);
             Assert.That(labels.Any(label => label.text.Contains("剩余")), Is.False);
+            var effectCard = inspection.GetComponentsInChildren<BindingMap>().Single();
+            var effectBounds = BoundsIn((RectTransform)effectCard.transform, (RectTransform)inspection);
+            var iconBounds = BoundsIn((RectTransform)icon, (RectTransform)inspection);
+            Assert.That(effectBounds.xMin - iconBounds.xMax, Is.InRange(60f, 85f));
+            Assert.That(effectBounds.yMin - iconBounds.center.y, Is.InRange(0f, 34f));
+            var binder = (InfoPanelBinder)simulation.GetType().GetField("inspection", Private).GetValue(simulation);
+            var iconRect = (RectTransform)icon;
+            Vector2 originalIconPosition = iconRect.anchoredPosition;
+            iconRect.anchoredPosition += new Vector2(25f, 14f);
+            binder.Tick();
+            var movedEffect = BoundsIn((RectTransform)effectCard.transform, (RectTransform)inspection);
+            var movedIcon = BoundsIn(iconRect, (RectTransform)inspection);
+            Assert.That(movedEffect.xMin - effectBounds.xMin, Is.EqualTo(movedIcon.xMin - iconBounds.xMin).Within(.1f));
+            Assert.That(movedEffect.yMin - effectBounds.yMin, Is.EqualTo(movedIcon.yMin - iconBounds.yMin).Within(.1f));
+            iconRect.anchoredPosition = originalIconPosition;
+            binder.Tick();
             buffHold.OnPointerUp(pointer);
             Capture("long-press-status", new Vector2Int(2608, 1200));
             host.PauseBattle();
             Assert.That(inspection.gameObject.activeSelf, Is.False);
+        }
+
+        private static Rect BoundsIn(RectTransform rect, RectTransform space)
+        {
+            var min = space.InverseTransformPoint(rect.TransformPoint(rect.rect.min));
+            var max = space.InverseTransformPoint(rect.TransformPoint(rect.rect.max));
+            return Rect.MinMaxRect(min.x, min.y, max.x, max.y);
         }
 
         void Capture(string name, Vector2Int? requestedSize = null)
