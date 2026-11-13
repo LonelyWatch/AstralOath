@@ -44,7 +44,7 @@ namespace AstralOath.Client.Tests
             var type = Type.GetType(Namespace + "BattleShieldAura" + Assembly, true);
             var definition = type.GetMethod("Prepare").Invoke(null, new[] { asset, Load<TextAsset>(".cfx.json") });
             var sync = type.GetMethod("Sync");
-            var presentation = (IDisposable)Activator.CreateInstance(type, definition, null);
+            var presentation = (IDisposable)Activator.CreateInstance(type, definition, null, null);
             var actor = new GameObject("Shielded test body");
             var replacement = new GameObject("Replacement test body");
             try

@@ -7,7 +7,6 @@ using System.Reflection;
 using AstralOath.Client.BattleScene;
 using AstralOath.Client.Common;
 using NUnit.Framework;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
@@ -68,7 +67,7 @@ namespace AstralOath.Client.Tests
         }
         [UnityTest] public IEnumerator ExcludedBodiesHideTheirStatusAndRestoreWithoutRevivingDefeatedUnits()
         {
-            scene = EditorSceneManager.LoadSceneInPlayMode("Assets/Game/Modules/BattleScene/Scenes/BattleScene.unity", new LoadSceneParameters(LoadSceneMode.Additive));
+            scene = BattleScenePreviewTests.LoadPlayerOpeningScene();
             yield return null; yield return null;
             var roots = scene.GetRootGameObjects();
             var host = roots.SelectMany(x => x.GetComponentsInChildren<BattleHudPreview>()).Single();
@@ -137,7 +136,7 @@ namespace AstralOath.Client.Tests
             var view = views["enemy-1"];
             view.GetType().GetMethod("BeginDeath").Invoke(view, null);
             stage.Reset(); Refresh();
-            Assert.That(map.transform.Find("Unit Status/Enemies/" + enemies.Single(x=>x.name=="Ice Slime").transform.parent.name).gameObject.activeSelf, Is.False,
+            Assert.That(map.transform.Find("Unit Status/Enemies/" + enemies[0].transform.parent.name).gameObject.activeSelf, Is.False,
                 "Restoring a cinematic mask cannot revive a defeated unit's status.");
             host.RestartBattle(); yield return null;
             Assert.That(spectatorMarker.gameObject.activeSelf, Is.True);

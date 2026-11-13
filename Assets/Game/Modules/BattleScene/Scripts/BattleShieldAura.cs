@@ -11,7 +11,7 @@ namespace AstralOath.Client.BattleScene
     {
         private static readonly SkeletonPlayerFactory Factory = new SkeletonPlayerFactory();
         private readonly Definition definition;
-        private readonly Transform shadow;
+        private readonly Vector3 anchorOffset;
         private ISkeletonPlayer player;
         private Renderer body;
         private MeshRenderer aura;
@@ -71,10 +71,12 @@ namespace AstralOath.Client.BattleScene
             return new Definition(source, animation, new Vector3(x, y, 0f) * asset.scale, scale, order);
         }
 
-        public BattleShieldAura(Definition definition, Transform shadow)
+        public BattleShieldAura(Definition definition, Transform shadow, Renderer initialBody)
         {
             this.definition = definition;
-            this.shadow = shadow;
+            // Calibrate to the authored foot point before a skill can separate the actor and its ground shadow.
+            if (initialBody && shadow)
+                anchorOffset = initialBody.transform.InverseTransformPoint(shadow.position);
         }
 
         public void Sync(Renderer currentBody, bool shielded, float visualDelta)
@@ -102,9 +104,6 @@ namespace AstralOath.Client.BattleScene
             int order = body.sortingOrder + definition.SortingOffset;
             if (aura.sortingLayerID != layer) aura.sortingLayerID = layer;
             if (aura.sortingOrder != order) aura.sortingOrder = order;
-            // Keep body scale and visibility, while the native persistent shield follows the ground anchor.
-            Vector3 origin = shadow ? body.transform.InverseTransformPoint(shadow.position) : Vector3.zero;
-            player.Root.transform.localPosition = origin + definition.Position;
             if (!hadShield)
             {
                 player.Play(definition.Animation, true);
@@ -118,6 +117,7 @@ namespace AstralOath.Client.BattleScene
             player = Factory.Create(definition.Source, body.transform);
             var root = player.Root;
             root.name = "Battle shield aura";
+            root.transform.localPosition = anchorOffset + definition.Position;
             root.transform.localScale = definition.Scale;
             aura = root.GetComponent<MeshRenderer>();
         }

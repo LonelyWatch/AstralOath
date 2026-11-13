@@ -8,6 +8,8 @@ namespace AstralOath.Client.BattleScene
     [DisallowMultipleComponent]
     public sealed class BattlePreviewActor : MonoBehaviour
     {
+        [SerializeField, Tooltip("在战斗配表中查找此角色 ID，开始战斗时自动装载模型。")]
+        private string heroId;
         [SerializeField] private TextAsset skeleton;
         [SerializeField] private TextAsset atlas;
         [SerializeField] private Texture2D page;
@@ -153,7 +155,19 @@ namespace AstralOath.Client.BattleScene
         public Bounds Bounds => player != null
             ? player.Root.GetComponent<MeshRenderer>().bounds : new Bounds(transform.position, Vector3.zero);
 
-        internal float FacingDirection => faceLeft ? -1f : 1f;
+        internal string HeroId => heroId;
+        private bool FacesLeft
+        {
+            get
+            {
+                var slot = transform.parent;
+                var team = slot ? slot.parent : null;
+                if (team && team.parent && team.parent.name == "Units")
+                    return team.name == "Enemies";
+                return faceLeft;
+            }
+        }
+        internal float FacingDirection => FacesLeft ? -1f : 1f;
 
         internal Transform PresentationShadow => transform.parent
             ? transform.parent.GetComponentInChildren<SpriteRenderer>(true)?.transform : null;
@@ -213,6 +227,9 @@ namespace AstralOath.Client.BattleScene
         private void OnEnable()
         {
             OnDisable(); // Also makes a repeated activation safe when editor reload options change.
+            // A newly placed generic prefab can have only a Hero ID. The battle host resolves
+            // the corresponding catalog model before it creates the simulation.
+            if (!skeleton && !atlas && !page) return;
             if (!skeleton || !atlas || !page || string.IsNullOrWhiteSpace(pageName))
                 throw new InvalidOperationException($"Battle preview actor {name} has incomplete Spine data.");
 
@@ -239,7 +256,7 @@ namespace AstralOath.Client.BattleScene
                     throw new InvalidOperationException($"Battle preview actor {name} has no playable idle animation.");
 
                 instance.Root.GetComponent<MeshRenderer>().sortingOrder = drawOrder;
-                if (faceLeft)
+                if (FacesLeft)
                     instance.Root.transform.localScale = new Vector3(-1, 1, 1);
                 idleAnimation = idle;
                 playingBattleAnimation = false;

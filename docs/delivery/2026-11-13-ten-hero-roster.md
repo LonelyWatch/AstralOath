@@ -5,7 +5,7 @@
 ## 操作
 
 - `Tools/角色实验室/打开场景`，Play 后可按 ID 或中文名搜索。每个角色有战斗模型、立绘、独立动画、日语语音及三个技能源图入口。
-- `Tools/战斗场景/打开场景`，在 `Battle Canvas` 的 `BattleHudPreview` Inspector 为前排、下方、上方、后排分别选择角色，然后 Play。默认四个站位沿用原先阵容。运行中修改后，使用暂停菜单的重新开始应用阵容。
+- `Tools/战斗场景/打开场景`，在 `Battle Canvas` 的 `BattleHudPreview` Inspector 为前排、下方、上方、后排分别选择角色，然后 Play。该版本的操作由[八英雄战斗场景](2026-11-13-eight-hero-battle.md)的实例 Hero Id 配置取代。
 - 扩充表和资产后，依次执行角色导入、Luban `Generate.ps1 -VerifyAccessors -SyncClient`、角色实验室收集器和 `Tools/战斗场景/更新角色资源引用`。场景生成入口读取清单和目录，不按角色英文别名猜路径。
 
 ## 共用规则和边界

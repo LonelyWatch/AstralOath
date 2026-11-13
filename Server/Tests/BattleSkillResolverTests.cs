@@ -182,6 +182,24 @@ public sealed class BattleSkillResolverTests
     }
 
     [Fact]
+    public void ExplicitEnemyRosterUsesItsOwnHeroDefinitions()
+    {
+        var catalog = ReadCatalog();
+        string[] allies = { "c1001", "c1062", "c1005", "c1002" };
+        string[] enemies = { "c1003", "c1004", "c1006", "c1007" };
+        var match = BattlePreviewFactory.Create("hero-roster", 271828, catalog, allies, enemies);
+        Assert.Equal(enemies, match.Snapshot.Units.Where(unit => unit.Slot.Side == BattleSide.Enemy)
+            .OrderBy(unit => unit.Slot.Position).Select(unit => unit.DefinitionId).ToArray());
+        var actor = match.Snapshot.GetUnit(match.Snapshot.CurrentActorId);
+        Assert.Equal(BattleSide.Enemy, actor.Slot.Side);
+        var result = Cast(match, actor.InstanceId, actor.Form.SkillIds[0], "ally-1");
+        Assert.Equal(BattleCommandStatus.Accepted, result.Status);
+        Assert.Contains(result.Events, item => item.Kind == BattleFlowEventKind.Action &&
+            item.SkillId == actor.DefinitionId + ".s1" && !string.IsNullOrWhiteSpace(item.PresentationId));
+        Assert.Throws<ArgumentException>(() => BattlePreviewFactory.Create("bad", 123, catalog, allies, enemies[..3]));
+    }
+
+    [Fact]
     public void PassiveSlotCannotBeSubmittedAndDoesNotConsumeTurn()
     {
         var catalog = ReadCatalog();

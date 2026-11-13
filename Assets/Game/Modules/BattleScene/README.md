@@ -1,6 +1,6 @@
 # BattleScene
 
-战斗子任务一。独立冒险战斗布局预览，使用原作 HUD、两套森林分层素材，以及双方各四个站位的 Spine 待机。我方重复使用拉斯补满，敌方使用冰、火、风、暗史莱姆。阵容、等级、生命、魂力和行动条为场景展示数据。相关规则及画面证据见[战斗资料](../../../../docs/development/epic-seven-battle-reference.md)。
+战斗场景使用原作 HUD、两套森林背景和双方各四个站位。默认八名英雄互不重复，使用同一个 `Res/Prefab/BattleActor.prefab` 的八个实例。相关规则及画面证据见[战斗资料](../../../../docs/development/epic-seven-battle-reference.md)。
 
 ## 打开与编辑
 
@@ -14,7 +14,7 @@
 ## 结构和后续接入
 
 - `BattleHud` 继承 `UIBaseView` 并验证 BindingMap。场景 Canvas 上的 `BattleHudPreview` 管理普通 C# `BattleHudBinder` 生命周期。预制体使用 GameText、GameButton 和 BindingMap。Burn 与三枚技能按钮接受点击，布局模式的魂力与角色固定为当前拉斯。
-- `BattlePreviewActor` 通过现有 SkeletonPlayerFactory 读取原版骨骼及图集，进入 Play 时生成，禁用或卸载时释放网格和材质。三名英雄直接引用 CharacterPresentation 的现有资产。
+- `BattlePreviewActor` 通过现有 SkeletonPlayerFactory 读取原版骨骼及图集，进入 Play 时生成，禁用或卸载时释放网格和材质。每个 `BattleActor` 实例用 `Hero Id` 指定角色。站位保存朝向、大小和排序，角色模型、技能、头像、语音及战斗面板从现有角色目录与配表解析。
 - `BattlePreviewViewport` 在安全区内保持 16:9，世界与 Screen Space Camera HUD 使用同一摄像机。HUD 作者坐标以 1280×720 左下原点记录，生成时乘 1.5。地图图层位置和站位来自对照后的手调。Forest2／3 的草地按原宽高比布置，底边固定在设计坐标 Y=-2，连续草带覆盖八个站位及其影子。替换舞台时用各槽位的世界坐标核对可站草带。梅赛德丝的待机保留原骨骼悬浮。
 - 场景通过独立试玩入口和直接资产引用运行，正式启动和 YooAsset 收集另行接入。正式流程接入时另定资源地址、数据契约和服务端准入。
 
@@ -36,12 +36,12 @@
 ## 头顶状态与护盾
 
 - 状态图标和回合数字挂在血条 Frame 下，沿用角色的骨骼 `top` 投影、镜头缩放和显隐。普通增益、减益由 15 项原图映射支持。左起每行最多五个，向上折行，同类刷新复用格子。
-- 白色护盾段紧接绿色生命，盾值由权威事件驱动。多段攻击共用原技能 HIT 时间，先消耗护盾，再变化生命。普通护盾播放原版 `stse_protect.cfx` 的六层白蓝护盾，沿原版 `shadow` 地面挂点移动，盾消失、角色被遮罩或死亡时隐藏。状态图标在导入时对齐 Linear 工程的底板透射率，保留原始轮廓与回合数字。
+- 白色护盾段紧接绿色生命，盾值由权威事件驱动。多段攻击共用原技能 HIT 时间，先消耗护盾，再变化生命。普通护盾播放原版 `stse_protect.cfx` 的六层白蓝护盾，按脚底校准初始偏移，再附于角色身体节点移动，盾消失、角色被遮罩或死亡时隐藏。状态图标在导入时对齐 Linear 工程的底板透射率，保留原始轮廓与回合数字。
 - 使用 `Tools/BattleScene/ImportStatusHud.py` 和 `Tools/BattleScene/ImportBattleShieldAura.py` 重建小范围源资源，追加 `--check` 核对哈希。通过 `Tools/战斗场景/更新血条、状态与死亡资源引用` 更新 UnitPresentation。配置、数据流和原版证据见[头顶状态与护盾复核](../../../../docs/delivery/2026-11-13-battle-status-shield.md)及[原版六层护盾和底板校正](../../../../docs/delivery/2026-11-13-battle-shield-refinement.md)。
 
 ## 角色配置
 
-Luban 快照 `Configs/battle-catalog.json` 含三名英雄、成长模板、觉醒节点、九技能、强化与文案。编辑入口及来源见[战斗角色数据](../../../../docs/development/battle-character-data.md)。Shared Battle 现已支持[面板计算、单位创建与站位](../../../../docs/development/battle-growth.md)。编辑态布局显示作者预设；运行时按队伍与 1–4 号槽映射世界单位和实时快照，四个史莱姆均为60级。
+Luban 快照 `Configs/battle-catalog.json` 含十名英雄、成长模板、觉醒节点、30 个技能槽及文案。编辑入口及来源见[战斗角色数据](../../../../docs/development/battle-character-data.md)。换人时在场景选择 `Units/Allies` 或 `Units/Enemies` 下对应槽位的角色实例，修改 `BattlePreviewActor > Hero Id`，进入 Play 或重开应用。可用 `Tools/战斗场景/更新角色资源引用` 刷新布局预览使用的缓存引用。默认阵容及验收见[八英雄通用预制体](../../../../docs/delivery/2026-11-13-eight-hero-battle.md)。
 
 ## 素材和验证
 

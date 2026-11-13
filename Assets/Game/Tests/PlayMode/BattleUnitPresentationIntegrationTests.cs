@@ -8,7 +8,6 @@ using AstralOath.Client.BattleScene;
 using AstralOath.Client.Common;
 using AstralOath.Shared.Battle;
 using NUnit.Framework;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
@@ -21,7 +20,7 @@ namespace AstralOath.Client.Tests
         Scene scene; BattleHudPreview host; BindingMap map;
         [UnitySetUp] public IEnumerator Load()
         {
-            scene = EditorSceneManager.LoadSceneInPlayMode("Assets/Game/Modules/BattleScene/Scenes/BattleScene.unity", new LoadSceneParameters(LoadSceneMode.Additive));
+            scene = BattleScenePreviewTests.LoadPlayerOpeningScene();
             yield return null; yield return null;
             host = scene.GetRootGameObjects().SelectMany(x => x.GetComponentsInChildren<BattleHudPreview>()).Single();
             map = scene.GetRootGameObjects().SelectMany(x => x.GetComponentsInChildren<BindingMap>()).Single();
@@ -55,7 +54,8 @@ namespace AstralOath.Client.Tests
         }
         [UnityTest] public IEnumerator DefeatKeepsTheActorForBlackeningAndPauseFreezesTheFade()
         {
-            var actor = scene.GetRootGameObjects().SelectMany(x => x.GetComponentsInChildren<BattlePreviewActor>()).Single(x => x.name == "Ice Slime");
+            var actor = scene.GetRootGameObjects().Single(x => x.name == "Units").transform
+                .Find("Enemies").GetChild(0).GetComponentInChildren<BattlePreviewActor>();
             var simulation = typeof(BattleHudPreview).GetField("simulation", Private).GetValue(host);
             var defeat = BattleDualAttackTimingTests.Event(BattleFlowEventKind.UnitDefeated, "ally-1", "c1001.s1", null, BattleActionOrigin.Primary);
             simulation.GetType().GetMethod("Present", Private).Invoke(simulation, new object[] { defeat });
@@ -161,14 +161,15 @@ namespace AstralOath.Client.Tests
             var first = (RectTransform)icons.GetChild(0);
             float originalWidth = Width(first, camera);
             Vector2 originalPosition = first.position;
-            actor.transform.position += Vector3.right * .7f;
+            Vector3 auraLocal = aura.localPosition;
+            actor.transform.position += new Vector3(.7f, 1.25f, 0f);
             actor.transform.localScale *= 1.25f;
             view.GetType().GetMethod("LateTick").Invoke(view, new object[] { camera });
             Assert.That((Vector2)first.position, Is.Not.EqualTo(originalPosition));
             Assert.That(Width(first, camera) / originalWidth, Is.EqualTo(1.25f).Within(.03f));
-            expectedAura = shadow.position + body.transform.TransformVector(Vector3.up * .2f);
-            Assert.That(Vector2.Distance(aura.position, expectedAura), Is.LessThan(.001f),
-                "A jump moves the body relative to the ground, but the source shield still uses shadow.");
+            Assert.That(Vector2.Distance(aura.position, body.transform.TransformPoint(auraLocal)), Is.LessThan(.001f),
+                "A jump moves the shield with the body even while its ground shadow stays behind.");
+            Assert.That(Vector2.Distance(aura.position, shadow.position), Is.GreaterThan(.7f));
             Assert.That(first.IsChildOf(frame.parent), Is.True);
             body.enabled = false;
             view.GetType().GetMethod("LateTick").Invoke(view, new object[] { camera });

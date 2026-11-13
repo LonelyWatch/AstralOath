@@ -33,7 +33,8 @@ namespace AstralOath.Client.Tests
             yield return null;
             var units = roots.Single(item => item.name == "Units").transform;
             var actors = units.GetComponentsInChildren<BattlePreviewActor>();
-            var target = actors.First(item => item.name.Contains("Slime"));
+            var enemies = units.Find("Enemies").GetComponentsInChildren<BattlePreviewActor>();
+            var target = enemies[0];
             var type = typeof(BattleHudPreview).Assembly.GetType("AstralOath.Client.BattleScene.BattleSkillPresentation", true);
             var begin = type.GetMethod("Begin");
             var tick = type.GetMethod("Tick");
@@ -44,7 +45,6 @@ namespace AstralOath.Client.Tests
             playback = (IDisposable)Activator.CreateInstance(type, new object[] { units, graphs, assets, camera, null, background });
             var prepare = type.GetMethod("Prepare");
             var stageTime = type.GetProperty("StageTime");
-            var enemies = actors.Where(item => item.name.Contains("Slime")).ToArray();
             var watch = new Stopwatch();
             foreach (var hero in new[] { ("Ras", "ras"), ("Mercedes", "mercedes"), ("Angelica", "angelica") })
             {

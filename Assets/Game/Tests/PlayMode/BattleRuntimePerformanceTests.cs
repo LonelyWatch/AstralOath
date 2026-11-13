@@ -8,7 +8,6 @@ using System.Reflection;
 using AstralOath.Client.BattleScene;
 using AstralOath.Shared.Battle;
 using NUnit.Framework;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
@@ -25,7 +24,7 @@ namespace AstralOath.Client.Tests
         [UnityTest]
         public IEnumerator NineAcceptedPresentationFixturesIncludeVoiceHudAndRealFrameIntervals()
         {
-            scene = EditorSceneManager.LoadSceneInPlayMode("Assets/Game/Modules/BattleScene/Scenes/BattleScene.unity", new LoadSceneParameters(LoadSceneMode.Additive));
+            scene = BattleScenePreviewTests.LoadPlayerOpeningScene();
             yield return null; yield return null;
             var host = scene.GetRootGameObjects().Select(x => x.GetComponent<BattleHudPreview>()).Single(x => x);
             var simulation = Field(host, "simulation");

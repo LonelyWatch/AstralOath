@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Object = UnityEngine.Object;
 using System.IO;
@@ -169,6 +170,7 @@ namespace AstralOath.Client.BattleScene.Editor
             var heroes = battle["heroes"].OrderBy(row => (string)row["id"], StringComparer.Ordinal).ToArray();
             var heroIds = heroes.Select(row => (string)row["id"]).ToHashSet(StringComparer.Ordinal);
             var rows = properties.FindProperty("heroModels");
+            var models = new Dictionary<string, SerializedProperty>(StringComparer.Ordinal);
             rows.arraySize = heroes.Length;
             for (int i = 0; i < heroes.Length; i++)
             {
@@ -176,16 +178,19 @@ namespace AstralOath.Client.BattleScene.Editor
                 var character = characters[id];
                 var row = rows.GetArrayElementAtIndex(i);
                 row.FindPropertyRelative("id").stringValue = id;
-                row.FindPropertyRelative("label").stringValue = Allies.FirstOrDefault(item => item.Id == id).Name ?? (string)character["name"];
+                var label = id switch
+                {
+                    "c1001" => "Ras",
+                    "c1062" => "Angelica",
+                    "c1005" => "Mercedes",
+                    _ => (string)character["name"]
+                };
+                row.FindPropertyRelative("label").stringValue = label;
                 row.FindPropertyRelative("skin").stringValue = (string)character["battleSkin"];
                 BattleSkillPresentationAssets.SetSkeleton(row.FindPropertyRelative("skeleton"), (string)character["battleSkeletonAddress"], paths);
+                models.Add(id, row);
             }
-            var selected = properties.FindProperty("allyHeroIds");
-            if (selected.arraySize == 0)
-            {
-                selected.arraySize = Allies.Length;
-                for (int i = 0; i < Allies.Length; i++) selected.GetArrayElementAtIndex(i).stringValue = Allies[i].Id;
-            }
+            ConfigureAuthoredTeams(hud, properties, GetBattleActorPrefab(), models, HeroElements(heroes));
             var graphs = characters.Values.Where(row => heroIds.Contains((string)row["id"]))
                 .SelectMany(row => row["skills"]).Select(row => (string)row["graphAddress"])
                 .Distinct(StringComparer.Ordinal).OrderBy(address => address, StringComparer.Ordinal)
@@ -206,10 +211,12 @@ namespace AstralOath.Client.BattleScene.Editor
             var classIcons = heroes.Select(row => (string)row["heroClass"]).Distinct(StringComparer.Ordinal)
                 .Select(role => "cm_icon_role_" + (role == "soul_weaver" ? "manauser" : role == "thief" ? "assassin" : role));
             var elementIcons = heroes.Select(row => "cm_icon_prom" + (string)row["element"]).Distinct(StringComparer.Ordinal);
+            var markerElements = new[] { "fire", "ice", "wind", "light", "dark" }
+                .Select(element => "game_hud_bar_" + element);
             SetArray("battleSprites", skills.Select(row => Asset<Sprite>(HudTextures + "Skills/" + Path.GetFileName((string)row["iconAsset"])))
                 .Concat(heroes.SelectMany(row => new[] { Asset<Sprite>(HudTextures + $"Faces/{row["id"]}_su.png"),
                     Asset<Sprite>(HudTextures + $"Faces/{row["id"]}_s.png") }))
-                .Concat(classIcons.Concat(elementIcons).Concat(new[] { "_hero_s_bg_ally", "_hero_s_bg_enemy", "_hero_s_frame_ally",
+                .Concat(classIcons.Concat(elementIcons).Concat(markerElements).Concat(new[] { "_hero_s_bg_ally", "_hero_s_bg_enemy", "_hero_s_frame_ally",
                     "_hero_s_frame_enemy", "cm_hero_circool1", "game_hud_arrow", "Faces/pet_slime1_n_grade1_1_s" })
                     .Distinct(StringComparer.Ordinal).Select(name => Asset<Sprite>(HudTextures + name + ".png")))
                 .Concat(BattleTurnHudAssets.Sprites()).Concat(BattleDamageFeedbackAssets.Sprites()).Distinct().ToArray());
@@ -262,6 +269,50 @@ namespace AstralOath.Client.BattleScene.Editor
             }
         }
 
+        private static Dictionary<string, string> HeroElements(IEnumerable<JToken> heroes) =>
+            heroes.ToDictionary(hero => (string)hero["id"], hero => (string)hero["element"], StringComparer.Ordinal);
+
+        private static void ConfigureAuthoredTeams(BindingMap hud, SerializedObject properties, GameObject prefab,
+            IReadOnlyDictionary<string, SerializedProperty> models,
+            IReadOnlyDictionary<string, string> elements)
+        {
+            var allies = properties.FindProperty("allyHeroIds");
+            var enemies = properties.FindProperty("enemyHeroIds");
+            var oldDefaults = new[] { "c1001", "c1062", "c1005", "c1001" };
+            if (enemies.arraySize == 0 && allies.arraySize == oldDefaults.Length &&
+                Enumerable.Range(0, oldDefaults.Length).All(i => allies.GetArrayElementAtIndex(i).stringValue == oldDefaults[i]))
+                allies.arraySize = 0;
+
+            var units = hud.gameObject.scene.GetRootGameObjects().Single(root => root.name == "Units").transform;
+            ConfigureTeam("Allies", allies, BattleHudPreview.DefaultAllyHeroIds, false);
+            ConfigureTeam("Enemies", enemies, BattleHudPreview.DefaultEnemyHeroIds, true);
+            allies.arraySize = 0;
+            enemies.arraySize = 0;
+
+            void ConfigureTeam(string name, SerializedProperty overrides, IReadOnlyList<string> defaults, bool enemy)
+            {
+                for (int i = 0; i < Slots.Length; i++)
+                {
+                    var slot = units.Find(name).GetChild(i);
+                    var currentActor = slot.GetComponentInChildren<BattlePreviewActor>(true);
+                    var currentId = currentActor
+                        ? new SerializedObject(currentActor).FindProperty("heroId").stringValue
+                        : null;
+                    string requested = i < overrides.arraySize ? overrides.GetArrayElementAtIndex(i).stringValue : null;
+                    string id = !string.IsNullOrEmpty(requested) ? requested :
+                        string.IsNullOrEmpty(currentId) ? defaults[i] : currentId;
+                    if (!models.TryGetValue(id, out var model))
+                        throw new InvalidOperationException("Unknown battle hero ID: " + id);
+                    PlaceHero(slot, prefab, id, model.FindPropertyRelative("label").stringValue, model, enemy, i);
+
+                    var marker = hud.transform.Find($"Unit Status/{name}/{slot.name}");
+                    var badge = marker.Find("Element").GetComponent<Image>();
+                    badge.sprite = Asset<Sprite>(HudTextures + "game_hud_bar_" + elements[id] + ".png");
+                    PrefabUtility.RecordPrefabInstancePropertyModifications(badge);
+                }
+            }
+        }
+
         private static void ImportHudEffectTextures()
         {
             foreach (string path in Directory.GetFiles(HudEffects, "*.png", SearchOption.AllDirectories))
@@ -293,40 +344,4 @@ namespace AstralOath.Client.BattleScene.Editor
             }
         }
     }
-
-    [CustomEditor(typeof(BattleHudPreview))]
-    internal sealed class BattleHudPreviewInspector : UnityEditor.Editor
-    {
-        public override void OnInspectorGUI()
-        {
-            serializedObject.Update();
-            var roster = serializedObject.FindProperty("heroModels");
-            var slots = serializedObject.FindProperty("allyHeroIds");
-            if (roster.arraySize == 0 || slots.arraySize != 4)
-            {
-                DrawPropertiesExcluding(serializedObject, "heroModels");
-                serializedObject.ApplyModifiedProperties();
-                return;
-            }
-
-            var ids = new string[roster.arraySize];
-            var labels = new string[roster.arraySize];
-            for (int i = 0; i < ids.Length; i++)
-            {
-                var row = roster.GetArrayElementAtIndex(i);
-                ids[i] = row.FindPropertyRelative("id").stringValue;
-                labels[i] = ids[i] + " " + row.FindPropertyRelative("label").stringValue;
-            }
-            string[] slotLabels = { "前排", "下方", "上方", "后排" };
-            for (int i = 0; i < slotLabels.Length; i++)
-            {
-                var slot = slots.GetArrayElementAtIndex(i);
-                int choice = EditorGUILayout.Popup(slotLabels[i], Array.IndexOf(ids, slot.stringValue), labels);
-                if (choice >= 0) slot.stringValue = ids[choice];
-            }
-            DrawPropertiesExcluding(serializedObject, "allyHeroIds", "heroModels");
-            serializedObject.ApplyModifiedProperties();
-        }
-    }
-
 }

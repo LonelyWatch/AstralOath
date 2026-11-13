@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json.Linq;
 using AstralOath.Client.Common;
 using TMPro;
 using UnityEditor;
@@ -34,21 +36,20 @@ namespace AstralOath.Client.BattleScene.Editor
             details.type = Image.Type.Sliced;
             details.pixelsPerUnitMultiplier = 1f / PixelScale;
             bindings.Add("orderHourglass", Picture(order, "Hourglass", "cm_icon_etctime2", 33.5f, 643.5f, 16.16f, 22.22f));
-            for (int i = Allies.Length - 1; i >= 0; i--)
-                OrderFace(order, Allies[i].Name, Allies[i].Id, 32, 184 + i * 47);
+            var allyIds = BattleHudPreview.DefaultAllyHeroIds;
+            var enemyIds = BattleHudPreview.DefaultEnemyHeroIds;
+            var heroElements = HeroElements(JObject.Parse(Asset<TextAsset>(Module + "/Configs/battle-catalog.json").text)["heroes"]);
+            for (int i = Slots.Length - 1; i >= 0; i--)
+                OrderFace(order, allyIds[i], 32, 184 + i * 47);
 
             var markers = Group("Unit Status", rect);
             var allyMarkers = Group("Allies", markers);
             var enemyMarkers = Group("Enemies", markers);
-            for (int i = 0; i < Allies.Length; i++)
+            for (int i = 0; i < Slots.Length; i++)
             {
-                var unit = Allies[i];
-                UnitStatus(allyMarkers, unit.Position, unit.X, unit.MarkerY, unit.Element, 1f - i * 0.07f, 1f - i * 0.13f);
-            }
-            for (int i = 0; i < Enemies.Length; i++)
-            {
-                var unit = Enemies[i];
-                UnitStatus(enemyMarkers, unit.Position, unit.X, unit.MarkerY, unit.Skin, 0.94f - i * 0.08f, 0.79f - i * 0.12f);
+                var layout = Slots[i];
+                UnitStatus(allyMarkers, layout.Position, layout.AllyX, layout.MarkerY, heroElements[allyIds[i]], 1f, 0f);
+                UnitStatus(enemyMarkers, layout.Position, layout.EnemyX, layout.MarkerY, heroElements[enemyIds[i]], 1f, 0f);
             }
 
             var active = Group("Active Unit", rect);
@@ -101,11 +102,11 @@ namespace AstralOath.Client.BattleScene.Editor
             return root;
         }
 
-        private static void OrderFace(RectTransform parent, string name, string id, float x, float y)
+        private static void OrderFace(RectTransform parent, string id, float x, float y)
         {
-            Picture(parent, name + " Base", "_hero_s_bg_ally", x, y, 54, 54);
-            Picture(parent, name + " Portrait", "Faces/" + id + "_s", x, y, 54, 54);
-            Picture(parent, name + " Frame", "_hero_s_frame_ally", x, y, 57, 57);
+            Picture(parent, id + " Base", "_hero_s_bg_ally", x, y, 54, 54);
+            Picture(parent, id + " Portrait", "Faces/" + id + "_s", x, y, 54, 54);
+            Picture(parent, id + " Frame", "_hero_s_frame_ally", x, y, 57, 57);
         }
 
         private static void UnitStatus(RectTransform parent, string position, float x, float y,

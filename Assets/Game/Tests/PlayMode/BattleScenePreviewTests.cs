@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using AstralOath.Client.BattleScene;
 using AstralOath.Client.Common;
 using AstralOath.Shared.Battle;
@@ -20,7 +21,50 @@ namespace AstralOath.Client.Tests
     public sealed class BattleScenePreviewTests
     {
         private const string ScenePath = "Assets/Game/Modules/BattleScene/Scenes/BattleScene.unity";
+        private const BindingFlags PrivateInstance = BindingFlags.Instance | BindingFlags.NonPublic;
+        private const string SlimeAsset = "Assets/Game/Modules/BattleScene/Res/Units/Slime/slime";
         private Scene scene;
+
+        internal static string[] SlowEnemyIds() => Enumerable.Repeat("c1008", 4).ToArray();
+
+        internal static Scene LoadPlayerOpeningScene()
+        {
+            // These tests require a deterministic first player turn. The default scene can open on either side.
+            SceneManager.sceneLoaded += ConfigureOpening;
+            try
+            {
+                return EditorSceneManager.LoadSceneInPlayMode(ScenePath, new LoadSceneParameters(LoadSceneMode.Additive));
+            }
+            catch
+            {
+                SceneManager.sceneLoaded -= ConfigureOpening;
+                throw;
+            }
+
+            static void ConfigureOpening(Scene loaded, LoadSceneMode mode)
+            {
+                if (loaded.path != ScenePath) return;
+                SceneManager.sceneLoaded -= ConfigureOpening;
+                var host = loaded.GetRootGameObjects().Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+                typeof(BattleHudPreview).GetField("allyHeroIds", PrivateInstance).SetValue(host,
+                    new[] { "c1001", "c1062", "c1005", "c1008" });
+                typeof(BattleHudPreview).GetField("enemyHeroIds", PrivateInstance).SetValue(host, SlowEnemyIds());
+            }
+        }
+
+        private static void BindSlimeModel(BattlePreviewActor actor)
+        {
+            var asset = new BattleSkillPresentationAsset
+            {
+                document = AssetDatabase.LoadAssetAtPath<TextAsset>(SlimeAsset + ".spine.json"),
+                atlas = AssetDatabase.LoadAssetAtPath<TextAsset>(SlimeAsset + ".atlas.txt"),
+                pages = new[] { AssetDatabase.LoadAssetAtPath<Texture2D>(SlimeAsset + ".png") },
+                pageNames = new[] { "slime.sct" },
+                premultipliedAlpha = true,
+                scale = .01f
+            };
+            typeof(BattlePreviewActor).GetMethod("UseModel", PrivateInstance).Invoke(actor, new object[] { asset, "ice", "Test Slime" });
+        }
 
         [UnityTest]
         public IEnumerator AuthoredSceneShowsOriginalActorsAndHud()
@@ -32,8 +76,9 @@ namespace AstralOath.Client.Tests
 
             var roots = scene.GetRootGameObjects();
             var units = roots.Single(root => root.name == "Units").transform;
-            var actors = units.GetComponentsInChildren<MeshFilter>()
-                .Where(mesh => mesh.sharedMesh && mesh.sharedMesh.name == "Skeleton dynamic mesh").ToArray();
+            var actors = units.GetComponentsInChildren<BattlePreviewActor>()
+                .Select(actor => actor.GetComponentInChildren<MeshFilter>())
+                .Where(mesh => mesh && mesh.sharedMesh && mesh.sharedMesh.name == "Skeleton dynamic mesh").ToArray();
             Assert.That(actors.Length, Is.EqualTo(8), "Four slots on each side must have a visible preview actor.");
             Assert.That(units.Find("Allies").childCount, Is.EqualTo(4));
             Assert.That(units.Find("Enemies").childCount, Is.EqualTo(4));
@@ -111,14 +156,14 @@ namespace AstralOath.Client.Tests
             float grassTop = bounds.min.y + bounds.size.y * (160f / 256f);
             Assert.That(bounds.size.x / bounds.size.y,
                 Is.EqualTo(ground.sprite.rect.width / ground.sprite.rect.height).Within(0.02f));
-            foreach (Transform side in units)
-            foreach (Transform slot in side)
+            foreach (string team in new[] { "Allies", "Enemies" })
+            foreach (Transform slot in units.Find(team))
             {
-                Assert.That(slot.position.x, Is.InRange(bounds.min.x, bounds.max.x), $"{stage.name} {side.name} {slot.name}");
-                Assert.That(slot.position.y, Is.InRange(bounds.min.y, grassTop), $"{stage.name} {side.name} {slot.name}");
+                Assert.That(slot.position.x, Is.InRange(bounds.min.x, bounds.max.x), $"{stage.name} {team} {slot.name}");
+                Assert.That(slot.position.y, Is.InRange(bounds.min.y, grassTop), $"{stage.name} {team} {slot.name}");
                 var shadow = slot.GetComponentInChildren<SpriteRenderer>();
                 Assert.That(shadow.bounds.center.y, Is.InRange(bounds.min.y, grassTop),
-                    $"{stage.name} {side.name} {slot.name} shadow");
+                    $"{stage.name} {team} {slot.name} shadow");
             }
         }
 
@@ -252,7 +297,7 @@ namespace AstralOath.Client.Tests
         [UnityTest]
         public IEnumerator PlayableBattleCommitsOnlyAfterTargetAndPlaysSkill()
         {
-            scene = EditorSceneManager.LoadSceneInPlayMode(ScenePath, new LoadSceneParameters(LoadSceneMode.Additive));
+            scene = LoadPlayerOpeningScene();
             yield return null;
             yield return null;
 
@@ -409,10 +454,13 @@ namespace AstralOath.Client.Tests
             var preview = roots.Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
             var map = roots.SelectMany(root => root.GetComponentsInChildren<BindingMap>()).Single();
             preview.StartBattle();
-            var banner = map.transform.Find("Battle State").GetComponent<GameText>();
+            var simulation = typeof(BattleHudPreview).GetField("simulation", PrivateInstance).GetValue(preview);
+            var presentedSkill = simulation.GetType().GetField("presentedSkillId", PrivateInstance);
+            var enemySkills = preview.SimulationSnapshot.Units.Where(unit => unit.Slot.Side == BattleSide.Enemy)
+                .SelectMany(unit => unit.Form.SkillIds).ToArray();
             float deadline = Time.realtimeSinceStartup + 40f;
             int soundsBeforeEnemy = preview.StartedSkillSounds;
-            while (banner.text != "史莱姆攻击" && Time.realtimeSinceStartup < deadline)
+            while (!enemySkills.Contains((string)presentedSkill.GetValue(simulation)) && Time.realtimeSinceStartup < deadline)
             {
                 soundsBeforeEnemy = preview.StartedSkillSounds;
                 var snapshot = preview.SimulationSnapshot;
@@ -420,7 +468,8 @@ namespace AstralOath.Client.Tests
                 preview.TrySelectBattleTarget(target.InstanceId);
                 yield return null;
             }
-            Assert.That(banner.text, Is.EqualTo("史莱姆攻击"), "Reach an enemy action through normal turn progression.");
+            Assert.That(enemySkills, Does.Contain((string)presentedSkill.GetValue(simulation)),
+                "Reach an enemy hero skill through normal turn progression.");
             foreach (string key in new[] { "skill1", "skill2", "skill3", "soulBurn" })
                 Assert.That(map.Require<GameButton>(key).gameObject.activeInHierarchy, Is.False,
                     "Enemy actions must hide the entire player skill group: " + key);
@@ -428,13 +477,7 @@ namespace AstralOath.Client.Tests
                 "Skill borders and overlays must be hidden as well.");
 #if UNITY_EDITOR_WIN
             Assert.That(preview.StartedSkillSounds, Is.GreaterThan(soundsBeforeEnemy),
-                "The enemy action starts its original model sound.");
-            int beforeImpact = preview.StartedHitSounds;
-            deadline = Time.realtimeSinceStartup + 2f;
-            while (preview.StartedHitSounds == beforeImpact && Time.realtimeSinceStartup < deadline)
-                yield return null;
-            Assert.That(preview.StartedHitSounds, Is.GreaterThanOrEqualTo(beforeImpact + 2),
-                "The enemy impact plays both its blunt hit and the target's Japanese reaction.");
+                "The enemy hero action starts its original skill sound.");
 #endif
             string output = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_CAPTURE_DIR");
             if (!string.IsNullOrWhiteSpace(output))
@@ -459,7 +502,15 @@ namespace AstralOath.Client.Tests
             preview.StartBattle();
             const System.Reflection.BindingFlags flags = System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance;
             var simulation = typeof(BattleHudPreview).GetField("simulation", flags).GetValue(preview);
-            var match = (BattleMatch)simulation.GetType().GetField("match", flags).GetValue(simulation);
+            var source = (TextAsset)typeof(BattleHudPreview).GetField("battleCatalog", flags).GetValue(preview);
+            // Unity JsonUtility does not populate nullable skill coefficients. Use the same
+            // package parser as the live preview without changing the test assembly references.
+            var json = Type.GetType("Newtonsoft.Json.JsonConvert, Newtonsoft.Json", throwOnError: true);
+            var deserialize = json.GetMethods(BindingFlags.Public | BindingFlags.Static).Single(method =>
+                method.Name == "DeserializeObject" && !method.IsGenericMethod && method.GetParameters().Length == 2 &&
+                method.GetParameters()[0].ParameterType == typeof(string) && method.GetParameters()[1].ParameterType == typeof(Type));
+            var catalog = (BattleCatalogData)deserialize.Invoke(null, new object[] { source.text, typeof(BattleCatalogData) });
+            var match = BattlePreviewFactory.Create("slime-audio-test", 271828UL, catalog);
             BattleFlowEvent absorbedHit = null;
             BattleFlowEvent action = null;
 
@@ -492,6 +543,8 @@ namespace AstralOath.Client.Tests
 
             var hitTarget = match.Snapshot.GetUnit(absorbedHit.TargetId);
             var units = roots.Single(root => root.name == "Units").transform;
+            var attacker = match.Snapshot.GetUnit(action.SourceId);
+            BindSlimeModel(units.Find("Enemies").GetChild(attacker.Slot.Position - 1).GetComponentInChildren<BattlePreviewActor>());
             var targetActor = units.Find("Allies").GetChild(hitTarget.Slot.Position - 1)
                 .GetComponentInChildren<BattlePreviewActor>();
             var player = typeof(BattlePreviewActor).GetField("player", flags).GetValue(targetActor);
@@ -524,8 +577,8 @@ namespace AstralOath.Client.Tests
             yield return null;
             var units = scene.GetRootGameObjects().Single(root => root.name == "Units").transform;
             var actor = units.Find("Enemies").GetChild(0).GetComponentInChildren<BattlePreviewActor>();
-            var method = typeof(BattlePreviewActor).GetMethod("GetBattleAnimationEventTime",
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            BindSlimeModel(actor);
+            var method = typeof(BattlePreviewActor).GetMethod("GetBattleAnimationEventTime", PrivateInstance);
             Assert.That(method, Is.Not.Null, "Impact scheduling needs the original animation's hit timing.");
             Assert.That((float)method.Invoke(actor, new object[] { "skill1", "hit" }), Is.EqualTo(.7f).Within(.0001f));
             Assert.That((float)method.Invoke(actor, new object[] { "skill1", "missing" }), Is.EqualTo(-1f));

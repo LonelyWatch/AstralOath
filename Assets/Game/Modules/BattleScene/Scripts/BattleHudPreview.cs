@@ -67,7 +67,11 @@ namespace AstralOath.Client.BattleScene
             public BattleSkillPresentationAsset skeleton;
         }
 
-        [SerializeField] private string[] allyHeroIds;
+        public static IReadOnlyList<string> DefaultAllyHeroIds { get; } = Array.AsReadOnly(new[] { "c1001", "c1062", "c1005", "c1002" });
+        public static IReadOnlyList<string> DefaultEnemyHeroIds { get; } = Array.AsReadOnly(new[] { "c1003", "c1004", "c1006", "c1007" });
+
+        [SerializeField, HideInInspector] private string[] allyHeroIds;
+        [SerializeField, HideInInspector] private string[] enemyHeroIds;
         [SerializeField, HideInInspector] private HeroModel[] heroModels;
         private BattleHudBinder binder;
         private BattleSimulationPreview simulation;
@@ -93,39 +97,64 @@ namespace AstralOath.Client.BattleScene
             if (!Application.isPlaying || !hud || !hud.isActiveAndEnabled || !battleCatalog)
                 throw new InvalidOperationException("Open the battle scene in Play mode before starting.");
             var catalog = JsonConvert.DeserializeObject<BattleCatalogData>(battleCatalog.text);
-            var ids = allyHeroIds is { Length: > 0 } ? (IReadOnlyList<string>)allyHeroIds : BattlePreviewFactory.DefaultHeroIds;
-            var nextMatch = BattlePreviewFactory.Create("local", 271828UL, catalog, allyHeroIds: ids);
-            var models = ResolveAllyModels(ids);
+            var units = gameObject.scene.GetRootGameObjects().Single(root => root.name == "Units").transform;
+            var allyActors = GetTeamActors(units.Find("Allies"), DefaultAllyHeroIds.Count);
+            var enemyActors = GetTeamActors(units.Find("Enemies"), DefaultEnemyHeroIds.Count);
+            var allies = SelectHeroes(allyActors, allyHeroIds, DefaultAllyHeroIds);
+            var enemies = SelectHeroes(enemyActors, enemyHeroIds, DefaultEnemyHeroIds);
+            var nextMatch = BattlePreviewFactory.Create("local", 271828UL, catalog, allyHeroIds: allies, enemyHeroIds: enemies);
+            var models = (heroModels ?? Array.Empty<HeroModel>()).ToDictionary(model => model.id, StringComparer.Ordinal);
+            var allySlots = ResolveTeam(allyActors, allies, models);
+            var enemySlots = ResolveTeam(enemyActors, enemies, models);
             if (simulation != null) ClearBinding();
-            if (models != null) ApplyAllyModels(models);
+            ApplyTeam(allySlots);
+            ApplyTeam(enemySlots);
             UpdateBinding();
             simulation = new BattleSimulationPreview(gameObject.scene, hud, binder, catalog, battleSprites, battleGraphs,
                 skillAssets, audioCatalog, audioBanks, battleDamageFont, impactBank, stageBackground, unitPresentation, nextMatch);
             binder.AttachSimulation(simulation);
         }
 
-        private HeroModel[] ResolveAllyModels(IReadOnlyList<string> ids)
+        private static BattlePreviewActor[] GetTeamActors(Transform team, int size)
         {
-            // Scenes saved before roster selection keep their authored default actor references.
-            if (heroModels == null || heroModels.Length == 0)
-            {
-                if (ids.SequenceEqual(BattlePreviewFactory.DefaultHeroIds)) return null;
-                throw new InvalidOperationException("Battle preview has no imported hero roster.");
-            }
-            var models = heroModels.ToDictionary(model => model.id, StringComparer.Ordinal);
-            return ids.Select(id => models.TryGetValue(id, out var model) ? model :
-                throw new InvalidOperationException("Missing battle model for " + id)).ToArray();
+            if (!team || team.childCount != size)
+                throw new InvalidOperationException("Battle preview requires four slots per team.");
+            var actors = new BattlePreviewActor[size];
+            for (int index = 0; index < size; index++)
+                actors[index] = team.GetChild(index).GetComponentsInChildren<BattlePreviewActor>(true).Single();
+            return actors;
         }
 
-        private void ApplyAllyModels(IReadOnlyList<HeroModel> models)
+        private static string[] SelectHeroes(BattlePreviewActor[] actors, string[] overrides, IReadOnlyList<string> defaults)
         {
-            var allies = gameObject.scene.GetRootGameObjects().Single(root => root.name == "Units").transform.Find("Allies");
-            for (int i = 0; i < models.Count; i++)
+            if (overrides is { Length: > 0 } && overrides.Length != actors.Length)
+                throw new InvalidOperationException("Battle preview requires four roster overrides.");
+            return actors.Select((actor, index) =>
             {
-                var model = models[i];
-                var actor = allies.GetChild(i).GetComponentInChildren<BattlePreviewActor>(true);
-                actor.UseModel(model.skeleton, model.skin, $"{model.label} [{model.id}]");
+                string selected = overrides is { Length: > 0 } ? overrides[index] : null;
+                if (!string.IsNullOrEmpty(selected)) return selected;
+                return string.IsNullOrEmpty(actor.HeroId) ? defaults[index] : actor.HeroId;
+            }).ToArray();
+        }
+
+        private static (BattlePreviewActor Actor, HeroModel Model)[] ResolveTeam(BattlePreviewActor[] actors,
+            IReadOnlyList<string> ids, IReadOnlyDictionary<string, HeroModel> models)
+        {
+            var slots = new (BattlePreviewActor, HeroModel)[ids.Count];
+            for (int index = 0; index < ids.Count; index++)
+            {
+                var actor = actors[index];
+                if (!models.TryGetValue(ids[index], out var model))
+                    throw new InvalidOperationException("Missing battle model for " + ids[index]);
+                slots[index] = (actor, model);
             }
+            return slots;
+        }
+
+        private static void ApplyTeam((BattlePreviewActor Actor, HeroModel Model)[] slots)
+        {
+            foreach (var (actor, model) in slots)
+                actor.UseModel(model.skeleton, model.skin, $"{model.label} [{model.id}]");
         }
 
         public bool TrySelectBattleTarget(string instanceId) => simulation?.ChooseTarget(instanceId) == true;

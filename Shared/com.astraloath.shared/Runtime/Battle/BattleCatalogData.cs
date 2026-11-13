@@ -81,43 +81,60 @@ namespace AstralOath.Shared.Battle
         public static IReadOnlyList<string> DefaultHeroIds { get; } = Array.AsReadOnly(new[] { "c1001", "c1062", "c1005", "c1001" });
 
         public static BattleMatch Create(string battleId, ulong seed, BattleCatalogData data, bool duel = false,
-            IReadOnlyList<string> allyHeroIds = null)
+            IReadOnlyList<string> allyHeroIds = null) => Create(battleId, seed, data, allyHeroIds, null, duel);
+
+        public static BattleMatch Create(string battleId, ulong seed, BattleCatalogData data,
+            IReadOnlyList<string> allyHeroIds, IReadOnlyList<string> enemyHeroIds, bool duel = false)
         {
             if (data == null) throw new ArgumentNullException(nameof(data));
             if (data.schemaVersion != 2) throw new ArgumentException("Unsupported battle catalog schema.", nameof(data));
-            var programs = new BattleSkillResolver(data, includePreviewSlime: !duel);
             var heroes = data.heroes.ToDictionary(row => row.id, StringComparer.Ordinal);
-            var selectedHeroes = allyHeroIds ?? DefaultHeroIds;
-            if (selectedHeroes.Count != DefaultHeroIds.Count || selectedHeroes.Any(id => id == null || !heroes.ContainsKey(id)))
-                throw new ArgumentException("The battle roster must specify four known heroes.", nameof(allyHeroIds));
+            var allies = allyHeroIds ?? DefaultHeroIds;
+            var enemies = enemyHeroIds ?? (duel ? allies : null);
+            ValidateRoster(allies, nameof(allyHeroIds));
+            if (enemies != null) ValidateRoster(enemies, nameof(enemyHeroIds));
+
+            var programs = new BattleSkillResolver(data, includePreviewSlime: enemies == null);
             var growth = data.growthPresets.ToDictionary(row => row.id, StringComparer.Ordinal);
             var roster = new List<BattleUnit>();
-            for (int i = 0; i < selectedHeroes.Count; i++)
+            var definitions = new Dictionary<string, HeroDefinition>(StringComparer.Ordinal);
+            for (int index = 0; index < allies.Count; index++)
             {
-                var row = heroes[selectedHeroes[i]];
-                var presetRow = growth[row.growthPresetId];
-                var preset = new HeroGrowthPreset(presetRow.id, presetRow.nativeStars, presetRow.attackCoefficientMilli,
-                    presetRow.healthCoefficientMilli, presetRow.defenseCoefficientMilli, presetRow.speedMilli);
-                var steps = data.awakeningSteps.Where(step => step.heroId == row.id).OrderBy(step => step.rank)
-                    .Select(step => new HeroAwakeningStep(step.rank, step.attackFlat, step.healthFlat, step.attackPercentBp,
-                        step.healthPercentBp, step.defensePercentBp, step.speedFlat, step.critChanceBp,
-                        step.critDamageBp, step.effectivenessBp, step.effectResistanceBp));
-                var form = new BattleUnitForm(row.variant, row.id,
-                    data.skills.Where(skill => skill.heroId == row.id).OrderBy(skill => skill.slot).Select(skill => skill.id));
-                var hero = new HeroDefinition(row.id, row.nameKey, ReadElement(row.element),
-                    row.heroClass, row.zodiac, form, preset, steps);
-                int slot = i + 1;
-                roster.Add(BattleUnit.CreateHero($"ally-{slot}", hero, new BattleSlot(BattleSide.Ally, slot),
-                    row.level, row.stars, row.awakenings));
-                roster.Add(duel
-                    ? BattleUnit.CreateHero($"enemy-{slot}", hero, new BattleSlot(BattleSide.Enemy, slot),
-                        row.level, row.stars, row.awakenings)
-                    : Slime(slot));
+                int slot = index + 1;
+                roster.Add(CreateHero(allies[index], BattleSide.Ally, "ally-", slot));
+                roster.Add(enemies == null ? Slime(slot) : CreateHero(enemies[index], BattleSide.Enemy, "enemy-", slot));
             }
 
             // The local exercise starts with souls to make all three heroes' Soul Burns testable.
             var rules = new BattleFlowRules(openingReadinessMaxBp: 500, initialAllySoul: duel ? 0 : 20);
             return new BattleMatch(battleId, RulesVersion, seed, new BattleFormation(roster), programs, rules);
+
+            void ValidateRoster(IReadOnlyList<string> selection, string parameter)
+            {
+                if (selection.Count != DefaultHeroIds.Count || selection.Any(id => id == null || !heroes.ContainsKey(id)))
+                    throw new ArgumentException("The battle roster must specify four known heroes.", parameter);
+            }
+
+            BattleUnit CreateHero(string id, BattleSide side, string prefix, int slot)
+            {
+                var row = heroes[id];
+                if (!definitions.TryGetValue(id, out var hero))
+                {
+                    var presetRow = growth[row.growthPresetId];
+                    var preset = new HeroGrowthPreset(presetRow.id, presetRow.nativeStars, presetRow.attackCoefficientMilli,
+                        presetRow.healthCoefficientMilli, presetRow.defenseCoefficientMilli, presetRow.speedMilli);
+                    var steps = data.awakeningSteps.Where(step => step.heroId == row.id).OrderBy(step => step.rank)
+                        .Select(step => new HeroAwakeningStep(step.rank, step.attackFlat, step.healthFlat, step.attackPercentBp,
+                            step.healthPercentBp, step.defensePercentBp, step.speedFlat, step.critChanceBp,
+                            step.critDamageBp, step.effectivenessBp, step.effectResistanceBp));
+                    var form = new BattleUnitForm(row.variant, row.id,
+                        data.skills.Where(skill => skill.heroId == row.id).OrderBy(skill => skill.slot).Select(skill => skill.id));
+                    hero = new HeroDefinition(row.id, row.nameKey, ReadElement(row.element),
+                        row.heroClass, row.zodiac, form, preset, steps);
+                    definitions.Add(id, hero);
+                }
+                return BattleUnit.CreateHero(prefix + slot, hero, new BattleSlot(side, slot), row.level, row.stars, row.awakenings);
+            }
         }
 
         private static BattleElement ReadElement(string element) =>

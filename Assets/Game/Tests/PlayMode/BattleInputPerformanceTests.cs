@@ -9,7 +9,6 @@ using AstralOath.Client.BattleScene;
 using AstralOath.Client.Common;
 using AstralOath.Shared.Battle;
 using NUnit.Framework;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
@@ -26,11 +25,13 @@ namespace AstralOath.Client.Tests
         public IEnumerator RealSkillInputsMeasureFullActionFrames()
         {
             var watch = Stopwatch.StartNew();
-            scene = EditorSceneManager.LoadSceneInPlayMode("Assets/Game/Modules/BattleScene/Scenes/BattleScene.unity", new LoadSceneParameters(LoadSceneMode.Additive));
+            scene = BattleScenePreviewTests.LoadPlayerOpeningScene();
             double sceneMs = watch.Elapsed.TotalMilliseconds;
             yield return null; yield return null;
             var host = scene.GetRootGameObjects().SelectMany(root => root.GetComponentsInChildren<BattleHudPreview>()).Single();
             var map = scene.GetRootGameObjects().SelectMany(root => root.GetComponentsInChildren<BindingMap>()).Single();
+            var catalogAsset = (TextAsset)typeof(BattleHudPreview).GetField("battleCatalog", Flags).GetValue(host);
+            var skills = JsonUtility.FromJson<BattleCatalogData>(catalogAsset.text).skills.ToDictionary(row => row.id);
             var simulation = typeof(BattleHudPreview).GetField("simulation", Flags).GetValue(host);
             Assert.That(simulation, Is.Not.Null);
             var busy = simulation.GetType().GetProperty("Busy", Flags);
@@ -57,9 +58,9 @@ namespace AstralOath.Client.Tests
                 int desiredSlot = input < 4 ? 3 : input < 8 ? 2 : 1;
                 var button = map.Require<GameButton>("skill" + desiredSlot);
                 if (!button.interactable) { desiredSlot = 1; button = map.Require<GameButton>("skill1"); }
-                bool friendly = actor.DefinitionId == "c1062" && desiredSlot > 1;
-                var target = snapshot.Units.First(unit => unit.IsAlive && (unit.Slot.Side == actor.Slot.Side) == friendly);
                 string skill = actor.Form.SkillIds[desiredSlot - 1];
+                bool friendly = skills[skill].target is "one_ally" or "all_allies";
+                var target = snapshot.Units.First(unit => unit.IsAlive && (unit.Slot.Side == actor.Slot.Side) == friendly);
                 ulong previous = snapshot.LastCommandSequence;
                 watch.Restart();
                 button.onClick.Invoke();

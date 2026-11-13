@@ -9,7 +9,6 @@ using AstralOath.Client.BattleScene;
 using AstralOath.Client.Common;
 using AstralOath.Shared.Battle;
 using NUnit.Framework;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
@@ -27,9 +26,7 @@ namespace AstralOath.Client.Tests
         [UnitySetUp]
         public IEnumerator Load()
         {
-            scene = EditorSceneManager.LoadSceneInPlayMode(
-                "Assets/Game/Modules/BattleScene/Scenes/BattleScene.unity",
-                new LoadSceneParameters(LoadSceneMode.Additive));
+            scene = BattleScenePreviewTests.LoadPlayerOpeningScene();
             yield return null;
             yield return null;
             host = scene.GetRootGameObjects().SelectMany(root => root.GetComponentsInChildren<BattleHudPreview>()).Single();

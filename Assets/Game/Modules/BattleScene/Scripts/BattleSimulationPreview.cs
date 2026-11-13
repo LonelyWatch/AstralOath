@@ -76,7 +76,8 @@ namespace AstralOath.Client.BattleScene
                     string team = state.Slot.Side == BattleSide.Ally ? "Allies" : "Enemies";
                     var slot = units.Find(team).GetChild(state.Slot.Position - 1);
                     var marker = hud.transform.Find($"Unit Status/{team}/{slot.name}").gameObject;
-                    views.Add(state.InstanceId, new View(slot, marker, camera, unitPresentation, deathTextures, statusArt, shieldAura));
+                    sprites.TryGetValue("game_hud_bar_" + state.Element.ToString().ToLowerInvariant(), out var element);
+                    views.Add(state.InstanceId, new View(slot, marker, camera, unitPresentation, deathTextures, statusArt, shieldAura, element));
                 }
             }
             catch
@@ -396,7 +397,8 @@ namespace AstralOath.Client.BattleScene
                     hitTimes = skillPresentation.HitTimes.ToArray();
                     float lastHit = hitTimes.Length == 0 ? impactSeconds : hitTimes[hitTimes.Length - 1];
                     actionDuration = Mathf.Max(timing.Duration, lastHit + 0.15f);
-                    string name = skills.TryGetValue(item.SkillId, out var skill) ? Label(skill.nameKey) : "史莱姆攻击";
+                    string name = skills.TryGetValue(item.SkillId, out var skill) ? Label(skill.nameKey) :
+                        item.SkillId == BattlePreviewFactory.SlimeSkillId ? "史莱姆攻击" : item.SkillId;
                     banner.text = name;
                     break;
                 case BattleFlowEventKind.BarrierAbsorbed:
@@ -698,7 +700,8 @@ namespace AstralOath.Client.BattleScene
         {
             private readonly Transform slot;
             private readonly GameObject marker;
-            private readonly Image readiness;
+            private readonly Image readiness, elementBadge;
+            private readonly Sprite originalElement;
             private readonly float originalHealth;
             private readonly float originalReadiness;
             private readonly BattleUnitStatusPresentation status;
@@ -716,13 +719,16 @@ namespace AstralOath.Client.BattleScene
             private Image levelBadge;
 
             public View(Transform slot, GameObject marker, Camera camera, BattleUnitPresentationProfile profile,
-                IReadOnlyDictionary<string, Texture2D> deathTextures, BattleStatusArt statusArt, BattleShieldAura.Definition auraDefinition)
+                IReadOnlyDictionary<string, Texture2D> deathTextures, BattleStatusArt statusArt,
+                BattleShieldAura.Definition auraDefinition, Sprite element)
             {
                 this.slot = slot;
                 this.marker = marker;
                 Actor = slot.GetComponentInChildren<BattlePreviewActor>();
                 Health = marker.transform.Find("HP").GetComponent<Image>();
                 readiness = marker.transform.Find("Combat Readiness").GetComponent<Image>();
+                elementBadge = marker.transform.Find("Element").GetComponent<Image>();
+                originalElement = elementBadge.sprite;
                 FeedbackAnchor = (RectTransform)marker.transform.Find("Frame");
                 originalHealth = Health.fillAmount;
                 originalReadiness = readiness.fillAmount;
@@ -731,7 +737,8 @@ namespace AstralOath.Client.BattleScene
                     StatusAnchor, camera, profile ? profile.DamageTrail : null, profile ? profile.HealthDivider : null,
                     profile ? profile.HealthSections : 10);
                 statusIcons = new BattleStatusIcons(FeedbackAnchor, statusArt, profile ? profile.StatusIconsPerRow : 5);
-                shieldAura = new BattleShieldAura(auraDefinition, Actor.PresentationShadow);
+                shieldAura = new BattleShieldAura(auraDefinition, Actor.PresentationShadow, Actor.PresentationRenderer);
+                if (element) elementBadge.sprite = element;
                 if (profile)
                 {
                     status.SetShieldSprite(profile.Shield);
@@ -740,7 +747,7 @@ namespace AstralOath.Client.BattleScene
                     status.TrailDelaySeconds = profile.TrailDelaySeconds; status.TrailSeconds = profile.TrailSeconds;
                 }
                 try { PrepareDeath(); }
-                catch { shieldAura.Dispose(); statusIcons.Dispose(); status.Dispose(); throw; }
+                catch { shieldAura.Dispose(); statusIcons.Dispose(); status.Dispose(); elementBadge.sprite = originalElement; throw; }
             }
             public BattlePreviewActor Actor { get; }
             public Image Health { get; }
@@ -882,6 +889,7 @@ namespace AstralOath.Client.BattleScene
                 if (!marker) return;
                 marker.SetActive(true);
                 Health.fillAmount = originalHealth;
+                elementBadge.sprite = originalElement;
                 readiness.fillAmount = originalReadiness;
             }
         }

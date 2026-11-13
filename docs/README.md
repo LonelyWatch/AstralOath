@@ -21,6 +21,7 @@
 - 热更/强更：[构建操作](development/hot-update.md)、[更新能力核对](delivery/2026-11-12-foundation-reaudit.md)、[HybridCLR 决策](architecture/adr/007-hybridclr.md)。
 - 服务端/数据库：[开发运维](development/server.md)、[服务端架构](architecture/server.md)。
 - 角色资源：[角色实验室](development/character-lab.md)、[通用导入规则](development/character-asset-import.md)、[CharacterPresentation](../Assets/Game/Modules/CharacterPresentation/README.md)、[CharacterLab](../Assets/Game/Modules/CharacterLab/README.md)。
+- 八英雄战斗场景：[换人、通用 Prefab 与跟随回归](delivery/2026-11-13-eight-hero-battle.md)。
 - 十名角色：[操作与验收](delivery/2026-11-13-ten-hero-roster.md)、[源图和资源审计](delivery/2026-11-13-ten-hero-source-audit.md)。
 - S1/S3当前修复：[镜头事件窗口、目标身体和信息条](delivery/2026-11-13-camera-visibility-fixes.md)、[原作参考范围](delivery/2026-11-13-camera-visibility-reference.md)。
 - 头顶状态与护盾：[排序、资源、事件和画面验证](delivery/2026-11-13-battle-status-shield.md)、[原版六层护盾和底板校正](delivery/2026-11-13-battle-shield-refinement.md)。

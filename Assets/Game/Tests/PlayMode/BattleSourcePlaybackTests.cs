@@ -48,8 +48,8 @@ namespace AstralOath.Client.Tests
 
             var allies = units.Find("Allies").GetComponentsInChildren<BattlePreviewActor>();
             var enemies = units.Find("Enemies").GetComponentsInChildren<BattlePreviewActor>();
-            var target = enemies.Single(actor => actor.name == "Ice Slime");
-            var secondEnemy = enemies.Single(actor => actor.name == "Fire Slime");
+            var target = enemies[0];
+            var secondEnemy = enemies[1];
             var ras = allies.Single(actor => actor.name == "Ras [c1001]");
             var mercedes = allies.Single(actor => actor.name == "Mercedes [c1005]");
             var allEnemyTargets = new[] { target }.Concat(enemies.Where(actor => actor != target)).ToArray();
@@ -129,6 +129,7 @@ namespace AstralOath.Client.Tests
             Assert.That(graphs.Length, Is.EqualTo(30));
             var selection = typeof(BattleHudPreview).GetField("allyHeroIds", PrivateInstance);
             var map = HostField<BindingMap>(host, "hud");
+            typeof(BattleHudPreview).GetField("enemyHeroIds", PrivateInstance).SetValue(host, BattleScenePreviewTests.SlowEnemyIds());
             host.enabled = true;
             foreach (string id in added)
             {
