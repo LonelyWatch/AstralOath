@@ -1,0 +1,265 @@
+
+upi_skeff_sk3_bg.sct
+size: 943,1358
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+b_wave_1_1
+  rotate: false
+  xy: 751, 629
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+b_wave_1_2
+  rotate: false
+  xy: 184, 1185
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+b_wave_1_3
+  rotate: false
+  xy: 355, 1167
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+crack_2
+  rotate: true
+  xy: 835, 329
+  size: 298, 106
+  orig: 298, 106
+  offset: 0, 0
+  index: -1
+crack_glow_1
+  rotate: true
+  xy: 184, 846
+  size: 337, 121
+  orig: 337, 121
+  offset: 0, 0
+  index: -1
+crack_glow_2
+  rotate: true
+  xy: 307, 846
+  size: 315, 94
+  orig: 315, 94
+  offset: 0, 0
+  index: -1
+crack_layer
+  rotate: true
+  xy: 850, 2
+  size: 218, 78
+  orig: 218, 78
+  offset: 0, 0
+  index: -1
+crack_shadow
+  rotate: false
+  xy: 2, 371
+  size: 472, 246
+  orig: 472, 246
+  offset: 0, 0
+  index: -1
+dusts_back_3
+  rotate: false
+  xy: 850, 222
+  size: 85, 103
+  orig: 85, 103
+  offset: 0, 0
+  index: -1
+dusts_midlle_1
+  rotate: true
+  xy: 419, 619
+  size: 218, 148
+  orig: 218, 148
+  offset: 0, 0
+  index: -1
+dusts_midlle_2
+  rotate: true
+  xy: 696, 329
+  size: 240, 137
+  orig: 240, 137
+  offset: 0, 0
+  index: -1
+dusts_midlle_3
+  rotate: true
+  xy: 476, 371
+  size: 221, 218
+  orig: 221, 218
+  offset: 0, 0
+  index: -1
+light_pillar_2
+  rotate: false
+  xy: 403, 846
+  size: 113, 206
+  orig: 113, 206
+  offset: 0, 0
+  index: -1
+rock/bg_rock_B_01
+  rotate: false
+  xy: 403, 1054
+  size: 170, 111
+  orig: 170, 111
+  offset: 0, 0
+  index: -1
+rock/bg_rock_B_03
+  rotate: true
+  xy: 526, 1167
+  size: 163, 162
+  orig: 163, 162
+  offset: 0, 0
+  index: -1
+rock/bg_rock_B_04
+  rotate: true
+  xy: 2, 846
+  size: 448, 180
+  orig: 448, 180
+  offset: 0, 0
+  index: -1
+rock/bg_rock_B_05
+  rotate: true
+  xy: 730, 800
+  size: 135, 147
+  orig: 135, 147
+  offset: 0, 0
+  index: -1
+rock/bg_rock_B_06
+  rotate: false
+  xy: 2, 619
+  size: 415, 225
+  orig: 415, 225
+  offset: 0, 0
+  index: -1
+rock/bg_rock_B_07
+  rotate: false
+  xy: 645, 941
+  size: 149, 122
+  orig: 149, 122
+  offset: 0, 0
+  index: -1
+rock/bg_rock_B_08
+  rotate: true
+  xy: 796, 937
+  size: 136, 108
+  orig: 136, 108
+  offset: 0, 0
+  index: -1
+rock/bg_rock_B_10
+  rotate: false
+  xy: 690, 1146
+  size: 88, 77
+  orig: 88, 77
+  offset: 0, 0
+  index: -1
+rock/bg_rock_B_11
+  rotate: false
+  xy: 879, 800
+  size: 48, 65
+  orig: 48, 65
+  offset: 0, 0
+  index: -1
+rock/bg_rock_B_12
+  rotate: true
+  xy: 569, 795
+  size: 39, 61
+  orig: 39, 61
+  offset: 0, 0
+  index: -1
+rock/bg_rock_B_13
+  rotate: true
+  xy: 645, 795
+  size: 144, 83
+  orig: 144, 83
+  offset: 0, 0
+  index: -1
+rock/bg_rock_B_14
+  rotate: false
+  xy: 2, 1296
+  size: 45, 60
+  orig: 45, 60
+  offset: 0, 0
+  index: -1
+rock/bg_rock_B_16
+  rotate: false
+  xy: 49, 1296
+  size: 81, 59
+  orig: 81, 59
+  offset: 0, 0
+  index: -1
+rock/bg_rock_B_17
+  rotate: false
+  xy: 879, 867
+  size: 52, 58
+  orig: 52, 58
+  offset: 0, 0
+  index: -1
+rock/bg_rock_F_01
+  rotate: true
+  xy: 569, 594
+  size: 199, 180
+  orig: 199, 180
+  offset: 0, 0
+  index: -1
+rock/bg_rock_F_02
+  rotate: true
+  xy: 657, 2
+  size: 325, 191
+  orig: 325, 191
+  offset: 0, 0
+  index: -1
+rock/bg_rock_F_03
+  rotate: false
+  xy: 690, 1225
+  size: 135, 111
+  orig: 135, 111
+  offset: 0, 0
+  index: -1
+rock/bg_rock_F_04
+  rotate: false
+  xy: 575, 1065
+  size: 112, 80
+  orig: 112, 80
+  offset: 0, 0
+  index: -1
+rock/bg_rock_F_05
+  rotate: false
+  xy: 827, 1189
+  size: 107, 108
+  orig: 107, 108
+  offset: 0, 0
+  index: -1
+rock/bg_rock_F_06
+  rotate: false
+  xy: 792, 1075
+  size: 149, 112
+  orig: 149, 112
+  offset: 0, 0
+  index: -1
+rock/bg_rock_F_07
+  rotate: true
+  xy: 689, 1065
+  size: 79, 101
+  orig: 79, 101
+  offset: 0, 0
+  index: -1
+rock/bg_rock_F_08
+  rotate: true
+  xy: 518, 839
+  size: 199, 125
+  orig: 199, 125
+  offset: 0, 0
+  index: -1
+rock/bg_rock_F_09
+  rotate: true
+  xy: 132, 1296
+  size: 51, 45
+  orig: 51, 45
+  offset: 0, 0
+  index: -1
+rock/bg_rock_base
+  rotate: false
+  xy: 2, 2
+  size: 653, 367
+  orig: 653, 367
+  offset: 0, 0
+  index: -1

@@ -132,3 +132,14 @@
 ,c1015.s3.2,c1015.s3,2,after_hit,apply_status,targets,DefenseDown,6500,2,7000,caster_skill_awakened,none,0
 ,c1015.s3.3,c1015.s3,3,after_hit,apply_status,targets,SpeedDown,6500,2,3000,none,none,0
 ,c1015.s3.4,c1015.s3,4,after_hit,apply_status,targets,Unhealable,6500,2,0,none,none,0
+,c1016.s1.1,c1016.s1,1,impact,damage,targets,none,10000,0,0,none,none,0
+,c1016.s1.2,c1016.s1,2,after_hit,apply_status,targets,DefenseDown,3500,2,7000,none,none,0
+,c1016.s2.1,c1016.s2,1,impact,damage,targets,none,10000,0,0,none,none,0
+,c1016.s2.2,c1016.s2,2,after_hit,dispel,targets,none,10000,0,1,none,none,0
+,c1016.s2.3,c1016.s2,3,after_hit,apply_status,targets,DefenseDown,6000,2,7000,none,none,0
+,c1016.s2.4,c1016.s2,4,after_hit,apply_status,targets,Silence,7500,1,0,none,none,0
+,c1016.s3.1,c1016.s3,1,impact,apply_status,self,AttackUp,10000,2,5000,none,none,0
+,c1016.s3.2,c1016.s3,2,impact,damage_bonus,self,none,10000,0,5000,recipient_debuffed_after_skill_awakening,none,0
+,c1016.s3.3,c1016.s3,3,impact,damage,targets,none,10000,0,0,none,none,0
+,c1016.s3.4,c1016.s3,4,after_attack,grant_extra_turn,self,none,10000,0,0,defeated_target,none,0
+,c1016.s3.5,c1016.s3,5,after_ally_skill,readiness,self,none,10000,0,2000,enemy_debuffed,none,0

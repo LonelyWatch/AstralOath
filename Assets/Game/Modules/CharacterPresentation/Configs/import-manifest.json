@@ -17,6 +17,7 @@
     "c1013",
     "c1014",
     "c1015",
+    "c1016",
     "c1062"
   ],
   "entries": [
@@ -2198,6 +2199,162 @@
         "characterlab/source/camera/wildred_sk3_cm.scsp/json"
       ],
       "outputSha256": "7fb49ee7f1e1db328164a007882b7e6179291c0c8097ab7c0797b1f8f70fc330",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "camera/yupine_cm_sk1.scsp",
+      "sourceSha256": "92bc700364c44293f2d89d12e7fa86688f6240b683c4e85906baaf3d270158bf",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/camera/yupine_cm_sk1.spine.json",
+      "address": "characterlab/source/camera/yupine_cm_sk1.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "5778b40b2a007f881655fe205d9a4921e471fc359dc14bdcb096904563150ada",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 757,
+        "consumedBytes": 757,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 1,
+            "frames": 40,
+            "segments": 39,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 0,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 38,
+              "stepped": 1,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "camera/yupine_cm_sk1.scsp",
+      "sourceSha256": "92bc700364c44293f2d89d12e7fa86688f6240b683c4e85906baaf3d270158bf",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/camera/yupine_cm_sk1.skeleton.json",
+      "address": "characterlab/source/camera/yupine_cm_sk1.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/camera/yupine_cm_sk1.scsp/json"
+      ],
+      "outputSha256": "cc269c608ea707bd984fbfb0f3061bf7f7d40b4827653e626bb2794242f36695",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "camera/yupine_cm_sk2.scsp",
+      "sourceSha256": "2f6591b195bdd4bf7be2c4430633e76d6b982cc860037adb34c0c3ff81ae67aa",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/camera/yupine_cm_sk2.spine.json",
+      "address": "characterlab/source/camera/yupine_cm_sk2.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "0045c02544ba5d3031bc9ecf8efd0706e69bd7a1189f9d97eddbcd741f480dff",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 731,
+        "consumedBytes": 731,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 1,
+            "frames": 38,
+            "segments": 37,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 0,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 36,
+              "stepped": 1,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "camera/yupine_cm_sk2.scsp",
+      "sourceSha256": "2f6591b195bdd4bf7be2c4430633e76d6b982cc860037adb34c0c3ff81ae67aa",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/camera/yupine_cm_sk2.skeleton.json",
+      "address": "characterlab/source/camera/yupine_cm_sk2.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/camera/yupine_cm_sk2.scsp/json"
+      ],
+      "outputSha256": "2fd98acd98a32ce08a07f4c4b6309464621608220bead16522e0944e4377abd3",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "camera/yupine_cm_sk3.scsp",
+      "sourceSha256": "a770fdeb49ca663b23dbf2ea0fa78fbf2a9f33b7fa138adef42569b74b15effb",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/camera/yupine_cm_sk3.spine.json",
+      "address": "characterlab/source/camera/yupine_cm_sk3.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "0aa1e500944cc66e5c90c1bd483b3a4ffcdb6bbecb5f20d6fde26b22011733d8",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 1355,
+        "consumedBytes": 1355,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 1,
+            "frames": 86,
+            "segments": 85,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 0,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 79,
+              "stepped": 6,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "camera/yupine_cm_sk3.scsp",
+      "sourceSha256": "a770fdeb49ca663b23dbf2ea0fa78fbf2a9f33b7fa138adef42569b74b15effb",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/camera/yupine_cm_sk3.skeleton.json",
+      "address": "characterlab/source/camera/yupine_cm_sk3.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/camera/yupine_cm_sk3.scsp/json"
+      ],
+      "outputSha256": "6a20356d88c2647f0850b0d6545a62b42c4dc6f366e1e9c8524c58a836b37ed1",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
@@ -5703,6 +5860,245 @@
         "status": "converted",
         "frameCount": 21,
         "durationSeconds": 1.5899999999999999
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1016_3.webp",
+      "sourceSha256": "04a731c6e93b859ef5e97714e0f5c3fd663e547835a54e8d592cfdfe4756759f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0000.png",
+      "address": "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0000",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "68500f099c4a02b5968ea6483f8e528a89af392e88f584eab31d33b8387f8746",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 0
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1016_3.webp",
+      "sourceSha256": "04a731c6e93b859ef5e97714e0f5c3fd663e547835a54e8d592cfdfe4756759f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0001.png",
+      "address": "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0001",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "57f419d30be961356bdda2f7f45eadd99d24078e61878d21e4e902a2662223ca",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 1
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1016_3.webp",
+      "sourceSha256": "04a731c6e93b859ef5e97714e0f5c3fd663e547835a54e8d592cfdfe4756759f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0002.png",
+      "address": "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0002",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "2a46c1cb560964a682ef891a9a100537bba86f0a2ccef8ea2a5dafa93edb3c10",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 2
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1016_3.webp",
+      "sourceSha256": "04a731c6e93b859ef5e97714e0f5c3fd663e547835a54e8d592cfdfe4756759f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0003.png",
+      "address": "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0003",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "6113f193060e5b2366a0360907183fb6f88180e2b9e210c4a7c571ab899347bb",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 3
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1016_3.webp",
+      "sourceSha256": "04a731c6e93b859ef5e97714e0f5c3fd663e547835a54e8d592cfdfe4756759f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0004.png",
+      "address": "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0004",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "91bd13abd13135502836b03fd15558699f56a70e833b356d7108afa06f279f05",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 4
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1016_3.webp",
+      "sourceSha256": "04a731c6e93b859ef5e97714e0f5c3fd663e547835a54e8d592cfdfe4756759f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0005.png",
+      "address": "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0005",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "52751f1d9a49cd09e1c3fac1713fa443d031075b496782ee64901209ebc7d83f",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 5
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1016_3.webp",
+      "sourceSha256": "04a731c6e93b859ef5e97714e0f5c3fd663e547835a54e8d592cfdfe4756759f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0006.png",
+      "address": "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0006",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "c7f503c9a37e27f4e53c79af477e1200b5c14d86ea0890955333f0da09b29e0f",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 6
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1016_3.webp",
+      "sourceSha256": "04a731c6e93b859ef5e97714e0f5c3fd663e547835a54e8d592cfdfe4756759f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0007.png",
+      "address": "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0007",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "feaad5939f2fa429b7471141a0e276e658d731f62feb9a69f405d5777b4a1a07",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 7
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1016_3.webp",
+      "sourceSha256": "04a731c6e93b859ef5e97714e0f5c3fd663e547835a54e8d592cfdfe4756759f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0008.png",
+      "address": "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0008",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "44639ca6a268d7f62fee0e26426703b9770f207219b026e22da4f223e4572ad0",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 8
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1016_3.webp",
+      "sourceSha256": "04a731c6e93b859ef5e97714e0f5c3fd663e547835a54e8d592cfdfe4756759f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0009.png",
+      "address": "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0009",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "1f9e8979b8dc34fa97d8ea8fec7bca797966b22d6d65999a092a50e333e39062",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 9
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1016_3.webp",
+      "sourceSha256": "04a731c6e93b859ef5e97714e0f5c3fd663e547835a54e8d592cfdfe4756759f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0010.png",
+      "address": "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0010",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "9791a3631140ec27b08e27ccb84d4997fcb1b1401e513e63f1f2382d5fb1d4b2",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 10
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1016_3.webp",
+      "sourceSha256": "04a731c6e93b859ef5e97714e0f5c3fd663e547835a54e8d592cfdfe4756759f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0011.png",
+      "address": "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0011",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "b0e8865e664c285a6a9d0fea512264064af7024eaa9cbd8983ec21debb768042",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 11
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1016_3.webp",
+      "sourceSha256": "04a731c6e93b859ef5e97714e0f5c3fd663e547835a54e8d592cfdfe4756759f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0012.png",
+      "address": "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0012",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "bfa856bb415deda6016da441595e5702f94c52010cd7a102c8ba89a111260b0d",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 12
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1016_3.webp",
+      "sourceSha256": "04a731c6e93b859ef5e97714e0f5c3fd663e547835a54e8d592cfdfe4756759f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0013.png",
+      "address": "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0013",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "123add7bb7934c54933b5f3f96df5720b6f43221e1b4cc10e27a52c40ec1ca50",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 13
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1016_3.webp",
+      "sourceSha256": "04a731c6e93b859ef5e97714e0f5c3fd663e547835a54e8d592cfdfe4756759f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0014.png",
+      "address": "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0014",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "6a466c57c98396f4f6b45a568c3175f1d1bafe740daae9c3bd0839f68d75926f",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 14
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1016_3.webp",
+      "sourceSha256": "04a731c6e93b859ef5e97714e0f5c3fd663e547835a54e8d592cfdfe4756759f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0015.png",
+      "address": "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0015",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "fbf16e8a7825606c91808c4c6d291cb15545bf31980600b2202b2af0d70651e3",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 15
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1016_3.webp",
+      "sourceSha256": "04a731c6e93b859ef5e97714e0f5c3fd663e547835a54e8d592cfdfe4756759f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3.cutin.json",
+      "address": "characterlab/source/cut/fhd/sk_c1016_3.webp",
+      "type": "cutin",
+      "dependencies": [
+        "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0000",
+        "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0001",
+        "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0002",
+        "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0003",
+        "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0004",
+        "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0005",
+        "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0006",
+        "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0007",
+        "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0008",
+        "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0009",
+        "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0010",
+        "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0011",
+        "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0012",
+        "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0013",
+        "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0014",
+        "characterlab/source/cut/fhd/sk_c1016_3.webp/frame/0015"
+      ],
+      "outputSha256": "e725972bad43a16031f15d293b9c1b011cc85b60a063a2eceae8586ddae77c4d",
+      "conversion": {
+        "status": "converted",
+        "frameCount": 16,
+        "durationSeconds": 0.89
       }
     },
     {
@@ -20321,6 +20717,608 @@
       }
     },
     {
+      "source": "effect/upi_skeff_bi.atlas",
+      "sourceSha256": "12cf324eac231ad66299d6fc0c20abf2abdb6bff93a363bce9ed2ab40a8977e1",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Atlas/effect/upi_skeff_bi.atlas.txt",
+      "address": "characterlab/source/effect/upi_skeff_bi.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/upi_skeff_bi.sct"
+      ],
+      "outputSha256": "12cf324eac231ad66299d6fc0c20abf2abdb6bff93a363bce9ed2ab40a8977e1",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/upi_skeff_bi.scsp",
+      "sourceSha256": "06c4557cb97628fbd86a90e1fe182d9c1fdb5235920a86cdcf91cfde1bb1f436",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_bi.spine.json",
+      "address": "characterlab/source/effect/upi_skeff_bi.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "da903727cf5389ea71996fc11455ada96b177412c5ae7ab9e50ba690754cb251",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 3735,
+        "consumedBytes": 3735,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 32,
+            "frames": 59,
+            "segments": 27,
+            "sourceMarkers": {
+              "allLinear": 24,
+              "allStepped": 0,
+              "explicit": 8
+            },
+            "modes": {
+              "linear": 17,
+              "stepped": 4,
+              "bezier": 6
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/upi_skeff_bi.scsp",
+      "sourceSha256": "06c4557cb97628fbd86a90e1fe182d9c1fdb5235920a86cdcf91cfde1bb1f436",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_bi.skeleton.json",
+      "address": "characterlab/source/effect/upi_skeff_bi.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/upi_skeff_bi.scsp/json",
+        "characterlab/source/effect/upi_skeff_bi.atlas",
+        "characterlab/source/effect/upi_skeff_bi.sct"
+      ],
+      "outputSha256": "1b92986f8fe57e95769642b029d8ac07c98165a690f5a7429ec0b67248998137",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/upi_skeff_bi.sct",
+      "sourceSha256": "056d7639aaa7afd400e132ef86f2c6b1223fc239ccc73289a91d4a0680c3c55a",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Textures/effect/upi_skeff_bi.png",
+      "address": "characterlab/source/effect/upi_skeff_bi.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "f7b227ee93ef6459d47484d89aafd468184dda4eda07e8f7c2c1036dc11818b5",
+      "conversion": {
+        "status": "converted",
+        "width": 455,
+        "height": 342,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "056d7639aaa7afd400e132ef86f2c6b1223fc239ccc73289a91d4a0680c3c55a",
+        "outputSha256": "f7b227ee93ef6459d47484d89aafd468184dda4eda07e8f7c2c1036dc11818b5"
+      }
+    },
+    {
+      "source": "effect/upi_skeff_sk1.atlas",
+      "sourceSha256": "e628761acd0a0286505677a722d8922968e7faccc4f912ee3d07a0184ab64f91",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Atlas/effect/upi_skeff_sk1.atlas.txt",
+      "address": "characterlab/source/effect/upi_skeff_sk1.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/upi_skeff_sk1.sct"
+      ],
+      "outputSha256": "e628761acd0a0286505677a722d8922968e7faccc4f912ee3d07a0184ab64f91",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/upi_skeff_sk1.scsp",
+      "sourceSha256": "d45717c9350d02ced76e0778b83231755a12350d10d2140a496221327047bf88",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_sk1.spine.json",
+      "address": "characterlab/source/effect/upi_skeff_sk1.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "2a2be07c7f9f83a90f1549c6ffdcd5c8ada53c24c9fd5eae62800c82323eebda",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 45349,
+        "consumedBytes": 45349,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 154,
+            "frames": 411,
+            "segments": 257,
+            "sourceMarkers": {
+              "allLinear": 70,
+              "allStepped": 3,
+              "explicit": 81
+            },
+            "modes": {
+              "linear": 132,
+              "stepped": 60,
+              "bezier": 65
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/upi_skeff_sk1.scsp",
+      "sourceSha256": "d45717c9350d02ced76e0778b83231755a12350d10d2140a496221327047bf88",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_sk1.skeleton.json",
+      "address": "characterlab/source/effect/upi_skeff_sk1.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/upi_skeff_sk1.scsp/json",
+        "characterlab/source/effect/upi_skeff_sk1.atlas",
+        "characterlab/source/effect/upi_skeff_sk1.sct"
+      ],
+      "outputSha256": "cf075c54392e8a907b8ee9126da76a1624db41460e87ceb5dd31bd93b6152083",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/upi_skeff_sk1.sct",
+      "sourceSha256": "ab326c6c4fa6cfc5d18fc52c17208eb70d75245b15f950471f6ad22a48a29026",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Textures/effect/upi_skeff_sk1.png",
+      "address": "characterlab/source/effect/upi_skeff_sk1.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "4d313f3fc6bd2d432e962f45fdb033a778e73157a3f2a2b02f8e727f80c0f0ac",
+      "conversion": {
+        "status": "converted",
+        "width": 512,
+        "height": 748,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "ab326c6c4fa6cfc5d18fc52c17208eb70d75245b15f950471f6ad22a48a29026",
+        "outputSha256": "4d313f3fc6bd2d432e962f45fdb033a778e73157a3f2a2b02f8e727f80c0f0ac"
+      }
+    },
+    {
+      "source": "effect/upi_skeff_sk2.atlas",
+      "sourceSha256": "9f8443a69249a1a6c7b16f7d959d6d5e5c9041f299f469fa595e0b6aa2a4de03",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Atlas/effect/upi_skeff_sk2.atlas.txt",
+      "address": "characterlab/source/effect/upi_skeff_sk2.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/upi_skeff_sk2.sct"
+      ],
+      "outputSha256": "9f8443a69249a1a6c7b16f7d959d6d5e5c9041f299f469fa595e0b6aa2a4de03",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/upi_skeff_sk2.scsp",
+      "sourceSha256": "3e4ec6c1ef9744bd3b193defa235cfc0e5f55bf6799d63079f25386f7498105f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_sk2.spine.json",
+      "address": "characterlab/source/effect/upi_skeff_sk2.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "2a24f6fca9b8e2b74dfbc57abb443f01660b8d4340d19064af58b9a9ad778f3b",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 97434,
+        "consumedBytes": 97434,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 342,
+            "frames": 781,
+            "segments": 439,
+            "sourceMarkers": {
+              "allLinear": 179,
+              "allStepped": 6,
+              "explicit": 157
+            },
+            "modes": {
+              "linear": 244,
+              "stepped": 86,
+              "bezier": 109
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/upi_skeff_sk2.scsp",
+      "sourceSha256": "3e4ec6c1ef9744bd3b193defa235cfc0e5f55bf6799d63079f25386f7498105f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_sk2.skeleton.json",
+      "address": "characterlab/source/effect/upi_skeff_sk2.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/upi_skeff_sk2.scsp/json",
+        "characterlab/source/effect/upi_skeff_sk2.atlas",
+        "characterlab/source/effect/upi_skeff_sk2.sct"
+      ],
+      "outputSha256": "b97c2955e154b6ce6a264b4a9ae83a8bcb506f2135466ccc048c33de3aa846da",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/upi_skeff_sk2.sct",
+      "sourceSha256": "47bc15411e01c07131e192294797904bc8336e9c42ff9cd1929ba883e22bb1e7",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Textures/effect/upi_skeff_sk2.png",
+      "address": "characterlab/source/effect/upi_skeff_sk2.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "b042a15105566d499054c2f2c005a32574c022ca3458ca39e894c42d4d068435",
+      "conversion": {
+        "status": "converted",
+        "width": 493,
+        "height": 1847,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "47bc15411e01c07131e192294797904bc8336e9c42ff9cd1929ba883e22bb1e7",
+        "outputSha256": "b042a15105566d499054c2f2c005a32574c022ca3458ca39e894c42d4d068435"
+      }
+    },
+    {
+      "source": "effect/upi_skeff_sk3_bg.atlas",
+      "sourceSha256": "ffa1dbb930ed7d129b898102ad79cb27bfc17a05e3e1b610fcac86e70d54c8b5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Atlas/effect/upi_skeff_sk3_bg.atlas.txt",
+      "address": "characterlab/source/effect/upi_skeff_sk3_bg.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/upi_skeff_sk3_bg.sct"
+      ],
+      "outputSha256": "ffa1dbb930ed7d129b898102ad79cb27bfc17a05e3e1b610fcac86e70d54c8b5",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/upi_skeff_sk3_bg.scsp",
+      "sourceSha256": "efa845d1222ab9821c2fbd6b6fb7f855c21aafb77308553a5168668dfb1496af",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_sk3_bg.spine.json",
+      "address": "characterlab/source/effect/upi_skeff_sk3_bg.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "243836c56bb2a1ef7fd0a31f4b66a7754aa0e9d017a498c77deb3d98783b33cc",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 25346,
+        "consumedBytes": 25346,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 211,
+            "frames": 437,
+            "segments": 226,
+            "sourceMarkers": {
+              "allLinear": 108,
+              "allStepped": 32,
+              "explicit": 71
+            },
+            "modes": {
+              "linear": 107,
+              "stepped": 52,
+              "bezier": 67
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/upi_skeff_sk3_bg.scsp",
+      "sourceSha256": "efa845d1222ab9821c2fbd6b6fb7f855c21aafb77308553a5168668dfb1496af",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_sk3_bg.skeleton.json",
+      "address": "characterlab/source/effect/upi_skeff_sk3_bg.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/upi_skeff_sk3_bg.scsp/json",
+        "characterlab/source/effect/upi_skeff_sk3_bg.atlas",
+        "characterlab/source/effect/upi_skeff_sk3_bg.sct"
+      ],
+      "outputSha256": "1b5a0f14cb5c1441449ab4b5ed7aa16de9d6e09394d9be5d7b6601a3426ba174",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/upi_skeff_sk3_bg.sct",
+      "sourceSha256": "e5c9d342e325257ff4c6463d676e6f9f968ac0b2a522dbbbff96d436d00544a9",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Textures/effect/upi_skeff_sk3_bg.png",
+      "address": "characterlab/source/effect/upi_skeff_sk3_bg.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "29016a35876d9aecde86ad17a384e38623ddc1b2be5819ceb01bee35e48b2e15",
+      "conversion": {
+        "status": "converted",
+        "width": 943,
+        "height": 1358,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "e5c9d342e325257ff4c6463d676e6f9f968ac0b2a522dbbbff96d436d00544a9",
+        "outputSha256": "29016a35876d9aecde86ad17a384e38623ddc1b2be5819ceb01bee35e48b2e15"
+      }
+    },
+    {
+      "source": "effect/upi_skeff_sk3_f.atlas",
+      "sourceSha256": "fb6bd6babbd2161da1bb70bfe19f441707edf130d7dfdba8e71fdd6f71d22b79",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Atlas/effect/upi_skeff_sk3_f.atlas.txt",
+      "address": "characterlab/source/effect/upi_skeff_sk3_f.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/upi_skeff_sk3_f.sct"
+      ],
+      "outputSha256": "fb6bd6babbd2161da1bb70bfe19f441707edf130d7dfdba8e71fdd6f71d22b79",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/upi_skeff_sk3_f.scsp",
+      "sourceSha256": "7e2ff511a3e7ffdce4bd36233caf6d26153e45c8a1209f0409cbd0b5cb12db53",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_sk3_f.spine.json",
+      "address": "characterlab/source/effect/upi_skeff_sk3_f.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "f8aa01bfa6b43d3912985cb4d991bd3f185c970a1e260050d824b61ff9d1c3f1",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 129557,
+        "consumedBytes": 129557,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 444,
+            "frames": 827,
+            "segments": 383,
+            "sourceMarkers": {
+              "allLinear": 319,
+              "allStepped": 1,
+              "explicit": 124
+            },
+            "modes": {
+              "linear": 220,
+              "stepped": 40,
+              "bezier": 123
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/upi_skeff_sk3_f.scsp",
+      "sourceSha256": "7e2ff511a3e7ffdce4bd36233caf6d26153e45c8a1209f0409cbd0b5cb12db53",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_sk3_f.skeleton.json",
+      "address": "characterlab/source/effect/upi_skeff_sk3_f.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/upi_skeff_sk3_f.scsp/json",
+        "characterlab/source/effect/upi_skeff_sk3_f.atlas",
+        "characterlab/source/effect/upi_skeff_sk3_f.sct"
+      ],
+      "outputSha256": "576829216b2fca133af85a7c3331daa1d71eac18f6b339edab3e063ec028a61a",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/upi_skeff_sk3_f.sct",
+      "sourceSha256": "ef46dfb52d8bd7024b946ff0295b468611e49519e25e20c283cf69a8798c5206",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Textures/effect/upi_skeff_sk3_f.png",
+      "address": "characterlab/source/effect/upi_skeff_sk3_f.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "a87bfe69d5e624306a807039d21335aabe5c815dbdc2a4298de19b7460c4e1b2",
+      "conversion": {
+        "status": "converted",
+        "width": 1388,
+        "height": 1022,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "ef46dfb52d8bd7024b946ff0295b468611e49519e25e20c283cf69a8798c5206",
+        "outputSha256": "a87bfe69d5e624306a807039d21335aabe5c815dbdc2a4298de19b7460c4e1b2"
+      }
+    },
+    {
+      "source": "effect/upi_skeff_sk3_sword.atlas",
+      "sourceSha256": "a86f6115eabb777ba4784d4596d68a0647712b09828d477a7d6a0759936e326d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Atlas/effect/upi_skeff_sk3_sword.atlas.txt",
+      "address": "characterlab/source/effect/upi_skeff_sk3_sword.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/upi_skeff_sk3_sword.sct"
+      ],
+      "outputSha256": "a86f6115eabb777ba4784d4596d68a0647712b09828d477a7d6a0759936e326d",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/upi_skeff_sk3_sword.scsp",
+      "sourceSha256": "c8b2aaf2d29d9a790fc13b3687e11483f83940a52a85d7865ca1b5622d9affb0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_sk3_sword.spine.json",
+      "address": "characterlab/source/effect/upi_skeff_sk3_sword.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "cf83e0ca01feb92978d1ed1a8aaaa60eed2e0577372f095e1d604903d0bb7367",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 8596,
+        "consumedBytes": 8596,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 32,
+            "frames": 179,
+            "segments": 147,
+            "sourceMarkers": {
+              "allLinear": 17,
+              "allStepped": 4,
+              "explicit": 11
+            },
+            "modes": {
+              "linear": 27,
+              "stepped": 120,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/upi_skeff_sk3_sword.scsp",
+      "sourceSha256": "c8b2aaf2d29d9a790fc13b3687e11483f83940a52a85d7865ca1b5622d9affb0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_sk3_sword.skeleton.json",
+      "address": "characterlab/source/effect/upi_skeff_sk3_sword.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/upi_skeff_sk3_sword.scsp/json",
+        "characterlab/source/effect/upi_skeff_sk3_sword.atlas",
+        "characterlab/source/effect/upi_skeff_sk3_sword.sct"
+      ],
+      "outputSha256": "c2ffd7131118ce25211d6cda2b877251cea8e51455bd6c2ee5c59a4500e1e842",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/upi_skeff_sk3_sword.sct",
+      "sourceSha256": "8b77d8f7384ae5c8d15493be12ceceebb35444e1e63005e07505e49dc2acf35d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Textures/effect/upi_skeff_sk3_sword.png",
+      "address": "characterlab/source/effect/upi_skeff_sk3_sword.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "755c10dac358b8c9e2ac68468bf974c8091ef7b50890b98eae25d4d840f33600",
+      "conversion": {
+        "status": "converted",
+        "width": 507,
+        "height": 1318,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "8b77d8f7384ae5c8d15493be12ceceebb35444e1e63005e07505e49dc2acf35d",
+        "outputSha256": "755c10dac358b8c9e2ac68468bf974c8091ef7b50890b98eae25d4d840f33600"
+      }
+    },
+    {
+      "source": "effect/upi_skeff_sk3_swordback.atlas",
+      "sourceSha256": "7082837595f45ed0c7fed5d9ed17fc2350a5a7965eaf0c61e80b74f7b93b5a35",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Atlas/effect/upi_skeff_sk3_swordback.atlas.txt",
+      "address": "characterlab/source/effect/upi_skeff_sk3_swordback.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/upi_skeff_sk3_swordback.sct"
+      ],
+      "outputSha256": "7082837595f45ed0c7fed5d9ed17fc2350a5a7965eaf0c61e80b74f7b93b5a35",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/upi_skeff_sk3_swordback.scsp",
+      "sourceSha256": "8ed7d55907476a657b8122a69d1bc3e014a8405386670993e2c2c7ece930225a",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_sk3_swordback.spine.json",
+      "address": "characterlab/source/effect/upi_skeff_sk3_swordback.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "21207d1af0244ff3ae64fe131e2bb7a2da66441d2e18274074fdee79e71b23a8",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 7650,
+        "consumedBytes": 7650,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 35,
+            "frames": 308,
+            "segments": 273,
+            "sourceMarkers": {
+              "allLinear": 1,
+              "allStepped": 13,
+              "explicit": 21
+            },
+            "modes": {
+              "linear": 134,
+              "stepped": 133,
+              "bezier": 6
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/upi_skeff_sk3_swordback.scsp",
+      "sourceSha256": "8ed7d55907476a657b8122a69d1bc3e014a8405386670993e2c2c7ece930225a",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_sk3_swordback.skeleton.json",
+      "address": "characterlab/source/effect/upi_skeff_sk3_swordback.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/upi_skeff_sk3_swordback.scsp/json",
+        "characterlab/source/effect/upi_skeff_sk3_swordback.atlas",
+        "characterlab/source/effect/upi_skeff_sk3_swordback.sct"
+      ],
+      "outputSha256": "18f47b11effdb1bad864d429c2222d321c5daba9223c9761446ba2ba2f4551ad",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/upi_skeff_sk3_swordback.sct",
+      "sourceSha256": "89119a7d7a7773b7e13be9ac06842d0075c7531656c38445d8672a338bc9f152",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Textures/effect/upi_skeff_sk3_swordback.png",
+      "address": "characterlab/source/effect/upi_skeff_sk3_swordback.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "dfe9a7ff99eeace77b64e27c6019edb315f4774fd952c337ab52303e7329d4af",
+      "conversion": {
+        "status": "converted",
+        "width": 256,
+        "height": 253,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "89119a7d7a7773b7e13be9ac06842d0075c7531656c38445d8672a338bc9f152",
+        "outputSha256": "dfe9a7ff99eeace77b64e27c6019edb315f4774fd952c337ab52303e7329d4af"
+      }
+    },
+    {
       "source": "effect/valkyrie_sk2.cfx",
       "sourceSha256": "2be083c2d41cbbbaf5aee74055d39b3e0f2b3dec941271b3e455a4205afe8c97",
       "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Effects/effect/valkyrie_sk2.cfx.json",
@@ -21610,6 +22608,94 @@
         "alpha": "source-preserved",
         "sourceSha256": "3bc9f79374fb05841718e9fb2eaf270ffe0a40269a2922b7d9a0f112d68f87ca",
         "outputSha256": "0b407bc3b51ee698aa452923a39ca692c9fa266f03eb3908afeea5b26129de80"
+      }
+    },
+    {
+      "source": "effect/yupi_pat.particle",
+      "sourceSha256": "2e98484c3ea55321592c3ab32586ccdf9ac68d726e366622654f1631f1494857",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/effect/yupi_pat.particle.json",
+      "address": "characterlab/source/effect/yupi_pat.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/orb_04.sct",
+        "characterlab/source/particle/pati_01.sct"
+      ],
+      "outputSha256": "446e6a53daa2d36d8b307fc45f0201252d85e0cb46bed22ab15d1c1c8a9f4f94",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/yupine_sk3_pat.cfx",
+      "sourceSha256": "788cdb6c8a95f90b11b5edfd35ffe5490feeb8d7e3aa31d266027c104caf4ad7",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/effect/yupine_sk3_pat.cfx.json",
+      "address": "characterlab/source/effect/yupine_sk3_pat.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/yupi_pat.particle"
+      ],
+      "outputSha256": "d23fa24cc9ecd74bc3b1ea6ee0b615728b9033ac0d4f4eac7ecccdddcc44699a",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/yupine_skeff_bi.cfx",
+      "sourceSha256": "42e9fa56d775017cb18fd3ec73540df3ff675be1b4a773240404c03213178246",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/effect/yupine_skeff_bi.cfx.json",
+      "address": "characterlab/source/effect/yupine_skeff_bi.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/upi_skeff_bi.scsp"
+      ],
+      "outputSha256": "ea4bf316be12f0a0e29ef34256a585d3248254155dc7947a43c43f50d84b1aea",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/yupine_skeff_sk1.cfx",
+      "sourceSha256": "93bcd8dbeaab521b979ac9a9fa3dd72c0d522b512026713c9200eb065a5d4d32",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/effect/yupine_skeff_sk1.cfx.json",
+      "address": "characterlab/source/effect/yupine_skeff_sk1.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/upi_skeff_sk1.scsp"
+      ],
+      "outputSha256": "c7ca57103af9bf4900a5e718cf02f5f78542b2a3ddb63e49ce3b7b5ad8c8939d",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/yupine_skeff_sk2.cfx",
+      "sourceSha256": "e61e20daa8b6f79287e89b7b724c0277cd8a29458495590eb076d04b0d41b4b0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/effect/yupine_skeff_sk2.cfx.json",
+      "address": "characterlab/source/effect/yupine_skeff_sk2.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/upi_skeff_sk2.scsp"
+      ],
+      "outputSha256": "4c8eeb768737b4bce2e6731a903202794688aacb1d76289984cdb5137ececbef",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/yupine_skeff_sk3.cfx",
+      "sourceSha256": "81b075df1ef7a478e3e917079c58189d7f47725835d2a14d402b71b356ebe7d6",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/effect/yupine_skeff_sk3.cfx.json",
+      "address": "characterlab/source/effect/yupine_skeff_sk3.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/upi_skeff_sk3_bg.scsp",
+        "characterlab/source/effect/upi_skeff_sk3_f.scsp",
+        "characterlab/source/effect/upi_skeff_sk3_sword.scsp",
+        "characterlab/source/effect/upi_skeff_sk3_swordback.scsp"
+      ],
+      "outputSha256": "861c149ee0103045e5428fd2e50479fce4d7e43d62cdf4cf6de93827e73b1da9",
+      "conversion": {
+        "status": "converted"
       }
     },
     {
@@ -32805,6 +33891,853 @@
       }
     },
     {
+      "source": "model/yupine.atlas",
+      "sourceSha256": "b94825053c1ec369eeef598b88e9fe223aa4b1753b4062f28d5a2af7e59e3a3f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Atlas/model/yupine.atlas.txt",
+      "address": "characterlab/source/model/yupine.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/model/yupine.sct"
+      ],
+      "outputSha256": "b94825053c1ec369eeef598b88e9fe223aa4b1753b4062f28d5a2af7e59e3a3f",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "model/yupine.scsp",
+      "sourceSha256": "d4c0fe95f6e7e9694b90a01b944953bcc1abfe3029b42891feb1eb04ab818d52",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/model/yupine.spine.json",
+      "address": "characterlab/source/model/yupine.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "3e146888a022acd1365d3b45c78bf3c870b1205041432caadc419ce2585fa25d",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 23,
+        "binaryBytes": 16321595,
+        "consumedBytes": 16321595,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {
+          "appear": {
+            "flipX": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            },
+            "flipY": {
+              "tracks": 1,
+              "frames": 1,
+              "bones": {
+                "weapon3": 1
+              }
+            }
+          },
+          "attacked": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 14,
+              "bones": {
+                "center": 5,
+                "weapon3": 4,
+                "bone18": 5
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "attacked_damage": {
+            "flipX": {
+              "tracks": 6,
+              "frames": 6,
+              "bones": {
+                "center": 1,
+                "bone36": 1,
+                "bone105": 1,
+                "bone18": 1,
+                "bone2": 1,
+                "waist": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "b_idle": {
+            "flipX": {
+              "tracks": 5,
+              "frames": 10,
+              "bones": {
+                "center": 2,
+                "weapon2": 2,
+                "bone4": 2,
+                "bone3": 2,
+                "waist": 2
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "b_idle_old": {
+            "flipX": {
+              "tracks": 5,
+              "frames": 10,
+              "bones": {
+                "center": 2,
+                "weapon2": 2,
+                "bone4": 2,
+                "bone3": 2,
+                "waist": 2
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "b_idle_ready": {
+            "flipX": {
+              "tracks": 7,
+              "frames": 34,
+              "bones": {
+                "center": 8,
+                "weapon3": 1,
+                "weapon2": 6,
+                "bone4": 6,
+                "bone3": 6,
+                "bone18": 1,
+                "waist": 6
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "camping": {
+            "flipX": {
+              "tracks": 1,
+              "frames": 7,
+              "bones": {
+                "bone143": 7
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "down": {
+            "flipX": {
+              "tracks": 1,
+              "frames": 2,
+              "bones": {
+                "weapon3": 2
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "flying_damage": {
+            "flipX": {
+              "tracks": 4,
+              "frames": 4,
+              "bones": {
+                "bone36": 1,
+                "bone105": 1,
+                "bone2": 1,
+                "waist": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "groggy": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 15,
+              "bones": {
+                "center": 5,
+                "weapon3": 5,
+                "bone18": 5
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "idle": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 5,
+              "bones": {
+                "center": 3,
+                "weapon3": 1,
+                "bone18": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "idle2": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 5,
+              "bones": {
+                "center": 3,
+                "weapon3": 1,
+                "bone18": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "idle_old": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 5,
+              "bones": {
+                "center": 3,
+                "weapon3": 1,
+                "bone18": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "jump_back": {
+            "flipX": {
+              "tracks": 8,
+              "frames": 26,
+              "bones": {
+                "center": 5,
+                "weapon3": 7,
+                "weapon2": 3,
+                "bone36": 1,
+                "bone105": 1,
+                "bone18": 7,
+                "bone2": 1,
+                "waist": 1
+              }
+            },
+            "flipY": {
+              "tracks": 2,
+              "frames": 4,
+              "bones": {
+                "bone164": 2,
+                "weapon2": 2
+              }
+            }
+          },
+          "jump_forward": {
+            "flipX": {
+              "tracks": 9,
+              "frames": 16,
+              "bones": {
+                "center": 3,
+                "weapon3": 1,
+                "weapon2": 2,
+                "bone36": 1,
+                "bone105": 1,
+                "bone4": 3,
+                "bone3": 2,
+                "bone2": 1,
+                "waist": 2
+              }
+            },
+            "flipY": {
+              "tracks": 2,
+              "frames": 3,
+              "bones": {
+                "weapon3": 1,
+                "weapon2": 2
+              }
+            }
+          },
+          "knock_down": {
+            "flipX": {
+              "tracks": 1,
+              "frames": 3,
+              "bones": {
+                "weapon3": 3
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "rise": {
+            "flipX": {
+              "tracks": 5,
+              "frames": 27,
+              "bones": {
+                "center": 6,
+                "weapon3": 11,
+                "weapon2": 1,
+                "bone36": 1,
+                "bone18": 8
+              }
+            },
+            "flipY": {
+              "tracks": 1,
+              "frames": 2,
+              "bones": {
+                "bone164": 2
+              }
+            }
+          },
+          "run": {
+            "flipX": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            },
+            "flipY": {
+              "tracks": 1,
+              "frames": 2,
+              "bones": {
+                "weapon3": 2
+              }
+            }
+          },
+          "skill1": {
+            "flipX": {
+              "tracks": 8,
+              "frames": 25,
+              "bones": {
+                "center": 4,
+                "weapon3": 3,
+                "weapon2": 7,
+                "bone4": 2,
+                "bone3": 1,
+                "bone18": 1,
+                "bone2": 3,
+                "waist": 4
+              }
+            },
+            "flipY": {
+              "tracks": 3,
+              "frames": 11,
+              "bones": {
+                "bone164": 1,
+                "weapon3": 2,
+                "weapon2": 8
+              }
+            }
+          },
+          "skill2": {
+            "flipX": {
+              "tracks": 10,
+              "frames": 115,
+              "bones": {
+                "center": 20,
+                "weapon3": 10,
+                "weapon2": 15,
+                "bone102": 1,
+                "bone4": 17,
+                "bone3": 11,
+                "bone18": 12,
+                "bone26": 2,
+                "waist": 11,
+                "weapon_c": 16
+              }
+            },
+            "flipY": {
+              "tracks": 2,
+              "frames": 5,
+              "bones": {
+                "bone164": 1,
+                "weapon2": 4
+              }
+            }
+          },
+          "skill3": {
+            "flipX": {
+              "tracks": 13,
+              "frames": 99,
+              "bones": {
+                "center": 14,
+                "weapon3": 13,
+                "weapon2": 17,
+                "bone195": 9,
+                "bone185": 2,
+                "bone36": 11,
+                "bone105": 2,
+                "bone4": 8,
+                "bone19": 4,
+                "bone3": 6,
+                "bone18": 4,
+                "bone2": 3,
+                "waist": 6
+              }
+            },
+            "flipY": {
+              "tracks": 2,
+              "frames": 15,
+              "bones": {
+                "weapon3": 3,
+                "weapon2": 12
+              }
+            }
+          },
+          "skill1_old_data": {
+            "flipX": {
+              "tracks": 8,
+              "frames": 22,
+              "bones": {
+                "center": 4,
+                "weapon3": 3,
+                "weapon2": 6,
+                "bone4": 2,
+                "bone3": 1,
+                "bone18": 1,
+                "bone2": 2,
+                "waist": 3
+              }
+            },
+            "flipY": {
+              "tracks": 3,
+              "frames": 10,
+              "bones": {
+                "bone164": 1,
+                "weapon3": 2,
+                "weapon2": 7
+              }
+            }
+          }
+        },
+        "curveTimelines": {
+          "appear": {
+            "tracks": 935,
+            "frames": 935,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 935,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "attacked": {
+            "tracks": 945,
+            "frames": 4207,
+            "segments": 3262,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 945,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 3262,
+              "bezier": 0
+            }
+          },
+          "attacked_damage": {
+            "tracks": 924,
+            "frames": 924,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 924,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "b_idle": {
+            "tracks": 941,
+            "frames": 7650,
+            "segments": 6709,
+            "sourceMarkers": {
+              "allLinear": 10,
+              "allStepped": 931,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 6709,
+              "bezier": 0
+            }
+          },
+          "b_idle_old": {
+            "tracks": 935,
+            "frames": 7525,
+            "segments": 6590,
+            "sourceMarkers": {
+              "allLinear": 9,
+              "allStepped": 926,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 6590,
+              "bezier": 0
+            }
+          },
+          "b_idle_ready": {
+            "tracks": 952,
+            "frames": 5357,
+            "segments": 4405,
+            "sourceMarkers": {
+              "allLinear": 2,
+              "allStepped": 950,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 4405,
+              "bezier": 0
+            }
+          },
+          "camping": {
+            "tracks": 861,
+            "frames": 14587,
+            "segments": 13726,
+            "sourceMarkers": {
+              "allLinear": 10,
+              "allStepped": 851,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 13726,
+              "bezier": 0
+            }
+          },
+          "down": {
+            "tracks": 932,
+            "frames": 2874,
+            "segments": 1942,
+            "sourceMarkers": {
+              "allLinear": 8,
+              "allStepped": 924,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 1942,
+              "bezier": 0
+            }
+          },
+          "flying": {
+            "tracks": 933,
+            "frames": 2856,
+            "segments": 1923,
+            "sourceMarkers": {
+              "allLinear": 8,
+              "allStepped": 925,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 1923,
+              "bezier": 0
+            }
+          },
+          "flying_damage": {
+            "tracks": 933,
+            "frames": 933,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 933,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "groggy": {
+            "tracks": 936,
+            "frames": 7369,
+            "segments": 6433,
+            "sourceMarkers": {
+              "allLinear": 8,
+              "allStepped": 928,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 6433,
+              "bezier": 0
+            }
+          },
+          "idle": {
+            "tracks": 836,
+            "frames": 7198,
+            "segments": 6362,
+            "sourceMarkers": {
+              "allLinear": 13,
+              "allStepped": 823,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 6362,
+              "bezier": 0
+            }
+          },
+          "idle2": {
+            "tracks": 830,
+            "frames": 6962,
+            "segments": 6132,
+            "sourceMarkers": {
+              "allLinear": 13,
+              "allStepped": 817,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 8,
+              "stepped": 6124,
+              "bezier": 0
+            }
+          },
+          "idle_old": {
+            "tracks": 830,
+            "frames": 6991,
+            "segments": 6161,
+            "sourceMarkers": {
+              "allLinear": 11,
+              "allStepped": 819,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 6161,
+              "bezier": 0
+            }
+          },
+          "jump_back": {
+            "tracks": 949,
+            "frames": 5175,
+            "segments": 4226,
+            "sourceMarkers": {
+              "allLinear": 6,
+              "allStepped": 943,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 4226,
+              "bezier": 0
+            }
+          },
+          "jump_forward": {
+            "tracks": 947,
+            "frames": 5411,
+            "segments": 4464,
+            "sourceMarkers": {
+              "allLinear": 7,
+              "allStepped": 940,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 4464,
+              "bezier": 0
+            }
+          },
+          "knock_down": {
+            "tracks": 933,
+            "frames": 4392,
+            "segments": 3459,
+            "sourceMarkers": {
+              "allLinear": 8,
+              "allStepped": 925,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 3459,
+              "bezier": 0
+            }
+          },
+          "rise": {
+            "tracks": 946,
+            "frames": 5674,
+            "segments": 4728,
+            "sourceMarkers": {
+              "allLinear": 3,
+              "allStepped": 943,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 4728,
+              "bezier": 0
+            }
+          },
+          "run": {
+            "tracks": 937,
+            "frames": 4457,
+            "segments": 3520,
+            "sourceMarkers": {
+              "allLinear": 10,
+              "allStepped": 927,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 3520,
+              "bezier": 0
+            }
+          },
+          "skill1": {
+            "tracks": 949,
+            "frames": 6762,
+            "segments": 5813,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 949,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 5813,
+              "bezier": 0
+            }
+          },
+          "skill2": {
+            "tracks": 951,
+            "frames": 15022,
+            "segments": 14071,
+            "sourceMarkers": {
+              "allLinear": 6,
+              "allStepped": 945,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 14071,
+              "bezier": 0
+            }
+          },
+          "skill3": {
+            "tracks": 958,
+            "frames": 16021,
+            "segments": 15063,
+            "sourceMarkers": {
+              "allLinear": 8,
+              "allStepped": 950,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 15063,
+              "bezier": 0
+            }
+          },
+          "skill1_old_data": {
+            "tracks": 941,
+            "frames": 6200,
+            "segments": 5259,
+            "sourceMarkers": {
+              "allLinear": 7,
+              "allStepped": 934,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 5259,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "model/yupine.scsp",
+      "sourceSha256": "d4c0fe95f6e7e9694b90a01b944953bcc1abfe3029b42891feb1eb04ab818d52",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/model/yupine.skeleton.json",
+      "address": "characterlab/source/model/yupine.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/model/yupine.scsp/json",
+        "characterlab/source/model/yupine.atlas",
+        "characterlab/source/model/yupine.sct"
+      ],
+      "outputSha256": "84aeedc94a8a7f32c7b9e11f7676c792d061658079575f1d994c6d6473045b55",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 23
+      }
+    },
+    {
+      "source": "model/yupine.sct",
+      "sourceSha256": "218c356b97e5dc4b9b99ea6c15f951c511369c9224f133611dabe16c2b6dcb2a",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Textures/model/yupine.png",
+      "address": "characterlab/source/model/yupine.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "45705c4a790c9911ff0234bca220a35b061c484b7d89444621ed70d6f13b95e6",
+      "conversion": {
+        "status": "converted",
+        "width": 1421,
+        "height": 128,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "218c356b97e5dc4b9b99ea6c15f951c511369c9224f133611dabe16c2b6dcb2a",
+        "outputSha256": "45705c4a790c9911ff0234bca220a35b061c484b7d89444621ed70d6f13b95e6"
+      }
+    },
+    {
+      "source": "model/yupine.timeline",
+      "sourceSha256": "0b0df627af12eda796c0a5da430ec1a83ac9e82b0ba07991c16f181f2cc36c5e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Configs/model/yupine.timeline.json",
+      "address": "characterlab/source/model/yupine.timeline",
+      "type": "timeline",
+      "dependencies": [
+        "characterlab/source/effect/yupine_skeff_bi.cfx"
+      ],
+      "outputSha256": "3b6b7a9192c5a95cd6df378229b1117fb337c2634f3d3f2710dfc475e3e5f0ca",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
       "source": "model/zerato.atlas",
       "sourceSha256": "155c0ba09c736aa19a1724a3b5fbe075dad252b1ec3cb0a14123a37ffeaff4fd",
       "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/model/zerato.atlas.txt",
@@ -35307,6 +37240,75 @@
         "alpha": "source-preserved",
         "sourceSha256": "fd27d6aa06265b64c563d3435a5b8655820c6829fce616d85ae2b00897d54728",
         "outputSha256": "e849a4bce9378b51acf643a04634f63ae993cd59aeda5a2b716166e240316264"
+      }
+    },
+    {
+      "source": "portrait/c1016.atlas",
+      "sourceSha256": "ced45ec698d0aa366a391a78f89f4bff2b14c0c792e1104b82092c8a8f8b8089",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Atlas/portrait/c1016.atlas.txt",
+      "address": "characterlab/source/portrait/c1016.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/portrait/c1016.sct"
+      ],
+      "outputSha256": "ced45ec698d0aa366a391a78f89f4bff2b14c0c792e1104b82092c8a8f8b8089",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "portrait/c1016.scsp",
+      "sourceSha256": "e6f3bcf5acc080ed59f5645f92ff3d24def05e609d338e2df3852b1bd1ef09fe",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/portrait/c1016.spine.json",
+      "address": "characterlab/source/portrait/c1016.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "51d2a17347dd55eef11b1daaaaf67543ae04eb148bd5f4b08abed649feb0a942",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "3.8.99",
+        "animationCount": 1,
+        "binaryBytes": 149582,
+        "consumedBytes": 149582,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {}
+      }
+    },
+    {
+      "source": "portrait/c1016.scsp",
+      "sourceSha256": "e6f3bcf5acc080ed59f5645f92ff3d24def05e609d338e2df3852b1bd1ef09fe",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/portrait/c1016.skeleton.json",
+      "address": "characterlab/source/portrait/c1016.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/portrait/c1016.scsp/json",
+        "characterlab/source/portrait/c1016.atlas",
+        "characterlab/source/portrait/c1016.sct"
+      ],
+      "outputSha256": "0a8c61c68147ff0125244945c89ecbaa8f23c248b54cc8b60171d2993ce998b6",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "3.8.99",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "portrait/c1016.sct",
+      "sourceSha256": "3bec7c08441a5407ff9397ba70bf5b3e265cfc37a16b7c1302638d9e73b6ee64",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Textures/portrait/c1016.png",
+      "address": "characterlab/source/portrait/c1016.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "6b2dc01c074ad423be37b385f93acadf834170f8b9f9e8a9cd2b1d892a21113e",
+      "conversion": {
+        "status": "converted",
+        "width": 1460,
+        "height": 1032,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "3bec7c08441a5407ff9397ba70bf5b3e265cfc37a16b7c1302638d9e73b6ee64",
+        "outputSha256": "6b2dc01c074ad423be37b385f93acadf834170f8b9f9e8a9cd2b1d892a21113e"
       }
     },
     {
@@ -37859,6 +39861,114 @@
         "characterlab/source/particle/ticle_02.sct"
       ],
       "outputSha256": "045598c99e3ee4abcfd5984d4fef49065a4ba2d78ebcaebc9cadd85a8679500d",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "stagept/c_yupine_skill_01.stg",
+      "sourceSha256": "9c7b3875bf0e9b82ea89cee3665eedbd9860153cc32417edca0b34adbd335954",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Configs/stagept/c_yupine_skill_01.graph.json",
+      "address": "characterlab/source/stagept/c_yupine_skill_01.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/camera/yupine_cm_sk1.scsp",
+        "characterlab/source/effect/hit_new_slash_01.atlas",
+        "characterlab/source/effect/hit_new_slash_01.scsp",
+        "characterlab/source/effect/hit_new_slash_01.sct",
+        "characterlab/source/effect/hit_new_slash_normal.cfx",
+        "characterlab/source/effect/hit_new_slash_yellow_nm_pati.particle",
+        "characterlab/source/effect/upi_skeff_bi.atlas",
+        "characterlab/source/effect/upi_skeff_bi.scsp",
+        "characterlab/source/effect/upi_skeff_bi.sct",
+        "characterlab/source/effect/upi_skeff_sk1.atlas",
+        "characterlab/source/effect/upi_skeff_sk1.scsp",
+        "characterlab/source/effect/upi_skeff_sk1.sct",
+        "characterlab/source/effect/yupine_skeff_bi.cfx",
+        "characterlab/source/effect/yupine_skeff_sk1.cfx",
+        "characterlab/source/model/yupine.timeline",
+        "characterlab/source/particle/ticle_02.sct"
+      ],
+      "outputSha256": "25fd7f3c4440edf0286e6c6b89158a521bec6b5279668f006da19459c0290597",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "stagept/c_yupine_skill_02.stg",
+      "sourceSha256": "7d3192e8e620621ea47288a2c443a9d1cf3e7042bb6afc9ce5fd52f93fa60b1f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Configs/stagept/c_yupine_skill_02.graph.json",
+      "address": "characterlab/source/stagept/c_yupine_skill_02.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/camera/yupine_cm_sk2.scsp",
+        "characterlab/source/effect/hit_new_blunt_01.atlas",
+        "characterlab/source/effect/hit_new_blunt_01.scsp",
+        "characterlab/source/effect/hit_new_blunt_01.sct",
+        "characterlab/source/effect/hit_new_blunt_mult_normal.cfx",
+        "characterlab/source/effect/hit_new_blunt_normal.cfx",
+        "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+        "characterlab/source/effect/upi_skeff_bi.atlas",
+        "characterlab/source/effect/upi_skeff_bi.scsp",
+        "characterlab/source/effect/upi_skeff_bi.sct",
+        "characterlab/source/effect/upi_skeff_sk2.atlas",
+        "characterlab/source/effect/upi_skeff_sk2.scsp",
+        "characterlab/source/effect/upi_skeff_sk2.sct",
+        "characterlab/source/effect/yupine_skeff_bi.cfx",
+        "characterlab/source/effect/yupine_skeff_sk2.cfx",
+        "characterlab/source/model/yupine.timeline",
+        "characterlab/source/particle/ticle_02.sct"
+      ],
+      "outputSha256": "311effec1bb72a5c0f36eadcadd20658f9aeef3bb925cb56895feb523fc23a2d",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "stagept/c_yupine_skill_03.stg",
+      "sourceSha256": "2139f6470d45e477eed12aa48e2ded0ac73f7b68a6855b0e5a811659b00716f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Configs/stagept/c_yupine_skill_03.graph.json",
+      "address": "characterlab/source/stagept/c_yupine_skill_03.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/camera/yupine_cm_sk3.scsp",
+        "characterlab/source/cut/fhd/sk_c1016_3.webp",
+        "characterlab/source/effect/hit_new_blunt_01.atlas",
+        "characterlab/source/effect/hit_new_blunt_01.scsp",
+        "characterlab/source/effect/hit_new_blunt_01.sct",
+        "characterlab/source/effect/hit_new_blunt_mult_normal.cfx",
+        "characterlab/source/effect/hit_new_blunt_normal.cfx",
+        "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+        "characterlab/source/effect/hit_new_slash_01.atlas",
+        "characterlab/source/effect/hit_new_slash_01.scsp",
+        "characterlab/source/effect/hit_new_slash_01.sct",
+        "characterlab/source/effect/hit_new_slash_normal.cfx",
+        "characterlab/source/effect/hit_new_slash_yellow_nm_pati.particle",
+        "characterlab/source/effect/upi_skeff_bi.atlas",
+        "characterlab/source/effect/upi_skeff_bi.scsp",
+        "characterlab/source/effect/upi_skeff_bi.sct",
+        "characterlab/source/effect/upi_skeff_sk3_bg.atlas",
+        "characterlab/source/effect/upi_skeff_sk3_bg.scsp",
+        "characterlab/source/effect/upi_skeff_sk3_bg.sct",
+        "characterlab/source/effect/upi_skeff_sk3_f.atlas",
+        "characterlab/source/effect/upi_skeff_sk3_f.scsp",
+        "characterlab/source/effect/upi_skeff_sk3_f.sct",
+        "characterlab/source/effect/upi_skeff_sk3_sword.atlas",
+        "characterlab/source/effect/upi_skeff_sk3_sword.scsp",
+        "characterlab/source/effect/upi_skeff_sk3_sword.sct",
+        "characterlab/source/effect/upi_skeff_sk3_swordback.atlas",
+        "characterlab/source/effect/upi_skeff_sk3_swordback.scsp",
+        "characterlab/source/effect/upi_skeff_sk3_swordback.sct",
+        "characterlab/source/effect/yupi_pat.particle",
+        "characterlab/source/effect/yupine_sk3_pat.cfx",
+        "characterlab/source/effect/yupine_skeff_bi.cfx",
+        "characterlab/source/effect/yupine_skeff_sk3.cfx",
+        "characterlab/source/model/yupine.timeline",
+        "characterlab/source/particle/orb_04.sct",
+        "characterlab/source/particle/pati_01.sct",
+        "characterlab/source/particle/ticle_02.sct"
+      ],
+      "outputSha256": "144842b7dc8bfdeacf07ff08df9c0a4d5a9c3a89532cd6521d21d4bf83e1bcde",
       "conversion": {
         "status": "converted"
       }

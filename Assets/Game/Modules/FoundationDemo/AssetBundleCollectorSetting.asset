@@ -10380,6 +10380,558 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags:
         UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/camera/yupine_cm_sk1.skeleton.json
+        CollectorGUID: 8aae6f8fc60f97a4f8cbd6accd421131
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/camera/yupine_cm_sk1.spine.json
+        CollectorGUID: 702a9c6eef3f8e64d9960b2f1f832c04
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/camera/yupine_cm_sk2.skeleton.json
+        CollectorGUID: bb119d4cac01aba4f8fb2b4e1f60d276
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/camera/yupine_cm_sk2.spine.json
+        CollectorGUID: ec88ebe2e979118468a854e4c8864fe7
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/camera/yupine_cm_sk3.skeleton.json
+        CollectorGUID: 255b5ae63244d6e4a9ed47f1e02825b6
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/camera/yupine_cm_sk3.spine.json
+        CollectorGUID: 8da125278a908554f82c82bd1e107ee4
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_bi.skeleton.json
+        CollectorGUID: 5f5e9c8bbfdf2c2498a91d8493450734
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_bi.spine.json
+        CollectorGUID: c394a0b1c37a53c409775082970cc86b
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_sk1.skeleton.json
+        CollectorGUID: f3020fbeaea99f7468603438cc52fd0b
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_sk1.spine.json
+        CollectorGUID: 9408790392f79da4d9c4da4fb777e3eb
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_sk2.skeleton.json
+        CollectorGUID: 1678a8ece14353d4098a3373307a666d
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_sk2.spine.json
+        CollectorGUID: 6b26d5d4aed2d874c947538f9cf767f9
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_sk3_bg.skeleton.json
+        CollectorGUID: d8cb3bd82c3b7ec44993aa72a6463356
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_sk3_bg.spine.json
+        CollectorGUID: 6b140139ac1e9584893b2e67b82d4ff4
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_sk3_f.skeleton.json
+        CollectorGUID: f9f9835b576942347897e7a3dd2e7c3e
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_sk3_f.spine.json
+        CollectorGUID: 0dbec8761c9657443804038c3eaf1784
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_sk3_sword.skeleton.json
+        CollectorGUID: 77b96232928a7d247bbc8cea4eeb3dad
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_sk3_sword.spine.json
+        CollectorGUID: 5a298483c64bead46a14ea1bfea7af95
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_sk3_swordback.skeleton.json
+        CollectorGUID: 2b2ddfdc405f8d24eb9ce216a8532a5e
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/effect/upi_skeff_sk3_swordback.spine.json
+        CollectorGUID: 952daee8ed153584cb172eebcfb27052
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/model/yupine.skeleton.json
+        CollectorGUID: 87b58be46bb73074097d187cb6bd462c
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/model/yupine.spine.json
+        CollectorGUID: 65d9ec4bcd25f1645b34d430327fec83
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/portrait/c1016.skeleton.json
+        CollectorGUID: f4779ca5a49181d4eb5fb45a21c98ae8
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Animations/portrait/c1016.spine.json
+        CollectorGUID: c8640772998afe14f8bc202a753167c4
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Atlas/effect/upi_skeff_bi.atlas.txt
+        CollectorGUID: 60f0444aba9b8db428cf486a8bfdc8cf
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Atlas/effect/upi_skeff_sk1.atlas.txt
+        CollectorGUID: 46ec6b7d8180b124eac900d14d42768f
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Atlas/effect/upi_skeff_sk2.atlas.txt
+        CollectorGUID: bb5a727b543a2534ab2f66ae0c234485
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Atlas/effect/upi_skeff_sk3_bg.atlas.txt
+        CollectorGUID: 9e66235f32765e84ba96469726beb142
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Atlas/effect/upi_skeff_sk3_f.atlas.txt
+        CollectorGUID: 32739f3e162c3124381582f5ea61fd08
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Atlas/effect/upi_skeff_sk3_sword.atlas.txt
+        CollectorGUID: fa987a70e430fad47bab29ae6c51dbee
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Atlas/effect/upi_skeff_sk3_swordback.atlas.txt
+        CollectorGUID: 6bf64bf7d880c5d499299965cb2760ae
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Atlas/model/yupine.atlas.txt
+        CollectorGUID: 5f09ba1342934434cbb287efab8c3aa1
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Atlas/portrait/c1016.atlas.txt
+        CollectorGUID: e6c1d7cc5facf0a4397e946b0766766d
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Configs/model/yupine.timeline.json
+        CollectorGUID: ce78d052a0687274e9db2e348de78278
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Configs/stagept/c_yupine_skill_01.graph.json
+        CollectorGUID: c35aae9712f69c746b768f937584cff9
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Configs/stagept/c_yupine_skill_02.graph.json
+        CollectorGUID: 1edaacdc254fba6419b7ff9556a0cc0b
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Configs/stagept/c_yupine_skill_03.graph.json
+        CollectorGUID: ba3d1f38d8817b9428ff0978be610ffa
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3.cutin.json
+        CollectorGUID: f6dad6448ef97b148a69c3806dda1b1e
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0000.png
+        CollectorGUID: d3d7e08c4c82c6f44a69b19292a0f5e7
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0001.png
+        CollectorGUID: a41ab49dcca0d764cbba06cecbd175c3
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0002.png
+        CollectorGUID: dd42a897981c4434986cd4c93f2a744b
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0003.png
+        CollectorGUID: 9637203ebb1b3934a8d84d1795e048d9
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0004.png
+        CollectorGUID: 0501c2aaebf3f2f409c6e5842229f96f
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0005.png
+        CollectorGUID: 1c6381ccb697dc741acd5c96fcc6d306
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0006.png
+        CollectorGUID: 0ef806ec3543ae743b842021efadb490
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0007.png
+        CollectorGUID: fdc3e6c5022531e4f81b1e33ff7fd18d
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0008.png
+        CollectorGUID: 2b6c121648cc1264d80aa922fbcc8229
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0009.png
+        CollectorGUID: c51ba20b09ac0584b8fccc90da816a3e
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0010.png
+        CollectorGUID: 46673879ff9e97f40bae22f5829efe3c
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0011.png
+        CollectorGUID: 1426521b982c201409185b8e13931576
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0012.png
+        CollectorGUID: 16b9af3014c1ecb41802b9178bfd2a0a
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0013.png
+        CollectorGUID: ff8ed544e08056a409b62187047fdfd7
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0014.png
+        CollectorGUID: 971057bf43c127c45b99200c6063f48d
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/cut/fhd/sk_c1016_3_frames/0015.png
+        CollectorGUID: 8ef63e7c8efa9f542b5c420634ae82ae
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/effect/yupi_pat.particle.json
+        CollectorGUID: 0736eb328b43a5741811de8eafbb682d
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/effect/yupine_sk3_pat.cfx.json
+        CollectorGUID: 92d44bb3cdc2cab4ab4246b3e44ab1f0
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/effect/yupine_skeff_bi.cfx.json
+        CollectorGUID: 6746f5bfef4b751409b751f193bba547
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/effect/yupine_skeff_sk1.cfx.json
+        CollectorGUID: 48f74442e31f0954f85b39ad1092ff4c
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/effect/yupine_skeff_sk2.cfx.json
+        CollectorGUID: dd87b553d46754f4b8e7957cd43d8eb5
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Effects/effect/yupine_skeff_sk3.cfx.json
+        CollectorGUID: 3ab0e0c73b1dded40b15764383a4e388
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Textures/effect/upi_skeff_bi.png
+        CollectorGUID: 8c7ab9860b9cb444b8ddef1ecb6dabf6
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Textures/effect/upi_skeff_sk1.png
+        CollectorGUID: 25d3bbdd548951149924fc3d0ed8d0bb
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Textures/effect/upi_skeff_sk2.png
+        CollectorGUID: 48193a71941d51b499e91bc18fdc9bc8
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Textures/effect/upi_skeff_sk3_bg.png
+        CollectorGUID: 1454f3b56f8311c4c8cee67145b160dd
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Textures/effect/upi_skeff_sk3_f.png
+        CollectorGUID: b1238bf1165f7e540966ad237d38f874
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Textures/effect/upi_skeff_sk3_sword.png
+        CollectorGUID: 680725c57b70f9e40a3f4540a1d302c4
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Textures/effect/upi_skeff_sk3_swordback.png
+        CollectorGUID: 94b90160582016d47a11fbc32bbf0a49
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Textures/model/yupine.png
+        CollectorGUID: 956d37c8ee82afb49aeaac702baf99f4
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1016/Textures/portrait/c1016.png
+        CollectorGUID: 78cf0d2265b7fe54891b3ec28424e9c6
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
       - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/camera/angelica_cm.skeleton.json
         CollectorGUID: 25f06cc55bae621438b0862977e31a2e
         CollectorType: 0

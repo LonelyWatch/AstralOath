@@ -1,0 +1,25 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "upi_skeff_sk3_bg",
+      "format": "spine",
+      "globalZ": -0.5
+    },
+    {
+      "source": "upi_skeff_sk3_f",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "upi_skeff_sk3_sword",
+      "z": "30",
+      "format": "spine"
+    },
+    {
+      "source": "upi_skeff_sk3_swordback",
+      "z": "-30",
+      "format": "spine"
+    }
+  ]
+}

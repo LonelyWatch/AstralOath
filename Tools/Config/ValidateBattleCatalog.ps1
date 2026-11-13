@@ -100,7 +100,7 @@ function Export-BattleCatalog {
             }
             $burn = $skill.soulBurnKind
             $turns = $skill.soulBurnTurns
-            if ($burn -cnotin @('none','reduce_cooldown','increase_damage','increase_healing','extend_granted_buffs','extra_turn','refill_resource') -or
+            if ($burn -cnotin @('none','reduce_cooldown','increase_damage','increase_healing','extend_granted_buffs','extra_turn','refill_resource','ignore_resistance') -or
                 (($skill.soulBurnCost -eq 0) -ne ($burn -ceq 'none')) -or
                 (($turns -gt 0) -ne ($burn -cin @('reduce_cooldown','extend_granted_buffs'))) -or
                 ($burn -ceq 'refill_resource' -and ($skill.resourceCost -le 0 -or $hero.resourceMaximum -eq 0)) -or
@@ -140,7 +140,7 @@ function Export-BattleCatalog {
             ($skill.soulGain -ne 0 -or $skill.soulBurnCost -ne 0 -or ($skill.cooldownTurns -gt 0 -and -not $triggersAttack)))) {
             throw "Battle skill effect program or passive activation is invalid for $($skill.id)."
         }
-        $activeStages = @('impact','after_hit','after_attack')
+        $activeStages = @('impact','after_hit','after_attack','after_ally_skill')
         $passiveOperations = @{
             impact = @('damage_bonus')
             on_attacked = @('cleanse','readiness','readiness_bonus','counterattack')
@@ -175,7 +175,7 @@ function Export-BattleCatalog {
                     'caster_health_above_half','caster_health_at_most_half','caster_has_resource','caster_buffed','recipient_buffed','recipient_debuffed_after_skill_awakening','recipient_health_at_most_half','single_target_attack',
                     'target_hit_critical','attack_critical','attack_critical_after_skill_awakening','caster_indomitable',
                     'caster_not_indomitable','caster_skill_awakened','target_readiness_drained','caster_health_below_three_quarters',
-                    'caster_speed_buffed','caster_speed_buffed_after_skill_awakening','defeated_target') -or
+                    'caster_speed_buffed','caster_speed_buffed_after_skill_awakening','defeated_target','enemy_debuffed') -or
                 $effect.chanceBonusStatus -cnotin @('none','AttackDown') -or
                 (($effect.chanceBonusStatus -ceq 'none') -ne ($effect.chanceBonusBp -eq 0)) -or
                 ($operation -cin @('cleanse','dispel','reduce_readiness','reduce_readiness_double','transfer_debuff','extend_cooldown') -and $effect.value -le 0) -or
@@ -218,6 +218,10 @@ function Export-BattleCatalog {
                     $effect.recipient -cne 'self' -or $effect.chanceBp -ne 10000 -or
                     @($skills | Where-Object { $_.heroId -ceq $skill.heroId -and $_.slot -eq $effect.value -and
                         $_.id -cne $skill.id -and $_.cooldownTurns -gt 0 }).Count -ne 1)) -or
+                ($effect.phase -ceq 'after_ally_skill' -and ($passive -or $skill.cooldownTurns -le 0 -or
+                    $operation -cne 'readiness' -or $effect.recipient -cne 'self' -or $effect.chanceBp -ne 10000 -or
+                    $effect.value -le 0 -or $effect.condition -cnotin @('none','enemy_debuffed'))) -or
+                ($effect.condition -ceq 'enemy_debuffed' -and $effect.phase -cne 'after_ally_skill') -or
                 ($effect.condition -ceq 'defeated_target' -and
                     ($operation -cnotin @('grant_extra_turn','reset_cooldown') -or -not $hasDamage)) -or
                 ($effect.status -ceq 'Poison' -and $effect.value -ne 500) -or

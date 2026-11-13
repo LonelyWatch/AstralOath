@@ -55,4 +55,4 @@ CFX 的 scale/rotate 等字段包含 "~" 范围时，当前不会推测抽样分
 
 卡琳 c1011 已接入角色内容；三技能、音频及已知缺项见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。
 
-巴尔＆塞尚 c1015 已接入三技能及日语原声。S2/S3 使用支持有序位移轨的 Spine 2.1 资源。规则、表现诊断与音频来源见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。
+优芬妮 c1016 已接入三技能及日语原声。S2 的三个原始日语键按事件解析，含此映射的新资源需要对应母包。规则、表现诊断与音频来源见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。

@@ -69,13 +69,38 @@ namespace AstralOath.Shared.Battle
                     foreach (var passive in Passives(ally))
                     {
                         var trigger = passive.AllyAttackTrigger;
-                        if (trigger == null || ally.Source.GetCooldown(passive.Row.id) > 0) continue;
+                        if (trigger == null || ally.Cooldowns.GetValueOrDefault(passive.Row.id) > 0) continue;
                         var target = targets.FirstOrDefault(candidate => candidate.Alive && attacked.Contains(candidate.Id) &&
                             ConditionMet(trigger, ally, candidate, false));
                         if (target == null || !ally.TriggeredPassives.Add(passive.Row.id)) continue;
                         if (passive.Row.cooldownTurns > 0)
-                            Changes.Add(BattleChange.Cooldown(ally.Id, ally.Id, passive.Row.id, passive.Row.cooldownTurns));
+                            ChangeCooldown(ally, ally, passive.Row.id, passive.Row.cooldownTurns);
                         Cast(ally, passive, target, false, BattleActionOrigin.Passive, phase);
+                    }
+                }
+            }
+
+            private void ResolveAllySkillEffects(Unit caster)
+            {
+                bool? enemyHasDebuff = null;
+                foreach (var listener in Allies(caster))
+                {
+                    if (listener == caster) continue;
+                    foreach (string id in listener.Source.Form.SkillIds)
+                    {
+                        if (!owner.skills.TryGetValue(id, out var program) || program.AllySkillEffects.Length == 0 ||
+                            listener.Cooldowns.GetValueOrDefault(id) > 0) continue;
+                        foreach (var effect in program.AllySkillEffects)
+                        {
+                            if (effect.condition == "enemy_debuffed")
+                            {
+                                enemyHasDebuff ??= units.Any(unit => unit.Alive && unit.Side != caster.Side &&
+                                    unit.Statuses.Any(status => IsHarmful(status.Kind)));
+                                if (!enemyHasDebuff.Value) continue;
+                            }
+                            ApplyEffect(listener, listener, program.Row, effect, owner.ModifiersFor(listener, program),
+                                false, BattleHitKind.None, null, false);
+                        }
                     }
                 }
             }

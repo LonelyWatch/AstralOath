@@ -23,6 +23,16 @@ namespace AstralOath.Client.Bootstrap
         private readonly List<Playback> finished = new List<Playback>();
         private readonly BindingScope assetsLifetime;
         private readonly HashSet<string> missingJapaneseKeys = new HashSet<string>(StringComparer.Ordinal);
+        private readonly Dictionary<string, Dictionary<string, string>> japaneseAliases =
+            new Dictionary<string, Dictionary<string, string>>(StringComparer.Ordinal);
+
+        [Serializable, UnityEngine.Scripting.Preserve]
+        public sealed class JapaneseProgrammerAlias
+        {
+            public string eventPath;
+            public string requestedKey;
+            public string audioTableKey;
+        }
         private readonly HashSet<string> reportedMissingJapaneseKeys = new HashSet<string>(StringComparer.Ordinal);
         private readonly List<string> pendingMissingJapaneseWarnings = new List<string>();
         private static readonly byte[] SilentProgrammerPcm = new byte[320]; // 20 ms, 8 kHz, mono PCM16.
@@ -105,7 +115,11 @@ namespace AstralOath.Client.Bootstrap
         public Task InitializeAsync(IAssetService assets, IEnumerable<string> addresses) =>
             InitializeAsync(assets, addresses, null);
 
-        public async Task InitializeAsync(IAssetService assets, IEnumerable<string> addresses, IEnumerable<string> absentJapaneseKeys)
+        public Task InitializeAsync(IAssetService assets, IEnumerable<string> addresses, IEnumerable<string> absentJapaneseKeys) =>
+            InitializeAsync(assets, addresses, absentJapaneseKeys, null);
+
+        public async Task InitializeAsync(IAssetService assets, IEnumerable<string> addresses,
+            IEnumerable<string> absentJapaneseKeys, IEnumerable<JapaneseProgrammerAlias> aliases)
         {
             if (disposed) throw new ObjectDisposedException(nameof(FmodCharacterAudioService));
             if (initializationStarted) throw new InvalidOperationException("FMOD 初始化只能执行一次");
@@ -118,6 +132,7 @@ namespace AstralOath.Client.Bootstrap
                         !string.Equals(key, JapaneseAudioTableKey(key), StringComparison.Ordinal) || !missingJapaneseKeys.Add(key))
                         throw new InvalidOperationException("无效的缺失日语音频键：" + key);
                 }
+                RegisterJapaneseAliases(aliases);
                 // A Profiler scope must not cross await: native initialization is one synchronous segment.
                 using (InitializeMarker.Auto())
                 {
@@ -140,6 +155,12 @@ namespace AstralOath.Client.Bootstrap
                     }
                 }
                 Check(studio.flushCommands(), "flushCommands");
+                foreach (var entry in japaneseAliases)
+                {
+                    Check(studio.getEvent(entry.Key, out _), "Japanese alias event " + entry.Key);
+                    foreach (string key in entry.Value.Values)
+                        Check(GetSoundInfo(key, out _), "Japanese alias target " + key);
+                }
                 IsAvailable = true;
                 diagnostic = "FMOD 2.03.15 / 日语音频库已加载";
             }
@@ -150,6 +171,26 @@ namespace AstralOath.Client.Bootstrap
                 throw;
             }
         }
+
+        private void RegisterJapaneseAliases(IEnumerable<JapaneseProgrammerAlias> aliases)
+        {
+            foreach (var alias in aliases ?? Array.Empty<JapaneseProgrammerAlias>())
+            {
+                if (alias == null || string.IsNullOrWhiteSpace(alias.eventPath) ||
+                    !alias.eventPath.StartsWith("event:/voc/", StringComparison.Ordinal) ||
+                    !IsCanonicalVoiceKey(alias.requestedKey) || !IsCanonicalVoiceKey(alias.audioTableKey) ||
+                    alias.requestedKey == alias.audioTableKey || missingJapaneseKeys.Contains(alias.audioTableKey))
+                    throw new InvalidOperationException("无效的日语音频键映射");
+                if (!japaneseAliases.TryGetValue(alias.eventPath, out var keys))
+                    japaneseAliases.Add(alias.eventPath, keys = new Dictionary<string, string>(StringComparer.Ordinal));
+                if (!keys.TryAdd(alias.requestedKey, alias.audioTableKey))
+                    throw new InvalidOperationException("重复的日语音频键映射：" + alias.eventPath + "/" + alias.requestedKey);
+            }
+        }
+
+        private static bool IsCanonicalVoiceKey(string key) =>
+            !string.IsNullOrWhiteSpace(key) && key.StartsWith("voc_", StringComparison.Ordinal) &&
+            string.Equals(key, JapaneseAudioTableKey(key), StringComparison.Ordinal);
 
         public ICharacterAudioPlayback PlayEvent(string eventPath)
         {
@@ -174,7 +215,7 @@ namespace AstralOath.Client.Bootstrap
             if (!eventPath.StartsWith("event:/", StringComparison.Ordinal)) eventPath = "event:/" + eventPath.TrimStart('/');
             Check(studio.getEvent(eventPath, out var description), eventPath);
             Check(description.createInstance(out var instance), "createInstance");
-            var playback = new Playback(this, instance);
+            var playback = new Playback(this, instance, japaneseAliases.GetValueOrDefault(eventPath));
             try
             {
                 playback.AttachProgrammerCallback();
@@ -288,7 +329,8 @@ namespace AstralOath.Client.Bootstrap
                 {
                     var properties = Marshal.PtrToStructure<FMOD.Studio.PROGRAMMER_SOUND_PROPERTIES>(parameters);
                     string requestedKey = properties.name;
-                    string key = JapaneseAudioTableKey(requestedKey);
+                    string canonicalKey = JapaneseAudioTableKey(requestedKey);
+                    string key = playback.ResolveJapaneseKey(canonicalKey);
                     var lookup = playback.owner.GetSoundInfo(key, out var info);
                     if (lookup == FMOD.RESULT.ERR_EVENT_NOTFOUND && playback.owner.missingJapaneseKeys.Contains(key))
                     {
@@ -392,12 +434,22 @@ namespace AstralOath.Client.Bootstrap
             private FMOD.Sound sound;
             private FMOD.Channel channel;
             private readonly bool isEvent;
+            private readonly IReadOnlyDictionary<string, string> japaneseAliases;
             private bool disposed;
             internal bool nativeDestroyed;
             internal bool hasHandle;
             private GCHandle handle;
-            internal Playback(FmodCharacterAudioService owner, FMOD.Studio.EventInstance instance)
-            { this.owner = owner; this.instance = instance; isEvent = true; }
+            internal Playback(FmodCharacterAudioService owner, FMOD.Studio.EventInstance instance,
+                IReadOnlyDictionary<string, string> japaneseAliases)
+            {
+                this.owner = owner;
+                this.instance = instance;
+                this.japaneseAliases = japaneseAliases;
+                isEvent = true;
+            }
+
+            internal string ResolveJapaneseKey(string key) =>
+                japaneseAliases != null && japaneseAliases.TryGetValue(key, out var alias) ? alias : key;
             internal Playback(FmodCharacterAudioService owner, FMOD.Sound sound, FMOD.Channel channel)
             { this.owner = owner; this.sound = sound; this.channel = channel; }
             internal void AttachProgrammerCallback()

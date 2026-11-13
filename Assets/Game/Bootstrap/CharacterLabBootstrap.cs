@@ -34,7 +34,12 @@ namespace AstralOath.Client.Bootstrap
         public string AudioDiagnostic => audio?.Diagnostic ?? "FMOD 尚未创建";
         public string StartupError { get; private set; }
 
-        [Serializable] private sealed class BankCatalog { public string[] sharedBanks; public string[] missingJapaneseProgrammerKeys; }
+        [Serializable] private sealed class BankCatalog
+        {
+            public string[] sharedBanks;
+            public string[] missingJapaneseProgrammerKeys;
+            public FmodCharacterAudioService.JapaneseProgrammerAlias[] japaneseProgrammerAliases;
+        }
 
         private async void Start()
         {
@@ -57,7 +62,11 @@ namespace AstralOath.Client.Bootstrap
                 if (catalog?.sharedBanks == null) throw new InvalidOperationException("角色目录缺少声音库清单");
                 audio = new FmodCharacterAudioService(scope.Token);
                 services.Add<ICharacterAudioService>(audio);
-                try { await audio.InitializeAsync(assets, catalog.sharedBanks, catalog.missingJapaneseProgrammerKeys); }
+                try
+                {
+                    await audio.InitializeAsync(assets, catalog.sharedBanks, catalog.missingJapaneseProgrammerKeys,
+                        catalog.japaneseProgrammerAliases);
+                }
                 catch (OperationCanceledException) { throw; }
                 catch (Exception error) { Debug.LogWarning("ASTRAL_CHARACTERLAB_AUDIO_UNAVAILABLE " + error.Message); }
                 scope.Token.ThrowIfCancellationRequested();

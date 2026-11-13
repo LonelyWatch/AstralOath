@@ -60,7 +60,7 @@ namespace AstralOath.Shared.Battle
                     cooldown = Math.Max(0, cooldown - program.Row.soulBurnTurns);
             }
             if (cooldown > 0)
-                work.Changes.Add(BattleChange.Cooldown(actor.Id, actor.Id, program.Row.id, cooldown));
+                work.ChangeCooldown(actor, actor, program.Row.id, cooldown);
             actor.Readiness = 0;
             string presentationId = work.Cast(actor, program, selected, command.UseSoulBurn, BattleActionOrigin.Primary);
             if (command.UseSoulBurn && actor.Alive)
@@ -110,6 +110,7 @@ namespace AstralOath.Shared.Battle
             public readonly Modifiers[] Modifiers;
             public readonly BattleCatalogData.EffectRow AllyAttackTrigger;
             public readonly BattleCatalogData.EffectRow[] CriticalEffects;
+            public readonly BattleCatalogData.EffectRow[] AllySkillEffects;
             public readonly BattleCatalogData.EffectRow[] CriticalBuffOptions;
 
             public Program(BattleCatalogData.SkillRow row, IEnumerable<BattleCatalogData.EffectRow> effects,
@@ -129,6 +130,7 @@ namespace AstralOath.Shared.Battle
                     effect.phase == "after_ally_attack" && effect.operation == "trigger");
                 if (AllyAttackTrigger == null && Effects.Any(effect => effect.phase == "after_ally_attack"))
                     throw new ArgumentException($"Passive attack '{row.id}' has no trigger.");
+                AllySkillEffects = Effects.Where(effect => effect.phase == "after_ally_skill").ToArray();
                 CriticalEffects = Effects.Where(effect => effect.phase == "after_caster_critical" &&
                     effect.operation != "random_buff_option").ToArray();
                 CriticalBuffOptions = Effects.Where(effect => effect.phase == "after_caster_critical" &&
@@ -171,6 +173,7 @@ namespace AstralOath.Shared.Battle
             public int Health;
             public int ResourceAmount;
             public int Readiness;
+            public readonly Dictionary<string, int> Cooldowns;
             public readonly HashSet<string> TriggeredPassives = new HashSet<string>(StringComparer.Ordinal);
 
             public Unit(BattleUnitSnapshot source)
@@ -179,6 +182,7 @@ namespace AstralOath.Shared.Battle
                 Health = source.CurrentHealth;
                 ResourceAmount = source.Resource?.Amount ?? 0;
                 Readiness = source.ReadinessBp;
+                Cooldowns = source.Cooldowns.ToDictionary(item => item.Key, item => item.Value, StringComparer.Ordinal);
                 Statuses = source.Statuses.ToList();
             }
 
@@ -263,7 +267,7 @@ namespace AstralOath.Shared.Battle
                 bool defeatedTarget = false;
                 foreach (var effect in program.Effects)
                 {
-                    if (triggerPhase != null && effect.phase != triggerPhase) continue;
+                    if (effect.phase == "after_ally_skill" || (triggerPhase != null && effect.phase != triggerPhase)) continue;
                     switch (effect.operation)
                     {
                         case "trigger":
@@ -322,6 +326,7 @@ namespace AstralOath.Shared.Battle
 
                 if (attackCritical && actor.Alive) ResolveCriticalPassives(actor);
                 ResolveAttackedPassives(actor, targets, attacked);
+                if (origin == BattleActionOrigin.Primary) ResolveAllySkillEffects(actor);
                 if (origin != BattleActionOrigin.Passive) ResolveAllyAttackPassives(actor, targets, attacked);
 
                 // Counters and random Dual Attacks are limited to the primary attack window.
@@ -350,6 +355,7 @@ namespace AstralOath.Shared.Battle
                 int bonusChance = effect.chanceBonusBp > 0 && target.Has(ParseStatus(effect.chanceBonusStatus))
                     ? effect.chanceBonusBp : 0;
                 int chance = Math.Min(Basis, effect.chanceBp + modifiers.ChanceBp + bonusChance);
+                bool ignoresResistance = soulBurn && skill.soulBurnKind == "ignore_resistance";
                 switch (effect.operation)
                 {
                     case "damage":
@@ -408,7 +414,7 @@ namespace AstralOath.Shared.Battle
                         break;
                     case "reduce_readiness":
                     case "reduce_readiness_double":
-                        if (CheckEffect(actor, target, null, chance, lastHit, hostile: true, checksImmunity: true))
+                        if (CheckEffect(actor, target, null, chance, lastHit, hostile: true, checksImmunity: true, ignoresResistance))
                         {
                             int reductionBp = effect.value + modifiers.ReadinessBp;
                             if (effect.operation == "reduce_readiness_double") reductionBp *= 2;
@@ -419,22 +425,22 @@ namespace AstralOath.Shared.Battle
                         foreach (var id in target.Source.Form.SkillIds)
                         {
                             if (!owner.skills.TryGetValue(id, out var reset) || reset.Row.slot != effect.value) continue;
-                            int remaining = target.Source.GetCooldown(id);
-                            if (remaining > 0) Changes.Add(BattleChange.Cooldown(actor.Id, target.Id, id, -remaining));
+                            int remaining = target.Cooldowns.GetValueOrDefault(id);
+                            if (remaining > 0) ChangeCooldown(actor, target, id, -remaining);
                         }
                         break;
                     case "reduce_cooldown":
                         foreach (var id in target.Source.Form.SkillIds)
-                            if (target.Source.GetCooldown(id) > 0)
-                                Changes.Add(BattleChange.Cooldown(actor.Id, target.Id, id, -effect.value));
+                            if (target.Cooldowns.GetValueOrDefault(id) > 0)
+                                ChangeCooldown(actor, target, id, -effect.value);
                         break;
                     case "extend_cooldown":
                         for (int turn = 0; turn < effect.value; turn++)
                         {
-                            if (!CheckEffect(actor, target, null, chance, lastHit, hostile: true, checksImmunity: true)) continue;
+                            if (!CheckEffect(actor, target, null, chance, lastHit, hostile: true, checksImmunity: true, ignoresResistance)) continue;
                             foreach (var id in target.Source.Form.SkillIds.Skip(1))
                                 if (owner.skills.TryGetValue(id, out var delayed) && delayed.Row.cooldownTurns > 0)
-                                    Changes.Add(BattleChange.Cooldown(actor.Id, target.Id, id, 1));
+                                    ChangeCooldown(actor, target, id, 1);
                         }
                         break;
                     case "cleanse":
@@ -446,7 +452,7 @@ namespace AstralOath.Shared.Battle
                         break;
                     case "dispel":
                         foreach (var status in target.Statuses.Where(item => IsDispellableBuff(item.Kind)).Take(effect.value).ToArray())
-                            if (CheckEffect(actor, target, status.Kind, chance, lastHit, hostile: true, checksImmunity: false))
+                            if (CheckEffect(actor, target, status.Kind, chance, lastHit, hostile: true, checksImmunity: false, ignoresResistance))
                             {
                                 target.Statuses.Remove(status);
                                 Changes.Add(BattleChange.RemoveStatus(actor.Id, target.Id, status.Kind));
@@ -455,7 +461,7 @@ namespace AstralOath.Shared.Battle
                     case "transfer_debuff":
                         foreach (var status in actor.Statuses.Where(item => IsHarmful(item.Kind)).Take(effect.value).ToArray())
                         {
-                            if (!CheckEffect(actor, target, status.Kind, chance, lastHit, hostile: true, checksImmunity: true)) continue;
+                            if (!CheckEffect(actor, target, status.Kind, chance, lastHit, hostile: true, checksImmunity: true, ignoresResistance)) continue;
                             ApplyStatus(actor, target, status.Kind, status.RemainingTurns, status.Strength);
                             actor.Statuses.Remove(status);
                             Changes.Add(BattleChange.RemoveStatus(actor.Id, actor.Id, status));
@@ -464,7 +470,7 @@ namespace AstralOath.Shared.Battle
                     case "apply_status":
                         var kind = ParseStatus(effect.status);
                         bool harmful = IsHarmful(kind);
-                        if (!CheckEffect(actor, target, kind, chance, lastHit, harmful, harmful)) break;
+                        if (!CheckEffect(actor, target, kind, chance, lastHit, harmful, harmful, ignoresResistance)) break;
                         int duration = effect.turns;
                         if (soulBurn && !harmful && skill.soulBurnKind == "extend_granted_buffs") duration += skill.soulBurnTurns;
                         int strength = kind == BattleStatusKind.Barrier ? BarrierStrength(actor, skill, modifiers.BarrierBp) : effect.value;
@@ -493,6 +499,13 @@ namespace AstralOath.Shared.Battle
                 Changes.Add(BattleChange.ApplyStatus(actor.Id, target.Id, kind, duration, strength));
             }
 
+            public void ChangeCooldown(Unit source, Unit target, string skillId, int delta)
+            {
+                int current = target.Cooldowns.GetValueOrDefault(skillId);
+                target.Cooldowns[skillId] = (int)Math.Clamp((long)current + delta, 0L, 60L);
+                Changes.Add(BattleChange.Cooldown(source.Id, target.Id, skillId, delta));
+            }
+
             private void ChangeReadiness(Unit source, Unit target, int delta)
             {
                 target.Readiness = (int)Math.Clamp((long)target.Readiness + delta, 0L, 1000000L);
@@ -510,7 +523,7 @@ namespace AstralOath.Shared.Battle
             }
 
             private bool CheckEffect(Unit source, Unit target, BattleStatusKind? kind, int chance, BattleHitKind hit,
-                bool hostile, bool checksImmunity)
+                bool hostile, bool checksImmunity, bool ignoresResistance)
             {
                 BattleEffectRejection? reason = null;
                 if (hostile && hit == BattleHitKind.Miss)
@@ -519,7 +532,7 @@ namespace AstralOath.Shared.Battle
                     reason = BattleEffectRejection.Blocked;
                 else if (!Roll(random, chance))
                     reason = BattleEffectRejection.ChanceFailed;
-                else if (hostile && !Roll(random, EffectSuccessBp(source.Effectiveness, target.EffectResistance)))
+                else if (hostile && !ignoresResistance && !Roll(random, EffectSuccessBp(source.Effectiveness, target.EffectResistance)))
                     reason = BattleEffectRejection.Resisted;
                 if (!reason.HasValue) return true;
                 if (reason != BattleEffectRejection.ChanceFailed)

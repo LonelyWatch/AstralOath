@@ -432,6 +432,33 @@
       "resourceAttackedSpend": 0,
       "resourceOpeningGain": 0,
       "resourceAttackedGain": 0
+    },
+    {
+      "id": "c1016",
+      "nameKey": "character.yupine.name",
+      "element": "wind",
+      "heroClass": "warrior",
+      "zodiac": "taurus",
+      "growthPresetId": "warrior_taurus_5",
+      "baseStars": 5,
+      "level": 60,
+      "stars": 6,
+      "awakenings": 6,
+      "variant": "standard",
+      "attack": 1228,
+      "health": 5784,
+      "defense": 553,
+      "speed": 109,
+      "critChanceBp": 2300,
+      "critDamageBp": 16500,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0,
+      "resourceKind": "none",
+      "resourceMaximum": 0,
+      "resourceTurnGain": 0,
+      "resourceAttackedSpend": 0,
+      "resourceOpeningGain": 0,
+      "resourceAttackedGain": 0
     }
   ],
   "growthPresets": [
@@ -574,6 +601,16 @@
       "healthCoefficientMilli": 143800,
       "defenseCoefficientMilli": 58500,
       "speedMilli": 106875
+    },
+    {
+      "id": "warrior_taurus_5",
+      "nativeStars": 5,
+      "heroClass": "warrior",
+      "zodiac": "taurus",
+      "attackCoefficientMilli": 65400,
+      "healthCoefficientMilli": 185800,
+      "defenseCoefficientMilli": 47400,
+      "speedMilli": 109375
     }
   ],
   "awakeningSteps": [
@@ -2016,6 +2053,96 @@
       "critDamageBp": 0,
       "effectivenessBp": 1200,
       "effectResistanceBp": 0
+    },
+    {
+      "id": "c1016.r1",
+      "heroId": "c1016",
+      "rank": 1,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 300,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1016.r2",
+      "heroId": "c1016",
+      "rank": 2,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 500,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1016.r3",
+      "heroId": "c1016",
+      "rank": 3,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1016.r4",
+      "heroId": "c1016",
+      "rank": 4,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 800,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1016.r5",
+      "heroId": "c1016",
+      "rank": 5,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 600,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1016.r6",
+      "heroId": "c1016",
+      "rank": 6,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 1000,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
     }
   ],
   "skills": [
@@ -3324,6 +3451,87 @@
       "soulBurnTurns": 0,
       "attackRateBp": 8000,
       "powerBp": 10000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": ""
+    },
+    {
+      "id": "c1016.s1",
+      "heroId": "c1016",
+      "slot": 1,
+      "nameKey": "battle.skill.c1016.s1.name",
+      "descriptionKey": "battle.skill.c1016.s1.description",
+      "presentationId": "c_yupine_skill_01",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1016_1.png",
+      "target": "one_enemy",
+      "cooldownTurns": 0,
+      "soulGain": 1,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 10000,
+      "powerBp": 10000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": ""
+    },
+    {
+      "id": "c1016.s2",
+      "heroId": "c1016",
+      "slot": 2,
+      "nameKey": "battle.skill.c1016.s2.name",
+      "descriptionKey": "battle.skill.c1016.s2.description",
+      "presentationId": "c_yupine_skill_02",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1016_2.png",
+      "target": "all_enemies",
+      "cooldownTurns": 5,
+      "soulGain": 2,
+      "soulBurnCost": 20,
+      "soulBurnKind": "ignore_resistance",
+      "soulBurnTurns": 0,
+      "attackRateBp": 9000,
+      "powerBp": 10000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": ""
+    },
+    {
+      "id": "c1016.s3",
+      "heroId": "c1016",
+      "slot": 3,
+      "nameKey": "battle.skill.c1016.s3.name",
+      "descriptionKey": "battle.skill.c1016.s3.description",
+      "presentationId": "c_yupine_skill_03",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1016_3.png",
+      "target": "one_enemy",
+      "cooldownTurns": 5,
+      "soulGain": 2,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 20000,
+      "powerBp": 9500,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
       "aoeOutsideTurn": false,
@@ -5331,6 +5539,171 @@
       "condition": "none",
       "chanceBonusStatus": "none",
       "chanceBonusBp": 0
+    },
+    {
+      "id": "c1016.s1.1",
+      "skillId": "c1016.s1",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1016.s1.2",
+      "skillId": "c1016.s1",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "DefenseDown",
+      "chanceBp": 3500,
+      "turns": 2,
+      "value": 7000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1016.s2.1",
+      "skillId": "c1016.s2",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1016.s2.2",
+      "skillId": "c1016.s2",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "dispel",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 1,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1016.s2.3",
+      "skillId": "c1016.s2",
+      "order": 3,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "DefenseDown",
+      "chanceBp": 6000,
+      "turns": 2,
+      "value": 7000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1016.s2.4",
+      "skillId": "c1016.s2",
+      "order": 4,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Silence",
+      "chanceBp": 7500,
+      "turns": 1,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1016.s3.1",
+      "skillId": "c1016.s3",
+      "order": 1,
+      "phase": "impact",
+      "operation": "apply_status",
+      "recipient": "self",
+      "status": "AttackUp",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 5000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1016.s3.2",
+      "skillId": "c1016.s3",
+      "order": 2,
+      "phase": "impact",
+      "operation": "damage_bonus",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 5000,
+      "condition": "recipient_debuffed_after_skill_awakening",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1016.s3.3",
+      "skillId": "c1016.s3",
+      "order": 3,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1016.s3.4",
+      "skillId": "c1016.s3",
+      "order": 4,
+      "phase": "after_attack",
+      "operation": "grant_extra_turn",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "defeated_target",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1016.s3.5",
+      "skillId": "c1016.s3",
+      "order": 5,
+      "phase": "after_ally_skill",
+      "operation": "readiness",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 2000,
+      "condition": "enemy_debuffed",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
     }
   ],
   "enhancements": [
@@ -6985,6 +7358,111 @@
       "step": 6,
       "kind": "damage_bp",
       "value": 1500
+    },
+    {
+      "id": "c1016.s1.e1",
+      "skillId": "c1016.s1",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1016.s1.e2",
+      "skillId": "c1016.s1",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1016.s1.e3",
+      "skillId": "c1016.s1",
+      "step": 3,
+      "kind": "effect_chance_bp",
+      "value": 500
+    },
+    {
+      "id": "c1016.s1.e4",
+      "skillId": "c1016.s1",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1016.s1.e5",
+      "skillId": "c1016.s1",
+      "step": 5,
+      "kind": "effect_chance_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1016.s1.e6",
+      "skillId": "c1016.s1",
+      "step": 6,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1016.s2.e1",
+      "skillId": "c1016.s2",
+      "step": 1,
+      "kind": "effect_chance_bp",
+      "value": 500
+    },
+    {
+      "id": "c1016.s2.e2",
+      "skillId": "c1016.s2",
+      "step": 2,
+      "kind": "cooldown_turns",
+      "value": 1
+    },
+    {
+      "id": "c1016.s2.e3",
+      "skillId": "c1016.s2",
+      "step": 3,
+      "kind": "effect_chance_bp",
+      "value": 500
+    },
+    {
+      "id": "c1016.s3.e1",
+      "skillId": "c1016.s3",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1016.s3.e2",
+      "skillId": "c1016.s3",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1016.s3.e3",
+      "skillId": "c1016.s3",
+      "step": 3,
+      "kind": "cooldown_turns",
+      "value": 1
+    },
+    {
+      "id": "c1016.s3.e4",
+      "skillId": "c1016.s3",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1016.s3.e5",
+      "skillId": "c1016.s3",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1016.s3.e6",
+      "skillId": "c1016.s3",
+      "step": 6,
+      "kind": "damage_bp",
+      "value": 1000
     }
   ],
   "messages": [
@@ -7721,6 +8199,34 @@
       "zhCn": "回合开始时，每层受到相当于自身最大生命值 5% 的伤害。"
     },
     {
+      "key": "battle.skill.c1016.s1.name",
+      "zhCn": "双重斩击"
+    },
+    {
+      "key": "battle.skill.c1016.s1.description",
+      "zhCn": "攻击单个敌人，有 35% 概率降低防御力 2 回合。"
+    },
+    {
+      "key": "battle.skill.c1016.s2.name",
+      "zhCn": "巨龙咆哮"
+    },
+    {
+      "key": "battle.skill.c1016.s2.description",
+      "zhCn": "攻击全体敌人，先尝试驱散一个强化，再分别以 60% 概率降低防御力 2 回合、以 75% 概率使目标沉默 1 回合。"
+    },
+    {
+      "key": "battle.skill.c1016.s3.name",
+      "zhCn": "巨龙冲锋"
+    },
+    {
+      "key": "battle.skill.c1016.s3.description",
+      "zhCn": "赋予自身攻击力提升 2 回合后攻击单个敌人，击倒目标时获得额外回合。三阶觉醒后对已有减益的目标增伤 50%。本技能可用时，其他队友施放技能后若有敌人处于减益，增加自身行动值 20%。"
+    },
+    {
+      "key": "battle.inspect.burn.ignore_resistance",
+      "zhCn": "忽略效果抗性。"
+    },
+    {
       "key": "character.ras.name",
       "zhCn": "拉斯"
     },
@@ -7783,6 +8289,10 @@
     {
       "key": "character.baal_sezan.name",
       "zhCn": "巴尔＆塞尚"
+    },
+    {
+      "key": "character.yupine.name",
+      "zhCn": "优芬妮"
     }
   ]
 }

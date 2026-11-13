@@ -67,7 +67,8 @@ namespace AstralOath.Client.BattleScene
                 var assets = new SceneBanks(addresses.ToArray(), bankAssets.ToArray());
                 service = new FmodCharacterAudioService(CancellationToken.None);
                 // Scene banks are already loaded TextAssets; the asset adapter always completes inline.
-                service.InitializeAsync(assets, addresses, catalog.missingJapaneseProgrammerKeys).GetAwaiter().GetResult();
+                service.InitializeAsync(assets, addresses, catalog.missingJapaneseProgrammerKeys,
+                    catalog.japaneseProgrammerAliases).GetAwaiter().GetResult();
             }
             catch (Exception error)
             {
@@ -198,6 +199,7 @@ namespace AstralOath.Client.BattleScene
             public AudioCharacter[] characters;
             public string[] sharedBanks;
             public string[] missingJapaneseProgrammerKeys;
+            public FmodCharacterAudioService.JapaneseProgrammerAlias[] japaneseProgrammerAliases;
         }
 
         [Serializable, Preserve]

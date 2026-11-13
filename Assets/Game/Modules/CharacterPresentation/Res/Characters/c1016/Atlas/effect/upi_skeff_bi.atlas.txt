@@ -1,0 +1,69 @@
+
+upi_skeff_bi.sct
+size: 455,342
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+eff_adslash_1
+  rotate: false
+  xy: 218, 170
+  size: 77, 90
+  orig: 77, 90
+  offset: 0, 0
+  index: -1
+eff_adslash_2
+  rotate: true
+  xy: 218, 262
+  size: 77, 90
+  orig: 77, 90
+  offset: 0, 0
+  index: -1
+eff_adslash_3
+  rotate: true
+  xy: 297, 170
+  size: 77, 90
+  orig: 77, 90
+  offset: 0, 0
+  index: -1
+eff_adslash_4
+  rotate: false
+  xy: 376, 2
+  size: 77, 90
+  orig: 77, 90
+  offset: 0, 0
+  index: -1
+energybolt_8
+  rotate: false
+  xy: 376, 94
+  size: 62, 54
+  orig: 62, 54
+  offset: 0, 0
+  index: -1
+flamedust_2
+  rotate: true
+  xy: 173, 2
+  size: 166, 201
+  orig: 166, 201
+  offset: 0, 0
+  index: -1
+flamedust_3
+  rotate: true
+  xy: 2, 173
+  size: 167, 214
+  orig: 167, 214
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+phone_shot
+  rotate: false
+  xy: 310, 249
+  size: 53, 59
+  orig: 53, 59
+  offset: 0, 0
+  index: -1

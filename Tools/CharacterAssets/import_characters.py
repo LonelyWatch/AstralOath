@@ -26,6 +26,7 @@ CHARACTERS={
     "c1013":("kartua","卡尔图哈"),
     "c1014":("cedars","席德"),
     "c1015":("baal_sezan","巴尔＆塞尚"),
+    "c1016":("yupine","优芬妮"),
     "c1062":("angelica","安洁莉卡"),
 }
 # Keep source identifiers verbatim even where the model and STG stems differ.
@@ -425,6 +426,32 @@ def voice_keys(text):
     return set(re.findall(r"\\(voc_[^\\\s]+)\.wav",text))
 
 
+def canonical_programmer_key(key):
+    return re.sub(r"\((zhs|en|kr|ja|zht|zl)\)$", "", key)
+
+
+# Explicit source provenance. A spelling match cannot authorize substitution between events.
+JAPANESE_PROGRAMMER_ALIASES = {
+    "event:/voc/skill/c_yupine_skill_02": tuple(
+        (f"voc_c1016_skill2_{take}", f"voc_c1016_skill2_{take}_j") for take in range(1, 4)),
+}
+
+
+def verified_japanese_aliases(used_events, audio, loaded_keys, source_events):
+    aliases = {}
+    for event in sorted(JAPANESE_PROGRAMMER_ALIASES.keys() & used_events):
+        event_keys = {canonical_programmer_key(key) for key in audio.get(event, ())}
+        # @master records locale-specific original file paths for this exact event.
+        japanese_files = {path.rsplit("\\", 1)[-1].removesuffix(".wav")
+                          for path in source_events.get(event, ()) if re.search(r"\\voc\\ja_[0-9]+\\", path)}
+        for requested, sample in JAPANESE_PROGRAMMER_ALIASES[event]:
+            if (requested not in event_keys or sample not in event_keys or sample not in loaded_keys or
+                    sample not in japanese_files or requested == sample or (event, requested) in aliases):
+                raise ValueError(f"Invalid source Japanese alias: {event}: {requested} -> {sample}")
+            aliases[event, requested] = sample
+    return aliases
+
+
 def build_catalog(closure,characters,include_banks):
     voice_table=safe_source(closure.root,"sound/ja/voc1.audio_ja.yml")
     voice_text=voice_table.read_text(encoding="utf-8-sig")
@@ -461,17 +488,26 @@ def build_catalog(closure,characters,include_banks):
             "battleSkeletonAddress":address(f"model/{hero}.scsp"),"portraitSkeletonAddress":address(f"portrait/{cid}.scsp"),
             "voiceBankAddress":address("sound/ja/voc1.audio_ja.bank") if include_banks else "",
             "timelineAddress":address(timeline) if timeline in closure.dependencies else "","voices":voices,"skills":skills})
-    referenced_keys={re.sub(r"\((zhs|en|kr|ja|zht|zl)\)$","",key)
+    source_events = {}
+    if include_banks and JAPANESE_PROGRAMMER_ALIASES.keys() & used_events:
+        source_events = audio_events(safe_source(closure.root,"sound/@master.yml").read_text(encoding="utf-8-sig"))
+    aliases = verified_japanese_aliases(used_events, audio, loaded_keys, source_events) if include_banks else {}
+    requested = {(event, canonical_programmer_key(key))
         for event in used_events for key in audio.get(event,()) if key.startswith("voc_")}
-    missing=referenced_keys-loaded_keys
+    missing = {key for event, key in requested if aliases.get((event, key), key) not in loaded_keys}
     if missing and include_banks:
         for table in sorted(voice_table.parent.glob("*.audio_ja.yml")):
             if table==voice_table:continue
             unloaded=missing & voice_keys(table.read_text(encoding="utf-8-sig"))
             if unloaded:
                 raise ValueError(f"Japanese programmer keys require bank {table.name}: {', '.join(sorted(unloaded))}")
-    return {"schemaVersion":1,"characters":records,"sharedBanks":[address(p) for p in BANKS] if include_banks else [],
+    catalog = {"schemaVersion":1,"characters":records,"sharedBanks":[address(p) for p in BANKS] if include_banks else [],
         "missingJapaneseProgrammerKeys":sorted(missing) if include_banks else []}
+    if aliases:
+        catalog["japaneseProgrammerAliases"] = [
+            {"eventPath": event, "requestedKey": requested, "audioTableKey": sample}
+            for (event, requested), sample in sorted(aliases.items())]
+    return catalog
 
 
 def verify_manifest(project,manifest,source_root=None):

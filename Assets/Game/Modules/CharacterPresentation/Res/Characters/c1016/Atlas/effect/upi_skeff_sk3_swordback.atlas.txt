@@ -1,0 +1,62 @@
+
+upi_skeff_sk3_swordback.sct
+size: 256,253
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+energybolt_2
+  rotate: false
+  xy: 2, 2
+  size: 133, 96
+  orig: 133, 96
+  offset: 0, 0
+  index: -1
+energybolt_4
+  rotate: false
+  xy: 104, 145
+  size: 80, 69
+  orig: 80, 69
+  offset: 0, 0
+  index: -1
+energybolt_8
+  rotate: false
+  xy: 186, 197
+  size: 62, 54
+  orig: 62, 54
+  offset: 0, 0
+  index: -1
+energybolt_9
+  rotate: false
+  xy: 186, 145
+  size: 68, 50
+  orig: 68, 50
+  offset: 0, 0
+  index: -1
+flame_s_1
+  rotate: true
+  xy: 137, 2
+  size: 101, 108
+  orig: 101, 108
+  offset: 0, 0
+  index: -1
+flame_s_2
+  rotate: false
+  xy: 2, 100
+  size: 100, 114
+  orig: 100, 114
+  offset: 0, 0
+  index: -1
+water_pillar_02
+  rotate: true
+  xy: 2, 216
+  size: 35, 132
+  orig: 35, 132
+  offset: 0, 0
+  index: -1
+water_pillar_03
+  rotate: true
+  xy: 104, 105
+  size: 38, 125
+  orig: 38, 125
+  offset: 0, 0
+  index: -1
