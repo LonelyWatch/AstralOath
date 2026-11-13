@@ -36,6 +36,7 @@ namespace AstralOath.Client.Skeletons
         private readonly S21.AnimationState state;
         private string animation;
         private bool loop;
+        private readonly Dictionary<string, Spine21SetupTimeline> completeMixTargets = new Dictionary<string, Spine21SetupTimeline>(StringComparer.Ordinal);
         internal Spine21Runtime(SkeletonPlayerSource source)
         {
             var data = Prepare(source);
@@ -75,10 +76,37 @@ namespace AstralOath.Client.Skeletons
                 // A new unblended clip must not inherit unkeyed attachments, bones or deformation.
                 state.ClearTracks(); skeleton.SetToSetupPose();
             }
-            if (animation != null) state.Data.SetMix(animation, name, mix);
-            animation = name; loop = looping; state.SetAnimation(0, name, looping); state.Apply(skeleton);
+            var target = skeleton.Data.FindAnimation(name);
+            Spine21SetupTimeline.Playback playback = null;
+            if (mix > 0)
+            {
+                if (!completeMixTargets.TryGetValue(name, out var defaults))
+                {
+                    defaults = new Spine21SetupTimeline(skeleton.Data, target);
+                    completeMixTargets.Add(name, defaults);
+                }
+                playback = new Spine21SetupTimeline.Playback(defaults, target);
+                target = playback.Animation;
+            }
+            // No queued tracks: SetAnimation captures the mix immediately. Using the
+            // instance default avoids retaining a dictionary of unique wrapper pairs.
+            state.Data.DefaultMix = mix;
+            animation = name; loop = looping;
+            var entry = state.SetAnimation(0, target, looping);
+            if (playback != null) playback.Entry = entry;
+            state.Apply(skeleton);
         }
-        internal override void Advance(float delta) { skeleton.Update(delta); state.Update(delta); state.Apply(skeleton); }
+        internal override void Advance(float delta)
+        {
+            // The public player holds a completed non-looping pose until Play/Stop.
+            // Preserve its native track as the next mix source instead of letting 2.1
+            // discard it one update after completion. The original completion has
+            // already fired; neither held frames nor Seek replay it.
+            var current = state.GetCurrent(0);
+            if (current != null && !current.Loop && current.LastTime >= current.Animation.Duration)
+                current.EndTime = float.PositiveInfinity;
+            skeleton.Update(delta); state.Update(delta); state.Apply(skeleton);
+        }
         internal override void Seek(float seconds)
         {
             state.ClearTracks(); skeleton.SetToSetupPose();
@@ -204,7 +232,7 @@ namespace AstralOath.Client.Skeletons
         }
         public override void Dispose()
         {
-            state.Event -= OnEvent; state.Complete -= OnComplete; state.ClearTracks(); Events.Clear();
+            state.Event -= OnEvent; state.Complete -= OnComplete; state.ClearTracks(); Events.Clear(); completeMixTargets.Clear();
         }
     }
 }

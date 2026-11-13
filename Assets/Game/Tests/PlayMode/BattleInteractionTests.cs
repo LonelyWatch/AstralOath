@@ -50,6 +50,31 @@ namespace AstralOath.Client.Tests
         }
 
         [UnityTest]
+        public IEnumerator SkillCameraKeepsWorldHealthAndLevelMarkersActive()
+        {
+            var status = map.transform.Find("Unit Status").gameObject;
+            Assert.That(status.activeInHierarchy, Is.True);
+            var simulation = typeof(BattleHudPreview).GetField("simulation", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(host);
+            var cinematic = simulation.GetType().GetField("cinematicVisible", BindingFlags.Instance | BindingFlags.NonPublic);
+            var target = host.SimulationSnapshot.Units.First(unit => unit.Slot.Side == BattleSide.Enemy);
+            map.Require<GameButton>("skill3").onClick.Invoke();
+            Assert.That(host.TrySelectBattleTarget(target.InstanceId), Is.True);
+            bool observedCinematic = false;
+            double deadline = Time.realtimeSinceStartupAsDouble + 20d;
+            do
+            {
+                yield return null;
+                bool presenting = (bool)cinematic.GetValue(simulation);
+                observedCinematic |= presenting;
+                Assert.That(status.activeInHierarchy, Is.True,
+                    "Health, level and status markers stay active during source camera/effect cues; only a real full-screen overlay may cover them.");
+                if (observedCinematic && !presenting) break;
+            } while (Time.realtimeSinceStartupAsDouble < deadline);
+            Assert.That(observedCinematic, Is.True, "The real skill must exercise the cinematic callback.");
+            Assert.That((bool)cinematic.GetValue(simulation), Is.False, "The skill must finish and restore player controls.");
+        }
+
+        [UnityTest]
         public IEnumerator PauseBlocksSkillInputAndFreezesPresentationUntilContinueAndRestartResetsBattle()
         {
             if (host.SimulationSnapshot == null) host.StartBattle();

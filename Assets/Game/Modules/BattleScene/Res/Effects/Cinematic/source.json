@@ -20,7 +20,7 @@
       "source": "D:/sevenepic/原始资源/effect/bg_hatch_3.png"
     },
     {
-      "transform": "GLSL texture sampling and additive tint equation ported to URP HLSL. Speed uniform driver and BGHATCH layout semantics remain unverified against original engine.",
+      "transform": "GLSL three-layer tint equation ported to URP HLSL. Source PNGs retain straight RGBA: shader restores alpha-weighted RGB to match Cocos premultiplied texture semantics, then uses One/OneMinusSrcAlpha blending with one sprite-opacity multiplication. See docs/delivery/2026-11-13-hatch-alpha-audit.md. Speed uniform driver and BGHATCH layout semantics remain unverified against original engine.",
       "sha256": "e46052b9c5a37e1b117a2bacb9d45541af80cd6587c34c113cee683bb8077546",
       "source": "D:/sevenepic/原始资源/system/program/sprite_hatch.frag"
     }

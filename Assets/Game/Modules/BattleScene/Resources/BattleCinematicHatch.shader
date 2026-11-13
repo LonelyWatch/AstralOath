@@ -15,7 +15,7 @@ Shader "AstralOath/BattleCinematicHatch"
         Tags { "Queue"="Transparent" "RenderType"="Transparent" "RenderPipeline"="UniversalPipeline" }
         Pass
         {
-            Blend SrcAlpha OneMinusSrcAlpha
+            Blend One OneMinusSrcAlpha
             ZWrite Off Cull Off
             HLSLPROGRAM
             #pragma vertex vert
@@ -31,12 +31,19 @@ Shader "AstralOath/BattleCinematicHatch"
             Varyings vert(Attributes input) { Varyings o; o.positionCS=TransformObjectToHClip(input.positionOS.xyz); o.uv=input.uv; o.color=input.color; return o; }
             half4 frag(Varyings input):SV_Target
             {
-                // Original sprite_hatch.frag equation; provenance is in Cinematic/source.json.
-                half3 t0=SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,input.uv+float2(_Option.x,0)).rgb;
-                half3 t1=SAMPLE_TEXTURE2D(_Texture1,sampler_Texture1,input.uv+float2(_Option.y,0)).rgb;
-                half3 t2=SAMPLE_TEXTURE2D(_Texture2,sampler_Texture2,input.uv+float2(_Option.z,0)).rgb;
-                return input.color*(half4(t0*_FragColor0.rgb*_FragColor0.a,_FragColor0.a)+
-                    half4(t1*_FragColor1.rgb*_FragColor1.a,_FragColor1.a)+half4(t2*_FragColor2.rgb*_FragColor2.a,_FragColor2.a));
+                // Original Cocos PNG uploads are premultiplied. These source PNGs remain
+                // straight RGBA in Unity: their alpha carries the soft streak intensity.
+                // Preserve that intensity before the original three-layer tint sum.
+                half4 t0=SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,input.uv+float2(_Option.x,0));
+                half4 t1=SAMPLE_TEXTURE2D(_Texture1,sampler_Texture1,input.uv+float2(_Option.y,0));
+                half4 t2=SAMPLE_TEXTURE2D(_Texture2,sampler_Texture2,input.uv+float2(_Option.z,0));
+                half3 rgb=t0.rgb*t0.a*_FragColor0.rgb*_FragColor0.a+
+                    t1.rgb*t1.a*_FragColor1.rgb*_FragColor1.a+
+                    t2.rgb*t2.a*_FragColor2.rgb*_FragColor2.a;
+                half alpha=(_FragColor0.a+_FragColor1.a+_FragColor2.a)*input.color.a;
+                // The sprite opacity affects premultiplied RGB once; the blend stage
+                // must not multiply by the accumulated alpha for a second time.
+                return half4(rgb*input.color.rgb*input.color.a,saturate(alpha));
             }
             ENDHLSL
         }

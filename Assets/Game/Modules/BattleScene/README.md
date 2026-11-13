@@ -77,3 +77,9 @@ Luban 快照 `Configs/battle-catalog.json` 含三名英雄、成长模板、觉�
 2026-11-13 起，重复站位共享场景内不可变骨骼源，播放实例保持独立，最后持有者禁用后释放源缓存。版本头不再反序列化整个骨骼 DOM；完整原生解析结果须核对版本，避免冲突头选择错误运行库。
 
 `Tools/战斗场景/重建数值字体` 只重建 HP 与伤害数字字体，保持原图和数字指标，补齐 TMP 保留字符。`Tools/战斗场景/构建 Windows 性能诊断包（Mono）` 生成独立性能包；不修改正式母包、热更或发布配置。用法与实际验证见[性能报告](../../../../docs/delivery/2026-11-13-battle-performance.md)，长期规则见 [ADR 013](../../../../docs/architecture/adr/013-battle-performance.md)。
+
+## 信息条与动作恢复
+
+普通攻击/技能的 CAM、BGHATCH 不再隐藏生命、等级和状态；全屏 CUTIN 使用幕布覆盖这些信息。技能与 Burn 控制仍按回合/演出管理。BGHATCH 同时保留原 PNG alpha 与预乘混合，不能通过换图或角色参数调整掩盖纹理编码问题。
+
+动作回待机须连续衔接并收敛到完整的目标姿态，检查旧版运行库遗漏键、尾轨清理、循环、暂停和实例隔离。源码、红绿测试、平台边界见[本轮修复记录](../../../../docs/delivery/2026-11-13-battle-presentation-fixes.md)；后续角色导入遵守[源演出规范](../../../../docs/development/battle-source-presentation.md)。Core 桥接改变需新母包，不能只发布业务 DLL。

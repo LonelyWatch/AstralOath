@@ -506,8 +506,9 @@ namespace AstralOath.Client.BattleScene
             cinematicVisible = value;
             if (value)
             {
+                // World status remains visible; a full-screen Cut-in covers it through renderer ordering.
                 foreach (var item in new[] { hud.transform.Find("Skills").gameObject,
-                    hud.Require<GameButton>("soulBurn").gameObject, hud.transform.Find("Unit Status").gameObject })
+                    hud.Require<GameButton>("soulBurn").gameObject })
                 {
                     cinematicHudStates.Add(item, item.activeSelf);
                     item.SetActive(false);

@@ -37,7 +37,7 @@ namespace AstralOath.Client.Tests
         private string captureDirectory;
 
         [Flags]
-        private enum Phase { None = 0, Approach = 1, Impact = 2, Wide = 4, Blur = 8, Cutin = 16 }
+        private enum Phase { None = 0, Approach = 1, Impact = 2, Wide = 4, Blur = 8, Cutin = 16, Hatch = 32 }
 
         [UnityTest]
         public IEnumerator AllNineSourceGraphsPlayInBothDirectionsAndRestoreTheScene()
@@ -60,8 +60,7 @@ namespace AstralOath.Client.Tests
             camera = host.GetComponent<Canvas>().worldCamera;
             units = roots.Single(root => root.name == "Units").transform;
             var map = HostField<BindingMap>(host, "hud");
-            var hudObjects = new[] { map.transform.Find("Skills").gameObject, map.Require<GameButton>("soulBurn").gameObject,
-                map.transform.Find("Unit Status").gameObject };
+            var hudObjects = new[] { map.transform.Find("Skills").gameObject, map.Require<GameButton>("soulBurn").gameObject };
             var hudVisibility = hudObjects.Select(item => item.activeSelf).ToArray();
             setCinematicVisible = visible =>
             {
@@ -120,7 +119,8 @@ namespace AstralOath.Client.Tests
                         Phase focus = id switch
                         {
                             "c_ras_skill_02" => Phase.Approach | Phase.Impact | Phase.Blur,
-                            "c_mercedes_skill_03" => Phase.Wide,
+                            "c_ras_skill_03" => Phase.Hatch,
+                            "c_mercedes_skill_03" => Phase.Wide | Phase.Hatch,
                             "c_angelica_skill_03" => Phase.Blur | Phase.Cutin,
                             _ => Phase.None
                         };
@@ -137,7 +137,8 @@ namespace AstralOath.Client.Tests
                         if (focus != Phase.None)
                         {
                             Phase interruptAt = focus.HasFlag(Phase.Approach) ? Phase.Approach :
-                                focus.HasFlag(Phase.Wide) ? Phase.Wide : Phase.Blur;
+                                focus.HasFlag(Phase.Wide) ? Phase.Wide :
+                                focus.HasFlag(Phase.Hatch) ? Phase.Hatch : Phase.Blur;
                             yield return Play(id, sample + "-interrupted", actor, primary, recipients, Phase.None, interruptAt);
                         }
                     }
@@ -181,6 +182,10 @@ namespace AstralOath.Client.Tests
                 if (camera.transform.Cast<Transform>().Any(child => child.gameObject.activeInHierarchy &&
                     child.name.StartsWith("CUTIN ", StringComparison.Ordinal)))
                     Observe(Phase.Cutin);
+                var hatch = camera.transform.Find("BGHATCH");
+                if (hatch && hatch.gameObject.activeInHierarchy &&
+                    hatch.GetComponent<MeshFilter>().sharedMesh.colors[0].a >= .9f)
+                    Observe(Phase.Hatch);
                 if ((float)requestedSize.GetValue(stage) > baseline.CameraSize + 0.1f)
                     Observe(Phase.Wide);
                 if (elapsed < timing.Impact && Mathf.Abs(actor.transform.localPosition.x - baseline.ActorHome.x) > 0.25f &&

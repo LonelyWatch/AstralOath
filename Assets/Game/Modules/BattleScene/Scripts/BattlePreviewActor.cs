@@ -18,6 +18,9 @@ namespace AstralOath.Client.BattleScene
         private ISkeletonPlayer player;
         private string idleAnimation;
         private bool playingBattleAnimation;
+        // Recovery is presentation-only: authored hit/return tails do not necessarily
+        // end at the battle idle pose. Keep the displayed pose while entering idle.
+        private const float IdleRecoveryMixSeconds = .15f;
         private bool paused;
         private int presentationPauseCount;
         private int presentationControlCount;
@@ -142,7 +145,7 @@ namespace AstralOath.Client.BattleScene
         {
             if (player == null || !playingBattleAnimation) return;
             playingBattleAnimation = false;
-            player.Play(idleAnimation, true);
+            player.Play(idleAnimation, true, IdleRecoveryMixSeconds);
         }
 
         internal float GetBattleAnimationDuration(string animation)
