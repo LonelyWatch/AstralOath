@@ -88,16 +88,16 @@ namespace AstralOath.Client.Tests
             var actor = (BattlePreviewActor)view.GetType().GetProperty("Actor").GetValue(view);
             var marker = map.transform.Find("Unit Status/Enemies/01 Front");
             var hp = marker.Find("HP").GetComponent<Image>();
-            var trail = marker.Find("Damage Trail").GetComponent<Image>();
+            var trail = hp.transform.Find("Damage Trail").GetComponent<Image>();
             void Call(string method, params object[] args) => view.GetType().GetMethod(method).Invoke(view, args);
             Call("SetHealth", 1000L, 1000); Call("SetHealth", 350L, 1000);
             Call("TickVisual", .1f);
             Assert.That(hp.fillAmount, Is.InRange(.35f, 1f));
-            Assert.That(trail.fillAmount, Is.GreaterThan(hp.fillAmount));
+            Assert.That(trail.rectTransform.rect.width, Is.GreaterThan(0f));
             Capture("damage-010");
-            Call("TickVisual", .35f);
+            Call("TickVisual", .6f);
             Assert.That(hp.fillAmount, Is.EqualTo(.35f).Within(.001f));
-            Assert.That(trail.fillAmount, Is.EqualTo(.35f).Within(.001f));
+            Assert.That(trail.enabled, Is.False);
             Capture("damage-settled");
             Call("ApplyStatus", Activator.CreateInstance(typeof(BattleStatusSnapshot),
                 Private, null, new object[] { BattleStatusKind.DefenseDown, 2, 0 }, null));
@@ -121,7 +121,7 @@ namespace AstralOath.Client.Tests
             Assert.That(deathBlock.GetFloat("_PresentationOpacity"), Is.EqualTo(1f));
             Assert.That(marker.GetComponent<CanvasGroup>().alpha, Is.EqualTo(1f));
             Assert.That(hp.fillAmount, Is.Zero.Within(.001f));
-            Assert.That(trail.fillAmount, Is.GreaterThan(0));
+            Assert.That(trail.enabled, Is.True);
             Assert.That(marker.Find("Frame/Status Icons").GetChild(0).gameObject.activeInHierarchy, Is.True);
             var particles = actor.transform.Find("Battle death particles");
             Assert.That(particles.GetComponentsInChildren<MeshRenderer>(), Is.Empty,
@@ -223,6 +223,7 @@ namespace AstralOath.Client.Tests
             var camera = map.GetComponentInParent<Canvas>().worldCamera;
             float health = marker.Find("HP").GetComponent<Image>().fillAmount;
             void Call(string method, params object[] args) => simulation.GetType().GetMethod(method, Private).Invoke(simulation, args);
+            simulation.GetType().GetMethod("SetPaused").Invoke(simulation, new object[] { true });
             void Present(BattleFlowEventKind kind, int amount = 0, BattleStatusKind? statusKind = null, int turns = 0,
                 string source = "ally-1", string target = "enemy-1")
             {
@@ -294,12 +295,15 @@ namespace AstralOath.Client.Tests
             CollectionAssert.AreEqual(new[] { "stic_att_up", "stic_def_dn" }, VisibleIcons());
             Capture("status-barrier-consumed");
 
-            Present(BattleFlowEventKind.StatusApplied, 90, BattleStatusKind.Barrier, 2);
+            Present(BattleFlowEventKind.StatusApplied, 1100, BattleStatusKind.Barrier, 2);
             Call("ShowDueFeedback");
+            var healthImage = marker.Find("HP").GetComponent<Image>();
+            var red = marker.GetComponentsInChildren<Image>(true).Single(image => image.name == "Damage Trail");
+            float RedWidth() => red.enabled ? red.rectTransform.rect.width : 0f;
             simulation.GetType().GetField("hitTimes", Private).SetValue(simulation, new[] { 1f, 2f, 3f });
-            Present(BattleFlowEventKind.BarrierAbsorbed, 90);
+            Present(BattleFlowEventKind.BarrierAbsorbed, 1100);
             Present(BattleFlowEventKind.StatusRemoved, statusKind: BattleStatusKind.Barrier);
-            Present(BattleFlowEventKind.Damage, 60);
+            Present(BattleFlowEventKind.Damage, 1800);
             Present(BattleFlowEventKind.StatusApplied, 5000, BattleStatusKind.DefenseUp, 2, target: "ally-1");
             Present(BattleFlowEventKind.StatusRemoved, statusKind: BattleStatusKind.AttackUp, source: "enemy-1");
             var friendlyIcons = map.transform.Find("Unit Status/Allies/01 Front/Frame/Status Icons");
@@ -325,19 +329,34 @@ namespace AstralOath.Client.Tests
             ShowAt(1f);
             AssertReactionRestart("A shield-only hit still plays the reaction.");
             Assert.That(aura.gameObject.activeSelf, Is.True, "The first hit only spends part of the shield.");
+            Assert.That(RedWidth(), Is.Zero, "A shield-only hit cannot start the HP damage trail.");
             Assert.That(healthValue.GetValue(view), Is.EqualTo(previousHealth));
             Assert.That(friendlyIcons.childCount, Is.Zero);
             CollectionAssert.Contains(VisibleIcons(), "stic_att_up");
             ShowAt(2f);
             AssertReactionRestart("The second hit restarts the reaction even while the first animation is playing.");
             Assert.That(aura.gameObject.activeSelf, Is.False);
-            Assert.That(healthValue.GetValue(view), Is.EqualTo(previousHealth), "Early HP damage must not start the bar tween.");
-            Assert.That(marker.Find("HP").GetComponent<Image>().fillAmount, Is.EqualTo(health).Within(.001f));
+            float redAtFirstHpHit = RedWidth();
+            Assert.That(redAtFirstHpHit, Is.GreaterThan(0f), "The first hit that removes HP must immediately show red.");
+            Assert.That(healthImage.fillAmount, Is.LessThan(health));
+            Assert.That(shield.gameObject.activeSelf, Is.False, "The depleted shield cannot obscure the red segment.");
+            Capture("damage-trail-first-hit", new Vector2Int(1920, 1080));
+            view.GetType().GetMethod("TickVisual").Invoke(view, new object[] { .5f });
+            Assert.That(RedWidth(), Is.EqualTo(redAtFirstHpHit).Within(.001f), "The red range holds until the last hit.");
+
             Assert.That(friendlyIcons.childCount, Is.Zero);
             CollectionAssert.Contains(VisibleIcons(), "stic_att_up");
             ShowAt(3f);
             AssertReactionRestart("The third hit restarts the reaction at its own cue.");
-            Assert.That(healthValue.GetValue(view), Is.EqualTo(previousHealth - 60));
+            float redAtLastHpHit = RedWidth();
+            Assert.That(redAtLastHpHit, Is.GreaterThan(redAtFirstHpHit), "The last hit extends the red range.");
+            Capture("damage-trail-last-hit", new Vector2Int(1920, 1080));
+            view.GetType().GetMethod("TickVisual").Invoke(view, new object[] { .3f });
+            Assert.That(RedWidth(), Is.InRange(.001f, redAtLastHpHit - .001f), "Red retracts after the last hit.");
+            Capture("damage-trail-retracting", new Vector2Int(1920, 1080));
+            view.GetType().GetMethod("TickVisual").Invoke(view, new object[] { .6f });
+Assert.That(RedWidth(), Is.Zero, "The red segment is cleared after the transition.");
+            Assert.That(healthValue.GetValue(view), Is.EqualTo(previousHealth - 1800));
             Assert.That(friendlyIcons.GetChild(0).GetComponent<Image>().sprite.name, Is.EqualTo("stic_def_up"));
             CollectionAssert.DoesNotContain(VisibleIcons(), "stic_att_up");
             yield return null;

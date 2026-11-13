@@ -9,15 +9,15 @@ namespace AstralOath.Client.BattleScene
         public string StatusAnchor = "top";
         public Vector2 StatusOffset;
         [Min(1)] public int HealthSections = 10;
-        public Sprite DamageTrail, HealthDivider, Shield;
+        public Sprite HealthDivider, Shield;
         public Sprite ResourceFrame, FocusFill, FightingSpiritFill;
         public TextAsset StatusManifest;
         public Sprite[] StatusGlyphs, StatusDigits, LevelDigits;
         [Range(1, BattleStatusIcons.MaximumColumns)] public int StatusIconsPerRow = BattleStatusIcons.MaximumColumns;
         public BattleSkillPresentationAsset ShieldAura;
         public TextAsset ShieldAuraEffect;
-        [Min(.001f)] public float DamageSeconds = .16f, HealSeconds = .18f, TrailSeconds = .28f;
-        [Min(0)] public float TrailDelaySeconds = .12f;
+        [Min(.001f)] public float DamageSeconds = .16f, HealSeconds = .18f, TrailSeconds = .50f;
+        [Min(0)] public float TrailDelaySeconds = .15f;
         public TextAsset DeathParticles;
         public Texture2D[] DeathTextures;
         [Min(.001f)] public float DeathDarkenSeconds = BattleDeathPresentation.DefaultDarkenSeconds,

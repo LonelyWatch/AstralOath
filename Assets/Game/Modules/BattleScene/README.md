@@ -110,7 +110,7 @@ Luban 快照 `Configs/battle-catalog.json` 含十名英雄、成长模板、觉�
 
 ## 血条跟随、损血与死亡（2026-11-13）
 
-`BattleUnitStatusPresentation`维护运行时条组；普通条十等分、50%主刻度更高，使用原split/dhp图片。血量变化有红棕损血尾，权威数据不变。当前原作证据与验收见[交付记录](../../../../docs/delivery/2026-11-13-health-death-presentation.md)。
+`BattleUnitStatusPresentation`维护运行时条组；普通条十等分、50% 主刻度更高，沿用原 split 图片。伤害由命中事件逐段表现，鲜红区间从首次实际失血累积，到末段命中后开始回收。全额护盾吸收不生成红段，权威数据不变。当前原作证据与验收见[交付记录](../../../../docs/delivery/2026-11-13-health-death-presentation.md)。
 
 `Res/Configs/UnitPresentation.asset`集中锚点、刻度、过渡和死亡资源配置；特殊Boss政策需独立证据。`Tools/战斗场景/更新血条与死亡资源引用`保留作者布局，`ImportDeathEffects.py --check`核对源依赖。死亡开场预备、末击黑化并淡出，原烟雾碎片到期释放；暂停、复活和重开不污染其他实例。Core shader/挂点接口需要新母包，不改变服务器规则。
 

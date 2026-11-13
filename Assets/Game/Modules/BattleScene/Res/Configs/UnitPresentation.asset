@@ -15,7 +15,6 @@ MonoBehaviour:
   StatusAnchor: top
   StatusOffset: {x: 0, y: 0}
   HealthSections: 10
-  DamageTrail: {fileID: 21300000, guid: 0b8a7661a1c2d75438455cc2b6516be7, type: 3}
   HealthDivider: {fileID: 21300000, guid: 0488774d46e918c40a739fdabcc64eeb, type: 3}
   Shield: {fileID: 21300000, guid: 5aed20f4f9401084cb5db1afbfe15949, type: 3}
   ResourceFrame: {fileID: 21300000, guid: 5cf92ad5ac7a72f409c21903f1c48f40, type: 3}
@@ -75,8 +74,8 @@ MonoBehaviour:
   ShieldAuraEffect: {fileID: 4900000, guid: 40f8357c67fc598287984e38b2ffd213, type: 3}
   DamageSeconds: 0.16
   HealSeconds: 0.18
-  TrailSeconds: 0.28
-  TrailDelaySeconds: 0.12
+  TrailSeconds: 0.5
+  TrailDelaySeconds: 0.15
   DeathParticles: {fileID: 4900000, guid: 04365e071684586897e7c48ac73ef717, type: 3}
   DeathTextures:
   - {fileID: 2800000, guid: a5cc6356afd05eb1b1f0e901737f79a4, type: 3}

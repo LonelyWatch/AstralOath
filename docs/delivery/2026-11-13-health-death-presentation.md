@@ -55,3 +55,10 @@ Unity2022.3.62f3 / Windows x64 Development Mono / D3D11 / RTX5080 / Ryzen9800X3D
 - 产物 `.artifacts/battle-performance-player/AstralOath.BattlePerformance.exe` 可手动启动；本次为Mono诊断，未构建正式HybridCLR/IL2CPP母包或Android。
 
 本轮代码复核未发现剩余阻断；资产来源、17程序集边界、6项校验工具测试、文档同步与暂存凭据/产物检查通过。用户预存 `damage_0.png.meta`、`FoundationFont.asset` 修改保留且不提交。进入Unity后重新打开BattleScene再Play，以载入已保存的新配置引用；没有强制关闭或覆盖用户编辑器中的未保存场景。
+
+## 2026-11-14 扣血红条时序
+
+- 旧版在伤害序列最后一段才触发血条变化，原 dhp 贴图为 RGB(129,50,45)，收缩仅 0.28 秒。现用独立高对比红段 RGB(231,44,53)，按实际血量损失百分比绘制。原 dhp 文件保留在来源目录及素材记录中。
+- 首次实际失血立即更新绿条并显示红段，后续每段扩展红段，外缘保持在本次受击前的血量位置。末段后保留 0.15 秒，随后用 0.50 秒收回到绿色端点。纯护盾吸收无红段，同一击破盾且扣血时清除残留白盾。动画随战斗暂停；新伤害可续接未收完的红段，治疗清除旧红段。
+- 当前按每次实际攻击的最后命中释放红段。协攻和追加攻击可接续，各目标独立计时。当前调整只作用于客户端展示。
+- Unity 2022.3 专项 EditMode 28/28、PlayMode 10/10。1920×1080 实景逐阶段采样，目标红段约 14 px（首次实际失血）、31 px（末击）、24 px（回收中），随后归零。图在 D 盘 .artifacts/ten-hero-frames/damage-trail-{first-hit,last-hit,retracting}.png。Android 真机尚未复测。

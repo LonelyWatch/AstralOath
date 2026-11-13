@@ -15,7 +15,6 @@ namespace AstralOath.Client.BattleScene.Editor
             Directory.CreateDirectory(directory); AssetDatabase.Refresh();
             var profile = AssetDatabase.LoadAssetAtPath<BattleUnitPresentationProfile>(directory + "/UnitPresentation.asset");
             if (!profile) { profile = ScriptableObject.CreateInstance<BattleUnitPresentationProfile>(); AssetDatabase.CreateAsset(profile, directory + "/UnitPresentation.asset"); }
-            profile.DamageTrail = ImportSprite("game_hud_bar_dhp.png");
             profile.HealthDivider = ImportSprite("game_hud_bar_split.png");
             profile.ResourceFrame = AssetDatabase.LoadAssetAtPath<Sprite>(Root + "Res/Textures/Hud/game_hud_bar_bg.png");
             profile.FocusFill = AssetDatabase.LoadAssetAtPath<Sprite>(Root + "Res/Textures/Hud/game_hud_bar_cp.png");

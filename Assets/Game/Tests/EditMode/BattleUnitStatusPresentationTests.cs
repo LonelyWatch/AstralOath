@@ -43,7 +43,7 @@ namespace AstralOath.Client.Tests
             Canvas.ForceUpdateCanvases(); originalPosition = marker.localPosition; originalScale = marker.localScale;
             type = Type.GetType("AstralOath.Client.BattleScene.BattleUnitStatusPresentation, AstralOath.Client.BattleScene", false);
             Assert.That(type, Is.Not.Null, "A reusable, lifecycle-owned unit status presenter must replace fixed canvas markers.");
-            presenter = (IDisposable)Activator.CreateInstance(type, marker, hp, actor, (Func<Vector3>)(() => bone.position), camera, sprite, sprite, 10);
+            presenter = (IDisposable)Activator.CreateInstance(type, marker, hp, actor, (Func<Vector3>)(() => bone.position), camera, sprite, 10);
         }
         [TearDown] public void TearDown()
         {
@@ -114,27 +114,27 @@ namespace AstralOath.Client.Tests
         [Test] public void DamageHasAContinuousFrontAndADelayedLossLayer()
         {
             Call("UpdateHealth", 10000L, 10000, true); Call("UpdateHealth", 6000L, 10000, false);
-            var trail = Trail(); Assert.That(hp.fillAmount, Is.EqualTo(1)); Assert.That(trail.fillAmount, Is.EqualTo(1));
+            Assert.That(hp.fillAmount, Is.EqualTo(1)); Assert.That(TrailWidth(), Is.Zero);
             Call("Tick", .05f); Assert.That(hp.fillAmount, Is.InRange(.6001f, .9999f));
-            Assert.That(trail.fillAmount, Is.GreaterThan(hp.fillAmount));
+            Assert.That(TrailWidth(), Is.GreaterThan(0f));
             Call("Tick", 2f); Assert.That(hp.fillAmount, Is.EqualTo(.6f).Within(.0001f));
-            Assert.That(trail.fillAmount, Is.EqualTo(.6f).Within(.0001f));
+            Assert.That(TrailWidth(), Is.Zero);
         }
         [Test] public void AnotherHitAndHealingRetargetCurrentVisualsWithoutShowingFalseDamage()
         {
             Call("UpdateHealth", 10000L, 10000, true); Call("UpdateHealth", 8000L, 10000, false); Call("Tick", .05f);
-            float front = hp.fillAmount, tail = Trail().fillAmount;
+            float front = hp.fillAmount, tail = TrailWidth();
             Call("UpdateHealth", 4000L, 10000, false);
-            Assert.That(hp.fillAmount, Is.EqualTo(front)); Assert.That(Trail().fillAmount, Is.EqualTo(tail));
+            Assert.That(hp.fillAmount, Is.EqualTo(front)); Assert.That(TrailWidth(), Is.EqualTo(tail));
             Call("Tick", .05f); Call("UpdateHealth", 9500L, 10000, false); Call("Tick", 2f);
-            Assert.That(hp.fillAmount, Is.EqualTo(.95f).Within(.0001f)); Assert.That(Trail().fillAmount, Is.EqualTo(.95f).Within(.0001f));
+            Assert.That(hp.fillAmount, Is.EqualTo(.95f).Within(.0001f)); Assert.That(TrailWidth(), Is.Zero);
         }
         [Test] public void ZeroDeltaFreezesHealthAndChangingMaximumDoesNotCreateATrail()
         {
             Call("UpdateHealth", 10000L, 10000, true); Call("UpdateHealth", 5000L, 10000, false);
-            Call("Tick", .05f); float current = hp.fillAmount, trail = Trail().fillAmount;
-            Call("Tick", 0f); Assert.That(hp.fillAmount, Is.EqualTo(current)); Assert.That(Trail().fillAmount, Is.EqualTo(trail));
-            Call("UpdateHealth", 5000L, 5000, false); Assert.That(hp.fillAmount, Is.EqualTo(1)); Assert.That(Trail().fillAmount, Is.EqualTo(1));
+            Call("Tick", .05f); float current = hp.fillAmount, trail = TrailWidth();
+            Call("Tick", 0f); Assert.That(hp.fillAmount, Is.EqualTo(current)); Assert.That(TrailWidth(), Is.EqualTo(trail));
+            Call("UpdateHealth", 5000L, 5000, false); Assert.That(hp.fillAmount, Is.EqualTo(1)); Assert.That(TrailWidth(), Is.Zero);
         }
         [TestCase(100, 40, 5f / 7f, 1f, 5f / 7f)]
         [TestCase(60, 30, .6f, .9f, 1f)]
@@ -155,7 +155,7 @@ namespace AstralOath.Client.Tests
             Assert.That(shield.rectTransform.rect.width, Is.EqualTo(hp.rectTransform.rect.width * (expectedEnd - expectedHealth)).Within(.001f));
             Assert.That(shield.rectTransform.rect.height, Is.EqualTo(hp.rectTransform.rect.height).Within(.001f));
             Assert.That(hp.fillAmount, Is.EqualTo(expectedHealth).Within(.0001f));
-            Assert.That(Trail().fillAmount, Is.EqualTo(expectedHealth).Within(.0001f));
+            Assert.That(TrailWidth(), Is.Zero);
             Assert.That(hp.transform.Find("Health Segments").GetComponent<RectTransform>().anchorMax.x,
                 Is.EqualTo(expectedHealthTrack).Within(.0001f), "HP marks stop before the overflow portion.");
         }
@@ -175,7 +175,7 @@ namespace AstralOath.Client.Tests
             Call("Tick", 1f);
             Assert.That(shield.gameObject.activeSelf, Is.False);
             Assert.That(hp.fillAmount, Is.EqualTo(.6f).Within(.0001f));
-            Assert.That(Trail().fillAmount, Is.EqualTo(.6f).Within(.0001f));
+            Assert.That(TrailWidth(), Is.Zero);
         }
 
         [Test] public void ChangingMaximumHealthRescalesTheSameAbsoluteBarrier()
@@ -239,18 +239,40 @@ namespace AstralOath.Client.Tests
             Assert.That(a.position.y, Is.EqualTo(middleA.position.y), "All ticks are bottom aligned.");
             Assert.That(middleB.position.y - middleA.position.y, Is.GreaterThan((b.position.y - a.position.y) * 1.5f));
         }
-        [Test] public void MissingSourceSpritesUseOwnedColoredFallbackInsteadOfWhiteBars()
+        [Test] public void RedSegmentHoldsItsStartThenShrinksFromTheOuterEdge()
         {
-            presenter.Dispose();
-            presenter = (IDisposable)Activator.CreateInstance(type, marker, hp, actor, (Func<Vector3>)(() => bone.position), camera, null, null, 10);
-            var tail = Trail(); var fallback = tail.sprite;
-            Assert.That(fallback, Is.Not.Null, "UGUI ignores filled geometry when an Image has no sprite.");
-            Assert.That(tail.color, Is.EqualTo(new Color(129f / 255f, 50f / 255f, 45f / 255f, 1f)));
-            var graphic = Array.Find(marker.GetComponentsInChildren<MaskableGraphic>(true), item => item.GetType().Name == "BattleHealthSegments");
-            Assert.That(graphic.color, Is.EqualTo(new Color(0, 0, 0, 128f / 255f)));
-            Call("UpdateHealth", 2500L, 10000, true); Assert.That(tail.fillAmount, Is.EqualTo(.25f));
-            presenter.Dispose(); presenter = null; Assert.That(fallback == null, Is.True, "Dispose owns the fallback Sprite, but not Texture2D.whiteTexture.");
-            Assert.That(Texture2D.whiteTexture, Is.Not.Null);
+            Call("UpdateHealth", 1000L, 1000, true);
+            Call("ApplyDamageHit", 800L, 1000, false);
+            var rect = Trail().rectTransform;
+            Assert.That(rect.anchorMin.x, Is.EqualTo(.8f));
+            Assert.That(rect.anchorMax.x, Is.EqualTo(1f));
+            Assert.That((Color32)Trail().color, Is.EqualTo(new Color32(231, 44, 53, 255)));
+            Call("Tick", 1f);
+            Assert.That(rect.anchorMax.x, Is.EqualTo(1f));
+            Call("ApplyDamageHit", 500L, 1000, true);
+            Call("UpdateHealth", 500L, 1000, false);
+            Call("Tick", .15f);
+            Assert.That(rect.anchorMin.x, Is.EqualTo(.5f));
+            Assert.That(rect.anchorMax.x, Is.EqualTo(1f));
+            Call("Tick", .25f);
+            Assert.That(rect.anchorMax.x, Is.EqualTo(.75f).Within(.001f));
+            Call("Tick", 1f);
+            Assert.That(TrailWidth(), Is.Zero);
+        }
+
+        [Test] public void LastCueWithNoLossReleasesAReversedTrailAndHealingClearsIt()
+        {
+            hp.fillOrigin = (int)Image.OriginHorizontal.Right;
+            Call("UpdateHealth", 1000L, 1000, true);
+            Call("ApplyDamageHit", 750L, 1000, false);
+            Assert.That(Trail().rectTransform.anchorMin.x, Is.Zero);
+            Assert.That(Trail().rectTransform.anchorMax.x, Is.EqualTo(.25f));
+            Call("ApplyDamageHit", 750L, 1000, true);
+            Call("Tick", .4f);
+            Assert.That(Trail().rectTransform.anchorMin.x, Is.EqualTo(.125f).Within(.001f));
+            Assert.That(Trail().rectTransform.anchorMax.x, Is.EqualTo(.25f));
+            Call("UpdateHealth", 900L, 1000, false);
+            Assert.That(TrailWidth(), Is.Zero);
         }
         [Test] public void NativeDividerGraphicSubmitsItsMeshThroughAnActualCanvasRenderer()
         {
@@ -277,7 +299,7 @@ namespace AstralOath.Client.Tests
             Call("UpdateHealth", 10000L, 10000, true); actor.position = Vector3.right; Call("LateTick", camera);
             presenter.Dispose(); presenter.Dispose(); presenter = null;
             Assert.That(marker.localPosition, Is.EqualTo(originalPosition)); Assert.That(marker.localScale, Is.EqualTo(originalScale));
-            Assert.That(hp.fillAmount, Is.EqualTo(.8f)); Assert.That(marker.Find("Damage Trail"), Is.Null);
+            Assert.That(hp.fillAmount, Is.EqualTo(.8f)); Assert.That(hp.transform.Find("Damage Trail"), Is.Null);
             Assert.That(hp.transform.Find("Health Segments"), Is.Null); Assert.That(marker.Find("Frame"), Is.SameAs(frame));
         }
         private float ScreenWidth()
@@ -285,7 +307,8 @@ namespace AstralOath.Client.Tests
             Vector3[] corners = new Vector3[4]; frame.GetWorldCorners(corners);
             return Vector2.Distance(Screen(corners[3]), Screen(corners[0]));
         }
-        private Image Trail() => marker.Find("Damage Trail").GetComponent<Image>();
+        private Image Trail() => hp.transform.Find("Damage Trail").GetComponent<Image>();
+        private float TrailWidth() => Trail().enabled ? Trail().rectTransform.rect.width : 0f;
         private Image Shield() => hp.transform.Find("Shield Fill").GetComponent<Image>();
         private void Call(string method, params object[] values) => type.GetMethod(method).Invoke(presenter, values);
         private Vector2 Screen(Vector3 world) => RectTransformUtility.WorldToScreenPoint(camera, world);

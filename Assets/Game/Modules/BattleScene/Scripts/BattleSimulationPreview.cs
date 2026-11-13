@@ -581,7 +581,7 @@ namespace AstralOath.Client.BattleScene
             var view = views[item.TargetId];
             var unit = Snapshot.GetUnit(item.TargetId);
             // The hit clock drives individual reactions, shield consumption and damage numbers.
-            // Apply the authoritative total HP loss at the final hit of this damage sequence.
+            // Present the accepted HP loss across the same authored hit sequence.
             var hits = BattleDamageSequence.Build(item.Amount + absorbed, hitTimes, impactSeconds);
             for (int index = 0; index < hits.Length; index++)
             {
@@ -599,7 +599,7 @@ namespace AstralOath.Client.BattleScene
                     if (!skillPresentation.OwnsNodeAnimationPose(view.Actor))
                         view.Actor.PlayBattleAnimation("attacked");
                     if (shieldLoss > 0) view.AbsorbShield(shieldLoss);
-                    if (last && item.Amount > 0) view.AdjustHealth(-item.Amount, unit.Stats.MaxHealth);
+                    if (item.Amount > 0) view.ApplyDamageHit(healthLoss, unit.Stats.MaxHealth, last);
                     var bounds = view.Actor.Bounds;
                     var world = bounds.center;
                     world.y = bounds.min.y + 0.27f * bounds.size.y;
@@ -927,7 +927,7 @@ namespace AstralOath.Client.BattleScene
                 originalHealth = Health.fillAmount;
                 this.profile = profile; this.deathTextures = deathTextures;
                 status = new BattleUnitStatusPresentation((RectTransform)marker.transform, Health, Actor.transform,
-                    StatusAnchor, camera, profile ? profile.DamageTrail : null, profile ? profile.HealthDivider : null,
+                    StatusAnchor, camera, profile ? profile.HealthDivider : null,
                     profile ? profile.HealthSections : 10);
                 resourceMaximum = resource?.Maximum ?? 0;
                 if (profile && resource != null)
@@ -1034,6 +1034,15 @@ namespace AstralOath.Client.BattleScene
                     PrepareDeath();
                 }
                 UpdateStatusVisibility(Actor.PresentationRenderer);
+            }
+
+            public void ApplyDamageHit(int loss, int maximum, bool lastHit)
+            {
+                presentedHealth = Math.Max(0L, presentedHealth - loss);
+                maximumHealth = maximum;
+                // Once HP is exposed, a depleted ward should not cover the new red segment.
+                if (loss > 0 && presentedShield == 0) status.UpdateShield(0, maximum, true);
+                status.ApplyDamageHit(presentedHealth, maximum, lastHit);
             }
 
             public void AdjustHealth(int delta, int maximum) => SetHealth(presentedHealth + delta, maximum);

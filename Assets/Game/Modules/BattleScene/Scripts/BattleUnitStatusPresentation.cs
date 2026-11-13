@@ -11,7 +11,6 @@ namespace AstralOath.Client.BattleScene
         private readonly Image health, trail, shield, frameImage;
         private readonly Sprite normalFrame;
         private Image resourceFill;
-        private readonly Sprite fallbackTrailSprite;
         private readonly BattleHealthSegments segments;
         private readonly Transform actor;
         private readonly Func<Vector3> worldAnchor;
@@ -23,19 +22,19 @@ namespace AstralOath.Client.BattleScene
         private double shieldTarget, shieldStart, visibleShield;
         private float shieldTime;
         private int maximum;
-        private bool initialized, losingHealth, disposed;
+        private bool initialized, losingHealth, holdingDamageTrail, disposed;
 
         // Project presentation defaults. Original E7 millisecond timings are not yet proven.
         public float DamageSeconds { get; set; } = .16f;
         public float HealSeconds { get; set; } = .18f;
-        public float TrailDelaySeconds { get; set; } = .12f;
-        public float TrailSeconds { get; set; } = .28f;
+        public float TrailDelaySeconds { get; set; } = .15f;
+        public float TrailSeconds { get; set; } = .50f;
         // Reference Canvas units, relative to the source top anchor. This is explicit calibration.
         public Vector2 AnchorOffset { get; set; }
         public Transform ScaleAnchor { get; set; }
 
         public BattleUnitStatusPresentation(RectTransform marker, Image health, Transform actor,
-            Func<Vector3> worldAnchor, Camera camera, Sprite damageSprite, Sprite splitSprite, int sectionCount)
+            Func<Vector3> worldAnchor, Camera camera, Sprite splitSprite, int sectionCount)
         {
             this.marker = marker ? marker : throw new ArgumentNullException(nameof(marker));
             this.health = health ? health : throw new ArgumentNullException(nameof(health));
@@ -52,17 +51,13 @@ namespace AstralOath.Client.BattleScene
             originalPosition = marker.localPosition; originalScale = marker.localScale; originalFill = health.fillAmount;
             referenceProjection = ProjectionInCanvasUnits(camera);
             var trailObject = new GameObject("Damage Trail", typeof(RectTransform), typeof(Image));
-            trailObject.transform.SetParent(marker, false);
-            trail = trailObject.GetComponent<Image>(); CopyRect(health.rectTransform, trail.rectTransform);
-            if (!damageSprite)
-                fallbackTrailSprite = Sprite.Create(Texture2D.whiteTexture, new Rect(0, 0, 1, 1), Vector2.zero);
-            trail.sprite = damageSprite ? damageSprite : fallbackTrailSprite;
-            // A missing source asset is a diagnostic fallback, never an opaque white damage bar.
-            trail.color = damageSprite ? Color.white : new Color(129f / 255f, 50f / 255f, 45f / 255f, 1f);
+            trailObject.transform.SetParent(health.transform, false);
+            trail = trailObject.GetComponent<Image>();
+            trail.color = new Color32(231, 44, 53, 255);
             trail.raycastTarget = false;
-            trail.type = Image.Type.Filled; trail.fillMethod = Image.FillMethod.Horizontal;
-            trail.fillOrigin = health.fillOrigin; trail.fillAmount = originalFill;
-            trail.transform.SetSiblingIndex(health.transform.GetSiblingIndex());
+            trail.enabled = false;
+            trail.rectTransform.sizeDelta = Vector2.zero;
+            SetHorizontalRange(trail.rectTransform, 0f, 0f, false);
             var shieldObject = new GameObject("Shield Fill", typeof(RectTransform), typeof(Image));
             shieldObject.transform.SetParent(health.transform, false);
             shield = shieldObject.GetComponent<Image>(); shield.raycastTarget = false;
@@ -140,15 +135,44 @@ namespace AstralOath.Client.BattleScene
             {
                 initialized = true; target = frontStart = trailStart = next;
                 visibleHealth = visibleTrail = next; frontTime = trailTime = 0;
-                losingHealth = false;
+                losingHealth = holdingDamageTrail = false;
                 RefreshBars();
                 return;
             }
             if (Mathf.Approximately(next, target)) return; // A snapshot refresh must not restart an existing tween.
+            holdingDamageTrail = false;
             losingHealth = next < target;
             target = next; frontStart = visibleHealth; frontTime = trailTime = 0;
             trailStart = losingHealth ? Mathf.Max(visibleTrail, visibleHealth) : visibleHealth;
             visibleTrail = trailStart;
+            RefreshBars();
+        }
+
+        public void ApplyDamageHit(long value, int max, bool lastHit)
+        {
+            if (disposed) return;
+            if (!initialized || maximum != max)
+            {
+                UpdateHealth(value, max, true);
+                return;
+            }
+
+            float next = (float)(Math.Max(0L, Math.Min(value, max)) / (double)max);
+            if (next < target)
+            {
+                // The green bar follows each actual loss. Keep the pre-hit edge through the hit sequence.
+                visibleTrail = Mathf.Max(visibleTrail, Mathf.Max(visibleHealth, target));
+                visibleHealth = target = frontStart = next;
+                frontTime = trailTime = 0;
+                losingHealth = holdingDamageTrail = true;
+                if (next <= 0f) shieldTarget = shieldStart = visibleShield = 0;
+            }
+            if (lastHit && holdingDamageTrail)
+            {
+                holdingDamageTrail = false;
+                trailStart = visibleTrail;
+                trailTime = 0;
+            }
             RefreshBars();
         }
 
@@ -171,17 +195,18 @@ namespace AstralOath.Client.BattleScene
         {
             if (disposed || !initialized || delta <= 0) return;
             if (float.IsNaN(delta) || float.IsInfinity(delta)) throw new ArgumentOutOfRangeException(nameof(delta));
-            frontTime += delta; trailTime += delta;
+            frontTime += delta;
             float duration = losingHealth ? DamageSeconds : HealSeconds;
             float progress = duration <= 0 ? 1 : Mathf.Clamp01(frontTime / duration);
             visibleHealth = Mathf.Lerp(frontStart, target, Smooth(progress));
-            if (losingHealth)
+            if (losingHealth && !holdingDamageTrail)
             {
+                trailTime += delta;
                 float tailProgress = TrailSeconds <= 0 ? (trailTime >= TrailDelaySeconds ? 1 : 0) :
                     Mathf.Clamp01((trailTime - Mathf.Max(0, TrailDelaySeconds)) / TrailSeconds);
                 visibleTrail = Mathf.Max(visibleHealth, Mathf.Lerp(trailStart, target, Smooth(tailProgress)));
             }
-            else visibleTrail = visibleHealth;
+            else if (!losingHealth) visibleTrail = visibleHealth;
 
             if (visibleShield != shieldTarget)
             {
@@ -203,8 +228,10 @@ namespace AstralOath.Client.BattleScene
             float healthEnd = visibleHealth * healthTrack;
             float shieldEnd = combined * healthTrack;
             health.fillAmount = healthEnd;
-            trail.fillAmount = visibleTrail * healthTrack;
+            float trailEnd = visibleTrail * healthTrack;
             bool fromRight = health.fillOrigin == (int)Image.OriginHorizontal.Right;
+            trail.enabled = trailEnd > healthEnd;
+            SetHorizontalRange(trail.rectTransform, healthEnd, Mathf.Max(healthEnd, trailEnd), fromRight);
             SetHorizontalRange(segments.rectTransform, 0f, healthTrack, fromRight);
             bool showShield = target > 0 && shieldEnd > healthEnd;
             if (shield.gameObject.activeSelf != showShield)
@@ -284,22 +311,11 @@ namespace AstralOath.Client.BattleScene
             if (rect.anchorMin != min) rect.anchorMin = min;
             if (rect.anchorMax != max) rect.anchorMax = max;
         }
-        private static void CopyRect(RectTransform source, RectTransform target)
-        {
-            target.anchorMin = source.anchorMin; target.anchorMax = source.anchorMax; target.pivot = source.pivot;
-            target.sizeDelta = source.sizeDelta; target.anchoredPosition3D = source.anchoredPosition3D;
-            target.localScale = source.localScale; target.localRotation = source.localRotation;
-        }
         public void Dispose()
         {
             if (disposed) return;
             disposed = true;
             Remove(trail ? trail.gameObject : null); Remove(shield ? shield.gameObject : null); Remove(segments ? segments.gameObject : null);
-            if (fallbackTrailSprite)
-            {
-                if (Application.isPlaying) UnityEngine.Object.Destroy(fallbackTrailSprite);
-                else UnityEngine.Object.DestroyImmediate(fallbackTrailSprite);
-            }
             Remove(resourceFill ? resourceFill.gameObject : null);
             if (frameImage) frameImage.sprite = normalFrame;
             if (health) health.fillAmount = originalFill;
