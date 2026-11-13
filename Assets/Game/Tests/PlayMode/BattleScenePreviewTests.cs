@@ -333,8 +333,16 @@ namespace AstralOath.Client.Tests
             Assert.That(map.transform.Find("Active Unit/Class").GetComponent<Image>().sprite.name,
                 Is.EqualTo("cm_icon_role_mage"));
             var marker = map.transform.Find("Unit Status/Enemies").GetChild(0);
-            Assert.That(marker.Find("Level Value").GetComponent<GameText>().text,
-                Is.EqualTo(initial.GetUnit("enemy-1").Level.ToString()));
+            var level = marker.Find("Level");
+            var tens = level.Find("Level Tens")?.GetComponent<Image>();
+            var ones = level.Find("Level Ones")?.GetComponent<Image>();
+            int enemyLevel = initial.GetUnit("enemy-1").Level;
+            Assert.That(tens, Is.Not.Null);
+            Assert.That(ones, Is.Not.Null);
+            Assert.That(tens.sprite.name, Is.EqualTo("itxt_num" + enemyLevel / 10 + "_b"));
+            Assert.That(ones.sprite.name, Is.EqualTo("itxt_num" + enemyLevel % 10 + "_b"));
+            Assert.That(tens.rectTransform.anchoredPosition.x, Is.EqualTo(-4.5f).Within(.001f));
+            Assert.That(ones.rectTransform.anchoredPosition.x, Is.EqualTo(7.5f).Within(.001f));
             var health = marker.Find("HP").GetComponent<Image>();
             float originalFill = health.fillAmount;
             Assert.That(preview.TrySelectBattleTarget("ally-1"), Is.False);
@@ -398,6 +406,96 @@ namespace AstralOath.Client.Tests
             Assert.That(secondSkill.IsInteractable(), Is.False);
             if (!string.IsNullOrWhiteSpace(output))
                 Capture(canvas.worldCamera, output, "battle-skill-cast.png");
+        }
+
+        [UnityTest]
+        public IEnumerator AutoButtonLetsTheAllyUseItsHighestAvailableSkill()
+        {
+            scene = LoadPlayerOpeningScene();
+            yield return null;
+            yield return null;
+            var roots = scene.GetRootGameObjects();
+            var host = roots.Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            var map = roots.SelectMany(root => root.GetComponentsInChildren<BindingMap>()).Single();
+            var raycaster = map.GetComponentInParent<GraphicRaycaster>();
+            var eventSystem = roots.Select(root => root.GetComponent<EventSystem>()).Single(item => item);
+            var actor = host.SimulationSnapshot.GetUnit(host.SimulationSnapshot.CurrentActorId);
+            Assert.That(actor.DefinitionId, Is.EqualTo("c1005"));
+            Click(map.Require<GameButton>("auto"), raycaster, eventSystem);
+            Assert.That(host.TrySelectBattleTarget("enemy-1"), Is.False);
+            yield return null;
+            yield return null;
+            Assert.That(host.SimulationSnapshot.LastCommandSequence, Is.EqualTo(1UL));
+            Assert.That(host.SimulationSnapshot.GetUnit(actor.InstanceId).GetCooldown("c1005.s3"), Is.GreaterThan(0));
+            Assert.That(host.SimulationSnapshot.AllySoul, Is.EqualTo(20), "Auto never arms or consumes Soul Burn.");
+            Click(map.Require<GameButton>("auto"), raycaster, eventSystem);
+        }
+
+        [UnityTest]
+        public IEnumerator SecondSkillClickUsesAiTargetOnlyInsideHalfSecond()
+        {
+            scene = LoadPlayerOpeningScene();
+            yield return null;
+            yield return null;
+            var roots = scene.GetRootGameObjects();
+            var host = roots.Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            var map = roots.SelectMany(root => root.GetComponentsInChildren<BindingMap>()).Single();
+            var raycaster = map.GetComponentInParent<GraphicRaycaster>();
+            var eventSystem = roots.Select(root => root.GetComponent<EventSystem>()).Single(item => item);
+            var skill = map.Require<GameButton>("skill1");
+            var otherSkill = map.Require<GameButton>("skill2");
+
+            Click(skill, raycaster, eventSystem);
+            Assert.That(host.SimulationSnapshot.LastCommandSequence, Is.Zero, "An already highlighted basic skill still requires the first real click.");
+            yield return new WaitForSecondsRealtime(.55f);
+            Click(skill, raycaster, eventSystem);
+            Assert.That(host.SimulationSnapshot.LastCommandSequence, Is.Zero, "An expired first click starts a fresh selection.");
+            Click(otherSkill, raycaster, eventSystem);
+            Click(skill, raycaster, eventSystem);
+            Assert.That(host.SimulationSnapshot.LastCommandSequence, Is.Zero, "Switching skill breaks the double-click pair.");
+            Click(skill, raycaster, eventSystem);
+            Assert.That(host.SimulationSnapshot.LastCommandSequence, Is.EqualTo(1UL));
+            Assert.That(host.SimulationSnapshot.GetUnit("enemy-1").CurrentHealth,
+                Is.LessThan(host.SimulationSnapshot.GetUnit("enemy-1").Stats.MaxHealth));
+        }
+
+        [UnityTest]
+        public IEnumerator BurnSelectionDoubleClickCastsTheArmedSkillOnce()
+        {
+            scene = LoadPlayerOpeningScene();
+            yield return null;
+            yield return null;
+            var roots = scene.GetRootGameObjects();
+            var host = roots.Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            var map = roots.SelectMany(root => root.GetComponentsInChildren<BindingMap>()).Single();
+            var raycaster = map.GetComponentInParent<GraphicRaycaster>();
+            var eventSystem = roots.Select(root => root.GetComponent<EventSystem>()).Single(item => item);
+            var burn = map.Require<GameButton>("soulBurn");
+            var skill = map.Require<GameButton>("skill3"); // Mercedes is the fixed opening actor.
+            var initial = host.SimulationSnapshot;
+            Assert.That(initial.GetUnit(initial.CurrentActorId).DefinitionId, Is.EqualTo("c1005"));
+            var simulation = typeof(BattleHudPreview).GetField("simulation", PrivateInstance).GetValue(host);
+            var voice = simulation.GetType().GetField("voice", PrivateInstance).GetValue(simulation);
+            var burnCount = voice.GetType().GetProperty("StartedBurnReadyCount", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            Assert.That(burnCount, Is.Not.Null);
+            Click(burn, raycaster, eventSystem);
+#if UNITY_EDITOR_WIN
+            Assert.That((int)burnCount.GetValue(voice), Is.EqualTo(1));
+#endif
+            Click(burn, raycaster, eventSystem); // Cancel leaves the count untouched.
+#if UNITY_EDITOR_WIN
+            Assert.That((int)burnCount.GetValue(voice), Is.EqualTo(1));
+#endif
+            Click(burn, raycaster, eventSystem);
+            Assert.That(host.SimulationSnapshot.LastCommandSequence, Is.Zero);
+            Click(skill, raycaster, eventSystem);
+            Assert.That(host.SimulationSnapshot.LastCommandSequence, Is.Zero, "Arming Burn does not count as a skill click.");
+            Click(skill, raycaster, eventSystem);
+            Assert.That(host.SimulationSnapshot.LastCommandSequence, Is.EqualTo(1UL));
+            Assert.That(host.SimulationSnapshot.AllySoul, Is.EqualTo(initial.AllySoul - 10 + 2));
+#if UNITY_EDITOR_WIN
+            Assert.That((int)burnCount.GetValue(voice), Is.EqualTo(2));
+#endif
         }
 
         [UnityTest]
@@ -482,10 +580,13 @@ namespace AstralOath.Client.Tests
             string output = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_CAPTURE_DIR");
             if (!string.IsNullOrWhiteSpace(output))
                 Capture(preview.GetComponent<Canvas>().worldCamera, output, "battle-enemy-turn.png");
-            deadline = Time.realtimeSinceStartup + 15f;
+            // Several enemies can play full S3 cinematics before the next ally turn.
+            deadline = Time.realtimeSinceStartup + 45f;
             while (!map.Require<GameButton>("skill1").IsInteractable() && Time.realtimeSinceStartup < deadline)
                 yield return null;
-            Assert.That(map.Require<GameButton>("skill1").gameObject.activeInHierarchy, Is.True);
+            var returned = preview.SimulationSnapshot;
+            string current = returned.CurrentActorId + " / turn " + returned.TurnNumber + " / " + returned.Outcome;
+            Assert.That(map.Require<GameButton>("skill1").gameObject.activeInHierarchy, Is.True, current);
             Assert.That(map.Require<GameButton>("skill1").IsInteractable(), Is.True);
             Assert.That(map.transform.Find("Skills").gameObject.activeSelf, Is.True);
         }

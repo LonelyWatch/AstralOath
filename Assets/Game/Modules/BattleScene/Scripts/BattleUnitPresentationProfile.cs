@@ -12,7 +12,7 @@ namespace AstralOath.Client.BattleScene
         public Sprite DamageTrail, HealthDivider, Shield;
         public Sprite ResourceFrame, FocusFill, FightingSpiritFill;
         public TextAsset StatusManifest;
-        public Sprite[] StatusGlyphs, StatusDigits;
+        public Sprite[] StatusGlyphs, StatusDigits, LevelDigits;
         [Min(1)] public int StatusIconsPerRow = 5;
         public BattleSkillPresentationAsset ShieldAura;
         public TextAsset ShieldAuraEffect;

@@ -1,4 +1,4 @@
-"""Prepare the original status glyphs and turn digits for the battle HUD."""
+"""Prepare battle status glyphs and preserve the native HUD number textures."""
 import argparse
 import hashlib
 import io
@@ -66,21 +66,21 @@ def adapt_icon(image):
     return stream.getvalue()
 
 
-ICON_PLATFORMS = re.compile(
-    r"(buildTarget: (?:DefaultTexturePlatform|Standalone|Android)\n"
+GLYPH_PLATFORM_COMPRESSION = re.compile(
+    r"(buildTarget: (?:DefaultTexturePlatform|Standalone|iPhone|Android)\n"
     r"(?:    [^\n]*\n)*?    textureCompression: )([0-9]+)"
 )
 
 
-def has_uncompressed_icons(meta):
-    settings = ICON_PLATFORMS.findall(meta)
-    return len(settings) == 3 and all(compression == "0" for _, compression in settings)
-
-
-def uncompressed_icon(meta):
-    updated = ICON_PLATFORMS.sub(r"\g<1>0", meta)
-    if not has_uncompressed_icons(updated):
-        raise ValueError("Missing required status icon texture importer settings.")
+def glyph_sampling(meta):
+    updated = GLYPH_PLATFORM_COMPRESSION.sub(r"\g<1>0", meta)
+    for key, value in (("filterMode", "0"), ("enableMipMap", "0"), ("userData", "AstralOath.ImportOverride")):
+        updated, count = re.subn(r"(?m)^( +)" + key + r":[^\n]*$", r"\g<1>" + key + ": " + value, updated)
+        if count != 1:
+            raise ValueError(f"Missing battle HUD glyph importer property: {key}")
+    settings = GLYPH_PLATFORM_COMPRESSION.findall(updated)
+    if len(settings) != 4:
+        raise ValueError("Missing required battle HUD glyph platform settings.")
     return "\n".join(line.rstrip() for line in updated.splitlines()) + "\n"
 
 
@@ -116,6 +116,7 @@ def main():
     manifest = {"schemaVersion": 2, "layoutEvidence": ["wnd/hp_bar.csb", "wnd/hp_bar_r.csb"],
                 "iconTransfer": "Compensate original display-space transmittance for Unity Linear; preserve soft corners.",
                 "digitTransfer": "Byte-identical original PNG.",
+                "sampling": "Point, no mipmaps, uncompressed; explicit import override survives platform reimport.",
                 "statuses": [{"kind": kind, "group": group, "asset": glyph + ".png"} for kind, group, glyph in STATUSES],
                 "files": rows}
     document = OUTPUT / "source.json"
@@ -126,12 +127,19 @@ def main():
         if asset.suffix == ".png":
             meta = asset.with_suffix(".png.meta")
             metadata[meta] = re.sub(r"(?m)^guid: [a-f0-9]+$", "guid: " + guid(asset), template, count=1)
+    # These sprites already have source provenance in the HUD / Readiness manifests.
+    for asset in [*(HUD / f"itxt_num{digit}_b.png" for digit in range(10)), *sorted((HUD / "Readiness").glob("stic_*.png"))]:
+        meta = asset.with_suffix(".png.meta")
+        if not asset.is_file() or not meta.is_file():
+            raise ValueError(f"Missing existing battle HUD glyph: {asset}")
+        metadata[meta] = meta.read_text(encoding="utf-8-sig")
     if args.check:
         mismatches = [str(path) for path, content in writes.items() if not path.is_file() or path.read_bytes() != content]
         mismatches += [str(path) for path in metadata if not path.is_file()]
         for path in metadata:
-            if path.name.startswith("stic_") and path.is_file():
-                if not has_uncompressed_icons(path.read_text(encoding="utf-8-sig")):
+            if path.name.endswith(".png.meta") and path.is_file():
+                existing = path.read_text(encoding="utf-8-sig")
+                if existing != glyph_sampling(existing):
                     mismatches.append(str(path))
         if mismatches:
             parser.exit(1, "Missing or changed status assets: " + ", ".join(mismatches) + "\n")
@@ -141,13 +149,11 @@ def main():
             if not path.is_file() or path.read_bytes() != content:
                 path.write_bytes(content)
         for path, content in metadata.items():
-            if not path.exists():
-                path.write_text(uncompressed_icon(content) if path.name.startswith("stic_") else content,
-                                encoding="utf-8", newline="\n")
-            elif path.name.startswith("stic_"):
-                existing = path.read_text(encoding="utf-8-sig")
-                if not has_uncompressed_icons(existing):
-                    path.write_text(uncompressed_icon(existing), encoding="utf-8", newline="\n")
+            if not path.exists() or path.name.endswith(".png.meta"):
+                existing = path.read_text(encoding="utf-8-sig") if path.exists() else None
+                updated = glyph_sampling(existing or content) if path.name.endswith(".png.meta") else content
+                if existing != updated:
+                    path.write_text(updated, encoding="utf-8", newline="\n")
     print(f"{'Verified' if args.check else 'Imported'} {len(rows)} original status HUD PNGs.")
 
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "importerSha256": "b7e1ecff57df564c89969bf8a2ca40d4481c4b7e9efbc693d7e21baa610202b8",
+  "importerSha256": "fbf1b979ae08ae5125e25650d6c433916d94ade9ff9ee43deaa44944012ec9f0",
   "files": [
     {
       "source": "原始资源/sound/gerneal.bank",
@@ -33,6 +33,14 @@
     {
       "source": "原始资源/sound/ja/voc1.audio_ja.bank",
       "sourceSha256": "0ce45d4f6ad15836fdc42a4c7644e67aa01ae68f4a15630958c41ecb5c48076b"
+    },
+    {
+      "source": "原始资源/sound/gerneal.yml",
+      "sourceSha256": "efd734f6a8128b9d73e03df7bc17e6ab01ea42ad648c2eaf453dd3abf4034389"
+    },
+    {
+      "source": "原始资源/sound/events.yml",
+      "sourceSha256": "7d9103cb87155bebf22e90988c834ec553ba6853d4e5a68bfdc435ba2122c487"
     }
   ],
   "events": {
@@ -43,6 +51,12 @@
       "impactBank": "gerneal.bank",
       "sourceHitEffect": "hit_new_blunt_normal.cfx",
       "sourceHitSeconds": 0.7
+    },
+    "burnReady": {
+      "event": "event:/battle/soulburn/ready",
+      "bank": "gerneal.bank",
+      "sourceSample": "assets\\ui\\se_ui_battle_soul_burn_on.wav",
+      "sourceEventId": "39f88ea3-22f3-4523-ad8a-16c691a45136"
     },
     "targetReactions": {
       "source": "CharacterLab/Configs/catalog.json characters[].voices[].eventPath",

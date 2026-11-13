@@ -30,11 +30,7 @@ namespace AstralOath.Shared.Battle
                 throw new ArgumentException("A skill effect refers to an unknown skill.", nameof(catalog));
             if (includePreviewSlime)
             {
-                var slime = new BattleCatalogData.SkillRow
-                {
-                    id = BattlePreviewFactory.SlimeSkillId, heroId = "preview.slime", slot = 1,
-                    target = "one_enemy", soulBurnKind = "none", attackRateBp = 10000, powerBp = 10000
-                };
+                var slime = CreatePreviewSlimeSkill();
                 skills.Add(slime.id, new Program(slime, new[]
                 {
                     new BattleCatalogData.EffectRow { order = 1, phase = "impact", operation = "damage", recipient = "targets", status = "none", chanceBp = Basis }
@@ -48,11 +44,8 @@ namespace AstralOath.Shared.Battle
             resolution = null;
             var work = new Execution(this, context.Snapshot, random);
             var actor = work.Get(command.ActorId);
-            if (actor == null || !skills.TryGetValue(command.SkillId, out var program) || program.Row.target == "passive" ||
-                (program.Row.slot > 1 && actor.Has(BattleStatusKind.Silence)) ||
-                actor.ResourceAmount < program.Row.resourceCost ||
-                (command.UseSoulBurn && (program.Row.soulBurnCost <= 0 ||
-                    context.Snapshot.GetSoul(actor.Side) < program.Row.soulBurnCost)))
+            if (actor == null || !skills.TryGetValue(command.SkillId, out var program) ||
+                !CanUseSkill(context.Snapshot, actor.Source, program.Row, command.UseSoulBurn))
                 return false;
 
             var selected = work.Get(command.TargetId);
@@ -74,6 +67,24 @@ namespace AstralOath.Shared.Battle
             resolution = new BattleActionResolution(work.Changes, program.Row.presentationId);
             return true;
         }
+
+        internal static BattleCatalogData.SkillRow CreatePreviewSlimeSkill() => new BattleCatalogData.SkillRow
+        {
+            id = BattlePreviewFactory.SlimeSkillId, heroId = "preview.slime", slot = 1,
+            target = "one_enemy", soulBurnKind = "none", attackRateBp = 10000, powerBp = 10000
+        };
+
+        internal static bool CanUseSkill(BattleSnapshot snapshot, BattleUnitSnapshot actor,
+            BattleCatalogData.SkillRow skill, bool useSoulBurn) =>
+            actor.IsAlive && skill.target != "passive" && actor.GetCooldown(skill.id) == 0 &&
+            (skill.slot <= 1 || actor.GetStatus(BattleStatusKind.Silence) == null) &&
+            (actor.Resource?.Amount ?? 0) >= skill.resourceCost &&
+            (!useSoulBurn || skill.soulBurnCost > 0 && snapshot.GetSoul(actor.Slot.Side) >= skill.soulBurnCost);
+
+        internal static bool IsHarmful(BattleStatusKind kind) =>
+            kind == BattleStatusKind.Stun || kind == BattleStatusKind.SpeedDown ||
+            kind == BattleStatusKind.AttackDown || kind == BattleStatusKind.DefenseDown ||
+            kind == BattleStatusKind.Unhealable || kind == BattleStatusKind.Silence;
 
         private Modifiers ModifiersFor(Unit actor, Program program)
         {
@@ -428,10 +439,6 @@ namespace AstralOath.Shared.Battle
             private static bool HasBuff(Unit unit) => unit.Statuses.Any(status => !IsHarmful(status.Kind));
             private static bool CanReact(Unit unit) => unit.Alive && !unit.Has(BattleStatusKind.Stun);
             private static BattleStatusKind ParseStatus(string value) => Enum.Parse<BattleStatusKind>(value);
-            private static bool IsHarmful(BattleStatusKind kind) => kind == BattleStatusKind.Stun || kind == BattleStatusKind.SpeedDown ||
-                kind == BattleStatusKind.AttackDown || kind == BattleStatusKind.DefenseDown ||
-                kind == BattleStatusKind.Unhealable || kind == BattleStatusKind.Silence;
-
             private static void SetStatus(Unit target, BattleStatusKind kind, int turns, int strength)
             {
                 int index = target.Statuses.FindIndex(item => item.Kind == kind);

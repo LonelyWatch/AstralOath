@@ -1,4 +1,4 @@
-"""Import only the source bank required by the preview slime's confirmed STG hit effect."""
+"""Import the source bank shared by the preview slime hit and the Burn ready cue."""
 import argparse
 import hashlib
 import json
@@ -26,23 +26,31 @@ def main():
     hit = next(node for node in stg["entities"] if node["etty"] == "HIT")
     if hit["effect"] != "hit_new_blunt_normal.cfx":
         raise ValueError("Slime source HIT effect changed; review the audio mapping before import")
-    if not args.check:
+    burn_event_name = r"battle\soulburn\ready"
+    burn_sample = r"assets\ui\se_ui_battle_soul_burn_on.wav"
+    sound_index = (source / "sound/gerneal.yml").read_text(encoding="utf-8")
+    if f"    {burn_event_name}:\n        - {burn_sample}\n" not in sound_index:
+        raise ValueError("Burn ready event or source sample changed in the shared bank index")
+    source_bank_hash = sha256(source_bank)
+    if not args.check and (not destination.is_file() or sha256(destination) != source_bank_hash):
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source_bank, destination)
-    if not destination.is_file() or sha256(destination) != sha256(source_bank):
+    if not destination.is_file() or sha256(destination) != source_bank_hash:
         raise ValueError("Imported impact bank is missing or differs from the read-only source")
     manifest = {
         "schemaVersion": 1,
         "importerSha256": sha256(Path(__file__)),
-        "files": [{"source": "原始资源/sound/gerneal.bank", "sourceSha256": sha256(source_bank),
+        "files": [{"source": "原始资源/sound/gerneal.bank", "sourceSha256": source_bank_hash,
                    "asset": SHARED_IMPACT_BANK, "assetSha256": sha256(destination)}],
         "evidence": [{"source": "原始资源/" + name, "sourceSha256": sha256(source / name)} for name in (
             "stagept/m_slime_skill_01.stg", "model/slime.scsp", "sound/master.strings.bank", "sound/sfx1.bank",
-            "sound/voc.event.bank", "sound/ja/voc1.audio_ja.bank")],
+            "sound/voc.event.bank", "sound/ja/voc1.audio_ja.bank", "sound/gerneal.yml", "sound/events.yml")],
         "events": {
             "preview.slime.s1": {"attack": "event:/model/slime/ani/skill1", "bank": "sfx1.bank",
                 "impact": "event:/effect/hit_new_blunt_normal", "impactBank": "gerneal.bank",
                 "sourceHitEffect": hit["effect"], "sourceHitSeconds": 0.7},
+            "burnReady": {"event": "event:/battle/soulburn/ready", "bank": "gerneal.bank",
+                "sourceSample": burn_sample, "sourceEventId": "39f88ea3-22f3-4523-ad8a-16c691a45136"},
             "targetReactions": {"source": "CharacterLab/Configs/catalog.json characters[].voices[].eventPath",
                 "suffix": "/ani/attacked", "banks": ["voc.event.bank", "ja/voc1.audio_ja.bank"]}
         }

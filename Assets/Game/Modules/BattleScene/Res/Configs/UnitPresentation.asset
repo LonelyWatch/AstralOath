@@ -49,6 +49,17 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 9b75e96114855016982838cd24fee111, type: 3}
   - {fileID: 21300000, guid: 8295dff8e8075f93b6f92102acc9da71, type: 3}
   - {fileID: 21300000, guid: 57f5a32a44a151028e125a0d822ce220, type: 3}
+  LevelDigits:
+  - {fileID: 21300000, guid: f06a0a266e65a7f47a2b5cab51cd5e16, type: 3}
+  - {fileID: 21300000, guid: f902d79899128bd438c8c685df775f07, type: 3}
+  - {fileID: 21300000, guid: 5bf9acc4b877ec74fa906169b4e266a1, type: 3}
+  - {fileID: 21300000, guid: 0fc48c9a10dec3a4dbd9c1f254bb0942, type: 3}
+  - {fileID: 21300000, guid: 54af6e4a13186e34cb1a962db0ed5760, type: 3}
+  - {fileID: 21300000, guid: f79645195716df74797b6447e1dda9c2, type: 3}
+  - {fileID: 21300000, guid: 9adbd90a34bb78748b341ba2a979bf08, type: 3}
+  - {fileID: 21300000, guid: 5e0766752782d3c46a647a31da845815, type: 3}
+  - {fileID: 21300000, guid: 1d702842098452c419f26b4ff18e74ce, type: 3}
+  - {fileID: 21300000, guid: d65faf8e110930645b4b084cc45300be, type: 3}
   StatusIconsPerRow: 5
   ShieldAura:
     source: effect/stse_protect.scsp

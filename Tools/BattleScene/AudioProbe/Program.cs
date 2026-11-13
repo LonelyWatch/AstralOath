@@ -55,6 +55,25 @@ static class Program
             Check(core.getMasterChannelGroup(out var master), "master group");
             Check(master.getDSP(0, out var meter), "master DSP");
             Check(meter.setMeteringEnabled(false, true), "enable metering");
+            var studio = Field<FMOD.Studio.System>(service, "studio");
+            const string burnPath = "event:/battle/soulburn/ready";
+            Check(studio.getEvent(burnPath, out var sourceBurn), "resolve the original Burn event");
+            Check(sourceBurn.getID(out var burnId), "get the original Burn event ID");
+            Check(FMOD.Studio.Util.parseID("{39f88ea3-22f3-4523-ad8a-16c691a45136}", out var expectedBurn), "parse source Burn event ID");
+            Require(burnId.Equals(expectedBurn), "Burn event must match source events.yml");
+            var loadedBanks = Field<List<FMOD.Studio.Bank>>(service, "banks");
+            int impactIndex = Array.FindIndex(addresses, address => address.EndsWith("/gerneal.bank", StringComparison.Ordinal));
+            Check(loadedBanks[impactIndex >= 0 ? impactIndex : loadedBanks.Count - 1].getEventList(out var impactEvents),
+                "list the already loaded shared impact bank events");
+            Require(impactEvents.Any(item => item.getID(out var id) == FMOD.RESULT.OK && id.Equals(burnId)),
+                "Burn ready must be in the shared impact bank");
+            Require(Meter(voice, meter, 150) <= 0.00001f, "Battle initialization must not pre-play the Burn ready cue");
+            voice.PlayBurnReady();
+            Require(voice.StartedBurnReadyCount == 1, "Arming Burn must start one original source cue");
+            float burnReadyPeak = Meter(voice, meter, 1500);
+            Require(burnReadyPeak > 0.00001f, "Burn ready produced no audio samples");
+            Console.WriteLine(JsonSerializer.Serialize(new { burnReadyPeak, eventPath = burnPath }));
+            Meter(voice, meter, 400);
             int effects = voice.StartedEffectCount;
             voice.Play("preview.slime.s1");
             Require(voice.StartedEffectCount == effects + 1, "Slime basic attack must start its source model/ani/skill1 event");
@@ -83,6 +102,8 @@ static class Program
             voice.Play("preview.slime.s1");
             playHit.Invoke(voice, new object[] { "c1001", "preview.slime.s1" });
             Require(!voice.IsAvailable && (int)hitCount.GetValue(voice) == count, "Disposed battle must not restart audio");
+            voice.PlayBurnReady();
+            Require(voice.StartedBurnReadyCount == 1, "Disposed battle must not restart the Burn cue");
             Require(!Field<FMOD.Studio.System>(service, "studio").isValid(), "Disposed battle retained its native system");
             // Exercise production callbacks for all roster paths using the same loaded source banks.
             using var rosterVoice = new BattleVoice(catalog, assets, impact);

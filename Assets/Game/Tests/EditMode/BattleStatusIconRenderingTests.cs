@@ -9,7 +9,41 @@ namespace AstralOath.Client.Tests
 {
     public sealed class BattleStatusIconRenderingTests
     {
-        private const string Root = "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Statuses/";
+        private const string Hud = "Assets/Game/Modules/BattleScene/Res/Textures/Hud/";
+        private const string Root = Hud + "Statuses/";
+
+        [TestCase("stic_att_up")]
+        [TestCase("stic_protect")]
+        [TestCase("itxt_num3")]
+        public void NativeHudGlyphsKeepLosslessSamplingAfterImport(string name)
+        {
+            AssertLosslessGlyph(Root + name + ".png");
+        }
+
+        [Test]
+        public void ReadinessDetailsKeepStatusGlyphsSharp()
+        {
+            AssertLosslessGlyph(Hud + "Readiness/stic_protect.png");
+        }
+
+        [Test]
+        public void LevelUsesTheTenLosslessBoldSourceDigits()
+        {
+            for (int digit = 0; digit < 10; digit++)
+                AssertLosslessGlyph(Hud + "itxt_num" + digit + "_b.png");
+        }
+
+        private static void AssertLosslessGlyph(string path)
+        {
+            var importer = AssetImporter.GetAtPath(path) as TextureImporter;
+            Assert.That(importer, Is.Not.Null, path);
+            Assert.That(importer.userData, Is.EqualTo("AstralOath.ImportOverride"), path);
+            Assert.That(importer.filterMode, Is.EqualTo(FilterMode.Point), path);
+            Assert.That(importer.mipmapEnabled, Is.False, path);
+            foreach (string platform in new[] { "DefaultTexturePlatform", "Standalone", "Android" })
+                Assert.That(importer.GetPlatformTextureSettings(platform).textureCompression,
+                    Is.EqualTo(TextureImporterCompression.Uncompressed), path + " (" + platform + ")");
+        }
 
         [TestCase("stic_protect", 15, 5, 64)]
         [TestCase("stic_speed_dn", 15, 5, 51)]

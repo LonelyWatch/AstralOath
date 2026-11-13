@@ -46,16 +46,17 @@ namespace AstralOath.Client.Tests
             while (Time.realtimeSinceStartup < deadline)
             {
                 skill = (string)skillField.GetValue(simulation);
-                if (skill != null && enemies.Any(id => skill == id + ".s1") &&
+                if (skill != null && enemies.Any(id => skill.StartsWith(id + ".", System.StringComparison.Ordinal)) &&
                     hud.Require<Image>("activePortrait").sprite.name == skill.Substring(0, 5) + "_su") break;
                 yield return null;
             }
             Assert.That(skill, Is.Not.Null, "An enemy must submit an actual hero skill without player input.");
-            Assert.That(enemies.Select(id => id + ".s1"), Does.Contain(skill));
+            Assert.That(enemies.Any(id => skill.StartsWith(id + ".", System.StringComparison.Ordinal)), Is.True);
+            Assert.That(skill, Does.EndWith(".s3"), "The opening enemy should choose an available ultimate.");
             Assert.That(hud.transform.Find("Skills").gameObject.activeSelf, Is.False);
             Assert.That(host.SimulationSnapshot.LastCommandSequence, Is.GreaterThan(0));
 
-            if (skill == "c1004.s1")
+            if (skill.StartsWith("c1004.", System.StringComparison.Ordinal))
             {
                 var portrait = hud.Require<Image>("activePortrait");
                 Assert.That(portrait.sprite.name, Is.EqualTo("c1004_su"));

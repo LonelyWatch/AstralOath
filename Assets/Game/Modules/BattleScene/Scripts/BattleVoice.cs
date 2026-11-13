@@ -15,6 +15,7 @@ namespace AstralOath.Client.BattleScene
     {
         private readonly Dictionary<string, SkillAudio> skills = new Dictionary<string, SkillAudio>(StringComparer.Ordinal);
         private const string SlimeSkillId = "preview.slime.s1";
+        private const string BurnReadyEvent = "event:/battle/soulburn/ready";
         private const string ImpactBankAddress = "battlescene/source/sound/gerneal.bank";
         private readonly Dictionary<string, string> hitVoices = new Dictionary<string, string>(StringComparer.Ordinal);
         private readonly HashSet<string> failedEvents = new HashSet<string>(StringComparer.Ordinal);
@@ -24,6 +25,7 @@ namespace AstralOath.Client.BattleScene
         public int StartedVoiceCount { get; private set; }
         public int StartedEffectCount { get; private set; }
         public int StartedHitCount { get; private set; }
+        public int StartedBurnReadyCount { get; private set; }
 
         public BattleVoice(TextAsset audioCatalog, TextAsset[] banks, TextAsset impactBank = null)
         {
@@ -86,6 +88,11 @@ namespace AstralOath.Client.BattleScene
             // Individual audio-table variants are selected in the bank, never launched together.
             if (Start(cue.eventPath)) StartedEffectCount++;
             if (Start(cue.voiceEventPath)) StartedVoiceCount++;
+        }
+
+        public void PlayBurnReady()
+        {
+            if (IsAvailable && Start(BurnReadyEvent)) StartedBurnReadyCount++;
         }
 
         // Called only when presenting accepted damage at its impact time, never by an animation callback.

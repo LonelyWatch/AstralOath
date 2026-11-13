@@ -16,7 +16,9 @@ namespace AstralOath.Client.BattleScene
     internal sealed class BattleSimulationPreview : IDisposable
     {
         private static readonly ProfilerMarker SubmitMarker = new ProfilerMarker("Astral.Battle.Submit");
+        private const double SkillQuickCastSeconds = .5;
         private readonly BattleMatch match;
+        private readonly BattleAiPolicy ai;
         private readonly BattleHudBinder binder;
         private readonly BindingMap hud;
         private readonly Camera camera;
@@ -45,6 +47,9 @@ namespace AstralOath.Client.BattleScene
         private int selected;
         private int previousSelection;
         private bool useSoulBurn;
+        private bool autoBattle;
+        private int lastClickedSkill = -1;
+        private double lastSkillClickTime;
         private string presentedSkillId;
         private bool cinematicVisible;
         private bool presentingNextTurn;
@@ -63,6 +68,7 @@ namespace AstralOath.Client.BattleScene
             messages = catalog.messages.ToDictionary(item => item.key, item => item.zhCn, StringComparer.Ordinal);
             sprites = icons.ToDictionary(sprite => sprite.name, StringComparer.Ordinal);
             this.match = match ?? throw new ArgumentNullException(nameof(match));
+            ai = new BattleAiPolicy(catalog);
             var units = scene.GetRootGameObjects().Single(root => root.name == "Units").transform;
             var deathTextures = unitPresentation ? unitPresentation.CreateDeathTextures() : new Dictionary<string, Texture2D>();
             var statusArt = unitPresentation
@@ -139,7 +145,6 @@ namespace AstralOath.Client.BattleScene
             voice = new BattleVoice(audioCatalog, audioBanks, impactBank);
             turnHud = new BattleTurnHud(hud, unit => Label(unit.NameKey), sprites, damageFont);
             turnHud.SetMissFeedbackLabel(Label("battle.feedback.miss"));
-            foreach (var view in views.Values) view.AddLevel(hp);
             Refresh();
         }
 
@@ -154,10 +159,12 @@ namespace AstralOath.Client.BattleScene
         {
             if (IsPaused == value) return;
             IsPaused = value;
+            lastClickedSkill = -1;
             foreach (var view in views.Values) view.Actor.SetPaused(value || view.DeathStarted);
             voice.SetPaused(value);
             UpdateSkillAvailability();
             hud.Require<GameButton>("soulBurn").interactable = CanAct && BurnSlot() >= 0;
+            binder.SetAutoInteractable(!value && !useSoulBurn && Snapshot.Outcome == BattleOutcome.InProgress);
         }
 
         private BattleUnitSnapshot Actor => Snapshot.GetUnit(Snapshot.CurrentActorId);
@@ -172,7 +179,7 @@ namespace AstralOath.Client.BattleScene
                 return false;
             }
         }
-        private bool CanAct => !IsPaused && !Busy && Actor?.Slot.Side == BattleSide.Ally;
+        private bool CanAct => !autoBattle && !IsPaused && !Busy && Actor?.Slot.Side == BattleSide.Ally;
 
         public void Tick(float delta)
         {
@@ -193,11 +200,10 @@ namespace AstralOath.Client.BattleScene
                 return;
             }
             if (Snapshot.Outcome != BattleOutcome.InProgress) return;
-            if (Actor.Slot.Side == BattleSide.Enemy)
+            if (autoBattle || Actor.Slot.Side == BattleSide.Enemy)
             {
-                var targets = Snapshot.Units.Where(unit => unit.IsAlive && unit.Slot.Side == BattleSide.Ally);
-                var target = targets.OrderBy(unit => (decimal)unit.CurrentHealth / unit.Stats.MaxHealth).First();
-                Submit(Actor.Form.SkillIds[0], target.InstanceId, false);
+                var choice = ai.ChooseAction(Snapshot);
+                if (choice != null) Submit(choice.SkillId, choice.TargetId, choice.UseSoulBurn);
                 return;
             }
             if (Input.GetMouseButtonDown(0) && (EventSystem.current == null || !EventSystem.current.IsPointerOverGameObject()))
@@ -284,17 +290,42 @@ namespace AstralOath.Client.BattleScene
 
         public void ChooseSkill(int index)
         {
-            if (!CanAct || !TrySkill(index, out var skill) || !IsSkillAvailable(skill)) return;
-            // Once armed, only the dedicated Cancel control may clear Soul Burn.
-            if (useSoulBurn) return;
-            selected = index;
-            binder.SetSimulationSelection(index);
+            if (!CanAct || !TrySkill(index, out var skill) || (useSoulBurn && index != selected) ||
+                !IsSkillAvailable(skill, useSoulBurn)) return;
+            double now = Time.unscaledTimeAsDouble;
+            bool quickCast = lastClickedSkill == index && now - lastSkillClickTime <= SkillQuickCastSeconds;
+            lastClickedSkill = index;
+            lastSkillClickTime = now;
+            if (quickCast)
+            {
+                var choice = ai.ChooseTarget(Snapshot, skill.id, useSoulBurn);
+                if (choice != null && Submit(choice.SkillId, choice.TargetId, choice.UseSoulBurn)) return;
+            }
+            if (!useSoulBurn)
+            {
+                selected = index;
+                binder.SetSimulationSelection(index);
+                ShowPrompt();
+            }
+        }
+
+        public void ToggleAuto()
+        {
+            if (IsPaused || useSoulBurn || Snapshot.Outcome != BattleOutcome.InProgress) return;
+            autoBattle = !autoBattle;
+            lastClickedSkill = -1;
+            binder.SetAutoEnabled(autoBattle);
+            if (Busy) return;
+            binder.SetSimulationSelection(CanAct ? selected : -1);
+            UpdateSkillAvailability();
+            hud.Require<GameButton>("soulBurn").interactable = CanAct && BurnSlot() >= 0;
             ShowPrompt();
         }
 
         public void ToggleBurn()
         {
             if (!CanAct) return;
+            lastClickedSkill = -1;
             if (useSoulBurn)
             {
                 useSoulBurn = false;
@@ -309,7 +340,9 @@ namespace AstralOath.Client.BattleScene
                 selected = index;
                 useSoulBurn = true;
                 binder.ArmSimulationBurn(index);
+                voice.PlayBurnReady();
             }
+            binder.SetAutoInteractable(!useSoulBurn);
             UpdateSkillAvailability();
             ShowPrompt();
         }
@@ -321,7 +354,7 @@ namespace AstralOath.Client.BattleScene
             {
                 bool active = TrySkill(index, out var skill) && skill.target != "passive";
                 bool available = active && HasSkillResource(skill) && (!useSoulBurn || index == selected);
-                button.interactable = CanAct && available && Actor.GetCooldown(skill.id) == 0;
+                button.interactable = CanAct && available && IsSkillAvailable(skill, useSoulBurn);
                 ((Image)button.targetGraphic).color = !available
                     ? new Color(.35f, .35f, .35f, 1f) : Color.white;
                 index++;
@@ -330,7 +363,7 @@ namespace AstralOath.Client.BattleScene
 
         public bool ChooseTarget(string id)
         {
-            if (!CanAct || !TrySkill(selected, out var skill) || !IsSkillAvailable(skill)) return false;
+            if (!CanAct || !TrySkill(selected, out var skill) || !IsSkillAvailable(skill, useSoulBurn)) return false;
             var target = Snapshot.GetUnit(id);
             bool allies = skill.target == "one_ally" || skill.target == "all_allies";
             if (target?.IsAlive != true || (target.Slot.Side == Actor.Slot.Side) != allies)
@@ -353,6 +386,9 @@ namespace AstralOath.Client.BattleScene
                 banner.text = "当前无法使用该技能";
                 return false;
             }
+            lastClickedSkill = -1;
+            useSoulBurn = false;
+            binder.SetAutoInteractable(result.Snapshot.Outcome == BattleOutcome.InProgress);
             turnHud.ResetFeedbackCombo();
             binder.SetSimulationSelection(-1);
             foreach (var button in SkillButtons()) button.interactable = false;
@@ -569,8 +605,15 @@ namespace AstralOath.Client.BattleScene
                     _ => role
                 }));
             }
+            if (Snapshot.Outcome != BattleOutcome.InProgress && autoBattle)
+            {
+                autoBattle = false;
+                binder.SetAutoEnabled(false);
+            }
+            binder.SetAutoInteractable(!IsPaused && Snapshot.Outcome == BattleOutcome.InProgress);
             selected = 0;
             useSoulBurn = false;
+            lastClickedSkill = -1;
             binder.SetSimulationSelection(CanAct ? selected : -1);
             int index = 0;
             foreach (var button in SkillButtons())
@@ -637,7 +680,8 @@ namespace AstralOath.Client.BattleScene
                 BattleOutcome.AllyVictory => "战斗胜利",
                 BattleOutcome.EnemyVictory => "战斗失败",
                 BattleOutcome.Draw => "战斗平局",
-                _ when !CanAct => "敌方行动",
+                _ when Actor?.Slot.Side == BattleSide.Enemy => "敌方行动",
+                _ when autoBattle => Label("battle.auto.active"),
                 _ when TrySkill(selected, out var skill) => $"{Label(skill.nameKey)} · {(useSoulBurn ? "燃魂 · " : "")}点击目标",
                 _ => "选择技能"
             };
@@ -653,8 +697,7 @@ namespace AstralOath.Client.BattleScene
         private int BurnSlot()
         {
             for (int i = 0; i < 3; i++)
-                if (TrySkill(i, out var skill) && IsSkillAvailable(skill) && skill.soulBurnCost > 0 &&
-                    Snapshot.GetSoul(Actor.Slot.Side) >= skill.soulBurnCost)
+                if (TrySkill(i, out var skill) && IsSkillAvailable(skill, true))
                     return i;
             return -1;
         }
@@ -662,8 +705,8 @@ namespace AstralOath.Client.BattleScene
         private bool HasSkillResource(BattleCatalogData.SkillRow skill) =>
             skill.resourceCost <= 0 || (Actor.Resource?.Amount ?? 0) >= skill.resourceCost;
 
-        private bool IsSkillAvailable(BattleCatalogData.SkillRow skill) =>
-            skill.target != "passive" && Actor.GetCooldown(skill.id) == 0 && HasSkillResource(skill);
+        private bool IsSkillAvailable(BattleCatalogData.SkillRow skill, bool burn = false) =>
+            ai.IsSkillAvailable(Snapshot, skill.id, burn);
 
         private IEnumerable<GameButton> SkillButtons() =>
             Enumerable.Range(1, 3).Select(index => hud.Require<GameButton>("skill" + index));
@@ -730,8 +773,7 @@ namespace AstralOath.Client.BattleScene
             private int maximumHealth;
             private readonly BattleStatusIcons statusIcons;
             private readonly BattleShieldAura shieldAura;
-            private GameText levelLabel;
-            private Image levelBadge;
+            private readonly BattleUnitLevelBadge levelBadge;
 
             public View(Transform slot, GameObject marker, Camera camera, BattleUnitPresentationProfile profile,
                 IReadOnlyDictionary<string, Texture2D> deathTextures, BattleStatusArt statusArt,
@@ -767,8 +809,9 @@ namespace AstralOath.Client.BattleScene
                     status.DamageSeconds = profile.DamageSeconds; status.HealSeconds = profile.HealSeconds;
                     status.TrailDelaySeconds = profile.TrailDelaySeconds; status.TrailSeconds = profile.TrailSeconds;
                 }
+                levelBadge = new BattleUnitLevelBadge(marker.transform.Find("Level").GetComponent<Image>(), profile ? profile.LevelDigits : null);
                 try { PrepareDeath(); }
-                catch { shieldAura.Dispose(); statusIcons.Dispose(); status.Dispose(); elementBadge.sprite = originalElement; throw; }
+                catch { shieldAura.Dispose(); statusIcons.Dispose(); status.Dispose(); levelBadge.Dispose(); elementBadge.sprite = originalElement; throw; }
             }
             public BattlePreviewActor Actor { get; }
             public Image Health { get; }
@@ -851,17 +894,9 @@ namespace AstralOath.Client.BattleScene
                 status.UpdateHealth(health, maximum, false);
             }
 
-            public void AddLevel(GameText digits)
-            {
-                levelBadge = marker.transform.Find("Level").GetComponent<Image>();
-                levelBadge.enabled = false;
-                levelLabel = CreateText(marker.transform, digits, "Level Value", Vector2.zero,
-                    levelBadge.rectTransform.anchoredPosition, new Vector2(34, 29), 19);
-            }
-
             public void RefreshStatuses(BattleUnitSnapshot state)
             {
-                levelLabel.text = state.Level.ToString();
+                levelBadge.Show(state.Level);
                 statusIcons.Reconcile(state.IsAlive ? state.Statuses : Array.Empty<BattleStatusSnapshot>());
                 SetShield(state.IsAlive ? state.Barrier : 0);
                 if (state.Resource != null) SetResource(state.Resource.Amount);
@@ -910,8 +945,7 @@ namespace AstralOath.Client.BattleScene
                 death?.Dispose(); death = null; deathStarted = false; status.Dispose();
                 shieldAura.Dispose();
                 statusIcons.Dispose();
-                RemoveOwnedObject(levelLabel ? levelLabel.gameObject : null);
-                if (levelBadge) levelBadge.enabled = true;
+                levelBadge.Dispose();
                 if (slot) slot.gameObject.SetActive(true);
                 if (!marker) return;
                 marker.SetActive(true);

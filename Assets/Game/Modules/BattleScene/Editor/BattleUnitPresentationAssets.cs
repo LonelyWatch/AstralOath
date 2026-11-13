@@ -32,7 +32,8 @@ namespace AstralOath.Client.BattleScene.Editor
         }
         private static void UpdateStatusAndShield(BattleUnitPresentationProfile profile)
         {
-            const string status = Root + "Res/Textures/Hud/Statuses/";
+            const string hud = Root + "Res/Textures/Hud/";
+            const string status = hud + "Statuses/";
             const string shield = Root + "Res/Effects/Shield/stse_protect";
             profile.Shield = AssetDatabase.LoadAssetAtPath<Sprite>(Root + "Res/Textures/Hud/game_hud_bar_sh.png");
             profile.StatusManifest = AssetDatabase.LoadAssetAtPath<TextAsset>(status + "source.json");
@@ -40,6 +41,8 @@ namespace AstralOath.Client.BattleScene.Editor
                 .Select(path => AssetDatabase.LoadAssetAtPath<Sprite>(path.Replace('\\', '/'))).ToArray();
             profile.StatusDigits = Enumerable.Range(0, 10)
                 .Select(digit => AssetDatabase.LoadAssetAtPath<Sprite>(status + "itxt_num" + digit + ".png")).ToArray();
+            profile.LevelDigits = Enumerable.Range(0, 10)
+                .Select(digit => AssetDatabase.LoadAssetAtPath<Sprite>(hud + "itxt_num" + digit + "_b.png")).ToArray();
             profile.ShieldAuraEffect = AssetDatabase.LoadAssetAtPath<TextAsset>(shield + ".cfx.json");
             profile.ShieldAura = new BattleSkillPresentationAsset
             {
@@ -52,7 +55,8 @@ namespace AstralOath.Client.BattleScene.Editor
                 scale = .01f
             };
             if (!profile.Shield || !profile.StatusManifest || profile.StatusGlyphs.Any(sprite => !sprite) ||
-                profile.StatusDigits.Any(sprite => !sprite) || !profile.ShieldAuraEffect || !profile.ShieldAura.document ||
+                profile.StatusDigits.Any(sprite => !sprite) || profile.LevelDigits.Any(sprite => !sprite) ||
+                !profile.ShieldAuraEffect || !profile.ShieldAura.document ||
                 !profile.ShieldAura.atlas || !profile.ShieldAura.pages[0])
                 throw new InvalidOperationException("Run ImportStatusHud.py and ImportBattleShieldAura.py before updating the unit profile.");
             profile.ValidateStatusArt();

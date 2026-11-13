@@ -28,6 +28,7 @@ namespace AstralOath.Client.BattleScene
         private readonly BindingScope scope;
         private readonly GameButton startPreview;
         private readonly GameButton pause;
+        private readonly GameButton auto;
         private readonly BattleHud.PauseControls pauseControls;
         private readonly GameButton burn;
         private readonly GameButton[] skills;
@@ -55,6 +56,7 @@ namespace AstralOath.Client.BattleScene
         {
             startPreview = map.Require<GameButton>("startPreview");
             pause = map.Require<GameButton>("pause");
+            auto = map.Require<GameButton>("auto");
             burn = map.Require<GameButton>("soulBurn");
             skills = new[] { map.Require<GameButton>("skill1"), map.Require<GameButton>("skill2"), map.Require<GameButton>("skill3") };
             selectedArtwork = new[] { map.Require<Image>("skillSelected1"), map.Require<Image>("skillSelected2"),
@@ -72,6 +74,20 @@ namespace AstralOath.Client.BattleScene
                 scope.Add(pauseControls.Dispose);
                 pause.interactable = false;
                 Bind(pause, PauseBattle);
+                var autoGraphic = auto.targetGraphic;
+                bool autoRaycast = autoGraphic.raycastTarget;
+                bool autoInteractable = auto.interactable;
+                Color autoColor = autoGraphic.color;
+                autoGraphic.raycastTarget = true;
+                auto.interactable = false;
+                Bind(auto, () => Simulation?.ToggleAuto());
+                scope.Add(() =>
+                {
+                    if (!auto) return;
+                    autoGraphic.raycastTarget = autoRaycast;
+                    autoGraphic.color = autoColor;
+                    auto.interactable = autoInteractable;
+                });
                 Bind(pauseControls.Continue, ResumeBattle);
                 if (startBattle != null) Bind(pauseControls.Restart, startBattle);
                 var burnSkill = skills[burnSkillIndex].transform;
@@ -210,6 +226,11 @@ namespace AstralOath.Client.BattleScene
             startPreview.gameObject.SetActive(false);
             pause.interactable = true;
         }
+
+        internal void SetAutoInteractable(bool interactable) => auto.interactable = interactable;
+
+        internal void SetAutoEnabled(bool enabled) =>
+            auto.targetGraphic.color = enabled ? new Color32(255, 211, 112, 255) : Color.white;
 
         internal void PauseBattle()
         {
