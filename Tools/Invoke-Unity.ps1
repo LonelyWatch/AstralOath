@@ -7,6 +7,7 @@ param(
     [string]$ProjectName = 'UnityProject',
     [switch]$NoSync,
     [switch]$Graphics,
+    [ValidatePattern('^[A-Za-z0-9_.|]+$')][string]$TestFilter,
     [switch]$DevelopmentHttp,
     [switch]$Development,
     [string]$BaselineId,
@@ -21,6 +22,9 @@ param(
     [ValidateRange(1, 14400)][int]$TimeoutSeconds = 3600
 )
 $ErrorActionPreference = 'Stop'
+if ($TestFilter -and $Mode -notin 'EditMode','PlayMode') {
+    throw 'TestFilter requires EditMode or PlayMode.'
+}
 $isCharacterLab = $Mode -in 'CharacterLabWindows','GenerateCharacterLab','ValidateCharacterLab'
 if ($isCharacterLab -and $SigningKey) { throw 'CharacterLab test packages do not use the Foundation release signer.' }
 if ($isCharacterLab -and -not $PSBoundParameters.ContainsKey('ProjectName')) { $ProjectName = 'UnityCharacterLab' }
@@ -94,7 +98,10 @@ foreach ($name in $bindings.Keys) {
 }
 switch ($Mode) {
     'Compile' { $arguments += '-quit' }
-    { $_ -in 'EditMode','PlayMode' } { $arguments += @('-runTests','-testPlatform',$Mode,'-testResults',"`"$(Join-Path $reports "$Mode.xml")`"") }
+    { $_ -in 'EditMode','PlayMode' } {
+        $arguments += @('-runTests','-testPlatform',$Mode,'-testResults',"`"$(Join-Path $reports "$Mode.xml")`"")
+        if ($TestFilter) { $arguments += @('-testFilter', $TestFilter) }
+    }
     default {
         $legacyMethod = @{ImportTmp='ImportTmpEssentials';Generate='CreateDemo';Windows='BuildWindows';AndroidAstc='BuildAndroidAstc';AndroidEtc2='BuildAndroidEtc2'}[$Mode]
         $builderMethod = @{

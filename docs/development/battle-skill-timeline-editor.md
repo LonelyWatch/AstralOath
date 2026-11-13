@@ -19,3 +19,14 @@
 ## 验证记录
 
 Unity 2022.3.62f3 全量 EditMode 492 项通过，其中技能时间轴专项 9 项，覆盖拉斯 S2 与梅赛德丝 S3 的真实渲染、Cut-in 双时钟、回退后的镜头及画面、独立场景释放，以及移动拉斯 S2 命中节点后编译轨道和播放器时点同步改变。覆盖测试验证了源图不变和无效节点拒绝。Windows Editor 批处理运行，Player 目标平台构建未执行。
+
+## 命令行回归
+
+```powershell
+& ./.tools/powershell/pwsh.exe -NoProfile -File Tools/Invoke-Unity.ps1 -Mode EditMode -Graphics -TestFilter BattleSkillTimeline
+$env:ASTRAL_BATTLE_HERO_ID='c1011'
+& ./.tools/powershell/pwsh.exe -NoProfile -File Tools/Invoke-Unity.ps1 -Mode PlayMode -Graphics -TestFilter AddedHeroesCanEnterBattleAndPlayAllSourceGraphs
+Remove-Item Env:ASTRAL_BATTLE_HERO_ID
+```
+
+逐角色测试仍校验完整演出目录。设置角色 ID 后，只播放该角色的演出并输出逐技能结果。
