@@ -6,7 +6,6 @@ using AstralOath.Client.BattleScene;
 using AstralOath.Client.Common;
 using AstralOath.Shared.Battle;
 using NUnit.Framework;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
@@ -22,8 +21,7 @@ namespace AstralOath.Client.Tests
         [UnityTest]
         public IEnumerator DefaultBattlePlaysEightDistinctHeroesAndAnEnemyHeroActsAutomatically()
         {
-            scene = EditorSceneManager.LoadSceneInPlayMode("Assets/Game/Modules/BattleScene/Scenes/BattleScene.unity",
-                new LoadSceneParameters(LoadSceneMode.Additive));
+            scene = BattleScenePreviewTests.LoadPlayerOpeningScene(useDefaultRoster: true);
             yield return null;
             yield return null;
             var roots = scene.GetRootGameObjects();

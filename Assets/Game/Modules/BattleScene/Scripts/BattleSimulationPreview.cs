@@ -59,6 +59,7 @@ namespace AstralOath.Client.BattleScene
         private int lastClickedSkill = -1;
         private double lastSkillClickTime;
         private string presentedSkillId;
+        private string forcedActorId;
         private bool cinematicVisible;
         private bool presentingNextTurn;
         private readonly Dictionary<GameObject, bool> cinematicHudStates = new Dictionary<GameObject, bool>();
@@ -212,7 +213,8 @@ namespace AstralOath.Client.BattleScene
                 return false;
             }
         }
-        private bool CanAct => !autoBattle && !IsPaused && !Busy && Actor?.Slot.Side == BattleSide.Ally;
+        private bool CanAct => !autoBattle && !IsPaused && !Busy &&
+            Actor?.Slot.Side == BattleSide.Ally && !ai.IsForcedAction(Snapshot);
 
         public void Tick(float delta)
         {
@@ -239,16 +241,16 @@ namespace AstralOath.Client.BattleScene
                 return;
             }
             if (Snapshot.Outcome != BattleOutcome.InProgress) return;
-            if (autoBattle || Actor.Slot.Side == BattleSide.Enemy)
+            if (autoBattle || Actor.Slot.Side == BattleSide.Enemy || ai.IsForcedAction(Snapshot))
             {
                 var choice = ai.ChooseAction(Snapshot);
                 if (choice != null) Submit(choice.SkillId, choice.TargetId, choice.UseSoulBurn);
                 return;
             }
-            if (TryGetWorldPress(out var press))
+            if (TrySkill(selected, out var skill) && TryGetWorldPress(out var press))
             {
                 Ray ray = camera.ScreenPointToRay(press);
-                var target = views.Where(pair => Snapshot.GetUnit(pair.Key).IsAlive && pair.Value.Contains(ray))
+                var target = views.Where(pair => pair.Value.Contains(ray) && ai.CanSelectTarget(Snapshot, skill.id, pair.Key, useSoulBurn))
                     .OrderBy(pair => ((Vector2)camera.WorldToScreenPoint(pair.Value.Center) - press).sqrMagnitude)
                     .Select(pair => pair.Key).FirstOrDefault();
                 if (target != null) ChooseTarget(target);
@@ -421,14 +423,8 @@ namespace AstralOath.Client.BattleScene
         public bool ChooseTarget(string id)
         {
             if (!CanAct || !TrySkill(selected, out var skill) || !IsSkillAvailable(skill, useSoulBurn)) return false;
-            var target = Snapshot.GetUnit(id);
-            bool allies = skill.target == "one_ally" || skill.target == "all_allies";
-            if (target?.IsAlive != true || (target.Slot.Side == Actor.Slot.Side) != allies)
-            {
-                banner.text = allies ? "请选择存活的友军" : "请选择存活的敌人";
-                return false;
-            }
-            return Submit(skill.id, target.InstanceId, useSoulBurn);
+            if (!ai.CanSelectTarget(Snapshot, skill.id, id, useSoulBurn)) return false;
+            return Submit(skill.id, id, useSoulBurn);
         }
 
         private bool Submit(string skill, string target, bool burn)
@@ -445,6 +441,7 @@ namespace AstralOath.Client.BattleScene
             }
             lastClickedSkill = -1;
             useSoulBurn = false;
+            forcedActorId = ai.IsForcedAction(snapshot) ? snapshot.CurrentActorId : null;
             binder.SetAutoInteractable(result.Snapshot.Outcome == BattleOutcome.InProgress);
             turnHud.ResetFeedbackCombo();
             binder.SetSimulationSelection(-1);
@@ -461,11 +458,13 @@ namespace AstralOath.Client.BattleScene
                 case BattleFlowEventKind.Action:
                     CloseInspection();
                     presentingNextTurn = false;
-                    if (item.Origin != BattleActionOrigin.DualAttack && item.Origin != BattleActionOrigin.ExtraAttack)
+                    if (item.Origin == BattleActionOrigin.Primary || item.Origin == BattleActionOrigin.Counter)
                         turnHud.BeginFeedbackAction();
                     if (item.Origin == BattleActionOrigin.Counter)
                         turnHud.ResetFeedbackCombo();
-                    SetPlayerControlsVisible(Snapshot.GetUnit(item.SourceId).Slot.Side == BattleSide.Ally);
+                    bool allyPrimary = item.Origin == BattleActionOrigin.Primary &&
+                        Snapshot.GetUnit(item.SourceId).Slot.Side == BattleSide.Ally && item.SourceId != forcedActorId;
+                    SetPlayerControlsVisible(allyPrimary);
                     var primary = item.TargetId != null && views.TryGetValue(item.TargetId, out var target)
                         ? target.Actor : null;
                     var actionEvents = playback.TakeWhile(next => next.Kind != BattleFlowEventKind.Action).ToArray();
@@ -508,17 +507,18 @@ namespace AstralOath.Client.BattleScene
                     ScheduleFeedback(Mathf.Max(lastDamageImpact, LastFeedbackAt(item.TargetId)),
                         item.TargetId, () => views[item.TargetId].ApplyStatus(item.Status));
                     break;
+                case BattleFlowEventKind.StatusDurationChanged:
+                    ScheduleFeedback(AfterLastHitAt(item.TargetId), item.TargetId,
+                        () => views[item.TargetId].UpdateStatusDuration(item.Status));
+                    break;
                 case BattleFlowEventKind.StatusRemoved:
                     // Absorb emits this just before Damage when the last shield point is used.
                     // Damage will remove the icon and aura at the hit that consumes it.
                     if (item.StatusKind.HasValue &&
                         (item.StatusKind != BattleStatusKind.Barrier || !MatchesAbsorption(item)))
                     {
-                        float at = LastFeedbackAt(item.TargetId);
-                        // Turn-end expiry is emitted with the unit as both source and target.
-                        // Keep its buff/ward through the attacking unit's remaining hit cues.
-                        if (item.SourceId == item.TargetId && hitTimes.Length != 0)
-                            at = Mathf.Max(at, hitTimes[hitTimes.Length - 1]);
+                        // Turn-end expiry keeps the marker visible through the attacking unit's last hit.
+                        float at = item.SourceId == item.TargetId ? AfterLastHitAt(item.TargetId) : LastFeedbackAt(item.TargetId);
                         ScheduleFeedback(at, item.TargetId, () => views[item.TargetId].RemoveStatus(item.StatusKind.Value));
                     }
                     break;
@@ -565,6 +565,21 @@ namespace AstralOath.Client.BattleScene
                         turnHud.RemoveUnit(item.TargetId);
                         views[item.TargetId].BeginDeath();
                     });
+                    break;
+                case BattleFlowEventKind.EffectRejected:
+                    string feedbackKey = item.EffectRejection switch
+                    {
+                        BattleEffectRejection.Resisted => "battle.feedback.effect_resisted",
+                        BattleEffectRejection.Blocked => "battle.feedback.effect_blocked",
+                        BattleEffectRejection.HealingPrevented => "battle.feedback.healing_prevented",
+                        _ => null
+                    };
+                    if (feedbackKey != null)
+                        ScheduleFeedback(Mathf.Max(lastDamageImpact, LastFeedbackAt(item.TargetId)), item.TargetId, () =>
+                        {
+                            var view = views[item.TargetId];
+                            turnHud.ShowStatusFeedback(Label(feedbackKey), view.FeedbackAnchor);
+                        });
                     break;
                 case BattleFlowEventKind.TurnSkipped:
                     banner.text = $"{Label(Snapshot.GetUnit(item.SourceId).NameKey)} · 眩晕";
@@ -622,6 +637,12 @@ namespace AstralOath.Client.BattleScene
             return index < 0 ? impactSeconds : pendingFeedback[index].At;
         }
 
+        private float AfterLastHitAt(string targetId)
+        {
+            float last = LastFeedbackAt(targetId);
+            return hitTimes.Length == 0 ? last : Mathf.Max(last, hitTimes[hitTimes.Length - 1]);
+        }
+
         private void ScheduleFeedback(float at, string targetId, Action show)
         {
             // Preserve authoritative event order for cues that share a time.
@@ -655,7 +676,8 @@ namespace AstralOath.Client.BattleScene
             turnHud.Refresh(Snapshot);
             var actor = Actor;
             displayedActor = actor;
-            SetPlayerControlsVisible(actor?.Slot.Side == BattleSide.Ally && Snapshot.Outcome == BattleOutcome.InProgress);
+            SetPlayerControlsVisible(actor?.Slot.Side == BattleSide.Ally && Snapshot.Outcome == BattleOutcome.InProgress &&
+                !ai.IsForcedAction(Snapshot));
             if (actor != null)
             {
                 hud.Require<GameText>("activeName").text = Label(actor.NameKey);
@@ -750,6 +772,7 @@ namespace AstralOath.Client.BattleScene
                 BattleOutcome.EnemyVictory => "战斗失败",
                 BattleOutcome.Draw => "战斗平局",
                 _ when Actor?.Slot.Side == BattleSide.Enemy => "敌方行动",
+                _ when ai.IsForcedAction(Snapshot) => Label("battle.prompt.forced_action"),
                 _ when autoBattle => Label("battle.auto.active"),
                 _ when TrySkill(selected, out var skill) => $"{Label(skill.nameKey)} · {(useSoulBurn ? "燃魂 · " : "")}点击目标",
                 _ => "选择技能"
@@ -907,6 +930,11 @@ namespace AstralOath.Client.BattleScene
             private readonly BattleStatusIcons statusIcons;
             private readonly BattleShieldAura shieldAura;
             private readonly BattleUnitLevelBadge levelBadge;
+            private static readonly int BodyOpacity = Shader.PropertyToID("_PresentationOpacity");
+            private const float StealthOpacity = .55f;
+            private MaterialPropertyBlock stealthBlock;
+            private Renderer stealthBody;
+            private float originalStealthOpacity;
 
             public View(Transform slot, GameObject marker, Camera camera, BattleUnitPresentationProfile profile,
                 IReadOnlyDictionary<string, Texture2D> deathTextures, BattleStatusArt statusArt,
@@ -1010,6 +1038,7 @@ namespace AstralOath.Client.BattleScene
             {
                 if (deathStarted) return;
                 deathStarted = true;
+                SetStealth(false);
                 SetShield(0);
                 Actor.BeginDefeatPose();
                 Actor.SetPaused(true);
@@ -1058,6 +1087,7 @@ namespace AstralOath.Client.BattleScene
             {
                 levelBadge.Show(state.Level);
                 statusIcons.Reconcile(state.IsAlive ? state.Statuses : Array.Empty<BattleStatusSnapshot>());
+                SetStealth(state.IsAlive && state.GetStatus(BattleStatusKind.Stealth) != null);
                 SetShield(state.IsAlive ? state.Barrier : 0);
                 if (state.Resource != null) SetResource(state.Resource.Amount);
             }
@@ -1076,12 +1106,39 @@ namespace AstralOath.Client.BattleScene
                     }
                 }
                 statusIcons.Apply(effect);
+                if (effect.Kind == BattleStatusKind.Stealth) SetStealth(true);
+            }
+
+            public void UpdateStatusDuration(BattleStatusSnapshot effect)
+            {
+                if (effect != null) statusIcons.UpdateDuration(effect);
             }
 
             public void RemoveStatus(BattleStatusKind kind)
             {
                 if (kind == BattleStatusKind.Barrier) SetShield(0);
                 statusIcons.Remove(kind);
+                if (kind == BattleStatusKind.Stealth) SetStealth(false);
+            }
+
+            private void SetStealth(bool active)
+            {
+                var body = active && !deathStarted ? Actor.PresentationRenderer : null;
+                if (body == stealthBody) return;
+                if (stealthBody) ApplyBodyOpacity(stealthBody, originalStealthOpacity);
+                stealthBody = body;
+                if (!body) return;
+                stealthBlock ??= new MaterialPropertyBlock();
+                body.GetPropertyBlock(stealthBlock);
+                originalStealthOpacity = stealthBlock.HasFloat(BodyOpacity) ? stealthBlock.GetFloat(BodyOpacity) : 1f;
+                ApplyBodyOpacity(body, originalStealthOpacity * StealthOpacity);
+            }
+
+            private void ApplyBodyOpacity(Renderer body, float opacity)
+            {
+                body.GetPropertyBlock(stealthBlock);
+                stealthBlock.SetFloat(BodyOpacity, opacity);
+                body.SetPropertyBlock(stealthBlock);
             }
 
             public void AbsorbShield(int amount)
@@ -1107,6 +1164,7 @@ namespace AstralOath.Client.BattleScene
 
             public void Restore()
             {
+                SetStealth(false);
                 death?.Dispose();
                 death = null;
                 Actor.SetTurnReady(false);

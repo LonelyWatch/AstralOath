@@ -152,6 +152,31 @@ public sealed class BattleMatchTests
     }
 
     [Fact]
+    public void ExtraTurnStartsBeforeAnotherReadyUnitAndDurationChangesAreReplayable()
+    {
+        var resolver = new Resolver((_, command, _) => command.Sequence == 1
+            ? new(new[]
+            {
+                BattleChange.Readiness("ally", "enemy", 10000),
+                BattleChange.ApplyStatus("ally", "ally", BattleStatusKind.AttackUp, 2, 5000),
+                BattleChange.ExtraTurn("ally")
+            })
+            : new(Array.Empty<BattleChange>()));
+        var match = Match(resolver);
+
+        var first = match.Submit(Command(1, "ally", "enemy"));
+        Assert.Equal("ally", first.Snapshot.CurrentActorId);
+        Assert.Equal(2, first.Snapshot.TurnNumber);
+        Assert.Equal(2, first.Snapshot.GetUnit("ally").GetStatus(BattleStatusKind.AttackUp)!.RemainingTurns);
+        Assert.Contains(first.Events, item => item.Kind == BattleFlowEventKind.ExtraTurnGranted);
+        var second = match.Submit(Command(2, "ally", "enemy"));
+        Assert.Equal("enemy", second.Snapshot.CurrentActorId);
+        var changed = Assert.Single(second.Events, item => item.Kind == BattleFlowEventKind.StatusDurationChanged);
+        Assert.Equal(1, changed.Status!.RemainingTurns);
+        Assert.Equal("ally", changed.Status.SourceId);
+    }
+
+    [Fact]
     public void StandardSoulCapacityCapsEachSideAtEightyAndReportsAcceptedAmounts()
     {
         var resolver = new Resolver((_, command, _) => new(new[]

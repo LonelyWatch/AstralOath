@@ -363,6 +363,113 @@ Assert.That(RedWidth(), Is.Zero, "The red segment is cleared after the transitio
         }
 
         [UnityTest]
+        public IEnumerator StealthOpacityRestoresOnRemovalAndBeforeDeath()
+        {
+            var simulation = typeof(BattleHudPreview).GetField("simulation", Private).GetValue(host);
+            simulation.GetType().GetMethod("SetPaused").Invoke(simulation, new object[] { true });
+            var view = ((IDictionary)simulation.GetType().GetField("views", Private).GetValue(simulation))["enemy-1"];
+            var actor = (BattlePreviewActor)view.GetType().GetProperty("Actor").GetValue(view);
+            var body = (Renderer)typeof(BattlePreviewActor).GetProperty("PresentationRenderer", Private).GetValue(actor);
+            var block = new MaterialPropertyBlock();
+            var opacity = Shader.PropertyToID("_PresentationOpacity");
+            var constructor = typeof(BattleStatusSnapshot).GetConstructor(Private, null,
+                new[] { typeof(BattleStatusKind), typeof(int), typeof(int) }, null);
+            var stealth = constructor.Invoke(new object[] { BattleStatusKind.Stealth, 2, 0 });
+
+            float ReadOpacity()
+            {
+                body.GetPropertyBlock(block);
+                return block.HasFloat(opacity) ? block.GetFloat(opacity) : 1f;
+            }
+
+            view.GetType().GetMethod("ApplyStatus").Invoke(view, new[] { stealth });
+            Assert.That(ReadOpacity(), Is.InRange(.01f, .99f));
+            Assert.That(body.enabled, Is.True);
+            view.GetType().GetMethod("RemoveStatus").Invoke(view, new object[] { BattleStatusKind.Stealth });
+            Assert.That(ReadOpacity(), Is.EqualTo(1f));
+            view.GetType().GetMethod("ApplyStatus").Invoke(view, new[] { stealth });
+            view.GetType().GetMethod("BeginDeath").Invoke(view, null);
+            Assert.That(ReadOpacity(), Is.EqualTo(1f), "Death owns its own opacity once it starts.");
+            view.GetType().GetMethod("TickVisual").Invoke(view, new object[] { .45f });
+            Assert.That(ReadOpacity(), Is.LessThan(1f));
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator ProvokedPlayerAutomaticallyAttacksTheSourceWithoutExposingControls()
+        {
+            var simulation = typeof(BattleHudPreview).GetField("simulation", Private).GetValue(host);
+            var match = (BattleMatch)simulation.GetType().GetField("match", Private).GetValue(simulation);
+            var actor = match.Snapshot.GetUnit(match.Snapshot.CurrentActorId);
+            Assert.That(actor.Slot.Side, Is.EqualTo(BattleSide.Ally));
+            var mutableActor = match.GetType().GetField("actor", Private).GetValue(match);
+            var statuses = (IList)mutableActor.GetType().GetProperty("Statuses").GetValue(mutableActor);
+            var makeStatus = typeof(BattleStatusSnapshot).GetConstructor(Private, null,
+                new[] { typeof(BattleStatusKind), typeof(int), typeof(int), typeof(string) }, null);
+            const string provokerId = "enemy-2";
+            statuses.Add(makeStatus.Invoke(new object[] { BattleStatusKind.Provoke, 1, 0, provokerId }));
+            var snapshot = match.GetType().GetMethod("Capture", Private).Invoke(match, null);
+            match.GetType().GetProperty("Snapshot").SetValue(match, snapshot);
+
+            simulation.GetType().GetMethod("Refresh", Private).Invoke(simulation, null);
+            Assert.That(map.transform.Find("Skills").gameObject.activeSelf, Is.False);
+            Assert.That(host.TrySelectBattleTarget("enemy-1"), Is.False);
+            Assert.That(match.Snapshot.LastCommandSequence, Is.Zero);
+            simulation.GetType().GetMethod("Tick").Invoke(simulation, new object[] { 0f });
+            Assert.That(match.Snapshot.LastCommandSequence, Is.EqualTo(1UL));
+            var events = (System.Collections.Generic.Queue<BattleFlowEvent>)simulation.GetType().GetField("playback", Private)
+                .GetValue(simulation);
+            var action = events.First(item => item.Kind == BattleFlowEventKind.Action);
+            Assert.That(action.TargetId, Is.EqualTo(provokerId));
+            Assert.That(action.SkillId, Is.EqualTo(actor.Form.SkillIds[0]));
+            Assert.That(action.UseSoulBurn, Is.False);
+            simulation.GetType().GetMethod("PresentReadyEvents", Private).Invoke(simulation, null);
+            Assert.That(map.transform.Find("Skills").gameObject.activeSelf, Is.False);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator ProvokeUsesNativeIconAndDurationChangesFollowTheirPlaybackCue()
+        {
+            var simulation = typeof(BattleHudPreview).GetField("simulation", Private).GetValue(host);
+            var present = simulation.GetType().GetMethod("Present", Private);
+            var showDue = simulation.GetType().GetMethod("ShowDueFeedback", Private);
+            var elapsed = simulation.GetType().GetField("actionElapsed", Private);
+            simulation.GetType().GetMethod("SetPaused").Invoke(simulation, new object[] { true });
+            var icons = map.transform.Find("Unit Status/Enemies/01 Front/Frame/Status Icons");
+            var kind = (BattleStatusKind)Enum.Parse(typeof(BattleStatusKind), "Provoke");
+            var durationChanged = (BattleFlowEventKind)Enum.Parse(typeof(BattleFlowEventKind), "StatusDurationChanged");
+            var makeStatus = typeof(BattleStatusSnapshot).GetConstructor(Private, null,
+                new[] { typeof(BattleStatusKind), typeof(int), typeof(int) }, null);
+            var makeEvent = typeof(BattleFlowEvent).GetConstructors(Private).Single();
+
+            void Deliver(BattleFlowEventKind eventKind, int turns)
+            {
+                var status = makeStatus.Invoke(new object[] { kind, turns, 0 });
+                present.Invoke(simulation, new[] { makeEvent.Invoke(new object[] { 1UL, 1, eventKind, "ally-1",
+                    "enemy-1", 0, null, null, BattleActionOrigin.Primary, kind, status, null, null,
+                    BattleHitKind.None, null, false, null }) });
+            }
+
+            Deliver(BattleFlowEventKind.StatusApplied, 2);
+            showDue.Invoke(simulation, null);
+            var icon = icons.GetChild(0).GetComponent<Image>();
+            var digit = icon.transform.Find("Remaining Turns").GetComponent<Image>();
+            Assert.That(icon.sprite.name, Is.EqualTo("stic_provoke"));
+            Assert.That(digit.sprite.name, Is.EqualTo("itxt_num2"));
+            simulation.GetType().GetField("hitTimes", Private).SetValue(simulation, new[] { 0.5f, 1f });
+            Deliver(durationChanged, 1);
+            elapsed.SetValue(simulation, 0.75f);
+            showDue.Invoke(simulation, null);
+            Assert.That(digit.sprite.name, Is.EqualTo("itxt_num2"));
+            elapsed.SetValue(simulation, 1f);
+            showDue.Invoke(simulation, null);
+            Assert.That(icons.GetChild(0).GetComponent<Image>(), Is.SameAs(icon));
+            Assert.That(digit.sprite.name, Is.EqualTo("itxt_num1"));
+            yield return null;
+        }
+
+        [UnityTest]
         public IEnumerator FiveOverheadStatusIconsWrapAfterThreeAndCompactWhenRemoved()
         {
             var simulation = typeof(BattleHudPreview).GetField("simulation", Private).GetValue(host);

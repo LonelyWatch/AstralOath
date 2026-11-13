@@ -63,7 +63,8 @@ namespace AstralOath.Client.Tests
             var angelica = Array.Find(catalog.skills, skill => skill.id == "c1062.s3");
             Assert.That(Read("SkillBurnDescription", angelica), Does.Contain("2"));
             Assert.That(Read("SkillDescription", angelica), Does.Not.Contain("燃魂"));
-            Assert.That(Read("StatusDescription", BattleStatusKind.Stealth), Does.Contain("试玩"));
+            Assert.That(Read("StatusDescription", BattleStatusKind.Stealth), Does.Contain("范围攻击"));
+            Assert.That(Read("StatusDescription", BattleStatusKind.Provoke), Does.Contain("基本技能"));
         }
     }
 }

@@ -9,7 +9,6 @@ using AstralOath.Client.BattleScene;
 using AstralOath.Client.Common;
 using AstralOath.Shared.Battle;
 using NUnit.Framework;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
@@ -18,7 +17,6 @@ namespace AstralOath.Client.Tests
 {
     public sealed class BattleSourcePlaybackTests
     {
-        private const string ScenePath = "Assets/Game/Modules/BattleScene/Scenes/BattleScene.unity";
         private const BindingFlags PrivateInstance = BindingFlags.Instance | BindingFlags.NonPublic;
         private const double ActionTimeout = 30d;
         private static readonly Type PresentationType = typeof(BattleHudPreview).Assembly
@@ -323,7 +321,7 @@ namespace AstralOath.Client.Tests
             if (SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null)
                 Assert.Ignore("The source playback sweep requires a graphics device.");
 
-            scene = EditorSceneManager.LoadSceneInPlayMode(ScenePath, new LoadSceneParameters(LoadSceneMode.Additive));
+            scene = BattleScenePreviewTests.LoadPlayerOpeningScene(useDefaultRoster: true);
             yield return null;
             yield return null;
 

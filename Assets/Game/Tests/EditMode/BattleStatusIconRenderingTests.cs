@@ -14,6 +14,7 @@ namespace AstralOath.Client.Tests
 
         [TestCase("stic_att_up")]
         [TestCase("stic_protect")]
+        [TestCase("stic_provoke")]
         [TestCase("stic_speed_up")]
         [TestCase("itxt_num3")]
         public void OverheadStatusGlyphsKeepUncompressedBilinearSamplingAfterImport(string name)

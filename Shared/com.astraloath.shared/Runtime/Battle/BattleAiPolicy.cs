@@ -45,13 +45,26 @@ namespace AstralOath.Shared.Battle
                 BattleSkillResolver.CanUseSkill(snapshot, actor, skill, useSoulBurn);
         }
 
+        public bool CanSelectTarget(BattleSnapshot snapshot, string skillId, string targetId, bool useSoulBurn = false)
+        {
+            if (!IsSkillAvailable(snapshot, skillId, useSoulBurn)) return false;
+            var actor = CurrentActor(snapshot);
+            return BattleTargeting.CanSelect(snapshot, actor, BattleTargeting.PrimaryRule(skills[skillId], actor), targetId);
+        }
+
+        public bool IsForcedAction(BattleSnapshot snapshot)
+        {
+            var actor = CurrentActor(snapshot);
+            return actor != null && BattleTargeting.ActiveProvoker(snapshot, actor) != null;
+        }
+
         public BattleAiChoice ChooseAction(BattleSnapshot snapshot)
         {
             var actor = CurrentActor(snapshot);
             if (actor == null) return null;
             var available = actor.Form.SkillIds.Where(id => IsSkillAvailable(snapshot, id))
                 .Select(id => skills[id]).OrderByDescending(skill => skill.slot).ToArray();
-            if (!soulWeavers.Contains(actor.DefinitionId))
+            if (IsForcedAction(snapshot) || !soulWeavers.Contains(actor.DefinitionId))
                 return available.Select(skill => ChooseTarget(snapshot, actor, skill, false)).FirstOrDefault(choice => choice != null);
 
             var allies = AliveOnSide(snapshot, actor.Slot.Side).ToArray();
@@ -83,8 +96,14 @@ namespace AstralOath.Shared.Battle
         private BattleAiChoice ChooseTarget(BattleSnapshot snapshot, BattleUnitSnapshot actor,
             BattleCatalogData.SkillRow skill, bool useSoulBurn)
         {
+            string targetRule = BattleTargeting.PrimaryRule(skill, actor);
+            var provoker = BattleTargeting.ActiveProvoker(snapshot, actor);
+            if (provoker != null)
+                return BattleTargeting.CanSelectUnit(snapshot, actor, targetRule, provoker)
+                    ? new BattleAiChoice(skill.id, provoker.InstanceId, useSoulBurn) : null;
+
             BattleUnitSnapshot target;
-            switch (skill.target)
+            switch (targetRule)
             {
                 case "one_ally":
                 case "all_allies":
@@ -93,7 +112,7 @@ namespace AstralOath.Shared.Battle
                 case "one_enemy":
                 case "two_enemies":
                 case "all_enemies":
-                    target = snapshot.Units.Where(unit => unit.IsAlive && unit.Slot.Side != actor.Slot.Side)
+                    target = snapshot.Units.Where(unit => BattleTargeting.CanSelectUnit(snapshot, actor, targetRule, unit))
                         .OrderByDescending(unit => EpicSevenCombatMath.ElementRelation(actor.Element, unit.Element) > 0)
                         .ThenBy(HealthRatio).ThenBy(unit => unit.Slot.Position).FirstOrDefault();
                     break;

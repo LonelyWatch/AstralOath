@@ -135,6 +135,8 @@ namespace AstralOath.Client.Tests
             }
             var view = views["enemy-1"];
             view.GetType().GetMethod("BeginDeath").Invoke(view, null);
+            // A dying unit keeps its status bar through the authored fade.
+            view.GetType().GetMethod("TickVisual").Invoke(view, new object[] { 2f });
             stage.Reset(); Refresh();
             Assert.That(map.transform.Find("Unit Status/Enemies/" + enemies[0].transform.parent.name).gameObject.activeSelf, Is.False,
                 "Restoring a cinematic mask cannot revive a defeated unit's status.");

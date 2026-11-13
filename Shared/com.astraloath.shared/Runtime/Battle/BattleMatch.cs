@@ -24,6 +24,7 @@ namespace AstralOath.Shared.Battle
         private int turn;
         private State actor;
         private BattleOutcome outcome;
+        private State extraTurn;
 
         public BattleMatch(string battleId, uint rulesVersion, ulong randomSeed, BattleFormation formation,
             IBattleActionResolver resolver, BattleFlowRules rules = null)
@@ -42,6 +43,7 @@ namespace AstralOath.Shared.Battle
             byId = units.ToDictionary(unit => unit.Id, StringComparer.Ordinal);
             var opening = new List<BattleFlowEvent>();
             Emit(opening, BattleFlowEventKind.BattleStarted);
+            if (resolver is IBattleLifecycleResolver lifecycle) ApplyLifecycle(lifecycle.BattleStart(Capture()), opening);
             Advance(opening);
             OpeningEvents = opening.AsReadOnly();
             Snapshot = Capture();
@@ -72,7 +74,8 @@ namespace AstralOath.Shared.Battle
             var random = new BattleRandom(unchecked(seed ^ command.Sequence * 0x9E3779B97F4A7C15UL));
             if (!resolver.TryResolve(new BattleActionContext(Snapshot), command, random, out var resolution))
                 return Reject(BattleCommandStatus.InvalidAction);
-            if (resolution == null || resolution.Changes.Count > 512 || resolution.Changes.Any(change => !IsValid(change)))
+            if (resolution == null || resolution.Changes.Count > 512 || resolution.Changes.Any(change => !IsValid(change) ||
+                    (change.Kind == BattleFlowEventKind.ExtraTurnGranted && change.SourceId != actor.Id)))
                 return Reject(BattleCommandStatus.InvalidResolution);
 
             var events = new List<BattleFlowEvent>();
@@ -86,7 +89,7 @@ namespace AstralOath.Shared.Battle
             {
                 Apply(change, events);
                 if (change.Kind == BattleFlowEventKind.StatusApplied && change.TargetId == actor.Id)
-                    refreshed.Add(change.Status);
+                    refreshed.Add(change.Status.Value);
             }
             FinishTurn(actor, previousStatuses, events, refreshed);
             Advance(events);
@@ -116,7 +119,8 @@ namespace AstralOath.Shared.Battle
                 case BattleFlowEventKind.Healing: return change.Amount >= 0;
                 case BattleFlowEventKind.CooldownChanged: return target.Unit.Form.SkillIds.Contains(change.SkillId);
                 case BattleFlowEventKind.ResourceChanged: return target.Resource != null;
-                case BattleFlowEventKind.StatusApplied: return change.Turns > 0 && change.Turns <= 60 && change.Amount >= 0;
+                case BattleFlowEventKind.StatusApplied: return change.Status.HasValue && change.Turns > 0 && change.Turns <= 60 && change.Amount >= 0;
+                case BattleFlowEventKind.StatusRemoved: return change.Status.HasValue;
                 default: return true;
             }
         }
@@ -141,6 +145,15 @@ namespace AstralOath.Shared.Battle
 
             var unit = byId[target];
             if (unit.Health == 0) return;
+            if (change.Kind == BattleFlowEventKind.ExtraTurnGranted)
+            {
+                if (extraTurn == null)
+                {
+                    extraTurn = unit;
+                    Emit(events, change.Kind, source, target);
+                }
+                return;
+            }
             switch (change.Kind)
             {
                 case BattleFlowEventKind.Damage:
@@ -169,14 +182,14 @@ namespace AstralOath.Shared.Battle
                         (int)Math.Clamp((long)cooldown + change.Amount, 0L, 60L), events);
                     break;
                 case BattleFlowEventKind.StatusApplied:
-                    var status = new BattleStatusSnapshot(change.Status, change.Turns, change.Amount);
+                    var status = new BattleStatusSnapshot(change.Status.Value, change.Turns, change.Amount, source);
                     int index = unit.Statuses.FindIndex(item => item.Kind == change.Status);
                     if (index < 0) unit.Statuses.Add(status);
                     else unit.Statuses[index] = status;
                     Emit(events, change.Kind, source, target, statusKind: change.Status, status: status);
                     break;
                 case BattleFlowEventKind.StatusRemoved:
-                    RemoveStatus(unit, source, change.Status, events);
+                    RemoveStatus(unit, source, change.Status.Value, events);
                     break;
                 case BattleFlowEventKind.EffectRejected:
                     Emit(events, change.Kind, source, target, statusKind: change.Status, rejection: change.Rejection);
@@ -194,7 +207,7 @@ namespace AstralOath.Shared.Battle
             if (barrier.Strength == absorbed)
                 RemoveStatus(unit, source, BattleStatusKind.Barrier, events);
             else
-                unit.Statuses[index] = new BattleStatusSnapshot(barrier.Kind, barrier.RemainingTurns, barrier.Strength - absorbed);
+                unit.Statuses[index] = new BattleStatusSnapshot(barrier.Kind, barrier.RemainingTurns, barrier.Strength - absorbed, barrier.SourceId);
             return amount - absorbed;
         }
 
@@ -233,9 +246,26 @@ namespace AstralOath.Shared.Battle
                 if (index < 0) continue;
                 var remaining = unit.Statuses[index];
                 if (remaining.RemainingTurns == 1) RemoveStatus(unit, unit.Id, remaining.Kind, events);
-                else unit.Statuses[index] = new BattleStatusSnapshot(remaining.Kind, remaining.RemainingTurns - 1, remaining.Strength);
+                else
+                {
+                    var updated = new BattleStatusSnapshot(remaining.Kind, remaining.RemainingTurns - 1,
+                        remaining.Strength, remaining.SourceId);
+                    unit.Statuses[index] = updated;
+                    Emit(events, BattleFlowEventKind.StatusDurationChanged, unit.Id, unit.Id,
+                        statusKind: updated.Kind, status: updated);
+                }
             }
+            if (unit.Health > 0 && resolver is IBattleLifecycleResolver lifecycle)
+                ApplyLifecycle(lifecycle.TurnEnd(Capture(), unit.Id), events);
             Emit(events, BattleFlowEventKind.TurnEnded, unit.Id);
+        }
+
+        private void ApplyLifecycle(IReadOnlyList<BattleChange> changes, List<BattleFlowEvent> events)
+        {
+            if (changes.Count > 512 || changes.Any(change => !IsValid(change) ||
+                change.Kind != BattleFlowEventKind.StatusApplied && change.Kind != BattleFlowEventKind.StatusRemoved))
+                throw new InvalidOperationException("Battle lifecycle program returned invalid changes.");
+            foreach (var change in changes) Apply(change, events);
         }
 
         private void Advance(List<BattleFlowEvent> events)
@@ -251,7 +281,10 @@ namespace AstralOath.Shared.Battle
                     return;
                 }
                 var living = units.Where(unit => unit.Health > 0).ToArray();
-                if (living.All(unit => unit.Readiness < Ready))
+                var granted = extraTurn;
+                extraTurn = null;
+                if (granted?.Health <= 0) granted = null;
+                if (granted == null && living.All(unit => unit.Readiness < Ready))
                 {
                     long ticks = long.MaxValue;
                     foreach (var unit in living)
@@ -267,7 +300,7 @@ namespace AstralOath.Shared.Battle
                     foreach (var unit in living)
                         unit.Readiness = (int)Math.Min(1000000L, unit.Readiness + ticks * unit.Speed);
                 }
-                actor = living.OrderByDescending(unit => unit.Readiness).First();
+                actor = granted ?? living.OrderByDescending(unit => unit.Readiness).First();
                 turn++;
                 Emit(events, BattleFlowEventKind.TurnStarted, actor.Id);
                 ChangeResource(actor, actor.Id, actor.Resource?.TurnGain ?? 0, events);

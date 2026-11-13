@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Linq;
+using AstralOath.Shared.Battle;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -46,8 +48,11 @@ namespace AstralOath.Client.Tests
             try
             {
                 var units = scene.GetRootGameObjects().Single(root => root.name == "Units").transform;
-                var expected = new[] { "c1001", "c1062", "c1005", "c1002", "c1003", "c1004", "c1006", "c1007" };
-                int index = 0;
+                var catalogAsset = AssetDatabase.LoadAssetAtPath<TextAsset>(module + "/Configs/battle-catalog.json");
+                Assert.That(catalogAsset, Is.Not.Null);
+                var catalog = JsonUtility.FromJson<BattleCatalogData>(catalogAsset.text);
+                var knownHeroes = new HashSet<string>(catalog.heroes.Select(hero => hero.id));
+
                 foreach (string side in new[] { "Allies", "Enemies" })
                 {
                     var team = units.Find(side);
@@ -56,7 +61,8 @@ namespace AstralOath.Client.Tests
                     {
                         var actor = slot.Cast<Transform>().Select(child => child.GetComponent(actorType)).Single(item => item);
                         Assert.That(PrefabUtility.GetCorrespondingObjectFromSource(actor.gameObject), Is.SameAs(prefab));
-                        Assert.That(new SerializedObject(actor).FindProperty("heroId").stringValue, Is.EqualTo(expected[index++]));
+                        string hero = new SerializedObject(actor).FindProperty("heroId").stringValue;
+                        Assert.That(knownHeroes, Does.Contain(hero), slot.name);
                     }
                 }
             }

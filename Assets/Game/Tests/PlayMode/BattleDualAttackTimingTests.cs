@@ -58,11 +58,50 @@ namespace AstralOath.Client.Tests
             Assert.That(skillBanner.gameObject.activeSelf, Is.False, "Returning to the command prompt dismisses the skill banner.");
         }
 
-        internal static BattleFlowEvent Event(BattleFlowEventKind kind, string source, string skill, string presentation, BattleActionOrigin origin)
+        [UnityTest]
+        public IEnumerator OffensivePassiveWaitsForPrimaryFeedbackAndKeepsControlsHidden()
+        {
+            scene = BattleScenePreviewTests.LoadPlayerOpeningScene("c1007");
+            yield return null;
+            yield return null;
+            var host = scene.GetRootGameObjects().Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            var simulation = Field(host, "simulation");
+            var queue = (Queue<BattleFlowEvent>)Field(simulation, "playback");
+            var map = host.GetComponentInChildren<BindingMap>();
+            var feedback = Field(simulation, "turnHud");
+            var caster = host.SimulationSnapshot.CurrentActorId;
+            queue.Enqueue(Event(BattleFlowEventKind.Damage, caster, "c1007.s1", null, BattleActionOrigin.Primary));
+            queue.Enqueue(Event(BattleFlowEventKind.StatusApplied, caster, "c1007.s1", null, BattleActionOrigin.Primary,
+                statusKind: BattleStatusKind.AttackUp));
+            queue.Enqueue(Event(BattleFlowEventKind.CooldownChanged, caster, "c1007.s2", null, BattleActionOrigin.Primary, amount: 2, target: caster));
+            queue.Enqueue(Event(BattleFlowEventKind.Action, caster, "c1007.s2", "c_wilderd_skill_02", BattleActionOrigin.Passive));
+            Call(simulation, "Present", Event(BattleFlowEventKind.Action, caster, "c1007.s1", "c_wilderd_skill_01", BattleActionOrigin.Primary));
+
+            float duration = (float)Field(simulation, "actionDuration");
+            Call(simulation, "Tick", duration - .001f);
+            Assert.That(Field(simulation, "presentedSkillId"), Is.EqualTo("c1007.s1"));
+            Assert.That(map.transform.Find("Unit Status/Enemies/01 Front/Frame/Status Icons").GetChild(0)
+                .GetComponent<Image>().sprite.name, Is.EqualTo("stic_att_up"));
+            Assert.That(map.Require<GameButton>("skill2").transform.Find("Cooldown Overlay").gameObject.activeSelf, Is.True);
+            Assert.That(map.Require<GameButton>("skill2").interactable, Is.False);
+            int hits = (int)Field(feedback, "hitCount");
+            Call(simulation, "Tick", .002f);
+            Assert.That(Field(simulation, "presentedSkillId"), Is.EqualTo("c1007.s2"));
+            Assert.That((int)Field(feedback, "hitCount"), Is.EqualTo(hits), "Passive joins the existing combo.");
+            Assert.That(map.transform.Find("Top Bar/Skill Use Banner/Skill Icon").GetComponent<Image>().sprite.name,
+                Is.EqualTo("sk_c1007_2"));
+            Assert.That(map.transform.Find("Skills").gameObject.activeSelf, Is.False);
+        }
+
+        internal static BattleFlowEvent Event(BattleFlowEventKind kind, string source, string skill, string presentation, BattleActionOrigin origin,
+            BattleStatusKind? statusKind = null, int amount = 30, string target = "enemy-1")
         {
             var ctor = typeof(BattleFlowEvent).GetConstructors(Instance).Single();
             var values = ctor.GetParameters().Select(p => p.HasDefaultValue ? p.DefaultValue : p.ParameterType == typeof(ulong) ? (object)1UL : p.ParameterType == typeof(int) ? 1 : (object)kind).ToArray();
-            var named = new Dictionary<string, object> { ["kind"] = kind, ["sourceId"] = source, ["targetId"] = "enemy-1", ["skillId"] = skill, ["presentationId"] = presentation, ["origin"] = origin, ["amount"] = 30, ["hitKind"] = BattleHitKind.Normal, ["remainingHealth"] = 3000 };
+            var status = statusKind.HasValue ? typeof(BattleStatusSnapshot).GetConstructor(Instance, null,
+                new[] { typeof(BattleStatusKind), typeof(int), typeof(int) }, null)
+                .Invoke(new object[] { statusKind.Value, 2, 5000 }) : null;
+            var named = new Dictionary<string, object> { ["kind"] = kind, ["sourceId"] = source, ["targetId"] = target, ["skillId"] = skill, ["presentationId"] = presentation, ["origin"] = origin, ["amount"] = amount, ["statusKind"] = statusKind, ["status"] = status, ["hitKind"] = BattleHitKind.Normal, ["remainingHealth"] = 3000 };
             foreach (var p in ctor.GetParameters()) if (named.TryGetValue(p.Name, out var value)) values[p.Position] = value;
             return (BattleFlowEvent)ctor.Invoke(values);
         }

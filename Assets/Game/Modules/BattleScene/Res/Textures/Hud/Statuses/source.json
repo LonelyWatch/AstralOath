@@ -82,6 +82,11 @@
       "kind": "Stealth",
       "group": "Buff",
       "asset": "stic_hide.png"
+    },
+    {
+      "kind": "Provoke",
+      "group": "Debuff",
+      "asset": "stic_provoke.png"
     }
   ],
   "files": [
@@ -174,6 +179,12 @@
       "asset": "stic_hide.png",
       "sourceSha256": "4bc17a677db4eb51d95771b0f77e6f386b627bb4bca0128e0381ec0502132c09",
       "assetSha256": "058a9f5f76f4fc25fd202704cb3fba2977514c921046e5a06f8a43c760ca7087"
+    },
+    {
+      "source": "原始资源/buff/stic_provoke.png",
+      "asset": "stic_provoke.png",
+      "sourceSha256": "9f56c1b44f3a77b792b42063e4d65776ec3c0a6058004b2f0ff6a9691d269906",
+      "assetSha256": "5c4d0e963fc96e244e148697ba2d1fc7ba3ec6b9d223ee4987d02a4c69c1b26d"
     },
     {
       "source": "原始资源/img/itxt_num0.png",

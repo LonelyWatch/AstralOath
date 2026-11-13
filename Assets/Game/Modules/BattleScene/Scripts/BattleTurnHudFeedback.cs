@@ -72,6 +72,25 @@ namespace AstralOath.Client.BattleScene
                 showMissCaption: hitKind == BattleHitKind.Miss);
         }
 
+        internal void ShowStatusFeedback(string message, RectTransform anchor)
+        {
+            if (!anchor || string.IsNullOrEmpty(message)) return;
+            var popup = AcquireFeedback();
+            popup.Root.name = "Status Feedback";
+            popup.Root.SetAsLastSibling();
+            popup.Anchor = anchor;
+            popup.Camera = null;
+            popup.Elapsed = 0f;
+            popup.FadeStart = NumberHold;
+            popup.Amount.gameObject.SetActive(false);
+            for (int index = 0; index < popup.GlyphCount; index++)
+                popup.Glyphs[index].gameObject.SetActive(false);
+            popup.GlyphCount = 0;
+            popup.Caption.text = message;
+            popup.Root.gameObject.SetActive(true);
+            AnimateFeedback(popup);
+        }
+
         private Feedback AcquireFeedback()
         {
             var popup = impactLabels.Find(candidate => !candidate.Root.gameObject.activeSelf);

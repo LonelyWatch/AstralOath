@@ -17,7 +17,8 @@ internal static class BattlePreviewEndpoints
         var catalog = JsonSerializer.Deserialize<BattleCatalogData>(bytes, new JsonSerializerOptions { IncludeFields = true })
             ?? throw new InvalidOperationException("The battle catalog could not be read.");
         string hash = Convert.ToHexString(SHA256.HashData(bytes));
-        var rooms = new BattlePreviewRooms((id, seed) => BattlePreviewFactory.Create(id, seed, catalog, duel: true), hash);
+        var ai = new BattleAiPolicy(catalog);
+        var rooms = new BattlePreviewRooms((id, seed) => BattlePreviewFactory.Create(id, seed, catalog, duel: true), hash, ai);
         // Validate the same authoritative roster and program during startup.
         _ = BattlePreviewFactory.Create("startup-validation", 0, catalog, duel: true);
         var routes = app.MapGroup("/api/battle-preview");
@@ -62,10 +63,12 @@ internal sealed class BattlePreviewRooms
     private readonly Dictionary<string, BattlePreviewRoom> rooms = new(StringComparer.Ordinal);
     private readonly Func<string, ulong, BattleMatch> createMatch;
     private readonly TimeProvider clock;
+    private readonly BattleAiPolicy ai;
 
-    public BattlePreviewRooms(Func<string, ulong, BattleMatch> createMatch, string contentHash, TimeProvider? clock = null)
+    public BattlePreviewRooms(Func<string, ulong, BattleMatch> createMatch, string contentHash, BattleAiPolicy ai, TimeProvider? clock = null)
     {
         this.createMatch = createMatch;
+        this.ai = ai;
         ContentHash = contentHash;
         this.clock = clock ?? TimeProvider.System;
     }
@@ -87,7 +90,7 @@ internal sealed class BattlePreviewRooms
             ulong seed = BinaryPrimitives.ReadUInt64LittleEndian(RandomNumberGenerator.GetBytes(sizeof(ulong)));
             string ally = Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
             string enemy = Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
-            var room = new BattlePreviewRoom(createMatch(id, seed), ally, enemy, now.Add(Lifetime), ContentHash);
+            var room = new BattlePreviewRoom(createMatch(id, seed), ally, enemy, now.Add(Lifetime), ContentHash, ai);
             rooms.Add(id, room);
             invitation = new BattlePreviewInvitation(id, ally, enemy, room.ExpiresAt, ContentHash, room.Read(0));
             return true;
@@ -122,10 +125,13 @@ internal sealed class BattlePreviewRoom
     private readonly byte[] enemyToken;
     private readonly string contentHash;
     private readonly List<BattleFlowEvent> history;
+    private readonly BattleAiPolicy ai;
+    private readonly Dictionary<BattleSnapshot, BattlePreviewCommandReply> commandReplies = new();
 
-    public BattlePreviewRoom(BattleMatch match, string ally, string enemy, DateTimeOffset expiresAt, string contentHash)
+    public BattlePreviewRoom(BattleMatch match, string ally, string enemy, DateTimeOffset expiresAt, string contentHash, BattleAiPolicy ai)
     {
         this.match = match;
+        this.ai = ai;
         allyToken = System.Text.Encoding.ASCII.GetBytes(ally);
         enemyToken = System.Text.Encoding.ASCII.GetBytes(enemy);
         this.contentHash = contentHash;
@@ -154,7 +160,7 @@ internal sealed class BattlePreviewRoom
         }
     }
 
-    public BattleCommandResult? Submit(BattleSide side, BattlePreviewCommand command)
+    public BattlePreviewCommandReply? Submit(BattleSide side, BattlePreviewCommand command)
     {
         lock (gate)
         {
@@ -164,15 +170,38 @@ internal sealed class BattlePreviewRoom
             // Scope idempotency keys to the issuing seat.
             var result = match.Submit(new BattleSkillCommand(snapshot.BattleId, command.RulesVersion, command.Sequence,
                 $"{(int)side}:{command.CommandId}", command.ActorId, command.SkillId, command.TargetId!, command.UseSoulBurn));
-            if (result.Status == BattleCommandStatus.Accepted)
+            if (result.Status == BattleCommandStatus.Duplicate && commandReplies.TryGetValue(result.Snapshot, out var reply))
+                return reply with { Status = BattleCommandStatus.Duplicate };
+            if (result.Status != BattleCommandStatus.Accepted) return BattlePreviewCommandReply.From(result);
+
+            var events = new List<BattleFlowEvent>(result.Events);
+            while (ai.IsForcedAction(match.Snapshot))
             {
-                history.AddRange(result.Events);
-                if (history.Count > MaximumRetainedEvents)
-                    history.RemoveRange(0, history.Count - MaximumRetainedEvents);
+                snapshot = match.Snapshot;
+                var forced = ai.ChooseAction(snapshot);
+                if (forced == null) break;
+                ulong sequence = snapshot.LastCommandSequence + 1;
+                var forcedResult = match.Submit(new BattleSkillCommand(snapshot.BattleId, snapshot.RulesVersion,
+                    sequence, $"forced:{sequence}", snapshot.CurrentActorId, forced.SkillId, forced.TargetId));
+                if (forcedResult.Status != BattleCommandStatus.Accepted)
+                    throw new InvalidOperationException($"Forced battle action was rejected: {forcedResult.Status}.");
+                events.AddRange(forcedResult.Events);
             }
-            return result;
+            history.AddRange(events);
+            if (history.Count > MaximumRetainedEvents)
+                history.RemoveRange(0, history.Count - MaximumRetainedEvents);
+            if (events.Count == result.Events.Count) return BattlePreviewCommandReply.From(result);
+            var completed = new BattlePreviewCommandReply(BattleCommandStatus.Accepted, match.Snapshot, events.AsReadOnly());
+            commandReplies.Add(result.Snapshot, completed);
+            return completed;
         }
     }
+}
+
+internal sealed record BattlePreviewCommandReply(BattleCommandStatus Status, BattleSnapshot Snapshot,
+    IReadOnlyList<BattleFlowEvent> Events)
+{
+    public static BattlePreviewCommandReply From(BattleCommandResult result) => new(result.Status, result.Snapshot, result.Events);
 }
 
 internal sealed record BattlePreviewUpdate(string ContentHash, BattleSnapshot Snapshot, bool SnapshotReset,

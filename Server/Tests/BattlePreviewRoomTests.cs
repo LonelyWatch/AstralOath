@@ -11,6 +11,68 @@ using Xunit;
 public sealed class BattlePreviewRoomTests
 {
     [Fact]
+    public void RoomResolvesForcedTurnAndReplaysTheSameAggregateAfterRetry()
+    {
+        var assembly = typeof(Program).Assembly;
+        using var stream = assembly.GetManifestResourceStream("AstralOath.BattleCatalog")!;
+        var catalog = JsonSerializer.Deserialize<BattleCatalogData>(stream, new JsonSerializerOptions { IncludeFields = true })!;
+        var match = new BattleMatch("forced", BattlePreviewFactory.RulesVersion, 23,
+            new BattleFormation(new[] { Unit("ally", BattleSide.Ally, 120), Unit("enemy", BattleSide.Enemy, 100) }),
+            new FirstHitProvokes(new BattleSkillResolver(catalog, randomDualChanceBp: 0)));
+        var roomType = assembly.GetType("AstralOath.Server.Battle.BattlePreviewRoom", throwOnError: true)!;
+        var commandType = assembly.GetType("AstralOath.Server.Battle.BattlePreviewCommand", throwOnError: true)!;
+        var room = Activator.CreateInstance(roomType, match, "ally-token", "enemy-token", DateTimeOffset.UtcNow.AddHours(1),
+            "content", new BattleAiPolicy(catalog))!;
+        var submit = roomType.GetMethod("Submit")!;
+        var read = roomType.GetMethod("Read")!;
+        var command = Activator.CreateInstance(commandType, BattlePreviewFactory.RulesVersion, 1UL, "open", "ally",
+            "c1001.s1", "enemy", false, "content");
+        ulong cursor = match.Snapshot.LastEventSequence;
+        Assert.Null(submit.Invoke(room, new[] { (object)BattleSide.Enemy, command }));
+        var accepted = AsJson(submit.Invoke(room, new[] { (object)BattleSide.Ally, command }));
+        Assert.Equal((int)BattleCommandStatus.Accepted, accepted.GetProperty("status").GetInt32());
+        Assert.Equal(2UL, accepted.GetProperty("snapshot").GetProperty("lastCommandSequence").GetUInt64());
+        var actions = accepted.GetProperty("events").EnumerateArray()
+            .Where(item => item.GetProperty("kind").GetInt32() == (int)BattleFlowEventKind.Action).ToArray();
+        Assert.Equal(2, actions.Length);
+        Assert.Equal("enemy", actions[1].GetProperty("sourceId").GetString());
+        Assert.Equal("ally", actions[1].GetProperty("targetId").GetString());
+        Assert.Equal("c1001.s1", actions[1].GetProperty("skillId").GetString());
+
+        var replay = AsJson(submit.Invoke(room, new[] { (object)BattleSide.Ally, command }));
+        Assert.Equal((int)BattleCommandStatus.Duplicate, replay.GetProperty("status").GetInt32());
+        Assert.Equal(accepted.GetProperty("snapshot").GetRawText(), replay.GetProperty("snapshot").GetRawText());
+        Assert.Equal(accepted.GetProperty("events").GetRawText(), replay.GetProperty("events").GetRawText());
+        var resumed = AsJson(read.Invoke(room, new object[] { cursor }));
+        Assert.Equal(accepted.GetProperty("events").GetRawText(), resumed.GetProperty("events").GetRawText());
+
+        static JsonElement AsJson(object? value) => JsonSerializer.SerializeToElement(value, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+
+        static BattleUnit Unit(string id, BattleSide side, int speed)
+        {
+            var form = new BattleUnitForm("standard", "ras", new[] { "c1001.s1" });
+            var definition = new MonsterDefinition("c1001", "ras", BattleElement.Fire, form);
+            return BattleUnit.CreateMonster(id, definition, new BattleSlot(side, 1), 60,
+                MonsterRank.Normal, new BattleStats(100, 5000, 300, speed));
+        }
+    }
+
+    private sealed class FirstHitProvokes(BattleSkillResolver inner) : IBattleActionResolver
+    {
+        public bool TryResolve(BattleActionContext context, BattleSkillCommand command, BattleRandom random,
+            out BattleActionResolution resolution)
+        {
+            if (command.Sequence != 1) return inner.TryResolve(context, command, random, out resolution);
+            resolution = new BattleActionResolution(new[]
+            {
+                BattleChange.ApplyStatus(command.ActorId, command.TargetId, BattleStatusKind.Provoke, 1)
+            }, "fixture");
+            return true;
+        }
+    }
+
+
+    [Fact]
     public async Task TwoClientsCanPlayAndReconnectButCannotActForTheOtherSeat()
     {
         await using var source = new WebApplicationFactory<Program>();

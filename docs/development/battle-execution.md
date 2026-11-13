@@ -4,17 +4,19 @@
 
 - 开场行动条每个单位在 0–5% 范围有随机初值，行动条到 100% 可行动，多个单位超过 100% 时优先超出最多者。每次正常行动重置该单位行动条。技能冷却在使用者回合结束递减。原作完全同值的决胜规则与开场随机精度待复测。项目以固定槽位作为最后决胜条件，用万分比和整数速度推进。[官方开场修正](https://page.onstove.com/epicseven/global/view/2913696) · [游戏内帮助转录](https://www.gacha.gg/epic-seven/mechanics)
 - 火克木、木克水、水克火，光暗互克。优势加 15 个百分点暴击率并给 10% 伤害修正，劣势增加 50 个百分点的未命中机会。先判未命中，再判暴击，剩余命中有 30% 重击机会。未命中伤害乘 0.75，重击乘 1.3。敌方附加效果先过技能发动概率，再过 `clamp(1 + 效果命中 - 效果抗性, 0, 0.85)`。免疫阻止负面状态，驱散走单独分支。[官方战斗说明](https://page.onstove.com/epicseven/global/main/view/4097326) · [说明转录](https://epic7x.com/10-2-patch-desert-jewel-basar-is-here/) · [官方绝对抵抗说明](https://page.onstove.com/epicseven/global/view/7120355)
-- 伤害参考公开计算器模型，用攻击倍率、最大生命加项、Power、1.871、技能强化、属性与命中修正，再除以 `1 + 防御/300`。本版在输出边界取整，个位边界仍待游戏样本校准。护盾先吸收伤害，剩余量扣生命。装备、神器、穿透、分摊与减伤组合尚未建模。[公开计算器实现](https://github.com/tyopoyt/e7calc-beta) · [伤害参数说明](https://epic7x.com/skill-multipliers/)
+- 伤害参考公开计算器模型，用攻击倍率、最大生命加项、Power、1.871、技能强化、属性与命中修正，再除以 `1 + 防御/300`。本版在输出边界取整，个位边界仍待游戏样本校准。护盾先吸收伤害，剩余量扣生命。技能防御穿透和配表减伤已接入。装备、神器、伤害分摊及与更多减伤来源叠加的顺序仍待建模和验证。[公开计算器实现](https://github.com/tyopoyt/e7calc-beta) · [伤害参数说明](https://epic7x.com/skill-multipliers/)
 - 普攻夹攻基础概率的官方修正为 3%。项目把自动夹攻先用于单目标英雄普攻。拉斯 S2 明确选最高攻击的可用友军。反击、夹攻和追加攻击分别记录来源，次级动作不递归触发反击链。多候选抽样、多个反击源的全局顺序和同时多类反应待原作逐条复验。[官方夹攻修正](https://page.onstove.com/epicseven/global/view/8979711) · [官方反击说明](https://page.onstove.com/epicseven/global/main/view/3852405?listType=2)
 - 拉斯、梅赛德丝、安洁莉卡的具体技能口径及更新来源见[角色数据](battle-character-data.md)。本版把普通梅赛德丝 S2 的攻击提升检查放在主攻击后，最多追加一次。安洁莉卡 S2 按当前生命百分比选最低友军，同目标去重。单次驱散按现有增益顺序取首个。以上细节由测试固定为当前项目规则，仍待实机校准。
 
 ## 技能程序与事件
 
-`Config/Tables/battle_skill_effects.csv` 是技能行为编辑入口。按技能 ID 和行号排序。当前阶段为 `impact`、`after_hit`、`after_attack`，对应伤害或治疗、命中后效果、攻击后的自身／全队效果和次级动作。伤害、治疗、驱散、状态、行动条、夹攻和条件追加均有类型化入口。倍率、魂燃和强化沿用其他战斗表。导表会检查引用、阶段顺序和参数，生成客户端快照和服务端嵌入文件。
+`Config/Tables/battle_skill_effects.csv` 是技能行为的编辑入口。主动技能按 `impact`、`after_hit`、`after_attack` 执行。被动可在 `battle_start`、`turn_end`、`on_attacked`、`after_ally_attack`、`damage_guard` 等阶段生效。追击用首行 `trigger` 定义门槛，后续行定义伤害、增益与行动值。伤害计算阶段读取配表的增伤、减伤和穿透。导表校验阶段和操作组合、目标、参数、行序及引用，再生成客户端与服务端共用快照。
 
-技能事件从主动作开始，依次发布魂力、冷却、伤害、护盾吸收、生命变化、状态、次级动作和击倒。对局执行回合结束、冷却递减、已有状态到期、行动条推进、眩晕跳过和胜负。受控客户端提交对局 ID、规则版本、命令序号、命令 ID、角色、技能、目标、是否魂燃。客户端以最终快照为准，按事件序号补播演出或对齐最新状态。[架构决策](../architecture/adr/011-battle-events.md)
+共享 `BattleMatch` 维护回合、状态和资源，`BattleSkillResolver` 在私有投影中生成有序变化。事件区分主技能、夹攻、追加、反击与被动，带独立事件序号。状态快照包含施加者和剩余回合，持续时间递减、到期、驱散和净化都通过事件通知表现。客户端按动作和命中时间显示事件，并在演出结束后对齐快照。动画回调只推进表现。
 
-Unity 进入战斗场景 Play 后自动试玩，四个敌方史莱姆显示真实60级。右上暂停提供继续游戏和重新开始；编辑器菜单 **Tools → 战斗场景 → 开始试玩** 仍可用于重开。点击技能和战场上的目标。燃魂锁定对应技能，其他技能置暗禁用，只能点击 Burn 位置的 Cancel 取消。敌方使用基础攻击并自动选最低生命比例。试玩阵容固定为四对四，开局我方 20 魂用于练习。命中反馈由权威事件驱动。演出能力与原作对照见下节。
+场景进入 Play 自动开战，双方各四个位置，阵容在通用角色 Prefab 的实例上配置。右上角暂停可以继续或重开。选中技能后点击战场目标，燃魂只能用原按钮位置的 Cancel 解除。手动、自动和权威命令使用同一套目标门禁。
+
+规则版本 3 的机制、状态清单、触发顺序和覆盖边界见[本轮交付](../delivery/2026-11-14-battle-mechanics.md)。[架构决策](../architecture/adr/011-battle-events.md)
 
 ## 战斗演出与 HUD
 
@@ -25,7 +27,7 @@ Unity 进入战斗场景 Play 后自动试玩，四个敌方史莱姆显示真�
 
 ## 本地自动决策与快捷施放
 
-`BattleAiPolicy` 从 Luban 技能、效果和英雄职业读取决策依据，共用权威解析器的可用性判断。返回技能 ID、目标 ID、燃魂标志，调用者通过正常 `BattleSkillCommand` 提交。策略不读随机流、不写战斗状态。服务器可复用，当前只在本地试玩连接了自动行动入口。
+`BattleAiPolicy` 从 Luban 技能、效果和英雄职业读取决策依据，共用权威解析器的可用性判断。返回技能 ID、目标 ID、燃魂标志，调用者通过正常 `BattleSkillCommand` 提交。策略不读随机流、不写战斗状态。Unity 本地试玩与开发服务的强制回合均使用该策略。
 
 敌方回合和己方 Auto 选技及选目标。手动双击锁定玩家选定的技能、沿用已准备的燃魂状态，再代选目标。窗口用非缩放时间计量，切技能、暂停、燃魂切换、换回合、重开都会清掉上次点击。群体技能的代表目标只负责构图或选中，实际作用名单仍由权威解析器决定。原版资料与默认策略见[本轮交付](../delivery/2026-11-13-battle-ai-hud.md)。
 
@@ -45,10 +47,10 @@ $env:ASPNETCORE_ENVIRONMENT = 'Development'
 ```
 
 - `POST /api/battle-preview/rooms` 返回房间 ID、配置 SHA-256、开局快照和两侧各自的令牌。每位客户端仅使用自己的 `Authorization: Bearer` 凭据。
-- `POST /api/battle-preview/rooms/{id}/commands` 接收 `contentHash`、`rulesVersion`、`sequence`、`commandId`、`actorId`、`skillId`、`targetId` 和 `useSoulBurn`。以返回的快照和命令状态判定接受、重复或拒绝。重复成功请求返回原确认和事件。
+- `POST /api/battle-preview/rooms/{id}/commands` 接收 `contentHash`、`rulesVersion`、`sequence`、`commandId`、`actorId`、`skillId`、`targetId` 和 `useSoulBurn`。以返回的快照和命令状态判定接受、重复或拒绝。回复可能同时包含挑衅产生的服务器自动指令、连续事件和最后快照。下一条用户指令从该快照的 `lastCommandSequence + 1` 开始。重复成功请求返回原快照和事件，状态为 Duplicate。
 - `GET /api/battle-preview/rooms/{id}?after={lastEventSequence}` 返回最新快照及后续事件。游标不在留存窗口时通过 `snapshotReset` 明示从快照恢复。房间存续一小时，最多 32 个。Unity 试玩使用本地内核，双人入口由 HTTP 客户端验证。
 
-当前战斗内容范围为三名标准形态英雄的九技能、样例史莱姆与本地双人验证。真实 PvP 还需账号和匹配接入、行动超时与投降、BP、赛季规则、持久恢复与客户端联网画面。多波次、装备、神器、剧情强化和完整被动库也需要独立证据和回归。
+战斗内核覆盖当前十名标准形态英雄。双人开发房间仍使用固定的基础英雄阵容，Unity 本地场景可配置十人。生产 PvP 还需账号准入、匹配、行动超时与投降、BP、赛季规则、持久恢复与客户端联网画面。其他原作角色、状态、装备、神器与多波次机制待补充。
 
 ## 前序交付验证记录
 

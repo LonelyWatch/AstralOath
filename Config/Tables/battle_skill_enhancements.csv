@@ -90,6 +90,11 @@
 ,c1007.s1.e3,c1007.s1,3,damage_bp,500
 ,c1007.s1.e4,c1007.s1,4,damage_bp,1000
 ,c1007.s1.e5,c1007.s1,5,damage_bp,1000
+,c1007.s2.e1,c1007.s2,1,damage_bp,500
+,c1007.s2.e2,c1007.s2,2,damage_bp,500
+,c1007.s2.e3,c1007.s2,3,damage_bp,500
+,c1007.s2.e4,c1007.s2,4,damage_bp,500
+,c1007.s2.e5,c1007.s2,5,damage_bp,1000
 ,c1007.s3.e1,c1007.s3,1,damage_bp,500
 ,c1007.s3.e2,c1007.s3,2,damage_bp,500
 ,c1007.s3.e3,c1007.s3,3,cooldown_turns,1
@@ -102,6 +107,12 @@
 ,c1008.s1.e5,c1008.s1,5,damage_bp,1000
 ,c1008.s1.e6,c1008.s1,6,damage_bp,1000
 ,c1008.s1.e7,c1008.s1,7,damage_bp,1000
+,c1008.s2.e1,c1008.s2,1,counter_chance_bp,50
+,c1008.s2.e2,c1008.s2,2,counter_chance_bp,50
+,c1008.s2.e3,c1008.s2,3,counter_chance_bp,100
+,c1008.s2.e4,c1008.s2,4,counter_chance_bp,100
+,c1008.s2.e5,c1008.s2,5,counter_chance_bp,100
+,c1008.s2.e6,c1008.s2,6,counter_chance_bp,100
 ,c1008.s3.e1,c1008.s3,1,soul_gain,2
 ,c1008.s3.e2,c1008.s3,2,cooldown_turns,1
 ,c1009.s1.e1,c1009.s1,1,damage_bp,500
@@ -109,6 +120,11 @@
 ,c1009.s1.e3,c1009.s1,3,damage_bp,500
 ,c1009.s1.e4,c1009.s1,4,damage_bp,500
 ,c1009.s1.e5,c1009.s1,5,damage_bp,1000
+,c1009.s2.e1,c1009.s2,1,barrier_bp,500
+,c1009.s2.e2,c1009.s2,2,barrier_bp,500
+,c1009.s2.e3,c1009.s2,3,barrier_bp,500
+,c1009.s2.e4,c1009.s2,4,barrier_bp,500
+,c1009.s2.e5,c1009.s2,5,barrier_bp,500
 ,c1009.s3.e1,c1009.s3,1,damage_bp,500
 ,c1009.s3.e2,c1009.s3,2,damage_bp,500
 ,c1009.s3.e3,c1009.s3,3,damage_bp,500

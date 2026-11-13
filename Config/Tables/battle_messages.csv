@@ -1,15 +1,22 @@
 ##,key,zhCn
 ,battle.auto.active,自动战斗中
+,battle.feedback.effect_blocked,免疫
+,battle.feedback.effect_resisted,效果抵抗
+,battle.feedback.healing_prevented,无法恢复生命值
 ,battle.feedback.miss,未命中
 ,battle.inspect.burn.extend_granted_buffs,本技能赋予的增益延长 {0} 回合。
+,battle.inspect.burn.extra_turn,施放后获得额外回合。
 ,battle.inspect.burn.increase_damage,提高本技能造成的伤害。
 ,battle.inspect.burn.reduce_cooldown,本技能冷却减少 {0} 回合。
+,battle.inspect.burn.refill_resource,施放后将个人资源回满。
 ,battle.inspect.burn_header,灵魂燃烧效果
 ,battle.inspect.close,关闭
 ,battle.inspect.cooldown,冷却时间{0}回合
-,battle.inspect.dual_attack.description,使用基本技能与另一名友军一同攻击。试玩中，由符合条件的友军发动夹攻，夹攻可触发技能的命中效果。
+,battle.inspect.dual_attack.description,使用基本技能与另一名友军一同攻击。由符合条件的友军发动夹攻，可触发其基本技能的命中效果。
 ,battle.inspect.dual_attack.name,夹攻
+,battle.inspect.enhancement.barrier_bp,+{0}  屏障倍率提高 {1:0.##} 个百分点
 ,battle.inspect.enhancement.cooldown_turns,+{0}  冷却时间减少 {1:0} 回合
+,battle.inspect.enhancement.counter_chance_bp,+{0}  反击概率提高 {1:0.##} 个百分点
 ,battle.inspect.enhancement.damage_bp,+{0}  伤害提高 {1:0.##}%
 ,battle.inspect.enhancement.effect_chance_bp,+{0}  效果触发率提高 {1:0.##} 个百分点
 ,battle.inspect.enhancement.healing_bp,+{0}  治疗量提高 {1:0.##}%
@@ -24,6 +31,7 @@
 ,battle.pause.continue,继续游戏
 ,battle.pause.restart,重新开始
 ,battle.pause.title,已暂停
+,battle.prompt.forced_action,挑衅 · 强制普攻
 ,battle.skill.c1001.s1.description,攻击一名敌人，有75%概率解除其一个增益。伤害随施术者最大生命提高。
 ,battle.skill.c1001.s1.name,十字斩
 ,battle.skill.c1001.s2.description,攻击一名敌人，随后由攻击最高的可用友军发动夹攻。
@@ -32,19 +40,19 @@
 ,battle.skill.c1001.s3.name,继承者之剑
 ,battle.skill.c1002.s1.description,攻击一名敌人并有35%概率降低防御2回合。目标攻击降低时触发率额外提高25个百分点，伤害随自身最大生命提高。
 ,battle.skill.c1002.s1.name,制裁
-,battle.skill.c1002.s2.description,攻击全体敌人，觉醒后有85%概率降低攻击2回合，再解除一个增益。伤害随自身最大生命提高。
+,battle.skill.c1002.s2.description,攻击全体敌人，有85%概率降低攻击2回合，随后解除一个增益。伤害随自身最大生命提高。
 ,battle.skill.c1002.s2.name,钢铁暴风
-,battle.skill.c1002.s3.description,攻击全体敌人，给予友军免疫和自身屏障2回合。伤害及屏障随自身最大生命提高。试玩暂未接入挑衅。
+,battle.skill.c1002.s3.description,攻击全体敌人，有85%概率挑衅1回合，随后给予全体友军免疫、自身屏障2回合。伤害和屏障随自身最大生命提高。
 ,battle.skill.c1002.s3.name,毁灭之枪
-,battle.skill.c1003.s1.description,攻击一名敌人，伤害随自身防御提高。自身生命低于一半时防御提升1回合。试玩暂未接入挑衅。
+,battle.skill.c1003.s1.description,攻击一名敌人，伤害随自身防御提高。自身生命至少一半时有50%概率挑衅目标1回合，低于一半时自身防御提升1回合。
 ,battle.skill.c1003.s1.name,连续斩击
 ,battle.skill.c1003.s2.description,解除选定友军两个减益，赋予随自身防御增强的屏障2回合，再提升目标行动值10%。
 ,battle.skill.c1003.s2.name,光之盾
 ,battle.skill.c1003.s3.description,全体友军攻击提升2回合、行动值增加15%，自身额外获得防御提升2回合。
 ,battle.skill.c1003.s3.name,胜利女神
-,battle.skill.c1004.s1.description,攻击一名敌人，降低其行动值10%。伤害随自身速度提高。试玩暂未接入燃魂追加回合。
+,battle.skill.c1004.s1.description,攻击一名敌人，降低其行动值10%。伤害随自身速度提高。专注至少2点时强化为自动射击，伤害提高并穿透目标20%防御。
 ,battle.skill.c1004.s1.name,单发射击
-,battle.skill.c1004.s2.description,被动。回合开始获得1点专注，受到攻击时消耗1点专注。试玩尚未接入受击净化、提升行动值和自动射击替换。
+,battle.skill.c1004.s2.description,被动。回合开始获得1点专注。受攻击时若有专注则消耗1点，解除自身一个减益并提升行动值15%。专注至少2点时强化基本技能。
 ,battle.skill.c1004.s2.name,集中
 ,battle.skill.c1004.s3.description,攻击全体敌人，有85%概率降低速度2回合。觉醒后全体友军速度提升2回合。
 ,battle.skill.c1004.s3.name,暴风之箭
@@ -62,21 +70,21 @@
 ,battle.skill.c1006.s3.name,夜曲
 ,battle.skill.c1007.s1.description,攻击两名敌人，伤害随自身速度提高。
 ,battle.skill.c1007.s1.name,横扫
-,battle.skill.c1007.s2.description,被动。达到目标生命条件时触发群攻，试玩尚未接入自动触发。
+,battle.skill.c1007.s2.description,被动。友军攻击后，若存活目标的生命不超过50%，自身攻击力提升2回合并追加群攻，行动值提高20%。追加攻击伤害随速度提高，冷却2回合。
 ,battle.skill.c1007.s2.name,剑舞
 ,battle.skill.c1007.s3.description,攻击全体敌人，伤害随自身速度提高。
 ,battle.skill.c1007.s3.name,剑刃升腾
 ,battle.skill.c1008.s1.description,攻击一名敌人，有25%概率眩晕1回合。伤害随自身防御提高。非自身回合使用时变为群攻。
 ,battle.skill.c1008.s1.name,盾牌猛击
-,battle.skill.c1008.s2.description,被动。涉及受击反击和单体伤害减免，试玩尚未接入触发。
+,battle.skill.c1008.s2.description,被动。满觉醒时受到攻击有20%概率以基本技能反击；友方受到单体攻击时降低30%伤害，同类减伤取最高值。
 ,battle.skill.c1008.s2.name,保护
 ,battle.skill.c1008.s3.description,解除全体友军一个减益，自身防御提升2回合，并为全体友军赋予随自身防御增强的屏障2回合。
 ,battle.skill.c1008.s3.name,盾墙
 ,battle.skill.c1009.s1.description,攻击一名敌人并提高自身行动值25%，获得25点斗志，命中时必定暴击。非夹攻且自身有增益时变为群攻并获得50点斗志。
 ,battle.skill.c1009.s1.name,双剑
-,battle.skill.c1009.s2.description,被动。涉及开战与回合末屏障、受击减伤及伤害提升，试玩尚未接入触发。
+,battle.skill.c1009.s2.description,被动。开战与自身回合结束时获得相当于自身攻击力50%的屏障1回合。自身有增益时造成伤害提高50%，受到攻击时伤害降低50%。
 ,battle.skill.c1009.s2.name,沼泽的意志
-,battle.skill.c1009.s3.description,消耗100点斗志。攻击全体敌人并施加无法恢复2回合，穿透防御最高敌人的防御，命中时必定暴击。试玩尚未接入本技能燃魂。
+,battle.skill.c1009.s3.description,消耗100点斗志，攻击全体敌人并施加无法恢复2回合。穿透防御最高敌人的防御，命中时必定暴击。
 ,battle.skill.c1009.s3.name,旋风
 ,battle.skill.c1062.s1.description,攻击一名敌人，有20%概率使其眩晕1回合。
 ,battle.skill.c1062.s1.name,神圣打击
@@ -106,6 +114,8 @@
 ,battle.status.evasionup.name,回避提升
 ,battle.status.immunity.description,阻止新的减益和可被免疫的敌方负面效果。已存在的减益继续生效。
 ,battle.status.immunity.name,免疫
+,battle.status.provoke.description,轮到自身行动时，对施加挑衅的敌人使用基本技能。
+,battle.status.provoke.name,挑衅
 ,battle.status.silence.description,无法主动使用第二和第三技能。
 ,battle.status.silence.name,沉默
 ,battle.status.speeddown.description,降低速度，减慢行动值的累积。
@@ -114,7 +124,7 @@
 ,battle.status.speedup.description,提高速度，加快行动值的累积。
 ,battle.status.speedup.name,速度提升
 ,battle.status.speedup.strength,速度提升{0:0.##}%。
-,battle.status.stealth.description,在试玩中用于触发技能的潜行加成，如绮世「暗之伤痕」的额外防御穿透。潜行选敌限制和群攻减伤尚未接入。
+,battle.status.stealth.description,存在其他可选敌人时，无法被敌方单独选中。承受范围攻击时降低伤害，受到生命伤害后解除。
 ,battle.status.stealth.name,潜行
 ,battle.status.stun.description,跳过自身回合。眩晕期间无法发动反击或夹攻。
 ,battle.status.stun.name,眩晕

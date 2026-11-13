@@ -157,6 +157,26 @@ function global:tar { throw 'System tar is unavailable: LZMA codec is unsupporte
         }
         Set-Content -LiteralPath $skillTable -Value $originalSkills -NoNewline -Encoding utf8
     }
+    $effectTable = Join-Path $work 'Config/Tables/battle_skill_effects.csv'
+    $originalEffects = Get-Content -LiteralPath $effectTable -Raw -Encoding utf8
+    foreach ($case in @(
+        @{ Property = 'status'; Value = 'Stun'; Error = 'Battle triggered effect arguments' },
+        @{ Property = 'chanceBp'; Value = '9000'; Error = 'Battle triggered effect arguments' },
+        @{ Property = 'phase'; Value = 'BATTLE_START'; Error = 'Battle skill effect sequence' }
+    )) {
+        $effectRows = @(Read-LubanRows $effectTable)
+        $openingEffect = @($effectRows | Where-Object phase -CEQ 'battle_start')[0]
+        $openingEffect.($case.Property) = $case.Value
+        Write-LubanRows $effectTable $effectRows
+        $invalidLog = & $pwsh -NoProfile -File $generate -Dotnet $dotnet -SyncClient 2>&1
+        if ($LASTEXITCODE -eq 0 -or ($invalidLog -join "`n") -notmatch [regex]::Escape($case.Error)) {
+            throw "Invalid battle lifecycle $($case.Property) was not rejected: $($invalidLog -join "`n")"
+        }
+        if ((Get-Content -LiteralPath $battlePath -Raw -Encoding utf8) -cne $battleText) {
+            throw "Rejected battle lifecycle $($case.Property) changed the published client snapshot."
+        }
+        Set-Content -LiteralPath $effectTable -Value $originalEffects -NoNewline -Encoding utf8
+    }
     foreach ($invalid in @('growth-profile', 'growth-panel', 'awakening-rank')) {
         if ($invalid -eq 'awakening-rank') {
             $awakeningRows = @(Read-LubanRows $awakeningTable)
@@ -197,7 +217,7 @@ function global:tar { throw 'System tar is unavailable: LZMA codec is unsupporte
     if ($LASTEXITCODE -eq 0 -or ($corruptLog -join "`n") -notmatch 'Checksum mismatch') {
         throw 'A corrupted extractor was not rejected before execution.'
     }
-    Write-Host 'Config fixture passed generation without tar, edited demo and battle snapshots, binary accessors, invalid presentation/slot/empty coefficient/growth preset/growth panel/awakening rank/bounds rejection and extractor checksum rejection.'
+    Write-Host 'Config fixture passed generation without tar, edited demo and battle snapshots, binary accessors, invalid presentation/slot/empty coefficient/passive lifecycle/growth preset/growth panel/awakening rank/bounds rejection and extractor checksum rejection.'
 } finally {
     $item = Get-Item -LiteralPath $work
     if ($item.Parent.FullName -ne (Join-Path $repo '.artifacts') -or

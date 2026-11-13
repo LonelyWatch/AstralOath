@@ -16,7 +16,7 @@ namespace AstralOath.Client.Tests
         [UnityTest]
         public IEnumerator MercedesDustFollowsTheReadyEventAndReusesThePreparedPlayer()
         {
-            var scene = BattleScenePreviewTests.LoadPlayerOpeningScene();
+            var scene = BattleScenePreviewTests.LoadPlayerOpeningScene(useDefaultRoster: true);
             yield return null;
             var host = scene.GetRootGameObjects().Select(item => item.GetComponent<BattleHudPreview>()).Single(item => item);
             var units = scene.GetRootGameObjects().Single(item => item.name == "Units").transform;

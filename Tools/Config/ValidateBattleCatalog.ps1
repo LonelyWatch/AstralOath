@@ -81,9 +81,10 @@ function Export-BattleCatalog {
             }
             $burn = $skill.soulBurnKind
             $turns = $skill.soulBurnTurns
-            if ($burn -cnotin @('none','reduce_cooldown','increase_damage','extend_granted_buffs') -or
+            if ($burn -cnotin @('none','reduce_cooldown','increase_damage','extend_granted_buffs','extra_turn','refill_resource') -or
                 (($skill.soulBurnCost -eq 0) -ne ($burn -ceq 'none')) -or
                 (($turns -gt 0) -ne ($burn -cin @('reduce_cooldown','extend_granted_buffs'))) -or
+                ($burn -ceq 'refill_resource' -and ($skill.resourceCost -le 0 -or $hero.resourceMaximum -eq 0)) -or
                 ($burn -ceq 'reduce_cooldown' -and $turns -gt $skill.cooldownTurns) -or
                 ($null -ne $skill.burnAttackRateBp -and $burn -cne 'increase_damage')) {
                 throw "Battle skill soul burn is invalid for $key."
@@ -106,55 +107,98 @@ function Export-BattleCatalog {
         $CharacterMessages | Where-Object key -CEQ $hero.nameKey
     }
 
+    $beneficialStatuses = @('AttackUp','DefenseUp','Immunity','Barrier','Counter','SpeedUp','EvasionUp','CriticalResistanceUp','Stealth')
+    $harmfulStatuses = @('Stun','SpeedDown','AttackDown','DefenseDown','Unhealable','Silence','Provoke')
+    $validStatuses = @('none') + $beneficialStatuses + $harmfulStatuses
     foreach ($skill in $skills) {
         $program = @($effects | Where-Object skillId -CEQ $skill.id | Sort-Object order)
-        if ($skill.target -ceq 'passive') {
-            if ($program.Count -ne 0 -or $skill.cooldownTurns -ne 0 -or $skill.soulGain -ne 0 -or $skill.soulBurnCost -ne 0 -or
-                @($enhancements | Where-Object skillId -CEQ $skill.id).Count -ne 0) {
-                throw "Passive slot has a manual skill program for $($skill.id)."
-            }
-            continue
+        $passive = $skill.target -ceq 'passive'
+        $triggersAttack = @($program | Where-Object phase -CEQ 'after_ally_attack').Count -gt 0
+        if ($program.Count -eq 0 -or ($passive -and
+            ($skill.soulGain -ne 0 -or $skill.soulBurnCost -ne 0 -or ($skill.cooldownTurns -gt 0 -and -not $triggersAttack)))) {
+            throw "Battle skill effect program or passive activation is invalid for $($skill.id)."
         }
-        if ($program.Count -eq 0) { throw "Battle skill effect program is missing for $($skill.id)." }
-        $stages = @('impact','after_hit','after_attack')
+        $activeStages = @('impact','after_hit','after_attack')
+        $passiveOperations = @{
+            impact = @('damage_bonus')
+            on_attacked = @('cleanse','readiness','counterattack')
+            damage_guard = @('damage_reduction')
+            after_ally_attack = @('trigger','damage','apply_status','readiness')
+            battle_start = @('apply_status')
+            turn_end = @('apply_status')
+        }
+        $activeOperations = @('damage','heal','dispel','cleanse','apply_status','readiness','reduce_readiness',
+            'extend_cooldown','dual_attack','repeat_if_status','damage_bonus','defense_penetration')
         $lastPhase = 0
         $hasDamage = $false
         for ($index = 0; $index -lt $program.Count; $index++) {
             $effect = $program[$index]
             $order = $index + 1
-            $phase = [array]::IndexOf($stages, $effect.phase)
-            $usesStatus = $effect.operation -cin @('apply_status','repeat_if_status')
-            if ($effect.order -ne $order -or $effect.id -cne "$($skill.id).$order" -or $phase -lt $lastPhase -or
-                $effect.operation -cnotin @('damage','heal','dispel','cleanse','apply_status','readiness','reduce_readiness','extend_cooldown','dual_attack','repeat_if_status') -or
+            $phase = [array]::IndexOf($activeStages, $effect.phase)
+            $operation = $effect.operation
+            $usesStatus = $operation -cin @('apply_status','repeat_if_status')
+            $isModifier = $operation -cin @('damage_bonus','defense_penetration')
+            $usesResourceThreshold = $isModifier -and $effect.condition -ceq 'caster_has_resource'
+            $validPhase = if ($passive) {
+                $effect.phase -cin $passiveOperations.Keys -and $operation -cin $passiveOperations[$effect.phase]
+            } else {
+                $phase -ge $lastPhase -and $operation -cin $activeOperations -and (-not $isModifier -or $effect.phase -ceq 'impact')
+            }
+            if ($effect.order -ne $order -or $effect.id -cne "$($skill.id).$order" -or -not $validPhase -or
                 $effect.recipient -cnotin @('targets','self','allies','target_and_lowest_ally') -or
                 ($usesStatus -ne ($effect.status -cne 'none')) -or
-                $effect.status -cnotin @('none','AttackUp','DefenseUp','Immunity','Barrier','Stun','AttackDown','DefenseDown','SpeedUp','SpeedDown','Unhealable','Stealth') -or
-                $effect.condition -cnotin @('none','caster_health_below_half') -or
+                $effect.status -cnotin $validStatuses -or
+                $effect.condition -cnotin @('none','caster_health_below_half','caster_health_at_least_half',
+                    'caster_health_above_half','caster_health_at_most_half','caster_has_resource','caster_buffed','recipient_buffed','recipient_health_at_most_half','single_target_attack') -or
                 $effect.chanceBonusStatus -cnotin @('none','AttackDown') -or
                 (($effect.chanceBonusStatus -ceq 'none') -ne ($effect.chanceBonusBp -eq 0)) -or
-                ($effect.operation -cin @('cleanse','dispel','reduce_readiness','extend_cooldown') -and $effect.value -le 0) -or
-                ($effect.operation -ceq 'extend_cooldown' -and $effect.value -gt 4) -or
-                (($effect.turns -gt 0) -ne ($effect.operation -ceq 'apply_status')) -or
+                ($operation -cin @('cleanse','dispel','reduce_readiness','extend_cooldown') -and $effect.value -le 0) -or
+                ($operation -ceq 'extend_cooldown' -and $effect.value -gt 4) -or
+                (($effect.turns -gt 0) -ne ($operation -ceq 'apply_status' -or $usesResourceThreshold)) -or
                 ($effect.phase -ceq 'after_hit' -and -not $hasDamage) -or
-                ($effect.operation -ceq 'damage' -and ($null -eq $skill.attackRateBp -or $null -eq $skill.powerBp)) -or
-                ($effect.operation -ceq 'heal' -and $null -eq $skill.casterHealthHealBp) -or
+                ($operation -ceq 'damage' -and ($null -eq $skill.attackRateBp -or $null -eq $skill.powerBp)) -or
+                ($operation -ceq 'heal' -and $null -eq $skill.casterHealthHealBp) -or
                 ($effect.status -ceq 'Barrier' -and
                     @(@($skill.casterHealthBarrierBp,$skill.casterDefenseBarrierBp,$skill.casterAttackBarrierBp) |
                         Where-Object { $null -ne $_ }).Count -ne 1)) {
                 throw "Battle skill effect sequence or arguments are invalid for $($effect.id)."
             }
+            $lifecycle = $effect.phase -cin @('battle_start','turn_end')
+            if (($isModifier -and ($effect.recipient -cne 'self' -or $effect.chanceBp -ne 10000 -or
+                    $effect.value -lt 1 -or $effect.value -gt 10000 -or
+                    $effect.condition -cnotin @('caster_buffed','caster_has_resource'))) -or
+                ($operation -ceq 'damage_reduction' -and ($effect.recipient -cnotin @('self','allies') -or
+                    $effect.chanceBp -ne 10000 -or $effect.value -lt 1 -or $effect.value -gt 10000 -or
+                    $effect.condition -cnotin @('none','recipient_buffed','single_target_attack'))) -or
+                ($operation -ceq 'counterattack' -and ($effect.recipient -cne 'self' -or $effect.value -ne 0)) -or
+                ($operation -ceq 'trigger' -and ($order -ne 1 -or $effect.recipient -cne 'targets' -or
+                    $effect.chanceBp -ne 10000 -or $effect.value -ne 0 -or $effect.chanceBonusBp -ne 0 -or
+                    $effect.condition -cnotin @('none','recipient_health_at_most_half'))) -or
+                ($lifecycle -and ($effect.chanceBp -ne 10000 -or $effect.status -cnotin $beneficialStatuses -or
+                    $effect.chanceBonusBp -ne 0)) -or
+                (($lifecycle -or $effect.phase -ceq 'on_attacked') -and $effect.recipient -cne 'self') -or
+                ($triggersAttack -and $operation -ceq 'damage' -and $effect.recipient -cne 'targets')) {
+                throw "Battle triggered effect arguments are invalid for $($effect.id)."
+            }
             $lastPhase = $phase
-            $hasDamage = $hasDamage -or $effect.operation -ceq 'damage'
+            $hasDamage = $hasDamage -or $operation -ceq 'damage'
+        }
+        if ($triggersAttack -and ($program[0].operation -cne 'trigger' -or -not $hasDamage)) {
+            throw "Passive attack requires a trigger and a damage effect for $($skill.id)."
         }
         $steps = @($enhancements | Where-Object skillId -CEQ $skill.id | Sort-Object step)
-        if ($steps.Count -eq 0) { throw "Battle skill enhancement steps missing for $($skill.id)." }
+        if (-not $passive -and $steps.Count -eq 0) { throw "Battle skill enhancement steps missing for $($skill.id)." }
         $cooldown = [int]$skill.cooldownTurns
         for ($index = 0; $index -lt $steps.Count; $index++) {
             $row = $steps[$index]
             $step = $index + 1
             if ($row.step -ne $step -or $row.id -cne "$($skill.id).e$step" -or
-                $row.kind -cnotin @('damage_bp','healing_bp','effect_chance_bp','cooldown_turns','readiness_bp','soul_gain')) {
+                $row.kind -cnotin @('damage_bp','healing_bp','effect_chance_bp','cooldown_turns','readiness_bp','soul_gain','counter_chance_bp','barrier_bp')) {
                 throw "Battle skill enhancement sequence is invalid for $($skill.id)."
+            }
+            if (($row.kind -ceq 'counter_chance_bp' -and -not @($program | Where-Object operation -CEQ 'counterattack').Count) -or
+                ($row.kind -ceq 'barrier_bp' -and -not @($program | Where-Object status -CEQ 'Barrier').Count)) {
+                throw "Battle enhancement has no matching effect for $($row.id)."
             }
             if ($row.kind -ceq 'cooldown_turns') {
                 $cooldown -= $row.value

@@ -7,17 +7,17 @@ namespace AstralOath.Shared.Battle
     public enum BattleOutcome { InProgress, AllyVictory, EnemyVictory, Draw }
     public enum BattleActionOrigin { Primary, DualAttack, Counter, ExtraAttack, Passive }
     public enum BattleHitKind { None, Miss, Normal, Crushing, Critical }
-    public enum BattleEffectRejection { Blocked, Resisted, ChanceFailed }
+    public enum BattleEffectRejection { Blocked, Resisted, ChanceFailed, Missed, HealingPrevented }
     public enum BattleStatusKind
     {
         AttackUp, DefenseUp, Immunity, Barrier, Stun, Counter,
-        SpeedUp, SpeedDown, AttackDown, DefenseDown, Unhealable, Silence, EvasionUp, CriticalResistanceUp, Stealth
+        SpeedUp, SpeedDown, AttackDown, DefenseDown, Unhealable, Silence, EvasionUp, CriticalResistanceUp, Stealth, Provoke
     }
     public enum BattleFlowEventKind
     {
         BattleStarted, TurnStarted, Action, Damage, Healing, ReadinessChanged,
         StatusApplied, StatusRemoved, CooldownChanged, SoulChanged, BarrierAbsorbed,
-        UnitDefeated, TurnSkipped, TurnEnded, BattleEnded, EffectRejected, ResourceChanged
+        UnitDefeated, TurnSkipped, TurnEnded, BattleEnded, EffectRejected, ResourceChanged, StatusDurationChanged, ExtraTurnGranted
     }
     public enum BattleCommandStatus
     {
@@ -86,7 +86,11 @@ namespace AstralOath.Shared.Battle
     public sealed class BattleStatusSnapshot
     {
         internal BattleStatusSnapshot(BattleStatusKind kind, int remainingTurns, int strength)
+            : this(kind, remainingTurns, strength, null) { }
+
+        internal BattleStatusSnapshot(BattleStatusKind kind, int remainingTurns, int strength, string sourceId)
         {
+            SourceId = sourceId;
             Kind = kind;
             RemainingTurns = remainingTurns;
             Strength = strength;
@@ -94,6 +98,7 @@ namespace AstralOath.Shared.Battle
         public BattleStatusKind Kind { get; }
         public int RemainingTurns { get; }
         public int Strength { get; }
+        public string SourceId { get; }
     }
 
     public sealed class BattleResourceSnapshot
@@ -233,6 +238,12 @@ namespace AstralOath.Shared.Battle
             out BattleActionResolution resolution);
     }
 
+    internal interface IBattleLifecycleResolver
+    {
+        IReadOnlyList<BattleChange> BattleStart(BattleSnapshot snapshot);
+        IReadOnlyList<BattleChange> TurnEnd(BattleSnapshot snapshot, string actorId);
+    }
+
     public sealed class BattleActionContext
     {
         internal BattleActionContext(BattleSnapshot snapshot) => Snapshot = snapshot;
@@ -256,7 +267,7 @@ namespace AstralOath.Shared.Battle
     {
         private BattleChange(BattleFlowEventKind kind, string source, string target, int amount = 0,
             string skillId = null, string presentationId = null, BattleActionOrigin origin = BattleActionOrigin.Primary,
-            BattleStatusKind status = default, int turns = 0, BattleSide side = default,
+            BattleStatusKind? status = null, int turns = 0, BattleSide side = default,
             BattleHitKind hitKind = default, BattleEffectRejection rejection = default)
         {
             Kind = kind; SourceId = source; TargetId = target; Amount = amount; SkillId = skillId;
@@ -270,7 +281,7 @@ namespace AstralOath.Shared.Battle
         internal string SkillId { get; }
         internal string PresentationId { get; }
         internal BattleActionOrigin Origin { get; }
-        internal BattleStatusKind Status { get; }
+        internal BattleStatusKind? Status { get; }
         internal int Turns { get; }
         internal BattleSide Side { get; }
         internal BattleHitKind HitKind { get; }
@@ -286,7 +297,7 @@ namespace AstralOath.Shared.Battle
             new BattleChange(BattleFlowEventKind.StatusApplied, source, target, strength, status: status, turns: turns);
         public static BattleChange RemoveStatus(string source, string target, BattleStatusKind status) =>
             new BattleChange(BattleFlowEventKind.StatusRemoved, source, target, status: status);
-        public static BattleChange EffectRejected(string source, string target, BattleStatusKind status, BattleEffectRejection reason) =>
+        public static BattleChange EffectRejected(string source, string target, BattleStatusKind? status, BattleEffectRejection reason) =>
             new BattleChange(BattleFlowEventKind.EffectRejected, source, target, status: status, rejection: reason);
         public static BattleChange Cooldown(string source, string target, string skillId, int delta) =>
             new BattleChange(BattleFlowEventKind.CooldownChanged, source, target, delta, skillId);
@@ -294,6 +305,8 @@ namespace AstralOath.Shared.Battle
             new BattleChange(BattleFlowEventKind.SoulChanged, source, null, delta, side: side);
         internal static BattleChange Resource(string source, string target, int delta) =>
             new BattleChange(BattleFlowEventKind.ResourceChanged, source, target, delta);
+        public static BattleChange ExtraTurn(string actor) =>
+            new BattleChange(BattleFlowEventKind.ExtraTurnGranted, actor, actor);
         public static BattleChange Action(string source, string target, string skillId, BattleActionOrigin origin, string presentationId = null) =>
             new BattleChange(BattleFlowEventKind.Action, source, target, skillId: skillId, origin: origin, presentationId: presentationId);
     }

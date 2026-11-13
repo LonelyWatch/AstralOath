@@ -183,11 +183,11 @@ public sealed class BattleSkillResolverTests
         Assert.Equal(100, resource.Maximum);
         Assert.Equal(0, resource.Amount);
         Assert.Equal(BattleCommandStatus.InvalidAction, Cast(match, "actor", "c1009.s3", "enemy").Status);
-        for (int index = 1; index <= 4; index++)
+        for (int index = 1; index <= 2; index++)
         {
             var basic = Cast(match, "actor", "c1009.s1", "enemy");
             Assert.Equal(BattleCommandStatus.Accepted, basic.Status);
-            Assert.Equal(index * 25, basic.Snapshot.GetUnit("actor").Resource!.Amount);
+            Assert.Equal(index * 50, basic.Snapshot.GetUnit("actor").Resource!.Amount);
         }
         var ultimate = Cast(match, "actor", "c1009.s3", "enemy");
         Assert.Equal(BattleCommandStatus.Accepted, ultimate.Status);
@@ -217,6 +217,139 @@ public sealed class BattleSkillResolverTests
         Assert.Equal(75, dual.Snapshot.GetUnit("actor").Resource!.Amount);
     }
 
+    [Fact]
+    public void SilkBurnSchedulesHerExtraTurnAndFocusStrengthensTheNextBasicAttack()
+    {
+        var catalog = ReadCatalog();
+        var silk = ResourceHero(catalog, "c1004", new[] { "c1004.s1", "c1004.s2", "c1004.s3" });
+        var enemy = Unit("enemy", "c1001", BattleSide.Enemy, 1, 100, 500000, 1);
+        var match = new BattleMatch("silk-burn", 3, 23, new BattleFormation(new[] { silk, enemy }),
+            new BattleSkillResolver(catalog, randomDualChanceBp: 0), new BattleFlowRules(initialAllySoul: 20));
+        var first = Cast(match, "actor", "c1004.s1", "enemy", burn: true);
+        Assert.Equal(BattleCommandStatus.Accepted, first.Status);
+        Assert.Contains(first.Events, item => item.Kind == BattleFlowEventKind.ExtraTurnGranted && item.SourceId == "actor");
+        Assert.Equal("actor", first.Snapshot.CurrentActorId);
+        Assert.Equal(2, first.Snapshot.GetUnit("actor").Resource!.Amount);
+        Assert.Equal(1, first.Snapshot.AllySoul);
+        var enhanced = Cast(match, "actor", "c1004.s1", "enemy");
+        Assert.Equal(BattleCommandStatus.Accepted, enhanced.Status);
+        Assert.Contains(enhanced.Events, item => item.Kind == BattleFlowEventKind.Damage && item.Amount > 0);
+    }
+
+    [Fact]
+    public void CharlotteOpensAndEndsHerTurnWithABarrierAndBurnRefillsSpirit()
+    {
+        var catalog = ReadCatalog();
+        var charlotte = ResourceHero(catalog, "c1009", new[] { "c1009.s1", "c1009.s2", "c1009.s3" });
+        var enemy = Unit("enemy", "c1001", BattleSide.Enemy, 1, 100, 500000, 1);
+        var match = new BattleMatch("charlotte-burn", 3, 23, new BattleFormation(new[] { charlotte, enemy }),
+            new BattleSkillResolver(catalog, randomDualChanceBp: 0), new BattleFlowRules(initialAllySoul: 20));
+        Assert.Equal((charlotte.Stats.Attack + 1) / 2, match.Snapshot.GetUnit("actor").Barrier);
+        Assert.Contains(match.OpeningEvents, item => item.Kind == BattleFlowEventKind.StatusApplied &&
+            item.StatusKind == BattleStatusKind.Barrier && item.TargetId == "actor");
+        var first = Cast(match, "actor", "c1009.s1", "enemy");
+        Assert.Equal(50, first.Snapshot.GetUnit("actor").Resource!.Amount);
+        Assert.Contains(first.Events, item => item.Kind == BattleFlowEventKind.StatusApplied &&
+            item.StatusKind == BattleStatusKind.Barrier && item.TargetId == "actor");
+        var second = Cast(match, "actor", "c1009.s1", "enemy");
+        Assert.Equal(100, second.Snapshot.GetUnit("actor").Resource!.Amount);
+        var ultimate = Cast(match, "actor", "c1009.s3", "enemy", burn: true);
+        Assert.Equal(BattleCommandStatus.Accepted, ultimate.Status);
+        Assert.Equal(new[] { 0, 100 }, ultimate.Events.Where(item => item.Kind == BattleFlowEventKind.ResourceChanged &&
+            item.TargetId == "actor").Select(item => item.Amount));
+    }
+
+    [Fact]
+    public void VildredFollowsAnAllyAgainstAWeakenedEnemyOnceAndUsesItsOwnCooldown()
+    {
+        var catalog = ReadCatalog();
+        var ras = Unit("ras", "c1001", BattleSide.Ally, 1, 1000, 6000, 1000);
+        var vildred = Unit("vildred", "c1007", BattleSide.Ally, 2, 1000, 6000, 2);
+        var enemy = Unit("enemy", "c1001", BattleSide.Enemy, 1, 100, 30000, 1);
+        enemy.ApplyDamage(16000);
+        var match = new BattleMatch("vildred-followup", 3, 23, new BattleFormation(new[] { ras, vildred, enemy }),
+            new BattleSkillResolver(catalog, randomDualChanceBp: 0));
+
+        var first = Cast(match, "ras", "c1001.s1", "enemy");
+        var follow = Assert.Single(first.Events, item => item.Kind == BattleFlowEventKind.Action && item.Origin == BattleActionOrigin.Passive);
+        Assert.Equal("c1007.s2", follow.SkillId);
+        Assert.Equal("c_wilderd_skill_02", follow.PresentationId);
+        Assert.Equal(2, first.Snapshot.GetUnit("vildred").GetCooldown(follow.SkillId));
+        Assert.Contains(first.Events, item => item.Kind == BattleFlowEventKind.Damage && item.SourceId == "vildred");
+        Assert.Contains(first.Events, item => item.Kind == BattleFlowEventKind.StatusApplied &&
+            item.TargetId == "vildred" && item.StatusKind == BattleStatusKind.AttackUp);
+        var second = Cast(match, "ras", "c1001.s1", "enemy");
+        Assert.Equal(BattleCommandStatus.Accepted, second.Status);
+        Assert.DoesNotContain(second.Events, item => item.Origin == BattleActionOrigin.Passive);
+    }
+
+    [Fact]
+    public void ArminProtectsAlliesFromSingleTargetDamageAndCountersWithAnAreaAttack()
+    {
+        var catalog = ReadCatalog();
+        catalog.effects.Single(effect => effect.skillId == "c1008.s2" && effect.operation == "counterattack").chanceBp = 10000;
+
+        int guarded = DamageToFriend("c1008", "c1001.s1");
+        int unguarded = DamageToFriend("c1001", "c1001.s1");
+        Assert.InRange(guarded, (int)(unguarded * .7m) - 1, (int)(unguarded * .7m) + 1);
+        Assert.Equal(DamageToFriend("c1001", "c1001.s3"), DamageToFriend("c1008", "c1001.s3"));
+
+        var counter = Cast(MakeMatch("c1008"), "attacker", "c1001.s1", "guard");
+        Assert.Equal(BattleCommandStatus.Accepted, counter.Status);
+        var action = Assert.Single(counter.Events, item => item.Kind == BattleFlowEventKind.Action &&
+            item.Origin == BattleActionOrigin.Counter);
+        Assert.Equal(("guard", "c1008.s1"), (action.SourceId, action.SkillId));
+        Assert.Equal(new[] { "attacker", "attacker-friend" }, counter.Events
+            .Where(item => item.Kind == BattleFlowEventKind.Damage && item.SourceId == "guard").Select(item => item.TargetId));
+
+        int DamageToFriend(string guard, string skill)
+        {
+            var result = Cast(MakeMatch(guard), "attacker", skill, "friend");
+            Assert.Equal(BattleCommandStatus.Accepted, result.Status);
+            return Assert.Single(result.Events, item => item.Kind == BattleFlowEventKind.Damage && item.TargetId == "friend").Amount;
+        }
+
+        BattleMatch MakeMatch(string guard) => new("guard", BattlePreviewFactory.RulesVersion, 23,
+            new BattleFormation(new[]
+            {
+                Unit("attacker", "c1001", BattleSide.Ally, 1, 1000, 30000, 1000),
+                Unit("attacker-friend", "c1001", BattleSide.Ally, 2, 100, 30000, 1),
+                Unit("friend", "c1001", BattleSide.Enemy, 1, 100, 30000, 2),
+                Unit("guard", guard, BattleSide.Enemy, 2, 100, 30000, 1),
+            }), new BattleSkillResolver(catalog, randomDualChanceBp: 0));
+    }
+
+    [Fact]
+    public void SilkCleansesBeforeSpendingHerLastFocus()
+    {
+        var catalog = ReadCatalog();
+        var silk = ResourceHero(catalog, "c1004", new[] { "c1004.s1", "c1004.s2", "c1004.s3" });
+        var enemy = Unit("enemy", "c1001", BattleSide.Enemy, 1, 100, 30000, silk.Stats.Speed - 1);
+        var effect = catalog.effects.Single(item => item.id == "c1001.s1.2");
+        effect.operation = "apply_status";
+        effect.status = "SpeedDown";
+        effect.chanceBp = 10000;
+        effect.turns = 2;
+        effect.value = 3000;
+
+        var match = new BattleMatch("silk-cleanse", BattlePreviewFactory.RulesVersion, 23,
+            new BattleFormation(new[] { silk, enemy }), new BattleSkillResolver(catalog, randomDualChanceBp: 0));
+        Assert.Equal(BattleCommandStatus.Accepted, Cast(match, "actor", "c1004.s1", "enemy").Status);
+        var hit = Cast(match, "enemy", "c1001.s1", "actor");
+        Assert.Equal(BattleCommandStatus.Accepted, hit.Status);
+        var events = hit.Events;
+        var applied = Assert.Single(events, item => item.Kind == BattleFlowEventKind.StatusApplied &&
+            item.StatusKind == BattleStatusKind.SpeedDown);
+        var removed = Assert.Single(events, item => item.Kind == BattleFlowEventKind.StatusRemoved &&
+            item.StatusKind == BattleStatusKind.SpeedDown);
+        var readiness = Assert.Single(events, item => item.Kind == BattleFlowEventKind.ReadinessChanged &&
+            item.SourceId == "actor" && item.TargetId == "actor");
+        var spent = Assert.Single(events, item => item.Kind == BattleFlowEventKind.ResourceChanged &&
+            item.TargetId == "actor" && item.Amount == 0);
+        Assert.True(applied.Sequence < removed.Sequence && removed.Sequence < readiness.Sequence && readiness.Sequence < spent.Sequence);
+        Assert.Null(hit.Snapshot.GetUnit("actor").GetStatus(BattleStatusKind.SpeedDown));
+    }
+
     private static BattleUnit ResourceHero(BattleCatalogData catalog, string hero, string[] skills)
     {
         var row = catalog.heroes.Single(item => item.id == hero);
@@ -241,28 +374,37 @@ public sealed class BattleSkillResolverTests
         Assert.Equal(2, shield.Snapshot.GetUnit("friend").GetStatus(BattleStatusKind.Barrier).RemainingTurns);
     }
 
-    [Fact]
-    public void PublishedRosterRunsFromOpeningToResultWithDeterministicReplay()
+    [Theory]
+    [InlineData(271828UL, 0)]
+    [InlineData(314159UL, 2)]
+    [InlineData(104729UL, 4)]
+    public void PublishedRosterRunsFromOpeningToResultWithDeterministicReplay(ulong seed, int offset)
     {
         var catalog = ReadCatalog();
-        var first = Run(catalog);
-        var second = Run(catalog);
-        Assert.Equal(first, second);
+        var heroIds = catalog.heroes.Select(hero => hero.id).OrderBy(id => id, StringComparer.Ordinal).ToArray();
+        var lineup = heroIds.Skip(offset).Concat(heroIds.Take(offset)).Take(8).ToArray();
+        var first = Run();
+        var second = Run();
         Assert.NotEqual(BattleOutcome.InProgress, first.Outcome);
+        Assert.Equal(first, second);
 
-        static (BattleOutcome Outcome, ulong Turns, ulong Events) Run(BattleCatalogData data)
+        (BattleOutcome Outcome, string Events, string Snapshot) Run()
         {
-            var match = BattlePreviewFactory.Create("playtest", 271828UL, data);
+            var match = BattlePreviewFactory.Create("playtest", seed, catalog, lineup[..4], lineup[4..]);
+            var ai = new BattleAiPolicy(catalog);
+            var events = match.OpeningEvents.ToList();
             for (int i = 0; i < 200 && match.Snapshot.Outcome == BattleOutcome.InProgress; i++)
             {
-                var actor = match.Snapshot.GetUnit(match.Snapshot.CurrentActorId);
-                var target = match.Snapshot.Units.First(unit => unit.IsAlive && unit.Slot.Side != actor.Slot.Side);
-                var result = Cast(match, actor.InstanceId, actor.Form.SkillIds[0], target.InstanceId);
+                var choice = ai.ChooseAction(match.Snapshot);
+                Assert.NotNull(choice);
+                var result = Cast(match, match.Snapshot.CurrentActorId, choice.SkillId, choice.TargetId, choice.UseSoulBurn);
                 Assert.Equal(BattleCommandStatus.Accepted, result.Status);
+                events.AddRange(result.Events);
             }
-            return (match.Snapshot.Outcome, match.Snapshot.LastCommandSequence, match.Snapshot.LastEventSequence);
+            return (match.Snapshot.Outcome, JsonSerializer.Serialize(events), JsonSerializer.Serialize(match.Snapshot));
         }
     }
+
 
     [Fact]
     public void PreviewRosterUsesRequestedSlotsAndMirrorsOnlyInDuels()

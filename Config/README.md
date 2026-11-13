@@ -21,6 +21,10 @@ CharacterLab 的两张表由 `Schema/characterlab.xml` 定义：
 
 Battle 的七张表由 `Schema/battle.xml` 定义。英雄通过 `battle_heroes.csv` 的 `growthPresetId` 引用 `battle_growth_presets.csv`，并按英雄 ID 在 `battle_awakening_steps.csv` 配置觉醒。现有面板列是导表的验收锚点。其余四张为 `battle_skills.csv`、`battle_skill_effects.csv`、`battle_skill_enhancements.csv`、`battle_messages.csv`。有序效果表定义技能的阶段、操作、目标和参数。导表检查模板、觉醒序列、槽位、角色、演出、图标、文案、魂燃和强化序列。见[等级与站位](../docs/development/battle-growth.md)和[技能配表](../docs/development/battle-character-data.md)。
 
+主动程序按 `impact`、`after_hit`、`after_attack` 顺序执行。被动槽使用 `target=passive`，由规则内核按开战、自身回合结束、受击后、友军攻击后或伤害计算阶段触发。开战和回合结束只接受自身必定获得的增益；受击阶段可配置自身净化、提高行动值或反击；伤害修正通过 `impact` 的 `damage_bonus`、`defense_penetration` 或 `damage_guard` 的 `damage_reduction` 配置。触发攻击使用其被动槽的倍率、演出和冷却。条件、目标、操作和强化类型随导表和共享执行器同步扩充，文案由稳定键关联。
+
+`turns` 在 `apply_status` 行表示持续回合数。对带 `caster_has_resource` 条件的伤害修正行，它表示最低个人资源；受击触发的同名条件使用 `turns=0`，表示个人资源至少为 1。反击概率强化用 `counter_chance_bp`，屏障倍率强化用 `barrier_bp`，两者为直接相加的万分比。额外回合及个人资源回满的魂燃分别使用 `extra_turn`、`refill_resource`。
+
 英雄的个人资源由 `resourceKind`（`none`、`focus`、`fighting_spirit`）、`resourceMaximum`、`resourceTurnGain` 和 `resourceAttackedSpend` 配置。无个人资源的英雄填写 `none,0,0,0`。主动技能使用 `resourceCost`、`resourceGain`、`resourceGainWhenBuffed`；最后一项为有增益且非夹攻时的获取值，0 表示沿用基础获取值。导表检查每个资源值都落在英雄自身上限内，并校验被动槽不填写主动获取或消耗。
 
 ## 生成和检查

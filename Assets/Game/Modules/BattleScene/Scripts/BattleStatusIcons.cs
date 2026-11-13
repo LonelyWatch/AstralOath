@@ -100,6 +100,15 @@ namespace AstralOath.Client.BattleScene
             Draw();
         }
 
+        public void UpdateDuration(BattleStatusSnapshot status)
+        {
+            int index = IndexOf(status.Kind);
+            if (index < 0) return;
+            var current = statuses[index];
+            statuses[index] = (status, current.Art);
+            Draw();
+        }
+
         public void Remove(BattleStatusKind kind)
         {
             int index = IndexOf(kind);
@@ -122,7 +131,8 @@ namespace AstralOath.Client.BattleScene
                     statuses.RemoveAt(index);
                     changed = true;
                 }
-                else if (current.RemainingTurns != displayed.Status.RemainingTurns || current.Strength != displayed.Status.Strength)
+                else if (current.RemainingTurns != displayed.Status.RemainingTurns || current.Strength != displayed.Status.Strength ||
+                    current.SourceId != displayed.Status.SourceId)
                 {
                     statuses[index] = (current, displayed.Art);
                     changed = true;

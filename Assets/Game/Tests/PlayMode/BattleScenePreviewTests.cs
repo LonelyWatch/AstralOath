@@ -27,7 +27,7 @@ namespace AstralOath.Client.Tests
 
         internal static string[] SlowEnemyIds() => Enumerable.Repeat("c1008", 4).ToArray();
 
-        internal static Scene LoadPlayerOpeningScene(string firstHero = null)
+        internal static Scene LoadPlayerOpeningScene(string firstHero = null, bool useDefaultRoster = false)
         {
             // These tests require a deterministic first player turn. The default scene can open on either side.
             SceneManager.sceneLoaded += ConfigureOpening;
@@ -46,9 +46,28 @@ namespace AstralOath.Client.Tests
                 if (loaded.path != ScenePath) return;
                 SceneManager.sceneLoaded -= ConfigureOpening;
                 var host = loaded.GetRootGameObjects().Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
-                typeof(BattleHudPreview).GetField("allyHeroIds", PrivateInstance).SetValue(host,
-                    firstHero == null ? new[] { "c1001", "c1062", "c1005", "c1008" } : Enumerable.Repeat(firstHero, 4).ToArray());
+                if (useDefaultRoster)
+                {
+                    var units = loaded.GetRootGameObjects().Single(root => root.name == "Units").transform;
+                    ConfigureTeam(units.Find("Allies"), BattleHudPreview.DefaultAllyHeroIds);
+                    ConfigureTeam(units.Find("Enemies"), BattleHudPreview.DefaultEnemyHeroIds);
+                    return;
+                }
+
+                var allies = firstHero == null ? new[] { "c1001", "c1062", "c1005", "c1008" }
+                    : Enumerable.Repeat(firstHero, 4).ToArray();
+                typeof(BattleHudPreview).GetField("allyHeroIds", PrivateInstance).SetValue(host, allies);
                 typeof(BattleHudPreview).GetField("enemyHeroIds", PrivateInstance).SetValue(host, SlowEnemyIds());
+            }
+
+            void ConfigureTeam(Transform team, System.Collections.Generic.IReadOnlyList<string> ids)
+            {
+                var field = typeof(BattlePreviewActor).GetField("heroId", PrivateInstance);
+                for (int slot = 0; slot < ids.Count; slot++)
+                {
+                    var actor = team.GetChild(slot).GetComponentInChildren<BattlePreviewActor>(true);
+                    field.SetValue(actor, ids[slot]);
+                }
             }
         }
 

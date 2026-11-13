@@ -1469,8 +1469,8 @@
       "target": "one_enemy",
       "cooldownTurns": 0,
       "soulGain": 1,
-      "soulBurnCost": 0,
-      "soulBurnKind": "none",
+      "soulBurnCost": 20,
+      "soulBurnKind": "extra_turn",
       "soulBurnTurns": 0,
       "attackRateBp": 9000,
       "powerBp": 9000,
@@ -1703,11 +1703,14 @@
       "presentationId": "c_wilderd_skill_02",
       "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1007_2.png",
       "target": "passive",
-      "cooldownTurns": 0,
+      "cooldownTurns": 2,
       "soulGain": 0,
       "soulBurnCost": 0,
       "soulBurnKind": "none",
       "soulBurnTurns": 0,
+      "attackRateBp": 5000,
+      "powerBp": 10000,
+      "casterSpeedDamagePpm": 1125,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
       "aoeOutsideTurn": false,
@@ -1848,6 +1851,7 @@
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
       "aoeOutsideTurn": false,
+      "casterAttackBarrierBp": 5000,
       "resourceCost": 0,
       "resourceGain": 0,
       "resourceGainWhenBuffed": 0
@@ -1863,8 +1867,8 @@
       "target": "all_enemies",
       "cooldownTurns": 0,
       "soulGain": 2,
-      "soulBurnCost": 0,
-      "soulBurnKind": "none",
+      "soulBurnCost": 10,
+      "soulBurnKind": "refill_resource",
       "soulBurnTurns": 0,
       "attackRateBp": 8500,
       "powerBp": 9000,
@@ -2104,7 +2108,7 @@
       "operation": "dispel",
       "recipient": "targets",
       "status": "none",
-      "chanceBp": 8500,
+      "chanceBp": 10000,
       "turns": 0,
       "value": 1,
       "condition": "none",
@@ -2130,6 +2134,21 @@
       "id": "c1002.s3.2",
       "skillId": "c1002.s3",
       "order": 2,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Provoke",
+      "chanceBp": 8500,
+      "turns": 1,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1002.s3.3",
+      "skillId": "c1002.s3",
+      "order": 3,
       "phase": "after_attack",
       "operation": "apply_status",
       "recipient": "allies",
@@ -2142,9 +2161,9 @@
       "chanceBonusBp": 0
     },
     {
-      "id": "c1002.s3.3",
+      "id": "c1002.s3.4",
       "skillId": "c1002.s3",
-      "order": 3,
+      "order": 4,
       "phase": "after_attack",
       "operation": "apply_status",
       "recipient": "self",
@@ -2175,6 +2194,21 @@
       "id": "c1003.s1.2",
       "skillId": "c1003.s1",
       "order": 2,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Provoke",
+      "chanceBp": 5000,
+      "turns": 1,
+      "value": 0,
+      "condition": "caster_health_at_least_half",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1003.s1.3",
+      "skillId": "c1003.s1",
+      "order": 3,
       "phase": "after_attack",
       "operation": "apply_status",
       "recipient": "self",
@@ -2281,6 +2315,36 @@
       "skillId": "c1004.s1",
       "order": 1,
       "phase": "impact",
+      "operation": "damage_bonus",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 3333,
+      "condition": "caster_has_resource",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1004.s1.2",
+      "skillId": "c1004.s1",
+      "order": 2,
+      "phase": "impact",
+      "operation": "defense_penetration",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 2000,
+      "condition": "caster_has_resource",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1004.s1.3",
+      "skillId": "c1004.s1",
+      "order": 3,
+      "phase": "impact",
       "operation": "damage",
       "recipient": "targets",
       "status": "none",
@@ -2292,9 +2356,9 @@
       "chanceBonusBp": 0
     },
     {
-      "id": "c1004.s1.2",
+      "id": "c1004.s1.4",
       "skillId": "c1004.s1",
-      "order": 2,
+      "order": 4,
       "phase": "after_hit",
       "operation": "reduce_readiness",
       "recipient": "targets",
@@ -2303,6 +2367,36 @@
       "turns": 0,
       "value": 1000,
       "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1004.s2.1",
+      "skillId": "c1004.s2",
+      "order": 1,
+      "phase": "on_attacked",
+      "operation": "cleanse",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 1,
+      "condition": "caster_has_resource",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1004.s2.2",
+      "skillId": "c1004.s2",
+      "order": 2,
+      "phase": "on_attacked",
+      "operation": "readiness",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 1500,
+      "condition": "caster_has_resource",
       "chanceBonusStatus": "none",
       "chanceBonusBp": 0
     },
@@ -2577,6 +2671,66 @@
       "chanceBonusBp": 0
     },
     {
+      "id": "c1007.s2.1",
+      "skillId": "c1007.s2",
+      "order": 1,
+      "phase": "after_ally_attack",
+      "operation": "trigger",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "recipient_health_at_most_half",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1007.s2.2",
+      "skillId": "c1007.s2",
+      "order": 2,
+      "phase": "after_ally_attack",
+      "operation": "apply_status",
+      "recipient": "self",
+      "status": "AttackUp",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 5000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1007.s2.3",
+      "skillId": "c1007.s2",
+      "order": 3,
+      "phase": "after_ally_attack",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1007.s2.4",
+      "skillId": "c1007.s2",
+      "order": 4,
+      "phase": "after_ally_attack",
+      "operation": "readiness",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 2000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
       "id": "c1007.s3.1",
       "skillId": "c1007.s3",
       "order": 1,
@@ -2618,6 +2772,36 @@
       "turns": 1,
       "value": 0,
       "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1008.s2.1",
+      "skillId": "c1008.s2",
+      "order": 1,
+      "phase": "on_attacked",
+      "operation": "counterattack",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 2000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1008.s2.2",
+      "skillId": "c1008.s2",
+      "order": 2,
+      "phase": "damage_guard",
+      "operation": "damage_reduction",
+      "recipient": "allies",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 3000,
+      "condition": "single_target_attack",
       "chanceBonusStatus": "none",
       "chanceBonusBp": 0
     },
@@ -2693,6 +2877,66 @@
       "turns": 0,
       "value": 2500,
       "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1009.s2.1",
+      "skillId": "c1009.s2",
+      "order": 1,
+      "phase": "battle_start",
+      "operation": "apply_status",
+      "recipient": "self",
+      "status": "Barrier",
+      "chanceBp": 10000,
+      "turns": 1,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1009.s2.2",
+      "skillId": "c1009.s2",
+      "order": 2,
+      "phase": "turn_end",
+      "operation": "apply_status",
+      "recipient": "self",
+      "status": "Barrier",
+      "chanceBp": 10000,
+      "turns": 1,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1009.s2.3",
+      "skillId": "c1009.s2",
+      "order": 3,
+      "phase": "impact",
+      "operation": "damage_bonus",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 5000,
+      "condition": "caster_buffed",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1009.s2.4",
+      "skillId": "c1009.s2",
+      "order": 4,
+      "phase": "damage_guard",
+      "operation": "damage_reduction",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 5000,
+      "condition": "recipient_buffed",
       "chanceBonusStatus": "none",
       "chanceBonusBp": 0
     },
@@ -3456,6 +3700,41 @@
       "value": 1000
     },
     {
+      "id": "c1007.s2.e1",
+      "skillId": "c1007.s2",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1007.s2.e2",
+      "skillId": "c1007.s2",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1007.s2.e3",
+      "skillId": "c1007.s2",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1007.s2.e4",
+      "skillId": "c1007.s2",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1007.s2.e5",
+      "skillId": "c1007.s2",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
       "id": "c1007.s3.e1",
       "skillId": "c1007.s3",
       "step": 1,
@@ -3540,6 +3819,48 @@
       "value": 1000
     },
     {
+      "id": "c1008.s2.e1",
+      "skillId": "c1008.s2",
+      "step": 1,
+      "kind": "counter_chance_bp",
+      "value": 50
+    },
+    {
+      "id": "c1008.s2.e2",
+      "skillId": "c1008.s2",
+      "step": 2,
+      "kind": "counter_chance_bp",
+      "value": 50
+    },
+    {
+      "id": "c1008.s2.e3",
+      "skillId": "c1008.s2",
+      "step": 3,
+      "kind": "counter_chance_bp",
+      "value": 100
+    },
+    {
+      "id": "c1008.s2.e4",
+      "skillId": "c1008.s2",
+      "step": 4,
+      "kind": "counter_chance_bp",
+      "value": 100
+    },
+    {
+      "id": "c1008.s2.e5",
+      "skillId": "c1008.s2",
+      "step": 5,
+      "kind": "counter_chance_bp",
+      "value": 100
+    },
+    {
+      "id": "c1008.s2.e6",
+      "skillId": "c1008.s2",
+      "step": 6,
+      "kind": "counter_chance_bp",
+      "value": 100
+    },
+    {
       "id": "c1008.s3.e1",
       "skillId": "c1008.s3",
       "step": 1,
@@ -3587,6 +3908,41 @@
       "step": 5,
       "kind": "damage_bp",
       "value": 1000
+    },
+    {
+      "id": "c1009.s2.e1",
+      "skillId": "c1009.s2",
+      "step": 1,
+      "kind": "barrier_bp",
+      "value": 500
+    },
+    {
+      "id": "c1009.s2.e2",
+      "skillId": "c1009.s2",
+      "step": 2,
+      "kind": "barrier_bp",
+      "value": 500
+    },
+    {
+      "id": "c1009.s2.e3",
+      "skillId": "c1009.s2",
+      "step": 3,
+      "kind": "barrier_bp",
+      "value": 500
+    },
+    {
+      "id": "c1009.s2.e4",
+      "skillId": "c1009.s2",
+      "step": 4,
+      "kind": "barrier_bp",
+      "value": 500
+    },
+    {
+      "id": "c1009.s2.e5",
+      "skillId": "c1009.s2",
+      "step": 5,
+      "kind": "barrier_bp",
+      "value": 500
     },
     {
       "id": "c1009.s3.e1",
@@ -3735,6 +4091,18 @@
       "zhCn": "自动战斗中"
     },
     {
+      "key": "battle.feedback.effect_blocked",
+      "zhCn": "免疫"
+    },
+    {
+      "key": "battle.feedback.effect_resisted",
+      "zhCn": "效果抵抗"
+    },
+    {
+      "key": "battle.feedback.healing_prevented",
+      "zhCn": "无法恢复生命值"
+    },
+    {
       "key": "battle.feedback.miss",
       "zhCn": "未命中"
     },
@@ -3743,12 +4111,20 @@
       "zhCn": "本技能赋予的增益延长 {0} 回合。"
     },
     {
+      "key": "battle.inspect.burn.extra_turn",
+      "zhCn": "施放后获得额外回合。"
+    },
+    {
       "key": "battle.inspect.burn.increase_damage",
       "zhCn": "提高本技能造成的伤害。"
     },
     {
       "key": "battle.inspect.burn.reduce_cooldown",
       "zhCn": "本技能冷却减少 {0} 回合。"
+    },
+    {
+      "key": "battle.inspect.burn.refill_resource",
+      "zhCn": "施放后将个人资源回满。"
     },
     {
       "key": "battle.inspect.burn_header",
@@ -3764,15 +4140,23 @@
     },
     {
       "key": "battle.inspect.dual_attack.description",
-      "zhCn": "使用基本技能与另一名友军一同攻击。试玩中，由符合条件的友军发动夹攻，夹攻可触发技能的命中效果。"
+      "zhCn": "使用基本技能与另一名友军一同攻击。由符合条件的友军发动夹攻，可触发其基本技能的命中效果。"
     },
     {
       "key": "battle.inspect.dual_attack.name",
       "zhCn": "夹攻"
     },
     {
+      "key": "battle.inspect.enhancement.barrier_bp",
+      "zhCn": "+{0}  屏障倍率提高 {1:0.##} 个百分点"
+    },
+    {
       "key": "battle.inspect.enhancement.cooldown_turns",
       "zhCn": "+{0}  冷却时间减少 {1:0} 回合"
+    },
+    {
+      "key": "battle.inspect.enhancement.counter_chance_bp",
+      "zhCn": "+{0}  反击概率提高 {1:0.##} 个百分点"
     },
     {
       "key": "battle.inspect.enhancement.damage_bp",
@@ -3831,6 +4215,10 @@
       "zhCn": "已暂停"
     },
     {
+      "key": "battle.prompt.forced_action",
+      "zhCn": "挑衅 · 强制普攻"
+    },
+    {
       "key": "battle.skill.c1001.s1.description",
       "zhCn": "攻击一名敌人，有75%概率解除其一个增益。伤害随施术者最大生命提高。"
     },
@@ -3864,7 +4252,7 @@
     },
     {
       "key": "battle.skill.c1002.s2.description",
-      "zhCn": "攻击全体敌人，觉醒后有85%概率降低攻击2回合，再解除一个增益。伤害随自身最大生命提高。"
+      "zhCn": "攻击全体敌人，有85%概率降低攻击2回合，随后解除一个增益。伤害随自身最大生命提高。"
     },
     {
       "key": "battle.skill.c1002.s2.name",
@@ -3872,7 +4260,7 @@
     },
     {
       "key": "battle.skill.c1002.s3.description",
-      "zhCn": "攻击全体敌人，给予友军免疫和自身屏障2回合。伤害及屏障随自身最大生命提高。试玩暂未接入挑衅。"
+      "zhCn": "攻击全体敌人，有85%概率挑衅1回合，随后给予全体友军免疫、自身屏障2回合。伤害和屏障随自身最大生命提高。"
     },
     {
       "key": "battle.skill.c1002.s3.name",
@@ -3880,7 +4268,7 @@
     },
     {
       "key": "battle.skill.c1003.s1.description",
-      "zhCn": "攻击一名敌人，伤害随自身防御提高。自身生命低于一半时防御提升1回合。试玩暂未接入挑衅。"
+      "zhCn": "攻击一名敌人，伤害随自身防御提高。自身生命至少一半时有50%概率挑衅目标1回合，低于一半时自身防御提升1回合。"
     },
     {
       "key": "battle.skill.c1003.s1.name",
@@ -3904,7 +4292,7 @@
     },
     {
       "key": "battle.skill.c1004.s1.description",
-      "zhCn": "攻击一名敌人，降低其行动值10%。伤害随自身速度提高。试玩暂未接入燃魂追加回合。"
+      "zhCn": "攻击一名敌人，降低其行动值10%。伤害随自身速度提高。专注至少2点时强化为自动射击，伤害提高并穿透目标20%防御。"
     },
     {
       "key": "battle.skill.c1004.s1.name",
@@ -3912,7 +4300,7 @@
     },
     {
       "key": "battle.skill.c1004.s2.description",
-      "zhCn": "被动。回合开始获得1点专注，受到攻击时消耗1点专注。试玩尚未接入受击净化、提升行动值和自动射击替换。"
+      "zhCn": "被动。回合开始获得1点专注。受攻击时若有专注则消耗1点，解除自身一个减益并提升行动值15%。专注至少2点时强化基本技能。"
     },
     {
       "key": "battle.skill.c1004.s2.name",
@@ -3984,7 +4372,7 @@
     },
     {
       "key": "battle.skill.c1007.s2.description",
-      "zhCn": "被动。达到目标生命条件时触发群攻，试玩尚未接入自动触发。"
+      "zhCn": "被动。友军攻击后，若存活目标的生命不超过50%，自身攻击力提升2回合并追加群攻，行动值提高20%。追加攻击伤害随速度提高，冷却2回合。"
     },
     {
       "key": "battle.skill.c1007.s2.name",
@@ -4008,7 +4396,7 @@
     },
     {
       "key": "battle.skill.c1008.s2.description",
-      "zhCn": "被动。涉及受击反击和单体伤害减免，试玩尚未接入触发。"
+      "zhCn": "被动。满觉醒时受到攻击有20%概率以基本技能反击；友方受到单体攻击时降低30%伤害，同类减伤取最高值。"
     },
     {
       "key": "battle.skill.c1008.s2.name",
@@ -4032,7 +4420,7 @@
     },
     {
       "key": "battle.skill.c1009.s2.description",
-      "zhCn": "被动。涉及开战与回合末屏障、受击减伤及伤害提升，试玩尚未接入触发。"
+      "zhCn": "被动。开战与自身回合结束时获得相当于自身攻击力50%的屏障1回合。自身有增益时造成伤害提高50%，受到攻击时伤害降低50%。"
     },
     {
       "key": "battle.skill.c1009.s2.name",
@@ -4040,7 +4428,7 @@
     },
     {
       "key": "battle.skill.c1009.s3.description",
-      "zhCn": "消耗100点斗志。攻击全体敌人并施加无法恢复2回合，穿透防御最高敌人的防御，命中时必定暴击。试玩尚未接入本技能燃魂。"
+      "zhCn": "消耗100点斗志，攻击全体敌人并施加无法恢复2回合。穿透防御最高敌人的防御，命中时必定暴击。"
     },
     {
       "key": "battle.skill.c1009.s3.name",
@@ -4159,6 +4547,14 @@
       "zhCn": "免疫"
     },
     {
+      "key": "battle.status.provoke.description",
+      "zhCn": "轮到自身行动时，对施加挑衅的敌人使用基本技能。"
+    },
+    {
+      "key": "battle.status.provoke.name",
+      "zhCn": "挑衅"
+    },
+    {
       "key": "battle.status.silence.description",
       "zhCn": "无法主动使用第二和第三技能。"
     },
@@ -4192,7 +4588,7 @@
     },
     {
       "key": "battle.status.stealth.description",
-      "zhCn": "在试玩中用于触发技能的潜行加成，如绮世「暗之伤痕」的额外防御穿透。潜行选敌限制和群攻减伤尚未接入。"
+      "zhCn": "存在其他可选敌人时，无法被敌方单独选中。承受范围攻击时降低伤害，受到生命伤害后解除。"
     },
     {
       "key": "battle.status.stealth.name",
