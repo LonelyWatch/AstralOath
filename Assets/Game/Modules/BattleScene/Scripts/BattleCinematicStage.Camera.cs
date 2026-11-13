@@ -102,6 +102,16 @@ namespace AstralOath.Client.BattleScene
             point.z = originalPosition.z;
             return point;
         }
+        internal float SourceScreenScale => camera && originalSize > 0f ? camera.orthographicSize / originalSize : 1f;
+
+        internal Vector3 SourceScreenPoint(Vector3 depthReference, Vector3 offset)
+        {
+            float depth = camera.WorldToViewportPoint(depthReference).z;
+            Vector3 center = camera.ViewportToWorldPoint(new Vector3(.5f, .5f, depth));
+            // Keep the source camera shake visible in this coordinate space too.
+            return center - shakeOffset + camera.transform.rotation * (offset * SourceScreenScale);
+        }
+
         private float EffectiveSize()
         {
             if (!background || !background.activeSelf || !hasMapBounds) return requestedSize;

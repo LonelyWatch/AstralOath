@@ -1,0 +1,45 @@
+{
+  "effect/cecilia_skill_03_botaura_back.atlas": [
+    "burst_sphear",
+    "burst_sphear_g",
+    "flash"
+  ],
+  "effect/cecilia_skill_03_botaura_front.atlas": [
+    "flash"
+  ],
+  "effect/cecilia_skill_03_flashbang.atlas": [
+    "burst_sphear"
+  ],
+  "effect/cecilia_skill_03_lanceaura1.atlas": [
+    "flash",
+    "lance_burst",
+    "lance_burst_g",
+    "lance_shot_gow",
+    "scan_glow2"
+  ],
+  "effect/cecilia_skill_03_lanceaura2.atlas": [
+    "flash",
+    "burst_sphear",
+    "burst_sphear_g",
+    "lance_burst",
+    "lance_burst_g",
+    "lance_shot_gow",
+    "ray_glow",
+    "scan_glow",
+    "scan_glow2",
+    "shine_ring"
+  ],
+  "effect/kise_m_skill_03_space.atlas": [
+    "b_ring1",
+    "b_ring2",
+    "board_ring",
+    "circle_ring1",
+    "circle_ring2",
+    "circle_ring3",
+    "flash",
+    "light_ball",
+    "light_line",
+    "light_ring",
+    "outer_circle"
+  ]
+}

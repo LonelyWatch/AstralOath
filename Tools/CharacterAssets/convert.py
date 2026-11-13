@@ -441,8 +441,37 @@ def convert_scsp(source:Path,destination:Path)->dict:
     return report
 
 
-def convert_sct(source:Path,destination:Path)->dict:
+def restore_white_pma_regions(image: Image.Image, bounds) -> None:
+    """Restore neutral PMA color from the unquantized alpha of audited atlas regions."""
+    import numpy as np
+
+    restored = []
+    for x, y, width, height in bounds:
+        if (min(x, y) < 0 or min(width, height) <= 0 or
+                x + width > image.width or y + height > image.height):
+            raise ValueError(f"Invalid white PMA region bounds: {(x, y, width, height)}")
+        box = (x, y, x + width, y + height)
+        rgba = np.array(image.crop(box))
+        rgb = rgba[:, :, :3].astype(np.int16)
+        alpha = rgba[:, :, 3].astype(np.int16)
+        # The two RGB565 quantization steps can disagree by up to four codes
+        # even for white, while a five-bit channel can be seven codes from A.
+        if (np.ptp(alpha) == 0 or np.any(np.abs(rgb - alpha[:, :, None]) > 7) or
+                np.any(np.ptp(rgb, axis=2) > 4) or np.any(rgb[alpha == 0])):
+            raise ValueError(f"Region is not an authored neutral white PMA mask: {box}")
+        rgba[:, :, :3] = rgba[:, :, 3:4]
+        restored.append((Image.fromarray(rgba), (x, y)))
+    for region, position in restored:
+        image.paste(region, position)
+
+
+def convert_sct(source:Path,destination:Path,*,white_pma_regions=None)->dict:
     data=Path(source).read_bytes(); image,report=decode_sct(data)
+    if white_pma_regions:
+        if report["encoding"] != "SCT1:RGB565+A8":
+            raise ValueError(f"White PMA restoration requires RGB565+A8: {source}")
+        restore_white_pma_regions(image, white_pma_regions.values())
+        report["whitePmaRegions"] = list(white_pma_regions)
     destination=Path(destination); destination.parent.mkdir(parents=True,exist_ok=True)
     image.save(destination,format="PNG")
     report.update(sourceSha256=hashlib.sha256(data).hexdigest(),outputSha256=hashlib.sha256(destination.read_bytes()).hexdigest())

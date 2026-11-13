@@ -60,7 +60,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 5e0766752782d3c46a647a31da845815, type: 3}
   - {fileID: 21300000, guid: 1d702842098452c419f26b4ff18e74ce, type: 3}
   - {fileID: 21300000, guid: d65faf8e110930645b4b084cc45300be, type: 3}
-  StatusIconsPerRow: 5
+  StatusIconsPerRow: 3
   ShieldAura:
     source: effect/stse_protect.scsp
     document: {fileID: 4900000, guid: f9c4e3554bc257709f44c5f48a4be82e, type: 3}
@@ -85,4 +85,5 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 3a8bb0164b70518bb8f137f4a42b1695, type: 3}
   - {fileID: 2800000, guid: 13fa37a0cf4b59ad8deb446711a5731e, type: 3}
   DeathDarkenSeconds: 0.2
-  DeathFadeSeconds: 0.4
+  DeathFadeSeconds: 0.28
+  DeathHoldSeconds: 0.12

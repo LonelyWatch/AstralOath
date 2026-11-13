@@ -34,6 +34,7 @@ def skill_ids(cid):
 BANKS=["sound/master.bank","sound/master.strings.bank","sound/sfx1.bank","sound/voc.event.bank","sound/ja/voc1.audio_ja.bank","sound/gerneal.bank"]
 RES=Path("Assets/Game/Modules/CharacterPresentation/Res")
 MANIFEST=Path("Assets/Game/Modules/CharacterPresentation/Configs/import-manifest.json")
+WHITE_PMA_REGIONS=Path(__file__).with_name("white-pma-regions.json")
 EXTENSIONS={".scsp",".atlas",".sct",".sct2",".png",".jpg",".jpeg",".webp",".cfx",".particle",".stg",".timeline",".bank"}
 
 
@@ -84,6 +85,42 @@ def atlas_pages(root,source):
         resolved=relative
         pages.append({"name":name,"source":resolved})
     return pages
+
+
+def load_white_pma_regions(root, sources):
+    atlas_rules = json.loads(WHITE_PMA_REGIONS.read_text(encoding="utf-8"))
+    result = {}
+    for atlas, region_names in atlas_rules.items():
+        if atlas not in sources:
+            continue
+        pages = atlas_pages(root, atlas)
+        if len(pages) != 1:
+            raise ValueError(f"White PMA restoration requires one atlas page: {atlas}")
+        regions = {}
+        lines = safe_source(root, atlas).read_text(encoding="utf-8-sig").splitlines()
+        for name in region_names:
+            indices = [index for index, line in enumerate(lines) if line == name]
+            if len(indices) != 1:
+                raise ValueError(f"Expected one white PMA atlas region: {atlas} -> {name}")
+            fields = {}
+            for line in lines[indices[0] + 1:]:
+                if not line or not line[0].isspace():
+                    break
+                key, value = line.strip().split(":", 1)
+                fields[key] = value.strip()
+            x, y = map(int, fields["xy"].split(","))
+            width, height = map(int, fields["size"].split(","))
+            rotation = fields["rotate"]
+            if rotation in ("true", "90"):
+                width, height = height, width
+            elif rotation not in ("false", "0"):
+                raise ValueError(f"Unsupported white PMA region rotation: {atlas} -> {name}")
+            regions[name] = (x, y, width, height)
+        page = pages[0]["source"]
+        if page in result:
+            raise ValueError(f"Duplicate white PMA rules for atlas page: {page}")
+        result[page] = regions
+    return result
 
 
 def category(source):
@@ -253,6 +290,7 @@ def import_assets(source_root,project,ids,include_banks=True):
         if source not in source_hashes:source_hashes[source]=hash_file(safe_source(closure.root,source))
         source_hash=source_hashes[source]
         entries.append({"source":source,"sourceSha256":source_hash,"path":relative.as_posix(),"address":asset_address,"type":kind,"dependencies":deps,"outputSha256":hash_file(project/relative),"conversion":conversion})
+    white_pma = load_white_pma_regions(closure.root, closure.dependencies)
     for source in sorted(closure.dependencies):
         source_path=safe_source(closure.root,source);relative=output_owner_path(source,closure.owners,existing_owners);suffix=source_path.suffix.lower()
         deps=[address(s) for s in closure.dependencies[source]];out=project/relative
@@ -276,7 +314,7 @@ def import_assets(source_root,project,ids,include_banks=True):
             resolved=resolve_atlas(closure.root,source);shutil.copyfile(safe_source(closure.root,resolved),project/relative)
             if resolved!=source:report["resolvedAtlas"]=resolved
         elif suffix in (".sct",".sct2"):
-            relative=relative.with_suffix(".png");report.update(convert_sct(source_path,project/relative))
+            relative=relative.with_suffix(".png");report.update(convert_sct(source_path,project/relative,white_pma_regions=white_pma.get(source)))
         elif suffix in (".cfx",".particle",".timeline"):
             relative=relative.with_suffix(suffix+".json");json_write(project/relative,closure.structures[source])
         elif suffix==".stg":

@@ -21,7 +21,7 @@
 
 SCSP 保留 `2.1.27` / `3.8.99` 原版本。2.1 的 type5/type6 分别为事件和完整 draw-order；type9/type10 分别为骨骼 FlipX/FlipY，依据固定官方 2.1 C 核心枚举和 spFlipTimeline 结构解析。参考查看器对这四个编号的命名错误，严格入口不调用它们的相关分支。翻转帧的骨骼索引、轴标记、时间、布尔值、重复轨道及原始到 JSON 的完整映射全部校验，禁止把这些轨道当作辅助排序或事件丢弃。2.1 曲线、FFD、源浮点精度均保留，不添加关键帧或修补旋转。3.8 缓存曲线的九个采样点经三次方程恢复控制点，并检查所有采样点残差（≤0.00002），输出官方3.8的 `curve/c2/c3/c4` 字段。保留缓存字段输出到 `.artifacts/character-import/conversion-reports.json`；旧报告将 type9 称为 engineDrawOrder 的判断已废止，兼容字段保持为空。当前 SCSP 转换器标记为 `astraloath-scsp/3`，清单记录版本与逐动画、逐骨骼翻转轨/帧数；报告另保留所有原始时间线类型计数。未识别的引擎字段仍不宣称已还原。
 
-纹理解码支持 SCT1 format4 RGB565+A8、format2 RGBA8888；SCT2支持明确编号的ASTC4x4/8x8、ETC2 RGBA8、原RGBA。未知编号不猜测。首批实际37张是SCT1；SCT2仅经过合成数据校验，没有本批真实样本。保留源RGB/alpha，六张主纹理的半透明像素检测符合PMA，因此SkeletonDescriptor明确 `premultipliedAlpha:true`，需配合对应PMA渲染。Unity纹理应 `sRGBTexture=true`、`alphaIsTransparency=false`，避免改写透明边缘RGB。粒子format2首批七张均为等值RGBA灰度数据，不能据此宣称所有未知彩色变种已验证。
+纹理解码支持 SCT1 format4 RGB565+A8、format2 RGBA8888；SCT2支持明确编号的ASTC4x4/8x8、ETC2 RGBA8、原RGBA。未知编号不猜测。首批实际37张是SCT1；SCT2仅经过合成数据校验，没有本批真实样本。默认保留源 RGB/alpha。已审核的 SCT1 RGB565+A8 中性白色 PMA 遮罩登记到 `white-pma-regions.json`，由源 atlas 查找矩形（含旋转），检查原像素与 alpha 的量化关系，再设置 RGB=A。alpha 和未登记像素逐字节保留，写入 `whitePmaRegions` 清单字段。六张主纹理的半透明像素检测符合PMA，因此SkeletonDescriptor明确 `premultipliedAlpha:true`，需配合对应PMA渲染。Unity纹理应 `sRGBTexture=true`、`alphaIsTransparency=false`，避免改写透明边缘RGB。粒子format2首批七张均为等值RGBA灰度数据，不能据此宣称所有未知彩色变种已验证。
 
 `.scsp` 的地址 `characterlab/source/<原相对路径>` 指向 SkeletonDescriptor，内部 JSON 地址追加 `/json`。atlas 保存 `.atlas.txt`，保持页名原 `.sct`；别名 atlas 展开到真实 atlas 文本，pages映射原页名到PNG资源地址。camera 可以没有图集，但必须没有渲染附件。STG graph保存原始实体、连接、entrypoint、eventlisteners，不把未知when/location摊平为确定时间；CFX/particle保留plist结构；timeline保留原JSON。
 

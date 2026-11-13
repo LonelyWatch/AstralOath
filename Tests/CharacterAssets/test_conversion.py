@@ -16,6 +16,25 @@ class ConversionTests(unittest.TestCase):
         image, report = convert.decode_sct(data)
         self.assertEqual(list(image.getdata()),[(255,0,0,255),(0,255,0,128)])
         self.assertEqual(report["width"],2)
+    def test_white_glow_restores_only_the_authored_region(self):
+        from PIL import Image
+        image = Image.new("RGBA", (3, 2))
+        image.putdata([(255, 0, 0, 255), (0, 4, 0, 5), (8, 8, 8, 9),
+                       (0, 0, 0, 0), (255, 255, 255, 255), (33, 36, 33, 34)])
+        convert.restore_white_pma_regions(image, [(1, 0, 2, 2)])
+        self.assertEqual(list(image.getdata()), [
+            (255, 0, 0, 255), (5, 5, 5, 5), (9, 9, 9, 9),
+            (0, 0, 0, 0), (255, 255, 255, 255), (34, 34, 34, 34)])
+
+    def test_white_glow_rejects_colored_source_and_keeps_input(self):
+        from PIL import Image
+        image = Image.new("RGBA", (3, 1))
+        image.putdata([(0, 4, 0, 5), (255, 255, 255, 255), (12, 128, 220, 240)])
+        before = image.tobytes()
+        with self.assertRaisesRegex(ValueError, "white PMA"):
+            convert.restore_white_pma_regions(image, [(0, 0, 2, 1), (2, 0, 1, 1)])
+        self.assertEqual(image.tobytes(), before)
+
     def test_sct_format2_rgba(self):
         import lz4.block
         raw=bytes([0,0,0,0,128,128,128,128])

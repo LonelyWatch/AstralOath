@@ -13,14 +13,16 @@ namespace AstralOath.Client.BattleScene
         public Sprite ResourceFrame, FocusFill, FightingSpiritFill;
         public TextAsset StatusManifest;
         public Sprite[] StatusGlyphs, StatusDigits, LevelDigits;
-        [Min(1)] public int StatusIconsPerRow = 5;
+        [Range(1, BattleStatusIcons.MaximumColumns)] public int StatusIconsPerRow = BattleStatusIcons.MaximumColumns;
         public BattleSkillPresentationAsset ShieldAura;
         public TextAsset ShieldAuraEffect;
         [Min(.001f)] public float DamageSeconds = .16f, HealSeconds = .18f, TrailSeconds = .28f;
         [Min(0)] public float TrailDelaySeconds = .12f;
         public TextAsset DeathParticles;
         public Texture2D[] DeathTextures;
-        [Min(.001f)] public float DeathDarkenSeconds = .2f, DeathFadeSeconds = .4f;
+        [Min(.001f)] public float DeathDarkenSeconds = BattleDeathPresentation.DefaultDarkenSeconds,
+            DeathFadeSeconds = BattleDeathPresentation.DefaultFadeSeconds;
+        [Min(0f)] public float DeathHoldSeconds = BattleDeathPresentation.DefaultHoldSeconds;
         internal BattleStatusArt CreateStatusArt() => new BattleStatusArt(StatusManifest, StatusGlyphs, StatusDigits);
 
         public void ValidateStatusArt() => CreateStatusArt().Validate();

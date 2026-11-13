@@ -424,7 +424,9 @@ namespace AstralOath.Client.BattleScene
                     }
                     var targets = targetEvents.Select(next => next.TargetId).Where(id => id != null)
                         .Distinct(StringComparer.Ordinal).Select(id => views[id].Actor).ToArray();
-                    var timing = skillPresentation.Begin(item.PresentationId, views[item.SourceId].Actor, primary, targets);
+                    var source = views[item.SourceId].Actor;
+                    source.SetTurnReady(false);
+                    var timing = skillPresentation.Begin(item.PresentationId, source, primary, targets);
                     presentedSkillId = item.SkillId;
                     voice.Play(string.IsNullOrEmpty(item.PresentationId) ? item.SkillId : item.PresentationId);
                     actionElapsed = 0f;
@@ -512,27 +514,26 @@ namespace AstralOath.Client.BattleScene
         {
             var view = views[item.TargetId];
             var unit = Snapshot.GetUnit(item.TargetId);
-            // The authoritative damage event reports HP loss separately. Use the same source
-            // hit clock for both parts and spend the shield before subtracting HP.
+            // The hit clock drives individual reactions, shield consumption and damage numbers.
+            // Apply the authoritative total HP loss at the final hit of this damage sequence.
             var hits = BattleDamageSequence.Build(item.Amount + absorbed, hitTimes, impactSeconds);
             for (int index = 0; index < hits.Length; index++)
             {
                 var hit = hits[index];
                 lastDamageImpact = hit.At;
                 bool first = index == 0;
-                bool fatal = index == hits.Length - 1 && item.RemainingHealth == 0;
+                bool last = index == hits.Length - 1;
                 int shieldLoss = Math.Min(absorbed, hit.Amount);
                 int healthLoss = hit.Amount - shieldLoss;
                 absorbed -= shieldLoss;
                 ScheduleFeedback(hit.At, item.TargetId, () =>
                 {
                     if (first) voice.PlayHit(unit.DefinitionId, presentedSkillId);
-                    // A shield-only hit still reacts. Authored NODE_ANI reactions and the
-                    // fatal cue own their poses, so generic feedback must leave them intact.
-                    if (!fatal && !skillPresentation.OwnsNodeAnimationPose(view.Actor))
+                    // Shield-only and fatal hits still react. Preserve authored NODE_ANI poses.
+                    if (!skillPresentation.OwnsNodeAnimationPose(view.Actor))
                         view.Actor.PlayBattleAnimation("attacked");
                     if (shieldLoss > 0) view.AbsorbShield(shieldLoss);
-                    view.AdjustHealth(-healthLoss, unit.Stats.MaxHealth);
+                    if (last && item.Amount > 0) view.AdjustHealth(-item.Amount, unit.Stats.MaxHealth);
                     var bounds = view.Actor.Bounds;
                     var world = bounds.center;
                     world.y = bounds.min.y + 0.27f * bounds.size.y;
@@ -579,6 +580,7 @@ namespace AstralOath.Client.BattleScene
             {
                 var view = views[state.InstanceId];
                 view.Show(state.IsAlive);
+                view.Actor.SetTurnReady(state.IsAlive && state.InstanceId == Snapshot.CurrentActorId);
                 view.SetHealth(state.CurrentHealth, state.Stats.MaxHealth);
                 view.RefreshStatuses(state);
             }
@@ -758,6 +760,8 @@ namespace AstralOath.Client.BattleScene
         {
             private readonly Transform slot;
             private readonly GameObject marker;
+            private readonly CanvasGroup markerGroup;
+            private readonly float originalMarkerAlpha;
             private readonly Image elementBadge;
             private readonly Sprite originalElement;
             private readonly float originalHealth;
@@ -781,6 +785,10 @@ namespace AstralOath.Client.BattleScene
             {
                 this.slot = slot;
                 this.marker = marker;
+                // The marker survives View replacement on restart. Reuse its group and reset the alpha on Restore.
+                markerGroup = marker.GetComponent<CanvasGroup>();
+                if (!markerGroup) markerGroup = marker.AddComponent<CanvasGroup>();
+                originalMarkerAlpha = markerGroup.alpha;
                 Actor = slot.GetComponentInChildren<BattlePreviewActor>();
                 Health = marker.transform.Find("HP").GetComponent<Image>();
                 elementBadge = marker.transform.Find("Element").GetComponent<Image>();
@@ -799,7 +807,7 @@ namespace AstralOath.Client.BattleScene
                         profile.HealthDivider, focus ? Mathf.Min(resource.Maximum, 10) : 5);
                     SetResource(resource.Amount);
                 }
-                statusIcons = new BattleStatusIcons(FeedbackAnchor, statusArt, profile ? profile.StatusIconsPerRow : 5);
+                statusIcons = new BattleStatusIcons(FeedbackAnchor, statusArt, profile ? profile.StatusIconsPerRow : BattleStatusIcons.MaximumColumns);
                 shieldAura = new BattleShieldAura(auraDefinition, Actor.PresentationShadow, Actor.PresentationRenderer);
                 if (element) elementBadge.sprite = element;
                 if (profile)
@@ -845,7 +853,8 @@ namespace AstralOath.Client.BattleScene
             {
                 // Source layouts own body masking. Read the current skeleton, never last-frame
                 // Renderer.isVisible or the presence of auxiliary particles/shadows.
-                bool visible = shown && !deathStarted && BattlePreviewActor.IsBodyVisible(body);
+                bool keepMarker = deathStarted ? !death.BodyComplete : shown;
+                bool visible = keepMarker && BattlePreviewActor.IsBodyVisible(body);
                 if (marker.activeSelf != visible) marker.SetActive(visible);
             }
             public void TickVisual(float delta)
@@ -853,14 +862,17 @@ namespace AstralOath.Client.BattleScene
                 status.Tick(delta);
                 SyncAura(delta);
                 if (death?.IsRunning != true) return;
+                Actor.TickDefeatPose(Mathf.Min(delta, death.RemainingBodySeconds));
                 death.Tick(delta);
+                markerGroup.alpha = originalMarkerAlpha * death.BodyOpacity;
+                if (death.BodyComplete && marker.activeSelf) marker.SetActive(false);
                 if (death.IsComplete) slot.gameObject.SetActive(false);
             }
             private void PrepareDeath()
             {
                 death = new BattleDeathPresentation(Actor.transform, profile ? profile.DeathParticles : null,
                     deathTextures, Actor.PresentationShadow ? Actor.PresentationShadow.GetComponent<Renderer>() : null, Actor.PresentationRenderer);
-                try { if (profile) death.ConfigureTimings(profile.DeathDarkenSeconds, profile.DeathFadeSeconds); }
+                try { if (profile) death.ConfigureTimings(profile.DeathDarkenSeconds, profile.DeathHoldSeconds, profile.DeathFadeSeconds); }
                 catch { death.Dispose(); death = null; throw; }
             }
             public void BeginDeath()
@@ -868,7 +880,9 @@ namespace AstralOath.Client.BattleScene
                 if (deathStarted) return;
                 deathStarted = true;
                 SetShield(0);
-                Actor.SetPaused(true); marker.SetActive(false); death.Begin();
+                Actor.BeginDefeatPose();
+                Actor.SetPaused(true);
+                death.Begin();
             }
             public void Show(bool value)
             {
@@ -881,7 +895,13 @@ namespace AstralOath.Client.BattleScene
                     death.Dispose(); death = null; deathStarted = false;
                 }
                 if (value || !IsDying) slot.gameObject.SetActive(value);
-                if (resurrecting) { Actor.SetPaused(false); PrepareDeath(); }
+                if (resurrecting)
+                {
+                    Actor.EndDefeatPose();
+                    Actor.SetPaused(false);
+                    markerGroup.alpha = originalMarkerAlpha;
+                    PrepareDeath();
+                }
                 UpdateStatusVisibility(Actor.PresentationRenderer);
             }
 
@@ -942,12 +962,22 @@ namespace AstralOath.Client.BattleScene
 
             public void Restore()
             {
-                death?.Dispose(); death = null; deathStarted = false; status.Dispose();
+                death?.Dispose();
+                death = null;
+                Actor.SetTurnReady(false);
+                if (deathStarted)
+                {
+                    Actor.EndDefeatPose();
+                    Actor.SetPaused(false);
+                    deathStarted = false;
+                }
+                status.Dispose();
                 shieldAura.Dispose();
                 statusIcons.Dispose();
                 levelBadge.Dispose();
                 if (slot) slot.gameObject.SetActive(true);
                 if (!marker) return;
+                markerGroup.alpha = originalMarkerAlpha;
                 marker.SetActive(true);
                 Health.fillAmount = originalHealth;
                 elementBadge.sprite = originalElement;

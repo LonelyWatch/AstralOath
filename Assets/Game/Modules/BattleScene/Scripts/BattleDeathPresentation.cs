@@ -21,12 +21,20 @@ namespace AstralOath.Client.BattleScene
         private readonly float particleLifetime;
         private float elapsed;
         private bool started, particlesStarted, disposed;
-        // Project timing, awaiting a timestamped original-client match; not read from STG.
-        public float DarkenSeconds { get; private set; } = .2f;
-        public float FadeSeconds { get; private set; } = .4f;
+        // Presentation timings are configurable until original frame intervals are measured.
+        internal const float DefaultDarkenSeconds = .2f;
+        internal const float DefaultHoldSeconds = .12f;
+        internal const float DefaultFadeSeconds = .28f;
+        public float DarkenSeconds { get; private set; } = DefaultDarkenSeconds;
+        public float HoldSeconds { get; private set; } = DefaultHoldSeconds;
+        public float FadeSeconds { get; private set; } = DefaultFadeSeconds;
+        private float FadeStart => DarkenSeconds + HoldSeconds;
+        private float BodyEnd => FadeStart + FadeSeconds;
         public bool IsRunning => started && !IsComplete;
-        public bool BodyComplete => started && elapsed >= DarkenSeconds + FadeSeconds;
-        public bool IsComplete => started && elapsed >= DarkenSeconds + Mathf.Max(FadeSeconds, particleLifetime);
+        public bool BodyComplete => started && elapsed >= BodyEnd;
+        public float RemainingBodySeconds => started ? Mathf.Max(0f, BodyEnd - elapsed) : 0f;
+        public float BodyOpacity => started ? 1f - Mathf.Clamp01((elapsed - FadeStart) / FadeSeconds) : 1f;
+        public bool IsComplete => started && elapsed >= FadeStart + Mathf.Max(FadeSeconds, particleLifetime);
 
         public BattleDeathPresentation(Transform visual, TextAsset definition, IReadOnlyDictionary<string, Texture2D> textures)
             : this(visual, definition, textures, null) { }
@@ -56,25 +64,23 @@ namespace AstralOath.Client.BattleScene
                 particleLifetime = Lifetime(definition);
                 effects = new GameObject("Battle death particles"); effects.transform.SetParent(visual, false);
                 effects.layer = visual.gameObject.layer;
-                int order = 0; Bounds bounds = default; bool found = false;
-                foreach (var renderer in renderers)
-                {
-                    order = Mathf.Max(order, renderer.sortingOrder);
-                    if (!found) { bounds = renderer.bounds; found = true; } else bounds.Encapsulate(renderer.bounds);
-                }
-                if (found) effects.transform.position = bounds.center;
+                int order = 0;
+                foreach (var renderer in renderers) order = Mathf.Max(order, renderer.sortingOrder);
                 try { particles = new BattleHudParticles(definition, textures, effects.transform, Vector2.zero, .012f, order + 1, true); }
                 catch { Destroy(effects); throw; }
             }
         }
 
-        public void ConfigureTimings(float darken, float fade)
+        public void ConfigureTimings(float darken, float hold, float fade)
         {
             if (disposed) throw new ObjectDisposedException(nameof(BattleDeathPresentation));
             if (started) throw new InvalidOperationException("Death timings cannot change after Begin; Reset first.");
             if (!float.IsFinite(darken) || darken <= 0) throw new ArgumentOutOfRangeException(nameof(darken));
+            if (!float.IsFinite(hold) || hold < 0) throw new ArgumentOutOfRangeException(nameof(hold));
             if (!float.IsFinite(fade) || fade <= 0) throw new ArgumentOutOfRangeException(nameof(fade));
-            DarkenSeconds = darken; FadeSeconds = fade;
+            DarkenSeconds = darken;
+            HoldSeconds = hold;
+            FadeSeconds = fade;
         }
 
         public void Begin()
@@ -82,16 +88,7 @@ namespace AstralOath.Client.BattleScene
             if (disposed) throw new ObjectDisposedException(nameof(BattleDeathPresentation));
             if (started) return;
             started = true; elapsed = 0;
-            if (effects)
-            {
-                Bounds bounds = default; bool found = false;
-                foreach (var renderer in renderers)
-                {
-                    if (!renderer) continue;
-                    if (!found) { bounds = renderer.bounds; found = true; } else bounds.Encapsulate(renderer.bounds);
-                }
-                if (found) effects.transform.position = bounds.center;
-            }
+            if (effects) PositionParticles();
             Apply(1f, 1f);
         }
         public void Tick(float delta)
@@ -100,14 +97,31 @@ namespace AstralOath.Client.BattleScene
             if (disposed || !IsRunning) return;
             float previous = elapsed;
             elapsed += delta;
-            Apply(1f - Mathf.Clamp01(elapsed / DarkenSeconds), 1f - Mathf.Clamp01((elapsed - DarkenSeconds) / FadeSeconds));
-            if (particles != null && elapsed >= DarkenSeconds)
+            Apply(1f - Mathf.Clamp01(elapsed / DarkenSeconds), BodyOpacity);
+            if (particles != null && elapsed >= FadeStart)
             {
-                if (!particlesStarted) { particles.Play(); particlesStarted = true; }
-                particles.Tick(Mathf.Max(0f, elapsed - DarkenSeconds) - Mathf.Max(0f, previous - DarkenSeconds));
+                if (!particlesStarted)
+                {
+                    particles.Play();
+                    particlesStarted = true;
+                }
+                particles.Tick(Mathf.Max(0f, elapsed - FadeStart) - Mathf.Max(0f, previous - FadeStart));
                 if (IsComplete) particles.Stop();
             }
         }
+        private void PositionParticles()
+        {
+            Bounds bounds = default;
+            bool found = false;
+            foreach (var renderer in renderers)
+            {
+                if (!renderer) continue;
+                if (found) bounds.Encapsulate(renderer.bounds);
+                else { bounds = renderer.bounds; found = true; }
+            }
+            if (found) effects.transform.position = bounds.center;
+        }
+
         private void Apply(float brightness, float opacity)
         {
             for (int i = 0; i < renderers.Length; i++)

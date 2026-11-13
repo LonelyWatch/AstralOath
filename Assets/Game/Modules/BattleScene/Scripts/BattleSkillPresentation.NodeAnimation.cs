@@ -136,7 +136,7 @@ namespace AstralOath.Client.BattleScene
                     }
                     Schedule(at + delay / 1000f, () =>
                     {
-                        if (!Owns(binding)) return;
+                        if (!Owns(binding) || actor.IsDefeatPoseActive) return;
                         var previous = binding.ReleaseReaction;
                         binding.ReleaseReaction = actor.HoldSourceReaction(fields[1]);
                         previous?.Invoke();
@@ -159,14 +159,12 @@ namespace AstralOath.Client.BattleScene
                     if (!Owns(binding)) continue;
                     var parent = binding.Body.parent;
                     Vector3 origin = parent.TransformPoint(binding.Position);
-                    if (screenPivot)
-                    {
-                        float depth = camera.WorldToViewportPoint(origin).z;
-                        origin = camera.ViewportToWorldPoint(new Vector3(.5f, .5f, depth)) + formation[index];
-                    }
-                    binding.Body.position = origin + translation;
+                    binding.Body.position = screenPivot
+                        ? cinematic.SourceScreenPoint(origin, translation + formation[index])
+                        : origin + translation;
                     binding.Body.localRotation = binding.Rotation * rotation;
-                    binding.Body.localScale = Vector3.Scale(binding.Scale, scale);
+                    binding.Body.localScale = Vector3.Scale(binding.Scale, scale) *
+                        (screenPivot ? cinematic.SourceScreenScale : 1f);
                 }
             }
 

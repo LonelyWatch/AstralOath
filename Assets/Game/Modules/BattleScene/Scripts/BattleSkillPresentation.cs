@@ -666,17 +666,47 @@ namespace AstralOath.Client.BattleScene
         {
             string source = (string)node["source"];
             if (string.IsNullOrEmpty(source)) return;
-            Cfx(source, primary, targets, (int?)node["location"] ?? 5, Number(node, "scale", 1f),
-                new Vector2(Number(node, "x"), Number(node, "y")), false, anchorName: (string)node["locationParam"]);
+            int? location = (int?)node["location"];
+            string anchorName = (string)node["locationParam"];
+            var offset = new Vector2(Number(node, "x"), Number(node, "y"));
+            // Confirmed screen cues use the authored 216-unit vertical offset without an actor location.
+            if (!location.HasValue && (offset.y != 216f || !string.IsNullOrEmpty(anchorName)))
+            {
+                WarnSource($"EFFECT {node["guid"]} has no confirmed default location. Using the primary target.");
+                location = 5;
+            }
+            Cfx(source, primary, targets, location, Number(node, "scale", 1f), offset, false, anchorName: anchorName);
         }
 
-        private void Cfx(string source, BattlePreviewActor primary, BattlePreviewActor[] targets, int location,
+        private void Cfx(string source, BattlePreviewActor primary, BattlePreviewActor[] targets, int? location,
             float scale, Vector2 offset, bool hit, Vector2 spread = default, string anchorName = null)
         {
             string key = source.StartsWith(EffectPath, StringComparison.Ordinal) ? source : EffectPath + source;
             if (!key.EndsWith(".cfx", StringComparison.Ordinal)) key += ".cfx";
             if (!(Document(key)?["primitive"] is JArray primitives)) return;
 
+            if (!location.HasValue)
+            {
+                if (!camera)
+                {
+                    WarnSource($"Screen CFX '{key}' needs a camera.");
+                    return;
+                }
+                var parts = primitives.OfType<JObject>().Select(ReadPrimitive).Where(part => part != null).ToArray();
+                var depths = parts.Select(part => Number(part, "globalZ", 1f)).Distinct().OrderBy(depth => depth).ToArray();
+                var behind = depths.Where(depth => depth < 0f).ToArray();
+                var inFront = depths.Where(depth => depth >= 0f).ToArray();
+                float side = caster.FacingDirection;
+                foreach (var part in parts)
+                {
+                    float depth = Number(part, "globalZ", 1f);
+                    // Keep source layers ordered around the actors, below the full-screen flash and HUD.
+                    int order = depth < 0f ? -10 + Array.IndexOf(behind, depth) : 65 + Array.IndexOf(inFront, depth);
+                    Schedule(time + Seconds(part, "delay"), () =>
+                        Spawn(key, part, null, null, scale, offset, side, true, order));
+                }
+                return;
+            }
             if (location == 41 || location == 42)
             {
                 var occupied = targets.Where(target => target).ToArray();
@@ -771,7 +801,7 @@ namespace AstralOath.Client.BattleScene
             float.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out value) && float.IsFinite(value);
 
         private void Spawn(string key, JObject part, Func<Vector3> position, BattlePreviewActor anchor, float scale,
-            Vector2 offset, float side, bool follow)
+            Vector2 offset, float side, bool follow, int? screenOrder = null)
         {
             string source = (string)part["source"];
             if (string.IsNullOrWhiteSpace(source)) return;
@@ -779,23 +809,24 @@ namespace AstralOath.Client.BattleScene
             float size = Mathf.Max(0.01f, Number(part, "scale", 1f) * scale *
                 (anchor ? Mathf.Abs(anchor.transform.lossyScale.x) : 1f));
             var renderer = anchor ? anchor.GetComponentInChildren<MeshRenderer>() : null;
-            int order = (renderer ? renderer.sortingOrder : 55) + (int)Mathf.Sign(Number(part, "globalZ", 1f)) * 2;
+            int order = screenOrder ??
+                ((renderer ? renderer.sortingOrder : 55) + (int)Mathf.Sign(Number(part, "globalZ", 1f)) * 2);
             var group = new GameObject("Skill CFX " + key.Substring(EffectPath.Length)).transform;
             group.SetParent(root, false);
             Vector3 translation = new Vector3((offset.x + Number(part, "x")) * side,
                 offset.y + Number(part, "y"), 0f) * SourcePixel;
-            group.position = position() + translation;
             group.localRotation = Quaternion.Euler(0f, 0f, -Number(part, "rotate") * side);
-            group.localScale = new Vector3(Number(part, "scaleX", 1f), Number(part, "scaleY", 1f), 1f);
+            var partScale = new Vector3(Number(part, "scaleX", 1f), Number(part, "scaleY", 1f), 1f);
+            UpdatePosition(true);
             try
             {
                 switch (format)
                 {
                     case "spine":
-                        SpawnSpine(source, part, group, size, order, side, UpdatePosition);
+                        SpawnSpine(source, part, group, size, order, side, () => UpdatePosition(false));
                         break;
                     case "particle":
-                        SpawnParticles(source, part, group, size, order, UpdatePosition);
+                        SpawnParticles(source, part, group, size, order, () => UpdatePosition(false));
                         break;
                     default:
                         throw new FormatException("Unsupported primitive format " + format);
@@ -807,9 +838,18 @@ namespace AstralOath.Client.BattleScene
                 Warn(source + ": " + error.Message);
             }
 
-            void UpdatePosition()
+            void UpdatePosition(bool initial)
             {
-                if (follow) group.position = position() + translation;
+                if (screenOrder.HasValue)
+                {
+                    group.position = cinematic.SourceScreenPoint(root.position, translation);
+                    group.localScale = partScale * cinematic.SourceScreenScale;
+                }
+                else if (initial || follow)
+                {
+                    group.position = position() + translation;
+                    if (initial) group.localScale = partScale;
+                }
             }
         }
 

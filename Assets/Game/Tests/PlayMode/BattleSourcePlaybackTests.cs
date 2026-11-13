@@ -178,6 +178,146 @@ namespace AstralOath.Client.Tests
             }
         }
 
+        [UnityTest]
+        public IEnumerator KiseS3KeepsScreenEffectsOffTheTargetSlotsAndRestoresTheMap()
+        {
+            yield return LoadBattle(_ => { });
+            var caster = units.Find("Enemies").GetComponentsInChildren<BattlePreviewActor>()
+                .Single(actor => actor.name.EndsWith("[c1006]", StringComparison.Ordinal));
+            var targets = units.Find("Allies").GetComponentsInChildren<BattlePreviewActor>();
+            var shadow = caster.transform.parent.GetComponentInChildren<SpriteRenderer>().transform;
+            var baseline = new SceneBaseline(camera, background, units, caster.transform, shadow);
+            playback = (IDisposable)Activator.CreateInstance(PresentationType,
+                new object[] { units, graphs, assets, camera, setCinematicVisible, background });
+            var effects = units.Find("Battle Skill Effects");
+            var stage = PresentationType.GetField("cinematic", PrivateInstance).GetValue(playback);
+            var shakeOffset = stage.GetType().GetField("shakeOffset", PrivateInstance);
+            var bodyProperty = typeof(BattlePreviewActor).GetProperty("PresentationRenderer", PrivateInstance);
+
+            foreach (var target in new[] { targets[0], targets[targets.Length - 1] })
+            {
+                var timing = ((float Impact, float Duration))Begin.Invoke(playback,
+                    new object[] { "c_kise_skill_03", caster, target, new[] { target } });
+                float elapsed = 0f;
+                bool spaceObserved = false;
+                bool secondSceneObserved = false;
+                bool mapHidden = false;
+                bool mapRestored = false;
+                int steps = 0;
+                while (elapsed < timing.Duration + .05f && steps++ < 1200)
+                {
+                    Tick.Invoke(playback, new object[] { .02f });
+                    elapsed = (float)PresentationType.GetProperty("StageTime").GetValue(playback);
+                    mapHidden |= !background.activeSelf;
+                    mapRestored |= mapHidden && background.activeSelf;
+                    var space = effects.Find("Skill CFX kise_m_skill_03_space.cfx");
+                    if (space && elapsed < 2f)
+                    {
+                        AssertScreenAnchor(space, target.name);
+                        spaceObserved = true;
+                    }
+                    var secondScene = effects.Cast<Transform>().FirstOrDefault(group => group.Find("kise_m_skill_03_bg") &&
+                        group.name == "Skill CFX kise_m_skill_03_bg_scene2.cfx");
+                    if (secondScene && !background.activeSelf)
+                    {
+                        AssertScreenAnchor(secondScene, target.name);
+                        if (!secondSceneObserved)
+                        {
+                            int backgroundOrder = secondScene.Find("kise_m_skill_03_bg").GetComponent<Renderer>().sortingOrder;
+                            int foregroundOrder = effects.Cast<Transform>()
+                                .Single(group => group.Find("kise_m_skill_03_scene2")).GetComponentInChildren<Renderer>().sortingOrder;
+                            foreach (var participant in new[] { caster, target })
+                            {
+                                int bodyOrder = ((Renderer)bodyProperty.GetValue(participant)).sortingOrder;
+                                Assert.That(backgroundOrder, Is.LessThan(bodyOrder));
+                                Assert.That(foregroundOrder, Is.GreaterThan(bodyOrder));
+                            }
+                        }
+                        secondSceneObserved = true;
+                    }
+                    yield return null;
+                }
+                Assert.That(spaceObserved && secondSceneObserved && mapHidden && mapRestored, Is.True, target.name);
+                Assert.That(elapsed, Is.GreaterThanOrEqualTo(timing.Duration), target.name);
+                baseline.AssertRestored(target.name);
+                Assert.That(effects.childCount, Is.Zero, target.name);
+            }
+
+            void AssertScreenAnchor(Transform effect, string targetName)
+            {
+                Vector3 viewport = camera.WorldToViewportPoint(effect.position + (Vector3)shakeOffset.GetValue(stage));
+                float authoredY = .5f + 216f * .01f / (2f * baseline.CameraSize);
+                Assert.That(viewport.x, Is.EqualTo(.5f).Within(.001f), targetName);
+                Assert.That(viewport.y, Is.EqualTo(authoredY).Within(.001f), targetName);
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator CaptureKiseAndCeciliaS3SourceFrames()
+        {
+            if (string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("ASTRAL_BATTLE_CAPTURE_DIR")))
+                Assert.Ignore("Set ASTRAL_BATTLE_CAPTURE_DIR to record source composition frames.");
+
+            yield return LoadBattle(_ => { });
+            playback = (IDisposable)Activator.CreateInstance(PresentationType,
+                new object[] { units, graphs, assets, camera, setCinematicVisible, background });
+            var effects = units.Find("Battle Skill Effects");
+            var stage = PresentationType.GetField("cinematic", PrivateInstance).GetValue(playback);
+            var allies = units.Find("Allies").GetComponentsInChildren<BattlePreviewActor>();
+            var enemies = units.Find("Enemies").GetComponentsInChildren<BattlePreviewActor>();
+            var kise = enemies.Single(actor => actor.name.EndsWith("[c1006]", StringComparison.Ordinal));
+            var cecilia = allies.Single(actor => actor.name.EndsWith("[c1002]", StringComparison.Ordinal));
+
+            var kiseTiming = ((float Impact, float Duration))Begin.Invoke(playback,
+                new object[] { "c_kise_skill_03", kise, allies[0], new[] { allies[0] } });
+            yield return CaptureUntil(kiseTiming.Duration, new[]
+            {
+                ("kise-s3-cinematic-space", "kise_m_skill_03_space", 0.65f),
+                ("kise-s3-cinematic-scene1", "kise_m_skill_03_scene1", 0.25f),
+                ("kise-s3-cinematic-scene2", "kise_m_skill_03_scene2", 0.56f)
+            });
+            WriteFrame("kise-s3-cinematic-restored");
+
+            var ceciliaTiming = ((float Impact, float Duration))Begin.Invoke(playback,
+                new object[] { "c_cecilia_skill_new_03", cecilia, enemies[0], enemies });
+            yield return CaptureUntil(ceciliaTiming.Duration, new[]
+            {
+                ("cecilia-s3-lance-glow", "cecilia_skill_03_lanceaura2", 1.5333f)
+            });
+
+            IEnumerator CaptureUntil(float duration, (string File, string Primitive, float LocalTime)[] frames)
+            {
+                var starts = new Dictionary<string, float>(StringComparer.Ordinal);
+                var captures = new HashSet<string>(StringComparer.Ordinal);
+                float sourceTime = 0f;
+                int steps = 0;
+                while (sourceTime < duration + .05f && steps++ < 1800)
+                {
+                    Tick.Invoke(playback, new object[] { 1f / 120f });
+                    sourceTime = (float)PresentationType.GetProperty("StageTime").GetValue(playback);
+                    foreach (var frame in frames)
+                    {
+                        if (captures.Contains(frame.File)) continue;
+                        if (!effects.Cast<Transform>().Any(group => group.Find(frame.Primitive))) continue;
+                        if (!starts.TryGetValue(frame.Primitive, out float start))
+                            starts.Add(frame.Primitive, start = sourceTime);
+                        if (sourceTime - start < frame.LocalTime) continue;
+                        WriteFrame(frame.File);
+                        captures.Add(frame.File);
+                    }
+                    yield return null;
+                }
+                Assert.That(captures, Is.EquivalentTo(frames.Select(frame => frame.File)));
+                Assert.That(sourceTime, Is.GreaterThanOrEqualTo(duration));
+            }
+
+            void WriteFrame(string name)
+            {
+                var frame = RenderFrame(stage, null, null);
+                File.WriteAllBytes(Path.Combine(captureDirectory, name + ".png"), frame.Composite);
+            }
+        }
+
         private IEnumerator LoadBattle(Action<GameObject[]> loaded)
         {
             if (SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null)

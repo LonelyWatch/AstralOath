@@ -21,7 +21,10 @@ namespace AstralOath.Client.BattleScene
         [SerializeField] private float sourceScale = .01f;
         private ISkeletonPlayer player;
         private string idleAnimation;
+        private string readyIdleAnimation;
+        private bool turnReady;
         private bool playingBattleAnimation;
+        private bool defeatPose;
         private object sourceReaction;
         // Recovery is presentation-only: authored hit/return tails do not necessarily
         // end at the battle idle pose. Keep the displayed pose while entering idle.
@@ -132,15 +135,48 @@ namespace AstralOath.Client.BattleScene
         }
 
         internal void BeginPresentationControl() => presentationControlCount++;
-        internal void EndPresentationControl() => presentationControlCount = Math.Max(0, presentationControlCount - 1);
+        internal void EndPresentationControl()
+        {
+            presentationControlCount = Math.Max(0, presentationControlCount - 1);
+            ApplyTurnIdleIfFree();
+        }
+
         internal void AdvancePresentation(float delta)
         {
-            if (player == null || paused || presentationPauseCount > 0) return;
+            if (player == null || paused || defeatPose || presentationPauseCount > 0) return;
             player.Tick(delta);
         }
 
-        public void SetPaused(bool value) => paused = value;
-        internal void SetPresentationPaused(bool value) => presentationPauseCount = Math.Max(0, presentationPauseCount + (value ? 1 : -1));
+        internal bool IsDefeatPoseActive => defeatPose;
+
+        internal void BeginDefeatPose() => defeatPose = true;
+
+        internal void TickDefeatPose(float delta)
+        {
+            // The accepted-death visual clock alone advances the last non-looping pose.
+            if (defeatPose && playingBattleAnimation && player != null && player.Time < player.Duration)
+                player.Tick(Mathf.Min(delta, player.Duration - player.Time));
+        }
+
+        internal void EndDefeatPose()
+        {
+            if (!defeatPose) return;
+            defeatPose = false;
+            PlayBattleIdle();
+        }
+
+        public void SetPaused(bool value)
+        {
+            paused = value;
+            if (!value) ApplyTurnIdleIfFree();
+        }
+
+        internal void SetPresentationPaused(bool value)
+        {
+            presentationPauseCount = Math.Max(0, presentationPauseCount + (value ? 1 : -1));
+            if (!value) ApplyTurnIdleIfFree();
+        }
+
         internal void PreparePresentation()
         {
             if (eventTimes != null) return;
@@ -192,12 +228,32 @@ namespace AstralOath.Client.BattleScene
             return true;
         }
 
+        private string CurrentBattleIdle => turnReady ? readyIdleAnimation ?? idleAnimation : idleAnimation;
+
+        internal void SetTurnReady(bool value)
+        {
+            if (turnReady == value) return;
+            turnReady = value;
+            ApplyTurnIdleIfFree();
+        }
+
+        private void ApplyTurnIdleIfFree()
+        {
+            if (player == null || playingBattleAnimation || paused || defeatPose ||
+                presentationPauseCount > 0 || presentationControlCount > 0)
+                return;
+
+            string animation = CurrentBattleIdle;
+            if (player.CurrentAnimation != animation)
+                player.Play(animation, true, IdleRecoveryMixSeconds);
+        }
+
         internal void PlayBattleIdle()
         {
-            if (player == null || !playingBattleAnimation) return;
+            if (player == null || defeatPose || !playingBattleAnimation) return;
             playingBattleAnimation = false;
             sourceReaction = null;
-            player.Play(idleAnimation, true, IdleRecoveryMixSeconds);
+            player.Play(CurrentBattleIdle, true, IdleRecoveryMixSeconds);
         }
 
         internal float GetBattleAnimationDuration(string animation)
@@ -218,7 +274,7 @@ namespace AstralOath.Client.BattleScene
 
         public float PlayBattleAnimation(string animation)
         {
-            if (player == null) return 0f;
+            if (player == null || defeatPose) return 0f;
             foreach (var clip in player.Animations)
                 if (clip.Name == animation && clip.Duration > 0)
                 {
@@ -233,7 +289,7 @@ namespace AstralOath.Client.BattleScene
         internal Action HoldSourceReaction(string animation)
         {
             var instance = player;
-            if (instance == null) return null;
+            if (instance == null || defeatPose) return null;
             foreach (var clip in instance.Animations)
             {
                 if (clip.Name != animation) continue;
@@ -266,28 +322,26 @@ namespace AstralOath.Client.BattleScene
                 sourceLease = AcquireSource();
                 instance = new SkeletonPlayerFactory().Create(sourceLease.Source, transform);
                 instance.SetSkin(skin);
-                string idle = null;
+                string fallbackIdle = null;
                 foreach (var animation in instance.Animations)
                 {
                     if (animation.Duration <= 0)
                         continue;
-                    if (animation.Name == "b_idle")
+                    switch (animation.Name)
                     {
-                        idle = animation.Name;
-                        break;
+                        case "b_idle": idleAnimation = animation.Name; break;
+                        case "b_idle_ready": readyIdleAnimation = animation.Name; break;
+                        case "idle": fallbackIdle = animation.Name; break;
                     }
-                    if (animation.Name == "idle")
-                        idle = animation.Name;
                 }
-                if (idle == null)
+                idleAnimation ??= fallbackIdle;
+                if (idleAnimation == null)
                     throw new InvalidOperationException($"Battle preview actor {name} has no playable idle animation.");
 
                 instance.Root.GetComponent<MeshRenderer>().sortingOrder = drawOrder;
                 if (FacesLeft)
                     instance.Root.transform.localScale = new Vector3(-1, 1, 1);
-                idleAnimation = idle;
-                playingBattleAnimation = false;
-                instance.Play(idle, true);
+                instance.Play(idleAnimation, true);
                 PreparePresentation();
                 player = instance;
             }
@@ -301,7 +355,7 @@ namespace AstralOath.Client.BattleScene
 
         private void Update()
         {
-            if (player == null || paused || presentationPauseCount > 0 || presentationControlCount > 0) return;
+            if (player == null || paused || defeatPose || presentationPauseCount > 0 || presentationControlCount > 0) return;
             if (sourceReaction != null && player.Time >= player.Duration) return;
             player.Tick(playingBattleAnimation ? Time.unscaledDeltaTime : Time.deltaTime);
             if (sourceReaction == null && playingBattleAnimation && player.Time >= player.Duration)
@@ -316,7 +370,12 @@ namespace AstralOath.Client.BattleScene
                 player = null;
                 ReleaseSource();
                 eventTimes = null;
+                idleAnimation = null;
+                readyIdleAnimation = null;
+                turnReady = false;
+                playingBattleAnimation = false;
                 paused = false;
+                defeatPose = false;
                 presentationPauseCount = 0;
                 presentationControlCount = 0;
                 sourceReaction = null;

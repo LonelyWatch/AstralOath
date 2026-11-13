@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using AstralOath.Client.Skeletons;
 using NUnit.Framework;
 using UnityEngine;
@@ -22,6 +23,26 @@ namespace AstralOath.Client.Tests
                 new Dictionary<string,Texture2D>{{"page.png",texture}}, pma, 1), parent.transform);
             return player.Root.GetComponent<MeshFilter>().sharedMesh;
         }
+        [TestCase("c1002", "cecilia_skill_03_lanceaura2", 1213, 846, 144, 144)] // Oversized flash in Cecilia S3.
+        [TestCase("c1002", "cecilia_skill_03_lanceaura2", 1359, 842, 144, 144)] // Travelling scan_glow2.
+        [TestCase("c1006", "kise_m_skill_03_space", 1390, 334, 330, 330)] // Kise S3 board_ring.
+        public void AuthoredWhiteGlowRegionsKeepContinuousNeutralPma(string unit, string atlas, int x, int y, int width, int height)
+        {
+            string asset = $"Assets/Game/Modules/CharacterPresentation/Res/Characters/{unit}/Textures/effect/{atlas}.png";
+            Assert.That(ImageConversion.LoadImage(texture, File.ReadAllBytes(asset)), Is.True);
+            var pixels = texture.GetPixels32();
+            var alphaLevels = new HashSet<byte>();
+            for (int row = y; row < y + height; row++)
+                for (int column = x; column < x + width; column++)
+                {
+                    var pixel = pixels[(texture.height - 1 - row) * texture.width + column];
+                    alphaLevels.Add(pixel.a);
+                    if (pixel.r != pixel.a || pixel.g != pixel.a || pixel.b != pixel.a)
+                        Assert.Fail($"Neutral PMA must use the native A8 ramp at ({column},{row}), got {pixel}.");
+                }
+            Assert.That(alphaLevels.Count, Is.GreaterThan(200), "Keep the authored opacity ramp.");
+        }
+
         [Test] public void ClippingCutsRealTrianglesAndEndsAtDeclaredSlot()
         {
             var mesh = Create(

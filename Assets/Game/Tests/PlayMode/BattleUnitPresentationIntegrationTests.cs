@@ -71,7 +71,7 @@ namespace AstralOath.Client.Tests
             host.PauseBattle(); yield return new WaitForSecondsRealtime(.15f);
             renderer.GetPropertyBlock(block); Assert.That(block.GetFloat("_PresentationBrightness"), Is.EqualTo(shade).Within(.01f));
             host.ResumeBattle();
-            yield return new WaitForSecondsRealtime(.15f);
+            yield return new WaitForSecondsRealtime(.25f);
             renderer.GetPropertyBlock(block);
             Assert.That(block.GetFloat("_PresentationOpacity"), Is.LessThan(1f), "The body fades after blackening.");
             host.RestartBattle(); yield return null;
@@ -99,15 +99,53 @@ namespace AstralOath.Client.Tests
             Assert.That(hp.fillAmount, Is.EqualTo(.35f).Within(.001f));
             Assert.That(trail.fillAmount, Is.EqualTo(.35f).Within(.001f));
             Capture("damage-settled");
-            Call("BeginDeath"); Call("TickVisual", .1f); Capture("death-010");
-            Call("TickVisual", .2f); Capture("death-030");
-            Call("TickVisual", .25f); Capture("death-055");
+            Call("ApplyStatus", Activator.CreateInstance(typeof(BattleStatusSnapshot),
+                Private, null, new object[] { BattleStatusKind.DefenseDown, 2, 0 }, null));
+            var player = (AstralOath.Client.Skeletons.ISkeletonPlayer)typeof(BattlePreviewActor)
+                .GetField("player", Private).GetValue(actor);
+            Assert.That(actor.PlayBattleAnimation("attacked"), Is.GreaterThan(.2f));
+            var body = (Renderer)typeof(BattlePreviewActor).GetProperty("PresentationRenderer", Private).GetValue(actor);
+            var deathBlock = new MaterialPropertyBlock();
+            var camera = map.GetComponentInParent<Canvas>().worldCamera;
+            Call("SetHealth", 0L, 1000);
+            Call("BeginDeath"); Call("Show", false); Call("TickVisual", .1f); Call("LateTick", camera);
+            Assert.That(player.CurrentAnimation, Is.EqualTo("attacked"));
+            Assert.That(player.Time, Is.EqualTo(.1f).Within(.001f), "The final source reaction continues into blackening.");
+            Assert.That(marker.gameObject.activeInHierarchy, Is.True);
+            Capture("death-010");
+            typeof(BattlePreviewActor).GetMethod("PlayBattleIdle", Private).Invoke(actor, null);
+            Call("TickVisual", .1f); Call("LateTick", camera);
+            body.GetPropertyBlock(deathBlock);
+            Assert.That(player.CurrentAnimation, Is.EqualTo("attacked"), "Action cleanup must not replace the defeated pose.");
+            Assert.That(deathBlock.GetFloat("_PresentationBrightness"), Is.Zero);
+            Assert.That(deathBlock.GetFloat("_PresentationOpacity"), Is.EqualTo(1f));
+            Assert.That(marker.GetComponent<CanvasGroup>().alpha, Is.EqualTo(1f));
+            Assert.That(hp.fillAmount, Is.Zero.Within(.001f));
+            Assert.That(trail.fillAmount, Is.GreaterThan(0));
+            Assert.That(marker.Find("Frame/Status Icons").GetChild(0).gameObject.activeInHierarchy, Is.True);
+            var particles = actor.transform.Find("Battle death particles");
+            Assert.That(particles.GetComponentsInChildren<MeshRenderer>(), Is.Empty,
+                "The particle burst must leave the opaque black silhouette unobscured.");
+            Capture("death-020");
+            Call("TickVisual", .08f); Call("LateTick", camera);
+            body.GetPropertyBlock(deathBlock);
+            Assert.That(deathBlock.GetFloat("_PresentationOpacity"), Is.EqualTo(1f));
+            Assert.That(marker.GetComponent<CanvasGroup>().alpha, Is.EqualTo(1f));
+            Assert.That(particles.GetComponentsInChildren<MeshRenderer>(), Is.Empty);
+            Capture("death-028");
+            Call("TickVisual", .11f); Call("LateTick", camera);
+            Assert.That(marker.GetComponent<CanvasGroup>().alpha, Is.EqualTo(.75f).Within(.01f));
+            Assert.That(particles.GetComponentsInChildren<MeshRenderer>(), Is.Not.Empty);
+            Capture("death-039");
+            Call("TickVisual", .16f); Capture("death-055");
+            Call("TickVisual", .1f); Call("LateTick", camera);
+            Assert.That(marker.gameObject.activeSelf, Is.False, "Only the particle tail remains after the body fades.");
             Call("TickVisual", 10f);
             Assert.That(actor.gameObject.activeInHierarchy, Is.False, "The physical slot is removed after the visual tail.");
             Call("Show", true);
             Assert.That(actor.gameObject.activeInHierarchy, Is.True);
             // Revival in the same frame must bind only the new skeleton, never deferred-destroy objects.
-            Call("BeginDeath"); Call("TickVisual", .3f);
+            Call("BeginDeath"); Call("TickVisual", .39f);
             var current = (Renderer)typeof(BattlePreviewActor).GetProperty("PresentationRenderer", Private).GetValue(actor);
             var block = new MaterialPropertyBlock(); current.GetPropertyBlock(block);
             Assert.That(block.GetFloat("_PresentationOpacity"), Is.EqualTo(.75f).Within(.01f));
@@ -230,7 +268,8 @@ namespace AstralOath.Client.Tests
             ShowAt(2f);
             AssertReactionRestart("The second hit restarts the reaction even while the first animation is playing.");
             Assert.That(aura.gameObject.activeSelf, Is.False);
-            Assert.That(healthValue.GetValue(view), Is.EqualTo(previousHealth - 10));
+            Assert.That(healthValue.GetValue(view), Is.EqualTo(previousHealth), "Early HP damage must not start the bar tween.");
+            Assert.That(marker.Find("HP").GetComponent<Image>().fillAmount, Is.EqualTo(health).Within(.001f));
             Assert.That(friendlyIcons.childCount, Is.Zero);
             CollectionAssert.Contains(VisibleIcons(), "stic_att_up");
             ShowAt(3f);
@@ -239,6 +278,47 @@ namespace AstralOath.Client.Tests
             Assert.That(friendlyIcons.GetChild(0).GetComponent<Image>().sprite.name, Is.EqualTo("stic_def_up"));
             CollectionAssert.DoesNotContain(VisibleIcons(), "stic_att_up");
             yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator FiveOverheadStatusIconsWrapAfterThreeAndCompactWhenRemoved()
+        {
+            var simulation = typeof(BattleHudPreview).GetField("simulation", Private).GetValue(host);
+            var view = ((IDictionary)simulation.GetType().GetField("views", Private).GetValue(simulation))["enemy-1"];
+            var icons = map.transform.Find("Unit Status/Enemies/01 Front/Frame/Status Icons");
+            var apply = view.GetType().GetMethod("ApplyStatus");
+            foreach (var item in new[]
+            {
+                (BattleStatusKind.SpeedUp, 2), (BattleStatusKind.Barrier, 2), (BattleStatusKind.Immunity, 1),
+                (BattleStatusKind.AttackUp, 1), (BattleStatusKind.DefenseUp, 1)
+            })
+            {
+                var status = Activator.CreateInstance(typeof(BattleStatusSnapshot), Private, null,
+                    new object[] { item.Item1, item.Item2, 1000 }, null);
+                apply.Invoke(view, new[] { status });
+            }
+
+            AssertLayout(new[] { "stic_speed_up", "stic_protect", "stic_debuf_impossible", "stic_att_up", "stic_def_up" });
+            Capture("status-wrap-three");
+            view.GetType().GetMethod("RemoveStatus").Invoke(view, new object[] { BattleStatusKind.Immunity });
+            AssertLayout(new[] { "stic_speed_up", "stic_protect", "stic_att_up", "stic_def_up" });
+            yield return null;
+
+            void AssertLayout(string[] expected)
+            {
+                var visible = icons.Cast<RectTransform>().Where(item => item.gameObject.activeSelf)
+                    .OrderBy(item => item.anchoredPosition.y).ThenBy(item => item.anchoredPosition.x).ToArray();
+                CollectionAssert.AreEqual(expected, visible.Select(item => item.GetComponent<Image>().sprite.name));
+                Assert.That(visible[3].GetSiblingIndex(), Is.LessThan(visible[0].GetSiblingIndex()),
+                    "Upper row tiles must render behind the overlapping turn digits of the lower row.");
+                float step = visible[0].rect.width;
+                for (int index = 0; index < visible.Length; index++)
+                {
+                    Vector2 position = visible[index].anchoredPosition;
+                    Assert.That(position.x, Is.EqualTo(index % 3 * step).Within(.01f), $"Column for {expected[index]}");
+                    Assert.That(position.y, Is.EqualTo(index / 3 * step).Within(.01f), $"Row for {expected[index]}");
+                }
+            }
         }
 
         void Capture(string name)

@@ -315,6 +315,16 @@ namespace AstralOath.Client.Tests
             Assert.That(start.gameObject.activeInHierarchy, Is.False, "The obsolete entry button stays hidden during the fight.");
             var initial = preview.SimulationSnapshot;
             Assert.That(initial.Units, Has.Count.EqualTo(8));
+            var unitGroups = roots.Single(root => root.name == "Units").transform;
+            foreach (var unit in initial.Units)
+            {
+                var group = unitGroups.Find(unit.Slot.Side == BattleSide.Ally ? "Allies" : "Enemies");
+                var unitActor = group.GetChild(unit.Slot.Position - 1).GetComponentInChildren<BattlePreviewActor>();
+                var skeleton = (AstralOath.Client.Skeletons.ISkeletonPlayer)typeof(BattlePreviewActor)
+                    .GetField("player", PrivateInstance).GetValue(unitActor);
+                string idle = unit.InstanceId == initial.CurrentActorId ? "b_idle_ready" : "b_idle";
+                Assert.That(skeleton.CurrentAnimation, Is.EqualTo(idle), unit.InstanceId);
+            }
             var readiness = map.transform.Find("Combat Readiness/Live Readiness/Readiness Portraits");
             Assert.That(readiness, Is.Not.Null, "The battle must show live readiness portraits.");
             Assert.That(readiness.childCount, Is.EqualTo(initial.Units.Count));

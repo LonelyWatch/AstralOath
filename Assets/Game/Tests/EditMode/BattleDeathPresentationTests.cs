@@ -65,23 +65,29 @@ namespace AstralOath.Client.Tests
             {
                 foreach(float invalid in new[]{0f,-1f,float.NaN,float.PositiveInfinity,float.NegativeInfinity})
                 {
-                    var error=Assert.Throws<TargetInvocationException>(()=>method.Invoke(presentation,new object[]{invalid,.4f}));
+                    var error=Assert.Throws<TargetInvocationException>(()=>method.Invoke(presentation,new object[]{invalid,.12f,.4f}));
                     Assert.That(error.InnerException,Is.TypeOf<ArgumentOutOfRangeException>());
-                    error=Assert.Throws<TargetInvocationException>(()=>method.Invoke(presentation,new object[]{.2f,invalid}));
+                    error=Assert.Throws<TargetInvocationException>(()=>method.Invoke(presentation,new object[]{.2f,.12f,invalid}));
                     Assert.That(error.InnerException,Is.TypeOf<ArgumentOutOfRangeException>());
+                    if (invalid != 0f)
+                    {
+                        error=Assert.Throws<TargetInvocationException>(()=>method.Invoke(presentation,new object[]{.2f,invalid,.4f}));
+                        Assert.That(error.InnerException,Is.TypeOf<ArgumentOutOfRangeException>());
+                    }
                 }
-                method.Invoke(presentation,new object[]{.35f,.6f});
+                method.Invoke(presentation,new object[]{.35f,.1f,.6f});
                 Assert.That(type.GetProperty("DarkenSeconds").GetValue(presentation),Is.EqualTo(.35f));
+                Assert.That(type.GetProperty("HoldSeconds").GetValue(presentation),Is.EqualTo(.1f));
                 Assert.That(type.GetProperty("FadeSeconds").GetValue(presentation),Is.EqualTo(.6f));
                 type.GetMethod("Begin").Invoke(presentation,null);
-                var running=Assert.Throws<TargetInvocationException>(()=>method.Invoke(presentation,new object[]{.1f,.1f}));
+                var running=Assert.Throws<TargetInvocationException>(()=>method.Invoke(presentation,new object[]{.1f,.1f,.1f}));
                 Assert.That(running.InnerException,Is.TypeOf<InvalidOperationException>());
-                type.GetMethod("Tick").Invoke(presentation,new object[]{.94f});
+                type.GetMethod("Tick").Invoke(presentation,new object[]{1.04f});
                 Assert.That(type.GetProperty("IsComplete").GetValue(presentation),Is.False);
                 type.GetMethod("Tick").Invoke(presentation,new object[]{.02f});
                 Assert.That(type.GetProperty("IsComplete").GetValue(presentation),Is.True);
                 type.GetMethod("Reset").Invoke(presentation,null);
-                method.Invoke(presentation,new object[]{.2f,.4f});
+                method.Invoke(presentation,new object[]{.2f,0f,.4f});
             }
             finally { presentation.Dispose();Object.DestroyImmediate(root); }
         }
@@ -213,7 +219,11 @@ namespace AstralOath.Client.Tests
             void Call(string name,params object[] args)=>type.GetMethod(name).Invoke(presentation,args);
             try
             {
-                Call("Begin");Call("Tick",.4f);
+                Call("Begin");Call("Tick",.28f);
+                Assert.That(root.GetComponentsInChildren<MeshRenderer>(),Has.Length.EqualTo(1),
+                    "Before fade only the opaque black body should be drawn.");
+                Assert.That(shadow.color.a,Is.EqualTo(original.a));
+                Call("Tick",.12f);
                 var renderers=root.GetComponentsInChildren<MeshRenderer>();
                 int normal=0,additive=0;
                 foreach(var renderer in renderers)
@@ -251,7 +261,9 @@ namespace AstralOath.Client.Tests
                 Assert.That(Value("_PresentationOpacity"),Is.EqualTo(1f));
                 Call("Tick",0f);Assert.That(Value("_PresentationBrightness"),Is.EqualTo(brightness));
                 Call("Begin");Assert.That(Value("_PresentationBrightness"),Is.EqualTo(brightness),"Duplicate defeat must not restart the effect.");
-                Call("Tick",.3f);Assert.That(Value("_PresentationBrightness"),Is.Zero);
+                Call("Tick",.18f);Assert.That(Value("_PresentationBrightness"),Is.Zero);
+                Assert.That(Value("_PresentationOpacity"),Is.EqualTo(1f));
+                Call("Tick",.12f);
                 Assert.That(Value("_PresentationOpacity"),Is.InRange(.001f,.999f));
                 Assert.That(renderer.sharedMaterial,Is.SameAs(material));
                 Call("Reset");Assert.That(Value("_PresentationBrightness"),Is.EqualTo(1f));

@@ -63,6 +63,7 @@ Unity 2022.3.62f3 / URP / UGUI / TMP；Common/AOT 通用设施；普通 C# UIBas
 
 ## 最近验证与后续入口
 
+- 2026-11-13 已修订屏幕演出、白光罩、回合待机、三列状态及末段扣血与死亡生命周期。[来源和验收](delivery/2026-11-13-battle-visual-refinement.md)
 - 2026-11-13演出修订：[通用规则](development/battle-source-presentation.md)、[本轮验收](delivery/2026-11-13-battle-presentation.md)。本轮无新增外部插件。
 - 本机资料与运行缓存迁移累计释放C盘19.08GiB；主工程及新缓存均走D盘，旧缓存目录保留junction。继续使用C盘的已安装Editor不在迁移范围。[启动与路径规则](development/local-storage.md)
 

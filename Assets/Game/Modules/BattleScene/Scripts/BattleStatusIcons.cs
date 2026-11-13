@@ -55,6 +55,7 @@ namespace AstralOath.Client.BattleScene
 
     internal sealed class BattleStatusIcons : IDisposable
     {
+        internal const int MaximumColumns = 3;
         private const float SourceFrameWidth = 86f;
         private const float SourceIconSize = 28f;
         private const float SourceIconScale = .9f;
@@ -71,7 +72,7 @@ namespace AstralOath.Client.BattleScene
         public BattleStatusIcons(RectTransform frame, BattleStatusArt art, int columns)
         {
             this.art = art;
-            this.columns = Mathf.Max(1, columns);
+            this.columns = Mathf.Clamp(columns, 1, MaximumColumns);
             float unit = frame.rect.width / SourceFrameWidth;
             glyphScale = unit * SourceIconScale;
             root = CreateRect("Status Icons", frame, new Vector2(1f, 15f) * unit, Vector2.zero);
@@ -136,7 +137,14 @@ namespace AstralOath.Client.BattleScene
             for (int index = 0; index < statuses.Count; index++)
             {
                 if (index == slots.Count)
-                    slots.Add(new Slot(root, new Vector2(index % columns, index / columns) * (SourceIconSize * glyphScale), glyphScale));
+                {
+                    int column = index % columns;
+                    int row = index / columns;
+                    var slot = new Slot(root, new Vector2(column, row) * (SourceIconSize * glyphScale), glyphScale);
+                    // Draw upper rows first so their tiles cannot cover lower-row turn digits.
+                    slot.Icon.transform.SetSiblingIndex(column);
+                    slots.Add(slot);
+                }
                 var item = statuses[index];
                 slots[index].Show(item.Art.Icon, item.Art.IsBuff ? BuffDigit : OtherDigit, item.Turns, art.Digits);
             }

@@ -145,7 +145,8 @@ namespace AstralOath.Client.BattleScene
                     camera.backgroundColor = show ? originalClear : Color.black;
                     break;
                 case "DARK":
-                    var dark = AddLayer("DARK " + ((string)node["id"] ?? (string)node["guid"]), -20, "CharacterLabUnlit");
+                    int darkOrder = Number(node, "globalZ", -1f) > 0f ? 91 : -20;
+                    var dark = AddLayer("DARK " + ((string)node["id"] ?? (string)node["guid"]), darkOrder, "CharacterLabUnlit");
                     dark.Node = node;
                     dark.Duration = Number(node, "duration", -1f) / 1000f;
                     dark.Material.mainTexture = Texture2D.whiteTexture;

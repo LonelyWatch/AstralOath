@@ -7111,15 +7111,20 @@
       "address": "characterlab/source/effect/cecilia_skill_03_botaura_back.sct",
       "type": "texture",
       "dependencies": [],
-      "outputSha256": "a520136dc00be19edbdf6cebbd4b74b5b3d8902f90dad8ce10678415cc472fb0",
+      "outputSha256": "f97a3bddc79accac1a7ba16928cb272af8c7a435c8b69c262d735e86413f09cf",
       "conversion": {
         "status": "converted",
         "width": 234,
         "height": 1077,
         "encoding": "SCT1:RGB565+A8",
         "alpha": "source-preserved",
+        "whitePmaRegions": [
+          "burst_sphear",
+          "burst_sphear_g",
+          "flash"
+        ],
         "sourceSha256": "0eab11b1286c3ffcc0475bfb9a785bea7502e27fe6d89513ad2c66f9aec5f5af",
-        "outputSha256": "a520136dc00be19edbdf6cebbd4b74b5b3d8902f90dad8ce10678415cc472fb0"
+        "outputSha256": "f97a3bddc79accac1a7ba16928cb272af8c7a435c8b69c262d735e86413f09cf"
       }
     },
     {
@@ -7197,15 +7202,18 @@
       "address": "characterlab/source/effect/cecilia_skill_03_botaura_front.sct",
       "type": "texture",
       "dependencies": [],
-      "outputSha256": "64058cc039c40c7f6df3b44c2fac74e1b728ee6ca2be49843434c4b5cdab75e5",
+      "outputSha256": "952e9658e0af9fc5ee71d663026a767f4aad2838cb1638e3f69da8da1bad49ea",
       "conversion": {
         "status": "converted",
         "width": 251,
         "height": 1217,
         "encoding": "SCT1:RGB565+A8",
         "alpha": "source-preserved",
+        "whitePmaRegions": [
+          "flash"
+        ],
         "sourceSha256": "49d85eb56b58817ad64660e73a8a76cf47c0e3c8c86521cac6815a5acd43af7e",
-        "outputSha256": "64058cc039c40c7f6df3b44c2fac74e1b728ee6ca2be49843434c4b5cdab75e5"
+        "outputSha256": "952e9658e0af9fc5ee71d663026a767f4aad2838cb1638e3f69da8da1bad49ea"
       }
     },
     {
@@ -7283,15 +7291,18 @@
       "address": "characterlab/source/effect/cecilia_skill_03_flashbang.sct",
       "type": "texture",
       "dependencies": [],
-      "outputSha256": "aeb531727e74b1dca0df3e2ae11083671a2c6d27257af25488b9dccbfddf8bcd",
+      "outputSha256": "aefdd34aef6e09017a7fb917f241bc3ad551beb205c77b6a1f991175465d0000",
       "conversion": {
         "status": "converted",
         "width": 1170,
         "height": 242,
         "encoding": "SCT1:RGB565+A8",
         "alpha": "source-preserved",
+        "whitePmaRegions": [
+          "burst_sphear"
+        ],
         "sourceSha256": "eea8c94e9c40506878102c159fd615ccaf55edf67b874c173f5b4506b88643cc",
-        "outputSha256": "aeb531727e74b1dca0df3e2ae11083671a2c6d27257af25488b9dccbfddf8bcd"
+        "outputSha256": "aefdd34aef6e09017a7fb917f241bc3ad551beb205c77b6a1f991175465d0000"
       }
     },
     {
@@ -7369,15 +7380,22 @@
       "address": "characterlab/source/effect/cecilia_skill_03_lanceaura1.sct",
       "type": "texture",
       "dependencies": [],
-      "outputSha256": "43ad648b10e8a14b74bc8a7b1db3a0ec2edf65304681719d92dc711318b139d4",
+      "outputSha256": "6f444c44dbca2f2f9beee5f59b242c6d335035f0fd7ba835e50491b7b86da477",
       "conversion": {
         "status": "converted",
         "width": 1579,
         "height": 512,
         "encoding": "SCT1:RGB565+A8",
         "alpha": "source-preserved",
+        "whitePmaRegions": [
+          "flash",
+          "lance_burst",
+          "lance_burst_g",
+          "lance_shot_gow",
+          "scan_glow2"
+        ],
         "sourceSha256": "8be9d0336f7092dcaadf8af3824c939375bad890f713220a7a89c99d6699184b",
-        "outputSha256": "43ad648b10e8a14b74bc8a7b1db3a0ec2edf65304681719d92dc711318b139d4"
+        "outputSha256": "6f444c44dbca2f2f9beee5f59b242c6d335035f0fd7ba835e50491b7b86da477"
       }
     },
     {
@@ -7455,15 +7473,27 @@
       "address": "characterlab/source/effect/cecilia_skill_03_lanceaura2.sct",
       "type": "texture",
       "dependencies": [],
-      "outputSha256": "127c7a3d32e59bb1ee01fff59f70149dd791e287645db800de02098cd5d97771",
+      "outputSha256": "4517f3e4d5a1b89f0cbad89bdc9f1aa5c1b9178787a46b2ba8c2057edcdddd97",
       "conversion": {
         "status": "converted",
         "width": 1733,
         "height": 993,
         "encoding": "SCT1:RGB565+A8",
         "alpha": "source-preserved",
+        "whitePmaRegions": [
+          "flash",
+          "burst_sphear",
+          "burst_sphear_g",
+          "lance_burst",
+          "lance_burst_g",
+          "lance_shot_gow",
+          "ray_glow",
+          "scan_glow",
+          "scan_glow2",
+          "shine_ring"
+        ],
         "sourceSha256": "73e942525ab7b663e7d09ca2cc576754008ea5134880d70d37e6294b83d92ace",
-        "outputSha256": "127c7a3d32e59bb1ee01fff59f70149dd791e287645db800de02098cd5d97771"
+        "outputSha256": "4517f3e4d5a1b89f0cbad89bdc9f1aa5c1b9178787a46b2ba8c2057edcdddd97"
       }
     },
     {
@@ -11312,15 +11342,28 @@
       "address": "characterlab/source/effect/kise_m_skill_03_space.sct",
       "type": "texture",
       "dependencies": [],
-      "outputSha256": "2e4b1b04d8ae76850851c0dec70deff33a20068d8306d3c6bd159bb0192491f2",
+      "outputSha256": "5a3891e2c39e28eebe27c1820001e48ac64295e894f9a6ceb633cc79e44ce44f",
       "conversion": {
         "status": "converted",
         "width": 1943,
         "height": 892,
         "encoding": "SCT1:RGB565+A8",
         "alpha": "source-preserved",
+        "whitePmaRegions": [
+          "b_ring1",
+          "b_ring2",
+          "board_ring",
+          "circle_ring1",
+          "circle_ring2",
+          "circle_ring3",
+          "flash",
+          "light_ball",
+          "light_line",
+          "light_ring",
+          "outer_circle"
+        ],
         "sourceSha256": "0aa32be5376cf7b573cdae207132a37bd9a8dcfaefd509ee03f7de6e2aa9aed9",
-        "outputSha256": "2e4b1b04d8ae76850851c0dec70deff33a20068d8306d3c6bd159bb0192491f2"
+        "outputSha256": "5a3891e2c39e28eebe27c1820001e48ac64295e894f9a6ceb633cc79e44ce44f"
       }
     },
     {
