@@ -113,11 +113,25 @@ namespace AstralOath.Client.BattleScene
         }
 
 #if UNITY_EDITOR
+        internal IReadOnlyCollection<string> EditorDiagnostics => diagnostics;
+
         internal IReadOnlyList<(float At, JObject Node, float Duration, JObject[] Modulators)> GetPreparedCues(
             BattlePreviewActor actor, string presentationId)
         {
             Prepare(actor, presentationId);
-            return cache.Cues[(actor, presentationId)];
+            var cues = cache.Cues[(actor, presentationId)];
+            var derived = ModelTimelineFrames(graphs[presentationId], cues)
+                .Where(frame => frame.Function is "effect" or "shake" or "event")
+                .Select(frame =>
+                {
+                    var node = (JObject)frame.Parameters.DeepClone();
+                    node["etty"] = frame.Function == "effect" ? "EFFECT" : frame.Function == "shake" ? "SHAKE" : "ONEVENT";
+                    node["trackSource"] = frame.Source;
+                    float duration = frame.Function == "effect" ? EffectDuration((string)node["source"])
+                        : frame.Function == "shake" ? ShakeDuration(node) : 0f;
+                    return (frame.At, node, duration, Array.Empty<JObject>());
+                });
+            return cues.Concat(derived).OrderBy(cue => cue.At).ToArray();
         }
 #endif
 
@@ -297,30 +311,21 @@ namespace AstralOath.Client.BattleScene
                         break;
                 }
             }
-            foreach (var dependency in graph["assets"].Where(item => (string)item["type"] == "timeline"))
+            foreach (var frame in ModelTimelineFrames(graph, cues))
             {
-                var timeline = Document((string)dependency["source"])?["timeline"]?["default"];
-                foreach (var clip in cues.Where(cue => Kind(cue.Node) == "ANI"))
+                var node = frame.Parameters;
+                switch (frame.Function)
                 {
-                    if (!(timeline?[(string)clip.Node["ani"]]?["frames"] is JArray frames)) continue;
-                    foreach (var frame in frames.OfType<JObject>())
-                    {
-                        if (!(frame["param"] is JObject node)) continue;
-                        float at = clip.At + Seconds(frame, "time");
-                        switch ((string)frame["func"])
-                        {
-                            case "effect":
-                                actionEnd = Mathf.Max(actionEnd, at + EffectDuration((string)node["source"]));
-                                Schedule(at, () => Cfx((string)node["source"], actor, recipients, 1,
-                                    Number(node, "scale", 1f), new Vector2(Number(node, "x"), Number(node, "y")),
-                                    false, anchorName: (string)node["locationBone"] ?? (string)node["locationParam"]));
-                                break;
-                            case "shake":
-                                actionEnd = Mathf.Max(actionEnd, at + ShakeDuration(node));
-                                Schedule(at, () => PlayShake(node));
-                                break;
-                        }
-                    }
+                    case "effect":
+                        actionEnd = Mathf.Max(actionEnd, frame.At + EffectDuration((string)node["source"]));
+                        Schedule(frame.At, () => Cfx((string)node["source"], actor, recipients, 1,
+                            Number(node, "scale", 1f), new Vector2(Number(node, "x"), Number(node, "y")),
+                            false, anchorName: (string)node["locationBone"] ?? (string)node["locationParam"]));
+                        break;
+                    case "shake":
+                        actionEnd = Mathf.Max(actionEnd, frame.At + ShakeDuration(node));
+                        Schedule(frame.At, () => PlayShake(node));
+                        break;
                 }
             }
 
@@ -574,6 +579,23 @@ namespace AstralOath.Client.BattleScene
             string key = ShakeSource(node);
             float speed = Number(node, "timeScale", 1f);
             return key != null && speed > 0f ? Metadata(key).Duration() / speed : 0f;
+        }
+
+        private IEnumerable<(float At, string Function, JObject Parameters, string Source)> ModelTimelineFrames(JObject graph,
+            IReadOnlyList<(float At, JObject Node, float Duration, JObject[] Modulators)> cues)
+        {
+            foreach (var dependency in graph["assets"].Where(item => (string)item["type"] == "timeline"))
+            {
+                string source = (string)dependency["source"];
+                var timeline = Document(source)?["timeline"]?["default"];
+                foreach (var clip in cues.Where(cue => Kind(cue.Node) == "ANI"))
+                {
+                    if (!(timeline?[(string)clip.Node["ani"]]?["frames"] is JArray frames)) continue;
+                    foreach (var frame in frames.OfType<JObject>())
+                        if (frame["param"] is JObject parameters)
+                            yield return (clip.At + Seconds(frame, "time"), (string)frame["func"], parameters, source);
+                }
+            }
         }
 
         private void PlayShake(JObject node)

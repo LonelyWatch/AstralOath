@@ -10,7 +10,7 @@
 
 ## 适用边界
 
-编辑器显示源 STG 节点及运行时已解析的节点时间和长度。CFX 内部粒子、Spine 骨骼关键帧与 FMOD 波形不展开为可编辑轨道；现有曲线字符串按源格式编辑。独立预览不会运行战斗规则或生成数值结算。分支和锚点的当前解释，以通用演出规范和十人基线为准。
+编辑器显示 STG 节点及运行时解析的时点和长度，并显示模型 timeline 中的命名事件、效果、镜头震动和播放器诊断。模型 timeline 条目可跳转和查看参数。CFX 内部粒子、Spine 骨骼关键帧与 FMOD 波形不展开为可编辑轨道；现有曲线字符串按源格式编辑。独立预览不会运行战斗规则或生成数值结算。分支和锚点的当前解释，以通用演出规范和十人基线为准。
 
 操作参考了 Timeline 的轨道／片段组织，以及 Sequencer 的标记、帧率、吸附与播放控制。项目复用自身播放器以保留 Cut-in 与源帧事件语义。[Unity Timeline](https://docs.unity3d.com/2022.3/Documentation/Manual/com.unity.timeline.html) · [Unreal Sequencer](https://dev.epicgames.com/documentation/en-us/unreal-engine/sequencer-cinematic-toolbar-in-unreal-engine)
 

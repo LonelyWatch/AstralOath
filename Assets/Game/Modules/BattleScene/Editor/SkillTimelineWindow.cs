@@ -227,8 +227,8 @@ namespace AstralOath.Client.BattleScene.Editor
                         targetHeroId: targetIds.ElementAtOrDefault(targetIndex), casterOnRight: flipped,
                         targetAll: all, targetAllies: allies);
                     preview.Seek(Mathf.Min(current, preview.Duration));
-                    var cue = preview.Cues.FirstOrDefault(item => (int?)item.Node["guid"] == selectedGuid);
-                    selectedNode = cue.Node;
+                    if (selectedGuid >= 0)
+                        selectedNode = preview.Cues.FirstOrDefault(item => (int?)item.Node["guid"] == selectedGuid).Node;
                     rebuild = false;
                     playing = false;
                     error = null;
@@ -511,7 +511,7 @@ namespace AstralOath.Client.BattleScene.Editor
                 if (input.type == EventType.MouseDown && input.button == 0 && rect.Contains(input.mousePosition))
                 {
                     SelectCue(cue.Node, cue.At);
-                    if (!compareOriginal) dragStart = cue.At;
+                    if (!compareOriginal && selectedGuid >= 0) dragStart = cue.At;
                     dragMouseX = input.mousePosition.x;
                     input.Use();
                 }
@@ -594,7 +594,7 @@ namespace AstralOath.Client.BattleScene.Editor
                     {
                         var cue = preview.Cues[index];
                         labels[index + 1] = $"{cue.At:F3}s  {cue.Node["etty"]}  #{cue.Node["guid"]}";
-                        if ((int?)cue.Node["guid"] == selectedGuid) current = index + 1;
+                        if (ReferenceEquals(cue.Node, selectedNode)) current = index + 1;
                     }
                     int picked = EditorGUILayout.Popup(current, labels);
                     if (picked > 0 && picked != current)
@@ -604,7 +604,15 @@ namespace AstralOath.Client.BattleScene.Editor
                     }
                 }
                 using var readOnly = new EditorGUI.DisabledScope(compareOriginal);
-                if (selectedNode != null)
+                if (selectedNode != null && selectedGuid < 0)
+                {
+                    EditorGUILayout.LabelField("模型时间轴", EditorStyles.boldLabel);
+                    EditorGUILayout.SelectableLabel((string)selectedNode["trackSource"], EditorStyles.wordWrappedMiniLabel,
+                        GUILayout.Height(30));
+                    foreach (var field in selectedNode.Properties().Where(field => field.Name != "trackSource"))
+                        EditorGUILayout.LabelField(field.Name, field.Value.ToString(Formatting.None));
+                }
+                else if (selectedNode != null)
                 {
                     var original = SkillTimelineOverrides.Nodes(source).First(node => (int?)node["guid"] == selectedGuid);
                     var edit = patch["nodes"]?[selectedGuid.ToString(CultureInfo.InvariantCulture)];
@@ -618,6 +626,13 @@ namespace AstralOath.Client.BattleScene.Editor
                         DrawField(field.Name, edit?["fields"]?[field.Name] ?? field.Value);
                 }
                 else EditorGUILayout.LabelField("点选轨道上的节点查看参数。", EditorStyles.wordWrappedMiniLabel);
+                if (preview != null && preview.Diagnostics.Count > 0)
+                {
+                    EditorGUILayout.Space();
+                    EditorGUILayout.LabelField("演出诊断", EditorStyles.boldLabel);
+                    foreach (string message in preview.Diagnostics)
+                        EditorGUILayout.HelpBox(message, MessageType.Info);
+                }
                 EditorGUILayout.EndScrollView();
             }
         }

@@ -83,6 +83,7 @@ namespace AstralOath.Client.BattleScene.Editor
         internal float StageDuration { get; private set; }
         internal float Time => requestedTime;
         internal float StageTime => playback?.StageTime ?? 0f;
+        internal IReadOnlyCollection<string> Diagnostics => playback?.EditorDiagnostics ?? Array.Empty<string>();
         internal IReadOnlyList<float> HitTimes => playback?.HitTimes ?? Array.Empty<float>();
         internal IReadOnlyList<(float At, JObject Node, float Duration, JObject[] Modulators)> Cues { get; private set; } =
             Array.Empty<(float, JObject, float, JObject[])>();
