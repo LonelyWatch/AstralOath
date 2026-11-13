@@ -116,10 +116,29 @@ namespace AstralOath.Client.BattleScene
             Vector3 projected = camera.WorldToScreenPoint(worldAnchor());
             var parent = marker.parent as RectTransform;
             if (!parent) return;
-            if (!RectTransformUtility.ScreenPointToWorldPointInRectangle(parent, projected, UiCamera(), out var desired)) return;
-            desired += parent.TransformVector(new Vector3(AnchorOffset.x * originalScale.x * relative,
-                AnchorOffset.y * originalScale.y * relative, 0));
-            marker.position += desired - frame.position;
+            var offset = new Vector3(AnchorOffset.x * originalScale.x * relative,
+                AnchorOffset.y * originalScale.y * relative, 0);
+            if (canvas.renderMode != RenderMode.WorldSpace)
+            {
+                // ScreenSpaceCamera updates its root world pose during camera rendering, after
+                // LateUpdate. Work entirely within the root Canvas so that later movement does
+                // not translate/scale an already projected marker a second time.
+                Rect pixels = ScreenRect();
+                Rect rect = ((RectTransform)canvas.transform).rect;
+                if (pixels.width <= 0f || pixels.height <= 0f) return;
+                var local = new Vector3(rect.xMin + (projected.x - pixels.xMin) * rect.width / pixels.width,
+                    rect.yMin + (projected.y - pixels.yMin) * rect.height / pixels.height, 0);
+                var desiredLocal = parent.InverseTransformPoint(canvas.transform.TransformPoint(local));
+                var frameLocal = parent.InverseTransformPoint(frame.position);
+                desiredLocal.z = frameLocal.z;
+                marker.localPosition += desiredLocal + offset - frameLocal;
+            }
+            else
+            {
+                if (!RectTransformUtility.ScreenPointToWorldPointInRectangle(parent, projected, UiCamera(), out var desired)) return;
+                desired += parent.TransformVector(offset);
+                marker.position += desired - frame.position;
+            }
         }
 
         private float ProjectionInCanvasUnits(Camera camera)
@@ -128,9 +147,27 @@ namespace AstralOath.Client.BattleScene
             float worldPixels = Vector2.Distance(camera.WorldToScreenPoint(origin),
                 camera.WorldToScreenPoint(origin + actor.TransformVector(Vector3.up)));
             var parent = marker.parent;
-            float canvasPixels = Vector2.Distance(RectTransformUtility.WorldToScreenPoint(UiCamera(), parent.position),
-                RectTransformUtility.WorldToScreenPoint(UiCamera(), parent.TransformPoint(Vector3.up)));
+            float canvasPixels;
+            if (canvas.renderMode != RenderMode.WorldSpace)
+            {
+                Rect pixels = ScreenRect();
+                Rect rect = ((RectTransform)canvas.transform).rect;
+                var localUp = canvas.transform.InverseTransformVector(parent.TransformVector(Vector3.up));
+                canvasPixels = new Vector2(localUp.x * pixels.width / Mathf.Max(.000001f, rect.width),
+                    localUp.y * pixels.height / Mathf.Max(.000001f, rect.height)).magnitude;
+            }
+            else
+                canvasPixels = Vector2.Distance(RectTransformUtility.WorldToScreenPoint(UiCamera(), parent.position),
+                    RectTransformUtility.WorldToScreenPoint(UiCamera(), parent.TransformPoint(Vector3.up)));
             return Mathf.Max(.000001f, worldPixels / Mathf.Max(.000001f, canvasPixels));
+        }
+        private Rect ScreenRect()
+        {
+            var uiCamera = UiCamera();
+            // Camera rendering to a texture covers the entire texture, ignoring camera.rect.
+            if (uiCamera && uiCamera.targetTexture)
+                return new Rect(0, 0, uiCamera.targetTexture.width, uiCamera.targetTexture.height);
+            return uiCamera ? uiCamera.pixelRect : canvas.pixelRect;
         }
         private Camera UiCamera() => canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera;
         private static float Smooth(float t) => t * t * (3f - 2f * t);

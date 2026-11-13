@@ -535,7 +535,7 @@ namespace AstralOath.Client.BattleScene
             cinematicVisible = value;
             if (value)
             {
-                // World status remains visible; a full-screen Cut-in covers it through renderer ordering.
+                // Each status follows its body mask; Cut-in covers the remaining status through renderer ordering.
                 foreach (var item in new[] { hud.transform.Find("Skills").gameObject,
                     hud.Require<GameButton>("soulBurn").gameObject })
                 {
@@ -644,6 +644,7 @@ namespace AstralOath.Client.BattleScene
             private readonly IReadOnlyDictionary<string, Texture2D> deathTextures;
             private BattleDeathPresentation death;
             private bool warnedAnchor, deathStarted;
+            private bool shown = true;
             private long presentedHealth;
             private GameText statusLabel;
             private GameText levelLabel;
@@ -691,7 +692,19 @@ namespace AstralOath.Client.BattleScene
                 if (!warnedAnchor) { warnedAnchor = true; Debug.LogWarning("Missing status anchor '" + anchor + "' on " + Actor.name + ". Configure the presentation profile; using actor origin."); }
                 return Actor.transform.position;
             }
-            public void LateTick(Camera camera) { if (marker.activeInHierarchy) status.LateTick(camera); }
+            public void LateTick(Camera camera)
+            {
+                UpdateStatusVisibility();
+                if (marker.activeInHierarchy) status.LateTick(camera);
+            }
+            private void UpdateStatusVisibility()
+            {
+                // Source layouts own body masking. Read the current skeleton, never last-frame
+                // Renderer.isVisible or the presence of auxiliary particles/shadows.
+                var body = Actor.PresentationRenderer;
+                bool visible = shown && !deathStarted && body && body.enabled && body.gameObject.activeInHierarchy;
+                if (marker.activeSelf != visible) marker.SetActive(visible);
+            }
             public void TickVisual(float delta)
             {
                 status.Tick(delta);
@@ -714,6 +727,7 @@ namespace AstralOath.Client.BattleScene
             }
             public void Show(bool value)
             {
+                shown = value;
                 bool resurrecting = value && deathStarted;
                 if (resurrecting)
                 {
@@ -723,7 +737,7 @@ namespace AstralOath.Client.BattleScene
                 }
                 if (value || !IsDying) slot.gameObject.SetActive(value);
                 if (resurrecting) { Actor.SetPaused(false); PrepareDeath(); }
-                marker.SetActive(value);
+                UpdateStatusVisibility();
             }
 
             public void AdjustHealth(int delta, int maximum) => SetHealth(presentedHealth + delta, maximum);

@@ -118,6 +118,7 @@ namespace AstralOath.Client.Tests
                         string sample = $"{hero.Graph}-s{skill}-{(faceLeft ? "left" : "right")}";
                         Phase focus = id switch
                         {
+                            "c_ras_skill_01" or "c_angelica_skill_01" => Phase.Approach | Phase.Impact,
                             "c_ras_skill_02" => Phase.Approach | Phase.Impact | Phase.Blur,
                             "c_ras_skill_03" => Phase.Hatch,
                             "c_mercedes_skill_03" => Phase.Wide | Phase.Hatch,
@@ -159,9 +160,17 @@ namespace AstralOath.Client.Tests
             var visualMeshes = new HashSet<Mesh>();
             var visualTargets = new HashSet<RenderTexture>();
             var frameCaptures = new List<string>();
+            var bodyCaptures = new List<string>();
             var timing = ((float Impact, float Duration))Begin.Invoke(playback, new object[] { id, actor, target, recipients });
             Assert.That(float.IsFinite(timing.Duration) && timing.Duration > 0f && timing.Duration < ActionTimeout, Is.True, sample);
             Assert.That(timing.Impact, Is.InRange(0f, timing.Duration), sample);
+            bool checkTargetsAtHits = id == "c_ras_skill_03" || id == "c_mercedes_skill_03";
+            float[] checkedHits = checkTargetsAtHits
+                ? ((IEnumerable<float>)PresentationType.GetProperty("HitTimes").GetValue(playback)).ToArray()
+                : Array.Empty<float>();
+            int nextCheckedHit = 0;
+            var cameraTrace = !string.IsNullOrEmpty(captureDirectory) && (id == "c_ras_skill_01" || id == "c_angelica_skill_01")
+                ? new List<string> { "source_seconds,camera_x,camera_y,orthographic_size,actor_x,actor_y" } : null;
             double deadline = Time.realtimeSinceStartupAsDouble + ActionTimeout;
             float elapsed = 0f;
             Phase observed = Phase.None;
@@ -172,6 +181,8 @@ namespace AstralOath.Client.Tests
                     camera.orthographicSize > 0f, Is.True, sample + " produced an invalid camera pose");
                 Assert.That(IsFinite(actor.transform.position) && IsFinite(shadow.position), Is.True, sample);
 
+                if (cameraTrace != null)
+                    cameraTrace.Add(FormattableString.Invariant($"{elapsed:F6},{camera.transform.position.x:F6},{camera.transform.position.y:F6},{camera.orthographicSize:F6},{actor.transform.position.x:F6},{actor.transform.position.y:F6}"));
                 var blur = camera.transform.Find("Battle post-effect camera");
                 var postCamera = blur && blur.gameObject.activeInHierarchy ? blur.GetComponent<Camera>() : null;
                 if (postCamera && postCamera.enabled && postCamera.targetTexture)
@@ -194,6 +205,22 @@ namespace AstralOath.Client.Tests
                 if (elapsed >= timing.Impact)
                     Observe(Phase.Impact);
 
+                while (nextCheckedHit < checkedHits.Length && elapsed + .00001f >= checkedHits[nextCheckedHit])
+                {
+                    foreach (var recipient in recipients)
+                    {
+                        var body = (Renderer)typeof(BattlePreviewActor).GetProperty("PresentationRenderer", PrivateInstance).GetValue(recipient);
+                        Assert.That(body && body.enabled && body.gameObject.activeInHierarchy, Is.True,
+                            sample + " hit " + nextCheckedHit + " at " + elapsed + " must display accepted target " + recipient.name);
+                    }
+                    if (!string.IsNullOrEmpty(captureDirectory))
+                    {
+                        frameCaptures.Add(Path.Combine(captureDirectory, sample + "-hit-" + nextCheckedHit + ".png"));
+                        if (nextCheckedHit == 0 || nextCheckedHit == checkedHits.Length - 1)
+                            bodyCaptures.Add(Path.Combine(captureDirectory, sample + "-hit-" + nextCheckedHit + "-actors.png"));
+                    }
+                    nextCheckedHit++;
+                }
                 if (frameCaptures.Count > 0)
                 {
                     bool blurred = postCamera && postCamera.enabled && postCamera.targetTexture;
@@ -206,6 +233,24 @@ namespace AstralOath.Client.Tests
                             File.WriteAllBytes(Path.ChangeExtension(path, null) + "-world.png", frame.World);
                     }
                     frameCaptures.Clear();
+                    if (bodyCaptures.Count > 0)
+                    {
+                        // Diagnostic companion: isolate actors from bright foreground CFX without
+                        // changing the normal capture, source blend mode, or production sorting.
+                        var renderers = effects.GetComponentsInChildren<Renderer>(true);
+                        var enabled = renderers.Select(renderer => renderer.enabled).ToArray();
+                        try
+                        {
+                            foreach (var renderer in renderers) renderer.enabled = false;
+                            var bodies = RenderFrame(stage, blurred ? postCamera : null, visualTargets);
+                            foreach (string path in bodyCaptures) File.WriteAllBytes(path, bodies.World ?? bodies.Composite);
+                        }
+                        finally
+                        {
+                            for (int index = 0; index < renderers.Length; index++) renderers[index].enabled = enabled[index];
+                        }
+                        bodyCaptures.Clear();
+                    }
                 }
                 TrackMeshes(camera.transform, visualMeshes);
                 TrackMeshes(effects, visualMeshes);
@@ -218,11 +263,15 @@ namespace AstralOath.Client.Tests
 
                 yield return null;
                 float delta = Time.unscaledDeltaTime;
+                if (nextCheckedHit < checkedHits.Length && elapsed < checkedHits[nextCheckedHit])
+                    delta = Mathf.Min(delta, checkedHits[nextCheckedHit] - elapsed);
                 Tick.Invoke(playback, new object[] { delta });
                 elapsed = (float)PresentationType.GetProperty("StageTime").GetValue(playback);
             }
             while (elapsed < timing.Duration + 0.05f);
 
+            if (cameraTrace != null) File.WriteAllLines(Path.Combine(captureDirectory, sample + "-camera.csv"), cameraTrace);
+            if (interruptAt == Phase.None) Assert.That(nextCheckedHit, Is.EqualTo(checkedHits.Length), sample + " must inspect every source hit.");
             Assert.That((observed & capturePhases) == capturePhases, Is.True,
                 $"{sample} observed {observed}; expected {capturePhases}.");
             Assert.That(interruptAt == Phase.None || playback == null, Is.True, sample + " never reached the interruption phase");

@@ -80,7 +80,7 @@ Luban 快照 `Configs/battle-catalog.json` 含三名英雄、成长模板、觉�
 
 ## 信息条与动作恢复
 
-普通攻击/技能的 CAM、BGHATCH 不再隐藏生命、等级和状态；全屏 CUTIN 使用幕布覆盖这些信息。技能与 Burn 控制仍按回合/演出管理。BGHATCH 同时保留原 PNG alpha 与预乘混合，不能通过换图或角色参数调整掩盖纹理编码问题。
+普通攻击/技能的 CAM、BGHATCH 不整体隐藏生命、等级和状态；各单位信息条随身体Renderer显示，LAYOUT排除旁观者时其条组同步隐藏；全屏 CUTIN 使用幕布覆盖这些信息。技能与 Burn 控制仍按回合/演出管理。BGHATCH 同时保留原 PNG alpha 与预乘混合，不能通过换图或角色参数调整掩盖纹理编码问题。
 
 动作回待机须连续衔接并收敛到完整的目标姿态，检查旧版运行库遗漏键、尾轨清理、循环、暂停和实例隔离。源码、红绿测试、平台边界见[本轮修复记录](../../../../docs/delivery/2026-11-13-battle-presentation-fixes.md)；后续角色导入遵守[源演出规范](../../../../docs/development/battle-source-presentation.md)。Core 桥接改变需新母包，不能只发布业务 DLL。
 
@@ -89,3 +89,9 @@ Luban 快照 `Configs/battle-catalog.json` 含三名英雄、成长模板、觉�
 `BattleUnitStatusPresentation`维护运行时条组；普通条十等分、50%主刻度更高，使用原split/dhp图片。血量变化有红棕损血尾，权威数据不变。当前原作证据与验收见[交付记录](../../../../docs/delivery/2026-11-13-health-death-presentation.md)。
 
 `Res/Configs/UnitPresentation.asset`集中锚点、刻度、过渡和死亡资源配置；特殊Boss政策需独立证据。`Tools/战斗场景/更新血条与死亡资源引用`保留作者布局，`ImportDeathEffects.py --check`核对源依赖。死亡开场预备、末击黑化并淡出，原烟雾碎片到期释放；暂停、复活和重开不污染其他实例。Core shader/挂点接口需要新母包，不改变服务器规则。
+
+## S1 镜头与 S3 目标恢复（2026-11-13）
+
+拉斯/安洁莉卡S1缺省time的CAM/ZOOM继承jump→landing事件窗口，保留各自原倍率、偏移和曲线。拉斯S3起手离屏布局在目标群镜头切入时恢复接受目标，旁观者继续隐藏；梅赛德丝有限布局的目标保持显示。View按当前骨架Renderer联动血条/等级/状态，死亡与布局复位互不覆盖。每个HIT、两朝向、中断和重开回归及证据范围见[本次交付](../../../../docs/delivery/2026-11-13-camera-visibility-fixes.md)。
+
+信息条投影使用根Canvas局部坐标与相对比例，避免ScreenSpaceCamera在Render阶段更新位姿后重复移动/缩放血条。验收检查Camera.Render后的同帧挂点，不只检查渲染前RectTransform；无逐单位Canvas强制重建。

@@ -313,9 +313,13 @@ namespace AstralOath.Client.BattleScene
                     var next = byId[(int)edge["to"]];
                     float nextAt = when == 0 ? finish : at;
                     float? nextDuration = null;
-                    // Style 2 travels inside the named jump/landing window. Other successors
-                    // retain their start or completion connection to the scope.
-                    if (when == 0 && jumpStart.HasValue && Kind(next) == "MOVE" && (int?)next["style"] == 2)
+                    // Style 2 travel and camera commands without their own time occupy the
+                    // named scope window. An explicit camera time (including zero) retains the
+                    // declared completion edge; start edges and delays retain their source meaning.
+                    string nextKind = Kind(next);
+                    bool scopeTravel = nextKind == "MOVE" && (int?)next["style"] == 2;
+                    bool scopeCamera = (nextKind == "CAM" || nextKind == "ZOOM") && next["time"] == null;
+                    if (when == 0 && jumpStart.HasValue && (scopeTravel || scopeCamera))
                     {
                         nextAt = jumpStart.Value;
                         nextDuration = Seconds(next, "time", finish - nextAt);
@@ -347,7 +351,15 @@ namespace AstralOath.Client.BattleScene
             return earliest.OrderBy(cue => cue.Value.At).ThenBy(cue => cue.Value.Order).Select(cue =>
             {
                 var node = byId[cue.Key];
-                var modulators = Kind(node) == "PPEFFECT" ? PostModulators(cue.Key).ToArray() : Array.Empty<JObject>();
+                string kind = Kind(node);
+                if ((kind == "CAM" || kind == "ZOOM") && node["time"] == null && cue.Value.Duration > 0f)
+                {
+                    // Cinematic playback consumes node time. Materialize inherited timing only
+                    // in the prepared cue, leaving the shared source graph immutable.
+                    node = (JObject)node.DeepClone();
+                    node["time"] = cue.Value.Duration * 1000f;
+                }
+                var modulators = kind == "PPEFFECT" ? PostModulators(cue.Key).ToArray() : Array.Empty<JObject>();
                 return (cue.Value.At, node, cue.Value.Duration, modulators);
             });
         }

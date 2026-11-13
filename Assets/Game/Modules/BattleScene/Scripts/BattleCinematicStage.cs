@@ -102,6 +102,7 @@ namespace AstralOath.Client.BattleScene
             {
                 case "CAM":
                     int location = (int?)node["location"] ?? 0;
+                    RevealLayoutTargets(location);
 
                     float ground = GroundOffset(location);
                     float facing = caster && caster.TryGetComponent<BattlePreviewActor>(out var actor) ? actor.FacingDirection : 1f;
@@ -196,6 +197,26 @@ namespace AstralOath.Client.BattleScene
                     if (!layoutVisibility.ContainsKey(renderer))
                         layoutVisibility.Add(renderer, renderer.enabled);
                     renderer.enabled = false;
+                }
+            }
+        }
+
+        private void RevealLayoutTargets(int location)
+        {
+            // away_x is currently represented by a temporary offscreen visibility mask,
+            // not by moving authoritative slots. A target-focused shot must release that
+            // mask before drawing impacts; the source LAYOUT reset comes only at the end.
+            if (layoutVisibility.Count == 0 ||
+                !(location == 5 || location == 12 || location == 16 || location == 31 ||
+                  location == 32 || location == 41 || location == 42)) return;
+            foreach (var participant in participants ?? targets)
+            {
+                if (!participant || !targets.Any(target => ContainsActor(participant, target))) continue;
+                foreach (var renderer in participant.GetComponentsInChildren<Renderer>(true))
+                {
+                    if (!layoutVisibility.TryGetValue(renderer, out bool original)) continue;
+                    renderer.enabled = original;
+                    layoutVisibility.Remove(renderer); // Release only what this stage hid.
                 }
             }
         }

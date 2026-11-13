@@ -61,12 +61,45 @@ namespace AstralOath.Client.Tests
         }
         [Test] public void CameraZoomAndActorScaleAffectTheMarkerWhileFacingStaysReadable()
         {
-            Call("LateTick", camera); float baselineWidth = ScreenWidth();
-            camera.orthographicSize *= .5f; Canvas.ForceUpdateCanvases(); Call("LateTick", camera);
+            camera.Render(); Call("LateTick", camera); camera.Render(); float baselineWidth = ScreenWidth();
+            camera.orthographicSize *= .5f; Canvas.ForceUpdateCanvases(); Call("LateTick", camera); camera.Render();
             Assert.That(ScreenWidth(), Is.EqualTo(baselineWidth * 2).Within(.2f), "Compare rendered width, not the Canvas-dependent localScale.");
-            actor.localScale = new Vector3(-1.5f, 1.5f, 1.5f); Call("LateTick", camera);
+            actor.localScale = new Vector3(-1.5f, 1.5f, 1.5f); Call("LateTick", camera); camera.Render();
             Assert.That(ScreenWidth(), Is.EqualTo(baselineWidth * 3).Within(.3f));
             Assert.That(marker.localScale.y, Is.GreaterThan(0)); AssertAnchor();
+        }
+        [TestCase(false, false)] [TestCase(false, true)]
+        [TestCase(true, false)] [TestCase(true, true)]
+        public void SameFrameCameraChangeStaysAlignedAfterCanvasRebuild(bool insetViewport, bool zoom)
+        {
+            // Hold the output, aspect and viewport fixed throughout the camera change.
+            // RT rendering ignores the screen rect, so the inset cases use the screen output.
+            // The assertion happens after Unity synchronizes its ScreenSpaceCamera Canvas, as
+            // rendering does; forcing it before LateTick would hide the production ordering bug.
+            camera.targetTexture = insetViewport ? null : renderTexture;
+            camera.aspect = 1f;
+            camera.rect = insetViewport ? new Rect(.1f, .15f, .8f, .7f) : new Rect(0, 0, 1, 1);
+            Canvas.ForceUpdateCanvases(); camera.Render();
+            Call("LateTick", camera); Canvas.ForceUpdateCanvases(); camera.Render(); AssertAnchor();
+            float width = ScreenWidth();
+            Vector3 baseline = camera.transform.position;
+            float size = camera.orthographicSize;
+            camera.transform.position += new Vector3(2f, -.75f, 0f);
+            if (zoom) camera.orthographicSize *= .65f;
+            Call("LateTick", camera);
+            Canvas.ForceUpdateCanvases();
+            TestContext.WriteLine("Before render: canvas=" + canvas.transform.position + " scale=" + canvas.transform.localScale +
+                " anchor error=" + Vector2.Distance(Screen(frame.position), Screen(bone.position)));
+            camera.Render();
+            TestContext.WriteLine("After render: canvas=" + canvas.transform.position + " scale=" + canvas.transform.localScale +
+                " anchor error=" + Vector2.Distance(Screen(frame.position), Screen(bone.position)));
+            AssertAnchor();
+            Assert.That(ScreenWidth(), Is.EqualTo(width / (zoom ? .65f : 1f)).Within(.2f),
+                "The first rendered frame must use the current zoom exactly once.");
+            camera.transform.position = baseline; camera.orthographicSize = size;
+            Call("LateTick", camera); Canvas.ForceUpdateCanvases(); camera.Render();
+            AssertAnchor();
+            Assert.That(ScreenWidth(), Is.EqualTo(width).Within(.2f), "Same-frame return must not retain the prior camera projection.");
         }
         [Test] public void ResizeDoesNotDoubleApplyCanvasScale()
         {
