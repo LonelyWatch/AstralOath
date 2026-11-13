@@ -52,7 +52,7 @@ namespace AstralOath.Client.BattleScene
 
         internal BattleHudBinder(BindingMap map, Sprite burnPressed, Sprite cancelNormal, Sprite cancelPressed,
             SpineEffect burnButton, SpineEffect selection, SpineEffect intro, SpineEffect soulUse,
-            TextAsset[] particleDefinitions, Texture2D[] particleTextures, UnityAction startBattle, Func<string, string> label)
+            TextAsset[] particleDefinitions, Texture2D[] particleTextures, UnityAction startBattle, Func<string, string> label, GameObject confirmPrefab = null)
         {
             startPreview = map.Require<GameButton>("startPreview");
             pause = map.Require<GameButton>("pause");
@@ -70,7 +70,7 @@ namespace AstralOath.Client.BattleScene
 
             try
             {
-                pauseControls = BattleHud.CreatePauseControls(map, label);
+                pauseControls = BattleHud.CreatePauseControls(map, label, confirmPrefab);
                 scope.Add(pauseControls.Dispose);
                 pause.interactable = false;
                 Bind(pause, PauseBattle);

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using AstralOath.Client.Common;
 using AstralOath.Shared.Battle;
 using TMPro;
@@ -31,15 +30,35 @@ namespace AstralOath.Client.BattleScene
         private readonly GameButton detailsButton;
         private readonly UnityAction toggleDetails;
         private readonly IReadOnlyDictionary<string, Sprite> sprites;
+        private readonly Action<BattleUnitSnapshot, int, Image> inspectSkill;
+        private readonly Action<BattleStatusSnapshot, Image> inspectStatus;
+        private readonly Action closeInspection;
+        private readonly BattleStatusArt statusArt;
         private readonly Dictionary<string, Portrait> portraits = new Dictionary<string, Portrait>(StringComparer.Ordinal);
+        private readonly List<Portrait> ordered = new List<Portrait>(8);
+        private readonly Comparison<Portrait> comparePortraits;
         private readonly List<Image> staticPortraits = new List<Image>();
         private readonly List<Cooldown> cooldowns = new List<Cooldown>(3);
         private string activeId;
 
         internal BattleTurnHud(BindingMap map, Func<BattleUnitSnapshot, string> label,
             IReadOnlyDictionary<string, Sprite> sprites, TMP_FontAsset damageFont = null)
+            : this(map, label, sprites, damageFont, null, null, null, null)
+        {
+        }
+
+        internal BattleTurnHud(BindingMap map, Func<BattleUnitSnapshot, string> label,
+            IReadOnlyDictionary<string, Sprite> sprites, TMP_FontAsset damageFont,
+            Action<BattleUnitSnapshot, int, Image> inspectSkill,
+            Action<BattleStatusSnapshot, Image> inspectStatus, Action closeInspection,
+            BattleStatusArt statusArt)
         {
             this.sprites = sprites;
+            comparePortraits = ComparePortraits;
+            this.inspectSkill = inspectSkill;
+            this.inspectStatus = inspectStatus;
+            this.closeInspection = closeInspection;
+            this.statusArt = statusArt;
             this.damageFont = damageFont;
             textSource = map.Require<GameText>("activeName");
             numberSource = map.Require<GameText>("activeHp");
@@ -187,8 +206,13 @@ namespace AstralOath.Client.BattleScene
 
         private void SetDetailsVisible(bool visible)
         {
+            if (!visible && details.gameObject.activeSelf) closeInspection?.Invoke();
             details.gameObject.SetActive(visible);
-            if (visible) liveRail.parent.SetAsLastSibling();
+            if (visible)
+            {
+                liveRail.parent.SetAsLastSibling();
+                ArrangePortraits();
+            }
             else liveRail.parent.SetSiblingIndex(originalRailSibling);
             portraitLayer.gameObject.SetActive(!visible);
             track.gameObject.SetActive(!visible);
@@ -199,19 +223,16 @@ namespace AstralOath.Client.BattleScene
 
         private void ArrangePortraits()
         {
+            bool showDetails = details.gameObject.activeSelf;
+            ordered.Clear();
             foreach (var portrait in portraits.Values)
             {
                 portrait.Root.gameObject.SetActive(portrait.Visible);
-                portrait.Detail.Root.gameObject.SetActive(portrait.Visible);
+                if (showDetails) portrait.Detail.Root.gameObject.SetActive(portrait.Visible);
+                if (portrait.Visible) ordered.Add(portrait);
             }
-
-            var ordered = portraits.Values.Where(portrait => portrait.Visible)
-                .OrderByDescending(portrait => portrait.Unit.InstanceId == activeId)
-                .ThenByDescending(portrait => portrait.ReadinessBp)
-                .ThenBy(portrait => portrait.Unit.Slot.Side)
-                .ThenBy(portrait => portrait.Unit.Slot.Position)
-                .ToArray();
-            for (int index = 0; index < ordered.Length; index++)
+            ordered.Sort(comparePortraits);
+            for (int index = 0; index < ordered.Count; index++)
             {
                 var portrait = ordered[index];
                 bool acting = portrait.Unit.InstanceId == activeId;
@@ -220,11 +241,22 @@ namespace AstralOath.Client.BattleScene
                 portrait.Position = new Vector2(track.anchoredPosition.x, y);
                 portrait.Highlight.enabled = acting && portrait.Highlight.sprite;
                 portrait.Root.SetAsFirstSibling();
+                if (!showDetails) continue;
                 // inbattle_order_detail.csb n_pos1..n_pos10: first row y48, then y128 + n*64.
                 float detailY = index == 0 ? 48f : 128f + (index - 1) * 64f;
                 portrait.Detail.Root.anchoredPosition = new Vector2(33f, detailY) * SourceScale;
                 portrait.Detail.Update(portrait.Unit, portrait.ReadinessBp, acting);
             }
+        }
+
+        private int ComparePortraits(Portrait left, Portrait right)
+        {
+            int result = (right.Unit.InstanceId == activeId).CompareTo(left.Unit.InstanceId == activeId);
+            if (result != 0) return result;
+            result = right.ReadinessBp.CompareTo(left.ReadinessBp);
+            if (result != 0) return result;
+            result = ((int)left.Unit.Slot.Side).CompareTo((int)right.Unit.Slot.Side);
+            return result != 0 ? result : left.Unit.Slot.Position.CompareTo(right.Unit.Slot.Position);
         }
 
         private static Color ElementColor(BattleElement element) => element switch

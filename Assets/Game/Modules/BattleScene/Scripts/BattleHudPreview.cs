@@ -22,11 +22,15 @@ namespace AstralOath.Client.BattleScene
             public TextAsset atlas;
             public Texture2D page;
 
-            internal ISkeletonPlayer Create(Transform anchor, string name, float scale, int sortingOrder)
+            internal SkeletonPlayerSource CreateSource(float scale)
             {
                 var pages = new Dictionary<string, Texture2D>(StringComparer.Ordinal) { { page.name + ".sct", page } };
-                var player = new SkeletonPlayerFactory().Create(
-                    new SkeletonPlayerSource(skeleton.text, atlas.text, pages, premultipliedAlpha: true, scale: scale), anchor);
+                return new SkeletonPlayerSource(skeleton.text, atlas.text, pages, premultipliedAlpha: true, scale: scale);
+            }
+
+            internal ISkeletonPlayer Create(Transform anchor, string name, float scale, int sortingOrder)
+            {
+                var player = new SkeletonPlayerFactory().Create(CreateSource(scale), anchor);
                 player.Root.name = name;
                 var renderer = player.Root.GetComponent<MeshRenderer>();
                 var canvas = anchor.GetComponentInParent<Canvas>();
@@ -38,6 +42,8 @@ namespace AstralOath.Client.BattleScene
         }
 
         [SerializeField] private BindingMap hud;
+        [SerializeField] private GameObject inspectionPrefab;
+        [SerializeField] private GameObject confirmPrefab;
         [SerializeField] private bool autoStartBattle = true;
         [SerializeField] private Sprite burnPressed;
         [SerializeField] private Sprite cancelNormal;
@@ -46,6 +52,8 @@ namespace AstralOath.Client.BattleScene
         [SerializeField] private SpineEffect skillSelection;
         [SerializeField] private SpineEffect burnIntro;
         [SerializeField] private SpineEffect soulUse;
+        [SerializeField] private SpineEffect soulDisplay;
+        [SerializeField] private SpineEffect readyDust;
         [SerializeField] private TextAsset[] particles;
         [SerializeField] private Texture2D[] particleTextures;
         [SerializeField] private TextAsset battleCatalog;
@@ -66,6 +74,8 @@ namespace AstralOath.Client.BattleScene
             public string skin;
             public BattleSkillPresentationAsset skeleton;
         }
+
+        public const int StandardSoulCapacity = BattleFlowRules.StandardMaximumSoul;
 
         public static IReadOnlyList<string> DefaultAllyHeroIds { get; } = Array.AsReadOnly(new[] { "c1001", "c1062", "c1005", "c1002" });
         public static IReadOnlyList<string> DefaultEnemyHeroIds { get; } = Array.AsReadOnly(new[] { "c1003", "c1004", "c1006", "c1007" });
@@ -111,7 +121,8 @@ namespace AstralOath.Client.BattleScene
             ApplyTeam(enemySlots);
             UpdateBinding();
             simulation = new BattleSimulationPreview(gameObject.scene, hud, binder, catalog, battleSprites, battleGraphs,
-                skillAssets, audioCatalog, audioBanks, battleDamageFont, impactBank, stageBackground, unitPresentation, nextMatch);
+                skillAssets, audioCatalog, audioBanks, battleDamageFont, impactBank, stageBackground, unitPresentation,
+                soulDisplay, particles, particleTextures, nextMatch, inspectionPrefab, readyDust: readyDust);
             binder.AttachSimulation(simulation);
         }
 
@@ -192,7 +203,7 @@ namespace AstralOath.Client.BattleScene
                 : new Dictionary<string, string>(StringComparer.Ordinal);
             binder = new BattleHudBinder(hud, burnPressed, cancelNormal, cancelPressed,
                 burnButton, skillSelection, burnIntro, soulUse, particles, particleTextures, battleCatalog ? StartBattle : null,
-                key => messages.TryGetValue(key, out var message) ? message : key);
+                key => messages.TryGetValue(key, out var message) ? message : key, confirmPrefab);
         }
 
         private void OnDisable() => ClearBinding();

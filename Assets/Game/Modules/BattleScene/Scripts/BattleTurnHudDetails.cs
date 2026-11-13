@@ -41,6 +41,7 @@ namespace AstralOath.Client.BattleScene
                 divider.color = new Color(1f, 1f, 1f, 0.28f);
                 divider.raycastTarget = false;
             }
+            var skillIcons = new Image[3];
             var shades = new Image[3];
             var cooldownNumbers = new GameText[3];
             for (int slot = 0; slot < 3; slot++)
@@ -50,7 +51,8 @@ namespace AstralOath.Client.BattleScene
                     new Vector2(sprite ? sprite.rect.width : 81f, sprite ? sprite.rect.height : 84f) * (0.65f * SourceScale))
                     .gameObject.AddComponent<Image>();
                 skill.sprite = sprite;
-                skill.raycastTarget = false;
+                skill.raycastTarget = inspectSkill != null;
+                skillIcons[slot] = skill;
                 skill.gameObject.SetActive(sprite);
                 shades[slot] = Layer(skill.transform, "Cooldown").gameObject.AddComponent<Image>();
                 shades[slot].sprite = sprite;
@@ -66,7 +68,7 @@ namespace AstralOath.Client.BattleScene
                 hourglass.rectTransform.anchoredPosition = new Vector2(15f, 0f);
             }
             var states = Rect(root, "States", new Vector2(486f, 0f) * SourceScale, Vector2.zero);
-            return new DetailRow(this, root, highlight, readiness, health, healthFill, shades, cooldownNumbers, states);
+            return new DetailRow(this, root, highlight, readiness, health, healthFill, skillIcons, shades, cooldownNumbers, states);
         }
 
         private Image DetailIcon(Transform parent, string name, string spriteName, Vector2 position, Vector2 size)
@@ -98,11 +100,11 @@ namespace AstralOath.Client.BattleScene
             private readonly Image[] cooldowns;
             private readonly GameText[] turns;
             private readonly RectTransform states;
-            private readonly List<Image> statusIcons = new List<Image>();
-            private readonly List<GameText> statusTurns = new List<GameText>();
+            private readonly List<StatusSlot> statusSlots = new List<StatusSlot>();
+            private BattleUnitSnapshot unit;
 
             internal DetailRow(BattleTurnHud owner, RectTransform root, Image highlight, GameText readiness,
-                GameText health, Image healthFill, Image[] cooldowns, GameText[] turns, RectTransform states)
+                GameText health, Image healthFill, Image[] skillIcons, Image[] cooldowns, GameText[] turns, RectTransform states)
             {
                 this.owner = owner;
                 Root = root;
@@ -113,12 +115,24 @@ namespace AstralOath.Client.BattleScene
                 this.cooldowns = cooldowns;
                 this.turns = turns;
                 this.states = states;
+                if (owner.inspectSkill == null) return;
+                for (int slot = 0; slot < skillIcons.Length; slot++)
+                {
+                    int index = slot;
+                    Image icon = skillIcons[index];
+                    icon.gameObject.AddComponent<GameLongPress>().Held = () =>
+                    {
+                        if (unit != null && index < unit.Form.SkillIds.Count)
+                            owner.inspectSkill(unit, index, icon);
+                    };
+                }
             }
 
             internal RectTransform Root { get; }
 
             internal void Update(BattleUnitSnapshot unit, int readinessBp, bool acting)
             {
+                this.unit = unit;
                 highlight.enabled = acting && highlight.sprite;
                 readiness.text = (readinessBp / 100f).ToString("0.#") + "%";
                 health.text = unit.CurrentHealth + "/" + unit.Stats.MaxHealth;
@@ -131,22 +145,51 @@ namespace AstralOath.Client.BattleScene
                 }
                 for (int index = 0; index < unit.Statuses.Count; index++)
                 {
-                    if (index == statusIcons.Count)
-                    {
-                        var icon = owner.DetailIcon(states, "Status " + (index + 1), "", new Vector2(index * 31f, 0f), new Vector2(30f, 30f));
-                        statusIcons.Add(icon);
-                        var count = Text(icon.transform, "Turns", "", new Vector2(14f, -13f), new Vector2(20f, 20f), 17f, owner.textSource);
-                        count.rectTransform.anchorMin = count.rectTransform.anchorMax = Vector2.one * 0.5f;
-                        statusTurns.Add(count);
-                    }
-                    string name = StatusSprite(unit.Statuses[index].Kind);
-                    statusIcons[index].sprite = name == null ? null : owner.sprites.GetValueOrDefault(name);
-                    statusIcons[index].enabled = statusIcons[index].sprite;
-                    statusIcons[index].gameObject.SetActive(statusIcons[index].sprite);
-                    statusTurns[index].text = unit.Statuses[index].RemainingTurns.ToString();
+                    if (index == statusSlots.Count) statusSlots.Add(CreateStatusSlot(index));
+                    var status = unit.Statuses[index];
+                    var slot = statusSlots[index];
+                    if (slot.Status?.Kind != status.Kind) slot.Hold?.Cancel();
+                    slot.Status = status;
+                    string name = StatusSprite(status.Kind);
+                    slot.Icon.sprite = owner.statusArt != null && owner.statusArt.TryGet(status.Kind, out var art)
+                        ? art.Icon : name == null ? null : owner.sprites.GetValueOrDefault(name);
+                    slot.Icon.enabled = slot.Icon.sprite;
+                    slot.Icon.gameObject.SetActive(slot.Icon.sprite);
+                    slot.Turns.text = status.RemainingTurns.ToString();
                 }
-                for (int index = unit.Statuses.Count; index < statusIcons.Count; index++)
-                    statusIcons[index].gameObject.SetActive(false);
+                for (int index = unit.Statuses.Count; index < statusSlots.Count; index++)
+                {
+                    var slot = statusSlots[index];
+                    slot.Status = null;
+                    slot.Icon.gameObject.SetActive(false);
+                }
+            }
+
+            private StatusSlot CreateStatusSlot(int index)
+            {
+                var icon = owner.DetailIcon(states, "Status " + (index + 1), "", new Vector2(index * 31f, 0f), new Vector2(30f, 30f));
+                var count = Text(icon.transform, "Turns", "", new Vector2(14f, -13f), new Vector2(20f, 20f), 17f, owner.textSource);
+                count.rectTransform.anchorMin = count.rectTransform.anchorMax = Vector2.one * 0.5f;
+                var slot = new StatusSlot { Icon = icon, Turns = count };
+                if (owner.inspectStatus != null)
+                {
+                    icon.raycastTarget = true;
+                    slot.Hold = icon.gameObject.AddComponent<GameLongPress>();
+                    slot.Hold.Held = () =>
+                    {
+                        if (slot.Status is BattleStatusSnapshot status)
+                            owner.inspectStatus(status, icon);
+                    };
+                }
+                return slot;
+            }
+
+            private sealed class StatusSlot
+            {
+                internal Image Icon;
+                internal GameText Turns;
+                internal GameLongPress Hold;
+                internal BattleStatusSnapshot Status;
             }
         }
     }

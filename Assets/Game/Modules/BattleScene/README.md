@@ -5,7 +5,7 @@
 ## 打开与编辑
 
 1. 在 Unity 使用 `Tools/战斗场景/打开场景`，或打开 `Scenes/BattleScene.unity`。
-2. 将 Game 视图设为 16:9，点击 Play。静态舞台和界面在编辑时可见，Spine 网格在 Play 时创建。
+2. 点击 Play 自动开始。Game 视图可用 16:9、全面屏横屏或平板比例。静态舞台和界面在编辑时可见，Spine 网格在 Play 时创建。
 3. 双击 `Res/Prefab/BattleHud.prefab` 可直接编辑。顶部按钮、行动条、单位血条、当前角色、魂力和技能分组排列。通过 `Tools/战斗场景/验证 HUD 绑定` 检查引用。
 4. 白天舞台使用 `Res/Prefab/Forest2Stage.prefab`，暮色舞台使用 `Forest3Stage.prefab`。替换场景中舞台实例即可换景。每个图层可单独调整。角色脚点在 `Units/Allies` 与 `Units/Enemies`，每方有前、下、上、后四个组。编辑态信息条使用HUD作者摆位；运行时按动画top挂点投影跟随人物及镜头缩放。
 
@@ -35,6 +35,12 @@
 已导入的 STG、CFX、Spine、粒子与角色 timeline 驱动动作、位移和命中特效，FMOD 在 Windows 播放原版技能音效和日语语音。敌方回合隐藏技能组和 Burn。行动条头像按行动值从上向下移动，当前行动者在下端；点击左侧沙漏展开原版行结构的行动值、生命、技能冷却与状态，点击空白关闭。技能冷却使用贴合图标的遮罩与回合数，伤害与治疗使用独立浮字。动画消费有序事件，状态由同源规则决定。试玩场景依赖共享战斗程序集，`BattleScene` 已登记为 HybridCLR 业务程序集。双人 HTTP 验证、规则口径及当前差异见[战斗第三步](../../../../docs/development/battle-execution.md)。
 
 非行动角色循环播放 `idle`；轮到角色时单次播放 `b_idle_ready`，随后循环 `b_idle`。受击或技能可以中断入场准备，同一回合恢复时沿用当前待机。多段命中逐段播放受击、护盾消耗和飘字，最后一段才触发整笔 HP 扣减过渡。死亡由已接受的事件触发，末击动作继续，角色逐渐变黑，再与头顶信息一同淡出，粒子保留尾迹。见[战斗演出修订](../../../../docs/delivery/2026-11-13-battle-visual-refinement.md)。
+
+## 魂力和战斗说明
+
+- 标准魂力上限 80，每满 10 点点亮一个原版蓝色火魂。剩余点数显示在进度槽，燃魂按权威事件消耗。原版 Burn 和 Cancel 在对应阶段暂时覆盖右侧槽位。
+- 长按底部技能、角色头顶状态或行动条详情图标查看说明。技能附带关联状态、夹攻和燃魂信息，主技能区还展示强化列表。点空白可关闭，长按松手不触发施法。
+- 世界铺满横屏，互动 HUD 对齐安全区。高宽比、技能标题和音频的验证见 [说明与录像对照](../../../../docs/delivery/2026-11-14-battle-inspection-ui.md)、[全面屏](../../../../docs/delivery/2026-11-14-battle-wide-viewport.md)、[魂力](../../../../docs/delivery/2026-11-14-battle-soul-gauge.md)、[日语变体](../../../../docs/delivery/2026-11-14-battle-voice-variants.md)、[技能标题](../../../../docs/delivery/2026-11-14-battle-skill-banner.md)。
 
 ## 头顶状态与护盾
 
@@ -117,3 +123,5 @@ Luban 快照 `Configs/battle-catalog.json` 含十名英雄、成长模板、觉�
 ## 十人阵容
 
 Battle Canvas 的 `BattleHudPreview` Inspector 为四个友军站位提供角色下拉列表。退出 Play 后选择并重新运行，或在运行中选择后点重新开始。模型、技能图、头像和音频引用由配表与导入清单生成，`Tools/战斗场景/更新角色资源引用` 可更新现有场景的引用。主动技能按权威流程提交，被动槽仅展示。十人名单、使用方式、源差异和回归见[十名角色接入](../../../../docs/delivery/2026-11-13-ten-hero-roster.md)。
+
+技能、头顶状态与行动条长按共用 Common 弹板。折叠行动条时只更新可见头像和进度，展开时刷新详情行。技能和效果卡的字体、底板及分区按原始 CSB，详见 [录屏和素材对照](../../../../docs/delivery/2026-11-14-battle-inspection-ui.md)。梅赛德丝 S3 立绘及入回合的 Spine 扬尘事件分别见 [立绘](../../../../docs/delivery/2026-11-14-mercedes-s3-cutin.md) 和 [交接帧报告](../../../../docs/delivery/2026-11-14-battle-turn-handoff.md)。

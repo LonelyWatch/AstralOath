@@ -76,6 +76,11 @@ namespace AstralOath.Tests
             var simulation = FormatterServices.GetUninitializedObject(simulationType);
             Set("skillPresentation", stage);
             Set("turnHud", hud);
+            var hudMap = root.GetComponent<BindingMap>();
+            var skillBanner = Activator.CreateInstance(BattleType("BattleSkillBanner"), Instance, null,
+                new object[] { (RectTransform)root.transform.Find("Top Bar"), hudMap.Require<GameText>("activeName"),
+                    new Dictionary<string, Sprite>() }, null);
+            Set("skillBanner", skillBanner);
             Set("voice", FormatterServices.GetUninitializedObject(BattleType("BattleVoice")));
             Set("views", Activator.CreateInstance(simulationType.GetField("views", Instance).FieldType));
             Set("playback", Activator.CreateInstance(simulationType.GetField("playback", Instance).FieldType));
@@ -85,7 +90,7 @@ namespace AstralOath.Tests
             var positions = new List<float>();
             Call(simulation, "ScheduleFeedback", .5f, "target", (Action)(() => positions.Add(world.localPosition.x)));
             Call(simulation, "ScheduleFeedback", 1f, "target", (Action)(() => positions.Add(world.localPosition.x)));
-            Call(simulation, "Tick", 1.5f);
+            Call(simulation, "AdvancePresentation", 1.5f);
 
             Assert.That(positions, Is.EqualTo(new[] { 3f, 7f }));
             Assert.That(world.localPosition, Is.EqualTo(Vector3.zero));

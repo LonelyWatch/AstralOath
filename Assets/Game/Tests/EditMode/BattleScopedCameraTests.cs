@@ -45,8 +45,8 @@ namespace AstralOath.Tests
             playback = (IDisposable)Activator.CreateInstance(TypeOf("BattleSkillPresentation"), new object[]{root.transform,
                 Array.Empty<TextAsset>(), Array.CreateInstance(TypeOf("BattleSkillPresentationAsset"),0), camera, null, null});
             playback.GetType().GetField("caster",Private).SetValue(playback,actor);
-            var nodes=graph["source"]["entities"].OfType<JObject>().ToArray();
-            cues=((IEnumerable<(float,JObject,float,JObject[])>)playback.GetType().GetMethod("ReadCues",Private).Invoke(playback,new object[]{graph,nodes})).ToArray();
+            cues = ((IEnumerable<(float, JObject, float, JObject[])>)playback.GetType().GetMethod("ReadCues", Private)
+                .Invoke(playback, new object[] { graph })).ToArray();
         }
         [TearDown] public void Cleanup()
         {

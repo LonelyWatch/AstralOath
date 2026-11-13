@@ -1,4 +1,5 @@
-import tempfile, unittest, sys
+import json, tempfile, unittest, sys
+from unittest.mock import patch
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]/"Tools"/"CharacterAssets"))
 import import_characters as importer
@@ -24,6 +25,40 @@ class ImportBoundaryTests(unittest.TestCase):
             closure.include("stagept/c_test.stg", "c1001")
             self.assertEqual(closure.dependencies["stagept/c_test.stg"], ["spani/motion.scsp"])
             self.assertEqual(closure.dependencies["spani/motion.scsp"], [])
+
+    def test_mercedes_cutin_is_added_only_for_the_authored_marker(self):
+        source = "stagept/c_mercedes_skill_03.stg"
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            for directory in ("stagept", "model", "cut/fhd"):
+                (root / directory).mkdir(parents=True, exist_ok=True)
+            model = root / "model/mercedes.scsp"
+            model.touch()
+            clip = root / "cut/fhd/sk_c1005_3.webp"
+            clip.touch()
+            graph_path = root / source
+            original = {"entities": [{"guid": 1, "etty": "ANI", "ani": "skill3"},
+                                     {"guid": 2, "etty": "HIT"}]}
+            graph_path.write_text(json.dumps(original), encoding="utf-8")
+            with patch.object(importer, "decode_scsp", return_value=({"animations": {
+                    "skill3": {"events": [{"name": "cutin", "time": 1.3}]}}}, None)):
+                closure = importer.Closure(root)
+                self.assertEqual(closure.direct(source), ["cut/fhd/sk_c1005_3.webp"])
+                self.assertEqual(closure.structures[source], original)
+                addon = closure.graph_additions[source]
+                self.assertEqual([node["etty"] for node in addon["entities"]], ["ONEVENT", "CUTIN"])
+                self.assertEqual(addon["entities"][0]["name"], "cutin")
+                self.assertEqual(addon["connections"], [{"from": 3, "to": 4}])
+
+            with patch.object(importer, "decode_scsp", return_value=({"animations": {}}, None)):
+                with self.assertRaisesRegex(ValueError, "Missing cut-in animation marker"):
+                    importer.Closure(root).direct(source)
+
+            original["entities"].append({"guid": 3, "etty": "CUTIN", "args": "sk_c1005_3"})
+            graph_path.write_text(json.dumps(original), encoding="utf-8")
+            closure = importer.Closure(root)
+            self.assertEqual(closure.direct(source), ["cut/fhd/sk_c1005_3.webp"])
+            self.assertNotIn(source, closure.graph_additions)
 
     def test_existing_paths_survive_shared_ownership_growth(self):
         source = "effect/common.sct"

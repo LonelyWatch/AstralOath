@@ -75,7 +75,9 @@ namespace AstralOath.Client.BattleScene
             }
         }
 
-        public void Play(string presentationId)
+        public void Play(string presentationId) => PlaySkill(presentationId, false, false);
+
+        public void PlaySkill(string presentationId, bool callsAlly, bool answersAlly)
         {
             if (!IsAvailable || string.IsNullOrWhiteSpace(presentationId)) return;
             if (!skills.TryGetValue(presentationId, out var cue))
@@ -84,10 +86,11 @@ namespace AstralOath.Client.BattleScene
                 return;
             }
 
-            // The catalog maps one timeline event and one randomized voice event.
-            // Individual audio-table variants are selected in the bank, never launched together.
+            // Keep the original effect timeline. FMOD chooses a take within one voice event.
             if (Start(cue.eventPath)) StartedEffectCount++;
-            if (Start(cue.voiceEventPath)) StartedVoiceCount++;
+            string contextualVoice = answersAlly ? cue.dualAnswerVoiceEventPath :
+                callsAlly ? cue.dualCallVoiceEventPath : null;
+            if (Start(contextualVoice) || Start(cue.voiceEventPath)) StartedVoiceCount++;
         }
 
         public void PlayBurnReady()
@@ -217,6 +220,8 @@ namespace AstralOath.Client.BattleScene
             public string id;
             public string eventPath;
             public string voiceEventPath;
+            public string dualCallVoiceEventPath;
+            public string dualAnswerVoiceEventPath;
         }
     }
 }

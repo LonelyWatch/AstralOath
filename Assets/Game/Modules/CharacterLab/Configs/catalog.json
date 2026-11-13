@@ -191,21 +191,27 @@
           "displayNameKey": "character.ras.skill1",
           "graphAddress": "characterlab/source/stagept/c_ras_skill_01.stg",
           "eventPath": "event:/skill/c_ras_skill_01",
-          "voiceEventPath": "event:/voc/skill/c_ras_skill_01"
+          "voiceEventPath": "event:/voc/skill/c_ras_skill_01",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_ras_skill_01_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_ras_skill_01_a"
         },
         {
           "id": "c_ras_skill_02",
           "displayNameKey": "character.ras.skill2",
           "graphAddress": "characterlab/source/stagept/c_ras_skill_02.stg",
           "eventPath": "event:/skill/c_ras_skill_02",
-          "voiceEventPath": "event:/voc/skill/c_ras_skill_02"
+          "voiceEventPath": "event:/voc/skill/c_ras_skill_02",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_ras_skill_02_c",
+          "dualAnswerVoiceEventPath": ""
         },
         {
           "id": "c_ras_skill_03",
           "displayNameKey": "character.ras.skill3",
           "graphAddress": "characterlab/source/stagept/c_ras_skill_03.stg",
           "eventPath": "event:/skill/c_ras_skill_03",
-          "voiceEventPath": "event:/voc/skill/c_ras_skill_03"
+          "voiceEventPath": "event:/voc/skill/c_ras_skill_03",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
         }
       ],
       "battleSkin": "default",
@@ -389,21 +395,27 @@
           "displayNameKey": "character.cecilia.skill1",
           "graphAddress": "characterlab/source/stagept/c_cecilia_skill_new_01.stg",
           "eventPath": "event:/skill/c_cecilia_skill_new_01",
-          "voiceEventPath": "event:/voc/skill/c_cecilia_skill_new_01"
+          "voiceEventPath": "event:/voc/skill/c_cecilia_skill_new_01",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_cecilia_skill_new_01_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_cecilia_skill_new_01_a"
         },
         {
           "id": "c_cecilia_skill_new_02",
           "displayNameKey": "character.cecilia.skill2",
           "graphAddress": "characterlab/source/stagept/c_cecilia_skill_new_02.stg",
           "eventPath": "event:/skill/c_cecilia_skill_new_02",
-          "voiceEventPath": "event:/voc/skill/c_cecilia_skill_new_02"
+          "voiceEventPath": "event:/voc/skill/c_cecilia_skill_new_02",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
         },
         {
           "id": "c_cecilia_skill_new_03",
           "displayNameKey": "character.cecilia.skill3",
           "graphAddress": "characterlab/source/stagept/c_cecilia_skill_new_03.stg",
           "eventPath": "event:/skill/c_cecilia_skill_new_03",
-          "voiceEventPath": "event:/voc/skill/c_cecilia_skill_new_03"
+          "voiceEventPath": "event:/voc/skill/c_cecilia_skill_new_03",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
         }
       ],
       "battleSkin": "default",
@@ -593,21 +605,27 @@
           "displayNameKey": "character.rose.skill1",
           "graphAddress": "characterlab/source/stagept/c_rose_skill_01.stg",
           "eventPath": "event:/skill/c_rose_skill_01",
-          "voiceEventPath": "event:/voc/skill/c_rose_skill_01"
+          "voiceEventPath": "event:/voc/skill/c_rose_skill_01",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_rose_skill_01_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_rose_skill_01_a"
         },
         {
           "id": "c_rose_skill_02",
           "displayNameKey": "character.rose.skill2",
           "graphAddress": "characterlab/source/stagept/c_rose_skill_02.stg",
           "eventPath": "event:/skill/c_rose_skill_02",
-          "voiceEventPath": "event:/voc/skill/c_rose_skill_02"
+          "voiceEventPath": "event:/voc/skill/c_rose_skill_02",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
         },
         {
           "id": "c_rose_skill_03",
           "displayNameKey": "character.rose.skill3",
           "graphAddress": "characterlab/source/stagept/c_rose_skill_03.stg",
           "eventPath": "event:/skill/c_rose_skill_03",
-          "voiceEventPath": "event:/voc/skill/c_rose_skill_03"
+          "voiceEventPath": "event:/voc/skill/c_rose_skill_03",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
         }
       ],
       "battleSkin": "default",
@@ -791,21 +809,27 @@
           "displayNameKey": "character.silk.skill1",
           "graphAddress": "characterlab/source/stagept/c_silk_skill_01.stg",
           "eventPath": "event:/skill/c_silk_skill_01",
-          "voiceEventPath": "event:/voc/skill/c_silk_skill_01"
+          "voiceEventPath": "event:/voc/skill/c_silk_skill_01",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_silk_skill_01_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_silk_skill_01_a"
         },
         {
           "id": "c_silk_skill_02",
           "displayNameKey": "character.silk.skill2",
           "graphAddress": "characterlab/source/stagept/c_silk_skill_02.stg",
           "eventPath": "event:/skill/c_silk_skill_02",
-          "voiceEventPath": "event:/voc/skill/c_silk_skill_02"
+          "voiceEventPath": "event:/voc/skill/c_silk_skill_02",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_silk_skill_02_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_silk_skill_02_a"
         },
         {
           "id": "c_silk_skill_03",
           "displayNameKey": "character.silk.skill3",
           "graphAddress": "characterlab/source/stagept/c_silk_skill_03.stg",
           "eventPath": "event:/skill/c_silk_skill_03",
-          "voiceEventPath": "event:/voc/skill/c_silk_skill_03"
+          "voiceEventPath": "event:/voc/skill/c_silk_skill_03",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
         }
       ],
       "battleSkin": "default",
@@ -983,21 +1007,27 @@
           "displayNameKey": "character.mercedes.skill1",
           "graphAddress": "characterlab/source/stagept/c_mercedes_skill_01.stg",
           "eventPath": "event:/skill/c_mercedes_skill_01",
-          "voiceEventPath": "event:/voc/skill/c_mercedes_skill_01"
+          "voiceEventPath": "event:/voc/skill/c_mercedes_skill_01",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_mercedes_skill_01_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_mercedes_skill_01_a"
         },
         {
           "id": "c_mercedes_skill_02",
           "displayNameKey": "character.mercedes.skill2",
           "graphAddress": "characterlab/source/stagept/c_mercedes_skill_02.stg",
           "eventPath": "event:/skill/c_mercedes_skill_02",
-          "voiceEventPath": "event:/voc/skill/c_mercedes_skill_02"
+          "voiceEventPath": "event:/voc/skill/c_mercedes_skill_02",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
         },
         {
           "id": "c_mercedes_skill_03",
           "displayNameKey": "character.mercedes.skill3",
           "graphAddress": "characterlab/source/stagept/c_mercedes_skill_03.stg",
           "eventPath": "event:/skill/c_mercedes_skill_03",
-          "voiceEventPath": "event:/voc/skill/c_mercedes_skill_03"
+          "voiceEventPath": "event:/voc/skill/c_mercedes_skill_03",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
         }
       ],
       "battleSkin": "default",
@@ -1217,21 +1247,27 @@
           "displayNameKey": "character.kise.skill1",
           "graphAddress": "characterlab/source/stagept/c_kise_skill_01.stg",
           "eventPath": "event:/skill/c_kise_skill_01",
-          "voiceEventPath": "event:/voc/skill/c_kise_skill_01"
+          "voiceEventPath": "event:/voc/skill/c_kise_skill_01",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_kise_skill_01_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_kise_skill_01_a"
         },
         {
           "id": "c_kise_skill_02",
           "displayNameKey": "character.kise.skill2",
           "graphAddress": "characterlab/source/stagept/c_kise_skill_02.stg",
           "eventPath": "event:/skill/c_kise_skill_02",
-          "voiceEventPath": "event:/voc/skill/c_kise_skill_02"
+          "voiceEventPath": "event:/voc/skill/c_kise_skill_02",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
         },
         {
           "id": "c_kise_skill_03",
           "displayNameKey": "character.kise.skill3",
           "graphAddress": "characterlab/source/stagept/c_kise_skill_03.stg",
           "eventPath": "event:/skill/c_kise_skill_03",
-          "voiceEventPath": "event:/voc/skill/c_kise_skill_03"
+          "voiceEventPath": "event:/voc/skill/c_kise_skill_03",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
         }
       ],
       "battleSkin": "default",
@@ -1427,21 +1463,27 @@
           "displayNameKey": "character.wildred.skill1",
           "graphAddress": "characterlab/source/stagept/c_wilderd_skill_01.stg",
           "eventPath": "event:/skill/c_wilderd_skill_01",
-          "voiceEventPath": "event:/voc/skill/c_wilderd_skill_01"
+          "voiceEventPath": "event:/voc/skill/c_wilderd_skill_01",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_wilderd_skill_01_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_wilderd_skill_01_a"
         },
         {
           "id": "c_wilderd_skill_02",
           "displayNameKey": "character.wildred.skill2",
           "graphAddress": "characterlab/source/stagept/c_wilderd_skill_02.stg",
           "eventPath": "event:/skill/c_wilderd_skill_02",
-          "voiceEventPath": "event:/voc/skill/c_wilderd_skill_02"
+          "voiceEventPath": "event:/voc/skill/c_wilderd_skill_02",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
         },
         {
           "id": "c_wilderd_skill_03",
           "displayNameKey": "character.wildred.skill3",
           "graphAddress": "characterlab/source/stagept/c_wilderd_skill_03.stg",
           "eventPath": "event:/skill/c_wilderd_skill_03",
-          "voiceEventPath": "event:/voc/skill/c_wilderd_skill_03"
+          "voiceEventPath": "event:/voc/skill/c_wilderd_skill_03",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
         }
       ],
       "battleSkin": "default",
@@ -1631,21 +1673,27 @@
           "displayNameKey": "character.arming.skill1",
           "graphAddress": "characterlab/source/stagept/c_aming_skill_01.stg",
           "eventPath": "event:/skill/c_aming_skill_01",
-          "voiceEventPath": "event:/voc/skill/c_aming_skill_01"
+          "voiceEventPath": "event:/voc/skill/c_aming_skill_01",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_aming_skill_01_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_aming_skill_01_a"
         },
         {
           "id": "c_aming_skill_02",
           "displayNameKey": "character.arming.skill2",
           "graphAddress": "characterlab/source/stagept/c_aming_skill_02.stg",
           "eventPath": "event:/skill/c_aming_skill_02",
-          "voiceEventPath": "event:/voc/skill/c_aming_skill_02"
+          "voiceEventPath": "event:/voc/skill/c_aming_skill_02",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
         },
         {
           "id": "c_aming_skill_03",
           "displayNameKey": "character.arming.skill3",
           "graphAddress": "characterlab/source/stagept/c_aming_skill_03.stg",
           "eventPath": "event:/skill/c_aming_skill_03",
-          "voiceEventPath": "event:/voc/skill/c_aming_skill_03"
+          "voiceEventPath": "event:/voc/skill/c_aming_skill_03",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
         }
       ],
       "battleSkin": "default",
@@ -1841,21 +1889,27 @@
           "displayNameKey": "character.charlotte.skill1",
           "graphAddress": "characterlab/source/stagept/c_charlotte_skill_01.stg",
           "eventPath": "event:/skill/c_charlotte_skill_01",
-          "voiceEventPath": "event:/voc/skill/c_charlotte_skill_01"
+          "voiceEventPath": "event:/voc/skill/c_charlotte_skill_01",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_charlotte_skill_01_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_charlotte_skill_01_a"
         },
         {
           "id": "c_charlotte_skill_02",
           "displayNameKey": "character.charlotte.skill2",
           "graphAddress": "characterlab/source/stagept/c_charlotte_skill_02.stg",
           "eventPath": "event:/skill/c_charlotte_skill_02",
-          "voiceEventPath": "event:/voc/skill/c_charlotte_skill_02"
+          "voiceEventPath": "event:/voc/skill/c_charlotte_skill_02",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
         },
         {
           "id": "c_charlotte_skill_03_05",
           "displayNameKey": "character.charlotte.skill3",
           "graphAddress": "characterlab/source/stagept/c_charlotte_skill_03_05.stg",
           "eventPath": "event:/skill/c_charlotte_skill_03_05",
-          "voiceEventPath": "event:/voc/skill/c_charlotte_skill_03_05"
+          "voiceEventPath": "event:/voc/skill/c_charlotte_skill_03_05",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
         }
       ],
       "battleSkin": "default",
@@ -2057,21 +2111,27 @@
           "displayNameKey": "character.angelica.skill1",
           "graphAddress": "characterlab/source/stagept/c_angelica_skill_01.stg",
           "eventPath": "event:/skill/c_angelica_skill_01",
-          "voiceEventPath": "event:/voc/skill/c_angelica_skill_01"
+          "voiceEventPath": "event:/voc/skill/c_angelica_skill_01",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_angelica_skill_01_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_angelica_skill_01_a"
         },
         {
           "id": "c_angelica_skill_02",
           "displayNameKey": "character.angelica.skill2",
           "graphAddress": "characterlab/source/stagept/c_angelica_skill_02.stg",
           "eventPath": "event:/skill/c_angelica_skill_02",
-          "voiceEventPath": "event:/voc/skill/c_angelica_skill_02"
+          "voiceEventPath": "event:/voc/skill/c_angelica_skill_02",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
         },
         {
           "id": "c_angelica_skill_03",
           "displayNameKey": "character.angelica.skill3",
           "graphAddress": "characterlab/source/stagept/c_angelica_skill_03.stg",
           "eventPath": "event:/skill/c_angelica_skill_03",
-          "voiceEventPath": "event:/voc/skill/c_angelica_skill_03"
+          "voiceEventPath": "event:/voc/skill/c_angelica_skill_03",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
         }
       ],
       "battleSkin": "default",

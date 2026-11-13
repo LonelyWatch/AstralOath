@@ -27,7 +27,7 @@ namespace AstralOath.Client.Tests
 
         internal static string[] SlowEnemyIds() => Enumerable.Repeat("c1008", 4).ToArray();
 
-        internal static Scene LoadPlayerOpeningScene()
+        internal static Scene LoadPlayerOpeningScene(string firstHero = null)
         {
             // These tests require a deterministic first player turn. The default scene can open on either side.
             SceneManager.sceneLoaded += ConfigureOpening;
@@ -41,13 +41,13 @@ namespace AstralOath.Client.Tests
                 throw;
             }
 
-            static void ConfigureOpening(Scene loaded, LoadSceneMode mode)
+            void ConfigureOpening(Scene loaded, LoadSceneMode mode)
             {
                 if (loaded.path != ScenePath) return;
                 SceneManager.sceneLoaded -= ConfigureOpening;
                 var host = loaded.GetRootGameObjects().Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
                 typeof(BattleHudPreview).GetField("allyHeroIds", PrivateInstance).SetValue(host,
-                    new[] { "c1001", "c1062", "c1005", "c1008" });
+                    firstHero == null ? new[] { "c1001", "c1062", "c1005", "c1008" } : Enumerable.Repeat(firstHero, 4).ToArray());
                 typeof(BattleHudPreview).GetField("enemyHeroIds", PrivateInstance).SetValue(host, SlowEnemyIds());
             }
         }
@@ -108,7 +108,8 @@ namespace AstralOath.Client.Tests
 
             var camera = roots.SelectMany(root => root.GetComponentsInChildren<Camera>())
                 .Single(item => item.name == "Battle Camera");
-            Assert.That(camera.pixelRect.width / camera.pixelRect.height, Is.EqualTo(16f / 9f).Within(0.01f));
+            Assert.That(camera.rect, Is.EqualTo(new Rect(0, 0, 1, 1)));
+            Assert.That(camera.pixelRect.width / camera.pixelRect.height, Is.EqualTo(Screen.width / (float)Screen.height).Within(0.01f));
             foreach (var actor in actors)
             {
                 Vector3 point = camera.WorldToViewportPoint(actor.transform.TransformPoint(actor.sharedMesh.bounds.center));
@@ -117,7 +118,10 @@ namespace AstralOath.Client.Tests
             }
 
             var day = roots.Single(root => root.name == "Forest2Stage");
-            AssertSlotsOnGrass(day, units);
+            var forest = AssetDatabase.LoadAssetAtPath<GameObject>(
+                "Assets/Game/Modules/BattleScene/Res/Prefab/Forest2Stage.prefab");
+            var authoredGround = forest.transform.Find("Ground").GetComponent<SpriteRenderer>();
+            AssertSlotsOnGrass(day, units, authoredGround);
             string output = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_CAPTURE_DIR");
             if (!string.IsNullOrWhiteSpace(output))
                 Capture(camera, output);
@@ -147,14 +151,15 @@ namespace AstralOath.Client.Tests
             Assert.That(!first, Is.True, "Disabling an actor must dispose its Spine mesh object.");
         }
 
-        private static void AssertSlotsOnGrass(GameObject stage, Transform units)
+        private static void AssertSlotsOnGrass(GameObject stage, Transform units, SpriteRenderer authored = null)
         {
             var ground = stage.transform.Find("Ground").GetComponent<SpriteRenderer>();
             Bounds bounds = ground.bounds;
             // Both atlas cuts have rocks and shrubs in their upper rows. Use the lower
             // 160 of 256 rows where the grass spans the playable width.
-            float grassTop = bounds.min.y + bounds.size.y * (160f / 256f);
-            Assert.That(bounds.size.x / bounds.size.y,
+            Bounds sourceBounds = authored ? authored.bounds : bounds;
+            float grassTop = sourceBounds.min.y + sourceBounds.size.y * (160f / 256f);
+            Assert.That(sourceBounds.size.x / sourceBounds.size.y,
                 Is.EqualTo(ground.sprite.rect.width / ground.sprite.rect.height).Within(0.02f));
             foreach (string team in new[] { "Allies", "Enemies" })
             foreach (Transform slot in units.Find(team))
@@ -444,8 +449,71 @@ namespace AstralOath.Client.Tests
             yield return null;
             Assert.That(host.SimulationSnapshot.LastCommandSequence, Is.EqualTo(1UL));
             Assert.That(host.SimulationSnapshot.GetUnit(actor.InstanceId).GetCooldown("c1005.s3"), Is.GreaterThan(0));
-            Assert.That(host.SimulationSnapshot.AllySoul, Is.EqualTo(20), "Auto never arms or consumes Soul Burn.");
+            Assert.That(host.SimulationSnapshot.AllySoul, Is.EqualTo(22), "Auto earns the skill's two points without consuming Soul Burn.");
             Click(map.Require<GameButton>("auto"), raycaster, eventSystem);
+        }
+
+        [UnityTest]
+        public IEnumerator SoulGaugeFillsEightNativeSlotsAndLoopsOnlyEarnedSouls()
+        {
+            scene = LoadPlayerOpeningScene();
+            yield return null;
+            yield return null;
+            var roots = scene.GetRootGameObjects();
+            var host = roots.Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            var map = roots.SelectMany(root => root.GetComponentsInChildren<BindingMap>()).Single();
+            var simulation = typeof(BattleHudPreview).GetField("simulation", PrivateInstance).GetValue(host);
+            var gauge = simulation.GetType().GetField("soulGauge", PrivateInstance).GetValue(simulation);
+            var present = simulation.GetType().GetMethod("Present", PrivateInstance);
+            var constructor = typeof(BattleFlowEvent).GetConstructors(PrivateInstance).Single();
+            var root = map.transform.Find("Soul Gauge/Soul Indicators");
+            var fill = map.Require<Image>("soulFill");
+
+            void SetSoul(int amount, BattleSide side = BattleSide.Ally) =>
+                present.Invoke(simulation, new[] { constructor.Invoke(new object[] { 1UL, 1, BattleFlowEventKind.SoulChanged,
+                    "ally-1", null, amount, null, null, BattleActionOrigin.Primary, null, null, side, null,
+                    BattleHitKind.None, null, false, null }) });
+            int VisibleSouls() => root.Cast<Transform>().Count(slot => slot.gameObject.activeSelf);
+
+            Assert.That(root.childCount, Is.EqualTo(8));
+            Assert.That(VisibleSouls(), Is.EqualTo(2));
+            Assert.That(map.Require<GameText>("soulCount").text, Is.EqualTo("20 / 80"));
+            SetSoul(79, BattleSide.Enemy);
+            Assert.That(VisibleSouls(), Is.EqualTo(2), "Enemy soul changes must not repaint the player gauge.");
+            SetSoul(9);
+            Assert.That(VisibleSouls(), Is.Zero);
+            Assert.That(fill.fillAmount, Is.EqualTo(.9f).Within(.001f));
+            SetSoul(10);
+            Assert.That(VisibleSouls(), Is.EqualTo(1));
+            Assert.That(fill.fillAmount, Is.Zero);
+            SetSoul(79);
+            Assert.That(VisibleSouls(), Is.EqualTo(7));
+            SetSoul(80);
+            Assert.That(VisibleSouls(), Is.EqualTo(8));
+            Assert.That(fill.fillAmount, Is.Zero);
+            gauge.GetType().GetMethod("Tick").Invoke(gauge, new object[] { 1.25f });
+            foreach (Transform slot in root)
+                Assert.That(slot.GetComponent<MeshFilter>().sharedMesh.vertexCount, Is.GreaterThan(0), slot.name);
+            var first = root.GetChild(0);
+            var last = root.GetChild(7);
+            Assert.That(last.localPosition.x - first.localPosition.x, Is.EqualTo(445.0071f).Within(.01f));
+
+            string output = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_CAPTURE_DIR");
+            if (!string.IsNullOrWhiteSpace(output))
+            {
+                var burn = map.Require<GameButton>("soulBurn");
+                bool previous = burn.gameObject.activeSelf;
+                burn.gameObject.SetActive(false);
+                try { Capture(map.GetComponentInParent<Canvas>().worldCamera, output, "battle-soul-eight.png"); }
+                finally { burn.gameObject.SetActive(previous); }
+            }
+            SetSoul(68);
+            Assert.That(VisibleSouls(), Is.EqualTo(6));
+            Assert.That(fill.fillAmount, Is.EqualTo(.8f).Within(.001f));
+            Assert.That(map.Require<GameText>("soulCount").text, Is.EqualTo("68 / 80"));
+            host.RestartBattle();
+            Assert.That(root.gameObject.activeSelf, Is.False, "Restart must detach the old effect roots immediately.");
+            Assert.That(map.transform.Find("Soul Gauge/Soul Indicators").childCount, Is.EqualTo(8));
         }
 
         [UnityTest]
@@ -518,33 +586,29 @@ namespace AstralOath.Client.Tests
         [UnityTest]
         public IEnumerator MeleeActorsMoveToTheTargetAndReturnToTheirSlot()
         {
-            scene = EditorSceneManager.LoadSceneInPlayMode(ScenePath, new LoadSceneParameters(LoadSceneMode.Additive));
+            scene = LoadPlayerOpeningScene("c1001");
             yield return null;
             yield return null;
             var roots = scene.GetRootGameObjects();
             var preview = roots.Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
             var units = roots.Single(root => root.name == "Units").transform;
-            preview.StartBattle();
-
-            BattlePreviewActor mover = null;
-            Vector3 home = Vector3.zero;
-            float deadline = Time.realtimeSinceStartup + 22f;
-            while (!mover && Time.realtimeSinceStartup < deadline)
-            {
-                var snapshot = preview.SimulationSnapshot;
-                var actor = snapshot.GetUnit(snapshot.CurrentActorId);
-                var target = snapshot.Units.FirstOrDefault(unit => unit.IsAlive && unit.Slot.Side == BattleSide.Enemy);
-                if (actor?.Slot.Side == BattleSide.Ally && target != null &&
-                    preview.TrySelectBattleTarget(target.InstanceId) && actor.DefinitionId == "c1001")
-                {
-                    mover = units.Find("Allies").GetChild(actor.Slot.Position - 1).GetComponentInChildren<BattlePreviewActor>();
-                    home = mover.transform.localPosition;
-                }
+            var skill = preview.GetComponentInChildren<BindingMap>().Require<GameButton>("skill1");
+            float readyDeadline = Time.realtimeSinceStartup + 10f;
+            while ((!skill.IsInteractable() || Time.unscaledDeltaTime >= .05f) && Time.realtimeSinceStartup < readyDeadline)
                 yield return null;
-            }
-            Assert.That(mover, Is.Not.Null, "Ras must reach a playable turn.");
+            Assert.That(skill.IsInteractable(), Is.True, "Ras must reach a playable turn.");
+
+            var snapshot = preview.SimulationSnapshot;
+            var actor = snapshot.GetUnit(snapshot.CurrentActorId);
+            Assert.That(actor.DefinitionId, Is.EqualTo("c1001"));
+            var mover = units.Find("Allies").GetChild(actor.Slot.Position - 1).GetComponentInChildren<BattlePreviewActor>();
+            var home = mover.transform.localPosition;
             var slotPosition = mover.transform.parent.position;
-            deadline = Time.realtimeSinceStartup + 4f;
+            var target = snapshot.Units.First(unit => unit.IsAlive && unit.Slot.Side == BattleSide.Enemy);
+            skill.onClick.Invoke();
+            Assert.That(preview.TrySelectBattleTarget(target.InstanceId), Is.True, "Ras submits S1 through the battle controller.");
+
+            float deadline = Time.realtimeSinceStartup + 4f;
             while (mover.transform.localPosition.x - home.x < 0.25f && Time.realtimeSinceStartup < deadline)
                 yield return null;
             Assert.That(mover.transform.localPosition.x - home.x, Is.GreaterThan(0.24f));
@@ -707,7 +771,7 @@ namespace AstralOath.Client.Tests
         {
             foreach (string wanted in new[] { "c1005", "c1001", "c1062" })
             {
-                scene = EditorSceneManager.LoadSceneInPlayMode(ScenePath, new LoadSceneParameters(LoadSceneMode.Additive));
+                scene = LoadPlayerOpeningScene(wanted);
                 yield return null;
                 yield return null;
                 var roots = scene.GetRootGameObjects();
@@ -717,7 +781,6 @@ namespace AstralOath.Client.Tests
                 var background = roots.Single(root => root.name == "Forest2Stage");
                 Vector3 originalPosition = camera.transform.position;
                 float originalSize = camera.orthographicSize;
-                preview.StartBattle();
                 // Scene loading and synchronous preparation can occupy the frame before this
                 // test's synthetic click. Wait for visible frames, as a real user would, so the
                 // next LateUpdate cannot consume the loading interval as the entire skill.
@@ -729,54 +792,54 @@ namespace AstralOath.Client.Tests
                     Assert.That(Time.realtimeSinceStartup, Is.LessThan(readyDeadline), "The battle must become ready for an observable input frame.");
                     stableFrames = Time.unscaledDeltaTime > 0f && Time.unscaledDeltaTime < .05f ? stableFrames + 1 : 0;
                 }
-                bool submitted = false;
-                float deadline = Time.realtimeSinceStartup + 45f;
-                while (!submitted && Time.realtimeSinceStartup < deadline)
-                {
-                    var snapshot = preview.SimulationSnapshot;
-                    var actor = snapshot.GetUnit(snapshot.CurrentActorId);
-                    var first = map.Require<GameButton>("skill1");
-                    if (actor?.Slot.Side == BattleSide.Ally && first.gameObject.activeInHierarchy && first.IsInteractable())
-                    {
-                        bool ultimate = actor.DefinitionId == wanted;
-                        map.Require<GameButton>(ultimate ? "skill3" : "skill1").onClick.Invoke();
-                        var targetSide = ultimate && wanted == "c1062" ? BattleSide.Ally : BattleSide.Enemy;
-                        string target = snapshot.Units.First(unit => unit.IsAlive && unit.Slot.Side == targetSide).InstanceId;
-                        submitted = preview.TrySelectBattleTarget(target) && ultimate;
-                    }
+                var skill = map.Require<GameButton>("skill3");
+                float deadline = Time.realtimeSinceStartup + 15f;
+                while ((!skill.gameObject.activeInHierarchy || !skill.IsInteractable()) && Time.realtimeSinceStartup < deadline)
                     yield return null;
-                }
-                Assert.That(submitted, Is.True, wanted + " reaches its real playable turn.");
-                yield return null;
+                Assert.That(skill.gameObject.activeInHierarchy && skill.IsInteractable(), Is.True, wanted + " reaches its real playable turn.");
+                var snapshot = preview.SimulationSnapshot;
+                Assert.That(snapshot.GetUnit(snapshot.CurrentActorId).DefinitionId, Is.EqualTo(wanted));
+                var targetSide = wanted == "c1062" ? BattleSide.Ally : BattleSide.Enemy;
+                string target = snapshot.Units.First(unit => unit.IsAlive && unit.Slot.Side == targetSide).InstanceId;
+                skill.onClick.Invoke();
+                Assert.That(preview.TrySelectBattleTarget(target), Is.True, wanted + " submits S3 through the battle controller.");
 
+                var simulation = typeof(BattleHudPreview).GetField("simulation", PrivateInstance).GetValue(preview);
+                var presentedSkill = simulation.GetType().GetField("presentedSkillId", PrivateInstance);
+                string skillId = wanted + ".s3";
                 deadline = Time.realtimeSinceStartup + 2f;
-                while (!preview.IsCinematicVisible && Time.realtimeSinceStartup < deadline) yield return null;
+                while ((!preview.IsCinematicVisible || (string)presentedSkill.GetValue(simulation) != skillId) &&
+                    Time.realtimeSinceStartup < deadline) yield return null;
+                Assert.That(presentedSkill.GetValue(simulation), Is.EqualTo(skillId));
                 Assert.That(preview.IsCinematicVisible, Is.True, wanted + " enters its source cinematic.");
                 Assert.That(map.transform.Find("Skills").gameObject.activeInHierarchy, Is.False);
-                bool sawCutin = false, sawStageReplacement = false, captured = false;
+                bool sawCutin = false, sawStageReplacement = false;
                 string output = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_CAPTURE_DIR");
                 deadline = Time.realtimeSinceStartup + 15f;
                 while (preview.IsCinematicVisible && Time.realtimeSinceStartup < deadline)
                 {
-                    var cutin = camera.GetComponentsInChildren<MeshRenderer>().FirstOrDefault(item => item.name.StartsWith("CUTIN "));
-                    sawCutin |= cutin && cutin.sharedMaterial.mainTexture;
-                    if (cutin)
+                    var cutin = camera.GetComponentsInChildren<MeshRenderer>().FirstOrDefault(item => item.name.StartsWith("CUTIN ", StringComparison.Ordinal));
+                    if (cutin && cutin.sharedMaterial.mainTexture)
                     {
                         Assert.That(cutin.bounds.size.x + .001f, Is.GreaterThanOrEqualTo(camera.orthographicSize * 2 * camera.aspect));
                         Assert.That(cutin.bounds.size.y + .001f, Is.GreaterThanOrEqualTo(camera.orthographicSize * 2));
+                        if (!sawCutin && !string.IsNullOrWhiteSpace(output))
+                            Capture(camera, output, "battle-" + wanted + "-s3.png");
+                        sawCutin = true;
                     }
-                    sawStageReplacement |= !background.activeSelf;
-                    if (!captured && ((wanted == "c1005" && !background.activeSelf &&
-                        camera.transform.Find("BGHATCH")) || cutin))
+                    if (wanted == "c1005" && sawCutin && !cutin && !background.activeSelf &&
+                        camera.transform.Find("BGHATCH") is Transform hatch && hatch.gameObject.activeInHierarchy)
                     {
-                        captured = true;
-                        if (!string.IsNullOrWhiteSpace(output)) Capture(camera, output, "battle-" + wanted + "-s3.png");
+                        if (!sawStageReplacement && !string.IsNullOrWhiteSpace(output))
+                            Capture(camera, output, "battle-c1005-s3-resumed-stage.png");
+                        sawStageReplacement = true;
                     }
                     yield return null;
                 }
                 Assert.That(preview.IsCinematicVisible, Is.False, "The cinematic ends without blocking the next turn.");
-                if (wanted == "c1005") Assert.That(sawStageReplacement, Is.True, "Mercedes replaces the stage instead of using a CUTIN.");
-                else Assert.That(sawCutin, Is.True, wanted + " renders its original CUTIN frames.");
+                Assert.That(sawCutin, Is.True, wanted + " renders its original CUTIN frames.");
+                if (wanted == "c1005")
+                    Assert.That(sawStageReplacement, Is.True, "Mercedes resumes the original skill stage after the CUTIN.");
                 Assert.That(camera.transform.position, Is.EqualTo(originalPosition));
                 Assert.That(camera.orthographicSize, Is.EqualTo(originalSize));
                 Assert.That(background.activeSelf, Is.True);

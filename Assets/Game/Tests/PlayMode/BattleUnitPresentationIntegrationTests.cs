@@ -384,29 +384,105 @@ namespace AstralOath.Client.Tests
             }
         }
 
-        void Capture(string name)
+        [UnityTest]
+        public IEnumerator SkillAndOverheadStatusHoldShowDetailsWithoutCasting()
         {
-            string output = Environment.GetEnvironmentVariable("ASTRAL_UNIT_CAPTURE_DIR");
+            var eventSystem = scene.GetRootGameObjects().Select(root => root.GetComponent<UnityEngine.EventSystems.EventSystem>())
+                .Single(item => item);
+            var simulation = typeof(BattleHudPreview).GetField("simulation", Private).GetValue(host);
+            var ras = host.SimulationSnapshot.GetUnit("ally-1");
+            simulation.GetType().GetField("displayedActor", Private).SetValue(simulation, ras);
+            var s2 = map.Require<GameButton>("skill2");
+            var pointer = new UnityEngine.EventSystems.PointerEventData(eventSystem)
+            {
+                pointerId = 4,
+                button = UnityEngine.EventSystems.PointerEventData.InputButton.Left
+            };
+            var skillHold = s2.GetComponent<GameLongPress>();
+            Assert.That(skillHold, Is.Not.Null);
+            skillHold.OnPointerDown(pointer);
+            yield return new WaitForSecondsRealtime(.55f);
+            var inspection = map.transform.Find("Battle Inspection");
+            Assert.That(inspection.gameObject.activeSelf, Is.True);
+            var labels = inspection.GetComponentsInChildren<GameText>();
+            Assert.That(labels.Any(label => label.text.Contains("获得灵魂") && label.font.faceInfo.familyName == "EpicSeven"), Is.True);
+            Assert.That(labels.Any(label => label.text.Contains("冷却时间3回合")), Is.True);
+            var skillCard = inspection.GetComponentsInChildren<BindingMap>().Single(item => item.Require<GameText>("title").text == "指挥一击");
+            Assert.That(skillCard.Require<Image>("background").sprite.name, Is.EqualTo("_box_equip_0"));
+            Assert.That(skillCard.Require<Image>("burnDivider").sprite.name, Is.EqualTo("_bar_2"));
+            var primary = (RectTransform)skillCard.transform;
+            Assert.That(inspection.GetComponent<Canvas>().overrideSorting, Is.True);
+            var secondary = (RectTransform)inspection.GetComponentsInChildren<BindingMap>()
+                .Single(item => item.Require<GameText>("title").text == "夹攻").transform;
+            Assert.That(primary.anchoredPosition.x, Is.GreaterThan(secondary.anchoredPosition.x));
+            var firstSkill = (RectTransform)map.Require<GameButton>("skill1").transform;
+            float firstSkillCenter = ((RectTransform)inspection).InverseTransformPoint(firstSkill.position).x;
+            Assert.That(primary.anchoredPosition.x + primary.rect.width, Is.InRange(firstSkillCenter - 135f, firstSkillCenter),
+                "Keep the skill card to the left of the skill bar.");
+            Assert.That(labels.Any(label => label.text.Contains("灵魂燃烧效果")), Is.True);
+            Assert.That(labels.Any(label => label.text == "夹攻"), Is.True);
+            Assert.That(labels.Any(label => label.text.Contains("强化技能")), Is.True);
+            skillHold.OnPointerUp(pointer);
+            s2.OnPointerClick(pointer);
+            Assert.That(host.SimulationSnapshot.LastCommandSequence, Is.Zero);
+            Capture("long-press-skill", new Vector2Int(2608, 1200));
+            inspection.Find("Dismiss Inspection").GetComponent<GameButton>().onClick.Invoke();
+            Assert.That(inspection.gameObject.activeSelf, Is.False);
+
+            var view = ((IDictionary)simulation.GetType().GetField("views", Private).GetValue(simulation))["ally-1"];
+            var status = (BattleStatusSnapshot)Activator.CreateInstance(typeof(BattleStatusSnapshot),
+                Private, null, new object[] { BattleStatusKind.DefenseUp, 2, 6000 }, null);
+            view.GetType().GetMethod("ApplyStatus").Invoke(view, new object[] { status });
+            var icon = map.transform.Find("Unit Status/Allies/01 Front/Frame/Status Icons").GetChild(0);
+            var buffHold = icon.GetComponent<GameLongPress>();
+            Assert.That(buffHold, Is.Not.Null);
+            buffHold.OnPointerDown(pointer);
+            yield return new WaitForSecondsRealtime(.55f);
+            Assert.That(inspection.gameObject.activeSelf, Is.True);
+            labels = inspection.GetComponentsInChildren<GameText>();
+            Assert.That(labels.Any(label => label.text == "防御力提升"), Is.True);
+            Assert.That(labels.Any(label => label.text.Contains("60%") && label.font.faceInfo.familyName == "EpicSeven"), Is.True);
+            Assert.That(labels.Any(label => label.text.Contains("剩余")), Is.False);
+            buffHold.OnPointerUp(pointer);
+            Capture("long-press-status", new Vector2Int(2608, 1200));
+            host.PauseBattle();
+            Assert.That(inspection.gameObject.activeSelf, Is.False);
+        }
+
+        void Capture(string name, Vector2Int? requestedSize = null)
+        {
+            string output = Environment.GetEnvironmentVariable("ASTRAL_UNIT_CAPTURE_DIR") ??
+                Environment.GetEnvironmentVariable("ASTRAL_BATTLE_CAPTURE_DIR");
             if (string.IsNullOrWhiteSpace(output)) return;
             Directory.CreateDirectory(output);
             var camera = map.GetComponentInParent<Canvas>().worldCamera;
-            var target = RenderTexture.GetTemporary(1920, 1080, 24);
-            var image = new Texture2D(1920, 1080, TextureFormat.RGB24, false);
+            var size = requestedSize ?? new Vector2Int(camera.pixelWidth, camera.pixelHeight);
+            int width = size.x, height = size.y;
+            var target = RenderTexture.GetTemporary(width, height, 24);
+            var image = new Texture2D(width, height, TextureFormat.RGB24, false);
             var previous = camera.targetTexture; var previousActive = RenderTexture.active;
             var rect = camera.rect; var aspect = camera.aspect;
+            var viewport = camera.GetComponent<BattlePreviewViewport>();
+            var apply = typeof(BattlePreviewViewport).GetMethod("ApplyScreen", Private);
             try
             {
-                camera.targetTexture = target; camera.rect = new Rect(0, 0, 1, 1); camera.aspect = 1920f/1080f;
+                camera.targetTexture = target;
+                if (requestedSize.HasValue) apply.Invoke(viewport, new object[] { size, new Rect(Vector2.zero, size) });
+                camera.Render();
+                if (requestedSize.HasValue) apply.Invoke(viewport, new object[] { size, new Rect(Vector2.zero, size) });
                 Canvas.ForceUpdateCanvases();
                 var simulation = typeof(BattleHudPreview).GetField("simulation", Private).GetValue(host);
                 simulation.GetType().GetMethod("Tick").Invoke(simulation, new object[] { 0f });
                 Canvas.ForceUpdateCanvases(); camera.Render(); RenderTexture.active = target;
-                image.ReadPixels(new Rect(0,0,1920,1080),0,0); image.Apply(false,false);
+                image.ReadPixels(new Rect(0, 0, width, height),0,0); image.Apply(false,false);
                 File.WriteAllBytes(Path.Combine(output, name + ".png"), image.EncodeToPNG());
             }
             finally
             {
-                camera.targetTexture = previous; camera.rect = rect; camera.aspect = aspect;
+                camera.targetTexture = previous;
+                if (requestedSize.HasValue)
+                    apply.Invoke(viewport, new object[] { new Vector2Int(Screen.width, Screen.height), Screen.safeArea });
+                camera.rect = rect; camera.aspect = aspect;
                 RenderTexture.active = previousActive; RenderTexture.ReleaseTemporary(target); UnityEngine.Object.Destroy(image);
             }
         }

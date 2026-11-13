@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AstralOath.Client.Common;
 using AstralOath.Shared.Battle;
 using UnityEngine;
 using UnityEngine.UI;
@@ -63,15 +64,18 @@ namespace AstralOath.Client.BattleScene
         private static readonly Color OtherDigit = new Color32(255, 133, 113, 255);
         private readonly BattleStatusArt art;
         private readonly int columns;
+        private readonly Action<BattleStatusSnapshot, Image> inspect;
         private readonly float glyphScale;
         private readonly RectTransform root;
-        private readonly List<(BattleStatusKind Kind, int Turns, BattleStatusArt.Entry Art)> statuses =
-            new List<(BattleStatusKind, int, BattleStatusArt.Entry)>();
+        private readonly List<(BattleStatusSnapshot Status, BattleStatusArt.Entry Art)> statuses =
+            new List<(BattleStatusSnapshot, BattleStatusArt.Entry)>();
         private readonly List<Slot> slots = new List<Slot>();
 
-        public BattleStatusIcons(RectTransform frame, BattleStatusArt art, int columns)
+        public BattleStatusIcons(RectTransform frame, BattleStatusArt art, int columns,
+            Action<BattleStatusSnapshot, Image> inspect = null)
         {
             this.art = art;
+            this.inspect = inspect;
             this.columns = Mathf.Clamp(columns, 1, MaximumColumns);
             float unit = frame.rect.width / SourceFrameWidth;
             glyphScale = unit * SourceIconScale;
@@ -83,12 +87,12 @@ namespace AstralOath.Client.BattleScene
         {
             if (!art.TryGet(status.Kind, out var entry)) return;
             int current = IndexOf(status.Kind);
-            var next = (status.Kind, status.RemainingTurns, entry);
+            var next = (status, entry);
             if (current >= 0) statuses[current] = next;
             else
             {
                 int index = entry.IsBuff
-                    ? statuses.FindIndex(item => !item.Art.IsBuff || item.Turns < status.RemainingTurns)
+                    ? statuses.FindIndex(item => !item.Art.IsBuff || item.Status.RemainingTurns < status.RemainingTurns)
                     : -1;
                 if (index < 0) statuses.Add(next);
                 else statuses.Insert(index, next);
@@ -112,15 +116,15 @@ namespace AstralOath.Client.BattleScene
                 var displayed = statuses[index];
                 BattleStatusSnapshot current = null;
                 foreach (var candidate in snapshot)
-                    if (candidate.Kind == displayed.Kind) { current = candidate; break; }
+                    if (candidate.Kind == displayed.Status.Kind) { current = candidate; break; }
                 if (current == null || (current.Kind == BattleStatusKind.Barrier && current.Strength <= 0))
                 {
                     statuses.RemoveAt(index);
                     changed = true;
                 }
-                else if (current.RemainingTurns != displayed.Turns)
+                else if (current.RemainingTurns != displayed.Status.RemainingTurns || current.Strength != displayed.Status.Strength)
                 {
-                    statuses[index] = (displayed.Kind, current.RemainingTurns, displayed.Art);
+                    statuses[index] = (current, displayed.Art);
                     changed = true;
                 }
             }
@@ -130,7 +134,7 @@ namespace AstralOath.Client.BattleScene
             if (changed) Draw();
         }
 
-        private int IndexOf(BattleStatusKind kind) => statuses.FindIndex(item => item.Kind == kind);
+        private int IndexOf(BattleStatusKind kind) => statuses.FindIndex(item => item.Status.Kind == kind);
 
         private void Draw()
         {
@@ -140,13 +144,13 @@ namespace AstralOath.Client.BattleScene
                 {
                     int column = index % columns;
                     int row = index / columns;
-                    var slot = new Slot(root, new Vector2(column, row) * (SourceIconSize * glyphScale), glyphScale);
+                    var slot = new Slot(root, new Vector2(column, row) * (SourceIconSize * glyphScale), glyphScale, inspect);
                     // Draw upper rows first so their tiles cannot cover lower-row turn digits.
                     slot.Icon.transform.SetSiblingIndex(column);
                     slots.Add(slot);
                 }
                 var item = statuses[index];
-                slots[index].Show(item.Art.Icon, item.Art.IsBuff ? BuffDigit : OtherDigit, item.Turns, art.Digits);
+                slots[index].Show(item.Status, item.Art.Icon, item.Art.IsBuff ? BuffDigit : OtherDigit, art.Digits);
             }
             for (int index = statuses.Count; index < slots.Count; index++) slots[index].Icon.gameObject.SetActive(false);
         }
@@ -180,17 +184,31 @@ namespace AstralOath.Client.BattleScene
         {
             public readonly Image Icon;
             private readonly Image firstDigit, secondDigit;
+            private readonly GameLongPress hold;
+            private BattleStatusSnapshot status;
 
-            public Slot(Transform parent, Vector2 position, float scale)
+            public Slot(Transform parent, Vector2 position, float scale, Action<BattleStatusSnapshot, Image> inspect)
             {
                 Icon = CreateImage("Status", parent, position, Vector2.one * (SourceIconSize * scale));
+                if (inspect != null)
+                {
+                    Icon.raycastTarget = true;
+                    hold = Icon.gameObject.AddComponent<GameLongPress>();
+                    hold.Held = () =>
+                    {
+                        if (status != null) inspect(status, Icon);
+                    };
+                }
                 Vector2 digitSize = new Vector2(12f, 16f) * scale;
                 firstDigit = CreateImage("Remaining Turns", Icon.transform, new Vector2(-4f, 16f) * scale, digitSize);
                 secondDigit = CreateImage("Remaining Turns (ones)", Icon.transform, new Vector2(4f, 16f) * scale, digitSize);
             }
 
-            public void Show(Sprite icon, Color digitColor, int turns, Sprite[] digits)
+            public void Show(BattleStatusSnapshot status, Sprite icon, Color digitColor, Sprite[] digits)
             {
+                if (hold && this.status?.Kind != status.Kind) hold.Cancel();
+                this.status = status;
+                int turns = status.RemainingTurns;
                 Icon.sprite = icon;
                 Icon.gameObject.SetActive(true);
                 bool twoDigits = turns >= 10;

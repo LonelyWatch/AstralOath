@@ -30,16 +30,113 @@ static class Program
         }
         return peak;
     }
+    static void AuditVariants(BattleVoice voice, FmodCharacterAudioService service, FMOD.Studio.System studio,
+        FMOD.DSP meter, string json, string[] skills)
+    {
+        using var catalog = JsonDocument.Parse(json);
+        var rows = catalog.RootElement.GetProperty("characters").EnumerateArray()
+            .SelectMany(character => character.GetProperty("skills").EnumerateArray())
+            .ToDictionary(skill => skill.GetProperty("id").GetString(), StringComparer.Ordinal);
+        service.CapturePerformanceDiagnostics = true;
+        foreach (string skill in skills)
+        {
+            string path = rows[skill].GetProperty("voiceEventPath").GetString();
+            Check(studio.getEvent(path, out var description), "voice " + path);
+            Check(description.getLength(out int length), "duration " + path);
+            Check(description.getParameterDescriptionCount(out int parameterCount), "parameter count " + path);
+            var parameters = new List<string>();
+            for (int i = 0; i < parameterCount; i++)
+            {
+                Check(description.getParameterDescriptionByIndex(i, out var parameter), "parameter " + path);
+                parameters.Add(parameter.name.ToString());
+            }
+            var takes = new HashSet<string>(StringComparer.Ordinal);
+            for (int cast = 0; cast < 8; cast++)
+            {
+                service.ResetPerformanceDiagnostics();
+                int before = voice.StartedVoiceCount;
+                voice.Play(skill);
+                Require(voice.StartedVoiceCount == before + 1, "Expected one native voice event: " + skill);
+                // Some authored programmer events expose a 20 ms trigger while the clips continue.
+                float peak = Meter(voice, meter, length <= 20 ? 3500 : Math.Max(length + 100, 1000));
+                var keys = service.DiagnosticSoundKeys.Order().ToArray();
+                Require(peak > 0.00001f && keys.Length != 0, "Skill produced no Japanese samples: " + skill);
+                takes.Add(string.Join(",", keys));
+                Console.WriteLine(JsonSerializer.Serialize(new { skill, cast, keys, length,
+                    parameters, peak }));
+            }
+            Require(takes.Count > 1, "Repeated source skill event used fewer than two distinct Japanese takes: " + skill);
+        }
+
+        var contextualPlay = typeof(BattleVoice).GetMethod("PlaySkill", new[] { typeof(string), typeof(bool), typeof(bool) });
+        Require(contextualPlay != null, "BattleVoice must accept an accepted ally call or answer cue");
+        foreach (var cue in new[]
+        {
+            (Skill: "c_ras_skill_02", Calls: true, Answers: false, Prefix: "voc_c1001_call_"),
+            (Skill: "c_mercedes_skill_01", Calls: false, Answers: true, Prefix: "voc_c1005_answer_"),
+            (Skill: "c_kise_skill_02", Calls: true, Answers: false, Prefix: "voc_c1006_skill2_")
+        })
+        {
+            service.ResetPerformanceDiagnostics();
+            int before = voice.StartedVoiceCount;
+            contextualPlay.Invoke(voice, new object[] { cue.Skill, cue.Calls, cue.Answers });
+            Require(voice.StartedVoiceCount == before + 1, "Expected exactly one native event for " + cue.Skill);
+            float peak = Meter(voice, meter, 1800);
+            var keys = service.DiagnosticSoundKeys.Order().ToArray();
+            Require(keys.Length != 0 && keys.All(key => key.StartsWith(cue.Prefix, StringComparison.Ordinal)) && peak > 0.00001f,
+                "Unexpected Japanese samples for " + cue.Skill + ": " + string.Join(", ", keys));
+            Console.WriteLine(JsonSerializer.Serialize(new { cue.Skill, cue.Calls, cue.Answers, keys, peak }));
+        }
+    }
+
+    static void RecordButton(string sounds, string outputPath)
+    {
+        Check(FMOD.Studio.System.create(out var studio), "create button capture system");
+        var output = Marshal.StringToCoTaskMemUTF8(outputPath);
+        try
+        {
+            Check(studio.getCoreSystem(out var core), "button capture core");
+            Check(core.setOutput(FMOD.OUTPUTTYPE.WAVWRITER), "button capture output");
+            Check(studio.initialize(64, FMOD.Studio.INITFLAGS.SYNCHRONOUS_UPDATE, FMOD.INITFLAGS.NORMAL, output),
+                "initialize button capture");
+            foreach (string bank in new[] { "master.bank", "master.strings.bank", "ui1.bank" })
+                Check(studio.loadBankMemory(File.ReadAllBytes(Path.Combine(sounds, bank)),
+                    FMOD.Studio.LOAD_BANK_FLAGS.NORMAL, out _), bank);
+            Check(studio.flushCommands(), "load button capture banks");
+            Check(studio.getEvent("event:/ui/btn_normal", out var description), "button event");
+            Check(description.getID(out var buttonId), "button event ID");
+            Check(FMOD.Studio.Util.parseID("{1d184b0f-78fa-4e74-b456-1388254dc51f}", out var sourceId), "button source ID");
+            Require(buttonId.Equals(sourceId), "Unexpected button event identity");
+            Check(description.loadSampleData(), "preload button sample");
+            Check(studio.flushSampleLoading(), "finish loading button sample");
+            Check(description.createInstance(out var instance), "create button event");
+            Check(instance.start(), "start button");
+            var timer = System.Diagnostics.Stopwatch.StartNew();
+            while (timer.ElapsedMilliseconds < 900)
+            {
+                Check(studio.update(), "render button");
+                Thread.Sleep(10);
+            }
+            Check(instance.release(), "release button event");
+        }
+        finally { studio.release(); Marshal.FreeCoTaskMem(output); }
+    }
+
     static int Main(string[] args)
     {
         try
         {
-            if (args.Length != 2) throw new ArgumentException("AudioProbe <project root> <read-only source sound root>");
+            if (args.Length < 2) throw new ArgumentException("AudioProbe <project root> <read-only source sound root> [skill event IDs...]");
             string root = Path.GetFullPath(args[0]);
             string sounds = Path.GetFullPath(args[1]);
             string native = Path.Combine(root, "Assets/ThirdParty/FMOD/Plugins/x86_64/fmodstudioL.dll");
             NativeLibrary.SetDllImportResolver(typeof(FMOD.System).Assembly, (name, assembly, path) =>
                 name.StartsWith("fmod", StringComparison.Ordinal) ? NativeLibrary.Load(native) : IntPtr.Zero);
+            if (args.Length == 4 && args[2] == "--record-button")
+            {
+                RecordButton(sounds, args[3]);
+                return 0;
+            }
             string json = File.ReadAllText(Path.Combine(root, "Assets/Game/Modules/CharacterLab/Configs/catalog.json"));
             var addresses = JsonDocument.Parse(json).RootElement.GetProperty("sharedBanks").EnumerateArray().Select(a => a.GetString()).ToArray();
             var assets = addresses.Select(address => new TextAsset(File.ReadAllBytes(Path.Combine(sounds,
@@ -56,6 +153,12 @@ static class Program
             Check(master.getDSP(0, out var meter), "master DSP");
             Check(meter.setMeteringEnabled(false, true), "enable metering");
             var studio = Field<FMOD.Studio.System>(service, "studio");
+            if (args.Length > 2)
+            {
+                AuditVariants(voice, service, studio, meter, json, args[2..]);
+                return 0;
+            }
+
             const string burnPath = "event:/battle/soulburn/ready";
             Check(studio.getEvent(burnPath, out var sourceBurn), "resolve the original Burn event");
             Check(sourceBurn.getID(out var burnId), "get the original Burn event ID");

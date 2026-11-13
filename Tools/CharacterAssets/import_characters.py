@@ -25,6 +25,10 @@ CHARACTERS={
 # Keep source identifiers verbatim even where the model and STG stems differ.
 SKILL_STEMS={"c1002":"c_cecilia_skill_new","c1007":"c_wilderd_skill","c1008":"c_aming_skill"}
 SKILL_VARIANTS={("c1009",3):"c_charlotte_skill_03_05"}
+# Base STG omits this cue; the base skeleton marker and skin STG corroborate its timing.
+ANIMATION_CUTINS={
+    "stagept/c_mercedes_skill_03.stg": ("model/mercedes.scsp", "skill3", "cutin", "sk_c1005_3"),
+}
 
 
 def skill_ids(cid):
@@ -162,12 +166,34 @@ def walk(value):
 class Closure:
     def __init__(self,root):
         self.root=Path(root);self.dependencies={};self.structures={};self.owners=defaultdict(set);self.diagnostics=[]
+        self.graph_additions={}
 
     def resolve(self,name,folder,suffix):
         relative=name if "/" in name else folder+"/"+name
         if not PurePosixPath(relative).suffix:relative+=suffix
         safe_source(self.root,relative)
         return relative
+
+    def animation_cutin(self,source,entities):
+        spec=ANIMATION_CUTINS.get(source)
+        if spec is None or any(node.get("etty")=="CUTIN" for node in entities):
+            return None
+        model,animation,event,clip=spec
+        if not any(node.get("etty")=="ANI" and node.get("ani")==animation for node in entities):
+            raise ValueError(f"Missing cut-in animation node: {source}/{animation}")
+        skeleton,_=decode_scsp(safe_source(self.root,model).read_bytes())
+        frames=skeleton["animations"].get(animation,{}).get("events",[])
+        if not any(frame.get("name")==event for frame in frames):
+            raise ValueError(f"Missing cut-in animation marker: {model}/{animation}/{event}")
+        listener=max(node["guid"] for node in entities)+1
+        self.graph_additions[source]={
+            "entities":[
+                {"guid":listener,"etty":"ONEVENT","ani":animation,"name":event},
+                {"guid":listener+1,"etty":"CUTIN","args":clip,"curtain_color":"0,0,0,255"},
+            ],
+            "connections":[{"from":listener,"to":listener+1}],
+        }
+        return self.resolve(clip,"cut/fhd",".webp")
 
     def direct(self,source):
         path=safe_source(self.root,source)
@@ -193,6 +219,8 @@ class Closure:
                     elif kind=="NODE_ANI" and name:deps.add(self.resolve(name,"spani",".scsp"))
                     elif name:deps.add(self.resolve(name,"effect",".cfx"))
                     if entity.get("effect"):deps.add(self.resolve(entity["effect"],"effect",".cfx"))
+                cutin=self.animation_cutin(source,document["entities"])
+                if cutin:deps.add(cutin)
             elif suffix==".cfx":
                 for item in walk(document):
                     if not item.get("source"):continue
@@ -327,6 +355,7 @@ def import_assets(source_root,project,ids,include_banks=True):
                     graph_sources.add(timeline);graph_sources.update(closure.descendants(timeline))
             deps=sorted(set(deps)|{address(p) for p in graph_sources})
             graph={"id":PurePosixPath(source).stem,"sourceFormat":"e7-stg","source":document,"assets":[{"source":dep,"address":address(dep),"type":asset_type(dep)} for dep in sorted(graph_sources)],"diagnostics":[]}
+            if source in closure.graph_additions:graph["additions"]=closure.graph_additions[source]
             json_write(project/relative,graph)
         elif suffix==".webp":
             frames=[]
@@ -408,10 +437,14 @@ def build_catalog(closure,characters,include_banks):
         for i,skill in enumerate(skill_ids(cid),1):
             effect=f"event:/skill/{skill}"
             voice=f"event:/voc/skill/{skill}"
+            call=f"{voice}_c"
+            answer=f"{voice}_a"
             skills.append({"id":skill,"displayNameKey":f"character.{hero}.skill{i}",
                 "graphAddress":address(f"stagept/{skill}.stg"),"eventPath":effect if audio.get(effect) else "",
-                "voiceEventPath":voice if audio.get(voice) else ""})
-            used_events.update((effect,voice))
+                "voiceEventPath":voice if audio.get(voice) else "",
+                "dualCallVoiceEventPath":call if audio.get(call) else "",
+                "dualAnswerVoiceEventPath":answer if audio.get(answer) else ""})
+            used_events.update((effect,voice,call,answer))
         used_events.update(voice["eventPath"] for voice in voices)
         records.append({"id":cid,"name":name,"displayNameKey":f"character.{hero}.name",
             "battleSkeletonAddress":address(f"model/{hero}.scsp"),"portraitSkeletonAddress":address(f"portrait/{cid}.scsp"),

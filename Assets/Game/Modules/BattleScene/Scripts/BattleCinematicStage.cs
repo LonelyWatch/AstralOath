@@ -90,6 +90,7 @@ namespace AstralOath.Client.BattleScene
             groundOffsets.Clear();
             foreach (var participant in targets.Concat(new[] { caster }).Where(item => item).Distinct())
                 groundOffsets[participant] = originalPosition.y - participant.position.y;
+            CaptureViewport();
             if (inherited == null) CaptureBackdrop();
             else AdoptBackdrop(inherited);
             running = true;
@@ -279,6 +280,7 @@ namespace AstralOath.Client.BattleScene
         public void TickCutin(float delta)
         {
             if (!running || !camera) return;
+            UpdateViewport();
             cutinTime += Mathf.Max(0f, delta);
             UpdateLayers();
         }
@@ -286,6 +288,7 @@ namespace AstralOath.Client.BattleScene
         public void Tick(float delta)
         {
             if (!running || !camera) return;
+            UpdateViewport();
             time += Mathf.Max(0f, delta);
             cutinTime += Mathf.Max(0f, delta);
             if (zoom is { } scale)
@@ -494,6 +497,7 @@ namespace AstralOath.Client.BattleScene
                 pendingHandoff = null;
                 running = true;
             }
+            if (running && camera) UpdateViewport();
             RestoreLayout();
             postEffects.Reset();
             ReleaseCameraMotion();

@@ -209,6 +209,8 @@ namespace AstralOath.Client.BattleScene
             }
         }
         internal float FacingDirection => FacesLeft ? -1f : 1f;
+        internal int PresentationDrawOrder => drawOrder;
+        internal event Action<BattlePreviewActor, SkeletonPlaybackEvent> TurnEntryCue;
 
         internal Transform PresentationShadow => transform.parent
             ? transform.parent.GetComponentInChildren<SpriteRenderer>(true)?.transform : null;
@@ -370,6 +372,7 @@ namespace AstralOath.Client.BattleScene
                 instance.Play(idleAnimation, true);
                 PreparePresentation();
                 player = instance;
+                player.Event += OnPlaybackEvent;
             }
             catch
             {
@@ -377,6 +380,12 @@ namespace AstralOath.Client.BattleScene
                 finally { ReleaseSource(); eventTimes = null; }
                 throw;
             }
+        }
+
+        private void OnPlaybackEvent(SkeletonPlaybackEvent item)
+        {
+            if (turnReady && !playingBattleAnimation && PlayingTurnEntry && item.Kind == SkeletonPlaybackEventKind.Event)
+                TurnEntryCue?.Invoke(this, item);
         }
 
         private void Update()
@@ -392,7 +401,14 @@ namespace AstralOath.Client.BattleScene
 
         private void OnDisable()
         {
-            try { player?.Dispose(); }
+            try
+            {
+                if (player != null)
+                {
+                    player.Event -= OnPlaybackEvent;
+                    player.Dispose();
+                }
+            }
             finally
             {
                 player = null;

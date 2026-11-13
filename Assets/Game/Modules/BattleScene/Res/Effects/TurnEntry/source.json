@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "skeleton": {
+    "source": "原始资源/effect/dust.scsp",
+    "sourceSha256": "24016c82efc466d5e2a0254223a024cdf4da67450250a18ad044c771ed710f4e",
+    "asset": "dust.spine.json",
+    "assetSha256": "b53c0e71e0f489d328ca54b56b9492210725e3336da63614330e35006adaccef"
+  },
+  "atlasAlias": {
+    "source": "原始资源/effect/dust.atlas",
+    "sourceSha256": "f3eb698b98e7cec1b2c9b488898b551cd0fd583efd6408f3ea1272b48afd1d6f"
+  },
+  "atlas": {
+    "source": "原始资源/effect/effect.atlas",
+    "sourceSha256": "09836c5449ad4aa4c3089b1dc5b340c5568205cc4bd8c3b336c49ac8ff18a588",
+    "asset": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Atlas/effect/effect.atlas.txt",
+    "assetSha256": "09836c5449ad4aa4c3089b1dc5b340c5568205cc4bd8c3b336c49ac8ff18a588"
+  },
+  "page": {
+    "source": "原始资源/effect/effect.sct",
+    "sourceSha256": "d6543a42b3d537493547cb45d7da14fc1d4a8de479087c7c1acca198591e06b0",
+    "asset": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Textures/effect/effect.png",
+    "assetSha256": "3cbcd0375e969df6c5c10230abbaf2aab28c4950ffed1eccc189c2e443a672ba"
+  },
+  "converterSha256": "e21ad97f26c4ebb05611e8d2c3458844aca329dbd955592a37a7bf7cbd191309"
+}

@@ -1,0 +1,60 @@
+{
+  "sourceRoot": "D:/sevenepic",
+  "originalAssets": [
+    {
+      "asset": "Fonts/EpicSeven.ttf",
+      "source": "原始资源/font/daum.ttf",
+      "sha256": "2643979e008564e3b59455f7548aa6f844c155b21b3aa42d00dcba1903c3c1ab"
+    },
+    {
+      "asset": "Textures/_box_equip_0.png",
+      "source": "原始资源/img/_box_equip_0.png",
+      "sha256": "ff9522fc341bd43fb08960cead5c15b32bc93d7857ab2187449e9a806de7239f"
+    },
+    {
+      "asset": "Textures/_btn_small_white.png",
+      "source": "原始资源/img/_btn_small_white.png",
+      "sha256": "3b85ccabaa3c1c8de92be4aba6cb51f7ae3371bc96be84d4e9d0b9bfe090f077"
+    },
+    {
+      "asset": "Textures/_bar_1.png",
+      "source": "原始资源/img/_bar_1.png",
+      "sha256": "ecfeb37e4bf3ad1994ea4a4c6a7cc753318e8e72aebe3516e668cd8651a11a67"
+    },
+    {
+      "asset": "Textures/_bar_2.png",
+      "source": "原始资源/img/_bar_2.png",
+      "sha256": "81e716524df5b87bb2ab8422d14e6b6c348726d8e7f65ea1f844f27144678729"
+    },
+    {
+      "asset": "Textures/cm_icon_star_s.png",
+      "source": "原始资源/img/cm_icon_star_s.png",
+      "sha256": "7203aca1ce6d3a29ace947448e6aefcf7fbe553a0f00eb27b7acf875cda76b11"
+    },
+    {
+      "asset": "Textures/cm_icon_etctime_b.png",
+      "source": "原始资源/img/cm_icon_etctime_b.png",
+      "sha256": "18498283d251aca5e2aaf3af40c50b90dfd4a07be136c99c44cf46e3343e67b8"
+    },
+    {
+      "asset": "Textures/cm_btn_norgreend.png",
+      "source": "原始资源/img/cm_btn_norgreend.png",
+      "sha256": "4aa01e4365e4c408b100c05cc7f6f4c83f29be88a41f28a6c3e2024902240668"
+    },
+    {
+      "asset": "Textures/cm_btn_norgreenp.png",
+      "source": "原始资源/img/cm_btn_norgreenp.png",
+      "sha256": "47f641549baa6a3b8c89a59a9985b74778b4bb3c213ddd81d8bf0dbf934dde01"
+    }
+  ],
+  "layoutEvidence": [
+    {
+      "source": "原始资源/wnd/skill_detail.csb",
+      "sha256": "3c19e1c614d672bc2557ba6e0144c963e898775e90247232611744b35676a599"
+    },
+    {
+      "source": "原始资源/wnd/skill_eff.csb",
+      "sha256": "d22ff10d9f529ebaf0d7afc1a44a0c08d0deaf4a5c4877ae5c2efab78cac8197"
+    }
+  ]
+}

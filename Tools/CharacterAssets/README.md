@@ -25,13 +25,13 @@ SCSP 保留 `2.1.27` / `3.8.99` 原版本。2.1 的 type5/type6 分别为事件�
 
 `.scsp` 的地址 `characterlab/source/<原相对路径>` 指向 SkeletonDescriptor，内部 JSON 地址追加 `/json`。atlas 保存 `.atlas.txt`，保持页名原 `.sct`；别名 atlas 展开到真实 atlas 文本，pages映射原页名到PNG资源地址。camera 可以没有图集，但必须没有渲染附件。STG graph保存原始实体、连接、entrypoint、eventlisteners，不把未知when/location摊平为确定时间；CFX/particle保留plist结构；timeline保留原JSON。
 
-动画WebP通过Pillow逐帧seek得到已合成RGBA帧，保留每帧毫秒时长；没有时长的帧拒绝输出。FMOD bank保存 `.bank.bytes`，禁止当AudioClip播放。语音事件路径依据源YML，不拼接虚构前缀。
+动画WebP通过Pillow逐帧seek得到已合成RGBA帧，保留每帧毫秒时长；没有时长的帧拒绝输出。 原 STG 缺少演出时按 `ANIMATION_CUTINS` 显式登记，仅在原图缺少 CUTIN 且对应原骨骼标记存在时生成 `graph.additions`，将正确皮肤的 WebP 加入依赖闭包。FMOD bank保存 `.bank.bytes`，禁止当AudioClip播放。语音事件路径依据源YML，不拼接虚构前缀。
 
 ## 清单与验证范围
 
 `Assets/Game/Modules/CharacterPresentation/Configs/import-manifest.json` 包含 `entries`，每项记录 `source/sourceSha256/path/address/type/dependencies/outputSha256/conversion`。首次导入且共享引用计数大于1的资源位于 `Res/Shared`，银行始终公共。已有依赖保持原位置和地址，扩大引用范围时保持其 meta。目录生成源为 `Config/CharacterAssets/catalog.generated.json`，临时副本为 `.artifacts/character-import/catalog.json`；Luban结合中文文案与角色展示表生成正式catalog。
 
-十角色导入实测 923 产物，包含 172 个骨骼、30 技能图、144 atlas、74 CFX、45 particle、9 timeline、7 CUTIN、6 bank。原首批 254 项的路径及字节哈希保持一致。导入/哈希校验不能替代Unity视觉、音频、真实事件时机或玩法验收。
+十角色导入实测 945 产物，包含 172 个骨骼、30 技能图、144 atlas、74 CFX、45 particle、9 timeline、8 CUTIN、6 bank。原首批 254 项的路径及字节哈希保持一致。导入/哈希校验不能替代Unity视觉、音频、真实事件时机或玩法验收。
 
 MIT参考解析结构隔离在 `ThirdParty/scsp_viewer`，固定来源、许可和本地改动见其NOTICE与LICENSE；未保留上游启发式动画扫描、自动版本升级、容错输出入口。
 
@@ -44,3 +44,5 @@ SCSP 2.1 的 `0xFFFF` 是线性、`0xFFFE` 是阶梯，显式 Bezier 首个 floa
 新增角色必须遵循 [角色资源进入 Unity 的通用规则](../../docs/development/character-asset-import.md)。格式证据、复现与验收见 [梅赛德丝 S3 修复报告](../../docs/delivery/2026-11-12-mercedes-curve-correctness.md)。本轮本机原游戏静态核验支持该语义，不根据“画面看起来顺眼”修改角色偏移。
 
 已证实的角色资源别名及未提供的旧 timeline 依赖、日语音频边界见[角色资源进入 Unity](../../docs/development/character-asset-import.md)。逐项通过 `--verify` 核对输入输出哈希，转换和资源校验以 Unity 实际加载验收补充。
+
+技能语音事件和夹攻呼叫/应答字段只在源 `sound/voc.event.yml` 确有对应事件时导出。语音样本语言及缺失键通过音频表核对，使用技能时只启动一个原生语音事件，FMOD 保留抽样与关联对白时序。单独的样本试听留在角色实验室。

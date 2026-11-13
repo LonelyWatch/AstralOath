@@ -26,8 +26,8 @@ namespace AstralOath.Client.BattleScene
 
         // Compatibility display for authored HUD prefabs: only generic UI components are added.
         // The Binder owns listeners and the panel lifetime; this View only creates and shows UI.
-        internal static PauseControls CreatePauseControls(BindingMap map, Func<string, string> label) =>
-            new PauseControls(map, label);
+        internal static PauseControls CreatePauseControls(BindingMap map, Func<string, string> label, GameObject confirmPrefab) =>
+            new PauseControls(map, label, confirmPrefab);
 
         internal sealed class PauseControls : IDisposable
         {
@@ -37,7 +37,7 @@ namespace AstralOath.Client.BattleScene
             internal GameButton Continue { get; }
             internal GameButton Restart { get; }
 
-            internal PauseControls(BindingMap map, Func<string, string> label)
+            internal PauseControls(BindingMap map, Func<string, string> label, GameObject confirmPrefab)
             {
                 var ownerCanvas = map.GetComponentInParent<Canvas>();
                 var pause = map.Require<GameButton>("pause");
@@ -59,8 +59,8 @@ namespace AstralOath.Client.BattleScene
                 card.raycastTarget = false;
                 var font = map.Require<GameText>("activeName");
                 Caption(panel, "Title", label("battle.pause.title"), font, new Vector2(0f, 115f), 36f);
-                Continue = Button(panel, "Continue", label("battle.pause.continue"), font, new Vector2(0f, 15f));
-                Restart = Button(panel, "Restart", label("battle.pause.restart"), font, new Vector2(0f, -95f));
+                Continue = Button(panel, "Continue", label("battle.pause.continue"), font, new Vector2(0f, 15f), confirmPrefab);
+                Restart = Button(panel, "Restart", label("battle.pause.restart"), font, new Vector2(0f, -95f), confirmPrefab);
                 root.SetActive(false);
             }
 
@@ -81,8 +81,21 @@ namespace AstralOath.Client.BattleScene
                 if (!item.GetComponent<GraphicRaycaster>()) item.AddComponent<GraphicRaycaster>();
             }
 
-            private static GameButton Button(Transform parent, string name, string caption, GameText font, Vector2 position)
+            private static GameButton Button(Transform parent, string name, string caption, GameText font, Vector2 position,
+                GameObject prefab)
             {
+                if (prefab)
+                {
+                    var instance = UnityEngine.Object.Instantiate(prefab, parent, false);
+                    instance.name = name;
+                    var authored = (RectTransform)instance.transform;
+                    authored.anchorMin = authored.anchorMax = Vector2.one * .5f;
+                    authored.sizeDelta = new Vector2(400f, 84f);
+                    authored.anchoredPosition = position;
+                    var bindings = instance.GetComponent<BindingMap>();
+                    bindings.Require<GameText>("label").text = caption;
+                    return bindings.Require<GameButton>("button");
+                }
                 var rect = Rect(parent, name, position, new Vector2(400f, 84f));
                 var background = rect.gameObject.AddComponent<Image>();
                 background.color = new Color32(69, 81, 98, 255);

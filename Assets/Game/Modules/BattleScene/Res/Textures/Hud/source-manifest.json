@@ -1868,6 +1868,32 @@
         44,
         45
       ]
+    },
+    {
+      "asset": "Readiness/_bar_1.png",
+      "source": "原始资源/img/_bar_1.png",
+      "sha256": "ecfeb37e4bf3ad1994ea4a4c6a7cc753318e8e72aebe3516e668cd8651a11a67",
+      "width": 98,
+      "height": 14,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        98,
+        13
+      ]
+    },
+    {
+      "asset": "Readiness/_box_black_gold.png",
+      "source": "原始资源/img/_box_black_gold.png",
+      "sha256": "74232c37f99a3ab675efc15cb8b4cd173ff8aed3308318e5f84c0a308e39bfa3",
+      "width": 116,
+      "height": 116,
+      "alphaBoundsLTRB": [
+        2,
+        2,
+        114,
+        114
+      ]
     }
   ],
   "layoutSchemaReference": "https://raw.githubusercontent.com/cocos2d/cocos2d-x/v3/cocos/editor-support/cocostudio/fbs-files/CSParseBinary.fbs"

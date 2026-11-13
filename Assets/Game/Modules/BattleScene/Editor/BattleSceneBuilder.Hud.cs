@@ -72,10 +72,10 @@ namespace AstralOath.Client.BattleScene.Editor
             Picture(soul, "Ornament", "_game_hud_soulbg1", 729, 56, 471, 114);
             Picture(soul, "Track", "game_hud_soulbg2", 703, 29, 390, 37);
             var soulFill = Picture(soul, "Fill", "game_hud_soulbg3", 692, 31.5f, 368, 23);
-            SetFill(soulFill, 1f);
+            SetFill(soulFill, 0f);
             bindings.Add("soulFill", soulFill);
             Button(soul, bindings, "soulBurn", "game_hud_btn_burn_d", 715, 64, 228, 102);
-            bindings.Add("soulCount", Text(soul, "Soul Count", "20 / 20", 690, 19, 110, 21, 14));
+            bindings.Add("soulCount", Text(soul, "Soul Count", "20 / " + BattleHudPreview.StandardSoulCapacity, 690, 19, 110, 21, 14));
 
             var skills = Group("Skills", rect);
             for (int index = 1; index <= 3; index++)

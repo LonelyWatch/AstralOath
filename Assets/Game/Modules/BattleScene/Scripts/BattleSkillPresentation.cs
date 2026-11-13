@@ -131,7 +131,7 @@ namespace AstralOath.Client.BattleScene
             try
             {
                 caster = actor; currentPresentationId = presentationId;
-                cache.Cues.Add((actor, presentationId), ReadCues(graph, graph["source"]["entities"].OfType<JObject>().ToArray()).ToArray());
+                cache.Cues.Add((actor, presentationId), ReadCues(graph).ToArray());
             }
             finally { caster = previous; currentPresentationId = previousId; }
         }
@@ -297,10 +297,15 @@ namespace AstralOath.Client.BattleScene
             return prepared;
         }
 
-        private IEnumerable<(float At, JObject Node, float Duration, JObject[] Modulators)> ReadCues(JObject graph, JObject[] nodes)
+        private IEnumerable<(float At, JObject Node, float Duration, JObject[] Modulators)> ReadCues(JObject graph)
         {
+            var source = graph["source"];
+            var additions = graph["additions"];
+            var nodes = source["entities"].OfType<JObject>()
+                .Concat(additions?["entities"]?.OfType<JObject>() ?? Enumerable.Empty<JObject>()).ToArray();
             var byId = nodes.ToDictionary(node => (int)node["guid"]);
-            var edges = graph["source"]["connections"].OfType<JObject>().ToLookup(edge => (int)edge["from"]);
+            var edges = source["connections"].OfType<JObject>()
+                .Concat(additions?["connections"]?.OfType<JObject>() ?? Enumerable.Empty<JObject>()).ToLookup(edge => (int)edge["from"]);
             var earliest = new Dictionary<int, (float At, int Order, float Duration)>();
             var timelineEvents = (graph["assets"] ?? new JArray()).Where(item => (string)item["type"] == "timeline")
                 .Select(item => Document((string)item["source"])?["timeline"]?["default"])

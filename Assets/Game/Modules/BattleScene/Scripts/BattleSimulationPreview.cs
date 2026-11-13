@@ -16,6 +16,7 @@ namespace AstralOath.Client.BattleScene
     internal sealed class BattleSimulationPreview : IDisposable
     {
         private static readonly ProfilerMarker SubmitMarker = new ProfilerMarker("Astral.Battle.Submit");
+        private static readonly ProfilerMarker RefreshMarker = new ProfilerMarker("Astral.Battle.Refresh");
         private const double SkillQuickCastSeconds = .5;
         private readonly BattleMatch match;
         private readonly BattleAiPolicy ai;
@@ -30,12 +31,19 @@ namespace AstralOath.Client.BattleScene
         private readonly List<(BattleSkillPresentation Stage, float Duration)> recoveryStages = new List<(BattleSkillPresentation, float)>();
         private readonly BattleVoice voice;
         private readonly BattleTurnHud turnHud;
+        private readonly BattleStatusArt statusArt;
+        private readonly BattleSoulGauge soulGauge;
         private readonly BattleActivePortrait activePortrait;
+        private readonly BattleTurnEntryEffects turnEntryEffects;
         private readonly Dictionary<string, View> views = new Dictionary<string, View>(StringComparer.Ordinal);
         private readonly Queue<BattleFlowEvent> playback = new Queue<BattleFlowEvent>();
         private readonly List<(float At, string TargetId, Action Show)> pendingFeedback =
             new List<(float, string, Action)>();
         private readonly GameText banner;
+        private readonly BattleSkillBanner skillBanner;
+        private readonly BattleInspectionContent inspectionContent;
+        private readonly InfoPanelBinder inspection;
+        private readonly GameLongPress[] skillHolds = new GameLongPress[3];
         private BattleUnitSnapshot displayedActor;
         private readonly Action restore;
         private BattleFlowEvent pendingAbsorption;
@@ -58,10 +66,14 @@ namespace AstralOath.Client.BattleScene
         public BattleSimulationPreview(Scene scene, BindingMap hud, BattleHudBinder binder, BattleCatalogData catalog,
             Sprite[] icons, TextAsset[] graphs, BattleSkillPresentationAsset[] skillAssets, TextAsset audioCatalog,
             TextAsset[] audioBanks, TMP_FontAsset damageFont, TextAsset impactBank, GameObject stageBackground,
-            BattleUnitPresentationProfile unitPresentation, BattleMatch match)
+            BattleUnitPresentationProfile unitPresentation, BattleHudPreview.SpineEffect soulDisplay,
+            TextAsset[] particles, Texture2D[] particleTextures, BattleMatch match, GameObject inspectionPrefab = null,
+            BattleHudPreview.SpineEffect readyDust = null)
         {
             this.hud = hud;
             this.binder = binder;
+            inspectionContent = new BattleInspectionContent(catalog);
+            if (inspectionPrefab) inspection = new InfoPanelBinder(inspectionPrefab, (RectTransform)hud.transform);
             camera = hud.GetComponentInParent<Canvas>().worldCamera;
             skills = catalog.skills.ToDictionary(skill => skill.id, StringComparer.Ordinal);
             classes = catalog.heroes.ToDictionary(hero => hero.id, hero => hero.heroClass, StringComparer.Ordinal);
@@ -71,7 +83,7 @@ namespace AstralOath.Client.BattleScene
             ai = new BattleAiPolicy(catalog);
             var units = scene.GetRootGameObjects().Single(root => root.name == "Units").transform;
             var deathTextures = unitPresentation ? unitPresentation.CreateDeathTextures() : new Dictionary<string, Texture2D>();
-            var statusArt = unitPresentation
+            statusArt = unitPresentation
                 ? unitPresentation.CreateStatusArt()
                 : new BattleStatusArt(null, null, null);
             var shieldAura = unitPresentation
@@ -85,13 +97,15 @@ namespace AstralOath.Client.BattleScene
                     var slot = units.Find(team).GetChild(state.Slot.Position - 1);
                     var marker = hud.transform.Find($"Unit Status/{team}/{slot.name}").gameObject;
                     sprites.TryGetValue("game_hud_bar_" + state.Element.ToString().ToLowerInvariant(), out var element);
-                    views.Add(state.InstanceId, new View(slot, marker, camera, unitPresentation, deathTextures, statusArt, shieldAura, element, state.Resource));
+                    views.Add(state.InstanceId, new View(slot, marker, camera, unitPresentation, deathTextures, statusArt, shieldAura, element, state.Resource,
+                        inspection == null ? null : InspectStatus));
                 }
             }
             catch
             {
                 foreach (var view in views.Values) view.Restore();
                 views.Clear();
+                inspection?.Dispose();
                 throw;
             }
 
@@ -111,6 +125,17 @@ namespace AstralOath.Client.BattleScene
             bool oldSkillVisibility = skillGroup.activeSelf, oldBurnVisibility = burnButton.activeSelf;
             var buttons = SkillButtons().Select(button => (button, image: (Image)button.targetGraphic)).ToArray();
             var oldIcons = buttons.Select(item => item.image.sprite).ToArray();
+            if (inspection != null)
+            {
+                for (int i = 0; i < buttons.Length; i++)
+                {
+                    int slot = i;
+                    var button = buttons[i].button;
+                    var hold = button.GetComponent<GameLongPress>() ?? button.gameObject.AddComponent<GameLongPress>();
+                    hold.Held = () => InspectSkill(displayedActor, slot, buttons[slot].image, false);
+                    skillHolds[i] = hold;
+                }
+            }
             restore = () =>
             {
                 if (!hud) return;
@@ -136,6 +161,7 @@ namespace AstralOath.Client.BattleScene
 
             banner = CreateText(hud.transform, text, "Battle State", new Vector2(0.5f, 1),
                 new Vector2(0, -46), new Vector2(720, 40), 24);
+            skillBanner = new BattleSkillBanner((RectTransform)hud.transform.Find("Top Bar"), text, sprites);
             skillPresentation = new BattleSkillPresentation(units, graphs, skillAssets, camera, SetCinematicVisible, stageBackground);
             // Resolve the active roster before exposing inputs: no source DOM/Spine parse on an attack click.
             foreach (var state in Snapshot.Units)
@@ -143,8 +169,14 @@ namespace AstralOath.Client.BattleScene
                     skillPresentation.Prepare(views[state.InstanceId].Actor,
                         skills.TryGetValue(skillId, out var row) ? row.presentationId : skillId);
             voice = new BattleVoice(audioCatalog, audioBanks, impactBank);
-            turnHud = new BattleTurnHud(hud, unit => Label(unit.NameKey), sprites, damageFont);
+            turnHud = new BattleTurnHud(hud, unit => Label(unit.NameKey), sprites, damageFont,
+                (unit, slot, image) => InspectSkill(unit, slot, image, true),
+                InspectStatus, CloseInspection, statusArt);
             turnHud.SetMissFeedbackLabel(Label("battle.feedback.miss"));
+            soulGauge = new BattleSoulGauge(soulFill, soul, match.MaximumSoul, soulDisplay,
+                particles.Single(item => item.name == "soul_pati_01.particle"),
+                particleTextures.ToDictionary(texture => texture.name + ".sct", StringComparer.Ordinal));
+            turnEntryEffects = new BattleTurnEntryEffects(units, views.Values.Select(view => view.Actor), readyDust);
             Refresh();
         }
 
@@ -159,6 +191,7 @@ namespace AstralOath.Client.BattleScene
         {
             if (IsPaused == value) return;
             IsPaused = value;
+            if (value) CloseInspection();
             lastClickedSkill = -1;
             foreach (var view in views.Values) view.Actor.SetPaused(value || view.DeathStarted);
             voice.SetPaused(value);
@@ -189,9 +222,12 @@ namespace AstralOath.Client.BattleScene
 
         private void TickBattle(float delta)
         {
+            inspection?.Tick();
             if (IsPaused) return;
             bool wasBusy = Busy;
+            turnEntryEffects.Tick(Mathf.Max(0f, delta));
             voice.Tick();
+            soulGauge.Tick(delta);
             AdvancePresentation(Mathf.Max(0f, delta));
             if (Busy) return;
             if (wasBusy)
@@ -206,14 +242,31 @@ namespace AstralOath.Client.BattleScene
                 if (choice != null) Submit(choice.SkillId, choice.TargetId, choice.UseSoulBurn);
                 return;
             }
-            if (Input.GetMouseButtonDown(0) && (EventSystem.current == null || !EventSystem.current.IsPointerOverGameObject()))
+            if (TryGetWorldPress(out var press))
             {
-                Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+                Ray ray = camera.ScreenPointToRay(press);
                 var target = views.Where(pair => Snapshot.GetUnit(pair.Key).IsAlive && pair.Value.Contains(ray))
-                    .OrderBy(pair => (camera.WorldToScreenPoint(pair.Value.Center) - Input.mousePosition).sqrMagnitude)
+                    .OrderBy(pair => ((Vector2)camera.WorldToScreenPoint(pair.Value.Center) - press).sqrMagnitude)
                     .Select(pair => pair.Key).FirstOrDefault();
                 if (target != null) ChooseTarget(target);
             }
+        }
+
+        private bool TryGetWorldPress(out Vector2 position)
+        {
+            position = default;
+            if (inspection?.IsOpen == true) return false;
+            var input = EventSystem.current;
+            if (Input.touchCount > 0)
+            {
+                if (Input.touchCount != 1) return false;
+                Touch touch = Input.GetTouch(0);
+                position = touch.position;
+                return touch.phase == TouchPhase.Began && (input == null || !input.IsPointerOverGameObject(touch.fingerId));
+            }
+
+            position = Input.mousePosition;
+            return Input.GetMouseButtonDown(0) && (input == null || !input.IsPointerOverGameObject());
         }
 
         private void AdvancePresentation(float remaining)
@@ -239,6 +292,7 @@ namespace AstralOath.Client.BattleScene
                 float before = skillPresentation.StageTime;
                 skillPresentation.Tick(step);
                 float advanced = Mathf.Max(0f, skillPresentation.StageTime - before);
+                skillBanner.Tick(advanced, skillPresentation.CutinRemainingSeconds > 0f);
                 TickRecoveries(advanced);
                 // Source time owns feedback during a skill; idle/death tails still need a clock
                 // when no finite action or cue is left. Cut-in freezes the source clock.
@@ -402,6 +456,7 @@ namespace AstralOath.Client.BattleScene
             switch (item.Kind)
             {
                 case BattleFlowEventKind.Action:
+                    CloseInspection();
                     presentingNextTurn = false;
                     if (item.Origin != BattleActionOrigin.DualAttack && item.Origin != BattleActionOrigin.ExtraAttack)
                         turnHud.BeginFeedbackAction();
@@ -426,7 +481,10 @@ namespace AstralOath.Client.BattleScene
                         .Distinct(StringComparer.Ordinal).Select(id => views[id].Actor).ToArray();
                     var timing = skillPresentation.Begin(item.PresentationId, views[item.SourceId].Actor, primary, targets);
                     presentedSkillId = item.SkillId;
-                    voice.Play(string.IsNullOrEmpty(item.PresentationId) ? item.SkillId : item.PresentationId);
+                    bool callsAlly = item.Origin == BattleActionOrigin.Primary &&
+                        playback.Skip(actionEvents.Length).FirstOrDefault()?.Origin == BattleActionOrigin.DualAttack;
+                    voice.PlaySkill(string.IsNullOrEmpty(item.PresentationId) ? item.SkillId : item.PresentationId,
+                        callsAlly, item.Origin == BattleActionOrigin.DualAttack);
                     actionElapsed = 0f;
                     impactSeconds = timing.ImpactSeconds;
                     lastDamageImpact = impactSeconds;
@@ -435,7 +493,10 @@ namespace AstralOath.Client.BattleScene
                     actionDuration = Mathf.Max(timing.Duration, lastHit + 0.15f);
                     string name = skills.TryGetValue(item.SkillId, out var skill) ? Label(skill.nameKey) :
                         item.SkillId == BattlePreviewFactory.SlimeSkillId ? "史莱姆攻击" : item.SkillId;
-                    banner.text = name;
+                    var caster = Snapshot.GetUnit(item.SourceId);
+                    var icon = skill == null ? null : sprites.GetValueOrDefault(Path.GetFileNameWithoutExtension(skill.iconAsset));
+                    banner.text = "";
+                    skillBanner.Show(Label(caster.NameKey), name, icon);
                     break;
                 case BattleFlowEventKind.BarrierAbsorbed:
                     pendingAbsorption = item;
@@ -472,6 +533,9 @@ namespace AstralOath.Client.BattleScene
                         int index = Array.IndexOf(displayedActor.Form.SkillIds.ToArray(), item.SkillId);
                         if (index >= 0) turnHud.SetCooldown(index, item.Amount);
                     }
+                    break;
+                case BattleFlowEventKind.SoulChanged:
+                    if (item.Side == BattleSide.Ally) soulGauge.Show(item.Amount);
                     break;
                 case BattleFlowEventKind.TurnStarted:
                     presentingNextTurn = true;
@@ -575,6 +639,7 @@ namespace AstralOath.Client.BattleScene
 
         private void Refresh()
         {
+            using var sample = RefreshMarker.Auto();
             foreach (var state in Snapshot.Units)
             {
                 var view = views[state.InstanceId];
@@ -583,9 +648,7 @@ namespace AstralOath.Client.BattleScene
                 view.SetHealth(state.CurrentHealth, state.Stats.MaxHealth);
                 view.RefreshStatuses(state);
             }
-            int soul = Snapshot.GetSoul(BattleSide.Ally);
-            hud.Require<GameText>("soulCount").text = $"{soul} / 20";
-            hud.Require<Image>("soulFill").fillAmount = soul / 20f;
+            soulGauge.Show(Snapshot.GetSoul(BattleSide.Ally));
             turnHud.Refresh(Snapshot);
             var actor = Actor;
             displayedActor = actor;
@@ -651,6 +714,7 @@ namespace AstralOath.Client.BattleScene
             cinematicVisible = value;
             if (value)
             {
+                CloseInspection();
                 // Each status follows its body mask; Cut-in covers the remaining status through renderer ordering.
                 foreach (var item in new[] { hud.transform.Find("Skills").gameObject,
                     hud.Require<GameButton>("soulBurn").gameObject })
@@ -676,6 +740,7 @@ namespace AstralOath.Client.BattleScene
 
         private void ShowPrompt()
         {
+            skillBanner.Hide();
             banner.text = Snapshot.Outcome switch
             {
                 BattleOutcome.AllyVictory => "战斗胜利",
@@ -693,6 +758,62 @@ namespace AstralOath.Client.BattleScene
             skill = null;
             return Actor != null && index >= 0 && index < Actor.Form.SkillIds.Count &&
                 skills.TryGetValue(Actor.Form.SkillIds[index], out skill);
+        }
+
+        private void InspectSkill(BattleUnitSnapshot unit, int slot, Image image, bool detailRow)
+        {
+            if (inspection == null || IsPaused || cinematicVisible || unit == null || slot >= unit.Form.SkillIds.Count ||
+                !skills.TryGetValue(unit.Form.SkillIds[slot], out var skill)) return;
+
+            // Holding consumes the gesture and also breaks an existing quick-cast pair.
+            lastClickedSkill = -1;
+            string cooldown = skill.cooldownTurns > 0
+                ? string.Format(Label("battle.inspect.cooldown"), skill.cooldownTurns)
+                : null;
+            string soul = skill.soulGain > 0 ? string.Format(Label("battle.inspect.soul_gain"), skill.soulGain) : null;
+            bool burn = skill.soulBurnCost > 0;
+            string upgrades = detailRow ? null : inspectionContent.SkillEnhancements(skill);
+            var icon = sprites.GetValueOrDefault(Path.GetFileNameWithoutExtension(skill.iconAsset));
+            var primary = new InfoPanelBinder.Card(icon ? icon : image.sprite, Label(skill.nameKey),
+                inspectionContent.SkillDescription(skill), soul: soul, cooldown: cooldown,
+                burnTitle: burn ? Label("battle.inspect.burn_header") : null,
+                burnCost: burn ? string.Format(Label("battle.inspect.soul_burn"), skill.soulBurnCost) : null,
+                burnDescription: burn ? inspectionContent.SkillBurnDescription(skill) : null,
+                upgrades: string.IsNullOrEmpty(upgrades) ? null : "<color=#ff7800>" +
+                    Label("battle.inspect.enhancement_header") + "</color>\n" + upgrades);
+            var (title, description, status) = inspectionContent.SkillAuxiliaryEffect(skill);
+            InfoPanelBinder.Card? related = null;
+            if (!string.IsNullOrEmpty(title))
+            {
+                if (status is BattleStatusKind kind) related = StatusCard(kind, title, description, null);
+                else related = new InfoPanelBinder.Card(null, title, description,
+                    new Color32(64, 45, 35, 237), new Color32(198, 156, 108, 255));
+            }
+            inspection.Show(image.rectTransform, primary, related, detailRow,
+                detailRow ? null : (RectTransform)hud.Require<GameButton>("skill1").transform);
+        }
+
+        private void InspectStatus(BattleStatusSnapshot status, Image image)
+        {
+            if (inspection == null || IsPaused || cinematicVisible) return;
+            lastClickedSkill = -1;
+            inspection.Show(image.rectTransform, StatusCard(status.Kind, inspectionContent.StatusName(status.Kind),
+                inspectionContent.StatusDescriptionWithStrength(status.Kind, status.Strength), image.sprite), preferRight: true);
+        }
+
+        private InfoPanelBinder.Card StatusCard(BattleStatusKind kind, string title, string description, Sprite icon)
+        {
+            bool debuff = statusArt.TryGet(kind, out var art) && !art.IsBuff;
+            return new InfoPanelBinder.Card(icon ? icon : art.Icon, title, description,
+                debuff ? new Color32(92, 41, 39, 242) : new Color32(27, 67, 104, 255),
+                debuff ? new Color32(255, 153, 146, 255) : new Color32(101, 190, 255, 255));
+        }
+
+        private void CloseInspection()
+        {
+            inspection?.Hide();
+            foreach (var hold in skillHolds)
+                if (hold) hold.Cancel();
         }
 
         private int BurnSlot()
@@ -733,6 +854,10 @@ namespace AstralOath.Client.BattleScene
 
         public void Dispose()
         {
+            CloseInspection();
+            inspection?.Dispose();
+            foreach (var hold in skillHolds)
+                if (hold) hold.Held = null;
             playback.Clear();
             pendingFeedback.Clear();
             pendingAbsorption = null;
@@ -742,7 +867,10 @@ namespace AstralOath.Client.BattleScene
             foreach (var view in views.Values) view.Actor.SetPaused(false);
             voice.Dispose();
             turnHud.Dispose();
+            soulGauge.Dispose();
+            turnEntryEffects.Dispose();
             foreach (var view in views.Values) view.Restore();
+            skillBanner.Dispose();
             RemoveOwnedObject(banner ? banner.gameObject : null);
             restore();
         }
@@ -780,7 +908,8 @@ namespace AstralOath.Client.BattleScene
 
             public View(Transform slot, GameObject marker, Camera camera, BattleUnitPresentationProfile profile,
                 IReadOnlyDictionary<string, Texture2D> deathTextures, BattleStatusArt statusArt,
-                BattleShieldAura.Definition auraDefinition, Sprite element, BattleResourceSnapshot resource)
+                BattleShieldAura.Definition auraDefinition, Sprite element, BattleResourceSnapshot resource,
+                Action<BattleStatusSnapshot, Image> inspectStatus)
             {
                 this.slot = slot;
                 this.marker = marker;
@@ -806,7 +935,8 @@ namespace AstralOath.Client.BattleScene
                         profile.HealthDivider, focus ? Mathf.Min(resource.Maximum, 10) : 5);
                     SetResource(resource.Amount);
                 }
-                statusIcons = new BattleStatusIcons(FeedbackAnchor, statusArt, profile ? profile.StatusIconsPerRow : BattleStatusIcons.MaximumColumns);
+                statusIcons = new BattleStatusIcons(FeedbackAnchor, statusArt,
+                    profile ? profile.StatusIconsPerRow : BattleStatusIcons.MaximumColumns, inspectStatus);
                 shieldAura = new BattleShieldAura(auraDefinition, Actor.PresentationShadow, Actor.PresentationRenderer);
                 if (element) elementBadge.sprite = element;
                 if (profile)

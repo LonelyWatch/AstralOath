@@ -71,7 +71,7 @@ namespace AstralOath.Client.BattleScene.Editor
             frameCamera.allowHDR = false;
             frameCamera.allowMSAA = false;
 
-            var camera = new GameObject("Battle Camera", typeof(Camera)).GetComponent<Camera>();
+            var camera = new GameObject("Battle Camera", typeof(Camera), typeof(AudioListener)).GetComponent<Camera>();
             camera.gameObject.tag = "MainCamera";
             camera.transform.position = new Vector3(0, 0, -10);
             camera.orthographic = true;

@@ -1401,6 +1401,7 @@ GameObject:
   - component: {fileID: 1135008495}
   - component: {fileID: 1135008493}
   - component: {fileID: 1135008494}
+  - component: {fileID: 1554767825}
   m_Layer: 0
   m_Name: Battle Camera
   m_TagString: MainCamera
@@ -2459,6 +2460,12 @@ MonoBehaviour:
   m_Name:
   m_EditorClassIdentifier:
   hud: {fileID: 1634799711}
+  inspectionPrefab: {fileID: 4207984273731152013, guid: 15ff2028247e8af43b070a8f469b03f5, type: 3}
+  confirmPrefab: {fileID: 7719714258307310058, guid: 700d90873afa51740a493645f5870b31, type: 3}
+  readyDust:
+    skeleton: {fileID: 4900000, guid: d7aa2303b8755242bec2f1b644aae802, type: 3}
+    atlas: {fileID: 4900000, guid: a03eaa41147d1b5409d8a979e19b3e5a, type: 3}
+    page: {fileID: 2800000, guid: f9610e721ac341b4aa6134f78f4e205e, type: 3}
   autoStartBattle: 1
   burnPressed: {fileID: 21300000, guid: cef8a4f61aa18294f9ea199a3db15fd2, type: 3}
   cancelNormal: {fileID: 21300000, guid: 2f517dec713e9144eae769850590e044, type: 3}
@@ -2479,7 +2486,12 @@ MonoBehaviour:
     skeleton: {fileID: 4900000, guid: bdd45ff740b4ed24e9cfa9a33eb19154, type: 3}
     atlas: {fileID: 4900000, guid: d2027a41f5a52db4d87bf9b293b50c1c, type: 3}
     page: {fileID: 2800000, guid: 16e030bc99e3f684dab2d31515445b22, type: 3}
+  soulDisplay:
+    skeleton: {fileID: 4900000, guid: 0ae002bc97845e55bee1b45326f0bdf0, type: 3}
+    atlas: {fileID: 4900000, guid: 97c94c1237b4547eabeca7d1095b603b, type: 3}
+    page: {fileID: 2800000, guid: f9fc0e555c6452638d3d9da7e716be5b, type: 3}
   particles:
+  - {fileID: 4900000, guid: f18f90eb555b5d128e961e4be50aac07, type: 3}
   - {fileID: 4900000, guid: d3e4038257f666b479b43e2be8c390e4, type: 3}
   - {fileID: 4900000, guid: 1faec1671c1504d4c87e3afd957679a0, type: 3}
   - {fileID: 4900000, guid: 0c688b4880f7b034fab2dbd454fd4b80, type: 3}
@@ -2621,6 +2633,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 14ae966de5a3f8b4691ebc34dd324237, type: 3}
   - {fileID: 21300000, guid: b0851859529a9954fa7e23c3507ae420, type: 3}
   - {fileID: 21300000, guid: b4c29cd78eda956439cd94422e9708b1, type: 3}
+  - {fileID: 21300000, guid: 8180ffedb899561da270484d5969aa0d, type: 3}
+  - {fileID: 21300000, guid: 51f53a11f77555ef91a6c73b872e7385, type: 3}
   skillAssets:
   - source: camera/aming_skill_01_cm.scsp
     document: {fileID: 4900000, guid: 3eefb5f70f53e3840bf69f5358d206ef, type: 3}
@@ -2908,6 +2922,35 @@ MonoBehaviour:
     texture: {fileID: 0}
     premultipliedAlpha: 1
     scale: 0.01
+  - source: cut/fhd/sk_c1005_3.webp
+    document: {fileID: 4900000, guid: 8f605d34f0a05b3e8423e8ce6f5ec2cd, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages:
+    - {fileID: 2800000, guid: 541741fa4d285bde9122c619e7e91fc5, type: 3}
+    - {fileID: 2800000, guid: d1ede51aec305813aeaf80149f8a1660, type: 3}
+    - {fileID: 2800000, guid: ce8cda50ab7e53679402a4b6202afe6a, type: 3}
+    - {fileID: 2800000, guid: 70acbac92e11568ca4f1d4e2181f9694, type: 3}
+    - {fileID: 2800000, guid: 719eb4460a3656b5a4659f0845fbfef0, type: 3}
+    - {fileID: 2800000, guid: 10a39ad2abcd5d0dac573118a7ea3752, type: 3}
+    - {fileID: 2800000, guid: 6c9cee86f6875cbab23a100bab4f66e2, type: 3}
+    - {fileID: 2800000, guid: b5acb6b43dc95f979d896586c4f40e72, type: 3}
+    - {fileID: 2800000, guid: e3f02f868d92512ca3ceaf24b88d4217, type: 3}
+    - {fileID: 2800000, guid: b7e62da781845321806aa8daed372abf, type: 3}
+    - {fileID: 2800000, guid: 1d08784bd9175ed1b3893e37d1e451cb, type: 3}
+    - {fileID: 2800000, guid: c89cf0aa962d59188a8c16533480bdc2, type: 3}
+    - {fileID: 2800000, guid: d9f9c1b98c4a5284bdcc6fec6996e0f2, type: 3}
+    - {fileID: 2800000, guid: d24d82dfebfd50b79b41aba0876f8cf2, type: 3}
+    - {fileID: 2800000, guid: 92026581d2fb5099853e4292c31e5c8c, type: 3}
+    - {fileID: 2800000, guid: 62a0b7fd47af5c4f8491ea2ee889d538, type: 3}
+    - {fileID: 2800000, guid: 5b9ff05ade0d50018afe370601165e88, type: 3}
+    - {fileID: 2800000, guid: c8ac3c1fc1e45ee3b08990bdb1553399, type: 3}
+    - {fileID: 2800000, guid: 6272cb36646b5bd49375491e38367c29, type: 3}
+    - {fileID: 2800000, guid: 6df14ffdc27b5a0ab613afc8b14f8030, type: 3}
+    - {fileID: 2800000, guid: c85237800c075d5593f2daf990751b64, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
   - source: cut/fhd/sk_c1006_3_1.webp
     document: {fileID: 4900000, guid: 1fd5920f9bba4194b8c87ecca952aa1e, type: 3}
     atlas: {fileID: 0}
@@ -5678,3 +5721,11 @@ SceneRoots:
   - {fileID: 1044406733}
   - {fileID: 1820183972}
   - {fileID: 214042782}
+--- !u!81 &1554767825
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135008492}
+  m_Enabled: 1

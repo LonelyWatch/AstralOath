@@ -26,7 +26,7 @@
 
 预览会消费 timeline 帧、CFX 骨骼特效、部分手动粒子字段和按 durationSeconds 播放的 CUTIN 帧。粒子的 colorBlends、burningType、positionType、repeat 仍有明确诊断；SHAKE 使用原 camera 骨骼的位移曲线和 timeScale，powerX/powerY/type 的振幅含义仍未应用；DARK/STOP 支持颜色、透明度与按 id 停止，持续时间/淡出重叠和深度语义仍属于明示实验映射。LAYOUT 和 SINE_VALUE 驱动仍未重现。PPEFFECT 的 sprite_blur 已按只读原始 shader 移植加权方向采样，仅读取原 STG 触发的 uniform 和时长；缺省 u_ratio=0 明确提示为实验选择。整个角色相机画面经过 RawImage 后处理，这只是实验室预览路径，不证明与原作 sprite 应用范围相同。CFX Fire 没有足够语义证据，相关原语明确不播放，不擅自启动默认动画。
 
-拉斯 S2 的实验协攻同伴明确为梅赛德丝，只播放动作、不结算战斗。安洁莉卡 S2 选己方两个试验角色，S3 显示四个己方试验角色。梅赛德丝 S2 保留 ANI=skill1 与 ONEVENT ani=skill2 的源不一致，不擅自改写；梅赛德丝 S3 没有源 CUTIN 时不会添加。
+拉斯 S2 的实验协攻同伴明确为梅赛德丝，只播放动作、不结算战斗。安洁莉卡 S2 选己方两个试验角色，S3 显示四个己方试验角色。梅赛德丝 S2 保留 ANI=skill1 与 ONEVENT ani=skill2 的源不一致，不擅自改写；梅赛德丝基础皮肤 S3 从导入器生成的 `graph.additions` 读取原骨骼 `skill3/cutin` 事件与基础皮肤的立绘序列。
 
 界面文案经 characterlab/localization 读取 Luban 生成资源，key 使用点分命名，各段统一小写 snake_case，BindingMap 组件 key 保持原名。界面中文与语音 ja 分开。资源导入器/生成目录不作为手工编辑入口。
 
@@ -48,3 +48,5 @@ CFX 的 scale/rotate 等字段包含 "~" 范围时，当前不会推测抽样分
 十角色接入时，命名 timeline 事件沿源动画及毫秒时刻进入 ONEVENT；亚敏 `skill2/eff_on` 为 1130ms。EFFECT 的 41/42 在实验模式只生成一次群体效果，位置取试验目标中心。DELAY 与空 source 的 SHOT 按节点 time 推进。绮世 `NODE_ANI` 骨骼及裁剪资源已收齐，其节点约束、原版精确全屏层级、条件位置与镜头在实验室仍属诊断范围。BattleScene 另有自身演出验收。
 
 日语音频使用资源目录明确列出的银行。源事件请求的无日语版本的片段列在 `missingJapaneseProgrammerKeys`，片段播放静音并按原事件继续。Windows 音频服务对每个缺失键记录一次诊断。
+
+共享技能目录还包含 `dualCallVoiceEventPath` 和 `dualAnswerVoiceEventPath`，由原 FMOD 目录生成，供 BattleScene 根据已接受的夹攻事件播放呼叫和应答。实验室直接预览技能时仍使用该技能的一条原生语音事件，FMOD 内部选择日语变体并维持多句对白的时序。见[战斗日语语音复核](../../../../docs/delivery/2026-11-14-battle-voice-variants.md)。

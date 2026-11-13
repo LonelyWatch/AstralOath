@@ -5,12 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using AstralOath.Client.BattleScene;
+using AstralOath.Client.Common;
 using AstralOath.Shared.Battle;
 using NUnit.Framework;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
+using UnityEngine.UI;
 
 namespace AstralOath.Client.Tests
 {
@@ -33,6 +35,12 @@ namespace AstralOath.Client.Tests
             queue.Enqueue(Event(BattleFlowEventKind.Action, "ally-3", "c1005.s1", "c_mercedes_skill_01", BattleActionOrigin.DualAttack));
             queue.Enqueue(Event(BattleFlowEventKind.Damage, "ally-3", "c1005.s1", null, BattleActionOrigin.DualAttack));
             Call(simulation, "Present", Event(BattleFlowEventKind.Action, "ally-1", "c1001.s2", "c_ras_skill_02", BattleActionOrigin.Primary));
+            var skillBanner = host.GetComponentInChildren<BindingMap>().transform.Find("Top Bar/Skill Use Banner");
+            Assert.That(skillBanner.gameObject.activeInHierarchy, Is.True);
+            Assert.That(skillBanner.Find("Skill Icon").GetComponent<Image>().sprite.name, Is.EqualTo("sk_c1001_2"));
+            Assert.That(skillBanner.Find("Caster Name").GetComponent<GameText>().text, Is.Not.Empty);
+            Assert.That(skillBanner.Find("Skill Name").GetComponent<GameText>().text, Is.Not.Empty);
+            Assert.That(((GameText)Field(simulation, "banner")).text, Is.Empty);
             var first = Field(simulation, "skillPresentation");
             var hits = (float[])Field(simulation, "hitTimes");
             float lastHit = hits.Last();
@@ -44,6 +52,10 @@ namespace AstralOath.Client.Tests
             Assert.That(Field(simulation, "presentedSkillId"), Is.EqualTo("c1005.s1"), "Dual attacker starts at the last source HIT, without waiting for return and CFX expiry.");
             Assert.That(Field(first, "caster"), Is.Not.Null, "The first actor keeps its recovery instead of teleporting home.");
             Assert.That(Field(simulation, "skillPresentation"), Is.Not.SameAs(first));
+            Assert.That(skillBanner.gameObject.activeInHierarchy, Is.True);
+            Assert.That(skillBanner.Find("Skill Icon").GetComponent<Image>().sprite.name, Is.EqualTo("sk_c1005_1"));
+            Call(simulation, "ShowPrompt");
+            Assert.That(skillBanner.gameObject.activeSelf, Is.False, "Returning to the command prompt dismisses the skill banner.");
         }
 
         internal static BattleFlowEvent Event(BattleFlowEventKind kind, string source, string skill, string presentation, BattleActionOrigin origin)

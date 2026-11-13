@@ -227,6 +227,8 @@ namespace AstralOath.Client.BattleScene.Editor
             }
 
             SetObject("hud", hud);
+            SetObject("inspectionPrefab", Asset<GameObject>("Assets/Game/Common/Res/Prefab/InfoPanel.prefab"));
+            SetObject("confirmPrefab", Asset<GameObject>("Assets/Game/Common/Res/Prefab/ConfirmButton.prefab"));
             SetObject("unitPresentation", BattleUnitPresentationAssets.Load());
             SetObject("battleDamageFont", BuildDamageDigits());
             SetObject("stageBackground", canvas.gameObject.scene.GetRootGameObjects()
@@ -238,6 +240,15 @@ namespace AstralOath.Client.BattleScene.Editor
             SetSpine("skillSelection", "hud_icon_select");
             SetSpine("burnIntro", "hud_icon_burneff");
             SetSpine("soulUse", "ui_soul_burn_use");
+            SetSpine("soulDisplay", "soul_01");
+            const string sharedDustAtlas = "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/";
+            var dust = properties.FindProperty("readyDust");
+            dust.FindPropertyRelative("skeleton").objectReferenceValue = Asset<TextAsset>(
+                "Assets/Game/Modules/BattleScene/Res/Effects/TurnEntry/dust.spine.json");
+            dust.FindPropertyRelative("atlas").objectReferenceValue = Asset<TextAsset>(
+                sharedDustAtlas + "Atlas/effect/effect.atlas.txt");
+            dust.FindPropertyRelative("page").objectReferenceValue = Asset<Texture2D>(
+                sharedDustAtlas + "Textures/effect/effect.png");
             SetArray("particles", Directory.GetFiles(HudEffects + "Particles", "*.particle.json")
                 .OrderBy(path => path, System.StringComparer.Ordinal)
                 .Select(path => Asset<TextAsset>(path.Replace('\\', '/'))).ToArray());

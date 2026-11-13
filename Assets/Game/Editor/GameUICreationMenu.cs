@@ -17,7 +17,10 @@ namespace AstralOath.Editor
         [MenuItem("GameObject/UI/项目按钮 (GameButton)", false, 2032)]
         private static void CreateButton(MenuCommand command) => Create(command, true);
 
-        private static void Create(MenuCommand command, bool button)
+        [MenuItem("GameObject/UI/通用确认按钮", false, 2033)]
+        private static void CreateConfirm(MenuCommand command) => Create(command, true, CommonUiPrefabs.ButtonPath);
+
+        private static void Create(MenuCommand command, bool button, string prefabPath = null)
         {
             Undo.IncrementCurrentGroup();
             int group = Undo.GetCurrentGroup();
@@ -43,7 +46,9 @@ namespace AstralOath.Editor
                 if (stage == null)
                     EnsureEventSystem(scene, undoName);
 
-                GameObject element = button ? CreateButtonObject() : CreateTextObject();
+                GameObject element = prefabPath == null
+                    ? (button ? CreateButtonObject() : CreateTextObject())
+                    : (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath), scene);
                 SceneManager.MoveGameObjectToScene(element, scene);
                 GameObjectUtility.SetParentAndAlign(element, parent);
                 foreach (Transform child in element.GetComponentsInChildren<Transform>(true))

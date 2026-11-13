@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AstralOath.Client.Core;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace AstralOath.Client.Common
@@ -11,7 +12,38 @@ namespace AstralOath.Client.Common
     [DisallowMultipleComponent, AddComponentMenu("UI/Game Button")]
     public sealed class GameButton : Button
     {
+        [SerializeField] private AudioSource clickAudio;
         private BindingScope current;
+
+        public override void OnPointerClick(PointerEventData eventData)
+        {
+            if (eventData.button == PointerEventData.InputButton.Left &&
+                TryGetComponent<GameLongPress>(out var hold) && hold.ConsumedClick(eventData)) return;
+            base.OnPointerClick(eventData);
+        }
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            if (clickAudio) onClick.AddListener(PlayClickSound);
+        }
+
+        private void PlayClickSound()
+        {
+            if (!clickAudio || !clickAudio.clip || !IsActive() || !IsInteractable()) return;
+            var canvas = GetComponentInParent<Canvas>();
+            if (!canvas)
+            {
+                clickAudio.PlayOneShot(clickAudio.clip);
+                return;
+            }
+
+            // The screen can close as part of this click; keep the sound on its owning Canvas.
+            var root = canvas.rootCanvas.gameObject;
+            if (!root.TryGetComponent<GameUiAudio>(out var output))
+                output = root.AddComponent<GameUiAudio>();
+            output.Play(clickAudio.clip, clickAudio.volume);
+        }
 
         public void Bind(BindingScope owner, Func<CancellationToken, Task> handler)
         {
@@ -61,6 +93,8 @@ namespace AstralOath.Client.Common
 
         protected override void OnDisable()
         {
+            onClick.RemoveListener(PlayClickSound);
+            if (clickAudio) clickAudio.Stop();
             try { Unbind(); }
             finally { base.OnDisable(); }
         }

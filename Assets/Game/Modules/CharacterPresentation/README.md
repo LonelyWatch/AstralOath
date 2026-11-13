@@ -6,6 +6,8 @@
 
 `StgPlaybackSession` 直接保留和遍历导入 graph.source 的 entities/connections/entrypoint/eventlisteners。ANI 完成和 ONEVENT 匹配分开处理，ONEVENT 保留源动画名；不把未知 when/location 改写成绝对时间。
 
+若原始 STG 缺少已被原骨骼事件和实机共同确认的演出节点，导入工具可以生成独立的 `graph.additions`。战斗与角色实验室以相同规则读取追加的实体与连接。原始 `graph.source` 保留不动。当前仅登记梅赛德丝基础皮肤 S3。Foundation 发布时把支持 `additions` 的 BattleScene 代码与新资源放入同一热更包，并按选定母包执行兼容检查。角色实验室随现有离线 Windows 测试包一起构建。此立绘补充不涉及 AOT、原生库或网络协议。参见[演出排查记录](../../../../docs/delivery/2026-11-14-mercedes-s3-cutin.md)。
+
 默认严格模式对编码条件给出诊断；实验模式明确提示 when=1 起始、缺省连接完成，以及外部显式注入的试验目标锚点。实验 CAM/MOVE/ZOOM 不声称原始曲线一致。CFX/timeline/粒子/CUTIN 的资源预加载与视觉执行位于 CharacterLab 的 CharacterEffectStage，与本调度器消费相同 Tick。
 
 `Tests~/CharacterPresentationClockTests.cs` 是 .NET 10 无 Unity 依赖的实际行为断言；最初空实现已观察到播放时钟断言失败，再实现后通过。Unity 图回归在 `Assets/Game/Tests/EditMode/CharacterPresentationGraphTests.cs`，由协调者统一执行。

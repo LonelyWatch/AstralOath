@@ -91,7 +91,7 @@ namespace AstralOath.Client.Tests
                             "c_ras_skill_01" or "c_angelica_skill_01" => Phase.Approach | Phase.Impact,
                             "c_ras_skill_02" => Phase.Approach | Phase.Impact | Phase.Blur,
                             "c_ras_skill_03" => Phase.Hatch,
-                            "c_mercedes_skill_03" => Phase.Wide | Phase.Hatch,
+                            "c_mercedes_skill_03" => Phase.Wide | Phase.Hatch | Phase.Cutin,
                             "c_angelica_skill_03" => Phase.Blur | Phase.Cutin,
                             _ => Phase.None
                         };
@@ -386,6 +386,12 @@ namespace AstralOath.Client.Tests
             float[] checkedHits = checkTargetsAtHits
                 ? ((IEnumerable<float>)PresentationType.GetProperty("HitTimes").GetValue(playback)).ToArray()
                 : Array.Empty<float>();
+            if (id == "c_mercedes_skill_03")
+                Assert.That(checkedHits, Has.Length.EqualTo(8), "Mercedes keeps all eight source hit cues.");
+            // The source LAYOUT runs for 200 ms before skill3, whose cutin event is at 1300 ms.
+            const float mercedesSourceCutin = 1.5f;
+            bool checkMercedesCutin = id == "c_mercedes_skill_03";
+            float mercedesCutinAt = -1f;
             int nextCheckedHit = 0;
             int sourceReactionHits = 0;
             var cameraTrace = !string.IsNullOrEmpty(captureDirectory) && (id == "c_ras_skill_01" || id == "c_angelica_skill_01")
@@ -409,9 +415,26 @@ namespace AstralOath.Client.Tests
                     visualTargets.Add(postCamera.targetTexture);
                     Observe(Phase.Blur);
                 }
-                if (camera.transform.Cast<Transform>().Any(child => child.gameObject.activeInHierarchy &&
-                    child.name.StartsWith("CUTIN ", StringComparison.Ordinal)))
+                var activeCutin = camera.transform.Cast<Transform>().FirstOrDefault(child => child.gameObject.activeInHierarchy &&
+                    child.name.StartsWith("CUTIN ", StringComparison.Ordinal));
+                if (activeCutin)
+                {
+                    if (checkMercedesCutin)
+                    {
+                        if (mercedesCutinAt < 0f)
+                        {
+                            mercedesCutinAt = elapsed;
+                            Assert.That(elapsed, Is.EqualTo(mercedesSourceCutin).Within(.001f));
+                            const string mercedesPortrait = "cut/fhd/sk_c1005_3.webp";
+                            Assert.That(activeCutin.name, Is.EqualTo("CUTIN " + mercedesPortrait));
+                            var portrait = assets.Single(asset => asset.source == mercedesPortrait);
+                            Assert.That(activeCutin.GetComponent<MeshRenderer>().sharedMaterial.mainTexture, Is.SameAs(portrait.pages[0]));
+                            Assert.That((float)cutinRemaining.GetValue(stage), Is.EqualTo(1.35f).Within(.02f));
+                        }
+                        Assert.That(elapsed, Is.EqualTo(mercedesCutinAt).Within(.001f), "Cut-in pauses the source animation clock.");
+                    }
                     Observe(Phase.Cutin);
+                }
                 var hatch = camera.transform.Find("BGHATCH");
                 if (hatch && hatch.gameObject.activeInHierarchy &&
                     hatch.GetComponent<MeshFilter>().sharedMesh.colors[0].a >= .9f)
@@ -493,6 +516,8 @@ namespace AstralOath.Client.Tests
                 float delta = Time.unscaledDeltaTime;
                 float wallCutin = (float)cutinRemaining.GetValue(stage);
                 if (wallCutin > 0f) delta = Mathf.Min(delta, wallCutin);
+                else if (checkMercedesCutin && elapsed < mercedesSourceCutin)
+                    delta = Mathf.Min(delta, mercedesSourceCutin - elapsed);
                 else if (nextCheckedHit < checkedHits.Length && elapsed < checkedHits[nextCheckedHit])
                     delta = Mathf.Min(delta, checkedHits[nextCheckedHit] - elapsed);
                 Tick.Invoke(playback, new object[] { delta });

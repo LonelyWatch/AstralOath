@@ -57,8 +57,11 @@ namespace AstralOath.Shared.Battle
 
     public sealed class BattleFlowRules
     {
+        public const int StandardMaximumSoul = 80;
+        public const int SoulPerSlot = 10;
+
         public BattleFlowRules(int openingReadinessMaxBp = 0, int maxTurns = 200,
-            int initialAllySoul = 0, int initialEnemySoul = 0, int maximumSoul = 20)
+            int initialAllySoul = 0, int initialEnemySoul = 0, int maximumSoul = StandardMaximumSoul)
         {
             if (openingReadinessMaxBp < 0 || openingReadinessMaxBp >= 10000)
                 throw new ArgumentOutOfRangeException(nameof(openingReadinessMaxBp));

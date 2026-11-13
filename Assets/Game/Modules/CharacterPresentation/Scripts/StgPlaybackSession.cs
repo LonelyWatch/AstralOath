@@ -42,15 +42,17 @@ namespace AstralOath.Client.CharacterPresentation
         {
             this.graph=graph??throw new ArgumentNullException(nameof(graph));this.caster=caster;this.camera=camera;this.experimental=experimental;this.report=report;
             var source=(JObject)graph["source"]??graph;
-            foreach(var token in source["entities"]??new JArray())
+            var additions=graph["additions"];
+            foreach(var node in (source["entities"]??new JArray()).OfType<JObject>()
+                .Concat((additions?["entities"]??new JArray()).OfType<JObject>()))
             {
-                var node=(JObject)token;int id=RequiredId(node["guid"]);
+                int id=RequiredId(node["guid"]);
                 if(nodes.ContainsKey(id))throw new FormatException("Duplicate STG guid "+id);
                 nodes.Add(id,node);
             }
-            foreach(var token in source["connections"]??new JArray())
+            foreach(var edge in (source["connections"]??new JArray()).OfType<JObject>()
+                .Concat((additions?["connections"]??new JArray()).OfType<JObject>()))
             {
-                var edge=(JObject)token;
                 if(!nodes.ContainsKey(RequiredId(edge["from"])) || !nodes.ContainsKey(RequiredId(edge["to"])))throw new FormatException("STG connection references missing guid.");
                 edges.Add(edge);
             }

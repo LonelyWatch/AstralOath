@@ -92,6 +92,29 @@ namespace AstralOath.Client.BattleScene
         private Vector3 backdropPosition;
         private Vector3 backdropScale;
         private Bounds backdropBounds;
+        private BattlePreviewViewport viewport;
+        private int viewportRevision;
+        private float viewportBaseline;
+
+        private void CaptureViewport()
+        {
+            viewport = camera.GetComponent<BattlePreviewViewport>();
+            viewportRevision = viewport ? viewport.LayoutRevision : 0;
+            viewportBaseline = viewport ? viewport.BaselineSize : 0f;
+        }
+
+        private void UpdateViewport()
+        {
+            if (!viewport || viewportRevision == viewport.LayoutRevision || viewportBaseline <= 0) return;
+            float factor = viewport.BaselineSize / viewportBaseline;
+            originalSize *= factor;
+            requestedSize *= factor;
+            if (zoom is { } scale)
+                zoom = (scale.From * factor, scale.To * factor, scale.Start, scale.Duration, scale.Curve);
+            CaptureViewport();
+            viewport.ResizeBackdrop();
+            CaptureBackdrop();
+        }
 
         private Vector3 Framed(Vector3 anchor, float groundOffset) =>
             anchor + Vector3.up * (groundOffset * camera.orthographicSize / originalSize);

@@ -17,6 +17,7 @@ OUTPUT = MODULE / "Res/Effects/Hud"
 RAW_DIRECTORY = "原始资源"
 ROOTS = (
     "effect/soul_burn_bt.scsp",
+    "effect/soul_01.cfx",
     "effect/hud_skill_select_nomal.cfx",
     "effect/hud_skill_select_burn.cfx",
     "effect/ui_soul_burn_use.cfx",

@@ -48,6 +48,7 @@ namespace AstralOath.Shared.Battle
         }
 
         public BattleSnapshot Snapshot { get; private set; }
+        public int MaximumSoul => rules.MaximumSoul;
         public IReadOnlyList<BattleFlowEvent> OpeningEvents { get; }
 
         public BattleCommandResult Submit(BattleSkillCommand command)

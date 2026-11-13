@@ -152,6 +152,27 @@ public sealed class BattleMatchTests
     }
 
     [Fact]
+    public void StandardSoulCapacityCapsEachSideAtEightyAndReportsAcceptedAmounts()
+    {
+        var resolver = new Resolver((_, command, _) => new(new[]
+        {
+            BattleChange.Soul(command.ActorId, command.ActorId == "ally" ? BattleSide.Ally : BattleSide.Enemy, 100),
+            BattleChange.Soul(command.ActorId, command.ActorId == "ally" ? BattleSide.Ally : BattleSide.Enemy, -13)
+        }));
+        var match = Match(resolver);
+
+        var ally = match.Submit(Command(1, "ally", "enemy"));
+        Assert.Equal(new[] { 80, 67 }, ally.Events.Where(e => e.Kind == BattleFlowEventKind.SoulChanged).Select(e => e.Amount));
+        Assert.Equal(67, ally.Snapshot.AllySoul);
+        Assert.Equal(0, ally.Snapshot.EnemySoul);
+
+        var enemy = match.Submit(Command(2, "enemy", "ally"));
+        Assert.Equal(new[] { 80, 67 }, enemy.Events.Where(e => e.Kind == BattleFlowEventKind.SoulChanged).Select(e => e.Amount));
+        Assert.Equal(67, enemy.Snapshot.AllySoul);
+        Assert.Equal(67, enemy.Snapshot.EnemySoul);
+    }
+
+    [Fact]
     public void InvalidResolutionCannotCommitEarlierEffectsOrConsumeRandomness()
     {
         ulong first = 0;

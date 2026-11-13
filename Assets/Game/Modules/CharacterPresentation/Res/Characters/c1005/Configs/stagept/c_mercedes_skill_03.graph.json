@@ -509,6 +509,11 @@
       "type": "skeleton"
     },
     {
+      "source": "cut/fhd/sk_c1005_3.webp",
+      "address": "characterlab/source/cut/fhd/sk_c1005_3.webp",
+      "type": "cutin"
+    },
+    {
       "source": "effect/hit_new_blunt_01.atlas",
       "address": "characterlab/source/effect/hit_new_blunt_01.atlas",
       "type": "atlas"
@@ -594,5 +599,27 @@
       "type": "texture"
     }
   ],
-  "diagnostics": []
+  "diagnostics": [],
+  "additions": {
+    "entities": [
+      {
+        "guid": 33,
+        "etty": "ONEVENT",
+        "ani": "skill3",
+        "name": "cutin"
+      },
+      {
+        "guid": 34,
+        "etty": "CUTIN",
+        "args": "sk_c1005_3",
+        "curtain_color": "0,0,0,255"
+      }
+    ],
+    "connections": [
+      {
+        "from": 33,
+        "to": 34
+      }
+    ]
+  }
 }

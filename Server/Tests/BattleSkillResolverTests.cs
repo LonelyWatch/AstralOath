@@ -60,6 +60,20 @@ public sealed class BattleSkillResolverTests
         Assert.Equal(0, result.Snapshot.GetUnit("actor").GetCooldown("c1001.s2"));
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void MercedesS3UsesSamePresentationWithOrWithoutSoulBurn(bool burn)
+    {
+        var match = Match("c1005");
+        var response = Cast(match, "actor", "c1005.s3", null, burn);
+
+        Assert.Equal(BattleCommandStatus.Accepted, response.Status);
+        var action = Assert.Single(response.Events, item => item.Kind == BattleFlowEventKind.Action);
+        Assert.Equal("c_mercedes_skill_03", action.PresentationId);
+        Assert.Equal(burn, action.UseSoulBurn);
+    }
+
     [Fact]
     public void MercedesAttackUpRepeatsS2ExactlyOnceWithoutExtraSoulOrTurn()
     {
