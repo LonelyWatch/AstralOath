@@ -143,4 +143,4 @@ Luban 快照 `Configs/battle-catalog.json` 含十名英雄、成长模板、觉�
 
 卡琳 c1011 已接入角色内容；三技能、音频及已知缺项见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。
 
-席德 c1014 已接入角色内容。原始第二张演出图用于提速后的普攻，S2 在实战为暴击被动。规则、表现诊断与音频来源见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。
+巴尔＆塞尚 c1015 已接入三技能及日语原声。S2/S3 使用支持有序位移轨的 Spine 2.1 资源。规则、表现诊断与音频来源见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。

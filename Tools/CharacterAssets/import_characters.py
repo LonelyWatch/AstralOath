@@ -25,10 +25,11 @@ CHARACTERS={
     "c1012":("corvus","科尔布思"),
     "c1013":("kartua","卡尔图哈"),
     "c1014":("cedars","席德"),
+    "c1015":("baal_sezan","巴尔＆塞尚"),
     "c1062":("angelica","安洁莉卡"),
 }
 # Keep source identifiers verbatim even where the model and STG stems differ.
-SKILL_STEMS={"c1002":"c_cecilia_skill_new","c1007":"c_wilderd_skill","c1008":"c_aming_skill","c1010":"c_jerato_skill","c1013":"c_cartuja_skill"}
+SKILL_STEMS={"c1002":"c_cecilia_skill_new","c1007":"c_wilderd_skill","c1008":"c_aming_skill","c1010":"c_jerato_skill","c1013":"c_cartuja_skill","c1015":"c_baal_skill"}
 SKILL_VARIANTS={("c1009",3):"c_charlotte_skill_03_05",
                 **{("c1014",index):f"c_cedars_skill_{index:02}_new" for index in range(1,4)}}
 # Base STG omits this cue; the base skeleton marker and skin STG corroborate its timing.
@@ -37,6 +38,7 @@ ANIMATION_CUTINS={
     "stagept/c_jerato_skill_03.stg": ("model/zerato.scsp", "skill3", "cutin", "sk_c1010_3"),
     "stagept/c_karin_skill_03.stg": ("model/karin.scsp", "skill3_2", "cutin", "sk_c1011_3"),
     "stagept/c_cartuja_skill_03.stg": ("model/kartua.scsp", "skill3", "cutin", "sk_c1013_3"),
+    "stagept/c_baal_skill_03.stg": ("model/baal_sezan.scsp", "skill3", "cutin", "sk_c1015_3"),
 }
 
 

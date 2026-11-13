@@ -511,6 +511,54 @@ Assert.That(RedWidth(), Is.Zero, "The red segment is cleared after the transitio
         }
 
         [UnityTest]
+        public IEnumerator PoisonIconsKeepIndependentStacksAndRemoveOnlyTheExpiredOne()
+        {
+            var simulation = typeof(BattleHudPreview).GetField("simulation", Private).GetValue(host);
+            var view = ((IDictionary)simulation.GetType().GetField("views", Private).GetValue(simulation))["enemy-1"];
+            var icons = map.transform.Find("Unit Status/Enemies/01 Front/Frame/Status Icons");
+            var apply = view.GetType().GetMethod("ApplyStatus");
+            var remove = view.GetType().GetMethod("RemoveStatusInstance");
+            var early = NewStatus(10, 1);
+            var late = NewStatus(11, 2);
+            apply.Invoke(view, new object[] { early });
+            apply.Invoke(view, new object[] { late });
+            CollectionAssert.AreEqual(new[] { "itxt_num1", "itxt_num2" }, Digits());
+            remove.Invoke(view, new object[] { early });
+            CollectionAssert.AreEqual(new[] { "itxt_num2" }, Digits());
+            yield return null;
+
+            BattleStatusSnapshot NewStatus(ulong id, int turns) =>
+                (BattleStatusSnapshot)Activator.CreateInstance(typeof(BattleStatusSnapshot), Private, null,
+                    new object[] { BattleStatusKind.Poison, turns, 500, "ally-1", id }, null);
+            string[] Digits() => icons.Cast<RectTransform>().Where(item => item.gameObject.activeSelf)
+                .OrderBy(item => item.anchoredPosition.x)
+                .Select(item => item.Find("Remaining Turns").GetComponent<Image>().sprite.name).ToArray();
+        }
+
+        [UnityTest]
+        public IEnumerator PoisonDamageUsesOneHealthChangeWithoutAuthoredHitFeedback()
+        {
+            var simulation = typeof(BattleHudPreview).GetField("simulation", Private).GetValue(host);
+            var view = ((IDictionary)simulation.GetType().GetField("views", Private).GetValue(simulation))["enemy-1"];
+            var health = view.GetType().GetField("presentedHealth", Private);
+            int maximum = host.SimulationSnapshot.GetUnit("enemy-1").Stats.MaxHealth;
+            view.GetType().GetMethod("SetHealth").Invoke(view, new object[] { 1000L, maximum });
+            simulation.GetType().GetField("hitTimes", Private).SetValue(simulation, new[] { .1f, .4f, .8f });
+            var damage = BattleDualAttackTimingTests.Event(BattleFlowEventKind.Damage, "ally-1", null, null,
+                BattleActionOrigin.Primary, BattleStatusKind.Poison, amount: 80);
+            int hitSounds = host.StartedHitSounds;
+
+            simulation.GetType().GetMethod("Present", Private).Invoke(simulation, new object[] { damage });
+            Assert.That(health.GetValue(view), Is.EqualTo(920L));
+            Assert.That(host.StartedHitSounds, Is.EqualTo(hitSounds));
+            var feedback = (IList)simulation.GetType().GetField("pendingFeedback", Private).GetValue(simulation);
+            Assert.That(feedback, Is.Empty, "Poison uses its own feedback instead of the previous skill's HIT sequence.");
+            var hud = simulation.GetType().GetField("turnHud", Private).GetValue(simulation);
+            Assert.That(hud.GetType().GetField("hitCount", Private).GetValue(hud), Is.EqualTo(0));
+            yield return null;
+        }
+
+        [UnityTest]
         public IEnumerator SkillAndOverheadStatusHoldShowDetailsWithoutCasting()
         {
             var eventSystem = scene.GetRootGameObjects().Select(root => root.GetComponent<UnityEngine.EventSystems.EventSystem>())

@@ -1,0 +1,160 @@
+
+baalcezanne_skill1.sct
+size: 505,520
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+sprite/center_smoke
+  rotate: false
+  xy: 262, 2
+  size: 211, 156
+  orig: 211, 156
+  offset: 0, 0
+  index: -1
+sprite/cloud_small_2
+  rotate: true
+  xy: 475, 282
+  size: 39, 15
+  orig: 39, 15
+  offset: 0, 0
+  index: -1
+sprite/cloud_small_4
+  rotate: true
+  xy: 475, 2
+  size: 61, 28
+  orig: 61, 28
+  offset: 0, 0
+  index: -1
+sprite/cloud_small_5
+  rotate: false
+  xy: 475, 121
+  size: 25, 17
+  orig: 25, 17
+  offset: 0, 0
+  index: -1
+sprite/cloud_small_6
+  rotate: true
+  xy: 475, 65
+  size: 54, 26
+  orig: 54, 26
+  offset: 0, 0
+  index: -1
+sprite/cloud_small_7
+  rotate: true
+  xy: 475, 161
+  size: 60, 20
+  orig: 60, 20
+  offset: 0, 0
+  index: -1
+sprite/energybolt_01
+  rotate: false
+  xy: 2, 2
+  size: 258, 182
+  orig: 258, 182
+  offset: 0, 0
+  index: -1
+sprite/energybolt_02
+  rotate: true
+  xy: 2, 186
+  size: 133, 96
+  orig: 133, 96
+  offset: 0, 0
+  index: -1
+sprite/energybolt_03
+  rotate: false
+  xy: 371, 323
+  size: 111, 71
+  orig: 111, 71
+  offset: 0, 0
+  index: -1
+sprite/energybolt_04
+  rotate: true
+  xy: 204, 323
+  size: 80, 69
+  orig: 80, 69
+  offset: 0, 0
+  index: -1
+sprite/energybolt_05
+  rotate: true
+  xy: 100, 186
+  size: 125, 103
+  orig: 125, 103
+  offset: 0, 0
+  index: -1
+sprite/energybolt_06
+  rotate: false
+  xy: 275, 323
+  size: 94, 78
+  orig: 94, 78
+  offset: 0, 0
+  index: -1
+sprite/energybolt_07
+  rotate: true
+  xy: 110, 313
+  size: 95, 92
+  orig: 95, 92
+  offset: 0, 0
+  index: -1
+sprite/energybolt_08
+  rotate: true
+  xy: 205, 186
+  size: 62, 54
+  orig: 62, 54
+  offset: 0, 0
+  index: -1
+sprite/energybolt_09
+  rotate: true
+  xy: 205, 250
+  size: 68, 50
+  orig: 68, 50
+  offset: 0, 0
+  index: -1
+sprite/energybolt_head3
+  rotate: true
+  xy: 475, 140
+  size: 19, 23
+  orig: 19, 23
+  offset: 0, 0
+  index: -1
+sprite/energybolt_head4
+  rotate: true
+  xy: 335, 403
+  size: 115, 162
+  orig: 115, 162
+  offset: 0, 0
+  index: -1
+sprite/energybolt_head5
+  rotate: false
+  xy: 2, 323
+  size: 106, 175
+  orig: 106, 175
+  offset: 0, 0
+  index: -1
+sprite/energybolt_head6
+  rotate: true
+  xy: 475, 223
+  size: 57, 18
+  orig: 57, 18
+  offset: 0, 0
+  index: -1
+sprite/light1
+  rotate: false
+  xy: 219, 405
+  size: 114, 113
+  orig: 114, 113
+  offset: 0, 0
+  index: -1
+sprite/light_halfcicle_01
+  rotate: false
+  xy: 262, 160
+  size: 211, 136
+  orig: 211, 136
+  offset: 0, 0
+  index: -1
+sprite/lightning_core_05
+  rotate: false
+  xy: 110, 410
+  size: 107, 107
+  orig: 107, 107
+  offset: 0, 0
+  index: -1

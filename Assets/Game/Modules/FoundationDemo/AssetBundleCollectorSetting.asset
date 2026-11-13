@@ -9532,6 +9532,854 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags:
         UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/camera/baalcezanne_cm_sk1.skeleton.json
+        CollectorGUID: e37cda21c3a17044d9d52e5597b00a37
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/camera/baalcezanne_cm_sk1.spine.json
+        CollectorGUID: 10b1f26d043c6b049af35145247a354f
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/camera/baalcezanne_cm_sk2.skeleton.json
+        CollectorGUID: 11aca976dd09832439ee83e95f323bdb
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/camera/baalcezanne_cm_sk2.spine.json
+        CollectorGUID: 4d53a862710a9de449771c8681d646eb
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/camera/baalcezanne_skill3_cm.skeleton.json
+        CollectorGUID: 4532d64ceba46244ca846e8e4a5bbbe5
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/camera/baalcezanne_skill3_cm.spine.json
+        CollectorGUID: b7cdd108ad1cd58438ae42e5b8b029ac
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baal_sezan_eff_casting.skeleton.json
+        CollectorGUID: 3cfd580fa4ec8b14384b8a9e5e621238
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baal_sezan_eff_casting.spine.json
+        CollectorGUID: bc7826f317342d341a5edc5ca32d287d
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baal_sezan_eff_casting3.skeleton.json
+        CollectorGUID: 405c0257b9a2ed3479020afd72003190
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baal_sezan_eff_casting3.spine.json
+        CollectorGUID: 49703bc14e47f62458612d551f93fead
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baal_sezan_eff_casting3_b.skeleton.json
+        CollectorGUID: bd4254a0aed9c7d438154e6f4f9d4673
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baal_sezan_eff_casting3_b.spine.json
+        CollectorGUID: b7a2a979ed3164541b72b722d7f18eb5
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baal_sezan_eff_casting3_b2.skeleton.json
+        CollectorGUID: 4ca37ef711730c14cbb72b70b996cbbb
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baal_sezan_eff_casting3_b2.spine.json
+        CollectorGUID: 6ba75349e3ff7e14ea7afbb12cb387b1
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baal_sezan_eff_casting_b.skeleton.json
+        CollectorGUID: d707cf5ffb12a95478f9c4513d466bf6
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baal_sezan_eff_casting_b.spine.json
+        CollectorGUID: b401c1d8ff5e78442b05a5087b6570fe
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baal_sezan_eff_casting_b2.skeleton.json
+        CollectorGUID: 34b735a305def914ebf5338c17e9be66
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baal_sezan_eff_casting_b2.spine.json
+        CollectorGUID: 1e5abdcc28c9eda4292038b029f6636e
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baalcezanne_skill1.skeleton.json
+        CollectorGUID: 4467d9eded39a1348bbae458ab9f81e2
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baalcezanne_skill1.spine.json
+        CollectorGUID: 1f1dcca1369ad1843a41663dd360197b
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baalcezanne_skill2_b.skeleton.json
+        CollectorGUID: df923d6f2e77e0248b91586cf4a39313
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baalcezanne_skill2_b.spine.json
+        CollectorGUID: 60ea0700c2efda54a84cbf6a7a6b77f6
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baalcezanne_skill2_f.skeleton.json
+        CollectorGUID: 92aaed0d897f3d24a9c38d5a27209ec4
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baalcezanne_skill2_f.spine.json
+        CollectorGUID: 1f283fd8d9c2e9843bb17895f01583f6
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baalcezanne_skill3_b.skeleton.json
+        CollectorGUID: b0c6eb6d181b557408f1d8316767e16c
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baalcezanne_skill3_b.spine.json
+        CollectorGUID: a5d88801cd3077e4687721e517cd8991
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baalcezanne_skill3_f.skeleton.json
+        CollectorGUID: e8063e0db965e054daa6a7e24ab0325b
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baalcezanne_skill3_f.spine.json
+        CollectorGUID: d444562a86ddece4082f02ddfc9c4f2d
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baalcezanne_skill3_ground.skeleton.json
+        CollectorGUID: 26b3658a4df061b41afa0c2c3e53317d
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baalcezanne_skill3_ground.spine.json
+        CollectorGUID: 98e263000f74908418a183dfd26a58fe
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/model/baal_sezan.skeleton.json
+        CollectorGUID: 8bb8b298d91255348bb65ed37abea6fe
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/model/baal_sezan.spine.json
+        CollectorGUID: a7180da1f1550014fae78c36c5c5e268
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/portrait/c1015.skeleton.json
+        CollectorGUID: fc8a7eee03d07714abfa2b2ee1560477
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/portrait/c1015.spine.json
+        CollectorGUID: ba5ea96947f3df1459d2e46fa1f92c19
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/effect/baal_sezan_eff_casting.atlas.txt
+        CollectorGUID: 78d64bd9ad7f5c14aaf91a163147752c
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/effect/baal_sezan_eff_casting3.atlas.txt
+        CollectorGUID: 319278fb59bd4c344aa6470a8004c2b9
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/effect/baal_sezan_eff_casting3_b.atlas.txt
+        CollectorGUID: 603e737f4d9994d41b6839bbfeaa7408
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/effect/baal_sezan_eff_casting3_b2.atlas.txt
+        CollectorGUID: da894e55f1c1f5b45ba7c39cb580c918
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/effect/baal_sezan_eff_casting_b.atlas.txt
+        CollectorGUID: 670bdb7fc43f1114b9babdcb543c221b
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/effect/baal_sezan_eff_casting_b2.atlas.txt
+        CollectorGUID: 57f24964ff81aac4c8685e5b988d7177
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/effect/baalcezanne_skill1.atlas.txt
+        CollectorGUID: 645874aa6961aea498cbe579346fca34
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/effect/baalcezanne_skill2_b.atlas.txt
+        CollectorGUID: 3ab9250cef33fe34e913f45827a33562
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/effect/baalcezanne_skill2_f.atlas.txt
+        CollectorGUID: 9053d2f64871e5445adc8aa650af86ea
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/effect/baalcezanne_skill3_b.atlas.txt
+        CollectorGUID: 343b20865c41edc40b70f248fcdc87b6
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/effect/baalcezanne_skill3_f.atlas.txt
+        CollectorGUID: e20adbf220c04034a8c4f96f75034490
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/effect/baalcezanne_skill3_ground.atlas.txt
+        CollectorGUID: 2c39c9b7bd1c3ec41a816b6e5c53e8d7
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/model/baal_sezan.atlas.txt
+        CollectorGUID: f21d1fb22d7b74f4b8ba6b1d6aacbd3d
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/portrait/c1015.atlas.txt
+        CollectorGUID: ef6b676aad0114648bba3a3bbf8cab2b
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Configs/model/baal_sezan.timeline.json
+        CollectorGUID: c8bd58704ad0465409c1df86864c3334
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Configs/stagept/c_baal_skill_01.graph.json
+        CollectorGUID: 9efb3cbcbe870bc49831839dd59712a2
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Configs/stagept/c_baal_skill_02.graph.json
+        CollectorGUID: d81023038d7fd774db33fbcf4bf5927d
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Configs/stagept/c_baal_skill_03.graph.json
+        CollectorGUID: b2e3e7832eacec843a123c12ad1557cd
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3.cutin.json
+        CollectorGUID: e8677a392fef7c54db9cb782c7977614
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0000.png
+        CollectorGUID: bac0f790d3d881b4096cc5be57db8eef
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0001.png
+        CollectorGUID: 554a92dbe27f7604aa1adf95b42161d9
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0002.png
+        CollectorGUID: 8292b7237194d83428c6750e56b552cb
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0003.png
+        CollectorGUID: 6802641c0a601574aade03aff2033c0a
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0004.png
+        CollectorGUID: 5d3177da67f49624484238397bb5b895
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0005.png
+        CollectorGUID: e9593c892208d2f4299fbc463d11a41e
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0006.png
+        CollectorGUID: 18e1e38b405164c4c8bc4e8bc512b186
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0007.png
+        CollectorGUID: e89b1e9a3e973614186fd1f93d7b9b60
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0008.png
+        CollectorGUID: 6250a06c66fc9e74b89c3f3869f4dc9e
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0009.png
+        CollectorGUID: 4e97ef18949ca5345a92f2c7662e5e47
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0010.png
+        CollectorGUID: 042e4ebc879cf0f44a53e365f0736e9f
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0011.png
+        CollectorGUID: 48ef2467a3dc1c44c91dcc27590774d5
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0012.png
+        CollectorGUID: f34f71c38e2753541b6d798256581f61
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0013.png
+        CollectorGUID: 21d640af0f4f1a24ca9fea70b2b05600
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0014.png
+        CollectorGUID: 5594f980d65106f4781b589c9ba6e436
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0015.png
+        CollectorGUID: 562c002dc0d48114caaf1db162d76c7e
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0016.png
+        CollectorGUID: 68371ae81a4f4d4488935180f2961858
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0017.png
+        CollectorGUID: b74ecee7eb3810c43a081f7f6d98a2b2
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0018.png
+        CollectorGUID: 2b824a0be5632564a8275c62ef784a9c
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0019.png
+        CollectorGUID: 2d049b4d1a0538447af52797b7ba4a49
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0020.png
+        CollectorGUID: f1ec6597455a34e43a2a702a01ff6ac0
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/baal_sezan_eff_casting.cfx.json
+        CollectorGUID: f726c8103c2eadd40ba4d5399078676a
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/baal_sezan_eff_casting2.cfx.json
+        CollectorGUID: c25795fd8b7055d4faf9ca651a327534
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/baal_sezan_eff_casting3.cfx.json
+        CollectorGUID: a967f59cde256eb44a114024072cacff
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/baal_sezan_eff_casting3_b.cfx.json
+        CollectorGUID: 0c181431ec48cd645903a972658aedfe
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/baal_sezan_eff_casting_b.cfx.json
+        CollectorGUID: e4939fcc239725b4692fca5cc8d8b191
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/baalcezanne_skill1.cfx.json
+        CollectorGUID: 194f7eda0ac732c49ac72a96d9531bf3
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/baalcezanne_skill2.cfx.json
+        CollectorGUID: 1a1721b78d178bc469777efbdb1f907b
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/baalcezanne_skill3_b.cfx.json
+        CollectorGUID: cc6f06d1f70e26146b16486692344331
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/baalcezanne_skill3_burst1.particle.json
+        CollectorGUID: 32064323aa4ff814aa2cabfa08888f16
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/baalcezanne_skill3_end.particle.json
+        CollectorGUID: 2f29495658f38e245b0202fa58ad3610
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/baalcezanne_skill3_ground.cfx.json
+        CollectorGUID: b2774f8f7d0c24e46baea6a6a7e45433
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/lightningspark_01.particle.json
+        CollectorGUID: 08019146ede2f684b9c85d743a3f30d9
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/lightningspark_02.particle.json
+        CollectorGUID: dcbc2b604434f164e914ad5109a3de37
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/rose_01.particle.json
+        CollectorGUID: 55585929b2013f74a89034267a71e5fb
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/rose_02.particle.json
+        CollectorGUID: bd31aa1ec86a93e4b887703b35439226
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/rose_7.particle.json
+        CollectorGUID: d00ae2faf602eba4aab8abd6580fa92a
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/rose_casting.particle.json
+        CollectorGUID: 848ca20d8288b4346b34be38a36200f8
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/rose_casting_2.particle.json
+        CollectorGUID: b746f3409a3f44f4789a173b3ab99adc
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/effect/baal_sezan_eff_casting.png
+        CollectorGUID: e2e5eeb301a641a4abebf90690db47ee
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/effect/baal_sezan_eff_casting3.png
+        CollectorGUID: 00a0bfdef8874674eb2677f26b21c062
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/effect/baal_sezan_eff_casting3_b.png
+        CollectorGUID: edd5551b4f8c55c4cae64188682e2658
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/effect/baal_sezan_eff_casting3_b2.png
+        CollectorGUID: f008a25c2927cb7458843e1538312c0f
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/effect/baal_sezan_eff_casting_b.png
+        CollectorGUID: 7b632e95db0025648846efef1122e66f
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/effect/baal_sezan_eff_casting_b2.png
+        CollectorGUID: fd7f9f2cd174ade4bb213c35f2a17ed1
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/effect/baalcezanne_skill1.png
+        CollectorGUID: b1fbc76641d7bae408f293aa94b086df
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/effect/baalcezanne_skill2_b.png
+        CollectorGUID: a09941eaea143ed48a2b2c97db775b2f
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/effect/baalcezanne_skill2_f.png
+        CollectorGUID: 86b8991e752aa494eaa3d6188f3f7bf2
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/effect/baalcezanne_skill3_b.png
+        CollectorGUID: 6ae8f515cbc0adf4dae5207716c4435c
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/effect/baalcezanne_skill3_f.png
+        CollectorGUID: 59eb2ac44db27d54a9a7875ab0de3717
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/effect/baalcezanne_skill3_ground.png
+        CollectorGUID: 83e9515d79070be4aa2833c4be36b671
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/model/baal_sezan.png
+        CollectorGUID: 5a35f85f37557ed4f86bdc2d3673e8cc
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/portrait/c1015.png
+        CollectorGUID: 504a92d924d48a04f8ba8e7c6c2441b8
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
       - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/camera/angelica_cm.skeleton.json
         CollectorGUID: 25f06cc55bae621438b0862977e31a2e
         CollectorType: 0

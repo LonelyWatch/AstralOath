@@ -349,7 +349,7 @@ namespace AstralOath.Client.BattleScene
                         recoveryStages.Add((previous, actionDuration));
                     }
                 }
-                else if (actionElapsed < impactSeconds) return;
+                else if (IsPeriodicDamage(item) ? HasActionPresentation : actionElapsed < impactSeconds) return;
                 playback.Dequeue();
                 Present(item);
             }
@@ -476,7 +476,8 @@ namespace AstralOath.Client.BattleScene
                     var primary = item.TargetId != null && views.TryGetValue(item.TargetId, out var target)
                         ? target.Actor : null;
                     var actionEvents = playback.TakeWhile(next => next.Kind != BattleFlowEventKind.Action).ToArray();
-                    var targetEvents = actionEvents.Where(next => next.Kind == BattleFlowEventKind.Damage || next.Kind == BattleFlowEventKind.Healing).ToArray();
+                    var targetEvents = actionEvents.Where(next => (next.Kind == BattleFlowEventKind.Damage && !IsPeriodicDamage(next)) ||
+                        next.Kind == BattleFlowEventKind.Healing).ToArray();
                     if (targetEvents.Length == 0 && skills.TryGetValue(item.SkillId, out var support) &&
                         (support.target == "all_allies" || support.target == "all_enemies" || support.target == "self"))
                     {
@@ -531,13 +532,19 @@ namespace AstralOath.Client.BattleScene
                     {
                         // Turn-end expiry keeps the marker visible through the attacking unit's last hit.
                         float at = item.SourceId == item.TargetId ? AfterLastHitAt(item.TargetId) : LastFeedbackAt(item.TargetId);
-                        ScheduleFeedback(at, item.TargetId, () => views[item.TargetId].RemoveStatus(item.StatusKind.Value));
+                        ScheduleFeedback(at, item.TargetId, () =>
+                        {
+                            var view = views[item.TargetId];
+                            if (item.Status != null) view.RemoveStatusInstance(item.Status);
+                            else view.RemoveStatus(item.StatusKind.Value);
+                        });
                     }
                     break;
                 case BattleFlowEventKind.Damage:
                     int absorbed = MatchesAbsorption(item) ? pendingAbsorption.Amount : 0;
                     pendingAbsorption = null;
-                    ScheduleDamage(item, absorbed);
+                    if (IsPeriodicDamage(item)) ShowPeriodicDamage(item, absorbed);
+                    else ScheduleDamage(item, absorbed);
                     break;
                 case BattleFlowEventKind.Healing:
                     ScheduleFeedback(LastFeedbackAt(item.TargetId), item.TargetId, () => ShowHealing(item));
@@ -603,6 +610,17 @@ namespace AstralOath.Client.BattleScene
             pendingAbsorption != null && pendingAbsorption.SourceId == item.SourceId &&
             pendingAbsorption.TargetId == item.TargetId;
 
+        private static bool IsPeriodicDamage(BattleFlowEvent item) =>
+            item.Kind == BattleFlowEventKind.Damage && item.StatusKind == BattleStatusKind.Poison;
+
+        private void ShowPeriodicDamage(BattleFlowEvent item, int absorbed)
+        {
+            var view = views[item.TargetId];
+            if (absorbed > 0) view.AbsorbShield(absorbed);
+            view.ApplyDamageHit(item.Amount, Snapshot.GetUnit(item.TargetId).Stats.MaxHealth, true);
+            turnHud.ShowPeriodicDamage(item, view.FeedbackAnchor, view.Actor.Bounds.center, camera);
+        }
+
         private void ScheduleDamage(BattleFlowEvent item, int absorbed)
         {
             var view = views[item.TargetId];
@@ -647,7 +665,7 @@ namespace AstralOath.Client.BattleScene
                     break;
                 if (next.TargetId != targetId) continue;
                 if (next.Kind == BattleFlowEventKind.Healing && next.Amount > 0) break;
-                if (next.Kind == BattleFlowEventKind.Damage) return true;
+                if (next.Kind == BattleFlowEventKind.Damage && !IsPeriodicDamage(next)) return true;
             }
             return false;
         }
@@ -1162,6 +1180,12 @@ namespace AstralOath.Client.BattleScene
                 if (kind == BattleStatusKind.Barrier) SetShield(0);
                 statusIcons.Remove(kind);
                 if (kind == BattleStatusKind.Stealth) SetStealth(false);
+            }
+
+            public void RemoveStatusInstance(BattleStatusSnapshot effect)
+            {
+                if (effect.InstanceId == 0) RemoveStatus(effect.Kind);
+                else statusIcons.Remove(effect.Kind, effect.InstanceId);
             }
 
             private void SetStealth(bool active)

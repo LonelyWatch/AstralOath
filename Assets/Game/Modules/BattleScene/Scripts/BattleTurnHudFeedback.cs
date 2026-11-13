@@ -45,6 +45,12 @@ namespace AstralOath.Client.BattleScene
                 ShowNumber(AcquireFeedback(), item.TargetId, item.Amount, BattleHitKind.None, true, anchor, targetWorld, worldCamera);
         }
 
+        internal void ShowPeriodicDamage(BattleFlowEvent item, RectTransform anchor, Vector3 targetWorld, Camera worldCamera)
+        {
+            if (!anchor || item.Amount <= 0) return;
+            ShowNumber(AcquireFeedback(), item.TargetId, item.Amount, BattleHitKind.None, false, anchor, targetWorld, worldCamera);
+        }
+
         internal void ShowDamageHit(string targetId, int amount, BattleHitKind hitKind,
             RectTransform anchor, Vector3 targetWorld, Camera worldCamera)
         {

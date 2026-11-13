@@ -1,0 +1,22 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "lightningspark_01",
+      "delay": "660",
+      "format": "particle"
+    },
+    {
+      "source": "baalcezanne_skill2_f",
+      "z": "30",
+      "scale": "1.4",
+      "format": "spine"
+    },
+    {
+      "source": "baalcezanne_skill2_b",
+      "z": "-30",
+      "scale": "1.4",
+      "format": "spine"
+    }
+  ]
+}

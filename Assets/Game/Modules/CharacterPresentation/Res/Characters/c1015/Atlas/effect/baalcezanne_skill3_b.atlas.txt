@@ -1,0 +1,76 @@
+
+baalcezanne_skill3_b.sct
+size: 256,787
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+sprite/center_smoke
+  rotate: false
+  xy: 2, 2
+  size: 211, 156
+  orig: 211, 156
+  offset: 0, 0
+  index: -1
+sprite/face
+  rotate: true
+  xy: 2, 298
+  size: 100, 194
+  orig: 100, 194
+  offset: 0, 0
+  index: -1
+sprite/light1
+  rotate: false
+  xy: 87, 672
+  size: 114, 113
+  orig: 114, 113
+  offset: 0, 0
+  index: -1
+sprite/light_halfcicle_01
+  rotate: false
+  xy: 2, 160
+  size: 211, 136
+  orig: 211, 136
+  offset: 0, 0
+  index: -1
+sprite/mto_light_03
+  rotate: false
+  xy: 2, 473
+  size: 56, 56
+  orig: 56, 56
+  offset: 0, 0
+  index: -1
+sprite/pillar_long_01
+  rotate: true
+  xy: 2, 400
+  size: 71, 185
+  orig: 71, 185
+  offset: 0, 0
+  index: -1
+sprite/pillar_long_02
+  rotate: false
+  xy: 87, 473
+  size: 65, 197
+  orig: 65, 197
+  offset: 0, 0
+  index: -1
+sprite/pillar_long_aura_01
+  rotate: false
+  xy: 198, 298
+  size: 56, 247
+  orig: 56, 247
+  offset: 0, 0
+  index: -1
+sprite/pillar_long_aura_02
+  rotate: false
+  xy: 2, 547
+  size: 83, 208
+  orig: 83, 208
+  offset: 0, 0
+  index: -1
+sprite/pillar_long_aura_03
+  rotate: false
+  xy: 203, 547
+  size: 50, 214
+  orig: 50, 214
+  offset: 0, 0
+  index: -1

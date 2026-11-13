@@ -35,6 +35,7 @@ STATUSES = (
     ("GreaterSpeedUp", "Buff", "stic_speed_up2"),
     ("CriticalDamageUp", "Buff", "stic_cridmg_up"),
     ("EffectivenessUp", "Buff", "stic_acc_up"),
+    ("Poison", "Debuff", "stic_dot"),
 )
 
 

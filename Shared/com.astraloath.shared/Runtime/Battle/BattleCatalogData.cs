@@ -102,7 +102,7 @@ namespace AstralOath.Shared.Battle
 
     public static class BattlePreviewFactory
     {
-        public const uint RulesVersion = 6;
+        public const uint RulesVersion = 7;
         public const string SlimeSkillId = "preview.slime.s1";
         public static IReadOnlyList<string> DefaultHeroIds { get; } = Array.AsReadOnly(new[] { "c1001", "c1062", "c1005", "c1001" });
 

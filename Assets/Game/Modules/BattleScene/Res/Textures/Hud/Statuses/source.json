@@ -107,6 +107,11 @@
       "kind": "EffectivenessUp",
       "group": "Buff",
       "asset": "stic_acc_up.png"
+    },
+    {
+      "kind": "Poison",
+      "group": "Debuff",
+      "asset": "stic_dot.png"
     }
   ],
   "files": [
@@ -229,6 +234,12 @@
       "asset": "stic_acc_up.png",
       "sourceSha256": "9de94b80bd3ab7dfce046bbbbdae5aa14f4703c5d8fa173f9ebaf6d6916a086d",
       "assetSha256": "796d9eeaeba79250489c32d732e75886adb804a7d753ac37c1fc4d9387bfb1cd"
+    },
+    {
+      "source": "原始资源/buff/stic_dot.png",
+      "asset": "stic_dot.png",
+      "sourceSha256": "a129b1578bc7225a3ed102366d08a79aef3eabd337d1d9ba63fa29a3adb6cd4e",
+      "assetSha256": "a5b5020020d9528e6f35bb9e409945f9c144e42f96cd8918515a3c9ba100f877"
     },
     {
       "source": "原始资源/img/itxt_num0.png",

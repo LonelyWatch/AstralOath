@@ -86,7 +86,7 @@ namespace AstralOath.Client.BattleScene
         public void Apply(BattleStatusSnapshot status)
         {
             if (!art.TryGet(status.Kind, out var entry)) return;
-            int current = IndexOf(status.Kind);
+            int current = IndexOf(status.Kind, status.InstanceId);
             var next = (status, entry);
             if (current >= 0) statuses[current] = next;
             else
@@ -102,16 +102,16 @@ namespace AstralOath.Client.BattleScene
 
         public void UpdateDuration(BattleStatusSnapshot status)
         {
-            int index = IndexOf(status.Kind);
+            int index = IndexOf(status.Kind, status.InstanceId);
             if (index < 0) return;
             var current = statuses[index];
             statuses[index] = (status, current.Art);
             Draw();
         }
 
-        public void Remove(BattleStatusKind kind)
+        public void Remove(BattleStatusKind kind, ulong instanceId = 0)
         {
-            int index = IndexOf(kind);
+            int index = IndexOf(kind, instanceId);
             if (index < 0) return;
             statuses.RemoveAt(index);
             Draw();
@@ -125,7 +125,7 @@ namespace AstralOath.Client.BattleScene
                 var displayed = statuses[index];
                 BattleStatusSnapshot current = null;
                 foreach (var candidate in snapshot)
-                    if (candidate.Kind == displayed.Status.Kind) { current = candidate; break; }
+                    if (SameInstance(candidate, displayed.Status)) { current = candidate; break; }
                 if (current == null || (current.Kind == BattleStatusKind.Barrier && current.Strength <= 0))
                 {
                     statuses.RemoveAt(index);
@@ -139,12 +139,15 @@ namespace AstralOath.Client.BattleScene
                 }
             }
             foreach (var current in snapshot)
-                if (IndexOf(current.Kind) < 0 && (current.Kind != BattleStatusKind.Barrier || current.Strength > 0))
+                if (IndexOf(current.Kind, current.InstanceId) < 0 && (current.Kind != BattleStatusKind.Barrier || current.Strength > 0))
                     Apply(current);
             if (changed) Draw();
         }
 
-        private int IndexOf(BattleStatusKind kind) => statuses.FindIndex(item => item.Status.Kind == kind);
+        private int IndexOf(BattleStatusKind kind, ulong instanceId) =>
+            statuses.FindIndex(item => item.Status.Kind == kind && item.Status.InstanceId == instanceId);
+        private static bool SameInstance(BattleStatusSnapshot left, BattleStatusSnapshot right) =>
+            left.Kind == right.Kind && left.InstanceId == right.InstanceId;
 
         private void Draw()
         {
@@ -216,7 +219,7 @@ namespace AstralOath.Client.BattleScene
 
             public void Show(BattleStatusSnapshot status, Sprite icon, Color digitColor, Sprite[] digits)
             {
-                if (hold && this.status?.Kind != status.Kind) hold.Cancel();
+                if (hold && (this.status == null || !SameInstance(this.status, status))) hold.Cancel();
                 this.status = status;
                 int turns = status.RemainingTurns;
                 Icon.sprite = icon;

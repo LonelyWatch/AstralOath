@@ -1,0 +1,403 @@
+{
+  "id": "c_baal_skill_01",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "location": 11,
+        "x": 150.0,
+        "curve": "0,1,1,1",
+        "time": 400,
+        "guid": 2,
+        "etty": "CAM"
+      },
+      {
+        "color": "0,0,0,255",
+        "accel": 1.0,
+        "opacity": 0.7,
+        "duration": -1,
+        "localZ": -1,
+        "fadeIn": 200,
+        "fadeOut": 200,
+        "id": "dark",
+        "guid": 3,
+        "etty": "DARK"
+      },
+      {
+        "ani": "skill1",
+        "guid": 4,
+        "etty": "ANI"
+      },
+      {
+        "delay": 1060,
+        "guid": 5,
+        "etty": "ANI_POS"
+      },
+      {
+        "source": "baalcezanne_skill1.cfx",
+        "scale": 1.0,
+        "location": 6,
+        "locationParam": "shadow",
+        "guid": 6,
+        "etty": "EFFECT"
+      },
+      {
+        "location": 12,
+        "x": -150.0,
+        "y": -60.0,
+        "curve": "0.51341,0.003472192,0.1226054,1.003472",
+        "time": 1000,
+        "guid": 7,
+        "etty": "CAM"
+      },
+      {
+        "source": "baal_sezan_eff_casting.cfx",
+        "scale": 1.0,
+        "location": 5,
+        "guid": 8,
+        "etty": "EFFECT"
+      },
+      {
+        "source": "baal_sezan_eff_casting_b.cfx",
+        "scale": 1.0,
+        "location": 5,
+        "guid": 9,
+        "etty": "EFFECT"
+      },
+      {
+        "time": 300,
+        "guid": 10,
+        "etty": "CAM"
+      },
+      {
+        "guid": 11,
+        "etty": "IDLE"
+      },
+      {
+        "targetId": "dark",
+        "guid": 12,
+        "etty": "STOP"
+      },
+      {
+        "scale": "1.4",
+        "curve": "0,1,1,1",
+        "time": 400,
+        "guid": 13,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.2",
+        "curve": "0.3716475,-2.980232E-08,0.06896552,0.9965278",
+        "time": 1000,
+        "guid": 14,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1",
+        "curve": "0,1,1,1",
+        "time": 300,
+        "guid": 15,
+        "etty": "ZOOM"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "baalcezanne_cm_sk1",
+        "guid": 16,
+        "etty": "SHAKE"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 17,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 18,
+        "etty": "HIT"
+      }
+    ],
+    "connections": [
+      {
+        "from": 5,
+        "to": 6,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 7,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 5,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 12,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 9,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 8,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 10,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 13,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 14,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 15,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 11,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 4,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 3,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 16,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 17,
+        "delay": 1200,
+        "when": 1,
+        "Desc": "1200",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 18,
+        "delay": 1300,
+        "when": 1,
+        "Desc": "1300",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/baalcezanne_cm_sk1.scsp",
+      "address": "characterlab/source/camera/baalcezanne_cm_sk1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting.atlas",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting.cfx",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting.scsp",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting.sct",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting_b.atlas",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting_b.cfx",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting_b.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting_b.scsp",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting_b.sct",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting_b2.atlas",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting_b2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting_b2.scsp",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting_b2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting_b2.sct",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting_b2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/baalcezanne_skill1.atlas",
+      "address": "characterlab/source/effect/baalcezanne_skill1.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/baalcezanne_skill1.cfx",
+      "address": "characterlab/source/effect/baalcezanne_skill1.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/baalcezanne_skill1.scsp",
+      "address": "characterlab/source/effect/baalcezanne_skill1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/baalcezanne_skill1.sct",
+      "address": "characterlab/source/effect/baalcezanne_skill1.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.atlas",
+      "address": "characterlab/source/effect/hit_new_blunt_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.scsp",
+      "address": "characterlab/source/effect/hit_new_blunt_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.sct",
+      "address": "characterlab/source/effect/hit_new_blunt_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_blunt_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_blunt_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_blunt_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/lightningspark_02.particle",
+      "address": "characterlab/source/effect/lightningspark_02.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/rose_casting.particle",
+      "address": "characterlab/source/effect/rose_casting.particle",
+      "type": "particle"
+    },
+    {
+      "source": "model/baal_sezan.timeline",
+      "address": "characterlab/source/model/baal_sezan.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/pati_01.sct",
+      "address": "characterlab/source/particle/pati_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/rose_02.sct",
+      "address": "characterlab/source/particle/rose_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

@@ -1,0 +1,41 @@
+
+baal_sezan_eff_casting3.sct
+size: 419,217
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bs
+  rotate: false
+  xy: 2, 2
+  size: 250, 104
+  orig: 250, 104
+  offset: 0, 0
+  index: -1
+eff_wind_twist_01
+  rotate: false
+  xy: 111, 166
+  size: 50, 44
+  orig: 50, 44
+  offset: 0, 0
+  index: -1
+flash2
+  rotate: false
+  xy: 254, 2
+  size: 163, 163
+  orig: 163, 163
+  offset: 0, 0
+  index: -1
+lightning_core_05
+  rotate: false
+  xy: 2, 108
+  size: 107, 107
+  orig: 107, 107
+  offset: 0, 0
+  index: -1
+mto_light_03
+  rotate: false
+  xy: 111, 108
+  size: 56, 56
+  orig: 56, 56
+  offset: 0, 0
+  index: -1

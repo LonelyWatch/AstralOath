@@ -174,3 +174,11 @@
 ,battle.status.effectivenessup.strength,效果命中提高{0:0.##}个百分点。
 ,battle.skill.c1014.whirlwind.name,旋风
 ,battle.skill.c1014.whirlwind.description,连续攻击单个敌人，命中后降低其防御力 1 回合。伤害随自身速度提高。
+,battle.skill.c1015.s1.name,幽魂骚扰
+,battle.skill.c1015.s1.description,召唤恶灵攻击两名敌人，各有 35% 概率中毒 2 回合。
+,battle.skill.c1015.s2.name,黑暗云雾
+,battle.skill.c1015.s2.description,攻击全体敌人，目标每有一个减益，受到的伤害额外提高 15%。本次攻击击倒敌人时重置最终安魂曲的冷却。
+,battle.skill.c1015.s3.name,最终安魂曲
+,battle.skill.c1015.s3.description,攻击全体敌人，分别有 65% 概率降低速度、禁止恢复 2 回合。第三阶觉醒后另有 65% 概率降低防御 2 回合。
+,battle.status.poison.name,中毒
+,battle.status.poison.description,回合开始时，每层受到相当于自身最大生命值 5% 的伤害。

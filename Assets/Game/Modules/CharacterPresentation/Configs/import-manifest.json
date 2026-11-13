@@ -16,6 +16,7 @@
     "c1012",
     "c1013",
     "c1014",
+    "c1015",
     "c1062"
   ],
   "entries": [
@@ -221,6 +222,162 @@
         "characterlab/source/camera/angelica_cm.scsp/json"
       ],
       "outputSha256": "5bd9b73e13eb6935ed13c91475e799dd22cae2388facbac9fa13fa0e7e697233",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "camera/baalcezanne_cm_sk1.scsp",
+      "sourceSha256": "a04d8019b05816559464922f441cdd2e315d19a7cfe4bc5b8305895a12ed8aab",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/camera/baalcezanne_cm_sk1.spine.json",
+      "address": "characterlab/source/camera/baalcezanne_cm_sk1.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "f28370def90a62a639b2c0ca748537a356c0ea85f46586d085dd678bd4fe690b",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 497,
+        "consumedBytes": 497,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 1,
+            "frames": 20,
+            "segments": 19,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 0,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 18,
+              "stepped": 1,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "camera/baalcezanne_cm_sk1.scsp",
+      "sourceSha256": "a04d8019b05816559464922f441cdd2e315d19a7cfe4bc5b8305895a12ed8aab",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/camera/baalcezanne_cm_sk1.skeleton.json",
+      "address": "characterlab/source/camera/baalcezanne_cm_sk1.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/camera/baalcezanne_cm_sk1.scsp/json"
+      ],
+      "outputSha256": "99e6d235022e28c913aa78d1c62382817f1810afb459b771105e635c7de155b9",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "camera/baalcezanne_cm_sk2.scsp",
+      "sourceSha256": "f0757154743e06145f2a886d3dd04a23b038c3a0cc45a935f6ace1a8b806795b",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/camera/baalcezanne_cm_sk2.spine.json",
+      "address": "characterlab/source/camera/baalcezanne_cm_sk2.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "bfc976507fa8b2f52872a9582e0ed9ea40471a573d1e5b8b18283c03d3cab2c8",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 749,
+        "consumedBytes": 749,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 4,
+            "frames": 40,
+            "segments": 36,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 3,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 32,
+              "stepped": 4,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "camera/baalcezanne_cm_sk2.scsp",
+      "sourceSha256": "f0757154743e06145f2a886d3dd04a23b038c3a0cc45a935f6ace1a8b806795b",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/camera/baalcezanne_cm_sk2.skeleton.json",
+      "address": "characterlab/source/camera/baalcezanne_cm_sk2.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/camera/baalcezanne_cm_sk2.scsp/json"
+      ],
+      "outputSha256": "2989227c8506f0b4898aa054413c627a44426f7b3fbcbaba107b85aaf5107a76",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "camera/baalcezanne_skill3_cm.scsp",
+      "sourceSha256": "70cc6fef82838c24946b0d1b8c35fe779e230dcdbfb9f92299ccb8f153e43b52",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/camera/baalcezanne_skill3_cm.spine.json",
+      "address": "characterlab/source/camera/baalcezanne_skill3_cm.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "027248b503bbf291af946eb60f82cd30ec2373f609d098fbd5ee96f4cb277be1",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 1166,
+        "consumedBytes": 1166,
+        "converterVersion": "astraloath-scsp/4",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 3,
+            "frames": 78,
+            "segments": 75,
+            "sourceMarkers": {
+              "allLinear": 3,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 75,
+              "stepped": 0,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "camera/baalcezanne_skill3_cm.scsp",
+      "sourceSha256": "70cc6fef82838c24946b0d1b8c35fe779e230dcdbfb9f92299ccb8f153e43b52",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/camera/baalcezanne_skill3_cm.skeleton.json",
+      "address": "characterlab/source/camera/baalcezanne_skill3_cm.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/camera/baalcezanne_skill3_cm.scsp/json"
+      ],
+      "outputSha256": "13a21293a10e0c6bc7d00049cb980b1a8a547f447331b04b7e48fc230c537612",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
@@ -5240,6 +5397,315 @@
       }
     },
     {
+      "source": "cut/fhd/sk_c1015_3.webp",
+      "sourceSha256": "294807d9b6dec9139020ceaa56d33b32981a259e9d06669f3ac0a58737446ad4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0000.png",
+      "address": "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0000",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "e382e107abad65c0aa51626a5ad1c13b2ebc3e0ab7d5ffc72b3afe702455a78c",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 0
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1015_3.webp",
+      "sourceSha256": "294807d9b6dec9139020ceaa56d33b32981a259e9d06669f3ac0a58737446ad4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0001.png",
+      "address": "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0001",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "876597fea5c481dd3f9de8e5fb6aab9465f8869a1fac7eae45e80d271d1cf150",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 1
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1015_3.webp",
+      "sourceSha256": "294807d9b6dec9139020ceaa56d33b32981a259e9d06669f3ac0a58737446ad4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0002.png",
+      "address": "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0002",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "bc2d570db97e37aaed09727f82b93932688d443700e0fa850a65da05cbca840d",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 2
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1015_3.webp",
+      "sourceSha256": "294807d9b6dec9139020ceaa56d33b32981a259e9d06669f3ac0a58737446ad4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0003.png",
+      "address": "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0003",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "9099d5f742abdc9e3bd5122ab2afa542ba470d2912dd0e798dde75952486d02a",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 3
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1015_3.webp",
+      "sourceSha256": "294807d9b6dec9139020ceaa56d33b32981a259e9d06669f3ac0a58737446ad4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0004.png",
+      "address": "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0004",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "36ee73342588274926ef6678871c9bec826c458b3e5efd7d6eaa5c530724b699",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 4
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1015_3.webp",
+      "sourceSha256": "294807d9b6dec9139020ceaa56d33b32981a259e9d06669f3ac0a58737446ad4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0005.png",
+      "address": "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0005",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "49811c6883776809bc29869c1584f3625a141949ea73207643de6c07a1e71200",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 5
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1015_3.webp",
+      "sourceSha256": "294807d9b6dec9139020ceaa56d33b32981a259e9d06669f3ac0a58737446ad4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0006.png",
+      "address": "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0006",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "2373a9ac993623ff5638c03f1f5da0b0fcd5d0dd250bb5af3e6142de3fac0a3e",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 6
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1015_3.webp",
+      "sourceSha256": "294807d9b6dec9139020ceaa56d33b32981a259e9d06669f3ac0a58737446ad4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0007.png",
+      "address": "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0007",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "d7976dde3756ccc752fc7e8d37bcdc9653eb044104440c7c761150319cc544e8",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 7
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1015_3.webp",
+      "sourceSha256": "294807d9b6dec9139020ceaa56d33b32981a259e9d06669f3ac0a58737446ad4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0008.png",
+      "address": "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0008",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "58646c2920e84b797173862d05fe3ec9131ac7c37749a734185137a925f5dc4d",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 8
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1015_3.webp",
+      "sourceSha256": "294807d9b6dec9139020ceaa56d33b32981a259e9d06669f3ac0a58737446ad4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0009.png",
+      "address": "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0009",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "e968949486eadf17e218a22f04ae5b696d2bc6f991d54a42ea288ddf97fd7ead",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 9
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1015_3.webp",
+      "sourceSha256": "294807d9b6dec9139020ceaa56d33b32981a259e9d06669f3ac0a58737446ad4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0010.png",
+      "address": "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0010",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "5e2a102b50f9cae1d559a6906576e9eac0d97e5c48ea1a88d011659564391196",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 10
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1015_3.webp",
+      "sourceSha256": "294807d9b6dec9139020ceaa56d33b32981a259e9d06669f3ac0a58737446ad4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0011.png",
+      "address": "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0011",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "d3909ae3180441396077a53d41a8cba400c4d09182d42601cdd491910b314c41",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 11
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1015_3.webp",
+      "sourceSha256": "294807d9b6dec9139020ceaa56d33b32981a259e9d06669f3ac0a58737446ad4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0012.png",
+      "address": "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0012",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "fe811eea3b176fb72bab250db5e638670b4d5bd87cb82ac5b4b1ccf1aeccbd90",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 12
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1015_3.webp",
+      "sourceSha256": "294807d9b6dec9139020ceaa56d33b32981a259e9d06669f3ac0a58737446ad4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0013.png",
+      "address": "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0013",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "914f99cbd56d5581cdbbce9fbd80367e9d02dca32bee78dc5a9908c6ee340977",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 13
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1015_3.webp",
+      "sourceSha256": "294807d9b6dec9139020ceaa56d33b32981a259e9d06669f3ac0a58737446ad4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0014.png",
+      "address": "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0014",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "82e5e25503e915a594a34b5296376cf68f25d3aaa6172f500c5d20e4c6fd7697",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 14
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1015_3.webp",
+      "sourceSha256": "294807d9b6dec9139020ceaa56d33b32981a259e9d06669f3ac0a58737446ad4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0015.png",
+      "address": "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0015",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "3b5b75d8bd63df4e240d992df000f4b522bc9abdb32e691fe809d530e9302ec0",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 15
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1015_3.webp",
+      "sourceSha256": "294807d9b6dec9139020ceaa56d33b32981a259e9d06669f3ac0a58737446ad4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0016.png",
+      "address": "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0016",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "938d8846828bf86ce822916286d0852838ee1c9d2852c0bc521c3d897a253f47",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 16
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1015_3.webp",
+      "sourceSha256": "294807d9b6dec9139020ceaa56d33b32981a259e9d06669f3ac0a58737446ad4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0017.png",
+      "address": "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0017",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "6c09a76d8e10a4f0651565664a402e0635342d61ecad952ff2459ef739865460",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 17
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1015_3.webp",
+      "sourceSha256": "294807d9b6dec9139020ceaa56d33b32981a259e9d06669f3ac0a58737446ad4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0018.png",
+      "address": "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0018",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "9820c890a0fb445897b41e5444a4e466c8783bbe2c6dc3eddcf911e48e4245e9",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 18
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1015_3.webp",
+      "sourceSha256": "294807d9b6dec9139020ceaa56d33b32981a259e9d06669f3ac0a58737446ad4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0019.png",
+      "address": "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0019",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "429adec8a685a7240bc1f4fa130dc899cf58de9e89c755e5d64cf0a203b728f0",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 19
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1015_3.webp",
+      "sourceSha256": "294807d9b6dec9139020ceaa56d33b32981a259e9d06669f3ac0a58737446ad4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3_frames/0020.png",
+      "address": "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0020",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "452063b1b2c14c00e8197fc3b356fa2629304d8148841fffedc420639bf47db5",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 20
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1015_3.webp",
+      "sourceSha256": "294807d9b6dec9139020ceaa56d33b32981a259e9d06669f3ac0a58737446ad4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/cut/fhd/sk_c1015_3.cutin.json",
+      "address": "characterlab/source/cut/fhd/sk_c1015_3.webp",
+      "type": "cutin",
+      "dependencies": [
+        "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0000",
+        "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0001",
+        "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0002",
+        "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0003",
+        "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0004",
+        "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0005",
+        "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0006",
+        "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0007",
+        "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0008",
+        "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0009",
+        "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0010",
+        "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0011",
+        "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0012",
+        "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0013",
+        "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0014",
+        "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0015",
+        "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0016",
+        "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0017",
+        "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0018",
+        "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0019",
+        "characterlab/source/cut/fhd/sk_c1015_3.webp/frame/0020"
+      ],
+      "outputSha256": "1a5d3f66217f2b73d90eba27c9839c61151ce3995247f027425deb4d96e5841b",
+      "conversion": {
+        "status": "converted",
+        "frameCount": 21,
+        "durationSeconds": 1.5899999999999999
+      }
+    },
+    {
       "source": "cut/fhd/sk_c1062_3.webp",
       "sourceSha256": "104511cc4ae6fb9b2570708f4cbf23f9366a4093f611bd5f5b42a310ae46252e",
       "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Effects/cut/fhd/sk_c1062_3_frames/0000.png",
@@ -8754,6 +9220,1206 @@
       "outputSha256": "84223ed4cd3efcfcb0dcc1be00138fbe64aa5e28c4ef0408f4572f8cb7e17edb",
       "conversion": {
         "status": "converted"
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting.atlas",
+      "sourceSha256": "3ea0966be5bc9a68e0ef23315562a548f98bb9bc3e9c78e88c75cfe6379ed3f8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/effect/baal_sezan_eff_casting.atlas.txt",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/baal_sezan_eff_casting.sct"
+      ],
+      "outputSha256": "3ea0966be5bc9a68e0ef23315562a548f98bb9bc3e9c78e88c75cfe6379ed3f8",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting.cfx",
+      "sourceSha256": "5aade95bf8a0b1b34c1dc530f39177d0e6f3c7a4f44b97ba259974cfb126bd19",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/baal_sezan_eff_casting.cfx.json",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/baal_sezan_eff_casting.scsp",
+        "characterlab/source/effect/rose_casting.particle"
+      ],
+      "outputSha256": "11270d159bcdebdbc01c61d2935979a1164e5950f7f775b7f6648e3307eab867",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting.scsp",
+      "sourceSha256": "3a8b89e313da41db472d0d0f828760647cb0d53ddbd8b4ae70f91500e9b8a3a7",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baal_sezan_eff_casting.spine.json",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "7fc3653643ced31e4823b66cca23353cf9fb9fc68f873063b009d2775275ac67",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 15314,
+        "consumedBytes": 15314,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 125,
+            "frames": 385,
+            "segments": 260,
+            "sourceMarkers": {
+              "allLinear": 28,
+              "allStepped": 30,
+              "explicit": 67
+            },
+            "modes": {
+              "linear": 142,
+              "stepped": 63,
+              "bezier": 55
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting.scsp",
+      "sourceSha256": "3a8b89e313da41db472d0d0f828760647cb0d53ddbd8b4ae70f91500e9b8a3a7",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baal_sezan_eff_casting.skeleton.json",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/baal_sezan_eff_casting.scsp/json",
+        "characterlab/source/effect/baal_sezan_eff_casting.atlas",
+        "characterlab/source/effect/baal_sezan_eff_casting.sct"
+      ],
+      "outputSha256": "cb5ef1dd1ca46bef9d268031bb106dbcd93239ecb99334c04e367c13fcc941ab",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting.sct",
+      "sourceSha256": "fc3aea067895980e73eb9eab8204c9dcbf4aca83348ca26d83490a88aa9a7b87",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/effect/baal_sezan_eff_casting.png",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "d05aaa25f221fe90a9e2b996d8c8ce94a0c9f142bd1324305d7ed0402850b295",
+      "conversion": {
+        "status": "converted",
+        "width": 778,
+        "height": 255,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "fc3aea067895980e73eb9eab8204c9dcbf4aca83348ca26d83490a88aa9a7b87",
+        "outputSha256": "d05aaa25f221fe90a9e2b996d8c8ce94a0c9f142bd1324305d7ed0402850b295"
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting2.cfx",
+      "sourceSha256": "b1e680d27bedc30a4c6bd13473a7c709ec30d2a37116db2f73527ebe28f8f88d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/baal_sezan_eff_casting2.cfx.json",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting2.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/baal_sezan_eff_casting.scsp",
+        "characterlab/source/effect/rose_casting_2.particle"
+      ],
+      "outputSha256": "310571cdc995402bd7dbe7428c9f02b370fbd76da3416425401ac60a26cc6598",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting3.atlas",
+      "sourceSha256": "fe46de0d4c6e9dbbcc42bd3aec38e400a4690b628f8851ef19d1767f42446754",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/effect/baal_sezan_eff_casting3.atlas.txt",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting3.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/baal_sezan_eff_casting3.sct"
+      ],
+      "outputSha256": "fe46de0d4c6e9dbbcc42bd3aec38e400a4690b628f8851ef19d1767f42446754",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting3.cfx",
+      "sourceSha256": "8e6b43d78b843f2bf60d510e9c45c1fd4001365fb371688d030c86c1b02e82ed",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/baal_sezan_eff_casting3.cfx.json",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting3.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/baal_sezan_eff_casting3.scsp"
+      ],
+      "outputSha256": "98841983e37994934ce06f4bffcf08ad97dc17eb228e57bd4e35f36503fbdd16",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting3.scsp",
+      "sourceSha256": "8d131683da5f636a4fb914dc41a768a680cb64881804dbff3da6720453dabd7a",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baal_sezan_eff_casting3.spine.json",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting3.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "bd064c2df465a85f194a8eda1a0f85cebcdcceca9c23c6f0f61f974c79d61c9c",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 3587,
+        "consumedBytes": 3587,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 29,
+            "frames": 105,
+            "segments": 76,
+            "sourceMarkers": {
+              "allLinear": 3,
+              "allStepped": 11,
+              "explicit": 15
+            },
+            "modes": {
+              "linear": 40,
+              "stepped": 34,
+              "bezier": 2
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting3.scsp",
+      "sourceSha256": "8d131683da5f636a4fb914dc41a768a680cb64881804dbff3da6720453dabd7a",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baal_sezan_eff_casting3.skeleton.json",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting3.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/baal_sezan_eff_casting3.scsp/json",
+        "characterlab/source/effect/baal_sezan_eff_casting3.atlas",
+        "characterlab/source/effect/baal_sezan_eff_casting3.sct"
+      ],
+      "outputSha256": "bb4d91f47a07be14c96ab00fbfc9f9542139deacfbd3ba59590c2ed7d6173fe1",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting3.sct",
+      "sourceSha256": "b5b816eb64499ba71d90030170b8cd04fdbf0c5ecbb7746bc29ec895418f5c4d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/effect/baal_sezan_eff_casting3.png",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting3.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "9c1f6064dd2d756181ab3556d8d9eaa38788b6cd24383fb820855ddca3d76fa2",
+      "conversion": {
+        "status": "converted",
+        "width": 419,
+        "height": 217,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "b5b816eb64499ba71d90030170b8cd04fdbf0c5ecbb7746bc29ec895418f5c4d",
+        "outputSha256": "9c1f6064dd2d756181ab3556d8d9eaa38788b6cd24383fb820855ddca3d76fa2"
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting3_b.atlas",
+      "sourceSha256": "aa6c90bde1cbe98dbf38c83d759db46ffc28be43532c25bbab35903de4c151ef",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/effect/baal_sezan_eff_casting3_b.atlas.txt",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting3_b.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/baal_sezan_eff_casting3_b.sct"
+      ],
+      "outputSha256": "aa6c90bde1cbe98dbf38c83d759db46ffc28be43532c25bbab35903de4c151ef",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting3_b.cfx",
+      "sourceSha256": "d96e6721e0900e0ddb9d75f5067b8bbca4cdfd7297fbb67d6e7f34e86cffac6b",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/baal_sezan_eff_casting3_b.cfx.json",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting3_b.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/baal_sezan_eff_casting3_b.scsp",
+        "characterlab/source/effect/baal_sezan_eff_casting3_b2.scsp"
+      ],
+      "outputSha256": "dc6f43963c9ca7bbfc9b5c6d2ca5f7e911012603635eb2061093c89329023298",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting3_b.scsp",
+      "sourceSha256": "584029861d03d9120ac3a2291c7a3cb2ebff30bf0611fce4bf9129d1b226a24b",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baal_sezan_eff_casting3_b.spine.json",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting3_b.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "55a5ef19d7ac7d49d4c2336f28e8a67830e2718127b59cc81cbb6537660124f3",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 5140,
+        "consumedBytes": 5140,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 8,
+            "frames": 20,
+            "segments": 12,
+            "sourceMarkers": {
+              "allLinear": 7,
+              "allStepped": 0,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 11,
+              "stepped": 1,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting3_b.scsp",
+      "sourceSha256": "584029861d03d9120ac3a2291c7a3cb2ebff30bf0611fce4bf9129d1b226a24b",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baal_sezan_eff_casting3_b.skeleton.json",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting3_b.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/baal_sezan_eff_casting3_b.scsp/json",
+        "characterlab/source/effect/baal_sezan_eff_casting3_b.atlas",
+        "characterlab/source/effect/baal_sezan_eff_casting3_b.sct"
+      ],
+      "outputSha256": "2b4e374438184acf4a545561cae6a20f7a26f6138109943df2c74a3a241877d4",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting3_b.sct",
+      "sourceSha256": "3df6c738d558ecae60dd18016943515fe09f4af3e47c8c83f72197e0d0477898",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/effect/baal_sezan_eff_casting3_b.png",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting3_b.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "901186a71f9a22142dbea5084eb5ebeb7b9a1e75cd20c7ff056e2f721596813d",
+      "conversion": {
+        "status": "converted",
+        "width": 167,
+        "height": 167,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "3df6c738d558ecae60dd18016943515fe09f4af3e47c8c83f72197e0d0477898",
+        "outputSha256": "901186a71f9a22142dbea5084eb5ebeb7b9a1e75cd20c7ff056e2f721596813d"
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting3_b2.atlas",
+      "sourceSha256": "d8ac4cdba6035bb6a364e331b7b8b47b2e1aaae81ed38d6d70aa95912a57063b",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/effect/baal_sezan_eff_casting3_b2.atlas.txt",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting3_b2.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/baal_sezan_eff_casting3_b2.sct"
+      ],
+      "outputSha256": "d8ac4cdba6035bb6a364e331b7b8b47b2e1aaae81ed38d6d70aa95912a57063b",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting3_b2.scsp",
+      "sourceSha256": "ca471dddb21edc3d8026c3f490a6b41709d135378388c8ab233c3ca4f930d4ee",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baal_sezan_eff_casting3_b2.spine.json",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting3_b2.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "01a4f28c036bf5e616f4ea80a35a668a53cd73a3e254a341c60bc3c8779af351",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 3562,
+        "consumedBytes": 3562,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 29,
+            "frames": 103,
+            "segments": 74,
+            "sourceMarkers": {
+              "allLinear": 6,
+              "allStepped": 7,
+              "explicit": 16
+            },
+            "modes": {
+              "linear": 41,
+              "stepped": 31,
+              "bezier": 2
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting3_b2.scsp",
+      "sourceSha256": "ca471dddb21edc3d8026c3f490a6b41709d135378388c8ab233c3ca4f930d4ee",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baal_sezan_eff_casting3_b2.skeleton.json",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting3_b2.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/baal_sezan_eff_casting3_b2.scsp/json",
+        "characterlab/source/effect/baal_sezan_eff_casting3_b2.atlas",
+        "characterlab/source/effect/baal_sezan_eff_casting3_b2.sct"
+      ],
+      "outputSha256": "2a8fefa65550af0bca1f162ba33484350be08774af6286f1ef13d244ba2e4534",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting3_b2.sct",
+      "sourceSha256": "b5b816eb64499ba71d90030170b8cd04fdbf0c5ecbb7746bc29ec895418f5c4d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/effect/baal_sezan_eff_casting3_b2.png",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting3_b2.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "9c1f6064dd2d756181ab3556d8d9eaa38788b6cd24383fb820855ddca3d76fa2",
+      "conversion": {
+        "status": "converted",
+        "width": 419,
+        "height": 217,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "b5b816eb64499ba71d90030170b8cd04fdbf0c5ecbb7746bc29ec895418f5c4d",
+        "outputSha256": "9c1f6064dd2d756181ab3556d8d9eaa38788b6cd24383fb820855ddca3d76fa2"
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting_b.atlas",
+      "sourceSha256": "8f127efc4eaf4e62910cc919d7fa698947106dbea150801e370ed50c266628fa",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/effect/baal_sezan_eff_casting_b.atlas.txt",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting_b.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/baal_sezan_eff_casting_b.sct"
+      ],
+      "outputSha256": "8f127efc4eaf4e62910cc919d7fa698947106dbea150801e370ed50c266628fa",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting_b.cfx",
+      "sourceSha256": "8bb609a3c1b62a29217f39d7be697f72f2f18bd304ed066ec4a42238d7b28c72",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/baal_sezan_eff_casting_b.cfx.json",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting_b.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/baal_sezan_eff_casting_b.scsp",
+        "characterlab/source/effect/baal_sezan_eff_casting_b2.scsp"
+      ],
+      "outputSha256": "db4fa5b7e6045e7cb910941024526934a0a33cd31664fad492ed0e83c4c5060b",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting_b.scsp",
+      "sourceSha256": "ccd71909e8a93c6ab7cb1b5b11e0d680e313bd0b796224433f13db4fe681ba50",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baal_sezan_eff_casting_b.spine.json",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting_b.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "c443cddeff4a01f07c96e1e5df4a0e3ba84c1928e03ce1ae519e7e9835eb364c",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 5128,
+        "consumedBytes": 5128,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 8,
+            "frames": 19,
+            "segments": 11,
+            "sourceMarkers": {
+              "allLinear": 7,
+              "allStepped": 0,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 10,
+              "stepped": 1,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting_b.scsp",
+      "sourceSha256": "ccd71909e8a93c6ab7cb1b5b11e0d680e313bd0b796224433f13db4fe681ba50",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baal_sezan_eff_casting_b.skeleton.json",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting_b.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/baal_sezan_eff_casting_b.scsp/json",
+        "characterlab/source/effect/baal_sezan_eff_casting_b.atlas",
+        "characterlab/source/effect/baal_sezan_eff_casting_b.sct"
+      ],
+      "outputSha256": "06948ac8b872efd6de0ef82bac1051d113cff2923a3fd5274fc77734640dd8cc",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting_b.sct",
+      "sourceSha256": "3df6c738d558ecae60dd18016943515fe09f4af3e47c8c83f72197e0d0477898",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/effect/baal_sezan_eff_casting_b.png",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting_b.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "901186a71f9a22142dbea5084eb5ebeb7b9a1e75cd20c7ff056e2f721596813d",
+      "conversion": {
+        "status": "converted",
+        "width": 167,
+        "height": 167,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "3df6c738d558ecae60dd18016943515fe09f4af3e47c8c83f72197e0d0477898",
+        "outputSha256": "901186a71f9a22142dbea5084eb5ebeb7b9a1e75cd20c7ff056e2f721596813d"
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting_b2.atlas",
+      "sourceSha256": "2d75c0ac46a3ec9f7f31d1beb237199a3c00ea2f93d9742101207afbb145c8b7",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/effect/baal_sezan_eff_casting_b2.atlas.txt",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting_b2.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/baal_sezan_eff_casting_b2.sct"
+      ],
+      "outputSha256": "2d75c0ac46a3ec9f7f31d1beb237199a3c00ea2f93d9742101207afbb145c8b7",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting_b2.scsp",
+      "sourceSha256": "be6fd358666b67451f23f46168f705860c87c86726964755b6f1fd1e670ee98b",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baal_sezan_eff_casting_b2.spine.json",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting_b2.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "396719d1be4e9119cf57cfcd18d0f258fa12f5c329483ec26872c959204b7a1f",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 3309,
+        "consumedBytes": 3309,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 29,
+            "frames": 85,
+            "segments": 56,
+            "sourceMarkers": {
+              "allLinear": 20,
+              "allStepped": 5,
+              "explicit": 4
+            },
+            "modes": {
+              "linear": 45,
+              "stepped": 9,
+              "bezier": 2
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting_b2.scsp",
+      "sourceSha256": "be6fd358666b67451f23f46168f705860c87c86726964755b6f1fd1e670ee98b",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baal_sezan_eff_casting_b2.skeleton.json",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting_b2.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/baal_sezan_eff_casting_b2.scsp/json",
+        "characterlab/source/effect/baal_sezan_eff_casting_b2.atlas",
+        "characterlab/source/effect/baal_sezan_eff_casting_b2.sct"
+      ],
+      "outputSha256": "a801d90d01d8efc67695cddb496d79bf02fbae0a6f0fcf40c35ad2a487fddcca",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/baal_sezan_eff_casting_b2.sct",
+      "sourceSha256": "b5b816eb64499ba71d90030170b8cd04fdbf0c5ecbb7746bc29ec895418f5c4d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/effect/baal_sezan_eff_casting_b2.png",
+      "address": "characterlab/source/effect/baal_sezan_eff_casting_b2.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "9c1f6064dd2d756181ab3556d8d9eaa38788b6cd24383fb820855ddca3d76fa2",
+      "conversion": {
+        "status": "converted",
+        "width": 419,
+        "height": 217,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "b5b816eb64499ba71d90030170b8cd04fdbf0c5ecbb7746bc29ec895418f5c4d",
+        "outputSha256": "9c1f6064dd2d756181ab3556d8d9eaa38788b6cd24383fb820855ddca3d76fa2"
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill1.atlas",
+      "sourceSha256": "10a876e3b482e998e3447a0e0c3d73d6c9602e0255ea061f28de3d7d76d6f3ed",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/effect/baalcezanne_skill1.atlas.txt",
+      "address": "characterlab/source/effect/baalcezanne_skill1.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/baalcezanne_skill1.sct"
+      ],
+      "outputSha256": "10a876e3b482e998e3447a0e0c3d73d6c9602e0255ea061f28de3d7d76d6f3ed",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill1.cfx",
+      "sourceSha256": "d0ad86ce77ebd0753c63b0b1fdca354616fbefc7536527c78bf9881fda5a34a2",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/baalcezanne_skill1.cfx.json",
+      "address": "characterlab/source/effect/baalcezanne_skill1.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/baalcezanne_skill1.scsp",
+        "characterlab/source/effect/lightningspark_02.particle"
+      ],
+      "outputSha256": "067d1175a6852cbb487ec512ae34e940bfef6d106c2eab393f560e8e92489164",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill1.scsp",
+      "sourceSha256": "d101dc9753e9b3372507065e076f8d9e5d58fbfcd7fffd9db99a1cf6d31248fb",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baalcezanne_skill1.spine.json",
+      "address": "characterlab/source/effect/baalcezanne_skill1.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "366d0557a5c0e8a9e353d9329b32e5d7bb5c7606116661c3d797b9e067a9736d",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 131259,
+        "consumedBytes": 131259,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 266,
+            "frames": 1486,
+            "segments": 1220,
+            "sourceMarkers": {
+              "allLinear": 61,
+              "allStepped": 47,
+              "explicit": 158
+            },
+            "modes": {
+              "linear": 696,
+              "stepped": 463,
+              "bezier": 61
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill1.scsp",
+      "sourceSha256": "d101dc9753e9b3372507065e076f8d9e5d58fbfcd7fffd9db99a1cf6d31248fb",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baalcezanne_skill1.skeleton.json",
+      "address": "characterlab/source/effect/baalcezanne_skill1.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/baalcezanne_skill1.scsp/json",
+        "characterlab/source/effect/baalcezanne_skill1.atlas",
+        "characterlab/source/effect/baalcezanne_skill1.sct"
+      ],
+      "outputSha256": "4491d1e85a3730da1c5771ca4c16e6a939a75f464831ea5937d46ef45f3f5e1c",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill1.sct",
+      "sourceSha256": "68ad32d141ff0f676d39f44fd943adbcc0eda516ca9449d62bfd80e282c34232",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/effect/baalcezanne_skill1.png",
+      "address": "characterlab/source/effect/baalcezanne_skill1.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "ab23518a72de570e043eed5763cf90bc450853b6985865b296f1459d4be7cec2",
+      "conversion": {
+        "status": "converted",
+        "width": 505,
+        "height": 520,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "68ad32d141ff0f676d39f44fd943adbcc0eda516ca9449d62bfd80e282c34232",
+        "outputSha256": "ab23518a72de570e043eed5763cf90bc450853b6985865b296f1459d4be7cec2"
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill2.cfx",
+      "sourceSha256": "857573ec666481edeb8ed919994f047fa76abed7f96a15bdd8664140c16aff91",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/baalcezanne_skill2.cfx.json",
+      "address": "characterlab/source/effect/baalcezanne_skill2.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/baalcezanne_skill2_b.scsp",
+        "characterlab/source/effect/baalcezanne_skill2_f.scsp",
+        "characterlab/source/effect/lightningspark_01.particle"
+      ],
+      "outputSha256": "3c2f2d9e191050643a789fe872d489ebc4f4ec473811b9672fb9a379ca6c1d0e",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill2_b.atlas",
+      "sourceSha256": "1247bea66a6bfdfc70aa2c2cbc32f76877e6b77c80a4a190a59dbd2f11ca03ff",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/effect/baalcezanne_skill2_b.atlas.txt",
+      "address": "characterlab/source/effect/baalcezanne_skill2_b.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/baalcezanne_skill2_b.sct"
+      ],
+      "outputSha256": "1247bea66a6bfdfc70aa2c2cbc32f76877e6b77c80a4a190a59dbd2f11ca03ff",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill2_b.scsp",
+      "sourceSha256": "43f4804602300ea313701281b15d681524d988894b31bc433d0802c0a651190c",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baalcezanne_skill2_b.spine.json",
+      "address": "characterlab/source/effect/baalcezanne_skill2_b.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "783bef2be9a0b27f01da7556a9bb610cb91f67ca185b071b66b0b2e8cd0e3310",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 35501,
+        "consumedBytes": 35501,
+        "converterVersion": "astraloath-scsp/4",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 41,
+            "frames": 191,
+            "segments": 150,
+            "sourceMarkers": {
+              "allLinear": 26,
+              "allStepped": 3,
+              "explicit": 12
+            },
+            "modes": {
+              "linear": 109,
+              "stepped": 35,
+              "bezier": 6
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill2_b.scsp",
+      "sourceSha256": "43f4804602300ea313701281b15d681524d988894b31bc433d0802c0a651190c",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baalcezanne_skill2_b.skeleton.json",
+      "address": "characterlab/source/effect/baalcezanne_skill2_b.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/baalcezanne_skill2_b.scsp/json",
+        "characterlab/source/effect/baalcezanne_skill2_b.atlas",
+        "characterlab/source/effect/baalcezanne_skill2_b.sct"
+      ],
+      "outputSha256": "1a2997cad6f0652e4d6ddecca301546d260e8e88421978e09f7f7a957dd39d96",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill2_b.sct",
+      "sourceSha256": "8e9d9437dfb66b21e9dcc910ca9081ad948efb3e0122da238230b244d7c0dc2c",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/effect/baalcezanne_skill2_b.png",
+      "address": "characterlab/source/effect/baalcezanne_skill2_b.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "925272590a2c7721d08ec801b2819dfd4f2d8201b00a30c0aa1c8e84af8970bf",
+      "conversion": {
+        "status": "converted",
+        "width": 187,
+        "height": 223,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "8e9d9437dfb66b21e9dcc910ca9081ad948efb3e0122da238230b244d7c0dc2c",
+        "outputSha256": "925272590a2c7721d08ec801b2819dfd4f2d8201b00a30c0aa1c8e84af8970bf"
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill2_f.atlas",
+      "sourceSha256": "6afb4f239b4cff1a1ac9e9f16cfc7fb6232b8fbf472fcab1a6a72b57c991e86b",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/effect/baalcezanne_skill2_f.atlas.txt",
+      "address": "characterlab/source/effect/baalcezanne_skill2_f.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/baalcezanne_skill2_f.sct"
+      ],
+      "outputSha256": "6afb4f239b4cff1a1ac9e9f16cfc7fb6232b8fbf472fcab1a6a72b57c991e86b",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill2_f.scsp",
+      "sourceSha256": "37eb0cb646e0d695b513445e935f79657569e06551aabd3d4097f4aeb576f159",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baalcezanne_skill2_f.spine.json",
+      "address": "characterlab/source/effect/baalcezanne_skill2_f.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "2d5c4e5cc9f48aa930ccc2b709597457362c35b294214e91b2546d7aed91b417",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 136394,
+        "consumedBytes": 136394,
+        "converterVersion": "astraloath-scsp/4",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 332,
+            "frames": 1278,
+            "segments": 946,
+            "sourceMarkers": {
+              "allLinear": 179,
+              "allStepped": 38,
+              "explicit": 115
+            },
+            "modes": {
+              "linear": 676,
+              "stepped": 237,
+              "bezier": 33
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill2_f.scsp",
+      "sourceSha256": "37eb0cb646e0d695b513445e935f79657569e06551aabd3d4097f4aeb576f159",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baalcezanne_skill2_f.skeleton.json",
+      "address": "characterlab/source/effect/baalcezanne_skill2_f.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/baalcezanne_skill2_f.scsp/json",
+        "characterlab/source/effect/baalcezanne_skill2_f.atlas",
+        "characterlab/source/effect/baalcezanne_skill2_f.sct"
+      ],
+      "outputSha256": "15cdd5db49198905e05cd6c8f338420dcf9f23ea7195ed96cc3b7c880c73dfe3",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill2_f.sct",
+      "sourceSha256": "ac0963dac55b2d499a68ae0bb669e273c337f7d60b8ab960e3a03c9fb418c4c3",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/effect/baalcezanne_skill2_f.png",
+      "address": "characterlab/source/effect/baalcezanne_skill2_f.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "78b536e170dd4ff887f9f292b37446cef9eaf83e72ce6af74a2351fbffa0803b",
+      "conversion": {
+        "status": "converted",
+        "width": 1172,
+        "height": 126,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "ac0963dac55b2d499a68ae0bb669e273c337f7d60b8ab960e3a03c9fb418c4c3",
+        "outputSha256": "78b536e170dd4ff887f9f292b37446cef9eaf83e72ce6af74a2351fbffa0803b"
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill3_b.atlas",
+      "sourceSha256": "c8afcd06ff307de01da7dc633c6cfa92363ddeb4a5bf9a77d9a451c84dcc8eec",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/effect/baalcezanne_skill3_b.atlas.txt",
+      "address": "characterlab/source/effect/baalcezanne_skill3_b.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/baalcezanne_skill3_b.sct"
+      ],
+      "outputSha256": "c8afcd06ff307de01da7dc633c6cfa92363ddeb4a5bf9a77d9a451c84dcc8eec",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill3_b.cfx",
+      "sourceSha256": "9ff04f3b98895e9014b853e3120e497d32a96bbccdba1c3822ac9f96bcf75f21",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/baalcezanne_skill3_b.cfx.json",
+      "address": "characterlab/source/effect/baalcezanne_skill3_b.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/baalcezanne_skill3_b.scsp",
+        "characterlab/source/effect/baalcezanne_skill3_burst1.particle",
+        "characterlab/source/effect/baalcezanne_skill3_end.particle",
+        "characterlab/source/effect/baalcezanne_skill3_f.scsp",
+        "characterlab/source/effect/rose_01.particle",
+        "characterlab/source/effect/rose_02.particle",
+        "characterlab/source/effect/rose_7.particle"
+      ],
+      "outputSha256": "6a630b365d54ae8055053d36a0ab71c5e88bfb5d05e3ad0073b1e4184c2d447c",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill3_b.scsp",
+      "sourceSha256": "c16f2b751874f7cc51cf123fe657c8d2f72e58e5f63b8a63f87760d5bbec5c0f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baalcezanne_skill3_b.spine.json",
+      "address": "characterlab/source/effect/baalcezanne_skill3_b.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "21538af53f669e74a73a4714088bdde3a13b11e1c99198a16556eda2659fc182",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 43441,
+        "consumedBytes": 43441,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 69,
+            "frames": 457,
+            "segments": 388,
+            "sourceMarkers": {
+              "allLinear": 34,
+              "allStepped": 13,
+              "explicit": 22
+            },
+            "modes": {
+              "linear": 289,
+              "stepped": 91,
+              "bezier": 8
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill3_b.scsp",
+      "sourceSha256": "c16f2b751874f7cc51cf123fe657c8d2f72e58e5f63b8a63f87760d5bbec5c0f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baalcezanne_skill3_b.skeleton.json",
+      "address": "characterlab/source/effect/baalcezanne_skill3_b.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/baalcezanne_skill3_b.scsp/json",
+        "characterlab/source/effect/baalcezanne_skill3_b.atlas",
+        "characterlab/source/effect/baalcezanne_skill3_b.sct"
+      ],
+      "outputSha256": "c942cc59c645b4b236b9087e58b30f10477d9eac0a2edf6358834c0d84bdc561",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill3_b.sct",
+      "sourceSha256": "7d378c4b7e8c73408de476425e00e40abb5f03b501c63e0df9b07ac76952f8fc",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/effect/baalcezanne_skill3_b.png",
+      "address": "characterlab/source/effect/baalcezanne_skill3_b.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "e427d485840bc4ce94d380a721c09a7d1aa8ccbe4df7859c790064242736c751",
+      "conversion": {
+        "status": "converted",
+        "width": 256,
+        "height": 787,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "7d378c4b7e8c73408de476425e00e40abb5f03b501c63e0df9b07ac76952f8fc",
+        "outputSha256": "e427d485840bc4ce94d380a721c09a7d1aa8ccbe4df7859c790064242736c751"
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill3_burst1.particle",
+      "sourceSha256": "9549247185db9a46e98f7f9e0a88aed842c87608dc07d09e77c117d084272e4d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/baalcezanne_skill3_burst1.particle.json",
+      "address": "characterlab/source/effect/baalcezanne_skill3_burst1.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/pati_01.sct",
+        "characterlab/source/particle/rose_02.sct"
+      ],
+      "outputSha256": "be7599136cbe9770a49d6af13a0d820f90da1d8484e55917b318939fe1a2e444",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill3_end.particle",
+      "sourceSha256": "1f5d759ee8b36b06b435a487935b4a4ab1cc5f47e02b7c402710da5cf73f3b95",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/baalcezanne_skill3_end.particle.json",
+      "address": "characterlab/source/effect/baalcezanne_skill3_end.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/pati_01.sct"
+      ],
+      "outputSha256": "ff5765e65b7fec0d48ed222eb25e66888a23d7cdca3d55159d2e322a06bd8163",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill3_f.atlas",
+      "sourceSha256": "f928219c0ed12d05b87a984a54bafad83760de51ec7e09eaf1c88696eea445e4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/effect/baalcezanne_skill3_f.atlas.txt",
+      "address": "characterlab/source/effect/baalcezanne_skill3_f.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/baalcezanne_skill3_f.sct"
+      ],
+      "outputSha256": "f928219c0ed12d05b87a984a54bafad83760de51ec7e09eaf1c88696eea445e4",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill3_f.scsp",
+      "sourceSha256": "a2522bad3574505e518c4b4860fad30444995dcf227799c78d33623b5b328ab8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baalcezanne_skill3_f.spine.json",
+      "address": "characterlab/source/effect/baalcezanne_skill3_f.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "f80a7829362efef576df4e667718f112da0ab08d7da623a70f786366bb9cad53",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 156544,
+        "consumedBytes": 156544,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 244,
+            "frames": 1196,
+            "segments": 952,
+            "sourceMarkers": {
+              "allLinear": 96,
+              "allStepped": 46,
+              "explicit": 102
+            },
+            "modes": {
+              "linear": 639,
+              "stepped": 262,
+              "bezier": 51
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill3_f.scsp",
+      "sourceSha256": "a2522bad3574505e518c4b4860fad30444995dcf227799c78d33623b5b328ab8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baalcezanne_skill3_f.skeleton.json",
+      "address": "characterlab/source/effect/baalcezanne_skill3_f.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/baalcezanne_skill3_f.scsp/json",
+        "characterlab/source/effect/baalcezanne_skill3_f.atlas",
+        "characterlab/source/effect/baalcezanne_skill3_f.sct"
+      ],
+      "outputSha256": "662f8ff00edcbf02f38d50c177efa02cb9ff52a8722889492fef38875f9897a8",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill3_f.sct",
+      "sourceSha256": "99eaa60bb22200a6ba77d44ffad412d75917c86d5d224836a210861541db807c",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/effect/baalcezanne_skill3_f.png",
+      "address": "characterlab/source/effect/baalcezanne_skill3_f.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "07d0b8b10e9d4e9596b8cc4508a5144245801c296c56a23f24dede8d3e299ba9",
+      "conversion": {
+        "status": "converted",
+        "width": 767,
+        "height": 251,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "99eaa60bb22200a6ba77d44ffad412d75917c86d5d224836a210861541db807c",
+        "outputSha256": "07d0b8b10e9d4e9596b8cc4508a5144245801c296c56a23f24dede8d3e299ba9"
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill3_ground.atlas",
+      "sourceSha256": "660a26e88c1b821deae2aa4295f06dfa148706e02d397f7f21dc07a1f9793cd3",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/effect/baalcezanne_skill3_ground.atlas.txt",
+      "address": "characterlab/source/effect/baalcezanne_skill3_ground.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/baalcezanne_skill3_ground.sct"
+      ],
+      "outputSha256": "660a26e88c1b821deae2aa4295f06dfa148706e02d397f7f21dc07a1f9793cd3",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill3_ground.cfx",
+      "sourceSha256": "604ccecc9fd715018239147d686b3aeb62568cfbb0cd65a1981d7f3d11f90220",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/baalcezanne_skill3_ground.cfx.json",
+      "address": "characterlab/source/effect/baalcezanne_skill3_ground.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/baalcezanne_skill3_ground.scsp"
+      ],
+      "outputSha256": "5f02dc18db30bc3d55079a3ae5849afb35efa9c01f069cef42cf1a25cb5437ac",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill3_ground.scsp",
+      "sourceSha256": "ebf379ad069323a56d36f3b69553992c4a26e321d922da90f323963f6400ca78",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baalcezanne_skill3_ground.spine.json",
+      "address": "characterlab/source/effect/baalcezanne_skill3_ground.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "f211b7fd49d2ace9c2d8dacf33c367ca5505e24718721603a6ba1717dc0ce94a",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 1436,
+        "consumedBytes": 1436,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 9,
+            "frames": 17,
+            "segments": 8,
+            "sourceMarkers": {
+              "allLinear": 7,
+              "allStepped": 0,
+              "explicit": 2
+            },
+            "modes": {
+              "linear": 6,
+              "stepped": 0,
+              "bezier": 2
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill3_ground.scsp",
+      "sourceSha256": "ebf379ad069323a56d36f3b69553992c4a26e321d922da90f323963f6400ca78",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/effect/baalcezanne_skill3_ground.skeleton.json",
+      "address": "characterlab/source/effect/baalcezanne_skill3_ground.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/baalcezanne_skill3_ground.scsp/json",
+        "characterlab/source/effect/baalcezanne_skill3_ground.atlas",
+        "characterlab/source/effect/baalcezanne_skill3_ground.sct"
+      ],
+      "outputSha256": "f27f46a45e528e06ea5db98f0a7e3d53794efe9c62e74cb1aaa0d4c4a12970f1",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/baalcezanne_skill3_ground.sct",
+      "sourceSha256": "468aa2a197c7ea94325e18d98143efc290f952a9a88df5c48910858a11648ae0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/effect/baalcezanne_skill3_ground.png",
+      "address": "characterlab/source/effect/baalcezanne_skill3_ground.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "32cc3e68e7c6c3d1798f78e2ebcaccb45b043056e1d20bf2b22129111e1ac13a",
+      "conversion": {
+        "status": "converted",
+        "width": 253,
+        "height": 209,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "468aa2a197c7ea94325e18d98143efc290f952a9a88df5c48910858a11648ae0",
+        "outputSha256": "32cc3e68e7c6c3d1798f78e2ebcaccb45b043056e1d20bf2b22129111e1ac13a"
       }
     },
     {
@@ -16331,6 +17997,34 @@
       }
     },
     {
+      "source": "effect/lightningspark_01.particle",
+      "sourceSha256": "dd833ee283ecfa408a1c1bfe8abb4b0d8a382c2aa37e68f77e3b2ed032581f20",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/lightningspark_01.particle.json",
+      "address": "characterlab/source/effect/lightningspark_01.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/pati_01.sct"
+      ],
+      "outputSha256": "a19a95b980afd723f0b2be5caab30de21d41db32ac74c369c2ec00dd2caee7cb",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/lightningspark_02.particle",
+      "sourceSha256": "2871f4f2c0a978408b0fdd60b22de04271dc5438165b53aab4ba5d14b7758db5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/lightningspark_02.particle.json",
+      "address": "characterlab/source/effect/lightningspark_02.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/pati_01.sct"
+      ],
+      "outputSha256": "ba94fa094be3ed956853b41e79dc74264a22528f3618b50e62db2c93bb5d79c7",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
       "source": "effect/mage_sk3_eff_b.atlas",
       "sourceSha256": "71fb67beefa321409333b77f1dd3839fd8a138298100a8e1157090b23d69050b",
       "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Atlas/effect/mage_sk3_eff_b.atlas.txt",
@@ -17942,6 +19636,79 @@
         "alpha": "source-preserved",
         "sourceSha256": "ff4af1abbd13d490bffcc47c841b4a996c06d69f01e3cd9601d4d88ea3e2426d",
         "outputSha256": "fb7eb80fb4fbbb395354a58baaa799417b980a443e4f7b376ff10f1f3ff0f4dd"
+      }
+    },
+    {
+      "source": "effect/rose_01.particle",
+      "sourceSha256": "a7b119b28ae8c4b31315cdd5aed78e7b429773cd38dd877a8db828f441ed2326",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/rose_01.particle.json",
+      "address": "characterlab/source/effect/rose_01.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/rose_01.sct",
+        "characterlab/source/particle/rose_02.sct"
+      ],
+      "outputSha256": "003559ecf69747334ee07c9a75edb517bedfdc49d42ac184bb3d68b92a24a368",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/rose_02.particle",
+      "sourceSha256": "6ec4f908e0378a8bd5916b7bfae2a424a698dea83dae7e891f39bfe7db6779cb",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/rose_02.particle.json",
+      "address": "characterlab/source/effect/rose_02.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/rose_01.sct",
+        "characterlab/source/particle/rose_02.sct"
+      ],
+      "outputSha256": "0b33db55180515e5b07890a3b3390bcf0882d37b0547c6fb96746a468659c188",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/rose_7.particle",
+      "sourceSha256": "f666d4e35dad27ba92be9d5d5919899b9d741c1d0419bf042b3703418ef6901d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/rose_7.particle.json",
+      "address": "characterlab/source/effect/rose_7.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/pati_01.sct"
+      ],
+      "outputSha256": "ec34b5c4b6c037774049917801eed302095692d2bb5cdf379e5a097d25ef988f",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/rose_casting.particle",
+      "sourceSha256": "d3f4fec57c703d6a21ce6493befda264cdea43526054502f5e99829fb92cb1c8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/rose_casting.particle.json",
+      "address": "characterlab/source/effect/rose_casting.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/rose_02.sct"
+      ],
+      "outputSha256": "2b81bdf243ad7128748e4e10e3311c10f2504d8ec606764e38c535c90b972de3",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/rose_casting_2.particle",
+      "sourceSha256": "1d8fa412efe0997c28e1a4a84a4ac76582841b8f0ddddbdb6796ee56c5422a83",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Effects/effect/rose_casting_2.particle.json",
+      "address": "characterlab/source/effect/rose_casting_2.particle",
+      "type": "particle",
+      "dependencies": [
+        "characterlab/source/particle/orb_02.sct",
+        "characterlab/source/particle/rose_02.sct"
+      ],
+      "outputSha256": "29a8faabe9460c88f64583c1c8b94197d16364cda64b72205d552eff4e0d2b6f",
+      "conversion": {
+        "status": "converted"
       }
     },
     {
@@ -22466,6 +24233,579 @@
         "characterlab/source/effect/aming_skill_03_shield.cfx"
       ],
       "outputSha256": "9160b61dd05881c9d4d912e000576a8163a4c8210cece981fe662e1be0bcf2c7",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "model/baal_sezan.atlas",
+      "sourceSha256": "967d29d0c17b07ddf32d43675d57716b9aebd1988fc677a815f737e667ae14c5",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/model/baal_sezan.atlas.txt",
+      "address": "characterlab/source/model/baal_sezan.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/model/baal_sezan.sct"
+      ],
+      "outputSha256": "967d29d0c17b07ddf32d43675d57716b9aebd1988fc677a815f737e667ae14c5",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "model/baal_sezan.scsp",
+      "sourceSha256": "40101bd5aeaefbeae31118449c30e51ba050d4916f397712affa77a9fbba533f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/model/baal_sezan.spine.json",
+      "address": "characterlab/source/model/baal_sezan.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "c837a858a09a54159cc1b25df4f53fd13cddd414914f995bba6ccda4920edd98",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 18,
+        "binaryBytes": 2243736,
+        "consumedBytes": 2243736,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {
+          "appear": {
+            "flipX": {
+              "tracks": 4,
+              "frames": 4,
+              "bones": {
+                "pelvis": 1,
+                "upper": 1,
+                "chast_center": 1,
+                "upper_head": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "b_idle": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 6,
+              "bones": {
+                "thigh_r": 2,
+                "armup_r": 2,
+                "backskirt_long": 2
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "b_idle_ready": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 5,
+              "bones": {
+                "thigh_r": 3,
+                "armup_r": 1,
+                "backskirt_long": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "camping": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 5,
+              "bones": {
+                "pelvis": 1,
+                "baal_center": 2,
+                "upper_head": 2
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "down": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 6,
+              "bones": {
+                "pelvis": 2,
+                "upper": 2,
+                "upper_head": 2
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "groggy": {
+            "flipX": {
+              "tracks": 1,
+              "frames": 2,
+              "bones": {
+                "leg_r": 2
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "knock_down": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 8,
+              "bones": {
+                "pelvis": 1,
+                "upper": 3,
+                "upper_head": 4
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "rise": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 8,
+              "bones": {
+                "pelvis": 3,
+                "upper": 2,
+                "upper_head": 3
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "run": {
+            "flipX": {
+              "tracks": 4,
+              "frames": 9,
+              "bones": {
+                "pelvis": 2,
+                "upper": 2,
+                "chast_center": 2,
+                "upper_head": 3
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "run_start": {
+            "flipX": {
+              "tracks": 5,
+              "frames": 8,
+              "bones": {
+                "pelvis": 2,
+                "upper": 2,
+                "chast_center": 1,
+                "neck": 2,
+                "upper_head": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "skill1": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 14,
+              "bones": {
+                "thigh_r": 6,
+                "armup_r": 2,
+                "backskirt_long": 6
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "skill2": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 22,
+              "bones": {
+                "thigh_r": 9,
+                "armup_r": 2,
+                "backskirt_long": 11
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "skill3": {
+            "flipX": {
+              "tracks": 12,
+              "frames": 28,
+              "bones": {
+                "thigh_r": 4,
+                "thigh_l": 1,
+                "pelvis": 1,
+                "upper": 1,
+                "armup_r": 2,
+                "chast_center": 1,
+                "upper_head": 1,
+                "foot_l_1": 1,
+                "sezan_waist": 3,
+                "sezan_head": 5,
+                "backskirt_long": 5,
+                "sezan_pelvis": 3
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          }
+        },
+        "curveTimelines": {
+          "appear": {
+            "tracks": 643,
+            "frames": 643,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 643,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "attacked": {
+            "tracks": 697,
+            "frames": 3196,
+            "segments": 2499,
+            "sourceMarkers": {
+              "allLinear": 4,
+              "allStepped": 693,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 2499,
+              "bezier": 0
+            }
+          },
+          "attacked_damage": {
+            "tracks": 663,
+            "frames": 663,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 663,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "b_idle": {
+            "tracks": 708,
+            "frames": 3287,
+            "segments": 2579,
+            "sourceMarkers": {
+              "allLinear": 11,
+              "allStepped": 697,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 2579,
+              "bezier": 0
+            }
+          },
+          "b_idle_ready": {
+            "tracks": 709,
+            "frames": 4953,
+            "segments": 4244,
+            "sourceMarkers": {
+              "allLinear": 6,
+              "allStepped": 703,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 4244,
+              "bezier": 0
+            }
+          },
+          "camping": {
+            "tracks": 667,
+            "frames": 2950,
+            "segments": 2283,
+            "sourceMarkers": {
+              "allLinear": 14,
+              "allStepped": 653,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 2283,
+              "bezier": 0
+            }
+          },
+          "down": {
+            "tracks": 693,
+            "frames": 1654,
+            "segments": 961,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 693,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 961,
+              "bezier": 0
+            }
+          },
+          "flying": {
+            "tracks": 688,
+            "frames": 1683,
+            "segments": 995,
+            "sourceMarkers": {
+              "allLinear": 4,
+              "allStepped": 684,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 995,
+              "bezier": 0
+            }
+          },
+          "flying_damage": {
+            "tracks": 688,
+            "frames": 688,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 688,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "groggy": {
+            "tracks": 689,
+            "frames": 5768,
+            "segments": 5079,
+            "sourceMarkers": {
+              "allLinear": 4,
+              "allStepped": 685,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 25,
+              "stepped": 5054,
+              "bezier": 0
+            }
+          },
+          "idle": {
+            "tracks": 696,
+            "frames": 7520,
+            "segments": 6824,
+            "sourceMarkers": {
+              "allLinear": 1,
+              "allStepped": 695,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 6824,
+              "bezier": 0
+            }
+          },
+          "knock_down": {
+            "tracks": 698,
+            "frames": 3094,
+            "segments": 2396,
+            "sourceMarkers": {
+              "allLinear": 7,
+              "allStepped": 691,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 2396,
+              "bezier": 0
+            }
+          },
+          "rise": {
+            "tracks": 710,
+            "frames": 3700,
+            "segments": 2990,
+            "sourceMarkers": {
+              "allLinear": 9,
+              "allStepped": 701,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 2990,
+              "bezier": 0
+            }
+          },
+          "run": {
+            "tracks": 699,
+            "frames": 2831,
+            "segments": 2132,
+            "sourceMarkers": {
+              "allLinear": 3,
+              "allStepped": 696,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 2132,
+              "bezier": 0
+            }
+          },
+          "run_start": {
+            "tracks": 657,
+            "frames": 3560,
+            "segments": 2903,
+            "sourceMarkers": {
+              "allLinear": 18,
+              "allStepped": 639,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 2903,
+              "bezier": 0
+            }
+          },
+          "skill1": {
+            "tracks": 710,
+            "frames": 14184,
+            "segments": 13474,
+            "sourceMarkers": {
+              "allLinear": 7,
+              "allStepped": 703,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 13474,
+              "bezier": 0
+            }
+          },
+          "skill2": {
+            "tracks": 710,
+            "frames": 15147,
+            "segments": 14437,
+            "sourceMarkers": {
+              "allLinear": 7,
+              "allStepped": 702,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 14435,
+              "bezier": 2
+            }
+          },
+          "skill3": {
+            "tracks": 707,
+            "frames": 7652,
+            "segments": 6945,
+            "sourceMarkers": {
+              "allLinear": 22,
+              "allStepped": 683,
+              "explicit": 2
+            },
+            "modes": {
+              "linear": 2,
+              "stepped": 6943,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "model/baal_sezan.scsp",
+      "sourceSha256": "40101bd5aeaefbeae31118449c30e51ba050d4916f397712affa77a9fbba533f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/model/baal_sezan.skeleton.json",
+      "address": "characterlab/source/model/baal_sezan.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/model/baal_sezan.scsp/json",
+        "characterlab/source/model/baal_sezan.atlas",
+        "characterlab/source/model/baal_sezan.sct"
+      ],
+      "outputSha256": "0c759018299f04bb2024b471f1425fe39ded4a31d0e80604964c0c4ae2034837",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 18
+      }
+    },
+    {
+      "source": "model/baal_sezan.sct",
+      "sourceSha256": "3dacda3a9fff921546357e6f6599e04cf1797722d6a8504fb57368dcc42afccb",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/model/baal_sezan.png",
+      "address": "characterlab/source/model/baal_sezan.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "59a1b764d908ec0167fe1c41f3a0444ddea75773e2d4c6b5c1d7ee7cba375708",
+      "conversion": {
+        "status": "converted",
+        "width": 1674,
+        "height": 253,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "3dacda3a9fff921546357e6f6599e04cf1797722d6a8504fb57368dcc42afccb",
+        "outputSha256": "59a1b764d908ec0167fe1c41f3a0444ddea75773e2d4c6b5c1d7ee7cba375708"
+      }
+    },
+    {
+      "source": "model/baal_sezan.timeline",
+      "sourceSha256": "d1566756da950da7d0f5aa66d9973f1f3774b5d0c2a923248b8748b190279fdd",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Configs/model/baal_sezan.timeline.json",
+      "address": "characterlab/source/model/baal_sezan.timeline",
+      "type": "timeline",
+      "dependencies": [],
+      "outputSha256": "d2da33c73aa7e158780964817824c0d62b5f96c863caa1e756074d956b6ddb01",
       "conversion": {
         "status": "converted"
       }
@@ -32854,6 +35194,122 @@
       }
     },
     {
+      "source": "portrait/c1015.atlas",
+      "sourceSha256": "d2b7972228326c2fa182c3a8d18d390da87290968fd501b8f7285a7e28cb1ae2",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Atlas/portrait/c1015.atlas.txt",
+      "address": "characterlab/source/portrait/c1015.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/portrait/c1015.sct"
+      ],
+      "outputSha256": "d2b7972228326c2fa182c3a8d18d390da87290968fd501b8f7285a7e28cb1ae2",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "portrait/c1015.scsp",
+      "sourceSha256": "8327513fdb2f5d09f885f6feaea7f24a1833cc7c89a4d1ccbd356148f078c491",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/portrait/c1015.spine.json",
+      "address": "characterlab/source/portrait/c1015.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "eac4ed863b7e34c55fd0c2694419ae62c77dad1e868cb4b8900f37f87fa8f517",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 3,
+        "binaryBytes": 344763,
+        "consumedBytes": 344763,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "idle": {
+            "tracks": 719,
+            "frames": 3588,
+            "segments": 2869,
+            "sourceMarkers": {
+              "allLinear": 4,
+              "allStepped": 459,
+              "explicit": 256
+            },
+            "modes": {
+              "linear": 191,
+              "stepped": 1244,
+              "bezier": 1434
+            }
+          },
+          "idle2": {
+            "tracks": 687,
+            "frames": 1831,
+            "segments": 1144,
+            "sourceMarkers": {
+              "allLinear": 131,
+              "allStepped": 324,
+              "explicit": 232
+            },
+            "modes": {
+              "linear": 18,
+              "stepped": 482,
+              "bezier": 644
+            }
+          },
+          "idle backup1": {
+            "tracks": 685,
+            "frames": 1235,
+            "segments": 550,
+            "sourceMarkers": {
+              "allLinear": 331,
+              "allStepped": 220,
+              "explicit": 134
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 220,
+              "bezier": 330
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "portrait/c1015.scsp",
+      "sourceSha256": "8327513fdb2f5d09f885f6feaea7f24a1833cc7c89a4d1ccbd356148f078c491",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Animations/portrait/c1015.skeleton.json",
+      "address": "characterlab/source/portrait/c1015.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/portrait/c1015.scsp/json",
+        "characterlab/source/portrait/c1015.atlas",
+        "characterlab/source/portrait/c1015.sct"
+      ],
+      "outputSha256": "40d557da94b6e5b69268280cdb6f41ebb6192497af0f98a8f9d62ce3bc6daac3",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 3
+      }
+    },
+    {
+      "source": "portrait/c1015.sct",
+      "sourceSha256": "fd27d6aa06265b64c563d3435a5b8655820c6829fce616d85ae2b00897d54728",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Textures/portrait/c1015.png",
+      "address": "characterlab/source/portrait/c1015.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "e849a4bce9378b51acf643a04634f63ae993cd59aeda5a2b716166e240316264",
+      "conversion": {
+        "status": "converted",
+        "width": 1635,
+        "height": 1032,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "fd27d6aa06265b64c563d3435a5b8655820c6829fce616d85ae2b00897d54728",
+        "outputSha256": "e849a4bce9378b51acf643a04634f63ae993cd59aeda5a2b716166e240316264"
+      }
+    },
+    {
       "source": "portrait/c1062.atlas",
       "sourceSha256": "52ca748c84a506050a880601da5719def118301b5de381d4d815bd3874b110c4",
       "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/portrait/c1062.atlas.txt",
@@ -33500,6 +35956,144 @@
         "characterlab/source/particle/zodiac_star1.sct"
       ],
       "outputSha256": "fc97d5bcdaeb5155688e3dc2b8a4625ef01e703516d6f46a46e2cef7a6f0952f",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "stagept/c_baal_skill_01.stg",
+      "sourceSha256": "629e249de06e3762cb222277cd16960d574c8dd3ce8ec6d0c1ff67eb1f8bb3f0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Configs/stagept/c_baal_skill_01.graph.json",
+      "address": "characterlab/source/stagept/c_baal_skill_01.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/camera/baalcezanne_cm_sk1.scsp",
+        "characterlab/source/effect/baal_sezan_eff_casting.atlas",
+        "characterlab/source/effect/baal_sezan_eff_casting.cfx",
+        "characterlab/source/effect/baal_sezan_eff_casting.scsp",
+        "characterlab/source/effect/baal_sezan_eff_casting.sct",
+        "characterlab/source/effect/baal_sezan_eff_casting_b.atlas",
+        "characterlab/source/effect/baal_sezan_eff_casting_b.cfx",
+        "characterlab/source/effect/baal_sezan_eff_casting_b.scsp",
+        "characterlab/source/effect/baal_sezan_eff_casting_b.sct",
+        "characterlab/source/effect/baal_sezan_eff_casting_b2.atlas",
+        "characterlab/source/effect/baal_sezan_eff_casting_b2.scsp",
+        "characterlab/source/effect/baal_sezan_eff_casting_b2.sct",
+        "characterlab/source/effect/baalcezanne_skill1.atlas",
+        "characterlab/source/effect/baalcezanne_skill1.cfx",
+        "characterlab/source/effect/baalcezanne_skill1.scsp",
+        "characterlab/source/effect/baalcezanne_skill1.sct",
+        "characterlab/source/effect/hit_new_blunt_01.atlas",
+        "characterlab/source/effect/hit_new_blunt_01.scsp",
+        "characterlab/source/effect/hit_new_blunt_01.sct",
+        "characterlab/source/effect/hit_new_blunt_normal.cfx",
+        "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+        "characterlab/source/effect/lightningspark_02.particle",
+        "characterlab/source/effect/rose_casting.particle",
+        "characterlab/source/model/baal_sezan.timeline",
+        "characterlab/source/particle/pati_01.sct",
+        "characterlab/source/particle/rose_02.sct",
+        "characterlab/source/particle/ticle_02.sct"
+      ],
+      "outputSha256": "8945e19c74e805be9c5de8aebaac77f2e8f6871f7f6afc5bc2368ae4b8801e43",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "stagept/c_baal_skill_02.stg",
+      "sourceSha256": "0cc9aa51d53f8dfbe038cd61cabd0be75438d5dd2a3940d99fa86b24cf36b8f0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Configs/stagept/c_baal_skill_02.graph.json",
+      "address": "characterlab/source/stagept/c_baal_skill_02.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/camera/baalcezanne_cm_sk2.scsp",
+        "characterlab/source/effect/baal_sezan_eff_casting.atlas",
+        "characterlab/source/effect/baal_sezan_eff_casting.scsp",
+        "characterlab/source/effect/baal_sezan_eff_casting.sct",
+        "characterlab/source/effect/baal_sezan_eff_casting2.cfx",
+        "characterlab/source/effect/baal_sezan_eff_casting_b.atlas",
+        "characterlab/source/effect/baal_sezan_eff_casting_b.cfx",
+        "characterlab/source/effect/baal_sezan_eff_casting_b.scsp",
+        "characterlab/source/effect/baal_sezan_eff_casting_b.sct",
+        "characterlab/source/effect/baal_sezan_eff_casting_b2.atlas",
+        "characterlab/source/effect/baal_sezan_eff_casting_b2.scsp",
+        "characterlab/source/effect/baal_sezan_eff_casting_b2.sct",
+        "characterlab/source/effect/baalcezanne_skill2.cfx",
+        "characterlab/source/effect/baalcezanne_skill2_b.atlas",
+        "characterlab/source/effect/baalcezanne_skill2_b.scsp",
+        "characterlab/source/effect/baalcezanne_skill2_b.sct",
+        "characterlab/source/effect/baalcezanne_skill2_f.atlas",
+        "characterlab/source/effect/baalcezanne_skill2_f.scsp",
+        "characterlab/source/effect/baalcezanne_skill2_f.sct",
+        "characterlab/source/effect/hit_new_blunt_01.atlas",
+        "characterlab/source/effect/hit_new_blunt_01.scsp",
+        "characterlab/source/effect/hit_new_blunt_01.sct",
+        "characterlab/source/effect/hit_new_blunt_mult_normal.cfx",
+        "characterlab/source/effect/hit_new_blunt_normal.cfx",
+        "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+        "characterlab/source/effect/lightningspark_01.particle",
+        "characterlab/source/effect/rose_casting_2.particle",
+        "characterlab/source/model/baal_sezan.timeline",
+        "characterlab/source/particle/orb_02.sct",
+        "characterlab/source/particle/pati_01.sct",
+        "characterlab/source/particle/rose_02.sct",
+        "characterlab/source/particle/ticle_02.sct"
+      ],
+      "outputSha256": "4651089a9adbfeca71fee3fee78f041804a058e087713f017652505a21546636",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "stagept/c_baal_skill_03.stg",
+      "sourceSha256": "681802e088b3091fcfd092ad9add26e67ac1356bddb2aa0b6ee9b5f605e988be",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1015/Configs/stagept/c_baal_skill_03.graph.json",
+      "address": "characterlab/source/stagept/c_baal_skill_03.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/camera/baalcezanne_skill3_cm.scsp",
+        "characterlab/source/cut/fhd/sk_c1015_3.webp",
+        "characterlab/source/effect/baal_sezan_eff_casting3.atlas",
+        "characterlab/source/effect/baal_sezan_eff_casting3.cfx",
+        "characterlab/source/effect/baal_sezan_eff_casting3.scsp",
+        "characterlab/source/effect/baal_sezan_eff_casting3.sct",
+        "characterlab/source/effect/baal_sezan_eff_casting3_b.atlas",
+        "characterlab/source/effect/baal_sezan_eff_casting3_b.cfx",
+        "characterlab/source/effect/baal_sezan_eff_casting3_b.scsp",
+        "characterlab/source/effect/baal_sezan_eff_casting3_b.sct",
+        "characterlab/source/effect/baal_sezan_eff_casting3_b2.atlas",
+        "characterlab/source/effect/baal_sezan_eff_casting3_b2.scsp",
+        "characterlab/source/effect/baal_sezan_eff_casting3_b2.sct",
+        "characterlab/source/effect/baalcezanne_skill3_b.atlas",
+        "characterlab/source/effect/baalcezanne_skill3_b.cfx",
+        "characterlab/source/effect/baalcezanne_skill3_b.scsp",
+        "characterlab/source/effect/baalcezanne_skill3_b.sct",
+        "characterlab/source/effect/baalcezanne_skill3_burst1.particle",
+        "characterlab/source/effect/baalcezanne_skill3_end.particle",
+        "characterlab/source/effect/baalcezanne_skill3_f.atlas",
+        "characterlab/source/effect/baalcezanne_skill3_f.scsp",
+        "characterlab/source/effect/baalcezanne_skill3_f.sct",
+        "characterlab/source/effect/baalcezanne_skill3_ground.atlas",
+        "characterlab/source/effect/baalcezanne_skill3_ground.cfx",
+        "characterlab/source/effect/baalcezanne_skill3_ground.scsp",
+        "characterlab/source/effect/baalcezanne_skill3_ground.sct",
+        "characterlab/source/effect/hit_new_blunt_01.atlas",
+        "characterlab/source/effect/hit_new_blunt_01.scsp",
+        "characterlab/source/effect/hit_new_blunt_01.sct",
+        "characterlab/source/effect/hit_new_blunt_mult_normal.cfx",
+        "characterlab/source/effect/hit_new_blunt_normal.cfx",
+        "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+        "characterlab/source/effect/rose_01.particle",
+        "characterlab/source/effect/rose_02.particle",
+        "characterlab/source/effect/rose_7.particle",
+        "characterlab/source/model/baal_sezan.timeline",
+        "characterlab/source/particle/pati_01.sct",
+        "characterlab/source/particle/rose_01.sct",
+        "characterlab/source/particle/rose_02.sct",
+        "characterlab/source/particle/ticle_02.sct"
+      ],
+      "outputSha256": "29f07fa07758ee33a534738348b05029f2c9fe6b8f6ad3e60f156e7dbf451b1a",
       "conversion": {
         "status": "converted"
       }

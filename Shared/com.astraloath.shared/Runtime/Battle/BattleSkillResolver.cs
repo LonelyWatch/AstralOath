@@ -93,7 +93,7 @@ namespace AstralOath.Shared.Battle
         internal static bool IsHarmful(BattleStatusKind kind) =>
             kind == BattleStatusKind.Stun || kind == BattleStatusKind.SpeedDown ||
             kind == BattleStatusKind.AttackDown || kind == BattleStatusKind.DefenseDown ||
-            kind == BattleStatusKind.Unhealable || kind == BattleStatusKind.Silence || kind == BattleStatusKind.Provoke;
+            kind == BattleStatusKind.Poison || kind == BattleStatusKind.Unhealable || kind == BattleStatusKind.Silence || kind == BattleStatusKind.Provoke;
 
         private Modifiers ModifiersFor(Unit actor, Program program)
         {
@@ -208,12 +208,14 @@ namespace AstralOath.Shared.Battle
             private readonly BattleSkillResolver owner;
             private readonly Unit[] units;
             private readonly BattleRandom random;
+            private ulong nextStatusId;
             internal readonly List<BattleChange> Changes = new List<BattleChange>();
 
             public Execution(BattleSkillResolver owner, BattleSnapshot snapshot, BattleRandom random)
             {
                 this.owner = owner;
                 this.random = random;
+                nextStatusId = snapshot.LastEventSequence;
                 units = snapshot.Units.Select(unit => new Unit(unit)).ToArray();
             }
 
@@ -266,6 +268,7 @@ namespace AstralOath.Shared.Battle
                     {
                         case "trigger":
                         case "damage_bonus":
+                        case "damage_bonus_per_debuff":
                         case "critical_damage_bonus":
                         case "defense_penetration":
                         case "attack_rate_bonus":
@@ -296,7 +299,7 @@ namespace AstralOath.Shared.Battle
                         bool hasHit = hit.TryGetValue(target.Id, out var lastHit);
                         if (effect.phase == "after_hit" && !hasHit) continue;
                         if (!ConditionMet(effect, actor, target, multiTargetAttack, lastHit, attackCritical,
-                            readinessDrained?.Contains(target.Id) == true, speedBuffed))
+                            readinessDrained?.Contains(target.Id) == true, speedBuffed, defeatedTarget))
                             continue;
                         int previousReadiness = target.Readiness;
                         ApplyEffect(actor, target, skill, effect, modifiers, soulBurn, lastHit, hit, target == highestDefense,
@@ -369,10 +372,12 @@ namespace AstralOath.Shared.Battle
                             SkillModifier(program, "defense_penetration", actor, target, multiTargetAttack);
                         decimal defense = target.Defense * (1m - Math.Min(Basis, penetration) / (decimal)Basis);
                         int speedScale = (soulBurn ? skill.burnSpeedDamagePpm : null) ?? skill.casterSpeedDamagePpm ?? 0;
+                        int perDebuff = SkillModifier(program, "damage_bonus_per_debuff", actor, target, multiTargetAttack);
+                        int debuffBonus = perDebuff == 0 ? 0 : perDebuff * target.Statuses.Count(status => IsHarmful(status.Kind));
                         decimal damageBonus = actor.Speed * speedScale / 1000000m +
                             (decimal)actor.Health / actor.MaximumHealth * (skill.casterHealthRatioDamageBp ?? 0) / Basis +
                             (HasBuff(target) ? (skill.damageAgainstBuffBp ?? 0) / (decimal)Basis : 0m) +
-                            (SkillModifier(program, "damage_bonus", actor, target, multiTargetAttack) +
+                            (debuffBonus + SkillModifier(program, "damage_bonus", actor, target, multiTargetAttack) +
                                 Passives(actor).Sum(passive => SkillModifier(passive, "damage_bonus", actor, target, multiTargetAttack))) / (decimal)Basis;
                         int reduction = DamageReduction(target, multiTargetAttack);
                         int criticalDamage = actor.CriticalDamage +
@@ -410,6 +415,14 @@ namespace AstralOath.Shared.Battle
                             ChangeReadiness(actor, target, -reductionBp);
                         }
                         break;
+                    case "reset_cooldown":
+                        foreach (var id in target.Source.Form.SkillIds)
+                        {
+                            if (!owner.skills.TryGetValue(id, out var reset) || reset.Row.slot != effect.value) continue;
+                            int remaining = target.Source.GetCooldown(id);
+                            if (remaining > 0) Changes.Add(BattleChange.Cooldown(actor.Id, target.Id, id, -remaining));
+                        }
+                        break;
                     case "reduce_cooldown":
                         foreach (var id in target.Source.Form.SkillIds)
                             if (target.Source.GetCooldown(id) > 0)
@@ -428,7 +441,7 @@ namespace AstralOath.Shared.Battle
                         foreach (var status in target.Statuses.Where(item => IsHarmful(item.Kind)).Take(effect.value).ToArray())
                         {
                             target.Statuses.Remove(status);
-                            Changes.Add(BattleChange.RemoveStatus(actor.Id, target.Id, status.Kind));
+                            Changes.Add(BattleChange.RemoveStatus(actor.Id, target.Id, status));
                         }
                         break;
                     case "dispel":
@@ -445,7 +458,7 @@ namespace AstralOath.Shared.Battle
                             if (!CheckEffect(actor, target, status.Kind, chance, lastHit, hostile: true, checksImmunity: true)) continue;
                             ApplyStatus(actor, target, status.Kind, status.RemainingTurns, status.Strength);
                             actor.Statuses.Remove(status);
-                            Changes.Add(BattleChange.RemoveStatus(actor.Id, actor.Id, status.Kind));
+                            Changes.Add(BattleChange.RemoveStatus(actor.Id, actor.Id, status));
                         }
                         break;
                     case "apply_status":
@@ -463,6 +476,13 @@ namespace AstralOath.Shared.Battle
 
             private void ApplyStatus(Unit actor, Unit target, BattleStatusKind kind, int duration, int strength)
             {
+                if (BattleStatusSnapshot.IsStackable(kind))
+                {
+                    var added = new BattleStatusSnapshot(kind, duration, strength, actor.Id, ++nextStatusId);
+                    target.Statuses.Add(added);
+                    Changes.Add(BattleChange.ApplyStatus(actor.Id, target.Id, added));
+                    return;
+                }
                 var previous = target.Status(kind);
                 if (previous != null)
                 {

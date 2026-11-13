@@ -90,7 +90,8 @@ namespace AstralOath.Shared.Battle
             foreach (var change in resolution.Changes)
             {
                 Apply(change, events);
-                if (change.Kind == BattleFlowEventKind.StatusApplied && change.TargetId == actor.Id)
+                if (change.Kind == BattleFlowEventKind.StatusApplied && change.TargetId == actor.Id &&
+                    !BattleStatusSnapshot.IsStackable(change.Status.Value))
                     refreshed.Add(change.Status.Value);
             }
             FinishTurn(actor, previousStatuses, events, refreshed);
@@ -159,12 +160,7 @@ namespace AstralOath.Shared.Battle
             switch (change.Kind)
             {
                 case BattleFlowEventKind.Damage:
-                    int remaining = Absorb(unit, change.Amount, source, events);
-                    int damage = Math.Min(unit.Health, remaining);
-                    unit.Health -= damage;
-                    Emit(events, change.Kind, source, target, damage, hitKind: change.HitKind, remainingHealth: unit.Health);
-                    if (unit.Health == 0)
-                        Emit(events, BattleFlowEventKind.UnitDefeated, source, target);
+                    ApplyDamage(unit, source, change.Amount, change.HitKind, events);
                     break;
                 case BattleFlowEventKind.ResourceChanged:
                     ChangeResource(unit, source, change.Amount, events);
@@ -184,18 +180,43 @@ namespace AstralOath.Shared.Battle
                         (int)Math.Clamp((long)cooldown + change.Amount, 0L, 60L), events);
                     break;
                 case BattleFlowEventKind.StatusApplied:
-                    var status = new BattleStatusSnapshot(change.Status.Value, change.Turns, change.Amount, source);
-                    int index = unit.Statuses.FindIndex(item => item.Kind == change.Status);
+                    var kind = change.Status.Value;
+                    bool stackable = BattleStatusSnapshot.IsStackable(kind);
+                    ulong instanceId = change.StatusInstanceId;
+                    if (stackable && instanceId == 0) instanceId = eventSequence + 1;
+                    var status = new BattleStatusSnapshot(kind, change.Turns, change.Amount, source, instanceId);
+                    int index = stackable ? -1 : unit.Statuses.FindIndex(item => item.Kind == kind);
                     if (index < 0) unit.Statuses.Add(status);
                     else unit.Statuses[index] = status;
                     Emit(events, change.Kind, source, target, statusKind: change.Status, status: status);
                     break;
                 case BattleFlowEventKind.StatusRemoved:
-                    RemoveStatus(unit, source, change.Status.Value, events);
+                    RemoveStatus(unit, source, change.Status.Value, events, change.StatusInstanceId);
                     break;
                 case BattleFlowEventKind.EffectRejected:
                     Emit(events, change.Kind, source, target, statusKind: change.Status, rejection: change.Rejection);
                     break;
+            }
+        }
+
+        private void ApplyDamage(State unit, string source, int amount, BattleHitKind hit, List<BattleFlowEvent> events,
+            BattleStatusSnapshot periodic = null)
+        {
+            int damage = Math.Min(unit.Health, Absorb(unit, amount, source, events));
+            unit.Health -= damage;
+            Emit(events, BattleFlowEventKind.Damage, source, unit.Id, damage, statusKind: periodic?.Kind,
+                status: periodic, hitKind: hit, remainingHealth: unit.Health);
+            if (unit.Health == 0)
+                Emit(events, BattleFlowEventKind.UnitDefeated, source, unit.Id, statusKind: periodic?.Kind, status: periodic);
+        }
+
+        private void ApplyStartOfTurnDamage(State unit, List<BattleFlowEvent> events)
+        {
+            foreach (var status in unit.Statuses.Where(item => item.Kind == BattleStatusKind.Poison).ToArray())
+            {
+                int damage = EpicSevenCombatMath.ScaleHealth(unit.Unit.Stats.MaxHealth, status.Strength);
+                ApplyDamage(unit, status.SourceId, damage, BattleHitKind.None, events, status);
+                if (unit.Health == 0) return;
             }
         }
 
@@ -213,10 +234,20 @@ namespace AstralOath.Shared.Battle
             return amount - absorbed;
         }
 
-        private void RemoveStatus(State unit, string source, BattleStatusKind kind, List<BattleFlowEvent> events)
+        private void RemoveStatus(State unit, string source, BattleStatusKind kind, List<BattleFlowEvent> events,
+            ulong instanceId = 0)
         {
-            if (unit.Statuses.RemoveAll(item => item.Kind == kind) > 0)
-                Emit(events, BattleFlowEventKind.StatusRemoved, source, unit.Id, statusKind: kind);
+            for (int index = 0; index < unit.Statuses.Count;)
+            {
+                var status = unit.Statuses[index];
+                if (status.Kind != kind || (instanceId != 0 && status.InstanceId != instanceId))
+                {
+                    index++;
+                    continue;
+                }
+                unit.Statuses.RemoveAt(index);
+                Emit(events, BattleFlowEventKind.StatusRemoved, source, unit.Id, statusKind: kind, status: status);
+            }
         }
 
         private void ChangeResource(State unit, string source, int delta, List<BattleFlowEvent> events)
@@ -244,14 +275,14 @@ namespace AstralOath.Shared.Battle
             foreach (var status in previous)
             {
                 if (refreshed?.Contains(status.Kind) == true) continue;
-                int index = unit.Statuses.FindIndex(item => item.Kind == status.Kind);
+                int index = unit.Statuses.FindIndex(item => item.Kind == status.Kind && item.InstanceId == status.InstanceId);
                 if (index < 0) continue;
                 var remaining = unit.Statuses[index];
-                if (remaining.RemainingTurns == 1) RemoveStatus(unit, unit.Id, remaining.Kind, events);
+                if (remaining.RemainingTurns == 1) RemoveStatus(unit, unit.Id, remaining.Kind, events, remaining.InstanceId);
                 else
                 {
                     var updated = new BattleStatusSnapshot(remaining.Kind, remaining.RemainingTurns - 1,
-                        remaining.Strength, remaining.SourceId);
+                        remaining.Strength, remaining.SourceId, remaining.InstanceId);
                     unit.Statuses[index] = updated;
                     Emit(events, BattleFlowEventKind.StatusDurationChanged, unit.Id, unit.Id,
                         statusKind: updated.Kind, status: updated);
@@ -305,6 +336,8 @@ namespace AstralOath.Shared.Battle
                 actor = granted ?? living.OrderByDescending(unit => unit.Readiness).First();
                 turn++;
                 Emit(events, BattleFlowEventKind.TurnStarted, actor.Id);
+                ApplyStartOfTurnDamage(actor, events);
+                if (actor.Health == 0) continue;
                 ChangeResource(actor, actor.Id, actor.Resource?.TurnGain ?? 0, events);
                 if (!actor.Statuses.Any(status => status.Kind == BattleStatusKind.Stun)) return;
                 actor.Readiness = 0;

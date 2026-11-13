@@ -1,0 +1,139 @@
+
+baalcezanne_skill3_f.sct
+size: 767,251
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+sprite/cloud_small_1
+  rotate: false
+  xy: 60, 218
+  size: 145, 30
+  orig: 145, 30
+  offset: 0, 0
+  index: -1
+sprite/cloud_small_4
+  rotate: false
+  xy: 274, 212
+  size: 61, 28
+  orig: 61, 28
+  offset: 0, 0
+  index: -1
+sprite/cloud_small_5
+  rotate: false
+  xy: 644, 226
+  size: 25, 17
+  orig: 25, 17
+  offset: 0, 0
+  index: -1
+sprite/cloud_small_6
+  rotate: true
+  xy: 702, 54
+  size: 54, 26
+  orig: 54, 26
+  offset: 0, 0
+  index: -1
+sprite/face
+  rotate: false
+  xy: 402, 2
+  size: 100, 194
+  orig: 100, 194
+  offset: 0, 0
+  index: -1
+sprite/force_01
+  rotate: false
+  xy: 520, 189
+  size: 64, 59
+  orig: 64, 59
+  offset: 0, 0
+  index: -1
+sprite/force_02
+  rotate: true
+  xy: 702, 2
+  size: 50, 55
+  orig: 50, 55
+  offset: 0, 0
+  index: -1
+sprite/force_03
+  rotate: false
+  xy: 207, 215
+  size: 65, 30
+  orig: 65, 30
+  offset: 0, 0
+  index: -1
+sprite/light1
+  rotate: false
+  xy: 586, 2
+  size: 114, 113
+  orig: 114, 113
+  offset: 0, 0
+  index: -1
+sprite/light_halfcicle_01
+  rotate: true
+  xy: 112, 2
+  size: 211, 136
+  orig: 211, 136
+  offset: 0, 0
+  index: -1
+sprite/lighting_01
+  rotate: true
+  xy: 337, 201
+  size: 40, 181
+  orig: 40, 181
+  offset: 0, 0
+  index: -1
+sprite/lightning_core_05
+  rotate: false
+  xy: 658, 117
+  size: 107, 107
+  orig: 107, 107
+  offset: 0, 0
+  index: -1
+sprite/mto_light_03
+  rotate: false
+  xy: 586, 187
+  size: 56, 56
+  orig: 56, 56
+  offset: 0, 0
+  index: -1
+sprite/pillar_long_01
+  rotate: false
+  xy: 504, 2
+  size: 71, 185
+  orig: 71, 185
+  offset: 0, 0
+  index: -1
+sprite/pillar_long_02
+  rotate: false
+  xy: 335, 2
+  size: 65, 197
+  orig: 65, 197
+  offset: 0, 0
+  index: -1
+sprite/pillar_long_aura_01
+  rotate: false
+  xy: 2, 2
+  size: 56, 247
+  orig: 56, 247
+  offset: 0, 0
+  index: -1
+sprite/pillar_long_aura_02
+  rotate: false
+  xy: 250, 2
+  size: 83, 208
+  orig: 83, 208
+  offset: 0, 0
+  index: -1
+sprite/pillar_long_aura_03
+  rotate: false
+  xy: 60, 2
+  size: 50, 214
+  orig: 50, 214
+  offset: 0, 0
+  index: -1
+sprite/pillar_short_02
+  rotate: false
+  xy: 577, 117
+  size: 79, 68
+  orig: 79, 68
+  offset: 0, 0
+  index: -1
