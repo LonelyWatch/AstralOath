@@ -1,0 +1,188 @@
+
+kartua_sk2_m.sct
+size: 485,1090
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bs
+  rotate: true
+  xy: 2, 809
+  size: 265, 110
+  orig: 265, 110
+  offset: 0, 0
+  index: -1
+buff_bear1
+  rotate: true
+  xy: 326, 617
+  size: 165, 141
+  orig: 165, 141
+  offset: 0, 0
+  index: -1
+buff_bear2
+  rotate: true
+  xy: 154, 438
+  size: 179, 145
+  orig: 179, 145
+  offset: 0, 0
+  index: -1
+buff_bear3
+  rotate: true
+  xy: 148, 255
+  size: 181, 151
+  orig: 181, 151
+  offset: 0, 0
+  index: -1
+buff_bear4
+  rotate: false
+  xy: 301, 499
+  size: 181, 116
+  orig: 181, 116
+  offset: 0, 0
+  index: -1
+dust_soft_1
+  rotate: true
+  xy: 2, 255
+  size: 279, 144
+  orig: 279, 144
+  offset: 0, 0
+  index: -1
+dust_soft_2
+  rotate: true
+  xy: 2, 536
+  size: 271, 150
+  orig: 271, 150
+  offset: 0, 0
+  index: -1
+dust_soft_3
+  rotate: true
+  xy: 373, 33
+  size: 293, 110
+  orig: 293, 110
+  offset: 0, 0
+  index: -1
+eff_wind_twist_01
+  rotate: false
+  xy: 171, 912
+  size: 50, 44
+  orig: 50, 44
+  offset: 0, 0
+  index: -1
+elite_02
+  rotate: false
+  xy: 301, 246
+  size: 60, 78
+  orig: 60, 78
+  offset: 0, 0
+  index: -1
+elite_03
+  rotate: true
+  xy: 226, 1019
+  size: 58, 84
+  orig: 58, 84
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 301, 328
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+force_01
+  rotate: false
+  xy: 337, 998
+  size: 66, 61
+  orig: 66, 61
+  offset: 0, 0
+  index: -1
+force_02
+  rotate: false
+  xy: 423, 904
+  size: 51, 55
+  orig: 51, 55
+  offset: 0, 0
+  index: -1
+force_03
+  rotate: true
+  xy: 405, 998
+  size: 65, 30
+  orig: 65, 30
+  offset: 0, 0
+  index: -1
+global_glow
+  rotate: false
+  xy: 337, 912
+  size: 84, 84
+  orig: 84, 84
+  offset: 0, 0
+  index: -1
+halfcicle_air2
+  rotate: false
+  xy: 2, 33
+  size: 231, 220
+  orig: 231, 220
+  offset: 0, 0
+  index: -1
+lense_flare
+  rotate: false
+  xy: 154, 619
+  size: 170, 170
+  orig: 170, 170
+  offset: 0, 0
+  index: -1
+light_halfcicle_01
+  rotate: true
+  xy: 235, 33
+  size: 211, 136
+  orig: 211, 136
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: false
+  xy: 2, 2
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1
+smoke_1
+  rotate: false
+  xy: 171, 791
+  size: 120, 119
+  orig: 120, 119
+  offset: 0, 0
+  index: -1
+smoke_2
+  rotate: true
+  xy: 114, 962
+  size: 126, 110
+  orig: 126, 110
+  offset: 0, 0
+  index: -1
+smoke_3
+  rotate: false
+  xy: 226, 912
+  size: 109, 105
+  orig: 109, 105
+  offset: 0, 0
+  index: -1
+smoke_4
+  rotate: true
+  xy: 293, 791
+  size: 119, 77
+  orig: 119, 77
+  offset: 0, 0
+  index: -1
+smoke_5
+  rotate: true
+  xy: 372, 784
+  size: 118, 110
+  orig: 118, 110
+  offset: 0, 0
+  index: -1
+tornado_cutter_1
+  rotate: true
+  xy: 114, 809
+  size: 151, 55
+  orig: 151, 55
+  offset: 0, 0
+  index: -1

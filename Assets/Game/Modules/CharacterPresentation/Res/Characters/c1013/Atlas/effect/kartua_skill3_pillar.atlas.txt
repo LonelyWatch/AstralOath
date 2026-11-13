@@ -1,0 +1,139 @@
+
+kartua_skill3_pillar.sct
+size: 440,448
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dust_b_1
+  rotate: false
+  xy: 385, 174
+  size: 39, 38
+  orig: 39, 38
+  offset: 0, 0
+  index: -1
+dust_b_2
+  rotate: false
+  xy: 360, 283
+  size: 53, 50
+  orig: 53, 50
+  offset: 0, 0
+  index: -1
+light1
+  rotate: false
+  xy: 111, 335
+  size: 112, 111
+  orig: 112, 111
+  offset: 0, 0
+  index: -1
+light_halfcicle_01
+  rotate: false
+  xy: 144, 2
+  size: 211, 136
+  orig: 211, 136
+  offset: 0, 0
+  index: -1
+lightning_core_05
+  rotate: false
+  xy: 2, 339
+  size: 107, 107
+  orig: 107, 107
+  offset: 0, 0
+  index: -1
+pillar_long_01
+  rotate: false
+  xy: 71, 2
+  size: 71, 327
+  orig: 71, 327
+  offset: 0, 0
+  index: -1
+pillar_long_02
+  rotate: false
+  xy: 2, 2
+  size: 67, 335
+  orig: 67, 335
+  offset: 0, 0
+  index: -1
+pillar_long_aura_01
+  rotate: true
+  xy: 144, 225
+  size: 56, 247
+  orig: 56, 247
+  offset: 0, 0
+  index: -1
+pillar_long_aura_02
+  rotate: true
+  xy: 144, 140
+  size: 83, 208
+  orig: 83, 208
+  offset: 0, 0
+  index: -1
+pillar_long_aura_03
+  rotate: true
+  xy: 144, 283
+  size: 50, 214
+  orig: 50, 214
+  offset: 0, 0
+  index: -1
+pillar_short_01
+  rotate: false
+  xy: 353, 335
+  size: 82, 87
+  orig: 82, 87
+  offset: 0, 0
+  index: -1
+pillar_short_02
+  rotate: false
+  xy: 357, 2
+  size: 79, 68
+  orig: 79, 68
+  offset: 0, 0
+  index: -1
+pillar_short_aura_01
+  rotate: false
+  xy: 357, 72
+  size: 76, 47
+  orig: 76, 47
+  offset: 0, 0
+  index: -1
+smoke_2
+  rotate: false
+  xy: 225, 335
+  size: 106, 108
+  orig: 106, 108
+  offset: 0, 0
+  index: -1
+smoke_3
+  rotate: true
+  xy: 393, 121
+  size: 51, 45
+  orig: 51, 45
+  offset: 0, 0
+  index: -1
+swf1
+  rotate: true
+  xy: 415, 214
+  size: 117, 18
+  orig: 117, 18
+  offset: 0, 0
+  index: -1
+swf2
+  rotate: true
+  xy: 333, 335
+  size: 99, 18
+  orig: 99, 18
+  offset: 0, 0
+  index: -1
+swf3
+  rotate: true
+  xy: 354, 140
+  size: 63, 29
+  orig: 63, 29
+  offset: 0, 0
+  index: -1
+swf4
+  rotate: false
+  xy: 353, 424
+  size: 65, 7
+  orig: 65, 7
+  offset: 0, 0
+  index: -1

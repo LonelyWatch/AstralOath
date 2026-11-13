@@ -48,7 +48,9 @@ namespace AstralOath.Shared.Battle
                         if (effect.phase != "on_attacked" || !ConditionMet(effect, target, target, false)) continue;
                         var modifiers = owner.ModifiersFor(target, passive);
 
-                        if (effect.operation == "counterattack") continue;
+                        if (effect.operation == "counterattack" || effect.operation == "readiness_bonus") continue;
+                        if (effect.operation == "readiness")
+                            modifiers.ReadinessBp += SkillModifier(passive, "readiness_bonus", target, target, false);
                         ApplyEffect(target, target, passive.Row, effect, modifiers, false,
                             BattleHitKind.None, null, false);
                     }
@@ -120,6 +122,7 @@ namespace AstralOath.Shared.Battle
                 return effect.condition switch
                 {
                     null or "" or "none" => true,
+                    "caster_health_below_three_quarters" => 4L * caster.Health < 3L * caster.MaximumHealth,
                     "caster_health_below_half" => 2L * caster.Health < caster.MaximumHealth,
                     "caster_health_at_least_half" => 2L * caster.Health >= caster.MaximumHealth,
                     "caster_health_at_most_half" => 2L * caster.Health <= caster.MaximumHealth,

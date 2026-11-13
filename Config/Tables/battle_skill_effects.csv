@@ -99,3 +99,15 @@
 ,c1062.s3.1,c1062.s3,1,impact,heal,targets,none,10000,0,0,none,none,0
 ,c1062.s3.2,c1062.s3,2,after_attack,apply_status,targets,Immunity,10000,2,0,none,none,0
 ,c1062.s3.3,c1062.s3,3,after_attack,apply_status,targets,Barrier,10000,2,0,none,none,0
+,c1013.s1.1,c1013.s1,1,impact,damage,targets,none,10000,0,0,none,none,0
+,c1013.s1.2,c1013.s1,2,after_hit,apply_status,targets,DefenseDown,3500,2,7000,none,none,0
+,c1013.s2.1,c1013.s2,1,on_attacked,readiness,self,none,10000,0,1000,none,none,0
+,c1013.s2.2,c1013.s2,2,on_attacked,readiness_bonus,self,none,10000,0,1000,caster_health_at_most_half,none,0
+,c1013.s3.1,c1013.s3,1,impact,attack_rate_bonus,self,none,10000,0,4000,caster_health_below_three_quarters,none,0
+,c1013.s3.2,c1013.s3,2,impact,health_rate_bonus,self,none,10000,0,125,caster_health_below_three_quarters,none,0
+,c1013.s3.3,c1013.s3,3,impact,burn_health_rate_bonus,self,none,10000,0,300,none,none,0
+,c1013.s3.4,c1013.s3,4,impact,burn_health_rate_bonus,self,none,10000,0,75,caster_health_below_three_quarters,none,0
+,c1013.s3.5,c1013.s3,5,impact,damage,targets,none,10000,0,0,none,none,0
+,c1013.s3.6,c1013.s3,6,after_hit,apply_status,targets,AttackDown,7500,2,5000,none,none,0
+,c1013.s3.7,c1013.s3,7,after_attack,heal,self,none,10000,0,0,caster_skill_awakened,none,0
+,c1013.s3.8,c1013.s3,8,after_attack,apply_status,self,DefenseUp,10000,2,6000,none,none,0

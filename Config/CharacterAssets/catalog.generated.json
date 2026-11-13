@@ -2498,6 +2498,196 @@
       ]
     },
     {
+      "id": "c1013",
+      "name": "卡尔图哈",
+      "displayNameKey": "character.kartua.name",
+      "battleSkeletonAddress": "characterlab/source/model/kartua.scsp",
+      "portraitSkeletonAddress": "characterlab/source/portrait/c1013.scsp",
+      "voiceBankAddress": "characterlab/source/sound/ja/voc1.audio_ja.bank",
+      "timelineAddress": "characterlab/source/model/kartua.timeline",
+      "voices": [
+        {
+          "id": "voc_c1013_answer_1",
+          "audioTableKey": "voc_c1013_answer_1",
+          "eventPath": "event:/voc/skill/c_cartuja_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1013_answer_1"
+        },
+        {
+          "id": "voc_c1013_answer_2",
+          "audioTableKey": "voc_c1013_answer_2",
+          "eventPath": "event:/voc/skill/c_cartuja_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1013_answer_2"
+        },
+        {
+          "id": "voc_c1013_attacked_1",
+          "audioTableKey": "voc_c1013_attacked_1",
+          "eventPath": "event:/voc/character/kartua/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1013_attacked_1"
+        },
+        {
+          "id": "voc_c1013_attacked_2",
+          "audioTableKey": "voc_c1013_attacked_2",
+          "eventPath": "event:/voc/character/kartua/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1013_attacked_2"
+        },
+        {
+          "id": "voc_c1013_call_1",
+          "audioTableKey": "voc_c1013_call_1",
+          "eventPath": "event:/voc/skill/c_cartuja_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1013_call_1"
+        },
+        {
+          "id": "voc_c1013_call_2",
+          "audioTableKey": "voc_c1013_call_2",
+          "eventPath": "event:/voc/skill/c_cartuja_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1013_call_2"
+        },
+        {
+          "id": "voc_c1013_dead_1",
+          "audioTableKey": "voc_c1013_dead_1",
+          "eventPath": "event:/voc/character/kartua/evt/dead",
+          "displayNameKey": "character.voice.voc_c1013_dead_1"
+        },
+        {
+          "id": "voc_c1013_dead_2",
+          "audioTableKey": "voc_c1013_dead_2",
+          "eventPath": "event:/voc/character/kartua/evt/dead",
+          "displayNameKey": "character.voice.voc_c1013_dead_2"
+        },
+        {
+          "id": "voc_c1013_get_1",
+          "audioTableKey": "voc_c1013_get_1",
+          "eventPath": "event:/voc/character/kartua/evt/get",
+          "displayNameKey": "character.voice.voc_c1013_get_1"
+        },
+        {
+          "id": "voc_c1013_idle_1",
+          "audioTableKey": "voc_c1013_idle_1",
+          "eventPath": "event:/voc/character/kartua/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1013_idle_1"
+        },
+        {
+          "id": "voc_c1013_idle_2",
+          "audioTableKey": "voc_c1013_idle_2",
+          "eventPath": "event:/voc/character/kartua/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1013_idle_2"
+        },
+        {
+          "id": "voc_c1013_lose_1",
+          "audioTableKey": "voc_c1013_lose_1",
+          "eventPath": "event:/voc/character/kartua/evt/defeat",
+          "displayNameKey": "character.voice.voc_c1013_lose_1"
+        },
+        {
+          "id": "voc_c1013_lvup_1",
+          "audioTableKey": "voc_c1013_lvup_1",
+          "eventPath": "event:/voc/character/kartua/evt/lvup",
+          "displayNameKey": "character.voice.voc_c1013_lvup_1"
+        },
+        {
+          "id": "voc_c1013_skill1_1",
+          "audioTableKey": "voc_c1013_skill1_1",
+          "eventPath": "event:/voc/skill/c_cartuja_skill_01",
+          "displayNameKey": "character.voice.voc_c1013_skill1_1"
+        },
+        {
+          "id": "voc_c1013_skill1_2",
+          "audioTableKey": "voc_c1013_skill1_2",
+          "eventPath": "event:/voc/skill/c_cartuja_skill_01",
+          "displayNameKey": "character.voice.voc_c1013_skill1_2"
+        },
+        {
+          "id": "voc_c1013_skill1_3",
+          "audioTableKey": "voc_c1013_skill1_3",
+          "eventPath": "event:/voc/skill/c_cartuja_skill_01",
+          "displayNameKey": "character.voice.voc_c1013_skill1_3"
+        },
+        {
+          "id": "voc_c1013_skill2_1",
+          "audioTableKey": "voc_c1013_skill2_1",
+          "eventPath": "event:/voc/skill/c_cartuja_skill_02",
+          "displayNameKey": "character.voice.voc_c1013_skill2_1"
+        },
+        {
+          "id": "voc_c1013_skill2_2",
+          "audioTableKey": "voc_c1013_skill2_2",
+          "eventPath": "event:/voc/skill/c_cartuja_skill_02",
+          "displayNameKey": "character.voice.voc_c1013_skill2_2"
+        },
+        {
+          "id": "voc_c1013_skill3_1",
+          "audioTableKey": "voc_c1013_skill3_1",
+          "eventPath": "event:/voc/skill/c_cartuja_skill_03",
+          "displayNameKey": "character.voice.voc_c1013_skill3_1"
+        },
+        {
+          "id": "voc_c1013_skill3_2",
+          "audioTableKey": "voc_c1013_skill3_2",
+          "eventPath": "event:/voc/skill/c_cartuja_skill_03",
+          "displayNameKey": "character.voice.voc_c1013_skill3_2"
+        },
+        {
+          "id": "voc_c1013_skill3_3_1",
+          "audioTableKey": "voc_c1013_skill3_3_1",
+          "eventPath": "event:/voc/skill/c_cartuja_skill_03",
+          "displayNameKey": "character.voice.voc_c1013_skill3_3_1"
+        },
+        {
+          "id": "voc_c1013_skill3_3_2",
+          "audioTableKey": "voc_c1013_skill3_3_2",
+          "eventPath": "event:/voc/skill/c_cartuja_skill_03",
+          "displayNameKey": "character.voice.voc_c1013_skill3_3_2"
+        },
+        {
+          "id": "voc_c1013_utterance_1",
+          "audioTableKey": "voc_c1013_utterance_1",
+          "eventPath": "event:/voc/character/kartua/evt/utterance_01",
+          "displayNameKey": "character.voice.voc_c1013_utterance_1"
+        },
+        {
+          "id": "voc_c1013_utterance_2",
+          "audioTableKey": "voc_c1013_utterance_2",
+          "eventPath": "event:/voc/character/kartua/evt/utterance_02",
+          "displayNameKey": "character.voice.voc_c1013_utterance_2"
+        },
+        {
+          "id": "voc_c1013_win_1",
+          "audioTableKey": "voc_c1013_win_1",
+          "eventPath": "event:/voc/character/kartua/evt/win",
+          "displayNameKey": "character.voice.voc_c1013_win_1"
+        }
+      ],
+      "skills": [
+        {
+          "id": "c_cartuja_skill_01",
+          "displayNameKey": "character.kartua.skill1",
+          "graphAddress": "characterlab/source/stagept/c_cartuja_skill_01.stg",
+          "eventPath": "event:/skill/c_cartuja_skill_01",
+          "voiceEventPath": "event:/voc/skill/c_cartuja_skill_01",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_cartuja_skill_01_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_cartuja_skill_01_a"
+        },
+        {
+          "id": "c_cartuja_skill_02",
+          "displayNameKey": "character.kartua.skill2",
+          "graphAddress": "characterlab/source/stagept/c_cartuja_skill_02.stg",
+          "eventPath": "event:/skill/c_cartuja_skill_02",
+          "voiceEventPath": "event:/voc/skill/c_cartuja_skill_02",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        },
+        {
+          "id": "c_cartuja_skill_03",
+          "displayNameKey": "character.kartua.skill3",
+          "graphAddress": "characterlab/source/stagept/c_cartuja_skill_03.stg",
+          "eventPath": "event:/skill/c_cartuja_skill_03",
+          "voiceEventPath": "event:/voc/skill/c_cartuja_skill_03",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        }
+      ]
+    },
+    {
       "id": "c1062",
       "name": "安洁莉卡",
       "displayNameKey": "character.angelica.name",
@@ -2731,6 +2921,7 @@
     "voc_c1007_skill3_3",
     "voc_c1009_defeat_2",
     "voc_c1009_sk3_1_p2",
-    "voc_c1011_skill2_3"
+    "voc_c1011_skill2_3",
+    "voc_c1013_skill3_3"
   ]
 }

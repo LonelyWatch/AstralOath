@@ -151,3 +151,9 @@
 ,battle.status.indomitable.name,不屈
 ,battle.status.indomitable.description,提高防御力和效果抗性各 30%，无法被驱散。
 ,battle.inspect.burn.increase_healing,提高本技能的生命恢复量。
+,battle.skill.c1013.s1.name,撕裂
+,battle.skill.c1013.s1.description,攻击单个敌人，有 35% 概率降低防御力 2 回合。伤害随自身最大生命值提高。
+,battle.skill.c1013.s2.name,危险地带
+,battle.skill.c1013.s2.description,受到攻击时行动值提高 10%。当自身生命值不高于 50% 时，额外提高 10%。
+,battle.skill.c1013.s3.name,捕食咆哮
+,battle.skill.c1013.s3.description,攻击全体敌人，有 75% 概率降低攻击力 2 回合。自身获得防御力提升 2 回合，第三阶觉醒后先恢复生命。伤害随自身最大生命值提高，低于 75% 时进一步提高。

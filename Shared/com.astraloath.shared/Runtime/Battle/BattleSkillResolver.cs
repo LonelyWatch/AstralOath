@@ -253,6 +253,8 @@ namespace AstralOath.Shared.Battle
                         case "defense_penetration":
                         case "attack_rate_bonus":
                         case "defense_rate_bonus":
+                        case "health_rate_bonus":
+                        case "burn_health_rate_bonus":
                             continue;
                         case "grant_extra_turn":
                             if (origin == BattleActionOrigin.Primary && actor.Alive &&
@@ -334,6 +336,9 @@ namespace AstralOath.Shared.Battle
                             SkillModifier(program, "attack_rate_bonus", actor, target, multiTargetAttack);
                         int defenseRate = (skill.casterDefenseDamageBp ?? 0) +
                             SkillModifier(program, "defense_rate_bonus", actor, target, multiTargetAttack);
+                        int healthRate = (skill.casterHealthDamageBp ?? 0) +
+                            SkillModifier(program, "health_rate_bonus", actor, target, multiTargetAttack);
+                        if (soulBurn) healthRate += SkillModifier(program, "burn_health_rate_bonus", actor, target, multiTargetAttack);
                         int penetration = (skill.defensePenetrationBp ?? 0) +
                             (actor.Has(BattleStatusKind.Stealth) ? skill.stealthPenetrationBp ?? 0 : 0) +
                             (highestDefense ? skill.highestDefensePenetrationBp ?? 0 : 0) +
@@ -349,7 +354,7 @@ namespace AstralOath.Shared.Battle
                         int criticalDamage = actor.Source.Stats.CritDamageBp +
                             SkillModifier(program, "critical_damage_bonus", actor, target, multiTargetAttack);
                         int damage = Damage(actor.Attack, defense, actor.MaximumHealth, rate, skill.powerBp.Value,
-                            skill.casterHealthDamageBp ?? 0, modifiers.DamageBp, relation, result, criticalDamage,
+                            healthRate, modifiers.DamageBp, relation, result, criticalDamage,
                             additionalBaseDamage: actor.Defense * defenseRate / Basis,
                             damageMultiplier: (1m + damageBonus) * (1m - reduction / (decimal)Basis) *
                                 (allTargetAttack && target.Has(BattleStatusKind.Stealth) ? .5m : 1m));

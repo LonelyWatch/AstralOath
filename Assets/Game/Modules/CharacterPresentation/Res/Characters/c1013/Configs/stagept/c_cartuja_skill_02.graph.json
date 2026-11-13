@@ -1,0 +1,375 @@
+{
+  "id": "c_cartuja_skill_02",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 3
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "location": 1,
+        "x": 150.0,
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 1,
+        "etty": "CAM"
+      },
+      {
+        "ani": "skill2",
+        "guid": 2,
+        "etty": "ANI"
+      },
+      {
+        "state": "start",
+        "guid": 3,
+        "etty": "ENTRY"
+      },
+      {
+        "guid": 4,
+        "etty": "IDLE"
+      },
+      {
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 5,
+        "etty": "CAM"
+      },
+      {
+        "source": "kartua_sk2.cfx",
+        "scale": 1.0,
+        "location": 11,
+        "guid": 6,
+        "etty": "EFFECT"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "kartua_sk2_cm",
+        "guid": 7,
+        "etty": "SHAKE"
+      },
+      {
+        "color": "0,0,0,255",
+        "accel": 1.0,
+        "opacity": 0.7,
+        "duration": 2400,
+        "localZ": -1,
+        "globalZ": -1,
+        "fadeIn": 300,
+        "fadeOut": 300,
+        "guid": 8,
+        "etty": "DARK"
+      },
+      {
+        "scale": "1.4",
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 9,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "x": 150.0,
+        "y": -30.0,
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 10,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.4",
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 11,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.2",
+        "curve": "0,1,1,1",
+        "time": 500,
+        "guid": 12,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "x": 150.0,
+        "y": 100.0,
+        "curve": "0,1,1,1",
+        "time": 500,
+        "guid": 13,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.5",
+        "curve": "0,1,1,1",
+        "time": 150,
+        "guid": 14,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "x": 150.0,
+        "y": -50.0,
+        "curve": "0,1,1,1",
+        "time": 150,
+        "guid": 15,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.1",
+        "curve": "0,1,1,1",
+        "time": 1320,
+        "guid": 16,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "x": 150.0,
+        "y": 70.0,
+        "curve": "0,1,1,1",
+        "time": 1320,
+        "guid": 17,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1",
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 18,
+        "etty": "ZOOM"
+      },
+      {
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 19,
+        "etty": "HIT"
+      }
+    ],
+    "connections": [
+      {
+        "from": 3,
+        "to": 1,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 4,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 5,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 6,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 8,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 9,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 11,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 10,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 12,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 13,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 15,
+        "to": 14,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 15,
+        "delay": 726,
+        "when": 1,
+        "Desc": "726",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 17,
+        "to": 16,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 17,
+        "delay": 1320,
+        "when": 1,
+        "Desc": "1320",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 18,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 19,
+        "delay": 2310,
+        "when": 1,
+        "Desc": "2310",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/kartua_sk2_cm.scsp",
+      "address": "characterlab/source/camera/kartua_sk2_cm.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/kartua_eff_sk1.atlas",
+      "address": "characterlab/source/effect/kartua_eff_sk1.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/kartua_eff_sk1.scsp",
+      "address": "characterlab/source/effect/kartua_eff_sk1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/kartua_eff_sk1.sct",
+      "address": "characterlab/source/effect/kartua_eff_sk1.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/kartua_sk2.cfx",
+      "address": "characterlab/source/effect/kartua_sk2.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/kartua_sk2_b.atlas",
+      "address": "characterlab/source/effect/kartua_sk2_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/kartua_sk2_b.scsp",
+      "address": "characterlab/source/effect/kartua_sk2_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/kartua_sk2_b.sct",
+      "address": "characterlab/source/effect/kartua_sk2_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/kartua_sk2_f.atlas",
+      "address": "characterlab/source/effect/kartua_sk2_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/kartua_sk2_f.scsp",
+      "address": "characterlab/source/effect/kartua_sk2_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/kartua_sk2_f.sct",
+      "address": "characterlab/source/effect/kartua_sk2_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/kartua_sk2_m.atlas",
+      "address": "characterlab/source/effect/kartua_sk2_m.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/kartua_sk2_m.scsp",
+      "address": "characterlab/source/effect/kartua_sk2_m.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/kartua_sk2_m.sct",
+      "address": "characterlab/source/effect/kartua_sk2_m.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/kartua_skill_01.cfx",
+      "address": "characterlab/source/effect/kartua_skill_01.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "model/kartua.timeline",
+      "address": "characterlab/source/model/kartua.timeline",
+      "type": "timeline"
+    }
+  ],
+  "diagnostics": []
+}

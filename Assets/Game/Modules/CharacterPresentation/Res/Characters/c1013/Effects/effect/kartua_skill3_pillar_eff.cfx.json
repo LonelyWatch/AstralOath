@@ -1,0 +1,84 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "kartua_skill3_pillar",
+      "x": "-900",
+      "y": "-100",
+      "z": "50",
+      "scale": "1.1",
+      "format": "spine",
+      "timeScale": 0.8
+    },
+    {
+      "source": "kartua_skill3_pillar",
+      "x": "-600",
+      "y": "100",
+      "z": "-50",
+      "scale": "0.9",
+      "delay": "165",
+      "format": "spine",
+      "timeScale": 0.8
+    },
+    {
+      "source": "kartua_skill3_pillar",
+      "x": "-400",
+      "y": "-300",
+      "z": "300",
+      "scale": "1.2",
+      "delay": "330",
+      "format": "spine",
+      "timeScale": 0.8
+    },
+    {
+      "source": "kartua_skill3_pillar",
+      "x": "0",
+      "y": "20",
+      "z": "10",
+      "scale": "1.15",
+      "delay": "495",
+      "format": "spine",
+      "timeScale": 0.8
+    },
+    {
+      "source": "kartua_skill3_pillar",
+      "x": "300",
+      "y": "-400",
+      "z": "100",
+      "scale": "1.5",
+      "delay": "660",
+      "format": "spine",
+      "timeScale": 0.8
+    },
+    {
+      "source": "kartua_skill3_pillar",
+      "x": "700",
+      "y": "200",
+      "z": "-100",
+      "scale": "0.8",
+      "delay": "825",
+      "format": "spine",
+      "timeScale": 0.8
+    },
+    {
+      "source": "kartua_skill3_pillar",
+      "x": "950",
+      "y": "-600",
+      "z": "100",
+      "scale": "1.7",
+      "delay": "990",
+      "format": "spine",
+      "timeScale": 0.8
+    },
+    {
+      "source": "kartua_skill3_pillar",
+      "x": "1200",
+      "y": "0",
+      "z": "0",
+      "scale": "1.1",
+      "delay": "1155",
+      "format": "spine",
+      "timeScale": 0.8
+    }
+  ]
+}

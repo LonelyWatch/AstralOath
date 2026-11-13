@@ -1,0 +1,20 @@
+{
+  "timeline": {
+    "default": {
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "id": "ks1",
+              "source": "kartua_skill_01",
+              "scale": 1.0,
+              "locationBone": "root"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
