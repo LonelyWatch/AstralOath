@@ -41,6 +41,8 @@ MIT参考解析结构隔离在 `ThirdParty/scsp_viewer`，固定来源、许可�
 
 SCSP 2.1 的 `0xFFFF` 是线性、`0xFFFE` 是阶梯，显式 Bezier 首个 float 是目标帧索引。按源记录保留三种插值，禁止全局强制平滑或强制阶梯。逐轨逐段写出校验与 `curveTimelines` 报告保证曲线未丢失；旧错误转换产物会被 Python 验证和 Unity 构建门禁拒绝。
 
+SCSP 2.1 的多条同骨骼 type2 位移轨按源记录顺序保留。标准 `bones/<bone>/translate` 保存第一条，动画内 `astralOathTranslateTracks` 保存额外轨道，AOT 播放层分别交给原版 `TranslateTimeline` 求值。只有含该字段的文件标记 `astraloath-scsp/4`，每条轨道的首帧、末帧、曲线和混合权重各自生效。重复的其他曲线轨仍拒绝导入。含该扩展的资源随支持它的新母包上线。源记录和验收见[贝尔与塞尚重复 Spine 位移轨](../../docs/delivery/2026-11-14-baal-duplicate-spine.md)。
+
 新增角色必须遵循 [角色资源进入 Unity 的通用规则](../../docs/development/character-asset-import.md)。格式证据、复现与验收见 [梅赛德丝 S3 修复报告](../../docs/delivery/2026-11-12-mercedes-curve-correctness.md)。本轮本机原游戏静态核验支持该语义，不根据“画面看起来顺眼”修改角色偏移。
 
 已证实的角色资源别名及未提供的旧 timeline 依赖、日语音频边界见[角色资源进入 Unity](../../docs/development/character-asset-import.md)。逐项通过 `--verify` 核对输入输出哈希，转换和资源校验以 Unity 实际加载验收补充。

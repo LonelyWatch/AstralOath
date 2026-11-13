@@ -37,7 +37,7 @@ namespace AstralOath.Client.Skeletons
                 {
                     case S.RotateTimeline t: rotate[t.BoneIndex] = t.Frames[0]; break;
                     case S.ScaleTimeline t: scale[t.BoneIndex] = t.Frames[0]; break;
-                    case S.TranslateTimeline t: translate[t.BoneIndex] = t.Frames[0]; break;
+                    case S.TranslateTimeline t: translate[t.BoneIndex] = Math.Min(translate[t.BoneIndex], t.Frames[0]); break;
                     case S.FlipYTimeline t: flipY[t.BoneIndex] = t.Frames[0]; flipYKeys[t.BoneIndex] = t; break;
                     case S.FlipXTimeline t: flipX[t.BoneIndex] = t.Frames[0]; flipXKeys[t.BoneIndex] = t; break;
                     case S.ColorTimeline t: color[t.SlotIndex] = t.Frames[0]; break;

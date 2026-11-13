@@ -20,6 +20,8 @@ from ThirdParty.scsp_viewer import scsp2json as writer
 
 MAX_DECODED = 256 * 1024 * 1024
 SCSP_CONVERTER_VERSION = "astraloath-scsp/3"
+ORDERED_TRANSLATE_VERSION = "astraloath-scsp/4"
+ORDERED_TRANSLATE_FIELD = "astralOathTranslateTracks"
 
 
 def _unpack_block(data: bytes) -> bytes:
@@ -118,8 +120,8 @@ def _record_curve_source(reader, skeleton, animation, kind, start, previous_bloc
         raise ValueError("Missing or duplicated source curve block")
     block = reader.curveBlocks[-1]
     index = struct.unpack_from("<I", reader.data, start + 4)[0]
-    if kind in (0, 1, 2):
-        path = (animation.name, "bones", skeleton.bones[index].name, {0:"scale", 1:"rotate", 2:"translate"}[kind])
+    if kind in (0, 1):
+        path = (animation.name, "bones", skeleton.bones[index].name, {0:"scale", 1:"rotate"}[kind])
     elif kind == 3:
         path = (animation.name, "slots", skeleton.slots[index].name, "color")
     elif kind == 8:
@@ -135,6 +137,44 @@ def _record_curve_source(reader, skeleton, animation, kind, start, previous_bloc
     skeleton.curveSource[path] = block
 
 
+def _read_translate_v2(reader, skeleton, animation):
+    bone_index, raw_count = reader.read_u32(), reader.read_u32()
+    if bone_index >= len(skeleton.bones):
+        raise ValueError("Invalid 2.1 translate bone index")
+    if raw_count < 3 or raw_count % 3 or raw_count * 4 + 2 > len(reader.data) - reader.pos:
+        raise ValueError("Invalid 2.1 translate float count")
+    bone = skeleton.bones[bone_index].name
+    entries, source_keys = [], []
+    previous = 0.0
+    for _ in range(raw_count // 3):
+        time, x, y = reader.read_f32(), reader.read_f32(), reader.read_f32()
+        if time < previous or not all(map(math.isfinite, (time, x, y))):
+            raise ValueError("Invalid 2.1 translate frame")
+        source_keys.append((time, x, y))
+        frame = {"time": time}
+        if x != 0:
+            frame["x"] = x
+        if y != 0:
+            frame["y"] = y
+        entries.append(frame)
+        previous = time
+    for frame, curve in zip(entries, _curves_v2(reader, len(entries))):
+        frame.update(curve)
+    animation.duration = max(animation.duration, previous)
+
+    # The native loader appends every record by ordinal, including equal and
+    # overlapping tracks for the same bone. Standard JSON has room for one.
+    timelines = animation.bones.setdefault(bone, {})
+    if "translate" in timelines:
+        additional = skeleton.orderedTranslate.setdefault(animation.name, {}).setdefault(bone, [])
+        path = (animation.name, ORDERED_TRANSLATE_FIELD, bone, len(additional))
+        additional.append(entries)
+    else:
+        path = (animation.name, "bones", bone, "translate")
+        timelines["translate"] = entries
+    skeleton.curveSource[path] = {**reader.curveBlocks[-1], "keys": tuple(source_keys)}
+
+
 def _validate_curves_v2(document, skeleton):
     for path, block in skeleton.curveSource.items():
         frames = document["animations"]
@@ -146,6 +186,10 @@ def _validate_curves_v2(document, skeleton):
             raise ValueError(f"Curve mapping mismatch between source and JSON: {path}")
         if "curve" in frames[-1]:
             raise ValueError(f"Unexpected terminal curve in JSON: {path}")
+        if "keys" in block:
+            keys = tuple((f.get("time", 0), f.get("x", 0), f.get("y", 0)) for f in frames)
+            if keys != block["keys"]:
+                raise ValueError(f"Translate key mapping mismatch between source and JSON: {path}")
 
 
 def _curve_report(skeleton):
@@ -231,6 +275,7 @@ def _animations_v2(reader, skeleton):
     skeleton.sourceTimelineCounts = {}
     skeleton.flipSource = {}
     skeleton.curveSource = {}
+    skeleton.orderedTranslate = {}
     for ai in range(skeleton.v2_anim_count):
         animation = common.AnimationData()
         animation.name = _string(reader.read_u32(), skeleton)
@@ -273,10 +318,13 @@ def _animations_v2(reader, skeleton):
                     elif flag != 0: raise ValueError(f"Unknown draw-order flag {flag}")
                     animation.drawOrder.append(frame)
                 continue
+            if kind == 2:
+                _read_translate_v2(reader, skeleton, animation)
+                continue
             # The vendored reference mislabels native 5/6/9/10. Never delegate these
             # or unknown IDs to its permissive fallback branches.
             previous_blocks = len(reader.curveBlocks)
-            if kind not in (0, 1, 2, 3, 4, 7, 8) or not v2._parse_v2_timeline_entry(reader,skeleton,animation,kind):
+            if kind not in (0, 1, 3, 4, 7, 8) or not v2._parse_v2_timeline_entry(reader,skeleton,animation,kind):
                 raise ValueError(f"Unsupported/incomplete timeline {kind} in {animation.name} at {start}")
             _record_curve_source(reader, skeleton, animation, kind, start, previous_blocks)
         result.append(animation)
@@ -370,14 +418,18 @@ def decode_scsp(data: bytes):
         if sk.version!=expected_version: raise ValueError(f"Unsupported Spine version {sk.version}")
         if len({a.name for a in sk.animations})!=len(sk.animations): raise ValueError("Duplicate animation names")
         document=writer.write_json_data(sk)
+        ordered_translate = getattr(sk, "orderedTranslate", {})
         if version != 30001:
+            for name, tracks in ordered_translate.items():
+                document["animations"][name][ORDERED_TRANSLATE_FIELD] = tracks
             _validate_flips_v2(document, sk)
             _validate_curves_v2(document, sk)
         _validate_json(document)
         if len(document.get("animations",{}))!=len(sk.animations): raise ValueError("Animation count mismatch")
     except (struct.error,IndexError,KeyError,OverflowError,UnicodeError) as exc:
         raise ValueError(f"Invalid SCSP record at byte {reader.pos}: {exc}") from exc
-    report={"converterVersion":SCSP_CONVERTER_VERSION,"spineVersion":sk.version,"bones":len(sk.bones),"slots":len(sk.slots),
+    converter_version = ORDERED_TRANSLATE_VERSION if ordered_translate else SCSP_CONVERTER_VERSION
+    report={"converterVersion":converter_version,"spineVersion":sk.version,"bones":len(sk.bones),"slots":len(sk.slots),
             "renderAttachments":sum(isinstance(a,(common.RegionAttachment,common.MeshAttachment,common.SkinnedMeshAttachment,common.LinkedMeshAttachment)) for skin in sk.skins for slots in skin.attachments.values() for a in slots.values()),
             "animationCount":len(sk.animations),"animations":[{"name":a.name,"duration":a.duration} for a in sk.animations],
             "binaryBytes":binary_size,"consumedBytes":reader.pos,"opaqueFields":reader.opaque,

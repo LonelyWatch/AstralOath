@@ -42,6 +42,32 @@ namespace AstralOath.Client.Tests
             });
         }
 
+        [Test]
+        public void OrderedTranslateTracksKeepTheEarliestKeyDuringACrossfade()
+        {
+            const string json = @"{""skeleton"":{""hash"":""crossfade"",""spine"":""2.1.27""},
+              ""bones"":[{""name"":""root"",""y"":3}],""slots"":[],""skins"":{""default"":{}},
+              ""animations"":{
+                ""outgoing"":{""bones"":{""root"":{""translate"":[{""time"":0,""y"":16},{""time"":1,""y"":16}]}}},
+                ""incoming"":{""bones"":{""root"":{""translate"":[{""time"":0,""y"":8},{""time"":1,""y"":8}]}},
+                ""astralOathTranslateTracks"":{""root"":[[{""time"":0.75,""y"":-4}]]}}}}";
+            var parent = new GameObject("Ordered Spine crossfade");
+            try
+            {
+                var source = new SkeletonPlayerSource(json, "", new Dictionary<string, Texture2D>(), scale: 1);
+                using var player = new SkeletonPlayerFactory().Create(source, parent.transform);
+                player.Play("outgoing", false);
+                player.Play("incoming", false, .5f);
+                player.Tick(.25f);
+                Assert.That(player.TryGetBonePose("root", out var pose), Is.True);
+                Assert.That(pose.LocalPosition.y, Is.EqualTo(15).Within(.00001));
+                player.Seek(1f);
+                Assert.That(player.TryGetBonePose("root", out pose), Is.True);
+                Assert.That(pose.LocalPosition.y, Is.EqualTo(-1).Within(.00001));
+            }
+            finally { Object.DestroyImmediate(parent); }
+        }
+
         private static void WithMercedes(System.Action<ISkeletonPlayer> assertion)
         {
             var parent = new GameObject("SCSP curve semantics");

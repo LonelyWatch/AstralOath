@@ -62,3 +62,40 @@ class NativeCurveTests(unittest.TestCase):
             return doc
         with patch.object(convert.writer,'write_json_data',damaged),self.assertRaisesRegex(ValueError,'[Cc]urve'):
             convert.decode_scsp(fixture_v2(translate(struct.pack('<H',3)+bezier(1)+bytes([0]))))
+
+class OrderedTranslateTests(unittest.TestCase):
+    @staticmethod
+    def track(frames, marker=0xffff, bone=0):
+        return (struct.pack('<3I', 2, bone, len(frames) * 3)
+                + b''.join(struct.pack('<3f', *frame) for frame in frames)
+                + struct.pack('<H', marker))
+
+    def test_same_bone_tracks_keep_source_order_times_coordinates_and_curves(self):
+        first = self.track([(0, 0, 8), (.5, 0, -4), (1, 0, 0)], 0xfffe)
+        later = self.track([(.75, 0, -4)])
+        repeated = self.track([(.75, 0, -4)])
+        doc, report = convert.decode_scsp(fixture_v2(first + later + repeated, 3))
+        animation = doc['animations']['idle']
+        self.assertEqual(animation['bones']['root']['translate'], [
+            {'time': 0, 'y': 8, 'curve': 'stepped'},
+            {'time': .5, 'y': -4, 'curve': 'stepped'}, {'time': 1}])
+        self.assertEqual(animation['astralOathTranslateTracks'], {
+            'root': [[{'time': .75, 'y': -4}], [{'time': .75, 'y': -4}]]})
+        self.assertEqual(report['curveTimelines']['idle']['tracks'], 3)
+        self.assertEqual(report['curveTimelines']['idle']['frames'], 5)
+        self.assertEqual(report['binaryBytes'], report['consumedBytes'])
+
+    def test_only_translate_can_repeat_and_malformed_translate_fails(self):
+        rotate = struct.pack('<IIIffH', 1, 0, 2, 0, 10, 0xffff)
+        with self.assertRaisesRegex(ValueError, 'Duplicate curve timeline'):
+            convert.decode_scsp(fixture_v2(rotate + rotate, 2))
+        invalid_tracks = (self.track([(0, float('nan'), 0)]),
+                          self.track([(1, 0, 0), (.5, 0, 0)]),
+                          self.track([(0, 0, 0)], bone=1))
+        for bad_track in invalid_tracks:
+            with self.subTest(track=bad_track), self.assertRaisesRegex(ValueError, 'translate'):
+                convert.decode_scsp(fixture_v2(self.track([(0, 0, 0)]) + bad_track, 2))
+
+    def test_standard_translate_omits_extension(self):
+        document, _ = convert.decode_scsp(fixture_v2(self.track([(0, 0, 8)])))
+        self.assertNotIn('astralOathTranslateTracks', document['animations']['idle'])

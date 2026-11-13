@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using AstralOath.Client.Skeletons;
 using A = AstralOath.ThirdParty.Spine21;
 using B = AstralOath.ThirdParty.Spine38;
 class Loader : A.TextureLoader, B.TextureLoader {
@@ -13,10 +14,42 @@ class Program {
  static long vertices; static int frames, deformed, reordered, events;
  static void Check(float[] v) { foreach(float x in v) if(float.IsNaN(x)||float.IsInfinity(x)) throw new Exception("Non-finite world vertex"); vertices+=v.Length/2; }
  static void CheckBone(float[] values) { foreach(float value in values) if(float.IsNaN(value)||float.IsInfinity(value)) throw new Exception("Non-finite bone matrix"); }
- static void Run21(string path,string atlasPath) {
+ static void AssertPose(A.Skeleton skeleton, A.Animation animation, string boneName, float time,
+     float alpha, float expectedY, float startY = 0) {
+  var bone = skeleton.FindBone(boneName);
+  skeleton.SetToSetupPose();
+  bone.Y = startY;
+  animation.Mix(skeleton, -1, time, false, null, alpha);
+  if (Math.Abs(bone.Y - expectedY) > .00005f)
+   throw new InvalidOperationException($"{animation.Name}/{boneName} at {time}, alpha {alpha}: expected {expectedY}, got {bone.Y}");
+ }
+ static void CheckBaalPoses(string path, A.Skeleton skeleton, A.Animation animation) {
+  if (animation == null) throw new InvalidOperationException("Missing Baal & Sezan source animation");
+  switch (Path.GetFileName(path)) {
+   case "baalcezanne_skill2_b.spine.json":
+    AssertPose(skeleton, animation, "root", .6333f, 1, -7.695f);
+    AssertPose(skeleton, animation, "root", 1.2666f, 1, -15.39f);
+    AssertPose(skeleton, animation, "root", 2.9333f, 1, -15.39f);
+    AssertPose(skeleton, animation, "root", 2.9333f, .5f, -7.695f);
+    break;
+   case "baalcezanne_skill2_f.spine.json":
+    AssertPose(skeleton, animation, "root", .6333f, 1, -7.695f);
+    AssertPose(skeleton, animation, "bone", .0333f, 1, 307.94f);
+    AssertPose(skeleton, animation, "bone", .0333f, .5f, 154.4775f);
+    break;
+   case "BaalCezanne_skill3_cm.spine.json":
+    AssertPose(skeleton, animation, "root", 3.799f, .5f, 16, 16);
+    AssertPose(skeleton, animation, "root", 3.8f, .5f, 4, 16);
+    break;
+   default:
+    throw new ArgumentException("Unexpected Baal & Sezan sample: " + path);
+  }
+ }
+ static void Run21(string path,string atlasPath,bool checkBaal) {
   using System.IO.TextReader ar=string.IsNullOrEmpty(atlasPath)?new StringReader(""):File.OpenText(atlasPath); var atlas=new A.Atlas(ar,"",new Loader());
-  using var jr=File.OpenText(path); var data=new A.SkeletonJson(atlas).ReadSkeletonData(jr);
+  var data=Spine21Json.Read(File.ReadAllText(path),atlas,1);
   var skeleton=new A.Skeleton(data); var state=new A.AnimationState(new A.AnimationStateData(data)); state.Event+=(_,__,___)=>events++;
+  if (checkBaal) CheckBaalPoses(path, skeleton, data.FindAnimation("animation"));
   int ffd=data.Animations.Sum(x=>x.Timelines.Count(t=>t is A.FFDTimeline));
   int draw=data.Animations.Sum(x=>x.Timelines.Count(t=>t is A.DrawOrderTimeline));
   foreach(var skin in data.Skins.DefaultIfEmpty()) foreach(var anim in data.Animations) {
@@ -63,9 +96,34 @@ class Program {
   }
   Console.WriteLine(JsonSerializer.Serialize(new{file=path,version=data.Version,animations=data.Animations.Count,skins=data.Skins.Count,ffdTimelines=ffd,drawOrderTimelines=draw,frames,deformed,reordered,events,vertices}));atlas.Dispose();
  }
+ static void CheckOrderedTranslate() {
+  const string json = """
+  {"skeleton":{"spine":"2.1.27","hash":"","width":0,"height":0},"bones":[{"name":"root","y":3}],
+   "slots":[],"skins":{"default":{}},
+   "animations":{"clip":{"bones":{"root":{"translate":[{"time":0,"y":8,"curve":"stepped"},
+   {"time":0.5,"y":-4,"curve":"stepped"},{"time":1}]}},
+   "astralOathTranslateTracks":{"root":[[{"time":0.75,"y":-4}],[{"time":0.75,"y":-4}]]}}}}
+  """;
+  var atlas = new A.Atlas(new StringReader(""), "", new Loader());
+  var data = Spine21Json.Read(json, atlas, 1);
+  var skeleton = new A.Skeleton(data);
+  var animation = data.FindAnimation("clip");
+  (float time, float alpha, float y)[] samples = { (.25f, 1, 11), (.5f, 1, -1),
+   (.749f, 1, -1), (.75f, 1, -1), (1, 1, -1), (.25f, .5f, 7), (1, .5f, 0) };
+  foreach (var sample in samples) {
+   skeleton.SetToSetupPose();
+   animation.Mix(skeleton, -1, sample.time, false, null, sample.alpha);
+   if (Math.Abs(skeleton.RootBone.Y - sample.y) > .00001f)
+    throw new InvalidOperationException($"Ordered translation at {sample.time}, alpha {sample.alpha}: expected {sample.y}, got {skeleton.RootBone.Y}");
+  }
+  atlas.Dispose();
+  Console.WriteLine("Ordered translate full-weight and mixed poses passed.");
+ }
  static void Main(string[] args) {
+  if (args.Length == 1 && args[0] == "--ordered-translate") { CheckOrderedTranslate(); return; }
   var inputs=new System.Collections.Generic.List<(string json,string atlas)>();
-  if(args.Length==3 && args[0]=="--manifest") {
+  bool checkBaal = args.Length == 3 && args[0] == "--baal-ordered-translate";
+  if(args.Length==3 && (args[0]=="--manifest" || checkBaal)) {
    string project=Path.GetFullPath(args[2]);
    using var manifest=JsonDocument.Parse(File.ReadAllText(args[1]));
    var entries=manifest.RootElement.GetProperty("entries").EnumerateArray().ToDictionary(e=>e.GetProperty("address").GetString(),e=>e);
@@ -84,12 +142,13 @@ class Program {
    }
   } else throw new ArgumentException("Usage: <converted-json-root> <original-root> OR --manifest <manifest.json> <project-root>");
   if(inputs.Count==0)throw new InvalidOperationException("No converted skeleton files were found.");
+  if(checkBaal && inputs.Count != 3) throw new InvalidOperationException("Expected three Baal & Sezan SCSP samples.");
   int passed=0;
   foreach(var input in inputs) {
    vertices=0;frames=deformed=reordered=events=0;
    using var doc=JsonDocument.Parse(File.ReadAllText(input.json));string version=doc.RootElement.GetProperty("skeleton").GetProperty("spine").GetString();
    try {
-    if(version.StartsWith("2.1"))Run21(input.json,input.atlas);else if(version.StartsWith("3.8"))Run38(input.json,input.atlas);else throw new Exception("Unsupported version "+version);
+    if(version.StartsWith("2.1"))Run21(input.json,input.atlas,checkBaal);else if(version.StartsWith("3.8"))Run38(input.json,input.atlas);else throw new Exception("Unsupported version "+version);
     passed++;
    }catch(Exception e){Console.WriteLine(input.json+" FAILED "+e);Environment.ExitCode=1;}
   }

@@ -71,8 +71,7 @@ namespace AstralOath.Client.Skeletons
             using (var reader = new StringReader(source.Atlas)) atlas = new S21.Atlas(reader, "", new SkeletonTextureLoader(source.Textures));
             try
             {
-                S21.SkeletonData data;
-                using (var reader = new StringReader(source.Json)) data = new S21.SkeletonJson(atlas) { Scale = source.Scale }.ReadSkeletonData(reader);
+                var data = Spine21Json.Read(source.Json, atlas, source.Scale);
                 // The complete parser can observe a later duplicate root header. Never cache
                 // data for a different version than the factory used to select this runtime.
                 if (source.ExportVersion == null || !string.Equals(data.Version, source.ExportVersion, StringComparison.Ordinal))
