@@ -33,6 +33,12 @@
 
 已导入的 STG、CFX、Spine、粒子与角色 timeline 驱动动作、位移和命中特效，FMOD 在 Windows 播放原版技能音效和日语语音。敌方回合隐藏技能组和 Burn。行动条头像按行动值从上向下移动，当前行动者在下端；点击左侧沙漏展开原版行结构的行动值、生命、技能冷却与状态，点击空白关闭。技能冷却使用贴合图标的遮罩与回合数，伤害与治疗使用独立浮字。动画消费有序事件，状态由同源规则决定。试玩场景依赖共享战斗程序集，`BattleScene` 已登记为 HybridCLR 业务程序集。双人 HTTP 验证、规则口径及当前差异见[战斗第三步](../../../../docs/development/battle-execution.md)。
 
+## 头顶状态与护盾
+
+- 状态图标和回合数字挂在血条 Frame 下，沿用角色的骨骼 `top` 投影、镜头缩放和显隐。普通增益、减益由 15 项原图映射支持。左起每行最多五个，向上折行，同类刷新复用格子。
+- 白色护盾段紧接绿色生命，盾值由权威事件驱动。多段攻击共用原技能 HIT 时间，先消耗护盾，再变化生命。白色环沿骨架位置播放，盾消失、角色被遮罩或死亡时隐藏。
+- 使用 `Tools/BattleScene/ImportStatusHud.py` 和 `Tools/BattleScene/ImportBattleShieldAura.py` 重建小范围源资源，追加 `--check` 核对哈希。通过 `Tools/战斗场景/更新血条、状态与死亡资源引用` 更新 UnitPresentation。配置、数据流和原版证据见[头顶状态与护盾复核](../../../../docs/delivery/2026-11-13-battle-status-shield.md)。
+
 ## 角色配置
 
 Luban 快照 `Configs/battle-catalog.json` 含三名英雄、成长模板、觉醒节点、九技能、强化与文案。编辑入口及来源见[战斗角色数据](../../../../docs/development/battle-character-data.md)。Shared Battle 现已支持[面板计算、单位创建与站位](../../../../docs/development/battle-growth.md)。编辑态布局显示作者预设；运行时按队伍与 1–4 号槽映射世界单位和实时快照，四个史莱姆均为60级。

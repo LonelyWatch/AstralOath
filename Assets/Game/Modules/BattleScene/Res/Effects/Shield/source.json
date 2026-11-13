@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "source": "原始资源/effect/stse_protect",
+  "sourceMapping": "Source effect chosen by inspection. Its original runtime association with the standard Barrier status is unconfirmed.",
+  "adaptation": "Keep the additive edge, its source geometry and alpha timing. Remove other slots and replace the edge's RGB tint with white for the project Barrier effect.",
+  "premultipliedAlpha": true,
+  "spineVersion": "2.1.27",
+  "animations": [
+    {
+      "name": "animation",
+      "duration": 2.166599988937378
+    }
+  ],
+  "texture": {
+    "width": 466,
+    "height": 446,
+    "encoding": "SCT1:RGB565+A8",
+    "alpha": "source-preserved"
+  },
+  "converterSha256": "7c22fb298a6eb8403a1fe9f7367d13a38dffa2af96a7b95b80658345a9478c25",
+  "files": [
+    {
+      "source": "原始资源/effect/stse_protect.cfx",
+      "sourceSha256": "28141f9414ce85e2a643e8ee51500d8c002ae16009af2a114d4bb1dd4ed67218",
+      "asset": "stse_protect.cfx.json",
+      "assetSha256": "b117841c99e2b0aac91d06cb3ee119e81e8b19e466be38cadbbdf25781e66670"
+    },
+    {
+      "source": "原始资源/effect/stse_protect.scsp",
+      "sourceSha256": "8eba4e4be52df767394191a7fa161b40346540cdf94a36b7f057608aea4b67f7",
+      "asset": "stse_protect.json",
+      "assetSha256": "0379ce84656153895e868894ee54d173ddc488d5c37c4f2daf1b0058c6223862"
+    },
+    {
+      "source": "原始资源/effect/stse_protect.atlas",
+      "sourceSha256": "ccb8b8d4698e12f6896808ebe21f4fa23dcf1a04b11095c6ee90be24a519da07",
+      "asset": "stse_protect.atlas.txt",
+      "assetSha256": "9f23bb8690e61f9a8eb7e21682e9fd96031e9fe626bc4b289f9c56bac4bd6a27"
+    },
+    {
+      "source": "原始资源/effect/stse_protect.sct",
+      "sourceSha256": "e541e83c2874fce7579ddbc3ad685dcf3a3aaab13332860b5c182773e2534ccd",
+      "asset": "stse_protect.png",
+      "assetSha256": "f14cb98e4a68058109c8df91b117435a56954015894f029bd5273ecdc33b8163"
+    }
+  ]
+}

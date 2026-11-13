@@ -93,7 +93,7 @@ namespace AstralOath.Client.Tests
             Assert.That(string.IsNullOrEmpty(group),Is.True,"Unknown ASTRAL_ANIMATION_CAPTURE_GROUP: "+group);
             if((bool)Read(binder,"loop"))Click("loop");
 
-            yield return SelectCharacter(0);
+            yield return SelectCharacter("c1001");
             foreach(float time in new[]{0f,.25f,.516646f,1f})
             {
                 yield return SelectAnimation("idle",true);
@@ -137,7 +137,7 @@ namespace AstralOath.Client.Tests
                 yield return Capture("ras-portrait38-idle-fresh-tick",time);
             }
             yield return SelectMode("battle","2.1");
-            yield return SelectCharacter(1);
+            yield return SelectCharacter("c1005");
             foreach(float time in new[]{.2f,1f,2f,3.2f})
             {
                 yield return SelectAnimation("skill3",true);
@@ -164,7 +164,7 @@ namespace AstralOath.Client.Tests
         {
             if(!(bool)Read(binder,"loop"))Click("loop");
             if((bool)Read(binder,"experimental"))Click("experimental");
-            yield return SelectCharacter(1);
+            yield return SelectCharacter("c1005");
             yield return SelectAnimation("skill3",true);
             float duration=Player.Duration;
             Assert.That(duration,Is.GreaterThan(4));
@@ -229,10 +229,11 @@ namespace AstralOath.Client.Tests
             Player.Pause(false);entry.Tick((float)Math.Max(0,target-ClockTime));
             Assert.That(ClockTime,Is.EqualTo(target).Within(.000001));
         }
-        private IEnumerator SelectCharacter(int index)
+        private IEnumerator SelectCharacter(string id)
         {
             var old=Player;
-            var button=Rows("characters")[index];button.onClick.Invoke();
+            var button=Rows("characters").Single(row => row.GetComponentInChildren<GameText>().text.StartsWith(id + " · ", StringComparison.Ordinal));
+            button.onClick.Invoke();
             yield return Until(()=>Player!=null&&!ReferenceEquals(Player,old)&&button.interactable,"Character UI did not finish switching.");
             yield return null; // Retired row objects and meshes use deferred Destroy.
             Assert.That(Player.Root.GetComponentsInChildren<MeshFilter>().Any(f=>f.sharedMesh&&f.sharedMesh.vertexCount>0),Is.True);

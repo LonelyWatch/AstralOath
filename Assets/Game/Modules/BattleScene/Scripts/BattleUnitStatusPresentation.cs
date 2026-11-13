@@ -8,7 +8,7 @@ namespace AstralOath.Client.BattleScene
     internal sealed class BattleUnitStatusPresentation : IDisposable
     {
         private readonly RectTransform marker, frame;
-        private readonly Image health, trail;
+        private readonly Image health, trail, shield;
         private readonly Sprite fallbackTrailSprite;
         private readonly BattleHealthSegments segments;
         private readonly Transform actor;
@@ -17,6 +17,9 @@ namespace AstralOath.Client.BattleScene
         private readonly Vector3 originalPosition, originalScale;
         private readonly float originalFill, referenceProjection;
         private float target, frontStart, trailStart, frontTime, trailTime;
+        private float visibleHealth, visibleTrail;
+        private double shieldTarget, shieldStart, visibleShield;
+        private float shieldTime;
         private int maximum;
         private bool initialized, losingHealth, disposed;
 
@@ -55,17 +58,33 @@ namespace AstralOath.Client.BattleScene
             trail.type = Image.Type.Filled; trail.fillMethod = Image.FillMethod.Horizontal;
             trail.fillOrigin = health.fillOrigin; trail.fillAmount = originalFill;
             trail.transform.SetSiblingIndex(health.transform.GetSiblingIndex());
+            var shieldObject = new GameObject("Shield Fill", typeof(RectTransform), typeof(Image));
+            shieldObject.transform.SetParent(health.transform, false);
+            shield = shieldObject.GetComponent<Image>(); shield.raycastTarget = false;
+            SetShieldSprite(null);
+            shield.rectTransform.sizeDelta = Vector2.zero;
+            SetHorizontalRange(shield.rectTransform, 0f, 0f, false);
+            shieldObject.SetActive(false);
+
             var segmentObject = new GameObject("Health Segments", typeof(RectTransform), typeof(BattleHealthSegments));
-            segmentObject.transform.SetParent(marker, false);
-            segments = segmentObject.GetComponent<BattleHealthSegments>(); CopyRect(health.rectTransform, segments.rectTransform);
+            segmentObject.transform.SetParent(health.transform, false);
+            segments = segmentObject.GetComponent<BattleHealthSegments>();
+            segments.rectTransform.sizeDelta = Vector2.zero;
+            SetHorizontalRange(segments.rectTransform, 0f, 1f, false);
             segments.SourceSprite = splitSprite; segments.color = splitSprite ? Color.white : new Color(0f, 0f, 0f, 128f / 255f);
             segments.raycastTarget = false;
-            segments.transform.SetSiblingIndex(health.transform.GetSiblingIndex() + 1);
             segments.UseFixedSections(sectionCount);
         }
 
         public void UseFixedSections(int count) { if (!disposed) segments.UseFixedSections(count); }
         public void UseHealthIntervals(int healthPerSection) { if (!disposed) segments.UseHealthIntervals(healthPerSection); }
+
+        public void SetShieldSprite(Sprite sprite)
+        {
+            if (disposed) return;
+            shield.sprite = sprite;
+            shield.color = sprite ? Color.white : new Color(220f / 255f, 220f / 255f, 220f / 255f, 1f);
+        }
 
         public void UpdateHealth(long value, int max, bool immediate)
         {
@@ -74,20 +93,37 @@ namespace AstralOath.Client.BattleScene
             float next = (float)(Math.Max(0L, Math.Min(value, max)) / (double)max);
             bool maximumChanged = maximum != max;
             if (maximumChanged) { maximum = max; segments.MaximumHealth = max; }
+            if (next <= 0)
+                shieldTarget = shieldStart = visibleShield = 0;
             if (!initialized || immediate || maximumChanged)
             {
                 initialized = true; target = frontStart = trailStart = next;
-                health.fillAmount = trail.fillAmount = next; frontTime = trailTime = 0;
+                visibleHealth = visibleTrail = next; frontTime = trailTime = 0;
                 losingHealth = false;
+                RefreshBars();
                 return;
             }
             if (Mathf.Approximately(next, target)) return; // A snapshot refresh must not restart an existing tween.
             losingHealth = next < target;
-            target = next; frontStart = health.fillAmount; frontTime = trailTime = 0;
-            if (losingHealth)
-                trailStart = trail.fillAmount = Mathf.Max(trail.fillAmount, health.fillAmount);
-            else
-                trailStart = trail.fillAmount = health.fillAmount; // Healing cancels a stale red damage tail.
+            target = next; frontStart = visibleHealth; frontTime = trailTime = 0;
+            trailStart = losingHealth ? Mathf.Max(visibleTrail, visibleHealth) : visibleHealth;
+            visibleTrail = trailStart;
+            RefreshBars();
+        }
+
+        public void UpdateShield(long value, int max, bool immediate)
+        {
+            if (disposed) return;
+            if (max <= 0) throw new ArgumentOutOfRangeException(nameof(max));
+            double next = Math.Max(0L, value);
+            if (!initialized || immediate || maximum != max)
+            {
+                shieldTarget = shieldStart = visibleShield = next; shieldTime = 0;
+                RefreshBars();
+                return;
+            }
+            if (next == shieldTarget) return;
+            shieldTarget = next; shieldStart = visibleShield; shieldTime = 0;
         }
 
         public void Tick(float delta)
@@ -97,14 +133,43 @@ namespace AstralOath.Client.BattleScene
             frontTime += delta; trailTime += delta;
             float duration = losingHealth ? DamageSeconds : HealSeconds;
             float progress = duration <= 0 ? 1 : Mathf.Clamp01(frontTime / duration);
-            health.fillAmount = Mathf.Lerp(frontStart, target, Smooth(progress));
+            visibleHealth = Mathf.Lerp(frontStart, target, Smooth(progress));
             if (losingHealth)
             {
                 float tailProgress = TrailSeconds <= 0 ? (trailTime >= TrailDelaySeconds ? 1 : 0) :
                     Mathf.Clamp01((trailTime - Mathf.Max(0, TrailDelaySeconds)) / TrailSeconds);
-                trail.fillAmount = Mathf.Max(health.fillAmount, Mathf.Lerp(trailStart, target, Smooth(tailProgress)));
+                visibleTrail = Mathf.Max(visibleHealth, Mathf.Lerp(trailStart, target, Smooth(tailProgress)));
             }
-            else trail.fillAmount = health.fillAmount;
+            else visibleTrail = visibleHealth;
+
+            if (visibleShield != shieldTarget)
+            {
+                shieldTime += delta;
+                float shieldDuration = shieldTarget < shieldStart ? DamageSeconds : HealSeconds;
+                float shieldProgress = shieldDuration <= 0 ? 1 : Mathf.Clamp01(shieldTime / shieldDuration);
+                visibleShield = shieldProgress >= 1f ? shieldTarget : shieldStart + (shieldTarget - shieldStart) * Smooth(shieldProgress);
+            }
+            RefreshBars();
+        }
+
+        private void RefreshBars()
+        {
+            if (!initialized) return;
+            // The source layout has separate HP and shield strips. Fit both into the fixed track,
+            // preserving empty HP space until the combined visible amount exceeds maximum HP.
+            float combined = visibleHealth + (float)(visibleShield / maximum);
+            float healthTrack = 1f / Mathf.Max(1f, combined);
+            float healthEnd = visibleHealth * healthTrack;
+            float shieldEnd = combined * healthTrack;
+            health.fillAmount = healthEnd;
+            trail.fillAmount = visibleTrail * healthTrack;
+            bool fromRight = health.fillOrigin == (int)Image.OriginHorizontal.Right;
+            SetHorizontalRange(segments.rectTransform, 0f, healthTrack, fromRight);
+            bool showShield = target > 0 && shieldEnd > healthEnd;
+            if (shield.gameObject.activeSelf != showShield)
+                shield.gameObject.SetActive(showShield);
+            if (showShield)
+                SetHorizontalRange(shield.rectTransform, healthEnd, shieldEnd, fromRight);
         }
 
         public void LateTick(Camera camera)
@@ -171,6 +236,13 @@ namespace AstralOath.Client.BattleScene
         }
         private Camera UiCamera() => canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera;
         private static float Smooth(float t) => t * t * (3f - 2f * t);
+        private static void SetHorizontalRange(RectTransform rect, float start, float end, bool fromRight)
+        {
+            Vector2 min = new Vector2(fromRight ? 1f - end : start, 0f);
+            Vector2 max = new Vector2(fromRight ? 1f - start : end, 1f);
+            if (rect.anchorMin != min) rect.anchorMin = min;
+            if (rect.anchorMax != max) rect.anchorMax = max;
+        }
         private static void CopyRect(RectTransform source, RectTransform target)
         {
             target.anchorMin = source.anchorMin; target.anchorMax = source.anchorMax; target.pivot = source.pivot;
@@ -181,7 +253,7 @@ namespace AstralOath.Client.BattleScene
         {
             if (disposed) return;
             disposed = true;
-            Remove(trail ? trail.gameObject : null); Remove(segments ? segments.gameObject : null);
+            Remove(trail ? trail.gameObject : null); Remove(shield ? shield.gameObject : null); Remove(segments ? segments.gameObject : null);
             if (fallbackTrailSprite)
             {
                 if (Application.isPlaying) UnityEngine.Object.Destroy(fallbackTrailSprite);

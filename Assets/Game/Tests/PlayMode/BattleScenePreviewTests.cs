@@ -609,6 +609,29 @@ namespace AstralOath.Client.Tests
                 Assert.That(camera.transform.position, Is.EqualTo(originalPosition));
                 Assert.That(camera.orthographicSize, Is.EqualTo(originalSize));
                 Assert.That(background.activeSelf, Is.True);
+                if (wanted == "c1062")
+                {
+                    deadline = Time.realtimeSinceStartup + 4f;
+                    var markers = map.transform.Find("Unit Status/Allies");
+                    while (!markers.Cast<Transform>().Any(marker =>
+                        marker.Find("HP/Shield Fill").gameObject.activeInHierarchy) && Time.realtimeSinceStartup < deadline)
+                        yield return null;
+                    var recipients = preview.SimulationSnapshot.Units.Where(unit => unit.IsAlive && unit.Slot.Side == BattleSide.Ally);
+                    var allies = roots.Single(root => root.name == "Units").transform.Find("Allies");
+                    foreach (var unit in recipients)
+                    {
+                        var marker = markers.GetChild(unit.Slot.Position - 1);
+                        var glyphs = marker.Find("Frame/Status Icons").Cast<Transform>()
+                            .Where(icon => icon.gameObject.activeInHierarchy).Select(icon => icon.GetComponent<Image>().sprite.name).ToArray();
+                        CollectionAssert.Contains(glyphs, "stic_debuf_impossible");
+                        CollectionAssert.Contains(glyphs, "stic_protect");
+                        Assert.That(Array.IndexOf(glyphs, "stic_debuf_impossible"), Is.LessThan(Array.IndexOf(glyphs, "stic_protect")));
+                        Assert.That(marker.Find("HP/Shield Fill").gameObject.activeInHierarchy, Is.True);
+                        Assert.That(allies.GetChild(unit.Slot.Position - 1).GetComponentsInChildren<MeshRenderer>()
+                            .Any(renderer => renderer.name == "Battle shield aura"), Is.True);
+                    }
+                    if (!string.IsNullOrWhiteSpace(output)) Capture(camera, output, "battle-c1062-s3-shields.png");
+                }
                 yield return SceneManager.UnloadSceneAsync(scene);
                 scene = default;
             }

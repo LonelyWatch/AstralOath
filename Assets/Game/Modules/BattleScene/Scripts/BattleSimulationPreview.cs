@@ -35,9 +35,11 @@ namespace AstralOath.Client.BattleScene
         private readonly GameText banner;
         private BattleUnitSnapshot displayedActor;
         private readonly Action restore;
+        private BattleFlowEvent pendingAbsorption;
         private float actionElapsed;
         private float impactSeconds;
         private float actionDuration;
+        private float lastDamageImpact;
         private float[] hitTimes = Array.Empty<float>();
         private int selected;
         private int previousSelection;
@@ -61,6 +63,12 @@ namespace AstralOath.Client.BattleScene
             this.match = match ?? throw new ArgumentNullException(nameof(match));
             var units = scene.GetRootGameObjects().Single(root => root.name == "Units").transform;
             var deathTextures = unitPresentation ? unitPresentation.CreateDeathTextures() : new Dictionary<string, Texture2D>();
+            var statusArt = unitPresentation
+                ? unitPresentation.CreateStatusArt()
+                : new BattleStatusArt(null, null, null);
+            var shieldAura = unitPresentation
+                ? BattleShieldAura.Prepare(unitPresentation.ShieldAura, unitPresentation.ShieldAuraEffect)
+                : null;
             try
             {
                 foreach (var state in match.Snapshot.Units)
@@ -68,7 +76,7 @@ namespace AstralOath.Client.BattleScene
                     string team = state.Slot.Side == BattleSide.Ally ? "Allies" : "Enemies";
                     var slot = units.Find(team).GetChild(state.Slot.Position - 1);
                     var marker = hud.transform.Find($"Unit Status/{team}/{slot.name}").gameObject;
-                    views.Add(state.InstanceId, new View(slot, marker, camera, unitPresentation, deathTextures));
+                    views.Add(state.InstanceId, new View(slot, marker, camera, unitPresentation, deathTextures, statusArt, shieldAura));
                 }
             }
             catch
@@ -130,7 +138,7 @@ namespace AstralOath.Client.BattleScene
             voice = new BattleVoice(audioCatalog, audioBanks, impactBank);
             turnHud = new BattleTurnHud(hud, unit => Label(unit.NameKey), sprites, damageFont);
             turnHud.SetMissFeedbackLabel(Label("battle.feedback.miss"));
-            foreach (var view in views.Values) view.AddLabels(text, hp);
+            foreach (var view in views.Values) view.AddLevel(hp);
             Refresh();
         }
 
@@ -384,14 +392,38 @@ namespace AstralOath.Client.BattleScene
                     voice.Play(string.IsNullOrEmpty(item.PresentationId) ? item.SkillId : item.PresentationId);
                     actionElapsed = 0f;
                     impactSeconds = timing.ImpactSeconds;
+                    lastDamageImpact = impactSeconds;
                     hitTimes = skillPresentation.HitTimes.ToArray();
                     float lastHit = hitTimes.Length == 0 ? impactSeconds : hitTimes[hitTimes.Length - 1];
                     actionDuration = Mathf.Max(timing.Duration, lastHit + 0.15f);
                     string name = skills.TryGetValue(item.SkillId, out var skill) ? Label(skill.nameKey) : "史莱姆攻击";
                     banner.text = name;
                     break;
+                case BattleFlowEventKind.BarrierAbsorbed:
+                    pendingAbsorption = item;
+                    break;
+                case BattleFlowEventKind.StatusApplied:
+                    ScheduleFeedback(Mathf.Max(lastDamageImpact, LastFeedbackAt(item.TargetId)),
+                        item.TargetId, () => views[item.TargetId].ApplyStatus(item.Status));
+                    break;
+                case BattleFlowEventKind.StatusRemoved:
+                    // Absorb emits this just before Damage when the last shield point is used.
+                    // Damage will remove the icon and aura at the hit that consumes it.
+                    if (item.StatusKind.HasValue &&
+                        (item.StatusKind != BattleStatusKind.Barrier || !MatchesAbsorption(item)))
+                    {
+                        float at = LastFeedbackAt(item.TargetId);
+                        // Turn-end expiry is emitted with the unit as both source and target.
+                        // Keep its buff/ward through the attacking unit's remaining hit cues.
+                        if (item.SourceId == item.TargetId && hitTimes.Length != 0)
+                            at = Mathf.Max(at, hitTimes[hitTimes.Length - 1]);
+                        ScheduleFeedback(at, item.TargetId, () => views[item.TargetId].RemoveStatus(item.StatusKind.Value));
+                    }
+                    break;
                 case BattleFlowEventKind.Damage:
-                    ScheduleDamage(item);
+                    int absorbed = MatchesAbsorption(item) ? pendingAbsorption.Amount : 0;
+                    pendingAbsorption = null;
+                    ScheduleDamage(item, absorbed);
                     break;
                 case BattleFlowEventKind.Healing:
                     ScheduleFeedback(LastFeedbackAt(item.TargetId), item.TargetId, () => ShowHealing(item));
@@ -422,15 +454,25 @@ namespace AstralOath.Client.BattleScene
             }
         }
 
-        private void ScheduleDamage(BattleFlowEvent item)
+        private bool MatchesAbsorption(BattleFlowEvent item) =>
+            pendingAbsorption != null && pendingAbsorption.SourceId == item.SourceId &&
+            pendingAbsorption.TargetId == item.TargetId;
+
+        private void ScheduleDamage(BattleFlowEvent item, int absorbed)
         {
             var view = views[item.TargetId];
             var unit = Snapshot.GetUnit(item.TargetId);
-            var hits = BattleDamageSequence.Build(item.Amount, hitTimes, impactSeconds);
+            // The authoritative damage event reports HP loss separately. Use the same source
+            // hit clock for both parts and spend the shield before subtracting HP.
+            var hits = BattleDamageSequence.Build(item.Amount + absorbed, hitTimes, impactSeconds);
             for (int index = 0; index < hits.Length; index++)
             {
                 var hit = hits[index];
+                lastDamageImpact = hit.At;
                 bool first = index == 0;
+                int shieldLoss = Math.Min(absorbed, hit.Amount);
+                int healthLoss = hit.Amount - shieldLoss;
+                absorbed -= shieldLoss;
                 ScheduleFeedback(hit.At, item.TargetId, () =>
                 {
                     // A hit absorbed by a barrier still plays its first-impact reaction.
@@ -440,11 +482,12 @@ namespace AstralOath.Client.BattleScene
                         if ((item.RemainingHealth > 0 || hits.Length > 1) && !skillPresentation.OwnsNodeAnimationPose(view.Actor))
                             view.Actor.PlayBattleAnimation("attacked");
                     }
-                    view.AdjustHealth(-hit.Amount, unit.Stats.MaxHealth);
+                    if (shieldLoss > 0) view.AbsorbShield(shieldLoss);
+                    view.AdjustHealth(-healthLoss, unit.Stats.MaxHealth);
                     var bounds = view.Actor.Bounds;
                     var world = bounds.center;
                     world.y = bounds.min.y + 0.27f * bounds.size.y;
-                    turnHud.ShowDamageHit(item.TargetId, hit.Amount, item.HitKind, view.FeedbackAnchor, world, camera);
+                    turnHud.ShowDamageHit(item.TargetId, healthLoss, item.HitKind, view.FeedbackAnchor, world, camera);
                 });
             }
         }
@@ -489,7 +532,7 @@ namespace AstralOath.Client.BattleScene
                 view.Show(state.IsAlive);
                 view.SetHealth(state.CurrentHealth, state.Stats.MaxHealth);
                 view.Readiness.fillAmount = Mathf.Clamp01(state.ReadinessBp / 10000f);
-                view.UpdateLabels(state);
+                view.RefreshStatuses(state);
             }
             int soul = Snapshot.GetSoul(BattleSide.Ally);
             hud.Require<GameText>("soulCount").text = $"{soul} / 20";
@@ -631,6 +674,7 @@ namespace AstralOath.Client.BattleScene
         {
             playback.Clear();
             pendingFeedback.Clear();
+            pendingAbsorption = null;
             skillPresentation.Dispose();
             foreach (var tail in recoveryStages) tail.Stage.Dispose();
             recoveryStages.Clear();
@@ -664,12 +708,15 @@ namespace AstralOath.Client.BattleScene
             private bool warnedAnchor, deathStarted;
             private bool shown = true;
             private long presentedHealth;
-            private GameText statusLabel;
+            private long presentedShield;
+            private int maximumHealth;
+            private readonly BattleStatusIcons statusIcons;
+            private readonly BattleShieldAura shieldAura;
             private GameText levelLabel;
             private Image levelBadge;
 
             public View(Transform slot, GameObject marker, Camera camera, BattleUnitPresentationProfile profile,
-                IReadOnlyDictionary<string, Texture2D> deathTextures)
+                IReadOnlyDictionary<string, Texture2D> deathTextures, BattleStatusArt statusArt, BattleShieldAura.Definition auraDefinition)
             {
                 this.slot = slot;
                 this.marker = marker;
@@ -683,14 +730,17 @@ namespace AstralOath.Client.BattleScene
                 status = new BattleUnitStatusPresentation((RectTransform)marker.transform, Health, Actor.transform,
                     StatusAnchor, camera, profile ? profile.DamageTrail : null, profile ? profile.HealthDivider : null,
                     profile ? profile.HealthSections : 10);
+                statusIcons = new BattleStatusIcons(FeedbackAnchor, statusArt, profile ? profile.StatusIconsPerRow : 5);
+                shieldAura = new BattleShieldAura(auraDefinition);
                 if (profile)
                 {
+                    status.SetShieldSprite(profile.Shield);
                     status.AnchorOffset = profile.StatusOffset;
                     status.DamageSeconds = profile.DamageSeconds; status.HealSeconds = profile.HealSeconds;
                     status.TrailDelaySeconds = profile.TrailDelaySeconds; status.TrailSeconds = profile.TrailSeconds;
                 }
                 try { PrepareDeath(); }
-                catch { status.Dispose(); throw; }
+                catch { shieldAura.Dispose(); statusIcons.Dispose(); status.Dispose(); throw; }
             }
             public BattlePreviewActor Actor { get; }
             public Image Health { get; }
@@ -714,18 +764,20 @@ namespace AstralOath.Client.BattleScene
             {
                 UpdateStatusVisibility();
                 if (marker.activeInHierarchy) status.LateTick(camera);
+                SyncAura(0f);
             }
             private void UpdateStatusVisibility()
             {
                 // Source layouts own body masking. Read the current skeleton, never last-frame
                 // Renderer.isVisible or the presence of auxiliary particles/shadows.
                 var body = Actor.PresentationRenderer;
-                bool visible = shown && !deathStarted && body && body.enabled && body.gameObject.activeInHierarchy;
+                bool visible = shown && !deathStarted && body && body.enabled && !body.forceRenderingOff && body.gameObject.activeInHierarchy;
                 if (marker.activeSelf != visible) marker.SetActive(visible);
             }
             public void TickVisual(float delta)
             {
                 status.Tick(delta);
+                SyncAura(delta);
                 if (death?.IsRunning != true) return;
                 death.Tick(delta);
                 if (death.IsComplete) slot.gameObject.SetActive(false);
@@ -741,6 +793,7 @@ namespace AstralOath.Client.BattleScene
             {
                 if (deathStarted) return;
                 deathStarted = true;
+                SetShield(0);
                 Actor.SetPaused(true); marker.SetActive(false); death.Begin();
             }
             public void Show(bool value)
@@ -763,45 +816,66 @@ namespace AstralOath.Client.BattleScene
             public void SetHealth(long health, int maximum)
             {
                 presentedHealth = health;
+                maximumHealth = maximum;
                 status.UpdateHealth(health, maximum, false);
             }
 
-            public void AddLabels(GameText font, GameText digits)
+            public void AddLevel(GameText digits)
             {
-                statusLabel = CreateText(marker.transform, font, "Statuses", Vector2.zero,
-                    FeedbackAnchor.anchoredPosition + Vector2.up * 24f, new Vector2(180, 24), 16);
                 levelBadge = marker.transform.Find("Level").GetComponent<Image>();
                 levelBadge.enabled = false;
                 levelLabel = CreateText(marker.transform, digits, "Level Value", Vector2.zero,
                     levelBadge.rectTransform.anchoredPosition, new Vector2(34, 29), 19);
             }
 
-            public void UpdateLabels(BattleUnitSnapshot state)
+            public void RefreshStatuses(BattleUnitSnapshot state)
             {
                 levelLabel.text = state.Level.ToString();
-                statusLabel.text = string.Join(" ", state.Statuses.Select(status => $"{StatusName(status.Kind)}{status.RemainingTurns}"));
+                statusIcons.Reconcile(state.IsAlive ? state.Statuses : Array.Empty<BattleStatusSnapshot>());
+                SetShield(state.IsAlive ? state.Barrier : 0);
             }
 
-            private static string StatusName(BattleStatusKind kind) => kind switch
+            public void ApplyStatus(BattleStatusSnapshot effect)
             {
-                BattleStatusKind.AttackUp => "攻↑",
-                BattleStatusKind.AttackDown => "攻↓",
-                BattleStatusKind.DefenseDown => "防↓",
-                BattleStatusKind.SpeedUp => "速↑",
-                BattleStatusKind.SpeedDown => "速↓",
-                BattleStatusKind.Unhealable => "禁疗",
-                BattleStatusKind.Stealth => "隐身",
-                BattleStatusKind.DefenseUp => "防↑",
-                BattleStatusKind.Immunity => "免疫",
-                BattleStatusKind.Barrier => "盾",
-                BattleStatusKind.Stun => "晕",
-                _ => kind.ToString()
-            };
+                if (effect.Kind == BattleStatusKind.Barrier)
+                {
+                    SetShield(effect.Strength);
+                    if (presentedShield == 0)
+                    {
+                        statusIcons.Remove(effect.Kind);
+                        return;
+                    }
+                }
+                statusIcons.Apply(effect);
+            }
+
+            public void RemoveStatus(BattleStatusKind kind)
+            {
+                if (kind == BattleStatusKind.Barrier) SetShield(0);
+                statusIcons.Remove(kind);
+            }
+
+            public void AbsorbShield(int amount)
+            {
+                SetShield(Math.Max(0L, presentedShield - amount));
+                if (presentedShield == 0) statusIcons.Remove(BattleStatusKind.Barrier);
+            }
+
+            private void SetShield(long amount)
+            {
+                presentedShield = amount;
+                status.UpdateShield(amount, maximumHealth, false);
+                SyncAura(0f);
+            }
+
+            private void SyncAura(float delta) =>
+                shieldAura.Sync(Actor.PresentationRenderer, shown && !deathStarted && presentedShield > 0, delta);
 
             public void Restore()
             {
                 death?.Dispose(); death = null; deathStarted = false; status.Dispose();
-                RemoveOwnedObject(statusLabel ? statusLabel.gameObject : null);
+                shieldAura.Dispose();
+                statusIcons.Dispose();
                 RemoveOwnedObject(levelLabel ? levelLabel.gameObject : null);
                 if (levelBadge) levelBadge.enabled = true;
                 if (slot) slot.gameObject.SetActive(true);

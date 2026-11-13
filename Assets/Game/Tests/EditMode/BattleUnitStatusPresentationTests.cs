@@ -136,6 +136,74 @@ namespace AstralOath.Client.Tests
             Call("Tick", 0f); Assert.That(hp.fillAmount, Is.EqualTo(current)); Assert.That(Trail().fillAmount, Is.EqualTo(trail));
             Call("UpdateHealth", 5000L, 5000, false); Assert.That(hp.fillAmount, Is.EqualTo(1)); Assert.That(Trail().fillAmount, Is.EqualTo(1));
         }
+        [TestCase(100, 40, 5f / 7f, 1f, 5f / 7f)]
+        [TestCase(60, 30, .6f, .9f, 1f)]
+        [TestCase(60, 60, .5f, 1f, 5f / 6f)]
+        public void BarrierAddsAnIndependentWhiteSegmentAndFitsInsideTheExistingTrack(
+            int current, int barrier, float expectedHealth, float expectedEnd, float expectedHealthTrack)
+        {
+            Call("SetShieldSprite", sprite);
+            Call("UpdateHealth", (long)current, 100, true);
+            Call("UpdateShield", (long)barrier, 100, true);
+
+            var shield = Shield();
+            Assert.That(shield.sprite, Is.SameAs(sprite));
+            Assert.That(shield.color, Is.EqualTo(Color.white));
+            Assert.That(shield.raycastTarget, Is.False);
+            Assert.That(shield.rectTransform.anchorMin.x, Is.EqualTo(expectedHealth).Within(.0001f));
+            Assert.That(shield.rectTransform.anchorMax.x, Is.EqualTo(expectedEnd).Within(.0001f));
+            Assert.That(shield.rectTransform.rect.width, Is.EqualTo(hp.rectTransform.rect.width * (expectedEnd - expectedHealth)).Within(.001f));
+            Assert.That(shield.rectTransform.rect.height, Is.EqualTo(hp.rectTransform.rect.height).Within(.001f));
+            Assert.That(hp.fillAmount, Is.EqualTo(expectedHealth).Within(.0001f));
+            Assert.That(Trail().fillAmount, Is.EqualTo(expectedHealth).Within(.0001f));
+            Assert.That(hp.transform.Find("Health Segments").GetComponent<RectTransform>().anchorMax.x,
+                Is.EqualTo(expectedHealthTrack).Within(.0001f), "HP marks stop before the overflow portion.");
+        }
+
+        [Test] public void BarrierUpdatesRetargetFromTheVisibleFillAndFreezeWhenPaused()
+        {
+            Call("UpdateHealth", 60L, 100, true);
+            Call("UpdateShield", 30L, 100, true);
+            Call("UpdateShield", 20L, 100, false);
+            var shield = Shield();
+            Call("Tick", .05f);
+            float visibleEnd = shield.rectTransform.anchorMax.x;
+            Assert.That(visibleEnd, Is.InRange(.8001f, .8999f));
+            Call("UpdateShield", 0L, 100, false);
+            Call("Tick", 0f);
+            Assert.That(shield.rectTransform.anchorMax.x, Is.EqualTo(visibleEnd));
+            Call("Tick", 1f);
+            Assert.That(shield.gameObject.activeSelf, Is.False);
+            Assert.That(hp.fillAmount, Is.EqualTo(.6f).Within(.0001f));
+            Assert.That(Trail().fillAmount, Is.EqualTo(.6f).Within(.0001f));
+        }
+
+        [Test] public void ChangingMaximumHealthRescalesTheSameAbsoluteBarrier()
+        {
+            Call("UpdateHealth", 100L, 100, true);
+            Call("UpdateShield", 50L, 100, true);
+            Call("UpdateHealth", 100L, 200, false);
+            var shield = Shield();
+            Assert.That(shield.rectTransform.anchorMin.x, Is.EqualTo(.5f).Within(.0001f));
+            Assert.That(shield.rectTransform.anchorMax.x, Is.EqualTo(.75f).Within(.0001f));
+        }
+
+        [Test] public void BarrierFollowsTheStatusMarkerAndIsCleanedUpWithIt()
+        {
+            Call("UpdateHealth", 100L, 100, true);
+            Call("UpdateShield", 50L, 100, true);
+            var shield = Shield();
+            Assert.That(shield.gameObject.activeInHierarchy, Is.True);
+            marker.gameObject.SetActive(false);
+            Assert.That(shield.gameObject.activeInHierarchy, Is.False);
+            marker.gameObject.SetActive(true);
+            Call("UpdateHealth", 0L, 100, true);
+            Assert.That(shield.gameObject.activeSelf, Is.False);
+            presenter.Dispose(); presenter = null;
+            Assert.That(hp.transform.Find("Shield Fill"), Is.Null);
+            Assert.That(hp.fillAmount, Is.EqualTo(.8f));
+        }
+
         [TestCase(2500, 2)] [TestCase(10000, 9)] [TestCase(1000, 0)]
         public void DividerValuesUseMaximumHealthAndDoNotInventPercentageSegments(int max, int expected)
         {
@@ -210,7 +278,7 @@ namespace AstralOath.Client.Tests
             presenter.Dispose(); presenter.Dispose(); presenter = null;
             Assert.That(marker.localPosition, Is.EqualTo(originalPosition)); Assert.That(marker.localScale, Is.EqualTo(originalScale));
             Assert.That(hp.fillAmount, Is.EqualTo(.8f)); Assert.That(marker.Find("Damage Trail"), Is.Null);
-            Assert.That(marker.Find("Health Segments"), Is.Null); Assert.That(marker.Find("Frame"), Is.SameAs(frame));
+            Assert.That(hp.transform.Find("Health Segments"), Is.Null); Assert.That(marker.Find("Frame"), Is.SameAs(frame));
         }
         private float ScreenWidth()
         {
@@ -218,6 +286,7 @@ namespace AstralOath.Client.Tests
             return Vector2.Distance(Screen(corners[3]), Screen(corners[0]));
         }
         private Image Trail() => marker.Find("Damage Trail").GetComponent<Image>();
+        private Image Shield() => hp.transform.Find("Shield Fill").GetComponent<Image>();
         private void Call(string method, params object[] values) => type.GetMethod(method).Invoke(presenter, values);
         private Vector2 Screen(Vector3 world) => RectTransformUtility.WorldToScreenPoint(camera, world);
         private void AssertAnchor() => Assert.That(Vector2.Distance(Screen(frame.position), Screen(bone.position)), Is.LessThan(.1f));

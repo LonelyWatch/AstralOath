@@ -1,0 +1,41 @@
+
+stse_protect.sct
+size: 466,446
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+glow
+  rotate: true
+  xy: 2, 236
+  size: 48, 243
+  orig: 48, 243
+  offset: 0, 0
+  index: -1
+shield
+  rotate: false
+  xy: 236, 2
+  size: 223, 223
+  orig: 223, 223
+  offset: 0, 0
+  index: -1
+shield_g1
+  rotate: false
+  xy: 2, 2
+  size: 232, 232
+  orig: 232, 232
+  offset: 0, 0
+  index: -1
+shield_g2
+  rotate: false
+  xy: 247, 227
+  size: 217, 217
+  orig: 217, 217
+  offset: 0, 0
+  index: -1
+siheld_edge
+  rotate: false
+  xy: 2, 286
+  size: 155, 155
+  orig: 155, 155
+  offset: 0, 0
+  index: -1

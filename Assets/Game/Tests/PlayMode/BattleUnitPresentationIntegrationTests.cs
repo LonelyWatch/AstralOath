@@ -112,6 +112,113 @@ namespace AstralOath.Client.Tests
             host.RestartBattle(); yield return null;
             Assert.That(actor.gameObject.activeInHierarchy, Is.True);
         }
+        [UnityTest] public IEnumerator StatusIconsFollowTheBarAndBarrierUsesAcceptedHitEvents()
+        {
+            var simulation = typeof(BattleHudPreview).GetField("simulation", Private).GetValue(host);
+            var marker = map.transform.Find("Unit Status/Enemies/01 Front");
+            var view = ((IDictionary)simulation.GetType().GetField("views", Private).GetValue(simulation))["enemy-1"];
+            var actor = (BattlePreviewActor)view.GetType().GetProperty("Actor").GetValue(view);
+            var body = (Renderer)typeof(BattlePreviewActor).GetProperty("PresentationRenderer", Private).GetValue(actor);
+            var frame = (RectTransform)marker.Find("Frame");
+            var camera = map.GetComponentInParent<Canvas>().worldCamera;
+            float health = marker.Find("HP").GetComponent<Image>().fillAmount;
+            void Call(string method, params object[] args) => simulation.GetType().GetMethod(method, Private).Invoke(simulation, args);
+            void Present(BattleFlowEventKind kind, int amount = 0, BattleStatusKind? statusKind = null, int turns = 0,
+                string source = "ally-1", string target = "enemy-1")
+            {
+                var status = turns == 0 ? null : (BattleStatusSnapshot)Activator.CreateInstance(typeof(BattleStatusSnapshot),
+                    Private, null, new object[] { statusKind.Value, turns, amount }, null);
+                var ctor = typeof(BattleFlowEvent).GetConstructors(Private).Single();
+                Call("Present", ctor.Invoke(new object[] { 1UL, 1, kind, source, target, amount, null, null,
+                    BattleActionOrigin.Primary, statusKind, status, null, null, BattleHitKind.Normal, null, false, 2000 }));
+            }
+
+            Present(BattleFlowEventKind.StatusApplied, 5000, BattleStatusKind.AttackUp, 1);
+            Present(BattleFlowEventKind.StatusApplied, 2000, BattleStatusKind.Barrier, 3);
+            Present(BattleFlowEventKind.StatusApplied, 5000, BattleStatusKind.DefenseDown, 3);
+            Call("ShowDueFeedback");
+            var icons = frame.Find("Status Icons");
+            Assert.That(icons, Is.Not.Null, "The scene needs status icon Images under the projected marker.");
+            string[] VisibleIcons() => icons.Cast<Transform>().Where(x => x.gameObject.activeSelf)
+                .Select(x => x.GetComponent<Image>().sprite.name).ToArray();
+            CollectionAssert.AreEqual(new[] { "stic_protect", "stic_att_up", "stic_def_dn" }, VisibleIcons());
+            var digit = icons.GetChild(0).Find("Remaining Turns").GetComponent<Image>();
+            Assert.That(digit.sprite.name, Is.EqualTo("itxt_num3"));
+            Present(BattleFlowEventKind.StatusApplied, 5000, BattleStatusKind.AttackUp, 4);
+            Call("ShowDueFeedback");
+            CollectionAssert.AreEqual(new[] { "stic_protect", "stic_att_up", "stic_def_dn" }, VisibleIcons());
+            var shield = marker.Find("HP/Shield Fill").GetComponent<Image>();
+            view.GetType().GetMethod("TickVisual").Invoke(view, new object[] { .25f });
+            Assert.That(shield.gameObject.activeSelf, Is.True);
+            var aura = body.transform.Find("Battle shield aura");
+            Assert.That(aura, Is.Not.Null);
+            Assert.That(aura.gameObject.activeInHierarchy, Is.True);
+            Capture("status-barrier-full");
+
+            var first = (RectTransform)icons.GetChild(0);
+            float originalWidth = Width(first, camera);
+            Vector2 originalPosition = first.position;
+            actor.transform.position += Vector3.right * .7f;
+            actor.transform.localScale *= 1.25f;
+            view.GetType().GetMethod("LateTick").Invoke(view, new object[] { camera });
+            Assert.That((Vector2)first.position, Is.Not.EqualTo(originalPosition));
+            Assert.That(Width(first, camera) / originalWidth, Is.EqualTo(1.25f).Within(.03f));
+            Assert.That(first.IsChildOf(frame.parent), Is.True);
+            body.enabled = false;
+            view.GetType().GetMethod("LateTick").Invoke(view, new object[] { camera });
+            Assert.That(icons.gameObject.activeInHierarchy, Is.False);
+            Assert.That(aura.gameObject.activeInHierarchy, Is.False);
+            body.enabled = true;
+            view.GetType().GetMethod("LateTick").Invoke(view, new object[] { camera });
+            Assert.That(icons.gameObject.activeInHierarchy, Is.True);
+            Assert.That(aura.gameObject.activeInHierarchy, Is.True);
+
+            Present(BattleFlowEventKind.BarrierAbsorbed, 2000);
+            Present(BattleFlowEventKind.StatusRemoved, statusKind: BattleStatusKind.Barrier);
+            Present(BattleFlowEventKind.Damage);
+            Call("ShowDueFeedback");
+            view.GetType().GetMethod("TickVisual").Invoke(view, new object[] { .5f });
+            Assert.That(shield.gameObject.activeSelf, Is.False);
+            Assert.That(aura.gameObject.activeInHierarchy, Is.False);
+            Assert.That(marker.Find("HP").GetComponent<Image>().fillAmount, Is.EqualTo(health).Within(.001f));
+            CollectionAssert.AreEqual(new[] { "stic_att_up", "stic_def_dn" }, VisibleIcons());
+            Capture("status-barrier-consumed");
+
+            Present(BattleFlowEventKind.StatusApplied, 90, BattleStatusKind.Barrier, 2);
+            Call("ShowDueFeedback");
+            simulation.GetType().GetField("hitTimes", Private).SetValue(simulation, new[] { 1f, 2f, 3f });
+            Present(BattleFlowEventKind.BarrierAbsorbed, 90);
+            Present(BattleFlowEventKind.StatusRemoved, statusKind: BattleStatusKind.Barrier);
+            Present(BattleFlowEventKind.Damage, 60);
+            Present(BattleFlowEventKind.StatusApplied, 5000, BattleStatusKind.DefenseUp, 2, target: "ally-1");
+            Present(BattleFlowEventKind.StatusRemoved, statusKind: BattleStatusKind.AttackUp, source: "enemy-1");
+            var friendlyIcons = map.transform.Find("Unit Status/Allies/01 Front/Frame/Status Icons");
+            var healthValue = view.GetType().GetField("presentedHealth", Private);
+            long previousHealth = (long)healthValue.GetValue(view);
+
+            void ShowAt(float at)
+            {
+                simulation.GetType().GetField("actionElapsed", Private).SetValue(simulation, at);
+                Call("ShowDueFeedback");
+            }
+
+            ShowAt(1f);
+            Assert.That(aura.gameObject.activeSelf, Is.True, "The first hit only spends part of the shield.");
+            Assert.That(healthValue.GetValue(view), Is.EqualTo(previousHealth));
+            Assert.That(friendlyIcons.childCount, Is.Zero);
+            CollectionAssert.Contains(VisibleIcons(), "stic_att_up");
+            ShowAt(2f);
+            Assert.That(aura.gameObject.activeSelf, Is.False);
+            Assert.That(healthValue.GetValue(view), Is.EqualTo(previousHealth - 10));
+            Assert.That(friendlyIcons.childCount, Is.Zero);
+            CollectionAssert.Contains(VisibleIcons(), "stic_att_up");
+            ShowAt(3f);
+            Assert.That(healthValue.GetValue(view), Is.EqualTo(previousHealth - 60));
+            Assert.That(friendlyIcons.GetChild(0).GetComponent<Image>().sprite.name, Is.EqualTo("stic_def_up"));
+            CollectionAssert.DoesNotContain(VisibleIcons(), "stic_att_up");
+            yield return null;
+        }
+
         void Capture(string name)
         {
             string output = Environment.GetEnvironmentVariable("ASTRAL_UNIT_CAPTURE_DIR");

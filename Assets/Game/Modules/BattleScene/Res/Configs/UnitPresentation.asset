@@ -17,6 +17,48 @@ MonoBehaviour:
   HealthSections: 10
   DamageTrail: {fileID: 21300000, guid: 0b8a7661a1c2d75438455cc2b6516be7, type: 3}
   HealthDivider: {fileID: 21300000, guid: 0488774d46e918c40a739fdabcc64eeb, type: 3}
+  Shield: {fileID: 21300000, guid: 5aed20f4f9401084cb5db1afbfe15949, type: 3}
+  StatusManifest: {fileID: 4900000, guid: 9667b1e71c615d12a31380d99e1faab7, type: 3}
+  StatusGlyphs:
+  - {fileID: 21300000, guid: d0b03ad9cbd658acbfced56a5e3271f8, type: 3}
+  - {fileID: 21300000, guid: f8df8980be905a18b77b2ea06cca2c39, type: 3}
+  - {fileID: 21300000, guid: 12e5379151345e4b8655fb42a72b0b66, type: 3}
+  - {fileID: 21300000, guid: 17df21655b395501a6ed4e9e64a22b04, type: 3}
+  - {fileID: 21300000, guid: 05a7a2d9332d5f3abbc6a2085f5d0a37, type: 3}
+  - {fileID: 21300000, guid: b4953471eafc5edb894bdfcaf4ddb085, type: 3}
+  - {fileID: 21300000, guid: c3e88e48982358c08bc8281585593c70, type: 3}
+  - {fileID: 21300000, guid: f573a99e3f5f54d5a97cde6c0b8fe72a, type: 3}
+  - {fileID: 21300000, guid: 828077ed8bdf5bb5a0bb829bb098bb6f, type: 3}
+  - {fileID: 21300000, guid: 63e0b267c3355f54bd596364d49974d4, type: 3}
+  - {fileID: 21300000, guid: dacecaa66a8f5e75a622d18869fb0bed, type: 3}
+  - {fileID: 21300000, guid: 0df29a7a70c7592ba8b41593c9cedacb, type: 3}
+  - {fileID: 21300000, guid: fb434b0b1c455b968415a93581656c93, type: 3}
+  - {fileID: 21300000, guid: c868eb68fecf506dbad49ebb1b2a65c1, type: 3}
+  - {fileID: 21300000, guid: 33f480c9df5c5659afadf3da2236d1f8, type: 3}
+  StatusDigits:
+  - {fileID: 21300000, guid: 6cd7d19e8ddd599280e8b82a19a09ba9, type: 3}
+  - {fileID: 21300000, guid: e5a5e0cefc835535ab31ae475d0b17b2, type: 3}
+  - {fileID: 21300000, guid: c77471e75d8253fcb59342cbd9f09a11, type: 3}
+  - {fileID: 21300000, guid: 8d1464e0a2fc5604875b74d4fade2062, type: 3}
+  - {fileID: 21300000, guid: 431e7992dfec5003bcb9e374b1b117e3, type: 3}
+  - {fileID: 21300000, guid: 51f09aa42e3e594cbe6f9a4aa353fcde, type: 3}
+  - {fileID: 21300000, guid: 826020065830534797bed69a5bd11d78, type: 3}
+  - {fileID: 21300000, guid: 9b75e96114855016982838cd24fee111, type: 3}
+  - {fileID: 21300000, guid: 8295dff8e8075f93b6f92102acc9da71, type: 3}
+  - {fileID: 21300000, guid: 57f5a32a44a151028e125a0d822ce220, type: 3}
+  StatusIconsPerRow: 5
+  ShieldAura:
+    source: effect/stse_protect.scsp
+    document: {fileID: 4900000, guid: f9c4e3554bc257709f44c5f48a4be82e, type: 3}
+    atlas: {fileID: 4900000, guid: 2b2d1400452e597bac3d0d2e1417872e, type: 3}
+    pageNames:
+    - stse_protect.sct
+    pages:
+    - {fileID: 2800000, guid: 079e32263340515792b0b1f256f6f625, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  ShieldAuraEffect: {fileID: 4900000, guid: 40f8357c67fc598287984e38b2ffd213, type: 3}
   DamageSeconds: 0.16
   HealSeconds: 0.18
   TrailSeconds: 0.28

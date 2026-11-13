@@ -1,0 +1,211 @@
+{
+  "schemaVersion": 1,
+  "layoutEvidence": [
+    "wnd/hp_bar.csb",
+    "wnd/hp_bar_r.csb"
+  ],
+  "statuses": [
+    {
+      "kind": "AttackUp",
+      "group": "Buff",
+      "asset": "stic_att_up.png"
+    },
+    {
+      "kind": "DefenseUp",
+      "group": "Buff",
+      "asset": "stic_def_up.png"
+    },
+    {
+      "kind": "Immunity",
+      "group": "Buff",
+      "asset": "stic_debuf_impossible.png"
+    },
+    {
+      "kind": "Barrier",
+      "group": "Buff",
+      "asset": "stic_protect.png"
+    },
+    {
+      "kind": "Stun",
+      "group": "Debuff",
+      "asset": "stic_stun.png"
+    },
+    {
+      "kind": "Counter",
+      "group": "Buff",
+      "asset": "stic_counter.png"
+    },
+    {
+      "kind": "SpeedUp",
+      "group": "Buff",
+      "asset": "stic_speed_up.png"
+    },
+    {
+      "kind": "SpeedDown",
+      "group": "Debuff",
+      "asset": "stic_speed_dn.png"
+    },
+    {
+      "kind": "AttackDown",
+      "group": "Debuff",
+      "asset": "stic_att_dn.png"
+    },
+    {
+      "kind": "DefenseDown",
+      "group": "Debuff",
+      "asset": "stic_def_dn.png"
+    },
+    {
+      "kind": "Unhealable",
+      "group": "Debuff",
+      "asset": "stic_heal_impossible.png"
+    },
+    {
+      "kind": "Silence",
+      "group": "Debuff",
+      "asset": "stic_silence.png"
+    },
+    {
+      "kind": "EvasionUp",
+      "group": "Buff",
+      "asset": "stic_dodge_up.png"
+    },
+    {
+      "kind": "CriticalResistanceUp",
+      "group": "Buff",
+      "asset": "stic_crires_up.png"
+    },
+    {
+      "kind": "Stealth",
+      "group": "Buff",
+      "asset": "stic_hide.png"
+    }
+  ],
+  "files": [
+    {
+      "source": "原始资源/buff/stic_att_up.png",
+      "asset": "stic_att_up.png",
+      "sha256": "183385724a64d4cb38357dc4ff3f2bd380fd76eb26acbf4697d825bce2e6d94b"
+    },
+    {
+      "source": "原始资源/buff/stic_def_up.png",
+      "asset": "stic_def_up.png",
+      "sha256": "7d050e80adfc516d09c5b25d4eafe95f1cea652cb5f13172779438c33dd73006"
+    },
+    {
+      "source": "原始资源/buff/stic_debuf_impossible.png",
+      "asset": "stic_debuf_impossible.png",
+      "sha256": "2624015ebc5d6888940f0d3d9cfdc660db71b84a7befae12fc245a94cc8b21b4"
+    },
+    {
+      "source": "原始资源/buff/stic_protect.png",
+      "asset": "stic_protect.png",
+      "sha256": "6fb47c7cadfd94d7452eb847c22392f2feb8b91a7977d3d0b1f35caa744be95d"
+    },
+    {
+      "source": "原始资源/buff/stic_stun.png",
+      "asset": "stic_stun.png",
+      "sha256": "56363fd02f0fecb53019d9e8080be404b6a949577c5d1060d044d0ee40058e95"
+    },
+    {
+      "source": "原始资源/buff/stic_counter.png",
+      "asset": "stic_counter.png",
+      "sha256": "88e9df6582949f94cf2b39785728d0864d053cfc811eaeea8ac417a7c7dd0742"
+    },
+    {
+      "source": "原始资源/buff/stic_speed_up.png",
+      "asset": "stic_speed_up.png",
+      "sha256": "f8b56b73b8446a37046085a077f2317e96cb44ea59e67124eb6d7754c97056cd"
+    },
+    {
+      "source": "原始资源/buff/stic_speed_dn.png",
+      "asset": "stic_speed_dn.png",
+      "sha256": "c6cec069042441bcd7d59219d363907887a1081f68d520c07d8d30ae4cb2c562"
+    },
+    {
+      "source": "原始资源/buff/stic_att_dn.png",
+      "asset": "stic_att_dn.png",
+      "sha256": "7e0006b1d24851d2f36c76b07490c19793a7edb0df634de14ca8f1a78155943f"
+    },
+    {
+      "source": "原始资源/buff/stic_def_dn.png",
+      "asset": "stic_def_dn.png",
+      "sha256": "ead0cc0f80c12f783ad6a5145b4e25349df163f1013f57f2e85321eafd007032"
+    },
+    {
+      "source": "原始资源/buff/stic_heal_impossible.png",
+      "asset": "stic_heal_impossible.png",
+      "sha256": "4846914a9e934e188c1b1e04512877a6e9d5555af3ec8cc466adf3125f6bbff0"
+    },
+    {
+      "source": "原始资源/buff/stic_silence.png",
+      "asset": "stic_silence.png",
+      "sha256": "e5e7ef6e7b60e846fcce80929b68d7b945c4e8a34b8305f630f0b4bdd9665af2"
+    },
+    {
+      "source": "原始资源/buff/stic_dodge_up.png",
+      "asset": "stic_dodge_up.png",
+      "sha256": "a181e290a80aace43885d8f53954614f906a993d18561b55d7c215a0e434bf14"
+    },
+    {
+      "source": "原始资源/buff/stic_crires_up.png",
+      "asset": "stic_crires_up.png",
+      "sha256": "2afc2278e2cfa3cc0988bbe73b9376da89015c6007f8e4b8acada4217d74974f"
+    },
+    {
+      "source": "原始资源/buff/stic_hide.png",
+      "asset": "stic_hide.png",
+      "sha256": "4bc17a677db4eb51d95771b0f77e6f386b627bb4bca0128e0381ec0502132c09"
+    },
+    {
+      "source": "原始资源/img/itxt_num0.png",
+      "asset": "itxt_num0.png",
+      "sha256": "b3237b0e195ea5218be4819256b4b25b52de8b29daaf07284aa09edbd08e65af"
+    },
+    {
+      "source": "原始资源/img/itxt_num1.png",
+      "asset": "itxt_num1.png",
+      "sha256": "7d46703ede70c30cc91b96684a8688b84d7bb8a2b605b740ba649e14668ef908"
+    },
+    {
+      "source": "原始资源/img/itxt_num2.png",
+      "asset": "itxt_num2.png",
+      "sha256": "9a31eff6c969d3d49dec14a558ea952a338749399c957ec59b2e45d59323c6ea"
+    },
+    {
+      "source": "原始资源/img/itxt_num3.png",
+      "asset": "itxt_num3.png",
+      "sha256": "44ef98ed4ad421e0b89d8059263bc1322e2414ac5c1e91ba27e17e72ea2d7b6b"
+    },
+    {
+      "source": "原始资源/img/itxt_num4.png",
+      "asset": "itxt_num4.png",
+      "sha256": "df219893335c598796b52e00de629566582d227b94a942e492537e04e6fd8865"
+    },
+    {
+      "source": "原始资源/img/itxt_num5.png",
+      "asset": "itxt_num5.png",
+      "sha256": "a3ae315ddf6424cc2ecfc079ce3375fb236200619e7ccf03c8f184d94e9ea734"
+    },
+    {
+      "source": "原始资源/img/itxt_num6.png",
+      "asset": "itxt_num6.png",
+      "sha256": "f3ea64c8159ae3f16e464ee17a59dbb76cbba0e31add8ee89d8251e5149572a5"
+    },
+    {
+      "source": "原始资源/img/itxt_num7.png",
+      "asset": "itxt_num7.png",
+      "sha256": "b20a10809ca2718a5488c2e8b4414ae4d1deeb0d88077c5622e99285ad46b152"
+    },
+    {
+      "source": "原始资源/img/itxt_num8.png",
+      "asset": "itxt_num8.png",
+      "sha256": "1376a2efbee4175cfefc0f8388ed82c87f55e1d7297d979bc2c97f6dc57ea80b"
+    },
+    {
+      "source": "原始资源/img/itxt_num9.png",
+      "asset": "itxt_num9.png",
+      "sha256": "9110c044f40690cc473f9d005ec9a26022febf59e54e7f36c742d6f6dcd22782"
+    }
+  ]
+}

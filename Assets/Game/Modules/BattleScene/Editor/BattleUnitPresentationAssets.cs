@@ -17,12 +17,40 @@ namespace AstralOath.Client.BattleScene.Editor
             if (!profile) { profile = ScriptableObject.CreateInstance<BattleUnitPresentationProfile>(); AssetDatabase.CreateAsset(profile, directory + "/UnitPresentation.asset"); }
             profile.DamageTrail = ImportSprite("game_hud_bar_dhp.png");
             profile.HealthDivider = ImportSprite("game_hud_bar_split.png");
+            UpdateStatusAndShield(profile);
             profile.DeathParticles = AssetDatabase.LoadAssetAtPath<TextAsset>(Root + "Res/Effects/Death/Particles/death_pati_02.particle.json");
             profile.DeathTextures = Directory.GetFiles(Root + "Res/Effects/Death/Particles", "*.png").OrderBy(x => x, StringComparer.Ordinal)
                 .Select(x => AssetDatabase.LoadAssetAtPath<Texture2D>(x.Replace('\\','/'))).ToArray();
             if (!profile.DeathParticles || profile.DeathTextures.Any(x => !x)) throw new InvalidOperationException("Run Tools/BattleScene/ImportDeathEffects.py first.");
             EditorUtility.SetDirty(profile); AssetDatabase.SaveAssetIfDirty(profile);
             return profile;
+        }
+        private static void UpdateStatusAndShield(BattleUnitPresentationProfile profile)
+        {
+            const string status = Root + "Res/Textures/Hud/Statuses/";
+            const string shield = Root + "Res/Effects/Shield/stse_protect";
+            profile.Shield = AssetDatabase.LoadAssetAtPath<Sprite>(Root + "Res/Textures/Hud/game_hud_bar_sh.png");
+            profile.StatusManifest = AssetDatabase.LoadAssetAtPath<TextAsset>(status + "source.json");
+            profile.StatusGlyphs = Directory.GetFiles(status, "stic_*.png").OrderBy(path => path, StringComparer.Ordinal)
+                .Select(path => AssetDatabase.LoadAssetAtPath<Sprite>(path.Replace('\\', '/'))).ToArray();
+            profile.StatusDigits = Enumerable.Range(0, 10)
+                .Select(digit => AssetDatabase.LoadAssetAtPath<Sprite>(status + "itxt_num" + digit + ".png")).ToArray();
+            profile.ShieldAuraEffect = AssetDatabase.LoadAssetAtPath<TextAsset>(shield + ".cfx.json");
+            profile.ShieldAura = new BattleSkillPresentationAsset
+            {
+                source = "effect/stse_protect.scsp",
+                document = AssetDatabase.LoadAssetAtPath<TextAsset>(shield + ".json"),
+                atlas = AssetDatabase.LoadAssetAtPath<TextAsset>(shield + ".atlas.txt"),
+                pageNames = new[] { "stse_protect.sct" },
+                pages = new[] { AssetDatabase.LoadAssetAtPath<Texture2D>(shield + ".png") },
+                premultipliedAlpha = true,
+                scale = .01f
+            };
+            if (!profile.Shield || !profile.StatusManifest || profile.StatusGlyphs.Any(sprite => !sprite) ||
+                profile.StatusDigits.Any(sprite => !sprite) || !profile.ShieldAuraEffect || !profile.ShieldAura.document ||
+                !profile.ShieldAura.atlas || !profile.ShieldAura.pages[0])
+                throw new InvalidOperationException("Run ImportStatusHud.py and ImportBattleShieldAura.py before updating the unit profile.");
+            profile.ValidateStatusArt();
         }
         static Sprite ImportSprite(string name)
         {
@@ -35,7 +63,7 @@ namespace AstralOath.Client.BattleScene.Editor
             importer.SaveAndReimport();
             return AssetDatabase.LoadAssetAtPath<Sprite>(path);
         }
-        [MenuItem("Tools/战斗场景/更新血条与死亡资源引用")]
+        [MenuItem("Tools/战斗场景/更新血条、状态与死亡资源引用")]
         public static void UpgradeScene()
         {
             if (EditorApplication.isPlayingOrWillChangePlaymode) throw new InvalidOperationException("Exit Play Mode first.");
