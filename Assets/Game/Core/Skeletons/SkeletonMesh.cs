@@ -71,7 +71,7 @@ namespace AstralOath.Client.Skeletons
             mesh.Clear(); mesh.SetVertices(vertices); mesh.SetUVs(0, uvs); mesh.SetColors(colors); mesh.SetUVs(1, darkColors);
             mesh.subMeshCount = materials.Count;
             for (int i = 0; i < materials.Count; i++) mesh.SetTriangles(triangles[i], i, false);
-            mesh.RecalculateBounds(); renderer.sharedMaterials = materials.ToArray();
+            mesh.RecalculateBounds(); renderer.SetSharedMaterials(materials);
         }
         public void Dispose()
         {

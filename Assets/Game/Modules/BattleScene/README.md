@@ -71,3 +71,9 @@ Luban 快照 `Configs/battle-catalog.json` 含三名英雄、成长模板、觉�
 源数据预备在进入交互前执行。Cut-in有独立时钟，舞台和命中等待其结束；夹攻在主末击开始，旧演员回位和新动作并行，只有新舞台拥有镜头。角色、镜头、粒子和反馈使用源时间；暂停不修改全局时间或权威状态。音频暂停限定本场FMOD。操作和时序规则见[源演出规范](../../../../docs/development/battle-source-presentation.md)与[录像复核](../../../../docs/delivery/2026-11-13-angelica-timing-reference.md)。最终测试和性能数值以本轮交付记录为准。
 
 本次通用时序还包括：CFX primitive显式ani与寿命一致、有限DARK的duration后追加fadeOut、CUTIN按源幕布颜色/透明度覆盖普通HUD但保留暂停层。完整失败回归、实帧和性能条件见[时序与试玩验收](../../../../docs/delivery/2026-11-13-battle-timing.md)。
+
+## 性能诊断与字体维护
+
+2026-11-13 起，重复站位共享场景内不可变骨骼源，播放实例保持独立，最后持有者禁用后释放源缓存。版本头不再反序列化整个骨骼 DOM；完整原生解析结果须核对版本，避免冲突头选择错误运行库。
+
+`Tools/战斗场景/重建数值字体` 只重建 HP 与伤害数字字体，保持原图和数字指标，补齐 TMP 保留字符。`Tools/战斗场景/构建 Windows 性能诊断包（Mono）` 生成独立性能包；不修改正式母包、热更或发布配置。用法与实际验证见[性能报告](../../../../docs/delivery/2026-11-13-battle-performance.md)，长期规则见 [ADR 013](../../../../docs/architecture/adr/013-battle-performance.md)。

@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using AstralOath.Client.Common;
 using AstralOath.Client.Core;
 using UnityEngine;
+using Unity.Profiling;
+using Stopwatch = System.Diagnostics.Stopwatch;
 
 namespace AstralOath.Client.Bootstrap
 {
@@ -18,6 +20,7 @@ namespace AstralOath.Client.Bootstrap
         private readonly List<FMOD.Studio.Bank> banks = new List<FMOD.Studio.Bank>();
         private readonly HashSet<Playback> active = new HashSet<Playback>();
         private readonly HashSet<Playback> callbackOwners = new HashSet<Playback>();
+        private readonly List<Playback> finished = new List<Playback>();
         private readonly BindingScope assetsLifetime;
         private bool disposed;
         private bool initializationStarted;
@@ -26,6 +29,72 @@ namespace AstralOath.Client.Bootstrap
         public bool IsAvailable { get; private set; }
         public string Diagnostic => callbackError ?? diagnostic;
         private static readonly FMOD.Studio.EVENT_CALLBACK ProgrammerCallback = OnProgrammerSound;
+        private static readonly ProfilerMarker InitializeMarker = new ProfilerMarker("Astral.Audio.InitializeNative");
+        private static readonly ProfilerMarker BankMarker = new ProfilerMarker("Astral.Audio.LoadBankMemory");
+        private static readonly ProfilerMarker EventMarker = new ProfilerMarker("Astral.Audio.PlayEvent");
+        private static readonly ProfilerMarker UpdateMarker = new ProfilerMarker("Astral.Audio.StudioUpdate");
+        private static readonly ProfilerMarker LookupMarker = new ProfilerMarker("Astral.Audio.GetSoundInfo");
+        private static readonly ProfilerMarker SoundMarker = new ProfilerMarker("Astral.Audio.CreateSound");
+        private static readonly ProfilerMarker CallbackMarker = new ProfilerMarker("Astral.Audio.ProgrammerCallback");
+        private static readonly ProfilerMarker TickMarker = new ProfilerMarker("Astral.Audio.Tick");
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        // Opt-in, bounded by an explicit measurement window. Never log from the audio hot path.
+        public bool CapturePerformanceDiagnostics { get; set; }
+        public double PeakPlayEventMilliseconds { get; private set; }
+        public double PeakUpdateMilliseconds { get; private set; }
+        public double PeakCreateSoundMilliseconds { get; private set; }
+        public double PeakProgrammerCallbackMilliseconds { get; private set; }
+        public double PeakTickMilliseconds { get; private set; }
+        public int ProgrammerCreateSoundCount { get; private set; }
+        public int DiagnosticActivePlaybackCount => active.Count;
+        private readonly HashSet<string> diagnosticSoundKeys = new HashSet<string>(StringComparer.Ordinal);
+        public IEnumerable<string> DiagnosticSoundKeys => diagnosticSoundKeys;
+        public void ResetPerformanceDiagnostics()
+        {
+            PeakPlayEventMilliseconds = PeakUpdateMilliseconds = PeakCreateSoundMilliseconds = 0;
+            PeakProgrammerCallbackMilliseconds = PeakTickMilliseconds = 0;
+            ProgrammerCreateSoundCount = 0;
+            diagnosticSoundKeys.Clear();
+        }
+#endif
+        private static double ElapsedMilliseconds(long started) =>
+            (Stopwatch.GetTimestamp() - started) * (1000d / Stopwatch.Frequency);
+
+        private void UpdateStudio(string operation)
+        {
+            using var marker = UpdateMarker.Auto();
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            long started = CapturePerformanceDiagnostics ? Stopwatch.GetTimestamp() : 0;
+#endif
+            try { Check(studio.update(), operation); }
+            finally
+            {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+                if (started != 0) PeakUpdateMilliseconds = Math.Max(PeakUpdateMilliseconds, ElapsedMilliseconds(started));
+#endif
+            }
+        }
+
+        private FMOD.RESULT GetSoundInfo(string key, out FMOD.Studio.SOUND_INFO info)
+        {
+            using var marker = LookupMarker.Auto();
+            return studio.getSoundInfo(key, out info);
+        }
+
+        private FMOD.RESULT CreateSound(ref FMOD.Studio.SOUND_INFO info, out FMOD.Sound sound)
+        {
+            using var marker = SoundMarker.Auto();
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            long started = CapturePerformanceDiagnostics ? Stopwatch.GetTimestamp() : 0;
+#endif
+            try { return core.createSound(info.name_or_data, info.mode | FMOD.MODE.CREATESAMPLE | FMOD.MODE.LOOP_OFF, ref info.exinfo, out sound); }
+            finally
+            {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+                if (started != 0) PeakCreateSoundMilliseconds = Math.Max(PeakCreateSoundMilliseconds, ElapsedMilliseconds(started));
+#endif
+            }
+        }
 
         public FmodCharacterAudioService(CancellationToken token) => assetsLifetime = new BindingScope(token);
 
@@ -36,19 +105,26 @@ namespace AstralOath.Client.Bootstrap
             initializationStarted = true;
             try
             {
-                Check(FMOD.Studio.System.create(out studio), "create");
-                Check(studio.getCoreSystem(out core), "getCoreSystem");
-                Check(core.getVersion(out uint version), "getVersion");
-                if (version != FMOD.VERSION.number)
-                    throw new InvalidOperationException($"FMOD 版本不符：{version:x8}，需要 {FMOD.VERSION.number:x8}");
-                Check(studio.initialize(128, FMOD.Studio.INITFLAGS.SYNCHRONOUS_UPDATE,
-                    FMOD.INITFLAGS.NORMAL, IntPtr.Zero), "initialize");
+                // A Profiler scope must not cross await: native initialization is one synchronous segment.
+                using (InitializeMarker.Auto())
+                {
+                    Check(FMOD.Studio.System.create(out studio), "create");
+                    Check(studio.getCoreSystem(out core), "getCoreSystem");
+                    Check(core.getVersion(out uint version), "getVersion");
+                    if (version != FMOD.VERSION.number)
+                        throw new InvalidOperationException($"FMOD 版本不符：{version:x8}，需要 {FMOD.VERSION.number:x8}");
+                    Check(studio.initialize(128, FMOD.Studio.INITFLAGS.SYNCHRONOUS_UPDATE,
+                        FMOD.INITFLAGS.NORMAL, IntPtr.Zero), "initialize");
+                }
                 foreach (string address in addresses.Distinct(StringComparer.Ordinal))
                 {
                     assetsLifetime.Token.ThrowIfCancellationRequested();
                     var bytes = await assets.LoadAsync<TextAsset>(address, assetsLifetime);
-                    Check(studio.loadBankMemory(bytes.bytes, FMOD.Studio.LOAD_BANK_FLAGS.NORMAL, out var bank), address);
-                    banks.Add(bank);
+                    using (BankMarker.Auto())
+                    {
+                        Check(studio.loadBankMemory(bytes.bytes, FMOD.Studio.LOAD_BANK_FLAGS.NORMAL, out var bank), address);
+                        banks.Add(bank);
+                    }
                 }
                 Check(studio.flushCommands(), "flushCommands");
                 IsAvailable = true;
@@ -64,6 +140,21 @@ namespace AstralOath.Client.Bootstrap
 
         public ICharacterAudioPlayback PlayEvent(string eventPath)
         {
+            using var marker = EventMarker.Auto();
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            long started = CapturePerformanceDiagnostics ? Stopwatch.GetTimestamp() : 0;
+#endif
+            try { return PlayEventCore(eventPath); }
+            finally
+            {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+                if (started != 0) PeakPlayEventMilliseconds = Math.Max(PeakPlayEventMilliseconds, ElapsedMilliseconds(started));
+#endif
+            }
+        }
+
+        private ICharacterAudioPlayback PlayEventCore(string eventPath)
+        {
             RequireReady();
             if (string.IsNullOrWhiteSpace(eventPath)) throw new ArgumentException("音频事件路径为空", nameof(eventPath));
             eventPath = eventPath.Replace('\\', '/');
@@ -76,7 +167,7 @@ namespace AstralOath.Client.Bootstrap
                 playback.AttachProgrammerCallback();
                 active.Add(playback);
                 Check(instance.start(), "start " + eventPath);
-                Check(studio.update(), "update");
+                UpdateStudio("update");
                 return playback;
             }
             catch { playback.Dispose(); throw; }
@@ -86,9 +177,8 @@ namespace AstralOath.Client.Bootstrap
         {
             RequireReady();
             if (string.IsNullOrWhiteSpace(audioTableKey)) throw new ArgumentException("语音 key 为空", nameof(audioTableKey));
-            Check(studio.getSoundInfo(audioTableKey, out var info), "getSoundInfo " + audioTableKey);
-            Check(core.createSound(info.name_or_data, info.mode | FMOD.MODE.CREATESAMPLE | FMOD.MODE.LOOP_OFF,
-                ref info.exinfo, out var sound), "createSound " + audioTableKey);
+            Check(GetSoundInfo(audioTableKey, out var info), "getSoundInfo " + audioTableKey);
+            Check(CreateSound(ref info, out var sound), "createSound " + audioTableKey);
             try
             {
                 var selected = sound;
@@ -106,15 +196,34 @@ namespace AstralOath.Client.Bootstrap
         {
             if (!IsAvailable || disposed) return;
             foreach (var playback in active) playback.Pause(paused);
-            Check(studio.update(), "pause update");
+            UpdateStudio("pause update");
         }
 
         public void Tick()
         {
+            using var marker = TickMarker.Auto();
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            long started = CapturePerformanceDiagnostics ? Stopwatch.GetTimestamp() : 0;
+#endif
+            try { TickCore(); }
+            finally
+            {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+                if (started != 0) PeakTickMilliseconds = Math.Max(PeakTickMilliseconds, ElapsedMilliseconds(started));
+#endif
+            }
+        }
+
+        private void TickCore()
+        {
             if (!IsAvailable || disposed) return;
-            Check(studio.update(), "update");
-            foreach (var playback in active.ToArray())
-                if (playback.HasFinished()) playback.Dispose();
+            UpdateStudio("update");
+            // Collect first: Dispose removes the instance from active. Reuse storage across frames.
+            finished.Clear();
+            foreach (var playback in active)
+                if (playback.HasFinished()) finished.Add(playback);
+            foreach (var playback in finished) playback.Dispose();
+            finished.Clear();
             if (callbackError != null)
             {
                 diagnostic = callbackError;
@@ -146,6 +255,10 @@ namespace AstralOath.Client.Bootstrap
         [AOT.MonoPInvokeCallback(typeof(FMOD.Studio.EVENT_CALLBACK))]
         private static FMOD.RESULT OnProgrammerSound(FMOD.Studio.EVENT_CALLBACK_TYPE type, IntPtr eventPtr, IntPtr parameters)
         {
+            using var marker = CallbackMarker.Auto();
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            long started = Stopwatch.GetTimestamp();
+#endif
             Playback playback = null;
             try
             {
@@ -159,17 +272,23 @@ namespace AstralOath.Client.Bootstrap
                 {
                     var properties = Marshal.PtrToStructure<FMOD.Studio.PROGRAMMER_SOUND_PROPERTIES>(parameters);
                     string requestedKey = properties.name;
-                    var originalLookup = playback.owner.studio.getSoundInfo(requestedKey, out var info);
+                    var originalLookup = playback.owner.GetSoundInfo(requestedKey, out var info);
                     string key = JapaneseAudioTableKey(requestedKey);
                     // Original events randomly contain locale-tagged programmer instruments.
                     // The selected Japanese bank exposes canonical bare keys. Always resolve
                     // the Japanese key even if a tagged key exists in another loaded table.
                     if (!string.Equals(key, requestedKey, StringComparison.Ordinal))
-                        Check(playback.owner.studio.getSoundInfo(key, out info), "Japanese programmer key " + key);
+                        Check(playback.owner.GetSoundInfo(key, out info), "Japanese programmer key " + key);
                     else
                         Check(originalLookup, "programmer key " + key);
-                    Check(playback.owner.core.createSound(info.name_or_data,
-                        info.mode | FMOD.MODE.CREATESAMPLE | FMOD.MODE.LOOP_OFF, ref info.exinfo, out var sound), "programmer createSound");
+                    Check(playback.owner.CreateSound(ref info, out var sound), "programmer createSound");
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+                    if (playback.owner.CapturePerformanceDiagnostics)
+                    {
+                        playback.owner.ProgrammerCreateSoundCount++;
+                        playback.owner.diagnosticSoundKeys.Add(key);
+                    }
+#endif
                     properties.sound = sound.handle;
                     properties.subsoundIndex = info.subsoundindex;
                     Marshal.StructureToPtr(properties, parameters, false);
@@ -193,6 +312,14 @@ namespace AstralOath.Client.Bootstrap
             {
                 if (playback != null) playback.owner.callbackError = "FMOD 回调失败：" + ex.Message;
                 return FMOD.RESULT.ERR_INTERNAL;
+            }
+            finally
+            {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+                if (playback?.owner.CapturePerformanceDiagnostics == true)
+                    playback.owner.PeakProgrammerCallbackMilliseconds = Math.Max(
+                        playback.owner.PeakProgrammerCallbackMilliseconds, ElapsedMilliseconds(started));
+#endif
             }
         }
 
@@ -226,7 +353,7 @@ namespace AstralOath.Client.Bootstrap
             // After system release no native callback can retain these handles.
             foreach (var playback in callbackOwners.ToArray()) playback.FreeHandleAfterSystemRelease();
             callbackOwners.Clear();
-            active.Clear(); banks.Clear(); assetsLifetime.Dispose();
+            active.Clear(); finished.Clear(); banks.Clear(); assetsLifetime.Dispose();
         }
 
         private sealed class Playback : ICharacterAudioPlayback

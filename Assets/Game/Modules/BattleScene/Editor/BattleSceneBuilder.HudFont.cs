@@ -27,6 +27,17 @@ namespace AstralOath.Client.BattleScene.Editor
             }
         }
 
+        [MenuItem("Tools/战斗场景/重建数值字体")]
+        public static void GenerateNumericFonts()
+        {
+            Directory.CreateDirectory(HealthFontDirectory);
+            var health = BuildHealthDigits();
+            var damage = BuildDamageDigits();
+            // Do not save unrelated dirty editor assets (including the general UI font).
+            AssetDatabase.SaveAssetIfDirty(health);
+            AssetDatabase.SaveAssetIfDirty(damage);
+        }
+
         private static TMP_FontAsset BuildHealthDigits() =>
             BuildDigits("BattleHpDigits", "epic7num", "TMP_Bitmap.shader", "0123456789/", preserveColor: false);
 
@@ -95,6 +106,8 @@ namespace AstralOath.Client.BattleScene.Editor
                 asset.characterTable.Add(new TMP_Character(unicode, asset, glyph));
             }
 
+            AddUnderlineGlyph(asset, atlas, lineHeight);
+
             var serialized = new SerializedObject(asset);
             serialized.FindProperty("m_Version").stringValue = "1.1.0";
             serialized.FindProperty("m_AtlasWidth").intValue = atlas.width;
@@ -106,6 +119,61 @@ namespace AstralOath.Client.BattleScene.Editor
                 throw new InvalidDataException("The battle numeric atlas is missing a required glyph: " + assetName);
             EditorUtility.SetDirty(asset);
             return asset;
+        }
+
+        private static void AddUnderlineGlyph(TMP_FontAsset asset, Texture2D atlas, int lineHeight)
+        {
+            const uint underscore = 0x5F;
+            if (asset.characterTable.Any(character => character.unicode == underscore)) return;
+            // TMP 3.0.7 requires U+005F in the primary font on every font assignment;
+            // it deliberately does not search fallback fonts for this special character.
+            // Reuse a real horizontal stroke without changing original atlas pixels or glyphs.
+            var stroke = asset.characterTable.FirstOrDefault(character => character.unicode == '-') ??
+                asset.characterTable.FirstOrDefault(character => character.unicode == '+');
+            if (stroke == null)
+                throw new InvalidDataException("No horizontal stroke for numeric-font underline: " + asset.name);
+            var readable = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+            GlyphRect underlineRect;
+            try
+            {
+                if (!readable.LoadImage(File.ReadAllBytes(AssetDatabase.GetAssetPath(atlas))))
+                    throw new InvalidDataException("Could not read numeric font atlas: " + asset.name);
+                var pixels = readable.GetPixels32();
+                var bounds = stroke.glyph.glyphRect;
+                underlineRect = new GlyphRect();
+                for (int y = bounds.y; y < bounds.y + bounds.height; y++)
+                {
+                    int start = -1;
+                    for (int x = bounds.x; x <= bounds.x + bounds.width; x++)
+                    {
+                        bool ink = false;
+                        if (x < bounds.x + bounds.width)
+                        {
+                            var pixel = pixels[y * readable.width + x];
+                            ink = pixel.a >= 250 && Mathf.Max(pixel.r, Mathf.Max(pixel.g, pixel.b)) >= 160;
+                        }
+                        if (ink && start < 0) start = x;
+                        if (!ink && start >= 0)
+                        {
+                            if (x - start > underlineRect.width)
+                                underlineRect = new GlyphRect(start, y, x - start, 1);
+                            start = -1;
+                        }
+                    }
+                }
+            }
+            finally { UnityEngine.Object.DestroyImmediate(readable); }
+            if (underlineRect.width < 3)
+                throw new InvalidDataException("Numeric font atlas has no visible underline stroke: " + asset.name);
+            float thickness = Mathf.Max(1f, Mathf.Round(lineHeight / 20f));
+            var metrics = new GlyphMetrics(underlineRect.width, thickness, 0, -thickness, underlineRect.width);
+            var glyph = new Glyph(underscore, metrics, underlineRect, 1, 0);
+            asset.glyphTable.Add(glyph);
+            asset.characterTable.Add(new TMP_Character(underscore, asset, glyph));
+            var face = asset.faceInfo;
+            face.underlineOffset = -thickness;
+            face.underlineThickness = thickness;
+            asset.faceInfo = face;
         }
 
         private static int Metric(string line, string key)

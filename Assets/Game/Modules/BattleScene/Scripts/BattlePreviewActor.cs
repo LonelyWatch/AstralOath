@@ -21,6 +21,78 @@ namespace AstralOath.Client.BattleScene
         private bool paused;
         private int presentationPauseCount;
         private int presentationControlCount;
+        private SharedSource sourceLease;
+
+        // Only live actors retain entries. Scene identity prevents independent battles from
+        // sharing a lifetime; each player still owns its pose, tracks, mesh and materials.
+        private static readonly Dictionary<SourceKey, SharedSource> SharedSources =
+            new Dictionary<SourceKey, SharedSource>();
+
+        private readonly struct SourceKey : IEquatable<SourceKey>
+        {
+            private readonly int scene, skeleton, atlas, page;
+            private readonly string pageName;
+            internal SourceKey(BattlePreviewActor actor)
+            {
+                scene = actor.gameObject.scene.handle;
+                skeleton = actor.skeleton.GetInstanceID();
+                atlas = actor.atlas.GetInstanceID();
+                page = actor.page.GetInstanceID();
+                pageName = actor.pageName;
+            }
+            public bool Equals(SourceKey other) => scene == other.scene && skeleton == other.skeleton &&
+                atlas == other.atlas && page == other.page && StringComparer.Ordinal.Equals(pageName, other.pageName);
+            public override bool Equals(object value) => value is SourceKey other && Equals(other);
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    int hash = scene;
+                    hash = hash * 397 ^ skeleton; hash = hash * 397 ^ atlas;
+                    hash = hash * 397 ^ page;
+                    return hash * 397 ^ StringComparer.Ordinal.GetHashCode(pageName);
+                }
+            }
+        }
+
+        private sealed class SharedSource
+        {
+            internal readonly SourceKey Key;
+            internal readonly SkeletonPlayerSource Source;
+            internal Dictionary<string, Dictionary<string, float>> Events;
+            internal int Owners;
+            internal SharedSource(SourceKey key, SkeletonPlayerSource source) { Key = key; Source = source; }
+        }
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetSharedSources() => SharedSources.Clear();
+
+        private SharedSource AcquireSource()
+        {
+            var key = new SourceKey(this);
+            if (!SharedSources.TryGetValue(key, out var entry))
+            {
+                var textures = new Dictionary<string, Texture2D>(StringComparer.Ordinal) { { pageName, page } };
+                // PMA and scale are fixed by this actor contract; if made configurable they must join SourceKey.
+                var source = new SkeletonPlayerSource(skeleton.text, atlas.text, textures, premultipliedAlpha: true);
+                entry = new SharedSource(key, source);
+                SharedSources.Add(key, entry);
+            }
+            entry.Owners++;
+            return entry;
+        }
+
+        private void ReleaseSource()
+        {
+            var entry = sourceLease;
+            sourceLease = null;
+            if (entry == null) return;
+            entry.Owners--;
+            // Old players may still own an entry after SubsystemRegistration. Their release
+            // must not evict a different entry created with the same asset IDs in the new session.
+            if (entry.Owners == 0 && SharedSources.TryGetValue(entry.Key, out var current) && ReferenceEquals(current, entry))
+                SharedSources.Remove(entry.Key);
+        }
 
         internal void BeginPresentationControl() => presentationControlCount++;
         internal void EndPresentationControl() => presentationControlCount = Math.Max(0, presentationControlCount - 1);
@@ -32,7 +104,14 @@ namespace AstralOath.Client.BattleScene
 
         public void SetPaused(bool value) => paused = value;
         internal void SetPresentationPaused(bool value) => presentationPauseCount = Math.Max(0, presentationPauseCount + (value ? 1 : -1));
-        internal void PreparePresentation() => eventTimes ??= BattleSkeletonMetadata.Read(skeleton.text, false).Events;
+        internal void PreparePresentation()
+        {
+            if (eventTimes != null) return;
+            // The event dictionaries are read-only after construction; no player clock or pose is stored here.
+            eventTimes = sourceLease != null
+                ? sourceLease.Events ??= BattleSkeletonMetadata.Read(sourceLease.Source.Json, false).Events
+                : BattleSkeletonMetadata.Read(skeleton.text, false).Events;
+        }
         private Dictionary<string, Dictionary<string, float>> eventTimes;
 
         public Bounds Bounds => player != null
@@ -97,18 +176,15 @@ namespace AstralOath.Client.BattleScene
 
         private void OnEnable()
         {
-            eventTimes = null;
-            paused = false;
-            presentationPauseCount = 0;
-            presentationControlCount = 0;
+            OnDisable(); // Also makes a repeated activation safe when editor reload options change.
             if (!skeleton || !atlas || !page || string.IsNullOrWhiteSpace(pageName))
                 throw new InvalidOperationException($"Battle preview actor {name} has incomplete Spine data.");
 
-            var textures = new Dictionary<string, Texture2D>(StringComparer.Ordinal) { { pageName, page } };
-            var source = new SkeletonPlayerSource(skeleton.text, atlas.text, textures, premultipliedAlpha: true);
-            var instance = new SkeletonPlayerFactory().Create(source, transform);
+            ISkeletonPlayer instance = null;
             try
             {
+                sourceLease = AcquireSource();
+                instance = new SkeletonPlayerFactory().Create(sourceLease.Source, transform);
                 instance.SetSkin(skin);
                 string idle = null;
                 foreach (var animation in instance.Animations)
@@ -132,12 +208,13 @@ namespace AstralOath.Client.BattleScene
                 idleAnimation = idle;
                 playingBattleAnimation = false;
                 instance.Play(idle, true);
-                player = instance;
                 PreparePresentation();
+                player = instance;
             }
             catch
             {
-                instance.Dispose();
+                try { instance?.Dispose(); }
+                finally { ReleaseSource(); eventTimes = null; }
                 throw;
             }
         }
@@ -152,12 +229,16 @@ namespace AstralOath.Client.BattleScene
 
         private void OnDisable()
         {
-            player?.Dispose();
-            player = null;
-            eventTimes = null;
-            paused = false;
-            presentationPauseCount = 0;
-            presentationControlCount = 0;
+            try { player?.Dispose(); }
+            finally
+            {
+                player = null;
+                ReleaseSource();
+                eventTimes = null;
+                paused = false;
+                presentationPauseCount = 0;
+                presentationControlCount = 0;
+            }
         }
     }
 }

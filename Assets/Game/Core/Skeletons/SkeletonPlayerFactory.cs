@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using Newtonsoft.Json;
 namespace AstralOath.Client.Skeletons
 {
     public sealed class SkeletonPlayerFactory : ISkeletonPlayerFactory
@@ -30,17 +31,47 @@ namespace AstralOath.Client.Skeletons
         private static string ReadVersion(SkeletonPlayerSource source)
         {
             if (source.ExportVersion != null) return source.ExportVersion;
-            string version;
-            using (var reader = new StringReader(source.Json))
+            const string invalidHeader = "Skeleton JSON must declare skeleton.spine.";
+            try
             {
-                var root = AstralOath.ThirdParty.Spine38.Json.Deserialize(reader) as Dictionary<string, object>;
-                if (root == null || !root.TryGetValue("skeleton", out var header) ||
-                    !(header is Dictionary<string, object> skeleton) ||
-                    !skeleton.TryGetValue("spine", out var value) || !(value is string text))
-                    throw new ArgumentException("Skeleton JSON must declare skeleton.spine.", nameof(source));
-                version = text;
+                using var input = new StringReader(source.Json);
+                using var reader = new JsonTextReader(input) { DateParseHandling = DateParseHandling.None };
+                if (reader.Read() && reader.TokenType == JsonToken.StartObject)
+                {
+                    while (reader.Read())
+                    {
+                        if (reader.TokenType == JsonToken.EndObject && reader.Depth == 0) break;
+                        if (reader.TokenType != JsonToken.PropertyName || reader.Depth != 1) continue;
+                        bool header = (string)reader.Value == "skeleton";
+                        if (!reader.Read()) break;
+                        if (!header) { reader.Skip(); continue; }
+                        if (reader.TokenType != JsonToken.StartObject) break;
+                        string version = null;
+                        while (reader.Read())
+                        {
+                            if (reader.TokenType == JsonToken.EndObject && reader.Depth == 1)
+                            {
+                                // Only the dispatch header is read here. The selected official core
+                                // still parses the complete document and validates its skeleton data.
+                                if (version != null) return source.ExportVersion = version;
+                                break;
+                            }
+                            if (reader.TokenType != JsonToken.PropertyName || reader.Depth != 2) continue;
+                            bool versionField = (string)reader.Value == "spine";
+                            if (!reader.Read()) break;
+                            // ReadAsString would coerce a numeric value; preserve strict JSON types.
+                            if (versionField) version = reader.TokenType == JsonToken.String ? (string)reader.Value : null;
+                            reader.Skip();
+                        }
+                        break;
+                    }
+                }
             }
-            return source.ExportVersion = version;
+            catch (JsonReaderException error)
+            {
+                throw new ArgumentException(invalidHeader, nameof(source), error);
+            }
+            throw new ArgumentException(invalidHeader, nameof(source));
         }
     }
     internal abstract class SkeletonRuntime : IDisposable

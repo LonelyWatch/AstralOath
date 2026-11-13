@@ -7,6 +7,7 @@ using AstralOath.Shared.Battle;
 using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
+using Unity.Profiling;
 
 namespace AstralOath.Client.BattleScene
 {
@@ -59,6 +60,9 @@ namespace AstralOath.Client.BattleScene
         private BattleHudBinder binder;
         private BattleSimulationPreview simulation;
 
+        private static readonly ProfilerMarker StartMarker = new ProfilerMarker("Astral.Battle.Start");
+        private static readonly ProfilerMarker FrameMarker = new ProfilerMarker("Astral.Battle.Frame");
+
         public bool AutoStartBattle { get => autoStartBattle; set => autoStartBattle = value; }
         public bool IsPaused => simulation?.IsPaused ?? false;
         public void PauseBattle() => binder?.PauseBattle();
@@ -73,6 +77,7 @@ namespace AstralOath.Client.BattleScene
 
         public void StartBattle()
         {
+            using var sample = StartMarker.Auto();
             if (!Application.isPlaying || !hud || !hud.isActiveAndEnabled || !battleCatalog)
                 throw new InvalidOperationException("Open the battle scene in Play mode before starting.");
             if (simulation != null) ClearBinding();
@@ -94,6 +99,7 @@ namespace AstralOath.Client.BattleScene
 
         private void LateUpdate()
         {
+            using var sample = FrameMarker.Auto();
             // EventSystem.Update must use the camera and screen-space HUD pose from the same
             // rendered frame. Advance the cinematic camera only after this frame's input.
             simulation?.Tick(Time.unscaledDeltaTime);

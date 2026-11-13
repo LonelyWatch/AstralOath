@@ -13,10 +13,11 @@ namespace AstralOath.Client.Tests
         [SetUp] public void SetUp() { parent = new GameObject("render-test"); texture = new Texture2D(16,16); }
         [TearDown] public void TearDown()
         { player?.Dispose(); Object.DestroyImmediate(parent); Object.DestroyImmediate(texture); }
-        private Mesh Create(string slots, string attachments, bool pma = false)
+        private Mesh Create(string slots, string attachments, bool pma = false, string animations = null)
         {
             string json = "{\"skeleton\":{\"hash\":\"synthetic-test\",\"spine\":\"3.8.99\"},\"bones\":[{\"name\":\"root\"}],\"slots\":[" + slots +
-                "],\"skins\":[{\"name\":\"default\",\"attachments\":{" + attachments + "}}]}";
+                "],\"skins\":[{\"name\":\"default\",\"attachments\":{" + attachments + "}}]" +
+                (animations == null ? "" : ",\"animations\":" + animations) + "}";
             player = new SkeletonPlayerFactory().Create(new SkeletonPlayerSource(json, SkeletonPlayerTests.Atlas,
                 new Dictionary<string,Texture2D>{{"page.png",texture}}, pma, 1), parent.transform);
             return player.Root.GetComponent<MeshFilter>().sharedMesh;
@@ -51,6 +52,40 @@ namespace AstralOath.Client.Tests
             var dark = new List<Vector4>(); mesh.GetUVs(1, dark);
             Assert.That(dark[4].x, Is.EqualTo(1)); Assert.That(dark[4].y, Is.Zero);
         }
+        [Test] public void ShrinkingDrawSegmentsClearsTrailingMaterialsAndCanRestoreSourceOrder()
+        {
+            var mesh = Create(
+                "{\"name\":\"a\",\"bone\":\"root\",\"attachment\":\"quad\"}," +
+                "{\"name\":\"b\",\"bone\":\"root\",\"attachment\":\"quad\",\"blend\":\"additive\"}," +
+                "{\"name\":\"c\",\"bone\":\"root\",\"attachment\":\"quad\"}",
+                "\"a\":{\"quad\":{\"width\":2,\"height\":2}},\"b\":{\"quad\":{\"width\":2,\"height\":2}},\"c\":{\"quad\":{\"width\":2,\"height\":2}}",
+                animations: @"{""one"":{""slots"":{""b"":{""attachment"":[{""name"":null}]},""c"":{""attachment"":[{""name"":null}]}}},
+                    ""empty"":{""slots"":{""a"":{""attachment"":[{""name"":null}]},""b"":{""attachment"":[{""name"":null}]},""c"":{""attachment"":[{""name"":null}]}}}}");
+            var renderer = player.Root.GetComponent<MeshRenderer>();
+            var original = renderer.sharedMaterials;
+            Assert.That(mesh.subMeshCount, Is.EqualTo(3));
+            Assert.That(original.Length, Is.EqualTo(3));
+            Assert.That(original[0], Is.SameAs(original[2]));
+
+            player.Play("one", false);
+            Assert.That(mesh.subMeshCount, Is.EqualTo(1));
+            Assert.That(mesh.vertexCount, Is.EqualTo(4));
+            Assert.That(renderer.sharedMaterials, Is.EqualTo(new[] { original[0] }));
+            Assert.That(mesh.GetTriangles(0)[0], Is.Zero);
+
+            player.Play("empty", false);
+            Assert.That(mesh.subMeshCount, Is.Zero);
+            Assert.That(mesh.vertexCount, Is.Zero);
+            Assert.That(renderer.sharedMaterials, Is.Empty, "An empty frame must not retain the previous material slots.");
+
+            player.Stop();
+            Assert.That(mesh.subMeshCount, Is.EqualTo(3));
+            Assert.That(renderer.sharedMaterials, Is.EqualTo(original));
+            Assert.That(mesh.GetTriangles(0)[0], Is.EqualTo(0));
+            Assert.That(mesh.GetTriangles(1)[0], Is.EqualTo(4));
+            Assert.That(mesh.GetTriangles(2)[0], Is.EqualTo(8));
+        }
+
         [TestCase(180)][TestCase(270)]
         public void UnsupportedRegionRotationFailsExplicitly(int degrees)
         {

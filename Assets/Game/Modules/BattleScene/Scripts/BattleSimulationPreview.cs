@@ -6,6 +6,7 @@ using AstralOath.Client.Common;
 using AstralOath.Shared.Battle;
 using TMPro;
 using UnityEngine;
+using Unity.Profiling;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -14,6 +15,7 @@ namespace AstralOath.Client.BattleScene
 {
     internal sealed class BattleSimulationPreview : IDisposable
     {
+        private static readonly ProfilerMarker SubmitMarker = new ProfilerMarker("Astral.Battle.Submit");
         private readonly BattleMatch match;
         private readonly BattleHudBinder binder;
         private readonly BindingMap hud;
@@ -301,6 +303,7 @@ namespace AstralOath.Client.BattleScene
 
         private bool Submit(string skill, string target, bool burn)
         {
+            using var sample = SubmitMarker.Auto();
             var snapshot = Snapshot;
             ulong sequence = snapshot.LastCommandSequence + 1;
             var result = match.Submit(new BattleSkillCommand(snapshot.BattleId, snapshot.RulesVersion, sequence,

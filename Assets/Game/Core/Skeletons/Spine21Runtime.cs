@@ -53,6 +53,11 @@ namespace AstralOath.Client.Skeletons
             {
                 S21.SkeletonData data;
                 using (var reader = new StringReader(source.Json)) data = new S21.SkeletonJson(atlas) { Scale = source.Scale }.ReadSkeletonData(reader);
+                // The complete parser can observe a later duplicate root header. Never cache
+                // data for a different version than the factory used to select this runtime.
+                if (source.ExportVersion == null || !string.Equals(data.Version, source.ExportVersion, StringComparison.Ordinal))
+                    throw new InvalidDataException("Parsed Spine version does not match dispatch header: " +
+                        source.ExportVersion + " -> " + data.Version);
                 CompleteSkinLookups(data);
                 source.ParsedData = data;
                 return data;

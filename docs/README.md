@@ -21,6 +21,7 @@
 - 热更/强更：[构建操作](development/hot-update.md)、[更新能力核对](delivery/2026-11-12-foundation-reaudit.md)、[HybridCLR 决策](architecture/adr/007-hybridclr.md)。
 - 服务端/数据库：[开发运维](development/server.md)、[服务端架构](architecture/server.md)。
 - 角色资源：[角色实验室](development/character-lab.md)、[通用导入规则](development/character-asset-import.md)、[CharacterPresentation](../Assets/Game/Modules/CharacterPresentation/README.md)、[CharacterLab](../Assets/Game/Modules/CharacterLab/README.md)。
+- 战斗性能：[测量与操作](delivery/2026-11-13-battle-performance.md)、[缓存和诊断边界](architecture/adr/013-battle-performance.md)。
 - 本机磁盘与缓存：[D盘资料与启动规则](development/local-storage.md)。
 - 战斗演出通用规则：[源数据、镜头与飘字](development/battle-source-presentation.md)、[时钟与缓存决策](architecture/adr/012-battle-presentation-clock.md)、[安洁莉卡录像复核](delivery/2026-11-13-angelica-timing-reference.md)、[时序与试玩验收](delivery/2026-11-13-battle-timing.md)。
 - 战斗：[场景模块](../Assets/Game/Modules/BattleScene/README.md)、[原作研究和截图](development/epic-seven-battle-reference.md)、[角色配表](development/battle-character-data.md)、[等级面板与战斗单位](development/battle-growth.md)、[战斗第三步与双人验证](development/battle-execution.md)、[场景验收](delivery/2026-11-12-battle-scene.md)。

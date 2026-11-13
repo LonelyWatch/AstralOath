@@ -2,6 +2,10 @@
 
 核对日期：2026-11-13。更新链路核对基线：`3fd85ca`，战斗场景现状另见下文。这是事实快照；修改能力、边界、验收状态或后续重点时立即更新。逐次变化见[变更日志](development/change-log.md)。
 
+## 最新性能核对
+
+2026-11-13 已补战斗骨骼源复用、严格版本探测、数字字体兼容修复及独立 Windows 性能诊断入口。完整 EditMode 339 通过，PlayMode 39通过并补跑可选截图1项通过；Editor 进入 Play 的测量从约8.53秒降至5.26秒，Windows两轮九技能含最终真实夹攻，P99约18.24ms，首次操作最大约35.91ms。详细边界、完整场景回归与最终复测以[性能报告](delivery/2026-11-13-battle-performance.md)为准。不能由纯音频或 Begin 函数耗时推断战斗整体流畅；本机另有 USB 设备断连触发 Editor 枚举阻塞的已记录证据。
+
 ## 已确定选型
 
 Unity 2022.3.62f3 / URP / UGUI / TMP；Common/AOT 通用设施；普通 C# UIBaseView + C# Binder + BindingMap；HybridCLR 冷启动业务代码更新；YooAsset；Luban 本地源表；免费 DOTween；.NET 10 模块化单体；MySQL 8.4。具体固定版本以锁文件为准，不自动升级。中文界面和日语语音独立。Windows 与 Android ARM64 为客户端目标；云主机 Windows Server 2022、2核4GB、100人以内为容量目标而非压测结论。
