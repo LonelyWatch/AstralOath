@@ -30,3 +30,11 @@ Remove-Item Env:ASTRAL_BATTLE_HERO_ID
 ```
 
 逐角色测试仍校验完整演出目录。设置角色 ID 后，只播放该角色的演出并输出逐技能结果。
+
+### 逐角色联合验收
+
+```powershell
+& ./.tools/powershell/pwsh.exe -NoProfile -File Tools/BattleScene/VerifyRosterHero.ps1 -HeroId c1012 -AuthorityFixture BattleCorvusTests
+```
+
+替换为对应角色 ID 和服务端测试类。脚本执行权威用例、Unity 入场和三技能播放并核对每槽的通过记录。TRX、XML 与日志保存到 `.artifacts/roster-data/<角色ID>/`，可据此复核源诊断和失败原因。实机表现对照仍需单独记录。
