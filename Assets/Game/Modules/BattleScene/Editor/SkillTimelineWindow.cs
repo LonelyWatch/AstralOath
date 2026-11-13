@@ -15,7 +15,7 @@ namespace AstralOath.Client.BattleScene.Editor
         private const string LabCatalog = "Assets/Game/Modules/CharacterLab/Configs/catalog.json";
         private const string BattleCatalog = "Assets/Game/Modules/BattleScene/Configs/battle-catalog.json";
         private const float TrackLabel = 103f;
-        private const float RowHeight = 24f;
+        private const float LaneHeight = 20f;
         private const float RulerHeight = 26f;
         private static readonly string[] Tracks =
             { "动作 / 位移", "镜头 / 震动", "特效 / 命中", "全屏 / 场景", "条件 / 其他" };
@@ -45,7 +45,7 @@ namespace AstralOath.Client.BattleScene.Editor
         private bool playing, loop, snap = true, flipped, audio, rebuild, compareOriginal;
         private int fps = 30, selectedGuid = -1;
         private float speed = 1f, zoom = 1f, scrollSeconds;
-        private Vector2 rosterScroll, detailScroll;
+        private Vector2 rosterScroll, detailScroll, timelineScroll;
         private double lastUpdate;
         private float? dragStart, dragGhost;
         private Rect ruler;
@@ -124,6 +124,7 @@ namespace AstralOath.Client.BattleScene.Editor
             error = null;
             zoom = 1f;
             scrollSeconds = 0f;
+            timelineScroll = Vector2.zero;
             source = JObject.Parse(AssetDatabase.LoadAssetAtPath<TextAsset>(skill.Asset).text);
             var catalog = ReadOverrides();
             patch = catalog[skill.Id] is JObject saved ? (JObject)saved.DeepClone() : SkillTimelineOverrides.NewPatch(source);
@@ -457,74 +458,126 @@ namespace AstralOath.Client.BattleScene.Editor
                 GUILayout.Label("缩放");
                 zoom = GUILayout.HorizontalSlider(zoom, 1f, 12f, GUILayout.Width(65));
             }
-            trackArea = GUILayoutUtility.GetRect(220f, RulerHeight + RowHeight * Tracks.Length, GUILayout.ExpandWidth(true));
-            ruler = new Rect(trackArea.x + TrackLabel, trackArea.y, Mathf.Max(1f, trackArea.width - TrackLabel), RulerHeight);
             float visible = Mathf.Max(.25f, preview.Duration / zoom);
             scrollSeconds = Mathf.Clamp(scrollSeconds, 0f, Mathf.Max(0f, preview.Duration - visible));
-            DrawTrackGrid(visible);
-            DrawCues(visible);
+            // IMGUI reports the final width on Repaint. Lay out on the previous known width so the row heights
+            // stay consistent across Layout, Repaint and input events.
+            var rows = PlaceCues(visible, Mathf.Max(120f, ruler.width));
+            float height = RulerHeight + rows.Sum(row => row.Height);
+            timelineScroll = EditorGUILayout.BeginScrollView(timelineScroll, false, height > 245f,
+                GUILayout.Height(Mathf.Min(height, 245f)));
+            trackArea = GUILayoutUtility.GetRect(220f, height, GUILayout.ExpandWidth(true));
+            if (Event.current.type != EventType.Layout)
+                ruler = new Rect(trackArea.x + TrackLabel, trackArea.y, Mathf.Max(1f, trackArea.width - TrackLabel), RulerHeight);
+            DrawTrackGrid(rows, visible);
+            DrawCues(rows, visible);
             TimelineInput(visible);
             if (dragGhost.HasValue)
             {
                 float ghost = Mathf.Clamp(X(dragGhost.Value, visible), ruler.xMin, ruler.xMax);
                 EditorGUI.DrawRect(new Rect(ghost, ruler.y, 2f, trackArea.height), Color.white);
             }
+            EditorGUILayout.EndScrollView();
             if (zoom > 1f)
                 scrollSeconds = GUILayout.HorizontalScrollbar(scrollSeconds, visible, 0f, Mathf.Max(visible, preview.Duration));
         }
 
-        private void DrawTrackGrid(float visible)
+        private sealed class TrackRow
         {
-            EditorGUI.DrawRect(trackArea, new Color(.13f,.15f,.18f));
-            for (int row = 0; row < Tracks.Length; row++)
+            internal readonly List<float> Ends = new();
+            internal readonly List<(JObject Node, float At, float Start, float End, int Lane)> Clips = new();
+            internal float Height => Mathf.Max(1, Ends.Count) * LaneHeight + 4f;
+        }
+
+        private TrackRow[] PlaceCues(float visible, float rulerWidth)
+        {
+            var rows = Tracks.Select(_ => new TrackRow()).ToArray();
+            float minimumDuration = 8f / rulerWidth * visible;
+            var placements = preview.Cues.Select(cue =>
             {
-                var rect = new Rect(trackArea.x, ruler.yMax + row * RowHeight, trackArea.width, RowHeight);
-                if ((row & 1) == 0) EditorGUI.DrawRect(rect, new Color(.17f,.19f,.22f));
-                GUI.Label(new Rect(rect.x + 5, rect.y, TrackLabel - 6, RowHeight), Tracks[row], EditorStyles.miniLabel);
+                string kind = (string)cue.Node["etty"];
+                float start = preview.StageToWallTime(cue.At);
+                float end = kind == "CUTIN"
+                    ? start + preview.Cutins.FirstOrDefault(item => Mathf.Approximately(item.At, cue.At)).Duration
+                    : preview.StageToWallTime(cue.At + cue.Duration);
+                float rightEdge = scrollSeconds + visible;
+                float left = start <= rightEdge ? Mathf.Min(start, rightEdge - minimumDuration) : start;
+                return (cue.Node, cue.At, Track: Track(kind), Start: left, End: Mathf.Max(start + minimumDuration, end));
+            });
+            foreach (var clip in placements.OrderBy(clip => clip.Start))
+            {
+                if (clip.End <= scrollSeconds || clip.Start > scrollSeconds + visible) continue;
+                var row = rows[clip.Track];
+                int lane = AssignLane(row.Ends, clip.Start, clip.End);
+                row.Clips.Add((clip.Node, clip.At, clip.Start, clip.End, lane));
             }
-            float spacing = visible >= 12f ? 2f : visible >= 5f ? 1f : visible >= 2f ? .5f : visible >= 1f ? .25f : .1f;
-            for (float tick = Mathf.Ceil(scrollSeconds / spacing) * spacing; tick <= scrollSeconds + visible; tick += spacing)
+            return rows;
+        }
+
+        private static int AssignLane(List<float> laneEnds, float left, float right)
+        {
+            for (int lane = 0; lane < laneEnds.Count; lane++)
             {
-                float x = X(tick, visible);
-                EditorGUI.DrawRect(new Rect(x, ruler.y, 1f, trackArea.height), new Color(.32f,.36f,.43f,.46f));
-                GUI.Label(new Rect(x + 2, ruler.y, 43, 19), tick.ToString("0.##", CultureInfo.InvariantCulture), EditorStyles.miniLabel);
+                if (laneEnds[lane] > left) continue;
+                laneEnds[lane] = right;
+                return lane;
+            }
+            laneEnds.Add(right);
+            return laneEnds.Count - 1;
+        }
+
+        private void DrawTrackGrid(TrackRow[] rows, float visible)
+        {
+            EditorGUI.DrawRect(trackArea, new Color(.13f, .15f, .18f));
+            float y = ruler.yMax;
+            for (int index = 0; index < rows.Length; index++)
+            {
+                var rect = new Rect(trackArea.x, y, trackArea.width, rows[index].Height);
+                if ((index & 1) == 0) EditorGUI.DrawRect(rect, new Color(.17f, .19f, .22f));
+                GUI.Label(new Rect(rect.x + 5, rect.y + 2, TrackLabel - 6, LaneHeight), Tracks[index], EditorStyles.miniLabel);
+                y += rect.height;
+            }
+            int frameStep = Mathf.Max(1, Mathf.CeilToInt(48f / ruler.width * visible * fps));
+            int first = Mathf.CeilToInt(scrollSeconds * fps / frameStep) * frameStep;
+            for (int frame = first; frame / (float)fps <= scrollSeconds + visible; frame += frameStep)
+            {
+                float time = frame / (float)fps;
+                float x = X(time, visible);
+                EditorGUI.DrawRect(new Rect(x, ruler.y, 1f, trackArea.height), new Color(.32f, .36f, .43f, .46f));
+                GUI.Label(new Rect(x + 2, ruler.y, 46f, 19f),
+                    new GUIContent(frame + "f", time.ToString("0.000", CultureInfo.InvariantCulture) + " s"),
+                    EditorStyles.miniLabel);
             }
         }
 
-        private void DrawCues(float visible)
+        private void DrawCues(TrackRow[] rows, float visible)
         {
-            foreach (var cue in preview.Cues)
+            float y = ruler.yMax;
+            for (int index = 0; index < rows.Length; index++)
             {
-                string kind = (string)cue.Node["etty"];
-                int track = Track(kind);
-                float start = preview.StageToWallTime(cue.At);
-                float end = preview.StageToWallTime(cue.At + cue.Duration);
-                if (kind == "CUTIN")
+                foreach (var clip in rows[index].Clips)
                 {
-                    var hold = preview.Cutins.FirstOrDefault(item => Mathf.Approximately(item.At, cue.At));
-                    end = start + hold.Duration;
+                    string kind = (string)clip.Node["etty"];
+                    float left = Mathf.Clamp(X(clip.Start, visible), ruler.xMin, ruler.xMax - 8f);
+                    float right = Mathf.Min(X(clip.End, visible), ruler.xMax);
+                    var rect = new Rect(left, y + 3f + clip.Lane * LaneHeight, right - left, LaneHeight - 3f);
+                    var color = ReferenceEquals(clip.Node, selectedNode) ? Color.white : TrackColors[index];
+                    EditorGUI.DrawRect(rect, color);
+                    string detail = $"#{clip.Node["guid"]} {kind}  播放 {Mathf.RoundToInt(preview.StageToWallTime(clip.At) * fps)} 帧 / 源 {clip.At:F3}s";
+                    GUI.Label(rect, new GUIContent(rect.width >= 25f ? kind : "", detail), EditorStyles.centeredGreyMiniLabel);
+                    var input = Event.current;
+                    if (input.type == EventType.MouseDown && input.button == 0 && rect.Contains(input.mousePosition))
+                    {
+                        SelectCue(clip.Node, clip.At);
+                        if (!compareOriginal && selectedGuid >= 0) dragStart = clip.At;
+                        dragMouseX = input.mousePosition.x;
+                        input.Use();
+                    }
                 }
-                float left = X(start, visible);
-                float right = X(end, visible);
-                if (right < ruler.xMin || left > ruler.xMax) continue;
-                var rect = new Rect(Mathf.Max(left, ruler.xMin), ruler.yMax + track * RowHeight + 4f,
-                    Mathf.Min(Mathf.Max(right - left, 8f), ruler.xMax - Mathf.Max(left, ruler.xMin)), RowHeight - 8f);
-                var color = ReferenceEquals(cue.Node, selectedNode) ? Color.white : TrackColors[track];
-                EditorGUI.DrawRect(rect, color);
-                if (rect.width >= 25f)
-                    GUI.Label(rect, new GUIContent(kind, $"#{cue.Node["guid"]} {kind}  {cue.At:F3}s"), EditorStyles.centeredGreyMiniLabel);
-                var input = Event.current;
-                if (input.type == EventType.MouseDown && input.button == 0 && rect.Contains(input.mousePosition))
-                {
-                    SelectCue(cue.Node, cue.At);
-                    if (!compareOriginal && selectedGuid >= 0) dragStart = cue.At;
-                    dragMouseX = input.mousePosition.x;
-                    input.Use();
-                }
+                y += rows[index].Height;
             }
-
             if (preview.Time >= scrollSeconds && preview.Time <= scrollSeconds + visible)
-                EditorGUI.DrawRect(new Rect(X(preview.Time, visible), ruler.y, 2f, trackArea.height), new Color(1f,.87f,.51f));
+                EditorGUI.DrawRect(new Rect(X(preview.Time, visible), ruler.y, 2f, trackArea.height), new Color(1f, .87f, .51f));
         }
 
         private static int Track(string kind) => kind switch
@@ -541,7 +594,7 @@ namespace AstralOath.Client.BattleScene.Editor
         private void TimelineInput(float visible)
         {
             var input = Event.current;
-            if (input.type == EventType.ScrollWheel && trackArea.Contains(input.mousePosition))
+            if (input.type == EventType.ScrollWheel && (input.shift || input.alt) && trackArea.Contains(input.mousePosition))
             {
                 if (input.shift) zoom = Mathf.Clamp(zoom * Mathf.Pow(1.1f, -input.delta.y), 1f, 12f);
                 else scrollSeconds += input.delta.y * visible * .08f;

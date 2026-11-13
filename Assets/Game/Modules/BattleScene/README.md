@@ -11,6 +11,8 @@
 
 `BattleSceneBuilder.Generate` 是可从隔离工程调用的作者工具，会重建示例场景、三个预制体和生命数字位图字体。编辑好的正式布局以保存的 Unity 资产为准。其完整批处理方法名是 `AstralOath.Client.BattleScene.Editor.BattleSceneBuilder.Generate`。
 
+技能演出编辑器的时间轴按帧显示。重叠片段在同轨道的不同子行可单独点选，悬停同时显示播放帧和源时点。见[编辑器操作](../../../../docs/development/battle-skill-timeline-editor.md)。
+
 ## 结构和后续接入
 
 - `BattleHud` 继承 `UIBaseView` 并验证 BindingMap。场景 Canvas 上的 `BattleHudPreview` 管理普通 C# `BattleHudBinder` 生命周期。预制体使用 GameText、GameButton 和 BindingMap。Burn 与三枚技能按钮接受点击，布局模式的魂力与角色固定为当前拉斯。

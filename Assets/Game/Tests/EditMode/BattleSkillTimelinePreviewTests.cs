@@ -135,6 +135,25 @@ namespace AstralOath.Tests
                 .Single(node => (int)node["guid"] == hitGuid)["_astralAtMs"], Is.Null);
         }
 
+        [Test]
+        public void OverlappingClipsAndMinimumWidthMarkersOccupySeparateLanes()
+        {
+            var type = Type.GetType(
+                "AstralOath.Client.BattleScene.Editor.SkillTimelineWindow, AstralOath.Client.BattleScene.Editor",
+                throwOnError: true);
+            var assign = type.GetMethod("AssignLane", BindingFlags.Static | BindingFlags.NonPublic);
+            Assert.That(assign, Is.Not.Null);
+            var ends = new List<float>();
+            int Add(float left, float right) => (int)assign.Invoke(null, new object[] { ends, left, right });
+
+            Assert.That(Add(10, 40), Is.Zero);
+            Assert.That(Add(14, 22), Is.EqualTo(1));
+            Assert.That(Add(20, 28), Is.EqualTo(2));
+            Assert.That(Add(24, 32), Is.EqualTo(1));
+            Assert.That(Add(42, 50), Is.Zero);
+            Assert.That(ends, Has.Count.EqualTo(3));
+        }
+
         private static Color32[] ReadPixels(RenderTexture texture)
         {
             var previous = RenderTexture.active;
