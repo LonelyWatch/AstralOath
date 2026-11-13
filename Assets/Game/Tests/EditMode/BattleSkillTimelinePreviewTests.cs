@@ -53,6 +53,9 @@ namespace AstralOath.Tests
                     Assert.That(cutins.Count, Is.GreaterThan(0));
                     var firstCutin = cutins[0];
                     sample = firstCutin.At + firstCutin.Duration * .4f;
+                    Assert.That((float)Invoke("WallToStageTime", sample), Is.EqualTo(firstCutin.At).Within(.0001f));
+                    float after = firstCutin.At + firstCutin.Duration + .15f;
+                    Assert.That((float)Invoke("WallToStageTime", after), Is.EqualTo(firstCutin.At + .15f).Within(.0001f));
                     Invoke("Seek", sample);
                     Assert.That(Read<float>("StageTime"), Is.EqualTo(firstCutin.At).Within(.015f), "Cut-in freezes stage time.");
                 }

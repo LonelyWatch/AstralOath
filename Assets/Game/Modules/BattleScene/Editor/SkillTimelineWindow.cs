@@ -47,7 +47,7 @@ namespace AstralOath.Client.BattleScene.Editor
         private float speed = 1f, zoom = 1f, scrollSeconds;
         private Vector2 rosterScroll, detailScroll;
         private double lastUpdate;
-        private float? dragStart;
+        private float? dragStart, dragGhost;
         private Rect ruler;
         private Rect trackArea;
 
@@ -463,6 +463,11 @@ namespace AstralOath.Client.BattleScene.Editor
             DrawTrackGrid(visible);
             DrawCues(visible);
             TimelineInput(visible);
+            if (dragGhost.HasValue)
+            {
+                float ghost = Mathf.Clamp(X(dragGhost.Value, visible), ruler.xMin, ruler.xMax);
+                EditorGUI.DrawRect(new Rect(ghost, ruler.y, 2f, trackArea.height), Color.white);
+            }
             if (zoom > 1f)
                 scrollSeconds = GUILayout.HorizontalScrollbar(scrollSeconds, visible, 0f, Mathf.Max(visible, preview.Duration));
         }
@@ -503,7 +508,7 @@ namespace AstralOath.Client.BattleScene.Editor
                 if (right < ruler.xMin || left > ruler.xMax) continue;
                 var rect = new Rect(Mathf.Max(left, ruler.xMin), ruler.yMax + track * RowHeight + 4f,
                     Mathf.Min(Mathf.Max(right - left, 8f), ruler.xMax - Mathf.Max(left, ruler.xMin)), RowHeight - 8f);
-                var color = (int?)cue.Node["guid"] == selectedGuid ? Color.white : TrackColors[track];
+                var color = ReferenceEquals(cue.Node, selectedNode) ? Color.white : TrackColors[track];
                 EditorGUI.DrawRect(rect, color);
                 if (rect.width >= 25f)
                     GUI.Label(rect, new GUIContent(kind, $"#{cue.Node["guid"]} {kind}  {cue.At:F3}s"), EditorStyles.centeredGreyMiniLabel);
@@ -545,10 +550,8 @@ namespace AstralOath.Client.BattleScene.Editor
             }
             if (dragStart.HasValue && input.type == EventType.MouseDrag)
             {
-                float offset = (input.mousePosition.x - dragMouseX) / ruler.width * visible;
-                float at = preview.StageToWallTime(Milliseconds(dragStart.Value + offset) / 1000f);
-                float ghost = Mathf.Clamp(X(at, visible), ruler.xMin, ruler.xMax);
-                EditorGUI.DrawRect(new Rect(ghost, ruler.y, 2f, trackArea.height), Color.white);
+                float sourceTime = DragStageTime(input.mousePosition.x, visible);
+                dragGhost = preview.StageToWallTime(Milliseconds(sourceTime) / 1000f);
                 input.Use();
                 Repaint();
                 return;
@@ -557,11 +560,11 @@ namespace AstralOath.Client.BattleScene.Editor
             {
                 if (dragStart.HasValue && selectedGuid >= 0 && input.button == 0)
                 {
-                    float moved = (input.mousePosition.x - dragMouseX) / ruler.width * visible;
+                    float sourceTime = DragStageTime(input.mousePosition.x, visible);
                     if (Mathf.Abs(input.mousePosition.x - dragMouseX) >= 4f)
-                        TryEdit(() => EditNode(node => node["atMs"] = Milliseconds(dragStart.Value + moved)));
+                        TryEdit(() => EditNode(node => node["atMs"] = Milliseconds(sourceTime)));
                 }
-                dragStart = null;
+                dragStart = dragGhost = null;
             }
             if (ruler.Contains(input.mousePosition) && input.button == 0 &&
                 (input.type == EventType.MouseDown || input.type == EventType.MouseDrag))
@@ -572,6 +575,13 @@ namespace AstralOath.Client.BattleScene.Editor
             }
         }
         private float dragMouseX;
+
+        private float DragStageTime(float mouseX, float visible)
+        {
+            float wallOffset = (mouseX - dragMouseX) / ruler.width * visible;
+            float originalWall = preview.StageToWallTime(dragStart.Value);
+            return preview.WallToStageTime(originalWall + wallOffset);
+        }
 
         private int Milliseconds(float seconds)
         {

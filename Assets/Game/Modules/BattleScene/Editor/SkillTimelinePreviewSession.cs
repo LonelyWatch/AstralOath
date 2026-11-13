@@ -188,6 +188,20 @@ namespace AstralOath.Client.BattleScene.Editor
             return stage + Cutins.Where(hold => hold.At < stage - .00001f).Sum(hold => hold.Duration);
         }
 
+        internal float WallToStageTime(float wallSeconds)
+        {
+            float wall = Mathf.Clamp(wallSeconds, 0f, Duration);
+            float accumulatedHold = 0f;
+            foreach (var hold in Cutins)
+            {
+                float start = hold.At + accumulatedHold;
+                if (wall <= start) break;
+                if (wall < start + hold.Duration) return hold.At;
+                accumulatedHold += hold.Duration;
+            }
+            return Mathf.Clamp(wall - accumulatedHold, 0f, StageDuration);
+        }
+
         internal void SeekStage(float stageSeconds) => Seek(StageToWallTime(stageSeconds));
 
         internal void Render()
