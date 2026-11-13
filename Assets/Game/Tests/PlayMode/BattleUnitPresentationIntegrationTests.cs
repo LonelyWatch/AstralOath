@@ -152,6 +152,66 @@ namespace AstralOath.Client.Tests
             host.RestartBattle(); yield return null;
             Assert.That(actor.gameObject.activeInHierarchy, Is.True);
         }
+        [UnityTest] public IEnumerator KiseBarrierTracksAnimatedShadowBoneOnBothFacings()
+        {
+            typeof(BattleHudPreview).GetField("allyHeroIds", Private)
+                .SetValue(host, new[] { "c1001", "c1062", "c1005", "c1006" });
+            typeof(BattleHudPreview).GetField("enemyHeroIds", Private)
+                .SetValue(host, new[] { "c1006", "c1008", "c1008", "c1008" });
+            host.RestartBattle();
+            yield return null;
+            var simulation = typeof(BattleHudPreview).GetField("simulation", Private).GetValue(host);
+            var views = (IDictionary)simulation.GetType().GetField("views", Private).GetValue(simulation);
+            var camera = map.GetComponentInParent<Canvas>().worldCamera;
+            var barrier = (BattleStatusSnapshot)Activator.CreateInstance(typeof(BattleStatusSnapshot),
+                Private, null, new object[] { BattleStatusKind.Barrier, 3, 2000 }, null);
+
+            foreach (string id in new[] { "ally-4", "enemy-1" })
+            {
+                var view = views[id];
+                var actor = (BattlePreviewActor)view.GetType().GetProperty("Actor").GetValue(view);
+                var body = (Renderer)typeof(BattlePreviewActor).GetProperty("PresentationRenderer", Private).GetValue(actor);
+                var player = (AstralOath.Client.Skeletons.ISkeletonPlayer)typeof(BattlePreviewActor)
+                    .GetField("player", Private).GetValue(actor);
+                var shadow = (Transform)typeof(BattlePreviewActor).GetProperty("PresentationShadow", Private).GetValue(actor);
+                Vector3 groundPosition = shadow.position;
+                void Sample(string clip, float time)
+                {
+                    player.Play(clip, false);
+                    player.Seek(time);
+                    view.GetType().GetMethod("LateTick").Invoke(view, new object[] { camera });
+                }
+
+                Sample("b_idle", 0f);
+                view.GetType().GetMethod("ApplyStatus").Invoke(view, new object[] { barrier });
+                var aura = body.transform.Find("Battle shield aura");
+                Assert.That(aura, Is.Not.Null, id);
+                AssertAnchor(.7405f);
+                if (id == "ally-4") Capture("kise-barrier-waiting");
+
+                Sample("b_idle_ready", 0f);
+                AssertAnchor(-.368f);
+                Sample("b_idle_ready", 1f);
+                AssertAnchor(.7405f);
+
+                body.transform.localPosition += new Vector3(.45f, .7f, 0f);
+                body.transform.localScale *= 1.18f;
+                camera.orthographicSize *= .9f;
+                Sample("b_idle", 0f);
+                AssertAnchor(.7405f);
+                Assert.That(shadow.position, Is.EqualTo(groundPosition), "The separate ground shadow stays in place.");
+                if (id == "enemy-1") Capture("kise-barrier-both-facings");
+
+                void AssertAnchor(float authoredX)
+                {
+                    Assert.That(player.TryGetBoneSkeletonPosition("shadow", out var foot), Is.True, id);
+                    Assert.That(foot.x, Is.EqualTo(authoredX).Within(.001f), id);
+                    var expected = body.transform.TransformPoint((Vector3)foot + Vector3.up * .2f);
+                    Assert.That(Vector3.Distance(aura.position, expected), Is.LessThan(.001f), id);
+                }
+            }
+        }
+
         [UnityTest] public IEnumerator StatusIconsFollowTheBarAndBarrierUsesAcceptedHitEvents()
         {
             var simulation = typeof(BattleHudPreview).GetField("simulation", Private).GetValue(host);
@@ -194,20 +254,23 @@ namespace AstralOath.Client.Tests
             Assert.That(aura, Is.Not.Null);
             Assert.That(aura.gameObject.activeInHierarchy, Is.True);
             var shadow = (Transform)typeof(BattlePreviewActor).GetProperty("PresentationShadow", Private).GetValue(actor);
-            Vector3 expectedAura = shadow.position + body.transform.TransformVector(Vector3.up * .2f);
+            var skeletonPlayer = (AstralOath.Client.Skeletons.ISkeletonPlayer)typeof(BattlePreviewActor)
+                .GetField("player", Private).GetValue(actor);
+            Assert.That(skeletonPlayer.TryGetBoneSkeletonPosition("shadow", out var foot), Is.True);
+            Vector3 expectedAura = body.transform.TransformPoint((Vector3)foot + Vector3.up * .2f);
             Assert.That(Vector2.Distance(aura.position, expectedAura), Is.LessThan(.001f));
             Capture("status-barrier-full");
 
             var first = (RectTransform)icons.GetChild(0);
             float originalWidth = Width(first, camera);
             Vector2 originalPosition = first.position;
-            Vector3 auraLocal = aura.localPosition;
             actor.transform.position += new Vector3(.7f, 1.25f, 0f);
             actor.transform.localScale *= 1.25f;
             view.GetType().GetMethod("LateTick").Invoke(view, new object[] { camera });
             Assert.That((Vector2)first.position, Is.Not.EqualTo(originalPosition));
             Assert.That(Width(first, camera) / originalWidth, Is.EqualTo(1.25f).Within(.03f));
-            Assert.That(Vector2.Distance(aura.position, body.transform.TransformPoint(auraLocal)), Is.LessThan(.001f),
+            Assert.That(skeletonPlayer.TryGetBoneSkeletonPosition("shadow", out foot), Is.True);
+            Assert.That(Vector2.Distance(aura.position, body.transform.TransformPoint((Vector3)foot + Vector3.up * .2f)), Is.LessThan(.001f),
                 "A jump moves the shield with the body even while its ground shadow stays behind.");
             Assert.That(Vector2.Distance(aura.position, shadow.position), Is.GreaterThan(.7f));
             Assert.That(first.IsChildOf(frame.parent), Is.True);

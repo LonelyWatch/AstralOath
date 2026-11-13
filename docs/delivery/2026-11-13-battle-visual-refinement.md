@@ -1,5 +1,7 @@
 # 战斗光效、绮世 S3 与回合反馈
 
+> 入回合准备动作和普通护盾挂点已由[后续复核](2026-11-13-battle-shield-anchor-ready.md)修正。以下保留当次实施及验收记录。
+
 ## 来源与定位
 
 - 赛西莉亚「毁灭之枪」S3 中，模型 `skill3_2` 的 timeline 触发 `cecilia_skill_03_new_lance2`，使用 `cecilia_skill_03_lanceaura2` 的 `lance_global_glow/flash`。该槽约在局部 1.53 秒放大到约 16 倍，再由骨骼染成紫色。原 SCT1 以 RGB565 存颜色，A8 单独存透明度。暗边实测 A=5、RGB=(0,4,0)，在黑幕和紫色染色下形成绿边与色阶。Unity 已用双线性和 Windows RGBA32。恢复赛西莉亚 5 张图集内 20 个审核过的白色 PMA 区块的 RGB，保留透明度和同页彩色素材，清单记录每个区块及源、输出哈希。没有更改运行时 shader。

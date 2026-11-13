@@ -21,8 +21,9 @@ namespace AstralOath.Client.BattleScene
         [SerializeField] private float sourceScale = .01f;
         private ISkeletonPlayer player;
         private string idleAnimation;
-        private string readyIdleAnimation;
-        private bool turnReady;
+        private string turnIdleAnimation;
+        private string turnEntryAnimation;
+        private bool turnReady, turnEntryPending;
         private bool playingBattleAnimation;
         private bool defeatPose;
         private object sourceReaction;
@@ -223,17 +224,24 @@ namespace AstralOath.Client.BattleScene
                 position = shadow.position;
                 return true;
             }
-            if (player == null || !player.TryGetBoneSkeletonPosition(anchor, out var skeletonPosition)) return false;
+            if (!TryGetSkeletonAnchor(anchor, out var skeletonPosition)) return false;
             position = player.Root.transform.TransformPoint(skeletonPosition);
             return true;
         }
 
-        private string CurrentBattleIdle => turnReady ? readyIdleAnimation ?? idleAnimation : idleAnimation;
+        internal bool TryGetSkeletonAnchor(string anchor, out Vector2 position)
+        {
+            position = default;
+            return player != null && player.TryGetBoneSkeletonPosition(anchor, out position);
+        }
+
+        private bool PlayingTurnEntry => turnEntryAnimation != null && player.CurrentAnimation == turnEntryAnimation;
 
         internal void SetTurnReady(bool value)
         {
             if (turnReady == value) return;
             turnReady = value;
+            turnEntryPending = value && turnEntryAnimation != null;
             ApplyTurnIdleIfFree();
         }
 
@@ -243,7 +251,18 @@ namespace AstralOath.Client.BattleScene
                 presentationPauseCount > 0 || presentationControlCount > 0)
                 return;
 
-            string animation = CurrentBattleIdle;
+            if (turnEntryPending)
+            {
+                turnEntryPending = false;
+                player.Play(turnEntryAnimation, false, IdleRecoveryMixSeconds);
+            }
+            else if (!turnReady || !PlayingTurnEntry || player.Time >= player.Duration)
+                PlayIdleLoop();
+        }
+
+        private void PlayIdleLoop()
+        {
+            string animation = turnReady ? turnIdleAnimation : idleAnimation;
             if (player.CurrentAnimation != animation)
                 player.Play(animation, true, IdleRecoveryMixSeconds);
         }
@@ -253,7 +272,10 @@ namespace AstralOath.Client.BattleScene
             if (player == null || defeatPose || !playingBattleAnimation) return;
             playingBattleAnimation = false;
             sourceReaction = null;
-            player.Play(CurrentBattleIdle, true, IdleRecoveryMixSeconds);
+            if (turnEntryPending && !paused && presentationPauseCount == 0 && presentationControlCount == 0)
+                ApplyTurnIdleIfFree();
+            else
+                PlayIdleLoop();
         }
 
         internal float GetBattleAnimationDuration(string animation)
@@ -322,19 +344,23 @@ namespace AstralOath.Client.BattleScene
                 sourceLease = AcquireSource();
                 instance = new SkeletonPlayerFactory().Create(sourceLease.Source, transform);
                 instance.SetSkin(skin);
-                string fallbackIdle = null;
+                string neutralIdle = null;
+                string battleIdle = null;
                 foreach (var animation in instance.Animations)
                 {
                     if (animation.Duration <= 0)
                         continue;
                     switch (animation.Name)
                     {
-                        case "b_idle": idleAnimation = animation.Name; break;
-                        case "b_idle_ready": readyIdleAnimation = animation.Name; break;
-                        case "idle": fallbackIdle = animation.Name; break;
+                        case "b_idle": battleIdle = animation.Name; break;
+                        case "b_idle_ready": turnEntryAnimation = animation.Name; break;
+                        case "idle": neutralIdle = animation.Name; break;
                     }
                 }
-                idleAnimation ??= fallbackIdle;
+                turnIdleAnimation = battleIdle ?? neutralIdle;
+                // The authored entry joins neutral idle to battle idle. Legacy rigs without
+                // that entry retain their existing idle selection.
+                idleAnimation = turnEntryAnimation != null ? neutralIdle ?? battleIdle : turnIdleAnimation;
                 if (idleAnimation == null)
                     throw new InvalidOperationException($"Battle preview actor {name} has no playable idle animation.");
 
@@ -360,6 +386,8 @@ namespace AstralOath.Client.BattleScene
             player.Tick(playingBattleAnimation ? Time.unscaledDeltaTime : Time.deltaTime);
             if (sourceReaction == null && playingBattleAnimation && player.Time >= player.Duration)
                 PlayBattleIdle();
+            else if (!playingBattleAnimation && PlayingTurnEntry && player.Time >= player.Duration)
+                ApplyTurnIdleIfFree();
         }
 
         private void OnDisable()
@@ -371,8 +399,10 @@ namespace AstralOath.Client.BattleScene
                 ReleaseSource();
                 eventTimes = null;
                 idleAnimation = null;
-                readyIdleAnimation = null;
+                turnIdleAnimation = null;
+                turnEntryAnimation = null;
                 turnReady = false;
+                turnEntryPending = false;
                 playingBattleAnimation = false;
                 paused = false;
                 defeatPose = false;

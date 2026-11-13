@@ -316,15 +316,22 @@ namespace AstralOath.Client.Tests
             var initial = preview.SimulationSnapshot;
             Assert.That(initial.Units, Has.Count.EqualTo(8));
             var unitGroups = roots.Single(root => root.name == "Units").transform;
+            AstralOath.Client.Skeletons.ISkeletonPlayer actingSkeleton = null;
             foreach (var unit in initial.Units)
             {
                 var group = unitGroups.Find(unit.Slot.Side == BattleSide.Ally ? "Allies" : "Enemies");
                 var unitActor = group.GetChild(unit.Slot.Position - 1).GetComponentInChildren<BattlePreviewActor>();
                 var skeleton = (AstralOath.Client.Skeletons.ISkeletonPlayer)typeof(BattlePreviewActor)
                     .GetField("player", PrivateInstance).GetValue(unitActor);
-                string idle = unit.InstanceId == initial.CurrentActorId ? "b_idle_ready" : "b_idle";
+                string idle = unit.InstanceId == initial.CurrentActorId ? "b_idle_ready" : "idle";
                 Assert.That(skeleton.CurrentAnimation, Is.EqualTo(idle), unit.InstanceId);
+                if (unit.InstanceId == initial.CurrentActorId) actingSkeleton = skeleton;
             }
+            Assert.That(actingSkeleton, Is.Not.Null);
+            float entryDeadline = Time.realtimeSinceStartup + actingSkeleton.Duration + 1f;
+            while (actingSkeleton.CurrentAnimation == "b_idle_ready" && Time.realtimeSinceStartup < entryDeadline)
+                yield return null;
+            Assert.That(actingSkeleton.CurrentAnimation, Is.EqualTo("b_idle"), "A waiting player sees the entry cue exactly once.");
             var readiness = map.transform.Find("Combat Readiness/Live Readiness/Readiness Portraits");
             Assert.That(readiness, Is.Not.Null, "The battle must show live readiness portraits.");
             Assert.That(readiness.childCount, Is.EqualTo(initial.Units.Count));

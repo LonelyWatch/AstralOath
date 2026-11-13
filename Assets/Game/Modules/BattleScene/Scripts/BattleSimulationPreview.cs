@@ -424,9 +424,7 @@ namespace AstralOath.Client.BattleScene
                     }
                     var targets = targetEvents.Select(next => next.TargetId).Where(id => id != null)
                         .Distinct(StringComparer.Ordinal).Select(id => views[id].Actor).ToArray();
-                    var source = views[item.SourceId].Actor;
-                    source.SetTurnReady(false);
-                    var timing = skillPresentation.Begin(item.PresentationId, source, primary, targets);
+                    var timing = skillPresentation.Begin(item.PresentationId, views[item.SourceId].Actor, primary, targets);
                     presentedSkillId = item.SkillId;
                     voice.Play(string.IsNullOrEmpty(item.PresentationId) ? item.SkillId : item.PresentationId);
                     actionElapsed = 0f;
@@ -491,6 +489,7 @@ namespace AstralOath.Client.BattleScene
                     turnHud.SetReadiness(item.TargetId, item.Amount);
                     break;
                 case BattleFlowEventKind.TurnEnded:
+                    views[item.SourceId].Actor.SetTurnReady(false);
                     turnHud.SetReadiness(item.SourceId, 0);
                     break;
                 case BattleFlowEventKind.UnitDefeated:
@@ -957,8 +956,13 @@ namespace AstralOath.Client.BattleScene
                 SyncAura(0f);
             }
 
-            private void SyncAura(float delta) =>
-                shieldAura.Sync(Actor.PresentationRenderer, shown && !deathStarted && presentedShield > 0, delta);
+            private void SyncAura(float delta)
+            {
+                bool shielded = shown && !deathStarted && presentedShield > 0;
+                Vector2? anchor = shielded && Actor.TryGetSkeletonAnchor("shadow", out var position)
+                    ? position : (Vector2?)null;
+                shieldAura.Sync(Actor.PresentationRenderer, shielded, delta, anchor);
+            }
 
             public void Restore()
             {

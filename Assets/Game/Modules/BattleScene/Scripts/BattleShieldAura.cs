@@ -11,7 +11,7 @@ namespace AstralOath.Client.BattleScene
     {
         private static readonly SkeletonPlayerFactory Factory = new SkeletonPlayerFactory();
         private readonly Definition definition;
-        private readonly Vector3 anchorOffset;
+        private readonly Vector3 fallbackAnchor;
         private ISkeletonPlayer player;
         private Renderer body;
         private MeshRenderer aura;
@@ -76,10 +76,10 @@ namespace AstralOath.Client.BattleScene
             this.definition = definition;
             // Calibrate to the authored foot point before a skill can separate the actor and its ground shadow.
             if (initialBody && shadow)
-                anchorOffset = initialBody.transform.InverseTransformPoint(shadow.position);
+                fallbackAnchor = initialBody.transform.InverseTransformPoint(shadow.position);
         }
 
-        public void Sync(Renderer currentBody, bool shielded, float visualDelta)
+        public void Sync(Renderer currentBody, bool shielded, float visualDelta, Vector2? skeletonAnchor)
         {
             if (disposed || definition == null) return;
             if (body != currentBody || (player != null && !player.Root))
@@ -100,6 +100,9 @@ namespace AstralOath.Client.BattleScene
             // LAYOUT owns Renderer.enabled. Use the effect object's visibility so a stage can restore
             // the renderer independently, including effects first applied while the actor was hidden.
             if (!player.Root.activeSelf) player.Root.SetActive(true);
+            Vector3 anchor = skeletonAnchor.HasValue ? (Vector3)skeletonAnchor.Value : fallbackAnchor;
+            Vector3 position = anchor + definition.Position;
+            if (player.Root.transform.localPosition != position) player.Root.transform.localPosition = position;
             int layer = body.sortingLayerID;
             int order = body.sortingOrder + definition.SortingOffset;
             if (aura.sortingLayerID != layer) aura.sortingLayerID = layer;
@@ -117,7 +120,6 @@ namespace AstralOath.Client.BattleScene
             player = Factory.Create(definition.Source, body.transform);
             var root = player.Root;
             root.name = "Battle shield aura";
-            root.transform.localPosition = anchorOffset + definition.Position;
             root.transform.localScale = definition.Scale;
             aura = root.GetComponent<MeshRenderer>();
         }

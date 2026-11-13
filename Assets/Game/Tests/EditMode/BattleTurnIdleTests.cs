@@ -26,7 +26,7 @@ namespace AstralOath.Client.Tests
         [TestCase("c1008", "arming")]
         [TestCase("c1009", "charlotte")]
         [TestCase("c1062", "angelica")]
-        public void SourceReadyIdleChangesWithTurnAndPreservesActionUntilRecovery(string id, string model)
+        public void SourceTurnEntryPlaysOnceThenLoopsBattleIdle(string id, string model)
         {
             string root = SourceRoot + id;
             string json = File.ReadAllText($"{root}/Animations/model/{model}.spine.json");
@@ -35,7 +35,7 @@ namespace AstralOath.Client.Tests
 
             WithActor(json, atlas, page, (actor, player) =>
             {
-                Assert.That(player.CurrentAnimation, Is.EqualTo("b_idle"));
+                Assert.That(player.CurrentAnimation, Is.EqualTo("idle"));
                 Invoke(actor, "SetTurnReady", true);
                 Assert.That(player.CurrentAnimation, Is.EqualTo("b_idle_ready"));
                 Assert.That(player.Duration, Is.GreaterThan(0f));
@@ -44,17 +44,31 @@ namespace AstralOath.Client.Tests
                 Invoke(actor, "SetTurnReady", true);
                 Assert.That(player.Time, Is.EqualTo(readyTime));
 
+                player.Tick(player.Duration + .25f);
+                Invoke(actor, "Update");
+                Assert.That(player.CurrentAnimation, Is.EqualTo("b_idle"), "The ready clip must complete rather than wrap.");
+                Invoke(actor, "SetTurnReady", true);
+                Assert.That(player.CurrentAnimation, Is.EqualTo("b_idle"), "The same turn cannot re-arm the cue.");
+
                 Invoke(actor, "PlayBattleAnimation", "attacked");
-                Invoke(actor, "SetTurnReady", false);
                 Assert.That(player.CurrentAnimation, Is.EqualTo("attacked"));
                 Invoke(actor, "PlayBattleIdle");
-                Assert.That(player.CurrentAnimation, Is.EqualTo("b_idle"));
+                Assert.That(player.CurrentAnimation, Is.EqualTo("b_idle"), "Hit recovery cannot repeat a consumed cue.");
+                Invoke(actor, "SetTurnReady", false);
 
                 Invoke(actor, "BeginPresentationControl");
                 Invoke(actor, "SetTurnReady", true);
-                Assert.That(player.CurrentAnimation, Is.EqualTo("b_idle"));
+                Assert.That(player.CurrentAnimation, Is.EqualTo("idle"));
                 Invoke(actor, "EndPresentationControl");
-                Assert.That(player.CurrentAnimation, Is.EqualTo("b_idle_ready"));
+                Assert.That(player.CurrentAnimation, Is.EqualTo("b_idle_ready"), "A later turn receives a fresh cue.");
+
+                Invoke(actor, "PlayBattleAnimation", "attacked");
+                Invoke(actor, "PlayBattleIdle");
+                Assert.That(player.CurrentAnimation, Is.EqualTo("b_idle"), "Interrupted entry does not replay.");
+                Invoke(actor, "SetTurnReady", false);
+                Invoke(actor, "SetTurnReady", true);
+                Invoke(actor, "SetTurnReady", false);
+                Assert.That(player.CurrentAnimation, Is.EqualTo("idle"), "An ended turn cannot keep the entry pose.");
             });
         }
 

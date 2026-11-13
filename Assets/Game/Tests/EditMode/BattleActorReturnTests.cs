@@ -105,7 +105,7 @@ namespace AstralOath.Client.Tests
             Invoke(actor, "Update");
             Assert.That(player.CurrentAnimation, Is.EqualTo("flying_damage"));
             release();
-            Assert.That(player.CurrentAnimation, Is.EqualTo("b_idle"));
+            Assert.That(player.CurrentAnimation, Is.EqualTo("idle"));
 
             release = (Action)hold.Invoke(actor, new object[] { "flying_damage" });
             Invoke(actor, "PlayBattleAnimation", "attacked");
@@ -123,6 +123,9 @@ namespace AstralOath.Client.Tests
             var actor = Create(source.json, source.atlas, source.page);
             var expectedActor = Create(source.json, source.atlas, source.page);
             var player = Player(actor); var expected = Player(expectedActor);
+            // This regression exercises recovery to the battle stance during the current turn.
+            EnterBattleIdle(actor, player);
+            EnterBattleIdle(expectedActor, expected);
             var mesh = player.Root.GetComponent<MeshFilter>().sharedMesh;
             var expectedMesh = expected.Root.GetComponent<MeshFilter>().sharedMesh;
             actor.transform.localPosition = new Vector3(4, 5, 0);
@@ -169,7 +172,7 @@ namespace AstralOath.Client.Tests
             Invoke(actor, "PlayBattleAnimation", "attacked");
             Assert.That(player.CurrentAnimation, Is.EqualTo("attacked")); Assert.That(player.Time, Is.Zero);
             Invoke(actor, "PlayBattleIdle"); Invoke(actor, "AdvancePresentation", .3f);
-            Assert.That(player.CurrentAnimation, Is.EqualTo("b_idle"));
+            Assert.That(player.CurrentAnimation, Is.EqualTo("idle"));
         }
 
         [TestCase(false)][TestCase(true)]
@@ -200,6 +203,7 @@ namespace AstralOath.Client.Tests
             var source = ReadModel("ras");
             var actor = Create(source.json, source.atlas, source.page);
             var player = Player(actor);
+            EnterBattleIdle(actor, player);
             Invoke(actor, "PlayBattleAnimation", "attacked"); player.Tick(player.Duration);
             player.Tick(.02f); player.Tick(.02f);
             var tail = Position(player, "ras_center");
@@ -340,6 +344,16 @@ namespace AstralOath.Client.Tests
             ActorType.GetField("pageName", Private).SetValue(actor, pageName);
             actors.Add(actor); Invoke(actor, "OnEnable"); return actor;
         }
+        private static void EnterBattleIdle(Component actor, ISkeletonPlayer player)
+        {
+            Invoke(actor, "SetTurnReady", true);
+            player.Tick(player.Duration);
+            Invoke(actor, "Update");
+            Assert.That(player.CurrentAnimation, Is.EqualTo("b_idle"));
+            // Start the recovery fixture from the steady battle loop, independent of entry blending.
+            player.Play("b_idle", true);
+        }
+
         private static (string json, string atlas, string page) ReadModel(string model)
         {
             var manifest = JObject.Parse(File.ReadAllText("Assets/Game/Modules/CharacterPresentation/Configs/import-manifest.json"));

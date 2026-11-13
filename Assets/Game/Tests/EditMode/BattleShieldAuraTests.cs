@@ -51,10 +51,10 @@ namespace AstralOath.Client.Tests
             {
                 var body = actor.AddComponent<MeshRenderer>();
                 body.sortingOrder = 52;
-                sync.Invoke(presentation, new object[] { body, false, .1f });
+                sync.Invoke(presentation, new object[] { body, false, .1f, null });
                 Assert.That(actor.transform.childCount, Is.Zero, "An unshielded actor should allocate no effect instance.");
 
-                sync.Invoke(presentation, new object[] { body, true, 0f });
+                sync.Invoke(presentation, new object[] { body, true, 0f, null });
                 var root = actor.transform.GetChild(0);
                 var renderer = root.GetComponent<MeshRenderer>();
                 Assert.That(root.gameObject.activeSelf, Is.True);
@@ -68,19 +68,19 @@ namespace AstralOath.Client.Tests
                 actor.transform.localScale = new Vector3(-2f, 2f, 1f);
                 Assert.That(Vector3.Distance(root.position, actor.transform.TransformPoint(0f, .2f, 0f)), Is.LessThan(.0001f));
                 body.enabled = false;
-                sync.Invoke(presentation, new object[] { body, true, .1f });
+                sync.Invoke(presentation, new object[] { body, true, .1f, null });
                 Assert.That(root.gameObject.activeSelf, Is.False);
                 body.enabled = true;
-                sync.Invoke(presentation, new object[] { body, true, .1f });
+                sync.Invoke(presentation, new object[] { body, true, .1f, null });
                 Assert.That(root.gameObject.activeSelf, Is.True);
 
-                sync.Invoke(presentation, new object[] { body, false, .1f });
+                sync.Invoke(presentation, new object[] { body, false, .1f, null });
                 Assert.That(root.gameObject.activeSelf, Is.False);
-                sync.Invoke(presentation, new object[] { body, true, .1f });
+                sync.Invoke(presentation, new object[] { body, true, .1f, null });
                 Assert.That(actor.transform.GetChild(0), Is.SameAs(root), "Shield reacquisition should reuse the player's mesh.");
 
                 var newBody = replacement.AddComponent<MeshRenderer>();
-                sync.Invoke(presentation, new object[] { newBody, true, .1f });
+                sync.Invoke(presentation, new object[] { newBody, true, .1f, null });
                 Assert.That(actor.transform.childCount, Is.Zero);
                 Assert.That(replacement.transform.childCount, Is.EqualTo(1));
                 presentation.Dispose();
