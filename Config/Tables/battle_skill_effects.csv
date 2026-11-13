@@ -74,6 +74,13 @@
 ,c1010.s2.3,c1010.s2,3,after_attack,readiness,self,none,10000,0,5000,none,none,0
 ,c1010.s3.1,c1010.s3,1,impact,damage,targets,none,10000,0,0,none,none,0
 ,c1010.s3.2,c1010.s3,2,after_hit,apply_status,targets,Stun,5000,1,0,none,none,0
+,c1011.s1.1,c1011.s1,1,impact,damage,targets,none,10000,0,0,none,none,0
+,c1011.s1.2,c1011.s1,2,after_attack,reduce_cooldown,self,none,10000,0,1,attack_critical,none,0
+,c1011.s2.1,c1011.s2,1,impact,damage,targets,none,10000,0,0,none,none,0
+,c1011.s2.2,c1011.s2,2,after_hit,apply_status,targets,DefenseDown,10000,1,7000,target_hit_critical,none,0
+,c1011.s2.3,c1011.s2,3,after_attack,grant_extra_turn,self,none,10000,0,0,attack_critical_after_skill_awakening,none,0
+,c1011.s3.1,c1011.s3,1,impact,critical_damage_bonus,self,none,10000,0,5000,none,none,0
+,c1011.s3.2,c1011.s3,2,impact,damage,targets,none,10000,0,0,none,none,0
 ,c1062.s1.1,c1062.s1,1,impact,damage,targets,none,10000,0,0,none,none,0
 ,c1062.s1.2,c1062.s1,2,after_hit,apply_status,targets,Stun,2000,1,0,none,none,0
 ,c1062.s2.1,c1062.s2,1,impact,heal,target_and_lowest_ally,none,10000,0,0,none,none,0

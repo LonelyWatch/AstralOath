@@ -25,3 +25,5 @@ SCT1 的中性白光遮罩按源 atlas 区域审计和登记，RGB 由未量化�
 2026-11-13 已将十名角色及三十个技能槽演出导入资源清单，按 E7 ID 顺序供实验室和战斗使用。原资源名和技能图名不一致时按源数据记录映射。`NODE_ANI` 读取 `spani/` 原骨骼轨道，无渲染附件时可使用空图集。命名 timeline 事件、DELAY、空 SHOT 与完成连接按源时刻调度。十名角色的模型、立绘、资源地址、音频表及源闭包边界见[角色资源进入 Unity](../../../../docs/development/character-asset-import.md)。
 
 杰拉图的原骨骼使用 zerato 拼写，技能演出图使用 jerato。第三技能的立绘由本形态骨骼命名事件定位，作为导入图的附加节点登记。见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。
+
+卡琳 c1011 已接入角色内容；三技能、音频及已知缺项见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。

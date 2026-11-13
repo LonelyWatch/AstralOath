@@ -138,3 +138,5 @@ Luban 快照 `Configs/battle-catalog.json` 含十名英雄、成长模板、觉�
 技能编辑入口为 **Tools → 战斗场景 → 技能演出编辑器**。轨道与视口复用战斗播放器，并显示模型时间轴附带的特效、震动和命名事件。保存的节点覆盖随场景资源发布。见[操作说明](../../../../docs/development/battle-skill-timeline-editor.md)和[前十名演出基线](../../../../docs/delivery/2026-11-14-skill-presentation-first-ten.md)。
 
 第 11 名杰拉图 c1010 的场景引用包含三个技能图及递归特效依赖。更新角色资源引用只重建目录，不修改作者已设的八个站位。
+
+卡琳 c1011 已接入角色内容；三技能、音频及已知缺项见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。

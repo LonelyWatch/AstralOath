@@ -2094,6 +2094,220 @@
       ]
     },
     {
+      "id": "c1011",
+      "name": "卡琳",
+      "displayNameKey": "character.karin.name",
+      "battleSkeletonAddress": "characterlab/source/model/karin.scsp",
+      "portraitSkeletonAddress": "characterlab/source/portrait/c1011.scsp",
+      "voiceBankAddress": "characterlab/source/sound/ja/voc1.audio_ja.bank",
+      "timelineAddress": "",
+      "voices": [
+        {
+          "id": "voc_c1011_answer_1",
+          "audioTableKey": "voc_c1011_answer_1",
+          "eventPath": "event:/voc/skill/c_karin_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1011_answer_1"
+        },
+        {
+          "id": "voc_c1011_answer_2",
+          "audioTableKey": "voc_c1011_answer_2",
+          "eventPath": "event:/voc/skill/c_karin_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1011_answer_2"
+        },
+        {
+          "id": "voc_c1011_attacked_1",
+          "audioTableKey": "voc_c1011_attacked_1",
+          "eventPath": "event:/voc/character/karin/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1011_attacked_1"
+        },
+        {
+          "id": "voc_c1011_attacked_2",
+          "audioTableKey": "voc_c1011_attacked_2",
+          "eventPath": "event:/voc/character/karin/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1011_attacked_2"
+        },
+        {
+          "id": "voc_c1011_attacked_3",
+          "audioTableKey": "voc_c1011_attacked_3",
+          "eventPath": "event:/voc/character/karin/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1011_attacked_3"
+        },
+        {
+          "id": "voc_c1011_call_1",
+          "audioTableKey": "voc_c1011_call_1",
+          "eventPath": "event:/voc/skill/c_karin_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1011_call_1"
+        },
+        {
+          "id": "voc_c1011_call_2",
+          "audioTableKey": "voc_c1011_call_2",
+          "eventPath": "event:/voc/skill/c_karin_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1011_call_2"
+        },
+        {
+          "id": "voc_c1011_dead_1",
+          "audioTableKey": "voc_c1011_dead_1",
+          "eventPath": "event:/voc/character/karin/evt/dead",
+          "displayNameKey": "character.voice.voc_c1011_dead_1"
+        },
+        {
+          "id": "voc_c1011_dead_2",
+          "audioTableKey": "voc_c1011_dead_2",
+          "eventPath": "event:/voc/character/karin/evt/dead",
+          "displayNameKey": "character.voice.voc_c1011_dead_2"
+        },
+        {
+          "id": "voc_c1011_get_1",
+          "audioTableKey": "voc_c1011_get_1",
+          "eventPath": "event:/voc/character/karin/evt/get",
+          "displayNameKey": "character.voice.voc_c1011_get_1"
+        },
+        {
+          "id": "voc_c1011_idle_1",
+          "audioTableKey": "voc_c1011_idle_1",
+          "eventPath": "event:/voc/character/karin/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1011_idle_1"
+        },
+        {
+          "id": "voc_c1011_idle_2",
+          "audioTableKey": "voc_c1011_idle_2",
+          "eventPath": "event:/voc/character/karin/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1011_idle_2"
+        },
+        {
+          "id": "voc_c1011_lose_1",
+          "audioTableKey": "voc_c1011_lose_1",
+          "eventPath": "event:/voc/character/karin/evt/defeat",
+          "displayNameKey": "character.voice.voc_c1011_lose_1"
+        },
+        {
+          "id": "voc_c1011_lvup_1",
+          "audioTableKey": "voc_c1011_lvup_1",
+          "eventPath": "event:/voc/character/karin/evt/lvup",
+          "displayNameKey": "character.voice.voc_c1011_lvup_1"
+        },
+        {
+          "id": "voc_c1011_skill1_1",
+          "audioTableKey": "voc_c1011_skill1_1",
+          "eventPath": "event:/voc/skill/c_karin_skill_01",
+          "displayNameKey": "character.voice.voc_c1011_skill1_1"
+        },
+        {
+          "id": "voc_c1011_skill1_2",
+          "audioTableKey": "voc_c1011_skill1_2",
+          "eventPath": "event:/voc/skill/c_karin_skill_01",
+          "displayNameKey": "character.voice.voc_c1011_skill1_2"
+        },
+        {
+          "id": "voc_c1011_skill1_3",
+          "audioTableKey": "voc_c1011_skill1_3",
+          "eventPath": "event:/voc/skill/c_karin_skill_01",
+          "displayNameKey": "character.voice.voc_c1011_skill1_3"
+        },
+        {
+          "id": "voc_c1011_skill1_4",
+          "audioTableKey": "voc_c1011_skill1_4",
+          "eventPath": "event:/voc/skill/c_karin_skill_01",
+          "displayNameKey": "character.voice.voc_c1011_skill1_4"
+        },
+        {
+          "id": "voc_c1011_skill2_1",
+          "audioTableKey": "voc_c1011_skill2_1",
+          "eventPath": "event:/voc/skill/c_karin_skill_02",
+          "displayNameKey": "character.voice.voc_c1011_skill2_1"
+        },
+        {
+          "id": "voc_c1011_skill2_2",
+          "audioTableKey": "voc_c1011_skill2_2",
+          "eventPath": "event:/voc/skill/c_karin_skill_02",
+          "displayNameKey": "character.voice.voc_c1011_skill2_2"
+        },
+        {
+          "id": "voc_c1011_skill2_3_1",
+          "audioTableKey": "voc_c1011_skill2_3_1",
+          "eventPath": "event:/voc/skill/c_karin_skill_02",
+          "displayNameKey": "character.voice.voc_c1011_skill2_3_1"
+        },
+        {
+          "id": "voc_c1011_skill2_3_2",
+          "audioTableKey": "voc_c1011_skill2_3_2",
+          "eventPath": "event:/voc/skill/c_karin_skill_02",
+          "displayNameKey": "character.voice.voc_c1011_skill2_3_2"
+        },
+        {
+          "id": "voc_c1011_skill3_1_1",
+          "audioTableKey": "voc_c1011_skill3_1_1",
+          "eventPath": "event:/voc/skill/c_karin_skill_03",
+          "displayNameKey": "character.voice.voc_c1011_skill3_1_1"
+        },
+        {
+          "id": "voc_c1011_skill3_1_2",
+          "audioTableKey": "voc_c1011_skill3_1_2",
+          "eventPath": "event:/voc/skill/c_karin_skill_03",
+          "displayNameKey": "character.voice.voc_c1011_skill3_1_2"
+        },
+        {
+          "id": "voc_c1011_skill3_2_1",
+          "audioTableKey": "voc_c1011_skill3_2_1",
+          "eventPath": "event:/voc/skill/c_karin_skill_03",
+          "displayNameKey": "character.voice.voc_c1011_skill3_2_1"
+        },
+        {
+          "id": "voc_c1011_skill3_2_2",
+          "audioTableKey": "voc_c1011_skill3_2_2",
+          "eventPath": "event:/voc/skill/c_karin_skill_03",
+          "displayNameKey": "character.voice.voc_c1011_skill3_2_2"
+        },
+        {
+          "id": "voc_c1011_utterance_1",
+          "audioTableKey": "voc_c1011_utterance_1",
+          "eventPath": "event:/voc/character/karin/evt/utterance_01",
+          "displayNameKey": "character.voice.voc_c1011_utterance_1"
+        },
+        {
+          "id": "voc_c1011_utterance_2",
+          "audioTableKey": "voc_c1011_utterance_2",
+          "eventPath": "event:/voc/character/karin/evt/utterance_02",
+          "displayNameKey": "character.voice.voc_c1011_utterance_2"
+        },
+        {
+          "id": "voc_c1011_win_1",
+          "audioTableKey": "voc_c1011_win_1",
+          "eventPath": "event:/voc/character/karin/evt/win",
+          "displayNameKey": "character.voice.voc_c1011_win_1"
+        }
+      ],
+      "skills": [
+        {
+          "id": "c_karin_skill_01",
+          "displayNameKey": "character.karin.skill1",
+          "graphAddress": "characterlab/source/stagept/c_karin_skill_01.stg",
+          "eventPath": "event:/skill/c_karin_skill_01",
+          "voiceEventPath": "event:/voc/skill/c_karin_skill_01",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_karin_skill_01_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_karin_skill_01_a"
+        },
+        {
+          "id": "c_karin_skill_02",
+          "displayNameKey": "character.karin.skill2",
+          "graphAddress": "characterlab/source/stagept/c_karin_skill_02.stg",
+          "eventPath": "event:/skill/c_karin_skill_02",
+          "voiceEventPath": "event:/voc/skill/c_karin_skill_02",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        },
+        {
+          "id": "c_karin_skill_03",
+          "displayNameKey": "character.karin.skill3",
+          "graphAddress": "characterlab/source/stagept/c_karin_skill_03.stg",
+          "eventPath": "event:/skill/c_karin_skill_03",
+          "voiceEventPath": "event:/voc/skill/c_karin_skill_03",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        }
+      ]
+    },
+    {
       "id": "c1062",
       "name": "安洁莉卡",
       "displayNameKey": "character.angelica.name",
@@ -2326,6 +2540,7 @@
     "voc_c1007_skill3_2",
     "voc_c1007_skill3_3",
     "voc_c1009_defeat_2",
-    "voc_c1009_sk3_1_p2"
+    "voc_c1009_sk3_1_p2",
+    "voc_c1011_skill2_3"
   ]
 }

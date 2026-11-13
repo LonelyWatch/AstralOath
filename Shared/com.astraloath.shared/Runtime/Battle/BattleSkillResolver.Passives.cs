@@ -113,7 +113,8 @@ namespace AstralOath.Shared.Battle
                 return amount;
             }
 
-            private static bool ConditionMet(BattleCatalogData.EffectRow effect, Unit caster, Unit recipient, bool allTargets)
+            private static bool ConditionMet(BattleCatalogData.EffectRow effect, Unit caster, Unit recipient, bool allTargets,
+                BattleHitKind targetHit = BattleHitKind.None, bool attackCritical = false)
             {
                 return effect.condition switch
                 {
@@ -128,6 +129,9 @@ namespace AstralOath.Shared.Battle
                     "recipient_debuffed_after_skill_awakening" => caster.Source.Awakenings >= 3 &&
                         recipient.Statuses.Any(status => IsHarmful(status.Kind)),
                     "recipient_health_at_most_half" => 2L * recipient.Health <= recipient.MaximumHealth,
+                    "target_hit_critical" => targetHit == BattleHitKind.Critical,
+                    "attack_critical" => attackCritical,
+                    "attack_critical_after_skill_awakening" => attackCritical && caster.Source.Awakenings >= 3,
                     "single_target_attack" => !allTargets,
                     _ => throw new InvalidOperationException($"Unknown skill condition '{effect.condition}'.")
                 };

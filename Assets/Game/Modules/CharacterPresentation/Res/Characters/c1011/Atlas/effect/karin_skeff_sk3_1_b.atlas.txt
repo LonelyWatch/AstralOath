@@ -1,0 +1,41 @@
+
+karin_skeff_sk3_1_b.sct
+size: 453,211
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 2, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+global_glow
+  rotate: false
+  xy: 344, 111
+  size: 84, 84
+  orig: 84, 84
+  offset: 0, 0
+  index: -1
+ground_smoke4
+  rotate: false
+  xy: 2, 173
+  size: 240, 36
+  orig: 240, 36
+  offset: 0, 0
+  index: -1
+lightning_core_05
+  rotate: false
+  xy: 344, 2
+  size: 107, 107
+  orig: 107, 107
+  offset: 0, 0
+  index: -1
+scan_glow2
+  rotate: false
+  xy: 173, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1

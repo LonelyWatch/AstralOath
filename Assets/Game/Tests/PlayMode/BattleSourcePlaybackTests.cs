@@ -129,6 +129,14 @@ namespace AstralOath.Client.Tests
             var loadedPresentations = graphs.Select(graph => JsonUtility.FromJson<GraphId>(graph.text).id).ToArray();
             Assert.That(loadedPresentations, Is.Unique);
             Assert.That(loadedPresentations, Is.EquivalentTo(catalog.skills.Select(skill => skill.presentationId).Distinct()));
+            string requested = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_HERO_ID");
+            if (!string.IsNullOrWhiteSpace(requested))
+            {
+                requested = requested.Trim();
+                Assert.That(catalog.heroes.Any(hero => hero.id == requested), Is.True,
+                    $"ASTRAL_BATTLE_HERO_ID '{requested}' must match an ID in the battle catalog.");
+                added = new[] { requested };
+            }
             var selection = typeof(BattleHudPreview).GetField("allyHeroIds", PrivateInstance);
             var map = HostField<BindingMap>(host, "hud");
             typeof(BattleHudPreview).GetField("enemyHeroIds", PrivateInstance).SetValue(host, BattleScenePreviewTests.SlowEnemyIds());
@@ -144,6 +152,7 @@ namespace AstralOath.Client.Tests
                 var skill = catalog.skills.Single(row => row.heroId == id && row.slot == 2);
                 Assert.That(map.Require<GameButton>("skill2").interactable, Is.EqualTo(skill.target != "passive"));
                 Assert.That(host.TrySelectBattleTarget("enemy-1"), Is.True, id + " S1 must submit through the real battle controller");
+                TestContext.WriteLine($"{id}: formation and authoritative S1 command passed.");
                 yield return null;
             }
             host.enabled = false;
@@ -176,6 +185,7 @@ namespace AstralOath.Client.Tests
                         _ => new[] { enemies[0] }
                     };
                     yield return Play(skill.presentationId, id + "-s" + skill.slot, front, recipients[0], recipients, Phase.None, Phase.None);
+                    TestContext.WriteLine($"{id} S{skill.slot}: {skill.presentationId} passed source playback and reset.");
                 }
             }
         }

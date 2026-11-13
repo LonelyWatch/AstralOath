@@ -234,6 +234,7 @@ namespace AstralOath.Shared.Battle
                     Changes.Add(BattleChange.Action(actor.Id, selected?.Id, program.Row.id, origin, program.Row.presentationId));
                 ChangeResource(actor, actor, -skill.resourceCost);
 
+                bool attackCritical = false;
                 foreach (var effect in program.Effects)
                 {
                     if (triggerPhase != null && effect.phase != triggerPhase) continue;
@@ -241,7 +242,13 @@ namespace AstralOath.Shared.Battle
                     {
                         case "trigger":
                         case "damage_bonus":
+                        case "critical_damage_bonus":
                         case "defense_penetration":
+                            continue;
+                        case "grant_extra_turn":
+                            if (origin == BattleActionOrigin.Primary && actor.Alive &&
+                                ConditionMet(effect, actor, actor, multiTargetAttack, attackCritical: attackCritical))
+                                Changes.Add(BattleChange.ExtraTurn(actor.Id));
                             continue;
                         case "dual_attack":
                             if (origin == BattleActionOrigin.Primary && selected?.Alive == true)
@@ -256,12 +263,16 @@ namespace AstralOath.Shared.Battle
 
                     foreach (var target in Recipients(effect.recipient, actor, targets))
                     {
-                        if (!target.Alive || !ConditionMet(effect, actor, target, multiTargetAttack)) continue;
+                        if (!target.Alive) continue;
                         bool hasHit = hit.TryGetValue(target.Id, out var lastHit);
                         if (effect.phase == "after_hit" && !hasHit) continue;
+                        if (!ConditionMet(effect, actor, target, multiTargetAttack, lastHit, attackCritical))
+                            continue;
                         ApplyEffect(actor, target, skill, effect, modifiers, soulBurn, lastHit, hit, target == highestDefense,
                             allTargetAttack, program, multiTargetAttack);
-                        if (effect.operation == "damage" && actor.Side != target.Side) attacked.Add(target.Id);
+                        if (effect.operation != "damage" || actor.Side == target.Side) continue;
+                        attacked.Add(target.Id);
+                        attackCritical |= hit[target.Id] == BattleHitKind.Critical;
                     }
                 }
 
@@ -316,8 +327,10 @@ namespace AstralOath.Shared.Battle
                             (SkillModifier(program, "damage_bonus", actor, target, multiTargetAttack) +
                                 Passives(actor).Sum(passive => SkillModifier(passive, "damage_bonus", actor, target, multiTargetAttack))) / (decimal)Basis;
                         int reduction = DamageReduction(target, multiTargetAttack);
+                        int criticalDamage = actor.Source.Stats.CritDamageBp +
+                            SkillModifier(program, "critical_damage_bonus", actor, target, multiTargetAttack);
                         int damage = Damage(actor.Attack, defense, actor.MaximumHealth, rate, skill.powerBp.Value,
-                            skill.casterHealthDamageBp ?? 0, modifiers.DamageBp, relation, result, actor.Source.Stats.CritDamageBp,
+                            skill.casterHealthDamageBp ?? 0, modifiers.DamageBp, relation, result, criticalDamage,
                             additionalBaseDamage: actor.Defense * (skill.casterDefenseDamageBp ?? 0) / Basis,
                             damageMultiplier: (1m + damageBonus) * (1m - reduction / (decimal)Basis) *
                                 (allTargetAttack && target.Has(BattleStatusKind.Stealth) ? .5m : 1m));
@@ -340,6 +353,11 @@ namespace AstralOath.Shared.Battle
                     case "reduce_readiness":
                         if (CheckEffect(actor, target, null, chance, lastHit, hostile: true, checksImmunity: true))
                             Changes.Add(BattleChange.Readiness(actor.Id, target.Id, -effect.value));
+                        break;
+                    case "reduce_cooldown":
+                        foreach (var id in target.Source.Form.SkillIds)
+                            if (target.Source.GetCooldown(id) > 0)
+                                Changes.Add(BattleChange.Cooldown(actor.Id, target.Id, id, -effect.value));
                         break;
                     case "extend_cooldown":
                         for (int turn = 0; turn < effect.value; turn++)

@@ -1,6 +1,6 @@
 # 角色资源白名单导入
 
-本工具接受显式白名单 c1001–c1010 与 c1062，按 E7 ID 排序。新增角色按[逐人接入规范](../../docs/development/battle-roster-expansion.md)验收。`D:/sevenepic/原始资源` 仅以只读方式访问；不得把整个外部目录复制进仓库。十一套骨骼和立绘、三十三份技能 STG 为根，递归引入其真实 atlas/纹理、CFX、particle、camera、cutin，以及实际存在的 timeline。六份指定 FMOD bank 公共保存一次。Ras 没有 timeline 是源布局信息，不伪造空文件。
+本工具接受显式白名单 c1001–c1011 与 c1062，按 E7 ID 排序。新增角色按[逐人接入规范](../../docs/development/battle-roster-expansion.md)验收。`D:/sevenepic/原始资源` 仅以只读方式访问；不得把整个外部目录复制进仓库。十二套骨骼和立绘、三十六份技能 STG 为根，递归引入其真实 atlas/纹理、CFX、particle、camera、cutin，以及实际存在的 timeline。六份指定 FMOD bank 公共保存一次。Ras 没有 timeline 是源布局信息，不伪造空文件。
 
 ## 固定环境与命令
 

@@ -8,7 +8,7 @@
 
 ## 角色接入
 
-角色实验室和战斗试玩可选择原有十名角色及新增杰拉图。第 12 名卡琳已预检。进度见[角色扩充手册](development/battle-roster-expansion.md)。战斗场景双方各四个位置使用同一个通用角色 Prefab，按实例 `Hero Id` 换人。默认八人互不重复，敌方按共享 AI 选择可用技能，详见[八英雄战斗场景](delivery/2026-11-13-eight-hero-battle.md)。规则版本 3 接入十人 26 个主动槽、四个被动槽和 16 种现有状态。当前技能覆盖、客户端表现、开发双人房间的挑衅自动指令及未验证原作边界见[战斗机制交付](delivery/2026-11-14-battle-mechanics.md)。Windows IL2CPP 实验室已用新母包通过十人及 30 个技能入口检查。旧母包需重建以使用 Spine 乘色与 FMOD 日语缺录音处理。操作和验证见[十名角色接入](delivery/2026-11-13-ten-hero-roster.md)。
+角色实验室和战斗试玩可选择 12 名角色，包括新增杰拉图与卡琳。科尔布思为下一名，已完成源资源预检。进度见[角色扩充手册](development/battle-roster-expansion.md)。战斗场景双方各四个位置使用同一个通用角色 Prefab，按实例 `Hero Id` 换人。默认八人互不重复，敌方按共享 AI 选择可用技能，详见[八英雄战斗场景](delivery/2026-11-13-eight-hero-battle.md)。规则版本 3 接入十人 26 个主动槽、四个被动槽和 16 种现有状态。当前技能覆盖、客户端表现、开发双人房间的挑衅自动指令及未验证原作边界见[战斗机制交付](delivery/2026-11-14-battle-mechanics.md)。Windows IL2CPP 实验室已用新母包通过十人及 30 个技能入口检查。旧母包需重建以使用 Spine 乘色与 FMOD 日语缺录音处理。操作和验证见[十名角色接入](delivery/2026-11-13-ten-hero-roster.md)。
 
 ## 魂槽、说明与全面屏
 

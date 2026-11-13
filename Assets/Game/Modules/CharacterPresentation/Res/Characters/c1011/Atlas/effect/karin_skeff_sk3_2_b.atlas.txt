@@ -1,0 +1,55 @@
+
+karin_skeff_sk3_2_b.sct
+size: 335,215
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+energy_aura_bottom1
+  rotate: false
+  xy: 143, 173
+  size: 139, 40
+  orig: 139, 40
+  offset: 0, 0
+  index: -1
+energy_aura_bottom2
+  rotate: false
+  xy: 2, 139
+  size: 139, 42
+  orig: 139, 42
+  offset: 0, 0
+  index: -1
+energy_aura_bottom3
+  rotate: false
+  xy: 143, 129
+  size: 138, 42
+  orig: 138, 42
+  offset: 0, 0
+  index: -1
+energy_aura_bottom4
+  rotate: true
+  xy: 284, 71
+  size: 134, 41
+  orig: 134, 41
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 2
+  size: 135, 135
+  orig: 135, 135
+  offset: 0, 0
+  index: -1
+global_glow
+  rotate: false
+  xy: 266, 2
+  size: 67, 67
+  orig: 67, 67
+  offset: 0, 0
+  index: -1
+lightningball_big
+  rotate: false
+  xy: 139, 2
+  size: 125, 125
+  orig: 125, 125
+  offset: 0, 0
+  index: -1

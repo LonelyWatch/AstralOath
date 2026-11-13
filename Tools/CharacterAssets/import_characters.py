@@ -21,6 +21,7 @@ CHARACTERS={
     "c1008":("arming","亚敏"),
     "c1009":("charlotte","夏绿蒂"),
     "c1010":("zerato","杰拉图"),
+    "c1011":("karin","卡琳"),
     "c1062":("angelica","安洁莉卡"),
 }
 # Keep source identifiers verbatim even where the model and STG stems differ.
@@ -30,6 +31,7 @@ SKILL_VARIANTS={("c1009",3):"c_charlotte_skill_03_05"}
 ANIMATION_CUTINS={
     "stagept/c_mercedes_skill_03.stg": ("model/mercedes.scsp", "skill3", "cutin", "sk_c1005_3"),
     "stagept/c_jerato_skill_03.stg": ("model/zerato.scsp", "skill3", "cutin", "sk_c1010_3"),
+    "stagept/c_karin_skill_03.stg": ("model/karin.scsp", "skill3_2", "cutin", "sk_c1011_3"),
 }
 
 

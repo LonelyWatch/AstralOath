@@ -128,7 +128,7 @@ function Export-BattleCatalog {
             turn_end = @('apply_status')
         }
         $activeOperations = @('damage','heal','dispel','cleanse','apply_status','readiness','reduce_readiness',
-            'extend_cooldown','dual_attack','repeat_if_status','damage_bonus','defense_penetration')
+            'extend_cooldown','reduce_cooldown','grant_extra_turn','dual_attack','repeat_if_status','damage_bonus','critical_damage_bonus','defense_penetration')
         $lastPhase = 0
         $hasDamage = $false
         for ($index = 0; $index -lt $program.Count; $index++) {
@@ -137,7 +137,7 @@ function Export-BattleCatalog {
             $phase = [array]::IndexOf($activeStages, $effect.phase)
             $operation = $effect.operation
             $usesStatus = $operation -cin @('apply_status','repeat_if_status')
-            $isModifier = $operation -cin @('damage_bonus','defense_penetration')
+            $isModifier = $operation -cin @('damage_bonus','critical_damage_bonus','defense_penetration')
             $usesResourceThreshold = $isModifier -and $effect.condition -ceq 'caster_has_resource'
             $validPhase = if ($passive) {
                 $effect.phase -cin $passiveOperations.Keys -and $operation -cin $passiveOperations[$effect.phase]
@@ -149,7 +149,8 @@ function Export-BattleCatalog {
                 ($usesStatus -ne ($effect.status -cne 'none')) -or
                 $effect.status -cnotin $validStatuses -or
                 $effect.condition -cnotin @('none','caster_health_below_half','caster_health_at_least_half',
-                    'caster_health_above_half','caster_health_at_most_half','caster_has_resource','caster_buffed','recipient_buffed','recipient_debuffed_after_skill_awakening','recipient_health_at_most_half','single_target_attack') -or
+                    'caster_health_above_half','caster_health_at_most_half','caster_has_resource','caster_buffed','recipient_buffed','recipient_debuffed_after_skill_awakening','recipient_health_at_most_half','single_target_attack',
+                    'target_hit_critical','attack_critical','attack_critical_after_skill_awakening') -or
                 $effect.chanceBonusStatus -cnotin @('none','AttackDown') -or
                 (($effect.chanceBonusStatus -ceq 'none') -ne ($effect.chanceBonusBp -eq 0)) -or
                 ($operation -cin @('cleanse','dispel','reduce_readiness','extend_cooldown') -and $effect.value -le 0) -or
@@ -167,7 +168,16 @@ function Export-BattleCatalog {
             if (($isModifier -and ($effect.recipient -cne 'self' -or $effect.chanceBp -ne 10000 -or
                     $effect.value -lt 1 -or $effect.value -gt 10000 -or
                     ($effect.condition -cnotin @('caster_buffed','caster_has_resource') -and
-                        -not ($operation -ceq 'damage_bonus' -and $effect.condition -ceq 'recipient_debuffed_after_skill_awakening')))) -or
+                        -not ($operation -ceq 'damage_bonus' -and $effect.condition -ceq 'recipient_debuffed_after_skill_awakening') -and
+                        -not ($operation -ceq 'critical_damage_bonus' -and $effect.condition -ceq 'none')))) -or
+                ($effect.condition -ceq 'target_hit_critical' -and
+                    ($effect.phase -cne 'after_hit' -or $effect.recipient -cne 'targets')) -or
+                ($effect.condition -cin @('attack_critical','attack_critical_after_skill_awakening') -and
+                    ($effect.phase -cne 'after_attack' -or $effect.recipient -cne 'self' -or -not $hasDamage)) -or
+                ($operation -ceq 'reduce_cooldown' -and ($effect.phase -cne 'after_attack' -or
+                    $effect.recipient -cne 'self' -or $effect.value -lt 1 -or $effect.value -gt 4 -or $effect.chanceBp -ne 10000)) -or
+                ($operation -ceq 'grant_extra_turn' -and ($effect.phase -cne 'after_attack' -or
+                    $effect.recipient -cne 'self' -or $effect.value -ne 0 -or $effect.chanceBp -ne 10000)) -or
                 ($operation -ceq 'damage_reduction' -and ($effect.recipient -cnotin @('self','allies') -or
                     $effect.chanceBp -ne 10000 -or $effect.value -lt 1 -or $effect.value -gt 10000 -or
                     $effect.condition -cnotin @('none','recipient_buffed','single_target_attack'))) -or

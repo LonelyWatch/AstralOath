@@ -252,6 +252,31 @@
       "resourceAttackedSpend": 0
     },
     {
+      "id": "c1011",
+      "nameKey": "character.karin.name",
+      "element": "ice",
+      "heroClass": "thief",
+      "zodiac": "leo",
+      "growthPresetId": "thief_leo_4",
+      "baseStars": 4,
+      "level": 60,
+      "stars": 6,
+      "awakenings": 6,
+      "variant": "standard",
+      "attack": 1188,
+      "health": 4855,
+      "defense": 508,
+      "speed": 113,
+      "critChanceBp": 2300,
+      "critDamageBp": 15000,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0,
+      "resourceKind": "none",
+      "resourceMaximum": 0,
+      "resourceTurnGain": 0,
+      "resourceAttackedSpend": 0
+    },
+    {
       "id": "c1062",
       "nameKey": "character.angelica.name",
       "element": "ice",
@@ -377,6 +402,16 @@
       "healthCoefficientMilli": 149400,
       "defenseCoefficientMilli": 53700,
       "speedMilli": 104375
+    },
+    {
+      "id": "thief_leo_4",
+      "nativeStars": 4,
+      "heroClass": "thief",
+      "zodiac": "leo",
+      "attackCoefficientMilli": 58200,
+      "healthCoefficientMilli": 153600,
+      "defenseCoefficientMilli": 43500,
+      "speedMilli": 113750
     }
   ],
   "awakeningSteps": [
@@ -1281,6 +1316,96 @@
       "effectResistanceBp": 0
     },
     {
+      "id": "c1011.r1",
+      "heroId": "c1011",
+      "rank": 1,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 300,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1011.r2",
+      "heroId": "c1011",
+      "rank": 2,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 300,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1011.r3",
+      "heroId": "c1011",
+      "rank": 3,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1011.r4",
+      "heroId": "c1011",
+      "rank": 4,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 800,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1011.r5",
+      "heroId": "c1011",
+      "rank": 5,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 600,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1011.r6",
+      "heroId": "c1011",
+      "rank": 6,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 600,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
       "id": "c1062.r1",
       "heroId": "c1062",
       "rank": 1,
@@ -2068,6 +2193,76 @@
       "soulBurnTurns": 0,
       "attackRateBp": 10000,
       "powerBp": 10000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
+    },
+    {
+      "id": "c1011.s1",
+      "heroId": "c1011",
+      "slot": 1,
+      "nameKey": "battle.skill.c1011.s1.name",
+      "descriptionKey": "battle.skill.c1011.s1.description",
+      "presentationId": "c_karin_skill_01",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1011_1.png",
+      "target": "one_enemy",
+      "cooldownTurns": 0,
+      "soulGain": 1,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 10000,
+      "powerBp": 9500,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
+    },
+    {
+      "id": "c1011.s2",
+      "heroId": "c1011",
+      "slot": 2,
+      "nameKey": "battle.skill.c1011.s2.name",
+      "descriptionKey": "battle.skill.c1011.s2.description",
+      "presentationId": "c_karin_skill_02",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1011_2.png",
+      "target": "one_enemy",
+      "cooldownTurns": 4,
+      "soulGain": 2,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 10000,
+      "powerBp": 9000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
+    },
+    {
+      "id": "c1011.s3",
+      "heroId": "c1011",
+      "slot": 3,
+      "nameKey": "battle.skill.c1011.s3.name",
+      "descriptionKey": "battle.skill.c1011.s3.description",
+      "presentationId": "c_karin_skill_03",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1011_3.png",
+      "target": "one_enemy",
+      "cooldownTurns": 7,
+      "soulGain": 3,
+      "soulBurnCost": 10,
+      "soulBurnKind": "increase_damage",
+      "soulBurnTurns": 0,
+      "attackRateBp": 16000,
+      "powerBp": 8500,
+      "burnAttackRateBp": 23000,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
       "aoeOutsideTurn": false,
@@ -3271,6 +3466,111 @@
       "chanceBonusBp": 0
     },
     {
+      "id": "c1011.s1.1",
+      "skillId": "c1011.s1",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1011.s1.2",
+      "skillId": "c1011.s1",
+      "order": 2,
+      "phase": "after_attack",
+      "operation": "reduce_cooldown",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 1,
+      "condition": "attack_critical",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1011.s2.1",
+      "skillId": "c1011.s2",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1011.s2.2",
+      "skillId": "c1011.s2",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "DefenseDown",
+      "chanceBp": 10000,
+      "turns": 1,
+      "value": 7000,
+      "condition": "target_hit_critical",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1011.s2.3",
+      "skillId": "c1011.s2",
+      "order": 3,
+      "phase": "after_attack",
+      "operation": "grant_extra_turn",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "attack_critical_after_skill_awakening",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1011.s3.1",
+      "skillId": "c1011.s3",
+      "order": 1,
+      "phase": "impact",
+      "operation": "critical_damage_bonus",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 5000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1011.s3.2",
+      "skillId": "c1011.s3",
+      "order": 2,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
       "id": "c1062.s1.1",
       "skillId": "c1062.s1",
       "order": 1,
@@ -4385,6 +4685,111 @@
       "value": 1000
     },
     {
+      "id": "c1011.s1.e1",
+      "skillId": "c1011.s1",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1011.s1.e2",
+      "skillId": "c1011.s1",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1011.s1.e3",
+      "skillId": "c1011.s1",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1011.s1.e4",
+      "skillId": "c1011.s1",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1011.s2.e1",
+      "skillId": "c1011.s2",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1011.s2.e2",
+      "skillId": "c1011.s2",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1011.s2.e3",
+      "skillId": "c1011.s2",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1011.s2.e4",
+      "skillId": "c1011.s2",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1011.s3.e1",
+      "skillId": "c1011.s3",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1011.s3.e2",
+      "skillId": "c1011.s3",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1011.s3.e3",
+      "skillId": "c1011.s3",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1011.s3.e4",
+      "skillId": "c1011.s3",
+      "step": 4,
+      "kind": "cooldown_turns",
+      "value": 1
+    },
+    {
+      "id": "c1011.s3.e5",
+      "skillId": "c1011.s3",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1011.s3.e6",
+      "skillId": "c1011.s3",
+      "step": 6,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1011.s3.e7",
+      "skillId": "c1011.s3",
+      "step": 7,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
       "id": "c1062.s1.e1",
       "skillId": "c1062.s1",
       "step": 1,
@@ -5040,6 +5445,30 @@
       "zhCn": "用巨大冰山攻击全体敌人，各有 50% 概率使其眩晕 1 回合。"
     },
     {
+      "key": "battle.skill.c1011.s1.name",
+      "zhCn": "连斩"
+    },
+    {
+      "key": "battle.skill.c1011.s1.description",
+      "zhCn": "拔剑攻击敌人。暴击时使自身技能冷却减少 1 回合。"
+    },
+    {
+      "key": "battle.skill.c1011.s2.name",
+      "zhCn": "居合·闪"
+    },
+    {
+      "key": "battle.skill.c1011.s2.description",
+      "zhCn": "冲向敌人并攻击。暴击时降低目标防御力 1 回合。完成第三阶觉醒后，暴击还会使自身获得额外回合。"
+    },
+    {
+      "key": "battle.skill.c1011.s3.name",
+      "zhCn": "居合·雷"
+    },
+    {
+      "key": "battle.skill.c1011.s3.description",
+      "zhCn": "以闪电般的速度斩击敌人，暴击时提高伤害。燃魂消耗 10 点魂力并提高本技能伤害。"
+    },
+    {
       "key": "character.ras.name",
       "zhCn": "拉斯"
     },
@@ -5078,6 +5507,10 @@
     {
       "key": "character.zerato.name",
       "zhCn": "杰拉图"
+    },
+    {
+      "key": "character.karin.name",
+      "zhCn": "卡琳"
     },
     {
       "key": "character.angelica.name",
