@@ -93,6 +93,52 @@ namespace AstralOath.Client.Tests
             Assert.That(map.transform.Find("Skills").gameObject.activeSelf, Is.False);
         }
 
+        [UnityTest]
+        public IEnumerator DamageTrailWaitsForTheLastImpactAcrossAnExtraAttack() =>
+            AssertDamageTrailHolds(BattleActionOrigin.ExtraAttack, "ally-1", "c1001.s2", "c_ras_skill_02");
+
+        [UnityTest]
+        public IEnumerator DamageTrailWaitsForTheLastImpactAcrossADualAttack() =>
+            AssertDamageTrailHolds(BattleActionOrigin.DualAttack, "ally-3", "c1005.s1", "c_mercedes_skill_01");
+
+        private IEnumerator AssertDamageTrailHolds(BattleActionOrigin followUp, string source, string skill, string presentation)
+        {
+            scene = BattleScenePreviewTests.LoadPlayerOpeningScene();
+            yield return null;
+            yield return null;
+            var host = scene.GetRootGameObjects().Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            var simulation = Field(host, "simulation");
+            var queue = (Queue<BattleFlowEvent>)Field(simulation, "playback");
+            var marker = host.GetComponentInChildren<BindingMap>().transform.Find("Unit Status/Enemies/01 Front");
+            var health = marker.Find("HP").GetComponent<Image>();
+            var trail = marker.GetComponentsInChildren<Image>(true).Single(image => image.name == "Damage Trail");
+            float RedEnd() => trail.rectTransform.anchorMax.x;
+
+            queue.Enqueue(Event(BattleFlowEventKind.Damage, "ally-1", "c1001.s2", null, BattleActionOrigin.Primary, amount: 900));
+            queue.Enqueue(Event(BattleFlowEventKind.Action, source, skill, presentation, followUp));
+            queue.Enqueue(Event(BattleFlowEventKind.Damage, source, skill, null, followUp, amount: 1100));
+            Call(simulation, "Present", Event(BattleFlowEventKind.Action, "ally-1", "c1001.s2", "c_ras_skill_02", BattleActionOrigin.Primary));
+
+            float healthBefore = health.fillAmount;
+            float firstDuration = (float)Field(simulation, "actionDuration");
+            float firstLastImpact = ((float[])Field(simulation, "hitTimes")).Last();
+            float transition = followUp == BattleActionOrigin.DualAttack ? firstLastImpact : firstDuration;
+            Call(simulation, "Tick", transition + .01f);
+            Assert.That(health.fillAmount, Is.LessThan(healthBefore), "The first action already dealt damage.");
+            Assert.That(trail.enabled, Is.True);
+            Assert.That(RedEnd(), Is.EqualTo(healthBefore).Within(.001f),
+                "The red edge stays at the starting HP through recovery and the next attack's windup.");
+
+            float healthAfterFirst = health.fillAmount;
+            float lastImpact = ((float[])Field(simulation, "hitTimes")).DefaultIfEmpty((float)Field(simulation, "impactSeconds")).Last();
+            Call(simulation, "Tick", lastImpact - (float)Field(simulation, "actionElapsed"));
+            Assert.That(health.fillAmount, Is.LessThan(healthAfterFirst));
+            Assert.That(RedEnd(), Is.EqualTo(healthBefore).Within(.001f));
+            Call(simulation, "Tick", .4f);
+            Assert.That(RedEnd(), Is.InRange(health.fillAmount + .001f, healthBefore - .001f),
+                "Only the final impact starts the red trail's retraction.");
+        }
+
         internal static BattleFlowEvent Event(BattleFlowEventKind kind, string source, string skill, string presentation, BattleActionOrigin origin,
             BattleStatusKind? statusKind = null, int amount = 30, string target = "enemy-1")
         {

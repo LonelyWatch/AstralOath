@@ -598,12 +598,13 @@ namespace AstralOath.Client.BattleScene
             // The hit clock drives individual reactions, shield consumption and damage numbers.
             // Present the accepted HP loss across the same authored hit sequence.
             var hits = BattleDamageSequence.Build(item.Amount + absorbed, hitTimes, impactSeconds);
+            bool closesTrail = !HasLaterDamageInChain(item.TargetId);
             for (int index = 0; index < hits.Length; index++)
             {
                 var hit = hits[index];
                 lastDamageImpact = hit.At;
                 bool first = index == 0;
-                bool last = index == hits.Length - 1;
+                bool releaseTrail = closesTrail && index == hits.Length - 1;
                 int shieldLoss = Math.Min(absorbed, hit.Amount);
                 int healthLoss = hit.Amount - shieldLoss;
                 absorbed -= shieldLoss;
@@ -614,13 +615,29 @@ namespace AstralOath.Client.BattleScene
                     if (!skillPresentation.OwnsNodeAnimationPose(view.Actor))
                         view.Actor.PlayBattleAnimation("attacked");
                     if (shieldLoss > 0) view.AbsorbShield(shieldLoss);
-                    if (item.Amount > 0) view.ApplyDamageHit(healthLoss, unit.Stats.MaxHealth, last);
+                    if (healthLoss > 0 || releaseTrail)
+                        view.ApplyDamageHit(healthLoss, unit.Stats.MaxHealth, releaseTrail);
                     var bounds = view.Actor.Bounds;
                     var world = bounds.center;
                     world.y = bounds.min.y + 0.27f * bounds.size.y;
                     turnHud.ShowDamageHit(item.TargetId, healthLoss, item.HitKind, view.FeedbackAnchor, world, camera);
                 });
             }
+        }
+
+        private bool HasLaterDamageInChain(string targetId)
+        {
+            foreach (var next in playback)
+            {
+                if (next.Kind == BattleFlowEventKind.TurnEnded ||
+                    next.Kind == BattleFlowEventKind.Action &&
+                    (next.Origin == BattleActionOrigin.Primary || next.Origin == BattleActionOrigin.Counter))
+                    break;
+                if (next.TargetId != targetId) continue;
+                if (next.Kind == BattleFlowEventKind.Healing && next.Amount > 0) break;
+                if (next.Kind == BattleFlowEventKind.Damage) return true;
+            }
+            return false;
         }
 
         private void ShowHealing(BattleFlowEvent item)
