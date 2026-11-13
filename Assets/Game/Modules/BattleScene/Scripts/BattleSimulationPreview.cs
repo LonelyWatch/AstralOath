@@ -180,7 +180,7 @@ namespace AstralOath.Client.BattleScene
                         skillPresentation.Prepare(actorView, row.speedUpPresentationId);
                 }
             }
-            voice = new BattleVoice(audioCatalog, audioBanks, impactBank);
+            voice = new BattleVoice(audioCatalog, audioBanks, impactBank, Snapshot.Units.Select(unit => unit.DefinitionId));
             turnHud = new BattleTurnHud(hud, unit => Label(unit.NameKey), sprites, damageFont,
                 (unit, slot, image) => InspectSkill(unit, slot, image, true),
                 InspectStatus, CloseInspection, statusArt);
@@ -423,8 +423,8 @@ namespace AstralOath.Client.BattleScene
             foreach (var button in SkillButtons())
             {
                 bool active = TrySkill(index, out var skill) && skill.target != "passive";
-                bool available = active && HasSkillResource(skill) && (!useSoulBurn || index == selected);
-                button.interactable = CanAct && available && IsSkillAvailable(skill, useSoulBurn);
+                bool available = active && (!useSoulBurn || index == selected) && IsSkillAvailable(skill, useSoulBurn);
+                button.interactable = CanAct && available;
                 ((Image)button.targetGraphic).color = !available
                     ? new Color(.35f, .35f, .35f, 1f) : Color.white;
                 index++;
@@ -549,6 +549,13 @@ namespace AstralOath.Client.BattleScene
                     if (IsPeriodicDamage(item)) ShowPeriodicDamage(item, absorbed);
                     else ScheduleDamage(item, absorbed);
                     break;
+                case BattleFlowEventKind.InjuryApplied:
+                    ScheduleFeedback(AfterLastHitAt(item.TargetId), item.TargetId, () =>
+                    {
+                        var view = views[item.TargetId];
+                        view.SetHealthCapacity(Snapshot.GetUnit(item.TargetId).Stats.MaxHealth, item.MaximumHealth.Value);
+                    });
+                    break;
                 case BattleFlowEventKind.Healing:
                     ScheduleFeedback(LastFeedbackAt(item.TargetId), item.TargetId, () => ShowHealing(item));
                     break;
@@ -620,7 +627,7 @@ namespace AstralOath.Client.BattleScene
         {
             var view = views[item.TargetId];
             if (absorbed > 0) view.AbsorbShield(absorbed);
-            view.ApplyDamageHit(item.Amount, Snapshot.GetUnit(item.TargetId).Stats.MaxHealth, true);
+            view.ApplyDamageHit(item.Amount, item.MaximumHealth ?? Snapshot.GetUnit(item.TargetId).MaximumHealth, true);
             turnHud.ShowPeriodicDamage(item, view.FeedbackAnchor, view.Actor.Bounds.center, camera);
         }
 
@@ -649,7 +656,7 @@ namespace AstralOath.Client.BattleScene
                         view.Actor.PlayBattleAnimation("attacked");
                     if (shieldLoss > 0) view.AbsorbShield(shieldLoss);
                     if (healthLoss > 0 || releaseTrail)
-                        view.ApplyDamageHit(healthLoss, unit.Stats.MaxHealth, releaseTrail);
+                        view.ApplyDamageHit(healthLoss, item.MaximumHealth ?? unit.MaximumHealth, releaseTrail);
                     var bounds = view.Actor.Bounds;
                     var world = bounds.center;
                     world.y = bounds.min.y + 0.27f * bounds.size.y;
@@ -676,7 +683,7 @@ namespace AstralOath.Client.BattleScene
         private void ShowHealing(BattleFlowEvent item)
         {
             var view = views[item.TargetId];
-            view.AdjustHealth(item.Amount, Snapshot.GetUnit(item.TargetId).Stats.MaxHealth);
+            view.AdjustHealth(item.Amount, item.MaximumHealth ?? Snapshot.GetUnit(item.TargetId).MaximumHealth);
             if (item.Amount > 0)
                 turnHud.ShowImpact(item, view.FeedbackAnchor, view.Actor.Bounds.center, camera);
         }
@@ -719,7 +726,8 @@ namespace AstralOath.Client.BattleScene
                 var view = views[state.InstanceId];
                 view.Show(state.IsAlive);
                 view.Actor.SetTurnReady(state.IsAlive && state.InstanceId == Snapshot.CurrentActorId);
-                view.SetHealth(state.CurrentHealth, state.Stats.MaxHealth);
+                view.SetHealthCapacity(state.Stats.MaxHealth, state.MaximumHealth);
+                view.SetHealth(state.CurrentHealth, state.MaximumHealth);
                 view.RefreshStatuses(state);
             }
             soulGauge.Show(Snapshot.GetSoul(BattleSide.Ally));
@@ -731,8 +739,8 @@ namespace AstralOath.Client.BattleScene
             if (actor != null)
             {
                 hud.Require<GameText>("activeName").text = Label(actor.NameKey);
-                hud.Require<GameText>("activeHp").text = $"{actor.CurrentHealth}/{actor.Stats.MaxHealth}";
-                hud.Require<Image>("activeHpFill").fillAmount = actor.CurrentHealth / (float)actor.Stats.MaxHealth;
+                hud.Require<GameText>("activeHp").text = $"{actor.CurrentHealth}/{actor.MaximumHealth}";
+                hud.Require<Image>("activeHpFill").fillAmount = actor.CurrentHealth / (float)actor.MaximumHealth;
                 sprites.TryGetValue(actor.DefinitionId + "_su", out var actorPortrait);
                 activePortrait.Show(actorPortrait);
                 SetActorArt("Element", "cm_icon_prom" + actor.Element.ToString().ToLowerInvariant());
@@ -912,9 +920,6 @@ namespace AstralOath.Client.BattleScene
                     return i;
             return -1;
         }
-
-        private bool HasSkillResource(BattleCatalogData.SkillRow skill) =>
-            skill.resourceCost <= 0 || (Actor.Resource?.Amount ?? 0) >= skill.resourceCost;
 
         private bool IsSkillAvailable(BattleCatalogData.SkillRow skill, bool burn = false) =>
             ai.IsSkillAvailable(Snapshot, skill.id, burn);
@@ -1140,6 +1145,13 @@ namespace AstralOath.Client.BattleScene
                 // Once HP is exposed, a depleted ward should not cover the new red segment.
                 if (loss > 0 && presentedShield == 0) status.UpdateShield(0, maximum, true);
                 status.ApplyDamageHit(presentedHealth, maximum, lastHit);
+            }
+
+            public void SetHealthCapacity(int original, int effective)
+            {
+                maximumHealth = effective;
+                presentedHealth = Math.Min(presentedHealth, effective);
+                status.SetHealthCapacity(original, effective);
             }
 
             public void AdjustHealth(int delta, int maximum) => SetHealth(presentedHealth + delta, maximum);

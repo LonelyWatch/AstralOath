@@ -1,0 +1,79 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "ravi_skeff_sk3_exp",
+      "y": "0",
+      "scale": "1.5,1.4",
+      "format": "spine",
+      "globalZ": 0.2
+    },
+    {
+      "source": "ravi_skill_03_pati1",
+      "x": "500",
+      "y": "350",
+      "rotate": "65",
+      "delay": "924",
+      "format": "particle",
+      "globalZ": 0.3
+    },
+    {
+      "source": "ravi_skill_03_pati2",
+      "x": "-490",
+      "y": "510",
+      "rotate": "-50",
+      "delay": "1089",
+      "format": "particle",
+      "globalZ": 0.3
+    },
+    {
+      "source": "ravi_skill_03_pati3",
+      "x": "-280",
+      "y": "70",
+      "rotate": "-115",
+      "delay": "1320",
+      "format": "particle",
+      "globalZ": 0.3
+    },
+    {
+      "source": "ravi_skill_03_pati4",
+      "x": "-35",
+      "y": "465",
+      "rotate": "-35",
+      "delay": "1617",
+      "format": "particle",
+      "globalZ": 0.3
+    },
+    {
+      "source": "ravi_skill_03_pati5",
+      "x": "50",
+      "y": "850",
+      "rotate": "10",
+      "delay": "2178",
+      "format": "particle",
+      "globalZ": 0.3
+    },
+    {
+      "source": "ravi_skill_03_pati6",
+      "x": "50",
+      "y": "900",
+      "scale": "1.0,0.6",
+      "rotate": "10",
+      "delay": "2178",
+      "format": "particle",
+      "globalZ": 0.3
+    },
+    {
+      "source": "ravi_skill_03_pati7",
+      "delay": "3500",
+      "format": "particle",
+      "globalZ": 0.1
+    },
+    {
+      "source": "ravi_skill_03_pati8",
+      "delay": "3762",
+      "format": "particle",
+      "globalZ": 0.4
+    }
+  ]
+}

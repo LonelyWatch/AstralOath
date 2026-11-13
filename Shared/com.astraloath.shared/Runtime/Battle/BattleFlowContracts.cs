@@ -18,7 +18,7 @@ namespace AstralOath.Shared.Battle
     {
         BattleStarted, TurnStarted, Action, Damage, Healing, ReadinessChanged,
         StatusApplied, StatusRemoved, CooldownChanged, SoulChanged, BarrierAbsorbed,
-        UnitDefeated, TurnSkipped, TurnEnded, BattleEnded, EffectRejected, ResourceChanged, StatusDurationChanged, ExtraTurnGranted
+        UnitDefeated, TurnSkipped, TurnEnded, BattleEnded, EffectRejected, ResourceChanged, StatusDurationChanged, ExtraTurnGranted, InjuryApplied, OpeningAttackBonusApplied, TurnEffectTriggered
     }
     public enum BattleCommandStatus
     {
@@ -123,18 +123,22 @@ namespace AstralOath.Shared.Battle
     {
         internal BattleUnitSnapshot(BattleUnit unit, int health, int readinessBp,
             IReadOnlyDictionary<string, int> cooldowns, IReadOnlyList<BattleStatusSnapshot> statuses,
-            int resourceAmount)
+            int resourceAmount, int injuryAmount, int openingAttackBonus, IReadOnlyCollection<string> triggeredTurnEffects)
         {
             InstanceId = unit.InstanceId;
             DefinitionId = unit.Definition.Id;
             NameKey = unit.Definition.NameKey;
             Level = unit.Level;
             Awakenings = unit.Awakenings ?? 0;
+            IsHero = unit.Definition is HeroDefinition;
             Element = unit.Definition.Element;
             Slot = unit.Slot;
             Form = unit.Form;
             Stats = unit.Stats;
             CurrentHealth = health;
+            InjuryAmount = injuryAmount;
+            OpeningAttackBonus = openingAttackBonus;
+            TriggeredTurnEffects = triggeredTurnEffects;
             ReadinessBp = readinessBp;
             Cooldowns = cooldowns;
             Statuses = statuses;
@@ -150,6 +154,11 @@ namespace AstralOath.Shared.Battle
         public BattleUnitForm Form { get; }
         public BattleStats Stats { get; }
         public int CurrentHealth { get; }
+        public int InjuryAmount { get; }
+        public int MaximumHealth => Stats.MaxHealth - InjuryAmount;
+        public int OpeningAttackBonus { get; }
+        internal IReadOnlyCollection<string> TriggeredTurnEffects { get; }
+        internal bool IsHero { get; }
         public bool IsAlive => CurrentHealth > 0;
         public int ReadinessBp { get; }
         public BattleResourceSnapshot Resource { get; }
@@ -201,12 +210,12 @@ namespace AstralOath.Shared.Battle
             string presentationId = null, BattleActionOrigin origin = BattleActionOrigin.Primary,
             BattleStatusKind? statusKind = null, BattleStatusSnapshot status = null, BattleSide? side = null,
             BattleOutcome? outcome = null, BattleHitKind hitKind = BattleHitKind.None,
-            BattleEffectRejection? effectRejection = null, bool useSoulBurn = false, int? remainingHealth = null)
+            BattleEffectRejection? effectRejection = null, bool useSoulBurn = false, int? remainingHealth = null, int? maximumHealth = null)
         {
             Sequence = sequence; TurnNumber = turn; Kind = kind; SourceId = sourceId; TargetId = targetId;
             Amount = amount; SkillId = skillId; PresentationId = presentationId; Origin = origin;
             StatusKind = statusKind; Status = status; Side = side; Outcome = outcome; HitKind = hitKind;
-            EffectRejection = effectRejection; UseSoulBurn = useSoulBurn; RemainingHealth = remainingHealth;
+            EffectRejection = effectRejection; UseSoulBurn = useSoulBurn; RemainingHealth = remainingHealth; MaximumHealth = maximumHealth;
         }
         public ulong Sequence { get; }
         public int TurnNumber { get; }
@@ -225,6 +234,7 @@ namespace AstralOath.Shared.Battle
         public BattleEffectRejection? EffectRejection { get; }
         public bool UseSoulBurn { get; }
         public int? RemainingHealth { get; }
+        public int? MaximumHealth { get; }
     }
 
     public sealed class BattleCommandResult
@@ -319,6 +329,12 @@ namespace AstralOath.Shared.Battle
             new BattleChange(BattleFlowEventKind.SoulChanged, source, null, delta, side: side);
         internal static BattleChange Resource(string source, string target, int delta) =>
             new BattleChange(BattleFlowEventKind.ResourceChanged, source, target, delta);
+        internal static BattleChange Injury(string source, string target, int amount) =>
+            new BattleChange(BattleFlowEventKind.InjuryApplied, source, target, amount);
+        internal static BattleChange OpeningAttackBonus(string actor, int amount) =>
+            new BattleChange(BattleFlowEventKind.OpeningAttackBonusApplied, actor, actor, amount);
+        internal static BattleChange MarkTurnEffect(string actor, string effectId) =>
+            new BattleChange(BattleFlowEventKind.TurnEffectTriggered, actor, actor, skillId: effectId);
         public static BattleChange ExtraTurn(string actor) =>
             new BattleChange(BattleFlowEventKind.ExtraTurnGranted, actor, actor);
         public static BattleChange Action(string source, string target, string skillId, BattleActionOrigin origin, string presentationId = null) =>

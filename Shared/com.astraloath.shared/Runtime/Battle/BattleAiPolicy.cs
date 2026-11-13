@@ -25,13 +25,21 @@ namespace AstralOath.Shared.Battle
         private readonly ILookup<string, BattleCatalogData.EffectRow> effects;
         private readonly HashSet<string> soulWeavers;
 
-        public BattleAiPolicy(BattleCatalogData catalog)
+        private readonly ILookup<string, BattleCatalogData.EnhancementRow> resourceDiscounts;
+        private readonly Func<string, string, int> enhancementRank;
+
+        public BattleAiPolicy(BattleCatalogData catalog, Func<string, string, int> enhancementRank = null)
         {
             if (catalog == null) throw new ArgumentNullException(nameof(catalog));
             if (catalog.skills == null || catalog.effects == null)
                 throw new ArgumentException("Battle AI requires the skill and effect catalog.", nameof(catalog));
             skills = catalog.skills.ToDictionary(row => row.id, row => row.Copy(), StringComparer.Ordinal);
             skills.Add(BattlePreviewFactory.SlimeSkillId, BattleSkillResolver.CreatePreviewSlimeSkill());
+            this.enhancementRank = enhancementRank;
+            resourceDiscounts = (catalog.enhancements ?? Array.Empty<BattleCatalogData.EnhancementRow>())
+                .Where(row => row.kind == "resource_cost")
+                .Select(row => new BattleCatalogData.EnhancementRow { skillId = row.skillId, step = row.step, value = row.value })
+                .ToLookup(row => row.skillId, StringComparer.Ordinal);
             effects = catalog.effects.Select(row => row.Copy()).ToLookup(row => row.skillId, StringComparer.Ordinal);
             soulWeavers = new HashSet<string>((catalog.heroes ?? Array.Empty<BattleCatalogData.HeroRow>())
                 .Where(row => row.heroClass == "soul_weaver").Select(row => row.id), StringComparer.Ordinal);
@@ -40,9 +48,15 @@ namespace AstralOath.Shared.Battle
         public bool IsSkillAvailable(BattleSnapshot snapshot, string skillId, bool useSoulBurn = false)
         {
             var actor = CurrentActor(snapshot);
-            return actor != null && skillId != null && actor.Form.SkillIds.Contains(skillId) &&
-                skills.TryGetValue(skillId, out var skill) &&
-                BattleSkillResolver.CanUseSkill(snapshot, actor, skill, useSoulBurn);
+            if (actor == null || skillId == null || !actor.Form.SkillIds.Contains(skillId) ||
+                !skills.TryGetValue(skillId, out var skill)) return false;
+            int discount = 0;
+            if (enhancementRank != null && resourceDiscounts.Contains(skillId))
+            {
+                int rank = enhancementRank(actor.InstanceId, skillId);
+                discount = resourceDiscounts[skillId].Where(row => row.step <= rank).Sum(row => row.value);
+            }
+            return BattleSkillResolver.CanUseSkill(snapshot, actor, skill, useSoulBurn, discount);
         }
 
         public bool CanSelectTarget(BattleSnapshot snapshot, string skillId, string targetId, bool useSoulBurn = false)
@@ -168,8 +182,8 @@ namespace AstralOath.Shared.Battle
 
         private static bool IsHealing(string operation) => operation == "heal" || operation == "heal_target_health";
         private static bool TargetsAllies(string target) => target == "one_ally" || target == "all_allies" || target == "self";
-        private static bool IsBelowHalf(BattleUnitSnapshot unit) => 2L * unit.CurrentHealth < unit.Stats.MaxHealth;
-        private static decimal HealthRatio(BattleUnitSnapshot unit) => unit.CurrentHealth / (decimal)unit.Stats.MaxHealth;
+        private static bool IsBelowHalf(BattleUnitSnapshot unit) => 2L * unit.CurrentHealth < unit.MaximumHealth;
+        private static decimal HealthRatio(BattleUnitSnapshot unit) => unit.CurrentHealth / (decimal)unit.MaximumHealth;
 
         private static IEnumerable<BattleUnitSnapshot> AliveOnSide(BattleSnapshot snapshot, BattleSide side) =>
             snapshot.Units.Where(unit => unit.IsAlive && unit.Slot.Side == side);

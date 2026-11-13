@@ -167,6 +167,13 @@ namespace AstralOath.Client.Tests
                 Assert.That(host.TrySelectBattleTarget("enemy-1"), Is.True, id + " S1 must submit through the real battle controller");
                 TestContext.WriteLine($"{id}: formation and authoritative S1 command passed.");
                 yield return null;
+#if UNITY_EDITOR_WIN
+                if (id == "c1019")
+                {
+                    Assert.That(host.StartedSkillSounds, Is.GreaterThan(0), "Ravi's original effect event must play in battle.");
+                    Assert.That(host.StartedSkillVoices, Is.GreaterThan(0), "Ravi's selected voice bank must play in battle.");
+                }
+#endif
             }
             host.enabled = false;
             yield return null;

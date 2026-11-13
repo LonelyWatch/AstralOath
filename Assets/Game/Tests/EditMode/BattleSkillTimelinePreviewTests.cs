@@ -223,6 +223,30 @@ namespace AstralOath.Tests
             }
         }
 
+        [Test]
+        public void RaviTerminalCutinHoldsOnceAndScopeEndsAtTheLandingMarker()
+        {
+            var type = Type.GetType(PreviewTypeName, throwOnError: true);
+            var graph = AssetDatabase.LoadAssetAtPath<TextAsset>(HeroDirectory +
+                "c1019/Configs/stagept/c_ravi_skill_03.graph.json");
+            Assert.That(graph, Is.Not.Null);
+            using var session = (IDisposable)Activator.CreateInstance(type, nonPublic: true);
+            type.GetMethod("Load", Instance).Invoke(session, new object[] { "c1019", "c_ravi_skill_03", graph.text, null, false, true, false });
+            var cues = (IReadOnlyList<(float At, JObject Node, float Duration, JObject[] Modulators)>)
+                type.GetProperty("Cues", Instance).GetValue(session);
+            var cutins = (IReadOnlyList<(float At, float Duration)>)type.GetProperty("Cutins", Instance).GetValue(session);
+            var first = cues.Single(cue => (int?)cue.Node["guid"] == 5);
+            Assert.That(cutins, Has.Count.EqualTo(1));
+            Assert.That(cutins[0].At, Is.EqualTo(first.At + 1.8666f).Within(.001f));
+            Assert.That(cutins[0].Duration, Is.EqualTo(1.8f).Within(.001f));
+            var last = cues.Single(cue => (int?)cue.Node["guid"] == 16);
+            var home = cues.Single(cue => (int?)cue.Node["guid"] == 19);
+            Assert.That(home.At, Is.EqualTo(last.At + .9333f).Within(.001f));
+            var hits = (IReadOnlyList<float>)type.GetProperty("HitTimes", Instance).GetValue(session);
+            Assert.That(hits.Count, Is.EqualTo(8));
+            Assert.That((float)type.GetProperty("StageDuration", Instance).GetValue(session), Is.GreaterThan(hits.Last()));
+        }
+
         private sealed class SceneAllocationProbe : IDisposable
         {
             internal readonly GameObject Object = new GameObject("Preview allocation probe") { hideFlags = HideFlags.HideAndDontSave };

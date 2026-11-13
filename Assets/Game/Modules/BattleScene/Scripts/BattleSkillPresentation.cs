@@ -374,6 +374,7 @@ namespace AstralOath.Client.BattleScene
                 .OfType<JObject>().ToArray();
             float EventTime(string animation, string name)
             {
+                if (string.IsNullOrEmpty(animation) || string.IsNullOrEmpty(name)) return -1f;
                 float spineTime = caster.GetBattleAnimationEventTime(animation, name);
                 if (spineTime >= 0f) return spineTime;
                 return timelineEvents.SelectMany(timeline => timeline[animation]?["frames"]?.OfType<JObject>() ?? Enumerable.Empty<JObject>())
@@ -394,7 +395,8 @@ namespace AstralOath.Client.BattleScene
                 if (Kind(node) == "ANI") { animation = (string)node["ani"]; animationStart = at; }
                 if (Kind(node) == "ANI_SCOPE")
                 {
-                    float start = EventTime(animation, (string)node["from"]);
+                    string from = (string)node["from"];
+                    float start = string.IsNullOrEmpty(from) ? 0f : EventTime(animation, from);
                     float end = EventTime(animation, (string)node["to"]);
                     if (start >= 0f && end < 0f)
                     {

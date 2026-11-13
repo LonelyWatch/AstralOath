@@ -27,17 +27,22 @@ namespace AstralOath.Shared.Battle
                     foreach (var effect in passive.Effects)
                     {
                         if (effect.phase != phase) continue;
-                        if (effect.operation != "apply_status" || effect.recipient != "self" || effect.chanceBp != Basis)
+                        if (effect.recipient != "self" || effect.chanceBp != Basis)
                             throw new InvalidOperationException($"Unsupported lifecycle effect {effect.id}.");
-                        if (ConditionMet(effect, actor, actor, false))
+                        if (!ConditionMet(effect, actor, actor, false)) continue;
+                        if (phase == "battle_start" && effect.operation == "opening_attack_from_health")
+                            Changes.Add(BattleChange.OpeningAttackBonus(actor.Id, ScaleHealth(actor.MaximumHealth, effect.value)));
+                        else if (effect.operation == "apply_status")
                             ApplyEffect(actor, actor, passive.Row, effect, owner.ModifiersFor(actor, passive), false,
                                 BattleHitKind.None, null, false);
+                        else throw new InvalidOperationException($"Unsupported lifecycle effect {effect.id}.");
                     }
                 }
                 return Changes;
             }
 
-            private void ResolveAttackedPassives(Unit attacker, Unit[] targets, HashSet<string> attacked)
+            private void ResolveAttackedPassives(Unit attacker, Unit[] targets, HashSet<string> attacked,
+                HashSet<string> criticallyHit)
             {
                 foreach (var target in targets)
                 {
@@ -46,6 +51,20 @@ namespace AstralOath.Shared.Battle
                     foreach (var effect in passive.Effects)
                     {
                         if (effect.phase != "on_attacked" || !ConditionMet(effect, target, target, false)) continue;
+                        if (effect.operation == "cleanse_once_on_critical")
+                        {
+                            if (criticallyHit?.Contains(target.Id) == true &&
+                                !target.TriggeredTurnEffects.Contains(effect.id))
+                            {
+                                var debuff = target.Statuses.FirstOrDefault(item => IsHarmful(item.Kind));
+                                if (debuff == null) continue;
+                                target.Statuses.Remove(debuff);
+                                target.TriggeredTurnEffects.Add(effect.id);
+                                Changes.Add(BattleChange.RemoveStatus(target.Id, target.Id, debuff));
+                                Changes.Add(BattleChange.MarkTurnEffect(target.Id, effect.id));
+                            }
+                            continue;
+                        }
                         var modifiers = owner.ModifiersFor(target, passive);
 
                         if (effect.operation == "counterattack" || effect.operation == "readiness_bonus") continue;

@@ -160,3 +160,12 @@
 ,c1018.s2.4,c1018.s2,4,after_attack,readiness,self,none,10000,0,2000,caster_skill_awakened,none,0
 ,c1018.s3.1,c1018.s3,1,impact,heal_target_health,targets,none,10000,0,1500,none,none,0
 ,c1018.s3.2,c1018.s3,2,impact,target_health_barrier,targets,none,10000,2,1500,none,none,0
+,c1019.s1.1,c1019.s1,1,impact,damage,targets,none,10000,0,0,none,none,0
+,c1019.s1.2,c1019.s1,2,after_attack,lifesteal,self,none,10000,0,3000,none,none,0
+,c1019.s2.1,c1019.s2,1,battle_start,opening_attack_from_health,self,none,10000,0,800,none,none,0
+,c1019.s2.2,c1019.s2,2,on_attacked,readiness,self,none,10000,0,800,none,none,0
+,c1019.s2.3,c1019.s2,3,on_attacked,cleanse_once_on_critical,self,none,10000,0,1,none,none,0
+,c1019.s3.1,c1019.s3,1,impact,damage,targets,none,10000,0,0,none,none,0
+,c1019.s3.2,c1019.s3,2,after_hit,injury,targets,none,10000,0,1000,caster_skill_not_awakened,none,0
+,c1019.s3.3,c1019.s3,3,after_hit,injury,targets,none,10000,0,2000,caster_skill_awakened,none,0
+,c1019.s3.4,c1019.s3,4,after_hit,apply_status,targets,Stun,7500,1,0,none,none,0

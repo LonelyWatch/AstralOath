@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AstralOath.Client.Bootstrap;
@@ -27,7 +28,8 @@ namespace AstralOath.Client.BattleScene
         public int StartedHitCount { get; private set; }
         public int StartedBurnReadyCount { get; private set; }
 
-        public BattleVoice(TextAsset audioCatalog, TextAsset[] banks, TextAsset impactBank = null)
+        public BattleVoice(TextAsset audioCatalog, TextAsset[] banks, TextAsset impactBank = null,
+            IEnumerable<string> activeHeroIds = null)
         {
             try
             {
@@ -64,11 +66,32 @@ namespace AstralOath.Client.BattleScene
                     addresses.Add(ImpactBankAddress);
                     bankAssets.Add(impactBank);
                 }
+                var aliases = catalog.japaneseProgrammerAliases;
+                if (activeHeroIds != null)
+                {
+                    var active = activeHeroIds.ToHashSet(StringComparer.Ordinal);
+                    var allVoiceBanks = catalog.characters.Select(row => row.voiceBankAddress)
+                        .Where(address => !string.IsNullOrEmpty(address)).ToHashSet(StringComparer.Ordinal);
+                    var activeVoiceBanks = catalog.characters.Where(row => active.Contains(row.id))
+                        .Select(row => row.voiceBankAddress).ToHashSet(StringComparer.Ordinal);
+                    var activeVoiceEvents = catalog.characters.Where(row => active.Contains(row.id))
+                        .SelectMany(row => row.skills ?? Array.Empty<SkillAudio>())
+                        .SelectMany(skill => new[] { skill.voiceEventPath, skill.dualCallVoiceEventPath, skill.dualAnswerVoiceEventPath })
+                        .ToHashSet(StringComparer.Ordinal);
+                    aliases = aliases?.Where(alias => activeVoiceEvents.Contains(alias.eventPath)).ToArray();
+                    for (int index = addresses.Count - 1; index >= 0; index--)
+                    {
+                        string address = addresses[index];
+                        if (!allVoiceBanks.Contains(address) || activeVoiceBanks.Contains(address)) continue;
+                        addresses.RemoveAt(index);
+                        bankAssets.RemoveAt(index);
+                    }
+                }
                 var assets = new SceneBanks(addresses.ToArray(), bankAssets.ToArray());
                 service = new FmodCharacterAudioService(CancellationToken.None);
                 // Scene banks are already loaded TextAssets; the asset adapter always completes inline.
                 service.InitializeAsync(assets, addresses, catalog.missingJapaneseProgrammerKeys,
-                    catalog.japaneseProgrammerAliases).GetAwaiter().GetResult();
+                    aliases).GetAwaiter().GetResult();
             }
             catch (Exception error)
             {
@@ -206,6 +229,7 @@ namespace AstralOath.Client.BattleScene
         private sealed class AudioCharacter
         {
             public string id;
+            public string voiceBankAddress;
             public SkillAudio[] skills;
             public CharacterVoice[] voices;
         }

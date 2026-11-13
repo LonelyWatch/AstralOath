@@ -513,6 +513,33 @@
       "resourceAttackedSpend": 0,
       "resourceOpeningGain": 0,
       "resourceAttackedGain": 0
+    },
+    {
+      "id": "c1019",
+      "nameKey": "character.ravi.name",
+      "element": "fire",
+      "heroClass": "warrior",
+      "zodiac": "capricorn",
+      "growthPresetId": "warrior_capricorn_5",
+      "baseStars": 5,
+      "level": 60,
+      "stars": 6,
+      "awakenings": 6,
+      "variant": "standard",
+      "attack": 966,
+      "health": 7323,
+      "defense": 657,
+      "speed": 102,
+      "critChanceBp": 1500,
+      "critDamageBp": 15000,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0,
+      "resourceKind": "fighting_spirit",
+      "resourceMaximum": 100,
+      "resourceTurnGain": 0,
+      "resourceAttackedSpend": 0,
+      "resourceOpeningGain": 60,
+      "resourceAttackedGain": 0
     }
   ],
   "growthPresets": [
@@ -685,6 +712,16 @@
       "healthCoefficientMilli": 132600,
       "defenseCoefficientMilli": 54300,
       "speedMilli": 97500
+    },
+    {
+      "id": "warrior_capricorn_5",
+      "nativeStars": 5,
+      "heroClass": "warrior",
+      "zodiac": "capricorn",
+      "attackCoefficientMilli": 54000,
+      "healthCoefficientMilli": 202600,
+      "defenseCoefficientMilli": 53100,
+      "speedMilli": 102500
     }
   ],
   "awakeningSteps": [
@@ -2397,6 +2434,96 @@
       "critDamageBp": 0,
       "effectivenessBp": 0,
       "effectResistanceBp": 0
+    },
+    {
+      "id": "c1019.r1",
+      "heroId": "c1019",
+      "rank": 1,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 300,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1019.r2",
+      "heroId": "c1019",
+      "rank": 2,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 300,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1019.r3",
+      "heroId": "c1019",
+      "rank": 3,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1019.r4",
+      "heroId": "c1019",
+      "rank": 4,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 600,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1019.r5",
+      "heroId": "c1019",
+      "rank": 5,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 600,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1019.r6",
+      "heroId": "c1019",
+      "rank": 6,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 600,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
     }
   ],
   "skills": [
@@ -3947,6 +4074,86 @@
       "aoeWhenBuffed": false,
       "aoeOutsideTurn": false,
       "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": ""
+    },
+    {
+      "id": "c1019.s1",
+      "heroId": "c1019",
+      "slot": 1,
+      "nameKey": "battle.skill.c1019.s1.name",
+      "descriptionKey": "battle.skill.c1019.s1.description",
+      "presentationId": "c_ravi_skill_01",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1019_1.png",
+      "target": "one_enemy",
+      "cooldownTurns": 0,
+      "soulGain": 1,
+      "soulBurnCost": 20,
+      "soulBurnKind": "increase_damage_no_dual",
+      "soulBurnTurns": 0,
+      "attackRateBp": 10000,
+      "powerBp": 10000,
+      "burnAttackRateBp": 25000,
+      "alwaysCritical": true,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 30,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": ""
+    },
+    {
+      "id": "c1019.s2",
+      "heroId": "c1019",
+      "slot": 2,
+      "nameKey": "battle.skill.c1019.s2.name",
+      "descriptionKey": "battle.skill.c1019.s2.description",
+      "presentationId": "c_ravi_skill_02",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1019_2.png",
+      "target": "passive",
+      "cooldownTurns": 0,
+      "soulGain": 0,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": ""
+    },
+    {
+      "id": "c1019.s3",
+      "heroId": "c1019",
+      "slot": 3,
+      "nameKey": "battle.skill.c1019.s3.name",
+      "descriptionKey": "battle.skill.c1019.s3.description",
+      "presentationId": "c_ravi_skill_03",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1019_3.png",
+      "target": "all_enemies",
+      "cooldownTurns": 0,
+      "soulGain": 3,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 12000,
+      "powerBp": 9500,
+      "alwaysCritical": true,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 100,
       "resourceGain": 0,
       "resourceGainWhenBuffed": 0,
       "speedUpPresentationId": "",
@@ -6370,6 +6577,141 @@
       "condition": "none",
       "chanceBonusStatus": "none",
       "chanceBonusBp": 0
+    },
+    {
+      "id": "c1019.s1.1",
+      "skillId": "c1019.s1",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1019.s1.2",
+      "skillId": "c1019.s1",
+      "order": 2,
+      "phase": "after_attack",
+      "operation": "lifesteal",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 3000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1019.s2.1",
+      "skillId": "c1019.s2",
+      "order": 1,
+      "phase": "battle_start",
+      "operation": "opening_attack_from_health",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 800,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1019.s2.2",
+      "skillId": "c1019.s2",
+      "order": 2,
+      "phase": "on_attacked",
+      "operation": "readiness",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 800,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1019.s2.3",
+      "skillId": "c1019.s2",
+      "order": 3,
+      "phase": "on_attacked",
+      "operation": "cleanse_once_on_critical",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 1,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1019.s3.1",
+      "skillId": "c1019.s3",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1019.s3.2",
+      "skillId": "c1019.s3",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "injury",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 1000,
+      "condition": "caster_skill_not_awakened",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1019.s3.3",
+      "skillId": "c1019.s3",
+      "order": 3,
+      "phase": "after_hit",
+      "operation": "injury",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 2000,
+      "condition": "caster_skill_awakened",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1019.s3.4",
+      "skillId": "c1019.s3",
+      "order": 4,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Stun",
+      "chanceBp": 7500,
+      "turns": 1,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
     }
   ],
   "enhancements": [
@@ -8339,6 +8681,111 @@
       "step": 7,
       "kind": "healing_bp",
       "value": 1000
+    },
+    {
+      "id": "c1019.s1.e1",
+      "skillId": "c1019.s1",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1019.s1.e2",
+      "skillId": "c1019.s1",
+      "step": 2,
+      "kind": "healing_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1019.s1.e3",
+      "skillId": "c1019.s1",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1019.s1.e4",
+      "skillId": "c1019.s1",
+      "step": 4,
+      "kind": "healing_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1019.s1.e5",
+      "skillId": "c1019.s1",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1019.s2.e1",
+      "skillId": "c1019.s2",
+      "step": 1,
+      "kind": "readiness_bp",
+      "value": 100
+    },
+    {
+      "id": "c1019.s2.e2",
+      "skillId": "c1019.s2",
+      "step": 2,
+      "kind": "readiness_bp",
+      "value": 100
+    },
+    {
+      "id": "c1019.s2.e3",
+      "skillId": "c1019.s2",
+      "step": 3,
+      "kind": "readiness_bp",
+      "value": 100
+    },
+    {
+      "id": "c1019.s2.e4",
+      "skillId": "c1019.s2",
+      "step": 4,
+      "kind": "readiness_bp",
+      "value": 200
+    },
+    {
+      "id": "c1019.s2.e5",
+      "skillId": "c1019.s2",
+      "step": 5,
+      "kind": "readiness_bp",
+      "value": 200
+    },
+    {
+      "id": "c1019.s3.e1",
+      "skillId": "c1019.s3",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1019.s3.e2",
+      "skillId": "c1019.s3",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1019.s3.e3",
+      "skillId": "c1019.s3",
+      "step": 3,
+      "kind": "resource_cost",
+      "value": 10
+    },
+    {
+      "id": "c1019.s3.e4",
+      "skillId": "c1019.s3",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1019.s3.e5",
+      "skillId": "c1019.s3",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1500
     }
   ],
   "messages": [
@@ -9159,6 +9606,30 @@
       "zhCn": "为全体友军恢复生命并赋予护盾 2 回合，治疗量和护盾量按每名友军的最大生命值计算。"
     },
     {
+      "key": "battle.skill.c1019.s1.name",
+      "zhCn": "屠杀"
+    },
+    {
+      "key": "battle.skill.c1019.s1.description",
+      "zhCn": "挥舞双刃斧攻击一名敌人，按实际生命伤害恢复自身生命。命中时必定暴击。消耗20点灵魂可以大幅提高伤害，且不会触发夹攻。"
+    },
+    {
+      "key": "battle.skill.c1019.s2.name",
+      "zhCn": "恶魔之血"
+    },
+    {
+      "key": "battle.skill.c1019.s2.description",
+      "zhCn": "首次战斗开始时获得60点斗志，根据自身开战时的最大生命值增加攻击力。受到攻击后提高速攻值；受到暴击时解除自身一个弱化效果，每回合最多一次。"
+    },
+    {
+      "key": "battle.skill.c1019.s3.name",
+      "zhCn": "恶魔猛击"
+    },
+    {
+      "key": "battle.skill.c1019.s3.description",
+      "zhCn": "攻击全体敌人，命中时必定暴击。造成伤口，随后有75%几率使目标眩晕1回合。每次造成的伤口最多削减目标10%最大生命值，技能觉醒后提高到20%。"
+    },
+    {
       "key": "character.ras.name",
       "zhCn": "拉斯"
     },
@@ -9233,6 +9704,10 @@
     {
       "key": "character.aither.name",
       "zhCn": "埃德勒"
+    },
+    {
+      "key": "character.ravi.name",
+      "zhCn": "萝菲"
     }
   ]
 }

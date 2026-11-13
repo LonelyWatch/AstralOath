@@ -29,6 +29,7 @@ CHARACTERS={
     "c1016":("yupine","优芬妮"),
     "c1017":("achates","雅卡泰丝"),
     "c1018":("aither","埃德勒"),
+    "c1019":("ravi","萝菲"),
     "c1062":("angelica","安洁莉卡"),
 }
 # Keep source identifiers verbatim even where the model and STG stems differ.
@@ -45,6 +46,7 @@ ANIMATION_CUTINS={
     "stagept/c_cartuja_skill_03.stg": ("model/kartua.scsp", "skill3", "cutin", "sk_c1013_3"),
     "stagept/c_baal_skill_03.stg": ("model/baal_sezan.scsp", "skill3", "cutin", "sk_c1015_3"),
     "stagept/c_iterre_skill_03.stg": ("model/aither.scsp", "skill3", "cutin", "sk_c1018_3"),
+    "stagept/c_ravi_skill_03.stg": ("model/ravi.scsp", "skill3_1", "cutin", "sk_c1019_3"),
 }
 
 
@@ -52,7 +54,23 @@ def skill_ids(cid):
     stem=SKILL_STEMS.get(cid, f"c_{CHARACTERS[cid][0]}_skill")
     return [SKILL_VARIANTS.get((cid,index), f"{stem}_{index:02}") for index in range(1,4)]
 
-BANKS=["sound/master.bank","sound/master.strings.bank","sound/sfx1.bank","sound/voc.event.bank","sound/ja/voc1.audio_ja.bank","sound/gerneal.bank"]
+BANKS = (
+    "sound/master.bank", "sound/master.strings.bank", "sound/sfx1.bank", "sound/voc.event.bank",
+    "sound/gerneal.bank",
+)
+DEFAULT_JAPANESE_BANK = "sound/ja/voc1.audio_ja.bank"
+JAPANESE_BANK_BY_CHARACTER = {"c1019": "sound/ja/voc3.audio_ja.bank"}
+
+
+def japanese_bank(character_id):
+    return JAPANESE_BANK_BY_CHARACTER.get(character_id, DEFAULT_JAPANESE_BANK)
+
+
+def selected_banks(character_ids):
+    # Preserve the established order of existing bank references.
+    japanese_banks = {japanese_bank(cid) for cid in character_ids}
+    return (*BANKS[:-1], *sorted(japanese_banks), BANKS[-1])
+
 RES=Path("Assets/Game/Modules/CharacterPresentation/Res")
 MANIFEST=Path("Assets/Game/Modules/CharacterPresentation/Configs/import-manifest.json")
 WHITE_PMA_REGIONS=Path(__file__).with_name("white-pma-regions.json")
@@ -163,7 +181,7 @@ def output_owner_path(source,owners,existing_owners=None):
     ids=owners[source]
     owner=(existing_owners or {}).get(source)
     if owner is None:
-        owner=Path("Shared") if len(ids)>1 or source in BANKS else Path("Characters")/next(iter(ids))
+        owner=Path("Shared") if len(ids)>1 or PurePosixPath(source).suffix == ".bank" else Path("Characters")/next(iter(ids))
     return RES/owner/category(source)/Path(*PurePosixPath(source).parts)
 
 
@@ -295,7 +313,7 @@ class Closure:
             timeline=f"model/{hero}.timeline"
             if safe_source(self.root,timeline).is_file():roots.append(timeline)
             else:self.diagnostics.append({"severity":"info","source":timeline,"code":"timeline-not-provided","message":"Source uses STG and skeleton events independently."})
-            if include_banks:roots+=BANKS
+            if include_banks:roots+=selected_banks([cid])
             for source in roots:self.include(source,cid)
         return self
 
@@ -469,9 +487,11 @@ def verified_japanese_aliases(used_events, audio, loaded_keys, source_events):
 
 
 def build_catalog(closure,characters,include_banks):
-    voice_table=safe_source(closure.root,"sound/ja/voc1.audio_ja.yml")
-    voice_text=voice_table.read_text(encoding="utf-8-sig")
-    loaded_keys=voice_keys(voice_text)
+    voice_tables = {}
+    for bank in sorted({japanese_bank(cid) for cid in characters}):
+        table = safe_source(closure.root, str(PurePosixPath(bank).with_suffix(".yml")))
+        voice_tables[bank] = (table, voice_keys(table.read_text(encoding="utf-8-sig")))
+    loaded_keys = {key for _, keys in voice_tables.values() for key in keys}
     event_text=safe_source(closure.root,"sound/voc.event.yml").read_text(encoding="utf-8-sig")
     voice_events={}
     audio=audio_events(event_text)
@@ -484,7 +504,8 @@ def build_catalog(closure,characters,include_banks):
     records=[]
     used_events=set()
     for cid,(hero,name) in characters.items():
-        keys=sorted(key for key in loaded_keys if key.startswith(f"voc_{cid}_"))
+        bank = japanese_bank(cid)
+        keys=sorted(key for key in voice_tables[bank][1] if key.startswith(f"voc_{cid}_"))
         timeline=f"model/{hero}.timeline"
         voices=[{"id":key,"audioTableKey":key,"eventPath":voice_events.get(key,""),"displayNameKey":"character.voice."+key} for key in keys]
         skills=[]
@@ -502,7 +523,7 @@ def build_catalog(closure,characters,include_banks):
         used_events.update(voice["eventPath"] for voice in voices)
         records.append({"id":cid,"name":name,"displayNameKey":f"character.{hero}.name",
             "battleSkeletonAddress":address(f"model/{hero}.scsp"),"portraitSkeletonAddress":address(f"portrait/{cid}.scsp"),
-            "voiceBankAddress":address("sound/ja/voc1.audio_ja.bank") if include_banks else "",
+            "voiceBankAddress":address(bank) if include_banks else "",
             "timelineAddress":address(timeline) if timeline in closure.dependencies else "","voices":voices,"skills":skills})
     source_events = {}
     if include_banks and JAPANESE_PROGRAMMER_ALIASES.keys() & used_events:
@@ -512,12 +533,13 @@ def build_catalog(closure,characters,include_banks):
         for event in used_events for key in audio.get(event,()) if key.startswith("voc_")}
     missing = {key for event, key in requested if aliases.get((event, key), key) not in loaded_keys}
     if missing and include_banks:
-        for table in sorted(voice_table.parent.glob("*.audio_ja.yml")):
-            if table==voice_table:continue
+        loaded_tables = {table for table, _ in voice_tables.values()}
+        for table in sorted(next(iter(loaded_tables)).parent.glob("*.audio_ja.yml")):
+            if table in loaded_tables:continue
             unloaded=missing & voice_keys(table.read_text(encoding="utf-8-sig"))
             if unloaded:
                 raise ValueError(f"Japanese programmer keys require bank {table.name}: {', '.join(sorted(unloaded))}")
-    catalog = {"schemaVersion":1,"characters":records,"sharedBanks":[address(p) for p in BANKS] if include_banks else [],
+    catalog = {"schemaVersion":1,"characters":records,"sharedBanks":[address(p) for p in selected_banks(characters)] if include_banks else [],
         "missingJapaneseProgrammerKeys":sorted(missing) if include_banks else []}
     if aliases:
         catalog["japaneseProgrammerAliases"] = [

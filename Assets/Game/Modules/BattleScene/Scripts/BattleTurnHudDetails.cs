@@ -135,8 +135,8 @@ namespace AstralOath.Client.BattleScene
                 this.unit = unit;
                 highlight.enabled = acting && highlight.sprite;
                 readiness.text = (readinessBp / 100f).ToString("0.#") + "%";
-                health.text = unit.CurrentHealth + "/" + unit.Stats.MaxHealth;
-                healthFill.rectTransform.anchorMax = new Vector2(unit.CurrentHealth / (float)unit.Stats.MaxHealth, 1f);
+                health.text = unit.CurrentHealth + "/" + unit.MaximumHealth;
+                healthFill.rectTransform.anchorMax = new Vector2(unit.CurrentHealth / (float)unit.MaximumHealth, 1f);
                 for (int slot = 0; slot < cooldowns.Length; slot++)
                 {
                     int remaining = slot < unit.Form.SkillIds.Count ? unit.GetCooldown(unit.Form.SkillIds[slot]) : 0;

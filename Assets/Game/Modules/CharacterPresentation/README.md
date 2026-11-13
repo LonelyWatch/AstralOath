@@ -28,4 +28,4 @@ SCT1 的中性白光遮罩按源 atlas 区域审计和登记，RGB 由未量化�
 
 卡琳 c1011 已接入角色内容；三技能、音频及已知缺项见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。
 
-埃德勒 c1018 已接入三技能及日语原声。完整弹道请在战斗场景或技能时间轴查看。规则、表现诊断与音频来源见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。
+萝菲 c1019 已接入三张演出图及原版日语。新增原版 voc3 银行，战斗按阵容选择；裂伤有效生命独立于基础面板。规则、表现诊断与音频来源见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。

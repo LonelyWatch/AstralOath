@@ -203,3 +203,9 @@
 ,battle.skill.c1018.s2.description,解除一名友军的两个减益，按目标最大生命值恢复生命。第三阶觉醒后提高自身行动值 20%。
 ,battle.skill.c1018.s3.name,精灵召唤
 ,battle.skill.c1018.s3.description,为全体友军恢复生命并赋予护盾 2 回合，治疗量和护盾量按每名友军的最大生命值计算。
+,battle.skill.c1019.s1.name,屠杀
+,battle.skill.c1019.s1.description,挥舞双刃斧攻击一名敌人，按实际生命伤害恢复自身生命。命中时必定暴击。消耗20点灵魂可以大幅提高伤害，且不会触发夹攻。
+,battle.skill.c1019.s2.name,恶魔之血
+,battle.skill.c1019.s2.description,首次战斗开始时获得60点斗志，根据自身开战时的最大生命值增加攻击力。受到攻击后提高速攻值；受到暴击时解除自身一个弱化效果，每回合最多一次。
+,battle.skill.c1019.s3.name,恶魔猛击
+,battle.skill.c1019.s3.description,攻击全体敌人，命中时必定暴击。造成伤口，随后有75%几率使目标眩晕1回合。每次造成的伤口最多削减目标10%最大生命值，技能觉醒后提高到20%。

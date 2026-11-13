@@ -20,8 +20,15 @@
 
 临时在进程中注册候选并注入 CUTIN 后，当前导入器给出 72 个资源输入，包括 17 SCSP、11 atlas、14 SCT、3 STG、9 CFX、11 particle、1 WebP、6 个既有 bank。全部 SCSP／SCT 解码成功，唯一信息诊断是模型 timeline 原本不存在。未包含待加的日语银行。模型 SHA-256 `47cc6a6152d9056975c63c456978fa7face318e79a72dccfea43da63f32d0a55`；三张源图依次为 `2158eda781cd654c1a89fb415063aa9df06d7fef5bfa52230ae34c5b22abde33`、`e502b2782441ead905ae3010021352f8a809e67de6320bdad218f9195edce0c8`、`0f7cfbf11780898c6636e5dde1a375b93501b0d719d180dc461731efe9ca9a31`；CUTIN `66ed34acaf101c6fa426a763aa18567ee9e31aa489ab5e9c1dfa6bf0a0add81c`。
 
-## 日语银行缺口
+## 声库和实际播放
 
-原生事件为 `event:/voc/skill/c_ravi_skill_01/02/03` 对应的三个独立路径，S1 另有 `_a`／`_c` 夹攻应答和呼叫。现有导入器只加载日语 `voc1`，对萝菲的 14 个战斗 programmer key 真实报错。原文件 `sound/ja/voc3.audio_ja.bank` 存在，大小 73,150,944 字节，SHA-256 `1645a0482309f83538e2903fd3b70f9c3bb74fca9026e2c6fdf5a8ed8d1056e7`，其 YAML 有 28 个基础角色键，14 个所需战斗键全部存在。voc5 的六条 `idle_s` 属于换装待机语音。
+- 14 条战斗所需原生日语录音全部位于 sound/ja/voc3.audio_ja.bank。声库 73,150,944 字节（69.76 MiB），SHA-256 1645a0482309f83538e2903fd3b70f9c3bb74fca9026e2c6fdf5a8ed8d1056e7。使用地址 characterlab/source/sound/ja/voc3.audio_ja.bank、Unity 文件 Assets/Game/Modules/CharacterPresentation/Res/Shared/Sounds/sound/ja/voc3.audio_ja.bank.bytes。Git LFS 覆盖该扩展名。录音表共有 28 条普通萝菲的音频。voc5 的六条同角色键是皮肤待机录音。
+- 14 条中，普攻 sk1_1/2/3，S2 sk2_1/2/3，S3 sk3_1_1/1_2/2_1/2_2，夹攻 call_1/2、answer_1/2，前缀均为 voc_c1019_。真实 Windows FMOD 2.03.15 对这 14 键逐一返回 OK，五条源事件均存在。
+- 生产 BattleVoice 与 FMOD 服务分别播放 c_ravi_skill_01、02、03 各八次。24 次均确认原生音效、语音事件、真实回调和非零 DSP。S1/S2/S3 各获得 3／3／2 套日语，S3 两套各含两句。各技能最低 DSP 峰值为 1.29692／1.80393／2.07574。夹攻呼叫和应答各四次，两种录音均实测出声。完整记录在 D 盘工程的 .artifacts/roster-data/c1019/fmod-play.log 与 fmod-required-keys.log。
+- 配置中的 sharedBanks 是本次纳入角色的所需声库并集，voiceBankAddress 保留每个角色自身声库，已有六份的相对加载顺序固定。声音资源仍以原版银行和原事件为单位维护。
 
-S1 和 S2 各有三条单句，S3 为两组各两句，夹攻呼叫和应答各两条。按角色实际依赖载入相应语音银行，在最后一个原生事件停止并释放后才卸载。正式接入前用 FMOD 探针验证旧角色与萝菲各自的银行选取、重复播放、同时活动、每条原句及回调后卸载。此次仅完成静态资源核对、闭包和转换验证。原生音频、Unity、正式配表和原作逐帧对照仍待执行。
+## 内存观察
+
+两个独立 .NET 探针进程，用相同 Windows 原生 FMOD 和同一版生产服务测量初始化后的整进程内存。六库输入 240,032,260 字节，七库 313,183,204 字节，差值为新增库的 69.76 MiB。读取数据后的私有字节 254,189,568／328,908,800，FMOD 初始化后的私有字节 614,223,872／762,310,656，增量约 141.23 MiB。初始化后的工作集 627,228,672／773,570,560，增量约 139.56 MiB。数据包含托管输入和原生分配，Unity 编辑器或 Player 的常驻量需要独立实测。
+
+战斗端按实际阵容选取日语银行，同时保持基础公共事件可用。角色实验室仍能通过同一个目录试听角色。继续增加新声库前，按目标设备测首次加载耗时、玩家切换场景后的释放和峰值占用。原始解包目录继续只读，项目缓存与测试放在 D 盘。

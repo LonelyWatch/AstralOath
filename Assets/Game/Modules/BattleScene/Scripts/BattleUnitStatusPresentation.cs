@@ -8,7 +8,7 @@ namespace AstralOath.Client.BattleScene
     internal sealed class BattleUnitStatusPresentation : IDisposable
     {
         private readonly RectTransform marker, frame;
-        private readonly Image health, trail, shield, frameImage;
+        private readonly Image health, trail, shield, injury, frameImage;
         private readonly Sprite normalFrame;
         private Image resourceFill;
         private readonly BattleHealthSegments segments;
@@ -21,7 +21,7 @@ namespace AstralOath.Client.BattleScene
         private float visibleHealth, visibleTrail;
         private double shieldTarget, shieldStart, visibleShield;
         private float shieldTime;
-        private int maximum;
+        private int maximum, uninjuredMaximum;
         private bool initialized, losingHealth, holdingDamageTrail, disposed;
 
         // Project presentation defaults. Original E7 millisecond timings are not yet proven.
@@ -65,6 +65,13 @@ namespace AstralOath.Client.BattleScene
             shield.rectTransform.sizeDelta = Vector2.zero;
             SetHorizontalRange(shield.rectTransform, 0f, 0f, false);
             shieldObject.SetActive(false);
+
+            injury = new GameObject("Injury", typeof(RectTransform), typeof(Image)).GetComponent<Image>();
+            injury.transform.SetParent(health.transform, false);
+            injury.rectTransform.sizeDelta = Vector2.zero;
+            injury.color = new Color32(120, 72, 148, 255);
+            injury.raycastTarget = false;
+            injury.enabled = false;
 
             var segmentObject = new GameObject("Health Segments", typeof(RectTransform), typeof(BattleHealthSegments));
             segmentObject.transform.SetParent(health.transform, false);
@@ -113,6 +120,24 @@ namespace AstralOath.Client.BattleScene
         {
             if (!disposed && resourceFill)
                 resourceFill.fillAmount = maximum > 0 ? Mathf.Clamp01(value / (float)maximum) : 0f;
+        }
+
+        public void SetHealthCapacity(int original, int effective)
+        {
+            if (disposed) return;
+            uninjuredMaximum = Math.Max(original, effective);
+            if (!initialized || maximum == effective || effective <= 0) return;
+            // Percentages inside the playable region change with the cap, while their physical
+            // positions and the existing red trail remain in original maximum-HP units.
+            float ratio = maximum / (float)effective;
+            target = Mathf.Min(1f, target * ratio);
+            frontStart = Mathf.Min(1f, frontStart * ratio);
+            trailStart = Mathf.Min(1f, trailStart * ratio);
+            visibleHealth = Mathf.Min(1f, visibleHealth * ratio);
+            visibleTrail = Mathf.Min(1f, visibleTrail * ratio);
+            maximum = effective;
+            segments.MaximumHealth = effective;
+            RefreshBars();
         }
 
         public void SetShieldSprite(Sprite sprite)
@@ -224,12 +249,15 @@ namespace AstralOath.Client.BattleScene
             // The source layout has separate HP and shield strips. Fit both into the fixed track,
             // preserving empty HP space until the combined visible amount exceeds maximum HP.
             float combined = visibleHealth + (float)(visibleShield / maximum);
-            float healthTrack = 1f / Mathf.Max(1f, combined);
+            float effectiveTrack = maximum / (float)Mathf.Max(maximum, uninjuredMaximum);
+            float healthTrack = effectiveTrack / Mathf.Max(1f, combined);
             float healthEnd = visibleHealth * healthTrack;
             float shieldEnd = combined * healthTrack;
             health.fillAmount = healthEnd;
             float trailEnd = visibleTrail * healthTrack;
             bool fromRight = health.fillOrigin == (int)Image.OriginHorizontal.Right;
+            injury.enabled = effectiveTrack < 1f;
+            if (injury.enabled) SetHorizontalRange(injury.rectTransform, effectiveTrack, 1f, fromRight);
             trail.enabled = trailEnd > healthEnd;
             SetHorizontalRange(trail.rectTransform, healthEnd, Mathf.Max(healthEnd, trailEnd), fromRight);
             SetHorizontalRange(segments.rectTransform, 0f, healthTrack, fromRight);
@@ -316,7 +344,7 @@ namespace AstralOath.Client.BattleScene
             if (disposed) return;
             disposed = true;
             Remove(trail ? trail.gameObject : null); Remove(shield ? shield.gameObject : null); Remove(segments ? segments.gameObject : null);
-            Remove(resourceFill ? resourceFill.gameObject : null);
+            Remove(resourceFill ? resourceFill.gameObject : null); Remove(injury ? injury.gameObject : null);
             if (frameImage) frameImage.sprite = normalFrame;
             if (health) health.fillAmount = originalFill;
             if (marker) { marker.localPosition = originalPosition; marker.localScale = originalScale; }

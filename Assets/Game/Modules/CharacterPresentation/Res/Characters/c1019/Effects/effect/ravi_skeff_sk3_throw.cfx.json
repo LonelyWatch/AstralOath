@@ -1,0 +1,18 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "ravi_skeff_sk3_throw",
+      "z": "100",
+      "scale": "1.5",
+      "format": "spine"
+    },
+    {
+      "source": "ravi_skeff_sk3_exp2",
+      "z": "0",
+      "scale": "1.5,1.4",
+      "format": "spine",
+      "globalZ": 0.1
+    }
+  ]
+}

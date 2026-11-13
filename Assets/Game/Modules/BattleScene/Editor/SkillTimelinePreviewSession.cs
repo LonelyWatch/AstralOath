@@ -73,7 +73,7 @@ namespace AstralOath.Client.BattleScene.Editor
         private BattleSkillPresentation playback;
         private BattleVoice voice;
         private TextAsset graphAsset;
-        private string graphId;
+        private string graphId, casterId;
         private bool useHitReactions;
         private bool disposed;
         private int step;
@@ -131,6 +131,7 @@ namespace AstralOath.Client.BattleScene.Editor
                     if (active.Contains(actor)) BindActor(actor, modelRows, actor == caster ? heroId : targetHeroId ?? "c1001");
                 }
                 this.graphId = graphId;
+                casterId = heroId;
                 string json = graphJson;
                 if (string.IsNullOrWhiteSpace(json))
                 {
@@ -233,7 +234,7 @@ namespace AstralOath.Client.BattleScene.Editor
             var serializedHost = new SerializedObject(host);
             voice = new BattleVoice(Reference<TextAsset>(serializedHost.FindProperty("audioCatalog")),
                 ReadAssetArray<TextAsset>(serializedHost.FindProperty("audioBanks")),
-                Reference<TextAsset>(serializedHost.FindProperty("impactBank")));
+                Reference<TextAsset>(serializedHost.FindProperty("impactBank")), new[] { casterId });
             if (!voice.IsAvailable)
             {
                 StopAudio();

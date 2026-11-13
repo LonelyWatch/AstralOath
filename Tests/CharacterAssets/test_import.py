@@ -9,7 +9,7 @@ class ImportBoundaryTests(unittest.TestCase):
         with self.assertRaises(ValueError): importer.select_characters(["c9999"])
         self.assertEqual(len(importer.select_characters(["c1001"])),1)
     def test_base_roster_uses_exact_graph_roots_in_id_order(self):
-        self.assertEqual(list(importer.CHARACTERS), [f"c100{i}" for i in range(1, 10)] + ["c1010", "c1011", "c1012", "c1013", "c1014", "c1015", "c1016", "c1017", "c1018", "c1062"])
+        self.assertEqual(list(importer.CHARACTERS), [f"c100{i}" for i in range(1, 10)] + ["c1010", "c1011", "c1012", "c1013", "c1014", "c1015", "c1016", "c1017", "c1018", "c1019", "c1062"])
         self.assertEqual(importer.skill_ids("c1007"), [f"c_wilderd_skill_{i:02}" for i in range(1, 4)])
         self.assertEqual(importer.skill_ids("c1009")[-1], "c_charlotte_skill_03_05")
         self.assertEqual(importer.skill_ids("c1010"), [f"c_jerato_skill_{i:02}" for i in range(1, 4)])
@@ -21,6 +21,9 @@ class ImportBoundaryTests(unittest.TestCase):
         self.assertEqual(importer.skill_ids("c1018"), [f"c_iterre_skill_{i:02}" for i in range(1, 4)])
         self.assertEqual(importer.ANIMATION_CUTINS["stagept/c_iterre_skill_03.stg"],
                          ("model/aither.scsp", "skill3", "cutin", "sk_c1018_3"))
+        self.assertEqual(importer.skill_ids("c1019"), [f"c_ravi_skill_{i:02}" for i in range(1, 4)])
+        self.assertEqual(importer.ANIMATION_CUTINS["stagept/c_ravi_skill_03.stg"],
+                         ("model/ravi.scsp", "skill3_1", "cutin", "sk_c1019_3"))
         self.assertEqual(importer.ANIMATION_CUTINS["stagept/c_cartuja_skill_03.stg"],
                          ("model/kartua.scsp", "skill3", "cutin", "sk_c1013_3"))
         self.assertEqual(importer.ANIMATION_CUTINS["stagept/c_jerato_skill_03.stg"],

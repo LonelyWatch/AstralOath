@@ -566,6 +566,30 @@ Assert.That(RedWidth(), Is.Zero, "The red segment is cleared after the transitio
         }
 
         [UnityTest]
+        public IEnumerator InjuryUsesTheOriginalTrackAndDoesNotResetTheRedTrail()
+        {
+            var simulation = typeof(BattleHudPreview).GetField("simulation", Private).GetValue(host);
+            var view = ((IDictionary)simulation.GetType().GetField("views", Private).GetValue(simulation))["enemy-1"];
+            var hp = map.transform.Find("Unit Status/Enemies/01 Front/HP").GetComponent<Image>();
+            var injury = hp.transform.Find("Injury").GetComponent<Image>();
+            var trail = hp.transform.Find("Damage Trail").GetComponent<Image>();
+            void Call(string method, params object[] args) => view.GetType().GetMethod(method).Invoke(view, args);
+
+            Call("SetHealthCapacity", 1000, 1000);
+            Call("SetHealth", 1000L, 1000);
+            Call("ApplyDamageHit", 400, 1000, true);
+            Call("SetHealthCapacity", 1000, 800);
+            Assert.That(hp.fillAmount, Is.EqualTo(.6f).Within(.001f));
+            Assert.That(injury.enabled, Is.True);
+            Assert.That(injury.rectTransform.anchorMax.x - injury.rectTransform.anchorMin.x, Is.EqualTo(.2f).Within(.001f));
+            Assert.That(trail.enabled, Is.True);
+            Call("TickVisual", 1f);
+            Assert.That(trail.enabled, Is.False);
+            Assert.That(injury.enabled, Is.True);
+            yield return null;
+        }
+
+        [UnityTest]
         public IEnumerator PoisonDamageUsesOneHealthChangeWithoutAuthoredHitFeedback()
         {
             var simulation = typeof(BattleHudPreview).GetField("simulation", Private).GetValue(host);
