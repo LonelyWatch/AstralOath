@@ -288,21 +288,6 @@ namespace AstralOath.Client.BattleScene
             return (impactTime, actionEnd);
         }
 
-        private void PlayNodeAnimationTracks(JObject node, float at, BattlePreviewActor target)
-        {
-            if (!(node["timeline"] is JArray frames)) return;
-            foreach (string entry in frames.Values<string>())
-            {
-                string[] fields = entry.Split(',');
-                if (fields.Length != 3 || !TryScalar(fields[0], out float delay) || delay < 0f || fields[2] != "1")
-                {
-                    WarnSource($"Unmapped NODE_ANI timeline entry '{entry}'.");
-                    continue;
-                }
-                Schedule(at + delay / 1000f, () => target.PlayBattleAnimation(fields[1]));
-            }
-        }
-
         private JObject ResolvePostModulator(JObject modulator)
         {
             if (Kind(modulator) != "RANDOM_VALUE" || (string)modulator["name"] != "u_range") return modulator;

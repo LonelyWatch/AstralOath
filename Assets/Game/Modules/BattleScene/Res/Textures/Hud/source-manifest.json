@@ -326,6 +326,19 @@
       ]
     },
     {
+      "asset": "game_hud_bar_bg_n.png",
+      "source": "原始资源/img/game_hud_bar_bg_n.png",
+      "sha256": "9421b72687aa9a0f79de5470e682f0ce610ec17e4f8759f55676997a6fb4f0e2",
+      "width": 86,
+      "height": 26,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        86,
+        26
+      ]
+    },
+    {
       "asset": "game_hud_bar_hp.png",
       "source": "原始资源/img/game_hud_bar_hp.png",
       "sha256": "9b7a04a735bf1a71655de4b325b6c68e04fa69eb710dff2011cae3baf5029466",
@@ -349,6 +362,32 @@
         0,
         2,
         6
+      ]
+    },
+    {
+      "asset": "game_hud_bar_cp.png",
+      "source": "原始资源/img/game_hud_bar_cp.png",
+      "sha256": "64fd1287b0604e1edc845eb5588b820b3ad0921e761dbcb84c56a524e229cee8",
+      "width": 2,
+      "height": 4,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        2,
+        3
+      ]
+    },
+    {
+      "asset": "game_hud_bar_bp.png",
+      "source": "原始资源/img/game_hud_bar_bp.png",
+      "sha256": "cd728d994e7919b40070737e94a9a1d5a16a03e701ee21a075cf8114030b89df",
+      "width": 2,
+      "height": 4,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        2,
+        3
       ]
     },
     {

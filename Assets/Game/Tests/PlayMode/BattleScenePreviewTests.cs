@@ -102,7 +102,7 @@ namespace AstralOath.Client.Tests
                 var bars = map.transform.Find("Unit Status/" + side);
                 Assert.That(bars.childCount, Is.EqualTo(4));
                 foreach (Transform bar in bars)
-                    Assert.That(bar.Find("Frame").GetComponent<Image>().sprite.name, Is.EqualTo("game_hud_bar_bg"));
+                    Assert.That(bar.Find("Frame").GetComponent<Image>().sprite.name, Is.EqualTo(bar.Find("HP/Personal Resource") ? "game_hud_bar_bg" : "game_hud_bar_bg_n"));
             }
             Assert.That(map.Require<GameText>("wave").text, Is.Not.Empty);
 

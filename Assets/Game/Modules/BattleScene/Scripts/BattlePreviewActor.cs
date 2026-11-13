@@ -22,6 +22,7 @@ namespace AstralOath.Client.BattleScene
         private ISkeletonPlayer player;
         private string idleAnimation;
         private bool playingBattleAnimation;
+        private object sourceReaction;
         // Recovery is presentation-only: authored hit/return tails do not necessarily
         // end at the battle idle pose. Keep the displayed pose while entering idle.
         private const float IdleRecoveryMixSeconds = .15f;
@@ -152,6 +153,9 @@ namespace AstralOath.Client.BattleScene
 
         internal Renderer PresentationRenderer => player?.Root ? player.Root.GetComponent<Renderer>() : null;
 
+        internal static bool IsBodyVisible(Renderer body) =>
+            body && body.enabled && !body.forceRenderingOff && body.gameObject.activeInHierarchy;
+
         public Bounds Bounds => player != null
             ? player.Root.GetComponent<MeshRenderer>().bounds : new Bounds(transform.position, Vector3.zero);
 
@@ -192,6 +196,7 @@ namespace AstralOath.Client.BattleScene
         {
             if (player == null || !playingBattleAnimation) return;
             playingBattleAnimation = false;
+            sourceReaction = null;
             player.Play(idleAnimation, true, IdleRecoveryMixSeconds);
         }
 
@@ -217,11 +222,33 @@ namespace AstralOath.Client.BattleScene
             foreach (var clip in player.Animations)
                 if (clip.Name == animation && clip.Duration > 0)
                 {
+                    sourceReaction = null;
                     player.Play(animation, false);
                     playingBattleAnimation = true;
                     return clip.Duration;
                 }
             return 0f;
+        }
+
+        internal Action HoldSourceReaction(string animation)
+        {
+            var instance = player;
+            if (instance == null) return null;
+            foreach (var clip in instance.Animations)
+            {
+                if (clip.Name != animation) continue;
+                var ownership = new object();
+                sourceReaction = ownership;
+                instance.Play(animation, false);
+                playingBattleAnimation = true;
+                return () =>
+                {
+                    if (player != instance || sourceReaction != ownership) return;
+                    sourceReaction = null;
+                    if (!paused) PlayBattleIdle();
+                };
+            }
+            return null;
         }
 
         private void OnEnable()
@@ -275,8 +302,9 @@ namespace AstralOath.Client.BattleScene
         private void Update()
         {
             if (player == null || paused || presentationPauseCount > 0 || presentationControlCount > 0) return;
+            if (sourceReaction != null && player.Time >= player.Duration) return;
             player.Tick(playingBattleAnimation ? Time.unscaledDeltaTime : Time.deltaTime);
-            if (playingBattleAnimation && player.Time >= player.Duration)
+            if (sourceReaction == null && playingBattleAnimation && player.Time >= player.Duration)
                 PlayBattleIdle();
         }
 
@@ -291,6 +319,7 @@ namespace AstralOath.Client.BattleScene
                 paused = false;
                 presentationPauseCount = 0;
                 presentationControlCount = 0;
+                sourceReaction = null;
             }
         }
     }

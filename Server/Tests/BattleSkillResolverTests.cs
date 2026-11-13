@@ -111,7 +111,6 @@ public sealed class BattleSkillResolverTests
     [InlineData("c1008", 1, "enemy")]
     [InlineData("c1008", 3, "friend")]
     [InlineData("c1009", 1, "enemy")]
-    [InlineData("c1009", 3, "enemy")]
     public void ExpandedRosterActiveSkillsProduceAuthoritativeResults(string hero, int slot, string target)
     {
         var match = Match(hero);
@@ -124,6 +123,94 @@ public sealed class BattleSkillResolverTests
         Assert.Contains(response.Events, item => item.Kind == BattleFlowEventKind.Damage ||
             item.Kind == BattleFlowEventKind.Healing || item.Kind == BattleFlowEventKind.StatusApplied ||
             item.Kind == BattleFlowEventKind.ReadinessChanged);
+    }
+
+    [Fact]
+    public void PersonalResourceIsOptionalAndSilkGainsOnTurnThenSpendsOncePerAttack()
+    {
+        var catalog = ReadCatalog();
+        var skills = new[] { "c1004.s1", "c1004.s2", "c1004.s3" };
+        var silk = ResourceHero(catalog, "c1004", skills);
+        var enemy = Unit("enemy", "c1001", BattleSide.Enemy, 1, 100, 30000, silk.Stats.Speed - 1);
+        var originalEffects = catalog.effects.Where(item => item.skillId == "c1001.s1").ToArray();
+        catalog.effects = catalog.effects.Concat(new[] {
+            new BattleCatalogData.EffectRow
+            {
+                skillId = "c1001.s1", order = originalEffects.Length + 1, phase = "impact",
+                operation = "damage", recipient = "targets", status = "none", chanceBp = 10000
+            }
+        }).ToArray();
+        var match = new BattleMatch("resource", 1, 23, new BattleFormation(new[] { silk, enemy }),
+            new BattleSkillResolver(catalog, randomDualChanceBp: 0));
+        var resource = match.Snapshot.GetUnit("actor").Resource;
+        Assert.Equal(BattleResourceKind.Focus, resource!.Kind);
+        Assert.Equal(5, resource.Maximum);
+        Assert.Equal(1, resource.Amount);
+        Assert.Null(match.Snapshot.GetUnit("enemy").Resource);
+        Assert.Equal(BattleCommandStatus.Accepted, Cast(match, "actor", "c1004.s1", "enemy").Status);
+
+        var hit = Cast(match, "enemy", "c1001.s1", "actor");
+        Assert.Equal(BattleCommandStatus.Accepted, hit.Status);
+        Assert.Equal(2, hit.Events.Count(item => item.Kind == BattleFlowEventKind.Damage && item.TargetId == "actor"));
+        var resourceEvents = hit.Events.Where(item => item.Kind == BattleFlowEventKind.ResourceChanged && item.TargetId == "actor").ToArray();
+        Assert.Equal(new[] { 0, 1 }, resourceEvents.Select(item => item.Amount));
+    }
+
+    [Fact]
+    public void CharlotteBuildsFightingSpiritAndPaysForUltimate()
+    {
+        var catalog = ReadCatalog();
+        var charlotte = ResourceHero(catalog, "c1009", new[] { "c1009.s1", "c1009.s2", "c1009.s3" });
+        var enemy = Unit("enemy", "c1001", BattleSide.Enemy, 1, 100, 500000, 1);
+        var match = new BattleMatch("resource", 1, 23, new BattleFormation(new[] { charlotte, enemy }),
+            new BattleSkillResolver(catalog, randomDualChanceBp: 0));
+        var resource = match.Snapshot.GetUnit("actor").Resource;
+        Assert.Equal(BattleResourceKind.FightingSpirit, resource!.Kind);
+        Assert.Equal(100, resource.Maximum);
+        Assert.Equal(0, resource.Amount);
+        Assert.Equal(BattleCommandStatus.InvalidAction, Cast(match, "actor", "c1009.s3", "enemy").Status);
+        for (int index = 1; index <= 4; index++)
+        {
+            var basic = Cast(match, "actor", "c1009.s1", "enemy");
+            Assert.Equal(BattleCommandStatus.Accepted, basic.Status);
+            Assert.Equal(index * 25, basic.Snapshot.GetUnit("actor").Resource!.Amount);
+        }
+        var ultimate = Cast(match, "actor", "c1009.s3", "enemy");
+        Assert.Equal(BattleCommandStatus.Accepted, ultimate.Status);
+        Assert.Equal(0, ultimate.Snapshot.GetUnit("actor").Resource!.Amount);
+        Assert.Contains(ultimate.Events, item => item.Kind == BattleFlowEventKind.Damage);
+    }
+
+    [Fact]
+    public void BuffedCharlotteGainsBaseSpiritFromDualAttackAndDoubleFromHerOwnSkill()
+    {
+        var catalog = ReadCatalog();
+        var charlotte = ResourceHero(catalog, "c1009", new[] { "c1009.s1", "c1009.s2", "c1009.s3" });
+        var ras = Unit("ras", "c1001", BattleSide.Ally, 2, 100, 30000, charlotte.Stats.Speed * 6 / 5);
+        var enemy = Unit("enemy", "c1001", BattleSide.Enemy, 1, 100, 500000, 1);
+        var match = new BattleMatch("resource", 1, 23, new BattleFormation(new[] { charlotte, ras, enemy }),
+            new BattleSkillResolver(catalog, randomDualChanceBp: 0));
+
+        var buff = Cast(match, "ras", "c1001.s3", "enemy");
+        Assert.Equal(BattleCommandStatus.Accepted, buff.Status);
+        Assert.NotNull(buff.Snapshot.GetUnit("actor").GetStatus(BattleStatusKind.DefenseUp));
+        var basic = Cast(match, "actor", "c1009.s1", "enemy");
+        Assert.Equal(BattleCommandStatus.Accepted, basic.Status);
+        Assert.Equal(50, basic.Snapshot.GetUnit("actor").Resource!.Amount);
+        var dual = Cast(match, "ras", "c1001.s2", "enemy");
+        Assert.Equal(BattleCommandStatus.Accepted, dual.Status);
+        Assert.Contains(dual.Events, item => item.Kind == BattleFlowEventKind.Action && item.Origin == BattleActionOrigin.DualAttack);
+        Assert.Equal(75, dual.Snapshot.GetUnit("actor").Resource!.Amount);
+    }
+
+    private static BattleUnit ResourceHero(BattleCatalogData catalog, string hero, string[] skills)
+    {
+        var row = catalog.heroes.Single(item => item.id == hero);
+        var form = new BattleUnitForm("standard", hero, skills);
+        var growth = new HeroGrowthPreset("test", 5, 60000, 300000, 60000, 100000);
+        var definition = new HeroDefinition(hero, hero, BattleElement.Fire, "knight", "libra", form, growth,
+            Array.Empty<HeroAwakeningStep>(), row.GetResourceDefinition());
+        return BattleUnit.CreateHero("actor", definition, new BattleSlot(BattleSide.Ally, 1), 60, 6, 0);
     }
 
     [Fact]

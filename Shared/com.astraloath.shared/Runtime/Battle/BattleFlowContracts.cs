@@ -17,7 +17,7 @@ namespace AstralOath.Shared.Battle
     {
         BattleStarted, TurnStarted, Action, Damage, Healing, ReadinessChanged,
         StatusApplied, StatusRemoved, CooldownChanged, SoulChanged, BarrierAbsorbed,
-        UnitDefeated, TurnSkipped, TurnEnded, BattleEnded, EffectRejected
+        UnitDefeated, TurnSkipped, TurnEnded, BattleEnded, EffectRejected, ResourceChanged
     }
     public enum BattleCommandStatus
     {
@@ -93,10 +93,24 @@ namespace AstralOath.Shared.Battle
         public int Strength { get; }
     }
 
+    public sealed class BattleResourceSnapshot
+    {
+        internal BattleResourceSnapshot(BattleResourceDefinition definition, int amount)
+        {
+            Kind = definition.Kind;
+            Maximum = definition.Maximum;
+            Amount = amount;
+        }
+        public BattleResourceKind Kind { get; }
+        public int Maximum { get; }
+        public int Amount { get; }
+    }
+
     public sealed class BattleUnitSnapshot
     {
         internal BattleUnitSnapshot(BattleUnit unit, int health, int readinessBp,
-            IReadOnlyDictionary<string, int> cooldowns, IReadOnlyList<BattleStatusSnapshot> statuses)
+            IReadOnlyDictionary<string, int> cooldowns, IReadOnlyList<BattleStatusSnapshot> statuses,
+            int resourceAmount)
         {
             InstanceId = unit.InstanceId;
             DefinitionId = unit.Definition.Id;
@@ -110,6 +124,8 @@ namespace AstralOath.Shared.Battle
             ReadinessBp = readinessBp;
             Cooldowns = cooldowns;
             Statuses = statuses;
+            ResourceRules = (unit.Definition as HeroDefinition)?.Resource;
+            Resource = ResourceRules == null ? null : new BattleResourceSnapshot(ResourceRules, resourceAmount);
         }
         public string InstanceId { get; }
         public string DefinitionId { get; }
@@ -122,6 +138,8 @@ namespace AstralOath.Shared.Battle
         public int CurrentHealth { get; }
         public bool IsAlive => CurrentHealth > 0;
         public int ReadinessBp { get; }
+        public BattleResourceSnapshot Resource { get; }
+        internal BattleResourceDefinition ResourceRules { get; }
         public int Barrier => GetStatus(BattleStatusKind.Barrier)?.Strength ?? 0;
         public IReadOnlyDictionary<string, int> Cooldowns { get; }
         public IReadOnlyList<BattleStatusSnapshot> Statuses { get; }
@@ -271,6 +289,8 @@ namespace AstralOath.Shared.Battle
             new BattleChange(BattleFlowEventKind.CooldownChanged, source, target, delta, skillId);
         public static BattleChange Soul(string source, BattleSide side, int delta) =>
             new BattleChange(BattleFlowEventKind.SoulChanged, source, null, delta, side: side);
+        internal static BattleChange Resource(string source, string target, int delta) =>
+            new BattleChange(BattleFlowEventKind.ResourceChanged, source, target, delta);
         public static BattleChange Action(string source, string target, string skillId, BattleActionOrigin origin, string presentationId = null) =>
             new BattleChange(BattleFlowEventKind.Action, source, target, skillId: skillId, origin: origin, presentationId: presentationId);
     }

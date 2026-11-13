@@ -48,8 +48,8 @@ namespace AstralOath.Client.BattleScene.Editor
             for (int i = 0; i < Slots.Length; i++)
             {
                 var layout = Slots[i];
-                UnitStatus(allyMarkers, layout.Position, layout.AllyX, layout.MarkerY, heroElements[allyIds[i]], 1f, 0f);
-                UnitStatus(enemyMarkers, layout.Position, layout.EnemyX, layout.MarkerY, heroElements[enemyIds[i]], 1f, 0f);
+                UnitStatus(allyMarkers, layout.Position, layout.AllyX, layout.MarkerY, heroElements[allyIds[i]], 1f);
+                UnitStatus(enemyMarkers, layout.Position, layout.EnemyX, layout.MarkerY, heroElements[enemyIds[i]], 1f);
             }
 
             var active = Group("Active Unit", rect);
@@ -110,14 +110,13 @@ namespace AstralOath.Client.BattleScene.Editor
         }
 
         private static void UnitStatus(RectTransform parent, string position, float x, float y,
-            string element, float hp, float readiness)
+            string element, float hp)
         {
             var group = Group(position, parent);
-            Picture(group, "Frame", "game_hud_bar_bg", x, y, 86, 26);
+            Picture(group, "Frame", "game_hud_bar_bg_n", x, y, 86, 26);
             Picture(group, "Element", "game_hud_bar_" + element, x - 29, y + 0.5f, 24, 21);
             Picture(group, "Level", "itxt_num5_b", x - 29, y, 26 * 0.53f, 34 * 0.53f);
             SetFill(Picture(group, "HP", "game_hud_bar_hp", x + 11, y + 7, 56, 6), hp);
-            SetFill(Picture(group, "Combat Readiness", "game_hud_bar_mp", x + 11, y + 1, 56, 4), readiness);
         }
 
         private static void SetFill(Image image, float fill)

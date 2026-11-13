@@ -50,6 +50,7 @@ namespace AstralOath.Shared.Battle
             var actor = work.Get(command.ActorId);
             if (actor == null || !skills.TryGetValue(command.SkillId, out var program) || program.Row.target == "passive" ||
                 (program.Row.slot > 1 && actor.Has(BattleStatusKind.Silence)) ||
+                actor.ResourceAmount < program.Row.resourceCost ||
                 (command.UseSoulBurn && (program.Row.soulBurnCost <= 0 ||
                     context.Snapshot.GetSoul(actor.Side) < program.Row.soulBurnCost)))
                 return false;
@@ -133,11 +134,13 @@ namespace AstralOath.Shared.Battle
             public readonly BattleUnitSnapshot Source;
             public readonly List<BattleStatusSnapshot> Statuses;
             public int Health;
+            public int ResourceAmount;
 
             public Unit(BattleUnitSnapshot source)
             {
                 Source = source;
                 Health = source.CurrentHealth;
+                ResourceAmount = source.Resource?.Amount ?? 0;
                 Statuses = source.Statuses.ToList();
             }
 
@@ -190,10 +193,11 @@ namespace AstralOath.Shared.Battle
 
             public void Cast(Unit actor, Program program, Unit selected, bool soulBurn, BattleActionOrigin origin)
             {
-                if (!actor.Alive) return;
                 var skill = program.Row;
+                if (!actor.Alive || actor.ResourceAmount < skill.resourceCost) return;
+                bool buffed = HasBuff(actor);
                 string targeting = skill.target;
-                if ((skill.aoeWhenBuffed && origin != BattleActionOrigin.DualAttack && HasBuff(actor)) ||
+                if ((skill.aoeWhenBuffed && origin != BattleActionOrigin.DualAttack && buffed) ||
                     (skill.aoeOutsideTurn && (origin == BattleActionOrigin.Counter || origin == BattleActionOrigin.DualAttack)))
                     targeting = "all_enemies";
                 var targets = ChooseTargets(targeting, actor, selected);
@@ -204,6 +208,7 @@ namespace AstralOath.Shared.Battle
                 var modifiers = owner.ModifiersFor(actor, program);
                 if (origin != BattleActionOrigin.Primary)
                     Changes.Add(BattleChange.Action(actor.Id, selected?.Id, program.Row.id, origin, program.Row.presentationId));
+                ChangeResource(actor, actor, -skill.resourceCost);
 
                 foreach (var effect in program.Effects)
                 {
@@ -228,6 +233,10 @@ namespace AstralOath.Shared.Battle
                         ApplyEffect(actor, target, skill, effect, modifiers, soulBurn, lastHit, hit, target == highestDefense);
                     }
                 }
+
+                int resourceGain = origin != BattleActionOrigin.DualAttack && buffed && skill.resourceGainWhenBuffed > 0
+                    ? skill.resourceGainWhenBuffed : skill.resourceGain;
+                ChangeResource(actor, actor, resourceGain);
 
                 // Counters and random Dual Attacks are limited to the primary attack window.
                 if (origin != BattleActionOrigin.Primary || hit.Count == 0) return;
@@ -274,8 +283,11 @@ namespace AstralOath.Shared.Battle
                             skill.casterHealthDamageBp ?? 0, modifiers.DamageBp, relation, result, actor.Source.Stats.CritDamageBp,
                             additionalBaseDamage: actor.Defense * (skill.casterDefenseDamageBp ?? 0) / Basis,
                             damageMultiplier: 1m + damageBonus);
+                        bool firstHit = !hit.ContainsKey(target.Id);
                         hit[target.Id] = result;
                         ProjectDamage(actor, target, damage, result);
+                        if (firstHit && target.Alive && actor.Side != target.Side)
+                            ChangeResource(actor, target, -(target.Source.ResourceRules?.AttackedSpend ?? 0));
                         break;
                     case "heal":
                         if (!target.Has(BattleStatusKind.Unhealable))
@@ -356,6 +368,15 @@ namespace AstralOath.Shared.Battle
                 if (!reason.HasValue) return true;
                 if (kind.HasValue) Changes.Add(BattleChange.EffectRejected(source.Id, target.Id, kind.Value, reason.Value));
                 return false;
+            }
+
+            private void ChangeResource(Unit source, Unit target, int delta)
+            {
+                if (delta == 0 || target.Source.Resource == null) return;
+                int next = (int)Math.Clamp((long)target.ResourceAmount + delta, 0L, target.Source.Resource.Maximum);
+                if (next == target.ResourceAmount) return;
+                Changes.Add(BattleChange.Resource(source.Id, target.Id, next - target.ResourceAmount));
+                target.ResourceAmount = next;
             }
 
             private void ProjectDamage(Unit source, Unit target, int damage, BattleHitKind hit)

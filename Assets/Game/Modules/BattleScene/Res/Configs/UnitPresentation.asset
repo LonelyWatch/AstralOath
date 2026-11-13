@@ -18,6 +18,9 @@ MonoBehaviour:
   DamageTrail: {fileID: 21300000, guid: 0b8a7661a1c2d75438455cc2b6516be7, type: 3}
   HealthDivider: {fileID: 21300000, guid: 0488774d46e918c40a739fdabcc64eeb, type: 3}
   Shield: {fileID: 21300000, guid: 5aed20f4f9401084cb5db1afbfe15949, type: 3}
+  ResourceFrame: {fileID: 21300000, guid: 5cf92ad5ac7a72f409c21903f1c48f40, type: 3}
+  FocusFill: {fileID: 21300000, guid: ca48f5dbd60a49d4af638a5de1811e9b, type: 3}
+  FightingSpiritFill: {fileID: 21300000, guid: 92fbd8c746bb402993d792cba4252afa, type: 3}
   StatusManifest: {fileID: 4900000, guid: 9667b1e71c615d12a31380d99e1faab7, type: 3}
   StatusGlyphs:
   - {fileID: 21300000, guid: d0b03ad9cbd658acbfced56a5e3271f8, type: 3}

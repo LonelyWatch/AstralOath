@@ -4,9 +4,9 @@
 
 当前试玩目录包含十名普通形态英雄，按 E7 ID 递增。初始配置采用 **Lv60、六星、六觉醒、技能 +0**，不叠加装备、神器、刻印、专属装备、转职和剧情强化。角色的初始星级与这一面板档位分别保存。此档位用作验收锚点。任意合法等级、星级和觉醒档由共享公式计算，详细口径与证据见[等级面板与战斗单位](battle-growth.md)。
 
-- `Config/Tables/battle_heroes.csv` 管理英雄的身份、属性、职业、星座、成长模板引用和验收面板。名称键复用 CharacterLab 源表。
+- `Config/Tables/battle_heroes.csv` 管理英雄的身份、属性、职业、星座、成长模板引用、验收面板和个人资源。名称键复用 CharacterLab 源表。
 - `Config/Tables/battle_growth_presets.csv` 维护可复用的成长系数，`battle_awakening_steps.csv` 按英雄记录各阶觉醒增量。
-- `Config/Tables/battle_skills.csv` 管理 30 个技能槽的目标类型、冷却、魂力、魂燃与参考系数。技能 ID 为 `角色ID.s槽位`。`presentationId` 与本地导入的 STG 对应，`iconAsset` 为 Unity 源资源路径。
+- `Config/Tables/battle_skills.csv` 管理 30 个技能槽的目标类型、冷却、魂力、魂燃、个人资源获取／消耗与参考系数。技能 ID 为 `角色ID.s槽位`。`presentationId` 与本地导入的 STG 对应，`iconAsset` 为 Unity 源资源路径。
 - `Config/Tables/battle_skill_effects.csv` 定义有序技能行为与阶段，供共享规则内核执行。见[战斗第三步](battle-execution.md)。
 - `Config/Tables/battle_skill_enhancements.csv` 管理 130 段已接入主动技能强化的战斗属性增量。正的 `cooldown_turns` 表示减少的回合数；强化材料与费用属于成长系统。
 - `Config/Tables/battle_messages.csv` 管理技能的中文工作译名与效果摘要。战斗逻辑应消费经核实的类型和参数，技能说明供人阅读。
@@ -25,15 +25,17 @@
 - `c1006` 绮世，1283 / 5138 / 522 / 116。 [面板](https://epic7x.com/character/kise/)
 - `c1007` 维德瑞，1283 / 5138 / 522 / 116。与绮世共用狮子座五星盗贼模板，原模型和演出分别使用 `wildred` 和 `c_wilderd_skill_*` 拼写。 [面板](https://epic7x.com/character/vildred/)
 - `c1008` 亚敏，721 / 6189 / 785 / 91。原模型和演出分别使用 `arming` 和 `c_aming_skill_*` 拼写。 [面板](https://epic7x.com/character/armin/)
-- `c1009` 夏绿蒂，1134 / 5825 / 662 / 99。S3 暂按满斗志选择源 `c_charlotte_skill_03_05`。 [面板](https://epic7x.com/character/charlotte/)
+- `c1009` 夏绿蒂，1134 / 5825 / 662 / 99。S3 消耗 100 点斗志，使用源 `c_charlotte_skill_03_05`。 [面板](https://epic7x.com/character/charlotte/)
 
 试玩面板使用满觉醒，主动效果表按该档位录入。赛西莉亚 S2 使用觉醒后的 85% 基础触发率，萝季 S3 按觉醒提供全队攻击与自身防御，席可 S3 按觉醒提升全体友军速度，绮世 S3 按觉醒执行两次冷却增加检定。低觉醒版本的技能行为尚无单独表项。技能数值和强化主要参考 GachaData/Epic7Tools 的同期技能页。部分旧页面仍保留早期版本，如绮世 S1 的旧燃魂，本次采用燃魂移至 S2 的资料。夏绿蒂 S3 的 Power 在 2026-03 调查与现有技能表中分别为 1.0 和 0.9，试玩暂取现有技能表的 0.9。 [技能表](https://gacha-data.com/epic-seven/skills/) [技能强化与觉醒](https://epic7tools.dev/tools/skill-multipliers/) [2026-03-12 数值调查](https://www.reddit.com/r/EpicSeven/comments/1rrsw92/datamine_20260312/)
 
 `casterDefenseDamageBp` 为防御乘数，`casterSpeedDamagePpm` 为每点速度乘以百万分比的伤害增幅，燃魂可覆盖速度系数。`casterHealthRatioDamageBp` 为满生命时的最大额外比例。防御穿透、必暴、增益条件群攻、回合外群攻以字段表示，必暴仍经过未命中判定。屏障分别支持最大生命、攻击、防御来源，同一技能只能选择一个来源。萝季和亚敏屏障暂用资料所列的 100% 和 60% 防御。赛西莉亚 S3 和绮世 S3 的精确屏障系数缺少已核对的同版数值，试玩暂取 15% 最大生命、100% 攻击。净化与驱散保持独立操作，降低行动值与冷却增加检查命中、免疫及抗性，行动值与魂力强化分别作用于自身的行为。 [萝季倍率](https://epic7x.com/character/rose/) [亚敏倍率](https://epic7x.com/character/armin/)
 
-席可、维德瑞、亚敏、夏绿蒂 S2 以 `target=passive` 保留图标、文案和演出槽，导表拒绝给这些槽填入手动施放程序，权威解析拒绝手动指令且不消耗回合。被动自动触发仍待接入，包括席可专注与普通技替换、维德瑞剑舞、亚敏减伤与反击、夏绿蒂被动屏障与减伤。试玩仍缺挑衅强制目标、潜行选中限制及被攻击解除、席可燃魂额外回合、夏绿蒂斗志及对应燃魂。绮世潜行状态可用于 S2 额外穿透。上述边界和待验系数独立于技能能否播放演出。
+席可、维德瑞、亚敏、夏绿蒂 S2 以 `target=passive` 保留图标、文案和演出槽，导表拒绝给这些槽填入手动施放程序，权威解析拒绝手动指令且不消耗回合。席可的回合开始专注获取及受击消耗已经接入；受击净化、行动值提升和普通技替换待接入。维德瑞剑舞、亚敏减伤与反击、夏绿蒂被动屏障与减伤待接入。试玩仍缺挑衅强制目标、潜行选中限制及被攻击解除、席可燃魂额外回合和夏绿蒂 S3 燃魂回满斗志。绮世潜行状态可用于 S2 额外穿透。上述边界和待验系数独立于技能能否播放演出。
 
-`BattlePreviewFactory.Create` 可接收四个合法 `allyHeroIds`，按传入顺序填站位并允许重复。无参数使用 `DefaultHeroIds`；本地敌方仍为四只史莱姆，双人镜像场按同一组 ID 构造两队。服务器与客户端应使用同一内容快照。新字段由 HybridCLR 战斗程序集读取，服务端相同源码随服务端独立更新。
+个人资源的字段及范围见[配置源表](../../Config/README.md)。r4262 的 `character_player.db` 标记席可为 `cp`、夏绿蒂为 `bp`。日文 `text.db` 的 `sk_c1004_2_de` 确认专注的回合开始及受击触发，试玩专注上限为 5。`skill_player.db` 的 `sk_c1009_1` 和 `sk_c1009_1_ss_1` 均为 25 点斗志，`sk_c1009_1_ss_2` 为 50 点，`sk_c1009_3` 消耗 100 点。其他当前目录英雄没有个人资源栏。
+
+`BattlePreviewFactory.Create` 可分别接收四个合法的 `allyHeroIds` 和 `enemyHeroIds`，按传入顺序填站位并允许重复。战斗场景显式指定双方英雄。工厂省略名单时使用 `DefaultHeroIds`，且敌方未指定时按单人四只史莱姆或双人镜像场创建。服务器与客户端应使用同一内容快照。新字段由 HybridCLR 战斗程序集读取，服务端相同源码随服务端独立更新。
 
 实际通过 Luban JSON、二进制/C# 访问器逐字段读回、图标和演出引用及十人完整面板校验。服务器自动化测试 76 通过，1 项缺 MySQL 环境跳过，17 个新增主动槽均提交合法权威指令并产生效果事件。Unity 演出和场景结果见本轮交付记录。
 
@@ -47,7 +49,7 @@ Smilegate 公布的角色索引确认了 `c1001`、`c1005`、`c1062` 三个 ID�
 - 梅赛德丝 `c1005` 1187／4491／627／101，暴击 27%、暴伤 160%。[角色面板](https://epic7x.com/character/mercedes/)
 - 安洁莉卡 `c1062` 576／5700／743／98，暴击 15%、暴伤 150%。[角色面板](https://epic7x.com/character/angelica/)
 
-本地 `character_player.db`、`skill_player.db`、`skillset_player.db`、`skill_upgrade.db` 等原始二进制可定位，尚无经过验证的数值读取器。上述公开面板和倍率未证实与本地资源包完全同版。本轮只读核对来源；导表无需 `D:/sevenepic` 或访问外服。
+本地 r4262 的 `character_player.db` 和 `skill_player.db` 已逐项核对本文所述的个人资源标记及数值。面板、完整技能倍率和强化参数仍采用上述来源，尚待同版逐项复验。本轮只读核对来源；导表无需 `D:/sevenepic` 或访问外服。
 
 ## 技能版本和下一步复验
 

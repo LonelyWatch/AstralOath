@@ -40,7 +40,8 @@ var battleMessages = Read<LocaleData>("battle_battlemessages");
 if (!battleHeroes.SequenceEqual(tables.BattleHeroes.DataList.Select(row => new BattleHeroData(
         row.Id, row.NameKey, row.Element, row.HeroClass, row.Zodiac, row.GrowthPresetId, row.BaseStars, row.Level, row.Stars,
         row.Awakenings, row.Variant, row.Attack, row.Health, row.Defense, row.Speed, row.CritChanceBp,
-        row.CritDamageBp, row.EffectivenessBp, row.EffectResistanceBp))) ||
+        row.CritDamageBp, row.EffectivenessBp, row.EffectResistanceBp, row.ResourceKind, row.ResourceMaximum,
+        row.ResourceTurnGain, row.ResourceAttackedSpend))) ||
     !growthPresets.SequenceEqual(tables.BattleGrowthPresets.DataList.Select(row => new BattleGrowthPresetData(
         row.Id, row.NativeStars, row.HeroClass, row.Zodiac, row.AttackCoefficientMilli,
         row.HealthCoefficientMilli, row.DefenseCoefficientMilli, row.SpeedMilli))) ||
@@ -55,7 +56,8 @@ if (!battleHeroes.SequenceEqual(tables.BattleHeroes.DataList.Select(row => new B
         row.CasterHealthBarrierBp, row.BurnAttackRateBp, row.CasterDefenseBarrierBp, row.CasterDefenseDamageBp,
         row.CasterSpeedDamagePpm, row.BurnSpeedDamagePpm, row.CasterHealthRatioDamageBp, row.DamageAgainstBuffBp,
         row.DefensePenetrationBp, row.StealthPenetrationBp, row.HighestDefensePenetrationBp,
-        row.AlwaysCritical, row.AoeWhenBuffed, row.AoeOutsideTurn, row.CasterAttackBarrierBp))) ||
+        row.AlwaysCritical, row.AoeWhenBuffed, row.AoeOutsideTurn, row.CasterAttackBarrierBp,
+        row.ResourceCost, row.ResourceGain, row.ResourceGainWhenBuffed))) ||
     !battleEffects.SequenceEqual(tables.BattleSkillEffects.DataList.Select(row => new BattleSkillEffectData(
         row.Id, row.SkillId, row.Order, row.Phase, row.Operation, row.Recipient, row.Status, row.ChanceBp, row.Turns, row.Value,
         row.Condition, row.ChanceBonusStatus, row.ChanceBonusBp))) ||
@@ -101,14 +103,16 @@ record CharacterData(string Id, string NameKey, int SortOrder, string BattleSkin
 
 record BattleHeroData(string Id, string NameKey, string Element, string HeroClass, string Zodiac,
     string GrowthPresetId, int BaseStars, int Level, int Stars, int Awakenings, string Variant, int Attack, int Health, int Defense,
-    int Speed, int CritChanceBp, int CritDamageBp, int EffectivenessBp, int EffectResistanceBp);
+    int Speed, int CritChanceBp, int CritDamageBp, int EffectivenessBp, int EffectResistanceBp,
+    string ResourceKind, int ResourceMaximum, int ResourceTurnGain, int ResourceAttackedSpend);
 record BattleSkillData(string Id, string HeroId, int Slot, string NameKey, string DescriptionKey,
     string PresentationId, string IconAsset, string Target, int CooldownTurns, int SoulGain, int SoulBurnCost,
     string SoulBurnKind, int SoulBurnTurns, int? AttackRateBp, int? PowerBp, int? CasterHealthDamageBp,
     int? CasterHealthHealBp, int? CasterHealthBarrierBp, int? BurnAttackRateBp, int? CasterDefenseBarrierBp,
     int? CasterDefenseDamageBp, int? CasterSpeedDamagePpm, int? BurnSpeedDamagePpm, int? CasterHealthRatioDamageBp,
     int? DamageAgainstBuffBp, int? DefensePenetrationBp, int? StealthPenetrationBp, int? HighestDefensePenetrationBp,
-    bool AlwaysCritical, bool AoeWhenBuffed, bool AoeOutsideTurn, int? CasterAttackBarrierBp);
+    bool AlwaysCritical, bool AoeWhenBuffed, bool AoeOutsideTurn, int? CasterAttackBarrierBp,
+    int ResourceCost, int ResourceGain, int ResourceGainWhenBuffed);
 record BattleSkillEffectData(string Id, string SkillId, int Order, string Phase, string Operation, string Recipient,
     string Status, int ChanceBp, int Turns, int Value, string Condition, string ChanceBonusStatus, int ChanceBonusBp);
 record BattleSkillEnhancementData(string Id, string SkillId, int Step, string Kind, int Value);

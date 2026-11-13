@@ -19,6 +19,10 @@
     <var name="critDamageBp" type="int#range=[10000,35000]"/>
     <var name="effectivenessBp" type="int#range=[0,100000]"/>
     <var name="effectResistanceBp" type="int#range=[0,100000]"/>
+    <var name="resourceKind" type="string"/>
+    <var name="resourceMaximum" type="int#range=[0,100000]"/>
+    <var name="resourceTurnGain" type="int#range=[0,100000]"/>
+    <var name="resourceAttackedSpend" type="int#range=[0,100000]"/>
   </bean>
 
   <bean name="GrowthPresetRow">
@@ -81,6 +85,9 @@
     <var name="aoeWhenBuffed" type="bool"/>
     <var name="aoeOutsideTurn" type="bool"/>
     <var name="casterAttackBarrierBp" type="int?"/>
+    <var name="resourceCost" type="int#range=[0,100000]"/>
+    <var name="resourceGain" type="int#range=[0,100000]"/>
+    <var name="resourceGainWhenBuffed" type="int#range=[0,100000]"/>
   </bean>
 
   <bean name="SkillEffectRow">

@@ -47,15 +47,40 @@ namespace AstralOath.Shared.Battle
             string.IsNullOrWhiteSpace(value) ? throw new ArgumentException("An ID or key is required.", parameter) : value;
     }
 
+    public enum BattleResourceKind { Focus, FightingSpirit }
+
+    public sealed class BattleResourceDefinition
+    {
+        public BattleResourceKind Kind { get; }
+        public int Maximum { get; }
+        internal int TurnGain { get; }
+        internal int AttackedSpend { get; }
+
+        public BattleResourceDefinition(BattleResourceKind kind, int maximum, int turnGain = 0, int attackedSpend = 0)
+        {
+            if (!Enum.IsDefined(typeof(BattleResourceKind), kind))
+                throw new ArgumentOutOfRangeException(nameof(kind));
+            if (maximum <= 0) throw new ArgumentOutOfRangeException(nameof(maximum));
+            if (turnGain < 0 || turnGain > maximum) throw new ArgumentOutOfRangeException(nameof(turnGain));
+            if (attackedSpend < 0 || attackedSpend > maximum) throw new ArgumentOutOfRangeException(nameof(attackedSpend));
+            Kind = kind;
+            Maximum = maximum;
+            TurnGain = turnGain;
+            AttackedSpend = attackedSpend;
+        }
+    }
+
     public sealed class HeroDefinition : BattleUnitDefinition
     {
         public string HeroClass { get; }
         public string Zodiac { get; }
         public HeroGrowthPreset GrowthPreset { get; }
         public IReadOnlyList<HeroAwakeningStep> AwakeningSteps { get; }
+        public BattleResourceDefinition Resource { get; }
 
         public HeroDefinition(string id, string nameKey, BattleElement element, string heroClass, string zodiac,
-            BattleUnitForm initialForm, HeroGrowthPreset growthPreset, IEnumerable<HeroAwakeningStep> awakeningSteps)
+            BattleUnitForm initialForm, HeroGrowthPreset growthPreset, IEnumerable<HeroAwakeningStep> awakeningSteps,
+            BattleResourceDefinition resource = null)
             : base(id, nameKey, element, initialForm)
         {
             HeroClass = RequireKey(heroClass, nameof(heroClass));
@@ -64,6 +89,7 @@ namespace AstralOath.Shared.Battle
             if (awakeningSteps == null)
                 throw new ArgumentNullException(nameof(awakeningSteps));
             AwakeningSteps = Array.AsReadOnly(awakeningSteps.ToArray());
+            Resource = resource;
         }
     }
 

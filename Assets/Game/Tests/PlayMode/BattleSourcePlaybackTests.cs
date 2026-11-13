@@ -247,6 +247,7 @@ namespace AstralOath.Client.Tests
                 ? ((IEnumerable<float>)PresentationType.GetProperty("HitTimes").GetValue(playback)).ToArray()
                 : Array.Empty<float>();
             int nextCheckedHit = 0;
+            int sourceReactionHits = 0;
             var cameraTrace = !string.IsNullOrEmpty(captureDirectory) && (id == "c_ras_skill_01" || id == "c_angelica_skill_01")
                 ? new List<string> { "source_seconds,camera_x,camera_y,orthographic_size,actor_x,actor_y" } : null;
             double deadline = Time.realtimeSinceStartupAsDouble + ActionTimeout;
@@ -290,6 +291,15 @@ namespace AstralOath.Client.Tests
                         var body = (Renderer)typeof(BattlePreviewActor).GetProperty("PresentationRenderer", PrivateInstance).GetValue(recipient);
                         Assert.That(body && body.enabled && body.gameObject.activeInHierarchy, Is.True,
                             sample + " hit " + nextCheckedHit + " at " + elapsed + " must display accepted target " + recipient.name);
+                    }
+                    if (id == "c_kise_skill_03" && (bool)PresentationType.GetMethod("OwnsNodeAnimationPose", PrivateInstance)
+                        .Invoke(playback, new object[] { target }))
+                    {
+                        var player = (AstralOath.Client.Skeletons.ISkeletonPlayer)typeof(BattlePreviewActor)
+                            .GetField("player", PrivateInstance).GetValue(target);
+                        Assert.That(player.CurrentAnimation, Is.EqualTo("flying_damage"));
+                        Assert.That(player.Duration, Is.Zero);
+                        sourceReactionHits++;
                     }
                     if (!string.IsNullOrEmpty(captureDirectory))
                     {
@@ -351,6 +361,8 @@ namespace AstralOath.Client.Tests
             while (elapsed < timing.Duration + 0.05f);
 
             if (cameraTrace != null) File.WriteAllLines(Path.Combine(captureDirectory, sample + "-camera.csv"), cameraTrace);
+            if (id == "c_kise_skill_03")
+                Assert.That(sourceReactionHits, Is.GreaterThan(0), "At least one Kise hit must use the actual source reaction.");
             if (interruptAt == Phase.None) Assert.That(nextCheckedHit, Is.EqualTo(checkedHits.Length), sample + " must inspect every source hit.");
             Assert.That((observed & capturePhases) == capturePhases, Is.True,
                 $"{sample} observed {observed}; expected {capturePhases}.");

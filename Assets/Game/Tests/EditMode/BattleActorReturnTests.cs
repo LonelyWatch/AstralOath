@@ -91,6 +91,58 @@ namespace AstralOath.Client.Tests
         }
 
         [Test]
+        public void SourceZeroSecondReactionCanHoldAndReleaseWithoutStealingANewerTrack()
+        {
+            var source = ReadModel("ras");
+            var actor = Create(source.json, source.atlas, source.page);
+            var player = Player(actor);
+            var hold = ActorType.GetMethod("HoldSourceReaction", Private);
+            Assert.That(hold, Is.Not.Null);
+            var release = (Action)hold.Invoke(actor, new object[] { "flying_damage" });
+            Assert.That(release, Is.Not.Null);
+            Assert.That(player.CurrentAnimation, Is.EqualTo("flying_damage"));
+            Assert.That(player.Duration, Is.Zero);
+            Invoke(actor, "Update");
+            Assert.That(player.CurrentAnimation, Is.EqualTo("flying_damage"));
+            release();
+            Assert.That(player.CurrentAnimation, Is.EqualTo("b_idle"));
+
+            release = (Action)hold.Invoke(actor, new object[] { "flying_damage" });
+            Invoke(actor, "PlayBattleAnimation", "attacked");
+            release();
+            Assert.That(player.CurrentAnimation, Is.EqualTo("attacked"));
+        }
+
+        [TestCase("jump_back")]
+        [TestCase("attacked")]
+        [TestCase("skill2")]
+        [TestCase("skill3")]
+        public void RoseChangesBodyViewWithoutBlendingThroughParkedBones(string animation)
+        {
+            var source = ReadModel("rose");
+            var actor = Create(source.json, source.atlas, source.page);
+            var expectedActor = Create(source.json, source.atlas, source.page);
+            var player = Player(actor); var expected = Player(expectedActor);
+            var mesh = player.Root.GetComponent<MeshFilter>().sharedMesh;
+            var expectedMesh = expected.Root.GetComponent<MeshFilter>().sharedMesh;
+            actor.transform.localPosition = new Vector3(4, 5, 0);
+            Invoke(actor, "PlayBattleAnimation", animation); player.Tick(player.Duration);
+            Assert.That(Position(player, "quarter_view").x, Is.Zero.Within(.0001f));
+            Assert.That(Position(player, "front_view").x, Is.GreaterThan(6f));
+            Invoke(actor, "PlayBattleIdle");
+            for (int frame = 0; frame < 6; frame++)
+            {
+                Assert.That(Position(player, "front_view").x, Is.EqualTo(Position(expected, "front_view").x).Within(.0001f),
+                    "The active body view should enter idle at its authored position on the first frame.");
+                Assert.That(Position(player, "quarter_view").x, Is.EqualTo(Position(expected, "quarter_view").x).Within(.0001f));
+                Assert.That(Vector3.Distance(mesh.bounds.center, expectedMesh.bounds.center), Is.LessThan(.0001f));
+                Assert.That(Vector3.Distance(mesh.bounds.size, expectedMesh.bounds.size), Is.LessThan(.0001f));
+                Assert.That(actor.transform.localPosition, Is.EqualTo(new Vector3(4, 5, 0)));
+                Invoke(actor, "AdvancePresentation", .025f); expected.Tick(.025f);
+            }
+        }
+
+        [Test]
         public void PausedReturnDoesNotAdvanceAndRepeatedIdleOrOtherActorsCannotRestartIt()
         {
             var source = ReadModel("ras");

@@ -23,7 +23,7 @@
 ,battle.skill.c1003.s3.name,胜利女神
 ,battle.skill.c1004.s1.description,攻击一名敌人，降低其行动值10%。伤害随自身速度提高。试玩暂未接入燃魂追加回合。
 ,battle.skill.c1004.s1.name,单发射击
-,battle.skill.c1004.s2.description,被动。涉及专注积累、受击解除减益和自动射击替换，试玩尚未接入触发。
+,battle.skill.c1004.s2.description,被动。回合开始获得1点专注，受到攻击时消耗1点专注。试玩尚未接入受击净化、提升行动值和自动射击替换。
 ,battle.skill.c1004.s2.name,集中
 ,battle.skill.c1004.s3.description,攻击全体敌人，有85%概率降低速度2回合。觉醒后全体友军速度提升2回合。
 ,battle.skill.c1004.s3.name,暴风之箭
@@ -51,11 +51,11 @@
 ,battle.skill.c1008.s2.name,保护
 ,battle.skill.c1008.s3.description,解除全体友军一个减益，自身防御提升2回合，并为全体友军赋予随自身防御增强的屏障2回合。燃魂使增益延长1回合。
 ,battle.skill.c1008.s3.name,盾墙
-,battle.skill.c1009.s1.description,攻击一名敌人并提高自身行动值25%，命中时必定暴击。非夹攻且自身有增益时变为群攻。
+,battle.skill.c1009.s1.description,攻击一名敌人并提高自身行动值25%，获得25点斗志，命中时必定暴击。非夹攻且自身有增益时变为群攻并获得50点斗志。
 ,battle.skill.c1009.s1.name,双剑
 ,battle.skill.c1009.s2.description,被动。涉及开战与回合末屏障、受击减伤及伤害提升，试玩尚未接入触发。
 ,battle.skill.c1009.s2.name,沼泽的意志
-,battle.skill.c1009.s3.description,攻击全体敌人并施加无法恢复2回合，穿透防御最高敌人的防御，命中时必定暴击。试玩采用满斗志演出，暂未接入斗志与燃魂。
+,battle.skill.c1009.s3.description,消耗100点斗志。攻击全体敌人并施加无法恢复2回合，穿透防御最高敌人的防御，命中时必定暴击。试玩尚未接入本技能燃魂。
 ,battle.skill.c1009.s3.name,旋风
 ,battle.skill.c1062.s1.description,攻击一名敌人，有20%概率使其眩晕1回合。
 ,battle.skill.c1062.s1.name,神圣打击

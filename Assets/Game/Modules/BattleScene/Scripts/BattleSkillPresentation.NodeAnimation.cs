@@ -17,12 +17,11 @@ namespace AstralOath.Client.BattleScene
             public readonly Vector3 Position;
             public readonly Quaternion Rotation;
             public readonly Vector3 Scale;
-            public readonly bool OwnsReaction;
+            public Action ReleaseReaction;
 
-            public NodeActorBinding(Transform body, NodeActorBinding previous, bool ownsReaction)
+            public NodeActorBinding(Transform body, NodeActorBinding previous)
             {
                 Body = body;
-                OwnsReaction = ownsReaction;
                 Position = previous?.Position ?? body.localPosition;
                 Rotation = previous?.Rotation ?? body.localRotation;
                 Scale = previous?.Scale ?? body.localScale;
@@ -40,7 +39,7 @@ namespace AstralOath.Client.BattleScene
         internal bool OwnsNodeAnimationPose(BattlePreviewActor actor)
         {
             var renderer = actor ? actor.PresentationRenderer : null;
-            return renderer && nodeActorBindings.TryGetValue(renderer.transform, out var binding) && binding.OwnsReaction;
+            return renderer && nodeActorBindings.TryGetValue(renderer.transform, out var binding) && binding.ReleaseReaction != null;
         }
 
         private static string NodeAnimationSource(JObject node)
@@ -66,12 +65,7 @@ namespace AstralOath.Client.BattleScene
                 return;
             }
 
-            if (affectedActors)
-            {
-                cinematic.RevealLayoutTargets();
-                foreach (var actor in recipients)
-                    if (actor && actor != caster) PlayNodeAnimationTracks(node, at, actor);
-            }
+            if (affectedActors) cinematic.RevealLayoutTargets();
 
             string source = NodeAnimationSource(node);
             string bone = (string)node["bone"];
@@ -111,8 +105,6 @@ namespace AstralOath.Client.BattleScene
             float facing = caster ? caster.FacingDirection : 1f;
             float until = time + sampler.Duration;
             bool holdPose = (bool?)node["disable_restore"] ?? false;
-            bool ownsReaction = affectedActors && node["timeline"] is JArray frames &&
-                frames.Values<string>().Any(entry => !string.IsNullOrWhiteSpace(entry) && entry.EndsWith(",1", StringComparison.Ordinal));
             Vector2 offset = new Vector2(Number(node, "offset_x"), Number(node, "offset_y")) * SourcePixel;
             var bindings = new NodeActorBinding[actors.Length];
             var formation = new Vector3[actors.Length];
@@ -121,12 +113,38 @@ namespace AstralOath.Client.BattleScene
             {
                 var body = actors[index].PresentationRenderer.transform;
                 nodeActorBindings.TryGetValue(body, out var previous);
-                bindings[index] = new NodeActorBinding(body, previous, ownsReaction);
-                nodeActorBindings[body] = bindings[index];
+                previous?.ReleaseReaction?.Invoke();
+                var binding = new NodeActorBinding(body, previous);
+                bindings[index] = binding;
+                nodeActorBindings[body] = binding;
+                if (affectedActors && node["timeline"] is JArray frames)
+                    ScheduleReactionTracks(actors[index], binding, frames);
                 formation[index] = actors[index].transform.position - center;
             }
             UpdatePose(0f);
             active.Add((holdPose ? float.PositiveInfinity : until, UpdatePose, Release));
+
+            void ScheduleReactionTracks(BattlePreviewActor actor, NodeActorBinding binding, JArray frames)
+            {
+                foreach (string entry in frames.Values<string>())
+                {
+                    string[] fields = entry?.Split(',');
+                    if (fields?.Length != 3 || !TryScalar(fields[0], out float delay) || delay < 0f || fields[2] != "1")
+                    {
+                        WarnSource($"Unmapped NODE_ANI timeline entry '{entry}'.");
+                        continue;
+                    }
+                    Schedule(at + delay / 1000f, () =>
+                    {
+                        if (!Owns(binding)) return;
+                        var previous = binding.ReleaseReaction;
+                        binding.ReleaseReaction = actor.HoldSourceReaction(fields[1]);
+                        previous?.Invoke();
+                        if (binding.ReleaseReaction == null)
+                            WarnSource($"NODE_ANI reaction '{fields[1]}' is absent on '{actor.name}'.");
+                    });
+                }
+            }
 
             void UpdatePose(float delta)
             {
@@ -166,6 +184,7 @@ namespace AstralOath.Client.BattleScene
                     {
                         nodeActorBindings.Remove(binding.Body);
                         binding.Restore();
+                        binding.ReleaseReaction?.Invoke();
                     }
                 }
             }

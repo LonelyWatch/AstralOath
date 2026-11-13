@@ -10,6 +10,24 @@ namespace AstralOath.Client.Tests
     public sealed class BattleHeroPrefabTests
     {
         [Test]
+        public void OverheadHudHasNoCombatReadinessStrip()
+        {
+            var hud = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Game/Modules/BattleScene/Res/Prefab/BattleHud.prefab");
+            Assert.That(hud.transform.Find("Combat Readiness"), Is.Not.Null, "Keep the separate turn-order rail.");
+            foreach (string side in new[] { "Allies", "Enemies" })
+            {
+                var team = hud.transform.Find("Unit Status/" + side);
+                Assert.That(team.childCount, Is.EqualTo(4));
+                foreach (Transform marker in team)
+                {
+                    Assert.That(marker.Find("Combat Readiness"), Is.Null, marker.name);
+                    Assert.That(marker.Find("Frame").GetComponent<UnityEngine.UI.Image>().sprite.name,
+                        Is.EqualTo("game_hud_bar_bg_n"), marker.name);
+                }
+            }
+        }
+
+        [Test]
         public void EightAuthoredSlotsUseOneIdentityNeutralPrefab()
         {
             const string module = "Assets/Game/Modules/BattleScene";

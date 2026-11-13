@@ -17,6 +17,11 @@ namespace AstralOath.Client.BattleScene.Editor
             if (!profile) { profile = ScriptableObject.CreateInstance<BattleUnitPresentationProfile>(); AssetDatabase.CreateAsset(profile, directory + "/UnitPresentation.asset"); }
             profile.DamageTrail = ImportSprite("game_hud_bar_dhp.png");
             profile.HealthDivider = ImportSprite("game_hud_bar_split.png");
+            profile.ResourceFrame = AssetDatabase.LoadAssetAtPath<Sprite>(Root + "Res/Textures/Hud/game_hud_bar_bg.png");
+            profile.FocusFill = AssetDatabase.LoadAssetAtPath<Sprite>(Root + "Res/Textures/Hud/game_hud_bar_cp.png");
+            profile.FightingSpiritFill = AssetDatabase.LoadAssetAtPath<Sprite>(Root + "Res/Textures/Hud/game_hud_bar_bp.png");
+            if (!profile.ResourceFrame || !profile.FocusFill || !profile.FightingSpiritFill)
+                throw new InvalidOperationException("Missing native Battle HUD personal resource sprites.");
             UpdateStatusAndShield(profile);
             profile.DeathParticles = AssetDatabase.LoadAssetAtPath<TextAsset>(Root + "Res/Effects/Death/Particles/death_pati_02.particle.json");
             profile.DeathTextures = Directory.GetFiles(Root + "Res/Effects/Death/Particles", "*.png").OrderBy(x => x, StringComparer.Ordinal)

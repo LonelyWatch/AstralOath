@@ -10,6 +10,7 @@ namespace AstralOath.Client.BattleScene
         public Vector2 StatusOffset;
         [Min(1)] public int HealthSections = 10;
         public Sprite DamageTrail, HealthDivider, Shield;
+        public Sprite ResourceFrame, FocusFill, FightingSpiritFill;
         public TextAsset StatusManifest;
         public Sprite[] StatusGlyphs, StatusDigits;
         [Min(1)] public int StatusIconsPerRow = 5;

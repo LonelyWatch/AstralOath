@@ -21,6 +21,8 @@ CharacterLab 的两张表由 `Schema/characterlab.xml` 定义：
 
 Battle 的七张表由 `Schema/battle.xml` 定义。英雄通过 `battle_heroes.csv` 的 `growthPresetId` 引用 `battle_growth_presets.csv`，并按英雄 ID 在 `battle_awakening_steps.csv` 配置觉醒。现有面板列是导表的验收锚点。其余四张为 `battle_skills.csv`、`battle_skill_effects.csv`、`battle_skill_enhancements.csv`、`battle_messages.csv`。有序效果表定义技能的阶段、操作、目标和参数。导表检查模板、觉醒序列、槽位、角色、演出、图标、文案、魂燃和强化序列。见[等级与站位](../docs/development/battle-growth.md)和[技能配表](../docs/development/battle-character-data.md)。
 
+英雄的个人资源由 `resourceKind`（`none`、`focus`、`fighting_spirit`）、`resourceMaximum`、`resourceTurnGain` 和 `resourceAttackedSpend` 配置。无个人资源的英雄填写 `none,0,0,0`。主动技能使用 `resourceCost`、`resourceGain`、`resourceGainWhenBuffed`；最后一项为有增益且非夹攻时的获取值，0 表示沿用基础获取值。导表检查每个资源值都落在英雄自身上限内，并校验被动槽不填写主动获取或消耗。
+
 ## 生成和检查
 
 在仓库根目录使用 PowerShell 7：

@@ -36,16 +36,20 @@ namespace AstralOath.Client.Skeletons
         {
             internal S21.SkeletonData Data { get; }
             internal IReadOnlyDictionary<S21.SlotData, SkeletonBlend> ExtendedBlends { get; }
+            internal S21.BoneData[] SlotViews { get; }
             internal ParsedSource(S21.SkeletonData data, IReadOnlyDictionary<S21.SlotData, SkeletonBlend> extendedBlends)
             {
                 Data = data;
                 ExtendedBlends = extendedBlends;
+                SlotViews = FindSlotViews(data);
             }
         }
 
         private readonly S21.Skeleton skeleton;
         private readonly S21.AnimationState state;
         private readonly IReadOnlyDictionary<S21.SlotData, SkeletonBlend> extendedBlends;
+        private readonly S21.BoneData[] slotViews;
+        private S21.Skeleton incomingViewPose;
         private string animation;
         private bool loop;
         private readonly Dictionary<string, Spine21SetupTimeline> completeMixTargets = new Dictionary<string, Spine21SetupTimeline>(StringComparer.Ordinal);
@@ -54,6 +58,7 @@ namespace AstralOath.Client.Skeletons
             var prepared = Prepare(source);
             var data = prepared.Data;
             extendedBlends = prepared.ExtendedBlends;
+            slotViews = prepared.SlotViews;
             skeleton = new S21.Skeleton(data); skeleton.SetSkin(data.DefaultSkin); state = new S21.AnimationState(new S21.AnimationStateData(data));
             foreach (var item in data.Animations) Animations.Add(new SkeletonAnimationInfo(item.Name, item.Duration));
             foreach (var skin in data.Skins) Skins.Add(skin.Name);
@@ -105,18 +110,89 @@ namespace AstralOath.Client.Skeletons
             return modes;
         }
 
+        private static S21.BoneData[] FindSlotViews(S21.SkeletonData data)
+        {
+            // E7 alternate body rigs are sibling *_view branches. Match the exact
+            // source root convention, never the character, clip or a pixel distance.
+            var firstViewByParent = new Dictionary<S21.BoneData, S21.BoneData>();
+            var siblingViews = new HashSet<S21.BoneData>();
+            foreach (var bone in data.Bones)
+            {
+                if (bone.Parent == null || !bone.Name.EndsWith("_view", StringComparison.Ordinal)) continue;
+                if (firstViewByParent.TryGetValue(bone.Parent, out var first))
+                {
+                    siblingViews.Add(first);
+                    siblingViews.Add(bone);
+                }
+                else firstViewByParent.Add(bone.Parent, bone);
+            }
+            if (siblingViews.Count == 0) return null;
+            var result = new S21.BoneData[data.Slots.Count];
+            for (int i = 0; i < result.Length; i++)
+            {
+                var bone = data.Slots[i].BoneData;
+                while (bone != null && !siblingViews.Contains(bone)) bone = bone.Parent;
+                result[i] = bone;
+            }
+            return result;
+        }
+
+        private S21.BoneData ExclusiveVisibleView(S21.Skeleton pose)
+        {
+            S21.BoneData active = null;
+            for (int i = 0; i < slotViews.Length; i++)
+            {
+                var view = slotViews[i];
+                if (view == null) continue;
+                var slot = pose.Slots[i];
+                if (slot.A <= 0) continue;
+                float attachmentAlpha = slot.Attachment switch
+                {
+                    S21.RegionAttachment region => region.A,
+                    S21.MeshAttachment mesh => mesh.A,
+                    S21.SkinnedMeshAttachment weighted => weighted.A,
+                    _ => 0f
+                };
+                if (attachmentAlpha <= 0) continue;
+                if (active != null && active != view) return null;
+                active = view;
+            }
+            return active;
+        }
+
+        private bool ChangesBodyView(S21.Animation target)
+        {
+            if (slotViews == null || state.GetCurrent(0) == null) return false;
+            var outgoing = ExclusiveVisibleView(skeleton);
+            if (outgoing == null) return false;
+
+            // Sample only visibility at the incoming setup frame, without mutating
+            // the displayed pose or firing events. No per-frame or cross-player state.
+            incomingViewPose ??= new S21.Skeleton(skeleton.Data);
+            incomingViewPose.Skin = skeleton.Skin;
+            incomingViewPose.SetSlotsToSetupPose();
+            foreach (var timeline in target.Timelines)
+                if (timeline is S21.AttachmentTimeline || timeline is S21.ColorTimeline)
+                    timeline.Apply(incomingViewPose, -1, 0, null, 1);
+            var incoming = ExclusiveVisibleView(incomingViewPose);
+            return incoming != null && incoming != outgoing && incoming.Parent == outgoing.Parent;
+        }
+
         private void OnEvent(S21.AnimationState sender, int track, S21.Event value)
         { Events.Enqueue(new SkeletonPlaybackEvent(SkeletonPlaybackEventKind.Event, value.Data.Name, value.Int, value.Float, value.String)); }
         private void OnComplete(S21.AnimationState sender, int track, int count)
         { Events.Enqueue(new SkeletonPlaybackEvent(SkeletonPlaybackEventKind.Complete, animation, count)); }
         internal override void Play(string name, bool looping, float mix)
         {
+            var target = skeleton.Data.FindAnimation(name);
+            // These rigs park the inactive body away from its visible origin. Mixing
+            // separate views would move a whole visible body through that offset.
+            if (mix > 0 && ChangesBodyView(target)) mix = 0;
             if (mix == 0)
             {
                 // A new unblended clip must not inherit unkeyed attachments, bones or deformation.
                 state.ClearTracks(); skeleton.SetToSetupPose();
             }
-            var target = skeleton.Data.FindAnimation(name);
             Spine21SetupTimeline.Playback playback = null;
             if (mix > 0)
             {

@@ -35,6 +35,11 @@ function Export-BattleCatalog {
             $hero.baseStars -gt $hero.stars -or $hero.awakenings -gt $hero.stars) {
             throw "Battle hero profile is invalid: $id."
         }
+        if ($hero.resourceKind -cnotin @('none','focus','fighting_spirit') -or
+            (($hero.resourceKind -ceq 'none') -ne ($hero.resourceMaximum -eq 0)) -or
+            $hero.resourceTurnGain -gt $hero.resourceMaximum -or $hero.resourceAttackedSpend -gt $hero.resourceMaximum) {
+            throw "Battle hero personal resource is invalid for $id."
+        }
         $preset = @($growthPresets | Where-Object id -CEQ $hero.growthPresetId)
         if ($preset.Count -ne 1 -or $preset[0].nativeStars -ne $hero.baseStars -or
             $preset[0].heroClass -cne $hero.heroClass -or $preset[0].zodiac -cne $hero.zodiac) {
@@ -65,6 +70,14 @@ function Export-BattleCatalog {
             if ($skill.nameKey -cne "battle.skill.$key.name" -or $skill.descriptionKey -cne "battle.skill.$key.description" -or
                 $skill.target -cnotin @('one_enemy','two_enemies','all_enemies','one_ally','all_allies','passive')) {
                 throw "Battle skill text or targeting is invalid for $key."
+            }
+            if ($skill.resourceCost -gt $hero.resourceMaximum -or
+                $skill.resourceGain -gt $hero.resourceMaximum -or
+                $skill.resourceGainWhenBuffed -gt $hero.resourceMaximum -or
+                ($skill.resourceGainWhenBuffed -gt 0 -and $skill.resourceGainWhenBuffed -lt $skill.resourceGain) -or
+                ($skill.target -ceq 'passive' -and ($skill.resourceCost -gt 0 -or $skill.resourceGain -gt 0 -or
+                    $skill.resourceGainWhenBuffed -gt 0))) {
+                throw "Battle skill personal resource is invalid for $key."
             }
             $burn = $skill.soulBurnKind
             $turns = $skill.soulBurnTurns

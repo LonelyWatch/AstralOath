@@ -20,7 +20,11 @@
       "critChanceBp": 1500,
       "critDamageBp": 15000,
       "effectivenessBp": 0,
-      "effectResistanceBp": 1200
+      "effectResistanceBp": 1200,
+      "resourceKind": "none",
+      "resourceMaximum": 0,
+      "resourceTurnGain": 0,
+      "resourceAttackedSpend": 0
     },
     {
       "id": "c1002",
@@ -41,7 +45,11 @@
       "critChanceBp": 1500,
       "critDamageBp": 15000,
       "effectivenessBp": 1800,
-      "effectResistanceBp": 0
+      "effectResistanceBp": 0,
+      "resourceKind": "none",
+      "resourceMaximum": 0,
+      "resourceTurnGain": 0,
+      "resourceAttackedSpend": 0
     },
     {
       "id": "c1003",
@@ -62,7 +70,11 @@
       "critChanceBp": 1500,
       "critDamageBp": 15000,
       "effectivenessBp": 0,
-      "effectResistanceBp": 1200
+      "effectResistanceBp": 1200,
+      "resourceKind": "none",
+      "resourceMaximum": 0,
+      "resourceTurnGain": 0,
+      "resourceAttackedSpend": 0
     },
     {
       "id": "c1004",
@@ -83,7 +95,11 @@
       "critChanceBp": 1500,
       "critDamageBp": 15000,
       "effectivenessBp": 0,
-      "effectResistanceBp": 0
+      "effectResistanceBp": 0,
+      "resourceKind": "focus",
+      "resourceMaximum": 5,
+      "resourceTurnGain": 1,
+      "resourceAttackedSpend": 1
     },
     {
       "id": "c1005",
@@ -104,7 +120,11 @@
       "critChanceBp": 2700,
       "critDamageBp": 16000,
       "effectivenessBp": 0,
-      "effectResistanceBp": 0
+      "effectResistanceBp": 0,
+      "resourceKind": "none",
+      "resourceMaximum": 0,
+      "resourceTurnGain": 0,
+      "resourceAttackedSpend": 0
     },
     {
       "id": "c1006",
@@ -125,7 +145,11 @@
       "critChanceBp": 2300,
       "critDamageBp": 15000,
       "effectivenessBp": 0,
-      "effectResistanceBp": 0
+      "effectResistanceBp": 0,
+      "resourceKind": "none",
+      "resourceMaximum": 0,
+      "resourceTurnGain": 0,
+      "resourceAttackedSpend": 0
     },
     {
       "id": "c1007",
@@ -146,7 +170,11 @@
       "critChanceBp": 2300,
       "critDamageBp": 15000,
       "effectivenessBp": 0,
-      "effectResistanceBp": 0
+      "effectResistanceBp": 0,
+      "resourceKind": "none",
+      "resourceMaximum": 0,
+      "resourceTurnGain": 0,
+      "resourceAttackedSpend": 0
     },
     {
       "id": "c1008",
@@ -167,7 +195,11 @@
       "critChanceBp": 1500,
       "critDamageBp": 15000,
       "effectivenessBp": 0,
-      "effectResistanceBp": 1800
+      "effectResistanceBp": 1800,
+      "resourceKind": "none",
+      "resourceMaximum": 0,
+      "resourceTurnGain": 0,
+      "resourceAttackedSpend": 0
     },
     {
       "id": "c1009",
@@ -188,7 +220,11 @@
       "critChanceBp": 2300,
       "critDamageBp": 15000,
       "effectivenessBp": 0,
-      "effectResistanceBp": 0
+      "effectResistanceBp": 0,
+      "resourceKind": "fighting_spirit",
+      "resourceMaximum": 100,
+      "resourceTurnGain": 0,
+      "resourceAttackedSpend": 0
     },
     {
       "id": "c1062",
@@ -209,7 +245,11 @@
       "critChanceBp": 1500,
       "critDamageBp": 15000,
       "effectivenessBp": 0,
-      "effectResistanceBp": 0
+      "effectResistanceBp": 0,
+      "resourceKind": "none",
+      "resourceMaximum": 0,
+      "resourceTurnGain": 0,
+      "resourceAttackedSpend": 0
     }
   ],
   "growthPresets": [
@@ -1226,7 +1266,10 @@
       "casterHealthDamageBp": 800,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1001.s2",
@@ -1246,7 +1289,10 @@
       "powerBp": 10000,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1001.s3",
@@ -1267,7 +1313,10 @@
       "casterHealthDamageBp": 1200,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1002.s1",
@@ -1288,7 +1337,10 @@
       "casterHealthDamageBp": 700,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1002.s2",
@@ -1309,7 +1361,10 @@
       "casterHealthDamageBp": 600,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1002.s3",
@@ -1331,7 +1386,10 @@
       "casterHealthBarrierBp": 1500,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1003.s1",
@@ -1352,7 +1410,10 @@
       "casterDefenseDamageBp": 7000,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1003.s2",
@@ -1371,7 +1432,10 @@
       "casterDefenseBarrierBp": 10000,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1003.s3",
@@ -1389,7 +1453,10 @@
       "soulBurnTurns": 1,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1004.s1",
@@ -1410,7 +1477,10 @@
       "casterSpeedDamagePpm": 750,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1004.s2",
@@ -1428,7 +1498,10 @@
       "soulBurnTurns": 0,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1004.s3",
@@ -1448,7 +1521,10 @@
       "powerBp": 10500,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1005.s1",
@@ -1468,7 +1544,10 @@
       "powerBp": 9500,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1005.s2",
@@ -1488,7 +1567,10 @@
       "powerBp": 10000,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1005.s3",
@@ -1508,7 +1590,10 @@
       "powerBp": 9500,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1006.s1",
@@ -1529,7 +1614,10 @@
       "damageAgainstBuffBp": 7000,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1006.s2",
@@ -1552,7 +1640,10 @@
       "stealthPenetrationBp": 3000,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1006.s3",
@@ -1574,7 +1665,10 @@
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
       "aoeOutsideTurn": false,
-      "casterAttackBarrierBp": 10000
+      "casterAttackBarrierBp": 10000,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1007.s1",
@@ -1595,7 +1689,10 @@
       "casterSpeedDamagePpm": 750,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1007.s2",
@@ -1613,7 +1710,10 @@
       "soulBurnTurns": 0,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1007.s3",
@@ -1636,7 +1736,10 @@
       "burnSpeedDamagePpm": 900,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1008.s1",
@@ -1657,7 +1760,10 @@
       "casterDefenseDamageBp": 6000,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": true
+      "aoeOutsideTurn": true,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1008.s2",
@@ -1675,7 +1781,10 @@
       "soulBurnTurns": 0,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1008.s3",
@@ -1694,7 +1803,10 @@
       "casterDefenseBarrierBp": 6000,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1009.s1",
@@ -1714,7 +1826,10 @@
       "powerBp": 10000,
       "alwaysCritical": true,
       "aoeWhenBuffed": true,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 25,
+      "resourceGainWhenBuffed": 50
     },
     {
       "id": "c1009.s2",
@@ -1732,7 +1847,10 @@
       "soulBurnTurns": 0,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1009.s3",
@@ -1753,7 +1871,10 @@
       "highestDefensePenetrationBp": 10000,
       "alwaysCritical": true,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 100,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1062.s1",
@@ -1773,7 +1894,10 @@
       "powerBp": 10000,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1062.s2",
@@ -1792,7 +1916,10 @@
       "casterHealthHealBp": 2000,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     },
     {
       "id": "c1062.s3",
@@ -1812,7 +1939,10 @@
       "casterHealthBarrierBp": 1500,
       "alwaysCritical": false,
       "aoeWhenBuffed": false,
-      "aoeOutsideTurn": false
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
     }
   ],
   "effects": [
@@ -3698,7 +3828,7 @@
     },
     {
       "key": "battle.skill.c1004.s2.description",
-      "zhCn": "被动。涉及专注积累、受击解除减益和自动射击替换，试玩尚未接入触发。"
+      "zhCn": "被动。回合开始获得1点专注，受到攻击时消耗1点专注。试玩尚未接入受击净化、提升行动值和自动射击替换。"
     },
     {
       "key": "battle.skill.c1004.s2.name",
@@ -3810,7 +3940,7 @@
     },
     {
       "key": "battle.skill.c1009.s1.description",
-      "zhCn": "攻击一名敌人并提高自身行动值25%，命中时必定暴击。非夹攻且自身有增益时变为群攻。"
+      "zhCn": "攻击一名敌人并提高自身行动值25%，获得25点斗志，命中时必定暴击。非夹攻且自身有增益时变为群攻并获得50点斗志。"
     },
     {
       "key": "battle.skill.c1009.s1.name",
@@ -3826,7 +3956,7 @@
     },
     {
       "key": "battle.skill.c1009.s3.description",
-      "zhCn": "攻击全体敌人并施加无法恢复2回合，穿透防御最高敌人的防御，命中时必定暴击。试玩采用满斗志演出，暂未接入斗志与燃魂。"
+      "zhCn": "消耗100点斗志。攻击全体敌人并施加无法恢复2回合，穿透防御最高敌人的防御，命中时必定暴击。试玩尚未接入本技能燃魂。"
     },
     {
       "key": "battle.skill.c1009.s3.name",

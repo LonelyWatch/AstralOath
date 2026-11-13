@@ -114,6 +114,7 @@ namespace AstralOath.Shared.Battle
                 case BattleFlowEventKind.Damage:
                 case BattleFlowEventKind.Healing: return change.Amount >= 0;
                 case BattleFlowEventKind.CooldownChanged: return target.Unit.Form.SkillIds.Contains(change.SkillId);
+                case BattleFlowEventKind.ResourceChanged: return target.Resource != null;
                 case BattleFlowEventKind.StatusApplied: return change.Turns > 0 && change.Turns <= 60 && change.Amount >= 0;
                 default: return true;
             }
@@ -148,6 +149,9 @@ namespace AstralOath.Shared.Battle
                     Emit(events, change.Kind, source, target, damage, hitKind: change.HitKind, remainingHealth: unit.Health);
                     if (unit.Health == 0)
                         Emit(events, BattleFlowEventKind.UnitDefeated, source, target);
+                    break;
+                case BattleFlowEventKind.ResourceChanged:
+                    ChangeResource(unit, source, change.Amount, events);
                     break;
                 case BattleFlowEventKind.Healing:
                     int healing = Math.Min(change.Amount, unit.Unit.Stats.MaxHealth - unit.Health);
@@ -197,6 +201,15 @@ namespace AstralOath.Shared.Battle
         {
             if (unit.Statuses.RemoveAll(item => item.Kind == kind) > 0)
                 Emit(events, BattleFlowEventKind.StatusRemoved, source, unit.Id, statusKind: kind);
+        }
+
+        private void ChangeResource(State unit, string source, int delta, List<BattleFlowEvent> events)
+        {
+            if (delta == 0 || unit.Resource == null) return;
+            int next = (int)Math.Clamp((long)unit.ResourceAmount + delta, 0L, unit.Resource.Maximum);
+            if (next == unit.ResourceAmount) return;
+            unit.ResourceAmount = next;
+            Emit(events, BattleFlowEventKind.ResourceChanged, source, unit.Id, next);
         }
 
         private void ChangeCooldown(State unit, string source, string skill, int value, List<BattleFlowEvent> events)
@@ -256,6 +269,7 @@ namespace AstralOath.Shared.Battle
                 actor = living.OrderByDescending(unit => unit.Readiness).First();
                 turn++;
                 Emit(events, BattleFlowEventKind.TurnStarted, actor.Id);
+                ChangeResource(actor, actor.Id, actor.Resource?.TurnGain ?? 0, events);
                 if (!actor.Statuses.Any(status => status.Kind == BattleStatusKind.Stun)) return;
                 actor.Readiness = 0;
                 Emit(events, BattleFlowEventKind.TurnSkipped, actor.Id, statusKind: BattleStatusKind.Stun);
@@ -291,6 +305,8 @@ namespace AstralOath.Shared.Battle
             public BattleUnit Unit { get; }
             public string Id => Unit.InstanceId;
             public int Health { get; set; }
+            public BattleResourceDefinition Resource => (Unit.Definition as HeroDefinition)?.Resource;
+            public int ResourceAmount { get; set; }
             public int Readiness { get; set; }
             public Dictionary<string, int> Cooldowns { get; } = new Dictionary<string, int>(StringComparer.Ordinal);
             public List<BattleStatusSnapshot> Statuses { get; } = new List<BattleStatusSnapshot>();
@@ -300,7 +316,7 @@ namespace AstralOath.Shared.Battle
 
             public BattleUnitSnapshot Snapshot() => new BattleUnitSnapshot(Unit, Health, Readiness,
                 new ReadOnlyDictionary<string, int>(new Dictionary<string, int>(Cooldowns, StringComparer.Ordinal)),
-                Array.AsReadOnly(Statuses.ToArray()));
+                Array.AsReadOnly(Statuses.ToArray()), ResourceAmount);
         }
     }
 }

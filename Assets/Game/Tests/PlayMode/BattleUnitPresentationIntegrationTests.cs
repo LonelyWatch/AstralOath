@@ -36,6 +36,8 @@ namespace AstralOath.Client.Tests
             Capture("idle");
             actor.transform.position += Vector3.right * 1.5f;
             actor.transform.localScale *= 1.2f; camera.orthographicSize *= .8f;
+            // NODE_ANI scales the renderer child rather than its parent actor.
+            actor.GetComponentInChildren<MeshRenderer>().transform.localScale *= 1.1f;
             actor.PlayBattleAnimation("attacked");
             for (int i = 0; i < 12; i++)
             {
@@ -48,7 +50,7 @@ namespace AstralOath.Client.Tests
                 var target = (Vector2)camera.WorldToScreenPoint((Vector3)args[1]);
                 var actual = RectTransformUtility.WorldToScreenPoint(camera, frame.TransformPoint(frame.rect.center));
                 Assert.That(Vector2.Distance(actual, target), Is.LessThan(2f), "Status must follow the animated top bone, not the original canvas slot.");
-                Assert.That(Width(frame, camera) / width, Is.EqualTo(1.5f).Within(.03f));
+                Assert.That(Width(frame, camera) / width, Is.EqualTo(1.65f).Within(.03f));
                 if (i == 11) Capture("moved-scaled-attacked");
             }
         }
@@ -209,17 +211,30 @@ namespace AstralOath.Client.Tests
                 Call("ShowDueFeedback");
             }
 
+            var player = (AstralOath.Client.Skeletons.ISkeletonPlayer)typeof(BattlePreviewActor)
+                .GetField("player", Private).GetValue(actor);
+            void AssertReactionRestart(string hit)
+            {
+                Assert.That(player.CurrentAnimation, Is.EqualTo("attacked"), hit);
+                Assert.That(player.Time, Is.Zero, hit);
+                player.Tick(player.Duration * .25f);
+                Assert.That(player.Time, Is.GreaterThan(0f), "Advance the real reaction clock before the next impact.");
+            }
+
             ShowAt(1f);
+            AssertReactionRestart("A shield-only hit still plays the reaction.");
             Assert.That(aura.gameObject.activeSelf, Is.True, "The first hit only spends part of the shield.");
             Assert.That(healthValue.GetValue(view), Is.EqualTo(previousHealth));
             Assert.That(friendlyIcons.childCount, Is.Zero);
             CollectionAssert.Contains(VisibleIcons(), "stic_att_up");
             ShowAt(2f);
+            AssertReactionRestart("The second hit restarts the reaction even while the first animation is playing.");
             Assert.That(aura.gameObject.activeSelf, Is.False);
             Assert.That(healthValue.GetValue(view), Is.EqualTo(previousHealth - 10));
             Assert.That(friendlyIcons.childCount, Is.Zero);
             CollectionAssert.Contains(VisibleIcons(), "stic_att_up");
             ShowAt(3f);
+            AssertReactionRestart("The third hit restarts the reaction at its own cue.");
             Assert.That(healthValue.GetValue(view), Is.EqualTo(previousHealth - 60));
             Assert.That(friendlyIcons.GetChild(0).GetComponent<Image>().sprite.name, Is.EqualTo("stic_def_up"));
             CollectionAssert.DoesNotContain(VisibleIcons(), "stic_att_up");

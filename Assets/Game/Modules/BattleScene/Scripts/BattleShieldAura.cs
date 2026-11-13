@@ -88,7 +88,7 @@ namespace AstralOath.Client.BattleScene
                 body = currentBody;
             }
 
-            bool visible = shielded && body && body.enabled && !body.forceRenderingOff && body.gameObject.activeInHierarchy;
+            bool visible = shielded && BattlePreviewActor.IsBodyVisible(body);
             if (!visible)
             {
                 if (player != null && player.Root.activeSelf) player.Root.SetActive(false);

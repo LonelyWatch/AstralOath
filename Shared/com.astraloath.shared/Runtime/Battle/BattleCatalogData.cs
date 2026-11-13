@@ -22,6 +22,26 @@ namespace AstralOath.Shared.Battle
         {
             public string id, nameKey, element, heroClass, zodiac, growthPresetId, variant;
             public int level, stars, awakenings;
+            public string resourceKind;
+            public int resourceMaximum, resourceTurnGain, resourceAttackedSpend;
+
+            public BattleResourceDefinition GetResourceDefinition()
+            {
+                switch (resourceKind)
+                {
+                    case "none":
+                    case null:
+                    case "":
+                        if (resourceMaximum != 0 || resourceTurnGain != 0 || resourceAttackedSpend != 0)
+                            throw new ArgumentException($"Hero '{id}' configures resource amounts without a resource kind.");
+                        return null;
+                    case "focus":
+                        return new BattleResourceDefinition(BattleResourceKind.Focus, resourceMaximum, resourceTurnGain, resourceAttackedSpend);
+                    case "fighting_spirit":
+                        return new BattleResourceDefinition(BattleResourceKind.FightingSpirit, resourceMaximum, resourceTurnGain, resourceAttackedSpend);
+                    default: throw new ArgumentException($"Unknown resource kind '{resourceKind}' for '{id}'.");
+                }
+            }
         }
 
         [Serializable]
@@ -44,6 +64,7 @@ namespace AstralOath.Shared.Battle
         {
             public string id, heroId, nameKey, presentationId, iconAsset, target, soulBurnKind;
             public int slot, cooldownTurns, soulGain, soulBurnCost, soulBurnTurns;
+            public int resourceCost, resourceGain, resourceGainWhenBuffed;
             public int? attackRateBp, powerBp, casterHealthDamageBp, casterHealthHealBp,
                 casterHealthBarrierBp, burnAttackRateBp, casterDefenseBarrierBp, casterAttackBarrierBp, casterDefenseDamageBp,
                 casterSpeedDamagePpm, burnSpeedDamagePpm, casterHealthRatioDamageBp, damageAgainstBuffBp,
@@ -130,7 +151,7 @@ namespace AstralOath.Shared.Battle
                     var form = new BattleUnitForm(row.variant, row.id,
                         data.skills.Where(skill => skill.heroId == row.id).OrderBy(skill => skill.slot).Select(skill => skill.id));
                     hero = new HeroDefinition(row.id, row.nameKey, ReadElement(row.element),
-                        row.heroClass, row.zodiac, form, preset, steps);
+                        row.heroClass, row.zodiac, form, preset, steps, row.GetResourceDefinition());
                     definitions.Add(id, hero);
                 }
                 return BattleUnit.CreateHero(prefix + slot, hero, new BattleSlot(side, slot), row.level, row.stars, row.awakenings);

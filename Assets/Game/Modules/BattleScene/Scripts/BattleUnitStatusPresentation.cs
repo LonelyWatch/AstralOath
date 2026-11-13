@@ -8,7 +8,9 @@ namespace AstralOath.Client.BattleScene
     internal sealed class BattleUnitStatusPresentation : IDisposable
     {
         private readonly RectTransform marker, frame;
-        private readonly Image health, trail, shield;
+        private readonly Image health, trail, shield, frameImage;
+        private readonly Sprite normalFrame;
+        private Image resourceFill;
         private readonly Sprite fallbackTrailSprite;
         private readonly BattleHealthSegments segments;
         private readonly Transform actor;
@@ -30,6 +32,7 @@ namespace AstralOath.Client.BattleScene
         public float TrailSeconds { get; set; } = .28f;
         // Reference Canvas units, relative to the source top anchor. This is explicit calibration.
         public Vector2 AnchorOffset { get; set; }
+        public Transform ScaleAnchor { get; set; }
 
         public BattleUnitStatusPresentation(RectTransform marker, Image health, Transform actor,
             Func<Vector3> worldAnchor, Camera camera, Sprite damageSprite, Sprite splitSprite, int sectionCount)
@@ -42,6 +45,8 @@ namespace AstralOath.Client.BattleScene
             if (sectionCount < 1) throw new ArgumentOutOfRangeException(nameof(sectionCount));
             frame = marker.Find("Frame") as RectTransform;
             if (!frame) throw new ArgumentException("The unit marker must contain a Frame.", nameof(marker));
+            frameImage = frame.GetComponent<Image>();
+            if (frameImage) normalFrame = frameImage.sprite;
             canvas = marker.GetComponentInParent<Canvas>()?.rootCanvas;
             if (!canvas) throw new ArgumentException("The unit marker must belong to a Canvas.", nameof(marker));
             originalPosition = marker.localPosition; originalScale = marker.localScale; originalFill = health.fillAmount;
@@ -78,6 +83,42 @@ namespace AstralOath.Client.BattleScene
 
         public void UseFixedSections(int count) { if (!disposed) segments.UseFixedSections(count); }
         public void UseHealthIntervals(int healthPerSection) { if (!disposed) segments.UseHealthIntervals(healthPerSection); }
+
+        public void ConfigureResource(Sprite frameSprite, Sprite fill, Sprite divider, int sections)
+        {
+            if (disposed || resourceFill || !frameImage || !frameSprite || !fill) return;
+            frameImage.sprite = frameSprite;
+            resourceFill = new GameObject("Personal Resource", typeof(RectTransform), typeof(Image)).GetComponent<Image>();
+            resourceFill.transform.SetParent(health.transform, false);
+            resourceFill.rectTransform.anchorMin = new Vector2(0, .5f);
+            resourceFill.rectTransform.anchorMax = new Vector2(1, .5f);
+            // hp_bar.csb places HP at y=16 with height 6 and the resource at y=11 with height 4.
+            float sourcePixel = health.rectTransform.rect.height / 6f;
+            resourceFill.rectTransform.sizeDelta = new Vector2(0, 4f * sourcePixel);
+            resourceFill.rectTransform.anchoredPosition = new Vector2(0, -6f * sourcePixel);
+            resourceFill.sprite = fill;
+            resourceFill.type = Image.Type.Filled;
+            resourceFill.fillMethod = Image.FillMethod.Horizontal;
+            resourceFill.fillOrigin = health.fillOrigin;
+            resourceFill.fillAmount = 0;
+            resourceFill.raycastTarget = false;
+            if (!divider || sections < 2) return;
+            var marks = new GameObject("Resource Dividers", typeof(RectTransform), typeof(BattleHealthSegments))
+                .GetComponent<BattleHealthSegments>();
+            marks.transform.SetParent(resourceFill.transform, false);
+            marks.rectTransform.anchorMin = Vector2.zero;
+            marks.rectTransform.anchorMax = Vector2.one;
+            marks.rectTransform.offsetMin = marks.rectTransform.offsetMax = Vector2.zero;
+            marks.SourceSprite = divider;
+            marks.UseFixedSections(sections);
+            marks.raycastTarget = false;
+        }
+
+        public void UpdateResource(int value, int maximum)
+        {
+            if (!disposed && resourceFill)
+                resourceFill.fillAmount = maximum > 0 ? Mathf.Clamp01(value / (float)maximum) : 0f;
+        }
 
         public void SetShieldSprite(Sprite sprite)
         {
@@ -210,7 +251,7 @@ namespace AstralOath.Client.BattleScene
         {
             Vector3 origin = worldAnchor();
             float worldPixels = Vector2.Distance(camera.WorldToScreenPoint(origin),
-                camera.WorldToScreenPoint(origin + actor.TransformVector(Vector3.up)));
+                camera.WorldToScreenPoint(origin + (ScaleAnchor ? ScaleAnchor : actor).TransformVector(Vector3.up)));
             var parent = marker.parent;
             float canvasPixels;
             if (canvas.renderMode != RenderMode.WorldSpace)
@@ -259,6 +300,8 @@ namespace AstralOath.Client.BattleScene
                 if (Application.isPlaying) UnityEngine.Object.Destroy(fallbackTrailSprite);
                 else UnityEngine.Object.DestroyImmediate(fallbackTrailSprite);
             }
+            Remove(resourceFill ? resourceFill.gameObject : null);
+            if (frameImage) frameImage.sprite = normalFrame;
             if (health) health.fillAmount = originalFill;
             if (marker) { marker.localPosition = originalPosition; marker.localScale = originalScale; }
         }
