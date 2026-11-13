@@ -22,10 +22,12 @@
 
 十角色回归同时加载六份共用 bank，播放全部 30 个技能的音效与随机日语语音事件，并用原生回调计数和主 DSP 峰值检查产声。源目录明确缺少的日语片段应记录一次诊断、保持音频服务可用，并继续其他片段。探针记录 `.artifacts/ten-hero-audioprobe-final.log`。
 
-将待重复播放的技能演出 ID 追加到命令行，可通过生产 `BattleVoice` 逐次播放并断言日语样本变化、夹攻呼叫/应答和无专用事件时的回退。例如：
+将待重复播放的技能演出 ID 追加到命令行，可通过生产 `BattleVoice` 逐次播放并断言日语样本变化。单独传 `--contextual` 核对夹攻呼叫/应答和无专用事件时的回退。例如：
 
 ```powershell
 & ./.tools/dotnet/dotnet.exe run --project Tools/BattleScene/AudioProbe -- $PWD.Path 'D:/sevenepic/原始资源/sound' c_ras_skill_01 c_mercedes_skill_01 c_kise_skill_01 c_ras_skill_03
 ```
+
+变体探针等待上一次的原生播放和回调结束，再开始下一次测量。省略后缀会要求至少两套日语样本，使用 `技能ID@1` 验证固定序列。杰拉图 S3 使用 `c_jerato_skill_03@1`，源事件包含 `voc_c1010_sk3_1_1` 和 `voc_c1010_sk3_1_2` 两段连续语音。
 
 附属录音命令 `--record-button <绝对 WAV 路径>` 只加载原 master/master.strings/ui1，校验 `event:/ui/btn_normal` 的 GUID，再用 FMOD `WAVWRITER` 写出完整事件。Unity 通用按钮使用剪去首尾多余静音的独立 PCM 文件。

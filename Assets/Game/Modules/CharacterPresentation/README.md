@@ -23,3 +23,5 @@ SpriteBlurSettings 校验原始 PPEFFECT uniform 并保留 shader 的样本上�
 SCT1 的中性白光遮罩按源 atlas 区域审计和登记，RGB 由未量化的 alpha 恢复，其他区块按原解码输出。新增角色及转换器修改必须执行 `docs/development/character-asset-import.md`；SCSP 曲线类型、局部翻转和继承语义在转换层保留，不由演出层添加逐角色偏移补偿。
 
 2026-11-13 已将十名角色及三十个技能槽演出导入资源清单，按 E7 ID 顺序供实验室和战斗使用。原资源名和技能图名不一致时按源数据记录映射。`NODE_ANI` 读取 `spani/` 原骨骼轨道，无渲染附件时可使用空图集。命名 timeline 事件、DELAY、空 SHOT 与完成连接按源时刻调度。十名角色的模型、立绘、资源地址、音频表及源闭包边界见[角色资源进入 Unity](../../../../docs/development/character-asset-import.md)。
+
+杰拉图的原骨骼使用 zerato 拼写，技能演出图使用 jerato。第三技能的立绘由本形态骨骼命名事件定位，作为导入图的附加节点登记。见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。

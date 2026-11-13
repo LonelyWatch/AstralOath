@@ -50,3 +50,5 @@ CFX 的 scale/rotate 等字段包含 "~" 范围时，当前不会推测抽样分
 日语音频使用资源目录明确列出的银行。源事件请求的无日语版本的片段列在 `missingJapaneseProgrammerKeys`，片段播放静音并按原事件继续。Windows 音频服务对每个缺失键记录一次诊断。
 
 共享技能目录还包含 `dualCallVoiceEventPath` 和 `dualAnswerVoiceEventPath`，由原 FMOD 目录生成，供 BattleScene 根据已接受的夹攻事件播放呼叫和应答。实验室直接预览技能时仍使用该技能的一条原生语音事件，FMOD 内部选择日语变体并维持多句对白的时序。见[战斗日语语音复核](../../../../docs/delivery/2026-11-14-battle-voice-variants.md)。
+
+杰拉图 c1010 已纳入角色目录、日语音频和三个演出入口。扩充顺序及验证证据见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。

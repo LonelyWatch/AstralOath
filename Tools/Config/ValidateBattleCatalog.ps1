@@ -149,7 +149,7 @@ function Export-BattleCatalog {
                 ($usesStatus -ne ($effect.status -cne 'none')) -or
                 $effect.status -cnotin $validStatuses -or
                 $effect.condition -cnotin @('none','caster_health_below_half','caster_health_at_least_half',
-                    'caster_health_above_half','caster_health_at_most_half','caster_has_resource','caster_buffed','recipient_buffed','recipient_health_at_most_half','single_target_attack') -or
+                    'caster_health_above_half','caster_health_at_most_half','caster_has_resource','caster_buffed','recipient_buffed','recipient_debuffed_after_skill_awakening','recipient_health_at_most_half','single_target_attack') -or
                 $effect.chanceBonusStatus -cnotin @('none','AttackDown') -or
                 (($effect.chanceBonusStatus -ceq 'none') -ne ($effect.chanceBonusBp -eq 0)) -or
                 ($operation -cin @('cleanse','dispel','reduce_readiness','extend_cooldown') -and $effect.value -le 0) -or
@@ -166,7 +166,8 @@ function Export-BattleCatalog {
             $lifecycle = $effect.phase -cin @('battle_start','turn_end')
             if (($isModifier -and ($effect.recipient -cne 'self' -or $effect.chanceBp -ne 10000 -or
                     $effect.value -lt 1 -or $effect.value -gt 10000 -or
-                    $effect.condition -cnotin @('caster_buffed','caster_has_resource'))) -or
+                    ($effect.condition -cnotin @('caster_buffed','caster_has_resource') -and
+                        -not ($operation -ceq 'damage_bonus' -and $effect.condition -ceq 'recipient_debuffed_after_skill_awakening')))) -or
                 ($operation -ceq 'damage_reduction' -and ($effect.recipient -cnotin @('self','allies') -or
                     $effect.chanceBp -ne 10000 -or $effect.value -lt 1 -or $effect.value -gt 10000 -or
                     $effect.condition -cnotin @('none','recipient_buffed','single_target_attack'))) -or

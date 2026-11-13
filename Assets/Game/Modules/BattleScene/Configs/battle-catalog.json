@@ -227,6 +227,31 @@
       "resourceAttackedSpend": 0
     },
     {
+      "id": "c1010",
+      "nameKey": "character.zerato.name",
+      "element": "ice",
+      "heroClass": "mage",
+      "zodiac": "aries",
+      "growthPresetId": "mage_aries_4",
+      "baseStars": 4,
+      "level": 60,
+      "stars": 6,
+      "awakenings": 6,
+      "variant": "standard",
+      "attack": 1159,
+      "health": 4733,
+      "defense": 627,
+      "speed": 104,
+      "critChanceBp": 2700,
+      "critDamageBp": 15000,
+      "effectivenessBp": 1800,
+      "effectResistanceBp": 0,
+      "resourceKind": "none",
+      "resourceMaximum": 0,
+      "resourceTurnGain": 0,
+      "resourceAttackedSpend": 0
+    },
+    {
       "id": "c1062",
       "nameKey": "character.angelica.name",
       "element": "ice",
@@ -342,6 +367,16 @@
       "healthCoefficientMilli": 187200,
       "defenseCoefficientMilli": 56700,
       "speedMilli": 99375
+    },
+    {
+      "id": "mage_aries_4",
+      "nativeStars": 4,
+      "heroClass": "mage",
+      "zodiac": "aries",
+      "attackCoefficientMilli": 63000,
+      "healthCoefficientMilli": 149400,
+      "defenseCoefficientMilli": 53700,
+      "speedMilli": 104375
     }
   ],
   "awakeningSteps": [
@@ -1156,6 +1191,96 @@
       "effectResistanceBp": 0
     },
     {
+      "id": "c1010.r1",
+      "heroId": "c1010",
+      "rank": 1,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 600,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1010.r2",
+      "heroId": "c1010",
+      "rank": 2,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 400,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1010.r3",
+      "heroId": "c1010",
+      "rank": 3,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1010.r4",
+      "heroId": "c1010",
+      "rank": 4,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 600,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1010.r5",
+      "heroId": "c1010",
+      "rank": 5,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 1200,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1010.r6",
+      "heroId": "c1010",
+      "rank": 6,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 800,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
       "id": "c1062.r1",
       "heroId": "c1062",
       "rank": 1,
@@ -1877,6 +2002,76 @@
       "aoeWhenBuffed": false,
       "aoeOutsideTurn": false,
       "resourceCost": 100,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
+    },
+    {
+      "id": "c1010.s1",
+      "heroId": "c1010",
+      "slot": 1,
+      "nameKey": "battle.skill.c1010.s1.name",
+      "descriptionKey": "battle.skill.c1010.s1.description",
+      "presentationId": "c_jerato_skill_01",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1010_1.png",
+      "target": "one_enemy",
+      "cooldownTurns": 0,
+      "soulGain": 1,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 10500,
+      "powerBp": 10000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
+    },
+    {
+      "id": "c1010.s2",
+      "heroId": "c1010",
+      "slot": 2,
+      "nameKey": "battle.skill.c1010.s2.name",
+      "descriptionKey": "battle.skill.c1010.s2.description",
+      "presentationId": "c_jerato_skill_02",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1010_2.png",
+      "target": "one_enemy",
+      "cooldownTurns": 3,
+      "soulGain": 2,
+      "soulBurnCost": 10,
+      "soulBurnKind": "increase_damage",
+      "soulBurnTurns": 0,
+      "attackRateBp": 15000,
+      "powerBp": 9500,
+      "burnAttackRateBp": 20000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0
+    },
+    {
+      "id": "c1010.s3",
+      "heroId": "c1010",
+      "slot": 3,
+      "nameKey": "battle.skill.c1010.s3.name",
+      "descriptionKey": "battle.skill.c1010.s3.description",
+      "presentationId": "c_jerato_skill_03",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1010_3.png",
+      "target": "all_enemies",
+      "cooldownTurns": 5,
+      "soulGain": 2,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 10000,
+      "powerBp": 10000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
       "resourceGain": 0,
       "resourceGainWhenBuffed": 0
     },
@@ -2971,6 +3166,111 @@
       "chanceBonusBp": 0
     },
     {
+      "id": "c1010.s1.1",
+      "skillId": "c1010.s1",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1010.s1.2",
+      "skillId": "c1010.s1",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "SpeedDown",
+      "chanceBp": 4000,
+      "turns": 2,
+      "value": 3000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1010.s2.1",
+      "skillId": "c1010.s2",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage_bonus",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 3000,
+      "condition": "recipient_debuffed_after_skill_awakening",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1010.s2.2",
+      "skillId": "c1010.s2",
+      "order": 2,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1010.s2.3",
+      "skillId": "c1010.s2",
+      "order": 3,
+      "phase": "after_attack",
+      "operation": "readiness",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 5000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1010.s3.1",
+      "skillId": "c1010.s3",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1010.s3.2",
+      "skillId": "c1010.s3",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Stun",
+      "chanceBp": 5000,
+      "turns": 1,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
       "id": "c1062.s1.1",
       "skillId": "c1062.s1",
       "order": 1,
@@ -3980,6 +4280,111 @@
       "value": 1500
     },
     {
+      "id": "c1010.s1.e1",
+      "skillId": "c1010.s1",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1010.s1.e2",
+      "skillId": "c1010.s1",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1010.s1.e3",
+      "skillId": "c1010.s1",
+      "step": 3,
+      "kind": "effect_chance_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1010.s1.e4",
+      "skillId": "c1010.s1",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1010.s2.e1",
+      "skillId": "c1010.s2",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1010.s2.e2",
+      "skillId": "c1010.s2",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1010.s2.e3",
+      "skillId": "c1010.s2",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1010.s2.e4",
+      "skillId": "c1010.s2",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1010.s3.e1",
+      "skillId": "c1010.s3",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1010.s3.e2",
+      "skillId": "c1010.s3",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1010.s3.e3",
+      "skillId": "c1010.s3",
+      "step": 3,
+      "kind": "effect_chance_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1010.s3.e4",
+      "skillId": "c1010.s3",
+      "step": 4,
+      "kind": "cooldown_turns",
+      "value": 1
+    },
+    {
+      "id": "c1010.s3.e5",
+      "skillId": "c1010.s3",
+      "step": 5,
+      "kind": "effect_chance_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1010.s3.e6",
+      "skillId": "c1010.s3",
+      "step": 6,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1010.s3.e7",
+      "skillId": "c1010.s3",
+      "step": 7,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
       "id": "c1062.s1.e1",
       "skillId": "c1062.s1",
       "step": 1,
@@ -4611,6 +5016,30 @@
       "zhCn": "无法恢复"
     },
     {
+      "key": "battle.skill.c1010.s1.name",
+      "zhCn": "寒冰刺"
+    },
+    {
+      "key": "battle.skill.c1010.s1.description",
+      "zhCn": "攻击敌人，有 40% 概率使其速度降低 2 回合。"
+    },
+    {
+      "key": "battle.skill.c1010.s2.name",
+      "zhCn": "破冰锥"
+    },
+    {
+      "key": "battle.skill.c1010.s2.description",
+      "zhCn": "连续攻击一名敌人，使自身行动值提高 50%。完成第三阶觉醒后，攻击带有减益的目标时提高伤害。燃魂消耗 10 点魂力并提高本技能伤害。"
+    },
+    {
+      "key": "battle.skill.c1010.s3.name",
+      "zhCn": "冰山"
+    },
+    {
+      "key": "battle.skill.c1010.s3.description",
+      "zhCn": "用巨大冰山攻击全体敌人，各有 50% 概率使其眩晕 1 回合。"
+    },
+    {
       "key": "character.ras.name",
       "zhCn": "拉斯"
     },
@@ -4645,6 +5074,10 @@
     {
       "key": "character.charlotte.name",
       "zhCn": "夏绿蒂"
+    },
+    {
+      "key": "character.zerato.name",
+      "zhCn": "杰拉图"
     },
     {
       "key": "character.angelica.name",

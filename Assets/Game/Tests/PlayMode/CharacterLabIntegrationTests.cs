@@ -53,7 +53,13 @@ namespace AstralOath.Client.Tests
             var entry = Field<object>(bootstrap, "entry");
             var binder = Field<object>(entry, "binder");
             var map = scene.GetRootGameObjects().SelectMany(root => root.GetComponentsInChildren<BindingMap>(true)).Single();
-            Assert.That(Rows(map, "characters").Length, Is.EqualTo(10));
+            var catalog = Field<object>(binder, "catalog");
+            var characters = (Array)catalog.GetType().GetField("characters").GetValue(catalog);
+            var characterIds = characters.Cast<object>().Select(character =>
+                (string)character.GetType().GetField("id").GetValue(character)).ToArray();
+            Assert.That(characterIds, Does.Contain("c1010"));
+            Assert.That(characterIds, Is.Unique);
+            Assert.That(Rows(map, "characters").Length, Is.EqualTo(characterIds.Length));
             Assert.That(Rows(map, "skills").Length, Is.EqualTo(3));
             Assert.That(Rows(map, "voices").Length, Is.GreaterThan(0));
             yield return null;
@@ -85,7 +91,7 @@ namespace AstralOath.Client.Tests
             Assert.That(sounds, Is.Empty);
             Assert.That(Field<bool>(voice, "disposed"), Is.True);
 
-            foreach (int index in new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 })
+            foreach (int index in Enumerable.Range(1, characterIds.Length - 1).Append(0))
             {
                 var oldRoot = Player(binder).Root;
                 Rows(map, "characters")[index].onClick.Invoke();

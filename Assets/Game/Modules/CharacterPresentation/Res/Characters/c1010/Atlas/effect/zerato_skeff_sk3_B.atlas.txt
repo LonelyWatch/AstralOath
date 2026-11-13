@@ -1,0 +1,69 @@
+
+zerato_skeff_sk3_B.sct
+size: 443,380
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dust_soft_2
+  rotate: false
+  xy: 2, 2
+  size: 271, 150
+  orig: 271, 150
+  offset: 0, 0
+  index: -1
+elite_02
+  rotate: true
+  xy: 210, 318
+  size: 60, 78
+  orig: 60, 78
+  offset: 0, 0
+  index: -1
+ice_bot01
+  rotate: false
+  xy: 2, 311
+  size: 104, 63
+  orig: 104, 63
+  offset: 0, 0
+  index: -1
+ice_bot02
+  rotate: false
+  xy: 108, 311
+  size: 100, 61
+  orig: 100, 61
+  offset: 0, 0
+  index: -1
+ice_bot03
+  rotate: false
+  xy: 290, 318
+  size: 71, 41
+  orig: 71, 41
+  offset: 0, 0
+  index: -1
+ice_bot04
+  rotate: true
+  xy: 238, 154
+  size: 50, 24
+  orig: 50, 24
+  offset: 0, 0
+  index: -1
+ice_smoke_01
+  rotate: true
+  xy: 275, 2
+  size: 203, 158
+  orig: 203, 158
+  offset: 0, 0
+  index: -1
+ice_smoke_02
+  rotate: false
+  xy: 2, 154
+  size: 234, 155
+  orig: 234, 155
+  offset: 0, 0
+  index: -1
+ice_smoke_05
+  rotate: false
+  xy: 238, 207
+  size: 203, 109
+  orig: 203, 109
+  offset: 0, 0
+  index: -1

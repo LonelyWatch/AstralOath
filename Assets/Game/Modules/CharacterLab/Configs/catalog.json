@@ -2136,6 +2136,204 @@
       ],
       "battleSkin": "default",
       "portraitSkin": "normal"
+    },
+    {
+      "id": "c1010",
+      "name": "杰拉图",
+      "displayNameKey": "character.zerato.name",
+      "battleSkeletonAddress": "characterlab/source/model/zerato.scsp",
+      "portraitSkeletonAddress": "characterlab/source/portrait/c1010.scsp",
+      "voiceBankAddress": "characterlab/source/sound/ja/voc1.audio_ja.bank",
+      "timelineAddress": "characterlab/source/model/zerato.timeline",
+      "voices": [
+        {
+          "id": "voc_c1010_answer_1",
+          "audioTableKey": "voc_c1010_answer_1",
+          "eventPath": "event:/voc/skill/c_jerato_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1010_answer_1"
+        },
+        {
+          "id": "voc_c1010_answer_2",
+          "audioTableKey": "voc_c1010_answer_2",
+          "eventPath": "event:/voc/skill/c_jerato_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1010_answer_2"
+        },
+        {
+          "id": "voc_c1010_call_1",
+          "audioTableKey": "voc_c1010_call_1",
+          "eventPath": "event:/voc/skill/c_jerato_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1010_call_1"
+        },
+        {
+          "id": "voc_c1010_call_2",
+          "audioTableKey": "voc_c1010_call_2",
+          "eventPath": "event:/voc/skill/c_jerato_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1010_call_2"
+        },
+        {
+          "id": "voc_c1010_dead_1",
+          "audioTableKey": "voc_c1010_dead_1",
+          "eventPath": "event:/voc/character/zerato/evt/dead",
+          "displayNameKey": "character.voice.voc_c1010_dead_1"
+        },
+        {
+          "id": "voc_c1010_dead_2",
+          "audioTableKey": "voc_c1010_dead_2",
+          "eventPath": "event:/voc/character/zerato/evt/dead",
+          "displayNameKey": "character.voice.voc_c1010_dead_2"
+        },
+        {
+          "id": "voc_c1010_defeat",
+          "audioTableKey": "voc_c1010_defeat",
+          "eventPath": "event:/voc/character/zerato/evt/defeat",
+          "displayNameKey": "character.voice.voc_c1010_defeat"
+        },
+        {
+          "id": "voc_c1010_dmg_1",
+          "audioTableKey": "voc_c1010_dmg_1",
+          "eventPath": "event:/voc/character/zerato/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1010_dmg_1"
+        },
+        {
+          "id": "voc_c1010_dmg_2",
+          "audioTableKey": "voc_c1010_dmg_2",
+          "eventPath": "event:/voc/character/zerato/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1010_dmg_2"
+        },
+        {
+          "id": "voc_c1010_dmg_3",
+          "audioTableKey": "voc_c1010_dmg_3",
+          "eventPath": "event:/voc/character/zerato/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1010_dmg_3"
+        },
+        {
+          "id": "voc_c1010_get",
+          "audioTableKey": "voc_c1010_get",
+          "eventPath": "event:/voc/character/zerato/evt/get",
+          "displayNameKey": "character.voice.voc_c1010_get"
+        },
+        {
+          "id": "voc_c1010_idle_1",
+          "audioTableKey": "voc_c1010_idle_1",
+          "eventPath": "event:/voc/character/zerato/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1010_idle_1"
+        },
+        {
+          "id": "voc_c1010_idle_2",
+          "audioTableKey": "voc_c1010_idle_2",
+          "eventPath": "event:/voc/character/zerato/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1010_idle_2"
+        },
+        {
+          "id": "voc_c1010_idle_3",
+          "audioTableKey": "voc_c1010_idle_3",
+          "eventPath": "event:/voc/character/zerato/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1010_idle_3"
+        },
+        {
+          "id": "voc_c1010_lv_1",
+          "audioTableKey": "voc_c1010_lv_1",
+          "eventPath": "event:/voc/character/zerato/evt/lvup",
+          "displayNameKey": "character.voice.voc_c1010_lv_1"
+        },
+        {
+          "id": "voc_c1010_sk1_1",
+          "audioTableKey": "voc_c1010_sk1_1",
+          "eventPath": "event:/voc/skill/c_jerato_skill_01",
+          "displayNameKey": "character.voice.voc_c1010_sk1_1"
+        },
+        {
+          "id": "voc_c1010_sk1_2",
+          "audioTableKey": "voc_c1010_sk1_2",
+          "eventPath": "event:/voc/skill/c_jerato_skill_01",
+          "displayNameKey": "character.voice.voc_c1010_sk1_2"
+        },
+        {
+          "id": "voc_c1010_sk1_3",
+          "audioTableKey": "voc_c1010_sk1_3",
+          "eventPath": "event:/voc/skill/c_jerato_skill_01",
+          "displayNameKey": "character.voice.voc_c1010_sk1_3"
+        },
+        {
+          "id": "voc_c1010_sk2_1",
+          "audioTableKey": "voc_c1010_sk2_1",
+          "eventPath": "event:/voc/skill/c_jerato_skill_02",
+          "displayNameKey": "character.voice.voc_c1010_sk2_1"
+        },
+        {
+          "id": "voc_c1010_sk2_2",
+          "audioTableKey": "voc_c1010_sk2_2",
+          "eventPath": "event:/voc/skill/c_jerato_skill_02",
+          "displayNameKey": "character.voice.voc_c1010_sk2_2"
+        },
+        {
+          "id": "voc_c1010_sk2_3",
+          "audioTableKey": "voc_c1010_sk2_3",
+          "eventPath": "event:/voc/skill/c_jerato_skill_02",
+          "displayNameKey": "character.voice.voc_c1010_sk2_3"
+        },
+        {
+          "id": "voc_c1010_sk3_1_1",
+          "audioTableKey": "voc_c1010_sk3_1_1",
+          "eventPath": "event:/voc/skill/c_jerato_skill_03",
+          "displayNameKey": "character.voice.voc_c1010_sk3_1_1"
+        },
+        {
+          "id": "voc_c1010_sk3_1_2",
+          "audioTableKey": "voc_c1010_sk3_1_2",
+          "eventPath": "event:/voc/skill/c_jerato_skill_03",
+          "displayNameKey": "character.voice.voc_c1010_sk3_1_2"
+        },
+        {
+          "id": "voc_c1010_utterance_1",
+          "audioTableKey": "voc_c1010_utterance_1",
+          "eventPath": "event:/voc/character/zerato/evt/utterance_01",
+          "displayNameKey": "character.voice.voc_c1010_utterance_1"
+        },
+        {
+          "id": "voc_c1010_utterance_2",
+          "audioTableKey": "voc_c1010_utterance_2",
+          "eventPath": "event:/voc/character/zerato/evt/utterance_02",
+          "displayNameKey": "character.voice.voc_c1010_utterance_2"
+        },
+        {
+          "id": "voc_c1010_win_1",
+          "audioTableKey": "voc_c1010_win_1",
+          "eventPath": "event:/voc/character/zerato/evt/win",
+          "displayNameKey": "character.voice.voc_c1010_win_1"
+        }
+      ],
+      "skills": [
+        {
+          "id": "c_jerato_skill_01",
+          "displayNameKey": "character.zerato.skill1",
+          "graphAddress": "characterlab/source/stagept/c_jerato_skill_01.stg",
+          "eventPath": "event:/skill/c_jerato_skill_01",
+          "voiceEventPath": "event:/voc/skill/c_jerato_skill_01",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_jerato_skill_01_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_jerato_skill_01_a"
+        },
+        {
+          "id": "c_jerato_skill_02",
+          "displayNameKey": "character.zerato.skill2",
+          "graphAddress": "characterlab/source/stagept/c_jerato_skill_02.stg",
+          "eventPath": "event:/skill/c_jerato_skill_02",
+          "voiceEventPath": "event:/voc/skill/c_jerato_skill_02",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        },
+        {
+          "id": "c_jerato_skill_03",
+          "displayNameKey": "character.zerato.skill3",
+          "graphAddress": "characterlab/source/stagept/c_jerato_skill_03.stg",
+          "eventPath": "event:/skill/c_jerato_skill_03",
+          "voiceEventPath": "event:/voc/skill/c_jerato_skill_03",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        }
+      ],
+      "battleSkin": "default",
+      "portraitSkin": "normal"
     }
   ],
   "sharedBanks": [

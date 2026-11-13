@@ -59,6 +59,7 @@ namespace AstralOath.Client.BattleScene
         [SerializeField] private TextAsset battleCatalog;
         [SerializeField] private TMP_FontAsset battleDamageFont;
         [SerializeField] private TextAsset[] battleGraphs;
+        [SerializeField] private TextAsset skillTimelineOverrides;
         [SerializeField] private Sprite[] battleSprites;
         [SerializeField] private BattleSkillPresentationAsset[] skillAssets;
         [SerializeField] private TextAsset audioCatalog;
@@ -122,7 +123,8 @@ namespace AstralOath.Client.BattleScene
             UpdateBinding();
             simulation = new BattleSimulationPreview(gameObject.scene, hud, binder, catalog, battleSprites, battleGraphs,
                 skillAssets, audioCatalog, audioBanks, battleDamageFont, impactBank, stageBackground, unitPresentation,
-                soulDisplay, particles, particleTextures, nextMatch, inspectionPrefab, readyDust: readyDust);
+                soulDisplay, particles, particleTextures, nextMatch, inspectionPrefab, readyDust: readyDust,
+                skillTimelineOverrides: skillTimelineOverrides);
             binder.AttachSimulation(simulation);
         }
 

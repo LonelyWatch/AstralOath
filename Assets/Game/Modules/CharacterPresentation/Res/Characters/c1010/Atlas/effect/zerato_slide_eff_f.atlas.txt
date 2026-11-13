@@ -1,0 +1,83 @@
+
+zerato_slide.sct
+size: 235,720
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+eff_slide_ad
+  rotate: true
+  xy: 184, 395
+  size: 141, 49
+  orig: 141, 49
+  offset: 0, 0
+  index: -1
+eff_slide_b
+  rotate: false
+  xy: 2, 2
+  size: 227, 114
+  orig: 227, 114
+  offset: 0, 0
+  index: -1
+eff_slide_b2
+  rotate: false
+  xy: 2, 118
+  size: 195, 111
+  orig: 195, 111
+  offset: 0, 0
+  index: -1
+eff_slide_bb1
+  rotate: false
+  xy: 45, 664
+  size: 164, 48
+  orig: 164, 48
+  offset: 0, 0
+  index: -1
+eff_slide_bb2
+  rotate: true
+  xy: 2, 571
+  size: 147, 41
+  orig: 147, 41
+  offset: 0, 0
+  index: -1
+eff_slide_f
+  rotate: true
+  xy: 184, 538
+  size: 124, 49
+  orig: 124, 49
+  offset: 0, 0
+  index: -1
+eff_slide_f2
+  rotate: false
+  xy: 45, 571
+  size: 130, 50
+  orig: 130, 50
+  offset: 0, 0
+  index: -1
+eff_slide_ff1
+  rotate: true
+  xy: 186, 253
+  size: 140, 47
+  orig: 140, 47
+  offset: 0, 0
+  index: -1
+eff_slide_ff2
+  rotate: true
+  xy: 199, 118
+  size: 133, 34
+  orig: 133, 34
+  offset: 0, 0
+  index: -1
+smoke_01
+  rotate: false
+  xy: 2, 391
+  size: 180, 178
+  orig: 180, 178
+  offset: 0, 0
+  index: -1
+smoke_02
+  rotate: false
+  xy: 2, 231
+  size: 182, 158
+  orig: 182, 158
+  offset: 0, 0
+  index: -1

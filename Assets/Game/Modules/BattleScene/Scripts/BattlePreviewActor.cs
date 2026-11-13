@@ -331,6 +331,12 @@ namespace AstralOath.Client.BattleScene
             return null;
         }
 
+#if UNITY_EDITOR
+        internal void EnableEditorPreview() => OnEnable();
+        internal void DisableEditorPreview() => OnDisable();
+        internal void AdvanceEditorPreview(float delta) => AdvanceAmbient(delta, delta);
+#endif
+
         private void OnEnable()
         {
             OnDisable(); // Also makes a repeated activation safe when editor reload options change.
@@ -388,11 +394,13 @@ namespace AstralOath.Client.BattleScene
                 TurnEntryCue?.Invoke(this, item);
         }
 
-        private void Update()
+        private void Update() => AdvanceAmbient(Time.deltaTime, Time.unscaledDeltaTime);
+
+        private void AdvanceAmbient(float idleDelta, float battleDelta)
         {
             if (player == null || paused || defeatPose || presentationPauseCount > 0 || presentationControlCount > 0) return;
             if (sourceReaction != null && player.Time >= player.Duration) return;
-            player.Tick(playingBattleAnimation ? Time.unscaledDeltaTime : Time.deltaTime);
+            player.Tick(playingBattleAnimation ? battleDelta : idleDelta);
             if (sourceReaction == null && playingBattleAnimation && player.Time >= player.Duration)
                 PlayBattleIdle();
             else if (!playingBattleAnimation && PlayingTurnEntry && player.Time >= player.Duration)

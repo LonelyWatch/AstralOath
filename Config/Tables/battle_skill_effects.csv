@@ -67,6 +67,13 @@
 ,c1009.s2.4,c1009.s2,4,damage_guard,damage_reduction,self,none,10000,0,5000,recipient_buffed,none,0
 ,c1009.s3.1,c1009.s3,1,impact,damage,targets,none,10000,0,0,none,none,0
 ,c1009.s3.2,c1009.s3,2,after_hit,apply_status,targets,Unhealable,10000,2,0,none,none,0
+,c1010.s1.1,c1010.s1,1,impact,damage,targets,none,10000,0,0,none,none,0
+,c1010.s1.2,c1010.s1,2,after_hit,apply_status,targets,SpeedDown,4000,2,3000,none,none,0
+,c1010.s2.1,c1010.s2,1,impact,damage_bonus,self,none,10000,0,3000,recipient_debuffed_after_skill_awakening,none,0
+,c1010.s2.2,c1010.s2,2,impact,damage,targets,none,10000,0,0,none,none,0
+,c1010.s2.3,c1010.s2,3,after_attack,readiness,self,none,10000,0,5000,none,none,0
+,c1010.s3.1,c1010.s3,1,impact,damage,targets,none,10000,0,0,none,none,0
+,c1010.s3.2,c1010.s3,2,after_hit,apply_status,targets,Stun,5000,1,0,none,none,0
 ,c1062.s1.1,c1062.s1,1,impact,damage,targets,none,10000,0,0,none,none,0
 ,c1062.s1.2,c1062.s1,2,after_hit,apply_status,targets,Stun,2000,1,0,none,none,0
 ,c1062.s2.1,c1062.s2,1,impact,heal,target_and_lowest_ally,none,10000,0,0,none,none,0

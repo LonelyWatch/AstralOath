@@ -9,9 +9,12 @@ class ImportBoundaryTests(unittest.TestCase):
         with self.assertRaises(ValueError): importer.select_characters(["c9999"])
         self.assertEqual(len(importer.select_characters(["c1001"])),1)
     def test_base_roster_uses_exact_graph_roots_in_id_order(self):
-        self.assertEqual(list(importer.CHARACTERS), [f"c100{i}" for i in range(1, 10)] + ["c1062"])
+        self.assertEqual(list(importer.CHARACTERS), [f"c100{i}" for i in range(1, 10)] + ["c1010", "c1062"])
         self.assertEqual(importer.skill_ids("c1007"), [f"c_wilderd_skill_{i:02}" for i in range(1, 4)])
         self.assertEqual(importer.skill_ids("c1009")[-1], "c_charlotte_skill_03_05")
+        self.assertEqual(importer.skill_ids("c1010"), [f"c_jerato_skill_{i:02}" for i in range(1, 4)])
+        self.assertEqual(importer.ANIMATION_CUTINS["stagept/c_jerato_skill_03.stg"],
+                         ("model/zerato.scsp", "skill3", "cutin", "sk_c1010_3"))
 
     def test_node_animation_uses_bone_only_spani_dependency(self):
         with tempfile.TemporaryDirectory() as folder:

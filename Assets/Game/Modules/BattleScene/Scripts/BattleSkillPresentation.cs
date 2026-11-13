@@ -75,10 +75,51 @@ namespace AstralOath.Client.BattleScene
 
         public BattleSkillPresentation(Transform worldRoot, TextAsset[] graphs, BattleSkillPresentationAsset[] assets,
             Camera camera = null, Action<bool> cinematicChanged = null, GameObject background = null)
-            : this(worldRoot, graphs.Where(graph => graph).Select(graph => JObject.Parse(graph.text))
+            : this(worldRoot, graphs, assets, camera, cinematicChanged, background, null) { }
+
+        internal BattleSkillPresentation(Transform worldRoot, TextAsset[] graphs, BattleSkillPresentationAsset[] assets,
+            Camera camera, Action<bool> cinematicChanged, GameObject background, TextAsset overrides)
+            : this(worldRoot, ReadGraphs(graphs, overrides)
                 .ToDictionary(graph => (string)graph["id"], StringComparer.Ordinal),
                 (assets ?? Array.Empty<BattleSkillPresentationAsset>()).ToDictionary(asset => asset.source, StringComparer.Ordinal),
                 new SessionCache(), camera, cinematicChanged, background) { }
+
+        private static IEnumerable<JObject> ReadGraphs(IEnumerable<TextAsset> assets, TextAsset overrides)
+        {
+            JObject patches = null;
+            if (overrides)
+            {
+                try { patches = SkillTimelineOverrides.ReadCatalog(overrides.text); }
+                catch (Exception error) when (error is InvalidOperationException or Newtonsoft.Json.JsonException)
+                {
+                    Debug.LogError("Cannot read skill timeline overrides: " + error.Message, overrides);
+                }
+            }
+
+            foreach (var asset in assets.Where(asset => asset))
+            {
+                var graph = JObject.Parse(asset.text);
+                string id = (string)graph["id"];
+                if (patches?[id] is JObject patch)
+                {
+                    try { graph = SkillTimelineOverrides.Apply(graph, patch); }
+                    catch (Exception error) when (error is InvalidOperationException or Newtonsoft.Json.JsonException or FormatException or OverflowException)
+                    {
+                        Debug.LogError("Cannot apply skill timeline override for " + id + ": " + error.Message, overrides);
+                    }
+                }
+                yield return graph;
+            }
+        }
+
+#if UNITY_EDITOR
+        internal IReadOnlyList<(float At, JObject Node, float Duration, JObject[] Modulators)> GetPreparedCues(
+            BattlePreviewActor actor, string presentationId)
+        {
+            Prepare(actor, presentationId);
+            return cache.Cues[(actor, presentationId)];
+        }
+#endif
 
         private BattleSkillPresentation(Transform worldRoot, Dictionary<string, JObject> graphs,
             Dictionary<string, BattleSkillPresentationAsset> assets, SessionCache cache,
@@ -323,6 +364,8 @@ namespace AstralOath.Client.BattleScene
                 float animationStart = 0f, float? durationOverride = null)
             {
                 int id = (int)node["guid"];
+                if (node[SkillTimelineOverrides.AbsoluteTimeField] != null)
+                    at = Seconds(node, SkillTimelineOverrides.AbsoluteTimeField);
                 if (path.Contains(id) || (earliest.TryGetValue(id, out var old) && old.At <= at)) return;
                 float duration = durationOverride ?? Completion(node);
                 float finish = at + duration;
@@ -839,7 +882,7 @@ namespace AstralOath.Client.BattleScene
             }
             catch (Exception error) when (error is FormatException || error is InvalidOperationException || error is KeyNotFoundException)
             {
-                if (group) Object.Destroy(group.gameObject);
+                if (group) DestroyVisual(group.gameObject);
                 Warn(source + ": " + error.Message);
             }
 
@@ -888,7 +931,7 @@ namespace AstralOath.Client.BattleScene
                 }, () =>
                 {
                     player.Dispose();
-                    if (group) Object.Destroy(group.gameObject);
+                    if (group) DestroyVisual(group.gameObject);
                 }));
             }
             catch
@@ -910,7 +953,7 @@ namespace AstralOath.Client.BattleScene
             }, () =>
             {
                 particles.Dispose();
-                if (group) Object.Destroy(group.gameObject);
+                if (group) DestroyVisual(group.gameObject);
             }));
         }
 
@@ -967,6 +1010,13 @@ namespace AstralOath.Client.BattleScene
             foreach (var visual in active) visual.Dispose();
             active.Clear();
         }
+
+        private static void DestroyVisual(Object value)
+        {
+            if (Application.isPlaying) Object.Destroy(value);
+            else Object.DestroyImmediate(value);
+        }
+
 
         public void Dispose()
         {

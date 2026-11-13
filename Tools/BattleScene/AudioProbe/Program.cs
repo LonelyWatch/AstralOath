@@ -31,15 +31,21 @@ static class Program
         return peak;
     }
     static void AuditVariants(BattleVoice voice, FmodCharacterAudioService service, FMOD.Studio.System studio,
-        FMOD.DSP meter, string json, string[] skills)
+        FMOD.DSP meter, string json, string[] skills, bool includeContextual)
     {
         using var catalog = JsonDocument.Parse(json);
         var rows = catalog.RootElement.GetProperty("characters").EnumerateArray()
             .SelectMany(character => character.GetProperty("skills").EnumerateArray())
             .ToDictionary(skill => skill.GetProperty("id").GetString(), StringComparer.Ordinal);
         service.CapturePerformanceDiagnostics = true;
-        foreach (string skill in skills)
+        foreach (string specification in skills)
         {
+            // A fixed authored sequence must play all of its keys, but need not vary between casts.
+            var parts = specification.Split('@');
+            string skill = parts[0];
+            int minimumTakes = parts.Length == 1 ? 2 : 0;
+            if (parts.Length > 1 && (parts.Length != 2 || !int.TryParse(parts[1], out minimumTakes) || minimumTakes < 1))
+                throw new ArgumentException("Use skillId or skillId@minimumDistinctTakes: " + specification);
             string path = rows[skill].GetProperty("voiceEventPath").GetString();
             Check(studio.getEvent(path, out var description), "voice " + path);
             Check(description.getLength(out int length), "duration " + path);
@@ -54,20 +60,27 @@ static class Program
             for (int cast = 0; cast < 8; cast++)
             {
                 service.ResetPerformanceDiagnostics();
-                int before = voice.StartedVoiceCount;
+                int voiceBefore = voice.StartedVoiceCount;
+                int effectBefore = voice.StartedEffectCount;
                 voice.Play(skill);
-                Require(voice.StartedVoiceCount == before + 1, "Expected one native voice event: " + skill);
+                Require(voice.StartedVoiceCount == voiceBefore + 1, "Expected one native voice event: " + skill);
+                Require(voice.StartedEffectCount == effectBefore + 1, "Expected one native sound effect: " + skill);
                 // Some authored programmer events expose a 20 ms trigger while the clips continue.
                 float peak = Meter(voice, meter, length <= 20 ? 3500 : Math.Max(length + 100, 1000));
+                var drain = System.Diagnostics.Stopwatch.StartNew();
+                while (service.DiagnosticActivePlaybackCount != 0 && drain.ElapsedMilliseconds < 15000)
+                    peak = Math.Max(peak, Meter(voice, meter, 50));
+                Require(service.DiagnosticActivePlaybackCount == 0, "Native events did not finish: " + skill);
                 var keys = service.DiagnosticSoundKeys.Order().ToArray();
                 Require(peak > 0.00001f && keys.Length != 0, "Skill produced no Japanese samples: " + skill);
                 takes.Add(string.Join(",", keys));
                 Console.WriteLine(JsonSerializer.Serialize(new { skill, cast, keys, length,
                     parameters, peak }));
             }
-            Require(takes.Count > 1, "Repeated source skill event used fewer than two distinct Japanese takes: " + skill);
+            Require(takes.Count >= minimumTakes, "Repeated source skill event used too few distinct Japanese takes: " + skill);
         }
 
+        if (!includeContextual) return;
         var contextualPlay = typeof(BattleVoice).GetMethod("PlaySkill", new[] { typeof(string), typeof(bool), typeof(bool) });
         Require(contextualPlay != null, "BattleVoice must accept an accepted ally call or answer cue");
         foreach (var cue in new[]
@@ -155,7 +168,10 @@ static class Program
             var studio = Field<FMOD.Studio.System>(service, "studio");
             if (args.Length > 2)
             {
-                AuditVariants(voice, service, studio, meter, json, args[2..]);
+                const string contextualFlag = "--contextual";
+                AuditVariants(voice, service, studio, meter, json,
+                    args[2..].Where(arg => arg != contextualFlag).ToArray(),
+                    args[2..].Contains(contextualFlag, StringComparer.Ordinal));
                 return 0;
             }
 

@@ -124,6 +124,7 @@ namespace AstralOath.Shared.Battle
             DefinitionId = unit.Definition.Id;
             NameKey = unit.Definition.NameKey;
             Level = unit.Level;
+            Awakenings = unit.Awakenings ?? 0;
             Element = unit.Definition.Element;
             Slot = unit.Slot;
             Form = unit.Form;
@@ -148,6 +149,7 @@ namespace AstralOath.Shared.Battle
         public int ReadinessBp { get; }
         public BattleResourceSnapshot Resource { get; }
         internal BattleResourceDefinition ResourceRules { get; }
+        internal int Awakenings { get; }
         public int Barrier => GetStatus(BattleStatusKind.Barrier)?.Strength ?? 0;
         public IReadOnlyDictionary<string, int> Cooldowns { get; }
         public IReadOnlyList<BattleStatusSnapshot> Statuses { get; }

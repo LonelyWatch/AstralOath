@@ -1,0 +1,55 @@
+
+zerato_skeff_sk2_target_ground.sct
+size: 482,461
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+ice_groundd_01
+  rotate: false
+  xy: 2, 2
+  size: 438, 173
+  orig: 438, 173
+  offset: 0, 0
+  index: -1
+ice_impact_01
+  rotate: false
+  xy: 2, 390
+  size: 159, 69
+  orig: 159, 69
+  offset: 0, 0
+  index: -1
+ice_impact_02
+  rotate: true
+  xy: 220, 300
+  size: 157, 63
+  orig: 157, 63
+  offset: 0, 0
+  index: -1
+ice_impact_03
+  rotate: false
+  xy: 285, 348
+  size: 189, 87
+  orig: 189, 87
+  offset: 0, 0
+  index: -1
+ice_impact_04
+  rotate: false
+  xy: 2, 300
+  size: 216, 88
+  orig: 216, 88
+  offset: 0, 0
+  index: -1
+ice_impact_05
+  rotate: false
+  xy: 2, 177
+  size: 307, 121
+  orig: 307, 121
+  offset: 0, 0
+  index: -1
+wind_shock
+  rotate: false
+  xy: 311, 177
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1

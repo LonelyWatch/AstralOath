@@ -69,7 +69,7 @@ namespace AstralOath.Client.BattleScene
             TextAsset[] audioBanks, TMP_FontAsset damageFont, TextAsset impactBank, GameObject stageBackground,
             BattleUnitPresentationProfile unitPresentation, BattleHudPreview.SpineEffect soulDisplay,
             TextAsset[] particles, Texture2D[] particleTextures, BattleMatch match, GameObject inspectionPrefab = null,
-            BattleHudPreview.SpineEffect readyDust = null)
+            BattleHudPreview.SpineEffect readyDust = null, TextAsset skillTimelineOverrides = null)
         {
             this.hud = hud;
             this.binder = binder;
@@ -163,7 +163,8 @@ namespace AstralOath.Client.BattleScene
             banner = CreateText(hud.transform, text, "Battle State", new Vector2(0.5f, 1),
                 new Vector2(0, -46), new Vector2(720, 40), 24);
             skillBanner = new BattleSkillBanner((RectTransform)hud.transform.Find("Top Bar"), text, sprites);
-            skillPresentation = new BattleSkillPresentation(units, graphs, skillAssets, camera, SetCinematicVisible, stageBackground);
+            skillPresentation = new BattleSkillPresentation(units, graphs, skillAssets, camera, SetCinematicVisible, stageBackground,
+                overrides: skillTimelineOverrides);
             // Resolve the active roster before exposing inputs: no source DOM/Spine parse on an attack click.
             foreach (var state in Snapshot.Units)
                 foreach (string skillId in state.Form.SkillIds)

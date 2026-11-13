@@ -125,6 +125,8 @@ namespace AstralOath.Shared.Battle
                     "caster_has_resource" => caster.ResourceAmount >= Math.Max(1, effect.turns),
                     "caster_buffed" => HasBuff(caster),
                     "recipient_buffed" => HasBuff(recipient),
+                    "recipient_debuffed_after_skill_awakening" => caster.Source.Awakenings >= 3 &&
+                        recipient.Statuses.Any(status => IsHarmful(status.Kind)),
                     "recipient_health_at_most_half" => 2L * recipient.Health <= recipient.MaximumHealth,
                     "single_target_attack" => !allTargets,
                     _ => throw new InvalidOperationException($"Unknown skill condition '{effect.condition}'.")

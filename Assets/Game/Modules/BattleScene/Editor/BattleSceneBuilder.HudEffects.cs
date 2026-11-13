@@ -190,7 +190,7 @@ namespace AstralOath.Client.BattleScene.Editor
                 BattleSkillPresentationAssets.SetSkeleton(row.FindPropertyRelative("skeleton"), (string)character["battleSkeletonAddress"], paths);
                 models.Add(id, row);
             }
-            ConfigureAuthoredTeams(hud, properties, GetBattleActorPrefab(), models, HeroElements(heroes));
+            if (!rosterOnly) ConfigureAuthoredTeams(hud, properties, GetBattleActorPrefab(), models, HeroElements(heroes));
             var graphs = characters.Values.Where(row => heroIds.Contains((string)row["id"]))
                 .SelectMany(row => row["skills"]).Select(row => (string)row["graphAddress"])
                 .Distinct(StringComparer.Ordinal).OrderBy(address => address, StringComparer.Ordinal)
@@ -207,6 +207,7 @@ namespace AstralOath.Client.BattleScene.Editor
             SetArray("audioBanks", lab["sharedBanks"].Values<string>()
                 .Select(address => BattleSkillPresentationAssets.Load<TextAsset>(address, paths)).ToArray());
             SetArray("battleGraphs", graphs);
+            SetObject("skillTimelineOverrides", Asset<TextAsset>(SkillTimelineOverrides.AssetPath));
             BattleSkillPresentationAssets.Collect(properties.FindProperty("skillAssets"), graphs);
             var classIcons = heroes.Select(row => (string)row["heroClass"]).Distinct(StringComparer.Ordinal)
                 .Select(role => "cm_icon_role_" + (role == "soul_weaver" ? "manauser" : role == "thief" ? "assassin" : role));

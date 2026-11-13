@@ -1,0 +1,83 @@
+
+zerato_skeff_sk2_self_F.sct
+size: 481,612
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+eff_wind_twist_02
+  rotate: false
+  xy: 373, 199
+  size: 106, 108
+  orig: 106, 108
+  offset: 0, 0
+  index: -1
+elite_02
+  rotate: false
+  xy: 415, 104
+  size: 60, 78
+  orig: 60, 78
+  offset: 0, 0
+  index: -1
+elite_05
+  rotate: true
+  xy: 415, 33
+  size: 69, 64
+  orig: 69, 64
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 168, 310
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+ice_part_small_02
+  rotate: true
+  xy: 339, 442
+  size: 117, 131
+  orig: 117, 131
+  offset: 0, 0
+  index: -1
+ice_part_small_03
+  rotate: true
+  xy: 339, 310
+  size: 130, 138
+  orig: 130, 138
+  offset: 0, 0
+  index: -1
+ice_part_small_04
+  rotate: false
+  xy: 168, 481
+  size: 109, 129
+  orig: 109, 129
+  offset: 0, 0
+  index: -1
+ice_smoke_05
+  rotate: false
+  xy: 168, 199
+  size: 203, 109
+  orig: 203, 109
+  offset: 0, 0
+  index: -1
+ice_wave_t_1
+  rotate: false
+  xy: 2, 33
+  size: 411, 164
+  orig: 411, 164
+  offset: 0, 0
+  index: -1
+ice_wave_t_6
+  rotate: true
+  xy: 2, 199
+  size: 411, 164
+  orig: 411, 164
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: false
+  xy: 2, 2
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1

@@ -6860,6 +6860,718 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags:
         UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/camera/boom_cm_power_dn.skeleton.json
+        CollectorGUID: 28e117df188ac824fbe20d75eaf82f6e
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/camera/boom_cm_power_dn.spine.json
+        CollectorGUID: 3b03a85d814a3af419394868c94ca4db
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/camera/zerato_skeff_sk1_cm.skeleton.json
+        CollectorGUID: 6c8d6de5cf017604c80490f3017cb5a3
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/camera/zerato_skeff_sk1_cm.spine.json
+        CollectorGUID: 667dd1671b26fe848a1bd39e20b059d3
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/camera/zerato_skeff_sk2_cm.skeleton.json
+        CollectorGUID: e4a3294851a91e44abed2f355e0b5227
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/camera/zerato_skeff_sk2_cm.spine.json
+        CollectorGUID: 87d3367822fe44b40b5bf4c0d3764348
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/camera/zerato_skeff_sk3_cm.skeleton.json
+        CollectorGUID: c82a113be49e9ca439c31ee4b3b6a4cd
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/camera/zerato_skeff_sk3_cm.spine.json
+        CollectorGUID: ef767e4d1bdc53e4faad9bb0a6ef8ef9
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk1_self.skeleton.json
+        CollectorGUID: 462a3d8d0d73487498ba4a3a0597b7bf
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk1_self.spine.json
+        CollectorGUID: 61ea7ec56b2378a4ebab9bc44230e3f0
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk1_target.skeleton.json
+        CollectorGUID: 5f7fc68c84e2f454fb07bce66e36ae61
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk1_target.spine.json
+        CollectorGUID: d4460c5248fb7614796bb20d5def49e0
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk2_self_F.skeleton.json
+        CollectorGUID: 2b894401c437ecb44b0884b7b2ad90b7
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk2_self_F.spine.json
+        CollectorGUID: 3d2cd35392735064ab6467c6a4b4867d
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk2_target_F.skeleton.json
+        CollectorGUID: 8a7a2d1d1c650d1409643884d22a56f9
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk2_target_F.spine.json
+        CollectorGUID: c0de9b909448f214bbddc1164a407040
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk2_target_ground.skeleton.json
+        CollectorGUID: f5504416859e3984aa6a85991c702344
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk2_target_ground.spine.json
+        CollectorGUID: bc931e5b343960d4ea9ccf809a44283e
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk3_B.skeleton.json
+        CollectorGUID: febaa6e849c732546b88b3b96da2840b
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk3_B.spine.json
+        CollectorGUID: baebf93d312a4554087a04ab9934e2c7
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk3_C.skeleton.json
+        CollectorGUID: b8548ab7c7a503546a85bb7d6f617638
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk3_C.spine.json
+        CollectorGUID: fb5272734ea639240a7ebf9bd936fd34
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk3_F.skeleton.json
+        CollectorGUID: 78133dff1274c83418eff6f3b1ca8ed4
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk3_F.spine.json
+        CollectorGUID: cc9b5212b43f377409ed1196542916b6
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk3_ground.skeleton.json
+        CollectorGUID: 15810dda616bc3647b343958692aef94
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk3_ground.spine.json
+        CollectorGUID: 1ad267da5aab1fb44bbbea643d8faad3
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_slide_eff_b.skeleton.json
+        CollectorGUID: 4478306c9d2be2945bca90c82d83d51a
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_slide_eff_b.spine.json
+        CollectorGUID: 35abaf9d2e794d9439e7a3e50dfd5025
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_slide_eff_f.skeleton.json
+        CollectorGUID: 27957c1ada9e0e842b40dcf2b49545b6
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_slide_eff_f.spine.json
+        CollectorGUID: 7547be1db7235db4cbdbf28eb8b651dc
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/model/zerato.skeleton.json
+        CollectorGUID: 71bbefbf1ac5a774697b57ccdf5a67f1
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/model/zerato.spine.json
+        CollectorGUID: 8320d8f86cea4394abed81d9facb4bb4
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/portrait/c1010.skeleton.json
+        CollectorGUID: 672a423be9b11c44c811d24ad803c5e5
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/portrait/c1010.spine.json
+        CollectorGUID: a59a3d49b8f110b4b83e6098c6123c69
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/effect/zerato_skeff_sk1_self.atlas.txt
+        CollectorGUID: df6088593859b41418253e8ff92c705a
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/effect/zerato_skeff_sk1_target.atlas.txt
+        CollectorGUID: 148fc6664d7c89d4fa67b1009b679c79
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/effect/zerato_skeff_sk2_self_F.atlas.txt
+        CollectorGUID: 373731d6658bc7f4ab7de3374e002e8c
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/effect/zerato_skeff_sk2_target_F.atlas.txt
+        CollectorGUID: 88d62ed387eed6f4aaed2cdf74018a37
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/effect/zerato_skeff_sk2_target_ground.atlas.txt
+        CollectorGUID: bb1b248cbee75f84f96b490fa81580ca
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/effect/zerato_skeff_sk3_B.atlas.txt
+        CollectorGUID: 6f5f34cd89c27fc49b2680cba52db3be
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/effect/zerato_skeff_sk3_C.atlas.txt
+        CollectorGUID: e384159aaff2bfc469b8a08f1b5b49a4
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/effect/zerato_skeff_sk3_F.atlas.txt
+        CollectorGUID: 64048ac5e08820f44ae43a0a2548ec77
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/effect/zerato_skeff_sk3_ground.atlas.txt
+        CollectorGUID: f59f0d81cf79d34428224eaab7c76eaa
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/effect/zerato_slide.atlas.txt
+        CollectorGUID: 255d972da9b3f1744b93fe6a72872174
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/effect/zerato_slide_eff_b.atlas.txt
+        CollectorGUID: a9e9138047e375d45bd6cb7b67164058
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/effect/zerato_slide_eff_f.atlas.txt
+        CollectorGUID: b717ac9641480e84cb4f3b9b06a75b4f
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/model/zerato.atlas.txt
+        CollectorGUID: 9e9b835f351eb954fbef07f1fe5799d9
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/portrait/c1010.atlas.txt
+        CollectorGUID: f18b77bc060076848908fd7b39debfbe
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Configs/model/zerato.timeline.json
+        CollectorGUID: 667efdd31ff5d1746b403a21518dcfc0
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Configs/stagept/c_jerato_skill_01.graph.json
+        CollectorGUID: 79c3b31a13649a049b3f22c73bc9ad90
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Configs/stagept/c_jerato_skill_02.graph.json
+        CollectorGUID: 3c14ca1ad28849e4eae484e6140af6bd
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Configs/stagept/c_jerato_skill_03.graph.json
+        CollectorGUID: 3cda2ce6f74559f4e86389e2d754bfc1
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3.cutin.json
+        CollectorGUID: af3c7aa9c63dc224e9b3b2a10651f94a
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0000.png
+        CollectorGUID: f1fe508cc39899b419fcab0b7834bb32
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0001.png
+        CollectorGUID: a8e5647dbf975414691be7a3f30ce9ba
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0002.png
+        CollectorGUID: 5366c0adfc5fd964ba343ffee4c2bf2e
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0003.png
+        CollectorGUID: 3e7c6943d9624194296ec87c58f2b3ca
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0004.png
+        CollectorGUID: 50a83370b21025745a83b62c29acd983
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0005.png
+        CollectorGUID: d99d7bef41428f04683dd3ec8d1412f0
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0006.png
+        CollectorGUID: bacca70e453c8e94090b0f2c3214c4ac
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0007.png
+        CollectorGUID: 9eec7af00603aca4b9670d435371dd26
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0008.png
+        CollectorGUID: 005d5367044da4042a40d8b8ef9ca469
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0009.png
+        CollectorGUID: 0a1a3b30e4e846b43a27b9099c5b5cd2
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0010.png
+        CollectorGUID: 18109b7409bbfec4697368f706c2e2ae
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0011.png
+        CollectorGUID: d78ec6ba7b61adc44bd2b28396c622a8
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0012.png
+        CollectorGUID: 4b397f2288195814fab291d9ec44fb39
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0013.png
+        CollectorGUID: db3e91ff754f4394b9e8ee0634308896
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0014.png
+        CollectorGUID: 12ca198757da5524a95b17e9b84aba50
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0015.png
+        CollectorGUID: 9101d67f207284a43bb0f9091b15590a
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0016.png
+        CollectorGUID: 305b63912e0b2d24ab1d2100c1b3a503
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/effect/zerato_skeff_sk1_self.cfx.json
+        CollectorGUID: ec844b2650507ea4284a71fb7c513039
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/effect/zerato_skeff_sk1_target.cfx.json
+        CollectorGUID: 2c6437bad0aae074186d7e849cfbb8cc
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/effect/zerato_skeff_sk2_self.cfx.json
+        CollectorGUID: d6f0edcd5dd601840a752e7537545290
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/effect/zerato_skeff_sk2_target.cfx.json
+        CollectorGUID: 971ab13c3ce02b0419120ac6e84bbcd8
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/effect/zerato_skeff_sk3_F.cfx.json
+        CollectorGUID: 648280f0fc846bd4fb5b3ab9d88054c3
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/effect/zerato_slide_1.cfx.json
+        CollectorGUID: 8365c77cea7f01445adc33abe053a98c
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/effect/zerato_slide_2.cfx.json
+        CollectorGUID: fe0557c448fffa24d9728124bd4a4bb1
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Textures/effect/zerato_skeff_sk1_self.png
+        CollectorGUID: be2bbba1efa9fbd498d7ec5a290a9d37
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Textures/effect/zerato_skeff_sk1_target.png
+        CollectorGUID: a2a9f9af627e88d4ea45f4695229ab08
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Textures/effect/zerato_skeff_sk2_self_F.png
+        CollectorGUID: 5852341bfd7c9f04fa0dc5e5a96c50e4
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Textures/effect/zerato_skeff_sk2_target_F.png
+        CollectorGUID: 2f5c907af9a60d142a0e54097507836e
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Textures/effect/zerato_skeff_sk2_target_ground.png
+        CollectorGUID: 02f740d32cd7d5c46b9e1d9506fa8632
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Textures/effect/zerato_skeff_sk3_B.png
+        CollectorGUID: 3f6b904948c362a418a63c7c16fb6e9a
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Textures/effect/zerato_skeff_sk3_C.png
+        CollectorGUID: e31962c581261fd45916d764748f0e68
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Textures/effect/zerato_skeff_sk3_F.png
+        CollectorGUID: a194496eab018b040b8c96d4b0fabf80
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Textures/effect/zerato_skeff_sk3_ground.png
+        CollectorGUID: b08d609a27bac0d4280d6affdfadc00d
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Textures/effect/zerato_slide.png
+        CollectorGUID: abe90971e1c23284b8f9d24da1a7953b
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Textures/model/zerato.png
+        CollectorGUID: c7a4518d42536594ba956d7e556ee1c7
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Textures/portrait/c1010.png
+        CollectorGUID: 27e19ffefb7e47a45a681e1b1490096d
+        CollectorType: 0
+        AddressRuleName: CharacterLabAddressRule
+        PackRuleName: CharacterLabPackRule
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
       - CollectPath: Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Animations/camera/angelica_cm.skeleton.json
         CollectorGUID: 25f06cc55bae621438b0862977e31a2e
         CollectorType: 0

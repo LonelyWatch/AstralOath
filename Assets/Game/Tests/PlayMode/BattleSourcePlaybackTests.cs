@@ -122,9 +122,13 @@ namespace AstralOath.Client.Tests
             yield return LoadBattle(value => roots = value);
             var host = roots.Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
             var catalog = JsonUtility.FromJson<BattleCatalogData>(HostField<TextAsset>(host, "battleCatalog").text);
-            string[] added = { "c1002", "c1003", "c1004", "c1006", "c1007", "c1008", "c1009" };
-            Assert.That(catalog.heroes.Select(hero => hero.id), Is.EqualTo(added.Concat(new[] { "c1001", "c1005", "c1062" }).OrderBy(id => id, StringComparer.Ordinal)));
-            Assert.That(graphs.Length, Is.EqualTo(30));
+            var separateLegacyFixture = new HashSet<string>(StringComparer.Ordinal) { "c1001", "c1005", "c1062" };
+            string[] added = catalog.heroes.Select(hero => hero.id)
+                .Where(id => !separateLegacyFixture.Contains(id)).ToArray();
+            Assert.That(added, Does.Contain("c1010"));
+            var loadedPresentations = graphs.Select(graph => JsonUtility.FromJson<GraphId>(graph.text).id).ToArray();
+            Assert.That(loadedPresentations, Is.Unique);
+            Assert.That(loadedPresentations, Is.EquivalentTo(catalog.skills.Select(skill => skill.presentationId).Distinct()));
             var selection = typeof(BattleHudPreview).GetField("allyHeroIds", PrivateInstance);
             var map = HostField<BindingMap>(host, "hud");
             typeof(BattleHudPreview).GetField("enemyHeroIds", PrivateInstance).SetValue(host, BattleScenePreviewTests.SlowEnemyIds());

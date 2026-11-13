@@ -1,0 +1,152 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using Newtonsoft.Json.Linq;
+using NUnit.Framework;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
+using Object = UnityEngine.Object;
+
+namespace AstralOath.Tests
+{
+    public sealed class BattleSkillTimelinePreviewTests
+    {
+        private const string PreviewTypeName =
+            "AstralOath.Client.BattleScene.Editor.SkillTimelinePreviewSession, AstralOath.Client.BattleScene.Editor";
+        private const string HeroDirectory = "Assets/Game/Modules/CharacterPresentation/Res/Characters/";
+        private const BindingFlags Instance = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+
+        [TestCase("c1001", "c_ras_skill_02", false)]
+        [TestCase("c1005", "c_mercedes_skill_03", true)]
+        public void IsolatedPreviewUsesAuthoredClocksAndReplaysTheSameFrame(string heroId, string skillId, bool hasCutin)
+        {
+            if (SystemInfo.graphicsDeviceType == GraphicsDeviceType.Null) Assert.Ignore("预览像素验证需要图形设备。");
+
+            var sourceScene = SceneManager.GetActiveScene();
+            bool wasDirty = sourceScene.isDirty;
+            int originalPreviewSceneCount = EditorSceneManager.previewSceneCount;
+            string path = HeroDirectory + heroId + "/Configs/stagept/" + skillId + ".graph.json";
+            var graph = AssetDatabase.LoadAssetAtPath<TextAsset>(path);
+            Assert.That(graph, Is.Not.Null, path);
+            var type = Type.GetType(PreviewTypeName, throwOnError: true);
+            using (var session = (IDisposable)Activator.CreateInstance(type, nonPublic: true))
+            {
+                T Read<T>(string name) => (T)type.GetProperty(name, Instance).GetValue(session);
+                object Invoke(string method, params object[] args) => type.GetMethod(method, Instance).Invoke(session, args);
+                Invoke("Load", heroId, skillId, graph.text, null, false, hasCutin, false);
+
+                var hitTimes = Read<IReadOnlyList<float>>("HitTimes");
+                float stageDuration = Read<float>("StageDuration");
+                float wallDuration = Read<float>("Duration");
+                var cutins = Read<IReadOnlyList<(float At, float Duration)>>("Cutins");
+                Assert.That(hitTimes.Count, Is.GreaterThan(0));
+                Assert.That(hitTimes[0], Is.InRange(0, stageDuration));
+                Assert.That(wallDuration, Is.EqualTo(stageDuration + cutins.Sum(item => item.Duration)).Within(.0001f));
+
+                float sample;
+                if (hasCutin)
+                {
+                    Assert.That(cutins.Count, Is.GreaterThan(0));
+                    var firstCutin = cutins[0];
+                    sample = firstCutin.At + firstCutin.Duration * .4f;
+                    Invoke("Seek", sample);
+                    Assert.That(Read<float>("StageTime"), Is.EqualTo(firstCutin.At).Within(.015f), "Cut-in freezes stage time.");
+                }
+                else
+                {
+                    Assert.That(cutins, Is.Empty);
+                    sample = hitTimes[0] + .035f;
+                    Invoke("Seek", sample);
+                    Assert.That(Read<float>("StageTime"), Is.EqualTo(Read<float>("Time")).Within(.015f));
+                }
+
+                var texture = Read<RenderTexture>("Texture");
+                Assert.That(texture && texture.IsCreated(), Is.True);
+                Invoke("Render");
+                Color32[] pixels = ReadPixels(texture);
+                Assert.That(pixels.Select(pixel => (pixel.r, pixel.g, pixel.b)).Distinct().Take(8).Count(),
+                    Is.EqualTo(8), "The preview must render scene geometry rather than a single clear color.");
+
+                var camera = (Camera)type.GetField("camera", Instance).GetValue(session);
+                var caster = (Component)type.GetField("caster", Instance).GetValue(session);
+                var cameraPosition = camera.transform.position;
+                var casterPosition = caster.transform.position;
+                float cameraSize = camera.orthographicSize;
+                float stageTime = Read<float>("StageTime");
+
+                Invoke("Seek", wallDuration);
+                Invoke("Seek", sample);
+                Invoke("Render");
+                Color32[] replay = ReadPixels(texture);
+                Assert.That(Read<float>("StageTime"), Is.EqualTo(stageTime).Within(.00001f));
+                Assert.That(Vector3.Distance(camera.transform.position, cameraPosition), Is.LessThan(.0001f));
+                Assert.That(Vector3.Distance(caster.transform.position, casterPosition), Is.LessThan(.0001f));
+                Assert.That(camera.orthographicSize, Is.EqualTo(cameraSize).Within(.0001f));
+                var differences = replay.Zip(pixels, (first, second) =>
+                    (Math.Abs(first.r - second.r) + Math.Abs(first.g - second.g) + Math.Abs(first.b - second.b)) / 3f).ToArray();
+                Assert.That(differences.Average(), Is.LessThan(3f), "Rewind must retain the frame's composition and colors.");
+                Assert.That(differences.Count(difference => difference <= 4f) / (float)differences.Length,
+                    Is.GreaterThan(.97f), "Most pixels should reproduce within four RGB levels after rewind.");
+                Assert.That(SceneManager.GetActiveScene(), Is.EqualTo(sourceScene));
+                Assert.That(sourceScene.isDirty, Is.EqualTo(wasDirty));
+                Assert.That(EditorSceneManager.previewSceneCount, Is.EqualTo(originalPreviewSceneCount + 1));
+            }
+            Assert.That(EditorSceneManager.previewSceneCount, Is.EqualTo(originalPreviewSceneCount));
+        }
+
+        [Test]
+        public void MovedHitMarkerChangesThePreparedTrackAndTheRealPlaybackClock()
+        {
+            const string graphId = "c_ras_skill_02";
+            const int hitGuid = 20;
+            const float movedHitSeconds = 3.125f;
+            string path = HeroDirectory + "c1001/Configs/stagept/" + graphId + ".graph.json";
+            var graph = AssetDatabase.LoadAssetAtPath<TextAsset>(path);
+            Assert.That(graph, Is.Not.Null, path);
+            var source = JObject.Parse(graph.text);
+            var nodes = (JArray)source["source"]["entities"];
+            var hit = nodes.OfType<JObject>().Single(node => (int)node["guid"] == hitGuid);
+            Assert.That((string)hit["etty"], Is.EqualTo("HIT"));
+
+            var type = Type.GetType(PreviewTypeName, throwOnError: true);
+            using var session = (IDisposable)Activator.CreateInstance(type, nonPublic: true);
+            var load = type.GetMethod("Load", Instance);
+            var cuesProperty = type.GetProperty("Cues", Instance);
+            void Load(string json) => load.Invoke(session, new object[] { "c1001", graphId, json, null, false, false, false });
+            float TrackTime() => ((IReadOnlyList<(float At, JObject Node, float Duration, JObject[] Modulators)>)
+                cuesProperty.GetValue(session)).Single(cue => (int)cue.Node["guid"] == hitGuid).At;
+
+            Load(graph.text);
+            float originalTime = TrackTime();
+            Assert.That(originalTime, Is.Not.EqualTo(movedHitSeconds).Within(.0001f));
+            hit["_astralAtMs"] = 3125;
+            Load(source.ToString());
+            Assert.That(TrackTime(), Is.EqualTo(movedHitSeconds).Within(.0001f));
+            var hitTimes = (IReadOnlyList<float>)type.GetProperty("HitTimes", Instance).GetValue(session);
+            Assert.That(hitTimes.Any(time => Mathf.Abs(time - movedHitSeconds) < .0001f), Is.True);
+            Assert.That(JObject.Parse(graph.text)["source"]["entities"].OfType<JObject>()
+                .Single(node => (int)node["guid"] == hitGuid)["_astralAtMs"], Is.Null);
+        }
+
+        private static Color32[] ReadPixels(RenderTexture texture)
+        {
+            var previous = RenderTexture.active;
+            var image = new Texture2D(texture.width, texture.height, TextureFormat.RGB24, false);
+            try
+            {
+                RenderTexture.active = texture;
+                image.ReadPixels(new Rect(0, 0, texture.width, texture.height), 0, 0);
+                return image.GetPixels32();
+            }
+            finally
+            {
+                RenderTexture.active = previous;
+                Object.DestroyImmediate(image);
+            }
+        }
+    }
+}

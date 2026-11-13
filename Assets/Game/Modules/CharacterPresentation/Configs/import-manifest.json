@@ -11,6 +11,7 @@
     "c1007",
     "c1008",
     "c1009",
+    "c1010",
     "c1062"
   ],
   "entries": [
@@ -216,6 +217,58 @@
         "characterlab/source/camera/angelica_cm.scsp/json"
       ],
       "outputSha256": "5bd9b73e13eb6935ed13c91475e799dd22cae2388facbac9fa13fa0e7e697233",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "camera/boom_cm_power_dn.scsp",
+      "sourceSha256": "d149c31a449bbd04e1f9b54a50e5c8459b1f17149bfc3bd91b30782d2d0a0748",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/camera/boom_cm_power_dn.spine.json",
+      "address": "characterlab/source/camera/boom_cm_power_dn.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "5407590dc2f31d08c086c918e02577730c5c11f71a8eeb5ad6895ee16babff5b",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 478,
+        "consumedBytes": 478,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 3,
+            "frames": 18,
+            "segments": 15,
+            "sourceMarkers": {
+              "allLinear": 3,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 15,
+              "stepped": 0,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "camera/boom_cm_power_dn.scsp",
+      "sourceSha256": "d149c31a449bbd04e1f9b54a50e5c8459b1f17149bfc3bd91b30782d2d0a0748",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/camera/boom_cm_power_dn.skeleton.json",
+      "address": "characterlab/source/camera/boom_cm_power_dn.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/camera/boom_cm_power_dn.scsp/json"
+      ],
+      "outputSha256": "5a3bbbf2ec5e1ef2060895e82f39cdeea09dda009d5f0c9945322ec6ca786749",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
@@ -1516,6 +1569,162 @@
         "characterlab/source/camera/wildred_sk3_cm.scsp/json"
       ],
       "outputSha256": "7fb49ee7f1e1db328164a007882b7e6179291c0c8097ab7c0797b1f8f70fc330",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "camera/zerato_skeff_sk1_cm.scsp",
+      "sourceSha256": "77c75d9132cacf908acf42d5f5da43c8f172bfa1964f2f9e91f9e98f70a14bc3",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/camera/zerato_skeff_sk1_cm.spine.json",
+      "address": "characterlab/source/camera/zerato_skeff_sk1_cm.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "bc200a0c536ef3b66c99ba8222e6bd691bfa05032ef52c13249df7d70b39fb62",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 640,
+        "consumedBytes": 640,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 1,
+            "frames": 31,
+            "segments": 30,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 0,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 28,
+              "stepped": 2,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "camera/zerato_skeff_sk1_cm.scsp",
+      "sourceSha256": "77c75d9132cacf908acf42d5f5da43c8f172bfa1964f2f9e91f9e98f70a14bc3",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/camera/zerato_skeff_sk1_cm.skeleton.json",
+      "address": "characterlab/source/camera/zerato_skeff_sk1_cm.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/camera/zerato_skeff_sk1_cm.scsp/json"
+      ],
+      "outputSha256": "fe664f254699401f83032a4dd97473c146f9dc4fa2a5c9a8b6c00b9c8c86cadc",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "camera/zerato_skeff_sk2_cm.scsp",
+      "sourceSha256": "1a1a76c8a45bf19681f004737f075fa110f45abd647d0470720e956aba0fae2d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/camera/zerato_skeff_sk2_cm.spine.json",
+      "address": "characterlab/source/camera/zerato_skeff_sk2_cm.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "4e6a95e73344c1d83ad8d18e81ded2193c17df2c798466c6b80ad5a47e62d47e",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 747,
+        "consumedBytes": 747,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 1,
+            "frames": 42,
+            "segments": 41,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 0,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 37,
+              "stepped": 4,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "camera/zerato_skeff_sk2_cm.scsp",
+      "sourceSha256": "1a1a76c8a45bf19681f004737f075fa110f45abd647d0470720e956aba0fae2d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/camera/zerato_skeff_sk2_cm.skeleton.json",
+      "address": "characterlab/source/camera/zerato_skeff_sk2_cm.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/camera/zerato_skeff_sk2_cm.scsp/json"
+      ],
+      "outputSha256": "472dbc6029e94258aebb0fec2605a3d1e2799fa647bb6e4999ac978ad3b3667d",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "camera/zerato_skeff_sk3_cm.scsp",
+      "sourceSha256": "6093c03a187955934576ecc14041278e68bea630a24312e45309fd6fc2f7e32f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/camera/zerato_skeff_sk3_cm.spine.json",
+      "address": "characterlab/source/camera/zerato_skeff_sk3_cm.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "c18ead9f3220a5b58698441274ae582c25eef01192b76828d86fb8440450c239",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 1111,
+        "consumedBytes": 1111,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 1,
+            "frames": 70,
+            "segments": 69,
+            "sourceMarkers": {
+              "allLinear": 0,
+              "allStepped": 0,
+              "explicit": 1
+            },
+            "modes": {
+              "linear": 65,
+              "stepped": 4,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "camera/zerato_skeff_sk3_cm.scsp",
+      "sourceSha256": "6093c03a187955934576ecc14041278e68bea630a24312e45309fd6fc2f7e32f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/camera/zerato_skeff_sk3_cm.skeleton.json",
+      "address": "characterlab/source/camera/zerato_skeff_sk3_cm.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/camera/zerato_skeff_sk3_cm.scsp/json"
+      ],
+      "outputSha256": "02821cc4ffd798c0acab56d5ad74b818f4d8579eb1bae3c325cbc125cc059109",
       "conversion": {
         "status": "converted",
         "spineVersion": "2.1.27",
@@ -3207,6 +3416,259 @@
         "status": "converted",
         "frameCount": 17,
         "durationSeconds": 1.2
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1010_3.webp",
+      "sourceSha256": "f9001de451c1d7a359fdd58ac4f1ae280261e5589d344ca25296dbe906ee5c71",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0000.png",
+      "address": "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0000",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "f845470e54dd2eac1edf4cecc9d874753f61895212b20a1f9ce57ea917be5826",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 0
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1010_3.webp",
+      "sourceSha256": "f9001de451c1d7a359fdd58ac4f1ae280261e5589d344ca25296dbe906ee5c71",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0001.png",
+      "address": "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0001",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "db9f84e500f28570a2a069db382b752ae43f7520a76022b837cf56551fa975d5",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 1
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1010_3.webp",
+      "sourceSha256": "f9001de451c1d7a359fdd58ac4f1ae280261e5589d344ca25296dbe906ee5c71",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0002.png",
+      "address": "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0002",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "55890f757d052cb81941c0db165f787d83a2f158a28877addea8f51fa3122498",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 2
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1010_3.webp",
+      "sourceSha256": "f9001de451c1d7a359fdd58ac4f1ae280261e5589d344ca25296dbe906ee5c71",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0003.png",
+      "address": "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0003",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "5e2c2b9686cc83c3f2db398f61054f05ce7f8b508c8dec3a5fa5995cac4b332e",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 3
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1010_3.webp",
+      "sourceSha256": "f9001de451c1d7a359fdd58ac4f1ae280261e5589d344ca25296dbe906ee5c71",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0004.png",
+      "address": "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0004",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "a3822dc7488e4a0a96ae10397cef8ed1a76ed65c70029939450e81e070529505",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 4
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1010_3.webp",
+      "sourceSha256": "f9001de451c1d7a359fdd58ac4f1ae280261e5589d344ca25296dbe906ee5c71",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0005.png",
+      "address": "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0005",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "f4eda4f6a05ba4f39bf13747d9f918587a1323b1af32b8cb857f154b3e7eb1a4",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 5
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1010_3.webp",
+      "sourceSha256": "f9001de451c1d7a359fdd58ac4f1ae280261e5589d344ca25296dbe906ee5c71",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0006.png",
+      "address": "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0006",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "605aa6ebcd848b44d759cc52e0e5410a2d9594cc1be186ee06b80ade71f33eb9",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 6
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1010_3.webp",
+      "sourceSha256": "f9001de451c1d7a359fdd58ac4f1ae280261e5589d344ca25296dbe906ee5c71",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0007.png",
+      "address": "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0007",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "7481517403c39a77b90fb86f53618896aed0d962f0d90d86fa078508cf39dcf3",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 7
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1010_3.webp",
+      "sourceSha256": "f9001de451c1d7a359fdd58ac4f1ae280261e5589d344ca25296dbe906ee5c71",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0008.png",
+      "address": "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0008",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "23a945c3a1aa5dbe55b6107b7a4eda6564117fcbdaf34e3b7592c75c327df501",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 8
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1010_3.webp",
+      "sourceSha256": "f9001de451c1d7a359fdd58ac4f1ae280261e5589d344ca25296dbe906ee5c71",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0009.png",
+      "address": "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0009",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "adaa321765ffe3b96ba8b997a607435481d5f6f3097b00350af4a87d447bd0b0",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 9
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1010_3.webp",
+      "sourceSha256": "f9001de451c1d7a359fdd58ac4f1ae280261e5589d344ca25296dbe906ee5c71",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0010.png",
+      "address": "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0010",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "326864bdb9882f2d3cdc9562b817cbcc3c9c4d4909d64242a1c0715e333ceacc",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 10
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1010_3.webp",
+      "sourceSha256": "f9001de451c1d7a359fdd58ac4f1ae280261e5589d344ca25296dbe906ee5c71",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0011.png",
+      "address": "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0011",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "aa204b9de8209c3395818d639b6aadbf143bf9254f42db58ad45f9fef96b2736",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 11
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1010_3.webp",
+      "sourceSha256": "f9001de451c1d7a359fdd58ac4f1ae280261e5589d344ca25296dbe906ee5c71",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0012.png",
+      "address": "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0012",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "b960b288f791aa97e2dc5c30248ab325db57ec03f6ca1291bf9ef1956adb9691",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 12
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1010_3.webp",
+      "sourceSha256": "f9001de451c1d7a359fdd58ac4f1ae280261e5589d344ca25296dbe906ee5c71",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0013.png",
+      "address": "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0013",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "59b5a6b003b6462db617c53d2006e4de269100a905fd36d505a63e13d7f03549",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 13
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1010_3.webp",
+      "sourceSha256": "f9001de451c1d7a359fdd58ac4f1ae280261e5589d344ca25296dbe906ee5c71",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0014.png",
+      "address": "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0014",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "909b8ca0ecb0da726cc59fba047b2d96ffe6c8c8cfef5e934fe0b67a3d4c410a",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 14
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1010_3.webp",
+      "sourceSha256": "f9001de451c1d7a359fdd58ac4f1ae280261e5589d344ca25296dbe906ee5c71",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0015.png",
+      "address": "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0015",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "3d65d4e756938198e6bc74a8af79af050a1657d8275edcbddb139432932ba90d",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 15
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1010_3.webp",
+      "sourceSha256": "f9001de451c1d7a359fdd58ac4f1ae280261e5589d344ca25296dbe906ee5c71",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3_frames/0016.png",
+      "address": "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0016",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "a1cb81a3fbb512dbdc7291b34785278a4c509610940e61bc215bc14a202d6d91",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 16
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1010_3.webp",
+      "sourceSha256": "f9001de451c1d7a359fdd58ac4f1ae280261e5589d344ca25296dbe906ee5c71",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/cut/fhd/sk_c1010_3.cutin.json",
+      "address": "characterlab/source/cut/fhd/sk_c1010_3.webp",
+      "type": "cutin",
+      "dependencies": [
+        "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0000",
+        "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0001",
+        "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0002",
+        "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0003",
+        "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0004",
+        "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0005",
+        "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0006",
+        "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0007",
+        "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0008",
+        "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0009",
+        "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0010",
+        "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0011",
+        "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0012",
+        "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0013",
+        "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0014",
+        "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0015",
+        "characterlab/source/cut/fhd/sk_c1010_3.webp/frame/0016"
+      ],
+      "outputSha256": "7bb704ce0f466bcb32ca21975d4ad9ee1207727a720b9825f0ae409327e91e38",
+      "conversion": {
+        "status": "converted",
+        "frameCount": 17,
+        "durationSeconds": 1.27
       }
     },
     {
@@ -15696,6 +16158,1086 @@
       }
     },
     {
+      "source": "effect/zerato_skeff_sk1_self.atlas",
+      "sourceSha256": "6897d51fbba2a8dbb9b3c99988c76e7f8eb3e5656ce2ddc1d1096dc40115b54f",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/effect/zerato_skeff_sk1_self.atlas.txt",
+      "address": "characterlab/source/effect/zerato_skeff_sk1_self.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/zerato_skeff_sk1_self.sct"
+      ],
+      "outputSha256": "6897d51fbba2a8dbb9b3c99988c76e7f8eb3e5656ce2ddc1d1096dc40115b54f",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk1_self.cfx",
+      "sourceSha256": "4a05c11e13be371c411f782734b350f75541c5cf0fa2465421b8e300c67477db",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/effect/zerato_skeff_sk1_self.cfx.json",
+      "address": "characterlab/source/effect/zerato_skeff_sk1_self.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/zerato_skeff_sk1_self.scsp"
+      ],
+      "outputSha256": "daba00cb5ffa869b6c36ab9f1ab072a4dbc1fc76daae72385718ac853ad2b67e",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk1_self.scsp",
+      "sourceSha256": "384aedbc3305686ff5617c96ccd90391f52eb6533244b441a5ae1eea2de5bf01",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk1_self.spine.json",
+      "address": "characterlab/source/effect/zerato_skeff_sk1_self.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "ec77b39c8964d39ea70bcf685af6511ffe222f3c792f4ef5c4802fb34698f29a",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 5150,
+        "consumedBytes": 5150,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 50,
+            "frames": 107,
+            "segments": 57,
+            "sourceMarkers": {
+              "allLinear": 26,
+              "allStepped": 0,
+              "explicit": 24
+            },
+            "modes": {
+              "linear": 30,
+              "stepped": 3,
+              "bezier": 24
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk1_self.scsp",
+      "sourceSha256": "384aedbc3305686ff5617c96ccd90391f52eb6533244b441a5ae1eea2de5bf01",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk1_self.skeleton.json",
+      "address": "characterlab/source/effect/zerato_skeff_sk1_self.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/zerato_skeff_sk1_self.scsp/json",
+        "characterlab/source/effect/zerato_skeff_sk1_self.atlas",
+        "characterlab/source/effect/zerato_skeff_sk1_self.sct"
+      ],
+      "outputSha256": "7085e451859c85eb8a50f186a5a6e3bc1e8721ab3b931d9167d003db5403b42f",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk1_self.sct",
+      "sourceSha256": "a818b44077e1eaadd790ba38d5860808f8d0fdf0ef66122da4378e5b3e4c9fb7",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Textures/effect/zerato_skeff_sk1_self.png",
+      "address": "characterlab/source/effect/zerato_skeff_sk1_self.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "11f4653cfaea2c5c7fc5f03d7703bd18a7dee5ad1a209a95274ed36f761747d6",
+      "conversion": {
+        "status": "converted",
+        "width": 502,
+        "height": 382,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "a818b44077e1eaadd790ba38d5860808f8d0fdf0ef66122da4378e5b3e4c9fb7",
+        "outputSha256": "11f4653cfaea2c5c7fc5f03d7703bd18a7dee5ad1a209a95274ed36f761747d6"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk1_target.atlas",
+      "sourceSha256": "bf286284b985623c9a496509cf4ce815e16485b7b93aed348013a047e04711f1",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/effect/zerato_skeff_sk1_target.atlas.txt",
+      "address": "characterlab/source/effect/zerato_skeff_sk1_target.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/zerato_skeff_sk1_target.sct"
+      ],
+      "outputSha256": "bf286284b985623c9a496509cf4ce815e16485b7b93aed348013a047e04711f1",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk1_target.cfx",
+      "sourceSha256": "c77efe8e43930bd44293ada0c8148b0670d8b2bd9ed5c9b95a26574082cf6dda",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/effect/zerato_skeff_sk1_target.cfx.json",
+      "address": "characterlab/source/effect/zerato_skeff_sk1_target.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/zerato_skeff_sk1_target.scsp"
+      ],
+      "outputSha256": "ee13e29e02ca39e7c08908e1ee2658bc91bf10385e40d8591ae22af0c71cc532",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk1_target.scsp",
+      "sourceSha256": "19724c38430b1974b6ee52ac46bc87dff2a171e6c3cd56207a1bc8a39e3963d4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk1_target.spine.json",
+      "address": "characterlab/source/effect/zerato_skeff_sk1_target.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "a6d6707848be012334194ec81fefc569f3d9e76fd1e15ec861bf5b90a4afd117",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 37568,
+        "consumedBytes": 37568,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 282,
+            "frames": 689,
+            "segments": 407,
+            "sourceMarkers": {
+              "allLinear": 64,
+              "allStepped": 61,
+              "explicit": 157
+            },
+            "modes": {
+              "linear": 156,
+              "stepped": 137,
+              "bezier": 114
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk1_target.scsp",
+      "sourceSha256": "19724c38430b1974b6ee52ac46bc87dff2a171e6c3cd56207a1bc8a39e3963d4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk1_target.skeleton.json",
+      "address": "characterlab/source/effect/zerato_skeff_sk1_target.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/zerato_skeff_sk1_target.scsp/json",
+        "characterlab/source/effect/zerato_skeff_sk1_target.atlas",
+        "characterlab/source/effect/zerato_skeff_sk1_target.sct"
+      ],
+      "outputSha256": "cc538a89984f633b83be8043c8062bb5a13dabf412ae989e69265ff24520bb93",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk1_target.sct",
+      "sourceSha256": "f78db70f0c2507c3facaa14b2c186af3c797f8feb01afb2f352e07836bf57413",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Textures/effect/zerato_skeff_sk1_target.png",
+      "address": "characterlab/source/effect/zerato_skeff_sk1_target.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "3fe03a18d576d42f1254a8f412b1bd7c137733bce247dbce62a497c08b574879",
+      "conversion": {
+        "status": "converted",
+        "width": 1829,
+        "height": 256,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "f78db70f0c2507c3facaa14b2c186af3c797f8feb01afb2f352e07836bf57413",
+        "outputSha256": "3fe03a18d576d42f1254a8f412b1bd7c137733bce247dbce62a497c08b574879"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk2_self.cfx",
+      "sourceSha256": "6c5d0029bbe07cfe003a54bedb3d471fe4d2f1cb5e071d4c5bf0d159dc97cb8a",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/effect/zerato_skeff_sk2_self.cfx.json",
+      "address": "characterlab/source/effect/zerato_skeff_sk2_self.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/zerato_skeff_sk2_self_F.scsp"
+      ],
+      "outputSha256": "a5989fe607974b7f04309cc15265768a37a11b51f3b64033b0f906e7b7a8f09d",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk2_self_F.atlas",
+      "sourceSha256": "b2aca01468f14b09ae5f84ccd7ae034244f51da31c1a627c46541edd1f946428",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/effect/zerato_skeff_sk2_self_F.atlas.txt",
+      "address": "characterlab/source/effect/zerato_skeff_sk2_self_F.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/zerato_skeff_sk2_self_F.sct"
+      ],
+      "outputSha256": "b2aca01468f14b09ae5f84ccd7ae034244f51da31c1a627c46541edd1f946428",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk2_self_F.scsp",
+      "sourceSha256": "28b15dda4dee1e06ce55d1e164368b91760cc36a5020bc99e038b4fbde687802",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk2_self_F.spine.json",
+      "address": "characterlab/source/effect/zerato_skeff_sk2_self_F.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "3b4eee80414b05f5034ead308aa3f6ebce37234412537cdac332d481a287514d",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 14525,
+        "consumedBytes": 14525,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 64,
+            "frames": 228,
+            "segments": 164,
+            "sourceMarkers": {
+              "allLinear": 34,
+              "allStepped": 3,
+              "explicit": 27
+            },
+            "modes": {
+              "linear": 110,
+              "stepped": 23,
+              "bezier": 31
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk2_self_F.scsp",
+      "sourceSha256": "28b15dda4dee1e06ce55d1e164368b91760cc36a5020bc99e038b4fbde687802",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk2_self_F.skeleton.json",
+      "address": "characterlab/source/effect/zerato_skeff_sk2_self_F.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/zerato_skeff_sk2_self_F.scsp/json",
+        "characterlab/source/effect/zerato_skeff_sk2_self_F.atlas",
+        "characterlab/source/effect/zerato_skeff_sk2_self_F.sct"
+      ],
+      "outputSha256": "53f6e5aea9aee39e14538805a604eca78aaa3a8cccc749f5a00c4165085c31bc",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk2_self_F.sct",
+      "sourceSha256": "96feaa653fee71bd54da1eae543eff4d3ad5141e3f00d65794c34169c7ff7121",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Textures/effect/zerato_skeff_sk2_self_F.png",
+      "address": "characterlab/source/effect/zerato_skeff_sk2_self_F.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "e47ad44b4743f9aca7e58a24efdcc9677e4125cb873b9c1ea5ee707db722c1a9",
+      "conversion": {
+        "status": "converted",
+        "width": 481,
+        "height": 612,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "96feaa653fee71bd54da1eae543eff4d3ad5141e3f00d65794c34169c7ff7121",
+        "outputSha256": "e47ad44b4743f9aca7e58a24efdcc9677e4125cb873b9c1ea5ee707db722c1a9"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk2_target.cfx",
+      "sourceSha256": "856d89236d4751110a9d0fb5e0a9ed4b45ec641b5eca4995bd0279e8b3e987fe",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/effect/zerato_skeff_sk2_target.cfx.json",
+      "address": "characterlab/source/effect/zerato_skeff_sk2_target.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/zerato_skeff_sk2_target_F.scsp",
+        "characterlab/source/effect/zerato_skeff_sk2_target_ground.scsp"
+      ],
+      "outputSha256": "7928c1cef451b1736c3f987851f5fc37872ff3555f64a082b3a633a00f209cad",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk2_target_F.atlas",
+      "sourceSha256": "faef5300274a07003c19208862740f1af7967ee5888a6c8a93ae89a920c1da99",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/effect/zerato_skeff_sk2_target_F.atlas.txt",
+      "address": "characterlab/source/effect/zerato_skeff_sk2_target_F.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/zerato_skeff_sk2_target_F.sct"
+      ],
+      "outputSha256": "faef5300274a07003c19208862740f1af7967ee5888a6c8a93ae89a920c1da99",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk2_target_F.scsp",
+      "sourceSha256": "754bd00b67ce9803b304183c70a61a960ff45b7fbd49df3e340a3ae46dd2bc8a",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk2_target_F.spine.json",
+      "address": "characterlab/source/effect/zerato_skeff_sk2_target_F.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "1bf21b80b648eb473ee8c176baf5f7964ff7f32edcb97397585d9713c60e25ac",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 34059,
+        "consumedBytes": 34059,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 251,
+            "frames": 656,
+            "segments": 405,
+            "sourceMarkers": {
+              "allLinear": 62,
+              "allStepped": 60,
+              "explicit": 129
+            },
+            "modes": {
+              "linear": 182,
+              "stepped": 130,
+              "bezier": 93
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk2_target_F.scsp",
+      "sourceSha256": "754bd00b67ce9803b304183c70a61a960ff45b7fbd49df3e340a3ae46dd2bc8a",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk2_target_F.skeleton.json",
+      "address": "characterlab/source/effect/zerato_skeff_sk2_target_F.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/zerato_skeff_sk2_target_F.scsp/json",
+        "characterlab/source/effect/zerato_skeff_sk2_target_F.atlas",
+        "characterlab/source/effect/zerato_skeff_sk2_target_F.sct"
+      ],
+      "outputSha256": "ab4b2063a7fd6f8d3d1217f4d7ea3f56a69859093444837f26896fa751cebedc",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk2_target_F.sct",
+      "sourceSha256": "5499978e7fcc15732011f0ba2b0fd05c964c599e44a24c49e780cc72185a889e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Textures/effect/zerato_skeff_sk2_target_F.png",
+      "address": "characterlab/source/effect/zerato_skeff_sk2_target_F.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "5fa46823026915c188cede81fd637e73fe80b126f96f2715544050b85aba401d",
+      "conversion": {
+        "status": "converted",
+        "width": 499,
+        "height": 604,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "5499978e7fcc15732011f0ba2b0fd05c964c599e44a24c49e780cc72185a889e",
+        "outputSha256": "5fa46823026915c188cede81fd637e73fe80b126f96f2715544050b85aba401d"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk2_target_ground.atlas",
+      "sourceSha256": "68cb1809aa7846b2607e262b1fdb06b02ae81edbfac037a30f21cffe7c816512",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/effect/zerato_skeff_sk2_target_ground.atlas.txt",
+      "address": "characterlab/source/effect/zerato_skeff_sk2_target_ground.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/zerato_skeff_sk2_target_ground.sct"
+      ],
+      "outputSha256": "68cb1809aa7846b2607e262b1fdb06b02ae81edbfac037a30f21cffe7c816512",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk2_target_ground.scsp",
+      "sourceSha256": "f795cd23e3b151b3acdd3672427f62475bb5b2845bc318d7893291efa75ea162",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk2_target_ground.spine.json",
+      "address": "characterlab/source/effect/zerato_skeff_sk2_target_ground.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "f7ca73e9c82542bdc325cd07e10ca86092a7405fcf9ba1c5a2752c14fa9ea709",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 3932,
+        "consumedBytes": 3932,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 41,
+            "frames": 81,
+            "segments": 40,
+            "sourceMarkers": {
+              "allLinear": 32,
+              "allStepped": 1,
+              "explicit": 8
+            },
+            "modes": {
+              "linear": 26,
+              "stepped": 9,
+              "bezier": 5
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk2_target_ground.scsp",
+      "sourceSha256": "f795cd23e3b151b3acdd3672427f62475bb5b2845bc318d7893291efa75ea162",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk2_target_ground.skeleton.json",
+      "address": "characterlab/source/effect/zerato_skeff_sk2_target_ground.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/zerato_skeff_sk2_target_ground.scsp/json",
+        "characterlab/source/effect/zerato_skeff_sk2_target_ground.atlas",
+        "characterlab/source/effect/zerato_skeff_sk2_target_ground.sct"
+      ],
+      "outputSha256": "72585f70650a227679cec4d3337355a5c3188c4b75b43840a7bbc35de36a8337",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk2_target_ground.sct",
+      "sourceSha256": "4317ebbc886ae13e5b7a119305ec716f763500bf039b41ab5a81a903e3e9b501",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Textures/effect/zerato_skeff_sk2_target_ground.png",
+      "address": "characterlab/source/effect/zerato_skeff_sk2_target_ground.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "2ca2c694e4d69fa8d31a391f071c3d8775fbab7398111da3c2f1b712bd040ad9",
+      "conversion": {
+        "status": "converted",
+        "width": 482,
+        "height": 461,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "4317ebbc886ae13e5b7a119305ec716f763500bf039b41ab5a81a903e3e9b501",
+        "outputSha256": "2ca2c694e4d69fa8d31a391f071c3d8775fbab7398111da3c2f1b712bd040ad9"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk3_B.atlas",
+      "sourceSha256": "70cbfc0dd89db860d5508493027d9446a125be31eac9afe228938a5babb74066",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/effect/zerato_skeff_sk3_B.atlas.txt",
+      "address": "characterlab/source/effect/zerato_skeff_sk3_B.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/zerato_skeff_sk3_B.sct"
+      ],
+      "outputSha256": "70cbfc0dd89db860d5508493027d9446a125be31eac9afe228938a5babb74066",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk3_B.scsp",
+      "sourceSha256": "e57a866032c99eaccec80854c202b3ffa53931b99ba82a73038d4d5af12ae158",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk3_B.spine.json",
+      "address": "characterlab/source/effect/zerato_skeff_sk3_B.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "f9107340206a716c857e8b3bba79a965cd45c5b32bdc550315f6138950bf7687",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 5461,
+        "consumedBytes": 5461,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 46,
+            "frames": 101,
+            "segments": 55,
+            "sourceMarkers": {
+              "allLinear": 28,
+              "allStepped": 1,
+              "explicit": 17
+            },
+            "modes": {
+              "linear": 37,
+              "stepped": 7,
+              "bezier": 11
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk3_B.scsp",
+      "sourceSha256": "e57a866032c99eaccec80854c202b3ffa53931b99ba82a73038d4d5af12ae158",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk3_B.skeleton.json",
+      "address": "characterlab/source/effect/zerato_skeff_sk3_B.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/zerato_skeff_sk3_B.scsp/json",
+        "characterlab/source/effect/zerato_skeff_sk3_B.atlas",
+        "characterlab/source/effect/zerato_skeff_sk3_B.sct"
+      ],
+      "outputSha256": "a6317405a6fc5129230e790c8acc82081df4eca06034680bb52b38032c987434",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk3_B.sct",
+      "sourceSha256": "114bd5b57cb967cab7370ce5535dfabfc48a348b76436dc0636f12bfbb67737c",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Textures/effect/zerato_skeff_sk3_B.png",
+      "address": "characterlab/source/effect/zerato_skeff_sk3_B.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "3cf92fc06e499319a3df02e25effe9f95b7a93eac66f26f0ec2b575bfa5cd84f",
+      "conversion": {
+        "status": "converted",
+        "width": 443,
+        "height": 380,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "114bd5b57cb967cab7370ce5535dfabfc48a348b76436dc0636f12bfbb67737c",
+        "outputSha256": "3cf92fc06e499319a3df02e25effe9f95b7a93eac66f26f0ec2b575bfa5cd84f"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk3_C.atlas",
+      "sourceSha256": "a336acdb587b67f1b667fbb322f60a7e88f768a094e408558ebe329413fcaaa1",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/effect/zerato_skeff_sk3_C.atlas.txt",
+      "address": "characterlab/source/effect/zerato_skeff_sk3_C.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/zerato_skeff_sk3_C.sct"
+      ],
+      "outputSha256": "a336acdb587b67f1b667fbb322f60a7e88f768a094e408558ebe329413fcaaa1",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk3_C.scsp",
+      "sourceSha256": "47bb9dd144f894279baf0517bf07a337e8d23b258890957c4e1eabb0b63e11e8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk3_C.spine.json",
+      "address": "characterlab/source/effect/zerato_skeff_sk3_C.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "62020209e87174a7104d0698521d6e75628ad079df58543c639ac83ebb166122",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 43558,
+        "consumedBytes": 43558,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 343,
+            "frames": 960,
+            "segments": 617,
+            "sourceMarkers": {
+              "allLinear": 26,
+              "allStepped": 105,
+              "explicit": 212
+            },
+            "modes": {
+              "linear": 93,
+              "stepped": 387,
+              "bezier": 137
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk3_C.scsp",
+      "sourceSha256": "47bb9dd144f894279baf0517bf07a337e8d23b258890957c4e1eabb0b63e11e8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk3_C.skeleton.json",
+      "address": "characterlab/source/effect/zerato_skeff_sk3_C.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/zerato_skeff_sk3_C.scsp/json",
+        "characterlab/source/effect/zerato_skeff_sk3_C.atlas",
+        "characterlab/source/effect/zerato_skeff_sk3_C.sct"
+      ],
+      "outputSha256": "b3f544752fb00e5ccc0b4b13c645a3697cf502b99cc8961ac83934e5197924f0",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk3_C.sct",
+      "sourceSha256": "cbf0ebfed717d44921ff017f64a605dc9cf6c81ac73414b8759be8be7ea8739a",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Textures/effect/zerato_skeff_sk3_C.png",
+      "address": "characterlab/source/effect/zerato_skeff_sk3_C.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "bc581c53610406f41587dccefb5550271a9b54a7e0150e6b0eaabc9350729203",
+      "conversion": {
+        "status": "converted",
+        "width": 493,
+        "height": 254,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "cbf0ebfed717d44921ff017f64a605dc9cf6c81ac73414b8759be8be7ea8739a",
+        "outputSha256": "bc581c53610406f41587dccefb5550271a9b54a7e0150e6b0eaabc9350729203"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk3_F.atlas",
+      "sourceSha256": "b6c9813c19a629fc05e0927700c1d365da019f8418b0f4e7fc377b775b864af6",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/effect/zerato_skeff_sk3_F.atlas.txt",
+      "address": "characterlab/source/effect/zerato_skeff_sk3_F.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/zerato_skeff_sk3_F.sct"
+      ],
+      "outputSha256": "b6c9813c19a629fc05e0927700c1d365da019f8418b0f4e7fc377b775b864af6",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk3_F.cfx",
+      "sourceSha256": "0aa3b00dca9cf14cad45bb5fd1257a7e5af33cb80dbff18cb043c82347eecd52",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/effect/zerato_skeff_sk3_F.cfx.json",
+      "address": "characterlab/source/effect/zerato_skeff_sk3_F.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/zerato_skeff_sk3_B.scsp",
+        "characterlab/source/effect/zerato_skeff_sk3_C.scsp",
+        "characterlab/source/effect/zerato_skeff_sk3_F.scsp",
+        "characterlab/source/effect/zerato_skeff_sk3_ground.scsp"
+      ],
+      "outputSha256": "923aaa3b109d2dd14230dd0b0a8b3d5908e2aa5aee8e26d1a6c57cf96864ffab",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk3_F.scsp",
+      "sourceSha256": "d2e8f520c129996cfd5153e6cb87b9e573e4322174ec926ebee3dfd9f1890016",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk3_F.spine.json",
+      "address": "characterlab/source/effect/zerato_skeff_sk3_F.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "0e1b690c80dffbded26dd8ad874f6d87f564478ebcf26d3913bfb66e41203a6c",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 57056,
+        "consumedBytes": 57056,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 474,
+            "frames": 1083,
+            "segments": 609,
+            "sourceMarkers": {
+              "allLinear": 330,
+              "allStepped": 2,
+              "explicit": 142
+            },
+            "modes": {
+              "linear": 453,
+              "stepped": 42,
+              "bezier": 114
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk3_F.scsp",
+      "sourceSha256": "d2e8f520c129996cfd5153e6cb87b9e573e4322174ec926ebee3dfd9f1890016",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk3_F.skeleton.json",
+      "address": "characterlab/source/effect/zerato_skeff_sk3_F.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/zerato_skeff_sk3_F.scsp/json",
+        "characterlab/source/effect/zerato_skeff_sk3_F.atlas",
+        "characterlab/source/effect/zerato_skeff_sk3_F.sct"
+      ],
+      "outputSha256": "18421791401b33655439b426558742becf9a188b65fbdd79254060f8b523682b",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk3_F.sct",
+      "sourceSha256": "ab90cf075a9d3ef8fd32ab616ef3cc26e10cf552118d8430fa229b89ecc94221",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Textures/effect/zerato_skeff_sk3_F.png",
+      "address": "characterlab/source/effect/zerato_skeff_sk3_F.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "7f85b6d565ae612c82e03a9a1afc496f9474c7f96ceded4c61eeada3b0aa12c6",
+      "conversion": {
+        "status": "converted",
+        "width": 512,
+        "height": 993,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "ab90cf075a9d3ef8fd32ab616ef3cc26e10cf552118d8430fa229b89ecc94221",
+        "outputSha256": "7f85b6d565ae612c82e03a9a1afc496f9474c7f96ceded4c61eeada3b0aa12c6"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk3_ground.atlas",
+      "sourceSha256": "77b527d17f1dc5565329b93df577b7cf9ebc5f412d716bd16061b031c357efb9",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/effect/zerato_skeff_sk3_ground.atlas.txt",
+      "address": "characterlab/source/effect/zerato_skeff_sk3_ground.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/zerato_skeff_sk3_ground.sct"
+      ],
+      "outputSha256": "77b527d17f1dc5565329b93df577b7cf9ebc5f412d716bd16061b031c357efb9",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk3_ground.scsp",
+      "sourceSha256": "4926107b66a97bf4cacc3ed26f9a726590997db796600adec955f4d5b862e298",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk3_ground.spine.json",
+      "address": "characterlab/source/effect/zerato_skeff_sk3_ground.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "ff077dfe51dceea428ec1782a7f2541df1bd381a87009f3327946202d2fa8067",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1,
+        "binaryBytes": 8425,
+        "consumedBytes": 8425,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 63,
+            "frames": 157,
+            "segments": 94,
+            "sourceMarkers": {
+              "allLinear": 41,
+              "allStepped": 4,
+              "explicit": 18
+            },
+            "modes": {
+              "linear": 64,
+              "stepped": 29,
+              "bezier": 1
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk3_ground.scsp",
+      "sourceSha256": "4926107b66a97bf4cacc3ed26f9a726590997db796600adec955f4d5b862e298",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_skeff_sk3_ground.skeleton.json",
+      "address": "characterlab/source/effect/zerato_skeff_sk3_ground.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/zerato_skeff_sk3_ground.scsp/json",
+        "characterlab/source/effect/zerato_skeff_sk3_ground.atlas",
+        "characterlab/source/effect/zerato_skeff_sk3_ground.sct"
+      ],
+      "outputSha256": "2d440c2fbd8cbdac8d3a4b780b21c926e2f8785e5e0e5d248809c5e130a48c88",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 1
+      }
+    },
+    {
+      "source": "effect/zerato_skeff_sk3_ground.sct",
+      "sourceSha256": "ada86c69711cd3cfbb41776af4a1af94c344acd89b5d639b8ced3ad357fd37d0",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Textures/effect/zerato_skeff_sk3_ground.png",
+      "address": "characterlab/source/effect/zerato_skeff_sk3_ground.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "4bdd86dc1f2207bd945c81ec01c698a4db6f3c6a40fdc9f5973affb349e51401",
+      "conversion": {
+        "status": "converted",
+        "width": 1019,
+        "height": 1091,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "ada86c69711cd3cfbb41776af4a1af94c344acd89b5d639b8ced3ad357fd37d0",
+        "outputSha256": "4bdd86dc1f2207bd945c81ec01c698a4db6f3c6a40fdc9f5973affb349e51401"
+      }
+    },
+    {
+      "source": "effect/zerato_slide.atlas",
+      "sourceSha256": "1799eefa5047b8926db2ccf0d7cb286e729ddf43a634fee53360f754616bf591",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/effect/zerato_slide.atlas.txt",
+      "address": "characterlab/source/effect/zerato_slide.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/zerato_slide.sct"
+      ],
+      "outputSha256": "1799eefa5047b8926db2ccf0d7cb286e729ddf43a634fee53360f754616bf591",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/zerato_slide.sct",
+      "sourceSha256": "177871508e3773d8f4feeed7afcf561b45b7034bfe707d968b40658cdcdd73cc",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Textures/effect/zerato_slide.png",
+      "address": "characterlab/source/effect/zerato_slide.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "ad8788f0abe7cc29751844434bba18703e60f19b62c3575d814a877675de06dc",
+      "conversion": {
+        "status": "converted",
+        "width": 235,
+        "height": 720,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "177871508e3773d8f4feeed7afcf561b45b7034bfe707d968b40658cdcdd73cc",
+        "outputSha256": "ad8788f0abe7cc29751844434bba18703e60f19b62c3575d814a877675de06dc"
+      }
+    },
+    {
+      "source": "effect/zerato_slide_1.cfx",
+      "sourceSha256": "bd529a52c4273cf8ad91ea1dec52f6e5d47e7eb047449d65a97f4c9bda174f1e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/effect/zerato_slide_1.cfx.json",
+      "address": "characterlab/source/effect/zerato_slide_1.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/zerato_slide_eff_b.scsp",
+        "characterlab/source/effect/zerato_slide_eff_f.scsp"
+      ],
+      "outputSha256": "bffbf956a4b7d24e4261da8aa003f4618d3badede88c4b89f8f7ae2f2ec8756a",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/zerato_slide_2.cfx",
+      "sourceSha256": "2ee62e138ce109b382e83b1cc6d135ceba74a2221121d19b7e4c955ceffcfd72",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Effects/effect/zerato_slide_2.cfx.json",
+      "address": "characterlab/source/effect/zerato_slide_2.cfx",
+      "type": "effect",
+      "dependencies": [
+        "characterlab/source/effect/zerato_slide_eff_b.scsp",
+        "characterlab/source/effect/zerato_slide_eff_f.scsp"
+      ],
+      "outputSha256": "8fa4fac173597fe9e51149eacee700157063add709f373a41e4a92ad3857e501",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "effect/zerato_slide_eff_b.atlas",
+      "sourceSha256": "000da6577f9785dc22fc5a79c96c7ec29fb598526f9b4a493c19c80ff918c130",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/effect/zerato_slide_eff_b.atlas.txt",
+      "address": "characterlab/source/effect/zerato_slide_eff_b.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/zerato_slide.atlas",
+        "characterlab/source/effect/zerato_slide.sct"
+      ],
+      "outputSha256": "1799eefa5047b8926db2ccf0d7cb286e729ddf43a634fee53360f754616bf591",
+      "conversion": {
+        "status": "converted",
+        "resolvedAtlas": "effect/zerato_slide.atlas"
+      }
+    },
+    {
+      "source": "effect/zerato_slide_eff_b.scsp",
+      "sourceSha256": "9374bb37271eda0a4154da706a64f1bec77bf2f07a6de9dc881cca6c59f93b72",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_slide_eff_b.spine.json",
+      "address": "characterlab/source/effect/zerato_slide_eff_b.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "9cc9641f87a8a2b5e1e990b7773b7a33394a1d0fb2d8da1c826bcbe5c83a80b4",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 2,
+        "binaryBytes": 3122,
+        "consumedBytes": 3122,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 13,
+            "frames": 23,
+            "segments": 10,
+            "sourceMarkers": {
+              "allLinear": 10,
+              "allStepped": 0,
+              "explicit": 3
+            },
+            "modes": {
+              "linear": 7,
+              "stepped": 1,
+              "bezier": 2
+            }
+          },
+          "animation2": {
+            "tracks": 13,
+            "frames": 23,
+            "segments": 10,
+            "sourceMarkers": {
+              "allLinear": 10,
+              "allStepped": 0,
+              "explicit": 3
+            },
+            "modes": {
+              "linear": 7,
+              "stepped": 1,
+              "bezier": 2
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/zerato_slide_eff_b.scsp",
+      "sourceSha256": "9374bb37271eda0a4154da706a64f1bec77bf2f07a6de9dc881cca6c59f93b72",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_slide_eff_b.skeleton.json",
+      "address": "characterlab/source/effect/zerato_slide_eff_b.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/zerato_slide_eff_b.scsp/json",
+        "characterlab/source/effect/zerato_slide_eff_b.atlas",
+        "characterlab/source/effect/zerato_slide.sct"
+      ],
+      "outputSha256": "19a8a6b405bdae44418bd31efd35309d0757034c71ab751bdcd98608f8c6ac3e",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 2
+      }
+    },
+    {
+      "source": "effect/zerato_slide_eff_f.atlas",
+      "sourceSha256": "000da6577f9785dc22fc5a79c96c7ec29fb598526f9b4a493c19c80ff918c130",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/effect/zerato_slide_eff_f.atlas.txt",
+      "address": "characterlab/source/effect/zerato_slide_eff_f.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/effect/zerato_slide.atlas",
+        "characterlab/source/effect/zerato_slide.sct"
+      ],
+      "outputSha256": "1799eefa5047b8926db2ccf0d7cb286e729ddf43a634fee53360f754616bf591",
+      "conversion": {
+        "status": "converted",
+        "resolvedAtlas": "effect/zerato_slide.atlas"
+      }
+    },
+    {
+      "source": "effect/zerato_slide_eff_f.scsp",
+      "sourceSha256": "68af20aa2bf70efbb974d5a659abf315ee4af7bea03c87a2a0161d1e808b525d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_slide_eff_f.spine.json",
+      "address": "characterlab/source/effect/zerato_slide_eff_f.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "7ea3d9aeadd6d927e8844ed49fff73208d74352543363b963caa24d4eebd1110",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 2,
+        "binaryBytes": 12939,
+        "consumedBytes": 12939,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "animation": {
+            "tracks": 23,
+            "frames": 44,
+            "segments": 21,
+            "sourceMarkers": {
+              "allLinear": 16,
+              "allStepped": 0,
+              "explicit": 7
+            },
+            "modes": {
+              "linear": 14,
+              "stepped": 0,
+              "bezier": 7
+            }
+          },
+          "animation2": {
+            "tracks": 20,
+            "frames": 41,
+            "segments": 21,
+            "sourceMarkers": {
+              "allLinear": 13,
+              "allStepped": 0,
+              "explicit": 7
+            },
+            "modes": {
+              "linear": 14,
+              "stepped": 0,
+              "bezier": 7
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "effect/zerato_slide_eff_f.scsp",
+      "sourceSha256": "68af20aa2bf70efbb974d5a659abf315ee4af7bea03c87a2a0161d1e808b525d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/effect/zerato_slide_eff_f.skeleton.json",
+      "address": "characterlab/source/effect/zerato_slide_eff_f.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/effect/zerato_slide_eff_f.scsp/json",
+        "characterlab/source/effect/zerato_slide_eff_f.atlas",
+        "characterlab/source/effect/zerato_slide.sct"
+      ],
+      "outputSha256": "587345348cd4e963b3b710815847939284be0d429c96b8e03952adcec4c06117",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 2
+      }
+    },
+    {
       "source": "model/angelica.atlas",
       "sourceSha256": "45b3055d875988637d5c3f3978ced5bd5033159bf2b7e47f07c0172e5e5a84db",
       "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/model/angelica.atlas.txt",
@@ -22701,6 +24243,725 @@
       }
     },
     {
+      "source": "model/zerato.atlas",
+      "sourceSha256": "155c0ba09c736aa19a1724a3b5fbe075dad252b1ec3cb0a14123a37ffeaff4fd",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/model/zerato.atlas.txt",
+      "address": "characterlab/source/model/zerato.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/model/zerato.sct"
+      ],
+      "outputSha256": "155c0ba09c736aa19a1724a3b5fbe075dad252b1ec3cb0a14123a37ffeaff4fd",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "model/zerato.scsp",
+      "sourceSha256": "b2119ae3a55d831168c89f8dbbdbb70bb7a74e27bff2c561c809013e443b76ad",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/model/zerato.spine.json",
+      "address": "characterlab/source/model/zerato.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "f8b9f0b9d11700b9f5cd4ad0ea53175d5860cc0b067b4cdcfb4e52920da94208",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 20,
+        "binaryBytes": 2520259,
+        "consumedBytes": 2520259,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {
+          "appear": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 3,
+              "bones": {
+                "bone23": 1,
+                "center": 1,
+                "bone6": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "attacked": {
+            "flipX": {
+              "tracks": 4,
+              "frames": 22,
+              "bones": {
+                "bone23": 7,
+                "bone6": 7,
+                "center": 7,
+                "bone107": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "attacked_damage": {
+            "flipX": {
+              "tracks": 4,
+              "frames": 4,
+              "bones": {
+                "bone23": 1,
+                "bone6": 1,
+                "center": 1,
+                "bone107": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "b_idle": {
+            "flipX": {
+              "tracks": 2,
+              "frames": 2,
+              "bones": {
+                "center": 1,
+                "bone23": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "b_idle_ready": {
+            "flipX": {
+              "tracks": 2,
+              "frames": 6,
+              "bones": {
+                "bone23": 3,
+                "center": 3
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "camping": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 3,
+              "bones": {
+                "bone23": 1,
+                "center": 1,
+                "bone6": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "down": {
+            "flipX": {
+              "tracks": 4,
+              "frames": 8,
+              "bones": {
+                "bone23": 2,
+                "bone6": 2,
+                "center": 2,
+                "bone107": 2
+              }
+            },
+            "flipY": {
+              "tracks": 1,
+              "frames": 2,
+              "bones": {
+                "center": 2
+              }
+            }
+          },
+          "flying": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 3,
+              "bones": {
+                "bone23": 1,
+                "center": 1,
+                "bone6": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "flying_damage": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 3,
+              "bones": {
+                "bone6": 1,
+                "center": 1,
+                "bone23": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "groggy": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 9,
+              "bones": {
+                "bone23": 3,
+                "bone6": 3,
+                "center": 3
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "idle": {
+            "flipX": {
+              "tracks": 2,
+              "frames": 4,
+              "bones": {
+                "center": 2,
+                "bone23": 2
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "jump_back": {
+            "flipX": {
+              "tracks": 5,
+              "frames": 39,
+              "bones": {
+                "bone23": 11,
+                "center": 9,
+                "bone107": 6,
+                "bone6": 10,
+                "bone154": 3
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "jump_forward": {
+            "flipX": {
+              "tracks": 4,
+              "frames": 13,
+              "bones": {
+                "bone23": 4,
+                "bone107": 3,
+                "center": 5,
+                "bone6": 1
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "knock_down": {
+            "flipX": {
+              "tracks": 4,
+              "frames": 4,
+              "bones": {
+                "bone6": 1,
+                "bone107": 1,
+                "bone23": 1,
+                "center": 1
+              }
+            },
+            "flipY": {
+              "tracks": 1,
+              "frames": 1,
+              "bones": {
+                "center": 1
+              }
+            }
+          },
+          "rise": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 10,
+              "bones": {
+                "center": 3,
+                "bone6": 3,
+                "bone23": 4
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "run": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 13,
+              "bones": {
+                "bone23": 6,
+                "center": 3,
+                "bone6": 4
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "run_start": {
+            "flipX": {
+              "tracks": 3,
+              "frames": 12,
+              "bones": {
+                "bone23": 5,
+                "center": 4,
+                "bone6": 3
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "skill1": {
+            "flipX": {
+              "tracks": 4,
+              "frames": 23,
+              "bones": {
+                "bone23": 8,
+                "bone107": 3,
+                "center": 8,
+                "bone6": 4
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "skill2": {
+            "flipX": {
+              "tracks": 5,
+              "frames": 50,
+              "bones": {
+                "center": 14,
+                "bone6": 11,
+                "bone23": 15,
+                "bone107": 7,
+                "bone154": 3
+              }
+            },
+            "flipY": {
+              "tracks": 0,
+              "frames": 0,
+              "bones": {}
+            }
+          },
+          "skill3": {
+            "flipX": {
+              "tracks": 5,
+              "frames": 101,
+              "bones": {
+                "center": 31,
+                "bone6": 24,
+                "bone23": 32,
+                "bone107": 8,
+                "bone154": 6
+              }
+            },
+            "flipY": {
+              "tracks": 1,
+              "frames": 9,
+              "bones": {
+                "center": 9
+              }
+            }
+          }
+        },
+        "curveTimelines": {
+          "appear": {
+            "tracks": 533,
+            "frames": 533,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 533,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "attacked": {
+            "tracks": 572,
+            "frames": 5288,
+            "segments": 4716,
+            "sourceMarkers": {
+              "allLinear": 1,
+              "allStepped": 568,
+              "explicit": 3
+            },
+            "modes": {
+              "linear": 4,
+              "stepped": 4712,
+              "bezier": 0
+            }
+          },
+          "attacked_damage": {
+            "tracks": 565,
+            "frames": 565,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 565,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "b_idle": {
+            "tracks": 526,
+            "frames": 8358,
+            "segments": 7832,
+            "sourceMarkers": {
+              "allLinear": 30,
+              "allStepped": 496,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 7832,
+              "bezier": 0
+            }
+          },
+          "b_idle_ready": {
+            "tracks": 528,
+            "frames": 8203,
+            "segments": 7675,
+            "sourceMarkers": {
+              "allLinear": 1,
+              "allStepped": 525,
+              "explicit": 2
+            },
+            "modes": {
+              "linear": 2,
+              "stepped": 7673,
+              "bezier": 0
+            }
+          },
+          "camping": {
+            "tracks": 554,
+            "frames": 11540,
+            "segments": 10986,
+            "sourceMarkers": {
+              "allLinear": 33,
+              "allStepped": 510,
+              "explicit": 11
+            },
+            "modes": {
+              "linear": 25,
+              "stepped": 10952,
+              "bezier": 9
+            }
+          },
+          "down": {
+            "tracks": 535,
+            "frames": 2578,
+            "segments": 2043,
+            "sourceMarkers": {
+              "allLinear": 17,
+              "allStepped": 518,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 16,
+              "stepped": 2027,
+              "bezier": 0
+            }
+          },
+          "flying": {
+            "tracks": 529,
+            "frames": 2488,
+            "segments": 1959,
+            "sourceMarkers": {
+              "allLinear": 21,
+              "allStepped": 508,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 1959,
+              "bezier": 0
+            }
+          },
+          "flying_damage": {
+            "tracks": 529,
+            "frames": 529,
+            "segments": 0,
+            "sourceMarkers": {
+              "allLinear": 529,
+              "allStepped": 0,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 0,
+              "bezier": 0
+            }
+          },
+          "groggy": {
+            "tracks": 536,
+            "frames": 10684,
+            "segments": 10148,
+            "sourceMarkers": {
+              "allLinear": 7,
+              "allStepped": 529,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 10148,
+              "bezier": 0
+            }
+          },
+          "idle": {
+            "tracks": 522,
+            "frames": 8253,
+            "segments": 7731,
+            "sourceMarkers": {
+              "allLinear": 36,
+              "allStepped": 486,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 7731,
+              "bezier": 0
+            }
+          },
+          "jump_back": {
+            "tracks": 540,
+            "frames": 8198,
+            "segments": 7658,
+            "sourceMarkers": {
+              "allLinear": 1,
+              "allStepped": 536,
+              "explicit": 3
+            },
+            "modes": {
+              "linear": 5,
+              "stepped": 7653,
+              "bezier": 0
+            }
+          },
+          "jump_forward": {
+            "tracks": 544,
+            "frames": 6115,
+            "segments": 5571,
+            "sourceMarkers": {
+              "allLinear": 11,
+              "allStepped": 533,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 5571,
+              "bezier": 0
+            }
+          },
+          "knock_down": {
+            "tracks": 534,
+            "frames": 4332,
+            "segments": 3798,
+            "sourceMarkers": {
+              "allLinear": 27,
+              "allStepped": 505,
+              "explicit": 2
+            },
+            "modes": {
+              "linear": 4,
+              "stepped": 3794,
+              "bezier": 0
+            }
+          },
+          "rise": {
+            "tracks": 539,
+            "frames": 5691,
+            "segments": 5152,
+            "sourceMarkers": {
+              "allLinear": 10,
+              "allStepped": 522,
+              "explicit": 7
+            },
+            "modes": {
+              "linear": 8,
+              "stepped": 5144,
+              "bezier": 0
+            }
+          },
+          "run": {
+            "tracks": 532,
+            "frames": 4628,
+            "segments": 4096,
+            "sourceMarkers": {
+              "allLinear": 9,
+              "allStepped": 523,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 4096,
+              "bezier": 0
+            }
+          },
+          "run_start": {
+            "tracks": 534,
+            "frames": 2585,
+            "segments": 2051,
+            "sourceMarkers": {
+              "allLinear": 11,
+              "allStepped": 523,
+              "explicit": 0
+            },
+            "modes": {
+              "linear": 1,
+              "stepped": 2050,
+              "bezier": 0
+            }
+          },
+          "skill1": {
+            "tracks": 534,
+            "frames": 7786,
+            "segments": 7252,
+            "sourceMarkers": {
+              "allLinear": 7,
+              "allStepped": 522,
+              "explicit": 5
+            },
+            "modes": {
+              "linear": 5,
+              "stepped": 7247,
+              "bezier": 0
+            }
+          },
+          "skill2": {
+            "tracks": 552,
+            "frames": 14155,
+            "segments": 13603,
+            "sourceMarkers": {
+              "allLinear": 3,
+              "allStepped": 545,
+              "explicit": 4
+            },
+            "modes": {
+              "linear": 4,
+              "stepped": 13599,
+              "bezier": 0
+            }
+          },
+          "skill3": {
+            "tracks": 541,
+            "frames": 23443,
+            "segments": 22902,
+            "sourceMarkers": {
+              "allLinear": 4,
+              "allStepped": 527,
+              "explicit": 10
+            },
+            "modes": {
+              "linear": 18,
+              "stepped": 22884,
+              "bezier": 0
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "model/zerato.scsp",
+      "sourceSha256": "b2119ae3a55d831168c89f8dbbdbb70bb7a74e27bff2c561c809013e443b76ad",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/model/zerato.skeleton.json",
+      "address": "characterlab/source/model/zerato.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/model/zerato.scsp/json",
+        "characterlab/source/model/zerato.atlas",
+        "characterlab/source/model/zerato.sct"
+      ],
+      "outputSha256": "70ae65f0097febabb6c4d71e64f98855725292c76415cc38fb0e5f36aea79ea5",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 20
+      }
+    },
+    {
+      "source": "model/zerato.sct",
+      "sourceSha256": "f5c5c88da4aef2bcd4905cb71933b58db3e594023e8f625c171ac85db4625164",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Textures/model/zerato.png",
+      "address": "characterlab/source/model/zerato.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "4a40f231b728a4fff5ddbde54ad0f0f58e68075f0281880c659846e819c49030",
+      "conversion": {
+        "status": "converted",
+        "width": 1262,
+        "height": 252,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "f5c5c88da4aef2bcd4905cb71933b58db3e594023e8f625c171ac85db4625164",
+        "outputSha256": "4a40f231b728a4fff5ddbde54ad0f0f58e68075f0281880c659846e819c49030"
+      }
+    },
+    {
+      "source": "model/zerato.timeline",
+      "sourceSha256": "63a4dd2e5570b8cd12fdd76aa4371a4a7d5540781322f71f43c6d0e656f7cae3",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Configs/model/zerato.timeline.json",
+      "address": "characterlab/source/model/zerato.timeline",
+      "type": "timeline",
+      "dependencies": [],
+      "outputSha256": "a638ad30375f96441a5b1a93381006b46d31cce7c3d11dd3ea9842eb4d626478",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
       "source": "particle/aura_01.sct",
       "sourceSha256": "6a0e39e8d278d4432199d3f13844d76ee7e0bbe24a3309b63b8be16feca7f98b",
       "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1009/Textures/particle/aura_01.png",
@@ -23881,6 +26142,152 @@
       }
     },
     {
+      "source": "portrait/c1010.atlas",
+      "sourceSha256": "d88122a032a47b7e71afcff9b9d0160a0ff3a0135b3dd959ca8ad81de04c16ef",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Atlas/portrait/c1010.atlas.txt",
+      "address": "characterlab/source/portrait/c1010.atlas",
+      "type": "atlas",
+      "dependencies": [
+        "characterlab/source/portrait/c1010.sct"
+      ],
+      "outputSha256": "d88122a032a47b7e71afcff9b9d0160a0ff3a0135b3dd959ca8ad81de04c16ef",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "portrait/c1010.scsp",
+      "sourceSha256": "a0740e9ef4de13cf94b968fcdc3421cac48c9e0ec2f2081328d470db3378b358",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/portrait/c1010.spine.json",
+      "address": "characterlab/source/portrait/c1010.scsp/json",
+      "type": "spine-json",
+      "dependencies": [],
+      "outputSha256": "e172d13cec2c2c44f941466bfdaf5c8105d0f41e3061a2b9891d2e48974c4c40",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 5,
+        "binaryBytes": 406432,
+        "consumedBytes": 406432,
+        "converterVersion": "astraloath-scsp/3",
+        "boneFlipTimelines": {},
+        "curveTimelines": {
+          "ice": {
+            "tracks": 591,
+            "frames": 653,
+            "segments": 62,
+            "sourceMarkers": {
+              "allLinear": 548,
+              "allStepped": 30,
+              "explicit": 13
+            },
+            "modes": {
+              "linear": 0,
+              "stepped": 34,
+              "bezier": 28
+            }
+          },
+          "idle": {
+            "tracks": 650,
+            "frames": 2944,
+            "segments": 2294,
+            "sourceMarkers": {
+              "allLinear": 8,
+              "allStepped": 427,
+              "explicit": 215
+            },
+            "modes": {
+              "linear": 58,
+              "stepped": 1009,
+              "bezier": 1227
+            }
+          },
+          "idle2": {
+            "tracks": 645,
+            "frames": 1775,
+            "segments": 1130,
+            "sourceMarkers": {
+              "allLinear": 5,
+              "allStepped": 440,
+              "explicit": 200
+            },
+            "modes": {
+              "linear": 12,
+              "stepped": 516,
+              "bezier": 602
+            }
+          },
+          "idle3 eff": {
+            "tracks": 643,
+            "frames": 1765,
+            "segments": 1122,
+            "sourceMarkers": {
+              "allLinear": 28,
+              "allStepped": 407,
+              "explicit": 208
+            },
+            "modes": {
+              "linear": 26,
+              "stepped": 474,
+              "bezier": 622
+            }
+          },
+          "xxidle2": {
+            "tracks": 605,
+            "frames": 1544,
+            "segments": 939,
+            "sourceMarkers": {
+              "allLinear": 120,
+              "allStepped": 294,
+              "explicit": 191
+            },
+            "modes": {
+              "linear": 3,
+              "stepped": 350,
+              "bezier": 586
+            }
+          }
+        },
+        "curveSemantics": "scsp-v2-sentinel/1"
+      }
+    },
+    {
+      "source": "portrait/c1010.scsp",
+      "sourceSha256": "a0740e9ef4de13cf94b968fcdc3421cac48c9e0ec2f2081328d470db3378b358",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Animations/portrait/c1010.skeleton.json",
+      "address": "characterlab/source/portrait/c1010.scsp",
+      "type": "skeleton",
+      "dependencies": [
+        "characterlab/source/portrait/c1010.scsp/json",
+        "characterlab/source/portrait/c1010.atlas",
+        "characterlab/source/portrait/c1010.sct"
+      ],
+      "outputSha256": "7d6e93e0020464fdbc67f9479aa197b6e499c5a5d3cd2e44eedce6be06c4015f",
+      "conversion": {
+        "status": "converted",
+        "spineVersion": "2.1.27",
+        "animationCount": 5
+      }
+    },
+    {
+      "source": "portrait/c1010.sct",
+      "sourceSha256": "fbeeafe5d15615dc700909944ac886eba2e02939602ad1932f0c8b1a6369094e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Textures/portrait/c1010.png",
+      "address": "characterlab/source/portrait/c1010.sct",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "b1258cf75407fa7a8153d8ba2aa574f6076ab56b00d6b5a9e8d5c732c1222dda",
+      "conversion": {
+        "status": "converted",
+        "width": 1111,
+        "height": 1032,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "sourceSha256": "fbeeafe5d15615dc700909944ac886eba2e02939602ad1932f0c8b1a6369094e",
+        "outputSha256": "b1258cf75407fa7a8153d8ba2aa574f6076ab56b00d6b5a9e8d5c732c1222dda"
+      }
+    },
+    {
       "source": "portrait/c1062.atlas",
       "sourceSha256": "52ca748c84a506050a880601da5719def118301b5de381d4d815bd3874b110c4",
       "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1062/Atlas/portrait/c1062.atlas.txt",
@@ -25057,6 +27464,140 @@
         "characterlab/source/particle/ticle_02.sct"
       ],
       "outputSha256": "6e5a65f9942a19b8ee80da073e98a95ca4ed2f2d234bf9a6850a8f1218ddd35f",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "stagept/c_jerato_skill_01.stg",
+      "sourceSha256": "41d961aab14c754c12616e96f93f1eb52d8f0762f1397e45d5425662c302c62e",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Configs/stagept/c_jerato_skill_01.graph.json",
+      "address": "characterlab/source/stagept/c_jerato_skill_01.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/camera/zerato_skeff_sk1_cm.scsp",
+        "characterlab/source/effect/hit_new_blunt_01.atlas",
+        "characterlab/source/effect/hit_new_blunt_01.scsp",
+        "characterlab/source/effect/hit_new_blunt_01.sct",
+        "characterlab/source/effect/hit_new_blunt_normal.cfx",
+        "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+        "characterlab/source/effect/hit_new_slash_01.atlas",
+        "characterlab/source/effect/hit_new_slash_01.scsp",
+        "characterlab/source/effect/hit_new_slash_01.sct",
+        "characterlab/source/effect/hit_new_slash_normal.cfx",
+        "characterlab/source/effect/hit_new_slash_yellow_nm_pati.particle",
+        "characterlab/source/effect/zerato_skeff_sk1_self.atlas",
+        "characterlab/source/effect/zerato_skeff_sk1_self.cfx",
+        "characterlab/source/effect/zerato_skeff_sk1_self.scsp",
+        "characterlab/source/effect/zerato_skeff_sk1_self.sct",
+        "characterlab/source/effect/zerato_skeff_sk1_target.atlas",
+        "characterlab/source/effect/zerato_skeff_sk1_target.cfx",
+        "characterlab/source/effect/zerato_skeff_sk1_target.scsp",
+        "characterlab/source/effect/zerato_skeff_sk1_target.sct",
+        "characterlab/source/model/zerato.timeline",
+        "characterlab/source/particle/ticle_02.sct"
+      ],
+      "outputSha256": "15148736e996a8fbeca424982105f14eeac703e04dd36b13c56c17f57440b1de",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "stagept/c_jerato_skill_02.stg",
+      "sourceSha256": "eb9fc9312545c7754dfff073aaf8e0db78ebe5a3b7a88e270d2f32f45e8e61d8",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Configs/stagept/c_jerato_skill_02.graph.json",
+      "address": "characterlab/source/stagept/c_jerato_skill_02.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/camera/zerato_skeff_sk2_cm.scsp",
+        "characterlab/source/effect/hit_new_blunt_01.atlas",
+        "characterlab/source/effect/hit_new_blunt_01.scsp",
+        "characterlab/source/effect/hit_new_blunt_01.sct",
+        "characterlab/source/effect/hit_new_blunt_normal.cfx",
+        "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+        "characterlab/source/effect/hit_new_pierce_normal.atlas",
+        "characterlab/source/effect/hit_new_pierce_normal.cfx",
+        "characterlab/source/effect/hit_new_pierce_normal.scsp",
+        "characterlab/source/effect/hit_new_pierce_normal.sct",
+        "characterlab/source/effect/hit_new_pierce_yellow_nm_pati.particle",
+        "characterlab/source/effect/hit_new_slash_01.atlas",
+        "characterlab/source/effect/hit_new_slash_01.scsp",
+        "characterlab/source/effect/hit_new_slash_01.sct",
+        "characterlab/source/effect/hit_new_slash_normal.cfx",
+        "characterlab/source/effect/hit_new_slash_yellow_nm_pati.particle",
+        "characterlab/source/effect/zerato_skeff_sk2_self.cfx",
+        "characterlab/source/effect/zerato_skeff_sk2_self_F.atlas",
+        "characterlab/source/effect/zerato_skeff_sk2_self_F.scsp",
+        "characterlab/source/effect/zerato_skeff_sk2_self_F.sct",
+        "characterlab/source/effect/zerato_skeff_sk2_target.cfx",
+        "characterlab/source/effect/zerato_skeff_sk2_target_F.atlas",
+        "characterlab/source/effect/zerato_skeff_sk2_target_F.scsp",
+        "characterlab/source/effect/zerato_skeff_sk2_target_F.sct",
+        "characterlab/source/effect/zerato_skeff_sk2_target_ground.atlas",
+        "characterlab/source/effect/zerato_skeff_sk2_target_ground.scsp",
+        "characterlab/source/effect/zerato_skeff_sk2_target_ground.sct",
+        "characterlab/source/effect/zerato_slide.atlas",
+        "characterlab/source/effect/zerato_slide.sct",
+        "characterlab/source/effect/zerato_slide_1.cfx",
+        "characterlab/source/effect/zerato_slide_2.cfx",
+        "characterlab/source/effect/zerato_slide_eff_b.atlas",
+        "characterlab/source/effect/zerato_slide_eff_b.scsp",
+        "characterlab/source/effect/zerato_slide_eff_f.atlas",
+        "characterlab/source/effect/zerato_slide_eff_f.scsp",
+        "characterlab/source/model/zerato.timeline",
+        "characterlab/source/particle/ticle_02.sct"
+      ],
+      "outputSha256": "a3d04f2e100bc2f85334ea1a0ba48dabf94f578051a18afe4fb95a05703118f8",
+      "conversion": {
+        "status": "converted"
+      }
+    },
+    {
+      "source": "stagept/c_jerato_skill_03.stg",
+      "sourceSha256": "928d069f2c585ee31200b9077e4730a475585e9b6a6371807edfe65ca9a3e792",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1010/Configs/stagept/c_jerato_skill_03.graph.json",
+      "address": "characterlab/source/stagept/c_jerato_skill_03.stg",
+      "type": "graph",
+      "dependencies": [
+        "characterlab/source/camera/boom_cm_power_dn.scsp",
+        "characterlab/source/camera/zerato_skeff_sk3_cm.scsp",
+        "characterlab/source/cut/fhd/sk_c1010_3.webp",
+        "characterlab/source/effect/hit_new_blunt_01.atlas",
+        "characterlab/source/effect/hit_new_blunt_01.scsp",
+        "characterlab/source/effect/hit_new_blunt_01.sct",
+        "characterlab/source/effect/hit_new_blunt_mult_normal.cfx",
+        "characterlab/source/effect/hit_new_blunt_normal.cfx",
+        "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+        "characterlab/source/effect/hit_new_slash_01.atlas",
+        "characterlab/source/effect/hit_new_slash_01.scsp",
+        "characterlab/source/effect/hit_new_slash_01.sct",
+        "characterlab/source/effect/hit_new_slash_normal.cfx",
+        "characterlab/source/effect/hit_new_slash_yellow_nm_pati.particle",
+        "characterlab/source/effect/zerato_skeff_sk3_B.atlas",
+        "characterlab/source/effect/zerato_skeff_sk3_B.scsp",
+        "characterlab/source/effect/zerato_skeff_sk3_B.sct",
+        "characterlab/source/effect/zerato_skeff_sk3_C.atlas",
+        "characterlab/source/effect/zerato_skeff_sk3_C.scsp",
+        "characterlab/source/effect/zerato_skeff_sk3_C.sct",
+        "characterlab/source/effect/zerato_skeff_sk3_F.atlas",
+        "characterlab/source/effect/zerato_skeff_sk3_F.cfx",
+        "characterlab/source/effect/zerato_skeff_sk3_F.scsp",
+        "characterlab/source/effect/zerato_skeff_sk3_F.sct",
+        "characterlab/source/effect/zerato_skeff_sk3_ground.atlas",
+        "characterlab/source/effect/zerato_skeff_sk3_ground.scsp",
+        "characterlab/source/effect/zerato_skeff_sk3_ground.sct",
+        "characterlab/source/effect/zerato_slide.atlas",
+        "characterlab/source/effect/zerato_slide.sct",
+        "characterlab/source/effect/zerato_slide_1.cfx",
+        "characterlab/source/effect/zerato_slide_2.cfx",
+        "characterlab/source/effect/zerato_slide_eff_b.atlas",
+        "characterlab/source/effect/zerato_slide_eff_b.scsp",
+        "characterlab/source/effect/zerato_slide_eff_f.atlas",
+        "characterlab/source/effect/zerato_slide_eff_f.scsp",
+        "characterlab/source/model/zerato.timeline",
+        "characterlab/source/particle/ticle_02.sct"
+      ],
+      "outputSha256": "cd285bc56c739d25293033bc55cb0a5fd516ef3166a535ed7dee3c5285f1f29f",
       "conversion": {
         "status": "converted"
       }
