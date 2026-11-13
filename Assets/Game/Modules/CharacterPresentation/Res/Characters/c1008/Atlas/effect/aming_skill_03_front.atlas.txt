@@ -1,0 +1,27 @@
+
+aming_skill_03_front.sct
+size: 443,194
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+area_wave_L
+  rotate: false
+  xy: 265, 2
+  size: 87, 189
+  orig: 87, 189
+  offset: 0, 0
+  index: -1
+area_wave_R
+  rotate: false
+  xy: 354, 2
+  size: 87, 189
+  orig: 87, 189
+  offset: 0, 0
+  index: -1
+spotlight
+  rotate: true
+  xy: 2, 2
+  size: 190, 261
+  orig: 190, 261
+  offset: 0, 0
+  index: -1

@@ -258,6 +258,7 @@ namespace AstralOath.Client.CharacterLab
             if(performanceScope!=owner)return;
             performance=new StgPlaybackSession(graph,player,context.PreviewCamera,experimental,Diagnose);
             performance.ResolveLocation=effects.ResolveLocation;
+            performance.Timeline=effects.Timeline;
             performance.Effect+=effects.Effect;
             performance.Animation+=effects.Animation;
             owner.Add(performance.Dispose);

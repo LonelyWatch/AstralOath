@@ -52,9 +52,13 @@ if (!battleHeroes.SequenceEqual(tables.BattleHeroes.DataList.Select(row => new B
         row.Id, row.HeroId, row.Slot, row.NameKey, row.DescriptionKey, row.PresentationId, row.IconAsset,
         row.Target, row.CooldownTurns, row.SoulGain, row.SoulBurnCost, row.SoulBurnKind, row.SoulBurnTurns,
         row.AttackRateBp, row.PowerBp, row.CasterHealthDamageBp, row.CasterHealthHealBp,
-        row.CasterHealthBarrierBp, row.BurnAttackRateBp))) ||
+        row.CasterHealthBarrierBp, row.BurnAttackRateBp, row.CasterDefenseBarrierBp, row.CasterDefenseDamageBp,
+        row.CasterSpeedDamagePpm, row.BurnSpeedDamagePpm, row.CasterHealthRatioDamageBp, row.DamageAgainstBuffBp,
+        row.DefensePenetrationBp, row.StealthPenetrationBp, row.HighestDefensePenetrationBp,
+        row.AlwaysCritical, row.AoeWhenBuffed, row.AoeOutsideTurn, row.CasterAttackBarrierBp))) ||
     !battleEffects.SequenceEqual(tables.BattleSkillEffects.DataList.Select(row => new BattleSkillEffectData(
-        row.Id, row.SkillId, row.Order, row.Phase, row.Operation, row.Recipient, row.Status, row.ChanceBp, row.Turns, row.Value))) ||
+        row.Id, row.SkillId, row.Order, row.Phase, row.Operation, row.Recipient, row.Status, row.ChanceBp, row.Turns, row.Value,
+        row.Condition, row.ChanceBonusStatus, row.ChanceBonusBp))) ||
     !battleEnhancements.SequenceEqual(tables.BattleSkillEnhancements.DataList.Select(row =>
         new BattleSkillEnhancementData(row.Id, row.SkillId, row.Step, row.Kind, row.Value))) ||
     !battleMessages.SequenceEqual(tables.BattleMessages.DataList.Select(row => new LocaleData(row.Key, row.ZhCn))))
@@ -101,9 +105,12 @@ record BattleHeroData(string Id, string NameKey, string Element, string HeroClas
 record BattleSkillData(string Id, string HeroId, int Slot, string NameKey, string DescriptionKey,
     string PresentationId, string IconAsset, string Target, int CooldownTurns, int SoulGain, int SoulBurnCost,
     string SoulBurnKind, int SoulBurnTurns, int? AttackRateBp, int? PowerBp, int? CasterHealthDamageBp,
-    int? CasterHealthHealBp, int? CasterHealthBarrierBp, int? BurnAttackRateBp);
+    int? CasterHealthHealBp, int? CasterHealthBarrierBp, int? BurnAttackRateBp, int? CasterDefenseBarrierBp,
+    int? CasterDefenseDamageBp, int? CasterSpeedDamagePpm, int? BurnSpeedDamagePpm, int? CasterHealthRatioDamageBp,
+    int? DamageAgainstBuffBp, int? DefensePenetrationBp, int? StealthPenetrationBp, int? HighestDefensePenetrationBp,
+    bool AlwaysCritical, bool AoeWhenBuffed, bool AoeOutsideTurn, int? CasterAttackBarrierBp);
 record BattleSkillEffectData(string Id, string SkillId, int Order, string Phase, string Operation, string Recipient,
-    string Status, int ChanceBp, int Turns, int Value);
+    string Status, int ChanceBp, int Turns, int Value, string Condition, string ChanceBonusStatus, int ChanceBonusBp);
 record BattleSkillEnhancementData(string Id, string SkillId, int Step, string Kind, int Value);
 
 record BattleGrowthPresetData(string Id, int NativeStars, string HeroClass, string Zodiac,

@@ -1,0 +1,132 @@
+
+kise_m_skill_03_space.sct
+size: 1943,892
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+b_ring1
+  rotate: false
+  xy: 1058, 294
+  size: 330, 330
+  orig: 330, 330
+  offset: 0, 0
+  index: -1
+b_ring2
+  rotate: false
+  xy: 1574, 2
+  size: 330, 330
+  orig: 330, 330
+  offset: 0, 0
+  index: -1
+board_ring
+  rotate: false
+  xy: 1390, 334
+  size: 330, 330
+  orig: 330, 330
+  offset: 0, 0
+  index: -1
+circle_ring1
+  rotate: false
+  xy: 1722, 554
+  size: 129, 129
+  orig: 129, 129
+  offset: 0, 0
+  index: -1
+circle_ring2
+  rotate: false
+  xy: 1681, 685
+  size: 129, 129
+  orig: 129, 129
+  offset: 0, 0
+  index: -1
+circle_ring3
+  rotate: false
+  xy: 1812, 685
+  size: 129, 129
+  orig: 129, 129
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 1510, 666
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+light_ball
+  rotate: false
+  xy: 1310, 666
+  size: 198, 198
+  orig: 198, 198
+  offset: 0, 0
+  index: -1
+light_line
+  rotate: true
+  xy: 1510, 837
+  size: 51, 327
+  orig: 51, 327
+  offset: 0, 0
+  index: -1
+light_ring
+  rotate: false
+  xy: 1044, 626
+  size: 264, 264
+  orig: 264, 264
+  offset: 0, 0
+  index: -1
+outer_circle
+  rotate: false
+  xy: 1722, 334
+  size: 218, 218
+  orig: 218, 218
+  offset: 0, 0
+  index: -1
+space_bg
+  rotate: false
+  xy: 2, 2
+  size: 527, 290
+  orig: 527, 290
+  offset: 0, 0
+  index: -1
+space_bg_blur
+  rotate: false
+  xy: 2, 294
+  size: 527, 290
+  orig: 527, 290
+  offset: 0, 0
+  index: -1
+star1
+  rotate: false
+  xy: 531, 586
+  size: 511, 288
+  orig: 511, 288
+  offset: 0, 0
+  index: -1
+star2
+  rotate: false
+  xy: 531, 2
+  size: 527, 290
+  orig: 527, 290
+  offset: 0, 0
+  index: -1
+star_blur1
+  rotate: false
+  xy: 531, 294
+  size: 525, 290
+  orig: 525, 290
+  offset: 0, 0
+  index: -1
+star_blur1_2
+  rotate: false
+  xy: 1060, 2
+  size: 512, 290
+  orig: 512, 290
+  offset: 0, 0
+  index: -1
+star_blur2
+  rotate: false
+  xy: 2, 586
+  size: 527, 290
+  orig: 527, 290
+  offset: 0, 0
+  index: -1

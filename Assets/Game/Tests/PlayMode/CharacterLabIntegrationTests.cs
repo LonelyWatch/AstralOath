@@ -53,7 +53,7 @@ namespace AstralOath.Client.Tests
             var entry = Field<object>(bootstrap, "entry");
             var binder = Field<object>(entry, "binder");
             var map = scene.GetRootGameObjects().SelectMany(root => root.GetComponentsInChildren<BindingMap>(true)).Single();
-            Assert.That(Rows(map, "characters").Length, Is.EqualTo(3));
+            Assert.That(Rows(map, "characters").Length, Is.EqualTo(10));
             Assert.That(Rows(map, "skills").Length, Is.EqualTo(3));
             Assert.That(Rows(map, "voices").Length, Is.GreaterThan(0));
             yield return null;
@@ -85,7 +85,7 @@ namespace AstralOath.Client.Tests
             Assert.That(sounds, Is.Empty);
             Assert.That(Field<bool>(voice, "disposed"), Is.True);
 
-            foreach (int index in new[] { 1, 2, 0, 2, 0 })
+            foreach (int index in new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 })
             {
                 var oldRoot = Player(binder).Root;
                 Rows(map, "characters")[index].onClick.Invoke();

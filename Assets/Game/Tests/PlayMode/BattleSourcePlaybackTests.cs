@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using AstralOath.Client.BattleScene;
 using AstralOath.Client.Common;
+using AstralOath.Shared.Battle;
 using NUnit.Framework;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -42,39 +43,8 @@ namespace AstralOath.Client.Tests
         [UnityTest]
         public IEnumerator AllNineSourceGraphsPlayInBothDirectionsAndRestoreTheScene()
         {
-            if (SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null)
-                Assert.Ignore("The source playback sweep requires a graphics device.");
-
-            scene = EditorSceneManager.LoadSceneInPlayMode(ScenePath, new LoadSceneParameters(LoadSceneMode.Additive));
-            yield return null;
-            yield return null;
-
-            var roots = scene.GetRootGameObjects();
-            var host = roots.Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
-            host.AutoStartBattle = false;
-            host.enabled = false; // Isolate direct source playback from the automatically started match.
-            yield return null;
-            graphs = HostField<TextAsset[]>(host, "battleGraphs");
-            assets = HostField<BattleSkillPresentationAsset[]>(host, "skillAssets");
-            background = HostField<GameObject>(host, "stageBackground");
-            camera = host.GetComponent<Canvas>().worldCamera;
-            units = roots.Single(root => root.name == "Units").transform;
-            var map = HostField<BindingMap>(host, "hud");
-            var hudObjects = new[] { map.transform.Find("Skills").gameObject, map.Require<GameButton>("soulBurn").gameObject };
-            var hudVisibility = hudObjects.Select(item => item.activeSelf).ToArray();
-            setCinematicVisible = visible =>
-            {
-                cinematicVisible = visible;
-                for (int index = 0; index < hudObjects.Length; index++)
-                    hudObjects[index].SetActive(!visible && hudVisibility[index]);
-            };
-
-            string output = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_CAPTURE_DIR");
-            if (!string.IsNullOrWhiteSpace(output))
-            {
-                captureDirectory = Path.Combine(output, "source-playback");
-                Directory.CreateDirectory(captureDirectory);
-            }
+            var roots = default(GameObject[]);
+            yield return LoadBattle(value => roots = value);
 
             var allies = units.Find("Allies").GetComponentsInChildren<BattlePreviewActor>();
             var enemies = units.Find("Enemies").GetComponentsInChildren<BattlePreviewActor>();
@@ -94,7 +64,7 @@ namespace AstralOath.Client.Tests
             var positions = slots.Select(slot => slot.position).ToArray();
             var expectedIds = roster.SelectMany(hero => Enumerable.Range(1, 3)
                 .Select(skill => $"c_{hero.Graph}_skill_{skill:D2}")).ToArray();
-            Assert.That(graphs.Select(graph => JsonUtility.FromJson<GraphId>(graph.text).id), Is.EquivalentTo(expectedIds));
+            Assert.That(expectedIds, Is.SubsetOf(graphs.Select(graph => JsonUtility.FromJson<GraphId>(graph.text).id).ToArray()));
             Assert.That(assets, Is.Not.Empty);
 
             foreach (bool faceLeft in new[] { false, true })
@@ -147,6 +117,105 @@ namespace AstralOath.Client.Tests
             }
         }
 
+        [UnityTest]
+        public IEnumerator AddedHeroesCanEnterBattleAndPlayAllSourceGraphs()
+        {
+            var roots = default(GameObject[]);
+            yield return LoadBattle(value => roots = value);
+            var host = roots.Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            var catalog = JsonUtility.FromJson<BattleCatalogData>(HostField<TextAsset>(host, "battleCatalog").text);
+            string[] added = { "c1002", "c1003", "c1004", "c1006", "c1007", "c1008", "c1009" };
+            Assert.That(catalog.heroes.Select(hero => hero.id), Is.EqualTo(added.Concat(new[] { "c1001", "c1005", "c1062" }).OrderBy(id => id, StringComparer.Ordinal)));
+            Assert.That(graphs.Length, Is.EqualTo(30));
+            var selection = typeof(BattleHudPreview).GetField("allyHeroIds", PrivateInstance);
+            var map = HostField<BindingMap>(host, "hud");
+            host.enabled = true;
+            foreach (string id in added)
+            {
+                selection.SetValue(host, Enumerable.Repeat(id, 4).ToArray());
+                host.StartBattle();
+                Assert.That(host.SimulationSnapshot.Units.Where(unit => unit.Slot.Side == BattleSide.Ally)
+                    .Select(unit => unit.DefinitionId), Is.All.EqualTo(id));
+                var actor = host.SimulationSnapshot.GetUnit(host.SimulationSnapshot.CurrentActorId);
+                Assert.That(actor.DefinitionId, Is.EqualTo(id));
+                var skill = catalog.skills.Single(row => row.heroId == id && row.slot == 2);
+                Assert.That(map.Require<GameButton>("skill2").interactable, Is.EqualTo(skill.target != "passive"));
+                Assert.That(host.TrySelectBattleTarget("enemy-1"), Is.True, id + " S1 must submit through the real battle controller");
+                yield return null;
+            }
+            host.enabled = false;
+            yield return null;
+
+            var allies = units.Find("Allies").GetComponentsInChildren<BattlePreviewActor>();
+            var enemies = units.Find("Enemies").GetComponentsInChildren<BattlePreviewActor>();
+            var front = allies[0];
+            var models = (Array)typeof(BattleHudPreview).GetField("heroModels", PrivateInstance).GetValue(host);
+            foreach (string id in added)
+            {
+                var model = models.Cast<object>().Single(value => (string)value.GetType().GetField("id").GetValue(value) == id);
+                var type = model.GetType();
+                typeof(BattlePreviewActor).GetMethod("UseModel", PrivateInstance).Invoke(front, new[]
+                {
+                    type.GetField("skeleton").GetValue(model), type.GetField("skin").GetValue(model), id
+                });
+                yield return null; // Finish deferred disposal of the prior skeleton before taking a renderer baseline.
+                var renderer = front.GetComponentInChildren<MeshRenderer>();
+                Assert.That(renderer && renderer.enabled && renderer.GetComponent<MeshFilter>().sharedMesh.vertexCount > 0, Is.True, id);
+                foreach (var skill in catalog.skills.Where(row => row.heroId == id))
+                {
+                    var recipients = skill.target switch
+                    {
+                        "all_allies" => allies,
+                        "one_ally" => new[] { allies[1] },
+                        "all_enemies" => enemies,
+                        "two_enemies" => enemies.Take(2).ToArray(),
+                        "passive" => id == "c1008" || id == "c1007" ? enemies : new[] { enemies[0] },
+                        _ => new[] { enemies[0] }
+                    };
+                    yield return Play(skill.presentationId, id + "-s" + skill.slot, front, recipients[0], recipients, Phase.None, Phase.None);
+                }
+            }
+        }
+
+        private IEnumerator LoadBattle(Action<GameObject[]> loaded)
+        {
+            if (SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null)
+                Assert.Ignore("The source playback sweep requires a graphics device.");
+
+            scene = EditorSceneManager.LoadSceneInPlayMode(ScenePath, new LoadSceneParameters(LoadSceneMode.Additive));
+            yield return null;
+            yield return null;
+
+            var roots = scene.GetRootGameObjects();
+            var host = roots.Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            host.AutoStartBattle = false;
+            host.enabled = false; // Isolate direct source playback from the automatically started match.
+            yield return null;
+            graphs = HostField<TextAsset[]>(host, "battleGraphs");
+            assets = HostField<BattleSkillPresentationAsset[]>(host, "skillAssets");
+            background = HostField<GameObject>(host, "stageBackground");
+            camera = host.GetComponent<Canvas>().worldCamera;
+            units = roots.Single(root => root.name == "Units").transform;
+            var map = HostField<BindingMap>(host, "hud");
+            var hudObjects = new[] { map.transform.Find("Skills").gameObject, map.Require<GameButton>("soulBurn").gameObject };
+            var hudVisibility = hudObjects.Select(item => item.activeSelf).ToArray();
+            setCinematicVisible = visible =>
+            {
+                cinematicVisible = visible;
+                for (int index = 0; index < hudObjects.Length; index++)
+                    hudObjects[index].SetActive(!visible && hudVisibility[index]);
+            };
+
+            string output = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_CAPTURE_DIR");
+            if (!string.IsNullOrWhiteSpace(output))
+            {
+                captureDirectory = Path.Combine(output, "source-playback");
+                Directory.CreateDirectory(captureDirectory);
+            }
+
+            loaded(roots);
+        }
+
         private IEnumerator Play(string id, string sample, BattlePreviewActor actor, BattlePreviewActor target,
             BattlePreviewActor[] recipients, Phase capturePhases, Phase interruptAt)
         {
@@ -155,6 +224,7 @@ namespace AstralOath.Client.Tests
             var effects = units.Find("Battle Skill Effects");
             var stage = PresentationType.GetField("cinematic", PrivateInstance).GetValue(playback);
             var requestedSize = stage.GetType().GetField("requestedSize", PrivateInstance);
+            var cutinRemaining = stage.GetType().GetProperty("CutinRemainingSeconds");
             var shadow = actor.transform.parent.GetComponentInChildren<SpriteRenderer>().transform;
             var baseline = new SceneBaseline(camera, background, units, actor.transform, shadow);
             var visualMeshes = new HashSet<Mesh>();
@@ -164,7 +234,14 @@ namespace AstralOath.Client.Tests
             var timing = ((float Impact, float Duration))Begin.Invoke(playback, new object[] { id, actor, target, recipients });
             Assert.That(float.IsFinite(timing.Duration) && timing.Duration > 0f && timing.Duration < ActionTimeout, Is.True, sample);
             Assert.That(timing.Impact, Is.InRange(0f, timing.Duration), sample);
-            bool checkTargetsAtHits = id == "c_ras_skill_03" || id == "c_mercedes_skill_03";
+            bool checkTargetsAtHits = id is "c_ras_skill_03" or "c_mercedes_skill_03" or "c_kise_skill_03";
+            if (id == "c_aming_skill_02")
+            {
+                var pillarHits = ((IEnumerable<float>)PresentationType.GetProperty("HitTimes").GetValue(playback)).ToArray();
+                Assert.That(pillarHits.Length, Is.EqualTo(7));
+                Assert.That(pillarHits[0], Is.EqualTo(2.021f).Within(.001f));
+                Assert.That(pillarHits[6], Is.EqualTo(3.143f).Within(.001f));
+            }
             float[] checkedHits = checkTargetsAtHits
                 ? ((IEnumerable<float>)PresentationType.GetProperty("HitTimes").GetValue(playback)).ToArray()
                 : Array.Empty<float>();
@@ -176,7 +253,7 @@ namespace AstralOath.Client.Tests
             Phase observed = Phase.None;
             do
             {
-                Assert.That(Time.realtimeSinceStartupAsDouble, Is.LessThan(deadline), sample + " exceeded the real-time deadline");
+                Assert.That(Time.realtimeSinceStartupAsDouble, Is.LessThan(deadline), sample + " exceeded the real-time deadline at source " + elapsed + ", cut-in remaining " + cutinRemaining.GetValue(stage));
                 Assert.That(IsFinite(camera.transform.position) && float.IsFinite(camera.orthographicSize) &&
                     camera.orthographicSize > 0f, Is.True, sample + " produced an invalid camera pose");
                 Assert.That(IsFinite(actor.transform.position) && IsFinite(shadow.position), Is.True, sample);
@@ -263,7 +340,9 @@ namespace AstralOath.Client.Tests
 
                 yield return null;
                 float delta = Time.unscaledDeltaTime;
-                if (nextCheckedHit < checkedHits.Length && elapsed < checkedHits[nextCheckedHit])
+                float wallCutin = (float)cutinRemaining.GetValue(stage);
+                if (wallCutin > 0f) delta = Mathf.Min(delta, wallCutin);
+                else if (nextCheckedHit < checkedHits.Length && elapsed < checkedHits[nextCheckedHit])
                     delta = Mathf.Min(delta, checkedHits[nextCheckedHit] - elapsed);
                 Tick.Invoke(playback, new object[] { delta });
                 elapsed = (float)PresentationType.GetProperty("StageTime").GetValue(playback);
@@ -413,7 +492,7 @@ namespace AstralOath.Client.Tests
             private readonly int cameraChildren;
             private readonly bool backgroundActive;
             private readonly Vector3 shadowHome;
-            private readonly (Renderer Renderer, bool Enabled)[] visibility;
+            private readonly (Renderer Renderer, bool Enabled, Vector3 Position, Quaternion Rotation, Vector3 Scale)[] visibility;
             private readonly (Transform Transform, Vector3 Position, Vector3 Scale)[] backdrop;
 
             internal SceneBaseline(Camera camera, GameObject background, Transform units, Transform actor, Transform shadow)
@@ -433,7 +512,8 @@ namespace AstralOath.Client.Tests
                 ActorHome = actor.localPosition;
                 ActorWorldX = actor.position.x;
                 shadowHome = shadow.localPosition;
-                visibility = units.GetComponentsInChildren<Renderer>(true).Select(renderer => (renderer, renderer.enabled)).ToArray();
+                visibility = units.GetComponentsInChildren<Renderer>(true).Select(renderer =>
+                    (renderer, renderer.enabled, renderer.transform.localPosition, renderer.transform.localRotation, renderer.transform.localScale)).ToArray();
                 backdrop = background.GetComponentsInChildren<SpriteRenderer>(true).Select(item =>
                     (item.transform, item.transform.localPosition, item.transform.localScale)).ToArray();
             }
@@ -455,7 +535,13 @@ namespace AstralOath.Client.Tests
                 Assert.That(Vector3.Distance(actor.localPosition, ActorHome), Is.LessThan(0.001f), sample);
                 Assert.That(Vector3.Distance(shadow.localPosition, shadowHome), Is.LessThan(0.001f), sample);
                 foreach (var item in visibility)
+                {
                     Assert.That(item.Renderer.enabled, Is.EqualTo(item.Enabled), sample + " changed slot renderer visibility");
+                    var body = item.Renderer.transform;
+                    Assert.That(Vector3.Distance(body.localPosition, item.Position), Is.LessThan(.001f), sample);
+                    Assert.That(Vector3.Distance(body.localScale, item.Scale), Is.LessThan(.001f), sample);
+                    Assert.That(Quaternion.Angle(body.localRotation, item.Rotation), Is.LessThan(.01f), sample);
+                }
                 foreach (var item in backdrop)
                 {
                     Assert.That(Vector3.Distance(item.Transform.localPosition, item.Position), Is.LessThan(0.001f), sample);

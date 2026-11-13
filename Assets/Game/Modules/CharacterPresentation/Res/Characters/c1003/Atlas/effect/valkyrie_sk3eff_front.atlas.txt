@@ -1,0 +1,181 @@
+
+valkyrie_sk3eff_front.sct
+size: 1071,250
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+sprite/eff/aura_body
+  rotate: false
+  xy: 2, 2
+  size: 168, 225
+  orig: 168, 225
+  offset: 0, 0
+  index: -1
+sprite/eff/aura_sword
+  rotate: true
+  xy: 343, 174
+  size: 57, 149
+  orig: 57, 149
+  offset: 0, 0
+  index: -1
+sprite/eff/light_b
+  rotate: false
+  xy: 172, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+sprite/eff/light_line
+  rotate: false
+  xy: 479, 88
+  size: 191, 36
+  orig: 191, 36
+  offset: 0, 0
+  index: -1
+sprite/eff/light_pillar1
+  rotate: true
+  xy: 479, 2
+  size: 84, 196
+  orig: 84, 196
+  offset: 0, 0
+  index: -1
+sprite/eff/light_pillar2
+  rotate: true
+  xy: 172, 173
+  size: 59, 169
+  orig: 59, 169
+  offset: 0, 0
+  index: -1
+sprite/eff/light_star
+  rotate: true
+  xy: 343, 2
+  size: 170, 134
+  orig: 170, 134
+  offset: 0, 0
+  index: -1
+sprite/eff/lighting_armor_L1
+  rotate: false
+  xy: 595, 126
+  size: 46, 34
+  orig: 46, 34
+  offset: 0, 0
+  index: -1
+sprite/eff/lighting_armor_L2
+  rotate: true
+  xy: 950, 96
+  size: 69, 57
+  orig: 69, 57
+  offset: 0, 0
+  index: -1
+sprite/eff/lighting_armor_L3
+  rotate: false
+  xy: 479, 126
+  size: 57, 46
+  orig: 57, 46
+  offset: 0, 0
+  index: -1
+sprite/eff/lighting_armor_R1
+  rotate: true
+  xy: 689, 111
+  size: 45, 44
+  orig: 45, 44
+  offset: 0, 0
+  index: -1
+sprite/eff/lighting_armor_R2
+  rotate: false
+  xy: 1009, 146
+  size: 59, 58
+  orig: 59, 58
+  offset: 0, 0
+  index: -1
+sprite/eff/lighting_armor_R3
+  rotate: false
+  xy: 538, 126
+  size: 55, 42
+  orig: 55, 42
+  offset: 0, 0
+  index: -1
+sprite/eff/lighting_body_1
+  rotate: false
+  xy: 950, 167
+  size: 56, 55
+  orig: 56, 55
+  offset: 0, 0
+  index: -1
+sprite/eff/lighting_body_2
+  rotate: false
+  xy: 560, 170
+  size: 53, 75
+  orig: 53, 75
+  offset: 0, 0
+  index: -1
+sprite/eff/lighting_face
+  rotate: false
+  xy: 494, 174
+  size: 64, 72
+  orig: 64, 72
+  offset: 0, 0
+  index: -1
+sprite/eff/lighting_hair_1
+  rotate: true
+  xy: 1014, 73
+  size: 71, 53
+  orig: 71, 53
+  offset: 0, 0
+  index: -1
+sprite/eff/lighting_hair_2
+  rotate: false
+  xy: 898, 2
+  size: 114, 92
+  orig: 114, 92
+  offset: 0, 0
+  index: -1
+sprite/eff/lightning_core_05
+  rotate: false
+  xy: 677, 2
+  size: 107, 107
+  orig: 107, 107
+  offset: 0, 0
+  index: -1
+sprite/eff/shadow_armor_L1
+  rotate: false
+  xy: 615, 162
+  size: 142, 86
+  orig: 142, 86
+  offset: 0, 0
+  index: -1
+sprite/eff/shadow_armor_L2
+  rotate: false
+  xy: 759, 111
+  size: 95, 120
+  orig: 95, 120
+  offset: 0, 0
+  index: -1
+sprite/eff/shadow_armor_R1
+  rotate: false
+  xy: 786, 2
+  size: 110, 103
+  orig: 110, 103
+  offset: 0, 0
+  index: -1
+sprite/eff/shadow_armor_R2
+  rotate: false
+  xy: 856, 107
+  size: 92, 123
+  orig: 92, 123
+  offset: 0, 0
+  index: -1
+sprite/eff/shadow_body
+  rotate: false
+  xy: 1014, 2
+  size: 55, 69
+  orig: 55, 69
+  offset: 0, 0
+  index: -1
+sprite/eff/shadow_face
+  rotate: true
+  xy: 643, 126
+  size: 33, 44
+  orig: 33, 44
+  offset: 0, 0
+  index: -1

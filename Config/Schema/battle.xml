@@ -68,6 +68,19 @@
     <var name="casterHealthHealBp" type="int?"/>
     <var name="casterHealthBarrierBp" type="int?"/>
     <var name="burnAttackRateBp" type="int?"/>
+    <var name="casterDefenseBarrierBp" type="int?"/>
+    <var name="casterDefenseDamageBp" type="int?"/>
+    <var name="casterSpeedDamagePpm" type="int?"/>
+    <var name="burnSpeedDamagePpm" type="int?"/>
+    <var name="casterHealthRatioDamageBp" type="int?"/>
+    <var name="damageAgainstBuffBp" type="int?"/>
+    <var name="defensePenetrationBp" type="int?"/>
+    <var name="stealthPenetrationBp" type="int?"/>
+    <var name="highestDefensePenetrationBp" type="int?"/>
+    <var name="alwaysCritical" type="bool"/>
+    <var name="aoeWhenBuffed" type="bool"/>
+    <var name="aoeOutsideTurn" type="bool"/>
+    <var name="casterAttackBarrierBp" type="int?"/>
   </bean>
 
   <bean name="SkillEffectRow">
@@ -81,6 +94,9 @@
     <var name="chanceBp" type="int#range=[1,10000]"/>
     <var name="turns" type="int#range=[0,30]"/>
     <var name="value" type="int#range=[0,100000]"/>
+    <var name="condition" type="string"/>
+    <var name="chanceBonusStatus" type="string"/>
+    <var name="chanceBonusBp" type="int#range=[0,10000]"/>
   </bean>
 
   <bean name="EnhancementRow">

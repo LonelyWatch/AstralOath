@@ -1,0 +1,48 @@
+
+silk_skill_01_eff_f.sct
+size: 86,980
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+airwave_01
+  rotate: false
+  xy: 2, 2
+  size: 81, 248
+  orig: 81, 248
+  offset: 0, 0
+  index: -1
+airwave_02
+  rotate: false
+  xy: 2, 252
+  size: 79, 248
+  orig: 79, 248
+  offset: 0, 0
+  index: -1
+airwave_03
+  rotate: false
+  xy: 2, 502
+  size: 79, 248
+  orig: 79, 248
+  offset: 0, 0
+  index: -1
+eff_wind_fire_01
+  rotate: true
+  xy: 2, 752
+  size: 168, 40
+  orig: 168, 40
+  offset: 0, 0
+  index: -1
+eff_wind_fire_02
+  rotate: true
+  xy: 44, 752
+  size: 160, 40
+  orig: 160, 40
+  offset: 0, 0
+  index: -1
+mto_light_03
+  rotate: false
+  xy: 2, 922
+  size: 56, 56
+  orig: 56, 56
+  offset: 0, 0
+  index: -1

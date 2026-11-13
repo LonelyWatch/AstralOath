@@ -7,6 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 OUTPUT = ROOT / "Assets/Game/Modules/BattleScene/Res/Sounds"
+SHARED_IMPACT_BANK = "Assets/Game/Modules/CharacterPresentation/Res/Shared/Sounds/sound/gerneal.bank.bytes"
 
 
 def sha256(path):
@@ -20,13 +21,13 @@ def main():
     args = parser.parse_args()
     source = args.source.resolve(strict=True) / "原始资源"
     source_bank = source / "sound/gerneal.bank"
-    destination = OUTPUT / "gerneal.bank.bytes"
+    destination = ROOT / SHARED_IMPACT_BANK
     stg = json.loads((source / "stagept/m_slime_skill_01.stg").read_text(encoding="utf-8"))
     hit = next(node for node in stg["entities"] if node["etty"] == "HIT")
     if hit["effect"] != "hit_new_blunt_normal.cfx":
         raise ValueError("Slime source HIT effect changed; review the audio mapping before import")
     if not args.check:
-        OUTPUT.mkdir(parents=True, exist_ok=True)
+        destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source_bank, destination)
     if not destination.is_file() or sha256(destination) != sha256(source_bank):
         raise ValueError("Imported impact bank is missing or differs from the read-only source")
@@ -34,7 +35,7 @@ def main():
         "schemaVersion": 1,
         "importerSha256": sha256(Path(__file__)),
         "files": [{"source": "原始资源/sound/gerneal.bank", "sourceSha256": sha256(source_bank),
-                   "asset": "gerneal.bank.bytes", "assetSha256": sha256(destination)}],
+                   "asset": SHARED_IMPACT_BANK, "assetSha256": sha256(destination)}],
         "evidence": [{"source": "原始资源/" + name, "sourceSha256": sha256(source / name)} for name in (
             "stagept/m_slime_skill_01.stg", "model/slime.scsp", "sound/master.strings.bank", "sound/sfx1.bank",
             "sound/voc.event.bank", "sound/ja/voc1.audio_ja.bank")],

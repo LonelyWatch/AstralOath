@@ -29,6 +29,19 @@ namespace AstralOath.Client.Tests
             Assert.DoesNotThrow(() => { service.Dispose(); service.Tick(); });
         }
 
+        [TestCase("")]
+        [TestCase("invalid-key")]
+        [TestCase("voc_c1009_sk3_1_p2(zhs)")]
+        public void InvalidMissingJapaneseKeyFailsBeforeNativeWork(string key)
+        {
+            var assets = new UnusedAssets();
+            using var service = new FmodCharacterAudioService(CancellationToken.None);
+            Assert.Throws<InvalidOperationException>(() => service.InitializeAsync(assets, new[] { "bank" }, new[] { key })
+                .GetAwaiter().GetResult());
+            Assert.That(assets.Calls, Is.Zero);
+            Assert.That(service.IsAvailable, Is.False);
+        }
+
         [TestCase("voc_c1001_shout_1(zhs)", "voc_c1001_shout_1")]
         [TestCase("voc_c1001_shout_1(ja)", "voc_c1001_shout_1")]
         [TestCase("voc_c1001_shout_1(en)", "voc_c1001_shout_1")]

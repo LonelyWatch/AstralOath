@@ -1,0 +1,55 @@
+
+eff_magic_wind2_f.sct
+size: 114,584
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bs
+  rotate: true
+  xy: 2, 2
+  size: 265, 110
+  orig: 265, 110
+  offset: 0, 0
+  index: -1
+eff_wind_twist_01
+  rotate: false
+  xy: 59, 499
+  size: 50, 44
+  orig: 50, 44
+  offset: 0, 0
+  index: -1
+eff_wind_twist_02
+  rotate: true
+  xy: 2, 269
+  size: 106, 108
+  orig: 106, 108
+  offset: 0, 0
+  index: -1
+elite_01
+  rotate: false
+  xy: 2, 499
+  size: 55, 74
+  orig: 55, 74
+  offset: 0, 0
+  index: -1
+elite_02
+  rotate: true
+  xy: 2, 437
+  size: 60, 78
+  orig: 60, 78
+  offset: 0, 0
+  index: -1
+elite_03
+  rotate: true
+  xy: 2, 377
+  size: 58, 84
+  orig: 58, 84
+  offset: 0, 0
+  index: -1
+elite_04
+  rotate: true
+  xy: 59, 545
+  size: 37, 38
+  orig: 37, 38
+  offset: 0, 0
+  index: -1

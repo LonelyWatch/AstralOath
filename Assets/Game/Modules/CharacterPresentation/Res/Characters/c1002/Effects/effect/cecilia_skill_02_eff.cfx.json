@@ -1,0 +1,26 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "cecilia_skill_02_eff",
+      "z": "1",
+      "format": "spine"
+    },
+    {
+      "source": "cecilia_skill_02_eff_pati",
+      "x": "-110",
+      "y": "215",
+      "z": "2",
+      "delay": "100",
+      "format": "particle"
+    },
+    {
+      "source": "cecilia_skill_02_eff_pati2",
+      "x": "110",
+      "y": "328",
+      "z": "3",
+      "delay": "595",
+      "format": "particle"
+    }
+  ]
+}

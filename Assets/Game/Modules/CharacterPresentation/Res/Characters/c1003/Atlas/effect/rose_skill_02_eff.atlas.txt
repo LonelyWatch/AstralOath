@@ -1,0 +1,62 @@
+
+rose_skill_02_eff.sct
+size: 240,1906
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+aura1
+  rotate: false
+  xy: 126, 1361
+  size: 40, 135
+  orig: 40, 135
+  offset: 0, 0
+  index: -1
+aura2
+  rotate: false
+  xy: 126, 1498
+  size: 40, 135
+  orig: 40, 135
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 1735
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: true
+  xy: 173, 1361
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1
+sw1
+  rotate: true
+  xy: 2, 2
+  size: 541, 236
+  orig: 541, 236
+  offset: 0, 0
+  index: -1
+sw2
+  rotate: true
+  xy: 2, 545
+  size: 438, 236
+  orig: 438, 236
+  offset: 0, 0
+  index: -1
+sw3
+  rotate: true
+  xy: 2, 985
+  size: 374, 233
+  orig: 374, 233
+  offset: 0, 0
+  index: -1
+sw4
+  rotate: true
+  xy: 2, 1361
+  size: 372, 122
+  orig: 372, 122
+  offset: 0, 0
+  index: -1

@@ -45,7 +45,7 @@ namespace AstralOath.Client.Tests
                 Assert.That(banks[address], Is.Not.Null, address);
             }
             string impactPath = dependencies.SingleOrDefault(item => Path.GetFileName(item) == "gerneal.bank.bytes");
-            if (impactPath != null)
+            if (impactPath != null && !catalog.sharedBanks.Contains("characterlab/source/sound/gerneal.bank"))
                 banks.Add("battlescene/source/sound/gerneal.bank", AssetDatabase.LoadAssetAtPath<TextAsset>(impactPath));
             var skills = catalog.characters.Where(character =>
                     character.id == "c1001" || character.id == "c1005" || character.id == "c1062")

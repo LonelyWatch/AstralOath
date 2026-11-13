@@ -1,0 +1,293 @@
+{
+  "id": "c_silk_skill_01",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 11
+    },
+    "eventlisteners": [
+      9
+    ],
+    "entities": [
+      {
+        "ani": "skill1",
+        "guid": 1,
+        "etty": "ANI"
+      },
+      {
+        "guid": 2,
+        "etty": "IDLE"
+      },
+      {
+        "location": 11,
+        "x": 150.0,
+        "curve": "0,1,1,1",
+        "time": 300,
+        "guid": 3,
+        "etty": "CAM"
+      },
+      {
+        "location": 41,
+        "x": 70.0,
+        "y": -50.0,
+        "curve": "0,1,1,1",
+        "time": 150,
+        "guid": 4,
+        "etty": "CAM"
+      },
+      {
+        "curve": "0,1,1,1",
+        "time": 600,
+        "guid": 5,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.4",
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 6,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1",
+        "curve": "0,1,1,1",
+        "time": 150,
+        "guid": 7,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1",
+        "curve": "0,1,1,1",
+        "time": 600,
+        "guid": 8,
+        "etty": "ZOOM"
+      },
+      {
+        "name": "hit",
+        "handled": true,
+        "guid": 9,
+        "etty": "ONEVENT"
+      },
+      {
+        "source": "",
+        "time": 100.0,
+        "finiEvent": "hit",
+        "guid": 10,
+        "etty": "SHOT"
+      },
+      {
+        "state": "start",
+        "guid": 11,
+        "etty": "ENTRY"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "silk_cm_shot",
+        "guid": 12,
+        "etty": "SHAKE"
+      },
+      {
+        "effect": "hit_new_pierce_normal.cfx",
+        "rand_x": 70,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 30.0,
+        "guid": 13,
+        "etty": "HIT"
+      },
+      {
+        "source": "silk_skill_01.cfx",
+        "scale": 1.0,
+        "location": 11,
+        "guid": 14,
+        "etty": "EFFECT"
+      }
+    ],
+    "connections": [
+      {
+        "from": 11,
+        "to": 1,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 3,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 4,
+        "delay": 66,
+        "Desc": "66",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 5,
+        "delay": 400,
+        "Desc": "400",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 6,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 8,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 12,
+        "delay": 100,
+        "when": 1,
+        "Desc": "100",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 12,
+        "to": 13,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 10,
+        "delay": 366,
+        "when": 1,
+        "Desc": "366",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 14,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/silk_cm_shot.scsp",
+      "address": "characterlab/source/camera/silk_cm_shot.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_pierce_normal.atlas",
+      "address": "characterlab/source/effect/hit_new_pierce_normal.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_pierce_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_pierce_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_pierce_normal.scsp",
+      "address": "characterlab/source/effect/hit_new_pierce_normal.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_pierce_normal.sct",
+      "address": "characterlab/source/effect/hit_new_pierce_normal.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_pierce_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_pierce_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/silk_skill_01.cfx",
+      "address": "characterlab/source/effect/silk_skill_01.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/silk_skill_01_eff_b.atlas",
+      "address": "characterlab/source/effect/silk_skill_01_eff_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/silk_skill_01_eff_b.scsp",
+      "address": "characterlab/source/effect/silk_skill_01_eff_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/silk_skill_01_eff_b.sct",
+      "address": "characterlab/source/effect/silk_skill_01_eff_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/silk_skill_01_eff_f.atlas",
+      "address": "characterlab/source/effect/silk_skill_01_eff_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/silk_skill_01_eff_f.scsp",
+      "address": "characterlab/source/effect/silk_skill_01_eff_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/silk_skill_01_eff_f.sct",
+      "address": "characterlab/source/effect/silk_skill_01_eff_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/silk_skill_01_pati.particle",
+      "address": "characterlab/source/effect/silk_skill_01_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "model/silk.timeline",
+      "address": "characterlab/source/model/silk.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/pati_01.sct",
+      "address": "characterlab/source/particle/pati_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

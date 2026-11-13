@@ -1,0 +1,33 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "cecilia_skill_02_new",
+      "scale": "1",
+      "format": "spine",
+      "actions": [
+        {
+          "action": "Fire",
+          "delay": "200"
+        },
+        {
+          "action": "Fire",
+          "delay": "1716"
+        }
+      ]
+    },
+    {
+      "source": "cecilia_skill_02_new_crack",
+      "format": "spine",
+      "globalZ": -0.1
+    },
+    {
+      "source": "cecilia_skill_02_new_pati1",
+      "x": "-6",
+      "z": "1",
+      "rotate": "-21",
+      "delay": "180",
+      "format": "particle"
+    }
+  ]
+}

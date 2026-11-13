@@ -1,0 +1,104 @@
+
+aming_skill_02_pillar.sct
+size: 1303,253
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+burst_flash
+  rotate: false
+  xy: 1065, 2
+  size: 121, 123
+  orig: 121, 123
+  offset: 0, 0
+  index: -1
+burst_flash2
+  rotate: false
+  xy: 686, 145
+  size: 70, 71
+  orig: 70, 71
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 1188, 2
+  size: 113, 113
+  orig: 113, 113
+  offset: 0, 0
+  index: -1
+global_flash
+  rotate: true
+  xy: 829, 2
+  size: 138, 116
+  orig: 138, 116
+  offset: 0, 0
+  index: -1
+impact_circle
+  rotate: false
+  xy: 186, 195
+  size: 135, 46
+  orig: 135, 46
+  offset: 0, 0
+  index: -1
+molt_glow
+  rotate: true
+  xy: 98, 2
+  size: 214, 86
+  orig: 214, 86
+  offset: 0, 0
+  index: -1
+pillar
+  rotate: false
+  xy: 2, 2
+  size: 94, 233
+  orig: 94, 233
+  offset: 0, 0
+  index: -1
+rot_pillar
+  rotate: true
+  xy: 947, 134
+  size: 117, 302
+  orig: 117, 302
+  offset: 0, 0
+  index: -1
+shine_01
+  rotate: false
+  xy: 686, 2
+  size: 141, 141
+  orig: 141, 141
+  offset: 0, 0
+  index: -1
+smoke1
+  rotate: true
+  xy: 947, 2
+  size: 130, 116
+  orig: 130, 116
+  offset: 0, 0
+  index: -1
+smoke2
+  rotate: true
+  xy: 186, 2
+  size: 191, 178
+  orig: 191, 178
+  offset: 0, 0
+  index: -1
+smoke3
+  rotate: true
+  xy: 366, 2
+  size: 191, 178
+  orig: 191, 178
+  offset: 0, 0
+  index: -1
+wind_wave1
+  rotate: false
+  xy: 758, 145
+  size: 137, 70
+  orig: 137, 70
+  offset: 0, 0
+  index: -1
+wind_wave2
+  rotate: false
+  xy: 546, 2
+  size: 138, 187
+  orig: 138, 187
+  offset: 0, 0
+  index: -1

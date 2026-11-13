@@ -21,6 +21,7 @@
 - 热更/强更：[构建操作](development/hot-update.md)、[更新能力核对](delivery/2026-11-12-foundation-reaudit.md)、[HybridCLR 决策](architecture/adr/007-hybridclr.md)。
 - 服务端/数据库：[开发运维](development/server.md)、[服务端架构](architecture/server.md)。
 - 角色资源：[角色实验室](development/character-lab.md)、[通用导入规则](development/character-asset-import.md)、[CharacterPresentation](../Assets/Game/Modules/CharacterPresentation/README.md)、[CharacterLab](../Assets/Game/Modules/CharacterLab/README.md)。
+- 十名角色：[操作与验收](delivery/2026-11-13-ten-hero-roster.md)、[源图和资源审计](delivery/2026-11-13-ten-hero-source-audit.md)。
 - S1/S3当前修复：[镜头事件窗口、目标身体和信息条](delivery/2026-11-13-camera-visibility-fixes.md)、[原作参考范围](delivery/2026-11-13-camera-visibility-reference.md)。
 - 血条与死亡：[跟随/分格/损血/消散及验收](delivery/2026-11-13-health-death-presentation.md)、[近期原作画面证据](delivery/2026-11-13-health-reference-audit.md)。
 - 战斗表现修复：[信息条、速度线与待机衔接](delivery/2026-11-13-battle-presentation-fixes.md)、[BGHATCH 纹理编码审计](delivery/2026-11-13-hatch-alpha-audit.md)。

@@ -1,0 +1,109 @@
+{
+  "timeline": {
+    "default": {
+      "skill3": {
+        "duration": 0,
+        "frames": [
+          {
+            "param": {}
+          }
+        ]
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "rose_skill_02",
+              "location": 1,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "rose_skill_01",
+              "location": 1,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "knock_down": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 1,
+            "func": "sound",
+            "param": {}
+          }
+        ]
+      },
+      "b_idle": {
+        "duration": 0,
+        "frames": []
+      },
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": [
+          {
+            "param": {}
+          }
+        ]
+      },
+      "jump_back": {
+        "duration": 0,
+        "frames": []
+      },
+      "attacked": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 1,
+            "func": "sound",
+            "param": {}
+          }
+        ]
+      },
+      "jump_forward": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 200,
+            "func": "sound",
+            "param": {}
+          },
+          {
+            "time": 533,
+            "func": "sound",
+            "param": {}
+          }
+        ]
+      },
+      "shock": {
+        "duration": 0,
+        "frames": []
+      },
+      "run_start": {
+        "duration": 0,
+        "frames": []
+      },
+      "attacked_damage": {
+        "duration": 0,
+        "frames": []
+      },
+      "camping": {
+        "duration": 0,
+        "frames": []
+      }
+    }
+  }
+}

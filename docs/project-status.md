@@ -2,6 +2,10 @@
 
 核对日期：2026-11-13。更新链路核对基线：`3fd85ca`，战斗场景现状另见下文。这是事实快照；修改能力、边界、验收状态或后续重点时立即更新。逐次变化见[变更日志](development/change-log.md)。
 
+## 十名角色接入
+
+角色实验室和战斗试玩共用十名普通角色。战斗 `BattleHudPreview` 可配置四个友军位置，新增七人 17 个主动槽已通过服务端提交检查。四个被动自动触发、资源积累与部分源图语义待验。Windows IL2CPP 实验室已用新母包通过十人及 30 个技能入口检查。旧母包需重建以使用 Spine 乘色与 FMOD 日语缺录音处理。操作和验证见[十名角色接入](delivery/2026-11-13-ten-hero-roster.md)。
+
 ## 最新 S1/S3 显示修复
 
 2026-11-13：S1命名起落窗口正确驱动CAM/ZOOM，不再把缺省time的镜头留到落地硬切；LAYOUT排除单位时同步关闭其信息条，目标镜头切入时解除接受目标的离屏遮罩。同帧镜头变动的血条投影已改为稳定Canvas局部坐标；完整EditMode431项、PlayMode全量46项及最终受影响21项回归通过（有重叠），Windows Mono两场九技能通过，可操作P99为18.15ms、最大33.54ms、0帧超过100ms；启动等待和精确范围以[本轮交付](delivery/2026-11-13-camera-visibility-fixes.md)为准。原始LAYOUT空间/fade和群体CFX globalZ完整语义仍待原作逐帧对照，不能把Renderer启用视为特效不遮挡或全部还原通过。
@@ -28,13 +32,13 @@ Unity 2022.3.62f3 / URP / UGUI / TMP；Common/AOT 通用设施；普通 C# UIBas
 - GameText / GameButton 直接继承 TMP / Button，右键 UI 提供创建入口；63对已有控件已迁移，GUID和配置保留。
 - Foundation 更新器：签名清单、哈希、断点、空间预检、原子版本切换、兼容预检、失败版本隔离及下次进程恢复。客户端可从配置的内容服务器取得兼容资源与 C# 业务 DLL。
 - 构建工具：Windows x64、Android ARM64 ASTC/ETC2 的完整母包和独立热更包，母包归档与签名发布工具。
-- CharacterLab：独立离线角色实验室，首批拉斯/梅赛德丝/安洁莉卡；双版本 Spine 与 FMOD 已集成。该入口只读取内置实验室内容，不等于 Foundation 远端更新入口。
+- CharacterLab：独立离线角色实验室，十名普通角色（c1001–c1009、c1062）；双版本 Spine 与 FMOD 已集成。该入口只读取内置实验室内容，不等于 Foundation 远端更新入口。
 
 - BattleScene：首阶段独立冒险布局预览。两套原图分层森林、原作 HUD、双方各四个可编辑脚点及 Spine 待机；已按近期实战和本地原版布局修订 HUD，可交互预览 Burn、燃魂 S2 和技能选中效果。见[HUD 复核](delivery/2026-11-12-battle-hud-fidelity.md)。
 
 - 战斗第三步：共享回合与技能事件内核、本地 Unity 实战试玩和开发态双人 HTTP 房间已接入。BattleScene运行即开始本地试玩，Pause可继续/重开，燃魂仅Cancel解除。试玩包含三角色技能特效、原始 S3 Cut-in/全屏背景与镜头、Windows 日语 FMOD 和史莱姆攻击/受击、近战位移、随镜头定位的浮字、向下行动条及原版行结构详情与冷却遮罩。敌方回合技能组隐藏；已按源图接入命名起落事件、原相机曲线、脚点构图、可见地图约束与短时世界模糊；Cut-in独立时钟冻结舞台，夹攻在末击交接并保留回位尾段，骨骼与图数据在开战前准备；CFX显式片段、DARK退出与Cut-in幕布按源字段执行；浮字使用原字形并按源 HIT 分段累计。精细布局、后处理包络和部分曲线仍未完成原作逐帧验收；攻击入口已预备复用，但Editor设备扫描伴随的偶发长帧仍需环境/Player对照定位。[规则和操作](development/battle-execution.md)、[本轮实测](delivery/2026-11-13-battle-timing.md)
 
-- Battle 配表：三名普通形态英雄、九技能、45 段强化、成长模板与觉醒节点已导出。Shared Battle 提供任意合法等级、星级与觉醒的裸面板计算，以及英雄、怪物、入场与四对四站位校验。见[等级与站位](development/battle-growth.md)和[配表来源](development/battle-character-data.md)。
+- Battle 配表：十名普通形态英雄、30 个技能槽、130 段主动技能强化、成长模板与觉醒节点已导出。Shared Battle 提供任意合法等级、星级与觉醒的裸面板计算，以及英雄、怪物、入场与四对四站位校验。见[等级与站位](development/battle-growth.md)和[配表来源](development/battle-character-data.md)。
 
 ## 必须知道的缺口
 

@@ -1,0 +1,23 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "silk_skill_01_eff_f",
+      "z": "3",
+      "format": "spine"
+    },
+    {
+      "source": "silk_skill_01_eff_b",
+      "z": "-3",
+      "format": "spine"
+    },
+    {
+      "source": "silk_skill_01_pati",
+      "x": "139",
+      "y": "247",
+      "z": "5",
+      "delay": "400",
+      "format": "particle"
+    }
+  ]
+}

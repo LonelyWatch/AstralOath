@@ -1,0 +1,28 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "2_1_eff",
+      "x": "0",
+      "scale": "0.8",
+      "format": "spine",
+      "globalZ": 1.5,
+      "actions": [
+        {
+          "action": "Fire",
+          "delay": "66"
+        },
+        {
+          "action": "Fire",
+          "delay": "231"
+        }
+      ]
+    },
+    {
+      "source": "2_1_dust",
+      "scale": "0.8",
+      "format": "spine",
+      "globalZ": 1.0
+    }
+  ]
+}

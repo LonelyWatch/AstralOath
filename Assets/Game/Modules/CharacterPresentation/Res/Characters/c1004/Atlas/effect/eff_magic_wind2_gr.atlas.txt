@@ -1,0 +1,20 @@
+
+eff_magic_wind2_gr.sct
+size: 320,111
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+lightning_core_05
+  rotate: false
+  xy: 2, 2
+  size: 107, 107
+  orig: 107, 107
+  offset: 0, 0
+  index: -1
+tornado_wave_01
+  rotate: false
+  xy: 111, 2
+  size: 207, 86
+  orig: 207, 86
+  offset: 0, 0
+  index: -1

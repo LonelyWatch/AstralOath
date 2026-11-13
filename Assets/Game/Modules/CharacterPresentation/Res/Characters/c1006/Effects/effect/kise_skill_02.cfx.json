@@ -1,0 +1,34 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "kise_skill_02",
+      "z": "0",
+      "format": "spine",
+      "globalZ": 5.0
+    },
+    {
+      "source": "kise_skill_02_back",
+      "x": "0",
+      "z": "-1",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "kise_skill_02_pati2",
+      "x": "-50",
+      "y": "50",
+      "scale": "1.1",
+      "delay": "1453",
+      "format": "particle",
+      "globalZ": 1.0
+    },
+    {
+      "source": "kise_skill_02_pati1",
+      "scale": "1.2",
+      "delay": "958",
+      "format": "particle",
+      "globalZ": 2.0
+    }
+  ]
+}

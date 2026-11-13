@@ -1,0 +1,45 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "2_2_air",
+      "z": "0",
+      "scale": "0.8",
+      "format": "spine",
+      "globalZ": 1.9
+    },
+    {
+      "source": "2_2_dust",
+      "z": "0",
+      "scale": "0.8",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "2_2_eff",
+      "x": "0",
+      "z": "0",
+      "scale": "0.8",
+      "format": "spine",
+      "globalZ": 1.5,
+      "actions": [
+        {
+          "action": "Fire",
+          "delay": "66"
+        },
+        {
+          "action": "Fire",
+          "delay": "231"
+        },
+        {
+          "action": "Fire",
+          "delay": "462"
+        },
+        {
+          "action": "Fire",
+          "delay": "594"
+        }
+      ]
+    }
+  ]
+}

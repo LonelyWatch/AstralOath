@@ -1,0 +1,618 @@
+{
+  "id": "c_aming_skill_03",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "ani": "skill3",
+        "guid": 2,
+        "etty": "ANI"
+      },
+      {
+        "from": "jump",
+        "to": "landing",
+        "guid": 3,
+        "etty": "ANI_SCOPE"
+      },
+      {
+        "location": 31,
+        "x": 50.0,
+        "guid": 4,
+        "etty": "CAM"
+      },
+      {
+        "ver": 2,
+        "location": 31,
+        "style": 2,
+        "guid": 5,
+        "etty": "MOVE"
+      },
+      {
+        "ani": "jump_back",
+        "guid": 6,
+        "etty": "ANI"
+      },
+      {
+        "from": "jump",
+        "to": "landing",
+        "guid": 7,
+        "etty": "ANI_SCOPE"
+      },
+      {
+        "ver": 2,
+        "location": 11,
+        "style": 2,
+        "guid": 8,
+        "etty": "MOVE"
+      },
+      {
+        "guid": 9,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.4",
+        "guid": 10,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1",
+        "guid": 11,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.6",
+        "curve": "0.1877395,0.09722219,0.03065134,0.9270833",
+        "time": 1600,
+        "guid": 12,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.1",
+        "curve": "0.2452107,0.06249997,0,0.9583333",
+        "time": 500,
+        "guid": 13,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 31,
+        "x": 50.0,
+        "y": 50.0,
+        "curve": "0.1877395,0.09722219,0.03065134,0.9270833",
+        "time": 1600,
+        "guid": 14,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.35",
+        "curve": "0.1992337,0.04861108,0.007662835,0.9548611",
+        "time": 1000,
+        "guid": 15,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 31,
+        "x": 50.0,
+        "curve": "0.2452107,0.06249997,0,0.9583333",
+        "time": 500,
+        "guid": 16,
+        "etty": "CAM"
+      },
+      {
+        "location": 31,
+        "x": 50.0,
+        "y": 30.0,
+        "curve": "0.1992337,0.04861108,0.007662835,0.9548611",
+        "time": 1000,
+        "guid": 17,
+        "etty": "CAM"
+      },
+      {
+        "targetId": "cb",
+        "guid": 18,
+        "etty": "STOP"
+      },
+      {
+        "time": 200,
+        "x": 0.0,
+        "y": 0.0,
+        "localZ": 0.0,
+        "scale": 2.2,
+        "rotate": 90.0,
+        "fadeIn": 200.0,
+        "fadeOut": 300.0,
+        "speed0": 10.0,
+        "speed1": 21.0,
+        "speed2": -10.0,
+        "color0": "255,211,51,255",
+        "color1": "245,131,0,255",
+        "color2": "132,61,26,255",
+        "guid": 19,
+        "etty": "BGHATCH"
+      },
+      {
+        "time": 200,
+        "guid": 20,
+        "etty": "BGSHOW"
+      },
+      {
+        "show": true,
+        "time": 200,
+        "guid": 21,
+        "etty": "BGSHOW"
+      },
+      {
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 22,
+        "etty": "HIT"
+      },
+      {
+        "duration": 600,
+        "program": "sprite_blur",
+        "direction_y": 1.0,
+        "u_sample": 3.0,
+        "u_range": 30.0,
+        "guid": 23,
+        "etty": "PPEFFECT"
+      },
+      {
+        "name": "u_range",
+        "duration": 600,
+        "power": 35.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 24,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "aming_skill_03_cm",
+        "guid": 25,
+        "etty": "SHAKE"
+      },
+      {
+        "blend_target": 55,
+        "color": "0,0,0,255",
+        "duration": -1,
+        "fadeIn": 300,
+        "fadeOut": 300,
+        "category": "cb",
+        "id": "cb",
+        "guid": 26,
+        "etty": "COLOR_BLEND"
+      }
+    ],
+    "connections": [
+      {
+        "from": 3,
+        "to": 4,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 5,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 3,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 8,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 9,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 6,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 10,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 11,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 12,
+        "to": 13,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 12,
+        "delay": 1433,
+        "when": 1,
+        "Desc": "1433",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 15,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 12,
+        "to": 14,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 16,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 15,
+        "to": 17,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 18,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 20,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 21,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 22,
+        "delay": 3300,
+        "when": 1,
+        "Desc": "3300",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 23,
+        "delay": 3119,
+        "when": 1,
+        "Desc": "3119",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 23,
+        "to": 24,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 25,
+        "delay": 1552,
+        "when": 1,
+        "Desc": "1552",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 26,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 19,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/aming_skill_01_cm.scsp",
+      "address": "characterlab/source/camera/aming_skill_01_cm.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "camera/aming_skill_02_new_cm.scsp",
+      "address": "characterlab/source/camera/aming_skill_02_new_cm.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "camera/aming_skill_03_cm.scsp",
+      "address": "characterlab/source/camera/aming_skill_03_cm.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/achates_wing2.particle",
+      "address": "characterlab/source/effect/achates_wing2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/aming_sheld_ready_pati.particle",
+      "address": "characterlab/source/effect/aming_sheld_ready_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/aming_shield_ready.atlas",
+      "address": "characterlab/source/effect/aming_shield_ready.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/aming_shield_ready.cfx",
+      "address": "characterlab/source/effect/aming_shield_ready.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/aming_shield_ready.scsp",
+      "address": "characterlab/source/effect/aming_shield_ready.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/aming_shield_ready.sct",
+      "address": "characterlab/source/effect/aming_shield_ready.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/aming_shield_ready_back.atlas",
+      "address": "characterlab/source/effect/aming_shield_ready_back.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/aming_shield_ready_back.scsp",
+      "address": "characterlab/source/effect/aming_shield_ready_back.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/aming_shield_ready_back.sct",
+      "address": "characterlab/source/effect/aming_shield_ready_back.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/aming_shield_ready_pati2.particle",
+      "address": "characterlab/source/effect/aming_shield_ready_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/aming_skill1_pati1.particle",
+      "address": "characterlab/source/effect/aming_skill1_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/aming_skill_01.atlas",
+      "address": "characterlab/source/effect/aming_skill_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/aming_skill_01.cfx",
+      "address": "characterlab/source/effect/aming_skill_01.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/aming_skill_01.scsp",
+      "address": "characterlab/source/effect/aming_skill_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/aming_skill_01.sct",
+      "address": "characterlab/source/effect/aming_skill_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/aming_skill_02_new.atlas",
+      "address": "characterlab/source/effect/aming_skill_02_new.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/aming_skill_02_new.cfx",
+      "address": "characterlab/source/effect/aming_skill_02_new.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/aming_skill_02_new.scsp",
+      "address": "characterlab/source/effect/aming_skill_02_new.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/aming_skill_02_new.sct",
+      "address": "characterlab/source/effect/aming_skill_02_new.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/aming_skill_02_new_pati1.particle",
+      "address": "characterlab/source/effect/aming_skill_02_new_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/aming_skill_02_new_pati2.particle",
+      "address": "characterlab/source/effect/aming_skill_02_new_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/aming_skill_03.atlas",
+      "address": "characterlab/source/effect/aming_skill_03.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/aming_skill_03.scsp",
+      "address": "characterlab/source/effect/aming_skill_03.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/aming_skill_03.sct",
+      "address": "characterlab/source/effect/aming_skill_03.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/aming_skill_03_back.atlas",
+      "address": "characterlab/source/effect/aming_skill_03_back.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/aming_skill_03_back.cfx",
+      "address": "characterlab/source/effect/aming_skill_03_back.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/aming_skill_03_back.scsp",
+      "address": "characterlab/source/effect/aming_skill_03_back.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/aming_skill_03_back.sct",
+      "address": "characterlab/source/effect/aming_skill_03_back.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/aming_skill_03_end.particle",
+      "address": "characterlab/source/effect/aming_skill_03_end.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/aming_skill_03_front.atlas",
+      "address": "characterlab/source/effect/aming_skill_03_front.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/aming_skill_03_front.cfx",
+      "address": "characterlab/source/effect/aming_skill_03_front.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/aming_skill_03_front.scsp",
+      "address": "characterlab/source/effect/aming_skill_03_front.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/aming_skill_03_front.sct",
+      "address": "characterlab/source/effect/aming_skill_03_front.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/aming_skill_03_patis.particle",
+      "address": "characterlab/source/effect/aming_skill_03_patis.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/aming_skill_03_secon.particle",
+      "address": "characterlab/source/effect/aming_skill_03_secon.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/aming_skill_03_shield.cfx",
+      "address": "characterlab/source/effect/aming_skill_03_shield.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/aming_skill_03_start.particle",
+      "address": "characterlab/source/effect/aming_skill_03_start.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/aming_skill_03_trans.particle",
+      "address": "characterlab/source/effect/aming_skill_03_trans.particle",
+      "type": "particle"
+    },
+    {
+      "source": "model/arming.timeline",
+      "address": "characterlab/source/model/arming.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/orb_02.sct",
+      "address": "characterlab/source/particle/orb_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/pati_01.sct",
+      "address": "characterlab/source/particle/pati_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/tri_pati_01.sct",
+      "address": "characterlab/source/particle/tri_pati_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/zodiac_star1.sct",
+      "address": "characterlab/source/particle/zodiac_star1.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

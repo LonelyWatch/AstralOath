@@ -1,0 +1,83 @@
+
+cecilia_skill_02_eff.sct
+size: 1086,506
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+blade_light_01
+  rotate: true
+  xy: 90, 439
+  size: 24, 154
+  orig: 24, 154
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 418
+  size: 86, 86
+  orig: 86, 86
+  offset: 0, 0
+  index: -1
+line_light_01
+  rotate: false
+  xy: 90, 418
+  size: 199, 19
+  orig: 199, 19
+  offset: 0, 0
+  index: -1
+sonic_wave1
+  rotate: false
+  xy: 2, 2
+  size: 264, 264
+  orig: 264, 264
+  offset: 0, 0
+  index: -1
+sonic_wave2
+  rotate: false
+  xy: 268, 2
+  size: 264, 264
+  orig: 264, 264
+  offset: 0, 0
+  index: -1
+sonic_wave3
+  rotate: false
+  xy: 534, 2
+  size: 264, 264
+  orig: 264, 264
+  offset: 0, 0
+  index: -1
+sonic_wave4
+  rotate: false
+  xy: 800, 2
+  size: 264, 264
+  orig: 264, 264
+  offset: 0, 0
+  index: -1
+swing_01
+  rotate: false
+  xy: 273, 268
+  size: 269, 148
+  orig: 269, 148
+  offset: 0, 0
+  index: -1
+swing_01_g
+  rotate: false
+  xy: 544, 268
+  size: 269, 148
+  orig: 269, 148
+  offset: 0, 0
+  index: -1
+swing_02
+  rotate: false
+  xy: 815, 268
+  size: 269, 148
+  orig: 269, 148
+  offset: 0, 0
+  index: -1
+swing_02_g
+  rotate: false
+  xy: 2, 268
+  size: 269, 148
+  orig: 269, 148
+  offset: 0, 0
+  index: -1

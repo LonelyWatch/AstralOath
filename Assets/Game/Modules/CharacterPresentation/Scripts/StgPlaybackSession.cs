@@ -23,6 +23,7 @@ namespace AstralOath.Client.CharacterPresentation
         private readonly List<(double at,int id)> finishes=new List<(double,int)>();
         private readonly HashSet<string> reports=new HashSet<string>(StringComparer.Ordinal);
         private readonly Dictionary<int,string> scopes=new Dictionary<int,string>();
+        private readonly List<(double at,string animation,string name)> timelineEvents=new List<(double,string,string)>();
         private double time;
         private int animationNode=-1;
         private float initialZoom;
@@ -33,6 +34,7 @@ namespace AstralOath.Client.CharacterPresentation
         private sealed class PositionTween { public Transform target; public Vector3 from,to; public double start,duration; }
         private sealed class ZoomTween { public double start,duration; public float from,to; }
         public Func<int,Vector3?> ResolveLocation {get;set;}
+        public JObject Timeline {get;set;}
         public event Action<JObject> Effect;
         public event Action<string> Animation;
         public string Id => (string)graph["id"];
@@ -81,6 +83,11 @@ namespace AstralOath.Client.CharacterPresentation
                 camera.orthographicSize=Mathf.Lerp(zoom.from,zoom.to,Mathf.Clamp01(t));
                 if(t>=1)zoom=null;
             }
+            foreach(var item in timelineEvents.Where(e=>e.at<=time).ToArray())
+            {
+                timelineEvents.Remove(item);
+                if(item.animation==caster.CurrentAnimation) DispatchNamedEvent(item.name);
+            }
             foreach(var item in finishes.Where(f=>f.at<=time).ToArray()) {finishes.Remove(item);Complete(item.id);}
             int budget=2048;
             while(true)
@@ -102,7 +109,7 @@ namespace AstralOath.Client.CharacterPresentation
                 case "ANI":
                     string animation=(string)node["ani"];
                     if(!caster.Animations.Any(a=>a.Name==animation)){Report("Missing ANI "+animation);Complete(id);break;}
-                    animationNode=id;caster.Play(animation,false);Animation?.Invoke(animation);break;
+                    animationNode=id;caster.Play(animation,false);ScheduleTimelineEvents(animation);Animation?.Invoke(animation);break;
                 case "ONEVENT": Complete(id);break;
                 case "ANI_SCOPE":
                     scopes[id]=(string)node["to"];
@@ -110,7 +117,7 @@ namespace AstralOath.Client.CharacterPresentation
                     break;
                 case "IDLE":
                     string idle=caster.Animations.FirstOrDefault(a=>a.Name=="b_idle"||a.Name=="idle")?.Name;
-                    if(idle!=null){caster.Play(idle,true);Animation?.Invoke(idle);}
+                    if(idle!=null){caster.Play(idle,true);ScheduleTimelineEvents(idle);Animation?.Invoke(idle);}
                     Complete(id);break;
                 case "ZOOM":
                     if(!experimental){Report("Unverified ZOOM curve "+node.ToString(Newtonsoft.Json.Formatting.None));Complete(id);break;}
@@ -137,6 +144,10 @@ namespace AstralOath.Client.CharacterPresentation
                     else positions.Add(new PositionTween{target=transform,from=transform.position,to=target,start=time,duration=seconds});
                     FinishAfter(id,seconds);break;
                 case "EFFECT": case "HIT": case "CUTIN": case "DARK": case "STOP": case "SHAKE": case "PPEFFECT": Effect?.Invoke(node);Complete(id);break;
+                case "DELAY":
+                    FinishAfter(id, Number(node["time"], 0)/1000d);break;
+                case "SHOT" when string.IsNullOrEmpty((string)node["source"]):
+                    FinishAfter(id, Number(node["time"], 0)/1000d);break;
                 case "SINE_VALUE":
                     Report("Unverified "+kind+" "+node.ToString(Newtonsoft.Json.Formatting.None));Complete(id);break;
                 default: Report("Unsupported STG node "+node.ToString(Newtonsoft.Json.Formatting.None));Complete(id);break;
@@ -144,7 +155,7 @@ namespace AstralOath.Client.CharacterPresentation
         }
         private void StartEdges(int id)
         {
-            foreach(var edge in edges.Where(e=>(int)e["from"]==id && e["when"]!=null))
+            foreach(var edge in edges.Where(e=>(int)e["from"]==id && (int?)e["when"] is int when && when!=0))
             {
                 int when=(int)edge["when"];
                 if(experimental&&when==1)Enqueue((int)edge["to"],Delay(edge));
@@ -154,7 +165,7 @@ namespace AstralOath.Client.CharacterPresentation
         private void Complete(int id)
         {
             if(!completed.Add(id))return;
-            foreach(var edge in edges.Where(e=>(int)e["from"]==id && e["when"]==null))
+            foreach(var edge in edges.Where(e=>(int)e["from"]==id && ((int?)e["when"]??0)==0))
                 Enqueue((int)edge["to"],Delay(edge));
         }
         private void OnEvent(SkeletonPlaybackEvent value)
@@ -165,13 +176,35 @@ namespace AstralOath.Client.CharacterPresentation
                 if(animationNode>=0 && (string)nodes[animationNode]["ani"]==value.Name)Complete(animationNode);
                 return;
             }
-            foreach(var node in nodes.Values.Where(n=>(string)n["etty"]=="ONEVENT" && (string)n["name"]==value.Name))
+            DispatchNamedEvent(value.Name);
+        }
+        private void ScheduleTimelineEvents(string animation)
+        {
+            timelineEvents.Clear();
+            if (!(Timeline?["timeline"]?["default"]?[animation]?["frames"] is JArray frames)) return;
+            foreach (var frame in frames.OfType<JObject>())
+            {
+                if ((string)frame["func"] != "event") continue;
+                string name = (string)frame["param"]?["name"];
+                double delay = Number(frame["time"], 0)/1000d;
+                if (string.IsNullOrWhiteSpace(name) || double.IsNaN(delay) || double.IsInfinity(delay) || delay < 0)
+                {
+                    Report("Invalid timeline event " + frame.ToString(Newtonsoft.Json.Formatting.None));
+                    continue;
+                }
+                if (delay == 0) DispatchNamedEvent(name);
+                else timelineEvents.Add((time+delay,animation,name));
+            }
+        }
+        private void DispatchNamedEvent(string name)
+        {
+            foreach(var node in nodes.Values.Where(n=>(string)n["etty"]=="ONEVENT" && (string)n["name"]==name))
             {
                 string expected=(string)node["ani"];
                 if(!string.IsNullOrEmpty(expected)&&expected!=caster.CurrentAnimation)continue;
                 Enqueue((int)node["guid"],0);
             }
-            foreach(var scope in scopes.Where(pair=>pair.Value==value.Name).ToArray()){scopes.Remove(scope.Key);Complete(scope.Key);}
+            foreach(var scope in scopes.Where(pair=>pair.Value==name).ToArray()){scopes.Remove(scope.Key);Complete(scope.Key);}
         }
         private void Enqueue(int id,double delay)
         {
@@ -187,7 +220,7 @@ namespace AstralOath.Client.CharacterPresentation
         private void Report(string message){if(reports.Add(message))report?.Invoke(message);}
         public void Dispose()
         {
-            if(disposed)return;disposed=true;caster.Event-=OnEvent;queue.Clear();finishes.Clear();scopes.Clear();positions.Clear();
+            if(disposed)return;disposed=true;caster.Event-=OnEvent;queue.Clear();finishes.Clear();scopes.Clear();positions.Clear();timelineEvents.Clear();
             if(camera){camera.orthographicSize=initialZoom;camera.transform.position=initialCamera;}
             Effect=null;Animation=null;
         }

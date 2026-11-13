@@ -45,15 +45,18 @@ namespace AstralOath.Shared.Battle
             public string id, heroId, nameKey, presentationId, iconAsset, target, soulBurnKind;
             public int slot, cooldownTurns, soulGain, soulBurnCost, soulBurnTurns;
             public int? attackRateBp, powerBp, casterHealthDamageBp, casterHealthHealBp,
-                casterHealthBarrierBp, burnAttackRateBp;
+                casterHealthBarrierBp, burnAttackRateBp, casterDefenseBarrierBp, casterAttackBarrierBp, casterDefenseDamageBp,
+                casterSpeedDamagePpm, burnSpeedDamagePpm, casterHealthRatioDamageBp, damageAgainstBuffBp,
+                defensePenetrationBp, stealthPenetrationBp, highestDefensePenetrationBp;
+            public bool alwaysCritical, aoeWhenBuffed, aoeOutsideTurn;
             internal SkillRow Copy() => (SkillRow)MemberwiseClone();
         }
 
         [Serializable]
         public sealed class EffectRow
         {
-            public string id, skillId, phase, operation, recipient, status;
-            public int order, chanceBp, turns, value;
+            public string id, skillId, phase, operation, recipient, status, condition, chanceBonusStatus;
+            public int order, chanceBp, turns, value, chanceBonusBp;
             internal EffectRow Copy() => (EffectRow)MemberwiseClone();
         }
 
@@ -75,19 +78,23 @@ namespace AstralOath.Shared.Battle
     {
         public const uint RulesVersion = 1;
         public const string SlimeSkillId = "preview.slime.s1";
-        private static readonly string[] PreviewHeroes = { "c1001", "c1062", "c1005", "c1001" };
+        public static IReadOnlyList<string> DefaultHeroIds { get; } = Array.AsReadOnly(new[] { "c1001", "c1062", "c1005", "c1001" });
 
-        public static BattleMatch Create(string battleId, ulong seed, BattleCatalogData data, bool duel = false)
+        public static BattleMatch Create(string battleId, ulong seed, BattleCatalogData data, bool duel = false,
+            IReadOnlyList<string> allyHeroIds = null)
         {
             if (data == null) throw new ArgumentNullException(nameof(data));
             if (data.schemaVersion != 2) throw new ArgumentException("Unsupported battle catalog schema.", nameof(data));
             var programs = new BattleSkillResolver(data, includePreviewSlime: !duel);
             var heroes = data.heroes.ToDictionary(row => row.id, StringComparer.Ordinal);
+            var selectedHeroes = allyHeroIds ?? DefaultHeroIds;
+            if (selectedHeroes.Count != DefaultHeroIds.Count || selectedHeroes.Any(id => id == null || !heroes.ContainsKey(id)))
+                throw new ArgumentException("The battle roster must specify four known heroes.", nameof(allyHeroIds));
             var growth = data.growthPresets.ToDictionary(row => row.id, StringComparer.Ordinal);
             var roster = new List<BattleUnit>();
-            for (int i = 0; i < PreviewHeroes.Length; i++)
+            for (int i = 0; i < selectedHeroes.Count; i++)
             {
-                var row = heroes[PreviewHeroes[i]];
+                var row = heroes[selectedHeroes[i]];
                 var presetRow = growth[row.growthPresetId];
                 var preset = new HeroGrowthPreset(presetRow.id, presetRow.nativeStars, presetRow.attackCoefficientMilli,
                     presetRow.healthCoefficientMilli, presetRow.defenseCoefficientMilli, presetRow.speedMilli);

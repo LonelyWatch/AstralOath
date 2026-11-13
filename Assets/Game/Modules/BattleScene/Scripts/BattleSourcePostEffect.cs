@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -72,10 +73,14 @@ namespace AstralOath.Client.BattleScene
                 !TryNumber(node, "duration", out float duration) || duration <= 0f)
                 return false;
 
-            var modulation = new SineRange[modulators.Length];
-            for (int index = 0; index < modulators.Length; index++)
+            var random = modulators.FirstOrDefault(item => (string)item["etty"] == "RANDOM_VALUE" &&
+                (string)item["name"] == "u_range" && item["value"] != null);
+            if (random != null) range = Number(random, "value", range);
+            var sineNodes = modulators.Where(item => item != random).ToArray();
+            var modulation = new SineRange[sineNodes.Length];
+            for (int index = 0; index < sineNodes.Length; index++)
             {
-                var item = modulators[index];
+                var item = sineNodes[index];
                 if ((string)item["etty"] != "SINE_VALUE" || (string)item["name"] != "u_range" ||
                     !TryNumber(item, "duration", out float period) || period <= 0f ||
                     !TryNumber(item, "power", out float power))

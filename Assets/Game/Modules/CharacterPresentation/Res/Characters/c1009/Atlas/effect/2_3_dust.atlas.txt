@@ -1,0 +1,83 @@
+
+2_3_dust.sct
+size: 474,61
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+RND/png/ssDOWN1
+  rotate: false
+  xy: 447, 34
+  size: 20, 24
+  orig: 20, 24
+  offset: 0, 0
+  index: -1
+RND/png/ssDOWN2
+  rotate: false
+  xy: 102, 2
+  size: 44, 52
+  orig: 44, 52
+  offset: 0, 0
+  index: -1
+RND/png/ssDOWN3
+  rotate: false
+  xy: 278, 2
+  size: 43, 51
+  orig: 43, 51
+  offset: 0, 0
+  index: -1
+RND/png/ssDOWN4
+  rotate: false
+  xy: 366, 2
+  size: 39, 46
+  orig: 39, 46
+  offset: 0, 0
+  index: -1
+RND/png/ssDOWN5
+  rotate: false
+  xy: 447, 2
+  size: 25, 30
+  orig: 25, 30
+  offset: 0, 0
+  index: -1
+RND/png/ssUP1
+  rotate: true
+  xy: 148, 2
+  size: 51, 63
+  orig: 51, 63
+  offset: 0, 0
+  index: -1
+RND/png/ssUP2
+  rotate: true
+  xy: 213, 2
+  size: 51, 63
+  orig: 51, 63
+  offset: 0, 0
+  index: -1
+RND/png/ssUP3
+  rotate: false
+  xy: 2, 2
+  size: 46, 57
+  orig: 46, 57
+  offset: 0, 0
+  index: -1
+RND/png/ssUP4
+  rotate: false
+  xy: 323, 2
+  size: 41, 51
+  orig: 41, 51
+  offset: 0, 0
+  index: -1
+png/dust_b_1
+  rotate: true
+  xy: 407, 2
+  size: 39, 38
+  orig: 39, 38
+  offset: 0, 0
+  index: -1
+png/dust_b_2
+  rotate: true
+  xy: 50, 2
+  size: 53, 50
+  orig: 53, 50
+  offset: 0, 0
+  index: -1

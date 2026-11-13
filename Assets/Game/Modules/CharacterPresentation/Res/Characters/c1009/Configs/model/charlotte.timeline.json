@@ -1,0 +1,160 @@
+{
+  "timeline": {
+    "default": {
+      "b_idle": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill3_2_2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "charlotte_skill3_boost2",
+              "location": 5,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill1": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill3_2_5": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "charlotte_skill3_boost5",
+              "location": 5,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "run": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill3_2_4": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "charlotte_skill3_boost4",
+              "location": 5,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill3_2_3": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "charlotte_skill3_boost3",
+              "location": 5,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill3_1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "id": "shsk1_rd",
+              "source": "charlotte_skill3_ready",
+              "location": 1,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "id": "d1",
+              "source": "charlotte_skill3_ready_d1",
+              "location": 5,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "jump_forward": {
+        "duration": 0,
+        "frames": []
+      },
+      "idle": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill3_2_1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "charlotte_skill3_boost1",
+              "location": 5,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": []
+      },
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": []
+      },
+      "groggy": {
+        "duration": 0,
+        "frames": []
+      },
+      "run_start": {
+        "duration": 0,
+        "frames": []
+      },
+      "jump_back": {
+        "duration": 0,
+        "frames": []
+      },
+      "knock_down": {
+        "duration": 0,
+        "frames": []
+      },
+      "down": {
+        "duration": 0,
+        "frames": []
+      },
+      "attacked": {
+        "duration": 0,
+        "frames": [
+          {
+            "param": {}
+          }
+        ]
+      },
+      "rise": {
+        "duration": 0,
+        "frames": []
+      }
+    }
+  }
+}

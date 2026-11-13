@@ -23,6 +23,69 @@
       "effectResistanceBp": 1200
     },
     {
+      "id": "c1002",
+      "nameKey": "character.cecilia.name",
+      "element": "fire",
+      "heroClass": "knight",
+      "zodiac": "aries",
+      "growthPresetId": "knight_aries_5",
+      "baseStars": 5,
+      "level": 60,
+      "stars": 6,
+      "awakenings": 6,
+      "variant": "standard",
+      "attack": 821,
+      "health": 6751,
+      "defense": 648,
+      "speed": 110,
+      "critChanceBp": 1500,
+      "critDamageBp": 15000,
+      "effectivenessBp": 1800,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1003",
+      "nameKey": "character.rose.name",
+      "element": "ice",
+      "heroClass": "knight",
+      "zodiac": "libra",
+      "growthPresetId": "knight_libra_4",
+      "baseStars": 4,
+      "level": 60,
+      "stars": 6,
+      "awakenings": 6,
+      "variant": "standard",
+      "attack": 821,
+      "health": 6266,
+      "defense": 703,
+      "speed": 97,
+      "critChanceBp": 1500,
+      "critDamageBp": 15000,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 1200
+    },
+    {
+      "id": "c1004",
+      "nameKey": "character.silk.name",
+      "element": "wind",
+      "heroClass": "ranger",
+      "zodiac": "virgo",
+      "growthPresetId": "ranger_virgo_4",
+      "baseStars": 4,
+      "level": 60,
+      "stars": 6,
+      "awakenings": 6,
+      "variant": "standard",
+      "attack": 1188,
+      "health": 4693,
+      "defense": 518,
+      "speed": 121,
+      "critChanceBp": 1500,
+      "critDamageBp": 15000,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
       "id": "c1005",
       "nameKey": "character.mercedes.name",
       "element": "fire",
@@ -40,6 +103,90 @@
       "speed": 101,
       "critChanceBp": 2700,
       "critDamageBp": 16000,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1006",
+      "nameKey": "character.kise.name",
+      "element": "ice",
+      "heroClass": "thief",
+      "zodiac": "leo",
+      "growthPresetId": "thief_leo_5",
+      "baseStars": 5,
+      "level": 60,
+      "stars": 6,
+      "awakenings": 6,
+      "variant": "standard",
+      "attack": 1283,
+      "health": 5138,
+      "defense": 522,
+      "speed": 116,
+      "critChanceBp": 2300,
+      "critDamageBp": 15000,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1007",
+      "nameKey": "character.wildred.name",
+      "element": "wind",
+      "heroClass": "thief",
+      "zodiac": "leo",
+      "growthPresetId": "thief_leo_5",
+      "baseStars": 5,
+      "level": 60,
+      "stars": 6,
+      "awakenings": 6,
+      "variant": "standard",
+      "attack": 1283,
+      "health": 5138,
+      "defense": 522,
+      "speed": 116,
+      "critChanceBp": 2300,
+      "critDamageBp": 15000,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1008",
+      "nameKey": "character.arming.name",
+      "element": "wind",
+      "heroClass": "knight",
+      "zodiac": "capricorn",
+      "growthPresetId": "knight_capricorn_4",
+      "baseStars": 4,
+      "level": 60,
+      "stars": 6,
+      "awakenings": 6,
+      "variant": "standard",
+      "attack": 721,
+      "health": 6189,
+      "defense": 785,
+      "speed": 91,
+      "critChanceBp": 1500,
+      "critDamageBp": 15000,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 1800
+    },
+    {
+      "id": "c1009",
+      "nameKey": "character.charlotte.name",
+      "element": "fire",
+      "heroClass": "knight",
+      "zodiac": "leo",
+      "growthPresetId": "knight_leo_5",
+      "baseStars": 5,
+      "level": 60,
+      "stars": 6,
+      "awakenings": 6,
+      "variant": "standard",
+      "attack": 1134,
+      "health": 5825,
+      "defense": 662,
+      "speed": 99,
+      "critChanceBp": 2300,
+      "critDamageBp": 15000,
       "effectivenessBp": 0,
       "effectResistanceBp": 0
     },
@@ -95,6 +242,66 @@
       "healthCoefficientMilli": 155000,
       "defenseCoefficientMilli": 60000,
       "speedMilli": 98750
+    },
+    {
+      "id": "knight_aries_5",
+      "nativeStars": 5,
+      "heroClass": "knight",
+      "zodiac": "aries",
+      "attackCoefficientMilli": 44400,
+      "healthCoefficientMilli": 201200,
+      "defenseCoefficientMilli": 55500,
+      "speedMilli": 106250
+    },
+    {
+      "id": "knight_libra_4",
+      "nativeStars": 4,
+      "heroClass": "knight",
+      "zodiac": "libra",
+      "attackCoefficientMilli": 44400,
+      "healthCoefficientMilli": 185800,
+      "defenseCoefficientMilli": 55200,
+      "speedMilli": 97500
+    },
+    {
+      "id": "ranger_virgo_4",
+      "nativeStars": 4,
+      "heroClass": "ranger",
+      "zodiac": "virgo",
+      "attackCoefficientMilli": 58200,
+      "healthCoefficientMilli": 148000,
+      "defenseCoefficientMilli": 44400,
+      "speedMilli": 117500
+    },
+    {
+      "id": "thief_leo_5",
+      "nativeStars": 5,
+      "heroClass": "thief",
+      "zodiac": "leo",
+      "attackCoefficientMilli": 63600,
+      "healthCoefficientMilli": 163400,
+      "defenseCoefficientMilli": 44700,
+      "speedMilli": 116250
+    },
+    {
+      "id": "knight_capricorn_4",
+      "nativeStars": 4,
+      "heroClass": "knight",
+      "zodiac": "capricorn",
+      "attackCoefficientMilli": 37800,
+      "healthCoefficientMilli": 199800,
+      "defenseCoefficientMilli": 58500,
+      "speedMilli": 91250
+    },
+    {
+      "id": "knight_leo_5",
+      "nativeStars": 5,
+      "heroClass": "knight",
+      "zodiac": "leo",
+      "attackCoefficientMilli": 55200,
+      "healthCoefficientMilli": 187200,
+      "defenseCoefficientMilli": 56700,
+      "speedMilli": 99375
     }
   ],
   "awakeningSteps": [
@@ -189,6 +396,276 @@
       "effectResistanceBp": 0
     },
     {
+      "id": "c1002.r1",
+      "heroId": "c1002",
+      "rank": 1,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 300,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1002.r2",
+      "heroId": "c1002",
+      "rank": 2,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 600,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1002.r3",
+      "heroId": "c1002",
+      "rank": 3,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1002.r4",
+      "heroId": "c1002",
+      "rank": 4,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 4,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1002.r5",
+      "heroId": "c1002",
+      "rank": 5,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 600,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1002.r6",
+      "heroId": "c1002",
+      "rank": 6,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 1200,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1003.r1",
+      "heroId": "c1003",
+      "rank": 1,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 300,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1003.r2",
+      "heroId": "c1003",
+      "rank": 2,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 300,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1003.r3",
+      "heroId": "c1003",
+      "rank": 3,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1003.r4",
+      "heroId": "c1003",
+      "rank": 4,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 1200
+    },
+    {
+      "id": "c1003.r5",
+      "heroId": "c1003",
+      "rank": 5,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 600,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1003.r6",
+      "heroId": "c1003",
+      "rank": 6,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 600,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1004.r1",
+      "heroId": "c1004",
+      "rank": 1,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 300,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1004.r2",
+      "heroId": "c1004",
+      "rank": 2,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 300,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1004.r3",
+      "heroId": "c1004",
+      "rank": 3,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1004.r4",
+      "heroId": "c1004",
+      "rank": 4,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 4,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1004.r5",
+      "heroId": "c1004",
+      "rank": 5,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 600,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1004.r6",
+      "heroId": "c1004",
+      "rank": 6,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 600,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
       "id": "c1005.r1",
       "heroId": "c1005",
       "rank": 1,
@@ -266,6 +743,366 @@
     {
       "id": "c1005.r6",
       "heroId": "c1005",
+      "rank": 6,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 600,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1006.r1",
+      "heroId": "c1006",
+      "rank": 1,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 300,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1006.r2",
+      "heroId": "c1006",
+      "rank": 2,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 300,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1006.r3",
+      "heroId": "c1006",
+      "rank": 3,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1006.r4",
+      "heroId": "c1006",
+      "rank": 4,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 800,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1006.r5",
+      "heroId": "c1006",
+      "rank": 5,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 600,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1006.r6",
+      "heroId": "c1006",
+      "rank": 6,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 600,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1007.r1",
+      "heroId": "c1007",
+      "rank": 1,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 300,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1007.r2",
+      "heroId": "c1007",
+      "rank": 2,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 300,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1007.r3",
+      "heroId": "c1007",
+      "rank": 3,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1007.r4",
+      "heroId": "c1007",
+      "rank": 4,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 800,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1007.r5",
+      "heroId": "c1007",
+      "rank": 5,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 600,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1007.r6",
+      "heroId": "c1007",
+      "rank": 6,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 600,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1008.r1",
+      "heroId": "c1008",
+      "rank": 1,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 300,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1008.r2",
+      "heroId": "c1008",
+      "rank": 2,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 600
+    },
+    {
+      "id": "c1008.r3",
+      "heroId": "c1008",
+      "rank": 3,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1008.r4",
+      "heroId": "c1008",
+      "rank": 4,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 600,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1008.r5",
+      "heroId": "c1008",
+      "rank": 5,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 600,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1008.r6",
+      "heroId": "c1008",
+      "rank": 6,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 1200
+    },
+    {
+      "id": "c1009.r1",
+      "heroId": "c1009",
+      "rank": 1,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 300,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1009.r2",
+      "heroId": "c1009",
+      "rank": 2,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 300,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1009.r3",
+      "heroId": "c1009",
+      "rank": 3,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1009.r4",
+      "heroId": "c1009",
+      "rank": 4,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 800,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1009.r5",
+      "heroId": "c1009",
+      "rank": 5,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 600,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1009.r6",
+      "heroId": "c1009",
       "rank": 6,
       "attackFlat": 30,
       "healthFlat": 80,
@@ -386,7 +1223,10 @@
       "soulBurnTurns": 0,
       "attackRateBp": 9000,
       "powerBp": 10000,
-      "casterHealthDamageBp": 800
+      "casterHealthDamageBp": 800,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
     },
     {
       "id": "c1001.s2",
@@ -403,7 +1243,10 @@
       "soulBurnKind": "reduce_cooldown",
       "soulBurnTurns": 2,
       "attackRateBp": 15000,
-      "powerBp": 10000
+      "powerBp": 10000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
     },
     {
       "id": "c1001.s3",
@@ -421,7 +1264,191 @@
       "soulBurnTurns": 0,
       "attackRateBp": 9000,
       "powerBp": 10000,
-      "casterHealthDamageBp": 1200
+      "casterHealthDamageBp": 1200,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
+    },
+    {
+      "id": "c1002.s1",
+      "heroId": "c1002",
+      "slot": 1,
+      "nameKey": "battle.skill.c1002.s1.name",
+      "descriptionKey": "battle.skill.c1002.s1.description",
+      "presentationId": "c_cecilia_skill_new_01",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1002_1.png",
+      "target": "one_enemy",
+      "cooldownTurns": 0,
+      "soulGain": 1,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 7000,
+      "powerBp": 10000,
+      "casterHealthDamageBp": 700,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
+    },
+    {
+      "id": "c1002.s2",
+      "heroId": "c1002",
+      "slot": 2,
+      "nameKey": "battle.skill.c1002.s2.name",
+      "descriptionKey": "battle.skill.c1002.s2.description",
+      "presentationId": "c_cecilia_skill_new_02",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1002_2.png",
+      "target": "all_enemies",
+      "cooldownTurns": 3,
+      "soulGain": 2,
+      "soulBurnCost": 10,
+      "soulBurnKind": "reduce_cooldown",
+      "soulBurnTurns": 2,
+      "attackRateBp": 4000,
+      "powerBp": 10000,
+      "casterHealthDamageBp": 600,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
+    },
+    {
+      "id": "c1002.s3",
+      "heroId": "c1002",
+      "slot": 3,
+      "nameKey": "battle.skill.c1002.s3.name",
+      "descriptionKey": "battle.skill.c1002.s3.description",
+      "presentationId": "c_cecilia_skill_new_03",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1002_3.png",
+      "target": "all_enemies",
+      "cooldownTurns": 5,
+      "soulGain": 2,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 6000,
+      "powerBp": 10500,
+      "casterHealthDamageBp": 1200,
+      "casterHealthBarrierBp": 1500,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
+    },
+    {
+      "id": "c1003.s1",
+      "heroId": "c1003",
+      "slot": 1,
+      "nameKey": "battle.skill.c1003.s1.name",
+      "descriptionKey": "battle.skill.c1003.s1.description",
+      "presentationId": "c_rose_skill_01",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1003_1.png",
+      "target": "one_enemy",
+      "cooldownTurns": 0,
+      "soulGain": 1,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 5000,
+      "powerBp": 10000,
+      "casterDefenseDamageBp": 7000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
+    },
+    {
+      "id": "c1003.s2",
+      "heroId": "c1003",
+      "slot": 2,
+      "nameKey": "battle.skill.c1003.s2.name",
+      "descriptionKey": "battle.skill.c1003.s2.description",
+      "presentationId": "c_rose_skill_02",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1003_2.png",
+      "target": "one_ally",
+      "cooldownTurns": 4,
+      "soulGain": 2,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "casterDefenseBarrierBp": 10000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
+    },
+    {
+      "id": "c1003.s3",
+      "heroId": "c1003",
+      "slot": 3,
+      "nameKey": "battle.skill.c1003.s3.name",
+      "descriptionKey": "battle.skill.c1003.s3.description",
+      "presentationId": "c_rose_skill_03",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1003_3.png",
+      "target": "all_allies",
+      "cooldownTurns": 5,
+      "soulGain": 3,
+      "soulBurnCost": 10,
+      "soulBurnKind": "extend_granted_buffs",
+      "soulBurnTurns": 1,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
+    },
+    {
+      "id": "c1004.s1",
+      "heroId": "c1004",
+      "slot": 1,
+      "nameKey": "battle.skill.c1004.s1.name",
+      "descriptionKey": "battle.skill.c1004.s1.description",
+      "presentationId": "c_silk_skill_01",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1004_1.png",
+      "target": "one_enemy",
+      "cooldownTurns": 0,
+      "soulGain": 1,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 9000,
+      "powerBp": 9000,
+      "casterSpeedDamagePpm": 750,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
+    },
+    {
+      "id": "c1004.s2",
+      "heroId": "c1004",
+      "slot": 2,
+      "nameKey": "battle.skill.c1004.s2.name",
+      "descriptionKey": "battle.skill.c1004.s2.description",
+      "presentationId": "c_silk_skill_02",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1004_2.png",
+      "target": "passive",
+      "cooldownTurns": 0,
+      "soulGain": 0,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
+    },
+    {
+      "id": "c1004.s3",
+      "heroId": "c1004",
+      "slot": 3,
+      "nameKey": "battle.skill.c1004.s3.name",
+      "descriptionKey": "battle.skill.c1004.s3.description",
+      "presentationId": "c_silk_skill_03",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1004_3.png",
+      "target": "all_enemies",
+      "cooldownTurns": 5,
+      "soulGain": 2,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 9500,
+      "powerBp": 10500,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
     },
     {
       "id": "c1005.s1",
@@ -438,7 +1465,10 @@
       "soulBurnKind": "none",
       "soulBurnTurns": 0,
       "attackRateBp": 10000,
-      "powerBp": 9500
+      "powerBp": 9500,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
     },
     {
       "id": "c1005.s2",
@@ -455,7 +1485,10 @@
       "soulBurnKind": "none",
       "soulBurnTurns": 0,
       "attackRateBp": 7500,
-      "powerBp": 10000
+      "powerBp": 10000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
     },
     {
       "id": "c1005.s3",
@@ -472,7 +1505,255 @@
       "soulBurnKind": "extend_granted_buffs",
       "soulBurnTurns": 1,
       "attackRateBp": 12000,
-      "powerBp": 9500
+      "powerBp": 9500,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
+    },
+    {
+      "id": "c1006.s1",
+      "heroId": "c1006",
+      "slot": 1,
+      "nameKey": "battle.skill.c1006.s1.name",
+      "descriptionKey": "battle.skill.c1006.s1.description",
+      "presentationId": "c_kise_skill_01",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1006_1.png",
+      "target": "one_enemy",
+      "cooldownTurns": 0,
+      "soulGain": 1,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 11000,
+      "powerBp": 10000,
+      "damageAgainstBuffBp": 7000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
+    },
+    {
+      "id": "c1006.s2",
+      "heroId": "c1006",
+      "slot": 2,
+      "nameKey": "battle.skill.c1006.s2.name",
+      "descriptionKey": "battle.skill.c1006.s2.description",
+      "presentationId": "c_kise_skill_02",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1006_2.png",
+      "target": "all_enemies",
+      "cooldownTurns": 4,
+      "soulGain": 2,
+      "soulBurnCost": 10,
+      "soulBurnKind": "increase_damage",
+      "soulBurnTurns": 0,
+      "attackRateBp": 10000,
+      "powerBp": 10000,
+      "burnAttackRateBp": 12000,
+      "defensePenetrationBp": 3000,
+      "stealthPenetrationBp": 3000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
+    },
+    {
+      "id": "c1006.s3",
+      "heroId": "c1006",
+      "slot": 3,
+      "nameKey": "battle.skill.c1006.s3.name",
+      "descriptionKey": "battle.skill.c1006.s3.description",
+      "presentationId": "c_kise_skill_03",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1006_3.png",
+      "target": "one_enemy",
+      "cooldownTurns": 5,
+      "soulGain": 3,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 16000,
+      "powerBp": 10000,
+      "casterHealthRatioDamageBp": 3500,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "casterAttackBarrierBp": 10000
+    },
+    {
+      "id": "c1007.s1",
+      "heroId": "c1007",
+      "slot": 1,
+      "nameKey": "battle.skill.c1007.s1.name",
+      "descriptionKey": "battle.skill.c1007.s1.description",
+      "presentationId": "c_wilderd_skill_01",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1007_1.png",
+      "target": "two_enemies",
+      "cooldownTurns": 0,
+      "soulGain": 1,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 9000,
+      "powerBp": 9500,
+      "casterSpeedDamagePpm": 750,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
+    },
+    {
+      "id": "c1007.s2",
+      "heroId": "c1007",
+      "slot": 2,
+      "nameKey": "battle.skill.c1007.s2.name",
+      "descriptionKey": "battle.skill.c1007.s2.description",
+      "presentationId": "c_wilderd_skill_02",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1007_2.png",
+      "target": "passive",
+      "cooldownTurns": 0,
+      "soulGain": 0,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
+    },
+    {
+      "id": "c1007.s3",
+      "heroId": "c1007",
+      "slot": 3,
+      "nameKey": "battle.skill.c1007.s3.name",
+      "descriptionKey": "battle.skill.c1007.s3.description",
+      "presentationId": "c_wilderd_skill_03",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1007_3.png",
+      "target": "all_enemies",
+      "cooldownTurns": 5,
+      "soulGain": 2,
+      "soulBurnCost": 10,
+      "soulBurnKind": "increase_damage",
+      "soulBurnTurns": 0,
+      "attackRateBp": 8500,
+      "powerBp": 10000,
+      "burnAttackRateBp": 11000,
+      "casterSpeedDamagePpm": 750,
+      "burnSpeedDamagePpm": 900,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
+    },
+    {
+      "id": "c1008.s1",
+      "heroId": "c1008",
+      "slot": 1,
+      "nameKey": "battle.skill.c1008.s1.name",
+      "descriptionKey": "battle.skill.c1008.s1.description",
+      "presentationId": "c_aming_skill_01",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1008_1.png",
+      "target": "one_enemy",
+      "cooldownTurns": 0,
+      "soulGain": 1,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 8000,
+      "powerBp": 9000,
+      "casterDefenseDamageBp": 6000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": true
+    },
+    {
+      "id": "c1008.s2",
+      "heroId": "c1008",
+      "slot": 2,
+      "nameKey": "battle.skill.c1008.s2.name",
+      "descriptionKey": "battle.skill.c1008.s2.description",
+      "presentationId": "c_aming_skill_02",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1008_2.png",
+      "target": "passive",
+      "cooldownTurns": 0,
+      "soulGain": 0,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
+    },
+    {
+      "id": "c1008.s3",
+      "heroId": "c1008",
+      "slot": 3,
+      "nameKey": "battle.skill.c1008.s3.name",
+      "descriptionKey": "battle.skill.c1008.s3.description",
+      "presentationId": "c_aming_skill_03",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1008_3.png",
+      "target": "all_allies",
+      "cooldownTurns": 4,
+      "soulGain": 1,
+      "soulBurnCost": 10,
+      "soulBurnKind": "extend_granted_buffs",
+      "soulBurnTurns": 1,
+      "casterDefenseBarrierBp": 6000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
+    },
+    {
+      "id": "c1009.s1",
+      "heroId": "c1009",
+      "slot": 1,
+      "nameKey": "battle.skill.c1009.s1.name",
+      "descriptionKey": "battle.skill.c1009.s1.description",
+      "presentationId": "c_charlotte_skill_01",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1009_1.png",
+      "target": "one_enemy",
+      "cooldownTurns": 0,
+      "soulGain": 1,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 9000,
+      "powerBp": 10000,
+      "alwaysCritical": true,
+      "aoeWhenBuffed": true,
+      "aoeOutsideTurn": false
+    },
+    {
+      "id": "c1009.s2",
+      "heroId": "c1009",
+      "slot": 2,
+      "nameKey": "battle.skill.c1009.s2.name",
+      "descriptionKey": "battle.skill.c1009.s2.description",
+      "presentationId": "c_charlotte_skill_02",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1009_2.png",
+      "target": "passive",
+      "cooldownTurns": 0,
+      "soulGain": 0,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
+    },
+    {
+      "id": "c1009.s3",
+      "heroId": "c1009",
+      "slot": 3,
+      "nameKey": "battle.skill.c1009.s3.name",
+      "descriptionKey": "battle.skill.c1009.s3.description",
+      "presentationId": "c_charlotte_skill_03_05",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1009_3.png",
+      "target": "all_enemies",
+      "cooldownTurns": 0,
+      "soulGain": 2,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 8500,
+      "powerBp": 9000,
+      "highestDefensePenetrationBp": 10000,
+      "alwaysCritical": true,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
     },
     {
       "id": "c1062.s1",
@@ -489,7 +1770,10 @@
       "soulBurnKind": "none",
       "soulBurnTurns": 0,
       "attackRateBp": 10000,
-      "powerBp": 10000
+      "powerBp": 10000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
     },
     {
       "id": "c1062.s2",
@@ -505,7 +1789,10 @@
       "soulBurnCost": 0,
       "soulBurnKind": "none",
       "soulBurnTurns": 0,
-      "casterHealthHealBp": 2000
+      "casterHealthHealBp": 2000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
     },
     {
       "id": "c1062.s3",
@@ -522,7 +1809,10 @@
       "soulBurnKind": "extend_granted_buffs",
       "soulBurnTurns": 2,
       "casterHealthHealBp": 1500,
-      "casterHealthBarrierBp": 1500
+      "casterHealthBarrierBp": 1500,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false
     }
   ],
   "effects": [
@@ -536,7 +1826,10 @@
       "status": "none",
       "chanceBp": 10000,
       "turns": 0,
-      "value": 0
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
     },
     {
       "id": "c1001.s1.2",
@@ -548,7 +1841,10 @@
       "status": "none",
       "chanceBp": 7500,
       "turns": 0,
-      "value": 1
+      "value": 1,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
     },
     {
       "id": "c1001.s2.1",
@@ -560,7 +1856,10 @@
       "status": "none",
       "chanceBp": 10000,
       "turns": 0,
-      "value": 0
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
     },
     {
       "id": "c1001.s2.2",
@@ -572,7 +1871,10 @@
       "status": "none",
       "chanceBp": 10000,
       "turns": 0,
-      "value": 0
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
     },
     {
       "id": "c1001.s3.1",
@@ -584,7 +1886,10 @@
       "status": "none",
       "chanceBp": 10000,
       "turns": 0,
-      "value": 0
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
     },
     {
       "id": "c1001.s3.2",
@@ -596,7 +1901,325 @@
       "status": "DefenseUp",
       "chanceBp": 10000,
       "turns": 2,
-      "value": 6000
+      "value": 6000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1002.s1.1",
+      "skillId": "c1002.s1",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1002.s1.2",
+      "skillId": "c1002.s1",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "DefenseDown",
+      "chanceBp": 3500,
+      "turns": 2,
+      "value": 7000,
+      "condition": "none",
+      "chanceBonusStatus": "AttackDown",
+      "chanceBonusBp": 2500
+    },
+    {
+      "id": "c1002.s2.1",
+      "skillId": "c1002.s2",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1002.s2.2",
+      "skillId": "c1002.s2",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "AttackDown",
+      "chanceBp": 8500,
+      "turns": 2,
+      "value": 5000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1002.s2.3",
+      "skillId": "c1002.s2",
+      "order": 3,
+      "phase": "after_hit",
+      "operation": "dispel",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 8500,
+      "turns": 0,
+      "value": 1,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1002.s3.1",
+      "skillId": "c1002.s3",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1002.s3.2",
+      "skillId": "c1002.s3",
+      "order": 2,
+      "phase": "after_attack",
+      "operation": "apply_status",
+      "recipient": "allies",
+      "status": "Immunity",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1002.s3.3",
+      "skillId": "c1002.s3",
+      "order": 3,
+      "phase": "after_attack",
+      "operation": "apply_status",
+      "recipient": "self",
+      "status": "Barrier",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1003.s1.1",
+      "skillId": "c1003.s1",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1003.s1.2",
+      "skillId": "c1003.s1",
+      "order": 2,
+      "phase": "after_attack",
+      "operation": "apply_status",
+      "recipient": "self",
+      "status": "DefenseUp",
+      "chanceBp": 10000,
+      "turns": 1,
+      "value": 6000,
+      "condition": "caster_health_below_half",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1003.s2.1",
+      "skillId": "c1003.s2",
+      "order": 1,
+      "phase": "impact",
+      "operation": "cleanse",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 2,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1003.s2.2",
+      "skillId": "c1003.s2",
+      "order": 2,
+      "phase": "after_attack",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Barrier",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1003.s2.3",
+      "skillId": "c1003.s2",
+      "order": 3,
+      "phase": "after_attack",
+      "operation": "readiness",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 1000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1003.s3.1",
+      "skillId": "c1003.s3",
+      "order": 1,
+      "phase": "after_attack",
+      "operation": "apply_status",
+      "recipient": "allies",
+      "status": "AttackUp",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 5000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1003.s3.2",
+      "skillId": "c1003.s3",
+      "order": 2,
+      "phase": "after_attack",
+      "operation": "readiness",
+      "recipient": "allies",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 1500,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1003.s3.3",
+      "skillId": "c1003.s3",
+      "order": 3,
+      "phase": "after_attack",
+      "operation": "apply_status",
+      "recipient": "self",
+      "status": "DefenseUp",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 6000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1004.s1.1",
+      "skillId": "c1004.s1",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1004.s1.2",
+      "skillId": "c1004.s1",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "reduce_readiness",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 1000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1004.s3.1",
+      "skillId": "c1004.s3",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1004.s3.2",
+      "skillId": "c1004.s3",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "SpeedDown",
+      "chanceBp": 8500,
+      "turns": 2,
+      "value": 3000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1004.s3.3",
+      "skillId": "c1004.s3",
+      "order": 3,
+      "phase": "after_attack",
+      "operation": "apply_status",
+      "recipient": "allies",
+      "status": "SpeedUp",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 3000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
     },
     {
       "id": "c1005.s1.1",
@@ -608,7 +2231,10 @@
       "status": "none",
       "chanceBp": 10000,
       "turns": 0,
-      "value": 0
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
     },
     {
       "id": "c1005.s1.2",
@@ -620,7 +2246,10 @@
       "status": "none",
       "chanceBp": 10000,
       "turns": 0,
-      "value": 1500
+      "value": 1500,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
     },
     {
       "id": "c1005.s2.1",
@@ -632,7 +2261,10 @@
       "status": "none",
       "chanceBp": 10000,
       "turns": 0,
-      "value": 0
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
     },
     {
       "id": "c1005.s2.2",
@@ -644,7 +2276,10 @@
       "status": "none",
       "chanceBp": 5500,
       "turns": 0,
-      "value": 1
+      "value": 1,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
     },
     {
       "id": "c1005.s2.3",
@@ -656,7 +2291,10 @@
       "status": "AttackUp",
       "chanceBp": 10000,
       "turns": 0,
-      "value": 0
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
     },
     {
       "id": "c1005.s3.1",
@@ -668,7 +2306,10 @@
       "status": "none",
       "chanceBp": 10000,
       "turns": 0,
-      "value": 0
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
     },
     {
       "id": "c1005.s3.2",
@@ -680,7 +2321,280 @@
       "status": "AttackUp",
       "chanceBp": 10000,
       "turns": 2,
-      "value": 5000
+      "value": 5000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1006.s1.1",
+      "skillId": "c1006.s1",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1006.s2.1",
+      "skillId": "c1006.s2",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1006.s3.1",
+      "skillId": "c1006.s3",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1006.s3.2",
+      "skillId": "c1006.s3",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "extend_cooldown",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 2,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1006.s3.3",
+      "skillId": "c1006.s3",
+      "order": 3,
+      "phase": "after_attack",
+      "operation": "apply_status",
+      "recipient": "self",
+      "status": "Stealth",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1006.s3.4",
+      "skillId": "c1006.s3",
+      "order": 4,
+      "phase": "after_attack",
+      "operation": "apply_status",
+      "recipient": "self",
+      "status": "Barrier",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1006.s3.5",
+      "skillId": "c1006.s3",
+      "order": 5,
+      "phase": "after_attack",
+      "operation": "readiness",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 5000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1007.s1.1",
+      "skillId": "c1007.s1",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1007.s3.1",
+      "skillId": "c1007.s3",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1008.s1.1",
+      "skillId": "c1008.s1",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1008.s1.2",
+      "skillId": "c1008.s1",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Stun",
+      "chanceBp": 2500,
+      "turns": 1,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1008.s3.1",
+      "skillId": "c1008.s3",
+      "order": 1,
+      "phase": "impact",
+      "operation": "cleanse",
+      "recipient": "allies",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 1,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1008.s3.2",
+      "skillId": "c1008.s3",
+      "order": 2,
+      "phase": "after_attack",
+      "operation": "apply_status",
+      "recipient": "self",
+      "status": "DefenseUp",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 6000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1008.s3.3",
+      "skillId": "c1008.s3",
+      "order": 3,
+      "phase": "after_attack",
+      "operation": "apply_status",
+      "recipient": "allies",
+      "status": "Barrier",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1009.s1.1",
+      "skillId": "c1009.s1",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1009.s1.2",
+      "skillId": "c1009.s1",
+      "order": 2,
+      "phase": "after_attack",
+      "operation": "readiness",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 2500,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1009.s3.1",
+      "skillId": "c1009.s3",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1009.s3.2",
+      "skillId": "c1009.s3",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Unhealable",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
     },
     {
       "id": "c1062.s1.1",
@@ -692,7 +2606,10 @@
       "status": "none",
       "chanceBp": 10000,
       "turns": 0,
-      "value": 0
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
     },
     {
       "id": "c1062.s1.2",
@@ -704,7 +2621,10 @@
       "status": "Stun",
       "chanceBp": 2000,
       "turns": 1,
-      "value": 0
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
     },
     {
       "id": "c1062.s2.1",
@@ -716,7 +2636,10 @@
       "status": "none",
       "chanceBp": 10000,
       "turns": 0,
-      "value": 0
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
     },
     {
       "id": "c1062.s3.1",
@@ -728,7 +2651,10 @@
       "status": "none",
       "chanceBp": 10000,
       "turns": 0,
-      "value": 0
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
     },
     {
       "id": "c1062.s3.2",
@@ -740,7 +2666,10 @@
       "status": "Immunity",
       "chanceBp": 10000,
       "turns": 2,
-      "value": 0
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
     },
     {
       "id": "c1062.s3.3",
@@ -752,7 +2681,10 @@
       "status": "Barrier",
       "chanceBp": 10000,
       "turns": 2,
-      "value": 0
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
     }
   ],
   "enhancements": [
@@ -862,6 +2794,293 @@
       "value": 1000
     },
     {
+      "id": "c1002.s1.e1",
+      "skillId": "c1002.s1",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1002.s1.e2",
+      "skillId": "c1002.s1",
+      "step": 2,
+      "kind": "effect_chance_bp",
+      "value": 500
+    },
+    {
+      "id": "c1002.s1.e3",
+      "skillId": "c1002.s1",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1002.s1.e4",
+      "skillId": "c1002.s1",
+      "step": 4,
+      "kind": "effect_chance_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1002.s1.e5",
+      "skillId": "c1002.s1",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1002.s2.e1",
+      "skillId": "c1002.s2",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1002.s2.e2",
+      "skillId": "c1002.s2",
+      "step": 2,
+      "kind": "effect_chance_bp",
+      "value": 500
+    },
+    {
+      "id": "c1002.s2.e3",
+      "skillId": "c1002.s2",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1002.s2.e4",
+      "skillId": "c1002.s2",
+      "step": 4,
+      "kind": "effect_chance_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1002.s2.e5",
+      "skillId": "c1002.s2",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1002.s3.e1",
+      "skillId": "c1002.s3",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1002.s3.e2",
+      "skillId": "c1002.s3",
+      "step": 2,
+      "kind": "effect_chance_bp",
+      "value": 500
+    },
+    {
+      "id": "c1002.s3.e3",
+      "skillId": "c1002.s3",
+      "step": 3,
+      "kind": "cooldown_turns",
+      "value": 1
+    },
+    {
+      "id": "c1002.s3.e4",
+      "skillId": "c1002.s3",
+      "step": 4,
+      "kind": "effect_chance_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1002.s3.e5",
+      "skillId": "c1002.s3",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1003.s1.e1",
+      "skillId": "c1003.s1",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1003.s1.e2",
+      "skillId": "c1003.s1",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1003.s1.e3",
+      "skillId": "c1003.s1",
+      "step": 3,
+      "kind": "effect_chance_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1003.s1.e4",
+      "skillId": "c1003.s1",
+      "step": 4,
+      "kind": "effect_chance_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1003.s1.e5",
+      "skillId": "c1003.s1",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1003.s2.e1",
+      "skillId": "c1003.s2",
+      "step": 1,
+      "kind": "readiness_bp",
+      "value": 200
+    },
+    {
+      "id": "c1003.s2.e2",
+      "skillId": "c1003.s2",
+      "step": 2,
+      "kind": "readiness_bp",
+      "value": 200
+    },
+    {
+      "id": "c1003.s2.e3",
+      "skillId": "c1003.s2",
+      "step": 3,
+      "kind": "cooldown_turns",
+      "value": 1
+    },
+    {
+      "id": "c1003.s2.e4",
+      "skillId": "c1003.s2",
+      "step": 4,
+      "kind": "readiness_bp",
+      "value": 300
+    },
+    {
+      "id": "c1003.s2.e5",
+      "skillId": "c1003.s2",
+      "step": 5,
+      "kind": "readiness_bp",
+      "value": 300
+    },
+    {
+      "id": "c1003.s3.e1",
+      "skillId": "c1003.s3",
+      "step": 1,
+      "kind": "readiness_bp",
+      "value": 200
+    },
+    {
+      "id": "c1003.s3.e2",
+      "skillId": "c1003.s3",
+      "step": 2,
+      "kind": "readiness_bp",
+      "value": 200
+    },
+    {
+      "id": "c1003.s3.e3",
+      "skillId": "c1003.s3",
+      "step": 3,
+      "kind": "cooldown_turns",
+      "value": 1
+    },
+    {
+      "id": "c1003.s3.e4",
+      "skillId": "c1003.s3",
+      "step": 4,
+      "kind": "readiness_bp",
+      "value": 300
+    },
+    {
+      "id": "c1003.s3.e5",
+      "skillId": "c1003.s3",
+      "step": 5,
+      "kind": "readiness_bp",
+      "value": 300
+    },
+    {
+      "id": "c1004.s1.e1",
+      "skillId": "c1004.s1",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1004.s1.e2",
+      "skillId": "c1004.s1",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1004.s1.e3",
+      "skillId": "c1004.s1",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1004.s1.e4",
+      "skillId": "c1004.s1",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1004.s1.e5",
+      "skillId": "c1004.s1",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1004.s1.e6",
+      "skillId": "c1004.s1",
+      "step": 6,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1004.s1.e7",
+      "skillId": "c1004.s1",
+      "step": 7,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1004.s3.e1",
+      "skillId": "c1004.s3",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1004.s3.e2",
+      "skillId": "c1004.s3",
+      "step": 2,
+      "kind": "cooldown_turns",
+      "value": 1
+    },
+    {
+      "id": "c1004.s3.e3",
+      "skillId": "c1004.s3",
+      "step": 3,
+      "kind": "effect_chance_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1004.s3.e4",
+      "skillId": "c1004.s3",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
       "id": "c1005.s1.e1",
       "skillId": "c1005.s1",
       "step": 1,
@@ -962,6 +3181,314 @@
     {
       "id": "c1005.s3.e5",
       "skillId": "c1005.s3",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1006.s1.e1",
+      "skillId": "c1006.s1",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1006.s1.e2",
+      "skillId": "c1006.s1",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1006.s1.e3",
+      "skillId": "c1006.s1",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1006.s1.e4",
+      "skillId": "c1006.s1",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1006.s1.e5",
+      "skillId": "c1006.s1",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1006.s2.e1",
+      "skillId": "c1006.s2",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1006.s2.e2",
+      "skillId": "c1006.s2",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1006.s2.e3",
+      "skillId": "c1006.s2",
+      "step": 3,
+      "kind": "cooldown_turns",
+      "value": 1
+    },
+    {
+      "id": "c1006.s2.e4",
+      "skillId": "c1006.s2",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1006.s2.e5",
+      "skillId": "c1006.s2",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1006.s3.e1",
+      "skillId": "c1006.s3",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1006.s3.e2",
+      "skillId": "c1006.s3",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1006.s3.e3",
+      "skillId": "c1006.s3",
+      "step": 3,
+      "kind": "cooldown_turns",
+      "value": 1
+    },
+    {
+      "id": "c1006.s3.e4",
+      "skillId": "c1006.s3",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1006.s3.e5",
+      "skillId": "c1006.s3",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1007.s1.e1",
+      "skillId": "c1007.s1",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1007.s1.e2",
+      "skillId": "c1007.s1",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1007.s1.e3",
+      "skillId": "c1007.s1",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1007.s1.e4",
+      "skillId": "c1007.s1",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1007.s1.e5",
+      "skillId": "c1007.s1",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1007.s3.e1",
+      "skillId": "c1007.s3",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1007.s3.e2",
+      "skillId": "c1007.s3",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1007.s3.e3",
+      "skillId": "c1007.s3",
+      "step": 3,
+      "kind": "cooldown_turns",
+      "value": 1
+    },
+    {
+      "id": "c1007.s3.e4",
+      "skillId": "c1007.s3",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1007.s3.e5",
+      "skillId": "c1007.s3",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1008.s1.e1",
+      "skillId": "c1008.s1",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1008.s1.e2",
+      "skillId": "c1008.s1",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1008.s1.e3",
+      "skillId": "c1008.s1",
+      "step": 3,
+      "kind": "effect_chance_bp",
+      "value": 500
+    },
+    {
+      "id": "c1008.s1.e4",
+      "skillId": "c1008.s1",
+      "step": 4,
+      "kind": "effect_chance_bp",
+      "value": 500
+    },
+    {
+      "id": "c1008.s1.e5",
+      "skillId": "c1008.s1",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1008.s1.e6",
+      "skillId": "c1008.s1",
+      "step": 6,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1008.s1.e7",
+      "skillId": "c1008.s1",
+      "step": 7,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1008.s3.e1",
+      "skillId": "c1008.s3",
+      "step": 1,
+      "kind": "soul_gain",
+      "value": 2
+    },
+    {
+      "id": "c1008.s3.e2",
+      "skillId": "c1008.s3",
+      "step": 2,
+      "kind": "cooldown_turns",
+      "value": 1
+    },
+    {
+      "id": "c1009.s1.e1",
+      "skillId": "c1009.s1",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1009.s1.e2",
+      "skillId": "c1009.s1",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1009.s1.e3",
+      "skillId": "c1009.s1",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1009.s1.e4",
+      "skillId": "c1009.s1",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1009.s1.e5",
+      "skillId": "c1009.s1",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1009.s3.e1",
+      "skillId": "c1009.s3",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1009.s3.e2",
+      "skillId": "c1009.s3",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1009.s3.e3",
+      "skillId": "c1009.s3",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1009.s3.e4",
+      "skillId": "c1009.s3",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1009.s3.e5",
+      "skillId": "c1009.s3",
       "step": 5,
       "kind": "damage_bp",
       "value": 1500
@@ -1074,84 +3601,8 @@
   ],
   "messages": [
     {
-      "key": "battle.skill.c1001.s1.name",
-      "zhCn": "十字斩"
-    },
-    {
-      "key": "battle.skill.c1001.s1.description",
-      "zhCn": "攻击一名敌人，有75%概率解除其一个增益。伤害随施术者最大生命提高。"
-    },
-    {
-      "key": "battle.skill.c1001.s2.name",
-      "zhCn": "指挥一击"
-    },
-    {
-      "key": "battle.skill.c1001.s2.description",
-      "zhCn": "攻击一名敌人，随后由攻击最高的可用友军发动夹攻。魂燃消耗10魂，使本技能冷却减少2回合。"
-    },
-    {
-      "key": "battle.skill.c1001.s3.name",
-      "zhCn": "继承者之剑"
-    },
-    {
-      "key": "battle.skill.c1001.s3.description",
-      "zhCn": "攻击全体敌人，随后使全体友军防御提升2回合。伤害随施术者最大生命提高。"
-    },
-    {
-      "key": "battle.skill.c1005.s1.name",
-      "zhCn": "神圣闪电"
-    },
-    {
-      "key": "battle.skill.c1005.s1.description",
-      "zhCn": "攻击两名敌人，随后使自身行动条提高15%。"
-    },
-    {
-      "key": "battle.skill.c1005.s2.name",
-      "zhCn": "次元裂隙"
-    },
-    {
-      "key": "battle.skill.c1005.s2.description",
-      "zhCn": "攻击全体敌人，对目标有55%概率解除一个增益。自身有攻击提升时，追加一次同技能攻击。"
-    },
-    {
-      "key": "battle.skill.c1005.s3.name",
-      "zhCn": "卡尔的炽焰之眼"
-    },
-    {
-      "key": "battle.skill.c1005.s3.description",
-      "zhCn": "攻击全体敌人，随后使全体友军攻击提升2回合。魂燃消耗10魂，使本技能赋予的增益延长1回合。"
-    },
-    {
-      "key": "battle.skill.c1062.s1.name",
-      "zhCn": "神圣打击"
-    },
-    {
-      "key": "battle.skill.c1062.s1.description",
-      "zhCn": "攻击一名敌人，有20%概率使其眩晕1回合。"
-    },
-    {
-      "key": "battle.skill.c1062.s2.name",
-      "zhCn": "生命起源"
-    },
-    {
-      "key": "battle.skill.c1062.s2.description",
-      "zhCn": "治疗选定友军及生命最低的友军，治疗量随施术者最大生命提高。"
-    },
-    {
-      "key": "battle.skill.c1062.s3.name",
-      "zhCn": "女神的指引"
-    },
-    {
-      "key": "battle.skill.c1062.s3.description",
-      "zhCn": "治疗全体友军并赋予免疫及屏障2回合。治疗及屏障随施术者最大生命提高。魂燃消耗20魂，使本技能赋予的增益延长2回合。"
-    },
-    {
       "key": "battle.feedback.miss",
       "zhCn": "未命中"
-    },
-    {
-      "key": "battle.pause.title",
-      "zhCn": "已暂停"
     },
     {
       "key": "battle.pause.continue",
@@ -1162,12 +3613,284 @@
       "zhCn": "重新开始"
     },
     {
+      "key": "battle.pause.title",
+      "zhCn": "已暂停"
+    },
+    {
+      "key": "battle.skill.c1001.s1.description",
+      "zhCn": "攻击一名敌人，有75%概率解除其一个增益。伤害随施术者最大生命提高。"
+    },
+    {
+      "key": "battle.skill.c1001.s1.name",
+      "zhCn": "十字斩"
+    },
+    {
+      "key": "battle.skill.c1001.s2.description",
+      "zhCn": "攻击一名敌人，随后由攻击最高的可用友军发动夹攻。魂燃消耗10魂，使本技能冷却减少2回合。"
+    },
+    {
+      "key": "battle.skill.c1001.s2.name",
+      "zhCn": "指挥一击"
+    },
+    {
+      "key": "battle.skill.c1001.s3.description",
+      "zhCn": "攻击全体敌人，随后使全体友军防御提升2回合。伤害随施术者最大生命提高。"
+    },
+    {
+      "key": "battle.skill.c1001.s3.name",
+      "zhCn": "继承者之剑"
+    },
+    {
+      "key": "battle.skill.c1002.s1.description",
+      "zhCn": "攻击一名敌人并有35%概率降低防御2回合。目标攻击降低时触发率额外提高25个百分点，伤害随自身最大生命提高。"
+    },
+    {
+      "key": "battle.skill.c1002.s1.name",
+      "zhCn": "制裁"
+    },
+    {
+      "key": "battle.skill.c1002.s2.description",
+      "zhCn": "攻击全体敌人，觉醒后有85%概率降低攻击2回合，再解除一个增益。伤害随自身最大生命提高。燃魂使本技能冷却减少2回合。"
+    },
+    {
+      "key": "battle.skill.c1002.s2.name",
+      "zhCn": "钢铁暴风"
+    },
+    {
+      "key": "battle.skill.c1002.s3.description",
+      "zhCn": "攻击全体敌人，给予友军免疫和自身屏障2回合。伤害及屏障随自身最大生命提高。试玩暂未接入挑衅。"
+    },
+    {
+      "key": "battle.skill.c1002.s3.name",
+      "zhCn": "毁灭之枪"
+    },
+    {
+      "key": "battle.skill.c1003.s1.description",
+      "zhCn": "攻击一名敌人，伤害随自身防御提高。自身生命低于一半时防御提升1回合。试玩暂未接入挑衅。"
+    },
+    {
+      "key": "battle.skill.c1003.s1.name",
+      "zhCn": "连续斩击"
+    },
+    {
+      "key": "battle.skill.c1003.s2.description",
+      "zhCn": "解除选定友军两个减益，赋予随自身防御增强的屏障2回合，再提升目标行动值10%。"
+    },
+    {
+      "key": "battle.skill.c1003.s2.name",
+      "zhCn": "光之盾"
+    },
+    {
+      "key": "battle.skill.c1003.s3.description",
+      "zhCn": "全体友军攻击提升2回合、行动值增加15%，自身额外获得防御提升2回合。燃魂使增益延长1回合。"
+    },
+    {
+      "key": "battle.skill.c1003.s3.name",
+      "zhCn": "胜利女神"
+    },
+    {
+      "key": "battle.skill.c1004.s1.description",
+      "zhCn": "攻击一名敌人，降低其行动值10%。伤害随自身速度提高。试玩暂未接入燃魂追加回合。"
+    },
+    {
+      "key": "battle.skill.c1004.s1.name",
+      "zhCn": "单发射击"
+    },
+    {
+      "key": "battle.skill.c1004.s2.description",
+      "zhCn": "被动。涉及专注积累、受击解除减益和自动射击替换，试玩尚未接入触发。"
+    },
+    {
+      "key": "battle.skill.c1004.s2.name",
+      "zhCn": "集中"
+    },
+    {
+      "key": "battle.skill.c1004.s3.description",
+      "zhCn": "攻击全体敌人，有85%概率降低速度2回合。觉醒后全体友军速度提升2回合。"
+    },
+    {
+      "key": "battle.skill.c1004.s3.name",
+      "zhCn": "暴风之箭"
+    },
+    {
+      "key": "battle.skill.c1005.s1.description",
+      "zhCn": "攻击两名敌人，随后使自身行动条提高15%。"
+    },
+    {
+      "key": "battle.skill.c1005.s1.name",
+      "zhCn": "神圣闪电"
+    },
+    {
+      "key": "battle.skill.c1005.s2.description",
+      "zhCn": "攻击全体敌人，对目标有55%概率解除一个增益。自身有攻击提升时，追加一次同技能攻击。"
+    },
+    {
+      "key": "battle.skill.c1005.s2.name",
+      "zhCn": "次元裂隙"
+    },
+    {
+      "key": "battle.skill.c1005.s3.description",
+      "zhCn": "攻击全体敌人，随后使全体友军攻击提升2回合。魂燃消耗10魂，使本技能赋予的增益延长1回合。"
+    },
+    {
+      "key": "battle.skill.c1005.s3.name",
+      "zhCn": "卡尔的炽焰之眼"
+    },
+    {
+      "key": "battle.skill.c1006.s1.description",
+      "zhCn": "攻击一名敌人，目标有增益时伤害提高70%。"
+    },
+    {
+      "key": "battle.skill.c1006.s1.name",
+      "zhCn": "满月之镰"
+    },
+    {
+      "key": "battle.skill.c1006.s2.description",
+      "zhCn": "攻击全体敌人，穿透30%防御，潜行状态额外穿透30%。燃魂提高伤害。"
+    },
+    {
+      "key": "battle.skill.c1006.s2.name",
+      "zhCn": "暗之伤痕"
+    },
+    {
+      "key": "battle.skill.c1006.s3.description",
+      "zhCn": "攻击一名敌人，觉醒后可两次增加技能冷却。自身获得潜行与按攻击计算的屏障2回合，行动值提高50%。伤害随当前生命比例提高。"
+    },
+    {
+      "key": "battle.skill.c1006.s3.name",
+      "zhCn": "夜曲"
+    },
+    {
+      "key": "battle.skill.c1007.s1.description",
+      "zhCn": "攻击两名敌人，伤害随自身速度提高。"
+    },
+    {
+      "key": "battle.skill.c1007.s1.name",
+      "zhCn": "横扫"
+    },
+    {
+      "key": "battle.skill.c1007.s2.description",
+      "zhCn": "被动。达到目标生命条件时触发群攻，试玩尚未接入自动触发。"
+    },
+    {
+      "key": "battle.skill.c1007.s2.name",
+      "zhCn": "剑舞"
+    },
+    {
+      "key": "battle.skill.c1007.s3.description",
+      "zhCn": "攻击全体敌人，伤害随自身速度提高。燃魂提高伤害。"
+    },
+    {
+      "key": "battle.skill.c1007.s3.name",
+      "zhCn": "剑刃升腾"
+    },
+    {
+      "key": "battle.skill.c1008.s1.description",
+      "zhCn": "攻击一名敌人，有25%概率眩晕1回合。伤害随自身防御提高。非自身回合使用时变为群攻。"
+    },
+    {
+      "key": "battle.skill.c1008.s1.name",
+      "zhCn": "盾牌猛击"
+    },
+    {
+      "key": "battle.skill.c1008.s2.description",
+      "zhCn": "被动。涉及受击反击和单体伤害减免，试玩尚未接入触发。"
+    },
+    {
+      "key": "battle.skill.c1008.s2.name",
+      "zhCn": "保护"
+    },
+    {
+      "key": "battle.skill.c1008.s3.description",
+      "zhCn": "解除全体友军一个减益，自身防御提升2回合，并为全体友军赋予随自身防御增强的屏障2回合。燃魂使增益延长1回合。"
+    },
+    {
+      "key": "battle.skill.c1008.s3.name",
+      "zhCn": "盾墙"
+    },
+    {
+      "key": "battle.skill.c1009.s1.description",
+      "zhCn": "攻击一名敌人并提高自身行动值25%，命中时必定暴击。非夹攻且自身有增益时变为群攻。"
+    },
+    {
+      "key": "battle.skill.c1009.s1.name",
+      "zhCn": "双剑"
+    },
+    {
+      "key": "battle.skill.c1009.s2.description",
+      "zhCn": "被动。涉及开战与回合末屏障、受击减伤及伤害提升，试玩尚未接入触发。"
+    },
+    {
+      "key": "battle.skill.c1009.s2.name",
+      "zhCn": "沼泽的意志"
+    },
+    {
+      "key": "battle.skill.c1009.s3.description",
+      "zhCn": "攻击全体敌人并施加无法恢复2回合，穿透防御最高敌人的防御，命中时必定暴击。试玩采用满斗志演出，暂未接入斗志与燃魂。"
+    },
+    {
+      "key": "battle.skill.c1009.s3.name",
+      "zhCn": "旋风"
+    },
+    {
+      "key": "battle.skill.c1062.s1.description",
+      "zhCn": "攻击一名敌人，有20%概率使其眩晕1回合。"
+    },
+    {
+      "key": "battle.skill.c1062.s1.name",
+      "zhCn": "神圣打击"
+    },
+    {
+      "key": "battle.skill.c1062.s2.description",
+      "zhCn": "治疗选定友军及生命最低的友军，治疗量随施术者最大生命提高。"
+    },
+    {
+      "key": "battle.skill.c1062.s2.name",
+      "zhCn": "生命起源"
+    },
+    {
+      "key": "battle.skill.c1062.s3.description",
+      "zhCn": "治疗全体友军并赋予免疫及屏障2回合。治疗及屏障随施术者最大生命提高。魂燃消耗20魂，使本技能赋予的增益延长2回合。"
+    },
+    {
+      "key": "battle.skill.c1062.s3.name",
+      "zhCn": "女神的指引"
+    },
+    {
       "key": "character.ras.name",
       "zhCn": "拉斯"
     },
     {
+      "key": "character.cecilia.name",
+      "zhCn": "赛西莉亚"
+    },
+    {
+      "key": "character.rose.name",
+      "zhCn": "萝季"
+    },
+    {
+      "key": "character.silk.name",
+      "zhCn": "席可"
+    },
+    {
       "key": "character.mercedes.name",
       "zhCn": "梅赛德丝"
+    },
+    {
+      "key": "character.kise.name",
+      "zhCn": "绮世"
+    },
+    {
+      "key": "character.wildred.name",
+      "zhCn": "维德瑞"
+    },
+    {
+      "key": "character.arming.name",
+      "zhCn": "亚敏"
+    },
+    {
+      "key": "character.charlotte.name",
+      "zhCn": "夏绿蒂"
     },
     {
       "key": "character.angelica.name",

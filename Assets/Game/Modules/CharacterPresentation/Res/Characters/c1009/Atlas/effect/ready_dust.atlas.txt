@@ -1,0 +1,41 @@
+
+ready_dust.sct
+size: 251,211
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+RND/png/dust_dash_01
+  rotate: true
+  xy: 193, 71
+  size: 127, 56
+  orig: 127, 56
+  offset: 0, 0
+  index: -1
+RND/png/dust_dash_02
+  rotate: true
+  xy: 71, 71
+  size: 138, 61
+  orig: 138, 61
+  offset: 0, 0
+  index: -1
+RND/png/dust_dash_03
+  rotate: false
+  xy: 71, 2
+  size: 151, 67
+  orig: 151, 67
+  offset: 0, 0
+  index: -1
+RND/png/dust_dash_04
+  rotate: true
+  xy: 2, 2
+  size: 152, 67
+  orig: 152, 67
+  offset: 0, 0
+  index: -1
+RND/png/dust_dash_05
+  rotate: true
+  xy: 134, 71
+  size: 128, 57
+  orig: 128, 57
+  offset: 0, 0
+  index: -1

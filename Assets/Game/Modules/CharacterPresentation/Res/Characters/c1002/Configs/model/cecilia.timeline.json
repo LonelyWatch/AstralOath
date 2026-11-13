@@ -1,0 +1,271 @@
+{
+  "timeline": {
+    "default": {
+      "knock_down": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 1,
+            "func": "sound",
+            "param": {}
+          }
+        ]
+      },
+      "run_start": {
+        "duration": 0,
+        "frames": []
+      },
+      "jump_forward": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 266,
+            "func": "sound",
+            "param": {}
+          },
+          {
+            "time": 600,
+            "func": "sound",
+            "param": {}
+          }
+        ]
+      },
+      "jump_back": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 133,
+            "func": "sound",
+            "param": {}
+          },
+          {
+            "time": 500,
+            "func": "sound",
+            "param": {}
+          }
+        ]
+      },
+      "form_idle_2": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "param": {}
+          }
+        ]
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "cecilia_skill_02_eff",
+              "location": 5,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 900,
+            "func": "event",
+            "param": {
+              "name": "effon",
+              "param": "effon"
+            }
+          }
+        ]
+      },
+      "b_idle": {
+        "duration": 0,
+        "frames": []
+      },
+      "attacked": {
+        "duration": 0,
+        "frames": [
+          {
+            "param": {}
+          }
+        ]
+      },
+      "fly": {
+        "duration": 0,
+        "frames": []
+      },
+      "fly_attack": {
+        "duration": 0,
+        "frames": []
+      },
+      "form_b_idle_ready": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 1,
+            "func": "sound",
+            "param": {}
+          }
+        ]
+      },
+      "form_idle": {
+        "duration": 0,
+        "frames": []
+      },
+      "form_jump_back": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 133,
+            "func": "sound",
+            "param": {}
+          },
+          {
+            "time": 466,
+            "func": "sound",
+            "param": {}
+          }
+        ]
+      },
+      "form_jump_forward": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 266,
+            "func": "sound",
+            "param": {}
+          },
+          {
+            "time": 600,
+            "func": "sound",
+            "param": {}
+          }
+        ]
+      },
+      "form_skill1": {
+        "duration": 0,
+        "frames": []
+      },
+      "form_skill2": {
+        "duration": 0,
+        "frames": []
+      },
+      "groggy": {
+        "duration": 0,
+        "frames": []
+      },
+      "idle": {
+        "duration": 0,
+        "frames": []
+      },
+      "rise": {
+        "duration": 0,
+        "frames": []
+      },
+      "run": {
+        "duration": 0,
+        "frames": []
+      },
+      "run_backup": {
+        "duration": 0,
+        "frames": []
+      },
+      "run_end": {
+        "duration": 0,
+        "frames": []
+      },
+      "shock": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill3": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "cecilia_skill_03_new_botaura",
+              "location": 5,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "cecilia_skill_03_new_lance",
+              "location": 1,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "cecilia_skill_03_new_lance",
+              "location": 1,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": [
+          {
+            "param": {}
+          }
+        ]
+      },
+      "form_b_idle": {
+        "duration": 0,
+        "frames": []
+      },
+      "camping": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill3_1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "cecilia_skill_03_new_botaura",
+              "location": 5,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "cecilia_skill_03_new_lance1",
+              "location": 5,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill3_2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "cecilia_skill_03_new_lance2",
+              "location": 1,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "3_idle_backup": {
+        "duration": 0,
+        "frames": []
+      },
+      "attacked_damage": {
+        "duration": 0,
+        "frames": []
+      }
+    }
+  }
+}

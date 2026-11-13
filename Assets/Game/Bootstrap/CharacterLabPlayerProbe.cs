@@ -41,7 +41,10 @@ namespace AstralOath.Client.Bootstrap
                 await RequireVisibleMesh();
                 if (!bootstrap.IsAudioAvailable) throw new InvalidOperationException(bootstrap.AudioDiagnostic);
                 await Capture("battle");
-                foreach (int character in new[] { 0, 1, 2 })
+                int characterCount = map.Require<RectTransform>("characters").GetComponentsInChildren<Button>(false).Length;
+                if (characterCount == 0) throw new InvalidOperationException("The character roster is empty.");
+                int skillCount = 0;
+                for (int character = 0; character < characterCount; character++)
                 {
                     await ClickRow(map, "characters", character);
                     await RequireVisibleMesh();
@@ -51,6 +54,7 @@ namespace AstralOath.Client.Bootstrap
                     for (int skill = 0; skill < 3; skill++)
                     {
                         await ClickRow(map, "skills", skill);
+                        skillCount++;
                         await Task.Delay(3500);
                         if (!bootstrap.IsReady || !bootstrap.IsAudioAvailable)
                             throw new InvalidOperationException(bootstrap.StartupError ?? bootstrap.AudioDiagnostic);
@@ -79,7 +83,7 @@ namespace AstralOath.Client.Bootstrap
                 if (FindObjectsOfType<MeshFilter>().Any(f => f.sharedMesh && f.sharedMesh.vertexCount > 0))
                     throw new InvalidOperationException("Closing the lab retained skeleton meshes.");
                 if (errors.Count > 0) throw new InvalidOperationException("Player logged unexpected errors: " + string.Join(" | ", errors.Take(8)));
-                Debug.Log("ASTRAL_CHARACTERLAB_PLAYER_SMOKE_PASSED startup,binding,mesh,three-characters,nine-skill-events,voices,battle,portrait,pause,stop,close");
+                Debug.Log($"ASTRAL_CHARACTERLAB_PLAYER_SMOKE_PASSED characters={characterCount} skills={skillCount} startup,binding,mesh,voices,battle,portrait,pause,stop,close");
                 Application.Quit(0);
             }
             catch (Exception error)

@@ -1,0 +1,55 @@
+
+expl_light.sct
+size: 251,311
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+RND/firepart_01
+  rotate: false
+  xy: 48, 257
+  size: 24, 31
+  orig: 24, 31
+  offset: 0, 0
+  index: -1
+RND/png/fblast_02
+  rotate: false
+  xy: 2, 257
+  size: 44, 42
+  orig: 44, 42
+  offset: 0, 0
+  index: -1
+RND/png/light1
+  rotate: true
+  xy: 138, 2
+  size: 112, 111
+  orig: 112, 111
+  offset: 0, 0
+  index: -1
+RND/png/part_1
+  rotate: false
+  xy: 119, 131
+  size: 130, 101
+  orig: 130, 101
+  offset: 0, 0
+  index: -1
+RND/png/part_2
+  rotate: false
+  xy: 2, 2
+  size: 134, 127
+  orig: 134, 127
+  offset: 0, 0
+  index: -1
+RND/png/part_3
+  rotate: true
+  xy: 119, 234
+  size: 75, 107
+  orig: 75, 107
+  offset: 0, 0
+  index: -1
+RND/png/part_4
+  rotate: false
+  xy: 2, 131
+  size: 115, 124
+  orig: 115, 124
+  offset: 0, 0
+  index: -1

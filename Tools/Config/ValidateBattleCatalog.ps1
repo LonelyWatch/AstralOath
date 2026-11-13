@@ -63,7 +63,7 @@ function Export-BattleCatalog {
                 throw "Battle skill icon does not match the imported asset for $key."
             }
             if ($skill.nameKey -cne "battle.skill.$key.name" -or $skill.descriptionKey -cne "battle.skill.$key.description" -or
-                $skill.target -cnotin @('one_enemy','two_enemies','all_enemies','one_ally','all_allies')) {
+                $skill.target -cnotin @('one_enemy','two_enemies','all_enemies','one_ally','all_allies','passive')) {
                 throw "Battle skill text or targeting is invalid for $key."
             }
             $burn = $skill.soulBurnKind
@@ -75,11 +75,19 @@ function Export-BattleCatalog {
                 ($null -ne $skill.burnAttackRateBp -and $burn -cne 'increase_damage')) {
                 throw "Battle skill soul burn is invalid for $key."
             }
-            foreach ($property in @('attackRateBp','powerBp','casterHealthDamageBp','casterHealthHealBp','casterHealthBarrierBp','burnAttackRateBp')) {
+            foreach ($property in @('attackRateBp','powerBp','casterHealthDamageBp','casterHealthHealBp','casterHealthBarrierBp','burnAttackRateBp',
+                'casterDefenseBarrierBp','casterAttackBarrierBp','casterDefenseDamageBp','casterSpeedDamagePpm','burnSpeedDamagePpm',
+                'casterHealthRatioDamageBp','damageAgainstBuffBp','defensePenetrationBp','stealthPenetrationBp','highestDefensePenetrationBp')) {
                 $coefficient = $skill.$property
-                if ($null -ne $coefficient -and ($coefficient -lt 1 -or $coefficient -gt 100000)) {
+                $limit = if ($property.EndsWith('PenetrationBp', [StringComparison]::OrdinalIgnoreCase)) { 10000 } else { 100000 }
+                if ($null -ne $coefficient -and ($coefficient -lt 1 -or $coefficient -gt $limit)) {
                     throw "Battle skill coefficient $property is invalid for $key."
                 }
+            }
+            if (($null -ne $skill.burnSpeedDamagePpm -and $burn -cne 'increase_damage') -or
+                ([int]$skill.defensePenetrationBp + [int]$skill.stealthPenetrationBp + [int]$skill.highestDefensePenetrationBp -gt 10000) -or
+                (($skill.aoeWhenBuffed -or $skill.aoeOutsideTurn) -and $skill.target -cne 'one_enemy')) {
+                throw "Battle skill conditional modifiers are invalid for $key."
             }
         }
         $CharacterMessages | Where-Object key -CEQ $hero.nameKey
@@ -87,6 +95,13 @@ function Export-BattleCatalog {
 
     foreach ($skill in $skills) {
         $program = @($effects | Where-Object skillId -CEQ $skill.id | Sort-Object order)
+        if ($skill.target -ceq 'passive') {
+            if ($program.Count -ne 0 -or $skill.cooldownTurns -ne 0 -or $skill.soulGain -ne 0 -or $skill.soulBurnCost -ne 0 -or
+                @($enhancements | Where-Object skillId -CEQ $skill.id).Count -ne 0) {
+                throw "Passive slot has a manual skill program for $($skill.id)."
+            }
+            continue
+        }
         if ($program.Count -eq 0) { throw "Battle skill effect program is missing for $($skill.id)." }
         $stages = @('impact','after_hit','after_attack')
         $lastPhase = 0
@@ -97,15 +112,22 @@ function Export-BattleCatalog {
             $phase = [array]::IndexOf($stages, $effect.phase)
             $usesStatus = $effect.operation -cin @('apply_status','repeat_if_status')
             if ($effect.order -ne $order -or $effect.id -cne "$($skill.id).$order" -or $phase -lt $lastPhase -or
-                $effect.operation -cnotin @('damage','heal','dispel','apply_status','readiness','dual_attack','repeat_if_status') -or
+                $effect.operation -cnotin @('damage','heal','dispel','cleanse','apply_status','readiness','reduce_readiness','extend_cooldown','dual_attack','repeat_if_status') -or
                 $effect.recipient -cnotin @('targets','self','allies','target_and_lowest_ally') -or
                 ($usesStatus -ne ($effect.status -cne 'none')) -or
-                $effect.status -cnotin @('none','AttackUp','DefenseUp','Immunity','Barrier','Stun') -or
+                $effect.status -cnotin @('none','AttackUp','DefenseUp','Immunity','Barrier','Stun','AttackDown','DefenseDown','SpeedUp','SpeedDown','Unhealable','Stealth') -or
+                $effect.condition -cnotin @('none','caster_health_below_half') -or
+                $effect.chanceBonusStatus -cnotin @('none','AttackDown') -or
+                (($effect.chanceBonusStatus -ceq 'none') -ne ($effect.chanceBonusBp -eq 0)) -or
+                ($effect.operation -cin @('cleanse','dispel','reduce_readiness','extend_cooldown') -and $effect.value -le 0) -or
+                ($effect.operation -ceq 'extend_cooldown' -and $effect.value -gt 4) -or
                 (($effect.turns -gt 0) -ne ($effect.operation -ceq 'apply_status')) -or
                 ($effect.phase -ceq 'after_hit' -and -not $hasDamage) -or
                 ($effect.operation -ceq 'damage' -and ($null -eq $skill.attackRateBp -or $null -eq $skill.powerBp)) -or
                 ($effect.operation -ceq 'heal' -and $null -eq $skill.casterHealthHealBp) -or
-                ($effect.status -ceq 'Barrier' -and $null -eq $skill.casterHealthBarrierBp)) {
+                ($effect.status -ceq 'Barrier' -and
+                    @(@($skill.casterHealthBarrierBp,$skill.casterDefenseBarrierBp,$skill.casterAttackBarrierBp) |
+                        Where-Object { $null -ne $_ }).Count -ne 1)) {
                 throw "Battle skill effect sequence or arguments are invalid for $($effect.id)."
             }
             $lastPhase = $phase
@@ -118,7 +140,7 @@ function Export-BattleCatalog {
             $row = $steps[$index]
             $step = $index + 1
             if ($row.step -ne $step -or $row.id -cne "$($skill.id).e$step" -or
-                $row.kind -cnotin @('damage_bp','healing_bp','effect_chance_bp','cooldown_turns')) {
+                $row.kind -cnotin @('damage_bp','healing_bp','effect_chance_bp','cooldown_turns','readiness_bp','soul_gain')) {
                 throw "Battle skill enhancement sequence is invalid for $($skill.id)."
             }
             if ($row.kind -ceq 'cooldown_turns') {

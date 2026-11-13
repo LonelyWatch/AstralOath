@@ -1,0 +1,13 @@
+{
+  "version": "2.1.27",
+  "jsonAddress": "characterlab/source/effect/light_dust.scsp/json",
+  "atlasAddress": "characterlab/source/effect/light_dust.atlas",
+  "pages": [
+    {
+      "name": "effect.sct",
+      "address": "characterlab/source/effect/effect.sct"
+    }
+  ],
+  "premultipliedAlpha": true,
+  "scale": 0.01
+}

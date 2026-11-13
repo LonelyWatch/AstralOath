@@ -1,4 +1,4 @@
-"""Import the explicitly approved three-character dependency closure.
+"""Import the explicitly approved character dependency closure.
 The external source is read-only. Output paths are deterministic and existing
 Unity .meta files are untouched. Missing dependencies abort before conversion.
 """
@@ -8,10 +8,30 @@ from collections import Counter,defaultdict
 import hashlib,json,plistlib,re,shutil
 from pathlib import Path,PurePosixPath
 from PIL import Image
-from convert import convert_scsp,convert_sct
+from convert import convert_scsp,convert_sct,decode_scsp
 
-CHARACTERS={"c1001":("ras","拉斯"),"c1005":("mercedes","梅赛德丝"),"c1062":("angelica","安洁莉卡")}
-BANKS=["sound/master.bank","sound/master.strings.bank","sound/sfx1.bank","sound/voc.event.bank","sound/ja/voc1.audio_ja.bank"]
+CHARACTERS={
+    "c1001":("ras","拉斯"),
+    "c1002":("cecilia","赛西莉亚"),
+    "c1003":("rose","萝季"),
+    "c1004":("silk","席可"),
+    "c1005":("mercedes","梅赛德丝"),
+    "c1006":("kise","绮世"),
+    "c1007":("wildred","维德瑞"),
+    "c1008":("arming","亚敏"),
+    "c1009":("charlotte","夏绿蒂"),
+    "c1062":("angelica","安洁莉卡"),
+}
+# Keep source identifiers verbatim even where the model and STG stems differ.
+SKILL_STEMS={"c1002":"c_cecilia_skill_new","c1007":"c_wilderd_skill","c1008":"c_aming_skill"}
+SKILL_VARIANTS={("c1009",3):"c_charlotte_skill_03_05"}
+
+
+def skill_ids(cid):
+    stem=SKILL_STEMS.get(cid, f"c_{CHARACTERS[cid][0]}_skill")
+    return [SKILL_VARIANTS.get((cid,index), f"{stem}_{index:02}") for index in range(1,4)]
+
+BANKS=["sound/master.bank","sound/master.strings.bank","sound/sfx1.bank","sound/voc.event.bank","sound/ja/voc1.audio_ja.bank","sound/gerneal.bank"]
 RES=Path("Assets/Game/Modules/CharacterPresentation/Res")
 MANIFEST=Path("Assets/Game/Modules/CharacterPresentation/Configs/import-manifest.json")
 EXTENSIONS={".scsp",".atlas",".sct",".sct2",".png",".jpg",".jpeg",".webp",".cfx",".particle",".stg",".timeline",".bank"}
@@ -19,8 +39,8 @@ EXTENSIONS={".scsp",".atlas",".sct",".sct2",".png",".jpg",".jpeg",".webp",".cfx"
 
 def select_characters(ids):
     if not ids or len(ids)!=len(set(ids)) or any(i not in CHARACTERS for i in ids):
-        raise ValueError("Only c1001, c1005 and c1062 may be imported, once each")
-    return {i:CHARACTERS[i] for i in ids}
+        raise ValueError("Only approved character IDs may be imported, once each")
+    return {i:CHARACTERS[i] for i in sorted(ids)}
 
 
 def safe_source(root:Path,relative:str)->Path:
@@ -81,9 +101,11 @@ def asset_type(source):
     return {".scsp":"skeleton",".atlas":"atlas",".cfx":"effect",".particle":"particle",".webp":"cutin",".timeline":"timeline",".stg":"graph",".bank":"bank"}.get(suffix,"texture")
 
 
-def output_owner_path(source,owners):
+def output_owner_path(source,owners,existing_owners=None):
     ids=owners[source]
-    owner=Path("Shared") if len(ids)>1 or source in BANKS else Path("Characters")/next(iter(ids))
+    owner=(existing_owners or {}).get(source)
+    if owner is None:
+        owner=Path("Shared") if len(ids)>1 or source in BANKS else Path("Characters")/next(iter(ids))
     return RES/owner/category(source)/Path(*PurePosixPath(source).parts)
 
 
@@ -119,7 +141,7 @@ class Closure:
         if suffix==".scsp":
             atlas=str(PurePosixPath(source).with_suffix(".atlas"))
             if safe_source(self.root,atlas).is_file() and safe_source(self.root,atlas).stat().st_size>0:deps.add(atlas)
-            elif not source.startswith("camera/"):raise FileNotFoundError(f"Skeleton atlas missing: {source}")
+            elif not source.startswith(("camera/","spani/")):raise FileNotFoundError(f"Skeleton atlas missing: {source}")
         elif suffix==".atlas":
             resolved=resolve_atlas(self.root,source)
             if resolved!=source:deps.add(resolved)
@@ -131,6 +153,7 @@ class Closure:
                     kind=entity.get("etty");name=entity.get("source")
                     if kind=="CUTIN" and entity.get("args"):deps.add(self.resolve(entity["args"],"cut/fhd",".webp"))
                     if kind=="SHAKE" and name:deps.add(self.resolve(name,"camera",".scsp"))
+                    elif kind=="NODE_ANI" and name:deps.add(self.resolve(name,"spani",".scsp"))
                     elif name:deps.add(self.resolve(name,"effect",".cfx"))
                     if entity.get("effect"):deps.add(self.resolve(entity["effect"],"effect",".cfx"))
             elif suffix==".cfx":
@@ -144,9 +167,29 @@ class Closure:
                 for item in walk(document):
                     if item.get("textureFileName"):deps.add(self.resolve(item["textureFileName"],"particle",".sct"))
             elif suffix==".timeline":
-                for item in walk(document):
-                    if item.get("func")=="effect" and item.get("param",{}).get("source"):
-                        deps.add(self.resolve(item["param"]["source"],"effect",".cfx"))
+                animations=None
+                for skin,clips in document["timeline"].items():
+                    for clip,timeline in clips.items():
+                        for frame in timeline.get("frames",[]):
+                            name=frame.get("param",{}).get("source")
+                            if not name:continue
+                            function=frame.get("func")
+                            if function=="shake":
+                                deps.add(self.resolve(name,"camera",".scsp"))
+                                continue
+                            if function!="effect":continue
+                            effect=self.resolve(name,"effect",".cfx")
+                            if not safe_source(self.root,effect).is_file():
+                                if animations is None:
+                                    model=safe_source(self.root,str(PurePosixPath(source).with_suffix(".scsp")))
+                                    animations=decode_scsp(model.read_bytes())[0]["animations"]
+                                if clip not in animations:
+                                    diagnostic={"severity":"info","source":source,
+                                        "code":"unused-timeline-dependency-missing",
+                                        "message":f"{skin}/{clip} cannot play on the source model: missing {effect}"}
+                                    if diagnostic not in self.diagnostics:self.diagnostics.append(diagnostic)
+                                    continue
+                            deps.add(effect)
         return sorted(deps)
 
     def include(self,source,character,trail=()):
@@ -166,7 +209,7 @@ class Closure:
     def build(self,characters,include_banks=True):
         for cid,(hero,_) in characters.items():
             roots=[f"model/{hero}.scsp",f"portrait/{cid}.scsp"]
-            roots += [f"stagept/c_{hero}_skill_{i:02}.stg" for i in range(1,4)]
+            roots += [f"stagept/{skill}.stg" for skill in skill_ids(cid)]
             timeline=f"model/{hero}.timeline"
             if safe_source(self.root,timeline).is_file():roots.append(timeline)
             else:self.diagnostics.append({"severity":"info","source":timeline,"code":"timeline-not-provided","message":"Source uses STG and skeleton events independently."})
@@ -191,12 +234,27 @@ def json_write(path,data):
 def import_assets(source_root,project,ids,include_banks=True):
     characters=select_characters(ids);project=Path(project).resolve();closure=Closure(source_root).build(characters,include_banks)
     entries=[];conversion_reports={};source_hashes={}
+    # Expanding the roster can make an existing dependency shared. Keep its Unity
+    # path/address (and GUID) until an explicit migration is performed.
+    existing_owners={}
+    if (project/MANIFEST).is_file():
+        for item in json.loads((project/MANIFEST).read_text(encoding="utf-8"))["entries"]:
+            parts=Path(item["path"]).relative_to(RES).parts
+            if parts[0]=="Shared":
+                owner=Path("Shared")
+            elif len(parts)>2 and parts[0]=="Characters" and parts[1] in CHARACTERS:
+                owner=Path(*parts[:2])
+            else:
+                raise ValueError("Invalid existing output owner: " + item["path"])
+            if item["source"] in existing_owners and owner!=existing_owners[item["source"]]:
+                raise ValueError("Inconsistent existing ownership for " + item["source"])
+            existing_owners[item["source"]]=owner
     def entry(source,relative,asset_address,kind,deps,conversion):
         if source not in source_hashes:source_hashes[source]=hash_file(safe_source(closure.root,source))
         source_hash=source_hashes[source]
         entries.append({"source":source,"sourceSha256":source_hash,"path":relative.as_posix(),"address":asset_address,"type":kind,"dependencies":deps,"outputSha256":hash_file(project/relative),"conversion":conversion})
     for source in sorted(closure.dependencies):
-        source_path=safe_source(closure.root,source);relative=output_owner_path(source,closure.owners);suffix=source_path.suffix.lower()
+        source_path=safe_source(closure.root,source);relative=output_owner_path(source,closure.owners,existing_owners);suffix=source_path.suffix.lower()
         deps=[address(s) for s in closure.dependencies[source]];out=project/relative
         report={"status":"converted"}
         if suffix==".scsp":
@@ -208,7 +266,7 @@ def import_assets(source_root,project,ids,include_banks=True):
             if summary["spineVersion"]=="2.1.27": conversion["curveSemantics"]="scsp-v2-sentinel/1"
             entry(source,json_relative,address(source)+"/json","spine-json",[],conversion)
             atlas=next((p for p in closure.dependencies[source] if p.endswith(".atlas")),None)
-            if not atlas and summary["renderAttachments"]:raise ValueError(f"Camera-only skeleton has render slots without atlas: {source}")
+            if not atlas and summary["renderAttachments"]:raise ValueError(f"Bone-only skeleton has render slots without atlas: {source}")
             pages=atlas_pages(closure.root,atlas) if atlas else []
             descriptor={"version":summary["spineVersion"],"jsonAddress":address(source)+"/json","atlasAddress":address(atlas) if atlas else "","pages":[{"name":p["name"],"address":address(p["source"])} for p in pages],"premultipliedAlpha":True,"scale":.01}
             relative=relative.with_suffix(".skeleton.json");json_write(project/relative,descriptor);deps=[address(source)+"/json"]+deps+[address(p["source"]) for p in pages]
@@ -266,21 +324,72 @@ def import_assets(source_root,project,ids,include_banks=True):
     return manifest
 
 
-def build_catalog(closure,characters,include_banks):
-    voice_text=safe_source(closure.root,"sound/ja/voc1.audio_ja.yml").read_text(encoding="utf-8-sig")
-    event_text=safe_source(closure.root,"sound/voc.event.yml").read_text(encoding="utf-8-sig")
-    voice_events={};event=None
-    for line in event_text.splitlines():
+def audio_events(document):
+    events={}
+    section=False
+    event=None
+    for line in document.splitlines():
+        if line=="Events:":
+            section=True
+            continue
+        if not section:continue
+        if line and not line[0].isspace():break
         match=re.match(r"^    ([^ ].*?):(?: \[\])?$",line)
-        if match:event=match.group(1).replace("\\","/")
+        if match:
+            event="event:/"+match.group(1).replace("\\","/")
+            events[event]=[]
         match=re.match(r"^        - (\S+)\s*$",line)
-        if match and event:voice_events.setdefault(match.group(1),"event:/"+event)
+        if match and event:events[event].append(match.group(1))
+    return events
+
+
+def voice_keys(text):
+    return set(re.findall(r"\\(voc_[^\\\s]+)\.wav",text))
+
+
+def build_catalog(closure,characters,include_banks):
+    voice_table=safe_source(closure.root,"sound/ja/voc1.audio_ja.yml")
+    voice_text=voice_table.read_text(encoding="utf-8-sig")
+    loaded_keys=voice_keys(voice_text)
+    event_text=safe_source(closure.root,"sound/voc.event.yml").read_text(encoding="utf-8-sig")
+    voice_events={}
+    audio=audio_events(event_text)
+    for event,keys in audio.items():
+        for key in keys:voice_events.setdefault(key,event)
+    for name in ("sfx1","gerneal"):
+        document=safe_source(closure.root,f"sound/{name}.yml").read_text(encoding="utf-8-sig")
+        for event,keys in audio_events(document).items():
+            audio.setdefault(event,[]).extend(keys)
     records=[]
+    used_events=set()
     for cid,(hero,name) in characters.items():
-        keys=sorted(set(re.findall(r"\\(voc_"+re.escape(cid)+r"_[^\\\s]+)\.wav",voice_text)))
+        keys=sorted(key for key in loaded_keys if key.startswith(f"voc_{cid}_"))
         timeline=f"model/{hero}.timeline"
-        records.append({"id":cid,"name":name,"displayNameKey":f"character.{hero}.name","battleSkeletonAddress":address(f"model/{hero}.scsp"),"portraitSkeletonAddress":address(f"portrait/{cid}.scsp"),"voiceBankAddress":address("sound/ja/voc1.audio_ja.bank") if include_banks else "","timelineAddress":address(timeline) if timeline in closure.dependencies else "","voices":[{"id":key,"audioTableKey":key,"eventPath":voice_events.get(key,""),"displayNameKey":"character.voice."+key} for key in keys],"skills":[{"id":f"c_{hero}_skill_{i:02}","displayNameKey":f"character.{hero}.skill{i}","graphAddress":address(f"stagept/c_{hero}_skill_{i:02}.stg"),"eventPath":f"event:/skill/c_{hero}_skill_{i:02}","voiceEventPath":f"event:/voc/skill/c_{hero}_skill_{i:02}"} for i in range(1,4)]})
-    return {"schemaVersion":1,"characters":records,"sharedBanks":[address(p) for p in BANKS] if include_banks else []}
+        voices=[{"id":key,"audioTableKey":key,"eventPath":voice_events.get(key,""),"displayNameKey":"character.voice."+key} for key in keys]
+        skills=[]
+        for i,skill in enumerate(skill_ids(cid),1):
+            effect=f"event:/skill/{skill}"
+            voice=f"event:/voc/skill/{skill}"
+            skills.append({"id":skill,"displayNameKey":f"character.{hero}.skill{i}",
+                "graphAddress":address(f"stagept/{skill}.stg"),"eventPath":effect if audio.get(effect) else "",
+                "voiceEventPath":voice if audio.get(voice) else ""})
+            used_events.update((effect,voice))
+        used_events.update(voice["eventPath"] for voice in voices)
+        records.append({"id":cid,"name":name,"displayNameKey":f"character.{hero}.name",
+            "battleSkeletonAddress":address(f"model/{hero}.scsp"),"portraitSkeletonAddress":address(f"portrait/{cid}.scsp"),
+            "voiceBankAddress":address("sound/ja/voc1.audio_ja.bank") if include_banks else "",
+            "timelineAddress":address(timeline) if timeline in closure.dependencies else "","voices":voices,"skills":skills})
+    referenced_keys={re.sub(r"\((zhs|en|kr|ja|zht|zl)\)$","",key)
+        for event in used_events for key in audio.get(event,()) if key.startswith("voc_")}
+    missing=referenced_keys-loaded_keys
+    if missing and include_banks:
+        for table in sorted(voice_table.parent.glob("*.audio_ja.yml")):
+            if table==voice_table:continue
+            unloaded=missing & voice_keys(table.read_text(encoding="utf-8-sig"))
+            if unloaded:
+                raise ValueError(f"Japanese programmer keys require bank {table.name}: {', '.join(sorted(unloaded))}")
+    return {"schemaVersion":1,"characters":records,"sharedBanks":[address(p) for p in BANKS] if include_banks else [],
+        "missingJapaneseProgrammerKeys":sorted(missing) if include_banks else []}
 
 
 def verify_manifest(project,manifest,source_root=None):

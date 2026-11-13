@@ -94,6 +94,52 @@ public sealed class BattleSkillResolverTests
         }
     }
 
+    [Theory]
+    [InlineData("c1002", 1, "enemy")]
+    [InlineData("c1002", 2, "enemy")]
+    [InlineData("c1002", 3, "enemy")]
+    [InlineData("c1003", 1, "enemy")]
+    [InlineData("c1003", 2, "friend")]
+    [InlineData("c1003", 3, "friend")]
+    [InlineData("c1004", 1, "enemy")]
+    [InlineData("c1004", 3, "enemy")]
+    [InlineData("c1006", 1, "enemy")]
+    [InlineData("c1006", 2, "enemy")]
+    [InlineData("c1006", 3, "enemy")]
+    [InlineData("c1007", 1, "enemy")]
+    [InlineData("c1007", 3, "enemy")]
+    [InlineData("c1008", 1, "enemy")]
+    [InlineData("c1008", 3, "friend")]
+    [InlineData("c1009", 1, "enemy")]
+    [InlineData("c1009", 3, "enemy")]
+    public void ExpandedRosterActiveSkillsProduceAuthoritativeResults(string hero, int slot, string target)
+    {
+        var match = Match(hero);
+        string id = $"{hero}.s{slot}";
+        var response = Cast(match, "actor", id, target);
+        Assert.Equal(BattleCommandStatus.Accepted, response.Status);
+        var action = Assert.Single(response.Events, item => item.Kind == BattleFlowEventKind.Action);
+        Assert.Equal(id, action.SkillId);
+        Assert.False(string.IsNullOrWhiteSpace(action.PresentationId));
+        Assert.Contains(response.Events, item => item.Kind == BattleFlowEventKind.Damage ||
+            item.Kind == BattleFlowEventKind.Healing || item.Kind == BattleFlowEventKind.StatusApplied ||
+            item.Kind == BattleFlowEventKind.ReadinessChanged);
+    }
+
+    [Fact]
+    public void RoseBurnExtendsOnlyGrantedBuffsAndDefenseBarrierUsesCasterStat()
+    {
+        var match = Match("c1003");
+        var buff = Cast(match, "actor", "c1003.s3", "friend", burn: true);
+        Assert.Equal(BattleCommandStatus.Accepted, buff.Status);
+        Assert.Contains(buff.Events, item => item.Kind == BattleFlowEventKind.ReadinessChanged && item.TargetId == "friend");
+        Assert.Equal(3, buff.Snapshot.GetUnit("friend").GetStatus(BattleStatusKind.AttackUp).RemainingTurns);
+        var shield = Cast(match, "actor", "c1003.s2", "friend");
+        Assert.Equal(BattleCommandStatus.Accepted, shield.Status);
+        Assert.Equal(480, shield.Snapshot.GetUnit("friend").Barrier);
+        Assert.Equal(2, shield.Snapshot.GetUnit("friend").GetStatus(BattleStatusKind.Barrier).RemainingTurns);
+    }
+
     [Fact]
     public void PublishedRosterRunsFromOpeningToResultWithDeterministicReplay()
     {
@@ -115,6 +161,40 @@ public sealed class BattleSkillResolverTests
             }
             return (match.Snapshot.Outcome, match.Snapshot.LastCommandSequence, match.Snapshot.LastEventSequence);
         }
+    }
+
+    [Fact]
+    public void PreviewRosterUsesRequestedSlotsAndMirrorsOnlyInDuels()
+    {
+        var catalog = ReadCatalog();
+        string[] roster = { "c1005", "c1001", "c1001", "c1062" };
+        var local = BattlePreviewFactory.Create("custom", 123, catalog, allyHeroIds: roster).Snapshot;
+        var duel = BattlePreviewFactory.Create("duel", 123, catalog, duel: true, allyHeroIds: roster).Snapshot;
+        for (int slot = 1; slot <= roster.Length; slot++)
+        {
+            Assert.Equal(roster[slot - 1], local.GetUnit($"ally-{slot}").Form.PresentationId);
+            Assert.Equal("slime", local.GetUnit($"enemy-{slot}").Form.PresentationId);
+            Assert.Equal(roster[slot - 1], duel.GetUnit($"enemy-{slot}").Form.PresentationId);
+        }
+        Assert.Throws<ArgumentException>(() => BattlePreviewFactory.Create("bad", 123, catalog, allyHeroIds: roster[..3]));
+        roster[0] = "missing";
+        Assert.Throws<ArgumentException>(() => BattlePreviewFactory.Create("bad", 123, catalog, allyHeroIds: roster));
+    }
+
+    [Fact]
+    public void PassiveSlotCannotBeSubmittedAndDoesNotConsumeTurn()
+    {
+        var catalog = ReadCatalog();
+        var row = Assert.Single(catalog.skills, item => item.id == "c1001.s2");
+        row.target = "passive";
+        catalog.effects = catalog.effects.Where(item => item.skillId != row.id).ToArray();
+        var actor = Unit("actor", "c1001", BattleSide.Ally, 1, 1000, 4000, 10000);
+        var enemy = Unit("enemy", "c1001", BattleSide.Enemy, 1, 100, 500000, 10);
+        var match = new BattleMatch("test", 1, 123, new BattleFormation(new[] { actor, enemy }),
+            new BattleSkillResolver(catalog), new BattleFlowRules(initialAllySoul: 20));
+        var before = match.Snapshot;
+        Assert.Equal(BattleCommandStatus.InvalidAction, Cast(match, "actor", row.id, "enemy").Status);
+        Assert.Same(before, match.Snapshot);
     }
 
     private static BattleMatch Match(string hero, int soul = 20)

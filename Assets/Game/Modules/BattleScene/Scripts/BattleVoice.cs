@@ -49,11 +49,15 @@ namespace AstralOath.Client.BattleScene
                     eventPath = "event:/model/slime/ani/skill1"
                 });
 
-                if (banks == null || banks.Length != catalog.sharedBanks.Length)
-                    throw new InvalidDataException("Battle scene audio banks do not match the catalog.");
                 var addresses = new List<string>(catalog.sharedBanks);
-                var bankAssets = new List<TextAsset>(banks);
-                if (impactBank)
+                var bankAssets = new List<TextAsset>(banks ?? Array.Empty<TextAsset>());
+                const string sharedImpact = "characterlab/source/sound/gerneal.bank";
+                // Older authored scenes carry the same bank in the dedicated impact field.
+                if (impactBank && addresses.Count == bankAssets.Count + 1 && addresses[addresses.Count - 1] == sharedImpact)
+                    bankAssets.Add(impactBank);
+                if (addresses.Count != bankAssets.Count)
+                    throw new InvalidDataException("Battle scene audio banks do not match the catalog.");
+                if (impactBank && !addresses.Contains(sharedImpact))
                 {
                     addresses.Add(ImpactBankAddress);
                     bankAssets.Add(impactBank);
@@ -61,7 +65,7 @@ namespace AstralOath.Client.BattleScene
                 var assets = new SceneBanks(addresses.ToArray(), bankAssets.ToArray());
                 service = new FmodCharacterAudioService(CancellationToken.None);
                 // Scene banks are already loaded TextAssets; the asset adapter always completes inline.
-                service.InitializeAsync(assets, addresses).GetAwaiter().GetResult();
+                service.InitializeAsync(assets, addresses, catalog.missingJapaneseProgrammerKeys).GetAwaiter().GetResult();
             }
             catch (Exception error)
             {
@@ -183,6 +187,7 @@ namespace AstralOath.Client.BattleScene
         {
             public AudioCharacter[] characters;
             public string[] sharedBanks;
+            public string[] missingJapaneseProgrammerKeys;
         }
 
         [Serializable, Preserve]

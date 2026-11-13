@@ -1,0 +1,48 @@
+
+razing_left.sct
+size: 229,160
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+RND/lightning/lightning_core_05
+  rotate: false
+  xy: 120, 2
+  size: 107, 107
+  orig: 107, 107
+  offset: 0, 0
+  index: -1
+RND/png/br10
+  rotate: true
+  xy: 120, 111
+  size: 39, 105
+  orig: 39, 105
+  offset: 0, 0
+  index: -1
+RND/png/br11
+  rotate: true
+  xy: 7, 116
+  size: 42, 53
+  orig: 42, 53
+  offset: 0, 0
+  index: -1
+RND/png/fblast_02
+  rotate: false
+  xy: 62, 116
+  size: 44, 42
+  orig: 44, 42
+  offset: 0, 0
+  index: -1
+RND/png/light1
+  rotate: true
+  xy: 7, 2
+  size: 112, 111
+  orig: 112, 111
+  offset: 0, 0
+  index: -1
+RND/png/light_line
+  rotate: false
+  xy: 2, 2
+  size: 3, 156
+  orig: 3, 156
+  offset: 0, 0
+  index: -1

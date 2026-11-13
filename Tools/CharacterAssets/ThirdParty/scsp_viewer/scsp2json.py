@@ -123,9 +123,8 @@ def write_json_data(sk: SkeletonData) -> Dict[str, Any]:
         if s.attachmentName is not None:
             obj["attachment"] = s.attachmentName
         if s.blendMode != BlendMode.Normal:
-            if is_v2:
-                if s.blendMode == BlendMode.Additive:
-                    obj["additive"] = True
+            if is_v2 and s.blendMode == BlendMode.Additive:
+                obj["additive"] = True
             else:
                 obj["blend"] = {BlendMode.Additive: "additive", BlendMode.Multiply: "multiply",
                                 BlendMode.Screen: "screen"}[s.blendMode]

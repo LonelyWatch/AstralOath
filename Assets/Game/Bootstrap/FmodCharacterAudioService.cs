@@ -22,6 +22,10 @@ namespace AstralOath.Client.Bootstrap
         private readonly HashSet<Playback> callbackOwners = new HashSet<Playback>();
         private readonly List<Playback> finished = new List<Playback>();
         private readonly BindingScope assetsLifetime;
+        private readonly HashSet<string> missingJapaneseKeys = new HashSet<string>(StringComparer.Ordinal);
+        private readonly HashSet<string> reportedMissingJapaneseKeys = new HashSet<string>(StringComparer.Ordinal);
+        private readonly List<string> pendingMissingJapaneseWarnings = new List<string>();
+        private static readonly byte[] SilentProgrammerPcm = new byte[320]; // 20 ms, 8 kHz, mono PCM16.
         private bool disposed;
         private bool initializationStarted;
         private string diagnostic = "FMOD 尚未初始化";
@@ -98,13 +102,22 @@ namespace AstralOath.Client.Bootstrap
 
         public FmodCharacterAudioService(CancellationToken token) => assetsLifetime = new BindingScope(token);
 
-        public async Task InitializeAsync(IAssetService assets, IEnumerable<string> addresses)
+        public Task InitializeAsync(IAssetService assets, IEnumerable<string> addresses) =>
+            InitializeAsync(assets, addresses, null);
+
+        public async Task InitializeAsync(IAssetService assets, IEnumerable<string> addresses, IEnumerable<string> absentJapaneseKeys)
         {
             if (disposed) throw new ObjectDisposedException(nameof(FmodCharacterAudioService));
             if (initializationStarted) throw new InvalidOperationException("FMOD 初始化只能执行一次");
             initializationStarted = true;
             try
             {
+                foreach (string key in absentJapaneseKeys ?? Array.Empty<string>())
+                {
+                    if (string.IsNullOrWhiteSpace(key) || !key.StartsWith("voc_", StringComparison.Ordinal) ||
+                        !string.Equals(key, JapaneseAudioTableKey(key), StringComparison.Ordinal) || !missingJapaneseKeys.Add(key))
+                        throw new InvalidOperationException("无效的缺失日语音频键：" + key);
+                }
                 // A Profiler scope must not cross await: native initialization is one synchronous segment.
                 using (InitializeMarker.Auto())
                 {
@@ -218,6 +231,9 @@ namespace AstralOath.Client.Bootstrap
         {
             if (!IsAvailable || disposed) return;
             UpdateStudio("update");
+            foreach (string key in pendingMissingJapaneseWarnings)
+                Debug.LogWarning("FMOD 源音频表缺少日语片段，跳过该段：" + key);
+            pendingMissingJapaneseWarnings.Clear();
             // Collect first: Dispose removes the instance from active. Reuse storage across frames.
             finished.Clear();
             foreach (var playback in active)
@@ -272,15 +288,28 @@ namespace AstralOath.Client.Bootstrap
                 {
                     var properties = Marshal.PtrToStructure<FMOD.Studio.PROGRAMMER_SOUND_PROPERTIES>(parameters);
                     string requestedKey = properties.name;
-                    var originalLookup = playback.owner.GetSoundInfo(requestedKey, out var info);
                     string key = JapaneseAudioTableKey(requestedKey);
-                    // Original events randomly contain locale-tagged programmer instruments.
-                    // The selected Japanese bank exposes canonical bare keys. Always resolve
-                    // the Japanese key even if a tagged key exists in another loaded table.
-                    if (!string.Equals(key, requestedKey, StringComparison.Ordinal))
-                        Check(playback.owner.GetSoundInfo(key, out info), "Japanese programmer key " + key);
-                    else
-                        Check(originalLookup, "programmer key " + key);
+                    var lookup = playback.owner.GetSoundInfo(key, out var info);
+                    if (lookup == FMOD.RESULT.ERR_EVENT_NOTFOUND && playback.owner.missingJapaneseKeys.Contains(key))
+                    {
+                        // Give FMOD a valid silent sound so it can continue the source event timeline.
+                        // The destroy callback owns this handle just like an ordinary programmer sound.
+                        var silence = new FMOD.CREATESOUNDEXINFO
+                        {
+                            cbsize = Marshal.SizeOf<FMOD.CREATESOUNDEXINFO>(), length = (uint)SilentProgrammerPcm.Length,
+                            defaultfrequency = 8000, numchannels = 1, format = FMOD.SOUND_FORMAT.PCM16
+                        };
+                        Check(playback.owner.core.createSound(SilentProgrammerPcm,
+                            FMOD.MODE.OPENRAW | FMOD.MODE.OPENMEMORY | FMOD.MODE.CREATESAMPLE | FMOD.MODE.LOOP_NORMAL,
+                            ref silence, out var silentSound), "programmer create silent interval");
+                        properties.sound = silentSound.handle;
+                        properties.subsoundIndex = -1;
+                        Marshal.StructureToPtr(properties, parameters, false);
+                        if (playback.owner.reportedMissingJapaneseKeys.Add(key))
+                            playback.owner.pendingMissingJapaneseWarnings.Add(key);
+                        return FMOD.RESULT.OK;
+                    }
+                    Check(lookup, "Japanese programmer key " + key);
                     Check(playback.owner.CreateSound(ref info, out var sound), "programmer createSound");
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
                     if (playback.owner.CapturePerformanceDiagnostics)

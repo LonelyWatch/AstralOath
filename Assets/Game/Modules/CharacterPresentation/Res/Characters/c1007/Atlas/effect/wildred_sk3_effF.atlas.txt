@@ -1,0 +1,356 @@
+
+wildred_sk3_effF.sct
+size: 511,1573
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bg_rock_F_01
+  rotate: true
+  xy: 2, 878
+  size: 199, 180
+  orig: 199, 180
+  offset: 0, 0
+  index: -1
+bg_rock_F_02
+  rotate: true
+  xy: 2, 280
+  size: 325, 191
+  orig: 325, 191
+  offset: 0, 0
+  index: -1
+bg_rock_F_03
+  rotate: false
+  xy: 311, 1020
+  size: 135, 111
+  orig: 135, 111
+  offset: 0, 0
+  index: -1
+bg_rock_F_04
+  rotate: true
+  xy: 429, 605
+  size: 112, 80
+  orig: 112, 80
+  offset: 0, 0
+  index: -1
+bg_rock_F_05
+  rotate: false
+  xy: 306, 1133
+  size: 107, 108
+  orig: 107, 108
+  offset: 0, 0
+  index: -1
+bg_rock_F_06
+  rotate: false
+  xy: 108, 1434
+  size: 149, 112
+  orig: 149, 112
+  offset: 0, 0
+  index: -1
+bg_rock_F_07
+  rotate: false
+  xy: 430, 375
+  size: 79, 101
+  orig: 79, 101
+  offset: 0, 0
+  index: -1
+bg_rock_F_08
+  rotate: true
+  xy: 184, 890
+  size: 199, 125
+  orig: 199, 125
+  offset: 0, 0
+  index: -1
+bg_rock_F_09
+  rotate: false
+  xy: 403, 1442
+  size: 51, 45
+  orig: 51, 45
+  offset: 0, 0
+  index: -1
+bs
+  rotate: true
+  xy: 2, 1321
+  size: 250, 104
+  orig: 250, 104
+  offset: 0, 0
+  index: -1
+cloud_small_2
+  rotate: false
+  xy: 108, 1548
+  size: 39, 15
+  orig: 39, 15
+  offset: 0, 0
+  index: -1
+cloud_small_4
+  rotate: false
+  xy: 411, 1412
+  size: 61, 28
+  orig: 61, 28
+  offset: 0, 0
+  index: -1
+cloud_small_5
+  rotate: true
+  xy: 492, 478
+  size: 25, 17
+  orig: 25, 17
+  offset: 0, 0
+  index: -1
+cloud_small_6
+  rotate: true
+  xy: 456, 1442
+  size: 54, 26
+  orig: 54, 26
+  offset: 0, 0
+  index: -1
+crack_burst
+  rotate: false
+  xy: 2, 2
+  size: 287, 276
+  orig: 287, 276
+  offset: 0, 0
+  index: -1
+crack_burst2
+  rotate: true
+  xy: 2, 607
+  size: 269, 191
+  orig: 269, 191
+  offset: 0, 0
+  index: -1
+dusts_back_1
+  rotate: true
+  xy: 323, 1243
+  size: 86, 104
+  orig: 86, 104
+  offset: 0, 0
+  index: -1
+dusts_back_2
+  rotate: false
+  xy: 299, 1331
+  size: 110, 103
+  orig: 110, 103
+  offset: 0, 0
+  index: -1
+dusts_back_3
+  rotate: false
+  xy: 259, 1436
+  size: 85, 103
+  orig: 85, 103
+  offset: 0, 0
+  index: -1
+dusts_midlle_1
+  rotate: false
+  xy: 291, 225
+  size: 218, 148
+  orig: 218, 148
+  offset: 0, 0
+  index: -1
+dusts_midlle_2
+  rotate: true
+  xy: 2, 1079
+  size: 240, 137
+  orig: 240, 137
+  offset: 0, 0
+  index: -1
+dusts_midlle_3
+  rotate: true
+  xy: 291, 2
+  size: 221, 218
+  orig: 221, 218
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 471, 585
+  size: 32, 18
+  orig: 32, 18
+  offset: 0, 0
+  index: -1
+flash2
+  rotate: false
+  xy: 141, 1091
+  size: 163, 163
+  orig: 163, 163
+  offset: 0, 0
+  index: -1
+groundlight_F_L
+  rotate: false
+  xy: 141, 1256
+  size: 180, 71
+  orig: 180, 71
+  offset: 0, 0
+  index: -1
+groundlight_F_R
+  rotate: true
+  xy: 432, 882
+  size: 95, 66
+  orig: 95, 66
+  offset: 0, 0
+  index: -1
+groundlight_crack_02
+  rotate: true
+  xy: 195, 280
+  size: 342, 91
+  orig: 342, 91
+  offset: 0, 0
+  index: -1
+light_long
+  rotate: false
+  xy: 195, 624
+  size: 111, 264
+  orig: 111, 264
+  offset: 0, 0
+  index: -1
+rock_b_01
+  rotate: false
+  xy: 415, 1133
+  size: 71, 83
+  orig: 71, 83
+  offset: 0, 0
+  index: -1
+rock_b_02
+  rotate: true
+  xy: 429, 1218
+  size: 72, 71
+  orig: 72, 71
+  offset: 0, 0
+  index: -1
+rock_b_03
+  rotate: true
+  xy: 432, 802
+  size: 78, 77
+  orig: 78, 77
+  offset: 0, 0
+  index: -1
+rock_b_04
+  rotate: false
+  xy: 429, 719
+  size: 80, 81
+  orig: 80, 81
+  offset: 0, 0
+  index: -1
+rock_m_01
+  rotate: true
+  xy: 403, 1489
+  size: 44, 51
+  orig: 44, 51
+  offset: 0, 0
+  index: -1
+rock_m_02
+  rotate: false
+  xy: 466, 1347
+  size: 43, 42
+  orig: 43, 42
+  offset: 0, 0
+  index: -1
+rock_m_03
+  rotate: false
+  xy: 411, 1347
+  size: 53, 63
+  orig: 53, 63
+  offset: 0, 0
+  index: -1
+rock_m_04
+  rotate: false
+  xy: 456, 1498
+  size: 38, 44
+  orig: 38, 44
+  offset: 0, 0
+  index: -1
+rock_m_05
+  rotate: true
+  xy: 346, 1436
+  size: 94, 55
+  orig: 94, 55
+  offset: 0, 0
+  index: -1
+rock_m_06
+  rotate: false
+  xy: 430, 478
+  size: 60, 105
+  orig: 60, 105
+  offset: 0, 0
+  index: -1
+rock_m_07
+  rotate: false
+  xy: 429, 1292
+  size: 73, 53
+  orig: 73, 53
+  offset: 0, 0
+  index: -1
+rock_m_08
+  rotate: true
+  xy: 448, 979
+  size: 64, 61
+  orig: 64, 61
+  offset: 0, 0
+  index: -1
+rock_m_09
+  rotate: false
+  xy: 448, 1045
+  size: 53, 84
+  orig: 53, 84
+  offset: 0, 0
+  index: -1
+rock_s_01
+  rotate: true
+  xy: 432, 979
+  size: 20, 14
+  orig: 20, 14
+  offset: 0, 0
+  index: -1
+rock_s_02
+  rotate: false
+  xy: 430, 585
+  size: 39, 18
+  orig: 39, 18
+  offset: 0, 0
+  index: -1
+rock_s_03
+  rotate: false
+  xy: 466, 1391
+  size: 31, 16
+  orig: 31, 16
+  offset: 0, 0
+  index: -1
+rock_s_04
+  rotate: false
+  xy: 492, 535
+  size: 16, 22
+  orig: 16, 22
+  offset: 0, 0
+  index: -1
+rock_s_05
+  rotate: false
+  xy: 492, 505
+  size: 16, 28
+  orig: 16, 28
+  offset: 0, 0
+  index: -1
+swave_01
+  rotate: true
+  xy: 288, 375
+  size: 228, 140
+  orig: 228, 140
+  offset: 0, 0
+  index: -1
+swave_02
+  rotate: true
+  xy: 308, 605
+  size: 209, 119
+  orig: 209, 119
+  offset: 0, 0
+  index: -1
+swave_03
+  rotate: true
+  xy: 311, 816
+  size: 202, 119
+  orig: 202, 119
+  offset: 0, 0
+  index: -1
+swave_04
+  rotate: false
+  xy: 108, 1329
+  size: 189, 103
+  orig: 189, 103
+  offset: 0, 0
+  index: -1

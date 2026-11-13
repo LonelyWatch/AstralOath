@@ -2,20 +2,42 @@
 
 ## 维护入口
 
-战斗第二步固定三名普通形态英雄。初始配置采用 **Lv60、六星、六觉醒、技能 +0**，不叠加装备、神器、刻印、专属装备、转职和剧情强化。角色的初始星级与这一面板档位分别保存。此档位用作验收锚点。任意合法等级、星级和觉醒档由共享公式计算，详细口径与证据见[等级面板与战斗单位](battle-growth.md)。
+当前试玩目录包含十名普通形态英雄，按 E7 ID 递增。初始配置采用 **Lv60、六星、六觉醒、技能 +0**，不叠加装备、神器、刻印、专属装备、转职和剧情强化。角色的初始星级与这一面板档位分别保存。此档位用作验收锚点。任意合法等级、星级和觉醒档由共享公式计算，详细口径与证据见[等级面板与战斗单位](battle-growth.md)。
 
-- `Config/Tables/battle_heroes.csv` 管理三人的身份、属性、职业、星座、成长模板引用和验收面板。名称键复用 CharacterLab 源表。
+- `Config/Tables/battle_heroes.csv` 管理英雄的身份、属性、职业、星座、成长模板引用和验收面板。名称键复用 CharacterLab 源表。
 - `Config/Tables/battle_growth_presets.csv` 维护可复用的成长系数，`battle_awakening_steps.csv` 按英雄记录各阶觉醒增量。
-- `Config/Tables/battle_skills.csv` 管理九个主动技能的目标类型、冷却、魂力、魂燃与参考系数。技能 ID 为 `角色ID.s槽位`。`presentationId` 与本地导入的 STG 对应，`iconAsset` 为 Unity 源资源路径。
+- `Config/Tables/battle_skills.csv` 管理 30 个技能槽的目标类型、冷却、魂力、魂燃与参考系数。技能 ID 为 `角色ID.s槽位`。`presentationId` 与本地导入的 STG 对应，`iconAsset` 为 Unity 源资源路径。
 - `Config/Tables/battle_skill_effects.csv` 定义有序技能行为与阶段，供共享规则内核执行。见[战斗第三步](battle-execution.md)。
-- `Config/Tables/battle_skill_enhancements.csv` 管理 45 段 +1 至 +5 的战斗属性增量。正的 `cooldown_turns` 表示减少的回合数；强化材料与费用属于成长系统。
-- `Config/Tables/battle_messages.csv` 管理九个技能的中文工作译名与效果摘要。战斗逻辑应消费经核实的类型和参数，技能说明供人阅读。
+- `Config/Tables/battle_skill_enhancements.csv` 管理 130 段已接入主动技能强化的战斗属性增量。正的 `cooldown_turns` 表示减少的回合数；强化材料与费用属于成长系统。
+- `Config/Tables/battle_messages.csv` 管理技能的中文工作译名与效果摘要。战斗逻辑应消费经核实的类型和参数，技能说明供人阅读。
 
 `Bp` 后缀使用万分比，10000 表示 100%。例如攻击倍率 0.9 写 9000，暴伤 150% 写 15000。技能 `powerBp` 是独立的技能系数；伤害公式中的全局常数、结算顺序、命中、抗性、取整与伤害修正另行验证。CSV 中可空倍率明确写 `null`。锁定版本的 Luban 会把空 CSV 数值单元格读作 0，导表拒绝把 0 当成一个已填写系数。安洁莉卡 S2/S3 的攻击倍率与 Power 不适用。
 
-在仓库根运行 `& ./.tools/powershell/pwsh.exe -NoProfile -File Tools/Config/Generate.ps1 -VerifyAccessors -SyncClient`。客户端快照写入 `Assets/Game/Modules/BattleScene/Configs/battle-catalog.json`，包含 3 英雄、3 成长模板、18 觉醒节点、9 技能、19 条技能效果、45 强化和 21 条文案（18 条技能文案加 3 个复用角色名）。同次生成 `.artifacts/config/json`、`bin` 与 `csharp`；C# 访问器已在 .NET 中逐字段读回二进制。客户端快照和 .NET 产物都由同一批 CSV 生成。试玩场景和开发服务使用同一份生成快照。正式发布时绑定所使用的内容版本。请勿手改生成文件。
+在仓库根运行 `& ./.tools/powershell/pwsh.exe -NoProfile -File Tools/Config/Generate.ps1 -VerifyAccessors -SyncClient`。客户端快照写入 `Assets/Game/Modules/BattleScene/Configs/battle-catalog.json`，包含 10 英雄、9 成长模板、60 觉醒节点、30 技能槽（26 个可手动施放）、58 条技能效果、130 条主动技能强化和 74 条文案（60 条技能文案、10 个复用角色名和 4 条战斗通用文案）。同次生成 `.artifacts/config/json`、`bin` 与 `csharp`；C# 访问器已在 .NET 中逐字段读回二进制。客户端快照和 .NET 产物都由同一批 CSV 生成。试玩场景和开发服务使用同一份生成快照。正式发布时绑定所使用的内容版本。请勿手改生成文件。
 
-## 身份和面板的证据
+## 十人目录扩充（2026-11-13）
+
+保留拉斯、梅赛德丝和安洁莉卡，按普通可编入角色的最小未收录 ID 增加七人。`c0001` 与 `c0002` 是官方索引中同名的梅赛德丝记录，普通可编入条目使用 `c1005`。新增名单与 Lv60 六星六觉醒的攻、血、防、速如下。角色身份和中文名来自 Smilegate 的 zh-CN 记录。面板锚点由公开资料的 Awakened Stats 栏、各阶觉醒和同口径成长系数交叉核对。 [官方角色索引](https://static-pubcomm.onstove.com/gameRecord/epic7/epic7_hero.json) [成长系数](https://gacha-data.com/epic-seven/stat_calc/)
+
+- `c1002` 赛西莉亚，821 / 6751 / 648 / 110。 [面板](https://epic7x.com/character/cecilia/)
+- `c1003` 萝季，821 / 6266 / 703 / 97。 [面板](https://epic7x.com/character/rose/)
+- `c1004` 席可，1188 / 4693 / 518 / 121。 [面板](https://epic7x.com/character/silk/)
+- `c1006` 绮世，1283 / 5138 / 522 / 116。 [面板](https://epic7x.com/character/kise/)
+- `c1007` 维德瑞，1283 / 5138 / 522 / 116。与绮世共用狮子座五星盗贼模板，原模型和演出分别使用 `wildred` 和 `c_wilderd_skill_*` 拼写。 [面板](https://epic7x.com/character/vildred/)
+- `c1008` 亚敏，721 / 6189 / 785 / 91。原模型和演出分别使用 `arming` 和 `c_aming_skill_*` 拼写。 [面板](https://epic7x.com/character/armin/)
+- `c1009` 夏绿蒂，1134 / 5825 / 662 / 99。S3 暂按满斗志选择源 `c_charlotte_skill_03_05`。 [面板](https://epic7x.com/character/charlotte/)
+
+试玩面板使用满觉醒，主动效果表按该档位录入。赛西莉亚 S2 使用觉醒后的 85% 基础触发率，萝季 S3 按觉醒提供全队攻击与自身防御，席可 S3 按觉醒提升全体友军速度，绮世 S3 按觉醒执行两次冷却增加检定。低觉醒版本的技能行为尚无单独表项。技能数值和强化主要参考 GachaData/Epic7Tools 的同期技能页。部分旧页面仍保留早期版本，如绮世 S1 的旧燃魂，本次采用燃魂移至 S2 的资料。夏绿蒂 S3 的 Power 在 2026-03 调查与现有技能表中分别为 1.0 和 0.9，试玩暂取现有技能表的 0.9。 [技能表](https://gacha-data.com/epic-seven/skills/) [技能强化与觉醒](https://epic7tools.dev/tools/skill-multipliers/) [2026-03-12 数值调查](https://www.reddit.com/r/EpicSeven/comments/1rrsw92/datamine_20260312/)
+
+`casterDefenseDamageBp` 为防御乘数，`casterSpeedDamagePpm` 为每点速度乘以百万分比的伤害增幅，燃魂可覆盖速度系数。`casterHealthRatioDamageBp` 为满生命时的最大额外比例。防御穿透、必暴、增益条件群攻、回合外群攻以字段表示，必暴仍经过未命中判定。屏障分别支持最大生命、攻击、防御来源，同一技能只能选择一个来源。萝季和亚敏屏障暂用资料所列的 100% 和 60% 防御。赛西莉亚 S3 和绮世 S3 的精确屏障系数缺少已核对的同版数值，试玩暂取 15% 最大生命、100% 攻击。净化与驱散保持独立操作，降低行动值与冷却增加检查命中、免疫及抗性，行动值与魂力强化分别作用于自身的行为。 [萝季倍率](https://epic7x.com/character/rose/) [亚敏倍率](https://epic7x.com/character/armin/)
+
+席可、维德瑞、亚敏、夏绿蒂 S2 以 `target=passive` 保留图标、文案和演出槽，导表拒绝给这些槽填入手动施放程序，权威解析拒绝手动指令且不消耗回合。被动自动触发仍待接入，包括席可专注与普通技替换、维德瑞剑舞、亚敏减伤与反击、夏绿蒂被动屏障与减伤。试玩仍缺挑衅强制目标、潜行选中限制及被攻击解除、席可燃魂额外回合、夏绿蒂斗志及对应燃魂。绮世潜行状态可用于 S2 额外穿透。上述边界和待验系数独立于技能能否播放演出。
+
+`BattlePreviewFactory.Create` 可接收四个合法 `allyHeroIds`，按传入顺序填站位并允许重复。无参数使用 `DefaultHeroIds`；本地敌方仍为四只史莱姆，双人镜像场按同一组 ID 构造两队。服务器与客户端应使用同一内容快照。新字段由 HybridCLR 战斗程序集读取，服务端相同源码随服务端独立更新。
+
+实际通过 Luban JSON、二进制/C# 访问器逐字段读回、图标和演出引用及十人完整面板校验。服务器自动化测试 76 通过，1 项缺 MySQL 环境跳过，17 个新增主动槽均提交合法权威指令并产生效果事件。Unity 演出和场景结果见本轮交付记录。
+
+## 首批三人身份和面板的证据
 
 Smilegate 公布的角色索引确认了 `c1001`、`c1005`、`c1062` 三个 ID。转职拉斯、暗／光安洁莉卡及月光梅赛德丝属于独立角色。原始模型与 STG 也按这三个 ID 核对。[官方角色索引](https://static-pubcomm.onstove.com/gameRecord/epic7/epic7_hero.json)
 

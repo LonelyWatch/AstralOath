@@ -1,0 +1,111 @@
+
+cecilia_skeff_sk1.sct
+size: 1088,468
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+fire_ring_L1
+  rotate: false
+  xy: 604, 235
+  size: 156, 231
+  orig: 156, 231
+  offset: 0, 0
+  index: -1
+fire_ring_L2
+  rotate: false
+  xy: 759, 2
+  size: 156, 231
+  orig: 156, 231
+  offset: 0, 0
+  index: -1
+fire_ring_L3
+  rotate: false
+  xy: 762, 235
+  size: 156, 231
+  orig: 156, 231
+  offset: 0, 0
+  index: -1
+fire_ring_R1
+  rotate: false
+  xy: 427, 2
+  size: 164, 231
+  orig: 164, 231
+  offset: 0, 0
+  index: -1
+fire_ring_R2
+  rotate: false
+  xy: 438, 235
+  size: 164, 231
+  orig: 164, 231
+  offset: 0, 0
+  index: -1
+fire_ring_R3
+  rotate: false
+  xy: 593, 2
+  size: 164, 231
+  orig: 164, 231
+  offset: 0, 0
+  index: -1
+fire_s1_1
+  rotate: false
+  xy: 920, 173
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1
+fire_s1_2
+  rotate: false
+  xy: 920, 271
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1
+fire_s1_3
+  rotate: false
+  xy: 920, 369
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 917, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+lance_burst
+  rotate: false
+  xy: 2, 2
+  size: 109, 232
+  orig: 109, 232
+  offset: 0, 0
+  index: -1
+lance_burst_g
+  rotate: false
+  xy: 113, 2
+  size: 109, 232
+  orig: 109, 232
+  offset: 0, 0
+  index: -1
+lance_shot_f1
+  rotate: true
+  xy: 2, 236
+  size: 201, 231
+  orig: 201, 231
+  offset: 0, 0
+  index: -1
+lance_shot_f2
+  rotate: false
+  xy: 224, 2
+  size: 201, 231
+  orig: 201, 231
+  offset: 0, 0
+  index: -1
+lance_shot_f3
+  rotate: false
+  xy: 235, 235
+  size: 201, 231
+  orig: 201, 231
+  offset: 0, 0
+  index: -1

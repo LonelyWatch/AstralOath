@@ -7,6 +7,30 @@ class ImportBoundaryTests(unittest.TestCase):
     def test_character_allowlist_rejects_expansion(self):
         with self.assertRaises(ValueError): importer.select_characters(["c9999"])
         self.assertEqual(len(importer.select_characters(["c1001"])),1)
+    def test_base_roster_uses_exact_graph_roots_in_id_order(self):
+        self.assertEqual(list(importer.CHARACTERS), [f"c100{i}" for i in range(1, 10)] + ["c1062"])
+        self.assertEqual(importer.skill_ids("c1007"), [f"c_wilderd_skill_{i:02}" for i in range(1, 4)])
+        self.assertEqual(importer.skill_ids("c1009")[-1], "c_charlotte_skill_03_05")
+
+    def test_node_animation_uses_bone_only_spani_dependency(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / "stagept").mkdir()
+            (root / "spani").mkdir()
+            (root / "stagept/c_test.stg").write_text('{"entities":[{"etty":"NODE_ANI","source":"motion.scsp"}]}')
+            (root / "spani/motion.scsp").write_bytes(b"synthetic header")
+            (root / "spani/motion.atlas").touch()
+            closure = importer.Closure(root)
+            closure.include("stagept/c_test.stg", "c1001")
+            self.assertEqual(closure.dependencies["stagept/c_test.stg"], ["spani/motion.scsp"])
+            self.assertEqual(closure.dependencies["spani/motion.scsp"], [])
+
+    def test_existing_paths_survive_shared_ownership_growth(self):
+        source = "effect/common.sct"
+        owners = {source: {"c1001", "c1002"}}
+        original = Path("Characters/c1001")
+        self.assertIn("/Characters/c1001/", importer.output_owner_path(source, owners, {source: original}).as_posix())
+
     def test_source_path_rejects_traversal_absolute_and_drive(self):
         with tempfile.TemporaryDirectory() as folder:
             for path in ["../secret", "/secret", "C:/secret", "effect/../../secret", "effect\\..\\secret"]:

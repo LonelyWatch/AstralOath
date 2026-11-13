@@ -1,0 +1,48 @@
+
+2_5_air.sct
+size: 118,305
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+air2_01
+  rotate: true
+  xy: 60, 176
+  size: 126, 56
+  orig: 126, 56
+  offset: 0, 0
+  index: -1
+air2_02
+  rotate: false
+  xy: 2, 2
+  size: 111, 49
+  orig: 111, 49
+  offset: 0, 0
+  index: -1
+air2_03
+  rotate: true
+  xy: 2, 176
+  size: 127, 56
+  orig: 127, 56
+  offset: 0, 0
+  index: -1
+air2_04
+  rotate: false
+  xy: 2, 97
+  size: 96, 38
+  orig: 96, 38
+  offset: 0, 0
+  index: -1
+air2_05
+  rotate: false
+  xy: 2, 53
+  size: 106, 42
+  orig: 106, 42
+  offset: 0, 0
+  index: -1
+air2_06
+  rotate: false
+  xy: 2, 137
+  size: 94, 37
+  orig: 94, 37
+  offset: 0, 0
+  index: -1

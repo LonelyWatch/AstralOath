@@ -1,0 +1,743 @@
+{
+  "id": "c_cecilia_skill_new_02",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 2
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "color": "0,0,0,255",
+        "accel": 1.0,
+        "opacity": 0.7,
+        "duration": -1,
+        "localZ": -1,
+        "globalZ": -1,
+        "fadeIn": 250,
+        "fadeOut": 500,
+        "id": "a1",
+        "guid": 1,
+        "etty": "DARK"
+      },
+      {
+        "state": "start",
+        "guid": 2,
+        "etty": "ENTRY"
+      },
+      {
+        "ani": "skill2",
+        "guid": 3,
+        "etty": "ANI"
+      },
+      {
+        "guid": 4,
+        "etty": "IDLE"
+      },
+      {
+        "location": 1,
+        "x": 100.0,
+        "y": -15.0,
+        "curve": "0.1340996,0.611111,0.3639847,0.9409722",
+        "time": 600,
+        "guid": 5,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.4",
+        "curve": "0.1877395,0.517361,0.5402299,0.8888888",
+        "time": 600,
+        "guid": 6,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.3",
+        "curve": "0.1877395,0.517361,0.5402299,0.8888888",
+        "time": 1000,
+        "guid": 7,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 42,
+        "x": -230.0,
+        "y": -10.0,
+        "curve": "0.1340996,0.611111,0.3639847,0.9409722",
+        "time": 1000,
+        "guid": 8,
+        "etty": "CAM"
+      },
+      {
+        "source": "cecilia_skill_02_new_01.cfx",
+        "x": -14.4,
+        "y": 36.0,
+        "z": -50,
+        "scale": 1.0,
+        "location": 42,
+        "guid": 9,
+        "etty": "EFFECT"
+      },
+      {
+        "source": "cecilia_skill_02_new_01.cfx",
+        "x": -86.4,
+        "y": -72.0,
+        "z": 100,
+        "scale": 1.0,
+        "location": 42,
+        "guid": 10,
+        "etty": "EFFECT"
+      },
+      {
+        "source": "cecilia_skill_02_new_01.cfx",
+        "x": 93.6,
+        "y": -14.4,
+        "z": 10,
+        "scale": 1.0,
+        "location": 42,
+        "guid": 11,
+        "etty": "EFFECT"
+      },
+      {
+        "source": "cecilia_skill_02_skyglow.cfx",
+        "x": -340.0,
+        "y": -100.0,
+        "scale": 1.0,
+        "location": 42,
+        "guid": 12,
+        "etty": "EFFECT"
+      },
+      {
+        "location": 42,
+        "x": -160.0,
+        "y": -15.0,
+        "curve": "0.2068966,0.07986108,0,0.9548611",
+        "time": 2500,
+        "guid": 13,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.1",
+        "curve": "0.2337165,0.08333331,0,0.9409722",
+        "time": 2500,
+        "guid": 14,
+        "etty": "ZOOM"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "cecilia_skill_02_new_cm",
+        "guid": 15,
+        "etty": "SHAKE"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "cecilia_skill_02_new_cm",
+        "guid": 16,
+        "etty": "SHAKE"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "cecilia_skill_02_new_cm",
+        "guid": 17,
+        "etty": "SHAKE"
+      },
+      {
+        "targetId": "a1",
+        "guid": 18,
+        "etty": "STOP"
+      },
+      {
+        "time": 200,
+        "guid": 19,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1",
+        "time": 200,
+        "guid": 20,
+        "etty": "ZOOM"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 21,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_mult_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 22,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_mult_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 23,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 24,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 25,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 26,
+        "etty": "HIT"
+      },
+      {
+        "name": "u_range",
+        "duration": 200,
+        "floating_type": true,
+        "upper": 50.0,
+        "guid": 27,
+        "etty": "RANDOM_VALUE"
+      },
+      {
+        "duration": 200,
+        "program": "sprite_blur",
+        "direction_x": -0.7,
+        "direction_y": 1.0,
+        "u_sample": 3.0,
+        "u_range": 50.0,
+        "guid": 28,
+        "etty": "PPEFFECT"
+      },
+      {
+        "duration": 500,
+        "program": "sprite_blur",
+        "direction_x": -0.7,
+        "direction_y": 1.0,
+        "u_sample": 3.0,
+        "u_range": 25.0,
+        "guid": 29,
+        "etty": "PPEFFECT"
+      },
+      {
+        "name": "u_range",
+        "duration": 500,
+        "power": 35.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 30,
+        "etty": "SINE_VALUE"
+      }
+    ],
+    "connections": [
+      {
+        "from": 2,
+        "to": 1,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 3,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 4,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 9,
+        "delay": 1500,
+        "when": 1,
+        "Desc": "1500",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 12,
+        "delay": 700,
+        "when": 1,
+        "Desc": "700",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 5,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 6,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 8,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 13,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 10,
+        "delay": 200,
+        "when": 1,
+        "Desc": "200",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 11,
+        "delay": 450,
+        "when": 1,
+        "Desc": "450",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 14,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 15,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 16,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 17,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 19,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 20,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 18,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 21,
+        "delay": 167,
+        "when": 1,
+        "Desc": "167",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 21,
+        "to": 22,
+        "delay": 1566,
+        "Desc": "1566",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 24,
+        "to": 23,
+        "delay": 1566,
+        "Desc": "1566",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 26,
+        "to": 25,
+        "delay": 1566,
+        "Desc": "1566",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 24,
+        "delay": 167,
+        "when": 1,
+        "Desc": "167",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 26,
+        "delay": 167,
+        "when": 1,
+        "Desc": "167",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 28,
+        "delay": 100,
+        "when": 1,
+        "Desc": "100",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 28,
+        "to": 27,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 29,
+        "to": 30,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 22,
+        "to": 29,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/cecilia_skill_02_new_cm.scsp",
+      "address": "characterlab/source/camera/cecilia_skill_02_new_cm.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/cecilia_skill_02_eff.atlas",
+      "address": "characterlab/source/effect/cecilia_skill_02_eff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/cecilia_skill_02_eff.cfx",
+      "address": "characterlab/source/effect/cecilia_skill_02_eff.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/cecilia_skill_02_eff.scsp",
+      "address": "characterlab/source/effect/cecilia_skill_02_eff.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/cecilia_skill_02_eff.sct",
+      "address": "characterlab/source/effect/cecilia_skill_02_eff.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/cecilia_skill_02_eff_pati.particle",
+      "address": "characterlab/source/effect/cecilia_skill_02_eff_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/cecilia_skill_02_eff_pati2.particle",
+      "address": "characterlab/source/effect/cecilia_skill_02_eff_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/cecilia_skill_02_new.atlas",
+      "address": "characterlab/source/effect/cecilia_skill_02_new.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/cecilia_skill_02_new.scsp",
+      "address": "characterlab/source/effect/cecilia_skill_02_new.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/cecilia_skill_02_new.sct",
+      "address": "characterlab/source/effect/cecilia_skill_02_new.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/cecilia_skill_02_new_01.cfx",
+      "address": "characterlab/source/effect/cecilia_skill_02_new_01.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/cecilia_skill_02_new_crack.atlas",
+      "address": "characterlab/source/effect/cecilia_skill_02_new_crack.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/cecilia_skill_02_new_crack.scsp",
+      "address": "characterlab/source/effect/cecilia_skill_02_new_crack.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/cecilia_skill_02_new_pati1.particle",
+      "address": "characterlab/source/effect/cecilia_skill_02_new_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/cecilia_skill_02_skyglow.atlas",
+      "address": "characterlab/source/effect/cecilia_skill_02_skyglow.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/cecilia_skill_02_skyglow.cfx",
+      "address": "characterlab/source/effect/cecilia_skill_02_skyglow.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/cecilia_skill_02_skyglow.scsp",
+      "address": "characterlab/source/effect/cecilia_skill_02_skyglow.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/cecilia_skill_02_skyglow.sct",
+      "address": "characterlab/source/effect/cecilia_skill_02_skyglow.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/cecilia_skill_02_skyglow_pati.particle",
+      "address": "characterlab/source/effect/cecilia_skill_02_skyglow_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/cecilia_skill_03_botaura_back.atlas",
+      "address": "characterlab/source/effect/cecilia_skill_03_botaura_back.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/cecilia_skill_03_botaura_back.scsp",
+      "address": "characterlab/source/effect/cecilia_skill_03_botaura_back.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/cecilia_skill_03_botaura_back.sct",
+      "address": "characterlab/source/effect/cecilia_skill_03_botaura_back.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/cecilia_skill_03_botaura_front.atlas",
+      "address": "characterlab/source/effect/cecilia_skill_03_botaura_front.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/cecilia_skill_03_botaura_front.scsp",
+      "address": "characterlab/source/effect/cecilia_skill_03_botaura_front.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/cecilia_skill_03_botaura_front.sct",
+      "address": "characterlab/source/effect/cecilia_skill_03_botaura_front.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/cecilia_skill_03_lanceaura1.atlas",
+      "address": "characterlab/source/effect/cecilia_skill_03_lanceaura1.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/cecilia_skill_03_lanceaura1.scsp",
+      "address": "characterlab/source/effect/cecilia_skill_03_lanceaura1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/cecilia_skill_03_lanceaura1.sct",
+      "address": "characterlab/source/effect/cecilia_skill_03_lanceaura1.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/cecilia_skill_03_lanceaura2.atlas",
+      "address": "characterlab/source/effect/cecilia_skill_03_lanceaura2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/cecilia_skill_03_lanceaura2.scsp",
+      "address": "characterlab/source/effect/cecilia_skill_03_lanceaura2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/cecilia_skill_03_lanceaura2.sct",
+      "address": "characterlab/source/effect/cecilia_skill_03_lanceaura2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/cecilia_skill_03_new_botaura.cfx",
+      "address": "characterlab/source/effect/cecilia_skill_03_new_botaura.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/cecilia_skill_03_new_lance1.cfx",
+      "address": "characterlab/source/effect/cecilia_skill_03_new_lance1.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/cecilia_skill_03_new_lance2.cfx",
+      "address": "characterlab/source/effect/cecilia_skill_03_new_lance2.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/cecilia_skill_03_renew_pati1.particle",
+      "address": "characterlab/source/effect/cecilia_skill_03_renew_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.atlas",
+      "address": "characterlab/source/effect/hit_new_blunt_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.scsp",
+      "address": "characterlab/source/effect/hit_new_blunt_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.sct",
+      "address": "characterlab/source/effect/hit_new_blunt_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_blunt_mult_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_blunt_mult_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_blunt_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_blunt_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_blunt_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/hit_new_slash_01.atlas",
+      "address": "characterlab/source/effect/hit_new_slash_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_slash_01.scsp",
+      "address": "characterlab/source/effect/hit_new_slash_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_slash_01.sct",
+      "address": "characterlab/source/effect/hit_new_slash_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_slash_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_slash_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_slash_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_slash_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "model/cecilia.timeline",
+      "address": "characterlab/source/model/cecilia.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/orb_02.sct",
+      "address": "characterlab/source/particle/orb_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/pati_01.sct",
+      "address": "characterlab/source/particle/pati_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

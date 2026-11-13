@@ -1,0 +1,34 @@
+
+cecilia_skill_03_flashbang.sct
+size: 1170,242
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+burst_sphear
+  rotate: false
+  xy: 1036, 2
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+color_back
+  rotate: false
+  xy: 1036, 136
+  size: 66, 66
+  orig: 66, 66
+  offset: 0, 0
+  index: -1
+flash_bang1
+  rotate: false
+  xy: 2, 2
+  size: 515, 238
+  orig: 515, 238
+  offset: 0, 0
+  index: -1
+flash_bang2
+  rotate: false
+  xy: 519, 2
+  size: 515, 238
+  orig: 515, 238
+  offset: 0, 0
+  index: -1

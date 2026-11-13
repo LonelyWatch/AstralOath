@@ -23,7 +23,7 @@ namespace AstralOath.Client.BattleScene
     }
 
     // Read-only playback of already committed actions. The transform is the visual child of a slot.
-    internal sealed class BattleSkillPresentation : IDisposable
+    internal sealed partial class BattleSkillPresentation : IDisposable
     {
         private const float SourcePixel = 0.01f;
         private const string EffectPath = "effect/";
@@ -70,6 +70,7 @@ namespace AstralOath.Client.BattleScene
         private bool cutinPaused;
         private bool incomingHandoff;
         public float StageTime => time;
+        internal float CutinRemainingSeconds => cinematic.CutinRemainingSeconds;
         public IReadOnlyList<float> HitTimes { get; private set; } = Array.Empty<float>();
 
         public BattleSkillPresentation(Transform worldRoot, TextAsset[] graphs, BattleSkillPresentationAsset[] assets,
@@ -116,7 +117,7 @@ namespace AstralOath.Client.BattleScene
                     string key = (string)dependency["source"];
                     string kind = (string)dependency["type"];
                     if (!assets.TryGetValue(key, out var asset) || !asset.document) continue;
-                    if (kind == "skeleton" && (key.StartsWith("effect/", StringComparison.Ordinal) || key.StartsWith("camera/", StringComparison.Ordinal)))
+                    if (kind == "skeleton" && (key.StartsWith("effect/", StringComparison.Ordinal) || key.StartsWith("camera/", StringComparison.Ordinal) || key.StartsWith("spani/", StringComparison.Ordinal)))
                     {
                         skeletonFactory.Prepare(Skeleton(key, asset));
                         Metadata(key);
@@ -235,7 +236,13 @@ namespace AstralOath.Client.BattleScene
                         Schedule(at, () => cinematic.Play(node));
                         break;
                     case "MOVE":
-                        Schedule(at, () => PlayMove(node, primary, cue.Duration));
+                        Schedule(at, () => PlayMove(node, primary, recipients, cue.Duration));
+                        break;
+                    case "NODE_ANI":
+                        Schedule(at, () => PlayNodeAnimation(node, at, recipients));
+                        break;
+                    case "COLOR_BLEND":
+                        WarnSource($"COLOR_BLEND {node["guid"]} tint layering is pending source verification.");
                         break;
                     case "SHAKE":
                         Schedule(at, () => PlayShake(node));
@@ -243,7 +250,7 @@ namespace AstralOath.Client.BattleScene
                     case "PPEFFECT":
                         Schedule(at, () =>
                         {
-                            if (!cinematic.PlayPostEffect(node, cue.Modulators))
+                            if (!cinematic.PlayPostEffect(node, cue.Modulators.Select(ResolvePostModulator).ToArray()))
                                 WarnSource($"PPEFFECT program '{node["program"]}' could not play at node {node["guid"]}.");
                         });
                         break;
@@ -251,22 +258,27 @@ namespace AstralOath.Client.BattleScene
             }
             foreach (var dependency in graph["assets"].Where(item => (string)item["type"] == "timeline"))
             {
-                var timeline = Document((string)dependency["source"]);
-                if (!(timeline?["timeline"]?["default"]?[animation]?["frames"] is JArray frames)) continue;
-                foreach (var frame in frames.OfType<JObject>())
+                var timeline = Document((string)dependency["source"])?["timeline"]?["default"];
+                foreach (var clip in cues.Where(cue => Kind(cue.Node) == "ANI"))
                 {
-                    if (!(frame["param"] is JObject node)) continue;
-                    float at = lead + Seconds(frame, "time");
-                    switch ((string)frame["func"])
+                    if (!(timeline?[(string)clip.Node["ani"]]?["frames"] is JArray frames)) continue;
+                    foreach (var frame in frames.OfType<JObject>())
                     {
-                        case "effect":
-                            actionEnd = Mathf.Max(actionEnd, at + EffectDuration((string)node["source"]));
-                            Schedule(at, () => Effect(node, primary, recipients));
-                            break;
-                        case "shake":
-                            actionEnd = Mathf.Max(actionEnd, at + ShakeDuration(node));
-                            Schedule(at, () => PlayShake(node));
-                            break;
+                        if (!(frame["param"] is JObject node)) continue;
+                        float at = clip.At + Seconds(frame, "time");
+                        switch ((string)frame["func"])
+                        {
+                            case "effect":
+                                actionEnd = Mathf.Max(actionEnd, at + EffectDuration((string)node["source"]));
+                                Schedule(at, () => Cfx((string)node["source"], actor, recipients, 1,
+                                    Number(node, "scale", 1f), new Vector2(Number(node, "x"), Number(node, "y")),
+                                    false, anchorName: (string)node["locationBone"] ?? (string)node["locationParam"]));
+                                break;
+                            case "shake":
+                                actionEnd = Mathf.Max(actionEnd, at + ShakeDuration(node));
+                                Schedule(at, () => PlayShake(node));
+                                break;
+                        }
                     }
                 }
             }
@@ -276,11 +288,46 @@ namespace AstralOath.Client.BattleScene
             return (impactTime, actionEnd);
         }
 
+        private void PlayNodeAnimationTracks(JObject node, float at, BattlePreviewActor target)
+        {
+            if (!(node["timeline"] is JArray frames)) return;
+            foreach (string entry in frames.Values<string>())
+            {
+                string[] fields = entry.Split(',');
+                if (fields.Length != 3 || !TryScalar(fields[0], out float delay) || delay < 0f || fields[2] != "1")
+                {
+                    WarnSource($"Unmapped NODE_ANI timeline entry '{entry}'.");
+                    continue;
+                }
+                Schedule(at + delay / 1000f, () => target.PlayBattleAnimation(fields[1]));
+            }
+        }
+
+        private JObject ResolvePostModulator(JObject modulator)
+        {
+            if (Kind(modulator) != "RANDOM_VALUE" || (string)modulator["name"] != "u_range") return modulator;
+            // Use one cosmetic sample for the cue. The source sampling cadence is unverified.
+            var prepared = (JObject)modulator.DeepClone();
+            prepared["value"] = Sample(Number(modulator, "lower"), Number(modulator, "upper"));
+            return prepared;
+        }
+
         private IEnumerable<(float At, JObject Node, float Duration, JObject[] Modulators)> ReadCues(JObject graph, JObject[] nodes)
         {
             var byId = nodes.ToDictionary(node => (int)node["guid"]);
             var edges = graph["source"]["connections"].OfType<JObject>().ToLookup(edge => (int)edge["from"]);
             var earliest = new Dictionary<int, (float At, int Order, float Duration)>();
+            var timelineEvents = (graph["assets"] ?? new JArray()).Where(item => (string)item["type"] == "timeline")
+                .Select(item => Document((string)item["source"])?["timeline"]?["default"])
+                .OfType<JObject>().ToArray();
+            float EventTime(string animation, string name)
+            {
+                float spineTime = caster.GetBattleAnimationEventTime(animation, name);
+                if (spineTime >= 0f) return spineTime;
+                return timelineEvents.SelectMany(timeline => timeline[animation]?["frames"]?.OfType<JObject>() ?? Enumerable.Empty<JObject>())
+                    .Where(frame => (string)frame["func"] == "event" && (string)frame["param"]?["name"] == name)
+                    .Select(frame => Seconds(frame, "time")).DefaultIfEmpty(-1f).Min();
+            }
             int ordinal = 0;
             void Visit(JObject node, float at, HashSet<int> path, string animation = null,
                 float animationStart = 0f, float? durationOverride = null)
@@ -293,8 +340,13 @@ namespace AstralOath.Client.BattleScene
                 if (Kind(node) == "ANI") { animation = (string)node["ani"]; animationStart = at; }
                 if (Kind(node) == "ANI_SCOPE")
                 {
-                    float start = caster.GetBattleAnimationEventTime(animation, (string)node["from"]);
-                    float end = caster.GetBattleAnimationEventTime(animation, (string)node["to"]);
+                    float start = EventTime(animation, (string)node["from"]);
+                    float end = EventTime(animation, (string)node["to"]);
+                    if (start >= 0f && end < 0f)
+                    {
+                        end = caster.GetBattleAnimationDuration(animation);
+                        WarnSource($"Missing {animation}/{node["to"]}; the scope ends with the original clip.");
+                    }
                     if (end >= 0f) finish = Mathf.Max(at, animationStart + end);
                     else Warn("Missing source ANI_SCOPE end event " + animation + "/" + node["to"]);
                     if (start >= 0f && end >= start) jumpStart = Mathf.Clamp(animationStart + start, at, finish);
@@ -329,8 +381,9 @@ namespace AstralOath.Client.BattleScene
                 if (Kind(node) == "ANI")
                     foreach (var listener in nodes.Where(item => Kind(item) == "ONEVENT" && (string)item["ani"] == animation))
                     {
-                        float eventTime = caster.GetBattleAnimationEventTime(animation, (string)listener["name"]);
+                        float eventTime = EventTime(animation, (string)listener["name"]);
                         if (eventTime >= 0) Visit(listener, at + eventTime, path, animation, at);
+                        else WarnSource($"Missing source event {animation}/{listener["name"]}.");
                     }
                 path.Remove(id);
             }
@@ -373,6 +426,7 @@ namespace AstralOath.Client.BattleScene
                 case "DARK": return Number(node, "duration", -1f) < 0f ? 0f : Seconds(node, "duration") + Seconds(node, "fadeOut");
                 case "EFFECT": return EffectDuration((string)node["source"]);
                 case "SHAKE": return ShakeDuration(node);
+                case "NODE_ANI": return NodeAnimationDuration(node);
                 case "PPEFFECT": return Seconds(node, "duration");
                 default: return Seconds(node, "time");
             }
@@ -576,7 +630,7 @@ namespace AstralOath.Client.BattleScene
             else pending.Insert(index, (at, run));
         }
 
-        private void PlayMove(JObject node, BattlePreviewActor primary, float duration)
+        private void PlayMove(JObject node, BattlePreviewActor primary, BattlePreviewActor[] targets, float duration)
         {
             if (!caster) return;
             int style = (int?)node["style"] ?? 1;
@@ -589,9 +643,13 @@ namespace AstralOath.Client.BattleScene
                 float separation = Mathf.Clamp(target.x - caster.transform.position.x, -.9f, .9f);
                 destination = caster.transform.parent.InverseTransformPoint(target - Vector3.right * separation);
             }
+            else if (location == 31 && primary)
+                destination = caster.transform.parent.InverseTransformPoint((caster.transform.position + primary.transform.position) * .5f);
+            else if ((location == 41 || location == 42) && targets.Length > 0)
+                destination = caster.transform.parent.InverseTransformPoint(TargetCenter(targets));
             else if (location != 11)
             {
-                Warn("Unsupported source MOVE location " + location);
+                WarnSource("Unsupported or unoccupied MOVE location " + location);
                 return;
             }
             if (style < 1 || style > 3)
@@ -616,6 +674,9 @@ namespace AstralOath.Client.BattleScene
             }
         }
 
+        private static Vector3 TargetCenter(BattlePreviewActor[] targets) =>
+            targets.Aggregate(Vector3.zero, (sum, target) => sum + target.transform.position) / targets.Length;
+
         private void Effect(JObject node, BattlePreviewActor primary, BattlePreviewActor[] targets)
         {
             string source = (string)node["source"];
@@ -631,7 +692,7 @@ namespace AstralOath.Client.BattleScene
             if (!key.EndsWith(".cfx", StringComparison.Ordinal)) key += ".cfx";
             if (!(Document(key)?["primitive"] is JArray primitives)) return;
 
-            if (location == 42)
+            if (location == 41 || location == 42)
             {
                 var occupied = targets.Where(target => target).ToArray();
                 if (occupied.Length == 0) return;
@@ -643,7 +704,7 @@ namespace AstralOath.Client.BattleScene
             {
                 1 => new[] { caster },
                 11 => new[] { caster },
-                5 => new[] { primary },
+                5 or 12 => new[] { primary },
                 6 => targets,
                 _ => null
             };

@@ -1,0 +1,259 @@
+{
+  "id": "c_rose_skill_02",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 5
+    },
+    "eventlisteners": [
+      11
+    ],
+    "entities": [
+      {
+        "guid": 1,
+        "etty": "IDLE"
+      },
+      {
+        "ani": "skill2",
+        "guid": 2,
+        "etty": "ANI"
+      },
+      {
+        "location": 1,
+        "x": 150.0,
+        "curve": "0,1,1,1",
+        "time": 300,
+        "guid": 3,
+        "etty": "CAM"
+      },
+      {
+        "location": 32,
+        "x": 150.0,
+        "curve": "0,1,1,1",
+        "time": 500,
+        "guid": 4,
+        "etty": "CAM"
+      },
+      {
+        "state": "start",
+        "guid": 5,
+        "etty": "ENTRY"
+      },
+      {
+        "scale": "1.4",
+        "curve": "0,1,1,1",
+        "time": 300,
+        "guid": 6,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.2",
+        "curve": "0,1,1,1",
+        "time": 500,
+        "guid": 7,
+        "etty": "ZOOM"
+      },
+      {
+        "source": "valkyrie_sk2",
+        "scale": 1.2,
+        "location": 6,
+        "locationParam": "target",
+        "guid": 8,
+        "etty": "EFFECT"
+      },
+      {
+        "scale": "1",
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 9,
+        "etty": "ZOOM"
+      },
+      {
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 10,
+        "etty": "CAM"
+      },
+      {
+        "ani": "skill2",
+        "name": "hit",
+        "handled": true,
+        "guid": 11,
+        "etty": "ONEVENT"
+      },
+      {
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 12,
+        "etty": "HIT"
+      }
+    ],
+    "connections": [
+      {
+        "from": 2,
+        "to": 1,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 4,
+        "delay": 680,
+        "Desc": "680",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 3,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 6,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 8,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 10,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 9,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 12,
+        "delay": 400,
+        "when": 1,
+        "Desc": "400",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "effect/defense_shield.atlas",
+      "address": "characterlab/source/effect/defense_shield.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/defense_shield.scsp",
+      "address": "characterlab/source/effect/defense_shield.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/effect.atlas",
+      "address": "characterlab/source/effect/effect.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/effect.sct",
+      "address": "characterlab/source/effect/effect.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/light_dust.atlas",
+      "address": "characterlab/source/effect/light_dust.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/light_dust.scsp",
+      "address": "characterlab/source/effect/light_dust.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/rose_skill_01.cfx",
+      "address": "characterlab/source/effect/rose_skill_01.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/rose_skill_01_eff.atlas",
+      "address": "characterlab/source/effect/rose_skill_01_eff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/rose_skill_01_eff.scsp",
+      "address": "characterlab/source/effect/rose_skill_01_eff.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/rose_skill_01_eff.sct",
+      "address": "characterlab/source/effect/rose_skill_01_eff.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/rose_skill_02.cfx",
+      "address": "characterlab/source/effect/rose_skill_02.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/rose_skill_02_eff.atlas",
+      "address": "characterlab/source/effect/rose_skill_02_eff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/rose_skill_02_eff.scsp",
+      "address": "characterlab/source/effect/rose_skill_02_eff.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/rose_skill_02_eff.sct",
+      "address": "characterlab/source/effect/rose_skill_02_eff.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/rose_skill_02_pati1.particle",
+      "address": "characterlab/source/effect/rose_skill_02_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/valkyrie_sk2.cfx",
+      "address": "characterlab/source/effect/valkyrie_sk2.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "model/rose.timeline",
+      "address": "characterlab/source/model/rose.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/pati_01.sct",
+      "address": "characterlab/source/particle/pati_01.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

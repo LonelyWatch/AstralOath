@@ -1,0 +1,20 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "cecilia_skill_02_skyglow",
+      "x": "200",
+      "y": "-100",
+      "scale": "1.2",
+      "format": "spine",
+      "globalZ": 0.1
+    },
+    {
+      "source": "cecilia_skill_02_skyglow_pati",
+      "x": "200",
+      "y": "1160",
+      "format": "particle",
+      "globalZ": 0.2
+    }
+  ]
+}

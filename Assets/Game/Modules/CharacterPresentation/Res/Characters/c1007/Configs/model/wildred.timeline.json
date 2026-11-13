@@ -1,0 +1,74 @@
+{
+  "timeline": {
+    "default": {
+      "skill2": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill2_2": {
+        "duration": 0,
+        "frames": []
+      },
+      "b_idle": {
+        "duration": 0,
+        "frames": []
+      },
+      "idle": {
+        "duration": 0,
+        "frames": []
+      },
+      "idle_backup": {
+        "duration": 0,
+        "frames": []
+      },
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": [
+          {
+            "param": {}
+          }
+        ]
+      },
+      "groggy2": {
+        "duration": 0,
+        "frames": []
+      },
+      "attacked": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 1,
+            "func": "sound",
+            "param": {}
+          }
+        ]
+      },
+      "groggy": {
+        "duration": 0,
+        "frames": []
+      },
+      "knock_down": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 1,
+            "func": "sound",
+            "param": {}
+          }
+        ]
+      },
+      "skill1": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill1_backup": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill3": {
+        "duration": 0,
+        "frames": []
+      }
+    }
+  }
+}

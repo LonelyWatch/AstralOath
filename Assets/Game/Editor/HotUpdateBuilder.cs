@@ -226,6 +226,9 @@ namespace AstralOath.Editor
             var previousScenes = EditorBuildSettings.scenes;
             var previousAppBundle = EditorUserBuildSettings.buildAppBundle;
             var previousExport = EditorUserBuildSettings.exportAsGoogleAndroidProject;
+            const string createSolution = "CreateSolution";
+            var previousWindowsSolution = target == BuildTarget.StandaloneWindows64
+                ? EditorUserBuildSettings.GetPlatformSettings("Standalone", createSolution) : null;
             var player = new PlayerBaseline
             {
                 formatVersion = 1,
@@ -247,6 +250,8 @@ namespace AstralOath.Editor
                 EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(profile.ScenePath, true) };
                 if (options.developmentHttp)
                     PlayerSettings.insecureHttpOption = InsecureHttpOption.DevelopmentOnly;
+                if (target == BuildTarget.StandaloneWindows64)
+                    EditorUserBuildSettings.SetPlatformSettings("Standalone", createSolution, "false");
                 if (target == BuildTarget.Android)
                 {
                     PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
@@ -336,6 +341,8 @@ namespace AstralOath.Editor
                     EditorBuildSettings.scenes = previousScenes;
                     EditorUserBuildSettings.buildAppBundle = previousAppBundle;
                     EditorUserBuildSettings.exportAsGoogleAndroidProject = previousExport;
+                    if (target == BuildTarget.StandaloneWindows64)
+                        EditorUserBuildSettings.SetPlatformSettings("Standalone", createSolution, previousWindowsSolution ?? "");
                 }
                 finally
                 {

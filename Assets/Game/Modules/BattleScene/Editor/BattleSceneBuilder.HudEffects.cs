@@ -1,3 +1,6 @@
+using System;
+using Newtonsoft.Json.Linq;
+using Object = UnityEngine.Object;
 using System.IO;
 using System.Linq;
 using AstralOath.Client.Common;
@@ -40,6 +43,21 @@ namespace AstralOath.Client.BattleScene.Editor
             AssetDatabase.SaveAssets();
             ValidateHud();
             Debug.Log("ASTRAL_BATTLE_HUD_EFFECTS_READY");
+        }
+
+        [MenuItem("Tools/战斗场景/更新角色资源引用")]
+        public static void InstallHeroRoster()
+        {
+            if (!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+            AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+            ImportSprites(HudTextures + "Faces");
+            ImportSprites(HudTextures + "Skills");
+            var scene = EditorSceneManager.OpenScene(ScenePath);
+            var hud = scene.GetRootGameObjects().SelectMany(root => root.GetComponentsInChildren<BindingMap>(true))
+                .Single(map => map.gameObject.name == "BattleHud");
+            ConfigureHudScene(hud, rosterOnly: true);
+            if (!EditorSceneManager.SaveScene(scene)) throw new IOException("Unable to save " + ScenePath);
+            Debug.Log("ASTRAL_BATTLE_ROSTER_READY");
         }
 
         private static void ConfigureHudButtons(BindingMap map)
@@ -132,9 +150,9 @@ namespace AstralOath.Client.BattleScene.Editor
             serialized.ApplyModifiedPropertiesWithoutUndo();
         }
 
-        private static void ConfigureHudScene(BindingMap hud)
+        private static void ConfigureHudScene(BindingMap hud, bool rosterOnly = false)
         {
-            BattleTurnHudAssets.Import();
+            if (!rosterOnly) BattleTurnHudAssets.Import();
             var canvas = hud.GetComponentInParent<Canvas>();
             if (!canvas.GetComponent<GraphicRaycaster>())
                 canvas.gameObject.AddComponent<GraphicRaycaster>();
@@ -142,31 +160,70 @@ namespace AstralOath.Client.BattleScene.Editor
                 preview = canvas.gameObject.AddComponent<BattleHudPreview>();
 
             var properties = new SerializedObject(preview);
-            SetObject("hud", hud);
-            SetObject("unitPresentation", BattleUnitPresentationAssets.Load());
-            SetObject("battleCatalog", Asset<TextAsset>(Module + "/Configs/battle-catalog.json"));
-            SetObject("battleDamageFont", BuildDamageDigits());
-            SetObject("impactBank", Asset<TextAsset>(Module + "/Res/Sounds/gerneal.bank.bytes"));
-            SetObject("stageBackground", canvas.gameObject.scene.GetRootGameObjects()
-                .Single(root => root.name == "Forest2Stage" || root.name == "Forest3Stage"));
-            var heroes = new[] { (Id: "c1001", Stem: "ras"), (Id: "c1005", Stem: "mercedes"), (Id: "c1062", Stem: "angelica") };
-            var graphs = heroes.SelectMany(hero => Enumerable.Range(1, 3).Select(slot => Asset<TextAsset>(
-                $"Assets/Game/Modules/CharacterPresentation/Res/Characters/{hero.Id}/Configs/stagept/c_{hero.Stem}_skill_0{slot}.graph.json"))).ToArray();
+            var catalog = Asset<TextAsset>(Module + "/Configs/battle-catalog.json");
+            var audio = Asset<TextAsset>("Assets/Game/Modules/CharacterLab/Configs/catalog.json");
+            var battle = JObject.Parse(catalog.text);
+            var lab = JObject.Parse(audio.text);
+            var paths = BattleSkillPresentationAssets.AddressMap();
+            var characters = lab["characters"].ToDictionary(row => (string)row["id"], StringComparer.Ordinal);
+            var heroes = battle["heroes"].OrderBy(row => (string)row["id"], StringComparer.Ordinal).ToArray();
+            var heroIds = heroes.Select(row => (string)row["id"]).ToHashSet(StringComparer.Ordinal);
+            var rows = properties.FindProperty("heroModels");
+            rows.arraySize = heroes.Length;
+            for (int i = 0; i < heroes.Length; i++)
+            {
+                string id = (string)heroes[i]["id"];
+                var character = characters[id];
+                var row = rows.GetArrayElementAtIndex(i);
+                row.FindPropertyRelative("id").stringValue = id;
+                row.FindPropertyRelative("label").stringValue = Allies.FirstOrDefault(item => item.Id == id).Name ?? (string)character["name"];
+                row.FindPropertyRelative("skin").stringValue = (string)character["battleSkin"];
+                BattleSkillPresentationAssets.SetSkeleton(row.FindPropertyRelative("skeleton"), (string)character["battleSkeletonAddress"], paths);
+            }
+            var selected = properties.FindProperty("allyHeroIds");
+            if (selected.arraySize == 0)
+            {
+                selected.arraySize = Allies.Length;
+                for (int i = 0; i < Allies.Length; i++) selected.GetArrayElementAtIndex(i).stringValue = Allies[i].Id;
+            }
+            var graphs = characters.Values.Where(row => heroIds.Contains((string)row["id"]))
+                .SelectMany(row => row["skills"]).Select(row => (string)row["graphAddress"])
+                .Distinct(StringComparer.Ordinal).OrderBy(address => address, StringComparer.Ordinal)
+                .Select(address => BattleSkillPresentationAssets.Load<TextAsset>(address, paths)).ToArray();
+            var graphIds = graphs.Select(graph => (string)JObject.Parse(graph.text)["id"]).ToHashSet(StringComparer.Ordinal);
+            var skills = battle["skills"].Where(row => heroIds.Contains((string)row["heroId"])).ToArray();
+            foreach (var skill in skills)
+                if ((string)skill["target"] != "passive" && !graphIds.Contains((string)skill["presentationId"]))
+                    throw new InvalidOperationException("Missing original battle graph for " + skill["id"]);
+
+            SetObject("battleCatalog", catalog);
+            SetObject("audioCatalog", audio);
+            SetObject("impactBank", null); // Current catalog includes the shared impact/effect bank.
+            SetArray("audioBanks", lab["sharedBanks"].Values<string>()
+                .Select(address => BattleSkillPresentationAssets.Load<TextAsset>(address, paths)).ToArray());
             SetArray("battleGraphs", graphs);
             BattleSkillPresentationAssets.Collect(properties.FindProperty("skillAssets"), graphs);
-            const string sounds = "Assets/Game/Modules/CharacterPresentation/Res/Shared/Sounds/sound/";
-            SetObject("audioCatalog", Asset<TextAsset>("Assets/Game/Modules/CharacterLab/Configs/catalog.json"));
-            SetArray("audioBanks", new[] { "master.bank", "master.strings.bank", "sfx1.bank", "voc.event.bank",
-                "ja/voc1.audio_ja.bank" }.Select(name => Asset<TextAsset>(sounds + name + ".bytes")).ToArray());
-            SetArray("battleSprites", heroes.SelectMany(hero => Enumerable.Range(1, 3).Select(slot =>
-                Asset<Sprite>(HudTextures + $"Skills/sk_{hero.Id}_{slot}.png")))
-                .Concat(heroes.SelectMany(hero => new[] { Asset<Sprite>(HudTextures + $"Faces/{hero.Id}_su.png"),
-                    Asset<Sprite>(HudTextures + $"Faces/{hero.Id}_s.png") }))
-                .Concat(new[] { "cm_icon_promfire", "cm_icon_promice", "cm_icon_role_knight", "cm_icon_role_mage",
-                    "cm_icon_role_manauser", "_hero_s_bg_ally", "_hero_s_bg_enemy", "_hero_s_frame_ally",
-                    "_hero_s_frame_enemy", "cm_hero_circool1", "game_hud_arrow", "Faces/pet_slime1_n_grade1_1_s" }
-                    .Select(name => Asset<Sprite>(HudTextures + name + ".png")))
-                .Concat(BattleTurnHudAssets.Sprites()).Concat(BattleDamageFeedbackAssets.Sprites()).ToArray());
+            var classIcons = heroes.Select(row => (string)row["heroClass"]).Distinct(StringComparer.Ordinal)
+                .Select(role => "cm_icon_role_" + (role == "soul_weaver" ? "manauser" : role == "thief" ? "assassin" : role));
+            var elementIcons = heroes.Select(row => "cm_icon_prom" + (string)row["element"]).Distinct(StringComparer.Ordinal);
+            SetArray("battleSprites", skills.Select(row => Asset<Sprite>(HudTextures + "Skills/" + Path.GetFileName((string)row["iconAsset"])))
+                .Concat(heroes.SelectMany(row => new[] { Asset<Sprite>(HudTextures + $"Faces/{row["id"]}_su.png"),
+                    Asset<Sprite>(HudTextures + $"Faces/{row["id"]}_s.png") }))
+                .Concat(classIcons.Concat(elementIcons).Concat(new[] { "_hero_s_bg_ally", "_hero_s_bg_enemy", "_hero_s_frame_ally",
+                    "_hero_s_frame_enemy", "cm_hero_circool1", "game_hud_arrow", "Faces/pet_slime1_n_grade1_1_s" })
+                    .Distinct(StringComparer.Ordinal).Select(name => Asset<Sprite>(HudTextures + name + ".png")))
+                .Concat(BattleTurnHudAssets.Sprites()).Concat(BattleDamageFeedbackAssets.Sprites()).Distinct().ToArray());
+            if (rosterOnly)
+            {
+                properties.ApplyModifiedPropertiesWithoutUndo();
+                return;
+            }
+
+            SetObject("hud", hud);
+            SetObject("unitPresentation", BattleUnitPresentationAssets.Load());
+            SetObject("battleDamageFont", BuildDamageDigits());
+            SetObject("stageBackground", canvas.gameObject.scene.GetRootGameObjects()
+                .Single(root => root.name == "Forest2Stage" || root.name == "Forest3Stage"));
             SetObject("burnPressed", Asset<Sprite>(HudTextures + "game_hud_btn_burn_p.png"));
             SetObject("cancelNormal", Asset<Sprite>(HudEffects + "game_hud_btn_burnc_d.png"));
             SetObject("cancelPressed", Asset<Sprite>(HudEffects + "game_hud_btn_burnc_p.png"));
@@ -236,4 +293,40 @@ namespace AstralOath.Client.BattleScene.Editor
             }
         }
     }
+
+    [CustomEditor(typeof(BattleHudPreview))]
+    internal sealed class BattleHudPreviewInspector : UnityEditor.Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            serializedObject.Update();
+            var roster = serializedObject.FindProperty("heroModels");
+            var slots = serializedObject.FindProperty("allyHeroIds");
+            if (roster.arraySize == 0 || slots.arraySize != 4)
+            {
+                DrawPropertiesExcluding(serializedObject, "heroModels");
+                serializedObject.ApplyModifiedProperties();
+                return;
+            }
+
+            var ids = new string[roster.arraySize];
+            var labels = new string[roster.arraySize];
+            for (int i = 0; i < ids.Length; i++)
+            {
+                var row = roster.GetArrayElementAtIndex(i);
+                ids[i] = row.FindPropertyRelative("id").stringValue;
+                labels[i] = ids[i] + " " + row.FindPropertyRelative("label").stringValue;
+            }
+            string[] slotLabels = { "前排", "下方", "上方", "后排" };
+            for (int i = 0; i < slotLabels.Length; i++)
+            {
+                var slot = slots.GetArrayElementAtIndex(i);
+                int choice = EditorGUILayout.Popup(slotLabels[i], Array.IndexOf(ids, slot.stringValue), labels);
+                if (choice >= 0) slot.stringValue = ids[choice];
+            }
+            DrawPropertiesExcluding(serializedObject, "allyHeroIds", "heroModels");
+            serializedObject.ApplyModifiedProperties();
+        }
+    }
+
 }

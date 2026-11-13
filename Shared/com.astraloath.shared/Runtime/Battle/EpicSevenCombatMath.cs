@@ -29,17 +29,18 @@ namespace AstralOath.Shared.Battle
         }
 
         public static BattleHitKind RollHit(BattleRandom random, int relation, int criticalChance,
-            int evasion = 0, int criticalResistance = 0, int hitChance = 0)
+            int evasion = 0, int criticalResistance = 0, int hitChance = 0, bool alwaysCritical = false)
         {
             if (Roll(random, evasion + (relation < 0 ? 5000 : 0) - hitChance)) return BattleHitKind.Miss;
-            if (Roll(random, criticalChance + (relation > 0 ? 1500 : 0) - criticalResistance)) return BattleHitKind.Critical;
+            if (alwaysCritical || Roll(random, criticalChance + (relation > 0 ? 1500 : 0) - criticalResistance)) return BattleHitKind.Critical;
             return Roll(random, 3000) ? BattleHitKind.Crushing : BattleHitKind.Normal;
         }
 
         public static int Damage(decimal attack, decimal defense, int maximumHealth, int attackRateBp, int powerBp,
-            int healthRateBp, int enhancementBp, int elementRelation, BattleHitKind hit, int criticalDamageBp)
+            int healthRateBp, int enhancementBp, int elementRelation, BattleHitKind hit, int criticalDamageBp,
+            decimal additionalBaseDamage = 0m, decimal damageMultiplier = 1m)
         {
-            decimal baseDamage = (attack * attackRateBp + (decimal)maximumHealth * healthRateBp) / Basis;
+            decimal baseDamage = (attack * attackRateBp + (decimal)maximumHealth * healthRateBp) / Basis + additionalBaseDamage;
             decimal hitMultiplier = hit switch
             {
                 BattleHitKind.Miss => 0.75m,
@@ -49,12 +50,12 @@ namespace AstralOath.Shared.Battle
             };
             decimal result = baseDamage * (powerBp / (decimal)Basis) * 1.871m *
                 (1m + enhancementBp / (decimal)Basis) * (elementRelation > 0 ? 1.1m : 1m) *
-                hitMultiplier / (1m + Math.Max(0m, defense) / 300m);
+                hitMultiplier * damageMultiplier / (1m + Math.Max(0m, defense) / 300m);
             return (int)Math.Clamp(Math.Round(result, MidpointRounding.AwayFromZero), 1m, int.MaxValue);
         }
 
-        internal static int ScaleHealth(int health, int rateBp, int enhancementBp = 0) =>
-            (int)Math.Clamp(Math.Round((decimal)health * rateBp / Basis * (1m + enhancementBp / (decimal)Basis),
+        internal static int ScaleHealth(decimal health, int rateBp, int enhancementBp = 0) =>
+            (int)Math.Clamp(Math.Round(health * rateBp / Basis * (1m + enhancementBp / (decimal)Basis),
                 MidpointRounding.AwayFromZero), 0m, int.MaxValue);
     }
 }

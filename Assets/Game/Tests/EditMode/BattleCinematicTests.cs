@@ -62,6 +62,33 @@ namespace AstralOath.Tests
             Assert.That(duration, Is.EqualTo(descriptor["frames"].Sum(frame => (float)frame["durationSeconds"])).Within(.0001f));
             Assert.That(duration, Is.GreaterThan(1f));
         }
+        [Test] public void SequentialCutinsReachTheirExactWallClockBoundaries()
+        {
+            root = new GameObject("Sequential Cut-in clock test");
+            var camera = root.AddComponent<Camera>(); camera.orthographic = true;
+            var type = Type.GetType("AstralOath.Client.BattleScene.BattleCinematicStage, " + RuntimeAssembly, true);
+            var assetType = Type.GetType("AstralOath.Client.BattleScene.BattleSkillPresentationAsset, " + RuntimeAssembly, true);
+            var asset = Activator.CreateInstance(assetType);
+            var descriptor = new TextAsset("{\"frames\":[{\"durationSeconds\":0.36}]}");
+            assetType.GetField("document").SetValue(asset, descriptor);
+            assetType.GetField("pages").SetValue(asset, new[] { Texture2D.whiteTexture });
+            stage = Activator.CreateInstance(type, new object[] { camera, null, null });
+            try
+            {
+                Call("Begin", root.transform, Array.Empty<Transform>(), true);
+                Call("Tick", 2.8266f);
+                var remaining = type.GetProperty("CutinRemainingSeconds");
+                for (int i = 0; i < 2; i++)
+                {
+                    Call("PlayCutin", asset);
+                    Call("TickCutin", (float)remaining.GetValue(stage) - .0000005f);
+                    Assert.That((float)remaining.GetValue(stage), Is.Zero);
+                    Assert.That(root.transform.childCount, Is.Zero);
+                }
+            }
+            finally { UnityEngine.Object.DestroyImmediate(descriptor); }
+        }
+
         [Test] public void CutinIsExcludedFromTheWorldBlurCapture()
         {
             root = new GameObject("Overlay composition test");

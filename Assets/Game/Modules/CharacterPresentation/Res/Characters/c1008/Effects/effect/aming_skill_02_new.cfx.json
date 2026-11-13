@@ -1,0 +1,27 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "aming_skill_02_new",
+      "z": "1",
+      "format": "spine"
+    },
+    {
+      "source": "aming_skill_02_new_pati1",
+      "x": "100",
+      "y": "200",
+      "z": "2",
+      "delay": "363",
+      "format": "particle"
+    },
+    {
+      "source": "aming_skill_02_new_pati2",
+      "x": "230",
+      "y": "220",
+      "z": "3",
+      "rotate": "-43",
+      "delay": "790",
+      "format": "particle"
+    }
+  ]
+}

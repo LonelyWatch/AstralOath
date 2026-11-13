@@ -1,0 +1,20 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "wildred_sk1_target",
+      "z": "30",
+      "format": "spine",
+      "actions": [
+        {
+          "action": "Fire",
+          "delay": "660"
+        },
+        {
+          "action": "Fire",
+          "delay": "1386"
+        }
+      ]
+    }
+  ]
+}

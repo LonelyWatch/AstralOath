@@ -1,0 +1,76 @@
+
+kise_skill_01.sct
+size: 232,1173
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+big_circle
+  rotate: false
+  xy: 2, 889
+  size: 145, 145
+  orig: 145, 145
+  offset: 0, 0
+  index: -1
+circle_glow
+  rotate: false
+  xy: 2, 202
+  size: 197, 197
+  orig: 197, 197
+  offset: 0, 0
+  index: -1
+circle_slash
+  rotate: false
+  xy: 2, 734
+  size: 153, 153
+  orig: 153, 153
+  offset: 0, 0
+  index: -1
+circle_slash2
+  rotate: false
+  xy: 2, 2
+  size: 198, 198
+  orig: 198, 198
+  offset: 0, 0
+  index: -1
+circle_slash_tale
+  rotate: false
+  xy: 167, 670
+  size: 61, 186
+  orig: 61, 186
+  offset: 0, 0
+  index: -1
+diamond
+  rotate: false
+  xy: 170, 418
+  size: 58, 250
+  orig: 58, 250
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 569
+  size: 163, 163
+  orig: 163, 163
+  offset: 0, 0
+  index: -1
+lense_flare
+  rotate: false
+  xy: 2, 401
+  size: 166, 166
+  orig: 166, 166
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: true
+  xy: 202, 2
+  size: 414, 28
+  orig: 414, 28
+  offset: 0, 0
+  index: -1
+small_circle
+  rotate: false
+  xy: 2, 1036
+  size: 135, 135
+  orig: 135, 135
+  offset: 0, 0
+  index: -1

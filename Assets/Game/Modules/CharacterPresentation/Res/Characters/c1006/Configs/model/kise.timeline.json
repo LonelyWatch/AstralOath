@@ -1,0 +1,189 @@
+{
+  "timeline": {
+    "default": {
+      "skill2_2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "kise_skill_02",
+              "location": 5,
+              "locationBone": "root",
+              "scale": 0.95
+            }
+          },
+          {
+            "func": "shake",
+            "param": {
+              "duration": -1,
+              "powerX": 10,
+              "powerY": 10,
+              "timeScale": 1.0,
+              "type": 1,
+              "source": "kise_skill_02_cm"
+            }
+          }
+        ]
+      },
+      "skill1_backup": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill1_3": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "kise_backport",
+              "location": 5,
+              "locationBone": "root",
+              "y": -100,
+              "scale": 1.0,
+              "z": 1
+            }
+          },
+          {
+            "time": 1,
+            "func": "sound",
+            "param": {}
+          }
+        ]
+      },
+      "attacked": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill1_2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "kise_skill_01",
+              "location": 5,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "shake",
+            "param": {
+              "duration": -1,
+              "powerX": 10,
+              "powerY": 10,
+              "timeScale": 1.0,
+              "type": 1,
+              "source": "kise_skill_01_cm"
+            }
+          }
+        ]
+      },
+      "skill2_3": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "kise_backport",
+              "location": 5,
+              "locationBone": "root",
+              "y": -100,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill1_1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "kise_teleport",
+              "location": 5,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill2_1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "kise_teleport",
+              "location": 5,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill3_1": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill3_2": {
+        "duration": 0,
+        "frames": [
+          {
+            "param": {}
+          }
+        ]
+      },
+      "idle": {
+        "duration": 0,
+        "frames": []
+      },
+      "run_start": {
+        "duration": 0,
+        "frames": []
+      },
+      "down": {
+        "duration": 0,
+        "frames": []
+      },
+      "knock_down": {
+        "duration": 0,
+        "frames": []
+      },
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": []
+      },
+      "b_idle": {
+        "duration": 0,
+        "frames": []
+      },
+      "groggy": {
+        "duration": 0,
+        "frames": []
+      },
+      "rise": {
+        "duration": 0,
+        "frames": []
+      },
+      "run": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill3_0": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "kise_m_skill_03_0",
+              "location": 5,
+              "scale": 1.0
+            }
+          }
+        ]
+      }
+    }
+  }
+}

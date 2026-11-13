@@ -1,0 +1,62 @@
+
+eff_explosion_dark_ground01.sct
+size: 490,689
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+crack_2
+  rotate: false
+  xy: 2, 346
+  size: 298, 106
+  orig: 298, 106
+  offset: 0, 0
+  index: -1
+crack_glow_2
+  rotate: false
+  xy: 2, 250
+  size: 315, 94
+  orig: 315, 94
+  offset: 0, 0
+  index: -1
+crack_shadow
+  rotate: false
+  xy: 2, 2
+  size: 472, 246
+  orig: 472, 246
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 319, 250
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+ring_wave
+  rotate: false
+  xy: 344, 421
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+ring_wave_g
+  rotate: false
+  xy: 344, 555
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+scan_glow2
+  rotate: false
+  xy: 2, 454
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+wind_shock
+  rotate: false
+  xy: 173, 454
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1

@@ -11,6 +11,8 @@ namespace AstralOath.Client.BattleScene
     // Owns presentation only. Source descriptors use milliseconds; Tick receives seconds.
     public sealed partial class BattleCinematicStage : IDisposable
     {
+        private const float CutinClockTolerance = .000001f;
+
         private sealed class Layer
         {
             public GameObject Root;
@@ -102,7 +104,7 @@ namespace AstralOath.Client.BattleScene
             {
                 case "CAM":
                     int location = (int?)node["location"] ?? 0;
-                    RevealLayoutTargets(location);
+                    if (location is 5 or 12 or 16 or 31 or 32 or 41 or 42) RevealLayoutTargets();
 
                     float ground = GroundOffset(location);
                     float facing = caster && caster.TryGetComponent<BattlePreviewActor>(out var actor) ? actor.FacingDirection : 1f;
@@ -201,14 +203,12 @@ namespace AstralOath.Client.BattleScene
             }
         }
 
-        private void RevealLayoutTargets(int location)
+        internal void RevealLayoutTargets()
         {
             // away_x is currently represented by a temporary offscreen visibility mask,
             // not by moving authoritative slots. A target-focused shot must release that
             // mask before drawing impacts; the source LAYOUT reset comes only at the end.
-            if (layoutVisibility.Count == 0 ||
-                !(location == 5 || location == 12 || location == 16 || location == 31 ||
-                  location == 32 || location == 41 || location == 42)) return;
+            if (layoutVisibility.Count == 0) return;
             foreach (var participant in participants ?? targets)
             {
                 if (!participant || !targets.Any(target => ContainsActor(participant, target))) continue;
@@ -269,8 +269,8 @@ namespace AstralOath.Client.BattleScene
                 float remaining = 0f;
                 foreach (var layer in layers)
                     if (layer.Cutin != null)
-                        remaining = Mathf.Max(remaining, layer.Start + layer.Duration - cutinTime);
-                return remaining;
+                        remaining = Mathf.Max(remaining, layer.Duration - (cutinTime - layer.Start));
+                return remaining > CutinClockTolerance ? remaining : 0f;
             }
         }
 
@@ -366,7 +366,10 @@ namespace AstralOath.Client.BattleScene
                 // DARK duration ends its hold; fadeOut is a separate interval. CUTIN and
                 // BGHATCH retain their source total durations and their own clock semantics.
                 float lifetime = layer.Duration + (dark ? fadeOut : 0f);
-                if ((layer.Duration >= 0f && elapsed >= lifetime) ||
+                // Compare against the same tolerance as the wall-clock boundary. A residue
+                // smaller than one float step at this timestamp cannot hold the source clock.
+                float tolerance = layer.Cutin != null || layer.IsCutinCurtain ? CutinClockTolerance : 0f;
+                if ((layer.Duration >= 0f && elapsed >= lifetime - tolerance) ||
                     (layer.Stop >= 0f && time >= layer.Stop + fadeOut))
                 {
                     Release(layer);

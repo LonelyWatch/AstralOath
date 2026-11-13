@@ -1,0 +1,27 @@
+
+wildred_swordineff.sct
+size: 418,197
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flare_01
+  rotate: false
+  xy: 167, 2
+  size: 149, 149
+  orig: 149, 149
+  offset: 0, 0
+  index: -1
+flash2
+  rotate: false
+  xy: 2, 2
+  size: 163, 163
+  orig: 163, 163
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: false
+  xy: 2, 167
+  size: 414, 28
+  orig: 414, 28
+  offset: 0, 0
+  index: -1

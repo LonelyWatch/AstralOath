@@ -1,0 +1,55 @@
+
+kise_skill_02.sct
+size: 511,783
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+circle_glow
+  rotate: false
+  xy: 267, 584
+  size: 197, 197
+  orig: 197, 197
+  offset: 0, 0
+  index: -1
+circle_slash3
+  rotate: false
+  xy: 2, 503
+  size: 263, 263
+  orig: 263, 263
+  offset: 0, 0
+  index: -1
+crack_glow
+  rotate: false
+  xy: 2, 266
+  size: 334, 235
+  orig: 334, 235
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 338, 266
+  size: 163, 163
+  orig: 163, 163
+  offset: 0, 0
+  index: -1
+scythe_tale
+  rotate: false
+  xy: 338, 431
+  size: 162, 151
+  orig: 162, 151
+  offset: 0, 0
+  index: -1
+stone_glow
+  rotate: false
+  xy: 2, 2
+  size: 381, 262
+  orig: 381, 262
+  offset: 0, 0
+  index: -1
+swing_1
+  rotate: true
+  xy: 385, 2
+  size: 135, 124
+  orig: 135, 124
+  offset: 0, 0
+  index: -1

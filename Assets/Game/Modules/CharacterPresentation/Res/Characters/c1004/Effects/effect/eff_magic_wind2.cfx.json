@@ -1,0 +1,36 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "eff_magic_wind2",
+      "y": "0",
+      "z": "30",
+      "scale": "1.5",
+      "format": "spine"
+    },
+    {
+      "source": "eff_magic_wind2_f",
+      "scale": "1.5",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "eff_magic_wind2_gr",
+      "scale": "1.5",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "elf_sk3_pat1",
+      "z": "20",
+      "delay": "100",
+      "format": "particle"
+    },
+    {
+      "source": "elf_sk3_pat2",
+      "delay": "100",
+      "format": "particle",
+      "globalZ": 0.5
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+
+finish_dust.sct
+size: 121,180
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+png/ssDOWN1
+  rotate: true
+  xy: 67, 42
+  size: 20, 24
+  orig: 20, 24
+  offset: 0, 0
+  index: -1
+png/ssDOWN2
+  rotate: true
+  xy: 67, 89
+  size: 44, 52
+  orig: 44, 52
+  offset: 0, 0
+  index: -1
+png/ssDOWN3
+  rotate: true
+  xy: 67, 135
+  size: 43, 51
+  orig: 43, 51
+  offset: 0, 0
+  index: -1
+png/ssUP1
+  rotate: true
+  xy: 2, 42
+  size: 51, 63
+  orig: 51, 63
+  offset: 0, 0
+  index: -1
+png/ssUP2
+  rotate: true
+  xy: 2, 95
+  size: 51, 63
+  orig: 51, 63
+  offset: 0, 0
+  index: -1
+png/swf1
+  rotate: false
+  xy: 2, 2
+  size: 117, 18
+  orig: 117, 18
+  offset: 0, 0
+  index: -1
+png/swf2
+  rotate: false
+  xy: 2, 22
+  size: 99, 18
+  orig: 99, 18
+  offset: 0, 0
+  index: -1
+png/swf3
+  rotate: false
+  xy: 2, 148
+  size: 63, 29
+  orig: 63, 29
+  offset: 0, 0
+  index: -1
+png/swf4
+  rotate: true
+  xy: 103, 22
+  size: 65, 7
+  orig: 65, 7
+  offset: 0, 0
+  index: -1

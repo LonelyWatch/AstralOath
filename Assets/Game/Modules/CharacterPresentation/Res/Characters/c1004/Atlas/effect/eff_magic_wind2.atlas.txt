@@ -1,0 +1,237 @@
+
+eff_magic_wind2.sct
+size: 474,909
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dust_soft_1
+  rotate: false
+  xy: 2, 170
+  size: 279, 144
+  orig: 279, 144
+  offset: 0, 0
+  index: -1
+dust_soft_2
+  rotate: false
+  xy: 2, 316
+  size: 271, 150
+  orig: 271, 150
+  offset: 0, 0
+  index: -1
+dust_soft_3
+  rotate: false
+  xy: 2, 58
+  size: 293, 110
+  orig: 293, 110
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 468
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+smoke_1
+  rotate: false
+  xy: 348, 445
+  size: 120, 119
+  orig: 120, 119
+  offset: 0, 0
+  index: -1
+smoke_2
+  rotate: true
+  xy: 362, 90
+  size: 126, 110
+  orig: 126, 110
+  offset: 0, 0
+  index: -1
+smoke_3
+  rotate: false
+  xy: 360, 338
+  size: 109, 105
+  orig: 109, 105
+  offset: 0, 0
+  index: -1
+smoke_4
+  rotate: true
+  xy: 283, 182
+  size: 119, 77
+  orig: 119, 77
+  offset: 0, 0
+  index: -1
+smoke_5
+  rotate: true
+  xy: 362, 218
+  size: 118, 110
+  orig: 118, 110
+  offset: 0, 0
+  index: -1
+thrust_01
+  rotate: false
+  xy: 2, 2
+  size: 360, 19
+  orig: 360, 19
+  offset: 0, 0
+  index: -1
+thrust_02
+  rotate: false
+  xy: 2, 23
+  size: 355, 16
+  orig: 355, 16
+  offset: 0, 0
+  index: -1
+thrust_03
+  rotate: false
+  xy: 2, 41
+  size: 332, 15
+  orig: 332, 15
+  offset: 0, 0
+  index: -1
+tornado_center_01
+  rotate: true
+  xy: 2, 639
+  size: 148, 166
+  orig: 148, 166
+  offset: 0, 0
+  index: -1
+tornado_center_02
+  rotate: true
+  xy: 235, 774
+  size: 133, 166
+  orig: 133, 166
+  offset: 0, 0
+  index: -1
+tornado_cutter_1
+  rotate: true
+  xy: 406, 637
+  size: 151, 55
+  orig: 151, 55
+  offset: 0, 0
+  index: -1
+tornado_t1_1
+  rotate: true
+  xy: 164, 789
+  size: 101, 69
+  orig: 101, 69
+  offset: 0, 0
+  index: -1
+tornado_t1_2
+  rotate: true
+  xy: 173, 568
+  size: 133, 93
+  orig: 133, 93
+  offset: 0, 0
+  index: -1
+tornado_t1_3
+  rotate: false
+  xy: 173, 468
+  size: 97, 53
+  orig: 97, 53
+  offset: 0, 0
+  index: -1
+tornado_t1_4
+  rotate: false
+  xy: 261, 703
+  size: 143, 67
+  orig: 143, 67
+  offset: 0, 0
+  index: -1
+tornado_t1_5
+  rotate: true
+  xy: 297, 105
+  size: 75, 61
+  orig: 75, 61
+  offset: 0, 0
+  index: -1
+tornado_t1_6
+  rotate: false
+  xy: 343, 566
+  size: 119, 69
+  orig: 119, 69
+  offset: 0, 0
+  index: -1
+tornado_t1_7
+  rotate: true
+  xy: 271, 551
+  size: 144, 70
+  orig: 144, 70
+  offset: 0, 0
+  index: -1
+tornado_t1_8
+  rotate: true
+  xy: 275, 429
+  size: 120, 71
+  orig: 120, 71
+  offset: 0, 0
+  index: -1
+tornado_t2_1
+  rotate: false
+  xy: 173, 523
+  size: 96, 43
+  orig: 96, 43
+  offset: 0, 0
+  index: -1
+tornado_t2_10
+  rotate: false
+  xy: 343, 637
+  size: 50, 35
+  orig: 50, 35
+  offset: 0, 0
+  index: -1
+tornado_t2_2
+  rotate: true
+  xy: 403, 790
+  size: 93, 42
+  orig: 93, 42
+  offset: 0, 0
+  index: -1
+tornado_t2_3
+  rotate: true
+  xy: 283, 303
+  size: 124, 75
+  orig: 124, 75
+  offset: 0, 0
+  index: -1
+tornado_t2_4
+  rotate: false
+  xy: 170, 703
+  size: 89, 69
+  orig: 89, 69
+  offset: 0, 0
+  index: -1
+tornado_t2_5
+  rotate: true
+  xy: 51, 789
+  size: 116, 40
+  orig: 116, 40
+  offset: 0, 0
+  index: -1
+tornado_t2_6
+  rotate: true
+  xy: 2, 789
+  size: 116, 47
+  orig: 116, 47
+  offset: 0, 0
+  index: -1
+tornado_t2_7
+  rotate: false
+  xy: 364, 2
+  size: 108, 86
+  orig: 108, 86
+  offset: 0, 0
+  index: -1
+tornado_t2_8
+  rotate: true
+  xy: 93, 789
+  size: 103, 69
+  orig: 103, 69
+  offset: 0, 0
+  index: -1
+tornado_t2_9
+  rotate: false
+  xy: 297, 58
+  size: 63, 45
+  orig: 63, 45
+  offset: 0, 0
+  index: -1

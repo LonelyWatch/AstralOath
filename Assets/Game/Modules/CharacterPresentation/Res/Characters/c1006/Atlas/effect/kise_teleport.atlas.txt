@@ -1,0 +1,27 @@
+
+kise_teleport.sct
+size: 418,231
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+circle_glow
+  rotate: false
+  xy: 2, 2
+  size: 197, 197
+  orig: 197, 197
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 201, 2
+  size: 163, 163
+  orig: 163, 163
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: false
+  xy: 2, 201
+  size: 414, 28
+  orig: 414, 28
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,38 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "kise_m_skill_03_bg",
+      "ani": "scene2",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "kise_m_skill_03_scene2",
+      "format": "spine",
+      "globalZ": 10.0
+    },
+    {
+      "source": "kise_m_skill_03_screeneff",
+      "format": "spine",
+      "globalZ": 995.0
+    },
+    {
+      "source": "kise_m_skill_03_pati1",
+      "y": "150",
+      "rotate": "-35",
+      "delay": "1300",
+      "format": "particle",
+      "globalZ": 900.0,
+      "lifeTime": "1500"
+    },
+    {
+      "source": "kise_m_skill_03_pati2",
+      "y": "150",
+      "rotate": "-35",
+      "delay": "567",
+      "format": "particle",
+      "globalZ": 903.0
+    }
+  ]
+}

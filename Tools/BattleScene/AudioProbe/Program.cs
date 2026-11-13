@@ -37,7 +37,7 @@ static class Program
             if (args.Length != 2) throw new ArgumentException("AudioProbe <project root> <read-only source sound root>");
             string root = Path.GetFullPath(args[0]);
             string sounds = Path.GetFullPath(args[1]);
-            string native = Path.Combine(root, "Assets/ThirdParty/FMOD/Plugins/x86_64/fmodstudio.dll");
+            string native = Path.Combine(root, "Assets/ThirdParty/FMOD/Plugins/x86_64/fmodstudioL.dll");
             NativeLibrary.SetDllImportResolver(typeof(FMOD.System).Assembly, (name, assembly, path) =>
                 name.StartsWith("fmod", StringComparison.Ordinal) ? NativeLibrary.Load(native) : IntPtr.Zero);
             string json = File.ReadAllText(Path.Combine(root, "Assets/Game/Modules/CharacterLab/Configs/catalog.json"));
@@ -84,6 +84,27 @@ static class Program
             playHit.Invoke(voice, new object[] { "c1001", "preview.slime.s1" });
             Require(!voice.IsAvailable && (int)hitCount.GetValue(voice) == count, "Disposed battle must not restart audio");
             Require(!Field<FMOD.Studio.System>(service, "studio").isValid(), "Disposed battle retained its native system");
+            // Exercise production callbacks for all roster paths using the same loaded source banks.
+            using var rosterVoice = new BattleVoice(catalog, assets, impact);
+            Require(rosterVoice.IsAvailable, "Roster audio could not initialize");
+            var rosterAudio = Field<FmodCharacterAudioService>(rosterVoice, "service");
+            var rosterCore = Field<FMOD.System>(rosterAudio, "core");
+            Check(rosterCore.setOutput(FMOD.OUTPUTTYPE.NOSOUND), "select roster silent output");
+            Check(rosterCore.getMasterChannelGroup(out var rosterMaster), "roster master group");
+            Check(rosterMaster.getDSP(0, out var rosterMeter), "roster master DSP");
+            Check(rosterMeter.setMeteringEnabled(false, true), "enable roster metering");
+            rosterAudio.CapturePerformanceDiagnostics = true;
+            using var parsedCatalog = JsonDocument.Parse(json);
+            var skills = parsedCatalog.RootElement.GetProperty("characters").EnumerateArray()
+                .SelectMany(character => character.GetProperty("skills").EnumerateArray()).ToArray();
+            foreach (var skill in skills) rosterVoice.Play(skill.GetProperty("id").GetString());
+            Require(rosterVoice.StartedEffectCount == skills.Length && rosterVoice.StartedVoiceCount == skills.Length,
+                "All catalog skill effects and voices must begin");
+            float rosterPeak = Meter(rosterVoice, rosterMeter, 7000);
+            Require(rosterPeak > 0.00001f && rosterAudio.ProgrammerCreateSoundCount >= skills.Length,
+                "The roster must produce real samples while source-missing intervals are skipped");
+            Console.WriteLine(JsonSerializer.Serialize(new { rosterSkills = skills.Length,
+                voiceCallbacks = rosterAudio.ProgrammerCreateSoundCount, rosterPeak, healthy = rosterVoice.IsAvailable }));
             Console.WriteLine(JsonSerializer.Serialize(new { result = "PASS", attackPeak, output = "NOSOUND" }));
             return 0;
         }

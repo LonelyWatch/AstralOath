@@ -61,6 +61,41 @@ namespace AstralOath.Tests
             player.Play("skill2",false);player.Emit(new SkeletonPlaybackEvent(SkeletonPlaybackEventKind.Event,"hit"));session.Advance(0);
             Assert.That(effects,Is.EqualTo(1));
         }
+        [Test] public void SourceTimelineDispatchesMatchingArminOneventAtItsNamedDelay()
+        {
+            const string assets = "Game/Modules/CharacterPresentation/Res/Characters/c1008/Configs/";
+            JObject Read(string path) => JObject.Parse(System.IO.File.ReadAllText(System.IO.Path.Combine(Application.dataPath, assets, path)));
+            var graph = Read("stagept/c_aming_skill_02.graph.json");
+            using var session = new StgPlaybackSession(graph, player, camera, false, _ => { });
+            session.Timeline = Read("model/arming.timeline.json");
+            var effects = new List<string>();
+            session.Effect += node => { if ((string)node["etty"] == "EFFECT") effects.Add((string)node["source"]); };
+            session.Start();
+            Assert.That(player.CurrentAnimation, Is.EqualTo("skill2"));
+            session.Advance(1.12f);
+            Assert.That(effects, Is.Empty);
+            session.Advance(.02f);
+            Assert.That(effects, Is.EqualTo(new[] { "aming_skill_02_new_pillar.cfx" }));
+            player.Emit(new SkeletonPlaybackEvent(SkeletonPlaybackEventKind.Event, "eff_on"));
+            session.Advance(1f);
+            Assert.That(effects, Has.Count.EqualTo(1));
+        }
+
+        [Test] public void SourceDelayAndEmptyShotRetainTheirTiming()
+        {
+            var graph = Graph("[{'guid':1,'etty':'ENTRY'},{'guid':2,'etty':'DELAY','time':100},{'guid':3,'etty':'SHOT','source':'','time':200},{'guid':4,'etty':'HIT'}]",
+                "[{'from':1,'to':2},{'from':2,'to':3,'when':0},{'from':3,'to':4}]");
+            using var session = new StgPlaybackSession(graph, player, camera, false, _ => { });
+            int hits = 0;
+            session.Effect += node => { if ((string)node["etty"] == "HIT") hits++; };
+            session.Start();
+            session.Advance(.10f);
+            session.Advance(.19f);
+            Assert.That(hits, Is.Zero);
+            session.Advance(.02f);
+            Assert.That(hits, Is.EqualTo(1));
+        }
+
         [Test] public void DisposeUnsubscribesAndRestoresCamera()
         {
             var graph=Graph("[{'guid':1,'etty':'ENTRY'},{'guid':2,'etty':'ZOOM','scale':'2','time':100}]","[{'from':1,'to':2}]");

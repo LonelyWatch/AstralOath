@@ -1,0 +1,54 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "valkyrie_sk3eff_front",
+      "z": "30",
+      "format": "spine"
+    },
+    {
+      "source": "valkyrie_sk3eff_back",
+      "z": "-30",
+      "format": "spine"
+    },
+    {
+      "source": "rose_skeff_sk3up_f",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "rose_skeff_sk3up_m",
+      "z": " ",
+      "format": "spine"
+    },
+    {
+      "source": "valkyrie_sk3_pati1",
+      "delay": "1200",
+      "format": "particle"
+    },
+    {
+      "source": "valkyrie_sk3_pati2",
+      "y": "600",
+      "delay": "2000",
+      "format": "particle"
+    },
+    {
+      "source": "valkyrie_sk3_pati3",
+      "x": "-50",
+      "y": "-100",
+      "z": "-60",
+      "scale": "1.2",
+      "delay": "1500",
+      "format": "particle"
+    },
+    {
+      "source": "valkyrie_sk3_pati3",
+      "x": "250",
+      "y": "-100",
+      "z": "-60",
+      "scale": "1.2",
+      "delay": "1500",
+      "format": "particle"
+    }
+  ]
+}

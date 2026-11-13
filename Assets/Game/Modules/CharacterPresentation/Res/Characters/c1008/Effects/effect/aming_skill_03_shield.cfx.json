@@ -1,0 +1,46 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "aming_skill_03",
+      "scale": "1.35",
+      "format": "spine",
+      "globalZ": 0.1
+    },
+    {
+      "source": "aming_skill_03_start",
+      "y": "25",
+      "z": "2",
+      "format": "particle",
+      "globalZ": 0.2
+    },
+    {
+      "source": "aming_skill_03_secon",
+      "z": "3",
+      "delay": "500",
+      "format": "particle",
+      "globalZ": 0.3
+    },
+    {
+      "source": "aming_skill_03_trans",
+      "z": "4",
+      "delay": "967",
+      "format": "particle",
+      "globalZ": 0.4
+    },
+    {
+      "source": "achates_wing2",
+      "z": "5",
+      "delay": "1600",
+      "format": "particle",
+      "globalZ": 0.5
+    },
+    {
+      "source": "aming_skill_03_end",
+      "z": "-1",
+      "delay": "2500",
+      "format": "particle",
+      "globalZ": 0.6
+    }
+  ]
+}

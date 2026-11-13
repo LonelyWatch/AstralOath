@@ -1,0 +1,259 @@
+{
+  "timeline": {
+    "default": {
+      "skill3": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 1519,
+            "func": "effect",
+            "param": {
+              "source": "aming_shield_ready",
+              "location": 5,
+              "locationBone": "weapon",
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 1552,
+            "func": "effect",
+            "param": {
+              "source": "aming_skill_03_back",
+              "location": 5,
+              "locationBone": "root",
+              "x": 46,
+              "scale": 1.0,
+              "z": -1
+            }
+          },
+          {
+            "time": 1552,
+            "func": "effect",
+            "param": {
+              "source": "aming_skill_03_shield",
+              "location": 5,
+              "locationBone": "weapon",
+              "x": -3,
+              "y": -10,
+              "scale": 1.0,
+              "z": 1
+            }
+          },
+          {
+            "time": 1552,
+            "func": "effect",
+            "param": {
+              "source": "aming_skill_03_front",
+              "location": 5,
+              "locationBone": "root",
+              "x": 46,
+              "scale": 1.0,
+              "z": 2
+            }
+          }
+        ]
+      },
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 265,
+            "func": "effect",
+            "param": {
+              "source": "aming_shield_ready",
+              "location": 5,
+              "locationBone": "weapon",
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 1519,
+            "func": "shake",
+            "param": {
+              "id": "a",
+              "duration": 220,
+              "powerX": 25,
+              "powerY": 10,
+              "timeScale": 1.0
+            }
+          },
+          {
+            "time": 1915,
+            "func": "shake",
+            "param": {
+              "duration": 300,
+              "powerX": 35,
+              "powerY": 10,
+              "timeScale": 1.0
+            }
+          },
+          {
+            "time": 2377,
+            "func": "effect",
+            "param": {
+              "source": "aming_skill_01",
+              "location": 5,
+              "locationBone": "weapon",
+              "x": 180,
+              "y": -19,
+              "scale": 1.07
+            }
+          },
+          {
+            "time": 2377,
+            "func": "shake",
+            "param": {
+              "duration": -1,
+              "powerX": 10,
+              "powerY": 10,
+              "timeScale": 1.0,
+              "type": 1,
+              "source": "aming_skill_01_cm"
+            }
+          }
+        ]
+      },
+      "skill2_1": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 2770,
+            "func": "fire",
+            "param": {}
+          },
+          {
+            "time": 2770,
+            "func": "shake",
+            "param": {
+              "duration": 350,
+              "powerX": 10,
+              "powerY": 15,
+              "timeScale": 1.0
+            }
+          }
+        ]
+      },
+      "skill2_2": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill2_3": {
+        "duration": 0,
+        "frames": []
+      },
+      "idle": {
+        "duration": 0,
+        "frames": []
+      },
+      "flying": {
+        "duration": 0,
+        "frames": []
+      },
+      "down": {
+        "duration": 0,
+        "frames": []
+      },
+      "run": {
+        "duration": 0,
+        "frames": []
+      },
+      "run_start": {
+        "duration": 0,
+        "frames": [
+          {
+            "param": {}
+          }
+        ]
+      },
+      "attacked": {
+        "duration": 0,
+        "frames": []
+      },
+      "b_idle": {
+        "duration": 0,
+        "frames": []
+      },
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": []
+      },
+      "groggy": {
+        "duration": 0,
+        "frames": []
+      },
+      "jump_back": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "aming_skill_02_new",
+              "location": 5,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 1130,
+            "func": "event",
+            "param": {
+              "name": "eff_on",
+              "param": "eff_on"
+            }
+          },
+          {
+            "time": 1130,
+            "func": "shake",
+            "param": {
+              "duration": -1,
+              "powerX": 10,
+              "powerY": 10,
+              "timeScale": 1.0,
+              "type": 1,
+              "source": "aming_skill_02_new_cm"
+            }
+          }
+        ]
+      },
+      "skill1_1": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill1_2": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 300,
+            "func": "effect",
+            "param": {
+              "source": "aming_shield_ready",
+              "location": 5,
+              "locationBone": "weapon",
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 2367,
+            "func": "effect",
+            "param": {
+              "source": "aming_skill_01",
+              "location": 5,
+              "locationBone": "weapon",
+              "x": 200,
+              "y": -20,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "camping": {
+        "duration": 0,
+        "frames": []
+      }
+    }
+  }
+}

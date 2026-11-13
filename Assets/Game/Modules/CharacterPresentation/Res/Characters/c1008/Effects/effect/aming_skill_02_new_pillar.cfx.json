@@ -1,0 +1,46 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "aming_skill_02_pillar",
+      "scale": "1",
+      "format": "spine",
+      "globalZ": 0.1,
+      "actions": [
+        {
+          "action": "Fire",
+          "delay": "891"
+        },
+        {
+          "action": "Fire",
+          "delay": "1091"
+        },
+        {
+          "action": "Fire",
+          "delay": "1291"
+        },
+        {
+          "action": "Fire",
+          "delay": "1491"
+        },
+        {
+          "action": "Fire",
+          "delay": "1691"
+        },
+        {
+          "action": "Fire",
+          "delay": "1891"
+        },
+        {
+          "action": "Fire",
+          "delay": "2013"
+        }
+      ]
+    },
+    {
+      "source": "aming_skill_02_pillar_pati1",
+      "format": "particle",
+      "globalZ": 0.2
+    }
+  ]
+}

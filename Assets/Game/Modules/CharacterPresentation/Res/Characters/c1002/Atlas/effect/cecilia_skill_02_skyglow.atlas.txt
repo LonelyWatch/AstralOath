@@ -1,0 +1,20 @@
+
+cecilia_skill_02_skyglow.sct
+size: 315,227
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 227, 2
+  size: 86, 86
+  orig: 86, 86
+  offset: 0, 0
+  index: -1
+shine_01
+  rotate: false
+  xy: 2, 2
+  size: 223, 223
+  orig: 223, 223
+  offset: 0, 0
+  index: -1

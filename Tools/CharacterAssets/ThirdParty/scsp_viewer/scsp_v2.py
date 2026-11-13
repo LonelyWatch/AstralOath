@@ -131,7 +131,7 @@ def read_slots_v2(r: SpineBinaryReader, sk: SkeletonData) -> None:
         slot.bone = sk.bones[bone_idx].name if 0 <= bone_idx < len(sk.bones) else (_ for _ in ()).throw(ValueError("Invalid slot bone index"))
         slot.color = f32_color(cr, cg, cb, ca)
         slot.attachmentName = get_pool_string(att_off, sk) if att_off != 0xFFFFFFFF else None
-        if blend not in (0,1): raise ValueError(f"Unsupported Spine 2.1 blend mode {blend}")
+        if blend not in (0,1,2,3): raise ValueError(f"Unsupported Spine 2.1 blend mode {blend}")
         slot.blendMode = BlendMode(blend)
         slots.append(slot)
     sk.slots = slots

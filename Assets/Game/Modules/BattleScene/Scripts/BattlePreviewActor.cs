@@ -15,6 +15,8 @@ namespace AstralOath.Client.BattleScene
         [SerializeField] private string skin = "default";
         [SerializeField] private bool faceLeft;
         [SerializeField] private int drawOrder;
+        [SerializeField] private bool premultipliedAlpha = true;
+        [SerializeField] private float sourceScale = .01f;
         private ISkeletonPlayer player;
         private string idleAnimation;
         private bool playingBattleAnimation;
@@ -35,6 +37,8 @@ namespace AstralOath.Client.BattleScene
         {
             private readonly int scene, skeleton, atlas, page;
             private readonly string pageName;
+            private readonly bool premultipliedAlpha;
+            private readonly float scale;
             internal SourceKey(BattlePreviewActor actor)
             {
                 scene = actor.gameObject.scene.handle;
@@ -42,9 +46,12 @@ namespace AstralOath.Client.BattleScene
                 atlas = actor.atlas.GetInstanceID();
                 page = actor.page.GetInstanceID();
                 pageName = actor.pageName;
+                premultipliedAlpha = actor.premultipliedAlpha;
+                scale = actor.sourceScale;
             }
             public bool Equals(SourceKey other) => scene == other.scene && skeleton == other.skeleton &&
-                atlas == other.atlas && page == other.page && StringComparer.Ordinal.Equals(pageName, other.pageName);
+                atlas == other.atlas && page == other.page && premultipliedAlpha == other.premultipliedAlpha &&
+                scale.Equals(other.scale) && StringComparer.Ordinal.Equals(pageName, other.pageName);
             public override bool Equals(object value) => value is SourceKey other && Equals(other);
             public override int GetHashCode()
             {
@@ -53,7 +60,9 @@ namespace AstralOath.Client.BattleScene
                     int hash = scene;
                     hash = hash * 397 ^ skeleton; hash = hash * 397 ^ atlas;
                     hash = hash * 397 ^ page;
-                    return hash * 397 ^ StringComparer.Ordinal.GetHashCode(pageName);
+                    hash = hash * 397 ^ StringComparer.Ordinal.GetHashCode(pageName);
+                    hash = hash * 397 ^ premultipliedAlpha.GetHashCode();
+                    return hash * 397 ^ scale.GetHashCode();
                 }
             }
         }
@@ -76,8 +85,7 @@ namespace AstralOath.Client.BattleScene
             if (!SharedSources.TryGetValue(key, out var entry))
             {
                 var textures = new Dictionary<string, Texture2D>(StringComparer.Ordinal) { { pageName, page } };
-                // PMA and scale are fixed by this actor contract; if made configurable they must join SourceKey.
-                var source = new SkeletonPlayerSource(skeleton.text, atlas.text, textures, premultipliedAlpha: true);
+                var source = new SkeletonPlayerSource(skeleton.text, atlas.text, textures, premultipliedAlpha, sourceScale);
                 entry = new SharedSource(key, source);
                 SharedSources.Add(key, entry);
             }
@@ -95,6 +103,29 @@ namespace AstralOath.Client.BattleScene
             // must not evict a different entry created with the same asset IDs in the new session.
             if (entry.Owners == 0 && SharedSources.TryGetValue(entry.Key, out var current) && ReferenceEquals(current, entry))
                 SharedSources.Remove(entry.Key);
+        }
+
+        internal void UseModel(BattleSkillPresentationAsset model, string skinName, string label)
+        {
+            if (model == null || !model.document || !model.atlas || model.pages?.Length != 1 ||
+                !model.pages[0] || model.pageNames?.Length != 1 || string.IsNullOrEmpty(model.pageNames[0]) ||
+                !float.IsFinite(model.scale) || model.scale <= 0f || string.IsNullOrEmpty(skinName))
+                throw new ArgumentException("Battle actor requires a complete single-page model: " + label, nameof(model));
+            if (skeleton == model.document && atlas == model.atlas && page == model.pages[0] &&
+                pageName == model.pageNames[0] && skin == skinName && sourceScale == model.scale &&
+                premultipliedAlpha == model.premultipliedAlpha) return;
+
+            bool wasEnabled = enabled;
+            enabled = false;
+            skeleton = model.document;
+            atlas = model.atlas;
+            page = model.pages[0];
+            pageName = model.pageNames[0];
+            skin = skinName;
+            sourceScale = model.scale;
+            premultipliedAlpha = model.premultipliedAlpha;
+            name = label;
+            enabled = wasEnabled;
         }
 
         internal void BeginPresentationControl() => presentationControlCount++;

@@ -32,22 +32,36 @@ namespace AstralOath.Client.Skeletons
     }
     internal sealed class Spine21Runtime : SkeletonRuntime
     {
+        internal sealed class ParsedSource
+        {
+            internal S21.SkeletonData Data { get; }
+            internal IReadOnlyDictionary<S21.SlotData, SkeletonBlend> ExtendedBlends { get; }
+            internal ParsedSource(S21.SkeletonData data, IReadOnlyDictionary<S21.SlotData, SkeletonBlend> extendedBlends)
+            {
+                Data = data;
+                ExtendedBlends = extendedBlends;
+            }
+        }
+
         private readonly S21.Skeleton skeleton;
         private readonly S21.AnimationState state;
+        private readonly IReadOnlyDictionary<S21.SlotData, SkeletonBlend> extendedBlends;
         private string animation;
         private bool loop;
         private readonly Dictionary<string, Spine21SetupTimeline> completeMixTargets = new Dictionary<string, Spine21SetupTimeline>(StringComparer.Ordinal);
         internal Spine21Runtime(SkeletonPlayerSource source)
         {
-            var data = Prepare(source);
+            var prepared = Prepare(source);
+            var data = prepared.Data;
+            extendedBlends = prepared.ExtendedBlends;
             skeleton = new S21.Skeleton(data); skeleton.SetSkin(data.DefaultSkin); state = new S21.AnimationState(new S21.AnimationStateData(data));
             foreach (var item in data.Animations) Animations.Add(new SkeletonAnimationInfo(item.Name, item.Duration));
             foreach (var skin in data.Skins) Skins.Add(skin.Name);
             state.Event += OnEvent; state.Complete += OnComplete;
         }
-        internal static S21.SkeletonData Prepare(SkeletonPlayerSource source)
+        internal static ParsedSource Prepare(SkeletonPlayerSource source)
         {
-            if (source.ParsedData is S21.SkeletonData cached) return cached;
+            if (source.ParsedData is ParsedSource cached) return cached;
             S21.Atlas atlas;
             using (var reader = new StringReader(source.Atlas)) atlas = new S21.Atlas(reader, "", new SkeletonTextureLoader(source.Textures));
             try
@@ -60,11 +74,37 @@ namespace AstralOath.Client.Skeletons
                     throw new InvalidDataException("Parsed Spine version does not match dispatch header: " +
                         source.ExportVersion + " -> " + data.Version);
                 CompleteSkinLookups(data);
-                source.ParsedData = data;
-                return data;
+                var prepared = new ParsedSource(data, ReadExtendedBlends(source.Json, data));
+                source.ParsedData = prepared;
+                return prepared;
             }
             finally { atlas.Dispose(); } // Loader borrows textures; parsed attachments retain their atlas regions.
         }
+        private static IReadOnlyDictionary<S21.SlotData, SkeletonBlend> ReadExtendedBlends(string json, S21.SkeletonData data)
+        {
+            // The official 2.1 player exposes only additive. SCSP also carries the two
+            // extra blend modes; the converter emits them as named slot metadata.
+            if (!json.Contains("\"blend\"")) return null;
+            using var reader = new StringReader(json);
+            var document = (Dictionary<string, object>)S21.Json.Deserialize(reader);
+            if (!document.TryGetValue("slots", out var value)) return null;
+            var modes = new Dictionary<S21.SlotData, SkeletonBlend>();
+            foreach (Dictionary<string, object> row in (List<object>)value)
+            {
+                if (!row.TryGetValue("blend", out var blend)) continue;
+                var slot = data.FindSlot((string)row["name"]);
+                modes.Add(slot, blend switch
+                {
+                    "normal" => SkeletonBlend.Normal,
+                    "additive" => SkeletonBlend.Additive,
+                    "multiply" => SkeletonBlend.Multiply,
+                    "screen" => SkeletonBlend.Screen,
+                    _ => throw new InvalidDataException("Unsupported Spine 2.1 slot blend: " + blend)
+                });
+            }
+            return modes;
+        }
+
         private void OnEvent(S21.AnimationState sender, int track, S21.Event value)
         { Events.Enqueue(new SkeletonPlaybackEvent(SkeletonPlaybackEventKind.Event, value.Data.Name, value.Int, value.Float, value.String)); }
         private void OnComplete(S21.AnimationState sender, int track, int count)
@@ -235,8 +275,10 @@ namespace AstralOath.Client.Skeletons
                 }
                 else continue; // Bounding boxes have no visible geometry.
                 var light = attachmentColor * new Color(slot.R * skeleton.R, slot.G * skeleton.G, slot.B * skeleton.B, slot.A * skeleton.A);
-                target.Add((Texture2D)atlasRegion.page.rendererObject, slot.Data.AdditiveBlending ? SkeletonBlend.Additive : SkeletonBlend.Normal,
-                    vertices, length, uv, triangles, triangles.Length, light, Color.black);
+                var blend = slot.Data.AdditiveBlending ? SkeletonBlend.Additive : SkeletonBlend.Normal;
+                if (extendedBlends != null && extendedBlends.TryGetValue(slot.Data, out var extended)) blend = extended;
+                target.Add((Texture2D)atlasRegion.page.rendererObject, blend, vertices, length, uv,
+                    triangles, triangles.Length, light, Color.black);
             }
         }
         public override void Dispose()

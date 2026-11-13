@@ -128,6 +128,19 @@ namespace AstralOath.Client.Tests
             player.Dispose();
             Assert.Throws<ObjectDisposedException>(() => player.TryGetBonePose("root", out _));
         }
+        [TestCase("multiply", UnityEngine.Rendering.BlendMode.DstColor, UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha)]
+        [TestCase("screen", UnityEngine.Rendering.BlendMode.One, UnityEngine.Rendering.BlendMode.OneMinusSrcColor)]
+        public void Spine21PreservesExtendedSlotBlend(string blend, UnityEngine.Rendering.BlendMode sourceBlend,
+            UnityEngine.Rendering.BlendMode destinationBlend)
+        {
+            const string version = "2.1.27";
+            string json = Json(version).Replace("\"attachment\":\"quad\"", "\"attachment\":\"quad\",\"blend\":\"" + blend + "\"");
+            var player = Create(version, json);
+            var material = player.Root.GetComponent<MeshRenderer>().sharedMaterial;
+            Assert.That(material.GetInt("_SrcBlend"), Is.EqualTo((int)sourceBlend));
+            Assert.That(material.GetInt("_DstBlend"), Is.EqualTo((int)destinationBlend));
+        }
+
         [Test] public void RejectsUnsupportedVersionAndRollsBackMissingPage()
         {
             Assert.Throws<NotSupportedException>(() => Create("4.2.0"));

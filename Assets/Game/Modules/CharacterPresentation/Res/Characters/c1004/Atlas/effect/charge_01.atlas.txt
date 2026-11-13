@@ -1,0 +1,34 @@
+
+charge_01.sct
+size: 413,231
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 231, 141
+  size: 84, 84
+  orig: 84, 84
+  offset: 0, 0
+  index: -1
+light_ray
+  rotate: false
+  xy: 231, 2
+  size: 42, 137
+  orig: 42, 137
+  offset: 0, 0
+  index: -1
+ring_01
+  rotate: false
+  xy: 2, 2
+  size: 227, 227
+  orig: 227, 227
+  offset: 0, 0
+  index: -1
+wind_shock2
+  rotate: false
+  xy: 275, 2
+  size: 136, 136
+  orig: 136, 136
+  offset: 0, 0
+  index: -1

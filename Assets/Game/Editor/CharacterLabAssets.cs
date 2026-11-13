@@ -41,7 +41,7 @@ namespace AstralOath.Editor
             Debug.Log("角色实验室：双版本 Spine 与 Windows FMOD 文件齐全。播放验证与原作对照需另行执行。ASTRAL_CHARACTERLAB_ENV_READY");
         }
 
-        [MenuItem("Tools/角色实验室/导入或更新首批角色", priority = 20)]
+        [MenuItem("Tools/角色实验室/导入或更新角色资源", priority = 20)]
         public static void ImportCharacters()
         {
             Debug.Log(HotUpdateBuildSettings.RunScript("CharacterAssets/Import.ps1", null, 1800));

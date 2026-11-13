@@ -1,0 +1,34 @@
+
+aming_shield_ready.sct
+size: 222,263
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 2, 2
+  size: 163, 163
+  orig: 163, 163
+  offset: 0, 0
+  index: -1
+shield_circle1
+  rotate: true
+  xy: 167, 2
+  size: 235, 53
+  orig: 235, 53
+  offset: 0, 0
+  index: -1
+shield_circle2
+  rotate: false
+  xy: 2, 215
+  size: 113, 46
+  orig: 113, 46
+  offset: 0, 0
+  index: -1
+shield_circle3
+  rotate: false
+  xy: 2, 167
+  size: 118, 46
+  orig: 118, 46
+  offset: 0, 0
+  index: -1

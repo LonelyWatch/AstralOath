@@ -1,0 +1,76 @@
+
+kise_m_skill_03_screeneff.sct
+size: 334,1820
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+b_ring1
+  rotate: false
+  xy: 2, 2
+  size: 330, 330
+  orig: 330, 330
+  offset: 0, 0
+  index: -1
+b_ring2
+  rotate: false
+  xy: 2, 334
+  size: 330, 330
+  orig: 330, 330
+  offset: 0, 0
+  index: -1
+color_back
+  rotate: false
+  xy: 214, 1596
+  size: 66, 66
+  orig: 66, 66
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 1649
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+lense_f1
+  rotate: false
+  xy: 2, 666
+  size: 330, 330
+  orig: 330, 330
+  offset: 0, 0
+  index: -1
+lense_f2
+  rotate: false
+  xy: 2, 998
+  size: 330, 330
+  orig: 330, 330
+  offset: 0, 0
+  index: -1
+lense_flare1_weak
+  rotate: false
+  xy: 2, 1330
+  size: 179, 317
+  orig: 179, 317
+  offset: 0, 0
+  index: -1
+light_line_gra
+  rotate: true
+  xy: 266, 1330
+  size: 264, 38
+  orig: 264, 38
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: true
+  xy: 183, 1330
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1
+line_light2
+  rotate: true
+  xy: 214, 1330
+  size: 263, 50
+  orig: 263, 50
+  offset: 0, 0
+  index: -1

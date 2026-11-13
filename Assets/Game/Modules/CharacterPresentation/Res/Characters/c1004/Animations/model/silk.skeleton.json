@@ -1,0 +1,13 @@
+{
+  "version": "2.1.27",
+  "jsonAddress": "characterlab/source/model/silk.scsp/json",
+  "atlasAddress": "characterlab/source/model/silk.atlas",
+  "pages": [
+    {
+      "name": "silk.sct",
+      "address": "characterlab/source/model/silk.sct"
+    }
+  ],
+  "premultipliedAlpha": true,
+  "scale": 0.01
+}

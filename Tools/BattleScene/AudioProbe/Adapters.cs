@@ -20,3 +20,13 @@ namespace UnityEngine
 namespace UnityEngine.Scripting { [AttributeUsage(AttributeTargets.Class)] public sealed class PreserveAttribute : Attribute {} }
 namespace AOT { [AttributeUsage(AttributeTargets.Method)] public sealed class MonoPInvokeCallbackAttribute : Attribute { public MonoPInvokeCallbackAttribute(Type type) {} } }
 namespace AstralOath.Client.Core { public interface IAssetService { Task<T> LoadAsync<T>(string address, BindingScope scope) where T : UnityEngine.Object; } }
+
+namespace Unity.Profiling
+{
+    public sealed class ProfilerMarker
+    {
+        public ProfilerMarker(string name) { }
+        public Scope Auto() => default;
+        public readonly struct Scope : System.IDisposable { public void Dispose() { } }
+    }
+}

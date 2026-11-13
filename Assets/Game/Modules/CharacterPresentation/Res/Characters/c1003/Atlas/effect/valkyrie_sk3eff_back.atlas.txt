@@ -1,0 +1,27 @@
+
+valkyrie_sk3eff_back.sct
+size: 341,141
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+sprite/eff/wing_1
+  rotate: true
+  xy: 175, 2
+  size: 133, 117
+  orig: 133, 117
+  offset: 0, 0
+  index: -1
+sprite/eff/wing_2
+  rotate: false
+  xy: 2, 2
+  size: 171, 137
+  orig: 171, 137
+  offset: 0, 0
+  index: -1
+sprite/eff/wing_3
+  rotate: true
+  xy: 294, 2
+  size: 123, 45
+  orig: 123, 45
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,90 @@
+
+kise_m_skill_03_bg.sct
+size: 996,993
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+blink1
+  rotate: false
+  xy: 821, 809
+  size: 169, 158
+  orig: 169, 158
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 650, 809
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+hori_ring1_1
+  rotate: false
+  xy: 250, 593
+  size: 198, 198
+  orig: 198, 198
+  offset: 0, 0
+  index: -1
+hori_ring1_2
+  rotate: false
+  xy: 450, 593
+  size: 198, 198
+  orig: 198, 198
+  offset: 0, 0
+  index: -1
+hori_ring1_3
+  rotate: false
+  xy: 250, 793
+  size: 198, 198
+  orig: 198, 198
+  offset: 0, 0
+  index: -1
+hori_ring1_4
+  rotate: false
+  xy: 450, 793
+  size: 198, 198
+  orig: 198, 198
+  offset: 0, 0
+  index: -1
+jump_water1
+  rotate: false
+  xy: 2, 859
+  size: 134, 121
+  orig: 134, 121
+  offset: 0, 0
+  index: -1
+kise_ori_bg1
+  rotate: false
+  xy: 2, 2
+  size: 660, 589
+  orig: 660, 589
+  offset: 0, 0
+  index: -1
+moon
+  rotate: false
+  xy: 664, 2
+  size: 330, 330
+  orig: 330, 330
+  offset: 0, 0
+  index: -1
+moon_break_bot
+  rotate: false
+  xy: 664, 334
+  size: 330, 249
+  orig: 330, 249
+  offset: 0, 0
+  index: -1
+moon_break_top
+  rotate: false
+  xy: 664, 585
+  size: 330, 222
+  orig: 330, 222
+  offset: 0, 0
+  index: -1
+water_spl
+  rotate: false
+  xy: 2, 593
+  size: 246, 264
+  orig: 246, 264
+  offset: 0, 0
+  index: -1

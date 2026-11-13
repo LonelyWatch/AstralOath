@@ -1,11 +1,11 @@
 # 角色资源进入 Unity 的通用规则
 
-本规范适用于后续所有角色，不以首批三角色通过代表全部 E7 资源兼容。当前入口为 `Tools/CharacterAssets/Import.ps1` 和 `Tools/角色实验室/导入或更新首批角色`；原始目录只读。排查案例见 [梅赛德丝 S3 曲线修复](../delivery/2026-11-12-mercedes-curve-correctness.md)。
+本规范适用于后续所有角色，不以首批三角色通过代表全部 E7 资源兼容。当前入口为 `Tools/CharacterAssets/Import.ps1` 和 `Tools/角色实验室/导入或更新角色资源`；原始目录只读。排查案例见 [梅赛德丝 S3 曲线修复](../delivery/2026-11-12-mercedes-curve-correctness.md)。
 
 ## 1. 来源与模块目录
 
 - 明确批准角色编号后，扩展导入白名单和 Luban 角色表；只递归导入模型、立绘、技能图实际引用的依赖。缺文件报错，不根据相似文件名替代，不复制整个解包目录。
-- 独占资源位于 `CharacterPresentation/Res/Characters/<id>/{Animations,Atlas,Textures,Sounds,Effects,Configs,Prefab,Materials}`，按实际类型建目录；共享依赖只保留在 `Res/Shared`。不重复拷贝 bank。
+- 独占资源位于 `CharacterPresentation/Res/Characters/<id>/{Animations,Atlas,Textures,Sounds,Effects,Configs,Prefab,Materials}`，按实际类型建目录；共享依赖只保留在 `Res/Shared`。不重复拷贝 bank。已有依赖后来由多个角色引用时继续通过原稳定地址共用，保留原路径和 meta。对新共享依赖使用 Shared。
 - 清单记录原始相对路径、源 SHA256、输出 SHA256、稳定地址、依赖、转换器版本及语义审计。重复导入保持文件路径及已有 `.meta`；不删除重建 GUID。
 - 原始游戏可执行文件仅作本机只读格式分析，不执行、不修改、不提交；不读取账号配置。固定依赖和参考源码提交，不自动追踪国际服。
 
@@ -54,3 +54,10 @@
 每次修改记录“原始字节／源程序证据 → 转换字段 → 官方运行库求值 → Unity 图像”的链路。参考查看器只能提供线索，不能直接继承其容错、版本迁移和视觉修补。修复前保留失败测试，修复后提交测试、转换器、清单、必要生成资源与报告。
 
 交付分别列出实际通过、失败、未执行及仍需原作对照的范围。所有诊断大文件、游戏程序、临时 PNG、Unity 缓存和测试包留在忽略目录；只提交项目代码、已批准资产及必要文档。只有协调者修改包配置和执行中文 Git 提交。
+
+## 十角色资源闭包
+
+- 白名单按 c1001–c1009 与 c1062 排序。维德瑞模型 `wildred` 对应 `c_wilderd_skill_*`，亚敏 `arming` 对应 `c_aming_skill_*`，赛西莉亚使用日语事件同名的 `c_cecilia_skill_new_*`。夏绿蒂 S3 配置保留 `c_charlotte_skill_03_05` 的显式源图名。
+- STG `NODE_ANI` 的 `source` 解析为 `spani/` 骨骼。镜头及节点骨骼没有非空 atlas 时必须确实不含渲染附件。模型 timeline 中明确的 `shake.source` 归为 camera 骨骼。赛西莉亚旧 `skill3` 轨引用的 `effect/cecilia_skill_03_new_lance.cfx` 缺失，原模型只有 `skill3_1`、`skill3_2`，因此保留原 timeline 并登记无可触发动画的缺失引用。活动动画上的缺文件继续阻断导入。
+- SCSP 2.1 的槽位 2 和 3 对应 multiply 与 screen。保留原槽位值并由 AOT 骨骼桥接识别。席可 `portrait/c1004.scsp` 的 `1/hairs` 乘色槽位已用于真实转换检查，原文件 144396 字节完整消费。官方 2.1 核心和旧输出文件无需修改。
+- 用源 YAML 目录核对技能效果、语音事件和已加载日语音频表。若源事件的日语样本存在于另一张表，应先登记正确 bank。确实无日语版本的四个原片段保留在 `missingJapaneseProgrammerKeys`。`gerneal.bank` 同时服务史莱姆受击和维德瑞技能，旧 GUID 迁至 CharacterPresentation 的 Shared 下并复用。

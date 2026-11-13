@@ -1,0 +1,320 @@
+{
+  "id": "c_rose_skill_01",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 5
+    },
+    "eventlisteners": [
+      15
+    ],
+    "entities": [
+      {
+        "guid": 1,
+        "etty": "IDLE"
+      },
+      {
+        "ani": "jump_back",
+        "guid": 2,
+        "etty": "ANI"
+      },
+      {
+        "ani": "skill1",
+        "guid": 3,
+        "etty": "ANI"
+      },
+      {
+        "ani": "jump_forward",
+        "guid": 4,
+        "etty": "ANI"
+      },
+      {
+        "state": "start",
+        "guid": 5,
+        "etty": "ENTRY"
+      },
+      {
+        "from": "jump",
+        "to": "landing",
+        "guid": 6,
+        "etty": "ANI_SCOPE"
+      },
+      {
+        "from": "jump",
+        "to": "landing",
+        "guid": 7,
+        "etty": "ANI_SCOPE"
+      },
+      {
+        "scale": "1",
+        "guid": 8,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.3",
+        "curve": "0.2911877,0.9548611,1,1",
+        "guid": 9,
+        "etty": "ZOOM"
+      },
+      {
+        "ver": 2,
+        "power": 50,
+        "location": 11,
+        "style": 2,
+        "guid": 10,
+        "etty": "MOVE"
+      },
+      {
+        "guid": 11,
+        "etty": "CAM"
+      },
+      {
+        "ver": 2,
+        "power": 50,
+        "location": 16,
+        "style": 2,
+        "x": 40.0,
+        "guid": 12,
+        "etty": "MOVE"
+      },
+      {
+        "location": 12,
+        "y": -30.0,
+        "guid": 13,
+        "etty": "CAM"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "rose_cm_sk1",
+        "guid": 14,
+        "etty": "SHAKE"
+      },
+      {
+        "ani": "skill1",
+        "name": "hit",
+        "handled": true,
+        "guid": 15,
+        "etty": "ONEVENT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 16,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 17,
+        "etty": "HIT"
+      }
+    ],
+    "connections": [
+      {
+        "from": 2,
+        "to": 1,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 6,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 3,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 4,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 8,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 9,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 12,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 13,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 10,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 11,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 14,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 17,
+        "delay": 233,
+        "when": 1,
+        "Desc": "233",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 16,
+        "delay": 700,
+        "when": 1,
+        "Desc": "700",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/rose_cm_sk1.scsp",
+      "address": "characterlab/source/camera/rose_cm_sk1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_slash_01.atlas",
+      "address": "characterlab/source/effect/hit_new_slash_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_slash_01.scsp",
+      "address": "characterlab/source/effect/hit_new_slash_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_slash_01.sct",
+      "address": "characterlab/source/effect/hit_new_slash_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_slash_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_slash_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_slash_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_slash_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/rose_skill_01.cfx",
+      "address": "characterlab/source/effect/rose_skill_01.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/rose_skill_01_eff.atlas",
+      "address": "characterlab/source/effect/rose_skill_01_eff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/rose_skill_01_eff.scsp",
+      "address": "characterlab/source/effect/rose_skill_01_eff.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/rose_skill_01_eff.sct",
+      "address": "characterlab/source/effect/rose_skill_01_eff.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/rose_skill_02.cfx",
+      "address": "characterlab/source/effect/rose_skill_02.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/rose_skill_02_eff.atlas",
+      "address": "characterlab/source/effect/rose_skill_02_eff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/rose_skill_02_eff.scsp",
+      "address": "characterlab/source/effect/rose_skill_02_eff.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/rose_skill_02_eff.sct",
+      "address": "characterlab/source/effect/rose_skill_02_eff.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/rose_skill_02_pati1.particle",
+      "address": "characterlab/source/effect/rose_skill_02_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "model/rose.timeline",
+      "address": "characterlab/source/model/rose.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/pati_01.sct",
+      "address": "characterlab/source/particle/pati_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

@@ -1,0 +1,237 @@
+
+kise_skill_02_back.sct
+size: 1009,1188
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+big_smoke
+  rotate: false
+  xy: 2, 360
+  size: 349, 319
+  orig: 349, 319
+  offset: 0, 0
+  index: -1
+bot_smoke
+  rotate: false
+  xy: 2, 959
+  size: 323, 227
+  orig: 323, 227
+  offset: 0, 0
+  index: -1
+crack_burst
+  rotate: false
+  xy: 2, 681
+  size: 287, 276
+  orig: 287, 276
+  offset: 0, 0
+  index: -1
+crack_burst2
+  rotate: true
+  xy: 761, 2
+  size: 269, 191
+  orig: 269, 191
+  offset: 0, 0
+  index: -1
+crack_impact
+  rotate: true
+  xy: 897, 451
+  size: 207, 104
+  orig: 207, 104
+  offset: 0, 0
+  index: -1
+crack_light1
+  rotate: true
+  xy: 327, 928
+  size: 255, 141
+  orig: 255, 141
+  offset: 0, 0
+  index: -1
+crack_light2
+  rotate: true
+  xy: 470, 928
+  size: 253, 140
+  orig: 253, 140
+  offset: 0, 0
+  index: -1
+diamond
+  rotate: true
+  xy: 291, 868
+  size: 58, 250
+  orig: 58, 250
+  offset: 0, 0
+  index: -1
+dust2
+  rotate: false
+  xy: 602, 360
+  size: 209, 159
+  orig: 209, 159
+  offset: 0, 0
+  index: -1
+dust3
+  rotate: true
+  xy: 618, 521
+  size: 255, 145
+  orig: 255, 145
+  offset: 0, 0
+  index: -1
+side_st_prob1
+  rotate: true
+  xy: 954, 178
+  size: 83, 34
+  orig: 83, 34
+  offset: 0, 0
+  index: -1
+skill2_bg
+  rotate: false
+  xy: 2, 2
+  size: 757, 356
+  orig: 757, 356
+  offset: 0, 0
+  index: -1
+smoke_a
+  rotate: false
+  xy: 353, 360
+  size: 247, 189
+  orig: 247, 189
+  offset: 0, 0
+  index: -1
+st_prob1
+  rotate: false
+  xy: 882, 984
+  size: 61, 109
+  orig: 61, 109
+  offset: 0, 0
+  index: -1
+st_prob2
+  rotate: false
+  xy: 945, 975
+  size: 57, 108
+  orig: 57, 108
+  offset: 0, 0
+  index: -1
+st_prob3
+  rotate: true
+  xy: 954, 2
+  size: 72, 53
+  orig: 72, 53
+  offset: 0, 0
+  index: -1
+st_prob4
+  rotate: true
+  xy: 882, 1095
+  size: 70, 69
+  orig: 70, 69
+  offset: 0, 0
+  index: -1
+st_prob5
+  rotate: false
+  xy: 893, 778
+  size: 94, 55
+  orig: 94, 55
+  offset: 0, 0
+  index: -1
+stone1
+  rotate: true
+  xy: 612, 874
+  size: 197, 141
+  orig: 197, 141
+  offset: 0, 0
+  index: -1
+stone2
+  rotate: false
+  xy: 612, 1073
+  size: 180, 92
+  orig: 180, 92
+  offset: 0, 0
+  index: -1
+stone3
+  rotate: true
+  xy: 765, 748
+  size: 86, 126
+  orig: 86, 126
+  offset: 0, 0
+  index: -1
+stone4
+  rotate: true
+  xy: 353, 551
+  size: 168, 263
+  orig: 168, 263
+  offset: 0, 0
+  index: -1
+stone5
+  rotate: true
+  xy: 291, 721
+  size: 145, 264
+  orig: 145, 264
+  offset: 0, 0
+  index: -1
+stone5-2
+  rotate: false
+  xy: 843, 836
+  size: 77, 146
+  orig: 77, 146
+  offset: 0, 0
+  index: -1
+stone6
+  rotate: true
+  xy: 557, 778
+  size: 94, 202
+  orig: 94, 202
+  offset: 0, 0
+  index: -1
+stone6-2
+  rotate: false
+  xy: 897, 660
+  size: 98, 116
+  orig: 98, 116
+  offset: 0, 0
+  index: -1
+stone7
+  rotate: false
+  xy: 765, 521
+  size: 130, 225
+  orig: 130, 225
+  offset: 0, 0
+  index: -1
+stone7-2
+  rotate: false
+  xy: 755, 874
+  size: 86, 162
+  orig: 86, 162
+  offset: 0, 0
+  index: -1
+stone8
+  rotate: true
+  xy: 761, 273
+  size: 77, 190
+  orig: 77, 190
+  offset: 0, 0
+  index: -1
+stone8-2
+  rotate: false
+  xy: 922, 835
+  size: 56, 138
+  orig: 56, 138
+  offset: 0, 0
+  index: -1
+stone9
+  rotate: true
+  xy: 813, 352
+  size: 97, 194
+  orig: 97, 194
+  offset: 0, 0
+  index: -1
+stone9-2
+  rotate: false
+  xy: 954, 76
+  size: 44, 100
+  orig: 44, 100
+  offset: 0, 0
+  index: -1
+stone_4-2
+  rotate: false
+  xy: 794, 1038
+  size: 86, 138
+  orig: 86, 138
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,139 @@
+
+aming_skill_01.sct
+size: 494,1076
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+burst1
+  rotate: true
+  xy: 209, 624
+  size: 278, 114
+  orig: 278, 114
+  offset: 0, 0
+  index: -1
+burst2
+  rotate: false
+  xy: 2, 2
+  size: 406, 154
+  orig: 406, 154
+  offset: 0, 0
+  index: -1
+burst3
+  rotate: false
+  xy: 2, 468
+  size: 285, 154
+  orig: 285, 154
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 232, 904
+  size: 163, 163
+  orig: 163, 163
+  offset: 0, 0
+  index: -1
+impact0
+  rotate: false
+  xy: 2, 309
+  size: 328, 157
+  orig: 328, 157
+  offset: 0, 0
+  index: -1
+impact1
+  rotate: false
+  xy: 2, 158
+  size: 382, 149
+  orig: 382, 149
+  offset: 0, 0
+  index: -1
+impact2
+  rotate: false
+  xy: 289, 477
+  size: 177, 106
+  orig: 177, 106
+  offset: 0, 0
+  index: -1
+impact3
+  rotate: false
+  xy: 2, 624
+  size: 205, 195
+  orig: 205, 195
+  offset: 0, 0
+  index: -1
+impact_shock
+  rotate: false
+  xy: 140, 904
+  size: 90, 170
+  orig: 90, 170
+  offset: 0, 0
+  index: -1
+impact_smoke
+  rotate: false
+  xy: 332, 309
+  size: 160, 166
+  orig: 160, 166
+  offset: 0, 0
+  index: -1
+line_pati
+  rotate: true
+  xy: 458, 585
+  size: 161, 20
+  orig: 161, 20
+  offset: 0, 0
+  index: -1
+misc0
+  rotate: false
+  xy: 397, 847
+  size: 83, 141
+  orig: 83, 141
+  offset: 0, 0
+  index: -1
+misc1
+  rotate: false
+  xy: 140, 821
+  size: 48, 62
+  orig: 48, 62
+  offset: 0, 0
+  index: -1
+misc2
+  rotate: false
+  xy: 325, 851
+  size: 39, 45
+  orig: 39, 45
+  offset: 0, 0
+  index: -1
+shw_bar
+  rotate: false
+  xy: 397, 990
+  size: 86, 73
+  orig: 86, 73
+  offset: 0, 0
+  index: -1
+shw_bk
+  rotate: true
+  xy: 2, 821
+  size: 213, 136
+  orig: 213, 136
+  offset: 0, 0
+  index: -1
+wave1
+  rotate: false
+  xy: 325, 585
+  size: 66, 264
+  orig: 66, 264
+  offset: 0, 0
+  index: -1
+wave2
+  rotate: false
+  xy: 410, 2
+  size: 63, 257
+  orig: 63, 257
+  offset: 0, 0
+  index: -1
+wave3
+  rotate: false
+  xy: 393, 585
+  size: 63, 260
+  orig: 63, 260
+  offset: 0, 0
+  index: -1

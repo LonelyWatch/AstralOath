@@ -95,3 +95,7 @@ Luban 快照 `Configs/battle-catalog.json` 含三名英雄、成长模板、觉�
 拉斯/安洁莉卡S1缺省time的CAM/ZOOM继承jump→landing事件窗口，保留各自原倍率、偏移和曲线。拉斯S3起手离屏布局在目标群镜头切入时恢复接受目标，旁观者继续隐藏；梅赛德丝有限布局的目标保持显示。View按当前骨架Renderer联动血条/等级/状态，死亡与布局复位互不覆盖。每个HIT、两朝向、中断和重开回归及证据范围见[本次交付](../../../../docs/delivery/2026-11-13-camera-visibility-fixes.md)。
 
 信息条投影使用根Canvas局部坐标与相对比例，避免ScreenSpaceCamera在Render阶段更新位姿后重复移动/缩放血条。验收检查Camera.Render后的同帧挂点，不只检查渲染前RectTransform；无逐单位Canvas强制重建。
+
+## 十人阵容
+
+Battle Canvas 的 `BattleHudPreview` Inspector 为四个友军站位提供角色下拉列表。退出 Play 后选择并重新运行，或在运行中选择后点重新开始。模型、技能图、头像和音频引用由配表与导入清单生成，`Tools/战斗场景/更新角色资源引用` 可更新现有场景的引用。主动技能按权威流程提交，被动槽仅展示。十人名单、使用方式、源差异和回归见[十名角色接入](../../../../docs/delivery/2026-11-13-ten-hero-roster.md)。

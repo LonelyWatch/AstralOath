@@ -1,0 +1,90 @@
+
+cecilia_skill_03_botaura_back.sct
+size: 234,1077
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+burst_sphear
+  rotate: false
+  xy: 2, 809
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+burst_sphear_g
+  rotate: false
+  xy: 2, 943
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+fire_wave1
+  rotate: false
+  xy: 2, 2
+  size: 230, 210
+  orig: 230, 210
+  offset: 0, 0
+  index: -1
+fire_wave2
+  rotate: false
+  xy: 2, 214
+  size: 230, 210
+  orig: 230, 210
+  offset: 0, 0
+  index: -1
+fire_wave3
+  rotate: false
+  xy: 2, 426
+  size: 230, 210
+  orig: 230, 210
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 638
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+kenfire_b_1_1
+  rotate: true
+  xy: 136, 943
+  size: 104, 64
+  orig: 104, 64
+  offset: 0, 0
+  index: -1
+kenfire_b_1_2
+  rotate: false
+  xy: 136, 809
+  size: 93, 65
+  orig: 93, 65
+  offset: 0, 0
+  index: -1
+kenfire_b_1_3
+  rotate: false
+  xy: 136, 876
+  size: 68, 65
+  orig: 68, 65
+  offset: 0, 0
+  index: -1
+kenfire_b_2_1
+  rotate: false
+  xy: 173, 666
+  size: 54, 51
+  orig: 54, 51
+  offset: 0, 0
+  index: -1
+kenfire_b_2_2
+  rotate: false
+  xy: 173, 638
+  size: 59, 26
+  orig: 59, 26
+  offset: 0, 0
+  index: -1
+kenfire_b_2_3
+  rotate: false
+  xy: 173, 719
+  size: 48, 12
+  orig: 48, 12
+  offset: 0, 0
+  index: -1

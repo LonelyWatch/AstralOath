@@ -49,7 +49,7 @@ namespace AstralOath.Client.BattleScene
         public BattleSimulationPreview(Scene scene, BindingMap hud, BattleHudBinder binder, BattleCatalogData catalog,
             Sprite[] icons, TextAsset[] graphs, BattleSkillPresentationAsset[] skillAssets, TextAsset audioCatalog,
             TextAsset[] audioBanks, TMP_FontAsset damageFont, TextAsset impactBank, GameObject stageBackground,
-            BattleUnitPresentationProfile unitPresentation = null)
+            BattleUnitPresentationProfile unitPresentation, BattleMatch match)
         {
             this.hud = hud;
             this.binder = binder;
@@ -58,7 +58,7 @@ namespace AstralOath.Client.BattleScene
             classes = catalog.heroes.ToDictionary(hero => hero.id, hero => hero.heroClass, StringComparer.Ordinal);
             messages = catalog.messages.ToDictionary(item => item.key, item => item.zhCn, StringComparer.Ordinal);
             sprites = icons.ToDictionary(sprite => sprite.name, StringComparer.Ordinal);
-            match = BattlePreviewFactory.Create("local", 271828UL, catalog);
+            this.match = match ?? throw new ArgumentNullException(nameof(match));
             var units = scene.GetRootGameObjects().Single(root => root.name == "Units").transform;
             var deathTextures = unitPresentation ? unitPresentation.CreateDeathTextures() : new Dictionary<string, Texture2D>();
             try
@@ -217,7 +217,9 @@ namespace AstralOath.Client.BattleScene
                 if (pendingFeedback.Count != 0)
                     nextTime = Mathf.Min(nextTime, pendingFeedback[0].At);
                 float untilNext = nextTime - actionElapsed;
-                float step = Mathf.Min(remaining, untilNext);
+                // A source-time boundary cannot subdivide wall time while Cut-in freezes the source clock.
+                float cutinRemaining = skillPresentation.CutinRemainingSeconds;
+                float step = Mathf.Min(remaining, cutinRemaining > 0f ? cutinRemaining : untilNext);
 
                 float before = skillPresentation.StageTime;
                 skillPresentation.Tick(step);
@@ -273,7 +275,7 @@ namespace AstralOath.Client.BattleScene
 
         public void ChooseSkill(int index)
         {
-            if (!CanAct || !TrySkill(index, out var skill) || Actor.GetCooldown(skill.id) > 0) return;
+            if (!CanAct || !TrySkill(index, out var skill) || skill.target == "passive" || Actor.GetCooldown(skill.id) > 0) return;
             // Once armed, only the dedicated Cancel control may clear Soul Burn.
             if (useSoulBurn) return;
             selected = index;
@@ -308,10 +310,11 @@ namespace AstralOath.Client.BattleScene
             int index = 0;
             foreach (var button in SkillButtons())
             {
-                bool available = CanAct && TrySkill(index, out var skill) && Actor.GetCooldown(skill.id) == 0 &&
+                bool active = TrySkill(index, out var skill) && skill.target != "passive";
+                bool available = CanAct && active && Actor.GetCooldown(skill.id) == 0 &&
                     (!useSoulBurn || index == selected);
                 button.interactable = available;
-                ((Image)button.targetGraphic).color = useSoulBurn && index != selected
+                ((Image)button.targetGraphic).color = !active || (useSoulBurn && index != selected)
                     ? new Color(.35f, .35f, .35f, 1f) : Color.white;
                 index++;
             }
@@ -319,7 +322,7 @@ namespace AstralOath.Client.BattleScene
 
         public bool ChooseTarget(string id)
         {
-            if (!CanAct || !TrySkill(selected, out var skill)) return false;
+            if (!CanAct || !TrySkill(selected, out var skill) || skill.target == "passive") return false;
             var target = Snapshot.GetUnit(id);
             bool allies = skill.target == "one_ally" || skill.target == "all_allies";
             if (target?.IsAlive != true || (target.Slot.Side == Actor.Slot.Side) != allies)
@@ -362,10 +365,20 @@ namespace AstralOath.Client.BattleScene
                     SetPlayerControlsVisible(Snapshot.GetUnit(item.SourceId).Slot.Side == BattleSide.Ally);
                     var primary = item.TargetId != null && views.TryGetValue(item.TargetId, out var target)
                         ? target.Actor : null;
-                    var targets = playback.TakeWhile(next => next.Kind != BattleFlowEventKind.Action)
-                        .Where(next => next.Kind == BattleFlowEventKind.Damage || next.Kind == BattleFlowEventKind.Healing)
-                        .Select(next => next.TargetId).Distinct(StringComparer.Ordinal)
-                        .Select(id => views[id].Actor).ToArray();
+                    var actionEvents = playback.TakeWhile(next => next.Kind != BattleFlowEventKind.Action).ToArray();
+                    var targetEvents = actionEvents.Where(next => next.Kind == BattleFlowEventKind.Damage || next.Kind == BattleFlowEventKind.Healing).ToArray();
+                    if (targetEvents.Length == 0 && skills.TryGetValue(item.SkillId, out var support) &&
+                        (support.target == "all_allies" || support.target == "all_enemies"))
+                    {
+                        var sourceSide = Snapshot.GetUnit(item.SourceId).Slot.Side;
+                        bool allies = support.target == "all_allies";
+                        targetEvents = actionEvents.Where(next => next.SourceId == item.SourceId && next.TargetId != null &&
+                            (next.Kind == BattleFlowEventKind.StatusApplied || next.Kind == BattleFlowEventKind.ReadinessChanged ||
+                                (next.Kind == BattleFlowEventKind.StatusRemoved && next.TargetId != item.SourceId)) &&
+                            (Snapshot.GetUnit(next.TargetId).Slot.Side == sourceSide) == allies).ToArray();
+                    }
+                    var targets = targetEvents.Select(next => next.TargetId).Where(id => id != null)
+                        .Distinct(StringComparer.Ordinal).Select(id => views[id].Actor).ToArray();
                     var timing = skillPresentation.Begin(item.PresentationId, views[item.SourceId].Actor, primary, targets);
                     presentedSkillId = item.SkillId;
                     voice.Play(string.IsNullOrEmpty(item.PresentationId) ? item.SkillId : item.PresentationId);
@@ -424,7 +437,7 @@ namespace AstralOath.Client.BattleScene
                     if (first)
                     {
                         voice.PlayHit(unit.DefinitionId, presentedSkillId);
-                        if (item.RemainingHealth > 0 || hits.Length > 1)
+                        if ((item.RemainingHealth > 0 || hits.Length > 1) && !skillPresentation.OwnsNodeAnimationPose(view.Actor))
                             view.Actor.PlayBattleAnimation("attacked");
                     }
                     view.AdjustHealth(-hit.Amount, unit.Stats.MaxHealth);
@@ -495,7 +508,12 @@ namespace AstralOath.Client.BattleScene
                 if (portrait.enabled) portrait.sprite = actorPortrait;
                 SetActorArt("Element", "cm_icon_prom" + actor.Element.ToString().ToLowerInvariant());
                 string role = classes.TryGetValue(actor.DefinitionId, out var heroClass) ? heroClass : "";
-                SetActorArt("Class", "cm_icon_role_" + (role == "soul_weaver" ? "manauser" : role));
+                SetActorArt("Class", "cm_icon_role_" + (role switch
+                {
+                    "soul_weaver" => "manauser",
+                    "thief" => "assassin",
+                    _ => role
+                }));
             }
             selected = 0;
             useSoulBurn = false;
@@ -507,7 +525,7 @@ namespace AstralOath.Client.BattleScene
                 if (TrySkill(index, out var skill) && sprites.TryGetValue(Path.GetFileNameWithoutExtension(skill.iconAsset), out var icon))
                     image.sprite = icon;
                 int turns = TrySkill(index, out skill) ? actor.GetCooldown(skill.id) : 0;
-                button.interactable = CanAct && skill != null && turns == 0;
+                button.interactable = CanAct && skill != null && skill.target != "passive" && turns == 0;
                 image.color = button.interactable || turns > 0 ? Color.white : new Color(0.45f, 0.45f, 0.45f, 1f);
                 turnHud.SetCooldown(index++, turns);
             }
@@ -581,7 +599,7 @@ namespace AstralOath.Client.BattleScene
         private int BurnSlot()
         {
             for (int i = 0; i < 3; i++)
-                if (TrySkill(i, out var skill) && skill.soulBurnCost > 0 &&
+                if (TrySkill(i, out var skill) && skill.target != "passive" && skill.soulBurnCost > 0 &&
                     Actor.GetCooldown(skill.id) == 0 && Snapshot.GetSoul(Actor.Slot.Side) >= skill.soulBurnCost)
                     return i;
             return -1;
@@ -767,6 +785,12 @@ namespace AstralOath.Client.BattleScene
             private static string StatusName(BattleStatusKind kind) => kind switch
             {
                 BattleStatusKind.AttackUp => "攻↑",
+                BattleStatusKind.AttackDown => "攻↓",
+                BattleStatusKind.DefenseDown => "防↓",
+                BattleStatusKind.SpeedUp => "速↑",
+                BattleStatusKind.SpeedDown => "速↓",
+                BattleStatusKind.Unhealable => "禁疗",
+                BattleStatusKind.Stealth => "隐身",
                 BattleStatusKind.DefenseUp => "防↑",
                 BattleStatusKind.Immunity => "免疫",
                 BattleStatusKind.Barrier => "盾",

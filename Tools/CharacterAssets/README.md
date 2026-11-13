@@ -1,6 +1,6 @@
 # 角色资源白名单导入
 
-本工具只接受已批准的 c1001（ras）、c1005（mercedes）、c1062（angelica）。`D:/sevenepic/原始资源` 仅以只读方式访问；不得把整个外部目录复制进仓库。三个骨骼和立绘、九份技能 STG 为根，递归引入其真实 atlas/纹理、CFX、particle、camera、cutin，以及实际存在的 timeline。五份指定 FMOD bank 公共保存一次。Ras 没有 timeline 是源布局信息，不伪造空文件。
+本工具只接受已批准的 c1001–c1009 与 c1062，按 E7 ID 排序。`D:/sevenepic/原始资源` 仅以只读方式访问；不得把整个外部目录复制进仓库。十套骨骼和立绘、三十份技能 STG 为根，递归引入其真实 atlas/纹理、CFX、particle、camera、cutin，以及实际存在的 timeline。六份指定 FMOD bank 公共保存一次。Ras 没有 timeline 是源布局信息，不伪造空文件。
 
 ## 固定环境与命令
 
@@ -29,9 +29,9 @@ SCSP 保留 `2.1.27` / `3.8.99` 原版本。2.1 的 type5/type6 分别为事件�
 
 ## 清单与验证范围
 
-`Assets/Game/Modules/CharacterPresentation/Configs/import-manifest.json` 包含 `entries`，每项记录 `source/sourceSha256/path/address/type/dependencies/outputSha256/conversion`。共享引用计数大于1的资源位于 `Res/Shared`；银行始终公共。目录生成源为 `Config/CharacterAssets/catalog.generated.json`，临时副本为 `.artifacts/character-import/catalog.json`；Luban结合中文文案与角色展示表生成正式catalog。
+`Assets/Game/Modules/CharacterPresentation/Configs/import-manifest.json` 包含 `entries`，每项记录 `source/sourceSha256/path/address/type/dependencies/outputSha256/conversion`。首次导入且共享引用计数大于1的资源位于 `Res/Shared`，银行始终公共。已有依赖保持原位置和地址，扩大引用范围时保持其 meta。目录生成源为 `Config/CharacterAssets/catalog.generated.json`，临时副本为 `.artifacts/character-import/catalog.json`；Luban结合中文文案与角色展示表生成正式catalog。
 
-本次导入实测174源文件→254产物；44骨骼均完整消费二进制，9技能图、40 atlas（含别名）、37源纹理、21CFX、14particle、2timeline、5bank。两个cutin分别16帧/1.25秒、20帧/1.28秒。导入/哈希校验不能替代Unity视觉、音频、真实事件时机或玩法验收。
+十角色导入实测 923 产物，包含 172 个骨骼、30 技能图、144 atlas、74 CFX、45 particle、9 timeline、7 CUTIN、6 bank。原首批 254 项的路径及字节哈希保持一致。导入/哈希校验不能替代Unity视觉、音频、真实事件时机或玩法验收。
 
 MIT参考解析结构隔离在 `ThirdParty/scsp_viewer`，固定来源、许可和本地改动见其NOTICE与LICENSE；未保留上游启发式动画扫描、自动版本升级、容错输出入口。
 
@@ -42,3 +42,5 @@ MIT参考解析结构隔离在 `ThirdParty/scsp_viewer`，固定来源、许可�
 SCSP 2.1 的 `0xFFFF` 是线性、`0xFFFE` 是阶梯，显式 Bezier 首个 float 是目标帧索引。按源记录保留三种插值，禁止全局强制平滑或强制阶梯。逐轨逐段写出校验与 `curveTimelines` 报告保证曲线未丢失；旧错误转换产物会被 Python 验证和 Unity 构建门禁拒绝。
 
 新增角色必须遵循 [角色资源进入 Unity 的通用规则](../../docs/development/character-asset-import.md)。格式证据、复现与验收见 [梅赛德丝 S3 修复报告](../../docs/delivery/2026-11-12-mercedes-curve-correctness.md)。本轮本机原游戏静态核验支持该语义，不根据“画面看起来顺眼”修改角色偏移。
+
+已证实的角色资源别名及未提供的旧 timeline 依赖、日语音频边界见[角色资源进入 Unity](../../docs/development/character-asset-import.md)。逐项通过 `--verify` 核对输入输出哈希，转换和资源校验以 Unity 实际加载验收补充。

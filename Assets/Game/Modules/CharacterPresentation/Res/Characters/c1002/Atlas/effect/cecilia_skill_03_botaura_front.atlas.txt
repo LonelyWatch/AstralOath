@@ -1,0 +1,118 @@
+
+cecilia_skill_03_botaura_front.sct
+size: 251,1217
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bot_aura_01
+  rotate: false
+  xy: 2, 2
+  size: 232, 103
+  orig: 232, 103
+  offset: 0, 0
+  index: -1
+bot_aura_02
+  rotate: false
+  xy: 2, 107
+  size: 232, 103
+  orig: 232, 103
+  offset: 0, 0
+  index: -1
+bot_aura_03
+  rotate: false
+  xy: 2, 212
+  size: 232, 103
+  orig: 232, 103
+  offset: 0, 0
+  index: -1
+bot_aura_04
+  rotate: false
+  xy: 2, 317
+  size: 232, 103
+  orig: 232, 103
+  offset: 0, 0
+  index: -1
+bot_aura_05
+  rotate: false
+  xy: 2, 422
+  size: 232, 103
+  orig: 232, 103
+  offset: 0, 0
+  index: -1
+fire_bl_1_1
+  rotate: false
+  xy: 2, 698
+  size: 133, 86
+  orig: 133, 86
+  offset: 0, 0
+  index: -1
+fire_bl_1_2
+  rotate: false
+  xy: 2, 907
+  size: 119, 105
+  orig: 119, 105
+  offset: 0, 0
+  index: -1
+fire_bl_1_3
+  rotate: true
+  xy: 123, 911
+  size: 108, 109
+  orig: 108, 109
+  offset: 0, 0
+  index: -1
+fire_bl_1_4
+  rotate: true
+  xy: 2, 1014
+  size: 95, 104
+  orig: 95, 104
+  offset: 0, 0
+  index: -1
+fire_s1_1
+  rotate: false
+  xy: 105, 1119
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1
+fire_s1_2
+  rotate: false
+  xy: 108, 1021
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1
+fire_s1_3
+  rotate: false
+  xy: 2, 1111
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 527
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+kenfire_s_1_1
+  rotate: false
+  xy: 137, 698
+  size: 112, 125
+  orig: 112, 125
+  offset: 0, 0
+  index: -1
+kenfire_s_1_2
+  rotate: true
+  xy: 136, 825
+  size: 84, 111
+  orig: 84, 111
+  offset: 0, 0
+  index: -1
+kenfire_s_1_3
+  rotate: true
+  xy: 2, 786
+  size: 119, 132
+  orig: 119, 132
+  offset: 0, 0
+  index: -1

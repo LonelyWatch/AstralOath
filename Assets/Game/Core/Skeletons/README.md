@@ -10,7 +10,7 @@ TryGetBonePose 返回官方内核计算后的只读局部位置（已按 source.
 
 2.1 使用原生 RegionAttachment/MeshAttachment/SkinnedMeshAttachment 的世界顶点与 Flip 继承。3.8 使用原生 RegionAttachment/MeshAttachment 和 SkeletonClipping；骨架 DrawOrder 原样进入连续材质段，A/B/A 不合并成 A/A/B。Atlas 的裁切和 0/90 度旋转 UV 来自原生 attachment，再将 V 坐标转成 Unity 坐标。固定 3.8 core 的 RegionAttachment 不支持其它旋转角度，桥接对此显式抛出 NotSupportedException，避免静默错图。
 
-`Resources/AstralOathSkeleton.shader` 是母包内置 URP unlit shader，支持 straight/PMA atlas、normal/additive/multiply/screen、slot/attachment tint 和 3.8 two-color tint。PMA 由调用方显式指定，不从纹理内容猜测。Atlas 纹理导入器负责过滤、wrap、色彩空间；桥接不修改借入纹理。Linear 项目中对 sRGB PMA 输入先取消 sRGB 预乘，再在线性空间重新预乘。PMA 输入应保留源 RGB，导入器关闭 alphaIsTransparency。2.1 官方格式只有 normal/additive slot，保留原格式语义。
+`Resources/AstralOathSkeleton.shader` 是母包内置 URP unlit shader，支持 straight/PMA atlas、normal/additive/multiply/screen、slot/attachment tint 和 3.8 two-color tint。PMA 由调用方显式指定，不从纹理内容猜测。Atlas 纹理导入器负责过滤、wrap、色彩空间；桥接不修改借入纹理。Linear 项目中对 sRGB PMA 输入先取消 sRGB 预乘，再在线性空间重新预乘。PMA 输入应保留源 RGB，导入器关闭 alphaIsTransparency。2.1 官方 core 的 normal/additive 字段仍由官方读取。SCSP 2.1 额外的 multiply/screen 槽位由桥接在同一份不可变解析缓存内读取命名 blend 字段，并复用 3.8 已有材质配置。席可的立绘实际包含 multiply 的 `1/hairs` 槽位。本次桥接变更需要重新构建 AOT 母包。
 
 本桥接不是 Canvas Graphic，Root 使用 MeshRenderer，需要场景 Camera，或由上层将相机 RenderTexture 显示到 UI。EditMode 测试验证动画/几何/生命周期/材质配置；shader 最终像素、真实资源画面及 Windows IL2CPP 播放另做验收，不以编译或合成测试代替。
 

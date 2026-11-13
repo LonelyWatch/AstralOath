@@ -58,6 +58,17 @@ namespace AstralOath.Client.BattleScene
         [SerializeField] private TextAsset impactBank;
         [SerializeField] private GameObject stageBackground;
         [SerializeField] private BattleUnitPresentationProfile unitPresentation;
+        [Serializable]
+        private sealed class HeroModel
+        {
+            public string id;
+            public string label;
+            public string skin;
+            public BattleSkillPresentationAsset skeleton;
+        }
+
+        [SerializeField] private string[] allyHeroIds;
+        [SerializeField, HideInInspector] private HeroModel[] heroModels;
         private BattleHudBinder binder;
         private BattleSimulationPreview simulation;
 
@@ -81,12 +92,40 @@ namespace AstralOath.Client.BattleScene
             using var sample = StartMarker.Auto();
             if (!Application.isPlaying || !hud || !hud.isActiveAndEnabled || !battleCatalog)
                 throw new InvalidOperationException("Open the battle scene in Play mode before starting.");
-            if (simulation != null) ClearBinding();
-            UpdateBinding();
             var catalog = JsonConvert.DeserializeObject<BattleCatalogData>(battleCatalog.text);
+            var ids = allyHeroIds is { Length: > 0 } ? (IReadOnlyList<string>)allyHeroIds : BattlePreviewFactory.DefaultHeroIds;
+            var nextMatch = BattlePreviewFactory.Create("local", 271828UL, catalog, allyHeroIds: ids);
+            var models = ResolveAllyModels(ids);
+            if (simulation != null) ClearBinding();
+            if (models != null) ApplyAllyModels(models);
+            UpdateBinding();
             simulation = new BattleSimulationPreview(gameObject.scene, hud, binder, catalog, battleSprites, battleGraphs,
-                skillAssets, audioCatalog, audioBanks, battleDamageFont, impactBank, stageBackground, unitPresentation);
+                skillAssets, audioCatalog, audioBanks, battleDamageFont, impactBank, stageBackground, unitPresentation, nextMatch);
             binder.AttachSimulation(simulation);
+        }
+
+        private HeroModel[] ResolveAllyModels(IReadOnlyList<string> ids)
+        {
+            // Scenes saved before roster selection keep their authored default actor references.
+            if (heroModels == null || heroModels.Length == 0)
+            {
+                if (ids.SequenceEqual(BattlePreviewFactory.DefaultHeroIds)) return null;
+                throw new InvalidOperationException("Battle preview has no imported hero roster.");
+            }
+            var models = heroModels.ToDictionary(model => model.id, StringComparer.Ordinal);
+            return ids.Select(id => models.TryGetValue(id, out var model) ? model :
+                throw new InvalidOperationException("Missing battle model for " + id)).ToArray();
+        }
+
+        private void ApplyAllyModels(IReadOnlyList<HeroModel> models)
+        {
+            var allies = gameObject.scene.GetRootGameObjects().Single(root => root.name == "Units").transform.Find("Allies");
+            for (int i = 0; i < models.Count; i++)
+            {
+                var model = models[i];
+                var actor = allies.GetChild(i).GetComponentInChildren<BattlePreviewActor>(true);
+                actor.UseModel(model.skeleton, model.skin, $"{model.label} [{model.id}]");
+            }
         }
 
         public bool TrySelectBattleTarget(string instanceId) => simulation?.ChooseTarget(instanceId) == true;

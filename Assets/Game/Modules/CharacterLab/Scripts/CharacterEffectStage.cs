@@ -32,7 +32,7 @@ namespace AstralOath.Client.CharacterLab
         private readonly List<(GameObject root,JObject descriptor,double start)> cutins=new List<(GameObject,JObject,double)>();
         private readonly Vector3 casterPosition,casterScale,cameraPosition;
         private readonly float cameraSize;
-        private JObject timeline;
+        public JObject Timeline { get; private set; }
         private double time;
         private int timelineGeneration;
         private bool disposed;
@@ -70,7 +70,7 @@ namespace AstralOath.Client.CharacterLab
                         textures[address]=await assets.LoadAsync<Texture2D>(address,scope);
                 }
             if(!string.IsNullOrEmpty(character.timelineAddress))
-                timeline=JObject.Parse((await assets.LoadAsync<TextAsset>(character.timelineAddress,scope)).text);
+                Timeline=JObject.Parse((await assets.LoadAsync<TextAsset>(character.timelineAddress,scope)).text);
             if(experimental)
             {
                 report("EXPERIMENTAL locations: 1/11 caster, 5 test opponent, 6 selected allies; positions are lab anchors, not verified source coordinates.");
@@ -98,7 +98,8 @@ namespace AstralOath.Client.CharacterLab
             if(location==1||location==11)return new Vector3(-2.7f,-2,0);
             if((location==5||location==12||location==16)&&allies.Count>1)return allies[1].Root.transform.position;
             if(location==31&&allies.Count>=2)return (allies[0].Root.transform.position+allies[1].Root.transform.position)*.5f;
-            if(location==32&&allies.Count>0)return allies.Select(a=>a.Root.transform.position).Aggregate(Vector3.zero,(a,b)=>a+b)/allies.Count;
+            if((location==32||location==41||location==42)&&allies.Count>0)
+                return allies.Select(a=>a.Root.transform.position).Aggregate(Vector3.zero,(a,b)=>a+b)/allies.Count;
             return null;
         }
         public void Assist(string animationEvent)
@@ -111,16 +112,21 @@ namespace AstralOath.Client.CharacterLab
         public void Animation(string name)
         {
             int generation=++timelineGeneration;
-            var frames=timeline?["timeline"]?["default"]?[name]?["frames"] as JArray;
+            var frames=Timeline?["timeline"]?["default"]?[name]?["frames"] as JArray;
             if(frames==null)return;
             foreach(JObject frame in frames)
             {
+                if ((string)frame["func"] == "event") continue; // Delivered by the STG session to ONEVENT.
                 double delay=Number(frame["time"],0)/1000d;
                 pending.Add((time+delay,()=>{
                     if(generation!=timelineGeneration)return;
                     string function=(string)frame["func"];var param=(JObject)frame["param"]??new JObject();
                     if(function=="effect")Effect(param);
                     else if(function=="remove")Remove((string)param["targetId"]);
+                    else if (function=="shake")
+                    {
+                        var shake=(JObject)param.DeepClone();shake["etty"]="SHAKE";Effect(shake);
+                    }
                     else report("Unsupported timeline function "+frame.ToString(Newtonsoft.Json.Formatting.None));
                 }));
             }
@@ -147,6 +153,18 @@ namespace AstralOath.Client.CharacterLab
             if(location==1||location==11)targets=new[]{caster.Root.transform};
             else if(location==5)targets=new[]{allies.Count>1?allies[1].Root.transform:caster.Root.transform};
             else if(location==6)targets=allies.Take(skillId=="c_angelica_skill_02"?2:allies.Count).Select(a=>a.Root.transform);
+            else if(location==41||location==42)
+            {
+                // Group effect plays once, at the center of the experimental target group.
+                var group=new GameObject("Lab effect group anchor").transform;
+                group.SetParent(context.WorldRoot,false);
+                var recipients=allies.Skip(1).ToArray();
+                group.position=recipients.Length==0?caster.Root.transform.position:
+                    recipients.Select(a=>a.Root.transform.position).Aggregate(Vector3.zero,(a,b)=>a+b)/recipients.Length;
+                group.localScale=caster.Root.transform.localScale;
+                scope.Add(()=>UnityEngine.Object.Destroy(group.gameObject));
+                targets=new[]{group};
+            }
             else {report("Unsupported location "+location+" for "+path);return;}
             foreach(JObject primitive in cfx["primitive"]??new JArray())
             {

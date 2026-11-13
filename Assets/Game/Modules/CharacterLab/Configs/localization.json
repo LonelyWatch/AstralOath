@@ -579,6 +579,922 @@
     {
       "key": "character.voice.voc_c1062_win_1",
       "zhCn": "voc_c1062_win_1"
+    },
+    {
+      "key": "character.cecilia.name",
+      "zhCn": "赛西莉亚"
+    },
+    {
+      "key": "character.cecilia.skill1",
+      "zhCn": "赛西莉亚 · 技能1"
+    },
+    {
+      "key": "character.cecilia.skill2",
+      "zhCn": "赛西莉亚 · 技能2"
+    },
+    {
+      "key": "character.cecilia.skill3",
+      "zhCn": "赛西莉亚 · 技能3"
+    },
+    {
+      "key": "character.voice.voc_c1002_answer_1",
+      "zhCn": "voc_c1002_answer_1"
+    },
+    {
+      "key": "character.voice.voc_c1002_answer_2",
+      "zhCn": "voc_c1002_answer_2"
+    },
+    {
+      "key": "character.voice.voc_c1002_attacked_1",
+      "zhCn": "voc_c1002_attacked_1"
+    },
+    {
+      "key": "character.voice.voc_c1002_attacked_2",
+      "zhCn": "voc_c1002_attacked_2"
+    },
+    {
+      "key": "character.voice.voc_c1002_call_1",
+      "zhCn": "voc_c1002_call_1"
+    },
+    {
+      "key": "character.voice.voc_c1002_call_2",
+      "zhCn": "voc_c1002_call_2"
+    },
+    {
+      "key": "character.voice.voc_c1002_dead_1",
+      "zhCn": "voc_c1002_dead_1"
+    },
+    {
+      "key": "character.voice.voc_c1002_dead_2",
+      "zhCn": "voc_c1002_dead_2"
+    },
+    {
+      "key": "character.voice.voc_c1002_dead_3",
+      "zhCn": "voc_c1002_dead_3"
+    },
+    {
+      "key": "character.voice.voc_c1002_get_1",
+      "zhCn": "voc_c1002_get_1"
+    },
+    {
+      "key": "character.voice.voc_c1002_idle_1",
+      "zhCn": "voc_c1002_idle_1"
+    },
+    {
+      "key": "character.voice.voc_c1002_idle_2",
+      "zhCn": "voc_c1002_idle_2"
+    },
+    {
+      "key": "character.voice.voc_c1002_idle_3",
+      "zhCn": "voc_c1002_idle_3"
+    },
+    {
+      "key": "character.voice.voc_c1002_idle_4",
+      "zhCn": "voc_c1002_idle_4"
+    },
+    {
+      "key": "character.voice.voc_c1002_lose_1",
+      "zhCn": "voc_c1002_lose_1"
+    },
+    {
+      "key": "character.voice.voc_c1002_lvup_1",
+      "zhCn": "voc_c1002_lvup_1"
+    },
+    {
+      "key": "character.voice.voc_c1002_skill1_1",
+      "zhCn": "voc_c1002_skill1_1"
+    },
+    {
+      "key": "character.voice.voc_c1002_skill1_2",
+      "zhCn": "voc_c1002_skill1_2"
+    },
+    {
+      "key": "character.voice.voc_c1002_skill1_3",
+      "zhCn": "voc_c1002_skill1_3"
+    },
+    {
+      "key": "character.voice.voc_c1002_skill2_1",
+      "zhCn": "voc_c1002_skill2_1"
+    },
+    {
+      "key": "character.voice.voc_c1002_skill2_2",
+      "zhCn": "voc_c1002_skill2_2"
+    },
+    {
+      "key": "character.voice.voc_c1002_skill2_3",
+      "zhCn": "voc_c1002_skill2_3"
+    },
+    {
+      "key": "character.voice.voc_c1002_skill3_1",
+      "zhCn": "voc_c1002_skill3_1"
+    },
+    {
+      "key": "character.voice.voc_c1002_skill3_2",
+      "zhCn": "voc_c1002_skill3_2"
+    },
+    {
+      "key": "character.voice.voc_c1002_utterance_1",
+      "zhCn": "voc_c1002_utterance_1"
+    },
+    {
+      "key": "character.voice.voc_c1002_utterance_2",
+      "zhCn": "voc_c1002_utterance_2"
+    },
+    {
+      "key": "character.voice.voc_c1002_win_1",
+      "zhCn": "voc_c1002_win_1"
+    },
+    {
+      "key": "character.rose.name",
+      "zhCn": "萝季"
+    },
+    {
+      "key": "character.rose.skill1",
+      "zhCn": "萝季 · 技能1"
+    },
+    {
+      "key": "character.rose.skill2",
+      "zhCn": "萝季 · 技能2"
+    },
+    {
+      "key": "character.rose.skill3",
+      "zhCn": "萝季 · 技能3"
+    },
+    {
+      "key": "character.voice.voc_c1003_answer_1",
+      "zhCn": "voc_c1003_answer_1"
+    },
+    {
+      "key": "character.voice.voc_c1003_answer_2",
+      "zhCn": "voc_c1003_answer_2"
+    },
+    {
+      "key": "character.voice.voc_c1003_call_1",
+      "zhCn": "voc_c1003_call_1"
+    },
+    {
+      "key": "character.voice.voc_c1003_call_2",
+      "zhCn": "voc_c1003_call_2"
+    },
+    {
+      "key": "character.voice.voc_c1003_dead_1",
+      "zhCn": "voc_c1003_dead_1"
+    },
+    {
+      "key": "character.voice.voc_c1003_dead_2",
+      "zhCn": "voc_c1003_dead_2"
+    },
+    {
+      "key": "character.voice.voc_c1003_dead_3",
+      "zhCn": "voc_c1003_dead_3"
+    },
+    {
+      "key": "character.voice.voc_c1003_defeat",
+      "zhCn": "voc_c1003_defeat"
+    },
+    {
+      "key": "character.voice.voc_c1003_dmg_1",
+      "zhCn": "voc_c1003_dmg_1"
+    },
+    {
+      "key": "character.voice.voc_c1003_dmg_2",
+      "zhCn": "voc_c1003_dmg_2"
+    },
+    {
+      "key": "character.voice.voc_c1003_dmg_3",
+      "zhCn": "voc_c1003_dmg_3"
+    },
+    {
+      "key": "character.voice.voc_c1003_get_1",
+      "zhCn": "voc_c1003_get_1"
+    },
+    {
+      "key": "character.voice.voc_c1003_idle_1",
+      "zhCn": "voc_c1003_idle_1"
+    },
+    {
+      "key": "character.voice.voc_c1003_idle_2",
+      "zhCn": "voc_c1003_idle_2"
+    },
+    {
+      "key": "character.voice.voc_c1003_idle_3",
+      "zhCn": "voc_c1003_idle_3"
+    },
+    {
+      "key": "character.voice.voc_c1003_lv_1",
+      "zhCn": "voc_c1003_lv_1"
+    },
+    {
+      "key": "character.voice.voc_c1003_sk1_1",
+      "zhCn": "voc_c1003_sk1_1"
+    },
+    {
+      "key": "character.voice.voc_c1003_sk1_2",
+      "zhCn": "voc_c1003_sk1_2"
+    },
+    {
+      "key": "character.voice.voc_c1003_sk1_3",
+      "zhCn": "voc_c1003_sk1_3"
+    },
+    {
+      "key": "character.voice.voc_c1003_sk2_1",
+      "zhCn": "voc_c1003_sk2_1"
+    },
+    {
+      "key": "character.voice.voc_c1003_sk2_2",
+      "zhCn": "voc_c1003_sk2_2"
+    },
+    {
+      "key": "character.voice.voc_c1003_sk3_1_1",
+      "zhCn": "voc_c1003_sk3_1_1"
+    },
+    {
+      "key": "character.voice.voc_c1003_sk3_1_2",
+      "zhCn": "voc_c1003_sk3_1_2"
+    },
+    {
+      "key": "character.voice.voc_c1003_sk3_2_1",
+      "zhCn": "voc_c1003_sk3_2_1"
+    },
+    {
+      "key": "character.voice.voc_c1003_sk3_2_2",
+      "zhCn": "voc_c1003_sk3_2_2"
+    },
+    {
+      "key": "character.voice.voc_c1003_utterance_1",
+      "zhCn": "voc_c1003_utterance_1"
+    },
+    {
+      "key": "character.voice.voc_c1003_utterance_2",
+      "zhCn": "voc_c1003_utterance_2"
+    },
+    {
+      "key": "character.voice.voc_c1003_win_1",
+      "zhCn": "voc_c1003_win_1"
+    },
+    {
+      "key": "character.silk.name",
+      "zhCn": "席可"
+    },
+    {
+      "key": "character.silk.skill1",
+      "zhCn": "席可 · 技能1"
+    },
+    {
+      "key": "character.silk.skill2",
+      "zhCn": "席可 · 技能2"
+    },
+    {
+      "key": "character.silk.skill3",
+      "zhCn": "席可 · 技能3"
+    },
+    {
+      "key": "character.voice.voc_c1004_answer_1",
+      "zhCn": "voc_c1004_answer_1"
+    },
+    {
+      "key": "character.voice.voc_c1004_answer_2",
+      "zhCn": "voc_c1004_answer_2"
+    },
+    {
+      "key": "character.voice.voc_c1004_attacked_1",
+      "zhCn": "voc_c1004_attacked_1"
+    },
+    {
+      "key": "character.voice.voc_c1004_attacked_2",
+      "zhCn": "voc_c1004_attacked_2"
+    },
+    {
+      "key": "character.voice.voc_c1004_attacked_3",
+      "zhCn": "voc_c1004_attacked_3"
+    },
+    {
+      "key": "character.voice.voc_c1004_call_1",
+      "zhCn": "voc_c1004_call_1"
+    },
+    {
+      "key": "character.voice.voc_c1004_call_2",
+      "zhCn": "voc_c1004_call_2"
+    },
+    {
+      "key": "character.voice.voc_c1004_dead_1",
+      "zhCn": "voc_c1004_dead_1"
+    },
+    {
+      "key": "character.voice.voc_c1004_dead_2",
+      "zhCn": "voc_c1004_dead_2"
+    },
+    {
+      "key": "character.voice.voc_c1004_defeat",
+      "zhCn": "voc_c1004_defeat"
+    },
+    {
+      "key": "character.voice.voc_c1004_get",
+      "zhCn": "voc_c1004_get"
+    },
+    {
+      "key": "character.voice.voc_c1004_idle_1",
+      "zhCn": "voc_c1004_idle_1"
+    },
+    {
+      "key": "character.voice.voc_c1004_idle_2",
+      "zhCn": "voc_c1004_idle_2"
+    },
+    {
+      "key": "character.voice.voc_c1004_idle_3",
+      "zhCn": "voc_c1004_idle_3"
+    },
+    {
+      "key": "character.voice.voc_c1004_lv_1",
+      "zhCn": "voc_c1004_lv_1"
+    },
+    {
+      "key": "character.voice.voc_c1004_shout_1",
+      "zhCn": "voc_c1004_shout_1"
+    },
+    {
+      "key": "character.voice.voc_c1004_shout_2",
+      "zhCn": "voc_c1004_shout_2"
+    },
+    {
+      "key": "character.voice.voc_c1004_sk2_1",
+      "zhCn": "voc_c1004_sk2_1"
+    },
+    {
+      "key": "character.voice.voc_c1004_sk2_2",
+      "zhCn": "voc_c1004_sk2_2"
+    },
+    {
+      "key": "character.voice.voc_c1004_sk2_3",
+      "zhCn": "voc_c1004_sk2_3"
+    },
+    {
+      "key": "character.voice.voc_c1004_sk2_4",
+      "zhCn": "voc_c1004_sk2_4"
+    },
+    {
+      "key": "character.voice.voc_c1004_sk3_1",
+      "zhCn": "voc_c1004_sk3_1"
+    },
+    {
+      "key": "character.voice.voc_c1004_sk3_2",
+      "zhCn": "voc_c1004_sk3_2"
+    },
+    {
+      "key": "character.voice.voc_c1004_sk3_3",
+      "zhCn": "voc_c1004_sk3_3"
+    },
+    {
+      "key": "character.voice.voc_c1004_utterance_1",
+      "zhCn": "voc_c1004_utterance_1"
+    },
+    {
+      "key": "character.voice.voc_c1004_utterance_2",
+      "zhCn": "voc_c1004_utterance_2"
+    },
+    {
+      "key": "character.voice.voc_c1004_win",
+      "zhCn": "voc_c1004_win"
+    },
+    {
+      "key": "character.kise.name",
+      "zhCn": "绮世"
+    },
+    {
+      "key": "character.kise.skill1",
+      "zhCn": "绮世 · 技能1"
+    },
+    {
+      "key": "character.kise.skill2",
+      "zhCn": "绮世 · 技能2"
+    },
+    {
+      "key": "character.kise.skill3",
+      "zhCn": "绮世 · 技能3"
+    },
+    {
+      "key": "character.voice.voc_c1006_answer_1",
+      "zhCn": "voc_c1006_answer_1"
+    },
+    {
+      "key": "character.voice.voc_c1006_answer_2",
+      "zhCn": "voc_c1006_answer_2"
+    },
+    {
+      "key": "character.voice.voc_c1006_attacked_1",
+      "zhCn": "voc_c1006_attacked_1"
+    },
+    {
+      "key": "character.voice.voc_c1006_attacked_2",
+      "zhCn": "voc_c1006_attacked_2"
+    },
+    {
+      "key": "character.voice.voc_c1006_attacked_3",
+      "zhCn": "voc_c1006_attacked_3"
+    },
+    {
+      "key": "character.voice.voc_c1006_attacked_4",
+      "zhCn": "voc_c1006_attacked_4"
+    },
+    {
+      "key": "character.voice.voc_c1006_call_1",
+      "zhCn": "voc_c1006_call_1"
+    },
+    {
+      "key": "character.voice.voc_c1006_call_2",
+      "zhCn": "voc_c1006_call_2"
+    },
+    {
+      "key": "character.voice.voc_c1006_dead_1",
+      "zhCn": "voc_c1006_dead_1"
+    },
+    {
+      "key": "character.voice.voc_c1006_dead_2",
+      "zhCn": "voc_c1006_dead_2"
+    },
+    {
+      "key": "character.voice.voc_c1006_get_1",
+      "zhCn": "voc_c1006_get_1"
+    },
+    {
+      "key": "character.voice.voc_c1006_idle_1",
+      "zhCn": "voc_c1006_idle_1"
+    },
+    {
+      "key": "character.voice.voc_c1006_idle_2",
+      "zhCn": "voc_c1006_idle_2"
+    },
+    {
+      "key": "character.voice.voc_c1006_idle_3",
+      "zhCn": "voc_c1006_idle_3"
+    },
+    {
+      "key": "character.voice.voc_c1006_idle_4",
+      "zhCn": "voc_c1006_idle_4"
+    },
+    {
+      "key": "character.voice.voc_c1006_idle_5",
+      "zhCn": "voc_c1006_idle_5"
+    },
+    {
+      "key": "character.voice.voc_c1006_lose_1",
+      "zhCn": "voc_c1006_lose_1"
+    },
+    {
+      "key": "character.voice.voc_c1006_lvup_1",
+      "zhCn": "voc_c1006_lvup_1"
+    },
+    {
+      "key": "character.voice.voc_c1006_skill1_1",
+      "zhCn": "voc_c1006_skill1_1"
+    },
+    {
+      "key": "character.voice.voc_c1006_skill1_2",
+      "zhCn": "voc_c1006_skill1_2"
+    },
+    {
+      "key": "character.voice.voc_c1006_skill1_3",
+      "zhCn": "voc_c1006_skill1_3"
+    },
+    {
+      "key": "character.voice.voc_c1006_skill2_1",
+      "zhCn": "voc_c1006_skill2_1"
+    },
+    {
+      "key": "character.voice.voc_c1006_skill2_2",
+      "zhCn": "voc_c1006_skill2_2"
+    },
+    {
+      "key": "character.voice.voc_c1006_skill2_3",
+      "zhCn": "voc_c1006_skill2_3"
+    },
+    {
+      "key": "character.voice.voc_c1006_skill2_4",
+      "zhCn": "voc_c1006_skill2_4"
+    },
+    {
+      "key": "character.voice.voc_c1006_skill3_1_1",
+      "zhCn": "voc_c1006_skill3_1_1"
+    },
+    {
+      "key": "character.voice.voc_c1006_skill3_1_2",
+      "zhCn": "voc_c1006_skill3_1_2"
+    },
+    {
+      "key": "character.voice.voc_c1006_skill3_2",
+      "zhCn": "voc_c1006_skill3_2"
+    },
+    {
+      "key": "character.voice.voc_c1006_skill3_3_1",
+      "zhCn": "voc_c1006_skill3_3_1"
+    },
+    {
+      "key": "character.voice.voc_c1006_skill3_3_2",
+      "zhCn": "voc_c1006_skill3_3_2"
+    },
+    {
+      "key": "character.voice.voc_c1006_utterance_1",
+      "zhCn": "voc_c1006_utterance_1"
+    },
+    {
+      "key": "character.voice.voc_c1006_utterance_2",
+      "zhCn": "voc_c1006_utterance_2"
+    },
+    {
+      "key": "character.voice.voc_c1006_win_1",
+      "zhCn": "voc_c1006_win_1"
+    },
+    {
+      "key": "character.wildred.name",
+      "zhCn": "维德瑞"
+    },
+    {
+      "key": "character.wildred.skill1",
+      "zhCn": "维德瑞 · 技能1"
+    },
+    {
+      "key": "character.wildred.skill2",
+      "zhCn": "维德瑞 · 技能2"
+    },
+    {
+      "key": "character.wildred.skill3",
+      "zhCn": "维德瑞 · 技能3"
+    },
+    {
+      "key": "character.voice.voc_c1007_answer_1",
+      "zhCn": "voc_c1007_answer_1"
+    },
+    {
+      "key": "character.voice.voc_c1007_answer_2",
+      "zhCn": "voc_c1007_answer_2"
+    },
+    {
+      "key": "character.voice.voc_c1007_attacked_1",
+      "zhCn": "voc_c1007_attacked_1"
+    },
+    {
+      "key": "character.voice.voc_c1007_attacked_2",
+      "zhCn": "voc_c1007_attacked_2"
+    },
+    {
+      "key": "character.voice.voc_c1007_attacked_3",
+      "zhCn": "voc_c1007_attacked_3"
+    },
+    {
+      "key": "character.voice.voc_c1007_call_1",
+      "zhCn": "voc_c1007_call_1"
+    },
+    {
+      "key": "character.voice.voc_c1007_call_2",
+      "zhCn": "voc_c1007_call_2"
+    },
+    {
+      "key": "character.voice.voc_c1007_dead_1",
+      "zhCn": "voc_c1007_dead_1"
+    },
+    {
+      "key": "character.voice.voc_c1007_dead_2",
+      "zhCn": "voc_c1007_dead_2"
+    },
+    {
+      "key": "character.voice.voc_c1007_get_1",
+      "zhCn": "voc_c1007_get_1"
+    },
+    {
+      "key": "character.voice.voc_c1007_idle_1",
+      "zhCn": "voc_c1007_idle_1"
+    },
+    {
+      "key": "character.voice.voc_c1007_idle_2",
+      "zhCn": "voc_c1007_idle_2"
+    },
+    {
+      "key": "character.voice.voc_c1007_idle_3",
+      "zhCn": "voc_c1007_idle_3"
+    },
+    {
+      "key": "character.voice.voc_c1007_lose_1",
+      "zhCn": "voc_c1007_lose_1"
+    },
+    {
+      "key": "character.voice.voc_c1007_lose_2",
+      "zhCn": "voc_c1007_lose_2"
+    },
+    {
+      "key": "character.voice.voc_c1007_lvup_1",
+      "zhCn": "voc_c1007_lvup_1"
+    },
+    {
+      "key": "character.voice.voc_c1007_skill1_1",
+      "zhCn": "voc_c1007_skill1_1"
+    },
+    {
+      "key": "character.voice.voc_c1007_skill1_2",
+      "zhCn": "voc_c1007_skill1_2"
+    },
+    {
+      "key": "character.voice.voc_c1007_skill1_3",
+      "zhCn": "voc_c1007_skill1_3"
+    },
+    {
+      "key": "character.voice.voc_c1007_skill2_1",
+      "zhCn": "voc_c1007_skill2_1"
+    },
+    {
+      "key": "character.voice.voc_c1007_skill2_2",
+      "zhCn": "voc_c1007_skill2_2"
+    },
+    {
+      "key": "character.voice.voc_c1007_skill3_1",
+      "zhCn": "voc_c1007_skill3_1"
+    },
+    {
+      "key": "character.voice.voc_c1007_skill3_2_1",
+      "zhCn": "voc_c1007_skill3_2_1"
+    },
+    {
+      "key": "character.voice.voc_c1007_skill3_2_2",
+      "zhCn": "voc_c1007_skill3_2_2"
+    },
+    {
+      "key": "character.voice.voc_c1007_skill3_4_1",
+      "zhCn": "voc_c1007_skill3_4_1"
+    },
+    {
+      "key": "character.voice.voc_c1007_skill3_4_2",
+      "zhCn": "voc_c1007_skill3_4_2"
+    },
+    {
+      "key": "character.voice.voc_c1007_utterance_1",
+      "zhCn": "voc_c1007_utterance_1"
+    },
+    {
+      "key": "character.voice.voc_c1007_utterance_2",
+      "zhCn": "voc_c1007_utterance_2"
+    },
+    {
+      "key": "character.voice.voc_c1007_win_1",
+      "zhCn": "voc_c1007_win_1"
+    },
+    {
+      "key": "character.arming.name",
+      "zhCn": "亚敏"
+    },
+    {
+      "key": "character.arming.skill1",
+      "zhCn": "亚敏 · 技能1"
+    },
+    {
+      "key": "character.arming.skill2",
+      "zhCn": "亚敏 · 技能2"
+    },
+    {
+      "key": "character.arming.skill3",
+      "zhCn": "亚敏 · 技能3"
+    },
+    {
+      "key": "character.voice.voc_c1008_answer_1",
+      "zhCn": "voc_c1008_answer_1"
+    },
+    {
+      "key": "character.voice.voc_c1008_answer_2",
+      "zhCn": "voc_c1008_answer_2"
+    },
+    {
+      "key": "character.voice.voc_c1008_call_1",
+      "zhCn": "voc_c1008_call_1"
+    },
+    {
+      "key": "character.voice.voc_c1008_call_2",
+      "zhCn": "voc_c1008_call_2"
+    },
+    {
+      "key": "character.voice.voc_c1008_dead_1",
+      "zhCn": "voc_c1008_dead_1"
+    },
+    {
+      "key": "character.voice.voc_c1008_dead_2",
+      "zhCn": "voc_c1008_dead_2"
+    },
+    {
+      "key": "character.voice.voc_c1008_defeat",
+      "zhCn": "voc_c1008_defeat"
+    },
+    {
+      "key": "character.voice.voc_c1008_dmg_1",
+      "zhCn": "voc_c1008_dmg_1"
+    },
+    {
+      "key": "character.voice.voc_c1008_dmg_2",
+      "zhCn": "voc_c1008_dmg_2"
+    },
+    {
+      "key": "character.voice.voc_c1008_dmg_3",
+      "zhCn": "voc_c1008_dmg_3"
+    },
+    {
+      "key": "character.voice.voc_c1008_get",
+      "zhCn": "voc_c1008_get"
+    },
+    {
+      "key": "character.voice.voc_c1008_idle_1",
+      "zhCn": "voc_c1008_idle_1"
+    },
+    {
+      "key": "character.voice.voc_c1008_idle_2",
+      "zhCn": "voc_c1008_idle_2"
+    },
+    {
+      "key": "character.voice.voc_c1008_idle_3",
+      "zhCn": "voc_c1008_idle_3"
+    },
+    {
+      "key": "character.voice.voc_c1008_lv_1",
+      "zhCn": "voc_c1008_lv_1"
+    },
+    {
+      "key": "character.voice.voc_c1008_sk1_1",
+      "zhCn": "voc_c1008_sk1_1"
+    },
+    {
+      "key": "character.voice.voc_c1008_sk1_2",
+      "zhCn": "voc_c1008_sk1_2"
+    },
+    {
+      "key": "character.voice.voc_c1008_sk1_3",
+      "zhCn": "voc_c1008_sk1_3"
+    },
+    {
+      "key": "character.voice.voc_c1008_sk1_4",
+      "zhCn": "voc_c1008_sk1_4"
+    },
+    {
+      "key": "character.voice.voc_c1008_sk2_1",
+      "zhCn": "voc_c1008_sk2_1"
+    },
+    {
+      "key": "character.voice.voc_c1008_sk2_2",
+      "zhCn": "voc_c1008_sk2_2"
+    },
+    {
+      "key": "character.voice.voc_c1008_sk2_3",
+      "zhCn": "voc_c1008_sk2_3"
+    },
+    {
+      "key": "character.voice.voc_c1008_sk3_1",
+      "zhCn": "voc_c1008_sk3_1"
+    },
+    {
+      "key": "character.voice.voc_c1008_sk3_2",
+      "zhCn": "voc_c1008_sk3_2"
+    },
+    {
+      "key": "character.voice.voc_c1008_sk3_3",
+      "zhCn": "voc_c1008_sk3_3"
+    },
+    {
+      "key": "character.voice.voc_c1008_utterance_1",
+      "zhCn": "voc_c1008_utterance_1"
+    },
+    {
+      "key": "character.voice.voc_c1008_utterance_2",
+      "zhCn": "voc_c1008_utterance_2"
+    },
+    {
+      "key": "character.voice.voc_c1008_win_1",
+      "zhCn": "voc_c1008_win_1"
+    },
+    {
+      "key": "character.charlotte.name",
+      "zhCn": "夏绿蒂"
+    },
+    {
+      "key": "character.charlotte.skill1",
+      "zhCn": "夏绿蒂 · 技能1"
+    },
+    {
+      "key": "character.charlotte.skill2",
+      "zhCn": "夏绿蒂 · 技能2"
+    },
+    {
+      "key": "character.charlotte.skill3",
+      "zhCn": "夏绿蒂 · 技能3"
+    },
+    {
+      "key": "character.voice.voc_c1009_answer_1",
+      "zhCn": "voc_c1009_answer_1"
+    },
+    {
+      "key": "character.voice.voc_c1009_answer_2",
+      "zhCn": "voc_c1009_answer_2"
+    },
+    {
+      "key": "character.voice.voc_c1009_call_1",
+      "zhCn": "voc_c1009_call_1"
+    },
+    {
+      "key": "character.voice.voc_c1009_call_2",
+      "zhCn": "voc_c1009_call_2"
+    },
+    {
+      "key": "character.voice.voc_c1009_dead_1",
+      "zhCn": "voc_c1009_dead_1"
+    },
+    {
+      "key": "character.voice.voc_c1009_dead_2",
+      "zhCn": "voc_c1009_dead_2"
+    },
+    {
+      "key": "character.voice.voc_c1009_defeat_1",
+      "zhCn": "voc_c1009_defeat_1"
+    },
+    {
+      "key": "character.voice.voc_c1009_dmg_1",
+      "zhCn": "voc_c1009_dmg_1"
+    },
+    {
+      "key": "character.voice.voc_c1009_dmg_2",
+      "zhCn": "voc_c1009_dmg_2"
+    },
+    {
+      "key": "character.voice.voc_c1009_dmg_3",
+      "zhCn": "voc_c1009_dmg_3"
+    },
+    {
+      "key": "character.voice.voc_c1009_dmg_4",
+      "zhCn": "voc_c1009_dmg_4"
+    },
+    {
+      "key": "character.voice.voc_c1009_gc_1",
+      "zhCn": "voc_c1009_gc_1"
+    },
+    {
+      "key": "character.voice.voc_c1009_idle_1",
+      "zhCn": "voc_c1009_idle_1"
+    },
+    {
+      "key": "character.voice.voc_c1009_idle_2",
+      "zhCn": "voc_c1009_idle_2"
+    },
+    {
+      "key": "character.voice.voc_c1009_idle_3",
+      "zhCn": "voc_c1009_idle_3"
+    },
+    {
+      "key": "character.voice.voc_c1009_idle_4",
+      "zhCn": "voc_c1009_idle_4"
+    },
+    {
+      "key": "character.voice.voc_c1009_lv_1",
+      "zhCn": "voc_c1009_lv_1"
+    },
+    {
+      "key": "character.voice.voc_c1009_lv_2",
+      "zhCn": "voc_c1009_lv_2"
+    },
+    {
+      "key": "character.voice.voc_c1009_shout_1",
+      "zhCn": "voc_c1009_shout_1"
+    },
+    {
+      "key": "character.voice.voc_c1009_shout_2",
+      "zhCn": "voc_c1009_shout_2"
+    },
+    {
+      "key": "character.voice.voc_c1009_shout_3",
+      "zhCn": "voc_c1009_shout_3"
+    },
+    {
+      "key": "character.voice.voc_c1009_shout_4",
+      "zhCn": "voc_c1009_shout_4"
+    },
+    {
+      "key": "character.voice.voc_c1009_sk2_1",
+      "zhCn": "voc_c1009_sk2_1"
+    },
+    {
+      "key": "character.voice.voc_c1009_sk3_1",
+      "zhCn": "voc_c1009_sk3_1"
+    },
+    {
+      "key": "character.voice.voc_c1009_sk3_2",
+      "zhCn": "voc_c1009_sk3_2"
+    },
+    {
+      "key": "character.voice.voc_c1009_utterance_1",
+      "zhCn": "voc_c1009_utterance_1"
+    },
+    {
+      "key": "character.voice.voc_c1009_utterance_2",
+      "zhCn": "voc_c1009_utterance_2"
+    },
+    {
+      "key": "character.voice.voc_c1009_win_1",
+      "zhCn": "voc_c1009_win_1"
+    },
+    {
+      "key": "character.voice.voc_c1009_win_2",
+      "zhCn": "voc_c1009_win_2"
     }
   ]
 }
