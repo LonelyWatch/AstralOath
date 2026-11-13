@@ -6,7 +6,7 @@
   ],
   "iconTransfer": "Compensate original display-space transmittance for Unity Linear; preserve soft corners.",
   "digitTransfer": "Byte-identical original PNG.",
-  "sampling": "Point, no mipmaps, uncompressed; explicit import override survives platform reimport.",
+  "sampling": "Bilinear for projected overhead status icons and turn digits; no mipmaps or compression; explicit import override.",
   "statuses": [
     {
       "kind": "AttackUp",

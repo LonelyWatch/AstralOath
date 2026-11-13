@@ -72,9 +72,9 @@ GLYPH_PLATFORM_COMPRESSION = re.compile(
 )
 
 
-def glyph_sampling(meta):
+def glyph_sampling(meta, bilinear):
     updated = GLYPH_PLATFORM_COMPRESSION.sub(r"\g<1>0", meta)
-    for key, value in (("filterMode", "0"), ("enableMipMap", "0"), ("userData", "AstralOath.ImportOverride")):
+    for key, value in (("filterMode", "1" if bilinear else "0"), ("enableMipMap", "0"), ("userData", "AstralOath.ImportOverride")):
         updated, count = re.subn(r"(?m)^( +)" + key + r":[^\n]*$", r"\g<1>" + key + ": " + value, updated)
         if count != 1:
             raise ValueError(f"Missing battle HUD glyph importer property: {key}")
@@ -116,7 +116,7 @@ def main():
     manifest = {"schemaVersion": 2, "layoutEvidence": ["wnd/hp_bar.csb", "wnd/hp_bar_r.csb"],
                 "iconTransfer": "Compensate original display-space transmittance for Unity Linear; preserve soft corners.",
                 "digitTransfer": "Byte-identical original PNG.",
-                "sampling": "Point, no mipmaps, uncompressed; explicit import override survives platform reimport.",
+                "sampling": "Bilinear for projected overhead status icons and turn digits; no mipmaps or compression; explicit import override.",
                 "statuses": [{"kind": kind, "group": group, "asset": glyph + ".png"} for kind, group, glyph in STATUSES],
                 "files": rows}
     document = OUTPUT / "source.json"
@@ -139,7 +139,7 @@ def main():
         for path in metadata:
             if path.name.endswith(".png.meta") and path.is_file():
                 existing = path.read_text(encoding="utf-8-sig")
-                if existing != glyph_sampling(existing):
+                if existing != glyph_sampling(existing, path.parent == OUTPUT):
                     mismatches.append(str(path))
         if mismatches:
             parser.exit(1, "Missing or changed status assets: " + ", ".join(mismatches) + "\n")
@@ -151,7 +151,7 @@ def main():
         for path, content in metadata.items():
             if not path.exists() or path.name.endswith(".png.meta"):
                 existing = path.read_text(encoding="utf-8-sig") if path.exists() else None
-                updated = glyph_sampling(existing or content) if path.name.endswith(".png.meta") else content
+                updated = glyph_sampling(existing or content, path.parent == OUTPUT) if path.name.endswith(".png.meta") else content
                 if existing != updated:
                     path.write_text(updated, encoding="utf-8", newline="\n")
     print(f"{'Verified' if args.check else 'Imported'} {len(rows)} original status HUD PNGs.")
