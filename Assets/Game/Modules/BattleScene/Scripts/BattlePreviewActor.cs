@@ -117,6 +117,8 @@ namespace AstralOath.Client.BattleScene
         }
         private Dictionary<string, Dictionary<string, float>> eventTimes;
 
+        internal Renderer PresentationRenderer => player?.Root ? player.Root.GetComponent<Renderer>() : null;
+
         public Bounds Bounds => player != null
             ? player.Root.GetComponent<MeshRenderer>().bounds : new Bounds(transform.position, Vector3.zero);
 
@@ -136,8 +138,8 @@ namespace AstralOath.Client.BattleScene
                 position = shadow.position;
                 return true;
             }
-            if (player == null || !player.TryGetBonePose(anchor, out var pose)) return false;
-            position = player.Root.transform.TransformPoint(pose.LocalPosition);
+            if (player == null || !player.TryGetBoneSkeletonPosition(anchor, out var skeletonPosition)) return false;
+            position = player.Root.transform.TransformPoint(skeletonPosition);
             return true;
         }
 

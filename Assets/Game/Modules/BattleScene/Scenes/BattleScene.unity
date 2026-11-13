@@ -2004,6 +2004,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hud: {fileID: 1634799711}
+  autoStartBattle: 1
   burnPressed: {fileID: 21300000, guid: cef8a4f61aa18294f9ea199a3db15fd2, type: 3}
   cancelNormal: {fileID: 21300000, guid: 2f517dec713e9144eae769850590e044, type: 3}
   cancelPressed: {fileID: 21300000, guid: 3e6c39485de5a7840ab6c5c828905b52, type: 3}
@@ -2905,6 +2906,7 @@ MonoBehaviour:
   - {fileID: 4900000, guid: eb272ed47e6b441419b658577907a6da, type: 3}
   impactBank: {fileID: 4900000, guid: 7e9a2359d30d4bb2ba88ea36c02fbe52, type: 3}
   stageBackground: {fileID: 1259719517}
+  unitPresentation: {fileID: 11400000, guid: 287af9c10f08c3e49bd5e028e04193b3, type: 2}
 --- !u!114 &1820183974
 MonoBehaviour:
   m_ObjectHideFlags: 0

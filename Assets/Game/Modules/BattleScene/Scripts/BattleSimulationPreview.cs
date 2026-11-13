@@ -48,7 +48,8 @@ namespace AstralOath.Client.BattleScene
 
         public BattleSimulationPreview(Scene scene, BindingMap hud, BattleHudBinder binder, BattleCatalogData catalog,
             Sprite[] icons, TextAsset[] graphs, BattleSkillPresentationAsset[] skillAssets, TextAsset audioCatalog,
-            TextAsset[] audioBanks, TMP_FontAsset damageFont, TextAsset impactBank, GameObject stageBackground)
+            TextAsset[] audioBanks, TMP_FontAsset damageFont, TextAsset impactBank, GameObject stageBackground,
+            BattleUnitPresentationProfile unitPresentation = null)
         {
             this.hud = hud;
             this.binder = binder;
@@ -59,12 +60,22 @@ namespace AstralOath.Client.BattleScene
             sprites = icons.ToDictionary(sprite => sprite.name, StringComparer.Ordinal);
             match = BattlePreviewFactory.Create("local", 271828UL, catalog);
             var units = scene.GetRootGameObjects().Single(root => root.name == "Units").transform;
-            foreach (var state in match.Snapshot.Units)
+            var deathTextures = unitPresentation ? unitPresentation.CreateDeathTextures() : new Dictionary<string, Texture2D>();
+            try
             {
-                string team = state.Slot.Side == BattleSide.Ally ? "Allies" : "Enemies";
-                var slot = units.Find(team).GetChild(state.Slot.Position - 1);
-                var marker = hud.transform.Find($"Unit Status/{team}/{slot.name}").gameObject;
-                views.Add(state.InstanceId, new View(slot, marker));
+                foreach (var state in match.Snapshot.Units)
+                {
+                    string team = state.Slot.Side == BattleSide.Ally ? "Allies" : "Enemies";
+                    var slot = units.Find(team).GetChild(state.Slot.Position - 1);
+                    var marker = hud.transform.Find($"Unit Status/{team}/{slot.name}").gameObject;
+                    views.Add(state.InstanceId, new View(slot, marker, camera, unitPresentation, deathTextures));
+                }
+            }
+            catch
+            {
+                foreach (var view in views.Values) view.Restore();
+                views.Clear();
+                throw;
             }
 
             var text = hud.Require<GameText>("activeName");
@@ -134,7 +145,7 @@ namespace AstralOath.Client.BattleScene
         {
             if (IsPaused == value) return;
             IsPaused = value;
-            foreach (var view in views.Values) view.Actor.SetPaused(value);
+            foreach (var view in views.Values) view.Actor.SetPaused(value || view.DeathStarted);
             voice.SetPaused(value);
             UpdateSkillAvailability();
             hud.Require<GameButton>("soulBurn").interactable = CanAct && BurnSlot() >= 0;
@@ -143,10 +154,24 @@ namespace AstralOath.Client.BattleScene
         private BattleUnitSnapshot Actor => Snapshot.GetUnit(Snapshot.CurrentActorId);
         private bool HasActionPresentation => actionElapsed < actionDuration || pendingFeedback.Count != 0 ||
             (recoveryStages != null && recoveryStages.Count != 0);
-        private bool Busy => playback.Count != 0 || HasActionPresentation;
+        private bool Busy
+        {
+            get
+            {
+                if (playback.Count != 0 || HasActionPresentation) return true;
+                foreach (var view in views.Values) if (view.BlocksNextAction) return true;
+                return false;
+            }
+        }
         private bool CanAct => !IsPaused && !Busy && Actor?.Slot.Side == BattleSide.Ally;
 
         public void Tick(float delta)
+        {
+            try { TickBattle(delta); }
+            finally { foreach (var view in views.Values) view.LateTick(camera); }
+        }
+
+        private void TickBattle(float delta)
         {
             if (IsPaused) return;
             bool wasBusy = Busy;
@@ -169,7 +194,7 @@ namespace AstralOath.Client.BattleScene
             if (Input.GetMouseButtonDown(0) && (EventSystem.current == null || !EventSystem.current.IsPointerOverGameObject()))
             {
                 Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-                var target = views.Where(pair => pair.Value.Contains(ray))
+                var target = views.Where(pair => Snapshot.GetUnit(pair.Key).IsAlive && pair.Value.Contains(ray))
                     .OrderBy(pair => (camera.WorldToScreenPoint(pair.Value.Center) - Input.mousePosition).sqrMagnitude)
                     .Select(pair => pair.Key).FirstOrDefault();
                 if (target != null) ChooseTarget(target);
@@ -198,6 +223,10 @@ namespace AstralOath.Client.BattleScene
                 skillPresentation.Tick(step);
                 float advanced = Mathf.Max(0f, skillPresentation.StageTime - before);
                 TickRecoveries(advanced);
+                // Source time owns feedback during a skill; idle/death tails still need a clock
+                // when no finite action or cue is left. Cut-in freezes the source clock.
+                float visualDelta = float.IsPositiveInfinity(nextTime) ? step : advanced;
+                foreach (var view in views.Values) view.TickVisual(visualDelta);
                 turnHud.Tick(advanced);
                 if (float.IsPositiveInfinity(nextTime)) return;
                 actionElapsed = advanced >= untilNext ? nextTime : actionElapsed + advanced;
@@ -371,7 +400,7 @@ namespace AstralOath.Client.BattleScene
                     ScheduleFeedback(LastFeedbackAt(item.TargetId), item.TargetId, () =>
                     {
                         turnHud.RemoveUnit(item.TargetId);
-                        views[item.TargetId].Show(false);
+                        views[item.TargetId].BeginDeath();
                     });
                     break;
                 case BattleFlowEventKind.TurnSkipped:
@@ -610,12 +639,18 @@ namespace AstralOath.Client.BattleScene
             private readonly Image readiness;
             private readonly float originalHealth;
             private readonly float originalReadiness;
+            private readonly BattleUnitStatusPresentation status;
+            private readonly BattleUnitPresentationProfile profile;
+            private readonly IReadOnlyDictionary<string, Texture2D> deathTextures;
+            private BattleDeathPresentation death;
+            private bool warnedAnchor, deathStarted;
             private long presentedHealth;
             private GameText statusLabel;
             private GameText levelLabel;
             private Image levelBadge;
 
-            public View(Transform slot, GameObject marker)
+            public View(Transform slot, GameObject marker, Camera camera, BattleUnitPresentationProfile profile,
+                IReadOnlyDictionary<string, Texture2D> deathTextures)
             {
                 this.slot = slot;
                 this.marker = marker;
@@ -625,6 +660,18 @@ namespace AstralOath.Client.BattleScene
                 FeedbackAnchor = (RectTransform)marker.transform.Find("Frame");
                 originalHealth = Health.fillAmount;
                 originalReadiness = readiness.fillAmount;
+                this.profile = profile; this.deathTextures = deathTextures;
+                status = new BattleUnitStatusPresentation((RectTransform)marker.transform, Health, Actor.transform,
+                    StatusAnchor, camera, profile ? profile.DamageTrail : null, profile ? profile.HealthDivider : null,
+                    profile ? profile.HealthSections : 10);
+                if (profile)
+                {
+                    status.AnchorOffset = profile.StatusOffset;
+                    status.DamageSeconds = profile.DamageSeconds; status.HealSeconds = profile.HealSeconds;
+                    status.TrailDelaySeconds = profile.TrailDelaySeconds; status.TrailSeconds = profile.TrailSeconds;
+                }
+                try { PrepareDeath(); }
+                catch { status.Dispose(); throw; }
             }
             public BattlePreviewActor Actor { get; }
             public Image Health { get; }
@@ -633,9 +680,49 @@ namespace AstralOath.Client.BattleScene
             public Vector3 Center => Actor.Bounds.center;
             public bool Contains(Ray ray) => slot.gameObject.activeInHierarchy && Actor.Bounds.IntersectRay(ray);
 
+            public bool IsDying => death?.IsRunning == true;
+            public bool DeathStarted => deathStarted;
+            public bool BlocksNextAction => deathStarted && !death.BodyComplete;
+
+            private Vector3 StatusAnchor()
+            {
+                string anchor = profile && !string.IsNullOrWhiteSpace(profile.StatusAnchor) ? profile.StatusAnchor : "top";
+                if (Actor.TryGetPresentationAnchor(anchor, out var world)) return world;
+                if (!warnedAnchor) { warnedAnchor = true; Debug.LogWarning("Missing status anchor '" + anchor + "' on " + Actor.name + ". Configure the presentation profile; using actor origin."); }
+                return Actor.transform.position;
+            }
+            public void LateTick(Camera camera) { if (marker.activeInHierarchy) status.LateTick(camera); }
+            public void TickVisual(float delta)
+            {
+                status.Tick(delta);
+                if (death?.IsRunning != true) return;
+                death.Tick(delta);
+                if (death.IsComplete) slot.gameObject.SetActive(false);
+            }
+            private void PrepareDeath()
+            {
+                death = new BattleDeathPresentation(Actor.transform, profile ? profile.DeathParticles : null,
+                    deathTextures, Actor.PresentationShadow ? Actor.PresentationShadow.GetComponent<Renderer>() : null, Actor.PresentationRenderer);
+                try { if (profile) death.ConfigureTimings(profile.DeathDarkenSeconds, profile.DeathFadeSeconds); }
+                catch { death.Dispose(); death = null; throw; }
+            }
+            public void BeginDeath()
+            {
+                if (deathStarted) return;
+                deathStarted = true;
+                Actor.SetPaused(true); marker.SetActive(false); death.Begin();
+            }
             public void Show(bool value)
             {
-                slot.gameObject.SetActive(value);
+                bool resurrecting = value && deathStarted;
+                if (resurrecting)
+                {
+                    // A disabled slot has destroyed its skeleton renderers. Rebind only after
+                    // activation, during revival preparation rather than the next fatal hit.
+                    death.Dispose(); death = null; deathStarted = false;
+                }
+                if (value || !IsDying) slot.gameObject.SetActive(value);
+                if (resurrecting) { Actor.SetPaused(false); PrepareDeath(); }
                 marker.SetActive(value);
             }
 
@@ -644,7 +731,7 @@ namespace AstralOath.Client.BattleScene
             public void SetHealth(long health, int maximum)
             {
                 presentedHealth = health;
-                Health.fillAmount = Mathf.Clamp01(health / (float)maximum);
+                status.UpdateHealth(health, maximum, false);
             }
 
             public void AddLabels(GameText font, GameText digits)
@@ -675,6 +762,7 @@ namespace AstralOath.Client.BattleScene
 
             public void Restore()
             {
+                death?.Dispose(); death = null; deathStarted = false; status.Dispose();
                 RemoveOwnedObject(statusLabel ? statusLabel.gameObject : null);
                 RemoveOwnedObject(levelLabel ? levelLabel.gameObject : null);
                 if (levelBadge) levelBadge.enabled = true;

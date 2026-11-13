@@ -200,6 +200,15 @@ namespace AstralOath.Client.Skeletons
             pose = new SkeletonBonePose(new Vector2(bone.X, bone.Y), bone.Rotation, new Vector2(bone.ScaleX, bone.ScaleY));
             return true;
         }
+        internal override bool TryGetBoneSkeletonPosition(string name, out Vector2 position)
+        {
+            var bone = skeleton.FindBone(name);
+            if (bone == null) { position = default; return false; }
+            // Every public pose mutation redraws and evaluates the official world transforms.
+            // Reuse that pose so querying an anchor never advances IK or animation state.
+            position = new Vector2(bone.WorldX, bone.WorldY);
+            return true;
+        }
         internal override void Draw(SkeletonMesh target)
         {
             skeleton.UpdateWorldTransform();

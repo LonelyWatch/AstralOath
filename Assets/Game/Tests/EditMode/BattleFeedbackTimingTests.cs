@@ -77,6 +77,7 @@ namespace AstralOath.Tests
             Set("skillPresentation", stage);
             Set("turnHud", hud);
             Set("voice", FormatterServices.GetUninitializedObject(BattleType("BattleVoice")));
+            Set("views", Activator.CreateInstance(simulationType.GetField("views", Instance).FieldType));
             Set("playback", Activator.CreateInstance(simulationType.GetField("playback", Instance).FieldType));
             Set("pendingFeedback", Activator.CreateInstance(simulationType.GetField("pendingFeedback", Instance).FieldType));
             Set("actionDuration", 2f);

@@ -136,6 +136,7 @@ namespace AstralOath.Tests
             public void Emit(SkeletonPlaybackEvent value)=>listeners?.Invoke(value);
             public void Play(string animation,bool loop,float mixSeconds=0)=>CurrentAnimation=animation;
             public bool TryGetBonePose(string bone,out SkeletonBonePose pose){pose=new SkeletonBonePose(BonePosition,0,Vector2.one);return bone=="camera";}
+            public bool TryGetBoneSkeletonPosition(string bone,out Vector2 position){position=default;return false;}
             public void SetSkin(string skin){}public void Pause(bool value){}public void Stop()=>CurrentAnimation=null;public void Tick(float delta){}public void Seek(float value){}public void SetFlip(bool x,bool y){}public void Dispose(){}
         }
     }

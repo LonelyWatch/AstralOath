@@ -57,6 +57,7 @@ namespace AstralOath.Client.BattleScene
         [SerializeField] private TextAsset[] audioBanks;
         [SerializeField] private TextAsset impactBank;
         [SerializeField] private GameObject stageBackground;
+        [SerializeField] private BattleUnitPresentationProfile unitPresentation;
         private BattleHudBinder binder;
         private BattleSimulationPreview simulation;
 
@@ -84,7 +85,7 @@ namespace AstralOath.Client.BattleScene
             UpdateBinding();
             var catalog = JsonConvert.DeserializeObject<BattleCatalogData>(battleCatalog.text);
             simulation = new BattleSimulationPreview(gameObject.scene, hud, binder, catalog, battleSprites, battleGraphs,
-                skillAssets, audioCatalog, audioBanks, battleDamageFont, impactBank, stageBackground);
+                skillAssets, audioCatalog, audioBanks, battleDamageFont, impactBank, stageBackground, unitPresentation);
             binder.AttachSimulation(simulation);
         }
 

@@ -7,7 +7,7 @@
 1. 在 Unity 使用 `Tools/战斗场景/打开场景`，或打开 `Scenes/BattleScene.unity`。
 2. 将 Game 视图设为 16:9，点击 Play。静态舞台和界面在编辑时可见，Spine 网格在 Play 时创建。
 3. 双击 `Res/Prefab/BattleHud.prefab` 可直接编辑。顶部按钮、行动条、单位血条、当前角色、魂力和技能分组排列。通过 `Tools/战斗场景/验证 HUD 绑定` 检查引用。
-4. 白天舞台使用 `Res/Prefab/Forest2Stage.prefab`，暮色舞台使用 `Forest3Stage.prefab`。替换场景中舞台实例即可换景。每个图层可单独调整。角色脚点在 `Units/Allies` 与 `Units/Enemies`，每方有前、下、上、后四个组。当前头顶血条使用 HUD 内同名分组的静态摆位。
+4. 白天舞台使用 `Res/Prefab/Forest2Stage.prefab`，暮色舞台使用 `Forest3Stage.prefab`。替换场景中舞台实例即可换景。每个图层可单独调整。角色脚点在 `Units/Allies` 与 `Units/Enemies`，每方有前、下、上、后四个组。编辑态信息条使用HUD作者摆位；运行时按动画top挂点投影跟随人物及镜头缩放。
 
 `BattleSceneBuilder.Generate` 是可从隔离工程调用的作者工具，会重建示例场景、三个预制体和生命数字位图字体。编辑好的正式布局以保存的 Unity 资产为准。其完整批处理方法名是 `AstralOath.Client.BattleScene.Editor.BattleSceneBuilder.Generate`。
 
@@ -83,3 +83,9 @@ Luban 快照 `Configs/battle-catalog.json` 含三名英雄、成长模板、觉�
 普通攻击/技能的 CAM、BGHATCH 不再隐藏生命、等级和状态；全屏 CUTIN 使用幕布覆盖这些信息。技能与 Burn 控制仍按回合/演出管理。BGHATCH 同时保留原 PNG alpha 与预乘混合，不能通过换图或角色参数调整掩盖纹理编码问题。
 
 动作回待机须连续衔接并收敛到完整的目标姿态，检查旧版运行库遗漏键、尾轨清理、循环、暂停和实例隔离。源码、红绿测试、平台边界见[本轮修复记录](../../../../docs/delivery/2026-11-13-battle-presentation-fixes.md)；后续角色导入遵守[源演出规范](../../../../docs/development/battle-source-presentation.md)。Core 桥接改变需新母包，不能只发布业务 DLL。
+
+## 血条跟随、损血与死亡（2026-11-13）
+
+`BattleUnitStatusPresentation`维护运行时条组；普通条十等分、50%主刻度更高，使用原split/dhp图片。血量变化有红棕损血尾，权威数据不变。当前原作证据与验收见[交付记录](../../../../docs/delivery/2026-11-13-health-death-presentation.md)。
+
+`Res/Configs/UnitPresentation.asset`集中锚点、刻度、过渡和死亡资源配置；特殊Boss政策需独立证据。`Tools/战斗场景/更新血条与死亡资源引用`保留作者布局，`ImportDeathEffects.py --check`核对源依赖。死亡开场预备、末击黑化并淡出，原烟雾碎片到期释放；暂停、复活和重开不污染其他实例。Core shader/挂点接口需要新母包，不改变服务器规则。

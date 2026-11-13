@@ -90,6 +90,7 @@ namespace AstralOath.Client.Skeletons
         internal abstract void Flip(bool x, bool y);
         internal abstract void Draw(SkeletonMesh target);
         internal abstract bool TryGetBonePose(string bone, out SkeletonBonePose pose);
+        internal abstract bool TryGetBoneSkeletonPosition(string bone, out Vector2 position);
         public abstract void Dispose();
     }
     internal sealed class SkeletonPlayer : ISkeletonPlayer
@@ -133,6 +134,11 @@ namespace AstralOath.Client.Skeletons
         {
             Check(); pose = default;
             return !string.IsNullOrEmpty(bone) && runtime.TryGetBonePose(bone, out pose);
+        }
+        public bool TryGetBoneSkeletonPosition(string bone, out Vector2 position)
+        {
+            Check(); position = default;
+            return !string.IsNullOrEmpty(bone) && runtime.TryGetBoneSkeletonPosition(bone, out position);
         }
         public void Pause(bool paused) { Check(); IsPaused = paused; }
         public void Stop()

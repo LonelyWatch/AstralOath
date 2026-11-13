@@ -1272,7 +1272,12 @@
       "sha256": "5dc074f79889263741d6a84b2f156e1189d97c15ca0dd5c6bf39b3dcb3794073",
       "width": 512,
       "height": 512,
-      "alphaBoundsLTRB": [0, 0, 508, 148]
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        508,
+        148
+      ]
     },
     {
       "asset": "Fonts/epic7num.fnt.txt",
@@ -1303,6 +1308,32 @@
         0,
         109,
         107
+      ]
+    },
+    {
+      "asset": "game_hud_bar_dhp.png",
+      "source": "原始资源/img/game_hud_bar_dhp.png",
+      "sha256": "3af8e2697445b9a60f49237deaee41c440d873b6680f43b0f141c7d2eadb1213",
+      "width": 2,
+      "height": 6,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        2,
+        6
+      ]
+    },
+    {
+      "asset": "game_hud_bar_split.png",
+      "source": "原始资源/img/game_hud_bar_split.png",
+      "sha256": "475e24618ac8a52b5102861b040ee8400e6ef69dc4b439bb66bce58314c81f59",
+      "width": 2,
+      "height": 6,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        1,
+        6
       ]
     }
   ],

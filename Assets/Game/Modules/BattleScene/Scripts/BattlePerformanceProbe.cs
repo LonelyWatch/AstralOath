@@ -169,9 +169,9 @@ namespace AstralOath.Client.BattleScene
                 }
                 if (pending != null && !busy()) CompletePending();
                 if (!automatic) continue;
-                if (covered.Count == expected.Length && pending == null && !busy())
+                if (covered.Count == expected.Length && report.unitDefeatedEvents > 0 && pending == null && !busy())
                 {
-                    Finish(true, "Nine skills completed through the normal battle command and presentation paths.");
+                    Finish(true, "Nine skills and accepted defeat completed through the normal battle command and presentation paths.");
                     continue;
                 }
                 if (Milliseconds(runtimeStarted, now) > 240000 || report.inputs.Count >= 80 || report.matches >= 8 && host.SimulationSnapshot.Outcome != BattleOutcome.InProgress)
@@ -262,6 +262,7 @@ namespace AstralOath.Client.BattleScene
             observedSequence = sequence;
             foreach (var item in events)
             {
+                if (item.Kind == BattleFlowEventKind.UnitDefeated) report.unitDefeatedEvents++;
                 if (item.Kind != BattleFlowEventKind.Action) continue;
                 if (item.Origin == BattleActionOrigin.DualAttack) report.dualAttackEvents++;
                 if (item.Origin == BattleActionOrigin.Counter) report.counterEvents++;
@@ -356,7 +357,7 @@ namespace AstralOath.Client.BattleScene
             report.nativeAudio = audio?.IsAvailable == true && report.programmerSoundCreates > 0 &&
                 report.nativeVoiceStarts > 0 && report.nativeEffectStarts > 0 && report.errors.Count == 0;
             report.audioVerification = "FMOD service availability, successful event starts, actual programmer sound creation and runtime warnings/errors checked. Physical speaker output is not acoustically verified.";
-            if (automatic && (!report.allNineCovered || !report.nativeAudio)) report.success = false;
+            if (automatic && (!report.allNineCovered || !report.nativeAudio || report.unitDefeatedEvents == 0)) report.success = false;
             report.notCovered = new[] { report.dualAttackEvents == 0 ? "dual attack not observed" : "dual attack event observed; timing fidelity not evaluated", "counter timing not evaluated", "formal HybridCLR/IL2CPP release pipeline", "OS process creation to runtime initialization", "OS target mouse raycast and UI occlusion" };
             report.gcCollections = GC.CollectionCount(0) - initialCollections;
             foreach (var input in report.inputs.Where(input => input.completed || input.aborted))
@@ -377,7 +378,7 @@ namespace AstralOath.Client.BattleScene
 
         [Serializable] private sealed class Report
         {
-            public int schemaVersion = 1, targetFPS, matches, acceptedCommands, enemyActionEvents, dualAttackEvents, counterEvents;
+            public int schemaVersion = 1, targetFPS, matches, acceptedCommands, enemyActionEvents, dualAttackEvents, counterEvents, unitDefeatedEvents;
             public string runId, utcStarted, utcFinished, runtimeBackend, gpu, graphicsApi, cpu, unity, reason, frameMeasurement, inputPath, audioDiagnostic, audioVerification;
             public bool isEditor, automatic, success, nativeAudio, allNineCovered, gcRecorderValid, playerLoopRecorderValid;
             public double runtimeStartToReadyMs;

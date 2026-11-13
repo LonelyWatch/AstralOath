@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bccc6d1c61c44269e2b654b96017079, type: 3}
+  m_Name: UnitPresentation
+  m_EditorClassIdentifier:
+  StatusAnchor: top
+  StatusOffset: {x: 0, y: 0}
+  HealthSections: 10
+  DamageTrail: {fileID: 21300000, guid: 0b8a7661a1c2d75438455cc2b6516be7, type: 3}
+  HealthDivider: {fileID: 21300000, guid: 0488774d46e918c40a739fdabcc64eeb, type: 3}
+  DamageSeconds: 0.16
+  HealSeconds: 0.18
+  TrailSeconds: 0.28
+  TrailDelaySeconds: 0.12
+  DeathParticles: {fileID: 4900000, guid: 04365e071684586897e7c48ac73ef717, type: 3}
+  DeathTextures:
+  - {fileID: 2800000, guid: a5cc6356afd05eb1b1f0e901737f79a4, type: 3}
+  - {fileID: 2800000, guid: ed68d366ed00525082aafadd0360345c, type: 3}
+  - {fileID: 2800000, guid: 47a737f319da5e64826fc6a0c5f61e23, type: 3}
+  - {fileID: 2800000, guid: 3a8bb0164b70518bb8f137f4a42b1695, type: 3}
+  - {fileID: 2800000, guid: 13fa37a0cf4b59ad8deb446711a5731e, type: 3}
+  DeathDarkenSeconds: 0.2
+  DeathFadeSeconds: 0.4

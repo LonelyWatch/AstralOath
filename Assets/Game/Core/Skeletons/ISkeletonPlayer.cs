@@ -75,5 +75,8 @@ namespace AstralOath.Client.Skeletons
         void Seek(float seconds);
         void SetFlip(bool x, bool y);
         bool TryGetBonePose(string bone, out SkeletonBonePose pose);
+        // Evaluated parent chain in skeleton/mesh space, including source.Scale and runtime flips.
+        // Does not include Root.transform; callers convert to Unity world with TransformPoint.
+        bool TryGetBoneSkeletonPosition(string bone, out Vector2 position);
     }
 }

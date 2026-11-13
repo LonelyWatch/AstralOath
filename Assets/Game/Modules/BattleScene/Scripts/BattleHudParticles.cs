@@ -71,7 +71,7 @@ namespace AstralOath.Client.BattleScene
             private int nextBurst;
 
             public Emitter(EmitterData data, Texture2D texture, Shader shader, Transform parent,
-                Vector2 offset, float scale, int sortingOrder)
+                Vector2 offset, float scale, int sortingOrder, bool premultiplied)
             {
                 this.data = data;
                 if (data.emitterType < 0 || data.emitterType > 1 || data.burningType < 0 || data.burningType > 1 ||
@@ -85,7 +85,8 @@ namespace AstralOath.Client.BattleScene
 
                 // The skeleton shader premultiplies straight texture samples. With the original
                 // SRC_ALPHA/ONE additive blend the equivalent factors are therefore ONE/ONE.
-                if (data.blendFuncSource != 770 || data.blendFuncDestination != 1)
+                if (!((data.blendFuncSource == 770 && data.blendFuncDestination == 1) ||
+                    (data.blendFuncSource == 1 && data.blendFuncDestination == 771)))
                     throw new FormatException($"Unsupported HUD particle blend in '{data.name}'.");
                 ramp = ReadRamp(data.colorBlends);
                 capacity = (int)data.maxParticles;
@@ -106,9 +107,12 @@ namespace AstralOath.Client.BattleScene
                 mesh = new Mesh { name = "HUD particle mesh" };
                 mesh.MarkDynamic();
                 root.GetComponent<MeshFilter>().sharedMesh = mesh;
-                material = new Material(shader) { name = "HUD particle additive", mainTexture = texture };
+                material = new Material(shader) { name = "Source particle material", mainTexture = texture };
+                material.SetFloat("_PremultipliedAlpha", premultiplied ? 1f : 0f);
+                material.SetFloat("_PmaSrgb", premultiplied && texture.isDataSRGB &&
+                    QualitySettings.activeColorSpace == ColorSpace.Linear ? 1f : 0f);
                 material.SetInt("_SrcBlend", (int)BlendMode.One);
-                material.SetInt("_DstBlend", (int)BlendMode.One);
+                material.SetInt("_DstBlend", (int)(data.blendFuncDestination == 771 ? BlendMode.OneMinusSrcAlpha : BlendMode.One));
                 var renderer = root.GetComponent<MeshRenderer>();
                 renderer.sharedMaterial = material;
                 renderer.sortingOrder = sortingOrder;
@@ -303,7 +307,10 @@ namespace AstralOath.Client.BattleScene
         private bool playing, disposed;
 
         public BattleHudParticles(TextAsset definition, IReadOnlyDictionary<string, Texture2D> textures, Transform parent,
-            Vector2 offset, float scale, int sortingOrder)
+            Vector2 offset, float scale, int sortingOrder) : this(definition, textures, parent, offset, scale, sortingOrder, false) { }
+
+        public BattleHudParticles(TextAsset definition, IReadOnlyDictionary<string, Texture2D> textures, Transform parent,
+            Vector2 offset, float scale, int sortingOrder, bool premultiplied)
         {
             if (!definition)
                 throw new ArgumentNullException(nameof(definition));
@@ -333,7 +340,7 @@ namespace AstralOath.Client.BattleScene
                          !textures.TryGetValue(Path.GetFileName(emitter.textureFileName), out texture) &&
                          !textures.TryGetValue(Path.GetFileNameWithoutExtension(emitter.textureFileName), out texture)) || !texture)
                         throw new FormatException($"Missing HUD particle texture '{emitter.textureFileName}' in '{definition.name}'.");
-                    emitters.Add(new Emitter(emitter, texture, shader, parent, offset, scale, sortingOrder));
+                    emitters.Add(new Emitter(emitter, texture, shader, parent, offset, scale, sortingOrder, premultiplied));
                 }
             }
             catch
@@ -401,7 +408,9 @@ namespace AstralOath.Client.BattleScene
                     float time = ReadFloat(columns[0]);
                     if (time < 0 || time > 1 || time <= previous)
                         throw new FormatException($"Unordered HUD particle color key '{row}'.");
-                    keys.Add((time, new Color(ReadFloat(columns[1]), ReadFloat(columns[2]), ReadFloat(columns[3]), ReadFloat(columns[4]))));
+                    // Source particle colorBlends uses time, alpha, red, green, blue.
+                    // Other source color fields may use RGBA; do not generalize this order beyond this schema.
+                    keys.Add((time, new Color(ReadFloat(columns[2]), ReadFloat(columns[3]), ReadFloat(columns[4]), ReadFloat(columns[1]))));
                     previous = time;
                 }
             }

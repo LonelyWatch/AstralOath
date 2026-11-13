@@ -143,6 +143,7 @@ namespace AstralOath.Client.BattleScene.Editor
 
             var properties = new SerializedObject(preview);
             SetObject("hud", hud);
+            SetObject("unitPresentation", BattleUnitPresentationAssets.Load());
             SetObject("battleCatalog", Asset<TextAsset>(Module + "/Configs/battle-catalog.json"));
             SetObject("battleDamageFont", BuildDamageDigits());
             SetObject("impactBank", Asset<TextAsset>(Module + "/Res/Sounds/gerneal.bank.bytes"));

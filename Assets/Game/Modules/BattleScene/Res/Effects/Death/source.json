@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "root": "effect/death_eff_01.cfx",
+  "selection": "Project default; source-client default variant mapping is unconfirmed.",
+  "premultipliedAlpha": true,
+  "converterSha256": "7c22fb298a6eb8403a1fe9f7367d13a38dffa2af96a7b95b80658345a9478c25",
+  "files": [
+    {
+      "source": "原始资源/effect/death_eff_01.cfx",
+      "sourceSha256": "d44931ddbdb8ab0e57ae080d21d6e9ebbdc42c121e5b22d5947d6c8c90628321",
+      "asset": "death_eff_01.cfx.json",
+      "assetSha256": "58683a6a3607f15e48713c24c7fede8b3281a550253ec9abd57051b51357749c",
+      "dependencies": [
+        "effect/death_pati_02.particle"
+      ]
+    },
+    {
+      "source": "原始资源/effect/death_pati_02.particle",
+      "sourceSha256": "71e163b425aa773edbefd5e7304f9af4500e5a3a1c19daf5307aaf5b5ab02589",
+      "asset": "Particles/death_pati_02.particle.json",
+      "assetSha256": "a5ff5d81a3042fdd6af91b632fafa39e25ffffd567460f60dd098ecb02095502",
+      "dependencies": [
+        "particle/flash.sct",
+        "particle/soft_smoke.sct",
+        "particle/ticle_01.sct",
+        "particle/ticle_02.sct",
+        "particle/tri_pati_01.sct"
+      ]
+    },
+    {
+      "source": "原始资源/particle/flash.sct",
+      "sourceSha256": "8dace73fcd75d8a7e93906cf39f1e763e7411da502eba2bee09b31f2acd61e62",
+      "asset": "Particles/flash.png",
+      "assetSha256": "d7ff6211ef9fb2b48807c040e8acf7b85fb7fa32812a43c90cf7ae29170254ae",
+      "dependencies": []
+    },
+    {
+      "source": "原始资源/particle/soft_smoke.sct",
+      "sourceSha256": "64a6033573fc2f675cf3204fecbe2b677d215b802e02d751881d0b36e894fa28",
+      "asset": "Particles/soft_smoke.png",
+      "assetSha256": "02a8fe2a9adc7e460d53d85cc15aed61a5c0cdfd7ca887391d24d7209746e3d5",
+      "dependencies": []
+    },
+    {
+      "source": "原始资源/particle/ticle_01.sct",
+      "sourceSha256": "c1057395969c0aa0c08915287bc2112492d0c4e918c8003cea3944f4ffc03ecf",
+      "asset": "Particles/ticle_01.png",
+      "assetSha256": "3aab37dd076d52615377b8c4206e676623c68db74ba87c12ae22517f48a62445",
+      "dependencies": []
+    },
+    {
+      "source": "原始资源/particle/ticle_02.sct",
+      "sourceSha256": "8f536d32d8984e0370e17ab9f1291be45b3908afce37ea8cb057ae1df4d2b9d2",
+      "asset": "Particles/ticle_02.png",
+      "assetSha256": "1be5fa2daba5583e21856ff31fff66b5a72d5e5ba8f1bcc15b9448a065e43007",
+      "dependencies": []
+    },
+    {
+      "source": "原始资源/particle/tri_pati_01.sct",
+      "sourceSha256": "fdd787a763bc3035447dfd0f4b233e97e17d08594fa08b44f3aae4df201bcacc",
+      "asset": "Particles/tri_pati_01.png",
+      "assetSha256": "b6b7783bdb83ffdaf213b0d490bdacd20c42445eea51908ba08181ded8d30a85",
+      "dependencies": []
+    }
+  ]
+}
