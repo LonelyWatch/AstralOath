@@ -91,4 +91,5 @@
 - 状态 UI 放在 `Unit Status/<队伍>/<槽位>/Frame` 下。沿用 `top` 和现有 Canvas 投影，LAYOUT 遮罩同步影响头顶全组和附在身体下的护盾特效，CUTIN 自然覆盖两者。隐藏期间保留状态和复用对象，死亡及重开清理实例。
 - 增加效果时扩充 `ImportStatusHud.py` 的状态资源映射及分类，运行导入器及 `--check`，更新 UnitPresentation 并验证全部枚举有源图。相同持续时间按施加先后，正常倒计时保留显示位置。新增类型用测试验证混排、数字、换行和刷新，禁止以中文缩写替代缺失图标。
 - 只消费已接受的 `StatusApplied.Status`、`StatusRemoved`、`BarrierAbsorbed`、`Damage` 和最后快照。配对盾吸收和伤害后，在各源 HIT 先消费盾再扣血。攻击后增益不能早于已有伤害时点；纯支援状态沿用技能反馈时点。回合快照校对剩余回合与实际盾量。显示顺序与权威驱散契约分别验证。
-- 共享原版素材的导入、尺度、适配和待验证项见[头顶状态与护盾复核](../delivery/2026-11-13-battle-status-shield.md)。
+- 状态原图与演出分别由 `cs_icon`、`cs_effect`、`cs_eff_bone` 指定。普通盾 `stse_protect.cfx` 保留全部 Spine 槽、混合、颜色与变形，沿 `shadow` 地面表现挂点。Boss、元素和其他特例依状态配置选取资源。图标底板按原生透射率在 Linear 导入时校正，保留透明圆角。状态数字保留原 PNG。
+- 共享素材、引擎差异与验收见[头顶状态与护盾复核](../delivery/2026-11-13-battle-status-shield.md)及[原版六层护盾和底板校正](../delivery/2026-11-13-battle-shield-refinement.md)。

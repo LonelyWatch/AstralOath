@@ -731,7 +731,7 @@ namespace AstralOath.Client.BattleScene
                     StatusAnchor, camera, profile ? profile.DamageTrail : null, profile ? profile.HealthDivider : null,
                     profile ? profile.HealthSections : 10);
                 statusIcons = new BattleStatusIcons(FeedbackAnchor, statusArt, profile ? profile.StatusIconsPerRow : 5);
-                shieldAura = new BattleShieldAura(auraDefinition);
+                shieldAura = new BattleShieldAura(auraDefinition, Actor.PresentationShadow);
                 if (profile)
                 {
                     status.SetShieldSprite(profile.Shield);

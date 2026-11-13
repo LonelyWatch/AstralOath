@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
@@ -11,6 +13,20 @@ namespace AstralOath.Client.Tests
         private const string AssetRoot = "Assets/Game/Modules/BattleScene/Res/Effects/Shield/stse_protect";
         private const string Assembly = ", AstralOath.Client.BattleScene";
         private const string Namespace = "AstralOath.Client.BattleScene.";
+
+        [Test]
+        public void BarrierRetainsNativeFillHighlightsAndAnimatedColors()
+        {
+            var document = JObject.Parse(Load<TextAsset>(".json").text);
+            var slots = document["slots"].ToDictionary(slot => (string)slot["name"], StringComparer.Ordinal);
+            CollectionAssert.AreEquivalent(new[] { "shield", "edge", "shield_f", "g1", "g2", "glow" }, slots.Keys);
+            Assert.That((bool?)slots["shield"]["additive"] ?? false, Is.False);
+            foreach (var name in new[] { "edge", "shield_f", "g1", "g2", "glow" })
+                Assert.That((bool)slots[name]["additive"], Is.True, name);
+            var animation = document["animations"]["animation"];
+            Assert.That((string)animation["slots"]["edge"]["color"][0]["color"], Is.EqualTo("5EA4FFFF"));
+            Assert.That(animation["ffd"]["default"]["glow"], Is.Not.Null);
+        }
 
         [Test]
         public void ImportedAuraFollowsBodyAndStopsWithShieldOrVisibility()
@@ -28,7 +44,7 @@ namespace AstralOath.Client.Tests
             var type = Type.GetType(Namespace + "BattleShieldAura" + Assembly, true);
             var definition = type.GetMethod("Prepare").Invoke(null, new[] { asset, Load<TextAsset>(".cfx.json") });
             var sync = type.GetMethod("Sync");
-            var presentation = (IDisposable)Activator.CreateInstance(type, definition);
+            var presentation = (IDisposable)Activator.CreateInstance(type, definition, null);
             var actor = new GameObject("Shielded test body");
             var replacement = new GameObject("Replacement test body");
             try
@@ -42,7 +58,9 @@ namespace AstralOath.Client.Tests
                 var root = actor.transform.GetChild(0);
                 var renderer = root.GetComponent<MeshRenderer>();
                 Assert.That(root.gameObject.activeSelf, Is.True);
-                Assert.That(root.GetComponent<MeshFilter>().sharedMesh.vertexCount, Is.GreaterThan(0));
+                var mesh = root.GetComponent<MeshFilter>().sharedMesh;
+                Assert.That(mesh.vertexCount, Is.GreaterThan(20));
+                Assert.That(mesh.subMeshCount, Is.EqualTo(2), "The ordinary shield fill and additive highlights need separate blending.");
                 Assert.That(renderer.sortingOrder, Is.EqualTo(53));
                 Assert.That(root.localScale, Is.EqualTo(Vector3.one * 1.5f));
 

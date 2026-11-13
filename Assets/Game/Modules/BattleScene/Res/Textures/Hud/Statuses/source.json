@@ -1,9 +1,11 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "layoutEvidence": [
     "wnd/hp_bar.csb",
     "wnd/hp_bar_r.csb"
   ],
+  "iconTransfer": "Compensate original display-space transmittance for Unity Linear; preserve soft corners.",
+  "digitTransfer": "Byte-identical original PNG.",
   "statuses": [
     {
       "kind": "AttackUp",
@@ -85,127 +87,152 @@
     {
       "source": "原始资源/buff/stic_att_up.png",
       "asset": "stic_att_up.png",
-      "sha256": "183385724a64d4cb38357dc4ff3f2bd380fd76eb26acbf4697d825bce2e6d94b"
+      "sourceSha256": "183385724a64d4cb38357dc4ff3f2bd380fd76eb26acbf4697d825bce2e6d94b",
+      "assetSha256": "9b26cb19f97dac1db4c8e66d3c2dcad657b52e6e9141274802317691b39ae6f3"
     },
     {
       "source": "原始资源/buff/stic_def_up.png",
       "asset": "stic_def_up.png",
-      "sha256": "7d050e80adfc516d09c5b25d4eafe95f1cea652cb5f13172779438c33dd73006"
+      "sourceSha256": "7d050e80adfc516d09c5b25d4eafe95f1cea652cb5f13172779438c33dd73006",
+      "assetSha256": "bace8ba2e683cbca16f828a1f3e6742753eedcd7f4bdaa8d6488d82b5e1bbe1d"
     },
     {
       "source": "原始资源/buff/stic_debuf_impossible.png",
       "asset": "stic_debuf_impossible.png",
-      "sha256": "2624015ebc5d6888940f0d3d9cfdc660db71b84a7befae12fc245a94cc8b21b4"
+      "sourceSha256": "2624015ebc5d6888940f0d3d9cfdc660db71b84a7befae12fc245a94cc8b21b4",
+      "assetSha256": "a6572972ddcc3538f5274e9cdfcca3ad4d7742e8e7ef7a73c68bf9a80d9bf1cf"
     },
     {
       "source": "原始资源/buff/stic_protect.png",
       "asset": "stic_protect.png",
-      "sha256": "6fb47c7cadfd94d7452eb847c22392f2feb8b91a7977d3d0b1f35caa744be95d"
+      "sourceSha256": "6fb47c7cadfd94d7452eb847c22392f2feb8b91a7977d3d0b1f35caa744be95d",
+      "assetSha256": "c74ee4e95c78b4b494d306bcd6139dca44492f127a32d23226f3f8ed3e3786d0"
     },
     {
       "source": "原始资源/buff/stic_stun.png",
       "asset": "stic_stun.png",
-      "sha256": "56363fd02f0fecb53019d9e8080be404b6a949577c5d1060d044d0ee40058e95"
+      "sourceSha256": "56363fd02f0fecb53019d9e8080be404b6a949577c5d1060d044d0ee40058e95",
+      "assetSha256": "60db213fe202bb169b89db4ddd7ce1cf1b77f39b3b6f3b7b88378687017ea535"
     },
     {
       "source": "原始资源/buff/stic_counter.png",
       "asset": "stic_counter.png",
-      "sha256": "88e9df6582949f94cf2b39785728d0864d053cfc811eaeea8ac417a7c7dd0742"
+      "sourceSha256": "88e9df6582949f94cf2b39785728d0864d053cfc811eaeea8ac417a7c7dd0742",
+      "assetSha256": "235b701c4e22e732b90815d17768092ade26c0b7a4e59aaa5fe0b3a33531d29a"
     },
     {
       "source": "原始资源/buff/stic_speed_up.png",
       "asset": "stic_speed_up.png",
-      "sha256": "f8b56b73b8446a37046085a077f2317e96cb44ea59e67124eb6d7754c97056cd"
+      "sourceSha256": "f8b56b73b8446a37046085a077f2317e96cb44ea59e67124eb6d7754c97056cd",
+      "assetSha256": "fe97f1cf077376ecdf4ea0ddbc088d7f93a1ef43437820603b1b99f70fa1c590"
     },
     {
       "source": "原始资源/buff/stic_speed_dn.png",
       "asset": "stic_speed_dn.png",
-      "sha256": "c6cec069042441bcd7d59219d363907887a1081f68d520c07d8d30ae4cb2c562"
+      "sourceSha256": "c6cec069042441bcd7d59219d363907887a1081f68d520c07d8d30ae4cb2c562",
+      "assetSha256": "4e1fd67fb26cf8c304ffd01aff83315e9c138c072606916feb1dd1550e345c40"
     },
     {
       "source": "原始资源/buff/stic_att_dn.png",
       "asset": "stic_att_dn.png",
-      "sha256": "7e0006b1d24851d2f36c76b07490c19793a7edb0df634de14ca8f1a78155943f"
+      "sourceSha256": "7e0006b1d24851d2f36c76b07490c19793a7edb0df634de14ca8f1a78155943f",
+      "assetSha256": "54d32b2d68d23257b0b21b6b41551a9da6cf024ee27c2277fa4013076e4bd0be"
     },
     {
       "source": "原始资源/buff/stic_def_dn.png",
       "asset": "stic_def_dn.png",
-      "sha256": "ead0cc0f80c12f783ad6a5145b4e25349df163f1013f57f2e85321eafd007032"
+      "sourceSha256": "ead0cc0f80c12f783ad6a5145b4e25349df163f1013f57f2e85321eafd007032",
+      "assetSha256": "b3fb2aab95c10151c838bf61d3e339a5e12027b971a881005768e0863c90c4ae"
     },
     {
       "source": "原始资源/buff/stic_heal_impossible.png",
       "asset": "stic_heal_impossible.png",
-      "sha256": "4846914a9e934e188c1b1e04512877a6e9d5555af3ec8cc466adf3125f6bbff0"
+      "sourceSha256": "4846914a9e934e188c1b1e04512877a6e9d5555af3ec8cc466adf3125f6bbff0",
+      "assetSha256": "3691e3d359726bb5556c5500fe0ae26821f2c1d87159ad59b55cfc086d3f86da"
     },
     {
       "source": "原始资源/buff/stic_silence.png",
       "asset": "stic_silence.png",
-      "sha256": "e5e7ef6e7b60e846fcce80929b68d7b945c4e8a34b8305f630f0b4bdd9665af2"
+      "sourceSha256": "e5e7ef6e7b60e846fcce80929b68d7b945c4e8a34b8305f630f0b4bdd9665af2",
+      "assetSha256": "ee2e2f90796dac17fb067f77fe4609587350f5adaf8e568e7762160e2f9b1f54"
     },
     {
       "source": "原始资源/buff/stic_dodge_up.png",
       "asset": "stic_dodge_up.png",
-      "sha256": "a181e290a80aace43885d8f53954614f906a993d18561b55d7c215a0e434bf14"
+      "sourceSha256": "a181e290a80aace43885d8f53954614f906a993d18561b55d7c215a0e434bf14",
+      "assetSha256": "e4a114891e9a308fd825924158b42cb337336e3176c0656043e570a7b8f8d658"
     },
     {
       "source": "原始资源/buff/stic_crires_up.png",
       "asset": "stic_crires_up.png",
-      "sha256": "2afc2278e2cfa3cc0988bbe73b9376da89015c6007f8e4b8acada4217d74974f"
+      "sourceSha256": "2afc2278e2cfa3cc0988bbe73b9376da89015c6007f8e4b8acada4217d74974f",
+      "assetSha256": "4e937f84f7d7587589c2d20bb5bc982f98ee768942e581dcf0c988b1eb845d10"
     },
     {
       "source": "原始资源/buff/stic_hide.png",
       "asset": "stic_hide.png",
-      "sha256": "4bc17a677db4eb51d95771b0f77e6f386b627bb4bca0128e0381ec0502132c09"
+      "sourceSha256": "4bc17a677db4eb51d95771b0f77e6f386b627bb4bca0128e0381ec0502132c09",
+      "assetSha256": "058a9f5f76f4fc25fd202704cb3fba2977514c921046e5a06f8a43c760ca7087"
     },
     {
       "source": "原始资源/img/itxt_num0.png",
       "asset": "itxt_num0.png",
-      "sha256": "b3237b0e195ea5218be4819256b4b25b52de8b29daaf07284aa09edbd08e65af"
+      "sourceSha256": "b3237b0e195ea5218be4819256b4b25b52de8b29daaf07284aa09edbd08e65af",
+      "assetSha256": "b3237b0e195ea5218be4819256b4b25b52de8b29daaf07284aa09edbd08e65af"
     },
     {
       "source": "原始资源/img/itxt_num1.png",
       "asset": "itxt_num1.png",
-      "sha256": "7d46703ede70c30cc91b96684a8688b84d7bb8a2b605b740ba649e14668ef908"
+      "sourceSha256": "7d46703ede70c30cc91b96684a8688b84d7bb8a2b605b740ba649e14668ef908",
+      "assetSha256": "7d46703ede70c30cc91b96684a8688b84d7bb8a2b605b740ba649e14668ef908"
     },
     {
       "source": "原始资源/img/itxt_num2.png",
       "asset": "itxt_num2.png",
-      "sha256": "9a31eff6c969d3d49dec14a558ea952a338749399c957ec59b2e45d59323c6ea"
+      "sourceSha256": "9a31eff6c969d3d49dec14a558ea952a338749399c957ec59b2e45d59323c6ea",
+      "assetSha256": "9a31eff6c969d3d49dec14a558ea952a338749399c957ec59b2e45d59323c6ea"
     },
     {
       "source": "原始资源/img/itxt_num3.png",
       "asset": "itxt_num3.png",
-      "sha256": "44ef98ed4ad421e0b89d8059263bc1322e2414ac5c1e91ba27e17e72ea2d7b6b"
+      "sourceSha256": "44ef98ed4ad421e0b89d8059263bc1322e2414ac5c1e91ba27e17e72ea2d7b6b",
+      "assetSha256": "44ef98ed4ad421e0b89d8059263bc1322e2414ac5c1e91ba27e17e72ea2d7b6b"
     },
     {
       "source": "原始资源/img/itxt_num4.png",
       "asset": "itxt_num4.png",
-      "sha256": "df219893335c598796b52e00de629566582d227b94a942e492537e04e6fd8865"
+      "sourceSha256": "df219893335c598796b52e00de629566582d227b94a942e492537e04e6fd8865",
+      "assetSha256": "df219893335c598796b52e00de629566582d227b94a942e492537e04e6fd8865"
     },
     {
       "source": "原始资源/img/itxt_num5.png",
       "asset": "itxt_num5.png",
-      "sha256": "a3ae315ddf6424cc2ecfc079ce3375fb236200619e7ccf03c8f184d94e9ea734"
+      "sourceSha256": "a3ae315ddf6424cc2ecfc079ce3375fb236200619e7ccf03c8f184d94e9ea734",
+      "assetSha256": "a3ae315ddf6424cc2ecfc079ce3375fb236200619e7ccf03c8f184d94e9ea734"
     },
     {
       "source": "原始资源/img/itxt_num6.png",
       "asset": "itxt_num6.png",
-      "sha256": "f3ea64c8159ae3f16e464ee17a59dbb76cbba0e31add8ee89d8251e5149572a5"
+      "sourceSha256": "f3ea64c8159ae3f16e464ee17a59dbb76cbba0e31add8ee89d8251e5149572a5",
+      "assetSha256": "f3ea64c8159ae3f16e464ee17a59dbb76cbba0e31add8ee89d8251e5149572a5"
     },
     {
       "source": "原始资源/img/itxt_num7.png",
       "asset": "itxt_num7.png",
-      "sha256": "b20a10809ca2718a5488c2e8b4414ae4d1deeb0d88077c5622e99285ad46b152"
+      "sourceSha256": "b20a10809ca2718a5488c2e8b4414ae4d1deeb0d88077c5622e99285ad46b152",
+      "assetSha256": "b20a10809ca2718a5488c2e8b4414ae4d1deeb0d88077c5622e99285ad46b152"
     },
     {
       "source": "原始资源/img/itxt_num8.png",
       "asset": "itxt_num8.png",
-      "sha256": "1376a2efbee4175cfefc0f8388ed82c87f55e1d7297d979bc2c97f6dc57ea80b"
+      "sourceSha256": "1376a2efbee4175cfefc0f8388ed82c87f55e1d7297d979bc2c97f6dc57ea80b",
+      "assetSha256": "1376a2efbee4175cfefc0f8388ed82c87f55e1d7297d979bc2c97f6dc57ea80b"
     },
     {
       "source": "原始资源/img/itxt_num9.png",
       "asset": "itxt_num9.png",
-      "sha256": "9110c044f40690cc473f9d005ec9a26022febf59e54e7f36c742d6f6dcd22782"
+      "sourceSha256": "9110c044f40690cc473f9d005ec9a26022febf59e54e7f36c742d6f6dcd22782",
+      "assetSha256": "9110c044f40690cc473f9d005ec9a26022febf59e54e7f36c742d6f6dcd22782"
     }
   ]
 }

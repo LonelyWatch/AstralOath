@@ -36,8 +36,8 @@
 ## 头顶状态与护盾
 
 - 状态图标和回合数字挂在血条 Frame 下，沿用角色的骨骼 `top` 投影、镜头缩放和显隐。普通增益、减益由 15 项原图映射支持。左起每行最多五个，向上折行，同类刷新复用格子。
-- 白色护盾段紧接绿色生命，盾值由权威事件驱动。多段攻击共用原技能 HIT 时间，先消耗护盾，再变化生命。白色环沿骨架位置播放，盾消失、角色被遮罩或死亡时隐藏。
-- 使用 `Tools/BattleScene/ImportStatusHud.py` 和 `Tools/BattleScene/ImportBattleShieldAura.py` 重建小范围源资源，追加 `--check` 核对哈希。通过 `Tools/战斗场景/更新血条、状态与死亡资源引用` 更新 UnitPresentation。配置、数据流和原版证据见[头顶状态与护盾复核](../../../../docs/delivery/2026-11-13-battle-status-shield.md)。
+- 白色护盾段紧接绿色生命，盾值由权威事件驱动。多段攻击共用原技能 HIT 时间，先消耗护盾，再变化生命。普通护盾播放原版 `stse_protect.cfx` 的六层白蓝护盾，沿原版 `shadow` 地面挂点移动，盾消失、角色被遮罩或死亡时隐藏。状态图标在导入时对齐 Linear 工程的底板透射率，保留原始轮廓与回合数字。
+- 使用 `Tools/BattleScene/ImportStatusHud.py` 和 `Tools/BattleScene/ImportBattleShieldAura.py` 重建小范围源资源，追加 `--check` 核对哈希。通过 `Tools/战斗场景/更新血条、状态与死亡资源引用` 更新 UnitPresentation。配置、数据流和原版证据见[头顶状态与护盾复核](../../../../docs/delivery/2026-11-13-battle-status-shield.md)及[原版六层护盾和底板校正](../../../../docs/delivery/2026-11-13-battle-shield-refinement.md)。
 
 ## 角色配置
 

@@ -23,7 +23,7 @@
 - 角色资源：[角色实验室](development/character-lab.md)、[通用导入规则](development/character-asset-import.md)、[CharacterPresentation](../Assets/Game/Modules/CharacterPresentation/README.md)、[CharacterLab](../Assets/Game/Modules/CharacterLab/README.md)。
 - 十名角色：[操作与验收](delivery/2026-11-13-ten-hero-roster.md)、[源图和资源审计](delivery/2026-11-13-ten-hero-source-audit.md)。
 - S1/S3当前修复：[镜头事件窗口、目标身体和信息条](delivery/2026-11-13-camera-visibility-fixes.md)、[原作参考范围](delivery/2026-11-13-camera-visibility-reference.md)。
-- 头顶状态与护盾：[排序、资源、事件和画面验证](delivery/2026-11-13-battle-status-shield.md)。
+- 头顶状态与护盾：[排序、资源、事件和画面验证](delivery/2026-11-13-battle-status-shield.md)、[原版六层护盾和底板校正](delivery/2026-11-13-battle-shield-refinement.md)。
 - 血条与死亡：[跟随/分格/损血/消散及验收](delivery/2026-11-13-health-death-presentation.md)、[近期原作画面证据](delivery/2026-11-13-health-reference-audit.md)。
 - 战斗表现修复：[信息条、速度线与待机衔接](delivery/2026-11-13-battle-presentation-fixes.md)、[BGHATCH 纹理编码审计](delivery/2026-11-13-hatch-alpha-audit.md)。
 - 战斗性能：[测量与操作](delivery/2026-11-13-battle-performance.md)、[缓存和诊断边界](architecture/adr/013-battle-performance.md)。

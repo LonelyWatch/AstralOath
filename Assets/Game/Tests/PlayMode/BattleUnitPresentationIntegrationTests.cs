@@ -153,6 +153,9 @@ namespace AstralOath.Client.Tests
             var aura = body.transform.Find("Battle shield aura");
             Assert.That(aura, Is.Not.Null);
             Assert.That(aura.gameObject.activeInHierarchy, Is.True);
+            var shadow = (Transform)typeof(BattlePreviewActor).GetProperty("PresentationShadow", Private).GetValue(actor);
+            Vector3 expectedAura = shadow.position + body.transform.TransformVector(Vector3.up * .2f);
+            Assert.That(Vector2.Distance(aura.position, expectedAura), Is.LessThan(.001f));
             Capture("status-barrier-full");
 
             var first = (RectTransform)icons.GetChild(0);
@@ -163,6 +166,9 @@ namespace AstralOath.Client.Tests
             view.GetType().GetMethod("LateTick").Invoke(view, new object[] { camera });
             Assert.That((Vector2)first.position, Is.Not.EqualTo(originalPosition));
             Assert.That(Width(first, camera) / originalWidth, Is.EqualTo(1.25f).Within(.03f));
+            expectedAura = shadow.position + body.transform.TransformVector(Vector3.up * .2f);
+            Assert.That(Vector2.Distance(aura.position, expectedAura), Is.LessThan(.001f),
+                "A jump moves the body relative to the ground, but the source shield still uses shadow.");
             Assert.That(first.IsChildOf(frame.parent), Is.True);
             body.enabled = false;
             view.GetType().GetMethod("LateTick").Invoke(view, new object[] { camera });

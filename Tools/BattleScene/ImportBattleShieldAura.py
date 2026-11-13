@@ -1,7 +1,6 @@
-"""Import the source shield effect and derive its neutral-colored edge for normal barriers."""
+"""Import the complete original persistent barrier effect into BattleScene."""
 
 import argparse
-from copy import deepcopy
 from hashlib import sha256
 from io import BytesIO
 import json
@@ -28,35 +27,6 @@ def guid(path):
     return uuid.uuid5(uuid.NAMESPACE_URL, "astraloath:" + path.relative_to(REPO).as_posix()).hex
 
 
-def white_edge(document):
-    result = deepcopy(document)
-    slots = result["slots"]
-    edge = next(slot for slot in slots if slot["name"] == "edge")
-    if edge["attachment"] != "siheld_edge" or not edge.get("additive"):
-        raise ValueError("The source shield's additive edge layout has changed.")
-    result["slots"] = [edge]
-    result["skins"]["default"] = {"edge": result["skins"]["default"]["edge"]}
-    animations = result["animations"]
-    if tuple(animations) != ("animation",):
-        raise ValueError("The shield aura expects the source's sole looping animation.")
-    animation = animations["animation"]
-    if set(animation) - {"slots", "bones", "ffd"}:
-        raise ValueError("Review newly introduced shield timeline types before adapting them.")
-
-    # Keep all bone curves and any edge deform. Strip other slots to keep the battle body visible.
-    animation["slots"] = {"edge": animation["slots"]["edge"]}
-    for skin, slots in tuple(animation.get("ffd", {}).items()):
-        if "edge" in slots:
-            animation["ffd"][skin] = {"edge": slots["edge"]}
-        else:
-            del animation["ffd"][skin]
-    if not animation.get("ffd"):
-        animation.pop("ffd", None)
-    for keyframe in animation["slots"]["edge"]["color"]:
-        keyframe["color"] = "FFFFFF" + keyframe["color"][6:]
-    return result
-
-
 def make_payloads(raw):
     cfx = plistlib.loads(raw[".cfx"])
     primitives = cfx["primitive"]
@@ -66,6 +36,9 @@ def make_payloads(raw):
         raise ValueError("Review the changed source CFX before updating the shield presentation.")
 
     document, skeleton_report = decode_scsp(raw[".scsp"])
+    slots = [slot["name"] for slot in document["slots"]]
+    if slots != ["shield", "edge", "shield_f", "g1", "g2", "glow"] or tuple(document["animations"]) != ("animation",):
+        raise ValueError("Review the changed native shield layers or animation before importing.")
     atlas = raw[".atlas"].decode("utf-8-sig")
     image, texture_report = decode_sct(raw[".sct"])
     if atlas.lstrip().splitlines()[0] != STEM + ".sct" or "\nsiheld_edge\n" not in atlas.replace("\r\n", "\n"):
@@ -77,7 +50,7 @@ def make_payloads(raw):
 
     payloads = {
         STEM + ".cfx.json": json_bytes(cfx),
-        STEM + ".json": json_bytes(white_edge(document)),
+        STEM + ".json": json_bytes(document),
         STEM + ".atlas.txt": atlas.replace("\r\n", "\n").encode("utf-8"),
         STEM + ".png": png.getvalue(),
     }
@@ -88,10 +61,17 @@ def make_payloads(raw):
         ".sct": STEM + ".png",
     }
     manifest = {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "source": "原始资源/effect/" + STEM,
-        "sourceMapping": "Source effect chosen by inspection. Its original runtime association with the standard Barrier status is unconfirmed.",
-        "adaptation": "Keep the additive edge, its source geometry and alpha timing. Remove other slots and replace the edge's RGB tint with white for the project Barrier effect.",
+        "sourceMapping": {
+            "table": "原始资源/db/cs_player.db",
+            "tableSha256": "c031c39f2a96af49d1b4240be6c60c37091289e5794300f7b6229369b06b026f",
+            "record": "shield_caster_maxhp",
+            "cs_icon": "stic_protect",
+            "cs_effect": "stse_protect.cfx",
+            "cs_eff_bone": "shadow",
+        },
+        "transfer": "Decode all original Spine slots, animations, blends and colors without stripping or recoloring.",
         "premultipliedAlpha": True,
         "spineVersion": skeleton_report["spineVersion"],
         "animations": skeleton_report["animations"],

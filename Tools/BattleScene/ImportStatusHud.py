@@ -1,4 +1,4 @@
-"""Import the original status glyphs and their turn digits without changing the source."""
+"""Prepare the original status glyphs and turn digits for the battle HUD."""
 import argparse
 import hashlib
 import io
@@ -37,6 +37,53 @@ def guid(path):
     return uuid.uuid5(uuid.NAMESPACE_URL, "astraloath:" + path.relative_to(REPO).as_posix()).hex
 
 
+def srgb_to_linear(value):
+    return value / 12.92 if value <= 0.04045 else ((value + 0.055) / 1.055) ** 2.4
+
+
+def linear_to_srgb(value):
+    return value * 12.92 if value <= 0.0031308 else 1.055 * value ** (1 / 2.4) - 0.055
+
+
+def adapt_icon(image):
+    # Preserve rounded-corner coverage and match display-space transmittance over white.
+    # Compensate straight RGB so the glyph retains its source contribution over black.
+    result = Image.new("RGBA", image.size)
+    pixels = []
+    for red, green, blue, alpha in image.convert("RGBA").getdata():
+        if alpha == 0 or alpha == 255:
+            pixels.append((red, green, blue, alpha))
+            continue
+        original_alpha = alpha / 255
+        target_alpha = round((1 - srgb_to_linear(1 - original_alpha)) * 255)
+        channels = tuple(round(linear_to_srgb(srgb_to_linear(channel / 255 * original_alpha) /
+                                              (target_alpha / 255)) * 255)
+                         for channel in (red, green, blue))
+        pixels.append((*channels, target_alpha))
+    result.putdata(pixels)
+    stream = io.BytesIO()
+    result.save(stream, format="PNG")
+    return stream.getvalue()
+
+
+ICON_PLATFORMS = re.compile(
+    r"(buildTarget: (?:DefaultTexturePlatform|Standalone|Android)\n"
+    r"(?:    [^\n]*\n)*?    textureCompression: )([0-9]+)"
+)
+
+
+def has_uncompressed_icons(meta):
+    settings = ICON_PLATFORMS.findall(meta)
+    return len(settings) == 3 and all(compression == "0" for _, compression in settings)
+
+
+def uncompressed_icon(meta):
+    updated = ICON_PLATFORMS.sub(r"\g<1>0", meta)
+    if not has_uncompressed_icons(updated):
+        raise ValueError("Missing required status icon texture importer settings.")
+    return "\n".join(line.rstrip() for line in updated.splitlines()) + "\n"
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path, default=Path("D:/sevenepic"))
@@ -55,15 +102,20 @@ def main():
         raw = (source / original).resolve(strict=True)
         if not raw.is_relative_to(source):
             raise ValueError(f"Source escaped its root: {original}")
-        data = raw.read_bytes()
-        with Image.open(io.BytesIO(data)) as img:
+        source_bytes = raw.read_bytes()
+        is_icon = original.startswith("buff/")
+        with Image.open(io.BytesIO(source_bytes)) as img:
             if img.format != "PNG" or img.size != dimensions or not img.convert("RGBA").getbbox():
                 raise ValueError(f"Unexpected source image: {original}, {img.format}, {img.size}")
+            data = adapt_icon(img) if is_icon else source_bytes
         asset = OUTPUT / raw.name
-        rows.append({"source": "原始资源/" + original, "asset": asset.name, "sha256": hashlib.sha256(data).hexdigest()})
+        rows.append({"source": "原始资源/" + original, "asset": asset.name,
+                     "sourceSha256": hashlib.sha256(source_bytes).hexdigest(), "assetSha256": hashlib.sha256(data).hexdigest()})
         writes[asset] = data
 
-    manifest = {"schemaVersion": 1, "layoutEvidence": ["wnd/hp_bar.csb", "wnd/hp_bar_r.csb"],
+    manifest = {"schemaVersion": 2, "layoutEvidence": ["wnd/hp_bar.csb", "wnd/hp_bar_r.csb"],
+                "iconTransfer": "Compensate original display-space transmittance for Unity Linear; preserve soft corners.",
+                "digitTransfer": "Byte-identical original PNG.",
                 "statuses": [{"kind": kind, "group": group, "asset": glyph + ".png"} for kind, group, glyph in STATUSES],
                 "files": rows}
     document = OUTPUT / "source.json"
@@ -72,10 +124,15 @@ def main():
                 document.with_suffix(".json.meta"): f"fileFormatVersion: 2\nguid: {guid(document)}\nTextScriptImporter:\n  externalObjects: {{}}\n"}
     for asset in writes:
         if asset.suffix == ".png":
-            metadata[asset.with_suffix(".png.meta")] = re.sub(r"(?m)^guid: [a-f0-9]+$", "guid: " + guid(asset), template, count=1)
+            meta = asset.with_suffix(".png.meta")
+            metadata[meta] = re.sub(r"(?m)^guid: [a-f0-9]+$", "guid: " + guid(asset), template, count=1)
     if args.check:
         mismatches = [str(path) for path, content in writes.items() if not path.is_file() or path.read_bytes() != content]
         mismatches += [str(path) for path in metadata if not path.is_file()]
+        for path in metadata:
+            if path.name.startswith("stic_") and path.is_file():
+                if not has_uncompressed_icons(path.read_text(encoding="utf-8-sig")):
+                    mismatches.append(str(path))
         if mismatches:
             parser.exit(1, "Missing or changed status assets: " + ", ".join(mismatches) + "\n")
     else:
@@ -85,7 +142,12 @@ def main():
                 path.write_bytes(content)
         for path, content in metadata.items():
             if not path.exists():
-                path.write_text(content, encoding="utf-8", newline="\n")
+                path.write_text(uncompressed_icon(content) if path.name.startswith("stic_") else content,
+                                encoding="utf-8", newline="\n")
+            elif path.name.startswith("stic_"):
+                existing = path.read_text(encoding="utf-8-sig")
+                if not has_uncompressed_icons(existing):
+                    path.write_text(uncompressed_icon(existing), encoding="utf-8", newline="\n")
     print(f"{'Verified' if args.check else 'Imported'} {len(rows)} original status HUD PNGs.")
 
 
