@@ -368,10 +368,11 @@ namespace AstralOath.Client.BattleScene.Editor
                     if (GUILayout.Button("保存演出", EditorStyles.toolbarButton))
                         try { SavePatch(); error = null; } catch (Exception problem) { error = problem.Message; }
                 if (Dirty) GUILayout.Label("未保存", EditorStyles.miniLabel);
-                if (preview == null && selected != null && patch?["nodes"] is JObject nodes && nodes.Count > 0 &&
+                if (selected != null && !compareOriginal && patch?["nodes"] is JObject nodes && nodes.Count > 0 &&
                     GUILayout.Button("还原本技能", EditorStyles.toolbarButton) &&
                     EditorUtility.DisplayDialog("还原演出", "清除当前技能覆盖并恢复原图。", "还原", "取消"))
                 {
+                    Undo.RecordObject(draft, "还原技能演出");
                     patch = SkillTimelineOverrides.NewPatch(source);
                     draft.patch = patch.ToString(Formatting.None);
                     rebuild = true;
