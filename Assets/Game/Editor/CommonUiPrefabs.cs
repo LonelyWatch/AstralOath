@@ -33,13 +33,13 @@ namespace AstralOath.Editor
         public static void GenerateArenaControls()
         {
             var font = GetPanelFont(Load<TMP_FontAsset>(FontPath));
-            Save(BuildButton(font, "ConfirmButton", "_btn_green"), ButtonPath);
-            Save(BuildButton(font, "CancelButton", "_btn_gold"), CancelPath);
+            Save(BuildButton(font, "ConfirmButton", "_btn_green", "UiAccept"), ButtonPath);
+            Save(BuildButton(font, "CancelButton", "_btn_gold", "UiCancel"), CancelPath);
             Save(BuildChoicePopup(font), ChoicePath);
             Save(BuildAvatar(), AvatarPath);
         }
 
-        private static GameObject BuildButton(TMP_FontAsset font, string name, string sprite)
+        private static GameObject BuildButton(TMP_FontAsset font, string name, string sprite, string clip)
         {
             var root = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(GameButton), typeof(AudioSource));
             var rect = (RectTransform)root.transform;
@@ -53,7 +53,7 @@ namespace AstralOath.Editor
             var swap = button.spriteState;
             swap.pressedSprite = Load<Sprite>(Root + "Textures/" + sprite + "_p.png");
             button.spriteState = swap;
-            SetClickSound(button);
+            SetClickSound(button, clip);
             var label = Text(Child(rect, "Label", Vector2.zero, Vector2.one,
                 new Vector2(20f, 0f), new Vector2(-20f, 0f)), font, 28f, Color.white);
             label.text = string.Empty;
@@ -62,12 +62,12 @@ namespace AstralOath.Editor
             return root;
         }
 
-        private static void SetClickSound(GameButton button)
+        private static void SetClickSound(GameButton button, string clip = "UiConfirm")
         {
             if (!button.TryGetComponent<AudioSource>(out var audio)) audio = button.gameObject.AddComponent<AudioSource>();
             audio.playOnAwake = false;
             audio.spatialBlend = 0f;
-            audio.clip = Load<AudioClip>(Root + "Sounds/UiConfirm.wav");
+            audio.clip = Load<AudioClip>(Root + "Sounds/" + clip + ".wav");
             var data = new SerializedObject(button);
             data.FindProperty("clickAudio").objectReferenceValue = audio;
             data.ApplyModifiedPropertiesWithoutUndo();

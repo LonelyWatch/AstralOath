@@ -13,36 +13,40 @@ namespace AstralOath.Client.Common
     public sealed class GameButton : Button
     {
         [SerializeField] private AudioSource clickAudio;
+        [SerializeField] private GameUiFeedback.Sound feedbackSound;
         private BindingScope current;
+        private bool dispatching;
+
+        public GameUiFeedback.Sound FeedbackSound { get => feedbackSound; set => feedbackSound = value; }
 
         public override void OnPointerClick(PointerEventData eventData)
         {
-            if (eventData.button == PointerEventData.InputButton.Left &&
-                TryGetComponent<GameLongPress>(out var hold) && hold.ConsumedClick(eventData)) return;
-            base.OnPointerClick(eventData);
+            if (eventData.button != PointerEventData.InputButton.Left || !IsActive() || !IsInteractable()) return;
+            if (TryGetComponent<GameLongPress>(out var hold) && hold.ConsumedClick(eventData)) return;
+            PlayClickSound();
+            dispatching = true;
+            try { base.OnPointerClick(eventData); }
+            finally { dispatching = false; }
+        }
+
+        public override void OnSubmit(BaseEventData eventData)
+        {
+            if (!IsActive() || !IsInteractable()) return;
+            PlayClickSound();
+            dispatching = true;
+            try { base.OnSubmit(eventData); }
+            finally { dispatching = false; }
         }
 
         protected override void OnEnable()
         {
             base.OnEnable();
-            if (clickAudio) onClick.AddListener(PlayClickSound);
+            onClick.AddListener(PlayClickSound);
         }
 
         private void PlayClickSound()
         {
-            if (!clickAudio || !clickAudio.clip || !IsActive() || !IsInteractable()) return;
-            var canvas = GetComponentInParent<Canvas>();
-            if (!canvas)
-            {
-                clickAudio.PlayOneShot(clickAudio.clip);
-                return;
-            }
-
-            // The screen can close as part of this click; keep the sound on its owning Canvas.
-            var root = canvas.rootCanvas.gameObject;
-            if (!root.TryGetComponent<GameUiAudio>(out var output))
-                output = root.AddComponent<GameUiAudio>();
-            output.Play(clickAudio.clip, clickAudio.volume);
+            if (!dispatching && IsActive() && IsInteractable()) GameUiFeedback.Play(this, feedbackSound, clickAudio);
         }
 
         public void Bind(BindingScope owner, Func<CancellationToken, Task> handler)

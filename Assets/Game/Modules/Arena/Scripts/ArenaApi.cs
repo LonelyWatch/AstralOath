@@ -19,7 +19,7 @@ namespace AstralOath.Client.Arena
         public int memberCount, capacity;
     }
     [Serializable, Preserve] public sealed class ArenaRoomState { public ArenaRoomInfo room; public ArenaPlayer[] members; }
-    [Serializable, Preserve] public sealed class ArenaMessage { public long id; public ArenaPlayer player; public string text; }
+    [Serializable, Preserve] public sealed class ArenaMessage { public long id; public ArenaPlayer player; public string text, createdAt; }
     [Serializable, Preserve] public sealed class ArenaCreateRequest { public string name, password, rule; public bool allowChat; }
 
     internal sealed class ArenaRequestException : IOException
@@ -37,10 +37,30 @@ namespace AstralOath.Client.Arena
         [Serializable, Preserve] private sealed class Password { public string password; }
         [Serializable, Preserve] private sealed class Chat { public string text; }
         [Serializable, Preserve] private sealed class Error { public string code; }
+        [Serializable, Preserve] private sealed class Operation { public string eventId, name; }
 
         private readonly Uri endpoint;
+        private readonly CancellationToken lifetime;
         private Session session;
-        public ArenaApi(Uri endpoint) => this.endpoint = endpoint ?? throw new ArgumentNullException(nameof(endpoint));
+        private int pendingOperations;
+        public ArenaApi(Uri endpoint, CancellationToken lifetime)
+        {
+            this.endpoint = endpoint ?? throw new ArgumentNullException(nameof(endpoint));
+            this.lifetime = lifetime;
+        }
+
+        internal async Task RecordOperationAsync(string name)
+        {
+            if (session == null || lifetime.IsCancellationRequested || pendingOperations >= 4) return;
+            ++pendingOperations;
+            try
+            {
+                await Send<Error>("telemetry", new Operation { eventId = Guid.NewGuid().ToString("N"), name = name }, lifetime, 4);
+            }
+            catch (ArenaRequestException) { }
+            catch (OperationCanceledException) when (lifetime.IsCancellationRequested) { }
+            finally { --pendingOperations; }
+        }
         public ArenaPlayer Player => session?.player;
 
         public async Task ConnectAsync(string displayName, string avatarId, CancellationToken token)
@@ -51,10 +71,11 @@ namespace AstralOath.Client.Arena
                 throw new ArenaRequestException("invalid_response");
         }
 
-        public async Task<ArenaRoomInfo[]> ListAsync(string visibility, string sort, string query, CancellationToken token)
+        public async Task<ArenaRoomInfo[]> ListAsync(string visibility, string sort, bool ascending, string query, CancellationToken token)
         {
             string search = Uri.EscapeDataString(query ?? "");
-            var result = await Send<Directory>($"rooms?visibility={visibility}&sort={sort}&query={search}", null, token);
+            string direction = ascending ? "asc" : "desc";
+            var result = await Send<Directory>($"rooms?visibility={visibility}&sort={sort}&direction={direction}&query={search}", null, token);
             return result.rooms ?? Array.Empty<ArenaRoomInfo>();
         }
 
@@ -77,14 +98,14 @@ namespace AstralOath.Client.Arena
 
         private static string Room(string id) => "rooms/" + Uri.EscapeDataString(id);
 
-        private async Task<T> Send<T>(string path, object data, CancellationToken token) where T : class
+        private async Task<T> Send<T>(string path, object data, CancellationToken token, int timeout = 10) where T : class
         {
             token.ThrowIfCancellationRequested();
             var url = new Uri(endpoint, "/api/arena/" + path);
             using var request = new UnityWebRequest(url, data == null ? UnityWebRequest.kHttpVerbGET : UnityWebRequest.kHttpVerbPOST)
             {
                 downloadHandler = new DownloadHandlerBuffer(),
-                timeout = 10,
+                timeout = timeout,
                 redirectLimit = 0
             };
             if (data != null)
@@ -93,7 +114,8 @@ namespace AstralOath.Client.Arena
                 request.SetRequestHeader("Content-Type", "application/json");
             }
             request.SetRequestHeader("Accept", "application/json");
-            if (session != null) request.SetRequestHeader("Authorization", "Bearer " + session.token);
+            var requestSession = session;
+            if (requestSession != null) request.SetRequestHeader("Authorization", "Bearer " + requestSession.token);
             var operation = request.SendWebRequest();
             while (!operation.isDone)
             {
@@ -107,7 +129,7 @@ namespace AstralOath.Client.Arena
                 string code = null;
                 try { if (!string.IsNullOrEmpty(json)) code = JsonUtility.FromJson<Error>(json)?.code; }
                 catch (ArgumentException) { }
-                if (request.responseCode == 401) session = null;
+                if (request.responseCode == 401 && session == requestSession) session = null;
                 throw new ArenaRequestException(code ?? (request.responseCode == 0 ? "unavailable" : "request_failed"));
             }
             if (request.responseCode == 204) return null;

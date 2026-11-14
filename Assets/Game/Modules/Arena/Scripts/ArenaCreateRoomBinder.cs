@@ -6,36 +6,36 @@ using UnityEngine;
 
 namespace AstralOath.Client.Arena
 {
-    internal sealed class ArenaCreateRoomBinder : IDisposable
+    internal sealed class ArenaCreateRoomBinder
     {
         private readonly ArenaCreateRoom view;
         private readonly ILocaleService locale;
         private readonly Func<ArenaCreateRequest, CancellationToken, Task> submit;
-        private BindingScope screen;
+        private readonly Action close;
         private bool chat;
         private string rule;
 
-        internal ArenaCreateRoomBinder(ArenaCreateRoom view, ILocaleService locale, Func<ArenaCreateRequest, CancellationToken, Task> submit)
+        internal ArenaCreateRoomBinder(ArenaCreateRoom view, ILocaleService locale, Func<ArenaCreateRequest, CancellationToken, Task> submit, Action close)
         {
             this.view = view;
             this.locale = locale;
             this.submit = submit;
+            this.close = close;
         }
 
-        internal void Open(CancellationToken token)
+        internal void Open(BindingScope screen)
         {
-            Dispose();
-            screen = new BindingScope(token);
             view.Show();
+            screen.Add(() => { if (view.Root) view.Hide(); });
             view.RoomName.SetTextWithoutNotify("");
             view.Password.SetTextWithoutNotify("");
             view.Locked.SetIsOnWithoutNotify(false);
             view.Password.interactable = false;
             view.Status.text = "";
             SetChat(true);
-            SetRule("basic");
+            SetRule("wild");
             Canvas.ForceUpdateCanvases();
-            view.Rules.horizontalNormalizedPosition = 1;
+            view.Rules.horizontalNormalizedPosition = 0;
             var locked = view.Locked;
             locked.onValueChanged.AddListener(PasswordChanged);
             screen.Add(() => { if (locked) locked.onValueChanged.RemoveListener(PasswordChanged); });
@@ -69,7 +69,7 @@ namespace AstralOath.Client.Arena
             foreach (string name in ArenaLabels.Rules) view.Selection(name).enabled = value == name;
         }
 
-        private Task Close(CancellationToken _) { Dispose(); return Task.CompletedTask; }
+        private Task Close(CancellationToken _) { close(); return Task.CompletedTask; }
 
         private async Task Confirm(CancellationToken token)
         {
@@ -81,18 +81,16 @@ namespace AstralOath.Client.Arena
                 return;
             }
             view.Status.text = "";
+            view.Cancel.interactable = view.Dismiss.interactable = false;
             try { await submit(new ArenaCreateRequest { name = name, password = password, rule = rule, allowChat = chat }, token); }
             catch (ArenaRequestException error) { view.Status.text = ArenaError.Text(locale, error); }
+            finally
+            {
+                if (view.Root) view.Cancel.interactable = view.Dismiss.interactable = true;
+            }
         }
 
         internal static bool ValidPassword(string value) =>
             value.Length == 4 && Array.TrueForAll(value.ToCharArray(), digit => digit >= '0' && digit <= '9');
-
-        public void Dispose()
-        {
-            screen?.Dispose();
-            screen = null;
-            if (view.Root) view.Hide();
-        }
     }
 }

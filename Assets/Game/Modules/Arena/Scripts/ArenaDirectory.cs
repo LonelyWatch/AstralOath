@@ -16,6 +16,8 @@ namespace AstralOath.Client.Arena
         public GameButton Search => Bindings.Require<GameButton>("search");
         public GameButton SubmitSearch => Bindings.Require<GameButton>("submitSearch");
         public GameText FilterLabel => Bindings.Require<GameText>("filterLabel");
+        public Image SearchSelected => Bindings.Require<Image>("searchSelected");
+        public Image SearchIcon => Bindings.Require<Image>("searchIcon");
         public GameText SearchLabel => Bindings.Require<GameText>("searchLabel");
         public GameText Status => Bindings.Require<GameText>("status");
         public GameObject SearchPanel => Bindings.Require<GameObject>("searchPanel");
@@ -27,7 +29,7 @@ namespace AstralOath.Client.Arena
         public override void Validate()
         {
             _ = Back; _ = Create; _ = Refresh; _ = Filter; _ = Search; _ = SubmitSearch;
-            _ = FilterLabel; _ = SearchLabel; _ = Status; _ = SearchPanel; _ = Query; _ = List; _ = Row; _ = Choice; _ = Password;
+            _ = FilterLabel; _ = SearchSelected; _ = SearchIcon; _ = SearchLabel; _ = Status; _ = SearchPanel; _ = Query; _ = List; _ = Row; _ = Choice; _ = Password;
         }
     }
 }

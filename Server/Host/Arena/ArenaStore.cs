@@ -1,5 +1,6 @@
 using System.Data;
 using System.Security.Cryptography;
+using AstralOath.Server.Foundation;
 using MySqlConnector;
 
 namespace AstralOath.Server.Arena;
@@ -38,7 +39,8 @@ internal sealed class ArenaStore(string? connectionString)
         return await reader.ReadAsync(token) ? ReadPlayer(reader, 0) : null;
     }
 
-    public async Task<IReadOnlyList<ArenaRoom>> Directory(string visibility, string sort, string query, CancellationToken token)
+    public async Task<IReadOnlyList<ArenaRoom>> Directory(string visibility, string sort, string direction, string query,
+        CancellationToken token)
     {
         await using var connection = await Open(token);
         using var command = Command(connection, null, """
@@ -49,9 +51,12 @@ internal sealed class ArenaStore(string? connectionString)
             JOIN arena_player p ON p.id = r.host_id
             WHERE (@visibility = 'all' OR (r.password_hash IS NULL) = (@visibility = 'public'))
               AND (@query = '' OR LOCATE(@query, r.name) > 0)
-            ORDER BY CASE WHEN @sort = 'players' THEN member_count END DESC, r.created_at DESC, r.id ASC
+            ORDER BY CASE WHEN @sort = 'players' AND @direction = 'asc' THEN member_count END ASC,
+                     CASE WHEN @sort = 'players' AND @direction = 'desc' THEN member_count END DESC,
+                     CASE WHEN @sort = 'recent' AND @direction = 'asc' THEN r.created_at END ASC,
+                     r.created_at DESC, r.id ASC
             LIMIT 100;
-            """, ("@visibility", visibility), ("@query", query), ("@sort", sort));
+            """, ("@visibility", visibility), ("@query", query), ("@sort", sort), ("@direction", direction));
         await using var reader = await command.ExecuteReaderAsync(token);
         var rooms = new List<ArenaRoom>();
         while (await reader.ReadAsync(token))
@@ -80,6 +85,7 @@ internal sealed class ArenaStore(string? connectionString)
         await InsertMembership(connection, transaction, id, player.Id, token);
         var room = await LockRoom(connection, transaction, id, token);
         var state = State(room, new[] { player });
+        await AuditRoom(connection, transaction, "arena.room.create", player, id, token);
         await transaction.CommitAsync(token);
         return state;
     }
@@ -102,6 +108,7 @@ internal sealed class ArenaStore(string? connectionString)
             if (members.Count >= Capacity) throw new ArenaProblem(409, "room_full");
             await InsertMembership(connection, transaction, id, player.Id, token);
             members.Add(player);
+            await AuditRoom(connection, transaction, "arena.room.join", player, id, token);
         }
         var state = State(room, members);
         await transaction.CommitAsync(token);
@@ -150,6 +157,7 @@ internal sealed class ArenaStore(string? connectionString)
                     ("@host", members[0].Id), ("@id", id));
             await next.ExecuteNonQueryAsync(token);
         }
+        await AuditRoom(connection, transaction, "arena.room.leave", player, id, token);
         await transaction.CommitAsync(token);
     }
 
@@ -199,9 +207,20 @@ internal sealed class ArenaStore(string? connectionString)
             """, ("@room", id), ("@player", player.Id), ("@body", text), ("@now", now));
         await insert.ExecuteNonQueryAsync(token);
         long messageId = insert.LastInsertedId;
+        await AuditRoom(connection, transaction, "arena.chat.send", player, id, token);
         await transaction.CommitAsync(token);
         return new ArenaMessage(messageId, player, text, now);
     }
+
+    public async Task RecordTelemetry(ArenaPlayer player, string eventId, string operation, CancellationToken token)
+    {
+        await using var connection = await Open(token);
+        await OperationAudit.Record(connection, null, operation, "arena_player", player.Id, null, null, eventId, token);
+    }
+
+    private static Task AuditRoom(MySqlConnection connection, MySqlTransaction transaction, string operation,
+        ArenaPlayer player, string roomId, CancellationToken token) =>
+        OperationAudit.Record(connection, transaction, operation, "arena_player", player.Id, "arena_room", roomId, null, token);
 
     private async Task<MySqlConnection> Open(CancellationToken token)
     {

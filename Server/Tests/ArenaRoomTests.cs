@@ -27,6 +27,71 @@ public sealed class ArenaRoomTests
     }
 
     [MySqlFact]
+    public async Task AuditRecordsCommittedChangesAndDeduplicatesAuthenticatedClientEvents()
+    {
+        var connection = Environment.GetEnvironmentVariable("ASTRALOATH_MYSQL_TEST")!;
+        using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+        await DatabaseMigrator.ApplyAsync(connection, deadline.Token);
+        await using var source = new WebApplicationFactory<Program>();
+        await using var factory = WithDatabase(source, connection);
+        using var host = factory.CreateClient();
+        using var guest = factory.CreateClient();
+        string refreshId = Guid.NewGuid().ToString("N");
+        var refresh = new { eventId = refreshId, name = "directory_refresh" };
+        using var unauthorized = await guest.PostAsJsonAsync(Arena + "/telemetry", refresh);
+        Assert.Equal(HttpStatusCode.Unauthorized, unauthorized.StatusCode);
+        await Authorize(host, "留痕房主");
+        await Authorize(guest, "留痕访客");
+        using var accepted = await guest.PostAsJsonAsync(Arena + "/telemetry", refresh);
+        Assert.Equal(HttpStatusCode.NoContent, accepted.StatusCode);
+        using var duplicate = await guest.PostAsJsonAsync(Arena + "/telemetry", refresh);
+        Assert.Equal(HttpStatusCode.NoContent, duplicate.StatusCode);
+        using var spoof = await guest.PostAsJsonAsync(Arena + "/telemetry", new { eventId = Guid.NewGuid().ToString("N"), name = "arena.room.create" });
+        Assert.Equal(HttpStatusCode.BadRequest, spoof.StatusCode);
+        using var arbitrary = await guest.PostAsJsonAsync(Arena + "/telemetry", new { eventId = Guid.NewGuid().ToString("N"), name = "directory_search", query = "私密搜索" });
+        Assert.Equal(HttpStatusCode.BadRequest, arbitrary.StatusCode);
+
+        var created = await Post(host, "/rooms", new { name = "留痕房间", password = "0042", allowChat = true, rule = "basic" });
+        string roomId = created.GetProperty("room").GetProperty("id").GetString()!;
+        using var wrong = await guest.PostAsJsonAsync(Arena + $"/rooms/{roomId}/join", new { password = "0000" });
+        Assert.Equal(HttpStatusCode.Forbidden, wrong.StatusCode);
+        var joined = await Post(guest, $"/rooms/{roomId}/join", new { password = "0042" });
+        await Post(guest, $"/rooms/{roomId}/join", new { password = "0042" });
+        string hostId = created.GetProperty("room").GetProperty("host").GetProperty("id").GetString()!;
+        string guestId = joined.GetProperty("members")[1].GetProperty("id").GetString()!;
+        await Post(guest, $"/rooms/{roomId}/messages", new { text = "聊天私密正文" });
+        foreach (var player in new[] { guest, guest, host })
+        {
+            using var leave = await player.PostAsync(Arena + $"/rooms/{roomId}/leave", null);
+            Assert.Equal(HttpStatusCode.NoContent, leave.StatusCode);
+        }
+
+        await using var mysql = new MySqlConnection(connection);
+        await mysql.OpenAsync(deadline.Token);
+        using var read = new MySqlCommand("""
+            SELECT actor_id, operation, subject_type, subject_id, client_event_id
+            FROM game_operation_audit
+            WHERE subject_id = @room OR client_event_id = @event ORDER BY id;
+            """, mysql);
+        read.Parameters.AddWithValue("@room", roomId);
+        read.Parameters.AddWithValue("@event", refreshId);
+        var actual = new List<(string, string, string?, string?, string?)>();
+        await using var rows = await read.ExecuteReaderAsync(deadline.Token);
+        while (await rows.ReadAsync(deadline.Token))
+            actual.Add((rows.GetString(0), rows.GetString(1), rows.IsDBNull(2) ? null : rows.GetString(2),
+                rows.IsDBNull(3) ? null : rows.GetString(3), rows.IsDBNull(4) ? null : rows.GetString(4)));
+        Assert.Equal(new[]
+        {
+            (guestId, "arena.directory.refresh", (string?)null, (string?)null, refreshId),
+            (hostId, "arena.room.create", "arena_room", roomId, (string?)null),
+            (guestId, "arena.room.join", "arena_room", roomId, (string?)null),
+            (guestId, "arena.chat.send", "arena_room", roomId, (string?)null),
+            (guestId, "arena.room.leave", "arena_room", roomId, (string?)null),
+            (hostId, "arena.room.leave", "arena_room", roomId, (string?)null),
+        }, actual);
+    }
+
+    [MySqlFact]
     public async Task TwoSessionsCanDiscoverJoinAndChatAcrossRestart()
     {
         var connection = Environment.GetEnvironmentVariable("ASTRALOATH_MYSQL_TEST")!;
@@ -55,6 +120,8 @@ public sealed class ArenaRoomTests
             Assert.Equal(roomId, Assert.Single(directory.GetProperty("rooms").EnumerateArray()).GetProperty("id").GetString());
             Assert.Empty((await Get(guest, "/rooms?visibility=public&query=" + Uri.EscapeDataString(roomName)))
                 .GetProperty("rooms").EnumerateArray());
+            using var invalidDirection = await guest.GetAsync(Arena + "/rooms?direction=sideways");
+            Assert.Equal(HttpStatusCode.BadRequest, invalidDirection.StatusCode);
 
             using var wrong = await guest.PostAsJsonAsync(Arena + $"/rooms/{roomId}/join", new { password = "1234" });
             Assert.Equal(HttpStatusCode.Forbidden, wrong.StatusCode);
@@ -88,6 +155,45 @@ public sealed class ArenaRoomTests
         using var cleared = await restored.GetAsync(Arena + "/rooms/current");
         Assert.Equal(HttpStatusCode.NoContent, cleared.StatusCode);
         Assert.Empty((await Get(restored, "/rooms?query=" + Uri.EscapeDataString(roomName))).GetProperty("rooms").EnumerateArray());
+    }
+
+    [MySqlFact]
+    public async Task DirectorySortsBothKeysInEitherDirectionBeforeReturningRooms()
+    {
+        var connection = Environment.GetEnvironmentVariable("ASTRALOATH_MYSQL_TEST")!;
+        await DatabaseMigrator.ApplyAsync(connection, CancellationToken.None);
+        await using var source = new WebApplicationFactory<Program>();
+        await using var factory = WithDatabase(source, connection);
+        using var firstHost = factory.CreateClient();
+        using var secondHost = factory.CreateClient();
+        using var guest = factory.CreateClient();
+        await Authorize(firstHost, "较早房主");
+        await Authorize(secondHost, "较晚房主");
+        await Authorize(guest, "排序访客");
+        string prefix = "排序" + Guid.NewGuid().ToString("N")[..8];
+        var first = await Post(firstHost, "/rooms", new { name = prefix + "甲", allowChat = true, rule = "basic" });
+        var second = await Post(secondHost, "/rooms", new { name = prefix + "乙", allowChat = true, rule = "basic" });
+        string firstId = first.GetProperty("room").GetProperty("id").GetString()!;
+        string secondId = second.GetProperty("room").GetProperty("id").GetString()!;
+        try
+        {
+            await Post(guest, $"/rooms/{firstId}/join", new { });
+            Assert.Equal(new[] { firstId, secondId }, await Sort("players", ""));
+            Assert.Equal(new[] { firstId, secondId }, await Sort("players", "&direction=desc"));
+            Assert.Equal(new[] { secondId, firstId }, await Sort("players", "&direction=asc"));
+            Assert.Equal(new[] { secondId, firstId }, await Sort("recent", "&direction=desc"));
+            Assert.Equal(new[] { firstId, secondId }, await Sort("recent", "&direction=asc"));
+        }
+        finally
+        {
+            using var guestLeave = await guest.PostAsync(Arena + $"/rooms/{firstId}/leave", null);
+            using var firstLeave = await firstHost.PostAsync(Arena + $"/rooms/{firstId}/leave", null);
+            using var secondLeave = await secondHost.PostAsync(Arena + $"/rooms/{secondId}/leave", null);
+        }
+
+        async Task<string?[]> Sort(string key, string direction) =>
+            (await Get(guest, $"/rooms?query={Uri.EscapeDataString(prefix)}&sort={key}{direction}"))
+            .GetProperty("rooms").EnumerateArray().Select(row => row.GetProperty("id").GetString()).ToArray();
     }
 
     [MySqlFact]

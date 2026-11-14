@@ -24,3 +24,5 @@ CharacterLab 的 YooAsset 收集设置由编辑器按导入清单维护，本次
 实验室 YooAsset 收集配置已接入第 21–30 名角色及相关依赖，已有地址和 GUID 保持一致。 [角色批次](../../../../docs/delivery/2026-11-14-roster21-30.md)
 
 正式启动使用 Home/Scenes/GameHome.unity，FoundationDemo 场景保留作诊断。Foundation 包新增 HomeArena 收集组及两个业务程序集。 [启动与模拟战](../../../../docs/development/arena-lobby.md)
+
+正式主页、模拟战目录及房间切换使用现有 `WindowCoordinator`。启动根拥有窗口协调器、内容加载和竞技场会话生命周期。旧 Foundation 诊断窗口仍使用 `IClientWindow` 注册入口。

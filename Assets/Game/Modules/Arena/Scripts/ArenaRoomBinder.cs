@@ -6,16 +6,17 @@ using System.Threading.Tasks;
 using AstralOath.Client.Common;
 using AstralOath.Client.Core;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace AstralOath.Client.Arena
 {
-    public sealed class ArenaRoomBinder : IDisposable
+    public sealed class ArenaRoomBinder
     {
         private readonly ArenaRoom view;
         private readonly ILocaleService locale;
         private readonly ArenaApi api;
         private readonly Func<Task> goBack;
-        private readonly List<GameText> messages = new List<GameText>();
+        private readonly List<GameObject> messages = new List<GameObject>();
         private BindingScope screen, roster;
         private ArenaRoomState state;
         private long cursor;
@@ -30,11 +31,11 @@ namespace AstralOath.Client.Arena
             this.goBack = goBack;
         }
 
-        public void Show(ArenaRoomState initial, CancellationToken token)
+        public Task OpenAsync(ArenaRoomState initial, BindingScope owner)
         {
-            Dispose();
-            screen = new BindingScope(token);
+            screen = owner;
             view.Show();
+            owner.Add(Close);
             view.Status.text = "";
             view.Message.SetTextWithoutNotify("");
             Render(initial);
@@ -42,6 +43,7 @@ namespace AstralOath.Client.Arena
             view.Send.interactable = initial.room.allowChat;
             if (initial.room.allowChat) view.Send.Bind(screen, SendAsync);
             _ = WatchAsync(screen.Token);
+            return Task.CompletedTask;
         }
 
         private async Task WatchAsync(CancellationToken token)
@@ -56,7 +58,7 @@ namespace AstralOath.Client.Arena
                         var next = await api.GetAsync(id, token);
                         Render(next);
                         if (next.room.allowChat)
-                            foreach (var message in await api.ReadMessagesAsync(id, cursor, token)) AddMessage(message);
+                            AppendMessages(await api.ReadMessagesAsync(id, cursor, token));
                         view.Status.text = "";
                     }
                     catch (ArenaRequestException error)
@@ -86,9 +88,10 @@ namespace AstralOath.Client.Arena
             var host = next.room.host;
             var guest = members.FirstOrDefault(member => member.id != host?.id);
             ArenaArt.SetText(view.HostName, host?.displayName);
-            ArenaArt.SetText(view.GuestName, guest?.displayName ?? locale.Resolve("arena.no_player"));
+            ArenaArt.SetText(view.GuestName, guest?.displayName);
             ArenaArt.SetAvatar(view.Host, host, true);
             view.Vacant.enabled = guest == null;
+            view.EmptyInfo.SetActive(guest == null);
             view.Guest.gameObject.SetActive(guest != null);
             if (guest != null) ArenaArt.SetAvatar(view.Guest, guest, false);
             roster?.Dispose();
@@ -116,22 +119,54 @@ namespace AstralOath.Client.Arena
             catch (ArenaRequestException error) { view.Status.text = ArenaError.Text(locale, error); }
         }
 
-        private void AddMessage(ArenaMessage message)
+        private void AppendMessages(ArenaMessage[] incoming)
         {
-            if (message.id <= cursor) return;
-            var row = UnityEngine.Object.Instantiate(view.ChatRow, view.Messages.content, false);
-            ArenaArt.SetText(row, $"{message.player?.displayName}  {message.text}");
-            row.gameObject.SetActive(true);
-            messages.Add(row);
-            if (messages.Count > 100)
+            if (incoming.Length == 0) return;
+            var history = view.Messages;
+            bool follow = messages.Count == 0 || history.content.rect.height <= history.viewport.rect.height ||
+                history.verticalNormalizedPosition <= .04f;
+            float previousY = history.content.anchoredPosition.y;
+            float removedHeight = 0;
+            var layout = history.content.GetComponent<VerticalLayoutGroup>();
+            foreach (var message in incoming)
             {
-                messages[0].gameObject.SetActive(false);
-                UnityEngine.Object.Destroy(messages[0].gameObject);
-                messages.RemoveAt(0);
+                if (message.id <= cursor) continue;
+                var row = UnityEngine.Object.Instantiate(view.ChatRow, history.content, false);
+                var map = row.GetComponent<BindingMap>();
+                ArenaArt.SetAvatar(map.Require<BindingMap>("avatar"), message.player, false);
+                var sender = map.Require<GameText>("sender");
+                ArenaArt.SetText(sender, message.player?.displayName);
+                sender.color = message.player?.id == api.Player?.id ? new Color32(137, 201, 62, 255) : Color.white;
+                var body = map.Require<GameText>("body");
+                ArenaArt.SetText(body, message.text);
+                string age = DateTimeOffset.TryParse(message.createdAt, System.Globalization.CultureInfo.InvariantCulture,
+                    System.Globalization.DateTimeStyles.None, out var time) ? time.ToLocalTime().ToString("HH:mm") : "";
+                ArenaArt.SetText(map.Require<GameText>("age"), age);
+                row.SetActive(true);
+                var size = row.GetComponent<LayoutElement>();
+                float rowWidth = history.viewport.rect.width - layout.padding.horizontal;
+                float textFraction = body.rectTransform.anchorMax.x - body.rectTransform.anchorMin.x;
+                float bodyWidth = Mathf.Max(1, rowWidth * textFraction - body.margin.x - body.margin.z);
+                size.preferredHeight = Mathf.Max(size.minHeight, 49 + body.GetPreferredValues(body.text, bodyWidth, 0).y);
+                messages.Add(row);
+                if (messages.Count > 100)
+                {
+                    removedHeight += ((RectTransform)messages[0].transform).rect.height +
+                        layout.spacing;
+                    messages[0].SetActive(false);
+                    UnityEngine.Object.Destroy(messages[0]);
+                    messages.RemoveAt(0);
+                }
+                cursor = message.id;
             }
-            cursor = message.id;
             Canvas.ForceUpdateCanvases();
-            view.Messages.verticalNormalizedPosition = 0;
+            if (follow) history.verticalNormalizedPosition = 0;
+            else
+            {
+                var position = history.content.anchoredPosition;
+                position.y = Mathf.Max(0, previousY - removedHeight);
+                history.content.anchoredPosition = position;
+            }
         }
 
         private async Task LeaveAsync(CancellationToken token)
@@ -151,13 +186,12 @@ namespace AstralOath.Client.Arena
             finally { leaving = false; }
         }
 
-        public void Dispose()
+        private void Close()
         {
-            screen?.Dispose();
             screen = null;
             roster?.Dispose();
             roster = null;
-            foreach (var row in messages) if (row) UnityEngine.Object.Destroy(row.gameObject);
+            foreach (var row in messages) if (row) { row.SetActive(false); UnityEngine.Object.Destroy(row); }
             messages.Clear();
             cursor = 0;
             memberSignature = null;

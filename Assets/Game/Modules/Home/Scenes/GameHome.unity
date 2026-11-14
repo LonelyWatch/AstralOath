@@ -724,6 +724,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   clickAudio: {fileID: 0}
+  feedbackSound: 0
 --- !u!1 &1384843494
 GameObject:
   m_ObjectHideFlags: 0
@@ -736,6 +737,7 @@ GameObject:
   - component: {fileID: 1384843498}
   - component: {fileID: 1384843497}
   - component: {fileID: 1384843496}
+  - component: {fileID: 1384843499}
   m_Layer: 0
   m_Name: Foundation Canvas
   m_TagString: Untagged
@@ -827,6 +829,25 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1384843499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1384843494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef5a879d5ef05a04a0720329fd124321, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  ring: {fileID: 21300000, guid: 9831cf84c6115e53a9b2fa96042060e4, type: 3}
+  glow: {fileID: 21300000, guid: 3d3230e528445affbb117f7312e618c2, type: 3}
+  spark: {fileID: 21300000, guid: bd9116a294895db2ada47c7e74ac565b, type: 3}
+  normal: {fileID: 8300000, guid: ffe7d70423275e6bbbf837c5da6e494e, type: 3}
+  confirm: {fileID: 8300000, guid: 5130cc75e93f53c39857d62567427d3f, type: 3}
+  cancel: {fileID: 8300000, guid: 03fb300bf820568482f750de6cf43f22, type: 3}
+  back: {fileID: 8300000, guid: e51964293381550d9ca74cf10ad045c3, type: 3}
 --- !u!1 &1527701559
 GameObject:
   m_ObjectHideFlags: 0

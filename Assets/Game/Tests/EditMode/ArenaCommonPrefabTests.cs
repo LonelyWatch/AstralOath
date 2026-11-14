@@ -12,9 +12,9 @@ namespace AstralOath.Client.Tests
     {
         private const string PrefabRoot = "Assets/Game/Common/Res/Prefab/";
 
-        [TestCase("ConfirmButton", "_btn_green")]
-        [TestCase("CancelButton", "_btn_gold")]
-        public void CommonButtonsHaveNativeArtworkAndClickAudio(string prefab, string sprite)
+        [TestCase("ConfirmButton", "_btn_green", "UiAccept")]
+        [TestCase("CancelButton", "_btn_gold", "UiCancel")]
+        public void CommonButtonsHaveNativeArtworkAndClickAudio(string prefab, string sprite, string clip)
         {
             var map = Load(prefab).GetComponent<BindingMap>();
             var button = map.Require<GameButton>("button");
@@ -23,7 +23,7 @@ namespace AstralOath.Client.Tests
             Assert.That(button.spriteState.pressedSprite.name, Is.EqualTo(sprite + "_p"));
             var audio = (AudioSource)new SerializedObject(button).FindProperty("clickAudio").objectReferenceValue;
             Assert.That(audio, Is.Not.Null);
-            Assert.That(audio.clip.name, Is.EqualTo("UiConfirm"));
+            Assert.That(audio.clip.name, Is.EqualTo(clip));
             Assert.That(audio.playOnAwake, Is.False);
         }
 

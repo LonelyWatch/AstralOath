@@ -108,6 +108,12 @@ namespace AstralOath.Editor
             bootstrap.FindProperty("showGameHome").boolValue = true;
             bootstrap.ApplyModifiedPropertiesWithoutUndo();
             var canvas = scene.GetRootGameObjects().Single(item => item.GetComponent<CanvasScaler>());
+            var feedback = canvas.AddComponent<GameUiFeedback>();
+            feedback.Configure(Load<Sprite>(Common + "Textures/UiTouchRing.png"), Load<Sprite>(Common + "Textures/UiTouchGlow.png"),
+                Load<AudioClip>(Common + "Sounds/UiConfirm.wav"), Load<AudioClip>(Common + "Sounds/UiAccept.wav"),
+                Load<AudioClip>(Common + "Sounds/UiCancel.wav"), Load<AudioClip>(Common + "Sounds/UiBack.wav"),
+                Load<Sprite>(Common + "Textures/UiTouchSpark.png"));
+            EditorUtility.SetDirty(feedback);
             canvas.GetComponent<CanvasScaler>().screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
             canvas.GetComponent<CanvasScaler>().matchWidthOrHeight = 1f;
             var launch = (GameButton)bootstrap.FindProperty("open").objectReferenceValue;
@@ -203,22 +209,13 @@ namespace AstralOath.Editor
             return t;
         }
 
-        private static GameButton Button(RectTransform rect, Sprite sprite, Color color, bool sound = true)
+        private static GameButton Button(RectTransform rect, Sprite sprite, Color color)
         {
             var image = Paint(rect, sprite, color, true, true);
             image.canvasRenderer.cullTransparentMesh = false;
             var button = rect.gameObject.AddComponent<GameButton>();
             button.targetGraphic = image;
             button.navigation = new Navigation { mode = Navigation.Mode.Automatic };
-            if (sound)
-            {
-                var audio = rect.gameObject.AddComponent<AudioSource>();
-                audio.playOnAwake = false;
-                audio.clip = Load<AudioClip>(Common + "Sounds/UiConfirm.wav");
-                var obj = new SerializedObject(button);
-                obj.FindProperty("clickAudio").objectReferenceValue = audio;
-                obj.ApplyModifiedPropertiesWithoutUndo();
-            }
             return button;
         }
 
@@ -247,7 +244,20 @@ namespace AstralOath.Editor
             label.font = font;
             label.fontSharedMaterial = font.material;
             label.text = labels[key];
-            return map.Require<GameButton>("button");
+            var button = map.Require<GameButton>("button");
+            button.FeedbackSound = key switch
+            {
+                "arena.confirm" => GameUiFeedback.Sound.Confirm,
+                "arena.cancel" => GameUiFeedback.Sound.Cancel,
+                _ => GameUiFeedback.Sound.Normal,
+            };
+            if (button.FeedbackSound == GameUiFeedback.Sound.Normal)
+            {
+                var settings = new SerializedObject(button);
+                settings.FindProperty("clickAudio").objectReferenceValue = null;
+                settings.ApplyModifiedPropertiesWithoutUndo();
+            }
+            return button;
         }
 
         private static BindingMap Avatar(RectTransform parent, string name, float x, float y, float w, float h)
@@ -327,6 +337,14 @@ namespace AstralOath.Editor
                 input.keyboardType = TouchScreenKeyboardType.NumberPad;
             }
             return input;
+        }
+
+        private static void FollowKeyboard(RectTransform panel, TMP_InputField input)
+        {
+            var keyboard = panel.gameObject.AddComponent<OnScreenKeyboardInset>();
+            var serialized = new SerializedObject(keyboard);
+            serialized.FindProperty("input").objectReferenceValue = input;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
         }
 
         private static void Bind(RectTransform root, params (string Key, Object Target)[] keys)

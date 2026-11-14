@@ -21,14 +21,15 @@ namespace AstralOath.Client.Arena
         public BindingMap Host => Bindings.Require<BindingMap>("host");
         public BindingMap Guest => Bindings.Require<BindingMap>("guest");
         public Image Vacant => Bindings.Require<Image>("vacant");
+        public GameObject EmptyInfo => Bindings.Require<GameObject>("emptyInfo");
         public ScrollRect Members => Bindings.Require<ScrollRect>("members");
         public GameObject MemberRow => Bindings.Require<GameObject>("memberRow");
         public ScrollRect Messages => Bindings.Require<ScrollRect>("messages");
-        public GameText ChatRow => Bindings.Require<GameText>("chatRow");
+        public GameObject ChatRow => Bindings.Require<GameObject>("chatRow");
         public override void Validate()
         {
             _ = Leave; _ = Send; _ = RoomName; _ = Rule; _ = Count; _ = HostName; _ = GuestName; _ = Status;
-            _ = Message; _ = Host; _ = Guest; _ = Vacant; _ = Members; _ = MemberRow; _ = Messages; _ = ChatRow;
+            _ = Message; _ = Host; _ = Guest; _ = Vacant; _ = EmptyInfo; _ = Members; _ = MemberRow; _ = Messages; _ = ChatRow;
         }
     }
 }

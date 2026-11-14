@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "release": "pack-15-r4262",
+  "sources": [
+    {
+      "path": "effect/ui_touch_def.cfx",
+      "sha256": "78b109af5e1e65c19d0672dee49067eee674a2873834a14927bca43494501d59"
+    },
+    {
+      "path": "effect/ui_touch_def.scsp",
+      "sha256": "96b4130be5ae8c4802f4c434238565b24be6fd712620be0934db77340ee2018c"
+    },
+    {
+      "path": "effect/ui_touch_def.atlas",
+      "sha256": "ca72c3761a2057b82da3a1d0d7ab63cad08409eba754fc35971caeab312b6315"
+    },
+    {
+      "path": "effect/ui_touch_def.sct",
+      "sha256": "3771974130af57c3c201940ec990d3a7326107ea48b18e6b94acad8c20b37355"
+    },
+    {
+      "path": "effect/ui_touch_def_pati1.particle",
+      "sha256": "b176a04aabdc755eb7c9f91226def21fd1e33a817674185e9b0a4021d8a3ec73"
+    },
+    {
+      "path": "particle/pati_03.sct",
+      "sha256": "5b0dea52e1fb929af01a0ed52cfd671d8632532336e98cfec7948b66b42d74b0"
+    },
+    {
+      "path": "sound/ui1.bank",
+      "sha256": "005c2f5479c9bd7c9557f4fbda6cca0dc5fdfcce3d5b67ffe13a74198f23e804"
+    }
+  ],
+  "textures": [
+    {
+      "path": "UiTouchRing.png",
+      "region": "ring",
+      "atlasRect": [
+        2,
+        261,
+        226,
+        226
+      ],
+      "sha256": "297ab7d55858e70aa544ab8a2d759e670182af8464137a3588f2646a2c453565"
+    },
+    {
+      "path": "UiTouchGlow.png",
+      "region": "ring_glow",
+      "atlasRect": [
+        2,
+        2,
+        257,
+        257
+      ],
+      "sha256": "bed24f466b3f6345b8a4e0b6cbee9319be7228d3a01c6358910e7e17d3fcc3e4"
+    },
+    {
+      "path": "UiTouchSpark.png",
+      "sha256": "e82c7a7b39d307562a22335917117f67131a62db0f5e3f4c121fd6b6bff5c10c"
+    }
+  ],
+  "audioRenderer": "FMOD Studio 2.03.15 WAVWRITER, PCM16 at 48000 Hz, silence trimmed without gain change",
+  "audio": [
+    {
+      "path": "UiConfirm.wav",
+      "event": "event:/ui/btn_normal",
+      "sha256": "2888aad5cb9853f51cc46dcf8b14e940e54040b72605efe8b8cf0eaac3ac0d87"
+    },
+    {
+      "path": "UiAccept.wav",
+      "event": "event:/ui/msgbox/btn_yes",
+      "durationSeconds": 0.26937,
+      "sha256": "60c35b92d02e3925949385016e9836879920ab2d120e3a43140105b0e458098f"
+    },
+    {
+      "path": "UiCancel.wav",
+      "event": "event:/ui/msgbox/btn_cancel",
+      "durationSeconds": 0.46165,
+      "sha256": "f12c86df4e29d28b0189d907e4d71e2b2c810bed7fd4ac913b85dabe1f79718c"
+    },
+    {
+      "path": "UiBack.wav",
+      "event": "event:/ui/btn_back",
+      "durationSeconds": 0.86998,
+      "sha256": "11d0340e7da1c5e6a7bb16a962123505cc7b49664dfc59f7faa58dbe04a432ff"
+    }
+  ]
+}

@@ -11,7 +11,7 @@ namespace AstralOath.Client.FoundationDemo
 {
     internal sealed class StartupNavigation
     {
-        private readonly BindingScope lifetime;
+        private readonly WindowCoordinator windows;
         private readonly HomeWindowBinder home;
         private readonly ArenaDirectoryBinder directory;
         private readonly ArenaRoomBinder room;
@@ -19,13 +19,11 @@ namespace AstralOath.Client.FoundationDemo
         private StartupNavigation(BindingScope lifetime, HomeWindow homeView, ArenaDirectory directoryView,
             ArenaCreateRoom createView, ArenaRoom roomView, ILocaleService locale, ArenaApi api, string playerName)
         {
-            this.lifetime = lifetime;
-            home = new HomeWindowBinder(homeView, locale, OpenDirectory, lifetime.Token);
-            directory = new ArenaDirectoryBinder(directoryView, createView, locale, api, OpenRoom, ShowHome, playerName);
+            windows = new WindowCoordinator(lifetime.Token);
+            lifetime.Add(windows.Dispose);
+            home = new HomeWindowBinder(homeView, locale, OpenDirectory);
+            directory = new ArenaDirectoryBinder(directoryView, createView, locale, api, windows, OpenRoom, ShowHome, playerName);
             room = new ArenaRoomBinder(roomView, locale, api, ReturnToDirectory);
-            lifetime.Add(room.Dispose);
-            lifetime.Add(directory.Dispose);
-            lifetime.Add(home.Dispose);
         }
 
         internal static async Task<StartupNavigation> StartAsync(GameLaunchContext context, BindingScope owner)
@@ -41,7 +39,7 @@ namespace AstralOath.Client.FoundationDemo
             var directory = await views.CreateAsync<ArenaDirectory>(assets, context.ViewRoot, owner);
             var create = await views.CreateAsync<ArenaCreateRoom>(assets, context.ViewRoot, owner);
             var room = await views.CreateAsync<ArenaRoom>(assets, context.ViewRoot, owner);
-            var api = new ArenaApi(context.Services.Get<GameServerEndpoint>().Address);
+            var api = new ArenaApi(context.Services.Get<GameServerEndpoint>().Address, owner.Token);
             string name = Environment.GetEnvironmentVariable("ASTRAL_ARENA_PLAYER_NAME");
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -54,41 +52,28 @@ namespace AstralOath.Client.FoundationDemo
                 }
             }
             var navigation = new StartupNavigation(owner, home, directory, create, room, locale, api, name);
-            navigation.ShowHome();
+            await navigation.ShowHome();
             context.Services.Add<ILocaleService>(locale);
             context.OpenButton.gameObject.SetActive(false);
             context.StartupStatus.gameObject.SetActive(false);
             return navigation;
         }
 
-        private async Task OpenDirectory(CancellationToken token)
+        private Task OpenDirectory(CancellationToken token)
         {
             token.ThrowIfCancellationRequested();
-            home.Hide();
-            await directory.ShowAsync(lifetime.Token);
+            return ReturnToDirectory();
         }
 
         private Task OpenRoom(ArenaRoomState state, CancellationToken token)
         {
             token.ThrowIfCancellationRequested();
             if (state?.room == null) throw new InvalidOperationException("Arena room response is missing.");
-            directory.Dispose();
-            room.Show(state, lifetime.Token);
-            return Task.CompletedTask;
+            return windows.ShowPageAsync(scope => room.OpenAsync(state, scope));
         }
 
-        private Task ReturnToDirectory()
-        {
-            room.Dispose();
-            return directory.ShowAsync(lifetime.Token);
-        }
+        private Task ReturnToDirectory() => windows.ShowPageAsync(directory.OpenAsync);
 
-        private void ShowHome()
-        {
-            directory.Dispose();
-            room.Dispose();
-            home.Show();
-        }
-
+        private Task ShowHome() => windows.ShowPageAsync(home.OpenAsync);
     }
 }

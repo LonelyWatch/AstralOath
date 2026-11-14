@@ -49,6 +49,14 @@ public sealed class InventoryWindow : UIBaseView
 
 `UIBaseView` 提供显示和组件访问；订阅、按钮行为、网络请求等继续由C# Binder组织，并用当前窗口的 BindingScope 取消与解绑。不要把业务类重新挂到预制体上，也不要把层级名称当作运行时查找路径。
 
+## 页面、浮层与交互反馈
+
+正式页通过 Core `WindowCoordinator.ShowPageAsync` 打开。窗口协调器负责替换时先关闭浮层，再解绑旧页面并取消请求。每次打开都获得新的 `BindingScope`。`ShowOverlay` 和 `CloseOverlay` 操作当前页面的命名浮层，页面、筛选、搜索、创建和密码都走同一入口。UIBaseView 继续只负责组件和显示，Binder 将恢复、轮询与事件注册到本次的 scope。
+
+根 Canvas 配置 `GameUiFeedback` 后，触点共用点击泛光和音频输出。普通 `GameButton` 自动使用默认音色，确认、取消和返回使用对应姿态设置。TMP 输入、标准选择组件使用相同反馈。不要在业务按钮回调里再次播放通用点击声。通用预制体的独立运行可使用其既有音频引用。`OnScreenKeyboardInset` 可用于底部输入条。真机键盘具体行为需按平台复核。
+
+业务需要留痕时按[留痕规则](operation-audit.md)在语义操作中调用，通用运行组件不上传点击。架构边界见 [ADR 016](../architecture/adr/016-window-feedback-operation-audit.md)。
+
 ## 演示与内容兼容性
 
 演示使用 `FoundationWindow.prefab`、`FoundationWindow.cs` 和 `FoundationWindowBinder.cs`。View 地址为 `foundation/foundation-window`，由 `FoundationEntry` 注册并加载。签名内容使用 schema 3，协议版本为 1。发布命令见[热更与强更构建](hot-update.md)。

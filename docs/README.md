@@ -18,6 +18,7 @@
 - 新系统/模块：[通用规范](development/project-standards.md)、目标模块 README、[AI 开发流程](development/ai-workflow.md)。
 - UI：[UIBaseView / Binder / 控件](development/ui-binder.md)、[控件决策](architecture/adr/009-ui-controls.md)。
 - 主页与竞技场：[启动、房间与聊天](development/arena-lobby.md)、[Arena](../Assets/Game/Modules/Arena/README.md)。
+- 操作留痕：[规则和接口](development/operation-audit.md)、[窗口与交互 ADR](architecture/adr/016-window-feedback-operation-audit.md)。
 - 配表：[Config README](../Config/README.md)、[配置与内容更新](architecture/content.md)。
 - 热更/强更：[构建操作](development/hot-update.md)、[更新能力核对](delivery/2026-11-12-foundation-reaudit.md)、[HybridCLR 决策](architecture/adr/007-hybridclr.md)。
 - 服务端/数据库：[开发运维](development/server.md)、[服务端架构](architecture/server.md)。

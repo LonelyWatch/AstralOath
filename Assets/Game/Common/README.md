@@ -15,7 +15,13 @@ Common 提供通用组件和资源，业务文案、图标数据、事件和生�
 
 ## 竞技场复用组件
 
-- `ConfirmButton` 和 `CancelButton` 使用竞技场原版绿、棕正常及按下贴图。两者通过 `button` / `label` 绑定文本和行为，沿用原版 `UiConfirm.wav` 与 GameButton 的 Canvas 级音效。快速关闭面板时音效可继续播放。
+- `ConfirmButton` 和 `CancelButton` 使用竞技场原版绿、棕正常及按下贴图。两者通过 `button` / `label` 绑定文本和行为，分别引用原版确认 `UiAccept.wav` 与取消 `UiCancel.wav`，由 Canvas 级音频源播放。快速关闭面板时音效可继续播放。
 - `ChoicePopup` 提供占满父容器的 `dismiss`、可定位 `body` 和模板 `choiceTemplate`。单列选项可用普通 C# `ChoicePopupBinder`，多列筛选可向同一个 body 添加控件并绑定 dismiss。父界面负责将 body 约束在自己的安全区。
 - `PlayerAvatar` 通过遮罩、原版圆框和可选的房主标记及徽章显示头像。调用方提供已加载的 Sprite 和资源生命周期。可通过 `PlayerAvatar.FromInstance` 绑定现有实例。预制体自身不拦截点击。
 - 菜单 `Tools/UI/生成竞技场通用预制体` 重建这些 Prefab，右键 `UI` 可直接创建实例。原版贴图、源 CSB、尺寸及校验值见 `Res/Textures/arena-common-source.json`。
+
+## 通用触点和键盘反馈
+
+根 Canvas 配置 `GameUiFeedback`。每个 UI 根使用固定上限的光环池，短点显示原版蓝色外扩环和粒子，拖动取消，图像不参与射线。`GameButton` 可指定普通、确认、取消、返回音色，普通按钮默认继承根 Canvas，旧按钮保留其已配置的音源。选择及输入控件由相同 Canvas 处理。资源来源见 `Res/Textures/ui-feedback-source.json`。
+
+聊天输入底栏可使用 `OnScreenKeyboardInset` 获取原生键盘边距。组件只移动拥有焦点的输入容器，收键盘后还原。Android 11 及以上读 IME Inset，Android 10 从窗口可见区域估算。

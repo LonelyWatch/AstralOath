@@ -5,3 +5,7 @@
 房间用独立的 BindingScope 轮询成员和竞技场聊天，退出界面取消请求并释放列表和聊天实例。目录由玩家手动更新。房间密码仅提交到服务器，接口只返回是否设密。会话由服务端发放，客户端在同一进程内持有令牌。网络走与 Foundation 一致的 HTTPS 或本机回环 HTTP 地址。
 
 `arena/directory`、`arena/create-room`、`arena/room` 和 `arena/zh-hans` 加入 Foundation 的 `HomeArena` 收集组。原版素材与截图对照见 `Res/Textures/source-manifest.json` 和[操作与验收](../../../../docs/development/arena-lobby.md)。
+
+依据 2026-11-14 国服录屏优化。默认按人数降序，重复点击排序项切换方向，选择时保留筛选浮层。搜索需用户主动聚焦输入，提交后可继续修改，取消时解除过滤。创建页从疯狂征召开始展示。房间聊天按头像、发送者、时间、正文排版，跟随底部时自动续滚，阅读旧消息时保持锚点。
+
+`WindowCoordinator` 管理目录、房间以及筛选、搜索、创建与密码弹窗。目录交互记录必要的客户端语义事件，创建、进出房和聊天走服务端事务留痕。参见[操作留痕](../../../../docs/development/operation-audit.md)与[录像对照交付](../../../../docs/delivery/2026-11-14-arena-recording.md)。

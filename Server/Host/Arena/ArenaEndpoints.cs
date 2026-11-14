@@ -1,5 +1,7 @@
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using MySqlConnector;
 
@@ -9,6 +11,7 @@ internal static class ArenaEndpoints
 {
     private const string SessionLimit = "arena-sessions";
     private const string JoinLimit = "arena-joins";
+    private const string TelemetryLimit = "arena-telemetry";
     private static readonly HashSet<string> Rules = new(StringComparer.Ordinal)
         { "basic", "draft", "wild", "round", "no_duplicate_class" };
 
@@ -20,6 +23,7 @@ internal static class ArenaEndpoints
         {
             options.AddPolicy(SessionLimit, context => FixedWindow(context, 30));
             options.AddPolicy(JoinLimit, context => FixedWindow(context, 50));
+            options.AddPolicy(TelemetryLimit, context => FixedWindow(context, 120));
             options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
             options.OnRejected = async (context, token) =>
                 await context.HttpContext.Response.WriteAsJsonAsync(new { code = "rate_limited" }, token);
@@ -66,15 +70,33 @@ internal static class ArenaEndpoints
             http.Items[typeof(ArenaPlayer)] = player;
             return await next(context);
         });
-        authenticated.MapGet("/rooms", async (string? visibility, string? sort, string? query,
+        authenticated.MapPost("/telemetry", async (ArenaTelemetryRequest request, HttpContext http, ArenaStore store,
+            CancellationToken cancellation) =>
+        {
+            if (!Guid.TryParseExact(request.EventId, "N", out var eventId) || eventId == Guid.Empty)
+                throw new ArenaProblem(400, "invalid_telemetry");
+            string operation = request.Name switch
+            {
+                "directory_refresh" => "arena.directory.refresh",
+                "directory_filter" => "arena.directory.filter",
+                "directory_search" => "arena.directory.search",
+                "create_dialog_open" => "arena.create_dialog.open",
+                _ => throw new ArenaProblem(400, "invalid_telemetry")
+            };
+            await store.RecordTelemetry(Player(http), eventId.ToString("N"), operation, cancellation);
+            return Results.NoContent();
+        }).WithMetadata(new RequestSizeLimitAttribute(512)).RequireRateLimiting(TelemetryLimit);
+        authenticated.MapGet("/rooms", async (string? visibility, string? sort, string? direction, string? query,
             ArenaStore store, CancellationToken cancellation) =>
         {
             visibility ??= "all";
             sort ??= "recent";
-            if (visibility is not ("all" or "public" or "private") || sort is not ("recent" or "players"))
+            direction ??= "desc";
+            if (visibility is not ("all" or "public" or "private") || sort is not ("recent" or "players") ||
+                direction is not ("asc" or "desc"))
                 throw new ArenaProblem(400, "invalid_directory");
             query = string.IsNullOrWhiteSpace(query) ? "" : Normalize(query, 28, "invalid_directory");
-            return Results.Ok(new { rooms = await store.Directory(visibility, sort, query, cancellation) });
+            return Results.Ok(new { rooms = await store.Directory(visibility, sort, direction, query, cancellation) });
         });
         authenticated.MapPost("/rooms", async (ArenaCreateRoomRequest request, HttpContext http, ArenaStore store,
             CancellationToken cancellation) =>
@@ -143,6 +165,8 @@ internal sealed record ArenaPlayerRequest(string? DisplayName, string? AvatarId)
 internal sealed record ArenaCreateRoomRequest(string? Name, string? Password, bool AllowChat, string? Rule);
 internal sealed record ArenaJoinRequest(string? Password);
 internal sealed record ArenaChatRequest(string? Text);
+[JsonUnmappedMemberHandling(JsonUnmappedMemberHandling.Disallow)]
+internal sealed record ArenaTelemetryRequest(string? EventId, string? Name);
 internal sealed record ArenaPlayer(string Id, string DisplayName, string AvatarId);
 internal sealed record ArenaSession(string Token, ArenaPlayer Player);
 internal sealed record ArenaRoom(string Id, string Name, ArenaPlayer Host, bool RequiresPassword, bool AllowChat,

@@ -46,7 +46,22 @@ namespace AstralOath.Client.Tests
                 yield return Wait(() => directory.Require<GameButton>("create").interactable, "Directory did not finish loading.");
                 directory.Require<GameButton>("filter").onClick.Invoke();
                 Assert.That(directory.Require<GameObject>("choice").activeInHierarchy, Is.True);
+                var filterBody = directory.Require<GameObject>("choice").GetComponent<BindingMap>()
+                    .Require<RectTransform>("body").GetComponent<BindingMap>();
+                Assert.That(filterBody.Require<Image>("players_down").enabled, Is.True);
+                filterBody.Require<GameButton>("players").onClick.Invoke();
+                Assert.That(filterBody.Require<Image>("players_up").enabled, Is.True);
+                yield return Wait(() => directory.Require<GameButton>("create").interactable, "Sorting did not finish.");
+                Assert.That(directory.Require<GameObject>("choice").activeInHierarchy, Is.True);
                 yield return Capture("arena-filter");
+                var feedback = directory.GetComponentInParent<Canvas>().rootCanvas.GetComponent<GameUiFeedback>();
+                Assert.That(feedback, Is.Not.Null);
+                var track = typeof(GameUiFeedback).GetMethod("Track", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+                var clickPoint = new Vector2(Screen.width * .37f, Screen.height * .61f);
+                track.Invoke(feedback, new object[] { 15, clickPoint, true, false, false });
+                track.Invoke(feedback, new object[] { 15, clickPoint, false, true, false });
+                yield return new WaitForSecondsRealtime(.12f);
+                yield return Capture("arena-click-glow");
                 directory.Require<GameButton>("filter").onClick.Invoke();
                 var choice = directory.Require<GameObject>("choice");
                 if (choice.activeInHierarchy) choice.GetComponent<BindingMap>().Require<GameButton>("dismiss").onClick.Invoke();
@@ -54,6 +69,8 @@ namespace AstralOath.Client.Tests
                 directory.Require<GameButton>("create").onClick.Invoke();
                 yield return Wait(() => ScreenMap("ArenaCreateRoom"), "Create modal did not open.");
                 var create = ScreenMap("ArenaCreateRoom");
+                Assert.That(create.Require<Image>("selection_wild").enabled, Is.True);
+                Assert.That(create.Require<ScrollRect>("rules").horizontalNormalizedPosition, Is.EqualTo(0f).Within(.01f));
                 yield return Capture("arena-create");
                 create.Require<GameButton>("confirm").onClick.Invoke();
                 Assert.That(create.Require<GameText>("status").text, Does.Contain("28"));
@@ -63,6 +80,8 @@ namespace AstralOath.Client.Tests
                 create.Require<TMP_InputField>("password").text = "1234";
                 yield return Capture("arena-create-filled");
                 create.Require<GameButton>("confirm").onClick.Invoke();
+                Assert.That(create.Require<GameButton>("cancel").interactable, Is.False);
+                Assert.That(create.Require<GameButton>("dismiss").interactable, Is.False);
                 yield return Wait(() => ScreenMap("ArenaRoom"), "First client did not enter its room.");
                 var room = ScreenMap("ArenaRoom");
                 Assert.That(room.Require<GameText>("name").text, Is.EqualTo(title));
@@ -121,11 +140,15 @@ namespace AstralOath.Client.Tests
             yield return Capture("arena-directory-scrolled");
 
             directory.Require<GameButton>("search").onClick.Invoke();
-            Assert.That(directory.Require<GameObject>("searchPanel").activeInHierarchy, Is.True);
+            var search = directory.Require<GameObject>("searchPanel");
+            Assert.That(search.activeInHierarchy, Is.True);
+            Assert.That(directory.Require<Image>("searchSelected").enabled, Is.True);
+            Assert.That(directory.Require<TMP_InputField>("query").isFocused, Is.False);
             directory.Require<TMP_InputField>("query").text = privateTitle;
             yield return Capture("arena-search");
             directory.Require<GameButton>("submitSearch").onClick.Invoke();
             yield return Wait(() => FindRows(list, group).Length == 1, "Search did not narrow the visible list.");
+            Assert.That(search.activeInHierarchy, Is.True);
             var row = FindRows(list, group).Single();
             Assert.That(row.Require<GameText>("name").text, Is.EqualTo(privateTitle));
             Assert.That(row.Require<Image>("lock").enabled, Is.True);
@@ -138,6 +161,7 @@ namespace AstralOath.Client.Tests
             var confirm = map.Require<GameButton>("confirm");
             input.text = "0000";
             confirm.onClick.Invoke();
+            Assert.That(map.Require<GameButton>("cancel").interactable, Is.False);
             yield return Wait(() => map.Require<GameText>("status").text == "密码错误。", "Wrong PIN was not rejected by the server.");
             Assert.That(ScreenMap("ArenaRoom"), Is.Null);
             Assert.That(password.activeInHierarchy, Is.True);

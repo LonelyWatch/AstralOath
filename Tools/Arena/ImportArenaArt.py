@@ -241,7 +241,8 @@ def main():
                         ["emblem/icon_pvp_sa_league_place.png"], root, args.check)
     arena.append(courtyard(root, args.check))
     home = source_pngs("Home", [f"img/{name}.png" for name in HOME_IMAGES] +
-                       ["bgpack/lobby_bg3.png", "face/c5009_s.png", "item/border/icon_border_pvp_season20_rank_3.png"], root, args.check)
+                       ["bgpack/lobby_bg3.png", "face/c5009_s.png", "item/border/icon_border_pvp_season20_rank_3.png"] +
+                       [f"item/sticker/ma_sticker_emo{index}.png" for index in (1, 2, 3)], root, args.check)
     home += home_portrait(root, args.check)
     manifest("Arena", arena, [
         "wnd/pvplive_base.csb", "wnd/pvplive_mock_battle_item.csb", "wnd/pvplive_lounge_creat.csb",
