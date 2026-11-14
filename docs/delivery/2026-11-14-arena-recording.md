@@ -20,3 +20,4 @@
 - Unity 2022.3.62f3 生成四个预制体和启动场景，Binder 与 YooAsset 地址校验通过。素材工具 `Tools/Arena/ImportArenaArt.py --check` 通过，覆盖竞技场 68 项、主页 27 项。
 - EditMode 19 项、图形 PlayMode 6 项通过。覆盖页面替换取消旧请求、浮层互斥、泛光池复用、拖动取消与音效关闭后继续播放，以及真实服务器上的刷新、筛选、搜索、设密创建、错误密码、双人入场、双向聊天和离场。房间写入中保持弹窗，显式更新目录会恢复已提交的当前房间。
 - 服务端与真实 MySQL 8.4 的 240 项回归全部通过。用 Unity 双会话后的数据库记录核对目录语义事件和创建、进出房、聊天审计。服务运行在本机开发地址 `127.0.0.1:5080`。测试报告、日志和截图位于 D 盘 `.artifacts/arena-recording-review`。
+- Windows x64 IL2CPP 开发母包 v0.1.2 最终构建和正常主页冷启动通过，日志标记 `ASTRAL_CODE_BOOT_OK release=builtin recovered=False`。本地证据为 `windows-build-final.log` 和 `windows-startup-final.log`。
