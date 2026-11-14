@@ -27,6 +27,15 @@ Battle 的七张表由 `Schema/battle.xml` 定义。英雄通过 `battle_heroes.
 
 英雄的个人资源由 `resourceKind`（`none`、`focus`、`fighting_spirit`）、`resourceMaximum`、`resourceTurnGain`、`resourceOpeningGain`、`resourceAttackedGain` 和 `resourceAttackedSpend` 配置。开战增量在首次推进回合前写入，受击增减量每次权威攻击执行一次。无个人资源的英雄使用 `none` 并将五个数值字段设为 0。主动技能使用 `resourceCost`、`resourceGain`、`resourceGainWhenBuffed`；最后一项为有增益且非夹攻时的获取值，0 表示沿用基础获取值。导表检查每个资源值都落在英雄自身上限内，并校验被动槽不填写主动获取或消耗。
 
+## 战斗官方简中文案
+
+当前原文取自本地官方 PC 客户端的 `pack-15-r4262`，版本清单与只读解包记录一致。来源是 `text/zhs/text.db`，觉醒与燃魂关系来自 `db/skill_player.db`，被动数值引用来自 `db/cs_player.db`。`Config/BattleText/original-zhs.json` 只保留项目实际使用的原文字段、来源 ID、数值引用和校验值。当前覆盖 20 名角色的 60 个技能、20 条未觉醒正文、20 条燃魂正文、22 个状态、回转乱舞变体和夹攻，共 208 条文本记录。
+
+同一原文键有多种形态时，用已验证的 `base_skill` 和 `parent_skill` 关系定位觉醒记录，默认详情取六觉对应文本。原作百分比占位符取该觉醒形态的原始技能等级数值，技能强化继续单列。转换仅应用 TMP 颜色标签、换行和原作占位符的显示格式。追加项目说明时用独立的 `battle.skill.<id>.note`、`battle.skill.<id>.burn.note` 或 `battle.status.<kind>.note`，保持原文条目可校验。
+
+- 用项目 Python 执行 `python Tools/Config/Import-BattleDescriptions.py --check` 校验来源、表和覆盖范围。使用 `--sync` 从已记录的原文刷新 CSV，再走正常 Luban 导表。普通导表也会验证原文校验值和覆盖范围，生产构建无需原始包或 Python。
+- 只有用户明确要求跟进版本或导入角色时，才从本地只读资料准备新来源。导入入口接受临时目录内的 `text.zhs.raw`、`text.zhs.json`、`skill_player.source.json`、`cs_player.source.json`，以及后两张表各自的 `*.columns.json`。文案 JSON 以原始键指向文字，数据库 JSON 以记录 ID 指向列值数组，列索引 JSON 以字段名指向从零开始的列号。确认版本和哈希后，执行 `python Tools/Config/Import-BattleDescriptions.py --import-export <目录> --release <版本> --manifest-sha256 <哈希>`。保留临时源数据在 D 盘忽略目录。
+
 ## 生成和检查
 
 在仓库根目录使用 PowerShell 7：

@@ -1,3 +1,4 @@
+using System.IO;
 using System.Collections.Generic;
 using AstralOath.Client.Common;
 using AstralOath.Shared.Battle;
@@ -46,7 +47,13 @@ namespace AstralOath.Client.BattleScene
             var cooldownNumbers = new GameText[3];
             for (int slot = 0; slot < 3; slot++)
             {
-                sprites.TryGetValue("sk_" + unit.DefinitionId + "_" + (slot + 1), out var sprite);
+                var definition = slot < unit.Form.SkillIds.Count && skillDefinitions != null
+                    ? skillDefinitions.GetValueOrDefault(unit.Form.SkillIds[slot]) : null;
+                bool passive = definition?.target == "passive";
+                string name = definition != null
+                    ? Path.GetFileNameWithoutExtension(definition.iconAsset) : $"sk_{unit.DefinitionId}_{slot + 1}";
+                Sprite sprite = passive ? sprites.GetValueOrDefault($"pa_{definition.heroId}_{definition.slot}") : null;
+                if (!sprite) sprite = sprites.GetValueOrDefault(name);
                 var skill = Rect(root, "Skill " + (slot + 1), new Vector2(302f + slot * 51f, -2f) * SourceScale,
                     new Vector2(sprite ? sprite.rect.width : 81f, sprite ? sprite.rect.height : 84f) * (0.65f * SourceScale))
                     .gameObject.AddComponent<Image>();
@@ -54,8 +61,19 @@ namespace AstralOath.Client.BattleScene
                 skill.raycastTarget = inspectSkill != null;
                 skillIcons[slot] = skill;
                 skill.gameObject.SetActive(sprite);
+                if (passive && PassiveFrame)
+                {
+                    var frame = Layer(skill.transform, "Passive Frame").gameObject.AddComponent<Image>();
+                    frame.sprite = PassiveFrame;
+                    frame.raycastTarget = false;
+                }
                 shades[slot] = Layer(skill.transform, "Cooldown").gameObject.AddComponent<Image>();
-                shades[slot].sprite = sprite;
+                shades[slot].sprite = passive && PassiveCooldown ? PassiveCooldown : sprite;
+                if (passive && PassiveCooldown)
+                {
+                    shades[slot].rectTransform.offsetMin = skill.rectTransform.sizeDelta * .075f;
+                    shades[slot].rectTransform.offsetMax = -shades[slot].rectTransform.offsetMin;
+                }
                 shades[slot].color = new Color(0f, 0f, 0f, 0.65f);
                 shades[slot].raycastTarget = false;
                 cooldownNumbers[slot] = Text(shades[slot].transform, "Turns", "", Vector2.zero,

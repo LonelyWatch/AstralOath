@@ -33,6 +33,12 @@ namespace AstralOath.Client.BattleScene.Editor
         {
             foreach (string file in Directory.GetFiles(Folder, "*.png"))
                 yield return AssetDatabase.LoadAssetAtPath<Sprite>(file.Replace('\\', '/'));
+
+            const string skills = "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills";
+            foreach (string file in Directory.GetFiles(skills, "pa_*.png"))
+                yield return AssetDatabase.LoadAssetAtPath<Sprite>(file.Replace('\\', '/'));
+            yield return AssetDatabase.LoadAssetAtPath<Sprite>(skills + "/_frame_passive.png");
+            yield return AssetDatabase.LoadAssetAtPath<Sprite>(skills + "/cm_cool_skill_passive.png");
         }
     }
 }

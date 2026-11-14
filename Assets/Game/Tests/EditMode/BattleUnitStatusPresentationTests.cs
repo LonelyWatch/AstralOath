@@ -246,8 +246,9 @@ namespace AstralOath.Client.Tests
             var rect = Trail().rectTransform;
             Assert.That(rect.anchorMin.x, Is.EqualTo(.8f));
             Assert.That(rect.anchorMax.x, Is.EqualTo(1f));
-            Assert.That((Color32)Trail().color, Is.EqualTo(new Color32(231, 44, 53, 255)));
+            Assert.That(Trail().color.g, Is.GreaterThan(44f / 255f), "A hit briefly brightens the red trail.");
             Call("Tick", 1f);
+            Assert.That((Color32)Trail().color, Is.EqualTo(new Color32(231, 44, 53, 255)));
             Assert.That(rect.anchorMax.x, Is.EqualTo(1f));
             Call("ApplyDamageHit", 500L, 1000, true);
             Call("UpdateHealth", 500L, 1000, false);
@@ -257,6 +258,51 @@ namespace AstralOath.Client.Tests
             Call("Tick", .25f);
             Assert.That(rect.anchorMax.x, Is.EqualTo(.75f).Within(.001f));
             Call("Tick", 1f);
+            Assert.That(TrailWidth(), Is.Zero);
+        }
+
+        [Test] public void TurnTrailKeepsOpeningHealthThroughHealingAndRepeatedHits()
+        {
+            Call("UpdateHealth", 800L, 1000, true);
+            Call("BeginDamageTurn", 800L);
+            Call("UpdateHealth", 1000L, 1000, false);
+            Call("Tick", .3f);
+            Assert.That(hp.fillAmount, Is.EqualTo(1f));
+
+            Call("ApplyDamageHit", 700L, 1000, false);
+            var red = Trail();
+            var firstFlash = red.color;
+            Assert.That(red.rectTransform.anchorMax.x, Is.EqualTo(.8f).Within(.001f));
+            Call("Tick", .8f);
+            Assert.That(red.rectTransform.anchorMax.x, Is.EqualTo(.8f).Within(.001f));
+            Assert.That(red.color.g, Is.LessThan(firstFlash.g));
+
+            Call("UpdateHealth", 750L, 1000, false);
+            Call("Tick", .25f);
+            Assert.That(red.rectTransform.anchorMax.x, Is.EqualTo(.8f).Within(.001f));
+            Assert.That(hp.fillAmount, Is.EqualTo(.75f).Within(.001f));
+
+            Call("ApplyDamageHit", 500L, 1000, false);
+            Assert.That(red.color, Is.EqualTo(firstFlash));
+            Assert.That(red.rectTransform.anchorMin.x, Is.EqualTo(.5f).Within(.001f));
+            Assert.That(red.rectTransform.anchorMax.x, Is.EqualTo(.8f).Within(.001f));
+            Call("Tick", .8f);
+            Assert.That(red.rectTransform.anchorMax.x, Is.EqualTo(.8f).Within(.001f));
+
+            Call("FinishDamageSequence");
+            Call("Tick", .4f);
+            Assert.That(red.rectTransform.anchorMax.x, Is.EqualTo(.65f).Within(.001f));
+            Call("FinishDamageSequence");
+            Call("Tick", .1f);
+            Assert.That(red.rectTransform.anchorMax.x, Is.LessThan(.65f));
+
+            // The old tail can still be retracting when the next turn takes damage.
+            Call("BeginDamageTurn", 500L);
+            Call("ApplyDamageHit", 450L, 1000, false);
+            Assert.That(red.rectTransform.anchorMax.x, Is.EqualTo(.5f).Within(.001f));
+            Assert.That(red.color, Is.EqualTo(firstFlash));
+            Call("FinishDamageSequence");
+            Call("Tick", .8f);
             Assert.That(TrailWidth(), Is.Zero);
         }
 

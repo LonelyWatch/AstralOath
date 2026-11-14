@@ -30,6 +30,9 @@ namespace AstralOath.Client.BattleScene
         private readonly GameButton detailsButton;
         private readonly UnityAction toggleDetails;
         private readonly IReadOnlyDictionary<string, Sprite> sprites;
+        private readonly IReadOnlyDictionary<string, BattleCatalogData.SkillRow> skillDefinitions;
+        private Sprite PassiveFrame => sprites.GetValueOrDefault("_frame_passive");
+        private Sprite PassiveCooldown => sprites.GetValueOrDefault("cm_cool_skill_passive");
         private readonly Action<BattleUnitSnapshot, int, Image> inspectSkill;
         private readonly Action<BattleStatusSnapshot, Image> inspectStatus;
         private readonly Action closeInspection;
@@ -52,8 +55,18 @@ namespace AstralOath.Client.BattleScene
             Action<BattleUnitSnapshot, int, Image> inspectSkill,
             Action<BattleStatusSnapshot, Image> inspectStatus, Action closeInspection,
             BattleStatusArt statusArt)
+            : this(map, label, sprites, damageFont, inspectSkill, inspectStatus, closeInspection, statusArt, null)
+        {
+        }
+
+        internal BattleTurnHud(BindingMap map, Func<BattleUnitSnapshot, string> label,
+            IReadOnlyDictionary<string, Sprite> sprites, TMP_FontAsset damageFont,
+            Action<BattleUnitSnapshot, int, Image> inspectSkill,
+            Action<BattleStatusSnapshot, Image> inspectStatus, Action closeInspection,
+            BattleStatusArt statusArt, IReadOnlyDictionary<string, BattleCatalogData.SkillRow> skillDefinitions)
         {
             this.sprites = sprites;
+            this.skillDefinitions = skillDefinitions;
             comparePortraits = ComparePortraits;
             this.inspectSkill = inspectSkill;
             this.inspectStatus = inspectStatus;
@@ -116,7 +129,11 @@ namespace AstralOath.Client.BattleScene
             closeDetailsButton.onClick.AddListener(closeDetails);
             buttonRect.SetAsLastSibling();
             for (int index = 1; index <= 3; index++)
-                cooldowns.Add(new Cooldown(map.Require<GameButton>("skill" + index), textSource));
+            {
+                var button = map.Require<GameButton>("skill" + index);
+                var frame = button.transform.parent.Find($"Skill {index} Frame")?.GetComponent<Image>();
+                cooldowns.Add(new Cooldown(button, frame, textSource));
+            }
         }
 
         internal void Refresh(BattleSnapshot snapshot)
@@ -149,18 +166,29 @@ namespace AstralOath.Client.BattleScene
             if (!portraits.TryGetValue(id, out var portrait))
                 return;
             portrait.Visible = false;
+            portrait.TickHit(Portrait.HitSeconds);
             ArrangePortraits();
         }
 
+        internal void SetSkillStyle(int index, bool passive) =>
+            cooldowns[index].SetStyle(passive ? PassiveFrame : null, passive ? PassiveCooldown : null);
+
         internal void SetCooldown(int index, int turns) => cooldowns[index].Show(turns);
+
+        internal void PlayReadinessHit(string id)
+        {
+            if (portraits.TryGetValue(id, out var portrait) && portrait.Visible)
+                portrait.PlayHit();
+        }
 
         internal void Tick(float delta)
         {
             float ease = 1f - Mathf.Exp(-delta * 11f);
             foreach (var portrait in portraits.Values)
             {
-                if (portrait.Visible)
-                    portrait.Root.anchoredPosition = Vector2.Lerp(portrait.Root.anchoredPosition, portrait.Position, ease);
+                if (!portrait.Visible) continue;
+                portrait.Root.anchoredPosition = Vector2.Lerp(portrait.Root.anchoredPosition, portrait.Position, ease);
+                portrait.TickHit(delta);
             }
             TickFeedback(delta);
         }
@@ -325,7 +353,7 @@ namespace AstralOath.Client.BattleScene
             foreach (var image in staticPortraits)
                 if (image) image.enabled = true;
             foreach (var cooldown in cooldowns)
-                Remove(cooldown.Shade);
+                cooldown.Dispose();
             Remove(liveRail);
             Remove(feedbackLayer);
         }
@@ -340,11 +368,47 @@ namespace AstralOath.Client.BattleScene
 
         private sealed class Portrait
         {
+            internal const float HitSeconds = .17f;
+            private static readonly Color HitTint = new Color(1f, .48f, .42f);
+            private readonly Image face, detailFace;
+            private float hitRemaining;
+
             internal Portrait(RectTransform root, Image highlight, DetailRow detail)
             {
                 Root = root;
                 Highlight = highlight;
                 Detail = detail;
+                face = root.Find("Face")?.GetComponent<Image>();
+                detailFace = detail.Root.Find("Portrait/Face")?.GetComponent<Image>();
+            }
+
+            internal void PlayHit()
+            {
+                hitRemaining = HitSeconds;
+                DrawHit(1f);
+            }
+
+            internal void TickHit(float delta)
+            {
+                if (hitRemaining <= 0f) return;
+                hitRemaining = Mathf.Max(0f, hitRemaining - delta);
+                DrawHit(hitRemaining / HitSeconds);
+            }
+
+            private void DrawHit(float strength)
+            {
+                Color tint = Color.Lerp(Color.white, HitTint, strength);
+                float x = Mathf.Cos((1f - strength) * 4f * Mathf.PI) * strength * 4f;
+                var offset = new Vector2(x, 0f);
+                Apply(face);
+                Apply(detailFace);
+
+                void Apply(Image image)
+                {
+                    if (!image) return;
+                    image.color = tint;
+                    image.rectTransform.anchoredPosition = offset;
+                }
             }
 
             internal RectTransform Root { get; }
@@ -359,12 +423,23 @@ namespace AstralOath.Client.BattleScene
         private sealed class Cooldown
         {
             private readonly Image icon;
+            private readonly Image frame;
+            private readonly Sprite originalFrame;
+            private readonly Vector2 originalPosition, originalSize;
             private readonly GameText number;
+            private Sprite passiveCooldown;
             private int previousTurns;
 
-            internal Cooldown(GameButton button, GameText source)
+            internal Cooldown(GameButton button, Image frame, GameText source)
             {
                 icon = (Image)button.targetGraphic;
+                this.frame = frame;
+                if (frame)
+                {
+                    originalFrame = frame.sprite;
+                    originalPosition = frame.rectTransform.anchoredPosition;
+                    originalSize = frame.rectTransform.sizeDelta;
+                }
                 Shade = Layer(button.transform, "Cooldown Overlay").gameObject.AddComponent<Image>();
                 Shade.color = new Color(0f, 0f, 0f, 0.56f);
                 Shade.raycastTarget = false;
@@ -375,13 +450,42 @@ namespace AstralOath.Client.BattleScene
                 Shade.gameObject.SetActive(false);
             }
 
-            internal Image Shade { get; }
+            private Image Shade { get; }
+
+            internal void SetStyle(Sprite passiveFrame, Sprite cooldownMask)
+            {
+                passiveCooldown = cooldownMask;
+                if (frame)
+                {
+                    frame.sprite = passiveFrame ? passiveFrame : originalFrame;
+                    frame.rectTransform.anchoredPosition = passiveFrame
+                        ? icon.rectTransform.anchoredPosition : originalPosition;
+                    frame.rectTransform.sizeDelta = passiveFrame ? icon.rectTransform.sizeDelta : originalSize;
+                }
+                if (previousTurns > 0) Show(previousTurns);
+            }
+
+            internal void Dispose()
+            {
+                SetStyle(null, null);
+                Remove(Shade);
+            }
 
             internal void Show(int turns)
             {
                 if (turns > 0)
                 {
-                    Shade.sprite = icon.overrideSprite;
+                    Shade.sprite = passiveCooldown ? passiveCooldown : icon.overrideSprite;
+                    if (passiveCooldown)
+                    {
+                        Shade.rectTransform.offsetMin = icon.rectTransform.sizeDelta * .075f;
+                        Shade.rectTransform.offsetMax = -Shade.rectTransform.offsetMin;
+                    }
+                    else
+                    {
+                        Shade.rectTransform.offsetMin = Vector2.zero;
+                        Shade.rectTransform.offsetMax = Vector2.zero;
+                    }
                     if (previousTurns != turns)
                         number.text = $"{turns}回合";
                 }

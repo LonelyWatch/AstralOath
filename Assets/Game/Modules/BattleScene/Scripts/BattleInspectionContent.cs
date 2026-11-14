@@ -20,27 +20,24 @@ namespace AstralOath.Client.BattleScene
             enhancements = catalog.enhancements.OrderBy(row => row.step).ToLookup(row => row.skillId, StringComparer.Ordinal);
         }
 
-        // Export-BattleCatalog validates the description key against the stable skill ID.
+        // The exported default description is the source text for the fully awakened roster.
         internal string SkillDescription(BattleCatalogData.SkillRow skill) =>
-            Label("battle.skill." + skill.id + ".description");
+            SourceText("battle.skill." + skill.id + ".description", "battle.skill." + skill.id + ".note");
 
         internal string StatusName(BattleStatusKind kind) => Label(StatusKey(kind) + ".name");
 
-        internal string StatusDescription(BattleStatusKind kind) => Label(StatusKey(kind) + ".description");
+        internal string StatusDescription(BattleStatusKind kind) =>
+            SourceText(StatusKey(kind) + ".description", StatusKey(kind) + ".note");
 
-        internal string StatusDescriptionWithStrength(BattleStatusKind kind, int strength)
-        {
-            string format = strength > 0 ? Label(StatusKey(kind) + ".strength") : string.Empty;
-            if (string.IsNullOrEmpty(format)) return StatusDescription(kind);
-            decimal percent = strength * 100m / EpicSevenCombatMath.Basis;
-            return string.Format(CultureInfo.CurrentCulture, format, percent);
-        }
+        internal string SkillBurnDescription(BattleCatalogData.SkillRow skill) => skill.soulBurnCost <= 0
+            ? string.Empty
+            : SourceText("battle.skill." + skill.id + ".burn.description", "battle.skill." + skill.id + ".burn.note");
 
-        internal string SkillBurnDescription(BattleCatalogData.SkillRow skill)
+        private string SourceText(string descriptionKey, string noteKey)
         {
-            if (skill.soulBurnCost <= 0) return string.Empty;
-            string text = Label("battle.inspect.burn." + skill.soulBurnKind);
-            return string.Format(CultureInfo.CurrentCulture, text, skill.soulBurnTurns);
+            string original = Label(descriptionKey);
+            string note = Label(noteKey);
+            return string.IsNullOrEmpty(note) ? original : original + "\n\n" + note;
         }
 
         internal string SkillEnhancements(BattleCatalogData.SkillRow skill)
@@ -65,7 +62,7 @@ namespace AstralOath.Client.BattleScene
                 if (effect.operation == "apply_status" && Enum.TryParse(effect.status, out BattleStatusKind kind))
                 {
                     string title = StatusName(kind);
-                    if (!string.IsNullOrEmpty(title)) return (title, StatusDescriptionWithStrength(kind, effect.value), kind);
+                    if (!string.IsNullOrEmpty(title)) return (title, StatusDescription(kind), kind);
                 }
             }
             return (string.Empty, string.Empty, null);

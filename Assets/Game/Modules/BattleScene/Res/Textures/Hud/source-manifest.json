@@ -2570,6 +2570,97 @@
         80,
         83
       ]
+    },
+    {
+      "asset": "Skills/_frame_passive.png",
+      "source": "原始资源/skill/_frame_passive.png",
+      "sha256": "9bba5bd43b3f66c01a9370ddaae8a1d90d2c35c2c91dfca375ec685aa67418cb",
+      "width": 82,
+      "height": 84,
+      "alphaBoundsLTRB": [
+        4,
+        4,
+        82,
+        84
+      ]
+    },
+    {
+      "asset": "Skills/cm_cool_skill_passive.png",
+      "source": "原始资源/img/cm_cool_skill_passive.png",
+      "sha256": "061bf67d7e79c7f5265974d1b7e4557b5757cd6fdba6cf3d3d778d65bf589581",
+      "width": 68,
+      "height": 71,
+      "alphaBoundsLTRB": [
+        0,
+        1,
+        67,
+        71
+      ]
+    },
+    {
+      "asset": "Skills/pa_c1004_2.png",
+      "source": "原始资源/skill/pa_c1004_2.png",
+      "sha256": "6a58d337ecbf5a78e4551e1b34ae21fe61ca9311378ddf46bec43c5cb42d6114",
+      "width": 82,
+      "height": 84,
+      "alphaBoundsLTRB": [
+        1,
+        1,
+        79,
+        83
+      ]
+    },
+    {
+      "asset": "Skills/pa_c1007_2.png",
+      "source": "原始资源/skill/pa_c1007_2.png",
+      "sha256": "f32fa230b683a06dcee40393e7eba6595d29a0b34232b8129049994a659479a3",
+      "width": 82,
+      "height": 84,
+      "alphaBoundsLTRB": [
+        1,
+        1,
+        79,
+        83
+      ]
+    },
+    {
+      "asset": "Skills/pa_c1008_2.png",
+      "source": "原始资源/skill/pa_c1008_2.png",
+      "sha256": "89eb323dad4f92b388ee0e50834f618603d1844571aa9abf82de58ed15e6c454",
+      "width": 82,
+      "height": 84,
+      "alphaBoundsLTRB": [
+        1,
+        1,
+        79,
+        83
+      ]
+    },
+    {
+      "asset": "Skills/pa_c1013_2.png",
+      "source": "原始资源/skill/pa_c1013_2.png",
+      "sha256": "cd70a8e25c4f66e6ad81fb62c59c3edfdbace5bbfd1be340e863aec8b5781d7b",
+      "width": 82,
+      "height": 84,
+      "alphaBoundsLTRB": [
+        1,
+        1,
+        79,
+        83
+      ]
+    },
+    {
+      "asset": "Skills/pa_c1019_2.png",
+      "source": "原始资源/skill/pa_c1019_2.png",
+      "sha256": "c114ce018bff6fe95ceff85cc214094f17a5c96a7fc0beeb444a42adf8b83a70",
+      "width": 82,
+      "height": 84,
+      "alphaBoundsLTRB": [
+        1,
+        1,
+        79,
+        83
+      ]
     }
   ],
   "layoutSchemaReference": "https://raw.githubusercontent.com/cocos2d/cocos2d-x/v3/cocos/editor-support/cocostudio/fbs-files/CSParseBinary.fbs"

@@ -664,12 +664,11 @@ Assert.That(RedWidth(), Is.Zero, "The red segment is cleared after the transitio
             Assert.That(labels.Any(label => label.text.Contains("灵魂燃烧效果")), Is.True);
             Assert.That(labels.Any(label => label.text == "夹攻"), Is.True);
             Assert.That(labels.Any(label => label.text.Contains("强化技能")), Is.True);
+            Capture("long-press-skill", new Vector2Int(2608, 1200));
             skillHold.OnPointerUp(pointer);
             s2.OnPointerClick(pointer);
             Assert.That(host.SimulationSnapshot.LastCommandSequence, Is.Zero);
-            Capture("long-press-skill", new Vector2Int(2608, 1200));
-            inspection.Find("Dismiss Inspection").GetComponent<GameButton>().onClick.Invoke();
-            Assert.That(inspection.gameObject.activeSelf, Is.False);
+            Assert.That(inspection.gameObject.activeSelf, Is.False, "Releasing the held skill closes its details immediately.");
 
             var view = ((IDictionary)simulation.GetType().GetField("views", Private).GetValue(simulation))["ally-1"];
             var status = (BattleStatusSnapshot)Activator.CreateInstance(typeof(BattleStatusSnapshot),
@@ -701,10 +700,10 @@ Assert.That(RedWidth(), Is.Zero, "The red segment is cleared after the transitio
             Assert.That(movedEffect.yMin - effectBounds.yMin, Is.EqualTo(movedIcon.yMin - iconBounds.yMin).Within(.1f));
             iconRect.anchoredPosition = originalIconPosition;
             binder.Tick();
-            buffHold.OnPointerUp(pointer);
             Capture("long-press-status", new Vector2Int(2608, 1200));
-            host.PauseBattle();
-            Assert.That(inspection.gameObject.activeSelf, Is.False);
+            buffHold.OnPointerExit(pointer);
+            Assert.That(inspection.gameObject.activeSelf, Is.False, "Canceling a held buff closes its details immediately.");
+            buffHold.OnPointerUp(pointer);
         }
 
         private static Rect BoundsIn(RectTransform rect, RectTransform space)

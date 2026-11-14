@@ -2,14 +2,14 @@
 
 ## 维护入口
 
-当前战斗目录包含十名普通形态英雄，按 E7 ID 递增。初始配置采用 **Lv60、六星、六觉醒、技能 +0**，不叠加装备、神器、刻印、专属装备、转职和剧情强化。角色的初始星级与这一面板档位分别保存。此档位用作验收锚点。任意合法等级、星级和觉醒档由共享公式计算，详细口径与证据见[等级面板与战斗单位](battle-growth.md)。
+当前战斗目录包含 20 名普通形态英雄，按已接入批次排列。初始配置采用 **Lv60、六星、六觉醒、技能 +0**，不叠加装备、神器、刻印、专属装备、转职和剧情强化。角色的初始星级与这一面板档位分别保存。此档位用作验收锚点。任意合法等级、星级和觉醒档由共享公式计算，详细口径与证据见[等级面板与战斗单位](battle-growth.md)。
 
 - `Config/Tables/battle_heroes.csv` 管理英雄的身份、属性、职业、星座、成长模板引用、验收面板和个人资源。名称键复用 CharacterLab 源表。
 - `Config/Tables/battle_growth_presets.csv` 维护可复用的成长系数，`battle_awakening_steps.csv` 按英雄记录各阶觉醒增量。
 - `Config/Tables/battle_skills.csv` 管理 30 个技能槽的目标类型、冷却、魂力、魂燃、个人资源获取／消耗与参考系数。技能 ID 为 `角色ID.s槽位`。`presentationId` 与本地导入的 STG 对应，`iconAsset` 为 Unity 源资源路径。
 - `Config/Tables/battle_skill_effects.csv` 定义有序技能行为与阶段，供共享规则内核执行。见[战斗第三步](battle-execution.md)。
 - `Config/Tables/battle_skill_enhancements.csv` 管理 146 段已接入的技能强化的战斗属性增量。正的 `cooldown_turns` 表示减少的回合数；强化材料与费用属于成长系统。
-- `Config/Tables/battle_messages.csv` 管理技能的中文工作译名与效果摘要。战斗逻辑应消费经核实的类型和参数，技能说明供人阅读。
+- `Config/Tables/battle_messages.csv` 保存同版本官方简中技能、燃魂和状态说明。导入工具校验本机原始来源，生成快照供界面读取。战斗逻辑应消费经核实的类型和参数，技能说明供人阅读。
 
 `Bp` 后缀使用万分比，10000 表示 100%。例如攻击倍率 0.9 写 9000，暴伤 150% 写 15000。技能 `powerBp` 是独立的技能系数；伤害公式中的全局常数、结算顺序、命中、抗性、取整与伤害修正另行验证。CSV 中可空倍率明确写 `null`。锁定版本的 Luban 会把空 CSV 数值单元格读作 0，导表拒绝把 0 当成一个已填写系数。安洁莉卡 S2/S3 的攻击倍率与 Power 不适用。
 

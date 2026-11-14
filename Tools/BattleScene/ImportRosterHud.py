@@ -22,8 +22,11 @@ def table(name):
         return list(csv.DictReader(source))
 
 
-def roster_art(heroes, skills):
-    files = {}
+def roster_art(heroes, skills, source):
+    files = {
+        "Skills/_frame_passive.png": "skill/_frame_passive.png",
+        "Skills/cm_cool_skill_passive.png": "img/cm_cool_skill_passive.png",
+    }
     for hero in heroes:
         identifier = hero["id"]
         for suffix in ("s", "su"):
@@ -40,6 +43,11 @@ def roster_art(heroes, skills):
             if path.parent != Path("Skills") or path.suffix != ".png":
                 raise ValueError(f"Skill icon must be a PNG under Skills: {path}")
             files[path.as_posix()] = f"skill/{path.name}"
+        if skill["target"] == "passive":
+            name = f"pa_{skill['heroId']}_{skill['slot']}.png"
+            original = f"skill/{name}"
+            if contained(source, f"原始资源/{original}").is_file():
+                files[f"Skills/{name}"] = original
     return files
 
 
@@ -102,7 +110,8 @@ def main():
     parser.add_argument("--source", type=Path, default=Path("D:/sevenepic"))
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
-    import_art(args.source.resolve(strict=True), roster_art(table("battle_heroes"), table("battle_skills")), args.check)
+    source = args.source.resolve(strict=True)
+    import_art(source, roster_art(table("battle_heroes"), table("battle_skills"), source), args.check)
 
 
 if __name__ == "__main__":

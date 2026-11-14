@@ -12,8 +12,10 @@ namespace AstralOath.Client.Common
         private Vector2 origin;
         private double started;
         private int? consumed;
+        private bool holding;
 
         public Action Held { get; set; }
+        public event Action HoldEnded;
         public bool IsTracking => pointer != null;
 
         public void OnPointerDown(PointerEventData data)
@@ -27,7 +29,7 @@ namespace AstralOath.Client.Common
 
         public void OnPointerUp(PointerEventData data)
         {
-            if (pointer?.pointerId == data.pointerId) pointer = null;
+            if (pointer?.pointerId == data.pointerId) EndTracking();
             if (consumed == data.pointerId) data.eligibleForClick = false;
         }
 
@@ -45,9 +47,10 @@ namespace AstralOath.Client.Common
                 Cancel();
                 return;
             }
-            if (Time.unscaledTimeAsDouble - started >= HoldSeconds)
+            if (!holding && Time.unscaledTimeAsDouble - started >= HoldSeconds)
             {
-                Cancel();
+                holding = true;
+                ConsumeClick();
                 Held?.Invoke();
             }
         }
@@ -57,9 +60,22 @@ namespace AstralOath.Client.Common
         public void Cancel()
         {
             if (pointer == null) return;
+            ConsumeClick();
+            EndTracking();
+        }
+
+        private void ConsumeClick()
+        {
             consumed = pointer.pointerId;
             pointer.eligibleForClick = false;
+        }
+
+        private void EndTracking()
+        {
             pointer = null;
+            if (!holding) return;
+            holding = false;
+            HoldEnded?.Invoke();
         }
 
         private void OnApplicationFocus(bool focused) { if (!focused) Cancel(); }

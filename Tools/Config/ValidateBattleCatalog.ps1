@@ -1,3 +1,40 @@
+function Confirm-BattleOriginalText {
+    param([string]$Repo, [object[]]$Messages, [object[]]$Skills, [string[]]$Statuses)
+
+    $original = Get-Content -LiteralPath (Join-Path $Repo 'Config/BattleText/original-zhs.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+    if ($original.schemaVersion -ne 1 -or $original.locale -cne 'zh-CN') { throw 'Invalid battle original-text source.' }
+    $entries = @{}
+    $text = @{}
+    foreach ($message in $Messages) { $text.Add($message.key, [string]$message.zhCn) }
+    $sha = [Security.Cryptography.SHA256]::Create()
+    try {
+        foreach ($property in $original.entries.PSObject.Properties) {
+            $key = $property.Name
+            $entries.Add($key, $property.Value)
+            if (-not $text.ContainsKey($key)) { throw "Missing original battle text: $key." }
+            $bytes = [Text.Encoding]::UTF8.GetBytes(($text[$key] -replace "`r`n", "`n"))
+            $hash = [BitConverter]::ToString($sha.ComputeHash($bytes)).Replace('-', '').ToLowerInvariant()
+            if ($hash -cne $property.Value.displaySha256) {
+                throw "Original battle text has changed: $key. Run Tools/Config/Import-BattleDescriptions.py --sync."
+            }
+        }
+    } finally { $sha.Dispose() }
+
+    $expected = @('battle.inspect.dual_attack.name', 'battle.inspect.dual_attack.description')
+    foreach ($skill in $Skills) {
+        $expected += $skill.nameKey, $skill.descriptionKey
+        if ($skill.soulBurnCost -gt 0) { $expected += "battle.skill.$($skill.id).burn.description" }
+        if ($skill.speedUpNameKey) { $expected += $skill.speedUpNameKey, $skill.speedUpDescriptionKey }
+    }
+    foreach ($status in $Statuses) {
+        $prefix = 'battle.status.' + $status.ToLowerInvariant()
+        $expected += "$prefix.name", "$prefix.description"
+    }
+    foreach ($key in $expected) {
+        if (-not $entries.ContainsKey($key)) { throw "Missing verified original battle text: $key." }
+    }
+}
+
 function Export-BattleCatalog {
     param([string]$Repo, [string]$JsonDir, $CharacterCatalog, [object[]]$CharacterMessages)
 
@@ -132,6 +169,7 @@ function Export-BattleCatalog {
         'GreaterSpeedUp','CriticalDamageUp','EffectivenessUp','Invincible')
     $harmfulStatuses = @('Stun','SpeedDown','AttackDown','DefenseDown','Unhealable','Silence','Provoke','Poison')
     $validStatuses = @('none') + $beneficialStatuses + $harmfulStatuses
+    Confirm-BattleOriginalText -Repo $Repo -Messages $messages -Skills $skills -Statuses ($beneficialStatuses + $harmfulStatuses)
     foreach ($skill in $skills) {
         $program = @($effects | Where-Object skillId -CEQ $skill.id | Sort-Object order)
         $passive = $skill.target -ceq 'passive'

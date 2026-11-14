@@ -89,7 +89,7 @@ namespace AstralOath.Client.Tests
             Assert.That(Field(simulation, "presentedSkillId"), Is.EqualTo("c1007.s2"));
             Assert.That((int)Field(feedback, "hitCount"), Is.EqualTo(hits), "Passive joins the existing combo.");
             Assert.That(map.transform.Find("Top Bar/Skill Use Banner/Skill Icon").GetComponent<Image>().sprite.name,
-                Is.EqualTo("sk_c1007_2"));
+                Is.EqualTo("pa_c1007_2"));
             Assert.That(map.transform.Find("Skills").gameObject.activeSelf, Is.False);
         }
 
@@ -137,6 +137,36 @@ namespace AstralOath.Client.Tests
             Call(simulation, "Tick", .4f);
             Assert.That(RedEnd(), Is.InRange(health.fillAmount + .001f, healthBefore - .001f),
                 "Only the final impact starts the red trail's retraction.");
+        }
+
+        [UnityTest]
+        public IEnumerator EachVisualHitFlashesOnlyTheTargetsReadinessPortrait()
+        {
+            scene = BattleScenePreviewTests.LoadPlayerOpeningScene("c1001");
+            yield return null;
+            yield return null;
+            var host = scene.GetRootGameObjects().Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            var map = host.GetComponentInChildren<BindingMap>();
+            var simulation = Field(host, "simulation");
+            var queue = (Queue<BattleFlowEvent>)Field(simulation, "playback");
+            var rail = map.transform.Find("Combat Readiness/Live Readiness/Readiness Portraits");
+            var face = rail.Find("enemy-1/Face").GetComponent<Image>();
+            var other = rail.Find("enemy-2/Face").GetComponent<Image>();
+            var normal = face.color;
+            var otherNormal = other.color;
+            queue.Enqueue(Event(BattleFlowEventKind.Damage, "ally-1", "c1001.s2", null, BattleActionOrigin.Primary, amount: 900));
+            Call(simulation, "Present", Event(BattleFlowEventKind.Action, "ally-1", "c1001.s2", "c_ras_skill_02", BattleActionOrigin.Primary));
+            var hits = (float[])Field(simulation, "hitTimes");
+            Assert.That(hits.Length, Is.GreaterThan(1));
+            foreach (float hit in hits)
+            {
+                Call(simulation, "Tick", hit - (float)Field(simulation, "actionElapsed") + .001f);
+                Assert.That(face.color, Is.Not.EqualTo(normal), "Every authored hit flashes the damaged unit.");
+                Assert.That(other.color, Is.EqualTo(otherNormal));
+                Call(simulation, "Tick", .2f);
+                Assert.That(face.color, Is.EqualTo(normal));
+                Assert.That(face.rectTransform.anchoredPosition, Is.EqualTo(Vector2.zero));
+            }
         }
 
         internal static BattleFlowEvent Event(BattleFlowEventKind kind, string source, string skill, string presentation, BattleActionOrigin origin,

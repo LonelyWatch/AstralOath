@@ -18,6 +18,8 @@ namespace AstralOath.Client.Common
         private readonly Canvas canvas;
         private readonly InfoPanel main, auxiliary;
         private readonly GameButton close;
+        private readonly GraphicRaycaster raycaster;
+        private GameLongPress sourceHold;
         private readonly Vector3[] corners = new Vector3[4];
         private RectTransform anchor;
         private Card currentCard;
@@ -67,6 +69,7 @@ namespace AstralOath.Client.Common
             container.SetParent(parent, false);
             Stretch(container);
             var overlay = container.GetComponent<Canvas>();
+            raycaster = container.GetComponent<GraphicRaycaster>();
             overlay.overrideSorting = true;
             overlay.sortingLayerID = canvas.sortingLayerID;
             overlay.sortingOrder = canvas.sortingOrder + 20;
@@ -94,9 +97,15 @@ namespace AstralOath.Client.Common
             return view;
         }
 
-        public void Show(RectTransform source, Card content, Card? secondary = null, bool preferRight = false)
+        public void Show(RectTransform source, Card content, Card? secondary = null, bool preferRight = false,
+            GameLongPress hold = null)
         {
             if (!source) return;
+            if (sourceHold) sourceHold.HoldEnded -= Hide;
+            sourceHold = hold;
+            if (sourceHold) sourceHold.HoldEnded += Hide;
+            // Keep the pointer over its original icon while this panel follows a hold.
+            raycaster.enabled = !sourceHold;
             anchor = source;
             currentCard = content;
             currentSecondary = secondary;
@@ -302,6 +311,8 @@ namespace AstralOath.Client.Common
 
         public void Hide()
         {
+            if (sourceHold) sourceHold.HoldEnded -= Hide;
+            sourceHold = null;
             anchor = null;
             currentCard = default;
             currentSecondary = null;

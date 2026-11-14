@@ -8843,7 +8843,7 @@
     },
     {
       "key": "battle.inspect.dual_attack.description",
-      "zhCn": "使用基本技能与另一名友军一同攻击。由符合条件的友军发动夹攻，可触发其基本技能的命中效果。"
+      "zhCn": "其他我军人员以基本技能发动攻击时，若自己处于可行动的状态下，也会使用基本技能攻击相同的目标。\n反击时不会触发。"
     },
     {
       "key": "battle.inspect.dual_attack.name",
@@ -8923,15 +8923,15 @@
     },
     {
       "key": "battle.skill.c1001.s1.description",
-      "zhCn": "攻击一名敌人，有75%概率解除其一个增益。伤害随施术者最大生命提高。"
+      "zhCn": "挥剑攻击敌人，有75%的几率解除1个强化效果。根据自身最大生命值等比提升伤害量。"
     },
     {
       "key": "battle.skill.c1001.s1.name",
-      "zhCn": "十字斩"
+      "zhCn": "斩击"
     },
     {
       "key": "battle.skill.c1001.s2.description",
-      "zhCn": "攻击一名敌人，随后由攻击最高的可用友军发动夹攻。"
+      "zhCn": "连续攻击敌人后，使攻击力最高的我军人员发动<color=#FFFFFF>夹攻</color>。"
     },
     {
       "key": "battle.skill.c1001.s2.name",
@@ -8939,7 +8939,7 @@
     },
     {
       "key": "battle.skill.c1001.s3.description",
-      "zhCn": "攻击全体敌人，随后使全体友军防御提升2回合。伤害随施术者最大生命提高。"
+      "zhCn": "飞扬剑气强力攻击全体敌人后，使全体我军人员在2回合内<color=#FFFFFF>防御力提升</color>。根据自身最大生命值等比提升伤害量。"
     },
     {
       "key": "battle.skill.c1001.s3.name",
@@ -8947,47 +8947,47 @@
     },
     {
       "key": "battle.skill.c1002.s1.description",
-      "zhCn": "攻击一名敌人并有35%概率降低防御2回合。目标攻击降低时触发率额外提高25个百分点，伤害随自身最大生命提高。"
+      "zhCn": "用矛攻击敌人，有<color=#FF9900>35%</color>的几率在2回合内造成<color=#FFFFFF>防御力降低</color>。若目标处于<color=#FFFFFF>攻击力降低</color>状态，则效果发生率提升25%。根据自身最大生命值等比提升伤害量。"
     },
     {
       "key": "battle.skill.c1002.s1.name",
-      "zhCn": "制裁"
+      "zhCn": "审判"
     },
     {
       "key": "battle.skill.c1002.s2.description",
-      "zhCn": "攻击全体敌人，有85%概率降低攻击2回合，随后解除一个增益。伤害随自身最大生命提高。"
+      "zhCn": "用魔法之矛攻击全体敌人，有<color=#FF9900>85%</color>的几率在2回合内造成<color=#FFFFFF>攻击力降低</color>效果后，解除1个强化效果。根据自身最大生命值等比提升伤害量。"
     },
     {
       "key": "battle.skill.c1002.s2.name",
-      "zhCn": "钢铁暴风"
+      "zhCn": "钢铁烙印"
     },
     {
       "key": "battle.skill.c1002.s3.description",
-      "zhCn": "攻击全体敌人，有85%概率挑衅1回合，随后给予全体友军免疫、自身屏障2回合。伤害和屏障随自身最大生命提高。"
+      "zhCn": "用注入黑暗之息的长矛攻击全体敌人，有<color=#FF9900>85%</color>的几率在1回合内<color=#FFFFFF>挑衅</color>对方，随后使全体我军人员在2回合内获得<color=#FFFFFF>免疫</color>效果，并使自己在2回合内获得<color=#FFFFFF>防护罩</color>。根据自身最大生命值等比提升伤害量和防护罩强度。"
     },
     {
       "key": "battle.skill.c1002.s3.name",
-      "zhCn": "毁灭之枪"
+      "zhCn": "破灭惩戒"
     },
     {
       "key": "battle.skill.c1003.s1.description",
-      "zhCn": "攻击一名敌人，伤害随自身防御提高。自身生命至少一半时有50%概率挑衅目标1回合，低于一半时自身防御提升1回合。"
+      "zhCn": "挥剑攻击敌人。若自身生命值在50%以上，则有<color=#FF9900>50%</color>的几率在1回合内造成<color=#FFFFFF>挑衅</color>。若自身生命值在50%以下，则使自身在1回合内获得<color=#FFFFFF>防御力提升</color>效果。根据自身防御力等比提升伤害量。"
     },
     {
       "key": "battle.skill.c1003.s1.name",
-      "zhCn": "连续斩击"
+      "zhCn": "连续砍击"
     },
     {
       "key": "battle.skill.c1003.s2.description",
-      "zhCn": "解除选定友军两个减益，赋予随自身防御增强的屏障2回合，再提升目标行动值10%。"
+      "zhCn": "用光盾包围目标，解除2个弱化效果，根据自身防御力使其在2回合内获得等比强度的<color=#FFFFFF>防护罩</color>后，使速攻值提升<color=#FF9900>10%</color>。"
     },
     {
       "key": "battle.skill.c1003.s2.name",
-      "zhCn": "光之盾"
+      "zhCn": "光盾"
     },
     {
       "key": "battle.skill.c1003.s3.description",
-      "zhCn": "全体友军攻击提升2回合、行动值增加15%，自身额外获得防御提升2回合。"
+      "zhCn": "庇护全体我军人员，使其在2回合内<color=#FFFFFF>攻击力提升</color>，速攻值提升<color=#FF9900>15%</color>。使自己在2回合内<color=#FFFFFF>防御力提升</color>。"
     },
     {
       "key": "battle.skill.c1003.s3.name",
@@ -8995,7 +8995,7 @@
     },
     {
       "key": "battle.skill.c1004.s1.description",
-      "zhCn": "攻击一名敌人，降低其行动值10%。伤害随自身速度提高。专注至少2点时强化为自动射击，伤害提高并穿透目标20%防御。"
+      "zhCn": "用箭攻击敌人，使速攻值降低10%。根据自身速度等比提升伤害量。"
     },
     {
       "key": "battle.skill.c1004.s1.name",
@@ -9003,63 +9003,67 @@
     },
     {
       "key": "battle.skill.c1004.s2.description",
-      "zhCn": "被动。回合开始获得1点专注。受攻击时若有专注则消耗1点，解除自身一个减益并提升行动值15%。专注至少2点时强化基本技能。"
+      "zhCn": "回合开始时，获得专注力1点。受到攻击时，消耗专注力1点，解除自身的1个弱化效果，使速攻值提升15%。若自身专注力在2点以上，则使用连发射击代替单发射击。\n连发射击：用箭攻击敌人，使速攻值降低10%。根据自身速度等比提升伤害量，对目标造成20%的防御力<color=#FFFFFF>穿透</color>。此攻击会受到与基本技能相关效果的影响。"
     },
     {
       "key": "battle.skill.c1004.s2.name",
-      "zhCn": "集中"
+      "zhCn": "集中力"
     },
     {
       "key": "battle.skill.c1004.s3.description",
-      "zhCn": "攻击全体敌人，有85%概率降低速度2回合。觉醒后全体友军速度提升2回合。"
+      "zhCn": "刮风攻击全体敌人，有<color=#FF9900>85%</color>的几率在2回合内造成<color=#FFFFFF>速度降低</color>，并使全体我军人员在2回合内<color=#FFFFFF>速度提升</color>。"
+    },
+    {
+      "key": "battle.skill.c1004.s2.note",
+      "zhCn": "项目说明：达到专注条件时已应用连发射击的伤害与穿透规则，独立演出尚未接入。"
     },
     {
       "key": "battle.skill.c1004.s3.name",
-      "zhCn": "暴风之箭"
+      "zhCn": "暴风箭"
     },
     {
       "key": "battle.skill.c1005.s1.description",
-      "zhCn": "攻击两名敌人，随后使自身行动条提高15%。"
+      "zhCn": "用电击魔法攻击包含目标在内的2人后，使自身速攻值提升15%。"
     },
     {
       "key": "battle.skill.c1005.s1.name",
-      "zhCn": "神圣闪电"
+      "zhCn": "天诛"
     },
     {
       "key": "battle.skill.c1005.s2.description",
-      "zhCn": "攻击全体敌人，对目标有55%概率解除一个增益。自身有攻击提升时，追加一次同技能攻击。"
+      "zhCn": "用电击球攻击全体敌人，有<color=#FF9900>55%</color>的几率解除1个强化效果。若自身处于<color=#FFFFFF>攻击力提升</color>状态，则发动相同的额外攻击。"
     },
     {
       "key": "battle.skill.c1005.s2.name",
-      "zhCn": "次元裂隙"
+      "zhCn": "次元龟裂"
     },
     {
       "key": "battle.skill.c1005.s3.description",
-      "zhCn": "攻击全体敌人，随后使全体友军攻击提升2回合。"
+      "zhCn": "释放古书之力攻击全体敌人后，使全体我军人员在2回合内<color=#FFFFFF>攻击力提升</color>。"
     },
     {
       "key": "battle.skill.c1005.s3.name",
-      "zhCn": "卡尔的炽焰之眼"
+      "zhCn": "古书玄力"
     },
     {
       "key": "battle.skill.c1006.s1.description",
-      "zhCn": "攻击一名敌人，目标有增益时伤害提高70%。"
+      "zhCn": "用镰刀粉碎攻击敌人。若目标处于强化效果状态，则伤害量提升70%。"
     },
     {
       "key": "battle.skill.c1006.s1.name",
-      "zhCn": "满月之镰"
+      "zhCn": "满月镰刀"
     },
     {
       "key": "battle.skill.c1006.s2.description",
-      "zhCn": "攻击全体敌人，穿透30%防御，潜行状态额外穿透30%。"
+      "zhCn": "使用镰刀攻击所有敌人。对目标造成30%的防御力<color=#FFFFFF>穿透</color>，若自身处于<color=#FFFFFF>隐身</color>状态，则额外对目标造成30%的防御力<color=#FFFFFF>穿透</color>。"
     },
     {
       "key": "battle.skill.c1006.s2.name",
-      "zhCn": "暗之伤痕"
+      "zhCn": "黑暗疤痕"
     },
     {
       "key": "battle.skill.c1006.s3.description",
-      "zhCn": "攻击一名敌人，觉醒后可两次增加技能冷却。自身获得潜行与按攻击计算的屏障2回合，行动值提高50%。伤害随当前生命比例提高。"
+      "zhCn": "跃起攻击敌人，造成2次技能冷却时间增加1回合。使自身在2回合内获得<color=#FFFFFF>隐身</color>效果、根据攻击力获得等比强度的<color=#FFFFFF>防护罩</color>后，使速攻值提升50%。根据自身当前生命值比例等比提升伤害量。"
     },
     {
       "key": "battle.skill.c1006.s3.name",
@@ -9067,63 +9071,63 @@
     },
     {
       "key": "battle.skill.c1007.s1.description",
-      "zhCn": "攻击两名敌人，伤害随自身速度提高。"
+      "zhCn": "快速扬起剑气，攻击包含目标在内的2人。根据自身速度等比提升伤害量。"
     },
     {
       "key": "battle.skill.c1007.s1.name",
-      "zhCn": "横扫"
+      "zhCn": "横扫千军"
     },
     {
       "key": "battle.skill.c1007.s2.description",
-      "zhCn": "被动。友军攻击后，若存活目标的生命不超过50%，自身攻击力提升2回合并追加群攻，行动值提高20%。追加攻击伤害随速度提高，冷却2回合。"
+      "zhCn": "我军人员攻击后，若敌人目标生命值在50%以下，则使自身在2回合内获得<color=#FFFFFF>攻击力提升</color>效果，使用御剑飞燕。\n御剑飞燕：用剑气攻击全体敌人，使自身速攻值提升20%。根据自身速度等比提升伤害量。"
     },
     {
       "key": "battle.skill.c1007.s2.name",
-      "zhCn": "剑舞"
+      "zhCn": "御剑飞燕"
     },
     {
       "key": "battle.skill.c1007.s3.description",
-      "zhCn": "攻击全体敌人，伤害随自身速度提高。"
+      "zhCn": "产生剑气攻击全体敌人。根据自身速度等比提升伤害量。"
     },
     {
       "key": "battle.skill.c1007.s3.name",
-      "zhCn": "剑刃升腾"
+      "zhCn": "御剑升天"
     },
     {
       "key": "battle.skill.c1008.s1.description",
-      "zhCn": "攻击一名敌人，有25%概率眩晕1回合。伤害随自身防御提高。非自身回合使用时变为群攻。"
+      "zhCn": "用盾牌攻击敌人，有<color=#FF9900>25%</color>的几率在1回合内造成<color=#FFFFFF>晕眩</color>效果。根据自身防御力等比提升伤害量。非自身回合时，变更为全体攻击。"
     },
     {
       "key": "battle.skill.c1008.s1.name",
-      "zhCn": "盾牌猛击"
+      "zhCn": "盾强击"
     },
     {
       "key": "battle.skill.c1008.s2.description",
-      "zhCn": "被动。满觉醒时受到攻击有20%概率以基本技能反击；友方受到单体攻击时降低30%伤害，同类减伤取最高值。"
+      "zhCn": "受到攻击时，有<color=#FF9900>20%</color>的几率发动反击。\n我军人员受到单一攻击时，使其获得30%的<color=#FFFFFF>伤害降低</color>效果。"
     },
     {
       "key": "battle.skill.c1008.s2.name",
-      "zhCn": "保护"
+      "zhCn": "防御架势"
     },
     {
       "key": "battle.skill.c1008.s3.description",
-      "zhCn": "解除全体友军一个减益，自身防御提升2回合，并为全体友军赋予随自身防御增强的屏障2回合。"
+      "zhCn": "用光盾解除全体我军人员的1个弱化效果，使自身在2回合内获得<color=#FFFFFF>防御力提升</color>效果、根据自身防御力使全体我军人员在2回合内获得等比强度的<color=#FFFFFF>防护罩</color>。"
     },
     {
       "key": "battle.skill.c1008.s3.name",
-      "zhCn": "盾墙"
+      "zhCn": "隔绝之盾"
     },
     {
       "key": "battle.skill.c1009.s1.description",
-      "zhCn": "攻击一名敌人并提高自身行动值25%，获得25点斗志，命中时必定暴击。非夹攻且自身有增益时变为群攻并获得50点斗志。"
+      "zhCn": "用双刀攻击敌人，使自身速攻值提升25%。命中时触发暴击。\n在除夹攻外的状况下使用时，若自身处于强化效果状态，则双刀变更为全体攻击，斗志获得量提升为2倍。"
     },
     {
       "key": "battle.skill.c1009.s1.name",
-      "zhCn": "双剑"
+      "zhCn": "双刀"
     },
     {
       "key": "battle.skill.c1009.s2.description",
-      "zhCn": "被动。开战与自身回合结束时获得相当于自身攻击力50%的屏障1回合。自身有增益时造成伤害提高50%，受到攻击时伤害降低50%。"
+      "zhCn": "战斗开始时和回合结束时，根据攻击力在1回合内获得等比强度的<color=#FFFFFF>防护罩</color>。\n若处于强化效果状态，则攻击时，伤害量提升50%；受到攻击时，获得50%的<color=#FFFFFF>伤害降低</color>效果。"
     },
     {
       "key": "battle.skill.c1009.s2.name",
@@ -9131,31 +9135,31 @@
     },
     {
       "key": "battle.skill.c1009.s3.description",
-      "zhCn": "消耗100点斗志，攻击全体敌人并施加无法恢复2回合。穿透防御最高敌人的防御，命中时必定暴击。"
+      "zhCn": "用旋转砍击攻击全体敌人，在2回合内造成<color=#FFFFFF>无法恢复</color>效果。对防御力最高的目标造成防御力<color=#FFFFFF>穿透</color>。命中时触发暴击。"
     },
     {
       "key": "battle.skill.c1009.s3.name",
-      "zhCn": "旋风"
+      "zhCn": "漩涡"
     },
     {
       "key": "battle.skill.c1062.s1.description",
-      "zhCn": "攻击一名敌人，有20%概率使其眩晕1回合。"
+      "zhCn": "用手杖攻击目标，有<color=#FF9900>20%</color>的几率在1回合内造成<color=#FFFFFF>晕眩</color>效果。"
     },
     {
       "key": "battle.skill.c1062.s1.name",
-      "zhCn": "神圣打击"
+      "zhCn": "神圣强击"
     },
     {
       "key": "battle.skill.c1062.s2.description",
-      "zhCn": "治疗选定友军及生命最低的友军，治疗量随施术者最大生命提高。"
+      "zhCn": "使用治愈之力，根据自身最大生命值使目标和生命值比例最低的我军人员等比恢复生命值。"
     },
     {
       "key": "battle.skill.c1062.s2.name",
-      "zhCn": "生命起源"
+      "zhCn": "生命的祈愿"
     },
     {
       "key": "battle.skill.c1062.s3.description",
-      "zhCn": "治疗全体友军并赋予免疫及屏障2回合。治疗及屏障随施术者最大生命提高。"
+      "zhCn": "使全体我军人员恢复生命值，在2回合内获得<color=#FFFFFF>免疫</color>效果、<color=#FFFFFF>防护罩</color>。根据自身最大生命值等比提升恢复量和防护罩强度。"
     },
     {
       "key": "battle.skill.c1062.s3.name",
@@ -9163,7 +9167,7 @@
     },
     {
       "key": "battle.status.attackdown.description",
-      "zhCn": "降低攻击力。"
+      "zhCn": "攻击力降低50%。"
     },
     {
       "key": "battle.status.attackdown.name",
@@ -9175,7 +9179,7 @@
     },
     {
       "key": "battle.status.attackup.description",
-      "zhCn": "提高攻击力。"
+      "zhCn": "攻击力提升50%。"
     },
     {
       "key": "battle.status.attackup.name",
@@ -9187,15 +9191,15 @@
     },
     {
       "key": "battle.status.barrier.description",
-      "zhCn": "优先吸收受到的伤害，超过剩余屏障值的部分扣除生命。"
+      "zhCn": "受到伤害时，代替生命值吸收部分伤害。"
     },
     {
       "key": "battle.status.barrier.name",
-      "zhCn": "屏障"
+      "zhCn": "防护罩"
     },
     {
       "key": "battle.status.counter.description",
-      "zhCn": "受到符合条件的攻击时，有概率以基本技能反击攻击者。"
+      "zhCn": "受到攻击时，立刻使用基本技能回击攻击自身的目标。受到额外攻击、反击时不会触发。"
     },
     {
       "key": "battle.status.counter.name",
@@ -9203,7 +9207,7 @@
     },
     {
       "key": "battle.status.criticalresistanceup.description",
-      "zhCn": "降低自身受到暴击的概率。"
+      "zhCn": "暴击抗性提升50%。"
     },
     {
       "key": "battle.status.criticalresistanceup.name",
@@ -9211,7 +9215,7 @@
     },
     {
       "key": "battle.status.defensedown.description",
-      "zhCn": "降低防御力。"
+      "zhCn": "防御力降低70%。"
     },
     {
       "key": "battle.status.defensedown.name",
@@ -9223,7 +9227,7 @@
     },
     {
       "key": "battle.status.defenseup.description",
-      "zhCn": "提高防御力。"
+      "zhCn": "防御力提升60%。"
     },
     {
       "key": "battle.status.defenseup.name",
@@ -9235,7 +9239,7 @@
     },
     {
       "key": "battle.status.evasionup.description",
-      "zhCn": "提高攻击者对自身未命中的概率。"
+      "zhCn": "回避提升50%。"
     },
     {
       "key": "battle.status.evasionup.name",
@@ -9243,7 +9247,7 @@
     },
     {
       "key": "battle.status.immunity.description",
-      "zhCn": "阻止新的减益和可被免疫的敌方负面效果。已存在的减益继续生效。"
+      "zhCn": "不受任何弱化效果及部分有害效果的影响。"
     },
     {
       "key": "battle.status.immunity.name",
@@ -9251,7 +9255,7 @@
     },
     {
       "key": "battle.status.provoke.description",
-      "zhCn": "轮到自身行动时，对施加挑衅的敌人使用基本技能。"
+      "zhCn": "回合开始时，被迫对施展挑衅的目标使用基本技能。"
     },
     {
       "key": "battle.status.provoke.name",
@@ -9259,7 +9263,7 @@
     },
     {
       "key": "battle.status.silence.description",
-      "zhCn": "无法主动使用第二和第三技能。"
+      "zhCn": "在自身回合选择技能时，无法选择除基本技能外的其他技能。"
     },
     {
       "key": "battle.status.silence.name",
@@ -9267,7 +9271,7 @@
     },
     {
       "key": "battle.status.speeddown.description",
-      "zhCn": "降低速度，减慢行动值的累积。"
+      "zhCn": "速度降低30%。"
     },
     {
       "key": "battle.status.speeddown.name",
@@ -9279,7 +9283,7 @@
     },
     {
       "key": "battle.status.speedup.description",
-      "zhCn": "提高速度，加快行动值的累积。"
+      "zhCn": "速度提升30%。"
     },
     {
       "key": "battle.status.speedup.name",
@@ -9291,23 +9295,23 @@
     },
     {
       "key": "battle.status.stealth.description",
-      "zhCn": "存在其他可选敌人时，无法被敌方单独选中。承受范围攻击时降低伤害，受到生命伤害后解除。"
+      "zhCn": "若存在其他我军人员，则不会被敌人指定为技能目标。受到全体攻击时，获得伤害降低效果，受到攻击造成的伤害时解除。"
     },
     {
       "key": "battle.status.stealth.name",
-      "zhCn": "潜行"
+      "zhCn": "隐身"
     },
     {
       "key": "battle.status.stun.description",
-      "zhCn": "跳过自身回合。眩晕期间无法发动反击或夹攻。"
+      "zhCn": "在持续回合内无法行动。"
     },
     {
       "key": "battle.status.stun.name",
-      "zhCn": "眩晕"
+      "zhCn": "晕眩"
     },
     {
       "key": "battle.status.unhealable.description",
-      "zhCn": "无法获得技能治疗。"
+      "zhCn": "无法获得生命值恢复效果。"
     },
     {
       "key": "battle.status.unhealable.name",
@@ -9315,83 +9319,83 @@
     },
     {
       "key": "battle.skill.c1010.s1.name",
-      "zhCn": "寒冰刺"
+      "zhCn": "冰刺"
     },
     {
       "key": "battle.skill.c1010.s1.description",
-      "zhCn": "攻击敌人，有 40% 概率使其速度降低 2 回合。"
+      "zhCn": "用冰锥攻击敌人，有<color=#FF9900>40%</color>的几率在2回合内造成<color=#FFFFFF>速度降低</color>。"
     },
     {
       "key": "battle.skill.c1010.s2.name",
-      "zhCn": "破冰锥"
+      "zhCn": "冰锥"
     },
     {
       "key": "battle.skill.c1010.s2.description",
-      "zhCn": "连续攻击一名敌人，使自身行动值提高 50%。完成第三阶觉醒后，攻击带有减益的目标时提高伤害。燃魂消耗 10 点魂力并提高本技能伤害。"
+      "zhCn": "连续攻击敌人后，使自身速攻值提升50%。若目标处于弱化效果状态，则伤害量提升。"
     },
     {
       "key": "battle.skill.c1010.s3.name",
-      "zhCn": "冰山"
+      "zhCn": "召唤冰山"
     },
     {
       "key": "battle.skill.c1010.s3.description",
-      "zhCn": "用巨大冰山攻击全体敌人，各有 50% 概率使其眩晕 1 回合。"
+      "zhCn": "制造巨大的冰山，攻击所有敌人，有<color=#FF9900>50%</color>的几率在1回合内造成<color=#FFFFFF>晕眩</color>效果。"
     },
     {
       "key": "battle.skill.c1011.s1.name",
-      "zhCn": "连斩"
+      "zhCn": "连续砍击"
     },
     {
       "key": "battle.skill.c1011.s1.description",
-      "zhCn": "拔剑攻击敌人。暴击时使自身技能冷却减少 1 回合。"
+      "zhCn": "用拔刀术攻击敌人。暴击时，技能冷却时间减少1回合。"
     },
     {
       "key": "battle.skill.c1011.s2.name",
-      "zhCn": "居合·闪"
+      "zhCn": "拔刀：一闪"
     },
     {
       "key": "battle.skill.c1011.s2.description",
-      "zhCn": "冲向敌人并攻击。暴击时降低目标防御力 1 回合。完成第三阶觉醒后，暴击还会使自身获得额外回合。"
+      "zhCn": "斩击敌人。暴击时，对目标在1回合内造成<color=#FFFFFF>防御力降低</color>效果，获得<color=#FFFFFF>额外回合</color>。"
     },
     {
       "key": "battle.skill.c1011.s3.name",
-      "zhCn": "居合·雷"
+      "zhCn": "拔刀：雷神"
     },
     {
       "key": "battle.skill.c1011.s3.description",
-      "zhCn": "以闪电般的速度斩击敌人，暴击时提高伤害。燃魂消耗 10 点魂力并提高本技能伤害。"
+      "zhCn": "用闪电般的行动乱砍攻击敌人。暴击时，伤害量提升。"
     },
     {
       "key": "battle.skill.c1012.s1.name",
-      "zhCn": "盾牌猛击"
+      "zhCn": "盾击"
     },
     {
       "key": "battle.skill.c1012.s1.description",
-      "zhCn": "使用盾牌攻击敌人，有 50% 概率转移自身一项减益。不屈时提高伤害并使目标眩晕 1 回合。伤害随自身防御力提高。"
+      "zhCn": "用盾牌推击敌人，有<color=#FF9900>50%</color>的几率<color=#FFFFFF>转移</color>1个弱化效果。若自身处于<color=#FFFFFF>不屈</color>状态，则伤害量提升，对目标在1回合内造成<color=#FFFFFF>晕眩</color>效果。根据自身防御力等比提升伤害量。"
     },
     {
       "key": "battle.skill.c1012.s2.name",
-      "zhCn": "铁锤轰击"
+      "zhCn": "攻城锤"
     },
     {
       "key": "battle.skill.c1012.s2.description",
-      "zhCn": "攻击全体敌人，使行动值降低 20%。不屈时使减量加倍。被推至 0 的目标有机会眩晕 1 回合。伤害随自身防御力提高。"
+      "zhCn": "用铁锤攻击全体敌人，使速攻值降低<color=#FF9900>20%</color>。若目标速攻值归0，则在1回合内造成<color=#FFFFFF>晕眩</color>效果。若自身处于<color=#FFFFFF>不屈</color>状态，则速攻值降低量提升为2倍。根据自身防御力等比提升伤害量。"
     },
     {
       "key": "battle.skill.c1012.s3.name",
-      "zhCn": "怒火降临"
+      "zhCn": "火神降临"
     },
     {
       "key": "battle.skill.c1012.s3.description",
-      "zhCn": "消耗 100 点斗志，赋予自身不屈 3 回合，完成第三阶觉醒后恢复生命值，然后获得额外回合。开局获得 50 点斗志，被攻击时获得 10 点。"
+      "zhCn": "释放斗志，在3回合内获得<color=#FFFFFF>不屈</color>效果，根据最大生命值等比恢复生命值后，获得<color=#FFFFFF>额外回合</color>。\n首次战斗开始时，获得斗志50点。\n受到攻击时，获得斗志10点。"
     },
     {
       "key": "battle.status.indomitable.name",
-      "zhCn": "不屈"
+      "zhCn": "不屈（无法解除）"
     },
     {
       "key": "battle.status.indomitable.description",
-      "zhCn": "提高防御力和效果抗性各 30%，无法被驱散。"
+      "zhCn": "防御力、效果抗性提升30%。"
     },
     {
       "key": "battle.inspect.burn.increase_healing",
@@ -9399,51 +9403,51 @@
     },
     {
       "key": "battle.skill.c1013.s1.name",
-      "zhCn": "撕裂"
+      "zhCn": "撕碎"
     },
     {
       "key": "battle.skill.c1013.s1.description",
-      "zhCn": "攻击单个敌人，有 35% 概率降低防御力 2 回合。伤害随自身最大生命值提高。"
+      "zhCn": "用锐利脚爪攻击敌人，有<color=#FF9900>35%</color>的几率在2回合内造成<color=#FFFFFF>防御力降低</color>。根据自身最大生命值等比提升伤害量。"
     },
     {
       "key": "battle.skill.c1013.s2.name",
-      "zhCn": "危险地带"
+      "zhCn": "威胁架势"
     },
     {
       "key": "battle.skill.c1013.s2.description",
-      "zhCn": "受到攻击时行动值提高 10%。当自身生命值不高于 50% 时，额外提高 10%。"
+      "zhCn": "受到攻击的同时，速攻值提升<color=#FF9900>10%</color>。若自身生命值在50%以下，则速攻值额外提升10%。"
     },
     {
       "key": "battle.skill.c1013.s3.name",
-      "zhCn": "捕食咆哮"
+      "zhCn": "捕食者的咆哮"
     },
     {
       "key": "battle.skill.c1013.s3.description",
-      "zhCn": "攻击全体敌人，有 75% 概率降低攻击力 2 回合。自身获得防御力提升 2 回合，第三阶觉醒后先恢复生命。伤害随自身最大生命值提高，低于 75% 时进一步提高。"
+      "zhCn": "散发野生之息，攻击所有敌人，有<color=#FF9900>75%</color>的几率在2回合内造成<color=#FFFFFF>攻击力降低</color>，自身生命值恢复一半之后，使自己在2回合内获得<color=#FFFFFF>防御力提升</color>。根据自身最大生命值等比提升伤害量，自身生命值低于75%时，伤害量提升。"
     },
     {
       "key": "battle.skill.c1014.s1.name",
-      "zhCn": "无情攻击"
+      "zhCn": "连击"
     },
     {
       "key": "battle.skill.c1014.s1.description",
-      "zhCn": "攻击单个敌人。若施放时已有速度提升，则使用旋风，降低目标防御力 1 回合。伤害随自身速度提高。"
+      "zhCn": "用短剑攻击敌人。根据自身速度等比提升伤害量。\n若自身处于<color=#FFFFFF>速度提升</color>状态，则使用回转乱舞代替连击。\n回转乱舞：连续攻击敌人，在1回合内造成<color=#FFFFFF>防御力降低</color>。根据自身速度等比提升伤害量。"
     },
     {
       "key": "battle.skill.c1014.s2.name",
-      "zhCn": "风之决意"
+      "zhCn": "风之决心"
     },
     {
       "key": "battle.skill.c1014.s2.description",
-      "zhCn": "暴击后自身获得速度提升 1 回合，另有 70% 概率获得一个随机增益 1 回合。每回合最多获得一次随机增益。"
+      "zhCn": "暴击时，使自身在1回合内获得<color=#FFFFFF>速度提升</color>效果，有<color=#FF9900>70%</color>的几率在1回合内获得<color=#FFFFFF>随机强化效果</color>。"
     },
     {
       "key": "battle.skill.c1014.s3.name",
-      "zhCn": "猛砍"
+      "zhCn": "乱砍"
     },
     {
       "key": "battle.skill.c1014.s3.description",
-      "zhCn": "攻击单个敌人，击倒目标时获得额外回合。伤害随自身速度提高。第三阶觉醒后，若施放时已有速度提升，则以优势属性攻击。"
+      "zhCn": "用短剑乱砍攻击敌人，消灭时，获得<color=#FFFFFF>额外回合</color>。若自身处于<color=#FFFFFF>速度提升</color>状态，则用有利属性发动攻击。根据自身速度等比提升伤害量。"
     },
     {
       "key": "battle.status.greaterspeedup.name",
@@ -9451,7 +9455,7 @@
     },
     {
       "key": "battle.status.greaterspeedup.description",
-      "zhCn": "提高速度，加快行动值累积。与普通速度提升取较高值。"
+      "zhCn": "速度提升45%。"
     },
     {
       "key": "battle.status.greaterspeedup.strength",
@@ -9463,7 +9467,7 @@
     },
     {
       "key": "battle.status.criticaldamageup.description",
-      "zhCn": "提高暴击时造成的伤害。"
+      "zhCn": "暴击伤害提升70%。"
     },
     {
       "key": "battle.status.criticaldamageup.strength",
@@ -9475,7 +9479,7 @@
     },
     {
       "key": "battle.status.effectivenessup.description",
-      "zhCn": "提升施加减益和其他可抵抗效果的成功率。"
+      "zhCn": "效果命中提升50%。"
     },
     {
       "key": "battle.status.effectivenessup.strength",
@@ -9483,35 +9487,35 @@
     },
     {
       "key": "battle.skill.c1014.whirlwind.name",
-      "zhCn": "旋风"
+      "zhCn": "回转乱舞"
     },
     {
       "key": "battle.skill.c1014.whirlwind.description",
-      "zhCn": "连续攻击单个敌人，命中后降低其防御力 1 回合。伤害随自身速度提高。"
+      "zhCn": "连续攻击敌人，在1回合内造成<color=#FFFFFF>防御力降低</color>。根据自身速度等比提升伤害量。"
     },
     {
       "key": "battle.skill.c1015.s1.name",
-      "zhCn": "幽魂骚扰"
+      "zhCn": "死灵出没"
     },
     {
       "key": "battle.skill.c1015.s1.description",
-      "zhCn": "召唤恶灵攻击两名敌人，各有 35% 概率中毒 2 回合。"
+      "zhCn": "召唤恶灵攻击包含目标在内的2名敌人，有<color=#FF9900>35%</color>的几率在2回合内造成<color=#FFFFFF>中毒</color>效果。"
     },
     {
       "key": "battle.skill.c1015.s2.name",
-      "zhCn": "黑暗云雾"
+      "zhCn": "黑云"
     },
     {
       "key": "battle.skill.c1015.s2.description",
-      "zhCn": "攻击全体敌人，目标每有一个减益，受到的伤害额外提高 15%。本次攻击击倒敌人时重置最终安魂曲的冷却。"
+      "zhCn": "召唤黑云攻击全体敌人。根据目标的弱化效果数等比提升伤害量。消灭时，最后的安魂曲冷却时间重置。"
     },
     {
       "key": "battle.skill.c1015.s3.name",
-      "zhCn": "最终安魂曲"
+      "zhCn": "最后的安魂曲"
     },
     {
       "key": "battle.skill.c1015.s3.description",
-      "zhCn": "攻击全体敌人，分别有 65% 概率降低速度、禁止恢复 2 回合。第三阶觉醒后另有 65% 概率降低防御 2 回合。"
+      "zhCn": "巴尔和塞尚用攻击魔法攻击全体敌人，各有<color=#FF9900>65%</color>的几率在2回合内造成<color=#FFFFFF>防御力降低</color>、<color=#FFFFFF>速度降低</color>、<color=#FFFFFF>无法恢复</color>效果。"
     },
     {
       "key": "battle.status.poison.name",
@@ -9519,31 +9523,31 @@
     },
     {
       "key": "battle.status.poison.description",
-      "zhCn": "回合开始时，每层受到相当于自身最大生命值 5% 的伤害。"
+      "zhCn": "回合开始时，受到最大生命值5%的伤害。"
     },
     {
       "key": "battle.skill.c1016.s1.name",
-      "zhCn": "双重斩击"
+      "zhCn": "双重砍击"
     },
     {
       "key": "battle.skill.c1016.s1.description",
-      "zhCn": "攻击单个敌人，有 35% 概率降低防御力 2 回合。"
+      "zhCn": "挥舞武器攻击敌人，有<color=#FF9900>35%</color>的几率在2回合内造成<color=#FFFFFF>防御力降低</color>。"
     },
     {
       "key": "battle.skill.c1016.s2.name",
-      "zhCn": "巨龙咆哮"
+      "zhCn": "龙的呼喊"
     },
     {
       "key": "battle.skill.c1016.s2.description",
-      "zhCn": "攻击全体敌人，先尝试驱散一个强化，再分别以 60% 概率降低防御力 2 回合、以 75% 概率使目标沉默 1 回合。"
+      "zhCn": "用龙嚎攻击全体敌人，解除1个强化效果后，有<color=#FF9900>60%</color>的几率在2回合内造成<color=#FFFFFF>防御力降低</color>，有<color=#FF9900>75%</color>的几率在1回合内造成<color=#FFFFFF>沉默</color>效果。"
     },
     {
       "key": "battle.skill.c1016.s3.name",
-      "zhCn": "巨龙冲锋"
+      "zhCn": "龙的突击"
     },
     {
       "key": "battle.skill.c1016.s3.description",
-      "zhCn": "赋予自身攻击力提升 2 回合后攻击单个敌人，击倒目标时获得额外回合。三阶觉醒后对已有减益的目标增伤 50%。本技能可用时，其他队友施放技能后若有敌人处于减益，增加自身行动值 20%。"
+      "zhCn": "使自身在2回合内获得<color=#FFFFFF>攻击力提升</color>效果后，用巨剑攻击敌人。消灭时，获得<color=#FFFFFF>额外回合</color>。若目标处于弱化效果状态，则伤害量提升。若此技能未处于冷却状态，则除自身外的我军人员使用技能后，若敌人处于弱化效果状态，则使自身速攻值提升20%。"
     },
     {
       "key": "battle.inspect.burn.ignore_resistance",
@@ -9551,27 +9555,27 @@
     },
     {
       "key": "battle.skill.c1017.s1.name",
-      "zhCn": "魔力纹章"
+      "zhCn": "魔法纹样"
     },
     {
       "key": "battle.skill.c1017.s1.description",
-      "zhCn": "攻击单个敌人，有 35% 概率降低攻击力 2 回合。"
+      "zhCn": "用手杖攻击敌人，有<color=#FF9900>35%</color>的几率在2回合内造成<color=#FFFFFF>攻击力降低</color>效果。"
     },
     {
       "key": "battle.skill.c1017.s2.name",
-      "zhCn": "快速治疗"
+      "zhCn": "急速治愈"
     },
     {
       "key": "battle.skill.c1017.s2.description",
-      "zhCn": "恢复一名友军的生命并赋予护盾 1 回合。三阶觉醒后改为赋予无敌 1 回合。随后使该目标的技能冷却减少 1 回合。"
+      "zhCn": "根据自身最大生命值使我军目标等比恢复生命值，在1回合内获得<color=#FFFFFF>无敌</color>效果后，使技能冷却时间减少1回合。"
     },
     {
       "key": "battle.skill.c1017.s3.name",
-      "zhCn": "治愈祈祷"
+      "zhCn": "治愈的祷告"
     },
     {
       "key": "battle.skill.c1017.s3.description",
-      "zhCn": "解除所有友军身上的减益后恢复生命。治疗量随施法者最大生命值提高。"
+      "zhCn": "用治愈之力解除全体我军人员的弱化效果后，根据自身最大生命值使其等比恢复生命值。"
     },
     {
       "key": "battle.status.invincible.name",
@@ -9579,15 +9583,15 @@
     },
     {
       "key": "battle.status.invincible.description",
-      "zhCn": "免受伤害。"
+      "zhCn": "使所有伤害无效化。"
     },
     {
       "key": "battle.skill.c1018.s1.name",
-      "zhCn": "精灵低语"
+      "zhCn": "精灵的絮语"
     },
     {
       "key": "battle.skill.c1018.s1.description",
-      "zhCn": "攻击单个敌人，有 40% 概率降低速度 2 回合。"
+      "zhCn": "用精灵之力攻击敌人，有<color=#FF9900>40%</color>的几率在2回合内造成<color=#FFFFFF>速度降低</color>。"
     },
     {
       "key": "battle.skill.c1018.s2.name",
@@ -9595,15 +9599,15 @@
     },
     {
       "key": "battle.skill.c1018.s2.description",
-      "zhCn": "解除一名友军的两个减益，按目标最大生命值恢复生命。第三阶觉醒后提高自身行动值 20%。"
+      "zhCn": "使用水流之息，根据目标最大生命值使我军目标等比恢复生命值，解除2个弱化效果后，使自身速攻值提升20%。"
     },
     {
       "key": "battle.skill.c1018.s3.name",
-      "zhCn": "精灵召唤"
+      "zhCn": "精灵的呼唤"
     },
     {
       "key": "battle.skill.c1018.s3.description",
-      "zhCn": "为全体友军恢复生命并赋予护盾 2 回合，治疗量和护盾量按每名友军的最大生命值计算。"
+      "zhCn": "用精灵之力使全体我军人员恢复，并在2回合内获得<color=#FFFFFF>防护罩</color>。根据目标的最大生命值等比提升恢复量和防护罩强度。"
     },
     {
       "key": "battle.skill.c1019.s1.name",
@@ -9611,7 +9615,7 @@
     },
     {
       "key": "battle.skill.c1019.s1.description",
-      "zhCn": "挥舞双刃斧攻击一名敌人，按实际生命伤害恢复自身生命。命中时必定暴击。消耗20点灵魂可以大幅提高伤害，且不会触发夹攻。"
+      "zhCn": "挥舞双刃斧攻击敌人，并将部分伤害量作为生命值恢复。命中时发生暴击。"
     },
     {
       "key": "battle.skill.c1019.s2.name",
@@ -9619,7 +9623,7 @@
     },
     {
       "key": "battle.skill.c1019.s2.description",
-      "zhCn": "首次战斗开始时获得60点斗志，根据自身开战时的最大生命值增加攻击力。受到攻击后提高速攻值；受到暴击时解除自身一个弱化效果，每回合最多一次。"
+      "zhCn": "首次战斗开始时，获得斗志60点，根据最大生命值等比提升攻击力。\n受到攻击后，速攻值提升<color=#FF9900>8%</color>；受到暴击后，解除自身的1个弱化效果。"
     },
     {
       "key": "battle.skill.c1019.s3.name",
@@ -9627,7 +9631,167 @@
     },
     {
       "key": "battle.skill.c1019.s3.description",
-      "zhCn": "攻击全体敌人，命中时必定暴击。造成伤口，随后有75%几率使目标眩晕1回合。每次造成的伤口最多削减目标10%最大生命值，技能觉醒后提高到20%。"
+      "zhCn": "无情攻击全体敌人，造成最多20%的<color=#FFFFFF>伤口</color>效果后，有75%的几率在1回合内造成<color=#FFFFFF>晕眩</color>效果。命中时触发暴击。"
+    },
+    {
+      "key": "battle.skill.c1001.s1.unawakened.description",
+      "zhCn": "挥剑攻击敌人，根据自身最大生命值等比提升伤害量。"
+    },
+    {
+      "key": "battle.skill.c1001.s2.burn.description",
+      "zhCn": "该技能冷却时间减少2回合。"
+    },
+    {
+      "key": "battle.skill.c1002.s2.burn.description",
+      "zhCn": "该技能冷却时间减少2回合。"
+    },
+    {
+      "key": "battle.skill.c1002.s2.unawakened.description",
+      "zhCn": "用魔法之矛攻击全体敌人，有<color=#FF9900>35%</color>的几率在2回合内造成<color=#FFFFFF>攻击力降低</color>效果后，解除1个强化效果。若自身生命值在50%以下，则效果发生率提升50%。根据自身最大生命值等比提升伤害量。"
+    },
+    {
+      "key": "battle.skill.c1003.s3.burn.description",
+      "zhCn": "此技能赋予的强化效果持续回合数\n增加1回合。"
+    },
+    {
+      "key": "battle.skill.c1003.s3.unawakened.description",
+      "zhCn": "庇护全体我军人员，使其在1回合内<color=#FFFFFF>攻击力提升</color>，速攻值提升<color=#FF9900>15%</color>。"
+    },
+    {
+      "key": "battle.skill.c1004.s1.burn.description",
+      "zhCn": "获得额外回合。"
+    },
+    {
+      "key": "battle.skill.c1004.s3.unawakened.description",
+      "zhCn": "刮风攻击全体敌人，有<color=#FF9900>85%</color>的几率在2回合内造成<color=#FFFFFF>速度降低</color>，并使自身在2回合内<color=#FFFFFF>速度提升</color>。"
+    },
+    {
+      "key": "battle.skill.c1005.s3.burn.description",
+      "zhCn": "此技能赋予的强化效果持续回合数增加1回合。"
+    },
+    {
+      "key": "battle.skill.c1005.s3.unawakened.description",
+      "zhCn": "释放古书之力攻击全体敌人后，使自身在2回合内<color=#FFFFFF>攻击力提升</color>。"
+    },
+    {
+      "key": "battle.skill.c1006.s2.burn.description",
+      "zhCn": "伤害量提升。"
+    },
+    {
+      "key": "battle.skill.c1006.s3.unawakened.description",
+      "zhCn": "跃起攻击敌人。使自身在2回合内获得<color=#FFFFFF>隐身</color>效果、根据攻击力获得等比强度的<color=#FFFFFF>防护罩</color>后，使速攻值提升50%。根据自身当前生命值比例等比提升伤害量。"
+    },
+    {
+      "key": "battle.skill.c1007.s2.unawakened.description",
+      "zhCn": "我军人员攻击后，若敌人目标生命值在50%以下，则使用御剑飞燕。\n御剑飞燕：用剑气攻击全体敌人，使自身速攻值提升20%。根据自身速度等比提升伤害量。"
+    },
+    {
+      "key": "battle.skill.c1007.s3.burn.description",
+      "zhCn": "伤害量提升。"
+    },
+    {
+      "key": "battle.skill.c1008.s2.unawakened.description",
+      "zhCn": "受到攻击时，有<color=#FF9900>10%</color>的几率发动反击。\n我军人员受到单一攻击时，使其获得30%的<color=#FFFFFF>伤害降低</color>效果。"
+    },
+    {
+      "key": "battle.skill.c1008.s3.burn.description",
+      "zhCn": "此技能赋予的强化效果持续回合数增加1回合。"
+    },
+    {
+      "key": "battle.skill.c1009.s3.burn.description",
+      "zhCn": "使用技能后获得100点斗志。"
+    },
+    {
+      "key": "battle.skill.c1009.s3.unawakened.description",
+      "zhCn": "用旋转砍击攻击全体敌人，在2回合内造成<color=#FFFFFF>无法恢复</color>效果。对防御力最高的目标造成防御力<color=#FFFFFF>穿透</color>。"
+    },
+    {
+      "key": "battle.skill.c1010.s2.burn.description",
+      "zhCn": "伤害量提升。"
+    },
+    {
+      "key": "battle.skill.c1010.s2.unawakened.description",
+      "zhCn": "连续攻击敌人后，使自身速攻值提升50%。"
+    },
+    {
+      "key": "battle.skill.c1011.s2.unawakened.description",
+      "zhCn": "斩击敌人。暴击时，对目标在1回合内造成<color=#FFFFFF>防御力降低</color>效果。"
+    },
+    {
+      "key": "battle.skill.c1011.s3.burn.description",
+      "zhCn": "伤害量提升。"
+    },
+    {
+      "key": "battle.skill.c1012.s3.burn.description",
+      "zhCn": "生命值恢复量变为2倍。"
+    },
+    {
+      "key": "battle.skill.c1012.s3.unawakened.description",
+      "zhCn": "释放斗志，在3回合内获得<color=#FFFFFF>不屈</color>效果，获得<color=#FFFFFF>额外回合</color>。\n首次战斗开始时，获得斗志50点。\n受到攻击时，获得斗志10点。"
+    },
+    {
+      "key": "battle.skill.c1013.s3.burn.description",
+      "zhCn": "伤害量提升。"
+    },
+    {
+      "key": "battle.skill.c1013.s3.unawakened.description",
+      "zhCn": "散发野生之息，攻击所有敌人，有<color=#FF9900>75%</color>的几率在2回合内造成<color=#FFFFFF>攻击力降低</color>，使自己在2回合内获得<color=#FFFFFF>防御力提升</color>。根据自身最大生命值等比提升伤害量，自身生命值低于75%时，伤害量提升。"
+    },
+    {
+      "key": "battle.skill.c1014.s3.burn.description",
+      "zhCn": "伤害量提升。"
+    },
+    {
+      "key": "battle.skill.c1014.s3.unawakened.description",
+      "zhCn": "用短剑乱砍攻击敌人，消灭时，获得<color=#FFFFFF>额外回合</color>。根据自身速度等比提升伤害量。"
+    },
+    {
+      "key": "battle.skill.c1015.s2.burn.description",
+      "zhCn": "伤害量提升。"
+    },
+    {
+      "key": "battle.skill.c1015.s3.unawakened.description",
+      "zhCn": "巴尔和塞尚用攻击魔法攻击全体敌人，各有<color=#FF9900>65%</color>的几率在2回合内造成<color=#FFFFFF>无法恢复</color>、<color=#FFFFFF>速度降低</color>效果。"
+    },
+    {
+      "key": "battle.skill.c1016.s2.burn.description",
+      "zhCn": "无视效果抗性。"
+    },
+    {
+      "key": "battle.skill.c1016.s3.unawakened.description",
+      "zhCn": "使自身在2回合内获得<color=#FFFFFF>攻击力提升</color>效果后，用巨剑攻击敌人。消灭时，获得<color=#FFFFFF>额外回合</color>。若此技能未处于冷却状态，则除自身外的我军人员使用技能后，若敌人处于弱化效果状态，则使自身速攻值提升20%。"
+    },
+    {
+      "key": "battle.skill.c1017.s2.unawakened.description",
+      "zhCn": "使我军目标的生命值恢复，在1回合内获得<color=#FFFFFF>防护罩</color>，使技能冷却时间减少1回合。根据自身最大生命值等比提升恢复量和防护罩强度。"
+    },
+    {
+      "key": "battle.skill.c1017.s3.burn.description",
+      "zhCn": "恢复量提升。"
+    },
+    {
+      "key": "battle.skill.c1018.s2.burn.description",
+      "zhCn": "恢复量提升。"
+    },
+    {
+      "key": "battle.skill.c1018.s2.unawakened.description",
+      "zhCn": "使用水流之息，根据目标最大生命值使我军目标等比恢复生命值，解除2个弱化效果。"
+    },
+    {
+      "key": "battle.skill.c1019.s1.burn.description",
+      "zhCn": "伤害量大幅提升，不会触发夹攻。"
+    },
+    {
+      "key": "battle.skill.c1019.s3.unawakened.description",
+      "zhCn": "无情攻击全体敌人，造成最多10%的<color=#FFFFFF>伤口</color>效果后，有75%的几率在1回合内造成<color=#FFFFFF>晕眩</color>效果。命中时触发暴击。"
+    },
+    {
+      "key": "battle.skill.c1062.s2.unawakened.description",
+      "zhCn": "使用治愈之力，根据自身最大生命值使目标等比恢复生命值。"
+    },
+    {
+      "key": "battle.skill.c1062.s3.burn.description",
+      "zhCn": "此技能赋予的强化效果持续回合数\n增加2回合。"
     },
     {
       "key": "character.ras.name",
