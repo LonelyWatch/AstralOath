@@ -170,26 +170,27 @@ internal sealed class ArenaStore(string? connectionString)
         await RequireMember(connection, transaction, id, player.Id, token);
         // A new reader gets the most recent history; an existing reader pages
         // forward in ascending cursor order even if it missed several polls.
-        string query = after == 0 ? """
-            SELECT m.id, p.id, p.display_name, p.avatar_id, m.body, m.created_at
+        const string select = """
+            SELECT m.id, p.id, p.display_name, p.avatar_id, m.body, m.created_at, s.sticker_id
             FROM arena_room_message m JOIN arena_player p ON p.id = m.player_id
-            WHERE m.room_id = @room ORDER BY m.id DESC LIMIT 50;
-            """ : """
-            SELECT m.id, p.id, p.display_name, p.avatar_id, m.body, m.created_at
-            FROM arena_room_message m JOIN arena_player p ON p.id = m.player_id
-            WHERE m.room_id = @room AND m.id > @after ORDER BY m.id ASC LIMIT 100;
+            LEFT JOIN arena_room_message_sticker s ON s.message_id = m.id
+            WHERE m.room_id = @room
             """;
+        string query = select + (after == 0 ? " ORDER BY m.id DESC LIMIT 50;"
+            : " AND m.id > @after ORDER BY m.id ASC LIMIT 100;");
         using var command = Command(connection, transaction, query, ("@room", id), ("@after", after));
         var messages = new List<ArenaMessage>();
         await using (var reader = await command.ExecuteReaderAsync(token))
             while (await reader.ReadAsync(token))
-                messages.Add(new ArenaMessage(reader.GetInt64(0), ReadPlayer(reader, 1), reader.GetString(4), Utc(reader, 5)));
+                messages.Add(new ArenaMessage(reader.GetInt64(0), ReadPlayer(reader, 1), reader.GetString(4), Utc(reader, 5),
+                    reader.IsDBNull(6) ? null : reader.GetString(6)));
         await transaction.CommitAsync(token);
         if (after == 0) messages.Reverse();
         return messages;
     }
 
-    public async Task<ArenaMessage> SendMessage(string id, ArenaPlayer player, string text, CancellationToken token)
+    public async Task<ArenaMessage> SendMessage(string id, ArenaPlayer player, string text, string? stickerId,
+        CancellationToken token)
     {
         await using var connection = await Open(token);
         await using var transaction = await connection.BeginTransactionAsync(IsolationLevel.ReadCommitted, token);
@@ -207,9 +208,16 @@ internal sealed class ArenaStore(string? connectionString)
             """, ("@room", id), ("@player", player.Id), ("@body", text), ("@now", now));
         await insert.ExecuteNonQueryAsync(token);
         long messageId = insert.LastInsertedId;
+        if (stickerId is not null)
+        {
+            using var sticker = Command(connection, transaction, """
+                INSERT INTO arena_room_message_sticker (message_id, sticker_id) VALUES (@message, @sticker);
+                """, ("@message", messageId), ("@sticker", stickerId));
+            await sticker.ExecuteNonQueryAsync(token);
+        }
         await AuditRoom(connection, transaction, "arena.chat.send", player, id, token);
         await transaction.CommitAsync(token);
-        return new ArenaMessage(messageId, player, text, now);
+        return new ArenaMessage(messageId, player, text, now, stickerId);
     }
 
     public async Task RecordTelemetry(ArenaPlayer player, string eventId, string operation, CancellationToken token)

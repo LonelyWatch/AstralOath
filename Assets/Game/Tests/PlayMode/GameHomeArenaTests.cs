@@ -102,6 +102,20 @@ namespace AstralOath.Client.Tests
                 yield return Wait(() => room.Require<ScrollRect>("messages").content.GetComponentsInChildren<GameText>()
                     .Any(label => label.text.Contains("来自第二会话")), "Unity did not receive peer chat.");
                 yield return Capture("arena-room-two");
+                room.Require<GameButton>("emoji").onClick.Invoke();
+                var picker = room.Require<GameObject>("emojiPicker");
+                Assert.That(picker.activeInHierarchy, Is.True);
+                yield return Capture("arena-emoji-picker");
+                var emojiRows = picker.GetComponentsInChildren<GameButton>();
+                Assert.That(emojiRows.Length, Is.GreaterThan(60));
+                emojiRows.Single(button => button.name == "c1001_smile_001").onClick.Invoke();
+                yield return Wait(() => !picker.activeInHierarchy, "Sticker picker did not close.");
+                yield return Complete(peer.Read());
+                Assert.That(peer.Chat, Does.Contain("c1001_smile_001"));
+                yield return Complete(peer.SendSticker("c1005_cry_001"));
+                yield return Wait(() => room.Require<ScrollRect>("messages").content.GetComponentsInChildren<Image>()
+                    .Any(image => image.sprite && image.sprite.name == "c1005_cry_001"), "Unity did not render a peer sticker.");
+                yield return Capture("arena-emoji-chat");
                 yield return Complete(peer.Leave());
                 room.Require<GameButton>("leave").onClick.Invoke();
                 yield return Wait(() => ScreenMap("ArenaDirectory"), "Leaving did not return to the directory.");
@@ -142,7 +156,9 @@ namespace AstralOath.Client.Tests
             directory.Require<GameButton>("search").onClick.Invoke();
             var search = directory.Require<GameObject>("searchPanel");
             Assert.That(search.activeInHierarchy, Is.True);
-            Assert.That(directory.Require<Image>("searchSelected").enabled, Is.True);
+            var searchButton = directory.Require<GameButton>("search");
+            Assert.That(((Image)searchButton.targetGraphic).sprite.name, Is.EqualTo("_btn_white_flat"));
+            Assert.That(searchButton.spriteState.pressedSprite.name, Is.EqualTo("_btn_white_flat_p"));
             Assert.That(directory.Require<TMP_InputField>("query").isFocused, Is.False);
             directory.Require<TMP_InputField>("query").text = privateTitle;
             yield return Capture("arena-search");
@@ -307,6 +323,8 @@ namespace AstralOath.Client.Tests
                 MemberCount = JsonUtility.FromJson<RoomState>(await Call("rooms/" + RoomId)).room.memberCount;
             public async Task Read() => Chat = await Call("rooms/" + RoomId + "/messages?after=0");
             public Task Send() => Call("rooms/" + RoomId + "/messages", "{\"text\":\"来自第二会话\"}");
+            public Task SendSticker(string id) => Call("rooms/" + RoomId + "/messages",
+                "{\"kind\":\"sticker\",\"stickerId\":\"" + id + "\"}");
 
             private async Task<string> Call(string path, string payload = null)
             {

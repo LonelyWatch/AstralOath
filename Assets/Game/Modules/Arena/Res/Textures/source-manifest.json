@@ -11,6 +11,14 @@
       "height": 750
     },
     {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/_bg_black_gold_s.png",
+      "source": "img/_bg_black_gold_s.png",
+      "sourceSha256": "441e55aa49a6438034978ca2acb07d07e43489c583958c9c85ce92d909ca0768",
+      "outputSha256": "441e55aa49a6438034978ca2acb07d07e43489c583958c9c85ce92d909ca0768",
+      "width": 347,
+      "height": 750
+    },
+    {
       "asset": "Assets/Game/Modules/Arena/Res/Textures/_box_black_gold.png",
       "source": "img/_box_black_gold.png",
       "sourceSha256": "74232c37f99a3ab675efc15cb8b4cd173ff8aed3308318e5f84c0a308e39bfa3",
@@ -83,6 +91,22 @@
       "height": 34
     },
     {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/_btn_white_flat.png",
+      "source": "img/_btn_white_flat.png",
+      "sourceSha256": "59c18254231bc8451beea2573327933ee5e4d8f0d732fd2722365cff874c04e9",
+      "outputSha256": "59c18254231bc8451beea2573327933ee5e4d8f0d732fd2722365cff874c04e9",
+      "width": 74,
+      "height": 74
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/_btn_white_flat_p.png",
+      "source": "img/_btn_white_flat_p.png",
+      "sourceSha256": "d30928cf08b98b1b0cf8eb1c84d1400aed37a99232b884688c5fd9369d31974e",
+      "outputSha256": "d30928cf08b98b1b0cf8eb1c84d1400aed37a99232b884688c5fd9369d31974e",
+      "width": 74,
+      "height": 74
+    },
+    {
       "asset": "Assets/Game/Modules/Arena/Res/Textures/_select.png",
       "source": "img/_select.png",
       "sourceSha256": "1879890ab706e88cb65d005b4c428ce3a7e875fc5efe904d5e2f5311db681fe2",
@@ -129,6 +153,14 @@
       "outputSha256": "81e716524df5b87bb2ab8422d14e6b6c348726d8e7f65ea1f844f27144678729",
       "width": 98,
       "height": 10
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/_bar_4.png",
+      "source": "img/_bar_4.png",
+      "sourceSha256": "436229e4ee7cee3e9497edad167afa9ed826bca81e8223c29be62b71e34beb1a",
+      "outputSha256": "436229e4ee7cee3e9497edad167afa9ed826bca81e8223c29be62b71e34beb1a",
+      "width": 98,
+      "height": 17
     },
     {
       "asset": "Assets/Game/Modules/Arena/Res/Textures/_bar_5.png",
@@ -207,6 +239,22 @@
       "source": "img/cm_btn_sorting_down.png",
       "sourceSha256": "e3a8c40c0ffac11488dda147fef1275f4a3814e957f65840694d351b3b3724af",
       "outputSha256": "e3a8c40c0ffac11488dda147fef1275f4a3814e957f65840694d351b3b3724af",
+      "width": 90,
+      "height": 52
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/cm_btn_sorting_up_p.png",
+      "source": "img/cm_btn_sorting_up_p.png",
+      "sourceSha256": "6754f8411b0440929760f70e0af6ec6b8aa22cdb8111e87200a17d57d41593fd",
+      "outputSha256": "6754f8411b0440929760f70e0af6ec6b8aa22cdb8111e87200a17d57d41593fd",
+      "width": 90,
+      "height": 52
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/cm_btn_sorting_down_p.png",
+      "source": "img/cm_btn_sorting_down_p.png",
+      "sourceSha256": "9f1c980d68f0dbd2e7e7475d10a98877d27b67f482c579f8bd5d035e73af4c6d",
+      "outputSha256": "9f1c980d68f0dbd2e7e7475d10a98877d27b67f482c579f8bd5d035e73af4c6d",
       "width": 90,
       "height": 52
     },

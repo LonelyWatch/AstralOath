@@ -90,3 +90,5 @@ public sealed class InventoryWindow : UIBaseView
 View 继续绑定 GameText / GameButton，普通 C# Binder 继续调用 Bind。GameText 绑定仅更新文本和语言订阅，保持 Inspector 中的换行、溢出和富文本选择；新建文本默认不阻挡射线。菜单的 New Text / Button 仅是编辑器占位内容，业务界面必须通过稳定文案 key 设置本地化内容。
 
 关闭/销毁控件会解绑事件、取消所属操作，并执行原生 TMP / Selectable 的生命周期清理。更换通用控件代码需要按 Common/AOT 边界重新构建母包，不能只推资源热更。决策见 [ADR 009](../architecture/adr/009-ui-controls.md)。
+
+按钮按下造型使用对应正常和按下贴图。按钮带独立箭头等装饰时，在 `GameButton` 中为装饰指定按下贴图，共用同一原生状态，避免单独叠加事件监听。点击泛光素材与验证见[竞技场界面复核](../delivery/2026-11-14-arena-ui-fidelity.md)。

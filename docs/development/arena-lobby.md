@@ -26,3 +26,5 @@ Foundation 包和既有冷启动验签链继续使用。新增 Home、Arena 业�
 - Windows x64 IL2CPP 开发母包通过构建和默认主页冷启动，日志有 `ASTRAL_CODE_BOOT_OK release=builtin recovered=False`。本次的两端房间流程在 Unity 图形 PlayMode 运行。开发包支持本机明文连接，发布客户端需配置 HTTPS 服务地址。
 
 本次录像复核、原版音效和泛光来源、窗口约定以及本机测试范围见[录像对照交付](../delivery/2026-11-14-arena-recording.md)。更新服务时应用 `003_game_operation_audit.sql`，权限及打点语义见[操作留痕](operation-audit.md)。
+
+房间表情使用第 `004_arena_chat_stickers.sql` 号迁移。Windows 包默认可缩放小窗，主页右上角或 F11 切换显示模式。录像对照、表情素材和平台验证见[本轮复核](../delivery/2026-11-14-arena-ui-fidelity.md)。

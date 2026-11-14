@@ -19,7 +19,7 @@ namespace AstralOath.Client.Arena
         public int memberCount, capacity;
     }
     [Serializable, Preserve] public sealed class ArenaRoomState { public ArenaRoomInfo room; public ArenaPlayer[] members; }
-    [Serializable, Preserve] public sealed class ArenaMessage { public long id; public ArenaPlayer player; public string text, createdAt; }
+    [Serializable, Preserve] public sealed class ArenaMessage { public long id; public ArenaPlayer player; public string text, createdAt, kind, stickerId; }
     [Serializable, Preserve] public sealed class ArenaCreateRequest { public string name, password, rule; public bool allowChat; }
 
     internal sealed class ArenaRequestException : IOException
@@ -36,6 +36,7 @@ namespace AstralOath.Client.Arena
         [Serializable, Preserve] private sealed class History { public ArenaMessage[] messages; }
         [Serializable, Preserve] private sealed class Password { public string password; }
         [Serializable, Preserve] private sealed class Chat { public string text; }
+        [Serializable, Preserve] private sealed class Sticker { public string kind = "sticker"; public string stickerId; }
         [Serializable, Preserve] private sealed class Error { public string code; }
         [Serializable, Preserve] private sealed class Operation { public string eventId, name; }
 
@@ -95,6 +96,9 @@ namespace AstralOath.Client.Arena
         }
         public Task<ArenaMessage> SendMessageAsync(string id, string text, CancellationToken token) =>
             Send<ArenaMessage>(Room(id) + "/messages", new Chat { text = text }, token);
+
+        public Task<ArenaMessage> SendStickerAsync(string id, string stickerId, CancellationToken token) =>
+            Send<ArenaMessage>(Room(id) + "/messages", new Sticker { stickerId = stickerId }, token);
 
         private static string Room(string id) => "rooms/" + Uri.EscapeDataString(id);
 

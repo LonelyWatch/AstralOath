@@ -19,11 +19,11 @@ sys.path.insert(0, str(REPO / "Tools/CharacterAssets"))
 from convert import decode_scsp, decode_sct
 
 ARENA_IMAGES = """
-_bg_black_gold_c _box_black_gold _box_blue2 _box_w4 _box_r_w4 _box_r_op80
-_tap_select _tap_select_p _btn_small_white _btn_small_white_p _select _select2 _sorting2
-_battle_pvp_icon_vs _bar_1 _bar_2 _bar_5 _bar_9 _bar_23 _dim _white
+_bg_black_gold_c _bg_black_gold_s _box_black_gold _box_blue2 _box_w4 _box_r_w4 _box_r_op80
+_tap_select _tap_select_p _btn_small_white _btn_small_white_p _btn_white_flat _btn_white_flat_p _select _select2 _sorting2
+_battle_pvp_icon_vs _bar_1 _bar_2 _bar_4 _bar_5 _bar_9 _bar_23 _dim _white
 battle_pvp_icon_win battle_pvp_icon_draw battle_pvp_icon_lose
-cm_btn_sorting_up cm_btn_sorting_down cm_hud_top_btn_esc cm_hud_top_btn_back cm_hud_top_btn_help
+cm_btn_sorting_up cm_btn_sorting_down cm_btn_sorting_up_p cm_btn_sorting_down_p cm_hud_top_btn_esc cm_hud_top_btn_back cm_hud_top_btn_help
 cm_icon_etcarrow2 cm_icon_etcinfor cm_icon_etclock cm_icon_etcrepeat cm_icon_etczoomer cm_icon_etcclose cm_icon_etcback
 icon_menu_all icon_menu_battle icon_menu_battle_add icon_menu_member icon_menu_global icon_menu_arena
 icon_menu_talk icon_menu_emoji icon_menu_onlychat icon_menu_noti_setting icon_menu_opacity icon_menu_banned
@@ -43,8 +43,9 @@ BORDERS = {
     "_box_r_op80": (16, 16, 16, 16), "_tap_select": (24, 20, 24, 20),
     "_tap_select_p": (24, 20, 24, 20), "_btn_small_white": (13, 13, 13, 13),
     "_btn_small_white_p": (13, 13, 13, 13), "_select": (25, 25, 25, 25),
+    "_btn_white_flat": (25, 25, 25, 25), "_btn_white_flat_p": (25, 25, 25, 25),
     "_bar_1": (40, 0, 40, 0), "_bar_2": (40, 0, 40, 0), "_bar_5": (40, 0, 40, 0),
-    "_bar_23": (30, 0, 30, 0), "renew_popup_bg_alpha": (34, 38, 34, 38),
+    "_bar_4": (32, 0, 32, 0), "_bar_23": (30, 0, 30, 0), "renew_popup_bg_alpha": (34, 38, 34, 38),
 }
 
 

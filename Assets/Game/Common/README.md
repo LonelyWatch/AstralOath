@@ -25,3 +25,5 @@ Common 提供通用组件和资源，业务文案、图标数据、事件和生�
 根 Canvas 配置 `GameUiFeedback`。每个 UI 根使用固定上限的光环池，短点显示原版蓝色外扩环和粒子，拖动取消，图像不参与射线。`GameButton` 可指定普通、确认、取消、返回音色，普通按钮默认继承根 Canvas，旧按钮保留其已配置的音源。选择及输入控件由相同 Canvas 处理。资源来源见 `Res/Textures/ui-feedback-source.json`。
 
 聊天输入底栏可使用 `OnScreenKeyboardInset` 获取原生键盘边距。组件只移动拥有焦点的输入容器，收键盘后还原。Android 11 及以上读 IME Inset，Android 10 从窗口可见区域估算。
+
+`ui_touch_def` 主体由原版 Spine 2.1 加权顶点、颜色和混合次序采样为 25 帧纹理，放在同一 Canvas 的反馈池播放。`GameButton` 的 Sprite Swap 使用预制的正常／按下纹理，附属箭头等图片可共用同一按压状态。`DesktopDisplayMode` 管理 Windows F11、无边框全屏和可缩放窗口，窗口尺寸在本次运行内恢复。

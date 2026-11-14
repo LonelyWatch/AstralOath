@@ -134,8 +134,20 @@ internal static class ArenaEndpoints
         });
         authenticated.MapPost("/rooms/{id}/messages", async (string id, ArenaChatRequest request, HttpContext http, ArenaStore store,
             CancellationToken cancellation) =>
-            Results.Ok(await store.SendMessage(RoomId(id), Player(http), Normalize(request.Text, 240, "invalid_message"), cancellation)));
+        {
+            var (text, stickerId) = ParseChat(request);
+            return Results.Ok(await store.SendMessage(RoomId(id), Player(http), text, stickerId, cancellation));
+        }).WithMetadata(new RequestSizeLimitAttribute(4096));
     }
+
+    private static (string Text, string? StickerId) ParseChat(ArenaChatRequest request) => request.Kind switch
+    {
+        null or "text" when string.IsNullOrEmpty(request.StickerId) =>
+            (Normalize(request.Text, 240, "invalid_message"), null),
+        "sticker" when string.IsNullOrEmpty(request.Text) && request.StickerId is { Length: > 0 and <= 48 } key &&
+            ArenaChatStickers.Contains(key) => ("", key),
+        _ => throw new ArenaProblem(400, "invalid_message")
+    };
 
     private static ArenaPlayer Player(HttpContext http) => (ArenaPlayer)http.Items[typeof(ArenaPlayer)]!;
     private static string RoomId(string id) => Guid.TryParseExact(id, "N", out var parsed)
@@ -164,7 +176,7 @@ internal sealed class ArenaProblem(int status, string code) : Exception(code)
 internal sealed record ArenaPlayerRequest(string? DisplayName, string? AvatarId);
 internal sealed record ArenaCreateRoomRequest(string? Name, string? Password, bool AllowChat, string? Rule);
 internal sealed record ArenaJoinRequest(string? Password);
-internal sealed record ArenaChatRequest(string? Text);
+internal sealed record ArenaChatRequest(string? Text, string? Kind, string? StickerId);
 [JsonUnmappedMemberHandling(JsonUnmappedMemberHandling.Disallow)]
 internal sealed record ArenaTelemetryRequest(string? EventId, string? Name);
 internal sealed record ArenaPlayer(string Id, string DisplayName, string AvatarId);
@@ -172,4 +184,8 @@ internal sealed record ArenaSession(string Token, ArenaPlayer Player);
 internal sealed record ArenaRoom(string Id, string Name, ArenaPlayer Host, bool RequiresPassword, bool AllowChat,
     string Rule, int MemberCount, int Capacity, DateTime CreatedAt);
 internal sealed record ArenaRoomState(ArenaRoom Room, IReadOnlyList<ArenaPlayer> Members);
-internal sealed record ArenaMessage(long Id, ArenaPlayer Player, string Text, DateTime CreatedAt);
+internal sealed record ArenaMessage(long Id, ArenaPlayer Player, string Text, DateTime CreatedAt,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? StickerId)
+{
+    public string Kind => StickerId is null ? "text" : "sticker";
+}

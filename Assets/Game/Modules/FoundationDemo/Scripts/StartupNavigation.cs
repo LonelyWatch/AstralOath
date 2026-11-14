@@ -17,13 +17,13 @@ namespace AstralOath.Client.FoundationDemo
         private readonly ArenaRoomBinder room;
 
         private StartupNavigation(BindingScope lifetime, HomeWindow homeView, ArenaDirectory directoryView,
-            ArenaCreateRoom createView, ArenaRoom roomView, ILocaleService locale, ArenaApi api, string playerName)
+            ArenaCreateRoom createView, ArenaRoom roomView, ILocaleService locale, ArenaApi api, string playerName, DesktopDisplayMode display)
         {
             windows = new WindowCoordinator(lifetime.Token);
             lifetime.Add(windows.Dispose);
-            home = new HomeWindowBinder(homeView, locale, OpenDirectory);
+            home = new HomeWindowBinder(homeView, locale, OpenDirectory, display);
             directory = new ArenaDirectoryBinder(directoryView, createView, locale, api, windows, OpenRoom, ShowHome, playerName);
-            room = new ArenaRoomBinder(roomView, locale, api, ReturnToDirectory);
+            room = new ArenaRoomBinder(roomView, locale, api, windows, ReturnToDirectory);
         }
 
         internal static async Task<StartupNavigation> StartAsync(GameLaunchContext context, BindingScope owner)
@@ -51,7 +51,8 @@ namespace AstralOath.Client.FoundationDemo
                     PlayerPrefs.Save();
                 }
             }
-            var navigation = new StartupNavigation(owner, home, directory, create, room, locale, api, name);
+            var display = context.ViewRoot.GetComponentInParent<DesktopDisplayMode>();
+            var navigation = new StartupNavigation(owner, home, directory, create, room, locale, api, name, display);
             await navigation.ShowHome();
             context.Services.Add<ILocaleService>(locale);
             context.OpenButton.gameObject.SetActive(false);

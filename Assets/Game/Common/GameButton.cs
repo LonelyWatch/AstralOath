@@ -14,6 +14,12 @@ namespace AstralOath.Client.Common
     {
         [SerializeField] private AudioSource clickAudio;
         [SerializeField] private GameUiFeedback.Sound feedbackSound;
+        [Serializable] private struct PressDecoration
+        {
+            public Image image;
+            public Sprite pressed;
+        }
+        [SerializeField] private PressDecoration[] pressDecorations = Array.Empty<PressDecoration>();
         private BindingScope current;
         private bool dispatching;
 
@@ -36,6 +42,13 @@ namespace AstralOath.Client.Common
             dispatching = true;
             try { base.OnSubmit(eventData); }
             finally { dispatching = false; }
+        }
+
+        protected override void DoStateTransition(SelectionState state, bool instant)
+        {
+            base.DoStateTransition(state, instant);
+            foreach (var decoration in pressDecorations)
+                if (decoration.image) decoration.image.overrideSprite = state == SelectionState.Pressed ? decoration.pressed : null;
         }
 
         protected override void OnEnable()

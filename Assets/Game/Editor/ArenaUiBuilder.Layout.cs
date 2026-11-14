@@ -59,7 +59,10 @@ namespace AstralOath.Editor
             label.fontSizeMin = 21;
             label.fontSizeMax = 36;
 
-            Bind(root, ("arena", arena), ("arenaLabel", label), ("profile", profileName));
+            var displayMode = Action(root, "Display mode", "home.window.fullscreen", 24, .85f, .026f, .13f, .055f,
+                out var windowLabel, Art("_box_r_op80"), Color.white);
+            Bind(root, ("arena", arena), ("arenaLabel", label), ("profile", profileName),
+                ("displayMode", displayMode), ("displayModeLabel", windowLabel));
             return root.gameObject;
         }
 
@@ -78,28 +81,31 @@ namespace AstralOath.Editor
             Paint(Area(top, "Bottom border", 0, .98f, 1, .015f), null, new Color32(126, 119, 111, 115));
 
             var left = Area(root, "Season profile", 0, .092f, .193f, .908f);
-            Paint(left, null, Black(.45f));
-            Picture(left, "Season edge", Art("_bg_black_gold_c"), 0, -.08f, 1.38f, 1.16f);
-            Text(left, "Season", "arena.season", 36, .09f, .045f, .78f, .07f, Gold, TextAlignmentOptions.Center);
-            NativeRule(left, "Season separator", .075f, .113f, .84f, .018f, Gold);
-            Picture(left, "Placement emblem", Art("icon_pvp_sa_league_place"), .22f, .146f, .56f, .235f, true);
-            Text(left, "Placement", "arena.placement", 25, .09f, .38f, .78f, .055f, Mist, TextAlignmentOptions.Center);
-            Text(left, "Placement count", "arena.placement_count", 33, .11f, .46f, .75f, .055f, Color.white, TextAlignmentOptions.Center);
-            NativeRule(left, "Profile separator", .075f, .547f, .87f, .018f, Gold);
-            Text(left, "Win rate", "arena.winrate", 27, .07f, .575f, .81f, .06f, Color.white, TextAlignmentOptions.Center);
-            Text(left, "Win streak", "arena.streak", 25, .07f, .644f, .81f, .05f, Gold, TextAlignmentOptions.Center);
+            Paint(Area(left, "Season shadow", 0, 0, .93f, 1), null, Black(.72f));
+            // pvplive_base uses the straight edge for left_bg. The curved left2_bg belongs behind the page.
+            Picture(left, "Season edge", Art("_bg_black_gold_s"), 0, .007f, 1, 1.009f);
+            var seasonGold = new Color32(181, 150, 108, 255);
+            var sideGray = new Color32(152, 152, 152, 255);
+            Text(left, "Season", "arena.season", 33, .075f, .035f, .80f, .066f, seasonGold, TextAlignmentOptions.Center);
+            SeasonLine(left, "Season separator", "_bar_1", .068f, .127f, .40f, .013f, new Color32(144, 122, 91, 200));
+            Picture(left, "Placement emblem", Art("icon_pvp_sa_league_place"), .207f, .156f, .535f, .215f, true);
+            Text(left, "Placement", "arena.placement", 24, .078f, .382f, .79f, .055f, sideGray, TextAlignmentOptions.Center);
+            Text(left, "Placement count", "arena.placement_count", 33, .09f, .46f, .77f, .055f, Color.white, TextAlignmentOptions.Center);
+            SeasonLine(left, "Profile separator", "_bar_4", .080f, .532f, .395f, .019f, new Color32(98, 80, 56, 170));
+            Text(left, "Win rate", "arena.winrate", 27, .07f, .564f, .81f, .06f, Color.white, TextAlignmentOptions.Center);
+            Text(left, "Win streak", "arena.streak", 25, .07f, .622f, .81f, .05f, seasonGold, TextAlignmentOptions.Center);
 
             var outcomeIcons = new[] { "battle_pvp_icon_win", "battle_pvp_icon_draw", "battle_pvp_icon_lose" };
             for (int i = 0; i < outcomeIcons.Length; i++)
             {
-                float x = .19f + .21f * i;
-                Picture(left, "Outcome icon " + i, Art(outcomeIcons[i]), x, .719f, .19f, .069f, true);
-                Text(left, "Outcome count " + i, "arena.zero", 26, x, .79f, .19f, .045f, Color.white, TextAlignmentOptions.Center);
+                float x = .16f + .213f * i;
+                Picture(left, "Outcome icon " + i, Art(outcomeIcons[i]), x, .706f, .19f, .086f, true);
+                Text(left, "Outcome count " + i, "arena.zero", 26, x, .788f, .19f, .043f, Color.white, TextAlignmentOptions.Center);
             }
 
-            Picture(left, "Global restrictions icon", Art("cm_icon_etcinfor"), .43f, .847f, .13f, .046f, true).color = Mist * .75f;
-            var restrictions = Text(left, "Global restrictions", "arena.no_global_bans", 21, .044f, .899f, .90f, .063f,
-                Mist * .74f, TextAlignmentOptions.Center);
+            Picture(left, "Global restrictions icon", Art("cm_icon_etcinfor"), .413f, .840f, .12f, .041f, true).color = sideGray;
+            var restrictions = Text(left, "Global restrictions", "arena.no_global_bans", 21, .027f, .886f, .89f, .054f,
+                sideGray, TextAlignmentOptions.Center);
             restrictions.enableAutoSizing = true;
             restrictions.fontSizeMin = 15;
             restrictions.fontSizeMax = 21;
@@ -120,11 +126,16 @@ namespace AstralOath.Editor
             var filter = Action(body, "Filter", "arena.filter.all", 26, 0, .13f, .235f, .062f, out var filterLabel, Art("_box_r_op80"), Color.white);
             var search = Action(body, "Search", "arena.search", 26, .246f, .13f, .175f, .062f, out var searchLabel, Art("_box_r_op80"), Color.white);
             var refresh = Action(body, "Refresh", "arena.refresh", 27, .818f, .13f, .175f, .062f, out var refreshLabel, Art("_box_r_op80"), Color.white);
+            PressSmallBlack(filter);
+            PressSmallBlack(search);
+            PressSmallBlack(refresh);
             var searchButtonRect = (RectTransform)search.transform;
-            var searchSelected = Picture(searchButtonRect, "Search active", Art("_btn_small_white"), 0, 0, 1, 1);
+            var searchSelected = Picture(searchButtonRect, "Search active", Art("_btn_white_flat"), 0, 0, 1, 1);
             searchSelected.type = Image.Type.Sliced;
             searchSelected.enabled = false;
             searchSelected.transform.SetAsFirstSibling();
+            var searchPressed = Picture(searchButtonRect, "Search active pressed art", Art("_btn_white_flat_p"), 0, 0, 1, 1);
+            searchPressed.enabled = false;
             var searchIcon = ToolbarIcon(search, searchLabel, "cm_icon_etczoomer");
             ToolbarIcon(filter, filterLabel, "_sorting2");
             ToolbarIcon(refresh, refreshLabel, "cm_icon_etcrepeat");
@@ -163,7 +174,7 @@ namespace AstralOath.Editor
             var choiceBackground = choice.GetComponent<BindingMap>().Require<Image>("background");
             choiceBackground.sprite = Art("_box_r_op80");
             var choiceFill = Area(choiceBody, "Popup dark fill", .007f, .025f, .986f, .95f);
-            Paint(choiceFill, Art("_box_r_op80"), Color.white, sliced: true);
+            Paint(choiceFill, null, Black(.94f));
             choiceFill.SetAsFirstSibling();
             var visibility = new[] { "all", "public", "private" };
             var binding = new System.Collections.Generic.List<(string, Object)>();
@@ -172,6 +183,7 @@ namespace AstralOath.Editor
                 string key = visibility[i];
                 var filterChoice = Action(choiceBody, key, "arena.filter." + key, 28, .045f, .09f + i * .277f, .32f, .229f,
                     out var caption, Art("_btn_small_white"), Color.clear);
+                PressSprites(filterChoice, Art("_btn_small_white"), Art("_btn_small_white_p"));
                 var rowRect = (RectTransform)filterChoice.transform;
                 Place((RectTransform)caption.transform, .26f, .04f, .68f, .92f);
                 caption.alignment = TextAlignmentOptions.MidlineLeft;
@@ -188,9 +200,11 @@ namespace AstralOath.Editor
                     Art("_btn_small_white"), Color.clear);
                 Place((RectTransform)caption.transform, .07f, .04f, .72f, .92f);
                 caption.alignment = TextAlignmentOptions.MidlineLeft;
+                PressSprites(sortChoice, Art("_btn_small_white"), Art("_btn_small_white_p"));
                 var sortRect = (RectTransform)sortChoice.transform;
                 var up = Picture(sortRect, "Ascending", Art("cm_btn_sorting_up"), .706f, -.08f, .285f, 1.16f, true);
                 var down = Picture(sortRect, "Descending", Art("cm_btn_sorting_down"), .706f, -.08f, .285f, 1.16f, true);
+                PressDecorations(sortChoice, (up, Art("cm_btn_sorting_up_p")), (down, Art("cm_btn_sorting_down_p")));
                 up.enabled = false;
                 down.enabled = false;
                 binding.Add((key, sortChoice));
@@ -203,10 +217,20 @@ namespace AstralOath.Editor
             var password = BuildPassword(root);
             Bind(root, ("back", back), ("create", create), ("refresh", refresh), ("filter", filter), ("search", search),
                 ("filterLabel", filterLabel), ("searchLabel", searchLabel), ("searchSelected", searchSelected),
-                ("searchIcon", searchIcon), ("submitSearch", submit), ("status", status),
+                ("searchIcon", searchIcon), ("searchPressed", searchPressed), ("submitSearch", submit), ("status", status),
                 ("searchPanel", searchPanel.gameObject), ("query", query), ("list", list), ("row", row.gameObject),
                 ("choice", choice.gameObject), ("password", password));
             return root.gameObject;
+        }
+
+        private static void SeasonLine(RectTransform parent, string name, string art, float x, float y,
+            float halfWidth, float height, Color color)
+        {
+            var sprite = Art(art);
+            Paint(Area(parent, name + " left", x, y, halfWidth, height), sprite, color, sliced: true);
+            var right = Area(parent, name + " right", x + halfWidth, y, halfWidth, height);
+            right.localScale = new Vector3(-1, 1, 1);
+            Paint(right, sprite, color, sliced: true);
         }
 
         private static Image ToolbarIcon(GameButton button, GameText caption, string icon)

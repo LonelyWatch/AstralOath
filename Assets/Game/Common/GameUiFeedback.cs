@@ -15,9 +15,13 @@ namespace AstralOath.Client.Common
         private const float SourceSpeed = 1.3f;
         private const float SourceLifetime = .5333f;
         private const float SourceOpacity = .30f;
+        private const int PulseFrameRate = 60, PulseFrameCount = 25, PulseColumns = 8, PulseRows = 4;
+        private const float PulseFrameSize = 135;
         private const string OverlayName = "Click feedback";
         [SerializeField] private Sprite ring, glow, spark;
         [SerializeField] private AudioClip normal, confirm, cancel, back;
+        [SerializeField] private Texture2D pulseFrames;
+        [SerializeField] private Material pulseBlend;
         private readonly Pulse[] pulses = new Pulse[PoolSize];
         private readonly Dictionary<int, Press> beginnings = new Dictionary<int, Press>();
         private readonly List<RaycastResult> hits = new List<RaycastResult>();
@@ -29,7 +33,7 @@ namespace AstralOath.Client.Common
         private float sparkAngle;
 
         public void Configure(Sprite ring, Sprite glow, AudioClip normal, AudioClip confirm, AudioClip cancel, AudioClip back = null,
-            Sprite spark = null)
+            Sprite spark = null, Texture2D pulseFrames = null, Material pulseBlend = null)
         {
             this.ring = ring;
             this.glow = glow;
@@ -38,6 +42,8 @@ namespace AstralOath.Client.Common
             this.cancel = cancel;
             this.back = back;
             this.spark = spark;
+            this.pulseFrames = pulseFrames;
+            this.pulseBlend = pulseBlend;
         }
 
         public static void Play(Component source, Sound sound = Sound.Normal) => Play(source, sound, null);
@@ -129,7 +135,7 @@ namespace AstralOath.Client.Common
 
         private void ShowAt(Vector2 screenPosition)
         {
-            if (!ring || !glow || !canvas) return;
+            if (!canvas || ((!pulseFrames || !pulseBlend) && (!ring || !glow))) return;
             var root = (RectTransform)transform;
             var camera = canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera;
             if (canvas.renderMode == RenderMode.WorldSpace &&
@@ -149,7 +155,7 @@ namespace AstralOath.Client.Common
             int index = nextPulse;
             nextPulse = (nextPulse + 1) % PoolSize;
             sparkAngle = (sparkAngle + 137.5f) % 360f;
-            if (pulses[index] == null) pulses[index] = new Pulse(overlay, ring, glow, spark);
+            if (pulses[index] == null) pulses[index] = new Pulse(overlay, ring, glow, spark, pulseFrames, pulseBlend);
             var pulse = pulses[index];
             pulse.Root.localPosition = local;
             pulse.Root.SetAsLastSibling();
@@ -167,16 +173,29 @@ namespace AstralOath.Client.Common
             float eased = 1f - Mathf.Pow(1f - expansion, 2.3f);
             float ringFade = SourceOpacity * (1f - Mathf.InverseLerp(.3666f, SourceLifetime, age));
             float glowFade = SourceOpacity * (1f - Mathf.InverseLerp(.10f, SourceLifetime, age));
-            Paint(pulse.Glow, Mathf.Lerp(35f, 142f, eased), new Color(.45f, .46f, 1f, glowFade * .86f));
-            Paint(pulse.Ring, Mathf.Lerp(19f, 115f, eased), new Color(.72f, .91f, 1f, ringFade));
+            if (pulse.Authored)
+            {
+                int frame = Mathf.Min((int)((now - pulse.Start) * PulseFrameRate), PulseFrameCount - 1);
+                if (frame != pulse.Frame)
+                {
+                    pulse.Frame = frame;
+                    pulse.Authored.uvRect = new Rect((frame % PulseColumns) / (float)PulseColumns,
+                        1f - (frame / PulseColumns + 1f) / PulseRows, 1f / PulseColumns, 1f / PulseRows);
+                }
+            }
+            else
+            {
+                Paint(pulse.Glow, Mathf.Lerp(35f, 142f, eased), new Color(.45f, .46f, 1f, glowFade * .86f));
+                Paint(pulse.Ring, Mathf.Lerp(19f, 115f, eased), new Color(.72f, .91f, 1f, ringFade));
+            }
             for (int i = 0; i < pulse.Sparks.Length; i++)
             {
                 float angle = (pulse.Angle + i * 72f) * Mathf.Deg2Rad;
                 var item = pulse.Sparks[i];
-                float radius = Mathf.Lerp(4f, 40f + (i % 3) * 14f, eased);
+                float radius = Mathf.Lerp(8f + i % 3 * 3f, 40f + (i % 3) * 11f, eased);
                 item.rectTransform.anchoredPosition = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
                 item.rectTransform.localRotation = Quaternion.Euler(0, 0, pulse.Angle + i * 31f + age * 120f);
-                Paint(item, Mathf.Lerp(13f + i % 3, 3f, expansion), new Color(.96f, .67f, .88f, glowFade * .8f));
+                Paint(item, Mathf.Lerp(13f + i % 3, 3f, expansion), new Color(.86f, .93f, 1f, glowFade * 1.7f));
             }
         }
 
@@ -220,15 +239,29 @@ namespace AstralOath.Client.Common
         {
             internal readonly RectTransform Root;
             internal readonly Image Ring, Glow;
+            internal readonly RawImage Authored;
+            internal int Frame = -1;
             internal readonly Image[] Sparks;
             internal float Start, Angle;
 
-            internal Pulse(RectTransform owner, Sprite ring, Sprite glow, Sprite spark)
+            internal Pulse(RectTransform owner, Sprite ring, Sprite glow, Sprite spark, Texture2D atlas, Material blend)
             {
                 Root = Child(owner, "Click pulse");
                 Root.sizeDelta = Vector2.zero;
-                Glow = MakeImage(Root, "Glow", glow);
-                Ring = MakeImage(Root, "Ring", ring);
+                if (atlas && blend)
+                {
+                    var quad = Child(Root, "Native pulse");
+                    quad.sizeDelta = Vector2.one * PulseFrameSize;
+                    Authored = quad.gameObject.AddComponent<RawImage>();
+                    Authored.texture = atlas;
+                    Authored.material = blend;
+                    Authored.raycastTarget = false;
+                }
+                else
+                {
+                    Glow = MakeImage(Root, "Glow", glow);
+                    Ring = MakeImage(Root, "Ring", ring);
+                }
                 Sparks = new Image[spark ? 5 : 0];
                 for (int i = 0; i < Sparks.Length; ++i) Sparks[i] = MakeImage(Root, "Spark", spark);
             }

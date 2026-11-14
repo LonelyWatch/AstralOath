@@ -14,12 +14,12 @@
 
 ## 模拟战目录、房间与竞技场聊天
 
-启动前用原有迁移入口应用 `002_arena_rooms.sql`、`003_game_operation_audit.sql`。服务运行账户需要 `arena_player` 的 SELECT/INSERT，`arena_room` 的 SELECT/INSERT/UPDATE/DELETE，`arena_room_member` 的 SELECT/INSERT/DELETE，`arena_room_message` 的 SELECT/INSERT，以及 `game_operation_audit` 的 INSERT。服务启动沿用 `Server` 的现有监听和 TLS 约束。本机明文开发入口为 `http://127.0.0.1:5080`。其他地址使用 HTTPS。
+启动前用原有迁移入口应用 `002_arena_rooms.sql`、`003_game_operation_audit.sql`、`004_arena_chat_stickers.sql`。服务运行账户需要 `arena_player` 的 SELECT/INSERT，`arena_room` 的 SELECT/INSERT/UPDATE/DELETE，`arena_room_member` 的 SELECT/INSERT/DELETE，`arena_room_message` 和 `arena_room_message_sticker` 的 SELECT/INSERT，以及 `game_operation_audit` 的 INSERT。服务启动沿用 `Server` 的现有监听和 TLS 约束。本机明文开发入口为 `http://127.0.0.1:5080`。其他地址使用 HTTPS。
 
 - `POST /api/arena/sessions` 用 `{displayName, avatarId}` 创建独立访客会话。返回 `{token, player}`，后续请求使用 Bearer。服务端持久化随机令牌的 SHA-256，返回给客户端的明文令牌需要由客户端保存以便重连。
 - `GET /api/arena/rooms` 支持 `visibility=all|public|private`、`sort=recent|players`、`direction=asc|desc` 和 `query` 名称搜索，返回排序后的前 100 个房间。默认 `sort=recent&direction=desc`。按人数排序的同人数房间优先返回较新的房间。私密房只返回密码标志。创建房间用 `POST /api/arena/rooms` 提交 `{name, password, allowChat, rule}`。名称最多 28 个 Unicode 字符，设密须四位 ASCII 数字，服务器只保存带随机盐的 PBKDF2 摘要。
 - `GET /api/arena/rooms/current` 可使用同一个令牌恢复当前房间，无房间时返回 204。成员用 `GET /api/arena/rooms/{id}` 查询状态，用 `POST /api/arena/rooms/{id}/join` 携带 `{password}` 入场，用 `POST /api/arena/rooms/{id}/leave` 离场。每人同时属于一个房间，每房最多 50 人。正常离开时房主转给最早入场成员，末位成员离开即删除房间和聊天。进程中止或客户端断线保留原会话及成员关系，本阶段未设自动回收期限。
-- `GET /api/arena/rooms/{id}/messages?after=...` 使用消息 ID 游标，初次最多返回最近 50 条，续读最多返回 100 条。成员可通过 `POST /api/arena/rooms/{id}/messages` 提交 `{text}`，最多 240 个 Unicode 字符。服务端验证成员资格及房间聊天许可，限制发送频率。该频道只对应当前竞技场房间。
+- `GET /api/arena/rooms/{id}/messages?after=...` 使用消息 ID 游标，初次最多返回最近 50 条，续读最多返回 100 条。成员可通过 `POST /api/arena/rooms/{id}/messages` 提交 `{text}` 或 `{kind:"text",text}`，最多 240 个 Unicode 字符。原版表情使用 `{kind:"sticker",stickerId}`，稳定 ID 见 `Host/Arena/arena-chat-stickers.txt`。响应包含 `kind`，表情消息同时返回 `stickerId` 和空 `text`。旧文本记录读取为 `kind=text`。服务器对两种消息使用相同的成员资格、房间聊天许可和频率校验。表情数据随消息清理，只接受 67 个原图标识。操作审计不保存正文、表情 ID 或资源路径。该频道对应当前竞技场房间。
 - `POST /api/arena/telemetry` 需要访客会话，接收 `{eventId,name}`。客户端生成非空 N 格式 GUID，并按操作使用 `directory_refresh`、`directory_filter`、`directory_search` 或 `create_dialog_open`。同一主体重复提交同一 ID 返回 204。接口限制请求体和来源请求频率，只接收明确字段。客户端以尽力方式提交。
 - `game_operation_audit` 保存语义操作、服务端时间、主体类型和内部 ID，以及有需要的对象类型和 ID。服务器在创建、实际加入、实际离开和发送聊天成功的业务事务内写入权威留痕，重复加入、重复离开和失败请求不产生成功记录。客户端观测点包含 `client_event_id`，权威记录该字段为空。表不包含玩家名称、密码、聊天内容、搜索词或 IP。房间被清理后留痕仍可查询。访问日志的人使用独立只读权限。归档和保留期限由运维在上线前配置。
 - 五种规则记录到房间。开始选禁、席位准备、战斗编排和正式账号系统属于后续链路。

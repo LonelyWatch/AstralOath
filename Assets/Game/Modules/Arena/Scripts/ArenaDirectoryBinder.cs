@@ -26,6 +26,7 @@ namespace AstralOath.Client.Arena
         private readonly Func<Task> goHome;
         private readonly string displayName;
         private BindingScope screen, rows;
+        private readonly Sprite searchIdle, searchIdlePressed;
         private string visibility = "all", sort = "players", query = "";
         private bool ascending, busy;
 
@@ -39,6 +40,8 @@ namespace AstralOath.Client.Arena
             this.enter = enter;
             this.goHome = goHome;
             this.displayName = displayName;
+            searchIdle = ((Image)view.Search.targetGraphic).sprite;
+            searchIdlePressed = view.Search.spriteState.pressedSprite;
             create = new ArenaCreateRoomBinder(createView, locale, CreateAsync, () => windows.CloseOverlay(CreateWindow));
         }
 
@@ -129,7 +132,12 @@ namespace AstralOath.Client.Arena
         private void UpdateSearchLabel()
         {
             bool selected = windows.IsOverlayOpen(SearchWindow) || query.Length != 0;
-            view.SearchSelected.enabled = selected;
+            var graphic = (Image)view.Search.targetGraphic;
+            graphic.sprite = selected ? view.SearchSelected.sprite : searchIdle;
+            graphic.overrideSprite = null;
+            var states = view.Search.spriteState;
+            states.pressedSprite = selected ? view.SearchPressed.sprite : searchIdlePressed;
+            view.Search.spriteState = states;
             view.SearchIcon.enabled = !selected;
             view.SearchLabel.color = selected ? new Color32(27, 31, 37, 255) : Color.white;
             view.SearchLabel.text = locale.Resolve(selected ? "arena.cancel_search" : "arena.search");

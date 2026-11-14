@@ -197,6 +197,62 @@ public sealed class ArenaRoomTests
     }
 
     [MySqlFact]
+    public async Task NativeStickerAndLegacyTextShareAuthenticatedMessageHistory()
+    {
+        const string sticker = "c1001_goodjob_001";
+        var connection = Environment.GetEnvironmentVariable("ASTRALOATH_MYSQL_TEST")!;
+        await DatabaseMigrator.ApplyAsync(connection, CancellationToken.None);
+        await using var source = new WebApplicationFactory<Program>();
+        string roomId;
+        string hostToken;
+        long stickerId;
+        await using (var factory = WithDatabase(source, connection))
+        {
+            using var host = factory.CreateClient();
+            using var outsider = factory.CreateClient();
+            hostToken = await Authorize(host, "表情房主");
+            await Authorize(outsider, "房间外");
+            var room = await Post(host, "/rooms", new { name = "表情测试", allowChat = true, rule = "basic" });
+            roomId = room.GetProperty("room").GetProperty("id").GetString()!;
+            string route = $"/rooms/{roomId}/messages";
+            using var forbidden = await outsider.PostAsJsonAsync(Arena + route, new { kind = "sticker", stickerId = sticker });
+            Assert.Equal(HttpStatusCode.Forbidden, forbidden.StatusCode);
+            using var unknown = await host.PostAsJsonAsync(Arena + route, new { kind = "sticker", stickerId = "https://example.invalid/image.png" });
+            Assert.Equal(HttpStatusCode.BadRequest, unknown.StatusCode);
+            using var mixed = await host.PostAsJsonAsync(Arena + route, new { kind = "sticker", stickerId = sticker, text = "混合参数" });
+            Assert.Equal(HttpStatusCode.BadRequest, mixed.StatusCode);
+            var sent = await Post(host, route, new { kind = "sticker", stickerId = sticker, text = "" });
+            Assert.Equal("sticker", sent.GetProperty("kind").GetString());
+            Assert.Equal(sticker, sent.GetProperty("stickerId").GetString());
+            Assert.Equal("", sent.GetProperty("text").GetString());
+            stickerId = sent.GetProperty("id").GetInt64();
+            using var tooSoon = await host.PostAsJsonAsync(Arena + route, new { text = "限流" });
+            Assert.Equal(HttpStatusCode.TooManyRequests, tooSoon.StatusCode);
+            using var secondMember = factory.CreateClient();
+            await Authorize(secondMember, "旧版访客");
+            await Post(secondMember, $"/rooms/{roomId}/join", new { });
+            var text = await Post(secondMember, route, new { text = "旧文本" });
+            Assert.Equal("text", text.GetProperty("kind").GetString());
+            Assert.Equal("旧文本", text.GetProperty("text").GetString());
+            using var leave = await secondMember.PostAsync(Arena + $"/rooms/{roomId}/leave", null);
+            Assert.Equal(HttpStatusCode.NoContent, leave.StatusCode);
+        }
+
+        await using var restarted = WithDatabase(source, connection);
+        using var restored = restarted.CreateClient();
+        restored.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", hostToken);
+        var history = (await Get(restored, $"/rooms/{roomId}/messages")).GetProperty("messages").EnumerateArray().ToArray();
+        Assert.Equal(new[] { "sticker", "text" }, history.Select(row => row.GetProperty("kind").GetString()).ToArray());
+        Assert.Equal(stickerId, history[0].GetProperty("id").GetInt64());
+        Assert.Equal(sticker, history[0].GetProperty("stickerId").GetString());
+        Assert.False(history[1].TryGetProperty("stickerId", out _));
+        var delta = (await Get(restored, $"/rooms/{roomId}/messages?after={stickerId}")).GetProperty("messages");
+        Assert.Equal("旧文本", Assert.Single(delta.EnumerateArray()).GetProperty("text").GetString());
+        using var final = await restored.PostAsync(Arena + $"/rooms/{roomId}/leave", null);
+        Assert.Equal(HttpStatusCode.NoContent, final.StatusCode);
+    }
+
+    [MySqlFact]
     public async Task ChatPermissionAndValidationAreEnforcedOnTheServer()
     {
         var connection = Environment.GetEnvironmentVariable("ASTRALOATH_MYSQL_TEST")!;
@@ -214,6 +270,11 @@ public sealed class ArenaRoomTests
         var roomId = created.GetProperty("room").GetProperty("id").GetString();
         using var denied = await owner.PostAsJsonAsync(Arena + $"/rooms/{roomId}/messages", new { text = "拒绝" });
         Assert.Equal(HttpStatusCode.Forbidden, denied.StatusCode);
+        using var deniedSticker = await owner.PostAsJsonAsync(Arena + $"/rooms/{roomId}/messages",
+            new { kind = "sticker", stickerId = "c1001_goodjob_001" });
+        Assert.Equal(HttpStatusCode.Forbidden, deniedSticker.StatusCode);
+        var rejection = await deniedSticker.Content.ReadFromJsonAsync<JsonElement>();
+        Assert.Equal("chat_disabled", rejection.GetProperty("code").GetString());
         using var leave = await owner.PostAsync(Arena + $"/rooms/{roomId}/leave", null);
         Assert.Equal(HttpStatusCode.NoContent, leave.StatusCode);
     }

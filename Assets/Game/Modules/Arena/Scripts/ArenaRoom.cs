@@ -11,6 +11,8 @@ namespace AstralOath.Client.Arena
         public override string PrefabPath => Address;
         public GameButton Leave => Bindings.Require<GameButton>("leave");
         public GameButton Send => Bindings.Require<GameButton>("send");
+        public GameButton Emoji => Bindings.Require<GameButton>("emoji");
+        public GameObject EmojiPicker => Bindings.Require<GameObject>("emojiPicker");
         public GameText RoomName => Bindings.Require<GameText>("name");
         public GameText Rule => Bindings.Require<GameText>("rule");
         public GameText Count => Bindings.Require<GameText>("count");
@@ -29,6 +31,7 @@ namespace AstralOath.Client.Arena
         public override void Validate()
         {
             _ = Leave; _ = Send; _ = RoomName; _ = Rule; _ = Count; _ = HostName; _ = GuestName; _ = Status;
+            _ = Emoji; _ = EmojiPicker;
             _ = Message; _ = Host; _ = Guest; _ = Vacant; _ = EmptyInfo; _ = Members; _ = MemberRow; _ = Messages; _ = ChatRow;
         }
     }

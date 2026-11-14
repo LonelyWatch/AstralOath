@@ -16,19 +16,26 @@ namespace AstralOath.Client.Arena
         private readonly ILocaleService locale;
         private readonly ArenaApi api;
         private readonly Func<Task> goBack;
+        private readonly WindowCoordinator windows;
+        private const string StickerWindow = "arena/stickers";
+        private readonly Dictionary<string, Sprite> stickers = new Dictionary<string, Sprite>(StringComparer.Ordinal);
         private readonly List<GameObject> messages = new List<GameObject>();
         private BindingScope screen, roster;
         private ArenaRoomState state;
         private long cursor;
         private string memberSignature;
-        private bool leaving;
+        private bool leaving, sending;
 
-        public ArenaRoomBinder(ArenaRoom view, ILocaleService locale, ArenaApi api, Func<Task> goBack)
+        public ArenaRoomBinder(ArenaRoom view, ILocaleService locale, ArenaApi api, WindowCoordinator windows, Func<Task> goBack)
         {
             this.view = view;
             this.locale = locale;
             this.api = api;
             this.goBack = goBack;
+            this.windows = windows;
+            var choices = view.EmojiPicker.GetComponent<BindingMap>().Require<ScrollRect>("choices");
+            foreach (var choice in choices.content.GetComponentsInChildren<GameButton>(true))
+                stickers.Add(choice.name, choice.GetComponent<BindingMap>().Require<Image>("art").sprite);
         }
 
         public Task OpenAsync(ArenaRoomState initial, BindingScope owner)
@@ -41,7 +48,12 @@ namespace AstralOath.Client.Arena
             Render(initial);
             view.Leave.Bind(screen, LeaveAsync);
             view.Send.interactable = initial.room.allowChat;
-            if (initial.room.allowChat) view.Send.Bind(screen, SendAsync);
+            view.Emoji.interactable = initial.room.allowChat;
+            if (initial.room.allowChat)
+            {
+                view.Send.Bind(screen, SendAsync);
+                view.Emoji.Bind(screen, ignored => { ToggleStickerPicker(); return Task.CompletedTask; });
+            }
             _ = WatchAsync(screen.Token);
             return Task.CompletedTask;
         }
@@ -107,16 +119,51 @@ namespace AstralOath.Client.Arena
             }
         }
 
+        private void ToggleStickerPicker()
+        {
+            if (windows.IsOverlayOpen(StickerWindow)) { windows.CloseOverlay(StickerWindow); return; }
+            windows.ShowOverlay(StickerWindow, scope =>
+            {
+                var picker = view.EmojiPicker;
+                picker.SetActive(true);
+                scope.Add(() => { if (picker) picker.SetActive(false); });
+                var map = picker.GetComponent<BindingMap>();
+                map.Require<GameButton>("dismiss").Bind(scope, ignored =>
+                {
+                    windows.CloseOverlay(StickerWindow);
+                    return Task.CompletedTask;
+                });
+                var scroller = map.Require<ScrollRect>("choices");
+                foreach (var choice in scroller.content.GetComponentsInChildren<GameButton>())
+                    choice.Bind(scope, ignored => SendStickerAsync(choice.name));
+            });
+        }
+
+        private async Task SendStickerAsync(string id)
+        {
+            if (sending) return;
+            sending = true;
+            var owner = screen;
+            windows.CloseOverlay(StickerWindow);
+            try { await api.SendStickerAsync(state.room.id, id, owner.Token); }
+            catch (OperationCanceledException) when (owner.Token.IsCancellationRequested) { }
+            catch (ArenaRequestException error) { view.Status.text = ArenaError.Text(locale, error); }
+            finally { if (screen == owner) sending = false; }
+        }
+
         private async Task SendAsync(CancellationToken token)
         {
             string message = view.Message.text.Trim();
-            if (message.Length == 0) return;
+            if (message.Length == 0 || sending) return;
+            sending = true;
+            var owner = screen;
             try
             {
                 await api.SendMessageAsync(state.room.id, message, token);
                 view.Message.SetTextWithoutNotify("");
             }
             catch (ArenaRequestException error) { view.Status.text = ArenaError.Text(locale, error); }
+            finally { if (screen == owner) sending = false; }
         }
 
         private void AppendMessages(ArenaMessage[] incoming)
@@ -138,7 +185,12 @@ namespace AstralOath.Client.Arena
                 ArenaArt.SetText(sender, message.player?.displayName);
                 sender.color = message.player?.id == api.Player?.id ? new Color32(137, 201, 62, 255) : Color.white;
                 var body = map.Require<GameText>("body");
-                ArenaArt.SetText(body, message.text);
+                var sticker = map.Require<Image>("sticker");
+                bool isSticker = message.kind == "sticker";
+                if (isSticker && message.stickerId != null && stickers.TryGetValue(message.stickerId, out var sprite))
+                    sticker.sprite = sprite;
+                sticker.enabled = sticker.sprite;
+                ArenaArt.SetText(body, isSticker ? (sticker.enabled ? "" : locale.Resolve("arena.chat.sticker_missing")) : message.text);
                 string age = DateTimeOffset.TryParse(message.createdAt, System.Globalization.CultureInfo.InvariantCulture,
                     System.Globalization.DateTimeStyles.None, out var time) ? time.ToLocalTime().ToString("HH:mm") : "";
                 ArenaArt.SetText(map.Require<GameText>("age"), age);
@@ -147,7 +199,7 @@ namespace AstralOath.Client.Arena
                 float rowWidth = history.viewport.rect.width - layout.padding.horizontal;
                 float textFraction = body.rectTransform.anchorMax.x - body.rectTransform.anchorMin.x;
                 float bodyWidth = Mathf.Max(1, rowWidth * textFraction - body.margin.x - body.margin.z);
-                size.preferredHeight = Mathf.Max(size.minHeight, 49 + body.GetPreferredValues(body.text, bodyWidth, 0).y);
+                size.preferredHeight = sticker.enabled ? 164 : Mathf.Max(size.minHeight, 49 + body.GetPreferredValues(body.text, bodyWidth, 0).y);
                 messages.Add(row);
                 if (messages.Count > 100)
                 {
@@ -189,6 +241,7 @@ namespace AstralOath.Client.Arena
         private void Close()
         {
             screen = null;
+            sending = false;
             roster?.Dispose();
             roster = null;
             foreach (var row in messages) if (row) { row.SetActive(false); UnityEngine.Object.Destroy(row); }

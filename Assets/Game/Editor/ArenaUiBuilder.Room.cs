@@ -40,6 +40,8 @@ namespace AstralOath.Editor
             Text(card, "Chat permission", "arena.chat_setting", 28, .05f, .410f, .19f, .095f, Mist, wrap: true);
             var allow = Action(card, "Allow", "arena.allow", 27, .261f, .418f, .147f, .069f, out _, Art("_btn_small_white"), Color.white);
             var deny = Action(card, "Deny", "arena.deny", 27, .418f, .418f, .147f, .069f, out _, Art("_btn_small_white"), Color.white);
+            PressSprites(allow, Art("_btn_small_white"), CommonArt("_btn_small_black_p"));
+            PressSprites(deny, Art("_btn_small_white"), CommonArt("_btn_small_black_p"));
             Text(card, "Rules label", "arena.rules", 30, .05f, .638f, .19f, .070f, Mist);
             var rules = Scroll(card, "Rules", .256f, .510f, .719f, .345f, horizontal: true);
             var keys = new System.Collections.Generic.List<(string, Object)>
@@ -97,6 +99,7 @@ namespace AstralOath.Editor
             Paint(Area(left, "Room header shading", 0, 0, 1, .095f), null, Black(.55f));
             var leave = Button(Area(left, "Leave room", .024f, .012f, .077f, .065f), Art("_box_r_op80"), Color.white);
             leave.FeedbackSound = GameUiFeedback.Sound.Back;
+            PressSmallBlack(leave);
             Picture((RectTransform)leave.transform, "Leave icon", Art("cm_hud_top_btn_esc"), 0, -.17f, 1, 1.34f, true);
             var name = Text(left, "Room title", null, 42, .119f, .01f, .78f, .066f);
             NativeRule(left, "Top rule", .024f, .079f, .954f, .023f, Gold, "_bar_2");
@@ -160,19 +163,71 @@ namespace AstralOath.Editor
             body.rectTransform.offsetMin = new Vector2(0, 6);
             body.rectTransform.offsetMax = new Vector2(0, -42);
             body.overflowMode = TextOverflowModes.Overflow;
-            Bind(chatRow, ("avatar", senderAvatar), ("sender", sender), ("age", age), ("body", body));
+            var sticker = Picture(chatRow, "Sticker", null, .13f, 0, 0, 0, true);
+            sticker.rectTransform.pivot = new Vector2(0, 1);
+            sticker.rectTransform.anchoredPosition = new Vector2(0, -35);
+            sticker.rectTransform.sizeDelta = new Vector2(142, 114);
+            Bind(chatRow, ("avatar", senderAvatar), ("sender", sender), ("age", age), ("body", body), ("sticker", sticker));
             chatRow.gameObject.SetActive(false);
             var composer = Area(chat, "Composer", 0, .853f, 1, .147f);
             var status = Text(composer, "Chat status", null, 22, .05f, 0, .9f, .184f, Mist);
             NativeRule(composer, "Message divider", .03f, .134f, .94f, .143f, Gold, "_bar_2");
-            var message = Input(composer, "Message", "arena.message", 200, .036f, .325f, .654f, .538f);
+            var emojiArea = Area(composer, "Emoji", .032f, .325f, .089f, .538f);
+            var emoji = Button(emojiArea, Art("_box_r_op80"), Color.white);
+            PressSmallBlack(emoji);
+            Picture(emojiArea, "Emoji icon", Art("icon_menu_emoji"), .16f, .16f, .68f, .68f, true);
+            var message = Input(composer, "Message", "arena.message", 200, .132f, .325f, .558f, .538f);
             var send = CommonButton(composer, "ConfirmButton", "arena.send", .707f, .325f, .26f, .538f);
             FollowKeyboard(composer, message);
-            Bind(root, ("leave", leave), ("send", send), ("name", name), ("rule", rule), ("count", count),
+            var emojiPicker = BuildEmojiPicker(root);
+            Bind(root, ("leave", leave), ("send", send), ("emoji", emoji), ("emojiPicker", emojiPicker), ("name", name), ("rule", rule), ("count", count),
                 ("hostName", hostName), ("guestName", guestName), ("status", status), ("message", message),
                 ("host", host), ("guest", guest), ("vacant", vacant), ("emptyInfo", emptyInfo.gameObject), ("members", members), ("memberRow", memberRow.gameObject),
                 ("messages", history), ("chatRow", chatRow.gameObject));
             return root.gameObject;
+        }
+
+        [System.Serializable] private sealed class StickerRow { public string id; }
+        [System.Serializable] private sealed class StickerCatalog { public StickerRow[] stickers; }
+
+        private static GameObject BuildEmojiPicker(RectTransform root)
+        {
+            var picker = Area(root, "Emoji picker", 0, 0, 1, 1);
+            var dismiss = Button(Area(picker, "Dismiss", 0, 0, 1, 1), null, Color.clear);
+            dismiss.FeedbackSound = GameUiFeedback.Sound.Silent;
+            var panel = Area(picker, "Panel", .327f, .476f, .273f, .49f);
+            Paint(panel, Art("_box_black_gold"), Color.white, true, true).pixelsPerUnitMultiplier = 3.6f;
+            var choices = Scroll(panel, "Emojis", .035f, .048f, .916f, .88f);
+            var track = Paint(Area(panel, "Scrollbar", .969f, .064f, .011f, .852f), Art("_box_r_op80"), Color.white, true, true);
+            var trackInner = Area(track.rectTransform, "Sliding area", 0, .015f, 1, .97f);
+            var thumb = Paint(Area(trackInner, "Thumb", .12f, 0, .76f, 1), Art("_white"), new Color32(109, 100, 85, 155));
+            var scrollbar = track.gameObject.AddComponent<Scrollbar>();
+            scrollbar.targetGraphic = thumb;
+            scrollbar.handleRect = thumb.rectTransform;
+            scrollbar.direction = Scrollbar.Direction.BottomToTop;
+            choices.verticalScrollbar = scrollbar;
+            choices.content.gameObject.GetComponent<VerticalLayoutGroup>().padding = new RectOffset(4, 4, 0, 0);
+            choices.content.gameObject.GetComponent<VerticalLayoutGroup>().spacing = 4;
+            const string assets = Arena + "Res/Textures/ChatStickers/";
+            var catalogue = JsonUtility.FromJson<StickerCatalog>(Load<TextAsset>(assets + "source-manifest.json").text);
+            RectTransform row = null;
+            for (int index = 0; index < catalogue.stickers.Length; index++)
+            {
+                int column = index % 3;
+                if (column == 0)
+                {
+                    row = Area(choices.content, "Emoji row", 0, 0, 1, 0);
+                    row.gameObject.AddComponent<LayoutElement>().preferredHeight = 116;
+                }
+                string id = catalogue.stickers[index].id;
+                var tile = Area(row, id, column / 3f, 0, 1f / 3f, 1);
+                Button(tile, null, Color.clear);
+                var art = Picture(tile, "Emoji", Load<Sprite>(assets + id + ".png"), .07f, .049f, .86f, .90f, true);
+                Bind(tile, ("art", art));
+            }
+            Bind(picker, ("dismiss", dismiss), ("choices", choices));
+            picker.gameObject.SetActive(false);
+            return picker.gameObject;
         }
 
         private static BindingMap ArenaAvatar(RectTransform parent, string name, float x, float y, float w, float h)

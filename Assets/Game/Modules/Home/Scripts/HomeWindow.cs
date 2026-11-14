@@ -9,6 +9,8 @@ namespace AstralOath.Client.Home
         public GameButton Arena => Bindings.Require<GameButton>("arena");
         public GameText ArenaLabel => Bindings.Require<GameText>("arenaLabel");
         public GameText Profile => Bindings.Require<GameText>("profile");
-        public override void Validate() { _ = Arena; _ = ArenaLabel; _ = Profile; }
+        public GameButton DisplayMode => Bindings.Require<GameButton>("displayMode");
+        public GameText DisplayModeLabel => Bindings.Require<GameText>("displayModeLabel");
+        public override void Validate() { _ = Arena; _ = ArenaLabel; _ = Profile; _ = DisplayMode; _ = DisplayModeLabel; }
     }
 }

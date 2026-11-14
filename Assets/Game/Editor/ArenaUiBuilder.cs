@@ -108,11 +108,13 @@ namespace AstralOath.Editor
             bootstrap.FindProperty("showGameHome").boolValue = true;
             bootstrap.ApplyModifiedPropertiesWithoutUndo();
             var canvas = scene.GetRootGameObjects().Single(item => item.GetComponent<CanvasScaler>());
+            canvas.AddComponent<DesktopDisplayMode>();
             var feedback = canvas.AddComponent<GameUiFeedback>();
             feedback.Configure(Load<Sprite>(Common + "Textures/UiTouchRing.png"), Load<Sprite>(Common + "Textures/UiTouchGlow.png"),
                 Load<AudioClip>(Common + "Sounds/UiConfirm.wav"), Load<AudioClip>(Common + "Sounds/UiAccept.wav"),
                 Load<AudioClip>(Common + "Sounds/UiCancel.wav"), Load<AudioClip>(Common + "Sounds/UiBack.wav"),
-                Load<Sprite>(Common + "Textures/UiTouchSpark.png"));
+                Load<Sprite>(Common + "Textures/UiTouchSpark.png"), Load<Texture2D>(Common + "Textures/UiTouchPulse.png"),
+                Load<Material>(Common + "Materials/UiTouchPulse.mat"));
             EditorUtility.SetDirty(feedback);
             canvas.GetComponent<CanvasScaler>().screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
             canvas.GetComponent<CanvasScaler>().matchWidthOrHeight = 1f;
@@ -218,6 +220,35 @@ namespace AstralOath.Editor
             button.navigation = new Navigation { mode = Navigation.Mode.Automatic };
             return button;
         }
+
+        private static void PressSprites(GameButton button, Sprite normal, Sprite pressed)
+        {
+            if (!normal || !pressed) throw new InvalidOperationException("Missing button state artwork: " + button.name);
+            var graphic = (Image)button.targetGraphic;
+            graphic.sprite = normal;
+            graphic.type = normal.border == Vector4.zero ? Image.Type.Simple : Image.Type.Sliced;
+            var states = button.spriteState;
+            states.pressedSprite = pressed;
+            button.spriteState = states;
+            button.transition = Selectable.Transition.SpriteSwap;
+        }
+
+        private static void PressDecorations(GameButton button, params (Image Image, Sprite Sprite)[] decorations)
+        {
+            var serialized = new SerializedObject(button);
+            var entries = serialized.FindProperty("pressDecorations");
+            entries.arraySize = decorations.Length;
+            for (int i = 0; i < decorations.Length; i++)
+            {
+                var item = entries.GetArrayElementAtIndex(i);
+                item.FindPropertyRelative("image").objectReferenceValue = decorations[i].Image;
+                item.FindPropertyRelative("pressed").objectReferenceValue = decorations[i].Sprite;
+            }
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static void PressSmallBlack(GameButton button) =>
+            PressSprites(button, CommonArt("_btn_small_black"), CommonArt("_btn_small_black_p"));
 
         private static GameButton Action(RectTransform parent, string name, string key, float size, float x, float y, float w, float h,
             out GameText label, Sprite sprite = null, Color? color = null)

@@ -84,5 +84,19 @@
       "durationSeconds": 0.86998,
       "sha256": "11d0340e7da1c5e6a7bb16a962123505cc7b49664dfc59f7faa58dbe04a432ff"
     }
-  ]
+  ],
+  "pulseFrameAtlas": {
+    "path": "UiTouchPulse.png",
+    "sha256": "95ea75ff88ba03e269c3570b0ad854cc47ebdc2c1bd75a90ef86b926d5313164",
+    "sourceScale": 0.15,
+    "sourceOpacity": 0.3,
+    "sourceSpeed": 1.3,
+    "fps": 60,
+    "frameCount": 25,
+    "cellPixels": 224,
+    "columns": 8,
+    "rows": 4,
+    "importer": "Tools/Common/UiTouchPulse/BakePulse.py",
+    "channels": "RGB is premultiplied normal plus additive energy; alpha is normal coverage"
+  }
 }
