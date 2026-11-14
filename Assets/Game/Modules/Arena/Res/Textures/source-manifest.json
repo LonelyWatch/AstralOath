@@ -195,6 +195,22 @@
       "height": 90
     },
     {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/_grow_s.png",
+      "source": "img/_grow_s.png",
+      "sourceSha256": "603cfa0e72b427c33b02806a29faa5dc47d6edee1f47d69a0a928e54451c5e8b",
+      "outputSha256": "603cfa0e72b427c33b02806a29faa5dc47d6edee1f47d69a0a928e54451c5e8b",
+      "width": 20,
+      "height": 113
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/_grow.png",
+      "source": "img/_grow.png",
+      "sourceSha256": "19406d4a55cadd82ca302b7f786ef3be6b9d451c9e0961c3cea6b37ce041ed9c",
+      "outputSha256": "19406d4a55cadd82ca302b7f786ef3be6b9d451c9e0961c3cea6b37ce041ed9c",
+      "width": 164,
+      "height": 167
+    },
+    {
       "asset": "Assets/Game/Modules/Arena/Res/Textures/_white.png",
       "source": "img/_white.png",
       "sourceSha256": "cb800045f3248a8956eb2935805bb29fd189cb0d1c97c34d6533603cc09102fb",
@@ -1005,6 +1021,10 @@
     {
       "source": "wnd/pvplive_lounge.csb",
       "sha256": "33949dc6da30cbb396cfc01a5b72d175fb3d0564e260d4dd4399a23b450b163a"
+    },
+    {
+      "source": "wnd/pvplive_spectator_bar.csb",
+      "sha256": "6fcafb953318e84ac30942f022e770a65b8988c78cf04649a11285d3dd7ded62"
     },
     {
       "source": "wnd/chat.csb",

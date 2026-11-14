@@ -130,7 +130,7 @@ namespace AstralOath.Editor
             Paint(Area(root, "Scene tint", 0, 0, 1, 1), null, Black(.48f));
             Picture(root, "Native room vignette", Art("vignetting4"), 0, 0, 1, 1);
             var left = Area(root, "Room contents", 0, 0, .604f, 1);
-            Paint(Area(left, "Room header shading", 0, 0, 1, .095f), null, new Color32(17, 19, 22, 155));
+            Picture(left, "Room header shading", Art("_grow_s"), 0, -.020f, 1, .266f);
             var leave = Button(Area(left, "Leave room", .024f, .012f, .077f, .065f), Art("_box_r_op80"), new Color32(184, 184, 184, 255));
             leave.FeedbackSound = GameUiFeedback.Sound.Back;
             PressSmallBlack(leave);
@@ -166,7 +166,9 @@ namespace AstralOath.Editor
             var start = CommonButton(left, "ConfirmButton", "arena.start", .405f, .518f, .19f, .078f);
             start.FeedbackSound = GameUiFeedback.Sound.Silent;
             start.gameObject.AddComponent<CanvasGroup>().alpha = .55f;
-            Paint(Area(left, "Member list shade", .025f, .630f, .952f, .337f), null, new Color32(26, 26, 26, 53));
+            Paint(Area(left, "Member list shade", 0, .641f, 1, .359f), null, Black(.82f));
+            Picture(left, "Member list foot gradient", Art("_grow"), 0, .682f, 1, .53f).color
+                = new Color32(255, 255, 255, 127);
             NativeRule(left, "Members divider", .024f, .628f, .954f, .026f, Gold);
             var members = Scroll(left, "Member list", .024f, .655f, .946f, .310f, horizontal: true);
             var layout = members.content.GetComponent<HorizontalLayoutGroup>();
@@ -174,6 +176,7 @@ namespace AstralOath.Editor
             var memberGrid = members.content.gameObject.AddComponent<GridLayoutGroup>();
             memberGrid.cellSize = new Vector2(420, 100);
             memberGrid.spacing = new Vector2(10, 8);
+            memberGrid.startCorner = GridLayoutGroup.Corner.UpperLeft;
             memberGrid.startAxis = GridLayoutGroup.Axis.Vertical;
             memberGrid.constraint = GridLayoutGroup.Constraint.FixedRowCount;
             memberGrid.constraintCount = 3;

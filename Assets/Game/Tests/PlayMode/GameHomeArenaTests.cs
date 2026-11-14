@@ -123,8 +123,6 @@ namespace AstralOath.Client.Tests
                 Assert.That(room.Require<Image>("roomLock").gameObject.activeInHierarchy, Is.True);
                 Assert.That(room.Require<GameText>("hostName").text, Does.EndWith("[me]"));
                 yield return Capture("arena-room-host");
-                var grid = room.Require<ScrollRect>("members").content.GetComponent<GridLayoutGroup>();
-                Assert.That(grid.startAxis, Is.EqualTo(GridLayoutGroup.Axis.Vertical));
                 room.Require<GameButton>("start").onClick.Invoke();
                 Assert.That(ToastMessage(room).text, Is.Not.Empty);
                 yield return Capture("arena-room");
@@ -153,6 +151,20 @@ namespace AstralOath.Client.Tests
                 Assert.That(ownHeading.Require<GameText>("sender").text, Does.EndWith("[me]"));
                 Assert.That(ownHeading.Require<GameText>("age").text, Is.EqualTo("刚才"));
                 yield return Capture("arena-room-two");
+                var rosterGuests = new[] { NewPeer(endpoint), NewPeer(endpoint) };
+                for (int i = 0; i < rosterGuests.Length; i++)
+                {
+                    yield return Complete(rosterGuests[i].Open("成员排列" + (i + 3)));
+                    yield return Complete(rosterGuests[i].Find(title));
+                    yield return Complete(rosterGuests[i].Join());
+                }
+                yield return Wait(() => room.Require<GameText>("count").text == "4/50", "The member list did not reach two columns.");
+                AssertMemberOrder(room);
+                Assert.That(room.transform.Find("Room contents/Member list shade").GetComponent<Image>().color.a,
+                    Is.GreaterThan(.60f), "Member list backdrop must visibly shade the courtyard.");
+                yield return Capture("arena-room-member-order");
+                yield return Capture("arena-room-member-order-16x9", 1600, 900);
+                foreach (var guest in rosterGuests) yield return Complete(guest.Leave());
                 room.Require<GameButton>("emoji").onClick.Invoke();
                 var picker = room.Require<GameObject>("emojiPicker");
                 Assert.That(picker.activeInHierarchy, Is.True);
@@ -263,6 +275,27 @@ namespace AstralOath.Client.Tests
             Assert.That(host.MemberCount, Is.EqualTo(1));
         }
 
+        private static void AssertMemberOrder(BindingMap room)
+        {
+            var content = room.Require<ScrollRect>("members").content;
+            LayoutRebuilder.ForceRebuildLayoutImmediate(content);
+            var members = content.Cast<RectTransform>().Where(item => item.gameObject.activeInHierarchy).ToArray();
+            Assert.That(members.Length, Is.EqualTo(4));
+            string Label(RectTransform item) => item.GetComponent<BindingMap>().Require<GameText>("name").text;
+            Assert.That(Label(members[0]), Does.EndWith("[me]"));
+            Assert.That(members.Skip(1).Select(Label), Is.EqualTo(new[] { "第二会话", "成员排列3", "成员排列4" }));
+
+            var first = members[0].anchoredPosition;
+            var second = members[1].anchoredPosition;
+            var third = members[2].anchoredPosition;
+            var fourth = members[3].anchoredPosition;
+            Assert.That(second.x, Is.EqualTo(first.x).Within(.5f));
+            Assert.That(third.x, Is.EqualTo(first.x).Within(.5f));
+            Assert.That(second.y, Is.LessThan(first.y));
+            Assert.That(third.y, Is.LessThan(second.y));
+            Assert.That(fourth.x, Is.GreaterThan(first.x));
+            Assert.That(fourth.y, Is.EqualTo(first.y).Within(.5f));
+        }
         private static GameText ToastMessage(BindingMap screen) =>
             screen.Require<GameObject>("toast").GetComponent<BindingMap>().Require<GameText>("message");
         private static BindingMap[] FindRows(ScrollRect list, string prefix) =>
@@ -366,6 +399,7 @@ namespace AstralOath.Client.Tests
         }
 
         [Serializable] private sealed class Session { public string token; }
+        [Serializable] private sealed class Identity { public string displayName; public string avatarId = "c1001"; }
         [Serializable] private sealed class Rooms { public Room[] rooms; }
         [Serializable] private sealed class Room { public string id, name; public int memberCount; }
         [Serializable] private sealed class RoomState { public Room room; }
@@ -379,8 +413,9 @@ namespace AstralOath.Client.Tests
             public string Chat { get; private set; }
             public int MemberCount { get; private set; }
             public Peer(string endpoint) => url = endpoint.TrimEnd('/') + "/api/arena/";
-            public async Task Open() => token = JsonUtility.FromJson<Session>(await Call("sessions",
-                "{\"displayName\":\"第二会话\",\"avatarId\":\"c1001\"}")).token;
+            public async Task Open(string displayName = "第二会话") =>
+                token = JsonUtility.FromJson<Session>(await Call("sessions",
+                    JsonUtility.ToJson(new Identity { displayName = displayName }))).token;
             public async Task Find(string title) => RoomId = JsonUtility.FromJson<Rooms>(await Call("rooms?visibility=private&sort=recent&query="
                 + Uri.EscapeDataString(title))).rooms.Single(room => room.name == title).id;
             public Task Join() => Call("rooms/" + RoomId + "/join", "{\"password\":\"1234\"}");
