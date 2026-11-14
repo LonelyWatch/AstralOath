@@ -1,0 +1,41 @@
+
+yuna_skill_02_buff.sct
+size: 294,757
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+beam
+  rotate: false
+  xy: 173, 707
+  size: 80, 22
+  orig: 80, 22
+  offset: 0, 0
+  index: -1
+boom_impact1
+  rotate: false
+  xy: 2, 2
+  size: 290, 290
+  orig: 290, 290
+  offset: 0, 0
+  index: -1
+boom_impact2
+  rotate: false
+  xy: 2, 294
+  size: 290, 290
+  orig: 290, 290
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 586
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+glow_pillar
+  rotate: false
+  xy: 173, 586
+  size: 33, 119
+  orig: 33, 119
+  offset: 0, 0
+  index: -1

@@ -103,6 +103,8 @@ namespace AstralOath.Client.BattleScene.Editor
             var active = battle["skills"].ToLookup(row => (string)row["heroId"]);
             var variant = battle["skills"].Where(row => !string.IsNullOrEmpty((string)row["speedUpPresentationId"]))
                 .ToDictionary(row => ((string)row["heroId"], (string)row["speedUpPresentationId"]));
+            var burnVariants = battle["skills"].Where(row => !string.IsNullOrEmpty((string)row["burnPresentationId"]))
+                .ToDictionary(row => ((string)row["heroId"], (string)row["burnPresentationId"]));
             var targets = lab["characters"].OrderBy(hero => (string)hero["id"], StringComparer.Ordinal).ToArray();
             targetIds = targets.Select(hero => (string)hero["id"]).ToArray();
             targetLabels = targets.Select(hero => $"{hero["name"]} ({hero["id"]})").ToArray();
@@ -115,12 +117,14 @@ namespace AstralOath.Client.BattleScene.Editor
                     var sourceAsset = BattleSkillPresentationAssets.Load<TextAsset>(address, paths);
                     string graph = (string)JObject.Parse(sourceAsset.text)["id"];
                     var authority = active[id].FirstOrDefault(item => (int)item["slot"] == index + 1);
-                    bool alternate = variant.TryGetValue((id, graph), out var parent);
+                    bool speedUp = variant.TryGetValue((id, graph), out var speedParent);
+                    bool burn = burnVariants.TryGetValue((id, graph), out var burnParent);
+                    var parent = speedParent ?? burnParent ?? authority;
                     return new Skill
                     {
                         Hero = id, Name = (string)hero["name"], Slot = index + 1, Id = graph,
-                        SlotLabel = alternate ? $"S{parent["slot"]} · 提速" : $"S{index + 1}",
-                        Asset = AssetDatabase.GetAssetPath(sourceAsset), Target = (string)(alternate ? parent : authority)?["target"]
+                        SlotLabel = burn ? $"S{parent["slot"]} · 燃魂" : speedUp ? $"S{parent["slot"]} · 提速" : $"S{index + 1}",
+                        Asset = AssetDatabase.GetAssetPath(sourceAsset), Target = (string)parent?["target"]
                     };
                 });
             }).OrderBy(skill => skill.Hero, StringComparer.Ordinal).ThenBy(skill => skill.Slot).ToArray();
@@ -249,7 +253,7 @@ namespace AstralOath.Client.BattleScene.Editor
                     bool all = targetMode is 2 or 4 || targetMode == 0 &&
                         (selected.Target is "all_allies" or "all_enemies" or "passive");
                     bool allies = targetMode is 3 or 4 || targetMode == 0 &&
-                        (selected.Target is "one_ally" or "all_allies");
+                        (selected.Target is "one_ally" or "one_other_ally" or "one_ally_including_dead" or "all_allies");
                     bool self = targetMode == 5 || targetMode == 0 && selected.Target == "self";
                     bool two = targetMode == 6 || targetMode == 0 && selected.Target == "two_enemies";
                     preview.LoadScenario(selected.Hero, selected.Id, graph.ToString(Formatting.None),

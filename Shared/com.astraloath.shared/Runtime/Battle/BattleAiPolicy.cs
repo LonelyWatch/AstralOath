@@ -82,10 +82,13 @@ namespace AstralOath.Shared.Battle
                 return available.Select(skill => ChooseTarget(snapshot, actor, skill, false)).FirstOrDefault(choice => choice != null);
 
             var allies = AliveOnSide(snapshot, actor.Slot.Side).ToArray();
+            var resurrection = available.FirstOrDefault(skill => skill.target == "one_ally_including_dead" &&
+                snapshot.Units.Any(unit => unit.Slot.Side == actor.Slot.Side && !unit.IsAlive));
+            if (resurrection != null) return ChooseTarget(snapshot, actor, resurrection, false);
             var support = available.Where(skill => TargetsAllies(skill.target)).ToArray();
             foreach (var skill in support)
             {
-                var target = BestAllyTarget(skill, actor, allies);
+                var target = BestAllyTarget(skill, actor, allies.Where(unit => skill.target != "one_other_ally" || unit != actor).ToArray());
                 if (target != null && CleanseScore(skill, actor, target, allies) > 0)
                     return new BattleAiChoice(skill.id, target.InstanceId, false);
             }
@@ -93,7 +96,7 @@ namespace AstralOath.Shared.Battle
             {
                 foreach (var skill in support)
                 {
-                    var target = BestAllyTarget(skill, actor, allies);
+                    var target = BestAllyTarget(skill, actor, allies.Where(unit => skill.target != "one_other_ally" || unit != actor).ToArray());
                     if (target != null) return new BattleAiChoice(skill.id, target.InstanceId, false);
                 }
             }
@@ -123,8 +126,11 @@ namespace AstralOath.Shared.Battle
                     target = actor;
                     break;
                 case "one_ally":
+                case "one_other_ally":
+                case "one_ally_including_dead":
                 case "all_allies":
-                    target = BestAllyTarget(skill, actor, AliveOnSide(snapshot, actor.Slot.Side).ToArray());
+                    target = BestAllyTarget(skill, actor, snapshot.Units.Where(unit =>
+                        BattleTargeting.CanSelectUnit(snapshot, actor, targetRule, unit)).ToArray());
                     break;
                 case "one_enemy":
                 case "two_enemies":
@@ -143,7 +149,7 @@ namespace AstralOath.Shared.Battle
             BattleUnitSnapshot[] allies)
         {
             bool heals = effects[skill.id].Any(effect => IsHealing(effect.operation));
-            return allies.OrderByDescending(unit => CleanseScore(skill, actor, unit, allies))
+            return allies.OrderBy(unit => unit.IsAlive).ThenByDescending(unit => CleanseScore(skill, actor, unit, allies))
                 .ThenBy(unit => heals && unit.GetStatus(BattleStatusKind.Unhealable) != null)
                 .ThenBy(HealthRatio).ThenBy(unit => unit.Slot.Position).FirstOrDefault();
         }
@@ -181,7 +187,8 @@ namespace AstralOath.Shared.Battle
             Math.Min(maximum, unit.Statuses.Count(status => BattleSkillResolver.IsHarmful(status.Kind)));
 
         private static bool IsHealing(string operation) => operation == "heal" || operation == "heal_target_health";
-        private static bool TargetsAllies(string target) => target == "one_ally" || target == "all_allies" || target == "self";
+        private static bool TargetsAllies(string target) => target == "one_ally" || target == "all_allies" ||
+            target == "one_other_ally" || target == "one_ally_including_dead" || target == "self";
         private static bool IsBelowHalf(BattleUnitSnapshot unit) => 2L * unit.CurrentHealth < unit.MaximumHealth;
         private static decimal HealthRatio(BattleUnitSnapshot unit) => unit.CurrentHealth / (decimal)unit.MaximumHealth;
 

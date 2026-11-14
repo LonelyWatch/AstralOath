@@ -1,0 +1,64 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "ruell_skill_01_hit",
+      "z": "1",
+      "scale": "1.1",
+      "format": "spine",
+      "actions": [
+        {
+          "action": "Fire",
+          "delay": "533"
+        }
+      ]
+    },
+    {
+      "source": "ruell_skill_01_hit_pati1",
+      "z": "2",
+      "delay": "467",
+      "format": "particle"
+    },
+    {
+      "source": "ruell_skill_01_hit_pati2",
+      "x": "127",
+      "z": "3",
+      "delay": "533",
+      "format": "particle"
+    },
+    {
+      "source": "ruell_skill_01_hit_pati3",
+      "x": "127",
+      "z": "4",
+      "scale": "0.45,1.0",
+      "delay": "550",
+      "format": "particle",
+      "actions": [
+        {
+          "action": "Move",
+          "delay": "50",
+          "interval": "2000",
+          "from": "0,0",
+          "to": "250,0"
+        }
+      ]
+    },
+    {
+      "source": "ruell_skill_01_hit_pati4",
+      "x": "0",
+      "z": "2",
+      "scale": "0.45,1.0",
+      "delay": "467",
+      "format": "particle",
+      "actions": [
+        {
+          "action": "Move",
+          "delay": "50",
+          "interval": "1500",
+          "from": "0,0",
+          "to": "-200,0"
+        }
+      ]
+    }
+  ]
+}

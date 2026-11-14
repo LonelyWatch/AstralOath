@@ -12,13 +12,15 @@ namespace AstralOath.Shared.Battle
     {
         AttackUp, DefenseUp, Immunity, Barrier, Stun, Counter,
         SpeedUp, SpeedDown, AttackDown, DefenseDown, Unhealable, Silence, EvasionUp, CriticalResistanceUp, Stealth, Provoke, Indomitable,
-        GreaterSpeedUp, CriticalDamageUp, EffectivenessUp, Poison, Invincible
+        GreaterSpeedUp, CriticalDamageUp, EffectivenessUp, Poison, Invincible,
+        CriticalChanceUp, ContinuousHealing, Burn, Bleed, Immortality, HitChanceDown,
+        GreaterAttackUp, Unbuffable, DamageLimit, SpiritlordProtection, Rage
     }
     public enum BattleFlowEventKind
     {
         BattleStarted, TurnStarted, Action, Damage, Healing, ReadinessChanged,
         StatusApplied, StatusRemoved, CooldownChanged, SoulChanged, BarrierAbsorbed,
-        UnitDefeated, TurnSkipped, TurnEnded, BattleEnded, EffectRejected, ResourceChanged, StatusDurationChanged, ExtraTurnGranted, InjuryApplied, OpeningAttackBonusApplied, TurnEffectTriggered
+        UnitDefeated, TurnSkipped, TurnEnded, BattleEnded, EffectRejected, ResourceChanged, StatusDurationChanged, ExtraTurnGranted, InjuryApplied, OpeningAttackBonusApplied, TurnEffectTriggered, UnitRevived
     }
     public enum BattleCommandStatus
     {
@@ -103,7 +105,8 @@ namespace AstralOath.Shared.Battle
         public int Strength { get; }
         public string SourceId { get; }
 
-        internal static bool IsStackable(BattleStatusKind kind) => kind == BattleStatusKind.Poison;
+        internal static bool IsStackable(BattleStatusKind kind) => kind == BattleStatusKind.Poison ||
+            kind == BattleStatusKind.Burn || kind == BattleStatusKind.Bleed || kind == BattleStatusKind.ContinuousHealing;
     }
 
     public sealed class BattleResourceSnapshot
@@ -259,6 +262,7 @@ namespace AstralOath.Shared.Battle
     internal interface IBattleLifecycleResolver
     {
         IReadOnlyList<BattleChange> BattleStart(BattleSnapshot snapshot);
+        IReadOnlyList<BattleChange> StartOfTurn(BattleSnapshot snapshot, string actorId);
         IReadOnlyList<BattleChange> TurnEnd(BattleSnapshot snapshot, string actorId);
     }
 
@@ -306,8 +310,19 @@ namespace AstralOath.Shared.Battle
         internal BattleHitKind HitKind { get; }
         internal BattleEffectRejection Rejection { get; }
 
+        internal static BattleChange PeriodicDamage(BattleStatusSnapshot status, string target, int amount) =>
+            new BattleChange(BattleFlowEventKind.Damage, status.SourceId, target, amount, status: status.Kind,
+                statusInstanceId: status.InstanceId);
+        internal static BattleChange PeriodicHealing(BattleStatusSnapshot status, string target, int amount) =>
+            new BattleChange(BattleFlowEventKind.Healing, status.SourceId, target, amount, status: status.Kind,
+                statusInstanceId: status.InstanceId);
         public static BattleChange Damage(string source, string target, int amount, BattleHitKind hitKind = BattleHitKind.Normal) =>
             new BattleChange(BattleFlowEventKind.Damage, source, target, amount, hitKind: hitKind);
+        internal static BattleChange UpdateStatusDuration(string source, string target, BattleStatusSnapshot status) =>
+            new BattleChange(BattleFlowEventKind.StatusDurationChanged, source, target, status.Strength, status: status.Kind,
+                turns: status.RemainingTurns, statusInstanceId: status.InstanceId);
+        internal static BattleChange Revive(string source, string target, int health) =>
+            new BattleChange(BattleFlowEventKind.UnitRevived, source, target, health);
         public static BattleChange Healing(string source, string target, int amount) =>
             new BattleChange(BattleFlowEventKind.Healing, source, target, amount);
         public static BattleChange Readiness(string source, string target, int deltaBp) =>

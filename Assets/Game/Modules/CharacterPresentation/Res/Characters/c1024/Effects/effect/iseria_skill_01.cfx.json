@@ -1,0 +1,220 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "iseria_skill_01",
+      "opacity": "1",
+      "scale": "1",
+      "format": "spine",
+      "globalZ": 0.8,
+      "timeScale": 0.9,
+      "actions": [
+        {
+          "action": "Fire",
+          "delay": "690"
+        },
+        {
+          "action": "Fire",
+          "delay": "944"
+        },
+        {
+          "action": "Fire",
+          "delay": "1162"
+        },
+        {
+          "action": "Fire",
+          "delay": "1307"
+        },
+        {
+          "action": "Fire",
+          "delay": "1525"
+        },
+        {
+          "action": "Fire",
+          "delay": "1800"
+        }
+      ]
+    },
+    {
+      "source": "iseria_skill_01_pati1",
+      "x": "-20",
+      "y": "30",
+      "scale": "0.6,1.0",
+      "rotate": "6",
+      "delay": "1650",
+      "repeat": "0",
+      "format": "particle",
+      "globalZ": 0.2,
+      "actions": [
+        {
+          "action": "Move",
+          "interval": "2000",
+          "from": "0,0",
+          "to": "-100,30"
+        }
+      ]
+    },
+    {
+      "source": "iseria_skill_01_pati2",
+      "x": "-20",
+      "y": "30",
+      "rotate": "6",
+      "delay": "1650",
+      "format": "particle",
+      "globalZ": 0.3
+    },
+    {
+      "source": "iseria_skill_01_pati3",
+      "x": "-20",
+      "y": "30",
+      "rotate": "6",
+      "delay": "1650",
+      "format": "particle",
+      "globalZ": 0.4
+    },
+    {
+      "source": "iseria_skill_01_pati4",
+      "x": "-960",
+      "y": "771",
+      "scale": "0.9",
+      "delay": "155",
+      "format": "particle",
+      "globalZ": 0.5
+    },
+    {
+      "source": "iseria_skill_01_pati4",
+      "x": "0.67",
+      "y": "-334.23",
+      "scale": "1",
+      "delay": "320",
+      "format": "particle",
+      "globalZ": 0.5
+    },
+    {
+      "source": "iseria_skill_01_pati4",
+      "x": "211.5",
+      "y": "777.32",
+      "scale": "0.7",
+      "delay": "520",
+      "format": "particle",
+      "globalZ": 0.5
+    },
+    {
+      "source": "iseria_skill_01_pati4",
+      "x": "-611.91",
+      "y": "641.1",
+      "scale": "0.6",
+      "delay": "650",
+      "format": "particle",
+      "globalZ": 0.5
+    },
+    {
+      "source": "iseria_skill_01_pati4",
+      "x": "-432.92",
+      "y": "-438.62",
+      "scale": "1.4",
+      "delay": "690",
+      "format": "particle",
+      "globalZ": 0.5
+    },
+    {
+      "source": "iseria_skill_01_pati4",
+      "x": "836.68",
+      "y": "-150.26",
+      "scale": "1.2",
+      "delay": "700",
+      "format": "particle",
+      "globalZ": 0.5
+    },
+    {
+      "source": "iseria_skill_01_pati4",
+      "x": "780.69",
+      "y": "502.17",
+      "scale": "0.6",
+      "delay": "770",
+      "format": "particle",
+      "globalZ": 0.5
+    },
+    {
+      "source": "iseria_skill_01_pati4",
+      "x": "-1304.6",
+      "y": "-60.77",
+      "scale": "2",
+      "delay": "770",
+      "format": "particle",
+      "globalZ": 0.5
+    },
+    {
+      "source": "iseria_skill_01_pati4",
+      "x": "860.42",
+      "y": "-109.1",
+      "scale": "0.5",
+      "delay": "917",
+      "format": "particle",
+      "globalZ": 0.5
+    },
+    {
+      "source": "iseria_skill_01_pati4",
+      "x": "-258.95",
+      "y": "671.31",
+      "scale": "0.5",
+      "delay": "950",
+      "format": "particle",
+      "globalZ": 0.5
+    },
+    {
+      "source": "iseria_skill_01_pati4",
+      "x": "648.82",
+      "y": "591.1",
+      "scale": "1",
+      "delay": "960",
+      "format": "particle",
+      "globalZ": 0.5
+    },
+    {
+      "source": "iseria_skill_01_pati4",
+      "x": "87.16",
+      "y": "856.29",
+      "scale": "0.9",
+      "delay": "1025",
+      "format": "particle",
+      "globalZ": 0.5
+    },
+    {
+      "source": "iseria_skill_01_pati4",
+      "x": "381.22",
+      "y": "-385.91",
+      "scale": "1.6",
+      "delay": "1170",
+      "format": "particle",
+      "globalZ": 0.5
+    },
+    {
+      "source": "iseria_skill_01_pati4",
+      "x": "808.15",
+      "y": "158.34",
+      "scale": "0.8",
+      "delay": "1350",
+      "format": "particle",
+      "globalZ": 0.5
+    },
+    {
+      "source": "iseria_skill_01_pati4",
+      "x": "805.58",
+      "y": "546.11",
+      "scale": "1.4",
+      "delay": "1550",
+      "format": "particle",
+      "globalZ": 0.5
+    },
+    {
+      "source": "iseria_skill_01_pati4",
+      "x": "774.79",
+      "y": "24.35",
+      "scale": "2.5",
+      "delay": "1720",
+      "format": "particle",
+      "globalZ": 0.5
+    }
+  ]
+}

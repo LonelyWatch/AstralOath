@@ -1,0 +1,63 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "ruell_skill_01_light",
+      "z": "1",
+      "format": "spine"
+    },
+    {
+      "source": "ruell_skill_01_shot_light_pati1",
+      "x": "370",
+      "y": "375",
+      "z": "2",
+      "scale": "0.55,1.0",
+      "delay": "1067",
+      "format": "particle",
+      "actions": [
+        {
+          "action": "Move",
+          "delay": "50",
+          "interval": "2000",
+          "from": "0,0",
+          "to": "100,0"
+        }
+      ]
+    },
+    {
+      "source": "ruell_skill_01_shot_light_pati1",
+      "x": "460",
+      "y": "375",
+      "z": "3",
+      "scale": "0.45,0.8",
+      "delay": "1167",
+      "format": "particle",
+      "actions": [
+        {
+          "action": "Move",
+          "delay": "50",
+          "interval": "2000",
+          "from": "0,0",
+          "to": "100,0"
+        }
+      ]
+    },
+    {
+      "source": "ruell_skill_01_shot_pati2",
+      "x": "550",
+      "y": "375",
+      "scale": "0.45,0.8",
+      "delay": "1200",
+      "format": "particle",
+      "actions": [
+        {
+          "action": "Move",
+          "delay": "50",
+          "interval": "2000",
+          "from": "0,0",
+          "to": "100,0"
+        }
+      ]
+    }
+  ]
+}

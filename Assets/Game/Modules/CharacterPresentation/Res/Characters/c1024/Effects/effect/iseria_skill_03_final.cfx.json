@@ -1,0 +1,187 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "iseria_skill_03_final_white",
+      "y": "100",
+      "format": "spine",
+      "globalZ": 900.0
+    },
+    {
+      "source": "iseria_skill_03_final_leafs",
+      "format": "particle",
+      "globalZ": 150.0
+    },
+    {
+      "source": "iseria_skill_03_final_leaf4",
+      "delay": "1234",
+      "format": "particle",
+      "globalZ": 99.0
+    },
+    {
+      "source": "iseria_skill_03_final_leaf2",
+      "format": "particle",
+      "globalZ": 90.0
+    },
+    {
+      "source": "iseria_skill_03_final_leaf3",
+      "delay": "2500",
+      "format": "particle",
+      "globalZ": 80.0
+    },
+    {
+      "source": "iseria_skill_03_final_blast",
+      "delay": "4000",
+      "format": "particle",
+      "globalZ": 70.0
+    },
+    {
+      "source": "iseria_skill_03_final_front",
+      "y": "100",
+      "z": "0",
+      "scale": "1",
+      "format": "spine",
+      "globalZ": 10.0,
+      "actions": [
+        {
+          "action": "Fire",
+          "delay": "1833"
+        },
+        {
+          "action": "Fire",
+          "delay": "3000"
+        },
+        {
+          "action": "Fire",
+          "delay": "3333"
+        },
+        {
+          "action": "Fire",
+          "delay": "3666"
+        },
+        {
+          "action": "Fire",
+          "delay": "4666"
+        },
+        {
+          "action": "Fire",
+          "delay": "4866"
+        },
+        {
+          "action": "Fire",
+          "delay": "5066"
+        },
+        {
+          "action": "Fire",
+          "delay": "5266"
+        },
+        {
+          "action": "Fire",
+          "delay": "5466"
+        }
+      ]
+    },
+    {
+      "source": "iseria_skill_03_final_back",
+      "y": "100",
+      "z": "0",
+      "format": "spine",
+      "globalZ": -10.0
+    },
+    {
+      "source": "iseria_skill_03_final_pati1",
+      "y": "560",
+      "delay": "1534",
+      "format": "particle",
+      "globalZ": 15.0
+    },
+    {
+      "source": "iseria_skill_03_final_pati2",
+      "y": "700",
+      "scale": "1.5,0.2",
+      "delay": "1167",
+      "format": "particle",
+      "globalZ": 18.0
+    },
+    {
+      "source": "iseria_skill_03_final_pati2",
+      "y": "200",
+      "scale": "1.2,0.2",
+      "delay": "1500",
+      "format": "particle",
+      "globalZ": 19.0
+    },
+    {
+      "source": "iseria_skill_03_final_pati3",
+      "delay": "2034",
+      "format": "particle",
+      "globalZ": 21.0
+    },
+    {
+      "source": "iseria_skill_03_final_pati4",
+      "x": "213",
+      "y": "-66.46",
+      "rotate": "20",
+      "delay": "3400",
+      "format": "particle",
+      "globalZ": 23.0
+    },
+    {
+      "source": "iseria_skill_03_final_pati4",
+      "x": "221",
+      "y": "-224",
+      "rotate": "35",
+      "delay": "3600",
+      "format": "particle",
+      "globalZ": 24.0
+    },
+    {
+      "source": "iseria_skill_03_final_pati4",
+      "x": "436",
+      "y": "-309.55",
+      "rotate": "35",
+      "delay": "3700",
+      "format": "particle",
+      "globalZ": 26.0
+    },
+    {
+      "source": "iseria_skill_03_final_pati4",
+      "x": "-226.78",
+      "y": "-161.07",
+      "rotate": "-25",
+      "delay": "3350",
+      "format": "particle",
+      "globalZ": 27.0
+    },
+    {
+      "source": "iseria_skill_03_final_pati4",
+      "x": "-610.25",
+      "y": "-113.57",
+      "rotate": "-18",
+      "delay": "3600",
+      "format": "particle",
+      "globalZ": 28.0
+    },
+    {
+      "source": "iseria_skill_03_final_pati4",
+      "x": "-464.61",
+      "y": "-266.54",
+      "rotate": "-60",
+      "delay": "3700",
+      "format": "particle",
+      "globalZ": 30.0
+    },
+    {
+      "source": "iseria_skill_03_final_pati5",
+      "delay": "3667",
+      "format": "particle",
+      "globalZ": 34.0
+    },
+    {
+      "source": "iseria_skill_03_final_pati7",
+      "delay": "2500",
+      "format": "particle",
+      "globalZ": 37.0
+    }
+  ]
+}

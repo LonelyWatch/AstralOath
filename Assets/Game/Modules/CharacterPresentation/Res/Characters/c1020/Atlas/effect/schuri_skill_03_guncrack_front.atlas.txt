@@ -1,0 +1,118 @@
+
+schuri_skill_03_guncrack_front.sct
+size: 1343,507
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bang_circle1
+  rotate: false
+  xy: 2, 2
+  size: 271, 271
+  orig: 271, 271
+  offset: 0, 0
+  index: -1
+bang_circle2
+  rotate: false
+  xy: 275, 2
+  size: 271, 271
+  orig: 271, 271
+  offset: 0, 0
+  index: -1
+bang_circle3
+  rotate: false
+  xy: 548, 2
+  size: 271, 271
+  orig: 271, 271
+  offset: 0, 0
+  index: -1
+beam_01
+  rotate: false
+  xy: 708, 437
+  size: 271, 31
+  orig: 271, 31
+  offset: 0, 0
+  index: -1
+beam_circle
+  rotate: true
+  xy: 547, 437
+  size: 57, 159
+  orig: 57, 159
+  offset: 0, 0
+  index: -1
+beam_core
+  rotate: false
+  xy: 708, 470
+  size: 82, 30
+  orig: 82, 30
+  offset: 0, 0
+  index: -1
+beam_glow
+  rotate: true
+  xy: 981, 412
+  size: 87, 57
+  orig: 87, 57
+  offset: 0, 0
+  index: -1
+bullet_01
+  rotate: false
+  xy: 274, 489
+  size: 101, 5
+  orig: 101, 5
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 709, 275
+  size: 135, 135
+  orig: 135, 135
+  offset: 0, 0
+  index: -1
+flash2
+  rotate: false
+  xy: 846, 275
+  size: 135, 135
+  orig: 135, 135
+  offset: 0, 0
+  index: -1
+gun_spark1
+  rotate: false
+  xy: 274, 275
+  size: 271, 212
+  orig: 271, 212
+  offset: 0, 0
+  index: -1
+gun_spark2
+  rotate: false
+  xy: 2, 275
+  size: 270, 230
+  orig: 270, 230
+  offset: 0, 0
+  index: -1
+gun_spark3
+  rotate: true
+  xy: 1086, 2
+  size: 271, 255
+  orig: 271, 255
+  offset: 0, 0
+  index: -1
+gun_spark4
+  rotate: true
+  xy: 821, 2
+  size: 271, 263
+  orig: 271, 263
+  offset: 0, 0
+  index: -1
+gun_spark_s
+  rotate: false
+  xy: 547, 275
+  size: 160, 160
+  orig: 160, 160
+  offset: 0, 0
+  index: -1
+white_out
+  rotate: false
+  xy: 983, 275
+  size: 67, 67
+  orig: 67, 67
+  offset: 0, 0
+  index: -1

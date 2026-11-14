@@ -117,6 +117,7 @@ namespace AstralOath.Client.Tests
         }
 
         [UnityTest]
+        [Timeout(600000)]
         public IEnumerator AddedHeroesCanEnterBattleAndPlayAllSourceGraphs()
         {
             var roots = default(GameObject[]);
@@ -129,16 +130,16 @@ namespace AstralOath.Client.Tests
             Assert.That(added, Does.Contain("c1010"));
             var loadedPresentations = graphs.Select(graph => JsonUtility.FromJson<GraphId>(graph.text).id).ToArray();
             Assert.That(loadedPresentations, Is.Unique);
-            var expectedPresentations = catalog.skills.SelectMany(skill => new[] { skill.presentationId, skill.speedUpPresentationId })
+            var expectedPresentations = catalog.skills.SelectMany(skill => new[] { skill.presentationId, skill.speedUpPresentationId, skill.burnPresentationId })
                 .Where(id => !string.IsNullOrEmpty(id)).Distinct(StringComparer.Ordinal);
             Assert.That(loadedPresentations, Is.EquivalentTo(expectedPresentations));
             string requested = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_HERO_ID");
             if (!string.IsNullOrWhiteSpace(requested))
             {
                 requested = requested.Trim();
-                Assert.That(catalog.heroes.Any(hero => hero.id == requested), Is.True,
-                    $"ASTRAL_BATTLE_HERO_ID '{requested}' must match an ID in the battle catalog.");
-                added = new[] { requested };
+                var ids = requested.Split(',').Select(id => id.Trim()).ToArray();
+                Assert.That(ids, Is.SubsetOf(added));
+                added = ids;
             }
             var selection = typeof(BattleHudPreview).GetField("allyHeroIds", PrivateInstance);
             var map = HostField<BindingMap>(host, "hud");
@@ -198,15 +199,23 @@ namespace AstralOath.Client.Tests
                     var recipients = skill.target switch
                     {
                         "all_allies" => allies,
-                        "one_ally" => new[] { allies[1] },
+                        "one_ally" or "one_other_ally" or "one_ally_including_dead" => new[] { allies[1] },
                         "self" => new[] { front },
                         "all_enemies" => enemies,
                         "two_enemies" => enemies.Take(2).ToArray(),
-                        "passive" => id == "c1008" || id == "c1007" ? enemies : new[] { enemies[0] },
+                        "passive" => id is "c1007" or "c1008" or "c1020" or "c1023" or "c1028" ? enemies : new[] { enemies[0] },
                         _ => new[] { enemies[0] }
                     };
-                    yield return Play(skill.presentationId, id + "-s" + skill.slot, front, recipients[0], recipients, Phase.None, Phase.None);
+                    Phase required = skill.slot == 3 && Array.IndexOf(new[] { "c1020", "c1021", "c1022", "c1023", "c1024",
+                        "c1027", "c1028", "c1029", "c1030", "c1031" }, id) >= 0 ? Phase.Cutin : Phase.None;
+                    yield return Play(skill.presentationId, id + "-s" + skill.slot, front, recipients[0], recipients, required, Phase.None);
                     TestContext.WriteLine($"{id} S{skill.slot}: {skill.presentationId} passed source playback and reset.");
+                    if (!string.IsNullOrEmpty(skill.burnPresentationId))
+                    {
+                        yield return Play(skill.burnPresentationId, id + "-s" + skill.slot + "-burn",
+                            front, recipients[0], recipients, Phase.None, Phase.None);
+                        TestContext.WriteLine($"{id} S{skill.slot} Burn: {skill.burnPresentationId} passed source playback and reset.");
+                    }
                     if (!string.IsNullOrEmpty(skill.speedUpPresentationId) &&
                         !catalog.skills.Any(row => row.heroId == id && row.presentationId == skill.speedUpPresentationId))
                         yield return Play(skill.speedUpPresentationId, id + "-s" + skill.slot + "-speed",

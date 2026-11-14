@@ -1,0 +1,130 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "iseria_skill_02_sowrds",
+      "z": "2",
+      "format": "spine"
+    },
+    {
+      "source": "iseria_skill_02_trees",
+      "z": "1",
+      "format": "spine"
+    },
+    {
+      "source": "iseria_skill_02_field",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "iseria_tree_piece_pati1",
+      "x": "-200",
+      "y": "150",
+      "z": "5",
+      "delay": "1700",
+      "format": "particle"
+    },
+    {
+      "source": "iseria_tree_piece_pati1",
+      "x": "200",
+      "y": "150",
+      "z": "5",
+      "scale": "-1.0,1.0",
+      "delay": "1700",
+      "format": "particle"
+    },
+    {
+      "source": "iseria_skill_02_sowrd_trail",
+      "z": "3",
+      "delay": "333",
+      "format": "particle",
+      "attach": "iseria_skill_02_sowrds/sw_pati1",
+      "lifeTime": "500"
+    },
+    {
+      "source": "iseria_skill_02_sowrd_trail",
+      "z": "3",
+      "delay": "200",
+      "format": "particle",
+      "attach": "iseria_skill_02_sowrds/sw_pati2",
+      "lifeTime": "650"
+    },
+    {
+      "source": "iseria_skill_02_sowrd_trail",
+      "z": "3",
+      "delay": "200",
+      "format": "particle",
+      "attach": "iseria_skill_02_sowrds/sw_pati3",
+      "lifeTime": "600"
+    },
+    {
+      "source": "iseria_skill_02_sowrd_trail",
+      "z": "3",
+      "delay": "300",
+      "format": "particle",
+      "attach": "iseria_skill_02_sowrds/sw_pati4",
+      "lifeTime": "600"
+    },
+    {
+      "source": "iseria_skill_02_sword_burst",
+      "y": "650",
+      "z": "4",
+      "scale": "1.0,0.7",
+      "delay": "1333",
+      "format": "particle"
+    },
+    {
+      "source": "iseria_skill_02_sword_burst",
+      "y": "450",
+      "z": "-2",
+      "scale": "0.8,-0.55",
+      "delay": "1333",
+      "format": "particle"
+    },
+    {
+      "source": "iseria_skill_02_circle_pati",
+      "y": "400",
+      "z": "6",
+      "scale": "0.7,0.4",
+      "delay": "1567",
+      "format": "particle"
+    },
+    {
+      "source": "iseria_skill_02_circle_pati",
+      "y": "800",
+      "z": "6",
+      "scale": "1.0,0.5",
+      "delay": "1667",
+      "format": "particle"
+    },
+    {
+      "source": "iseria_skill_02_circle_pati",
+      "y": "1200",
+      "z": "6",
+      "scale": "1.2,0.6",
+      "delay": "1767",
+      "format": "particle"
+    },
+    {
+      "source": "iseria_skill_02_tree_pati1",
+      "z": "5",
+      "delay": "1570",
+      "format": "particle"
+    },
+    {
+      "source": "iseria_skill_02_afterpati",
+      "y": "1000",
+      "delay": "1600",
+      "format": "particle",
+      "globalZ": 1.0
+    },
+    {
+      "source": "iseria_skill_02_treecircle",
+      "y": "1400",
+      "scale": "1.25,0.4",
+      "delay": "1867",
+      "format": "particle",
+      "globalZ": 1.0
+    }
+  ]
+}

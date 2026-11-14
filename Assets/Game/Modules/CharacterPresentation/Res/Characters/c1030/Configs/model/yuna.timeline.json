@@ -1,0 +1,172 @@
+{
+  "timeline": {
+    "default": {
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "id": "key",
+              "source": "yuna_bidle_eff",
+              "location": 1,
+              "locationBone": "keyboard",
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "b_idle": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "yuna_bidle_switch_eff",
+              "location": 1,
+              "locationBone": "keyboard",
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "yuna_skill_01_holo",
+              "location": 1,
+              "locationBone": "keyboard",
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "yuna_skill_01_motion",
+              "location": 1,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 90,
+            "func": "remove",
+            "param": {
+              "targetId": "key"
+            }
+          }
+        ]
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "yuna_bidle_switch_eff",
+              "location": 1,
+              "locationBone": "keyboard",
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "yuna_skill_02_holo",
+              "location": 1,
+              "locationBone": "keyboard",
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "yuna_skill_02_motion",
+              "location": 1,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 90,
+            "func": "remove",
+            "param": {
+              "targetId": "key"
+            }
+          }
+        ]
+      },
+      "skill3_1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "yuna_skill_03_boost",
+              "location": 5,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "yuna_bidle_switch_eff",
+              "location": 1,
+              "locationBone": "keyboard",
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 90,
+            "func": "remove",
+            "param": {
+              "targetId": "key"
+            }
+          }
+        ]
+      },
+      "skill3_2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "yuna_skill_03_fusion",
+              "location": 1,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill3_3": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "yuna_skill_03_shot",
+              "location": 1,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "idle": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "key"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

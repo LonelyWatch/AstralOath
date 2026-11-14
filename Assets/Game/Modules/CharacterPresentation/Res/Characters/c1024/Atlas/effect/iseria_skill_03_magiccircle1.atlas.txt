@@ -1,0 +1,34 @@
+
+iseria_skill_03_magiccircle1.sct
+size: 302,509
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 2, 278
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+hand_circle1
+  rotate: false
+  xy: 173, 278
+  size: 127, 127
+  orig: 127, 127
+  offset: 0, 0
+  index: -1
+hand_circle_g
+  rotate: false
+  xy: 173, 407
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+magic_circle1
+  rotate: false
+  xy: 2, 2
+  size: 274, 274
+  orig: 274, 274
+  offset: 0, 0
+  index: -1

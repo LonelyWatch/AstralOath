@@ -1,0 +1,13 @@
+{
+  "version": "2.1.27",
+  "jsonAddress": "characterlab/source/model/charles.scsp/json",
+  "atlasAddress": "characterlab/source/model/charles.atlas",
+  "pages": [
+    {
+      "name": "charles.sct",
+      "address": "characterlab/source/model/charles.sct"
+    }
+  ],
+  "premultipliedAlpha": true,
+  "scale": 0.01
+}

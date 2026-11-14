@@ -1,0 +1,272 @@
+
+yuna_skill_03_beam.sct
+size: 1849,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+beam_big1
+  rotate: true
+  xy: 197, 2
+  size: 395, 137
+  orig: 395, 137
+  offset: 0, 0
+  index: -1
+beam_big2
+  rotate: true
+  xy: 2, 2
+  size: 449, 193
+  orig: 449, 193
+  offset: 0, 0
+  index: -1
+beam_big3
+  rotate: true
+  xy: 336, 2
+  size: 270, 116
+  orig: 270, 116
+  offset: 0, 0
+  index: -1
+beam_big_crack1
+  rotate: false
+  xy: 357, 398
+  size: 95, 110
+  orig: 95, 110
+  offset: 0, 0
+  index: -1
+beam_big_crack2
+  rotate: true
+  xy: 897, 203
+  size: 184, 76
+  orig: 184, 76
+  offset: 0, 0
+  index: -1
+beam_big_crack3
+  rotate: true
+  xy: 1723, 336
+  size: 157, 100
+  orig: 157, 100
+  offset: 0, 0
+  index: -1
+beam_big_crack4
+  rotate: false
+  xy: 336, 274
+  size: 266, 122
+  orig: 266, 122
+  offset: 0, 0
+  index: -1
+beam_big_crack5
+  rotate: false
+  xy: 454, 2
+  size: 205, 225
+  orig: 205, 225
+  offset: 0, 0
+  index: -1
+beam_big_crack6
+  rotate: false
+  xy: 1331, 371
+  size: 79, 138
+  orig: 79, 138
+  offset: 0, 0
+  index: -1
+beam_big_crack7
+  rotate: false
+  xy: 1342, 2
+  size: 94, 199
+  orig: 94, 199
+  offset: 0, 0
+  index: -1
+beam_big_crack8
+  rotate: false
+  xy: 170, 453
+  size: 185, 44
+  orig: 185, 44
+  offset: 0, 0
+  index: -1
+beam_big_crack9
+  rotate: false
+  xy: 197, 399
+  size: 147, 34
+  orig: 147, 34
+  offset: 0, 0
+  index: -1
+beam_big_crack_s
+  rotate: false
+  xy: 197, 435
+  size: 95, 16
+  orig: 95, 16
+  offset: 0, 0
+  index: -1
+beam_blur_glow
+  rotate: true
+  xy: 808, 2
+  size: 199, 147
+  orig: 199, 147
+  offset: 0, 0
+  index: -1
+beam_circle1
+  rotate: false
+  xy: 1430, 203
+  size: 165, 165
+  orig: 165, 165
+  offset: 0, 0
+  index: -1
+beam_circle2
+  rotate: false
+  xy: 1522, 2
+  size: 165, 165
+  orig: 165, 165
+  offset: 0, 0
+  index: -1
+beam_circle3
+  rotate: false
+  xy: 1597, 169
+  size: 165, 165
+  orig: 165, 165
+  offset: 0, 0
+  index: -1
+beam_great_crack
+  rotate: true
+  xy: 796, 216
+  size: 175, 99
+  orig: 175, 99
+  offset: 0, 0
+  index: -1
+big_crack1
+  rotate: false
+  xy: 661, 2
+  size: 145, 212
+  orig: 145, 212
+  offset: 0, 0
+  index: -1
+big_crack2
+  rotate: true
+  xy: 790, 397
+  size: 100, 170
+  orig: 100, 170
+  offset: 0, 0
+  index: -1
+big_crack3
+  rotate: false
+  xy: 1510, 370
+  size: 95, 133
+  orig: 95, 133
+  offset: 0, 0
+  index: -1
+big_crack4
+  rotate: true
+  xy: 1146, 203
+  size: 166, 148
+  orig: 166, 148
+  offset: 0, 0
+  index: -1
+big_crack5
+  rotate: false
+  xy: 622, 397
+  size: 166, 102
+  orig: 166, 102
+  offset: 0, 0
+  index: -1
+big_crack6
+  rotate: false
+  xy: 957, 2
+  size: 138, 199
+  orig: 138, 199
+  offset: 0, 0
+  index: -1
+big_crack7
+  rotate: false
+  xy: 1438, 2
+  size: 82, 199
+  orig: 82, 199
+  offset: 0, 0
+  index: -1
+big_crack8
+  rotate: true
+  xy: 604, 229
+  size: 166, 190
+  orig: 166, 190
+  offset: 0, 0
+  index: -1
+big_crack_n1
+  rotate: true
+  xy: 1296, 203
+  size: 166, 132
+  orig: 166, 132
+  offset: 0, 0
+  index: -1
+big_crack_n2
+  rotate: true
+  xy: 1223, 2
+  size: 199, 117
+  orig: 199, 117
+  offset: 0, 0
+  index: -1
+big_crack_n3
+  rotate: true
+  xy: 1607, 336
+  size: 157, 114
+  orig: 157, 114
+  offset: 0, 0
+  index: -1
+big_crack_n4
+  rotate: false
+  xy: 1130, 374
+  size: 199, 136
+  orig: 199, 136
+  offset: 0, 0
+  index: -1
+big_crack_n5
+  rotate: true
+  xy: 1097, 2
+  size: 199, 124
+  orig: 199, 124
+  offset: 0, 0
+  index: -1
+energybolt_2
+  rotate: true
+  xy: 1412, 371
+  size: 133, 96
+  orig: 133, 96
+  offset: 0, 0
+  index: -1
+energybolt_4
+  rotate: true
+  xy: 1764, 163
+  size: 80, 69
+  orig: 80, 69
+  offset: 0, 0
+  index: -1
+final_crack1
+  rotate: false
+  xy: 454, 398
+  size: 166, 103
+  orig: 166, 103
+  offset: 0, 0
+  index: -1
+final_crack2
+  rotate: false
+  xy: 1689, 2
+  size: 158, 159
+  orig: 158, 159
+  offset: 0, 0
+  index: -1
+final_crack3
+  rotate: false
+  xy: 2, 453
+  size: 166, 50
+  orig: 166, 50
+  offset: 0, 0
+  index: -1
+final_crack4
+  rotate: true
+  xy: 962, 389
+  size: 118, 166
+  orig: 118, 166
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 975, 203
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,125 @@
+
+ruell_bidle_eff.sct
+size: 247,1575
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+br_cir1
+  rotate: false
+  xy: 2, 2
+  size: 195, 195
+  orig: 195, 195
+  offset: 0, 0
+  index: -1
+br_cir2
+  rotate: false
+  xy: 2, 199
+  size: 195, 195
+  orig: 195, 195
+  offset: 0, 0
+  index: -1
+br_cir3
+  rotate: false
+  xy: 2, 396
+  size: 195, 195
+  orig: 195, 195
+  offset: 0, 0
+  index: -1
+br_cir4
+  rotate: false
+  xy: 2, 593
+  size: 195, 195
+  orig: 195, 195
+  offset: 0, 0
+  index: -1
+cry
+  rotate: true
+  xy: 2, 1520
+  size: 48, 67
+  orig: 48, 67
+  offset: 0, 0
+  index: -1
+cry_glow
+  rotate: true
+  xy: 135, 1511
+  size: 62, 82
+  orig: 62, 82
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 790
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: true
+  xy: 199, 53
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1
+weapon
+  rotate: false
+  xy: 173, 790
+  size: 72, 341
+  orig: 72, 341
+  offset: 0, 0
+  index: -1
+weapon2
+  rotate: false
+  xy: 135, 1133
+  size: 106, 376
+  orig: 106, 376
+  offset: 0, 0
+  index: -1
+weapon_glow
+  rotate: false
+  xy: 2, 1120
+  size: 131, 398
+  orig: 131, 398
+  offset: 0, 0
+  index: -1
+weapon_glow_tale
+  rotate: false
+  xy: 2, 961
+  size: 152, 51
+  orig: 152, 51
+  offset: 0, 0
+  index: -1
+weapon_glow_tale_e
+  rotate: false
+  xy: 2, 1014
+  size: 152, 51
+  orig: 152, 51
+  offset: 0, 0
+  index: -1
+weapon_glow_tale_f
+  rotate: false
+  xy: 2, 1067
+  size: 152, 51
+  orig: 152, 51
+  offset: 0, 0
+  index: -1
+weapon_l1
+  rotate: true
+  xy: 199, 2
+  size: 26, 42
+  orig: 26, 42
+  offset: 0, 0
+  index: -1
+weapon_l2
+  rotate: true
+  xy: 199, 30
+  size: 21, 30
+  orig: 21, 30
+  offset: 0, 0
+  index: -1
+weapon_l3
+  rotate: false
+  xy: 199, 483
+  size: 24, 48
+  orig: 24, 48
+  offset: 0, 0
+  index: -1

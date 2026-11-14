@@ -1,0 +1,19 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "kylon_idle",
+      "z": "30",
+      "format": "particle",
+      "loop": 1
+    },
+    {
+      "source": "kylon_idle",
+      "x": "-80",
+      "y": "30",
+      "z": "30",
+      "format": "particle",
+      "loop": 1
+    }
+  ]
+}

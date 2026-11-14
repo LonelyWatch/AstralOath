@@ -57,6 +57,7 @@ namespace AstralOath.Client.BattleScene.Editor
             var hud = scene.GetRootGameObjects().SelectMany(root => root.GetComponentsInChildren<BindingMap>(true))
                 .Single(map => map.gameObject.name == "BattleHud");
             ConfigureHudScene(hud, rosterOnly: true);
+            BattleUnitPresentationAssets.RefreshStatusArt();
             if (!EditorSceneManager.SaveScene(scene)) throw new IOException("Unable to save " + ScenePath);
             Debug.Log("ASTRAL_BATTLE_ROSTER_READY");
         }
@@ -201,9 +202,9 @@ namespace AstralOath.Client.BattleScene.Editor
             {
                 if ((string)skill["target"] != "passive" && !graphIds.Contains((string)skill["presentationId"]))
                     throw new InvalidOperationException("Missing original battle graph for " + skill["id"]);
-                string alternate = (string)skill["speedUpPresentationId"];
-                if (!string.IsNullOrWhiteSpace(alternate) && !graphIds.Contains(alternate))
-                    throw new InvalidOperationException("Missing alternate battle graph for " + skill["id"]);
+                foreach (string alternate in new[] { (string)skill["speedUpPresentationId"], (string)skill["burnPresentationId"] })
+                    if (!string.IsNullOrWhiteSpace(alternate) && !graphIds.Contains(alternate))
+                        throw new InvalidOperationException("Missing alternate battle graph for " + skill["id"]);
             }
 
             SetObject("battleCatalog", catalog);

@@ -1,0 +1,72 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "yuna_skill_03_beam_final",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "yuna_skill_03_dark",
+      "ani": "final_beam",
+      "format": "spine",
+      "globalZ": 10.0
+    },
+    {
+      "source": "yuna_skill_03_final_boom",
+      "x": "100~800",
+      "y": "-500~300",
+      "scale": "1~2.5",
+      "delay": "400",
+      "repeat": "11;50~100",
+      "format": "spine",
+      "globalZ": 4.0
+    },
+    {
+      "source": "yuna_skill_03_final_boom",
+      "x": "100~800",
+      "y": "-500~300",
+      "scale": "1~2.5",
+      "delay": "300",
+      "repeat": "11;50~100",
+      "format": "spine",
+      "globalZ": 5.0
+    },
+    {
+      "source": "ken_hiteff",
+      "ani": "animation5",
+      "x": "100~800",
+      "y": "-500~300",
+      "scale": "0.5~1",
+      "rotate": "-20~45",
+      "delay": "300",
+      "repeat": "11;50~100",
+      "format": "spine",
+      "globalZ": 4.5,
+      "timeScale": 1.4
+    },
+    {
+      "source": "ken_hiteff",
+      "ani": "animation5",
+      "x": "100~800",
+      "y": "-500~300",
+      "scale": "0.7~1.7",
+      "rotate": "-20~45",
+      "delay": "300",
+      "repeat": "11;50~100",
+      "format": "spine",
+      "globalZ": 4.5,
+      "timeScale": 1.4
+    },
+    {
+      "source": "yuna_skill_03_final_pati1",
+      "x": "-1500",
+      "y": "450",
+      "rotate": "18",
+      "delay": "200",
+      "format": "particle",
+      "globalZ": 7.0,
+      "lifeTime": "650"
+    }
+  ]
+}

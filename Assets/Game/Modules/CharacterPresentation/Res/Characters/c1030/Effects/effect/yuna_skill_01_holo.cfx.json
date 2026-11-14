@@ -1,0 +1,52 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "yuna_skill_01_holo",
+      "z": "3",
+      "format": "spine"
+    },
+    {
+      "source": "yuna_skill_01_holo_target",
+      "x": "80",
+      "y": "80",
+      "z": "4",
+      "scale": "0.7,1.0",
+      "rotate": "10",
+      "format": "spine"
+    },
+    {
+      "source": "yuna_skill_01_holo_pati2",
+      "x": "-10",
+      "y": "9",
+      "z": "6",
+      "scale": "0.8",
+      "format": "particle"
+    },
+    {
+      "source": "yuna_skill_01_holo_pati1",
+      "x": "-10",
+      "y": "200",
+      "z": "5",
+      "scale": "1.0,0.5",
+      "delay": "1033",
+      "format": "particle"
+    },
+    {
+      "source": "yuna_skill_01_holo_pati1",
+      "x": "-10",
+      "y": "120",
+      "z": "5",
+      "scale": "1.0,0.5",
+      "delay": "1033",
+      "format": "particle"
+    },
+    {
+      "source": "yuna_skill_01_holo_pati3",
+      "y": "50",
+      "z": "5.5",
+      "delay": "1033",
+      "format": "particle"
+    }
+  ]
+}

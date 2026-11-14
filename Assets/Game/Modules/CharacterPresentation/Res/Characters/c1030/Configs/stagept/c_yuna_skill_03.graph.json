@@ -1,0 +1,1547 @@
+{
+  "id": "c_yuna_skill_03",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "color": "0,0,0,255",
+        "accel": 1.0,
+        "opacity": 1.0,
+        "duration": -1,
+        "localZ": -1,
+        "globalZ": 100,
+        "fadeIn": 200,
+        "fadeOut": 10,
+        "id": "sate",
+        "guid": 2,
+        "etty": "DARK"
+      },
+      {
+        "targetId": "sate",
+        "guid": 3,
+        "etty": "STOP"
+      },
+      {
+        "source": "yuna_skill_03_sate.cfx",
+        "y": 216.0,
+        "scale": 1.0,
+        "disableAutoFlipX": true,
+        "guid": 4,
+        "etty": "EFFECT"
+      },
+      {
+        "ani": "skill3_1",
+        "guid": 5,
+        "etty": "ANI"
+      },
+      {
+        "location": 1,
+        "curve": "0.03065134,0.829861,0.1609195,0.9131944",
+        "time": 1000,
+        "guid": 6,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.7",
+        "curve": "0.03065134,0.829861,0.1609195,0.9131944",
+        "time": 1000,
+        "guid": 7,
+        "etty": "ZOOM"
+      },
+      {
+        "guid": 8,
+        "etty": "BGSHOW"
+      },
+      {
+        "location": 1,
+        "x": 30.0,
+        "y": 100.0,
+        "curve": "0.3218391,0.125,0.07279693,0.9305555",
+        "time": 200,
+        "guid": 9,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.3",
+        "curve": "0.3218391,0.125,0.07279693,0.9305555",
+        "time": 200,
+        "guid": 10,
+        "etty": "ZOOM"
+      },
+      {
+        "time": 200,
+        "guid": 11,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1",
+        "time": 200,
+        "guid": 12,
+        "etty": "ZOOM"
+      },
+      {
+        "show": true,
+        "time": 200,
+        "guid": 13,
+        "etty": "BGSHOW"
+      },
+      {
+        "fade": 10,
+        "time": 10,
+        "away_x": 1280.0,
+        "guid": 14,
+        "etty": "LAYOUT"
+      },
+      {
+        "mode": 1,
+        "fade": 200,
+        "time": 200,
+        "guid": 15,
+        "etty": "LAYOUT"
+      },
+      {
+        "ani": "skill3_2",
+        "guid": 16,
+        "etty": "ANI"
+      },
+      {
+        "ver": 2,
+        "location": 31,
+        "style": 3,
+        "y": 1000.0,
+        "guid": 17,
+        "etty": "MOVE"
+      },
+      {
+        "scale": "1",
+        "guid": 18,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "y": -220.0,
+        "guid": 19,
+        "etty": "CAM"
+      },
+      {
+        "args": "sk_c1030_3",
+        "guid": 20,
+        "etty": "CUTIN"
+      },
+      {
+        "ani": "skill3_3",
+        "guid": 21,
+        "etty": "ANI"
+      },
+      {
+        "scale": "1.8",
+        "guid": 22,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "x": 50.0,
+        "y": -95.0,
+        "guid": 23,
+        "etty": "CAM"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "yuna_skill_03_shot_camera",
+        "guid": 24,
+        "etty": "SHAKE"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "yuna_skill_03_boost_camera",
+        "guid": 25,
+        "etty": "SHAKE"
+      },
+      {
+        "ver": 2,
+        "location": 11,
+        "style": 3,
+        "guid": 26,
+        "etty": "MOVE"
+      },
+      {
+        "guid": 27,
+        "etty": "IDLE"
+      },
+      {
+        "color": "255,255,255,255",
+        "accel": 1.0,
+        "opacity": 1.0,
+        "duration": 100,
+        "localZ": -1,
+        "globalZ": 100,
+        "fadeIn": 50,
+        "fadeOut": 200,
+        "id": "beam",
+        "guid": 28,
+        "etty": "DARK"
+      },
+      {
+        "source": "yuna_skill_03_beam.cfx",
+        "y": 216.0,
+        "scale": 1.0,
+        "guid": 29,
+        "etty": "EFFECT"
+      },
+      {
+        "scale": "1",
+        "guid": 30,
+        "etty": "ZOOM"
+      },
+      {
+        "y": 1000.0,
+        "guid": 31,
+        "etty": "CAM"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "yuna_skill_03_beam_camera",
+        "guid": 32,
+        "etty": "SHAKE"
+      },
+      {
+        "location": 16,
+        "x": 50.0,
+        "y": -40.0,
+        "curve": "0.03065134,0.829861,0.1302682,0.9444444",
+        "time": 500,
+        "guid": 33,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.2",
+        "curve": "0.03065134,0.829861,0.1302682,0.9444444",
+        "time": 500,
+        "guid": 34,
+        "etty": "ZOOM"
+      },
+      {
+        "source": "yuna_skill_03_final.cfx",
+        "y": 216.0,
+        "scale": 1.0,
+        "guid": 35,
+        "etty": "EFFECT"
+      },
+      {
+        "color": "255,255,255,255",
+        "accel": 1.0,
+        "opacity": 1.0,
+        "duration": -1,
+        "localZ": -1,
+        "globalZ": 100,
+        "fadeIn": 10,
+        "fadeOut": 1000,
+        "id": "final",
+        "guid": 36,
+        "etty": "DARK"
+      },
+      {
+        "targetId": "final",
+        "guid": 37,
+        "etty": "STOP"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "yuna_skill_03_final_camera",
+        "guid": 38,
+        "etty": "SHAKE"
+      },
+      {
+        "time": 1500,
+        "x": 0.0,
+        "y": 0.0,
+        "localZ": 0.0,
+        "scale": 1.5,
+        "rotate": 23.0,
+        "fadeIn": 100.0,
+        "fadeOut": 500.0,
+        "speed0": 5.0,
+        "speed1": 14.0,
+        "speed2": -3.0,
+        "color0": "44,135,211,255",
+        "color1": "77,30,225,255",
+        "color2": "59,39,89,255",
+        "guid": 39,
+        "etty": "BGHATCH"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 150,
+        "rand_y": 150,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 40,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 150,
+        "rand_y": 150,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 41,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 150,
+        "rand_y": 150,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 42,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 150,
+        "rand_y": 150,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 43,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 150,
+        "rand_y": 150,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 44,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 150,
+        "rand_y": 150,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 45,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 150,
+        "rand_y": 150,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 46,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 150,
+        "rand_y": 150,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 47,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 150,
+        "rand_y": 150,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 48,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 150,
+        "rand_y": 150,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 49,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 150,
+        "rand_y": 150,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 50,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 150,
+        "rand_y": 150,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 51,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 150,
+        "rand_y": 150,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 52,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 150,
+        "rand_y": 150,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 53,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 150,
+        "rand_y": 150,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 54,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 150,
+        "rand_y": 150,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 55,
+        "etty": "HIT"
+      },
+      {
+        "duration": 600,
+        "program": "sprite_blur",
+        "direction_x": -1.0,
+        "direction_y": 0.7,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 56,
+        "etty": "PPEFFECT"
+      },
+      {
+        "name": "u_range",
+        "duration": 600,
+        "power": 25.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 57,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "duration": 350,
+        "program": "sprite_blur",
+        "direction_x": 1.0,
+        "direction_y": -0.4,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 58,
+        "etty": "PPEFFECT"
+      },
+      {
+        "name": "u_range",
+        "duration": 350,
+        "power": 40.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 59,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "duration": 800,
+        "program": "sprite_blur",
+        "direction_x": 1.0,
+        "direction_y": -0.4,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 60,
+        "etty": "PPEFFECT"
+      },
+      {
+        "name": "u_range",
+        "duration": 800,
+        "power": 20.0,
+        "finish_rad": 1.0,
+        "guid": 61,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "duration": 600,
+        "program": "sprite_blur",
+        "direction_x": 1.0,
+        "direction_y": 0.2,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 62,
+        "etty": "PPEFFECT"
+      },
+      {
+        "name": "u_range",
+        "duration": 600,
+        "power": 25.0,
+        "finish_rad": 1.0,
+        "guid": 63,
+        "etty": "SINE_VALUE"
+      }
+    ],
+    "connections": [
+      {
+        "from": 1,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 3,
+        "delay": 200,
+        "when": 1,
+        "Desc": "200",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 4,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 5,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 6,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 8,
+        "delay": 200,
+        "when": 1,
+        "Desc": "200",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 10,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 9,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 12,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 14,
+        "delay": 200,
+        "when": 1,
+        "Desc": "200",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 15,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 15,
+        "to": 13,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 17,
+        "to": 16,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 18,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 17,
+        "to": 19,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 17,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 16,
+        "to": 20,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 20,
+        "to": 21,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 23,
+        "to": 22,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 20,
+        "to": 23,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 21,
+        "to": 24,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 25,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 21,
+        "to": 26,
+        "delay": 2650,
+        "when": 1,
+        "Desc": "2650",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 26,
+        "to": 27,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 21,
+        "to": 28,
+        "delay": 2600,
+        "when": 1,
+        "Desc": "2600",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 28,
+        "to": 29,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 31,
+        "to": 30,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 28,
+        "to": 31,
+        "delay": 50,
+        "when": 1,
+        "Desc": "50",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 29,
+        "to": 32,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 33,
+        "to": 34,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 29,
+        "to": 33,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 33,
+        "to": 35,
+        "delay": 200,
+        "when": 1,
+        "Desc": "200",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 35,
+        "to": 11,
+        "delay": 2300,
+        "when": 1,
+        "Desc": "2300",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 35,
+        "to": 36,
+        "delay": 2030,
+        "when": 1,
+        "Desc": "2030",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 15,
+        "to": 37,
+        "delay": 300,
+        "Desc": "300",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 35,
+        "to": 38,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 29,
+        "to": 39,
+        "delay": 700,
+        "when": 1,
+        "Desc": "700",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 35,
+        "to": 40,
+        "delay": 234,
+        "when": 1,
+        "Desc": "234",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 40,
+        "to": 41,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 41,
+        "to": 42,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 42,
+        "to": 43,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 43,
+        "to": 44,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 44,
+        "to": 45,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 45,
+        "to": 46,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 46,
+        "to": 47,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 47,
+        "to": 52,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 52,
+        "to": 53,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 53,
+        "to": 55,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 55,
+        "to": 54,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 54,
+        "to": 51,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 51,
+        "to": 50,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 50,
+        "to": 48,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 48,
+        "to": 49,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 56,
+        "to": 57,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 21,
+        "to": 56,
+        "delay": 1330,
+        "when": 1,
+        "Desc": "1330",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 58,
+        "to": 59,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 60,
+        "to": 61,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 40,
+        "to": 58,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 47,
+        "to": 60,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 62,
+        "to": 63,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 29,
+        "to": 62,
+        "delay": 400,
+        "when": 1,
+        "Desc": "400",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/yuna_skill_03_beam_camera.scsp",
+      "address": "characterlab/source/camera/yuna_skill_03_beam_camera.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "camera/yuna_skill_03_boost_camera.scsp",
+      "address": "characterlab/source/camera/yuna_skill_03_boost_camera.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "camera/yuna_skill_03_final_camera.scsp",
+      "address": "characterlab/source/camera/yuna_skill_03_final_camera.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "camera/yuna_skill_03_shot_camera.scsp",
+      "address": "characterlab/source/camera/yuna_skill_03_shot_camera.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "cut/fhd/sk_c1030_3.webp",
+      "address": "characterlab/source/cut/fhd/sk_c1030_3.webp",
+      "type": "cutin"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.atlas",
+      "address": "characterlab/source/effect/hit_new_blunt_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.scsp",
+      "address": "characterlab/source/effect/hit_new_blunt_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.sct",
+      "address": "characterlab/source/effect/hit_new_blunt_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_blunt_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_blunt_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_blunt_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/ken_hiteff.atlas",
+      "address": "characterlab/source/effect/ken_hiteff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/ken_hiteff.scsp",
+      "address": "characterlab/source/effect/ken_hiteff.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/ken_sk1_2_b_idle_hit.atlas",
+      "address": "characterlab/source/effect/ken_sk1_2_b_idle_hit.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/ken_sk1_2_b_idle_hit.sct",
+      "address": "characterlab/source/effect/ken_sk1_2_b_idle_hit.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_bidle_eff.atlas",
+      "address": "characterlab/source/effect/yuna_bidle_eff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_bidle_eff.cfx",
+      "address": "characterlab/source/effect/yuna_bidle_eff.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/yuna_bidle_eff.scsp",
+      "address": "characterlab/source/effect/yuna_bidle_eff.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_bidle_eff.sct",
+      "address": "characterlab/source/effect/yuna_bidle_eff.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_bidle_pati1.particle",
+      "address": "characterlab/source/effect/yuna_bidle_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_bidle_pati2.particle",
+      "address": "characterlab/source/effect/yuna_bidle_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_bidle_pati3.particle",
+      "address": "characterlab/source/effect/yuna_bidle_pati3.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_bidle_pati4.particle",
+      "address": "characterlab/source/effect/yuna_bidle_pati4.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_bidle_pati5.particle",
+      "address": "characterlab/source/effect/yuna_bidle_pati5.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_bidle_switch.atlas",
+      "address": "characterlab/source/effect/yuna_bidle_switch.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_bidle_switch.scsp",
+      "address": "characterlab/source/effect/yuna_bidle_switch.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_bidle_switch.sct",
+      "address": "characterlab/source/effect/yuna_bidle_switch.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_bidle_switch_eff.cfx",
+      "address": "characterlab/source/effect/yuna_bidle_switch_eff.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/yuna_fusion_bg.atlas",
+      "address": "characterlab/source/effect/yuna_fusion_bg.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_fusion_bg.scsp",
+      "address": "characterlab/source/effect/yuna_fusion_bg.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_fusion_bg.sct",
+      "address": "characterlab/source/effect/yuna_fusion_bg.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_01_circle_b.atlas",
+      "address": "characterlab/source/effect/yuna_skill_01_circle_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_01_circle_b.scsp",
+      "address": "characterlab/source/effect/yuna_skill_01_circle_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_01_circle_b.sct",
+      "address": "characterlab/source/effect/yuna_skill_01_circle_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_01_circle_f.atlas",
+      "address": "characterlab/source/effect/yuna_skill_01_circle_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_01_circle_f.scsp",
+      "address": "characterlab/source/effect/yuna_skill_01_circle_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_01_circle_f.sct",
+      "address": "characterlab/source/effect/yuna_skill_01_circle_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_01_holo.atlas",
+      "address": "characterlab/source/effect/yuna_skill_01_holo.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_01_holo.cfx",
+      "address": "characterlab/source/effect/yuna_skill_01_holo.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/yuna_skill_01_holo.scsp",
+      "address": "characterlab/source/effect/yuna_skill_01_holo.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_01_holo.sct",
+      "address": "characterlab/source/effect/yuna_skill_01_holo.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_01_holo_pati1.particle",
+      "address": "characterlab/source/effect/yuna_skill_01_holo_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_01_holo_pati2.particle",
+      "address": "characterlab/source/effect/yuna_skill_01_holo_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_01_holo_pati3.particle",
+      "address": "characterlab/source/effect/yuna_skill_01_holo_pati3.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_01_holo_target.atlas",
+      "address": "characterlab/source/effect/yuna_skill_01_holo_target.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_01_holo_target.scsp",
+      "address": "characterlab/source/effect/yuna_skill_01_holo_target.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_01_holo_target.sct",
+      "address": "characterlab/source/effect/yuna_skill_01_holo_target.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_01_motion.cfx",
+      "address": "characterlab/source/effect/yuna_skill_01_motion.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/yuna_skill_01_motion_pati1.particle",
+      "address": "characterlab/source/effect/yuna_skill_01_motion_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_02_holo.atlas",
+      "address": "characterlab/source/effect/yuna_skill_02_holo.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_02_holo.cfx",
+      "address": "characterlab/source/effect/yuna_skill_02_holo.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/yuna_skill_02_holo.scsp",
+      "address": "characterlab/source/effect/yuna_skill_02_holo.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_02_holo.sct",
+      "address": "characterlab/source/effect/yuna_skill_02_holo.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_02_holo_pati1.particle",
+      "address": "characterlab/source/effect/yuna_skill_02_holo_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_02_holo_pati2.particle",
+      "address": "characterlab/source/effect/yuna_skill_02_holo_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_02_holo_pati3.particle",
+      "address": "characterlab/source/effect/yuna_skill_02_holo_pati3.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_02_motion.atlas",
+      "address": "characterlab/source/effect/yuna_skill_02_motion.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_02_motion.cfx",
+      "address": "characterlab/source/effect/yuna_skill_02_motion.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/yuna_skill_02_motion.scsp",
+      "address": "characterlab/source/effect/yuna_skill_02_motion.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_02_motion.sct",
+      "address": "characterlab/source/effect/yuna_skill_02_motion.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_02_motion_pati1.particle",
+      "address": "characterlab/source/effect/yuna_skill_02_motion_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_02_motion_pati2.particle",
+      "address": "characterlab/source/effect/yuna_skill_02_motion_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_03_beam.atlas",
+      "address": "characterlab/source/effect/yuna_skill_03_beam.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_03_beam.cfx",
+      "address": "characterlab/source/effect/yuna_skill_03_beam.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/yuna_skill_03_beam.scsp",
+      "address": "characterlab/source/effect/yuna_skill_03_beam.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_03_beam.sct",
+      "address": "characterlab/source/effect/yuna_skill_03_beam.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_03_beam_final.atlas",
+      "address": "characterlab/source/effect/yuna_skill_03_beam_final.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_03_beam_final.scsp",
+      "address": "characterlab/source/effect/yuna_skill_03_beam_final.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_03_beam_final.sct",
+      "address": "characterlab/source/effect/yuna_skill_03_beam_final.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_03_boost.atlas",
+      "address": "characterlab/source/effect/yuna_skill_03_boost.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_03_boost.cfx",
+      "address": "characterlab/source/effect/yuna_skill_03_boost.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/yuna_skill_03_boost.scsp",
+      "address": "characterlab/source/effect/yuna_skill_03_boost.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_03_boost.sct",
+      "address": "characterlab/source/effect/yuna_skill_03_boost.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_03_boost_pati1.particle",
+      "address": "characterlab/source/effect/yuna_skill_03_boost_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_03_dark.atlas",
+      "address": "characterlab/source/effect/yuna_skill_03_dark.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_03_dark.scsp",
+      "address": "characterlab/source/effect/yuna_skill_03_dark.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_03_dark.sct",
+      "address": "characterlab/source/effect/yuna_skill_03_dark.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_03_final.cfx",
+      "address": "characterlab/source/effect/yuna_skill_03_final.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/yuna_skill_03_final_boom.atlas",
+      "address": "characterlab/source/effect/yuna_skill_03_final_boom.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_03_final_boom.scsp",
+      "address": "characterlab/source/effect/yuna_skill_03_final_boom.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_03_final_boom.sct",
+      "address": "characterlab/source/effect/yuna_skill_03_final_boom.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_03_final_pati1.particle",
+      "address": "characterlab/source/effect/yuna_skill_03_final_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_03_fusion.atlas",
+      "address": "characterlab/source/effect/yuna_skill_03_fusion.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_03_fusion.cfx",
+      "address": "characterlab/source/effect/yuna_skill_03_fusion.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/yuna_skill_03_fusion.scsp",
+      "address": "characterlab/source/effect/yuna_skill_03_fusion.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_03_fusion.sct",
+      "address": "characterlab/source/effect/yuna_skill_03_fusion.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_03_sate.cfx",
+      "address": "characterlab/source/effect/yuna_skill_03_sate.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/yuna_skill_03_sate_pati1.particle",
+      "address": "characterlab/source/effect/yuna_skill_03_sate_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_03_shot.atlas",
+      "address": "characterlab/source/effect/yuna_skill_03_shot.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_03_shot.cfx",
+      "address": "characterlab/source/effect/yuna_skill_03_shot.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/yuna_skill_03_shot.scsp",
+      "address": "characterlab/source/effect/yuna_skill_03_shot.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_03_shot.sct",
+      "address": "characterlab/source/effect/yuna_skill_03_shot.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_03_shot_backsmoke.atlas",
+      "address": "characterlab/source/effect/yuna_skill_03_shot_backsmoke.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_03_shot_backsmoke.scsp",
+      "address": "characterlab/source/effect/yuna_skill_03_shot_backsmoke.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_03_shot_backsmoke.sct",
+      "address": "characterlab/source/effect/yuna_skill_03_shot_backsmoke.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_03_shot_in_pati.particle",
+      "address": "characterlab/source/effect/yuna_skill_03_shot_in_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_03_shot_pati1.particle",
+      "address": "characterlab/source/effect/yuna_skill_03_shot_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_03_space_bg.atlas",
+      "address": "characterlab/source/effect/yuna_skill_03_space_bg.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_03_space_bg.scsp",
+      "address": "characterlab/source/effect/yuna_skill_03_space_bg.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_03_space_bg.sct",
+      "address": "characterlab/source/effect/yuna_skill_03_space_bg.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_03_space_sate.atlas",
+      "address": "characterlab/source/effect/yuna_skill_03_space_sate.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_03_space_sate.scsp",
+      "address": "characterlab/source/effect/yuna_skill_03_space_sate.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_03_space_sate.sct",
+      "address": "characterlab/source/effect/yuna_skill_03_space_sate.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_switch_pati1.particle",
+      "address": "characterlab/source/effect/yuna_switch_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "model/yuna.timeline",
+      "address": "characterlab/source/model/yuna.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/pati_01.sct",
+      "address": "characterlab/source/particle/pati_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/pati_sq_01.sct",
+      "address": "characterlab/source/particle/pati_sq_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/pati_sq_02.sct",
+      "address": "characterlab/source/particle/pati_sq_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_01.sct",
+      "address": "characterlab/source/particle/ticle_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_03.sct",
+      "address": "characterlab/source/particle/ticle_03.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/tri_pati_01.sct",
+      "address": "characterlab/source/particle/tri_pati_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/zodiac_star1.sct",
+      "address": "characterlab/source/particle/zodiac_star1.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

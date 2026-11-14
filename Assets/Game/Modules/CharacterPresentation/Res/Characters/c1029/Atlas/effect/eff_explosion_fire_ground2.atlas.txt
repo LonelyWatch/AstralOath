@@ -1,0 +1,62 @@
+
+eff_explosion_fire_ground2.sct
+size: 704,489
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+crack_2
+  rotate: true
+  xy: 250, 189
+  size: 298, 106
+  orig: 298, 106
+  offset: 0, 0
+  index: -1
+crack_glow_2
+  rotate: false
+  xy: 250, 2
+  size: 315, 94
+  orig: 315, 94
+  offset: 0, 0
+  index: -1
+crack_shadow
+  rotate: true
+  xy: 2, 2
+  size: 472, 246
+  orig: 472, 246
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 358, 186
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+impact_shock
+  rotate: true
+  xy: 567, 2
+  size: 185, 135
+  orig: 185, 135
+  offset: 0, 0
+  index: -1
+light_long
+  rotate: true
+  xy: 358, 360
+  size: 112, 267
+  orig: 112, 267
+  offset: 0, 0
+  index: -1
+tornado_wave_01
+  rotate: false
+  xy: 358, 98
+  size: 207, 86
+  orig: 207, 86
+  offset: 0, 0
+  index: -1
+wind_shock
+  rotate: false
+  xy: 529, 189
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1

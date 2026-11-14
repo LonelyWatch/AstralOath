@@ -1,0 +1,21 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "kylon_sk1eff_target_f",
+      "ani": "hit",
+      "z": "50",
+      "scale": "0.7~1.2",
+      "rotate": "-50~50",
+      "format": "spine"
+    },
+    {
+      "source": "kylon_sk1eff_target_b",
+      "ani": "hit",
+      "z": "-30",
+      "scale": "0.7~1.2",
+      "rotate": "-50~50",
+      "format": "spine"
+    }
+  ]
+}

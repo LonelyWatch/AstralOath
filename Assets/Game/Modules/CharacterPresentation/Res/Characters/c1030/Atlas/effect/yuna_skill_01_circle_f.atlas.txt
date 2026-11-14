@@ -1,0 +1,20 @@
+
+yuna_skill_01_circle_f.sct
+size: 312,181
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+hand_circle1
+  rotate: false
+  xy: 2, 2
+  size: 177, 177
+  orig: 177, 177
+  offset: 0, 0
+  index: -1
+hand_circle2
+  rotate: false
+  xy: 181, 2
+  size: 129, 129
+  orig: 129, 129
+  offset: 0, 0
+  index: -1

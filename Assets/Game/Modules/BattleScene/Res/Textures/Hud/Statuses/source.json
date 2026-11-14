@@ -117,6 +117,61 @@
       "kind": "Invincible",
       "group": "Buff",
       "asset": "stic_invincible.png"
+    },
+    {
+      "kind": "CriticalChanceUp",
+      "group": "Buff",
+      "asset": "stic_cri_up.png"
+    },
+    {
+      "kind": "ContinuousHealing",
+      "group": "Buff",
+      "asset": "stic_heal.png"
+    },
+    {
+      "kind": "Burn",
+      "group": "Debuff",
+      "asset": "stic_blaze.png"
+    },
+    {
+      "kind": "Bleed",
+      "group": "Debuff",
+      "asset": "stic_blood.png"
+    },
+    {
+      "kind": "Immortality",
+      "group": "Buff",
+      "asset": "stic_immortality.png"
+    },
+    {
+      "kind": "HitChanceDown",
+      "group": "Debuff",
+      "asset": "stic_blind.png"
+    },
+    {
+      "kind": "GreaterAttackUp",
+      "group": "Buff",
+      "asset": "stic_att_up2.png"
+    },
+    {
+      "kind": "Unbuffable",
+      "group": "Debuff",
+      "asset": "stic_buf_impossible.png"
+    },
+    {
+      "kind": "DamageLimit",
+      "group": "Buff",
+      "asset": "stic_dmg_limit.png"
+    },
+    {
+      "kind": "SpiritlordProtection",
+      "group": "Buff",
+      "asset": "stic_spiritlord_keep.png"
+    },
+    {
+      "kind": "Rage",
+      "group": "Buff",
+      "asset": "stic_madness.png"
     }
   ],
   "files": [
@@ -251,6 +306,72 @@
       "asset": "stic_invincible.png",
       "sourceSha256": "57a00da491c05c5594ce7d46429c1e1bd771190d1363bc7310b68901a64cc958",
       "assetSha256": "fee77bea53bfad3704bcc9d93bb4d3aabadc54fb4f7bdb46545c648553ae6899"
+    },
+    {
+      "source": "原始资源/buff/stic_cri_up.png",
+      "asset": "stic_cri_up.png",
+      "sourceSha256": "310024645c53c5188f15fe49fe55c8f2c0fcf35986818ea43e049fe5172fabdb",
+      "assetSha256": "15af362b695ad5067ed80b77e7ff3de3f51983938c627d79b85de7e983b18377"
+    },
+    {
+      "source": "原始资源/buff/stic_heal.png",
+      "asset": "stic_heal.png",
+      "sourceSha256": "5244fcb1e750662ad849f550990da671217db90af8c059347fe33bbf4e1d4137",
+      "assetSha256": "f3b6f801c557fa77f436b27f2c52e7bd42e5208c34c13d763007f95bf65e32d6"
+    },
+    {
+      "source": "原始资源/buff/stic_blaze.png",
+      "asset": "stic_blaze.png",
+      "sourceSha256": "459aa754255cc2fd0baa52b5294c5aae45921081dd13af40625f496e76450146",
+      "assetSha256": "ad7a60cea43b154e8f654994bb7892174395fdc0c7e161fa98fb2186e70135a3"
+    },
+    {
+      "source": "原始资源/buff/stic_blood.png",
+      "asset": "stic_blood.png",
+      "sourceSha256": "0b9a93bbca9be6d06ba4397e2f429917254345bbc218eb4e605a8bf039c642c4",
+      "assetSha256": "7db54c132288929afc02b64694c4d13c025f96617fd82dfff995fd09adc634c1"
+    },
+    {
+      "source": "原始资源/buff/stic_immortality.png",
+      "asset": "stic_immortality.png",
+      "sourceSha256": "f560ecf2b47c419edb1563b32a315f1817a7cd236d1bc0044182fd4085a0d7d3",
+      "assetSha256": "a469ef078b5e8007a152fea56b52be5db23e4c63c48c9f605fc3237187eef335"
+    },
+    {
+      "source": "原始资源/buff/stic_blind.png",
+      "asset": "stic_blind.png",
+      "sourceSha256": "116f31b9465cc313c240930d8ac372cd8240df3b32ece819f544a78cf0dee485",
+      "assetSha256": "37e73798df884193137cb5b0ce2d0091ada4933330c4b14978f18d72256a8a3f"
+    },
+    {
+      "source": "原始资源/buff/stic_att_up2.png",
+      "asset": "stic_att_up2.png",
+      "sourceSha256": "5285aaa36f981e722938569b03b57b7e39036d90353abc432cd95f439c64eb11",
+      "assetSha256": "b01a2cd4c42e934da3f256290d3f13e58bdb8f70f096cbab417ebbd038114169"
+    },
+    {
+      "source": "原始资源/buff/stic_buf_impossible.png",
+      "asset": "stic_buf_impossible.png",
+      "sourceSha256": "3195371fa0bdb3dd215d969ce8889b5ae71abb40cf3752dd2c1559abb72b2013",
+      "assetSha256": "f0c68bed2d419262c7e253a8c071b74c7b0504da80f12c8ae19149f9676d4323"
+    },
+    {
+      "source": "原始资源/buff/stic_dmg_limit.png",
+      "asset": "stic_dmg_limit.png",
+      "sourceSha256": "69318ade507110561c7279dfc55e64fd6e86a0b1c63f4b982eb7fb4279e1902c",
+      "assetSha256": "9f415ecd068a5ea374e3a245e0b832d4b34e4083e1b279417a045596933c311c"
+    },
+    {
+      "source": "原始资源/buff/stic_spiritlord_keep.png",
+      "asset": "stic_spiritlord_keep.png",
+      "sourceSha256": "a88fffb152b3c96ea566c8071de9e6c888dc982ee6f31e4579a5f0bc22281a1f",
+      "assetSha256": "724413f0666793eac3d9b95c90ca54a5a159bcad00ec860cc670f9d4fb3b8757"
+    },
+    {
+      "source": "原始资源/buff/stic_madness.png",
+      "asset": "stic_madness.png",
+      "sourceSha256": "d36cca02d4f259c5ed66aa1e8300fe87f22db91be1fad7afa7d6350e0ac50d91",
+      "assetSha256": "f3fdb87644574d75459e96317056a8448541df633282e5b01cbc1f667456c6c6"
     },
     {
       "source": "原始资源/img/itxt_num0.png",

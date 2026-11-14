@@ -35,6 +35,11 @@ namespace AstralOath.Client.Bootstrap
         }
         private readonly HashSet<string> reportedMissingJapaneseKeys = new HashSet<string>(StringComparer.Ordinal);
         private readonly List<string> pendingMissingJapaneseWarnings = new List<string>();
+        private const string KayronSkillThreeVoice = "event:/voc/skill/c_kylon_skill_03";
+        private const string KayronSkillThreeStuckTake = "voc_c1023_skill3_2";
+        // The r4262 event keeps this take active after its last audible sample (~8.7 s).
+        // Use native playback time so pausing does not consume the release margin.
+        private const int KayronSkillThreeReleaseMilliseconds = 11000;
         private static readonly byte[] SilentProgrammerPcm = new byte[320]; // 20 ms, 8 kHz, mono PCM16.
         private bool disposed;
         private bool initializationStarted;
@@ -215,7 +220,8 @@ namespace AstralOath.Client.Bootstrap
             if (!eventPath.StartsWith("event:/", StringComparison.Ordinal)) eventPath = "event:/" + eventPath.TrimStart('/');
             Check(studio.getEvent(eventPath, out var description), eventPath);
             Check(description.createInstance(out var instance), "createInstance");
-            var playback = new Playback(this, instance, japaneseAliases.GetValueOrDefault(eventPath));
+            var playback = new Playback(this, instance, japaneseAliases.GetValueOrDefault(eventPath),
+                eventPath == KayronSkillThreeVoice);
             try
             {
                 playback.AttachProgrammerCallback();
@@ -353,6 +359,7 @@ namespace AstralOath.Client.Bootstrap
                     }
                     Check(lookup, "Japanese programmer key " + key);
                     Check(playback.owner.CreateSound(ref info, out var sound), "programmer createSound");
+                    playback.ObserveProgrammerKey(key);
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
                     if (playback.owner.CapturePerformanceDiagnostics)
                     {
@@ -435,17 +442,25 @@ namespace AstralOath.Client.Bootstrap
             private FMOD.Channel channel;
             private readonly bool isEvent;
             private readonly IReadOnlyDictionary<string, string> japaneseAliases;
+            private readonly bool mayHaveStuckKayronTake;
+            private volatile bool hasStuckKayronTake;
             private bool disposed;
             internal bool nativeDestroyed;
             internal bool hasHandle;
             private GCHandle handle;
             internal Playback(FmodCharacterAudioService owner, FMOD.Studio.EventInstance instance,
-                IReadOnlyDictionary<string, string> japaneseAliases)
+                IReadOnlyDictionary<string, string> japaneseAliases, bool mayHaveStuckKayronTake)
             {
                 this.owner = owner;
                 this.instance = instance;
                 this.japaneseAliases = japaneseAliases;
+                this.mayHaveStuckKayronTake = mayHaveStuckKayronTake;
                 isEvent = true;
+            }
+
+            internal void ObserveProgrammerKey(string key)
+            {
+                if (mayHaveStuckKayronTake && key == KayronSkillThreeStuckTake) hasStuckKayronTake = true;
             }
 
             internal string ResolveJapaneseKey(string key) =>
@@ -473,7 +488,13 @@ namespace AstralOath.Client.Bootstrap
             {
                 if (disposed) return true;
                 if (isEvent)
-                    return nativeDestroyed || instance.getPlaybackState(out var state) == FMOD.RESULT.OK && state == FMOD.Studio.PLAYBACK_STATE.STOPPED;
+                {
+                    if (nativeDestroyed ||
+                        instance.getPlaybackState(out var state) == FMOD.RESULT.OK && state == FMOD.Studio.PLAYBACK_STATE.STOPPED)
+                        return true;
+                    return hasStuckKayronTake && instance.getTimelinePosition(out int position) == FMOD.RESULT.OK &&
+                        position >= KayronSkillThreeReleaseMilliseconds;
+                }
                 return channel.isPlaying(out bool playing) != FMOD.RESULT.OK || !playing;
             }
             public void Stop() => Dispose();

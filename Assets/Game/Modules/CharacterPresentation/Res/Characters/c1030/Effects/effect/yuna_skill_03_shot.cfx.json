@@ -1,0 +1,38 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "yuna_skill_03_shot",
+      "z": "10",
+      "format": "spine"
+    },
+    {
+      "source": "yuna_skill_03_shot_backsmoke",
+      "z": "-10",
+      "format": "spine"
+    },
+    {
+      "source": "yuna_skill_03_dark",
+      "ani": "shot",
+      "format": "spine",
+      "globalZ": 10.0
+    },
+    {
+      "source": "yuna_skill_03_shot_pati1",
+      "z": "20",
+      "delay": "1333",
+      "format": "particle"
+    },
+    {
+      "source": "yuna_skill_03_shot_in_pati",
+      "format": "particle",
+      "globalZ": 9.0
+    },
+    {
+      "source": "yuna_skill_03_shot_in_pati",
+      "z": "-10",
+      "scale": "-1,-1",
+      "format": "particle"
+    }
+  ]
+}

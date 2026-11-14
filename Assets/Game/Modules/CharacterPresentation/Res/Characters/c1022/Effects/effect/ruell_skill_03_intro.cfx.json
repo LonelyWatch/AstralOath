@@ -1,0 +1,42 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "ruell_skill_03_intro",
+      "ani": "intro",
+      "z": "1",
+      "format": "spine"
+    },
+    {
+      "source": "ruell_skill_03_circle",
+      "ani": "intro",
+      "z": "0",
+      "scale": "1.0,0.3",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "ruell_skill_03_intro_pati1",
+      "x": "573.43",
+      "y": "560.56",
+      "z": "2",
+      "scale": "1.3",
+      "delay": "1033",
+      "format": "particle"
+    },
+    {
+      "source": "ruell_skill_03_intro_pati2",
+      "x": "569.51",
+      "y": "0",
+      "z": "3",
+      "delay": "1600",
+      "format": "particle"
+    },
+    {
+      "source": "ruell_skill_03_whiteout",
+      "ani": "intro",
+      "format": "spine",
+      "globalZ": 1.0
+    }
+  ]
+}

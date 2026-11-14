@@ -1,0 +1,55 @@
+
+yuna_bidle_switch.sct
+size: 879,202
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+blind_grid1
+  rotate: true
+  xy: 378, 2
+  size: 173, 108
+  orig: 173, 108
+  offset: 0, 0
+  index: -1
+blind_grid2
+  rotate: true
+  xy: 488, 2
+  size: 173, 108
+  orig: 173, 108
+  offset: 0, 0
+  index: -1
+blind_grid3
+  rotate: true
+  xy: 598, 2
+  size: 173, 108
+  orig: 173, 108
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 708, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+holo_blind1
+  rotate: false
+  xy: 284, 2
+  size: 92, 189
+  orig: 92, 189
+  offset: 0, 0
+  index: -1
+holo_blind2
+  rotate: false
+  xy: 2, 2
+  size: 280, 198
+  orig: 280, 198
+  offset: 0, 0
+  index: -1
+screen_ray
+  rotate: true
+  xy: 378, 177
+  size: 12, 201
+  orig: 12, 201
+  offset: 0, 0
+  index: -1

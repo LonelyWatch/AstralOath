@@ -1,0 +1,139 @@
+
+yuna_skill_01_boom3.sct
+size: 512,735
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+boom_impact1
+  rotate: false
+  xy: 2, 2
+  size: 290, 290
+  orig: 290, 290
+  offset: 0, 0
+  index: -1
+boom_impact2
+  rotate: false
+  xy: 2, 294
+  size: 290, 290
+  orig: 290, 290
+  offset: 0, 0
+  index: -1
+burst_sphear
+  rotate: false
+  xy: 189, 586
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+burst_sphear_g
+  rotate: false
+  xy: 294, 345
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+cloud_08
+  rotate: true
+  xy: 465, 174
+  size: 55, 44
+  orig: 55, 44
+  offset: 0, 0
+  index: -1
+cloud_09
+  rotate: true
+  xy: 457, 535
+  size: 89, 50
+  orig: 89, 50
+  offset: 0, 0
+  index: -1
+cloud_10
+  rotate: false
+  xy: 405, 535
+  size: 50, 39
+  orig: 50, 39
+  offset: 0, 0
+  index: -1
+cloud_14
+  rotate: false
+  xy: 405, 479
+  size: 83, 54
+  orig: 83, 54
+  offset: 0, 0
+  index: -1
+cloud_18
+  rotate: false
+  xy: 435, 626
+  size: 75, 53
+  orig: 75, 53
+  offset: 0, 0
+  index: -1
+cloud_crack_02
+  rotate: false
+  xy: 435, 681
+  size: 59, 52
+  orig: 59, 52
+  offset: 0, 0
+  index: -1
+cloud_crack_03
+  rotate: true
+  xy: 465, 231
+  size: 63, 34
+  orig: 63, 34
+  offset: 0, 0
+  index: -1
+cloud_crack_06
+  rotate: true
+  xy: 465, 296
+  size: 47, 43
+  orig: 47, 43
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 294, 174
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+impact_shock
+  rotate: false
+  xy: 2, 586
+  size: 185, 135
+  orig: 185, 135
+  offset: 0, 0
+  index: -1
+ray
+  rotate: false
+  xy: 466, 2
+  size: 36, 170
+  orig: 36, 170
+  offset: 0, 0
+  index: -1
+rock_dust1
+  rotate: false
+  xy: 294, 2
+  size: 170, 170
+  orig: 170, 170
+  offset: 0, 0
+  index: -1
+smoke_2
+  rotate: true
+  xy: 323, 586
+  size: 126, 110
+  orig: 126, 110
+  offset: 0, 0
+  index: -1
+smoke_3
+  rotate: false
+  xy: 294, 479
+  size: 109, 105
+  orig: 109, 105
+  offset: 0, 0
+  index: -1
+smoke_4
+  rotate: true
+  xy: 428, 345
+  size: 119, 77
+  orig: 119, 77
+  offset: 0, 0
+  index: -1

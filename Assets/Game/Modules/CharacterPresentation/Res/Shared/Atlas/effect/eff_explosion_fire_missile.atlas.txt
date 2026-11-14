@@ -1,0 +1,160 @@
+
+eff_explosion_fire_missile.sct
+size: 256,1055
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+eff_wind_twist_01
+  rotate: false
+  xy: 204, 203
+  size: 50, 44
+  orig: 50, 44
+  offset: 0, 0
+  index: -1
+energybolt_02
+  rotate: true
+  xy: 2, 722
+  size: 133, 96
+  orig: 133, 96
+  offset: 0, 0
+  index: -1
+energybolt_04
+  rotate: false
+  xy: 2, 984
+  size: 80, 69
+  orig: 80, 69
+  offset: 0, 0
+  index: -1
+energybolt_05
+  rotate: true
+  xy: 2, 857
+  size: 125, 103
+  orig: 125, 103
+  offset: 0, 0
+  index: -1
+energybolt_07
+  rotate: false
+  xy: 107, 795
+  size: 95, 92
+  orig: 95, 92
+  offset: 0, 0
+  index: -1
+energybolt_08
+  rotate: true
+  xy: 197, 889
+  size: 62, 54
+  orig: 62, 54
+  offset: 0, 0
+  index: -1
+energybolt_09
+  rotate: true
+  xy: 204, 2
+  size: 68, 50
+  orig: 68, 50
+  offset: 0, 0
+  index: -1
+fire_blast1_01
+  rotate: false
+  xy: 204, 295
+  size: 48, 40
+  orig: 48, 40
+  offset: 0, 0
+  index: -1
+fire_blast1_02
+  rotate: false
+  xy: 204, 249
+  size: 46, 44
+  orig: 46, 44
+  offset: 0, 0
+  index: -1
+fire_blast1_03
+  rotate: true
+  xy: 204, 72
+  size: 129, 35
+  orig: 129, 35
+  offset: 0, 0
+  index: -1
+fire_blast1_04
+  rotate: false
+  xy: 107, 889
+  size: 88, 87
+  orig: 88, 87
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 33, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: true
+  xy: 2, 2
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1
+part_1
+  rotate: false
+  xy: 124, 473
+  size: 130, 101
+  orig: 130, 101
+  offset: 0, 0
+  index: -1
+part_2
+  rotate: false
+  xy: 33, 344
+  size: 134, 127
+  orig: 134, 127
+  offset: 0, 0
+  index: -1
+part_3
+  rotate: true
+  xy: 107, 978
+  size: 75, 107
+  orig: 75, 107
+  offset: 0, 0
+  index: -1
+smoke_1
+  rotate: false
+  xy: 2, 473
+  size: 120, 119
+  orig: 120, 119
+  offset: 0, 0
+  index: -1
+smoke_2
+  rotate: true
+  xy: 2, 594
+  size: 126, 110
+  orig: 126, 110
+  offset: 0, 0
+  index: -1
+smoke_3
+  rotate: false
+  xy: 114, 688
+  size: 109, 105
+  orig: 109, 105
+  offset: 0, 0
+  index: -1
+smoke_4
+  rotate: true
+  xy: 169, 344
+  size: 119, 77
+  orig: 119, 77
+  offset: 0, 0
+  index: -1
+smoke_5
+  rotate: false
+  xy: 124, 576
+  size: 118, 110
+  orig: 118, 110
+  offset: 0, 0
+  index: -1
+wind_shock
+  rotate: false
+  xy: 33, 173
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,146 @@
+
+eff_magic_fire.sct
+size: 511,511
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+after_smoke1
+  rotate: false
+  xy: 2, 2
+  size: 193, 206
+  orig: 193, 206
+  offset: 0, 0
+  index: -1
+after_smoke2
+  rotate: true
+  xy: 2, 210
+  size: 195, 176
+  orig: 195, 176
+  offset: 0, 0
+  index: -1
+eff_wind_twist_01
+  rotate: false
+  xy: 269, 58
+  size: 50, 44
+  orig: 50, 44
+  offset: 0, 0
+  index: -1
+eff_wind_twist_02
+  rotate: true
+  xy: 231, 403
+  size: 106, 108
+  orig: 106, 108
+  offset: 0, 0
+  index: -1
+energybolt_02
+  rotate: false
+  xy: 2, 407
+  size: 133, 96
+  orig: 133, 96
+  offset: 0, 0
+  index: -1
+energybolt_04
+  rotate: true
+  xy: 197, 2
+  size: 80, 69
+  orig: 80, 69
+  offset: 0, 0
+  index: -1
+energybolt_07
+  rotate: true
+  xy: 137, 407
+  size: 95, 92
+  orig: 95, 92
+  offset: 0, 0
+  index: -1
+energybolt_08
+  rotate: false
+  xy: 269, 2
+  size: 62, 54
+  orig: 62, 54
+  offset: 0, 0
+  index: -1
+energybolt_09
+  rotate: true
+  xy: 450, 424
+  size: 68, 50
+  orig: 68, 50
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 336, 173
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+gs1
+  rotate: false
+  xy: 450, 344
+  size: 59, 78
+  orig: 59, 78
+  offset: 0, 0
+  index: -1
+gs2
+  rotate: true
+  xy: 269, 104
+  size: 47, 49
+  orig: 47, 49
+  offset: 0, 0
+  index: -1
+gs3
+  rotate: false
+  xy: 382, 344
+  size: 46, 52
+  orig: 46, 52
+  offset: 0, 0
+  index: -1
+gs4
+  rotate: true
+  xy: 237, 173
+  size: 33, 30
+  orig: 33, 30
+  offset: 0, 0
+  index: -1
+gs5
+  rotate: true
+  xy: 269, 153
+  size: 29, 26
+  orig: 29, 26
+  offset: 0, 0
+  index: -1
+gs6
+  rotate: false
+  xy: 336, 344
+  size: 44, 53
+  orig: 44, 53
+  offset: 0, 0
+  index: -1
+gs7
+  rotate: true
+  xy: 197, 173
+  size: 33, 38
+  orig: 33, 38
+  offset: 0, 0
+  index: -1
+lightning_core_05
+  rotate: false
+  xy: 341, 399
+  size: 107, 107
+  orig: 107, 107
+  offset: 0, 0
+  index: -1
+smoke1
+  rotate: true
+  xy: 180, 210
+  size: 191, 154
+  orig: 191, 154
+  offset: 0, 0
+  index: -1
+wind_shock
+  rotate: false
+  xy: 336, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,300 @@
+
+yuna_skill_02_holo.sct
+size: 616,508
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+burst_sphear_g
+  rotate: false
+  xy: 173, 204
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 204
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+grid1
+  rotate: false
+  xy: 2, 2
+  size: 278, 99
+  orig: 278, 99
+  offset: 0, 0
+  index: -1
+grid2
+  rotate: false
+  xy: 2, 103
+  size: 278, 99
+  orig: 278, 99
+  offset: 0, 0
+  index: -1
+grid3
+  rotate: false
+  xy: 282, 2
+  size: 278, 99
+  orig: 278, 99
+  offset: 0, 0
+  index: -1
+holo_back
+  rotate: false
+  xy: 2, 375
+  size: 175, 114
+  orig: 175, 114
+  offset: 0, 0
+  index: -1
+holo_eff
+  rotate: false
+  xy: 560, 216
+  size: 51, 51
+  orig: 51, 51
+  offset: 0, 0
+  index: -1
+ring1
+  rotate: false
+  xy: 310, 433
+  size: 73, 73
+  orig: 73, 73
+  offset: 0, 0
+  index: -1
+s1
+  rotate: false
+  xy: 556, 269
+  size: 40, 62
+  orig: 40, 62
+  offset: 0, 0
+  index: -1
+s10
+  rotate: false
+  xy: 553, 450
+  size: 31, 34
+  orig: 31, 34
+  offset: 0, 0
+  index: -1
+s11_1
+  rotate: false
+  xy: 428, 196
+  size: 72, 92
+  orig: 72, 92
+  offset: 0, 0
+  index: -1
+s11_2
+  rotate: true
+  xy: 509, 457
+  size: 36, 42
+  orig: 36, 42
+  offset: 0, 0
+  index: -1
+s11_3
+  rotate: false
+  xy: 598, 269
+  size: 16, 21
+  orig: 16, 21
+  offset: 0, 0
+  index: -1
+s12_1
+  rotate: false
+  xy: 415, 339
+  size: 81, 72
+  orig: 81, 72
+  offset: 0, 0
+  index: -1
+s12_2
+  rotate: true
+  xy: 586, 450
+  size: 36, 27
+  orig: 36, 27
+  offset: 0, 0
+  index: -1
+s12_3
+  rotate: false
+  xy: 560, 169
+  size: 54, 45
+  orig: 54, 45
+  offset: 0, 0
+  index: -1
+s2
+  rotate: false
+  xy: 563, 376
+  size: 46, 37
+  orig: 46, 37
+  offset: 0, 0
+  index: -1
+s3
+  rotate: false
+  xy: 385, 439
+  size: 66, 65
+  orig: 66, 65
+  offset: 0, 0
+  index: -1
+s4
+  rotate: false
+  xy: 553, 415
+  size: 38, 33
+  orig: 38, 33
+  offset: 0, 0
+  index: -1
+s5
+  rotate: true
+  xy: 563, 333
+  size: 41, 51
+  orig: 41, 51
+  offset: 0, 0
+  index: -1
+s6
+  rotate: true
+  xy: 453, 439
+  size: 63, 34
+  orig: 63, 34
+  offset: 0, 0
+  index: -1
+s7
+  rotate: false
+  xy: 544, 112
+  size: 70, 55
+  orig: 70, 55
+  offset: 0, 0
+  index: -1
+s8
+  rotate: false
+  xy: 454, 290
+  size: 48, 47
+  orig: 48, 47
+  offset: 0, 0
+  index: -1
+s9
+  rotate: false
+  xy: 498, 341
+  size: 63, 68
+  orig: 63, 68
+  offset: 0, 0
+  index: -1
+sate_check
+  rotate: false
+  xy: 544, 103
+  size: 16, 7
+  orig: 16, 7
+  offset: 0, 0
+  index: -1
+sate_checkbox
+  rotate: false
+  xy: 562, 2
+  size: 46, 108
+  orig: 46, 108
+  offset: 0, 0
+  index: -1
+sate_guage
+  rotate: false
+  xy: 282, 174
+  size: 188, 20
+  orig: 188, 20
+  offset: 0, 0
+  index: -1
+sate_guage2
+  rotate: true
+  xy: 489, 495
+  size: 11, 53
+  orig: 11, 53
+  offset: 0, 0
+  index: -1
+sate_holo
+  rotate: false
+  xy: 307, 196
+  size: 119, 99
+  orig: 119, 99
+  offset: 0, 0
+  index: -1
+sate_img
+  rotate: false
+  xy: 179, 338
+  size: 119, 99
+  orig: 119, 99
+  offset: 0, 0
+  index: -1
+sate_line1
+  rotate: false
+  xy: 300, 339
+  size: 113, 55
+  orig: 113, 55
+  offset: 0, 0
+  index: -1
+sate_line2
+  rotate: true
+  xy: 489, 413
+  size: 75, 18
+  orig: 75, 18
+  offset: 0, 0
+  index: -1
+sate_line3
+  rotate: false
+  xy: 300, 396
+  size: 88, 35
+  orig: 88, 35
+  offset: 0, 0
+  index: -1
+sate_line4
+  rotate: true
+  xy: 502, 174
+  size: 89, 56
+  orig: 89, 56
+  offset: 0, 0
+  index: -1
+sate_line5
+  rotate: false
+  xy: 87, 491
+  size: 82, 9
+  orig: 82, 9
+  offset: 0, 0
+  index: -1
+sate_line6
+  rotate: false
+  xy: 509, 411
+  size: 42, 44
+  orig: 42, 44
+  offset: 0, 0
+  index: -1
+sate_line7
+  rotate: false
+  xy: 390, 413
+  size: 97, 24
+  orig: 97, 24
+  offset: 0, 0
+  index: -1
+sate_line8
+  rotate: false
+  xy: 179, 439
+  size: 129, 59
+  orig: 129, 59
+  offset: 0, 0
+  index: -1
+sate_line9
+  rotate: true
+  xy: 504, 265
+  size: 74, 50
+  orig: 74, 50
+  offset: 0, 0
+  index: -1
+sate_progress
+  rotate: false
+  xy: 307, 297
+  size: 145, 40
+  orig: 145, 40
+  offset: 0, 0
+  index: -1
+sate_progress_ui
+  rotate: false
+  xy: 282, 103
+  size: 260, 69
+  orig: 260, 69
+  offset: 0, 0
+  index: -1
+standby
+  rotate: false
+  xy: 2, 491
+  size: 83, 15
+  orig: 83, 15
+  offset: 0, 0
+  index: -1

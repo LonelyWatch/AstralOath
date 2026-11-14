@@ -1,0 +1,660 @@
+{
+  "id": "c_iseria_skill_02",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "ani": "skill2",
+        "guid": 2,
+        "etty": "ANI"
+      },
+      {
+        "time": 200,
+        "guid": 3,
+        "etty": "BGSHOW"
+      },
+      {
+        "time": 300,
+        "guid": 4,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1",
+        "time": 300,
+        "guid": 5,
+        "etty": "ZOOM"
+      },
+      {
+        "show": true,
+        "time": 300,
+        "guid": 6,
+        "etty": "BGSHOW"
+      },
+      {
+        "guid": 7,
+        "etty": "IDLE"
+      },
+      {
+        "scale": "1.4",
+        "curve": "0.2413793,0.7395833,0.1494253,0.9305555",
+        "time": 300,
+        "guid": 8,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "curve": "0.2413793,0.7395833,0.1494253,0.9305555",
+        "time": 300,
+        "guid": 9,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.6",
+        "curve": "0.2298851,0.09027775,0.2490421,0.9305555",
+        "time": 400,
+        "guid": 10,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "y": -50.0,
+        "curve": "0.2298851,0.09027775,0.2490421,0.9305555",
+        "time": 400,
+        "guid": 11,
+        "etty": "CAM"
+      },
+      {
+        "scale": "0.8",
+        "curve": "0.03065134,0.9756944,0.394636,0.9270833",
+        "time": 1500,
+        "guid": 12,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "y": 50.0,
+        "curve": "0.03065134,0.9756944,0.394636,0.9270833",
+        "time": 1500,
+        "guid": 13,
+        "etty": "CAM"
+      },
+      {
+        "targetId": "cf",
+        "guid": 14,
+        "etty": "STOP"
+      },
+      {
+        "scale": "1.2",
+        "curve": "0.2873563,0.1909722,0,0.9479166",
+        "time": 800,
+        "guid": 15,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "y": 150.0,
+        "curve": "0.2873563,0.1909722,0,0.9479166",
+        "time": 800,
+        "guid": 16,
+        "etty": "CAM"
+      },
+      {
+        "blend_target": 55,
+        "color": "0,0,0,255",
+        "duration": -1,
+        "fadeIn": 200,
+        "fadeOut": 300,
+        "alpha_channel": 0.0,
+        "id": "cf",
+        "guid": 17,
+        "etty": "COLOR_BLEND"
+      },
+      {
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 18,
+        "etty": "HIT"
+      },
+      {
+        "name": "u_range",
+        "duration": 400,
+        "power": 15.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 19,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "duration": 400,
+        "program": "sprite_blur",
+        "direction_y": 1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "u_ratio": 0.5,
+        "guid": 20,
+        "etty": "PPEFFECT"
+      }
+    ],
+    "connections": [
+      {
+        "from": 1,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 3,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 5,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 6,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 7,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 8,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 9,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 10,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 12,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 13,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 4,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 14,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 16,
+        "to": 15,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 16,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 16,
+        "to": 11,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 17,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 18,
+        "delay": 2400,
+        "when": 1,
+        "Desc": "2400",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 20,
+        "to": 19,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 20,
+        "delay": 1600,
+        "when": 1,
+        "Desc": "1600",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "effect/iseria_bidle_auraburst1.cfx",
+      "address": "characterlab/source/effect/iseria_bidle_auraburst1.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/iseria_bidle_auraburst2.cfx",
+      "address": "characterlab/source/effect/iseria_bidle_auraburst2.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/iseria_bidle_orbburst.cfx",
+      "address": "characterlab/source/effect/iseria_bidle_orbburst.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/iseria_bidle_pati1.particle",
+      "address": "characterlab/source/effect/iseria_bidle_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/iseria_bidle_pati2.particle",
+      "address": "characterlab/source/effect/iseria_bidle_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/iseria_bidle_pati3.particle",
+      "address": "characterlab/source/effect/iseria_bidle_pati3.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/iseria_bidle_pati4.particle",
+      "address": "characterlab/source/effect/iseria_bidle_pati4.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/iseria_bidle_pati5.particle",
+      "address": "characterlab/source/effect/iseria_bidle_pati5.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/iseria_camp_pati.cfx",
+      "address": "characterlab/source/effect/iseria_camp_pati.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/iseria_camp_pati.particle",
+      "address": "characterlab/source/effect/iseria_camp_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/iseria_fly_pati.cfx",
+      "address": "characterlab/source/effect/iseria_fly_pati.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/iseria_fly_pati.particle",
+      "address": "characterlab/source/effect/iseria_fly_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/iseria_idle_aura.cfx",
+      "address": "characterlab/source/effect/iseria_idle_aura.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/iseria_idle_aura2.cfx",
+      "address": "characterlab/source/effect/iseria_idle_aura2.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/iseria_idle_orb.cfx",
+      "address": "characterlab/source/effect/iseria_idle_orb.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/iseria_idle_orb_b.cfx",
+      "address": "characterlab/source/effect/iseria_idle_orb_b.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/iseria_idle_pati1.particle",
+      "address": "characterlab/source/effect/iseria_idle_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/iseria_idle_pati2.particle",
+      "address": "characterlab/source/effect/iseria_idle_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/iseria_idle_pati3.particle",
+      "address": "characterlab/source/effect/iseria_idle_pati3.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/iseria_idle_pati4.particle",
+      "address": "characterlab/source/effect/iseria_idle_pati4.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/iseria_idle_pati5.particle",
+      "address": "characterlab/source/effect/iseria_idle_pati5.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/iseria_idle_pati6.particle",
+      "address": "characterlab/source/effect/iseria_idle_pati6.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/iseria_run_trail.cfx",
+      "address": "characterlab/source/effect/iseria_run_trail.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/iseria_run_trail.particle",
+      "address": "characterlab/source/effect/iseria_run_trail.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/iseria_skill_01_renewal_motion.cfx",
+      "address": "characterlab/source/effect/iseria_skill_01_renewal_motion.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/iseria_skill_01_renewal_motion.particle",
+      "address": "characterlab/source/effect/iseria_skill_01_renewal_motion.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/iseria_skill_01_renewal_motion2.particle",
+      "address": "characterlab/source/effect/iseria_skill_01_renewal_motion2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/iseria_skill_01_swtel.atlas",
+      "address": "characterlab/source/effect/iseria_skill_01_swtel.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/iseria_skill_01_swtel.scsp",
+      "address": "characterlab/source/effect/iseria_skill_01_swtel.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/iseria_skill_01_swtel.sct",
+      "address": "characterlab/source/effect/iseria_skill_01_swtel.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/iseria_skill_02.cfx",
+      "address": "characterlab/source/effect/iseria_skill_02.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/iseria_skill_02_afterpati.particle",
+      "address": "characterlab/source/effect/iseria_skill_02_afterpati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/iseria_skill_02_circle_pati.particle",
+      "address": "characterlab/source/effect/iseria_skill_02_circle_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/iseria_skill_02_field.atlas",
+      "address": "characterlab/source/effect/iseria_skill_02_field.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/iseria_skill_02_field.scsp",
+      "address": "characterlab/source/effect/iseria_skill_02_field.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/iseria_skill_02_field.sct",
+      "address": "characterlab/source/effect/iseria_skill_02_field.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/iseria_skill_02_sowrd_trail.particle",
+      "address": "characterlab/source/effect/iseria_skill_02_sowrd_trail.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/iseria_skill_02_sowrds.atlas",
+      "address": "characterlab/source/effect/iseria_skill_02_sowrds.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/iseria_skill_02_sowrds.scsp",
+      "address": "characterlab/source/effect/iseria_skill_02_sowrds.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/iseria_skill_02_sowrds.sct",
+      "address": "characterlab/source/effect/iseria_skill_02_sowrds.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/iseria_skill_02_sword_burst.particle",
+      "address": "characterlab/source/effect/iseria_skill_02_sword_burst.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/iseria_skill_02_tree_pati1.particle",
+      "address": "characterlab/source/effect/iseria_skill_02_tree_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/iseria_skill_02_treecircle.particle",
+      "address": "characterlab/source/effect/iseria_skill_02_treecircle.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/iseria_skill_02_trees.atlas",
+      "address": "characterlab/source/effect/iseria_skill_02_trees.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/iseria_skill_02_trees.scsp",
+      "address": "characterlab/source/effect/iseria_skill_02_trees.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/iseria_skill_02_trees.sct",
+      "address": "characterlab/source/effect/iseria_skill_02_trees.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/iseria_skill_03_circle.cfx",
+      "address": "characterlab/source/effect/iseria_skill_03_circle.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/iseria_skill_03_circle_pati.particle",
+      "address": "characterlab/source/effect/iseria_skill_03_circle_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/iseria_skill_03_magiccircle1.atlas",
+      "address": "characterlab/source/effect/iseria_skill_03_magiccircle1.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/iseria_skill_03_magiccircle1.scsp",
+      "address": "characterlab/source/effect/iseria_skill_03_magiccircle1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/iseria_skill_03_magiccircle1.sct",
+      "address": "characterlab/source/effect/iseria_skill_03_magiccircle1.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/iseria_skill_03_magiccircle2.atlas",
+      "address": "characterlab/source/effect/iseria_skill_03_magiccircle2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/iseria_skill_03_magiccircle2.scsp",
+      "address": "characterlab/source/effect/iseria_skill_03_magiccircle2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/iseria_skill_03_magiccircle2.sct",
+      "address": "characterlab/source/effect/iseria_skill_03_magiccircle2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/iseria_skill_03_magiccircle3.atlas",
+      "address": "characterlab/source/effect/iseria_skill_03_magiccircle3.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/iseria_skill_03_magiccircle3.scsp",
+      "address": "characterlab/source/effect/iseria_skill_03_magiccircle3.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/iseria_skill_03_magiccircle3.sct",
+      "address": "characterlab/source/effect/iseria_skill_03_magiccircle3.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/iseria_skill_03_sword.cfx",
+      "address": "characterlab/source/effect/iseria_skill_03_sword.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/iseria_skill_03_swordswing_01.atlas",
+      "address": "characterlab/source/effect/iseria_skill_03_swordswing_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/iseria_skill_03_swordswing_01.scsp",
+      "address": "characterlab/source/effect/iseria_skill_03_swordswing_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/iseria_skill_03_swordswing_01.sct",
+      "address": "characterlab/source/effect/iseria_skill_03_swordswing_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/iseria_skill_03_swordswing_01_back.atlas",
+      "address": "characterlab/source/effect/iseria_skill_03_swordswing_01_back.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/iseria_skill_03_swordswing_01_back.scsp",
+      "address": "characterlab/source/effect/iseria_skill_03_swordswing_01_back.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/iseria_skill_03_swordswing_01_back.sct",
+      "address": "characterlab/source/effect/iseria_skill_03_swordswing_01_back.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/iseria_tree_piece_pati1.particle",
+      "address": "characterlab/source/effect/iseria_tree_piece_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "model/iseria.timeline",
+      "address": "characterlab/source/model/iseria.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/flash.sct",
+      "address": "characterlab/source/particle/flash.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ice_pati_01.sct",
+      "address": "characterlab/source/particle/ice_pati_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/orb_02.sct",
+      "address": "characterlab/source/particle/orb_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/pati_01.sct",
+      "address": "characterlab/source/particle/pati_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_01.sct",
+      "address": "characterlab/source/particle/ticle_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/zodiac_star1.sct",
+      "address": "characterlab/source/particle/zodiac_star1.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

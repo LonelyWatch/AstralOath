@@ -1,0 +1,181 @@
+
+dingo_eff_sk2_self.sct
+size: 255,1035
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+eff_dust_2
+  rotate: true
+  xy: 149, 429
+  size: 78, 102
+  orig: 78, 102
+  offset: 0, 0
+  index: -1
+eff_dust_3
+  rotate: false
+  xy: 2, 2
+  size: 211, 164
+  orig: 211, 164
+  offset: 0, 0
+  index: -1
+eff_dust_4
+  rotate: false
+  xy: 2, 339
+  size: 145, 90
+  orig: 145, 90
+  offset: 0, 0
+  index: -1
+eff_dust_5
+  rotate: true
+  xy: 2, 795
+  size: 51, 108
+  orig: 51, 108
+  offset: 0, 0
+  index: -1
+eff_dust_6
+  rotate: false
+  xy: 149, 355
+  size: 104, 72
+  orig: 104, 72
+  offset: 0, 0
+  index: -1
+eff_dust_7
+  rotate: false
+  xy: 2, 937
+  size: 82, 84
+  orig: 82, 84
+  offset: 0, 0
+  index: -1
+eff_dust_8
+  rotate: false
+  xy: 215, 2
+  size: 36, 86
+  orig: 36, 86
+  offset: 0, 0
+  index: -1
+eff_dust_blur_1
+  rotate: false
+  xy: 163, 922
+  size: 65, 53
+  orig: 65, 53
+  offset: 0, 0
+  index: -1
+eff_dust_blur_2
+  rotate: false
+  xy: 163, 864
+  size: 66, 56
+  orig: 66, 56
+  offset: 0, 0
+  index: -1
+eff_dust_blur_3
+  rotate: false
+  xy: 86, 937
+  size: 66, 75
+  orig: 66, 75
+  offset: 0, 0
+  index: -1
+eff_dust_line1
+  rotate: true
+  xy: 173, 221
+  size: 132, 79
+  orig: 132, 79
+  offset: 0, 0
+  index: -1
+eff_dust_line2
+  rotate: false
+  xy: 2, 431
+  size: 132, 79
+  orig: 132, 79
+  offset: 0, 0
+  index: -1
+eff_dust_line3
+  rotate: false
+  xy: 2, 512
+  size: 132, 79
+  orig: 132, 79
+  offset: 0, 0
+  index: -1
+eff_dust_line4
+  rotate: false
+  xy: 2, 593
+  size: 132, 79
+  orig: 132, 79
+  offset: 0, 0
+  index: -1
+fire_blast1_01
+  rotate: true
+  xy: 173, 168
+  size: 48, 40
+  orig: 48, 40
+  offset: 0, 0
+  index: -1
+fire_blast1_02
+  rotate: true
+  xy: 209, 977
+  size: 46, 44
+  orig: 46, 44
+  offset: 0, 0
+  index: -1
+fire_blast1_03
+  rotate: true
+  xy: 215, 90
+  size: 129, 35
+  orig: 129, 35
+  offset: 0, 0
+  index: -1
+fire_blast1_04
+  rotate: false
+  xy: 2, 848
+  size: 88, 87
+  orig: 88, 87
+  offset: 0, 0
+  index: -1
+fist_01
+  rotate: true
+  xy: 92, 864
+  size: 70, 69
+  orig: 70, 69
+  offset: 0, 0
+  index: -1
+fist_02
+  rotate: true
+  xy: 154, 977
+  size: 56, 53
+  orig: 56, 53
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 168
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+smoke_1
+  rotate: false
+  xy: 2, 674
+  size: 120, 119
+  orig: 120, 119
+  offset: 0, 0
+  index: -1
+smoke_2
+  rotate: true
+  xy: 136, 509
+  size: 126, 110
+  orig: 126, 110
+  offset: 0, 0
+  index: -1
+smoke_3
+  rotate: false
+  xy: 124, 757
+  size: 109, 105
+  orig: 109, 105
+  offset: 0, 0
+  index: -1
+smoke_5
+  rotate: true
+  xy: 136, 637
+  size: 118, 110
+  orig: 118, 110
+  offset: 0, 0
+  index: -1

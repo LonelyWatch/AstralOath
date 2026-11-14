@@ -1,0 +1,918 @@
+{
+  "id": "c_clarisa_skill_02",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [
+      36
+    ],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "ani": "jump_forward",
+        "guid": 2,
+        "etty": "ANI"
+      },
+      {
+        "ani": "skill2",
+        "guid": 3,
+        "etty": "ANI"
+      },
+      {
+        "ani": "jump_back",
+        "guid": 4,
+        "etty": "ANI"
+      },
+      {
+        "guid": 5,
+        "etty": "IDLE"
+      },
+      {
+        "location": 41,
+        "x": 50.0,
+        "y": -10.0,
+        "curve": "0.2758621,0.7013888,1,1",
+        "guid": 6,
+        "etty": "CAM"
+      },
+      {
+        "from": "jump",
+        "to": "landing",
+        "guid": 7,
+        "etty": "ANI_SCOPE"
+      },
+      {
+        "from": "jump",
+        "to": "landing",
+        "guid": 8,
+        "etty": "ANI_SCOPE"
+      },
+      {
+        "scale": "1.4",
+        "guid": 9,
+        "etty": "ZOOM"
+      },
+      {
+        "curve": "0.2758621,0.7013888,1,1",
+        "guid": 10,
+        "etty": "CAM"
+      },
+      {
+        "ver": 2,
+        "power": 50,
+        "location": 41,
+        "style": 2,
+        "x": 50.0,
+        "y": -10.0,
+        "guid": 11,
+        "etty": "MOVE"
+      },
+      {
+        "scale": "1",
+        "guid": 12,
+        "etty": "ZOOM"
+      },
+      {
+        "ver": 2,
+        "power": 50,
+        "location": 11,
+        "style": 2,
+        "guid": 13,
+        "etty": "MOVE"
+      },
+      {
+        "duration": 100,
+        "powerX": 40,
+        "powerY": 40,
+        "timeScale": 1.0,
+        "without": true,
+        "guid": 14,
+        "etty": "SHAKE"
+      },
+      {
+        "duration": 100,
+        "powerX": 40,
+        "powerY": 40,
+        "timeScale": 1.0,
+        "without": true,
+        "guid": 15,
+        "etty": "SHAKE"
+      },
+      {
+        "duration": 100,
+        "powerX": 40,
+        "powerY": 40,
+        "timeScale": 1.0,
+        "without": true,
+        "guid": 16,
+        "etty": "SHAKE"
+      },
+      {
+        "duration": 100,
+        "powerX": 40,
+        "powerY": 40,
+        "timeScale": 1.0,
+        "without": true,
+        "guid": 17,
+        "etty": "SHAKE"
+      },
+      {
+        "duration": 100,
+        "powerX": 40,
+        "powerY": 40,
+        "timeScale": 1.0,
+        "without": true,
+        "guid": 18,
+        "etty": "SHAKE"
+      },
+      {
+        "duration": 100,
+        "powerX": 40,
+        "powerY": 40,
+        "timeScale": 1.0,
+        "without": true,
+        "guid": 19,
+        "etty": "SHAKE"
+      },
+      {
+        "duration": 100,
+        "powerX": 40,
+        "powerY": 40,
+        "timeScale": 1.0,
+        "without": true,
+        "guid": 20,
+        "etty": "SHAKE"
+      },
+      {
+        "scale": "1.43",
+        "curve": "0,0.767361,1,1",
+        "time": 50,
+        "guid": 21,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.4",
+        "curve": "1,0,1,1",
+        "time": 50,
+        "guid": 22,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.43",
+        "curve": "0,0.767361,1,1",
+        "time": 50,
+        "guid": 23,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.4",
+        "curve": "1,0,1,1",
+        "time": 50,
+        "guid": 24,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.43",
+        "curve": "0,0.767361,1,1",
+        "time": 50,
+        "guid": 25,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.4",
+        "curve": "1,0,1,1",
+        "time": 50,
+        "guid": 26,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.43",
+        "curve": "0,0.767361,1,1",
+        "time": 50,
+        "guid": 27,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.4",
+        "curve": "1,0,1,1",
+        "time": 50,
+        "guid": 28,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.43",
+        "curve": "0,0.767361,1,1",
+        "time": 50,
+        "guid": 29,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.4",
+        "curve": "1,0,1,1",
+        "time": 50,
+        "guid": 30,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.43",
+        "curve": "0,0.767361,1,1",
+        "time": 50,
+        "guid": 31,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.4",
+        "curve": "1,0,1,1",
+        "time": 50,
+        "guid": 32,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.45",
+        "curve": "0,0.767361,1,1",
+        "time": 50,
+        "guid": 33,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.4",
+        "curve": "1,0,1,1",
+        "time": 200,
+        "guid": 34,
+        "etty": "ZOOM"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "clarisa_sk2_cm",
+        "guid": 35,
+        "etty": "SHAKE"
+      },
+      {
+        "ani": "skill2",
+        "name": "hit",
+        "handled": true,
+        "guid": 36,
+        "etty": "ONEVENT"
+      },
+      {
+        "effect": "hit_new_blunt_mult_normal.cfx",
+        "rand_x": 80,
+        "rand_y": 80,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 37,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 80,
+        "rand_y": 80,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 38,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 80,
+        "rand_y": 80,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 39,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_mult_normal.cfx",
+        "rand_x": 80,
+        "rand_y": 80,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 40,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_mult_normal.cfx",
+        "rand_x": 80,
+        "rand_y": 80,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 41,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 80,
+        "rand_y": 80,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 42,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_mult_normal.cfx",
+        "rand_x": 80,
+        "rand_y": 80,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 43,
+        "etty": "HIT"
+      },
+      {
+        "duration": 450,
+        "program": "sprite_blur",
+        "direction_x": 1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 44,
+        "etty": "PPEFFECT"
+      },
+      {
+        "name": "u_range",
+        "duration": 450,
+        "power": 15.0,
+        "finish_rad": 1.0,
+        "guid": 45,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "duration": 450,
+        "program": "sprite_blur",
+        "direction_x": 1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 46,
+        "etty": "PPEFFECT"
+      },
+      {
+        "name": "u_range",
+        "duration": 450,
+        "power": 25.0,
+        "finish_rad": 1.0,
+        "guid": 47,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "duration": 250,
+        "program": "sprite_blur",
+        "direction_x": 1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 48,
+        "etty": "PPEFFECT"
+      },
+      {
+        "name": "u_range",
+        "duration": 250,
+        "power": 30.0,
+        "finish_rad": 1.0,
+        "guid": 49,
+        "etty": "SINE_VALUE"
+      }
+    ],
+    "connections": [
+      {
+        "from": 1,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 3,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 4,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 5,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 8,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 6,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 9,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 10,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 12,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 11,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 13,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 14,
+        "delay": 760,
+        "when": 1,
+        "Desc": "760",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 15,
+        "delay": 1155,
+        "when": 1,
+        "Desc": "1155",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "cond": "",
+        "from": 3,
+        "to": 16,
+        "delay": 1452,
+        "when": 1,
+        "Desc": "1452",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 17,
+        "delay": 1650,
+        "when": 1,
+        "Desc": "1650",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "cond": "",
+        "from": 3,
+        "to": 18,
+        "delay": 2112,
+        "when": 1,
+        "Desc": "2112",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 19,
+        "delay": 2409,
+        "when": 1,
+        "Desc": "2409",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 20,
+        "delay": 1848,
+        "when": 1,
+        "Desc": "1848",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 14,
+        "to": 21,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 21,
+        "to": 22,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 23,
+        "to": 24,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 25,
+        "to": 26,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 27,
+        "to": 28,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 29,
+        "to": 30,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 31,
+        "to": 32,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 33,
+        "to": 34,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 15,
+        "to": 23,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 16,
+        "to": 25,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 20,
+        "to": 27,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 17,
+        "to": 29,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 18,
+        "to": 31,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 33,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 35,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 22,
+        "to": 37,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 34,
+        "to": 39,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 32,
+        "to": 40,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 30,
+        "to": 41,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 28,
+        "to": 42,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 26,
+        "to": 43,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 24,
+        "to": 38,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 44,
+        "to": 45,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 37,
+        "to": 44,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 46,
+        "to": 47,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 39,
+        "to": 46,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 48,
+        "to": 49,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 42,
+        "to": 48,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/clarisa_sk2_cm.scsp",
+      "address": "characterlab/source/camera/clarisa_sk2_cm.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/clarisa_bidle.cfx",
+      "address": "characterlab/source/effect/clarisa_bidle.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/clarisa_bidle_eff_b.atlas",
+      "address": "characterlab/source/effect/clarisa_bidle_eff_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/clarisa_bidle_eff_b.scsp",
+      "address": "characterlab/source/effect/clarisa_bidle_eff_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/clarisa_bidle_eff_f.atlas",
+      "address": "characterlab/source/effect/clarisa_bidle_eff_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/clarisa_bidle_eff_f.scsp",
+      "address": "characterlab/source/effect/clarisa_bidle_eff_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/clarisa_sk1_eff_b.atlas",
+      "address": "characterlab/source/effect/clarisa_sk1_eff_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/clarisa_sk1_eff_b.scsp",
+      "address": "characterlab/source/effect/clarisa_sk1_eff_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/clarisa_sk1_eff_f.atlas",
+      "address": "characterlab/source/effect/clarisa_sk1_eff_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/clarisa_sk1_eff_f.scsp",
+      "address": "characterlab/source/effect/clarisa_sk1_eff_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/clarisa_sk1eff.atlas",
+      "address": "characterlab/source/effect/clarisa_sk1eff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/clarisa_sk1eff.sct",
+      "address": "characterlab/source/effect/clarisa_sk1eff.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/clarisa_sk2_eff_b.atlas",
+      "address": "characterlab/source/effect/clarisa_sk2_eff_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/clarisa_sk2_eff_b.scsp",
+      "address": "characterlab/source/effect/clarisa_sk2_eff_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/clarisa_sk2_eff_f.atlas",
+      "address": "characterlab/source/effect/clarisa_sk2_eff_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/clarisa_sk2_eff_f.scsp",
+      "address": "characterlab/source/effect/clarisa_sk2_eff_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/clarisa_sk2eff.atlas",
+      "address": "characterlab/source/effect/clarisa_sk2eff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/clarisa_sk2eff.sct",
+      "address": "characterlab/source/effect/clarisa_sk2eff.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/clarisa_sk3_eff_whirlwind.atlas",
+      "address": "characterlab/source/effect/clarisa_sk3_eff_whirlwind.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/clarisa_sk3_eff_whirlwind.scsp",
+      "address": "characterlab/source/effect/clarisa_sk3_eff_whirlwind.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/clarisa_skill_01.cfx",
+      "address": "characterlab/source/effect/clarisa_skill_01.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/clarisa_skill_02.cfx",
+      "address": "characterlab/source/effect/clarisa_skill_02.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/clarisa_skill_03.atlas",
+      "address": "characterlab/source/effect/clarisa_skill_03.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/clarisa_skill_03.sct",
+      "address": "characterlab/source/effect/clarisa_skill_03.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/clarisa_skill_03_whirlwind.cfx",
+      "address": "characterlab/source/effect/clarisa_skill_03_whirlwind.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.atlas",
+      "address": "characterlab/source/effect/hit_new_blunt_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.scsp",
+      "address": "characterlab/source/effect/hit_new_blunt_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.sct",
+      "address": "characterlab/source/effect/hit_new_blunt_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_blunt_mult_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_blunt_mult_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_blunt_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_blunt_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_blunt_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "model/clarisa.timeline",
+      "address": "characterlab/source/model/clarisa.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

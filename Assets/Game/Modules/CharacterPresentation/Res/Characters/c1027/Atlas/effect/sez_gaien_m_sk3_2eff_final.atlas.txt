@@ -1,0 +1,55 @@
+
+sez_gaien_m_sk3_2eff_final.sct
+size: 224,778
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+energy_szm_7_2
+  rotate: false
+  xy: 50, 2
+  size: 168, 70
+  orig: 168, 70
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 338
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+light_line
+  rotate: false
+  xy: 2, 2
+  size: 46, 46
+  orig: 46, 46
+  offset: 0, 0
+  index: -1
+p_rock_1
+  rotate: false
+  xy: 94, 74
+  size: 128, 108
+  orig: 128, 108
+  offset: 0, 0
+  index: -1
+p_rock_2
+  rotate: false
+  xy: 2, 74
+  size: 90, 79
+  orig: 90, 79
+  offset: 0, 0
+  index: -1
+septc_1
+  rotate: true
+  xy: 2, 509
+  size: 267, 204
+  orig: 267, 204
+  offset: 0, 0
+  index: -1
+septc_2
+  rotate: false
+  xy: 2, 184
+  size: 185, 152
+  orig: 185, 152
+  offset: 0, 0
+  index: -1

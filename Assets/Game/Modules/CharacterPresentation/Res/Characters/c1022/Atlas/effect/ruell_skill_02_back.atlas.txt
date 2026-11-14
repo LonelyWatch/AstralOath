@@ -1,0 +1,97 @@
+
+ruell_skill_02_back.sct
+size: 861,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bot_wave2
+  rotate: false
+  xy: 310, 2
+  size: 278, 146
+  orig: 278, 146
+  offset: 0, 0
+  index: -1
+circle_smoke_L
+  rotate: true
+  xy: 622, 2
+  size: 137, 130
+  orig: 137, 130
+  offset: 0, 0
+  index: -1
+circle_smoke_L2
+  rotate: true
+  xy: 289, 159
+  size: 80, 107
+  orig: 80, 107
+  offset: 0, 0
+  index: -1
+circle_smoke_R
+  rotate: true
+  xy: 650, 141
+  size: 111, 129
+  orig: 111, 129
+  offset: 0, 0
+  index: -1
+circle_smoke_bl
+  rotate: false
+  xy: 519, 150
+  size: 129, 99
+  orig: 129, 99
+  offset: 0, 0
+  index: -1
+circle_smoke_br
+  rotate: true
+  xy: 398, 150
+  size: 104, 119
+  orig: 104, 119
+  offset: 0, 0
+  index: -1
+circle_smoke_p
+  rotate: false
+  xy: 781, 172
+  size: 53, 58
+  orig: 53, 58
+  offset: 0, 0
+  index: -1
+circle_smoke_p2
+  rotate: false
+  xy: 781, 110
+  size: 48, 60
+  orig: 48, 60
+  offset: 0, 0
+  index: -1
+circle_smoke_ring
+  rotate: false
+  xy: 2, 159
+  size: 285, 93
+  orig: 285, 93
+  offset: 0, 0
+  index: -1
+circle_smoke_s
+  rotate: false
+  xy: 754, 2
+  size: 105, 106
+  orig: 105, 106
+  offset: 0, 0
+  index: -1
+pillar
+  rotate: false
+  xy: 2, 2
+  size: 152, 155
+  orig: 152, 155
+  offset: 0, 0
+  index: -1
+pillar_g
+  rotate: false
+  xy: 156, 2
+  size: 152, 155
+  orig: 152, 155
+  offset: 0, 0
+  index: -1
+pillar_ray
+  rotate: false
+  xy: 590, 2
+  size: 30, 145
+  orig: 30, 145
+  offset: 0, 0
+  index: -1

@@ -122,7 +122,8 @@ namespace AstralOath.Client.BattleScene
             Prepare(actor, presentationId);
             var cues = cache.Cues[(actor, presentationId)];
             var derived = ModelTimelineFrames(graphs[presentationId], cues)
-                .Where(frame => frame.Function is "effect" or "shake" or "event")
+                .Where(frame => (frame.Function is "shake" or "event") ||
+                    (frame.Function == "effect" && !string.IsNullOrEmpty((string)frame.Parameters["source"])))
                 .Select(frame =>
                 {
                     var node = (JObject)frame.Parameters.DeepClone();
@@ -329,7 +330,7 @@ namespace AstralOath.Client.BattleScene
                 var node = frame.Parameters;
                 switch (frame.Function)
                 {
-                    case "effect":
+                    case "effect" when !string.IsNullOrEmpty((string)node["source"]):
                         actionEnd = Mathf.Max(actionEnd, frame.At + EffectDuration((string)node["source"]));
 #if UNITY_EDITOR
                         EditorMainDuration = Mathf.Max(EditorMainDuration, frame.At + EditorEffectDuration((string)node["source"]));
@@ -853,9 +854,10 @@ namespace AstralOath.Client.BattleScene
         {
             string source = (string)node["source"];
             if (string.IsNullOrEmpty(source)) return;
+            // Native ranged models may omit selfBone while supplying their launch anchor in the rig.
             string bone = (string)node["selfBone"];
-            if (!target || duration <= 0f || string.IsNullOrWhiteSpace(bone) ||
-                !caster.TryGetPresentationAnchor(bone, out var launch))
+            if (string.IsNullOrWhiteSpace(bone)) bone = "arrow_start";
+            if (!target || duration <= 0f || !caster.TryGetPresentationAnchor(bone, out var launch))
             {
                 WarnSource($"SHOT {node["guid"]} has no verified launch bone, target or duration.");
                 return;
@@ -930,6 +932,15 @@ namespace AstralOath.Client.BattleScene
                 }
                 return;
             }
+            if (location == 31)
+            {
+                var other = primary ? primary : targets.FirstOrDefault(target => target);
+                if (caster && other)
+                    SpawnAt(() => (Position(caster) + Position(other)) * .5f, caster, false);
+                else if (caster)
+                    SpawnAt(() => Position(caster), caster, false);
+                return;
+            }
             if (location == 41 || location == 42)
             {
                 var occupied = targets.Where(target => target).ToArray();
@@ -942,6 +953,7 @@ namespace AstralOath.Client.BattleScene
             {
                 1 => new[] { caster },
                 11 => new[] { caster },
+                2 => targets.Length > 0 ? targets : new[] { primary },
                 5 or 12 => new[] { primary },
                 6 => targets,
                 _ => null

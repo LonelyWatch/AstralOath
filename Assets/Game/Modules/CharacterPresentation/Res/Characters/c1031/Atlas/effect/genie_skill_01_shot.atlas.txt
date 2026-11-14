@@ -1,0 +1,41 @@
+
+genie_skill_01_shot.sct
+size: 418,252
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+circle_01
+  rotate: false
+  xy: 85, 2
+  size: 79, 248
+  orig: 79, 248
+  offset: 0, 0
+  index: -1
+circle_01_1
+  rotate: false
+  xy: 2, 2
+  size: 81, 248
+  orig: 81, 248
+  offset: 0, 0
+  index: -1
+circle_02
+  rotate: false
+  xy: 166, 2
+  size: 79, 248
+  orig: 79, 248
+  offset: 0, 0
+  index: -1
+dia_01
+  rotate: true
+  xy: 247, 173
+  size: 40, 110
+  orig: 40, 110
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 247, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1

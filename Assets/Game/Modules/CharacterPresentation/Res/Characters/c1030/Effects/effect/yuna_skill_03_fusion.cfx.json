@@ -1,0 +1,21 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "yuna_skill_03_fusion",
+      "z": "50",
+      "format": "spine"
+    },
+    {
+      "source": "yuna_fusion_bg",
+      "z": "-5",
+      "format": "spine"
+    },
+    {
+      "source": "yuna_skill_03_dark",
+      "ani": "fusion",
+      "format": "spine",
+      "globalZ": 10.0
+    }
+  ]
+}

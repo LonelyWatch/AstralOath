@@ -1,0 +1,69 @@
+
+ruell_skeff_sk3_target.sct
+size: 802,484
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+agl_ptc_1
+  rotate: true
+  xy: 2, 349
+  size: 121, 156
+  orig: 121, 156
+  offset: 0, 0
+  index: -1
+flamedust_2
+  rotate: true
+  xy: 429, 315
+  size: 166, 201
+  orig: 166, 201
+  offset: 0, 0
+  index: -1
+flamedust_3
+  rotate: true
+  xy: 213, 315
+  size: 167, 214
+  orig: 167, 214
+  offset: 0, 0
+  index: -1
+flamedust_4
+  rotate: false
+  xy: 632, 173
+  size: 166, 235
+  orig: 166, 235
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 631, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+light_pillar/light_pillar_blur
+  rotate: false
+  xy: 2, 2
+  size: 209, 345
+  orig: 209, 345
+  offset: 0, 0
+  index: -1
+light_pillar/light_pillar_prizm_01
+  rotate: true
+  xy: 213, 107
+  size: 102, 416
+  orig: 102, 416
+  offset: 0, 0
+  index: -1
+light_pillar/light_pillar_prizm_02
+  rotate: true
+  xy: 213, 2
+  size: 103, 416
+  orig: 103, 416
+  offset: 0, 0
+  index: -1
+light_pillar/light_pillar_prizm_03
+  rotate: true
+  xy: 213, 211
+  size: 102, 415
+  orig: 102, 415
+  offset: 0, 0
+  index: -1

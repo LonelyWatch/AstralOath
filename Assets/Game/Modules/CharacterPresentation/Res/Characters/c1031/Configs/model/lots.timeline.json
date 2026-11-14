@@ -1,0 +1,67 @@
+{
+  "timeline": {
+    "default": {
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 1100,
+            "func": "effect",
+            "param": {
+              "source": "genie_skill_01_light",
+              "location": 5,
+              "locationBone": "arrow_start",
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 1200,
+            "func": "event",
+            "param": {
+              "name": "shot",
+              "param": "shot"
+            }
+          }
+        ]
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 1100,
+            "func": "effect",
+            "param": {
+              "source": "hit_light_heal_01",
+              "location": 5,
+              "locationBone": "shadow",
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 1100,
+            "func": "event",
+            "param": {
+              "name": "eff",
+              "param": "eff"
+            }
+          }
+        ]
+      },
+      "skill3": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 130,
+            "func": "effect",
+            "param": {
+              "source": "healer_skill_03",
+              "location": 5,
+              "locationBone": "shadow",
+              "scale": 0.8
+            }
+          }
+        ]
+      }
+    }
+  }
+}

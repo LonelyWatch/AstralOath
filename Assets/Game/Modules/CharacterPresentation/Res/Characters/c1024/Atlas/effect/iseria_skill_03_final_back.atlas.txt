@@ -1,0 +1,69 @@
+
+iseria_skill_03_final_back.sct
+size: 986,429
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bg_cloud_top1
+  rotate: true
+  xy: 37, 2
+  size: 336, 88
+  orig: 336, 88
+  offset: 0, 0
+  index: -1
+bg_cloud_top2
+  rotate: false
+  xy: 448, 310
+  size: 264, 92
+  orig: 264, 92
+  offset: 0, 0
+  index: -1
+bg_cloud_top3
+  rotate: false
+  xy: 2, 342
+  size: 337, 85
+  orig: 337, 85
+  offset: 0, 0
+  index: -1
+bg_mid_cloud
+  rotate: true
+  xy: 2, 2
+  size: 338, 33
+  orig: 338, 33
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 789, 127
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+iseria_bg
+  rotate: false
+  xy: 127, 2
+  size: 660, 306
+  orig: 660, 306
+  offset: 0, 0
+  index: -1
+smoke_1
+  rotate: true
+  xy: 789, 298
+  size: 120, 119
+  orig: 120, 119
+  offset: 0, 0
+  index: -1
+smoke_3
+  rotate: true
+  xy: 341, 310
+  size: 109, 105
+  orig: 109, 105
+  offset: 0, 0
+  index: -1
+smoke_back
+  rotate: false
+  xy: 789, 2
+  size: 195, 123
+  orig: 195, 123
+  offset: 0, 0
+  index: -1

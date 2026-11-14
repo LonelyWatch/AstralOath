@@ -1,0 +1,24 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "kylon_sk2eff_final",
+      "format": "spine",
+      "globalZ": 999.0
+    },
+    {
+      "source": "kylon_skill_02_pati1",
+      "y": "-1000",
+      "format": "particle",
+      "globalZ": 1.0
+    },
+    {
+      "source": "kylon_skill_02_pati2",
+      "x": "0",
+      "y": "-1000",
+      "rotate": "-20",
+      "format": "particle",
+      "globalZ": 1.0
+    }
+  ]
+}

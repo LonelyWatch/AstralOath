@@ -96,6 +96,7 @@
     <var name="speedUpPowerBp" type="int?"/>
     <var name="speedUpNameKey" type="string"/>
     <var name="speedUpDescriptionKey" type="string"/>
+    <var name="burnPresentationId" type="string"/>
   </bean>
 
   <bean name="SkillEffectRow">

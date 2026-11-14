@@ -1,0 +1,97 @@
+
+yuna_skill_03_beam_final.sct
+size: 241,1209
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+first_beam1
+  rotate: true
+  xy: 219, 514
+  size: 127, 20
+  orig: 127, 20
+  offset: 0, 0
+  index: -1
+first_beam2
+  rotate: true
+  xy: 219, 317
+  size: 195, 20
+  orig: 195, 20
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 70, 668
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+laser_glow
+  rotate: true
+  xy: 2, 2
+  size: 331, 109
+  orig: 331, 109
+  offset: 0, 0
+  index: -1
+laser_glow2
+  rotate: true
+  xy: 2, 335
+  size: 331, 109
+  orig: 331, 109
+  offset: 0, 0
+  index: -1
+laser_pillar1
+  rotate: true
+  xy: 175, 839
+  size: 246, 59
+  orig: 246, 59
+  offset: 0, 0
+  index: -1
+laser_pillar2
+  rotate: true
+  xy: 113, 2
+  size: 313, 125
+  orig: 313, 125
+  offset: 0, 0
+  index: -1
+laser_pillar_wave1
+  rotate: true
+  xy: 2, 967
+  size: 240, 89
+  orig: 240, 89
+  offset: 0, 0
+  index: -1
+laser_pillar_wave2
+  rotate: true
+  xy: 93, 839
+  size: 240, 80
+  orig: 240, 80
+  offset: 0, 0
+  index: -1
+laser_scratch1
+  rotate: true
+  xy: 113, 317
+  size: 297, 66
+  orig: 297, 66
+  offset: 0, 0
+  index: -1
+laser_scratch2
+  rotate: true
+  xy: 2, 668
+  size: 297, 66
+  orig: 297, 66
+  offset: 0, 0
+  index: -1
+laser_scratch3
+  rotate: true
+  xy: 181, 317
+  size: 261, 36
+  orig: 261, 36
+  offset: 0, 0
+  index: -1
+light_core
+  rotate: false
+  xy: 93, 1081
+  size: 57, 57
+  orig: 57, 57
+  offset: 0, 0
+  index: -1

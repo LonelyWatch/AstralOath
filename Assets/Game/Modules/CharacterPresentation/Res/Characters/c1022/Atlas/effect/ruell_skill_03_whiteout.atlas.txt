@@ -1,0 +1,48 @@
+
+ruell_skill_03_whiteout.sct
+size: 183,778
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+burst_scancircle
+  rotate: false
+  xy: 2, 203
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 374
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+ring_flash
+  rotate: false
+  xy: 2, 545
+  size: 145, 145
+  orig: 145, 145
+  offset: 0, 0
+  index: -1
+shot_ray1
+  rotate: false
+  xy: 147, 2
+  size: 34, 192
+  orig: 34, 192
+  offset: 0, 0
+  index: -1
+splash_light
+  rotate: false
+  xy: 2, 2
+  size: 143, 199
+  orig: 143, 199
+  offset: 0, 0
+  index: -1
+white_out
+  rotate: false
+  xy: 2, 692
+  size: 84, 84
+  orig: 84, 84
+  offset: 0, 0
+  index: -1

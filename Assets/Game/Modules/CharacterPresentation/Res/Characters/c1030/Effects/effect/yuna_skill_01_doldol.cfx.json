@@ -1,0 +1,17 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "yuna_skill_01_doldol",
+      "z": "5",
+      "format": "spine"
+    },
+    {
+      "source": "yuna_skill_01_doldol_pati1",
+      "z": "7",
+      "delay": "40",
+      "format": "particle",
+      "attach": "yuna_skill_01_doldol/doldol_anker"
+    }
+  ]
+}

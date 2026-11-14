@@ -1,0 +1,153 @@
+
+ruell_skill_02_front.sct
+size: 1839,251
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+back_fire
+  rotate: true
+  xy: 73, 2
+  size: 226, 187
+  orig: 226, 187
+  offset: 0, 0
+  index: -1
+back_fire_g
+  rotate: true
+  xy: 262, 2
+  size: 226, 187
+  orig: 226, 187
+  offset: 0, 0
+  index: -1
+big_wave1
+  rotate: true
+  xy: 2, 2
+  size: 244, 69
+  orig: 244, 69
+  offset: 0, 0
+  index: -1
+burst_ring
+  rotate: false
+  xy: 1320, 166
+  size: 317, 78
+  orig: 317, 78
+  offset: 0, 0
+  index: -1
+cry
+  rotate: true
+  xy: 1581, 110
+  size: 48, 67
+  orig: 48, 67
+  offset: 0, 0
+  index: -1
+cry_glow
+  rotate: false
+  xy: 1256, 166
+  size: 62, 82
+  orig: 62, 82
+  offset: 0, 0
+  index: -1
+cry_shw
+  rotate: true
+  xy: 1491, 110
+  size: 51, 88
+  orig: 51, 88
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 779, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: false
+  xy: 1061, 135
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1
+pillar_cover
+  rotate: true
+  xy: 950, 2
+  size: 162, 109
+  orig: 162, 109
+  offset: 0, 0
+  index: -1
+pillar_glow
+  rotate: false
+  xy: 451, 2
+  size: 162, 194
+  orig: 162, 194
+  offset: 0, 0
+  index: -1
+pillar_glow_g
+  rotate: false
+  xy: 615, 2
+  size: 162, 194
+  orig: 162, 194
+  offset: 0, 0
+  index: -1
+weapon
+  rotate: true
+  xy: 913, 173
+  size: 72, 341
+  orig: 72, 341
+  offset: 0, 0
+  index: -1
+weapon2
+  rotate: true
+  xy: 1461, 2
+  size: 106, 376
+  orig: 106, 376
+  offset: 0, 0
+  index: -1
+weapon_glow
+  rotate: true
+  xy: 1061, 2
+  size: 131, 398
+  orig: 131, 398
+  offset: 0, 0
+  index: -1
+weapon_glow_tale
+  rotate: false
+  xy: 451, 198
+  size: 152, 51
+  orig: 152, 51
+  offset: 0, 0
+  index: -1
+weapon_glow_tale_e
+  rotate: false
+  xy: 605, 198
+  size: 152, 51
+  orig: 152, 51
+  offset: 0, 0
+  index: -1
+weapon_glow_tale_f
+  rotate: false
+  xy: 759, 198
+  size: 152, 51
+  orig: 152, 51
+  offset: 0, 0
+  index: -1
+weapon_l1
+  rotate: false
+  xy: 1650, 110
+  size: 26, 42
+  orig: 26, 42
+  offset: 0, 0
+  index: -1
+weapon_l2
+  rotate: true
+  xy: 779, 173
+  size: 21, 30
+  orig: 21, 30
+  offset: 0, 0
+  index: -1
+weapon_l3
+  rotate: false
+  xy: 1639, 160
+  size: 24, 48
+  orig: 24, 48
+  offset: 0, 0
+  index: -1

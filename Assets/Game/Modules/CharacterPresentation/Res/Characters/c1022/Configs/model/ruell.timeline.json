@@ -1,0 +1,207 @@
+{
+  "timeline": {
+    "default": {
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "id": "bidle_ready",
+              "source": "ruell_bidle_ready",
+              "location": 1,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "ruell_bidle_switch",
+              "location": 1,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "ruell_skill_01_shot",
+              "location": 1,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "shake",
+            "param": {
+              "duration": -1,
+              "powerX": 10,
+              "powerY": 10,
+              "timeScale": 1.0,
+              "type": 1,
+              "source": "ruell_skill_01_camera1"
+            }
+          },
+          {
+            "time": 40,
+            "func": "remove",
+            "param": {
+              "targetId": "bidle_ready"
+            }
+          }
+        ]
+      },
+      "b_idle": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "ruell_bidle_switch",
+              "location": 1,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "ruell_skill_02",
+              "location": 1,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "shake",
+            "param": {
+              "duration": -1,
+              "powerX": 10,
+              "powerY": 10,
+              "timeScale": 1.0,
+              "type": 1,
+              "source": "ruell_skill_02_camera"
+            }
+          },
+          {
+            "time": 20,
+            "func": "remove",
+            "param": {
+              "targetId": "bidle_ready"
+            }
+          }
+        ]
+      },
+      "skill3_1": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 20,
+            "func": "remove",
+            "param": {
+              "targetId": "bidle_ready"
+            }
+          }
+        ]
+      },
+      "skill3_2": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill1_1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "ruell_skill_01_shot_light",
+              "location": 5,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "shake",
+            "param": {
+              "duration": -1,
+              "powerX": 10,
+              "powerY": 10,
+              "timeScale": 1.0,
+              "type": 1,
+              "source": "ruell_skill_01_camera1_l"
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "ruell_bidle_switch",
+              "location": 5,
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 20,
+            "func": "remove",
+            "param": {
+              "targetId": "bidle_ready"
+            }
+          }
+        ]
+      },
+      "skill1_2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "ruell_skill_01_shot",
+              "location": 5,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "ruell_bidle_switch",
+              "location": 5,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "shake",
+            "param": {
+              "duration": -1,
+              "powerX": 10,
+              "powerY": 10,
+              "timeScale": 1.0,
+              "type": 1,
+              "source": "ruell_skill_01_camera1"
+            }
+          },
+          {
+            "time": 20,
+            "func": "remove",
+            "param": {
+              "targetId": "bidle_ready"
+            }
+          }
+        ]
+      },
+      "idle": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "bidle_ready"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

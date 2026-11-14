@@ -1,0 +1,50 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "eff_explosion_fire_small",
+      "y": "0",
+      "scale": "1.2",
+      "format": "spine"
+    },
+    {
+      "source": "eff_explosion_fire_medium",
+      "x": "250",
+      "y": "-150",
+      "z": "150",
+      "scale": "1.5",
+      "delay": "150",
+      "format": "spine"
+    },
+    {
+      "source": "eff_explosion_fire_small",
+      "x": "400",
+      "y": "50",
+      "z": "-50",
+      "scale": "1.5",
+      "delay": "300",
+      "format": "spine"
+    },
+    {
+      "source": "eff_explosion_fire_ground2",
+      "format": "spine"
+    },
+    {
+      "source": "eff_explosion_fire_ground2",
+      "x": "250",
+      "y": "-150",
+      "z": "150",
+      "scale": "1.5",
+      "delay": "150",
+      "format": "spine"
+    },
+    {
+      "source": "eff_explosion_fire_ground2",
+      "x": "400",
+      "y": "50",
+      "z": "-50",
+      "delay": "300",
+      "format": "spine"
+    }
+  ]
+}

@@ -1,0 +1,258 @@
+
+yuna_skill_03_space_sate.sct
+size: 511,1066
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+big_sate
+  rotate: false
+  xy: 2, 2
+  size: 348, 282
+  orig: 348, 282
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 799
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+line_lgiht_n_1
+  rotate: true
+  xy: 295, 520
+  size: 103, 48
+  orig: 103, 48
+  offset: 0, 0
+  index: -1
+line_lgiht_n_2
+  rotate: true
+  xy: 295, 625
+  size: 103, 48
+  orig: 103, 48
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: true
+  xy: 436, 371
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1
+line_light_u_1
+  rotate: true
+  xy: 283, 976
+  size: 75, 99
+  orig: 75, 99
+  offset: 0, 0
+  index: -1
+line_light_u_2
+  rotate: true
+  xy: 384, 985
+  size: 75, 99
+  orig: 75, 99
+  offset: 0, 0
+  index: -1
+mini_sate
+  rotate: false
+  xy: 2, 286
+  size: 199, 169
+  orig: 199, 169
+  offset: 0, 0
+  index: -1
+mini_sate_a
+  rotate: false
+  xy: 2, 457
+  size: 199, 169
+  orig: 199, 169
+  offset: 0, 0
+  index: -1
+mini_sate_a2
+  rotate: false
+  xy: 2, 628
+  size: 199, 169
+  orig: 199, 169
+  offset: 0, 0
+  index: -1
+ray_01
+  rotate: false
+  xy: 467, 371
+  size: 36, 168
+  orig: 36, 168
+  offset: 0, 0
+  index: -1
+ring_light_n
+  rotate: true
+  xy: 100, 970
+  size: 74, 67
+  orig: 74, 67
+  offset: 0, 0
+  index: -1
+ring_light_u
+  rotate: false
+  xy: 467, 541
+  size: 42, 86
+  orig: 42, 86
+  offset: 0, 0
+  index: -1
+sate_sp1
+  rotate: false
+  xy: 345, 546
+  size: 76, 102
+  orig: 76, 102
+  offset: 0, 0
+  index: -1
+sate_sp2
+  rotate: false
+  xy: 345, 650
+  size: 76, 102
+  orig: 76, 102
+  offset: 0, 0
+  index: -1
+sate_sp3
+  rotate: false
+  xy: 203, 681
+  size: 76, 102
+  orig: 76, 102
+  offset: 0, 0
+  index: -1
+sate_sp4
+  rotate: false
+  xy: 431, 803
+  size: 76, 102
+  orig: 76, 102
+  offset: 0, 0
+  index: -1
+sate_sp5
+  rotate: true
+  xy: 283, 898
+  size: 76, 102
+  orig: 76, 102
+  offset: 0, 0
+  index: -1
+sate_sp6
+  rotate: true
+  xy: 387, 907
+  size: 76, 102
+  orig: 76, 102
+  offset: 0, 0
+  index: -1
+sl1
+  rotate: false
+  xy: 467, 685
+  size: 31, 28
+  orig: 31, 28
+  offset: 0, 0
+  index: -1
+sl2
+  rotate: false
+  xy: 467, 715
+  size: 30, 27
+  orig: 30, 27
+  offset: 0, 0
+  index: -1
+sl3
+  rotate: false
+  xy: 467, 744
+  size: 28, 28
+  orig: 28, 28
+  offset: 0, 0
+  index: -1
+sl4
+  rotate: false
+  xy: 467, 774
+  size: 27, 27
+  orig: 27, 27
+  offset: 0, 0
+  index: -1
+sw10
+  rotate: false
+  xy: 352, 226
+  size: 148, 143
+  orig: 148, 143
+  offset: 0, 0
+  index: -1
+sw11
+  rotate: true
+  xy: 203, 407
+  size: 111, 131
+  orig: 111, 131
+  offset: 0, 0
+  index: -1
+sw12
+  rotate: true
+  xy: 2, 970
+  size: 77, 96
+  orig: 77, 96
+  offset: 0, 0
+  index: -1
+sw1_1
+  rotate: false
+  xy: 334, 754
+  size: 95, 142
+  orig: 95, 142
+  offset: 0, 0
+  index: -1
+sw1_2
+  rotate: true
+  xy: 203, 520
+  size: 159, 90
+  orig: 159, 90
+  offset: 0, 0
+  index: -1
+sw2
+  rotate: true
+  xy: 346, 371
+  size: 173, 88
+  orig: 173, 88
+  offset: 0, 0
+  index: -1
+sw3
+  rotate: false
+  xy: 203, 785
+  size: 124, 111
+  orig: 124, 111
+  offset: 0, 0
+  index: -1
+sw4
+  rotate: false
+  xy: 467, 629
+  size: 36, 54
+  orig: 36, 54
+  offset: 0, 0
+  index: -1
+sw5
+  rotate: false
+  xy: 281, 730
+  size: 51, 44
+  orig: 51, 44
+  offset: 0, 0
+  index: -1
+sw6
+  rotate: true
+  xy: 169, 992
+  size: 72, 100
+  orig: 72, 100
+  offset: 0, 0
+  index: -1
+sw7
+  rotate: true
+  xy: 173, 898
+  size: 92, 108
+  orig: 92, 108
+  offset: 0, 0
+  index: -1
+sw8
+  rotate: true
+  xy: 352, 2
+  size: 222, 157
+  orig: 222, 157
+  offset: 0, 0
+  index: -1
+sw9
+  rotate: false
+  xy: 203, 286
+  size: 141, 119
+  orig: 141, 119
+  offset: 0, 0
+  index: -1

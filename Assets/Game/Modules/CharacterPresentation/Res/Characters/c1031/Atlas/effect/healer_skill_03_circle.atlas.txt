@@ -1,0 +1,27 @@
+
+healer_skill_03_circle.sct
+size: 1195,505
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+magic_circle_dn
+  rotate: false
+  xy: 2, 2
+  size: 501, 501
+  orig: 501, 501
+  offset: 0, 0
+  index: -1
+magic_circle_up
+  rotate: false
+  xy: 505, 2
+  size: 396, 396
+  orig: 396, 396
+  offset: 0, 0
+  index: -1
+magic_circle_upshw
+  rotate: false
+  xy: 903, 2
+  size: 290, 290
+  orig: 290, 290
+  offset: 0, 0
+  index: -1

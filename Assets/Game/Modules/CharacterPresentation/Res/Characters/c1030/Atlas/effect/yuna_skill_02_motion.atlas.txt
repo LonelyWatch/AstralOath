@@ -1,0 +1,27 @@
+
+yuna_skill_02_motion.sct
+size: 173,228
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+beam
+  rotate: false
+  xy: 2, 173
+  size: 80, 22
+  orig: 80, 22
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+phone_shot
+  rotate: true
+  xy: 84, 173
+  size: 53, 59
+  orig: 53, 59
+  offset: 0, 0
+  index: -1

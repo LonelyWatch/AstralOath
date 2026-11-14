@@ -37,6 +37,17 @@ STATUSES = (
     ("EffectivenessUp", "Buff", "stic_acc_up"),
     ("Poison", "Debuff", "stic_dot"),
     ("Invincible", "Buff", "stic_invincible"),
+    ("CriticalChanceUp", "Buff", "stic_cri_up"),
+    ("ContinuousHealing", "Buff", "stic_heal"),
+    ("Burn", "Debuff", "stic_blaze"),
+    ("Bleed", "Debuff", "stic_blood"),
+    ("Immortality", "Buff", "stic_immortality"),
+    ("HitChanceDown", "Debuff", "stic_blind"),
+    ("GreaterAttackUp", "Buff", "stic_att_up2"),
+    ("Unbuffable", "Debuff", "stic_buf_impossible"),
+    ("DamageLimit", "Buff", "stic_dmg_limit"),
+    ("SpiritlordProtection", "Buff", "stic_spiritlord_keep"),
+    ("Rage", "Buff", "stic_madness"),
 )
 
 

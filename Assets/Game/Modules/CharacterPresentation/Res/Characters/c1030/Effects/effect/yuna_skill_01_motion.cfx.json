@@ -1,0 +1,56 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "yuna_skill_01_circle_b",
+      "z": "5",
+      "format": "spine"
+    },
+    {
+      "source": "yuna_skill_01_circle_f",
+      "x": "121",
+      "y": "294",
+      "z": "3",
+      "scale": "0.26,1.0",
+      "format": "spine"
+    },
+    {
+      "source": "yuna_skill_01_motion_pati1",
+      "x": "121",
+      "y": "294",
+      "z": "6",
+      "scale": "1.0,0.26",
+      "rotate": "90",
+      "delay": "1333",
+      "format": "particle",
+      "actions": [
+        {
+          "action": "Move",
+          "delay": "50",
+          "interval": "2000",
+          "from": "0,0",
+          "to": "40,0"
+        }
+      ]
+    },
+    {
+      "source": "yuna_skill_01_motion_pati1",
+      "x": "121",
+      "y": "294",
+      "z": "6",
+      "scale": "1.0,0.26",
+      "rotate": "90",
+      "delay": "1333",
+      "format": "particle",
+      "actions": [
+        {
+          "action": "Move",
+          "delay": "50",
+          "interval": "2000",
+          "from": "0,0",
+          "to": "-40,0"
+        }
+      ]
+    }
+  ]
+}

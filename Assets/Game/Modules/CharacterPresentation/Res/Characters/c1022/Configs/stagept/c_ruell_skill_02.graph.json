@@ -1,0 +1,500 @@
+{
+  "id": "c_ruell_skill_02",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "alone": true,
+        "fade": 200,
+        "time": 200,
+        "away_x": 2500.0,
+        "guid": 2,
+        "etty": "LAYOUT"
+      },
+      {
+        "time": 200,
+        "guid": 3,
+        "etty": "BGSHOW"
+      },
+      {
+        "location": 1,
+        "y": -10.0,
+        "curve": "0,1,1,1",
+        "time": 1167,
+        "guid": 4,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.4",
+        "curve": "0,1,1,1",
+        "time": 1167,
+        "guid": 5,
+        "etty": "ZOOM"
+      },
+      {
+        "ani": "skill2",
+        "guid": 6,
+        "etty": "ANI"
+      },
+      {
+        "scale": "0.85",
+        "curve": "0.07662835,0.9444444,0.3793103,0.9618055",
+        "time": 1200,
+        "guid": 7,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "y": -30.0,
+        "curve": "0.05747126,0.8819444,0.1187739,0.9583333",
+        "time": 1200,
+        "guid": 8,
+        "etty": "CAM"
+      },
+      {
+        "guid": 9,
+        "etty": "IDLE"
+      },
+      {
+        "mode": 1,
+        "fade": 200,
+        "time": 200,
+        "away_x": 2500.0,
+        "guid": 10,
+        "etty": "LAYOUT"
+      },
+      {
+        "show": true,
+        "time": 200,
+        "guid": 11,
+        "etty": "BGSHOW"
+      },
+      {
+        "scale": "1",
+        "time": 200,
+        "guid": 12,
+        "etty": "ZOOM"
+      },
+      {
+        "time": 200,
+        "guid": 13,
+        "etty": "CAM"
+      },
+      {
+        "location": 1,
+        "y": -30.0,
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 14,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.2",
+        "curve": "0.2643678,0.0520833,0.5785441,0.8958333",
+        "time": 500,
+        "guid": 15,
+        "etty": "ZOOM"
+      },
+      {
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 16,
+        "etty": "HIT"
+      },
+      {
+        "source": "hit_light_heal_01.cfx",
+        "scale": 1.0,
+        "location": 12,
+        "locationParam": "root",
+        "guid": 17,
+        "etty": "EFFECT"
+      },
+      {
+        "duration": 350,
+        "program": "sprite_blur",
+        "direction_y": 1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 18,
+        "etty": "PPEFFECT"
+      },
+      {
+        "name": "u_range",
+        "duration": 350,
+        "power": 20.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 19,
+        "etty": "SINE_VALUE"
+      }
+    ],
+    "connections": [
+      {
+        "from": 1,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 3,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 5,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 6,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 4,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 8,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 9,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 11,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 12,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 13,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 14,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 15,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 15,
+        "to": 10,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 17,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 17,
+        "to": 16,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 18,
+        "to": 19,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 18,
+        "delay": 1350,
+        "when": 1,
+        "Desc": "1350",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/ruell_skill_01_camera1.scsp",
+      "address": "characterlab/source/camera/ruell_skill_01_camera1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "camera/ruell_skill_01_camera1_l.scsp",
+      "address": "characterlab/source/camera/ruell_skill_01_camera1_l.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "camera/ruell_skill_02_camera.scsp",
+      "address": "characterlab/source/camera/ruell_skill_02_camera.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/healer_skill_03_hit.atlas",
+      "address": "characterlab/source/effect/healer_skill_03_hit.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/healer_skill_03_hit.scsp",
+      "address": "characterlab/source/effect/healer_skill_03_hit.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/healer_skill_03_hit.sct",
+      "address": "characterlab/source/effect/healer_skill_03_hit.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_heal_pati.particle",
+      "address": "characterlab/source/effect/hit_heal_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/hit_light_heal_01.cfx",
+      "address": "characterlab/source/effect/hit_light_heal_01.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/ruell_bidle_eff.atlas",
+      "address": "characterlab/source/effect/ruell_bidle_eff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/ruell_bidle_eff.scsp",
+      "address": "characterlab/source/effect/ruell_bidle_eff.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/ruell_bidle_eff.sct",
+      "address": "characterlab/source/effect/ruell_bidle_eff.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/ruell_bidle_ready.cfx",
+      "address": "characterlab/source/effect/ruell_bidle_ready.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/ruell_bidle_switch.cfx",
+      "address": "characterlab/source/effect/ruell_bidle_switch.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/ruell_skill_01.atlas",
+      "address": "characterlab/source/effect/ruell_skill_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/ruell_skill_01.scsp",
+      "address": "characterlab/source/effect/ruell_skill_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/ruell_skill_01.sct",
+      "address": "characterlab/source/effect/ruell_skill_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/ruell_skill_01_light.atlas",
+      "address": "characterlab/source/effect/ruell_skill_01_light.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/ruell_skill_01_light.scsp",
+      "address": "characterlab/source/effect/ruell_skill_01_light.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/ruell_skill_01_light.sct",
+      "address": "characterlab/source/effect/ruell_skill_01_light.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/ruell_skill_01_shot.cfx",
+      "address": "characterlab/source/effect/ruell_skill_01_shot.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/ruell_skill_01_shot_light.cfx",
+      "address": "characterlab/source/effect/ruell_skill_01_shot_light.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/ruell_skill_01_shot_light_pati1.particle",
+      "address": "characterlab/source/effect/ruell_skill_01_shot_light_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/ruell_skill_01_shot_pati1.particle",
+      "address": "characterlab/source/effect/ruell_skill_01_shot_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/ruell_skill_01_shot_pati2.particle",
+      "address": "characterlab/source/effect/ruell_skill_01_shot_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/ruell_skill_01_shot_pati3.particle",
+      "address": "characterlab/source/effect/ruell_skill_01_shot_pati3.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/ruell_skill_01_shot_pati4.particle",
+      "address": "characterlab/source/effect/ruell_skill_01_shot_pati4.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/ruell_skill_02.cfx",
+      "address": "characterlab/source/effect/ruell_skill_02.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/ruell_skill_02_back.atlas",
+      "address": "characterlab/source/effect/ruell_skill_02_back.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/ruell_skill_02_back.scsp",
+      "address": "characterlab/source/effect/ruell_skill_02_back.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/ruell_skill_02_back.sct",
+      "address": "characterlab/source/effect/ruell_skill_02_back.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/ruell_skill_02_circle.atlas",
+      "address": "characterlab/source/effect/ruell_skill_02_circle.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/ruell_skill_02_circle.scsp",
+      "address": "characterlab/source/effect/ruell_skill_02_circle.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/ruell_skill_02_circle.sct",
+      "address": "characterlab/source/effect/ruell_skill_02_circle.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/ruell_skill_02_front.atlas",
+      "address": "characterlab/source/effect/ruell_skill_02_front.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/ruell_skill_02_front.scsp",
+      "address": "characterlab/source/effect/ruell_skill_02_front.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/ruell_skill_02_front.sct",
+      "address": "characterlab/source/effect/ruell_skill_02_front.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/ruell_skill_02_pati1.particle",
+      "address": "characterlab/source/effect/ruell_skill_02_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/ruell_skill_02_pati2.particle",
+      "address": "characterlab/source/effect/ruell_skill_02_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/ruell_skill_02_pati3.particle",
+      "address": "characterlab/source/effect/ruell_skill_02_pati3.particle",
+      "type": "particle"
+    },
+    {
+      "source": "model/ruell.timeline",
+      "address": "characterlab/source/model/ruell.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/cross_02.sct",
+      "address": "characterlab/source/particle/cross_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/flash.sct",
+      "address": "characterlab/source/particle/flash.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/pati_01.sct",
+      "address": "characterlab/source/particle/pati_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/zodiac_star1.sct",
+      "address": "characterlab/source/particle/zodiac_star1.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/zodiac_star3.sct",
+      "address": "characterlab/source/particle/zodiac_star3.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

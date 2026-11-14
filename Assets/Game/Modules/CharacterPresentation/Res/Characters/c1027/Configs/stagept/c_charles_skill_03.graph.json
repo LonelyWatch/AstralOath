@@ -1,0 +1,1018 @@
+{
+  "id": "c_charles_skill_03",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 2
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "fade": 300,
+        "time": 300,
+        "away_x": 600.0,
+        "guid": 1,
+        "etty": "LAYOUT"
+      },
+      {
+        "state": "start",
+        "guid": 2,
+        "etty": "ENTRY"
+      },
+      {
+        "time": 200,
+        "guid": 3,
+        "etty": "BGSHOW"
+      },
+      {
+        "ani": "skill3_1",
+        "guid": 4,
+        "etty": "ANI"
+      },
+      {
+        "guid": 5,
+        "etty": "IDLE"
+      },
+      {
+        "args": "sk_c1027_3",
+        "curtain_color": "0,0,0,255",
+        "guid": 6,
+        "etty": "CUTIN"
+      },
+      {
+        "source": "charles_skill_03_01.cfx",
+        "scale": 1.0,
+        "location": 5,
+        "id": "3_1",
+        "guid": 7,
+        "etty": "EFFECT"
+      },
+      {
+        "source": "charles_skill_03_02.cfx",
+        "scale": 1.0,
+        "location": 1,
+        "guid": 8,
+        "etty": "EFFECT"
+      },
+      {
+        "source": "charles_skill_03_03.cfx",
+        "x": 50.0,
+        "y": 216.0,
+        "scale": 2.65,
+        "guid": 9,
+        "etty": "EFFECT"
+      },
+      {
+        "ani": "skill3_2",
+        "guid": 10,
+        "etty": "ANI"
+      },
+      {
+        "mode": 1,
+        "alone": true,
+        "self_x": 450.0,
+        "guid": 11,
+        "etty": "LAYOUT"
+      },
+      {
+        "show": true,
+        "guid": 12,
+        "etty": "BGSHOW"
+      },
+      {
+        "location": 11,
+        "x": 240.0,
+        "y": -80.0,
+        "guid": 13,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.28",
+        "guid": 14,
+        "etty": "ZOOM"
+      },
+      {
+        "guid": 15,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1",
+        "guid": 16,
+        "etty": "ZOOM"
+      },
+      {
+        "y": 2000.0,
+        "guid": 17,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1",
+        "guid": 18,
+        "etty": "ZOOM"
+      },
+      {
+        "ver": 2,
+        "location": 41,
+        "style": 3,
+        "x": -1500.0,
+        "guid": 19,
+        "etty": "MOVE"
+      },
+      {
+        "ver": 2,
+        "time": 267,
+        "curve": "0.1570881,-2.980232E-08,0.7,0.7",
+        "location": 41,
+        "style": 1,
+        "guid": 20,
+        "etty": "MOVE"
+      },
+      {
+        "location": 41,
+        "x": -870.0,
+        "guid": 21,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.4",
+        "guid": 22,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 41,
+        "x": 200.0,
+        "curve": "0.3295019,-2.980232E-08,0.04597701,1",
+        "time": 500,
+        "guid": 23,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.5",
+        "time": 500,
+        "guid": 24,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "0.5",
+        "guid": 25,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "x": 350.0,
+        "y": -250.0,
+        "guid": 26,
+        "etty": "CAM"
+      },
+      {
+        "color": "255,255,255,255",
+        "accel": 1.0,
+        "opacity": 1.0,
+        "duration": 400,
+        "localZ": -1,
+        "globalZ": 999,
+        "fadeIn": 100,
+        "fadeOut": 200,
+        "guid": 27,
+        "etty": "DARK"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "charles_sk3_3eff_cm",
+        "guid": 28,
+        "etty": "SHAKE"
+      },
+      {
+        "source": "charles_skill_03_02_b2.cfx",
+        "scale": 1.0,
+        "location": 41,
+        "guid": 29,
+        "etty": "EFFECT"
+      },
+      {
+        "target_node": 76,
+        "source": "charles_sk3_node.scsp",
+        "timeline": [
+          "500,attacked_damage,0"
+        ],
+        "guid": 30,
+        "etty": "NODE_ANI"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "charles_sk3_2eff_cm",
+        "guid": 31,
+        "etty": "SHAKE"
+      },
+      {
+        "duration": -1,
+        "alpha_channel": 0.0,
+        "id": "cb",
+        "guid": 32,
+        "etty": "COLOR_BLEND"
+      },
+      {
+        "targetId": "cb",
+        "guid": 33,
+        "etty": "STOP"
+      },
+      {
+        "duration": -1,
+        "alpha_channel": 0.0,
+        "id": "cb2",
+        "guid": 34,
+        "etty": "COLOR_BLEND"
+      },
+      {
+        "source": "charles_skill_03_final.cfx",
+        "scale": 1.0,
+        "guid": 35,
+        "etty": "EFFECT"
+      },
+      {
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "rand_scale": 0.5,
+        "guid": 36,
+        "etty": "HIT"
+      },
+      {
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "rand_scale": 0.5,
+        "guid": 37,
+        "etty": "HIT"
+      },
+      {
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "rand_scale": 0.5,
+        "guid": 38,
+        "etty": "HIT"
+      },
+      {
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "rand_scale": 0.5,
+        "guid": 39,
+        "etty": "HIT"
+      },
+      {
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "rand_scale": 0.5,
+        "guid": 40,
+        "etty": "HIT"
+      },
+      {
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "rand_scale": 0.5,
+        "guid": 41,
+        "etty": "HIT"
+      },
+      {
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "rand_scale": 0.5,
+        "guid": 42,
+        "etty": "HIT"
+      },
+      {
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "rand_scale": 0.5,
+        "guid": 43,
+        "etty": "HIT"
+      },
+      {
+        "scale": "1.25",
+        "time": 300,
+        "guid": 44,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 11,
+        "x": 260.0,
+        "y": -80.0,
+        "time": 300,
+        "guid": 45,
+        "etty": "CAM"
+      },
+      {
+        "targetId": "3_1",
+        "guid": 46,
+        "etty": "STOP"
+      }
+    ],
+    "connections": [
+      {
+        "from": 1,
+        "to": 3,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 9,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 5,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 11,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 12,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 14,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 13,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 15,
+        "to": 16,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 15,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 17,
+        "to": 18,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 17,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 1,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 19,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 21,
+        "to": 22,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 23,
+        "to": 24,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 26,
+        "to": 25,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 26,
+        "delay": 770,
+        "when": 1,
+        "Desc": "770",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 27,
+        "delay": 1500,
+        "when": 1,
+        "Desc": "1500",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 28,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 21,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 21,
+        "to": 8,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 10,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 29,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 30,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 32,
+        "delay": 600,
+        "when": 1,
+        "Desc": "600",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 33,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 35,
+        "delay": 300,
+        "when": 1,
+        "Desc": "300",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 36,
+        "to": 37,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 37,
+        "to": 38,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 38,
+        "to": 39,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 39,
+        "to": 40,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 36,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 41,
+        "to": 42,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 40,
+        "to": 41,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 43,
+        "delay": 500,
+        "when": 1,
+        "Desc": "500",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 20,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 4,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 45,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 45,
+        "to": 44,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 46,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 46,
+        "to": 6,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 31,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 21,
+        "to": 23,
+        "Desc": "",
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/charles_sk3_2eff_cm.scsp",
+      "address": "characterlab/source/camera/charles_sk3_2eff_cm.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "camera/charles_sk3_3eff_cm.scsp",
+      "address": "characterlab/source/camera/charles_sk3_3eff_cm.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "cut/fhd/sk_c1027_3.webp",
+      "address": "characterlab/source/cut/fhd/sk_c1027_3.webp",
+      "type": "cutin"
+    },
+    {
+      "source": "effect/charles_b_idle_ready.cfx",
+      "address": "characterlab/source/effect/charles_b_idle_ready.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/charles_b_idle_readyeff_b.atlas",
+      "address": "characterlab/source/effect/charles_b_idle_readyeff_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/charles_b_idle_readyeff_b.scsp",
+      "address": "characterlab/source/effect/charles_b_idle_readyeff_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/charles_b_idle_readyeff_b.sct",
+      "address": "characterlab/source/effect/charles_b_idle_readyeff_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/charles_b_idle_readyeff_f.atlas",
+      "address": "characterlab/source/effect/charles_b_idle_readyeff_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/charles_b_idle_readyeff_f.scsp",
+      "address": "characterlab/source/effect/charles_b_idle_readyeff_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/charles_b_idle_readyeff_f.sct",
+      "address": "characterlab/source/effect/charles_b_idle_readyeff_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/charles_sk1eff_b.atlas",
+      "address": "characterlab/source/effect/charles_sk1eff_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/charles_sk1eff_b.scsp",
+      "address": "characterlab/source/effect/charles_sk1eff_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/charles_sk1eff_b.sct",
+      "address": "characterlab/source/effect/charles_sk1eff_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/charles_sk1eff_f.atlas",
+      "address": "characterlab/source/effect/charles_sk1eff_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/charles_sk1eff_f.scsp",
+      "address": "characterlab/source/effect/charles_sk1eff_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/charles_sk1eff_f.sct",
+      "address": "characterlab/source/effect/charles_sk1eff_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/charles_sk3_1eff_f1.atlas",
+      "address": "characterlab/source/effect/charles_sk3_1eff_f1.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/charles_sk3_1eff_f1.scsp",
+      "address": "characterlab/source/effect/charles_sk3_1eff_f1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/charles_sk3_1eff_f1.sct",
+      "address": "characterlab/source/effect/charles_sk3_1eff_f1.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/charles_sk3_1eff_f2.atlas",
+      "address": "characterlab/source/effect/charles_sk3_1eff_f2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/charles_sk3_1eff_f2.scsp",
+      "address": "characterlab/source/effect/charles_sk3_1eff_f2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/charles_sk3_1eff_f2.sct",
+      "address": "characterlab/source/effect/charles_sk3_1eff_f2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/charles_sk3_1eff_f3.atlas",
+      "address": "characterlab/source/effect/charles_sk3_1eff_f3.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/charles_sk3_1eff_f3.scsp",
+      "address": "characterlab/source/effect/charles_sk3_1eff_f3.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/charles_sk3_1eff_f3.sct",
+      "address": "characterlab/source/effect/charles_sk3_1eff_f3.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/charles_sk3_1eff_f4.atlas",
+      "address": "characterlab/source/effect/charles_sk3_1eff_f4.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/charles_sk3_1eff_f4.scsp",
+      "address": "characterlab/source/effect/charles_sk3_1eff_f4.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/charles_sk3_1eff_f4.sct",
+      "address": "characterlab/source/effect/charles_sk3_1eff_f4.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/charles_sk3_1eff_f5.atlas",
+      "address": "characterlab/source/effect/charles_sk3_1eff_f5.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/charles_sk3_1eff_f5.scsp",
+      "address": "characterlab/source/effect/charles_sk3_1eff_f5.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/charles_sk3_1eff_f5.sct",
+      "address": "characterlab/source/effect/charles_sk3_1eff_f5.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/charles_sk3_1eff_f6.atlas",
+      "address": "characterlab/source/effect/charles_sk3_1eff_f6.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/charles_sk3_1eff_f6.scsp",
+      "address": "characterlab/source/effect/charles_sk3_1eff_f6.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/charles_sk3_1eff_f6.sct",
+      "address": "characterlab/source/effect/charles_sk3_1eff_f6.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/charles_sk3_2eff_b.atlas",
+      "address": "characterlab/source/effect/charles_sk3_2eff_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/charles_sk3_2eff_b.scsp",
+      "address": "characterlab/source/effect/charles_sk3_2eff_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/charles_sk3_2eff_b.sct",
+      "address": "characterlab/source/effect/charles_sk3_2eff_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/charles_sk3_2eff_b2.atlas",
+      "address": "characterlab/source/effect/charles_sk3_2eff_b2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/charles_sk3_2eff_b2.scsp",
+      "address": "characterlab/source/effect/charles_sk3_2eff_b2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/charles_sk3_2eff_b2.sct",
+      "address": "characterlab/source/effect/charles_sk3_2eff_b2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/charles_sk3_2eff_f.atlas",
+      "address": "characterlab/source/effect/charles_sk3_2eff_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/charles_sk3_2eff_f.scsp",
+      "address": "characterlab/source/effect/charles_sk3_2eff_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/charles_sk3_2eff_f.sct",
+      "address": "characterlab/source/effect/charles_sk3_2eff_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/charles_sk3_3eff.atlas",
+      "address": "characterlab/source/effect/charles_sk3_3eff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/charles_sk3_3eff.scsp",
+      "address": "characterlab/source/effect/charles_sk3_3eff.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/charles_sk3_3eff.sct",
+      "address": "characterlab/source/effect/charles_sk3_3eff.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/charles_sk3eff_b.atlas",
+      "address": "characterlab/source/effect/charles_sk3eff_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/charles_sk3eff_b.scsp",
+      "address": "characterlab/source/effect/charles_sk3eff_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/charles_sk3eff_b.sct",
+      "address": "characterlab/source/effect/charles_sk3eff_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/charles_skill_01.cfx",
+      "address": "characterlab/source/effect/charles_skill_01.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/charles_skill_03_01.cfx",
+      "address": "characterlab/source/effect/charles_skill_03_01.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/charles_skill_03_02.cfx",
+      "address": "characterlab/source/effect/charles_skill_03_02.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/charles_skill_03_02_b2.cfx",
+      "address": "characterlab/source/effect/charles_skill_03_02_b2.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/charles_skill_03_02_pati.particle",
+      "address": "characterlab/source/effect/charles_skill_03_02_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/charles_skill_03_03.cfx",
+      "address": "characterlab/source/effect/charles_skill_03_03.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/charles_skill_03_final.cfx",
+      "address": "characterlab/source/effect/charles_skill_03_final.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/charles_skill_03_final_pati.particle",
+      "address": "characterlab/source/effect/charles_skill_03_final_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/charles_skill_03_slide.cfx",
+      "address": "characterlab/source/effect/charles_skill_03_slide.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/krau_sk2eff_slide_f.atlas",
+      "address": "characterlab/source/effect/krau_sk2eff_slide_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/krau_sk2eff_slide_f.scsp",
+      "address": "characterlab/source/effect/krau_sk2eff_slide_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/krau_skill_0203.atlas",
+      "address": "characterlab/source/effect/krau_skill_0203.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/krau_skill_0203.sct",
+      "address": "characterlab/source/effect/krau_skill_0203.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/sez_gaien_m_sk3_2eff_final.atlas",
+      "address": "characterlab/source/effect/sez_gaien_m_sk3_2eff_final.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/sez_gaien_m_sk3_2eff_final.scsp",
+      "address": "characterlab/source/effect/sez_gaien_m_sk3_2eff_final.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/sez_gaien_m_sk3_2eff_final.sct",
+      "address": "characterlab/source/effect/sez_gaien_m_sk3_2eff_final.sct",
+      "type": "texture"
+    },
+    {
+      "source": "model/charles.timeline",
+      "address": "characterlab/source/model/charles.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/ticle_01.sct",
+      "address": "characterlab/source/particle/ticle_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/tri_pati_01.sct",
+      "address": "characterlab/source/particle/tri_pati_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "spani/charles_sk3_node.scsp",
+      "address": "characterlab/source/spani/charles_sk3_node.scsp",
+      "type": "skeleton"
+    }
+  ],
+  "diagnostics": []
+}

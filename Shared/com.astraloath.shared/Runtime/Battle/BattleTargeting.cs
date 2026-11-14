@@ -31,10 +31,13 @@ namespace AstralOath.Shared.Battle
 
             if (targetRule == "self") return selected == null || selected == actor;
 
-            bool allies = targetRule == "one_ally" || targetRule == "all_allies";
+            bool allies = targetRule == "one_ally" || targetRule == "all_allies" ||
+                targetRule == "one_other_ally" || targetRule == "one_ally_including_dead";
             bool area = targetRule == "all_enemies" || targetRule == "all_allies";
             if (selected == null) return area;
-            if (!selected.IsAlive || (selected.Slot.Side == actor.Slot.Side) != allies) return false;
+            if ((!selected.IsAlive && targetRule != "one_ally_including_dead") ||
+                (selected.Slot.Side == actor.Slot.Side) != allies ||
+                (targetRule == "one_other_ally" && selected == actor)) return false;
             if (area || allies || provoker != null) return true;
             if (targetRule != "one_enemy" && targetRule != "two_enemies") return false;
             if (selected.GetStatus(BattleStatusKind.Stealth) == null) return true;

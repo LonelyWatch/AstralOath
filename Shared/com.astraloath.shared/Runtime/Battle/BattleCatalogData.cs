@@ -73,6 +73,7 @@ namespace AstralOath.Shared.Battle
                 casterSpeedDamagePpm, burnSpeedDamagePpm, casterHealthRatioDamageBp, damageAgainstBuffBp,
                 defensePenetrationBp, stealthPenetrationBp, highestDefensePenetrationBp;
             public bool alwaysCritical, aoeWhenBuffed, aoeOutsideTurn;
+            public string burnPresentationId;
             public string speedUpPresentationId, speedUpIconAsset, speedUpNameKey, speedUpDescriptionKey;
             public int? speedUpAttackRateBp, speedUpPowerBp;
             internal SkillRow Copy() => (SkillRow)MemberwiseClone();
@@ -102,7 +103,7 @@ namespace AstralOath.Shared.Battle
 
     public static class BattlePreviewFactory
     {
-        public const uint RulesVersion = 11;
+        public const uint RulesVersion = 12;
         public const string SlimeSkillId = "preview.slime.s1";
         public static IReadOnlyList<string> DefaultHeroIds { get; } = Array.AsReadOnly(new[] { "c1001", "c1062", "c1005", "c1001" });
 

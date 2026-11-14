@@ -1,0 +1,19 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "kylon_b_idle_eff_f",
+      "ani": "b_idle",
+      "z": "30",
+      "format": "spine",
+      "loop": 1
+    },
+    {
+      "source": "kylon_b_idle_eff_b",
+      "ani": "b_idle",
+      "z": "-30",
+      "format": "spine",
+      "loop": 1
+    }
+  ]
+}

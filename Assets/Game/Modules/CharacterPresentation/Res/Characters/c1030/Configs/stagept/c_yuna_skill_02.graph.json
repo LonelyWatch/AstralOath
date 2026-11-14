@@ -1,0 +1,776 @@
+{
+  "id": "c_yuna_skill_02",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 4
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "guid": 1,
+        "etty": "IDLE"
+      },
+      {
+        "ani": "skill2",
+        "guid": 2,
+        "etty": "ANI"
+      },
+      {
+        "color": "0,0,0,255",
+        "accel": 1.0,
+        "opacity": 0.9,
+        "duration": -1,
+        "localZ": -1,
+        "globalZ": -1,
+        "fadeIn": 200,
+        "fadeOut": 200,
+        "id": "dk",
+        "guid": 3,
+        "etty": "DARK"
+      },
+      {
+        "state": "start",
+        "guid": 4,
+        "etty": "ENTRY"
+      },
+      {
+        "location": 1,
+        "x": 50.0,
+        "y": -25.0,
+        "curve": "0.05747126,0.8124999,0.03065134,0.9583333",
+        "time": 1500,
+        "guid": 5,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.85",
+        "curve": "0.05747126,0.8124999,0.03065134,0.9583333",
+        "time": 1500,
+        "guid": 6,
+        "etty": "ZOOM"
+      },
+      {
+        "source": "yuna_skill_02_sate.cfx",
+        "y": 300.0,
+        "scale": 1.0,
+        "location": 31,
+        "guid": 7,
+        "etty": "EFFECT"
+      },
+      {
+        "location": 31,
+        "y": 160.0,
+        "curve": "0.137931,0.07638886,0,0.9722222",
+        "time": 766,
+        "guid": 8,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.7",
+        "curve": "0.137931,0.07638886,0,0.9722222",
+        "time": 766,
+        "guid": 9,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.05",
+        "curve": "0.0651341,0.7743055,0,0.96875",
+        "time": 2600,
+        "guid": 10,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 31,
+        "curve": "0.0651341,0.7743055,0,0.96875",
+        "time": 2600,
+        "guid": 11,
+        "etty": "CAM"
+      },
+      {
+        "targetId": "dk",
+        "guid": 12,
+        "etty": "STOP"
+      },
+      {
+        "time": 200,
+        "guid": 13,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1",
+        "time": 200,
+        "guid": 14,
+        "etty": "ZOOM"
+      },
+      {
+        "source": "yuna_skill_02_buff.cfx",
+        "scale": 1.0,
+        "location": 12,
+        "locationParam": "root",
+        "guid": 15,
+        "etty": "EFFECT"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "yuna_skill_02_camera",
+        "guid": 16,
+        "etty": "SHAKE"
+      },
+      {
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 17,
+        "etty": "HIT"
+      },
+      {
+        "duration": 350,
+        "program": "sprite_blur",
+        "direction_y": 1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 18,
+        "etty": "PPEFFECT"
+      },
+      {
+        "name": "u_range",
+        "duration": 350,
+        "power": 25.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 19,
+        "etty": "SINE_VALUE"
+      }
+    ],
+    "connections": [
+      {
+        "from": 2,
+        "to": 1,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 3,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 5,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 6,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 7,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 9,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 8,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 10,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 11,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 12,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 14,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 13,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 15,
+        "delay": 1200,
+        "when": 1,
+        "Desc": "1200",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 15,
+        "to": 16,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 15,
+        "to": 17,
+        "delay": 500,
+        "when": 1,
+        "Desc": "500",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 18,
+        "to": 19,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 18,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/yuna_skill_02_camera.scsp",
+      "address": "characterlab/source/camera/yuna_skill_02_camera.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_bidle_eff.atlas",
+      "address": "characterlab/source/effect/yuna_bidle_eff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_bidle_eff.cfx",
+      "address": "characterlab/source/effect/yuna_bidle_eff.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/yuna_bidle_eff.scsp",
+      "address": "characterlab/source/effect/yuna_bidle_eff.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_bidle_eff.sct",
+      "address": "characterlab/source/effect/yuna_bidle_eff.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_bidle_pati1.particle",
+      "address": "characterlab/source/effect/yuna_bidle_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_bidle_pati2.particle",
+      "address": "characterlab/source/effect/yuna_bidle_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_bidle_pati3.particle",
+      "address": "characterlab/source/effect/yuna_bidle_pati3.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_bidle_pati4.particle",
+      "address": "characterlab/source/effect/yuna_bidle_pati4.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_bidle_pati5.particle",
+      "address": "characterlab/source/effect/yuna_bidle_pati5.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_bidle_switch.atlas",
+      "address": "characterlab/source/effect/yuna_bidle_switch.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_bidle_switch.scsp",
+      "address": "characterlab/source/effect/yuna_bidle_switch.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_bidle_switch.sct",
+      "address": "characterlab/source/effect/yuna_bidle_switch.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_bidle_switch_eff.cfx",
+      "address": "characterlab/source/effect/yuna_bidle_switch_eff.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/yuna_fusion_bg.atlas",
+      "address": "characterlab/source/effect/yuna_fusion_bg.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_fusion_bg.scsp",
+      "address": "characterlab/source/effect/yuna_fusion_bg.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_fusion_bg.sct",
+      "address": "characterlab/source/effect/yuna_fusion_bg.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_01_circle_b.atlas",
+      "address": "characterlab/source/effect/yuna_skill_01_circle_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_01_circle_b.scsp",
+      "address": "characterlab/source/effect/yuna_skill_01_circle_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_01_circle_b.sct",
+      "address": "characterlab/source/effect/yuna_skill_01_circle_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_01_circle_f.atlas",
+      "address": "characterlab/source/effect/yuna_skill_01_circle_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_01_circle_f.scsp",
+      "address": "characterlab/source/effect/yuna_skill_01_circle_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_01_circle_f.sct",
+      "address": "characterlab/source/effect/yuna_skill_01_circle_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_01_doldol_pati1.particle",
+      "address": "characterlab/source/effect/yuna_skill_01_doldol_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_01_holo.atlas",
+      "address": "characterlab/source/effect/yuna_skill_01_holo.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_01_holo.cfx",
+      "address": "characterlab/source/effect/yuna_skill_01_holo.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/yuna_skill_01_holo.scsp",
+      "address": "characterlab/source/effect/yuna_skill_01_holo.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_01_holo.sct",
+      "address": "characterlab/source/effect/yuna_skill_01_holo.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_01_holo_pati1.particle",
+      "address": "characterlab/source/effect/yuna_skill_01_holo_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_01_holo_pati2.particle",
+      "address": "characterlab/source/effect/yuna_skill_01_holo_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_01_holo_pati3.particle",
+      "address": "characterlab/source/effect/yuna_skill_01_holo_pati3.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_01_holo_target.atlas",
+      "address": "characterlab/source/effect/yuna_skill_01_holo_target.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_01_holo_target.scsp",
+      "address": "characterlab/source/effect/yuna_skill_01_holo_target.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_01_holo_target.sct",
+      "address": "characterlab/source/effect/yuna_skill_01_holo_target.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_01_motion.cfx",
+      "address": "characterlab/source/effect/yuna_skill_01_motion.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/yuna_skill_01_motion_pati1.particle",
+      "address": "characterlab/source/effect/yuna_skill_01_motion_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_02_buff.atlas",
+      "address": "characterlab/source/effect/yuna_skill_02_buff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_02_buff.cfx",
+      "address": "characterlab/source/effect/yuna_skill_02_buff.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/yuna_skill_02_buff.scsp",
+      "address": "characterlab/source/effect/yuna_skill_02_buff.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_02_buff.sct",
+      "address": "characterlab/source/effect/yuna_skill_02_buff.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_02_buff_pati1.particle",
+      "address": "characterlab/source/effect/yuna_skill_02_buff_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_02_buff_pati2.particle",
+      "address": "characterlab/source/effect/yuna_skill_02_buff_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_02_holo.atlas",
+      "address": "characterlab/source/effect/yuna_skill_02_holo.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_02_holo.cfx",
+      "address": "characterlab/source/effect/yuna_skill_02_holo.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/yuna_skill_02_holo.scsp",
+      "address": "characterlab/source/effect/yuna_skill_02_holo.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_02_holo.sct",
+      "address": "characterlab/source/effect/yuna_skill_02_holo.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_02_holo_circle1.atlas",
+      "address": "characterlab/source/effect/yuna_skill_02_holo_circle1.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_02_holo_circle1.scsp",
+      "address": "characterlab/source/effect/yuna_skill_02_holo_circle1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_02_holo_circle1.sct",
+      "address": "characterlab/source/effect/yuna_skill_02_holo_circle1.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_02_holo_pati1.particle",
+      "address": "characterlab/source/effect/yuna_skill_02_holo_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_02_holo_pati2.particle",
+      "address": "characterlab/source/effect/yuna_skill_02_holo_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_02_holo_pati3.particle",
+      "address": "characterlab/source/effect/yuna_skill_02_holo_pati3.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_02_motion.atlas",
+      "address": "characterlab/source/effect/yuna_skill_02_motion.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_02_motion.cfx",
+      "address": "characterlab/source/effect/yuna_skill_02_motion.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/yuna_skill_02_motion.scsp",
+      "address": "characterlab/source/effect/yuna_skill_02_motion.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_02_motion.sct",
+      "address": "characterlab/source/effect/yuna_skill_02_motion.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_02_motion_pati1.particle",
+      "address": "characterlab/source/effect/yuna_skill_02_motion_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_02_motion_pati2.particle",
+      "address": "characterlab/source/effect/yuna_skill_02_motion_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_02_sate.atlas",
+      "address": "characterlab/source/effect/yuna_skill_02_sate.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_02_sate.cfx",
+      "address": "characterlab/source/effect/yuna_skill_02_sate.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/yuna_skill_02_sate.scsp",
+      "address": "characterlab/source/effect/yuna_skill_02_sate.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_02_sate.sct",
+      "address": "characterlab/source/effect/yuna_skill_02_sate.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_02_sate_pati1.particle",
+      "address": "characterlab/source/effect/yuna_skill_02_sate_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_02_sate_pati2.particle",
+      "address": "characterlab/source/effect/yuna_skill_02_sate_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_02_sate_pati3.particle",
+      "address": "characterlab/source/effect/yuna_skill_02_sate_pati3.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_02_sate_pati4.particle",
+      "address": "characterlab/source/effect/yuna_skill_02_sate_pati4.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_03_boost.atlas",
+      "address": "characterlab/source/effect/yuna_skill_03_boost.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_03_boost.cfx",
+      "address": "characterlab/source/effect/yuna_skill_03_boost.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/yuna_skill_03_boost.scsp",
+      "address": "characterlab/source/effect/yuna_skill_03_boost.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_03_boost.sct",
+      "address": "characterlab/source/effect/yuna_skill_03_boost.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_03_boost_pati1.particle",
+      "address": "characterlab/source/effect/yuna_skill_03_boost_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_03_dark.atlas",
+      "address": "characterlab/source/effect/yuna_skill_03_dark.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_03_dark.scsp",
+      "address": "characterlab/source/effect/yuna_skill_03_dark.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_03_dark.sct",
+      "address": "characterlab/source/effect/yuna_skill_03_dark.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_03_fusion.atlas",
+      "address": "characterlab/source/effect/yuna_skill_03_fusion.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_03_fusion.cfx",
+      "address": "characterlab/source/effect/yuna_skill_03_fusion.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/yuna_skill_03_fusion.scsp",
+      "address": "characterlab/source/effect/yuna_skill_03_fusion.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_03_fusion.sct",
+      "address": "characterlab/source/effect/yuna_skill_03_fusion.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_03_shot.atlas",
+      "address": "characterlab/source/effect/yuna_skill_03_shot.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_03_shot.cfx",
+      "address": "characterlab/source/effect/yuna_skill_03_shot.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/yuna_skill_03_shot.scsp",
+      "address": "characterlab/source/effect/yuna_skill_03_shot.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_03_shot.sct",
+      "address": "characterlab/source/effect/yuna_skill_03_shot.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_03_shot_backsmoke.atlas",
+      "address": "characterlab/source/effect/yuna_skill_03_shot_backsmoke.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/yuna_skill_03_shot_backsmoke.scsp",
+      "address": "characterlab/source/effect/yuna_skill_03_shot_backsmoke.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/yuna_skill_03_shot_backsmoke.sct",
+      "address": "characterlab/source/effect/yuna_skill_03_shot_backsmoke.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/yuna_skill_03_shot_in_pati.particle",
+      "address": "characterlab/source/effect/yuna_skill_03_shot_in_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_skill_03_shot_pati1.particle",
+      "address": "characterlab/source/effect/yuna_skill_03_shot_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/yuna_switch_pati1.particle",
+      "address": "characterlab/source/effect/yuna_switch_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "model/yuna.timeline",
+      "address": "characterlab/source/model/yuna.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/pati_01.sct",
+      "address": "characterlab/source/particle/pati_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/pati_sq_01.sct",
+      "address": "characterlab/source/particle/pati_sq_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/pati_sq_02.sct",
+      "address": "characterlab/source/particle/pati_sq_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_01.sct",
+      "address": "characterlab/source/particle/ticle_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_03.sct",
+      "address": "characterlab/source/particle/ticle_03.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/tri_pati_01.sct",
+      "address": "characterlab/source/particle/tri_pati_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/zodiac_star1.sct",
+      "address": "characterlab/source/particle/zodiac_star1.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

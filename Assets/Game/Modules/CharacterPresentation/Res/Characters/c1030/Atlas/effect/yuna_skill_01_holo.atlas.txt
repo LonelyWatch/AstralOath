@@ -1,0 +1,76 @@
+
+yuna_skill_01_holo.sct
+size: 511,305
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 282, 118
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+fn_fire
+  rotate: false
+  xy: 489, 108
+  size: 20, 97
+  orig: 20, 97
+  offset: 0, 0
+  index: -1
+fn_un
+  rotate: false
+  xy: 489, 207
+  size: 20, 90
+  orig: 20, 90
+  offset: 0, 0
+  index: -1
+font_line
+  rotate: false
+  xy: 459, 108
+  size: 28, 112
+  orig: 28, 112
+  offset: 0, 0
+  index: -1
+grid1
+  rotate: false
+  xy: 2, 2
+  size: 278, 99
+  orig: 278, 99
+  offset: 0, 0
+  index: -1
+grid2
+  rotate: false
+  xy: 2, 103
+  size: 278, 99
+  orig: 278, 99
+  offset: 0, 0
+  index: -1
+grid3
+  rotate: false
+  xy: 2, 204
+  size: 278, 99
+  orig: 278, 99
+  offset: 0, 0
+  index: -1
+guage
+  rotate: false
+  xy: 453, 222
+  size: 23, 81
+  orig: 23, 81
+  offset: 0, 0
+  index: -1
+guage_panel
+  rotate: false
+  xy: 459, 2
+  size: 42, 104
+  orig: 42, 104
+  offset: 0, 0
+  index: -1
+holo_back
+  rotate: false
+  xy: 282, 2
+  size: 175, 114
+  orig: 175, 114
+  offset: 0, 0
+  index: -1

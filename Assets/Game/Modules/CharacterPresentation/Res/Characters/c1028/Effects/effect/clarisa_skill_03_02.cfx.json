@@ -1,0 +1,21 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "clarisa_sk3_eff_bz2",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "clarisa_sk3_eff_fz2",
+      "format": "spine",
+      "globalZ": 1.0,
+      "actions": [
+        {
+          "action": "Fire",
+          "delay": "3100"
+        }
+      ]
+    }
+  ]
+}

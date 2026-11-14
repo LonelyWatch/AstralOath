@@ -224,6 +224,40 @@ namespace AstralOath.Tests
         }
 
         [Test]
+        public void LotsUsesRigLaunchAnchorWhenTheSourceOmitsSelfBone()
+        {
+            var type = Type.GetType(PreviewTypeName, throwOnError: true);
+            var asset = AssetDatabase.LoadAssetAtPath<TextAsset>(HeroDirectory +
+                "c1031/Configs/stagept/c_lots_skill_01.graph.json");
+            Assert.That(asset, Is.Not.Null);
+            using var session = (IDisposable)Activator.CreateInstance(type, nonPublic: true);
+            type.GetMethod("Load", Instance).Invoke(session,
+                new object[] { "c1031", "c_lots_skill_01", asset.text, "c1001", false, false, false });
+            var cues = (IReadOnlyList<(float At, JObject Node, float Duration, JObject[] Modulators)>)
+                type.GetProperty("Cues", Instance).GetValue(session);
+            var shot = cues.Single(cue => (string)cue.Node["etty"] == "SHOT");
+            Assert.That(shot.Node["selfBone"], Is.Null);
+            Assert.That(shot.Duration, Is.EqualTo(.2f).Within(.001f));
+            var seek = type.GetMethod("Seek", Instance);
+
+            Transform Ball()
+            {
+                var playback = type.GetField("playback", Instance).GetValue(session);
+                var root = (Transform)playback.GetType().GetField("root", Instance).GetValue(playback);
+                return root.Find("Skill CFX genie_light_skill_01_ball.cfx");
+            }
+
+            seek.Invoke(session, new object[] { shot.At + .04f });
+            Assert.That(Ball(), Is.Not.Null);
+            float first = Ball().position.x;
+            seek.Invoke(session, new object[] { shot.At + .15f });
+            Assert.That(Ball(), Is.Not.Null);
+            Assert.That(Mathf.Abs(Ball().position.x - first), Is.GreaterThan(.25f));
+            seek.Invoke(session, new object[] { shot.At + .23f });
+            Assert.That(Ball(), Is.Null);
+        }
+
+        [Test]
         public void RaviTerminalCutinHoldsOnceAndScopeEndsAtTheLandingMarker()
         {
             var type = Type.GetType(PreviewTypeName, throwOnError: true);

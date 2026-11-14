@@ -1,0 +1,41 @@
+
+yuna_skill_01_holo_target.sct
+size: 447,183
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 2, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+lock_on
+  rotate: false
+  xy: 416, 103
+  size: 29, 29
+  orig: 29, 29
+  offset: 0, 0
+  index: -1
+tar_circle1
+  rotate: false
+  xy: 173, 2
+  size: 161, 161
+  orig: 161, 161
+  offset: 0, 0
+  index: -1
+tar_circle2
+  rotate: false
+  xy: 336, 103
+  size: 78, 78
+  orig: 78, 78
+  offset: 0, 0
+  index: -1
+tar_circle3
+  rotate: false
+  xy: 336, 2
+  size: 99, 99
+  orig: 99, 99
+  offset: 0, 0
+  index: -1

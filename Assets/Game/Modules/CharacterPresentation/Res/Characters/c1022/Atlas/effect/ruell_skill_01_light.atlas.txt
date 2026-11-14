@@ -1,0 +1,125 @@
+
+ruell_skill_01_light.sct
+size: 1537,252
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+blur_ring
+  rotate: true
+  xy: 1274, 2
+  size: 159, 261
+  orig: 159, 261
+  offset: 0, 0
+  index: -1
+br_cir1
+  rotate: false
+  xy: 202, 2
+  size: 195, 195
+  orig: 195, 195
+  offset: 0, 0
+  index: -1
+br_cir2
+  rotate: false
+  xy: 399, 2
+  size: 195, 195
+  orig: 195, 195
+  offset: 0, 0
+  index: -1
+br_cir3
+  rotate: false
+  xy: 596, 2
+  size: 195, 195
+  orig: 195, 195
+  offset: 0, 0
+  index: -1
+br_cir4
+  rotate: false
+  xy: 793, 2
+  size: 195, 195
+  orig: 195, 195
+  offset: 0, 0
+  index: -1
+cry
+  rotate: true
+  xy: 2, 202
+  size: 48, 67
+  orig: 48, 67
+  offset: 0, 0
+  index: -1
+cry_glow
+  rotate: false
+  xy: 1359, 163
+  size: 62, 82
+  orig: 62, 82
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 1103, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+l_circle1
+  rotate: false
+  xy: 990, 2
+  size: 111, 177
+  orig: 111, 177
+  offset: 0, 0
+  index: -1
+l_circle2
+  rotate: false
+  xy: 1274, 163
+  size: 83, 83
+  orig: 83, 83
+  offset: 0, 0
+  index: -1
+lense_circle1
+  rotate: false
+  xy: 2, 2
+  size: 198, 198
+  orig: 198, 198
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: false
+  xy: 727, 199
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1
+ray
+  rotate: false
+  xy: 71, 238
+  size: 182, 9
+  orig: 182, 9
+  offset: 0, 0
+  index: -1
+shot_ray1
+  rotate: true
+  xy: 71, 202
+  size: 34, 192
+  orig: 34, 192
+  offset: 0, 0
+  index: -1
+weapon_glow_tale
+  rotate: false
+  xy: 265, 199
+  size: 152, 51
+  orig: 152, 51
+  offset: 0, 0
+  index: -1
+weapon_glow_tale_e
+  rotate: false
+  xy: 419, 199
+  size: 152, 51
+  orig: 152, 51
+  offset: 0, 0
+  index: -1
+weapon_glow_tale_f
+  rotate: false
+  xy: 573, 199
+  size: 152, 51
+  orig: 152, 51
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,29 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "yuna_skill_03_dark",
+      "ani": "space",
+      "format": "spine",
+      "globalZ": 10.0
+    },
+    {
+      "source": "yuna_skill_03_space_sate",
+      "format": "spine",
+      "globalZ": 7.0
+    },
+    {
+      "source": "yuna_skill_03_space_bg",
+      "format": "spine",
+      "globalZ": 5.0
+    },
+    {
+      "source": "yuna_skill_03_sate_pati1",
+      "x": "323",
+      "y": "-34",
+      "delay": "1567",
+      "format": "particle",
+      "globalZ": 8.0
+    }
+  ]
+}

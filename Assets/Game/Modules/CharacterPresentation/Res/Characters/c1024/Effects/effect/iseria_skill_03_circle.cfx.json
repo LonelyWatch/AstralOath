@@ -1,0 +1,33 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "iseria_skill_03_magiccircle1",
+      "z": "2",
+      "scale": "1.0,0.4",
+      "rotate": "20",
+      "format": "spine"
+    },
+    {
+      "source": "iseria_skill_03_magiccircle2",
+      "z": "2",
+      "scale": "1.0,0.4",
+      "rotate": "20",
+      "format": "spine"
+    },
+    {
+      "source": "iseria_skill_03_magiccircle3",
+      "z": "2",
+      "scale": "1.0,0.4",
+      "rotate": "20",
+      "format": "spine"
+    },
+    {
+      "source": "iseria_skill_03_circle_pati",
+      "z": "3",
+      "scale": "1.2,0.4",
+      "rotate": "20",
+      "format": "particle"
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "timeline": {
+    "default": {
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "id": "br",
+              "source": "dingo_eff_br",
+              "location": 5,
+              "locationBone": "",
+              "scale": 1.0,
+              "z": 30
+            }
+          }
+        ]
+      },
+      "b_idle": {
+        "duration": 0,
+        "frames": []
+      },
+      "idle": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "skill3_1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "jump_forward": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

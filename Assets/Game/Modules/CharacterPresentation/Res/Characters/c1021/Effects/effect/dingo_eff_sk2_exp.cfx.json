@@ -1,0 +1,22 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "dingo_eff_sk2_exp_f",
+      "y": "0",
+      "z": "200",
+      "scale": "0.8",
+      "format": "spine"
+    },
+    {
+      "source": "dingo_eff_sk2_exp_b",
+      "z": "-200",
+      "scale": "0.8",
+      "format": "spine"
+    },
+    {
+      "source": "dingo_sk2_pati",
+      "format": "particle"
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "ruell_skill_03_circle",
+      "ani": "finish",
+      "z": "0",
+      "scale": "0.6,0.15",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "ruell_skill_03_spirit_back",
+      "ani": "finish",
+      "z": "0",
+      "scale": "0.6",
+      "format": "spine",
+      "globalZ": 0.1
+    },
+    {
+      "source": "ruell_skill_03_spirit_back",
+      "ani": "finish",
+      "z": "0",
+      "scale": "-0.6,0.6",
+      "format": "spine",
+      "globalZ": 0.1
+    },
+    {
+      "source": "ruell_skill_03_obj",
+      "ani": "finish",
+      "scale": "0.6",
+      "format": "spine",
+      "globalZ": 0.2
+    },
+    {
+      "source": "ruell_skill_03_spirit_front",
+      "ani": "finish",
+      "scale": "0.6",
+      "format": "spine",
+      "globalZ": 0.3
+    },
+    {
+      "source": "ruell_skill_03_spirit_front",
+      "ani": "finish",
+      "scale": "-0.6,0.6",
+      "format": "spine",
+      "globalZ": 0.3
+    },
+    {
+      "source": "ruell_skill_03_finaleff",
+      "ani": "finish",
+      "scale": "0.6",
+      "format": "spine",
+      "globalZ": 0.4
+    },
+    {
+      "source": "ruell_skill_03_whiteout",
+      "ani": "finish",
+      "scale": "0.6",
+      "format": "spine",
+      "globalZ": 1.5
+    },
+    {
+      "source": "ruell_skill_03_finish_pati1",
+      "x": "0",
+      "y": "1050",
+      "delay": "1267",
+      "format": "particle",
+      "globalZ": 0.5
+    },
+    {
+      "source": "ruell_skill_03_finish_pati2",
+      "y": "1050",
+      "scale": "1.3,-0.15",
+      "delay": "1300",
+      "format": "particle",
+      "globalZ": 0.7
+    },
+    {
+      "source": "ruell_skill_03_finish_pati3",
+      "delay": "1267",
+      "format": "particle",
+      "globalZ": 1.4
+    },
+    {
+      "source": "ruell_skill_03_finish_pati4",
+      "x": "350",
+      "y": "200",
+      "delay": "1200",
+      "format": "particle",
+      "globalZ": 0.75
+    },
+    {
+      "source": "ruell_skill_03_finish_pati4",
+      "x": "-350",
+      "y": "200",
+      "scale": "-1.0,1.0",
+      "delay": "1200",
+      "format": "particle",
+      "globalZ": 0.75
+    },
+    {
+      "source": "ruell_skill_03_finish_pati5",
+      "y": "1050",
+      "delay": "1267",
+      "format": "particle",
+      "globalZ": 1.1
+    },
+    {
+      "source": "ruell_skill_03_finish_pati6",
+      "delay": "3433",
+      "format": "particle",
+      "globalZ": 1.2
+    },
+    {
+      "source": "ruell_skill_03_finish_pati7",
+      "delay": "6000",
+      "format": "particle",
+      "globalZ": 1.3
+    }
+  ]
+}

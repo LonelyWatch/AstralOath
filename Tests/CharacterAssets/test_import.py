@@ -9,7 +9,7 @@ class ImportBoundaryTests(unittest.TestCase):
         with self.assertRaises(ValueError): importer.select_characters(["c9999"])
         self.assertEqual(len(importer.select_characters(["c1001"])),1)
     def test_base_roster_uses_exact_graph_roots_in_id_order(self):
-        self.assertEqual(list(importer.CHARACTERS), [f"c100{i}" for i in range(1, 10)] + ["c1010", "c1011", "c1012", "c1013", "c1014", "c1015", "c1016", "c1017", "c1018", "c1019", "c1062"])
+        self.assertEqual(list(importer.CHARACTERS), [f"c100{i}" for i in range(1, 10)] + [f"c{i}" for i in (*range(1010, 1025), *range(1027, 1032), 1062)])
         self.assertEqual(importer.skill_ids("c1007"), [f"c_wilderd_skill_{i:02}" for i in range(1, 4)])
         self.assertEqual(importer.skill_ids("c1009")[-1], "c_charlotte_skill_03_05")
         self.assertEqual(importer.skill_ids("c1010"), [f"c_jerato_skill_{i:02}" for i in range(1, 4)])
@@ -28,6 +28,24 @@ class ImportBoundaryTests(unittest.TestCase):
                          ("model/kartua.scsp", "skill3", "cutin", "sk_c1013_3"))
         self.assertEqual(importer.ANIMATION_CUTINS["stagept/c_jerato_skill_03.stg"],
                          ("model/zerato.scsp", "skill3", "cutin", "sk_c1010_3"))
+
+    def test_new_roster_keeps_native_graph_names_and_includes_burn_alternates(self):
+        expected = {
+            "c1020": "schuri", "c1021": "dinggo", "c1022": "ruell", "c1023": "kylon",
+            "c1024": "iseria", "c1027": "charles", "c1028": "clarisa", "c1029": "leo",
+            "c1030": "yuna", "c1031": "lots",
+        }
+        for character, model in expected.items():
+            with self.subTest(character=character):
+                self.assertEqual(importer.CHARACTERS[character][0], model)
+                self.assertEqual(importer.skill_ids(character), [f"c_{model}_skill_{i:02}" for i in range(1, 4)])
+                expected_alternate = [f"c_{model}_skill_01_2"] if character in ("c1022", "c1024") else []
+                self.assertEqual(importer.presentation_ids(character), importer.skill_ids(character) + expected_alternate)
+
+    def test_voice_display_key_normalizes_hyphen_without_touching_sample_identity(self):
+        sample = "voc_c1022_sk3_1-1"
+        self.assertEqual(importer.voice_display_key(sample), "character.voice.voc_c1022_sk3_1_1")
+        self.assertEqual(importer.voice_display_key("voc_c1022_idle"), "character.voice.voc_c1022_idle")
 
     def test_animation_index_is_derived_only_for_the_evidenced_graph_and_keeps_raw_fields(self):
         raw = {"entities": [{"etty": "ANI", "ani": "skill{idx}"}]}

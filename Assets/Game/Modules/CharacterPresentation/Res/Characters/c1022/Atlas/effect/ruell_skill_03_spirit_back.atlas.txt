@@ -1,0 +1,118 @@
+
+ruell_skill_03_spirit_back.sct
+size: 1244,498
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+b_b_arm
+  rotate: true
+  xy: 2, 430
+  size: 66, 48
+  orig: 66, 48
+  offset: 0, 0
+  index: -1
+b_b_arm_light
+  rotate: true
+  xy: 237, 382
+  size: 33, 24
+  orig: 33, 24
+  offset: 0, 0
+  index: -1
+b_silk_1
+  rotate: false
+  xy: 439, 373
+  size: 344, 123
+  orig: 344, 123
+  offset: 0, 0
+  index: -1
+b_silk_1_light
+  rotate: false
+  xy: 266, 414
+  size: 171, 61
+  orig: 171, 61
+  offset: 0, 0
+  index: -1
+b_silk_2
+  rotate: false
+  xy: 898, 2
+  size: 344, 279
+  orig: 344, 279
+  offset: 0, 0
+  index: -1
+b_silk_2_light
+  rotate: true
+  xy: 1099, 283
+  size: 172, 139
+  orig: 172, 139
+  offset: 0, 0
+  index: -1
+b_silk_3
+  rotate: true
+  xy: 2, 2
+  size: 426, 131
+  orig: 426, 131
+  offset: 0, 0
+  index: -1
+b_silk_3_light
+  rotate: false
+  xy: 52, 430
+  size: 212, 65
+  orig: 212, 65
+  offset: 0, 0
+  index: -1
+b_silk_4
+  rotate: true
+  xy: 135, 2
+  size: 378, 233
+  orig: 378, 233
+  offset: 0, 0
+  index: -1
+b_silk_4_light
+  rotate: false
+  xy: 785, 373
+  size: 189, 117
+  orig: 189, 117
+  offset: 0, 0
+  index: -1
+b_t_arm
+  rotate: true
+  xy: 263, 382
+  size: 30, 56
+  orig: 30, 56
+  offset: 0, 0
+  index: -1
+b_t_arm_light
+  rotate: false
+  xy: 321, 382
+  size: 15, 28
+  orig: 15, 28
+  offset: 0, 0
+  index: -1
+body
+  rotate: false
+  xy: 370, 2
+  size: 262, 369
+  orig: 262, 369
+  offset: 0, 0
+  index: -1
+body_light
+  rotate: false
+  xy: 634, 2
+  size: 262, 369
+  orig: 262, 369
+  offset: 0, 0
+  index: -1
+hair_bot
+  rotate: false
+  xy: 898, 283
+  size: 199, 86
+  orig: 199, 86
+  offset: 0, 0
+  index: -1
+hair_bot_light
+  rotate: false
+  xy: 135, 382
+  size: 100, 43
+  orig: 100, 43
+  offset: 0, 0
+  index: -1

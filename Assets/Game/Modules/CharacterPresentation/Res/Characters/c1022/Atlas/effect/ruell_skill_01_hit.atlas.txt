@@ -1,0 +1,139 @@
+
+ruell_skill_01_hit.sct
+size: 1197,244
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+back_fire
+  rotate: true
+  xy: 66, 2
+  size: 226, 187
+  orig: 226, 187
+  offset: 0, 0
+  index: -1
+back_fire_g
+  rotate: true
+  xy: 255, 2
+  size: 226, 187
+  orig: 226, 187
+  offset: 0, 0
+  index: -1
+beam_hit1
+  rotate: false
+  xy: 444, 203
+  size: 145, 34
+  orig: 145, 34
+  offset: 0, 0
+  index: -1
+beam_hit2
+  rotate: false
+  xy: 591, 202
+  size: 145, 34
+  orig: 145, 34
+  offset: 0, 0
+  index: -1
+beam_hit3
+  rotate: true
+  xy: 1119, 2
+  size: 145, 34
+  orig: 145, 34
+  offset: 0, 0
+  index: -1
+beam_hit4
+  rotate: true
+  xy: 1155, 2
+  size: 145, 34
+  orig: 145, 34
+  offset: 0, 0
+  index: -1
+blur_ring
+  rotate: true
+  xy: 856, 2
+  size: 159, 261
+  orig: 159, 261
+  offset: 0, 0
+  index: -1
+blur_ring2
+  rotate: true
+  xy: 1035, 185
+  size: 47, 115
+  orig: 47, 115
+  offset: 0, 0
+  index: -1
+cloud_08
+  rotate: true
+  xy: 904, 185
+  size: 55, 44
+  orig: 55, 44
+  offset: 0, 0
+  index: -1
+cloud_14
+  rotate: false
+  xy: 950, 185
+  size: 83, 54
+  orig: 83, 54
+  offset: 0, 0
+  index: -1
+cloud_crack_02
+  rotate: true
+  xy: 850, 173
+  size: 59, 52
+  orig: 59, 52
+  offset: 0, 0
+  index: -1
+cloud_crack_06
+  rotate: true
+  xy: 1152, 185
+  size: 47, 43
+  orig: 47, 43
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 685, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+hit_circle
+  rotate: false
+  xy: 444, 2
+  size: 65, 199
+  orig: 65, 199
+  offset: 0, 0
+  index: -1
+hit_impact1
+  rotate: true
+  xy: 2, 2
+  size: 230, 62
+  orig: 230, 62
+  offset: 0, 0
+  index: -1
+pierce_hole
+  rotate: true
+  xy: 738, 173
+  size: 69, 110
+  orig: 69, 110
+  offset: 0, 0
+  index: -1
+ray
+  rotate: false
+  xy: 66, 230
+  size: 182, 9
+  orig: 182, 9
+  offset: 0, 0
+  index: -1
+ray2
+  rotate: false
+  xy: 904, 163
+  size: 280, 20
+  orig: 280, 20
+  offset: 0, 0
+  index: -1
+wind_wave1
+  rotate: false
+  xy: 511, 2
+  size: 172, 198
+  orig: 172, 198
+  offset: 0, 0
+  index: -1

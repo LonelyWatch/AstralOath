@@ -1,0 +1,120 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "schuri_skill_03_guncrack_front",
+      "ani": "fiveshot",
+      "scale": "1",
+      "format": "spine",
+      "globalZ": 2.0,
+      "actions": [
+        {
+          "action": "Fire",
+          "delay": "300"
+        },
+        {
+          "action": "Fire",
+          "delay": "533"
+        },
+        {
+          "action": "Fire",
+          "delay": "1100"
+        },
+        {
+          "action": "Fire",
+          "delay": "1366"
+        },
+        {
+          "action": "Fire",
+          "delay": "1700"
+        }
+      ]
+    },
+    {
+      "source": "schuri_skill_03_crack_pati1",
+      "x": "0",
+      "y": "0",
+      "delay": "267",
+      "format": "particle",
+      "globalZ": 1.1,
+      "attach": "schuri_skill_03_guncrack_back/crack1"
+    },
+    {
+      "source": "schuri_skill_03_crack_pati2",
+      "delay": "267",
+      "format": "particle",
+      "globalZ": 1.2,
+      "attach": "schuri_skill_03_guncrack_back/crack1"
+    },
+    {
+      "source": "schuri_skill_03_crack_pati1",
+      "x": "0",
+      "y": "0",
+      "delay": "500",
+      "format": "particle",
+      "globalZ": 1.1,
+      "attach": "schuri_skill_03_guncrack_back/crack2"
+    },
+    {
+      "source": "schuri_skill_03_crack_pati2",
+      "delay": "500",
+      "format": "particle",
+      "globalZ": 1.2,
+      "attach": "schuri_skill_03_guncrack_back/crack2"
+    },
+    {
+      "source": "schuri_skill_03_crack_pati1",
+      "x": "0",
+      "y": "0",
+      "delay": "1033",
+      "format": "particle",
+      "globalZ": 1.1,
+      "attach": "schuri_skill_03_guncrack_back/crack3"
+    },
+    {
+      "source": "schuri_skill_03_crack_pati2",
+      "delay": "1033",
+      "format": "particle",
+      "globalZ": 1.2,
+      "attach": "schuri_skill_03_guncrack_back/crack3"
+    },
+    {
+      "source": "schuri_skill_03_crack_pati1",
+      "x": "0",
+      "y": "0",
+      "delay": "1333",
+      "format": "particle",
+      "globalZ": 1.1,
+      "attach": "schuri_skill_03_guncrack_back/crack4"
+    },
+    {
+      "source": "schuri_skill_03_crack_pati2",
+      "delay": "1333",
+      "format": "particle",
+      "globalZ": 1.2,
+      "attach": "schuri_skill_03_guncrack_back/crack4"
+    },
+    {
+      "source": "schuri_skill_03_crack_pati1",
+      "x": "0",
+      "y": "0",
+      "delay": "1666",
+      "format": "particle",
+      "globalZ": 1.1,
+      "attach": "schuri_skill_03_guncrack_back/crack5"
+    },
+    {
+      "source": "schuri_skill_03_crack_pati2",
+      "delay": "1666",
+      "format": "particle",
+      "globalZ": 1.2,
+      "attach": "schuri_skill_03_guncrack_back/crack5"
+    },
+    {
+      "source": "schuri_skill_03_guncrack_back",
+      "ani": "fiveshot",
+      "format": "spine",
+      "globalZ": -1.0
+    }
+  ]
+}

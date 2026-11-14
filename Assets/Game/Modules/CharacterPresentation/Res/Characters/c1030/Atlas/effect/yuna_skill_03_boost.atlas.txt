@@ -1,0 +1,139 @@
+
+yuna_skill_03_boost.sct
+size: 886,505
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+boost_fire_01
+  rotate: true
+  xy: 517, 455
+  size: 33, 129
+  orig: 33, 129
+  offset: 0, 0
+  index: -1
+boost_fire_02
+  rotate: false
+  xy: 821, 368
+  size: 57, 57
+  orig: 57, 57
+  offset: 0, 0
+  index: -1
+boost_g_smoke1
+  rotate: true
+  xy: 368, 334
+  size: 152, 147
+  orig: 152, 147
+  offset: 0, 0
+  index: -1
+boost_g_smoke2
+  rotate: false
+  xy: 680, 222
+  size: 204, 144
+  orig: 204, 144
+  offset: 0, 0
+  index: -1
+boost_g_smoke3
+  rotate: false
+  xy: 2, 294
+  size: 193, 204
+  orig: 193, 204
+  offset: 0, 0
+  index: -1
+boost_g_smoke4
+  rotate: false
+  xy: 692, 33
+  size: 182, 187
+  orig: 182, 187
+  offset: 0, 0
+  index: -1
+boost_long_sm1
+  rotate: true
+  xy: 437, 33
+  size: 161, 253
+  orig: 161, 253
+  offset: 0, 0
+  index: -1
+boost_long_sm2
+  rotate: false
+  xy: 2, 2
+  size: 200, 290
+  orig: 200, 290
+  offset: 0, 0
+  index: -1
+boost_shot_sm
+  rotate: true
+  xy: 455, 196
+  size: 123, 223
+  orig: 123, 223
+  offset: 0, 0
+  index: -1
+boost_sm1
+  rotate: false
+  xy: 651, 368
+  size: 65, 77
+  orig: 65, 77
+  offset: 0, 0
+  index: -1
+boost_sm_circle
+  rotate: false
+  xy: 204, 235
+  size: 249, 97
+  orig: 249, 97
+  offset: 0, 0
+  index: -1
+boot_glow_L
+  rotate: true
+  xy: 651, 447
+  size: 44, 66
+  orig: 44, 66
+  offset: 0, 0
+  index: -1
+boot_glow_R
+  rotate: false
+  xy: 772, 368
+  size: 47, 69
+  orig: 47, 69
+  offset: 0, 0
+  index: -1
+boot_spark_01
+  rotate: true
+  xy: 719, 446
+  size: 43, 55
+  orig: 43, 55
+  offset: 0, 0
+  index: -1
+boot_spark_02
+  rotate: false
+  xy: 718, 368
+  size: 52, 76
+  orig: 52, 76
+  offset: 0, 0
+  index: -1
+burst_sphear_g
+  rotate: false
+  xy: 517, 321
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+circle_ecle
+  rotate: false
+  xy: 204, 2
+  size: 231, 231
+  orig: 231, 231
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 197, 334
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: false
+  xy: 437, 2
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1

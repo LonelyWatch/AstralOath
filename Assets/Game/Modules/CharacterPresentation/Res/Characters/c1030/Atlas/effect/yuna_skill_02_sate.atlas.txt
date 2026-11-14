@@ -1,0 +1,174 @@
+
+yuna_skill_02_sate.sct
+size: 1005,855
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+beam
+  rotate: true
+  xy: 321, 352
+  size: 80, 22
+  orig: 80, 22
+  offset: 0, 0
+  index: -1
+boom_tape
+  rotate: false
+  xy: 846, 219
+  size: 85, 200
+  orig: 85, 200
+  offset: 0, 0
+  index: -1
+circle_ecle
+  rotate: false
+  xy: 613, 250
+  size: 231, 231
+  orig: 231, 231
+  offset: 0, 0
+  index: -1
+doldol_body
+  rotate: true
+  xy: 664, 721
+  size: 88, 148
+  orig: 88, 148
+  offset: 0, 0
+  index: -1
+doldol_eye
+  rotate: false
+  xy: 933, 303
+  size: 51, 59
+  orig: 51, 59
+  offset: 0, 0
+  index: -1
+doldol_left
+  rotate: false
+  xy: 929, 568
+  size: 66, 98
+  orig: 66, 98
+  offset: 0, 0
+  index: -1
+doldol_right
+  rotate: false
+  xy: 856, 568
+  size: 71, 97
+  orig: 71, 97
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 820, 677
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+holo_circle
+  rotate: false
+  xy: 582, 483
+  size: 236, 236
+  orig: 236, 236
+  offset: 0, 0
+  index: -1
+light_core
+  rotate: false
+  xy: 530, 721
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: false
+  xy: 352, 219
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1
+ring_flash
+  rotate: false
+  xy: 856, 421
+  size: 145, 145
+  orig: 145, 145
+  offset: 0, 0
+  index: -1
+sate_in_light
+  rotate: true
+  xy: 933, 219
+  size: 82, 70
+  orig: 82, 70
+  offset: 0, 0
+  index: -1
+sate_l_wing1
+  rotate: false
+  xy: 352, 250
+  size: 259, 202
+  orig: 259, 202
+  offset: 0, 0
+  index: -1
+sate_l_wing2
+  rotate: false
+  xy: 321, 454
+  size: 259, 202
+  orig: 259, 202
+  offset: 0, 0
+  index: -1
+sate_r_wing1
+  rotate: false
+  xy: 352, 2
+  size: 292, 215
+  orig: 292, 215
+  offset: 0, 0
+  index: -1
+sate_r_wing2
+  rotate: false
+  xy: 646, 2
+  size: 292, 215
+  orig: 292, 215
+  offset: 0, 0
+  index: -1
+sate_sphear_detail
+  rotate: false
+  xy: 2, 352
+  size: 317, 317
+  orig: 317, 317
+  offset: 0, 0
+  index: -1
+sate_sphear_grid
+  rotate: false
+  xy: 2, 2
+  size: 348, 348
+  orig: 348, 348
+  offset: 0, 0
+  index: -1
+sate_sphear_grid1
+  rotate: false
+  xy: 2, 671
+  size: 174, 174
+  orig: 174, 174
+  offset: 0, 0
+  index: -1
+sate_sphear_grid2
+  rotate: false
+  xy: 178, 671
+  size: 174, 174
+  orig: 174, 174
+  offset: 0, 0
+  index: -1
+sate_sphear_grid3
+  rotate: false
+  xy: 354, 658
+  size: 174, 174
+  orig: 174, 174
+  offset: 0, 0
+  index: -1
+sate_wing_glows
+  rotate: true
+  xy: 940, 2
+  size: 192, 51
+  orig: 192, 51
+  offset: 0, 0
+  index: -1
+shot_ray1
+  rotate: false
+  xy: 820, 483
+  size: 34, 192
+  orig: 34, 192
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,41 @@
+
+healer_skill_03.sct
+size: 372,418
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+heal_glow
+  rotate: false
+  xy: 2, 2
+  size: 266, 293
+  orig: 266, 293
+  offset: 0, 0
+  index: -1
+light_pillar_1
+  rotate: true
+  xy: 2, 297
+  size: 112, 204
+  orig: 112, 204
+  offset: 0, 0
+  index: -1
+light_pillar_2
+  rotate: false
+  xy: 270, 200
+  size: 94, 172
+  orig: 94, 172
+  offset: 0, 0
+  index: -1
+light_ray
+  rotate: true
+  xy: 208, 374
+  size: 42, 137
+  orig: 42, 137
+  offset: 0, 0
+  index: -1
+wind_wave1
+  rotate: true
+  xy: 270, 2
+  size: 196, 100
+  orig: 196, 100
+  offset: 0, 0
+  index: -1

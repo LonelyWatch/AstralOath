@@ -1,0 +1,76 @@
+
+dingo_eff_sk3_p3.sct
+size: 441,479
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 2, 307
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+foodfinal_01
+  rotate: false
+  xy: 140, 2
+  size: 174, 172
+  orig: 174, 172
+  offset: 0, 0
+  index: -1
+foodfinal_02
+  rotate: true
+  xy: 238, 176
+  size: 220, 80
+  orig: 220, 80
+  offset: 0, 0
+  index: -1
+foodfinal_03
+  rotate: false
+  xy: 2, 215
+  size: 234, 90
+  orig: 234, 90
+  offset: 0, 0
+  index: -1
+light_halfcicle_01
+  rotate: true
+  xy: 2, 2
+  size: 211, 136
+  orig: 211, 136
+  offset: 0, 0
+  index: -1
+smoke_1
+  rotate: true
+  xy: 320, 130
+  size: 120, 119
+  orig: 120, 119
+  offset: 0, 0
+  index: -1
+smoke_2
+  rotate: true
+  xy: 316, 2
+  size: 126, 110
+  orig: 126, 110
+  offset: 0, 0
+  index: -1
+smoke_3
+  rotate: false
+  xy: 320, 372
+  size: 109, 105
+  orig: 109, 105
+  offset: 0, 0
+  index: -1
+smoke_4
+  rotate: false
+  xy: 173, 398
+  size: 119, 77
+  orig: 119, 77
+  offset: 0, 0
+  index: -1
+smoke_5
+  rotate: true
+  xy: 320, 252
+  size: 118, 110
+  orig: 118, 110
+  offset: 0, 0
+  index: -1

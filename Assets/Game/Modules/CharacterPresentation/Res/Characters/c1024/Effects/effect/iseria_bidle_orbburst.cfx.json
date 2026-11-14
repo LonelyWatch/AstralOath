@@ -1,0 +1,26 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "iseria_bidle_pati4",
+      "z": "2",
+      "delay": "200",
+      "format": "particle"
+    },
+    {
+      "source": "iseria_bidle_pati5",
+      "z": "3",
+      "scale": "1.0,0.6",
+      "rotate": "25",
+      "format": "particle"
+    },
+    {
+      "source": "iseria_bidle_pati5",
+      "z": "3",
+      "scale": "1.1,0.65",
+      "rotate": "-60",
+      "delay": "100",
+      "format": "particle"
+    }
+  ]
+}

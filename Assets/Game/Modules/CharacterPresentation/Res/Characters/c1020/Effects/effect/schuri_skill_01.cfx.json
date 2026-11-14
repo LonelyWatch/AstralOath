@@ -1,0 +1,29 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "schuri_skill_01",
+      "z": "3",
+      "scale": "1",
+      "format": "spine"
+    },
+    {
+      "source": "schuri_skill_01_pati1",
+      "x": "290.32",
+      "y": "402.67",
+      "z": "1",
+      "scale": "0.9",
+      "delay": "964",
+      "format": "particle"
+    },
+    {
+      "source": "schuri_skill_01_pati2",
+      "x": "200.57",
+      "y": "403.84",
+      "z": "1",
+      "scale": "0.9",
+      "delay": "1964",
+      "format": "particle"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "yuna_skill_02_buff",
+      "z": "3",
+      "format": "spine"
+    },
+    {
+      "source": "yuna_skill_02_buff_pati1",
+      "z": "5",
+      "scale": "0.4,1.0",
+      "delay": "450",
+      "format": "particle"
+    },
+    {
+      "source": "yuna_skill_02_buff_pati2",
+      "z": "7",
+      "delay": "500",
+      "format": "particle"
+    }
+  ]
+}

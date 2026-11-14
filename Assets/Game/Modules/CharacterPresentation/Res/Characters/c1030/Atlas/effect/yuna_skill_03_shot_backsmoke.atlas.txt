@@ -1,0 +1,48 @@
+
+yuna_skill_03_shot_backsmoke.sct
+size: 443,209
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cloud_13
+  rotate: true
+  xy: 298, 89
+  size: 95, 68
+  orig: 95, 68
+  offset: 0, 0
+  index: -1
+cloud_15
+  rotate: true
+  xy: 368, 89
+  size: 89, 73
+  orig: 89, 73
+  offset: 0, 0
+  index: -1
+cloud_16
+  rotate: true
+  xy: 2, 165
+  size: 42, 55
+  orig: 42, 55
+  offset: 0, 0
+  index: -1
+cloud_big_08
+  rotate: true
+  xy: 2, 2
+  size: 161, 81
+  orig: 161, 81
+  offset: 0, 0
+  index: -1
+cloud_big_12
+  rotate: false
+  xy: 85, 89
+  size: 211, 118
+  orig: 211, 118
+  offset: 0, 0
+  index: -1
+cloud_line
+  rotate: false
+  xy: 85, 2
+  size: 334, 85
+  orig: 334, 85
+  offset: 0, 0
+  index: -1

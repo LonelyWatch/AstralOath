@@ -193,6 +193,8 @@ namespace AstralOath.Client.BattleScene
                     skillPresentation.Prepare(actorView, row?.presentationId ?? skillId);
                     if (!string.IsNullOrEmpty(row?.speedUpPresentationId))
                         skillPresentation.Prepare(actorView, row.speedUpPresentationId);
+                    if (!string.IsNullOrEmpty(row?.burnPresentationId))
+                        skillPresentation.Prepare(actorView, row.burnPresentationId);
                 }
             }
             voice = new BattleVoice(audioCatalog, audioBanks, impactBank, Snapshot.Units.Select(unit => unit.DefinitionId));
@@ -277,7 +279,8 @@ namespace AstralOath.Client.BattleScene
             if (TrySkill(selected, out var skill) && TryGetWorldPress(out var press))
             {
                 Ray ray = camera.ScreenPointToRay(press);
-                var target = views.Where(pair => pair.Value.Contains(ray) && ai.CanSelectTarget(Snapshot, skill.id, pair.Key, useSoulBurn))
+                var target = views.Where(pair => ai.CanSelectTarget(Snapshot, skill.id, pair.Key, useSoulBurn) &&
+                    pair.Value.Contains(ray, allowInactive: skill.target == "one_ally_including_dead"))
                     .OrderBy(pair => ((Vector2)camera.WorldToScreenPoint(pair.Value.Center) - press).sqrMagnitude)
                     .Select(pair => pair.Key).FirstOrDefault();
                 if (target != null) ChooseTarget(target);
@@ -492,6 +495,8 @@ namespace AstralOath.Client.BattleScene
                 case BattleFlowEventKind.Action:
                     CloseInspection();
                     presentingNextTurn = false;
+                    if (item.Origin == BattleActionOrigin.Primary)
+                        turnHud.SetReadiness(item.SourceId, 0);
                     if (item.Origin == BattleActionOrigin.Primary || item.Origin == BattleActionOrigin.Counter)
                         turnHud.BeginFeedbackAction();
                     if (item.Origin == BattleActionOrigin.Counter)
@@ -502,12 +507,17 @@ namespace AstralOath.Client.BattleScene
                     var primary = item.TargetId != null && views.TryGetValue(item.TargetId, out var target)
                         ? target.Actor : null;
                     var actionEvents = playback.TakeWhile(next => next.Kind != BattleFlowEventKind.Action).ToArray();
-                    var targetEvents = actionEvents.Where(next => (next.Kind == BattleFlowEventKind.Damage && !IsPeriodicDamage(next)) ||
-                        next.Kind == BattleFlowEventKind.Healing).ToArray();
+                    var sourceSide = Snapshot.GetUnit(item.SourceId).Slot.Side;
+                    bool offensive = skills.TryGetValue(item.SkillId, out var actionSkill)
+                        ? actionSkill.target is "one_enemy" or "two_enemies" or "all_enemies" or "passive"
+                        : item.SkillId == BattlePreviewFactory.SlimeSkillId;
+                    var targetEvents = actionEvents.Where(next =>
+                        (offensive ? next.Kind == BattleFlowEventKind.Damage && !IsPeriodicDamage(next)
+                            : next.Kind is BattleFlowEventKind.Healing or BattleFlowEventKind.UnitRevived) &&
+                        (Snapshot.GetUnit(next.TargetId).Slot.Side != sourceSide) == offensive).ToArray();
                     if (targetEvents.Length == 0 && skills.TryGetValue(item.SkillId, out var support) &&
                         (support.target == "all_allies" || support.target == "all_enemies" || support.target == "self"))
                     {
-                        var sourceSide = Snapshot.GetUnit(item.SourceId).Slot.Side;
                         bool allies = support.target == "all_allies" || support.target == "self";
                         if (support.target == "self") primary = views[item.SourceId].Actor;
                         targetEvents = actionEvents.Where(next => next.SourceId == item.SourceId && next.TargetId != null &&
@@ -517,6 +527,9 @@ namespace AstralOath.Client.BattleScene
                     }
                     var targets = targetEvents.Select(next => next.TargetId).Where(id => id != null)
                         .Distinct(StringComparer.Ordinal).Select(id => views[id].Actor).ToArray();
+                    if (item.TargetId != null && views[item.TargetId].DeathStarted &&
+                        skills.TryGetValue(item.SkillId, out var resurrection) && resurrection.target == "one_ally_including_dead")
+                        views[item.TargetId].PrepareRevivalTarget();
                     var timing = skillPresentation.Begin(item.PresentationId, views[item.SourceId].Actor, primary, targets);
                     presentedSkillId = item.SkillId;
                     bool callsAlly = item.Origin == BattleActionOrigin.Primary &&
@@ -609,11 +622,20 @@ namespace AstralOath.Client.BattleScene
                     }
                     break;
                 case BattleFlowEventKind.ReadinessChanged:
-                    turnHud.SetReadiness(item.TargetId, item.Amount);
+                    ScheduleFeedback(LastFeedbackAt(item.TargetId), item.TargetId,
+                        () => turnHud.SetReadiness(item.TargetId, item.Amount));
                     break;
                 case BattleFlowEventKind.TurnEnded:
                     views[item.SourceId].Actor.SetTurnReady(false);
-                    turnHud.SetReadiness(item.SourceId, 0);
+                    break;
+                case BattleFlowEventKind.UnitRevived:
+                    ScheduleFeedback(Mathf.Max(lastDamageImpact, LastFeedbackAt(item.TargetId)), item.TargetId, () =>
+                    {
+                        var view = views[item.TargetId];
+                        view.Show(true);
+                        view.SetHealth(item.RemainingHealth.Value, item.MaximumHealth.Value);
+                        turnHud.RestoreUnit(item.TargetId);
+                    });
                     break;
                 case BattleFlowEventKind.UnitDefeated:
                     ScheduleFeedback(LastFeedbackAt(item.TargetId), item.TargetId, () =>
@@ -638,6 +660,7 @@ namespace AstralOath.Client.BattleScene
                         });
                     break;
                 case BattleFlowEventKind.TurnSkipped:
+                    turnHud.SetReadiness(item.SourceId, 0);
                     banner.text = $"{Label(Snapshot.GetUnit(item.SourceId).NameKey)} · 眩晕";
                     break;
             }
@@ -648,7 +671,8 @@ namespace AstralOath.Client.BattleScene
             pendingAbsorption.TargetId == item.TargetId;
 
         private static bool IsPeriodicDamage(BattleFlowEvent item) =>
-            item.Kind == BattleFlowEventKind.Damage && item.StatusKind == BattleStatusKind.Poison;
+            item.Kind == BattleFlowEventKind.Damage && (item.StatusKind == BattleStatusKind.Poison ||
+                item.StatusKind == BattleStatusKind.Burn || item.StatusKind == BattleStatusKind.Bleed);
 
         private void ShowPeriodicDamage(BattleFlowEvent item, int absorbed)
         {
@@ -1045,6 +1069,7 @@ namespace AstralOath.Client.BattleScene
             private readonly IReadOnlyDictionary<string, Texture2D> deathTextures;
             private BattleDeathPresentation death;
             private bool warnedAnchor, deathStarted;
+            private Bounds defeatTargetBounds;
             private bool shown = true;
             private long presentedHealth;
             private long presentedShield;
@@ -1107,7 +1132,9 @@ namespace AstralOath.Client.BattleScene
             public Image Health { get; }
             public RectTransform FeedbackAnchor { get; }
             public Vector3 Center => Actor.Bounds.center;
-            public bool Contains(Ray ray) => slot.gameObject.activeInHierarchy && Actor.Bounds.IntersectRay(ray);
+            public bool Contains(Ray ray, bool allowInactive = false) =>
+                slot.gameObject.activeInHierarchy && !deathStarted ? Actor.Bounds.IntersectRay(ray)
+                    : allowInactive && deathStarted && defeatTargetBounds.IntersectRay(ray);
 
             public bool IsDying => death?.IsRunning == true;
             public bool DeathStarted => deathStarted;
@@ -1160,6 +1187,8 @@ namespace AstralOath.Client.BattleScene
             public void BeginDeath()
             {
                 if (deathStarted) return;
+                defeatTargetBounds = Actor.Bounds;
+                defeatTargetBounds.Expand(new Vector3(0.25f, 0.25f, 0.5f));
                 deathStarted = true;
                 SetStealth(false);
                 SetShield(0);
@@ -1167,6 +1196,11 @@ namespace AstralOath.Client.BattleScene
                 Actor.SetPaused(true);
                 death.Begin();
             }
+            public void PrepareRevivalTarget()
+            {
+                if (!slot.gameObject.activeSelf) slot.gameObject.SetActive(true);
+            }
+
             public void Show(bool value)
             {
                 shown = value;

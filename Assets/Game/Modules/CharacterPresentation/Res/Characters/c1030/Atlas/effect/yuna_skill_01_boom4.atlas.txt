@@ -1,0 +1,69 @@
+
+yuna_skill_01_boom4.sct
+size: 252,465
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cloud_10
+  rotate: false
+  xy: 173, 317
+  size: 50, 39
+  orig: 50, 39
+  offset: 0, 0
+  index: -1
+cloud_14
+  rotate: true
+  xy: 174, 2
+  size: 83, 54
+  orig: 83, 54
+  offset: 0, 0
+  index: -1
+cloud_18
+  rotate: false
+  xy: 174, 87
+  size: 75, 53
+  orig: 75, 53
+  offset: 0, 0
+  index: -1
+cloud_crack_02
+  rotate: false
+  xy: 174, 142
+  size: 59, 52
+  orig: 59, 52
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 174
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+rock_dust1
+  rotate: false
+  xy: 2, 2
+  size: 170, 170
+  orig: 170, 170
+  offset: 0, 0
+  index: -1
+smoke_2
+  rotate: false
+  xy: 2, 345
+  size: 126, 110
+  orig: 126, 110
+  offset: 0, 0
+  index: -1
+smoke_3
+  rotate: false
+  xy: 130, 358
+  size: 109, 105
+  orig: 109, 105
+  offset: 0, 0
+  index: -1
+smoke_4
+  rotate: true
+  xy: 173, 196
+  size: 119, 77
+  orig: 119, 77
+  offset: 0, 0
+  index: -1

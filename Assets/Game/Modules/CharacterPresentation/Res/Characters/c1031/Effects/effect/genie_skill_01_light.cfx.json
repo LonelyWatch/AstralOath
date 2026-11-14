@@ -1,0 +1,25 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "genie_skill_01_shot",
+      "ani": "light",
+      "z": "3",
+      "format": "spine"
+    },
+    {
+      "source": "genie_skill_01_back",
+      "ani": "light",
+      "z": "-1",
+      "format": "spine"
+    },
+    {
+      "source": "genie_shot_light_pati",
+      "x": "40",
+      "z": "2",
+      "scale": "1.05",
+      "delay": "50",
+      "format": "particle"
+    }
+  ]
+}

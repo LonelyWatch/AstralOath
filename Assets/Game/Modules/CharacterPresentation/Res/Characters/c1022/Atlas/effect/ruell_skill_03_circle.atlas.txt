@@ -1,0 +1,69 @@
+
+ruell_skill_03_circle.sct
+size: 952,935
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+add_circle_01
+  rotate: false
+  xy: 532, 269
+  size: 251, 251
+  orig: 251, 251
+  offset: 0, 0
+  index: -1
+add_circle_02
+  rotate: false
+  xy: 532, 2
+  size: 265, 265
+  orig: 265, 265
+  offset: 0, 0
+  index: -1
+big_circle1
+  rotate: false
+  xy: 2, 2
+  size: 528, 528
+  orig: 528, 528
+  offset: 0, 0
+  index: -1
+burst_sphear
+  rotate: false
+  xy: 799, 2
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+circle_scan
+  rotate: false
+  xy: 405, 532
+  size: 338, 338
+  orig: 338, 338
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 745, 717
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+magic_circle3
+  rotate: false
+  xy: 785, 269
+  size: 165, 165
+  orig: 165, 165
+  offset: 0, 0
+  index: -1
+main_circle1
+  rotate: false
+  xy: 2, 532
+  size: 401, 401
+  orig: 401, 401
+  offset: 0, 0
+  index: -1
+main_circle2
+  rotate: false
+  xy: 745, 522
+  size: 193, 193
+  orig: 193, 193
+  offset: 0, 0
+  index: -1

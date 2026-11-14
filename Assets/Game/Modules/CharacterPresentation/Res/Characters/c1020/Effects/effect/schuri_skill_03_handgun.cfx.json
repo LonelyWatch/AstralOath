@@ -1,0 +1,26 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "schuri_skill3_handgun",
+      "z": "1",
+      "repeat": "2;20",
+      "format": "spine"
+    },
+    {
+      "source": "schuri_skill_03_handgun_pati1",
+      "x": "40",
+      "z": "2",
+      "scale": "0.43,1.0",
+      "delay": "50",
+      "format": "particle"
+    },
+    {
+      "source": "schuri_skill_03_handgun_pati2",
+      "x": "100",
+      "z": "3",
+      "delay": "90",
+      "format": "particle"
+    }
+  ]
+}

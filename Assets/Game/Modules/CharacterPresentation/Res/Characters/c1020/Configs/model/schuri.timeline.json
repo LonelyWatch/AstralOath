@@ -1,0 +1,203 @@
+{
+  "timeline": {
+    "default": {
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "shake",
+            "param": {
+              "duration": -1,
+              "powerX": 10,
+              "powerY": 10,
+              "timeScale": 1.0,
+              "type": 1,
+              "source": "schuri_skill_01_cm"
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "schuri_skill_01",
+              "location": 5,
+              "locationBone": "shadow",
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 1320,
+            "func": "fire",
+            "param": {}
+          },
+          {
+            "time": 2542,
+            "func": "fire",
+            "param": {}
+          },
+          {
+            "time": 2700,
+            "func": "fire",
+            "param": {}
+          }
+        ]
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "schuri_skill_02",
+              "location": 5,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "shake",
+            "param": {
+              "duration": -1,
+              "powerX": 10,
+              "powerY": 10,
+              "timeScale": 1.0,
+              "type": 1,
+              "source": "schuri_skill_02_cm"
+            }
+          },
+          {
+            "time": 1122,
+            "func": "fire",
+            "param": {}
+          },
+          {
+            "time": 1322,
+            "func": "fire",
+            "param": {}
+          },
+          {
+            "time": 2310,
+            "func": "fire",
+            "param": {}
+          },
+          {
+            "time": 2510,
+            "func": "fire",
+            "param": {}
+          }
+        ]
+      },
+      "skill3": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill3_1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "shake",
+            "param": {
+              "duration": -1,
+              "powerX": 10,
+              "powerY": 10,
+              "timeScale": 1.0,
+              "type": 1,
+              "source": "schuri_skill_03_handgun_camera"
+            }
+          },
+          {
+            "time": 667,
+            "func": "effect",
+            "param": {
+              "source": "schuri_skill_03_handgun",
+              "location": 5,
+              "locationBone": "shadow",
+              "x": 280,
+              "y": 385,
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 1300,
+            "func": "effect",
+            "param": {
+              "source": "schuri_skill_03_handgun",
+              "location": 5,
+              "locationBone": "shadow",
+              "x": 315,
+              "y": 281,
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 1600,
+            "func": "effect",
+            "param": {
+              "source": "schuri_skill_03_handgun",
+              "location": 5,
+              "locationBone": "shadow",
+              "x": 240,
+              "y": 370,
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 1900,
+            "func": "effect",
+            "param": {
+              "source": "schuri_skill_03_handgun",
+              "location": 5,
+              "locationBone": "shadow",
+              "x": 270,
+              "y": 384,
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 2500,
+            "func": "effect",
+            "param": {
+              "source": "schuri_skill_03_handgun",
+              "location": 5,
+              "locationBone": "shadow",
+              "x": 280,
+              "y": 388,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill3_2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "shake",
+            "param": {
+              "duration": -1,
+              "powerX": 10,
+              "powerY": 10,
+              "timeScale": 1.0,
+              "type": 1,
+              "source": "schuri_skill_03_snipe_camera"
+            }
+          },
+          {
+            "time": 300,
+            "func": "effect",
+            "param": {
+              "source": "schuri_skill_03_snipe",
+              "location": 5,
+              "locationBone": "shadow",
+              "x": 400,
+              "y": 400,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "run_start": {
+        "duration": 0,
+        "frames": []
+      }
+    }
+  }
+}

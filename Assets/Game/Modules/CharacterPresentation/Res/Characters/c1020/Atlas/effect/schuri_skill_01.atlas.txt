@@ -1,0 +1,118 @@
+
+schuri_skill_01.sct
+size: 481,1172
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 268, 569
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+impact1
+  rotate: false
+  xy: 268, 911
+  size: 120, 129
+  orig: 120, 129
+  offset: 0, 0
+  index: -1
+impact2
+  rotate: true
+  xy: 394, 911
+  size: 216, 85
+  orig: 216, 85
+  offset: 0, 0
+  index: -1
+impact3
+  rotate: false
+  xy: 268, 448
+  size: 177, 119
+  orig: 177, 119
+  offset: 0, 0
+  index: -1
+impact4
+  rotate: false
+  xy: 173, 1066
+  size: 219, 103
+  orig: 219, 103
+  offset: 0, 0
+  index: -1
+impact_center
+  rotate: false
+  xy: 2, 1066
+  size: 169, 104
+  orig: 169, 104
+  offset: 0, 0
+  index: -1
+impact_glow
+  rotate: false
+  xy: 268, 110
+  size: 183, 167
+  orig: 183, 167
+  offset: 0, 0
+  index: -1
+impact_glow_g
+  rotate: false
+  xy: 268, 279
+  size: 183, 167
+  orig: 183, 167
+  offset: 0, 0
+  index: -1
+ray1
+  rotate: true
+  xy: 453, 110
+  size: 219, 15
+  orig: 219, 15
+  offset: 0, 0
+  index: -1
+ray1_g
+  rotate: true
+  xy: 453, 331
+  size: 219, 15
+  orig: 219, 15
+  offset: 0, 0
+  index: -1
+self_shw
+  rotate: false
+  xy: 268, 2
+  size: 209, 106
+  orig: 209, 106
+  offset: 0, 0
+  index: -1
+sonic_wave1
+  rotate: false
+  xy: 2, 2
+  size: 264, 264
+  orig: 264, 264
+  offset: 0, 0
+  index: -1
+sonic_wave2
+  rotate: false
+  xy: 2, 268
+  size: 264, 264
+  orig: 264, 264
+  offset: 0, 0
+  index: -1
+sonic_wave3
+  rotate: false
+  xy: 2, 534
+  size: 264, 264
+  orig: 264, 264
+  offset: 0, 0
+  index: -1
+sonic_wave4
+  rotate: false
+  xy: 2, 800
+  size: 264, 264
+  orig: 264, 264
+  offset: 0, 0
+  index: -1
+wind_shock
+  rotate: false
+  xy: 268, 740
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,23 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "iseria_skill_01_renewal",
+      "z": "5",
+      "format": "spine"
+    },
+    {
+      "source": "iseria_skill_01_renewal_pati1",
+      "z": "7",
+      "delay": "820",
+      "format": "particle"
+    },
+    {
+      "source": "iseria_skill_01_renewal_pati2",
+      "x": "320",
+      "z": "6",
+      "delay": "200",
+      "format": "particle"
+    }
+  ]
+}

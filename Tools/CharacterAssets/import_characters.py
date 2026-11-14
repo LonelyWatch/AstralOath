@@ -30,12 +30,27 @@ CHARACTERS={
     "c1017":("achates","雅卡泰丝"),
     "c1018":("aither","埃德勒"),
     "c1019":("ravi","萝菲"),
+    "c1020":("schuri","修里"),
+    "c1021":("dinggo","汀果"),
+    "c1022":("ruell","光之瑞儿"),
+    "c1023":("kylon","凯隆"),
+    "c1024":("iseria","伊赛丽亚"),
+    "c1027":("charles","查尔斯"),
+    "c1028":("clarisa","克莱莉莎"),
+    "c1029":("leo","雷欧"),
+    "c1030":("yuna","尤娜"),
+    "c1031":("lots","拉兹"),
     "c1062":("angelica","安洁莉卡"),
 }
 # Keep source identifiers verbatim even where the model and STG stems differ.
 SKILL_STEMS={"c1002":"c_cecilia_skill_new","c1007":"c_wilderd_skill","c1008":"c_aming_skill","c1010":"c_jerato_skill","c1013":"c_cartuja_skill","c1015":"c_baal_skill","c1017":"c_acha_skill","c1018":"c_iterre_skill"}
 SKILL_VARIANTS={("c1009",3):"c_charlotte_skill_03_05",
                 **{("c1014",index):f"c_cedars_skill_{index:02}_new" for index in range(1,4)}}
+# Source S1 Soulburn graphs are distinct; retain the three primary slots first.
+EXTRA_SKILL_GRAPHS = {
+    "c1022": ("c_ruell_skill_01_2",),
+    "c1024": ("c_iseria_skill_01_2",),
+}
 # Base S1 has an explicit skill1 listener and matching model timeline event.
 GRAPH_ANIMATION_INDEX = {"stagept/c_iterre_skill_01.stg": 1}
 # Base STG omits this cue; the base skeleton marker and skin STG corroborate its timing.
@@ -47,12 +62,17 @@ ANIMATION_CUTINS={
     "stagept/c_baal_skill_03.stg": ("model/baal_sezan.scsp", "skill3", "cutin", "sk_c1015_3"),
     "stagept/c_iterre_skill_03.stg": ("model/aither.scsp", "skill3", "cutin", "sk_c1018_3"),
     "stagept/c_ravi_skill_03.stg": ("model/ravi.scsp", "skill3_1", "cutin", "sk_c1019_3"),
+    "stagept/c_clarisa_skill_03.stg": ("model/clarisa.scsp", "skill3", "cutin", "sk_c1028_3"),
 }
 
 
 def skill_ids(cid):
     stem=SKILL_STEMS.get(cid, f"c_{CHARACTERS[cid][0]}_skill")
     return [SKILL_VARIANTS.get((cid,index), f"{stem}_{index:02}") for index in range(1,4)]
+
+def presentation_ids(cid):
+    return [*skill_ids(cid), *EXTRA_SKILL_GRAPHS.get(cid, ())]
+
 
 BANKS = (
     "sound/master.bank", "sound/master.strings.bank", "sound/sfx1.bank", "sound/voc.event.bank",
@@ -309,7 +329,7 @@ class Closure:
     def build(self,characters,include_banks=True):
         for cid,(hero,_) in characters.items():
             roots=[f"model/{hero}.scsp",f"portrait/{cid}.scsp"]
-            roots += [f"stagept/{skill}.stg" for skill in skill_ids(cid)]
+            roots += [f"stagept/{skill}.stg" for skill in presentation_ids(cid)]
             timeline=f"model/{hero}.timeline"
             if safe_source(self.root,timeline).is_file():roots.append(timeline)
             else:self.diagnostics.append({"severity":"info","source":timeline,"code":"timeline-not-provided","message":"Source uses STG and skeleton events independently."})
@@ -486,6 +506,10 @@ def verified_japanese_aliases(used_events, audio, loaded_keys, source_events):
     return aliases
 
 
+def voice_display_key(sample):
+    return "character.voice." + sample.replace("-", "_")
+
+
 def build_catalog(closure,characters,include_banks):
     voice_tables = {}
     for bank in sorted({japanese_bank(cid) for cid in characters}):
@@ -507,14 +531,18 @@ def build_catalog(closure,characters,include_banks):
         bank = japanese_bank(cid)
         keys=sorted(key for key in voice_tables[bank][1] if key.startswith(f"voc_{cid}_"))
         timeline=f"model/{hero}.timeline"
-        voices=[{"id":key,"audioTableKey":key,"eventPath":voice_events.get(key,""),"displayNameKey":"character.voice."+key} for key in keys]
+        labels = [voice_display_key(key) for key in keys]
+        if len(set(labels)) != len(labels):
+            raise ValueError(f"Japanese voice localization keys collide for {cid}")
+        voices=[{"id":key,"audioTableKey":key,"eventPath":voice_events.get(key,""),"displayNameKey":label} for key,label in zip(keys,labels)]
         skills=[]
-        for i,skill in enumerate(skill_ids(cid),1):
+        for i,skill in enumerate(presentation_ids(cid),1):
             effect=f"event:/skill/{skill}"
             voice=f"event:/voc/skill/{skill}"
             call=f"{voice}_c"
             answer=f"{voice}_a"
-            skills.append({"id":skill,"displayNameKey":f"character.{hero}.skill{i}",
+            display_key = f"character.{hero}.skill{i}" if i <= 3 else "battle.inspect.burn_header"
+            skills.append({"id":skill,"displayNameKey":display_key,
                 "graphAddress":address(f"stagept/{skill}.stg"),"eventPath":effect if audio.get(effect) else "",
                 "voiceEventPath":voice if audio.get(voice) else "",
                 "dualCallVoiceEventPath":call if audio.get(call) else "",

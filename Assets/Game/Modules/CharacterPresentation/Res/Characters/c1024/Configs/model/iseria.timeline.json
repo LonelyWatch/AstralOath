@@ -1,0 +1,345 @@
+{
+  "timeline": {
+    "default": {
+      "skill1": {
+        "duration": 0,
+        "frames": []
+      },
+      "b_idle": {
+        "duration": 0,
+        "frames": []
+      },
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 100,
+            "func": "effect",
+            "param": {
+              "source": "iseria_bidle_auraburst2",
+              "location": 1,
+              "locationBone": "target",
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 333,
+            "func": "remove",
+            "param": {
+              "targetId": "orb"
+            }
+          },
+          {
+            "time": 333,
+            "func": "effect",
+            "param": {
+              "source": "iseria_bidle_orbburst",
+              "location": 1,
+              "locationBone": "eff_pos",
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 333,
+            "func": "remove",
+            "param": {
+              "targetId": "orb_b"
+            }
+          },
+          {
+            "time": 800,
+            "func": "effect",
+            "param": {
+              "source": "iseria_bidle_auraburst1",
+              "location": 1,
+              "locationBone": "shadow",
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 834,
+            "func": "remove",
+            "param": {
+              "targetId": "aura2"
+            }
+          },
+          {
+            "time": 1000,
+            "func": "remove",
+            "param": {
+              "targetId": "aura1"
+            }
+          }
+        ]
+      },
+      "idle": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "run"
+            }
+          },
+          {
+            "time": 1,
+            "func": "effect",
+            "param": {
+              "id": "aura1",
+              "source": "iseria_idle_aura",
+              "location": 1,
+              "locationBone": "target",
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 1,
+            "func": "effect",
+            "param": {
+              "id": "aura2",
+              "source": "iseria_idle_aura2",
+              "location": 1,
+              "locationBone": "shadow",
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 1,
+            "func": "effect",
+            "param": {
+              "id": "orb",
+              "source": "iseria_idle_orb",
+              "location": 1,
+              "locationBone": "eff_pos",
+              "scale": 0.5,
+              "z": 1
+            }
+          },
+          {
+            "time": 1,
+            "func": "effect",
+            "param": {
+              "id": "orb_b",
+              "source": "iseria_idle_orb_b",
+              "location": 1,
+              "locationBone": "eff_pos",
+              "scale": 0.6,
+              "z": -1
+            }
+          }
+        ]
+      },
+      "camping": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "iseria_camp_pati",
+              "location": 5,
+              "locationBone": "target",
+              "x": 65,
+              "y": -300,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "iseria_fly_pati",
+              "location": 5,
+              "locationBone": "bone40",
+              "scale": 0.85
+            }
+          }
+        ]
+      },
+      "rise": {
+        "duration": 0,
+        "frames": []
+      },
+      "run_start": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "aura1",
+              "delay": 200
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "aura2",
+              "delay": 200
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "id": "run",
+              "source": "iseria_run_trail",
+              "location": 1,
+              "locationBone": "target",
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "orb_b",
+              "delay": 300
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "orb",
+              "delay": 300
+            }
+          }
+        ]
+      },
+      "run": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "aura1",
+              "delay": 200
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "aura2",
+              "delay": 200
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "id": "run",
+              "source": "iseria_run_trail",
+              "location": 1,
+              "locationBone": "target",
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "orb_b",
+              "delay": 300
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "orb",
+              "delay": 300
+            }
+          }
+        ]
+      },
+      "down": {
+        "duration": 0,
+        "frames": []
+      },
+      "knock_down": {
+        "duration": 0,
+        "frames": []
+      },
+      "groggy": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "iseria_skill_02",
+              "location": 5,
+              "locationBone": "shadow",
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill3": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "iseria_skill_03_sword",
+              "location": 1,
+              "locationBone": "shadow",
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 700,
+            "func": "effect",
+            "param": {
+              "source": "iseria_skill_03_circle",
+              "location": 1,
+              "locationBone": "shadow",
+              "x": 149,
+              "y": 563,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill1_1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "iseria_skill_01_renewal_motion",
+              "location": 5,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "run_start_backup": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill3_time": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "iseria_skill_03_sword",
+              "location": 1,
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 700,
+            "func": "effect",
+            "param": {
+              "source": "iseria_skill_03_circle",
+              "location": 1,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill3_backup": {
+        "duration": 0,
+        "frames": []
+      }
+    }
+  }
+}

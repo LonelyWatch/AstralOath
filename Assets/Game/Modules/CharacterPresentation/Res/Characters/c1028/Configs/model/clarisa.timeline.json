@@ -1,0 +1,106 @@
+{
+  "timeline": {
+    "default": {
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "id": "br",
+              "source": "clarisa_bidle",
+              "location": 5,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "clarisa_skill_01",
+              "location": 5,
+              "locationBone": "",
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "clarisa_skill_02",
+              "location": 5,
+              "locationBone": "",
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "skill3": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "clarisa_skill_03_whirlwind",
+              "location": 1,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "location": 1,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "location": 1,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "jump_forward": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "dingo_eff_sk3_p1_f",
+      "z": "1",
+      "scale": "1.4",
+      "format": "spine"
+    },
+    {
+      "source": "dingo_eff_sk3_p1_b",
+      "z": "-1",
+      "scale": "1.4",
+      "format": "spine"
+    },
+    {
+      "source": "dingo_eff_sk3_p2",
+      "scale": "1",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "blazepati",
+      "z": "10",
+      "delay": "1800",
+      "format": "particle"
+    },
+    {
+      "source": "whiteout",
+      "delay": "4059",
+      "format": "spine",
+      "globalZ": 1.0
+    }
+  ]
+}

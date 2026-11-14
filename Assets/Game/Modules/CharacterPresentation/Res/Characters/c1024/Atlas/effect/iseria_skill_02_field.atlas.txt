@@ -1,0 +1,48 @@
+
+iseria_skill_02_field.sct
+size: 236,243
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bot_wave2
+  rotate: false
+  xy: 2, 2
+  size: 194, 102
+  orig: 194, 102
+  offset: 0, 0
+  index: -1
+energy_aura_bottom1
+  rotate: true
+  xy: 161, 106
+  size: 121, 35
+  orig: 121, 35
+  offset: 0, 0
+  index: -1
+energy_aura_bottom2
+  rotate: true
+  xy: 198, 2
+  size: 120, 36
+  orig: 120, 36
+  offset: 0, 0
+  index: -1
+energy_aura_bottom3
+  rotate: true
+  xy: 122, 106
+  size: 121, 37
+  orig: 121, 37
+  offset: 0, 0
+  index: -1
+energy_aura_bottom4
+  rotate: true
+  xy: 198, 124
+  size: 117, 36
+  orig: 117, 36
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 106
+  size: 118, 118
+  orig: 118, 118
+  offset: 0, 0
+  index: -1

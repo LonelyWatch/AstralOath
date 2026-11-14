@@ -1,0 +1,97 @@
+
+yuna_skill_03_fusion.sct
+size: 508,494
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+boost_fire_01
+  rotate: false
+  xy: 398, 330
+  size: 33, 129
+  orig: 33, 129
+  offset: 0, 0
+  index: -1
+boost_long_sm2
+  rotate: false
+  xy: 2, 2
+  size: 200, 290
+  orig: 200, 290
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 227, 257
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+fu_smoke_01
+  rotate: false
+  xy: 204, 2
+  size: 134, 253
+  orig: 134, 253
+  offset: 0, 0
+  index: -1
+fu_smoke_02
+  rotate: false
+  xy: 433, 385
+  size: 37, 34
+  orig: 37, 34
+  offset: 0, 0
+  index: -1
+fu_smoke_03
+  rotate: false
+  xy: 433, 330
+  size: 48, 53
+  orig: 48, 53
+  offset: 0, 0
+  index: -1
+fu_smoke_04
+  rotate: false
+  xy: 398, 235
+  size: 88, 93
+  orig: 88, 93
+  offset: 0, 0
+  index: -1
+fu_smoke_05
+  rotate: true
+  xy: 393, 117
+  size: 116, 82
+  orig: 116, 82
+  offset: 0, 0
+  index: -1
+lense_circle1
+  rotate: false
+  xy: 2, 294
+  size: 198, 198
+  orig: 198, 198
+  offset: 0, 0
+  index: -1
+lense_glow
+  rotate: false
+  xy: 393, 2
+  size: 113, 113
+  orig: 113, 113
+  offset: 0, 0
+  index: -1
+lense_line
+  rotate: true
+  xy: 202, 294
+  size: 198, 23
+  orig: 198, 23
+  offset: 0, 0
+  index: -1
+ray_01
+  rotate: true
+  xy: 227, 428
+  size: 36, 168
+  orig: 36, 168
+  offset: 0, 0
+  index: -1
+smoke_ring
+  rotate: true
+  xy: 340, 2
+  size: 226, 51
+  orig: 226, 51
+  offset: 0, 0
+  index: -1

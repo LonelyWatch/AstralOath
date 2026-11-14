@@ -10,6 +10,9 @@ namespace AstralOath.Shared.Battle
         IReadOnlyList<BattleChange> IBattleLifecycleResolver.BattleStart(BattleSnapshot snapshot) =>
             new Execution(this, snapshot, new BattleRandom(0)).ApplyLifecycle("battle_start", null);
 
+        IReadOnlyList<BattleChange> IBattleLifecycleResolver.StartOfTurn(BattleSnapshot snapshot, string actorId) =>
+            new Execution(this, snapshot, new BattleRandom(0)).ApplyPeriodicEffects(actorId);
+
         IReadOnlyList<BattleChange> IBattleLifecycleResolver.TurnEnd(BattleSnapshot snapshot, string actorId) =>
             new Execution(this, snapshot, new BattleRandom(0)).ApplyLifecycle("turn_end", actorId);
 
@@ -23,7 +26,7 @@ namespace AstralOath.Shared.Battle
                 foreach (var actor in units)
                 {
                     if (!actor.Alive || (actorId != null && actorId != actor.Id)) continue;
-                    foreach (var passive in Passives(actor))
+                    foreach (var passive in actor.Source.Form.SkillIds.Select(id => owner.skills.GetValueOrDefault(id)).Where(program => program != null))
                     foreach (var effect in passive.Effects)
                     {
                         if (effect.phase != phase) continue;
@@ -39,6 +42,72 @@ namespace AstralOath.Shared.Battle
                     }
                 }
                 return Changes;
+            }
+
+            public IReadOnlyList<BattleChange> ApplyPeriodicEffects(string actorId)
+            {
+                var target = Get(actorId);
+                foreach (var status in target.Statuses.Where(item => BattleStatusSnapshot.IsStackable(item.Kind)).ToArray())
+                {
+                    var source = Get(status.SourceId);
+                    if (status.Kind == BattleStatusKind.ContinuousHealing)
+                    {
+                        if (target.Has(BattleStatusKind.Unhealable)) continue;
+                        int healing = Math.Min(target.MaximumHealth - target.Health, ScaleHealth(target.MaximumHealth, status.Strength));
+                        target.Health += healing;
+                        Changes.Add(BattleChange.PeriodicHealing(status, target.Id, healing));
+                        continue;
+                    }
+                    int damage = status.Kind == BattleStatusKind.Poison
+                        ? ScaleHealth(target.MaximumHealth, status.Strength)
+                        : PeriodicDamage(status.Strength, target.Defense);
+                    ProjectDamage(source, target, damage, BattleHitKind.None, periodic: status);
+                    if (!target.Alive)
+                    {
+                        ResolveEnemyDefeats(source, 1);
+                        break;
+                    }
+                    if (!target.Statuses.Contains(status)) break; // A self-revive cleared the queue.
+                }
+                return Changes;
+            }
+
+            private Program LethalProtection(Unit target) =>
+                Passives(target).FirstOrDefault(passive => target.Cooldowns.GetValueOrDefault(passive.Row.id) == 0 &&
+                    passive.Effects.Any(effect => effect.phase == "on_lethal_damage" && effect.operation == "life_floor"));
+
+            private void ResolveLethalProtection(Unit target, Program program)
+            {
+                var modifiers = owner.ModifiersFor(target, program);
+                ChangeCooldown(target, target, program.Row.id, Math.Max(0, program.Row.cooldownTurns - modifiers.CooldownTurns));
+                foreach (var effect in program.Effects.Where(effect => effect.phase == "on_lethal_damage" && effect.operation != "life_floor"))
+                    ApplyEffect(target, target, program.Row, effect, modifiers, false, BattleHitKind.None, null, false);
+            }
+
+            private void ResolveEnemyDefeats(Unit attacker, int count)
+            {
+                foreach (var ally in Allies(attacker))
+                foreach (string id in ally.Source.Form.SkillIds)
+                {
+                    if (!owner.skills.TryGetValue(id, out var program)) continue;
+                    var modifiers = owner.ModifiersFor(ally, program);
+                    foreach (var effect in program.Effects.Where(effect => effect.phase == "after_enemy_defeated"))
+                        for (int index = 0; index < count; index++)
+                            ApplyEffect(ally, ally, program.Row, effect, modifiers, false, BattleHitKind.None, null, false);
+                }
+            }
+
+            private void ResolveKillPassives(Unit actor, int slot)
+            {
+                if (!CanReact(actor) || (slot != 1 && slot != 3)) return;
+                var target = units.FirstOrDefault(unit => unit.Alive && unit.Side != actor.Side);
+                foreach (var passive in Passives(actor))
+                {
+                    if (!passive.Effects.Any(effect => effect.phase == "after_caster_kill" && effect.operation == "trigger" &&
+                        effect.condition == "basic_or_ultimate_kill") ||
+                        !actor.TriggeredPassives.Add(passive.Row.id)) continue;
+                    Cast(actor, passive, target, false, BattleActionOrigin.Passive, "after_caster_kill");
+                }
             }
 
             private void ResolveAttackedPassives(Unit attacker, Unit[] targets, HashSet<string> attacked,
@@ -124,7 +193,7 @@ namespace AstralOath.Shared.Battle
                 }
             }
 
-            private void ResolveCriticalPassives(Unit actor)
+            private void ResolveCriticalPassives(Unit actor, int criticalTargets)
             {
                 foreach (var passive in Passives(actor))
                 foreach (var effect in passive.CriticalEffects)
@@ -139,6 +208,11 @@ namespace AstralOath.Shared.Battle
                         var options = passive.CriticalBuffOptions;
                         var option = options[(int)(random.NextUInt64() % (ulong)options.Length)];
                         ApplyStatus(actor, actor, ParseStatus(option.status), option.turns, option.value);
+                    }
+                    else if (effect.operation == "readiness")
+                    {
+                        foreach (var target in Recipients(effect.recipient, actor, Array.Empty<Unit>()))
+                            ChangeReadiness(actor, target, (effect.value + modifiers.ReadinessBp) * criticalTargets);
                     }
                     else ApplyEffect(actor, actor, passive.Row, effect, modifiers, false,
                         BattleHitKind.None, null, false);
@@ -172,19 +246,21 @@ namespace AstralOath.Shared.Battle
             }
 
             private static int SkillModifier(Program program, string operation, Unit caster, Unit recipient, bool allTargets,
-                bool speedBuffed = false)
+                bool speedBuffed = false, bool fullResource = false, bool nonDualBuffed = false, bool soulBurn = false)
             {
                 if (program == null) return 0;
                 int amount = 0;
                 foreach (var effect in program.Effects)
-                    if (effect.operation == operation && ConditionMet(effect, caster, recipient, allTargets, speedBuffed: speedBuffed))
+                    if (effect.operation == operation && ConditionMet(effect, caster, recipient, allTargets, speedBuffed: speedBuffed,
+                        fullResource: fullResource, nonDualBuffed: nonDualBuffed, soulBurn: soulBurn))
                         amount += effect.value;
                 return amount;
             }
 
             private static bool ConditionMet(BattleCatalogData.EffectRow effect, Unit caster, Unit recipient, bool allTargets,
                 BattleHitKind targetHit = BattleHitKind.None, bool attackCritical = false, bool readinessDrained = false,
-                bool speedBuffed = false, bool defeatedTarget = false)
+                bool speedBuffed = false, bool defeatedTarget = false, bool fullResource = false,
+                bool nonDualBuffed = false, bool soulBurn = false)
             {
                 return effect.condition switch
                 {
@@ -196,6 +272,17 @@ namespace AstralOath.Shared.Battle
                     "caster_health_above_half" => 2L * caster.Health > caster.MaximumHealth,
                     "caster_has_resource" => caster.ResourceAmount >= Math.Max(1, effect.turns),
                     "caster_buffed" => HasBuff(caster),
+                    "caster_buffed_non_dual" => nonDualBuffed,
+                    "caster_buffed_non_dual_burn" => nonDualBuffed && soulBurn,
+                    "resource_full" => fullResource,
+                    "resource_not_full" => !fullResource,
+                    "resource_full_after_awakening" => fullResource && caster.Source.Awakenings >= 3,
+                    "caster_at_least_three_buffs" => caster.Statuses.Count(status => !IsHarmful(status.Kind)) >= 3,
+                    "caster_fewer_than_three_buffs" => caster.Statuses.Count(status => !IsHarmful(status.Kind)) < 3,
+                    "recipient_bleeding" => recipient.Has(BattleStatusKind.Bleed),
+                    "caster_enraged" => caster.Has(BattleStatusKind.Rage),
+                    "soul_burn" => soulBurn,
+                    "no_soul_burn" => !soulBurn,
                     "caster_speed_buffed" => speedBuffed,
                     "caster_speed_buffed_after_skill_awakening" => speedBuffed && caster.Source.Awakenings >= 3,
                     "defeated_target" => defeatedTarget,

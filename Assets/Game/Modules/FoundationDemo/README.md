@@ -20,3 +20,5 @@ CharacterLab 的 YooAsset 收集设置由编辑器按导入清单维护，本次
 卡琳 c1011 已接入角色内容；三技能、音频及已知缺项见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。
 
 萝菲 c1019 已接入三张演出图及原版日语。新增原版 voc3 银行，战斗按阵容选择；裂伤有效生命独立于基础面板。规则、表现诊断与音频来源见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。
+
+实验室 YooAsset 收集配置已接入第 21–30 名角色及相关依赖，已有地址和 GUID 保持一致。 [角色批次](../../../../docs/delivery/2026-11-14-roster21-30.md)

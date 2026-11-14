@@ -1,0 +1,27 @@
+
+leo_sk3_star.sct
+size: 432,204
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cross_02
+  rotate: false
+  xy: 173, 33
+  size: 68, 68
+  orig: 68, 68
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 33
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: false
+  xy: 2, 2
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,19 @@
+{
+  "timeline": {
+    "default": {
+      "skill3": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 858,
+            "func": "event",
+            "param": {
+              "name": "cutin",
+              "param": "cutin"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

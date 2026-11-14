@@ -28,6 +28,15 @@ namespace AstralOath.Client.BattleScene.Editor
             EditorUtility.SetDirty(profile); AssetDatabase.SaveAssetIfDirty(profile);
             return profile;
         }
+        internal static void RefreshStatusArt()
+        {
+            var profile = AssetDatabase.LoadAssetAtPath<BattleUnitPresentationProfile>(Root + "Res/Configs/UnitPresentation.asset");
+            if (!profile) throw new InvalidOperationException("Missing battle unit presentation profile.");
+            UpdateStatusAndShield(profile);
+            EditorUtility.SetDirty(profile);
+            AssetDatabase.SaveAssetIfDirty(profile);
+        }
+
         private static void UpdateStatusAndShield(BattleUnitPresentationProfile profile)
         {
             const string hud = Root + "Res/Textures/Hud/";

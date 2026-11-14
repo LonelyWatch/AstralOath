@@ -1,0 +1,230 @@
+
+yuna_skill_01_doldol.sct
+size: 1892,253
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+burst_sphear_g
+  rotate: false
+  xy: 1758, 2
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+circle_ecle
+  rotate: false
+  xy: 2, 2
+  size: 231, 231
+  orig: 231, 231
+  offset: 0, 0
+  index: -1
+doldol_body
+  rotate: false
+  xy: 1530, 2
+  size: 88, 148
+  orig: 88, 148
+  offset: 0, 0
+  index: -1
+doldol_eye
+  rotate: false
+  xy: 1748, 143
+  size: 51, 59
+  orig: 51, 59
+  offset: 0, 0
+  index: -1
+doldol_left
+  rotate: false
+  xy: 1531, 152
+  size: 66, 98
+  orig: 66, 98
+  offset: 0, 0
+  index: -1
+doldol_right
+  rotate: true
+  xy: 407, 173
+  size: 71, 97
+  orig: 71, 97
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 393, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+laser1_1
+  rotate: false
+  xy: 564, 2
+  size: 79, 167
+  orig: 79, 167
+  offset: 0, 0
+  index: -1
+laser1_2
+  rotate: false
+  xy: 645, 2
+  size: 79, 167
+  orig: 79, 167
+  offset: 0, 0
+  index: -1
+laser1_3
+  rotate: true
+  xy: 647, 171
+  size: 79, 167
+  orig: 79, 167
+  offset: 0, 0
+  index: -1
+laser2_1
+  rotate: false
+  xy: 1050, 2
+  size: 57, 156
+  orig: 57, 156
+  offset: 0, 0
+  index: -1
+laser2_2
+  rotate: false
+  xy: 1109, 2
+  size: 57, 156
+  orig: 57, 156
+  offset: 0, 0
+  index: -1
+laser2_3
+  rotate: false
+  xy: 1168, 2
+  size: 57, 156
+  orig: 57, 156
+  offset: 0, 0
+  index: -1
+laser3_1
+  rotate: true
+  xy: 506, 173
+  size: 67, 139
+  orig: 67, 139
+  offset: 0, 0
+  index: -1
+laser3_2
+  rotate: false
+  xy: 1620, 2
+  size: 67, 139
+  orig: 67, 139
+  offset: 0, 0
+  index: -1
+laser3_3
+  rotate: false
+  xy: 1689, 2
+  size: 67, 139
+  orig: 67, 139
+  offset: 0, 0
+  index: -1
+laser4_1
+  rotate: false
+  xy: 235, 2
+  size: 77, 170
+  orig: 77, 170
+  offset: 0, 0
+  index: -1
+laser4_2
+  rotate: true
+  xy: 235, 174
+  size: 77, 170
+  orig: 77, 170
+  offset: 0, 0
+  index: -1
+laser4_3
+  rotate: false
+  xy: 314, 2
+  size: 77, 170
+  orig: 77, 170
+  offset: 0, 0
+  index: -1
+laser5_1
+  rotate: false
+  xy: 726, 2
+  size: 106, 156
+  orig: 106, 156
+  offset: 0, 0
+  index: -1
+laser5_2
+  rotate: false
+  xy: 834, 2
+  size: 106, 156
+  orig: 106, 156
+  offset: 0, 0
+  index: -1
+laser5_3
+  rotate: false
+  xy: 942, 2
+  size: 106, 156
+  orig: 106, 156
+  offset: 0, 0
+  index: -1
+laser6_1
+  rotate: true
+  xy: 816, 160
+  size: 90, 137
+  orig: 90, 137
+  offset: 0, 0
+  index: -1
+laser6_2
+  rotate: true
+  xy: 955, 160
+  size: 90, 137
+  orig: 90, 137
+  offset: 0, 0
+  index: -1
+laser6_3
+  rotate: true
+  xy: 1094, 160
+  size: 90, 137
+  orig: 90, 137
+  offset: 0, 0
+  index: -1
+laser7_1
+  rotate: false
+  xy: 1227, 2
+  size: 99, 150
+  orig: 99, 150
+  offset: 0, 0
+  index: -1
+laser7_2
+  rotate: false
+  xy: 1328, 2
+  size: 99, 150
+  orig: 99, 150
+  offset: 0, 0
+  index: -1
+laser7_3
+  rotate: false
+  xy: 1429, 2
+  size: 99, 150
+  orig: 99, 150
+  offset: 0, 0
+  index: -1
+laser8_1
+  rotate: true
+  xy: 1233, 154
+  size: 96, 147
+  orig: 96, 147
+  offset: 0, 0
+  index: -1
+laser8_2
+  rotate: true
+  xy: 1382, 154
+  size: 96, 147
+  orig: 96, 147
+  offset: 0, 0
+  index: -1
+laser8_3
+  rotate: true
+  xy: 1599, 152
+  size: 96, 147
+  orig: 96, 147
+  offset: 0, 0
+  index: -1
+screen_ray
+  rotate: true
+  xy: 2, 235
+  size: 12, 201
+  orig: 12, 201
+  offset: 0, 0
+  index: -1
