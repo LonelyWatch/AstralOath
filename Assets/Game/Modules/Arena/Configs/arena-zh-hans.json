@@ -1,0 +1,265 @@
+{
+  "rows": [
+    { "key": "arena.zero", "text": "0" },
+    {
+      "key": "home.arena",
+      "text": "竞技场模拟战"
+    },
+    {
+      "key": "home.profile",
+      "text": "冒险者"
+    },
+    {
+      "key": "arena.title",
+      "text": "世界竞技场"
+    },
+    {
+      "key": "arena.mock",
+      "text": "模拟战"
+    },
+    {
+      "key": "arena.create",
+      "text": "创建房间"
+    },
+    {
+      "key": "arena.refresh",
+      "text": "更新目录"
+    },
+    {
+      "key": "arena.search",
+      "text": "搜索"
+    },
+    {
+      "key": "arena.cancel_search",
+      "text": "取消搜索"
+    },
+    {
+      "key": "arena.search_hint",
+      "text": "可以搜索房间名。"
+    },
+    {
+      "key": "arena.search_placeholder",
+      "text": "选择并输入"
+    },
+    {
+      "key": "arena.filter.all",
+      "text": "全部"
+    },
+    {
+      "key": "arena.filter.public",
+      "text": "公开"
+    },
+    {
+      "key": "arena.filter.private",
+      "text": "不公开"
+    },
+    {
+      "key": "arena.sort.players",
+      "text": "人数"
+    },
+    {
+      "key": "arena.sort.recent",
+      "text": "最近"
+    },
+    {
+      "key": "arena.season",
+      "text": "自由赛季"
+    },
+    {
+      "key": "arena.placement",
+      "text": "级别配置中"
+    },
+    {
+      "key": "arena.placement_count",
+      "text": "0/10"
+    },
+    {
+      "key": "arena.winrate",
+      "text": "胜率：0.0%"
+    },
+    {
+      "key": "arena.streak",
+      "text": "连胜0次"
+    },
+    {
+      "key": "arena.room_name",
+      "text": "房间名"
+    },
+    {
+      "key": "arena.room_name_hint",
+      "text": "名称最多可输入28个字。"
+    },
+    {
+      "key": "arena.enter_text",
+      "text": "点击输入"
+    },
+    {
+      "key": "arena.privacy",
+      "text": "是否公开"
+    },
+    {
+      "key": "arena.set_password",
+      "text": "设定密码"
+    },
+    {
+      "key": "arena.password_hint",
+      "text": "密码\n输入4个数字"
+    },
+    {
+      "key": "arena.chat_setting",
+      "text": "是否允许\n参与者聊天"
+    },
+    {
+      "key": "arena.allow",
+      "text": "允许"
+    },
+    {
+      "key": "arena.deny",
+      "text": "不允许"
+    },
+    {
+      "key": "arena.rules",
+      "text": "战斗规则"
+    },
+    {
+      "key": "arena.cancel",
+      "text": "取消"
+    },
+    {
+      "key": "arena.confirm",
+      "text": "确认"
+    },
+    {
+      "key": "arena.touch_close",
+      "text": "轻触后关闭"
+    },
+    {
+      "key": "arena.join",
+      "text": "入场"
+    },
+    {
+      "key": "arena.waiting",
+      "text": "等待中"
+    },
+    {
+      "key": "arena.rule.basic",
+      "text": "基本"
+    },
+    {
+      "key": "arena.rule.draft",
+      "text": "征召模式"
+    },
+    {
+      "key": "arena.rule.wild",
+      "text": "疯狂征召"
+    },
+    {
+      "key": "arena.rule.round",
+      "text": "回合模式"
+    },
+    {
+      "key": "arena.rule.no_duplicate_class",
+      "text": "不可选择重复职业"
+    },
+    {
+      "key": "arena.participants",
+      "text": "参与者"
+    },
+    {
+      "key": "arena.channel",
+      "text": "竞技场"
+    },
+    {
+      "key": "arena.no_player",
+      "text": "没有玩家。"
+    },
+    {
+      "key": "arena.start",
+      "text": "开始战斗"
+    },
+    {
+      "key": "arena.message",
+      "text": "点击此处并输入"
+    },
+    {
+      "key": "arena.send",
+      "text": "输入"
+    },
+    {
+      "key": "arena.leave",
+      "text": "离开"
+    },
+    {
+      "key": "arena.loading",
+      "text": "正在更新目录…"
+    },
+    {
+      "key": "arena.empty",
+      "text": "暂无符合条件的房间"
+    },
+    {
+      "key": "arena.guest_name",
+      "text": "冒险者{0}"
+    },
+    {
+      "key": "arena.error.unavailable",
+      "text": "无法连接竞技场服务器，请检查连接后刷新。"
+    },
+    {
+      "key": "arena.error.database_unavailable",
+      "text": "房间服务暂不可用，请稍后重试。"
+    },
+    {
+      "key": "arena.error.request_failed",
+      "text": "请求未完成，请重试。"
+    },
+    {
+      "key": "arena.error.invalid_name",
+      "text": "请输入1至28个字的房间名。"
+    },
+    {
+      "key": "arena.error.invalid_password",
+      "text": "请输入四位数字密码。"
+    },
+    {
+      "key": "arena.error.incorrect_password",
+      "text": "密码错误。"
+    },
+    {
+      "key": "arena.error.room_full",
+      "text": "房间已满。"
+    },
+    {
+      "key": "arena.error.room_not_found",
+      "text": "房间已关闭，请刷新目录。"
+    },
+    {
+      "key": "arena.error.already_in_room",
+      "text": "你已加入房间。"
+    },
+    {
+      "key": "arena.error.not_in_room",
+      "text": "你已离开房间。"
+    },
+    {
+      "key": "arena.error.chat_disabled",
+      "text": "房主已关闭参与者聊天。"
+    },
+    {
+      "key": "arena.error.invalid_message",
+      "text": "请输入有效的聊天内容。"
+    },
+    {
+      "key": "arena.error.unauthorized",
+      "text": "会话已过期，请返回目录重新连接。"
+    },
+    {
+      "key": "arena.error.invalid_player",
+      "text": "玩家名称无效。"
+    },
+    {
+      "key": "arena.error.invalid_room",
+      "text": "请检查房间名、密码和战斗规则。"
+    }
+  ]
+}

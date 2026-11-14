@@ -1,4 +1,5 @@
 using System.Net;
+using AstralOath.Server.Arena;
 using AstralOath.Server.Battle;
 using AstralOath.Server.Foundation;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -58,15 +59,18 @@ builder.Services.AddSingleton(services => new EchoStore(services.GetRequiredServ
 builder.Services.AddHealthChecks().AddCheck<DatabaseHealthCheck>(
     "foundation_database", failureStatus: HealthStatus.Unhealthy, tags: ["ready"], timeout: TimeSpan.FromSeconds(3));
 builder.Services.AddRequestTimeouts();
+builder.Services.AddArena();
 
 var app = builder.Build();
 if (app.Configuration.GetValue<bool>(WebHostDefaults.PreferHostingUrlsKey)
     || app.Configuration.GetSection("Kestrel:Endpoints").Exists())
     throw new InvalidOperationException("Configure the listener under Server. preferHostingUrls and Kestrel:Endpoints are unsupported.");
 app.UseRequestTimeouts();
+app.UseRateLimiter();
 app.MapHealthChecks("/health/live", new HealthCheckOptions { Predicate = _ => false });
 app.MapHealthChecks("/health/ready", new HealthCheckOptions { Predicate = check => check.Tags.Contains("ready") });
 app.MapFoundationEcho(isDevelopment);
+app.MapArena();
 if (app.Configuration.GetValue<bool>("BattlePreview:Enabled"))
 {
     if (!isDevelopment || !IPAddress.IsLoopback(bindAddress))

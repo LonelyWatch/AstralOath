@@ -10,7 +10,7 @@ namespace AstralOath.Editor
     public sealed class CharacterLabBuildProfile
     {
         public static readonly CharacterLabBuildProfile Foundation = new CharacterLabBuildProfile(
-            "foundation", "Foundation", "foundation-", FoundationBuilder.ScenePath,
+            "foundation", "Foundation", "foundation-", ArenaUiBuilder.StartupScene,
             "Config/HotUpdate/assemblies.json", "AstralOath", "AstralOath.Client.FoundationDemo",
             "AstralOath.Client.FoundationDemo.FoundationEntry", "AstralOath.Client.Common.IHotUpdateEntry");
         public static readonly CharacterLabBuildProfile CharacterLab = new CharacterLabBuildProfile(

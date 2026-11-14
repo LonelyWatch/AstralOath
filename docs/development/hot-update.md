@@ -74,3 +74,5 @@ Windows IL2CPP 和 Android ARM64 需分别演练。先用新母包验证内置�
 2026-11-13的保护属于Shared.Updates/AOT变更，需新母包才能交付旧客户端；不能仅用业务热更覆盖更新器。[触发经过与验证](../delivery/2026-11-13-battle-presentation.md)。
 
 Windows 完整包入口临时关闭构建设置中的 `Create Visual Studio Solution`，确保产生可运行的 `.exe`，并在结束时恢复原设置。若本机编译峰值触发 Windows 页面文件不足，可在同一终端仅为该次构建设置 `BEE_BUILD_THREADS=2`。
+
+正式启动场景为 Home/Scenes/GameHome.unity，Foundation 仍使用原 FoundationEntry 及签名流程。清单增加 AstralOath.Client.Home 和 AstralOath.Client.Arena，HomeArena 组随同发布。启动契约、场景或立绘桥变更按新母包构建。 [主界面与模拟战](arena-lobby.md)

@@ -7,7 +7,7 @@ namespace AstralOath.Client.Common
     {
         public GameLaunchContext(ServiceRegistry services, BindingScope lifetime, Transform viewRoot,
             GameButton openButton, GameText openLabel, GameText startupStatus, string textLocale, string voiceLocale,
-            bool recovered)
+            bool recovered, bool showHome = false)
         {
             Services = services;
             Lifetime = lifetime;
@@ -18,6 +18,7 @@ namespace AstralOath.Client.Common
             TextLocale = textLocale;
             VoiceLocale = voiceLocale;
             Recovered = recovered;
+            ShowHome = showHome;
         }
 
         public ServiceRegistry Services { get; }
@@ -29,5 +30,6 @@ namespace AstralOath.Client.Common
         public string TextLocale { get; }
         public string VoiceLocale { get; }
         public bool Recovered { get; }
+        public bool ShowHome { get; }
     }
 }

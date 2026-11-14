@@ -1,0 +1,238 @@
+{
+  "schemaVersion": 1,
+  "release": "pack-15-r4262",
+  "assets": [
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/renew_cm_hud_coreloop.png",
+      "source": "img/renew_cm_hud_coreloop.png",
+      "sourceSha256": "fffaa7c77f030ca951f8e48dcba00b0c379b89a08f140299d70d02ba3aea1277",
+      "outputSha256": "fffaa7c77f030ca951f8e48dcba00b0c379b89a08f140299d70d02ba3aea1277",
+      "width": 64,
+      "height": 64
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/renew_cm_hud_epicpass.png",
+      "source": "img/renew_cm_hud_epicpass.png",
+      "sourceSha256": "da09cf5e30c8cefecb514c8d0d38e05c9e2a6dd11ba24f55990958793356ee96",
+      "outputSha256": "da09cf5e30c8cefecb514c8d0d38e05c9e2a6dd11ba24f55990958793356ee96",
+      "width": 64,
+      "height": 64
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/renew_cm_hud_evnet.png",
+      "source": "img/renew_cm_hud_evnet.png",
+      "sourceSha256": "e25e94ed1135e74e507132ad41e774dbb4e72f353f26de211292cec8aeb2df55",
+      "outputSha256": "e25e94ed1135e74e507132ad41e774dbb4e72f353f26de211292cec8aeb2df55",
+      "width": 64,
+      "height": 64
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/renew_gauge_profile_bar.png",
+      "source": "img/renew_gauge_profile_bar.png",
+      "sourceSha256": "63c8e0b2512a2ad06a932d883ab2725336b9cee9970d0e00bd642906af39b353",
+      "outputSha256": "63c8e0b2512a2ad06a932d883ab2725336b9cee9970d0e00bd642906af39b353",
+      "width": 160,
+      "height": 9
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/renew_gauge_profile_bg.png",
+      "source": "img/renew_gauge_profile_bg.png",
+      "sourceSha256": "6ecf127565c43f356b2d4d77f483d815f081411da82d3aaa859fc062e034c499",
+      "outputSha256": "6ecf127565c43f356b2d4d77f483d815f081411da82d3aaa859fc062e034c499",
+      "width": 160,
+      "height": 9
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/renew_icon_quick_sanctuary.png",
+      "source": "img/renew_icon_quick_sanctuary.png",
+      "sourceSha256": "6ffa6acc7cc0d1b402dd9b6866499f098bbfb13d69c59fadbe78a7b8fa96a7ef",
+      "outputSha256": "6ffa6acc7cc0d1b402dd9b6866499f098bbfb13d69c59fadbe78a7b8fa96a7ef",
+      "width": 64,
+      "height": 64
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/renew_icon_quick_secretshop.png",
+      "source": "img/renew_icon_quick_secretshop.png",
+      "sourceSha256": "53a481d44d980f9d8e5f3887e03780d69be2009f2d30db21b9030a2f9f1bd3c6",
+      "outputSha256": "53a481d44d980f9d8e5f3887e03780d69be2009f2d30db21b9030a2f9f1bd3c6",
+      "width": 64,
+      "height": 64
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/main_hud_btn_bunny.png",
+      "source": "img/main_hud_btn_bunny.png",
+      "sourceSha256": "5bd03e51f96a71882df6f5185949ea0e6cbfd16ff8fe60fcdea680854a0ff173",
+      "outputSha256": "5bd03e51f96a71882df6f5185949ea0e6cbfd16ff8fe60fcdea680854a0ff173",
+      "width": 90,
+      "height": 100
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/main_hud_btn_rhianna.png",
+      "source": "img/main_hud_btn_rhianna.png",
+      "sourceSha256": "8fdfedac0950ab296036e51f8cb06e72eda304a63ebb526500cb10ece3b1f5de",
+      "outputSha256": "8fdfedac0950ab296036e51f8cb06e72eda304a63ebb526500cb10ece3b1f5de",
+      "width": 90,
+      "height": 100
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/main_hud_btn_arena.png",
+      "source": "img/main_hud_btn_arena.png",
+      "sourceSha256": "b8439d3078185436443ac391e42413da67c22e6337e3a68e073bff05c5b76de6",
+      "outputSha256": "b8439d3078185436443ac391e42413da67c22e6337e3a68e073bff05c5b76de6",
+      "width": 120,
+      "height": 120
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/main_hud_btn_arena_p.png",
+      "source": "img/main_hud_btn_arena_p.png",
+      "sourceSha256": "6f73c49deae5dbd6959e1be42b94a6325900ba3dc7945ce6e02a02dbded06185",
+      "outputSha256": "6f73c49deae5dbd6959e1be42b94a6325900ba3dc7945ce6e02a02dbded06185",
+      "width": 120,
+      "height": 120
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/cm_hud_top_btn_mail.png",
+      "source": "img/cm_hud_top_btn_mail.png",
+      "sourceSha256": "73d7a6ee2e1c6b6a37a93ec09e3a528a52d075100d045f9122afdac8d1db971d",
+      "outputSha256": "73d7a6ee2e1c6b6a37a93ec09e3a528a52d075100d045f9122afdac8d1db971d",
+      "width": 59,
+      "height": 66
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/cm_hud_top_btn_bag.png",
+      "source": "img/cm_hud_top_btn_bag.png",
+      "sourceSha256": "aca9a069766ad9263664d8e0f4fbe54dfa59baee875b26f993f3d6b4726f3213",
+      "outputSha256": "aca9a069766ad9263664d8e0f4fbe54dfa59baee875b26f993f3d6b4726f3213",
+      "width": 59,
+      "height": 66
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/cm_hud_top_btn_alarm.png",
+      "source": "img/cm_hud_top_btn_alarm.png",
+      "sourceSha256": "6e5e7cba4298042d5d995f4537ef650c6d3621b1d5866c7763ff7e4b315a2c57",
+      "outputSha256": "6e5e7cba4298042d5d995f4537ef650c6d3621b1d5866c7763ff7e4b315a2c57",
+      "width": 72,
+      "height": 72
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/cm_hud_top_btn_chatting.png",
+      "source": "img/cm_hud_top_btn_chatting.png",
+      "sourceSha256": "873b84a9a7c53fcc5b220e4ada258dd95ff219c6f0a2314700eabfb331c31344",
+      "outputSha256": "873b84a9a7c53fcc5b220e4ada258dd95ff219c6f0a2314700eabfb331c31344",
+      "width": 59,
+      "height": 66
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/cm_hud_top_btn_quick.png",
+      "source": "img/cm_hud_top_btn_quick.png",
+      "sourceSha256": "741493e1f205d749a6b61ba446196d95669fdd634a03a2d1f01c2b51c2beeb48",
+      "outputSha256": "741493e1f205d749a6b61ba446196d95669fdd634a03a2d1f01c2b51c2beeb48",
+      "width": 68,
+      "height": 66
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/cm_hud_top_titlebg_renew.png",
+      "source": "img/cm_hud_top_titlebg_renew.png",
+      "sourceSha256": "994c463b3e1cf6e94b443bb927f51d06cd91d45c44d83d3eb82c0847c12211fb",
+      "outputSha256": "994c463b3e1cf6e94b443bb927f51d06cd91d45c44d83d3eb82c0847c12211fb",
+      "width": 654,
+      "height": 85
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/hero_rank.png",
+      "source": "img/hero_rank.png",
+      "sourceSha256": "3fec972a378101de2bc7961f18719ef471cd917487ac0aa1ec3e248091d4942e",
+      "outputSha256": "3fec972a378101de2bc7961f18719ef471cd917487ac0aa1ec3e248091d4942e",
+      "width": 84,
+      "height": 30
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/lobby_bg3.png",
+      "source": "bgpack/lobby_bg3.png",
+      "sourceSha256": "238ce32ec34949dff191fe46d39398a6b4f9879e9009976574a6478d80b6b904",
+      "outputSha256": "238ce32ec34949dff191fe46d39398a6b4f9879e9009976574a6478d80b6b904",
+      "width": 1580,
+      "height": 720
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/c5009_s.png",
+      "source": "face/c5009_s.png",
+      "sourceSha256": "9ce810de52f04e3bfaa0589a685d4da021b675537900d30ef9cd001c73d8e79c",
+      "outputSha256": "9ce810de52f04e3bfaa0589a685d4da021b675537900d30ef9cd001c73d8e79c",
+      "width": 112,
+      "height": 112
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/icon_border_pvp_season20_rank_3.png",
+      "source": "item/border/icon_border_pvp_season20_rank_3.png",
+      "sourceSha256": "2769f943f17edfb5fc2b91036ad9511ff6500374bcd7b059ee9469eddbe26eb0",
+      "outputSha256": "2769f943f17edfb5fc2b91036ad9511ff6500374bcd7b059ee9469eddbe26eb0",
+      "width": 148,
+      "height": 148
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Animations/c5009.spine.json",
+      "sources": [
+        {
+          "source": "portrait/c5009.scsp",
+          "sha256": "4bb520c4e2a4b6deb0cc482019d84d163d28eac58c3791d88b9a78d8e54e1cda"
+        }
+      ],
+      "outputSha256": "e91ae578e937fd88fb5d7a6acc907fda5afb37fd62dd06070b9b58ed8d85e24f",
+      "conversion": {
+        "spineVersion": "3.8.99",
+        "converterVersion": "astraloath-scsp/3",
+        "animations": [
+          {
+            "name": "idle",
+            "duration": 16.66670036315918
+          },
+          {
+            "name": "idle2dddddddddddd",
+            "duration": 16.66670036315918
+          }
+        ],
+        "skin": "normal",
+        "scale": 0.01
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Atlas/c5009.atlas.txt",
+      "sources": [
+        {
+          "source": "portrait/c5009.atlas",
+          "sha256": "f2e7d489be4a32b2e4880c0fdf21a6bdc81a1f74c6647d57443e237ee2fc6e75"
+        }
+      ],
+      "outputSha256": "f2e7d489be4a32b2e4880c0fdf21a6bdc81a1f74c6647d57443e237ee2fc6e75",
+      "conversion": {
+        "texturePage": "c5009.sct"
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/c5009.png",
+      "sources": [
+        {
+          "source": "portrait/c5009.sct",
+          "sha256": "f89e3bf185f609b31c5f7013e30803dd9f2c3d9e56b6982003cff19335d5a6f2"
+        }
+      ],
+      "outputSha256": "74402b466a4e55060865444367662604d9ac3248487cd624008dbfc308e8a6be",
+      "conversion": {
+        "premultipliedAlpha": true,
+        "width": 1636,
+        "height": 1032
+      }
+    }
+  ],
+  "sourceLayouts": [
+    {
+      "source": "wnd/lobby_ui_renew.csb",
+      "sha256": "b3feab99142e1b78607e8b880137df4e666a3db187b9049ec8ae7b02282d3aa2"
+    },
+    {
+      "source": "wnd/lobby_ui_ver2.csb",
+      "sha256": "f683c05b0b00036c48847ba1a9095849fbaf04bce4a3741799f6ab6f75c6a547"
+    }
+  ]
+}

@@ -152,7 +152,7 @@ namespace AstralOath.Editor
             File.Copy(key, keyAsset, overwrite: true);
             AssetDatabase.ImportAsset(keyAsset, ImportAssetOptions.ForceSynchronousImport);
 
-            var scene = EditorSceneManager.OpenScene(ScenePath);
+            var scene = EditorSceneManager.OpenScene(ArenaUiBuilder.StartupScene);
             var component = scene.GetRootGameObjects().Select(go => go.GetComponent<FoundationBootstrap>())
                 .Single(item => item);
             var bootstrap = new SerializedObject(component);

@@ -20,11 +20,20 @@ namespace AstralOath.Editor
         [MenuItem("GameObject/UI/通用确认按钮", false, 2033)]
         private static void CreateConfirm(MenuCommand command) => Create(command, true, CommonUiPrefabs.ButtonPath);
 
+        [MenuItem("GameObject/UI/通用取消按钮", false, 2034)]
+        private static void CreateCancel(MenuCommand command) => Create(command, true, CommonUiPrefabs.CancelPath);
+
+        [MenuItem("GameObject/UI/通用选择弹窗", false, 2035)]
+        private static void CreateChoice(MenuCommand command) => Create(command, false, CommonUiPrefabs.ChoicePath);
+
+        [MenuItem("GameObject/UI/通用角色头像", false, 2036)]
+        private static void CreateAvatar(MenuCommand command) => Create(command, false, CommonUiPrefabs.AvatarPath);
+
         private static void Create(MenuCommand command, bool button, string prefabPath = null)
         {
             Undo.IncrementCurrentGroup();
             int group = Undo.GetCurrentGroup();
-            string undoName = button ? "创建项目按钮" : "创建项目文本";
+            string undoName = prefabPath == null ? (button ? "创建项目按钮" : "创建项目文本") : "创建通用预制体";
             Undo.SetCurrentGroupName(undoName);
             try
             {

@@ -2,6 +2,8 @@
   "assemblies": [
     "AstralOath.Battle",
     "AstralOath.Client.BattleScene",
+    "AstralOath.Client.Home",
+    "AstralOath.Client.Arena",
     "AstralOath.Client.FoundationDemo"
   ],
   "entryAssembly": "AstralOath.Client.FoundationDemo",

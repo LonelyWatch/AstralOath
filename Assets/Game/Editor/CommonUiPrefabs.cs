@@ -13,6 +13,9 @@ namespace AstralOath.Editor
     {
         internal const string Root = "Assets/Game/Common/Res/";
         internal const string ButtonPath = Root + "Prefab/ConfirmButton.prefab";
+        internal const string CancelPath = Root + "Prefab/CancelButton.prefab";
+        internal const string ChoicePath = Root + "Prefab/ChoicePopup.prefab";
+        internal const string AvatarPath = Root + "Prefab/PlayerAvatar.prefab";
         internal const string PanelPath = Root + "Prefab/InfoPanel.prefab";
         private const string PanelFontPath = Root + "Fonts/EpicSeven.asset";
         private const string FontPath = "Assets/Game/Modules/FoundationDemo/Res/Fonts/FoundationFont.asset";
@@ -21,38 +24,147 @@ namespace AstralOath.Editor
         public static void Generate()
         {
             var font = Load<TMP_FontAsset>(FontPath);
-            Save(BuildButton(font), ButtonPath);
+            GenerateArenaControls();
             Save(BuildPanel(GetPanelFont(font)), PanelPath);
             UIViewRegistry.ValidatePrefab<InfoPanel>(Load<GameObject>(PanelPath));
         }
 
-        private static GameObject BuildButton(TMP_FontAsset font)
+        [MenuItem("Tools/UI/生成竞技场通用预制体")]
+        public static void GenerateArenaControls()
         {
-            var root = new GameObject("ConfirmButton", typeof(RectTransform), typeof(Image), typeof(GameButton), typeof(AudioSource));
+            var font = GetPanelFont(Load<TMP_FontAsset>(FontPath));
+            Save(BuildButton(font, "ConfirmButton", "_btn_green"), ButtonPath);
+            Save(BuildButton(font, "CancelButton", "_btn_gold"), CancelPath);
+            Save(BuildChoicePopup(font), ChoicePath);
+            Save(BuildAvatar(), AvatarPath);
+        }
+
+        private static GameObject BuildButton(TMP_FontAsset font, string name, string sprite)
+        {
+            var root = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(GameButton), typeof(AudioSource));
             var rect = (RectTransform)root.transform;
             rect.sizeDelta = new Vector2(260f, 64f);
             var image = root.GetComponent<Image>();
-            image.sprite = Load<Sprite>(Root + "Textures/cm_btn_norgreend.png");
+            image.sprite = Load<Sprite>(Root + "Textures/" + sprite + ".png");
             image.type = Image.Type.Sliced;
             var button = root.GetComponent<GameButton>();
             button.targetGraphic = image;
             button.transition = Selectable.Transition.SpriteSwap;
             var swap = button.spriteState;
-            swap.pressedSprite = Load<Sprite>(Root + "Textures/cm_btn_norgreenp.png");
+            swap.pressedSprite = Load<Sprite>(Root + "Textures/" + sprite + "_p.png");
             button.spriteState = swap;
-            var audio = root.GetComponent<AudioSource>();
-            audio.playOnAwake = false;
-            audio.spatialBlend = 0f;
-            audio.clip = Load<AudioClip>(Root + "Sounds/UiConfirm.wav");
-            var data = new SerializedObject(button);
-            data.FindProperty("clickAudio").objectReferenceValue = audio;
-            data.ApplyModifiedPropertiesWithoutUndo();
+            SetClickSound(button);
             var label = Text(Child(rect, "Label", Vector2.zero, Vector2.one,
                 new Vector2(20f, 0f), new Vector2(-20f, 0f)), font, 28f, Color.white);
             label.text = string.Empty;
             label.alignment = TextAlignmentOptions.Center;
             Bind(root, ("label", label), ("button", button));
             return root;
+        }
+
+        private static void SetClickSound(GameButton button)
+        {
+            if (!button.TryGetComponent<AudioSource>(out var audio)) audio = button.gameObject.AddComponent<AudioSource>();
+            audio.playOnAwake = false;
+            audio.spatialBlend = 0f;
+            audio.clip = Load<AudioClip>(Root + "Sounds/UiConfirm.wav");
+            var data = new SerializedObject(button);
+            data.FindProperty("clickAudio").objectReferenceValue = audio;
+            data.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static GameObject BuildChoicePopup(TMP_FontAsset font)
+        {
+            var root = new GameObject("ChoicePopup", typeof(RectTransform));
+            var rect = (RectTransform)root.transform;
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.offsetMin = rect.offsetMax = Vector2.zero;
+
+            var dismissRect = Child(rect, "Dismiss", Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
+            var dismissSurface = dismissRect.gameObject.AddComponent<Image>();
+            dismissSurface.color = Color.clear;
+            dismissSurface.canvasRenderer.cullTransparentMesh = false;
+            var dismiss = dismissRect.gameObject.AddComponent<GameButton>();
+            dismiss.transition = Selectable.Transition.None;
+            dismiss.targetGraphic = dismissSurface;
+
+            var body = Child(rect, "Body", Vector2.one * .5f, Vector2.one * .5f,
+                new Vector2(-235f, -90f), new Vector2(235f, 90f));
+            var background = body.gameObject.AddComponent<Image>();
+            background.sprite = Load<Sprite>(Root + "Textures/_box_black_white.png");
+            background.type = Image.Type.Sliced;
+
+            var row = Child(body, "ChoiceTemplate", new Vector2(0f, 1f), Vector2.one,
+                new Vector2(14f, -54f), new Vector2(-14f, -12f));
+            var tile = row.gameObject.AddComponent<Image>();
+            tile.sprite = Load<Sprite>(Root + "Textures/_btn_small_black.png");
+            tile.type = Image.Type.Sliced;
+            var button = row.gameObject.AddComponent<GameButton>();
+            button.targetGraphic = tile;
+            button.transition = Selectable.Transition.SpriteSwap;
+            var swap = button.spriteState;
+            swap.pressedSprite = Load<Sprite>(Root + "Textures/_btn_small_black_p.png");
+            button.spriteState = swap;
+            SetClickSound(button);
+            var label = Text(Child(row, "Label", Vector2.zero, Vector2.one,
+                new Vector2(53f, 0f), new Vector2(-12f, 0f)), font, 23f, Color.white);
+            label.enableWordWrapping = false;
+            label.overflowMode = TextOverflowModes.Ellipsis;
+
+            var checkBase = ImageAt(row, "Check Frame", "cm_checkbg", new Vector2(0f, .5f), new Vector2(26f, 26f), new Vector2(25f, 0f));
+            var check = ImageAt(checkBase.rectTransform, "Check", "cm_checkicon2", Vector2.one * .5f,
+                new Vector2(26f, 26f), Vector2.zero);
+            check.gameObject.SetActive(false);
+            Bind(row.gameObject, ("label", label), ("check", check));
+            row.gameObject.SetActive(false);
+            Bind(root, ("body", body), ("background", background), ("dismiss", dismiss), ("choiceTemplate", button));
+            return root;
+        }
+
+        private static GameObject BuildAvatar()
+        {
+            var root = new GameObject("PlayerAvatar", typeof(RectTransform));
+            var rect = (RectTransform)root.transform;
+            rect.sizeDelta = new Vector2(126f, 126f);
+            var plate = PanelImage(rect, "Plate", "_hero_s_bg_ally.png");
+            Fit(plate.rectTransform, 7f / 126f);
+
+            var clip = PanelImage(rect, "Portrait Clip", "_hero_s_bg_ally.png");
+            Fit(clip.rectTransform, 8f / 126f);
+            clip.gameObject.AddComponent<Mask>().showMaskGraphic = false;
+            var portrait = PanelImage(clip.rectTransform, "Portrait");
+            Fit(portrait.rectTransform, 0f);
+
+            var frame = PanelImage(rect, "Frame", "_hero_s_frame_enemy.png");
+            Fit(frame.rectTransform, 0f);
+            var owner = PanelImage(rect, "Owner", "cm_icon_etcleader.png");
+            owner.rectTransform.anchorMin = new Vector2(0f, .79f);
+            owner.rectTransform.anchorMax = new Vector2(.24f, 1f);
+            var badge = PanelImage(rect, "Badge");
+            badge.rectTransform.anchorMin = new Vector2(.75f, .05f);
+            badge.rectTransform.anchorMax = new Vector2(1.08f, .38f);
+            owner.gameObject.SetActive(false);
+            badge.gameObject.SetActive(false);
+            Bind(root, ("portrait", portrait), ("frame", frame), ("owner", owner), ("badge", badge));
+            return root;
+        }
+
+        private static Image ImageAt(RectTransform parent, string name, string sprite, Vector2 anchor, Vector2 size, Vector2 position)
+        {
+            var image = PanelImage(parent, name, sprite == null ? null : sprite + ".png");
+            var rect = image.rectTransform;
+            rect.anchorMin = rect.anchorMax = anchor;
+            rect.sizeDelta = size;
+            rect.anchoredPosition = position;
+            return image;
+        }
+
+        private static void Fit(RectTransform rect, float inset)
+        {
+            rect.anchorMin = Vector2.one * inset;
+            rect.anchorMax = Vector2.one - rect.anchorMin;
+            rect.offsetMin = rect.offsetMax = Vector2.zero;
         }
 
         private static TMP_FontAsset GetPanelFont(TMP_FontAsset fallback)

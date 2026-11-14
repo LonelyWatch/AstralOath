@@ -19,6 +19,7 @@ namespace AstralOath.Client.Bootstrap
         [SerializeField] private string baseUrl = "http://127.0.0.1:5080";
         [SerializeField] private string textLocale = "zh-Hans";
         [SerializeField] private string voiceLocale = "ja";
+        [SerializeField] private bool showGameHome;
         [SerializeField] private string manifestUrl;
         [SerializeField] private string signatureUrl;
         [SerializeField] private TextAsset contentPublicKey;
@@ -28,8 +29,8 @@ namespace AstralOath.Client.Bootstrap
             {
                 ["zh-Hans"] = new Dictionary<string, string>
                 {
-                    ["foundation.loading"] = "正在加载演示资源…",
-                    ["foundation.load.error"] = "地基初始化失败，请查看日志。"
+                    ["foundation.loading"] = "正在加载游戏资源…",
+                    ["foundation.load.error"] = "游戏初始化失败，请查看日志。"
                 }
             };
         private BindingScope lifetime;
@@ -65,11 +66,13 @@ namespace AstralOath.Client.Bootstrap
                 services.Add<IConfigService>(new JsonConfigService(content.Assets));
                 services.Add<IAnimationService>(new DotweenAnimations());
                 string url = Environment.GetEnvironmentVariable("ASTRAL_FOUNDATION_URL");
-                services.Add<IEchoService>(new ProtobufEchoService(string.IsNullOrWhiteSpace(url) ? baseUrl : url));
+                var server = new GameServerEndpoint(string.IsNullOrWhiteSpace(url) ? baseUrl : url);
+                services.Add(server);
+                services.Add<IEchoService>(new ProtobufEchoService(server.Address.AbsoluteUri));
                 entry = content.CreateEntry();
                 scope.Add(entry.Dispose);
                 await entry.StartAsync(new GameLaunchContext(services, scope, viewRoot, open, openLabel,
-                    startupStatus, textLocale, voiceLocale, recovered));
+                    startupStatus, textLocale, voiceLocale, recovered, showGameHome && !automation));
                 scope.Token.ThrowIfCancellationRequested();
                 services.Add<IAudioService>(new VoiceService(audioOutput, content.Assets, services.Get<ILocaleService>()));
                 content.ConfirmStartup();

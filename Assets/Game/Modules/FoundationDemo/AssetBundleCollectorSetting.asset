@@ -62,6 +62,51 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 
+    - GroupName: HomeArena
+      GroupDesc:
+      AssetTags:
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Game/Modules/Home/Res/Prefab/HomeWindow.prefab
+        CollectorGUID: 8be61fee165b3c9468a7cb70985ae04c
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/Arena/Res/Prefab/ArenaDirectory.prefab
+        CollectorGUID: 158375bb9d3b6fb4893425b8fefb40d0
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/Arena/Res/Prefab/ArenaCreateRoom.prefab
+        CollectorGUID: 24b2ea57974e2da40ba0cf7498f7eb7a
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/Arena/Res/Prefab/ArenaRoom.prefab
+        CollectorGUID: 45f8a0dc03e3c5547b870dcf1ed8258d
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/Arena/Configs/arena-zh-hans.json
+        CollectorGUID: 684f618e281dfd248b9b24266083f63e
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
   - PackageName: CharacterLab
     PackageDesc:
     EnableAddressable: 1

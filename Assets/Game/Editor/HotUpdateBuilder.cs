@@ -146,7 +146,11 @@ namespace AstralOath.Editor
                 CheckInstalled(target);
             else if (options.contentVersion <= archive.contentVersion)
                 throw new BuildFailedException("热更资源版本必须高于母包内置版本。");
-            if (profile == CharacterLabBuildProfile.Foundation) FoundationBuilder.ValidateDemo();
+            if (profile == CharacterLabBuildProfile.Foundation)
+            {
+                FoundationBuilder.ValidateDemo();
+                ArenaUiBuilder.Validate();
+            }
             else CharacterLabBuild.Validate();
 
             string output = Path.GetFullPath(Path.Combine(options.outputRoot, variant,

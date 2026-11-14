@@ -1,0 +1,190 @@
+{
+  "release": "pack-15-r4262",
+  "sourceScenes": [
+    "wnd/pvplive_lounge_creat.csb",
+    "wnd/pvplive_mock_battle_item.csb",
+    "wnd/pvplive_lounge.csb"
+  ],
+  "assets": [
+    {
+      "asset": "_btn_green.png",
+      "source": "img/_btn_green.png",
+      "sha256": "209315cc9f3ff33da7740008b56768301bcb296dd4b0e1ea0f45f5e999eb0832",
+      "size": [
+        152,
+        61
+      ],
+      "border": [
+        24,
+        18,
+        24,
+        18
+      ]
+    },
+    {
+      "asset": "_btn_green_p.png",
+      "source": "img/_btn_green_p.png",
+      "sha256": "f552287f6c24fa79539f7a2234a3b8af9b6d7b5ad99f6dc14b92c8c095960994",
+      "size": [
+        152,
+        61
+      ],
+      "border": [
+        24,
+        18,
+        24,
+        18
+      ]
+    },
+    {
+      "asset": "_btn_gold.png",
+      "source": "img/_btn_gold.png",
+      "sha256": "4c4861a4aae376a620c706ac2fa3c778f5bf221537187cac8f17a7f9e57d699b",
+      "size": [
+        152,
+        61
+      ],
+      "border": [
+        24,
+        18,
+        24,
+        18
+      ]
+    },
+    {
+      "asset": "_btn_gold_p.png",
+      "source": "img/_btn_gold_p.png",
+      "sha256": "d56ef788bbdb080bbfb92c5b5af10d1e026bf4d7a5b88642191d64f2daf5dfbf",
+      "size": [
+        152,
+        61
+      ],
+      "border": [
+        24,
+        18,
+        24,
+        18
+      ]
+    },
+    {
+      "asset": "_box_black_white.png",
+      "source": "img/_box_black_white.png",
+      "sha256": "31af3c642dc2d6a665bc016e31ea33cf2d5f3006b63cf8b388c78818bb0e81b1",
+      "size": [
+        116,
+        116
+      ],
+      "border": [
+        40,
+        40,
+        40,
+        40
+      ]
+    },
+    {
+      "asset": "cm_checkbg.png",
+      "source": "img/cm_checkbg.png",
+      "sha256": "0d63fa13938f743219667a062ac73a462c42ac913ee3cd68ce5c202e90339caf",
+      "size": [
+        34,
+        35
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "asset": "cm_checkicon2.png",
+      "source": "img/cm_checkicon2.png",
+      "sha256": "48459450971d08f327a6118acc79e3026b130628be577a4e3f57af0c2a3381ad",
+      "size": [
+        34,
+        35
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "asset": "_hero_s_bg_ally.png",
+      "source": "img/_hero_s_bg_ally.png",
+      "sha256": "5ff52755be6568efb40c8e94f3371cac9706b4d7ebce2f40a13d6e84732c3817",
+      "size": [
+        112,
+        112
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "asset": "_hero_s_frame_enemy.png",
+      "source": "img/_hero_s_frame_enemy.png",
+      "sha256": "ce31c8f212041d1b47a41eb729d3f0ec133fd397cf7338222a669c1580d5bd76",
+      "size": [
+        126,
+        126
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "asset": "cm_icon_etcleader.png",
+      "source": "img/cm_icon_etcleader.png",
+      "sha256": "210a17edb0af072cbfae55a14d20c4377593bcb5d5c324d8d7627b74d6de7d10",
+      "size": [
+        30,
+        26
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "asset": "_btn_small_black.png",
+      "source": "img/_btn_small_black.png",
+      "sha256": "5d2458be3abf2d92a1f75d77b58d741d69c62571052ae80c4524c7ed0969a966",
+      "size": [
+        36,
+        34
+      ],
+      "border": [
+        12,
+        12,
+        12,
+        12
+      ]
+    },
+    {
+      "asset": "_btn_small_black_p.png",
+      "source": "img/_btn_small_black_p.png",
+      "sha256": "a890885cd4d3c14f36114f4877771d47618eb31164ef388aaa298b03008f4df7",
+      "size": [
+        36,
+        34
+      ],
+      "border": [
+        12,
+        12,
+        12,
+        12
+      ]
+    }
+  ]
+}

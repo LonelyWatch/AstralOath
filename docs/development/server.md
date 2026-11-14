@@ -1,6 +1,6 @@
 # 服务端开发与运维
 
-在仓库根目录使用 .NET 10 SDK 和 PowerShell。默认开发监听 `127.0.0.1:5080`。在 MySQL 8.4 创建独立的 UTF-8 数据库，并从本地私密配置加载 `ConnectionStrings__MySql`。迁移账户需要在目标库创建表和读取、写入迁移记录的权限。运行账户需要 `foundation_echo` 的 SELECT、INSERT、UPDATE 权限。远程数据库连接使用验证主机名的 TLS，例如 MySqlConnector 的 `SslMode=VerifyFull` 并配置信任链。
+在仓库根目录使用 .NET 10 SDK 和 PowerShell。默认开发监听 `127.0.0.1:5080`。在 MySQL 8.4 创建独立的 UTF-8 数据库，并从本地私密配置加载 `ConnectionStrings__MySql`。迁移账户需要在目标库创建表和读取、写入迁移记录的权限。运行账户需要 `foundation_echo` 的 SELECT、INSERT、UPDATE 权限。启用竞技场后，增加[房间、成员和聊天表权限](../../Server/README.md#模拟战目录房间与竞技场聊天)。远程数据库连接使用验证主机名的 TLS，例如 MySqlConnector 的 `SslMode=VerifyFull` 并配置信任链。
 
 ```powershell
 $env:ASPNETCORE_ENVIRONMENT = 'Development'
@@ -27,7 +27,7 @@ dotnet run --project Server/Host --no-restore
 
 ## 备份与恢复
 
-为备份和恢复分别创建受 ACL 保护的 MySQL 客户端选项文件，用 `[client]` 节配置主机、端口、用户和密码。工具只使用所选文件，不加载用户登录路径。运行期间避免 DDL，以获得一致的 InnoDB 快照。备份 SQL 包含 Foundation 的表、数据和迁移历史，不包含切换源库或删除表的语句。
+为备份和恢复分别创建受 ACL 保护的 MySQL 客户端选项文件，用 `[client]` 节配置主机、端口、用户和密码。工具只使用所选文件，不加载用户登录路径。运行期间避免 DDL，以获得一致的 InnoDB 快照。备份 SQL 包含所选库内 Foundation、Arena 的表、数据和迁移历史，不包含切换源库或删除表的语句。
 
 ```powershell
 Server/Ops/Database.ps1 -Action Backup -MySqlBin <MySQL的bin目录> -DefaultsFile <备份选项文件> -Database astraloath -DumpFile <新备份路径>

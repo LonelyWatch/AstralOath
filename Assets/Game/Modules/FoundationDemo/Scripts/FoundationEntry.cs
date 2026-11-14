@@ -30,6 +30,11 @@ namespace AstralOath.Client.FoundationDemo
             detach = context.Lifetime.Add(Dispose);
             try
             {
+                if (context.ShowHome)
+                {
+                    await StartupNavigation.StartAsync(context, scope);
+                    return;
+                }
                 var services = context.Services;
                 var assets = services.Get<IAssetService>();
                 var config = services.Get<IConfigService>();

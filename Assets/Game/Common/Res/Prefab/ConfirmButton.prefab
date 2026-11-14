@@ -69,7 +69,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3ef15b9fcfa259fdb9762e0bb5df553b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 326462678abf50649f449a0058fbd0e3, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -109,7 +109,7 @@ MonoBehaviour:
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 21300000, guid: 9fa7a2b5b447579da21e18b97c2dc424, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: def4370707155c9c8736e2465976fef1, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -304,8 +304,8 @@ MonoBehaviour:
       m_Calls: []
   m_text:
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: aa02108d73c0dba47b0f664f7c337c19, type: 2}
-  m_sharedMaterial: {fileID: -6473002146201775773, guid: aa02108d73c0dba47b0f664f7c337c19, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f88001289c690f945b4d49e8b3f4f9c6, type: 2}
+  m_sharedMaterial: {fileID: 3699528880270856300, guid: f88001289c690f945b4d49e8b3f4f9c6, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

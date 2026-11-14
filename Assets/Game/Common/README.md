@@ -12,3 +12,10 @@ Common 提供通用组件和资源，业务文案、图标数据、事件和生�
 
 
 使用长按触发 InfoPanelBinder 时传入触发源 GameLongPress。面板在该手势结束、移出、取消或控件禁用时关闭；按住期间面板不截获原触发源的指针。短按仍按普通点击处理。
+
+## 竞技场复用组件
+
+- `ConfirmButton` 和 `CancelButton` 使用竞技场原版绿、棕正常及按下贴图。两者通过 `button` / `label` 绑定文本和行为，沿用原版 `UiConfirm.wav` 与 GameButton 的 Canvas 级音效。快速关闭面板时音效可继续播放。
+- `ChoicePopup` 提供占满父容器的 `dismiss`、可定位 `body` 和模板 `choiceTemplate`。单列选项可用普通 C# `ChoicePopupBinder`，多列筛选可向同一个 body 添加控件并绑定 dismiss。父界面负责将 body 约束在自己的安全区。
+- `PlayerAvatar` 通过遮罩、原版圆框和可选的房主标记及徽章显示头像。调用方提供已加载的 Sprite 和资源生命周期。可通过 `PlayerAvatar.FromInstance` 绑定现有实例。预制体自身不拦截点击。
+- 菜单 `Tools/UI/生成竞技场通用预制体` 重建这些 Prefab，右键 `UI` 可直接创建实例。原版贴图、源 CSB、尺寸及校验值见 `Res/Textures/arena-common-source.json`。
