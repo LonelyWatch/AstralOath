@@ -17,13 +17,14 @@ namespace AstralOath.Client.Arena
         private readonly ArenaApi api;
         private readonly Func<Task> goBack;
         private readonly WindowCoordinator windows;
+        private const int ChatHistoryLimit = 100;
         private const string StickerWindow = "arena/stickers";
         private readonly Dictionary<string, Sprite> stickers = new Dictionary<string, Sprite>(StringComparer.Ordinal);
-        private readonly List<GameObject> messages = new List<GameObject>();
+        private readonly SortedList<long, RectTransform> messages = new SortedList<long, RectTransform>();
         private BindingScope screen, roster;
         private ArenaRoomState state;
         private long cursor;
-        private string memberSignature;
+        private string memberSignature, roomError, chatError, actionError;
         private bool leaving, sending;
 
         public ArenaRoomBinder(ArenaRoom view, ILocaleService locale, ArenaApi api, WindowCoordinator windows, Func<Task> goBack)
@@ -54,32 +55,69 @@ namespace AstralOath.Client.Arena
                 view.Send.Bind(screen, SendAsync);
                 view.Emoji.Bind(screen, ignored => { ToggleStickerPicker(); return Task.CompletedTask; });
             }
-            _ = WatchAsync(screen.Token);
+            _ = WatchRoomAsync(initial.room.id, screen.Token);
+            if (initial.room.allowChat)
+                _ = WatchChatAsync(initial.room.id, screen.Token);
             return Task.CompletedTask;
         }
 
-        private async Task WatchAsync(CancellationToken token)
+        private async Task WatchRoomAsync(string id, CancellationToken token)
         {
             try
             {
                 while (true)
                 {
-                    string id = state.room.id;
                     try
                     {
-                        var next = await api.GetAsync(id, token);
-                        Render(next);
-                        if (next.room.allowChat)
-                            AppendMessages(await api.ReadMessagesAsync(id, cursor, token));
-                        view.Status.text = "";
+                        Render(await api.GetAsync(id, token));
+                        roomError = null;
+                        ShowStatus();
                     }
                     catch (ArenaRequestException error)
                     {
-                        if (leaving || token.IsCancellationRequested) return;
-                        view.Status.text = ArenaError.Text(locale, error);
-                        if (error.Code == "not_in_room" || error.Code == "room_not_found" || error.Code == "unauthorized") return;
+                        if (token.IsCancellationRequested) return;
+                        if (IsRoomClosed(error) && !leaving) { await ReturnToDirectoryAsync(); return; }
+                        roomError = ArenaError.Text(locale, error);
+                        ShowStatus();
                     }
-                    await Task.Delay(TimeSpan.FromSeconds(2), token);
+                    await Task.Delay(TimeSpan.FromSeconds(5), token);
+                }
+            }
+            catch (OperationCanceledException) when (token.IsCancellationRequested) { }
+            catch (Exception error) { Debug.LogException(error); }
+        }
+
+        private async Task WatchChatAsync(string id, CancellationToken token)
+        {
+            var minimumIdleInterval = TimeSpan.FromSeconds(2);
+            try
+            {
+                while (true)
+                {
+                    var elapsed = System.Diagnostics.Stopwatch.StartNew();
+                    try
+                    {
+                        var incoming = await api.ReadMessagesAsync(id, cursor, token, waitForNewMessages: true);
+                        if (incoming.Length > 0)
+                        {
+                            AppendMessages(incoming);
+                            cursor = incoming[incoming.Length - 1].id;
+                        }
+                        chatError = null;
+                        ShowStatus();
+                        if (incoming.Length > 0) continue;
+                    }
+                    catch (ArenaRequestException error)
+                    {
+                        if (token.IsCancellationRequested) return;
+                        if (IsRoomClosed(error) && !leaving) { await ReturnToDirectoryAsync(); return; }
+                        chatError = ArenaError.Text(locale, error);
+                        ShowStatus();
+                    }
+                    // Older servers return empty reads immediately.
+                    var remaining = minimumIdleInterval - elapsed.Elapsed;
+                    if (remaining > TimeSpan.Zero)
+                        await Task.Delay(remaining, token);
                 }
             }
             catch (OperationCanceledException) when (token.IsCancellationRequested) { }
@@ -139,30 +177,38 @@ namespace AstralOath.Client.Arena
             });
         }
 
-        private async Task SendStickerAsync(string id)
-        {
-            if (sending) return;
-            sending = true;
-            var owner = screen;
-            windows.CloseOverlay(StickerWindow);
-            try { await api.SendStickerAsync(state.room.id, id, owner.Token); }
-            catch (OperationCanceledException) when (owner.Token.IsCancellationRequested) { }
-            catch (ArenaRequestException error) { view.Status.text = ArenaError.Text(locale, error); }
-            finally { if (screen == owner) sending = false; }
-        }
+        private Task SendStickerAsync(string id) => SendChatAsync(id, isSticker: true, screen.Token);
 
-        private async Task SendAsync(CancellationToken token)
+        private Task SendAsync(CancellationToken token) => SendChatAsync(view.Message.text, isSticker: false, token);
+
+        private async Task SendChatAsync(string value, bool isSticker, CancellationToken token)
         {
-            string message = view.Message.text.Trim();
-            if (message.Length == 0 || sending) return;
+            if (leaving || sending || string.IsNullOrWhiteSpace(value)) return;
             sending = true;
             var owner = screen;
             try
             {
-                await api.SendMessageAsync(state.room.id, message, token);
-                view.Message.SetTextWithoutNotify("");
+                var message = isSticker
+                    ? await api.SendStickerAsync(state.room.id, value, token)
+                    : await api.SendMessageAsync(state.room.id, value.Trim(), token);
+                if (message == null || message.id <= 0) throw new ArenaRequestException("invalid_response");
+                // The send response can arrive ahead of unseen messages from other players.
+                // Only ascending history reads advance the cursor.
+                AppendMessages(new[] { message });
+                if (isSticker) windows.CloseOverlay(StickerWindow);
+                else if (view.Message.text == value)
+                    view.Message.SetTextWithoutNotify("");
+                actionError = null;
+                ShowStatus();
             }
-            catch (ArenaRequestException error) { view.Status.text = ArenaError.Text(locale, error); }
+            catch (OperationCanceledException) when (token.IsCancellationRequested) { }
+            catch (ArenaRequestException error)
+            {
+                if (leaving || token.IsCancellationRequested) return;
+                if (IsRoomClosed(error)) { await ReturnToDirectoryAsync(); return; }
+                actionError = ArenaError.Text(locale, error);
+                ShowStatus();
+            }
             finally { if (screen == owner) sending = false; }
         }
 
@@ -172,12 +218,21 @@ namespace AstralOath.Client.Arena
             var history = view.Messages;
             bool follow = messages.Count == 0 || history.content.rect.height <= history.viewport.rect.height ||
                 history.verticalNormalizedPosition <= .04f;
-            float previousY = history.content.anchoredPosition.y;
-            float removedHeight = 0;
+            var viewport = history.viewport;
+            var anchor = follow ? null : messages.Values.FirstOrDefault(row =>
+            {
+                var bottom = viewport.InverseTransformPoint(row.TransformPoint(0, row.rect.yMin, 0)).y;
+                var top = viewport.InverseTransformPoint(row.TransformPoint(0, row.rect.yMax, 0)).y;
+                return top >= viewport.rect.yMin && bottom <= viewport.rect.yMax;
+            });
+            var contentParent = history.content.parent;
+            float anchorY = anchor ? contentParent.InverseTransformPoint(anchor.position).y : 0;
             var layout = history.content.GetComponent<VerticalLayoutGroup>();
+            bool changed = false;
             foreach (var message in incoming)
             {
-                if (message.id <= cursor) continue;
+                if (messages.ContainsKey(message.id) || messages.Count >= ChatHistoryLimit && message.id < messages.Keys[0])
+                    continue;
                 var row = UnityEngine.Object.Instantiate(view.ChatRow, history.content, false);
                 var map = row.GetComponent<BindingMap>();
                 ArenaArt.SetAvatar(map.Require<BindingMap>("avatar"), message.player, false);
@@ -200,25 +255,29 @@ namespace AstralOath.Client.Arena
                 float textFraction = body.rectTransform.anchorMax.x - body.rectTransform.anchorMin.x;
                 float bodyWidth = Mathf.Max(1, rowWidth * textFraction - body.margin.x - body.margin.z);
                 size.preferredHeight = sticker.enabled ? 164 : Mathf.Max(size.minHeight, 49 + body.GetPreferredValues(body.text, bodyWidth, 0).y);
-                messages.Add(row);
-                if (messages.Count > 100)
+                var rowRect = (RectTransform)row.transform;
+                messages.Add(message.id, rowRect);
+                rowRect.SetSiblingIndex(messages.IndexOfKey(message.id));
+                if (messages.Count > ChatHistoryLimit)
                 {
-                    removedHeight += ((RectTransform)messages[0].transform).rect.height +
-                        layout.spacing;
-                    messages[0].SetActive(false);
-                    UnityEngine.Object.Destroy(messages[0]);
+                    var oldest = messages.Values[0].gameObject;
+                    oldest.SetActive(false);
+                    oldest.transform.SetAsLastSibling();
+                    UnityEngine.Object.Destroy(oldest);
                     messages.RemoveAt(0);
                 }
-                cursor = message.id;
+                changed = true;
             }
-            Canvas.ForceUpdateCanvases();
+            if (!changed) return;
+            LayoutRebuilder.ForceRebuildLayoutImmediate(history.content);
             if (follow) history.verticalNormalizedPosition = 0;
-            else
+            else if (anchor && anchor.gameObject.activeSelf)
             {
                 var position = history.content.anchoredPosition;
-                position.y = Mathf.Max(0, previousY - removedHeight);
+                position.y += anchorY - contentParent.InverseTransformPoint(anchor.position).y;
                 history.content.anchoredPosition = position;
             }
+            else history.verticalNormalizedPosition = 1;
         }
 
         private async Task LeaveAsync(CancellationToken token)
@@ -230,13 +289,30 @@ namespace AstralOath.Client.Arena
                 await api.LeaveAsync(state.room.id, token);
                 await goBack();
             }
-            catch (ArenaRequestException error) when (error.Code == "not_in_room" || error.Code == "room_not_found" || error.Code == "unauthorized")
+            catch (ArenaRequestException error) when (IsRoomClosed(error))
             {
                 await goBack();
             }
-            catch (ArenaRequestException error) { view.Status.text = ArenaError.Text(locale, error); }
+            catch (ArenaRequestException error)
+            {
+                actionError = ArenaError.Text(locale, error);
+                ShowStatus();
+            }
             finally { leaving = false; }
         }
+
+        private async Task ReturnToDirectoryAsync()
+        {
+            if (leaving) return;
+            leaving = true;
+            try { await goBack(); }
+            finally { leaving = false; }
+        }
+
+        private static bool IsRoomClosed(ArenaRequestException error) =>
+            error.Code == "not_in_room" || error.Code == "room_not_found" || error.Code == "unauthorized";
+
+        private void ShowStatus() => view.Status.text = actionError ?? chatError ?? roomError ?? "";
 
         private void Close()
         {
@@ -244,10 +320,11 @@ namespace AstralOath.Client.Arena
             sending = false;
             roster?.Dispose();
             roster = null;
-            foreach (var row in messages) if (row) { row.SetActive(false); UnityEngine.Object.Destroy(row); }
+            foreach (var row in messages.Values)
+                if (row) { row.gameObject.SetActive(false); UnityEngine.Object.Destroy(row.gameObject); }
             messages.Clear();
             cursor = 0;
-            memberSignature = null;
+            memberSignature = roomError = chatError = actionError = null;
             state = null;
             if (view.Root) view.Hide();
         }

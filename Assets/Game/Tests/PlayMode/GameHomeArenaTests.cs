@@ -94,24 +94,46 @@ namespace AstralOath.Client.Tests
                 yield return Complete(peer.Join());
                 yield return Wait(() => room.Require<GameText>("count").text == "2/50", "Peer did not appear in room.");
                 room.Require<TMP_InputField>("message").text = "来自 Unity";
+                float sendStarted = Time.realtimeSinceStartup;
                 room.Require<GameButton>("send").onClick.Invoke();
-                yield return Wait(() => room.Require<TMP_InputField>("message").text.Length == 0, "Unity did not send chat.");
+                yield return Wait(() => ShowsChat(room, "来自 Unity"), "Unity did not display its confirmed message.", 1.25f);
+                Debug.Log($"ARENA_CHAT_SENDER_MS {(Time.realtimeSinceStartup - sendStarted) * 1000:F0}");
+                Assert.That(room.Require<TMP_InputField>("message").text, Is.Empty);
                 yield return Complete(peer.Read());
                 Assert.That(peer.Chat, Does.Contain("来自 Unity"));
+                float peerStarted = Time.realtimeSinceStartup;
                 yield return Complete(peer.Send());
-                yield return Wait(() => room.Require<ScrollRect>("messages").content.GetComponentsInChildren<GameText>()
-                    .Any(label => label.text.Contains("来自第二会话")), "Unity did not receive peer chat.");
+                yield return Wait(() => ShowsChat(room, "来自第二会话"), "Unity did not receive peer chat.", 1.25f);
+                Debug.Log($"ARENA_CHAT_RECEIVER_MS {(Time.realtimeSinceStartup - peerStarted) * 1000:F0}");
+                Assert.That(ChatCount(room, "来自 Unity"), Is.EqualTo(1), "Sender message appeared twice.");
                 yield return Capture("arena-room-two");
                 room.Require<GameButton>("emoji").onClick.Invoke();
                 var picker = room.Require<GameObject>("emojiPicker");
                 Assert.That(picker.activeInHierarchy, Is.True);
                 yield return Capture("arena-emoji-picker");
+                var scroll = picker.GetComponent<BindingMap>().Require<ScrollRect>("choices");
+                Assert.That(scroll.viewport.GetComponent<RectMask2D>(), Is.Not.Null);
+                Assert.That(picker.GetComponentsInChildren<Image>().Any(image => image.sprite &&
+                    image.sprite.name == "emoji_picker_frame" && image.type == Image.Type.Sliced), Is.True);
+                var portrait = room.Require<BindingMap>("host").Require<Image>("portrait").sprite;
+                Assert.That(portrait.name, Is.EqualTo("c1001_avatar_room"));
+                Assert.That(portrait.rect.width, Is.EqualTo(140f));
                 var emojiRows = picker.GetComponentsInChildren<GameButton>();
                 Assert.That(emojiRows.Length, Is.GreaterThan(60));
+                // This exercises a successful send after the server's 500 ms cadence guard.
+                yield return new WaitForSecondsRealtime(.55f);
                 emojiRows.Single(button => button.name == "c1001_smile_001").onClick.Invoke();
                 yield return Wait(() => !picker.activeInHierarchy, "Sticker picker did not close.");
+                room.Require<GameButton>("emoji").onClick.Invoke();
+                emojiRows.Single(button => button.name == "c1001_smile_001").onClick.Invoke();
+                yield return Wait(() => !string.IsNullOrEmpty(room.Require<GameText>("status").text),
+                    "The cadence guard did not report the rapid second send.");
+                Assert.That(picker.activeInHierarchy, Is.True, "A rejected sticker send closed the picker.");
+                room.Require<GameButton>("emoji").onClick.Invoke();
                 yield return Complete(peer.Read());
                 Assert.That(peer.Chat, Does.Contain("c1001_smile_001"));
+                Assert.That(room.Require<ScrollRect>("messages").content.GetComponentsInChildren<Image>()
+                    .Count(image => image.sprite && image.sprite.name == "c1001_smile_001"), Is.EqualTo(1));
                 yield return Complete(peer.SendSticker("c1005_cry_001"));
                 yield return Wait(() => room.Require<ScrollRect>("messages").content.GetComponentsInChildren<Image>()
                     .Any(image => image.sprite && image.sprite.name == "c1005_cry_001"), "Unity did not render a peer sticker.");
@@ -229,9 +251,15 @@ namespace AstralOath.Client.Tests
             .SelectMany(root => root.GetComponentsInChildren<BindingMap>())
             .FirstOrDefault(item => item.gameObject.name == name || item.gameObject.name == name + "(Clone)");
 
-        private static IEnumerator Wait(Func<bool> predicate, string reason)
+        private static int ChatCount(BindingMap room, string message) =>
+            room.Require<ScrollRect>("messages").content.GetComponentsInChildren<GameText>()
+                .Count(label => label.text.Contains(message));
+
+        private static bool ShowsChat(BindingMap room, string message) => ChatCount(room, message) != 0;
+
+        private static IEnumerator Wait(Func<bool> predicate, string reason, float timeout = 18f)
         {
-            float deadline = Time.realtimeSinceStartup + 18;
+            float deadline = Time.realtimeSinceStartup + timeout;
             while (!predicate() && Time.realtimeSinceStartup < deadline) yield return null;
             Assert.That(predicate(), Is.True, reason);
         }

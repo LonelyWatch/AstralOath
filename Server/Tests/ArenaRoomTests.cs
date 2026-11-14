@@ -253,6 +253,87 @@ public sealed class ArenaRoomTests
     }
 
     [MySqlFact]
+    public async Task ExpiredRoomOwnerTransfersToActiveGuestAndEmptyRoomDisappears()
+    {
+        var connection = Environment.GetEnvironmentVariable("ASTRALOATH_MYSQL_TEST")!;
+        await DatabaseMigrator.ApplyAsync(connection, CancellationToken.None);
+        await using var source = new WebApplicationFactory<Program>();
+        await using var factory = WithDatabase(source, connection);
+        using var owner = factory.CreateClient();
+        using var guest = factory.CreateClient();
+        await Authorize(owner, "断线房主");
+        await Authorize(guest, "活跃访客");
+        string title = "租约" + Guid.NewGuid().ToString("N")[..8];
+        var created = await Post(owner, "/rooms", new { name = title, allowChat = true, rule = "basic" });
+        var room = created.GetProperty("room");
+        string roomId = room.GetProperty("id").GetString()!;
+        string ownerId = room.GetProperty("host").GetProperty("id").GetString()!;
+        var joined = await Post(guest, $"/rooms/{roomId}/join", new { });
+        string guestId = joined.GetProperty("members")[1].GetProperty("id").GetString()!;
+
+        await using var mysql = new MySqlConnection(connection);
+        await mysql.OpenAsync();
+        try
+        {
+            await SetRemaining(guestId, 3);
+            await Get(guest, $"/rooms/{roomId}");
+            Assert.InRange(await SecondsRemaining(guestId), 53, 60);
+            await SetRemaining(ownerId, -1);
+            using var expiredChat = await owner.GetAsync(Arena + $"/rooms/{roomId}/messages");
+            Assert.Equal(HttpStatusCode.Forbidden, expiredChat.StatusCode);
+            var rows = (await Get(guest, "/rooms?query=" + Uri.EscapeDataString(title))).GetProperty("rooms");
+            var transferred = Assert.Single(rows.EnumerateArray());
+            Assert.Equal(1, transferred.GetProperty("memberCount").GetInt32());
+            Assert.Equal(guestId, transferred.GetProperty("host").GetProperty("id").GetString());
+            using var expiredOwner = await owner.GetAsync(Arena + $"/rooms/{roomId}");
+            Assert.Equal(HttpStatusCode.Forbidden, expiredOwner.StatusCode);
+            await SetRemaining(guestId, -1);
+            Assert.Empty((await Get(owner, "/rooms?query=" + Uri.EscapeDataString(title))).GetProperty("rooms").EnumerateArray());
+            using var empty = await guest.GetAsync(Arena + "/rooms/current");
+            Assert.Equal(HttpStatusCode.NoContent, empty.StatusCode);
+            using var expiredRoom = await guest.GetAsync(Arena + $"/rooms/{roomId}");
+            Assert.Equal(HttpStatusCode.NotFound, expiredRoom.StatusCode);
+            using var audit = new MySqlCommand("""
+                SELECT COUNT(*) FROM game_operation_audit
+                WHERE subject_id = @room AND operation = 'arena.room.expire';
+                """, mysql);
+            audit.Parameters.AddWithValue("@room", roomId);
+            Assert.Equal(2L, await audit.ExecuteScalarAsync());
+
+            var replacement = await Post(owner, "/rooms", new { name = title, allowChat = true, rule = "basic" });
+            string replacementId = replacement.GetProperty("room").GetProperty("id").GetString()!;
+            using var replacementLeave = await owner.PostAsync(Arena + $"/rooms/{replacementId}/leave", null);
+            Assert.Equal(HttpStatusCode.NoContent, replacementLeave.StatusCode);
+        }
+        finally
+        {
+            using var ownerLeave = await owner.PostAsync(Arena + $"/rooms/{roomId}/leave", null);
+            using var guestLeave = await guest.PostAsync(Arena + $"/rooms/{roomId}/leave", null);
+        }
+
+        async Task SetRemaining(string playerId, int seconds)
+        {
+            using var update = new MySqlCommand("""
+                UPDATE arena_room_member_lease SET expires_at = TIMESTAMPADD(SECOND, @seconds, UTC_TIMESTAMP(6))
+                WHERE player_id = @id;
+                """, mysql);
+            update.Parameters.AddWithValue("@seconds", seconds);
+            update.Parameters.AddWithValue("@id", playerId);
+            Assert.Equal(1, await update.ExecuteNonQueryAsync());
+        }
+
+        async Task<long> SecondsRemaining(string playerId)
+        {
+            using var read = new MySqlCommand("""
+                SELECT TIMESTAMPDIFF(SECOND, UTC_TIMESTAMP(6), expires_at)
+                FROM arena_room_member_lease WHERE player_id = @id;
+                """, mysql);
+            read.Parameters.AddWithValue("@id", playerId);
+            return Convert.ToInt64(await read.ExecuteScalarAsync());
+        }
+    }
+
+    [MySqlFact]
     public async Task ChatPermissionAndValidationAreEnforcedOnTheServer()
     {
         var connection = Environment.GetEnvironmentVariable("ASTRALOATH_MYSQL_TEST")!;

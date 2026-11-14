@@ -195,17 +195,19 @@ namespace AstralOath.Editor
             var picker = Area(root, "Emoji picker", 0, 0, 1, 1);
             var dismiss = Button(Area(picker, "Dismiss", 0, 0, 1, 1), null, Color.clear);
             dismiss.FeedbackSound = GameUiFeedback.Sound.Silent;
-            var panel = Area(picker, "Panel", .327f, .476f, .273f, .49f);
-            Paint(panel, Art("_box_black_gold"), Color.white, true, true).pixelsPerUnitMultiplier = 3.6f;
-            var choices = Scroll(panel, "Emojis", .035f, .048f, .916f, .88f);
-            var track = Paint(Area(panel, "Scrollbar", .969f, .064f, .011f, .852f), Art("_box_r_op80"), Color.white, true, true);
+            var panel = Area(picker, "Panel", .338f, .469f, .258f, .513f);
+            Paint(panel, Art("emoji_picker_frame"), Color.white, true, true);
+            var choices = Scroll(panel, "Emojis", .025f, .037f, .919f, .951f);
+            var track = Paint(Area(panel, "Scrollbar", .936f, .035f, .012f, .914f), null, Color.clear, true);
+            track.canvasRenderer.cullTransparentMesh = false;
             var trackInner = Area(track.rectTransform, "Sliding area", 0, .015f, 1, .97f);
-            var thumb = Paint(Area(trackInner, "Thumb", .12f, 0, .76f, 1), Art("_white"), new Color32(109, 100, 85, 155));
+            var thumb = Paint(Area(trackInner, "Thumb", .12f, 0, .76f, 1), null, new Color32(77, 76, 72, 135));
             var scrollbar = track.gameObject.AddComponent<Scrollbar>();
             scrollbar.targetGraphic = thumb;
             scrollbar.handleRect = thumb.rectTransform;
             scrollbar.direction = Scrollbar.Direction.BottomToTop;
             choices.verticalScrollbar = scrollbar;
+            choices.verticalScrollbarVisibility = ScrollRect.ScrollbarVisibility.AutoHide;
             choices.content.gameObject.GetComponent<VerticalLayoutGroup>().padding = new RectOffset(4, 4, 0, 0);
             choices.content.gameObject.GetComponent<VerticalLayoutGroup>().spacing = 4;
             const string assets = Arena + "Res/Textures/ChatStickers/";
@@ -217,12 +219,12 @@ namespace AstralOath.Editor
                 if (column == 0)
                 {
                     row = Area(choices.content, "Emoji row", 0, 0, 1, 0);
-                    row.gameObject.AddComponent<LayoutElement>().preferredHeight = 116;
+                    row.gameObject.AddComponent<LayoutElement>().preferredHeight = 146;
                 }
                 string id = catalogue.stickers[index].id;
                 var tile = Area(row, id, column / 3f, 0, 1f / 3f, 1);
                 Button(tile, null, Color.clear);
-                var art = Picture(tile, "Emoji", Load<Sprite>(assets + id + ".png"), .07f, .049f, .86f, .90f, true);
+                var art = Picture(tile, "Emoji", Load<Sprite>(assets + id + ".png"), .060f, .030f, .88f, .93f, true);
                 Bind(tile, ("art", art));
             }
             Bind(picker, ("dismiss", dismiss), ("choices", choices));
@@ -233,7 +235,8 @@ namespace AstralOath.Editor
         private static BindingMap ArenaAvatar(RectTransform parent, string name, float x, float y, float w, float h)
         {
             var avatar = Avatar(parent, name, x, y, w, h);
-            avatar.Require<Image>("frame").sprite = Art("icon_border_pvp_season20_rank_3", Home);
+            avatar.Require<Image>("frame").sprite = Art("arena_avatar_frame");
+            avatar.Require<Image>("portrait").sprite = Art("c1001_avatar_room");
             return avatar;
         }
 

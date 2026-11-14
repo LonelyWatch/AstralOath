@@ -89,10 +89,12 @@ namespace AstralOath.Client.Arena
         public Task<ArenaRoomState> GetAsync(string id, CancellationToken token) =>
             Send<ArenaRoomState>(Room(id), null, token);
         public Task LeaveAsync(string id, CancellationToken token) => Send<Error>(Room(id) + "/leave", new object(), token);
-        public async Task<ArenaMessage[]> ReadMessagesAsync(string id, long after, CancellationToken token)
+        public async Task<ArenaMessage[]> ReadMessagesAsync(string id, long after, CancellationToken token, bool waitForNewMessages = false)
         {
-            var result = await Send<History>(Room(id) + "/messages?after=" + after.ToString(CultureInfo.InvariantCulture), null, token);
-            return result.messages ?? Array.Empty<ArenaMessage>();
+            string path = Room(id) + "/messages?after=" + after.ToString(CultureInfo.InvariantCulture);
+            if (waitForNewMessages) path += "&waitMs=8000";
+            var result = await Send<History>(path, null, token, waitForNewMessages ? 12 : 10);
+            return result?.messages ?? Array.Empty<ArenaMessage>();
         }
         public Task<ArenaMessage> SendMessageAsync(string id, string text, CancellationToken token) =>
             Send<ArenaMessage>(Room(id) + "/messages", new Chat { text = text }, token);
@@ -121,10 +123,22 @@ namespace AstralOath.Client.Arena
             var requestSession = session;
             if (requestSession != null) request.SetRequestHeader("Authorization", "Bearer " + requestSession.token);
             var operation = request.SendWebRequest();
-            while (!operation.isDone)
+            if (!operation.isDone)
             {
-                if (token.IsCancellationRequested) { request.Abort(); token.ThrowIfCancellationRequested(); }
-                await Task.Yield();
+                var completion = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+                void Complete(AsyncOperation _) => completion.TrySetResult(true);
+                operation.completed += Complete;
+                try
+                {
+                    using var cancellation = token.Register(() => completion.TrySetCanceled(token));
+                    await completion.Task;
+                }
+                catch (OperationCanceledException) when (token.IsCancellationRequested)
+                {
+                    request.Abort();
+                    throw;
+                }
+                finally { operation.completed -= Complete; }
             }
             token.ThrowIfCancellationRequested();
             string json = request.downloadHandler.text;

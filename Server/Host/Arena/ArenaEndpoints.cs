@@ -19,6 +19,8 @@ internal static class ArenaEndpoints
     {
         services.AddSingleton(provider => new ArenaStore(provider.GetRequiredService<IConfiguration>()
             .GetConnectionString("MySql")));
+        services.AddHostedService<ArenaRoomLeaseWorker>();
+        services.AddSingleton<ArenaChatSignal>();
         services.AddRateLimiter(options =>
         {
             options.AddPolicy(SessionLimit, context => FixedWindow(context, 30));
@@ -126,17 +128,33 @@ internal static class ArenaEndpoints
             await store.LeaveRoom(RoomId(id), Player(http), cancellation);
             return Results.NoContent();
         });
-        authenticated.MapGet("/rooms/{id}/messages", async (string id, long? after, HttpContext http, ArenaStore store,
-            CancellationToken cancellation) =>
+        authenticated.MapGet("/rooms/{id}/messages", async (string id, long? after, int? waitMs, HttpContext http,
+            ArenaStore store, ArenaChatSignal chat, CancellationToken cancellation) =>
         {
-            if (after < 0) throw new ArenaProblem(400, "invalid_message");
-            return Results.Ok(new { messages = await store.ReadMessages(RoomId(id), Player(http), after ?? 0, cancellation) });
+            if (after < 0 || waitMs is < 0 or > 8000) throw new ArenaProblem(400, "invalid_message");
+            string roomId = RoomId(id);
+            var player = Player(http);
+            long cursor = after ?? 0;
+            int wait = waitMs.GetValueOrDefault();
+            // Subscribe before reading so a commit between the query and wait cannot be missed.
+            using var subscription = wait > 0 ? chat.Subscribe(roomId) : null;
+            var messages = await store.ReadMessages(roomId, player, cursor, cancellation);
+            if (messages.Count == 0 && subscription is not null)
+            {
+                try { await subscription.Changed.WaitAsync(TimeSpan.FromMilliseconds(wait), cancellation); }
+                catch (TimeoutException) { }
+                messages = await store.ReadMessages(roomId, player, cursor, cancellation);
+            }
+            return Results.Ok(new { messages });
         });
-        authenticated.MapPost("/rooms/{id}/messages", async (string id, ArenaChatRequest request, HttpContext http, ArenaStore store,
-            CancellationToken cancellation) =>
+        authenticated.MapPost("/rooms/{id}/messages", async (string id, ArenaChatRequest request, HttpContext http,
+            ArenaStore store, ArenaChatSignal chat, CancellationToken cancellation) =>
         {
+            string roomId = RoomId(id);
             var (text, stickerId) = ParseChat(request);
-            return Results.Ok(await store.SendMessage(RoomId(id), Player(http), text, stickerId, cancellation));
+            var message = await store.SendMessage(roomId, Player(http), text, stickerId, cancellation);
+            chat.Publish(roomId);
+            return Results.Ok(message);
         }).WithMetadata(new RequestSizeLimitAttribute(4096));
     }
 

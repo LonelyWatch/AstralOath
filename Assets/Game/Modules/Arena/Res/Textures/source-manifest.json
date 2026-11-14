@@ -774,6 +774,68 @@
           }
         ]
       }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/c1001_avatar_room.png",
+      "sources": [
+        {
+          "source": "face/c1001_su.png",
+          "sha256": "f7063b80a972e565563dbea194ff982f181d23ef14a8a538fb98c3ede4584063"
+        }
+      ],
+      "outputSha256": "f88fc6a68e471d3881f92bc9d5f84a8d9c680b468f99e6898189c54f8b77126c",
+      "conversion": {
+        "method": "original-asset-crop",
+        "cropLtrb": [
+          72,
+          17,
+          212,
+          157
+        ],
+        "mirrorX": true,
+        "mask": "circle",
+        "resizesSource": false
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/emoji_picker_frame.png",
+      "sources": [
+        {
+          "source": "img/_box_black_gold.png",
+          "sha256": "74232c37f99a3ab675efc15cb8b4cd173ff8aed3308318e5f84c0a308e39bfa3"
+        }
+      ],
+      "outputSha256": "23b7242d8b4b03e5cc4c5705690ec38da6934723bf8d691b4e7876d46e3b2a79",
+      "conversion": {
+        "method": "original-asset-crop",
+        "cropLtrb": [
+          31,
+          31,
+          85,
+          85
+        ],
+        "scale9InsetsLtrb": [
+          14,
+          14,
+          14,
+          14
+        ],
+        "sourceLayout": "wnd/chat_emoji_tip.csb"
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/arena_avatar_frame.png",
+      "sources": [
+        {
+          "source": "item/border/icon_border_pvp_season20_rank_3.png",
+          "sha256": "2769f943f17edfb5fc2b91036ad9511ff6500374bcd7b059ee9469eddbe26eb0"
+        }
+      ],
+      "outputSha256": "2769f943f17edfb5fc2b91036ad9511ff6500374bcd7b059ee9469eddbe26eb0",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none"
+      }
     }
   ],
   "sourceLayouts": [
@@ -804,6 +866,14 @@
     {
       "source": "wnd/chat.csb",
       "sha256": "38deb22d5006a0426e2117be9d798228aad53b44eae5e86474a3f2049a174221"
+    },
+    {
+      "source": "wnd/chat_emoji_tip.csb",
+      "sha256": "85538781e821a6d5bda3fc54baf942001b0c7143a5e216dc36e452bc5db6a585"
+    },
+    {
+      "source": "wnd/chat_emoji_tip_item.csb",
+      "sha256": "f7921a76e6e790bb0c16a7687ff0d3f6d9320669634c11ce76f479ae140e2f76"
     }
   ]
 }

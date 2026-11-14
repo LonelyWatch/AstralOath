@@ -9,6 +9,10 @@ internal sealed class ArenaStore(string? connectionString)
 {
     private const int Capacity = 50;
     private const int PinIterations = 100_000;
+    private const int LeaseSeconds = 60;
+    private const int SweepPageSize = 64;
+
+    public bool IsConfigured => !string.IsNullOrWhiteSpace(connectionString);
 
     public async Task<ArenaSession> CreateSession(string name, string avatar, CancellationToken token)
     {
@@ -43,20 +47,24 @@ internal sealed class ArenaStore(string? connectionString)
         CancellationToken token)
     {
         await using var connection = await Open(token);
+        await SweepExpiredRooms(connection, token);
         using var command = Command(connection, null, """
             SELECT r.id, r.name, r.password_hash IS NOT NULL, r.allow_chat, r.rule, r.created_at,
                    p.id, p.display_name, p.avatar_id,
-                   (SELECT COUNT(*) FROM arena_room_member m WHERE m.room_id = r.id) AS member_count
+                   (SELECT COUNT(*) FROM arena_room_member m
+                    LEFT JOIN arena_room_member_lease l ON l.player_id = m.player_id
+                    WHERE m.room_id = r.id AND COALESCE(l.expires_at, TIMESTAMPADD(SECOND, @lease, m.joined_at)) > UTC_TIMESTAMP(6)) AS member_count
             FROM arena_room r
             JOIN arena_player p ON p.id = r.host_id
             WHERE (@visibility = 'all' OR (r.password_hash IS NULL) = (@visibility = 'public'))
               AND (@query = '' OR LOCATE(@query, r.name) > 0)
+            HAVING member_count > 0
             ORDER BY CASE WHEN @sort = 'players' AND @direction = 'asc' THEN member_count END ASC,
                      CASE WHEN @sort = 'players' AND @direction = 'desc' THEN member_count END DESC,
                      CASE WHEN @sort = 'recent' AND @direction = 'asc' THEN r.created_at END ASC,
                      r.created_at DESC, r.id ASC
             LIMIT 100;
-            """, ("@visibility", visibility), ("@query", query), ("@sort", sort), ("@direction", direction));
+            """, ("@visibility", visibility), ("@query", query), ("@sort", sort), ("@direction", direction), ("@lease", LeaseSeconds));
         await using var reader = await command.ExecuteReaderAsync(token);
         var rooms = new List<ArenaRoom>();
         while (await reader.ReadAsync(token))
@@ -72,6 +80,7 @@ internal sealed class ArenaStore(string? connectionString)
         var salt = password is null ? null : RandomNumberGenerator.GetBytes(16);
         var hash = password is null ? null : HashPin(password, salt!);
         await using var connection = await Open(token);
+        await SweepPriorRoom(connection, player.Id, exceptRoomId: null, token);
         await using var transaction = await connection.BeginTransactionAsync(IsolationLevel.ReadCommitted, token);
         await LockPlayer(connection, transaction, player.Id, token);
         if (await FindMembership(connection, transaction, player.Id, token) is not null)
@@ -93,8 +102,9 @@ internal sealed class ArenaStore(string? connectionString)
     public async Task<ArenaRoomState> JoinRoom(string id, ArenaPlayer player, string? password, CancellationToken token)
     {
         await using var connection = await Open(token);
+        await SweepPriorRoom(connection, player.Id, id, token);
         await using var transaction = await connection.BeginTransactionAsync(IsolationLevel.ReadCommitted, token);
-        var room = await LockRoom(connection, transaction, id, token);
+        var room = await LockActiveRoom(connection, transaction, id, token);
         await LockPlayer(connection, transaction, player.Id, token);
         var membership = await FindMembership(connection, transaction, player.Id, token);
         var members = await Members(connection, transaction, id, token);
@@ -110,6 +120,7 @@ internal sealed class ArenaStore(string? connectionString)
             members.Add(player);
             await AuditRoom(connection, transaction, "arena.room.join", player, id, token);
         }
+        else await RenewLease(connection, transaction, player.Id, token);
         var state = State(room, members);
         await transaction.CommitAsync(token);
         return state;
@@ -117,8 +128,9 @@ internal sealed class ArenaStore(string? connectionString)
 
     public async Task<ArenaRoomState?> CurrentRoom(ArenaPlayer player, CancellationToken token)
     {
-        await using var connection = await Open(token);
-        string? id = await FindMembership(connection, null, player.Id, token);
+        string? id;
+        await using (var connection = await Open(token))
+            id = await FindMembership(connection, null, player.Id, token);
         if (id is null) return null;
         try { return await ReadRoom(id, player, token); }
         catch (ArenaProblem problem) when (problem.Code is "room_not_found" or "not_in_room") { return null; }
@@ -128,9 +140,14 @@ internal sealed class ArenaStore(string? connectionString)
     {
         await using var connection = await Open(token);
         await using var transaction = await connection.BeginTransactionAsync(IsolationLevel.ReadCommitted, token);
-        var room = await LockRoom(connection, transaction, id, token, shared: true);
+        var room = await LockActiveRoom(connection, transaction, id, token);
         var members = await Members(connection, transaction, id, token);
-        if (!members.Any(member => member.Id == player.Id)) throw new ArenaProblem(403, "not_in_room");
+        if (!members.Any(member => member.Id == player.Id))
+        {
+            await transaction.CommitAsync(token);
+            throw new ArenaProblem(403, "not_in_room");
+        }
+        await RenewLease(connection, transaction, player.Id, token);
         await transaction.CommitAsync(token);
         return State(room, members);
     }
@@ -140,10 +157,14 @@ internal sealed class ArenaStore(string? connectionString)
         await using var connection = await Open(token);
         await using var transaction = await connection.BeginTransactionAsync(IsolationLevel.ReadCommitted, token);
         RoomRecord room;
-        try { room = await LockRoom(connection, transaction, id, token); }
+        try { room = await LockActiveRoom(connection, transaction, id, token); }
         catch (ArenaProblem problem) when (problem.Code == "room_not_found") { return; }
         await LockPlayer(connection, transaction, player.Id, token);
-        if (await FindMembership(connection, transaction, player.Id, token) != id) return;
+        if (await FindMembership(connection, transaction, player.Id, token) != id)
+        {
+            await transaction.CommitAsync(token);
+            return;
+        }
         using var remove = Command(connection, transaction,
             "DELETE FROM arena_room_member WHERE player_id = @player;",
             ("@player", player.Id));
@@ -151,11 +172,7 @@ internal sealed class ArenaStore(string? connectionString)
         if (room.HostId == player.Id)
         {
             var members = await Members(connection, transaction, id, token);
-            using var next = members.Count == 0
-                ? Command(connection, transaction, "DELETE FROM arena_room WHERE id = @id;", ("@id", id))
-                : Command(connection, transaction, "UPDATE arena_room SET host_id = @host WHERE id = @id;",
-                    ("@host", members[0].Id), ("@id", id));
-            await next.ExecuteNonQueryAsync(token);
+            await TransferOrRemoveRoom(connection, transaction, id, members.FirstOrDefault()?.Id, token);
         }
         await AuditRoom(connection, transaction, "arena.room.leave", player, id, token);
         await transaction.CommitAsync(token);
@@ -167,7 +184,7 @@ internal sealed class ArenaStore(string? connectionString)
         await using var connection = await Open(token);
         await using var transaction = await connection.BeginTransactionAsync(IsolationLevel.ReadCommitted, token);
         await LockRoom(connection, transaction, id, token, shared: true);
-        await RequireMember(connection, transaction, id, player.Id, token);
+        await RequireActiveMember(connection, transaction, id, player.Id, token);
         // A new reader gets the most recent history; an existing reader pages
         // forward in ascending cursor order even if it missed several polls.
         const string select = """
@@ -194,7 +211,7 @@ internal sealed class ArenaStore(string? connectionString)
     {
         await using var connection = await Open(token);
         await using var transaction = await connection.BeginTransactionAsync(IsolationLevel.ReadCommitted, token);
-        var room = await LockRoom(connection, transaction, id, token);
+        var room = await LockActiveRoom(connection, transaction, id, token);
         await RequireMember(connection, transaction, id, player.Id, token);
         if (!room.AllowChat) throw new ArenaProblem(403, "chat_disabled");
         var now = DateTime.UtcNow;
@@ -215,6 +232,7 @@ internal sealed class ArenaStore(string? connectionString)
                 """, ("@message", messageId), ("@sticker", stickerId));
             await sticker.ExecuteNonQueryAsync(token);
         }
+        await RenewLease(connection, transaction, player.Id, token);
         await AuditRoom(connection, transaction, "arena.chat.send", player, id, token);
         await transaction.CommitAsync(token);
         return new ArenaMessage(messageId, player, text, now, stickerId);
@@ -230,9 +248,121 @@ internal sealed class ArenaStore(string? connectionString)
         ArenaPlayer player, string roomId, CancellationToken token) =>
         OperationAudit.Record(connection, transaction, operation, "arena_player", player.Id, "arena_room", roomId, null, token);
 
+    public async Task SweepExpiredRooms(CancellationToken token)
+    {
+        await using var connection = await Open(token);
+        await SweepExpiredRooms(connection, token);
+    }
+
+    private static async Task SweepExpiredRooms(MySqlConnection connection, CancellationToken token)
+    {
+        // Read candidate IDs without row locks. Each candidate is rechecked under its room lock.
+        using var command = Command(connection, null, """
+            SELECT m.room_id
+            FROM arena_room_member_lease l JOIN arena_room_member m ON m.player_id = l.player_id
+            WHERE l.expires_at <= UTC_TIMESTAMP(6)
+            UNION DISTINCT
+            SELECT m.room_id
+            FROM arena_room_member m LEFT JOIN arena_room_member_lease l ON l.player_id = m.player_id
+            WHERE l.player_id IS NULL AND m.joined_at <= TIMESTAMPADD(SECOND, -@lease, UTC_TIMESTAMP(6))
+            ORDER BY room_id LIMIT @limit;
+            """, ("@limit", SweepPageSize), ("@lease", LeaseSeconds));
+        var expired = new List<string>();
+        await using (var reader = await command.ExecuteReaderAsync(token))
+            while (await reader.ReadAsync(token)) expired.Add(reader.GetString(0));
+        foreach (string id in expired) await SweepRoom(connection, id, token);
+    }
+
+    private static async Task SweepPriorRoom(MySqlConnection connection, string playerId, string? exceptRoomId,
+        CancellationToken token)
+    {
+        using var command = Command(connection, null, """
+            SELECT m.room_id FROM arena_room_member m
+            LEFT JOIN arena_room_member_lease l ON l.player_id = m.player_id
+            WHERE m.player_id = @player
+              AND COALESCE(l.expires_at, TIMESTAMPADD(SECOND, @lease, m.joined_at)) <= UTC_TIMESTAMP(6);
+            """, ("@player", playerId), ("@lease", LeaseSeconds));
+        if (await command.ExecuteScalarAsync(token) is string id && id != exceptRoomId)
+            await SweepRoom(connection, id, token);
+    }
+
+    private static async Task SweepRoom(MySqlConnection connection, string id, CancellationToken token)
+    {
+        await using var transaction = await connection.BeginTransactionAsync(IsolationLevel.ReadCommitted, token);
+        RoomRecord room;
+        try { room = await LockRoom(connection, transaction, id, token); }
+        catch (ArenaProblem problem) when (problem.Code == "room_not_found") { return; }
+        await RemoveExpiredMembers(connection, transaction, room, token);
+        await transaction.CommitAsync(token);
+    }
+
+    private static async Task<RoomRecord> LockActiveRoom(MySqlConnection connection, MySqlTransaction transaction,
+        string id, CancellationToken token)
+    {
+        var room = await LockRoom(connection, transaction, id, token);
+        var active = await RemoveExpiredMembers(connection, transaction, room, token);
+        if (active is not null) return active;
+        await transaction.CommitAsync(token);
+        throw new ArenaProblem(404, "room_not_found");
+    }
+
+    private static async Task<RoomRecord?> RemoveExpiredMembers(MySqlConnection connection, MySqlTransaction transaction,
+        RoomRecord room, CancellationToken token)
+    {
+        using var lookup = Command(connection, transaction, """
+            SELECT m.player_id FROM arena_room_member m
+            LEFT JOIN arena_room_member_lease l ON l.player_id = m.player_id
+            WHERE m.room_id = @room
+              AND COALESCE(l.expires_at, TIMESTAMPADD(SECOND, @lease, m.joined_at)) <= UTC_TIMESTAMP(6)
+            ORDER BY m.joined_at, m.player_id;
+            """, ("@room", room.Id), ("@lease", LeaseSeconds));
+        var expired = new List<string>();
+        await using (var reader = await lookup.ExecuteReaderAsync(token))
+            while (await reader.ReadAsync(token)) expired.Add(reader.GetString(0));
+        if (expired.Count == 0) return room;
+        foreach (string playerId in expired)
+        {
+            using var remove = Command(connection, transaction,
+                "DELETE FROM arena_room_member WHERE player_id = @player AND room_id = @room;",
+                ("@player", playerId), ("@room", room.Id));
+            await remove.ExecuteNonQueryAsync(token);
+            await OperationAudit.Record(connection, transaction, "arena.room.expire", "arena_player", playerId,
+                "arena_room", room.Id, null, token);
+        }
+        if (!expired.Contains(room.HostId)) return room;
+        using var findHost = Command(connection, transaction, """
+            SELECT player_id FROM arena_room_member WHERE room_id = @room ORDER BY joined_at, player_id LIMIT 1;
+            """, ("@room", room.Id));
+        string? nextHost = (string?)await findHost.ExecuteScalarAsync(token);
+        await TransferOrRemoveRoom(connection, transaction, room.Id, nextHost, token);
+        return nextHost is null ? null : room with { HostId = nextHost };
+    }
+
+    private static async Task TransferOrRemoveRoom(MySqlConnection connection, MySqlTransaction transaction, string id,
+        string? nextHost, CancellationToken token)
+    {
+        using var command = nextHost is null
+            ? Command(connection, transaction, "DELETE FROM arena_room WHERE id = @id;", ("@id", id))
+            : Command(connection, transaction, "UPDATE arena_room SET host_id = @host WHERE id = @id;",
+                ("@host", nextHost), ("@id", id));
+        await command.ExecuteNonQueryAsync(token);
+    }
+
+    private static async Task RenewLease(MySqlConnection connection, MySqlTransaction transaction, string playerId,
+        CancellationToken token)
+    {
+        using var renew = Command(connection, transaction, """
+            INSERT INTO arena_room_member_lease (player_id, expires_at)
+            VALUES (@player, TIMESTAMPADD(SECOND, @lease, UTC_TIMESTAMP(6)))
+            ON DUPLICATE KEY UPDATE expires_at = IF(expires_at <= TIMESTAMPADD(SECOND, @threshold, UTC_TIMESTAMP(6)),
+                TIMESTAMPADD(SECOND, @lease, UTC_TIMESTAMP(6)), expires_at);
+            """, ("@player", playerId), ("@lease", LeaseSeconds), ("@threshold", LeaseSeconds - 10));
+        await renew.ExecuteNonQueryAsync(token);
+    }
+
     private async Task<MySqlConnection> Open(CancellationToken token)
     {
-        if (string.IsNullOrWhiteSpace(connectionString)) throw new ArenaProblem(503, "database_unavailable");
+        if (!IsConfigured) throw new ArenaProblem(503, "database_unavailable");
         var connection = new MySqlConnection(connectionString);
         try { await connection.OpenAsync(token); return connection; }
         catch { await connection.DisposeAsync(); throw; }
@@ -284,11 +414,24 @@ internal sealed class ArenaStore(string? connectionString)
         return (string?)await command.ExecuteScalarAsync(token);
     }
 
+    private static async Task RequireActiveMember(MySqlConnection connection, MySqlTransaction transaction,
+        string id, string playerId, CancellationToken token)
+    {
+        using var command = Command(connection, transaction, """
+            SELECT 1 FROM arena_room_member m
+            LEFT JOIN arena_room_member_lease l ON l.player_id = m.player_id
+            WHERE m.player_id = @player AND m.room_id = @room
+              AND COALESCE(l.expires_at, TIMESTAMPADD(SECOND, @lease, m.joined_at)) > UTC_TIMESTAMP(6);
+            """, ("@player", playerId), ("@room", id), ("@lease", LeaseSeconds));
+        if (await command.ExecuteScalarAsync(token) is null) throw new ArenaProblem(403, "not_in_room");
+    }
+
     private static async Task RequireMember(MySqlConnection connection, MySqlTransaction transaction,
         string id, string playerId, CancellationToken token)
     {
-        if (await FindMembership(connection, transaction, playerId, token) != id)
-            throw new ArenaProblem(403, "not_in_room");
+        if (await FindMembership(connection, transaction, playerId, token) == id) return;
+        await transaction.CommitAsync(token);
+        throw new ArenaProblem(403, "not_in_room");
     }
 
     private static async Task InsertMembership(MySqlConnection connection, MySqlTransaction transaction,
@@ -298,6 +441,7 @@ internal sealed class ArenaStore(string? connectionString)
             INSERT INTO arena_room_member (player_id, room_id, joined_at) VALUES (@player, @room, UTC_TIMESTAMP(6));
             """, ("@player", playerId), ("@room", id));
         await command.ExecuteNonQueryAsync(token);
+        await RenewLease(connection, transaction, playerId, token);
     }
 
     private static ArenaRoomState State(RoomRecord room, IReadOnlyList<ArenaPlayer> members) =>

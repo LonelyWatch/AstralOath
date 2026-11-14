@@ -10,7 +10,7 @@ import uuid
 from pathlib import Path
 
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageChops, ImageDraw
 
 REPO = Path(__file__).resolve().parents[2]
 MODULES = REPO / "Assets/Game/Modules"
@@ -45,6 +45,7 @@ BORDERS = {
     "_btn_small_white_p": (13, 13, 13, 13), "_select": (25, 25, 25, 25),
     "_btn_white_flat": (25, 25, 25, 25), "_btn_white_flat_p": (25, 25, 25, 25),
     "_bar_1": (40, 0, 40, 0), "_bar_2": (40, 0, 40, 0), "_bar_5": (40, 0, 40, 0),
+    "emoji_picker_frame": (14, 14, 14, 14),
     "_bar_4": (32, 0, 32, 0), "_bar_23": (30, 0, 30, 0), "renew_popup_bg_alpha": (34, 38, 34, 38),
 }
 
@@ -93,8 +94,13 @@ def metadata(path, check, importer):
         border = re.search(r"(?m)^  spriteBorder: .*", importer)
         if border and border[0] not in old:
             raise ValueError(f"Unity sprite border differs: {meta}")
+        if path.stem in UNCOMPRESSED_UI and any(value != "0" for value in re.findall(r"(?m)^\s+textureCompression: (\d+)$", old)):
+            raise ValueError(f"Unity compression would alter interface artwork: {meta}")
     elif not old:
         write(meta, f"fileFormatVersion: 2\nguid: {identifier}\n{importer}".encode(), False)
+
+
+UNCOMPRESSED_UI = {"emoji_picker_frame", "c1001_avatar_room", "arena_avatar_frame"}
 
 
 def texture_importer(path, sprite):
@@ -104,6 +110,8 @@ def texture_importer(path, sprite):
         template = MODULES / "CharacterPresentation/Res/Characters/c1031/Textures/portrait/c1031.png.meta"
     text = template.read_text(encoding="utf-8-sig")
     result = "\n".join(line.rstrip() for line in text.splitlines()[2:]) + "\n"
+    if path.stem in UNCOMPRESSED_UI:
+        result = re.sub(r"(?m)^(\s+textureCompression:) \d+$", r"\1 0", result)
     if path.stem in BORDERS:
         x, y, z, w = BORDERS[path.stem]
         result = re.sub(r"(?m)^  spriteBorder: .*", f"  spriteBorder: {{x: {x}, y: {y}, z: {z}, w: {w}}}", result)
@@ -222,6 +230,36 @@ def courtyard(root, check):
 
 
 
+def arena_room_art(root, check):
+    portrait_source = "face/c1001_su.png"
+    portrait_data = read_source(root, portrait_source)
+    portrait_crop = (72, 17, 212, 157)
+    portrait = Image.open(io.BytesIO(portrait_data)).convert("RGBA").crop(portrait_crop)
+    portrait = portrait.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+    edge = Image.new("L", (portrait.width * 4, portrait.height * 4))
+    ImageDraw.Draw(edge).ellipse((0, 0, edge.width - 1, edge.height - 1), fill=255)
+    edge = edge.resize(portrait.size, Image.Resampling.LANCZOS)
+    portrait.putalpha(ImageChops.multiply(portrait.getchannel("A"), edge))
+
+    border_source = "img/_box_black_gold.png"
+    border_data = read_source(root, border_source)
+    border_crop = (31, 31, 85, 85)
+    border = Image.open(io.BytesIO(border_data)).convert("RGBA").crop(border_crop)
+
+    frame_source = "item/border/icon_border_pvp_season20_rank_3.png"
+    frame_data = read_source(root, frame_source)
+    variants = (
+        ("c1001_avatar_room.png", png_bytes(portrait), portrait_source, portrait_data,
+         {"method": "original-asset-crop", "cropLtrb": portrait_crop, "mirrorX": True, "mask": "circle", "resizesSource": False}),
+        ("emoji_picker_frame.png", png_bytes(border), border_source, border_data,
+         {"method": "original-asset-crop", "cropLtrb": border_crop, "scale9InsetsLtrb": [14, 14, 14, 14],
+          "sourceLayout": "wnd/chat_emoji_tip.csb"}),
+        ("arena_avatar_frame.png", frame_data, frame_source, frame_data, {"method": "original-asset", "compression": "none"}),
+    )
+    return [write_converted("Arena", "Textures/" + name, data, [{"source": source, "sha256": digest(raw)}], check, conversion)
+            for name, data, source, raw, conversion in variants]
+
+
 def manifest(module, entries, layouts, root, check):
     result = {"schemaVersion": 1, "release": "pack-15-r4262", "assets": entries,
               "sourceLayouts": [{"source": path, "sha256": digest(read_source(root, path))} for path in layouts]}
@@ -241,6 +279,7 @@ def main():
     arena = source_pngs("Arena", [f"img/{name}.png" for name in ARENA_IMAGES] +
                         ["emblem/icon_pvp_sa_league_place.png"], root, args.check)
     arena.append(courtyard(root, args.check))
+    arena += arena_room_art(root, args.check)
     home = source_pngs("Home", [f"img/{name}.png" for name in HOME_IMAGES] +
                        ["bgpack/lobby_bg3.png", "face/c5009_s.png", "item/border/icon_border_pvp_season20_rank_3.png"] +
                        [f"item/sticker/ma_sticker_emo{index}.png" for index in (1, 2, 3)], root, args.check)
@@ -248,6 +287,7 @@ def main():
     manifest("Arena", arena, [
         "wnd/pvplive_base.csb", "wnd/pvplive_mock_battle_item.csb", "wnd/pvplive_lounge_creat.csb",
         "wnd/pvplive_mod_card.csb", "wnd/pvplive_lounge_pw.csb", "wnd/pvplive_lounge.csb", "wnd/chat.csb",
+        "wnd/chat_emoji_tip.csb", "wnd/chat_emoji_tip_item.csb",
     ], root, args.check)
     manifest("Home", home, ["wnd/lobby_ui_renew.csb", "wnd/lobby_ui_ver2.csb"], root, args.check)
     print(f"{'Verified' if args.check else 'Imported'} {len(arena)} Arena and {len(home)} Home assets.")
