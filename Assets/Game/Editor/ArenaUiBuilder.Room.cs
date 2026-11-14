@@ -146,8 +146,8 @@ namespace AstralOath.Editor
             lockSize.preferredHeight = 47;
             roomLock.gameObject.SetActive(false);
             NativeRule(left, "Top rule", .024f, .079f, .954f, .023f, Gold, "_bar_2");
-            var ruleBoard = Area(left, "Rule board", .388f, .178f, .23f, .105f);
-            Paint(ruleBoard, null, new Color32(25, 26, 28, 107));
+            Picture(left, "Rule board", Art("_grow"), .330f, .128f, .35f, .190f).color
+                = new Color32(255, 255, 255, 107);
             Picture(left, "Battle rule icon", Art("icon_menu_battle"), .446f, .184f, .034f, .035f, true).color = Gold;
             Text(left, "Battle rule caption", "arena.rules", 27, .481f, .183f, .21f, .043f, Gold);
             NativeRule(left, "Rule accent", .39f, .221f, .22f, .021f, Gold, "_bar_2");
@@ -166,9 +166,8 @@ namespace AstralOath.Editor
             var start = CommonButton(left, "ConfirmButton", "arena.start", .405f, .518f, .19f, .078f);
             start.FeedbackSound = GameUiFeedback.Sound.Silent;
             start.gameObject.AddComponent<CanvasGroup>().alpha = .55f;
-            Paint(Area(left, "Member list shade", 0, .641f, 1, .359f), null, Black(.82f));
-            Picture(left, "Member list foot gradient", Art("_grow"), 0, .682f, 1, .53f).color
-                = new Color32(255, 255, 255, 127);
+            Picture(left, "Member list shade", Art("_grow"), -.246f, .523f, 1.481f, .612f).color
+                = new Color32(255, 255, 255, 232);
             NativeRule(left, "Members divider", .024f, .628f, .954f, .026f, Gold);
             var members = Scroll(left, "Member list", .024f, .655f, .946f, .310f, horizontal: true);
             var layout = members.content.GetComponent<HorizontalLayoutGroup>();

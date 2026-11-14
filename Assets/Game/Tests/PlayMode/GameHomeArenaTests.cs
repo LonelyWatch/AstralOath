@@ -160,8 +160,9 @@ namespace AstralOath.Client.Tests
                 }
                 yield return Wait(() => room.Require<GameText>("count").text == "4/50", "The member list did not reach two columns.");
                 AssertMemberOrder(room);
-                Assert.That(room.transform.Find("Room contents/Member list shade").GetComponent<Image>().color.a,
-                    Is.GreaterThan(.60f), "Member list backdrop must visibly shade the courtyard.");
+                var memberShade = room.transform.Find("Room contents/Member list shade").GetComponent<Image>();
+                Assert.That(memberShade.sprite?.name, Is.EqualTo("_grow"), "The roster uses the native feathered mask.");
+                Assert.That(memberShade.raycastTarget, Is.False);
                 yield return Capture("arena-room-member-order");
                 yield return Capture("arena-room-member-order-16x9", 1600, 900);
                 foreach (var guest in rosterGuests) yield return Complete(guest.Leave());
