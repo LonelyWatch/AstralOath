@@ -14,9 +14,15 @@ internal sealed class ArenaBattleCatalog : IDisposable
     private readonly BattleAiPolicy ai;
     private readonly MemoryCache battleReads = new(new MemoryCacheOptions { SizeLimit = 32 });
     public string ContentHash { get; }
+    public int TurnSeconds { get; }
+    public int PresentationWaitSeconds { get; }
 
-    public ArenaBattleCatalog()
+    public ArenaBattleCatalog(IConfiguration? configuration = null)
     {
+        TurnSeconds = configuration?.GetValue<int?>("Arena:BattleTurnSeconds") ?? 30;
+        PresentationWaitSeconds = configuration?.GetValue<int?>("Arena:BattlePresentationWaitSeconds") ?? 30;
+        if (TurnSeconds is < 5 or > 120 || PresentationWaitSeconds is < 5 or > 120)
+            throw new InvalidOperationException("Arena battle clock durations must be between 5 and 120 seconds.");
         using var stream = typeof(ArenaBattleCatalog).Assembly.GetManifestResourceStream("AstralOath.BattleCatalog")
             ?? throw new InvalidOperationException("The generated battle catalog is missing from the server build.");
         using var reader = new StreamReader(stream, Encoding.UTF8);
@@ -31,6 +37,7 @@ internal sealed class ArenaBattleCatalog : IDisposable
 
     public string[] EligibleHeroIds { get; }
     public bool Contains(string? id) => id != null && heroes.Contains(id);
+    public BattleAiChoice? ChooseTimeoutAction(BattleSnapshot snapshot) => ai.ChooseAction(snapshot);
     public static ulong NewSeed() => BinaryPrimitives.ReadUInt64LittleEndian(RandomNumberGenerator.GetBytes(sizeof(ulong)));
 
     public BattlePreviewRoom? FindBattle(string id, ulong revision) =>

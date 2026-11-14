@@ -21,6 +21,14 @@ namespace AstralOath.Client.Arena
         internal BindingMap Card(string side, int index) => Bindings.Require<BindingMap>(side + index);
         internal BindingMap Avatar(string side) => Bindings.Require<BindingMap>(side + "Avatar");
 
+        internal void FitLayout()
+        {
+            var layout = Bindings.Require<RectTransform>("layout");
+            var parent = (RectTransform)layout.parent;
+            float scale = Mathf.Min(parent.rect.width / 1920f, parent.rect.height / 1080f);
+            layout.localScale = Vector3.one * Mathf.Max(.01f, scale);
+        }
+
         public override void Validate()
         {
             foreach (string key in new[] { "title", "timer", "preTimer", "host", "guest", "hint", "preCount", "actionLabel", "preActionLabel", "status" })
@@ -35,6 +43,8 @@ namespace AstralOath.Client.Arena
                 foreach (string digit in new[] { "Tens", "Units", "Single" })
                     _ = Picture(clock + digit);
             _ = Surface("featured");
+            _ = Bindings.Require<RectTransform>("layout");
+            _ = Picture("banGlow");
             _ = Bindings.Require<BindingMap>("hostAvatar"); _ = Bindings.Require<BindingMap>("guestAvatar");
             for (int index = 0; index < 5; index++)
             {

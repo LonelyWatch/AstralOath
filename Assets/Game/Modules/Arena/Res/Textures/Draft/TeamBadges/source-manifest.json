@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 1,
+  "assets": [
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/TeamBadges/hero_lv.png",
+      "sources": [
+        {
+          "source": "img/hero_lv.png",
+          "sha256": "b97ec44c69ec8613b63acda9d756ad4668f7080bdcf6c773ceeb77ad9865c202"
+        }
+      ],
+      "outputSha256": "b97ec44c69ec8613b63acda9d756ad4668f7080bdcf6c773ceeb77ad9865c202",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 43,
+        "height": 30
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/TeamBadges/cm_icon_star.png",
+      "sources": [
+        {
+          "source": "img/cm_icon_star.png",
+          "sha256": "60484eb5b5a0fc96ad459a0839dd49274e680dfd3d32035340193de50c425982"
+        }
+      ],
+      "outputSha256": "60484eb5b5a0fc96ad459a0839dd49274e680dfd3d32035340193de50c425982",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 30,
+        "height": 29
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/TeamBadges/cm_icon_star_j.png",
+      "sources": [
+        {
+          "source": "img/cm_icon_star_j.png",
+          "sha256": "8b06e216e3f5262ec926d7f496bf2f7450f26974e3a320ca243733d8fc450c17"
+        }
+      ],
+      "outputSha256": "8b06e216e3f5262ec926d7f496bf2f7450f26974e3a320ca243733d8fc450c17",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 30,
+        "height": 29
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/TeamBadges/hero_lv_0.png",
+      "sources": [
+        {
+          "source": "img/hero_lv_0.png",
+          "sha256": "aa4238cbe993a575b9d89b5bc94d827d292e42deef44247c6c223ce8d5cd7e70"
+        }
+      ],
+      "outputSha256": "aa4238cbe993a575b9d89b5bc94d827d292e42deef44247c6c223ce8d5cd7e70",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 21,
+        "height": 30
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/TeamBadges/hero_lv_1.png",
+      "sources": [
+        {
+          "source": "img/hero_lv_1.png",
+          "sha256": "8d7c262e1ebdb16e79e454d92de1febca96ad5acb324160389a8629750c606a7"
+        }
+      ],
+      "outputSha256": "8d7c262e1ebdb16e79e454d92de1febca96ad5acb324160389a8629750c606a7",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 21,
+        "height": 30
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/TeamBadges/hero_lv_2.png",
+      "sources": [
+        {
+          "source": "img/hero_lv_2.png",
+          "sha256": "be3f0ed325fabb052c5e5377b6552f7dde0940e1490498d728a53e010f70a063"
+        }
+      ],
+      "outputSha256": "be3f0ed325fabb052c5e5377b6552f7dde0940e1490498d728a53e010f70a063",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 21,
+        "height": 30
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/TeamBadges/hero_lv_3.png",
+      "sources": [
+        {
+          "source": "img/hero_lv_3.png",
+          "sha256": "a7c9fe84030f6252946c2f8b942f005341f7565682b2cc6f3dd141010fdea1ad"
+        }
+      ],
+      "outputSha256": "a7c9fe84030f6252946c2f8b942f005341f7565682b2cc6f3dd141010fdea1ad",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 21,
+        "height": 30
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/TeamBadges/hero_lv_4.png",
+      "sources": [
+        {
+          "source": "img/hero_lv_4.png",
+          "sha256": "0146a153ed87682683d1210fd9eacedf2119fb4d5749866f647b52582b685e1f"
+        }
+      ],
+      "outputSha256": "0146a153ed87682683d1210fd9eacedf2119fb4d5749866f647b52582b685e1f",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 21,
+        "height": 30
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/TeamBadges/hero_lv_5.png",
+      "sources": [
+        {
+          "source": "img/hero_lv_5.png",
+          "sha256": "511b305bd9c20bbc33a81c7ae0023394f08c5388bbd1af57a662f661325b4037"
+        }
+      ],
+      "outputSha256": "511b305bd9c20bbc33a81c7ae0023394f08c5388bbd1af57a662f661325b4037",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 21,
+        "height": 30
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/TeamBadges/hero_lv_6.png",
+      "sources": [
+        {
+          "source": "img/hero_lv_6.png",
+          "sha256": "0625bf3a5abaef5176a9bd5bbdcfa6cef3d704dfa2cbfda8fcdc8631cfc07838"
+        }
+      ],
+      "outputSha256": "0625bf3a5abaef5176a9bd5bbdcfa6cef3d704dfa2cbfda8fcdc8631cfc07838",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 21,
+        "height": 30
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/TeamBadges/hero_lv_7.png",
+      "sources": [
+        {
+          "source": "img/hero_lv_7.png",
+          "sha256": "9a57b9562af02e75618f75b53cf5344eb10f6155b1f918df88d9538c2fbcfb42"
+        }
+      ],
+      "outputSha256": "9a57b9562af02e75618f75b53cf5344eb10f6155b1f918df88d9538c2fbcfb42",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 21,
+        "height": 30
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/TeamBadges/hero_lv_8.png",
+      "sources": [
+        {
+          "source": "img/hero_lv_8.png",
+          "sha256": "4827941b38c1c2cfe608d431d680d435e9a5aede3fb7c2b758b75d13aefc9a0f"
+        }
+      ],
+      "outputSha256": "4827941b38c1c2cfe608d431d680d435e9a5aede3fb7c2b758b75d13aefc9a0f",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 21,
+        "height": 30
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/TeamBadges/hero_lv_9.png",
+      "sources": [
+        {
+          "source": "img/hero_lv_9.png",
+          "sha256": "163687ee0fe1c34dcdd5f6fed6539090247930ba4619eaf5e0ef8aa33f555a34"
+        }
+      ],
+      "outputSha256": "163687ee0fe1c34dcdd5f6fed6539090247930ba4619eaf5e0ef8aa33f555a34",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 21,
+        "height": 30
+      }
+    }
+  ],
+  "sourceLayout": "wnd/pvplive_ready.csb",
+  "sourceLayoutSha256": "85732af80ed41491a79265475c824fb38435089b98c010cb4a95225b1a063677"
+}

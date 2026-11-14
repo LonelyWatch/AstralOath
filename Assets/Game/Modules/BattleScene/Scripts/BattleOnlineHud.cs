@@ -10,12 +10,15 @@ using UnityEngine.UI;
 namespace AstralOath.Client.BattleScene
 {
     // Native pvplive_global_hp.csb artwork, in the shared safe-area coordinate space.
-    // No clock is fabricated: the live API currently has no authoritative turn deadline.
     internal sealed class BattleOnlineHud : IDisposable
     {
         private readonly RectTransform root;
         private readonly Image allyHealth, enemyHealth;
         private readonly GameText turn;
+        private readonly RectTransform clockRoot;
+        private readonly Image clockProgress;
+        private readonly GameText countdown;
+        private readonly Sprite clockBlue, clockRed;
         private readonly BattleOnlineTransitionAssets.Copy copy;
         private readonly List<(GameObject Item, bool Active)> hidden = new List<(GameObject, bool)>();
         private readonly RectTransform speed;
@@ -27,7 +30,8 @@ namespace AstralOath.Client.BattleScene
             this.copy = copy ?? throw new ArgumentNullException(nameof(copy));
             var art = Resources.LoadAll<Sprite>("AstralOathOnlineHud").ToDictionary(item => item.name, StringComparer.Ordinal);
             foreach (string name in new[] { "_battle_pvp_icon_vs", "game_hud_bar_pvplive", "game_hud_bar_hp",
-                "game_hud_bar_hp_red", "game_hud_bar_split", "_hero_s_frame_enemy", "_hero_s_bg_ally" })
+                "game_hud_bar_hp_red", "game_hud_bar_split", "_hero_s_frame_enemy", "_hero_s_bg_ally",
+                "time_progress_bg", "time_progress_bar_blue", "time_progress_bar_red" })
                 if (!art.ContainsKey(name)) throw new InvalidOperationException("Online battle HUD art is missing: " + name);
             var font = map.Require<GameText>("activeName");
             // Sibling of the ordinary HUD: team identities remain visible during the entry HUD fade.
@@ -53,6 +57,21 @@ namespace AstralOath.Client.BattleScene
                 new Vector2(420f, 54f), 31.2f, TextAlignmentOptions.Center);
             turn.fontStyle = FontStyles.Bold;
             turn.gameObject.SetActive(false);
+            clockRoot = Rect(root, "Authoritative Turn Clock", new Vector2(.5f, 1f), new Vector2(.5f, 1f),
+                new Vector2(0, -325.5f), Vector2.one * 141f);
+            Picture(clockRoot, "Native Clock Background", art["time_progress_bg"], new Vector2(.5f, .5f),
+                new Vector2(.5f, .5f), Vector2.zero, Vector2.one * 141f);
+            clockBlue = art["time_progress_bar_blue"]; clockRed = art["time_progress_bar_red"];
+            clockProgress = Picture(clockRoot, "Native Clock Progress", clockBlue, new Vector2(.5f, .5f),
+                new Vector2(.5f, .5f), Vector2.zero, Vector2.one * 123f);
+            clockProgress.type = Image.Type.Filled;
+            clockProgress.fillMethod = Image.FillMethod.Radial360;
+            clockProgress.fillOrigin = (int)Image.Origin360.Top;
+            clockProgress.fillClockwise = false;
+            countdown = Text(clockRoot, "Seconds Remaining", map.Require<GameText>("activeHp"), new Vector2(.5f, .5f),
+                Vector2.zero, new Vector2(115f, 96f), 54f, TextAlignmentOptions.Center);
+            countdown.overflowMode = TextOverflowModes.Overflow;
+            clockRoot.gameObject.SetActive(false);
 
             Image Team(bool ally, string name, string avatarId, Sprite avatar)
             {
@@ -104,13 +123,21 @@ namespace AstralOath.Client.BattleScene
             enemyHealth.fillAmount = Ratio(enemyCurrent, enemyMaximum);
         }
 
-        internal void ShowTurn(BattleSide? side, bool visible)
+        internal void ShowTurn(BattleSide? side, bool visible, BattleTurnClockView clock = null, double elapsed = 0)
         {
-            turn.gameObject.SetActive(visible && side.HasValue);
+            bool timed = visible && side.HasValue && clock?.DeadlineUnixMilliseconds.HasValue == true;
+            turn.gameObject.SetActive(timed);
+            clockRoot.gameObject.SetActive(timed);
             if (!side.HasValue) return;
             bool mine = side.Value == BattleSide.Ally;
             turn.text = mine ? copy.yourTurn : copy.opponentTurn;
             turn.color = mine ? new Color32(68, 148, 255, 255) : new Color32(254, 30, 30, 255);
+            if (!timed) return;
+            double remaining = clock.RemainingSeconds(elapsed);
+            countdown.text = Math.Ceiling(remaining).ToString(System.Globalization.CultureInfo.InvariantCulture);
+            countdown.color = Color.white;
+            clockProgress.sprite = mine ? clockBlue : clockRed;
+            clockProgress.fillAmount = (float)(remaining / clock.DecisionSeconds);
         }
 
         private static float Ratio(long current, long maximum) => maximum > 0 ? Mathf.Clamp01((float)(current / (double)maximum)) : 0f;

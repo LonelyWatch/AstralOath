@@ -102,6 +102,9 @@ internal sealed partial class ArenaStore
         }
         if (changed)
         {
+            if (previousPhase != "battle" && draft.Phase == "battle")
+                SynchronizeClock(draft, catalog.Start(draft.Id, draft.Seed, draft.Host.Formation, draft.Guest.Formation).Read(0).Snapshot,
+                    catalog, DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
             await SaveDraft(connection, transaction, draft, token);
             await AuditRoom(connection, transaction, "arena.draft." + request.Kind, player, id, token);
             if (previousPhase != "battle" && draft.Phase == "battle")
@@ -128,7 +131,8 @@ internal sealed partial class ArenaStore
             room = await LoadBattle(connection, transaction, draft, catalog, token);
             catalog.RememberBattle(draft.Id, revision, room);
         }
-        var update = room.Read(after);
+        room = await AdvanceBattleClock(connection, transaction, draft, room, catalog, token);
+        var update = room.Read(after) with { Clock = draft.BattleClock?.View(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()) };
         await RenewLease(connection, transaction, player.Id, token);
         await transaction.CommitAsync(token);
         return update;
@@ -143,18 +147,28 @@ internal sealed partial class ArenaStore
         if (request.BattleId != draft.Id) throw new ArenaProblem(409, "battle_changed");
         var room = await LoadBattle(connection, transaction, draft, catalog, token);
         BattleSide side = draft.SideOf(player) == "host" ? BattleSide.Ally : BattleSide.Enemy;
+        if (room.Read(0).Snapshot.GetUnit(request.ActorId)?.Slot.Side != side)
+            throw new ArenaProblem(403, "battle_wrong_seat");
+        // A valid late command cannot race ahead of the default action at its deadline.
+        room = await AdvanceBattleClock(connection, transaction, draft, room, catalog, token);
+        if (request.Sequence == room.Read(0).Snapshot.LastCommandSequence + 1 && draft.BattleClock != null &&
+            !draft.BattleClock.DeadlineUnixMilliseconds.HasValue)
+        {
+            await transaction.CommitAsync(token);
+            throw new ArenaProblem(409, "battle_presentation_pending");
+        }
         var reply = room.Submit(side, request) ?? throw new ArenaProblem(403, "battle_wrong_seat");
         if (reply.Status == BattleCommandStatus.Accepted)
         {
-            using var insert = Command(connection, transaction, """
-                INSERT INTO arena_battle_command (draft_id, sequence, side, payload)
-                VALUES (@draft, @sequence, @side, @payload);
-                """, ("@draft", draft.Id), ("@sequence", request.Sequence), ("@side", (int)side),
-                ("@payload", JsonSerializer.Serialize(request)));
-            await insert.ExecuteNonQueryAsync(token);
+            await StoreBattleCommand(connection, transaction, draft.Id, side, request, token);
+            SynchronizeClock(draft, reply.Snapshot, catalog, DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+            await SaveDraft(connection, transaction, draft, token);
             if (reply.Snapshot.Outcome != BattleOutcome.InProgress)
                 await AuditRoom(connection, transaction, "arena.battle.finish", player, id, token);
         }
+        else if (reply.Status != BattleCommandStatus.Duplicate)
+            reply = reply with { Events = room.Read(0).Events };
+        reply = reply with { Clock = draft.BattleClock?.View(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()) };
         await RenewLease(connection, transaction, player.Id, token);
         await transaction.CommitAsync(token);
         if (reply.Status == BattleCommandStatus.Accepted)
@@ -184,9 +198,11 @@ internal sealed partial class ArenaStore
         await using var reader = await command.ExecuteReaderAsync(token);
         while (await reader.ReadAsync(token))
         {
-            var saved = JsonSerializer.Deserialize<BattlePreviewCommand>(reader.GetString(1))
+            using var payload = JsonDocument.Parse(reader.GetString(1));
+            bool serverTimeout = payload.RootElement.TryGetProperty("serverTimeout", out var origin) && origin.ValueKind == JsonValueKind.True;
+            var saved = payload.RootElement.Deserialize<BattlePreviewCommand>()
                 ?? throw new InvalidOperationException("Stored battle command is missing.");
-            var result = room.Submit((BattleSide)reader.GetByte(0), saved);
+            var result = serverTimeout ? room.SubmitTimeout((BattleSide)reader.GetByte(0), saved) : room.Submit((BattleSide)reader.GetByte(0), saved);
             if (result?.Status != BattleCommandStatus.Accepted)
                 throw new InvalidOperationException("An accepted Arena battle command could not be replayed.");
         }
@@ -211,6 +227,9 @@ internal sealed partial class ArenaStore
         ArenaBattleCatalog catalog, CancellationToken token)
     {
         if (draft.AdvanceExpired(catalog, DateTimeOffset.UtcNow) == 0) return;
+        if (draft.Phase == "battle")
+            SynchronizeClock(draft, catalog.Start(draft.Id, draft.Seed, draft.Host.Formation, draft.Guest.Formation).Read(0).Snapshot,
+                catalog, DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
         await SaveDraft(connection, transaction, draft, token);
         await OperationAudit.Record(connection, transaction, draft.Phase == "battle" ? "arena.battle.start_timeout" : "arena.draft.timeout",
             "server", "arena", "arena_room", draft.RoomId, null, token);

@@ -23,6 +23,10 @@ namespace AstralOath.Client.BattleScene
             internal BattleFlowEvent[] Events;
             internal bool Reset;
             internal BattleCommandStatus? Status;
+            internal BattleTurnClockView Clock;
+            internal double ClockSampleTime;
+            internal bool ClockUnavailable;
+            internal ulong? ReadySequence, ReadyEventSequence;
         }
 
         private const float PollInterval = .30f;
@@ -34,11 +38,19 @@ namespace AstralOath.Client.BattleScene
         private Task<Update> request;
         private float nextPoll;
         private bool disposed;
+        private ulong? readySequence, readyEventSequence;
+        private double clockSampleTime;
         internal BattleSnapshot Snapshot { get; private set; }
         internal BattleOnlinePlayers Players { get; set; }
         internal bool Submitting { get; private set; }
         internal bool Healthy { get; private set; } = true;
         internal bool Terminated { get; private set; }
+        internal bool ClockUnavailable { get; private set; }
+        internal BattleTurnClockView Clock { get; private set; }
+        internal double ClockElapsed => Math.Max(0d, Time.realtimeSinceStartupAsDouble - clockSampleTime);
+        internal bool CanSubmit => Healthy && !Terminated && !Submitting && Clock != null &&
+            Clock.CommandSequence == Snapshot.LastCommandSequence && Clock.EventSequence == Snapshot.LastEventSequence &&
+            Clock.ActorId == Snapshot.CurrentActorId && Clock.DeadlineUnixMilliseconds.HasValue && Clock.RemainingSeconds(ClockElapsed) > 0;
 
         internal BattleOnlineSession(Uri endpoint, string roomId, string battleId, string contentHash,
             string bearer, bool localIsHost)
@@ -65,11 +77,12 @@ namespace AstralOath.Client.BattleScene
             using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(token, lifetime.Token);
             var update = await SendAsync(null, 0, cancellation.Token);
             Snapshot = update.Snapshot;
+            ApplyClock(update);
         }
 
         internal bool Submit(string skillId, string targetId, bool useSoulBurn)
         {
-            if (disposed || Submitting || !Healthy || Terminated) return false;
+            if (disposed || !CanSubmit) return false;
             // If a read is already in flight, ignore its stale response. The new command response
             // or the subsequent cursor read supplies the complete authoritative result.
             Observe(request);
@@ -87,7 +100,7 @@ namespace AstralOath.Client.BattleScene
             return true;
         }
 
-        internal Update Tick(bool canPoll)
+        internal Update Tick(bool canPoll, bool canReady = true)
         {
             if (disposed || Terminated) return null;
             if (request != null)
@@ -103,6 +116,12 @@ namespace AstralOath.Client.BattleScene
                     Healthy = true;
                     if (update.Snapshot.LastEventSequence < Snapshot.LastEventSequence) return null;
                     Snapshot = update.Snapshot;
+                    ApplyClock(update);
+                    if (update.ReadySequence.HasValue)
+                    {
+                        readySequence = update.ReadySequence;
+                        readyEventSequence = update.ReadyEventSequence;
+                    }
                     return update;
                 }
                 catch (InvalidDataException)
@@ -119,14 +138,33 @@ namespace AstralOath.Client.BattleScene
             }
             if (request == null && canPoll && Time.unscaledTime >= nextPoll &&
                 Snapshot.Outcome == BattleOutcome.InProgress)
-                request = SendAsync(null, Snapshot.LastEventSequence, lifetime.Token);
+            {
+                bool needsReady = canReady && (readySequence != Snapshot.LastCommandSequence || readyEventSequence != Snapshot.LastEventSequence);
+                var ready = needsReady ? new JObject
+                {
+                    ["battleId"] = battleId, ["commandSequence"] = Snapshot.LastCommandSequence,
+                    ["eventSequence"] = Snapshot.LastEventSequence, ["actorId"] = Snapshot.CurrentActorId
+                } : null;
+                request = SendAsync(ready, Snapshot.LastEventSequence, lifetime.Token, needsReady);
+            }
             return null;
         }
 
-        private async Task<Update> SendAsync(JObject command, ulong cursor, CancellationToken token)
+        private void ApplyClock(Update update)
+        {
+            ClockUnavailable = update.ClockUnavailable;
+            if (ClockUnavailable) { Healthy = false; Terminated = true; }
+            Clock = update.Clock != null && update.Clock.CommandSequence == Snapshot.LastCommandSequence &&
+                update.Clock.EventSequence == Snapshot.LastEventSequence && update.Clock.ActorId == Snapshot.CurrentActorId
+                ? update.Clock : null;
+            clockSampleTime = update.ClockSampleTime;
+        }
+
+        private async Task<Update> SendAsync(JObject command, ulong cursor, CancellationToken token, bool ready = false)
         {
             token.ThrowIfCancellationRequested();
-            string suffix = command == null ? "?after=" + cursor.ToString(CultureInfo.InvariantCulture) : "/commands";
+            string after = "?after=" + cursor.ToString(CultureInfo.InvariantCulture);
+            string suffix = ready ? "/ready" + after : command == null ? after : "/commands";
             using var web = new UnityWebRequest(url.AbsoluteUri + suffix,
                 command == null ? UnityWebRequest.kHttpVerbGET : UnityWebRequest.kHttpVerbPOST)
             {
@@ -139,6 +177,7 @@ namespace AstralOath.Client.BattleScene
             }
             web.SetRequestHeader("Accept", "application/json");
             web.SetRequestHeader("Authorization", "Bearer " + bearer);
+            double sentAt = Time.realtimeSinceStartupAsDouble;
             var operation = web.SendWebRequest();
             if (!operation.isDone)
             {
@@ -163,10 +202,22 @@ namespace AstralOath.Client.BattleScene
                 catch (JsonException) { }
                 if ((string)conflict?["code"] is "battle_content_mismatch" or "battle_changed")
                     throw new InvalidDataException("The battle version changed.");
+                if ((string)conflict?["code"] == "battle_not_started")
+                    throw new InvalidDataException("The battle was cancelled or the seated player's lease expired.");
             }
             if (web.result != UnityWebRequest.Result.Success)
                 throw new IOException("Battle service did not respond.");
-            try { return Read(JObject.Parse(web.downloadHandler.text), command == null, cursor); }
+            try
+            {
+                var update = Read(JObject.Parse(web.downloadHandler.text), command == null || ready, cursor);
+                update.ClockSampleTime = (sentAt + Time.realtimeSinceStartupAsDouble) * .5d;
+                if (ready)
+                {
+                    update.ReadySequence = (ulong)command["commandSequence"];
+                    update.ReadyEventSequence = (ulong)command["eventSequence"];
+                }
+                return update;
+            }
             catch (Exception error) when (error is JsonException or ArgumentException or InvalidOperationException or NullReferenceException)
             { throw new InvalidDataException("Battle service returned invalid data.", error); }
         }
@@ -206,6 +257,15 @@ namespace AstralOath.Client.BattleScene
                 Status = ReadOptional<BattleCommandStatus>(root["status"])
             };
             update.Events = update.Reset ? Array.Empty<BattleFlowEvent>() : events;
+            if (root["clock"] is JObject clock)
+            {
+                update.Clock = clock.ToObject<BattleTurnClockView>();
+                update.ClockUnavailable = update.Clock == null || (int?)clock["protocolVersion"] != BattleTurnClockView.CurrentProtocolVersion ||
+                    clock["deadlineUnixMilliseconds"] == null || clock["commandSequence"] == null || clock["eventSequence"] == null ||
+                    update.Clock.DecisionSeconds < 5 || update.Clock.DecisionSeconds > 120 ||
+                    update.Clock.ServerNowUnixMilliseconds <= 0 || string.IsNullOrWhiteSpace(update.Clock.ActorId);
+            }
+            else update.ClockUnavailable = outcome == BattleOutcome.InProgress;
             return update;
         }
 

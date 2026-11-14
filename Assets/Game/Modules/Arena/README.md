@@ -13,3 +13,11 @@
 `WindowCoordinator` 管理目录、房间以及筛选、搜索、创建与密码弹窗。目录交互记录必要的客户端语义事件，创建、进出房和聊天走服务端事务留痕。参见[操作留痕](../../../../docs/development/operation-audit.md)与[录像对照交付](../../../../docs/delivery/2026-11-14-arena-recording.md)。
 
 房间聊天的表情从输入栏打开三列表情浮层，可滚动。底板取自原版 wnd/chat_emoji_tip.csb 对应贴图，使用薄棕边和不透明黑色内底。房间内使用独立的无压缩头像及头像框 Sprite，沿用 Common 头像预制体。服务端与资源导入验证使用同一组 67 个 `emoticon_chat` 资源 ID。客户端显示原版静态聊天图，文本和表情共用消息游标及禁聊规则。源素材及界面对照见[本轮复核](../../../../docs/delivery/2026-11-14-arena-ui-fidelity.md)。
+
+## 选禁界面来源与验收
+
+选人、终禁和阵型采用原版玩家布局的 1280×720 设计坐标。原版 CSB 记录卡槽镜像、头像边缘锚点、轮廓、圈位和换位按钮坐标。运行时生成的骨骼模型显示比例须用原作录像对照。当前试用每个源像素 0.29 个设计像素，并基于初始网格为超宽或超高模型一次性缩小，保留足底锚点。宽屏按统一设计画布等比显示，可能留有边缘空白。
+
+在 D 盘主工程运行 `& ./.tools/character-assets/Scripts/python.exe -X utf8 -B Tools/Arena/InspectDraftLayout.py`，在 `.artifacts/arena-draft/revision` 生成原版布局结构 JSON 和素材图册。等级、数字和星级的独立复核入口是 `Tools/Arena/ImportArenaArt.py --team-badges-only --check`。各组源坐标、对应素材和待核对项见[选禁与阵型原始布局审计](../../../../docs/delivery/2026-11-15-draft-source-audit.md)。
+
+本轮先交付选人、终禁和阵型的新版 Unity 实机截图，用户确认后才构建或发客户端包。

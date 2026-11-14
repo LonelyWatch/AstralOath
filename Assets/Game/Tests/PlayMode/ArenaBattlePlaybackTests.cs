@@ -136,6 +136,65 @@ namespace AstralOath.Client.Tests
             Assert.That(GameObject.Find("Online Battle Gate"), Is.Null);
         }
 
+        [UnityTest]
+        public IEnumerator IgnitionCoversTheCanvasAtWideAndTabletAspectRatios()
+        {
+            if (SystemInfo.graphicsDeviceType == GraphicsDeviceType.Null)
+                Assert.Ignore("A graphics device is required to check the transition camera.");
+
+            var assembly = typeof(BattleOnlineLaunch).Assembly;
+            var type = assembly.GetType("AstralOath.Client.BattleScene.BattleOnlineGate", true);
+            var resource = Resources.Load("AstralOathOnlineTransition");
+            using var cancellation = new CancellationTokenSource();
+            using var gate = (IDisposable)Activator.CreateInstance(type, Members, null, new[] { resource }, null);
+            var overlay = (GameObject)type.GetField("overlay", Members).GetValue(gate);
+            var effectCamera = (Camera)type.GetField("camera", Members).GetValue(gate);
+            var canvas = overlay.GetComponent<Canvas>();
+            var picture = overlay.GetComponentInChildren<UnityEngine.UI.RawImage>();
+            var viewport = new GameObject("Test viewport", typeof(Camera));
+            var outputCamera = viewport.GetComponent<Camera>();
+            outputCamera.enabled = false;
+            var task = (Task)type.GetMethod("IgniteAsync", Members).Invoke(gate, new object[] { cancellation.Token });
+            try
+            {
+                canvas.renderMode = RenderMode.ScreenSpaceCamera;
+                canvas.worldCamera = outputCamera;
+                foreach (var size in new[] { new Vector2Int(1920, 900), new Vector2Int(2240, 960), new Vector2Int(1440, 1080) })
+                {
+                    var output = RenderTexture.GetTemporary(size.x, size.y, 0);
+                    outputCamera.targetTexture = output;
+                    try
+                    {
+                        Canvas.ForceUpdateCanvases();
+                        yield return null;
+                        yield return null;
+                        var target = effectCamera.targetTexture;
+                        float outputAspect = size.x / (float)size.y;
+                        Assert.That(target.width / (float)target.height, Is.EqualTo(outputAspect).Within(.003f),
+                            "A fixed-size intermediate surface cuts off the native translucent effects inside the visible frame.");
+                        Assert.That(effectCamera.aspect, Is.EqualTo(outputAspect).Within(.003f));
+                        Assert.That(picture.texture, Is.SameAs(target));
+                        var bounds = picture.rectTransform.rect.size;
+                        var rootBounds = ((RectTransform)canvas.transform).rect.size;
+                        Assert.That(bounds.x, Is.EqualTo(rootBounds.x).Within(1f));
+                        Assert.That(bounds.y, Is.EqualTo(rootBounds.y).Within(1f));
+                        yield return null;
+                        Assert.That(effectCamera.targetTexture, Is.SameAs(target), "Avoid reallocating if the output size is stable.");
+                    }
+                    finally
+                    {
+                        outputCamera.targetTexture = null;
+                        RenderTexture.ReleaseTemporary(output);
+                    }
+                }
+            }
+            finally
+            {
+                cancellation.Cancel();
+                UnityEngine.Object.Destroy(viewport);
+            }
+        }
+
         private static void CaptureTransition(IDisposable gate, Type gateType, string filename, bool requireOpaqueCenter)
         {
             if (SystemInfo.graphicsDeviceType == GraphicsDeviceType.Null) return;

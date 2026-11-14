@@ -7,10 +7,12 @@ using System.Reflection;
 using System.Text;
 using AstralOath.Client.BattleScene;
 using AstralOath.Client.Common;
+using AstralOath.Shared.Battle;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using TMPro;
+using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -153,6 +155,19 @@ namespace AstralOath.Client.Tests
             }
             yield return Wait(() => online.GetValue(hostHud) != null && arrival.GetValue(hostHud) == null,
                 "The online battle did not complete stage entry.", 40);
+            // The second seat in this fixture is an HTTP peer, so explicitly acknowledge
+            // its presentation window after the local scene has completed real entry.
+            JObject timedBattle = null;
+            yield return Peer(roomPath + "/battle", null, value => timedBattle = value);
+            var timedSnapshot = timedBattle["snapshot"];
+            yield return Peer(roomPath + "/battle/ready", new
+            {
+                battleId = (string)timedSnapshot["battleId"], commandSequence = (ulong)timedSnapshot["lastCommandSequence"],
+                eventSequence = (ulong)timedSnapshot["lastEventSequence"], actorId = (string)timedSnapshot["currentActorId"]
+            }, null);
+            var clockNode = hostHud.transform.Find("Online PvP HUD/Authoritative Turn Clock");
+            yield return Wait(() => clockNode && clockNode.gameObject.activeInHierarchy,
+                "Both ready seats did not produce an authoritative visible countdown.");
             var heroId = typeof(BattlePreviewActor).GetProperty("HeroId", flags);
             var units = battleScene.GetRootGameObjects().Single(root => root.name == "Units").transform;
             string[] HeroesAtPositions(string team) => units.Find(team).Cast<Transform>()
@@ -163,6 +178,44 @@ namespace AstralOath.Client.Tests
             yield return CaptureBattle(battleScene, hostHud, "arena-draft-battle", 1920, 900);
             yield return CaptureBattle(battleScene, hostHud, "arena-draft-battle-16x9", 1920, 1080);
             yield return CaptureBattle(battleScene, hostHud, "arena-draft-battle-21x9", 2240, 960);
+            var liveSession = online.GetValue(hostHud);
+            BattleSnapshot LiveSnapshot() => (BattleSnapshot)liveSession.GetType().GetProperty("Snapshot", flags).GetValue(liveSession);
+            var simulation = typeof(BattleHudPreview).GetField("simulation", flags).GetValue(hostHud);
+            var busy = simulation.GetType().GetProperty("Busy", flags);
+            var battleCatalog = JsonConvert.DeserializeObject<BattleCatalogData>(AssetDatabase.LoadAssetAtPath<TextAsset>(
+                "Assets/Game/Modules/BattleScene/Configs/battle-catalog.json").text);
+            var policy = new BattleAiPolicy(battleCatalog);
+            for (int step = 0; step < 8 && LiveSnapshot().GetUnit(LiveSnapshot().CurrentActorId).Slot.Side == BattleSide.Enemy; step++)
+            {
+                var current = LiveSnapshot();
+                var active = current.GetUnit(current.CurrentActorId);
+                var choice = policy.ChooseTarget(current, active.Form.SkillIds[0]) ?? policy.ChooseAction(current);
+                Assert.That(choice, Is.Not.Null);
+                JObject commandReply = null;
+                yield return Peer(roomPath + "/battle/commands", new
+                {
+                    battleId = current.BattleId, rulesVersion = current.RulesVersion,
+                    sequence = current.LastCommandSequence + 1, commandId = Guid.NewGuid().ToString("N"),
+                    actorId = current.CurrentActorId, skillId = choice.SkillId, targetId = choice.TargetId,
+                    useSoulBurn = choice.UseSoulBurn, contentHash = (string)timedBattle["contentHash"]
+                }, value => commandReply = value);
+                Assert.That((int)commandReply["status"], Is.EqualTo((int)BattleCommandStatus.Accepted));
+                ulong acceptedSequence = (ulong)commandReply["snapshot"]["lastCommandSequence"];
+                yield return Wait(() => LiveSnapshot().LastCommandSequence >= acceptedSequence && !(bool)busy.GetValue(simulation),
+                    "The accepted opponent action did not finish its real presentation.", 30);
+                current = LiveSnapshot();
+                yield return Peer(roomPath + "/battle/ready", new
+                {
+                    battleId = current.BattleId, commandSequence = current.LastCommandSequence,
+                    eventSequence = current.LastEventSequence, actorId = current.CurrentActorId
+                }, null);
+                yield return Wait(() => clockNode.gameObject.activeInHierarchy, "The next real turn did not open its clock.");
+            }
+            Assert.That(LiveSnapshot().GetUnit(LiveSnapshot().CurrentActorId).Slot.Side, Is.EqualTo(BattleSide.Ally));
+            Assert.That((bool)simulation.GetType().GetProperty("IsTurnEntryPlaying", flags).GetValue(simulation), Is.False,
+                "The authoritative clock must wait for the visible turn-entry animation.");
+            yield return CaptureBattle(battleScene, hostHud, "arena-draft-my-turn-16x9", 1920, 1080);
+            yield return CaptureBattle(battleScene, hostHud, "arena-draft-my-turn-21x9", 2240, 960);
         }
 
         [UnityTearDown]

@@ -36,6 +36,7 @@
 - `POST /api/arena/rooms/{id}/draft/actions` 接受 `{requestId,draftId,version,kind,heroIds}`。预禁 `preban` 提交整组，选人 `pick` 提交一个，后禁 `ban` 提交一个对手英雄，站位 `formation` 提交按战位排序的四个存活英雄 ID。重复提交相同请求只返回当前一方视角，同请求 ID 改内容返回 409。轮流选人遵循 1–2–2–2–2–1，每个单选窗口 30 秒、双选窗口共 60 秒，其他阶段各 30 秒。开启保护时第三名选中的英雄免于后禁。超时后服务端在下一次有效读取或提交时补齐本窗口的合法选择。
 - 两侧完成站位即建立权威战斗。房主是 `Ally`，对手是 `Enemy`。通过 `GET /api/arena/rooms/{id}/battle?after={eventSequence}` 取快照及新增事件。提交命令到 `POST /api/arena/rooms/{id}/battle/commands`，沿用开发战斗命令格式并填写当前 `battleId` 与 `contentHash`。配置 SHA-256 基于去除 BOM 并将 CRLF 统一为 LF 的 UTF-8 文本。双方都用同一快照，服务端校验当前行动方、英雄归属、内容哈希、规则版本和命令幂等。旧局指令会被拒绝。战斗请求也续期成员资格。
 - 已接受的命令按序存储，服务端重启后用固定配置与随机种子重放。轮询从有界只读缓存读取已提交状态，修改以 MySQL 房间锁和事务为准。草案、战斗命令随所属房间清理，审计保留。现有战斗版本需一致，发布不兼容规则前先结束在途局。
-- 权威审计记录草案开始、实际提交的阶段、超时推进、取消以及战斗开始／结束，在同一事务写入，不含选择内容。GUI、BP 超时和重开检查见项目验收记录。服务端战斗回合超时、观战、其他房间玩法另行接入。
+- 权威审计记录草案开始、实际提交的阶段、超时推进、取消以及战斗开始／结束，在同一事务写入，不含选择内容。GUI、BP 超时和重开检查见项目验收记录。观战、其他房间玩法另行接入。
+- 在线战斗响应增加版本 1 的 `clock`；双方在完成对应事件演出后向 `/battle/ready?after={eventSequence}` 提交 `{battleId,commandSequence,eventSequence,actorId}`。两侧就绪后才设置决策截止时间。`Arena:BattleTurnSeconds` 与 `Arena:BattlePresentationWaitSeconds` 默认分别为 30 秒，配置范围 5–120 秒，并在本局首次生成时固定。等待上限到达自动开启计时；未进入决策窗口返回 409 `battle_presentation_pending`。到期后下一次有效请求先按共享 AI 选择合法动作并同事务保存，再处理手动命令。重复 ready 或重连不延时，状态随草案 JSON 持久化，无新增迁移。旧客户端命令同样受时间窗约束；新客户端要求计时协议版本 1。详见[回合计时与验证](../docs/delivery/2026-11-15-online-turn-clock.md)。
 
 真实 MySQL 回归用 `dotnet test Server/Tests --filter FullyQualifiedName~ArenaDraftTests`。测试覆盖选禁隐私、同时抢选、选人计时与保护、双方站位、战斗权限、重启重放、退出取消及旧局请求拒绝。

@@ -193,7 +193,7 @@ namespace AstralOath.Client.BattleScene
             if (online != null)
             {
                 onlineHud = new BattleOnlineHud(hud, online.Players, onlineCopy, sprites);
-                banner.rectTransform.anchoredPosition = new Vector2(0, -282f);
+                banner.rectTransform.anchoredPosition = new Vector2(0, -423f);
             }
             skillBanner = new BattleSkillBanner((RectTransform)hud.transform.Find("Top Bar"), text, sprites);
             skillPresentation = new BattleSkillPresentation(units, graphs, skillAssets, camera, SetCinematicVisible, stageBackground,
@@ -253,6 +253,7 @@ namespace AstralOath.Client.BattleScene
         }
 
         private BattleUnitSnapshot Actor => Snapshot.GetUnit(Snapshot.CurrentActorId);
+        private bool IsTurnEntryPlaying => Actor != null && views.TryGetValue(Actor.InstanceId, out var view) && view.Actor.IsTurnEntryPlaying;
         private bool HasActionPresentation => actionElapsed < actionDuration || pendingFeedback.Count != 0 ||
             (recoveryStages != null && recoveryStages.Count != 0);
         private bool Busy
@@ -264,8 +265,9 @@ namespace AstralOath.Client.BattleScene
                 return false;
             }
         }
+        private bool onlineCanAct;
         private bool CanAct => !entering && !autoBattle && !IsPaused && !Busy &&
-            (online == null || online.Healthy && !online.Submitting && !online.Terminated) &&
+            (online == null || online.CanSubmit && !IsTurnEntryPlaying) &&
             Actor?.Slot.Side == BattleSide.Ally && !ai.IsForcedAction(Snapshot);
 
         public void Tick(float delta)
@@ -282,7 +284,20 @@ namespace AstralOath.Client.BattleScene
         private void TickBattle(float delta)
         {
             if (IsPaused || entering) return;
-            if (online != null) ReadOnlineEvents();
+            if (online != null)
+            {
+                ReadOnlineEvents();
+                // Actor ambient Update ends b_idle_ready independently of network replies.
+                // Refresh input on that transition even if this window's clock was already running.
+                bool allowed = CanAct;
+                if (onlineCanAct != allowed)
+                {
+                    onlineCanAct = allowed;
+                    UpdateSkillAvailability();
+                    hud.Require<GameButton>("soulBurn").interactable = allowed && BurnSlot() >= 0;
+                    if (allowed) ShowPrompt();
+                }
+            }
             bool wasBusy = Busy;
             turnEntryEffects.Tick(Mathf.Max(0f, delta));
             voice.Tick();
@@ -525,20 +540,22 @@ namespace AstralOath.Client.BattleScene
             // An event batch and its final snapshot must stay paired until all of its visual
             // events have played. Fetch from the current cursor once presentation has settled.
             var previous = Snapshot;
-            var update = online.Tick(!Busy);
+            bool couldAct = CanAct;
+            var update = online.Tick(!Busy, !IsTurnEntryPlaying);
             if (update == null)
             {
                 if (!online.Healthy)
                 {
                     SuspendOnlineInput();
-                    banner.text = online.Terminated ? onlineCopy.connectionEnded : onlineCopy.reconnecting;
+                    banner.text = online.ClockUnavailable ? onlineCopy.clockUnavailable :
+                        online.Terminated ? onlineCopy.connectionEnded : onlineCopy.reconnecting;
                     if (online.Terminated) binder.ShowOnlineReturn();
                 }
                 return;
             }
             if (!update.Reset && update.Events.Length == 0)
             {
-                if (onlineInputSuspended)
+                if (onlineInputSuspended || couldAct != CanAct)
                 {
                     onlineInputSuspended = false;
                     UpdateSkillAvailability();
@@ -1018,8 +1035,8 @@ namespace AstralOath.Client.BattleScene
                 else { enemy += view.PresentedHealth; enemyMax += view.PresentedMaximumHealth; }
             }
             onlineHud.SetHealth(ally, allyMax, enemy, enemyMax);
-            onlineHud.ShowTurn(Actor?.Slot.Side, !entering && !Busy && !cinematicVisible && online.Healthy &&
-                Snapshot.Outcome == BattleOutcome.InProgress);
+            onlineHud.ShowTurn(Actor?.Slot.Side, !entering && !Busy && !IsTurnEntryPlaying && !cinematicVisible && online.Healthy &&
+                Snapshot.Outcome == BattleOutcome.InProgress, online.Clock, online.ClockElapsed);
         }
 
         private bool TrySkill(int index, out BattleCatalogData.SkillRow skill)

@@ -24,6 +24,7 @@ namespace AstralOath.Client.Arena
         private readonly Func<CancellationToken, Task> leaveRoom;
         private readonly Dictionary<string, ArenaDraftArt.Hero> art;
         private readonly Sprite[] scoreDigits;
+        private readonly ArenaDraftArt artwork;
         private readonly RectTransform gridViewport, recentGrid;
         private readonly GridLayoutGroup prebanLayout, recentLayout;
         private readonly GameText timerText, preTimerText;
@@ -55,6 +56,7 @@ namespace AstralOath.Client.Arena
             this.locale = locale;
             this.returnToRoom = returnToRoom;
             this.leaveRoom = leaveRoom;
+            this.artwork = artwork;
             art = artwork.Heroes.ToDictionary(hero => hero.Id, StringComparer.Ordinal);
             scoreDigits = artwork.ScoreDigits;
             gridViewport = view.Scroll("grid").viewport;
@@ -70,13 +72,13 @@ namespace AstralOath.Client.Arena
             feature = new ArenaDraftPortrait(view.Surface("featured"));
             for (int index = 0; index < 5; index++)
             {
-                left[index] = new Choice(view.Card("blue", index));
-                right[index] = new Choice(view.Card("red", index));
+                left[index] = new Choice(view.Card("blue", index), artwork.LevelDigits, teamSlot: true, protectedSlot: index == 2);
+                right[index] = new Choice(view.Card("red", index), artwork.LevelDigits, teamSlot: true, protectedSlot: index == 2);
             }
             for (int index = 0; index < 4; index++)
             {
                 var card = view.Card("formation", index);
-                positions[index] = new Choice(card);
+                positions[index] = new Choice(card, miniature: true);
                 positions[index].Model = card.Require<RawImage>("model");
                 modelSurfaces[index] = new ArenaDraftPortrait(positions[index].Model, miniature: true);
             }
@@ -94,6 +96,7 @@ namespace AstralOath.Client.Arena
             prebans.Clear();
             lastSecond = int.MinValue;
             view.Show();
+            view.FitLayout();
             owner.Add(Close);
             view.Label("status").text = "";
             view.Search("search").SetTextWithoutNotify("");
@@ -138,6 +141,7 @@ namespace AstralOath.Client.Arena
                 Release(revealCards);
                 Render();
             }
+            view.FitLayout();
             UpdateTimer();
             FitGrid(prebanLayout, gridViewport.rect.width);
             FitGrid(recentLayout, recentGrid.rect.width);
@@ -307,6 +311,17 @@ namespace AstralOath.Client.Arena
             view.Picture("blue").enabled = !pick || draft.OwnTurn;
             view.Picture("red").enabled = !pick || !draft.OwnTurn;
             view.Picture("banMark").enabled = ban;
+            view.Picture("banGlow").enabled = ban;
+            var action = view.Button("action");
+            ((Image)action.targetGraphic).sprite = ban ? artwork.ActionRed : artwork.ActionGreen;
+            var states = action.spriteState;
+            states.pressedSprite = ban ? artwork.ActionRedPressed : artwork.ActionGreenPressed;
+            action.spriteState = states;
+            // Source final-ban prompt is above the red ban emblem.
+            var hintRect = view.Label("hint").rectTransform;
+            hintRect.anchorMin = new Vector2(.285f, ban ? .279f : arrange ? .161f : .244f);
+            hintRect.anchorMax = new Vector2(.713f, ban ? .368f : arrange ? .234f : .317f);
+            hintRect.offsetMin = hintRect.offsetMax = Vector2.zero;
 
             RenderTeam(left, draft.Own, draft.Opponent, pick && draft.OwnTurn, false);
             RenderTeam(right, draft.Opponent, draft.Own, pick && !draft.OwnTurn, true);
@@ -355,9 +370,10 @@ namespace AstralOath.Client.Arena
                 item.Button.interactable = id != null && (!enemy || draft.phase != "ban" || CanSelect(id));
                 item.Selection.enabled = active && index >= taken && index < taken + draft.picksRemainingInWindow
                     || enemy && id != null && id == candidate && draft.phase == "ban";
-                item.Selection.color = enemy ? new Color(1f, .60f, .56f, .88f) : new Color(.69f, .78f, 1f, .94f);
-                ((Image)item.Button.targetGraphic).color = id == null ? new Color32(125, 130, 135, 231) : Color.white;
+                item.Selection.color = Color.white;
+                ((Image)item.Button.targetGraphic).color = Color.white;
                 item.Guard.enabled = protect || draft.banProtection && index == 2 && id == null;
+                if (item.GuardPlate) item.GuardPlate.enabled = item.Guard.enabled && id == null;
                 item.Mark.enabled = isBanned;
                 item.SetState(null, isBanned);
                 ((Image)item.Button.targetGraphic).overrideSprite = id == null ? null : item.Filled.sprite;
@@ -375,6 +391,7 @@ namespace AstralOath.Client.Arena
                 item.SetFormationLevel(hero);
                 item.Button.interactable = draft.phase == "formation" && canAct && hero != null;
                 item.Selection.enabled = index == swapIndex;
+                item.Change.enabled = canAct && swapIndex >= 0 && swapIndex != index;
                 if (shownFormation[index] == id) { if (hero != null) item.Portrait.enabled = !item.Model.enabled; continue; }
                 shownFormation[index] = id;
                 if (hero == null) { modelSurfaces[index].Clear(); continue; }
@@ -639,9 +656,14 @@ namespace AstralOath.Client.Arena
             internal readonly Image Portrait, Selection, Guard, Mark, Filled;
             internal RawImage Model;
             private readonly Image element, role, dim;
+            internal readonly Image GuardPlate, Change;
+            private readonly GameObject levelRoot, starRoot;
+            private readonly Image tens, units;
+            private readonly Sprite[] levelDigits;
+            private readonly Image[] grade;
             private readonly GameText title, stars, state;
 
-            internal Choice(BindingMap map)
+            internal Choice(BindingMap map, Sprite[] digits = null, bool teamSlot = false, bool protectedSlot = false, bool miniature = false)
             {
                 Button = map.Require<GameButton>("button");
                 Portrait = map.Require<Image>("portrait");
@@ -655,10 +677,32 @@ namespace AstralOath.Client.Arena
                 stars = map.Require<GameText>("stars");
                 state = map.Require<GameText>("state");
                 dim = map.Require<Image>("dim");
+                if (teamSlot)
+                {
+                    levelDigits = digits;
+                    levelRoot = map.Require<GameObject>("levelRoot");
+                    starRoot = map.Require<GameObject>("starRoot");
+                    tens = map.Require<Image>("levelTens");
+                    units = map.Require<Image>("levelUnits");
+                    grade = Enumerable.Range(0, 6).Select(index => map.Require<Image>("star" + index)).ToArray();
+                    if (protectedSlot) GuardPlate = map.Require<Image>("guardPlate");
+                }
+                if (miniature) Change = map.Require<Image>("change");
             }
 
             internal void Set(string id, ArenaDraftArt.Hero hero, bool asCard, bool tags, bool levelLabel = false)
             {
+                if (levelRoot)
+                {
+                    levelRoot.SetActive(hero != null);
+                    starRoot.SetActive(hero != null);
+                    if (hero != null)
+                    {
+                        tens.sprite = levelDigits[Mathf.Clamp(hero.Level / 10, 0, 9)];
+                        units.sprite = levelDigits[Mathf.Clamp(hero.Level % 10, 0, 9)];
+                        for (int index = 0; index < grade.Length; index++) grade[index].enabled = index < hero.Stars;
+                    }
+                }
                 if (Id == id) return;
                 Id = id;
                 Portrait.sprite = asCard ? hero?.Card : hero?.Face;

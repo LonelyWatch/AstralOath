@@ -24,77 +24,91 @@ namespace AstralOath.Editor
 
         private static GameObject BuildDraft()
         {
-            var root = Root("ArenaDraft");
+            var outer = Root("ArenaDraft");
+            Paint(outer, null, Color.black, true);
+            Cover(outer, "Native selection background", DraftSprite("base_pvplive_vs"));
+            var root = Area(outer, "Native reference layout", 0, 0, 1, 1);
+            root.anchorMin = root.anchorMax = new Vector2(.5f, .5f);
+            root.sizeDelta = new Vector2(1920, 1080);
             var refs = new List<(string, Object)>();
             void Add(string key, Object node) => refs.Add((key, node));
-            Paint(root, null, Color.black, true);
-            Cover(root, "Arena interior", DraftSprite("pvp_rta_ss6_d"));
-            var atmosphere = Picture(root, "Red and blue atmosphere", DraftSprite("base_pvplive_eff"), 0, 0, .79f, 1);
-            atmosphere.color = new Color(1f, 1f, 1f, .53f);
-            Paint(Area(root, "Background shade", 0, 0, 1, 1), null, Black(.36f));
-
-            var stage = Area(root, "Draft stage", 0, 0, .79f, 1);
-            var center = Area(stage, "Featured hero", .202f, .133f, .596f, .796f);
+            Add("layout", root);
+            Picture(root, "Native blue and red backdrop", DraftSprite("base_pvplive_eff"), 0, 0, 998f / 1280, 1);
+            var stage = Area(root, "Draft stage", 0, 0, 998f / 1280, 1);
+            var center = Area(stage, "Featured hero", 0, 0, 1, 1);
             center.gameObject.AddComponent<RectMask2D>();
-            var fallback = Picture(center, "Static illustration", null, 0, 0, 1, 1, true);
+            var fallback = Picture(center, "Static illustration", null, -40f / 998, -45f / 720, 1080f / 998, 1140f / 720, true);
             fallback.enabled = false;
             Add("featuredFallback", fallback);
-            Add("featured", Raw(center, "Spine illustration", -.10f, -.08f, 1.20f, 1.44f));
-            var footTone = Picture(stage, "Lower portrait fade", Art("_grow_s"), .194f, .631f, .612f, .292f);
-            footTone.color = Black(.63f);
+            Add("featured", Raw(center, "Spine illustration", 0, 0, 1, 1));
+            var footTone = Picture(stage, "Lower portrait fade", Art("_grow_s"), -.22f, 462f / 720, 1.46f, 258f / 720);
             footTone.rectTransform.localScale = new Vector3(1, -1, 1);
-            var formation = Area(stage, "Formation slots", .270f, .244f, .460f, .573f);
-            Add("formation", formation.gameObject);
-            // Match BattleScene slot indices: front, lower, upper, rear.
-            var pads = new[] { (.625f, .273f), (.353f, .527f), (.353f, .012f), (.06f, .267f) };
-            for (int index = 0; index < pads.Length; index++)
-            {
-                var (x, y) = pads[index];
-                var pad = Area(formation, "Position " + (index + 1), x, y, .29f, .428f);
-                var floor = index == 0 ? "hero_config_panelleader" : index == 3 ? "hero_config_panelback" : "hero_config_bg";
-                var map = DraftCard(pad, DraftSprite(floor), null, false, false, true);
-                Add("formation" + index, map);
-            }
-
-            Picture(stage, "Native left rail", Art("_bg_black_gold_c"), -.112f, .060f, .576f, 1.042f);
-            var rightRail = Picture(stage, "Native right rail", Art("_bg_black_gold_c"), .536f, .060f, .576f, 1.042f);
+            Picture(stage, "Upper portrait fade", Art("_grow_s"), -.22f, 0, 1.46f, 258f / 720);
+            Picture(stage, "Native left rail", Art("_bg_black_gold_c"), -112f / 998, 43f / 720, 576f / 998, 750f / 720);
+            var rightRail = Picture(stage, "Native right rail", Art("_bg_black_gold_c"), 531f / 998, 43f / 720, 576f / 998, 750f / 720);
             rightRail.rectTransform.localScale = new Vector3(-1, 1, 1);
             Add("blue", DraftArc(stage, false, "Blue active arc"));
             Add("red", DraftArc(stage, true, "Red active arc"));
             for (int row = 0; row < 5; row++)
             {
-                int index = row + 1;
-                float width = new[] { .292f, .229f, .198f, .198f, .229f }[row];
-                float y = .160f + row * .142f;
-                var left = Area(stage, "Ally pick " + index, .018f, y, width, .120f);
-                var right = Area(stage, "Enemy pick " + index, .982f - width, y, width, .120f);
-                var empty = DraftSprite("pvplive_slot" + index);
-                string slot = "pvplive_slot" + index;
-                Add("blue" + row, DraftCard(left, empty, DraftSprite(slot + "_blue"), false, true, false, DraftSprite(slot + "_glow_blue")));
-                Add("red" + row, DraftCard(right, empty, DraftSprite(slot + "_red"), true, true, false, DraftSprite(slot + "_glow_red")));
+                float width = NativeSlotWidths[row];
+                float top = 120.5f + row * 100;
+                var left = Area(stage, "Ally pick " + (row + 1), 19f / 998, top / 720, width / 998, 85f / 720);
+                var right = Area(stage, "Enemy pick " + (row + 1), (976f - width) / 998, top / 720, width / 998, 85f / 720);
+                Add("blue" + row, NativeTeamCard(left, row, false));
+                Add("red" + row, NativeTeamCard(right, row, true));
             }
+            var formation = Area(stage, "Formation slots", 0, 0, 1, 1);
+            Add("formation", formation.gameObject);
+            // Native CSB places model origins independently of floor plate centers.
+            var floors = new[] { new Vector2(610.7f, 259.2f), new Vector2(508.5f, 192), new Vector2(491.7f, 318.7f), new Vector2(390.9f, 250.8f) };
+            var changes = new[] { new Vector2(611, 327), new Vector2(509, 267), new Vector2(489, 389), new Vector2(392, 316) };
+            var origins = new[] { new Vector2(608, 264), new Vector2(506, 193), new Vector2(493, 321), new Vector2(391, 250) };
+            for (int index = 0; index < 4; index++)
+            {
+                var point = origins[index];
+                var pad = Area(formation, "Position " + (index + 1), (point.x - 120) / 998, (720 - point.y - 190) / 720, 240f / 998, 240f / 720);
+                string floor = index == 0 ? "hero_config_panelleader" : index == 3 ? "hero_config_panelback" : "hero_config_bg";
+                var map = DraftCard(pad, DraftSprite(floor), null, false, false, true);
+                Add("formation" + index, map);
+                var ring = pad.Find("Floor ring") as RectTransform;
+                Place(ring, (floors[index].x - point.x + 120 - 90.3f) / 240, (190 - (floors[index].y - point.y) - 42.7f) / 240, 180.6f / 240, 85.4f / 240);
+                Place(map.Require<Image>("selection").rectTransform, ring.anchorMin.x, 1 - ring.anchorMax.y, 180.6f / 240, 85.4f / 240);
+                Place(map.Require<Image>("change").rectTransform,
+                    (changes[index].x - point.x + 120 - 43) / 240,
+                    (190 - (changes[index].y - point.y) - 43) / 240, 86f / 240, 86f / 240);
+                // Rear/upper models render first; front/lower overlap them naturally.
+            }
+            foreach (int index in new[] { 2, 3, 0, 1 })
+                ((BindingMap)refs.Find(entry => entry.Item1 == "formation" + index).Item2).transform.SetAsLastSibling();
 
             var hostAvatar = ArenaAvatar(stage, "Local profile", .059f, .022f, .061f, .102f);
             var guestAvatar = ArenaAvatar(stage, "Remote profile", .916f, .022f, .061f, .102f);
             Add("hostAvatar", hostAvatar);
             Add("guestAvatar", guestAvatar);
-            Add("host", Text(stage, "My player", null, 29, .129f, .025f, .31f, .052f));
-            Add("guest", Text(stage, "Opponent player", null, 29, .563f, .025f, .335f, .052f,
+            Add("host", Text(stage, "My player", null, 27, .153f, .032f, .25f, .047f));
+            Add("guest", Text(stage, "Opponent player", null, 27, .597f, .032f, .28f, .047f,
                 alignment: TextAlignmentOptions.MidlineRight));
             NativeRule(stage, "Blue header", .024f, .083f, .388f, .014f, Gold);
             NativeRule(stage, "Red header", .588f, .083f, .388f, .014f, Gold);
-            Add("title", Text(stage, "Draft phase", null, 27, .345f, .021f, .31f, .040f,
+            Add("title", Text(stage, "Draft phase", null, 29, .345f, .025f, .31f, .048f,
                 Mist, TextAlignmentOptions.Center));
-            Add("timer", DraftTimer(stage, "Draft countdown", .431f, .059f, .138f, .100f, refs, "timer"));
+            Add("timer", DraftTimer(stage, "Draft countdown", .451f, .066f, .096f, .092f, refs, "timer"));
             var exit = Button(Area(stage, "Exit draft", .014f, .019f, .04f, .063f), null, Color.clear);
             Picture((RectTransform)exit.transform, "Exit", Art("cm_icon_etcback"), .22f, .16f, .56f, .68f, true);
             exit.FeedbackSound = GameUiFeedback.Sound.Back;
             Add("exit", exit);
-            var hint = Text(stage, "Draft instruction", null, 29, .217f, .733f, .567f, .055f,
+            var hint = Text(stage, "Draft instruction", null, 29, .285f, .686f, .428f, .073f,
                 alignment: TextAlignmentOptions.Center);
-            hint.fontStyle = FontStyles.Bold;
+            hint.fontStyle = FontStyles.Normal;
+            hint.enableWordWrapping = true;
             Add("hint", hint);
-            var mark = Picture(stage, "Final ban symbol", DraftSprite("cm_icon_st_banned"), .456f, .685f, .088f, .09f, true);
+            var banGlow = Picture(stage, "Final ban shade", Art("_grow"), 334f / 998, 417f / 720, 328f / 998, 334f / 720);
+            banGlow.color = new Color(1, 1, 1, .4f);
+            banGlow.enabled = false;
+            Add("banGlow", banGlow);
+            var mark = Picture(stage, "Final ban symbol", Art("icon_menu_banned"), 448f / 998, 482f / 720, 100f / 998, 100f / 720, true);
+            mark.color = new Color32(195, 21, 21, 255);
             mark.enabled = false;
             Add("banMark", mark);
             var preHeader = Area(stage, "Revealed preban caption", .259f, .854f, .482f, .040f);
@@ -103,12 +117,12 @@ namespace AstralOath.Editor
                 new Color32(231, 155, 151, 255), TextAlignmentOptions.MidlineLeft);
             Add("preHeader", preHeader.gameObject);
             Add("revealed", DraftHorizontal(stage, "Revealed bans", .304f, .898f, .392f, .097f, 64).gameObject);
-            var action = CommonButton(stage, "ConfirmButton", "arena.draft.choose", .716f, .904f, .257f, .082f);
+            var action = CommonButton(stage, "ConfirmButton", "arena.draft.choose", 719f / 998, 628f / 720, 271f / 998, 72f / 720);
             action.BlockedFeedback = true;
             Add("action", action);
             Add("actionLabel", action.GetComponent<BindingMap>().Require<GameText>("label"));
 
-            var pool = Area(root, "Hero roster sidebar", .79f, 0, .21f, 1);
+            var pool = Area(root, "Hero roster sidebar", 998f / 1280, 0, 282f / 1280, 1);
             Paint(pool, null, new Color32(8, 12, 20, 241));
             VerticalRule(pool, "Border", 0, .016f, .018f, .97f, Gold * .72f);
             Text(pool, "Roster caption", "arena.draft.roster", 23, .065f, .017f, .87f, .047f, Mist);
@@ -179,8 +193,8 @@ namespace AstralOath.Editor
             reveal.gameObject.SetActive(false);
             Add("status", Text(root, "Draft status", null, 25, .208f, .939f, .49f, .050f,
                 new Color32(255, 172, 118, 255), TextAlignmentOptions.Center));
-            Bind(root, refs.ToArray());
-            return root.gameObject;
+            Bind(outer, refs.ToArray());
+            return outer.gameObject;
         }
 
         private static BindingMap DraftCard(RectTransform root, Sprite background, Sprite filled, bool reverse, bool horizontal, bool miniature, Sprite outline = null)
@@ -256,16 +270,22 @@ namespace AstralOath.Editor
                 ("stars", stars), ("state", state), ("dim", dim) };
             if (miniature)
             {
-                var model = Raw(root, "Battle model", -.055f, -.31f, 1.11f, 1.36f);
+                var model = Raw(root, "Battle model", 0, 0, 1, 1);
                 model.transform.SetSiblingIndex(4);
                 keys.Add(("model", model));
+                var change = Picture(root, "Change position", DraftSprite("hero_config_btn_change"), .32f, .15f, .3583f, .3583f, true);
+                change.enabled = false;
+                keys.Add(("change", change));
+                foreach (var label in new[] { name, stars, state }) label.color = Color.clear;
+                role.color = element.color = Color.clear;
+
                 ((Image)button.targetGraphic).sprite = null;
                 ((Image)button.targetGraphic).color = Color.clear;
                 selection.sprite = DraftSprite("hero_config_bg");
                 Place(selection.rectTransform, -.07f, .588f, 1.14f, .46f);
-                selection.preserveAspect = true;
+                selection.preserveAspect = false;
                 selection.color = new Color(.58f, .78f, 1f, .94f);
-                var ring = Picture(root, "Floor ring", background, -.07f, .588f, 1.14f, .46f, true);
+                var ring = Picture(root, "Floor ring", background, -.07f, .588f, 1.14f, .46f, false);
                 ring.color = new Color32(51, 137, 225, 255);
                 ring.transform.SetAsFirstSibling();
             }
@@ -297,12 +317,11 @@ namespace AstralOath.Editor
 
         private static Image DraftArc(RectTransform stage, bool reverse, string name)
         {
-            var anchor = Area(stage, name + " anchor", reverse ? .657f : .192f, .119f, .151f, .791f);
-            var rail = Picture(anchor, "Unlit rail", DraftSprite("pvplive_progress_bg"), 0, 0, 1, 1);
-            rail.color = new Color32(135, 105, 68, 225);
+            float x = reverse ? 709 : 287;
+            var rail = Picture(stage, name + " unlit rail", DraftSprite("pvplive_progress_bg"), (x - 63.5f) / 998, (720 - 325 - 265.5f) / 720, 127f / 998, 531f / 720);
             if (reverse) rail.rectTransform.localScale = new Vector3(-1, 1, 1);
-            var glow = Picture(anchor, name, DraftSprite(reverse ? "pvplive_progress_bar_red" : "pvplive_progress_bar_blue"),
-                -1.04f, .345f, 3.08f, .310f);
+            var glow = Picture(stage, name, DraftSprite(reverse ? "pvplive_progress_bar_red" : "pvplive_progress_bar_blue"),
+                (x - 259.5f) / 998, (720 - 325 - 58.5f) / 720, 519f / 998, 117f / 720);
             glow.rectTransform.localEulerAngles = new Vector3(0, 0, -90);
             if (!reverse) glow.rectTransform.localScale = new Vector3(1, -1, 1);
             return glow;
@@ -362,6 +381,11 @@ namespace AstralOath.Editor
                 catalog = ScriptableObject.CreateInstance<ArenaDraftArt>();
                 AssetDatabase.CreateAsset(catalog, DraftArtPath);
             }
+            catalog.LevelDigits = Enumerable.Range(0, 10).Select(digit => DraftSprite("TeamBadges/hero_lv_" + digit)).ToArray();
+            catalog.ActionGreen = CommonArt("_btn_green");
+            catalog.ActionGreenPressed = CommonArt("_btn_green_p");
+            catalog.ActionRed = DraftSprite("_btn_red");
+            catalog.ActionRedPressed = DraftSprite("_btn_red_p");
             catalog.ScoreDigits = Enumerable.Range(0, 10).Select(digit => DraftSprite("Digits/score_" + digit)).ToArray();
             catalog.Heroes = source.heroes.OrderBy(hero => hero.id, StringComparer.Ordinal).Select(hero =>
             {

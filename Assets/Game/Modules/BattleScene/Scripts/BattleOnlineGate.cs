@@ -17,18 +17,22 @@ namespace AstralOath.Client.BattleScene
         private const float SourceHeight = 720f;
         private const float SourceWidth = 1280f;
         private const float InverseScale = .01f;
+        private const float DesignAspect = SourceWidth / SourceHeight;
+        private const float IgnitionViewScale = 1.35f;
+        private const int MaxRenderWidth = 2560;
         private readonly BattleOnlineTransitionAssets assets;
         private readonly GameObject stage, overlay;
         private readonly Camera camera;
-        private readonly RenderTexture texture;
+        private readonly Canvas canvas;
+        private readonly RawImage picture;
+        private RenderTexture texture;
         private readonly AudioSource audio;
-        private readonly AspectRatioFitter presentationAspect;
         private readonly Dictionary<string, ISkeletonPlayer> players = new Dictionary<string, ISkeletonPlayer>(StringComparer.Ordinal);
         private readonly Dictionary<string, Texture2D> textures;
         private readonly Dictionary<string, TextAsset> particles;
         private readonly List<SpineLayer> layers = new List<SpineLayer>();
         private readonly List<Particle> visuals = new List<Particle>();
-        private bool disposed;
+        private bool disposed, showingIgnition;
 
         private sealed class SpineLayer
         {
@@ -71,27 +75,21 @@ namespace AstralOath.Client.BattleScene
                 camera.clearFlags = CameraClearFlags.SolidColor;
                 camera.backgroundColor = Color.clear;
                 camera.orthographic = true;
-                camera.orthographicSize = SourceHeight * InverseScale * .5f;
-                camera.aspect = SourceWidth / SourceHeight;
                 camera.nearClipPlane = .1f;
                 camera.farClipPlane = 30f;
                 camera.allowHDR = false;
                 camera.allowMSAA = false;
-                texture = new RenderTexture((int)SourceWidth, (int)SourceHeight, 16, RenderTextureFormat.ARGB32)
-                { name = "Online Battle Gate Frame", useMipMap = false };
-                texture.Create();
-                camera.targetTexture = texture;
 
-                var canvas = overlay.GetComponent<Canvas>();
+                canvas = overlay.GetComponent<Canvas>();
                 canvas.renderMode = RenderMode.ScreenSpaceOverlay;
                 canvas.sortingOrder = 32700;
-                var picture = new GameObject("Native Gate Frame", typeof(RectTransform), typeof(RawImage), typeof(AspectRatioFitter));
-                var rect = (RectTransform)picture.transform;
+                picture = new GameObject("Native Gate Frame", typeof(RectTransform), typeof(RawImage)).GetComponent<RawImage>();
+                var rect = picture.rectTransform;
                 rect.SetParent(overlay.transform, false);
-                presentationAspect = picture.GetComponent<AspectRatioFitter>();
-                presentationAspect.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
-                presentationAspect.aspectRatio = SourceWidth / SourceHeight;
-                picture.GetComponent<RawImage>().texture = texture;
+                rect.anchorMin = Vector2.zero;
+                rect.anchorMax = Vector2.one;
+                rect.offsetMin = rect.offsetMax = Vector2.zero;
+                UpdateProjection();
 
                 var factory = new SkeletonPlayerFactory();
                 foreach (var effect in assets.skeletons)
@@ -115,6 +113,7 @@ namespace AstralOath.Client.BattleScene
         // use zero-duration loop poses and remain visible without redrawing them.
         internal void TickClosed()
         {
+            UpdateProjection();
             float delta = FrameDelta();
             foreach (var layer in layers)
                 if (layer.FinishedIntro && layer.Loop != null && layer.Player.Duration > 0f)
@@ -125,10 +124,8 @@ namespace AstralOath.Client.BattleScene
         {
             token.ThrowIfCancellationRequested();
             ClearEffects();
-            bool ignition = effect == assets.ignitionCfx;
-            presentationAspect.aspectMode = ignition ? AspectRatioFitter.AspectMode.FitInParent :
-                AspectRatioFitter.AspectMode.EnvelopeParent;
-            camera.orthographicSize = .5f * SourceHeight * InverseScale * (ignition ? 1.35f : 1f);
+            showingIgnition = effect == assets.ignitionCfx;
+            UpdateProjection();
             var parts = (JArray)JObject.Parse(effect.text)["primitive"];
             foreach (var row in parts.OfType<JObject>())
             {
@@ -153,6 +150,7 @@ namespace AstralOath.Client.BattleScene
             {
                 await Task.Yield();
                 token.ThrowIfCancellationRequested();
+                UpdateProjection();
                 float delta = FrameDelta();
                 elapsed += delta;
                 playing = Advance(elapsed, delta);
@@ -235,6 +233,44 @@ namespace AstralOath.Client.BattleScene
             return playingIntro;
         }
 
+        private void UpdateProjection()
+        {
+            Rect output = canvas.pixelRect;
+            // An offscreen camera can display this canvas at a size different from the Game view.
+            if (canvas.renderMode == RenderMode.ScreenSpaceCamera && canvas.worldCamera)
+                output = canvas.worldCamera.pixelRect;
+            if (output.width <= 1f || output.height <= 1f)
+                output = new Rect(0f, 0f, Screen.width, Screen.height);
+            float aspect = output.height > 1f && output.width > 1f ? output.width / output.height : DesignAspect;
+            int height = Mathf.Max(1, Mathf.FloorToInt(Mathf.Min(SourceHeight, MaxRenderWidth / aspect)));
+            int width = Mathf.Max(1, Mathf.RoundToInt(height * aspect));
+
+            // The gate covers the output. IGNITION retains its original fit framing, but its
+            // translucent effects can extend through the full output instead of a fitted rectangle.
+            float frameScale = showingIgnition ? IgnitionViewScale * Mathf.Max(1f, DesignAspect / aspect) :
+                Mathf.Min(1f, DesignAspect / aspect);
+            camera.aspect = aspect;
+            camera.orthographicSize = .5f * SourceHeight * InverseScale * frameScale;
+            if (texture && texture.width == width && texture.height == height) return;
+
+            ReleaseTarget();
+            texture = new RenderTexture(width, height, 16, RenderTextureFormat.ARGB32)
+            { name = "Online Battle Gate Frame", useMipMap = false, wrapMode = TextureWrapMode.Clamp };
+            texture.Create();
+            camera.targetTexture = texture;
+            picture.texture = texture;
+        }
+
+        private void ReleaseTarget()
+        {
+            if (!texture) return;
+            if (camera) camera.targetTexture = null;
+            if (picture) picture.texture = null;
+            texture.Release();
+            Object.Destroy(texture);
+            texture = null;
+        }
+
         private static float FrameDelta() => Mathf.Clamp(Time.unscaledDeltaTime, 0f, .05f);
         private static float Number(JObject row, string key, float fallback = 0) => Parse((string)row[key], fallback);
         private static float Parse(string value, float fallback) =>
@@ -263,12 +299,7 @@ namespace AstralOath.Client.BattleScene
             ClearEffects();
             foreach (var player in players.Values) player.Dispose();
             players.Clear();
-            if (camera) camera.targetTexture = null;
-            if (texture)
-            {
-                texture.Release();
-                Object.Destroy(texture);
-            }
+            ReleaseTarget();
             if (stage) { stage.SetActive(false); Object.Destroy(stage); }
             if (overlay) { overlay.SetActive(false); Object.Destroy(overlay); }
         }

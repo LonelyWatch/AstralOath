@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bb092d138f31cff47a21db9dc90133f2, type: 3}
   m_Name: ArenaDraftArt
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   Heroes:
   - Id: c1001
     Name: "\u62C9\u65AF"
@@ -534,3 +534,18 @@ MonoBehaviour:
   - {fileID: 21300000, guid: bd9cd0b6c3f55b129df68b2df6f4579f, type: 3}
   - {fileID: 21300000, guid: 6fc484e6c656531d8e511323d71ddd17, type: 3}
   - {fileID: 21300000, guid: abaa74d91bc45521859024ea35cd1a09, type: 3}
+  LevelDigits:
+  - {fileID: 21300000, guid: 1ed4300967a25d74bab680ba0f102f69, type: 3}
+  - {fileID: 21300000, guid: e522e5d9d49a55b2b725c1b372f35efc, type: 3}
+  - {fileID: 21300000, guid: 24c6abeec5bb51989999993f4334733d, type: 3}
+  - {fileID: 21300000, guid: 88f98e6959eb55bd84f711c50b45334d, type: 3}
+  - {fileID: 21300000, guid: c7bc4f0ff639574781d04012b2bfde9f, type: 3}
+  - {fileID: 21300000, guid: 91d22efc54c65ae0aa3d2912e539e281, type: 3}
+  - {fileID: 21300000, guid: b58ce5bb2f145c9da404f20fdc79e390, type: 3}
+  - {fileID: 21300000, guid: 515fd01de83f5388b038382ba914ec02, type: 3}
+  - {fileID: 21300000, guid: 54cec7e8438a59069467208af2387453, type: 3}
+  - {fileID: 21300000, guid: 8e60a029eaa45b9e99acf86694ca2101, type: 3}
+  ActionGreen: {fileID: 21300000, guid: 326462678abf50649f449a0058fbd0e3, type: 3}
+  ActionGreenPressed: {fileID: 21300000, guid: def4370707155c9c8736e2465976fef1, type: 3}
+  ActionRed: {fileID: 21300000, guid: ac0af4b9d60c5035a0f52219a5b86be5, type: 3}
+  ActionRedPressed: {fileID: 21300000, guid: caddf35450b9570098357d52f55795c7, type: 3}

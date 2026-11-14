@@ -182,13 +182,36 @@ namespace AstralOath.Client.Arena
         {
             var rect = output.rectTransform.rect;
             float aspect = Mathf.Clamp(rect.width / Mathf.Max(rect.height, 1), .1f, 10f);
-            var size = framingBounds.extents;
-            float halfHeight = Mathf.Max(.05f, Mathf.Max(size.y, size.x / aspect) * (miniature ? 1.24f : 1.10f));
             camera.aspect = aspect;
-            camera.orthographicSize = halfHeight;
-            var center = framingBounds.center;
-            float verticalCenter = miniature ? framingBounds.min.y + halfHeight * .84f : center.y;
-            camera.transform.localPosition = new Vector3(center.x, verticalCenter, -10);
+            if (miniature)
+            {
+                // CSB specifies the floor anchors, not the runtime model scale. Use one
+                // display scale for the roster; only oversized meshes are reduced once.
+                // Keep the rig origin on the floor (120,50), never recenter on animated bounds.
+                float pixelsPerUnit = MiniaturePixelsPerUnit(framingBounds);
+                camera.orthographicSize = 120f / pixelsPerUnit;
+                camera.transform.localPosition = new Vector3(0, 70f / pixelsPerUnit, -10);
+            }
+            else
+            {
+                // pvplive_ready: n_portrait=(500,-375), scale=1.2, visible canvas=998x720.
+                // The player uses .01 units/source pixel; retaining this origin preserves
+                // each hero's authored face position instead of normalizing their bounds.
+                camera.orthographicSize = 3f;
+                camera.transform.localPosition = new Vector3(-1f / 120f, 735f / 120f, -10);
+            }
+        }
+
+        private static float MiniaturePixelsPerUnit(Bounds bounds)
+        {
+            const float nominal = 29f;
+            // Eight native pixels of breathing room on all four sides.
+            float scale = nominal;
+            if (bounds.min.x < 0) scale = Mathf.Min(scale, 112f / -bounds.min.x);
+            if (bounds.max.x > 0) scale = Mathf.Min(scale, 112f / bounds.max.x);
+            if (bounds.min.y < 0) scale = Mathf.Min(scale, 42f / -bounds.min.y);
+            if (bounds.max.y > 0) scale = Mathf.Min(scale, 182f / bounds.max.y);
+            return Mathf.Max(.01f, scale);
         }
 
         private void ReleaseStage()

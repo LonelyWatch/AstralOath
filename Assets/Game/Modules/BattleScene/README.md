@@ -173,8 +173,8 @@ Luban 快照 `Configs/battle-catalog.json` 含十名英雄、成长模板、觉�
 
 在线入口通过 `BattleOnlinePlayers` 传入对局双方的显示名、头像 ID 和已分类的头像 Sprite；头像由大厅持有到叠加战斗场景退出。无资料时使用本地化的阵营称呼，不填入虚构玩家。离线场景继续使用原有波次 HUD。
 
-`BattleOnlineHud` 在战斗安全区上缘展示双方头像、名称、分段总生命条和原版 VS。生命聚合当前实际呈现的单位生命，随受击演出更新；回合文字只读取当前显示的行动方，在入场、动作播放、断线和战斗结束时隐藏。服务端没有回合截止时间，因此不生成倒计时。该图层不接收射线，不改变鼠标、触摸和技能操作。
+`BattleOnlineHud` 在战斗安全区上缘展示双方头像、名称、分段总生命条和原版 VS。生命聚合当前实际呈现的单位生命，随受击演出更新；回合文字与原版红／蓝计时环只在权威决策窗口显示，入场、动作播放、断线和结束时隐藏。双方演出完成通过会话 ready 接口同步，服务器保存期限并处理超时合法默认动作，客户端只投影剩余秒数。服务版本不支持计时时显示明确错误并停止输入。该图层不接收射线，不改变鼠标和触摸命中。协议、等待上限和验收见[在线计时记录](../../../../docs/delivery/2026-11-15-online-turn-clock.md)。
 
 入场标题在 IGNITION 下方显示金色竞技场与白色决斗场，入场结束释放标题，队伍 HUD 持续显示。独立图层避免被普通 HUD 的入场淡出一同隐藏，退出战斗恢复原波次与速度按钮布局。
 
-素材入口为 `Tools/BattleScene/ImportOnlineHud.py`；`--check` 验证七张选定 PNG 与只读原始来源逐字节一致，`Resources/AstralOathOnlineHud/source.json` 记录每张文件与 `wnd/pvplive_global_hp.csb` 布局证据的 SHA-256。CSB 仅作布局依据，不进入运行时。Unity 编译与 16:9、21:9 实帧截图分别验收；资源校验不能替代视觉对照。
+素材入口为 `Tools/BattleScene/ImportOnlineHud.py`；`--check` 验证十张选定 PNG 与只读原始来源逐字节一致，`Resources/AstralOathOnlineHud/source.json` 记录每张文件与 `wnd/pvplive_global_hp.csb` 布局证据的 SHA-256。CSB 仅作布局依据，不进入运行时。Unity 编译与 16:9、21:9 实帧截图分别验收；资源校验不能替代视觉对照。

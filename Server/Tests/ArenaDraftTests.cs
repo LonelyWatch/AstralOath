@@ -118,6 +118,10 @@ public sealed class ArenaDraftTests
                 actorId = activeActorId, skillId = skill, targetId = (hostTurn ? "enemy-" : "ally-") + 1,
                 useSoulBurn = false, contentHash = ready.GetProperty("contentHash").GetString()
             };
+            var presented = new { battleId = draftId, commandSequence = 0UL,
+                eventSequence = opening.GetProperty("lastEventSequence").GetUInt64(), actorId = activeActorId };
+            await Send(host, battlePath + "/ready", presented);
+            await Send(guest, battlePath + "/ready", presented);
             using (var wrongSeat = await (hostTurn ? guest : host).PostAsJsonAsync(Api(battlePath + "/commands"), command, ct))
                 Assert.Equal(HttpStatusCode.Forbidden, wrongSeat.StatusCode);
             var accepted = await Send(hostTurn ? host : guest, battlePath + "/commands", command);

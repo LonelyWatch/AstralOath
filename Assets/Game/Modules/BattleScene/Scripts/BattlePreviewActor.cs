@@ -292,6 +292,8 @@ namespace AstralOath.Client.BattleScene
         }
 
         private bool PlayingTurnEntry => turnEntryAnimation != null && player.CurrentAnimation == turnEntryAnimation;
+        internal bool IsTurnEntryPlaying => player != null &&
+            (turnEntryPending || PlayingTurnEntry && player.Time < player.Duration);
 
         internal void SetTurnReady(bool value)
         {

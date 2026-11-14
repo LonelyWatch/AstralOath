@@ -11,7 +11,8 @@ from ImportArenaArt import digest, metadata, read_source, texture_importer, writ
 
 OUTPUT = ROOT / "Assets/Game/Modules/BattleScene/Resources/AstralOathOnlineHud"
 NAMES = ("_battle_pvp_icon_vs", "game_hud_bar_pvplive", "game_hud_bar_hp",
-         "game_hud_bar_hp_red", "game_hud_bar_split", "_hero_s_frame_enemy", "_hero_s_bg_ally")
+         "game_hud_bar_hp_red", "game_hud_bar_split", "_hero_s_frame_enemy", "_hero_s_bg_ally",
+         "time_progress_bg", "time_progress_bar_blue", "time_progress_bar_red")
 
 
 def main():

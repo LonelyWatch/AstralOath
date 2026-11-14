@@ -25,5 +25,7 @@ namespace AstralOath.Client.Arena
 
         public Hero[] Heroes = Array.Empty<Hero>();
         public Sprite[] ScoreDigits = Array.Empty<Sprite>();
+        public Sprite[] LevelDigits = Array.Empty<Sprite>();
+        public Sprite ActionGreen, ActionGreenPressed, ActionRed, ActionRedPressed;
     }
 }

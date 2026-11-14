@@ -34,5 +34,13 @@ internal static class ArenaDraftEndpoints
             if (request.ContentHash != catalog.ContentHash) throw new ArenaProblem(409, "battle_content_mismatch");
             return Results.Ok(await store.BattleCommand(RoomId(id), Player(http), request, catalog, cancellation));
         }).WithMetadata(new RequestSizeLimitAttribute(4096));
+        room.MapPost("/battle/ready", async (string id, ulong? after, ArenaBattleReadyRequest request, HttpContext http,
+            ArenaStore store, ArenaBattleCatalog catalog, CancellationToken cancellation) =>
+        {
+            if (string.IsNullOrWhiteSpace(request.BattleId) || request.BattleId.Length > 80 ||
+                string.IsNullOrWhiteSpace(request.ActorId) || request.ActorId.Length > 80)
+                throw new ArenaProblem(400, "invalid_battle_ready");
+            return Results.Ok(await store.BattleReady(RoomId(id), Player(http), request, after ?? 0, catalog, cancellation));
+        }).WithMetadata(new RequestSizeLimitAttribute(1024));
     }
 }

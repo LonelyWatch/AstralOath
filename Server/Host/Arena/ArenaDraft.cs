@@ -22,6 +22,7 @@ internal sealed class ArenaDraft
     public required int PrebanCount { get; init; }
     public required bool BanProtection { get; init; }
     public DateTimeOffset? DeadlineAt { get; set; }
+    public ArenaBattleTurnClock? BattleClock { get; set; }
     public required string ContentHash { get; init; }
     public uint BattleRulesVersion { get; init; }
     public required ArenaDraftSeat Host { get; init; }

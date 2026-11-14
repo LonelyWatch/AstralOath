@@ -413,14 +413,35 @@ def manifest(module, entries, layouts, root, check):
     metadata(path, check, "TextScriptImporter:\n  externalObjects: {}\n  userData:\n  assetBundleName:\n  assetBundleVariant:\n")
 
 
+def draft_team_badges(root, check):
+    folder = MODULES / "Arena/Res/Textures/Draft/TeamBadges"
+    if not check:
+        folder.mkdir(parents=True, exist_ok=True)
+    metadata(folder, check, "folderAsset: yes\nDefaultImporter:\n  externalObjects: {}\n")
+    names = ["hero_lv", "cm_icon_star", "cm_icon_star_j"]
+    names += [f"hero_lv_{digit}" for digit in range(10)]
+    entries = [draft_png(root, check, f"img/{name}.png", f"TeamBadges/{name}.png") for name in names]
+    layout = "wnd/pvplive_ready.csb"
+    manifest_data = {"schemaVersion": 1, "assets": entries, "sourceLayout": layout,
+                     "sourceLayoutSha256": digest(read_source(root, layout))}
+    manifest_path = folder / "source-manifest.json"
+    write(manifest_path, (json.dumps(manifest_data, ensure_ascii=False, indent=2) + "\n").encode(), check)
+    metadata(manifest_path, check, "TextScriptImporter:\n  externalObjects: {}\n")
+    return len(entries)
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path, default=Path("D:/sevenepic"))
     parser.add_argument("--check", action="store_true")
+    parser.add_argument("--team-badges-only", action="store_true", help="Import only native team slot level and star art.")
     args = parser.parse_args()
     root = (args.source / SOURCE_FOLDER).resolve(strict=True)
     if REPO.resolve().is_relative_to(root):
         raise ValueError("The project must stay outside the source archive.")
+    badge_count = draft_team_badges(root, args.check)
+    if args.team_badges_only:
+        print(f"{'Verified' if args.check else 'Imported'} {badge_count} Arena team badge assets.")
+        return
     arena = source_pngs("Arena", [f"img/{name}.png" for name in ARENA_IMAGES] +
                         ["emblem/icon_pvp_sa_league_place.png"], root, args.check)
     arena.append(courtyard(root, args.check))

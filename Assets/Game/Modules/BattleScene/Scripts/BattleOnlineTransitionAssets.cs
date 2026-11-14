@@ -21,6 +21,7 @@ namespace AstralOath.Client.BattleScene
         {
             public string arenaTitle, arenaMode, reconnecting, connectionEnded;
             public string yourTurn, opponentTurn, localPlayer, opponentPlayer;
+            public string clockUnavailable;
 
             internal static Copy Load(TextAsset text)
             {
@@ -29,7 +30,7 @@ namespace AstralOath.Client.BattleScene
                     string.IsNullOrWhiteSpace(result.reconnecting) || string.IsNullOrWhiteSpace(result.connectionEnded) ||
                     string.IsNullOrWhiteSpace(result.arenaMode) || string.IsNullOrWhiteSpace(result.yourTurn) ||
                     string.IsNullOrWhiteSpace(result.opponentTurn) || string.IsNullOrWhiteSpace(result.localPlayer) ||
-                    string.IsNullOrWhiteSpace(result.opponentPlayer))
+                    string.IsNullOrWhiteSpace(result.opponentPlayer) || string.IsNullOrWhiteSpace(result.clockUnavailable))
                     throw new InvalidOperationException("Online battle localization resources are incomplete.");
                 return result;
             }

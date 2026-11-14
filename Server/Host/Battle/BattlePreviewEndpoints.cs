@@ -163,6 +163,13 @@ internal sealed class BattlePreviewRoom
     }
 
     public BattlePreviewCommandReply? Submit(BattleSide side, BattlePreviewCommand command)
+        => SubmitCore(side, command, $"{(int)side}:{command.CommandId}");
+
+    // A separate entry point makes the identity namespace impossible to select in a client payload.
+    public BattlePreviewCommandReply? SubmitTimeout(BattleSide side, BattlePreviewCommand command)
+        => SubmitCore(side, command, $"server-timeout:{(int)side}:{command.Sequence}");
+
+    private BattlePreviewCommandReply? SubmitCore(BattleSide side, BattlePreviewCommand command, string identity)
     {
         lock (gate)
         {
@@ -171,7 +178,7 @@ internal sealed class BattlePreviewRoom
             if (unit == null || unit.Slot.Side != side) return null;
             // Scope idempotency keys to the issuing seat.
             var result = match.Submit(new BattleSkillCommand(snapshot.BattleId, command.RulesVersion, command.Sequence,
-                $"{(int)side}:{command.CommandId}", command.ActorId, command.SkillId, command.TargetId!, command.UseSoulBurn));
+                identity, command.ActorId, command.SkillId, command.TargetId!, command.UseSoulBurn));
             if (result.Status == BattleCommandStatus.Duplicate && commandReplies.TryGetValue(result.Snapshot, out var reply))
                 return reply with { Status = BattleCommandStatus.Duplicate };
             if (result.Status != BattleCommandStatus.Accepted) return BattlePreviewCommandReply.From(result);
@@ -203,10 +210,14 @@ internal sealed class BattlePreviewRoom
 internal sealed record BattlePreviewCommandReply(BattleCommandStatus Status, BattleSnapshot Snapshot,
     IReadOnlyList<BattleFlowEvent> Events)
 {
+    public BattleTurnClockView? Clock { get; init; }
     public static BattlePreviewCommandReply From(BattleCommandResult result) => new(result.Status, result.Snapshot, result.Events);
 }
 
 internal sealed record BattlePreviewUpdate(string ContentHash, BattleSnapshot Snapshot, bool SnapshotReset,
-    IReadOnlyList<BattleFlowEvent> Events);
+    IReadOnlyList<BattleFlowEvent> Events)
+{
+    public BattleTurnClockView? Clock { get; init; }
+}
 internal sealed record BattlePreviewInvitation(string RoomId, string AllyToken, string EnemyToken,
     DateTimeOffset ExpiresAt, string ContentHash, BattlePreviewUpdate Opening);
