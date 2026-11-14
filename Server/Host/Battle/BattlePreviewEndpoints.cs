@@ -50,6 +50,8 @@ internal sealed record BattlePreviewCommand(
     uint RulesVersion, ulong Sequence, string CommandId, string ActorId, string SkillId, string? TargetId,
     bool UseSoulBurn, string ContentHash)
 {
+    public string? BattleId { get; init; }
+
     internal bool IsValid() =>
         CommandId is { Length: > 0 and <= 78 } && !string.IsNullOrWhiteSpace(CommandId) && IsKey(ActorId) && IsKey(SkillId) && (TargetId == null || IsKey(TargetId));
 

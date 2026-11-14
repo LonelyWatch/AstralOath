@@ -1,0 +1,33 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "treff_pd_pvp_battle_close_f",
+      "ani": "start,loop",
+      "z": "2",
+      "scale": "0.75",
+      "format": "spine",
+      "loop": 1
+    },
+    {
+      "source": "treff_pd_pvp_battle_close_b",
+      "ani": "start,loop",
+      "scale": "0.75",
+      "format": "spine",
+      "loop": 1
+    },
+    {
+      "source": "treff_pd_pvp_battle_close_m",
+      "ani": "start,loop",
+      "z": "1",
+      "scale": "0.75",
+      "format": "spine",
+      "loop": 1
+    },
+    {
+      "source": "treff_pd_pvp_battle_pp_close",
+      "z": "3",
+      "format": "spine"
+    }
+  ]
+}

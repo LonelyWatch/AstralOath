@@ -69,8 +69,9 @@ namespace AstralOath.Client.Tests
                 directory.Require<GameButton>("create").onClick.Invoke();
                 yield return Wait(() => ScreenMap("ArenaCreateRoom"), "Create modal did not open.");
                 var create = ScreenMap("ArenaCreateRoom");
-                Assert.That(create.Require<Image>("selection_wild").enabled, Is.True);
-                Assert.That(create.Require<ScrollRect>("rules").horizontalNormalizedPosition, Is.EqualTo(0f).Within(.01f));
+                Assert.That(create.Require<Image>("selection_basic").enabled, Is.True);
+                Assert.That(create.Require<ScrollRect>("rules").horizontalNormalizedPosition, Is.EqualTo(1f).Within(.01f));
+                Assert.That(create.Require<GameObject>("draftOptions").activeInHierarchy, Is.True);
                 var allow = create.Require<GameButton>("allow");
                 var deny = create.Require<GameButton>("deny");
                 deny.onClick.Invoke();

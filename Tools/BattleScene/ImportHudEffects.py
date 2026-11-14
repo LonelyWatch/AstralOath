@@ -50,9 +50,9 @@ def asset_path(source):
     return "Particles/" + name if path.parent.name == "particle" or path.suffix == ".particle" else name
 
 
-def collect(root):
+def collect(root, roots=ROOTS):
     closure = Closure(root)
-    for source in ROOTS:
+    for source in roots:
         closure.include(source, "battle-hud")
 
     paths = {source: asset_path(source) for source in closure.dependencies}
@@ -101,7 +101,7 @@ def collect(root):
     payloads["source.json"] = json_bytes({
         "schemaVersion": 1,
         "converterSha256": hash_file(TOOLS / "CharacterAssets/convert.py"),
-        "roots": list(ROOTS),
+        "roots": list(roots),
         "files": files,
     })
     return payloads

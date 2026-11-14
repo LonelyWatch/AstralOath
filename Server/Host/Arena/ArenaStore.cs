@@ -5,7 +5,7 @@ using MySqlConnector;
 
 namespace AstralOath.Server.Arena;
 
-internal sealed class ArenaStore(string? connectionString)
+internal sealed partial class ArenaStore(string? connectionString)
 {
     private const int Capacity = 50;
     private const int PinIterations = 100_000;
@@ -53,8 +53,10 @@ internal sealed class ArenaStore(string? connectionString)
                    p.id, p.display_name, p.avatar_id,
                    (SELECT COUNT(*) FROM arena_room_member m
                     LEFT JOIN arena_room_member_lease l ON l.player_id = m.player_id
-                    WHERE m.room_id = r.id AND COALESCE(l.expires_at, TIMESTAMPADD(SECOND, @lease, m.joined_at)) > UTC_TIMESTAMP(6)) AS member_count
+                    WHERE m.room_id = r.id AND COALESCE(l.expires_at, TIMESTAMPADD(SECOND, @lease, m.joined_at)) > UTC_TIMESTAMP(6)) AS member_count,
+                   COALESCE(s.preban_count, 2), COALESCE(s.first_pick, 'host'), COALESCE(s.ban_protection, 1)
             FROM arena_room r
+            LEFT JOIN arena_room_draft_settings s ON s.room_id = r.id
             JOIN arena_player p ON p.id = r.host_id
             WHERE (@visibility = 'all' OR (r.password_hash IS NULL) = (@visibility = 'public'))
               AND (@query = '' OR LOCATE(@query, r.name) > 0)
@@ -69,12 +71,13 @@ internal sealed class ArenaStore(string? connectionString)
         var rooms = new List<ArenaRoom>();
         while (await reader.ReadAsync(token))
             rooms.Add(new ArenaRoom(reader.GetString(0), reader.GetString(1), ReadPlayer(reader, 6),
-                reader.GetBoolean(2), reader.GetBoolean(3), reader.GetString(4), reader.GetInt32(9), Capacity, Utc(reader, 5)));
+                reader.GetBoolean(2), reader.GetBoolean(3), reader.GetString(4), reader.GetInt32(9), Capacity, Utc(reader, 5),
+                reader.GetInt32(10), reader.GetString(11), reader.GetBoolean(12)));
         return rooms;
     }
 
     public async Task<ArenaRoomState> CreateRoom(ArenaPlayer player, string name, string? password, bool allowChat,
-        string rule, CancellationToken token)
+        string rule, int prebanCount, string firstPick, bool banProtection, CancellationToken token)
     {
         var id = Guid.NewGuid().ToString("N");
         var salt = password is null ? null : RandomNumberGenerator.GetBytes(16);
@@ -91,6 +94,11 @@ internal sealed class ArenaStore(string? connectionString)
             """, ("@id", id), ("@host", player.Id), ("@name", name), ("@salt", salt), ("@hash", hash),
             ("@chat", allowChat), ("@rule", rule));
         await insert.ExecuteNonQueryAsync(token);
+        using var settings = Command(connection, transaction, """
+            INSERT INTO arena_room_draft_settings (room_id, preban_count, first_pick, ban_protection)
+            VALUES (@id, @preban, @first, @protection);
+            """, ("@id", id), ("@preban", prebanCount), ("@first", firstPick), ("@protection", banProtection));
+        await settings.ExecuteNonQueryAsync(token);
         await InsertMembership(connection, transaction, id, player.Id, token);
         var room = await LockRoom(connection, transaction, id, token);
         var state = State(room, new[] { player });
@@ -169,6 +177,7 @@ internal sealed class ArenaStore(string? connectionString)
             "DELETE FROM arena_room_member WHERE player_id = @player;",
             ("@player", player.Id));
         await remove.ExecuteNonQueryAsync(token);
+        await CancelDraftIfSeated(connection, transaction, id, player.Id, token);
         if (room.HostId == player.Id)
         {
             var members = await Members(connection, transaction, id, token);
@@ -326,6 +335,7 @@ internal sealed class ArenaStore(string? connectionString)
                 "DELETE FROM arena_room_member WHERE player_id = @player AND room_id = @room;",
                 ("@player", playerId), ("@room", room.Id));
             await remove.ExecuteNonQueryAsync(token);
+            await CancelDraftIfSeated(connection, transaction, room.Id, playerId, token);
             await OperationAudit.Record(connection, transaction, "arena.room.expire", "arena_player", playerId,
                 "arena_room", room.Id, null, token);
         }
@@ -380,8 +390,9 @@ internal sealed class ArenaStore(string? connectionString)
         string id, CancellationToken token, bool shared = false)
     {
         const string query = """
-            SELECT id, host_id, name, password_salt, password_hash, allow_chat, rule, created_at
-            FROM arena_room WHERE id = @id
+            SELECT r.id, r.host_id, r.name, r.password_salt, r.password_hash, r.allow_chat, r.rule, r.created_at,
+                   COALESCE(s.preban_count, 2), COALESCE(s.first_pick, 'host'), COALESCE(s.ban_protection, 1)
+            FROM arena_room r LEFT JOIN arena_room_draft_settings s ON s.room_id = r.id WHERE r.id = @id
             """;
         using var command = Command(connection, transaction, query + (shared ? " FOR SHARE;" : " FOR UPDATE;"), ("@id", id));
         await using var reader = await command.ExecuteReaderAsync(token);
@@ -389,7 +400,7 @@ internal sealed class ArenaStore(string? connectionString)
         return new RoomRecord(reader.GetString(0), reader.GetString(1), reader.GetString(2),
             reader.IsDBNull(3) ? null : reader.GetFieldValue<byte[]>(3),
             reader.IsDBNull(4) ? null : reader.GetFieldValue<byte[]>(4),
-            reader.GetBoolean(5), reader.GetString(6), Utc(reader, 7));
+            reader.GetBoolean(5), reader.GetString(6), Utc(reader, 7), reader.GetInt32(8), reader.GetString(9), reader.GetBoolean(10));
     }
 
     private static async Task<List<ArenaPlayer>> Members(MySqlConnection connection, MySqlTransaction transaction,
@@ -446,7 +457,8 @@ internal sealed class ArenaStore(string? connectionString)
 
     private static ArenaRoomState State(RoomRecord room, IReadOnlyList<ArenaPlayer> members) =>
         new(new ArenaRoom(room.Id, room.Name, members.Single(player => player.Id == room.HostId),
-            room.PasswordHash is not null, room.AllowChat, room.Rule, members.Count, Capacity, room.CreatedAt), members);
+            room.PasswordHash is not null, room.AllowChat, room.Rule, members.Count, Capacity, room.CreatedAt,
+            room.PrebanCount, room.FirstPick, room.BanProtection), members);
 
     private static byte[] HashPin(string pin, byte[] salt) =>
         Rfc2898DeriveBytes.Pbkdf2(pin, salt, PinIterations, HashAlgorithmName.SHA256, 32);
@@ -466,5 +478,5 @@ internal sealed class ArenaStore(string? connectionString)
     }
 
     private sealed record RoomRecord(string Id, string HostId, string Name, byte[]? PasswordSalt,
-        byte[]? PasswordHash, bool AllowChat, string Rule, DateTime CreatedAt);
+        byte[]? PasswordHash, bool AllowChat, string Rule, DateTime CreatedAt, int PrebanCount, string FirstPick, bool BanProtection);
 }

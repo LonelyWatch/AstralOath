@@ -20,6 +20,7 @@ namespace AstralOath.Client.BattleScene
         private RectTransform hud, top, rail, active, soul, skills, detailsClose;
         private readonly List<(RectTransform Item, Vector2 Position)> topRight = new List<(RectTransform, Vector2)>();
         private Backdrop sky, ground;
+        private SpriteRenderer onlineBackdrop;
         private Vector2 railPosition, railScale, layoutScreen;
         internal float BaselineSize { get; private set; }
         internal int LayoutRevision { get; private set; }
@@ -183,8 +184,21 @@ namespace AstralOath.Client.BattleScene
             detailsClose.sizeDelta = size;
         }
 
+        internal void UseOnlineBackdrop(SpriteRenderer renderer)
+        {
+            onlineBackdrop = renderer;
+            ResizeBackdrop();
+        }
+
         internal void ResizeBackdrop()
         {
+            if (onlineBackdrop)
+            {
+                float scale = Mathf.Max(2f * BaselineSize / onlineBackdrop.sprite.bounds.size.y,
+                    2f * BaselineSize * stageCamera.aspect / onlineBackdrop.sprite.bounds.size.x);
+                onlineBackdrop.transform.localScale = new Vector3(scale, scale, 1f);
+                return;
+            }
             if (sky == null || !sky.Transform || ground == null || !ground.Transform)
                 foreach (var root in gameObject.scene.GetRootGameObjects())
                 {

@@ -107,6 +107,22 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags:
         UserData:
+      - CollectPath: Assets/Game/Modules/Arena/Res/Prefab/ArenaDraft.prefab
+        CollectorGUID: afdeac38d9e4a274fad0ab58301149e1
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/Arena/Configs/ArenaDraftArt.asset
+        CollectorGUID: f37c98ffa996f3a4392bdccd64e1b4c3
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
   - PackageName: CharacterLab
     PackageDesc:
     EnableAddressable: 1

@@ -4,7 +4,7 @@
 
 ## 主界面与模拟战
 
-正式启动进入游戏主页，可进入模拟战目录、创建和加入房间，并在同一房间内聊天。MySQL 保存房间及成员。当前使用访客会话，BP 与联机开战待接入。 [操作与验收](development/arena-lobby.md)
+正式启动进入游戏主页，可进入模拟战目录、创建和加入房间，并在同一房间内聊天。MySQL 保存房间及成员。当前使用访客会话。基本模拟战支持预禁、五选一禁、四人阵型和服务端权威 4v4 入场。 [操作与验收](development/arena-lobby.md) [联机选禁与入场](development/arena-draft.md)
 
 模拟战已按手机录像完善原版点击反馈、筛选、搜索及聊天排版。目录与房间改用统一窗口协调器。打点迁移已应用到本机测试库。 [录像对照](delivery/2026-11-14-arena-recording.md) [操作留痕](development/operation-audit.md)
 

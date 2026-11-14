@@ -13,6 +13,8 @@
     "AstralOath.Client.Skeletons",
     "AstralOath.ThirdParty.Fmod"
   ],
+  "overrideReferences": true,
+  "precompiledReferences": ["nunit.framework.dll", "Newtonsoft.Json.dll"],
   "optionalUnityReferences": [
     "TestAssemblies"
   ]

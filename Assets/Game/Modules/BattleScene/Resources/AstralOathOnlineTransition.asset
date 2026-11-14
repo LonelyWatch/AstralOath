@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0007efb238594283ac2fa206585c7d72, type: 3}
+  m_Name: AstralOathOnlineTransition
+  m_EditorClassIdentifier:
+  skeletons:
+  - skeleton: {fileID: 4900000, guid: 5c24630cfc0b51e4becd684538c33573, type: 3}
+    atlas: {fileID: 4900000, guid: 6907f6b7480056818381da72e4620c1e, type: 3}
+    page: {fileID: 2800000, guid: 594ebc3777935095ba544143e040b37b, type: 3}
+  - skeleton: {fileID: 4900000, guid: fed6a6b8e53f500a84538d66913a7331, type: 3}
+    atlas: {fileID: 4900000, guid: 52d6cec4167c526887d8aef584099276, type: 3}
+    page: {fileID: 2800000, guid: 111cba3b10c555bd8c32bb2a49ad16e7, type: 3}
+  - skeleton: {fileID: 4900000, guid: dc904d473be55c12b247ad3eab4c123b, type: 3}
+    atlas: {fileID: 4900000, guid: 6134dd05561f5ef783bddbeb0022c842, type: 3}
+    page: {fileID: 2800000, guid: 292355dd17a35582a535693269545b1a, type: 3}
+  - skeleton: {fileID: 4900000, guid: 4e81f60451755d73824f8f3dd026ee7b, type: 3}
+    atlas: {fileID: 4900000, guid: da903c3226d15bbc844836884b490a45, type: 3}
+    page: {fileID: 2800000, guid: 6b958be1ecd350c1852b205b2af724f6, type: 3}
+  - skeleton: {fileID: 4900000, guid: de9f9d5fe7245d31bf12898772295c19, type: 3}
+    atlas: {fileID: 4900000, guid: 31a49070ee4b58a9ba910a6f540b3454, type: 3}
+    page: {fileID: 2800000, guid: 24663d347bc35976b748383c4265d9d8, type: 3}
+  - skeleton: {fileID: 4900000, guid: c4aaaf6fa1c657d6812fd91edaab836b, type: 3}
+    atlas: {fileID: 4900000, guid: 7e167bd36c2e50189338ee749f780f11, type: 3}
+    page: {fileID: 2800000, guid: eb793c30863b56a98f6364ab3b09c270, type: 3}
+  - skeleton: {fileID: 4900000, guid: 37edc4922d265af1b2d3f805d933948c, type: 3}
+    atlas: {fileID: 4900000, guid: e48d967086bc527fa83e3deb1c9d7683, type: 3}
+    page: {fileID: 2800000, guid: b09645d6843b5d1a8cef6dac0850f4bd, type: 3}
+  - skeleton: {fileID: 4900000, guid: 8044c79744cd5f749a1b215a6b61efc5, type: 3}
+    atlas: {fileID: 4900000, guid: 5d957927ad2f513ca973619fdbcc46f3, type: 3}
+    page: {fileID: 2800000, guid: 3ea59261c6eb56ecb6a0f9070cd952f4, type: 3}
+  doorClose: {fileID: 8300000, guid: 5d0413eb5e335eba87f953a88ea48b9c, type: 3}
+  doorOpen: {fileID: 8300000, guid: b905308d65ab5f57a3715c5f5ba4c7c0, type: 3}
+  closeCfx: {fileID: 4900000, guid: 8315e77564f1539fa60144fe223d0643, type: 3}
+  openCfx: {fileID: 4900000, guid: fa2452090cda558ba4f27c53b12ae547, type: 3}
+  ignitionCfx: {fileID: 4900000, guid: 6aca13f1e3f35a57bba45d4f1eebfcb1, type: 3}
+  particles:
+  - {fileID: 4900000, guid: 6cb0378e78ea5bb9981a7ad529db7748, type: 3}
+  textures:
+  - {fileID: 2800000, guid: c44065a5cb966564dbd630ab0c865e0e, type: 3}
+  - {fileID: 2800000, guid: 557bcd29ac72a944e898fbd8d80b60c6, type: 3}
+  - {fileID: 2800000, guid: 49173b9a5cfeb454ca0ab1aed285427e, type: 3}
+  arenaBackdrop: {fileID: 21300000, guid: 93cd2d9c1d56554cb3a16c6468c3b411, type: 3}
+  zhHans: {fileID: 4900000, guid: 3770ab8bcf2345b5ae9164fdd19efb43, type: 3}

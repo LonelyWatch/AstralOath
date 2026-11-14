@@ -30,5 +30,7 @@ Assets/Game/Modules/BattleScene/Res/Textures/Hud/Fonts/*.fnt.txt -text !eol
 Assets/Game/Modules/BattleScene/Res/Effects/Hud/*.atlas.txt -text !eol
 Assets/Game/Modules/BattleScene/Res/Effects/Shield/*.atlas.txt -text !eol
 Assets/Game/Modules/BattleScene/Res/Effects/Invincible/*.atlas.txt -text !eol
+Assets/Game/Modules/BattleScene/Res/Effects/PvpGate/*.atlas.txt -text !eol
+Assets/Game/Modules/Arena/Res/Textures/Draft/*.fnt.txt text eol=lf
 
 Assets/Game/Modules/Home/Res/Atlas/*.atlas.txt -text !eol

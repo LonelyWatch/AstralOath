@@ -30,6 +30,8 @@ namespace AstralOath.Editor
             (Arena + "Res/Prefab/ArenaCreateRoom.prefab", ArenaCreateRoom.Address),
             (Arena + "Res/Prefab/ArenaRoom.prefab", ArenaRoom.Address),
             (Arena + "Configs/arena-zh-hans.json", ArenaLabels.Address),
+            (DraftPrefabPath, ArenaDraft.Address),
+            (DraftArtPath, ArenaDraftArt.Address),
         };
         private static readonly Color Gold = new Color32(166, 139, 92, 255);
         private static readonly Color Mist = new Color32(180, 206, 216, 255);
@@ -55,8 +57,24 @@ namespace AstralOath.Editor
             Save(BuildDirectory(), Assets[1].Path);
             Save(BuildCreate(), Assets[2].Path);
             Save(BuildRoom(), Assets[3].Path);
+            Save(BuildDraft(), DraftPrefabPath);
+            BuildDraftArt();
             ConfigureCollectors();
             BuildStartupScene();
+            Validate();
+        }
+
+        // Narrow rebuild for draft-specific editor iteration without regenerating unrelated assets.
+        public static void GenerateDraft()
+        {
+            AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+            font = Load<TMP_FontAsset>(Common + "Fonts/EpicSeven.asset");
+            labels = JsonUtility.FromJson<LabelFile>(File.ReadAllText(Assets[4].Path)).rows
+                .ToDictionary(row => row.key, row => row.text);
+            Save(BuildCreate(), Assets[2].Path);
+            Save(BuildDraft(), DraftPrefabPath);
+            BuildDraftArt();
+            ConfigureCollectors();
             Validate();
         }
 
@@ -73,6 +91,8 @@ namespace AstralOath.Editor
             UIViewRegistry.ValidatePrefab<ArenaDirectory>(Load<GameObject>(Assets[1].Path));
             UIViewRegistry.ValidatePrefab<ArenaCreateRoom>(Load<GameObject>(Assets[2].Path));
             UIViewRegistry.ValidatePrefab<ArenaRoom>(Load<GameObject>(Assets[3].Path));
+            UIViewRegistry.ValidatePrefab<ArenaDraft>(Load<GameObject>(DraftPrefabPath));
+            _ = Load<ArenaDraftArt>(DraftArtPath);
             UIViewRegistry.ValidatePrefab<ArenaPasswordEntry>(Load<GameObject>(PasswordEntryPath));
             UIViewRegistry.ValidatePrefab<GameToast>(Load<GameObject>(ToastPath));
             _ = Load<SceneAsset>(StartupScene);

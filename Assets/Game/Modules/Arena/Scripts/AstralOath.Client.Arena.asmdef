@@ -1,5 +1,5 @@
 {
   "name": "AstralOath.Client.Arena",
-  "references": ["AstralOath.Client.Core", "AstralOath.Client.Common", "UnityEngine.UI", "Unity.TextMeshPro"],
+  "references": ["AstralOath.Client.Core", "AstralOath.Client.Common", "UnityEngine.UI", "Unity.TextMeshPro", "AstralOath.Client.Skeletons", "AstralOath.Client.BattleScene"],
   "autoReferenced": false
 }

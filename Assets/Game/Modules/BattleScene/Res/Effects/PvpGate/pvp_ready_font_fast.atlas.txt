@@ -1,0 +1,34 @@
+
+pvp_ready_font_fast.sct
+size: 457,489
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 2, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+ignition
+  rotate: false
+  xy: 2, 173
+  size: 453, 156
+  orig: 453, 156
+  offset: 0, 0
+  index: -1
+ignition_g
+  rotate: false
+  xy: 2, 331
+  size: 453, 156
+  orig: 453, 156
+  offset: 0, 0
+  index: -1
+line_light_02
+  rotate: false
+  xy: 173, 2
+  size: 199, 19
+  orig: 199, 19
+  offset: 0, 0
+  index: -1

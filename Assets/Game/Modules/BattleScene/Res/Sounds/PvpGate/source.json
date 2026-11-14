@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "method": "FMOD Studio 2.03.15 authored event PCM render",
+  "mixerStartupFramesRemoved": 5120,
+  "events": [
+    {
+      "name": "ui/pvp/door_close",
+      "eventId": "84290154-dee4-4e6f-933a-e106c1ffc24f",
+      "sourceSample": "assets\\ui\\treff_pd_pvp_battle_close.wav",
+      "bank": "ui1",
+      "asset": "DoorClose.wav",
+      "sha256": "e3bf64efb4c8e6abb842d2fbb805147678a99d754393691ba4421de8d118c865",
+      "sampleRate": 48000,
+      "sampleFrames": 94080,
+      "channels": 2
+    },
+    {
+      "name": "ui/pvp/door_open",
+      "eventId": "e04705e6-c46c-40db-abbd-a8874d1431ab",
+      "sourceSample": "assets\\ui\\treff_pd_pvp_battle_open.wav",
+      "bank": "ui1",
+      "asset": "DoorOpen.wav",
+      "sha256": "6a5b137171fb2ca86d19798aa649b2b36e114e34d99f7ca3347ffb58a757bc9d",
+      "sampleRate": 48000,
+      "sampleFrames": 98880,
+      "channels": 2
+    }
+  ],
+  "sources": [
+    {
+      "source": "sound/master.bank",
+      "sha256": "c00f5f04d84c640e27324429ae97f51d45593a98d0239da9bf4b986376f7db97"
+    },
+    {
+      "source": "sound/master.strings.bank",
+      "sha256": "45509040a16b108a5a3090ab300e71cee4876a5fc16140f49411ea12d53cc8e2"
+    },
+    {
+      "source": "sound/ui1.bank",
+      "sha256": "005c2f5479c9bd7c9557f4fbda6cca0dc5fdfcce3d5b67ffe13a74198f23e804"
+    },
+    {
+      "source": "sound/ui1.yml",
+      "sha256": "ba7faa901e7123fc73b53825e21f7d26ef4c945c0f5c992301975bc7dd3f0923"
+    },
+    {
+      "source": "sound/events.yml",
+      "sha256": "7d9103cb87155bebf22e90988c834ec553ba6853d4e5a68bfdc435ba2122c487"
+    }
+  ]
+}

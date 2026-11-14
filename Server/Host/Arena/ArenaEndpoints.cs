@@ -1,4 +1,5 @@
 using System.Text;
+using AstralOath.Server.Battle;
 using System.Text.Json.Serialization;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +22,7 @@ internal static class ArenaEndpoints
             .GetConnectionString("MySql")));
         services.AddHostedService<ArenaRoomLeaseWorker>();
         services.AddSingleton<ArenaChatSignal>();
+        services.AddSingleton<ArenaBattleCatalog>();
         services.AddRateLimiter(options =>
         {
             options.AddPolicy(SessionLimit, context => FixedWindow(context, 30));
@@ -107,7 +109,12 @@ internal static class ArenaEndpoints
             string? password = string.IsNullOrEmpty(request.Password) ? null : request.Password;
             if (password is not null && !IsPin(password) || request.Rule is null || !Rules.Contains(request.Rule))
                 throw new ArenaProblem(400, "invalid_room");
-            return Results.Ok(await store.CreateRoom(Player(http), name, password, request.AllowChat, request.Rule, cancellation));
+            int prebanCount = request.PrebanCount ?? 2;
+            string firstPick = request.FirstPick ?? "host";
+            if (prebanCount is < 0 or > 2 || firstPick is not ("host" or "guest"))
+                throw new ArenaProblem(400, "invalid_room");
+            return Results.Ok(await store.CreateRoom(Player(http), name, password, request.AllowChat, request.Rule,
+                prebanCount, firstPick, request.BanProtection ?? true, cancellation));
         });
         authenticated.MapGet("/rooms/current", async (HttpContext http, ArenaStore store, CancellationToken cancellation) =>
         {
@@ -128,6 +135,7 @@ internal static class ArenaEndpoints
             await store.LeaveRoom(RoomId(id), Player(http), cancellation);
             return Results.NoContent();
         });
+        authenticated.MapArenaDraft();
         authenticated.MapGet("/rooms/{id}/messages", async (string id, long? after, int? waitMs, HttpContext http,
             ArenaStore store, ArenaChatSignal chat, CancellationToken cancellation) =>
         {
@@ -167,8 +175,8 @@ internal static class ArenaEndpoints
         _ => throw new ArenaProblem(400, "invalid_message")
     };
 
-    private static ArenaPlayer Player(HttpContext http) => (ArenaPlayer)http.Items[typeof(ArenaPlayer)]!;
-    private static string RoomId(string id) => Guid.TryParseExact(id, "N", out var parsed)
+    internal static ArenaPlayer Player(HttpContext http) => (ArenaPlayer)http.Items[typeof(ArenaPlayer)]!;
+    internal static string RoomId(string id) => Guid.TryParseExact(id, "N", out var parsed)
         ? parsed.ToString("N") : throw new ArenaProblem(404, "room_not_found");
     private static bool IsPin(string value) => value.Length == 4 && !value.AsSpan().ContainsAnyExceptInRange('0', '9');
 
@@ -192,7 +200,8 @@ internal sealed class ArenaProblem(int status, string code) : Exception(code)
 }
 
 internal sealed record ArenaPlayerRequest(string? DisplayName, string? AvatarId);
-internal sealed record ArenaCreateRoomRequest(string? Name, string? Password, bool AllowChat, string? Rule);
+internal sealed record ArenaCreateRoomRequest(string? Name, string? Password, bool AllowChat, string? Rule,
+    int? PrebanCount, string? FirstPick, bool? BanProtection);
 internal sealed record ArenaJoinRequest(string? Password);
 internal sealed record ArenaChatRequest(string? Text, string? Kind, string? StickerId);
 [JsonUnmappedMemberHandling(JsonUnmappedMemberHandling.Disallow)]
@@ -200,7 +209,7 @@ internal sealed record ArenaTelemetryRequest(string? EventId, string? Name);
 internal sealed record ArenaPlayer(string Id, string DisplayName, string AvatarId);
 internal sealed record ArenaSession(string Token, ArenaPlayer Player);
 internal sealed record ArenaRoom(string Id, string Name, ArenaPlayer Host, bool RequiresPassword, bool AllowChat,
-    string Rule, int MemberCount, int Capacity, DateTime CreatedAt);
+    string Rule, int MemberCount, int Capacity, DateTime CreatedAt, int PrebanCount, string FirstPick, bool BanProtection);
 internal sealed record ArenaRoomState(ArenaRoom Room, IReadOnlyList<ArenaPlayer> Members);
 internal sealed record ArenaMessage(long Id, ArenaPlayer Player, string Text, DateTime CreatedAt,
     [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? StickerId)

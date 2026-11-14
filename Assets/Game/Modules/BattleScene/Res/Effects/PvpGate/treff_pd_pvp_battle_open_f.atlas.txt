@@ -1,0 +1,139 @@
+
+treff_pd_pvp_battle_open_f.sct
+size: 1292,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+1flash
+  rotate: false
+  xy: 1107, 342
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+1glow
+  rotate: true
+  xy: 459, 904
+  size: 117, 153
+  orig: 117, 153
+  offset: 0, 0
+  index: -1
+36_lll
+  rotate: false
+  xy: 2, 2
+  size: 453, 902
+  orig: 453, 902
+  offset: 0, 0
+  index: -1
+36_rrr
+  rotate: false
+  xy: 457, 2
+  size: 448, 900
+  orig: 448, 900
+  offset: 0, 0
+  index: -1
+flare_05
+  rotate: false
+  xy: 907, 2
+  size: 338, 338
+  orig: 338, 338
+  offset: 0, 0
+  index: -1
+flare_12
+  rotate: false
+  xy: 1107, 513
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+g_flash
+  rotate: false
+  xy: 907, 531
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+glow_l1
+  rotate: false
+  xy: 614, 904
+  size: 104, 108
+  orig: 104, 108
+  offset: 0, 0
+  index: -1
+glow_l2
+  rotate: false
+  xy: 720, 904
+  size: 104, 108
+  orig: 104, 108
+  offset: 0, 0
+  index: -1
+glow_l3
+  rotate: false
+  xy: 826, 904
+  size: 104, 108
+  orig: 104, 108
+  offset: 0, 0
+  index: -1
+in_g01
+  rotate: true
+  xy: 2, 979
+  size: 15, 73
+  orig: 15, 73
+  offset: 0, 0
+  index: -1
+in_g02
+  rotate: false
+  xy: 1191, 927
+  size: 97, 57
+  orig: 97, 57
+  offset: 0, 0
+  index: -1
+pattern
+  rotate: false
+  xy: 907, 702
+  size: 130, 185
+  orig: 130, 185
+  offset: 0, 0
+  index: -1
+pattern_blur
+  rotate: true
+  xy: 932, 889
+  size: 86, 100
+  orig: 86, 100
+  offset: 0, 0
+  index: -1
+patterns
+  rotate: true
+  xy: 1039, 854
+  size: 151, 150
+  orig: 151, 150
+  offset: 0, 0
+  index: -1
+patterns_all
+  rotate: true
+  xy: 907, 342
+  size: 187, 198
+  orig: 187, 198
+  offset: 0, 0
+  index: -1
+rectangle_01
+  rotate: false
+  xy: 2, 906
+  size: 455, 71
+  orig: 455, 71
+  offset: 0, 0
+  index: -1
+rhombus_01
+  rotate: false
+  xy: 1191, 854
+  size: 89, 71
+  orig: 89, 71
+  offset: 0, 0
+  index: -1
+square_01
+  rotate: false
+  xy: 1078, 684
+  size: 168, 168
+  orig: 168, 168
+  offset: 0, 0
+  index: -1

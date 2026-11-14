@@ -49,6 +49,8 @@ BORDERS = {
     "directory_create": (14, 16, 14, 12), "directory_create_pressed": (14, 16, 14, 12),
     "directory_refresh": (14, 16, 14, 12), "directory_refresh_pressed": (14, 16, 14, 12),
     "directory_rule": (32, 4, 32, 4), "directory_tab": (41, 0, 10, 0),
+    "_btn_red": (14, 12, 14, 13), "_btn_red_p": (14, 12, 14, 13),
+    "renew_popup_bg": (46, 55, 46, 55), "renew_popup_bg_2_alpha": (30, 38, 30, 38),
     "_bar_4": (32, 0, 32, 0), "_bar_23": (30, 0, 30, 0), "renew_popup_bg_alpha": (34, 38, 34, 38),
 }
 
@@ -97,7 +99,7 @@ def metadata(path, check, importer):
         border = re.search(r"(?m)^  spriteBorder: .*", importer)
         if border and border[0] not in old:
             raise ValueError(f"Unity sprite border differs: {meta}")
-        if path.stem in UNCOMPRESSED_UI and any(value != "0" for value in re.findall(r"(?m)^\s+textureCompression: (\d+)$", old)):
+        if (path.stem in UNCOMPRESSED_UI or "Draft" in path.relative_to(MODULES).parts) and any(value != "0" for value in re.findall(r"(?m)^\s+textureCompression: (\d+)$", old)):
             raise ValueError(f"Unity compression would alter interface artwork: {meta}")
     elif not old:
         write(meta, f"fileFormatVersion: 2\nguid: {identifier}\n{importer}".encode(), False)
@@ -113,9 +115,9 @@ def texture_importer(path, sprite):
         template = MODULES / "CharacterPresentation/Res/Characters/c1031/Textures/portrait/c1031.png.meta"
     text = template.read_text(encoding="utf-8-sig")
     result = "\n".join(line.rstrip() for line in text.splitlines()[2:]) + "\n"
-    if path.stem in UNCOMPRESSED_UI:
+    if (path.stem in UNCOMPRESSED_UI or "Draft" in path.relative_to(MODULES).parts):
         result = re.sub(r"(?m)^(\s+textureCompression:) \d+$", r"\1 0", result)
-    if path.stem in UNCOMPRESSED_UI:
+    if (path.stem in UNCOMPRESSED_UI or "Draft" in path.relative_to(MODULES).parts):
         result = re.sub(r"(?m)^  userData:.*$", "  userData: AstralOath.ImportOverride", result)
     if path.stem in BORDERS:
         x, y, z, w = BORDERS[path.stem]
@@ -300,6 +302,109 @@ def arena_directory_art(root, check):
     return entries
 
 
+def arena_draft_art(root, check):
+    images = """
+        base_pvplive_vs base_pvplive_eff cm_diagonal_red cm_icon_st_banned vignetting2
+        _cm_banned_res _cm_safeguard _cm_safeguard_glow _btn_red _btn_red_p _tap_select_blue2
+        pvplive_slot3_safeguard pvplive_hero_slot pvplive_win_off pvplive_win_on
+        pvplive_progress_bar_blue pvplive_progress_bar_red pvplive_progress_bg
+        pvplive_progress_bar_blue2 pvplive_progress_bar_red2 pvplive_progress_bg2
+        hero_config_bg hero_config_panelback hero_config_panelleader hero_config_btn_change hero_config_btn_add
+        cm_hero_cirbg2 renew_popup_bg renew_popup_bg_2_alpha pvp_rta_ss6_d
+        hero_bg_normal hero_bg_selected hero_bg_mask hero_bg_slot hero_bg_slot_select
+    """.split()
+    images += [f"pvplive_slot{number}{state}" for number in range(1, 6)
+               for state in ("", "_blue", "_red", "_select")]
+    for folder in (MODULES / "Arena/Res/Textures/Draft", MODULES / "Arena/Res/Textures/Draft/Heroes"):
+        if not check:
+            folder.mkdir(parents=True, exist_ok=True)
+        metadata(folder, check, "folderAsset: yes\nDefaultImporter:\n  externalObjects: {}\n")
+    entries = [draft_png(root, check, f"img/{name}.png", f"{name}.png") for name in images]
+    catalog = MODULES / "BattleScene/Configs/battle-catalog.json"
+    heroes = json.loads(catalog.read_text(encoding="utf-8-sig"))["heroes"]
+    for hero in heroes:
+        hero_id = hero["id"]
+        if not re.fullmatch(r"c\d{4}", hero_id):
+            raise ValueError(f"Invalid draft roster hero ID: {hero_id}")
+        entries.append(draft_png(root, check, f"face/{hero_id}_l.png", f"Heroes/{hero_id}_l.png"))
+        illustration = f"face/{hero_id}_fu.png"
+        if (root / illustration).is_file():
+            entries.append(draft_png(root, check, illustration, f"Heroes/{hero_id}_fu.png"))
+    entries += draft_digits(root, check)
+    entries += draft_slot_glows(root, check)
+    return entries
+
+
+def draft_digits(root, check):
+    folder = MODULES / "Arena/Res/Textures/Draft/Digits"
+    if not check:
+        folder.mkdir(parents=True, exist_ok=True)
+    metadata(folder, check, "folderAsset: yes\nDefaultImporter:\n  externalObjects: {}\n")
+    descriptor, page = ("font/score.fnt", "font/score_0.png")
+    data = read_source(root, descriptor)
+    page_data = read_source(root, page)
+    source = [{"source": entry, "sha256": digest(raw)} for entry, raw in ((descriptor, data), (page, page_data))]
+    original = Image.open(io.BytesIO(page_data)).convert("RGBA")
+    glyphs = re.findall(r"^char id=(\d+)\s+x=(\d+)\s+y=(\d+)\s+width=(\d+)\s+height=(\d+).*?xadvance=(\d+)", data.decode("utf-8-sig"), re.M)
+    outputs = [write_converted("Arena", "Textures/Draft/score.fnt.txt", data.replace(b"\r\n", b"\n"),
+                               source[:1], check, {"method": "original-bitmap-font-layout", "layout": "wnd/pvplive_ready_pre_ben.csb"})]
+    outputs.append(draft_png(root, check, page, "score_atlas.png"))
+    for code, x, y, w, h, advance in (map(int, row) for row in glyphs):
+        if not 48 <= code <= 57:
+            continue
+        glyph = original.crop((x, y, x + w, y + h))
+        outputs.append(write_converted("Arena", f"Textures/Draft/Digits/score_{code - 48}.png",
+                       png_bytes(glyph), source, check,
+                       {"method": "native-bitmap-glyph-crop", "xAdvance": advance, "crop": [x, y, w, h]}))
+    if len(outputs) != 12:
+        raise ValueError("Native draft timer is missing digit glyphs")
+    return outputs
+
+
+def draft_slot_glows(root, check):
+    entries = []
+    for index in range(1, 6):
+        base = f"effect/ui_livepvp_slot_eff_{index:02}"
+        scsp, atlas, sct = (base + suffix for suffix in (".scsp", ".atlas", ".sct"))
+        skeleton_data, atlas_data, texture_data = (read_source(root, asset) for asset in (scsp, atlas, sct))
+        document, _ = decode_scsp(skeleton_data)
+        image, _ = decode_sct(texture_data)
+        region = re.search(rf"(?m)^slot{index}_3\r?\n +rotate: false\r?\n +xy: (\d+), (\d+)\r?\n +size: (\d+), (\d+)",
+                           atlas_data.decode("utf-8-sig"))
+        x, y, w, h = map(int, region.groups())
+        mask = np.asarray(image.crop((x, y, x + w, y + h)), dtype=np.float32) / 255
+        for side in ("blue", "red"):
+            clip = side + "_idle"
+            colors = [document["animations"][clip]["slots"][slot]["color"][0]["color"] for slot in ("slot_line", "slot_line2")]
+            multiplier = np.sum([np.frombuffer(bytes.fromhex(color), dtype=np.uint8)[:3] for color in colors], axis=0) / 255
+            opacity = mask[:, :, 3:4]
+            merged = np.clip(np.divide(mask[:, :, :3] * multiplier, opacity,
+                                      out=np.zeros_like(mask[:, :, :3]), where=opacity > 0), 0, 1)
+            combined = np.concatenate((merged, opacity), axis=2)
+            result = Image.fromarray(np.rint(combined * 255).astype(np.uint8), "RGBA")
+            # At t=0, native red_idle mirrors the pivot while native blue_idle does not.
+            if document["animations"][clip]["bones"]["pivot"]["scale"][0]["x"] < 0:
+                result = result.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+            cue = f"effect/ui_livepvp_slot_{side}{index}_idle.cfx"
+            sources = [{"source": path, "sha256": digest(raw)} for path, raw in
+                       ((scsp, skeleton_data), (atlas, atlas_data), (sct, texture_data), (cue, read_source(root, cue)))]
+            entries.append(write_converted("Arena", f"Textures/Draft/pvplive_slot{index}_glow_{side}.png",
+                           png_bytes(result), sources, check,
+                           {"method": "native-additive-outline-preview", "clip": clip, "time": 0,
+                            "atlasRegion": f"slot{index}_3", "colors": colors, "nativePivotMirrorBaked": True}))
+    return entries
+
+
+def draft_png(root, check, source, output):
+    data = read_source(root, source)
+    with Image.open(io.BytesIO(data)) as image:
+        if image.format != "PNG" or not image.convert("RGBA").getchannel("A").getbbox():
+            raise ValueError(f"Invalid source draft sprite: {source}")
+        width, height = image.size
+    return write_converted("Arena", f"Textures/Draft/{output}", data,
+                           [{"source": source, "sha256": digest(data)}], check,
+                           {"method": "original-asset", "compression": "none", "width": width, "height": height})
+
 def manifest(module, entries, layouts, root, check):
     result = {"schemaVersion": 1, "release": "pack-15-r4262", "assets": entries,
               "sourceLayouts": [{"source": path, "sha256": digest(read_source(root, path))} for path in layouts]}
@@ -322,6 +427,7 @@ def main():
     arena += arena_room_art(root, args.check)
     arena.append(arena_create_dialog_art(root, args.check))
     arena += arena_directory_art(root, args.check)
+    arena += arena_draft_art(root, args.check)
     home = source_pngs("Home", [f"img/{name}.png" for name in HOME_IMAGES] +
                        ["bgpack/lobby_bg3.png", "face/c5009_s.png", "item/border/icon_border_pvp_season20_rank_3.png"] +
                        [f"item/sticker/ma_sticker_emo{index}.png" for index in (1, 2, 3)], root, args.check)
@@ -330,6 +436,10 @@ def main():
         "wnd/pvplive_base.csb", "wnd/pvplive_mock_battle_item.csb", "wnd/pvplive_lounge_creat.csb",
         "wnd/pvplive_mod_card.csb", "wnd/pvplive_lounge_pw.csb", "wnd/pvplive_lounge.csb", "wnd/pvplive_spectator_bar.csb", "wnd/chat.csb",
         "wnd/chat_emoji_tip.csb", "wnd/chat_emoji_tip_item.csb",
+        "wnd/pvplive_ready.csb", "wnd/pvplive_ready_pre_ben.csb", "wnd/pvplive_ready_pre_ben_item.csb",
+        "wnd/pvplive_ready_pre_ben_eff.csb", "wnd/pvplive_preban_hero.csb", "wnd/pvplive_preban_hero_item.csb",
+        "wnd/pvplive_pick_sel.csb", "wnd/pvplive_ready_formation.csb",
+        "wnd/unit_list.csb", "wnd/unit_bar.csb", "wnd/unit_bar_simple.csb",
     ], root, args.check)
     manifest("Home", home, ["wnd/lobby_ui_renew.csb", "wnd/lobby_ui_ver2.csb"], root, args.check)
     print(f"{'Verified' if args.check else 'Imported'} {len(arena)} Arena and {len(home)} Home assets.")

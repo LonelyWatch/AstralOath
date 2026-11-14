@@ -15,7 +15,8 @@ namespace AstralOath.Client.Arena
         private readonly Action close;
         private readonly GameToastBinder toast;
         private BindingScope screen;
-        private bool chat;
+        private bool chat, hostFirst, protection;
+        private int prebanCount;
         private string rule;
 
         internal ArenaCreateRoomBinder(ArenaCreateRoom view, ILocaleService locale, Func<ArenaCreateRequest, CancellationToken, Task> submit, Action close, GameToastBinder toast)
@@ -38,9 +39,12 @@ namespace AstralOath.Client.Arena
             PasswordChanged(false);
             view.Status.text = "";
             SetChat(true);
-            SetRule("wild");
+            prebanCount = 2;
+            hostFirst = protection = true;
+            SetRule("basic");
+            UpdateDraftOptions();
             Canvas.ForceUpdateCanvases();
-            view.Rules.horizontalNormalizedPosition = 0;
+            view.Rules.horizontalNormalizedPosition = 1;
             var locked = view.Locked;
             locked.onValueChanged.AddListener(PasswordChanged);
             screen.Add(() => { if (locked) locked.onValueChanged.RemoveListener(PasswordChanged); });
@@ -49,6 +53,9 @@ namespace AstralOath.Client.Arena
             view.Cancel.Bind(screen, Close);
             view.Dismiss.Bind(screen, Close);
             view.Confirm.Bind(screen, Confirm);
+            view.DraftOption("prebanCount").Bind(screen, _ => { prebanCount = (prebanCount + 1) % 3; UpdateDraftOptions(); return Task.CompletedTask; });
+            view.DraftOption("firstPick").Bind(screen, _ => { hostFirst = !hostFirst; UpdateDraftOptions(); return Task.CompletedTask; });
+            view.DraftOption("banProtection").Bind(screen, _ => { protection = !protection; UpdateDraftOptions(); return Task.CompletedTask; });
             foreach (string name in ArenaLabels.Rules)
                 view.Rule(name).Bind(screen, _ => { SetRule(name); return Task.CompletedTask; });
         }
@@ -83,6 +90,18 @@ namespace AstralOath.Client.Arena
         {
             rule = value;
             foreach (string name in ArenaLabels.Rules) view.Selection(name).enabled = value == name;
+            view.DraftOptions.SetActive(value == "basic");
+            var scroll = (RectTransform)view.Rules.transform;
+            var min = scroll.anchorMin;
+            min.y = value == "basic" ? .225f : .145f;
+            scroll.anchorMin = min;
+        }
+
+        private void UpdateDraftOptions()
+        {
+            view.DraftLabel("prebanLabel").text = GameText.Format(locale, "arena.draft.setting_preban", prebanCount);
+            view.DraftLabel("firstPickLabel").text = locale.Resolve(hostFirst ? "arena.draft.setting_host" : "arena.draft.setting_guest");
+            view.DraftLabel("protectionLabel").text = locale.Resolve(protection ? "arena.draft.setting_protected" : "arena.draft.setting_unprotected");
         }
 
         private Task Close(CancellationToken _) { close(); return Task.CompletedTask; }
@@ -99,7 +118,11 @@ namespace AstralOath.Client.Arena
             }
             view.Status.text = "";
             view.Cancel.interactable = view.Dismiss.interactable = false;
-            try { await submit(new ArenaCreateRequest { name = name, password = password, rule = rule, allowChat = chat }, token); }
+            try { await submit(new ArenaCreateRequest
+            {
+                name = name, password = password, rule = rule, allowChat = chat, prebanCount = prebanCount,
+                firstPick = hostFirst ? "host" : "guest", banProtection = protection
+            }, token); }
             catch (ArenaRequestException error) when (!token.IsCancellationRequested)
             {
                 Reject(ArenaError.Text(locale, error));

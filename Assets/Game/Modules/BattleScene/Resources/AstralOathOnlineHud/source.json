@@ -1,0 +1,45 @@
+{
+  "sourceRoot": "D:\\sevenepic\\原始资源",
+  "assets": [
+    {
+      "source": "img/_battle_pvp_icon_vs.png",
+      "asset": "Assets/Game/Modules/BattleScene/Resources/AstralOathOnlineHud/_battle_pvp_icon_vs.png",
+      "sha256": "f9518e34b367b519db8666182e79e2159f978ba63123b09ae182030573eff0e3"
+    },
+    {
+      "source": "img/game_hud_bar_pvplive.png",
+      "asset": "Assets/Game/Modules/BattleScene/Resources/AstralOathOnlineHud/game_hud_bar_pvplive.png",
+      "sha256": "788da90f06cae0ea846cfd6725df64edfbc9eff88f669a21920d80e5cde522bd"
+    },
+    {
+      "source": "img/game_hud_bar_hp.png",
+      "asset": "Assets/Game/Modules/BattleScene/Resources/AstralOathOnlineHud/game_hud_bar_hp.png",
+      "sha256": "9b7a04a735bf1a71655de4b325b6c68e04fa69eb710dff2011cae3baf5029466"
+    },
+    {
+      "source": "img/game_hud_bar_hp_red.png",
+      "asset": "Assets/Game/Modules/BattleScene/Resources/AstralOathOnlineHud/game_hud_bar_hp_red.png",
+      "sha256": "c1f1249647b9d39373cfbf7ca9333f61295e5c6b68eabe84d55f54f5be05a4a6"
+    },
+    {
+      "source": "img/game_hud_bar_split.png",
+      "asset": "Assets/Game/Modules/BattleScene/Resources/AstralOathOnlineHud/game_hud_bar_split.png",
+      "sha256": "475e24618ac8a52b5102861b040ee8400e6ef69dc4b439bb66bce58314c81f59"
+    },
+    {
+      "source": "img/_hero_s_frame_enemy.png",
+      "asset": "Assets/Game/Modules/BattleScene/Resources/AstralOathOnlineHud/_hero_s_frame_enemy.png",
+      "sha256": "ce31c8f212041d1b47a41eb729d3f0ec133fd397cf7338222a669c1580d5bd76"
+    },
+    {
+      "source": "img/_hero_s_bg_ally.png",
+      "asset": "Assets/Game/Modules/BattleScene/Resources/AstralOathOnlineHud/_hero_s_bg_ally.png",
+      "sha256": "5ff52755be6568efb40c8e94f3371cac9706b4d7ebce2f40a13d6e84732c3817"
+    }
+  ],
+  "layout": {
+    "source": "wnd/pvplive_global_hp.csb",
+    "sha256": "0fefc53ffd65f0e4194391cff835d2119444617aaeb933c99ed94c70345581f4"
+  },
+  "transfer": "Byte-identical selected PNGs. CSB is layout evidence, not a runtime asset."
+}

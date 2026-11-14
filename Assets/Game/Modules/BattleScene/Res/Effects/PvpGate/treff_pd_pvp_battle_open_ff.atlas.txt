@@ -1,0 +1,62 @@
+
+treff_pd_pvp_battle_open_ff.sct
+size: 512,508
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Layer-2
+  rotate: false
+  xy: 398, 192
+  size: 65, 65
+  orig: 65, 65
+  offset: 0, 0
+  index: -1
+center_glow_03
+  rotate: true
+  xy: 398, 2
+  size: 112, 111
+  orig: 112, 111
+  offset: 0, 0
+  index: -1
+g_flash
+  rotate: false
+  xy: 2, 336
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+particle01_pupple
+  rotate: false
+  xy: 398, 116
+  size: 74, 74
+  orig: 74, 74
+  offset: 0, 0
+  index: -1
+prz_01
+  rotate: true
+  xy: 331, 2
+  size: 299, 65
+  orig: 299, 65
+  offset: 0, 0
+  index: -1
+rainbowflare1
+  rotate: false
+  xy: 173, 336
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+rainbowflare2
+  rotate: true
+  xy: 344, 303
+  size: 169, 128
+  orig: 169, 128
+  offset: 0, 0
+  index: -1
+sunshine_1
+  rotate: false
+  xy: 2, 2
+  size: 327, 332
+  orig: 327, 332
+  offset: 0, 0
+  index: -1

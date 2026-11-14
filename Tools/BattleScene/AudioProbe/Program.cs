@@ -102,33 +102,33 @@ static class Program
         }
     }
 
-    static void RecordButton(string sounds, string outputPath)
+    static void RecordUiEvent(string sounds, string outputPath, string eventPath, string nativeId, int milliseconds, bool offline)
     {
         Check(FMOD.Studio.System.create(out var studio), "create button capture system");
         var output = Marshal.StringToCoTaskMemUTF8(outputPath);
         try
         {
             Check(studio.getCoreSystem(out var core), "button capture core");
-            Check(core.setOutput(FMOD.OUTPUTTYPE.WAVWRITER), "button capture output");
+            Check(core.setOutput(offline ? FMOD.OUTPUTTYPE.WAVWRITER_NRT : FMOD.OUTPUTTYPE.WAVWRITER), "button capture output");
             Check(studio.initialize(64, FMOD.Studio.INITFLAGS.SYNCHRONOUS_UPDATE, FMOD.INITFLAGS.NORMAL, output),
                 "initialize button capture");
             foreach (string bank in new[] { "master.bank", "master.strings.bank", "ui1.bank" })
                 Check(studio.loadBankMemory(File.ReadAllBytes(Path.Combine(sounds, bank)),
                     FMOD.Studio.LOAD_BANK_FLAGS.NORMAL, out _), bank);
             Check(studio.flushCommands(), "load button capture banks");
-            Check(studio.getEvent("event:/ui/btn_normal", out var description), "button event");
+            Check(studio.getEvent(eventPath, out var description), "button event");
             Check(description.getID(out var buttonId), "button event ID");
-            Check(FMOD.Studio.Util.parseID("{1d184b0f-78fa-4e74-b456-1388254dc51f}", out var sourceId), "button source ID");
-            Require(buttonId.Equals(sourceId), "Unexpected button event identity");
+            Check(FMOD.Studio.Util.parseID(nativeId, out var sourceId), "button source ID");
+            Require(buttonId.Equals(sourceId), "Unexpected UI audio event identity: " + eventPath);
             Check(description.loadSampleData(), "preload button sample");
             Check(studio.flushSampleLoading(), "finish loading button sample");
             Check(description.createInstance(out var instance), "create button event");
             Check(instance.start(), "start button");
             var timer = System.Diagnostics.Stopwatch.StartNew();
-            while (timer.ElapsedMilliseconds < 900)
+            for (int elapsed = 0; elapsed < milliseconds; elapsed = offline ? elapsed + 10 : (int)timer.ElapsedMilliseconds)
             {
-                Check(studio.update(), "render button");
-                Thread.Sleep(10);
+                Check(studio.update(), "render audio event");
+                if (!offline) Thread.Sleep(10);
             }
             Check(instance.release(), "release button event");
         }
@@ -147,7 +147,15 @@ static class Program
                 name.StartsWith("fmod", StringComparison.Ordinal) ? NativeLibrary.Load(native) : IntPtr.Zero);
             if (args.Length == 4 && args[2] == "--record-button")
             {
-                RecordButton(sounds, args[3]);
+                RecordUiEvent(sounds, args[3], "event:/ui/btn_normal", "{1d184b0f-78fa-4e74-b456-1388254dc51f}", 900, false);
+                return 0;
+            }
+            if (args.Length == 4 && args[2] is "--record-pvp-close" or "--record-pvp-open")
+            {
+                bool close = args[2] == "--record-pvp-close";
+                string path = close ? "event:/ui/pvp/door_close" : "event:/ui/pvp/door_open";
+                string id = close ? "{84290154-dee4-4e6f-933a-e106c1ffc24f}" : "{e04705e6-c46c-40db-abbd-a8874d1431ab}";
+                RecordUiEvent(sounds, args[3], path, id, 3000, true);
                 return 0;
             }
             string json = File.ReadAllText(Path.Combine(root, "Assets/Game/Modules/CharacterLab/Configs/catalog.json"));

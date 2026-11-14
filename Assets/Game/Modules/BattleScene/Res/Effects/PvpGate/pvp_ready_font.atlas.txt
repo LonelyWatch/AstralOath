@@ -1,0 +1,62 @@
+
+pvp_ready_font.sct
+size: 1207,249
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 912, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+getready
+  rotate: true
+  xy: 1083, 2
+  size: 245, 60
+  orig: 245, 60
+  offset: 0, 0
+  index: -1
+getready_g
+  rotate: true
+  xy: 1145, 2
+  size: 245, 60
+  orig: 245, 60
+  offset: 0, 0
+  index: -1
+ignition
+  rotate: false
+  xy: 2, 2
+  size: 453, 156
+  orig: 453, 156
+  offset: 0, 0
+  index: -1
+ignition_g
+  rotate: false
+  xy: 457, 2
+  size: 453, 156
+  orig: 453, 156
+  offset: 0, 0
+  index: -1
+line_light_02
+  rotate: false
+  xy: 2, 222
+  size: 199, 19
+  orig: 199, 19
+  offset: 0, 0
+  index: -1
+prepare
+  rotate: false
+  xy: 2, 160
+  size: 446, 60
+  orig: 446, 60
+  offset: 0, 0
+  index: -1
+prepare_g
+  rotate: false
+  xy: 450, 160
+  size: 446, 60
+  orig: 446, 60
+  offset: 0, 0
+  index: -1

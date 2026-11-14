@@ -9,6 +9,8 @@ YooAsset 包 `Foundation` 提供下列业务资源。构建另外生成代码清
 - `foundation/demo-resource` 提供可见的文本资源。
 - `foundation/foundation-window` 提供只挂通用 BindingMap 的窗口预制体；普通 C# FoundationWindow 通过 UIViewRegistry 注册、加载并访问其组件。
 
+正式 GameHome 导航在进入选禁时才加载 ArenaDraft 和角色预览资源。Foundation 母包包含 GameHome 与 BattleScene 两个内置场景，BattleScene 由联机选禁完成后打开。已有母包需更新安装包才能使用该入口。
+
 窗口每次打开建立新作用域，关闭时取消请求并释放资源、事件和动画。演示文案使用 key，默认为简体中文，语音选择独立。详细启动、更新和构建步骤见 `docs/architecture/client.md`。
 
 `AssetBundleCollectorSetting.asset` 同时保存 CharacterLab 包的收集配置。十名角色接入后，角色实验室组由导入清单重新生成，继续使用原稳定地址和角色分包规则。见[十名角色接入](../../../../docs/delivery/2026-11-13-ten-hero-roster.md)。

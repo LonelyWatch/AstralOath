@@ -26,10 +26,15 @@ namespace AstralOath.Client.Arena
         public ScrollRect Rules => Bindings.Require<ScrollRect>("rules");
         public GameButton Rule(string name) => Bindings.Require<GameButton>("rule_" + name);
         public Image Selection(string name) => Bindings.Require<Image>("selection_" + name);
+        internal GameObject DraftOptions => Bindings.Require<GameObject>("draftOptions");
+        internal GameButton DraftOption(string key) => Bindings.Require<GameButton>(key);
+        internal GameText DraftLabel(string key) => Bindings.Require<GameText>(key);
         public override void Validate()
         {
             _ = RoomName; _ = Password; _ = PasswordState; _ = Locked; _ = Allow; _ = Deny; _ = Confirm; _ = Cancel; _ = Dismiss; _ = Status; _ = Rules;
-            _ = AllowSelection; _ = DenySelection; _ = AllowCaption; _ = DenyCaption;
+            _ = AllowSelection; _ = DenySelection; _ = AllowCaption; _ = DenyCaption; _ = DraftOptions;
+            _ = DraftOption("prebanCount"); _ = DraftOption("firstPick"); _ = DraftOption("banProtection");
+            _ = DraftLabel("prebanLabel"); _ = DraftLabel("firstPickLabel"); _ = DraftLabel("protectionLabel");
             foreach (string rule in ArenaLabels.Rules) { _ = Rule(rule); _ = Selection(rule); }
         }
     }

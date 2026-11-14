@@ -16,13 +16,15 @@ namespace AstralOath.Client.Arena
         public string id, name, rule;
         public ArenaPlayer host;
         public bool requiresPassword, allowChat;
-        public int memberCount, capacity;
+        public int memberCount, capacity, prebanCount;
+        public bool banProtection;
+        public string firstPick;
     }
     [Serializable, Preserve] public sealed class ArenaRoomState { public ArenaRoomInfo room; public ArenaPlayer[] members; }
     [Serializable, Preserve] public sealed class ArenaMessage { public long id; public ArenaPlayer player; public string text, createdAt, kind, stickerId; }
-    [Serializable, Preserve] public sealed class ArenaCreateRequest { public string name, password, rule; public bool allowChat; }
+    [Serializable, Preserve] public sealed class ArenaCreateRequest { public string name, password, rule, firstPick; public bool allowChat, banProtection; public int prebanCount; }
 
-    internal sealed class ArenaRequestException : IOException
+    public sealed class ArenaRequestException : IOException
     {
         internal string Code { get; }
         internal ArenaRequestException(string code) : base(code) { Code = code; }
@@ -40,6 +42,9 @@ namespace AstralOath.Client.Arena
         [Serializable, Preserve] private sealed class Error { public string code; }
         [Serializable, Preserve] private sealed class Operation { public string eventId, name; }
 
+        [Serializable, Preserve] private sealed class DraftStart { public string requestId; }
+        internal Uri Endpoint => endpoint;
+        internal string Bearer => session?.token;
         private readonly Uri endpoint;
         private readonly CancellationToken lifetime;
         private Session session;
@@ -102,6 +107,12 @@ namespace AstralOath.Client.Arena
         public Task<ArenaMessage> SendStickerAsync(string id, string stickerId, CancellationToken token) =>
             Send<ArenaMessage>(Room(id) + "/messages", new Sticker { stickerId = stickerId }, token);
 
+        public Task<ArenaDraftState> DraftAsync(string id, CancellationToken token) =>
+            Send<ArenaDraftState>(Room(id) + "/draft", null, token);
+        public Task<ArenaDraftState> StartDraftAsync(string id, CancellationToken token) =>
+            Send<ArenaDraftState>(Room(id) + "/draft/start", new DraftStart { requestId = Guid.NewGuid().ToString("N") }, token);
+        internal Task<ArenaDraftState> SubmitDraftAsync(string id, ArenaDraftAction action, CancellationToken token) =>
+            Send<ArenaDraftState>(Room(id) + "/draft/actions", action, token);
         private static string Room(string id) => "rooms/" + Uri.EscapeDataString(id);
 
         private async Task<T> Send<T>(string path, object data, CancellationToken token, int timeout = 10) where T : class

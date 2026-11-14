@@ -995,6 +995,1982 @@
           112
         ]
       }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/base_pvplive_vs.png",
+      "sources": [
+        {
+          "source": "img/base_pvplive_vs.png",
+          "sha256": "19138d8528c017af28e9532b3ef0a9b8fa370f05580e18e221708d980da58a17"
+        }
+      ],
+      "outputSha256": "19138d8528c017af28e9532b3ef0a9b8fa370f05580e18e221708d980da58a17",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 256,
+        "height": 144
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/base_pvplive_eff.png",
+      "sources": [
+        {
+          "source": "img/base_pvplive_eff.png",
+          "sha256": "4390b7f425e6b6137dcf9227a9f28485f2d69957ca2eac876e997528ba98271c"
+        }
+      ],
+      "outputSha256": "4390b7f425e6b6137dcf9227a9f28485f2d69957ca2eac876e997528ba98271c",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 500,
+        "height": 225
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/cm_diagonal_red.png",
+      "sources": [
+        {
+          "source": "img/cm_diagonal_red.png",
+          "sha256": "11dc65404a1dcd8bf5895bb3ca2c32f354eb25893a02136303a7be56d645c9f8"
+        }
+      ],
+      "outputSha256": "11dc65404a1dcd8bf5895bb3ca2c32f354eb25893a02136303a7be56d645c9f8",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 683,
+        "height": 284
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/cm_icon_st_banned.png",
+      "sources": [
+        {
+          "source": "img/cm_icon_st_banned.png",
+          "sha256": "682359816f6830fca19377fd17bb956909e47d6f842140e907726afb3c19cd06"
+        }
+      ],
+      "outputSha256": "682359816f6830fca19377fd17bb956909e47d6f842140e907726afb3c19cd06",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 56,
+        "height": 48
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/vignetting2.png",
+      "sources": [
+        {
+          "source": "img/vignetting2.png",
+          "sha256": "944769b3c1101a1ca7b8b5f14938aa9e2373275b5461aba286f4bfc3a3354c23"
+        }
+      ],
+      "outputSha256": "944769b3c1101a1ca7b8b5f14938aa9e2373275b5461aba286f4bfc3a3354c23",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 256,
+        "height": 144
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/_cm_banned_res.png",
+      "sources": [
+        {
+          "source": "img/_cm_banned_res.png",
+          "sha256": "fb9bf4684d28ba7636af9cabb25c3faeb3fde0e2416f93c96c6c517876c0af42"
+        }
+      ],
+      "outputSha256": "fb9bf4684d28ba7636af9cabb25c3faeb3fde0e2416f93c96c6c517876c0af42",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 341,
+        "height": 284
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/_cm_safeguard.png",
+      "sources": [
+        {
+          "source": "img/_cm_safeguard.png",
+          "sha256": "d647da9194a68594fff54d461680eaff165031575c21a7d5c0f419aaf2619242"
+        }
+      ],
+      "outputSha256": "d647da9194a68594fff54d461680eaff165031575c21a7d5c0f419aaf2619242",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 62,
+        "height": 66
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/_cm_safeguard_glow.png",
+      "sources": [
+        {
+          "source": "img/_cm_safeguard_glow.png",
+          "sha256": "d7b4115ce4b3cc3145280dbfadc4aed65cbfe4bbe61ce84d35e49cd0d5543119"
+        }
+      ],
+      "outputSha256": "d7b4115ce4b3cc3145280dbfadc4aed65cbfe4bbe61ce84d35e49cd0d5543119",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 54,
+        "height": 57
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/_btn_red.png",
+      "sources": [
+        {
+          "source": "img/_btn_red.png",
+          "sha256": "365d0406167e064dc3d5504711bfbf8cb73f407e452f70bb98618205b478545c"
+        }
+      ],
+      "outputSha256": "365d0406167e064dc3d5504711bfbf8cb73f407e452f70bb98618205b478545c",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 152,
+        "height": 61
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/_btn_red_p.png",
+      "sources": [
+        {
+          "source": "img/_btn_red_p.png",
+          "sha256": "9e25882bcfab0bc3f58136711a3c6b15113d4db2f0c10143c47c178052a4971a"
+        }
+      ],
+      "outputSha256": "9e25882bcfab0bc3f58136711a3c6b15113d4db2f0c10143c47c178052a4971a",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 152,
+        "height": 61
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/_tap_select_blue2.png",
+      "sources": [
+        {
+          "source": "img/_tap_select_blue2.png",
+          "sha256": "4bc480a3b763dd5cbffa26216fdf46eee1ce1007da9ead93457d00275e5a6f30"
+        }
+      ],
+      "outputSha256": "4bc480a3b763dd5cbffa26216fdf46eee1ce1007da9ead93457d00275e5a6f30",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 120,
+        "height": 54
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot3_safeguard.png",
+      "sources": [
+        {
+          "source": "img/pvplive_slot3_safeguard.png",
+          "sha256": "c90920368b5c0eb704f7062120777dca6b06a6f51d1b2d6b7ba10b127c33ab20"
+        }
+      ],
+      "outputSha256": "c90920368b5c0eb704f7062120777dca6b06a6f51d1b2d6b7ba10b127c33ab20",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 196,
+        "height": 85
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_hero_slot.png",
+      "sources": [
+        {
+          "source": "img/pvplive_hero_slot.png",
+          "sha256": "aa07136597f3382419d4a970551caff3fb45580b38704eda53d032f58de31adc"
+        }
+      ],
+      "outputSha256": "aa07136597f3382419d4a970551caff3fb45580b38704eda53d032f58de31adc",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 68,
+        "height": 85
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_win_off.png",
+      "sources": [
+        {
+          "source": "img/pvplive_win_off.png",
+          "sha256": "ab270646a8c093098ad25ec4f1bce20f29aed795256449995d51ed6adb232a48"
+        }
+      ],
+      "outputSha256": "ab270646a8c093098ad25ec4f1bce20f29aed795256449995d51ed6adb232a48",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 21,
+        "height": 20
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_win_on.png",
+      "sources": [
+        {
+          "source": "img/pvplive_win_on.png",
+          "sha256": "580c4dd1a16770f511ede5a9791e15142f4348f7e4de44a47943804fea890992"
+        }
+      ],
+      "outputSha256": "580c4dd1a16770f511ede5a9791e15142f4348f7e4de44a47943804fea890992",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 21,
+        "height": 20
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_progress_bar_blue.png",
+      "sources": [
+        {
+          "source": "img/pvplive_progress_bar_blue.png",
+          "sha256": "23718a989352ae49beab5752bd3792a475ba39ae08c0a51aa8553a321048294a"
+        }
+      ],
+      "outputSha256": "23718a989352ae49beab5752bd3792a475ba39ae08c0a51aa8553a321048294a",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 519,
+        "height": 117
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_progress_bar_red.png",
+      "sources": [
+        {
+          "source": "img/pvplive_progress_bar_red.png",
+          "sha256": "f626c09914c30d108b372cce3e16c3153c0b89ddd93c97e698163275438a6ec2"
+        }
+      ],
+      "outputSha256": "f626c09914c30d108b372cce3e16c3153c0b89ddd93c97e698163275438a6ec2",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 519,
+        "height": 117
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_progress_bg.png",
+      "sources": [
+        {
+          "source": "img/pvplive_progress_bg.png",
+          "sha256": "d31c9238af1193ed75cb041065e46134a513ba3cd3d40bdf881b83ed22a6e183"
+        }
+      ],
+      "outputSha256": "d31c9238af1193ed75cb041065e46134a513ba3cd3d40bdf881b83ed22a6e183",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 127,
+        "height": 531
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_progress_bar_blue2.png",
+      "sources": [
+        {
+          "source": "img/pvplive_progress_bar_blue2.png",
+          "sha256": "1a8d79df1b7da1895151df9fd9957e099ae0471b24705413ac739cdf13b72476"
+        }
+      ],
+      "outputSha256": "1a8d79df1b7da1895151df9fd9957e099ae0471b24705413ac739cdf13b72476",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 486,
+        "height": 116
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_progress_bar_red2.png",
+      "sources": [
+        {
+          "source": "img/pvplive_progress_bar_red2.png",
+          "sha256": "9461744de6dc8b3b01a246e86a95558759a80b2c96b481432a6c8c9f451da706"
+        }
+      ],
+      "outputSha256": "9461744de6dc8b3b01a246e86a95558759a80b2c96b481432a6c8c9f451da706",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 486,
+        "height": 116
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_progress_bg2.png",
+      "sources": [
+        {
+          "source": "img/pvplive_progress_bg2.png",
+          "sha256": "1ad6d3abfbff36c51d0a25fc2566c30eab7b9f7b9b24aa4e0a3e3b505fc89b7a"
+        }
+      ],
+      "outputSha256": "1ad6d3abfbff36c51d0a25fc2566c30eab7b9f7b9b24aa4e0a3e3b505fc89b7a",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 127,
+        "height": 498
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/hero_config_bg.png",
+      "sources": [
+        {
+          "source": "img/hero_config_bg.png",
+          "sha256": "3088398be2d06ad4e2a647fe902cd4a52e509222d4bec6fbef9cb48368bbe4b1"
+        }
+      ],
+      "outputSha256": "3088398be2d06ad4e2a647fe902cd4a52e509222d4bec6fbef9cb48368bbe4b1",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 258,
+        "height": 122
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/hero_config_panelback.png",
+      "sources": [
+        {
+          "source": "img/hero_config_panelback.png",
+          "sha256": "1a1115ac7a2451cc44d62307ed6e9ededafb7ba907292e05e95266595996e278"
+        }
+      ],
+      "outputSha256": "1a1115ac7a2451cc44d62307ed6e9ededafb7ba907292e05e95266595996e278",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 258,
+        "height": 122
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/hero_config_panelleader.png",
+      "sources": [
+        {
+          "source": "img/hero_config_panelleader.png",
+          "sha256": "e05262bba5316d21980b0521040996aef080c4351c355395facd4e3165bc568f"
+        }
+      ],
+      "outputSha256": "e05262bba5316d21980b0521040996aef080c4351c355395facd4e3165bc568f",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 310,
+        "height": 122
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/hero_config_btn_change.png",
+      "sources": [
+        {
+          "source": "img/hero_config_btn_change.png",
+          "sha256": "5f0a57b1fa0f8c717b3a323e2afcac9606099b0ed2f0535ce2ac8cf43c402bbb"
+        }
+      ],
+      "outputSha256": "5f0a57b1fa0f8c717b3a323e2afcac9606099b0ed2f0535ce2ac8cf43c402bbb",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 86,
+        "height": 86
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/hero_config_btn_add.png",
+      "sources": [
+        {
+          "source": "img/hero_config_btn_add.png",
+          "sha256": "6dc8c4488466fd22618e69df105d12ed0fd0b39ac9468ef315cdbab17f4ebc2d"
+        }
+      ],
+      "outputSha256": "6dc8c4488466fd22618e69df105d12ed0fd0b39ac9468ef315cdbab17f4ebc2d",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 86,
+        "height": 86
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/cm_hero_cirbg2.png",
+      "sources": [
+        {
+          "source": "img/cm_hero_cirbg2.png",
+          "sha256": "a7308db45f9a5ea69b3f30ff7f601b7870821dbec389f6e8e2a1f32b8cd10fad"
+        }
+      ],
+      "outputSha256": "a7308db45f9a5ea69b3f30ff7f601b7870821dbec389f6e8e2a1f32b8cd10fad",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 86,
+        "height": 86
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/renew_popup_bg.png",
+      "sources": [
+        {
+          "source": "img/renew_popup_bg.png",
+          "sha256": "e8bf7aadd73b22b3e1cdfc5f52b9843c99a3cf4b6fe3af78668e0c415542bfbe"
+        }
+      ],
+      "outputSha256": "e8bf7aadd73b22b3e1cdfc5f52b9843c99a3cf4b6fe3af78668e0c415542bfbe",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 366,
+        "height": 578
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/renew_popup_bg_2_alpha.png",
+      "sources": [
+        {
+          "source": "img/renew_popup_bg_2_alpha.png",
+          "sha256": "5a6f560c1e9ca90bc466fa88b11ae1e4fc140e3da678e31fb2aef481186e8c20"
+        }
+      ],
+      "outputSha256": "5a6f560c1e9ca90bc466fa88b11ae1e4fc140e3da678e31fb2aef481186e8c20",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 256,
+        "height": 410
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvp_rta_ss6_d.png",
+      "sources": [
+        {
+          "source": "img/pvp_rta_ss6_d.png",
+          "sha256": "6bfb049eac9fa9f1bc7f215e8284a7c16d1809e1dd3076d4deb1acfe02b5b9aa"
+        }
+      ],
+      "outputSha256": "6bfb049eac9fa9f1bc7f215e8284a7c16d1809e1dd3076d4deb1acfe02b5b9aa",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 256,
+        "height": 144
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/hero_bg_normal.png",
+      "sources": [
+        {
+          "source": "img/hero_bg_normal.png",
+          "sha256": "66a047084a3f61170a49043e084039f95d7061c4cd4728b0ef174da5cbbd3bb2"
+        }
+      ],
+      "outputSha256": "66a047084a3f61170a49043e084039f95d7061c4cd4728b0ef174da5cbbd3bb2",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 361,
+        "height": 112
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/hero_bg_selected.png",
+      "sources": [
+        {
+          "source": "img/hero_bg_selected.png",
+          "sha256": "ddeb3b5b37024554ce139b67293217f4266d850d68df49837b769396b6d3500a"
+        }
+      ],
+      "outputSha256": "ddeb3b5b37024554ce139b67293217f4266d850d68df49837b769396b6d3500a",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 361,
+        "height": 112
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/hero_bg_mask.png",
+      "sources": [
+        {
+          "source": "img/hero_bg_mask.png",
+          "sha256": "1a655a977080386b13242f3a82caeca0581bd3095eba0f5f0ba9df1f0a40b296"
+        }
+      ],
+      "outputSha256": "1a655a977080386b13242f3a82caeca0581bd3095eba0f5f0ba9df1f0a40b296",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 361,
+        "height": 112
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/hero_bg_slot.png",
+      "sources": [
+        {
+          "source": "img/hero_bg_slot.png",
+          "sha256": "bced1627d8ad6b629c0651f13074895b2b6f994fe12e06384fdb72d75800656a"
+        }
+      ],
+      "outputSha256": "bced1627d8ad6b629c0651f13074895b2b6f994fe12e06384fdb72d75800656a",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 361,
+        "height": 112
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/hero_bg_slot_select.png",
+      "sources": [
+        {
+          "source": "img/hero_bg_slot_select.png",
+          "sha256": "2e142677d57d3f52243b35550830c81d5fd4b9fb20a3f8002935c9a0214d075c"
+        }
+      ],
+      "outputSha256": "2e142677d57d3f52243b35550830c81d5fd4b9fb20a3f8002935c9a0214d075c",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 345,
+        "height": 107
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot1.png",
+      "sources": [
+        {
+          "source": "img/pvplive_slot1.png",
+          "sha256": "8b6fe2ac95b1e9e6723612a6005306e3c0511096f7d8268ed2f64a26d92e85a7"
+        }
+      ],
+      "outputSha256": "8b6fe2ac95b1e9e6723612a6005306e3c0511096f7d8268ed2f64a26d92e85a7",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 291,
+        "height": 85
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot1_blue.png",
+      "sources": [
+        {
+          "source": "img/pvplive_slot1_blue.png",
+          "sha256": "0a28bada9d7f734081c1350cc732f32a3d1fb1b6081ea138809f6e1830d7ce54"
+        }
+      ],
+      "outputSha256": "0a28bada9d7f734081c1350cc732f32a3d1fb1b6081ea138809f6e1830d7ce54",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 291,
+        "height": 85
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot1_red.png",
+      "sources": [
+        {
+          "source": "img/pvplive_slot1_red.png",
+          "sha256": "0a0926b90422331f8c5a7a8f87da5f990f9afb6d54c92c6d7913ab39861abb7b"
+        }
+      ],
+      "outputSha256": "0a0926b90422331f8c5a7a8f87da5f990f9afb6d54c92c6d7913ab39861abb7b",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 291,
+        "height": 85
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot1_select.png",
+      "sources": [
+        {
+          "source": "img/pvplive_slot1_select.png",
+          "sha256": "ff72207809e008675bf3b34e852a377beab789c49811c67054fbe71b2b497102"
+        }
+      ],
+      "outputSha256": "ff72207809e008675bf3b34e852a377beab789c49811c67054fbe71b2b497102",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 291,
+        "height": 85
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot2.png",
+      "sources": [
+        {
+          "source": "img/pvplive_slot2.png",
+          "sha256": "f09011d1b6bf106b274682004182ac53a3b965051e6df304b8a95b9113aaff62"
+        }
+      ],
+      "outputSha256": "f09011d1b6bf106b274682004182ac53a3b965051e6df304b8a95b9113aaff62",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 226,
+        "height": 85
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot2_blue.png",
+      "sources": [
+        {
+          "source": "img/pvplive_slot2_blue.png",
+          "sha256": "5967b302518285ddd7037c6a218dc861cdb8ab285134f4decaa1d1f079c71e46"
+        }
+      ],
+      "outputSha256": "5967b302518285ddd7037c6a218dc861cdb8ab285134f4decaa1d1f079c71e46",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 226,
+        "height": 85
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot2_red.png",
+      "sources": [
+        {
+          "source": "img/pvplive_slot2_red.png",
+          "sha256": "e59b74e881085605fddfa841c35e4cdd9789b73ded01cdfc1550543b6e8034a6"
+        }
+      ],
+      "outputSha256": "e59b74e881085605fddfa841c35e4cdd9789b73ded01cdfc1550543b6e8034a6",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 226,
+        "height": 85
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot2_select.png",
+      "sources": [
+        {
+          "source": "img/pvplive_slot2_select.png",
+          "sha256": "e1eb84f3f5a5bcb3589b1b5ee662e15853171d0670775586866d3a4304b9f3e1"
+        }
+      ],
+      "outputSha256": "e1eb84f3f5a5bcb3589b1b5ee662e15853171d0670775586866d3a4304b9f3e1",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 226,
+        "height": 85
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot3.png",
+      "sources": [
+        {
+          "source": "img/pvplive_slot3.png",
+          "sha256": "bbc37e211916171dcf3515222945ce367f198599c4cd2051a3b78a4bc7830b2f"
+        }
+      ],
+      "outputSha256": "bbc37e211916171dcf3515222945ce367f198599c4cd2051a3b78a4bc7830b2f",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 196,
+        "height": 85
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot3_blue.png",
+      "sources": [
+        {
+          "source": "img/pvplive_slot3_blue.png",
+          "sha256": "4e01894a14018e7df85f7738734b5f76f12b67776f97aa7aef57c93c6dceefc2"
+        }
+      ],
+      "outputSha256": "4e01894a14018e7df85f7738734b5f76f12b67776f97aa7aef57c93c6dceefc2",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 196,
+        "height": 85
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot3_red.png",
+      "sources": [
+        {
+          "source": "img/pvplive_slot3_red.png",
+          "sha256": "5da66c9dd2702240f1aa3c1be9fc9830d6e2b15959b5dbfd58f1a489c1acabfe"
+        }
+      ],
+      "outputSha256": "5da66c9dd2702240f1aa3c1be9fc9830d6e2b15959b5dbfd58f1a489c1acabfe",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 196,
+        "height": 85
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot3_select.png",
+      "sources": [
+        {
+          "source": "img/pvplive_slot3_select.png",
+          "sha256": "fdb99aafed5dcbce732dcbfaf3c5014e4e21ba49dc26153ade0c7537adc37d47"
+        }
+      ],
+      "outputSha256": "fdb99aafed5dcbce732dcbfaf3c5014e4e21ba49dc26153ade0c7537adc37d47",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 196,
+        "height": 85
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot4.png",
+      "sources": [
+        {
+          "source": "img/pvplive_slot4.png",
+          "sha256": "ee9a260acb20a74c43dc1eddf20920468fe9ae6920afd067f8f48ee24ee04d9e"
+        }
+      ],
+      "outputSha256": "ee9a260acb20a74c43dc1eddf20920468fe9ae6920afd067f8f48ee24ee04d9e",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 196,
+        "height": 85
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot4_blue.png",
+      "sources": [
+        {
+          "source": "img/pvplive_slot4_blue.png",
+          "sha256": "e9866a25fd515c40e255f99fb6d846b705d6115014cf59d2a610641473f06868"
+        }
+      ],
+      "outputSha256": "e9866a25fd515c40e255f99fb6d846b705d6115014cf59d2a610641473f06868",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 196,
+        "height": 85
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot4_red.png",
+      "sources": [
+        {
+          "source": "img/pvplive_slot4_red.png",
+          "sha256": "c25c201ab8f50b08dec2bd11151ebf8cf0ccac14139bb0a9b7ef64ec6c52e5e4"
+        }
+      ],
+      "outputSha256": "c25c201ab8f50b08dec2bd11151ebf8cf0ccac14139bb0a9b7ef64ec6c52e5e4",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 196,
+        "height": 85
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot4_select.png",
+      "sources": [
+        {
+          "source": "img/pvplive_slot4_select.png",
+          "sha256": "5c00ea5867d9ac62bdf5219ce19fc44e12f85737b25de9f3d5f91e6663494077"
+        }
+      ],
+      "outputSha256": "5c00ea5867d9ac62bdf5219ce19fc44e12f85737b25de9f3d5f91e6663494077",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 196,
+        "height": 85
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot5.png",
+      "sources": [
+        {
+          "source": "img/pvplive_slot5.png",
+          "sha256": "69340cf37c984dcc52e16d5a6bdae97b1b6b1ece64b7e7d592336d9b91a929d1"
+        }
+      ],
+      "outputSha256": "69340cf37c984dcc52e16d5a6bdae97b1b6b1ece64b7e7d592336d9b91a929d1",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 226,
+        "height": 85
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot5_blue.png",
+      "sources": [
+        {
+          "source": "img/pvplive_slot5_blue.png",
+          "sha256": "af61ce76f0c9a524e29b24192e6d70336b86b04ab42001dc604abb6c17c4c599"
+        }
+      ],
+      "outputSha256": "af61ce76f0c9a524e29b24192e6d70336b86b04ab42001dc604abb6c17c4c599",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 226,
+        "height": 85
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot5_red.png",
+      "sources": [
+        {
+          "source": "img/pvplive_slot5_red.png",
+          "sha256": "1cd9cea9e06aa54ffa0311475cad642ae7fe58a875d7b07c82dddc9121bb7450"
+        }
+      ],
+      "outputSha256": "1cd9cea9e06aa54ffa0311475cad642ae7fe58a875d7b07c82dddc9121bb7450",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 226,
+        "height": 85
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot5_select.png",
+      "sources": [
+        {
+          "source": "img/pvplive_slot5_select.png",
+          "sha256": "9e998d98bb2e0c07067f273c7aff3b46e9c0d6c036ae561158fe8587a7a7ea70"
+        }
+      ],
+      "outputSha256": "9e998d98bb2e0c07067f273c7aff3b46e9c0d6c036ae561158fe8587a7a7ea70",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 226,
+        "height": 85
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1001_l.png",
+      "sources": [
+        {
+          "source": "face/c1001_l.png",
+          "sha256": "4c6bf96522ba681fb3e47ff485638c565d95e3c2e2c31c20450afd146ffcdffc"
+        }
+      ],
+      "outputSha256": "4c6bf96522ba681fb3e47ff485638c565d95e3c2e2c31c20450afd146ffcdffc",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1002_l.png",
+      "sources": [
+        {
+          "source": "face/c1002_l.png",
+          "sha256": "4635ff6f531eedfc2a22302c7e023fa07163d7423c69a94da75fba0eafe0d85c"
+        }
+      ],
+      "outputSha256": "4635ff6f531eedfc2a22302c7e023fa07163d7423c69a94da75fba0eafe0d85c",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1003_l.png",
+      "sources": [
+        {
+          "source": "face/c1003_l.png",
+          "sha256": "70d12fdce29a6e76bfbfd1b31163d842ae28173053a20ef0c37f5b135fd7c558"
+        }
+      ],
+      "outputSha256": "70d12fdce29a6e76bfbfd1b31163d842ae28173053a20ef0c37f5b135fd7c558",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1004_l.png",
+      "sources": [
+        {
+          "source": "face/c1004_l.png",
+          "sha256": "f22c613e12ee1d820a983f6bebd5d9954d1108838a70f307bc33fbba75b3afb5"
+        }
+      ],
+      "outputSha256": "f22c613e12ee1d820a983f6bebd5d9954d1108838a70f307bc33fbba75b3afb5",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 190,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1005_l.png",
+      "sources": [
+        {
+          "source": "face/c1005_l.png",
+          "sha256": "d053ac8c1f3ca206e61ac7ea248c9a8f8925401cf57fe608d192d4e61f63021d"
+        }
+      ],
+      "outputSha256": "d053ac8c1f3ca206e61ac7ea248c9a8f8925401cf57fe608d192d4e61f63021d",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1006_l.png",
+      "sources": [
+        {
+          "source": "face/c1006_l.png",
+          "sha256": "e94036f0968b3e2d441dc9410391c716e7a1830d6316dd4a8331e08f02cbf6da"
+        }
+      ],
+      "outputSha256": "e94036f0968b3e2d441dc9410391c716e7a1830d6316dd4a8331e08f02cbf6da",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1007_l.png",
+      "sources": [
+        {
+          "source": "face/c1007_l.png",
+          "sha256": "e2b9eac1c483dec61af6990e0f78fabd4cc2ed74b3f964a4be7aa02b95a69bb2"
+        }
+      ],
+      "outputSha256": "e2b9eac1c483dec61af6990e0f78fabd4cc2ed74b3f964a4be7aa02b95a69bb2",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1008_l.png",
+      "sources": [
+        {
+          "source": "face/c1008_l.png",
+          "sha256": "934cc7e66fd6302f0f60858c9475f260e01a95d36d97eb8538bdea4b12e24f37"
+        }
+      ],
+      "outputSha256": "934cc7e66fd6302f0f60858c9475f260e01a95d36d97eb8538bdea4b12e24f37",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1009_l.png",
+      "sources": [
+        {
+          "source": "face/c1009_l.png",
+          "sha256": "1bf68f2a6a3ab0dd120a21fc160dc5bff5c603d748e29dbba73850c2d73f1673"
+        }
+      ],
+      "outputSha256": "1bf68f2a6a3ab0dd120a21fc160dc5bff5c603d748e29dbba73850c2d73f1673",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1010_l.png",
+      "sources": [
+        {
+          "source": "face/c1010_l.png",
+          "sha256": "4a4b4fbbdefaa310f78d1e502b6728edd4c8df5a2e1cd1888855638582570275"
+        }
+      ],
+      "outputSha256": "4a4b4fbbdefaa310f78d1e502b6728edd4c8df5a2e1cd1888855638582570275",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1011_l.png",
+      "sources": [
+        {
+          "source": "face/c1011_l.png",
+          "sha256": "691143c6a20f82a537c76b830afdaa5f522e3ee0dba40f668da5576e419c9368"
+        }
+      ],
+      "outputSha256": "691143c6a20f82a537c76b830afdaa5f522e3ee0dba40f668da5576e419c9368",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 190,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1012_l.png",
+      "sources": [
+        {
+          "source": "face/c1012_l.png",
+          "sha256": "e3c4a0d06f44ec5befc07473c319bcbd6aad356feb93b487d709c1d650d7b3f7"
+        }
+      ],
+      "outputSha256": "e3c4a0d06f44ec5befc07473c319bcbd6aad356feb93b487d709c1d650d7b3f7",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 190,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1062_l.png",
+      "sources": [
+        {
+          "source": "face/c1062_l.png",
+          "sha256": "d920ab8ed4c387a65f827b16ce06136efbdbb432b6cea26b36fb181642f0bfb1"
+        }
+      ],
+      "outputSha256": "d920ab8ed4c387a65f827b16ce06136efbdbb432b6cea26b36fb181642f0bfb1",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1013_l.png",
+      "sources": [
+        {
+          "source": "face/c1013_l.png",
+          "sha256": "d524ba286d089bbe4f44673eeadfad177189b5d4c8839912aa624fac0bcafddc"
+        }
+      ],
+      "outputSha256": "d524ba286d089bbe4f44673eeadfad177189b5d4c8839912aa624fac0bcafddc",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 190,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1014_l.png",
+      "sources": [
+        {
+          "source": "face/c1014_l.png",
+          "sha256": "5bc5301180cc5f40b22aaaa628e5e0b8aba64bc76e93567833aa3bf8401b9ee1"
+        }
+      ],
+      "outputSha256": "5bc5301180cc5f40b22aaaa628e5e0b8aba64bc76e93567833aa3bf8401b9ee1",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 204,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1015_l.png",
+      "sources": [
+        {
+          "source": "face/c1015_l.png",
+          "sha256": "eeb200d67885bfe30a96226c51f522ad6690631213920f3c40eec147bae5ea66"
+        }
+      ],
+      "outputSha256": "eeb200d67885bfe30a96226c51f522ad6690631213920f3c40eec147bae5ea66",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 190,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1016_l.png",
+      "sources": [
+        {
+          "source": "face/c1016_l.png",
+          "sha256": "fc32bf5a4fa6a3cec77be6ec67ddb783611e0185ff433f6afda487a230125880"
+        }
+      ],
+      "outputSha256": "fc32bf5a4fa6a3cec77be6ec67ddb783611e0185ff433f6afda487a230125880",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1017_l.png",
+      "sources": [
+        {
+          "source": "face/c1017_l.png",
+          "sha256": "219dc20f09c53c5e814eb06f603709b5f019c1029e93aadcb10a900da364bf5e"
+        }
+      ],
+      "outputSha256": "219dc20f09c53c5e814eb06f603709b5f019c1029e93aadcb10a900da364bf5e",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1018_l.png",
+      "sources": [
+        {
+          "source": "face/c1018_l.png",
+          "sha256": "443f9662c609d15f9c014083f6631845eb387a2509e4a21e699c66f4934adfca"
+        }
+      ],
+      "outputSha256": "443f9662c609d15f9c014083f6631845eb387a2509e4a21e699c66f4934adfca",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1019_l.png",
+      "sources": [
+        {
+          "source": "face/c1019_l.png",
+          "sha256": "93b3f2fc6372a8a3092ca994c728f3f34f667326c2d1ce1108bb43834d625d8e"
+        }
+      ],
+      "outputSha256": "93b3f2fc6372a8a3092ca994c728f3f34f667326c2d1ce1108bb43834d625d8e",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1020_l.png",
+      "sources": [
+        {
+          "source": "face/c1020_l.png",
+          "sha256": "ef2665fe07e3b9547be1a7121c0e292a0ecd9295d1c050a5f3f924cf1614cc92"
+        }
+      ],
+      "outputSha256": "ef2665fe07e3b9547be1a7121c0e292a0ecd9295d1c050a5f3f924cf1614cc92",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1021_l.png",
+      "sources": [
+        {
+          "source": "face/c1021_l.png",
+          "sha256": "ae0b42d71ceada4f7855a1d766973ad8246f6618dec4254931d91d7ecf243f6d"
+        }
+      ],
+      "outputSha256": "ae0b42d71ceada4f7855a1d766973ad8246f6618dec4254931d91d7ecf243f6d",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1022_l.png",
+      "sources": [
+        {
+          "source": "face/c1022_l.png",
+          "sha256": "0cf7241994ec6b2307a021967b438de7d7d5782ef593c0044209491e686ac785"
+        }
+      ],
+      "outputSha256": "0cf7241994ec6b2307a021967b438de7d7d5782ef593c0044209491e686ac785",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 204,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1023_l.png",
+      "sources": [
+        {
+          "source": "face/c1023_l.png",
+          "sha256": "19cf180d3942808b13acdd84659e5e2d047f31b836b0f0ee8a7aa98781287fa8"
+        }
+      ],
+      "outputSha256": "19cf180d3942808b13acdd84659e5e2d047f31b836b0f0ee8a7aa98781287fa8",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1024_l.png",
+      "sources": [
+        {
+          "source": "face/c1024_l.png",
+          "sha256": "0993c11e486e4c6d3ee385b6dd56595cdca0b8cee3981efaac7f5ce4c24828ea"
+        }
+      ],
+      "outputSha256": "0993c11e486e4c6d3ee385b6dd56595cdca0b8cee3981efaac7f5ce4c24828ea",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1027_l.png",
+      "sources": [
+        {
+          "source": "face/c1027_l.png",
+          "sha256": "883fe4e77168b39af1829586e33a200609ea4910d0ed88b9a60b404e1cab1a9b"
+        }
+      ],
+      "outputSha256": "883fe4e77168b39af1829586e33a200609ea4910d0ed88b9a60b404e1cab1a9b",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1027_fu.png",
+      "sources": [
+        {
+          "source": "face/c1027_fu.png",
+          "sha256": "b4ab0130756a60b75bc32d75b3bba24d0f41759b2b9c2756a83d282928b54033"
+        }
+      ],
+      "outputSha256": "b4ab0130756a60b75bc32d75b3bba24d0f41759b2b9c2756a83d282928b54033",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 900,
+        "height": 950
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1028_l.png",
+      "sources": [
+        {
+          "source": "face/c1028_l.png",
+          "sha256": "a527c17a8d7798cd92e04e16da730babcdab88af92829808eb98cd9456ae7d43"
+        }
+      ],
+      "outputSha256": "a527c17a8d7798cd92e04e16da730babcdab88af92829808eb98cd9456ae7d43",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1029_l.png",
+      "sources": [
+        {
+          "source": "face/c1029_l.png",
+          "sha256": "f896111bcad081dd3f660102bf02fa9bc57bef812c95b1f9b152963b8a9fd05d"
+        }
+      ],
+      "outputSha256": "f896111bcad081dd3f660102bf02fa9bc57bef812c95b1f9b152963b8a9fd05d",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1030_l.png",
+      "sources": [
+        {
+          "source": "face/c1030_l.png",
+          "sha256": "0e5d559356950d79f6afb05129543add5acef3464e7cfd0531fe33fede83f9b0"
+        }
+      ],
+      "outputSha256": "0e5d559356950d79f6afb05129543add5acef3464e7cfd0531fe33fede83f9b0",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1031_l.png",
+      "sources": [
+        {
+          "source": "face/c1031_l.png",
+          "sha256": "bcd50c9ac30bdaf4fd397af8ca0f5b3a74216d91848f32ac5490d68dc50a3495"
+        }
+      ],
+      "outputSha256": "bcd50c9ac30bdaf4fd397af8ca0f5b3a74216d91848f32ac5490d68dc50a3495",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 204,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/score.fnt.txt",
+      "sources": [
+        {
+          "source": "font/score.fnt",
+          "sha256": "30f8c18c40c8d089fbb747ae0ccdd275909af388b164157937b4f25887224334"
+        }
+      ],
+      "outputSha256": "de606e70448698bda67e5a3792d4c25b8fecafda32b19c88466e6f1ba9092d2e",
+      "conversion": {
+        "method": "original-bitmap-font-layout",
+        "layout": "wnd/pvplive_ready_pre_ben.csb"
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/score_atlas.png",
+      "sources": [
+        {
+          "source": "font/score_0.png",
+          "sha256": "a1cce71b312e4cce0c50eb5d13628ba152437872b1ab69a491aa46b99203a6e5"
+        }
+      ],
+      "outputSha256": "a1cce71b312e4cce0c50eb5d13628ba152437872b1ab69a491aa46b99203a6e5",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 512,
+        "height": 512
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Digits/score_0.png",
+      "sources": [
+        {
+          "source": "font/score.fnt",
+          "sha256": "30f8c18c40c8d089fbb747ae0ccdd275909af388b164157937b4f25887224334"
+        },
+        {
+          "source": "font/score_0.png",
+          "sha256": "a1cce71b312e4cce0c50eb5d13628ba152437872b1ab69a491aa46b99203a6e5"
+        }
+      ],
+      "outputSha256": "3c85674a437951fa05d2aa46dd3e695c076c6216d714fe6f3270fede0e60c599",
+      "conversion": {
+        "method": "native-bitmap-glyph-crop",
+        "xAdvance": 46,
+        "crop": [
+          68,
+          105,
+          66,
+          100
+        ]
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Digits/score_1.png",
+      "sources": [
+        {
+          "source": "font/score.fnt",
+          "sha256": "30f8c18c40c8d089fbb747ae0ccdd275909af388b164157937b4f25887224334"
+        },
+        {
+          "source": "font/score_0.png",
+          "sha256": "a1cce71b312e4cce0c50eb5d13628ba152437872b1ab69a491aa46b99203a6e5"
+        }
+      ],
+      "outputSha256": "9b9ca41d2d04b837dee285ebcf24076871b858d52c3eee2e1747feeeb7e8e2a8",
+      "conversion": {
+        "method": "native-bitmap-glyph-crop",
+        "xAdvance": 32,
+        "crop": [
+          316,
+          101,
+          52,
+          100
+        ]
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Digits/score_2.png",
+      "sources": [
+        {
+          "source": "font/score.fnt",
+          "sha256": "30f8c18c40c8d089fbb747ae0ccdd275909af388b164157937b4f25887224334"
+        },
+        {
+          "source": "font/score_0.png",
+          "sha256": "a1cce71b312e4cce0c50eb5d13628ba152437872b1ab69a491aa46b99203a6e5"
+        }
+      ],
+      "outputSha256": "16d792dcbb4af0bab8e239f92ae02c355dbcd8e22e6464c10540b7d7c36116cb",
+      "conversion": {
+        "method": "native-bitmap-glyph-crop",
+        "xAdvance": 48,
+        "crop": [
+          71,
+          0,
+          69,
+          100
+        ]
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Digits/score_3.png",
+      "sources": [
+        {
+          "source": "font/score.fnt",
+          "sha256": "30f8c18c40c8d089fbb747ae0ccdd275909af388b164157937b4f25887224334"
+        },
+        {
+          "source": "font/score_0.png",
+          "sha256": "a1cce71b312e4cce0c50eb5d13628ba152437872b1ab69a491aa46b99203a6e5"
+        }
+      ],
+      "outputSha256": "5b2f1c57e809df5f367eb2e4db5e12afd7c96edf3deb45f8df75e8cf087e2457",
+      "conversion": {
+        "method": "native-bitmap-glyph-crop",
+        "xAdvance": 46,
+        "crop": [
+          278,
+          0,
+          67,
+          100
+        ]
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Digits/score_4.png",
+      "sources": [
+        {
+          "source": "font/score.fnt",
+          "sha256": "30f8c18c40c8d089fbb747ae0ccdd275909af388b164157937b4f25887224334"
+        },
+        {
+          "source": "font/score_0.png",
+          "sha256": "a1cce71b312e4cce0c50eb5d13628ba152437872b1ab69a491aa46b99203a6e5"
+        }
+      ],
+      "outputSha256": "cf6ec98dcc27bd3fe18d97a962037b2cf91b8e798996477fc85eac535d1d2b29",
+      "conversion": {
+        "method": "native-bitmap-glyph-crop",
+        "xAdvance": 46,
+        "crop": [
+          346,
+          0,
+          67,
+          100
+        ]
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Digits/score_5.png",
+      "sources": [
+        {
+          "source": "font/score.fnt",
+          "sha256": "30f8c18c40c8d089fbb747ae0ccdd275909af388b164157937b4f25887224334"
+        },
+        {
+          "source": "font/score_0.png",
+          "sha256": "a1cce71b312e4cce0c50eb5d13628ba152437872b1ab69a491aa46b99203a6e5"
+        }
+      ],
+      "outputSha256": "cea139f17cc62355dc2508bd6f6c8c75353e670cb886ce58e6e39405c2bb135c",
+      "conversion": {
+        "method": "native-bitmap-glyph-crop",
+        "xAdvance": 46,
+        "crop": [
+          141,
+          0,
+          68,
+          100
+        ]
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Digits/score_6.png",
+      "sources": [
+        {
+          "source": "font/score.fnt",
+          "sha256": "30f8c18c40c8d089fbb747ae0ccdd275909af388b164157937b4f25887224334"
+        },
+        {
+          "source": "font/score_0.png",
+          "sha256": "a1cce71b312e4cce0c50eb5d13628ba152437872b1ab69a491aa46b99203a6e5"
+        }
+      ],
+      "outputSha256": "2bea6f31d7c38e0b846d5d0bb808abf7f1aac05ae680ad99c99d8914ecedf6fe",
+      "conversion": {
+        "method": "native-bitmap-glyph-crop",
+        "xAdvance": 45,
+        "crop": [
+          135,
+          101,
+          63,
+          100
+        ]
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Digits/score_7.png",
+      "sources": [
+        {
+          "source": "font/score.fnt",
+          "sha256": "30f8c18c40c8d089fbb747ae0ccdd275909af388b164157937b4f25887224334"
+        },
+        {
+          "source": "font/score_0.png",
+          "sha256": "a1cce71b312e4cce0c50eb5d13628ba152437872b1ab69a491aa46b99203a6e5"
+        }
+      ],
+      "outputSha256": "364b4c1debd17509f01893943b909be97230d0fcd245688aec118efdeda90bd7",
+      "conversion": {
+        "method": "native-bitmap-glyph-crop",
+        "xAdvance": 40,
+        "crop": [
+          414,
+          0,
+          67,
+          100
+        ]
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Digits/score_8.png",
+      "sources": [
+        {
+          "source": "font/score.fnt",
+          "sha256": "30f8c18c40c8d089fbb747ae0ccdd275909af388b164157937b4f25887224334"
+        },
+        {
+          "source": "font/score_0.png",
+          "sha256": "a1cce71b312e4cce0c50eb5d13628ba152437872b1ab69a491aa46b99203a6e5"
+        }
+      ],
+      "outputSha256": "0e891b16eff434c9443e3a72ec5dfb28f0bd8b4feda8bf3d6727b6260c8d5d94",
+      "conversion": {
+        "method": "native-bitmap-glyph-crop",
+        "xAdvance": 46,
+        "crop": [
+          0,
+          105,
+          67,
+          100
+        ]
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Digits/score_9.png",
+      "sources": [
+        {
+          "source": "font/score.fnt",
+          "sha256": "30f8c18c40c8d089fbb747ae0ccdd275909af388b164157937b4f25887224334"
+        },
+        {
+          "source": "font/score_0.png",
+          "sha256": "a1cce71b312e4cce0c50eb5d13628ba152437872b1ab69a491aa46b99203a6e5"
+        }
+      ],
+      "outputSha256": "04786ed882c0beec1ee52a360ec88e1ee13611a18d0e2c066a1ecfaaf865c4cb",
+      "conversion": {
+        "method": "native-bitmap-glyph-crop",
+        "xAdvance": 44,
+        "crop": [
+          199,
+          101,
+          62,
+          100
+        ]
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot1_glow_blue.png",
+      "sources": [
+        {
+          "source": "effect/ui_livepvp_slot_eff_01.scsp",
+          "sha256": "2ed08436d9ff3dddb84e4a86458fdd1fa24f33c75b8a99128aa018914d41c759"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_eff_01.atlas",
+          "sha256": "4208d34854ffef9817efbddac5080597c109f919c0ff96303adbe86e45736696"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_eff_01.sct",
+          "sha256": "04d164d8b743841d3f42f9e875b307807f115a63421ba6657c9522ad2c79b10c"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_blue1_idle.cfx",
+          "sha256": "20df4dff0640af4480058d73aed532cdca67b622a2e299017fb2b0be37ded1f5"
+        }
+      ],
+      "outputSha256": "c674788b7154ae0963f4df6c52ab912c0fd556f8ccac62628cbaf6b3380607ba",
+      "conversion": {
+        "method": "native-additive-outline-preview",
+        "clip": "blue_idle",
+        "time": 0,
+        "atlasRegion": "slot1_3",
+        "colors": [
+          "86EDFFFF",
+          "282CFFFF"
+        ],
+        "nativePivotMirrorBaked": true
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot1_glow_red.png",
+      "sources": [
+        {
+          "source": "effect/ui_livepvp_slot_eff_01.scsp",
+          "sha256": "2ed08436d9ff3dddb84e4a86458fdd1fa24f33c75b8a99128aa018914d41c759"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_eff_01.atlas",
+          "sha256": "4208d34854ffef9817efbddac5080597c109f919c0ff96303adbe86e45736696"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_eff_01.sct",
+          "sha256": "04d164d8b743841d3f42f9e875b307807f115a63421ba6657c9522ad2c79b10c"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_red1_idle.cfx",
+          "sha256": "67e8a8190007d9efcc8b2e575e832cb8a8097b1bc8d8d90156d6c9f7facc4a6d"
+        }
+      ],
+      "outputSha256": "8cf620015cefa935d218ada222ee73601b49a34fec9f7013d089982cacf674d7",
+      "conversion": {
+        "method": "native-additive-outline-preview",
+        "clip": "red_idle",
+        "time": 0,
+        "atlasRegion": "slot1_3",
+        "colors": [
+          "FFF38CFF",
+          "FF0107FF"
+        ],
+        "nativePivotMirrorBaked": true
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot2_glow_blue.png",
+      "sources": [
+        {
+          "source": "effect/ui_livepvp_slot_eff_02.scsp",
+          "sha256": "ff96deda7f105bcad04968918b64d22c0ebca0b05b82ca588c84501dcf7a1554"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_eff_02.atlas",
+          "sha256": "d2e148f52cba76b7de1f44a197eca9530ad1be7eb84a5dafdf43e6c44999f4c9"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_eff_02.sct",
+          "sha256": "247e536c71d3b88268c49cfa5a9e69449a43f155378a2b739417d183bc3fae8f"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_blue2_idle.cfx",
+          "sha256": "48eb0ba69994dbc05f14af78e7a5b803c126c472fe7882b80325e8943a67af01"
+        }
+      ],
+      "outputSha256": "78325c20c4ed7285cac596ff2ac36c59db5b94bfe739733415835c967a3b216e",
+      "conversion": {
+        "method": "native-additive-outline-preview",
+        "clip": "blue_idle",
+        "time": 0,
+        "atlasRegion": "slot2_3",
+        "colors": [
+          "86EDFFFF",
+          "282CFFFF"
+        ],
+        "nativePivotMirrorBaked": true
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot2_glow_red.png",
+      "sources": [
+        {
+          "source": "effect/ui_livepvp_slot_eff_02.scsp",
+          "sha256": "ff96deda7f105bcad04968918b64d22c0ebca0b05b82ca588c84501dcf7a1554"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_eff_02.atlas",
+          "sha256": "d2e148f52cba76b7de1f44a197eca9530ad1be7eb84a5dafdf43e6c44999f4c9"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_eff_02.sct",
+          "sha256": "247e536c71d3b88268c49cfa5a9e69449a43f155378a2b739417d183bc3fae8f"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_red2_idle.cfx",
+          "sha256": "ef547df0f4aeb203cfca0263b3b6c043f2dd7c496ffcedec7481be663dacfdb2"
+        }
+      ],
+      "outputSha256": "7e7f85d9568eaddf375da11819847f439b7deb80bd99d779eb9c2c5362477343",
+      "conversion": {
+        "method": "native-additive-outline-preview",
+        "clip": "red_idle",
+        "time": 0,
+        "atlasRegion": "slot2_3",
+        "colors": [
+          "FFF38CFF",
+          "FF0107FF"
+        ],
+        "nativePivotMirrorBaked": true
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot3_glow_blue.png",
+      "sources": [
+        {
+          "source": "effect/ui_livepvp_slot_eff_03.scsp",
+          "sha256": "4eb48e0d4de3e83bf02327cb8a63878ca3407fe804b1d72d7ef7fea8855a3924"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_eff_03.atlas",
+          "sha256": "858d895d52a5f6ff715861b634d01267e2bc992c64654c4855fc1bbe7f10dc73"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_eff_03.sct",
+          "sha256": "a3349c8f216c1b9a2e9daba572bb8abdde49ef97c7635a168a0ce92e0eedbb0e"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_blue3_idle.cfx",
+          "sha256": "8c42fb43329c4fa803c3844b3206d0a52cdd701844226750bed4960b218abd27"
+        }
+      ],
+      "outputSha256": "95cece94734bda6949dc61e83bb8cbdae22672be1563990c3acc38f84edc24c3",
+      "conversion": {
+        "method": "native-additive-outline-preview",
+        "clip": "blue_idle",
+        "time": 0,
+        "atlasRegion": "slot3_3",
+        "colors": [
+          "86EDFFFF",
+          "282CFFFF"
+        ],
+        "nativePivotMirrorBaked": true
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot3_glow_red.png",
+      "sources": [
+        {
+          "source": "effect/ui_livepvp_slot_eff_03.scsp",
+          "sha256": "4eb48e0d4de3e83bf02327cb8a63878ca3407fe804b1d72d7ef7fea8855a3924"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_eff_03.atlas",
+          "sha256": "858d895d52a5f6ff715861b634d01267e2bc992c64654c4855fc1bbe7f10dc73"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_eff_03.sct",
+          "sha256": "a3349c8f216c1b9a2e9daba572bb8abdde49ef97c7635a168a0ce92e0eedbb0e"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_red3_idle.cfx",
+          "sha256": "0d5ec2ef6d2c61a76289a730f3f1db0abc46b21d2218875649ac0d6457634a8b"
+        }
+      ],
+      "outputSha256": "b6c223fd3aeabc9f4f614240abb94b75ccca48c34408e01d47dadb168d4eadf5",
+      "conversion": {
+        "method": "native-additive-outline-preview",
+        "clip": "red_idle",
+        "time": 0,
+        "atlasRegion": "slot3_3",
+        "colors": [
+          "FFF38CFF",
+          "FF0107FF"
+        ],
+        "nativePivotMirrorBaked": true
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot4_glow_blue.png",
+      "sources": [
+        {
+          "source": "effect/ui_livepvp_slot_eff_04.scsp",
+          "sha256": "1cedc634ea6d5ef994ddb4800b1df46800f41c107dd1155b38ad124930355c48"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_eff_04.atlas",
+          "sha256": "cdf81202a2f37f1dad8ecd0137755962a2967d949e07fb07cbd0d6f22a8ce61a"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_eff_04.sct",
+          "sha256": "e9d99052e765f465742464c7c92b14228de10e747a531a70679cd2fa11cbefa1"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_blue4_idle.cfx",
+          "sha256": "0317a7ef575470a2df861590d19df1204b7af8b31c9b0fe2900b555c20876cb8"
+        }
+      ],
+      "outputSha256": "ff9a81e388a812e2a929d29d5221776d24d0aa30f6442efceeaae748745a4747",
+      "conversion": {
+        "method": "native-additive-outline-preview",
+        "clip": "blue_idle",
+        "time": 0,
+        "atlasRegion": "slot4_3",
+        "colors": [
+          "86EDFFFF",
+          "282CFFFF"
+        ],
+        "nativePivotMirrorBaked": true
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot4_glow_red.png",
+      "sources": [
+        {
+          "source": "effect/ui_livepvp_slot_eff_04.scsp",
+          "sha256": "1cedc634ea6d5ef994ddb4800b1df46800f41c107dd1155b38ad124930355c48"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_eff_04.atlas",
+          "sha256": "cdf81202a2f37f1dad8ecd0137755962a2967d949e07fb07cbd0d6f22a8ce61a"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_eff_04.sct",
+          "sha256": "e9d99052e765f465742464c7c92b14228de10e747a531a70679cd2fa11cbefa1"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_red4_idle.cfx",
+          "sha256": "665e7550e3eb8345c19d51e4cea7ba69c66ad4f73d1e1e6b34c9ac25a9e33ba3"
+        }
+      ],
+      "outputSha256": "4795c00fe1961a5ca10fbc7c05b632dc23df54566fd1fc00b5a3249bcc741547",
+      "conversion": {
+        "method": "native-additive-outline-preview",
+        "clip": "red_idle",
+        "time": 0,
+        "atlasRegion": "slot4_3",
+        "colors": [
+          "FFF38CFF",
+          "FF0107FF"
+        ],
+        "nativePivotMirrorBaked": true
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot5_glow_blue.png",
+      "sources": [
+        {
+          "source": "effect/ui_livepvp_slot_eff_05.scsp",
+          "sha256": "c40399a348e7ff6e79c58306eade87885208d6479f11dad2833dbd1c17bc7807"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_eff_05.atlas",
+          "sha256": "f5038f7dbde1c5d885e82012783fa9e47e99837a9b5dbeddc6dcb1c653073d06"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_eff_05.sct",
+          "sha256": "57fbbdd529e57306f52539903c6a384aaf24796427ddcb6bea7d6b03836e1544"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_blue5_idle.cfx",
+          "sha256": "d58375652d328d1c3885dac55b9db950cb3599252cb36aecc6a990e9f21e55c2"
+        }
+      ],
+      "outputSha256": "1cf30248991ac249a726c08cfc60778b806d69ecfa403968e7198b34fe50dc97",
+      "conversion": {
+        "method": "native-additive-outline-preview",
+        "clip": "blue_idle",
+        "time": 0,
+        "atlasRegion": "slot5_3",
+        "colors": [
+          "86EDFFFF",
+          "282CFFFF"
+        ],
+        "nativePivotMirrorBaked": true
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/pvplive_slot5_glow_red.png",
+      "sources": [
+        {
+          "source": "effect/ui_livepvp_slot_eff_05.scsp",
+          "sha256": "c40399a348e7ff6e79c58306eade87885208d6479f11dad2833dbd1c17bc7807"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_eff_05.atlas",
+          "sha256": "f5038f7dbde1c5d885e82012783fa9e47e99837a9b5dbeddc6dcb1c653073d06"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_eff_05.sct",
+          "sha256": "57fbbdd529e57306f52539903c6a384aaf24796427ddcb6bea7d6b03836e1544"
+        },
+        {
+          "source": "effect/ui_livepvp_slot_red5_idle.cfx",
+          "sha256": "0b5857a96f2da61c537e1ead30450df18de2c23c4579a519e8d4c681ed01bd8b"
+        }
+      ],
+      "outputSha256": "f5f31a8360065f42c0b92c84a82da4c7eb9975796965c91d3b7d13b9d0e53678",
+      "conversion": {
+        "method": "native-additive-outline-preview",
+        "clip": "red_idle",
+        "time": 0,
+        "atlasRegion": "slot5_3",
+        "colors": [
+          "FFF38CFF",
+          "FF0107FF"
+        ],
+        "nativePivotMirrorBaked": true
+      }
     }
   ],
   "sourceLayouts": [
@@ -1037,6 +3013,50 @@
     {
       "source": "wnd/chat_emoji_tip_item.csb",
       "sha256": "f7921a76e6e790bb0c16a7687ff0d3f6d9320669634c11ce76f479ae140e2f76"
+    },
+    {
+      "source": "wnd/pvplive_ready.csb",
+      "sha256": "85732af80ed41491a79265475c824fb38435089b98c010cb4a95225b1a063677"
+    },
+    {
+      "source": "wnd/pvplive_ready_pre_ben.csb",
+      "sha256": "1b75c332c87870f91bf6b7667b6c248d06c9d8f17413dd48da75297166e3dafb"
+    },
+    {
+      "source": "wnd/pvplive_ready_pre_ben_item.csb",
+      "sha256": "a57fe370a0cfa3925779af3b28aeafcf2983bbc01fe5f96b231ae76356b0b13e"
+    },
+    {
+      "source": "wnd/pvplive_ready_pre_ben_eff.csb",
+      "sha256": "ff960485831a4b2269e3ce1040a747ceddab2a1f366f046fa79fcd9051502eb1"
+    },
+    {
+      "source": "wnd/pvplive_preban_hero.csb",
+      "sha256": "3e5fa180270200e9fa4bc2a432fa0a5e3a9e49767069ee4584b3cd5b79f4025d"
+    },
+    {
+      "source": "wnd/pvplive_preban_hero_item.csb",
+      "sha256": "86211d764fb281127fc27255f47e163c18413abc51ae835e66f5e126aed9467b"
+    },
+    {
+      "source": "wnd/pvplive_pick_sel.csb",
+      "sha256": "1b472419d68c9d831fbef6e365b4199d84b804e4dbf3b92d734c367001e62bd0"
+    },
+    {
+      "source": "wnd/pvplive_ready_formation.csb",
+      "sha256": "272a8772b83bbc1d56bbf0d467ea7bba8ab84762c410fac598a325479fa107bb"
+    },
+    {
+      "source": "wnd/unit_list.csb",
+      "sha256": "71a5f4c9c3b8633381dc7db36bb46283b96aafd85836b8342c86f6d56d2aeb24"
+    },
+    {
+      "source": "wnd/unit_bar.csb",
+      "sha256": "0c8ecba55b1c56b266d3dfd7f03bf8e97261be8c434f19746edf05a75d0dd367"
+    },
+    {
+      "source": "wnd/unit_bar_simple.csb",
+      "sha256": "3d9d0122dd8a0067c9a9e44eb30b554a48f289aed7c7ef71ef869a079db4c9be"
     }
   ]
 }

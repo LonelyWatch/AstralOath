@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using AstralOath.Client.Common;
 using AstralOath.Client.Skeletons;
 using AstralOath.Shared.Battle;
@@ -86,6 +88,11 @@ namespace AstralOath.Client.BattleScene
         [SerializeField, HideInInspector] private HeroModel[] heroModels;
         private BattleHudBinder binder;
         private BattleSimulationPreview simulation;
+        private BattleOnlineSession online;
+        private BattleOnlineArrival arrival;
+        private CanvasGroup entryHud;
+        private GameText stageTitle;
+        private BattleOnlineTransitionAssets.Copy onlineCopy;
 
         private static readonly ProfilerMarker StartMarker = new ProfilerMarker("Astral.Battle.Start");
         private static readonly ProfilerMarker FrameMarker = new ProfilerMarker("Astral.Battle.Frame");
@@ -105,6 +112,7 @@ namespace AstralOath.Client.BattleScene
         public void StartBattle()
         {
             using var sample = StartMarker.Auto();
+            if (online != null) return;
             if (!Application.isPlaying || !hud || !hud.isActiveAndEnabled || !battleCatalog)
                 throw new InvalidOperationException("Open the battle scene in Play mode before starting.");
             var catalog = JsonConvert.DeserializeObject<BattleCatalogData>(battleCatalog.text);
@@ -114,6 +122,82 @@ namespace AstralOath.Client.BattleScene
             var allies = SelectHeroes(allyActors, allyHeroIds, DefaultAllyHeroIds);
             var enemies = SelectHeroes(enemyActors, enemyHeroIds, DefaultEnemyHeroIds);
             var nextMatch = BattlePreviewFactory.Create("local", 271828UL, catalog, allyHeroIds: allies, enemyHeroIds: enemies);
+            InstallBattle(catalog, allyActors, enemyActors, allies, enemies, nextMatch);
+        }
+
+        internal async Task PrepareOnlineAsync(BattleOnlineSession session, BattleOnlineTransitionAssets assets, CancellationToken token)
+        {
+            autoStartBattle = false;
+            var catalog = JsonConvert.DeserializeObject<BattleCatalogData>(battleCatalog.text);
+            await session.OpenAsync(battleCatalog, catalog, token);
+            token.ThrowIfCancellationRequested();
+            var units = gameObject.scene.GetRootGameObjects().Single(root => root.name == "Units").transform;
+            var allyActors = GetTeamActors(units.Find("Allies"), DefaultAllyHeroIds.Count);
+            var enemyActors = GetTeamActors(units.Find("Enemies"), DefaultEnemyHeroIds.Count);
+            string[] Team(BattleSide side) => session.Snapshot.Units.Where(unit => unit.Slot.Side == side)
+                .OrderBy(unit => unit.Slot.Position).Select(unit => unit.DefinitionId).ToArray();
+            online = session;
+            onlineCopy = BattleOnlineTransitionAssets.Copy.Load(assets.zhHans);
+            InstallOnlineBackdrop(assets.arenaBackdrop);
+            entryHud = hud.gameObject.AddComponent<CanvasGroup>();
+            entryHud.alpha = 0f;
+            entryHud.blocksRaycasts = false;
+            InstallBattle(catalog, allyActors, enemyActors, Team(BattleSide.Ally), Team(BattleSide.Enemy), null);
+            arrival = new BattleOnlineArrival(units, allyActors.Concat(enemyActors), readyDust);
+            arrival.HoldAboveStage();
+        }
+
+        internal void BeginOnlineArrival()
+        {
+            arrival?.Begin();
+            var title = new GameObject("PvP Arena Title", typeof(RectTransform), typeof(GameText));
+            title.transform.SetParent(transform, false);
+            var rect = (RectTransform)title.transform;
+            rect.anchorMin = rect.anchorMax = new Vector2(.5f, .26f);
+            rect.sizeDelta = new Vector2(720f, 160f);
+            rect.anchoredPosition = Vector2.zero;
+            stageTitle = title.GetComponent<GameText>();
+            var template = hud.Require<GameText>("activeName");
+            stageTitle.font = template.font;
+            stageTitle.fontSharedMaterial = template.fontSharedMaterial;
+            stageTitle.fontSize = 52f;
+            stageTitle.fontStyle = FontStyles.Bold;
+            stageTitle.alignment = TextAlignmentOptions.Center;
+            stageTitle.text = "<size=34><color=#D8AD66>" + onlineCopy.arenaMode + "</color></size>\n" + onlineCopy.arenaTitle;
+            stageTitle.raycastTarget = false;
+        }
+
+        private void InstallOnlineBackdrop(Sprite sprite)
+        {
+            if (stageBackground) stageBackground.SetActive(false);
+            stageBackground = new GameObject("RTA 021 Stage", typeof(SpriteRenderer));
+            var renderer = stageBackground.GetComponent<SpriteRenderer>();
+            renderer.sprite = sprite;
+            renderer.sortingOrder = -70;
+            var canvas = GetComponent<Canvas>();
+            canvas.worldCamera.GetComponent<BattlePreviewViewport>().UseOnlineBackdrop(renderer);
+        }
+        internal bool OnlineArrivalComplete => arrival?.Complete ?? true;
+        internal bool OnlineArrivalEffectsComplete => arrival?.EffectsComplete ?? true;
+
+        internal void FinishOnlineEntry()
+        {
+            arrival?.Dispose();
+            arrival = null;
+            if (stageTitle)
+            {
+                stageTitle.gameObject.SetActive(false);
+                Destroy(stageTitle.gameObject);
+                stageTitle = null;
+            }
+            entryHud.alpha = 1f;
+            entryHud.blocksRaycasts = true;
+            simulation?.FinishOnlineEntry();
+        }
+
+        private void InstallBattle(BattleCatalogData catalog, BattlePreviewActor[] allyActors, BattlePreviewActor[] enemyActors,
+            string[] allies, string[] enemies, BattleMatch nextMatch)
+        {
             var models = (heroModels ?? Array.Empty<HeroModel>()).ToDictionary(model => model.id, StringComparer.Ordinal);
             var allySlots = ResolveTeam(allyActors, allies, models);
             var enemySlots = ResolveTeam(enemyActors, enemies, models);
@@ -124,8 +208,8 @@ namespace AstralOath.Client.BattleScene
             simulation = new BattleSimulationPreview(gameObject.scene, hud, binder, catalog, battleSprites, battleGraphs,
                 skillAssets, audioCatalog, audioBanks, battleDamageFont, impactBank, stageBackground,
                 soulDisplay, soulConsume, particles, particleTextures, nextMatch, inspectionPrefab, readyDust: readyDust,
-                skillTimelineOverrides: skillTimelineOverrides);
-            binder.AttachSimulation(simulation);
+                skillTimelineOverrides: skillTimelineOverrides, online: online, onlineCopy: onlineCopy);
+            binder.AttachSimulation(simulation, online != null);
         }
 
         private static BattlePreviewActor[] GetTeamActors(Transform team, int size)
@@ -146,7 +230,7 @@ namespace AstralOath.Client.BattleScene
             {
                 string selected = overrides is { Length: > 0 } ? overrides[index] : null;
                 if (!string.IsNullOrEmpty(selected)) return selected;
-                return string.IsNullOrEmpty(actor.HeroId) ? defaults[index] : actor.HeroId;
+                return string.IsNullOrEmpty(actor.AuthoredHeroId) ? defaults[index] : actor.AuthoredHeroId;
             }).ToArray();
         }
 
@@ -167,7 +251,7 @@ namespace AstralOath.Client.BattleScene
         private static void ApplyTeam((BattlePreviewActor Actor, HeroModel Model)[] slots)
         {
             foreach (var (actor, model) in slots)
-                actor.UseModel(model.skeleton, model.skin, $"{model.label} [{model.id}]");
+                actor.UseModel(model.skeleton, model.skin, $"{model.label} [{model.id}]", model.id);
         }
 
         public bool TrySelectBattleTarget(string instanceId) => simulation?.ChooseTarget(instanceId) == true;
@@ -184,6 +268,7 @@ namespace AstralOath.Client.BattleScene
             using var sample = FrameMarker.Auto();
             // EventSystem.Update must use the camera and screen-space HUD pose from the same
             // rendered frame. Advance the cinematic camera only after this frame's input.
+            arrival?.Tick(Time.unscaledDeltaTime);
             simulation?.Tick(Time.unscaledDeltaTime);
             if (!IsPaused) binder?.Tick(Time.unscaledDeltaTime);
         }
@@ -208,7 +293,14 @@ namespace AstralOath.Client.BattleScene
                 key => messages.TryGetValue(key, out var message) ? message : key, confirmPrefab);
         }
 
-        private void OnDisable() => ClearBinding();
+        private void OnDisable()
+        {
+            arrival?.Dispose();
+            arrival = null;
+            ClearBinding();
+            online?.Dispose();
+            online = null;
+        }
 
         private void ClearBinding()
         {

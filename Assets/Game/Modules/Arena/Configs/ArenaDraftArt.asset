@@ -1,0 +1,536 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb092d138f31cff47a21db9dc90133f2, type: 3}
+  m_Name: ArenaDraftArt
+  m_EditorClassIdentifier:
+  Heroes:
+  - Id: c1001
+    Name: "\u62C9\u65AF"
+    Element: fire
+    Class: knight
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: 9202a49f69995d947b4cd2718f213774, type: 3}
+    Card: {fileID: 21300000, guid: 7678d41886b7539a880c01f9e9a679a8, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: 0c628788b569a3b48a97d60c9b405e67, type: 3}
+    ClassIcon: {fileID: 21300000, guid: 50a1bc58c7b135e4496e9b70e5062a87, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: db8688112d998024899828f50dcd1130, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: c38307dfb5200954d99a8c9baa665b53, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: b6e25bc4dd82cd441a648a747d527fa4, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 5a996d4f61ee77246abea1aaa51036f8, type: 3}
+    PortraitPage: {fileID: 2800000, guid: 3c9c288cc874cb04394b8382954764cf, type: 3}
+    ModelPage: {fileID: 2800000, guid: a278d9cad861bc94bb2f2e2da7dad2b4, type: 3}
+  - Id: c1002
+    Name: "\u8D5B\u897F\u8389\u4E9A"
+    Element: fire
+    Class: knight
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: 11baebe6e0d1567b89e066ae056e4170, type: 3}
+    Card: {fileID: 21300000, guid: 5be1f88321d858b39e30378a55a03c67, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: 0c628788b569a3b48a97d60c9b405e67, type: 3}
+    ClassIcon: {fileID: 21300000, guid: 50a1bc58c7b135e4496e9b70e5062a87, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: 47d34938b87c7b849ae1fec048d8d764, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: 9afb7c7215da41448b7e4f2afabe0c9e, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: af3ea90ff19f9d74985a9ceebf4c8db4, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 9956e51eaf4f42347be44d1b43a0b722, type: 3}
+    PortraitPage: {fileID: 2800000, guid: f2e747c0482d09647b73cd7d4036600b, type: 3}
+    ModelPage: {fileID: 2800000, guid: 648afb8a4d3a673418c96d20a2324276, type: 3}
+  - Id: c1003
+    Name: "\u841D\u5B63"
+    Element: ice
+    Class: knight
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: 5562df32c7b954a1aa7b6a881ab502cc, type: 3}
+    Card: {fileID: 21300000, guid: c63c9bafae1051d8b2cede318766a1af, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: c4381d6a80c91cb4d86a72515d4df803, type: 3}
+    ClassIcon: {fileID: 21300000, guid: 50a1bc58c7b135e4496e9b70e5062a87, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: ea003c82cc1b39e45b5ed147bfa9eea0, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: 13a7634764539f14994aef6c9daab836, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: 00992de16d2cf9f48ba3751e2b385d2f, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 266a92fb1f0c22a4f91613c3014f2982, type: 3}
+    PortraitPage: {fileID: 2800000, guid: 6487565ba0d8931438bba79311e8e255, type: 3}
+    ModelPage: {fileID: 2800000, guid: cbca2fe6093fc9a418b4bc91b3892097, type: 3}
+  - Id: c1004
+    Name: "\u5E2D\u53EF"
+    Element: wind
+    Class: ranger
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: e137b5fe767552c2b6ceb84a44bb4f5c, type: 3}
+    Card: {fileID: 21300000, guid: 08e37aeeb4755203be15a70783e40f43, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: 1fc8c70c515e513ea88829bd074402e8, type: 3}
+    ClassIcon: {fileID: 21300000, guid: ecd53c2f9ea05742a2119a180ad27b97, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: c1fd642f62b46d24581b5e49a8c7dc3a, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: dcf46d7a8353fd84a80b30548a66275c, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: 1e04b57be887aff4bb0068d0c7df1c5e, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 6f3c3d15eca389845ae5470e54b9c786, type: 3}
+    PortraitPage: {fileID: 2800000, guid: a0cfc6bb7526dc34594914626ee5f98f, type: 3}
+    ModelPage: {fileID: 2800000, guid: b7b8f697a8f9cfe45b52f69d959d5984, type: 3}
+  - Id: c1005
+    Name: "\u6885\u8D5B\u5FB7\u4E1D"
+    Element: fire
+    Class: mage
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: be214f168c4eda54ca8a921b54ebb7d0, type: 3}
+    Card: {fileID: 21300000, guid: d6bb72d58a025e9db76d76002bc9d533, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: 0c628788b569a3b48a97d60c9b405e67, type: 3}
+    ClassIcon: {fileID: 21300000, guid: 093bf47c26044c24c9dfdb2e13c755cf, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: c46f783fa76fa9146a56e54636954697, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: 089d9a10b5cc26c4fb9bc994f58bdbb8, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: 8c1822d6d56ea9949a69b5a19d825a75, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 44253665a66244b47b5c2ac6f0d62d36, type: 3}
+    PortraitPage: {fileID: 2800000, guid: d2ba732c80932174a8780c4d2bfedcd0, type: 3}
+    ModelPage: {fileID: 2800000, guid: 4e0f8ce6ae0351b4b98f350ef0075f4f, type: 3}
+  - Id: c1006
+    Name: "\u7EEE\u4E16"
+    Element: ice
+    Class: thief
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: 6d7640d52e40598d8e5b63223edb7579, type: 3}
+    Card: {fileID: 21300000, guid: c1c5ff96d0385800abdc422e3e31a375, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: c4381d6a80c91cb4d86a72515d4df803, type: 3}
+    ClassIcon: {fileID: 21300000, guid: 36e1a1966c47543694055c3a4ac533d3, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: c1b5e30e71a9a8745a96673986552a63, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: 0716136df624ca842b1232302a4ca48a, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: 124711c0d5115ba4aae2498ff60e7010, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 63a8fb6f93eb55e44896cb603fe2429d, type: 3}
+    PortraitPage: {fileID: 2800000, guid: 1479cf1e7761e9541bcf01a7950d74f3, type: 3}
+    ModelPage: {fileID: 2800000, guid: e889527c572a8e64ea8eb39caab9aa74, type: 3}
+  - Id: c1007
+    Name: "\u7EF4\u5FB7\u745E"
+    Element: wind
+    Class: thief
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: 448e322fde635263bcdaef818bacc502, type: 3}
+    Card: {fileID: 21300000, guid: 000f566dae40570fb71e8be71276c376, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: 1fc8c70c515e513ea88829bd074402e8, type: 3}
+    ClassIcon: {fileID: 21300000, guid: 36e1a1966c47543694055c3a4ac533d3, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: fad30dfb16ab4974b9d96926be9c0074, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: f6a47255da3e2374c8fb57dbe8b510c9, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: 48ceeab5395776b41a1f743bd4f1e09e, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: c727bfeacb2b6ef40a0092851a9f0007, type: 3}
+    PortraitPage: {fileID: 2800000, guid: 16da3a7c76da86d46957ae496b2c2c65, type: 3}
+    ModelPage: {fileID: 2800000, guid: 287943d404155cb41b5ef9d42eee900d, type: 3}
+  - Id: c1008
+    Name: "\u4E9A\u654F"
+    Element: wind
+    Class: knight
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: 20337eb99a5d582f8d838c48433039e8, type: 3}
+    Card: {fileID: 21300000, guid: e26a46f84ce5593abedfb4448dd02694, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: 1fc8c70c515e513ea88829bd074402e8, type: 3}
+    ClassIcon: {fileID: 21300000, guid: 50a1bc58c7b135e4496e9b70e5062a87, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: 5a668c769a851f2488f1eb6898e386c0, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: 262c04dff255b9841a2ad973d73a45df, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: dd5ecd0380226ca4bb4dc448cf15b060, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 548a2305954635941b87fa001874e825, type: 3}
+    PortraitPage: {fileID: 2800000, guid: 9a927424dc8bdc540b136adf9919eb65, type: 3}
+    ModelPage: {fileID: 2800000, guid: cdbbda664e7d31f4ab5fd0b879488677, type: 3}
+  - Id: c1009
+    Name: "\u590F\u7EFF\u8482"
+    Element: fire
+    Class: knight
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: e9668edeb1b45f5fabb87351e8e5cb1c, type: 3}
+    Card: {fileID: 21300000, guid: e9d23099bf0f5f51b3d0ca5a57207925, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: 0c628788b569a3b48a97d60c9b405e67, type: 3}
+    ClassIcon: {fileID: 21300000, guid: 50a1bc58c7b135e4496e9b70e5062a87, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: 4a8327f4064aa2944988f02bd4ce58fd, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: a5e91ce3cfc7191468adcd154855fd13, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: 56fc5d882160156459b1757b1ab001aa, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: f2637db07402a0a45abfda3a01c9f55d, type: 3}
+    PortraitPage: {fileID: 2800000, guid: d93192116057c3c479c0efe36f36b542, type: 3}
+    ModelPage: {fileID: 2800000, guid: b7a327b5901c8bc429935c5ce5108901, type: 3}
+  - Id: c1010
+    Name: "\u6770\u62C9\u56FE"
+    Element: ice
+    Class: mage
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: 4649584fd4db547781e91608084d53b9, type: 3}
+    Card: {fileID: 21300000, guid: e76ecb728d1e5e41a061d50dfe0ac67e, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: c4381d6a80c91cb4d86a72515d4df803, type: 3}
+    ClassIcon: {fileID: 21300000, guid: 093bf47c26044c24c9dfdb2e13c755cf, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: a59a3d49b8f110b4b83e6098c6123c69, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: f18b77bc060076848908fd7b39debfbe, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: 8320d8f86cea4394abed81d9facb4bb4, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 9e9b835f351eb954fbef07f1fe5799d9, type: 3}
+    PortraitPage: {fileID: 2800000, guid: 27e19ffefb7e47a45a681e1b1490096d, type: 3}
+    ModelPage: {fileID: 2800000, guid: c7a4518d42536594ba956d7e556ee1c7, type: 3}
+  - Id: c1011
+    Name: "\u5361\u7433"
+    Element: ice
+    Class: thief
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: afb05d3456d75b53a1b37fe6dec14102, type: 3}
+    Card: {fileID: 21300000, guid: a0eef900bcb7541099e53bd86471b45a, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: c4381d6a80c91cb4d86a72515d4df803, type: 3}
+    ClassIcon: {fileID: 21300000, guid: 36e1a1966c47543694055c3a4ac533d3, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: 4501fdd848c66f441a8eeb970681f325, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: 068e4a1af5d128445940e7837900a8f7, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: deb98a3f47c6fa346b8f04d65d858421, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: de25e6104e36c3e4fbec707b6deb420c, type: 3}
+    PortraitPage: {fileID: 2800000, guid: 7ee850f660a9a994a96d5afd8984eab2, type: 3}
+    ModelPage: {fileID: 2800000, guid: da9c6d14134f6244fbc3b837c89a5638, type: 3}
+  - Id: c1012
+    Name: "\u79D1\u5C14\u5E03\u601D"
+    Element: fire
+    Class: warrior
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: 1fcdfee00a5c50b9a4732be28a0c6f9b, type: 3}
+    Card: {fileID: 21300000, guid: 42f191c206525feea81da1b4d1f62dd2, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: 0c628788b569a3b48a97d60c9b405e67, type: 3}
+    ClassIcon: {fileID: 21300000, guid: ab70e30159c054cdba7fef2f4197a5ba, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: 71ea4533171cf1a4fb1e8f13d7e49410, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: a3867550316be494c81b0151a065343e, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: 1de91a10fb8ec0840ad8e791b8950ef3, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: f4e4feed351d0aa45ad3d4ac3e695b19, type: 3}
+    PortraitPage: {fileID: 2800000, guid: d829c0b7ec54e594cb75957e79a30e5a, type: 3}
+    ModelPage: {fileID: 2800000, guid: ecc29c75603d4eb4291534d3fe14df40, type: 3}
+  - Id: c1013
+    Name: "\u5361\u5C14\u56FE\u54C8"
+    Element: wind
+    Class: warrior
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: ae934e69c0a05489afc29375d2f233b7, type: 3}
+    Card: {fileID: 21300000, guid: 75effa8fefd45c41bdfc643f94df0598, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: 1fc8c70c515e513ea88829bd074402e8, type: 3}
+    ClassIcon: {fileID: 21300000, guid: ab70e30159c054cdba7fef2f4197a5ba, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: c553db0acc565744483cc98319bba729, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: b24bf34f039fc5e4cbc5d69fe2a132e5, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: 7ef14e6aaeda7294db4f2d663a9663c0, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 964e2094f8b1b6e48a9cc3df867daee2, type: 3}
+    PortraitPage: {fileID: 2800000, guid: 999d25ce07ae2fa4abb4043e7b12598c, type: 3}
+    ModelPage: {fileID: 2800000, guid: fafb225a28f057348af7a2e372f764f4, type: 3}
+  - Id: c1014
+    Name: "\u5E2D\u5FB7"
+    Element: wind
+    Class: thief
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: bc23bcb05cfb5202bde46dc48cfd3c56, type: 3}
+    Card: {fileID: 21300000, guid: 2ac22e9494ff519c9e8544bbe6e28f52, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: 1fc8c70c515e513ea88829bd074402e8, type: 3}
+    ClassIcon: {fileID: 21300000, guid: 36e1a1966c47543694055c3a4ac533d3, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: 48dd38e6e974cbd46aeb9c53d487f999, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: e42ca17fccccfaa4bbd2458480220518, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: a06437e35795daf4881acf833657076a, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 54973e5c48ca5b04094e4993cd4c9f65, type: 3}
+    PortraitPage: {fileID: 2800000, guid: e1961fc4fc8a97a4cb87f8d0dccfbd64, type: 3}
+    ModelPage: {fileID: 2800000, guid: 87d1692c817f1d24198c6db2693f6c67, type: 3}
+  - Id: c1015
+    Name: "\u5DF4\u5C14\uFF06\u585E\u5C1A"
+    Element: fire
+    Class: mage
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: e1ab9ba896ab53ffa75cf53830eab883, type: 3}
+    Card: {fileID: 21300000, guid: a3895489f67d573bab000a8c199eaeda, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: 0c628788b569a3b48a97d60c9b405e67, type: 3}
+    ClassIcon: {fileID: 21300000, guid: 093bf47c26044c24c9dfdb2e13c755cf, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: ba5ea96947f3df1459d2e46fa1f92c19, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: ef6b676aad0114648bba3a3bbf8cab2b, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: a7180da1f1550014fae78c36c5c5e268, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: f21d1fb22d7b74f4b8ba6b1d6aacbd3d, type: 3}
+    PortraitPage: {fileID: 2800000, guid: 504a92d924d48a04f8ba8e7c6c2441b8, type: 3}
+    ModelPage: {fileID: 2800000, guid: 5a35f85f37557ed4f86bdc2d3673e8cc, type: 3}
+  - Id: c1016
+    Name: "\u4F18\u82AC\u59AE"
+    Element: wind
+    Class: warrior
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: b119c892076054aba89f7953e7bdf122, type: 3}
+    Card: {fileID: 21300000, guid: 89ace76fdb805fadb9db5944727ce35d, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: 1fc8c70c515e513ea88829bd074402e8, type: 3}
+    ClassIcon: {fileID: 21300000, guid: ab70e30159c054cdba7fef2f4197a5ba, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: c8640772998afe14f8bc202a753167c4, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: e6c1d7cc5facf0a4397e946b0766766d, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: 65d9ec4bcd25f1645b34d430327fec83, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 5f09ba1342934434cbb287efab8c3aa1, type: 3}
+    PortraitPage: {fileID: 2800000, guid: 78cf0d2265b7fe54891b3ec28424e9c6, type: 3}
+    ModelPage: {fileID: 2800000, guid: 956d37c8ee82afb49aeaac702baf99f4, type: 3}
+  - Id: c1017
+    Name: "\u96C5\u5361\u6CF0\u4E1D"
+    Element: fire
+    Class: soul_weaver
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: c4e428f1a4cf5b7c86b1a806c48ac3cf, type: 3}
+    Card: {fileID: 21300000, guid: b319e8cbff2850b98ec7904aeab14d84, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: 0c628788b569a3b48a97d60c9b405e67, type: 3}
+    ClassIcon: {fileID: 21300000, guid: c99872c1997abca4085510777ee17d9e, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: a3e5d24574c64134782b10ca9729b06b, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: 9b5604199bb82b240a6b70cb4ed5da85, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: 63c9ddfa4e2f6df408f785a156431920, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 580cee3c373463942955822ab8810f84, type: 3}
+    PortraitPage: {fileID: 2800000, guid: 35681b278f8f00e4786ee1bb93e10ad6, type: 3}
+    ModelPage: {fileID: 2800000, guid: 66c86945e05bc2d499673e83e298c48c, type: 3}
+  - Id: c1018
+    Name: "\u57C3\u5FB7\u52D2"
+    Element: ice
+    Class: soul_weaver
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: 2286363045d65ea7a622eae835d0e28d, type: 3}
+    Card: {fileID: 21300000, guid: 5736709e71d85622acd2fef81eacddb6, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: c4381d6a80c91cb4d86a72515d4df803, type: 3}
+    ClassIcon: {fileID: 21300000, guid: c99872c1997abca4085510777ee17d9e, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: a3de6f9a923e1a24daa1cd239aff96cb, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: 2f75db380f63700428244b062397d0a3, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: 2c013f600314f2548b2d67cdbb3955d1, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 757fa238f0e2be144832f6c5fa21754a, type: 3}
+    PortraitPage: {fileID: 2800000, guid: 91b2ca991f4aa0e4ca3010c024f93f7b, type: 3}
+    ModelPage: {fileID: 2800000, guid: 36fe3a1000218e743835e9a28f35fb36, type: 3}
+  - Id: c1019
+    Name: "\u841D\u83F2"
+    Element: fire
+    Class: warrior
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: 43aba22eca045d5da36509b264efc3a0, type: 3}
+    Card: {fileID: 21300000, guid: dcb868c4a5535d00aac34b04a468fe1f, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: 0c628788b569a3b48a97d60c9b405e67, type: 3}
+    ClassIcon: {fileID: 21300000, guid: ab70e30159c054cdba7fef2f4197a5ba, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: 471ee3d0b128a0449b273923b6f82e8c, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: 39de02abce7a3f54ab4c987773886c4a, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: 3e530ad8b7bf6504dad9deffdea4feda, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 171a438931b83e1458b110ef63e32f2d, type: 3}
+    PortraitPage: {fileID: 2800000, guid: eb09582b0643a834683fab25b4b0f7ba, type: 3}
+    ModelPage: {fileID: 2800000, guid: 19a8916798e0b72469576c2677d35a75, type: 3}
+  - Id: c1020
+    Name: "\u4FEE\u91CC"
+    Element: fire
+    Class: ranger
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: 10bf3f43d4f85343b12e96a92ec5f972, type: 3}
+    Card: {fileID: 21300000, guid: e92f2eac7b4f50c9896d3db9bdf6948e, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: 0c628788b569a3b48a97d60c9b405e67, type: 3}
+    ClassIcon: {fileID: 21300000, guid: ecd53c2f9ea05742a2119a180ad27b97, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: 6d4ceb8179ee28a4c9a7154481976b1d, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: 9383ef4fc07314048ab8a74ea896a9de, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: 137d667b2549bd649b14f2228bb490cb, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 5b83db22d4be8f64498da6cf50ed2aad, type: 3}
+    PortraitPage: {fileID: 2800000, guid: 38d408d941753394ca0a55c7bde5c47e, type: 3}
+    ModelPage: {fileID: 2800000, guid: ed1f7c67a62484a47bd766a5aad685fc, type: 3}
+  - Id: c1021
+    Name: "\u6C40\u679C"
+    Element: fire
+    Class: warrior
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: c109ca7f1d6952e08e81df7d08065a03, type: 3}
+    Card: {fileID: 21300000, guid: 7e5076cea9545c3ab849f8b46e4a1ef4, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: 0c628788b569a3b48a97d60c9b405e67, type: 3}
+    ClassIcon: {fileID: 21300000, guid: ab70e30159c054cdba7fef2f4197a5ba, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: ae3833f7469b3714b81c447445b61267, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: d06240e149bb098439250ddc4a1a13f8, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: 236e29a863548de44844375bd273d7c9, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 64114806f808e5a4498c11956bf48be8, type: 3}
+    PortraitPage: {fileID: 2800000, guid: 3e21a86575335514387ee6fe515552e9, type: 3}
+    ModelPage: {fileID: 2800000, guid: 4de95605cc375b6498745d76cb85cd59, type: 3}
+  - Id: c1022
+    Name: "\u5149\u4E4B\u745E\u513F"
+    Element: light
+    Class: soul_weaver
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: 3af817f59e6f536682897677d6c80eb8, type: 3}
+    Card: {fileID: 21300000, guid: 1f841e66fc7e5d00ac18ed5210ce9b3b, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: 2c3850f8066c5f51a8c3a6203840e6fc, type: 3}
+    ClassIcon: {fileID: 21300000, guid: c99872c1997abca4085510777ee17d9e, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: 7e6390991f5b4d143a1b183041d04755, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: 291930363621b404c8eda1092675ab1d, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: 29001777f195b9e499007062fd8c4d62, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 328c1684ab163794083d22611513ed1a, type: 3}
+    PortraitPage: {fileID: 2800000, guid: cbdd59516a27aa24f8f1633a372e08c2, type: 3}
+    ModelPage: {fileID: 2800000, guid: fbd30bdde6a60774381ca608e883cb3d, type: 3}
+  - Id: c1023
+    Name: "\u51EF\u9686"
+    Element: fire
+    Class: thief
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: e4bc80d884945b2391b50ab81938eb6a, type: 3}
+    Card: {fileID: 21300000, guid: 5c60e4116fbc5879abe290e0cac9c159, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: 0c628788b569a3b48a97d60c9b405e67, type: 3}
+    ClassIcon: {fileID: 21300000, guid: 36e1a1966c47543694055c3a4ac533d3, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: 49012964336f68044905a8be644324c2, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: b0d6526d8d1b2d94c96d1a5043b853a5, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: 947b17b7a81cbd74599630b880ca1b32, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: d88d5d2326668ca43ba0eb3b5556ec87, type: 3}
+    PortraitPage: {fileID: 2800000, guid: 1ad34e99811fc7541b7c2896617c7325, type: 3}
+    ModelPage: {fileID: 2800000, guid: 3e102699f9329a541bf7203b0e7180b8, type: 3}
+  - Id: c1024
+    Name: "\u4F0A\u8D5B\u4E3D\u4E9A"
+    Element: wind
+    Class: ranger
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: 036a5c25539256aa89d9c6c46ca492dd, type: 3}
+    Card: {fileID: 21300000, guid: a895a37223865ae9a759560a118cc100, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: 1fc8c70c515e513ea88829bd074402e8, type: 3}
+    ClassIcon: {fileID: 21300000, guid: ecd53c2f9ea05742a2119a180ad27b97, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: d4520ad4c6bb88c40ad5abc6741f2491, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: 05a6533491222fc408921344c39b9010, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: cafe34b3962c22d4795cf0e48ca4732a, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 52075197569ec2a4ab149e0c49189990, type: 3}
+    PortraitPage: {fileID: 2800000, guid: 19b2417f23df1af44a71007233ead447, type: 3}
+    ModelPage: {fileID: 2800000, guid: bfa5ac20439dc9d4db18067829252f19, type: 3}
+  - Id: c1027
+    Name: "\u67E5\u5C14\u65AF"
+    Element: wind
+    Class: knight
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: fd0ae3cacc8b57d69cf97cf0cdf3abf3, type: 3}
+    Card: {fileID: 21300000, guid: 7c843771788a5bcbb02a94df9ba56984, type: 3}
+    Illustration: {fileID: 21300000, guid: 35ae5cce2af45296ace722a378fa2758, type: 3}
+    ElementIcon: {fileID: 21300000, guid: 1fc8c70c515e513ea88829bd074402e8, type: 3}
+    ClassIcon: {fileID: 21300000, guid: 50a1bc58c7b135e4496e9b70e5062a87, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: 6f799cd6dcf5bf04f9c456c96bf073be, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: 0b9fc2d27222ea449ae47af9e32d1a10, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: f2e5b91e9457e1548ab529cb64716a86, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: e6f5a83edf8381841a4a17c08229a614, type: 3}
+    PortraitPage: {fileID: 2800000, guid: caeefd42b6906754fb89e27b82868b56, type: 3}
+    ModelPage: {fileID: 2800000, guid: 8da15d2a08e21d04fb5ba500a6555c3a, type: 3}
+  - Id: c1028
+    Name: "\u514B\u83B1\u8389\u838E"
+    Element: ice
+    Class: warrior
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: 327cde401301574289bc95708689ae2b, type: 3}
+    Card: {fileID: 21300000, guid: 51ec9bc48ee55b46b98250828c5a4fe2, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: c4381d6a80c91cb4d86a72515d4df803, type: 3}
+    ClassIcon: {fileID: 21300000, guid: ab70e30159c054cdba7fef2f4197a5ba, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: 76b00db61f90cde4bb0f20c825f56837, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: 020b5db8775443946937ba73189041f6, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: 7918fc6a58154c64dbefb6c220bb404b, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: c64c39dd7fd43c14a924f6e16e4e7ecc, type: 3}
+    PortraitPage: {fileID: 2800000, guid: b76d52a598cdf5b42a5b28fcbf6d2847, type: 3}
+    ModelPage: {fileID: 2800000, guid: 416364c5baa76f644848cfe9c62e3b60, type: 3}
+  - Id: c1029
+    Name: "\u96F7\u6B27"
+    Element: wind
+    Class: ranger
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: 79bb02e8e9ad504a8fea7214d32b6551, type: 3}
+    Card: {fileID: 21300000, guid: 90c90d7d0b435e4ab95bd532b58ae081, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: 1fc8c70c515e513ea88829bd074402e8, type: 3}
+    ClassIcon: {fileID: 21300000, guid: ecd53c2f9ea05742a2119a180ad27b97, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: 99163ee2ce4ec5b4e9751e9c3a81108c, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: 7cd53b9550d4ffe4496ce6230b1fb9ed, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: b0b05e3d2f37f6044ac8e17ffdd2e50c, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 000e954d06333224fb78023ee5d70e8b, type: 3}
+    PortraitPage: {fileID: 2800000, guid: fc64d1066f617b545a36fddeb4472fcf, type: 3}
+    ModelPage: {fileID: 2800000, guid: dad423c360e47df4e917ed20c21afa48, type: 3}
+  - Id: c1030
+    Name: "\u5C24\u5A1C"
+    Element: ice
+    Class: ranger
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: da9c90708a9d5d1d8641c697e871b249, type: 3}
+    Card: {fileID: 21300000, guid: 31875815c1f85765a58c2897c5aa6421, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: c4381d6a80c91cb4d86a72515d4df803, type: 3}
+    ClassIcon: {fileID: 21300000, guid: ecd53c2f9ea05742a2119a180ad27b97, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: bcf737681fd17ec41b2bce10e7c4d10b, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: a2dc478b4da57b94b98d3293ddef69c4, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: bcc791543dbe51c48b09995dc209d1c5, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 2c252197031ca2c41890e5de9b586266, type: 3}
+    PortraitPage: {fileID: 2800000, guid: d933e12260736dc44a631640eb49a629, type: 3}
+    ModelPage: {fileID: 2800000, guid: 06bdd24b038f56b47b18013ae2a9482b, type: 3}
+  - Id: c1031
+    Name: "\u62C9\u5179"
+    Element: wind
+    Class: soul_weaver
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: 95cc45e35e0e54c3b6897f27a908a7ca, type: 3}
+    Card: {fileID: 21300000, guid: 139df6a0d6895ea9ae22e3b950bc74d5, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: 1fc8c70c515e513ea88829bd074402e8, type: 3}
+    ClassIcon: {fileID: 21300000, guid: c99872c1997abca4085510777ee17d9e, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: 67094add024528247bdefe787bf57329, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: 7d0c900ca12ab36479b3903dd14dd3b9, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: d404d85c7cf1c0c4486e30c070c5f1a2, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: ced10dab62955744fbfb697f989f989b, type: 3}
+    PortraitPage: {fileID: 2800000, guid: cc830adcf71e0de4597ffa63dc88b86e, type: 3}
+    ModelPage: {fileID: 2800000, guid: cd25dfec5acda96499db727278d97b71, type: 3}
+  - Id: c1062
+    Name: "\u5B89\u6D01\u8389\u5361"
+    Element: ice
+    Class: soul_weaver
+    Level: 60
+    Stars: 6
+    Face: {fileID: 21300000, guid: 70dd63de62ab84546bb9ad1f6201901a, type: 3}
+    Card: {fileID: 21300000, guid: 3afca5907d3e5476925d1b665172484d, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: c4381d6a80c91cb4d86a72515d4df803, type: 3}
+    ClassIcon: {fileID: 21300000, guid: c99872c1997abca4085510777ee17d9e, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: 5de454b7253bdd34f87d353784031d06, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: 5e3bcab32e9f7cf42844fb4e784f773c, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: 11819ff6121a6ce48ae6202698c28558, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 9cad130ffe4a5f848a63740f62a24665, type: 3}
+    PortraitPage: {fileID: 2800000, guid: ea32c45f2505c5044b116e5055435f07, type: 3}
+    ModelPage: {fileID: 2800000, guid: db1573e9fb447434abfe032107dc2a4d, type: 3}
+  ScoreDigits:
+  - {fileID: 21300000, guid: 81990abd4cad51e1b0d739066cc01859, type: 3}
+  - {fileID: 21300000, guid: 3cf74a1895b957289cc41c0d28d052e3, type: 3}
+  - {fileID: 21300000, guid: f811f8397a4552d7be289a3dba24333e, type: 3}
+  - {fileID: 21300000, guid: f6162cb902b15a53a24006112fbeff99, type: 3}
+  - {fileID: 21300000, guid: aab5af25c4bf5db9b5ed314e48d6343f, type: 3}
+  - {fileID: 21300000, guid: 6a7b6cab38e55343a70c1e329e56234c, type: 3}
+  - {fileID: 21300000, guid: 7c25b5fb1eec5a14a1d02df1ec4576dd, type: 3}
+  - {fileID: 21300000, guid: bd9cd0b6c3f55b129df68b2df6f4579f, type: 3}
+  - {fileID: 21300000, guid: 6fc484e6c656531d8e511323d71ddd17, type: 3}
+  - {fileID: 21300000, guid: abaa74d91bc45521859024ea35cd1a09, type: 3}

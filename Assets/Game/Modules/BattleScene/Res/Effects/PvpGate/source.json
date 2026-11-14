@@ -1,0 +1,533 @@
+{
+  "schemaVersion": 1,
+  "converterSha256": "6dacb9c4857aca8051a20a24f17cdd64ce72d058a0cbbe1cf8ad06f78025a707",
+  "roots": [
+    "effect/pvp_battle_ready.cfx",
+    "effect/pvp_battle_igni.cfx",
+    "effect/treff_pd_pvp_battle_close.cfx",
+    "effect/treff_pd_pvp_battle_open.cfx"
+  ],
+  "files": [
+    {
+      "source": "原始资源/effect/pvp_battle_igni.cfx",
+      "sourceSha256": "b3a05ed1076a6bdee7bb0f74fcc33671b4200f10d84ca0df5c879fa95a45d7b9",
+      "asset": "pvp_battle_igni.cfx.json",
+      "dependencies": [
+        "Particles/pvp_igni_pati.particle.json",
+        "pvp_ready_font_fast.spine.json"
+      ],
+      "assetSha256": "0a1396869e52dc38c676b4f24fed12d8e58c165d5a60e3406a1c378792f744a1"
+    },
+    {
+      "source": "原始资源/effect/pvp_battle_ready.cfx",
+      "sourceSha256": "16dd09f2b102c8a1062a0b6f10172f57c9806d22a5d4fae710a021dc17b68a63",
+      "asset": "pvp_battle_ready.cfx.json",
+      "dependencies": [
+        "Particles/pvp_igni_pati.particle.json",
+        "Particles/pvp_prepare_pati.particle.json",
+        "pvp_ready_font.spine.json",
+        "Particles/pvp_ready_pati.particle.json"
+      ],
+      "assetSha256": "3558c39e56ada57f5e332d69f33d5e5a85357deb2b661c35a4462b6376776509"
+    },
+    {
+      "source": "原始资源/effect/pvp_igni_pati.particle",
+      "sourceSha256": "0a5fdae84a08c1bcaebeb39e55772358df8fbcf4d82358ed2115004860ff688b",
+      "asset": "Particles/pvp_igni_pati.particle.json",
+      "dependencies": [
+        "../Hud/Particles/aura_04.png",
+        "../Hud/Particles/pati_01.png",
+        "../Hud/Particles/ticle_02.png"
+      ],
+      "assetSha256": "c3141c7a24aa8dd02e7d60d804516a53818eca836234e17749285c16bc1fb773"
+    },
+    {
+      "source": "原始资源/effect/pvp_prepare_pati.particle",
+      "sourceSha256": "d42a7343c9e436c3a662aec360b363525e8f7e6619e488182c14bb75e377932b",
+      "asset": "Particles/pvp_prepare_pati.particle.json",
+      "dependencies": [
+        "../Hud/Particles/pati_01.png"
+      ],
+      "assetSha256": "f159b2b00af0aa3a55ada2adbc8bd9089e2b0541e393d634f417a3e2ef08e6d7"
+    },
+    {
+      "source": "原始资源/effect/pvp_ready_font.atlas",
+      "sourceSha256": "8b11048172fc42885b2d41f7e1d2bb6e3a18ea2bd505e6e9c3f90b884ecd7e08",
+      "asset": "pvp_ready_font.atlas.txt",
+      "dependencies": [
+        "pvp_ready_font.png"
+      ],
+      "assetSha256": "8b11048172fc42885b2d41f7e1d2bb6e3a18ea2bd505e6e9c3f90b884ecd7e08"
+    },
+    {
+      "source": "原始资源/effect/pvp_ready_font.scsp",
+      "sourceSha256": "e8674af53be75ce3c28e9c67e2c3c9c2499ac994e984baee1a693022a5cbbf2a",
+      "asset": "pvp_ready_font.spine.json",
+      "dependencies": [
+        "pvp_ready_font.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 3.3333001136779785
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "pvp_ready_font.sct",
+          "asset": "pvp_ready_font.png"
+        }
+      ],
+      "assetSha256": "655e781a68b6e2d5d023e90b0a3c2c6388368c0ba56f6fb478cfe619fac106a1"
+    },
+    {
+      "source": "原始资源/effect/pvp_ready_font.sct",
+      "sourceSha256": "b32c4f5ddea621304dfa58722ea3ae006a62272442405becfb9ee1063d139e09",
+      "asset": "pvp_ready_font.png",
+      "dependencies": [],
+      "texture": {
+        "width": 1207,
+        "height": 249,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "432c1058b8d4e0e191a7a59d2f9319a44c74bb4fd6e45c95da521bf05f1a9705"
+    },
+    {
+      "source": "原始资源/effect/pvp_ready_font_fast.atlas",
+      "sourceSha256": "efb98e6e7ddfbcf693be1d8166903cd4b3854f1b02361443fc61ab372643b072",
+      "asset": "pvp_ready_font_fast.atlas.txt",
+      "dependencies": [
+        "pvp_ready_font_fast.png"
+      ],
+      "assetSha256": "efb98e6e7ddfbcf693be1d8166903cd4b3854f1b02361443fc61ab372643b072"
+    },
+    {
+      "source": "原始资源/effect/pvp_ready_font_fast.scsp",
+      "sourceSha256": "b522b3ccea97458524e56f29e902e8ba92868562b6071f345e16d58cd1a89613",
+      "asset": "pvp_ready_font_fast.spine.json",
+      "dependencies": [
+        "pvp_ready_font_fast.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 1.3666000366210938
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "pvp_ready_font_fast.sct",
+          "asset": "pvp_ready_font_fast.png"
+        }
+      ],
+      "assetSha256": "3132d1fcfdd5d01e9ac3449e930800146de4ac9c535eecb7239e3e7a16edb69e"
+    },
+    {
+      "source": "原始资源/effect/pvp_ready_font_fast.sct",
+      "sourceSha256": "06c5ea37cd63c70016f4cbb7a4e6f6a67958c119a345accbe8acf97acf8b6cc6",
+      "asset": "pvp_ready_font_fast.png",
+      "dependencies": [],
+      "texture": {
+        "width": 457,
+        "height": 489,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "5ced699978a5412890c5c31539585e47961a36a399ba0229856a0f23d8c4e814"
+    },
+    {
+      "source": "原始资源/effect/pvp_ready_pati.particle",
+      "sourceSha256": "841a5029e5a7852e210a88720b6d1e266421f1fa6b606ff572010e909fd42812",
+      "asset": "Particles/pvp_ready_pati.particle.json",
+      "dependencies": [
+        "../Hud/Particles/pati_01.png"
+      ],
+      "assetSha256": "41a6d4f0cffe4205fd244c5e5f3a84dce7fc105515c142cecc05e545a3179838"
+    },
+    {
+      "source": "原始资源/effect/treff_pd_pvp_battle_close.cfx",
+      "sourceSha256": "76ab87df01e80642bcad16583c48767604b0a3a21497bcfc4c382fc3c4adc98d",
+      "asset": "treff_pd_pvp_battle_close.cfx.json",
+      "dependencies": [
+        "treff_pd_pvp_battle_close_b.spine.json",
+        "treff_pd_pvp_battle_close_f.spine.json",
+        "treff_pd_pvp_battle_close_m.spine.json",
+        "treff_pd_pvp_battle_pp_close.spine.json"
+      ],
+      "assetSha256": "6b7c56676f50eb226438f4aa8a323e29472f753fbee328f6843d0bc713fd777f"
+    },
+    {
+      "source": "原始资源/effect/treff_pd_pvp_battle_close_b.atlas",
+      "sourceSha256": "9d8c302e0d2ec81066bf6d3e29073f26ac1323391e7dd8f99dd2ebcf3a78f721",
+      "asset": "treff_pd_pvp_battle_close_b.atlas.txt",
+      "dependencies": [
+        "treff_pd_pvp_battle_close_b.png"
+      ],
+      "assetSha256": "9d8c302e0d2ec81066bf6d3e29073f26ac1323391e7dd8f99dd2ebcf3a78f721"
+    },
+    {
+      "source": "原始资源/effect/treff_pd_pvp_battle_close_b.scsp",
+      "sourceSha256": "0484958271e617a30c3094e47f0e10ba0866d253f79700be2efe862cf5bafc89",
+      "asset": "treff_pd_pvp_battle_close_b.spine.json",
+      "dependencies": [
+        "treff_pd_pvp_battle_close_b.atlas.txt"
+      ],
+      "spineVersion": "3.8.99",
+      "animations": [
+        {
+          "name": "loop",
+          "duration": 0.0
+        },
+        {
+          "name": "start",
+          "duration": 1.7000000476837158
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "treff_pd_pvp_battle_close_b.sct",
+          "asset": "treff_pd_pvp_battle_close_b.png"
+        }
+      ],
+      "assetSha256": "14f3351ef706dae1f072e527d716b82c8d1fbf38b4625a5bf56811e7b8e95f18"
+    },
+    {
+      "source": "原始资源/effect/treff_pd_pvp_battle_close_b.sct",
+      "sourceSha256": "4bff445cda3c987b91d63ffdd4e378e3cee4e0dc41edcc290d2e0d7e9e7fab88",
+      "asset": "treff_pd_pvp_battle_close_b.png",
+      "dependencies": [],
+      "texture": {
+        "width": 1364,
+        "height": 640,
+        "encoding": "SCT2:40",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "62c83fffb9a461b3873d105995f611d217448fd7a988a0e79bf2067ec8789248"
+    },
+    {
+      "source": "原始资源/effect/treff_pd_pvp_battle_close_f.atlas",
+      "sourceSha256": "c30d7f062e9aefea6fe7e7cb1d6ebce9dd51a8a1df8b668a796257d815c14dd1",
+      "asset": "treff_pd_pvp_battle_close_f.atlas.txt",
+      "dependencies": [
+        "treff_pd_pvp_battle_close_f.png"
+      ],
+      "assetSha256": "c30d7f062e9aefea6fe7e7cb1d6ebce9dd51a8a1df8b668a796257d815c14dd1"
+    },
+    {
+      "source": "原始资源/effect/treff_pd_pvp_battle_close_f.scsp",
+      "sourceSha256": "fa99baaf9a1542b45c447af15aeca22c14f51ff6819df0009be806172165e31e",
+      "asset": "treff_pd_pvp_battle_close_f.spine.json",
+      "dependencies": [
+        "treff_pd_pvp_battle_close_f.atlas.txt"
+      ],
+      "spineVersion": "3.8.99",
+      "animations": [
+        {
+          "name": "loop",
+          "duration": 0.0
+        },
+        {
+          "name": "start",
+          "duration": 1.7000000476837158
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "treff_pd_pvp_battle_close_f.sct",
+          "asset": "treff_pd_pvp_battle_close_f.png"
+        }
+      ],
+      "assetSha256": "23074e526e949f0285c19aa0d1d6816ecdd13b5701d76ea339eb5b13c9d0300f"
+    },
+    {
+      "source": "原始资源/effect/treff_pd_pvp_battle_close_f.sct",
+      "sourceSha256": "94d802335ee28f44ebe6f430892f11cc55f21e181192ede87ee2adafffefd917",
+      "asset": "treff_pd_pvp_battle_close_f.png",
+      "dependencies": [],
+      "texture": {
+        "width": 1668,
+        "height": 908,
+        "encoding": "SCT2:40",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "5299358beaa554e594065ac829b87c2949d78e5d0054ca6bd40aa0101bf23c5f"
+    },
+    {
+      "source": "原始资源/effect/treff_pd_pvp_battle_close_m.atlas",
+      "sourceSha256": "9b3605e3f4d42de2151c27b5ef8c3a8fdc9c82ee248333cce01c65151a9b7ccd",
+      "asset": "treff_pd_pvp_battle_close_m.atlas.txt",
+      "dependencies": [
+        "treff_pd_pvp_battle_close_m.png"
+      ],
+      "assetSha256": "9b3605e3f4d42de2151c27b5ef8c3a8fdc9c82ee248333cce01c65151a9b7ccd"
+    },
+    {
+      "source": "原始资源/effect/treff_pd_pvp_battle_close_m.scsp",
+      "sourceSha256": "cf7eb2cdfd4ddc62415899bcf549fa433d4b36754f4f15401c437edbe21fab44",
+      "asset": "treff_pd_pvp_battle_close_m.spine.json",
+      "dependencies": [
+        "treff_pd_pvp_battle_close_m.atlas.txt"
+      ],
+      "spineVersion": "3.8.99",
+      "animations": [
+        {
+          "name": "loop",
+          "duration": 0.5
+        },
+        {
+          "name": "start",
+          "duration": 2.733299970626831
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "treff_pd_pvp_battle_close_m.sct",
+          "asset": "treff_pd_pvp_battle_close_m.png"
+        }
+      ],
+      "assetSha256": "00b9227b8b709c8300426f7cea185e085f7f08a76ef92428d426406793e7a17c"
+    },
+    {
+      "source": "原始资源/effect/treff_pd_pvp_battle_close_m.sct",
+      "sourceSha256": "16cfca713578a70247e69e5117717205d4972e6fa057951641484d779f534a54",
+      "asset": "treff_pd_pvp_battle_close_m.png",
+      "dependencies": [],
+      "texture": {
+        "width": 1368,
+        "height": 600,
+        "encoding": "SCT2:40",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "c5fddcbc3dd9235da58f6793adeb672ab9740be229ddbee32649f7806beea36d"
+    },
+    {
+      "source": "原始资源/effect/treff_pd_pvp_battle_open.cfx",
+      "sourceSha256": "d1ab2762df8fcfc8c0dc152d6b6800228fedb80cb4290d932582b6efacaafda2",
+      "asset": "treff_pd_pvp_battle_open.cfx.json",
+      "dependencies": [
+        "treff_pd_pvp_battle_open_b.spine.json",
+        "treff_pd_pvp_battle_open_f.spine.json",
+        "treff_pd_pvp_battle_open_ff.spine.json"
+      ],
+      "assetSha256": "3edbb594bbd98ebe7e2de832a8fa3fc42245eea2caa9e5fccb80be455446657f"
+    },
+    {
+      "source": "原始资源/effect/treff_pd_pvp_battle_open_b.atlas",
+      "sourceSha256": "a1fc0a733abc81927a5cc57a4fc555b88215129fda3d7943db5a7cfa2cf50803",
+      "asset": "treff_pd_pvp_battle_open_b.atlas.txt",
+      "dependencies": [
+        "treff_pd_pvp_battle_open_b.png"
+      ],
+      "assetSha256": "a1fc0a733abc81927a5cc57a4fc555b88215129fda3d7943db5a7cfa2cf50803"
+    },
+    {
+      "source": "原始资源/effect/treff_pd_pvp_battle_open_b.scsp",
+      "sourceSha256": "8bbddf8c3fef8be237a7f3099aad3339e9765333d775548326fa4fb31bdf8847",
+      "asset": "treff_pd_pvp_battle_open_b.spine.json",
+      "dependencies": [
+        "treff_pd_pvp_battle_open_b.atlas.txt"
+      ],
+      "spineVersion": "3.8.99",
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 1.5
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "treff_pd_pvp_battle_open_b.sct",
+          "asset": "treff_pd_pvp_battle_open_b.png"
+        }
+      ],
+      "assetSha256": "63c1b34d06496338f64064036d284b95c8ac9937f11aa05c131e26c4f2ee0cf0"
+    },
+    {
+      "source": "原始资源/effect/treff_pd_pvp_battle_open_b.sct",
+      "sourceSha256": "4bff445cda3c987b91d63ffdd4e378e3cee4e0dc41edcc290d2e0d7e9e7fab88",
+      "asset": "treff_pd_pvp_battle_open_b.png",
+      "dependencies": [],
+      "texture": {
+        "width": 1364,
+        "height": 640,
+        "encoding": "SCT2:40",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "62c83fffb9a461b3873d105995f611d217448fd7a988a0e79bf2067ec8789248"
+    },
+    {
+      "source": "原始资源/effect/treff_pd_pvp_battle_open_f.atlas",
+      "sourceSha256": "ad2506d9853eddf1d433fac99615df0763329434b7f2a2dfc8c567ce4d52607c",
+      "asset": "treff_pd_pvp_battle_open_f.atlas.txt",
+      "dependencies": [
+        "treff_pd_pvp_battle_open_f.png"
+      ],
+      "assetSha256": "ad2506d9853eddf1d433fac99615df0763329434b7f2a2dfc8c567ce4d52607c"
+    },
+    {
+      "source": "原始资源/effect/treff_pd_pvp_battle_open_f.scsp",
+      "sourceSha256": "628031260efdc4fdff483cf5e3e9ccd6fe59d64c46503be1732da4850ec6d544",
+      "asset": "treff_pd_pvp_battle_open_f.spine.json",
+      "dependencies": [
+        "treff_pd_pvp_battle_open_f.atlas.txt"
+      ],
+      "spineVersion": "3.8.99",
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 0.833299994468689
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "treff_pd_pvp_battle_open_f.sct",
+          "asset": "treff_pd_pvp_battle_open_f.png"
+        }
+      ],
+      "assetSha256": "4bd56583c295298783389a5a4e838944032a49b2e970e490f9dee71d1232cb89"
+    },
+    {
+      "source": "原始资源/effect/treff_pd_pvp_battle_open_f.sct",
+      "sourceSha256": "800e873cfa81621d071327d52876327aa408c5262c6393d5b981ff4fdc5faa02",
+      "asset": "treff_pd_pvp_battle_open_f.png",
+      "dependencies": [],
+      "texture": {
+        "width": 1292,
+        "height": 1024,
+        "encoding": "SCT2:40",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "e180b4fff28f2fd986a7dae52a96b772780b3f73b64711fe54a870e66118050c"
+    },
+    {
+      "source": "原始资源/effect/treff_pd_pvp_battle_open_ff.atlas",
+      "sourceSha256": "eae55177fa530f320316ce7065a5d06b2d67c122f625de6f187877344f8f8238",
+      "asset": "treff_pd_pvp_battle_open_ff.atlas.txt",
+      "dependencies": [
+        "treff_pd_pvp_battle_open_ff.png"
+      ],
+      "assetSha256": "eae55177fa530f320316ce7065a5d06b2d67c122f625de6f187877344f8f8238"
+    },
+    {
+      "source": "原始资源/effect/treff_pd_pvp_battle_open_ff.scsp",
+      "sourceSha256": "fac6d0295804360790e8238d0f279680dae527eabc6a86990987f12a5c62e76c",
+      "asset": "treff_pd_pvp_battle_open_ff.spine.json",
+      "dependencies": [
+        "treff_pd_pvp_battle_open_ff.atlas.txt"
+      ],
+      "spineVersion": "3.8.99",
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 0.800000011920929
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "treff_pd_pvp_battle_open_ff.sct",
+          "asset": "treff_pd_pvp_battle_open_ff.png"
+        }
+      ],
+      "assetSha256": "62f77a2d6c53e953274c64b19ddf33503bb36d82e5e942ccc52c5b2bd21e12d5"
+    },
+    {
+      "source": "原始资源/effect/treff_pd_pvp_battle_open_ff.sct",
+      "sourceSha256": "7629ecb3c7369f99dc32472c4beeae4eb2818bb2f41e1c9143ee29f6fd1560ec",
+      "asset": "treff_pd_pvp_battle_open_ff.png",
+      "dependencies": [],
+      "texture": {
+        "width": 512,
+        "height": 508,
+        "encoding": "SCT2:40",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "a5683056951c6772d59533d51429232894e207c3a3fed5ae027da0f178cdec7b"
+    },
+    {
+      "source": "原始资源/effect/treff_pd_pvp_battle_pp_close.atlas",
+      "sourceSha256": "efa3d70d3db0d0a4987f8f6113f55a92b3385361f187173c5bd3b8ed03ee351b",
+      "asset": "treff_pd_pvp_battle_pp_close.atlas.txt",
+      "dependencies": [
+        "treff_pd_pvp_battle_pp_close.png"
+      ],
+      "assetSha256": "efa3d70d3db0d0a4987f8f6113f55a92b3385361f187173c5bd3b8ed03ee351b"
+    },
+    {
+      "source": "原始资源/effect/treff_pd_pvp_battle_pp_close.scsp",
+      "sourceSha256": "3bd5a09735032912c346853f66d8405d7e498596cf0cef61c0894791adec985a",
+      "asset": "treff_pd_pvp_battle_pp_close.spine.json",
+      "dependencies": [
+        "treff_pd_pvp_battle_pp_close.atlas.txt"
+      ],
+      "spineVersion": "3.8.99",
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 2.6666998863220215
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "treff_pd_pvp_battle_pp_close.sct",
+          "asset": "treff_pd_pvp_battle_pp_close.png"
+        }
+      ],
+      "assetSha256": "e50dae45a4cc62438758df21260beffb3fe113e9fd01b498c9b7c7dc4106da55"
+    },
+    {
+      "source": "原始资源/effect/treff_pd_pvp_battle_pp_close.sct",
+      "sourceSha256": "72a5fac1705a8e8b976323b6be9742151777db38758b716a1da70d277dfc9782",
+      "asset": "treff_pd_pvp_battle_pp_close.png",
+      "dependencies": [],
+      "texture": {
+        "width": 128,
+        "height": 1144,
+        "encoding": "SCT2:40",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "b2031a274ed7729f38a094468130d08a37578ec34e7ed8ac76a38243f1bf8220"
+    },
+    {
+      "source": "原始资源/particle/aura_04.sct",
+      "sourceSha256": "64e3d4e72158a90a11eaac129ad00f0d6f9a22a0859fc04b2a27ffe15a9b63a1",
+      "asset": "../Hud/Particles/aura_04.png",
+      "dependencies": [],
+      "texture": {
+        "width": 128,
+        "height": 128,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "27ea6b15b4f9f7b0fe98760741f7cd79061514d3b48029e10e0eb034a03da5f4"
+    },
+    {
+      "source": "原始资源/particle/pati_01.sct",
+      "sourceSha256": "c54340504fd79d0844917fd4e69d46ba4261e31061c3f1edfaf005263410db59",
+      "asset": "../Hud/Particles/pati_01.png",
+      "dependencies": [],
+      "texture": {
+        "width": 120,
+        "height": 120,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "b781ef81c5198b0e2f2124edba9756e7de944947f1edc54eba66672bf2251fd5"
+    },
+    {
+      "source": "原始资源/particle/ticle_02.sct",
+      "sourceSha256": "8f536d32d8984e0370e17ab9f1291be45b3908afce37ea8cb057ae1df4d2b9d2",
+      "asset": "../Hud/Particles/ticle_02.png",
+      "dependencies": [],
+      "texture": {
+        "width": 66,
+        "height": 66,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "1be5fa2daba5583e21856ff31fff66b5a72d5e5ba8f1bcc15b9448a065e43007"
+    }
+  ]
+}

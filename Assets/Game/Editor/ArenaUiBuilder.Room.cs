@@ -8,6 +8,14 @@ namespace AstralOath.Editor
 {
     public static partial class ArenaUiBuilder
     {
+        private static GameButton DraftOption(RectTransform root, string name, float x, float w, out GameText label)
+        {
+            var rect = Area(root, name, x, .031f, w, .938f);
+            var button = Button(rect, Art("_btn_small_black"), Color.white);
+            label = Text(rect, "Value", null, 21, .035f, 0, .93f, 1, Mist, TextAlignmentOptions.Center);
+            return button;
+        }
+
         private static GameObject BuildCreate()
         {
             var root = Root("ArenaCreateRoom");
@@ -62,11 +70,18 @@ namespace AstralOath.Editor
             denySelection.enabled = false;
             Text(card, "Rules label", "arena.rules", 30, .05f, .638f, .19f, .070f, Mist);
             var rules = Scroll(card, "Rules", .256f, .510f, .719f, .345f, horizontal: true);
+            var draftOptions = Area(card, "Basic draft settings", .259f, .789f, .70f, .062f);
+            var prebanCount = DraftOption(draftOptions, "Preban count", 0, .356f, out var prebanLabel);
+            var firstPick = DraftOption(draftOptions, "First pick", .367f, .273f, out var firstPickLabel);
+            var protection = DraftOption(draftOptions, "Ban protection", .651f, .349f, out var protectionLabel);
             var keys = new System.Collections.Generic.List<(string, Object)>
             {
                 ("name", name), ("password", password), ("passwordState", passwordState), ("locked", toggle),
                 ("allow", allow), ("deny", deny), ("allowCaption", allowCaption), ("denyCaption", denyCaption),
-                ("allowSelection", allowSelection), ("denySelection", denySelection), ("rules", rules)
+                ("allowSelection", allowSelection), ("denySelection", denySelection), ("rules", rules),
+                ("draftOptions", draftOptions.gameObject), ("prebanCount", prebanCount), ("firstPick", firstPick),
+                ("banProtection", protection), ("prebanLabel", prebanLabel), ("firstPickLabel", firstPickLabel),
+                ("protectionLabel", protectionLabel)
             };
             foreach (var (id, index) in new[] { ("wild",5), ("draft",4), ("round",3), ("no_duplicate_class",2), ("basic",1) })
             {

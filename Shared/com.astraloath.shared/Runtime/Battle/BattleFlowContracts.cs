@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace AstralOath.Shared.Battle
@@ -127,17 +128,28 @@ namespace AstralOath.Shared.Battle
         internal BattleUnitSnapshot(BattleUnit unit, int health, int readinessBp,
             IReadOnlyDictionary<string, int> cooldowns, IReadOnlyList<BattleStatusSnapshot> statuses,
             int resourceAmount, int injuryAmount, int openingAttackBonus, IReadOnlyCollection<string> triggeredTurnEffects)
+            : this(unit.InstanceId, unit.Definition.Id, unit.Definition.NameKey, unit.Level, unit.Definition.Element,
+                unit.Slot, unit.Form, unit.Stats, health, readinessBp, cooldowns, statuses,
+                (unit.Definition as HeroDefinition)?.Resource, resourceAmount, injuryAmount, openingAttackBonus,
+                unit.Awakenings ?? 0, unit.Definition is HeroDefinition, triggeredTurnEffects)
+        { }
+
+        internal BattleUnitSnapshot(string instanceId, string definitionId, string nameKey, int level, BattleElement element,
+            BattleSlot slot, BattleUnitForm form, BattleStats stats, int health, int readinessBp,
+            IReadOnlyDictionary<string, int> cooldowns, IReadOnlyList<BattleStatusSnapshot> statuses,
+            BattleResourceDefinition resourceRules, int resourceAmount, int injuryAmount, int openingAttackBonus,
+            int awakenings, bool isHero, IReadOnlyCollection<string> triggeredTurnEffects)
         {
-            InstanceId = unit.InstanceId;
-            DefinitionId = unit.Definition.Id;
-            NameKey = unit.Definition.NameKey;
-            Level = unit.Level;
-            Awakenings = unit.Awakenings ?? 0;
-            IsHero = unit.Definition is HeroDefinition;
-            Element = unit.Definition.Element;
-            Slot = unit.Slot;
-            Form = unit.Form;
-            Stats = unit.Stats;
+            InstanceId = instanceId;
+            DefinitionId = definitionId;
+            NameKey = nameKey;
+            Level = level;
+            Awakenings = awakenings;
+            IsHero = isHero;
+            Element = element;
+            Slot = slot;
+            Form = form;
+            Stats = stats;
             CurrentHealth = health;
             InjuryAmount = injuryAmount;
             OpeningAttackBonus = openingAttackBonus;
@@ -145,7 +157,7 @@ namespace AstralOath.Shared.Battle
             ReadinessBp = readinessBp;
             Cooldowns = cooldowns;
             Statuses = statuses;
-            ResourceRules = (unit.Definition as HeroDefinition)?.Resource;
+            ResourceRules = resourceRules;
             Resource = ResourceRules == null ? null : new BattleResourceSnapshot(ResourceRules, resourceAmount);
         }
         public string InstanceId { get; }
@@ -354,5 +366,34 @@ namespace AstralOath.Shared.Battle
             new BattleChange(BattleFlowEventKind.ExtraTurnGranted, actor, actor);
         public static BattleChange Action(string source, string target, string skillId, BattleActionOrigin origin, string presentationId = null) =>
             new BattleChange(BattleFlowEventKind.Action, source, target, skillId: skillId, origin: origin, presentationId: presentationId);
+    }
+
+    // Hydrate presentation data received from the authoritative battle service.
+    // These factories never replace the state of a BattleMatch.
+    public static class BattlePresentationWire
+    {
+        public static BattleUnitSnapshot Unit(string instanceId, BattleCatalogData.HeroRow hero, int level,
+            BattleElement element, BattleSlot slot, BattleUnitForm form, BattleStats stats, int health, int readiness,
+            Dictionary<string, int> cooldowns, BattleStatusSnapshot[] statuses,
+            int resourceAmount, int injury, int openingAttackBonus) =>
+            new BattleUnitSnapshot(instanceId, hero.id, hero.nameKey, level, element, slot, form, stats, health,
+                readiness, new ReadOnlyDictionary<string, int>(cooldowns), Array.AsReadOnly(statuses),
+                hero.GetResourceDefinition(), resourceAmount, injury, openingAttackBonus, hero.awakenings, true,
+                Array.Empty<string>());
+
+        public static BattleSnapshot Snapshot(string battleId, uint rulesVersion, ulong commandSequence, ulong eventSequence,
+            int turn, string currentActorId, BattleOutcome outcome, int localSoul, int opponentSoul, BattleUnitSnapshot[] units) =>
+            new BattleSnapshot(battleId, rulesVersion, commandSequence, eventSequence, turn, currentActorId, outcome,
+                localSoul, opponentSoul, units.ToArray());
+
+        public static BattleStatusSnapshot Status(BattleStatusKind kind, int turns, int strength, string sourceId, ulong instanceId) =>
+            new BattleStatusSnapshot(kind, turns, strength, sourceId, instanceId);
+
+        public static BattleFlowEvent Event(ulong sequence, int turn, BattleFlowEventKind kind, string sourceId, string targetId,
+            int amount, string skillId, string presentationId, BattleActionOrigin origin, BattleStatusKind? statusKind,
+            BattleStatusSnapshot status, BattleSide? side, BattleOutcome? outcome, BattleHitKind hitKind,
+            BattleEffectRejection? effectRejection, bool useSoulBurn, int? remainingHealth, int? maximumHealth) =>
+            new BattleFlowEvent(sequence, turn, kind, sourceId, targetId, amount, skillId, presentationId,
+                origin, statusKind, status, side, outcome, hitKind, effectRejection, useSoulBurn, remainingHealth, maximumHealth);
     }
 }

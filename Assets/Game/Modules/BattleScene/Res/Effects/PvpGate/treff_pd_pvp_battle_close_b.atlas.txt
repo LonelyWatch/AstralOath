@@ -1,0 +1,34 @@
+
+treff_pd_pvp_battle_close_b.sct
+size: 1364,640
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+2flash
+  rotate: false
+  xy: 1190, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+36_l
+  rotate: true
+  xy: 2, 2
+  size: 598, 594
+  orig: 598, 594
+  offset: 0, 0
+  index: -1
+36_r
+  rotate: false
+  xy: 598, 2
+  size: 590, 594
+  orig: 590, 594
+  offset: 0, 0
+  index: -1
+said
+  rotate: true
+  xy: 598, 598
+  size: 39, 594
+  orig: 39, 594
+  offset: 0, 0
+  index: -1

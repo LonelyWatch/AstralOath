@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 1,
+  "asset": "rta_021.png",
+  "assetSha256": "aaa618b99d1b647e4871f5c36c5d894520005c75ee56516dead408ed39079f37",
+  "method": "Spine 3.8.99 setup-pose meshes and slots, viewport aligned static stage",
+  "texturePage": {
+    "width": 1849,
+    "height": 1017,
+    "encoding": "SCT1:RGBA8888",
+    "alpha": "source-preserved"
+  },
+  "viewport": {
+    "width": 2240,
+    "height": 1080,
+    "sourceCrop": [
+      160,
+      0,
+      2400,
+      1008
+    ]
+  },
+  "layerOrder": [
+    "bg",
+    "wall_2",
+    "wall_1",
+    "b_torso",
+    "ground_3",
+    "ground_2",
+    "ground_1",
+    "light_1",
+    "m_3",
+    "m_5",
+    "m_7",
+    "m_6",
+    "m_6_1",
+    "m_8",
+    "m_9",
+    "m_10",
+    "m_4",
+    "m_2",
+    "m_1",
+    "light_2",
+    "light_3",
+    "f_1",
+    "f_2",
+    "f_3",
+    "f_4",
+    "f_5",
+    "f_7",
+    "f_8",
+    "f_light_1",
+    "f_light_2",
+    "f_light_3",
+    "f_light_4",
+    "f_light_5"
+  ],
+  "sources": [
+    {
+      "source": "bg/rta_021.atlas",
+      "sha256": "dae2c87deff4d804c7b2e7584d8675823888852ff0c9a3abbedbeebf382cf94e"
+    },
+    {
+      "source": "bg/rta_021.sca",
+      "sha256": "9d2888723130bc75e3958935631acf7d6671ac5317584d9785b2a07de67d3082"
+    },
+    {
+      "source": "bg/rta_021.sct",
+      "sha256": "7d821c53dc27ab42fb338b84fe841b1934c749121a4dc5a263754457cf491f31"
+    },
+    {
+      "source": "bg/rta_021_bg.scsp",
+      "sha256": "8657e03afb7140e0f7e6f9e94908a80a1478b48b808374802d3d2f066486dbf7"
+    },
+    {
+      "source": "bg/rta_021_wall_2.scsp",
+      "sha256": "a94a8ab04986c3282c2a8cdd38496d58211c8c311620f7eb0e298c97c582c97c"
+    },
+    {
+      "source": "bg/rta_021_wall_1.scsp",
+      "sha256": "7f23e21701ad87c03f9ae019a43fc72c88bcd0b7872bda60117c7a8346731c70"
+    },
+    {
+      "source": "bg/rta_021_b_torso.scsp",
+      "sha256": "d4a9b7ec92547ea69659a209823e664f70fc6e12cb4c5e1649f141685334a311"
+    },
+    {
+      "source": "bg/rta_021_ground_3.scsp",
+      "sha256": "66414416442ef08c880c5a142081fc585897e9d22949c931b61cead9370d6815"
+    },
+    {
+      "source": "bg/rta_021_ground_2.scsp",
+      "sha256": "93bf3563e47818454b1e3fd4ab4d553008bb495703187e06bc963b935696571d"
+    },
+    {
+      "source": "bg/rta_021_ground_1.scsp",
+      "sha256": "ca5e6514cb60c6d385bc2a357c3d0864f6baf8ee9f710c9af98da97b6bd97c6d"
+    },
+    {
+      "source": "bg/rta_021_light_1.scsp",
+      "sha256": "c5a226003e34b89a6d47b42968d5b95201cb71646827c0e2bb922f8cf9b6ac32"
+    },
+    {
+      "source": "bg/rta_021_m_3.scsp",
+      "sha256": "e2f26d2631f2a0b5d5af18855922b76b4bfa0c1b42223cd78c46d749eb0b9a98"
+    },
+    {
+      "source": "bg/rta_021_m_5.scsp",
+      "sha256": "7efd96d61ca8888de34d1039eb9e9698311b043b8867afe241d9e8540e4b47d9"
+    },
+    {
+      "source": "bg/rta_021_m_7.scsp",
+      "sha256": "b7f55567252e2caef59b531959b998ac7ade9e984816a172eea632f4c73d2b7a"
+    },
+    {
+      "source": "bg/rta_021_m_6.scsp",
+      "sha256": "f09f3bd2828a4167444ed09c2389c72e0af26463e85b021a136a395e0fa73481"
+    },
+    {
+      "source": "bg/rta_021_m_6_1.scsp",
+      "sha256": "f42573d5fbd059bdc49d1623a6fa1f339b47aefec7130fc2a307d25fdf0df8b1"
+    },
+    {
+      "source": "bg/rta_021_m_8.scsp",
+      "sha256": "53256c7e52a77f596847ba2cbc928c42ac2d0c759427ce55aca69de024fdbd70"
+    },
+    {
+      "source": "bg/rta_021_m_9.scsp",
+      "sha256": "24a1caef405190dfbaea44d86d444fa497226381bb94140c063d5cfd3679db0a"
+    },
+    {
+      "source": "bg/rta_021_m_10.scsp",
+      "sha256": "cf552dfaaef0df8b9fcb0c0a940e43159b9dd3502535d166d8fdbff018dbc7e6"
+    },
+    {
+      "source": "bg/rta_021_m_4.scsp",
+      "sha256": "1c3f2e131cc89914dc7c0710f4a6524fb2e96048c85276cbac0c2f9309f8c7a1"
+    },
+    {
+      "source": "bg/rta_021_m_2.scsp",
+      "sha256": "fcae551896b483dd9f6b7a2dd00f413d9f7e2a1397a29738fecfd0e801f20366"
+    },
+    {
+      "source": "bg/rta_021_m_1.scsp",
+      "sha256": "c2065d895ca043cda148153469c8a0e34a2a5aa18b2b9039c7a41789e8d1a233"
+    },
+    {
+      "source": "bg/rta_021_light_2.scsp",
+      "sha256": "8a18fd8ca792296e6cb728ebda5589964a084426e4a010401da802bee1e35db0"
+    },
+    {
+      "source": "bg/rta_021_light_3.scsp",
+      "sha256": "f85fe6d64406c9e5e4c36ec72cfcbd0e25f331711f27dad5a55530dea7f69581"
+    },
+    {
+      "source": "bg/rta_021_f_1.scsp",
+      "sha256": "c91f7d3e6856394d2c1409066b30e5dedb8bd1942f1c0618ac845015db215f44"
+    },
+    {
+      "source": "bg/rta_021_f_2.scsp",
+      "sha256": "e8a84335d7b97b043d6ae698b2e733ae19aa1651f29cfac686586c7eefbd2b92"
+    },
+    {
+      "source": "bg/rta_021_f_3.scsp",
+      "sha256": "4084559cff7c7658ad53948c2133a3c8aaf8948ead4f2f465e6b34332106c0cb"
+    },
+    {
+      "source": "bg/rta_021_f_4.scsp",
+      "sha256": "a305ba0911b642da0ec8450ff54010134b4745310fff73fd4b450f28ebaf4a16"
+    },
+    {
+      "source": "bg/rta_021_f_5.scsp",
+      "sha256": "07a5c2d09af328434ba3333f12c08a7d9685abca6b57e67406431faa035a3acd"
+    },
+    {
+      "source": "bg/rta_021_f_7.scsp",
+      "sha256": "bd30760545d67b8255a828b9b5c812940a98e5f1e4a32abdfe813fd93a91c9fe"
+    },
+    {
+      "source": "bg/rta_021_f_8.scsp",
+      "sha256": "5f2c543341b4aff5fd2af6f94af0e33b57d4cd08db44a08b4a0ff71ac4ea4e88"
+    },
+    {
+      "source": "bg/rta_021_f_light_1.scsp",
+      "sha256": "a8685c5d689872fe89a36a8a9a53e1777dbe1ba4ea65d9d2400d134f5e7d482a"
+    },
+    {
+      "source": "bg/rta_021_f_light_2.scsp",
+      "sha256": "fd5e96e18031eee0023a867d0216f8a476d6cc7bdd27236cca189981ad8b5b0c"
+    },
+    {
+      "source": "bg/rta_021_f_light_3.scsp",
+      "sha256": "36ba44ff29fd0fc25549a5b8dc8c6ca8ba506c85c738e03ae1b2b67c7bd84628"
+    },
+    {
+      "source": "bg/rta_021_f_light_4.scsp",
+      "sha256": "d0180a6f4e5a59823654449bdbc55710ade07ac789ca7f8aa32a7ab14a7d819c"
+    },
+    {
+      "source": "bg/rta_021_f_light_5.scsp",
+      "sha256": "69238509b3f025e9d25aa56ecb37e06057da95e1d95873dcd374aa892e298415"
+    }
+  ]
+}

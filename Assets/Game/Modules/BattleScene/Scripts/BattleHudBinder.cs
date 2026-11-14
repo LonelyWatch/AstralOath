@@ -48,6 +48,7 @@ namespace AstralOath.Client.BattleScene
         private readonly BattleHudParticles useParticles;
         private int selected = -1;
         private bool armed;
+        private bool onlineBattle, leaving;
         private float pendingBurnSelection = -1f;
 
         internal BattleHudBinder(BindingMap map, Sprite burnPressed, Sprite cancelNormal, Sprite cancelPressed,
@@ -220,10 +221,23 @@ namespace AstralOath.Client.BattleScene
             useParticles.Tick(delta);
         }
 
-        internal void AttachSimulation(BattleSimulationPreview simulation)
+        internal void AttachSimulation(BattleSimulationPreview simulation, bool online = false)
         {
             Simulation = simulation;
             startPreview.gameObject.SetActive(false);
+            onlineBattle = online;
+            pause.interactable = !online;
+            if (online)
+            {
+                pause.gameObject.SetActive(false);
+                auto.gameObject.SetActive(false);
+            }
+        }
+
+        internal void ShowOnlineReturn()
+        {
+            if (!onlineBattle || pause.gameObject.activeSelf) return;
+            pause.gameObject.SetActive(true);
             pause.interactable = true;
         }
 
@@ -234,9 +248,25 @@ namespace AstralOath.Client.BattleScene
 
         internal void PauseBattle()
         {
+            if (onlineBattle)
+            {
+                if (!leaving) LeaveOnlineBattle();
+                return;
+            }
             if (Simulation == null || Simulation.IsPaused) return;
             Simulation.SetPaused(true);
             pauseControls.Show(true);
+        }
+
+        private async void LeaveOnlineBattle()
+        {
+            leaving = true;
+            try { await BattleOnlineLaunch.ExitAsync(); }
+            catch (Exception error)
+            {
+                Debug.LogException(error);
+                leaving = false;
+            }
         }
 
         internal void ResumeBattle()

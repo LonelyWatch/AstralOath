@@ -17,6 +17,7 @@ namespace AstralOath.Client.Arena
         private readonly ILocaleService locale;
         private readonly ArenaApi api;
         private readonly Func<Task> goBack;
+        private readonly Func<ArenaDraftState, Task> openDraft;
         private readonly WindowCoordinator windows;
         private readonly GameToastBinder toast;
         private const int ChatHistoryLimit = 100;
@@ -42,14 +43,15 @@ namespace AstralOath.Client.Arena
         private ArenaRoomState state;
         private long cursor;
         private string memberSignature, roomError, chatError, actionError;
-        private bool leaving, sending;
+        private bool leaving, sending, starting, transitioning;
 
-        public ArenaRoomBinder(ArenaRoom view, ILocaleService locale, ArenaApi api, WindowCoordinator windows, Func<Task> goBack)
+        public ArenaRoomBinder(ArenaRoom view, ILocaleService locale, ArenaApi api, WindowCoordinator windows, Func<Task> goBack, Func<ArenaDraftState, Task> openDraft = null)
         {
             this.view = view;
             this.locale = locale;
             this.api = api;
             this.goBack = goBack;
+            this.openDraft = openDraft;
             this.windows = windows;
             toast = new GameToastBinder(GameToast.ForInstance(view.Toast));
             var choices = view.EmojiPicker.GetComponent<BindingMap>().Require<ScrollRect>("choices");
@@ -66,7 +68,9 @@ namespace AstralOath.Client.Arena
             view.Message.SetTextWithoutNotify("");
             Render(initial);
             view.Leave.Bind(screen, LeaveAsync);
-            view.Start.Bind(screen, StartAsync);
+            var start = view.Start;
+            start.onClick.AddListener(StartClick);
+            screen.Add(() => { if (start) start.onClick.RemoveListener(StartClick); });
             view.Send.interactable = initial.room.allowChat;
             view.Emoji.interactable = initial.room.allowChat;
             if (initial.room.allowChat)
@@ -75,6 +79,7 @@ namespace AstralOath.Client.Arena
                 view.Emoji.Bind(screen, ignored => { ToggleStickerPicker(); return Task.CompletedTask; });
             }
             _ = WatchRoomAsync(initial.room.id, screen.Token);
+            if (openDraft != null && initial.room.rule == "basic") _ = WatchDraftAsync(initial.room.id, screen.Token);
             if (initial.room.allowChat)
                 _ = WatchChatAsync(initial.room.id, screen.Token);
             return Task.CompletedTask;
@@ -154,6 +159,8 @@ namespace AstralOath.Client.Arena
             view.Rule.text = locale.Resolve("arena.rule." + next.room.rule);
             view.Count.text = $"{next.room.memberCount}/{next.room.capacity}";
             view.Message.interactable = next.room.allowChat;
+            view.Start.GetComponent<CanvasGroup>().alpha =
+                next.room.rule == "basic" && next.room.host?.id == api.Player?.id && members.Length >= 2 ? 1f : .55f;
             if (memberSignature == signature) return;
             memberSignature = signature;
             var host = next.room.host;
@@ -186,12 +193,67 @@ namespace AstralOath.Client.Arena
             label.color = isSelf ? SelfNameColor : Color.white;
         }
 
-        private Task StartAsync(CancellationToken _)
+        private async void StartClick()
         {
-            bool hasOpponent = (state.members?.Length ?? 0) > 1;
-            GameUiFeedback.Play(view.Start, GameUiFeedback.Sound.Blocked);
-            toast.Show(locale.Resolve(hasOpponent ? "arena.start_unavailable" : "arena.no_player"), screen);
-            return Task.CompletedTask;
+            var owner = screen;
+            if (owner == null || starting || leaving) return;
+            string denial = state.room.rule != "basic" || openDraft == null ? "arena.error.draft_rule_unsupported"
+                : state.room.host?.id != api.Player?.id ? "arena.error.draft_host_only"
+                : (state.members?.Length ?? 0) < 2 ? "arena.no_player" : null;
+            if (denial != null)
+            {
+                GameUiFeedback.Play(view.Start, GameUiFeedback.Sound.Blocked);
+                toast.Show(locale.Resolve(denial), owner);
+                return;
+            }
+            starting = true;
+            GameUiFeedback.Play(view.Start, GameUiFeedback.Sound.Confirm);
+            try
+            {
+                var draft = await api.StartDraftAsync(state.room.id, owner.Token);
+                if (scopeStillOpen()) await EnterDraftAsync(draft);
+            }
+            catch (OperationCanceledException) when (owner.Token.IsCancellationRequested) { }
+            catch (ArenaRequestException error) when (!owner.Token.IsCancellationRequested)
+            {
+                GameUiFeedback.Play(view.Start, GameUiFeedback.Sound.Blocked);
+                toast.Show(ArenaError.Text(locale, error), owner);
+            }
+            catch (Exception error)
+            {
+                Debug.LogException(error);
+                if (scopeStillOpen()) toast.Show(locale.Resolve("arena.error.request_failed"), owner);
+            }
+            finally { starting = false; }
+
+            bool scopeStillOpen() => screen == owner && !owner.Token.IsCancellationRequested;
+        }
+
+        private async Task WatchDraftAsync(string id, CancellationToken token)
+        {
+            try
+            {
+                while (!token.IsCancellationRequested)
+                {
+                    await Task.Delay(750, token);
+                    if (transitioning || starting || leaving) continue;
+                    try { await EnterDraftAsync(await api.DraftAsync(id, token)); }
+                    catch (ArenaRequestException error) when (error.Code is "not_in_room" or "room_not_found")
+                    { return; }
+                    catch (ArenaRequestException) { }
+                    if (token.IsCancellationRequested) return;
+                }
+            }
+            catch (OperationCanceledException) when (token.IsCancellationRequested) { }
+            catch (Exception error) { Debug.LogException(error); }
+        }
+
+        private async Task EnterDraftAsync(ArenaDraftState draft)
+        {
+            if (draft == null || draft.phase == "cancelled" || transitioning || screen == null || screen.Token.IsCancellationRequested) return;
+            transitioning = true;
+            try { await openDraft(draft); }
+            finally { transitioning = false; }
         }
 
         private void ToggleStickerPicker()

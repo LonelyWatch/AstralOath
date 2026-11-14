@@ -24,6 +24,7 @@ namespace AstralOath.Client.BattleScene
         [SerializeField] private Vector3 shadowOffset;
         private bool shadowNormalized;
         private ISkeletonPlayer player;
+        private string resolvedHeroId;
         private string idleAnimation;
         private string turnIdleAnimation;
         private string turnEntryAnimation;
@@ -116,12 +117,13 @@ namespace AstralOath.Client.BattleScene
                 SharedSources.Remove(entry.Key);
         }
 
-        internal void UseModel(BattleSkillPresentationAsset model, string skinName, string label)
+        internal void UseModel(BattleSkillPresentationAsset model, string skinName, string label, string definitionId = null)
         {
             if (model == null || !model.document || !model.atlas || model.pages?.Length != 1 ||
                 !model.pages[0] || model.pageNames?.Length != 1 || string.IsNullOrEmpty(model.pageNames[0]) ||
                 !float.IsFinite(model.scale) || model.scale <= 0f || string.IsNullOrEmpty(skinName))
                 throw new ArgumentException("Battle actor requires a complete single-page model: " + label, nameof(model));
+            resolvedHeroId = definitionId;
             if (skeleton == model.document && atlas == model.atlas && page == model.pages[0] &&
                 pageName == model.pageNames[0] && skin == skinName && sourceScale == model.scale &&
                 premultipliedAlpha == model.premultipliedAlpha) return;
@@ -137,6 +139,25 @@ namespace AstralOath.Client.BattleScene
             premultipliedAlpha = model.premultipliedAlpha;
             name = label;
             enabled = wasEnabled;
+        }
+
+        internal void BeginArrivalPose()
+        {
+            BeginPresentationControl();
+            if (player != null)
+                foreach (var clip in player.Animations)
+                    if (clip.Name == "appear")
+                    {
+                        player.Play("appear", false);
+                        player.Seek(0f);
+                        break;
+                    }
+        }
+
+        internal void EndArrivalPose()
+        {
+            PlayIdleLoop();
+            EndPresentationControl();
         }
 
         internal void BeginPresentationControl() => presentationControlCount++;
@@ -200,7 +221,8 @@ namespace AstralOath.Client.BattleScene
         public Bounds Bounds => player != null
             ? player.Root.GetComponent<MeshRenderer>().bounds : new Bounds(transform.position, Vector3.zero);
 
-        internal string HeroId => heroId;
+        internal string HeroId => resolvedHeroId ?? heroId;
+        internal string AuthoredHeroId => heroId;
         private bool FacesLeft
         {
             get

@@ -1,0 +1,32 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "pvp_ready_font",
+      "z": "1",
+      "scale": "1.11",
+      "format": "spine"
+    },
+    {
+      "source": "pvp_prepare_pati",
+      "z": "2",
+      "delay": "66",
+      "format": "particle",
+      "attach": "pvp_ready_font/prepare"
+    },
+    {
+      "source": "pvp_ready_pati",
+      "z": "2",
+      "delay": "562",
+      "format": "particle",
+      "attach": "pvp_ready_font/getready"
+    },
+    {
+      "source": "pvp_igni_pati",
+      "y": "190",
+      "z": "4",
+      "delay": "2016",
+      "format": "particle"
+    }
+  ]
+}
