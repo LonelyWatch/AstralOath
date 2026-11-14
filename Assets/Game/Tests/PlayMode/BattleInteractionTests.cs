@@ -123,18 +123,21 @@ namespace AstralOath.Client.Tests
         }
 
         [UnityTest]
-        public IEnumerator BurnOnlyCancelButtonCancelsAndOtherSkillsAreDisabled()
+        public IEnumerator CancelKeepsTheBurnSkillSelectedAndCastsItWithoutSoulBurn()
         {
             if (host.SimulationSnapshot == null) host.StartBattle();
             var burn = map.Require<GameButton>("soulBurn");
             var skills = Enumerable.Range(1, 3).Select(index => map.Require<GameButton>("skill" + index)).ToArray();
             var catalog = JsonUtility.FromJson<BattleCatalogData>(File.ReadAllText(
                 "Assets/Game/Modules/BattleScene/Configs/battle-catalog.json"));
-            var actor = host.SimulationSnapshot.GetUnit(host.SimulationSnapshot.CurrentActorId);
+            var initial = host.SimulationSnapshot;
+            var actor = initial.GetUnit(initial.CurrentActorId);
             int burnIndex = Array.FindIndex(actor.Form.SkillIds.ToArray(),
                 id => catalog.skills.Single(skill => skill.id == id).soulBurnCost > 0);
+            var burnSkill = catalog.skills.Single(skill => skill.id == actor.Form.SkillIds[burnIndex]);
             int previousIndex = (burnIndex + 1) % skills.Length;
             skills[previousIndex].onClick.Invoke();
+            Assert.That(map.Require<Image>("skillSelected" + (previousIndex + 1)).gameObject.activeSelf, Is.True);
             burn.onClick.Invoke();
             for (int index = 0; index < skills.Length; index++)
             {
@@ -157,8 +160,18 @@ namespace AstralOath.Client.Tests
             Assert.That(map.Require<Image>("skillSelected" + (previousIndex + 1)).gameObject.activeSelf, Is.False);
             burn.onClick.Invoke();
             foreach (var skill in skills) Assert.That(skill.interactable, Is.True);
-            Assert.That(map.Require<Image>("skillSelected" + (previousIndex + 1)).gameObject.activeSelf, Is.True,
-                "Cancel restores the selection from before Burn.");
+            for (int index = 0; index < skills.Length; index++)
+                Assert.That(map.Require<Image>("skillSelected" + (index + 1)).gameObject.activeSelf,
+                    Is.EqualTo(index == burnIndex), "Cancel keeps the Soul Burn skill selected in normal mode.");
+            Assert.That(host.SimulationSnapshot.LastCommandSequence, Is.Zero);
+            var enemy = initial.Units.First(unit => unit.Slot.Side == BattleSide.Enemy);
+            Assert.That(host.TrySelectBattleTarget(enemy.InstanceId), Is.True);
+            var result = host.SimulationSnapshot;
+            Assert.That(result.LastCommandSequence, Is.EqualTo(1UL));
+            Assert.That(result.GetUnit(actor.InstanceId).GetCooldown(burnSkill.id), Is.GreaterThan(0),
+                "Selecting a target immediately after Cancel must cast the skill that remained highlighted.");
+            Assert.That(result.AllySoul, Is.EqualTo(initial.AllySoul + burnSkill.soulGain),
+                "The normal cast earns souls without spending any.");
         }
 
         [UnityTest]

@@ -15,7 +15,17 @@ namespace AstralOath.Client.BattleScene.Editor
         private const string LabCatalog = "Assets/Game/Modules/CharacterLab/Configs/catalog.json";
         private const string BattleCatalog = "Assets/Game/Modules/BattleScene/Configs/battle-catalog.json";
         private const float TrackLabel = 103f;
-        private const float LaneHeight = 20f;
+        private const float LaneHeight = 25f;
+        private const float MaximumZoom = 48f;
+        private static readonly Color SelectionColor = new Color(.3f, .78f, 1f);
+        [SerializeField] private float rosterWidth = 238f, inspectorWidth = 300f, timelineHeight = 320f;
+        private int resizingPanel, dragControl;
+        private bool revealSelectedLane, panningTimeline, scrubbingTimeline;
+        private float panMouseX, panStart, timelineViewportHeight;
+        private string selectedCueKey;
+        private object selectionCueCollection;
+        private int selectedOccurrence;
+        private GUIStyle clipLabel, selectedClipLabel, cardLabel;
         private const float RulerHeight = 26f;
         private static readonly string[] Tracks =
             { "动作 / 位移", "镜头 / 震动", "特效 / 命中", "全屏 / 场景", "条件 / 其他" };
@@ -42,7 +52,8 @@ namespace AstralOath.Client.BattleScene.Editor
         private JObject source, patch, selectedNode;
         private Draft draft;
         private string savedPatch, search = "", error;
-        private bool playing, loop, snap = true, flipped, audio, rebuild, compareOriginal;
+        private bool playing, loop, snap = true, flipped, audio, rebuild, compareOriginal, includeAfterglow;
+        private float TimelineDuration => preview == null ? 0f : includeAfterglow ? preview.Duration : preview.MainDuration;
         private int fps = 30, selectedGuid = -1;
         private float speed = 1f, zoom = 1f, scrollSeconds;
         private Vector2 rosterScroll, detailScroll, timelineScroll;
@@ -56,7 +67,7 @@ namespace AstralOath.Client.BattleScene.Editor
 
         private void OnEnable()
         {
-            minSize = new Vector2(900, 580);
+            minSize = new Vector2(1040, 660);
             saveChangesMessage = "当前技能有未保存的演出修改。";
             EditorApplication.update += UpdatePreview;
             EditorApplication.playModeStateChanged += PlayModeChanged;
@@ -125,7 +136,9 @@ namespace AstralOath.Client.BattleScene.Editor
             selected = skill;
             selectedNode = null;
             selectedGuid = -1;
+            selectedCueKey = null;
             error = null;
+            includeAfterglow = false;
             zoom = 1f;
             scrollSeconds = 0f;
             timelineScroll = Vector2.zero;
@@ -207,10 +220,19 @@ namespace AstralOath.Client.BattleScene.Editor
             rebuild = true;
         }
 
-        private void SelectCue(JObject node, float at)
+        private void SelectCue(JObject node, float at) => PickCue(node, at, true);
+
+        private void PickCue(JObject node, float at, bool reveal)
         {
             selectedNode = node;
             selectedGuid = (int?)node["guid"] ?? -1;
+            selectedCueKey = CueKey(node);
+            selectionCueCollection = preview.Cues;
+            selectedOccurrence = preview.Cues.TakeWhile(item => !ReferenceEquals(item.Node, node)).Count(item => CueKey(item.Node) == selectedCueKey);
+            detailScroll = Vector2.zero;
+            GUI.FocusControl(null);
+            if (reveal) RevealTime(preview.StageToWallTime(at));
+            revealSelectedLane = true;
             SeekStage(at);
         }
 
@@ -233,9 +255,7 @@ namespace AstralOath.Client.BattleScene.Editor
                     preview.LoadScenario(selected.Hero, selected.Id, graph.ToString(Formatting.None),
                         targetHeroId: targetIds.ElementAtOrDefault(targetIndex), casterOnRight: flipped,
                         targetAll: all, targetAllies: allies, targetSelf: self, targetTwo: two);
-                    preview.Seek(Mathf.Min(current, preview.Duration));
-                    if (selectedGuid >= 0)
-                        selectedNode = preview.Cues.FirstOrDefault(item => (int?)item.Node["guid"] == selectedGuid).Node;
+                    MovePreviewTime(Mathf.Min(current, TimelineDuration));
                     rebuild = false;
                     playing = false;
                     error = null;
@@ -247,11 +267,11 @@ namespace AstralOath.Client.BattleScene.Editor
                 float delta = Mathf.Clamp((float)(now - lastUpdate), 0f, .12f);
                 lastUpdate = now;
                 float next = preview.Time + delta * speed;
-                if (next >= preview.Duration)
+                if (next >= TimelineDuration)
                 {
                     if (loop)
                     {
-                        preview.Seek(0f);
+                        MovePreviewTime(0f);
                         if (audio && Mathf.Approximately(speed, 1f)) preview.StartAudio();
                         next = 0f;
                     }
@@ -259,10 +279,10 @@ namespace AstralOath.Client.BattleScene.Editor
                     {
                         playing = false;
                         preview.StopAudio();
-                        next = preview.Duration;
+                        next = TimelineDuration;
                     }
                 }
-                preview.Seek(next);
+                MovePreviewTime(next);
                 preview.Render();
                 Repaint();
             }
@@ -281,6 +301,7 @@ namespace AstralOath.Client.BattleScene.Editor
             playing = false;
             preview?.Dispose();
             preview = null;
+            selectionCueCollection = null;
         }
 
         private void PlayPause()
@@ -289,9 +310,9 @@ namespace AstralOath.Client.BattleScene.Editor
             playing = !playing;
             lastUpdate = EditorApplication.timeSinceStartup;
             if (!playing) preview.SetAudioPaused(true);
-            else if (preview.Time <= .001f || preview.Time >= preview.Duration)
+            else if (preview.Time <= .001f || preview.Time >= TimelineDuration)
             {
-                preview.Seek(0f);
+                MovePreviewTime(0f);
                 if (audio && Mathf.Approximately(speed, 1f)) preview.StartAudio();
             }
             else preview.SetAudioPaused(false);
@@ -302,9 +323,28 @@ namespace AstralOath.Client.BattleScene.Editor
             if (preview == null) return;
             playing = false;
             preview.StopAudio();
-            preview.Seek(time);
+            MovePreviewTime(Mathf.Clamp(time, 0f, TimelineDuration));
             preview.Render();
             Repaint();
+        }
+
+        private void MovePreviewTime(float time)
+        {
+            preview.Seek(time);
+            // Rewind rebuilds the playback graph, including the JObject instances used by the GUI.
+            // Rebind once per cue collection, not every displayed frame, so selection is independent
+            // of playback lifetime and repeated model events retain their own occurrence.
+            if (ReferenceEquals(selectionCueCollection, preview.Cues)) return;
+            selectionCueCollection = preview.Cues;
+            if (selectedCueKey == null) return;
+            selectedNode = preview.Cues.Where(item => CueKey(item.Node) == selectedCueKey)
+                .Skip(selectedOccurrence).FirstOrDefault().Node;
+            if (selectedNode == null)
+            {
+                selectedGuid = -1;
+                selectedCueKey = null;
+                selectedOccurrence = 0;
+            }
         }
 
         private void SeekStage(float stage)
@@ -322,30 +362,103 @@ namespace AstralOath.Client.BattleScene.Editor
             }
 
             hasUnsavedChanges = Dirty;
+            EnsureStyles();
+            dragControl = GUIUtility.GetControlID("SkillTimeline.Pointer".GetHashCode(), FocusType.Passive);
+            if (Event.current.type == EventType.Ignore) ReleasePointer();
             HandleKeys();
             DrawToolbar();
             if (!string.IsNullOrEmpty(error)) EditorGUILayout.HelpBox(error, MessageType.Error);
-            using (new EditorGUILayout.HorizontalScope())
+            float usable = Mathf.Max(1000f, position.width) - 16f;
+            float left = Mathf.Clamp(rosterWidth, 210f, Mathf.Min(360f, usable - 700f));
+            float right = Mathf.Clamp(inspectorWidth, 260f, Mathf.Min(420f, usable - left - 400f));
+            timelineHeight = Mathf.Clamp(timelineHeight, 250f, Mathf.Max(250f, position.height - 315f));
+            using (new EditorGUILayout.VerticalScope())
             {
-                DrawRoster();
-                using (new EditorGUILayout.VerticalScope(GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true)))
+                GUILayout.Space(6f);
+                using (new EditorGUILayout.HorizontalScope(GUILayout.Height(Mathf.Max(235f,
+                           position.height - timelineHeight - (string.IsNullOrEmpty(error) ? 60f : 100f)))))
                 {
-                    DrawViewport();
-                    DrawTimeline();
+                    GUILayout.Space(8f);
+                    using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox, GUILayout.Width(left)))
+                        DrawRoster();
+                    DrawSplitter(1, false);
+                    using (new EditorGUILayout.VerticalScope(GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true)))
+                        DrawViewport();
+                    DrawSplitter(2, false);
+                    using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox, GUILayout.Width(right)))
+                        DrawInspector();
+                    GUILayout.Space(8f);
                 }
-                DrawInspector();
+                DrawSplitter(3, true);
+                using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox, GUILayout.Height(timelineHeight)))
+                    DrawTimeline();
+                GUILayout.Label("空格 播放/暂停    ← → 逐帧    F 聚焦选中    A 显示全部    C 定位播放头    Shift+滚轮 缩放    中键拖动 平移",
+                    EditorStyles.miniLabel);
             }
+        }
+
+        private void OnLostFocus() => ReleasePointer();
+
+        private void CapturePointer() => GUIUtility.hotControl = dragControl;
+
+        private void ReleasePointer()
+        {
+            if (GUIUtility.hotControl == dragControl) GUIUtility.hotControl = 0;
+            resizingPanel = 0; panningTimeline = scrubbingTimeline = false; dragStart = dragGhost = null;
+        }
+
+        private void EnsureStyles()
+        {
+            if (clipLabel != null) return;
+            clipLabel = new GUIStyle(EditorStyles.miniLabel)
+            {
+                alignment = TextAnchor.MiddleLeft, clipping = TextClipping.Clip, padding = new RectOffset(5, 3, 0, 0)
+            };
+            clipLabel.normal.textColor = new Color(.08f, .10f, .14f);
+            selectedClipLabel = new GUIStyle(clipLabel) { fontStyle = FontStyle.Bold };
+            selectedClipLabel.normal.textColor = Color.white;
+            cardLabel = new GUIStyle(EditorStyles.label)
+            {
+                alignment = TextAnchor.MiddleLeft, clipping = TextClipping.Clip, padding = new RectOffset(12, 6, 0, 0)
+            };
+        }
+
+        private void DrawSplitter(int index, bool horizontal)
+        {
+            Rect rect = horizontal
+                ? GUILayoutUtility.GetRect(1f, 8f, GUILayout.ExpandWidth(true))
+                : GUILayoutUtility.GetRect(8f, 1f, GUILayout.Width(8f), GUILayout.ExpandHeight(true));
+            EditorGUIUtility.AddCursorRect(rect, horizontal ? MouseCursor.ResizeVertical : MouseCursor.ResizeHorizontal);
+            if (Event.current.type == EventType.Repaint)
+                EditorGUI.DrawRect(horizontal ? new Rect(rect.center.x - 20f, rect.y + 3f, 40f, 2f)
+                    : new Rect(rect.x + 3f, rect.center.y - 20f, 2f, 40f), new Color(.34f, .39f, .44f));
+            var input = Event.current;
+            if (input.type == EventType.MouseDown && input.button == 0 && rect.Contains(input.mousePosition))
+            { resizingPanel = index; CapturePointer(); input.Use(); }
+            if (resizingPanel != index) return;
+            if (input.type == EventType.MouseDrag)
+            {
+                if (index == 1) rosterWidth = Mathf.Clamp(rosterWidth + input.delta.x, 210f, 360f);
+                if (index == 2) inspectorWidth = Mathf.Clamp(inspectorWidth - input.delta.x, 260f, 420f);
+                if (index == 3) timelineHeight -= input.delta.y;
+                input.Use(); Repaint();
+            }
+            if (input.type == EventType.MouseUp && input.button == 0) { ReleasePointer(); input.Use(); }
         }
 
         private void HandleKeys()
         {
             var input = Event.current;
-            if (input.type != EventType.KeyDown || EditorGUIUtility.editingTextField) return;
+            if (input.type != EventType.KeyDown || EditorGUIUtility.editingTextField ||
+                input.control || input.command || input.alt) return;
             if (input.keyCode == KeyCode.Space) PlayPause();
             else if (input.keyCode == KeyCode.LeftArrow) Seek((preview?.Time ?? 0f) - 1f / fps);
             else if (input.keyCode == KeyCode.RightArrow) Seek((preview?.Time ?? 0f) + 1f / fps);
             else if (input.keyCode == KeyCode.Home) Seek(0f);
-            else if (input.keyCode == KeyCode.End) Seek(preview?.Duration ?? 0f);
+            else if (input.keyCode == KeyCode.End) Seek(TimelineDuration);
+            else if (input.keyCode == KeyCode.F) FocusSelection();
+            else if (input.keyCode == KeyCode.A) FitTimeline();
+            else if (input.keyCode == KeyCode.C) CenterPlayhead();
             else return;
             input.Use();
         }
@@ -354,7 +467,9 @@ namespace AstralOath.Client.BattleScene.Editor
         {
             using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
             {
-                GUILayout.Label(selected == null ? "技能演出" : $"{selected.Name} / {selected.SlotLabel}  {selected.Id}", EditorStyles.boldLabel);
+                GUILayout.Label(selected == null ? "技能演出" : $"{selected.Name} / {selected.SlotLabel}",
+                    EditorStyles.boldLabel, GUILayout.MinWidth(110f));
+                if (selected != null) GUILayout.Label(selected.Id, EditorStyles.miniLabel, GUILayout.MinWidth(0f));
                 GUILayout.FlexibleSpace();
                 bool original = GUILayout.Toggle(compareOriginal, "对照原图", EditorStyles.toolbarButton);
                 if (original != compareOriginal)
@@ -382,23 +497,31 @@ namespace AstralOath.Client.BattleScene.Editor
 
         private void DrawRoster()
         {
-            using (new EditorGUILayout.VerticalScope(GUILayout.Width(165)))
+            GUILayout.Label("角色与技能", EditorStyles.boldLabel);
+            search = EditorGUILayout.TextField(search, EditorStyles.toolbarSearchField);
+            GUILayout.Space(5f);
+            rosterScroll = EditorGUILayout.BeginScrollView(rosterScroll, false, true);
+            string hero = null;
+            foreach (var skill in skills.Where(Matches))
             {
-                search = EditorGUILayout.TextField(search, EditorStyles.toolbarSearchField);
-                rosterScroll = EditorGUILayout.BeginScrollView(rosterScroll);
-                string hero = null;
-                foreach (var skill in skills.Where(Matches))
+                if (hero != skill.Hero)
                 {
-                    if (hero != skill.Hero)
-                    {
-                        hero = skill.Hero;
-                        EditorGUILayout.LabelField(skill.Name + "  " + hero, EditorStyles.boldLabel);
-                    }
-                    using (new EditorGUI.DisabledScope(selected == skill))
-                        if (GUILayout.Button($"{skill.SlotLabel}  {skill.Id}", EditorStyles.miniButton)) LoadSkill(skill);
+                    if (hero != null) GUILayout.Space(8f);
+                    hero = skill.Hero;
+                    EditorGUILayout.LabelField(skill.Name + "  " + hero, EditorStyles.boldLabel);
                 }
-                EditorGUILayout.EndScrollView();
+                var rect = GUILayoutUtility.GetRect(1f, 36f, GUILayout.ExpandWidth(true));
+                bool active = selected == skill;
+                EditorGUI.DrawRect(rect, active ? new Color(.13f, .32f, .46f) : new Color(.22f, .24f, .27f));
+                if (active) EditorGUI.DrawRect(new Rect(rect.x, rect.y, 3f, rect.height), SelectionColor);
+                if (GUI.Button(rect, new GUIContent("", skill.Id), GUIStyle.none) && !active) LoadSkill(skill);
+                GUI.Label(new Rect(rect.x, rect.y + 1f, rect.width, 18f),
+                    (active ? "●  " : "") + skill.SlotLabel + (active ? "    当前演出" : ""), cardLabel);
+                GUI.Label(new Rect(rect.x + 12f, rect.y + 18f, rect.width - 20f, 16f),
+                    new GUIContent(skill.Id, skill.Asset), EditorStyles.miniLabel);
+                GUILayout.Space(3f);
             }
+            EditorGUILayout.EndScrollView();
         }
 
         private bool Matches(Skill skill) => string.IsNullOrEmpty(search) ||
@@ -410,12 +533,38 @@ namespace AstralOath.Client.BattleScene.Editor
         {
             using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
             {
-                if (GUILayout.Button("|◀", EditorStyles.toolbarButton)) Seek(0f);
-                if (GUILayout.Button("−1 帧", EditorStyles.toolbarButton)) Seek((preview?.Time ?? 0f) - 1f / fps);
-                if (GUILayout.Button(playing ? "暂停" : "播放", EditorStyles.toolbarButton)) PlayPause();
-                if (GUILayout.Button("+1 帧", EditorStyles.toolbarButton)) Seek((preview?.Time ?? 0f) + 1f / fps);
-                loop = GUILayout.Toggle(loop, "循环", EditorStyles.toolbarButton);
-                bool nextAudio = GUILayout.Toggle(audio, "声音", EditorStyles.toolbarButton);
+                EditorGUI.BeginChangeCheck();
+                targetMode = EditorGUILayout.Popup(targetMode, new[] { "按技能选目标", "单体敌人", "全体敌人", "单体友军", "全体友军", "自身", "两名敌人" }, GUILayout.Width(114));
+                if (targetLabels.Length > 0)
+                    targetIndex = EditorGUILayout.Popup(targetIndex, targetLabels, GUILayout.MinWidth(100), GUILayout.MaxWidth(180));
+                bool nextFlip = GUILayout.Toggle(flipped, "换边", EditorStyles.toolbarButton, GUILayout.Width(42f));
+                if (nextFlip != flipped) { flipped = nextFlip; rebuild = true; }
+                if (EditorGUI.EndChangeCheck()) rebuild = true;
+                if (preview != null && GUILayout.Button("下一命中", EditorStyles.toolbarButton, GUILayout.Width(72f)))
+                {
+                    var hits = preview.HitTimes;
+                    float nextHit = hits.FirstOrDefault(hit => hit > preview.StageTime + .01f);
+                    SeekStage(nextHit > 0f ? nextHit : hits.FirstOrDefault());
+                }
+            }
+            GUILayout.Space(5f);
+            var image = GUILayoutUtility.GetRect(80f, 80f, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+            EditorGUI.DrawRect(image, new Color(.07f, .08f, .10f));
+            if (preview?.Texture)
+                GUI.DrawTexture(image, preview.Texture, ScaleMode.ScaleToFit, false);
+        }
+
+        private void DrawTimeline()
+        {
+            if (preview == null) { GUILayout.Label("正在准备演出预览…"); return; }
+            using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
+            {
+                if (GUILayout.Button(new GUIContent("|◀", "回到开头（Home）"), EditorStyles.toolbarButton, GUILayout.Width(34f))) Seek(0f);
+                if (GUILayout.Button("−1 帧", EditorStyles.toolbarButton, GUILayout.Width(50f))) Seek((preview?.Time ?? 0f) - 1f / fps);
+                if (GUILayout.Button(playing ? "暂停" : "播放", EditorStyles.toolbarButton, GUILayout.Width(50f))) PlayPause();
+                if (GUILayout.Button("+1 帧", EditorStyles.toolbarButton, GUILayout.Width(50f))) Seek((preview?.Time ?? 0f) + 1f / fps);
+                loop = GUILayout.Toggle(loop, "循环", EditorStyles.toolbarButton, GUILayout.Width(42f));
+                bool nextAudio = GUILayout.Toggle(audio, "声音", EditorStyles.toolbarButton, GUILayout.Width(42f));
                 if (audio != nextAudio && !nextAudio) preview?.StopAudio();
                 audio = nextAudio;
                 float newSpeed = EditorGUILayout.FloatField(speed, GUILayout.Width(37));
@@ -425,57 +574,82 @@ namespace AstralOath.Client.BattleScene.Editor
                     preview?.StopAudio();
                 }
                 GUILayout.Label("×", EditorStyles.miniLabel);
-                bool nextFlip = GUILayout.Toggle(flipped, "换边", EditorStyles.toolbarButton);
-                if (nextFlip != flipped) { flipped = nextFlip; rebuild = true; }
+                GUILayout.FlexibleSpace();
+                GUILayout.Label("空格 播放/暂停", EditorStyles.miniLabel);
             }
             using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
             {
-                EditorGUI.BeginChangeCheck();
-                targetMode = EditorGUILayout.Popup(targetMode, new[] { "按技能选目标", "单体敌人", "全体敌人", "单体友军", "全体友军", "自身", "两名敌人" }, GUILayout.Width(100));
-                if (targetLabels.Length > 0)
-                    targetIndex = EditorGUILayout.Popup(targetIndex, targetLabels, GUILayout.Width(133));
-                if (EditorGUI.EndChangeCheck()) rebuild = true;
-                if (preview != null && GUILayout.Button("下一命中", EditorStyles.toolbarButton))
-                {
-                    var hits = preview.HitTimes;
-                    float nextHit = hits.FirstOrDefault(hit => hit > preview.StageTime + .01f);
-                    SeekStage(nextHit > 0f ? nextHit : hits.FirstOrDefault());
-                }
-            }
-            var image = GUILayoutUtility.GetRect(220f, 220f, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
-            EditorGUI.DrawRect(image, new Color(.07f, .08f, .10f));
-            if (preview?.Texture)
-                GUI.DrawTexture(image, preview.Texture, ScaleMode.ScaleToFit, false);
-        }
-
-        private void DrawTimeline()
-        {
-            if (preview == null) return;
-            using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
-            {
+                GUILayout.Label("时间轴", EditorStyles.boldLabel, GUILayout.Width(50f));
+                if (GUILayout.Button(new GUIContent("显示全部  A", "完整显示技能，不改变播放头"), EditorStyles.toolbarButton, GUILayout.Width(90f))) FitTimeline();
+                using (new EditorGUI.DisabledScope(selectedNode == null))
+                    if (GUILayout.Button(new GUIContent("聚焦选中  F", "双击片段也可聚焦；同时定位到所在轨道"), EditorStyles.toolbarButton, GUILayout.Width(90f))) FocusSelection();
+                if (GUILayout.Button("播放头  C", EditorStyles.toolbarButton, GUILayout.Width(78f))) CenterPlayhead();
+                GUILayout.Space(12f);
                 GUILayout.Label("帧", GUILayout.Width(16));
                 EditorGUI.BeginChangeCheck();
-                int frame = EditorGUILayout.DelayedIntField(Mathf.RoundToInt(preview.Time * fps), GUILayout.Width(44));
-                if (EditorGUI.EndChangeCheck()) Seek(frame / (float)fps);
-                GUILayout.Label($"播放 {preview.Time:F3}s   源 {preview.StageTime:F3}s", GUILayout.Width(148));
-                fps = EditorGUILayout.IntPopup(fps, new[] { "24 fps", "30 fps", "60 fps" }, new[] { 24, 30, 60 }, GUILayout.Width(66));
-                snap = GUILayout.Toggle(snap, "吸附", EditorStyles.toolbarButton);
+                int frame = EditorGUILayout.DelayedIntField(Mathf.RoundToInt(preview.Time * fps), GUILayout.Width(54));
+                if (EditorGUI.EndChangeCheck()) { Seek(frame / (float)fps); RevealTime(preview.Time); }
+                GUILayout.Label($"播放 {preview.Time:F3} / {TimelineDuration:F3}s   源 {preview.StageTime:F3}s",
+                    GUILayout.Width(240f));
                 GUILayout.FlexibleSpace();
-                GUILayout.Label("缩放");
-                zoom = GUILayout.HorizontalSlider(zoom, 1f, 12f, GUILayout.Width(65));
+                bool tails = GUILayout.Toggle(includeAfterglow, new GUIContent("含余辉", "查看模型附加特效的完整余辉范围；不修改原数据或实战时序"),
+                    EditorStyles.toolbarButton, GUILayout.Width(70f));
+                if (tails != includeAfterglow)
+                {
+                    includeAfterglow = tails; FitTimeline();
+                    if (preview.Time > TimelineDuration) Seek(TimelineDuration);
+                }
             }
-            float visible = Mathf.Max(.25f, preview.Duration / zoom);
-            scrollSeconds = Mathf.Clamp(scrollSeconds, 0f, Mathf.Max(0f, preview.Duration - visible));
-            // IMGUI reports the final width on Repaint. Lay out on the previous known width so the row heights
-            // stay consistent across Layout, Repaint and input events.
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                GUILayout.Label(SelectionSummary(), selectedNode != null ? EditorStyles.boldLabel : EditorStyles.miniLabel,
+                    GUILayout.MinWidth(0));
+                GUILayout.FlexibleSpace();
+                fps = EditorGUILayout.IntPopup(fps, new[] { "24 fps", "30 fps", "60 fps" }, new[] { 24, 30, 60 }, GUILayout.Width(68));
+                snap = GUILayout.Toggle(snap, "吸附", EditorStyles.toolbarButton, GUILayout.Width(40f));
+                GUILayout.Label("缩放", GUILayout.Width(30f));
+                float nextZoom = GUILayout.HorizontalSlider(zoom, 1f, MaximumZoom, GUILayout.Width(85));
+                if (!Mathf.Approximately(nextZoom, zoom)) ZoomTimeline(nextZoom, .5f);
+            }
+            float visible = Mathf.Max(.01f, TimelineDuration / zoom);
+            scrollSeconds = Mathf.Clamp(scrollSeconds, 0f, Mathf.Max(0f, TimelineDuration - visible));
             var rows = PlaceCues(visible, Mathf.Max(120f, ruler.width));
-            float height = RulerHeight + rows.Sum(row => row.Height);
-            timelineScroll = EditorGUILayout.BeginScrollView(timelineScroll, false, height > 245f,
-                GUILayout.Height(Mathf.Min(height, 245f)));
+            float height = rows.Sum(row => row.Height);
+            timelineViewportHeight = Mathf.Max(100f, timelineHeight - 120f);
+            if (revealSelectedLane)
+            {
+                float top = 0f;
+                foreach (var row in rows)
+                {
+                    foreach (var clip in row.Clips)
+                        if (ReferenceEquals(clip.Node, selectedNode))
+                        {
+                            float y = top + 3f + clip.Lane * LaneHeight;
+                            if (y < timelineScroll.y || y + LaneHeight > timelineScroll.y + timelineViewportHeight)
+                                timelineScroll.y = Mathf.Clamp(y - timelineViewportHeight * .4f, 0f, Mathf.Max(0f, height - timelineViewportHeight));
+                        }
+                    top += row.Height;
+                }
+                revealSelectedLane = false;
+            }
+            Rect header = GUILayoutUtility.GetRect(220f, RulerHeight, GUILayout.ExpandWidth(true));
+            bool scrollbar = height > timelineViewportHeight;
+            var headerRuler = new Rect(header.x + TrackLabel, header.y,
+                Mathf.Max(1f, header.width - TrackLabel - 12f - (scrollbar ? 16f : 0f)), RulerHeight);
+            DrawRuler(header, headerRuler, visible);
+            timelineScroll = EditorGUILayout.BeginScrollView(timelineScroll, false, scrollbar,
+                GUILayout.Height(timelineViewportHeight));
             trackArea = GUILayoutUtility.GetRect(220f, height, GUILayout.ExpandWidth(true));
             if (Event.current.type != EventType.Layout)
-                ruler = new Rect(trackArea.x + TrackLabel, trackArea.y, Mathf.Max(1f, trackArea.width - TrackLabel), RulerHeight);
+                ruler = new Rect(trackArea.x + TrackLabel, trackArea.y, Mathf.Max(1f, trackArea.width - TrackLabel - 12f), RulerHeight);
             DrawTrackGrid(rows, visible);
+            if (includeAfterglow && preview.MainDuration < preview.Duration - .01f &&
+                preview.MainDuration < scrollSeconds + visible)
+            {
+                float x = Mathf.Max(ruler.x, X(preview.MainDuration, visible));
+                EditorGUI.DrawRect(new Rect(x, ruler.y, ruler.xMax - x, trackArea.height), new Color(.24f, .22f, .15f, .5f));
+                GUI.Label(new Rect(x + 4f, ruler.y + 11f, 130f, 16f), "附加特效余辉", EditorStyles.miniLabel);
+            }
             DrawCues(rows, visible);
             TimelineInput(visible);
             if (dragGhost.HasValue)
@@ -484,8 +658,81 @@ namespace AstralOath.Client.BattleScene.Editor
                 EditorGUI.DrawRect(new Rect(ghost, ruler.y, 2f, trackArea.height), Color.white);
             }
             EditorGUILayout.EndScrollView();
-            if (zoom > 1f)
-                scrollSeconds = GUILayout.HorizontalScrollbar(scrollSeconds, visible, 0f, Mathf.Max(visible, preview.Duration));
+            scrollSeconds = GUILayout.HorizontalScrollbar(scrollSeconds, visible, 0f, Mathf.Max(visible, TimelineDuration));
+        }
+
+        private string SelectionSummary()
+        {
+            if (selectedNode == null || preview == null) return "单击片段查看参数，双击或按 F 聚焦";
+            var cue = preview.Cues.FirstOrDefault(item => ReferenceEquals(item.Node, selectedNode));
+            string id = selectedGuid >= 0 ? "#" + selectedGuid : "模型事件（只读）";
+            return $"已选：{id} {selectedNode["etty"]}    {Mathf.RoundToInt(preview.StageToWallTime(cue.At) * fps)} 帧 / 源 {cue.At:F3}s";
+        }
+
+        private static string CueKey(JObject node) => node["guid"] != null
+            ? "node:" + node["guid"] : "model:" + node.ToString(Formatting.None);
+
+        private static Vector2 FrameTimeRange(float duration, float from, float to)
+        {
+            duration = Mathf.Max(.01f, duration);
+            from = Mathf.Clamp(from, 0, duration);
+            to = Mathf.Clamp(to, from, duration);
+            float padding = Mathf.Max(.12f, (to - from) * .18f);
+            float span = Mathf.Clamp(to - from + padding * 2f, duration / MaximumZoom, duration);
+            return new Vector2(Mathf.Clamp((from + to - span) * .5f, 0f, duration - span), duration / span);
+        }
+
+        private static float AnchoredScroll(float duration, float start, float oldZoom, float newZoom, float anchor)
+        {
+            float span = duration / Mathf.Max(1f, newZoom);
+            return Mathf.Clamp(start + duration / Mathf.Max(1f, oldZoom) * anchor - span * anchor,
+                0f, Mathf.Max(0f, duration - span));
+        }
+
+        private void ZoomTimeline(float value, float anchor)
+        {
+            if (preview == null) return;
+            value = Mathf.Clamp(value, 1f, MaximumZoom);
+            scrollSeconds = AnchoredScroll(TimelineDuration, scrollSeconds, zoom, value, Mathf.Clamp01(anchor));
+            zoom = value;
+            Repaint();
+        }
+
+        private void FitTimeline()
+        {
+            zoom = 1f; scrollSeconds = 0f; timelineScroll = Vector2.zero;
+            GUI.FocusControl(null); Repaint();
+        }
+
+        private void FocusSelection()
+        {
+            if (preview == null || selectedNode == null) return;
+            var cue = preview.Cues.First(item => ReferenceEquals(item.Node, selectedNode));
+            float start = preview.StageToWallTime(cue.At);
+            float end = (string)cue.Node["etty"] == "CUTIN"
+                ? start + preview.Cutins.FirstOrDefault(item => Mathf.Approximately(item.At, cue.At)).Duration
+                : preview.StageToWallTime(cue.At + cue.Duration);
+            if (end > preview.MainDuration + .001f) includeAfterglow = true;
+            var view = FrameTimeRange(TimelineDuration, start, end);
+            scrollSeconds = view.x; zoom = view.y; revealSelectedLane = true;
+            GUI.FocusControl(null); Repaint();
+        }
+
+        private void CenterPlayhead()
+        {
+            if (preview == null) return;
+            scrollSeconds = Mathf.Clamp(preview.Time - TimelineDuration / zoom * .5f,
+                0f, Mathf.Max(0f, TimelineDuration - TimelineDuration / zoom));
+            GUI.FocusControl(null); Repaint();
+        }
+
+        private void RevealTime(float time)
+        {
+            if (preview == null) return;
+            if (time > preview.MainDuration + .001f) includeAfterglow = true;
+            float span = TimelineDuration / zoom;
+            if (time < scrollSeconds || time > scrollSeconds + span)
+                scrollSeconds = Mathf.Clamp(time - span * .3f, 0f, Mathf.Max(0f, TimelineDuration - span));
         }
 
         private sealed class TrackRow
@@ -506,13 +753,10 @@ namespace AstralOath.Client.BattleScene.Editor
                 float end = kind == "CUTIN"
                     ? start + preview.Cutins.FirstOrDefault(item => Mathf.Approximately(item.At, cue.At)).Duration
                     : preview.StageToWallTime(cue.At + cue.Duration);
-                float rightEdge = scrollSeconds + visible;
-                float left = start <= rightEdge ? Mathf.Min(start, rightEdge - minimumDuration) : start;
-                return (cue.Node, cue.At, Track: Track(kind), Start: left, End: Mathf.Max(start + minimumDuration, end));
+                return (cue.Node, cue.At, Track: Track(kind), Start: start, End: Mathf.Max(start + minimumDuration, end));
             });
             foreach (var clip in placements.OrderBy(clip => clip.Start))
             {
-                if (clip.End <= scrollSeconds || clip.Start > scrollSeconds + visible) continue;
                 var row = rows[clip.Track];
                 int lane = AssignLane(row.Ends, clip.Start, clip.End);
                 row.Clips.Add((clip.Node, clip.At, clip.Start, clip.End, lane));
@@ -535,7 +779,7 @@ namespace AstralOath.Client.BattleScene.Editor
         private void DrawTrackGrid(TrackRow[] rows, float visible)
         {
             EditorGUI.DrawRect(trackArea, new Color(.13f, .15f, .18f));
-            float y = ruler.yMax;
+            float y = trackArea.y;
             for (int index = 0; index < rows.Length; index++)
             {
                 var rect = new Rect(trackArea.x, y, trackArea.width, rows[index].Height);
@@ -546,36 +790,76 @@ namespace AstralOath.Client.BattleScene.Editor
             int frameStep = Mathf.Max(1, Mathf.CeilToInt(48f / ruler.width * visible * fps));
             int first = Mathf.CeilToInt(scrollSeconds * fps / frameStep) * frameStep;
             for (int frame = first; frame / (float)fps <= scrollSeconds + visible; frame += frameStep)
+                EditorGUI.DrawRect(new Rect(X(frame / (float)fps, visible), trackArea.y, 1f, trackArea.height),
+                    new Color(.32f, .36f, .43f, .46f));
+        }
+
+        private void DrawRuler(Rect header, Rect axis, float visible)
+        {
+            EditorGUI.DrawRect(header, new Color(.11f, .13f, .16f));
+            GUI.Label(new Rect(header.x + 5f, header.y + 4f, TrackLabel - 5f, 18f), "轨道 / 帧", EditorStyles.miniLabel);
+            int frameStep = Mathf.Max(1, Mathf.CeilToInt(48f / axis.width * visible * fps));
+            int first = Mathf.CeilToInt(scrollSeconds * fps / frameStep) * frameStep;
+            for (int frame = first; frame / (float)fps <= scrollSeconds + visible; frame += frameStep)
             {
                 float time = frame / (float)fps;
-                float x = X(time, visible);
-                EditorGUI.DrawRect(new Rect(x, ruler.y, 1f, trackArea.height), new Color(.32f, .36f, .43f, .46f));
-                GUI.Label(new Rect(x + 2, ruler.y, 46f, 19f),
-                    new GUIContent(frame + "f", time.ToString("0.000", CultureInfo.InvariantCulture) + " s"),
-                    EditorStyles.miniLabel);
+                float x = axis.x + (time - scrollSeconds) / visible * axis.width;
+                EditorGUI.DrawRect(new Rect(x, axis.yMax - 6f, 1f, 6f), Color.gray);
+                GUI.Label(new Rect(x + 2, axis.y, 46f, 19f),
+                    new GUIContent(frame + "f", time.ToString("0.000", CultureInfo.InvariantCulture) + " s"), EditorStyles.miniLabel);
             }
+            if (preview.Time >= scrollSeconds && preview.Time <= scrollSeconds + visible)
+            {
+                float x = axis.x + (preview.Time - scrollSeconds) / visible * axis.width;
+                EditorGUI.DrawRect(new Rect(x - 2f, axis.y, 4f, axis.height), new Color(1f, .87f, .51f));
+            }
+            var input = Event.current;
+            if (input.type == EventType.MouseDown && input.button == 0 && axis.Contains(input.mousePosition) &&
+                !dragStart.HasValue && resizingPanel == 0 && !panningTimeline)
+            {
+                scrubbingTimeline = true; CapturePointer(); GUI.FocusControl(null);
+            }
+            if (scrubbingTimeline && (input.type == EventType.MouseDown || input.type == EventType.MouseDrag))
+            {
+                float time = scrollSeconds + Mathf.Clamp01((input.mousePosition.x - axis.x) / axis.width) * visible;
+                Seek(snap ? Mathf.Round(time * fps) / fps : time);
+                input.Use();
+            }
+            if (scrubbingTimeline && input.type == EventType.MouseUp && input.button == 0)
+            { ReleasePointer(); input.Use(); }
         }
 
         private void DrawCues(TrackRow[] rows, float visible)
         {
-            float y = ruler.yMax;
+            float y = trackArea.y;
             for (int index = 0; index < rows.Length; index++)
             {
                 foreach (var clip in rows[index].Clips)
                 {
+                    if (clip.End < scrollSeconds || clip.Start > scrollSeconds + visible) continue;
                     string kind = (string)clip.Node["etty"];
                     float left = Mathf.Clamp(X(clip.Start, visible), ruler.xMin, ruler.xMax - 8f);
                     float right = Mathf.Min(X(clip.End, visible), ruler.xMax);
                     var rect = new Rect(left, y + 3f + clip.Lane * LaneHeight, right - left, LaneHeight - 3f);
-                    var color = ReferenceEquals(clip.Node, selectedNode) ? Color.white : TrackColors[index];
-                    EditorGUI.DrawRect(rect, color);
-                    string detail = $"#{clip.Node["guid"]} {kind}  播放 {Mathf.RoundToInt(preview.StageToWallTime(clip.At) * fps)} 帧 / 源 {clip.At:F3}s";
-                    GUI.Label(rect, new GUIContent(rect.width >= 25f ? kind : "", detail), EditorStyles.centeredGreyMiniLabel);
+                    bool active = ReferenceEquals(clip.Node, selectedNode);
+                    EditorGUI.DrawRect(rect, active ? new Color(.08f, .27f, .40f) : TrackColors[index]);
+                    if (active)
+                    {
+                        EditorGUI.DrawRect(new Rect(rect.x, rect.y, rect.width, 2f), SelectionColor);
+                        EditorGUI.DrawRect(new Rect(rect.x, rect.yMax - 2f, rect.width, 2f), SelectionColor);
+                        EditorGUI.DrawRect(new Rect(rect.x, rect.y, 2f, rect.height), SelectionColor);
+                        EditorGUI.DrawRect(new Rect(rect.xMax - 2f, rect.y, 2f, rect.height), SelectionColor);
+                    }
+                    string id = clip.Node["guid"] != null ? "#" + clip.Node["guid"] : "模型";
+                    string detail = $"{id} {kind}  播放 {Mathf.RoundToInt(preview.StageToWallTime(clip.At) * fps)} 帧 / 源 {clip.At:F3}s";
+                    GUI.Label(rect, new GUIContent(rect.width >= 38f ? id + " " + kind : "", detail),
+                        active ? selectedClipLabel : clipLabel);
                     var input = Event.current;
                     if (input.type == EventType.MouseDown && input.button == 0 && rect.Contains(input.mousePosition))
                     {
-                        SelectCue(clip.Node, clip.At);
-                        if (!compareOriginal && selectedGuid >= 0) dragStart = clip.At;
+                        PickCue(clip.Node, clip.At, false);
+                        if (input.clickCount == 2) { dragStart = dragGhost = null; FocusSelection(); }
+                        else if (!compareOriginal && selectedGuid >= 0) { dragStart = clip.At; CapturePointer(); }
                         dragMouseX = input.mousePosition.x;
                         input.Use();
                     }
@@ -600,14 +884,26 @@ namespace AstralOath.Client.BattleScene.Editor
         private void TimelineInput(float visible)
         {
             var input = Event.current;
-            if (input.type == EventType.ScrollWheel && (input.shift || input.alt) && trackArea.Contains(input.mousePosition))
+            if (input.type == EventType.ScrollWheel && !dragStart.HasValue && !scrubbingTimeline && (input.shift || input.alt) && trackArea.Contains(input.mousePosition))
             {
-                if (input.shift) zoom = Mathf.Clamp(zoom * Mathf.Pow(1.1f, -input.delta.y), 1f, 12f);
+                if (input.shift) ZoomTimeline(zoom * Mathf.Pow(1.1f, -input.delta.y), (input.mousePosition.x - ruler.x) / ruler.width);
                 else scrollSeconds += input.delta.y * visible * .08f;
                 input.Use();
                 Repaint();
                 return;
             }
+            if (input.type == EventType.MouseDown && input.button == 2 && trackArea.Contains(input.mousePosition))
+            {
+                panningTimeline = true; CapturePointer(); panMouseX = input.mousePosition.x; panStart = scrollSeconds;
+                GUI.FocusControl(null); input.Use();
+            }
+            if (panningTimeline && input.type == EventType.MouseDrag)
+            {
+                scrollSeconds = Mathf.Clamp(panStart - (input.mousePosition.x - panMouseX) / ruler.width * visible,
+                    0f, Mathf.Max(0f, TimelineDuration - visible));
+                input.Use(); Repaint(); return;
+            }
+            if (input.type == EventType.MouseUp && input.button == 2 && panningTimeline) { ReleasePointer(); input.Use(); }
             if (dragStart.HasValue && input.type == EventType.MouseDrag)
             {
                 float sourceTime = DragStageTime(input.mousePosition.x, visible);
@@ -624,14 +920,7 @@ namespace AstralOath.Client.BattleScene.Editor
                     if (Mathf.Abs(input.mousePosition.x - dragMouseX) >= 4f)
                         TryEdit(() => EditNode(node => node["atMs"] = Milliseconds(sourceTime)));
                 }
-                dragStart = dragGhost = null;
-            }
-            if (ruler.Contains(input.mousePosition) && input.button == 0 &&
-                (input.type == EventType.MouseDown || input.type == EventType.MouseDrag))
-            {
-                float time = scrollSeconds + (input.mousePosition.x - ruler.x) / ruler.width * visible;
-                Seek(snap ? Mathf.Round(time * fps) / fps : time);
-                input.Use();
+                ReleasePointer();
             }
         }
         private float dragMouseX;
@@ -651,9 +940,17 @@ namespace AstralOath.Client.BattleScene.Editor
 
         private void DrawInspector()
         {
-            using (new EditorGUILayout.VerticalScope(GUILayout.Width(245)))
+            using (new EditorGUILayout.VerticalScope())
             {
                 EditorGUILayout.LabelField("节点参数", EditorStyles.boldLabel);
+                if (selectedNode != null)
+                {
+                    var selectionRect = GUILayoutUtility.GetRect(1f, 28f, GUILayout.ExpandWidth(true));
+                    EditorGUI.DrawRect(selectionRect, new Color(.10f, .29f, .41f));
+                    GUI.Label(selectionRect, SelectionSummary(), selectedClipLabel);
+                }
+                float previousLabelWidth = EditorGUIUtility.labelWidth;
+                EditorGUIUtility.labelWidth = 110f;
                 detailScroll = EditorGUILayout.BeginScrollView(detailScroll, GUILayout.ExpandHeight(true));
                 if (preview != null && preview.Cues.Count > 0)
                 {
@@ -671,6 +968,7 @@ namespace AstralOath.Client.BattleScene.Editor
                     {
                         var cue = preview.Cues[picked - 1];
                         SelectCue(cue.Node, cue.At);
+                        FocusSelection();
                     }
                 }
                 using var readOnly = new EditorGUI.DisabledScope(compareOriginal);
@@ -704,6 +1002,7 @@ namespace AstralOath.Client.BattleScene.Editor
                         EditorGUILayout.HelpBox(message, MessageType.Info);
                 }
                 EditorGUILayout.EndScrollView();
+                EditorGUIUtility.labelWidth = previousLabelWidth;
             }
         }
 

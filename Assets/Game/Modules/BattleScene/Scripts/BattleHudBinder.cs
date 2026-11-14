@@ -272,6 +272,7 @@ namespace AstralOath.Client.BattleScene
                 return;
             }
             ClearSelection();
+            selected = burnSkillIndex;
             SetArmed(true);
             Play(useEffect, "animation", false);
             useParticles.Play();

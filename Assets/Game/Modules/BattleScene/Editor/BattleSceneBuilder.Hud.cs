@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json.Linq;
 using AstralOath.Client.Common;
 using TMPro;
 using UnityEditor;
@@ -37,20 +36,12 @@ namespace AstralOath.Client.BattleScene.Editor
             details.pixelsPerUnitMultiplier = 1f / PixelScale;
             bindings.Add("orderHourglass", Picture(order, "Hourglass", "cm_icon_etctime2", 33.5f, 643.5f, 16.16f, 22.22f));
             var allyIds = BattleHudPreview.DefaultAllyHeroIds;
-            var enemyIds = BattleHudPreview.DefaultEnemyHeroIds;
-            var heroElements = HeroElements(JObject.Parse(Asset<TextAsset>(Module + "/Configs/battle-catalog.json").text)["heroes"]);
             for (int i = Slots.Length - 1; i >= 0; i--)
                 OrderFace(order, allyIds[i], 32, 184 + i * 47);
 
             var markers = Group("Unit Status", rect);
-            var allyMarkers = Group("Allies", markers);
-            var enemyMarkers = Group("Enemies", markers);
-            for (int i = 0; i < Slots.Length; i++)
-            {
-                var layout = Slots[i];
-                UnitStatus(allyMarkers, layout.Position, layout.AllyX, layout.MarkerY, heroElements[allyIds[i]], 1f);
-                UnitStatus(enemyMarkers, layout.Position, layout.EnemyX, layout.MarkerY, heroElements[enemyIds[i]], 1f);
-            }
+            Group("Allies", markers);
+            Group("Enemies", markers);
 
             var active = Group("Active Unit", rect);
             active.SetSiblingIndex(order.GetSiblingIndex());
@@ -107,16 +98,6 @@ namespace AstralOath.Client.BattleScene.Editor
             Picture(parent, id + " Base", "_hero_s_bg_ally", x, y, 54, 54);
             Picture(parent, id + " Portrait", "Faces/" + id + "_s", x, y, 54, 54);
             Picture(parent, id + " Frame", "_hero_s_frame_ally", x, y, 57, 57);
-        }
-
-        private static void UnitStatus(RectTransform parent, string position, float x, float y,
-            string element, float hp)
-        {
-            var group = Group(position, parent);
-            Picture(group, "Frame", "game_hud_bar_bg_n", x, y, 86, 26);
-            Picture(group, "Element", "game_hud_bar_" + element, x - 29, y + 0.5f, 24, 21);
-            Picture(group, "Level", "itxt_num5_b", x - 29, y, 26 * 0.53f, 34 * 0.53f);
-            SetFill(Picture(group, "HP", "game_hud_bar_hp", x + 11, y + 7, 56, 6), hp);
         }
 
         private static void SetFill(Image image, float fill)

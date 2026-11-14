@@ -53,6 +53,7 @@ namespace AstralOath.Client.BattleScene
         [SerializeField] private SpineEffect burnIntro;
         [SerializeField] private SpineEffect soulUse;
         [SerializeField] private SpineEffect soulDisplay;
+        [SerializeField] private SpineEffect soulConsume;
         [SerializeField] private SpineEffect readyDust;
         [SerializeField] private TextAsset[] particles;
         [SerializeField] private Texture2D[] particleTextures;
@@ -66,7 +67,6 @@ namespace AstralOath.Client.BattleScene
         [SerializeField] private TextAsset[] audioBanks;
         [SerializeField] private TextAsset impactBank;
         [SerializeField] private GameObject stageBackground;
-        [SerializeField] private BattleUnitPresentationProfile unitPresentation;
         [Serializable]
         private sealed class HeroModel
         {
@@ -122,8 +122,8 @@ namespace AstralOath.Client.BattleScene
             ApplyTeam(enemySlots);
             UpdateBinding();
             simulation = new BattleSimulationPreview(gameObject.scene, hud, binder, catalog, battleSprites, battleGraphs,
-                skillAssets, audioCatalog, audioBanks, battleDamageFont, impactBank, stageBackground, unitPresentation,
-                soulDisplay, particles, particleTextures, nextMatch, inspectionPrefab, readyDust: readyDust,
+                skillAssets, audioCatalog, audioBanks, battleDamageFont, impactBank, stageBackground,
+                soulDisplay, soulConsume, particles, particleTextures, nextMatch, inspectionPrefab, readyDust: readyDust,
                 skillTimelineOverrides: skillTimelineOverrides);
             binder.AttachSimulation(simulation);
         }

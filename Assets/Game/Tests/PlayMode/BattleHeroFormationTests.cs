@@ -82,6 +82,7 @@ namespace AstralOath.Client.Tests
 
             typeof(BattlePreviewActor).GetField("heroId", InstancePrivate).SetValue(swap, "c1008");
             host.RestartBattle();
+            swappedMarker = hud.transform.Find("Unit Status/Allies/" + swap.transform.parent.name);
             Assert.That(swappedMarker.Find("HP/Personal Resource"), Is.Null);
             Assert.That(swappedMarker.Find("Frame").GetComponent<Image>().sprite.name, Is.EqualTo("game_hud_bar_bg_n"));
 

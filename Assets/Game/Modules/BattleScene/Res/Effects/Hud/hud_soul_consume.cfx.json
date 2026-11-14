@@ -1,0 +1,18 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "soul_grow",
+      "z": "2",
+      "scale": "1.0",
+      "format": "spine",
+      "timeScale": 0.6
+    },
+    {
+      "source": "soul_consume_pati",
+      "z": "1",
+      "scale": "1.2",
+      "format": "particle"
+    }
+  ]
+}

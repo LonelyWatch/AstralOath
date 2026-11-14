@@ -272,12 +272,15 @@ namespace AstralOath.Client.Tests
             }
             Click(burn, raycaster, eventSystem);
             Assert.That(EffectVisible(skill2.transform, "Burn Intro"), Is.False);
-            Assert.That(selected3.gameObject.activeSelf, Is.True);
+            Assert.That(selected2.gameObject.activeSelf, Is.True);
+            Assert.That(selected3.gameObject.activeSelf, Is.False);
+            Assert.That(EffectVisible(skill2.transform, "Skill Selection"), Is.True);
 
             Click(burn, raycaster, eventSystem);
             Assert.That(EffectVisible(burn.transform, "Soul Burn Use"), Is.True);
             Click(burn, raycaster, eventSystem);
             Assert.That(EffectVisible(burn.transform, "Soul Burn Use"), Is.False);
+            Assert.That(selected2.gameObject.activeSelf, Is.True, "Cancel during the intro also retains the Soul Burn skill.");
 
             Click(burn, raycaster, eventSystem);
             canvas.gameObject.SetActive(false);
@@ -491,7 +494,7 @@ namespace AstralOath.Client.Tests
             void SetSoul(int amount, BattleSide side = BattleSide.Ally) =>
                 present.Invoke(simulation, new[] { constructor.Invoke(new object[] { 1UL, 1, BattleFlowEventKind.SoulChanged,
                     "ally-1", null, amount, null, null, BattleActionOrigin.Primary, null, null, side, null,
-                    BattleHitKind.None, null, false, null }) });
+                    BattleHitKind.None, null, false, null, null }) });
             int VisibleSouls() => root.Cast<Transform>().Count(slot => slot.gameObject.activeSelf);
 
             Assert.That(root.childCount, Is.EqualTo(8));

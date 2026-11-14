@@ -114,6 +114,7 @@ namespace AstralOath.Client.BattleScene
 
 #if UNITY_EDITOR
         internal IReadOnlyCollection<string> EditorDiagnostics => diagnostics;
+        internal float EditorMainDuration { get; private set; }
 
         internal IReadOnlyList<(float At, JObject Node, float Duration, JObject[] Modulators)> GetPreparedCues(
             BattlePreviewActor actor, string presentationId)
@@ -219,7 +220,7 @@ namespace AstralOath.Client.BattleScene
             currentPresentationId = string.IsNullOrEmpty(presentationId) ? actor.name : presentationId;
             home = actor.transform.localPosition;
             casterShadow = actor.PresentationShadow;
-            shadowHome = casterShadow ? casterShadow.localPosition : Vector3.zero;
+            shadowHome = casterShadow ? ShadowInSlot : Vector3.zero;
             time = 0f;
             var recipients = targets.Where(target => target).Distinct().ToArray();
             if (recipients.Length == 0 && primaryTarget)
@@ -235,6 +236,9 @@ namespace AstralOath.Client.BattleScene
                 cinematic.Begin(actor.transform, recipients.Select(target => target.transform).ToArray(), false);
                 cinematic.ReturnToBaseline(.2f);
                 float end = Mathf.Max(duration, impact + .15f);
+#if UNITY_EDITOR
+                EditorMainDuration = end;
+#endif
                 Schedule(end, EndAction);
                 if (primary) Schedule(impact, () => Cfx(BasicHit, primary, recipients, 5, 1f, Vector2.zero, true));
                 return (impact, Mathf.Max(duration, impact + 0.15f));
@@ -314,6 +318,12 @@ namespace AstralOath.Client.BattleScene
                         break;
                 }
             }
+#if UNITY_EDITOR
+            // Model-timeline CFX may leave ambient particles after the authored return.
+            // Keep their full lifetime for playback, but expose the choreography separately to the editor.
+            // STG effect-completion edges above remain part of that choreography.
+            EditorMainDuration = actionEnd;
+#endif
             foreach (var frame in ModelTimelineFrames(graph, cues))
             {
                 var node = frame.Parameters;
@@ -321,12 +331,18 @@ namespace AstralOath.Client.BattleScene
                 {
                     case "effect":
                         actionEnd = Mathf.Max(actionEnd, frame.At + EffectDuration((string)node["source"]));
+#if UNITY_EDITOR
+                        EditorMainDuration = Mathf.Max(EditorMainDuration, frame.At + EditorEffectDuration((string)node["source"]));
+#endif
                         Schedule(frame.At, () => Cfx((string)node["source"], actor, recipients, 1,
                             Number(node, "scale", 1f), new Vector2(Number(node, "x"), Number(node, "y")),
                             false, anchorName: (string)node["locationBone"] ?? (string)node["locationParam"]));
                         break;
                     case "shake":
                         actionEnd = Mathf.Max(actionEnd, frame.At + ShakeDuration(node));
+#if UNITY_EDITOR
+                        EditorMainDuration = Mathf.Max(EditorMainDuration, frame.At + ShakeDuration(node));
+#endif
                         Schedule(frame.At, () => PlayShake(node));
                         break;
                 }
@@ -498,6 +514,40 @@ namespace AstralOath.Client.BattleScene
                 .DefaultIfEmpty(0f).Max() ?? 0f;
         }
 
+#if UNITY_EDITOR
+        // A model-timeline effect does not insert a graph wait. Preserve its Spine animation,
+        // explicit lifetime and particle emission window in the main preview; only particle
+        // drift after the last emission belongs to the optional afterglow range.
+        private float EditorEffectDuration(string source)
+        {
+            if (string.IsNullOrEmpty(source)) return 0f;
+            string key = source.StartsWith(EffectPath, StringComparison.Ordinal) ? source : EffectPath + source;
+            if (!key.EndsWith(".cfx", StringComparison.Ordinal)) key += ".cfx";
+            return Document(key)?["primitive"]?.OfType<JObject>()
+                .Select(part => Mathf.Max(0f, UpperNumber(part, "delay")) / 1000f + EditorPrimitiveDuration(part))
+                .DefaultIfEmpty(0f).Max() ?? 0f;
+        }
+
+        private float EditorPrimitiveDuration(JObject part)
+        {
+            if ((string)part["format"] != "particle" || UpperNumber(part, "lifeTime", -1f) >= 0f)
+                return PrimitiveDuration(part);
+            var emitters = Document(EffectPath + (string)part["source"] + ".particle")?["emitters"] as JArray;
+            if (emitters == null) return PrimitiveDuration(part);
+            float end = 0f;
+            foreach (var emitter in emitters.OfType<JObject>().Where(item => (bool?)item["disable"] != true))
+            {
+                bool burst = (int?)emitter["burningType"] == 1;
+                float duration = Number(emitter, "duration");
+                // Unknown/unbounded emitters keep the existing explicit diagnostic fallback.
+                if (!burst && duration < 0f) return PrimitiveDuration(part);
+                float start = Mathf.Max(0f, Number(emitter, "startDelay") + Mathf.Abs(Number(emitter, "startDelayVar")));
+                float repetitions = Mathf.Max(0f, Number(emitter, "repeat") - 1f) * Number(emitter, "interval");
+                end = Mathf.Max(end, start + repetitions + (burst ? 0f : duration));
+            }
+            return end;
+        }
+#endif
         private float PrimitiveDuration(JObject part)
         {
             float lifetime = UpperNumber(part, "lifeTime", -1f);
@@ -679,13 +729,13 @@ namespace AstralOath.Client.BattleScene
                 float eased = Mathf.SmoothStep(0f, 1f, progress);
                 caster.transform.localPosition = Vector3.Lerp(movement.From, movement.To, eased) +
                     Vector3.up * (Mathf.Sin(progress * Mathf.PI) * movement.Arc);
-                if (casterShadow)
-                    casterShadow.localPosition = shadowHome + Vector3.Lerp(movement.GroundFrom, movement.To, eased) - home;
                 if (progress >= 1f)
                 {
                     caster.transform.localPosition = movement.To;
                     motion = null;
                 }
+                if (casterShadow)
+                    ShadowInSlot = shadowHome + Vector3.Lerp(movement.GroundFrom, movement.To, eased) - home;
             }
             cinematic.Tick(delta);
             for (int i = active.Count - 1; i >= 0; i--)
@@ -708,17 +758,43 @@ namespace AstralOath.Client.BattleScene
             else pending.Insert(index, (at, run));
         }
 
+        // MOVE positions are authored in the slot. A prefab child needs the same ground path
+        // as the original sibling shadow, independent of the airborne body transform.
+        private Vector3 ShadowInSlot
+        {
+            get
+            {
+                var slot = caster.transform.parent;
+                return slot ? slot.InverseTransformPoint(casterShadow.position) : casterShadow.position;
+            }
+            set
+            {
+                var slot = caster.transform.parent;
+                casterShadow.position = slot ? slot.TransformPoint(value) : value;
+            }
+        }
+
         private void PlayMove(JObject node, BattlePreviewActor primary, BattlePreviewActor[] targets, float duration)
         {
             if (!caster) return;
             int style = (int?)node["style"] ?? 1;
             int location = (int?)node["location"] ?? 11;
             Vector3 destination = home;
+            float approachDirection = 0f, minimumGap = 0f;
             if (location == 16)
             {
                 if (!primary || primary == caster) return;
                 Vector3 target = primary.transform.position;
-                float separation = Mathf.Clamp(target.x - caster.transform.position.x, -.9f, .9f);
+                float horizontal = target.x - caster.transform.position.x;
+                float gap = .9f;
+                if (style is 1 or 2)
+                {
+                    approachDirection = horizontal == 0f ? caster.FacingDirection : Mathf.Sign(horizontal);
+                    float footprint = (ShadowWidth(caster) + ShadowWidth(primary)) * .5f;
+                    gap = Mathf.Clamp(footprint + .18f, 1.18f, 2.2f);
+                    minimumGap = Mathf.Min(Mathf.Abs(horizontal), Mathf.Clamp(footprint, .9f, 2f));
+                }
+                float separation = Mathf.Clamp(horizontal, -gap, gap);
                 destination = caster.transform.parent.InverseTransformPoint(target - Vector3.right * separation);
             }
             else if (location == 31 && primary)
@@ -737,19 +813,37 @@ namespace AstralOath.Client.BattleScene
             }
             if (style != 3)
                 destination += new Vector3(Number(node, "x") * caster.FacingDirection, Number(node, "y"), 0f) * SourcePixel;
+            if (approachDirection != 0f)
+            {
+                // Preserve authored offsets while preventing a front approach from closing the ground gap.
+                var parent = caster.transform.parent;
+                var worldDestination = parent.TransformPoint(destination);
+                float limit = primary.transform.position.x - approachDirection * minimumGap;
+                if ((worldDestination.x - limit) * approachDirection > 0f)
+                {
+                    worldDestination.x = limit;
+                    destination = parent.InverseTransformPoint(worldDestination);
+                }
+            }
             float arc = style == 3 ? 0f : Number(node, "h", style == 2 ? Number(node, "power") : 0f) * SourcePixel;
             if (duration > 0f)
             {
                 Vector3 from = caster.transform.localPosition;
-                Vector3 groundFrom = casterShadow ? home + casterShadow.localPosition - shadowHome : from;
+                Vector3 groundFrom = casterShadow ? home + ShadowInSlot - shadowHome : from;
                 motion = (from, groundFrom, destination, time, duration, arc);
             }
             else
             {
                 motion = null;
                 caster.transform.localPosition = destination;
-                if (casterShadow) casterShadow.localPosition = shadowHome + destination - home;
+                if (casterShadow) ShadowInSlot = shadowHome + destination - home;
             }
+        }
+
+        private static float ShadowWidth(BattlePreviewActor actor)
+        {
+            var shadow = actor.PresentationShadow;
+            return shadow && shadow.TryGetComponent<SpriteRenderer>(out var renderer) ? renderer.bounds.size.x : 0f;
         }
 
         private static Vector3 TargetCenter(BattlePreviewActor[] targets) =>
@@ -1088,7 +1182,7 @@ namespace AstralOath.Client.BattleScene
                 caster.PlayBattleIdle();
                 caster.EndPresentationControl();
             }
-            if (casterShadow) casterShadow.localPosition = shadowHome;
+            if (caster && casterShadow) ShadowInSlot = shadowHome;
             casterShadow = null;
             caster = null;
             motion = null;

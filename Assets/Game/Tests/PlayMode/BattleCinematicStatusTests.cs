@@ -141,6 +141,7 @@ namespace AstralOath.Client.Tests
             Assert.That(map.transform.Find("Unit Status/Enemies/" + enemies[0].transform.parent.name).gameObject.activeSelf, Is.False,
                 "Restoring a cinematic mask cannot revive a defeated unit's status.");
             host.RestartBattle(); yield return null;
+            spectatorMarker = map.transform.Find("Unit Status/Allies/" + spectator.transform.parent.name);
             Assert.That(spectatorMarker.gameObject.activeSelf, Is.True);
         }
     }

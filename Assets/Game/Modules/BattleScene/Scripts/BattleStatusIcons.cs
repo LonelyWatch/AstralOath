@@ -67,6 +67,8 @@ namespace AstralOath.Client.BattleScene
         private readonly Action<BattleStatusSnapshot, Image> inspect;
         private readonly float glyphScale;
         private readonly RectTransform root;
+        private readonly bool ownsRoot;
+        private bool disposed;
         private readonly List<(BattleStatusSnapshot Status, BattleStatusArt.Entry Art)> statuses =
             new List<(BattleStatusSnapshot, BattleStatusArt.Entry)>();
         private readonly List<Slot> slots = new List<Slot>();
@@ -79,13 +81,18 @@ namespace AstralOath.Client.BattleScene
             this.columns = Mathf.Clamp(columns, 1, MaximumColumns);
             float unit = frame.rect.width / SourceFrameWidth;
             glyphScale = unit * SourceIconScale;
-            root = CreateRect("Status Icons", frame, new Vector2(1f, 15f) * unit, Vector2.zero);
-            root.anchorMin = root.anchorMax = Vector2.up * .5f;
+            root = frame.Find("Status Icons") as RectTransform;
+            ownsRoot = !root;
+            if (ownsRoot)
+            {
+                root = CreateRect("Status Icons", frame, new Vector2(1f, 15f) * unit, Vector2.zero);
+                root.anchorMin = root.anchorMax = Vector2.up * .5f;
+            }
         }
 
         public void Apply(BattleStatusSnapshot status)
         {
-            if (!art.TryGet(status.Kind, out var entry)) return;
+            if (disposed || !art.TryGet(status.Kind, out var entry)) return;
             int current = IndexOf(status.Kind, status.InstanceId);
             var next = (status, entry);
             if (current >= 0) statuses[current] = next;
@@ -102,6 +109,7 @@ namespace AstralOath.Client.BattleScene
 
         public void UpdateDuration(BattleStatusSnapshot status)
         {
+            if (disposed) return;
             int index = IndexOf(status.Kind, status.InstanceId);
             if (index < 0) return;
             var current = statuses[index];
@@ -111,6 +119,7 @@ namespace AstralOath.Client.BattleScene
 
         public void Remove(BattleStatusKind kind, ulong instanceId = 0)
         {
+            if (disposed) return;
             int index = IndexOf(kind, instanceId);
             if (index < 0) return;
             statuses.RemoveAt(index);
@@ -119,6 +128,7 @@ namespace AstralOath.Client.BattleScene
 
         public void Reconcile(IReadOnlyList<BattleStatusSnapshot> snapshot)
         {
+            if (disposed) return;
             bool changed = false;
             for (int index = statuses.Count - 1; index >= 0; index--)
             {
@@ -170,10 +180,21 @@ namespace AstralOath.Client.BattleScene
 
         public void Dispose()
         {
-            if (!root) return;
-            root.gameObject.SetActive(false);
-            root.SetParent(null, false);
-            UnityEngine.Object.Destroy(root.gameObject);
+            if (disposed) return;
+            disposed = true;
+            foreach (var slot in slots) slot.Dispose();
+            slots.Clear();
+            statuses.Clear();
+            if (ownsRoot && root) RemoveOwnedObject(root.gameObject);
+        }
+
+        private static void RemoveOwnedObject(GameObject item)
+        {
+            if (!item) return;
+            item.SetActive(false);
+            item.transform.SetParent(null, false);
+            if (Application.isPlaying) UnityEngine.Object.Destroy(item);
+            else UnityEngine.Object.DestroyImmediate(item);
         }
 
         private static RectTransform CreateRect(string name, Transform parent, Vector2 position, Vector2 size)
@@ -227,6 +248,13 @@ namespace AstralOath.Client.BattleScene
                 bool twoDigits = turns >= 10;
                 SetDigit(firstDigit, digits, twoDigits ? turns / 10 : turns, digitColor);
                 SetDigit(secondDigit, digits, twoDigits ? turns % 10 : -1, digitColor);
+            }
+
+            public void Dispose()
+            {
+                if (hold) { hold.Cancel(); hold.Held = null; }
+                status = null;
+                if (Icon) RemoveOwnedObject(Icon.gameObject);
             }
 
             private static void SetDigit(Image image, Sprite[] digits, int value, Color color)

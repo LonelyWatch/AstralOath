@@ -45,6 +45,7 @@ namespace AstralOath.Client.BattleScene
         private readonly InfoPanelBinder inspection;
         private readonly GameLongPress[] skillHolds = new GameLongPress[3];
         private BattleUnitSnapshot displayedActor;
+        private (int Turn, string ActorId) lastReadyVoice;
         private readonly Action restore;
         private BattleFlowEvent pendingAbsorption;
         private float actionElapsed;
@@ -53,7 +54,6 @@ namespace AstralOath.Client.BattleScene
         private float lastDamageImpact;
         private float[] hitTimes = Array.Empty<float>();
         private int selected;
-        private int previousSelection;
         private bool useSoulBurn;
         private bool autoBattle;
         private int lastClickedSkill = -1;
@@ -67,7 +67,7 @@ namespace AstralOath.Client.BattleScene
         public BattleSimulationPreview(Scene scene, BindingMap hud, BattleHudBinder binder, BattleCatalogData catalog,
             Sprite[] icons, TextAsset[] graphs, BattleSkillPresentationAsset[] skillAssets, TextAsset audioCatalog,
             TextAsset[] audioBanks, TMP_FontAsset damageFont, TextAsset impactBank, GameObject stageBackground,
-            BattleUnitPresentationProfile unitPresentation, BattleHudPreview.SpineEffect soulDisplay,
+            BattleHudPreview.SpineEffect soulDisplay, BattleHudPreview.SpineEffect soulConsume,
             TextAsset[] particles, Texture2D[] particleTextures, BattleMatch match, GameObject inspectionPrefab = null,
             BattleHudPreview.SpineEffect readyDust = null, TextAsset skillTimelineOverrides = null)
         {
@@ -83,6 +83,10 @@ namespace AstralOath.Client.BattleScene
             this.match = match ?? throw new ArgumentNullException(nameof(match));
             ai = new BattleAiPolicy(catalog);
             var units = scene.GetRootGameObjects().Single(root => root.name == "Units").transform;
+            var statusRoot = hud.transform.Find("Unit Status");
+            var unitPresentation = units.GetComponentInChildren<BattleActorStatusTemplate>(true)?.Profile;
+            if (!statusRoot || !unitPresentation)
+                throw new InvalidOperationException("BattleActor requires a unit status template and shared presentation profile.");
             var deathTextures = unitPresentation ? unitPresentation.CreateDeathTextures() : new Dictionary<string, Texture2D>();
             statusArt = unitPresentation
                 ? unitPresentation.CreateStatusArt()
@@ -99,10 +103,20 @@ namespace AstralOath.Client.BattleScene
                 {
                     string team = state.Slot.Side == BattleSide.Ally ? "Allies" : "Enemies";
                     var slot = units.Find(team).GetChild(state.Slot.Position - 1);
-                    var marker = hud.transform.Find($"Unit Status/{team}/{slot.name}").gameObject;
-                    sprites.TryGetValue("game_hud_bar_" + state.Element.ToString().ToLowerInvariant(), out var element);
-                    views.Add(state.InstanceId, new View(slot, marker, camera, unitPresentation, deathTextures, statusArt, shieldAura, invincibleAura, element, state.Resource,
-                        inspection == null ? null : InspectStatus));
+                    var actor = slot.GetComponentInChildren<BattlePreviewActor>(true);
+                    var template = actor.GetComponent<BattleActorStatusTemplate>();
+                    var marker = template.CreateMarker(statusRoot.Find(team), slot.name);
+                    try
+                    {
+                        sprites.TryGetValue("game_hud_bar_" + state.Element.ToString().ToLowerInvariant(), out var element);
+                        views.Add(state.InstanceId, new View(slot, actor, marker, camera, unitPresentation, deathTextures,
+                            statusArt, shieldAura, invincibleAura, element, state.Resource, inspection == null ? null : InspectStatus));
+                    }
+                    catch
+                    {
+                        RemoveOwnedObject(marker);
+                        throw;
+                    }
                 }
             }
             catch
@@ -185,8 +199,9 @@ namespace AstralOath.Client.BattleScene
                 (unit, slot, image) => InspectSkill(unit, slot, image, true),
                 InspectStatus, CloseInspection, statusArt);
             turnHud.SetMissFeedbackLabel(Label("battle.feedback.miss"));
-            soulGauge = new BattleSoulGauge(soulFill, soul, match.MaximumSoul, soulDisplay,
+            soulGauge = new BattleSoulGauge(soulFill, soul, match.MaximumSoul, soulDisplay, soulConsume,
                 particles.Single(item => item.name == "soul_pati_01.particle"),
+                particles.Single(item => item.name == "soul_consume_pati.particle"),
                 particleTextures.ToDictionary(texture => texture.name + ".sct", StringComparer.Ordinal));
             turnEntryEffects = new BattleTurnEntryEffects(units, views.Values.Select(view => view.Actor), readyDust);
             Refresh();
@@ -399,14 +414,12 @@ namespace AstralOath.Client.BattleScene
             if (useSoulBurn)
             {
                 useSoulBurn = false;
-                selected = previousSelection;
                 binder.CancelSimulationBurn();
             }
             else
             {
                 int index = BurnSlot();
                 if (index < 0) return;
-                previousSelection = selected;
                 selected = index;
                 useSoulBurn = true;
                 binder.ArmSimulationBurn(index);
@@ -449,6 +462,14 @@ namespace AstralOath.Client.BattleScene
             {
                 banner.text = "当前无法使用该技能";
                 return false;
+            }
+            if (burn && snapshot.GetUnit(snapshot.CurrentActorId).Slot.Side == BattleSide.Ally)
+            {
+                // The resolver emits the confirmed cost before the ordinary soul gain.
+                var cost = result.Events.FirstOrDefault(item => item.Kind == BattleFlowEventKind.SoulChanged &&
+                    item.Side == BattleSide.Ally && item.SourceId == snapshot.CurrentActorId);
+                if (cost != null && cost.Amount < snapshot.AllySoul)
+                    soulGauge.Show(cost.Amount, animateConsumption: true);
             }
             lastClickedSkill = -1;
             useSoulBurn = false;
@@ -734,6 +755,15 @@ namespace AstralOath.Client.BattleScene
             turnHud.Refresh(Snapshot);
             var actor = Actor;
             displayedActor = actor;
+            if (actor?.IsAlive == true && Snapshot.Outcome == BattleOutcome.InProgress)
+            {
+                var ready = (Snapshot.TurnNumber, actor.InstanceId);
+                if (ready != lastReadyVoice)
+                {
+                    lastReadyVoice = ready;
+                    voice.PlayTurnReady(actor.DefinitionId);
+                }
+            }
             SetPlayerControlsVisible(actor?.Slot.Side == BattleSide.Ally && Snapshot.Outcome == BattleOutcome.InProgress &&
                 !ai.IsForcedAction(Snapshot));
             if (actor != null)
@@ -984,8 +1014,6 @@ namespace AstralOath.Client.BattleScene
             private readonly CanvasGroup markerGroup;
             private readonly float originalMarkerAlpha;
             private readonly Image elementBadge;
-            private readonly Sprite originalElement;
-            private readonly float originalHealth;
             private readonly BattleUnitStatusPresentation status;
             private readonly int resourceMaximum;
             private readonly BattleUnitPresentationProfile profile;
@@ -1006,7 +1034,7 @@ namespace AstralOath.Client.BattleScene
             private Renderer stealthBody;
             private float originalStealthOpacity;
 
-            public View(Transform slot, GameObject marker, Camera camera, BattleUnitPresentationProfile profile,
+            public View(Transform slot, BattlePreviewActor actor, GameObject marker, Camera camera, BattleUnitPresentationProfile profile,
                 IReadOnlyDictionary<string, Texture2D> deathTextures, BattleStatusArt statusArt,
                 BattleShieldAura.Definition auraDefinition, BattleShieldAura.Definition invincibleDefinition,
                 Sprite element, BattleResourceSnapshot resource,
@@ -1014,16 +1042,13 @@ namespace AstralOath.Client.BattleScene
             {
                 this.slot = slot;
                 this.marker = marker;
-                // The marker survives View replacement on restart. Reuse its group and reset the alpha on Restore.
                 markerGroup = marker.GetComponent<CanvasGroup>();
                 if (!markerGroup) markerGroup = marker.AddComponent<CanvasGroup>();
                 originalMarkerAlpha = markerGroup.alpha;
-                Actor = slot.GetComponentInChildren<BattlePreviewActor>();
+                Actor = actor;
                 Health = marker.transform.Find("HP").GetComponent<Image>();
                 elementBadge = marker.transform.Find("Element").GetComponent<Image>();
-                originalElement = elementBadge.sprite;
                 FeedbackAnchor = (RectTransform)marker.transform.Find("Frame");
-                originalHealth = Health.fillAmount;
                 this.profile = profile; this.deathTextures = deathTextures;
                 status = new BattleUnitStatusPresentation((RectTransform)marker.transform, Health, Actor.transform,
                     StatusAnchor, camera, profile ? profile.HealthDivider : null,
@@ -1051,7 +1076,7 @@ namespace AstralOath.Client.BattleScene
                 }
                 levelBadge = new BattleUnitLevelBadge(marker.transform.Find("Level").GetComponent<Image>(), profile ? profile.LevelDigits : null);
                 try { PrepareDeath(); }
-                catch { shieldAura.Dispose(); invincibleAura.Dispose(); statusIcons.Dispose(); status.Dispose(); levelBadge.Dispose(); elementBadge.sprite = originalElement; throw; }
+                catch { shieldAura.Dispose(); invincibleAura.Dispose(); statusIcons.Dispose(); status.Dispose(); levelBadge.Dispose(); throw; }
             }
             public BattlePreviewActor Actor { get; }
             public Image Health { get; }
@@ -1272,11 +1297,7 @@ namespace AstralOath.Client.BattleScene
                 statusIcons.Dispose();
                 levelBadge.Dispose();
                 if (slot) slot.gameObject.SetActive(true);
-                if (!marker) return;
-                markerGroup.alpha = originalMarkerAlpha;
-                marker.SetActive(true);
-                Health.fillAmount = originalHealth;
-                elementBadge.sprite = originalElement;
+                RemoveOwnedObject(marker);
             }
         }
 

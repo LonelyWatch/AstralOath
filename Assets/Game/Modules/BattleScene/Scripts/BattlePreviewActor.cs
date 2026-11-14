@@ -19,6 +19,10 @@ namespace AstralOath.Client.BattleScene
         [SerializeField] private int drawOrder;
         [SerializeField] private bool premultipliedAlpha = true;
         [SerializeField] private float sourceScale = .01f;
+        [SerializeField] private Transform shadow;
+        [SerializeField] private Vector2 shadowSizeMultiplier = Vector2.one;
+        [SerializeField] private Vector3 shadowOffset;
+        private bool shadowNormalized;
         private ISkeletonPlayer player;
         private string idleAnimation;
         private string turnIdleAnimation;
@@ -212,8 +216,36 @@ namespace AstralOath.Client.BattleScene
         internal int PresentationDrawOrder => drawOrder;
         internal event Action<BattlePreviewActor, SkeletonPlaybackEvent> TurnEntryCue;
 
-        internal Transform PresentationShadow => transform.parent
-            ? transform.parent.GetComponentInChildren<SpriteRenderer>(true)?.transform : null;
+        internal Transform PresentationShadow
+        {
+            get
+            {
+                if (shadow) return shadow;
+                // Older battle scenes and source playback fixtures authored the shadow on the slot.
+                var slot = transform.parent;
+                if (slot)
+                    foreach (Transform child in slot)
+                        if (child.TryGetComponent<SpriteRenderer>(out _))
+                            return child;
+                return null;
+            }
+        }
+
+        private void NormalizeShadow()
+        {
+            if (!shadow || shadowNormalized) return;
+            Vector3 scale = transform.localScale;
+            if (Mathf.Approximately(scale.x, 0f) || Mathf.Approximately(scale.y, 0f) ||
+                Mathf.Approximately(scale.z, 0f)) return;
+            // The common shadow is authored at slot size. The hero's root scale fits its model
+            // to the formation, so compensate once when the instance begins presentation.
+            shadow.localPosition = Matrix4x4.TRS(Vector3.zero, transform.localRotation, scale)
+                .inverse.MultiplyPoint3x4(shadow.localPosition + shadowOffset);
+            shadow.localScale = Vector3.Scale(shadow.localScale, new Vector3(
+                shadowSizeMultiplier.x / Mathf.Abs(scale.x),
+                shadowSizeMultiplier.y / Mathf.Abs(scale.y), 1f / Mathf.Abs(scale.z)));
+            shadowNormalized = true;
+        }
 
         internal bool TryGetPresentationAnchor(string anchor, out Vector3 position)
         {
@@ -340,6 +372,7 @@ namespace AstralOath.Client.BattleScene
         private void OnEnable()
         {
             OnDisable(); // Also makes a repeated activation safe when editor reload options change.
+            NormalizeShadow();
             // A newly placed generic prefab can have only a Hero ID. The battle host resolves
             // the corresponding catalog model before it creates the simulation.
             if (!skeleton && !atlas && !page) return;

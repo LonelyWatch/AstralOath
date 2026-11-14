@@ -190,7 +190,7 @@ namespace AstralOath.Client.BattleScene.Editor
                 BattleSkillPresentationAssets.SetSkeleton(row.FindPropertyRelative("skeleton"), (string)character["battleSkeletonAddress"], paths);
                 models.Add(id, row);
             }
-            if (!rosterOnly) ConfigureAuthoredTeams(hud, properties, GetBattleActorPrefab(), models, HeroElements(heroes));
+            if (!rosterOnly) ConfigureAuthoredTeams(hud, properties, GetBattleActorPrefab(), models);
             var graphs = characters.Values.Where(row => heroIds.Contains((string)row["id"]))
                 .SelectMany(row => row["skills"]).Select(row => (string)row["graphAddress"])
                 .Distinct(StringComparer.Ordinal).OrderBy(address => address, StringComparer.Ordinal)
@@ -237,7 +237,6 @@ namespace AstralOath.Client.BattleScene.Editor
             SetObject("hud", hud);
             SetObject("inspectionPrefab", Asset<GameObject>("Assets/Game/Common/Res/Prefab/InfoPanel.prefab"));
             SetObject("confirmPrefab", Asset<GameObject>("Assets/Game/Common/Res/Prefab/ConfirmButton.prefab"));
-            SetObject("unitPresentation", BattleUnitPresentationAssets.Load());
             SetObject("battleDamageFont", BuildDamageDigits());
             SetObject("stageBackground", canvas.gameObject.scene.GetRootGameObjects()
                 .Single(root => root.name == "Forest2Stage" || root.name == "Forest3Stage"));
@@ -249,6 +248,7 @@ namespace AstralOath.Client.BattleScene.Editor
             SetSpine("burnIntro", "hud_icon_burneff");
             SetSpine("soulUse", "ui_soul_burn_use");
             SetSpine("soulDisplay", "soul_01");
+            SetSpine("soulConsume", "soul_grow");
             const string sharedDustAtlas = "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/";
             var dust = properties.FindProperty("readyDust");
             dust.FindPropertyRelative("skeleton").objectReferenceValue = Asset<TextAsset>(
@@ -288,12 +288,8 @@ namespace AstralOath.Client.BattleScene.Editor
             }
         }
 
-        private static Dictionary<string, string> HeroElements(IEnumerable<JToken> heroes) =>
-            heroes.ToDictionary(hero => (string)hero["id"], hero => (string)hero["element"], StringComparer.Ordinal);
-
         private static void ConfigureAuthoredTeams(BindingMap hud, SerializedObject properties, GameObject prefab,
-            IReadOnlyDictionary<string, SerializedProperty> models,
-            IReadOnlyDictionary<string, string> elements)
+            IReadOnlyDictionary<string, SerializedProperty> models)
         {
             var allies = properties.FindProperty("allyHeroIds");
             var enemies = properties.FindProperty("enemyHeroIds");
@@ -323,11 +319,6 @@ namespace AstralOath.Client.BattleScene.Editor
                     if (!models.TryGetValue(id, out var model))
                         throw new InvalidOperationException("Unknown battle hero ID: " + id);
                     PlaceHero(slot, prefab, id, model.FindPropertyRelative("label").stringValue, model, enemy, i);
-
-                    var marker = hud.transform.Find($"Unit Status/{name}/{slot.name}");
-                    var badge = marker.Find("Element").GetComponent<Image>();
-                    badge.sprite = Asset<Sprite>(HudTextures + "game_hud_bar_" + elements[id] + ".png");
-                    PrefabUtility.RecordPrefabInstancePropertyModifications(badge);
                 }
             }
         }

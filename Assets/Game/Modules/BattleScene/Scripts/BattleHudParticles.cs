@@ -42,6 +42,7 @@ namespace AstralOath.Client.BattleScene
         private struct Particle
         {
             public Vector2 Origin, Position, Velocity;
+            public int ColorRamp;
             public Color StartColor, EndColor;
             public float Age, Life, StartSize, EndSize, Rotation, Spin;
             public float RadialAcceleration, TangentialAcceleration, Angle, AngularSpeed, StartRadius, EndRadius;
@@ -58,7 +59,7 @@ namespace AstralOath.Client.BattleScene
             private readonly GameObject root;
             private readonly Mesh mesh;
             private readonly Material material;
-            private readonly (float Time, Color Color)[] ramp;
+            private readonly (float Time, Color Color)[][] ramps;
             private readonly List<Particle> particles;
             private readonly List<Vector3> vertices;
             private readonly List<Vector2> uvs;
@@ -88,7 +89,7 @@ namespace AstralOath.Client.BattleScene
                 if (!((data.blendFuncSource == 770 && data.blendFuncDestination == 1) ||
                     (data.blendFuncSource == 1 && data.blendFuncDestination == 771)))
                     throw new FormatException($"Unsupported HUD particle blend in '{data.name}'.");
-                ramp = ReadRamp(data.colorBlends);
+                ramps = ReadRamps(data.colorBlends);
                 capacity = (int)data.maxParticles;
                 repetitions = data.interval > 0 ? Math.Max(1, data.repeat) : 1;
                 particles = new List<Particle>(capacity);
@@ -210,6 +211,9 @@ namespace AstralOath.Client.BattleScene
                     EndColor = RandomColor(random, new Color(data.finishColorRed, data.finishColorGreen, data.finishColorBlue, data.finishColorAlpha),
                         new Color(data.finishColorVarianceRed, data.finishColorVarianceGreen, data.finishColorVarianceBlue, data.finishColorVarianceAlpha))
                 };
+                // Each source string is a complete 0..1 curve, not a continuation of the preceding curve.
+                // Choose once per particle. Single-ramp assets consume no additional random samples.
+                particle.ColorRamp = ramps.Length > 1 ? random.Next(ramps.Length) : 0;
                 if (Advance(ref particle, Math.Max(0, age)))
                     particles.Add(particle);
             }
@@ -252,7 +256,8 @@ namespace AstralOath.Client.BattleScene
                     float halfSize = Mathf.Lerp(particle.StartSize, particle.EndSize, t) * 0.5f;
                     Vector2 axis = Direction(particle.Rotation + particle.Spin * particle.Age) * halfSize;
                     Vector2 perpendicular = new Vector2(-axis.y, axis.x);
-                    Color color = ramp.Length == 0 ? Color.Lerp(particle.StartColor, particle.EndColor, t) : RampColor(t);
+                    Color color = ramps.Length == 0 ? Color.Lerp(particle.StartColor, particle.EndColor, t)
+                        : RampColor(ramps[particle.ColorRamp], t);
                     int index = vertices.Count;
                     foreach (Vector2 corner in Corners)
                     {
@@ -276,7 +281,7 @@ namespace AstralOath.Client.BattleScene
                 mesh.SetTriangles(triangles, 0);
             }
 
-            private Color RampColor(float time)
+            private static Color RampColor((float Time, Color Color)[] ramp, float time)
             {
                 if (time <= ramp[0].Time)
                     return ramp[0].Color;
@@ -392,6 +397,15 @@ namespace AstralOath.Client.BattleScene
             emitters.Clear();
         }
 
+        private static (float Time, Color Color)[][] ReadRamps(string[] groups)
+        {
+            if (groups == null || groups.Length == 0)
+                return Array.Empty<(float Time, Color Color)[]>();
+            var result = new (float Time, Color Color)[groups.Length][];
+            for (int index = 0; index < groups.Length; index++)
+                result[index] = ReadRamp(new[] { groups[index] });
+            return result;
+        }
         private static (float Time, Color Color)[] ReadRamp(string[] groups)
         {
             if (groups == null || groups.Length == 0)

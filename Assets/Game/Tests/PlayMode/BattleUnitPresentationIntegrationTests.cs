@@ -90,6 +90,7 @@ namespace AstralOath.Client.Tests
             var hp = marker.Find("HP").GetComponent<Image>();
             var trail = hp.transform.Find("Damage Trail").GetComponent<Image>();
             void Call(string method, params object[] args) => view.GetType().GetMethod(method).Invoke(view, args);
+            Call("SetHealthCapacity", 1000, 1000);
             Call("SetHealth", 1000L, 1000); Call("SetHealth", 350L, 1000);
             Call("TickVisual", .1f);
             Assert.That(hp.fillAmount, Is.InRange(.35f, 1f));
@@ -231,7 +232,7 @@ namespace AstralOath.Client.Tests
                     Private, null, new object[] { statusKind.Value, turns, amount }, null);
                 var ctor = typeof(BattleFlowEvent).GetConstructors(Private).Single();
                 Call("Present", ctor.Invoke(new object[] { 1UL, 1, kind, source, target, amount, null, null,
-                    BattleActionOrigin.Primary, statusKind, status, null, null, BattleHitKind.Normal, null, false, 2000 }));
+                    BattleActionOrigin.Primary, statusKind, status, null, null, BattleHitKind.Normal, null, false, 2000, null }));
             }
 
             Present(BattleFlowEventKind.StatusApplied, 5000, BattleStatusKind.AttackUp, 1);
@@ -265,8 +266,10 @@ namespace AstralOath.Client.Tests
             var first = (RectTransform)icons.GetChild(0);
             float originalWidth = Width(first, camera);
             Vector2 originalPosition = first.position;
+            Vector3 ground = shadow.position;
             actor.transform.position += new Vector3(.7f, 1.25f, 0f);
             actor.transform.localScale *= 1.25f;
+            shadow.position = ground; // The actual MOVE driver keeps the child shadow on its ground path.
             view.GetType().GetMethod("LateTick").Invoke(view, new object[] { camera });
             Assert.That((Vector2)first.position, Is.Not.EqualTo(originalPosition));
             Assert.That(Width(first, camera) / originalWidth, Is.EqualTo(1.25f).Within(.03f));
@@ -405,9 +408,9 @@ Assert.That(RedWidth(), Is.Zero, "The red segment is cleared after the transitio
             var mutableActor = match.GetType().GetField("actor", Private).GetValue(match);
             var statuses = (IList)mutableActor.GetType().GetProperty("Statuses").GetValue(mutableActor);
             var makeStatus = typeof(BattleStatusSnapshot).GetConstructor(Private, null,
-                new[] { typeof(BattleStatusKind), typeof(int), typeof(int), typeof(string) }, null);
+                new[] { typeof(BattleStatusKind), typeof(int), typeof(int), typeof(string), typeof(ulong) }, null);
             const string provokerId = "enemy-2";
-            statuses.Add(makeStatus.Invoke(new object[] { BattleStatusKind.Provoke, 1, 0, provokerId }));
+            statuses.Add(makeStatus.Invoke(new object[] { BattleStatusKind.Provoke, 1, 0, provokerId, 0UL }));
             var snapshot = match.GetType().GetMethod("Capture", Private).Invoke(match, null);
             match.GetType().GetProperty("Snapshot").SetValue(match, snapshot);
 
@@ -448,7 +451,7 @@ Assert.That(RedWidth(), Is.Zero, "The red segment is cleared after the transitio
                 var status = makeStatus.Invoke(new object[] { kind, turns, 0 });
                 present.Invoke(simulation, new[] { makeEvent.Invoke(new object[] { 1UL, 1, eventKind, "ally-1",
                     "enemy-1", 0, null, null, BattleActionOrigin.Primary, kind, status, null, null,
-                    BattleHitKind.None, null, false, null }) });
+                    BattleHitKind.None, null, false, null, null }) });
             }
 
             Deliver(BattleFlowEventKind.StatusApplied, 2);

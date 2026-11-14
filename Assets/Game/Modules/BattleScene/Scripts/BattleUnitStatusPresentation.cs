@@ -10,6 +10,7 @@ namespace AstralOath.Client.BattleScene
         private readonly RectTransform marker, frame;
         private readonly Image health, trail, shield, injury, frameImage;
         private readonly Sprite normalFrame;
+        private readonly bool ownsShield;
         private Image resourceFill;
         private readonly BattleHealthSegments segments;
         private readonly Transform actor;
@@ -58,13 +59,19 @@ namespace AstralOath.Client.BattleScene
             trail.enabled = false;
             trail.rectTransform.sizeDelta = Vector2.zero;
             SetHorizontalRange(trail.rectTransform, 0f, 0f, false);
-            var shieldObject = new GameObject("Shield Fill", typeof(RectTransform), typeof(Image));
-            shieldObject.transform.SetParent(health.transform, false);
-            shield = shieldObject.GetComponent<Image>(); shield.raycastTarget = false;
-            SetShieldSprite(null);
+            shield = health.transform.Find("Shield Fill")?.GetComponent<Image>();
+            ownsShield = !shield;
+            if (ownsShield)
+            {
+                shield = new GameObject("Shield Fill", typeof(RectTransform), typeof(Image)).GetComponent<Image>();
+                shield.transform.SetParent(health.transform, false);
+            }
+            shield.raycastTarget = false;
+            shield.transform.SetSiblingIndex(trail.transform.GetSiblingIndex() + 1);
+            SetShieldSprite(shield.sprite);
             shield.rectTransform.sizeDelta = Vector2.zero;
             SetHorizontalRange(shield.rectTransform, 0f, 0f, false);
-            shieldObject.SetActive(false);
+            shield.gameObject.SetActive(false);
 
             injury = new GameObject("Injury", typeof(RectTransform), typeof(Image)).GetComponent<Image>();
             injury.transform.SetParent(health.transform, false);
@@ -343,7 +350,9 @@ namespace AstralOath.Client.BattleScene
         {
             if (disposed) return;
             disposed = true;
-            Remove(trail ? trail.gameObject : null); Remove(shield ? shield.gameObject : null); Remove(segments ? segments.gameObject : null);
+            Remove(trail ? trail.gameObject : null); Remove(segments ? segments.gameObject : null);
+            if (ownsShield) Remove(shield ? shield.gameObject : null);
+            else if (shield) shield.gameObject.SetActive(false);
             Remove(resourceFill ? resourceFill.gameObject : null); Remove(injury ? injury.gameObject : null);
             if (frameImage) frameImage.sprite = normalFrame;
             if (health) health.fillAmount = originalFill;

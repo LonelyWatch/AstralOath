@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Linq;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 namespace AstralOath.Client.BattleScene.Editor
 {
@@ -80,17 +79,6 @@ namespace AstralOath.Client.BattleScene.Editor
             return AssetDatabase.LoadAssetAtPath<Sprite>(path);
         }
         [MenuItem("Tools/战斗场景/更新血条、状态与死亡资源引用")]
-        public static void UpgradeScene()
-        {
-            if (EditorApplication.isPlayingOrWillChangePlaymode) throw new InvalidOperationException("Exit Play Mode first.");
-            if (!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
-            var scene = EditorSceneManager.OpenScene(BattleSceneBuilder.ScenePath);
-            var host = scene.GetRootGameObjects().SelectMany(x => x.GetComponentsInChildren<BattleHudPreview>()).Single();
-            var serialized = new SerializedObject(host);
-            serialized.FindProperty("unitPresentation").objectReferenceValue = Load();
-            serialized.ApplyModifiedPropertiesWithoutUndo();
-            EditorSceneManager.MarkSceneDirty(scene); EditorSceneManager.SaveScene(scene);
-            Debug.Log("ASTRAL_UNIT_PRESENTATION_UPGRADED");
-        }
+        public static void UpgradeScene() => BattleSceneBuilder.MigrateActorStatusTemplates();
     }
 }

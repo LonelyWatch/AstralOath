@@ -23,7 +23,7 @@
 ## Burn 和技能选中预览
 
 - 进入 Play，Burn 播放原版入场和 0.6666 秒闪动。普通技能选中叠加 `hud_skill.csb` 的 `selected` 图层（`cm_select_skill.png`，114×120，中心相对技能图标左 3、上 4 个设计像素）、Spine 闪动和粒子。切换时清除上一枚的效果。
-- 点击 Burn 立刻播放魂力闪光并切换为 Cancel，同时拉斯的 S2 播放燃魂起手。231 毫秒后出现蓝色燃魂描边与粒子。点击 Cancel 中断闪光并恢复之前的普通选中。之后点技能会恢复普通选中。
+- 点击 Burn 立刻播放魂力闪光并切换为 Cancel，同时拉斯的 S2 播放燃魂起手。231 毫秒后出现蓝色燃魂描边与粒子。点击 Cancel 中断闪光并解除燃魂，刚才选中的燃魂技能继续以普通样式选中。
 - 这段说明适用于进入 Play 后的布局模式。试玩模式的消耗、目标与技能结算见下节。关闭或隐藏 HUD 时释放粒子、骨骼与按钮监听。
 - `Res/Effects/Hud/source.json` 记录原版 SCSP、SCT、atlas、CFX、粒子和按钮 PNG 的来源及哈希。Git 保留原版 atlas 的字节及换行。使用项目素材 Python 环境运行 `Tools/BattleScene/ImportHudEffects.py --check` 验证，去掉 `--check` 复现素材。Unity 编辑器批处理入口 `AstralOath.Client.BattleScene.Editor.BattleSceneBuilder.InstallHudEffects` 只更新 HUD 点击配置与场景组件，可用于保留已编辑的站位和布局。
 - 源 CFX 的顺序、描边颜色和 Spine 曲线沿用原数据。粒子在 Unity 中按原参数播放，专有的发射模式按爆发与持续发射重建。视觉外观参考原版战斗截图，按钮和技能锚点按当前布局对齐，原作连续录像逐帧对照仍待验证。[原作战斗截图](https://d3kxs6kpbh59hp.cloudfront.net/community/COMMUNITY/718883b8c9f34eaca8e89ee116e1e29d/1f0480fa6b5144a584877ad1c1d10df7_1617085685.png)
@@ -144,3 +144,16 @@ Luban 快照 `Configs/battle-catalog.json` 含十名英雄、成长模板、觉�
 卡琳 c1011 已接入角色内容；三技能、音频及已知缺项见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。
 
 萝菲 c1019 已接入三张演出图及原版日语。新增原版 voc3 银行，战斗按阵容选择；裂伤有效生命独立于基础面板。规则、表现诊断与音频来源见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。
+
+## 角色预制与回合反馈（2026-11-14）
+
+- 八个站位继承同一个 [BattleActor.prefab](Res/Prefab/BattleActor.prefab)。预制根下的 Shadow 管理共用阴影；StatusTemplate 管理头顶框、血条、等级、护盾填充和 Buff 挂点，预制组件引用共用 UnitPresentation，其中包含护盾与无敌光晕。角色 ID 仍在站位实例上配置。
+- 战斗把头顶模板复制到 BattleHud 的 Unit Status/阵营/站位，沿用骨骼跟随投影与长按。场景共用一个 Canvas；光晕跟随身体，阴影走地面路径。重开释放旧状态条与粒子，再建立八个实例。
+- 取消燃魂保留刚才选中的技能，可直接点目标普通施放。己方燃魂在权威指令确认扣费时，于减少的整魂槽原位播放 hud_soul_consume；准备、取消和魂力收入不触发消散。
+- 近身 MOVE 根据角色地面尺寸拉开距离并限制过度前冲，保留源时点。实际显示新回合时尝试一次该角色的日语 b_idle_ready 事件，刷新与暂停继续不重复触发。梅赛德丝尘土事件仍由骨骼触发。
+
+操作与验证见[本轮验收](../../../../docs/delivery/2026-11-14-battle-actor-burn.md)。
+
+## 技能演出编辑器交互修订（2026-11-14）
+
+技能列表、预览与参数区分栏可调，底部时间轴独占整行；播放/暂停、逐帧、循环、声音和速度统一位于轴上方。F聚焦、A看全、C定位播放头；选中节点在回退重建、重播和循环后保持关联。编辑器区分主演出与完整余辉范围；原始粒子多组颜色渐变分别解析，不再因第二组从0开始而丢弃发射器。操作、实测与边界见[技能演出编辑器](../../../../docs/development/battle-skill-timeline-editor.md)及[本轮验收](../../../../docs/delivery/2026-11-14-timeline-usability.md)。

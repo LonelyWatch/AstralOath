@@ -1,6 +1,10 @@
 using System;
+using System.IO;
+using System.Linq;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace AstralOath.Client.BattleScene.Editor
 {
@@ -29,7 +33,6 @@ namespace AstralOath.Client.BattleScene.Editor
                 var layout = Slots[i];
                 var slot = Child(layout.Position, team);
                 slot.localPosition = World(enemy ? layout.EnemyX : layout.AllyX, layout.Y);
-                PlaceSprite("Shadow", slot, Asset<Sprite>(HudTextures + "UnitShadow.png"), 640, 363, 85, 23, -50);
             }
         }
 
@@ -94,7 +97,70 @@ namespace AstralOath.Client.BattleScene.Editor
             }
 
             var root = new GameObject("BattleActor", typeof(BattlePreviewActor));
+            var shadow = PlaceSprite("Shadow", root.transform, Asset<Sprite>(HudTextures + "UnitShadow.png"), 640, 363, 85, 23, -50);
+            using (var actor = new SerializedObject(root.GetComponent<BattlePreviewActor>()))
+            {
+                actor.FindProperty("shadow").objectReferenceValue = shadow.transform;
+                actor.ApplyModifiedPropertiesWithoutUndo();
+            }
+            ConfigureActorStatusPrefab(root);
             return SavePrefab(root, "BattleActor");
+        }
+
+        [MenuItem("Tools/战斗场景/迁移角色阴影")]
+        public static void MigrateActorShadows()
+        {
+            if (Application.isPlaying ||
+                (!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())) return;
+            var scene = SceneManager.GetSceneByPath(ScenePath);
+            bool openedHere = !scene.IsValid() || !scene.isLoaded;
+            if (openedHere) scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Additive);
+            try
+            {
+                var units = scene.GetRootGameObjects().Single(item => item.name == "Units").transform;
+                var sprite = Asset<Sprite>(HudTextures + "UnitShadow.png");
+                var migrations = (from Transform team in units
+                                  from Transform slot in team
+                                  let actor = slot.GetComponentInChildren<BattlePreviewActor>(true)
+                                  from Transform child in slot
+                                  let legacy = child.GetComponent<SpriteRenderer>()
+                                  where legacy && legacy.sprite == sprite
+                                  select (actor, legacy)).ToArray();
+                foreach (var (actor, legacy) in migrations)
+                {
+                    if (!actor || !actor.transform.Find("Shadow"))
+                        throw new InvalidOperationException($"站位 {legacy.transform.parent.name} 缺少 BattleActor 预制阴影。");
+                    if (legacy.transform.childCount != 0 || legacy.GetComponents<Component>().Length != 2)
+                        throw new InvalidOperationException($"站位 {legacy.transform.parent.name} 的旧阴影附加了其他对象，请先移到角色预制。");
+                }
+                foreach (var (actor, legacy) in migrations)
+                {
+                    var shadow = actor.transform.Find("Shadow");
+                    using var serialized = new SerializedObject(actor);
+                    var oldScale = legacy.transform.localScale;
+                    serialized.FindProperty("shadowSizeMultiplier").vector2Value = new Vector2(
+                        oldScale.x / shadow.localScale.x, oldScale.y / shadow.localScale.y);
+                    serialized.FindProperty("shadowOffset").vector3Value =
+                        legacy.transform.localPosition - actor.transform.localPosition - shadow.localPosition;
+                    serialized.ApplyModifiedPropertiesWithoutUndo();
+                    var renderer = shadow.GetComponent<SpriteRenderer>();
+                    renderer.color = legacy.color;
+                    renderer.enabled = legacy.enabled;
+                    renderer.sortingLayerID = legacy.sortingLayerID;
+                    renderer.sortingOrder = legacy.sortingOrder;
+                    renderer.sharedMaterial = legacy.sharedMaterial;
+                    PrefabUtility.RecordPrefabInstancePropertyModifications(renderer);
+                    UnityEngine.Object.DestroyImmediate(legacy.gameObject);
+                }
+
+                if (migrations.Length > 0 && !EditorSceneManager.SaveScene(scene))
+                    throw new IOException("Unable to save " + ScenePath);
+                Debug.Log($"ASTRAL_BATTLE_ACTOR_SHADOWS_MIGRATED: {migrations.Length}");
+            }
+            finally
+            {
+                if (openedHere) EditorSceneManager.CloseScene(scene, removeScene: true);
+            }
         }
 
         private static void ConfigureHeroActor(BattlePreviewActor actor, string id, SerializedProperty model)

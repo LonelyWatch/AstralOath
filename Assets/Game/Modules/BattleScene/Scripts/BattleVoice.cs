@@ -19,6 +19,7 @@ namespace AstralOath.Client.BattleScene
         private const string BurnReadyEvent = "event:/battle/soulburn/ready";
         private const string ImpactBankAddress = "battlescene/source/sound/gerneal.bank";
         private readonly Dictionary<string, string> hitVoices = new Dictionary<string, string>(StringComparer.Ordinal);
+        private readonly Dictionary<string, string> readyVoices = new Dictionary<string, string>(StringComparer.Ordinal);
         private readonly HashSet<string> failedEvents = new HashSet<string>(StringComparer.Ordinal);
         private FmodCharacterAudioService service;
 
@@ -27,6 +28,7 @@ namespace AstralOath.Client.BattleScene
         public int StartedEffectCount { get; private set; }
         public int StartedHitCount { get; private set; }
         public int StartedBurnReadyCount { get; private set; }
+        public int StartedTurnReadyCount { get; private set; }
 
         public BattleVoice(TextAsset audioCatalog, TextAsset[] banks, TextAsset impactBank = null,
             IEnumerable<string> activeHeroIds = null)
@@ -43,8 +45,13 @@ namespace AstralOath.Client.BattleScene
                     foreach (var skill in character.skills ?? Array.Empty<SkillAudio>())
                         skills.Add(skill.id, skill);
                     foreach (var voice in character.voices ?? Array.Empty<CharacterVoice>())
-                        if (voice.eventPath?.EndsWith("/ani/attacked", StringComparison.Ordinal) == true)
-                            hitVoices[character.id] = voice.eventPath;
+                    {
+                        string path = voice.eventPath;
+                        if (path?.EndsWith("/ani/attacked", StringComparison.Ordinal) == true)
+                            hitVoices[character.id] = path;
+                        else if (path?.EndsWith("/ani/b_idle_ready", StringComparison.Ordinal) == true)
+                            readyVoices[character.id] = path;
+                    }
                 }
                 // The source slime STG uses the skill1 model animation, not a skill/m_slime event.
                 skills.Add(SlimeSkillId, new SkillAudio
@@ -75,8 +82,9 @@ namespace AstralOath.Client.BattleScene
                     var activeVoiceBanks = catalog.characters.Where(row => active.Contains(row.id))
                         .Select(row => row.voiceBankAddress).ToHashSet(StringComparer.Ordinal);
                     var activeVoiceEvents = catalog.characters.Where(row => active.Contains(row.id))
-                        .SelectMany(row => row.skills ?? Array.Empty<SkillAudio>())
-                        .SelectMany(skill => new[] { skill.voiceEventPath, skill.dualCallVoiceEventPath, skill.dualAnswerVoiceEventPath })
+                        .SelectMany(row => (row.skills ?? Array.Empty<SkillAudio>())
+                            .SelectMany(skill => new[] { skill.voiceEventPath, skill.dualCallVoiceEventPath, skill.dualAnswerVoiceEventPath })
+                            .Concat((row.voices ?? Array.Empty<CharacterVoice>()).Select(voice => voice.eventPath)))
                         .ToHashSet(StringComparer.Ordinal);
                     aliases = aliases?.Where(alias => activeVoiceEvents.Contains(alias.eventPath)).ToArray();
                     for (int index = addresses.Count - 1; index >= 0; index--)
@@ -115,6 +123,12 @@ namespace AstralOath.Client.BattleScene
             string contextualVoice = answersAlly ? cue.dualAnswerVoiceEventPath :
                 callsAlly ? cue.dualCallVoiceEventPath : null;
             if (Start(contextualVoice) || Start(cue.voiceEventPath)) StartedVoiceCount++;
+        }
+
+        public void PlayTurnReady(string heroId)
+        {
+            if (IsAvailable && heroId != null && readyVoices.TryGetValue(heroId, out var path) && Start(path))
+                StartedTurnReadyCount++;
         }
 
         public void PlayBurnReady()

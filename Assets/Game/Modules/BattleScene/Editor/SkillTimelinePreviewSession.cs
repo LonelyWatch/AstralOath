@@ -84,6 +84,8 @@ namespace AstralOath.Client.BattleScene.Editor
         internal RenderTexture Texture { get; private set; }
         internal float Duration { get; private set; }
         internal float StageDuration { get; private set; }
+        internal float MainDuration { get; private set; }
+        internal float MainStageDuration { get; private set; }
         internal float Time => requestedTime;
         internal float StageTime => playback?.StageTime ?? 0f;
         internal IReadOnlyCollection<string> Diagnostics => playback?.EditorDiagnostics ?? Array.Empty<string>();
@@ -308,6 +310,9 @@ namespace AstralOath.Client.BattleScene.Editor
             Cutins = cutins.AsReadOnly();
             StageDuration = playback.Begin(graphId, caster, primaryTarget, recipients).Duration;
             Duration = StageDuration + Cutins.Sum(hold => hold.Duration);
+            MainStageDuration = playback.EditorMainDuration;
+            MainDuration = MainStageDuration + Cutins.Where(hold => hold.At <= MainStageDuration + .00001f)
+                .Sum(hold => hold.Duration);
             step = nextHit = 0;
             requestedTime = 0f;
             ApplyHitReactions();
@@ -373,7 +378,7 @@ namespace AstralOath.Client.BattleScene.Editor
             graphAsset = null;
             Cues = Array.Empty<(float, JObject, float, JObject[])>();
             Cutins = Array.Empty<(float, float)>();
-            StageDuration = Duration = requestedTime = 0f;
+            StageDuration = Duration = MainStageDuration = MainDuration = requestedTime = 0f;
             step = 0;
         }
 

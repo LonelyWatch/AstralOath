@@ -4,6 +4,6 @@
 
 魂槽使用本机原资源 `wnd/inbattle_hud.csb` 的八个坐标，横坐标 526、568.5、611、653.5、696、738.5、780.1714、822.6714，纵坐标约 44，以 1280×720 设计坐标投影至现有 1920×1080 安全视口。满十点显示一个独立蓝魂，底部蓝色条显示余数，例如 79 点为七个蓝魂与 90% 底条，80 点为八个蓝魂与空底条。原作 Burn/Cancel 在可使用时覆盖魂槽右侧；魂槽、按钮及技能组仍在各自生命周期更新。对照来自 2026-11-14 的原版实录 00:01–00:04，录制帧 2608×1200、简中、1×，客户端版本未确认。参考帧保存在 D 盘 `.artifacts/battle-inspection-reference`。
 
-蓝魂从 `effect/soul_01.cfx` 导入闭包。原 `intro` 约 0.9666 秒，之后循环 `loop` 约 4.9333 秒，Spine 比例 0.8，并在 200 毫秒后启动原粒子。开局已有的蓝魂直接显示循环，已消耗的蓝魂立即停止并回收显示。此处保留了原魂本身的动画，未接入原作飞魂轨迹与消耗时额外的爆发特效。运行 `Tools/BattleScene/ImportHudEffects.py --check` 可核对源和生成物哈希，`AstralOath.Client.BattleScene.Editor.BattleSceneBuilder.InstallHudEffects` 可重建当前场景引用。
+蓝魂从 `effect/soul_01.cfx` 导入闭包。原 `intro` 约 0.9666 秒，之后循环 `loop` 约 4.9333 秒，Spine 比例 0.8，并在 200 毫秒后启动原粒子。开局已有的蓝魂直接显示循环，已消耗的蓝魂立即停止并回收显示。此处保留了原魂本身的动画，未接入原作飞魂轨迹。后续已接入原 hud_soul_consume：确认扣魂时在减少的整魂槽原位播放 soul_grow 骨骼与两个粒子发射器，暂停冻结、重开释放，详见[本轮验收](2026-11-14-battle-actor-burn.md)。运行 `Tools/BattleScene/ImportHudEffects.py --check` 可核对源和生成物哈希，`AstralOath.Client.BattleScene.Editor.BattleSceneBuilder.InstallHudEffects` 可重建当前场景引用。
 
 共享规则新增测试实测先在上限 20 的基线失败，修改后筛选 Battle 的服务端测试 59/59 通过。Unity 2022.3 PlayMode 实景用例 `SoulGaugeFillsEightNativeSlotsAndLoopsOnlyEarnedSouls` 已通过，验证 9/10/79/80/68、对方事件过滤、真实 Spine 网格、槽距和重开回收。采样画面位于 D 盘 `.artifacts/ten-hero-frames/battle-soul-eight.png`。

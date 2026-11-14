@@ -38,6 +38,26 @@ namespace AstralOath.Tests
             Assert.That(hits, Is.EqualTo(new[] { 1.466f, 1.766f, 2.733f }).Within(.001f));
         }
 
+        [TestCase(3f, false, 0f, 1.18f)]
+        [TestCase(-3f, true, 0f, 1.18f)]
+        [TestCase(3f, false, 80f, .9f)]
+        [TestCase(-3f, true, 80f, .9f)]
+        [TestCase(.6f, false, 0f, .6f)]
+        public void ApproachLeavesSpaceOnEitherSideWithoutRetreatingFromCloseTargets(
+            float targetX, bool facesLeft, float authoredX, float expectedGap)
+        {
+            using var playback = Begin(2, out var caster, out var shadow, graph =>
+            {
+                foreach (JObject node in (JArray)graph["source"]["entities"])
+                    if ((string)node["etty"] == "MOVE" && (int?)node["location"] == 16)
+                        node["x"] = authoredX;
+            }, targetX, facesLeft);
+            Tick(playback, 1.2f);
+            Assert.That(Mathf.Abs(targetX - caster.position.x), Is.EqualTo(expectedGap).Within(.001f));
+            Assert.That(Mathf.Sign(targetX) * (targetX - caster.position.x), Is.GreaterThan(0f));
+            Assert.That(shadow.position.x, Is.EqualTo(caster.position.x).Within(.001f));
+        }
+
         [Test]
         public void RasThirdSkillExecutesVerticalMoveAndSourceReturnWithoutExplicitX()
         {
@@ -84,7 +104,8 @@ namespace AstralOath.Tests
             Assert.That(messages[0], Does.Contain("c_ras_skill_02").And.Contain("when=7").And.Contain("15 -> 11"));
         }
 
-        private IDisposable Begin(int skill, out Transform caster, out Transform shadow, Action<JObject> edit = null)
+        private IDisposable Begin(int skill, out Transform caster, out Transform shadow, Action<JObject> edit = null,
+            float targetX = 3f, bool facesLeft = false)
         {
             root = new GameObject("Source motion");
             root.SetActive(false);
@@ -101,10 +122,11 @@ namespace AstralOath.Tests
             }
             var skeleton = AssetDatabase.LoadAssetAtPath<TextAsset>(Ras + "Animations/model/ras.spine.json");
             var source = CreateActor(Vector3.zero, out shadow);
-            var target = CreateActor(Vector3.right * 3f, out _);
+            var target = CreateActor(Vector3.right * targetX, out _);
             using (var serialized = new SerializedObject(source))
             {
                 serialized.FindProperty("skeleton").objectReferenceValue = skeleton;
+                serialized.FindProperty("faceLeft").boolValue = facesLeft;
                 serialized.ApplyModifiedPropertiesWithoutUndo();
             }
             caster = source.transform;
