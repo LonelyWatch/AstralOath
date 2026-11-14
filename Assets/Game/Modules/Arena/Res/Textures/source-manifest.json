@@ -836,6 +836,29 @@
         "method": "original-asset",
         "compression": "none"
       }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/arena_create_dialog_bg.png",
+      "sources": [
+        {
+          "source": "img/renew_popup_bg_alpha.png",
+          "sha256": "7aa82d305f97434ab9f4044915a879b23f14814cb8bcd1cca7f4386b6995e270"
+        }
+      ],
+      "outputSha256": "88b8c0cb492f8e13903379e8e03f52499057e0c5a85606eaa368c0c08c1efdd9",
+      "conversion": {
+        "method": "source-glass-opacity-adjustment",
+        "sourceLayout": "wnd/pvplive_lounge_creat.csb",
+        "sourceGlassAlpha": 230,
+        "upperGlassAlpha": 245,
+        "lowerGlassAlpha": 230,
+        "scale9InsetsLtrb": [
+          54,
+          54,
+          54,
+          54
+        ]
+      }
     }
   ],
   "sourceLayouts": [

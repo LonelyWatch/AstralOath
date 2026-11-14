@@ -1,6 +1,7 @@
 using System.Linq;
 using AstralOath.Client.Common;
 using NUnit.Framework;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,9 +19,19 @@ namespace AstralOath.Client.Tests
         {
             var map = Load(prefab).GetComponent<BindingMap>();
             var button = map.Require<GameButton>("button");
-            Assert.That(map.Require<GameText>("label").raycastTarget, Is.False);
-            Assert.That(((Image)button.targetGraphic).sprite.name, Is.EqualTo(sprite));
+            var label = map.Require<GameText>("label");
+            var surface = (Image)button.targetGraphic;
+            Assert.That(((RectTransform)map.transform).sizeDelta, Is.EqualTo(new Vector2(288f, 91.5f)));
+            Assert.That(label.raycastTarget, Is.False);
+            Assert.That(label.fontSize, Is.EqualTo(31.5f));
+            Assert.That(label.fontStyle.HasFlag(FontStyles.Bold), Is.True);
+            Assert.That(label.rectTransform.anchoredPosition.y, Is.EqualTo(5.49f).Within(.001f));
+            Assert.That(surface.sprite.name, Is.EqualTo(sprite));
+            Assert.That(surface.type, Is.EqualTo(Image.Type.Sliced));
+            Assert.That(surface.pixelsPerUnitMultiplier, Is.EqualTo(2f / 3f).Within(.001f));
+            Assert.That(surface.sprite.border, Is.EqualTo(new Vector4(50f, 14f, 50f, 12f)));
             Assert.That(button.spriteState.pressedSprite.name, Is.EqualTo(sprite + "_p"));
+            Assert.That(button.spriteState.pressedSprite.border, Is.EqualTo(surface.sprite.border));
             var audio = (AudioSource)new SerializedObject(button).FindProperty("clickAudio").objectReferenceValue;
             Assert.That(audio, Is.Not.Null);
             Assert.That(audio.clip.name, Is.EqualTo(clip));

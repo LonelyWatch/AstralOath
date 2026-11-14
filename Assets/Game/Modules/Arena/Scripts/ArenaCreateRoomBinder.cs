@@ -28,9 +28,8 @@ namespace AstralOath.Client.Arena
             view.Show();
             screen.Add(() => { if (view.Root) view.Hide(); });
             view.RoomName.SetTextWithoutNotify("");
-            view.Password.SetTextWithoutNotify("");
             view.Locked.SetIsOnWithoutNotify(false);
-            view.Password.interactable = false;
+            PasswordChanged(false);
             view.Status.text = "";
             SetChat(true);
             SetRule("wild");
@@ -50,17 +49,28 @@ namespace AstralOath.Client.Arena
 
         private void PasswordChanged(bool enabled)
         {
-            view.Password.interactable = enabled;
-            if (!enabled) view.Password.SetTextWithoutNotify("");
+            var state = view.PasswordState;
+            state.alpha = enabled ? 1f : .30f;
+            state.interactable = enabled;
+            state.blocksRaycasts = enabled;
+            var input = view.Password;
+            input.interactable = enabled;
+            var fieldColor = input.targetGraphic.color;
+            // UGUI blends in linear space. The bright field needs extra attenuation independent of its hint.
+            fieldColor.a = enabled ? 1f : .26f;
+            input.targetGraphic.color = fieldColor;
+            input.placeholder.color = enabled ? new Color32(74, 70, 62, 255) : new Color32(12, 19, 25, 255);
+            if (!enabled) input.SetTextWithoutNotify("");
         }
 
         private void SetChat(bool allowed)
         {
             chat = allowed;
-            var selected = new Color32(79, 132, 19, 255);
-            var normal = new Color32(11, 22, 37, 255);
-            view.Allow.targetGraphic.color = allowed ? selected : normal;
-            view.Deny.targetGraphic.color = allowed ? normal : selected;
+            view.AllowSelection.enabled = allowed;
+            view.DenySelection.enabled = !allowed;
+            Color muted = new Color32(185, 185, 185, 255);
+            view.AllowCaption.color = allowed ? Color.white : muted;
+            view.DenyCaption.color = allowed ? muted : Color.white;
         }
 
         private void SetRule(string value)

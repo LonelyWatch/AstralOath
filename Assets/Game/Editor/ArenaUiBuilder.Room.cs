@@ -11,11 +11,19 @@ namespace AstralOath.Editor
         private static GameObject BuildCreate()
         {
             var root = Root("ArenaCreateRoom");
-            var dismiss = Button(Area(root, "Backdrop", 0, 0, 1, 1), null, Black(.73f));
-            dismiss.FeedbackSound = GameUiFeedback.Sound.Cancel;
-            var card = Area(root, "Create dialog", .244f, .042f, .512f, .888f);
-            Paint(card, Art("renew_popup_bg_alpha"), Color.white, true, true);
-            Text(card, "Create title", "arena.create", 42, .050f, .022f, .88f, .07f);
+            Paint(Area(root, "Modal dim base", 0, 0, 1, 1), null, Black(63f / 255f));
+            var dismiss = Button(Area(root, "Backdrop", 0, 0, 1, 1), Art("_dim"), Color.white);
+            dismiss.transition = Selectable.Transition.None;
+            dismiss.FeedbackSound = GameUiFeedback.Sound.Normal;
+            var frame = Area(Area(root, "Create dialog bounds", .03f, .040f, .94f, .944f),
+                "Create dialog frame", 0, 0, 1, 1);
+            var fit = frame.gameObject.AddComponent<AspectRatioFitter>();
+            fit.aspectMode = AspectRatioFitter.AspectMode.FitInParent;
+            const float cardHeight = .942f;
+            fit.aspectRatio = 764f / 645f * cardHeight;
+            var card = Area(frame, "Create dialog", 0, 0, 1, cardHeight);
+            Paint(card, Art("arena_create_dialog_bg"), Color.white, true, true);
+            Text(card, "Create title", "arena.create", 39, .057f, .022f, .88f, .07f).fontStyle = FontStyles.Bold;
             NativeRule(card, "Header divider", .046f, .096f, .908f, .023f, new Color32(170, 184, 187, 225));
             Text(card, "Name label", "arena.room_name", 30, .05f, .143f, .19f, .079f, Mist);
             var name = Input(card, "Room name", "arena.enter_text", 28, .262f, .132f, .685f, .084f);
@@ -31,22 +39,34 @@ namespace AstralOath.Editor
             toggle.graphic = box;
             toggle.isOn = false;
             Text(toggleArea, "Set password", "arena.set_password", 28, .216f, .01f, .78f, .98f);
-            VerticalRule(card, "Privacy separator", .517f, .289f, .018f, .099f, Mist * .7f);
-            Text(card, "Password hint", "arena.password_hint", 23, .55f, .287f, .17f, .087f, Mist, wrap: true);
-            var password = Input(card, "Password", "arena.enter_text", 4, .735f, .291f, .212f, .078f, true);
+            var passwordOptions = Area(card, "Password options", .517f, .287f, .43f, .101f);
+            var passwordState = passwordOptions.gameObject.AddComponent<CanvasGroup>();
+            passwordState.alpha = .30f;
+            passwordState.interactable = false;
+            passwordState.blocksRaycasts = false;
+            VerticalRule(passwordOptions, "Privacy separator", 0, .020f, .042f, .980f, Mist * .7f);
+            Text(passwordOptions, "Password hint", "arena.password_hint", 23, .077f, 0, .395f, .861f, Mist, wrap: true);
+            var password = Input(passwordOptions, "Password", "arena.enter_text", 4, .507f, .040f, .493f, .772f, true);
+            var passwordColors = password.colors;
+            passwordColors.disabledColor = passwordColors.normalColor;
+            password.colors = passwordColors;
+            password.interactable = false;
             foreach (var field in new[] { name, password })
                 ((Image)field.targetGraphic).sprite = Art("_box_w4");
 
             Text(card, "Chat permission", "arena.chat_setting", 28, .05f, .410f, .19f, .095f, Mist, wrap: true);
-            var allow = Action(card, "Allow", "arena.allow", 27, .261f, .418f, .147f, .069f, out _, Art("_btn_small_white"), Color.white);
-            var deny = Action(card, "Deny", "arena.deny", 27, .418f, .418f, .147f, .069f, out _, Art("_btn_small_white"), Color.white);
-            PressSprites(allow, Art("_btn_small_white"), CommonArt("_btn_small_black_p"));
-            PressSprites(deny, Art("_btn_small_white"), CommonArt("_btn_small_black_p"));
+            var allow = ChatChoice(card, "Allow", "arena.allow", .261f, new Color32(61, 119, 8, 255),
+                out var allowCaption, out var allowSelection);
+            var deny = ChatChoice(card, "Deny", "arena.deny", .418f, new Color32(162, 27, 27, 255),
+                out var denyCaption, out var denySelection);
+            denySelection.enabled = false;
             Text(card, "Rules label", "arena.rules", 30, .05f, .638f, .19f, .070f, Mist);
             var rules = Scroll(card, "Rules", .256f, .510f, .719f, .345f, horizontal: true);
             var keys = new System.Collections.Generic.List<(string, Object)>
             {
-                ("name", name), ("password", password), ("locked", toggle), ("allow", allow), ("deny", deny), ("rules", rules)
+                ("name", name), ("password", password), ("passwordState", passwordState), ("locked", toggle),
+                ("allow", allow), ("deny", deny), ("allowCaption", allowCaption), ("denyCaption", denyCaption),
+                ("allowSelection", allowSelection), ("denySelection", denySelection), ("rules", rules)
             };
             foreach (var (id, index) in new[] { ("wild",5), ("draft",4), ("round",3), ("no_duplicate_class",2), ("basic",1) })
             {
@@ -74,18 +94,32 @@ namespace AstralOath.Editor
                 keys.Add(("rule_" + id, button));
                 keys.Add(("selection_" + id, selected));
             }
-            Rule(card, "Footer separator", .03f, .859f, .94f, .002f);
+            Paint(Area(card, "Footer separator", .020f, .859f, .960f, .00125f), null, new Color32(81, 117, 145, 180));
             var status = Text(card, "Create status", null, 22, .031f, .956f, .938f, .035f,
                 new Color32(255, 191, 158, 255), TextAlignmentOptions.Center);
-            var cancel = CommonButton(card, "CancelButton", "arena.cancel", .246f, .88f, .24f, .080f);
-            var confirm = CommonButton(card, "ConfirmButton", "arena.confirm", .503f, .88f, .24f, .080f);
-            var dismissHint = Area(root, "Dismiss hint", .419f, .938f, .162f, .044f);
-            Picture(dismissHint, "Dismiss icon", Art("cm_icon_etcclose"), .03f, .16f, .12f, .68f, true).color = Mist;
-            Text(dismissHint, "Dismiss caption", "arena.touch_close", 24, .12f, 0, .82f, 1,
-                Color.white, TextAlignmentOptions.Center);
+            var cancel = CommonButton(card, "CancelButton", "arena.cancel", .246f, .871f, .242f, .098f);
+            var confirm = CommonButton(card, "ConfirmButton", "arena.confirm", .502f, .871f, .242f, .098f);
+            var dismissHint = Area(frame, "Dismiss hint", .432f, .950f, .136f, .048f);
+            Picture(dismissHint, "Dismiss icon", Art("cm_icon_etcclose"), 0, .27f, .17f, .49f, true).color
+                = new Color32(135, 135, 135, 255);
+            Text(dismissHint, "Dismiss caption", "arena.touch_close", 21, .225f, 0, .775f, 1,
+                new Color32(176, 176, 176, 255));
             keys.Add(("dismiss", dismiss)); keys.Add(("status", status)); keys.Add(("cancel", cancel)); keys.Add(("confirm", confirm));
             Bind(root, keys.ToArray());
             return root.gameObject;
+        }
+
+        private static GameButton ChatChoice(RectTransform card, string name, string key, float x, Color selected,
+            out GameText caption, out Image selection)
+        {
+            var button = Action(card, name, key, 26, x, .418f, .147f, .069f, out caption,
+                CommonArt("_btn_small_black"), Color.white);
+            PressSmallBlack(button);
+            selection = Paint(Area((RectTransform)button.transform, "Selected", 0, 0, 1, 1),
+                Art("_btn_small_white"), selected, sliced: true);
+            selection.rectTransform.SetAsFirstSibling();
+            PressDecorations(button, (selection, CommonArt("_btn_small_black_p")));
+            return button;
         }
 
         private static GameObject BuildRoom()

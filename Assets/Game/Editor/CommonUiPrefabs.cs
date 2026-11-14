@@ -43,10 +43,12 @@ namespace AstralOath.Editor
         {
             var root = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(GameButton), typeof(AudioSource));
             var rect = (RectTransform)root.transform;
-            rect.sizeDelta = new Vector2(260f, 64f);
+            rect.sizeDelta = new Vector2(288f, 91.5f);
             var image = root.GetComponent<Image>();
             image.sprite = Load<Sprite>(Root + "Textures/" + sprite + ".png");
             image.type = Image.Type.Sliced;
+            // Cocos draws source pixels 1:1 at 720p. The project UI reference height is 1080p.
+            image.pixelsPerUnitMultiplier = 2f / 3f;
             var button = root.GetComponent<GameButton>();
             button.targetGraphic = image;
             button.transition = Selectable.Transition.SpriteSwap;
@@ -54,9 +56,11 @@ namespace AstralOath.Editor
             swap.pressedSprite = Load<Sprite>(Root + "Textures/" + sprite + "_p.png");
             button.spriteState = swap;
             SetClickSound(button, clip);
+            const float baselineOffset = 5.49f;
             var label = Text(Child(rect, "Label", Vector2.zero, Vector2.one,
-                new Vector2(20f, 0f), new Vector2(-20f, 0f)), font, 28f, Color.white);
+                new Vector2(20f, baselineOffset), new Vector2(-20f, baselineOffset)), font, 31.5f, Color.white);
             label.text = string.Empty;
+            label.fontStyle = FontStyles.Bold;
             label.alignment = TextAlignmentOptions.Center;
             Bind(root, ("label", label), ("button", button));
             return root;

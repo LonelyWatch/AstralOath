@@ -45,7 +45,7 @@ BORDERS = {
     "_btn_small_white_p": (13, 13, 13, 13), "_select": (25, 25, 25, 25),
     "_btn_white_flat": (25, 25, 25, 25), "_btn_white_flat_p": (25, 25, 25, 25),
     "_bar_1": (40, 0, 40, 0), "_bar_2": (40, 0, 40, 0), "_bar_5": (40, 0, 40, 0),
-    "emoji_picker_frame": (14, 14, 14, 14),
+    "emoji_picker_frame": (14, 14, 14, 14), "arena_create_dialog_bg": (54, 54, 54, 54),
     "_bar_4": (32, 0, 32, 0), "_bar_23": (30, 0, 30, 0), "renew_popup_bg_alpha": (34, 38, 34, 38),
 }
 
@@ -100,7 +100,7 @@ def metadata(path, check, importer):
         write(meta, f"fileFormatVersion: 2\nguid: {identifier}\n{importer}".encode(), False)
 
 
-UNCOMPRESSED_UI = {"emoji_picker_frame", "c1001_avatar_room", "arena_avatar_frame"}
+UNCOMPRESSED_UI = {"emoji_picker_frame", "c1001_avatar_room", "arena_avatar_frame", "arena_create_dialog_bg"}
 
 
 def texture_importer(path, sprite):
@@ -112,6 +112,8 @@ def texture_importer(path, sprite):
     result = "\n".join(line.rstrip() for line in text.splitlines()[2:]) + "\n"
     if path.stem in UNCOMPRESSED_UI:
         result = re.sub(r"(?m)^(\s+textureCompression:) \d+$", r"\1 0", result)
+    if path.stem == "arena_create_dialog_bg":
+        result = re.sub(r"(?m)^  userData:.*$", "  userData: AstralOath.ImportOverride", result)
     if path.stem in BORDERS:
         x, y, z, w = BORDERS[path.stem]
         result = re.sub(r"(?m)^  spriteBorder: .*", f"  spriteBorder: {{x: {x}, y: {y}, z: {z}, w: {w}}}", result)
@@ -260,6 +262,22 @@ def arena_room_art(root, check):
             for name, data, source, raw, conversion in variants]
 
 
+def arena_create_dialog_art(root, check):
+    source = "img/renew_popup_bg_alpha.png"
+    raw = read_source(root, source)
+    source_image = Image.open(io.BytesIO(raw)).convert("RGBA")
+    alpha = np.array(source_image.getchannel("A"))
+    extra_alpha = np.rint(np.interp(np.arange(source_image.height), [0, 231, 434], [15, 15, 0])).astype(np.uint8)
+    # The glass fill is 230 in the source; keep the original frame and edge alpha.
+    alpha += (alpha == 230) * extra_alpha[:, None]
+    source_image.putalpha(Image.fromarray(alpha))
+    return write_converted("Arena", "Textures/arena_create_dialog_bg.png", png_bytes(source_image),
+                           [{"source": source, "sha256": digest(raw)}], check,
+                           {"method": "source-glass-opacity-adjustment", "sourceLayout": "wnd/pvplive_lounge_creat.csb",
+                            "sourceGlassAlpha": 230, "upperGlassAlpha": 245, "lowerGlassAlpha": 230,
+                            "scale9InsetsLtrb": [54, 54, 54, 54]})
+
+
 def manifest(module, entries, layouts, root, check):
     result = {"schemaVersion": 1, "release": "pack-15-r4262", "assets": entries,
               "sourceLayouts": [{"source": path, "sha256": digest(read_source(root, path))} for path in layouts]}
@@ -280,6 +298,7 @@ def main():
                         ["emblem/icon_pvp_sa_league_place.png"], root, args.check)
     arena.append(courtyard(root, args.check))
     arena += arena_room_art(root, args.check)
+    arena.append(arena_create_dialog_art(root, args.check))
     home = source_pngs("Home", [f"img/{name}.png" for name in HOME_IMAGES] +
                        ["bgpack/lobby_bg3.png", "face/c5009_s.png", "item/border/icon_border_pvp_season20_rank_3.png"] +
                        [f"item/sticker/ma_sticker_emo{index}.png" for index in (1, 2, 3)], root, args.check)
