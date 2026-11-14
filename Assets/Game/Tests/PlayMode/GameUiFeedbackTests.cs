@@ -5,6 +5,7 @@ using AstralOath.Client.Common;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
@@ -75,6 +76,13 @@ namespace AstralOath.Client.Tests
                 float peak = 0;
                 for (int x = 170; x < 225; x++) peak = Mathf.Max(peak, frame.GetPixel(x, 120).b);
                 Assert.That(peak, Is.GreaterThan(.30f), "The late ring keeps a visible luminous edge.");
+                Capture(.44f, "native-click-particles.png");
+                int litParticles = 0;
+                for (int y = 68; y < 172; y++)
+                    for (int x = 108; x < 212; x++)
+                        if (frame.GetPixel(x, y).b > .04f)
+                            litParticles++;
+                Assert.That(litParticles, Is.InRange(4, 400), "Sparse particles stay visible briefly after the ring fades.");
             }
             finally
             {
@@ -87,6 +95,50 @@ namespace AstralOath.Client.Tests
         }
 #endif
 
+        [UnityTest]
+        public IEnumerator BlockedButtonPlaysDeniedSoundWithoutDispatchingClick()
+        {
+            var canvas = new GameObject("Blocked feedback test canvas", typeof(Canvas), typeof(GameUiFeedback), typeof(AudioListener));
+            var events = new GameObject("Blocked feedback events", typeof(EventSystem));
+            var item = new GameObject("Blocked button", typeof(RectTransform), typeof(Image), typeof(GameButton));
+            var normal = AudioClip.Create("normal feedback", 24000, 1, 48000, false);
+            var cancel = AudioClip.Create("cancel feedback", 24000, 1, 48000, false);
+            var blocked = AudioClip.Create("blocked feedback", 24000, 1, 48000, false);
+            try
+            {
+                item.transform.SetParent(canvas.transform, false);
+                var feedback = canvas.GetComponent<GameUiFeedback>();
+                feedback.Configure(null, null, normal, null, cancel, blocked: blocked);
+                var resolve = typeof(GameUiFeedback).GetMethod("Resolve", BindingFlags.Instance | BindingFlags.NonPublic);
+                Assert.That(resolve.Invoke(feedback, new object[] { GameUiFeedback.Sound.Back }), Is.SameAs(cancel));
+                Assert.That(resolve.Invoke(feedback, new object[] { GameUiFeedback.Sound.Cancel }), Is.SameAs(cancel));
+                Assert.That(resolve.Invoke(feedback, new object[] { GameUiFeedback.Sound.Confirm }), Is.SameAs(normal));
+                var button = item.GetComponent<GameButton>();
+                button.interactable = false;
+                int activations = 0;
+                button.onClick.AddListener(() => activations++);
+                var mouse = new PointerEventData(events.GetComponent<EventSystem>()) { button = PointerEventData.InputButton.Left };
+                ExecuteEvents.Execute(item, mouse, ExecuteEvents.pointerClickHandler);
+                Assert.That(canvas.GetComponent<AudioSource>(), Is.Null);
+
+                button.BlockedFeedback = true;
+                ExecuteEvents.Execute(item, mouse, ExecuteEvents.pointerClickHandler);
+                Assert.That(activations, Is.Zero);
+                Assert.That(canvas.GetComponent<AudioSource>(), Is.Not.Null);
+                Assert.That(resolve.Invoke(feedback, new object[] { GameUiFeedback.Sound.Blocked }), Is.SameAs(blocked));
+                yield return null;
+                Assert.That(canvas.GetComponent<AudioSource>().isPlaying, Is.True);
+            }
+            finally
+            {
+                Object.Destroy(item);
+                Object.Destroy(events);
+                Object.Destroy(canvas);
+                Object.Destroy(normal);
+                Object.Destroy(cancel);
+                Object.Destroy(blocked);
+            }
+        }
         [UnityTest]
         public IEnumerator ACanvasReusesNonInteractiveClickGlows()
         {
@@ -101,7 +153,7 @@ namespace AstralOath.Client.Tests
                 var type = Type.GetType("AstralOath.Client.Common.GameUiFeedback, AstralOath.Client.Common");
                 Assert.That(type, Is.Not.Null, "The root Canvas needs shared click feedback.");
                 var feedback = target.AddComponent(type);
-                type.GetMethod("Configure").Invoke(feedback, new object[] { sprite, sprite, null, null, null, null, null, null, null });
+                type.GetMethod("Configure").Invoke(feedback, new object[] { sprite, sprite, null, null, null, null, null, null, null, null });
                 var track = type.GetMethod("Track", BindingFlags.Instance | BindingFlags.NonPublic);
                 Assert.That(track, Is.Not.Null);
                 var center = new Vector2(Screen.width * .5f, Screen.height * .5f);

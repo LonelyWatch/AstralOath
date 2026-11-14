@@ -859,6 +859,126 @@
           54
         ]
       }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/directory_create.png",
+      "sources": [
+        {
+          "source": "img/_btn_gold.png",
+          "sha256": "4c4861a4aae376a620c706ac2fa3c778f5bf221537187cac8f17a7f9e57d699b"
+        }
+      ],
+      "outputSha256": "4c4861a4aae376a620c706ac2fa3c778f5bf221537187cac8f17a7f9e57d699b",
+      "conversion": {
+        "method": "native-scale-nine",
+        "sourceLayout": "wnd/pvplive_base.csb",
+        "capRectXywh": [
+          14,
+          12,
+          124,
+          33
+        ]
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/directory_create_pressed.png",
+      "sources": [
+        {
+          "source": "img/_btn_gold_p.png",
+          "sha256": "d56ef788bbdb080bbfb92c5b5af10d1e026bf4d7a5b88642191d64f2daf5dfbf"
+        }
+      ],
+      "outputSha256": "d56ef788bbdb080bbfb92c5b5af10d1e026bf4d7a5b88642191d64f2daf5dfbf",
+      "conversion": {
+        "method": "native-scale-nine",
+        "sourceLayout": "wnd/pvplive_base.csb",
+        "capRectXywh": [
+          14,
+          12,
+          124,
+          33
+        ]
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/directory_refresh.png",
+      "sources": [
+        {
+          "source": "img/_btn_small_black.png",
+          "sha256": "5d2458be3abf2d92a1f75d77b58d741d69c62571052ae80c4524c7ed0969a966"
+        }
+      ],
+      "outputSha256": "5d2458be3abf2d92a1f75d77b58d741d69c62571052ae80c4524c7ed0969a966",
+      "conversion": {
+        "method": "native-scale-nine",
+        "sourceLayout": "wnd/pvplive_base.csb",
+        "capRectXywh": [
+          14,
+          12,
+          8,
+          6
+        ]
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/directory_refresh_pressed.png",
+      "sources": [
+        {
+          "source": "img/_btn_small_black_p.png",
+          "sha256": "a890885cd4d3c14f36114f4877771d47618eb31164ef388aaa298b03008f4df7"
+        }
+      ],
+      "outputSha256": "a890885cd4d3c14f36114f4877771d47618eb31164ef388aaa298b03008f4df7",
+      "conversion": {
+        "method": "native-scale-nine",
+        "sourceLayout": "wnd/pvplive_base.csb",
+        "capRectXywh": [
+          14,
+          12,
+          8,
+          6
+        ]
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/directory_rule.png",
+      "sources": [
+        {
+          "source": "img/_bar_2.png",
+          "sha256": "81e716524df5b87bb2ab8422d14e6b6c348726d8e7f65ea1f844f27144678729"
+        }
+      ],
+      "outputSha256": "81e716524df5b87bb2ab8422d14e6b6c348726d8e7f65ea1f844f27144678729",
+      "conversion": {
+        "method": "native-scale-nine",
+        "sourceLayout": "wnd/pvplive_base.csb",
+        "capRectXywh": [
+          32,
+          4,
+          34,
+          2
+        ]
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/directory_tab.png",
+      "sources": [
+        {
+          "source": "img/_select2.png",
+          "sha256": "21ade1b20347ce3b01a7406ceaea8d126de1c9e73b63a256354623341e32edaf"
+        }
+      ],
+      "outputSha256": "21ade1b20347ce3b01a7406ceaea8d126de1c9e73b63a256354623341e32edaf",
+      "conversion": {
+        "method": "native-scale-nine",
+        "sourceLayout": "wnd/pvplive_base.csb",
+        "capRectXywh": [
+          41,
+          0,
+          9,
+          112
+        ]
+      }
     }
   ],
   "sourceLayouts": [

@@ -27,10 +27,11 @@ namespace AstralOath.Client.Arena
         public GameObject Row => Bindings.Require<GameObject>("row");
         public GameObject Choice => Bindings.Require<GameObject>("choice");
         public GameObject Password => Bindings.Require<GameObject>("password");
+        public GameObject Toast => Bindings.Require<GameObject>("toast");
         public override void Validate()
         {
             _ = Back; _ = Create; _ = Refresh; _ = Filter; _ = Search; _ = SubmitSearch;
-            _ = FilterLabel; _ = SearchSelected; _ = SearchPressed; _ = SearchIcon; _ = SearchLabel; _ = Status; _ = SearchPanel; _ = Query; _ = List; _ = Row; _ = Choice; _ = Password;
+            _ = FilterLabel; _ = SearchSelected; _ = SearchPressed; _ = SearchIcon; _ = SearchLabel; _ = Status; _ = SearchPanel; _ = Query; _ = List; _ = Row; _ = Choice; _ = Password; _ = Toast;
         }
     }
 }

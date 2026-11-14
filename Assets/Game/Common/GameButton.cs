@@ -14,6 +14,7 @@ namespace AstralOath.Client.Common
     {
         [SerializeField] private AudioSource clickAudio;
         [SerializeField] private GameUiFeedback.Sound feedbackSound;
+        [SerializeField] private bool blockedFeedback;
         [Serializable] private struct PressDecoration
         {
             public Image image;
@@ -24,10 +25,11 @@ namespace AstralOath.Client.Common
         private bool dispatching;
 
         public GameUiFeedback.Sound FeedbackSound { get => feedbackSound; set => feedbackSound = value; }
+        public bool BlockedFeedback { get => blockedFeedback; set => blockedFeedback = value; }
 
         public override void OnPointerClick(PointerEventData eventData)
         {
-            if (eventData.button != PointerEventData.InputButton.Left || !IsActive() || !IsInteractable()) return;
+            if (eventData.button != PointerEventData.InputButton.Left || !CanActivate()) return;
             if (TryGetComponent<GameLongPress>(out var hold) && hold.ConsumedClick(eventData)) return;
             PlayClickSound();
             dispatching = true;
@@ -37,11 +39,19 @@ namespace AstralOath.Client.Common
 
         public override void OnSubmit(BaseEventData eventData)
         {
-            if (!IsActive() || !IsInteractable()) return;
+            if (!CanActivate()) return;
             PlayClickSound();
             dispatching = true;
             try { base.OnSubmit(eventData); }
             finally { dispatching = false; }
+        }
+
+        private bool CanActivate()
+        {
+            if (!IsActive()) return false;
+            if (IsInteractable()) return true;
+            if (blockedFeedback) GameUiFeedback.Play(this, GameUiFeedback.Sound.Blocked);
+            return false;
         }
 
         protected override void DoStateTransition(SelectionState state, bool instant)

@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AstralOath.Client.Common;
 using AstralOath.Client.Core;
 using UnityEngine;
 
@@ -12,20 +13,25 @@ namespace AstralOath.Client.Arena
         private readonly ILocaleService locale;
         private readonly Func<ArenaCreateRequest, CancellationToken, Task> submit;
         private readonly Action close;
+        private readonly GameToastBinder toast;
+        private BindingScope screen;
         private bool chat;
         private string rule;
 
-        internal ArenaCreateRoomBinder(ArenaCreateRoom view, ILocaleService locale, Func<ArenaCreateRequest, CancellationToken, Task> submit, Action close)
+        internal ArenaCreateRoomBinder(ArenaCreateRoom view, ILocaleService locale, Func<ArenaCreateRequest, CancellationToken, Task> submit, Action close, GameToastBinder toast)
         {
             this.view = view;
             this.locale = locale;
             this.submit = submit;
             this.close = close;
+            this.toast = toast;
         }
 
         internal void Open(BindingScope screen)
         {
+            this.screen = screen;
             view.Show();
+            view.Confirm.FeedbackSound = GameUiFeedback.Sound.Silent;
             screen.Add(() => { if (view.Root) view.Hide(); });
             view.RoomName.SetTextWithoutNotify("");
             view.Locked.SetIsOnWithoutNotify(false);
@@ -87,17 +93,27 @@ namespace AstralOath.Client.Arena
             string password = view.Locked.isOn ? view.Password.text : "";
             if (name.Length < 1 || name.Length > 28 || (view.Locked.isOn && !ValidPassword(password)))
             {
-                view.Status.text = locale.Resolve(name.Length < 1 || name.Length > 28 ? "arena.error.invalid_name" : "arena.error.invalid_password");
+                Reject(locale.Resolve(name.Length < 1 || name.Length > 28
+                    ? "arena.error.invalid_name" : "arena.error.invalid_password"));
                 return;
             }
             view.Status.text = "";
             view.Cancel.interactable = view.Dismiss.interactable = false;
             try { await submit(new ArenaCreateRequest { name = name, password = password, rule = rule, allowChat = chat }, token); }
-            catch (ArenaRequestException error) { view.Status.text = ArenaError.Text(locale, error); }
+            catch (ArenaRequestException error) when (!token.IsCancellationRequested)
+            {
+                Reject(ArenaError.Text(locale, error));
+            }
             finally
             {
                 if (view.Root) view.Cancel.interactable = view.Dismiss.interactable = true;
             }
+        }
+
+        private void Reject(string message)
+        {
+            GameUiFeedback.Play(view.Confirm, GameUiFeedback.Sound.Blocked);
+            toast.Show(message, screen);
         }
 
         internal static bool ValidPassword(string value) =>

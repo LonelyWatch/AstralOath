@@ -114,21 +114,40 @@ namespace AstralOath.Editor
             Paint(right, null, Blue);
             var selected = Area(right, "Selected mock battle", 0, 0, 1, .144f);
             Paint(selected, null, new Color32(4, 14, 34, 255));
-            Picture(selected, "Native selection", Art("_select2"), -.145f, -.06f, .40f, 1.12f);
+            var selectedArt = Area(selected, "Native selection", 0, 0, 1, 1);
+            selectedArt.offsetMin = new Vector2(-33f, 0);
+            Paint(selectedArt, Art("directory_tab"), Color.white, sliced: true).pixelsPerUnitMultiplier = 2f / 3f;
             Picture(selected, "Mock battle icon", Art("icon_menu_battle_add"), .075f, .23f, .14f, .54f, true);
             Text(selected, "Mock battle tab", "arena.mock", 34, .245f, .05f, .71f, .90f);
 
             var body = Area(root, "Directory", .203f, .096f, .597f, .89f);
             Text(body, "Mock battle title", "arena.mock", 39, 0, .010f, .60f, .10f);
-            var create = CommonButton(body, "CancelButton", "arena.create", .818f, .022f, .175f, .075f);
-            NativeRule(body, "Top rule", 0, .107f, 1, .017f, Gold);
-            NativeRule(body, "Toolbar rule", 0, .194f, 1, .017f, Gold);
-            var filter = Action(body, "Filter", "arena.filter.all", 26, 0, .13f, .235f, .062f, out var filterLabel, Art("_box_r_op80"), Color.white);
-            var search = Action(body, "Search", "arena.search", 26, .246f, .13f, .175f, .062f, out var searchLabel, Art("_box_r_op80"), Color.white);
-            var refresh = Action(body, "Refresh", "arena.refresh", 27, .818f, .13f, .175f, .062f, out var refreshLabel, Art("_box_r_op80"), Color.white);
+            const float buttonLeft = .818f;
+            const float buttonWidth = .175f;
+            const float toolbarTop = .116f;
+            const float toolbarHeight = .061f;
+            var create = CommonButton(body, "CancelButton", "arena.create", buttonLeft, .022f, buttonWidth, .083f);
+            PressSprites(create, Art("directory_create"), Art("directory_create_pressed"));
+            ((Image)create.targetGraphic).pixelsPerUnitMultiplier = 2f / 3f;
+            var createLabel = create.GetComponent<BindingMap>().Require<GameText>("label");
+            createLabel.fontSize = 28f;
+            createLabel.characterSpacing = -1.5f;
+            Place(createLabel.rectTransform, .04f, 0, .90f, .92f);
+
+            DirectoryRule(body, "Top rule", .098f, 178);
+            DirectoryRule(body, "Toolbar rule", .181f, 127);
+            var filter = Action(body, "Filter", "arena.filter.all", 26, 0, toolbarTop, .235f, toolbarHeight, out var filterLabel, Art("_box_r_op80"), Color.white);
+            var search = Action(body, "Search", "arena.search", 26, .246f, toolbarTop, .175f, toolbarHeight, out var searchLabel, Art("_box_r_op80"), Color.white);
+            var refresh = Action(body, "Refresh", "arena.refresh", 26, buttonLeft, toolbarTop, buttonWidth, toolbarHeight, out var refreshLabel,
+                Art("directory_refresh"), Color.white);
             PressSmallBlack(filter);
             PressSmallBlack(search);
-            PressSmallBlack(refresh);
+            PressSprites(refresh, Art("directory_refresh"), Art("directory_refresh_pressed"));
+            ((Image)refresh.targetGraphic).pixelsPerUnitMultiplier = 2f / 3f;
+            refreshLabel.color = new Color32(193, 193, 193, 255);
+            Place(refreshLabel.rectTransform, .23f, 0, .756f, .85f);
+            Picture((RectTransform)refresh.transform, "Icon", Art("cm_icon_etcrepeat"), .048f, .11f, .245f, .66f, true).color
+                = new Color32(144, 144, 144, 255);
             var searchButtonRect = (RectTransform)search.transform;
             var searchSelected = Picture(searchButtonRect, "Search active", Art("_btn_white_flat"), 0, 0, 1, 1);
             searchSelected.type = Image.Type.Sliced;
@@ -138,7 +157,6 @@ namespace AstralOath.Editor
             searchPressed.enabled = false;
             var searchIcon = ToolbarIcon(search, searchLabel, "cm_icon_etczoomer");
             ToolbarIcon(filter, filterLabel, "_sorting2");
-            ToolbarIcon(refresh, refreshLabel, "cm_icon_etcrepeat");
             var list = Scroll(body, "Rooms", 0, .210f, 1, .775f);
             var status = Text(body, "Directory status", null, 25, .06f, .46f, .88f, .08f, Mist, TextAlignmentOptions.Center);
             var row = Area(body, "Room row template", 0, 0, 1, 0);
@@ -214,12 +232,13 @@ namespace AstralOath.Editor
             }
             Bind(choiceBody, binding.ToArray());
             choice.gameObject.SetActive(false);
-            var password = BuildPassword(root);
+            var password = CreatePasswordEntry(root);
+            var toast = CreateDirectoryToast(root);
             Bind(root, ("back", back), ("create", create), ("refresh", refresh), ("filter", filter), ("search", search),
                 ("filterLabel", filterLabel), ("searchLabel", searchLabel), ("searchSelected", searchSelected),
                 ("searchIcon", searchIcon), ("searchPressed", searchPressed), ("submitSearch", submit), ("status", status),
                 ("searchPanel", searchPanel.gameObject), ("query", query), ("list", list), ("row", row.gameObject),
-                ("choice", choice.gameObject), ("password", password));
+                ("choice", choice.gameObject), ("password", password), ("toast", toast));
             return root.gameObject;
         }
 
@@ -239,6 +258,9 @@ namespace AstralOath.Editor
             return Picture((RectTransform)button.transform, "Icon", Art(icon), .05f, .17f, .16f, .66f, true);
         }
 
+        private static void DirectoryRule(RectTransform parent, string name, float y, byte alpha) =>
+            Paint(Area(parent, name, 0, y, 1, .012f), Art("directory_rule"),
+                new Color32(146, 109, 62, alpha), sliced: true).pixelsPerUnitMultiplier = 2f / 3f;
         private static void NativeRule(RectTransform parent, string name, float x, float y, float w, float h, Color color,
             string art = "_bar_23") =>
             Paint(Area(parent, name, x, y, w, h), Art(art), color, sliced: true);
@@ -255,20 +277,5 @@ namespace AstralOath.Editor
             Paint(line, Art("_bar_5"), color);
         }
 
-        private static GameObject BuildPassword(RectTransform parent)
-        {
-            var root = Area(parent, "Join password popup", 0, 0, 1, 1);
-            Paint(root, null, Black(.63f), true);
-            var card = Area(root, "Password card", .32f, .29f, .36f, .42f);
-            Paint(card, Art("renew_popup_bg_alpha"), Color.white, true, true);
-            Text(card, "Password title", "arena.set_password", 37, .075f, .06f, .85f, .16f);
-            var input = Input(card, "Password", "arena.enter_text", 4, .08f, .30f, .84f, .16f, true);
-            var status = Text(card, "Password status", null, 24, .08f, .53f, .84f, .14f, Mist);
-            var cancel = CommonButton(card, "CancelButton", "arena.cancel", .13f, .73f, .34f, .16f);
-            var confirm = CommonButton(card, "ConfirmButton", "arena.confirm", .53f, .73f, .34f, .16f);
-            Bind(root, ("input", input), ("status", status), ("cancel", cancel), ("confirm", confirm));
-            root.gameObject.SetActive(false);
-            return root.gameObject;
-        }
     }
 }

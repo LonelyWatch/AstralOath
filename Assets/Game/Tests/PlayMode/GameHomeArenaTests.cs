@@ -107,7 +107,7 @@ namespace AstralOath.Client.Tests
                 Assert.That(create.Require<Toggle>("locked").isOn, Is.False);
                 Assert.That(create.Require<Image>("allowSelection").enabled, Is.True);
                 create.Require<GameButton>("confirm").onClick.Invoke();
-                Assert.That(create.Require<GameText>("status").text, Does.Contain("28"));
+                Assert.That(ToastMessage(directory).text, Does.Contain("28"));
                 string title = "双端验证" + Guid.NewGuid().ToString("N").Substring(0, 8);
                 create.Require<TMP_InputField>("name").text = title;
                 create.Require<Toggle>("locked").isOn = true;
@@ -120,6 +120,13 @@ namespace AstralOath.Client.Tests
                 var room = ScreenMap("ArenaRoom");
                 Assert.That(room.Require<GameText>("name").text, Is.EqualTo(title));
                 Assert.That(room.Require<GameText>("count").text, Is.EqualTo("1/50"));
+                Assert.That(room.Require<Image>("roomLock").gameObject.activeInHierarchy, Is.True);
+                Assert.That(room.Require<GameText>("hostName").text, Does.EndWith("[me]"));
+                yield return Capture("arena-room-host");
+                var grid = room.Require<ScrollRect>("members").content.GetComponent<GridLayoutGroup>();
+                Assert.That(grid.startAxis, Is.EqualTo(GridLayoutGroup.Axis.Vertical));
+                room.Require<GameButton>("start").onClick.Invoke();
+                Assert.That(ToastMessage(room).text, Is.Not.Empty);
                 yield return Capture("arena-room");
                 var peer = NewPeer(endpoint);
                 yield return Complete(peer.Open());
@@ -140,6 +147,11 @@ namespace AstralOath.Client.Tests
                 yield return Wait(() => ShowsChat(room, "来自第二会话"), "Unity did not receive peer chat.", 1.25f);
                 Debug.Log($"ARENA_CHAT_RECEIVER_MS {(Time.realtimeSinceStartup - peerStarted) * 1000:F0}");
                 Assert.That(ChatCount(room, "来自 Unity"), Is.EqualTo(1), "Sender message appeared twice.");
+                var ownHeading = room.Require<ScrollRect>("messages").content.GetComponentsInChildren<BindingMap>()
+                    .First(map => map.transform.parent == room.Require<ScrollRect>("messages").content &&
+                        map.Require<GameText>("body").text == "来自 Unity");
+                Assert.That(ownHeading.Require<GameText>("sender").text, Does.EndWith("[me]"));
+                Assert.That(ownHeading.Require<GameText>("age").text, Is.EqualTo("刚才"));
                 yield return Capture("arena-room-two");
                 room.Require<GameButton>("emoji").onClick.Invoke();
                 var picker = room.Require<GameObject>("emojiPicker");
@@ -231,10 +243,11 @@ namespace AstralOath.Client.Tests
             var map = password.GetComponent<BindingMap>();
             var input = map.Require<TMP_InputField>("input");
             var confirm = map.Require<GameButton>("confirm");
+            yield return Capture("arena-password");
             input.text = "0000";
             confirm.onClick.Invoke();
-            Assert.That(map.Require<GameButton>("cancel").interactable, Is.False);
-            yield return Wait(() => map.Require<GameText>("status").text == "密码错误。", "Wrong PIN was not rejected by the server.");
+            yield return Wait(() => ToastMessage(directory).text == "密码错误。", "Wrong PIN was not rejected by the server.");
+            yield return Capture("arena-password-toast");
             Assert.That(ScreenMap("ArenaRoom"), Is.Null);
             Assert.That(password.activeInHierarchy, Is.True);
             yield return Wait(() => confirm.interactable, "Password action did not become available after rejection.");
@@ -250,6 +263,8 @@ namespace AstralOath.Client.Tests
             Assert.That(host.MemberCount, Is.EqualTo(1));
         }
 
+        private static GameText ToastMessage(BindingMap screen) =>
+            screen.Require<GameObject>("toast").GetComponent<BindingMap>().Require<GameText>("message");
         private static BindingMap[] FindRows(ScrollRect list, string prefix) =>
             list.content.GetComponentsInChildren<BindingMap>()
                 .Where(map => map.transform.parent == list.content &&

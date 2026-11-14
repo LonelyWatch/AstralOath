@@ -33,7 +33,7 @@ namespace AstralOath.Editor
         public static void GenerateArenaControls()
         {
             var font = GetPanelFont(Load<TMP_FontAsset>(FontPath));
-            Save(BuildButton(font, "ConfirmButton", "_btn_green", "UiAccept"), ButtonPath);
+            Save(BuildButton(font, "ConfirmButton", "_btn_green", "UiConfirm"), ButtonPath);
             Save(BuildButton(font, "CancelButton", "_btn_gold", "UiCancel"), CancelPath);
             Save(BuildChoicePopup(font), ChoicePath);
             Save(BuildAvatar(), AvatarPath);

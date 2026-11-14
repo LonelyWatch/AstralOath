@@ -13,7 +13,7 @@ namespace AstralOath.Client.Tests
     {
         private const string PrefabRoot = "Assets/Game/Common/Res/Prefab/";
 
-        [TestCase("ConfirmButton", "_btn_green", "UiAccept")]
+        [TestCase("ConfirmButton", "_btn_green", "UiConfirm")]
         [TestCase("CancelButton", "_btn_gold", "UiCancel")]
         public void CommonButtonsHaveNativeArtworkAndClickAudio(string prefab, string sprite, string clip)
         {

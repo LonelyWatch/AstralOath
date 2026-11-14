@@ -46,6 +46,9 @@ BORDERS = {
     "_btn_white_flat": (25, 25, 25, 25), "_btn_white_flat_p": (25, 25, 25, 25),
     "_bar_1": (40, 0, 40, 0), "_bar_2": (40, 0, 40, 0), "_bar_5": (40, 0, 40, 0),
     "emoji_picker_frame": (14, 14, 14, 14), "arena_create_dialog_bg": (54, 54, 54, 54),
+    "directory_create": (14, 16, 14, 12), "directory_create_pressed": (14, 16, 14, 12),
+    "directory_refresh": (14, 16, 14, 12), "directory_refresh_pressed": (14, 16, 14, 12),
+    "directory_rule": (32, 4, 32, 4), "directory_tab": (41, 0, 10, 0),
     "_bar_4": (32, 0, 32, 0), "_bar_23": (30, 0, 30, 0), "renew_popup_bg_alpha": (34, 38, 34, 38),
 }
 
@@ -100,7 +103,7 @@ def metadata(path, check, importer):
         write(meta, f"fileFormatVersion: 2\nguid: {identifier}\n{importer}".encode(), False)
 
 
-UNCOMPRESSED_UI = {"emoji_picker_frame", "c1001_avatar_room", "arena_avatar_frame", "arena_create_dialog_bg"}
+UNCOMPRESSED_UI = {"emoji_picker_frame", "c1001_avatar_room", "arena_avatar_frame", "arena_create_dialog_bg", "directory_tab", "directory_rule", "directory_refresh", "directory_refresh_pressed", "directory_create", "directory_create_pressed"}
 
 
 def texture_importer(path, sprite):
@@ -112,7 +115,7 @@ def texture_importer(path, sprite):
     result = "\n".join(line.rstrip() for line in text.splitlines()[2:]) + "\n"
     if path.stem in UNCOMPRESSED_UI:
         result = re.sub(r"(?m)^(\s+textureCompression:) \d+$", r"\1 0", result)
-    if path.stem == "arena_create_dialog_bg":
+    if path.stem in UNCOMPRESSED_UI:
         result = re.sub(r"(?m)^  userData:.*$", "  userData: AstralOath.ImportOverride", result)
     if path.stem in BORDERS:
         x, y, z, w = BORDERS[path.stem]
@@ -278,6 +281,25 @@ def arena_create_dialog_art(root, check):
                             "scale9InsetsLtrb": [54, 54, 54, 54]})
 
 
+def arena_directory_art(root, check):
+    specs = (
+        ("directory_create", "_btn_gold", [14, 12, 124, 33]),
+        ("directory_create_pressed", "_btn_gold_p", [14, 12, 124, 33]),
+        ("directory_refresh", "_btn_small_black", [14, 12, 8, 6]),
+        ("directory_refresh_pressed", "_btn_small_black_p", [14, 12, 8, 6]),
+        ("directory_rule", "_bar_2", [32, 4, 34, 2]),
+        ("directory_tab", "_select2", [41, 0, 9, 112]),
+    )
+    entries = []
+    for output, source_name, cap in specs:
+        source = f"img/{source_name}.png"
+        data = read_source(root, source)
+        entries.append(write_converted("Arena", f"Textures/{output}.png", data,
+                       [{"source": source, "sha256": digest(data)}], check,
+                       {"method": "native-scale-nine", "sourceLayout": "wnd/pvplive_base.csb", "capRectXywh": cap}))
+    return entries
+
+
 def manifest(module, entries, layouts, root, check):
     result = {"schemaVersion": 1, "release": "pack-15-r4262", "assets": entries,
               "sourceLayouts": [{"source": path, "sha256": digest(read_source(root, path))} for path in layouts]}
@@ -299,6 +321,7 @@ def main():
     arena.append(courtyard(root, args.check))
     arena += arena_room_art(root, args.check)
     arena.append(arena_create_dialog_art(root, args.check))
+    arena += arena_directory_art(root, args.check)
     home = source_pngs("Home", [f"img/{name}.png" for name in HOME_IMAGES] +
                        ["bgpack/lobby_bg3.png", "face/c5009_s.png", "item/border/icon_border_pvp_season20_rank_3.png"] +
                        [f"item/sticker/ma_sticker_emo{index}.png" for index in (1, 2, 3)], root, args.check)

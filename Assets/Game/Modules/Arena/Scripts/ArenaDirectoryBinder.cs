@@ -22,6 +22,9 @@ namespace AstralOath.Client.Arena
         private readonly ArenaApi api;
         private readonly WindowCoordinator windows;
         private readonly ArenaCreateRoomBinder create;
+        private readonly ArenaPasswordEntryBinder passwordEntry;
+        private readonly GameButton passwordConfirm;
+        private readonly GameToastBinder toast;
         private readonly Func<ArenaRoomState, CancellationToken, Task> enter;
         private readonly Func<Task> goHome;
         private readonly string displayName;
@@ -42,7 +45,11 @@ namespace AstralOath.Client.Arena
             this.displayName = displayName;
             searchIdle = ((Image)view.Search.targetGraphic).sprite;
             searchIdlePressed = view.Search.spriteState.pressedSprite;
-            create = new ArenaCreateRoomBinder(createView, locale, CreateAsync, () => windows.CloseOverlay(CreateWindow));
+            toast = new GameToastBinder(GameToast.ForInstance(view.Toast));
+            var passwordView = ArenaPasswordEntry.FromInstance(view.Password);
+            passwordConfirm = passwordView.Confirm;
+            passwordEntry = new ArenaPasswordEntryBinder(passwordView, locale, toast);
+            create = new ArenaCreateRoomBinder(createView, locale, CreateAsync, () => windows.CloseOverlay(CreateWindow), toast);
         }
 
         public async Task OpenAsync(BindingScope owner)
@@ -220,6 +227,7 @@ namespace AstralOath.Client.Arena
             {
                 await ConnectAsync(token);
                 var result = await api.CreateAsync(request, token);
+                GameUiFeedback.Play(view.Create, GameUiFeedback.Sound.Confirm);
                 await enter(result, token);
             }
             finally { if (screen == owner) busy = false; }
@@ -251,41 +259,13 @@ namespace AstralOath.Client.Arena
 
         private Task AskPassword(ArenaRoomInfo room)
         {
-            windows.ShowOverlay(PasswordWindow, scope =>
-            {
-                var map = view.Password.GetComponent<BindingMap>();
-                var input = map.Require<TMPro.TMP_InputField>("input");
-                var errorLabel = map.Require<GameText>("status");
-                input.SetTextWithoutNotify("");
-                errorLabel.text = "";
-                view.Password.SetActive(true);
-                scope.Add(() => { if (view.Root) view.Password.SetActive(false); });
-                var cancel = map.Require<GameButton>("cancel");
-                cancel.Bind(scope, _ =>
-                {
-                    windows.CloseOverlay(PasswordWindow);
-                    return Task.CompletedTask;
-                });
-                map.Require<GameButton>("confirm").Bind(scope, async token =>
-                {
-                    if (!ArenaCreateRoomBinder.ValidPassword(input.text))
-                    {
-                        errorLabel.text = locale.Resolve("arena.error.invalid_password");
-                        return;
-                    }
-                    cancel.interactable = input.interactable = false;
-                    try { await JoinAsync(room.id, input.text, token, errorLabel); }
-                    finally
-                    {
-                        if (cancel) cancel.interactable = true;
-                        if (input) input.interactable = true;
-                    }
-                });
-            });
+            windows.ShowOverlay(PasswordWindow, scope => passwordEntry.Open(scope,
+                (pin, token) => JoinAsync(room.id, pin, token, passwordConfirm),
+                () => windows.CloseOverlay(PasswordWindow)));
             return Task.CompletedTask;
         }
 
-        private async Task JoinAsync(string id, string password, CancellationToken token, GameText status = null)
+        private async Task JoinAsync(string id, string password, CancellationToken token, GameButton confirmation = null)
         {
             if (busy) return;
             busy = true;
@@ -294,9 +274,17 @@ namespace AstralOath.Client.Arena
             {
                 await ConnectAsync(token);
                 var result = await api.JoinAsync(id, password, token);
+                if (confirmation) GameUiFeedback.Play(confirmation, GameUiFeedback.Sound.Confirm);
                 await enter(result, token);
             }
-            catch (ArenaRequestException error) { (status ? status : view.Status).text = ArenaError.Text(locale, error); }
+            catch (ArenaRequestException error) when (!confirmation)
+            {
+                if (!token.IsCancellationRequested)
+                {
+                    GameUiFeedback.Play(view.List, GameUiFeedback.Sound.Blocked);
+                    toast.Show(ArenaError.Text(locale, error), owner);
+                }
+            }
             finally { if (screen == owner) busy = false; }
         }
 

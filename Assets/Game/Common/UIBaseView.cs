@@ -15,6 +15,8 @@ namespace AstralOath.Client.Common
         // Override to require the keys and reference types that this view consumes.
         public virtual void Validate() { }
 
+        protected void BindTo(GameObject root) => Attach(root);
+
         internal void Attach(GameObject root)
         {
             Root = root;

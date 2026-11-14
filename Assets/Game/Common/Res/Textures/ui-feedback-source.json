@@ -83,20 +83,51 @@
       "event": "event:/ui/btn_back",
       "durationSeconds": 0.86998,
       "sha256": "11d0340e7da1c5e6a7bb16a962123505cc7b49664dfc59f7faa58dbe04a432ff"
+    },
+    {
+      "path": "UiBlocked.wav",
+      "event": "event:/ui/popup/down_neg",
+      "durationSeconds": 0.92146,
+      "sha256": "32e0836ea830ddaf44502b94c2468afcb09823a1c6b0a568b09cbaa35de3fbee"
     }
   ],
   "pulseFrameAtlas": {
     "path": "UiTouchPulse.png",
-    "sha256": "95ea75ff88ba03e269c3570b0ad854cc47ebdc2c1bd75a90ef86b926d5313164",
+    "sha256": "225472ecaddae90f8847c6e10fda816526df06dba598a2b4847dec1817d111b3",
     "sourceScale": 0.15,
     "sourceOpacity": 0.3,
     "sourceSpeed": 1.3,
     "fps": 60,
-    "frameCount": 25,
+    "frameCount": 32,
     "cellPixels": 224,
     "columns": 8,
     "rows": 4,
     "importer": "Tools/Common/UiTouchPulse/BakePulse.py",
-    "channels": "RGB is premultiplied normal plus additive energy; alpha is normal coverage"
+    "channels": "RGB is premultiplied normal plus additive energy; alpha is normal coverage",
+    "ringFrames": 25,
+    "rimWidthScale": 0.7,
+    "particleOpacity": 0.25,
+    "particleEmissionCounts": [
+      4,
+      8
+    ]
+  },
+  "audioRoles": {
+    "ordinaryConfirmAndClose": "UiConfirm.wav",
+    "returnAndCancel": "UiCancel.wav",
+    "blocked": "UiBlocked.wav"
+  },
+  "reference": {
+    "capture": "Screenrecorder-2026-11-14-21-34-41-148.mp4",
+    "visualSeconds": [
+      38.087,
+      38.453
+    ],
+    "blockedAudioSeconds": [
+      40.027,
+      41.094,
+      41.904,
+      42.374
+    ]
   }
 }

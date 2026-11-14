@@ -15,15 +15,17 @@ Common 提供通用组件和资源，业务文案、图标数据、事件和生�
 
 ## 竞技场复用组件
 
-- `ConfirmButton` 和 `CancelButton` 使用竞技场原版绿、棕正常及按下贴图。两者通过 `button` / `label` 绑定文本和行为，分别引用原版确认 `UiAccept.wav` 与取消 `UiCancel.wav`，由 Canvas 级音频源播放。快速关闭面板时音效可继续播放。标准尺寸为 288×91.5，对应原版 1280×720 参考系的 192×61。正常图和按下图使用相同的原版九宫格切边，31.5 号粗体近似原版白色细描边，文字中心略向上。业务界面可按参考图覆盖实例尺寸。
+- `ConfirmButton` 和 `CancelButton` 使用竞技场原版绿、棕正常及按下贴图。两者通过 `button` / `label` 绑定文本和行为，分别引用原版普通确认声 `UiConfirm.wav` 与取消声 `UiCancel.wav`，由 Canvas 级音频源播放。快速关闭面板时音效可继续播放。标准尺寸为 288×91.5，对应原版 1280×720 参考系的 192×61。正常图和按下图使用相同的原版九宫格切边，31.5 号粗体近似原版白色细描边，文字中心略向上。业务界面可按参考图覆盖实例尺寸。
 - `ChoicePopup` 提供占满父容器的 `dismiss`、可定位 `body` 和模板 `choiceTemplate`。单列选项可用普通 C# `ChoicePopupBinder`，多列筛选可向同一个 body 添加控件并绑定 dismiss。父界面负责将 body 约束在自己的安全区。
 - `PlayerAvatar` 通过遮罩、原版圆框和可选的房主标记及徽章显示头像。调用方提供已加载的 Sprite 和资源生命周期。可通过 `PlayerAvatar.FromInstance` 绑定现有实例。预制体自身不拦截点击。
 - 菜单 `Tools/UI/生成竞技场通用预制体` 重建这些 Prefab，右键 `UI` 可直接创建实例。原版贴图、源 CSB、尺寸及校验值见 `Res/Textures/arena-common-source.json`。
 
+- `GameToast.prefab` 在安全区下方显示已有本地化提示。使用 `GameToast.ForInstance` 绑定嵌套预制体，并让 `GameToastBinder.Show(message, owner)` 持有页面或浮层的 `BindingScope`，最新消息替换前一条并在 2 秒后关闭。底板不拦截点击，音效由触发控件决定。蓝色装饰使用原版 `img/_cm_popnoti_bg.png`，SHA-256 为 `c777f0234957bd5107edacb105cc3f6c93796d099802c9ad50c63dd08c39b897`。
+
 ## 通用触点和键盘反馈
 
-根 Canvas 配置 `GameUiFeedback`。每个 UI 根使用固定上限的光环池，短点显示原版蓝色外扩环和粒子，拖动取消，图像不参与射线。`GameButton` 可指定普通、确认、取消、返回音色，普通按钮默认继承根 Canvas，旧按钮保留其已配置的音源。选择及输入控件由相同 Canvas 处理。资源来源见 `Res/Textures/ui-feedback-source.json`。
+根 Canvas 配置 `GameUiFeedback`。普通点击、确认和关闭弹窗用 `UiConfirm.wav`（`event:/ui/btn_normal`），返回和取消用 `UiCancel.wav`（`event:/ui/msgbox/btn_cancel`），受限操作用 `UiBlocked.wav`（`event:/ui/popup/down_neg`）。可见但不可点击的控件按需启用 `GameButton.BlockedFeedback`。需要等输入校验再决定是否播放反馈的按钮可设为 `Sound.Silent`，由 Binder 在得到校验结果后调用 `GameUiFeedback.Play` 播放对应音色。返回图标按返回语义，点击弹窗外的关闭区按关闭语义。各反馈在 Canvas 级音频源播放，关闭窗口时声音正常播完。资源来源见 `Res/Textures/ui-feedback-source.json`。
 
 聊天输入底栏可使用 `OnScreenKeyboardInset` 获取原生键盘边距。组件只移动拥有焦点的输入容器，收键盘后还原。Android 11 及以上读 IME Inset，Android 10 从窗口可见区域估算。
 
-`ui_touch_def` 主体由原版 Spine 2.1 加权顶点、颜色和混合次序采样为 25 帧纹理，放在同一 Canvas 的反馈池播放。`GameButton` 的 Sprite Swap 使用预制的正常／按下纹理，附属箭头等图片可共用同一按压状态。`DesktopDisplayMode` 管理 Windows F11、无边框全屏和可缩放窗口，窗口尺寸在本次运行内恢复。
+`ui_touch_def` 主体采用原版 Spine 2.1 网格和淡出曲线，按录屏收细外圈。外围粒子采用原版贴图、两组发射参数、色带与叠加混合，环淡出后仍短暂可见。32 帧共用一个图集和一组固定池容量，每次点击有不同粒子方向，拖动取消且图元不参与射线。`GameButton` 的 Sprite Swap 使用预制的正常／按下纹理，附属箭头等图片可共用同一按压状态。`DesktopDisplayMode` 管理 Windows F11、无边框全屏和可缩放窗口，窗口尺寸在本次运行内恢复。

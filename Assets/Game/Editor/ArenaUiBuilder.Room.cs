@@ -130,45 +130,67 @@ namespace AstralOath.Editor
             Paint(Area(root, "Scene tint", 0, 0, 1, 1), null, Black(.48f));
             Picture(root, "Native room vignette", Art("vignetting4"), 0, 0, 1, 1);
             var left = Area(root, "Room contents", 0, 0, .604f, 1);
-            Paint(Area(left, "Room header shading", 0, 0, 1, .095f), null, Black(.55f));
-            var leave = Button(Area(left, "Leave room", .024f, .012f, .077f, .065f), Art("_box_r_op80"), Color.white);
+            Paint(Area(left, "Room header shading", 0, 0, 1, .095f), null, new Color32(17, 19, 22, 155));
+            var leave = Button(Area(left, "Leave room", .024f, .012f, .077f, .065f), Art("_box_r_op80"), new Color32(184, 184, 184, 255));
             leave.FeedbackSound = GameUiFeedback.Sound.Back;
             PressSmallBlack(leave);
             Picture((RectTransform)leave.transform, "Leave icon", Art("cm_hud_top_btn_esc"), 0, -.17f, 1, 1.34f, true);
-            var name = Text(left, "Room title", null, 42, .119f, .01f, .78f, .066f);
+            var roomHeading = Area(left, "Room heading", .12f, .007f, .80f, .074f);
+            InlineHeading(roomHeading, 7f);
+            var name = Text(roomHeading, "Room title", null, 40, 0, 0, 1, 1);
+            name.gameObject.AddComponent<LayoutElement>().minWidth = 0;
+            name.fontStyle = FontStyles.Bold;
+            var roomLock = Picture(roomHeading, "Room lock", Art("cm_icon_etclock"), 0, 0, 1, 1, true);
+            var lockSize = roomLock.gameObject.AddComponent<LayoutElement>();
+            lockSize.minWidth = lockSize.preferredWidth = 40;
+            lockSize.preferredHeight = 47;
+            roomLock.gameObject.SetActive(false);
             NativeRule(left, "Top rule", .024f, .079f, .954f, .023f, Gold, "_bar_2");
+            var ruleBoard = Area(left, "Rule board", .388f, .178f, .23f, .105f);
+            Paint(ruleBoard, null, new Color32(25, 26, 28, 107));
             Picture(left, "Battle rule icon", Art("icon_menu_battle"), .446f, .184f, .034f, .035f, true).color = Gold;
             Text(left, "Battle rule caption", "arena.rules", 27, .481f, .183f, .21f, .043f, Gold);
             NativeRule(left, "Rule accent", .39f, .221f, .22f, .021f, Gold, "_bar_2");
             var rule = Text(left, "Battle rule", null, 30, .37f, .236f, .27f, .045f, Color.white, TextAlignmentOptions.Center);
             var host = ArenaAvatar(left, "Host avatar", .148f, .251f, .155f, .197f);
             var guest = ArenaAvatar(left, "Guest avatar", .651f, .251f, .155f, .197f);
-            Picture(host.transform as RectTransform, "Host rank", Art("icon_pvp_sa_league_place"), .943f, .338f, .43f, .43f, true);
-            Picture(guest.transform as RectTransform, "Guest rank", Art("icon_pvp_sa_league_place"), .943f, .338f, .43f, .43f, true);
+            Picture(host.transform as RectTransform, "Host rank", Art("icon_pvp_sa_league_place"), .943f, .326f, .52f, .49f, true);
+            Picture(guest.transform as RectTransform, "Guest rank", Art("icon_pvp_sa_league_place"), .943f, .326f, .52f, .49f, true);
             var vacant = Picture(left, "Vacant guest slot", Art("game_hud_target_c2"), .621f, .431f, .242f, .136f);
             var emptyInfo = Area(left, "Vacant details", .552f, .254f, .38f, .115f);
             Picture(emptyInfo, "Info", Art("cm_icon_etcinfor"), .42f, .02f, .16f, .37f, true).color = Mist * .68f;
             Text(emptyInfo, "Empty label", "arena.no_player", 28, 0, .42f, 1, .47f, Mist, TextAlignmentOptions.Center);
-            var hostName = Text(left, "Host name", null, 32, .052f, .441f, .37f, .065f, Green, TextAlignmentOptions.Center);
-            var guestName = Text(left, "Guest name", null, 32, .553f, .441f, .38f, .065f, Mist, TextAlignmentOptions.Center);
+            var hostName = Text(left, "Host name", null, 35, .076f, .443f, .37f, .048f, Green, TextAlignmentOptions.Center);
+            var guestName = Text(left, "Guest name", null, 35, .548f, .443f, .38f, .048f, Color.white, TextAlignmentOptions.Center);
             Picture(left, "Versus", Art("_battle_pvp_icon_vs"), .424f, .311f, .17f, .192f, true);
             var start = CommonButton(left, "ConfirmButton", "arena.start", .405f, .518f, .19f, .078f);
-            start.interactable = false;
+            start.FeedbackSound = GameUiFeedback.Sound.Silent;
             start.gameObject.AddComponent<CanvasGroup>().alpha = .55f;
+            Paint(Area(left, "Member list shade", .025f, .630f, .952f, .337f), null, new Color32(26, 26, 26, 53));
             NativeRule(left, "Members divider", .024f, .628f, .954f, .026f, Gold);
-            var members = Scroll(left, "Member list", .024f, .655f, .946f, .310f);
+            var members = Scroll(left, "Member list", .024f, .655f, .946f, .310f, horizontal: true);
+            var layout = members.content.GetComponent<HorizontalLayoutGroup>();
+            Object.DestroyImmediate(layout);
+            var memberGrid = members.content.gameObject.AddComponent<GridLayoutGroup>();
+            memberGrid.cellSize = new Vector2(420, 100);
+            memberGrid.spacing = new Vector2(10, 8);
+            memberGrid.startAxis = GridLayoutGroup.Axis.Vertical;
+            memberGrid.constraint = GridLayoutGroup.Constraint.FixedRowCount;
+            memberGrid.constraintCount = 3;
             var memberRow = Area(left, "Member template", 0, 0, 1, 0);
-            memberRow.gameObject.AddComponent<LayoutElement>().preferredHeight = 82;
-            var memberAvatar = ArenaAvatar(memberRow, "Member avatar", .014f, .02f, .088f, .94f);
-            var memberName = Text(memberRow, "Member name", null, 26, .115f, .05f, .82f, .88f, Green);
+            var memberAvatar = ArenaAvatar(memberRow, "Member avatar", .002f, .024f, .245f, .95f);
+            Picture((RectTransform)memberAvatar.transform, "Member rank", Art("icon_pvp_sa_league_place"), .67f, .58f, .36f, .40f, true);
+            var memberName = Text(memberRow, "Member name", null, 27, .263f, .12f, .727f, .72f, Color.white);
             Bind(memberRow, ("avatar", memberAvatar), ("name", memberName));
             memberRow.gameObject.SetActive(false);
 
             var chat = Area(root, "Arena chat", .605f, 0, .395f, 1);
-            Paint(chat, null, Black(.94f));
+            Paint(chat, null, new Color32(19, 19, 20, 237));
+            Paint(Area(chat, "Chat heading board", 0, 0, 1, .147f), null, new Color32(13, 14, 17, 111));
+            Paint(Area(chat, "Participant board", .021f, .149f, .958f, .079f), null, new Color32(34, 33, 35, 93));
             Paint(Area(root, "Chat separator", .602f, 0, .0022f, 1), null, Gold * .8f);
-            Text(chat, "Chat title", "arena.title", 39, .042f, .012f, .91f, .066f);
-            var channel = Area(chat, "Arena channel", .585f, .083f, .35f, .064f);
+            Text(chat, "Chat title", "arena.title", 40, .044f, .008f, .91f, .066f).fontStyle = FontStyles.Bold;
+            var channel = Area(chat, "Arena channel", .586f, .079f, .272f, .069f);
             Paint(channel, Art("_tap_select_p"), Color.white, sliced: true);
             Picture(channel, "Arena symbol", Art("icon_menu_arena"), .12f, .18f, .19f, .64f, true);
             Text(channel, "Channel name", "arena.channel", 30, .29f, 0, .62f, 1, Color.white, TextAlignmentOptions.Center);
@@ -185,26 +207,36 @@ namespace AstralOath.Editor
             history.content.GetComponent<VerticalLayoutGroup>().spacing = 8;
             var chatRow = Area(chat, "Chat message template", 0, 0, 1, 0);
             var messageLayout = chatRow.gameObject.AddComponent<LayoutElement>();
-            messageLayout.minHeight = 91;
-            messageLayout.preferredHeight = 91;
-            var senderAvatar = ArenaAvatar(chatRow, "Sender avatar", 0, 0, .111f, 1);
-            var sender = Text(chatRow, "Sender", null, 26, .131f, 0, .60f, 0, Green);
-            sender.rectTransform.offsetMin = new Vector2(0, -40);
-            var age = Text(chatRow, "Age", null, 21, .735f, 0, .23f, 0, Gold * .80f);
-            age.rectTransform.offsetMin = new Vector2(0, -40);
-            var body = Text(chatRow, "Content", null, 27, .131f, 0, .846f, 1, Mist,
-                TextAlignmentOptions.TopLeft, wrap: true);
+            messageLayout.minHeight = 107;
+            messageLayout.preferredHeight = 107;
+            var senderAvatar = ArenaAvatar(chatRow, "Sender avatar", 0, 0, .132f, 0);
+            ((RectTransform)senderAvatar.transform).offsetMin = new Vector2(0, -100);
+            var heading = Area(chatRow, "Chat heading", .146f, 0, .825f, 0);
+            heading.offsetMin = new Vector2(0, -46);
+            heading.offsetMax = new Vector2(0, -4);
+            InlineHeading(heading, 8f);
+            var sender = Text(heading, "Sender", null, 26, 0, 0, 1, 1, Green);
+            sender.gameObject.AddComponent<LayoutElement>().minWidth = 0;
+            var age = Text(heading, "Age", null, 23, 0, 0, 1, 1, new Color32(148, 122, 89, 255));
+            age.gameObject.AddComponent<LayoutElement>().flexibleWidth = 0;
+            var body = Text(chatRow, "Content", null, 27, .146f, 0, .832f, 1,
+                new Color32(204, 202, 205, 255), TextAlignmentOptions.TopLeft, wrap: true);
             body.rectTransform.offsetMin = new Vector2(0, 6);
-            body.rectTransform.offsetMax = new Vector2(0, -42);
+            body.rectTransform.offsetMax = new Vector2(0, -51);
             body.overflowMode = TextOverflowModes.Overflow;
-            var sticker = Picture(chatRow, "Sticker", null, .13f, 0, 0, 0, true);
+            var sticker = Picture(chatRow, "Sticker", null, .146f, 0, 0, 0, true);
             sticker.rectTransform.pivot = new Vector2(0, 1);
-            sticker.rectTransform.anchoredPosition = new Vector2(0, -35);
+            sticker.rectTransform.anchoredPosition = new Vector2(0, -48);
             sticker.rectTransform.sizeDelta = new Vector2(142, 114);
             Bind(chatRow, ("avatar", senderAvatar), ("sender", sender), ("age", age), ("body", body), ("sticker", sticker));
             chatRow.gameObject.SetActive(false);
             var composer = Area(chat, "Composer", 0, .853f, 1, .147f);
-            var status = Text(composer, "Chat status", null, 22, .05f, 0, .9f, .184f, Mist);
+            Paint(Area(composer, "Composer shade", .016f, .19f, .968f, .79f), null, new Color32(35, 35, 35, 91));
+            var notice = Area(composer, "Chat status board", .035f, -.144f, .93f, .264f);
+            Paint(notice, Art("_btn_small_white"), new Color32(105, 78, 48, 151), sliced: true);
+            var status = Text(notice, "Chat status", null, 22, .03f, 0, .94f, 1,
+                new Color32(186, 150, 110, 255), TextAlignmentOptions.Center);
+            notice.gameObject.SetActive(false);
             NativeRule(composer, "Message divider", .03f, .134f, .94f, .143f, Gold, "_bar_2");
             var emojiArea = Area(composer, "Emoji", .032f, .325f, .089f, .538f);
             var emoji = Button(emojiArea, Art("_box_r_op80"), Color.white);
@@ -214,13 +246,25 @@ namespace AstralOath.Editor
             var send = CommonButton(composer, "ConfirmButton", "arena.send", .707f, .325f, .26f, .538f);
             FollowKeyboard(composer, message);
             var emojiPicker = BuildEmojiPicker(root);
+            var toast = CreateDirectoryToast(root);
             Bind(root, ("leave", leave), ("send", send), ("emoji", emoji), ("emojiPicker", emojiPicker), ("name", name), ("rule", rule), ("count", count),
-                ("hostName", hostName), ("guestName", guestName), ("status", status), ("message", message),
+                ("hostName", hostName), ("guestName", guestName), ("status", status), ("statusBoard", notice.gameObject), ("message", message),
+                ("roomLock", roomLock), ("start", start), ("toast", toast),
                 ("host", host), ("guest", guest), ("vacant", vacant), ("emptyInfo", emptyInfo.gameObject), ("members", members), ("memberRow", memberRow.gameObject),
                 ("messages", history), ("chatRow", chatRow.gameObject));
             return root.gameObject;
         }
 
+        private static void InlineHeading(RectTransform area, float spacing)
+        {
+            var layout = area.gameObject.AddComponent<HorizontalLayoutGroup>();
+            layout.spacing = spacing;
+            layout.childAlignment = TextAnchor.MiddleLeft;
+            layout.childControlWidth = true;
+            layout.childControlHeight = true;
+            layout.childForceExpandWidth = false;
+            layout.childForceExpandHeight = true;
+        }
         [System.Serializable] private sealed class StickerRow { public string id; }
         [System.Serializable] private sealed class StickerCatalog { public StickerRow[] stickers; }
 
@@ -228,7 +272,7 @@ namespace AstralOath.Editor
         {
             var picker = Area(root, "Emoji picker", 0, 0, 1, 1);
             var dismiss = Button(Area(picker, "Dismiss", 0, 0, 1, 1), null, Color.clear);
-            dismiss.FeedbackSound = GameUiFeedback.Sound.Silent;
+            dismiss.FeedbackSound = GameUiFeedback.Sound.Confirm;
             var panel = Area(picker, "Panel", .338f, .469f, .258f, .513f);
             Paint(panel, Art("emoji_picker_frame"), Color.white, true, true);
             var choices = Scroll(panel, "Emojis", .025f, .037f, .919f, .951f);

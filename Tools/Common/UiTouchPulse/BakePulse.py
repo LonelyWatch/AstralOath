@@ -8,6 +8,7 @@ import argparse
 import io
 import json
 from pathlib import Path
+import plistlib
 import subprocess
 import sys
 
@@ -22,6 +23,9 @@ CELL = 224
 COLUMNS, ROWS = 8, 4
 SUPERSAMPLE = 2
 OPACITY = .30
+FPS = 60
+FRAMES = 32
+RING_FRAMES = 25
 
 
 def draw(layer, atlas):
@@ -62,6 +66,69 @@ def draw(layer, atlas):
     return sampled
 
 
+def thin_ring(composite, frame):
+    # Preserve the initial disc. As it opens, keep the rim radius and tighten its profile.
+    width = 1 - .30 * np.clip((frame - 8) / 8, 0, 1)
+    if width == 1:
+        return composite
+    yy, xx = np.indices((CELL, CELL), dtype=np.float32)
+    center = (CELL - 1) / 2
+    x, y = xx - center, yy - center
+    radius = np.maximum(np.hypot(x, y), .001)
+    peak = np.argmax(composite[CELL // 2, CELL // 2:, 2]) + .5
+    mapped = np.maximum(0, peak + (radius - peak) / width)
+    sx = np.clip(center + x * mapped / radius, 0, CELL - 1.001)
+    sy = np.clip(center + y * mapped / radius, 0, CELL - 1.001)
+    left, top = sx.astype(int), sy.astype(int)
+    dx, dy = (sx - left)[..., None], (sy - top)[..., None]
+    near = composite[top, left] * (1 - dx) + composite[top, left + 1] * dx
+    far = composite[top + 1, left] * (1 - dx) + composite[top + 1, left + 1] * dx
+    return near * (1 - dy) + far * dy
+
+
+def sample_sparks(source):
+    primitives = plistlib.loads((source / "effect/ui_touch_def.cfx").read_bytes())["primitive"]
+    effect = next(item for item in primitives if item["format"] == "particle")
+    emitters = plistlib.loads((source / "effect/ui_touch_def_pati1.particle").read_bytes())["emitters"]
+    texture, _ = decode_sct((source / emitters[0]["textureFileName"]).read_bytes())
+    rng = np.random.default_rng(324)
+    sparks = []
+    for emitter in sorted(emitters, key=lambda emitter: emitter["particleLifespan"]):
+        gradient = np.array([[float(value) for value in stop.split(",")]
+                             for stop in emitter["colorBlends"][0].split(";")])
+        for index in range(int(emitter["emissionRate"])):
+            start = rng.uniform(8, 25)
+            end = min(88, float(effect["scale"]) * rng.uniform(.7, 1) * emitter["minRadius"])
+            lifetime = emitter["particleLifespan"]
+            life = lifetime + rng.uniform(-.12, .61) * emitter["particleLifespanVariance"]
+            size = rng.uniform(7, 16) * emitter["particleLifespan"] / .4
+            sparks.append((index * .004, start, end, life, size, rng.uniform(0, 2 * np.pi), gradient))
+    return sparks, texture.convert("RGBA"), float(effect["opacity"])
+
+
+def add_sparks(composite, frame, sparks, texture, opacity):
+    # Frame samples vary in angle, lifetime, size and velocity. Keep the brightest early dots
+    # on the disc, then carry them beyond the rim using the source additive blend and color ramp.
+    elapsed = frame / FPS
+    for delay, start, end, life, size, angle, gradient in sparks:
+        time = (elapsed - delay) / life
+        if not 0 <= time < 1:
+            continue
+        radius = start + (end - start) * time ** 1.25
+        side = max(5, round(size * (1 - .65 * time)))
+        middle = (CELL - 1) / 2
+        left = round(middle + np.cos(angle) * radius - side / 2)
+        top = round(middle + np.sin(angle) * radius - side / 2)
+        spot = np.array(texture.resize((side, side), Image.Resampling.LANCZOS), np.float32) / 255
+        tint = np.array([np.interp(time, gradient[:, 0], gradient[:, col]) for col in range(2, 5)])
+        alpha = np.interp(time, gradient[:, 0], gradient[:, 1])
+        # Keep sparse particles visible after sampling into the linear UI target.
+        emission = (spot[:, :, 3:4] * alpha * opacity) ** .35
+        if elapsed > RING_FRAMES / FPS:
+            emission *= 1.45
+        composite[top:top + side, left:left + side, :3] += spot[:, :, :3] * tint * emission
+
+
 def bake(scratch, source):
     model = source / "effect/ui_touch_def.scsp"
     atlas = source / "effect/ui_touch_def.atlas"
@@ -75,11 +142,13 @@ def bake(scratch, source):
     command = [str(dotnet) if dotnet.is_file() else "dotnet", "run", "--project", str(project)]
     subprocess.run([*command, "--", str(skeleton), str(atlas), str(samples)], check=True)
     layers = json.loads(samples.read_text(encoding="utf-8"))
-    if len(layers) != 25:
+    if len(layers) != RING_FRAMES:
         raise ValueError(f"Unexpected native frame count: {len(layers)}")
     texture = np.asarray(page, np.float32) / 255
     sheet = Image.new("RGBA", (CELL * COLUMNS, CELL * ROWS))
-    for i, frame in enumerate(layers):
+    sparks, particle_texture, particle_opacity = sample_sparks(source)
+    for i in range(FRAMES):
+        frame = layers[i] if i < RING_FRAMES else ()
         side = CELL * SUPERSAMPLE
         composite = np.zeros((side, side, 4), np.float32)
         for layer in frame:
@@ -89,6 +158,9 @@ def bake(scratch, source):
             else:
                 composite = sampled + composite * (1 - sampled[:, :, 3:4])
         composite = composite.reshape(CELL, SUPERSAMPLE, CELL, SUPERSAMPLE, 4).mean(axis=(1, 3))
+        if i < RING_FRAMES:
+            composite = thin_ring(composite, i)
+        add_sparks(composite, i, sparks, particle_texture, particle_opacity)
         pixels = np.rint(np.clip(composite, 0, 1) * 255).astype(np.uint8)
         if pixels[[0, -1], :, :].max() or pixels[:, [0, -1], :].max():
             raise ValueError(f"Frame {i} clips its transparent cells")
@@ -112,7 +184,7 @@ def main():
             raise SystemExit("The native pointer atlas differs from a clean bake.")
     else:
         output.write_bytes(result)
-    print(f"Verified 25 authored frames at 60 fps ({len(result)} bytes).")
+    print(f"Verified {FRAMES} ring and particle frames at {FPS} fps ({len(result)} bytes).")
 
 
 if __name__ == "__main__":

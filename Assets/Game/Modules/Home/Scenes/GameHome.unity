@@ -847,9 +847,10 @@ MonoBehaviour:
   glow: {fileID: 21300000, guid: 3d3230e528445affbb117f7312e618c2, type: 3}
   spark: {fileID: 21300000, guid: bd9116a294895db2ada47c7e74ac565b, type: 3}
   normal: {fileID: 8300000, guid: ffe7d70423275e6bbbf837c5da6e494e, type: 3}
-  confirm: {fileID: 8300000, guid: 5130cc75e93f53c39857d62567427d3f, type: 3}
+  confirm: {fileID: 8300000, guid: ffe7d70423275e6bbbf837c5da6e494e, type: 3}
   cancel: {fileID: 8300000, guid: 03fb300bf820568482f750de6cf43f22, type: 3}
-  back: {fileID: 8300000, guid: e51964293381550d9ca74cf10ad045c3, type: 3}
+  back: {fileID: 8300000, guid: 03fb300bf820568482f750de6cf43f22, type: 3}
+  blocked: {fileID: 8300000, guid: 865153796f2f5ddaa7ff411f856af62f, type: 3}
   pulseFrames: {fileID: 2800000, guid: f699e33b543958afa2a915b075f406d4, type: 3}
   pulseBlend: {fileID: 2100000, guid: 488717896086533ba0aac6bcb6013c60, type: 2}
 --- !u!114 &1384843500

@@ -51,6 +51,7 @@ namespace AstralOath.Editor
             labels = JsonUtility.FromJson<LabelFile>(File.ReadAllText(Assets[4].Path)).rows
                 .ToDictionary(row => row.key, row => row.text);
             Save(BuildHome(), Assets[0].Path);
+            BuildPasswordEntryPrefabs();
             Save(BuildDirectory(), Assets[1].Path);
             Save(BuildCreate(), Assets[2].Path);
             Save(BuildRoom(), Assets[3].Path);
@@ -72,6 +73,8 @@ namespace AstralOath.Editor
             UIViewRegistry.ValidatePrefab<ArenaDirectory>(Load<GameObject>(Assets[1].Path));
             UIViewRegistry.ValidatePrefab<ArenaCreateRoom>(Load<GameObject>(Assets[2].Path));
             UIViewRegistry.ValidatePrefab<ArenaRoom>(Load<GameObject>(Assets[3].Path));
+            UIViewRegistry.ValidatePrefab<ArenaPasswordEntry>(Load<GameObject>(PasswordEntryPath));
+            UIViewRegistry.ValidatePrefab<GameToast>(Load<GameObject>(ToastPath));
             _ = Load<SceneAsset>(StartupScene);
             var addresses = AssetBundleCollectorSettingData.Setting.BeginCollect("Foundation", true, false)
                 .CollectAssets.ToDictionary(asset => asset.Address, asset => asset.AssetInfo.AssetPath);
@@ -111,10 +114,10 @@ namespace AstralOath.Editor
             canvas.AddComponent<DesktopDisplayMode>();
             var feedback = canvas.AddComponent<GameUiFeedback>();
             feedback.Configure(Load<Sprite>(Common + "Textures/UiTouchRing.png"), Load<Sprite>(Common + "Textures/UiTouchGlow.png"),
-                Load<AudioClip>(Common + "Sounds/UiConfirm.wav"), Load<AudioClip>(Common + "Sounds/UiAccept.wav"),
-                Load<AudioClip>(Common + "Sounds/UiCancel.wav"), Load<AudioClip>(Common + "Sounds/UiBack.wav"),
+                Load<AudioClip>(Common + "Sounds/UiConfirm.wav"), Load<AudioClip>(Common + "Sounds/UiConfirm.wav"),
+                Load<AudioClip>(Common + "Sounds/UiCancel.wav"), Load<AudioClip>(Common + "Sounds/UiCancel.wav"),
                 Load<Sprite>(Common + "Textures/UiTouchSpark.png"), Load<Texture2D>(Common + "Textures/UiTouchPulse.png"),
-                Load<Material>(Common + "Materials/UiTouchPulse.mat"));
+                Load<Material>(Common + "Materials/UiTouchPulse.mat"), Load<AudioClip>(Common + "Sounds/UiBlocked.wav"));
             EditorUtility.SetDirty(feedback);
             canvas.GetComponent<CanvasScaler>().screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
             canvas.GetComponent<CanvasScaler>().matchWidthOrHeight = 1f;

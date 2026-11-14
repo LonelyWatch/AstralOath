@@ -9,17 +9,17 @@ namespace AstralOath.Client.Common
     [DisallowMultipleComponent, RequireComponent(typeof(Canvas))]
     public sealed class GameUiFeedback : MonoBehaviour
     {
-        public enum Sound { Normal, Confirm, Cancel, Back, Silent }
+        public enum Sound { Normal, Confirm, Cancel, Back, Silent, Blocked }
 
         private const int PoolSize = 10;
         private const float SourceSpeed = 1.3f;
         private const float SourceLifetime = .5333f;
         private const float SourceOpacity = .30f;
-        private const int PulseFrameRate = 60, PulseFrameCount = 25, PulseColumns = 8, PulseRows = 4;
+        private const int PulseFrameRate = 60, PulseFrameCount = 32, PulseColumns = 8, PulseRows = 4;
         private const float PulseFrameSize = 135;
         private const string OverlayName = "Click feedback";
         [SerializeField] private Sprite ring, glow, spark;
-        [SerializeField] private AudioClip normal, confirm, cancel, back;
+        [SerializeField] private AudioClip normal, confirm, cancel, back, blocked;
         [SerializeField] private Texture2D pulseFrames;
         [SerializeField] private Material pulseBlend;
         private readonly Pulse[] pulses = new Pulse[PoolSize];
@@ -33,7 +33,7 @@ namespace AstralOath.Client.Common
         private float sparkAngle;
 
         public void Configure(Sprite ring, Sprite glow, AudioClip normal, AudioClip confirm, AudioClip cancel, AudioClip back = null,
-            Sprite spark = null, Texture2D pulseFrames = null, Material pulseBlend = null)
+            Sprite spark = null, Texture2D pulseFrames = null, Material pulseBlend = null, AudioClip blocked = null)
         {
             this.ring = ring;
             this.glow = glow;
@@ -44,6 +44,7 @@ namespace AstralOath.Client.Common
             this.spark = spark;
             this.pulseFrames = pulseFrames;
             this.pulseBlend = pulseBlend;
+            this.blocked = blocked;
         }
 
         public static void Play(Component source, Sound sound = Sound.Normal) => Play(source, sound, null);
@@ -55,7 +56,7 @@ namespace AstralOath.Client.Common
             var root = nearest ? nearest.rootCanvas : null;
             var feedback = root ? root.GetComponent<GameUiFeedback>() : null;
             var clip = sound == Sound.Normal && custom && custom.clip ? custom.clip : feedback?.Resolve(sound);
-            if (!clip && custom) clip = custom.clip;
+            if (!clip && custom && sound != Sound.Blocked) clip = custom.clip;
             if (!clip) return;
             if (!root)
             {
@@ -68,8 +69,13 @@ namespace AstralOath.Client.Common
 
         private AudioClip Resolve(Sound sound)
         {
-            var selected = sound switch { Sound.Confirm => confirm, Sound.Cancel => cancel, Sound.Back => back, _ => normal };
-            return selected ? selected : normal;
+            return sound switch
+            {
+                Sound.Blocked => blocked,
+                Sound.Cancel or Sound.Back => cancel ? cancel : back,
+                Sound.Confirm => normal ? normal : confirm,
+                _ => normal
+            };
         }
 
         private void Awake() => canvas = GetComponent<Canvas>();
@@ -162,20 +168,26 @@ namespace AstralOath.Client.Common
             pulse.Root.gameObject.SetActive(true);
             pulse.Start = Time.unscaledTime;
             pulse.Angle = sparkAngle;
+            if (pulse.Authored) pulse.Authored.rectTransform.localRotation = Quaternion.Euler(0, 0, pulse.Angle);
             Render(pulse, pulse.Start);
         }
 
         private static void Render(Pulse pulse, float now)
         {
-            float age = (now - pulse.Start) * SourceSpeed;
-            if (age >= SourceLifetime) { pulse.Root.gameObject.SetActive(false); return; }
+            float elapsed = now - pulse.Start;
+            float age = elapsed * SourceSpeed;
+            if (pulse.Authored ? elapsed >= PulseFrameCount / (float)PulseFrameRate : age >= SourceLifetime)
+            {
+                pulse.Root.gameObject.SetActive(false);
+                return;
+            }
             float expansion = Mathf.InverseLerp(0, .4333f, age);
             float eased = 1f - Mathf.Pow(1f - expansion, 2.3f);
             float ringFade = SourceOpacity * (1f - Mathf.InverseLerp(.3666f, SourceLifetime, age));
             float glowFade = SourceOpacity * (1f - Mathf.InverseLerp(.10f, SourceLifetime, age));
             if (pulse.Authored)
             {
-                int frame = Mathf.Min((int)((now - pulse.Start) * PulseFrameRate), PulseFrameCount - 1);
+                int frame = Mathf.Min((int)(elapsed * PulseFrameRate), PulseFrameCount - 1);
                 if (frame != pulse.Frame)
                 {
                     pulse.Frame = frame;
@@ -262,7 +274,7 @@ namespace AstralOath.Client.Common
                     Glow = MakeImage(Root, "Glow", glow);
                     Ring = MakeImage(Root, "Ring", ring);
                 }
-                Sparks = new Image[spark ? 5 : 0];
+                Sparks = new Image[spark && !Authored ? 5 : 0];
                 for (int i = 0; i < Sparks.Length; ++i) Sparks[i] = MakeImage(Root, "Spark", spark);
             }
 

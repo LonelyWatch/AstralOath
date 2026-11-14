@@ -3,6 +3,12 @@
     { "key": "home.window.fullscreen", "text": "全屏（F11）" },
     { "key": "home.window.windowed", "text": "窗口（F11）" },
     { "key": "arena.chat.sticker_missing", "text": "[表情]" },
+    { "key": "arena.chat.age_now", "text": "刚才" },
+    { "key": "arena.chat.age_minutes", "text": "{0}分钟前" },
+    { "key": "arena.chat.age_hours", "text": "{0}小时前" },
+    { "key": "arena.chat.age_days", "text": "{0}天前" },
+    { "key": "arena.player_self", "text": "{0}[me]" },
+    { "key": "arena.start_unavailable", "text": "当前无法开始战斗。" },
     { "key": "arena.no_global_bans", "text": "无全服务器禁用英雄及神器。" },
     { "key": "arena.zero", "text": "0" },
     {
@@ -104,6 +110,14 @@
     {
       "key": "arena.set_password",
       "text": "设定密码"
+    },
+    {
+      "key": "arena.password_title",
+      "text": "密码"
+    },
+    {
+      "key": "arena.enter_password_hint",
+      "text": "请输入密码。"
     },
     {
       "key": "arena.password_hint",
