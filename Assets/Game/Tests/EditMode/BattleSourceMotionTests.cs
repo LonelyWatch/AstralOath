@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using UnityEditor;
@@ -10,7 +12,7 @@ namespace AstralOath.Tests
     public sealed class BattleSourceMotionTests
     {
         private const string Module = "AstralOath.Client.BattleScene";
-        private const string Ras = "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1001/";
+        private const string Characters = "Assets/Game/Modules/CharacterPresentation/Res/Characters/";
         private GameObject root;
 
         [TearDown]
@@ -75,6 +77,83 @@ namespace AstralOath.Tests
                 "The following style-3 MOVE returns the visual to its slot.");
         }
 
+        [TestCase(1f)]
+        [TestCase(-1f)]
+        public void KayronFirstSkillCrossesTheActualTargetAtTheAuthoredSlashMarkers(float facing)
+        {
+            using var playback = Begin(1, out var caster, out var shadow, targetX: 3f * facing,
+                facesLeft: facing < 0f, hero: "c1023", model: "kylon");
+            Tick(playback, .433f);
+            Assert.That(caster.position.x, Is.Zero.Within(.001f));
+            Tick(playback, .002f);
+            Assert.That(caster.position.x * facing, Is.EqualTo(.5f).Within(.03f),
+                "At 434 ms style 3 must place the caster 250 source pixels before the primary target.");
+            Tick(playback, .10f);
+            Assert.That(caster.position.x * facing, Is.EqualTo(5.5f).Within(.001f));
+            Tick(playback, .47f);
+            Assert.That(caster.position.x * facing, Is.EqualTo(.5f).Within(.001f));
+            Assert.That(shadow.position.x, Is.EqualTo(caster.position.x).Within(.001f));
+            Tick(playback, .37f);
+            Assert.That(caster.position.x * facing, Is.EqualTo(5.5f).Within(.001f));
+            Tick(playback, .86f);
+            Assert.That(caster.position.x, Is.Zero.Within(.001f));
+        }
+
+        [Test]
+        public void KayronThirdSkillKeepsCastingCameraInFrameWhileSourceParksTheActor()
+        {
+            var cameraObject = new GameObject("Parking camera", typeof(Camera));
+            var camera = cameraObject.GetComponent<Camera>();
+            camera.transform.position = Vector3.back * 10f;
+            camera.orthographic = true;
+            try
+            {
+                using var playback = Begin(1, out var caster, out _, hero: "c1023", model: "kylon", camera: camera);
+                var graph = AssetDatabase.LoadAssetAtPath<TextAsset>(Characters + "c1023/Configs/stagept/c_kylon_skill_03.graph.json");
+                var nodes = JObject.Parse(graph.text)["source"]["entities"].OfType<JObject>().ToDictionary(node => (int)node["guid"]);
+                const BindingFlags Private = BindingFlags.Instance | BindingFlags.NonPublic;
+                var stage = playback.GetType().GetField("cinematic", Private).GetValue(playback);
+                var stageType = stage.GetType();
+                var playMove = playback.GetType().GetMethod("PlayMove", Private);
+                stageType.GetMethod("Play").Invoke(stage, new object[] { nodes[42] });
+                void AdvanceCamera(float delta) => stageType.GetMethod("Tick").Invoke(stage, new object[] { delta });
+                void Move(int id) => playMove.Invoke(playback, new object[] { nodes[id], null, null, 0f });
+
+                AdvanceCamera(1.76f);
+                float beforeParking = camera.transform.position.x;
+                Move(43);
+                AdvanceCamera(.02f);
+                Assert.That(caster.position.x, Is.EqualTo(-80f).Within(.001f));
+                Assert.That(camera.transform.position.x, Is.EqualTo(beforeParking).Within(.1f),
+                    "The still-running source camera should not move to the parked caster.");
+
+                Move(44);
+                caster.position += Vector3.right;
+                AdvanceCamera(.50f);
+                Assert.That(camera.transform.position.x, Is.EqualTo(3f).Within(.01f),
+                    "A source return restores ordinary tracking of the visible caster.");
+            }
+            finally { UnityEngine.Object.DestroyImmediate(cameraObject); }
+        }
+
+        [Test]
+        public void CharlesThirdSkillStartsOffscreenAndUsesTheSourceCurveTowardTheTargetGroup()
+        {
+            using var playback = Begin(3, out var caster, out var shadow, hero: "c1027", model: "charles", secondTargetX: 5f);
+            // This motion-only fixture skips nondeterministic graphics dependencies. The
+            // graph starts the slide after its initial 300 ms LAYOUT when no loaded CFX or
+            // Cut-in interposes a separate visual duration.
+            Tick(playback, .3001f);
+            Assert.That(caster.position.x, Is.EqualTo(-11f).Within(.02f),
+                "The authored style-3 displacement starts 1500 source pixels before the target group.");
+            Tick(playback, .1334f);
+            Assert.That(caster.position.x, Is.EqualTo(-4.296f).Within(.02f),
+                "The 267 ms slide follows its own cubic Bézier, including the authored midpoint.");
+            Assert.That(shadow.position.x, Is.EqualTo(caster.position.x).Within(.001f));
+            Tick(playback, .14f);
+            Assert.That(caster.position.x, Is.EqualTo(4f).Within(.001f));
+        }
+
         [Test]
         public void UnsupportedSourceConnectionIsReportedOnceWithItsSkillAndEndpoints()
         {
@@ -105,22 +184,24 @@ namespace AstralOath.Tests
         }
 
         private IDisposable Begin(int skill, out Transform caster, out Transform shadow, Action<JObject> edit = null,
-            float targetX = 3f, bool facesLeft = false)
+            float targetX = 3f, bool facesLeft = false, string hero = "c1001", string model = "ras",
+            float? secondTargetX = null, Camera camera = null)
         {
             root = new GameObject("Source motion");
             root.SetActive(false);
             var actor = Type.GetType(Module + ".BattlePreviewActor, " + Module, true);
             var runtime = Type.GetType(Module + ".BattleSkillPresentation, " + Module, true);
             var asset = Type.GetType(Module + ".BattleSkillPresentationAsset, " + Module, true);
-            var sourceId = "c_ras_skill_0" + skill;
-            var graph = AssetDatabase.LoadAssetAtPath<TextAsset>(Ras + "Configs/stagept/" + sourceId + ".graph.json");
+            string sourceId = "c_" + model + "_skill_0" + skill;
+            string character = Characters + hero + "/";
+            var graph = AssetDatabase.LoadAssetAtPath<TextAsset>(character + "Configs/stagept/" + sourceId + ".graph.json");
             if (edit != null)
             {
                 var document = JObject.Parse(graph.text);
                 edit(document);
                 graph = new TextAsset(document.ToString());
             }
-            var skeleton = AssetDatabase.LoadAssetAtPath<TextAsset>(Ras + "Animations/model/ras.spine.json");
+            var skeleton = AssetDatabase.LoadAssetAtPath<TextAsset>(character + "Animations/model/" + model + ".spine.json");
             var source = CreateActor(Vector3.zero, out shadow);
             var target = CreateActor(Vector3.right * targetX, out _);
             using (var serialized = new SerializedObject(source))
@@ -130,12 +211,13 @@ namespace AstralOath.Tests
                 serialized.ApplyModifiedPropertiesWithoutUndo();
             }
             caster = source.transform;
-            var targets = Array.CreateInstance(actor, 1);
+            var targets = Array.CreateInstance(actor, secondTargetX.HasValue ? 2 : 1);
             targets.SetValue(target, 0);
+            if (secondTargetX.HasValue) targets.SetValue(CreateActor(Vector3.right * secondTargetX.Value, out _), 1);
             try
             {
                 var presenter = (IDisposable)Activator.CreateInstance(runtime,
-                    new object[] { root.transform, new[] { graph }, Array.CreateInstance(asset, 0), null, null, null });
+                    new object[] { root.transform, new[] { graph }, Array.CreateInstance(asset, 0), camera, null, null });
                 runtime.GetMethod("Begin").Invoke(presenter, new object[] { sourceId, source, target, targets });
                 return presenter;
             }

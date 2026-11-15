@@ -187,6 +187,14 @@
       "height": 12
     },
     {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/z_tile_bar.png",
+      "source": "img/z_tile_bar.png",
+      "sourceSha256": "71bc4f474863e96eb4d15ecc0d4079e8af5931ff4eebca620a8d85112e20517b",
+      "outputSha256": "71bc4f474863e96eb4d15ecc0d4079e8af5931ff4eebca620a8d85112e20517b",
+      "width": 64,
+      "height": 4
+    },
+    {
       "asset": "Assets/Game/Modules/Arena/Res/Textures/_dim.png",
       "source": "img/_dim.png",
       "sourceSha256": "d0120d3ec050aebffa9882fe147ff45bf7ff6d1a13cc3c7bbcfee3ec712d28cf",
@@ -851,6 +859,32 @@
       "conversion": {
         "method": "original-asset",
         "compression": "none"
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/room_protection_frame.png",
+      "sources": [
+        {
+          "source": "img/_box_black_white.png",
+          "sha256": "31af3c642dc2d6a665bc016e31ea33cf2d5f3006b63cf8b388c78818bb0e81b1"
+        }
+      ],
+      "outputSha256": "9dc77c8757f55626c64fde29ae510866aee13dbe9acafc6a01bd4f5fdd2e247b",
+      "conversion": {
+        "method": "original-asset-crop",
+        "cropLtrb": [
+          31,
+          31,
+          85,
+          85
+        ],
+        "scale9InsetsLtrb": [
+          14,
+          14,
+          14,
+          14
+        ],
+        "sourceLayout": "wnd/pvplive_safe_guard_setting.csb"
       }
     },
     {
@@ -3121,6 +3155,14 @@
     {
       "source": "wnd/chat_emoji_tip_item.csb",
       "sha256": "f7921a76e6e790bb0c16a7687ff0d3f6d9320669634c11ce76f479ae140e2f76"
+    },
+    {
+      "source": "wnd/pvplive_lounge_ban_setting.csb",
+      "sha256": "1ebe36f7fe622280b96f9b2178433e4fb85e096d9f874b0a0575e6b83eb2c46a"
+    },
+    {
+      "source": "wnd/pvplive_safe_guard_setting.csb",
+      "sha256": "32d7722ee5c6bcdcb791ea5a392be6d1b72e39f6bc3200dce105d57569d3cefa"
     },
     {
       "source": "wnd/pvplive_ready.csb",

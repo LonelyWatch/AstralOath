@@ -90,6 +90,39 @@ namespace AstralOath.Client.Tests
                 Assert.That(Vector3.Distance(actualVertices[i], expectedVertices[i]), Is.LessThan(.0001f), model + " mesh/FFD vertex " + i);
         }
 
+        [TestCase("ras")]
+        [TestCase("mercedes")]
+        public void IncapacitatedActorLoopsNativeGroggyThroughHitsUntilStatusClears(string model)
+        {
+            var source = ReadModel(model);
+            var actor = Create(source.json, source.atlas, source.page);
+            var player = Player(actor);
+            Invoke(actor, "SetTurnReady", true);
+            var actionBlocked = ActorType.GetMethod("SetActionBlocked", Private);
+            Assert.That(actionBlocked, Is.Not.Null, "Active control status must reach the actor's ambient animation.");
+            actionBlocked.Invoke(actor, new object[] { true });
+            Assert.That(player.CurrentAnimation, Is.EqualTo("groggy"));
+            float duration = player.Duration;
+            Invoke(actor, "AdvanceAmbient", duration + .22f, duration + .22f);
+            Assert.That(player.CurrentAnimation, Is.EqualTo("groggy"));
+            Assert.That(player.Time, Is.EqualTo(.22f).Within(.01f), "The source clock must wrap instead of stopping on the last frame.");
+            actionBlocked.Invoke(actor, new object[] { true });
+            Assert.That(player.Time, Is.EqualTo(.22f).Within(.01f), "Applying the same status again must not restart the loop.");
+
+            Invoke(actor, "PlayBattleAnimation", "attacked");
+            Assert.That(player.CurrentAnimation, Is.EqualTo("attacked"));
+            actionBlocked.Invoke(actor, new object[] { true });
+            Assert.That(player.CurrentAnimation, Is.EqualTo("attacked"), "Status changes must let hit reactions finish.");
+            Invoke(actor, "AdvanceAmbient", player.Duration + .05f, player.Duration + .05f);
+            Assert.That(player.CurrentAnimation, Is.EqualTo("groggy"));
+
+            Invoke(actor, "SetTurnReady", false);
+            Assert.That(player.CurrentAnimation, Is.EqualTo("groggy"));
+            actionBlocked.Invoke(actor, new object[] { false });
+            Assert.That(player.CurrentAnimation, Is.EqualTo("idle"));
+        }
+
+
         [Test]
         public void SourceZeroSecondReactionCanHoldAndReleaseWithoutStealingANewerTrack()
         {

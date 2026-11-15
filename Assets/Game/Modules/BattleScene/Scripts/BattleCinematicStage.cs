@@ -34,6 +34,7 @@ namespace AstralOath.Client.BattleScene
         private readonly Dictionary<Renderer, bool> layoutVisibility = new Dictionary<Renderer, bool>();
         private Transform[] participants;
         private Transform caster;
+        private Vector3? parkedCasterAnchor;
         private Transform[] targets;
         private Vector3 originalPosition;
         private float originalSize;
@@ -314,13 +315,20 @@ namespace AstralOath.Client.BattleScene
             UpdateLayers();
         }
 
+        internal void SetCasterParked(bool parked)
+        {
+            if (!parked) parkedCasterAnchor = null;
+            else if (caster) parkedCasterAnchor ??= caster.position;
+        }
+
         private Vector3 Anchor(int location)
         {
             if (location == 0) return originalPosition;
-            if ((location == 1 || location == 11) && caster) return caster.position;
+            Vector3 casterAnchor = parkedCasterAnchor ?? (caster ? caster.position : originalPosition);
+            if ((location == 1 || location == 11) && caster) return casterAnchor;
             var live = targets.Where(item => item).ToArray();
-            if (live.Length == 0) return caster ? caster.position : originalPosition;
-            if (location == 31 && caster) return (caster.position + live[0].position) * .5f;
+            if (live.Length == 0) return casterAnchor;
+            if (location == 31 && caster) return (casterAnchor + live[0].position) * .5f;
             if (location == 32 || location == 41 || location == 42)
                 return live.Aggregate(Vector3.zero, (sum, item) => sum + item.position) / live.Length;
             if (location == 5 || location == 12 || location == 16) return live[0].position;
@@ -426,21 +434,38 @@ namespace AstralOath.Client.BattleScene
         }
 
         // Solve x(t) for the source cubic Bezier, then evaluate y(t); preserve overshoot in y.
-        public static float Curve(float progress, string curve)
+        public static float Curve(float progress, string curve) =>
+            progress > 0f && progress < 1f && TryParseCurve(curve, out var points)
+                ? EvaluateCurve(progress, points)
+                : progress;
+
+        internal static bool TryParseCurve(string curve, out Vector4 points)
         {
-            if (string.IsNullOrEmpty(curve) || progress <= 0f || progress >= 1f) return progress;
+            points = default;
+            if (string.IsNullOrEmpty(curve)) return false;
             var values = curve.Split(',');
-            if (values.Length != 4) return progress;
-            float[] points = values.Select(value => float.Parse(value, CultureInfo.InvariantCulture)).ToArray();
+            if (values.Length != 4) return false;
+            for (int i = 0; i < values.Length; i++)
+            {
+                if (!float.TryParse(values[i], NumberStyles.Float, CultureInfo.InvariantCulture, out float value) ||
+                    !float.IsFinite(value)) return false;
+                points[i] = value;
+            }
+            return true;
+        }
+
+        internal static float EvaluateCurve(float progress, Vector4 points)
+        {
+            if (progress <= 0f || progress >= 1f) return progress;
             float low = 0f;
             float high = 1f;
             for (int index = 0; index < 20; index++)
             {
                 float t = (low + high) * .5f;
-                if (Bezier(t, points[0], points[2]) < progress) low = t;
+                if (Bezier(t, points.x, points.z) < progress) low = t;
                 else high = t;
             }
-            return Bezier((low + high) * .5f, points[1], points[3]);
+            return Bezier((low + high) * .5f, points.y, points.w);
         }
 
         private static float Bezier(float t, float a, float b) =>
@@ -516,6 +541,7 @@ namespace AstralOath.Client.BattleScene
             running = false;
             hidden = false;
             caster = null;
+            parkedCasterAnchor = null;
             targets = Array.Empty<Transform>();
         }
 

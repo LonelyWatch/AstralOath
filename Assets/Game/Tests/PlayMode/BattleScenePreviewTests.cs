@@ -453,6 +453,67 @@ namespace AstralOath.Client.Tests
         }
 
         [UnityTest]
+        public IEnumerator RosesS3ShowsStatusIconsAndReadinessWordsOnTheAffectedActor()
+        {
+            scene = LoadPlayerOpeningScene("c1003");
+            yield return null;
+            yield return null;
+            var roots = scene.GetRootGameObjects();
+            var host = roots.Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            var map = roots.SelectMany(root => root.GetComponentsInChildren<BindingMap>()).Single();
+            var actor = host.SimulationSnapshot.GetUnit(host.SimulationSnapshot.CurrentActorId);
+            Assert.That(actor.DefinitionId, Is.EqualTo("c1003"));
+            var layer = map.transform.Find("Unit Status/Allies").GetChild(actor.Slot.Position - 1).Find("Effect Words");
+            Assert.That(layer, Is.Not.Null);
+            Assert.That(layer.childCount, Is.Zero);
+
+            var skill = map.Require<GameButton>("skill3");
+            skill.onClick.Invoke();
+            Assert.That(host.TrySelectBattleTarget(actor.InstanceId), Is.True, "Submit Rose's real all-allies skill.");
+            Assert.That(host.SimulationSnapshot.GetUnit(actor.InstanceId).GetStatus(BattleStatusKind.AttackUp), Is.Not.Null);
+            Assert.That(layer.childCount, Is.Zero, "Effects must wait until the authored feedback cue.");
+
+            var expected = new[] { "攻击力提升", "速攻值提升", "防御力提升" };
+            var shown = new System.Collections.Generic.HashSet<string>(StringComparer.Ordinal);
+            var illustrated = new System.Collections.Generic.HashSet<string>(StringComparer.Ordinal);
+            float limit = Time.realtimeSinceStartup + 15f;
+            string output = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_CAPTURE_DIR");
+            bool captured = false;
+            float peakAlpha = 0f;
+            int countActive = 0, countLayerVisible = 0;
+            var allNames = new System.Collections.Generic.HashSet<string>(StringComparer.Ordinal);
+            while (Time.realtimeSinceStartup < limit)
+            {
+                if (layer.gameObject.activeInHierarchy) countLayerVisible++;
+                foreach (var word in layer.GetComponentsInChildren<GameText>(true))
+                {
+                    var root = word.transform.parent;
+                    allNames.Add(word.text);
+                    if (!root.gameObject.activeInHierarchy) continue;
+                    countActive++;
+                    float alpha = root.GetComponent<CanvasGroup>().alpha;
+                    peakAlpha = Mathf.Max(peakAlpha, alpha);
+                    if (alpha < .8f) continue;
+                    shown.Add(word.text);
+                    var icon = root.Find("Icon").GetComponent<Image>();
+                    if (icon.enabled && icon.sprite) illustrated.Add(word.text);
+                }
+                if (!captured && shown.Count >= 2 && !string.IsNullOrWhiteSpace(output))
+                {
+                    Capture(host.GetComponent<Canvas>().worldCamera, output, "battle-actor-effect-words.png");
+                    captured = true;
+                }
+                if (expected.All(shown.Contains)) break;
+                yield return null;
+            }
+            Assert.That(expected.All(shown.Contains), Is.True,
+                $"Visible words: {string.Join(", ", shown)}. Pooled rows: {layer.childCount}. " +
+                $"All text: {string.Join(", ", allNames)}. Peak alpha: {peakAlpha}. Active samples: {countActive}. " +
+                $"Visible layer samples: {countLayerVisible}.");
+            Assert.That(illustrated, Is.EquivalentTo(new[] { "攻击力提升", "防御力提升" }));
+        }
+
+        [UnityTest]
         public IEnumerator AutoButtonLetsTheAllyUseItsHighestAvailableSkill()
         {
             scene = LoadPlayerOpeningScene();

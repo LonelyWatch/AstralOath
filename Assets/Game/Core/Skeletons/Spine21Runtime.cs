@@ -8,25 +8,35 @@ namespace AstralOath.Client.Skeletons
 {
     internal sealed class SkeletonTextureLoader : S21.TextureLoader, S38.TextureLoader
     {
-        private readonly IReadOnlyDictionary<string, Texture2D> textures;
-        internal SkeletonTextureLoader(IReadOnlyDictionary<string, Texture2D> textures) { this.textures = textures; }
-        private Texture2D Find(string name)
+        private readonly Dictionary<string, (Texture2D Texture, int Width, int Height)> pages =
+            new Dictionary<string, (Texture2D, int, int)>(StringComparer.Ordinal);
+
+        // Capture Unity state on the calling (main) thread. The worker only passes
+        // borrowed Texture2D references as opaque atlas renderer data.
+        internal SkeletonTextureLoader(IReadOnlyDictionary<string, Texture2D> textures)
         {
-            if (!textures.TryGetValue(name, out var value) || value == null)
+            foreach (var pair in textures)
+                if (pair.Value)
+                    pages.Add(pair.Key, (pair.Value, pair.Value.width, pair.Value.height));
+        }
+
+        private (Texture2D Texture, int Width, int Height) Find(string name)
+        {
+            if (!pages.TryGetValue(name, out var value))
                 throw new ArgumentException("Missing atlas page texture: " + name);
             return value;
         }
         public void Load(S21.AtlasPage page, string path)
         {
-            var texture = Find(page.name); page.rendererObject = texture;
-            if (page.width == 0) page.width = texture.width;
-            if (page.height == 0) page.height = texture.height;
+            var texture = Find(page.name); page.rendererObject = texture.Texture;
+            if (page.width == 0) page.width = texture.Width;
+            if (page.height == 0) page.height = texture.Height;
         }
         public void Load(S38.AtlasPage page, string path)
         {
-            var texture = Find(page.name); page.rendererObject = texture;
-            if (page.width == 0) page.width = texture.width;
-            if (page.height == 0) page.height = texture.height;
+            var texture = Find(page.name); page.rendererObject = texture.Texture;
+            if (page.width == 0) page.width = texture.Width;
+            if (page.height == 0) page.height = texture.Height;
         }
         public void Unload(object texture) { /* Borrowed asset: released by the caller's BindingScope. */ }
     }
@@ -64,11 +74,11 @@ namespace AstralOath.Client.Skeletons
             foreach (var skin in data.Skins) Skins.Add(skin.Name);
             state.Event += OnEvent; state.Complete += OnComplete;
         }
-        internal static ParsedSource Prepare(SkeletonPlayerSource source)
+        internal static ParsedSource Prepare(SkeletonPlayerSource source, SkeletonTextureLoader loader = null)
         {
             if (source.ParsedData is ParsedSource cached) return cached;
             S21.Atlas atlas;
-            using (var reader = new StringReader(source.Atlas)) atlas = new S21.Atlas(reader, "", new SkeletonTextureLoader(source.Textures));
+            using (var reader = new StringReader(source.Atlas)) atlas = new S21.Atlas(reader, "", loader ?? new SkeletonTextureLoader(source.Textures));
             try
             {
                 var data = Spine21Json.Read(source.Json, atlas, source.Scale);

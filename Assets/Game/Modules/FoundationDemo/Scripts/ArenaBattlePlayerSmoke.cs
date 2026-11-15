@@ -22,6 +22,7 @@ namespace AstralOath.Client.FoundationDemo
         private sealed class Fixture
         {
             public string roomId, battleId, contentHash, bearer;
+            public bool preload;
         }
 
         internal static void StartIfRequested(GameLaunchContext context, CancellationToken lifetime)
@@ -52,9 +53,21 @@ namespace AstralOath.Client.FoundationDemo
 
                 using var deadline = CancellationTokenSource.CreateLinkedTokenSource(lifetime);
                 deadline.CancelAfter(TimeSpan.FromSeconds(90));
-                await BattleOnlineLaunch.LoadAsync(context.Services.Get<IAssetService>(),
-                    context.Services.Get<ISceneAssetService>(), endpoint, fixture.roomId, fixture.battleId,
-                    fixture.contentHash, fixture.bearer, true, deadline.Token);
+                var assets = context.Services.Get<IAssetService>();
+                var scenes = context.Services.Get<ISceneAssetService>();
+                using var prepared = fixture.preload ? BattleOnlineLaunch.BeginPreload(assets, scenes, deadline.Token) : null;
+                if (fixture.preload)
+                {
+                    if (prepared == null) throw new InvalidOperationException("The battle scene could not start preloading.");
+                    await WaitUntilAsync(() =>
+                    {
+                        var staged = SceneManager.GetSceneByPath(BattleOnlineLaunch.ScenePath);
+                        return staged.isLoaded && staged.GetRootGameObjects().All(root => !root.activeSelf);
+                    }, deadline.Token);
+                    Debug.Log("ASTRAL_ARENA_BATTLE_PRELOAD_OK");
+                }
+                await BattleOnlineLaunch.LoadAsync(assets, scenes, endpoint, fixture.roomId, fixture.battleId,
+                    fixture.contentHash, fixture.bearer, true, deadline.Token, prepared: prepared);
 
                 var scene = SceneManager.GetSceneByPath(BattleOnlineLaunch.ScenePath);
                 if (!scene.isLoaded || SceneManager.GetActiveScene() != scene)

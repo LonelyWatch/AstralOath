@@ -21,7 +21,7 @@ from convert import decode_scsp, decode_sct
 ARENA_IMAGES = """
 _bg_black_gold_c _bg_black_gold_s _box_black_gold _box_blue2 _box_w4 _box_r_w4 _box_r_op80
 _tap_select _tap_select_p _btn_small_white _btn_small_white_p _btn_white_flat _btn_white_flat_p _select _select2 _sorting2
-_battle_pvp_icon_vs _bar_1 _bar_2 _bar_4 _bar_5 _bar_9 _bar_23 _dim _grow_s _grow _white
+_battle_pvp_icon_vs _bar_1 _bar_2 _bar_4 _bar_5 _bar_9 _bar_23 z_tile_bar _dim _grow_s _grow _white
 battle_pvp_icon_win battle_pvp_icon_draw battle_pvp_icon_lose
 cm_btn_sorting_up cm_btn_sorting_down cm_btn_sorting_up_p cm_btn_sorting_down_p cm_hud_top_btn_esc cm_hud_top_btn_back cm_hud_top_btn_help
 cm_icon_etcarrow2 cm_icon_etcinfor cm_icon_etclock cm_icon_etcrepeat cm_icon_etczoomer cm_icon_etcclose cm_icon_etcback
@@ -46,7 +46,7 @@ BORDERS = {
     "_btn_small_white_p": (13, 13, 13, 13), "_select": (25, 25, 25, 25),
     "_btn_white_flat": (25, 25, 25, 25), "_btn_white_flat_p": (25, 25, 25, 25),
     "_bar_1": (40, 0, 40, 0), "_bar_2": (40, 0, 40, 0), "_bar_5": (40, 0, 40, 0),
-    "emoji_picker_frame": (14, 14, 14, 14), "arena_create_dialog_bg": (54, 54, 54, 54),
+    "emoji_picker_frame": (14, 14, 14, 14), "room_protection_frame": (14, 14, 14, 14), "arena_create_dialog_bg": (54, 54, 54, 54),
     "directory_create": (14, 16, 14, 12), "directory_create_pressed": (14, 16, 14, 12),
     "directory_refresh": (14, 16, 14, 12), "directory_refresh_pressed": (14, 16, 14, 12),
     "directory_rule": (32, 4, 32, 4), "directory_tab": (41, 0, 10, 0),
@@ -106,7 +106,7 @@ def metadata(path, check, importer):
         write(meta, f"fileFormatVersion: 2\nguid: {identifier}\n{importer}".encode(), False)
 
 
-UNCOMPRESSED_UI = {"emoji_picker_frame", "c1001_avatar_room", "arena_avatar_frame", "arena_create_dialog_bg", "directory_tab", "directory_rule", "directory_refresh", "directory_refresh_pressed", "directory_create", "directory_create_pressed", "_grow_s", "_grow"}
+UNCOMPRESSED_UI = {"emoji_picker_frame", "room_protection_frame", "z_tile_bar", "c1001_avatar_room", "arena_avatar_frame", "arena_create_dialog_bg", "directory_tab", "directory_rule", "directory_refresh", "directory_refresh_pressed", "directory_create", "directory_create_pressed", "_grow_s", "_grow"}
 
 
 def texture_importer(path, sprite):
@@ -255,6 +255,9 @@ def arena_room_art(root, check):
     border_source = "img/_box_black_gold.png"
     border_data = read_source(root, border_source)
     border_crop = (31, 31, 85, 85)
+    protection_source = "img/_box_black_white.png"
+    protection_data = read_source(root, protection_source)
+    protection = Image.open(io.BytesIO(protection_data)).convert("RGBA").crop(border_crop)
     border = Image.open(io.BytesIO(border_data)).convert("RGBA").crop(border_crop)
 
     frame_source = "item/border/icon_border_pvp_season20_rank_3.png"
@@ -266,6 +269,9 @@ def arena_room_art(root, check):
          {"method": "original-asset-crop", "cropLtrb": border_crop, "scale9InsetsLtrb": [14, 14, 14, 14],
           "sourceLayout": "wnd/chat_emoji_tip.csb"}),
         ("arena_avatar_frame.png", frame_data, frame_source, frame_data, {"method": "original-asset", "compression": "none"}),
+        ("room_protection_frame.png", png_bytes(protection), protection_source, protection_data,
+         {"method": "original-asset-crop", "cropLtrb": border_crop, "scale9InsetsLtrb": [14, 14, 14, 14],
+          "sourceLayout": "wnd/pvplive_safe_guard_setting.csb"}),
     )
     return [write_converted("Arena", "Textures/" + name, data, [{"source": source, "sha256": digest(raw)}], check, conversion)
             for name, data, source, raw, conversion in variants]
@@ -526,6 +532,7 @@ def main():
         "wnd/pvplive_base.csb", "wnd/pvplive_mock_battle_item.csb", "wnd/pvplive_lounge_creat.csb",
         "wnd/pvplive_mod_card.csb", "wnd/pvplive_lounge_pw.csb", "wnd/pvplive_lounge.csb", "wnd/pvplive_spectator_bar.csb", "wnd/chat.csb",
         "wnd/chat_emoji_tip.csb", "wnd/chat_emoji_tip_item.csb",
+        "wnd/pvplive_lounge_ban_setting.csb", "wnd/pvplive_safe_guard_setting.csb",
         "wnd/pvplive_ready.csb", "wnd/pvplive_ready_pre_ben.csb", "wnd/pvplive_ready_pre_ben_item.csb",
         "wnd/pvplive_ready_pre_ben_eff.csb", "wnd/pvplive_preban_hero.csb", "wnd/pvplive_preban_hero_item.csb",
         "wnd/pvplive_pick_sel.csb", "wnd/pvplive_ready_formation.csb",

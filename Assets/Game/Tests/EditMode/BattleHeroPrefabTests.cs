@@ -43,6 +43,51 @@ namespace AstralOath.Client.Tests
         }
 
         [Test]
+        public void ActorEffectWordsKeepSeparateRowsAndFollowTheProjectedStatusMarker()
+        {
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Game/Modules/BattleScene/Res/Prefab/BattleActor.prefab");
+            var actor = Object.Instantiate(prefab);
+            var hud = new GameObject("HUD", typeof(RectTransform), typeof(Canvas));
+            IDisposable words = null;
+            try
+            {
+                var owner = actor.GetComponent("BattleActorStatusTemplate");
+                var marker = (GameObject)owner.GetType().GetMethod("CreateMarker").Invoke(owner,
+                    new object[] { hud.transform, "Unit" });
+                var layer = (RectTransform)marker.transform.Find("Effect Words");
+                Assert.That(layer, Is.Not.Null, "The effect words must use the actor's projected prefab marker.");
+                var profile = owner.GetType().GetProperty("Profile").GetValue(owner);
+                var font = (TMPro.TMP_FontAsset)profile.GetType().GetField("EffectWordFont").GetValue(profile);
+                Assert.That(font && font.name == "EpicSeven", Is.True, "Use the original UI font.");
+
+                var type = Type.GetType("AstralOath.Client.BattleScene.BattleEffectWords, AstralOath.Client.BattleScene", true);
+                words = (IDisposable)Activator.CreateInstance(type, (RectTransform)marker.transform, font);
+                object[] popup = { "Poison", null, false };
+                type.GetMethod("Show").Invoke(words, popup);
+                type.GetMethod("Show").Invoke(words, popup);
+                type.GetMethod("Tick").Invoke(words, new object[] { .18f });
+                Assert.That(layer.childCount, Is.EqualTo(2), "Repeated status triggers are distinct lines.");
+                var first = (RectTransform)layer.GetChild(0);
+                var second = (RectTransform)layer.GetChild(1);
+                Assert.That(first.anchoredPosition.y - second.anchoredPosition.y, Is.GreaterThan(20f));
+                Assert.That(first.GetComponentInChildren<AstralOath.Client.Common.GameText>().raycastTarget, Is.False);
+                var prior = second.position;
+                marker.transform.localPosition += Vector3.right * 60f;
+                marker.transform.localScale *= 1.2f;
+                Assert.That(second.position, Is.Not.EqualTo(prior));
+                Assert.That(second.lossyScale.x, Is.EqualTo(1.2f).Within(.01f));
+
+                type.GetMethod("Tick").Invoke(words, new object[] { 2f });
+                Assert.That(first.gameObject.activeSelf || second.gameObject.activeSelf, Is.False);
+                type.GetMethod("Show").Invoke(words, popup);
+                Assert.That(layer.childCount, Is.EqualTo(2), "Expired labels are reused.");
+                type.GetMethod("Clear").Invoke(words, null);
+                Assert.That(first.gameObject.activeSelf || second.gameObject.activeSelf, Is.False);
+            }
+            finally { words?.Dispose(); Object.DestroyImmediate(hud); Object.DestroyImmediate(actor); }
+        }
+
+        [Test]
         public void ActorStatusTemplateCreatesIndependentMarkersUnderTheSharedCanvas()
         {
             var prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Game/Modules/BattleScene/Res/Prefab/BattleActor.prefab");

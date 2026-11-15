@@ -51,6 +51,15 @@ namespace AstralOath.Client.BattleScene.Editor
                 icons.sizeDelta = Vector2.zero;
                 icons.anchoredPosition = new Vector2(1f, 15f) * PixelScale;
             }
+            if (!marker.Find(BattleEffectWords.LayerName))
+            {
+                var words = (RectTransform)new GameObject(BattleEffectWords.LayerName, typeof(RectTransform)).transform;
+                words.SetParent(marker, false);
+                words.anchorMin = words.anchorMax = words.pivot = Vector2.one * .5f;
+                words.sizeDelta = Vector2.zero;
+                words.anchoredPosition = new Vector2(8f, -42f) * PixelScale;
+            }
+
             var serialized = new SerializedObject(owner);
             serialized.FindProperty("markerTemplate").objectReferenceValue = marker;
             serialized.FindProperty("profile").objectReferenceValue = BattleUnitPresentationAssets.Load();

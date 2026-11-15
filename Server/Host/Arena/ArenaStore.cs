@@ -129,7 +129,7 @@ internal sealed partial class ArenaStore(string? connectionString)
             await AuditRoom(connection, transaction, "arena.room.join", player, id, token);
         }
         else await RenewLease(connection, transaction, player.Id, token);
-        var state = State(room, members);
+        var state = State(room, members, await DraftReadyPlayers(connection, transaction, id, token));
         await transaction.CommitAsync(token);
         return state;
     }
@@ -156,8 +156,9 @@ internal sealed partial class ArenaStore(string? connectionString)
             throw new ArenaProblem(403, "not_in_room");
         }
         await RenewLease(connection, transaction, player.Id, token);
+        var state = State(room, members, await DraftReadyPlayers(connection, transaction, id, token));
         await transaction.CommitAsync(token);
-        return State(room, members);
+        return state;
     }
 
     public async Task LeaveRoom(string id, ArenaPlayer player, CancellationToken token)
@@ -197,9 +198,11 @@ internal sealed partial class ArenaStore(string? connectionString)
         // A new reader gets the most recent history; an existing reader pages
         // forward in ascending cursor order even if it missed several polls.
         const string select = """
-            SELECT m.id, p.id, p.display_name, p.avatar_id, m.body, m.created_at, s.sticker_id
+            SELECT m.id, p.id, p.display_name, p.avatar_id, m.body, m.created_at,
+                   s.sticker_id, n.notice_code
             FROM arena_room_message m JOIN arena_player p ON p.id = m.player_id
             LEFT JOIN arena_room_message_sticker s ON s.message_id = m.id
+            LEFT JOIN arena_room_message_notice n ON n.message_id = m.id
             WHERE m.room_id = @room
             """;
         string query = select + (after == 0 ? " ORDER BY m.id DESC LIMIT 50;"
@@ -209,7 +212,7 @@ internal sealed partial class ArenaStore(string? connectionString)
         await using (var reader = await command.ExecuteReaderAsync(token))
             while (await reader.ReadAsync(token))
                 messages.Add(new ArenaMessage(reader.GetInt64(0), ReadPlayer(reader, 1), reader.GetString(4), Utc(reader, 5),
-                    reader.IsDBNull(6) ? null : reader.GetString(6)));
+                    reader.IsDBNull(6) ? null : reader.GetString(6), reader.IsDBNull(7) ? null : reader.GetString(7)));
         await transaction.CommitAsync(token);
         if (after == 0) messages.Reverse();
         return messages;
@@ -225,8 +228,10 @@ internal sealed partial class ArenaStore(string? connectionString)
         if (!room.AllowChat) throw new ArenaProblem(403, "chat_disabled");
         var now = DateTime.UtcNow;
         using var recent = Command(connection, transaction, """
-            SELECT 1 FROM arena_room_message
-            WHERE room_id = @room AND player_id = @player AND created_at > @threshold LIMIT 1;
+            SELECT 1 FROM arena_room_message m
+            WHERE m.room_id = @room AND m.player_id = @player AND m.created_at > @threshold
+              AND NOT EXISTS (SELECT 1 FROM arena_room_message_notice n WHERE n.message_id = m.id)
+            LIMIT 1;
             """, ("@room", id), ("@player", player.Id), ("@threshold", now.AddMilliseconds(-500)));
         if (await recent.ExecuteScalarAsync(token) is not null) throw new ArenaProblem(429, "rate_limited");
         using var insert = Command(connection, transaction, """
@@ -455,10 +460,11 @@ internal sealed partial class ArenaStore(string? connectionString)
         await RenewLease(connection, transaction, playerId, token);
     }
 
-    private static ArenaRoomState State(RoomRecord room, IReadOnlyList<ArenaPlayer> members) =>
+    private static ArenaRoomState State(RoomRecord room, IReadOnlyList<ArenaPlayer> members,
+        IReadOnlyList<string>? readyPlayers = null) =>
         new(new ArenaRoom(room.Id, room.Name, members.Single(player => player.Id == room.HostId),
             room.PasswordHash is not null, room.AllowChat, room.Rule, members.Count, Capacity, room.CreatedAt,
-            room.PrebanCount, room.FirstPick, room.BanProtection), members);
+            room.PrebanCount, room.FirstPick, room.BanProtection), members, readyPlayers ?? []);
 
     private static byte[] HashPin(string pin, byte[] salt) =>
         Rfc2898DeriveBytes.Pbkdf2(pin, salt, PinIterations, HashAlgorithmName.SHA256, 32);

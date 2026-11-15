@@ -62,6 +62,11 @@ namespace AstralOath.Client.BattleScene.Editor
             const string shield = Root + "Res/Effects/Shield/stse_protect";
             profile.Shield = AssetDatabase.LoadAssetAtPath<Sprite>(Root + "Res/Textures/Hud/game_hud_bar_sh.png");
             profile.StatusManifest = AssetDatabase.LoadAssetAtPath<TextAsset>(status + "source.json");
+            profile.EffectWordCopy = AssetDatabase.LoadAssetAtPath<TextAsset>(Root + "Res/Configs/BattleEffectWords.zh-Hans.json");
+            profile.EffectWordFont = AssetDatabase.LoadAssetAtPath<TMPro.TMP_FontAsset>(
+                "Assets/Game/Common/Res/Fonts/EpicSeven.asset");
+            if (!profile.EffectWordCopy || !profile.EffectWordFont)
+                throw new InvalidOperationException("Missing native battle effect word font or localization.");
             profile.StatusGlyphs = Directory.GetFiles(status, "stic_*.png").OrderBy(path => path, StringComparer.Ordinal)
                 .Select(path => AssetDatabase.LoadAssetAtPath<Sprite>(path.Replace('\\', '/'))).ToArray();
             profile.StatusDigits = Enumerable.Range(0, 10)

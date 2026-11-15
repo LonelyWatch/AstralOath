@@ -20,8 +20,14 @@ namespace AstralOath.Client.Arena
         public bool banProtection;
         public string firstPick;
     }
-    [Serializable, Preserve] public sealed class ArenaRoomState { public ArenaRoomInfo room; public ArenaPlayer[] members; }
-    [Serializable, Preserve] public sealed class ArenaMessage { public long id; public ArenaPlayer player; public string text, createdAt, kind, stickerId; }
+    [Serializable, Preserve] public sealed class ArenaRoomState
+    {
+        public ArenaRoomInfo room;
+        public ArenaPlayer[] members;
+        public bool supportsDraftReady;
+        public string[] readyPlayerIds;
+    }
+    [Serializable, Preserve] public sealed class ArenaMessage { public long id; public ArenaPlayer player; public string text, createdAt, kind, stickerId, systemCode; }
     [Serializable, Preserve] public sealed class ArenaCreateRequest { public string name, password, rule; public bool allowChat; }
 
     public sealed class ArenaRequestException : IOException
@@ -42,7 +48,8 @@ namespace AstralOath.Client.Arena
         [Serializable, Preserve] private sealed class Error { public string code; }
         [Serializable, Preserve] private sealed class Operation { public string eventId, name; }
 
-        [Serializable, Preserve] private sealed class DraftStart { public string requestId; }
+        [Serializable, Preserve] private sealed class DraftStart { public string requestId; public bool requireReady; }
+        [Serializable, Preserve] private sealed class DraftReady { public bool ready; }
         [Serializable, Preserve] private sealed class PrebanSettings { public int prebanCount; }
         [Serializable, Preserve] private sealed class FirstPickSettings { public string firstPick; }
         [Serializable, Preserve] private sealed class ProtectionSettings { public bool banProtection; }
@@ -112,8 +119,11 @@ namespace AstralOath.Client.Arena
 
         public Task<ArenaDraftState> DraftAsync(string id, CancellationToken token) =>
             Send<ArenaDraftState>(Room(id) + "/draft", null, token);
-        public Task<ArenaDraftState> StartDraftAsync(string id, CancellationToken token) =>
-            Send<ArenaDraftState>(Room(id) + "/draft/start", new DraftStart { requestId = Guid.NewGuid().ToString("N") }, token);
+        public Task<ArenaDraftState> StartDraftAsync(string id, CancellationToken token, bool requireReady = false) =>
+            Send<ArenaDraftState>(Room(id) + "/draft/start",
+                new DraftStart { requestId = Guid.NewGuid().ToString("N"), requireReady = requireReady }, token);
+        internal Task<ArenaRoomState> SetReadyAsync(string id, bool ready, CancellationToken token) =>
+            Send<ArenaRoomState>(Room(id) + "/draft/ready", new DraftReady { ready = ready }, token);
         internal Task<ArenaRoomState> SetPrebanCountAsync(string id, int count, CancellationToken token) =>
             SaveDraftSettingAsync(id, new PrebanSettings { prebanCount = count }, token);
         internal Task<ArenaRoomState> SetFirstPickAsync(string id, string seat, CancellationToken token) =>

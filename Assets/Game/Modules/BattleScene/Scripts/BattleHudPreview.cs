@@ -7,6 +7,7 @@ using AstralOath.Client.Common;
 using AstralOath.Client.Skeletons;
 using AstralOath.Shared.Battle;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using TMPro;
 using UnityEngine;
 using Unity.Profiling;
@@ -93,6 +94,9 @@ namespace AstralOath.Client.BattleScene
         private CanvasGroup entryHud, entryUnitStatus;
         private GameText stageTitle;
         private BattleOnlineTransitionAssets.Copy onlineCopy;
+        private readonly SemaphoreSlim modelWorkers = new SemaphoreSlim(2);
+        private readonly Dictionary<string, Task<BattlePreviewActor.SharedSource>> preparedModels =
+            new Dictionary<string, Task<BattlePreviewActor.SharedSource>>(StringComparer.Ordinal);
 
         private static readonly ProfilerMarker StartMarker = new ProfilerMarker("Astral.Battle.Start");
         private static readonly ProfilerMarker FrameMarker = new ProfilerMarker("Astral.Battle.Frame");
@@ -125,17 +129,63 @@ namespace AstralOath.Client.BattleScene
             InstallBattle(catalog, allyActors, enemyActors, allies, enemies, nextMatch);
         }
 
-        internal async Task PrepareOnlineAsync(BattleOnlineSession session, BattleOnlineTransitionAssets assets, CancellationToken token)
+        internal BattleCatalogData AcceptOnlineSnapshot(BattleOnlineSession session,
+            (JObject Payload, double SentAt, double ReceivedAt) opening)
         {
-            autoStartBattle = false;
             var catalog = JsonConvert.DeserializeObject<BattleCatalogData>(battleCatalog.text);
-            await session.OpenAsync(battleCatalog, catalog, token);
+            session.Open(battleCatalog, catalog, opening);
+            return catalog;
+        }
+
+        internal Task WarmOnlineModelsAsync(IEnumerable<string> heroIds, CancellationToken token) =>
+            Task.WhenAll(QueueOnlineModels(heroIds, ReadHeroModels(), token).Values);
+
+        private Dictionary<string, Task<BattlePreviewActor.SharedSource>> QueueOnlineModels(
+            IEnumerable<string> heroIds, IReadOnlyDictionary<string, HeroModel> models, CancellationToken token)
+        {
+            var requested = new Dictionary<string, Task<BattlePreviewActor.SharedSource>>(StringComparer.Ordinal);
+            foreach (string id in heroIds.Distinct(StringComparer.Ordinal))
+            {
+                token.ThrowIfCancellationRequested();
+                if (!models.TryGetValue(id, out var model))
+                    throw new InvalidOperationException("Missing battle model for " + id);
+                if (!preparedModels.TryGetValue(id, out var preparation))
+                {
+                    preparation = BattlePreviewActor.WarmModelAsync(gameObject.scene, model.skeleton, model.skin, model.label, modelWorkers, token);
+                    preparedModels.Add(id, preparation);
+                }
+                requested.Add(id, preparation);
+            }
+            return requested;
+        }
+
+        internal async Task ConfigureOnlineRosterAsync(BattleSnapshot snapshot, CancellationToken token)
+        {
+            var models = ReadHeroModels();
+            string[] allies = OnlineTeam(snapshot, BattleSide.Ally);
+            string[] enemies = OnlineTeam(snapshot, BattleSide.Enemy);
+            var requested = QueueOnlineModels(allies.Concat(enemies), models, token);
+            await Task.WhenAll(requested.Values);
             token.ThrowIfCancellationRequested();
+            var loaded = requested.ToDictionary(entry => entry.Key, entry => entry.Value.Result, StringComparer.Ordinal);
+            preparedModels.Clear();
+
+            var units = gameObject.scene.GetRootGameObjects().Single(root => root.name == "Units").transform;
+            ApplyTeam(ResolveTeam(GetTeamActors(units.Find("Allies"), DefaultAllyHeroIds.Count), allies, models), loaded);
+            ApplyTeam(ResolveTeam(GetTeamActors(units.Find("Enemies"), DefaultEnemyHeroIds.Count), enemies, models), loaded);
+        }
+
+        private static string[] OnlineTeam(BattleSnapshot snapshot, BattleSide side) =>
+            snapshot.Units.Where(unit => unit.Slot.Side == side)
+                .OrderBy(unit => unit.Slot.Position).Select(unit => unit.DefinitionId).ToArray();
+
+        internal void PrepareOnline(BattleOnlineSession session, BattleOnlineTransitionAssets assets, BattleCatalogData catalog)
+        {
+            double started = Time.realtimeSinceStartupAsDouble;
+            autoStartBattle = false;
             var units = gameObject.scene.GetRootGameObjects().Single(root => root.name == "Units").transform;
             var allyActors = GetTeamActors(units.Find("Allies"), DefaultAllyHeroIds.Count);
             var enemyActors = GetTeamActors(units.Find("Enemies"), DefaultEnemyHeroIds.Count);
-            string[] Team(BattleSide side) => session.Snapshot.Units.Where(unit => unit.Slot.Side == side)
-                .OrderBy(unit => unit.Slot.Position).Select(unit => unit.DefinitionId).ToArray();
             online = session;
             onlineCopy = BattleOnlineTransitionAssets.Copy.Load(assets.zhHans);
             var viewport = GetComponent<Canvas>().worldCamera.GetComponent<BattlePreviewViewport>();
@@ -144,9 +194,19 @@ namespace AstralOath.Client.BattleScene
             entryHud = hud.gameObject.AddComponent<CanvasGroup>();
             entryHud.alpha = 0f;
             entryHud.blocksRaycasts = false;
-            InstallBattle(catalog, allyActors, enemyActors, Team(BattleSide.Ally), Team(BattleSide.Enemy), null);
+            double layoutReady = Time.realtimeSinceStartupAsDouble;
+            var timings = InstallBattle(catalog, allyActors, enemyActors,
+                OnlineTeam(session.Snapshot, BattleSide.Ally), OnlineTeam(session.Snapshot, BattleSide.Enemy), null);
+            double battleReady = Time.realtimeSinceStartupAsDouble;
             arrival = new BattleOnlineArrival(units, viewport, allyActors, enemyActors);
             arrival.Prepare();
+            if (Debug.isDebugBuild)
+            {
+                static string Ms(double start, double end) => ((end - start) * 1000d).ToString("F0", System.Globalization.CultureInfo.InvariantCulture);
+                Debug.Log("ASTRAL_ARENA_HOST layoutMs=" + Ms(started, layoutReady) +
+                    " modelsMs=" + Ms(layoutReady, timings.ModelsReady) + " binderMs=" + Ms(timings.ModelsReady, timings.BinderReady) +
+                    " simulationMs=" + Ms(timings.BinderReady, battleReady) + " arrivalMs=" + Ms(battleReady, Time.realtimeSinceStartupAsDouble));
+            }
         }
 
         internal void BeginOnlineArrival()
@@ -205,22 +265,29 @@ namespace AstralOath.Client.BattleScene
             simulation?.FinishOnlineEntry();
         }
 
-        private void InstallBattle(BattleCatalogData catalog, BattlePreviewActor[] allyActors, BattlePreviewActor[] enemyActors,
+        private (double ModelsReady, double BinderReady) InstallBattle(BattleCatalogData catalog,
+            BattlePreviewActor[] allyActors, BattlePreviewActor[] enemyActors,
             string[] allies, string[] enemies, BattleMatch nextMatch)
         {
-            var models = (heroModels ?? Array.Empty<HeroModel>()).ToDictionary(model => model.id, StringComparer.Ordinal);
+            var models = ReadHeroModels();
             var allySlots = ResolveTeam(allyActors, allies, models);
             var enemySlots = ResolveTeam(enemyActors, enemies, models);
             if (simulation != null) ClearBinding();
             ApplyTeam(allySlots);
             ApplyTeam(enemySlots);
-            UpdateBinding();
+            double modelsReady = Time.realtimeSinceStartupAsDouble;
+            UpdateBinding(catalog);
+            double binderReady = Time.realtimeSinceStartupAsDouble;
             simulation = new BattleSimulationPreview(gameObject.scene, hud, binder, catalog, battleSprites, battleGraphs,
                 skillAssets, audioCatalog, audioBanks, battleDamageFont, impactBank, stageBackground,
                 soulDisplay, soulConsume, particles, particleTextures, nextMatch, inspectionPrefab, readyDust: readyDust,
                 skillTimelineOverrides: skillTimelineOverrides, online: online, onlineCopy: onlineCopy);
             binder.AttachSimulation(simulation, online != null);
+            return (modelsReady, binderReady);
         }
+
+        private Dictionary<string, HeroModel> ReadHeroModels() =>
+            (heroModels ?? Array.Empty<HeroModel>()).ToDictionary(model => model.id, StringComparer.Ordinal);
 
         private static BattlePreviewActor[] GetTeamActors(Transform team, int size)
         {
@@ -258,10 +325,15 @@ namespace AstralOath.Client.BattleScene
             return slots;
         }
 
-        private static void ApplyTeam((BattlePreviewActor Actor, HeroModel Model)[] slots)
+        private static void ApplyTeam((BattlePreviewActor Actor, HeroModel Model)[] slots,
+            IReadOnlyDictionary<string, BattlePreviewActor.SharedSource> prepared = null)
         {
             foreach (var (actor, model) in slots)
-                actor.UseModel(model.skeleton, model.skin, $"{model.label} [{model.id}]", model.id);
+            {
+                BattlePreviewActor.SharedSource source = null;
+                prepared?.TryGetValue(model.id, out source);
+                actor.UseBattleModel(model.skeleton, model.skin, $"{model.label} [{model.id}]", model.id, source);
+            }
         }
 
         public bool TrySelectBattleTarget(string instanceId) => simulation?.ChooseTarget(instanceId) == true;
@@ -283,7 +355,7 @@ namespace AstralOath.Client.BattleScene
             if (!IsPaused) binder?.Tick(Time.unscaledDeltaTime);
         }
 
-        private void UpdateBinding()
+        private void UpdateBinding(BattleCatalogData catalog = null)
         {
             if (!hud || !hud.isActiveAndEnabled)
             {
@@ -295,7 +367,7 @@ namespace AstralOath.Client.BattleScene
 
             UIViewRegistry.ValidatePrefab<BattleHud>(hud.gameObject);
             var messages = battleCatalog
-                ? JsonConvert.DeserializeObject<BattleCatalogData>(battleCatalog.text).messages
+                ? (catalog ?? JsonConvert.DeserializeObject<BattleCatalogData>(battleCatalog.text)).messages
                     .ToDictionary(item => item.key, item => item.zhCn, StringComparer.Ordinal)
                 : new Dictionary<string, string>(StringComparer.Ordinal);
             binder = new BattleHudBinder(hud, burnPressed, cancelNormal, cancelPressed,

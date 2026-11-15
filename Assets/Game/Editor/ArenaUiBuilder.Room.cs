@@ -1,3 +1,6 @@
+using System.IO;
+using System.Linq;
+using AstralOath.Client.Arena;
 using AstralOath.Client.Common;
 using TMPro;
 using UnityEditor;
@@ -122,6 +125,16 @@ namespace AstralOath.Editor
             return button;
         }
 
+        public static void GenerateRoom()
+        {
+            AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+            font = Load<TMP_FontAsset>(Common + "Fonts/EpicSeven.asset");
+            labels = JsonUtility.FromJson<LabelFile>(File.ReadAllText(Assets[4].Path)).rows
+                .ToDictionary(row => row.key, row => row.text);
+            Save(BuildRoom(), Assets[3].Path);
+            UIViewRegistry.ValidatePrefab<ArenaRoom>(Load<GameObject>(Assets[3].Path));
+        }
+
         private static GameObject BuildRoom()
         {
             var root = Root("ArenaRoom");
@@ -166,6 +179,10 @@ namespace AstralOath.Editor
             var start = CommonButton(left, "ConfirmButton", "arena.start", .405f, .518f, .19f, .078f);
             start.FeedbackSound = GameUiFeedback.Sound.Silent;
             start.gameObject.AddComponent<CanvasGroup>().alpha = .55f;
+            var startLabel = start.GetComponent<BindingMap>().Require<GameText>("label");
+            var guestReady = Text(left, "Guest ready", "arena.draft.room_ready_status", 22, .651f, .55f, .155f, .042f,
+                Green, TextAlignmentOptions.Center);
+            guestReady.gameObject.SetActive(false);
             Picture(left, "Member list shade", Art("_grow"), -.246f, .523f, 1.481f, .612f).color
                 = new Color32(255, 255, 255, 232);
             NativeRule(left, "Members divider", .024f, .628f, .954f, .026f, Gold);
@@ -232,6 +249,13 @@ namespace AstralOath.Editor
             sticker.rectTransform.sizeDelta = new Vector2(142, 114);
             Bind(chatRow, ("avatar", senderAvatar), ("sender", sender), ("age", age), ("body", body), ("sticker", sticker));
             chatRow.gameObject.SetActive(false);
+            var systemRow = Area(chat, "System message template", 0, 0, 1, 0);
+            systemRow.gameObject.AddComponent<LayoutElement>().minHeight = 42f;
+            Paint(systemRow, Art("_btn_small_white"), new Color32(105, 78, 48, 151), sliced: true);
+            var systemBody = Text(systemRow, "System notice", null, 22, .03f, 0, .94f, 1,
+                new Color32(186, 150, 110, 255), TextAlignmentOptions.Center, wrap: true);
+            Bind(systemRow, ("body", systemBody));
+            systemRow.gameObject.SetActive(false);
             var composer = Area(chat, "Composer", 0, .853f, 1, .147f);
             Paint(Area(composer, "Composer shade", .016f, .19f, .968f, .79f), null, new Color32(35, 35, 35, 91));
             var notice = Area(composer, "Chat status board", .035f, -.144f, .93f, .264f);
@@ -248,12 +272,11 @@ namespace AstralOath.Editor
             var send = CommonButton(composer, "ConfirmButton", "arena.send", .707f, .325f, .26f, .538f);
             FollowKeyboard(composer, message);
             var draftSettings = Area(left, "Basic room draft settings", 0, 0, 1, 1);
-            var protection = RoomDraftButton(draftSettings, "Ban protection", "icon_menu_safeguard", .537f, .105f, out var protectionLabel);
-            var prebans = RoomDraftButton(draftSettings, "Preban count", "icon_menu_banned", .648f, .072f, out var prebanLabel);
+            var protection = RoomDraftButton(draftSettings, true, out var protectionLabel);
+            var prebans = RoomDraftButton(draftSettings, false, out var prebanLabel);
             var firstPick = RoomFirstPick(draftSettings, "Host first pick", .190f, out var firstPickCheck, out var firstPickLabel);
             var guestFirstPick = RoomFirstPick(draftSettings, "Guest first pick", .681f, out var guestFirstPickCheck, out var guestFirstPickLabel);
             guestFirstPick.interactable = false;
-            guestFirstPick.targetGraphic.raycastTarget = false;
             guestFirstPick.gameObject.SetActive(false);
             var prebanPicker = BuildRoomDraftPicker(root, true);
             var protectionPicker = BuildRoomDraftPicker(root, false);
@@ -263,24 +286,38 @@ namespace AstralOath.Editor
                 ("hostName", hostName), ("guestName", guestName), ("status", status), ("statusBoard", notice.gameObject), ("message", message),
                 ("roomLock", roomLock), ("start", start), ("toast", toast),
                 ("host", host), ("guest", guest), ("vacant", vacant), ("emptyInfo", emptyInfo.gameObject), ("members", members), ("memberRow", memberRow.gameObject),
-                ("messages", history), ("chatRow", chatRow.gameObject),
+                ("messages", history), ("chatRow", chatRow.gameObject), ("systemRow", systemRow.gameObject),
+                ("startLabel", startLabel), ("guestReady", guestReady),
                 ("draftSettings", draftSettings.gameObject), ("prebanCount", prebans), ("prebanLabel", prebanLabel),
                 ("banProtection", protection), ("protectionLabel", protectionLabel), ("firstPick", firstPick),
                 ("firstPickCheck", firstPickCheck), ("firstPickLabel", firstPickLabel),
-                ("guestFirstPick", guestFirstPick.gameObject), ("guestFirstPickCheck", guestFirstPickCheck),
+                ("guestFirstPick", guestFirstPick), ("guestFirstPickCheck", guestFirstPickCheck),
                 ("guestFirstPickLabel", guestFirstPickLabel), ("prebanPicker", prebanPicker), ("protectionPicker", protectionPicker));
             return root.gameObject;
         }
 
-        private static GameButton RoomDraftButton(RectTransform parent, string name, string icon, float x, float width,
-            out GameText label)
+        private static GameButton RoomDraftButton(RectTransform parent, bool protection, out GameText label)
         {
-            var rect = Area(parent, name, x, .101f, width, .065f);
+            // pvplive_lounge: use the authored 100x51 / 64x51 sliced controls and their 101px offset.
+            const float roomWidth = 1280f * .604f;
+            const float height = 51f;
+            float width = protection ? 100f : 64f;
+            float x = .537f + (protection ? 0 : 101f / roomWidth);
+            var rect = Area(parent, protection ? "Ban protection" : "Preban count",
+                x, (720f - 594f - height) / 720f, width / roomWidth, height / 720f);
             var button = Button(rect, CommonArt("_btn_small_black"), Color.white);
             PressSmallBlack(button);
-            Picture(rect, "Icon", Art(icon), .05f, .13f, width < .08f ? .68f : .39f, .74f, true);
-            float labelX = width < .08f ? .64f : .44f;
-            label = Text(rect, "Value", null, 28, labelX, 0, .95f - labelX, 1, Color.white, TextAlignmentOptions.Center);
+            float iconSize = protection ? 48f : 43f;
+            float iconX = protection ? 28f : 28.8f;
+            float iconY = protection ? 27f : 28f;
+            var icon = Picture(rect, "Icon", Art(protection ? "icon_menu_safeguard" : "icon_menu_banned"),
+                (iconX - iconSize / 2) / width, (height - iconY - iconSize / 2) / height,
+                iconSize / width, iconSize / height, true);
+            icon.color = new Color32(255, 255, 255, 127);
+            float valueWidth = protection ? 46f : 21f;
+            float valueX = protection ? 68f : 48f;
+            label = Text(rect, "Value", null, protection ? 23 : 25, (valueX - valueWidth / 2) / width,
+                0, valueWidth / width, 1, Color.white, TextAlignmentOptions.Center);
             return button;
         }
 
@@ -301,28 +338,33 @@ namespace AstralOath.Editor
         {
             var picker = Area(root, preban ? "Preban picker" : "Protection picker", 0, 0, 1, 1);
             var dismiss = Button(Area(picker, "Dismiss", 0, 0, 1, 1), null, Color.clear);
-            var panel = Area(picker, "Panel", preban ? .358f : .224f, .180f, .226f, preban ? .312f : .279f);
-            Paint(panel, preban ? Art("_box_black_gold") : CommonArt("_box_black_white"), Color.white, true, true);
+            // The CSB main node scales both popup frames before drawing them in the room.
+            var panel = Area(picker, "Panel", preban ? .357f : .179f, preban ? .187f : .175f,
+                .228f, preban ? .328f : .295f);
+            Paint(panel, Art(preban ? "emoji_picker_frame" : "room_protection_frame"), Color.white, true, true);
             string key = preban ? "arena.draft.room_preban_" : "arena.draft.room_protection_";
-            Text(panel, "Title", key + "title", 27, .04f, .044f, .92f, .175f, Color.white, TextAlignmentOptions.Center);
-            NativeRule(panel, "Divider", .063f, .232f, .874f, .033f, Gold, "_bar_1");
-            Text(panel, "Description", key + "hint", 23, .086f, .303f, .828f, .232f, preban ? Gold : Color.white,
-                TextAlignmentOptions.Center, wrap: true);
+            Text(panel, "Title", key + "title", 29, .04f, .057f, .92f, .125f, Color.white, TextAlignmentOptions.Center);
+            if (preban) NativeRule(panel, "Divider", .063f, .218f, .874f, .044f, Gold, "_bar_2");
+            else Picture(panel, "Divider", Art("z_tile_bar"), .055f, .253f, .89f, .015f).color =
+                new Color32(255, 255, 255, 178);
+            Text(panel, "Description", key + "hint", 25, .055f, .311f, .89f, .205f,
+                preban ? Gold : new Color32(190, 190, 190, 255), TextAlignmentOptions.Center, wrap: true);
 
             var bindings = new System.Collections.Generic.List<(string, Object)> { ("dismiss", dismiss) };
             int count = preban ? 4 : 2;
-            float cell = .9f / count;
             for (int index = 0; index < count; index++)
             {
                 int column = preban ? index : 1 - index;
-                var rect = Area(panel, "Choice " + index, .05f + column * cell, .648f, cell - .025f, .247f);
+                var rect = Area(panel, "Choice " + index, preban ? .063f + .231f * column : .073f + .439f * column,
+                    preban ? .642f : .713f, preban ? .191f : .399f, preban ? .241f : .187f);
                 var button = Button(rect, CommonArt("_btn_small_black"), Color.white);
                 PressSmallBlack(button);
                 var selected = Paint(Area(rect, "Selected", 0, 0, 1, 1), CommonArt("_btn_small_white"), Color.white, sliced: true);
                 PressDecorations(button, (selected, Art("_btn_small_white_p")));
                 selected.enabled = false;
                 string option = preban ? null : index == 0 ? "arena.draft.room_off" : "arena.draft.room_on";
-                var label = Text(rect, "Choice value", option, 28, 0, 0, 1, 1, Color.white, TextAlignmentOptions.Center);
+                var label = Text(rect, "Choice value", option, preban ? 34 : 30, 0, 0, 1, 1,
+                    Color.white, TextAlignmentOptions.Center);
                 if (preban) label.text = index.ToString(System.Globalization.CultureInfo.InvariantCulture);
                 bindings.Add(("choice" + index, button));
                 bindings.Add(("selected" + index, selected));

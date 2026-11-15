@@ -26,6 +26,9 @@ namespace AstralOath.Client.BattleScene
     internal sealed partial class BattleSkillPresentation : IDisposable
     {
         private const float SourcePixel = 0.01f;
+        // The native graphs reserve far instant home-relative placements of 4000+
+        // source pixels for an offstage hold. Ordinary staged entrances are smaller.
+        private const float OffstageParkingPixels = 4000f;
         private const string EffectPath = "effect/";
         private const string BasicHit = "hit_new_blunt_normal.cfx";
         private readonly Transform root;
@@ -46,7 +49,7 @@ namespace AstralOath.Client.BattleScene
         private Vector3 home;
         private Transform casterShadow;
         private Vector3 shadowHome;
-        private (Vector3 From, Vector3 GroundFrom, Vector3 To, float Start, float Duration, float Arc)? motion;
+        private (Vector3 From, Vector3 GroundFrom, Vector3 To, float Start, float Duration, float Arc, Vector4? Curve)? motion;
         private float time;
 
         // One battle owns parsed data. Successive actions share it, never their clocks or live visuals.
@@ -249,7 +252,7 @@ namespace AstralOath.Client.BattleScene
             if (nodes.Any(node => Kind(node) == "LAYOUT" && (int?)node["mode"] != 1 && Number(node, "away_x") < 1280f))
                 Warn(presentationId + ": source LAYOUT uses a participant visibility mask; self_x/away_x placement and fade curves remain unverified and authored slots are retained.");
             if (nodes.Any(node => Kind(node) == "MOVE"))
-                Warn(presentationId + ": source MOVE timing and anchors are used with reconstructed movement curves.");
+                Warn(presentationId + ": source MOVE timing, offsets and authored curves are used. Default movement curves and jump arcs are reconstructed.");
             Prepare(actor, presentationId);
             var cues = cache.Cues[(actor, presentationId)];
             var main = cues.First(cue => Kind(cue.Node) == "ANI" &&
@@ -727,16 +730,19 @@ namespace AstralOath.Client.BattleScene
             if (motion is { } movement && caster)
             {
                 float progress = Mathf.Clamp01((time - movement.Start) / movement.Duration);
-                float eased = Mathf.SmoothStep(0f, 1f, progress);
-                caster.transform.localPosition = Vector3.Lerp(movement.From, movement.To, eased) +
+                float eased = movement.Curve is { } curve
+                    ? BattleCinematicStage.EvaluateCurve(progress, curve)
+                    : Mathf.SmoothStep(0f, 1f, progress);
+                caster.transform.localPosition = Vector3.LerpUnclamped(movement.From, movement.To, eased) +
                     Vector3.up * (Mathf.Sin(progress * Mathf.PI) * movement.Arc);
                 if (progress >= 1f)
                 {
                     caster.transform.localPosition = movement.To;
+                    cinematic.SetCasterParked(false);
                     motion = null;
                 }
                 if (casterShadow)
-                    ShadowInSlot = shadowHome + Vector3.Lerp(movement.GroundFrom, movement.To, eased) - home;
+                    ShadowInSlot = shadowHome + Vector3.LerpUnclamped(movement.GroundFrom, movement.To, eased) - home;
             }
             cinematic.Tick(delta);
             for (int i = active.Count - 1; i >= 0; i--)
@@ -798,6 +804,8 @@ namespace AstralOath.Client.BattleScene
                 float separation = Mathf.Clamp(horizontal, -gap, gap);
                 destination = caster.transform.parent.InverseTransformPoint(target - Vector3.right * separation);
             }
+            else if (location == 12 && primary)
+                destination = caster.transform.parent.InverseTransformPoint(primary.transform.position);
             else if (location == 31 && primary)
                 destination = caster.transform.parent.InverseTransformPoint((caster.transform.position + primary.transform.position) * .5f);
             else if ((location == 41 || location == 42) && targets.Length > 0)
@@ -812,8 +820,10 @@ namespace AstralOath.Client.BattleScene
                 Warn("Unsupported source MOVE style " + style);
                 return;
             }
-            if (style != 3)
-                destination += new Vector3(Number(node, "x") * caster.FacingDirection, Number(node, "y"), 0f) * SourcePixel;
+            // Style 3 has no jump arc. It still carries authored placement offsets,
+            // including deliberate offscreen staging before a timed entrance.
+            float x = Number(node, "x"), y = Number(node, "y");
+            destination += new Vector3(x * caster.FacingDirection, y, 0f) * SourcePixel;
             if (approachDirection != 0f)
             {
                 // Preserve authored offsets while preventing a front approach from closing the ground gap.
@@ -831,11 +841,15 @@ namespace AstralOath.Client.BattleScene
             {
                 Vector3 from = caster.transform.localPosition;
                 Vector3 groundFrom = casterShadow ? home + ShadowInSlot - shadowHome : from;
-                motion = (from, groundFrom, destination, time, duration, arc);
+                Vector4? curve = BattleCinematicStage.TryParseCurve((string)node["curve"], out var points) ? points : null;
+                motion = (from, groundFrom, destination, time, duration, arc, curve);
             }
             else
             {
                 motion = null;
+                bool parksCaster = style == 3 && location == 11 &&
+                    Mathf.Max(Mathf.Abs(x), Mathf.Abs(y)) >= OffstageParkingPixels;
+                cinematic.SetCasterParked(parksCaster);
                 caster.transform.localPosition = destination;
                 if (casterShadow) ShadowInSlot = shadowHome + destination - home;
             }

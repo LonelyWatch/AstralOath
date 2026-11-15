@@ -2,7 +2,7 @@ using AstralOath.Server.Battle;
 
 namespace AstralOath.Server.Arena;
 
-internal sealed record ArenaDraftStartRequest(string? RequestId);
+internal sealed record ArenaDraftStartRequest(string? RequestId, bool RequireReady = false);
 internal sealed record ArenaDraftActionRequest(string? RequestId, string? DraftId, int Version, string? Kind, string[]? HeroIds);
 
 internal sealed record ArenaDraftSeatView(ArenaPlayer Player, string[] Prebans, string[] Picks,

@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using AstralOath.Client.Skeletons;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace AstralOath.Client.BattleScene
 {
@@ -28,7 +31,8 @@ namespace AstralOath.Client.BattleScene
         private string idleAnimation;
         private string turnIdleAnimation;
         private string turnEntryAnimation;
-        private bool turnReady, turnEntryPending;
+        private string incapacitatedAnimation;
+        private bool turnReady, turnEntryPending, actionBlocked;
         private bool playingBattleAnimation;
         private bool defeatPose;
         private object sourceReaction;
@@ -38,28 +42,33 @@ namespace AstralOath.Client.BattleScene
         private bool paused;
         private int presentationPauseCount;
         private int presentationControlCount;
-        private SharedSource sourceLease;
+        private SharedSource sourceLease, warmedSource;
 
         // Only live actors retain entries. Scene identity prevents independent battles from
         // sharing a lifetime; each player still owns its pose, tracks, mesh and materials.
         private static readonly Dictionary<SourceKey, SharedSource> SharedSources =
             new Dictionary<SourceKey, SharedSource>();
 
-        private readonly struct SourceKey : IEquatable<SourceKey>
+        internal readonly struct SourceKey : IEquatable<SourceKey>
         {
             private readonly int scene, skeleton, atlas, page;
             private readonly string pageName;
             private readonly bool premultipliedAlpha;
             private readonly float scale;
             internal SourceKey(BattlePreviewActor actor)
+                : this(actor.gameObject.scene, actor.skeleton, actor.atlas, actor.page, actor.pageName,
+                    actor.premultipliedAlpha, actor.sourceScale) { }
+
+            internal SourceKey(Scene scene, TextAsset skeleton, TextAsset atlas, Texture2D page, string pageName,
+                bool premultipliedAlpha, float scale)
             {
-                scene = actor.gameObject.scene.handle;
-                skeleton = actor.skeleton.GetInstanceID();
-                atlas = actor.atlas.GetInstanceID();
-                page = actor.page.GetInstanceID();
-                pageName = actor.pageName;
-                premultipliedAlpha = actor.premultipliedAlpha;
-                scale = actor.sourceScale;
+                this.scene = scene.handle;
+                this.skeleton = skeleton.GetInstanceID();
+                this.atlas = atlas.GetInstanceID();
+                this.page = page.GetInstanceID();
+                this.pageName = pageName;
+                this.premultipliedAlpha = premultipliedAlpha;
+                this.scale = scale;
             }
             public bool Equals(SourceKey other) => scene == other.scene && skeleton == other.skeleton &&
                 atlas == other.atlas && page == other.page && premultipliedAlpha == other.premultipliedAlpha &&
@@ -79,7 +88,7 @@ namespace AstralOath.Client.BattleScene
             }
         }
 
-        private sealed class SharedSource
+        internal sealed class SharedSource
         {
             internal readonly SourceKey Key;
             internal readonly SkeletonPlayerSource Source;
@@ -94,15 +103,43 @@ namespace AstralOath.Client.BattleScene
         private SharedSource AcquireSource()
         {
             var key = new SourceKey(this);
+            var prepared = warmedSource;
+            warmedSource = null;
             if (!SharedSources.TryGetValue(key, out var entry))
             {
-                var textures = new Dictionary<string, Texture2D>(StringComparer.Ordinal) { { pageName, page } };
-                var source = new SkeletonPlayerSource(skeleton.text, atlas.text, textures, premultipliedAlpha, sourceScale);
-                entry = new SharedSource(key, source);
+                entry = prepared?.Key.Equals(key) == true ? prepared : new SharedSource(key,
+                    CreateModelSource(skeleton, atlas, page, pageName, premultipliedAlpha, sourceScale));
                 SharedSources.Add(key, entry);
             }
             entry.Owners++;
             return entry;
+        }
+
+        private static SkeletonPlayerSource CreateModelSource(TextAsset skeleton, TextAsset atlas, Texture2D page,
+            string pageName, bool premultipliedAlpha, float scale)
+        {
+            var textures = new Dictionary<string, Texture2D>(StringComparer.Ordinal) { { pageName, page } };
+            return new SkeletonPlayerSource(skeleton.text, atlas.text, textures, premultipliedAlpha, scale);
+        }
+
+        internal static async Task<SharedSource> WarmModelAsync(Scene scene, BattleSkillPresentationAsset model, string skin,
+            string label, SemaphoreSlim workers, CancellationToken token)
+        {
+            await workers.WaitAsync(token);
+            try
+            {
+                token.ThrowIfCancellationRequested();
+                ValidateModel(model, skin, label);
+                var key = new SourceKey(scene, model.document, model.atlas, model.pages[0], model.pageNames[0],
+                    model.premultipliedAlpha, model.scale);
+                var source = CreateModelSource(model.document, model.atlas, model.pages[0], model.pageNames[0],
+                    model.premultipliedAlpha, model.scale);
+                await new SkeletonPlayerFactory().PrepareAsync(source, token);
+                var events = await Task.Run(() => BattleSkeletonMetadata.Read(source.Json, false).Events, token);
+                token.ThrowIfCancellationRequested();
+                return new SharedSource(key, source) { Events = events };
+            }
+            finally { workers.Release(); }
         }
 
         private void ReleaseSource()
@@ -117,13 +154,23 @@ namespace AstralOath.Client.BattleScene
                 SharedSources.Remove(entry.Key);
         }
 
-        internal void UseModel(BattleSkillPresentationAsset model, string skinName, string label, string definitionId = null)
+        private static void ValidateModel(BattleSkillPresentationAsset model, string skinName, string label)
         {
             if (model == null || !model.document || !model.atlas || model.pages?.Length != 1 ||
                 !model.pages[0] || model.pageNames?.Length != 1 || string.IsNullOrEmpty(model.pageNames[0]) ||
                 !float.IsFinite(model.scale) || model.scale <= 0f || string.IsNullOrEmpty(skinName))
                 throw new ArgumentException("Battle actor requires a complete single-page model: " + label, nameof(model));
+        }
+
+        internal void UseModel(BattleSkillPresentationAsset model, string skinName, string label) =>
+            UseBattleModel(model, skinName, label, null);
+
+        internal void UseBattleModel(BattleSkillPresentationAsset model, string skinName, string label, string definitionId,
+            SharedSource prepared = null)
+        {
+            ValidateModel(model, skinName, label);
             resolvedHeroId = definitionId;
+            warmedSource = prepared;
             if (skeleton == model.document && atlas == model.atlas && page == model.pages[0] &&
                 pageName == model.pageNames[0] && skin == skinName && sourceScale == model.scale &&
                 premultipliedAlpha == model.premultipliedAlpha) return;
@@ -297,7 +344,15 @@ namespace AstralOath.Client.BattleScene
         {
             if (turnReady == value) return;
             turnReady = value;
-            turnEntryPending = value && turnEntryAnimation != null;
+            turnEntryPending = value && !actionBlocked && turnEntryAnimation != null;
+            ApplyTurnIdleIfFree();
+        }
+
+        internal void SetActionBlocked(bool value)
+        {
+            if (actionBlocked == value) return;
+            actionBlocked = value;
+            if (value) turnEntryPending = false;
             ApplyTurnIdleIfFree();
         }
 
@@ -312,13 +367,13 @@ namespace AstralOath.Client.BattleScene
                 turnEntryPending = false;
                 player.Play(turnEntryAnimation, false, IdleRecoveryMixSeconds);
             }
-            else if (!turnReady || !PlayingTurnEntry || player.Time >= player.Duration)
+            else if (actionBlocked || !turnReady || !PlayingTurnEntry || player.Time >= player.Duration)
                 PlayIdleLoop();
         }
 
         private void PlayIdleLoop()
         {
-            string animation = turnReady ? turnIdleAnimation : idleAnimation;
+            string animation = actionBlocked ? incapacitatedAnimation ?? idleAnimation : turnReady ? turnIdleAnimation : idleAnimation;
             if (player.CurrentAnimation != animation)
                 player.Play(animation, true, IdleRecoveryMixSeconds);
         }
@@ -394,6 +449,9 @@ namespace AstralOath.Client.BattleScene
         private void OnEnable()
         {
             OnDisable(); // Also makes a repeated activation safe when editor reload options change.
+            // The additive scene briefly enables the authored roots before the staging
+            // callback parks them. Only the verified online roster may initialize rigs.
+            if (BattleOnlineLaunch.IsStaging(gameObject.scene)) return;
             NormalizeShadow();
             // A newly placed generic prefab can have only a Hero ID. The battle host resolves
             // the corresponding catalog model before it creates the simulation.
@@ -418,6 +476,7 @@ namespace AstralOath.Client.BattleScene
                         case "b_idle": battleIdle = animation.Name; break;
                         case "b_idle_ready": turnEntryAnimation = animation.Name; break;
                         case "idle": neutralIdle = animation.Name; break;
+                        case "groggy": incapacitatedAnimation = animation.Name; break;
                     }
                 }
                 turnIdleAnimation = battleIdle ?? neutralIdle;
@@ -480,6 +539,8 @@ namespace AstralOath.Client.BattleScene
                 idleAnimation = null;
                 turnIdleAnimation = null;
                 turnEntryAnimation = null;
+                incapacitatedAnimation = null;
+                actionBlocked = false;
                 turnReady = false;
                 turnEntryPending = false;
                 playingBattleAnimation = false;

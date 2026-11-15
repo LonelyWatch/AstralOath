@@ -2,7 +2,8 @@
 param(
     [Parameter(Mandatory)][string]$Player,
     [uri]$BaseUrl = 'http://127.0.0.1:5080',
-    [ValidatePattern('^[a-z0-9-]+$')][string]$Name = 'windows-arena-battle'
+    [ValidatePattern('^[a-z0-9-]+$')][string]$Name = 'windows-arena-battle',
+    [switch]$Preload
 )
 $ErrorActionPreference = 'Stop'
 if (-not $BaseUrl.IsAbsoluteUri -or -not $BaseUrl.IsLoopback -or
@@ -119,12 +120,14 @@ try {
         battleId = $draft.battleId
         contentHash = $draft.contentHash
         bearer = $hostBearer
+        preload = $Preload.IsPresent
     }
     $arguments = @('-astral-arena-battle-smoke','-screen-fullscreen','0','-logFile',('"' + $log + '"'))
     $application = Start-Process -FilePath $Player -WorkingDirectory (Split-Path -Parent $Player) -WindowStyle Hidden -PassThru -ArgumentList $arguments
     $env:ASTRAL_FOUNDATION_URL = $priorEndpoint
     $env:ASTRAL_ARENA_BATTLE_SMOKE_FIXTURE = $priorFixture
 
+    if ($Preload) { Wait-PlayerMarker 'ASTRAL_ARENA_BATTLE_PRELOAD_OK' 25 }
     Wait-PlayerMarker 'ASTRAL_ARENA_BATTLE_ENTRY_OK actors=8' 55
     $null = Invoke-Arena ($battlePath + '/ready') $guestBearer @{
         battleId = $snapshot.battleId

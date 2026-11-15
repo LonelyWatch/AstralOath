@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AstralOath.Client.BattleScene;
 using AstralOath.Client.Common;
+using AstralOath.Client.Core;
 using AstralOath.Shared.Battle;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -15,6 +16,7 @@ using NUnit.Framework;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -289,6 +291,93 @@ namespace AstralOath.Client.Tests
             {
                 RenderTexture.active = previous;
                 UnityEngine.Object.Destroy(sample);
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator FormationPreloadKeepsBattleHiddenAndDiscardsTheUnusedScene()
+        {
+            var home = SceneManager.GetActiveScene();
+            var begin = typeof(BattleOnlineLaunch).GetMethod("BeginPreload", BindingFlags.Public | BindingFlags.Static);
+            Assert.That(begin, Is.Not.Null, "The draft needs a staged scene it can load before closing the gate.");
+            var services = new EditorBattlePreload();
+            using var lifetime = new CancellationTokenSource();
+            int parsedDefaultRigs = -1;
+            void ObserveLoadedScene(Scene loaded, LoadSceneMode mode)
+            {
+                if (mode != LoadSceneMode.Additive || loaded.path != BattleOnlineLaunch.ScenePath) return;
+                parsedDefaultRigs = loaded.GetRootGameObjects()
+                    .SelectMany(root => root.GetComponentsInChildren<BattlePreviewActor>(true))
+                    .Count(actor => actor.GetComponentsInChildren<MeshFilter>(true).Any(mesh => mesh.name.StartsWith("Skeleton ", StringComparison.Ordinal)));
+            }
+            // Subscribe before preload parks the roots so a brief default rig allocation cannot go unnoticed.
+            SceneManager.sceneLoaded += ObserveLoadedScene;
+            var prep = (IDisposable)begin.Invoke(null, new object[] { services, services, lifetime.Token });
+            Assert.That(prep, Is.Not.Null);
+            try
+            {
+                float expires = Time.realtimeSinceStartup + 20f;
+                Scene scene;
+                do
+                {
+                    Assert.That(Time.realtimeSinceStartup, Is.LessThan(expires), "Preload never settled.");
+                    yield return null;
+                    scene = SceneManager.GetSceneByPath(BattleOnlineLaunch.ScenePath);
+                } while (!scene.isLoaded || !services.Finished);
+
+                Assert.That(SceneManager.GetActiveScene(), Is.EqualTo(home));
+                Assert.That(BattleOnlineLaunch.IsActive, Is.False);
+                Assert.That(parsedDefaultRigs, Is.Zero, "The staged scene should not parse its offline demo roster.");
+                Assert.That(scene.GetRootGameObjects().All(root => !root.activeSelf), Is.True,
+                    "Cameras, input and the offline simulation must stay hidden during formation.");
+                Assert.That(scene.GetRootGameObjects().SelectMany(root => root.GetComponentsInChildren<BattleHudPreview>(true))
+                    .Single().SimulationSnapshot, Is.Null);
+                Assert.That(services.AssetRequests, Is.EqualTo(1));
+                lifetime.Cancel();
+                prep.Dispose();
+                while (scene.isLoaded)
+                {
+                    Assert.That(Time.realtimeSinceStartup, Is.LessThan(expires), "Unused staged scene never unloaded.");
+                    yield return null;
+                }
+                Assert.That(services.Releases, Is.EqualTo(1));
+            }
+            finally
+            {
+                SceneManager.sceneLoaded -= ObserveLoadedScene;
+                prep.Dispose();
+            }
+        }
+
+        private sealed class EditorBattlePreload : IAssetService, ISceneAssetService, ILoadedScene
+        {
+            internal bool Finished;
+            internal int AssetRequests, Releases;
+            public Scene Scene { get; private set; }
+
+            public Task<T> LoadAsync<T>(string address, BindingScope scope) where T : UnityEngine.Object
+            {
+                AssetRequests++;
+                scope.Add(() => Releases++);
+                var asset = AssetDatabase.LoadAssetAtPath<T>(
+                    "Assets/Game/Modules/BattleScene/Configs/AstralOathOnlineTransition.asset");
+                return Task.FromResult(asset);
+            }
+
+            public async Task<ILoadedScene> LoadAdditiveAsync(string address, CancellationToken token)
+            {
+                var loading = EditorSceneManager.LoadSceneAsyncInPlayMode(BattleOnlineLaunch.ScenePath,
+                    new LoadSceneParameters(LoadSceneMode.Additive));
+                while (!loading.isDone) await Task.Yield();
+                Scene = SceneManager.GetSceneByPath(BattleOnlineLaunch.ScenePath);
+                Finished = true;
+                return this;
+            }
+
+            public async Task UnloadAsync()
+            {
+                var unloading = SceneManager.UnloadSceneAsync(Scene);
+                while (unloading != null && !unloading.isDone) await Task.Yield();
             }
         }
 

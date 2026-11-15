@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using AstralOath.Client.Arena;
 using AstralOath.Client.BattleScene;
 using AstralOath.Client.Common;
 using AstralOath.Shared.Battle;
@@ -65,6 +66,9 @@ namespace AstralOath.Client.Tests
             });
             yield return Peer(roomPath + "/join", new { });
             yield return Wait(() => Screen("ArenaRoom").Require<GameText>("count").text == "2/50", "Second player did not appear.");
+            yield return Peer(roomPath + "/draft/ready", new { ready = true });
+            yield return Wait(() => Screen("ArenaRoom").Require<GameText>("guestReady").gameObject.activeInHierarchy,
+                "The host did not see the guest ready.");
             yield return Capture("arena-draft-room-ready");
             Click(Screen("ArenaRoom"), "start");
             yield return Wait(() => Screen("ArenaDraft") && HeroCount(Screen("ArenaDraft"), "grid") >= 14, "Preban grid did not initialize.");
@@ -224,6 +228,12 @@ namespace AstralOath.Client.Tests
                             Assert.That(next["guest"]["picks"].Count(), Is.Zero);
                         });
                         yield return Wait(() => portrait.enabled && portrait.sprite, "The remote candidate did not show in the empty team slot.");
+                        var draftArt = AssetDatabase.LoadAssetAtPath<ArenaDraftArt>("Assets/Game/Modules/Arena/Configs/ArenaDraftArt.asset");
+                        var previewArt = draftArt.Heroes.Single(hero => hero.Id == opponentPreview);
+                        var central = draft.Require<Image>("featuredFallback");
+                        var previewSprite = previewArt.Illustration ? previewArt.Illustration : previewArt.Card;
+                        yield return Wait(() => central.sprite == previewSprite,
+                            "The opponent candidate must also replace the central hero portrait.", 3f);
                         Assert.That(opponentCard.Require<GameButton>("button").interactable, Is.False);
                         var opponentOutline = opponentCard.Require<Image>("pending");
                         Assert.That(opponentOutline.enabled, Is.True);

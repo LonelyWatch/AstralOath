@@ -210,9 +210,13 @@ internal sealed record ArenaPlayer(string Id, string DisplayName, string AvatarI
 internal sealed record ArenaSession(string Token, ArenaPlayer Player);
 internal sealed record ArenaRoom(string Id, string Name, ArenaPlayer Host, bool RequiresPassword, bool AllowChat,
     string Rule, int MemberCount, int Capacity, DateTime CreatedAt, int PrebanCount, string FirstPick, bool BanProtection);
-internal sealed record ArenaRoomState(ArenaRoom Room, IReadOnlyList<ArenaPlayer> Members);
-internal sealed record ArenaMessage(long Id, ArenaPlayer Player, string Text, DateTime CreatedAt,
-    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? StickerId)
+internal sealed record ArenaRoomState(ArenaRoom Room, IReadOnlyList<ArenaPlayer> Members, IReadOnlyList<string> ReadyPlayerIds)
 {
-    public string Kind => StickerId is null ? "text" : "sticker";
+    public bool SupportsDraftReady => true;
+}
+internal sealed record ArenaMessage(long Id, ArenaPlayer Player, string Text, DateTime CreatedAt,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? StickerId,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? SystemCode = null)
+{
+    public string Kind => SystemCode is not null ? "system" : StickerId is null ? "text" : "sticker";
 }

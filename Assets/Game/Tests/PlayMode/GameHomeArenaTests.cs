@@ -160,14 +160,31 @@ namespace AstralOath.Client.Tests
                 yield return Wait(() => room.Require<GameText>("protectionLabel").text == "OFF" && protection.interactable,
                     "The host did not disable ban protection.");
 
+                yield return Complete(peer.SetReady());
+                yield return Wait(() => room.Require<GameText>("guestReady").gameObject.activeInHierarchy,
+                    "The host did not see the guest readiness.");
+                var guestFirstPick = room.Require<GameButton>("guestFirstPick");
+                Assert.That(guestFirstPick.interactable, Is.True);
                 firstPick.onClick.Invoke();
+                Assert.That(room.Require<Image>("firstPickCheck").enabled, Is.True, "Clicking the current side must not toggle it off.");
+                guestFirstPick.onClick.Invoke();
                 yield return Wait(() => room.Require<Image>("guestFirstPickCheck").enabled && firstPick.interactable,
                     "The first-pick indicator did not move to the guest.");
                 Assert.That(room.Require<Image>("firstPickCheck").enabled, Is.False);
+                Assert.That(room.Require<GameText>("guestReady").gameObject.activeInHierarchy, Is.False);
+                yield return Wait(() => ShowsChat(room, "玩家2已成为首选出战英雄的对象"), "The system notice was not shown.");
+                Assert.That(ShowsChat(room, "预先禁用英雄数量已变更为3名。"), Is.True);
+                Assert.That(ShowsChat(room, "已关闭禁用防护功能。"), Is.True);
                 yield return Complete(peer.ReadRoom());
                 Assert.That(peer.RoomSettings, Is.EqualTo((3, "guest", false)),
                     "The guest did not see all three persisted changes.");
                 yield return Capture("arena-room-draft-settings");
+                firstPick.onClick.Invoke();
+                yield return Wait(() => room.Require<Image>("firstPickCheck").enabled &&
+                    !room.Require<Image>("guestFirstPickCheck").enabled && ShowsChat(room, "玩家1已成为首选出战英雄的对象"),
+                    "Selecting the host did not switch the sole check mark and announce the change.");
+                Assert.That(ChatCount(room, "玩家2已成为首选出战英雄的对象"), Is.EqualTo(1));
+                yield return Capture("arena-room-first-pick-host");
 
                 room.Require<TMP_InputField>("message").text = "来自 Unity";
                 float sendStarted = Time.realtimeSinceStartup;
@@ -463,6 +480,7 @@ namespace AstralOath.Client.Tests
             public async Task Find(string title) => RoomId = JsonUtility.FromJson<Rooms>(await Call("rooms?visibility=private&sort=recent&query="
                 + Uri.EscapeDataString(title))).rooms.Single(room => room.name == title).id;
             public Task Join() => Call("rooms/" + RoomId + "/join", "{\"password\":\"1234\"}");
+            public Task SetReady() => Call("rooms/" + RoomId + "/draft/ready", "{\"ready\":true}");
             public async Task Create(string title, string password)
             {
                 var response = await Call("rooms", JsonUtility.ToJson(new CreateRoom { name = title, password = password }));

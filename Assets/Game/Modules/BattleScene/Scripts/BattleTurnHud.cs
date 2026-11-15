@@ -153,12 +153,15 @@ namespace AstralOath.Client.BattleScene
             ArrangePortraits();
         }
 
-        internal void SetReadiness(string id, int readinessBp)
+        internal int SetReadiness(string id, int readinessBp)
         {
             if (!portraits.TryGetValue(id, out var portrait) || !portrait.Visible)
-                return;
+                return 0;
+            int change = readinessBp - portrait.ReadinessBp;
+            if (change == 0) return 0;
             portrait.ReadinessBp = readinessBp;
             ArrangePortraits();
+            return change;
         }
 
         internal void RestoreUnit(string id)

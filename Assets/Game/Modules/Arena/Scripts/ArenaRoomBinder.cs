@@ -27,6 +27,7 @@ namespace AstralOath.Client.Arena
         private const string ProtectionWindow = "arena/room-protection";
         private static readonly Color InactivePickColor = new Color32(150, 153, 157, 255);
         private static readonly Color SelectedChoiceColor = new Color32(20, 21, 23, 255);
+        private static readonly Color UnselectedChoiceColor = new Color32(149, 149, 149, 255);
         private readonly Dictionary<string, Sprite> stickers = new Dictionary<string, Sprite>(StringComparer.Ordinal);
         private static readonly Color SelfNameColor = new Color32(137, 201, 62, 255);
         private readonly SortedList<long, MessageRow> messages = new SortedList<long, MessageRow>();
@@ -79,7 +80,8 @@ namespace AstralOath.Client.Arena
             screen.Add(() => { if (start) start.onClick.RemoveListener(StartClick); });
             Listen(view.PrebanCount, OpenPrebanPicker);
             Listen(view.BanProtection, OpenProtectionPicker);
-            Listen(view.FirstPick, ChangeFirstPick);
+            Listen(view.FirstPick, () => ChangeFirstPick(view.FirstPick, "host"));
+            Listen(view.GuestFirstPick, () => ChangeFirstPick(view.GuestFirstPick, "guest"));
             view.Send.interactable = initial.room.allowChat;
             view.Emoji.interactable = initial.room.allowChat;
             if (initial.room.allowChat)
@@ -89,8 +91,7 @@ namespace AstralOath.Client.Arena
             }
             _ = WatchRoomAsync(initial.room.id, screen.Token);
             if (openDraft != null && initial.room.rule == "basic") _ = WatchDraftAsync(initial.room.id, screen.Token);
-            if (initial.room.allowChat)
-                _ = WatchChatAsync(initial.room.id, screen.Token);
+            _ = WatchChatAsync(initial.room.id, screen.Token);
             return Task.CompletedTask;
         }
 
@@ -118,7 +119,7 @@ namespace AstralOath.Client.Arena
                         roomError = ArenaError.Text(locale, error);
                         ShowStatus();
                     }
-                    await Task.Delay(TimeSpan.FromSeconds(5), token);
+                    await Task.Delay(TimeSpan.FromSeconds(GuestSeat != null ? 1 : 5), token);
                 }
             }
             catch (OperationCanceledException) when (token.IsCancellationRequested) { }
@@ -140,6 +141,13 @@ namespace AstralOath.Client.Arena
                         {
                             AppendMessages(incoming);
                             cursor = incoming[incoming.Length - 1].id;
+                            if (incoming.Any(message => message.kind == "system") && !savingSettings)
+                            {
+                                int revision = settingsRevision;
+                                var current = await api.GetAsync(id, token);
+                                if (!token.IsCancellationRequested && revision == settingsRevision && !savingSettings)
+                                    Render(current);
+                            }
                         }
                         chatError = null;
                         ShowStatus();
@@ -199,23 +207,34 @@ namespace AstralOath.Client.Arena
 
         private bool IsDraftHost => state?.room?.host?.id != null && state.room.host.id == api.Player?.id;
 
-        private bool CanEditDraftSettings => state?.room.rule == "basic" && IsDraftHost &&
-            screen != null && !screen.Token.IsCancellationRequested &&
-            !savingSettings && !starting && !transitioning && !leaving;
+        private ArenaPlayer GuestSeat => state?.members?.FirstOrDefault(member => member.id != state.room.host?.id);
+        private bool SupportsReady => state?.supportsDraftReady == true;
+        private bool IsGuestSeat => GuestSeat?.id is string guestId && guestId == api.Player?.id;
+        private bool GuestIsReady => SupportsReady && state.readyPlayerIds != null &&
+            Array.IndexOf(state.readyPlayerIds, GuestSeat?.id) >= 0;
+        private bool CanUseDraftSettings => state?.room.rule == "basic" && screen != null &&
+            !screen.Token.IsCancellationRequested && !savingSettings && !starting && !transitioning && !leaving;
+        private bool CanEditDraftSettings => CanUseDraftSettings && IsDraftHost;
 
         private void RenderDraftSettings()
         {
             var room = state.room;
             bool basic = room.rule == "basic";
-            bool guestPresent = (state.members?.Length ?? 0) >= 2;
+            bool guestPresent = GuestSeat != null;
             view.DraftSettings.SetActive(basic);
-            view.GuestFirstPick.SetActive(basic && guestPresent);
+            view.GuestFirstPick.gameObject.SetActive(basic && guestPresent);
+            view.GuestReady.gameObject.SetActive(basic && GuestIsReady);
+            view.StartLabel.text = locale.Resolve(basic && SupportsReady && IsGuestSeat
+                ? GuestIsReady ? "arena.draft.room_cancel_ready" : "arena.draft.room_ready"
+                : "arena.start");
+            bool canStart = IsDraftHost && guestPresent && (!SupportsReady || GuestIsReady);
             view.Start.GetComponent<CanvasGroup>().alpha =
-                basic && IsDraftHost && guestPresent && !savingSettings ? 1f : .55f;
+                CanUseDraftSettings && (canStart || SupportsReady && IsGuestSeat) ? 1f : .55f;
             if (!basic) return;
 
-            view.PrebanCount.interactable = view.BanProtection.interactable =
-                view.FirstPick.interactable = CanEditDraftSettings;
+            view.PrebanCount.interactable = view.BanProtection.interactable = CanUseDraftSettings;
+            view.FirstPick.interactable = CanEditDraftSettings;
+            view.GuestFirstPick.interactable = CanEditDraftSettings && guestPresent;
             view.PrebanLabel.text = room.prebanCount.ToString(CultureInfo.InvariantCulture);
             view.ProtectionLabel.text = locale.Resolve(room.banProtection ? "arena.draft.room_on" : "arena.draft.room_off");
 
@@ -235,14 +254,14 @@ namespace AstralOath.Client.Arena
 
         private void OpenPrebanPicker()
         {
-            if (!CanEditDraftSettings) return;
+            if (!CanUseDraftSettings) return;
             ShowDraftPicker(PrebanWindow, view.PrebanPicker, view.PrebanCount, state.room.prebanCount, 4,
                 api.SetPrebanCountAsync);
         }
 
         private void OpenProtectionPicker()
         {
-            if (!CanEditDraftSettings) return;
+            if (!CanUseDraftSettings) return;
             ShowDraftPicker(ProtectionWindow, view.ProtectionPicker, view.BanProtection,
                 state.room.banProtection ? 1 : 0, 2, (id, choice, token) => api.SetBanProtectionAsync(id, choice == 1, token));
         }
@@ -265,9 +284,10 @@ namespace AstralOath.Client.Arena
                     int choice = i;
                     string suffix = i.ToString(CultureInfo.InvariantCulture);
                     var button = bindings.Require<GameButton>("choice" + suffix);
+                    button.interactable = CanEditDraftSettings;
                     bindings.Require<Image>("selected" + suffix).enabled = choice == selected;
                     bindings.Require<GameText>("choiceLabel" + suffix).color =
-                        choice == selected ? SelectedChoiceColor : Color.white;
+                        choice == selected ? SelectedChoiceColor : UnselectedChoiceColor;
                     button.Bind(overlay, _ =>
                     {
                         // Saving belongs to the room, so closing the popup does not cancel it.
@@ -279,16 +299,16 @@ namespace AstralOath.Client.Arena
             });
         }
 
-        private async void ChangeFirstPick()
+        private async void ChangeFirstPick(GameButton source, string seat)
         {
-            await SaveDraftSettingAsync(view.FirstPick, (id, token) =>
-                api.SetFirstPickAsync(id, state.room.firstPick == "host" ? "guest" : "host", token));
+            if (!CanEditDraftSettings || state.room.firstPick == seat || (seat == "guest" && GuestSeat == null)) return;
+            await SaveDraftSettingAsync(source, (id, token) => api.SetFirstPickAsync(id, seat, token));
         }
 
         private async Task SaveDraftSettingAsync(GameButton source,
-            Func<string, CancellationToken, Task<ArenaRoomState>> save)
+            Func<string, CancellationToken, Task<ArenaRoomState>> save, bool guestReadiness = false)
         {
-            if (!CanEditDraftSettings) return;
+            if (!CanUseDraftSettings || (guestReadiness ? !IsGuestSeat : !IsDraftHost)) return;
             var owner = screen;
             savingSettings = true;
             ++settingsRevision;
@@ -340,10 +360,18 @@ namespace AstralOath.Client.Arena
         private async void StartClick()
         {
             var owner = screen;
-            if (owner == null || starting || leaving || savingSettings) return;
+            if (owner == null || starting || leaving || savingSettings || transitioning) return;
+            if (state.room.rule == "basic" && SupportsReady && IsGuestSeat)
+            {
+                bool ready = !GuestIsReady;
+                GameUiFeedback.Play(view.Start, GameUiFeedback.Sound.Confirm);
+                await SaveDraftSettingAsync(view.Start, (id, token) => api.SetReadyAsync(id, ready, token), guestReadiness: true);
+                return;
+            }
             string denial = state.room.rule != "basic" || openDraft == null ? "arena.error.draft_rule_unsupported"
                 : state.room.host?.id != api.Player?.id ? "arena.error.draft_host_only"
-                : (state.members?.Length ?? 0) < 2 ? "arena.no_player" : null;
+                : GuestSeat == null ? "arena.no_player"
+                : SupportsReady && !GuestIsReady ? "arena.error.draft_guest_not_ready" : null;
             if (denial != null)
             {
                 GameUiFeedback.Play(view.Start, GameUiFeedback.Sound.Blocked);
@@ -355,7 +383,7 @@ namespace AstralOath.Client.Arena
             GameUiFeedback.Play(view.Start, GameUiFeedback.Sound.Confirm);
             try
             {
-                var draft = await api.StartDraftAsync(state.room.id, owner.Token);
+                var draft = await api.StartDraftAsync(state.room.id, owner.Token, requireReady: SupportsReady);
                 if (scopeStillOpen()) await EnterDraftAsync(draft);
             }
             catch (OperationCanceledException) when (owner.Token.IsCancellationRequested) { }
@@ -490,19 +518,34 @@ namespace AstralOath.Client.Arena
             {
                 if (messages.ContainsKey(message.id) || messages.Count >= ChatHistoryLimit && message.id < messages.Keys[0])
                     continue;
-                var row = UnityEngine.Object.Instantiate(view.ChatRow, history.content, false);
+                bool isSystem = message.kind == "system";
+                var row = UnityEngine.Object.Instantiate(isSystem ? view.SystemRow : view.ChatRow, history.content, false);
                 var map = row.GetComponent<BindingMap>();
-                ArenaArt.SetAvatar(map.Require<BindingMap>("avatar"), message.player, false);
-                var sender = map.Require<GameText>("sender");
-                SetPlayerName(sender, message.player);
-
                 var body = map.Require<GameText>("body");
-                var sticker = map.Require<Image>("sticker");
-                bool isSticker = message.kind == "sticker";
-                if (isSticker && message.stickerId != null && stickers.TryGetValue(message.stickerId, out var sprite))
-                    sticker.sprite = sprite;
-                sticker.enabled = sticker.sprite;
-                ArenaArt.SetText(body, isSticker ? (sticker.enabled ? "" : locale.Resolve("arena.chat.sticker_missing")) : message.text);
+                Image sticker = null;
+                if (isSystem)
+                {
+                    var text = message.systemCode switch
+                    {
+                        "first_pick_changed" => GameText.Format(locale, "arena.chat.first_pick_changed", message.text),
+                        "preban_count_changed" => GameText.Format(locale, "arena.chat.preban_count_changed", message.text),
+                        "ban_protection_enabled" => locale.Resolve("arena.chat.ban_protection_enabled"),
+                        "ban_protection_disabled" => locale.Resolve("arena.chat.ban_protection_disabled"),
+                        _ => message.text
+                    };
+                    ArenaArt.SetText(body, text);
+                }
+                else
+                {
+                    ArenaArt.SetAvatar(map.Require<BindingMap>("avatar"), message.player, false);
+                    SetPlayerName(map.Require<GameText>("sender"), message.player);
+                    sticker = map.Require<Image>("sticker");
+                    bool isSticker = message.kind == "sticker";
+                    if (isSticker && message.stickerId != null && stickers.TryGetValue(message.stickerId, out var sprite))
+                        sticker.sprite = sprite;
+                    sticker.enabled = sticker.sprite;
+                    ArenaArt.SetText(body, isSticker ? (sticker.enabled ? "" : locale.Resolve("arena.chat.sticker_missing")) : message.text);
+                }
                 DateTimeOffset? createdAt = DateTimeOffset.TryParse(message.createdAt, CultureInfo.InvariantCulture,
                     DateTimeStyles.None, out var time) ? time : (DateTimeOffset?)null;
 
@@ -511,9 +554,11 @@ namespace AstralOath.Client.Arena
                 float rowWidth = history.viewport.rect.width - layout.padding.horizontal;
                 float textFraction = body.rectTransform.anchorMax.x - body.rectTransform.anchorMin.x;
                 float bodyWidth = Mathf.Max(1, rowWidth * textFraction - body.margin.x - body.margin.z);
-                size.preferredHeight = sticker.enabled ? 176 : Mathf.Max(size.minHeight, 58 + body.GetPreferredValues(body.text, bodyWidth, 0).y);
+                float padding = isSystem ? 12f : 58f;
+                size.preferredHeight = sticker && sticker.enabled ? 176 :
+                    Mathf.Max(size.minHeight, padding + body.GetPreferredValues(body.text, bodyWidth, 0).y);
                 var rowRect = (RectTransform)row.transform;
-                var entry = new MessageRow(rowRect, map.Require<GameText>("age"), createdAt);
+                var entry = new MessageRow(rowRect, isSystem ? null : map.Require<GameText>("age"), createdAt);
                 SetMessageAge(entry, now);
                 messages.Add(message.id, entry);
                 rowRect.SetSiblingIndex(messages.IndexOfKey(message.id));
@@ -548,6 +593,7 @@ namespace AstralOath.Client.Arena
 
         private void SetMessageAge(MessageRow row, DateTimeOffset now)
         {
+            if (!row.Age) return;
             string text = row.CreatedAt.HasValue ? FormatMessageAge(now - row.CreatedAt.Value) : string.Empty;
             if (row.Age.text == text) return;
             ArenaArt.SetText(row.Age, text);

@@ -14,6 +14,8 @@ TryGetBonePose 返回官方内核计算后的只读局部位置（已按 source.
 
 母包骨骼材质允许离屏特效给 RGB 与 alpha 分别指定混合因子。竞技场确认光在实例材质上启用，普通骨骼仍使用默认覆盖行为；加色层只累加亮度，避免后续 UI 合成把光误当作遮罩。竞技场源骨骼的 sRGB 颜色转换与粒子的柔光衰减也仅对该实例启用。
 
+联机预载可以在主线程调用 `SkeletonPlayerFactory.PrepareAsync`。调用时先读取图集页的纹理引用和尺寸，之后只在工作线程解析托管骨骼数据。同一来源用同一份解析缓存。预载调用方保留资源句柄并管理并发与取消，实际网格、材质和动画播放仍在 Unity 主线程。Unity EditMode 验证 2.1 和 3.8 在图集页未声明尺寸时也能复用此缓存。新接口属于 AOT，交付需重新构建母包。
+
 本桥接不是 Canvas Graphic，Root 使用 MeshRenderer，需要场景 Camera，或由上层将相机 RenderTexture 显示到 UI。EditMode 测试验证动画/几何/生命周期/材质配置；shader 最终像素、真实资源画面及 Windows IL2CPP 播放另做验收，不以编译或合成测试代替。
 
 ## 2.1 动画状态约定

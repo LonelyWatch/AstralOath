@@ -19,11 +19,11 @@ namespace AstralOath.Client.Skeletons
             foreach (var skin in data.Skins) Skins.Add(skin.Name);
             state.Event += OnEvent; state.Complete += OnComplete;
         }
-        internal static S.SkeletonData Prepare(SkeletonPlayerSource source)
+        internal static S.SkeletonData Prepare(SkeletonPlayerSource source, SkeletonTextureLoader loader = null)
         {
             if (source.ParsedData is S.SkeletonData cached) return cached;
             S.Atlas atlas;
-            using (var reader = new StringReader(source.Atlas)) atlas = new S.Atlas(reader, "", new SkeletonTextureLoader(source.Textures));
+            using (var reader = new StringReader(source.Atlas)) atlas = new S.Atlas(reader, "", loader ?? new SkeletonTextureLoader(source.Textures));
             try
             {
                 // The pinned 3.8 RegionAttachment accepts only the native 0/90 layout.

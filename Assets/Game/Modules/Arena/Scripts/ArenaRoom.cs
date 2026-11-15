@@ -21,7 +21,7 @@ namespace AstralOath.Client.Arena
         internal GameButton FirstPick => Bindings.Require<GameButton>("firstPick");
         internal Image FirstPickCheck => Bindings.Require<Image>("firstPickCheck");
         internal GameText FirstPickLabel => Bindings.Require<GameText>("firstPickLabel");
-        internal GameObject GuestFirstPick => Bindings.Require<GameObject>("guestFirstPick");
+        internal GameButton GuestFirstPick => Bindings.Require<GameButton>("guestFirstPick");
         internal Image GuestFirstPickCheck => Bindings.Require<Image>("guestFirstPickCheck");
         internal GameText GuestFirstPickLabel => Bindings.Require<GameText>("guestFirstPickLabel");
         public GameObject Toast => Bindings.Require<GameObject>("toast");
@@ -45,16 +45,19 @@ namespace AstralOath.Client.Arena
         public GameObject MemberRow => Bindings.Require<GameObject>("memberRow");
         public ScrollRect Messages => Bindings.Require<ScrollRect>("messages");
         public GameObject ChatRow => Bindings.Require<GameObject>("chatRow");
+        internal GameObject SystemRow => Bindings.Require<GameObject>("systemRow");
+        internal GameText StartLabel => Bindings.Require<GameText>("startLabel");
+        internal GameText GuestReady => Bindings.Require<GameText>("guestReady");
         public override void Validate()
         {
             _ = Leave; _ = Send; _ = RoomName; _ = Rule; _ = Count; _ = HostName; _ = GuestName; _ = Status; _ = StatusBoard;
-            _ = Emoji; _ = EmojiPicker; _ = Start; _ = Toast; _ = RoomLock;
+            _ = Emoji; _ = EmojiPicker; _ = Start; _ = StartLabel; _ = GuestReady; _ = Toast; _ = RoomLock;
             _ = DraftSettings; _ = PrebanCount; _ = PrebanLabel; _ = BanProtection; _ = ProtectionLabel;
             _ = FirstPick; _ = FirstPickCheck; _ = FirstPickLabel;
             _ = GuestFirstPick; _ = GuestFirstPickCheck; _ = GuestFirstPickLabel;
             ValidateSettingsPicker(PrebanPicker, 4);
             ValidateSettingsPicker(ProtectionPicker, 2);
-            _ = Message; _ = Host; _ = Guest; _ = Vacant; _ = EmptyInfo; _ = Members; _ = MemberRow; _ = Messages; _ = ChatRow;
+            _ = Message; _ = Host; _ = Guest; _ = Vacant; _ = EmptyInfo; _ = Members; _ = MemberRow; _ = Messages; _ = ChatRow; _ = SystemRow;
         }
 
         private static void ValidateSettingsPicker(GameObject picker, int choices)

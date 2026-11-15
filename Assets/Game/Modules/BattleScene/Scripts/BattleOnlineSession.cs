@@ -68,7 +68,13 @@ namespace AstralOath.Client.BattleScene
             this.localIsHost = localIsHost;
         }
 
-        internal async Task OpenAsync(TextAsset asset, BattleCatalogData catalog, CancellationToken token)
+        internal async Task<(JObject Payload, double SentAt, double ReceivedAt)> FetchOpeningAsync(CancellationToken token)
+        {
+            using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(token, lifetime.Token);
+            return await FetchResponseAsync(null, 0, cancellation.Token);
+        }
+
+        internal void Open(TextAsset asset, BattleCatalogData catalog, (JObject Payload, double SentAt, double ReceivedAt) response)
         {
             using var hash = SHA256.Create();
             string canonical = asset.text.TrimStart('\ufeff').Replace("\r\n", "\n");
@@ -76,8 +82,7 @@ namespace AstralOath.Client.BattleScene
             if (!string.Equals(localHash, contentHash, StringComparison.OrdinalIgnoreCase))
                 throw new InvalidDataException("Client and server battle data differ.");
             heroes = catalog.heroes.ToDictionary(row => row.id, StringComparer.Ordinal);
-            using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(token, lifetime.Token);
-            var update = await SendAsync(null, 0, cancellation.Token);
+            var update = Decode(response, null, 0, false);
             Snapshot = update.Snapshot;
             ApplyClock(update);
         }
@@ -163,7 +168,11 @@ namespace AstralOath.Client.BattleScene
             clockSampleTime = update.ClockSampleTime;
         }
 
-        private async Task<Update> SendAsync(JObject command, ulong cursor, CancellationToken token, bool ready = false)
+        private async Task<Update> SendAsync(JObject command, ulong cursor, CancellationToken token, bool ready = false) =>
+            Decode(await FetchResponseAsync(command, cursor, token, ready), command, cursor, ready);
+
+        private async Task<(JObject Payload, double SentAt, double ReceivedAt)> FetchResponseAsync(
+            JObject command, ulong cursor, CancellationToken token, bool ready = false)
         {
             token.ThrowIfCancellationRequested();
             string after = "?after=" + cursor.ToString(CultureInfo.InvariantCulture);
@@ -210,12 +219,18 @@ namespace AstralOath.Client.BattleScene
             }
             if (web.result != UnityWebRequest.Result.Success)
                 throw new IOException("Battle service did not respond.");
+            double receivedAt = Time.realtimeSinceStartupAsDouble;
+            try { return (JObject.Parse(web.downloadHandler.text), sentAt, receivedAt); }
+            catch (JsonException error) { throw new InvalidDataException("Battle service returned invalid data.", error); }
+        }
+
+        private Update Decode((JObject Payload, double SentAt, double ReceivedAt) response, JObject command, ulong cursor, bool ready)
+        {
             try
             {
-                var update = Read(JObject.Parse(web.downloadHandler.text), command == null || ready, cursor);
-                double receivedAt = Time.realtimeSinceStartupAsDouble;
-                update.ClockSampleTime = (sentAt + receivedAt) * .5d;
-                update.LatencyMilliseconds = (int)Math.Round((receivedAt - sentAt) * 1000d);
+                var update = Read(response.Payload, command == null || ready, cursor);
+                update.ClockSampleTime = (response.SentAt + response.ReceivedAt) * .5d;
+                update.LatencyMilliseconds = (int)Math.Round((response.ReceivedAt - response.SentAt) * 1000d);
                 if (ready)
                 {
                     update.ReadySequence = (ulong)command["commandSequence"];

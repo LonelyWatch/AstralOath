@@ -7,6 +7,7 @@ namespace AstralOath.Client.Skeletons
     public sealed class SkeletonPlayerSource
     {
         // Source-owned immutable parse cache. No static references or live playback state.
+        internal readonly object ParseLock = new object();
         internal object ParsedData;
         internal string ExportVersion;
         public string Json { get; }

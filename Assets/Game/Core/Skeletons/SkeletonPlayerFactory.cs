@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 using Newtonsoft.Json;
 namespace AstralOath.Client.Skeletons
@@ -11,21 +13,48 @@ namespace AstralOath.Client.Skeletons
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (parent == null) throw new ArgumentNullException(nameof(parent));
-            string version = ReadVersion(source);
-            // Decide from the actual export header, never a filename or caller-supplied guess.
+            string version;
             SkeletonRuntime runtime;
-            if (version == "2.1" || version.StartsWith("2.1.", StringComparison.Ordinal)) runtime = new Spine21Runtime(source);
-            else if (version == "3.8" || version.StartsWith("3.8.", StringComparison.Ordinal)) runtime = new Spine38Runtime(source);
-            else throw new NotSupportedException("Unsupported Spine export version: " + version);
+            lock (source.ParseLock)
+            {
+                version = ReadVersion(source);
+                // Decide from the actual export header, never a filename or caller-supplied guess.
+                if (version == "2.1" || version.StartsWith("2.1.", StringComparison.Ordinal)) runtime = new Spine21Runtime(source);
+                else if (version == "3.8" || version.StartsWith("3.8.", StringComparison.Ordinal)) runtime = new Spine38Runtime(source);
+                else throw new NotSupportedException("Unsupported Spine export version: " + version);
+            }
             try { return new SkeletonPlayer(runtime, source.PremultipliedAlpha, version, parent); }
             catch { runtime.Dispose(); throw; }
         }
         public void Prepare(SkeletonPlayerSource source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
+            lock (source.ParseLock) PrepareManaged(source, null);
+        }
+
+        // Call from Unity's main thread while the caller owns the atlas textures.
+        // Only the original runtimes' managed parsing runs on a worker.
+        public Task PrepareAsync(SkeletonPlayerSource source, CancellationToken token)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            token.ThrowIfCancellationRequested();
+            var loader = new SkeletonTextureLoader(source.Textures);
+            return Task.Run(() =>
+            {
+                lock (source.ParseLock)
+                {
+                    token.ThrowIfCancellationRequested();
+                    PrepareManaged(source, loader);
+                }
+                token.ThrowIfCancellationRequested();
+            }, token);
+        }
+
+        private static void PrepareManaged(SkeletonPlayerSource source, SkeletonTextureLoader loader)
+        {
             string version = ReadVersion(source);
-            if (version == "2.1" || version.StartsWith("2.1.", StringComparison.Ordinal)) Spine21Runtime.Prepare(source);
-            else if (version == "3.8" || version.StartsWith("3.8.", StringComparison.Ordinal)) Spine38Runtime.Prepare(source);
+            if (version == "2.1" || version.StartsWith("2.1.", StringComparison.Ordinal)) Spine21Runtime.Prepare(source, loader);
+            else if (version == "3.8" || version.StartsWith("3.8.", StringComparison.Ordinal)) Spine38Runtime.Prepare(source, loader);
             else throw new NotSupportedException("Unsupported Spine export version: " + version);
         }
         private static string ReadVersion(SkeletonPlayerSource source)

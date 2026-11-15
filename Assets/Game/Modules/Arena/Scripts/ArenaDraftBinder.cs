@@ -59,6 +59,7 @@ namespace AstralOath.Client.Arena
         private readonly string[] shownFormation = new string[4];
 
         private BindingScope scope;
+        private BattleOnlineLaunch.Preparation battlePreload;
         private ArenaDraftState draft;
         private string candidate, featured, featuredBan, loadedBattle;
         private string[] formation = Empty;
@@ -266,6 +267,8 @@ namespace AstralOath.Client.Arena
             launching = true;
             Render();
             var match = draft;
+            var prepared = battlePreload;
+            battlePreload = null;
             try
             {
                 var own = match.Own.player;
@@ -273,12 +276,13 @@ namespace AstralOath.Client.Arena
                 var identities = new BattleOnlinePlayers(own.displayName, opponent.displayName, own.avatarId, opponent.avatarId,
                     GetArt(own.avatarId)?.Face, GetArt(opponent.avatarId)?.Face);
                 await BattleOnlineLaunch.LoadAsync(assets, scenes, api.Endpoint, match.roomId, match.battleId, match.contentHash,
-                    api.Bearer, match.IsHost, token, identities);
+                    api.Bearer, match.IsHost, token, identities, prepared);
                 loadedBattle = match.battleId;
             }
-            catch (OperationCanceledException) when (token.IsCancellationRequested) { }
+            catch (OperationCanceledException) when (token.IsCancellationRequested) { prepared?.Dispose(); }
             catch (Exception error)
             {
+                prepared?.Dispose();
                 Debug.LogException(error);
                 if (!token.IsCancellationRequested) view.Label("status").text = L("arena.draft.launch_failed");
                 await Task.Delay(2500, token);
@@ -311,11 +315,22 @@ namespace AstralOath.Client.Arena
             {
                 candidate = null;
                 swapIndex = -1;
-                if (draft.phase == "formation")
-                    formation = DraftFormation();
+                if (scope != null && battlePreload == null && draft.phase is "pick" or "ban" or "formation")
+                    battlePreload = BattleOnlineLaunch.BeginPreload(assets, scenes, scope.Token);
+                if (draft.phase == "formation") formation = DraftFormation();
             }
             bool hostPicked = previousPhase == "pick" && Count(draft.host.picks) > priorHostPicks;
             bool guestPicked = previousPhase == "pick" && Count(draft.guest.picks) > priorGuestPicks;
+            if (battlePreload != null && (changedPhase || hostPicked || guestPicked) &&
+                draft.phase is "pick" or "ban" or "formation")
+            {
+                // Only the public, locked selections supply model IDs. A highlighted candidate
+                // or an unacknowledged click must never affect the warmed roster.
+                string ownBan = draft.phase == "formation" ? draft.Opponent.ban : null;
+                string enemyBan = draft.phase == "formation" ? draft.Own.ban : null;
+                battlePreload.WarmRoster((draft.Own.picks ?? Empty).Where(id => !string.IsNullOrEmpty(id) && id != ownBan)
+                    .Concat((draft.Opponent.picks ?? Empty).Where(id => !string.IsNullOrEmpty(id) && id != enemyBan)));
+            }
             if (hostPicked || guestPicked)
             {
                 candidate = null;
@@ -442,9 +457,11 @@ namespace AstralOath.Client.Arena
             foreach (var choice in revealedOwn.Concat(revealedEnemy)) choice.Button.interactable = false;
 
             if (arrange) RenderFormation(canAct);
+            string activeCandidate = draft.OwnTurn ? candidate : draft.previewHeroId;
             string portraitId = pre || arrange ? null : ban
                 ? candidate ?? draft.Own.ban ?? (lastPickFeedbackUntil > 0f ? featured : null)
-                : candidate ?? featured ?? draft.Own.picks?.LastOrDefault() ?? draft.Opponent.picks?.LastOrDefault();
+                : !string.IsNullOrEmpty(activeCandidate) ? activeCandidate
+                : featured ?? draft.Own.picks?.LastOrDefault() ?? draft.Opponent.picks?.LastOrDefault();
             SetFeatured(portraitId, ban && (candidate != null || draft.Own.ban != null));
             UpdateTimer();
             ApplySearch();
@@ -954,6 +971,8 @@ namespace AstralOath.Client.Arena
         private void Close()
         {
             rosterFilter.Close();
+            battlePreload?.Dispose();
+            battlePreload = null;
             scope = null;
             visibleRoster = Array.Empty<Choice>();
             feature.Clear();

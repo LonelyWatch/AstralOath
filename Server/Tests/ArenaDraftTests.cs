@@ -252,6 +252,15 @@ public sealed class ArenaDraftTests
             await ExpectFailure(host, settings, new { prebanCount = 4 }, HttpStatusCode.BadRequest, "invalid_draft_settings");
             await ExpectFailure(host, settings, new { firstPick = "unknown" }, HttpStatusCode.BadRequest, "invalid_draft_settings");
 
+            var initialReady = await Send(guest, roomPath + "/draft/ready", new { ready = true });
+            Assert.True(initialReady.GetProperty("supportsDraftReady").GetBoolean());
+            Assert.Single(initialReady.GetProperty("readyPlayerIds").EnumerateArray());
+            await Send(host, roomPath + "/draft/ready", new { ready = true });
+            var unchanged = await Send(host, settings, new { firstPick = "host" });
+            Assert.Equal(2, unchanged.GetProperty("readyPlayerIds").GetArrayLength());
+            var quiet = await guest.GetFromJsonAsync<JsonElement>(Api(roomPath + "/messages"), ct);
+            Assert.Equal(0, quiet.GetProperty("messages").GetArrayLength());
+
             // Concurrent updates to different fields must preserve both settings.
             await Task.WhenAll(Send(host, settings, new { prebanCount = 3 }),
                 Send(host, settings, new { firstPick = "guest" }));
@@ -259,8 +268,19 @@ public sealed class ArenaDraftTests
             AssertSettings(updated, 3, "guest", false);
             var guestRoom = (await guest.GetFromJsonAsync<JsonElement>(Api(roomPath), ct)).GetProperty("room");
             AssertSettings(guestRoom, 3, "guest", false);
+            Assert.Equal(0, (await Send(host, settings, new { firstPick = "guest" })).GetProperty("readyPlayerIds").GetArrayLength());
+            var notices = (await guest.GetFromJsonAsync<JsonElement>(Api(roomPath + "/messages"), ct)).GetProperty("messages");
+            Assert.All(notices.EnumerateArray(), notice => Assert.Equal("system", notice.GetProperty("kind").GetString()));
+            var byCode = notices.EnumerateArray().ToDictionary(notice => notice.GetProperty("systemCode").GetString()!);
+            Assert.Equal(3, byCode.Count);
+            Assert.Equal("2", byCode["first_pick_changed"].GetProperty("text").GetString());
+            Assert.Equal("3", byCode["preban_count_changed"].GetProperty("text").GetString());
+            Assert.Contains("ban_protection_disabled", byCode.Keys);
+            await ExpectFailure(host, roomPath + "/draft/start", new { requestId = RequestId(), requireReady = true },
+                HttpStatusCode.Conflict, "draft_guest_not_ready");
+            await Send(guest, roomPath + "/draft/ready", new { ready = true });
 
-            var draft = await Send(host, roomPath + "/draft/start", new { requestId = RequestId() });
+            var draft = await Send(host, roomPath + "/draft/start", new { requestId = RequestId(), requireReady = true });
             Assert.Equal("preban", Phase(draft));
             AssertSettings(draft, 3, "guest", false);
             var eligible = draft.GetProperty("eligibleHeroIds").EnumerateArray().Select(row => row.GetString()!).ToArray();

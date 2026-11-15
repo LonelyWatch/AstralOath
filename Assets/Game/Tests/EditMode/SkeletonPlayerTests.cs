@@ -44,6 +44,28 @@ namespace AstralOath.Client.Tests
             Assert.That(mesh.bounds.center.x, Is.EqualTo(2.5f).Within(0.001));
         }
         [TestCase("2.1.25")][TestCase("3.8.99")]
+        public void BackgroundPreparationSupportsAtlasPagesWithoutAuthoredDimensions(string version)
+        {
+            // Missing atlas size uses the Unity texture dimensions. This access must be
+            // captured before managed parsing moves to the worker.
+            var source = new SkeletonPlayerSource(Json(version), Atlas.Replace("\nsize: 16,16\n", "\nsize: 0,0\n"),
+                new Dictionary<string, Texture2D> { ["page.png"] = texture }, scale: 1f);
+            var factory = new SkeletonPlayerFactory();
+            var prepare = typeof(SkeletonPlayerFactory).GetMethod("PrepareAsync");
+            Assert.That(prepare, Is.Not.Null);
+            var task = (System.Threading.Tasks.Task)prepare.Invoke(factory,
+                new object[] { source, System.Threading.CancellationToken.None });
+            task.GetAwaiter().GetResult();
+
+            var player = factory.Create(source, parent.transform);
+            players.Add(player);
+            Assert.That(player.Root.GetComponent<MeshRenderer>().sharedMaterial.mainTexture, Is.SameAs(texture));
+            player.Play("move", false);
+            player.Tick(.25f);
+            Assert.That(player.Root.GetComponent<MeshFilter>().sharedMesh.bounds.center.x, Is.EqualTo(2.5f).Within(.001f));
+        }
+
+        [TestCase("2.1.25")][TestCase("3.8.99")]
         public void PauseSeekAndFlipPreserveIndependentInstances(string version)
         {
             var first = Create(version); var second = Create(version);

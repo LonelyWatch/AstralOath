@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 namespace AstralOath.Client.BattleScene
 {
@@ -11,7 +12,8 @@ namespace AstralOath.Client.BattleScene
         [Min(1)] public int HealthSections = 10;
         public Sprite HealthDivider, Shield;
         public Sprite ResourceFrame, FocusFill, FightingSpiritFill;
-        public TextAsset StatusManifest;
+        public TextAsset StatusManifest, EffectWordCopy;
+        public TMP_FontAsset EffectWordFont;
         public Sprite[] StatusGlyphs, StatusDigits, LevelDigits;
         [Range(1, BattleStatusIcons.MaximumColumns)] public int StatusIconsPerRow = BattleStatusIcons.MaximumColumns;
         public BattleSkillPresentationAsset ShieldAura;
