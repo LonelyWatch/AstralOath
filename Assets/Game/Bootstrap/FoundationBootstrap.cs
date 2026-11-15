@@ -199,10 +199,21 @@ namespace AstralOath.Client.Bootstrap
 
 
 
-        private void OnDestroy()
+        private void OnApplicationQuit() => Shutdown();
+        private void OnDestroy() => Shutdown();
+
+        private void Shutdown()
         {
+            var scope = lifetime;
+            lifetime = null;
             entry = null;
-            try { lifetime?.Dispose(); }
+            if (scope == null)
+                return;
+
+            // TMP submeshes use the parent font material during OnDisable.
+            try { if (viewRoot) viewRoot.gameObject.SetActive(false); }
+            catch (Exception error) { Debug.LogException(error); }
+            try { scope.Dispose(); }
             catch (Exception error) { Debug.LogException(error); }
         }
 
