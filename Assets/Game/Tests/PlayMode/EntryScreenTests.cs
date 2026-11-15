@@ -14,6 +14,35 @@ namespace AstralOath.Client.Tests.PlayMode
     public sealed class EntryScreenTests
     {
         [UnityTest]
+        public IEnumerator VerifiedUpdateWaitsForRestartConfirmation()
+        {
+            var canvas = new GameObject("Restart test canvas", typeof(RectTransform), typeof(Canvas));
+            try
+            {
+                var type = typeof(FoundationBootstrap).Assembly.GetType("AstralOath.Client.Bootstrap.EntryScreen");
+                Assert.That(type, Is.Not.Null);
+                var showRestart = type.GetMethod("ShowRestartAsync");
+                Assert.That(showRestart, Is.Not.Null);
+                using var screen = (IDisposable)Activator.CreateInstance(type,
+                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
+                    null, new object[] { canvas.transform, null }, null);
+                var prompt = (Task)showRestart.Invoke(screen, new object[] { CancellationToken.None });
+                Assert.That(prompt.IsCompleted, Is.False);
+                var message = Array.Find(canvas.GetComponentsInChildren<GameText>(),
+                    candidate => candidate.name == "Restart instructions");
+                Assert.That(message?.text, Does.Contain("重新打开"));
+                var confirm = Array.Find(canvas.GetComponentsInChildren<GameButton>(),
+                    candidate => candidate.name == "Quit after hot update");
+                Assert.That(confirm, Is.Not.Null);
+                confirm.onClick.Invoke();
+                Assert.That(prompt.IsCompletedSuccessfully, Is.True);
+                Assert.That(confirm.IsInteractable(), Is.False);
+                yield return null;
+            }
+            finally { UnityEngine.Object.Destroy(canvas); }
+        }
+
+        [UnityTest]
         public IEnumerator PatchCancellationDoesNotAcceptDownloadAndHiddenScreenCancelsPendingPrompt()
         {
             var canvas = new GameObject("Test canvas", typeof(RectTransform), typeof(Canvas));

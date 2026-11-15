@@ -10,6 +10,10 @@ param(
     [ValidatePattern('^[A-Za-z0-9_.|]+$')][string]$TestFilter,
     [switch]$DevelopmentHttp,
     [switch]$Development,
+    [switch]$Minimal,
+    [string]$ContentManifestUrl,
+    [string]$ContentSignatureUrl,
+    [string]$ContentPublicKey,
     [string]$BaselineId,
     [string]$BaselinePath,
     [string]$AppVersion,
@@ -22,6 +26,12 @@ param(
     [ValidateRange(1, 14400)][int]$TimeoutSeconds = 3600
 )
 $ErrorActionPreference = 'Stop'
+if ($Minimal -and $Mode -ne 'Windows') {
+    throw '-Minimal is available only for the Windows Foundation player.'
+}
+if (!$Minimal -and ($ContentManifestUrl -or $ContentSignatureUrl -or $ContentPublicKey)) {
+    throw 'Download endpoints and the public key are build arguments for -Mode Windows -Minimal.'
+}
 if ($TestFilter -and $Mode -notin 'EditMode','PlayMode') {
     throw 'TestFilter requires EditMode or PlayMode.'
 }
@@ -48,7 +58,7 @@ if (-not $NoSync) {
             $relative = [IO.Path]::GetRelativePath($source, $file.FullName)
             if ($relative -match '(^|[\\/])(bin|obj|\.git)([\\/]|$)') { continue }
             if ($tree -eq 'Assets' -and $relative.Replace('\','/') -match
-                '^(Game/HotUpdate/Generated(?:[/.]|$)|HybridCLR/Generate(?:[/.]|$)|Game/Bootstrap/Resources/AstralOathPlayerBaseline\.json(?:\.meta)?$)') { continue }
+                '^(Game/HotUpdate/Generated(?:[/.]|$)|HybridCLR/Generate(?:[/.]|$)|Game/Bootstrap/Resources/AstralOath(?:PlayerBaseline|MinimalContent)\.json(?:\.meta)?$)') { continue }
             $expected.Add($relative) | Out-Null
             $target = Join-Path $destination $relative
             New-Item -ItemType Directory -Force (Split-Path $target) | Out-Null
@@ -76,6 +86,7 @@ if ($Mode -in 'AndroidAstc','AndroidEtc2','HotAndroidAstc','HotAndroidEtc2') { $
 if ($BuildTarget) { $arguments += @('-buildTarget', $BuildTarget) }
 if ($DevelopmentHttp) { $arguments += '-astral-dev-http' }
 if ($Development) { $arguments += '-astral-development' }
+if ($Minimal) { $arguments += '-astral-minimal' }
 if (-not $OutputRoot) { $OutputRoot = Join-Path $repo $(if ($isCharacterLab) { '.artifacts/characterlab-builds' } else { '.artifacts/builds' }) }
 $bindings = @{
     '-astral-baseline-id' = $BaselineId
@@ -85,11 +96,14 @@ $bindings = @{
     '-astral-android-version-code' = $AndroidVersionCode
     '-astral-output-root' = $OutputRoot
     '-astral-offline-path' = $OfflinePath
+    '-astral-content-manifest' = $ContentManifestUrl
+    '-astral-content-signature' = $ContentSignatureUrl
+    '-astral-content-public-key' = $ContentPublicKey
 }
 foreach ($name in $bindings.Keys) {
     $value = $bindings[$name]
     if (-not $value) { continue }
-    if ($name -in '-astral-baseline-path','-astral-output-root','-astral-offline-path') {
+    if ($name -in '-astral-baseline-path','-astral-output-root','-astral-offline-path','-astral-content-public-key') {
         $value = [IO.Path]::GetFullPath($value, (Get-Location).ProviderPath)
     }
     if ("$value" -match '["\r\n]') { throw "Invalid value for $name." }

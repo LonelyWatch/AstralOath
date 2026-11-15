@@ -73,6 +73,9 @@ namespace AstralOath.Client.Bootstrap
                     ["entry.patch.validating"] = "正在校验资源……",
                     ["entry.patch.progress"] = "{0} / {1}   {2}/s",
                     ["entry.patch.percent"] = "{0:0}%",
+                    ["entry.patch.restart.title"] = "更新完成",
+                    ["entry.patch.restart.message"] = "资源校验完成。请退出并重新打开游戏，启用更新内容。",
+                    ["entry.patch.restart.exit"] = "退出游戏",
                     ["entry.force.title"] = "需要更新客户端",
                     ["entry.force.message"] = "当前客户端版本过低，请前往QQ群下载最新版。",
                     ["entry.force.minimum"] = "最低客户端版本：{0}",
@@ -325,6 +328,20 @@ namespace AstralOath.Client.Bootstrap
             progressAmount.text = L("entry.patch.progress", Bytes(receivedBytes), Bytes(totalBytes), Bytes(bytesPerSecond));
             progressPercent.text = L("entry.patch.percent", Math.Floor(fraction * 100));
             progressFill.anchorMax = new Vector2((float)fraction, 1);
+        }
+
+        public Task ShowRestartAsync(CancellationToken token)
+        {
+            SetBackground(titleBackground);
+            ResetPanel();
+            var prompt = Prompt<bool>(token);
+            RectTransform band = PatchBand(L("entry.patch.restart.title"));
+            Label(Box("Restart instructions", band, .19f, .28f, .81f, .68f),
+                L("entry.patch.restart.message"), 31, White, TextAlignmentOptions.Center, wrap: true);
+            Button(Box("Quit after hot update", band, .417f, .806f, .583f, .927f), L("entry.patch.restart.exit"),
+                "ButtonGreenRound", new Color32(25, 75, 46, 255), GameUiFeedback.Sound.Confirm,
+                () => Complete(prompt, true), 28, "ButtonGreenRoundPressed");
+            return prompt.Task;
         }
 
         public Task ShowForceAsync(string detail, CancellationToken token)

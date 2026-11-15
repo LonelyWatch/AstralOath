@@ -82,6 +82,11 @@ namespace AstralOath.Client.Bootstrap
                     var flow = new EntryFlow(new EntryWebClient(server.Address), screen, Application.version, !Application.isEditor);
                     var admission = await flow.OpenAsync(OpenContent, scope.Token);
                     content = admission.content;
+                    if (content == null)
+                    {
+                        Quit(0);
+                        return;
+                    }
                     if (scope.Token.IsCancellationRequested)
                     {
                         content.Dispose();

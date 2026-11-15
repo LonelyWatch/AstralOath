@@ -18,6 +18,9 @@ namespace AstralOath.Client.BattleScene
         [SerializeField] internal Texture2D[] textures;
         [SerializeField] internal Sprite arenaBackdrop;
         [SerializeField] internal TextAsset zhHans;
+        [SerializeField] internal Sprite[] hudSprites;
+        [SerializeField] internal TextAsset hudScoreLayout;
+        [SerializeField] internal BattleHudPreview.SpineEffect arrivalWarning, arrivalDust;
 
         [Serializable, Preserve]
         internal sealed class Copy
@@ -43,14 +46,19 @@ namespace AstralOath.Client.BattleScene
         {
             var asset = await assets.LoadAsync<BattleOnlineTransitionAssets>(Address, scope);
             if (!asset || asset.skeletons == null || asset.skeletons.Length == 0 ||
-                asset.skeletons.Any(item => item == null || !item.skeleton || !item.atlas || !item.page) ||
+                asset.skeletons.Any(IsIncomplete) ||
                 asset.skeletons.Select(item => item.page.name).Distinct(StringComparer.Ordinal).Count() != asset.skeletons.Length ||
                 !asset.closeCfx || !asset.openCfx || !asset.ignitionCfx || !asset.doorClose || !asset.doorOpen ||
                 !asset.arenaBackdrop || !asset.zhHans ||
+                !asset.hudScoreLayout || asset.hudSprites == null || asset.hudSprites.Length == 0 || asset.hudSprites.Any(item => !item) ||
+                IsIncomplete(asset.arrivalWarning) || IsIncomplete(asset.arrivalDust) ||
                 asset.particles == null || asset.particles.Any(item => !item) ||
                 asset.textures == null || asset.textures.Any(item => !item))
                 throw new InvalidOperationException("Online battle transition resources are incomplete.");
             return asset;
         }
+
+        private static bool IsIncomplete(BattleHudPreview.SpineEffect effect)
+            => effect == null || !effect.skeleton || !effect.atlas || !effect.page;
     }
 }

@@ -26,6 +26,10 @@ namespace AstralOath.Editor
         public string outputRoot = ".artifacts/builds";
         public string signingKey = "";
         public string offlinePath = "";
+        [NonSerialized] public bool minimal;
+        public string contentManifestUrl = "";
+        public string contentSignatureUrl = "";
+        public string contentPublicKey = "";
         public bool development;
         public bool developmentHttp;
 
@@ -42,6 +46,10 @@ namespace AstralOath.Editor
             settings.appVersion = ReadArg(args, "-astral-app-version", settings.appVersion);
             settings.outputRoot = ReadArg(args, "-astral-output-root", settings.outputRoot);
             settings.offlinePath = ReadArg(args, "-astral-offline-path", settings.offlinePath);
+            settings.minimal = args.Contains("-astral-minimal");
+            settings.contentManifestUrl = ReadArg(args, "-astral-content-manifest", settings.contentManifestUrl);
+            settings.contentSignatureUrl = ReadArg(args, "-astral-content-signature", settings.contentSignatureUrl);
+            settings.contentPublicKey = ReadArg(args, "-astral-content-public-key", settings.contentPublicKey);
             settings.signingKey = Environment.GetEnvironmentVariable("ASTRAL_SIGNING_KEY") ?? settings.signingKey;
             var content = ReadArg(args, "-astral-content-version", settings.contentVersion.ToString(CultureInfo.InvariantCulture));
             var android = ReadArg(args, "-astral-android-version-code", settings.androidVersionCode.ToString(CultureInfo.InvariantCulture));
@@ -227,6 +235,9 @@ namespace AstralOath.Editor
             settings.outputRoot = PathField("输出目录", settings.outputRoot, folder: true);
             settings.signingKey = PathField("本地 RSA 私钥", settings.signingKey);
             settings.offlinePath = PathField("离线 libil2cpp 源", settings.offlinePath, folder: true);
+            settings.contentManifestUrl = EditorGUILayout.TextField("最小包清单 URL", settings.contentManifestUrl);
+            settings.contentSignatureUrl = EditorGUILayout.TextField("最小包签名 URL", settings.contentSignatureUrl);
+            settings.contentPublicKey = PathField("最小包 RSA 公钥 JSON", settings.contentPublicKey);
             settings.development = EditorGUILayout.Toggle("开发构建", settings.development);
             settings.developmentHttp = EditorGUILayout.Toggle("开发 HTTP", settings.developmentHttp);
             if (GUILayout.Button("保存"))

@@ -82,6 +82,42 @@ if ($report.Summary.BuildPackageName -cne 'Foundation' -or $report.Summary.Build
     throw 'The build report does not describe this Foundation package.'
 }
 
+$registeredSources = [Collections.Generic.Dictionary[string,object]]::new([StringComparer]::Ordinal)
+$packageAssets = @($report.BundleInfos.BundleContents | Where-Object { $_.AssetPath -clike 'Packages/*' })
+if ($packageAssets.Count -gt 0 -and $snapshot) {
+    $index = Resolve-ContentSourceFile $snapshot 'package-sources.json'
+    if ((Get-Item -LiteralPath $index).Length -gt 8MB) { throw 'YooAsset package source index exceeded its size limit.' }
+    $sources = Get-Content -LiteralPath $index -Raw | ConvertFrom-Json -AsHashtable
+    if ($sources.reportSha256 -cne (Get-FileHash -LiteralPath $reportFile.FullName).Hash.ToLowerInvariant() -or
+        $sources.files -isnot [array]) { throw 'Package source index does not describe this YooAsset report.' }
+    $expected = [Collections.Generic.Dictionary[string,string]]::new([StringComparer]::Ordinal)
+    foreach ($asset in $packageAssets) {
+        if ($asset.AssetPath -cnotmatch '\APackages/[a-z0-9][a-z0-9.-]+/.+\z' -or
+            $asset.AssetGUID -cnotmatch '\A[a-f0-9]{32}\z') { throw 'Invalid YooAsset package source identity.' }
+        if ($expected.ContainsKey($asset.AssetPath) -and $expected[$asset.AssetPath] -cne $asset.AssetGUID) {
+            throw "Conflicting GUIDs in YooAsset report for '$($asset.AssetPath)'."
+        }
+        $expected[$asset.AssetPath] = $asset.AssetGUID
+    }
+    foreach ($item in $sources.files) {
+        if ($item.path -isnot [string] -or -not $expected.ContainsKey($item.path) -or $expected[$item.path] -cne $item.guid) {
+            throw 'Package source index contains a path or GUID missing from the YooAsset report.'
+        }
+        $assetFile = Resolve-ContentSourceFile $snapshot $item.path
+        $metaFile = Resolve-ContentSourceFile $snapshot ($item.path + '.meta')
+        $digest = (Get-FileHash -LiteralPath $assetFile).Hash.ToLowerInvariant()
+        if ($digest -cne $item.sha256 -or (Get-FileHash -LiteralPath $metaFile).Hash.ToLowerInvariant() -cne $item.metaSha256) {
+            throw "Package source hash mismatch for '$($item.path)'."
+        }
+        $metaGuids = [regex]::Matches((Get-Content -LiteralPath $metaFile -Raw), '(?m)^guid: ([a-f0-9]{32})\r?$')
+        if ($metaGuids.Count -ne 1 -or $metaGuids[0].Groups[1].Value -cne $item.guid) {
+            throw "Package source GUID mismatch for '$($item.path)'."
+        }
+        $registeredSources.Add($item.path, @{ path = $item.path; sha256 = $digest })
+    }
+    if ($registeredSources.Count -ne $expected.Count) { throw 'Package source index is incomplete.' }
+}
+
 $bundles = [Collections.Generic.Dictionary[string,string]]::new([StringComparer]::Ordinal)
 foreach ($bundle in $report.BundleInfos) {
     $bundles.Add($bundle.BundleName, $bundle.FileName)
@@ -104,12 +140,18 @@ $entries = @(
         $primary = $sources[0]
         if ($snapshot -and $primary.StartsWith('Assets/Game/HotUpdate/Generated/', [StringComparison]::Ordinal)) {
             $primary = 'Config/HotUpdate/assemblies.json'
+        } elseif ($primary.StartsWith('Packages/', [StringComparison]::Ordinal)) {
+            $primary = $buildSource
         }
         $entry = New-Provenance $bundle.FileName $primary @($dependencies)
         $entry.sourceAssets = @($sources | ForEach-Object {
-            $sourceRoot = if ($snapshot -and $_.StartsWith('Assets/Game/HotUpdate/Generated/', [StringComparison]::Ordinal)) { $snapshot } else { $repo }
-            $sourceFile = Resolve-ContentSourceFile $sourceRoot $_
-            @{ path = $_; sha256 = (Get-FileHash -LiteralPath $sourceFile).Hash.ToLowerInvariant() }
+            if ($registeredSources.ContainsKey($_)) {
+                $registeredSources[$_]
+            } else {
+                $sourceRoot = if ($snapshot -and $_.StartsWith('Assets/Game/HotUpdate/Generated/', [StringComparison]::Ordinal)) { $snapshot } else { $repo }
+                $sourceFile = Resolve-ContentSourceFile $sourceRoot $_
+                @{ path = $_; sha256 = (Get-FileHash -LiteralPath $sourceFile).Hash.ToLowerInvariant() }
+            }
         })
         $entry
     }

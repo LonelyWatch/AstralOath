@@ -4,6 +4,24 @@
 
 客户端只使用 HybridCLR。首次迁移或稳定 AOT 层发生变化时，需要分发对应平台的新 IL2CPP 母包。Foundation 同一母包的兼容业务代码、配置和资源可随独立热更包发布，在应用完全退出后的下一次启动激活。已经载入的程序集无法在同一进程卸载，启动失败后的恢复也需要新进程。
 
+## 默认选择与最小包
+
+普通「打包」请求先查已分发母包的对应平台和归档，兼容时构建并签名热更包。改动母包信任配置、启动代码及其直接依赖、原生桥接或不兼容协议，或者没有可复用母包时，构建最小强更包。
+
+最小母包包含 IL2CPP 运行时、稳定程序集、第一场景、登录和更新界面、首屏背景、字体及用到的交互图和音效，以及签名公钥和平台需要的着色器、原生插件。更新器在加载业务 DLL 前使用这套内容。角色、战斗场景和演出、主页及活动背景、业务配表、热更程序集和对应 AOT 补充元数据进入签名 YooAsset 发布目录。最小客户端目录不内置 Foundation YooAsset 包。
+
+Windows 最小包与其首发资源在同一次构建生成，为同一个母包 ID。首次启动需要可用的内容端点，先配置同目录的清单 URL、签名 URL 和公钥 JSON。正式地址使用 HTTPS，回环测试地址使用开发包和 `-DevelopmentHttp`。发布者独立签名并提供首发资源。母包归档和签名资源放在客户端安装目录之外。
+
+```powershell
+pwsh -File Tools/Invoke-Unity.ps1 -Mode Windows -Minimal `
+    -AppVersion 0.1.14 -AndroidVersionCode 1 -ContentVersion 1 `
+    -ContentManifestUrl 'https://cdn.example/manifest.json' `
+    -ContentSignatureUrl 'https://cdn.example/manifest.sig' `
+    -ContentPublicKey '<public.json>' -SigningKey '<private.key>'
+```
+
+校验且激活新资源后，客户端在加载业务程序集前提示「更新完成」。点「退出游戏」，重新打开客户端时启用已安装版本。同一版本正常重开不再提示。已有安装被重复打开时继续沿用签名检查及坏包隔离。默认 Windows 完整离线包模式可用于单独的离线验收。
+
 ## 构建配置与程序集登记
 
 当前有两套独立配置，不能互换入口、YooAsset 包、签名设置或母包归档：
@@ -55,7 +73,7 @@ pwsh -File Tools/Content/Package-Unity.ps1 -BuildOutput $hotOutput -Key .artifac
 pwsh -File Tools/Content/Release.ps1 -Action Verify -Key .artifacts/keys/dev/public.pem -Release .artifacts/releases/win-v1-content-2 -SchemaVersion 3
 ```
 
-示例开发公钥须预先作为可信公钥配置到用于联调的母包。配置清单 URL、签名 URL 和公钥的方式见[客户端地基](../architecture/client.md)。按母包和平台维护兼容发布地址。发布目录包含 schema 3 外层签名清单，客户端验签后从同一 YooAsset 版本加载业务程序集和资源。保管私钥及母包归档，不提交到仓库。
+示例开发公钥须预先作为可信公钥配置到用于联调的母包。配置清单 URL、签名 URL 和公钥的方式见[客户端地基](../architecture/client.md)。按母包和平台维护兼容发布地址。发布目录包含 schema 3 外层签名清单，客户端验签后从同一 YooAsset 版本加载业务程序集和资源。保管私钥及母包归档，不提交到仓库。 Unity 包依赖（例如 URP 材质和着色器）由构建按实际解析位置归档，签名时核对 YooAsset 报告、素材与 `.meta` 哈希及 GUID。签名使用构建归档，不从当前编辑器缓存重新猜测依赖。
 
 ## 构建边界
 

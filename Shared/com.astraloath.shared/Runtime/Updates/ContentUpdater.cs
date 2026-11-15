@@ -9,14 +9,17 @@ namespace AstralOath.Shared.Updates
 {
     public sealed class ContentRelease
     {
-        internal ContentRelease(long version, string directoryPath)
+        internal ContentRelease(long version, string directoryPath, bool wasActivated = false)
         {
             Version = version;
             DirectoryPath = directoryPath;
+            WasActivated = wasActivated;
         }
 
         public long Version { get; }
         public string DirectoryPath { get; }
+        // Set only by InstallAsync after a new selection or payload repair is committed.
+        public bool WasActivated { get; }
     }
 
     public readonly struct ContentDownloadProgress
@@ -124,7 +127,8 @@ namespace AstralOath.Shared.Updates
 
                 string stagedRepair = null;
                 string quarantined = null;
-                if (release == null)
+                bool payloadChanged = release == null;
+                if (payloadChanged)
                 {
                     string staging = SafePath(SafePath(store, "staging"), Digest(bytes));
                     string payload = SafePath(staging, "files");
@@ -244,7 +248,8 @@ namespace AstralOath.Shared.Updates
                     }
                     throw;
                 }
-                return release;
+                return new ContentRelease(release.Version, release.DirectoryPath,
+                    payloadChanged || pointer.active != manifest.Version);
             }
         }
 

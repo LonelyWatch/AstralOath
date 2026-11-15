@@ -9,7 +9,6 @@ namespace AstralOath.Client.BattleScene
     internal sealed class BattleOnlineArrival : IDisposable
     {
         private const string Animation = "animation";
-        private const string EffectResources = "AstralOathBattleArrival/";
         private const float WideScale = 1.15f;
         private const float LeadSeconds = .06f;
         private const float RunSeconds = .64f;
@@ -37,11 +36,11 @@ namespace AstralOath.Client.BattleScene
         internal bool EffectsComplete => Complete && allies.Concat(enemies).All(slot => slot.Effect?.Root.activeSelf != true);
 
         internal BattleOnlineArrival(Transform parent, BattlePreviewViewport viewport, IReadOnlyList<BattlePreviewActor> allies,
-            IReadOnlyList<BattlePreviewActor> enemies)
+            IReadOnlyList<BattlePreviewActor> enemies, BattleOnlineTransitionAssets assets)
         {
             this.viewport = viewport;
-            var warning = LoadEffect("encounter_01", .0037f);
-            var dust = LoadEffect("dust_landing", .0042f);
+            var warning = assets.arrivalWarning.CreateSource(.0037f);
+            var dust = assets.arrivalDust.CreateSource(.0042f);
             var factory = new SkeletonPlayerFactory();
             var built = new List<Slot>();
             try
@@ -75,19 +74,6 @@ namespace AstralOath.Client.BattleScene
                 foreach (var slot in built) slot.Effect?.Dispose();
                 throw;
             }
-        }
-
-        private static SkeletonPlayerSource LoadEffect(string name, float scale)
-        {
-            string resource = EffectResources + name;
-            var skeleton = Resources.Load<TextAsset>(resource + ".spine");
-            var atlas = Resources.Load<TextAsset>(resource + ".atlas");
-            var texture = Resources.Load<Texture2D>(resource);
-            if (!skeleton || !atlas || !texture)
-                throw new InvalidOperationException("The online battle arrival effect is incomplete: " + name);
-            return new SkeletonPlayerSource(skeleton.text, atlas.text,
-                new Dictionary<string, Texture2D>(StringComparer.Ordinal) { { name + ".sct", texture } },
-                premultipliedAlpha: true, scale: scale);
         }
 
         internal void Prepare()

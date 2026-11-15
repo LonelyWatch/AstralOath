@@ -183,8 +183,8 @@ Luban 快照 `Configs/battle-catalog.json` 含十名英雄、成长模板、觉�
 
 入场标题在 IGNITION 下方显示金色竞技场与白色决斗场，入场结束释放标题，队伍 HUD 持续显示。独立图层避免被普通 HUD 的入场淡出一同隐藏，退出战斗恢复原波次与速度按钮布局。
 
-素材入口为 `Tools/BattleScene/ImportOnlineHud.py`；`--check` 验证 15 张来源 PNG 逐字节一致及 10 张原版 `score.fnt` 位图数字按字框裁切，`Resources/AstralOathOnlineHud/source.json` 记录每张文件与 `wnd/pvplive_global_hp.csb` 布局证据的 SHA-256。CSB 仅作布局依据，不进入运行时。Unity 编译与 16:9、21:9 实帧截图分别验收；资源校验不能替代视觉对照。
+素材入口为 `Tools/BattleScene/ImportOnlineHud.py`；`--check` 验证 15 张来源 PNG 逐字节一致及 10 张原版 `score.fnt` 位图数字按字框裁切，`Res/Online/AstralOathOnlineHud/source.json` 记录每张文件与 `wnd/pvplive_global_hp.csb` 布局证据的 SHA-256。CSB 仅作布局依据，不进入运行时。联机 HUD 与入场演出由签名资源包地址 battle/online-transition 持有，联机预加载阶段一次取得。Unity 编译与 16:9、21:9 实帧截图分别验收；资源校验不能替代视觉对照。
 
 联机转场配置和战斗场景由当前 Foundation YooAsset 包在热更新程序集加载后读取。选位确认后先加载关门素材，再增量加载场景；退出时卸载该场景，释放转场资源句柄并恢复主页。Windows 安装包验收见[模拟战选禁与入场](../../../../docs/development/arena-draft.md)。
 
-联机入场改用原包 `effect/eff_pvp_intro.cfx` 指定的 `eff_pvp_outro_draw / ignition`。源轨包含白色衬线字、半透明横条和红光柱，时长 1.8667 秒；原火焰粒子不再由联机入场引用。进入在线场景时以本机视角区分阵营。我方留在站位上播放原版 `effect/encounter_01.cfx` 的白色星芒和红色感叹号，对方按入场顺序从镜头右侧沿地面跑进各自站位，停止后按足底位置播放原版 `effect/dust_landing.scsp` 的浅色尘团，保留源网格变形、配色和约 0.567 秒时长。头顶等级和生命值从入场开始跟随角色。最后一名对手入位后镜头才平滑推近，镜头完成和 IGNITION 播放结束后才开放权威战斗输入。素材通过 `Tools/BattleScene/ImportOnlineArrival.py --check` 核对，来源及哈希见 `Resources/AstralOathBattleArrival/source.json`。局内权威倒计时用源位图数字，保持原字距，并把整组数字的可见像素边界居中对齐回合环；回合环仍按己／敌方着色。队伍顶栏恢复 `pvplive_global_hp.csb` 的 `_grow` 半透明底和通用昵称微投影，仅显示实际可取得的玩家资料与本机请求延迟。
+联机入场改用原包 `effect/eff_pvp_intro.cfx` 指定的 `eff_pvp_outro_draw / ignition`。源轨包含白色衬线字、半透明横条和红光柱，时长 1.8667 秒；原火焰粒子不再由联机入场引用。进入在线场景时以本机视角区分阵营。我方留在站位上播放原版 `effect/encounter_01.cfx` 的白色星芒和红色感叹号，对方按入场顺序从镜头右侧沿地面跑进各自站位，停止后按足底位置播放原版 `effect/dust_landing.scsp` 的浅色尘团，保留源网格变形、配色和约 0.567 秒时长。头顶等级和生命值从入场开始跟随角色。最后一名对手入位后镜头才平滑推近，镜头完成和 IGNITION 播放结束后才开放权威战斗输入。素材通过 `Tools/BattleScene/ImportOnlineArrival.py --check` 核对，来源及哈希见 `Res/Online/AstralOathBattleArrival/source.json`。局内权威倒计时用源位图数字，保持原字距，并把整组数字的可见像素边界居中对齐回合环；回合环仍按己／敌方着色。队伍顶栏恢复 `pvplive_global_hp.csb` 的 `_grow` 半透明底和通用昵称微投影，仅显示实际可取得的玩家资料与本机请求延迟。

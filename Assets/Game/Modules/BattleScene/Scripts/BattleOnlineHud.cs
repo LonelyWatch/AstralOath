@@ -46,16 +46,16 @@ namespace AstralOath.Client.BattleScene
         }
 
         internal BattleOnlineHud(BindingMap map, BattleOnlinePlayers players, BattleOnlineTransitionAssets.Copy copy,
-            IReadOnlyDictionary<string, Sprite> roster)
+            IReadOnlyDictionary<string, Sprite> roster, BattleOnlineTransitionAssets assets)
         {
             this.copy = copy ?? throw new ArgumentNullException(nameof(copy));
-            var art = Resources.LoadAll<Sprite>("AstralOathOnlineHud").ToDictionary(item => item.name, StringComparer.Ordinal);
+            var art = assets.hudSprites.ToDictionary(item => item.name, StringComparer.Ordinal);
             foreach (string name in new[] { "_battle_pvp_icon_vs", "game_hud_bar_pvplive", "game_hud_bar_hp",
                 "game_hud_bar_hp_red", "game_hud_bar_split", "_hero_s_frame_enemy", "_hero_s_bg_ally",
                 "time_progress_bg", "time_progress_bar_blue", "time_progress_bar_red" })
                 if (!art.ContainsKey(name)) throw new InvalidOperationException("Online battle HUD art is missing: " + name);
             scoreDigits = Enumerable.Range(0, 10).Select(i => art["score_" + i]).ToArray();
-            var source = Resources.Load<TextAsset>("AstralOathOnlineHud/source");
+            var source = assets.hudScoreLayout;
             scoreGlyphs = source ? JsonUtility.FromJson<ScoreLayout>(source.text)?.scoreGlyphs : null;
             if (scoreGlyphs?.Length != scoreDigits.Length || scoreGlyphs.Any(glyph =>
                 glyph.advance <= 0 || glyph.right <= glyph.left || glyph.bottom <= glyph.top))

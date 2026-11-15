@@ -158,7 +158,7 @@ namespace AstralOath.Client.Tests
             try
             {
                 using var view = (IDisposable)Activator.CreateInstance(type, Members, null,
-                    new object[] { bindings, null, copy, null }, null);
+                    new object[] { bindings, null, copy, null, resource }, null);
                 var draw = type.GetMethod("ShowTurn", Members);
                 var clockRoot = (RectTransform)type.GetField("clockRoot", Members).GetValue(view);
                 var allDigits = clockRoot.GetComponentsInChildren<UnityEngine.UI.Image>(true)
@@ -400,8 +400,11 @@ namespace AstralOath.Client.Tests
                 var enemyPositions = enemies.Select(actor => actor.transform.position).ToArray();
                 var enemyShadows = enemies.Select(actor => actor.transform.Find("Shadow").position).ToArray();
                 var type = typeof(BattleHudPreview).Assembly.GetType("AstralOath.Client.BattleScene.BattleOnlineArrival", true);
+                var transition = AssetDatabase.LoadAssetAtPath<BattleOnlineTransitionAssets>(
+                    "Assets/Game/Modules/BattleScene/Configs/AstralOathOnlineTransition.asset");
+                Assert.That(transition, Is.Not.Null);
                 using (var animation = (IDisposable)Activator.CreateInstance(type, Members, null,
-                           new object[] { units, viewport, allies, enemies }, null))
+                           new object[] { units, viewport, allies, enemies, transition }, null))
                 {
                     float FrontX(BattlePreviewActor actor) => camera.WorldToViewportPoint(actor.Bounds.min).x;
                     bool Flag(string name) => (bool)type.GetProperty(name, Members).GetValue(animation);
@@ -438,7 +441,8 @@ namespace AstralOath.Client.Tests
                     Assert.That(enemies.Select(actor => actor.transform.position), Is.EqualTo(enemyPositions));
                     Assert.That(enemies.Select(actor => actor.transform.Find("Shadow").position), Is.EqualTo(enemyShadows));
                     Tick(.17f);
-                    var dustTexture = Resources.Load<Texture2D>("AstralOathBattleArrival/dust_landing");
+                    var dustTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(
+                        "Assets/Game/Modules/BattleScene/Res/Online/AstralOathBattleArrival/dust_landing.png");
                     Assert.That(dustTexture, Is.Not.Null);
                     Assert.That(dustTexture.width, Is.EqualTo(97));
                     Assert.That(units.GetComponentsInChildren<MeshRenderer>()

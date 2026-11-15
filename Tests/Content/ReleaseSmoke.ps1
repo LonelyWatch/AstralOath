@@ -130,6 +130,39 @@ try {
 } finally { $rsa.Dispose() }
 Write-Host 'YooAsset package wrapper layout and client public key passed with a report fixture.'
 
+$build = Join-Path $staging 'completed-package'
+$bundleOutput = Join-Path $build 'bundles/StandaloneWindows64/Foundation/foundation-1'
+$packageAsset = 'Packages/com.astral.fixture/Shaders/Foo.shader'
+$guid = '0123456789abcdef0123456789abcdef'
+$snapshotPath = Join-Path $build "sources/$packageAsset"
+New-Item -ItemType Directory -Path $bundleOutput,(Split-Path $snapshotPath) -Force | Out-Null
+Copy-Item -Path "$packageDir/*" -Destination $bundleOutput
+@{ contentVersion = 1; packageDirectory = 'bundles/StandaloneWindows64/Foundation/foundation-1' } |
+    ConvertTo-Json | Set-Content -LiteralPath "$build/package.complete.json"
+$reportPath = Join-Path $bundleOutput 'Foundation_foundation-1.report'
+$buildReport = Get-Content -LiteralPath $reportPath -Raw | ConvertFrom-Json -AsHashtable
+$buildReport.BundleInfos[0].BundleContents = @(@{ AssetPath = $packageAsset; AssetGUID = $guid }, @{ AssetPath = $tmpShader })
+$buildReport | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $reportPath
+Set-Content -LiteralPath $snapshotPath -Value 'registry shader fixture' -NoNewline
+Set-Content -LiteralPath "$snapshotPath.meta" -Value @('fileFormatVersion: 2',"guid: $guid")
+@{
+    reportSha256 = (Get-FileHash -LiteralPath $reportPath).Hash.ToLowerInvariant()
+    files = @(@{
+        path = $packageAsset
+        guid = $guid
+        sha256 = (Get-FileHash -LiteralPath $snapshotPath).Hash.ToLowerInvariant()
+        metaSha256 = (Get-FileHash -LiteralPath "$snapshotPath.meta").Hash.ToLowerInvariant()
+    })
+} | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath "$build/sources/package-sources.json"
+& ./Tools/Content/Package-Unity.ps1 -BuildOutput $build -Key "$staging/dev/private.key" -Release "$staging/registry-unity-release"
+& ./Tools/Content/Release.ps1 -Action Verify -Key "$staging/dev/public.pem" -Release "$staging/registry-unity-release" -SchemaVersion 3
+Add-Content -LiteralPath $snapshotPath -Value 'tampered'
+$rejected = $false
+try {
+    & ./Tools/Content/Package-Unity.ps1 -BuildOutput $build -Key "$staging/dev/private.key" -Release "$staging/bad-registry-release"
+} catch { $rejected = $_.Exception.Message -like '*Package source hash mismatch*' }
+if (-not $rejected -or (Test-Path "$staging/bad-registry-release")) { throw 'Tampered Unity registry source was accepted.' }
+
 
 Add-Content "$packageDir/Foundation_foundation-1.bytes" 'tampered'
 $rejected = $false

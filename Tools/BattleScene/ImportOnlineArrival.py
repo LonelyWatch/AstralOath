@@ -4,7 +4,7 @@ import argparse
 from pathlib import Path
 from ImportHudEffects import MODULE, RAW_DIRECTORY, collect
 
-OUTPUT = MODULE / "Resources/AstralOathBattleArrival"
+OUTPUT = MODULE / "Res/Online/AstralOathBattleArrival"
 ROOTS = ("effect/encounter_01.cfx", "effect/dust_landing.scsp")
 
 

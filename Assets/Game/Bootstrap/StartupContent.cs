@@ -14,15 +14,27 @@ using UnityEngine.Scripting;
 
 namespace AstralOath.Client.Bootstrap
 {
+    internal sealed class StartupContentUnavailableException : IOException
+    {
+        internal StartupContentUnavailableException(string message, Exception inner = null) : base(message, inner) { }
+    }
+
     internal sealed class StartupContent : IDisposable
     {
         private const int SchemaVersion = 3;
+        private const string MinimalContentResourceName = "AstralOathMinimalContent";
         private sealed class QuarantinedReleaseException : Exception
         {
             internal QuarantinedReleaseException() : base("该补丁上次启动失败，已隔离。") { }
         }
         [Serializable, Preserve]
-        private sealed class PublicKey { public string modulus; public string exponent; }
+        private sealed class ContentSource
+        {
+            public string manifestUrl;
+            public string signatureUrl;
+            public string modulus;
+            public string exponent;
+        }
         private readonly HotUpdateCodeLoader code;
         private readonly CodeBootJournal journal;
         private StartupContent(YooAssetService assets, HotUpdateCodeLoader code, CodeBootJournal journal, long? version)
@@ -34,6 +46,7 @@ namespace AstralOath.Client.Bootstrap
         }
         internal YooAssetService Assets { get; }
         internal long? ReleaseVersion { get; }
+        internal bool RestartRequired { get; private set; }
         internal string PackageVersion => Assets.PackageVersion;
         internal IHotUpdateEntry CreateEntry()
         {
@@ -70,16 +83,11 @@ namespace AstralOath.Client.Bootstrap
             long? interrupted = journal.RecoverInterruptedBoot();
             if (interrupted.HasValue)
                 failedUpdate("上次 C# 启动未完成，已隔离版本 " + interrupted.Value);
-            if (!remote)
+            bool minimal = baseline.requiresDownloadedContent;
+            if (!remote && !minimal)
                 return await LoadAsync(null, baseline, journal, lifetime);
-            if (!Uri.TryCreate(manifest, UriKind.Absolute, out var manifestUri) ||
-                !Uri.TryCreate(signature, UriKind.Absolute, out var signatureUri) ||
-                !IsTrustedTransport(manifestUri) || !IsTrustedTransport(signatureUri) || !key)
-                throw new InvalidDataException("Content update requires HTTPS URLs and a pinned RSA public key.");
-            var parameters = JsonUtility.FromJson<PublicKey>(key.text);
             using var rsa = RSA.Create();
-            rsa.ImportParameters(new RSAParameters { Modulus = Convert.FromBase64String(parameters.modulus),
-                Exponent = Convert.FromBase64String(parameters.exponent) });
+            var (manifestUri, signatureUri) = ConfigureSource(rsa, minimal, manifest, signature, key);
             using var http = new HttpClient(new HttpClientHandler { AllowAutoRedirect = false }) { Timeout = TimeSpan.FromSeconds(20) };
             var unityContext = SynchronizationContext.Current ?? throw new InvalidOperationException("Start content on the Unity main thread.");
             var updater = new ContentUpdater(storePath, http, rsa, (int)FoundationProtocol.Version, SchemaVersion,
@@ -96,35 +104,66 @@ namespace AstralOath.Client.Bootstrap
                         if (journal.IsRejected(release.Version))
                             throw new QuarantinedReleaseException();
                         candidate = await LoadAsync(release, baseline, journal, token);
-                    }), approveDownload == null ? null : ConfirmAsync, downloadProgress, baseline.contentVersion), lifetime);
+                    }), approveDownload == null ? null : ConfirmAsync, downloadProgress,
+                    minimal ? 0 : baseline.contentVersion), lifetime);
                 lifetime.ThrowIfCancellationRequested();
                 if (declined)
                     return null;
                 if (installed == null)
+                {
+                    if (minimal)
+                        throw new StartupContentUnavailableException("服务器未提供适用于此客户端的启动资源，请稍后重试。");
                     return await LoadAsync(null, baseline, journal, lifetime);
-                return candidate ?? throw new InvalidOperationException("Candidate was not preflighted.");
+                }
+                if (candidate == null)
+                    throw new InvalidOperationException("Candidate was not preflighted.");
+                candidate.RestartRequired = approveDownload != null && installed.WasActivated;
+                return candidate;
             }
             catch (Exception error)
             {
                 candidate?.Dispose();
                 lifetime.ThrowIfCancellationRequested();
-                if (approveDownload != null && !(error is QuarantinedReleaseException)) throw;
+                bool quarantined = error is QuarantinedReleaseException;
+                bool remoteUnavailable = error is HttpRequestException || error is OperationCanceledException;
+                if (approveDownload != null && !quarantined && !(minimal && remoteUnavailable))
+                {
+                    if (minimal && !(error is StartupContentUnavailableException))
+                        throw new StartupContentUnavailableException("启动资源更新失败，请检查网络和存储空间后重试。", error);
+                    throw;
+                }
                 failedUpdate(error.Message);
                 using var recovery = CancellationTokenSource.CreateLinkedTokenSource(lifetime);
                 recovery.CancelAfter(TimeSpan.FromSeconds(30));
+                if (minimal && remoteUnavailable)
+                {
+                    // After a completed update, the active release may not yet have a successful boot.
+                    try
+                    {
+                        var current = await Task.Run(() => updater.GetActiveRelease(recovery.Token), recovery.Token);
+                        if (current != null && !journal.IsRejected(current.Version))
+                            return await LoadAsync(current, baseline, journal, recovery.Token);
+                    }
+                    catch (Exception recoveryError) when (!(recoveryError is OperationCanceledException))
+                    {
+                        failedUpdate("已安装资源无法启动：" + recoveryError.Message);
+                    }
+                }
                 try
                 {
                     long? healthy = journal.LastHealthyVersion;
                     var active = healthy.HasValue
                         ? await Task.Run(() => updater.ActivateReleaseAsync(healthy.Value, recovery.Token), recovery.Token)
-                        : await Task.Run(() => updater.GetActiveRelease(recovery.Token), recovery.Token);
+                        : !minimal ? await Task.Run(() => updater.GetActiveRelease(recovery.Token), recovery.Token) : null;
                     if (active != null && !journal.IsRejected(active.Version))
                         return await LoadAsync(active, baseline, journal, recovery.Token);
                 }
                 catch (Exception recoveryError) when (!(recoveryError is OperationCanceledException))
                 {
-                    failedUpdate("本地更新不可用，回到安装包内容：" + recoveryError.Message);
+                    failedUpdate("本地回退资源不可用：" + recoveryError.Message);
                 }
+                if (minimal)
+                    throw new StartupContentUnavailableException("此安装包需要已验证的启动资源，请检查网络后重试。", error);
                 return await LoadAsync(null, baseline, journal, recovery.Token);
             }
 
@@ -141,6 +180,40 @@ namespace AstralOath.Client.Bootstrap
             }
 #endif
         }
+        private static (Uri manifest, Uri signature) ConfigureSource(RSA rsa, bool minimal,
+            string manifest, string signature, TextAsset key)
+        {
+            try
+            {
+                var sourceAsset = minimal ? Resources.Load<TextAsset>(MinimalContentResourceName) : key;
+                var source = sourceAsset ? JsonUtility.FromJson<ContentSource>(sourceAsset.text) : null;
+                if (minimal)
+                {
+                    manifest = source?.manifestUrl;
+                    signature = source?.signatureUrl;
+                }
+                if (string.IsNullOrWhiteSpace(source?.modulus) || string.IsNullOrWhiteSpace(source.exponent) ||
+                    !Uri.TryCreate(manifest, UriKind.Absolute, out var manifestUri) ||
+                    !Uri.TryCreate(signature, UriKind.Absolute, out var signatureUri) ||
+                    !IsTrustedTransport(manifestUri) || !IsTrustedTransport(signatureUri))
+                {
+                    throw new InvalidDataException("Content update requires HTTPS URLs and a pinned RSA public key.");
+                }
+
+                rsa.ImportParameters(new RSAParameters
+                {
+                    Modulus = Convert.FromBase64String(source.modulus),
+                    Exponent = Convert.FromBase64String(source.exponent)
+                });
+                return (manifestUri, signatureUri);
+            }
+            catch (Exception error) when (minimal && (error is InvalidDataException || error is ArgumentException ||
+                error is FormatException || error is CryptographicException))
+            {
+                throw new StartupContentUnavailableException("安装包缺少可信的资源下载配置，请重新获取客户端。", error);
+            }
+        }
+
         private static bool IsTrustedTransport(Uri uri) =>
             uri.Scheme == Uri.UriSchemeHttps || (Debug.isDebugBuild && uri.Scheme == Uri.UriSchemeHttp && uri.IsLoopback);
 

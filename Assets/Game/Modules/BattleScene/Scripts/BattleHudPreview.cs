@@ -196,9 +196,9 @@ namespace AstralOath.Client.BattleScene
             entryHud.blocksRaycasts = false;
             double layoutReady = Time.realtimeSinceStartupAsDouble;
             var timings = InstallBattle(catalog, allyActors, enemyActors,
-                OnlineTeam(session.Snapshot, BattleSide.Ally), OnlineTeam(session.Snapshot, BattleSide.Enemy), null);
+                OnlineTeam(session.Snapshot, BattleSide.Ally), OnlineTeam(session.Snapshot, BattleSide.Enemy), null, assets);
             double battleReady = Time.realtimeSinceStartupAsDouble;
-            arrival = new BattleOnlineArrival(units, viewport, allyActors, enemyActors);
+            arrival = new BattleOnlineArrival(units, viewport, allyActors, enemyActors, assets);
             arrival.Prepare();
             if (Debug.isDebugBuild)
             {
@@ -267,7 +267,8 @@ namespace AstralOath.Client.BattleScene
 
         private (double ModelsReady, double BinderReady) InstallBattle(BattleCatalogData catalog,
             BattlePreviewActor[] allyActors, BattlePreviewActor[] enemyActors,
-            string[] allies, string[] enemies, BattleMatch nextMatch)
+            string[] allies, string[] enemies, BattleMatch nextMatch,
+            BattleOnlineTransitionAssets onlineAssets = null)
         {
             var models = ReadHeroModels();
             var allySlots = ResolveTeam(allyActors, allies, models);
@@ -281,7 +282,7 @@ namespace AstralOath.Client.BattleScene
             simulation = new BattleSimulationPreview(gameObject.scene, hud, binder, catalog, battleSprites, battleGraphs,
                 skillAssets, audioCatalog, audioBanks, battleDamageFont, impactBank, stageBackground,
                 soulDisplay, soulConsume, particles, particleTextures, nextMatch, inspectionPrefab, readyDust: readyDust,
-                skillTimelineOverrides: skillTimelineOverrides, online: online, onlineCopy: onlineCopy);
+                skillTimelineOverrides: skillTimelineOverrides, online: online, onlineCopy: onlineCopy, onlineAssets: onlineAssets);
             binder.AttachSimulation(simulation, online != null);
             return (modelsReady, binderReady);
         }

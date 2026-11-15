@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using AstralOath.Client.Bootstrap;
 using AstralOath.Shared.Updates;
 using dnlib.DotNet;
@@ -92,6 +94,10 @@ namespace AstralOath.Editor
         [MenuItem("Tools/强更包/Windows x64")]
         public static void BuildWindows() => Build(BuildTarget.StandaloneWindows64, 0, true);
 
+        [MenuItem("Tools/强更包/Windows x64 最小包")]
+        public static void BuildMinimalWindows() =>
+            Build(CharacterLabBuildProfile.Foundation, BuildTarget.StandaloneWindows64, 0, true, minimal: true);
+
         [MenuItem("Tools/强更包/Android ARM64 ASTC")]
         public static void BuildAndroidAstc() => Build(BuildTarget.Android, (int)MobileTextureSubtarget.ASTC, true);
 
@@ -134,13 +140,24 @@ namespace AstralOath.Editor
         private static void Build(BuildTarget target, int subtarget, bool full) =>
             Build(CharacterLabBuildProfile.Foundation, target, subtarget, full);
 
-        internal static void Build(CharacterLabBuildProfile profile, BuildTarget target, int subtarget, bool full)
+        internal static void Build(CharacterLabBuildProfile profile, BuildTarget target, int subtarget, bool full, bool minimal = false)
         {
             RequireActiveTarget(target);
             var options = profile.LoadSettings();
+            options.minimal |= minimal;
             var config = ReadAssemblyConfig(profile);
             string variant = Variant(target, subtarget);
             ValidateOptions(options, full);
+            string minimalContent = null;
+            if (options.minimal)
+            {
+                if (!full || profile != CharacterLabBuildProfile.Foundation || target != BuildTarget.StandaloneWindows64)
+                    throw new BuildFailedException("最小母包仅支持 Foundation Windows x64 强更构建。");
+                minimalContent = ReadMinimalContentConfig(options);
+                string existingPackage = Path.Combine(AssetBundleBuilderHelper.GetStreamingAssetsRoot(), profile.PackageName);
+                if (Directory.Exists(existingPackage) && Directory.EnumerateFiles(existingPackage, "*", SearchOption.AllDirectories).Any())
+                    throw new BuildFailedException("StreamingAssets 中已有 Foundation 内置文件。请在独立构建项目中制作最小包。");
+            }
             var archive = full ? null : ReadBaseline(profile, options, target, variant);
             if (full)
                 CheckInstalled(target);
@@ -170,7 +187,7 @@ namespace AstralOath.Editor
                     EditorUserBuildSettings.androidBuildSubtarget = (MobileTextureSubtarget)subtarget;
                 PackageReceipt receipt;
                 if (full)
-                    receipt = BuildPlayer(profile, target, variant, options, config, output, development);
+                    receipt = BuildPlayer(profile, target, variant, options, config, output, development, minimalContent);
                 else
                     receipt = BuildHotPackage(profile, target, options, config, output, archive);
 
@@ -208,7 +225,7 @@ namespace AstralOath.Editor
         }
 
         private static PackageReceipt BuildPlayer(CharacterLabBuildProfile profile, BuildTarget target, string variant, HotUpdateBuildSettings options,
-            AssemblyConfig config, string output, bool development)
+            AssemblyConfig config, string output, bool development, string minimalContent)
         {
             var namedTarget = NamedBuildTarget.FromBuildTargetGroup(BuildPipeline.GetBuildTargetGroup(target));
             var hybridClrScope = new CharacterLabBuildSettingsScope();
@@ -241,8 +258,13 @@ namespace AstralOath.Editor
                 architecture = target == BuildTarget.Android ? "ARM64" : "x64",
                 runtimeVersion = RuntimeVersion,
                 appVersion = options.appVersion,
-                contentVersion = options.contentVersion
+                contentVersion = options.minimal ? 0 : options.contentVersion,
+                requiresDownloadedContent = options.minimal
             };
+            const string minimalContentAsset = "Assets/Game/Bootstrap/Resources/AstralOathMinimalContent.json";
+            byte[] previousMinimalContent = options.minimal && File.Exists(minimalContentAsset)
+                ? File.ReadAllBytes(minimalContentAsset) : null;
+            bool previousMinimalContentMeta = File.Exists(minimalContentAsset + ".meta");
 
             try
             {
@@ -269,6 +291,8 @@ namespace AstralOath.Editor
                 }
 
                 WriteJson(BaselineAsset, player);
+                if (options.minimal)
+                    File.WriteAllText(minimalContentAsset, minimalContent);
                 AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
                 string compiled = SettingsUtil.GetHotUpdateDllsOutputDirByTarget(target);
                 foreach (string name in config.assemblies)
@@ -285,12 +309,12 @@ namespace AstralOath.Editor
                     Directory.EnumerateFiles(generatedAot, "*.dll").Select(Path.GetFileNameWithoutExtension), new[] { "mscorlib" });
                 var metadata = ReadMetadata(generatedAot, metadataNames);
                 var receipt = BuildPackage(profile, output, target, options.contentVersion, player, config, assemblies,
-                    compiled, generatedAot, metadataNames, true);
+                    compiled, generatedAot, metadataNames, embed: !options.minimal);
                 var playerFile = Path.Combine(output, profile.ExecutableName + (target == BuildTarget.Android ? ".apk" : ".exe"));
                 FoundationStreamingAssets.PlayerPath = playerFile;
                 FoundationStreamingAssets.PackageName = profile.PackageName;
                 FoundationStreamingAssets.Injected = false;
-                FoundationStreamingAssets.StagedRoot = Path.Combine(output, "embedded");
+                FoundationStreamingAssets.StagedRoot = options.minimal ? null : Path.Combine(output, "embedded");
                 var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
                 {
                     target = target,
@@ -301,7 +325,7 @@ namespace AstralOath.Editor
                     options = development ? BuildOptions.Development : BuildOptions.None
                 });
                 if (report.summary.result != UnityEditor.Build.Reporting.BuildResult.Succeeded ||
-                    !File.Exists(playerFile) || !FoundationStreamingAssets.Injected)
+                    !File.Exists(playerFile) || FoundationStreamingAssets.Injected == options.minimal)
                     throw new BuildFailedException($"IL2CPP 母包构建失败（{report.summary.result}）。");
 
                 // HybridCLR resets the stripped directory at the start of each real player build.
@@ -332,6 +356,7 @@ namespace AstralOath.Editor
             {
                 try
                 {
+
                     FoundationStreamingAssets.StagedRoot = previousStagedRoot;
                     FoundationStreamingAssets.PlayerPath = previousPlayerPath;
                     FoundationStreamingAssets.PackageName = previousPackage;
@@ -358,6 +383,12 @@ namespace AstralOath.Editor
                         if (previousBaseline != null) File.WriteAllBytes(BaselineAsset, previousBaseline);
                         else if (previousBaselineMeta) File.Delete(BaselineAsset);
                         else AssetDatabase.DeleteAsset(BaselineAsset);
+                        if (options.minimal)
+                        {
+                            if (previousMinimalContent != null) File.WriteAllBytes(minimalContentAsset, previousMinimalContent);
+                            else if (previousMinimalContentMeta) File.Delete(minimalContentAsset);
+                            else AssetDatabase.DeleteAsset(minimalContentAsset);
+                        }
                         AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
                     }
                     finally { hybridClrScope.Dispose(); }
@@ -486,6 +517,7 @@ namespace AstralOath.Editor
                 receipt.baselineId != archive.player?.baselineId || receipt.contentVersion != archive.contentVersion)
                 throw new BuildFailedException("母包归档与当前构建 profile 或包回执不一致。");
             var player = archive.player;
+            var standalonePlayer = JsonUtility.FromJson<PlayerBaseline>(File.ReadAllText(Path.Combine(options.baselinePath, "player-baseline.json")));
             if (player == null || player.formatVersion != 1 || !Guid.TryParseExact(player.baselineId, "N", out _) ||
                 (options.expectedBaselineId != null && player.baselineId != options.expectedBaselineId) ||
                 !HotUpdateBuildInputs.SupportsTarget(player.platform, player.architecture, archive.variant, target.ToString(), variant) ||
@@ -495,7 +527,7 @@ namespace AstralOath.Editor
                 archive.contentVersion <= 0 ||
                 archive.strippedAssemblies == null || archive.strippedAssemblies.Length == 0 ||
                 archive.metadataAssemblies == null || archive.metadataAssemblies.Length == 0 ||
-                File.ReadAllText(Path.Combine(options.baselinePath, "player-baseline.json")) != JsonUtility.ToJson(player, true))
+                standalonePlayer == null || JsonUtility.ToJson(standalonePlayer) != JsonUtility.ToJson(player))
                 throw new BuildFailedException("母包 ID、平台、纹理变体或工具链与当前构建不兼容。");
             string aot = AotDirectory(options.baselinePath);
             RequireMatchingMetadata(aot, archive.strippedAssemblies);
@@ -569,6 +601,8 @@ namespace AstralOath.Editor
                 }, false);
                 if (!result.Success)
                     throw new BuildFailedException(result.ErrorInfo);
+                if (profile == CharacterLabBuildProfile.Foundation)
+                    ArchivePackageSources(result.OutputPackageDirectory, packageVersion, Path.Combine(output, "sources"));
                 Debug.Log("ASTRAL_YOOASSET_PACKAGE " + result.OutputPackageDirectory);
                 return new PackageReceipt
                 {
@@ -583,6 +617,88 @@ namespace AstralOath.Editor
             {
                 package.Groups.Remove(collector);
             }
+        }
+
+        [Serializable]
+        private sealed class PackageSourceArchive
+        {
+            public string reportSha256;
+            public PackageSourceFile[] files;
+        }
+
+        [Serializable]
+        private sealed class PackageSourceFile
+        {
+            public string path;
+            public string guid;
+            public string sha256;
+            public string metaSha256;
+        }
+
+        private static void ArchivePackageSources(string packageDirectory, string packageVersion, string snapshot)
+        {
+            string reportPath = Path.Combine(packageDirectory, $"Foundation_{packageVersion}.report");
+            var report = BuildReport.Deserialize(File.ReadAllText(reportPath));
+            var sources = new List<PackageSourceFile>();
+            var packageAssets = report.BundleInfos.SelectMany(bundle => bundle.BundleContents)
+                .Where(asset => asset.AssetPath.StartsWith("Packages/", StringComparison.Ordinal))
+                .GroupBy(asset => asset.AssetPath, StringComparer.Ordinal)
+                .OrderBy(group => group.Key, StringComparer.Ordinal);
+            foreach (var group in packageAssets)
+            {
+                var asset = group.First();
+                var package = UnityEditor.PackageManager.PackageInfo.FindForAssetPath(asset.AssetPath);
+                string prefix = package?.assetPath + "/";
+                if (package == null || string.IsNullOrEmpty(package.resolvedPath) ||
+                    !asset.AssetPath.StartsWith(prefix, StringComparison.Ordinal) ||
+                    !Regex.IsMatch(asset.AssetGUID ?? "", @"\A[a-f0-9]{32}\z") ||
+                    group.Any(item => item.AssetGUID != asset.AssetGUID) ||
+                    AssetDatabase.AssetPathToGUID(asset.AssetPath) != asset.AssetGUID)
+                    throw new BuildFailedException($"无法确定 YooAsset 构建报告的包资源来源：{asset.AssetPath}");
+
+                string original = PackageSourcePath(package.resolvedPath, asset.AssetPath.Substring(prefix.Length));
+                string destination = PackageSourcePath(snapshot, asset.AssetPath);
+                RequireRegularPackageFile(original);
+                RequireRegularPackageFile(original + ".meta");
+                var metaGuids = Regex.Matches(File.ReadAllText(original + ".meta"), @"(?m)^guid: ([a-f0-9]{32})\r?$");
+                if (metaGuids.Count != 1 || metaGuids[0].Groups[1].Value != asset.AssetGUID)
+                    throw new BuildFailedException($"包资源的 .meta GUID 与构建报告不一致：{asset.AssetPath}");
+
+                Directory.CreateDirectory(Path.GetDirectoryName(destination));
+                File.Copy(original, destination);
+                File.Copy(original + ".meta", destination + ".meta");
+                sources.Add(new PackageSourceFile
+                {
+                    path = asset.AssetPath,
+                    guid = asset.AssetGUID,
+                    sha256 = HotUpdateBuildInputs.Hash(destination),
+                    metaSha256 = HotUpdateBuildInputs.Hash(destination + ".meta")
+                });
+            }
+
+            WriteJson(Path.Combine(snapshot, "package-sources.json"), new PackageSourceArchive
+            {
+                reportSha256 = HotUpdateBuildInputs.Hash(reportPath),
+                files = sources.ToArray()
+            });
+        }
+
+        private static string PackageSourcePath(string root, string relative)
+        {
+            if (relative.Split('/').Any(segment => string.IsNullOrEmpty(segment) || segment == "." || segment == ".." ||
+                segment.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0 || segment.EndsWith(".", StringComparison.Ordinal) ||
+                segment.EndsWith(" ", StringComparison.Ordinal)))
+                throw new BuildFailedException($"包资源路径无效：{relative}");
+            return Path.GetFullPath(Path.Combine(root, relative));
+        }
+
+        private static void RequireRegularPackageFile(string path)
+        {
+            if (!File.Exists(path) || (File.GetAttributes(path) & System.IO.FileAttributes.Directory) != 0)
+                throw new BuildFailedException($"包资源文件不存在：{path}");
+            for (string component = path; component != null; component = Path.GetDirectoryName(component))
+                if ((File.GetAttributes(component) & System.IO.FileAttributes.ReparsePoint) != 0)
+                    throw new BuildFailedException($"包资源不能经过链接或重解析点：{component}");
         }
 
         private static void CopyCode(HotUpdateFile item, string directory, string kind)
@@ -646,6 +762,52 @@ namespace AstralOath.Editor
             if (full && (!HotUpdateBuildInputs.IsSafeId(options.appVersion) || options.androidVersionCode <= 0))
                 throw new BuildFailedException("强更包需要有效应用版本及正数 Android versionCode。");
         }
+
+        [Serializable]
+        private sealed class MinimalContentConfig
+        {
+            public string manifestUrl;
+            public string signatureUrl;
+            public string modulus;
+            public string exponent;
+        }
+
+        private static string ReadMinimalContentConfig(HotUpdateBuildSettings options)
+        {
+            if (!IsContentEndpoint(options.contentManifestUrl, options.developmentHttp) ||
+                !IsContentEndpoint(options.contentSignatureUrl, options.developmentHttp))
+                throw new BuildFailedException("最小母包需要 HTTPS 清单和签名 URL。仅显式开启开发 HTTP 时允许回环 HTTP。");
+            if (string.IsNullOrWhiteSpace(options.contentPublicKey) || !File.Exists(options.contentPublicKey))
+                throw new BuildFailedException("最小母包需要 RSA 公钥 JSON（modulus 和 exponent）。");
+
+            try
+            {
+                var key = JsonUtility.FromJson<MinimalContentConfig>(File.ReadAllText(options.contentPublicKey));
+                if (string.IsNullOrWhiteSpace(key?.modulus) || string.IsNullOrWhiteSpace(key.exponent))
+                    throw new FormatException();
+                using var rsa = RSA.Create();
+                rsa.ImportParameters(new RSAParameters
+                {
+                    Modulus = Convert.FromBase64String(key.modulus),
+                    Exponent = Convert.FromBase64String(key.exponent)
+                });
+                if (rsa.KeySize < 2048) throw new CryptographicException();
+                // Serialize validated endpoints and public parameters only.
+                key.manifestUrl = options.contentManifestUrl;
+                key.signatureUrl = options.contentSignatureUrl;
+                return JsonUtility.ToJson(key);
+            }
+            catch (Exception exception) when (exception is IOException || exception is UnauthorizedAccessException ||
+                exception is ArgumentException || exception is FormatException || exception is CryptographicException)
+            {
+                throw new BuildFailedException("最小母包需要有效的至少 2048 位 RSA 公钥 JSON。");
+            }
+        }
+
+        private static bool IsContentEndpoint(string value, bool developmentHttp) =>
+            Uri.TryCreate(value, UriKind.Absolute, out var uri) && string.IsNullOrEmpty(uri.UserInfo) &&
+            string.IsNullOrEmpty(uri.Fragment) && (uri.Scheme == Uri.UriSchemeHttps ||
+                (developmentHttp && uri.IsLoopback && uri.Scheme == Uri.UriSchemeHttp));
 
         private static string Variant(BuildTarget target, int subtarget)
         {

@@ -46,3 +46,38 @@ MonoBehaviour:
   textures: []
   arenaBackdrop: {fileID: 21300000, guid: 93cd2d9c1d56554cb3a16c6468c3b411, type: 3}
   zhHans: {fileID: 4900000, guid: 3770ab8bcf2345b5ae9164fdd19efb43, type: 3}
+  hudSprites:
+  - {fileID: 21300000, guid: 5af75a620cad53c1b7a7f344b0f04545, type: 3}
+  - {fileID: 21300000, guid: 5f664a3e09ba56118edb8d9e0acc8c1a, type: 3}
+  - {fileID: 21300000, guid: e61b52fb6f745a68b12ce5b00700e918, type: 3}
+  - {fileID: 21300000, guid: 2b6f0123df845ce7a5871768de3b9887, type: 3}
+  - {fileID: 21300000, guid: 68594d335664521e933921b88408f051, type: 3}
+  - {fileID: 21300000, guid: 960d71e368c3534f9dc3c1f51821436a, type: 3}
+  - {fileID: 21300000, guid: 273e348a172655449a39586ab2fb0139, type: 3}
+  - {fileID: 21300000, guid: 04d1887ae29c515eb58bd721b830dee3, type: 3}
+  - {fileID: 21300000, guid: 66760935ffa1590ca00d89bf2cce68ea, type: 3}
+  - {fileID: 21300000, guid: 3846677d35995a95bfe57c0a8636c961, type: 3}
+  - {fileID: 21300000, guid: b1fd65acb7705710b3b2c46db65e2809, type: 3}
+  - {fileID: 21300000, guid: c729f82e3f675e80a64f8773c4d0c729, type: 3}
+  - {fileID: 21300000, guid: 580826eb9ed85388872301dea6a970da, type: 3}
+  - {fileID: 21300000, guid: e970a0451a9059918b1504276883ad35, type: 3}
+  - {fileID: 21300000, guid: adfc1284231959e3841c33a016b47a5c, type: 3}
+  - {fileID: 21300000, guid: bac93bd24b8b5511b1ef2a5fb3c3986c, type: 3}
+  - {fileID: 21300000, guid: 0a0774a312bc55eea3aacc52b5f4fd34, type: 3}
+  - {fileID: 21300000, guid: 45bb1449a4b65483a972651e369a940c, type: 3}
+  - {fileID: 21300000, guid: 82cf3eef649f5749aa9a4402a0052679, type: 3}
+  - {fileID: 21300000, guid: 12fae343b0405dd5abe400a7fb46b690, type: 3}
+  - {fileID: 21300000, guid: df8d449d1cf756649c1094e3e79b0330, type: 3}
+  - {fileID: 21300000, guid: f5574e01e7885908b905664bf1bffc66, type: 3}
+  - {fileID: 21300000, guid: f2a8da59109c5a01a249ebef32cafacb, type: 3}
+  - {fileID: 21300000, guid: d4cd595b1f3a55ebb96a82e58887ccab, type: 3}
+  - {fileID: 21300000, guid: e4b30c777e30580a89ff495cb656dd19, type: 3}
+  hudScoreLayout: {fileID: 4900000, guid: 50e51a99c67b5de5927488c94b5a7b96, type: 3}
+  arrivalWarning:
+    skeleton: {fileID: 4900000, guid: 64c7914f91b15f39ae967522a7b34f3e, type: 3}
+    atlas: {fileID: 4900000, guid: 39099e5a4a9951909733a61c84ed3fb1, type: 3}
+    page: {fileID: 2800000, guid: 303d8e3a99815abf8eb438c784ba7217, type: 3}
+  arrivalDust:
+    skeleton: {fileID: 4900000, guid: b4f335e3a3934a5aaa4be50b3c694a52, type: 3}
+    atlas: {fileID: 4900000, guid: 0cd68dd25b274dd491c4ad3638733ab9, type: 3}
+    page: {fileID: 2800000, guid: c71807804bf14623b2c1a0d04835cc63, type: 3}

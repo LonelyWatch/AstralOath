@@ -73,6 +73,13 @@ namespace AstralOath.Client.Bootstrap
                         if (!retry || error.Code == "unauthorized") break;
                         continue;
                     }
+                    catch (StartupContentUnavailableException error)
+                    {
+                        if (error.InnerException != null)
+                            Debug.LogWarning("Entry content check failed: " + error.InnerException.GetType().Name);
+                        if (!await screen.ShowFailureAsync(error.Message, lifetime)) break;
+                        continue;
+                    }
                     catch (Exception error)
                     {
                         Debug.LogWarning("Entry content check failed: " + error.GetType().Name);
@@ -86,6 +93,14 @@ namespace AstralOath.Client.Bootstrap
                             ?? (bundled > 0 ? bundled.ToString(CultureInfo.InvariantCulture) :
                                 (production ? content.PackageVersion : "Editor"));
                         screen.Version = FormatVersion(appVersion, actualVersion);
+                        if (content.RestartRequired)
+                        {
+                            Debug.Log($"ASTRAL_CONTENT_RESTART_REQUIRED version={content.ReleaseVersion}");
+                            await screen.ShowRestartAsync(lifetime);
+                            content.Dispose();
+                            return default;
+                        }
+
                         using var display = new BindingScope(lifetime);
                         var background = await ReadThemeAsync(content, display);
                         await screen.WaitForStartAsync(background, lifetime);

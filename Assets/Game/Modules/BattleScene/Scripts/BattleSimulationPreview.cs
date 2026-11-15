@@ -77,7 +77,8 @@ namespace AstralOath.Client.BattleScene
             BattleHudPreview.SpineEffect soulDisplay, BattleHudPreview.SpineEffect soulConsume,
             TextAsset[] particles, Texture2D[] particleTextures, BattleMatch match, GameObject inspectionPrefab = null,
             BattleHudPreview.SpineEffect readyDust = null, TextAsset skillTimelineOverrides = null,
-            BattleOnlineSession online = null, BattleOnlineTransitionAssets.Copy onlineCopy = null)
+            BattleOnlineSession online = null, BattleOnlineTransitionAssets.Copy onlineCopy = null,
+            BattleOnlineTransitionAssets onlineAssets = null)
         {
             bool measureEntry = online != null && Debug.isDebugBuild;
             double started = measureEntry ? Time.realtimeSinceStartupAsDouble : 0d;
@@ -201,7 +202,7 @@ namespace AstralOath.Client.BattleScene
                 new Vector2(0, -46), new Vector2(720, 40), 24);
             if (online != null)
             {
-                onlineHud = new BattleOnlineHud(hud, online.Players, onlineCopy, sprites);
+                onlineHud = new BattleOnlineHud(hud, online.Players, onlineCopy, sprites, onlineAssets);
                 banner.rectTransform.anchoredPosition = new Vector2(0, -423f);
             }
             skillBanner = new BattleSkillBanner((RectTransform)hud.transform.Find("Top Bar"), text, sprites);

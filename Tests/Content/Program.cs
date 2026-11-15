@@ -63,7 +63,10 @@ sealed partial class Fixture : IAsyncDisposable
         Require(updater.GetActiveRelease() == null, "fresh store has no active release");
         var release = await Install(updater);
         Require(release.Version == 1 && File.ReadAllBytes(Path.Combine(release.DirectoryPath, FilePath)).SequenceEqual(Body), "release payload");
-        Require(Updater().GetActiveRelease().Version == 1, "restart recovered active release");
+        Require(release.WasActivated, "the first signed install requires a fresh process");
+        var restarted = Updater();
+        Require(restarted.GetActiveRelease().Version == 1, "restart recovered active release");
+        Require(!(await Install(restarted)).WasActivated, "already active content does not request another restart");
     }
 
 
@@ -235,7 +238,8 @@ sealed partial class Fixture : IAsyncDisposable
         Require(File.ReadAllBytes(local).All(value => value == 0), "candidate cancellation restored quarantine");
 
         var repaired = await Install(Updater(schema: 2));
-        Require(repaired.Version == 10 && File.ReadAllBytes(local).SequenceEqual(Body), "same signed version replaced corrupt payload");
+        Require(repaired.Version == 10 && repaired.WasActivated && File.ReadAllBytes(local).SequenceEqual(Body),
+            "same signed version replaced corrupt payload and requires a fresh process");
         Require(Updater(schema: 2).GetActiveRelease().Version == 10, "repaired release survived restart");
         Require((await Updater(schema: 2).RollbackAsync(default)).Version == 9, "repair preserved the previous version");
     }

@@ -15,5 +15,6 @@ namespace AstralOath.Shared.Updates
         [DataMember(IsRequired = true)] public string runtimeVersion;
         [DataMember(IsRequired = true)] public string appVersion;
         [DataMember(EmitDefaultValue = false)] public long contentVersion;
+        [DataMember(EmitDefaultValue = false)] public bool requiresDownloadedContent;
     }
 }

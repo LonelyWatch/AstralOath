@@ -26,7 +26,8 @@
 - 通用文本与按钮使用直接继承原控件的 GameText / GameButton，不再叠加对应原版组件；保留基类生命周期与现有 GUID，业务继续归普通 C# Binder。
 - 每完成一个可验收改动就同步相应模块 README 与 `docs/development/change-log.md`，接口/配置/资源/构建行为改变必须与文档同批提交。状态或边界变化同步 `docs/project-status.md`，新增架构决策写 ADR；禁止只把交接留在聊天中。
 - 提交前执行 `node Tools/check-docs.mjs --staged`。源码/配置/资源/构建改动缺变更日志，业务模块缺对应 README 时拒绝提交；机械检查不替代语义审查。
-- 区分“热更底层”“完整包构建”“强制升级准入”“正式环境部署”四种状态；没有代码和目标平台证据不能互相代替。当前强更策略缺口见地基复核报告。
+- 打包默认选择与当前已分发母包兼容的签名热更包。启动、更新器或可信公钥等 AOT 边界、原生组件、协议不兼容或没有可复用母包时才构建强更包。强更最小包只内置启动和运行必需资源，业务内容走签名 YooAsset。热更安装完成必须提示退出后重新打开，下一进程才加载新业务程序集。验收与命令见 docs/development/hot-update.md。
+- 区分热更底层、完整包构建、强制升级准入和正式环境部署。具体验收状态见 docs/project-status.md。
 
 - 本机新增项目资料、工具缓存、截图/视频参考和构建产物统一放 D 盘主工作区 .artifacts/.tools 或 D:/AstralOathData；禁止继续向 C 盘历史工作区/Downloads/Temp 增加大文件。工具先初始化 Tools/ProjectEnvironment.ps1，编辑器使用 Tools/Open-Unity.ps1。迁移事实与现存安装例外见 docs/development/local-storage.md。
 
