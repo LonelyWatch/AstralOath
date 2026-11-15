@@ -90,7 +90,7 @@ namespace AstralOath.Client.BattleScene
         private BattleSimulationPreview simulation;
         private BattleOnlineSession online;
         private BattleOnlineArrival arrival;
-        private CanvasGroup entryHud;
+        private CanvasGroup entryHud, entryUnitStatus;
         private GameText stageTitle;
         private BattleOnlineTransitionAssets.Copy onlineCopy;
 
@@ -153,17 +153,17 @@ namespace AstralOath.Client.BattleScene
             var title = new GameObject("PvP Arena Title", typeof(RectTransform), typeof(GameText));
             title.transform.SetParent(transform, false);
             var rect = (RectTransform)title.transform;
-            rect.anchorMin = rect.anchorMax = new Vector2(.5f, .26f);
+            rect.anchorMin = rect.anchorMax = new Vector2(.5f, .615f);
             rect.sizeDelta = new Vector2(720f, 160f);
             rect.anchoredPosition = Vector2.zero;
             stageTitle = title.GetComponent<GameText>();
             var template = hud.Require<GameText>("activeName");
             stageTitle.font = template.font;
             stageTitle.fontSharedMaterial = template.fontSharedMaterial;
-            stageTitle.fontSize = 52f;
+            stageTitle.fontSize = 43f;
             stageTitle.fontStyle = FontStyles.Bold;
             stageTitle.alignment = TextAlignmentOptions.Center;
-            stageTitle.text = "<size=34><color=#D8AD66>" + onlineCopy.arenaMode + "</color></size>\n" + onlineCopy.arenaTitle;
+            stageTitle.text = "<size=32><color=#D8AD66>" + onlineCopy.arenaMode + "</color></size>\n" + onlineCopy.arenaTitle;
             stageTitle.raycastTarget = false;
         }
 
@@ -190,6 +190,7 @@ namespace AstralOath.Client.BattleScene
                 Destroy(stageTitle.gameObject);
                 stageTitle = null;
             }
+            ReleaseEntryUnitStatus();
             entryHud.alpha = 1f;
             entryHud.blocksRaycasts = true;
             simulation?.FinishOnlineEntry();
@@ -269,6 +270,13 @@ namespace AstralOath.Client.BattleScene
             // EventSystem.Update must use the camera and screen-space HUD pose from the same
             // rendered frame. Advance the cinematic camera only after this frame's input.
             arrival?.Tick(Time.unscaledDeltaTime);
+            if (arrival?.Complete == true && !entryUnitStatus)
+            {
+                // The native intro shows landed heroes' level and health under the title.
+                entryUnitStatus = hud.transform.Find("Unit Status").gameObject.AddComponent<CanvasGroup>();
+                entryUnitStatus.ignoreParentGroups = true;
+                entryUnitStatus.blocksRaycasts = false;
+            }
             simulation?.Tick(Time.unscaledDeltaTime);
             if (!IsPaused) binder?.Tick(Time.unscaledDeltaTime);
         }
@@ -293,10 +301,19 @@ namespace AstralOath.Client.BattleScene
                 key => messages.TryGetValue(key, out var message) ? message : key, confirmPrefab);
         }
 
+        private void ReleaseEntryUnitStatus()
+        {
+            if (!entryUnitStatus) return;
+            entryUnitStatus.ignoreParentGroups = false;
+            Destroy(entryUnitStatus);
+            entryUnitStatus = null;
+        }
+
         private void OnDisable()
         {
             arrival?.Dispose();
             arrival = null;
+            ReleaseEntryUnitStatus();
             ClearBinding();
             online?.Dispose();
             online = null;

@@ -4,10 +4,72 @@
   "roots": [
     "effect/pvp_battle_ready.cfx",
     "effect/pvp_battle_igni.cfx",
+    "effect/eff_pvp_intro.cfx",
     "effect/treff_pd_pvp_battle_close.cfx",
     "effect/treff_pd_pvp_battle_open.cfx"
   ],
   "files": [
+    {
+      "source": "原始资源/effect/eff_pvp_intro.cfx",
+      "sourceSha256": "b970f468f72806c2048f4ee44124807ef5f153f5b91672a2314d8e32dcb24db4",
+      "asset": "eff_pvp_intro.cfx.json",
+      "dependencies": [
+        "eff_pvp_outro_draw.spine.json"
+      ],
+      "assetSha256": "73db3c006653ed66f0afc55d66c70cf9bc088c27914917351e89391cea57614b"
+    },
+    {
+      "source": "原始资源/effect/eff_pvp_outro_draw.atlas",
+      "sourceSha256": "c609e43ff60a8c6ef2953a8d628b6a4bd8abacdcf8834c80e3bc15dc2c95499a",
+      "asset": "eff_pvp_outro_draw.atlas.txt",
+      "dependencies": [
+        "eff_pvp_outro_draw.png"
+      ],
+      "assetSha256": "c609e43ff60a8c6ef2953a8d628b6a4bd8abacdcf8834c80e3bc15dc2c95499a"
+    },
+    {
+      "source": "原始资源/effect/eff_pvp_outro_draw.scsp",
+      "sourceSha256": "2c5c307c94648b7fc8ad9fcad68e06f5f288859986628e1f3fc798075e3eb062",
+      "asset": "eff_pvp_outro_draw.spine.json",
+      "dependencies": [
+        "eff_pvp_outro_draw.atlas.txt"
+      ],
+      "spineVersion": "3.8.99",
+      "animations": [
+        {
+          "name": "draw_instant",
+          "duration": 1.666700005531311
+        },
+        {
+          "name": "draw_loop",
+          "duration": 15.0
+        },
+        {
+          "name": "ignition",
+          "duration": 1.8667000532150269
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "eff_pvp_outro_draw.sct",
+          "asset": "eff_pvp_outro_draw.png"
+        }
+      ],
+      "assetSha256": "1f021361edb2a26e640b2344b74a3ba5a1c2a1b4556088e8f233c7118c15ae5f"
+    },
+    {
+      "source": "原始资源/effect/eff_pvp_outro_draw.sct",
+      "sourceSha256": "34aed025abea9bf13e7b4795290362c92d8dfa231ddc375152e54640e4b4da3d",
+      "asset": "eff_pvp_outro_draw.png",
+      "dependencies": [],
+      "texture": {
+        "width": 1677,
+        "height": 1016,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "090ab0aa25f2da0c584297d6e2b79735e5acf828cff1bf8503f5786b05c7d302"
+    },
     {
       "source": "原始资源/effect/pvp_battle_igni.cfx",
       "sourceSha256": "b3a05ed1076a6bdee7bb0f74fcc33671b4200f10d84ca0df5c879fa95a45d7b9",

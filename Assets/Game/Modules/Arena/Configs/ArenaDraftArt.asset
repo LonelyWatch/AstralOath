@@ -19,6 +19,14 @@ MonoBehaviour:
     Class: knight
     Level: 60
     Stars: 6
+    BaseStars: 3
+    Attack: 758
+    Defense: 672
+    Health: 5826
+    Speed: 95
+    FilterEffects:
+    - effect_dispel
+    - status_DefenseUp
     Face: {fileID: 21300000, guid: 9202a49f69995d947b4cd2718f213774, type: 3}
     Card: {fileID: 21300000, guid: 7678d41886b7539a880c01f9e9a679a8, type: 3}
     Illustration: {fileID: 0}
@@ -36,6 +44,18 @@ MonoBehaviour:
     Class: knight
     Level: 60
     Stars: 6
+    BaseStars: 5
+    Attack: 821
+    Defense: 648
+    Health: 6751
+    Speed: 110
+    FilterEffects:
+    - status_DefenseDown
+    - status_AttackDown
+    - effect_dispel
+    - status_Provoke
+    - status_Immunity
+    - status_Barrier
     Face: {fileID: 21300000, guid: 11baebe6e0d1567b89e066ae056e4170, type: 3}
     Card: {fileID: 21300000, guid: 5be1f88321d858b39e30378a55a03c67, type: 3}
     Illustration: {fileID: 0}
@@ -53,6 +73,18 @@ MonoBehaviour:
     Class: knight
     Level: 60
     Stars: 6
+    BaseStars: 4
+    Attack: 821
+    Defense: 703
+    Health: 6266
+    Speed: 97
+    FilterEffects:
+    - status_Provoke
+    - status_DefenseUp
+    - effect_cleanse
+    - status_Barrier
+    - effect_raise
+    - status_AttackUp
     Face: {fileID: 21300000, guid: 5562df32c7b954a1aa7b6a881ab502cc, type: 3}
     Card: {fileID: 21300000, guid: c63c9bafae1051d8b2cede318766a1af, type: 3}
     Illustration: {fileID: 0}
@@ -70,6 +102,17 @@ MonoBehaviour:
     Class: ranger
     Level: 60
     Stars: 6
+    BaseStars: 4
+    Attack: 1188
+    Defense: 518
+    Health: 4693
+    Speed: 121
+    FilterEffects:
+    - effect_reduce
+    - effect_cleanse
+    - effect_raise
+    - status_SpeedDown
+    - status_SpeedUp
     Face: {fileID: 21300000, guid: e137b5fe767552c2b6ceb84a44bb4f5c, type: 3}
     Card: {fileID: 21300000, guid: 08e37aeeb4755203be15a70783e40f43, type: 3}
     Illustration: {fileID: 0}
@@ -87,6 +130,15 @@ MonoBehaviour:
     Class: mage
     Level: 60
     Stars: 6
+    BaseStars: 4
+    Attack: 1187
+    Defense: 627
+    Health: 4491
+    Speed: 101
+    FilterEffects:
+    - effect_raise
+    - effect_dispel
+    - status_AttackUp
     Face: {fileID: 21300000, guid: be214f168c4eda54ca8a921b54ebb7d0, type: 3}
     Card: {fileID: 21300000, guid: d6bb72d58a025e9db76d76002bc9d533, type: 3}
     Illustration: {fileID: 0}
@@ -104,6 +156,16 @@ MonoBehaviour:
     Class: thief
     Level: 60
     Stars: 6
+    BaseStars: 5
+    Attack: 1283
+    Defense: 522
+    Health: 5138
+    Speed: 116
+    FilterEffects:
+    - effect_extend_cd
+    - status_Stealth
+    - status_Barrier
+    - effect_raise
     Face: {fileID: 21300000, guid: 6d7640d52e40598d8e5b63223edb7579, type: 3}
     Card: {fileID: 21300000, guid: c1c5ff96d0385800abdc422e3e31a375, type: 3}
     Illustration: {fileID: 0}
@@ -121,6 +183,14 @@ MonoBehaviour:
     Class: thief
     Level: 60
     Stars: 6
+    BaseStars: 5
+    Attack: 1283
+    Defense: 522
+    Health: 5138
+    Speed: 116
+    FilterEffects:
+    - status_AttackUp
+    - effect_raise
     Face: {fileID: 21300000, guid: 448e322fde635263bcdaef818bacc502, type: 3}
     Card: {fileID: 21300000, guid: 000f566dae40570fb71e8be71276c376, type: 3}
     Illustration: {fileID: 0}
@@ -138,6 +208,16 @@ MonoBehaviour:
     Class: knight
     Level: 60
     Stars: 6
+    BaseStars: 4
+    Attack: 721
+    Defense: 785
+    Health: 6189
+    Speed: 91
+    FilterEffects:
+    - status_Stun
+    - effect_cleanse
+    - status_DefenseUp
+    - status_Barrier
     Face: {fileID: 21300000, guid: 20337eb99a5d582f8d838c48433039e8, type: 3}
     Card: {fileID: 21300000, guid: e26a46f84ce5593abedfb4448dd02694, type: 3}
     Illustration: {fileID: 0}
@@ -155,6 +235,15 @@ MonoBehaviour:
     Class: knight
     Level: 60
     Stars: 6
+    BaseStars: 5
+    Attack: 1134
+    Defense: 662
+    Health: 5825
+    Speed: 99
+    FilterEffects:
+    - effect_raise
+    - status_Barrier
+    - status_Unhealable
     Face: {fileID: 21300000, guid: e9668edeb1b45f5fabb87351e8e5cb1c, type: 3}
     Card: {fileID: 21300000, guid: e9d23099bf0f5f51b3d0ca5a57207925, type: 3}
     Illustration: {fileID: 0}
@@ -172,6 +261,15 @@ MonoBehaviour:
     Class: mage
     Level: 60
     Stars: 6
+    BaseStars: 4
+    Attack: 1159
+    Defense: 627
+    Health: 4733
+    Speed: 104
+    FilterEffects:
+    - status_SpeedDown
+    - effect_raise
+    - status_Stun
     Face: {fileID: 21300000, guid: 4649584fd4db547781e91608084d53b9, type: 3}
     Card: {fileID: 21300000, guid: e76ecb728d1e5e41a061d50dfe0ac67e, type: 3}
     Illustration: {fileID: 0}
@@ -189,6 +287,15 @@ MonoBehaviour:
     Class: thief
     Level: 60
     Stars: 6
+    BaseStars: 4
+    Attack: 1188
+    Defense: 508
+    Health: 4855
+    Speed: 113
+    FilterEffects:
+    - effect_reduce_cd
+    - status_DefenseDown
+    - effect_extra_turn
     Face: {fileID: 21300000, guid: afb05d3456d75b53a1b37fe6dec14102, type: 3}
     Card: {fileID: 21300000, guid: a0eef900bcb7541099e53bd86471b45a, type: 3}
     Illustration: {fileID: 0}
@@ -206,6 +313,17 @@ MonoBehaviour:
     Class: warrior
     Level: 60
     Stars: 6
+    BaseStars: 4
+    Attack: 903
+    Defense: 630
+    Health: 6635
+    Speed: 103
+    FilterEffects:
+    - status_Stun
+    - effect_reduce
+    - status_Indomitable
+    - effect_heal
+    - effect_extra_turn
     Face: {fileID: 21300000, guid: 1fcdfee00a5c50b9a4732be28a0c6f9b, type: 3}
     Card: {fileID: 21300000, guid: 42f191c206525feea81da1b4d1f62dd2, type: 3}
     Illustration: {fileID: 0}
@@ -223,6 +341,17 @@ MonoBehaviour:
     Class: warrior
     Level: 60
     Stars: 6
+    BaseStars: 4
+    Attack: 903
+    Defense: 630
+    Health: 6635
+    Speed: 103
+    FilterEffects:
+    - status_DefenseDown
+    - effect_raise
+    - status_AttackDown
+    - effect_heal
+    - status_DefenseUp
     Face: {fileID: 21300000, guid: ae934e69c0a05489afc29375d2f233b7, type: 3}
     Card: {fileID: 21300000, guid: 75effa8fefd45c41bdfc643f94df0598, type: 3}
     Illustration: {fileID: 0}
@@ -240,6 +369,20 @@ MonoBehaviour:
     Class: thief
     Level: 60
     Stars: 6
+    BaseStars: 4
+    Attack: 1029
+    Defense: 473
+    Health: 5097
+    Speed: 126
+    FilterEffects:
+    - status_DefenseDown
+    - status_SpeedUp
+    - status_Immunity
+    - status_EvasionUp
+    - status_CriticalDamageUp
+    - status_EffectivenessUp
+    - status_GreaterSpeedUp
+    - effect_extra_turn
     Face: {fileID: 21300000, guid: bc23bcb05cfb5202bde46dc48cfd3c56, type: 3}
     Card: {fileID: 21300000, guid: 2ac22e9494ff519c9e8544bbe6e28f52, type: 3}
     Illustration: {fileID: 0}
@@ -257,6 +400,17 @@ MonoBehaviour:
     Class: mage
     Level: 60
     Stars: 6
+    BaseStars: 5
+    Attack: 1197
+    Defense: 683
+    Health: 4572
+    Speed: 106
+    FilterEffects:
+    - status_Poison
+    - effect_reduce_cd
+    - status_DefenseDown
+    - status_SpeedDown
+    - status_Unhealable
     Face: {fileID: 21300000, guid: e1ab9ba896ab53ffa75cf53830eab883, type: 3}
     Card: {fileID: 21300000, guid: a3895489f67d573bab000a8c199eaeda, type: 3}
     Illustration: {fileID: 0}
@@ -274,6 +428,18 @@ MonoBehaviour:
     Class: warrior
     Level: 60
     Stars: 6
+    BaseStars: 5
+    Attack: 1228
+    Defense: 553
+    Health: 5784
+    Speed: 109
+    FilterEffects:
+    - status_DefenseDown
+    - effect_dispel
+    - status_Silence
+    - status_AttackUp
+    - effect_extra_turn
+    - effect_raise
     Face: {fileID: 21300000, guid: b119c892076054aba89f7953e7bdf122, type: 3}
     Card: {fileID: 21300000, guid: 89ace76fdb805fadb9db5944727ce35d, type: 3}
     Illustration: {fileID: 0}
@@ -291,6 +457,18 @@ MonoBehaviour:
     Class: soul_weaver
     Level: 60
     Stars: 6
+    BaseStars: 4
+    Attack: 603
+    Defense: 662
+    Health: 4945
+    Speed: 103
+    FilterEffects:
+    - status_AttackDown
+    - effect_heal
+    - status_Barrier
+    - status_Invincible
+    - effect_reduce_cd
+    - effect_cleanse
     Face: {fileID: 21300000, guid: c4e428f1a4cf5b7c86b1a806c48ac3cf, type: 3}
     Card: {fileID: 21300000, guid: b319e8cbff2850b98ec7904aeab14d84, type: 3}
     Illustration: {fileID: 0}
@@ -308,6 +486,17 @@ MonoBehaviour:
     Class: soul_weaver
     Level: 60
     Stars: 6
+    BaseStars: 3
+    Attack: 712
+    Defense: 672
+    Health: 4592
+    Speed: 103
+    FilterEffects:
+    - status_SpeedDown
+    - effect_cleanse
+    - effect_heal
+    - effect_raise
+    - effect_barrier
     Face: {fileID: 21300000, guid: 2286363045d65ea7a622eae835d0e28d, type: 3}
     Card: {fileID: 21300000, guid: 5736709e71d85622acd2fef81eacddb6, type: 3}
     Illustration: {fileID: 0}
@@ -325,6 +514,17 @@ MonoBehaviour:
     Class: warrior
     Level: 60
     Stars: 6
+    BaseStars: 5
+    Attack: 966
+    Defense: 657
+    Health: 7323
+    Speed: 102
+    FilterEffects:
+    - effect_heal
+    - effect_raise
+    - effect_cleanse
+    - effect_injury
+    - status_Stun
     Face: {fileID: 21300000, guid: 43aba22eca045d5da36509b264efc3a0, type: 3}
     Card: {fileID: 21300000, guid: dcb868c4a5535d00aac34b04a468fe1f, type: 3}
     Illustration: {fileID: 0}
@@ -342,6 +542,14 @@ MonoBehaviour:
     Class: ranger
     Level: 60
     Stars: 6
+    BaseStars: 4
+    Attack: 1068
+    Defense: 536
+    Health: 5650
+    Speed: 110
+    FilterEffects:
+    - effect_raise
+    - effect_reduce
     Face: {fileID: 21300000, guid: 10bf3f43d4f85343b12e96a92ec5f972, type: 3}
     Card: {fileID: 21300000, guid: e92f2eac7b4f50c9896d3db9bdf6948e, type: 3}
     Illustration: {fileID: 0}
@@ -359,6 +567,19 @@ MonoBehaviour:
     Class: warrior
     Level: 60
     Stars: 6
+    BaseStars: 4
+    Attack: 957
+    Defense: 592
+    Health: 5057
+    Speed: 112
+    FilterEffects:
+    - status_Bleed
+    - status_Burn
+    - effect_heal
+    - effect_cleanse
+    - status_CriticalChanceUp
+    - effect_reduce_cd
+    - effect_extra_turn
     Face: {fileID: 21300000, guid: c109ca7f1d6952e08e81df7d08065a03, type: 3}
     Card: {fileID: 21300000, guid: 7e5076cea9545c3ab849f8b46e4a1ef4, type: 3}
     Illustration: {fileID: 0}
@@ -376,6 +597,19 @@ MonoBehaviour:
     Class: soul_weaver
     Level: 60
     Stars: 6
+    BaseStars: 5
+    Attack: 621
+    Defense: 802
+    Health: 5474
+    Speed: 102
+    FilterEffects:
+    - effect_heal
+    - effect_cleanse
+    - status_Barrier
+    - status_DamageLimit
+    - effect_revive
+    - status_Invincible
+    - status_SpiritlordProtection
     Face: {fileID: 21300000, guid: 3af817f59e6f536682897677d6c80eb8, type: 3}
     Card: {fileID: 21300000, guid: 1f841e66fc7e5d00ac18ed5210ce9b3b, type: 3}
     Illustration: {fileID: 0}
@@ -393,6 +627,18 @@ MonoBehaviour:
     Class: thief
     Level: 60
     Stars: 6
+    BaseStars: 5
+    Attack: 1119
+    Defense: 483
+    Health: 5340
+    Speed: 129
+    FilterEffects:
+    - status_HitChanceDown
+    - status_Immortality
+    - status_EvasionUp
+    - effect_reduce_cd
+    - effect_heal
+    - status_AttackUp
     Face: {fileID: 21300000, guid: e4bc80d884945b2391b50ab81938eb6a, type: 3}
     Card: {fileID: 21300000, guid: 5c60e4116fbc5879abe290e0cac9c159, type: 3}
     Illustration: {fileID: 0}
@@ -410,6 +656,18 @@ MonoBehaviour:
     Class: ranger
     Level: 60
     Stars: 6
+    BaseStars: 5
+    Attack: 1158
+    Defense: 553
+    Health: 6002
+    Speed: 112
+    FilterEffects:
+    - status_DefenseDown
+    - status_GreaterAttackUp
+    - effect_reduce_cd
+    - effect_extra_turn
+    - effect_dispel
+    - status_Unbuffable
     Face: {fileID: 21300000, guid: 036a5c25539256aa89d9c6c46ca492dd, type: 3}
     Card: {fileID: 21300000, guid: a895a37223865ae9a759560a118cc100, type: 3}
     Illustration: {fileID: 0}
@@ -427,6 +685,18 @@ MonoBehaviour:
     Class: knight
     Level: 60
     Stars: 6
+    BaseStars: 5
+    Attack: 957
+    Defense: 634
+    Health: 6148
+    Speed: 109
+    FilterEffects:
+    - effect_dispel
+    - effect_heal
+    - effect_raise
+    - status_AttackUp
+    - status_DefenseUp
+    - status_Counter
     Face: {fileID: 21300000, guid: fd0ae3cacc8b57d69cf97cf0cdf3abf3, type: 3}
     Card: {fileID: 21300000, guid: 7c843771788a5bcbb02a94df9ba56984, type: 3}
     Illustration: {fileID: 21300000, guid: 35ae5cce2af45296ace722a378fa2758, type: 3}
@@ -444,6 +714,17 @@ MonoBehaviour:
     Class: warrior
     Level: 60
     Stars: 6
+    BaseStars: 4
+    Attack: 1252
+    Defense: 564
+    Health: 5219
+    Speed: 103
+    FilterEffects:
+    - status_DefenseDown
+    - status_Rage
+    - effect_soul
+    - status_Bleed
+    - effect_reduce_cd
     Face: {fileID: 21300000, guid: 327cde401301574289bc95708689ae2b, type: 3}
     Card: {fileID: 21300000, guid: 51ec9bc48ee55b46b98250828c5a4fe2, type: 3}
     Illustration: {fileID: 0}
@@ -461,6 +742,15 @@ MonoBehaviour:
     Class: ranger
     Level: 60
     Stars: 6
+    BaseStars: 4
+    Attack: 930
+    Defense: 564
+    Health: 5380
+    Speed: 112
+    FilterEffects:
+    - status_Stun
+    - status_DefenseDown
+    - status_SpeedDown
     Face: {fileID: 21300000, guid: 79bb02e8e9ad504a8fea7214d32b6551, type: 3}
     Card: {fileID: 21300000, guid: 90c90d7d0b435e4ab95bd532b58ae081, type: 3}
     Illustration: {fileID: 0}
@@ -478,6 +768,16 @@ MonoBehaviour:
     Class: ranger
     Level: 60
     Stars: 6
+    BaseStars: 5
+    Attack: 1158
+    Defense: 553
+    Health: 6002
+    Speed: 112
+    FilterEffects:
+    - effect_raise
+    - status_AttackUp
+    - status_SpeedUp
+    - effect_extra_turn
     Face: {fileID: 21300000, guid: da9c90708a9d5d1d8641c697e871b249, type: 3}
     Card: {fileID: 21300000, guid: 31875815c1f85765a58c2897c5aa6421, type: 3}
     Illustration: {fileID: 0}
@@ -495,6 +795,16 @@ MonoBehaviour:
     Class: soul_weaver
     Level: 60
     Stars: 6
+    BaseStars: 4
+    Attack: 603
+    Defense: 662
+    Health: 4945
+    Speed: 103
+    FilterEffects:
+    - status_AttackDown
+    - effect_raise
+    - effect_heal
+    - status_ContinuousHealing
     Face: {fileID: 21300000, guid: 95cc45e35e0e54c3b6897f27a908a7ca, type: 3}
     Card: {fileID: 21300000, guid: 139df6a0d6895ea9ae22e3b950bc74d5, type: 3}
     Illustration: {fileID: 0}
@@ -512,6 +822,16 @@ MonoBehaviour:
     Class: soul_weaver
     Level: 60
     Stars: 6
+    BaseStars: 4
+    Attack: 576
+    Defense: 743
+    Health: 5700
+    Speed: 98
+    FilterEffects:
+    - status_Stun
+    - effect_heal
+    - status_Immunity
+    - status_Barrier
     Face: {fileID: 21300000, guid: 70dd63de62ab84546bb9ad1f6201901a, type: 3}
     Card: {fileID: 21300000, guid: 3afca5907d3e5476925d1b665172484d, type: 3}
     Illustration: {fileID: 0}

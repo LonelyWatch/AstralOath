@@ -38,6 +38,7 @@ main_hud_btn_arena main_hud_btn_arena_p cm_hud_top_btn_mail cm_hud_top_btn_bag c
 cm_hud_top_btn_chatting cm_hud_top_btn_quick cm_hud_top_titlebg_renew hero_rank
 """.split()
 BORDERS = {
+    "filter_main_bg": (14, 14, 14, 14),
     "_box_black_gold": (32, 32, 32, 32), "_box_blue2": (10, 10, 10, 10),
     "_box_w4": (13, 13, 13, 13), "_box_r_w4": (16, 16, 16, 16),
     "_box_r_op80": (16, 16, 16, 16), "_tap_select": (24, 20, 24, 20),
@@ -119,8 +120,11 @@ def texture_importer(path, sprite):
         result = re.sub(r"(?m)^(\s+textureCompression:) \d+$", r"\1 0", result)
     if (path.stem in UNCOMPRESSED_UI or "Draft" in path.relative_to(MODULES).parts):
         result = re.sub(r"(?m)^  userData:.*$", "  userData: AstralOath.ImportOverride", result)
-    if path.stem in BORDERS:
-        x, y, z, w = BORDERS[path.stem]
+    border = BORDERS.get(path.stem)
+    if path.parent.name == "Filters" and path.stem in {"_btn_small_black", "_btn_small_black_p"}:
+        border = (13, 13, 13, 13)
+    if border:
+        x, y, z, w = border
         result = re.sub(r"(?m)^  spriteBorder: .*", f"  spriteBorder: {{x: {x}, y: {y}, z: {z}, w: {w}}}", result)
     return result
 
@@ -429,19 +433,46 @@ def draft_team_badges(root, check):
     metadata(manifest_path, check, "TextScriptImporter:\n  externalObjects: {}\n")
     return len(entries)
 
+def draft_roster_filters(root, check):
+    folder = MODULES / "Arena/Res/Textures/Draft/Filters"
+    if not check:
+        folder.mkdir(parents=True, exist_ok=True)
+    metadata(folder, check, "folderAsset: yes\nDefaultImporter:\n  externalObjects: {}\n")
+    names = ("filter_main_bg", "filter_img_deco", "filter_img_line", "icon_menu_reset", "easy_setting_checkbg",
+             "_btn_small_black", "_btn_small_black_p", "cm_icon_profire", "cm_icon_proice", "cm_icon_prowind",
+             "cm_icon_prolight", "cm_icon_prodark", "icon_menu_warrior", "icon_menu_roleknight", "icon_menu_roleassassin",
+             "icon_menu_ranger", "icon_menu_rolemage", "icon_menu_rolremanauser")
+    entries = [draft_png(root, check, f"img/{name}.png", f"Filters/{name}.png") for name in names]
+    layouts = ("filter_sector3", "filter_sorting_item", "filter_list_group")
+    manifest_data = {"schemaVersion": 1, "assets": entries, "sourceLayouts": [
+        {"source": f"wnd/{name}.csb", "sha256": digest(read_source(root, f"wnd/{name}.csb"))} for name in layouts
+    ]}
+    manifest_path = folder / "source-manifest.json"
+    write(manifest_path, (json.dumps(manifest_data, ensure_ascii=False, indent=2) + "\n").encode(), check)
+    metadata(manifest_path, check, "TextScriptImporter:\n  externalObjects: {}\n")
+    return len(entries)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path, default=Path("D:/sevenepic"))
     parser.add_argument("--check", action="store_true")
-    parser.add_argument("--team-badges-only", action="store_true", help="Import only native team slot level and star art.")
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("--team-badges-only", action="store_true", help="Import only native team slot level and star art.")
+    group.add_argument("--draft-filters-only", action="store_true", help="Import only native draft roster filter artwork.")
     args = parser.parse_args()
     root = (args.source / SOURCE_FOLDER).resolve(strict=True)
     if REPO.resolve().is_relative_to(root):
         raise ValueError("The project must stay outside the source archive.")
+    if args.draft_filters_only:
+        count = draft_roster_filters(root, args.check)
+        print(f"{'Verified' if args.check else 'Imported'} {count} Arena roster filter assets.")
+        return
     badge_count = draft_team_badges(root, args.check)
     if args.team_badges_only:
         print(f"{'Verified' if args.check else 'Imported'} {badge_count} Arena team badge assets.")
         return
+    draft_roster_filters(root, args.check)
     arena = source_pngs("Arena", [f"img/{name}.png" for name in ARENA_IMAGES] +
                         ["emblem/icon_pvp_sa_league_place.png"], root, args.check)
     arena.append(courtyard(root, args.check))

@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "assets": [
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Header/cm_ping_bg.png",
+      "sources": [
+        {
+          "source": "img/cm_ping_bg.png",
+          "sha256": "e6ad6d1238b815f01c4afcfe9ec0f94b070b99f8122e3aa637fd5f86ca529450"
+        }
+      ],
+      "outputSha256": "e6ad6d1238b815f01c4afcfe9ec0f94b070b99f8122e3aa637fd5f86ca529450",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 34,
+        "height": 30
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Header/cm_ping_1.png",
+      "sources": [
+        {
+          "source": "img/cm_ping_1.png",
+          "sha256": "d73b0a442cf4736ca3fc48a495aadcdcc4b76967e86eb59906959926273a1954"
+        }
+      ],
+      "outputSha256": "d73b0a442cf4736ca3fc48a495aadcdcc4b76967e86eb59906959926273a1954",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 29,
+        "height": 26
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Header/cm_ping_2.png",
+      "sources": [
+        {
+          "source": "img/cm_ping_2.png",
+          "sha256": "c3ebfae3f6a54bb8f1acdad94022496d6016399b52ac45efb2cddbd41b567a83"
+        }
+      ],
+      "outputSha256": "c3ebfae3f6a54bb8f1acdad94022496d6016399b52ac45efb2cddbd41b567a83",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 29,
+        "height": 26
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Header/cm_ping_3.png",
+      "sources": [
+        {
+          "source": "img/cm_ping_3.png",
+          "sha256": "3f0bb138ea2f2a1081b8253c89aa851d669c027c3bfb3786fcac5e401f7d91d9"
+        }
+      ],
+      "outputSha256": "3f0bb138ea2f2a1081b8253c89aa851d669c027c3bfb3786fcac5e401f7d91d9",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 29,
+        "height": 26
+      }
+    }
+  ],
+  "sourceLayout": "wnd/pvplive_ready.csb",
+  "sourceLayoutSha256": "85732af80ed41491a79265475c824fb38435089b98c010cb4a95225b1a063677"
+}

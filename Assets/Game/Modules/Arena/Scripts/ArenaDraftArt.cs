@@ -12,7 +12,8 @@ namespace AstralOath.Client.Arena
         public sealed class Hero
         {
             public string Id, Name, Element, Class;
-            public int Level, Stars;
+            public int Level, Stars, BaseStars, Attack, Defense, Health, Speed;
+            public string[] FilterEffects = Array.Empty<string>();
             public Sprite Face, Card, Illustration, ElementIcon, ClassIcon;
             public TextAsset PortraitSkeleton, PortraitAtlas, ModelSkeleton, ModelAtlas;
             public Texture2D PortraitPage, ModelPage;

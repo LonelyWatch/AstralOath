@@ -93,6 +93,11 @@ namespace AstralOath.Editor
             if (!enemy) dim.rectTransform.localScale = new Vector3(-1, 1, 1);
             dim.gameObject.SetActive(false);
 
+            // The inset glow is a candidate effect. The pending pick uses the full CSB img_sel art.
+            var pending = TeamCardPicture(root, "Native pending pick", DraftSprite(slot + "_select"), width,
+                new Vector2(width * .5f, 42.5f), new Vector2(width, 85), new Vector2(.5f, .5f));
+            pending.rectTransform.localScale = visual.rectTransform.localScale;
+            pending.enabled = false;
             Sprite glow = DraftSprite(slot + (enemy ? "_glow_red" : "_glow_blue"));
             var selection = TeamCardPicture(root, "Native selection glow", glow, width,
                 new Vector2(trayEdge + direction * NativeSlotEffectXs[index], 42.5f + (index == 1 ? -1 : 0)),
@@ -104,13 +109,19 @@ namespace AstralOath.Editor
                 new Vector2(341 * .45f * .78f, 284 * .45f * .78f), new Vector2(.5f, .5f));
             selection.enabled = guard.enabled = mark.enabled = false;
             Image guardPlate = null;
+            GameText guardCaption = null;
             if (index == 2)
             {
                 guardPlate = TeamCardPicture(root, "Native safeguard plate", DraftSprite("pvplive_slot3_safeguard"),
-                    width, new Vector2(width / 2, 42.5f), new Vector2(197, 85), new Vector2(.5f, .5f));
-                if (!enemy) guardPlate.rectTransform.localScale = new Vector3(-1, 1, 1);
+                    width, new Vector2(width / 2 + (enemy ? .5f : -.5f), 42.5f), new Vector2(197, 85), new Vector2(.5f, .5f));
+                if (enemy) guardPlate.rectTransform.localScale = new Vector3(-1, 1, 1);
                 guardPlate.transform.SetSiblingIndex(clip.transform.GetSiblingIndex());
                 guardPlate.enabled = false;
+                guardCaption = Text(root, "Ban protection caption", "arena.draft.safeguard", 26 * .66f * 1.5f,
+                    (98f - 57.5f) / width, (70.5f - 13f) / NativeSlotHeight,
+                    115f / width, 26f / NativeSlotHeight, new Color32(145, 145, 145, 255), TMPro.TextAlignmentOptions.Center);
+                guardCaption.enableWordWrapping = false;
+                guardCaption.enabled = false;
             }
 
             var name = Text(root, "Legacy name", null, 1, 0, 0, 0, 0, Color.clear);
@@ -118,12 +129,16 @@ namespace AstralOath.Editor
             var state = Text(root, "Slot status", null, 23, .14f, .32f, .72f, .33f, alignment: TMPro.TextAlignmentOptions.Center);
             var keys = new List<(string, Object)>
             {
-                ("button", button), ("filled", filled), ("selection", selection), ("portrait", portrait),
+                ("button", button), ("filled", filled), ("pending", pending), ("selection", selection), ("portrait", portrait),
                 ("guard", guard), ("mark", mark), ("element", element), ("role", role), ("name", name),
                 ("stars", stars), ("state", state), ("dim", dim), ("levelRoot", level.gameObject),
                 ("levelTens", tens), ("levelUnits", units), ("starRoot", starRoot.gameObject)
             };
-            if (guardPlate) keys.Add(("guardPlate", guardPlate));
+            if (guardPlate)
+            {
+                keys.Add(("guardPlate", guardPlate));
+                keys.Add(("guardCaption", guardCaption));
+            }
             for (int star = 0; star < starImages.Length; star++)
                 keys.Add(("star" + star, starImages[star]));
             Bind(root, keys.ToArray());

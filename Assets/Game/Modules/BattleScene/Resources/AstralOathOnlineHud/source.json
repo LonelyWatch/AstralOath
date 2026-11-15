@@ -50,11 +50,176 @@
       "source": "img/time_progress_bar_red.png",
       "asset": "Assets/Game/Modules/BattleScene/Resources/AstralOathOnlineHud/time_progress_bar_red.png",
       "sha256": "6f41f8b10f82f00a7f0c5edce47312ca777cfea3e3816c6519647c91bbca8b5d"
+    },
+    {
+      "source": "img/_grow.png",
+      "asset": "Assets/Game/Modules/BattleScene/Resources/AstralOathOnlineHud/_grow.png",
+      "sha256": "19406d4a55cadd82ca302b7f786ef3be6b9d451c9e0961c3cea6b37ce041ed9c"
+    },
+    {
+      "source": "img/cm_ping_bg.png",
+      "asset": "Assets/Game/Modules/BattleScene/Resources/AstralOathOnlineHud/cm_ping_bg.png",
+      "sha256": "e6ad6d1238b815f01c4afcfe9ec0f94b070b99f8122e3aa637fd5f86ca529450"
+    },
+    {
+      "source": "img/cm_ping_1.png",
+      "asset": "Assets/Game/Modules/BattleScene/Resources/AstralOathOnlineHud/cm_ping_1.png",
+      "sha256": "d73b0a442cf4736ca3fc48a495aadcdcc4b76967e86eb59906959926273a1954"
+    },
+    {
+      "source": "img/cm_ping_2.png",
+      "asset": "Assets/Game/Modules/BattleScene/Resources/AstralOathOnlineHud/cm_ping_2.png",
+      "sha256": "c3ebfae3f6a54bb8f1acdad94022496d6016399b52ac45efb2cddbd41b567a83"
+    },
+    {
+      "source": "img/cm_ping_3.png",
+      "asset": "Assets/Game/Modules/BattleScene/Resources/AstralOathOnlineHud/cm_ping_3.png",
+      "sha256": "3f0bb138ea2f2a1081b8253c89aa851d669c027c3bfb3786fcac5e401f7d91d9"
+    },
+    {
+      "source": "font/score_0.png",
+      "asset": "Assets/Game/Modules/BattleScene/Resources/AstralOathOnlineHud/score_0.png",
+      "sha256": "4805b98eb4bba44e14cda72c5b0f23a68ed5726f62343687d9a9db7338aa28f2",
+      "sourceSha256": "a1cce71b312e4cce0c50eb5d13628ba152437872b1ab69a491aa46b99203a6e5",
+      "descriptor": "font/score.fnt",
+      "descriptorSha256": "30f8c18c40c8d089fbb747ae0ccdd275909af388b164157937b4f25887224334",
+      "crop": [
+        68,
+        105,
+        66,
+        100
+      ]
+    },
+    {
+      "source": "font/score_0.png",
+      "asset": "Assets/Game/Modules/BattleScene/Resources/AstralOathOnlineHud/score_1.png",
+      "sha256": "573b0c97e724370b0f8981a2f0482f46cace4f117266cd6b619861bffbe82144",
+      "sourceSha256": "a1cce71b312e4cce0c50eb5d13628ba152437872b1ab69a491aa46b99203a6e5",
+      "descriptor": "font/score.fnt",
+      "descriptorSha256": "30f8c18c40c8d089fbb747ae0ccdd275909af388b164157937b4f25887224334",
+      "crop": [
+        316,
+        101,
+        52,
+        100
+      ]
+    },
+    {
+      "source": "font/score_0.png",
+      "asset": "Assets/Game/Modules/BattleScene/Resources/AstralOathOnlineHud/score_2.png",
+      "sha256": "c18fe989914fd709d2a4a0980b57959c89371970abff501b6479abc5b389a2e2",
+      "sourceSha256": "a1cce71b312e4cce0c50eb5d13628ba152437872b1ab69a491aa46b99203a6e5",
+      "descriptor": "font/score.fnt",
+      "descriptorSha256": "30f8c18c40c8d089fbb747ae0ccdd275909af388b164157937b4f25887224334",
+      "crop": [
+        71,
+        0,
+        69,
+        100
+      ]
+    },
+    {
+      "source": "font/score_0.png",
+      "asset": "Assets/Game/Modules/BattleScene/Resources/AstralOathOnlineHud/score_3.png",
+      "sha256": "1fc2184c97cd695193ad8b1050514edb20cfefc9bb1b5b325651ab06be5e2cf8",
+      "sourceSha256": "a1cce71b312e4cce0c50eb5d13628ba152437872b1ab69a491aa46b99203a6e5",
+      "descriptor": "font/score.fnt",
+      "descriptorSha256": "30f8c18c40c8d089fbb747ae0ccdd275909af388b164157937b4f25887224334",
+      "crop": [
+        278,
+        0,
+        67,
+        100
+      ]
+    },
+    {
+      "source": "font/score_0.png",
+      "asset": "Assets/Game/Modules/BattleScene/Resources/AstralOathOnlineHud/score_4.png",
+      "sha256": "16c5bf6ce75820ffbb7350c0b4b09b85cd15a3872fa5fa9d8bf7ec4e722bf4e3",
+      "sourceSha256": "a1cce71b312e4cce0c50eb5d13628ba152437872b1ab69a491aa46b99203a6e5",
+      "descriptor": "font/score.fnt",
+      "descriptorSha256": "30f8c18c40c8d089fbb747ae0ccdd275909af388b164157937b4f25887224334",
+      "crop": [
+        346,
+        0,
+        67,
+        100
+      ]
+    },
+    {
+      "source": "font/score_0.png",
+      "asset": "Assets/Game/Modules/BattleScene/Resources/AstralOathOnlineHud/score_5.png",
+      "sha256": "62e1c3444447802c25ee7b0d9c1978d45fe168864c0742394a31b8658384b278",
+      "sourceSha256": "a1cce71b312e4cce0c50eb5d13628ba152437872b1ab69a491aa46b99203a6e5",
+      "descriptor": "font/score.fnt",
+      "descriptorSha256": "30f8c18c40c8d089fbb747ae0ccdd275909af388b164157937b4f25887224334",
+      "crop": [
+        141,
+        0,
+        68,
+        100
+      ]
+    },
+    {
+      "source": "font/score_0.png",
+      "asset": "Assets/Game/Modules/BattleScene/Resources/AstralOathOnlineHud/score_6.png",
+      "sha256": "48e6a48d2f70790b2723a99a324895de3bad8e7da19dfc373ec624c3cc8d6c38",
+      "sourceSha256": "a1cce71b312e4cce0c50eb5d13628ba152437872b1ab69a491aa46b99203a6e5",
+      "descriptor": "font/score.fnt",
+      "descriptorSha256": "30f8c18c40c8d089fbb747ae0ccdd275909af388b164157937b4f25887224334",
+      "crop": [
+        135,
+        101,
+        63,
+        100
+      ]
+    },
+    {
+      "source": "font/score_0.png",
+      "asset": "Assets/Game/Modules/BattleScene/Resources/AstralOathOnlineHud/score_7.png",
+      "sha256": "42826fa8c39242476cf06cebc64e74abefbe617e97c6189512e6be82e162e0ff",
+      "sourceSha256": "a1cce71b312e4cce0c50eb5d13628ba152437872b1ab69a491aa46b99203a6e5",
+      "descriptor": "font/score.fnt",
+      "descriptorSha256": "30f8c18c40c8d089fbb747ae0ccdd275909af388b164157937b4f25887224334",
+      "crop": [
+        414,
+        0,
+        67,
+        100
+      ]
+    },
+    {
+      "source": "font/score_0.png",
+      "asset": "Assets/Game/Modules/BattleScene/Resources/AstralOathOnlineHud/score_8.png",
+      "sha256": "d1987f3f94aa13ffdccd7b880ae0720e43c9f0b4a36fbf309be007ca85a6634f",
+      "sourceSha256": "a1cce71b312e4cce0c50eb5d13628ba152437872b1ab69a491aa46b99203a6e5",
+      "descriptor": "font/score.fnt",
+      "descriptorSha256": "30f8c18c40c8d089fbb747ae0ccdd275909af388b164157937b4f25887224334",
+      "crop": [
+        0,
+        105,
+        67,
+        100
+      ]
+    },
+    {
+      "source": "font/score_0.png",
+      "asset": "Assets/Game/Modules/BattleScene/Resources/AstralOathOnlineHud/score_9.png",
+      "sha256": "bffe2ee00dd8095987ad77b2c0dcbf480b53bc0efbd45df61f914a7c38cb300f",
+      "sourceSha256": "a1cce71b312e4cce0c50eb5d13628ba152437872b1ab69a491aa46b99203a6e5",
+      "descriptor": "font/score.fnt",
+      "descriptorSha256": "30f8c18c40c8d089fbb747ae0ccdd275909af388b164157937b4f25887224334",
+      "crop": [
+        199,
+        101,
+        62,
+        100
+      ]
     }
   ],
   "layout": {
     "source": "wnd/pvplive_global_hp.csb",
     "sha256": "0fefc53ffd65f0e4194391cff835d2119444617aaeb933c99ed94c70345581f4"
   },
-  "transfer": "Byte-identical selected PNGs. CSB is layout evidence, not a runtime asset."
+  "transfer": "Selected PNGs are byte-identical; score glyphs are cropped by the native descriptor. CSB is layout evidence only."
 }

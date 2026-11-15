@@ -21,7 +21,11 @@ namespace AstralOath.Client.Arena
         private readonly ArenaApi api;
         private readonly ILocaleService locale;
         private readonly Func<Task> returnToRoom;
-        private readonly Func<CancellationToken, Task> leaveRoom;
+        private readonly ArenaDraftRosterFilter rosterFilter;
+        private Choice[] visibleRoster = Array.Empty<Choice>();
+        private float lastRosterOffset = float.NaN, lastRosterWidth, lastRosterHeight;
+        private int? localLatency;
+        private int lastRosterFocus = -1;
         private readonly Dictionary<string, ArenaDraftArt.Hero> art;
         private readonly Sprite[] scoreDigits;
         private readonly ArenaDraftArt artwork;
@@ -30,8 +34,10 @@ namespace AstralOath.Client.Arena
         private readonly GameText timerText, preTimerText;
         private readonly Image[] digits, preDigits;
         private int lastSecond = int.MinValue;
+        private int lastPickCount = -1, pickWindowSeconds = 30;
+        private string lastPickSide;
         private readonly List<Choice> roster = new List<Choice>(), grid = new List<Choice>(),
-            selected = new List<Choice>(), revealed = new List<Choice>(), recent = new List<Choice>();
+            selected = new List<Choice>(), revealedOwn = new List<Choice>(), revealedEnemy = new List<Choice>(), recent = new List<Choice>();
         private readonly List<Choice> revealCards = new List<Choice>();
         private float revealUntil;
         private readonly List<string> prebans = new List<string>();
@@ -45,17 +51,17 @@ namespace AstralOath.Client.Arena
         private string candidate, featured, featuredBan, loadedBattle;
         private string[] formation = Empty;
         private int swapIndex;
-        private bool sending, exiting, launching;
+        private bool sending, launching;
         private DateTimeOffset deadline;
 
         public ArenaDraftBinder(ArenaDraft view, ArenaApi api, ILocaleService locale, ArenaDraftArt artwork,
-            Func<Task> returnToRoom, Func<CancellationToken, Task> leaveRoom)
+            WindowCoordinator windows, Func<Task> returnToRoom)
         {
             this.view = view;
             this.api = api;
             this.locale = locale;
             this.returnToRoom = returnToRoom;
-            this.leaveRoom = leaveRoom;
+            rosterFilter = new ArenaDraftRosterFilter(view, locale, windows, ApplySearch);
             this.artwork = artwork;
             art = artwork.Heroes.ToDictionary(hero => hero.Id, StringComparer.Ordinal);
             scoreDigits = artwork.ScoreDigits;
@@ -92,9 +98,12 @@ namespace AstralOath.Client.Arena
             formation = Empty;
             swapIndex = -1;
             revealUntil = 0f;
-            sending = exiting = launching = false;
+            sending = launching = false;
+            localLatency = null;
             prebans.Clear();
             lastSecond = int.MinValue;
+            lastPickCount = -1;
+            lastPickSide = null;
             view.Show();
             view.FitLayout();
             owner.Add(Close);
@@ -105,7 +114,7 @@ namespace AstralOath.Client.Arena
             WatchSearch("preSearch");
             Listen(view.Button("action"), SubmitAsync);
             Listen(view.Button("preAction"), SubmitAsync);
-            Listen(view.Button("exit"), ExitAsync);
+            rosterFilter.Bind(owner);
             for (int index = 0; index < 5; index++)
             {
                 int slot = index;
@@ -134,7 +143,7 @@ namespace AstralOath.Client.Arena
 
         private void Tick(float seconds)
         {
-            if (scope == null || launching || exiting) return;
+            if (scope == null || launching) return;
             if (revealUntil > 0f && Time.unscaledTime >= revealUntil)
             {
                 revealUntil = 0f;
@@ -143,6 +152,7 @@ namespace AstralOath.Client.Arena
             }
             view.FitLayout();
             UpdateTimer();
+            LayoutRoster();
             FitGrid(prebanLayout, gridViewport.rect.width);
             FitGrid(recentLayout, recentGrid.rect.width);
             feature.Tick(seconds);
@@ -173,7 +183,9 @@ namespace AstralOath.Client.Arena
                     await Task.Delay(650, token);
                     try
                     {
+                        double started = Time.realtimeSinceStartupAsDouble;
                         var next = await api.DraftAsync(roomId, token);
+                        localLatency = Mathf.RoundToInt((float)(Time.realtimeSinceStartupAsDouble - started) * 1000);
                         if (next == null) { await returnToRoom(); return; }
                         Adopt(next);
                     }
@@ -181,6 +193,8 @@ namespace AstralOath.Client.Arena
                     {
                         if (error.Code is "not_in_room" or "room_not_found" or "draft_not_seated")
                         { await returnToRoom(); return; }
+                        localLatency = null;
+                        ShowConnection();
                         view.Label("status").text = ArenaError.Text(locale, error);
                         await Task.Delay(900, token);
                     }
@@ -196,7 +210,7 @@ namespace AstralOath.Client.Arena
 
         private async Task LaunchAsync(CancellationToken token)
         {
-            if (launching || exiting || string.IsNullOrEmpty(draft.battleId)) return;
+            if (launching || string.IsNullOrEmpty(draft.battleId)) return;
             launching = true;
             Render();
             var match = draft;
@@ -257,7 +271,8 @@ namespace AstralOath.Client.Arena
 
             SyncChips(selected, "preSelected", prebans);
             string[] banIds = (draft.Own.prebans ?? Empty).Concat(draft.Opponent.prebans ?? Empty).Distinct().ToArray();
-            SyncChips(revealed, "revealed", banIds);
+            SyncChips(revealedOwn, "revealedOwn", draft.Own.prebans ?? Empty);
+            SyncChips(revealedEnemy, "revealedEnemy", draft.Opponent.prebans ?? Empty);
             if (revealPreban && banIds.Length > 0)
             {
                 revealUntil = Time.unscaledTime + .83f;
@@ -281,24 +296,27 @@ namespace AstralOath.Client.Arena
             bool pre = draft.phase == "preban";
             bool arrange = draft.phase == "formation" || draft.phase == "battle";
             bool showingReveal = revealUntil > 0f;
-            bool canAct = !sending && !exiting && !launching && !showingReveal && !draft.Own.submitted;
+            bool canAct = !sending && !launching && !showingReveal && !draft.Own.submitted;
             view.Node("reveal").SetActive(showingReveal);
             bool pick = draft.phase == "pick";
             bool ban = draft.phase == "ban";
             if (pick) canAct &= draft.OwnTurn;
             view.Node("preban").SetActive(pre);
             view.Node("formation").SetActive(arrange);
-            view.Node("preHeader").SetActive(!pre && revealed.Count > 0);
-            view.Node("revealed").SetActive(!pre && revealed.Count > 0);
+            view.Node("preHeader").SetActive(!pre && (revealedOwn.Count + revealedEnemy.Count) > 0);
+            bool filtersAllowed = !pre && !showingReveal && draft.phase != "battle";
+            view.Button("openRosterFilters").interactable = filtersAllowed;
+            if (!filtersAllowed) rosterFilter.Close();
             var own = draft.Own.player;
             var opponent = draft.Opponent.player;
             ArenaArt.SetText(view.Label("host"), own.displayName);
             ArenaArt.SetText(view.Label("guest"), opponent.displayName);
             SetAvatar(view.Avatar("host"), own);
             SetAvatar(view.Avatar("guest"), opponent);
+            ShowConnection();
             view.Label("title").text = L(pick ? draft.OwnTurn ? "arena.draft.own_turn" : "arena.draft.other_turn"
                 : "arena.draft." + draft.phase);
-            view.Label("title").color = pick && !draft.OwnTurn ? new Color32(228, 108, 97, 255) : new Color32(130, 181, 246, 255);
+            view.Label("title").color = pick && !draft.OwnTurn ? new Color32(254, 30, 30, 255) : new Color32(68, 148, 255, 255);
             view.Label("hint").text = L(pick ? "arena.draft.pick_hint" : ban ? "arena.draft.ban_hint"
                 : arrange ? "arena.draft.formation_hint" : "arena.draft.preban_hint");
             view.Label("preCount").text = GameText.Format(locale, "arena.draft.preban_count", prebans.Count, draft.prebanCount);
@@ -307,7 +325,6 @@ namespace AstralOath.Client.Arena
             view.Label("preActionLabel").text = L(draft.Own.submitted ? "arena.draft.waiting" : "arena.draft.choose");
             view.Button("action").interactable = canAct && (pick || ban ? CanSelect(candidate) : draft.phase == "formation" && formation.Length == 4);
             view.Button("preAction").interactable = canAct && prebans.Count == draft.prebanCount;
-            view.Button("exit").interactable = !launching && !exiting;
             view.Picture("blue").enabled = !pick || draft.OwnTurn;
             view.Picture("red").enabled = !pick || !draft.OwnTurn;
             view.Picture("banMark").enabled = ban;
@@ -340,13 +357,20 @@ namespace AstralOath.Client.Arena
                 choice.Selection.enabled = prebans.Contains(choice.Id);
                 choice.Button.interactable = pre && !draft.Own.submitted && !sending;
             }
-            foreach (var choice in revealed) choice.Button.interactable = false;
+            foreach (var choice in revealedOwn.Concat(revealedEnemy)) choice.Button.interactable = false;
 
             if (arrange) RenderFormation(canAct);
             SetFeatured(pre || arrange ? null : candidate ?? featured ?? draft.Own.picks?.LastOrDefault() ??
                 draft.Opponent.picks?.LastOrDefault(), ban);
             UpdateTimer();
             ApplySearch();
+        }
+
+        private void ShowConnection()
+        {
+            view.Node("hostPing").SetActive(localLatency.HasValue);
+            int level = localLatency < 120 ? 3 : localLatency < 250 ? 2 : 1;
+            for (int i = 1; i <= 3; i++) view.Picture("hostPing" + i).enabled = i == level;
         }
 
         private void SetAvatar(BindingMap avatar, ArenaPlayer player)
@@ -368,12 +392,17 @@ namespace AstralOath.Client.Arena
                 bool protect = id != null && id == seat.protectedHeroId;
                 bool isBanned = id != null && (draft.phase is "formation" or "battle") && id == opponent.ban;
                 item.Button.interactable = id != null && (!enemy || draft.phase != "ban" || CanSelect(id));
-                item.Selection.enabled = active && index >= taken && index < taken + draft.picksRemainingInWindow
-                    || enemy && id != null && id == candidate && draft.phase == "ban";
-                item.Selection.color = Color.white;
+                item.Pending.enabled = active && index >= taken && index < taken + draft.picksRemainingInWindow;
+                item.Pending.color = enemy ? new Color32(255, 104, 95, 72) : new Color32(111, 204, 255, 72);
+                item.Selection.enabled = enemy && id != null && id == candidate && draft.phase == "ban";
                 ((Image)item.Button.targetGraphic).color = Color.white;
                 item.Guard.enabled = protect || draft.banProtection && index == 2 && id == null;
-                if (item.GuardPlate) item.GuardPlate.enabled = item.Guard.enabled && id == null;
+                if (item.GuardPlate)
+                {
+                    bool showSlotProtection = item.Guard.enabled && id == null;
+                    item.GuardPlate.enabled = item.GuardCaption.enabled = showSlotProtection;
+                    item.GuardCaption.text = L("arena.draft.safeguard");
+                }
                 item.Mark.enabled = isBanned;
                 item.SetState(null, isBanned);
                 ((Image)item.Button.targetGraphic).overrideSprite = id == null ? null : item.Filled.sprite;
@@ -432,7 +461,17 @@ namespace AstralOath.Client.Arena
                 }
                 SyncChips(selected, "preSelected", prebans);
             }
-            else { candidate = id; featured = id; }
+            else
+            {
+                candidate = id; featured = id;
+                int selectedIndex = Array.FindIndex(visibleRoster, row => row.Id == id);
+                if (draft.phase == "pick" && selectedIndex >= 0)
+                {
+                    var scroll = view.Scroll("roster");
+                    scroll.StopMovement();
+                    scroll.content.anchoredPosition = new Vector2(0, selectedIndex * (rosterFilter.Compact ? 57f : 73f));
+                }
+            }
             Render();
         }
 
@@ -474,7 +513,7 @@ namespace AstralOath.Client.Arena
 
         private async Task SubmitAsync()
         {
-            if (sending || exiting || launching || draft.Own.submitted) return;
+            if (sending || launching || draft.Own.submitted) return;
             string phase = draft.phase;
             var ids = phase switch
             {
@@ -514,24 +553,21 @@ namespace AstralOath.Client.Arena
             }
         }
 
-        private async Task ExitAsync()
-        {
-            if (exiting || launching) return;
-            var owner = scope;
-            exiting = true;
-            Render();
-            try { await leaveRoom(owner.Token); }
-            catch (OperationCanceledException) when (owner.Token.IsCancellationRequested) { }
-            catch (ArenaRequestException error) { if (!owner.Token.IsCancellationRequested) view.Label("status").text = ArenaError.Text(locale, error); }
-            finally
-            {
-                if (scope == owner) { exiting = false; Render(); }
-            }
-        }
-
         private void UpdateTimer()
         {
-            int seconds = deadline == default ? -1 : Math.Max(0, (int)Math.Ceiling((deadline - DateTimeOffset.UtcNow).TotalSeconds));
+            double remaining = deadline == default ? -1 : (deadline - DateTimeOffset.UtcNow).TotalSeconds;
+            int picksTaken = Count(draft?.Own.picks) + Count(draft?.Opponent.picks);
+            // Opening and closing single picks use 30 seconds; the shared two-pick window is 60.
+            if (draft?.phase == "pick" && picksTaken != lastPickCount)
+            {
+                if (draft.activeSide != lastPickSide || lastPickCount < 0)
+                    pickWindowSeconds = picksTaken == 0 || picksTaken == 9 ? 30 : 60;
+                lastPickCount = picksTaken;
+                lastPickSide = draft.activeSide;
+            }
+            float fraction = remaining < 0 ? 0 : Mathf.Clamp01((float)(remaining / (draft?.phase == "pick" ? pickWindowSeconds : 30)));
+            view.Picture("blue").fillAmount = view.Picture("red").fillAmount = fraction;
+            int seconds = deadline == default ? -1 : Math.Max(0, (int)Math.Ceiling(remaining));
             if (seconds == lastSecond) return;
             lastSecond = seconds;
             timerText.text = preTimerText.text = seconds < 0 ? "" : seconds.ToString(CultureInfo.InvariantCulture);
@@ -565,6 +601,11 @@ namespace AstralOath.Client.Arena
         private void ApplySearch()
         {
             Filter(roster, view.Search("search").text);
+            visibleRoster = rosterFilter.Order(roster.Where(row => row.Button.gameObject.activeSelf), row => art[row.Id]).ToArray();
+            view.Node("rosterEmpty").SetActive(visibleRoster.Length == 0);
+            lastRosterOffset = float.NaN;
+            lastRosterFocus = -1;
+            LayoutRoster();
             Filter(grid, view.Search("preSearch").text);
         }
 
@@ -576,8 +617,50 @@ namespace AstralOath.Client.Arena
                 var hero = art[choice.Id];
                 bool matches = term.Length == 0 || hero.Name.IndexOf(term, StringComparison.OrdinalIgnoreCase) >= 0 ||
                     hero.Id.IndexOf(term, StringComparison.OrdinalIgnoreCase) >= 0;
+                if (ReferenceEquals(list, roster)) matches &= rosterFilter.Matches(hero);
                 if (choice.Button.gameObject.activeSelf != matches) choice.Button.gameObject.SetActive(matches);
             }
+        }
+
+        private void LayoutRoster()
+        {
+            var scroll = view.Scroll("roster");
+            float width = scroll.viewport.rect.width, height = scroll.viewport.rect.height;
+            if (width <= 0f || height <= 0f) return;
+            float step = rosterFilter.Compact ? 57f : 73f;
+            float baseHeight = rosterFilter.Compact ? 65f : 84f;
+            float focusLine = Mathf.Min(height * .19f, step * 2f);
+            float edge = focusLine - step * .5f;
+            float extent = Mathf.Max(height, focusLine + (visibleRoster.Length - 1) * step + height - focusLine);
+            if (scroll.content.sizeDelta.y != extent) scroll.content.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, extent);
+            float offset = Mathf.Clamp(scroll.content.anchoredPosition.y, 0, extent - height);
+            if (!Mathf.Approximately(scroll.content.anchoredPosition.y, offset))
+                scroll.content.anchoredPosition = new Vector2(0, offset);
+            if (Mathf.Abs(lastRosterOffset - offset) < .02f && lastRosterWidth == width && lastRosterHeight == height) return;
+            lastRosterOffset = offset; lastRosterWidth = width; lastRosterHeight = height;
+            float focus = offset / step;
+            int nearest = Mathf.Clamp(Mathf.RoundToInt(focus), 0, Mathf.Max(0, visibleRoster.Length - 1));
+            for (int i = 0; i < visibleRoster.Length; i++)
+            {
+                var row = (RectTransform)visibleRoster[i].Button.transform;
+                float distance = Mathf.Abs(i - focus);
+                float prominence = 1f - Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(distance / 3.8f));
+                row.anchorMin = row.anchorMax = new Vector2(1, 1);
+                row.pivot = new Vector2(1, .5f);
+                row.anchoredPosition = new Vector2(-4f, -(edge + (i + .5f) * step));
+                row.sizeDelta = new Vector2((width - 8f) * Mathf.Lerp(.66f, 1f, prominence), baseHeight * Mathf.Lerp(.88f, 1.25f, prominence));
+
+            }
+            // Far rows are raised first. The card at the focus line draws on top of both neighbors.
+            if (visibleRoster.Length == 0 || nearest == lastRosterFocus) return;
+            lastRosterFocus = nearest;
+            int maxDistance = Mathf.Max(nearest, visibleRoster.Length - 1 - nearest);
+            for (int distance = maxDistance; distance > 0 && visibleRoster.Length > 0; distance--)
+            {
+                if (nearest - distance >= 0) visibleRoster[nearest - distance].Button.transform.SetAsLastSibling();
+                if (nearest + distance < visibleRoster.Length) visibleRoster[nearest + distance].Button.transform.SetAsLastSibling();
+            }
+            if (visibleRoster.Length > 0) visibleRoster[nearest].Button.transform.SetAsLastSibling();
         }
 
         private void WatchSearch(string key)
@@ -626,11 +709,13 @@ namespace AstralOath.Client.Arena
 
         private void Close()
         {
+            rosterFilter.Close();
             scope = null;
+            visibleRoster = Array.Empty<Choice>();
             feature.Clear();
             foreach (var model in modelSurfaces) model.Clear();
             Array.Clear(shownFormation, 0, shownFormation.Length);
-            Release(roster); Release(grid); Release(selected); Release(revealed); Release(recent); Release(revealCards);
+            Release(roster); Release(grid); Release(selected); Release(revealedOwn); Release(revealedEnemy); Release(recent); Release(revealCards);
             if (view.Root) view.Hide();
         }
 
@@ -656,7 +741,8 @@ namespace AstralOath.Client.Arena
             internal readonly Image Portrait, Selection, Guard, Mark, Filled;
             internal RawImage Model;
             private readonly Image element, role, dim;
-            internal readonly Image GuardPlate, Change;
+            internal readonly Image GuardPlate, Change, Pending;
+            internal readonly GameText GuardCaption;
             private readonly GameObject levelRoot, starRoot;
             private readonly Image tens, units;
             private readonly Sprite[] levelDigits;
@@ -685,7 +771,12 @@ namespace AstralOath.Client.Arena
                     tens = map.Require<Image>("levelTens");
                     units = map.Require<Image>("levelUnits");
                     grade = Enumerable.Range(0, 6).Select(index => map.Require<Image>("star" + index)).ToArray();
-                    if (protectedSlot) GuardPlate = map.Require<Image>("guardPlate");
+                    Pending = map.Require<Image>("pending");
+                    if (protectedSlot)
+                    {
+                        GuardPlate = map.Require<Image>("guardPlate");
+                        GuardCaption = map.Require<GameText>("guardCaption");
+                    }
                 }
                 if (miniature) Change = map.Require<Image>("change");
             }

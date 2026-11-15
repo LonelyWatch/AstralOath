@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using System;
 using System.Collections;
+using System.Linq;
 using System.Reflection;
 using AstralOath.Client.Arena;
 using AstralOath.Client.Skeletons;
@@ -33,6 +34,8 @@ namespace AstralOath.Client.Tests
                     Assert.That((bool)type.GetMethod("Show", flags).Invoke(preview, new[] { source, null, null }), Is.True, hero.Id);
                     var camera = (Camera)type.GetField("camera", flags).GetValue(preview);
                     var player = (ISkeletonPlayer)type.GetField("player", flags).GetValue(preview);
+                    if (player.Animations.Any(clip => clip.Name == "idle"))
+                        Assert.That(player.CurrentAnimation, Is.EqualTo("idle"), hero.Id + " formation pose");
                     Vector3 foot = camera.WorldToViewportPoint(player.Root.transform.position);
                     Assert.That(foot.x, Is.EqualTo(.5f).Within(.001f), hero.Id);
                     Assert.That(foot.y, Is.EqualTo(50f / 240f).Within(.001f), hero.Id);

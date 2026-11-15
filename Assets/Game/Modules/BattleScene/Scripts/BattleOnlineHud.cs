@@ -17,7 +17,13 @@ namespace AstralOath.Client.BattleScene
         private readonly GameText turn;
         private readonly RectTransform clockRoot;
         private readonly Image clockProgress;
-        private readonly GameText countdown;
+        private static readonly int[] ScoreAdvance = { 46, 32, 48, 46, 46, 46, 45, 40, 46, 44 };
+        private readonly Image digitFirst, digitSecond, digitThird;
+        private readonly Sprite[] scoreDigits;
+        private readonly Image[] localPing;
+        private readonly GameObject localPingRoot;
+        private readonly Material playerNameShadow;
+        private int shownSeconds = -1;
         private readonly Sprite clockBlue, clockRed;
         private readonly BattleOnlineTransitionAssets.Copy copy;
         private readonly List<(GameObject Item, bool Active)> hidden = new List<(GameObject, bool)>();
@@ -48,6 +54,21 @@ namespace AstralOath.Client.BattleScene
             speed.anchorMin = speed.anchorMax = Vector2.one;
             speed.anchoredPosition = new Vector2(-210f, -49.5f);
 
+            var shade = Picture(root, "Native Team HUD Shade", art["_grow"], new Vector2(.5f, 1f),
+                new Vector2(.5f, 1f), new Vector2(0, -45f), new Vector2(164 * 6.15f * 1.5f, 167 * 2.26f * 1.5f));
+            shade.color = new Color(1, 1, 1, .6f);
+            var shadowPreset = Resources.Load<Material>("AstralOathPlayerNameShadow");
+            if (shadowPreset && font.fontSharedMaterial && font.fontSharedMaterial.HasProperty(ShaderUtilities.ID_UnderlayColor))
+            {
+                // The arena and battle labels use different font atlases. Apply the common
+                // preset's values to the battle font instead of borrowing its texture or UVs.
+                playerNameShadow = new Material(font.fontSharedMaterial);
+                playerNameShadow.SetColor(ShaderUtilities.ID_UnderlayColor, shadowPreset.GetColor(ShaderUtilities.ID_UnderlayColor));
+                foreach (var property in new[] { ShaderUtilities.ID_UnderlayOffsetX, ShaderUtilities.ID_UnderlayOffsetY,
+                    ShaderUtilities.ID_UnderlayDilate, ShaderUtilities.ID_UnderlaySoftness })
+                    playerNameShadow.SetFloat(property, shadowPreset.GetFloat(property));
+                playerNameShadow.EnableKeyword("UNDERLAY_ON");
+            }
             allyHealth = Team(true, players?.LocalName, players?.LocalAvatarId, players?.LocalAvatar);
             enemyHealth = Team(false, players?.OpponentName, players?.OpponentAvatarId, players?.OpponentAvatar);
             var vs = Picture(root, "Versus", art["_battle_pvp_icon_vs"], new Vector2(.5f, 1f),
@@ -55,6 +76,7 @@ namespace AstralOath.Client.BattleScene
             vs.preserveAspect = true;
             turn = Text(root, "Online Turn", font, new Vector2(.5f, 1f), new Vector2(0, -232.5f),
                 new Vector2(420f, 54f), 31.2f, TextAlignmentOptions.Center);
+            if (playerNameShadow) turn.fontSharedMaterial = playerNameShadow;
             turn.fontStyle = FontStyles.Bold;
             turn.gameObject.SetActive(false);
             clockRoot = Rect(root, "Authoritative Turn Clock", new Vector2(.5f, 1f), new Vector2(.5f, 1f),
@@ -68,9 +90,20 @@ namespace AstralOath.Client.BattleScene
             clockProgress.fillMethod = Image.FillMethod.Radial360;
             clockProgress.fillOrigin = (int)Image.Origin360.Top;
             clockProgress.fillClockwise = false;
-            countdown = Text(clockRoot, "Seconds Remaining", map.Require<GameText>("activeHp"), new Vector2(.5f, .5f),
-                Vector2.zero, new Vector2(115f, 96f), 54f, TextAlignmentOptions.Center);
-            countdown.overflowMode = TextOverflowModes.Overflow;
+            scoreDigits = Enumerable.Range(0, 10).Select(i => art["score_" + i]).ToArray();
+            digitFirst = Digit("Countdown tens or single");
+            digitSecond = Digit("Countdown units");
+            digitThird = Digit("Countdown hundreds overflow");
+            Image Digit(string name) => Picture(clockRoot, name, scoreDigits[0], new Vector2(.5f, .5f),
+                new Vector2(.5f, .5f), Vector2.zero, Vector2.zero);
+            var pingAnchor = new Vector2(.5f, 1f);
+            var ping = Rect(root, "Local Connection Quality", pingAnchor, pingAnchor, new Vector2(-507f, -27f), Vector2.zero);
+            localPingRoot = ping.gameObject;
+            Picture(ping, "Connection background", art["cm_ping_bg"], Vector2.one * .5f, Vector2.one * .5f,
+                Vector2.zero, new Vector2(51, 45));
+            localPing = Enumerable.Range(1, 3).Select(i => Picture(ping, "Quality " + i, art["cm_ping_" + i],
+                Vector2.one * .5f, Vector2.one * .5f, Vector2.zero, new Vector2(43.5f, 39))).ToArray();
+            localPingRoot.SetActive(false);
             clockRoot.gameObject.SetActive(false);
 
             Image Team(bool ally, string name, string avatarId, Sprite avatar)
@@ -103,7 +136,8 @@ namespace AstralOath.Client.BattleScene
                 label.margin = Vector4.zero;
                 label.text = string.IsNullOrWhiteSpace(name) ? (ally ? copy.localPlayer : copy.opponentPlayer) : name;
                 label.overflowMode = TextOverflowModes.Ellipsis;
-                label.fontStyle = FontStyles.Bold;
+                label.fontStyle = FontStyles.Normal;
+                if (playerNameShadow) label.fontSharedMaterial = playerNameShadow;
                 var faceAnchor = new Vector2(ally ? .18f : .82f, 1f);
                 Picture(root, side + " Avatar Background", art["_hero_s_bg_ally"], faceAnchor, faceAnchor,
                     new Vector2(0, -72f), Vector2.one * 116f);
@@ -134,10 +168,44 @@ namespace AstralOath.Client.BattleScene
             turn.color = mine ? new Color32(68, 148, 255, 255) : new Color32(254, 30, 30, 255);
             if (!timed) return;
             double remaining = clock.RemainingSeconds(elapsed);
-            countdown.text = Math.Ceiling(remaining).ToString(System.Globalization.CultureInfo.InvariantCulture);
-            countdown.color = Color.white;
+            ShowSeconds((int)Math.Ceiling(remaining));
             clockProgress.sprite = mine ? clockBlue : clockRed;
             clockProgress.fillAmount = (float)(remaining / clock.DecisionSeconds);
+        }
+
+        internal void ShowConnection(int? latency)
+        {
+            localPingRoot.SetActive(latency.HasValue);
+            int level = latency < 120 ? 3 : latency < 250 ? 2 : 1;
+            for (int i = 0; i < localPing.Length; i++) localPing[i].enabled = i + 1 == level;
+        }
+
+        private void ShowSeconds(int seconds)
+        {
+            if (seconds == shownSeconds) return;
+            shownSeconds = seconds;
+            // The battle layout scales the same native score atlas to .55 of source size.
+            const float scale = .55f * 1.5f;
+            int units = seconds % 10;
+            int tens = seconds / 10 % 10;
+            int hundreds = seconds / 100;
+            digitThird.enabled = hundreds > 0;
+            digitSecond.enabled = seconds >= 10;
+            int first = hundreds > 0 ? hundreds : seconds >= 10 ? tens : units;
+            float advance = ScoreAdvance[first] + (seconds >= 10 ? ScoreAdvance[units] : 0) + (hundreds > 0 ? ScoreAdvance[tens] : 0);
+            float x = -advance * .5f;
+            Place(digitFirst, first);
+            if (hundreds > 0) Place(digitThird, tens);
+            if (seconds >= 10) Place(digitSecond, units);
+
+            void Place(Image image, int digit)
+            {
+                image.sprite = scoreDigits[digit];
+                var rect = image.rectTransform;
+                rect.sizeDelta = image.sprite.rect.size * scale;
+                rect.anchoredPosition = new Vector2((x + (ScoreAdvance[digit] - 2) * .5f) * scale, 0);
+                x += ScoreAdvance[digit];
+            }
         }
 
         private static float Ratio(long current, long maximum) => maximum > 0 ? Mathf.Clamp01((float)(current / (double)maximum)) : 0f;
@@ -184,6 +252,7 @@ namespace AstralOath.Client.BattleScene
             hidden.Clear();
             if (speed) { speed.anchorMin = speedMin; speed.anchorMax = speedMax; speed.anchoredPosition = speedPosition; }
             if (root) { root.gameObject.SetActive(false); UnityEngine.Object.Destroy(root.gameObject); }
+            if (playerNameShadow) UnityEngine.Object.Destroy(playerNameShadow);
         }
     }
 }

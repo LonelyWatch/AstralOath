@@ -109,7 +109,7 @@ namespace AstralOath.Client.FoundationDemo
                 {
                     scope.Add(loading.Dispose);
                     scope.Add(release);
-                    var draft = new ArenaDraftBinder(draftView, api, locale, draftArt, ReopenRoomAsync, LeaveDraftRoomAsync);
+                    var draft = new ArenaDraftBinder(draftView, api, locale, draftArt, windows, ReopenRoomAsync);
                     scope.Add(draft.Dispose);
                     return draft.OpenAsync(state, scope);
                 });

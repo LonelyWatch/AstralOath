@@ -177,4 +177,6 @@ Luban 快照 `Configs/battle-catalog.json` 含十名英雄、成长模板、觉�
 
 入场标题在 IGNITION 下方显示金色竞技场与白色决斗场，入场结束释放标题，队伍 HUD 持续显示。独立图层避免被普通 HUD 的入场淡出一同隐藏，退出战斗恢复原波次与速度按钮布局。
 
-素材入口为 `Tools/BattleScene/ImportOnlineHud.py`；`--check` 验证十张选定 PNG 与只读原始来源逐字节一致，`Resources/AstralOathOnlineHud/source.json` 记录每张文件与 `wnd/pvplive_global_hp.csb` 布局证据的 SHA-256。CSB 仅作布局依据，不进入运行时。Unity 编译与 16:9、21:9 实帧截图分别验收；资源校验不能替代视觉对照。
+素材入口为 `Tools/BattleScene/ImportOnlineHud.py`；`--check` 验证 15 张来源 PNG 逐字节一致及 10 张原版 `score.fnt` 位图数字按字框裁切，`Resources/AstralOathOnlineHud/source.json` 记录每张文件与 `wnd/pvplive_global_hp.csb` 布局证据的 SHA-256。CSB 仅作布局依据，不进入运行时。Unity 编译与 16:9、21:9 实帧截图分别验收；资源校验不能替代视觉对照。
+
+联机入场改用原包 `effect/eff_pvp_intro.cfx` 指定的 `eff_pvp_outro_draw / ignition`。源轨包含白色衬线字、半透明横条和红光柱，时长 1.8667 秒；原火焰粒子不再由联机入场引用。角色落地后可在入场特效期间显示头顶状态。局内权威倒计时使用同套源位图数字，回合环仍按己／敌方着色。队伍顶栏恢复 `pvplive_global_hp.csb` 的 `_grow` 半透明底和通用昵称微投影，仅显示实际可取得的玩家资料与本机请求延迟。

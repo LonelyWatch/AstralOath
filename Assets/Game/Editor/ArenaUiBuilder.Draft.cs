@@ -82,25 +82,10 @@ namespace AstralOath.Editor
             foreach (int index in new[] { 2, 3, 0, 1 })
                 ((BindingMap)refs.Find(entry => entry.Item1 == "formation" + index).Item2).transform.SetAsLastSibling();
 
-            var hostAvatar = ArenaAvatar(stage, "Local profile", .059f, .022f, .061f, .102f);
-            var guestAvatar = ArenaAvatar(stage, "Remote profile", .916f, .022f, .061f, .102f);
-            Add("hostAvatar", hostAvatar);
-            Add("guestAvatar", guestAvatar);
-            Add("host", Text(stage, "My player", null, 27, .153f, .032f, .25f, .047f));
-            Add("guest", Text(stage, "Opponent player", null, 27, .597f, .032f, .28f, .047f,
-                alignment: TextAlignmentOptions.MidlineRight));
-            NativeRule(stage, "Blue header", .024f, .083f, .388f, .014f, Gold);
-            NativeRule(stage, "Red header", .588f, .083f, .388f, .014f, Gold);
-            Add("title", Text(stage, "Draft phase", null, 29, .345f, .025f, .31f, .048f,
-                Mist, TextAlignmentOptions.Center));
-            Add("timer", DraftTimer(stage, "Draft countdown", .451f, .066f, .096f, .092f, refs, "timer"));
-            var exit = Button(Area(stage, "Exit draft", .014f, .019f, .04f, .063f), null, Color.clear);
-            Picture((RectTransform)exit.transform, "Exit", Art("cm_icon_etcback"), .22f, .16f, .56f, .68f, true);
-            exit.FeedbackSound = GameUiFeedback.Sound.Back;
-            Add("exit", exit);
+            BuildDraftHeader(stage, refs);
             var hint = Text(stage, "Draft instruction", null, 29, .285f, .686f, .428f, .073f,
                 alignment: TextAlignmentOptions.Center);
-            hint.fontStyle = FontStyles.Normal;
+            hint.fontStyle = FontStyles.Bold;
             hint.enableWordWrapping = true;
             Add("hint", hint);
             var banGlow = Picture(stage, "Final ban shade", Art("_grow"), 334f / 998, 417f / 720, 328f / 998, 334f / 720);
@@ -111,12 +96,7 @@ namespace AstralOath.Editor
             mark.color = new Color32(195, 21, 21, 255);
             mark.enabled = false;
             Add("banMark", mark);
-            var preHeader = Area(stage, "Revealed preban caption", .259f, .854f, .482f, .040f);
-            Picture(preHeader, "Preban symbol", DraftSprite("cm_icon_st_banned"), .233f, .05f, .092f, .9f, true);
-            Text(preHeader, "Caption", "arena.draft.prebanned", 26, .332f, 0, .66f, 1,
-                new Color32(231, 155, 151, 255), TextAlignmentOptions.MidlineLeft);
-            Add("preHeader", preHeader.gameObject);
-            Add("revealed", DraftHorizontal(stage, "Revealed bans", .304f, .898f, .392f, .097f, 64).gameObject);
+            BuildDraftRevealed(stage, refs);
             var action = CommonButton(stage, "ConfirmButton", "arena.draft.choose", 719f / 998, 628f / 720, 271f / 998, 72f / 720);
             action.BlockedFeedback = true;
             Add("action", action);
@@ -126,11 +106,10 @@ namespace AstralOath.Editor
             Paint(pool, null, new Color32(8, 12, 20, 241));
             VerticalRule(pool, "Border", 0, .016f, .018f, .97f, Gold * .72f);
             Text(pool, "Roster caption", "arena.draft.roster", 23, .065f, .017f, .87f, .047f, Mist);
-            Add("search", DraftSearch(pool, "Find hero", .065f, .071f, .885f, .062f));
+            Add("search", DraftSearch(pool, "Find hero", .52f, .071f, .43f, .062f));
             var roster = Scroll(pool, "Scroll heroes", .04f, .149f, .96f, .841f);
-            var rosterLayout = roster.content.GetComponent<VerticalLayoutGroup>();
-            rosterLayout.spacing = 4;
-            rosterLayout.padding = new RectOffset(0, 4, 1, 7);
+            Object.DestroyImmediate(roster.content.GetComponent<VerticalLayoutGroup>());
+            Object.DestroyImmediate(roster.content.GetComponent<ContentSizeFitter>());
             Add("roster", roster);
             DraftTemplate(root, "Roster hero template", 105, DraftSprite("hero_bg_normal"), true, false, out var rowTemplate);
             Add("row", rowTemplate.gameObject);
@@ -138,6 +117,8 @@ namespace AstralOath.Editor
             Add("gridCell", gridTemplate.gameObject);
             DraftTemplate(root, "Banned portrait template", 62, DraftSprite("cm_hero_cirbg2"), false, true, out var chip);
             Add("chip", chip.gameObject);
+
+            BuildDraftFilters(root, pool, refs);
 
             var dim = Area(root, "Preban modal", 0, 0, 1, 1);
             Paint(dim, null, Black(.45f), true);
@@ -318,12 +299,17 @@ namespace AstralOath.Editor
         private static Image DraftArc(RectTransform stage, bool reverse, string name)
         {
             float x = reverse ? 709 : 287;
+            float fillX = x + (reverse ? -4 : 4);
             var rail = Picture(stage, name + " unlit rail", DraftSprite("pvplive_progress_bg"), (x - 63.5f) / 998, (720 - 325 - 265.5f) / 720, 127f / 998, 531f / 720);
             if (reverse) rail.rectTransform.localScale = new Vector3(-1, 1, 1);
             var glow = Picture(stage, name, DraftSprite(reverse ? "pvplive_progress_bar_red" : "pvplive_progress_bar_blue"),
-                (x - 259.5f) / 998, (720 - 325 - 58.5f) / 720, 519f / 998, 117f / 720);
-            glow.rectTransform.localEulerAngles = new Vector3(0, 0, -90);
-            if (!reverse) glow.rectTransform.localScale = new Vector3(1, -1, 1);
+                (fillX - 259.5f) / 998, (720 - 325 - 58.5f) / 720, 519f / 998, 117f / 720);
+            // Cocos clockwise angles have opposite sign in Unity. Red and blue source textures
+            // already bend in opposite directions. Offset centers for their 4 px alpha registration.
+            glow.rectTransform.localEulerAngles = new Vector3(0, 0, 90);
+            glow.type = Image.Type.Filled;
+            glow.fillMethod = Image.FillMethod.Horizontal;
+            glow.fillOrigin = (int)Image.OriginHorizontal.Left;
             return glow;
         }
 
@@ -410,6 +396,7 @@ namespace AstralOath.Editor
                     ModelPage = Load<Texture2D>(directory + "Textures/model/" + model + ".png")
                 };
             }).ToArray();
+            PopulateDraftFilterData(catalog);
             EditorUtility.SetDirty(catalog);
             AssetDatabase.SaveAssets();
         }

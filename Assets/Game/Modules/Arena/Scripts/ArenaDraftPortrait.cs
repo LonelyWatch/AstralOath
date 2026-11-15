@@ -103,7 +103,7 @@ namespace AstralOath.Client.Arena
                 var chosenSkin = skin ?? (miniature ? null : "normal");
                 if (chosenSkin != null && HasSkin(chosenSkin)) player.SetSkin(chosenSkin);
 
-                string clip = animation ?? (miniature && HasAnimation("b_idle") ? "b_idle" : "idle");
+                string clip = animation ?? (miniature && !HasAnimation("idle") && HasAnimation("b_idle") ? "b_idle" : "idle");
                 if (!HasAnimation(clip) && animation == null)
                     foreach (var candidate in player.Animations)
                         if (candidate.Duration > 0)

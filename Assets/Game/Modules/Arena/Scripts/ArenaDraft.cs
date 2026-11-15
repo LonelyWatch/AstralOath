@@ -31,10 +31,10 @@ namespace AstralOath.Client.Arena
 
         public override void Validate()
         {
-            foreach (string key in new[] { "title", "timer", "preTimer", "host", "guest", "hint", "preCount", "actionLabel", "preActionLabel", "status" })
+            foreach (string key in new[] { "title", "timer", "preTimer", "host", "guest", "hint", "preCount", "actionLabel", "preActionLabel", "status", "rosterFilterLabel" })
                 _ = Label(key);
-            foreach (string key in new[] { "action", "preAction", "exit" }) _ = Button(key);
-            foreach (string key in new[] { "preban", "formation", "preSelected", "revealed", "row", "gridCell", "chip", "recent", "preHeader", "reveal", "revealHeroes" })
+            foreach (string key in new[] { "action", "preAction", "openRosterFilters" }) _ = Button(key);
+            foreach (string key in new[] { "preban", "formation", "preSelected", "revealedOwn", "revealedEnemy", "rosterEmpty", "rosterFilters", "row", "gridCell", "chip", "recent", "preHeader", "reveal", "revealHeroes" })
                 _ = Node(key);
             foreach (string key in new[] { "roster", "grid" }) _ = Scroll(key);
             foreach (string key in new[] { "search", "preSearch" }) _ = Search(key);
@@ -45,6 +45,7 @@ namespace AstralOath.Client.Arena
             _ = Surface("featured");
             _ = Bindings.Require<RectTransform>("layout");
             _ = Picture("banGlow");
+            _ = Node("hostPing");
             _ = Bindings.Require<BindingMap>("hostAvatar"); _ = Bindings.Require<BindingMap>("guestAvatar");
             for (int index = 0; index < 5; index++)
             {

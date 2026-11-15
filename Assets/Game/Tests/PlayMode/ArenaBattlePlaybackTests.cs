@@ -73,6 +73,9 @@ namespace AstralOath.Client.Tests
             var open = (TextAsset)assetType.GetField("openCfx", Members).GetValue(resource);
             Assert.That(close.name, Is.EqualTo("treff_pd_pvp_battle_close.cfx"));
             Assert.That(open.name, Is.EqualTo("treff_pd_pvp_battle_open.cfx"));
+            var ignition = (TextAsset)assetType.GetField("ignitionCfx", Members).GetValue(resource);
+            Assert.That(ignition.name, Is.EqualTo("eff_pvp_intro.cfx"),
+                "World Arena uses the white serif intro with red vertical light and translucent strip.");
             var closeAudio = (AudioClip)assetType.GetField("doorClose", Members).GetValue(resource);
             var openAudio = (AudioClip)assetType.GetField("doorOpen", Members).GetValue(resource);
             Assert.That(closeAudio && closeAudio.name == "DoorClose" && closeAudio.length > 1.5f, Is.True);
@@ -96,7 +99,7 @@ namespace AstralOath.Client.Tests
                 {
                     (method: "CloseAsync", layer: "treff_pd_pvp_battle_close_f", time: .60f, file: "pvp-gate-closing"),
                     (method: "OpenAsync", layer: "treff_pd_pvp_battle_open_f", time: .35f, file: "pvp-gate-opening"),
-                    (method: "IgniteAsync", layer: "pvp_ready_font_fast", time: .35f, file: "pvp-ignition")
+                    (method: "IgniteAsync", layer: "eff_pvp_outro_draw", time: .66f, file: "pvp-ignition")
                 })
                 {
                     var task = (Task)type.GetMethod(shot.method, Members).Invoke(gate, new object[] { CancellationToken.None });

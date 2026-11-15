@@ -87,6 +87,32 @@ namespace AstralOath.Client.Tests
                 yield return Capture("arena-draft-preban-reveal");
             }
 
+            yield return Wait(() => draft.Require<GameText>("title").text == "你的回合", "The draft did not enter the host turn.");
+            Assert.That(draft.transform.Find("Native reference layout/Draft stage/Exit draft"), Is.Null);
+            Assert.That(draft.Require<GameObject>("revealedOwn").transform.childCount, Is.EqualTo(2));
+            Assert.That(draft.Require<GameObject>("revealedEnemy").transform.childCount, Is.EqualTo(2));
+            var scroll = draft.Require<ScrollRect>("roster");
+            var rollFirst = (RectTransform)Hero(draft, "roster", pool[0]).transform;
+            var rollThird = (RectTransform)Hero(draft, "roster", pool[2]).transform;
+            Assert.That(rollFirst.rect.width, Is.GreaterThan(rollThird.rect.width));
+            scroll.content.anchoredPosition = new Vector2(0, 146);
+            yield return Wait(() => rollThird.rect.width > rollFirst.rect.width, "Roster focus did not follow scroll.");
+            Assert.That(rollThird.GetSiblingIndex(), Is.EqualTo(scroll.content.childCount - 1));
+            scroll.content.anchoredPosition = Vector2.zero;
+            yield return Wait(() => draft.Require<GameButton>("openRosterFilters").interactable,
+                "Roster filter was not enabled after the reveal.");
+            Click(draft, "openRosterFilters");
+            var filter = draft.Require<GameObject>("rosterFilters").GetComponent<BindingMap>();
+            yield return Wait(() => filter.gameObject.activeInHierarchy, "Roster filter did not open.");
+            yield return Capture("arena-draft-roster-filter");
+            var options = filter.Require<BindingMap>("element").Require<RectTransform>("options");
+            Click(options.Find("fire").GetComponent<BindingMap>(), "button");
+            Assert.That(Hero(draft, "roster", "c1001").gameObject.activeSelf, Is.True);
+            yield return Wait(() => Hero(draft, "roster", "c1003") == null, "Fire filter did not hide the ice hero c1003.");
+            Click(options.Find("all").GetComponent<BindingMap>(), "button");
+            Assert.That(Hero(draft, "roster", "c1003").gameObject.activeSelf, Is.True);
+            Click(filter, "close");
+
             bool[] hostPicks = { true, false, false, true, true, false, false, true, true, false };
             for (int i = 0; i < hostPicks.Length; i++)
             {
@@ -98,7 +124,13 @@ namespace AstralOath.Client.Tests
                 }
                 yield return Wait(() => Hero(draft, "roster", candidate)?.interactable == true, "Host hero did not become selectable.");
                 ClickHero(draft, "roster", candidate);
-                if (i == 3) yield return Capture("arena-draft-pick");
+                if (i == 3)
+                {
+                    var shield = draft.Require<BindingMap>("blue2");
+                    Assert.That(shield.Require<GameText>("guardCaption").enabled, Is.True);
+                    Assert.That(shield.Require<Image>("pending").enabled, Is.True);
+                    yield return Capture("arena-draft-pick");
+                }
                 int expected = state["host"]["picks"].Count() + 1;
                 Click(draft, "action");
                 yield return ReadUntil(route, next => next["host"]["picks"].Count() == expected, next => state = next);
@@ -231,12 +263,6 @@ namespace AstralOath.Client.Tests
                 var exit = BattleOnlineLaunch.ExitAsync();
                 yield return Wait(() => exit.IsCompleted, "Online battle did not unload.");
                 exit.GetAwaiter().GetResult();
-            }
-            var draft = Screen("ArenaDraft");
-            if (draft && draft.Require<GameButton>("exit").interactable)
-            {
-                Click(draft, "exit");
-                yield return Wait(() => !Screen("ArenaDraft"), "Arena draft did not close.");
             }
             var room = Screen("ArenaRoom");
             if (room)

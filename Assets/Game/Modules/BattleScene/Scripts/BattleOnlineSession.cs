@@ -25,6 +25,7 @@ namespace AstralOath.Client.BattleScene
             internal BattleCommandStatus? Status;
             internal BattleTurnClockView Clock;
             internal double ClockSampleTime;
+            internal int LatencyMilliseconds;
             internal bool ClockUnavailable;
             internal ulong? ReadySequence, ReadyEventSequence;
         }
@@ -43,6 +44,7 @@ namespace AstralOath.Client.BattleScene
         internal BattleSnapshot Snapshot { get; private set; }
         internal BattleOnlinePlayers Players { get; set; }
         internal bool Submitting { get; private set; }
+        internal int? LatencyMilliseconds { get; private set; }
         internal bool Healthy { get; private set; } = true;
         internal bool Terminated { get; private set; }
         internal bool ClockUnavailable { get; private set; }
@@ -152,6 +154,7 @@ namespace AstralOath.Client.BattleScene
 
         private void ApplyClock(Update update)
         {
+            LatencyMilliseconds = update.LatencyMilliseconds;
             ClockUnavailable = update.ClockUnavailable;
             if (ClockUnavailable) { Healthy = false; Terminated = true; }
             Clock = update.Clock != null && update.Clock.CommandSequence == Snapshot.LastCommandSequence &&
@@ -210,7 +213,9 @@ namespace AstralOath.Client.BattleScene
             try
             {
                 var update = Read(JObject.Parse(web.downloadHandler.text), command == null || ready, cursor);
-                update.ClockSampleTime = (sentAt + Time.realtimeSinceStartupAsDouble) * .5d;
+                double receivedAt = Time.realtimeSinceStartupAsDouble;
+                update.ClockSampleTime = (sentAt + receivedAt) * .5d;
+                update.LatencyMilliseconds = (int)Math.Round((receivedAt - sentAt) * 1000d);
                 if (ready)
                 {
                     update.ReadySequence = (ulong)command["commandSequence"];

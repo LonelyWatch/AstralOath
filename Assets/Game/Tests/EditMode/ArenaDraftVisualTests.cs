@@ -23,6 +23,23 @@ namespace AstralOath.Client.Tests
         }
 
         [Test]
+        public void PendingSlotOverlaySharesTheTraySilhouetteOnBothTeams()
+        {
+            var bindings = AssetDatabase.LoadAssetAtPath<GameObject>(Path).GetComponent<BindingMap>();
+            foreach (var side in new[] { "blue", "red" })
+            for (int index = 0; index < 5; index++)
+            {
+                var card = bindings.Require<BindingMap>(side + index);
+                var tray = (Image)card.Require<GameButton>("button").targetGraphic;
+                var pending = card.Require<Image>("pending");
+                Assert.That(pending.sprite.name, Is.EqualTo(tray.sprite.name + "_select"));
+                Assert.That(pending.rectTransform.anchorMin, Is.EqualTo(tray.rectTransform.anchorMin));
+                Assert.That(pending.rectTransform.anchorMax, Is.EqualTo(tray.rectTransform.anchorMax));
+                Assert.That(pending.rectTransform.localScale.x, Is.EqualTo(tray.rectTransform.localScale.x));
+            }
+        }
+
+        [Test]
         public void FormationHasNativeChangeControlsAndReadableSeparatedFloorRings()
         {
             var bindings = AssetDatabase.LoadAssetAtPath<GameObject>(Path).GetComponent<BindingMap>();

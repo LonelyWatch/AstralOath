@@ -18,7 +18,7 @@ namespace AstralOath.Client.BattleScene
         private const float SourceWidth = 1280f;
         private const float InverseScale = .01f;
         private const float DesignAspect = SourceWidth / SourceHeight;
-        private const float IgnitionViewScale = 1.35f;
+        private const float IgnitionSkeletonScale = .5f;
         private const int MaxRenderWidth = 2560;
         private readonly BattleOnlineTransitionAssets assets;
         private readonly GameObject stage, overlay;
@@ -162,7 +162,10 @@ namespace AstralOath.Client.BattleScene
         {
             string[] clips = ((string)row["ani"] ?? "animation").Split(',');
             player.Root.transform.localPosition = new Vector3(Number(row, "x"), Number(row, "y"), 0f) * InverseScale;
-            player.Root.transform.localScale = Vector3.one * Number(row, "scale", 1f);
+            // The new intro is authored in a double-resolution HUD coordinate space.
+            // Apply the same scale to the letters, beams and shade so their placement stays coupled.
+            float scale = Number(row, "scale", 1f) * (showingIgnition ? IgnitionSkeletonScale : 1f);
+            player.Root.transform.localScale = Vector3.one * scale;
             player.Root.GetComponent<MeshRenderer>().sortingOrder = (int)Number(row, "z");
             layers.Add(new SpineLayer
             {
@@ -245,9 +248,9 @@ namespace AstralOath.Client.BattleScene
             int height = Mathf.Max(1, Mathf.FloorToInt(Mathf.Min(SourceHeight, MaxRenderWidth / aspect)));
             int width = Mathf.Max(1, Mathf.RoundToInt(height * aspect));
 
-            // The gate covers the output. IGNITION retains its original fit framing, but its
-            // translucent effects can extend through the full output instead of a fitted rectangle.
-            float frameScale = showingIgnition ? IgnitionViewScale * Mathf.Max(1f, DesignAspect / aspect) :
+            // The doors cover the viewport. The smaller IGNITION title fits it, while its
+            // translucent strip can render to the full width of the output.
+            float frameScale = showingIgnition ? Mathf.Max(1f, DesignAspect / aspect) :
                 Mathf.Min(1f, DesignAspect / aspect);
             camera.aspect = aspect;
             camera.orthographicSize = .5f * SourceHeight * InverseScale * frameScale;

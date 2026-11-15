@@ -1034,6 +1034,7 @@ namespace AstralOath.Client.BattleScene
                 if (state.Slot.Side == BattleSide.Ally) { ally += view.PresentedHealth; allyMax += view.PresentedMaximumHealth; }
                 else { enemy += view.PresentedHealth; enemyMax += view.PresentedMaximumHealth; }
             }
+            onlineHud.ShowConnection(online.Healthy ? online.LatencyMilliseconds : null);
             onlineHud.SetHealth(ally, allyMax, enemy, enemyMax);
             onlineHud.ShowTurn(Actor?.Slot.Side, !entering && !Busy && !IsTurnEntryPlaying && !cinematicVisible && online.Healthy &&
                 Snapshot.Outcome == BattleOutcome.InProgress, online.Clock, online.ClockElapsed);

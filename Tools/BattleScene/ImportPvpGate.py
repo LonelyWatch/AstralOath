@@ -1,4 +1,4 @@
-"""Import the World Arena gate and countdown from their original effect dependency closure."""
+"""Import the World Arena gate and entry effects from their original dependency closure."""
 
 import argparse
 import json
@@ -14,6 +14,7 @@ OUTPUT = MODULE / "Res/Effects/PvpGate"
 ROOTS = (
     "effect/pvp_battle_ready.cfx",
     "effect/pvp_battle_igni.cfx",
+    "effect/eff_pvp_intro.cfx",
     "effect/treff_pd_pvp_battle_close.cfx",
     "effect/treff_pd_pvp_battle_open.cfx",
 )

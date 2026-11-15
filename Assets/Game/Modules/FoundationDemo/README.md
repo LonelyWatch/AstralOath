@@ -29,3 +29,5 @@ CharacterLab 的 YooAsset 收集设置由编辑器按导入清单维护，本次
 
 正式主页、模拟战目录及房间切换使用现有 `WindowCoordinator`。启动根拥有窗口协调器、内容加载和竞技场会话生命周期。旧 Foundation 诊断窗口仍使用 `IClientWindow` 注册入口。
 正式启动的 Windows Canvas 提供 `DesktopDisplayMode`，由 Home Binder 显示切换入口。Arena 房间的表情浮层与其他窗口共用启动阶段创建的 `WindowCoordinator`。
+
+BP 复用主页 `WindowCoordinator` 统一管理选人筛选浮层，窗口退出释放筛选订阅；选人舞台本身不显示返回箭头。

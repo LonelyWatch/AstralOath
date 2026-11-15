@@ -21,3 +21,5 @@
 在 D 盘主工程运行 `& ./.tools/character-assets/Scripts/python.exe -X utf8 -B Tools/Arena/InspectDraftLayout.py`，在 `.artifacts/arena-draft/revision` 生成原版布局结构 JSON 和素材图册。等级、数字和星级的独立复核入口是 `Tools/Arena/ImportArenaArt.py --team-badges-only --check`。各组源坐标、对应素材和待核对项见[选禁与阵型原始布局审计](../../../../docs/delivery/2026-11-15-draft-source-audit.md)。
 
 本轮先交付选人、终禁和阵型的新版 Unity 实机截图，用户确认后才构建或发客户端包。
+
+BP 待选槽采用原版等尺寸 `pvplive_slot*_select` 着色蒙层，已选终禁目标继续用独立候选光。保护槽依源文件镜像并显示本地化说明。两侧弧形进度按当前选禁截止时间填充，空槽、蒙层、轨道在同一设计坐标对齐。双方预禁头像分组，图标和标题整体居中。阵型常规播放 `idle`（缺失时才回退 `b_idle`）。顶部不放返回箭头。右栏支持按角色数据筛选、排序，滑动焦点里的预览卡放大叠在邻卡上方；详细能力边界见[筛选说明](../../../../docs/delivery/2026-11-15-draft-roster-filter.md)。
