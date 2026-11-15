@@ -17,6 +17,7 @@ namespace AstralOath.Editor
         internal const string ChoicePath = Root + "Prefab/ChoicePopup.prefab";
         internal const string AvatarPath = Root + "Prefab/PlayerAvatar.prefab";
         internal const string PanelPath = Root + "Prefab/InfoPanel.prefab";
+        internal const string ButtonCaptionPath = Root + "Materials/GameButtonCaption.mat";
         private const string PanelFontPath = Root + "Fonts/EpicSeven.asset";
         private const string FontPath = "Assets/Game/Modules/FoundationDemo/Res/Fonts/FoundationFont.asset";
 
@@ -60,10 +61,17 @@ namespace AstralOath.Editor
             var label = Text(Child(rect, "Label", Vector2.zero, Vector2.one,
                 new Vector2(20f, baselineOffset), new Vector2(-20f, baselineOffset)), font, 31.5f, Color.white);
             label.text = string.Empty;
-            label.fontStyle = FontStyles.Bold;
+            ApplyButtonCaption(label);
             label.alignment = TextAlignmentOptions.Center;
             Bind(root, ("label", label), ("button", button));
             return root;
+        }
+
+        internal static void ApplyButtonCaption(GameText label)
+        {
+            label.font = Load<TMP_FontAsset>(PanelFontPath);
+            label.fontStyle |= FontStyles.Bold;
+            label.fontSharedMaterial = Load<Material>(ButtonCaptionPath);
         }
 
         private static void SetClickSound(GameButton button, string clip = "UiConfirm")

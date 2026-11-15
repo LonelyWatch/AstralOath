@@ -2,8 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using AstralOath.Client.Common;
 using AstralOath.Client.Core;
+using AstralOath.Shared.Updates;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -20,6 +24,7 @@ namespace AstralOath.Client.Bootstrap
         [SerializeField] private string textLocale = "zh-Hans";
         [SerializeField] private string voiceLocale = "ja";
         [SerializeField] private bool showGameHome;
+        [SerializeField] private TMP_FontAsset entryFont;
         [SerializeField] private string manifestUrl;
         [SerializeField] private string signatureUrl;
         [SerializeField] private TextAsset contentPublicKey;
@@ -49,12 +54,44 @@ namespace AstralOath.Client.Bootstrap
                 scope.Add(services.Dispose);
                 startupStatus.Bind(bootLocale, scope, "foundation.loading");
                 bool recovered = false;
-                var content = await StartupContent.OpenAsync(manifestUrl, signatureUrl, contentPublicKey,
-                    scope.Token, message =>
+                string url = Environment.GetEnvironmentVariable("ASTRAL_FOUNDATION_URL");
+                var server = new GameServerEndpoint(string.IsNullOrWhiteSpace(url) ? baseUrl : url);
+                bool arenaSmoke = Debug.isDebugBuild &&
+                    Array.Exists(Environment.GetCommandLineArgs(), arg => arg == "-astral-arena-battle-smoke");
+                bool interactive = showGameHome && !automation && !arenaSmoke;
+#if UNITY_EDITOR
+                // Legacy Arena UI tests verify the scene separately from the account admission flow.
+                interactive &= Environment.GetEnvironmentVariable("ASTRAL_TEST_SKIP_ENTRY") != "1";
+#endif
+
+                Task<StartupContent> OpenContent(
+                    Func<long, CancellationToken, Task<bool>> confirm,
+                    Action<ContentDownloadProgress> report) =>
+                    StartupContent.OpenAsync(manifestUrl, signatureUrl, contentPublicKey, scope.Token, message =>
                     {
                         recovered = true;
                         Debug.LogWarning("Foundation content update: " + message);
-                    });
+                    }, confirm, report);
+                StartupContent content;
+                if (interactive)
+                {
+                    startupStatus.gameObject.SetActive(false);
+                    open.gameObject.SetActive(false);
+                    if (entryFont) startupStatus.font = entryFont;
+                    using var screen = new EntryScreen(viewRoot, startupStatus);
+                    var flow = new EntryFlow(new EntryWebClient(server.Address), screen, Application.version, !Application.isEditor);
+                    var admission = await flow.OpenAsync(OpenContent, scope.Token);
+                    content = admission.content;
+                    if (scope.Token.IsCancellationRequested)
+                    {
+                        content.Dispose();
+                        scope.Token.ThrowIfCancellationRequested();
+                    }
+                    services.Add(admission.session);
+                    screen.Hide();
+                    startupStatus.gameObject.SetActive(true);
+                }
+                else content = await OpenContent(null, null);
                 if (scope.Token.IsCancellationRequested)
                 {
                     content.Dispose();
@@ -66,8 +103,6 @@ namespace AstralOath.Client.Bootstrap
                 services.Add<ISceneAssetService>(content.Assets);
                 services.Add<IConfigService>(new JsonConfigService(content.Assets));
                 services.Add<IAnimationService>(new DotweenAnimations());
-                string url = Environment.GetEnvironmentVariable("ASTRAL_FOUNDATION_URL");
-                var server = new GameServerEndpoint(string.IsNullOrWhiteSpace(url) ? baseUrl : url);
                 services.Add(server);
                 services.Add<IEchoService>(new ProtobufEchoService(server.Address.AbsoluteUri));
                 entry = content.CreateEntry();

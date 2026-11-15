@@ -17,6 +17,10 @@ namespace AstralOath.Client.Bootstrap
     internal sealed class StartupContent : IDisposable
     {
         private const int SchemaVersion = 3;
+        private sealed class QuarantinedReleaseException : Exception
+        {
+            internal QuarantinedReleaseException() : base("该补丁上次启动失败，已隔离。") { }
+        }
         [Serializable, Preserve]
         private sealed class PublicKey { public string modulus; public string exponent; }
         private readonly HotUpdateCodeLoader code;
@@ -30,6 +34,7 @@ namespace AstralOath.Client.Bootstrap
         }
         internal YooAssetService Assets { get; }
         internal long? ReleaseVersion { get; }
+        internal string PackageVersion => Assets.PackageVersion;
         internal IHotUpdateEntry CreateEntry()
         {
 #if UNITY_EDITOR
@@ -44,7 +49,9 @@ namespace AstralOath.Client.Bootstrap
             if (ReleaseVersion.HasValue) journal.Confirm(ReleaseVersion.Value);
         }
         internal static async Task<StartupContent> OpenAsync(string manifest, string signature, TextAsset key,
-            CancellationToken lifetime, Action<string> failedUpdate)
+            CancellationToken lifetime, Action<string> failedUpdate,
+            Func<long, CancellationToken, Task<bool>> approveDownload = null,
+            Action<ContentDownloadProgress> downloadProgress = null)
         {
             bool remote = !string.IsNullOrWhiteSpace(manifest) || !string.IsNullOrWhiteSpace(signature) || key;
 #if UNITY_EDITOR
@@ -77,27 +84,31 @@ namespace AstralOath.Client.Bootstrap
             var unityContext = SynchronizationContext.Current ?? throw new InvalidOperationException("Start content on the Unity main thread.");
             var updater = new ContentUpdater(storePath, http, rsa, (int)FoundationProtocol.Version, SchemaVersion,
                 () => AvailableBytes(storePath, unityContext));
-            using var deadline = CancellationTokenSource.CreateLinkedTokenSource(lifetime);
-            deadline.CancelAfter(TimeSpan.FromSeconds(60));
+            bool declined = false;
             StartupContent candidate = null;
             try
             {
                 if (interrupted.HasValue && journal.LastHealthyVersion.HasValue)
-                    await Task.Run(() => updater.ActivateReleaseAsync(journal.LastHealthyVersion.Value, deadline.Token), deadline.Token);
-                await Task.Run(() => updater.InstallAsync(manifestUri, signatureUri, deadline.Token,
+                    await Task.Run(() => updater.ActivateReleaseAsync(journal.LastHealthyVersion.Value, lifetime), lifetime);
+                var installed = await Task.Run(() => updater.InstallAsync(manifestUri, signatureUri, lifetime,
                     (release, token) => OnUnityThread(unityContext, async () =>
                     {
                         if (journal.IsRejected(release.Version))
-                            throw new InvalidDataException("This release previously failed startup and is quarantined. Publish a new version.");
+                            throw new QuarantinedReleaseException();
                         candidate = await LoadAsync(release, baseline, journal, token);
-                    })), deadline.Token);
+                    }), approveDownload == null ? null : ConfirmAsync, downloadProgress, baseline.contentVersion), lifetime);
                 lifetime.ThrowIfCancellationRequested();
+                if (declined)
+                    return null;
+                if (installed == null)
+                    return await LoadAsync(null, baseline, journal, lifetime);
                 return candidate ?? throw new InvalidOperationException("Candidate was not preflighted.");
             }
             catch (Exception error)
             {
                 candidate?.Dispose();
                 lifetime.ThrowIfCancellationRequested();
+                if (approveDownload != null && !(error is QuarantinedReleaseException)) throw;
                 failedUpdate(error.Message);
                 using var recovery = CancellationTokenSource.CreateLinkedTokenSource(lifetime);
                 recovery.CancelAfter(TimeSpan.FromSeconds(30));
@@ -115,6 +126,18 @@ namespace AstralOath.Client.Bootstrap
                     failedUpdate("本地更新不可用，回到安装包内容：" + recoveryError.Message);
                 }
                 return await LoadAsync(null, baseline, journal, recovery.Token);
+            }
+
+            async Task<bool> ConfirmAsync(long bytes, CancellationToken token)
+            {
+                bool approved = false;
+                await OnUnityThread(unityContext, async () =>
+                {
+                    token.ThrowIfCancellationRequested();
+                    approved = await approveDownload(bytes, token);
+                }).ConfigureAwait(false);
+                declined = !approved;
+                return approved;
             }
 #endif
         }

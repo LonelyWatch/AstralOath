@@ -19,6 +19,13 @@ namespace AstralOath.Shared.Updates
         public string DirectoryPath { get; }
     }
 
+    public readonly struct ContentDownloadProgress
+    {
+        internal ContentDownloadProgress(long received, long total) { Received = received; Total = total; }
+        public long Received { get; }
+        public long Total { get; }
+    }
+
     public sealed partial class ContentUpdater
     {
         private const int MaxManifestBytes = 1024 * 1024;
@@ -73,7 +80,9 @@ namespace AstralOath.Shared.Updates
         }
 
         public async Task<ContentRelease> InstallAsync(Uri manifestUri, Uri signatureUri, CancellationToken token,
-            Func<ContentRelease, CancellationToken, Task> validateCandidate = null)
+            Func<ContentRelease, CancellationToken, Task> validateCandidate = null,
+            Func<long, CancellationToken, Task<bool>> approveDownload = null,
+            Action<ContentDownloadProgress> downloadProgress = null, long bundledVersion = 0)
         {
             RequireHttpUri(manifestUri);
             RequireHttpUri(signatureUri);
@@ -84,6 +93,8 @@ namespace AstralOath.Shared.Updates
                 byte[] signature = await FetchAsync(signatureUri, trustedKey.KeySize / 8, token).ConfigureAwait(false);
                 var manifest = ParseVerified(bytes, signature);
                 RequireCompatible(manifest);
+                if (manifest.Version <= bundledVersion && pointer.active <= bundledVersion)
+                    return null; // The signed release is already covered by the installed application.
                 if (manifest.Version < pointer.active)
                     throw new InvalidDataException("Downgrades require an explicit rollback.");
 
@@ -115,31 +126,57 @@ namespace AstralOath.Shared.Updates
                 string quarantined = null;
                 if (release == null)
                 {
-                    string staging = SafeDirectory(SafeDirectory(store, "staging"), Digest(bytes));
-                    string payload = SafeDirectory(staging, "files");
+                    string staging = SafePath(SafePath(store, "staging"), Digest(bytes));
+                    string payload = SafePath(staging, "files");
+                    long total = 0;
+                    long retained = 0;
                     long required = DiskSafetyBytes + bytes.Length + signature.Length;
                     foreach (var entry in manifest.Files)
                     {
-                        string local = ResolveFile(payload, entry.Path, true);
+                        token.ThrowIfCancellationRequested();
+                        string local = ResolveFile(payload, entry.Path, false);
                         long have = File.Exists(local) ? new FileInfo(local).Length : 0;
-                        if (have > entry.Size || (have == entry.Size && File.Exists(local) && !Matches(local, entry, token)))
-                        {
-                            File.Delete(local);
-                            have = 0;
-                        }
+                        if (have == entry.Size && File.Exists(local) && Matches(local, entry, token))
+                            continue;
+                        if (have >= entry.Size) have = 0;
+                        total = checked(total + entry.Size);
+                        retained = checked(retained + have);
                         required = checked(required + entry.Size - have);
                     }
+                    if (total > 0 && approveDownload != null &&
+                        !await approveDownload(total - retained, token).ConfigureAwait(false))
+                        return null;
+                    token.ThrowIfCancellationRequested();
                     if (availableBytes() < required)
                         throw new IOException("Insufficient disk space for the remaining content and safety reserve.");
+                    SafeDirectory(SafeDirectory(SafeDirectory(store, "staging"), Digest(bytes)), "files");
 
+                    long received = retained;
+                    downloadProgress?.Invoke(new ContentDownloadProgress(received, total));
                     foreach (var entry in manifest.Files)
                     {
                         token.ThrowIfCancellationRequested();
                         string local = ResolveFile(payload, entry.Path, true);
-                        if (!File.Exists(local) || new FileInfo(local).Length != entry.Size)
+                        long have = File.Exists(local) ? new FileInfo(local).Length : 0;
+                        if (File.Exists(local) && have == entry.Size && Matches(local, entry, token))
+                            continue;
+                        if (File.Exists(local) && have >= entry.Size)
                         {
+                            File.Delete(local);
+                            have = 0;
+                        }
+                        if (entry.Size == 0)
+                            File.Create(local).Dispose();
+                        else
+                        {
+                            long prior = have;
                             Uri source = new Uri(manifestUri, entry.Path);
-                            await DownloadAsync(source, local, entry, token).ConfigureAwait(false);
+                            await DownloadAsync(source, local, entry, token, written =>
+                            {
+                                received += written - prior;
+                                prior = written;
+                                downloadProgress?.Invoke(new ContentDownloadProgress(received, total));
+                            }).ConfigureAwait(false);
                         }
                         if (!Matches(local, entry, token))
                         {

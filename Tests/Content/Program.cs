@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 
 await using var fixture = await Fixture.StartAsync();
 await fixture.ValidInstallAndRestart();
+await fixture.ConsentPrecedesPayloadAndKeepsActiveRelease();
 await fixture.BadSignatureAndTraversal();
 await fixture.BadHashAndShortBody();
 await fixture.ResumeAndFallback();
@@ -37,7 +38,7 @@ sealed partial class Fixture : IAsyncDisposable
     private WebApplication server;
     private byte[] manifest, signature, body = Body;
     private bool interrupt, ignoreRange, badRange, oversized;
-    private int rangeRequests;
+    private int rangeRequests, contentRequests;
     private CancellationTokenSource cancelOnContent;
 
     public static async Task<Fixture> StartAsync()
@@ -65,6 +66,42 @@ sealed partial class Fixture : IAsyncDisposable
         Require(Updater().GetActiveRelease().Version == 1, "restart recovered active release");
     }
 
+
+    public async Task ConsentPrecedesPayloadAndKeepsActiveRelease()
+    {
+        const int version = 2;
+        SetRelease(version);
+        int before = contentRequests;
+        var updater = Updater();
+        var progress = new List<ContentDownloadProgress>();
+        bool prompted = false;
+        var rejected = await updater.InstallAsync(new Uri(server.Urls.Single() + "/manifest.json"),
+            new Uri(server.Urls.Single() + "/manifest.sig"), default, approveDownload: (bytes, _) =>
+            {
+                prompted = true;
+                Require(bytes == Body.Length && contentRequests == before, "confirmation precedes payload and reports size");
+                return Task.FromResult(false);
+            }, downloadProgress: progress.Add);
+        Require(prompted && rejected == null && progress.Count == 0 && contentRequests == before
+            && updater.GetActiveRelease().Version == 1, "decline keeps the previous release");
+        Require(!Directory.Exists(Path.Combine(store, "releases", version.ToString())), "decline does not create a release");
+        var bundled = await updater.InstallAsync(new Uri(server.Urls.Single() + "/manifest.json"),
+            new Uri(server.Urls.Single() + "/manifest.sig"), default, approveDownload: (_, _) =>
+                throw new Exception("the package already contains this version"), bundledVersion: version);
+        Require(bundled == null && contentRequests == before, "signed bundled release needs no downloads");
+        var fixtureStore = Path.Combine(store, "consent");
+        var isolated = new ContentUpdater(fixtureStore, http, key, 1, 1);
+        var installed = await isolated.InstallAsync(new Uri(server.Urls.Single() + "/manifest.json"),
+            new Uri(server.Urls.Single() + "/manifest.sig"), default, approveDownload: (_, _) => Task.FromResult(true),
+            downloadProgress: progress.Add);
+        Require(installed.Version == version && progress.Last().Received == Body.Length &&
+            progress.Last().Total == Body.Length, "consent installs and publishes byte progress");
+        await isolated.InstallAsync(new Uri(server.Urls.Single() + "/manifest.json"),
+            new Uri(server.Urls.Single() + "/manifest.sig"), default,
+            approveDownload: (_, _) => throw new Exception("an installed version must not ask for download approval"));
+        // Restore the fixture to the first release for subsequent failure scenarios.
+        SetRelease(1);
+    }
     public async Task BadSignatureAndTraversal()
     {
         SetRelease(2);
@@ -260,6 +297,7 @@ sealed partial class Fixture : IAsyncDisposable
 
     private async Task SendContent(HttpContext context)
     {
+        Interlocked.Increment(ref contentRequests);
         if (cancelOnContent != null)
             cancelOnContent.Cancel();
         var rangeHeader = context.Request.Headers.Range.ToString();

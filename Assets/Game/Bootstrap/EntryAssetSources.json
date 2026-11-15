@@ -1,0 +1,261 @@
+{
+  "assets": [
+    {
+      "asset": "Assets/Game/Bootstrap/Resources/Entry/TitleLogo.png",
+      "source": "客户端附加资源/启动包/pre/ui/epic7_logo.png",
+      "sourceSha256": "16a73410e3c94dc94fb2002477ce739b606b3dab278c2ab95be96a51aaed4d62",
+      "assetSha256": "16a73410e3c94dc94fb2002477ce739b606b3dab278c2ab95be96a51aaed4d62"
+    },
+    {
+      "asset": "Assets/Game/Bootstrap/Resources/Entry/PanelFrame.png",
+      "source": "客户端附加资源/启动包/pre/ui/renew_popup_bg.png",
+      "sourceSha256": "0e02c38c6724c3855bab08d1e62004b78ea3ac513ddd354a5ba70eae0221ed39",
+      "assetSha256": "0e02c38c6724c3855bab08d1e62004b78ea3ac513ddd354a5ba70eae0221ed39"
+    },
+    {
+      "asset": "Assets/Game/Bootstrap/Resources/Entry/ButtonGreen.png",
+      "source": "客户端附加资源/启动包/pre/ui/_btn_green.png",
+      "sourceSha256": "209315cc9f3ff33da7740008b56768301bcb296dd4b0e1ea0f45f5e999eb0832",
+      "assetSha256": "209315cc9f3ff33da7740008b56768301bcb296dd4b0e1ea0f45f5e999eb0832"
+    },
+    {
+      "asset": "Assets/Game/Bootstrap/Resources/Entry/ButtonGreenPressed.png",
+      "source": "客户端附加资源/启动包/pre/ui/_btn_green_p.png",
+      "sourceSha256": "f552287f6c24fa79539f7a2234a3b8af9b6d7b5ad99f6dc14b92c8c095960994",
+      "assetSha256": "f552287f6c24fa79539f7a2234a3b8af9b6d7b5ad99f6dc14b92c8c095960994"
+    },
+    {
+      "asset": "Assets/Game/Bootstrap/Resources/Entry/ButtonGreenRound.png",
+      "source": "客户端附加资源/启动包/pre/ui/_btn_green_r.png",
+      "sourceSha256": "dbeffdd498333a8cef91ce96c121cad457dafa7059cad1a66ee7f570cb7b48a6",
+      "assetSha256": "445198afb4b1357d0d1f90cd55d9123673d9cd5c388f342f7eb008f2cabc3463",
+      "conversion": "Adjusted the unpressed patch button RGB contrast only: smooth lightness factor 0.87–1.17 for green pixels, weighted by source alpha. Preserves alpha, source hue ratios and geometry. Pressed state uses the unmodified original frame."
+    },
+    {
+      "asset": "Assets/Game/Bootstrap/Resources/Entry/ButtonGreenRoundPressed.png",
+      "source": "客户端附加资源/启动包/pre/ui/_btn_green_r_p.png",
+      "sourceSha256": "a313617d3ebbd7ebd39721b8157178f78b47a4b9f20133e5adb6d45915ec0841",
+      "assetSha256": "a313617d3ebbd7ebd39721b8157178f78b47a4b9f20133e5adb6d45915ec0841"
+    },
+    {
+      "asset": "Assets/Game/Bootstrap/Resources/Entry/ButtonGold.png",
+      "source": "客户端附加资源/启动包/pre/ui/_btn_gold.png",
+      "sourceSha256": "4c4861a4aae376a620c706ac2fa3c778f5bf221537187cac8f17a7f9e57d699b",
+      "assetSha256": "4c4861a4aae376a620c706ac2fa3c778f5bf221537187cac8f17a7f9e57d699b"
+    },
+    {
+      "asset": "Assets/Game/Bootstrap/Resources/Entry/ButtonGoldPressed.png",
+      "source": "客户端附加资源/启动包/pre/ui/_btn_gold_p.png",
+      "sourceSha256": "d56ef788bbdb080bbfb92c5b5af10d1e026bf4d7a5b88642191d64f2daf5dfbf",
+      "assetSha256": "d56ef788bbdb080bbfb92c5b5af10d1e026bf4d7a5b88642191d64f2daf5dfbf"
+    },
+    {
+      "asset": "Assets/Game/Bootstrap/Resources/Entry/Divider.png",
+      "source": "客户端附加资源/启动包/pre/ui/_bar_23.png",
+      "sourceSha256": "a8cd8415a8d1331086ed7178e6721607488c3a6d1600dcdbda6c1f446861a063",
+      "assetSha256": "a8cd8415a8d1331086ed7178e6721607488c3a6d1600dcdbda6c1f446861a063"
+    },
+    {
+      "asset": "Assets/Game/Bootstrap/Resources/Entry/LoginButton.png",
+      "source": "客户端附加资源/启动包/pre/ui/_btn_small_black_4.png",
+      "sourceSha256": "1b63952cd9538045b44aa88ce7f4f90bfeacaa4474e60519527a87c0bfcc75fe",
+      "assetSha256": "1b63952cd9538045b44aa88ce7f4f90bfeacaa4474e60519527a87c0bfcc75fe"
+    },
+    {
+      "asset": "Assets/Game/Bootstrap/Resources/Entry/LoginButtonPressed.png",
+      "source": "客户端附加资源/启动包/pre/ui/_btn_small_black_4_p.png",
+      "sourceSha256": "a407d7d1847cc9b1a1941cb5841e4afc4b762a9ca6b887869e48aa93010f18e1",
+      "assetSha256": "a407d7d1847cc9b1a1941cb5841e4afc4b762a9ca6b887869e48aa93010f18e1"
+    },
+    {
+      "asset": "Assets/Game/Bootstrap/Resources/Entry/Key.png",
+      "source": "客户端附加资源/启动包/pre/ui/cm_icon_etclogin.png",
+      "sourceSha256": "9a929d51f7e9f5f61fc20b33cf98062e22cee0ac1aa1f7a79fa131029a7e71b8",
+      "assetSha256": "9a929d51f7e9f5f61fc20b33cf98062e22cee0ac1aa1f7a79fa131029a7e71b8"
+    },
+    {
+      "asset": "Assets/Game/Bootstrap/Resources/Entry/ProgressTrack.png",
+      "source": "客户端附加资源/启动包/pre/ui/renew_title_progress.png_bg.png",
+      "sourceSha256": "b8f011fa32b4299f6d852f464b97e86dc3dc0a3e67969b0e6372646aab29b609",
+      "assetSha256": "b8f011fa32b4299f6d852f464b97e86dc3dc0a3e67969b0e6372646aab29b609"
+    },
+    {
+      "asset": "Assets/Game/Bootstrap/Resources/Entry/ProgressFill.png",
+      "source": "客户端附加资源/启动包/pre/ui/renew_title_progress.png",
+      "sourceSha256": "33650db016b2553a53b169b0af9917751ebb41022bc2a6d558b890c5d0cfd358",
+      "assetSha256": "33650db016b2553a53b169b0af9917751ebb41022bc2a6d558b890c5d0cfd358"
+    },
+    {
+      "asset": "Assets/Game/Bootstrap/Resources/Entry/PatchPanel.png",
+      "source": "客户端附加资源/启动包/pre/ui/renew_popup_bg_2.png",
+      "sourceSha256": "80b58044904520d4e88b1189ee8aac5dd7c5c40ccffa55a409fbd9413e9354f7",
+      "assetSha256": "80b58044904520d4e88b1189ee8aac5dd7c5c40ccffa55a409fbd9413e9354f7"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Entry/26_halloween_bg.jpg",
+      "source": "客户端附加资源/在线素材/Live/world_kor/webpubs/res/title/bg/26_halloween_bg.webp",
+      "sourceSha256": "d577277c13d9c9d12bfa32ec040a209e404fefe82e81fddd9bbae37fef629442",
+      "assetSha256": "2c8c8f8805ed69c9dafdd6ef3b8b01de3ad2b44b6c60fe23a1de506fe65e69a9",
+      "conversion": "WebP decoded to JPEG (95, 4:4:4); native dimensions and framing"
+    },
+    {
+      "asset": "Assets/Game/Bootstrap/Resources/Entry/TitleBackground.jpg",
+      "assetSha256": "06d4ed93dcd9c83dbae6c4fe9a9422c824fce50faf4eeabc57c2d22fcf5229b1",
+      "source": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total.cfx",
+      "sourceSha256": "675186b0aec9fd68ab04fb415853dee9cde74dfa9db55a39aa64ae580459056d",
+      "conversion": "CFX graph in primitive Z order. Existing SCSP/SCT decoder and official Spine 3.8 pose, sanc_idle 0.65 s, meshes and region attachments with source premultiplied colors and runtime blend modes. Camera centered x/y at 0, width 3400 scene units. Static frame for the minimum install package. Scoped to reference aspect ratio and center cropped at runtime. JPEG (95, 4:4:4).",
+      "inputs": [
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_0.scsp",
+          "sha256": "8af2dc679c412c7c9d3ba0cd35835ea4656c09e5179c9a746aea6575090c0a28"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_0.atlas",
+          "sha256": "1de470671cbe83ae1be59f0473262410540c17d23afa7cb7d88444c274adebe8"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_0.sct",
+          "sha256": "f6a321c0e4a25a8c06fd0a74b1ba79b6c79702c72725adbc1e023cd424af1bdc"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_1.scsp",
+          "sha256": "08505583ba38b02a220385ba64e115987f182bc7d619f0d6ee5ff3b45414eae1"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_1.atlas",
+          "sha256": "35063c8a9b82646bd0728ddf92d9113a43177be816b9744b32ae9629c385e166"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_1.sct",
+          "sha256": "c99670e6a702c1a370276c5629a73f9b732a151fe5052141dedceee5bf21be57"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_2.scsp",
+          "sha256": "56b59f89c5df7b510b9f282cbb476a3ce6a4a98441a419b2001a6d0403c73ee5"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_2.atlas",
+          "sha256": "1bacd3a6e867bb458bc9a6ba90f7e315bc13264404af9f42fc3832a4b1ae1c59"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_2.sct",
+          "sha256": "aefc1d2acb348d5455c08e3d08e036ff470205a0dfa40bc5e91a9529d27e4f63"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_3.scsp",
+          "sha256": "b9227e2048f4c9d001dcd4bbebb6546af8f43370a4b29ebd369f2062dd335380"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_3.atlas",
+          "sha256": "5bd8563afc9134724a40e3cd01b4a226ac5dc040aeef6629639d9348e8051102"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_3.sct",
+          "sha256": "1c5699e2dbd52aca64d8af603931760809930ec7f121221a9c5d48785d69bf1f"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_4.scsp",
+          "sha256": "e2edcb4b0022bca117e3add48a2431a1542d08b6ffd48576a872ee9bf537b633"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_4.atlas",
+          "sha256": "a0ee3837117281de5a2826e8e5165a0cde1f6acecc649183f9e819647527d72b"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_4.sct",
+          "sha256": "2f9b28ee382a3d85042c6d497a617c4169eb7e7c97dda731fc5117e26b480831"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_5.scsp",
+          "sha256": "bed9c0a23037d29ddc248421201a4a7d54bac758a293565aa68783837481e8e8"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_5.atlas",
+          "sha256": "142ca1a7d3411dd6e4e82dbab0107075d9493be7058918238e77af45fc8cb907"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_5.sct",
+          "sha256": "a24eac5951878c17e53d316f36e785bf0f382213dff2de8241031079353b9217"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_6.scsp",
+          "sha256": "f408a5ee26e1ff26f59479e1426780dfbe0fb3c90f3150727332d7df94dc9748"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_6.atlas",
+          "sha256": "75c7eeba82ea0cba49b79d5fc3ba671d7796a77df84fbed4416339a4c5237e5b"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_6.sct",
+          "sha256": "861392067b622b57e7fc1101e36f9c00a119e5c65cc29c3b8ea75d0d2b8a1d97"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_7.scsp",
+          "sha256": "0c528126e28f5d6bfed8412e512c19195945bd60e498517f92c0f5c4dabc2d64"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_7.atlas",
+          "sha256": "c138b8fc5c075eb3973acdb5389479953640502cbdbc97ac92fecfdcb49c733e"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_7.sct",
+          "sha256": "f48ae6531568719bb736bbeaf6ffcea97e4a9fc948342bd806bef3cb9ffb8290"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_8.scsp",
+          "sha256": "7fd3312f5476b7eb0f3b9d7cec7035d78a4b4f8bc93b3b2e6d4429779ce061cc"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_8.atlas",
+          "sha256": "83307a84c2088ea4ea3acca31ac31fd8e76bfc3b883d53807c977107b6de12ad"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_8.sct",
+          "sha256": "6c0c839fdca0b063ad59c1a50212b0d438de77f26c5f2fb10244a89444466110"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_9.scsp",
+          "sha256": "7a5ab3fa98522de52d9fc65ceacfd49ef1ae65e96295353485900b7e67acbc24"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_9.atlas",
+          "sha256": "c8d77b6a45362be8b7dd75a3902ad9e270d096a554a9da728ae2f0eba089b8a4"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_9.sct",
+          "sha256": "66f894116ac708ba2faad43ff478b20346a338dae08e4ef2c5cc3254c7c1aedd"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_10.scsp",
+          "sha256": "ed29ac5dbd70f158848b56d43e878d2c35da83be571aa1f2c7fb4f30f0ec4051"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_10.atlas",
+          "sha256": "60362f587c5b146ff389ee284acfd4d58cb13d8daa25e3877312e5e30c79a097"
+        },
+        {
+          "path": "客户端附加资源/启动包/pre/title_prequel/eff_sanc_total_10.sct",
+          "sha256": "929d55f69f59712f60376b8c6e77ef88c8f06dc7f8c21030dad4023b45bb750a"
+        }
+      ]
+    },
+    {
+      "asset": "Assets/Game/Bootstrap/Resources/Entry/UiConfirm.wav",
+      "source": "Assets/Game/Common/Res/Sounds/UiConfirm.wav",
+      "assetSha256": "2888aad5cb9853f51cc46dcf8b14e940e54040b72605efe8b8cf0eaac3ac0d87",
+      "sourceSha256": "2888aad5cb9853f51cc46dcf8b14e940e54040b72605efe8b8cf0eaac3ac0d87"
+    },
+    {
+      "asset": "Assets/Game/Bootstrap/Resources/Entry/UiCancel.wav",
+      "source": "Assets/Game/Common/Res/Sounds/UiCancel.wav",
+      "assetSha256": "f12c86df4e29d28b0189d907e4d71e2b2c810bed7fd4ac913b85dabe1f79718c",
+      "sourceSha256": "f12c86df4e29d28b0189d907e4d71e2b2c810bed7fd4ac913b85dabe1f79718c"
+    },
+    {
+      "asset": "Assets/Game/Bootstrap/Resources/Entry/UiBlocked.wav",
+      "source": "Assets/Game/Common/Res/Sounds/UiBlocked.wav",
+      "assetSha256": "32e0836ea830ddaf44502b94c2468afcb09823a1c6b0a568b09cbaa35de3fbee",
+      "sourceSha256": "32e0836ea830ddaf44502b94c2468afcb09823a1c6b0a568b09cbaa35de3fbee"
+    }
+  ]
+}

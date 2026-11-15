@@ -31,6 +31,19 @@ namespace AstralOath.Client.Core
             return (T)services[typeof(T)];
         }
 
+        public bool TryGet<T>(out T service) where T : class
+        {
+            if (disposed)
+                throw new ObjectDisposedException(nameof(ServiceRegistry));
+            if (services.TryGetValue(typeof(T), out var registered))
+            {
+                service = (T)registered;
+                return true;
+            }
+            service = null;
+            return false;
+        }
+
         public void Dispose()
         {
             if (disposed)

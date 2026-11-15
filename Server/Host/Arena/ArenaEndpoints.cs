@@ -18,8 +18,12 @@ internal static class ArenaEndpoints
 
     public static IServiceCollection AddArena(this IServiceCollection services)
     {
-        services.AddSingleton(provider => new ArenaStore(provider.GetRequiredService<IConfiguration>()
-            .GetConnectionString("MySql")));
+        services.AddSingleton(provider =>
+        {
+            var settings = provider.GetRequiredService<IConfiguration>();
+            return new ArenaStore(settings.GetConnectionString("MySql"),
+                settings.GetValue("Entry:AllowLegacyArenaGuests", true));
+        });
         services.AddHostedService<ArenaRoomLeaseWorker>();
         services.AddSingleton<ArenaChatSignal>();
         services.AddSingleton<ArenaBattleCatalog>();
@@ -57,6 +61,7 @@ internal static class ArenaEndpoints
         });
         arena.MapPost("/sessions", async (ArenaPlayerRequest request, ArenaStore store, CancellationToken cancellation) =>
         {
+            if (!store.AllowLegacyGuests) throw new ArenaProblem(403, "account_required");
             string name = Normalize(request.DisplayName, 24, "invalid_player");
             string avatar = request.AvatarId ?? "c1001";
             if (avatar.Length != 5 || avatar[0] != 'c' || avatar.AsSpan(1).ContainsAnyExceptInRange('0', '9'))

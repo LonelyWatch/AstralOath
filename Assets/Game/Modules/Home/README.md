@@ -1,6 +1,6 @@
 # Home
 
-`Scenes/GameHome.unity` 是游戏首场景。开发入口为 Unity 的 **Tools → 游戏主页 → 打开启动场景**。Foundation Bootstrap 校验并加载内容后，按地址 `home/main` 显示 HomeWindow；点竞技场模拟战打开 Arena 模块。旧 FoundationDemo 场景继续用于 Echo 和启动诊断。
+`Scenes/GameHome.unity` 是游戏首场景。开发入口为 Unity 的 **Tools → 游戏主页 → 打开启动场景**。启动入口先登录并选服，校验并加载内容后，还需点击活动标题页进入主页；详见[游戏入口、账号与更新](../../../../docs/development/game-entry.md)。主页按地址 `home/main` 显示 HomeWindow；点竞技场模拟战打开 Arena 模块。旧 FoundationDemo 场景继续用于 Echo 和启动诊断。
 
 `HomeWindow : UIBaseView` 和 `HomeWindowBinder` 分离组件与导航。主页使用原版 `bgpack/lobby_bg3.png` 和夏日夏绿蒂 c5009 的 Spine 3.8.99 立绘，来源见 `Res/Textures/source-manifest.json`。预制体沿安全区锚定，采用高度匹配的 CanvasScaler。退出主页会回收立绘 Camera、RenderTexture 和 Spine 实例。
 

@@ -44,3 +44,18 @@
 - 在线战斗响应增加版本 1 的 `clock`；双方在完成对应事件演出后向 `/battle/ready?after={eventSequence}` 提交 `{battleId,commandSequence,eventSequence,actorId}`。两侧就绪后才设置决策截止时间。`Arena:BattleTurnSeconds` 与 `Arena:BattlePresentationWaitSeconds` 默认分别为 30 秒，配置范围 5–120 秒，并在本局首次生成时固定。等待上限到达自动开启计时；未进入决策窗口返回 409 `battle_presentation_pending`。到期后下一次有效请求先按共享 AI 选择合法动作并同事务保存，再处理手动命令。重复 ready 或重连不延时，状态随草案 JSON 持久化，无新增迁移。旧客户端命令同样受时间窗约束；新客户端要求计时协议版本 1。详见[回合计时与验证](../docs/delivery/2026-11-15-online-turn-clock.md)。
 
 真实 MySQL 回归用 `dotnet test Server/Tests --filter FullyQualifiedName~ArenaDraftTests`。测试覆盖选禁隐私、同时抢选、选人计时与保护、双方站位、战斗权限、重启重放、退出取消及旧局请求拒绝。
+
+## 启动登录、注册与选服
+
+发布新客户端前应用迁移 `009_entry_account.sql`。运行账号需要新增表 `entry_account` 的 SELECT/INSERT/UPDATE、`entry_email_challenge` 的 SELECT/INSERT/UPDATE/DELETE，沿用 `arena_player` 与 `game_operation_audit` 的权限。
+
+- 客户端通过 `GET /api/entry/version` 取得 `minimumAppVersion` 与区服 ID `undying-memory`。设置 `Entry__MinimumAppVersion` 指定最低母包版本，留空表示未设置。
+- `POST /api/entry/email-code` 发送注册验证码。发送成功返回 204。验证码十分钟有效，单地址六十秒内仅能请求一次，每次申请允许五次校验。服务进程重启后，重新申请验证码。
+- `POST /api/entry/register` 使用 `{username,email,password,code}`，`POST /api/entry/login` 使用 `{account,password}`。账号名采用 3–24 位 ASCII 英文字母、数字或下划线，也可用注册邮箱登录。密码长度为 12–128 个字符。接口成功后返回短期入口令牌。
+- `POST /api/entry/select-realm` 使用入口 Bearer 和 `{realmId:"undying-memory",appVersion:"1.0.0"}`，返回现有竞技场会话结构 `{token,player}`。入口令牌有效期十五分钟，竞技场令牌有效期二十四小时。再次选服后生成的新令牌替换旧令牌，玩家 ID 保持一致。服务端配置最低版本时，选服会再次校验客户端报送版本，欠缺或过旧则返回 426 `client_update_required`。
+- 注册、登录和选服成功后在对应数据库事务内记入 `game_operation_audit`，记录内部账户 ID 与操作类型。凭据、邮箱地址、验证码和令牌均不进入审计内容。
+- 现有访客客户端仍可使用竞技场会话接口。所有客户端更新后，将 `Entry__AllowLegacyArenaGuests` 设置为 `false` 关闭新建和使用访客会话。
+
+SMTP 使用 `Entry__Smtp__Host`、`Entry__Smtp__Port`、`Entry__Smtp__From` 以及服务商要求的 `Entry__Smtp__Username`、`Entry__Smtp__Password`。端口默认 587，使用 STARTTLS。把凭据配置到服务器环境变量。测试 SMTP 可以在 Development 对回环 IP 显式设置 `Entry__Smtp__UseStartTls=false`，供本地捕获验证码邮件。
+
+使用已有的隔离 MySQL 8.4 测试配置运行 `dotnet test Server/Tests --filter FullyQualifiedName~EntryAccountTests`。测试会在本地回环监听器接收验证码，并验证注册、防重放、选服及竞技场身份。

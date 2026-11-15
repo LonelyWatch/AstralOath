@@ -139,6 +139,27 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags:
         UserData:
+    - GroupName: EntryTheme
+      GroupDesc:
+      AssetTags:
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Game/Modules/Home/Configs/entry-theme.json
+        CollectorGUID: 67aa90a6c3aa4eb08a1fbac65845d0f6
+        CollectorType: 0
+        AddressRuleName: EntryThemeAddressRule
+        PackRuleName: PackSeparately
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/Home/Res/Textures/Entry
+        CollectorGUID: 5e053e845438489eb541e96396beefb6
+        CollectorType: 0
+        AddressRuleName: EntryThemeAddressRule
+        PackRuleName: PackSeparately
+        FilterRuleName: EntryThemeFilterRule
+        AssetTags:
+        UserData:
   - PackageName: CharacterLab
     PackageDesc:
     EnableAddressable: 1

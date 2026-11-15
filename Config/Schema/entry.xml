@@ -1,0 +1,7 @@
+<module name="entry">
+  <bean name="TitleTheme">
+    <var name="id" type="string"/>
+    <var name="backgroundAddress" type="string"/>
+  </bean>
+  <table name="TitleThemes" value="TitleTheme" input="entry_title_themes.csv"/>
+</module>

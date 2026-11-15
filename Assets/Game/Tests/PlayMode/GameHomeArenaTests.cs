@@ -30,6 +30,8 @@ namespace AstralOath.Client.Tests
             string endpoint = Environment.GetEnvironmentVariable("ASTRAL_ARENA_TEST_URL");
             if (string.IsNullOrWhiteSpace(endpoint)) Assert.Ignore("Set ASTRAL_ARENA_TEST_URL to a running test API.");
             string original = Environment.GetEnvironmentVariable("ASTRAL_FOUNDATION_URL");
+            string skip = Environment.GetEnvironmentVariable("ASTRAL_TEST_SKIP_ENTRY");
+            Environment.SetEnvironmentVariable("ASTRAL_TEST_SKIP_ENTRY", "1");
             Environment.SetEnvironmentVariable("ASTRAL_FOUNDATION_URL", endpoint);
             try
             {
@@ -257,7 +259,11 @@ namespace AstralOath.Client.Tests
                 yield return ExerciseDirectory(endpoint);
 
             }
-            finally { Environment.SetEnvironmentVariable("ASTRAL_FOUNDATION_URL", original); }
+            finally
+            {
+                Environment.SetEnvironmentVariable("ASTRAL_FOUNDATION_URL", original);
+                Environment.SetEnvironmentVariable("ASTRAL_TEST_SKIP_ENTRY", skip);
+            }
         }
 
         private IEnumerator ExerciseDirectory(string endpoint)

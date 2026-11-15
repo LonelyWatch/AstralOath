@@ -5,13 +5,14 @@ using MySqlConnector;
 
 namespace AstralOath.Server.Arena;
 
-internal sealed partial class ArenaStore(string? connectionString)
+internal sealed partial class ArenaStore(string? connectionString, bool allowLegacyGuests = true)
 {
     private const int Capacity = 50;
     private const int PinIterations = 100_000;
     private const int LeaseSeconds = 60;
     private const int SweepPageSize = 64;
 
+    public bool AllowLegacyGuests => allowLegacyGuests;
     public bool IsConfigured => !string.IsNullOrWhiteSpace(connectionString);
 
     public async Task<ArenaSession> CreateSession(string name, string avatar, CancellationToken token)
@@ -37,8 +38,11 @@ internal sealed partial class ArenaStore(string? connectionString)
         catch (FormatException) { return null; }
         await using var connection = await Open(token);
         using var command = Command(connection, null, """
-            SELECT id, display_name, avatar_id FROM arena_player WHERE token_hash = @hash;
-            """, ("@hash", SHA256.HashData(secret)));
+            SELECT p.id, p.display_name, p.avatar_id FROM arena_player p
+            LEFT JOIN entry_account a ON a.player_id = p.id
+            WHERE p.token_hash = @hash AND ((a.player_id IS NULL AND @allowGuests)
+                OR a.arena_expires_at > UTC_TIMESTAMP(6));
+            """, ("@hash", SHA256.HashData(secret)), ("@allowGuests", allowLegacyGuests));
         await using var reader = await command.ExecuteReaderAsync(token);
         return await reader.ReadAsync(token) ? ReadPlayer(reader, 0) : null;
     }

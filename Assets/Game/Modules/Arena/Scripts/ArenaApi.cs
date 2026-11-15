@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using AstralOath.Client.Core;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Scripting;
@@ -59,10 +60,18 @@ namespace AstralOath.Client.Arena
         private readonly CancellationToken lifetime;
         private Session session;
         private int pendingOperations;
-        public ArenaApi(Uri endpoint, CancellationToken lifetime)
+        public ArenaApi(Uri endpoint, CancellationToken lifetime, GameAccountSession account = null)
         {
             this.endpoint = endpoint ?? throw new ArgumentNullException(nameof(endpoint));
             this.lifetime = lifetime;
+            if (account != null)
+            {
+                session = new Session
+                {
+                    token = account.Token,
+                    player = new ArenaPlayer { id = account.PlayerId, displayName = account.DisplayName, avatarId = account.AvatarId }
+                };
+            }
         }
 
         internal async Task RecordOperationAsync(string name)

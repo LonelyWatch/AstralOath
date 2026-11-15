@@ -61,8 +61,9 @@ namespace AstralOath.Client.FoundationDemo
             var directory = await views.CreateAsync<ArenaDirectory>(assets, context.ViewRoot, owner);
             var create = await views.CreateAsync<ArenaCreateRoom>(assets, context.ViewRoot, owner);
             var room = await views.CreateAsync<ArenaRoom>(assets, context.ViewRoot, owner);
-            var api = new ArenaApi(context.Services.Get<GameServerEndpoint>().Address, owner.Token);
-            string name = Environment.GetEnvironmentVariable("ASTRAL_ARENA_PLAYER_NAME");
+            context.Services.TryGet<GameAccountSession>(out var account);
+            var api = new ArenaApi(context.Services.Get<GameServerEndpoint>().Address, owner.Token, account);
+            string name = account?.DisplayName ?? Environment.GetEnvironmentVariable("ASTRAL_ARENA_PLAYER_NAME");
             if (string.IsNullOrWhiteSpace(name))
             {
                 name = PlayerPrefs.GetString("arena.guest-name", "");

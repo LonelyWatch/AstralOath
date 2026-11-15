@@ -44,7 +44,7 @@ namespace AstralOath.Shared.Updates
             }
         }
 
-        private async Task DownloadAsync(Uri uri, string local, ContentEntry entry, CancellationToken token)
+        private async Task DownloadAsync(Uri uri, string local, ContentEntry entry, CancellationToken token, Action<long> progress)
         {
             long offset = File.Exists(local) ? new FileInfo(local).Length : 0;
             using (var deadline = CancellationTokenSource.CreateLinkedTokenSource(token))
@@ -70,6 +70,7 @@ namespace AstralOath.Shared.Updates
                     {
                         throw new InvalidDataException("Unexpected content HTTP status: " + response.StatusCode);
                     }
+                    progress?.Invoke(offset);
                     if (response.Content.Headers.ContentLength is long length && length != entry.Size - offset)
                         throw new InvalidDataException("Payload length differs from the signed size: " + entry.Path);
 
@@ -97,6 +98,7 @@ namespace AstralOath.Shared.Updates
                                 throw new InvalidDataException("Payload exceeded the signed size: " + entry.Path);
                             await output.WriteAsync(buffer, 0, read, deadline.Token).ConfigureAwait(false);
                             received += read;
+                            progress?.Invoke(received);
                             deadline.CancelAfter(TimeSpan.FromSeconds(60));
                         }
                         output.Flush(true);

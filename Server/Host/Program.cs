@@ -2,6 +2,7 @@ using System.Net;
 using AstralOath.Server.Arena;
 using AstralOath.Server.Battle;
 using AstralOath.Server.Foundation;
+using AstralOath.Server.Entry;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting.WindowsServices;
@@ -60,6 +61,7 @@ builder.Services.AddHealthChecks().AddCheck<DatabaseHealthCheck>(
     "foundation_database", failureStatus: HealthStatus.Unhealthy, tags: ["ready"], timeout: TimeSpan.FromSeconds(3));
 builder.Services.AddRequestTimeouts();
 builder.Services.AddArena();
+builder.Services.AddEntry();
 
 var app = builder.Build();
 if (app.Configuration.GetValue<bool>(WebHostDefaults.PreferHostingUrlsKey)
@@ -71,6 +73,7 @@ app.MapHealthChecks("/health/live", new HealthCheckOptions { Predicate = _ => fa
 app.MapHealthChecks("/health/ready", new HealthCheckOptions { Predicate = check => check.Tags.Contains("ready") });
 app.MapFoundationEcho(isDevelopment);
 app.MapArena();
+app.MapEntry();
 if (app.Configuration.GetValue<bool>("BattlePreview:Enabled"))
 {
     if (!isDevelopment || !IPAddress.IsLoopback(bindAddress))

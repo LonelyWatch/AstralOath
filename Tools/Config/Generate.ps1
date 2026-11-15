@@ -16,6 +16,7 @@ $version = 'v5.1.0'
 if ($SyncClient -and $CheckClient) { throw 'Choose either -SyncClient or -CheckClient.' }
 $client = Join-Path $repo 'Assets/Game/Modules'
 $clientFiles = @{
+    'entry-theme.json' = 'Home/Configs/entry-theme.json'
     'demo_ui.json' = 'FoundationDemo/Configs/demo-config.json'
     'demo_localizationkeys.json' = 'FoundationDemo/Configs/demo-localization.json'
     'characterlab-catalog-runtime.json' = 'CharacterLab/Configs/catalog.json'
@@ -63,6 +64,18 @@ try {
     if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $dll -PathType Leaf)) { throw 'Luban extraction failed.' }
     & $Dotnet --roll-forward Major $dll --conf Config/luban.conf -t client -d json --strict -x "outputDataDir=$staging/json"
     if ($LASTEXITCODE -ne 0) { throw 'Luban JSON generation or validation failed.' }
+    $themeRows = @(Get-Content -Raw -Encoding UTF8 (Join-Path $staging 'json/entry_titlethemes.json') | ConvertFrom-Json)
+    if ($themeRows.Count -ne 1 -or $themeRows[0].id -cne 'current' -or
+        $themeRows[0].backgroundAddress -cnotmatch '\Aentry/backgrounds/(?<name>[a-z0-9_]+)\z') {
+        throw 'Entry requires one current theme and a valid background address.'
+    }
+    $themeBase = $Matches.name
+    $themeDir = Join-Path $client 'Home/Res/Textures/Entry'
+    $themeAsset = @(Get-ChildItem -LiteralPath $themeDir -File | Where-Object {
+        $_.BaseName -ceq $themeBase -and $_.Extension -cin '.jpg','.png' })
+    if ($themeAsset.Count -ne 1) { throw "Entry theme references a missing or ambiguous texture: $themeBase" }
+    [IO.File]::WriteAllText((Join-Path $staging 'json/entry-theme.json'),
+        (ConvertTo-Json -Compress $themeRows[0]) + "`n", [Text.UTF8Encoding]::new($false))
     foreach ($asset in @(Get-Content -Raw -Encoding UTF8 (Join-Path $staging 'json/demo_assets.json') | ConvertFrom-Json)) {
         if ($asset.sourcePath -cnotmatch '\A(?:Assets|Config)/(?:[A-Za-z0-9_][A-Za-z0-9_.-]*/)*[A-Za-z0-9_][A-Za-z0-9_.-]*\z' -or
             -not (Test-Path -LiteralPath (Join-Path $repo $asset.sourcePath) -PathType Leaf)) {

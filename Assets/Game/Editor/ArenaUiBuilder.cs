@@ -104,6 +104,7 @@ namespace AstralOath.Editor
             _ = Load<ScriptableObject>(OnlineBattleTransition);
             var addresses = AssetBundleCollectorSettingData.Setting.BeginCollect("Foundation", true, false)
                 .CollectAssets.ToDictionary(asset => asset.Address, asset => asset.AssetInfo.AssetPath);
+            EntryThemeAddressRule.Validate(addresses);
             foreach (var (path, address) in Assets)
                 if (!addresses.TryGetValue(address, out string registered) || registered != path)
                     throw new BuildFailedException("缺少 Foundation 资源地址 " + address);
@@ -136,6 +137,7 @@ namespace AstralOath.Editor
             var root = scene.GetRootGameObjects().Single(item => item.GetComponent<FoundationBootstrap>());
             var bootstrap = new SerializedObject(root.GetComponent<FoundationBootstrap>());
             bootstrap.FindProperty("showGameHome").boolValue = true;
+            bootstrap.FindProperty("entryFont").objectReferenceValue = Load<TMP_FontAsset>(Common + "Fonts/EpicSeven.asset");
             bootstrap.ApplyModifiedPropertiesWithoutUndo();
             var canvas = scene.GetRootGameObjects().Single(item => item.GetComponent<CanvasScaler>());
             canvas.AddComponent<DesktopDisplayMode>();
@@ -302,8 +304,6 @@ namespace AstralOath.Editor
             var rect = Prefab(parent, prefab, x, y, w, h);
             var map = rect.GetComponent<BindingMap>();
             var label = map.Require<GameText>("label");
-            label.font = font;
-            label.fontSharedMaterial = font.material;
             label.text = labels[key];
             var button = map.Require<GameButton>("button");
             button.FeedbackSound = key switch

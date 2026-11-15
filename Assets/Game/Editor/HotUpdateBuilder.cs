@@ -240,7 +240,8 @@ namespace AstralOath.Editor
                 platform = target.ToString(),
                 architecture = target == BuildTarget.Android ? "ARM64" : "x64",
                 runtimeVersion = RuntimeVersion,
-                appVersion = options.appVersion
+                appVersion = options.appVersion,
+                contentVersion = options.contentVersion
             };
 
             try

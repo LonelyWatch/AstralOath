@@ -10,6 +10,7 @@ namespace AstralOath.Client.Bootstrap
     public sealed class YooAssetService : IAssetService, ISceneAssetService, IDisposable
     {
         public const string PackageName = "Foundation";
+        internal string PackageVersion { get; private set; }
         private readonly ResourcePackage package;
         private readonly string packageId;
         private bool disposed;
@@ -60,6 +61,7 @@ namespace AstralOath.Client.Bootstrap
             var version = package.RequestPackageVersionAsync(timeout: 15);
             await WaitAsync(version, deadline.Token);
             await WaitAsync(package.UpdatePackageManifestAsync(version.PackageVersion, 15), deadline.Token);
+            PackageVersion = version.PackageVersion;
         }
 
         public async Task<T> LoadAsync<T>(string address, BindingScope scope) where T : UnityEngine.Object
