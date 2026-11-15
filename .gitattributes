@@ -4,6 +4,8 @@
 *.lua text eol=lf
 *.md text eol=lf
 *.json text eol=lf
+# Luban preserves line endings inside quoted multi-line fields.
+Config/Tables/*.csv text eol=lf
 *.ps1 text eol=lf
 *.mjs text eol=lf
 *.proto text eol=lf

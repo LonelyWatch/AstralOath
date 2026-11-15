@@ -40,9 +40,9 @@ MCP 配置依据 [官方配置说明](https://learn.chatgpt.com/docs/extend/mcp?
 
 本机项目配置已放入忽略的 `.codex/config.toml`；其他机器使用模板重新配置绝对路径。当前对话工具不会因文件写入自动刷新，需要重新加载连接。已通过 SDK 直接连接隔离 Editor 的验证不等同于当前对话已自动获取这些工具。
 
-仓库 CI 使用[官方 checkout Action](https://github.com/actions/checkout)的固定提交，仅有 contents:read 权限。Windows runner 的 Node 和 PowerShell 环境运行同一个本地检查脚本；Unity 构建需要持有有效授权的构建机，不能把普通源码 CI 绿灯当作玩家包验收。
+仓库 CI 使用[官方 checkout Action](https://github.com/actions/checkout)的固定提交，仅有 contents:read 权限。Windows runner 运行同一个本地检查脚本，导表等检查使用已校验的项目内固定 PowerShell；Unity 构建需要持有有效授权的构建机，不能把普通源码 CI 绿灯当作玩家包验收。
 
-推送后核对本次提交的 GitHub Actions 结果，记录运行链接与成功、失败或尚未完成状态。本地检查通过和 Git 推送成功均不能替代远端 CI 通过；失败时读取具体步骤日志，修复后等待新提交的检查结果。历史失败记录保留，不以删除记录或停用检查代替修复。
+推送后核对本次提交的 GitHub Actions 结果，记录运行链接与成功、失败或尚未完成状态。本地检查通过和 Git 推送成功均不能替代远端 CI 通过；失败时读取具体步骤日志，修复后等待新提交的检查结果。历史失败记录保留，不以删除记录或停用检查代替修复。配置源 CSV 固定以 LF 检出，因为 Luban 保留带引号的多行文案中的换行，CRLF 会改变快照内容。
 
 ## 发布与版本追踪
 

@@ -39,7 +39,9 @@ try {
         Copy-Item -LiteralPath (Join-Path $repo $file) -Destination $destination
     }
     $battleSkills = Read-LubanRows (Join-Path $work 'Config/Tables/battle_skills.csv')
-    foreach ($icon in ($battleSkills.iconAsset | Sort-Object -Unique)) {
+    # Both the base skill and optional variant icons are required by the production validator.
+    $skillIcons = @($battleSkills.iconAsset) + @($battleSkills.speedUpIconAsset)
+    foreach ($icon in ($skillIcons | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Sort-Object -Unique)) {
         $destination = Join-Path $work $icon
         [void][IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($destination))
         Copy-Item -LiteralPath (Join-Path $repo $icon) -Destination $destination
