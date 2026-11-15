@@ -39,8 +39,8 @@ namespace AstralOath.Client.BattleScene
         private Dictionary<string, SkeletonPlayerSource> skeletons => cache.Skeletons;
         private Dictionary<string, Texture2D> textures => cache.Textures;
         private readonly List<(float At, Action Run)> pending = new List<(float, Action)>();
-        private readonly List<(float Until, Action<float> Tick, Action Dispose)> active =
-            new List<(float, Action<float>, Action)>();
+        private readonly List<(float Until, Action<float> Tick, Action Dispose, bool Afterglow)> active =
+            new List<(float, Action<float>, Action, bool)>();
         private HashSet<string> diagnostics => cache.Diagnostics;
         private readonly SkeletonPlayerFactory skeletonFactory = new SkeletonPlayerFactory();
         private readonly System.Random cosmeticRandom = new System.Random(137);
@@ -51,6 +51,7 @@ namespace AstralOath.Client.BattleScene
         private Vector3 shadowHome;
         private (Vector3 From, Vector3 GroundFrom, Vector3 To, float Start, float Duration, float Arc, Vector4? Curve)? motion;
         private float time;
+        private float? choreographyEnd;
 
         // One battle owns parsed data. Successive actions share it, never their clocks or live visuals.
         private sealed class SessionCache
@@ -73,6 +74,7 @@ namespace AstralOath.Client.BattleScene
         private bool cutinPaused;
         private bool incomingHandoff;
         public float StageTime => time;
+        internal float FullDuration { get; private set; }
         internal float CutinRemainingSeconds => cinematic.CutinRemainingSeconds;
         public IReadOnlyList<float> HitTimes { get; private set; } = Array.Empty<float>();
 
@@ -117,7 +119,6 @@ namespace AstralOath.Client.BattleScene
 
 #if UNITY_EDITOR
         internal IReadOnlyCollection<string> EditorDiagnostics => diagnostics;
-        internal float EditorMainDuration { get; private set; }
 
         internal IReadOnlyList<(float At, JObject Node, float Duration, JObject[] Modulators)> GetPreparedCues(
             BattlePreviewActor actor, string presentationId)
@@ -240,12 +241,10 @@ namespace AstralOath.Client.BattleScene
                 cinematic.Begin(actor.transform, recipients.Select(target => target.transform).ToArray(), false);
                 cinematic.ReturnToBaseline(.2f);
                 float end = Mathf.Max(duration, impact + .15f);
-#if UNITY_EDITOR
-                EditorMainDuration = end;
-#endif
+                FullDuration = end;
                 Schedule(end, EndAction);
                 if (primary) Schedule(impact, () => Cfx(BasicHit, primary, recipients, 5, 1f, Vector2.zero, true));
-                return (impact, Mathf.Max(duration, impact + 0.15f));
+                return (impact, end);
             }
 
             var nodes = ((JObject)graph["source"])["entities"].OfType<JObject>().ToArray();
@@ -322,37 +321,32 @@ namespace AstralOath.Client.BattleScene
                         break;
                 }
             }
-#if UNITY_EDITOR
-            // Model-timeline CFX may leave ambient particles after the authored return.
-            // Keep their full lifetime for playback, but expose the choreography separately to the editor.
-            // STG effect-completion edges above remain part of that choreography.
-            EditorMainDuration = actionEnd;
-#endif
+            // STG completion, camera cues, and hits remain authoritative for the visual action.
+            // Model-timeline effects can leave particles after their authored emission windows.
+            float fullEnd = actionEnd;
             foreach (var frame in ModelTimelineFrames(graph, cues))
             {
                 var node = frame.Parameters;
                 switch (frame.Function)
                 {
                     case "effect" when !string.IsNullOrEmpty((string)node["source"]):
-                        actionEnd = Mathf.Max(actionEnd, frame.At + EffectDuration((string)node["source"]));
-#if UNITY_EDITOR
-                        EditorMainDuration = Mathf.Max(EditorMainDuration, frame.At + EditorEffectDuration((string)node["source"]));
-#endif
-                        Schedule(frame.At, () => Cfx((string)node["source"], actor, recipients, 1,
+                        string source = (string)node["source"];
+                        fullEnd = Mathf.Max(fullEnd, frame.At + EffectDuration(source));
+                        actionEnd = Mathf.Max(actionEnd, frame.At + EffectDuration(source, includeAfterglow: false));
+                        Schedule(frame.At, () => Cfx(source, actor, recipients, 1,
                             Number(node, "scale", 1f), new Vector2(Number(node, "x"), Number(node, "y")),
-                            false, anchorName: (string)node["locationBone"] ?? (string)node["locationParam"]));
+                            false, anchorName: (string)node["locationBone"] ?? (string)node["locationParam"],
+                            allowAfterglow: true));
                         break;
                     case "shake":
                         actionEnd = Mathf.Max(actionEnd, frame.At + ShakeDuration(node));
-#if UNITY_EDITOR
-                        EditorMainDuration = Mathf.Max(EditorMainDuration, frame.At + ShakeDuration(node));
-#endif
                         Schedule(frame.At, () => PlayShake(node));
                         break;
                 }
             }
 
-            Schedule(actionEnd, EndAction);
+            FullDuration = Mathf.Max(actionEnd, fullEnd);
+            choreographyEnd = actionEnd;
             Tick(0f);
             return (impactTime, actionEnd);
         }
@@ -508,31 +502,19 @@ namespace AstralOath.Client.BattleScene
             }
         }
 
-        private float EffectDuration(string source)
+        private float EffectDuration(string source, bool includeAfterglow = true)
         {
             if (string.IsNullOrEmpty(source)) return 0f;
             string key = source.StartsWith(EffectPath, StringComparison.Ordinal) ? source : EffectPath + source;
             if (!key.EndsWith(".cfx", StringComparison.Ordinal)) key += ".cfx";
             return Document(key)?["primitive"]?.OfType<JObject>()
-                .Select(part => Mathf.Max(0f, UpperNumber(part, "delay")) / 1000f + PrimitiveDuration(part))
+                .Select(part => Mathf.Max(0f, UpperNumber(part, "delay")) / 1000f +
+                    (includeAfterglow ? PrimitiveDuration(part) : ChoreographyPrimitiveDuration(part)))
                 .DefaultIfEmpty(0f).Max() ?? 0f;
         }
 
-#if UNITY_EDITOR
-        // A model-timeline effect does not insert a graph wait. Preserve its Spine animation,
-        // explicit lifetime and particle emission window in the main preview; only particle
-        // drift after the last emission belongs to the optional afterglow range.
-        private float EditorEffectDuration(string source)
-        {
-            if (string.IsNullOrEmpty(source)) return 0f;
-            string key = source.StartsWith(EffectPath, StringComparison.Ordinal) ? source : EffectPath + source;
-            if (!key.EndsWith(".cfx", StringComparison.Ordinal)) key += ".cfx";
-            return Document(key)?["primitive"]?.OfType<JObject>()
-                .Select(part => Mathf.Max(0f, UpperNumber(part, "delay")) / 1000f + EditorPrimitiveDuration(part))
-                .DefaultIfEmpty(0f).Max() ?? 0f;
-        }
-
-        private float EditorPrimitiveDuration(JObject part)
+        // Model-timeline effects preserve authored Spine clips, emission windows, and explicit lifetimes.
+        private float ChoreographyPrimitiveDuration(JObject part)
         {
             if ((string)part["format"] != "particle" || UpperNumber(part, "lifeTime", -1f) >= 0f)
                 return PrimitiveDuration(part);
@@ -551,7 +533,7 @@ namespace AstralOath.Client.BattleScene
             }
             return end;
         }
-#endif
+
         private float PrimitiveDuration(JObject part)
         {
             float lifetime = UpperNumber(part, "lifeTime", -1f);
@@ -709,8 +691,14 @@ namespace AstralOath.Client.BattleScene
                     task.Run();
                     continue;
                 }
+                if (choreographyEnd is float end && time >= end)
+                {
+                    EndAction(preserveHandoff: false, preserveAfterglow: true);
+                    continue;
+                }
                 if (remaining <= 0f) break;
-                float step = pending.Count > 0 ? Mathf.Min(remaining, Mathf.Max(0f, pending[0].At - time)) : remaining;
+                float step = pending.Count > 0 ? Mathf.Min(remaining, pending[0].At - time) : remaining;
+                if (choreographyEnd is float finish) step = Mathf.Min(step, finish - time);
                 Advance(step);
                 remaining -= step;
             }
@@ -918,7 +906,8 @@ namespace AstralOath.Client.BattleScene
         }
 
         private void Cfx(string source, BattlePreviewActor primary, BattlePreviewActor[] targets, int? location,
-            float scale, Vector2 offset, bool hit, Vector2 spread = default, string anchorName = null)
+            float scale, Vector2 offset, bool hit, Vector2 spread = default, string anchorName = null,
+            bool allowAfterglow = false)
         {
             string key = source.StartsWith(EffectPath, StringComparison.Ordinal) ? source : EffectPath + source;
             if (!key.EndsWith(".cfx", StringComparison.Ordinal)) key += ".cfx";
@@ -1001,7 +990,8 @@ namespace AstralOath.Client.BattleScene
                     if (part == null) continue;
                     float side = caster.FacingDirection;
                     Schedule(time + Seconds(part, "delay"),
-                        () => Spawn(key, part, position, anchor, scale, offset + variation, side, follow));
+                        () => Spawn(key, part, position, anchor, scale, offset + variation, side, follow,
+                            allowAfterglow: allowAfterglow));
                 }
             }
         }
@@ -1050,7 +1040,7 @@ namespace AstralOath.Client.BattleScene
             float.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out value) && float.IsFinite(value);
 
         private void Spawn(string key, JObject part, Func<Vector3> position, BattlePreviewActor anchor, float scale,
-            Vector2 offset, float side, bool follow, int? screenOrder = null)
+            Vector2 offset, float side, bool follow, int? screenOrder = null, bool allowAfterglow = false)
         {
             string source = (string)part["source"];
             if (string.IsNullOrWhiteSpace(source)) return;
@@ -1075,7 +1065,10 @@ namespace AstralOath.Client.BattleScene
                         SpawnSpine(source, part, group, size, order, side, () => UpdatePosition(false));
                         break;
                     case "particle":
-                        SpawnParticles(source, part, group, size, order, () => UpdatePosition(false));
+                        SpawnParticles(source, part, group, size, order, () =>
+                        {
+                            if (!allowAfterglow || caster) UpdatePosition(false);
+                        }, allowAfterglow);
                         break;
                     default:
                         throw new FormatException("Unsupported primitive format " + format);
@@ -1138,7 +1131,7 @@ namespace AstralOath.Client.BattleScene
                 {
                     player.Dispose();
                     if (group) DestroyVisual(group.gameObject);
-                }));
+                }, false));
             }
             catch
             {
@@ -1147,7 +1140,8 @@ namespace AstralOath.Client.BattleScene
             }
         }
 
-        private void SpawnParticles(string source, JObject part, Transform group, float size, int order, Action follow)
+        private void SpawnParticles(string source, JObject part, Transform group, float size, int order, Action follow,
+            bool allowAfterglow)
         {
             string key = EffectPath + source + ".particle";
             var particles = new BattleHudParticles(assets[key].document, textures, group, Vector2.zero, size * SourcePixel, order);
@@ -1160,7 +1154,7 @@ namespace AstralOath.Client.BattleScene
             {
                 particles.Dispose();
                 if (group) DestroyVisual(group.gameObject);
-            }));
+            }, allowAfterglow));
         }
 
         private SkeletonPlayerSource Skeleton(string key, BattleSkillPresentationAsset asset)
@@ -1198,7 +1192,7 @@ namespace AstralOath.Client.BattleScene
 
         private void EndAction() => EndAction(false);
 
-        private void EndAction(bool preserveHandoff)
+        private void EndAction(bool preserveHandoff, bool preserveAfterglow = false)
         {
             SetCutinPaused(false);
             if (!preserveHandoff) cinematic.Reset();
@@ -1212,9 +1206,15 @@ namespace AstralOath.Client.BattleScene
             casterShadow = null;
             caster = null;
             motion = null;
+            choreographyEnd = null;
             pending.Clear();
-            foreach (var visual in active) visual.Dispose();
-            active.Clear();
+            for (int index = active.Count - 1; index >= 0; index--)
+            {
+                var visual = active[index];
+                if (preserveAfterglow && visual.Afterglow) continue;
+                visual.Dispose();
+                active.RemoveAt(index);
+            }
         }
 
         private static void DestroyVisual(Object value)

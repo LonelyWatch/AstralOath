@@ -135,10 +135,13 @@ namespace AstralOath.Client.Tests
             int burnIndex = Array.FindIndex(actor.Form.SkillIds.ToArray(),
                 id => catalog.skills.Single(skill => skill.id == id).soulBurnCost > 0);
             var burnSkill = catalog.skills.Single(skill => skill.id == actor.Form.SkillIds[burnIndex]);
+            var stateLabel = map.transform.Find("Battle State").GetComponent<GameText>();
             int previousIndex = (burnIndex + 1) % skills.Length;
             skills[previousIndex].onClick.Invoke();
             Assert.That(map.Require<Image>("skillSelected" + (previousIndex + 1)).gameObject.activeSelf, Is.True);
+            Assert.That(stateLabel.text, Is.Empty, "Ordinary skill selection should use the highlighted slot without a center hint.");
             burn.onClick.Invoke();
+            Assert.That(stateLabel.text, Is.Empty, "Arming Soul Burn should also leave the center clear.");
             for (int index = 0; index < skills.Length; index++)
             {
                 Assert.That(skills[index].interactable, Is.EqualTo(index == burnIndex));
@@ -172,6 +175,14 @@ namespace AstralOath.Client.Tests
                 "Selecting a target immediately after Cancel must cast the skill that remained highlighted.");
             Assert.That(result.AllySoul, Is.EqualTo(initial.AllySoul + burnSkill.soulGain),
                 "The normal cast earns souls without spending any.");
+
+            var actionBanner = map.transform.Find("Top Bar/Skill Use Banner");
+            double deadline = Time.realtimeSinceStartupAsDouble + 2d;
+            while (!actionBanner.gameObject.activeInHierarchy && Time.realtimeSinceStartupAsDouble < deadline)
+                yield return null;
+            Assert.That(actionBanner.gameObject.activeInHierarchy, Is.True);
+            Assert.That(actionBanner.Find("Skill Name").GetComponent<GameText>().text, Is.Not.Empty,
+                "The actual cast should still show its skill title.");
         }
 
         [UnityTest]

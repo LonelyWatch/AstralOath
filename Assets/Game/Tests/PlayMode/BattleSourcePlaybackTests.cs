@@ -419,8 +419,14 @@ namespace AstralOath.Client.Tests
             var frameCaptures = new List<string>();
             var bodyCaptures = new List<string>();
             var timing = ((float Impact, float Duration))Begin.Invoke(playback, new object[] { id, actor, target, recipients });
+            float fullDuration = (float)PresentationType.GetProperty("FullDuration", PrivateInstance).GetValue(playback);
             Assert.That(float.IsFinite(timing.Duration) && timing.Duration > 0f && timing.Duration < ActionTimeout, Is.True, sample);
             Assert.That(timing.Impact, Is.InRange(0f, timing.Duration), sample);
+            if (id == "c_aming_skill_03")
+            {
+                Assert.That(timing.Duration, Is.EqualTo(6.0666f).Within(.015f), "The real action ends at the source jump_back.");
+                Assert.That(fullDuration, Is.EqualTo(11.552f).Within(.015f), "Pellet drift remains available without blocking the next action.");
+            }
             bool checkTargetsAtHits = id is "c_ras_skill_03" or "c_mercedes_skill_03" or "c_kise_skill_03";
             if (id == "c_aming_skill_02")
             {
@@ -569,7 +575,7 @@ namespace AstralOath.Client.Tests
                 Tick.Invoke(playback, new object[] { delta });
                 elapsed = (float)PresentationType.GetProperty("StageTime").GetValue(playback);
             }
-            while (elapsed < timing.Duration + 0.05f);
+            while (elapsed < fullDuration + 0.05f);
 
             if (cameraTrace != null) File.WriteAllLines(Path.Combine(captureDirectory, sample + "-camera.csv"), cameraTrace);
             if (id == "c_kise_skill_03")

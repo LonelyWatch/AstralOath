@@ -308,9 +308,9 @@ namespace AstralOath.Client.BattleScene.Editor
                     cutins.Add((cue.At, BattleCinematicStage.CutinDuration(JObject.Parse(asset.document.text))));
             }
             Cutins = cutins.AsReadOnly();
-            StageDuration = playback.Begin(graphId, caster, primaryTarget, recipients).Duration;
+            MainStageDuration = playback.Begin(graphId, caster, primaryTarget, recipients).Duration;
+            StageDuration = playback.FullDuration;
             Duration = StageDuration + Cutins.Sum(hold => hold.Duration);
-            MainStageDuration = playback.EditorMainDuration;
             MainDuration = MainStageDuration + Cutins.Where(hold => hold.At <= MainStageDuration + .00001f)
                 .Sum(hold => hold.Duration);
             step = nextHit = 0;

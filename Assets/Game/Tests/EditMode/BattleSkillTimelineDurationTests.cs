@@ -38,7 +38,7 @@ namespace AstralOath.Tests
         }
 
         [Test]
-        public void AmbientTailRemainsAvailableAndRewindsWithoutTruncatingTheRuntime()
+        public void AmbientTailRemainsVisibleAfterReleasingTheCasterAndRewinds()
         {
             var type = Type.GetType(PreviewTypeName, throwOnError: true);
             using var session = (IDisposable)Activator.CreateInstance(type, nonPublic: true);
@@ -61,6 +61,9 @@ namespace AstralOath.Tests
             seek.Invoke(session, new object[] { 7f });
             int vertices = TailVertices();
             Assert.That(vertices, Is.GreaterThan(0), "The full range still renders real ambient particles after the main end.");
+            var caster = type.GetField("caster", Instance).GetValue(session);
+            Assert.That(caster.GetType().GetField("presentationControlCount", Instance).GetValue(caster), Is.Zero,
+                "Returning to the original slot should release the caster while the source particles finish.");
             seek.Invoke(session, new object[] { full });
             Assert.That(world.GetComponentsInChildren<MeshFilter>(true)
                 .Any(mesh => mesh.gameObject.name == "HUD particle bubble"), Is.False, "Full playback releases the expired CFX.");
@@ -115,14 +118,14 @@ namespace AstralOath.Tests
                 new object[] { "c1008", "c_aming_skill_03", null, null, false, true, true });
             var playback = type.GetField("playback", Instance).GetValue(session);
             var runtime = playback.GetType();
-            float Main(string key) => (float)runtime.GetMethod("EditorEffectDuration", Instance)
-                .Invoke(playback, new object[] { key });
+            float Main(string key) => (float)runtime.GetMethod("EffectDuration", Instance)
+                .Invoke(playback, new object[] { key, false });
             Assert.That(Main("aming_skill_03_front"), Is.EqualTo(3.1f).Within(.001f),
                 "Keep the original 3.1s Spine layer and 3s emission, excluding only the 7s particle drift.");
             Assert.That(Main("aming_skill_03_back"), Is.EqualTo(3.2f).Within(.001f),
                 "Pure Spine model-timeline effects remain part of the main preview.");
             var declared = JObject.Parse("{'format':'particle','source':'aming_skill_03_patis','lifeTime':12000}");
-            Assert.That((float)runtime.GetMethod("EditorPrimitiveDuration", Instance)
+            Assert.That((float)runtime.GetMethod("ChoreographyPrimitiveDuration", Instance)
                 .Invoke(playback, new object[] { declared }), Is.EqualTo(12f));
         }
 

@@ -1,0 +1,20 @@
+
+stse_stun.sct
+size: 173,271
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 2, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+stun_star
+  rotate: false
+  xy: 2, 173
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1

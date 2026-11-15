@@ -980,6 +980,78 @@ namespace AstralOath.Client.Tests
                    effect.GetComponent<MeshFilter>().sharedMesh.vertexCount > 0;
         }
 
+        [UnityTest]
+        public IEnumerator StunStarsFollowTheCharacterAndStopWhenTheStatusClears()
+        {
+            scene = LoadPlayerOpeningScene();
+            yield return null;
+            yield return null;
+            var host = scene.GetRootGameObjects().Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            var simulation = typeof(BattleHudPreview).GetField("simulation", PrivateInstance).GetValue(host);
+            var views = (IDictionary)simulation.GetType().GetField("views", PrivateInstance).GetValue(simulation);
+            var view = views["ally-1"];
+            var type = view.GetType();
+            var actor = (BattlePreviewActor)type.GetProperty("Actor").GetValue(view);
+            var body = (Renderer)typeof(BattlePreviewActor).GetProperty("PresentationRenderer", PrivateInstance).GetValue(actor);
+            var status = (BattleStatusSnapshot)typeof(BattleStatusSnapshot)
+                .GetConstructor(PrivateInstance, null, new[] { typeof(BattleStatusKind), typeof(int), typeof(int), typeof(string), typeof(ulong) }, null)
+                .Invoke(new object[] { BattleStatusKind.Stun, 1, 0, "enemy-1", 7UL });
+            void Apply() => type.GetMethod("ApplyStatus").Invoke(view, new object[] { status });
+            void Remove() => type.GetMethod("RemoveStatusInstance").Invoke(view, new object[] { status });
+
+            const string effectName = "Battle stun stars";
+            Assert.That(body.transform.Find(effectName), Is.Null, "Unstunned units must not allocate stars.");
+            Apply();
+            yield return null;
+            var stars = body.transform.Find(effectName);
+            Assert.That(stars, Is.Not.Null, "Stun must play the native star loop under the character skeleton.");
+            Assert.That(stars.GetComponent<MeshFilter>().sharedMesh.vertexCount, Is.GreaterThan(12));
+            Assert.That(stars.GetComponent<MeshRenderer>().sortingOrder, Is.GreaterThan(body.sortingOrder));
+            var getAnchor = typeof(BattlePreviewActor).GetMethod("TryGetPresentationAnchor", PrivateInstance);
+            Vector3 Top()
+            {
+                var args = new object[] { "top", Vector3.zero };
+                Assert.That(getAnchor.Invoke(actor, args), Is.True, "The native top bone must be available.");
+                return (Vector3)args[1];
+            }
+            Assert.That(Vector3.Distance(stars.position, Top()), Is.LessThan(.002f));
+            var camera = scene.GetRootGameObjects().SelectMany(root => root.GetComponentsInChildren<Camera>())
+                .Single(item => item.name == "Battle Camera");
+            string output = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_CAPTURE_DIR");
+            if (!string.IsNullOrEmpty(output))
+            {
+                yield return new WaitForSecondsRealtime(.22f);
+                Capture(camera, output, "battle-stun-stars.png");
+            }
+
+            Vector3 before = stars.position;
+            actor.transform.position += Vector3.right * .5f;
+            yield return null;
+            Assert.That(stars.position.x, Is.EqualTo(before.x + .5f).Within(.16f));
+            body.forceRenderingOff = true;
+            yield return null;
+            Assert.That(stars.gameObject.activeSelf, Is.False, "Skill layouts must hide the stars with the actor.");
+            body.forceRenderingOff = false;
+            yield return null;
+            Assert.That(stars.gameObject.activeSelf, Is.True);
+            Remove();
+            yield return null;
+            Assert.That(stars.gameObject.activeSelf, Is.False, "Removing the status must hide residual stars.");
+            Apply();
+            yield return null;
+            Assert.That(body.transform.Find(effectName), Is.SameAs(stars), "Reapplying stun should reuse the effect object.");
+            Assert.That(stars.gameObject.activeSelf, Is.True);
+
+            type.GetMethod("BeginDeath").Invoke(view, null);
+            Assert.That(stars.gameObject.activeSelf, Is.False);
+            // Revive before the defeat animation disables the actor object.
+            Remove();
+            type.GetMethod("Show").Invoke(view, new object[] { true });
+            yield return null;
+            var player = (AstralOath.Client.Skeletons.ISkeletonPlayer)typeof(BattlePreviewActor)
+                .GetField("player", PrivateInstance).GetValue(actor);
+            Assert.That(player.CurrentAnimation, Is.Not.EqualTo("groggy"), "Revival must not retain the old stun pose.");
+        }
         private static void Capture(Camera camera, string directory, string file = "battle-scene-1920x1080.png")
         {
             Directory.CreateDirectory(directory);

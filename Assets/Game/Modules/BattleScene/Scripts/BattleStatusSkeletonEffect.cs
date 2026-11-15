@@ -6,8 +6,8 @@ using UnityEngine;
 
 namespace AstralOath.Client.BattleScene
 {
-    // The battle owns shield state and the visual clock. This class only plays a borrowed effect.
-    internal sealed class BattleShieldAura : IDisposable
+    // The battle owns status state and the visual clock. One parsed definition can be played by multiple actors.
+    internal sealed class BattleStatusSkeletonEffect : IDisposable
     {
         private static readonly SkeletonPlayerFactory Factory = new SkeletonPlayerFactory();
         private readonly Definition definition;
@@ -16,7 +16,7 @@ namespace AstralOath.Client.BattleScene
         private ISkeletonPlayer player;
         private Renderer body;
         private MeshRenderer aura;
-        private bool hadShield, disposed;
+        private bool wasActive, disposed;
 
         internal sealed class Definition
         {
@@ -37,32 +37,32 @@ namespace AstralOath.Client.BattleScene
         }
 
         // Parse and prepare the source once for all units in this battle.
-        public static Definition Prepare(BattleSkillPresentationAsset asset, TextAsset cfx)
+        public static Definition Prepare(BattleSkillPresentationAsset asset, TextAsset cfx, int defaultSortingOffset = 0)
         {
             if (asset == null && !cfx) return null;
             if (asset == null || !asset.document || !asset.atlas || !cfx ||
                 asset.pageNames == null || asset.pages == null ||
                 asset.pageNames.Length == 0 || asset.pageNames.Length != asset.pages.Length)
-                throw new ArgumentException("The shield aura requires CFX, Spine data, atlas and every atlas page.", nameof(asset));
+                throw new ArgumentException("A status effect requires CFX, Spine data, atlas and every atlas page.", nameof(asset));
 
             var primitives = JObject.Parse(cfx.text)["primitive"] as JArray;
             if (primitives?.Count != 1 || !(primitives[0] is JObject primitive) ||
                 (string)primitive["format"] != "spine" || (bool?)primitive["loop"] != true ||
                 asset.source != "effect/" + (string)primitive["source"] + ".scsp")
-                throw new FormatException("The shield aura CFX must contain one looping Spine primitive matching the selected asset.");
+                throw new FormatException("A status effect CFX must contain one looping Spine primitive matching the selected asset.");
 
             float x = (float?)primitive["x"] ?? 0f;
             float y = (float?)primitive["y"] ?? 0f;
             float scale = (float?)primitive["scale"] ?? 1f;
-            int order = (int?)primitive["z"] ?? 0;
+            int order = (int?)primitive["z"] ?? defaultSortingOffset;
             if (!float.IsFinite(x) || !float.IsFinite(y) || !float.IsFinite(scale) || scale <= 0f)
-                throw new FormatException("The shield aura CFX must have a finite position and a positive scale.");
+                throw new FormatException("A status effect CFX must have a finite position and a positive scale.");
 
             var pages = new Dictionary<string, Texture2D>(StringComparer.Ordinal);
             for (int index = 0; index < asset.pageNames.Length; index++)
             {
                 if (string.IsNullOrWhiteSpace(asset.pageNames[index]) || !asset.pages[index])
-                    throw new ArgumentException("A shield aura atlas page is missing.", nameof(asset));
+                    throw new ArgumentException("A status effect atlas page is missing.", nameof(asset));
                 pages.Add(asset.pageNames[index], asset.pages[index]);
             }
 
@@ -72,10 +72,10 @@ namespace AstralOath.Client.BattleScene
             return new Definition(source, animation, new Vector3(x, y, 0f) * asset.scale, scale, order);
         }
 
-        public BattleShieldAura(Definition definition, Transform shadow, Renderer initialBody)
+        public BattleStatusSkeletonEffect(Definition definition, Transform shadow, Renderer initialBody)
             : this(definition, shadow, initialBody, "Battle shield aura") { }
 
-        public BattleShieldAura(Definition definition, Transform shadow, Renderer initialBody, string objectName)
+        public BattleStatusSkeletonEffect(Definition definition, Transform shadow, Renderer initialBody, string objectName)
         {
             this.definition = definition;
             this.objectName = objectName;
@@ -84,7 +84,7 @@ namespace AstralOath.Client.BattleScene
                 fallbackAnchor = initialBody.transform.InverseTransformPoint(shadow.position);
         }
 
-        public void Sync(Renderer currentBody, bool shielded, float visualDelta, Vector2? skeletonAnchor)
+        public void Sync(Renderer currentBody, bool active, float visualDelta, Vector2? skeletonAnchor)
         {
             if (disposed || definition == null) return;
             if (body != currentBody || (player != null && !player.Root))
@@ -93,11 +93,11 @@ namespace AstralOath.Client.BattleScene
                 body = currentBody;
             }
 
-            bool visible = shielded && BattlePreviewActor.IsBodyVisible(body);
+            bool visible = active && BattlePreviewActor.IsBodyVisible(body);
             if (!visible)
             {
                 if (player != null && player.Root.activeSelf) player.Root.SetActive(false);
-                if (!shielded) hadShield = false;
+                if (!active) wasActive = false;
                 return;
             }
 
@@ -112,10 +112,10 @@ namespace AstralOath.Client.BattleScene
             int order = body.sortingOrder + definition.SortingOffset;
             if (aura.sortingLayerID != layer) aura.sortingLayerID = layer;
             if (aura.sortingOrder != order) aura.sortingOrder = order;
-            if (!hadShield)
+            if (!wasActive)
             {
                 player.Play(definition.Animation, true);
-                hadShield = true;
+                wasActive = true;
             }
             player.Tick(visualDelta);
         }
@@ -140,7 +140,7 @@ namespace AstralOath.Client.BattleScene
             player = null;
             aura = null;
             body = null;
-            hadShield = false;
+            wasActive = false;
         }
 
         public void Dispose()

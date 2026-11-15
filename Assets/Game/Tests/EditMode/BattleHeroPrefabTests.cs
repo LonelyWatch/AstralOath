@@ -61,16 +61,37 @@ namespace AstralOath.Client.Tests
                 Assert.That(font && font.name == "EpicSeven", Is.True, "Use the original UI font.");
 
                 var type = Type.GetType("AstralOath.Client.BattleScene.BattleEffectWords, AstralOath.Client.BattleScene", true);
-                words = (IDisposable)Activator.CreateInstance(type, (RectTransform)marker.transform, font);
-                object[] popup = { "Poison", null, false };
+                var outline = (Material)profile.GetType().GetField("EffectWordOutline").GetValue(profile);
+                Assert.That(outline && outline.IsKeywordEnabled(TMPro.ShaderUtilities.Keyword_Underlay), Is.True,
+                    "Keep the underlay variant in the material referenced by the asset bundle.");
+                Assert.That(outline.GetFloat(TMPro.ShaderUtilities.ID_OutlineWidth), Is.Zero,
+                    "The edge sits behind the face instead of taking pixels from thin strokes.");
+                Assert.That(outline.mainTexture, Is.SameAs(font.atlasTexture));
+                words = (IDisposable)Activator.CreateInstance(type, (RectTransform)marker.transform, font, outline);
+                object[] popup = { "抵抗", null, false };
+                var statusIcon = AssetDatabase.LoadAssetAtPath<Sprite>(
+                    "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Statuses/stic_silence.png");
+                Assert.That(statusIcon, Is.Not.Null);
                 type.GetMethod("Show").Invoke(words, popup);
-                type.GetMethod("Show").Invoke(words, popup);
-                type.GetMethod("Tick").Invoke(words, new object[] { .18f });
-                Assert.That(layer.childCount, Is.EqualTo(2), "Repeated status triggers are distinct lines.");
+                type.GetMethod("Show").Invoke(words, new object[] { "沉默", statusIcon, false });
+                type.GetMethod("Tick").Invoke(words, new object[] { .09f });
+                Assert.That(layer.childCount, Is.EqualTo(2), "Two nearby status events remain separate lines.");
                 var first = (RectTransform)layer.GetChild(0);
                 var second = (RectTransform)layer.GetChild(1);
-                Assert.That(first.anchoredPosition.y - second.anchoredPosition.y, Is.GreaterThan(20f));
-                Assert.That(first.GetComponentInChildren<AstralOath.Client.Common.GameText>().raycastTarget, Is.False);
+                var caption = first.GetComponentInChildren<AstralOath.Client.Common.GameText>();
+                Assert.That(first.anchoredPosition.y - second.anchoredPosition.y,
+                    Is.GreaterThan(caption.fontSize), "Adjacent words must clear each other as soon as they become readable.");
+                var captionWithIcon = second.GetComponentInChildren<AstralOath.Client.Common.GameText>();
+                var icon = second.Find("Icon").GetComponent<UnityEngine.UI.Image>();
+                Assert.That(caption.raycastTarget, Is.False);
+                Assert.That(caption.fontSharedMaterial, Is.SameAs(outline));
+                Assert.That(caption.fontStyle, Is.EqualTo(TMPro.FontStyles.Normal), "Use the weight from the original font face.");
+                Assert.That(captionWithIcon.rectTransform.anchoredPosition.x,
+                    Is.EqualTo(caption.rectTransform.anchoredPosition.x).Within(.01f),
+                    "An accompanying icon must not shift its caption out of the actor's column.");
+                float iconRight = icon.rectTransform.anchoredPosition.x + icon.rectTransform.rect.width / 2;
+                float captionLeft = captionWithIcon.rectTransform.anchoredPosition.x - captionWithIcon.rectTransform.rect.width / 2;
+                Assert.That(iconRight, Is.LessThan(captionLeft), "Keep a visible gap between the icon and the caption.");
                 var prior = second.position;
                 marker.transform.localPosition += Vector3.right * 60f;
                 marker.transform.localScale *= 1.2f;

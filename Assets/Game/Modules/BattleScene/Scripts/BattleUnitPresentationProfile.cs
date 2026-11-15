@@ -14,12 +14,15 @@ namespace AstralOath.Client.BattleScene
         public Sprite ResourceFrame, FocusFill, FightingSpiritFill;
         public TextAsset StatusManifest, EffectWordCopy;
         public TMP_FontAsset EffectWordFont;
+        public Material EffectWordOutline;
         public Sprite[] StatusGlyphs, StatusDigits, LevelDigits;
         [Range(1, BattleStatusIcons.MaximumColumns)] public int StatusIconsPerRow = BattleStatusIcons.MaximumColumns;
         public BattleSkillPresentationAsset ShieldAura;
         public TextAsset ShieldAuraEffect;
         public BattleSkillPresentationAsset InvincibleAura;
         public TextAsset InvincibleAuraEffect;
+        public BattleSkillPresentationAsset StunStars;
+        public TextAsset StunStarsEffect;
         [Min(.001f)] public float DamageSeconds = .16f, HealSeconds = .18f, TrailSeconds = .50f;
         [Min(0)] public float TrailDelaySeconds = .15f;
         public TextAsset DeathParticles, OnlineDeathParticles;

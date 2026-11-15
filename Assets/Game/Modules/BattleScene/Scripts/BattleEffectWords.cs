@@ -18,21 +18,28 @@ namespace AstralOath.Client.BattleScene
         private const float MaximumHiddenSeconds = 4f;
         private const float FadeOut = .24f;
         private const float Spacing = 42f;
+        private const float CaptionSize = 36f;
+        private const float IconSize = 35f;
+        private const float IconGap = 8f;
+        private const float Baseline = -10f;
+        private const float Rise = 28f;
         private const int Capacity = 8;
         private static readonly Vector2 MarkerOffset = new Vector2(12f, -63f);
-        private static readonly Color Gold = new Color32(232, 202, 121, 255);
-        private static readonly Color Violet = new Color32(229, 168, 225, 255);
+        private static readonly Color Gold = new Color32(214, 191, 123, 255);
+        private static readonly Color Violet = new Color32(220, 174, 215, 255);
         private readonly RectTransform layer;
         private readonly TMP_FontAsset font;
+        private readonly Material outlinePreset;
         private readonly bool ownsLayer;
         private readonly List<Word> active = new List<Word>(Capacity);
         private readonly Stack<Word> available = new Stack<Word>(Capacity);
-        private Material material;
+        private Material fallbackOutline;
         private float hiddenSeconds;
 
-        public BattleEffectWords(RectTransform marker, TMP_FontAsset preferredFont)
+        public BattleEffectWords(RectTransform marker, TMP_FontAsset preferredFont, Material preferredOutline)
         {
             font = preferredFont ? preferredFont : TMP_Settings.defaultFontAsset;
+            outlinePreset = font && preferredOutline && preferredOutline.mainTexture == font.atlasTexture ? preferredOutline : null;
             layer = marker.Find(LayerName) as RectTransform;
             if (!layer)
             {
@@ -48,20 +55,18 @@ namespace AstralOath.Client.BattleScene
             if (!layer || string.IsNullOrWhiteSpace(text)) return;
             if (active.Count == Capacity) Retire(0);
             var word = available.Count > 0 ? available.Pop() : CreateWord();
-            word.Position = 0f;
             word.Time = 0f;
             word.Text.text = text;
             word.Text.color = passive ? Violet : Gold;
             word.Icon.sprite = icon;
             word.Icon.enabled = icon;
             float width = word.Text.GetPreferredValues(text).x;
-            float iconWidth = icon ? 43f : 0f;
-            word.Text.rectTransform.anchoredPosition = new Vector2(iconWidth * .5f, 0f);
             word.Text.rectTransform.sizeDelta = new Vector2(width + 2f, Spacing);
-            word.Icon.rectTransform.anchoredPosition = new Vector2(-width * .5f - 4f, 0f);
+            // The caption stays centered on the actor whether or not an icon precedes it.
+            word.Icon.rectTransform.anchoredPosition = new Vector2(-(width + IconSize) * .5f - IconGap, 0f);
             word.Root.SetAsLastSibling();
             word.Root.gameObject.SetActive(true);
-            word.Root.anchoredPosition = Vector2.zero;
+            word.Root.anchoredPosition = Vector2.up * Baseline;
             word.Opacity.alpha = 0f;
             active.Add(word);
         }
@@ -78,6 +83,7 @@ namespace AstralOath.Client.BattleScene
                 return;
             }
             hiddenSeconds = 0f;
+            float nextRow = Baseline;
             for (int index = active.Count - 1; index >= 0; index--)
             {
                 var word = active[index];
@@ -90,9 +96,9 @@ namespace AstralOath.Client.BattleScene
                     continue;
                 }
 
-                float row = (active.Count - 1 - index) * Spacing;
-                word.Position = Mathf.Lerp(word.Position, row, 1f - Mathf.Exp(-18f * step));
-                word.Root.anchoredPosition = Vector2.up * (word.Position + 34f * (word.Time / Duration));
+                float position = Mathf.Max(nextRow, Baseline + Rise * (word.Time / Duration));
+                word.Root.anchoredPosition = Vector2.up * position;
+                nextRow = position + Spacing;
                 word.Opacity.alpha = Mathf.Min(1f, Mathf.Min(word.Time / FadeIn, (Duration - word.Time) / FadeOut));
             }
         }
@@ -111,7 +117,7 @@ namespace AstralOath.Client.BattleScene
                 var root = available.Pop().Root;
                 if (root) Destroy(root.gameObject);
             }
-            if (material) Destroy(material);
+            if (fallbackOutline) Destroy(fallbackOutline);
             if (ownsLayer && layer) Destroy(layer.gameObject);
         }
 
@@ -129,28 +135,29 @@ namespace AstralOath.Client.BattleScene
             var opacity = root.gameObject.AddComponent<CanvasGroup>();
             opacity.interactable = opacity.blocksRaycasts = false;
             var icon = MakeRect("Icon", root).gameObject.AddComponent<Image>();
-            icon.rectTransform.sizeDelta = Vector2.one * 36f;
+            icon.rectTransform.sizeDelta = Vector2.one * IconSize;
             icon.preserveAspect = true;
             icon.raycastTarget = false;
             var text = MakeRect("Caption", root).gameObject.AddComponent<GameText>();
             if (font)
             {
                 text.font = font;
-                if (!material)
+                if (!outlinePreset && !fallbackOutline)
                 {
-                    material = new Material(font.material) { name = "Battle Effect Word Outline" };
-                    material.SetColor(ShaderUtilities.ID_OutlineColor, new Color32(39, 28, 18, 255));
-                    material.SetFloat(ShaderUtilities.ID_OutlineWidth, .24f);
-                    material.SetFloat(ShaderUtilities.ID_OutlineSoftness, .04f);
-                    material.SetFloat(ShaderUtilities.ID_FaceDilate, .06f);
-                    material.EnableKeyword(ShaderUtilities.Keyword_Outline);
+                    // Keep older character profiles readable before their authored material is updated.
+                    fallbackOutline = new Material(font.material) { name = "Battle Effect Word Outline (Fallback)" };
+                    // A centered underlay draws the edge behind the face without narrowing thin strokes.
+                    fallbackOutline.SetColor(ShaderUtilities.ID_UnderlayColor, new Color32(25, 18, 8, 255));
+                    fallbackOutline.SetFloat(ShaderUtilities.ID_UnderlayDilate, .56f);
+                    fallbackOutline.SetFloat(ShaderUtilities.ID_UnderlaySoftness, .035f);
+                    fallbackOutline.EnableKeyword(ShaderUtilities.Keyword_Underlay);
                 }
-                text.fontSharedMaterial = material;
+                text.fontSharedMaterial = outlinePreset ? outlinePreset : fallbackOutline;
                 text.UpdateMeshPadding();
             }
-            text.fontSize = 38f;
+            text.fontSize = CaptionSize;
             text.alignment = TextAlignmentOptions.Center;
-            text.fontStyle = FontStyles.Bold;
+            text.fontStyle = FontStyles.Normal;
             text.enableWordWrapping = false;
             text.richText = false;
             text.raycastTarget = false;
@@ -178,7 +185,6 @@ namespace AstralOath.Client.BattleScene
             internal CanvasGroup Opacity;
             internal GameText Text;
             internal Image Icon;
-            internal float Position;
             internal float Time;
         }
     }

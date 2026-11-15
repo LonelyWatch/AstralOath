@@ -25,7 +25,7 @@ namespace AstralOath.Client.BattleScene.Editor
             EditorUtility.SetDirty(profile); AssetDatabase.SaveAssetIfDirty(profile);
             return profile;
         }
-        internal static void RefreshStatusArt()
+        public static void RefreshStatusArt()
         {
             var profile = AssetDatabase.LoadAssetAtPath<BattleUnitPresentationProfile>(Root + "Res/Configs/UnitPresentation.asset");
             if (!profile) throw new InvalidOperationException("Missing battle unit presentation profile.");
@@ -65,7 +65,8 @@ namespace AstralOath.Client.BattleScene.Editor
             profile.EffectWordCopy = AssetDatabase.LoadAssetAtPath<TextAsset>(Root + "Res/Configs/BattleEffectWords.zh-Hans.json");
             profile.EffectWordFont = AssetDatabase.LoadAssetAtPath<TMPro.TMP_FontAsset>(
                 "Assets/Game/Common/Res/Fonts/EpicSeven.asset");
-            if (!profile.EffectWordCopy || !profile.EffectWordFont)
+            profile.EffectWordOutline = AssetDatabase.LoadAssetAtPath<Material>(Root + "Res/Fonts/BattleEffectWordOutline.mat");
+            if (!profile.EffectWordCopy || !profile.EffectWordFont || !profile.EffectWordOutline)
                 throw new InvalidOperationException("Missing native battle effect word font or localization.");
             profile.StatusGlyphs = Directory.GetFiles(status, "stic_*.png").OrderBy(path => path, StringComparer.Ordinal)
                 .Select(path => AssetDatabase.LoadAssetAtPath<Sprite>(path.Replace('\\', '/'))).ToArray();
@@ -76,6 +77,8 @@ namespace AstralOath.Client.BattleScene.Editor
             profile.ShieldAura = LoadAura(shield, "stse_protect", out profile.ShieldAuraEffect);
             profile.InvincibleAura = LoadAura(Root + "Res/Effects/Invincible/stse_invincible", "stse_invincible",
                 out profile.InvincibleAuraEffect);
+            profile.StunStars = LoadAura(Root + "Res/Effects/Stun/stse_stun", "stse_stun",
+                out profile.StunStarsEffect);
             if (!profile.Shield || !profile.StatusManifest || profile.StatusGlyphs.Any(sprite => !sprite) ||
                 profile.StatusDigits.Any(sprite => !sprite) || profile.LevelDigits.Any(sprite => !sprite))
                 throw new InvalidOperationException("Run ImportStatusHud.py before updating the unit profile.");

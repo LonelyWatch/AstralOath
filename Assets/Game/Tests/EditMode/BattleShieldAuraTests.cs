@@ -41,8 +41,8 @@ namespace AstralOath.Client.Tests
             assetType.GetField("premultipliedAlpha").SetValue(asset, true);
             assetType.GetField("scale").SetValue(asset, .01f);
 
-            var type = Type.GetType(Namespace + "BattleShieldAura" + Assembly, true);
-            var definition = type.GetMethod("Prepare").Invoke(null, new[] { asset, Load<TextAsset>(".cfx.json") });
+            var type = Type.GetType(Namespace + "BattleStatusSkeletonEffect" + Assembly, true);
+            var definition = type.GetMethod("Prepare").Invoke(null, new[] { asset, Load<TextAsset>(".cfx.json"), (object)0 });
             var sync = type.GetMethod("Sync");
             var presentation = (IDisposable)Activator.CreateInstance(type, definition, null, null);
             var actor = new GameObject("Shielded test body");

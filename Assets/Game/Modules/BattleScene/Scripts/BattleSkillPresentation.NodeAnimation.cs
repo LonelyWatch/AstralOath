@@ -122,7 +122,7 @@ namespace AstralOath.Client.BattleScene
                 formation[index] = actors[index].transform.position - center;
             }
             UpdatePose(0f);
-            active.Add((holdPose ? float.PositiveInfinity : until, UpdatePose, Release));
+            active.Add((holdPose ? float.PositiveInfinity : until, UpdatePose, Release, false));
 
             void ScheduleReactionTracks(BattlePreviewActor actor, NodeActorBinding binding, JArray frames)
             {

@@ -109,10 +109,13 @@ namespace AstralOath.Client.BattleScene
                 ? unitPresentation.CreateStatusArt()
                 : new BattleStatusArt(null, null, null);
             var shieldAura = unitPresentation
-                ? BattleShieldAura.Prepare(unitPresentation.ShieldAura, unitPresentation.ShieldAuraEffect)
+                ? BattleStatusSkeletonEffect.Prepare(unitPresentation.ShieldAura, unitPresentation.ShieldAuraEffect)
                 : null;
             var invincibleAura = unitPresentation
-                ? BattleShieldAura.Prepare(unitPresentation.InvincibleAura, unitPresentation.InvincibleAuraEffect)
+                ? BattleStatusSkeletonEffect.Prepare(unitPresentation.InvincibleAura, unitPresentation.InvincibleAuraEffect)
+                : null;
+            var stunStars = unitPresentation
+                ? BattleStatusSkeletonEffect.Prepare(unitPresentation.StunStars, unitPresentation.StunStarsEffect, defaultSortingOffset: 1)
                 : null;
             var text = hud.Require<GameText>("activeName");
             try
@@ -128,7 +131,7 @@ namespace AstralOath.Client.BattleScene
                     {
                         sprites.TryGetValue("game_hud_bar_" + state.Element.ToString().ToLowerInvariant(), out var element);
                         views.Add(state.InstanceId, new View(slot, actor, marker, camera, unitPresentation, deathParticles, deathTextures,
-                            statusArt, shieldAura, invincibleAura, element, state.Resource, text, inspection == null ? null : InspectStatus));
+                            statusArt, shieldAura, invincibleAura, stunStars, element, state.Resource, text, inspection == null ? null : InspectStatus));
                     }
                     catch
                     {
@@ -1099,8 +1102,7 @@ namespace AstralOath.Client.BattleScene
                 _ when Actor?.Slot.Side == BattleSide.Enemy => online == null ? "敌方行动" : string.Empty,
                 _ when ai.IsForcedAction(Snapshot) => Label("battle.prompt.forced_action"),
                 _ when autoBattle => Label("battle.auto.active"),
-                _ when TrySkill(selected, out var skill) => $"{Label(SkillNameKey(skill, UsesSpeedVariant(skill, Actor)))} · {(useSoulBurn ? "燃魂 · " : "")}点击目标",
-                _ => "选择技能"
+                _ => string.Empty
             };
         }
 
@@ -1285,7 +1287,8 @@ namespace AstralOath.Client.BattleScene
             private int maximumHealth;
             private readonly BattleStatusIcons statusIcons;
             private readonly BattleEffectWords effectWords;
-            private readonly BattleShieldAura shieldAura, invincibleAura;
+            private readonly BattleStatusSkeletonEffect shieldAura, invincibleAura, stunStars;
+            private bool stunned;
             private bool invincible;
             private readonly BattleUnitLevelBadge levelBadge;
             private static readonly int BodyOpacity = Shader.PropertyToID("_PresentationOpacity");
@@ -1296,7 +1299,8 @@ namespace AstralOath.Client.BattleScene
 
             public View(Transform slot, BattlePreviewActor actor, GameObject marker, Camera camera, BattleUnitPresentationProfile profile,
                 TextAsset deathParticles, IReadOnlyDictionary<string, Texture2D> deathTextures, BattleStatusArt statusArt,
-                BattleShieldAura.Definition auraDefinition, BattleShieldAura.Definition invincibleDefinition,
+                BattleStatusSkeletonEffect.Definition auraDefinition, BattleStatusSkeletonEffect.Definition invincibleDefinition,
+                BattleStatusSkeletonEffect.Definition stunDefinition,
                 Sprite element, BattleResourceSnapshot resource, GameText fontSource,
                 Action<BattleStatusSnapshot, Image> inspectStatus)
             {
@@ -1325,9 +1329,10 @@ namespace AstralOath.Client.BattleScene
                 }
                 statusIcons = new BattleStatusIcons(FeedbackAnchor, statusArt,
                     profile ? profile.StatusIconsPerRow : BattleStatusIcons.MaximumColumns, inspectStatus);
-                shieldAura = new BattleShieldAura(auraDefinition, Actor.PresentationShadow, Actor.PresentationRenderer);
-                invincibleAura = new BattleShieldAura(invincibleDefinition, Actor.PresentationShadow,
+                shieldAura = new BattleStatusSkeletonEffect(auraDefinition, Actor.PresentationShadow, Actor.PresentationRenderer);
+                invincibleAura = new BattleStatusSkeletonEffect(invincibleDefinition, Actor.PresentationShadow,
                     Actor.PresentationRenderer, "Battle invincibility aura");
+                stunStars = new BattleStatusSkeletonEffect(stunDefinition, null, Actor.PresentationRenderer, "Battle stun stars");
                 if (element) elementBadge.sprite = element;
                 if (profile)
                 {
@@ -1338,12 +1343,13 @@ namespace AstralOath.Client.BattleScene
                 }
                 levelBadge = new BattleUnitLevelBadge(marker.transform.Find("Level").GetComponent<Image>(), profile ? profile.LevelDigits : null);
                 var wordFont = profile && profile.EffectWordFont ? profile.EffectWordFont : fontSource.font;
-                effectWords = new BattleEffectWords((RectTransform)marker.transform, wordFont);
+                effectWords = new BattleEffectWords((RectTransform)marker.transform, wordFont,
+                    profile ? profile.EffectWordOutline : null);
                 try { PrepareDeath(); }
                 catch
                 {
                     effectWords.Dispose();
-                    shieldAura.Dispose(); invincibleAura.Dispose(); statusIcons.Dispose(); status.Dispose(); levelBadge.Dispose();
+                    shieldAura.Dispose(); invincibleAura.Dispose(); stunStars.Dispose(); statusIcons.Dispose(); status.Dispose(); levelBadge.Dispose();
                     throw;
                 }
             }
@@ -1377,7 +1383,7 @@ namespace AstralOath.Client.BattleScene
                     status.ScaleAnchor = body.transform;
                     status.LateTick(camera);
                 }
-                SyncAura(0f);
+                SyncStatusEffects(0f);
             }
             private void UpdateStatusVisibility(Renderer body)
             {
@@ -1390,7 +1396,7 @@ namespace AstralOath.Client.BattleScene
             public void TickVisual(float delta)
             {
                 status.Tick(delta);
-                SyncAura(delta);
+                SyncStatusEffects(delta);
                 if (death?.IsRunning != true) return;
                 Actor.TickDefeatPose(Mathf.Min(delta, death.RemainingPoseSeconds));
                 death.Tick(delta);
@@ -1415,6 +1421,7 @@ namespace AstralOath.Client.BattleScene
                 SetStealth(false);
                 SetShield(0);
                 Actor.BeginDefeatPose();
+                SetStunned(false);
                 Actor.SetPaused(true);
                 death.Begin();
             }
@@ -1486,7 +1493,7 @@ namespace AstralOath.Client.BattleScene
             {
                 levelBadge.Show(state.Level);
                 statusIcons.Reconcile(state.IsAlive ? state.Statuses : Array.Empty<BattleStatusSnapshot>());
-                Actor.SetActionBlocked(state.IsAlive && state.Statuses.Any(effect => PreventsActions(effect.Kind)));
+                SetStunned(state.IsAlive && state.GetStatus(BattleStatusKind.Stun) != null);
                 SetStealth(state.IsAlive && state.GetStatus(BattleStatusKind.Stealth) != null);
                 invincible = state.IsAlive && state.GetStatus(BattleStatusKind.Invincible) != null;
                 SetShield(state.IsAlive ? state.Barrier : 0);
@@ -1507,9 +1514,9 @@ namespace AstralOath.Client.BattleScene
                     }
                 }
                 statusIcons.Apply(effect);
-                if (PreventsActions(effect.Kind)) Actor.SetActionBlocked(true);
+                if (effect.Kind == BattleStatusKind.Stun) SetStunned(true);
                 if (effect.Kind == BattleStatusKind.Stealth) SetStealth(true);
-                if (effect.Kind == BattleStatusKind.Invincible) { invincible = true; SyncAura(0f); }
+                if (effect.Kind == BattleStatusKind.Invincible) { invincible = true; SyncStatusEffects(0f); }
             }
 
             public void UpdateStatusDuration(BattleStatusSnapshot effect)
@@ -1521,9 +1528,9 @@ namespace AstralOath.Client.BattleScene
             {
                 if (kind == BattleStatusKind.Barrier) SetShield(0);
                 statusIcons.Remove(kind);
-                if (PreventsActions(kind)) Actor.SetActionBlocked(false);
+                if (kind == BattleStatusKind.Stun) SetStunned(false);
                 if (kind == BattleStatusKind.Stealth) SetStealth(false);
-                if (kind == BattleStatusKind.Invincible) { invincible = false; SyncAura(0f); }
+                if (kind == BattleStatusKind.Invincible) { invincible = false; SyncStatusEffects(0f); }
             }
 
             public void RemoveStatusInstance(BattleStatusSnapshot effect)
@@ -1532,13 +1539,17 @@ namespace AstralOath.Client.BattleScene
                 else
                 {
                     statusIcons.Remove(effect.Kind, effect.InstanceId);
-                    if (PreventsActions(effect.Kind)) Actor.SetActionBlocked(false);
+                    if (effect.Kind == BattleStatusKind.Stun) SetStunned(false);
                 }
             }
 
-            // Keep the pose tied to the implemented skip-turn status. Forced skill or
-            // target changes such as silence and provoke can still take a turn.
-            private static bool PreventsActions(BattleStatusKind kind) => kind == BattleStatusKind.Stun;
+            private void SetStunned(bool value)
+            {
+                if (stunned == value) return;
+                stunned = value;
+                Actor.SetActionBlocked(value);
+                SyncStatusEffects(0f);
+            }
 
             private void SetStealth(bool active)
             {
@@ -1570,10 +1581,10 @@ namespace AstralOath.Client.BattleScene
             {
                 presentedShield = amount;
                 status.UpdateShield(amount, maximumHealth, false);
-                SyncAura(0f);
+                SyncStatusEffects(0f);
             }
 
-            private void SyncAura(float delta)
+            private void SyncStatusEffects(float delta)
             {
                 bool shielded = shown && !deathStarted && presentedShield > 0;
                 bool protectedFromDamage = shown && !deathStarted && invincible;
@@ -1582,6 +1593,10 @@ namespace AstralOath.Client.BattleScene
                 var body = Actor.PresentationRenderer;
                 shieldAura.Sync(body, shielded, delta, anchor);
                 invincibleAura.Sync(body, protectedFromDamage, delta, anchor);
+                // The original status table binds stse_stun to the animated "top" bone.
+                Vector2? head = shown && !deathStarted && stunned && Actor.TryGetSkeletonAnchor("top", out var top)
+                    ? top : (Vector2?)null;
+                stunStars.Sync(body, head.HasValue, delta, head);
             }
 
             public void Restore()
@@ -1600,6 +1615,7 @@ namespace AstralOath.Client.BattleScene
                 status.Dispose();
                 shieldAura.Dispose();
                 invincibleAura.Dispose();
+                stunStars.Dispose();
                 statusIcons.Dispose();
                 effectWords.Dispose();
                 levelBadge.Dispose();

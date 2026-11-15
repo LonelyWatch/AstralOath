@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "source": "原始资源/effect/stse_stun",
+  "sourceMapping": {
+    "table": "原始资源/db/cs_player.db",
+    "tableSha256": "c031c39f2a96af49d1b4240be6c60c37091289e5794300f7b6229369b06b026f",
+    "records": {
+      "205": "stic_stun",
+      "205k": "stic_stun_keep"
+    },
+    "cs_effect": "stse_stun.cfx",
+    "cs_eff_bone": "top"
+  },
+  "premultipliedAlpha": true,
+  "partialAlphaPixels": 20293,
+  "spineVersion": "2.1.27",
+  "animations": [
+    {
+      "name": "animation",
+      "duration": 1.06659996509552
+    }
+  ],
+  "texture": {
+    "width": 173,
+    "height": 271,
+    "encoding": "SCT1:RGB565+A8",
+    "alpha": "source-preserved"
+  },
+  "converterSha256": "6dacb9c4857aca8051a20a24f17cdd64ce72d058a0cbbe1cf8ad06f78025a707",
+  "files": [
+    {
+      "source": "原始资源/effect/stse_stun.cfx",
+      "sourceSha256": "c7f945e533ed01dfd503797f5726db9c7ff2c558156c4a9f7dfcac0e8898ab68",
+      "asset": "stse_stun.cfx.json",
+      "assetSha256": "31f91139c20cbe08ed4ff6b693c2916226476cb6a212df00cfaf1df912632546"
+    },
+    {
+      "source": "原始资源/effect/stse_stun.scsp",
+      "sourceSha256": "73adf317796801c77c52bf10580ad43dad7ab9a44037ead7abde9276cae27e49",
+      "asset": "stse_stun.json",
+      "assetSha256": "b581f3364f013acf273b0b27c89b80f75f78ae9afa02c641a1ca80826e21366a"
+    },
+    {
+      "source": "原始资源/effect/stse_stun.atlas",
+      "sourceSha256": "4bcfac01ed45d57ded5a4254468a0caf9dfa04482265c9ca3ac17ac9cb461bad",
+      "asset": "stse_stun.atlas.txt",
+      "assetSha256": "f9f65b19973f660a002945024b4acc9d3f8a9c42ff83d248ceb8e93e1692f7f3"
+    },
+    {
+      "source": "原始资源/effect/stse_stun.sct",
+      "sourceSha256": "c0d986ca74851cd351143caf7f12c6ad3be3f35b2b5ed6408f26807d73b6e1d5",
+      "asset": "stse_stun.png",
+      "assetSha256": "4b9e2a755acfeeef66efc85ce5c4937a5196d7d623ff84be916e3c20e9f2b461"
+    }
+  ]
+}
