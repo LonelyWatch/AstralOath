@@ -63,6 +63,7 @@ namespace AstralOath.Client.Bootstrap
 
                 services.Add(content);
                 services.Add<IAssetService>(content.Assets);
+                services.Add<ISceneAssetService>(content.Assets);
                 services.Add<IConfigService>(new JsonConfigService(content.Assets));
                 services.Add<IAnimationService>(new DotweenAnimations());
                 string url = Environment.GetEnvironmentVariable("ASTRAL_FOUNDATION_URL");

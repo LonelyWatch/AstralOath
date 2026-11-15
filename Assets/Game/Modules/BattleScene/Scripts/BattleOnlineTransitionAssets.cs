@@ -1,13 +1,16 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
+using AstralOath.Client.Core;
 using UnityEngine;
 using UnityEngine.Scripting;
 
 namespace AstralOath.Client.BattleScene
 {
-    // Kept in Resources because the gate closes before the battle scene is loaded.
+    // Loaded from the active Foundation bundle after its hot-update scripts have been loaded.
     public sealed class BattleOnlineTransitionAssets : ScriptableObject
     {
+        public const string Address = "battle/online-transition";
         [SerializeField] internal BattleHudPreview.SpineEffect[] skeletons;
         [SerializeField] internal AudioClip doorClose, doorOpen;
         [SerializeField] internal TextAsset closeCfx, openCfx, ignitionCfx;
@@ -36,9 +39,9 @@ namespace AstralOath.Client.BattleScene
             }
         }
 
-        internal static BattleOnlineTransitionAssets Load()
+        internal static async Task<BattleOnlineTransitionAssets> LoadAsync(IAssetService assets, BindingScope scope)
         {
-            var asset = Resources.Load<BattleOnlineTransitionAssets>("AstralOathOnlineTransition");
+            var asset = await assets.LoadAsync<BattleOnlineTransitionAssets>(Address, scope);
             if (!asset || asset.skeletons == null || asset.skeletons.Length == 0 ||
                 asset.skeletons.Any(item => item == null || !item.skeleton || !item.atlas || !item.page) ||
                 asset.skeletons.Select(item => item.page.name).Distinct(StringComparer.Ordinal).Count() != asset.skeletons.Length ||

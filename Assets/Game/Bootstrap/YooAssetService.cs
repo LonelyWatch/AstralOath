@@ -2,12 +2,12 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using AstralOath.Client.Core;
-using UnityEngine;
+using UnityEngine.SceneManagement;
 using YooAsset;
 
 namespace AstralOath.Client.Bootstrap
 {
-    public sealed class YooAssetService : IAssetService, IDisposable
+    public sealed class YooAssetService : IAssetService, ISceneAssetService, IDisposable
     {
         public const string PackageName = "Foundation";
         private readonly ResourcePackage package;
@@ -86,6 +86,50 @@ namespace AstralOath.Client.Bootstrap
                 if (handle.IsValid)
                     handle.Release();
                 throw;
+            }
+        }
+
+        public async Task<ILoadedScene> LoadAdditiveAsync(string address, CancellationToken token)
+        {
+            using var deadline = WithDeadline(token);
+            deadline.Token.ThrowIfCancellationRequested();
+            var handle = package.LoadSceneAsync(address, LoadSceneMode.Additive);
+            // Unity cannot cancel a scene load in flight. Finish it before rolling back.
+            while (handle.IsValid && !handle.IsDone)
+                await Task.Yield();
+
+            if (!handle.IsValid || handle.Status != EOperationStatus.Succeed)
+            {
+                string error = handle.IsValid ? handle.LastError : "invalid scene handle";
+                if (handle.IsValid) handle.Release();
+                deadline.Token.ThrowIfCancellationRequested();
+                throw new InvalidOperationException($"YooAsset scene {address}: {error}");
+            }
+
+            var loaded = new LoadedScene(handle);
+            if (deadline.IsCancellationRequested)
+            {
+                await loaded.UnloadAsync();
+                deadline.Token.ThrowIfCancellationRequested();
+            }
+            return loaded;
+        }
+
+        private sealed class LoadedScene : ILoadedScene
+        {
+            private readonly SceneHandle handle;
+            public Scene Scene { get; }
+
+            internal LoadedScene(SceneHandle handle)
+            {
+                this.handle = handle;
+                Scene = handle.SceneObject;
+            }
+
+            public async Task UnloadAsync()
+            {
+                if (handle.IsValid)
+                    await WaitAsync(handle.UnloadAsync(), CancellationToken.None);
             }
         }
 

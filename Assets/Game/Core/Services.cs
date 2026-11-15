@@ -2,12 +2,24 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace AstralOath.Client.Core
 {
     public interface IAssetService
     {
         Task<T> LoadAsync<T>(string address, BindingScope scope) where T : UnityEngine.Object;
+    }
+
+    public interface ISceneAssetService
+    {
+        Task<ILoadedScene> LoadAdditiveAsync(string address, CancellationToken token);
+    }
+
+    public interface ILoadedScene
+    {
+        Scene Scene { get; }
+        Task UnloadAsync();
     }
 
     public interface IAudioService

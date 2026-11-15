@@ -23,6 +23,8 @@ namespace AstralOath.Editor
         private const string Home = "Assets/Game/Modules/Home/";
         private const string Common = "Assets/Game/Common/Res/";
         public const string StartupScene = Home + "Scenes/GameHome.unity";
+        private const string OnlineBattleScene = "Assets/Game/Modules/BattleScene/Scenes/BattleScene.unity";
+        private const string OnlineBattleTransition = "Assets/Game/Modules/BattleScene/Configs/AstralOathOnlineTransition.asset";
         private static readonly (string Path, string Address)[] Assets =
         {
             (Home + "Res/Prefab/HomeWindow.prefab", HomeWindow.Address),
@@ -32,6 +34,8 @@ namespace AstralOath.Editor
             (Arena + "Configs/arena-zh-hans.json", ArenaLabels.Address),
             (DraftPrefabPath, ArenaDraft.Address),
             (DraftArtPath, ArenaDraftArt.Address),
+            (OnlineBattleScene, "battle/online-scene"),
+            (OnlineBattleTransition, "battle/online-transition"),
         };
         private static readonly Color Gold = new Color32(166, 139, 92, 255);
         private static readonly Color Mist = new Color32(180, 206, 216, 255);
@@ -96,11 +100,13 @@ namespace AstralOath.Editor
             UIViewRegistry.ValidatePrefab<ArenaPasswordEntry>(Load<GameObject>(PasswordEntryPath));
             UIViewRegistry.ValidatePrefab<GameToast>(Load<GameObject>(ToastPath));
             _ = Load<SceneAsset>(StartupScene);
+            _ = Load<SceneAsset>(OnlineBattleScene);
+            _ = Load<ScriptableObject>(OnlineBattleTransition);
             var addresses = AssetBundleCollectorSettingData.Setting.BeginCollect("Foundation", true, false)
                 .CollectAssets.ToDictionary(asset => asset.Address, asset => asset.AssetInfo.AssetPath);
             foreach (var (path, address) in Assets)
                 if (!addresses.TryGetValue(address, out string registered) || registered != path)
-                    throw new BuildFailedException("缺少主页资源地址 " + address);
+                    throw new BuildFailedException("缺少 Foundation 资源地址 " + address);
         }
 
         internal static string AddressFor(string path) => Assets.Single(item => item.Path == path).Address;
@@ -117,7 +123,8 @@ namespace AstralOath.Editor
                 {
                     CollectPath = path,
                     CollectorGUID = AssetDatabase.AssetPathToGUID(path),
-                    AddressRuleName = nameof(HomeArenaAddressRule)
+                    AddressRuleName = nameof(HomeArenaAddressRule),
+                    PackRuleName = path == OnlineBattleScene ? nameof(PackSeparately) : nameof(PackDirectory)
                 });
             EditorUtility.SetDirty(settings);
             AssetDatabase.SaveAssets();

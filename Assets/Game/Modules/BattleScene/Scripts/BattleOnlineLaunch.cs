@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AstralOath.Client.Core;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -14,7 +15,10 @@ namespace AstralOath.Client.BattleScene
         public const string ScenePath = "Assets/Game/Modules/BattleScene/Scenes/BattleScene.unity";
         private static readonly List<Behaviour> SuspendedHome = new List<Behaviour>();
         private static bool loading;
+        public const string SceneAddress = "battle/online-scene";
         private static Scene onlineScene, home;
+        private static ILoadedScene sceneHandle;
+        private static BindingScope assetScope;
 
         public static event Action Exited;
 
@@ -24,24 +28,23 @@ namespace AstralOath.Client.BattleScene
             loading = false;
             onlineScene = default;
             home = default;
+            sceneHandle = null;
+            assetScope = null;
             SuspendedHome.Clear();
             Exited = null;
         }
 
         public static bool IsActive => loading || onlineScene.IsValid() && onlineScene.isLoaded;
 
-        public static Task LoadAsync(Uri endpoint, string roomId, string battleId, string contentHash,
-            string arenaBearer, bool localIsHost, CancellationToken cancellationToken)
-            => LoadAsync(endpoint, roomId, battleId, contentHash, arenaBearer, localIsHost, cancellationToken, null);
-
-        public static async Task LoadAsync(Uri endpoint, string roomId, string battleId, string contentHash,
-            string arenaBearer, bool localIsHost, CancellationToken cancellationToken, BattleOnlinePlayers players)
+        public static async Task LoadAsync(IAssetService assets, ISceneAssetService scenes, Uri endpoint,
+            string roomId, string battleId, string contentHash, string arenaBearer, bool localIsHost,
+            CancellationToken cancellationToken, BattleOnlinePlayers players = null)
         {
             if (IsActive || SceneManager.GetSceneByPath(ScenePath).isLoaded)
                 throw new InvalidOperationException("A battle scene is already active.");
             cancellationToken.ThrowIfCancellationRequested();
-            if (!Application.CanStreamedLevelBeLoaded(ScenePath))
-                throw new InvalidOperationException("The current build does not contain the battle scene.");
+            if (assets == null || scenes == null)
+                throw new ArgumentException("The active Foundation package must supply battle assets and scenes.");
             loading = true;
             home = SceneManager.GetActiveScene();
             BattleOnlineSession session = null;
@@ -57,25 +60,26 @@ namespace AstralOath.Client.BattleScene
 
             try
             {
-                var assets = BattleOnlineTransitionAssets.Load();
-                using var gate = new BattleOnlineGate(assets);
+                assetScope = new BindingScope(cancellationToken);
+                var transition = await BattleOnlineTransitionAssets.LoadAsync(assets, assetScope);
+                using var gate = new BattleOnlineGate(transition);
                 await gate.CloseAsync(cancellationToken);
                 SuspendHome();
                 SceneManager.sceneLoaded += PrepareHost;
-                var operation = SceneManager.LoadSceneAsync(ScenePath, LoadSceneMode.Additive);
-                if (operation == null) throw new InvalidOperationException("Unable to start loading the battle scene.");
-                // Unity scene loads cannot be aborted. Wait until the scene exists so a canceled launch can unload it.
-                while (!operation.isDone)
+                var operation = scenes.LoadAdditiveAsync(SceneAddress, cancellationToken);
+                while (!operation.IsCompleted)
                 {
                     gate.TickClosed();
                     await Task.Yield();
                 }
+                sceneHandle = await operation;
+                onlineScene = sceneHandle.Scene;
                 cancellationToken.ThrowIfCancellationRequested();
                 if (!host) throw new InvalidOperationException("The battle scene has no battle host.");
                 SceneManager.SetActiveScene(onlineScene);
                 session = new BattleOnlineSession(endpoint, roomId, battleId, contentHash, arenaBearer, localIsHost);
                 session.Players = players;
-                var preparing = host.PrepareOnlineAsync(session, assets, cancellationToken);
+                var preparing = host.PrepareOnlineAsync(session, transition, cancellationToken);
                 while (!preparing.IsCompleted)
                 {
                     gate.TickClosed();
@@ -142,19 +146,20 @@ namespace AstralOath.Client.BattleScene
             try
             {
                 if (home.IsValid() && home.isLoaded) SceneManager.SetActiveScene(home);
-                if (onlineScene.IsValid() && onlineScene.isLoaded)
-                {
-                    var unloading = SceneManager.UnloadSceneAsync(onlineScene);
-                    while (unloading != null && !unloading.isDone) await Task.Yield();
-                }
+                if (sceneHandle != null)
+                    await sceneHandle.UnloadAsync();
             }
             finally
             {
                 onlineScene = default;
+                sceneHandle = null;
                 foreach (var item in SuspendedHome)
                     if (item) item.enabled = true;
                 SuspendedHome.Clear();
                 home = default;
+                var scope = assetScope;
+                assetScope = null;
+                scope?.Dispose();
             }
         }
     }

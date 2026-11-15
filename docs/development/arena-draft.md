@@ -17,7 +17,7 @@
 
 选禁与对局权威在服务端。事务锁定同一个房间。客户端按版本提交，使用请求 ID 去重，并限定为当前选禁 ID 或对局 ID。不同席位的同阶段提交可并行，禁名和站位在对手端按阶段公开。超时由当前两席的读取或操作推进，服务端从合法候选中选择；退出或席位活动过期会取消该次流程。战斗命令和配置摘要用于重连与回放。普通房间成员可以留在房间，观战入口尚未实现。
 
-开发运行前应用迁移 `006_arena_draft.sql`，重新启动服务。正式客户端需新 Foundation 母包，因为 BattleScene 成为第二个内置场景，入场资源随母包。BP 窗口与角色素材目录随 Foundation YooAsset 包发布，进入 BP 时才读取角色预览资源。新增英雄时同步 BattleScene 战斗目录和原版卡面素材，再运行 `Tools/游戏主页/生成主页和模拟战` 生成对应目录和预制体。其他规则仍可保存和加入房间，联机开局目前只开放「基本」。实机录像对照图须经用户确认后才构建客户端安装包。
+开发运行前应用迁移 `006_arena_draft.sql`，重新启动服务。Foundation 母包只内置 GameHome。战斗场景和转场配置包含热更新程序集定义的 Unity 脚本，必须在程序集就绪后从当前 Foundation YooAsset 包加载。0.1.9 在选位后因 Unity 无法恢复内置转场资源的字段而卡住，需安装更新后的母包以获得 AOT 场景加载服务。BP 窗口与角色素材目录随 Foundation YooAsset 包发布，进入 BP 时才读取角色预览资源。新增英雄时同步 BattleScene 战斗目录和原版卡面素材，再运行 `Tools/游戏主页/生成主页和模拟战` 生成对应目录和预制体。其他规则仍可保存和加入房间，联机开局目前只开放「基本」。实机录像对照图须经用户确认后才构建客户端安装包。
 
 ## 验收和待核对
 
@@ -29,3 +29,5 @@ MySQL 集成 244 项通过，Unity 图形 PlayMode 覆盖房间、选禁、双�
 $env:ASTRAL_ARENA_TEST_URL = 'http://127.0.0.1:5080'
 pwsh -NoProfile -File Tools/Invoke-Unity.ps1 -Mode PlayMode -Graphics -TestFilter 'AstralOath.Client.Tests.ArenaDraftOnlineTests|AstralOath.Client.Tests.ArenaBattlePlaybackTests|AstralOath.Client.Tests.GameHomeArenaTests'
 ```
+
+Windows 开发包另跑 `Tools/Test-WindowsArenaBattle.ps1 -Player <解压后的 AstralOath.exe>`。脚本以两个独立访客通过本机服务完成预禁、选人、终禁和阵型，再由打包后的 Player 运行实际入场代码，检查八个角色模型、服务端回合计时及首条战斗命令。该入口只对显式请求的联调包开放，服务地址必须为回环地址。

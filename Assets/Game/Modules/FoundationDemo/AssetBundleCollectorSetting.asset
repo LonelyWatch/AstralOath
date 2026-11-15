@@ -123,6 +123,22 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags:
         UserData:
+      - CollectPath: Assets/Game/Modules/BattleScene/Scenes/BattleScene.unity
+        CollectorGUID: c23e7359d493c69418ace4959dd249b6
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackSeparately
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/BattleScene/Configs/AstralOathOnlineTransition.asset
+        CollectorGUID: 500f060b1dbb451ab738b8a93d33eaf7
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
   - PackageName: CharacterLab
     PackageDesc:
     EnableAddressable: 1

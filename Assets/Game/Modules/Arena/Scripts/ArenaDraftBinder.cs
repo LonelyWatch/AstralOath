@@ -20,6 +20,8 @@ namespace AstralOath.Client.Arena
         private readonly ArenaDraft view;
         private readonly ArenaApi api;
         private readonly ILocaleService locale;
+        private readonly IAssetService assets;
+        private readonly ISceneAssetService scenes;
         private readonly Func<Task> returnToRoom;
         private readonly ArenaDraftRosterFilter rosterFilter;
         private static readonly Vector2 RosterCardSize = new Vector2(361f, 112f);
@@ -56,11 +58,13 @@ namespace AstralOath.Client.Arena
         private DateTimeOffset deadline;
 
         public ArenaDraftBinder(ArenaDraft view, ArenaApi api, ILocaleService locale, ArenaDraftArt artwork,
-            WindowCoordinator windows, Func<Task> returnToRoom)
+            WindowCoordinator windows, IAssetService assets, ISceneAssetService scenes, Func<Task> returnToRoom)
         {
             this.view = view;
             this.api = api;
             this.locale = locale;
+            this.assets = assets;
+            this.scenes = scenes;
             this.returnToRoom = returnToRoom;
             rosterFilter = new ArenaDraftRosterFilter(view, locale, windows, ApplySearch);
             this.artwork = artwork;
@@ -224,7 +228,7 @@ namespace AstralOath.Client.Arena
                 var opponent = match.Opponent.player;
                 var identities = new BattleOnlinePlayers(own.displayName, opponent.displayName, own.avatarId, opponent.avatarId,
                     GetArt(own.avatarId)?.Face, GetArt(opponent.avatarId)?.Face);
-                await BattleOnlineLaunch.LoadAsync(api.Endpoint, match.roomId, match.battleId, match.contentHash,
+                await BattleOnlineLaunch.LoadAsync(assets, scenes, api.Endpoint, match.roomId, match.battleId, match.contentHash,
                     api.Bearer, match.IsHost, token, identities);
                 loadedBattle = match.battleId;
             }

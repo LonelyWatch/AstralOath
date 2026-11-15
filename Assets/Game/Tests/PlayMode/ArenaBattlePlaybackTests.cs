@@ -67,7 +67,7 @@ namespace AstralOath.Client.Tests
         public IEnumerator NativeGateAndIgnitionPlayAndReleaseTheOverlay()
         {
             var assembly = typeof(BattleOnlineLaunch).Assembly;
-            var resource = Resources.Load("AstralOathOnlineTransition");
+            var resource = AssetDatabase.LoadAssetAtPath<BattleOnlineTransitionAssets>("Assets/Game/Modules/BattleScene/Configs/AstralOathOnlineTransition.asset");
             Assert.That(resource, Is.Not.Null);
             var assetType = resource.GetType();
             var close = (TextAsset)assetType.GetField("closeCfx", Members).GetValue(resource);
@@ -147,7 +147,7 @@ namespace AstralOath.Client.Tests
             var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
             var canvas = new GameObject("Countdown test", typeof(RectTransform), typeof(Canvas));
             var bindings = UnityEngine.Object.Instantiate(prefab, canvas.transform, false).GetComponent<BindingMap>();
-            var resource = Resources.Load("AstralOathOnlineTransition");
+            var resource = AssetDatabase.LoadAssetAtPath<BattleOnlineTransitionAssets>("Assets/Game/Modules/BattleScene/Configs/AstralOathOnlineTransition.asset");
             var assetType = resource.GetType();
             var copyType = assetType.GetNestedType("Copy", BindingFlags.NonPublic);
             var copy = copyType.GetMethod("Load", BindingFlags.Static | BindingFlags.NonPublic).Invoke(null,
@@ -206,7 +206,7 @@ namespace AstralOath.Client.Tests
 
             var assembly = typeof(BattleOnlineLaunch).Assembly;
             var type = assembly.GetType("AstralOath.Client.BattleScene.BattleOnlineGate", true);
-            var resource = Resources.Load("AstralOathOnlineTransition");
+            var resource = AssetDatabase.LoadAssetAtPath<BattleOnlineTransitionAssets>("Assets/Game/Modules/BattleScene/Configs/AstralOathOnlineTransition.asset");
             using var cancellation = new CancellationTokenSource();
             using var gate = (IDisposable)Activator.CreateInstance(type, Members, null, new[] { resource }, null);
             var overlay = (GameObject)type.GetField("overlay", Members).GetValue(gate);

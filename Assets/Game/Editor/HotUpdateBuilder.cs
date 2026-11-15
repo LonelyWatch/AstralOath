@@ -251,9 +251,8 @@ namespace AstralOath.Editor
                 PlayerSettings.bundleVersion = options.appVersion;
                 PlayerSettings.defaultInterfaceOrientation = UIOrientation.LandscapeLeft;
                 EditorUserBuildSettings.development = development;
-                var scenePaths = profile == CharacterLabBuildProfile.Foundation
-                    ? new[] { profile.ScenePath, "Assets/Game/Modules/BattleScene/Scenes/BattleScene.unity" }
-                    : new[] { profile.ScenePath };
+                // The battle scene contains hot-update-managed components and is loaded from Foundation after startup.
+                var scenePaths = new[] { profile.ScenePath };
                 EditorBuildSettings.scenes = scenePaths.Select(path => new EditorBuildSettingsScene(path, true)).ToArray();
                 if (options.developmentHttp)
                     PlayerSettings.insecureHttpOption = InsecureHttpOption.DevelopmentOnly;

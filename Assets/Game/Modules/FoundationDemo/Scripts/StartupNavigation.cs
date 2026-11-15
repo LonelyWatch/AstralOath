@@ -18,6 +18,7 @@ namespace AstralOath.Client.FoundationDemo
         private readonly ArenaRoomBinder room;
         private readonly UIViewRegistry views;
         private readonly IAssetService assets;
+        private readonly ISceneAssetService scenes;
         private readonly Transform parent;
         private readonly BindingScope lifetime;
         private readonly ILocaleService locale;
@@ -26,12 +27,13 @@ namespace AstralOath.Client.FoundationDemo
         private string roomId;
 
         private StartupNavigation(BindingScope lifetime, HomeWindow homeView, ArenaDirectory directoryView,
-            ArenaCreateRoom createView, ArenaRoom roomView, UIViewRegistry views, IAssetService assets, Transform parent,
+            ArenaCreateRoom createView, ArenaRoom roomView, UIViewRegistry views, IAssetService assets, ISceneAssetService scenes, Transform parent,
             ILocaleService locale, ArenaApi api, string playerName, DesktopDisplayMode display)
         {
             this.api = api;
             this.views = views;
             this.assets = assets;
+            this.scenes = scenes;
             this.parent = parent;
             this.lifetime = lifetime;
             this.locale = locale;
@@ -72,7 +74,8 @@ namespace AstralOath.Client.FoundationDemo
                 }
             }
             var display = context.ViewRoot.GetComponentInParent<DesktopDisplayMode>();
-            var navigation = new StartupNavigation(owner, home, directory, create, room, views, assets, context.ViewRoot, locale, api, name, display);
+            var scenes = context.Services.Get<ISceneAssetService>();
+            var navigation = new StartupNavigation(owner, home, directory, create, room, views, assets, scenes, context.ViewRoot, locale, api, name, display);
             await navigation.ShowHome();
             context.Services.Add<ILocaleService>(locale);
             context.OpenButton.gameObject.SetActive(false);
@@ -109,7 +112,7 @@ namespace AstralOath.Client.FoundationDemo
                 {
                     scope.Add(loading.Dispose);
                     scope.Add(release);
-                    var draft = new ArenaDraftBinder(draftView, api, locale, draftArt, windows, ReopenRoomAsync);
+                    var draft = new ArenaDraftBinder(draftView, api, locale, draftArt, windows, assets, scenes, ReopenRoomAsync);
                     scope.Add(draft.Dispose);
                     return draft.OpenAsync(state, scope);
                 });

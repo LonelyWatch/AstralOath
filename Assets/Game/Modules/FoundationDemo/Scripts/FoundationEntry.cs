@@ -33,6 +33,7 @@ namespace AstralOath.Client.FoundationDemo
                 if (context.ShowHome)
                 {
                     await StartupNavigation.StartAsync(context, scope);
+                    ArenaBattlePlayerSmoke.StartIfRequested(context, scope.Token);
                     return;
                 }
                 var services = context.Services;
