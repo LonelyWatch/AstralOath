@@ -10,7 +10,7 @@ namespace AstralOath.Client.BattleScene
     {
         private const string Animation = "animation";
         private const string EffectResources = "AstralOathBattleArrival/";
-        private const float WideScale = 1.11f;
+        private const float WideScale = 1.15f;
         private const float LeadSeconds = .06f;
         private const float RunSeconds = .64f;
         private const float StaggerSeconds = .105f;

@@ -177,27 +177,30 @@ namespace AstralOath.Client.Tests
             Assert.That(keys[keys.Length-1].Item2.a,Is.Zero.Within(.00001f),"Native death/Burn ramps end transparent; blue is not opacity.");
         }
 
-        [Test]
-        public void OriginalDeathSmokeEmitsDarkPurpleOpaqueVerticesRatherThanBrightRedClouds()
+        [TestCase("death_pati_02", .1019608f, .0627451f, .1372549f)]
+        [TestCase("death_pati_01", .2470588f, .05098039f, .1058824f)]
+        public void OriginalDeathSmokeUsesTheNativeTint(string name,float red,float green,float blue)
         {
             const string directory="Assets/Game/Modules/BattleScene/Res/Effects/Death/Particles/";
-            var source=UnityEditor.AssetDatabase.LoadAssetAtPath<TextAsset>(directory+"death_pati_02.particle.json");
+            var source=UnityEditor.AssetDatabase.LoadAssetAtPath<TextAsset>(directory+name+".particle.json");
             var document=JObject.Parse(source.text);
             document["emitters"]=new JArray(document["emitters"][0].DeepClone());
             var definition=new TextAsset(document.ToString());
             var root=new GameObject("Native death smoke color regression");
             var texture=UnityEditor.AssetDatabase.LoadAssetAtPath<Texture2D>(directory+"soft_smoke.png");
             var type=Type.GetType("AstralOath.Client.BattleScene.BattleHudParticles, AstralOath.Client.BattleScene",true);
-            var particles=(IDisposable)Activator.CreateInstance(type,definition,new Dictionary<string,Texture2D>{{"soft_smoke",texture}},root.transform,Vector2.zero,.012f,0,true);
+            var particles=(IDisposable)Activator.CreateInstance(type,definition,new Dictionary<string,Texture2D>{{"soft_smoke",texture}},root.transform,Vector2.zero,.012f,0,true,true);
             try
             {
                 type.GetMethod("Play").Invoke(particles,null);
                 var colors=root.GetComponentInChildren<MeshFilter>(true).sharedMesh.colors;
                 Assert.That(colors,Is.Not.Empty);
+                var expected = new Color(red, green, blue);
+                if (QualitySettings.activeColorSpace == ColorSpace.Linear) expected = expected.linear;
                 Assert.That(colors[0].a,Is.EqualTo(1f).Within(.00001f));
-                Assert.That(colors[0].r,Is.EqualTo(.1019608f).Within(.00001f));
-                Assert.That(colors[0].g,Is.EqualTo(.0627451f).Within(.00001f));
-                Assert.That(colors[0].b,Is.EqualTo(.1372549f).Within(.00001f));
+                Assert.That(colors[0].r,Is.EqualTo(expected.r).Within(.00001f));
+                Assert.That(colors[0].g,Is.EqualTo(expected.g).Within(.00001f));
+                Assert.That(colors[0].b,Is.EqualTo(expected.b).Within(.00001f));
             }
             finally {particles.Dispose();Object.DestroyImmediate(definition);Object.DestroyImmediate(root);}
         }
@@ -223,7 +226,7 @@ namespace AstralOath.Client.Tests
                 Assert.That(root.GetComponentsInChildren<MeshRenderer>(),Has.Length.EqualTo(1),
                     "Before fade only the opaque black body should be drawn.");
                 Assert.That(shadow.color.a,Is.EqualTo(original.a));
-                Call("Tick",.12f);
+                Call("Tick",.09f);
                 var renderers=root.GetComponentsInChildren<MeshRenderer>();
                 int normal=0,additive=0;
                 foreach(var renderer in renderers)
@@ -233,6 +236,8 @@ namespace AstralOath.Client.Tests
                     int dst=material.GetInt("_DstBlend");if(dst==(int)BlendMode.OneMinusSrcAlpha)normal++;else if(dst==(int)BlendMode.One)additive++;
                 }
                 Assert.That(normal,Is.EqualTo(6));Assert.That(additive,Is.EqualTo(1));
+                Assert.That(shadow.color.a,Is.EqualTo(original.a),"The silhouette remains opaque as the native burst starts.");
+                Call("Tick",.07f);
                 Assert.That(shadow.color.a,Is.InRange(.001f,original.a-.001f));
                 Call("Reset");Assert.That(shadow.color,Is.EqualTo(original));
                 Call("Begin");Call("Tick",10f);Assert.That((bool)type.GetProperty("IsComplete").GetValue(presentation),Is.True);
@@ -261,7 +266,7 @@ namespace AstralOath.Client.Tests
                 Assert.That(Value("_PresentationOpacity"),Is.EqualTo(1f));
                 Call("Tick",0f);Assert.That(Value("_PresentationBrightness"),Is.EqualTo(brightness));
                 Call("Begin");Assert.That(Value("_PresentationBrightness"),Is.EqualTo(brightness),"Duplicate defeat must not restart the effect.");
-                Call("Tick",.18f);Assert.That(Value("_PresentationBrightness"),Is.Zero);
+                Call("Tick",.18f);Assert.That(Value("_PresentationBrightness"),Is.InRange(0f,.02f));
                 Assert.That(Value("_PresentationOpacity"),Is.EqualTo(1f));
                 Call("Tick",.12f);
                 Assert.That(Value("_PresentationOpacity"),Is.InRange(.001f,.999f));

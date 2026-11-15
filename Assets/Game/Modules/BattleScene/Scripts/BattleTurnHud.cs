@@ -212,7 +212,8 @@ namespace AstralOath.Client.BattleScene
         private Image CreateFace(RectTransform root, BattleUnitSnapshot unit)
         {
             // hud_face.csb: parent scale .7, source icon scale .69, base/frame scale .66.
-            string side = unit.Slot.Side == BattleSide.Ally ? "ally" : "enemy";
+            bool ally = unit.Slot.Side == BattleSide.Ally;
+            string side = ally ? "ally" : "enemy";
             float baseSize = 112f * 0.66f * 0.7f * SourceScale;
             Icon(root, "Base", sprites.GetValueOrDefault("_hero_s_bg_" + side), baseSize, Color.white);
             string faceName = unit.DefinitionId == "preview.slime" ? PreviewSlimeFace(unit.Element) : unit.DefinitionId + "_s";
@@ -221,10 +222,13 @@ namespace AstralOath.Client.BattleScene
             else
                 Text(root, "Slot", unit.Slot.Position.ToString(), Vector2.zero, new Vector2(38f, 35f),
                     26f, numberSource).color = ElementColor(unit.Element);
-            var frame = sprites.GetValueOrDefault("_hero_s_frame_" + side);
-            Icon(root, "Frame", frame, frame ? frame.rect.width * 0.66f * 0.7f * SourceScale : baseSize, Color.white);
-            var highlight = Icon(root, "Current Turn", sprites.GetValueOrDefault("cm_hero_circool1"), 82f * 0.7f * SourceScale,
-                new Color(1f, 0.82f, 0.40f));
+            var ring = sprites.GetValueOrDefault("cm_hero_circool1");
+            Color sideColor = ally ? Color.white : new Color32(241, 42, 48, 255);
+            float ringSize = 82f * 0.7f * SourceScale;
+            var highlightColor = sideColor;
+            highlightColor.a = .48f;
+            var highlight = Icon(root, "Current Turn", ring, ringSize + 5f, highlightColor);
+            Icon(root, "Frame", ring, ringSize, sideColor);
             highlight.enabled = false;
             return highlight;
         }

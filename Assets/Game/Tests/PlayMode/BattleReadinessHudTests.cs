@@ -52,6 +52,29 @@ namespace AstralOath.Client.Tests
         }
 
         [Test]
+        public void SideRingRemainsVisibleDuringHitAndCurrentTurn()
+        {
+            var ally = snapshot.Units.First(unit => unit.Slot.Side == BattleSide.Ally);
+            var enemy = snapshot.Units.First(unit => unit.Slot.Side == BattleSide.Enemy);
+            var allyRing = portraits.Find(ally.InstanceId + "/Frame").GetComponent<Image>();
+            var enemyRing = portraits.Find(enemy.InstanceId + "/Frame").GetComponent<Image>();
+            var enemyFace = portraits.Find(enemy.InstanceId + "/Face").GetComponent<Image>();
+            var acting = portraits.Find(snapshot.CurrentActorId + "/Current Turn").GetComponent<Image>();
+            Assert.That(allyRing.color, Is.EqualTo(Color.white));
+            Assert.That(enemyRing.color.r, Is.GreaterThan(enemyRing.color.g * 4f));
+            Assert.That(enemyRing.sprite, Is.EqualTo(allyRing.sprite));
+            Assert.That(acting.enabled, Is.True);
+            var ringColor = enemyRing.color;
+
+            Invoke("PlayReadinessHit", enemy.InstanceId);
+            Assert.That(enemyFace.color, Is.Not.EqualTo(Color.white));
+            Assert.That(enemyRing.color, Is.EqualTo(ringColor));
+            Invoke("Tick", .2f);
+            Assert.That(enemyFace.color, Is.EqualTo(Color.white));
+            Assert.That(enemyRing.enabled, Is.True);
+        }
+
+        [Test]
         public void ReadinessPositionIsLinearAndIndependentOfSurvivorCount()
         {
             string id = snapshot.Units.First(unit => unit.InstanceId != snapshot.CurrentActorId).InstanceId;
@@ -150,7 +173,8 @@ namespace AstralOath.Client.Tests
                 var effect = (BattleStatusSnapshot)Activator.CreateInstance(typeof(BattleStatusSnapshot), PrivateInstance, null,
                     new object[] { kind, turns, strength }, null);
                 return (BattleUnitSnapshot)Activator.CreateInstance(typeof(BattleUnitSnapshot), PrivateInstance, null,
-                    new object[] { unit, current.CurrentHealth, current.ReadinessBp, current.Cooldowns, new[] { effect }, 0 }, null);
+                    new object[] { unit, current.CurrentHealth, current.ReadinessBp, current.Cooldowns, new[] { effect },
+                        0, current.InjuryAmount, current.OpeningAttackBonus, Array.Empty<string>() }, null);
             }
             var updated = WithStatus(BattleStatusKind.DefenseDown, 2, 7000);
             var update = rowView.GetType().GetMethod("Update", PrivateInstance);

@@ -304,7 +304,7 @@ namespace AstralOath.Client.Tests
                 yield return CaptureBattle(battleScene, hostHud, "arena-draft-entry-warning", 1920, 900, gateOverlay: true);
                 yield return Wait(() => InArrival() && (bool)actorsReady.GetValue(hostHud),
                     "All actors did not arrive before the camera transition.", 10);
-                yield return CaptureBattle(battleScene, hostHud, "arena-draft-entry-grounded", 1920, 900, gateOverlay: true);
+                yield return CaptureBattle(battleScene, hostHud, "arena-draft-entry-grounded", 1920, 1080, gateOverlay: true);
                 yield return Wait(() => InArrival() && (bool)cameraBlending.GetValue(hostHud) &&
                     (float)blendTime.GetValue(arrival.GetValue(hostHud)) >= .25f,
                     "The camera did not move closer at the end of entry.", 10);
@@ -332,6 +332,7 @@ namespace AstralOath.Client.Tests
                 .Select(actor => (string)heroId.GetValue(actor)).ToArray();
             Assert.That(HeroesAtPositions("Allies"), Is.EqualTo(hostPicksSurviving));
             Assert.That(HeroesAtPositions("Enemies"), Is.EqualTo(guestPicksSurviving));
+            AssertOnlineFraming(battleScene, hostHud.GetComponent<Canvas>().worldCamera, units);
             yield return CaptureBattle(battleScene, hostHud, "arena-draft-battle", 1920, 900);
             yield return CaptureBattle(battleScene, hostHud, "arena-draft-battle-16x9", 1920, 1080);
             yield return CaptureBattle(battleScene, hostHud, "arena-draft-battle-21x9", 2240, 960);
@@ -373,6 +374,28 @@ namespace AstralOath.Client.Tests
                 "The authoritative clock must wait for the visible turn-entry animation.");
             yield return CaptureBattle(battleScene, hostHud, "arena-draft-my-turn-16x9", 1920, 1080);
             yield return CaptureBattle(battleScene, hostHud, "arena-draft-my-turn-21x9", 2240, 960);
+            var unit = LiveSnapshot().Units.First(entry => entry.Slot.Side == BattleSide.Enemy && entry.IsAlive);
+            var views = (IDictionary)simulation.GetType().GetField("views", flags).GetValue(simulation);
+            var deathView = views[unit.InstanceId];
+            var particles = (TextAsset)deathView.GetType().GetField("deathParticles", flags).GetValue(deathView);
+            Assert.That(particles.name, Is.EqualTo("death_pati_01.particle"), "Arena must use the red native death variant.");
+            if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("ASTRAL_ARENA_CAPTURE_DIR")))
+            {
+                // Sample the same presentation in the live arena after normal authoritative turns are verified.
+                simulation.GetType().GetProperty("IsPaused", flags).SetValue(simulation, true);
+                var actor = (BattlePreviewActor)deathView.GetType().GetProperty("Actor", flags).GetValue(deathView);
+                actor.PlayBattleAnimation("attacked");
+                void Present(string name, params object[] args) => deathView.GetType().GetMethod(name, flags).Invoke(deathView, args);
+                Present("SetHealth", 0L, unit.MaximumHealth);
+                Present("BeginDeath");
+                Present("Show", false);
+                Present("TickVisual", .1f);
+                yield return CaptureBattle(battleScene, hostHud, "arena-death-final-hit", 1920, 1080);
+                Present("TickVisual", .17f);
+                yield return CaptureBattle(battleScene, hostHud, "arena-death-silhouette", 1920, 1080);
+                Present("TickVisual", .26f);
+                yield return CaptureBattle(battleScene, hostHud, "arena-death-red-burst", 1920, 1080);
+            }
         }
 
         [UnityTearDown]
@@ -480,6 +503,34 @@ namespace AstralOath.Client.Tests
             float deadline = Time.realtimeSinceStartup + seconds;
             while (!condition() && Time.realtimeSinceStartup < deadline) yield return null;
             Assert.That(condition(), Is.True, message);
+        }
+
+        private static void AssertOnlineFraming(Scene scene, Camera camera, Transform units)
+        {
+            var viewport = camera.GetComponent<BattlePreviewViewport>();
+            var apply = typeof(BattlePreviewViewport).GetMethod("ApplyScreen", BindingFlags.Instance | BindingFlags.NonPublic);
+            var backdrop = scene.GetRootGameObjects().Single(root => root.name == "RTA 021 Stage").GetComponent<SpriteRenderer>();
+            void Apply(Vector2Int size, Rect safe) => apply.Invoke(viewport, new object[] { size, safe });
+            try
+            {
+                foreach (var size in new[] { new Vector2Int(1920, 1080), new Vector2Int(2240, 960) })
+                {
+                    Apply(size, new Rect(0, 0, size.x, size.y));
+                    var lower = camera.WorldToViewportPoint(units.Find("Allies").GetChild(1).position);
+                    var upper = camera.WorldToViewportPoint(units.Find("Allies").GetChild(2).position);
+                    Assert.That(lower.y, Is.InRange(.12f, .18f), "The lower line must clear the bottom HUD.");
+                    Assert.That(upper.y - lower.y, Is.GreaterThan(.2f), "The arena must preserve front-to-back depth.");
+                    Assert.That(camera.WorldToViewportPoint(backdrop.bounds.center).y, Is.InRange(.66f, .70f));
+                    var bottom = camera.WorldToViewportPoint(backdrop.bounds.min);
+                    var top = camera.WorldToViewportPoint(backdrop.bounds.max);
+                    Assert.That(bottom.x <= 0f && bottom.y <= 0f && top.x >= 1f && top.y >= 1f, Is.True,
+                        "The stage must cover the final camera on both aspect ratios.");
+                }
+            }
+            finally
+            {
+                Apply(new Vector2Int(UnityEngine.Screen.width, UnityEngine.Screen.height), UnityEngine.Screen.safeArea);
+            }
         }
 
         private static IEnumerator CaptureBattle(Scene scene, BattleHudPreview host, string label,

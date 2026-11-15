@@ -21,10 +21,7 @@ namespace AstralOath.Client.BattleScene.Editor
             if (!profile.ResourceFrame || !profile.FocusFill || !profile.FightingSpiritFill)
                 throw new InvalidOperationException("Missing native Battle HUD personal resource sprites.");
             UpdateStatusAndShield(profile);
-            profile.DeathParticles = AssetDatabase.LoadAssetAtPath<TextAsset>(Root + "Res/Effects/Death/Particles/death_pati_02.particle.json");
-            profile.DeathTextures = Directory.GetFiles(Root + "Res/Effects/Death/Particles", "*.png").OrderBy(x => x, StringComparer.Ordinal)
-                .Select(x => AssetDatabase.LoadAssetAtPath<Texture2D>(x.Replace('\\','/'))).ToArray();
-            if (!profile.DeathParticles || profile.DeathTextures.Any(x => !x)) throw new InvalidOperationException("Run Tools/BattleScene/ImportDeathEffects.py first.");
+            UpdateDeathEffects(profile);
             EditorUtility.SetDirty(profile); AssetDatabase.SaveAssetIfDirty(profile);
             return profile;
         }
@@ -35,6 +32,27 @@ namespace AstralOath.Client.BattleScene.Editor
             UpdateStatusAndShield(profile);
             EditorUtility.SetDirty(profile);
             AssetDatabase.SaveAssetIfDirty(profile);
+        }
+
+        public static void RefreshDeathEffects()
+        {
+            var profile = AssetDatabase.LoadAssetAtPath<BattleUnitPresentationProfile>(Root + "Res/Configs/UnitPresentation.asset");
+            if (!profile) throw new InvalidOperationException("Missing battle unit presentation profile.");
+            UpdateDeathEffects(profile);
+            EditorUtility.SetDirty(profile);
+            AssetDatabase.SaveAssetIfDirty(profile);
+        }
+
+        private static void UpdateDeathEffects(BattleUnitPresentationProfile profile)
+        {
+            const string folder = Root + "Res/Effects/Death/Particles/";
+            profile.DeathParticles = AssetDatabase.LoadAssetAtPath<TextAsset>(folder + "death_pati_02.particle.json");
+            profile.OnlineDeathParticles = AssetDatabase.LoadAssetAtPath<TextAsset>(folder + "death_pati_01.particle.json");
+            profile.DeathTextures = Directory.GetFiles(folder, "*.png").OrderBy(path => path, StringComparer.Ordinal)
+                .Select(path => AssetDatabase.LoadAssetAtPath<Texture2D>(path.Replace('\\', '/'))).ToArray();
+            if (!profile.DeathParticles || !profile.OnlineDeathParticles ||
+                profile.DeathTextures.Length == 0 || profile.DeathTextures.Any(texture => !texture))
+                throw new InvalidOperationException("Run Tools/BattleScene/ImportDeathEffects.py first.");
         }
 
         private static void UpdateStatusAndShield(BattleUnitPresentationProfile profile)

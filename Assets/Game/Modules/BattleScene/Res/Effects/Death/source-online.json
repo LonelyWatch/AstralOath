@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "root": "effect/death_eff_02.cfx",
+  "selection": "Online arena; red smoke and fragments matched to the supplied battle reference.",
+  "premultipliedAlpha": true,
+  "converterSha256": "6dacb9c4857aca8051a20a24f17cdd64ce72d058a0cbbe1cf8ad06f78025a707",
+  "files": [
+    {
+      "source": "原始资源/effect/death_eff_02.cfx",
+      "sourceSha256": "1528ff0d1188ef96acb5415123c112b0530b5900fbfefd8a168e6fc0c5a73593",
+      "asset": "death_eff_02.cfx.json",
+      "assetSha256": "0751e6627480d122c837fc2ad07b6f4557884dbc3c3ee02ce10ada130b6bea48",
+      "dependencies": [
+        "effect/death_pati_01.particle"
+      ]
+    },
+    {
+      "source": "原始资源/effect/death_pati_01.particle",
+      "sourceSha256": "e39afb2e3d30fba9eae487e47e1c729cf4d634f3eb70920e57e8cb201f5c7f3b",
+      "asset": "Particles/death_pati_01.particle.json",
+      "assetSha256": "cbeded408af392a3e321f764c175e7fd9f18dcd573c4ed8439e76888c4fdc3d9",
+      "dependencies": [
+        "particle/flash.sct",
+        "particle/soft_smoke.sct",
+        "particle/ticle_01.sct",
+        "particle/ticle_02.sct",
+        "particle/tri_pati_01.sct"
+      ]
+    },
+    {
+      "source": "原始资源/particle/flash.sct",
+      "sourceSha256": "8dace73fcd75d8a7e93906cf39f1e763e7411da502eba2bee09b31f2acd61e62",
+      "asset": "Particles/flash.png",
+      "assetSha256": "d7ff6211ef9fb2b48807c040e8acf7b85fb7fa32812a43c90cf7ae29170254ae",
+      "dependencies": []
+    },
+    {
+      "source": "原始资源/particle/soft_smoke.sct",
+      "sourceSha256": "64a6033573fc2f675cf3204fecbe2b677d215b802e02d751881d0b36e894fa28",
+      "asset": "Particles/soft_smoke.png",
+      "assetSha256": "02a8fe2a9adc7e460d53d85cc15aed61a5c0cdfd7ca887391d24d7209746e3d5",
+      "dependencies": []
+    },
+    {
+      "source": "原始资源/particle/ticle_01.sct",
+      "sourceSha256": "c1057395969c0aa0c08915287bc2112492d0c4e918c8003cea3944f4ffc03ecf",
+      "asset": "Particles/ticle_01.png",
+      "assetSha256": "3aab37dd076d52615377b8c4206e676623c68db74ba87c12ae22517f48a62445",
+      "dependencies": []
+    },
+    {
+      "source": "原始资源/particle/ticle_02.sct",
+      "sourceSha256": "8f536d32d8984e0370e17ab9f1291be45b3908afce37ea8cb057ae1df4d2b9d2",
+      "asset": "Particles/ticle_02.png",
+      "assetSha256": "1be5fa2daba5583e21856ff31fff66b5a72d5e5ba8f1bcc15b9448a065e43007",
+      "dependencies": []
+    },
+    {
+      "source": "原始资源/particle/tri_pati_01.sct",
+      "sourceSha256": "fdd787a763bc3035447dfd0f4b233e97e17d08594fa08b44f3aae4df201bcacc",
+      "asset": "Particles/tri_pati_01.png",
+      "assetSha256": "b6b7783bdb83ffdaf213b0d490bdacd20c42445eea51908ba08181ded8d30a85",
+      "dependencies": []
+    }
+  ]
+}

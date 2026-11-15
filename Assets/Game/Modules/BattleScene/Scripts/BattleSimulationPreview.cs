@@ -98,7 +98,8 @@ namespace AstralOath.Client.BattleScene
             var unitPresentation = units.GetComponentInChildren<BattleActorStatusTemplate>(true)?.Profile;
             if (!statusRoot || !unitPresentation)
                 throw new InvalidOperationException("BattleActor requires a unit status template and shared presentation profile.");
-            var deathTextures = unitPresentation ? unitPresentation.CreateDeathTextures() : new Dictionary<string, Texture2D>();
+            var deathTextures = unitPresentation.CreateDeathTextures();
+            var deathParticles = unitPresentation.GetDeathParticles(online != null);
             statusArt = unitPresentation
                 ? unitPresentation.CreateStatusArt()
                 : new BattleStatusArt(null, null, null);
@@ -120,7 +121,7 @@ namespace AstralOath.Client.BattleScene
                     try
                     {
                         sprites.TryGetValue("game_hud_bar_" + state.Element.ToString().ToLowerInvariant(), out var element);
-                        views.Add(state.InstanceId, new View(slot, actor, marker, camera, unitPresentation, deathTextures,
+                        views.Add(state.InstanceId, new View(slot, actor, marker, camera, unitPresentation, deathParticles, deathTextures,
                             statusArt, shieldAura, invincibleAura, element, state.Resource, inspection == null ? null : InspectStatus));
                     }
                     catch
@@ -1194,6 +1195,7 @@ namespace AstralOath.Client.BattleScene
             private readonly BattleUnitStatusPresentation status;
             private readonly int resourceMaximum;
             private readonly BattleUnitPresentationProfile profile;
+            private readonly TextAsset deathParticles;
             private readonly IReadOnlyDictionary<string, Texture2D> deathTextures;
             private BattleDeathPresentation death;
             private bool warnedAnchor, deathStarted;
@@ -1213,7 +1215,7 @@ namespace AstralOath.Client.BattleScene
             private float originalStealthOpacity;
 
             public View(Transform slot, BattlePreviewActor actor, GameObject marker, Camera camera, BattleUnitPresentationProfile profile,
-                IReadOnlyDictionary<string, Texture2D> deathTextures, BattleStatusArt statusArt,
+                TextAsset deathParticles, IReadOnlyDictionary<string, Texture2D> deathTextures, BattleStatusArt statusArt,
                 BattleShieldAura.Definition auraDefinition, BattleShieldAura.Definition invincibleDefinition,
                 Sprite element, BattleResourceSnapshot resource,
                 Action<BattleStatusSnapshot, Image> inspectStatus)
@@ -1227,7 +1229,9 @@ namespace AstralOath.Client.BattleScene
                 Health = marker.transform.Find("HP").GetComponent<Image>();
                 elementBadge = marker.transform.Find("Element").GetComponent<Image>();
                 FeedbackAnchor = (RectTransform)marker.transform.Find("Frame");
-                this.profile = profile; this.deathTextures = deathTextures;
+                this.profile = profile;
+                this.deathParticles = deathParticles;
+                this.deathTextures = deathTextures;
                 status = new BattleUnitStatusPresentation((RectTransform)marker.transform, Health, Actor.transform,
                     StatusAnchor, camera, profile ? profile.HealthDivider : null,
                     profile ? profile.HealthSections : 10);
@@ -1292,7 +1296,7 @@ namespace AstralOath.Client.BattleScene
             {
                 // Source layouts own body masking. Read the current skeleton, never last-frame
                 // Renderer.isVisible or the presence of auxiliary particles/shadows.
-                bool keepMarker = deathStarted ? !death.BodyComplete : shown;
+                bool keepMarker = deathStarted ? death.StatusOpacity > 0f : shown;
                 bool visible = keepMarker && BattlePreviewActor.IsBodyVisible(body);
                 if (marker.activeSelf != visible) marker.SetActive(visible);
             }
@@ -1301,15 +1305,15 @@ namespace AstralOath.Client.BattleScene
                 status.Tick(delta);
                 SyncAura(delta);
                 if (death?.IsRunning != true) return;
-                Actor.TickDefeatPose(Mathf.Min(delta, death.RemainingBodySeconds));
+                Actor.TickDefeatPose(Mathf.Min(delta, death.RemainingPoseSeconds));
                 death.Tick(delta);
-                markerGroup.alpha = originalMarkerAlpha * death.BodyOpacity;
-                if (death.BodyComplete && marker.activeSelf) marker.SetActive(false);
+                markerGroup.alpha = originalMarkerAlpha * death.StatusOpacity;
+                if (death.StatusOpacity <= 0f && marker.activeSelf) marker.SetActive(false);
                 if (death.IsComplete) slot.gameObject.SetActive(false);
             }
             private void PrepareDeath()
             {
-                death = new BattleDeathPresentation(Actor.transform, profile ? profile.DeathParticles : null,
+                death = new BattleDeathPresentation(Actor.transform, deathParticles,
                     deathTextures, Actor.PresentationShadow ? Actor.PresentationShadow.GetComponent<Renderer>() : null, Actor.PresentationRenderer);
                 try { if (profile) death.ConfigureTimings(profile.DeathDarkenSeconds, profile.DeathHoldSeconds, profile.DeathFadeSeconds); }
                 catch { death.Dispose(); death = null; throw; }

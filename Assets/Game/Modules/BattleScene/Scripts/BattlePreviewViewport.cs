@@ -10,6 +10,19 @@ namespace AstralOath.Client.BattleScene
     {
         private const float DesignAspect = 16f / 9f;
         private const float MaximumHorizontalExpansion = 1.12f;
+        private const float OnlineBattleCameraScale = .90f;
+        private const float ArenaBackdropHorizontalZoom = 1.65f;
+        private const float ArenaBackdropVerticalZoom = 1.55f;
+        private const float ArenaBackdropCenterY = .674f;
+        private const float ArenaEntryVerticalOffset = .043f;
+        // Feet in the 16:9 battle view, ordered front, lower, upper, rear.
+        private static readonly Vector2[] OnlineAllyFeet =
+        {
+            new Vector2(.334f, .253f),
+            new Vector2(.226f, .139f),
+            new Vector2(.221f, .372f),
+            new Vector2(.107f, .265f)
+        };
         private static readonly Vector2 DesignSize = new Vector2(1920f, 1080f);
         private static readonly Rect FullViewport = new Rect(0, 0, 1, 1);
         private Camera stageCamera;
@@ -71,13 +84,9 @@ namespace AstralOath.Client.BattleScene
             {
                 LayoutRevision++;
                 float aspect = size.x / (float)size.y;
-                float previousBaseline = BaselineSize;
-                BaselineSize = designSize * Mathf.Min(1f, DesignAspect * MaximumHorizontalExpansion / aspect);
-                if (aspect < DesignAspect) BaselineSize = designSize * DesignAspect / aspect;
                 stageCamera.rect = FullViewport;
                 stageCamera.aspect = aspect;
-                if (stageCamera.orthographic && previousBaseline > 0)
-                    stageCamera.orthographicSize *= BaselineSize / previousBaseline;
+                UpdateBaseline(aspect);
                 ResizeBackdrop();
             }
 
@@ -96,6 +105,19 @@ namespace AstralOath.Client.BattleScene
             }
             appliedSize = size;
             appliedSafeArea = safe;
+        }
+
+        private void UpdateBaseline(float aspect)
+        {
+            float previous = BaselineSize;
+            float framing = onlineBackdrop ? designSize * OnlineBattleCameraScale : designSize;
+            // The lower arena slots stay clear of the bottom HUD on ultrawide displays.
+            float aspectFit = aspect < DesignAspect ? DesignAspect / aspect : 1f;
+            if (!onlineBackdrop && aspect >= DesignAspect)
+                aspectFit = Mathf.Min(1f, DesignAspect * MaximumHorizontalExpansion / aspect);
+            BaselineSize = framing * aspectFit;
+            if (stageCamera.orthographic && previous > 0)
+                stageCamera.orthographicSize *= BaselineSize / previous;
         }
 
         private static Rect ClampSafeArea(Rect safe, Vector2Int size)
@@ -188,7 +210,28 @@ namespace AstralOath.Client.BattleScene
         internal void UseOnlineBackdrop(SpriteRenderer renderer)
         {
             onlineBackdrop = renderer;
+            UpdateBaseline(stageCamera.aspect);
             ResizeBackdrop();
+        }
+
+        internal void PositionOnlineFormation(IReadOnlyList<BattlePreviewActor> allies, IReadOnlyList<BattlePreviewActor> enemies)
+        {
+            float halfHeight = designSize * OnlineBattleCameraScale;
+            float width = halfHeight * 2f * DesignAspect;
+            for (int index = 0; index < OnlineAllyFeet.Length; index++)
+            {
+                var feet = OnlineAllyFeet[index];
+                float x = (feet.x - .5f) * width;
+                float y = (feet.y - .5f) * halfHeight * 2f;
+                SetSlot(allies[index], x, y);
+                SetSlot(enemies[index], -x, y);
+            }
+
+            void SetSlot(BattlePreviewActor actor, float x, float y)
+            {
+                var slot = actor.transform.parent;
+                slot.position = new Vector3(x, y, slot.position.z);
+            }
         }
 
         internal void BeginOnlineEntry(float wideScale)
@@ -198,7 +241,17 @@ namespace AstralOath.Client.BattleScene
             SetOnlineEntryScale(wideScale);
         }
 
-        internal void SetOnlineEntryScale(float scale) => stageCamera.orthographicSize = BaselineSize * scale;
+        internal void SetOnlineEntryScale(float scale)
+        {
+            stageCamera.orthographicSize = BaselineSize * scale;
+            if (!onlineBackdrop) return;
+            float wide = Mathf.InverseLerp(1f, onlineBackdropScale, scale);
+            var position = stageCamera.transform.position;
+            position.y = OnlineEntryCameraY * wide;
+            stageCamera.transform.position = position;
+        }
+
+        private float OnlineEntryCameraY => designSize * OnlineBattleCameraScale * 2f * ArenaEntryVerticalOffset;
 
         internal float OnlineEntryRightEdge(Vector3 worldPoint)
         {
@@ -210,11 +263,21 @@ namespace AstralOath.Client.BattleScene
         {
             if (onlineBackdrop)
             {
-                float scale = Mathf.Max(2f * BaselineSize / onlineBackdrop.sprite.bounds.size.y,
-                    2f * BaselineSize * stageCamera.aspect / onlineBackdrop.sprite.bounds.size.x);
-                // Keep the stage fixed in world space while the entry camera moves closer.
-                scale *= onlineBackdropScale;
-                onlineBackdrop.transform.localScale = new Vector3(scale, scale, 1f);
+                float frameHeight = designSize * OnlineBattleCameraScale * 2f;
+                var source = onlineBackdrop.sprite.bounds.size;
+                // Register the curtains and floor to the 16:9 reference, then allow room for the wide entry view.
+                float centerY = (ArenaBackdropCenterY - .5f) * frameHeight;
+                float scaleX = frameHeight * ArenaBackdropHorizontalZoom / source.y;
+                float scaleY = frameHeight * ArenaBackdropVerticalZoom / source.y;
+                float entryHalfHeight = BaselineSize * onlineBackdropScale;
+                float entryCenterY = onlineBackdropScale > 1f ? OnlineEntryCameraY : 0f;
+                float halfHeight = Mathf.Max(BaselineSize + Mathf.Abs(centerY),
+                    entryHalfHeight + Mathf.Abs(centerY - entryCenterY));
+                float coverage = Mathf.Max(1f,
+                    2f * entryHalfHeight * stageCamera.aspect / (source.x * scaleX),
+                    2f * halfHeight / (source.y * scaleY));
+                onlineBackdrop.transform.localScale = new Vector3(scaleX * coverage, scaleY * coverage, 1f);
+                onlineBackdrop.transform.position = new Vector3(0f, centerY, onlineBackdrop.transform.position.z);
                 return;
             }
             if (sky == null || !sky.Transform || ground == null || !ground.Transform)

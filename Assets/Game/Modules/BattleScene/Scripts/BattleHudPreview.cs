@@ -138,12 +138,13 @@ namespace AstralOath.Client.BattleScene
                 .OrderBy(unit => unit.Slot.Position).Select(unit => unit.DefinitionId).ToArray();
             online = session;
             onlineCopy = BattleOnlineTransitionAssets.Copy.Load(assets.zhHans);
-            InstallOnlineBackdrop(assets.arenaBackdrop);
+            var viewport = GetComponent<Canvas>().worldCamera.GetComponent<BattlePreviewViewport>();
+            viewport.UseOnlineBackdrop(InstallOnlineBackdrop(assets.arenaBackdrop));
+            viewport.PositionOnlineFormation(allyActors, enemyActors);
             entryHud = hud.gameObject.AddComponent<CanvasGroup>();
             entryHud.alpha = 0f;
             entryHud.blocksRaycasts = false;
             InstallBattle(catalog, allyActors, enemyActors, Team(BattleSide.Ally), Team(BattleSide.Enemy), null);
-            var viewport = GetComponent<Canvas>().worldCamera.GetComponent<BattlePreviewViewport>();
             arrival = new BattleOnlineArrival(units, viewport, allyActors, enemyActors);
             arrival.Prepare();
         }
@@ -172,16 +173,16 @@ namespace AstralOath.Client.BattleScene
             stageTitle.raycastTarget = false;
         }
 
-        private void InstallOnlineBackdrop(Sprite sprite)
+        private SpriteRenderer InstallOnlineBackdrop(Sprite sprite)
         {
             if (stageBackground) stageBackground.SetActive(false);
             stageBackground = new GameObject("RTA 021 Stage", typeof(SpriteRenderer));
             var renderer = stageBackground.GetComponent<SpriteRenderer>();
             renderer.sprite = sprite;
             renderer.sortingOrder = -70;
-            var canvas = GetComponent<Canvas>();
-            canvas.worldCamera.GetComponent<BattlePreviewViewport>().UseOnlineBackdrop(renderer);
+            return renderer;
         }
+
         internal bool OnlineArrivalIgnitionReady => arrival?.IgnitionReady ?? true;
         internal bool OnlineArrivalActorsReady => arrival?.ActorsReady ?? true;
         internal bool OnlineArrivalCameraBlending => arrival?.CameraBlending == true;

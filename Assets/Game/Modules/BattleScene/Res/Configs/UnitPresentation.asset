@@ -107,6 +107,7 @@ MonoBehaviour:
   TrailSeconds: 0.5
   TrailDelaySeconds: 0.15
   DeathParticles: {fileID: 4900000, guid: 04365e071684586897e7c48ac73ef717, type: 3}
+  OnlineDeathParticles: {fileID: 4900000, guid: a326531ce472593c87735d768b4e0db7, type: 3}
   DeathTextures:
   - {fileID: 2800000, guid: a5cc6356afd05eb1b1f0e901737f79a4, type: 3}
   - {fileID: 2800000, guid: ed68d366ed00525082aafadd0360345c, type: 3}

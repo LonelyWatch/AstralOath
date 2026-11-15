@@ -11,6 +11,8 @@ namespace AstralOath.Client.BattleScene
     {
         private static readonly int Brightness = Shader.PropertyToID("_PresentationBrightness");
         private static readonly int Opacity = Shader.PropertyToID("_PresentationOpacity");
+        private const float SilhouetteBrightness = .014f;
+        private const float MaximumBurstOverlap = .075f;
         private readonly Renderer[] renderers;
         private readonly MaterialPropertyBlock block = new MaterialPropertyBlock();
         private readonly float[] originalBrightness, originalOpacity;
@@ -28,13 +30,15 @@ namespace AstralOath.Client.BattleScene
         public float DarkenSeconds { get; private set; } = DefaultDarkenSeconds;
         public float HoldSeconds { get; private set; } = DefaultHoldSeconds;
         public float FadeSeconds { get; private set; } = DefaultFadeSeconds;
-        private float FadeStart => DarkenSeconds + HoldSeconds;
-        private float BodyEnd => FadeStart + FadeSeconds;
+        private float BurstStart => DarkenSeconds + HoldSeconds;
+        private float BodyEnd => BurstStart + FadeSeconds;
+        private float FadeStart => BurstStart + (particles == null ? 0f : Mathf.Min(MaximumBurstOverlap, FadeSeconds * .25f));
         public bool IsRunning => started && !IsComplete;
         public bool BodyComplete => started && elapsed >= BodyEnd;
-        public float RemainingBodySeconds => started ? Mathf.Max(0f, BodyEnd - elapsed) : 0f;
-        public float BodyOpacity => started ? 1f - Mathf.Clamp01((elapsed - FadeStart) / FadeSeconds) : 1f;
-        public bool IsComplete => started && elapsed >= FadeStart + Mathf.Max(FadeSeconds, particleLifetime);
+        public float RemainingPoseSeconds => started ? Mathf.Max(0f, DarkenSeconds - elapsed) : 0f;
+        public float BodyOpacity => started ? 1f - Mathf.InverseLerp(FadeStart, BodyEnd, elapsed) : 1f;
+        public float StatusOpacity => started ? 1f - Mathf.InverseLerp(DarkenSeconds * .65f, DarkenSeconds, elapsed) : 1f;
+        public bool IsComplete => started && elapsed >= BurstStart + Mathf.Max(FadeSeconds, particleLifetime);
 
         public BattleDeathPresentation(Transform visual, TextAsset definition, IReadOnlyDictionary<string, Texture2D> textures)
             : this(visual, definition, textures, null) { }
@@ -66,7 +70,8 @@ namespace AstralOath.Client.BattleScene
                 effects.layer = visual.gameObject.layer;
                 int order = 0;
                 foreach (var renderer in renderers) order = Mathf.Max(order, renderer.sortingOrder);
-                try { particles = new BattleHudParticles(definition, textures, effects.transform, Vector2.zero, .012f, order + 1, true); }
+                try { particles = new BattleHudParticles(definition, textures, effects.transform, Vector2.zero, .012f,
+                    order + 1, premultiplied: true, sourceColorsSrgb: true); }
                 catch { Destroy(effects); throw; }
             }
         }
@@ -88,7 +93,6 @@ namespace AstralOath.Client.BattleScene
             if (disposed) throw new ObjectDisposedException(nameof(BattleDeathPresentation));
             if (started) return;
             started = true; elapsed = 0;
-            if (effects) PositionParticles();
             Apply(1f, 1f);
         }
         public void Tick(float delta)
@@ -97,15 +101,17 @@ namespace AstralOath.Client.BattleScene
             if (disposed || !IsRunning) return;
             float previous = elapsed;
             elapsed += delta;
-            Apply(1f - Mathf.Clamp01(elapsed / DarkenSeconds), BodyOpacity);
-            if (particles != null && elapsed >= FadeStart)
+            Apply(Mathf.Max(SilhouetteBrightness, 1f - elapsed / DarkenSeconds), BodyOpacity);
+            if (particles != null && elapsed >= BurstStart)
             {
                 if (!particlesStarted)
                 {
+                    // Sample the finished hit pose so the burst follows the actual silhouette.
+                    PositionParticles();
                     particles.Play();
                     particlesStarted = true;
                 }
-                particles.Tick(Mathf.Max(0f, elapsed - FadeStart) - Mathf.Max(0f, previous - FadeStart));
+                particles.Tick(Mathf.Max(0f, elapsed - BurstStart) - Mathf.Max(0f, previous - BurstStart));
                 if (IsComplete) particles.Stop();
             }
         }

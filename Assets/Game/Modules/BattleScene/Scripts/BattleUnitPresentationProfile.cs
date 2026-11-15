@@ -20,7 +20,7 @@ namespace AstralOath.Client.BattleScene
         public TextAsset InvincibleAuraEffect;
         [Min(.001f)] public float DamageSeconds = .16f, HealSeconds = .18f, TrailSeconds = .50f;
         [Min(0)] public float TrailDelaySeconds = .15f;
-        public TextAsset DeathParticles;
+        public TextAsset DeathParticles, OnlineDeathParticles;
         public Texture2D[] DeathTextures;
         [Min(.001f)] public float DeathDarkenSeconds = BattleDeathPresentation.DefaultDarkenSeconds,
             DeathFadeSeconds = BattleDeathPresentation.DefaultFadeSeconds;
@@ -28,6 +28,9 @@ namespace AstralOath.Client.BattleScene
         internal BattleStatusArt CreateStatusArt() => new BattleStatusArt(StatusManifest, StatusGlyphs, StatusDigits);
 
         public void ValidateStatusArt() => CreateStatusArt().Validate();
+
+        internal TextAsset GetDeathParticles(bool online) =>
+            online && OnlineDeathParticles ? OnlineDeathParticles : DeathParticles;
 
         internal IReadOnlyDictionary<string, Texture2D> CreateDeathTextures()
         {

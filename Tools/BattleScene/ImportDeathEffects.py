@@ -13,16 +13,10 @@ sys.path.insert(0, str(REPO / "Tools/CharacterAssets"))
 from convert import decode_sct
 from import_characters import Closure, safe_source, hash_file
 OUTPUT = REPO / "Assets/Game/Modules/BattleScene/Res/Effects/Death"
+EFFECTS = ("death_eff_01", "death_eff_02")
 
-def main():
-    parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--source",type=Path,default=Path("D:/sevenepic"))
-    parser.add_argument("--effect",choices=("death_eff_01","death_eff_02"),default="death_eff_01")
-    parser.add_argument("--check",action="store_true")
-    args=parser.parse_args()
-    source=(args.source/"原始资源").resolve(strict=True)
-    if OUTPUT.resolve().is_relative_to(source): raise ValueError("Read-only sources cannot be overwritten")
-    root="effect/"+args.effect+".cfx"
+def collect_effect(source, effect):
+    root="effect/"+effect+".cfx"
     closure=Closure(source);closure.include(root,"battle-death")
     files=[];payloads={}
     for name in sorted(closure.dependencies):
@@ -36,8 +30,30 @@ def main():
         else: raise ValueError("Unsupported death dependency: "+name)
         payloads[relative]=data
         files.append(dict(source="原始资源/"+name,sourceSha256=hash_file(raw),asset=relative,assetSha256=sha256(data).hexdigest(),dependencies=sorted(closure.dependencies[name])))
-    manifest=dict(schemaVersion=1,root=root,selection="Project default; source-client default variant mapping is unconfirmed.",premultipliedAlpha=True,converterSha256=hash_file(REPO/"Tools/CharacterAssets/convert.py"),files=files)
-    payloads["source.json"]=(json.dumps(manifest,ensure_ascii=False,indent=2)+"\n").encode("utf-8")
+    offline = effect == EFFECTS[0]
+    selection = ("Project default; source-client default variant mapping is unconfirmed." if offline
+        else "Online arena; red smoke and fragments matched to the supplied battle reference.")
+    manifest=dict(schemaVersion=1,root=root,selection=selection,premultipliedAlpha=True,converterSha256=hash_file(REPO/"Tools/CharacterAssets/convert.py"),files=files)
+    manifest_name = "source.json" if offline else "source-online.json"
+    payloads[manifest_name]=(json.dumps(manifest,ensure_ascii=False,indent=2)+"\n").encode("utf-8")
+    return payloads
+
+
+def main():
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--source",type=Path,default=Path("D:/sevenepic"))
+    parser.add_argument("--effect",choices=EFFECTS,help="Select one effect. The default imports both variants.")
+    parser.add_argument("--check",action="store_true")
+    args=parser.parse_args()
+    source=(args.source/"原始资源").resolve(strict=True)
+    if OUTPUT.resolve().is_relative_to(source): raise ValueError("Read-only sources cannot be overwritten")
+    effects = (args.effect,) if args.effect else EFFECTS
+    payloads = {}
+    for effect in effects:
+        for name, data in collect_effect(source, effect).items():
+            if name in payloads and payloads[name] != data:
+                raise ValueError(f"Conflicting shared death dependency: {name}")
+            payloads[name] = data
     missing=[]
     png_template=(REPO/"Assets/Game/Modules/BattleScene/Res/Effects/Hud/Particles/ticle_02.png.meta").read_text(encoding="utf-8-sig")
     for name,data in payloads.items():
@@ -56,5 +72,5 @@ def main():
             meta=Path(str(folder)+".meta")
             if not meta.exists(): meta.write_text("fileFormatVersion: 2\nguid: "+uuid.uuid5(uuid.NAMESPACE_URL,"astraloath:"+folder.relative_to(REPO).as_posix()).hex+"\nfolderAsset: yes\nDefaultImporter:\n  externalObjects: {}\n",encoding="utf-8")
     if missing: parser.exit(1,"Missing or changed death assets: "+", ".join(missing)+"\n")
-    print(("Verified" if args.check else "Imported")+f" {len(files)} death assets from {root}.")
+    print(("Verified" if args.check else "Imported")+f" {len(payloads)} death files from {', '.join(effects)}.")
 if __name__=="__main__":main()

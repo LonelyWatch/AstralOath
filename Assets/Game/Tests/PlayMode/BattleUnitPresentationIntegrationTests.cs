@@ -118,12 +118,10 @@ namespace AstralOath.Client.Tests
             Call("TickVisual", .1f); Call("LateTick", camera);
             body.GetPropertyBlock(deathBlock);
             Assert.That(player.CurrentAnimation, Is.EqualTo("attacked"), "Action cleanup must not replace the defeated pose.");
-            Assert.That(deathBlock.GetFloat("_PresentationBrightness"), Is.Zero);
+            Assert.That(deathBlock.GetFloat("_PresentationBrightness"), Is.LessThan(.025f));
             Assert.That(deathBlock.GetFloat("_PresentationOpacity"), Is.EqualTo(1f));
-            Assert.That(marker.GetComponent<CanvasGroup>().alpha, Is.EqualTo(1f));
+            Assert.That(marker.gameObject.activeInHierarchy, Is.False, "The defeated silhouette has no overhead HUD.");
             Assert.That(hp.fillAmount, Is.Zero.Within(.001f));
-            Assert.That(trail.enabled, Is.True);
-            Assert.That(marker.Find("Frame/Status Icons").GetChild(0).gameObject.activeInHierarchy, Is.True);
             var particles = actor.transform.Find("Battle death particles");
             Assert.That(particles.GetComponentsInChildren<MeshRenderer>(), Is.Empty,
                 "The particle burst must leave the opaque black silhouette unobscured.");
@@ -131,11 +129,13 @@ namespace AstralOath.Client.Tests
             Call("TickVisual", .08f); Call("LateTick", camera);
             body.GetPropertyBlock(deathBlock);
             Assert.That(deathBlock.GetFloat("_PresentationOpacity"), Is.EqualTo(1f));
-            Assert.That(marker.GetComponent<CanvasGroup>().alpha, Is.EqualTo(1f));
+            Assert.That(marker.GetComponent<CanvasGroup>().alpha, Is.Zero.Within(.001f));
             Assert.That(particles.GetComponentsInChildren<MeshRenderer>(), Is.Empty);
+            Assert.That(player.Time, Is.EqualTo(.2f).Within(.001f));
             Capture("death-028");
             Call("TickVisual", .11f); Call("LateTick", camera);
-            Assert.That(marker.GetComponent<CanvasGroup>().alpha, Is.EqualTo(.75f).Within(.01f));
+            body.GetPropertyBlock(deathBlock);
+            Assert.That(deathBlock.GetFloat("_PresentationOpacity"), Is.EqualTo(1f).Within(.01f));
             Assert.That(particles.GetComponentsInChildren<MeshRenderer>(), Is.Not.Empty);
             Capture("death-039");
             Call("TickVisual", .16f); Capture("death-055");
@@ -146,10 +146,10 @@ namespace AstralOath.Client.Tests
             Call("Show", true);
             Assert.That(actor.gameObject.activeInHierarchy, Is.True);
             // Revival in the same frame must bind only the new skeleton, never deferred-destroy objects.
-            Call("BeginDeath"); Call("TickVisual", .39f);
+            Call("BeginDeath"); Call("TickVisual", .46f);
             var current = (Renderer)typeof(BattlePreviewActor).GetProperty("PresentationRenderer", Private).GetValue(actor);
             var block = new MaterialPropertyBlock(); current.GetPropertyBlock(block);
-            Assert.That(block.GetFloat("_PresentationOpacity"), Is.EqualTo(.75f).Within(.01f));
+            Assert.That(block.GetFloat("_PresentationOpacity"), Is.EqualTo(2f / 3f).Within(.015f));
             host.RestartBattle(); yield return null;
             Assert.That(actor.gameObject.activeInHierarchy, Is.True);
         }

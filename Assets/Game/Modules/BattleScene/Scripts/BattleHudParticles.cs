@@ -68,13 +68,15 @@ namespace AstralOath.Client.BattleScene
             private readonly List<int> triangles;
             private readonly int capacity;
             private readonly int repetitions;
+            private readonly bool linearizeSourceColors;
             private double delay;
             private int nextBurst;
 
             public Emitter(EmitterData data, Texture2D texture, Shader shader, Transform parent,
-                Vector2 offset, float scale, int sortingOrder, bool premultiplied)
+                Vector2 offset, float scale, int sortingOrder, bool premultiplied, bool sourceColorsSrgb)
             {
                 this.data = data;
+                linearizeSourceColors = sourceColorsSrgb && QualitySettings.activeColorSpace == ColorSpace.Linear;
                 if (data.emitterType < 0 || data.emitterType > 1 || data.burningType < 0 || data.burningType > 1 ||
                     !float.IsFinite(data.maxParticles) || data.maxParticles < 1 || data.maxParticles > 4096 ||
                     data.maxParticles != (int)data.maxParticles || data.repeat < 0 || data.repeat > 32 ||
@@ -258,6 +260,7 @@ namespace AstralOath.Client.BattleScene
                     Vector2 perpendicular = new Vector2(-axis.y, axis.x);
                     Color color = ramps.Length == 0 ? Color.Lerp(particle.StartColor, particle.EndColor, t)
                         : RampColor(ramps[particle.ColorRamp], t);
+                    if (linearizeSourceColors) color = color.linear;
                     int index = vertices.Count;
                     foreach (Vector2 corner in Corners)
                     {
@@ -316,6 +319,10 @@ namespace AstralOath.Client.BattleScene
 
         public BattleHudParticles(TextAsset definition, IReadOnlyDictionary<string, Texture2D> textures, Transform parent,
             Vector2 offset, float scale, int sortingOrder, bool premultiplied)
+            : this(definition, textures, parent, offset, scale, sortingOrder, premultiplied, false) { }
+
+        public BattleHudParticles(TextAsset definition, IReadOnlyDictionary<string, Texture2D> textures, Transform parent,
+            Vector2 offset, float scale, int sortingOrder, bool premultiplied, bool sourceColorsSrgb)
         {
             if (!definition)
                 throw new ArgumentNullException(nameof(definition));
@@ -345,7 +352,7 @@ namespace AstralOath.Client.BattleScene
                          !textures.TryGetValue(Path.GetFileName(emitter.textureFileName), out texture) &&
                          !textures.TryGetValue(Path.GetFileNameWithoutExtension(emitter.textureFileName), out texture)) || !texture)
                         throw new FormatException($"Missing HUD particle texture '{emitter.textureFileName}' in '{definition.name}'.");
-                    emitters.Add(new Emitter(emitter, texture, shader, parent, offset, scale, sortingOrder, premultiplied));
+                    emitters.Add(new Emitter(emitter, texture, shader, parent, offset, scale, sortingOrder, premultiplied, sourceColorsSrgb));
                 }
             }
             catch

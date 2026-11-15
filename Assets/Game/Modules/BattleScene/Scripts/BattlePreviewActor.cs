@@ -169,12 +169,16 @@ namespace AstralOath.Client.BattleScene
 
         internal bool IsDefeatPoseActive => defeatPose;
 
-        internal void BeginDefeatPose() => defeatPose = true;
+        internal void BeginDefeatPose()
+        {
+            if (!playingBattleAnimation) PlayBattleAnimation("attacked");
+            defeatPose = true;
+        }
 
         internal void TickDefeatPose(float delta)
         {
-            // The accepted-death visual clock alone advances the last non-looping pose.
-            if (defeatPose && playingBattleAnimation && player != null && player.Time < player.Duration)
+            // Advance the accepted hit pose only while the body is darkening.
+            if (delta > 0f && defeatPose && playingBattleAnimation && player != null && player.Time < player.Duration)
                 player.Tick(Mathf.Min(delta, player.Duration - player.Time));
         }
 
