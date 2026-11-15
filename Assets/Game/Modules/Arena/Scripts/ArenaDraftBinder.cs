@@ -630,7 +630,7 @@ namespace AstralOath.Client.Arena
             }
         }
 
-        private float RosterStep => rosterFilter.Compact ? 57f : 73f;
+        private float RosterStep => rosterFilter.Compact ? 62f : 82f;
 
         private void LayoutRoster()
         {
@@ -656,15 +656,16 @@ namespace AstralOath.Client.Arena
             lastRosterStep = step;
             float focus = offset / step;
             int nearest = Mathf.Clamp(Mathf.RoundToInt(focus), 0, Mathf.Max(0, visibleRoster.Length - 1));
-            float fullScale = (width - 8f) / RosterCardSize.x * (rosterFilter.Compact ? .86f : 1f);
+            float fullScale = (width - 10f) / RosterCardSize.x * (rosterFilter.Compact ? .86f : 1f);
             for (int i = 0; i < visibleRoster.Length; i++)
             {
                 var row = (RectTransform)visibleRoster[i].Button.transform;
                 float distance = Mathf.Abs(i - focus);
-                float scale = fullScale * Mathf.Lerp(.65f, 1f, Mathf.Exp(-distance * .58f));
+                float scale = fullScale * Mathf.Lerp(.70f, 1f, Mathf.Exp(-distance * .58f));
                 row.anchorMin = row.anchorMax = new Vector2(1, 1);
                 row.pivot = new Vector2(1, .5f);
-                row.anchoredPosition = new Vector2(-4f, -(focusLine + i * step));
+                // The native plate has transparent pixels along its right edge.
+                row.anchoredPosition = new Vector2(10f, -(focusLine + i * step));
                 row.sizeDelta = RosterCardSize;
                 row.localScale = new Vector3(scale, scale, 1f);
             }

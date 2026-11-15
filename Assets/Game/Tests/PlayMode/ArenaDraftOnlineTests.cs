@@ -109,6 +109,29 @@ namespace AstralOath.Client.Tests
             scroll.content.anchoredPosition = new Vector2(0, rowStep * 2f);
             yield return Wait(() => rollThird.localScale.x > rollFirst.localScale.x, "Roster focus did not follow scroll.");
             Assert.That(rollThird.GetSiblingIndex(), Is.EqualTo(scroll.content.childCount - 1));
+            var sidebar = (RectTransform)scroll.transform.parent;
+            var focusBounds = RectTransformUtility.CalculateRelativeRectTransformBounds(sidebar, rollThird);
+            var viewportBounds = new Bounds(sidebar.InverseTransformPoint(scroll.viewport.TransformPoint(scroll.viewport.rect.center)), scroll.viewport.rect.size);
+            Assert.That(focusBounds.min.x, Is.LessThan(sidebar.rect.xMin - sidebar.rect.width * .06f),
+                "The focused card must extend visibly past the sidebar divider.");
+            Assert.That(focusBounds.min.x, Is.GreaterThanOrEqualTo(viewportBounds.min.x),
+                "The scroll viewport must not clip the focused card horizontally.");
+            float plateRight = focusBounds.max.x - 8f * rollThird.localScale.x;
+            Assert.That(sidebar.rect.xMax - plateRight, Is.InRange(-1f, 4f),
+                "The focused card must align with the sidebar right edge.");
+
+            var visibleRows = scroll.content.Cast<RectTransform>()
+                .Where(row => row.gameObject.activeInHierarchy)
+                .OrderByDescending(row => row.anchoredPosition.y).ToArray();
+            for (int i = 1; i < visibleRows.Length; i++)
+            {
+                var upperRow = visibleRows[i - 1];
+                var lowerRow = visibleRows[i];
+                float overlap = (upperRow.rect.height * upperRow.localScale.y +
+                    lowerRow.rect.height * lowerRow.localScale.y) * .5f -
+                    (upperRow.anchoredPosition.y - lowerRow.anchoredPosition.y);
+                Assert.That(overlap, Is.GreaterThan(10f), "Even the smallest neighboring cards should overlap.");
+            }
             Assert.That(scroll.content.anchoredPosition.y + rollFirst.anchoredPosition.y,
                 Is.GreaterThan(scroll.content.anchoredPosition.y + rollThird.anchoredPosition.y));
             yield return Capture("arena-draft-roster-scrolled");

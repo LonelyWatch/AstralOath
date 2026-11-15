@@ -107,7 +107,12 @@ namespace AstralOath.Editor
             VerticalRule(pool, "Border", 0, .016f, .018f, .97f, Gold * .72f);
             Text(pool, "Roster caption", "arena.draft.roster", 23, .065f, .017f, .87f, .047f, Mist);
             Add("search", DraftSearch(pool, "Find hero", .52f, .071f, .43f, .062f));
-            var roster = Scroll(pool, "Scroll heroes", .04f, .149f, .96f, .841f);
+            var roster = Scroll(pool, "Scroll heroes", 0, .149f, 1, .841f);
+            // The viewport reveals the overhang. Empty scroll space stays on the sidebar.
+            roster.viewport.offsetMin = new Vector2(-90f, 0);
+            Object.DestroyImmediate(roster.viewport.GetComponent<Image>());
+            var scrollSurface = Paint((RectTransform)roster.transform, null, Color.clear, true);
+            scrollSurface.canvasRenderer.cullTransparentMesh = false;
             Object.DestroyImmediate(roster.content.GetComponent<VerticalLayoutGroup>());
             Object.DestroyImmediate(roster.content.GetComponent<ContentSizeFitter>());
             Add("roster", roster);
