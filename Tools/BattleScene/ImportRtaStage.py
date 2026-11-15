@@ -17,9 +17,10 @@ from ImportArenaArt import digest, metadata, read_source, texture_importer, writ
 from convert import decode_scsp, decode_sct
 
 OUTPUT = MODULE / "Res/Textures/Backgrounds/Rta021"
+# The floor occludes the hem of the central backdrop (m_5). The m_3 glow sits on the floor.
 LAYERS = """
-    bg wall_2 wall_1 b_torso ground_3 ground_2 ground_1 light_1
-    m_3 m_5 m_7 m_6 m_6_1 m_8 m_9 m_10 m_4 m_2 m_1
+    bg wall_2 wall_1 b_torso m_5 ground_3 ground_2 ground_1 light_1
+    m_3 m_7 m_6 m_6_1 m_8 m_9 m_10 m_4 m_2 m_1
     light_2 light_3 f_1 f_2 f_3 f_4 f_5 f_7 f_8
     f_light_1 f_light_2 f_light_3 f_light_4 f_light_5
 """.split()

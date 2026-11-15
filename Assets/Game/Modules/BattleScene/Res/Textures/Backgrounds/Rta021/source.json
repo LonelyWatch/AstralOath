@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "asset": "rta_021.png",
-  "assetSha256": "aaa618b99d1b647e4871f5c36c5d894520005c75ee56516dead408ed39079f37",
+  "assetSha256": "f639cd18e5477aa33608722b91c3f8299fe332b3b52417e606313fe1eb87f94a",
   "method": "Spine 3.8.99 setup-pose meshes and slots, viewport aligned static stage",
   "texturePage": {
     "width": 1849,
@@ -24,12 +24,12 @@
     "wall_2",
     "wall_1",
     "b_torso",
+    "m_5",
     "ground_3",
     "ground_2",
     "ground_1",
     "light_1",
     "m_3",
-    "m_5",
     "m_7",
     "m_6",
     "m_6_1",
@@ -84,6 +84,10 @@
       "sha256": "d4a9b7ec92547ea69659a209823e664f70fc6e12cb4c5e1649f141685334a311"
     },
     {
+      "source": "bg/rta_021_m_5.scsp",
+      "sha256": "7efd96d61ca8888de34d1039eb9e9698311b043b8867afe241d9e8540e4b47d9"
+    },
+    {
       "source": "bg/rta_021_ground_3.scsp",
       "sha256": "66414416442ef08c880c5a142081fc585897e9d22949c931b61cead9370d6815"
     },
@@ -102,10 +106,6 @@
     {
       "source": "bg/rta_021_m_3.scsp",
       "sha256": "e2f26d2631f2a0b5d5af18855922b76b4bfa0c1b42223cd78c46d749eb0b9a98"
-    },
-    {
-      "source": "bg/rta_021_m_5.scsp",
-      "sha256": "7efd96d61ca8888de34d1039eb9e9698311b043b8867afe241d9e8540e4b47d9"
     },
     {
       "source": "bg/rta_021_m_7.scsp",
