@@ -1,0 +1,20 @@
+
+dust_landing.sct
+size: 97,54
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dust_b_1
+  rotate: true
+  xy: 57, 2
+  size: 39, 38
+  orig: 39, 38
+  offset: 0, 0
+  index: -1
+dust_b_2
+  rotate: false
+  xy: 2, 2
+  size: 53, 50
+  orig: 53, 50
+  offset: 0, 0
+  index: -1

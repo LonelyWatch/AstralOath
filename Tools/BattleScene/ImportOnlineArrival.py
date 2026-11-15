@@ -1,11 +1,11 @@
-"""Import the original per-hero arena encounter mark from the read-only asset dump."""
+"""Import the original arena encounter mark and landing dust from the read-only asset dump."""
 
 import argparse
 from pathlib import Path
 from ImportHudEffects import MODULE, RAW_DIRECTORY, collect
 
 OUTPUT = MODULE / "Resources/AstralOathBattleArrival"
-ROOTS = ("effect/encounter_01.cfx",)
+ROOTS = ("effect/encounter_01.cfx", "effect/dust_landing.scsp")
 
 
 def main():

@@ -9,15 +9,12 @@ namespace AstralOath.Client.BattleScene
     internal sealed class BattleOnlineArrival : IDisposable
     {
         private const string Animation = "animation";
-        private const string WarningResources = "AstralOathBattleArrival/encounter_01";
+        private const string EffectResources = "AstralOathBattleArrival/";
         private const float WideScale = 1.11f;
         private const float LeadSeconds = .06f;
         private const float RunSeconds = .64f;
         private const float StaggerSeconds = .105f;
         private const float CameraSeconds = .43f;
-        private const float DustScale = .0033f;
-        private const float DustOpacity = .28f;
-        private static readonly int PresentationOpacity = Shader.PropertyToID("_PresentationOpacity");
         private readonly BattlePreviewViewport viewport;
         private readonly Slot[] allies, enemies;
         private float time, cameraTime;
@@ -40,13 +37,11 @@ namespace AstralOath.Client.BattleScene
         internal bool EffectsComplete => Complete && allies.Concat(enemies).All(slot => slot.Effect?.Root.activeSelf != true);
 
         internal BattleOnlineArrival(Transform parent, BattlePreviewViewport viewport, IReadOnlyList<BattlePreviewActor> allies,
-            IReadOnlyList<BattlePreviewActor> enemies, BattleHudPreview.SpineEffect dustAsset)
+            IReadOnlyList<BattlePreviewActor> enemies)
         {
             this.viewport = viewport;
-            var warning = LoadWarning();
-            var dust = dustAsset != null && dustAsset.skeleton && dustAsset.atlas && dustAsset.page ? dustAsset.CreateSource(DustScale) : null;
-            var dustAppearance = new MaterialPropertyBlock();
-            dustAppearance.SetFloat(PresentationOpacity, DustOpacity);
+            var warning = LoadEffect("encounter_01", .0037f);
+            var dust = LoadEffect("dust_landing", .0042f);
             var factory = new SkeletonPlayerFactory();
             var built = new List<Slot>();
             try
@@ -58,7 +53,6 @@ namespace AstralOath.Client.BattleScene
                         ShadowPosition = shadow ? shadow.position : actor.transform.position };
                     built.Add(slot);
                     var source = isAlly ? warning : dust;
-                    if (source == null) return slot;
                     slot.Effect = factory.Create(source, parent);
                     slot.Effect.Root.name = isAlly ? "PvP Arrival Warning " + actor.HeroId : "Battle Arrival Dust";
                     var renderer = slot.Effect.Root.GetComponent<MeshRenderer>();
@@ -66,7 +60,6 @@ namespace AstralOath.Client.BattleScene
                     slot.Effect.Root.transform.position = slot.ShadowPosition;
                     if (!isAlly)
                     {
-                        renderer.SetPropertyBlock(dustAppearance);
                         var scale = actor.transform.lossyScale;
                         slot.Effect.Root.transform.localScale = new Vector3(actor.FacingDirection * scale.x, scale.y, 1f);
                     }
@@ -84,16 +77,17 @@ namespace AstralOath.Client.BattleScene
             }
         }
 
-        private static SkeletonPlayerSource LoadWarning()
+        private static SkeletonPlayerSource LoadEffect(string name, float scale)
         {
-            var skeleton = Resources.Load<TextAsset>(WarningResources + ".spine");
-            var atlas = Resources.Load<TextAsset>(WarningResources + ".atlas");
-            var texture = Resources.Load<Texture2D>(WarningResources);
+            string resource = EffectResources + name;
+            var skeleton = Resources.Load<TextAsset>(resource + ".spine");
+            var atlas = Resources.Load<TextAsset>(resource + ".atlas");
+            var texture = Resources.Load<Texture2D>(resource);
             if (!skeleton || !atlas || !texture)
-                throw new InvalidOperationException("The online battle arrival warning assets are incomplete.");
+                throw new InvalidOperationException("The online battle arrival effect is incomplete: " + name);
             return new SkeletonPlayerSource(skeleton.text, atlas.text,
-                new Dictionary<string, Texture2D>(StringComparer.Ordinal) { { "encounter_01.sct", texture } },
-                premultipliedAlpha: true, scale: .0037f);
+                new Dictionary<string, Texture2D>(StringComparer.Ordinal) { { name + ".sct", texture } },
+                premultipliedAlpha: true, scale: scale);
         }
 
         internal void Prepare()

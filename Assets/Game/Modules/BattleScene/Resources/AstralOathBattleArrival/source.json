@@ -2,9 +2,54 @@
   "schemaVersion": 1,
   "converterSha256": "6dacb9c4857aca8051a20a24f17cdd64ce72d058a0cbbe1cf8ad06f78025a707",
   "roots": [
-    "effect/encounter_01.cfx"
+    "effect/encounter_01.cfx",
+    "effect/dust_landing.scsp"
   ],
   "files": [
+    {
+      "source": "原始资源/effect/dust_landing.atlas",
+      "sourceSha256": "5335e5fbcbbe114f3760861fe70b57e6db69b763dd01be6c6351af5e5fbc9282",
+      "asset": "dust_landing.atlas.txt",
+      "dependencies": [
+        "dust_landing.png"
+      ],
+      "assetSha256": "5335e5fbcbbe114f3760861fe70b57e6db69b763dd01be6c6351af5e5fbc9282"
+    },
+    {
+      "source": "原始资源/effect/dust_landing.scsp",
+      "sourceSha256": "3f3e0e49f14cbc8146da019d7df22dc67fe08dedbd87bfd485947ec6dc189f16",
+      "asset": "dust_landing.spine.json",
+      "dependencies": [
+        "dust_landing.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 0.5666000247001648
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "dust_landing.sct",
+          "asset": "dust_landing.png"
+        }
+      ],
+      "assetSha256": "182e78e9563c99d82d129a984880e11edae9462594eee5829c5e1542c360a834"
+    },
+    {
+      "source": "原始资源/effect/dust_landing.sct",
+      "sourceSha256": "1c014d997a6e3c59dd66fdba1d396d4860cbe7a960cf09e109159ed467be6ea3",
+      "asset": "dust_landing.png",
+      "dependencies": [],
+      "texture": {
+        "width": 97,
+        "height": 54,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "4a52f3f1a7b161a91d50db052b75ed62e4b0ecd69b0aaa39a749531ef282be06"
+    },
     {
       "source": "原始资源/effect/encounter_01.atlas",
       "sourceSha256": "5c4fc919e0110ed9a13363cf5762de2c174484f207fdfdf20003b8cfc88c3f52",

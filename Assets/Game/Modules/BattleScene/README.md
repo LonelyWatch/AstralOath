@@ -2,7 +2,7 @@
 
 战斗场景使用原作 HUD、两套森林背景和双方各四个站位。默认八名英雄互不重复，使用同一个 `Res/Prefab/BattleActor.prefab` 的八个实例。相关规则及画面证据见[战斗资料](../../../../docs/development/epic-seven-battle-reference.md)。
 
-模拟战在线入口接收服务器创建的 4 对 4 对局，按本方视角显示阵型。蓝光闸门遮住加载。开门后我方原地显示感叹号，对方沿地面跑入，入位时播放淡淡的脚边扬尘，双方就位后镜头拉近。参见[联机选禁与入场](../../../../docs/development/arena-draft.md)。
+模拟战在线入口接收服务器创建的 4 对 4 对局，按本方视角显示阵型。蓝光闸门遮住加载。开门后我方原地显示感叹号，对方沿地面跑入，入位时播放原包 `dust_landing` 的浅色脚边扬尘，双方就位后镜头拉近。参见[联机选禁与入场](../../../../docs/development/arena-draft.md)。
 
 ## 打开与编辑
 
@@ -181,4 +181,4 @@ Luban 快照 `Configs/battle-catalog.json` 含十名英雄、成长模板、觉�
 
 联机转场配置和战斗场景由当前 Foundation YooAsset 包在热更新程序集加载后读取。选位确认后先加载关门素材，再增量加载场景；退出时卸载该场景，释放转场资源句柄并恢复主页。Windows 安装包验收见[模拟战选禁与入场](../../../../docs/development/arena-draft.md)。
 
-联机入场改用原包 `effect/eff_pvp_intro.cfx` 指定的 `eff_pvp_outro_draw / ignition`。源轨包含白色衬线字、半透明横条和红光柱，时长 1.8667 秒；原火焰粒子不再由联机入场引用。进入在线场景时以本机视角区分阵营。我方留在站位上播放原版 `effect/encounter_01.cfx` 的白色星芒和红色感叹号，对方按入场顺序从镜头右侧沿地面跑进各自站位，停止后播放已有的尘土。头顶等级和生命值从入场开始跟随角色。最后一名对手入位后镜头才平滑推近，镜头完成和 IGNITION 播放结束后才开放权威战斗输入。素材通过 `Tools/BattleScene/ImportOnlineArrival.py --check` 核对，来源及哈希见 `Resources/AstralOathBattleArrival/source.json`。局内权威倒计时用源位图数字，保持原字距，并把整组数字的可见像素边界居中对齐回合环；回合环仍按己／敌方着色。队伍顶栏恢复 `pvplive_global_hp.csb` 的 `_grow` 半透明底和通用昵称微投影，仅显示实际可取得的玩家资料与本机请求延迟。
+联机入场改用原包 `effect/eff_pvp_intro.cfx` 指定的 `eff_pvp_outro_draw / ignition`。源轨包含白色衬线字、半透明横条和红光柱，时长 1.8667 秒；原火焰粒子不再由联机入场引用。进入在线场景时以本机视角区分阵营。我方留在站位上播放原版 `effect/encounter_01.cfx` 的白色星芒和红色感叹号，对方按入场顺序从镜头右侧沿地面跑进各自站位，停止后按足底位置播放原版 `effect/dust_landing.scsp` 的浅色尘团，保留源网格变形、配色和约 0.567 秒时长。头顶等级和生命值从入场开始跟随角色。最后一名对手入位后镜头才平滑推近，镜头完成和 IGNITION 播放结束后才开放权威战斗输入。素材通过 `Tools/BattleScene/ImportOnlineArrival.py --check` 核对，来源及哈希见 `Resources/AstralOathBattleArrival/source.json`。局内权威倒计时用源位图数字，保持原字距，并把整组数字的可见像素边界居中对齐回合环；回合环仍按己／敌方着色。队伍顶栏恢复 `pvplive_global_hp.csb` 的 `_grow` 半透明底和通用昵称微投影，仅显示实际可取得的玩家资料与本机请求延迟。

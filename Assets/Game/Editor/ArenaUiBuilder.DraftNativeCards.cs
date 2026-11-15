@@ -10,6 +10,8 @@ namespace AstralOath.Editor
     {
         // pvplive_ready.csb slot owners use one native edge as their local origin.
         private static readonly int[] NativeSlotWidths = { 291, 226, 196, 196, 226 };
+        private static readonly int[] NativeSlotGlowHeights = { 131, 132, 131, 131, 130 };
+        private const float NativeSlotGlowExtraWidth = 44f;
         private static readonly int[] NativeRoleXs = { 240, 186, 156, 147, 169 };
         private static readonly int[] NativeBlueLevelXs = { 200, 154, 128, 128, 154 };
         private static readonly int[] NativeRedLevelXs = { -249, -203, -180, -179, -204 };
@@ -94,11 +96,12 @@ namespace AstralOath.Editor
             if (!enemy) dim.rectTransform.localScale = new Vector3(-1, 1, 1);
             dim.gameObject.SetActive(false);
 
-            // The original Spine outline atlas is downsampled and contains transparent padding.
-            // Enlarge its rendered rect to register the luminous contour onto the slot silhouette.
+            // The cropped glow retains the transparent padding of Spine's slot_line attachment.
+            // Use the authored attachment bounds so the bright ridge follows the plate silhouette.
             Sprite glow = DraftSprite(slot + (enemy ? "_glow_red" : "_glow_blue"));
             var pending = TeamCardPicture(root, "Breathing pick outline", glow, width,
-                new Vector2(width / 2, 42.5f), new Vector2(width + 26, 106), new Vector2(.5f, .5f));
+                new Vector2(width / 2, NativeSlotHeight / 2),
+                new Vector2(width + NativeSlotGlowExtraWidth, NativeSlotGlowHeights[index]), new Vector2(.5f, .5f));
             // The red sprite is already mirrored and its baked glow is gold before tinting.
             pending.color = enemy ? new Color(1f, .30f, .46f) : new Color(.67f, .80f, 1f);
             pending.enabled = false;

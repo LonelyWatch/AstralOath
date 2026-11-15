@@ -114,6 +114,21 @@ namespace AstralOath.Client.Tests
             Assert.That(star.sprite.name, Is.EqualTo("cm_icon_star_j"));
             Assert.That(nextStar.rectTransform.anchorMin.x - star.rectTransform.anchorMin.x,
                 Is.LessThan(star.rectTransform.anchorMax.x - star.rectTransform.anchorMin.x));
+            // Compare the live prefab on both sides with the authored slot_line attachment bounds.
+            var plateWidths = new[] { 291f, 226f, 196f, 196f, 226f };
+            var glowHeights = new[] { 131f, 132f, 131f, 131f, 130f };
+            for (int slot = 0; slot < plateWidths.Length; slot++)
+            {
+                foreach (string side in new[] { "blue", "red" })
+                {
+                    RectTransform outline = draft.Require<BindingMap>(side + slot).Require<Image>("pending").rectTransform;
+                    Vector2 extent = outline.anchorMax - outline.anchorMin;
+                    Assert.That(extent.x * plateWidths[slot], Is.EqualTo(plateWidths[slot] + 44f).Within(.01f), side + slot);
+                    Assert.That(extent.y * 85f, Is.EqualTo(glowHeights[slot]).Within(.01f), side + slot);
+                    Assert.That(Vector2.Distance((outline.anchorMin + outline.anchorMax) * .5f, Vector2.one * .5f),
+                        Is.LessThan(.001f), side + slot);
+                }
+            }
             var emptyOutline = draft.Require<BindingMap>("blue0").Require<Image>("pending");
             Assert.That(emptyOutline.enabled, Is.True);
             Assert.That(emptyOutline.sprite.name, Does.EndWith("_glow_blue"));

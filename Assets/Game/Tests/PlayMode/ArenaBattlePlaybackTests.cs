@@ -311,9 +311,8 @@ namespace AstralOath.Client.Tests
                 var enemyPositions = enemies.Select(actor => actor.transform.position).ToArray();
                 var enemyShadows = enemies.Select(actor => actor.transform.Find("Shadow").position).ToArray();
                 var type = typeof(BattleHudPreview).Assembly.GetType("AstralOath.Client.BattleScene.BattleOnlineArrival", true);
-                var dust = typeof(BattleHudPreview).GetField("readyDust", Members).GetValue(host);
                 using (var animation = (IDisposable)Activator.CreateInstance(type, Members, null,
-                           new object[] { units, viewport, allies, enemies, dust }, null))
+                           new object[] { units, viewport, allies, enemies }, null))
                 {
                     float FrontX(BattlePreviewActor actor) => camera.WorldToViewportPoint(actor.Bounds.min).x;
                     bool Flag(string name) => (bool)type.GetProperty(name, Members).GetValue(animation);
@@ -344,21 +343,20 @@ namespace AstralOath.Client.Tests
                     for (int step = 0; step < 30 && !Flag("ActorsReady"); step++)
                         Tick(.04f);
                     Assert.That(Flag("ActorsReady"), Is.True);
-                    var dustRenderers = units.GetComponentsInChildren<MeshRenderer>()
-                        .Where(renderer => renderer.name == "Battle Arrival Dust").ToArray();
-                    Assert.That(dustRenderers, Has.Length.EqualTo(enemies.Length));
-                    var appearance = new MaterialPropertyBlock();
-                    foreach (var renderer in dustRenderers)
-                    {
-                        renderer.GetPropertyBlock(appearance);
-                        Assert.That(appearance.GetFloat("_PresentationOpacity"), Is.InRange(.2f, .4f));
-                    }
                     Assert.That(Flag("CameraBlending"), Is.True);
                     Assert.That(camera.orthographicSize, Is.EqualTo(wide));
                     Assert.That(allies.Select(actor => actor.transform.position), Is.EqualTo(allyPositions));
                     Assert.That(enemies.Select(actor => actor.transform.position), Is.EqualTo(enemyPositions));
                     Assert.That(enemies.Select(actor => actor.transform.Find("Shadow").position), Is.EqualTo(enemyShadows));
                     Tick(.17f);
+                    var dustTexture = Resources.Load<Texture2D>("AstralOathBattleArrival/dust_landing");
+                    Assert.That(dustTexture, Is.Not.Null);
+                    Assert.That(dustTexture.width, Is.EqualTo(97));
+                    Assert.That(units.GetComponentsInChildren<MeshRenderer>()
+                        .Where(renderer => renderer.name == "Battle Arrival Dust")
+                        .SelectMany(renderer => renderer.sharedMaterials)
+                        .Any(material => material.mainTexture == dustTexture), Is.True,
+                        "The visible arrival puffs must use the original landing atlas.");
                     Assert.That(camera.orthographicSize, Is.GreaterThan(baseline).And.LessThan(wide));
                     Tick(.3f);
                     Assert.That(Flag("Complete"), Is.True);

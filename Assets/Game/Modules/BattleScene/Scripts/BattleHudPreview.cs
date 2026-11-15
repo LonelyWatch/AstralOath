@@ -144,7 +144,7 @@ namespace AstralOath.Client.BattleScene
             entryHud.blocksRaycasts = false;
             InstallBattle(catalog, allyActors, enemyActors, Team(BattleSide.Ally), Team(BattleSide.Enemy), null);
             var viewport = GetComponent<Canvas>().worldCamera.GetComponent<BattlePreviewViewport>();
-            arrival = new BattleOnlineArrival(units, viewport, allyActors, enemyActors, readyDust);
+            arrival = new BattleOnlineArrival(units, viewport, allyActors, enemyActors);
             arrival.Prepare();
         }
 
