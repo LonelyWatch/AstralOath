@@ -33,6 +33,7 @@
 - 横屏设计，1920×1080参考尺寸；背景按视觉需要铺满，关键交互放Safe Area。使用锚点、布局组件和滚动，不写死物理屏幕像素。
 - SafeAreaLayout已按Screen.safeArea与窗口尺寸更新；它只应挂在与Canvas归一化坐标一致的安全区容器，不能任意嵌套后假定结果相同。
 - CanvasScaler需要按界面选择并记录策略：Foundation为MatchWidthOrHeight/0.5，CharacterLab为Expand。右键自动补的Canvas是Unity默认设置，制作正式界面时必须配置参考尺寸和安全区。
+- Windows 客户端开启 Unity Player 的后台运行，失焦不暂停界面、计时或网络。PlayerSettings 变更随下一次完整安装包交付，验收使用常规启动的 Player 切换焦点，避免使用会强制开启后台运行的冒烟入口。
 - 平板4:3、常规16:9、长屏、带缺口Android、PC缩放/窗口尺寸变化都需验收。宽屏可扩展背景/列表，窄屏保持按钮可点、文字可读；需要断点布局时由模块明确实现并记录。
 - PC测试鼠标/滚轮/键盘导航和焦点，Android测试触摸、防误触、返回/前后台恢复。不要让Hover成为唯一提示或把鼠标行为当成触屏验收。
 - Android目标ARM64/IL2CPP，ASTC和ETC2分开产出；Windows x64/IL2CPP。最低Android API/target API与工具链以ProjectSettings和锁定文档为准；平台能力差异要有显式路径。

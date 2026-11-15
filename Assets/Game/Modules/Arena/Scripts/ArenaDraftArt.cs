@@ -24,6 +24,19 @@ namespace AstralOath.Client.Arena
                 modelSource ??= ArenaDraftPortrait.CreateSource(ModelSkeleton, ModelAtlas, ModelPage);
         }
 
+        [Serializable]
+        public sealed class NativeEffect
+        {
+            public TextAsset Skeleton, Atlas, Particles;
+            public Texture2D Page;
+            private SkeletonPlayerSource source;
+            internal SkeletonPlayerSource MakeSource() =>
+                source ??= ArenaDraftPortrait.CreateSource(Skeleton, Atlas, Page);
+        }
+
+        public NativeEffect[] BluePick = Array.Empty<NativeEffect>(), RedPick = Array.Empty<NativeEffect>();
+        public NativeEffect FinalBan;
+        public Texture2D[] ParticleTextures = Array.Empty<Texture2D>();
         public Hero[] Heroes = Array.Empty<Hero>();
         public Sprite[] ScoreDigits = Array.Empty<Sprite>();
         public Sprite[] LevelDigits = Array.Empty<Sprite>();

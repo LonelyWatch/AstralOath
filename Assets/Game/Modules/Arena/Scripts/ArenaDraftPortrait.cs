@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using AstralOath.Client.Skeletons;
+using AstralOath.Client.BattleScene;
 using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
@@ -13,6 +14,9 @@ namespace AstralOath.Client.Arena
         private static readonly HashSet<int> ActiveStages = new HashSet<int>();
         private readonly RawImage output;
         private readonly bool miniature;
+        private readonly Vector2? nativeEffectSize;
+        private readonly Vector2? effectRightFade;
+        private readonly bool blendCardLight;
         private readonly Material originalMaterial;
         private readonly ISkeletonPlayerFactory factory = new SkeletonPlayerFactory();
 
@@ -24,14 +28,34 @@ namespace AstralOath.Client.Arena
         private Camera camera;
         private RenderTexture target;
         private Material material;
+        private BattleHudParticles particles;
+        private GameObject particleAnchor;
+        private float particleDelay;
         private Bounds framingBounds;
         private int stageIndex = -1;
         private bool disposed;
+        private bool oneShot, feedbackActive;
+        private float feedbackElapsed;
+        private Vector2 feedbackOrigin;
+        private static readonly int WhiteFlashId = Shader.PropertyToID("_WhiteFlash");
+        // Visual feedback parameters; the source CSB does not author the portrait's runtime tween.
+        private const float FeedbackDuration = .30f;
+        private const float FeedbackRise = .08f;
+        private const float FeedbackHeight = 20f;
 
-        internal ArenaDraftPortrait(RawImage output, bool miniature = false)
+        internal ArenaDraftPortrait(RawImage output, bool miniature)
+            : this(output, miniature, null) { }
+
+        internal ArenaDraftPortrait(RawImage output, bool miniature = false, Vector2? nativeEffectSize = null,
+            Vector2? effectRightFade = null, bool blendCardLight = false)
         {
             this.output = output ? output : throw new ArgumentNullException(nameof(output));
             this.miniature = miniature;
+            if (nativeEffectSize.HasValue && (nativeEffectSize.Value.x <= 0 || nativeEffectSize.Value.y <= 0))
+                throw new ArgumentOutOfRangeException(nameof(nativeEffectSize));
+            this.nativeEffectSize = nativeEffectSize;
+            this.effectRightFade = effectRightFade;
+            this.blendCardLight = blendCardLight;
             originalMaterial = output.material;
             output.raycastTarget = false;
             output.enabled = false;
@@ -53,8 +77,9 @@ namespace AstralOath.Client.Arena
         {
             if (disposed || !output) return false;
             if (source == null) { Clear(); return false; }
-            bool same = ReferenceEquals(this.source, source) && this.skin == skin && this.animation == animation;
+            bool same = !oneShot && ReferenceEquals(this.source, source) && this.skin == skin && this.animation == animation;
             if (same && player != null) return true;
+            oneShot = false;
             this.source = source;
             this.skin = skin;
             this.animation = animation;
@@ -64,6 +89,66 @@ namespace AstralOath.Client.Arena
                 return true;
             }
             return StartPlayer();
+        }
+
+        internal bool PlayOneShot(SkeletonPlayerSource source, string animation)
+        {
+            if (disposed || !output) return false;
+            if (source == null || string.IsNullOrWhiteSpace(animation)) { Clear(); return false; }
+            ResetFeedback();
+            this.source = source;
+            this.skin = null;
+            this.animation = animation;
+            oneShot = true;
+            if (!output.gameObject.activeInHierarchy)
+            {
+                ReleaseStage();
+                return true;
+            }
+            return StartPlayer();
+        }
+
+        internal bool IsVisible => output && output.enabled;
+
+        internal void AddParticles(TextAsset definition, IReadOnlyDictionary<string, Texture2D> textures,
+            float delay, float angle, float opacity)
+        {
+            if (!definition || !stage) return;
+            ReleaseParticles();
+            particleAnchor = new GameObject("Draft effect particles") { layer = PreviewLayer };
+            particleAnchor.transform.SetParent(stage.transform, false);
+            particleAnchor.transform.localRotation = Quaternion.Euler(0f, 0f, angle);
+            particleDelay = delay;
+            particles = new BattleHudParticles(definition, textures, particleAnchor.transform, Vector2.zero, .01f, 5,
+                premultiplied: true, sourceColorsSrgb: true);
+            particles.SetOpacity(opacity);
+            if (blendCardLight)
+                foreach (var renderer in particleAnchor.GetComponentsInChildren<MeshRenderer>(true))
+                    ConfigurePickLight(renderer, particle: true);
+            if (delay == 0f) particles.Play();
+        }
+
+        internal void SetDesaturation(float amount)
+        {
+            if (material) material.SetFloat("_Desaturation", amount);
+        }
+
+        internal void PlaySelectionFeedback()
+        {
+            if (disposed || !output || !output.enabled || !output.gameObject.activeInHierarchy) return;
+            ResetFeedback();
+            feedbackOrigin = output.rectTransform.anchoredPosition;
+            feedbackElapsed = 0;
+            feedbackActive = true;
+            if (material) material.SetFloat(WhiteFlashId, 1f);
+        }
+
+        internal void ResetFeedback()
+        {
+            if (feedbackActive && output) output.rectTransform.anchoredPosition = feedbackOrigin;
+            feedbackActive = false;
+            feedbackElapsed = 0;
+            if (material) material.SetFloat(WhiteFlashId, 0f);
         }
 
         internal void Tick(float unscaledDeltaTime)
@@ -76,6 +161,37 @@ namespace AstralOath.Client.Arena
             if (source == null || (player == null && !StartPlayer())) return;
             FrameOutput();
             if (unscaledDeltaTime > 0) player.Tick(unscaledDeltaTime);
+            if (particles != null && unscaledDeltaTime > 0f)
+            {
+                float activeTime = unscaledDeltaTime;
+                if (particleDelay > 0f)
+                {
+                    activeTime = Mathf.Max(0f, unscaledDeltaTime - particleDelay);
+                    particleDelay = Mathf.Max(0f, particleDelay - unscaledDeltaTime);
+                    if (particleDelay == 0f) particles.Play();
+                }
+                particles.Tick(activeTime);
+            }
+            if (oneShot && player.Time >= player.Duration)
+            {
+                Clear();
+                return;
+            }
+            if (feedbackActive)
+            {
+                feedbackElapsed += Mathf.Max(0, unscaledDeltaTime);
+                if (feedbackElapsed >= FeedbackDuration) ResetFeedback();
+                else
+                {
+                    float rise = feedbackElapsed / FeedbackRise;
+                    float fall = (feedbackElapsed - FeedbackRise) / (FeedbackDuration - FeedbackRise);
+                    float height = feedbackElapsed <= FeedbackRise
+                        ? Mathf.SmoothStep(0, 1, rise) : 1f - Mathf.SmoothStep(0, 1, fall);
+                    output.rectTransform.anchoredPosition = feedbackOrigin + Vector2.up * (FeedbackHeight * height);
+                    if (material) material.SetFloat(WhiteFlashId,
+                        1f - Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(.04f, .18f, feedbackElapsed)));
+                }
+            }
         }
 
         internal void Clear()
@@ -83,6 +199,7 @@ namespace AstralOath.Client.Arena
             source = null;
             skin = null;
             animation = null;
+            oneShot = false;
             ReleaseStage();
         }
 
@@ -97,10 +214,12 @@ namespace AstralOath.Client.Arena
         {
             try
             {
+                ResetFeedback();
+                ReleaseParticles();
                 if (!stage) CreateStage();
                 player?.Dispose();
                 player = factory.Create(source, stage.transform);
-                var chosenSkin = skin ?? (miniature ? null : "normal");
+                var chosenSkin = skin ?? (miniature || nativeEffectSize.HasValue ? null : "normal");
                 if (chosenSkin != null && HasSkin(chosenSkin)) player.SetSkin(chosenSkin);
 
                 string clip = animation ?? (miniature && !HasAnimation("idle") && HasAnimation("b_idle") ? "b_idle" : "idle");
@@ -112,11 +231,13 @@ namespace AstralOath.Client.Arena
                             break;
                         }
 
-                if (HasAnimation(clip)) player.Play(clip, true);
+                if (HasAnimation(clip)) player.Play(clip, !oneShot);
                 else if (animation != null) throw new ArgumentException("未知骨骼动画 " + clip);
 
                 var mesh = player.Root.GetComponent<MeshFilter>().sharedMesh;
                 if (!mesh || mesh.vertexCount == 0) throw new InvalidOperationException("骨骼预览没有可见网格。");
+                if (blendCardLight)
+                    ConfigurePickLight(player.Root.GetComponent<MeshRenderer>(), particle: false);
                 framingBounds = mesh.bounds;
                 FrameOutput();
                 output.texture = target;
@@ -129,6 +250,22 @@ namespace AstralOath.Client.Arena
                 Debug.LogException(error, output);
                 Clear();
                 return false;
+            }
+        }
+
+        private static void ConfigurePickLight(MeshRenderer renderer, bool particle)
+        {
+            // The five pick rigs have a single atlas. Their two blend materials are
+            // created at the first frame and owned by this player instance.
+            foreach (var layer in renderer.sharedMaterials)
+            {
+                // Particle vertices already use linear colors. The Spine keys are sRGB.
+                if (!particle && QualitySettings.activeColorSpace == ColorSpace.Linear)
+                    layer.SetFloat("_SrgbVertexTint", 1f);
+                if (layer.GetInt("_DstBlend") != (int)UnityEngine.Rendering.BlendMode.One) continue;
+                layer.SetInt("_SrcAlphaBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+                layer.SetInt("_DstAlphaBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                if (particle) layer.SetFloat("_SoftEmissionFalloff", 1f);
             }
         }
 
@@ -165,17 +302,25 @@ namespace AstralOath.Client.Arena
             camera.orthographic = true;
             camera.nearClipPlane = .1f;
             camera.farClipPlane = 20;
-            camera.allowHDR = false;
+            camera.allowHDR = nativeEffectSize.HasValue && SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.ARGBHalf);
             camera.allowMSAA = false;
             camera.depth = -100;
             int size = miniature ? 256 : 768;
-            target = new RenderTexture(size, size, 16, RenderTextureFormat.ARGB32)
+            var format = camera.allowHDR ? RenderTextureFormat.ARGBHalf : RenderTextureFormat.ARGB32;
+            target = new RenderTexture(size, size, 16, format)
             {
                 name = "Arena draft preview",
                 hideFlags = HideFlags.HideAndDontSave
             };
             camera.targetTexture = target;
             material = new Material(shader) { hideFlags = HideFlags.HideAndDontSave };
+            if (nativeEffectSize.HasValue) material.SetFloat("_SoftEffectEdges", 1f);
+            if (blendCardLight) material.SetFloat("_BlendCardLight", 1f);
+            if (effectRightFade.HasValue)
+            {
+                var fade = effectRightFade.Value;
+                material.SetVector("_RightFade", new Vector4(fade.x, fade.y, 0f, 0f));
+            }
         }
 
         private void FrameOutput()
@@ -183,7 +328,14 @@ namespace AstralOath.Client.Arena
             var rect = output.rectTransform.rect;
             float aspect = Mathf.Clamp(rect.width / Mathf.Max(rect.height, 1), .1f, 10f);
             camera.aspect = aspect;
-            if (miniature)
+            if (nativeEffectSize.HasValue)
+            {
+                // Effect sources use .01 world units per native pixel and an authored origin.
+                var size = nativeEffectSize.Value;
+                camera.orthographicSize = Mathf.Max(size.y, size.x / aspect) * .005f;
+                camera.transform.localPosition = new Vector3(0, 0, -10);
+            }
+            else if (miniature)
             {
                 // CSB specifies the floor anchors, not the runtime model scale. Use one
                 // display scale for the roster; only oversized meshes are reduced once.
@@ -214,8 +366,19 @@ namespace AstralOath.Client.Arena
             return Mathf.Max(.01f, scale);
         }
 
+        private void ReleaseParticles()
+        {
+            particles?.Dispose();
+            particles = null;
+            if (!particleAnchor) return;
+            particleAnchor.SetActive(false);
+            Object.Destroy(particleAnchor);
+            particleAnchor = null;
+        }
+
         private void ReleaseStage()
         {
+            ResetFeedback();
             if (output)
             {
                 output.texture = null;
@@ -228,6 +391,7 @@ namespace AstralOath.Client.Arena
                 camera.targetTexture = null;
                 camera = null;
             }
+            ReleaseParticles();
             player?.Dispose();
             player = null;
             if (stage)

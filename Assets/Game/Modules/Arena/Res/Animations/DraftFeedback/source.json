@@ -1,0 +1,621 @@
+{
+  "schemaVersion": 1,
+  "converterSha256": "6dacb9c4857aca8051a20a24f17cdd64ce72d058a0cbbe1cf8ad06f78025a707",
+  "roots": [
+    "effect/ui_livepvp_bann_eff.cfx",
+    "effect/ui_livepvp_slot_blue1_set.cfx",
+    "effect/ui_livepvp_slot_red1_set.cfx",
+    "effect/ui_livepvp_slot_blue2_set.cfx",
+    "effect/ui_livepvp_slot_red2_set.cfx",
+    "effect/ui_livepvp_slot_blue3_set.cfx",
+    "effect/ui_livepvp_slot_red3_set.cfx",
+    "effect/ui_livepvp_slot_blue4_set.cfx",
+    "effect/ui_livepvp_slot_red4_set.cfx",
+    "effect/ui_livepvp_slot_blue5_set.cfx",
+    "effect/ui_livepvp_slot_red5_set.cfx"
+  ],
+  "files": [
+    {
+      "source": "原始资源/effect/ui_livepvp_bann_eff.atlas",
+      "sourceSha256": "43c130d3f8fde5c0f3edda6d252be252e5980a5eee5ebd2795cd12d37d7c0403",
+      "asset": "ui_livepvp_bann_eff.atlas.txt",
+      "dependencies": [
+        "ui_livepvp_bann_eff.png"
+      ],
+      "assetSha256": "43c130d3f8fde5c0f3edda6d252be252e5980a5eee5ebd2795cd12d37d7c0403"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_bann_eff.cfx",
+      "sourceSha256": "eacd11dfb45617249b05b97775c8e3c2376d7cdfdba89e1ab28a59299e084107",
+      "asset": "ui_livepvp_bann_eff.cfx.json",
+      "dependencies": [
+        "ui_livepvp_bann_eff.spine.json",
+        "Particles/ui_livepvp_bann_pati1.particle.json"
+      ],
+      "assetSha256": "be599c82e7e42eed09c29c77706f0d8aaf8ee576834af41efaf7b6054d2a441d"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_bann_eff.scsp",
+      "sourceSha256": "08b74b33fdee9f1595771380e8843b3c8e471ee19f92a715d6369b6169e4dc2d",
+      "asset": "ui_livepvp_bann_eff.spine.json",
+      "dependencies": [
+        "ui_livepvp_bann_eff.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "intro",
+          "duration": 0.7666000127792358
+        },
+        {
+          "name": "loop",
+          "duration": 1.333299994468689
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "ui_livepvp_bann_eff.sct",
+          "asset": "ui_livepvp_bann_eff.png"
+        }
+      ],
+      "assetSha256": "787ec1730728a5bf2f7fb023a06ed47d293008b9ae503fe0404b1d18abb9e45f"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_bann_eff.sct",
+      "sourceSha256": "6edf1961cd8b6a6d9df76470dc85adb3434f9a53bae3478f13ee16ffa2730101",
+      "asset": "ui_livepvp_bann_eff.png",
+      "dependencies": [],
+      "texture": {
+        "width": 773,
+        "height": 253,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "premultipliedAlpha": true
+      },
+      "assetSha256": "32682e88436bf2d691082911302e974568123afbe19c29668ff8011cee0e123d"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_bann_pati1.particle",
+      "sourceSha256": "266b8bbd3dc91b615f1db2ea7fa30fdd9eda94b93727788d053a3f859eefe761",
+      "asset": "Particles/ui_livepvp_bann_pati1.particle.json",
+      "dependencies": [
+        "Particles/pati_03.png",
+        "Particles/ticle_02.png"
+      ],
+      "assetSha256": "ffbf2be0e944acb659663bb2317ecca20767e608a0d650efa8b0e3531cca14af"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_blue1_pati1.particle",
+      "sourceSha256": "2d32f26ad18aebe73bf43e2020f567a0b9e73ebaf0a03aeee70f0ff0f00b33ee",
+      "asset": "Particles/ui_livepvp_slot_blue1_pati1.particle.json",
+      "dependencies": [
+        "Particles/pati_03.png"
+      ],
+      "assetSha256": "c50366ecf1df3099518a98fefaa6aa3b8e6f9f9fbb7388bddd5d91bac470e851"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_blue1_set.cfx",
+      "sourceSha256": "307736c6474c4499624442f22557e87ead9c4d017908149d531ff1bb6b889766",
+      "asset": "ui_livepvp_slot_blue1_set.cfx.json",
+      "dependencies": [
+        "Particles/ui_livepvp_slot_blue1_pati1.particle.json",
+        "ui_livepvp_slot_eff_01.spine.json"
+      ],
+      "assetSha256": "560bfb6ca84ffdfbe0070d349bd8625e2c7675e228765725ef40c8287b04949b"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_blue2_pati1.particle",
+      "sourceSha256": "6cff156b06be969f755cf3255633499b8114ac8bdb8750a10aac6f7cb3d2dbfd",
+      "asset": "Particles/ui_livepvp_slot_blue2_pati1.particle.json",
+      "dependencies": [
+        "Particles/pati_03.png"
+      ],
+      "assetSha256": "e7f5b6c6b32514ec4b7eb5ba4a42a8bd17bdbb90b3bf909f1294f03c13c95d52"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_blue2_set.cfx",
+      "sourceSha256": "6152896c808241bb3f6d0b2444396c819c1370a83e4e7f3f099ba08e5beb29ea",
+      "asset": "ui_livepvp_slot_blue2_set.cfx.json",
+      "dependencies": [
+        "Particles/ui_livepvp_slot_blue2_pati1.particle.json",
+        "ui_livepvp_slot_eff_02.spine.json"
+      ],
+      "assetSha256": "5aa26253a38d91ce33e94c2c351434781c06328fea52b9b0a551e05a8d519f99"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_blue3_pati1.particle",
+      "sourceSha256": "fa27a6241696310cb4afba12138eb65f18bdd887084bc6d49c7801dc36d69768",
+      "asset": "Particles/ui_livepvp_slot_blue3_pati1.particle.json",
+      "dependencies": [
+        "Particles/pati_03.png"
+      ],
+      "assetSha256": "569c6e0ba047eb7939077388399436e0e3158e35b4c89b267d5c9f9af8de2823"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_blue3_set.cfx",
+      "sourceSha256": "35107fc985885eb9d879f6c4e3f058ab54da36cbef48085a1a1f6596a5fa88bc",
+      "asset": "ui_livepvp_slot_blue3_set.cfx.json",
+      "dependencies": [
+        "Particles/ui_livepvp_slot_blue3_pati1.particle.json",
+        "ui_livepvp_slot_eff_03.spine.json"
+      ],
+      "assetSha256": "857dfbbb10e8a0db2c4892a3a92f74e78d1429e881f69b9800dc64b9c2eb661d"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_blue4_pati1.particle",
+      "sourceSha256": "7cbe61426e9a0910d7e07f7b08dae18e05543fa768f9ea0b0925659cb460a5fa",
+      "asset": "Particles/ui_livepvp_slot_blue4_pati1.particle.json",
+      "dependencies": [
+        "Particles/pati_03.png"
+      ],
+      "assetSha256": "ae7c8305ae1977d737e5667489f218ea3d096d293a8ead5ad8646619be20ee60"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_blue4_set.cfx",
+      "sourceSha256": "ec738137a6e5b16556fc257f5b4857c216b1caa269d51426888365c3e617f887",
+      "asset": "ui_livepvp_slot_blue4_set.cfx.json",
+      "dependencies": [
+        "Particles/ui_livepvp_slot_blue4_pati1.particle.json",
+        "ui_livepvp_slot_eff_04.spine.json"
+      ],
+      "assetSha256": "dbfb4763f23391b6397c39a67ae75d70d8357608db2748f9f074dae75b292f18"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_blue5_pati1.particle",
+      "sourceSha256": "6cff156b06be969f755cf3255633499b8114ac8bdb8750a10aac6f7cb3d2dbfd",
+      "asset": "Particles/ui_livepvp_slot_blue5_pati1.particle.json",
+      "dependencies": [
+        "Particles/pati_03.png"
+      ],
+      "assetSha256": "e7f5b6c6b32514ec4b7eb5ba4a42a8bd17bdbb90b3bf909f1294f03c13c95d52"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_blue5_set.cfx",
+      "sourceSha256": "ae2c0182be911bd5007504a1c4567dc5a0b613a76230d8c3c47ed12c71955cf2",
+      "asset": "ui_livepvp_slot_blue5_set.cfx.json",
+      "dependencies": [
+        "Particles/ui_livepvp_slot_blue5_pati1.particle.json",
+        "ui_livepvp_slot_eff_05.spine.json"
+      ],
+      "assetSha256": "24a5c1f6f66d11347e20beb39e664337fa280ee664129ca8a8de66da40383bba"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_eff_01.atlas",
+      "sourceSha256": "4208d34854ffef9817efbddac5080597c109f919c0ff96303adbe86e45736696",
+      "asset": "ui_livepvp_slot_eff_01.atlas.txt",
+      "dependencies": [
+        "ui_livepvp_slot_eff_01.png"
+      ],
+      "assetSha256": "4208d34854ffef9817efbddac5080597c109f919c0ff96303adbe86e45736696"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_eff_01.scsp",
+      "sourceSha256": "2ed08436d9ff3dddb84e4a86458fdd1fa24f33c75b8a99128aa018914d41c759",
+      "asset": "ui_livepvp_slot_eff_01.spine.json",
+      "dependencies": [
+        "ui_livepvp_slot_eff_01.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "blue_idle",
+          "duration": 1.0
+        },
+        {
+          "name": "blue_set",
+          "duration": 0.6665999889373779
+        },
+        {
+          "name": "red_idle",
+          "duration": 1.0
+        },
+        {
+          "name": "red_set",
+          "duration": 0.6665999889373779
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "ui_livepvp_slot_eff_01.sct",
+          "asset": "ui_livepvp_slot_eff_01.png"
+        }
+      ],
+      "assetSha256": "7f874a19a8d0dd3f6b80ef2930d5e0c15dd7b45405231b625aae4813bfcf7af2",
+      "presentationFitting": {
+        "slot": "glow",
+        "scaleXMultiplier": 0.43,
+        "scaleYMultiplier": 0.46,
+        "confirmationAlphaMultiplier": 0.44
+      }
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_eff_01.sct",
+      "sourceSha256": "04d164d8b743841d3f42f9e875b307807f115a63421ba6657c9522ad2c79b10c",
+      "asset": "ui_livepvp_slot_eff_01.png",
+      "dependencies": [],
+      "texture": {
+        "width": 224,
+        "height": 437,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "premultipliedAlpha": true
+      },
+      "assetSha256": "1552b367ad33a93bf1d85f71954cee150a01542e2fdfc95b8497a133db739c67"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_eff_02.atlas",
+      "sourceSha256": "d2e148f52cba76b7de1f44a197eca9530ad1be7eb84a5dafdf43e6c44999f4c9",
+      "asset": "ui_livepvp_slot_eff_02.atlas.txt",
+      "dependencies": [
+        "ui_livepvp_slot_eff_02.png"
+      ],
+      "assetSha256": "d2e148f52cba76b7de1f44a197eca9530ad1be7eb84a5dafdf43e6c44999f4c9"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_eff_02.scsp",
+      "sourceSha256": "ff96deda7f105bcad04968918b64d22c0ebca0b05b82ca588c84501dcf7a1554",
+      "asset": "ui_livepvp_slot_eff_02.spine.json",
+      "dependencies": [
+        "ui_livepvp_slot_eff_02.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "blue_idle",
+          "duration": 1.0
+        },
+        {
+          "name": "blue_set",
+          "duration": 0.6665999889373779
+        },
+        {
+          "name": "red_idle",
+          "duration": 1.0
+        },
+        {
+          "name": "red_set",
+          "duration": 0.6665999889373779
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "ui_livepvp_slot_eff_02.sct",
+          "asset": "ui_livepvp_slot_eff_02.png"
+        }
+      ],
+      "assetSha256": "7d996ea01ca430c159ce9f08a3d7519e5329a58180b46ca3d820469304785bca",
+      "presentationFitting": {
+        "slot": "glow",
+        "scaleXMultiplier": 0.43,
+        "scaleYMultiplier": 0.46,
+        "confirmationAlphaMultiplier": 0.44
+      }
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_eff_02.sct",
+      "sourceSha256": "247e536c71d3b88268c49cfa5a9e69449a43f155378a2b739417d183bc3fae8f",
+      "asset": "ui_livepvp_slot_eff_02.png",
+      "dependencies": [],
+      "texture": {
+        "width": 182,
+        "height": 440,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "premultipliedAlpha": true
+      },
+      "assetSha256": "989b8cb1ce541a322af271641a19c3283a0d1f030e5f6d2db7dea40561693124"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_eff_03.atlas",
+      "sourceSha256": "858d895d52a5f6ff715861b634d01267e2bc992c64654c4855fc1bbe7f10dc73",
+      "asset": "ui_livepvp_slot_eff_03.atlas.txt",
+      "dependencies": [
+        "ui_livepvp_slot_eff_03.png"
+      ],
+      "assetSha256": "858d895d52a5f6ff715861b634d01267e2bc992c64654c4855fc1bbe7f10dc73"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_eff_03.scsp",
+      "sourceSha256": "4eb48e0d4de3e83bf02327cb8a63878ca3407fe804b1d72d7ef7fea8855a3924",
+      "asset": "ui_livepvp_slot_eff_03.spine.json",
+      "dependencies": [
+        "ui_livepvp_slot_eff_03.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "blue_idle",
+          "duration": 1.0
+        },
+        {
+          "name": "blue_set",
+          "duration": 0.6665999889373779
+        },
+        {
+          "name": "red_idle",
+          "duration": 1.0
+        },
+        {
+          "name": "red_set",
+          "duration": 0.6665999889373779
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "ui_livepvp_slot_eff_03.sct",
+          "asset": "ui_livepvp_slot_eff_03.png"
+        }
+      ],
+      "assetSha256": "646e6ff630145c857644f8c7215a11f5c8e12596187be48a1dac9d4b2d9a9a35",
+      "presentationFitting": {
+        "slot": "glow",
+        "scaleXMultiplier": 0.43,
+        "scaleYMultiplier": 0.46,
+        "confirmationAlphaMultiplier": 0.44
+      }
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_eff_03.sct",
+      "sourceSha256": "a3349c8f216c1b9a2e9daba572bb8abdde49ef97c7635a168a0ce92e0eedbb0e",
+      "asset": "ui_livepvp_slot_eff_03.png",
+      "dependencies": [],
+      "texture": {
+        "width": 173,
+        "height": 437,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "premultipliedAlpha": true
+      },
+      "assetSha256": "c8226382589b6445dc3e7b638f441386ffaf97516b97c9cea8a4139040d25020"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_eff_04.atlas",
+      "sourceSha256": "cdf81202a2f37f1dad8ecd0137755962a2967d949e07fb07cbd0d6f22a8ce61a",
+      "asset": "ui_livepvp_slot_eff_04.atlas.txt",
+      "dependencies": [
+        "ui_livepvp_slot_eff_04.png"
+      ],
+      "assetSha256": "cdf81202a2f37f1dad8ecd0137755962a2967d949e07fb07cbd0d6f22a8ce61a"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_eff_04.scsp",
+      "sourceSha256": "1cedc634ea6d5ef994ddb4800b1df46800f41c107dd1155b38ad124930355c48",
+      "asset": "ui_livepvp_slot_eff_04.spine.json",
+      "dependencies": [
+        "ui_livepvp_slot_eff_04.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "blue_idle",
+          "duration": 1.0
+        },
+        {
+          "name": "blue_set",
+          "duration": 0.6665999889373779
+        },
+        {
+          "name": "red_idle",
+          "duration": 1.0
+        },
+        {
+          "name": "red_set",
+          "duration": 0.6665999889373779
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "ui_livepvp_slot_eff_04.sct",
+          "asset": "ui_livepvp_slot_eff_04.png"
+        }
+      ],
+      "assetSha256": "ff9b3c5476f91276feb0dc87122e87af8d14a173557f89d5c97693db66c2876c",
+      "presentationFitting": {
+        "slot": "glow",
+        "scaleXMultiplier": 0.43,
+        "scaleYMultiplier": 0.46,
+        "confirmationAlphaMultiplier": 0.44
+      }
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_eff_04.sct",
+      "sourceSha256": "e9d99052e765f465742464c7c92b14228de10e747a531a70679cd2fa11cbefa1",
+      "asset": "ui_livepvp_slot_eff_04.png",
+      "dependencies": [],
+      "texture": {
+        "width": 173,
+        "height": 437,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "premultipliedAlpha": true
+      },
+      "assetSha256": "401c7dabc13704e788418ab73a1a4de7f3e2ac3aad17b92001850b3abea42ff2"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_eff_05.atlas",
+      "sourceSha256": "f5038f7dbde1c5d885e82012783fa9e47e99837a9b5dbeddc6dcb1c653073d06",
+      "asset": "ui_livepvp_slot_eff_05.atlas.txt",
+      "dependencies": [
+        "ui_livepvp_slot_eff_05.png"
+      ],
+      "assetSha256": "f5038f7dbde1c5d885e82012783fa9e47e99837a9b5dbeddc6dcb1c653073d06"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_eff_05.scsp",
+      "sourceSha256": "c40399a348e7ff6e79c58306eade87885208d6479f11dad2833dbd1c17bc7807",
+      "asset": "ui_livepvp_slot_eff_05.spine.json",
+      "dependencies": [
+        "ui_livepvp_slot_eff_05.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "blue_idle",
+          "duration": 1.0
+        },
+        {
+          "name": "blue_set",
+          "duration": 0.6665999889373779
+        },
+        {
+          "name": "red_idle",
+          "duration": 1.0
+        },
+        {
+          "name": "red_set",
+          "duration": 0.6665999889373779
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "ui_livepvp_slot_eff_05.sct",
+          "asset": "ui_livepvp_slot_eff_05.png"
+        }
+      ],
+      "assetSha256": "67e32784a43b4c9a406120d3ed11e916d8da0aebeab12c261858d6d70393a53f",
+      "presentationFitting": {
+        "slot": "glow",
+        "scaleXMultiplier": 0.43,
+        "scaleYMultiplier": 0.46,
+        "confirmationAlphaMultiplier": 0.44
+      }
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_eff_05.sct",
+      "sourceSha256": "57fbbdd529e57306f52539903c6a384aaf24796427ddcb6bea7d6b03836e1544",
+      "asset": "ui_livepvp_slot_eff_05.png",
+      "dependencies": [],
+      "texture": {
+        "width": 182,
+        "height": 437,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "premultipliedAlpha": true
+      },
+      "assetSha256": "ae8dc6ae28a1dcd5fa2ab94586645ffee03b60ab5efa312abd81589d92d513d2"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_red1_pati1.particle",
+      "sourceSha256": "0b3597a1beca0732f2c5505ebac84cd1c5f9a273cbf699b61f464fe7c2e45879",
+      "asset": "Particles/ui_livepvp_slot_red1_pati1.particle.json",
+      "dependencies": [
+        "Particles/pati_03.png"
+      ],
+      "assetSha256": "8554b96bf392763bff1979509954c836a8f428036073041cd21f69eb434b0f17"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_red1_set.cfx",
+      "sourceSha256": "50c78518c54a489b4f3c72ea5c08fcb8a27dda2a9b733d47d01523a3f1e69884",
+      "asset": "ui_livepvp_slot_red1_set.cfx.json",
+      "dependencies": [
+        "ui_livepvp_slot_eff_01.spine.json",
+        "Particles/ui_livepvp_slot_red1_pati1.particle.json"
+      ],
+      "assetSha256": "49119b18da73116f28ecfde896893674471fe230d3f90d0c43840a3c696a2ad0"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_red2_pati1.particle",
+      "sourceSha256": "b699915f8c83bee8bdde624462c9971a3ac6aa46f4b73f8dceeb8a036e80c5dc",
+      "asset": "Particles/ui_livepvp_slot_red2_pati1.particle.json",
+      "dependencies": [
+        "Particles/pati_03.png"
+      ],
+      "assetSha256": "443a883fc52c048e2642cef0f9aec60e8ccee5d7e4489c51a0f413328669eee7"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_red2_set.cfx",
+      "sourceSha256": "13abc78a67773e1979e6fef48b665a5fe447d203c615ea9d6d284c18a1da7b06",
+      "asset": "ui_livepvp_slot_red2_set.cfx.json",
+      "dependencies": [
+        "ui_livepvp_slot_eff_02.spine.json",
+        "Particles/ui_livepvp_slot_red2_pati1.particle.json"
+      ],
+      "assetSha256": "3ac77b184a5a6186f1035d2452c6330c8f59b51d4f58b67e3b09e3e706895055"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_red3_pati1.particle",
+      "sourceSha256": "0c2eee8c4262c1acb1e4e6b0a23e013191af8593e469b6f3854197a7de4eb4b6",
+      "asset": "Particles/ui_livepvp_slot_red3_pati1.particle.json",
+      "dependencies": [
+        "Particles/pati_03.png"
+      ],
+      "assetSha256": "71788a7ffa90fa22551cd26678a76c527f7f389b8d0c5adeab11fb3dd22e3172"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_red3_set.cfx",
+      "sourceSha256": "984990ce22a3a40f75c8fc787e5c228a2fa1121bc042d9da9a58ad6a35858a7a",
+      "asset": "ui_livepvp_slot_red3_set.cfx.json",
+      "dependencies": [
+        "ui_livepvp_slot_eff_03.spine.json",
+        "Particles/ui_livepvp_slot_red3_pati1.particle.json"
+      ],
+      "assetSha256": "9d71e69283003ffc91a226ee985a945138abdb8d0fc9def3fe07948617a57f59"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_red4_pati1.particle",
+      "sourceSha256": "9079f89c1b67a6d56c4903f30f01b0a129375c8bb27bfb420cb1588f4ecdff1f",
+      "asset": "Particles/ui_livepvp_slot_red4_pati1.particle.json",
+      "dependencies": [
+        "Particles/pati_03.png"
+      ],
+      "assetSha256": "5d99e38fdbb4c10f0eb850647837cf44e529ab15dd490734f09cedd7113abc3a"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_red4_set.cfx",
+      "sourceSha256": "f492538ca41172e0d6352518a129f12aaeec4d952a6aae84aa69bfb98b1eeafd",
+      "asset": "ui_livepvp_slot_red4_set.cfx.json",
+      "dependencies": [
+        "ui_livepvp_slot_eff_04.spine.json",
+        "Particles/ui_livepvp_slot_red4_pati1.particle.json"
+      ],
+      "assetSha256": "40a45a4664789cde2f7c3b51445d07868428ca32f697e6c3755b19203ebfa190"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_red5_pati1.particle",
+      "sourceSha256": "a72a40ccc80da8b72de053a97864384e9d2d2044add18b847a79463573e24aaf",
+      "asset": "Particles/ui_livepvp_slot_red5_pati1.particle.json",
+      "dependencies": [
+        "Particles/pati_03.png"
+      ],
+      "assetSha256": "e2b9faf50008ca508b601ad5f7de216b788035375610886fdc654e3aafd38404"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_slot_red5_set.cfx",
+      "sourceSha256": "9fab512881a093a71458c9b9c303cb7111b6680b4acd08909424d66eee34f96e",
+      "asset": "ui_livepvp_slot_red5_set.cfx.json",
+      "dependencies": [
+        "ui_livepvp_slot_eff_05.spine.json",
+        "Particles/ui_livepvp_slot_red5_pati1.particle.json"
+      ],
+      "assetSha256": "4b0190e3a56ca55141383f5f59e084f3426c14cf4ee7eeae5ac0504c92dfa4f7"
+    },
+    {
+      "source": "原始资源/particle/pati_03.sct",
+      "sourceSha256": "5b0dea52e1fb929af01a0ed52cfd671d8632532336e98cfec7948b66b42d74b0",
+      "asset": "Particles/pati_03.png",
+      "dependencies": [],
+      "texture": {
+        "width": 100,
+        "height": 100,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved",
+        "premultipliedAlpha": true
+      },
+      "assetSha256": "2f9a947909dd408411a6e000e19b7e24d62f7e03e173423cad10aebdcc8ba692"
+    },
+    {
+      "source": "原始资源/particle/ticle_02.sct",
+      "sourceSha256": "8f536d32d8984e0370e17ab9f1291be45b3908afce37ea8cb057ae1df4d2b9d2",
+      "asset": "Particles/ticle_02.png",
+      "dependencies": [],
+      "texture": {
+        "width": 66,
+        "height": 66,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved",
+        "premultipliedAlpha": true
+      },
+      "assetSha256": "1be5fa2daba5583e21856ff31fff66b5a72d5e5ba8f1bcc15b9448a065e43007"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "ui_livepvp_bann_eff",
+      "ani": "intro,loop",
+      "z": "3",
+      "format": "spine",
+      "loop": 1
+    },
+    {
+      "source": "ui_livepvp_bann_pati1",
+      "z": "5",
+      "rotate": "-7",
+      "delay": "100",
+      "format": "particle"
+    }
+  ]
+}

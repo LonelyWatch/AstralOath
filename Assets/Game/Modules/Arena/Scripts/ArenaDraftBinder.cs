@@ -50,7 +50,12 @@ namespace AstralOath.Client.Arena
         private readonly List<string> prebans = new List<string>();
         private readonly Choice[] left = new Choice[5], right = new Choice[5], positions = new Choice[4];
         private readonly ArenaDraftPortrait[] modelSurfaces = new ArenaDraftPortrait[4];
-        private readonly ArenaDraftPortrait feature;
+        private readonly ArenaDraftPortrait feature, banFeedback;
+        private readonly ArenaDraftPortrait[] blueFeedback = new ArenaDraftPortrait[5], redFeedback = new ArenaDraftPortrait[5];
+        private readonly Dictionary<string, Texture2D> particleTextures;
+        private static readonly int[] NativeSlotWidths = { 291, 226, 196, 196, 226 };
+        private float lastPickFeedbackUntil;
+        private bool banIntroPlaying;
         private readonly string[] shownFormation = new string[4];
 
         private BindingScope scope;
@@ -85,10 +90,24 @@ namespace AstralOath.Client.Arena
 
             Image[] Clock(string key) => new[] { view.Picture(key + "Tens"), view.Picture(key + "Units"), view.Picture(key + "Single") };
             feature = new ArenaDraftPortrait(view.Surface("featured"));
+            banFeedback = new ArenaDraftPortrait(view.Surface("banFeedback"), nativeEffectSize: new Vector2(1040, 620) * 2.60f);
+            particleTextures = artwork.ParticleTextures.ToDictionary(texture => texture.name, StringComparer.Ordinal);
             for (int index = 0; index < 5; index++)
             {
-                left[index] = new Choice(view.Card("blue", index), artwork.LevelDigits, teamSlot: true, protectedSlot: index == 2);
-                right[index] = new Choice(view.Card("red", index), artwork.LevelDigits, teamSlot: true, protectedSlot: index == 2);
+                var blue = view.Card("blue", index);
+                var red = view.Card("red", index);
+                left[index] = new Choice(blue, artwork.LevelDigits, teamSlot: true, protectedSlot: index == 2);
+                right[index] = new Choice(red, artwork.LevelDigits, teamSlot: true, protectedSlot: index == 2);
+                // The rendered gutter lets the original additive glows and sparks fade beyond the card.
+                float width = NativeSlotWidths[index] + 208;
+                var effectSize = new Vector2(width, 293) * 2.24f;
+                blueFeedback[index] = new ArenaDraftPortrait(blue.Require<RawImage>("confirm"),
+                    nativeEffectSize: effectSize, blendCardLight: true);
+                // The source outline extends past the card. Fade the wide glow into the
+                // roster rather than cutting off the outline at the edge of the card.
+                var rightFade = new Vector2((width - 91) / width, (width - 43) / width);
+                redFeedback[index] = new ArenaDraftPortrait(red.Require<RawImage>("confirm"),
+                    nativeEffectSize: effectSize, effectRightFade: rightFade, blendCardLight: true);
             }
             for (int index = 0; index < 4; index++)
             {
@@ -106,8 +125,8 @@ namespace AstralOath.Client.Arena
             candidate = featured = featuredBan = loadedBattle = null;
             formation = Empty;
             swapIndex = -1;
-            revealUntil = 0f;
-            sending = launching = false;
+            revealUntil = lastPickFeedbackUntil = 0f;
+            sending = launching = banIntroPlaying = false;
             localLatency = null;
             prebans.Clear();
             lastSecond = int.MinValue;
@@ -175,6 +194,21 @@ namespace AstralOath.Client.Arena
             FitGrid(recentLayout, recentGrid.rect.width);
             feature.Tick(seconds);
             foreach (var model in modelSurfaces) model.Tick(seconds);
+            foreach (var effect in blueFeedback) effect.Tick(seconds);
+            foreach (var effect in redFeedback) effect.Tick(seconds);
+            banFeedback.Tick(seconds);
+            if (lastPickFeedbackUntil > 0f && Time.unscaledTime >= lastPickFeedbackUntil)
+            {
+                lastPickFeedbackUntil = 0f;
+                if (draft.phase == "ban" && candidate == null) Render();
+            }
+            if (banIntroPlaying && !banFeedback.IsVisible)
+            {
+                banIntroPlaying = false;
+                if (draft.phase == "ban" && draft.Own.submitted)
+                    banFeedback.Show(artwork.FinalBan.MakeSource(), animation: "loop");
+                Render();
+            }
         }
 
         private async Task AnimateAsync(CancellationToken token)
@@ -264,8 +298,10 @@ namespace AstralOath.Client.Arena
                 return;
             }
             previewSequence = next.previewSequence;
-            bool changedPhase = draft?.phase != next.phase;
-            bool revealPreban = draft?.phase == "preban" && next.phase == "pick";
+            string previousPhase = draft?.phase;
+            string previousBan = draft?.Own.ban;
+            bool changedPhase = previousPhase != next.phase;
+            bool revealPreban = previousPhase == "preban" && next.phase == "pick";
             int priorHostPicks = Count(draft?.host?.picks);
             int priorGuestPicks = Count(draft?.guest?.picks);
             draft = next;
@@ -278,15 +314,21 @@ namespace AstralOath.Client.Arena
                 if (draft.phase == "formation")
                     formation = DraftFormation();
             }
-            bool hostPicked = Count(draft.host.picks) > priorHostPicks;
-            bool guestPicked = Count(draft.guest.picks) > priorGuestPicks;
-            if (draft.phase == "pick" && (hostPicked || guestPicked))
+            bool hostPicked = previousPhase == "pick" && Count(draft.host.picks) > priorHostPicks;
+            bool guestPicked = previousPhase == "pick" && Count(draft.guest.picks) > priorGuestPicks;
+            if (hostPicked || guestPicked)
             {
-                if (!CanSelect(candidate)) candidate = null;
+                candidate = null;
                 bool showHost = hostPicked && (!guestPicked || draft.activeSide != "host");
-                string last = (showHost ? draft.host.picks : draft.guest.picks)?.LastOrDefault();
-                featured = candidate ?? last ?? featured;
+                featured = (showHost ? draft.host.picks : draft.guest.picks).Last();
+                if (draft.phase == "ban") lastPickFeedbackUntil = Time.unscaledTime + .30f;
             }
+            if (previousPhase == "ban" && draft.Own.ban != null && previousBan != draft.Own.ban)
+                banIntroPlaying = PlayEffect(banFeedback, artwork.FinalBan, "intro", .10f, 7f, .46f);
+            else if (previousPhase == null && draft.phase == "ban" && draft.Own.submitted)
+                banFeedback.Show(artwork.FinalBan.MakeSource(), animation: "loop");
+            if (changedPhase && draft.phase != "ban" && !banIntroPlaying)
+                banFeedback.Clear();
             if (draft.phase == "preban" && draft.Own.submitted)
             {
                 prebans.Clear();
@@ -311,6 +353,26 @@ namespace AstralOath.Client.Arena
             }
             view.Label("status").text = "";
             Render();
+            if (hostPicked || guestPicked) feature.PlaySelectionFeedback();
+            if (hostPicked) PlayPicks(draft.IsHost, priorHostPicks, draft.host.picks.Length);
+            if (guestPicked) PlayPicks(!draft.IsHost, priorGuestPicks, draft.guest.picks.Length);
+        }
+
+        private void PlayPicks(bool own, int first, int count)
+        {
+            var targets = own ? blueFeedback : redFeedback;
+            var effects = own ? artwork.BluePick : artwork.RedPick;
+            string animation = own ? "blue_set" : "red_set";
+            for (int index = first; index < Mathf.Min(count, targets.Length); index++)
+                PlayEffect(targets[index], effects[index], animation);
+        }
+
+        private bool PlayEffect(ArenaDraftPortrait target, ArenaDraftArt.NativeEffect effect, string animation,
+            float particleDelay = 0f, float particleRotation = 0f, float particleOpacity = 1f)
+        {
+            if (!target.PlayOneShot(effect.MakeSource(), animation)) return false;
+            target.AddParticles(effect.Particles, particleTextures, particleDelay, particleRotation, particleOpacity);
+            return true;
         }
 
         private string[] DraftFormation() => Count(draft.Own.formation) == 4
@@ -320,12 +382,13 @@ namespace AstralOath.Client.Arena
         private void Render()
         {
             bool pre = draft.phase == "preban";
-            bool arrange = draft.phase == "formation" || draft.phase == "battle";
+            bool finishingBan = draft.phase == "formation" && banIntroPlaying;
+            bool arrange = !finishingBan && (draft.phase == "formation" || draft.phase == "battle");
             bool showingReveal = revealUntil > 0f;
-            bool canAct = !sending && !launching && !showingReveal && !draft.Own.submitted;
+            bool canAct = !sending && !launching && !showingReveal && !finishingBan && !draft.Own.submitted;
             view.Node("reveal").SetActive(showingReveal);
             bool pick = draft.phase == "pick";
-            bool ban = draft.phase == "ban";
+            bool ban = draft.phase == "ban" || finishingBan;
             if (pick) canAct &= draft.OwnTurn;
             view.Node("preban").SetActive(pre);
             view.Node("formation").SetActive(arrange);
@@ -341,33 +404,24 @@ namespace AstralOath.Client.Arena
             SetAvatar(view.Avatar("guest"), opponent);
             ShowConnection();
             view.Label("title").text = L(pick ? draft.OwnTurn ? "arena.draft.own_turn" : "arena.draft.other_turn"
-                : "arena.draft." + draft.phase);
+                : ban ? "arena.draft.ban" : "arena.draft." + draft.phase);
             view.Label("title").color = pick && !draft.OwnTurn ? new Color32(254, 30, 30, 255) : new Color32(68, 148, 255, 255);
             view.Label("hint").text = L(pick ? "arena.draft.pick_hint" : ban ? "arena.draft.ban_hint"
                 : arrange ? "arena.draft.formation_hint" : "arena.draft.preban_hint");
             view.Label("preCount").text = GameText.Format(locale, "arena.draft.preban_count", prebans.Count, draft.prebanCount);
-            view.Label("actionLabel").text = L(launching ? "arena.draft.entering" : draft.Own.submitted ||
-                pick && !draft.OwnTurn ? "arena.draft.waiting" : arrange ? "arena.start" : ban ? "arena.draft.complete" : "arena.draft.choose");
-            view.Label("preActionLabel").text = L(draft.Own.submitted ? "arena.draft.waiting" : "arena.draft.choose");
-            view.Button("action").interactable = canAct && (pick || ban ? CanSelect(candidate) : draft.phase == "formation" && formation.Length == 4);
-            view.Button("preAction").interactable = canAct && prebans.Count == draft.prebanCount;
+            RenderActions(canAct, pick, ban, arrange, finishingBan);
             view.Picture("blue").enabled = !pick || draft.OwnTurn;
             view.Picture("red").enabled = !pick || !draft.OwnTurn;
-            view.Picture("banMark").enabled = ban;
+            view.Picture("banMark").enabled = ban && !banFeedback.IsVisible;
             view.Picture("banGlow").enabled = ban;
-            var action = view.Button("action");
-            ((Image)action.targetGraphic).sprite = ban ? artwork.ActionRed : artwork.ActionGreen;
-            var states = action.spriteState;
-            states.pressedSprite = ban ? artwork.ActionRedPressed : artwork.ActionGreenPressed;
-            action.spriteState = states;
             // Source final-ban prompt is above the red ban emblem.
             var hintRect = view.Label("hint").rectTransform;
             hintRect.anchorMin = new Vector2(.285f, ban ? .279f : arrange ? .161f : .244f);
             hintRect.anchorMax = new Vector2(.713f, ban ? .368f : arrange ? .234f : .317f);
             hintRect.offsetMin = hintRect.offsetMax = Vector2.zero;
 
-            RenderTeam(left, draft.Own, draft.Opponent, pick && draft.OwnTurn, false);
-            RenderTeam(right, draft.Opponent, draft.Own, pick && !draft.OwnTurn, true);
+            RenderTeam(left, draft.Own, draft.Opponent, pick && draft.OwnTurn, false, ban);
+            RenderTeam(right, draft.Opponent, draft.Own, pick && !draft.OwnTurn, true, ban);
             foreach (var choice in roster)
             {
                 bool valid = CanSelect(choice.Id);
@@ -388,10 +442,47 @@ namespace AstralOath.Client.Arena
             foreach (var choice in revealedOwn.Concat(revealedEnemy)) choice.Button.interactable = false;
 
             if (arrange) RenderFormation(canAct);
-            SetFeatured(pre || arrange ? null : candidate ?? featured ?? draft.Own.picks?.LastOrDefault() ??
-                draft.Opponent.picks?.LastOrDefault(), ban);
+            string portraitId = pre || arrange ? null : ban
+                ? candidate ?? draft.Own.ban ?? (lastPickFeedbackUntil > 0f ? featured : null)
+                : candidate ?? featured ?? draft.Own.picks?.LastOrDefault() ?? draft.Opponent.picks?.LastOrDefault();
+            SetFeatured(portraitId, ban && (candidate != null || draft.Own.ban != null));
             UpdateTimer();
             ApplySearch();
+        }
+
+        private void RenderActions(bool canAct, bool pick, bool ban, bool arrange, bool finishingBan)
+        {
+            var action = view.Button("action");
+            var label = view.Label("actionLabel");
+            bool waiting = draft.Own.submitted || finishingBan || (pick && !draft.OwnTurn);
+            bool enabled = canAct && (pick || ban ? CanSelect(candidate) : draft.phase == "formation" && formation.Length == 4);
+            label.text = L(launching ? "arena.draft.entering" : waiting ? "arena.draft.waiting"
+                : arrange ? "arena.start" : ban ? "arena.draft.complete" : "arena.draft.choose");
+            var position = label.rectTransform.anchoredPosition;
+            position.x = pick ? -22f : 0f;
+            label.rectTransform.anchoredPosition = position;
+            var arrow = view.Picture("actionArrow");
+            arrow.enabled = pick;
+            arrow.color = new Color(.42f, .76f, .106f, enabled ? 1f : .28f);
+            ((Image)action.targetGraphic).sprite = ban ? artwork.ActionRed : artwork.ActionGreen;
+            var states = action.spriteState;
+            states.pressedSprite = ban ? artwork.ActionRedPressed : artwork.ActionGreenPressed;
+            action.spriteState = states;
+            SetActionState(action, label, enabled, pick && waiting
+                ? new Color(.62f, .62f, .62f, .29f) : new Color(.48f, .48f, .48f, .55f));
+
+            var preAction = view.Button("preAction");
+            var preLabel = view.Label("preActionLabel");
+            preLabel.text = L("arena.draft.choose");
+            SetActionState(preAction, preLabel, canAct && prebans.Count == draft.prebanCount,
+                new Color(.34f, .34f, .34f, .96f));
+        }
+
+        private static void SetActionState(GameButton button, GameText label, bool enabled, Color disabled)
+        {
+            button.interactable = enabled;
+            button.targetGraphic.color = enabled ? Color.white : disabled;
+            label.color = enabled ? Color.white : new Color32(132, 126, 130, 255);
         }
 
         private void ShowConnection()
@@ -409,7 +500,7 @@ namespace AstralOath.Client.Arena
             ArenaArt.SetAvatar(avatar, player, false);
         }
 
-        private void RenderTeam(Choice[] team, ArenaDraftSeat seat, ArenaDraftSeat opponent, bool active, bool enemy)
+        private void RenderTeam(Choice[] team, ArenaDraftSeat seat, ArenaDraftSeat opponent, bool active, bool enemy, bool ban)
         {
             int taken = Count(seat.picks);
             for (int index = 0; index < team.Length; index++)
@@ -424,11 +515,11 @@ namespace AstralOath.Client.Arena
                 item.Set(id, hero, asCard: true, tags: true, levelLabel: true);
                 item.SetProvisional(provisional);
                 bool protect = id != null && id == seat.protectedHeroId;
-                bool isBanned = id != null && (draft.phase is "formation" or "battle") && id == opponent.ban;
-                item.Button.interactable = id != null && (!enemy || draft.phase != "ban" || CanSelect(id));
+                bool isBanned = id != null && !ban && (draft.phase is "formation" or "battle") && id == opponent.ban;
+                bool highlightedBan = ban && enemy && id != null && id == (candidate ?? draft.Own.ban);
+                item.Button.interactable = id != null && (!ban || (enemy && CanSelect(id) && !sending));
                 item.Pending.enabled = active && index >= taken && index < taken + draft.picksRemainingInWindow;
-                item.Selection.enabled = enemy && id != null && id == candidate && draft.phase == "ban";
-                ((Image)item.Button.targetGraphic).color = Color.white;
+                item.Selection.enabled = false;
                 bool showSlotProtection = draft.banProtection && index == 2 && hero == null;
                 item.Guard.enabled = showSlotProtection;
                 if (item.GuardPlate)
@@ -438,7 +529,8 @@ namespace AstralOath.Client.Arena
                     item.GuardCaption.text = L("arena.draft.safeguard");
                 }
                 item.Mark.enabled = isBanned;
-                item.SetState(null, isBanned);
+                item.SetState(null, isBanned || highlightedBan);
+                item.SetBanTint(isBanned || highlightedBan);
                 ((Image)item.Button.targetGraphic).overrideSprite = id == null ? null : item.Filled.sprite;
             }
         }
@@ -471,7 +563,7 @@ namespace AstralOath.Client.Arena
             var hero = GetArt(id);
             var fallback = view.Picture("featuredFallback");
             var surface = view.Surface("featured");
-            Color tone = ban ? new Color(.6f, .56f, .56f, 1) : Color.white;
+            Color tone = ban ? new Color(.43f, .43f, .43f, 1) : Color.white;
             surface.color = fallback.color = tone;
             if (hero == null)
             {
@@ -481,6 +573,7 @@ namespace AstralOath.Client.Arena
             }
             fallback.sprite = hero.Illustration ? hero.Illustration : hero.Card;
             fallback.enabled = !feature.Show(hero.MakePortrait());
+            feature.SetDesaturation(ban ? .72f : 0f);
         }
 
         private void Select(string id)
@@ -549,7 +642,7 @@ namespace AstralOath.Client.Arena
 
         private async Task SubmitAsync()
         {
-            if (sending || launching || draft.Own.submitted) return;
+            if (sending || launching || draft.Own.submitted || (draft.phase == "formation" && banIntroPlaying)) return;
             string phase = draft.phase;
             var ids = phase switch
             {
@@ -852,6 +945,9 @@ namespace AstralOath.Client.Arena
         public void Dispose()
         {
             feature.Dispose();
+            banFeedback.Dispose();
+            foreach (var effect in blueFeedback) effect.Dispose();
+            foreach (var effect in redFeedback) effect.Dispose();
             foreach (var model in modelSurfaces) model.Dispose();
         }
 
@@ -861,6 +957,9 @@ namespace AstralOath.Client.Arena
             scope = null;
             visibleRoster = Array.Empty<Choice>();
             feature.Clear();
+            banFeedback.Clear();
+            foreach (var effect in blueFeedback) effect.Clear();
+            foreach (var effect in redFeedback) effect.Clear();
             foreach (var model in modelSurfaces) model.Clear();
             Array.Clear(shownFormation, 0, shownFormation.Length);
             Release(roster); Release(grid); Release(selected); Release(revealedOwn); Release(revealedEnemy); Release(recent); Release(revealCards);
@@ -1041,6 +1140,14 @@ namespace AstralOath.Client.Arena
                 // Native blue_idle/red_idle fade from 255 to about 53 and back in one second.
                 if (Pending.enabled) SetOpacity(Pending, Mathf.Lerp(.207f, 1f, pulse));
                 if (provisional) SetPickCardOpacity(Mathf.Lerp(.17f, .48f, pulse));
+            }
+
+            internal void SetBanTint(bool banned)
+            {
+                Button.targetGraphic.color = banned ? new Color(.37f, .37f, .37f) : Color.white;
+                if (provisional) return;
+                Portrait.color = role.color = element.color = banned ? new Color(.34f, .34f, .34f) : Color.white;
+                levelVisibility.alpha = starVisibility.alpha = banned ? .46f : 1f;
             }
 
             private void SetPickCardOpacity(float opacity)

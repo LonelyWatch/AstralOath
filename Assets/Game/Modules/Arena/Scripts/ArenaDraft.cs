@@ -43,6 +43,8 @@ namespace AstralOath.Client.Arena
                 foreach (string digit in new[] { "Tens", "Units", "Single" })
                     _ = Picture(clock + digit);
             _ = Surface("featured");
+            _ = Surface("banFeedback");
+            _ = Picture("actionArrow");
             _ = Bindings.Require<RectTransform>("layout");
             _ = Picture("banGlow");
             _ = Node("hostPing");
@@ -51,6 +53,8 @@ namespace AstralOath.Client.Arena
             {
                 ValidateCard(Card("blue", index));
                 ValidateCard(Card("red", index));
+                _ = Card("blue", index).Require<RawImage>("confirm");
+                _ = Card("red", index).Require<RawImage>("confirm");
             }
             for (int index = 0; index < 4; index++)
             {

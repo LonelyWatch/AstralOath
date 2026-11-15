@@ -84,11 +84,19 @@ namespace AstralOath.Client.Tests
             var footerStar = footerCards[1].GetComponent<BindingMap>().Require<Image>("star0");
             var gridStar = Hero(draft, "grid", pool[1]).GetComponent<BindingMap>().Require<Image>("star0");
             Assert.That(footerStar.sprite, Is.SameAs(gridStar.sprite));
+            Assert.That(footer.GetComponent<GridLayoutGroup>().cellSize.x, Is.EqualTo(138f).Within(.1f),
+                "The selected portrait must use the native footer size.");
+            Assert.That(selectedMark.rectTransform.anchorMax.x - selectedMark.rectTransform.anchorMin.x,
+                Is.GreaterThan(1f), "The slash must cover the gold portrait frame.");
             yield return new WaitForSecondsRealtime(.35f);
             yield return Capture("arena-draft-preban");
             Click(draft, "preAction");
             yield return ObserveHostSubmission(route, "preban", next => state = next);
             Assert.That(state["host"]["prebans"].Count(), Is.EqualTo(0));
+            yield return Wait(() => !draft.Require<GameButton>("preAction").interactable, "Preban stayed clickable.");
+            Assert.That(draft.Require<GameText>("preActionLabel").text, Is.EqualTo("选择"));
+            Assert.That(draft.Require<GameButton>("preAction").targetGraphic.color.r, Is.LessThan(.5f));
+            yield return Capture("bp-preban-waiting");
             yield return PeerAction(route, state, "preban", pool.Skip(2).Take(2).ToArray(), next => state = next);
             if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("ASTRAL_ARENA_CAPTURE_DIR")))
             {
@@ -230,6 +238,12 @@ namespace AstralOath.Client.Tests
                     }
 
                     yield return PeerAction(route, state, "pick", new[] { candidate }, next => state = next);
+                    if (i == 1)
+                    {
+                        var redEffect = draft.Require<BindingMap>("red0").Require<RawImage>("confirm");
+                        yield return Wait(() => redEffect.enabled && redEffect.texture, "The opponent's confirmed pick did not play red feedback.");
+                        yield return CapturePickSequence(redEffect, "bp-pick-confirm-red");
+                    }
                     continue;
                 }
                 yield return Wait(() => Hero(draft, "roster", candidate)?.interactable == true, "Host hero did not become selectable.");
@@ -244,6 +258,22 @@ namespace AstralOath.Client.Tests
                 int expected = state["host"]["picks"].Count() + 1;
                 Click(draft, "action");
                 yield return ReadUntil(route, next => next["host"]["picks"].Count() == expected, next => state = next);
+                if (i == 0)
+                {
+                    var effect = draft.Require<BindingMap>("blue0").Require<RawImage>("confirm");
+                    var pickPortrait = draft.Require<RawImage>("featured");
+                    yield return Wait(() => effect.enabled && effect.texture, "Our confirmed pick did not play blue feedback.");
+                    Assert.That(pickPortrait.rectTransform.anchoredPosition.y > 0f ||
+                        pickPortrait.material.GetFloat("_WhiteFlash") > 0f, Is.True, "The featured hero did not hop or flash.");
+                    yield return CapturePickSequence(effect, "bp-pick-confirm-blue");
+                    yield return Wait(() => !effect.enabled, "The confirmed pick effect did not release.");
+                    Assert.That(pickPortrait.material.GetFloat("_WhiteFlash"), Is.Zero);
+                    Assert.That(draft.Require<GameText>("actionLabel").text, Does.StartWith("等待中"));
+                    Assert.That(draft.Require<GameButton>("action").interactable, Is.False);
+                    Assert.That(draft.Require<Image>("actionArrow").enabled, Is.True);
+                    Assert.That(draft.Require<GameButton>("action").targetGraphic.color.a, Is.LessThan(.4f));
+                    yield return Capture("bp-pick-opponent-waiting");
+                }
             }
             Assert.That((string)state["phase"], Is.EqualTo("ban"));
             var target = draft.Require<BindingMap>("red0").Require<GameButton>("button");
@@ -251,15 +281,40 @@ namespace AstralOath.Client.Tests
             yield return Wait(() => target.interactable && !protectedSlot.Require<GameButton>("button").interactable,
                 "Final ban did not enable ordinary targets and protect the third pick.");
             Assert.That(protectedSlot.Require<Image>("filledGuard").enabled, Is.True);
+            var featured = draft.Require<RawImage>("featured");
+            yield return Wait(() => !featured.enabled, "Final ban must start with an empty center.");
+            yield return Capture("bp-final-ban-empty");
             target.onClick.Invoke();
+            Assert.That(featured.enabled, Is.True);
+            Assert.That(featured.color.r, Is.EqualTo(featured.color.g));
+            Assert.That(featured.color.r, Is.LessThan(.6f));
+            Assert.That(draft.Require<BindingMap>("red0").Require<Image>("dim").gameObject.activeSelf, Is.True);
+            Assert.That(featured.material.GetFloat("_Desaturation"), Is.GreaterThan(.5f));
             yield return Capture("arena-draft-final-ban");
             Click(draft, "action");
             yield return ObserveHostSubmission(route, "ban", next => state = next);
             Assert.That(state["host"]["ban"].Type, Is.EqualTo(JTokenType.Null));
+            yield return Wait(() => draft.Require<GameText>("actionLabel").text.StartsWith("等待中", StringComparison.Ordinal),
+                "Final ban submit did not show waiting.");
+            Assert.That(draft.Require<GameButton>("action").targetGraphic.color.a, Is.LessThan(.65f));
+            yield return Capture("bp-final-ban-waiting");
+            yield return Wait(() => draft.Require<RawImage>("banFeedback").enabled, "The native BANNED effect did not play.");
+            yield return new WaitForSecondsRealtime(.46f);
+            yield return Capture("bp-final-ban-effect");
+            yield return new WaitForSecondsRealtime(.36f);
+            yield return Capture("bp-final-ban-stamp");
             string hostBanned = (string)state["host"]["picks"][0];
             yield return PeerAction(route, state, "ban", new[] { hostBanned }, next => state = next);
 
             yield return Wait(() => draft.Require<GameObject>("formation").activeInHierarchy, "Formation did not open.");
+            foreach (string slot in new[] { "blue0", "red0" })
+            {
+                var banned = draft.Require<BindingMap>(slot);
+                Assert.That(banned.Require<Image>("dim").gameObject.activeSelf, Is.True);
+                Assert.That(banned.Require<Image>("mark").enabled, Is.True);
+                Assert.That(banned.Require<Image>("portrait").color.r, Is.LessThan(.5f));
+            }
+            Assert.That(draft.Require<RawImage>("banFeedback").enabled, Is.False);
             var hostPicksSurviving = state["host"]["picks"].Values<string>().Where(id => id != hostBanned).ToArray();
             var guestPicksSurviving = state["guest"]["picks"].Values<string>().Where(id => id != (string)state["host"]["ban"]).ToArray();
             var first = draft.Require<BindingMap>("formation0").Require<GameButton>("button");
@@ -272,6 +327,10 @@ namespace AstralOath.Client.Tests
             Click(draft, "action");
             yield return ObserveHostSubmission(route, "formation", next => state = next);
             Assert.That(state["host"]["formation"].Count(), Is.EqualTo(0));
+            yield return Wait(() => !draft.Require<GameButton>("action").interactable, "Formation stayed clickable.");
+            Assert.That(draft.Require<GameText>("actionLabel").text, Does.StartWith("等待中"));
+            Assert.That(draft.Require<GameButton>("action").targetGraphic.color.a, Is.LessThan(.65f));
+            yield return Capture("bp-formation-waiting");
             yield return PeerAction(route, state, "formation", guestPicksSurviving, next => state = next);
 
             Assert.That((string)state["phase"], Is.EqualTo("battle"));
@@ -619,6 +678,15 @@ namespace AstralOath.Client.Tests
                 RenderTexture.ReleaseTemporary(target);
                 UnityEngine.Object.Destroy(image);
             }
+        }
+
+        private static IEnumerator CapturePickSequence(RawImage surface, string label)
+        {
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("ASTRAL_ARENA_CAPTURE_DIR"))) yield break;
+            float firstFrame = Time.unscaledTime;
+            yield return Capture(label);
+            yield return new WaitUntil(() => Time.unscaledTime >= firstFrame + .20f);
+            if (surface.enabled) yield return Capture(label + "-outline");
         }
 
         private static IEnumerator Capture(string label)

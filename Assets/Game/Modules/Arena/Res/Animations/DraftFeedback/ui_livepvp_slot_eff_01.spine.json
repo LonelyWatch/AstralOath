@@ -1,0 +1,802 @@
+{
+  "skeleton": {
+    "hash": "guddXcEv2X+LxGjUsz16J2wJZvo",
+    "spine": "2.1.27",
+    "width": 0.0,
+    "height": 0.0
+  },
+  "bones": [
+    {
+      "name": "root"
+    },
+    {
+      "name": "pivot",
+      "parent": "root"
+    },
+    {
+      "name": "glow",
+      "parent": "pivot",
+      "scaleX": 4.176159954071045,
+      "scaleY": 2.4725
+    },
+    {
+      "name": "slot",
+      "parent": "pivot"
+    }
+  ],
+  "slots": [
+    {
+      "name": "slot_glow_n",
+      "bone": "slot",
+      "attachment": "slot1_1"
+    },
+    {
+      "name": "slot_line",
+      "bone": "slot",
+      "attachment": "slot1_3",
+      "additive": true
+    },
+    {
+      "name": "slot_line2",
+      "bone": "slot",
+      "attachment": "slot1_3",
+      "additive": true
+    },
+    {
+      "name": "slot_glow_a",
+      "bone": "slot",
+      "attachment": "slot1_1",
+      "additive": true
+    },
+    {
+      "name": "slot_glow_g",
+      "bone": "slot",
+      "attachment": "slot1_2",
+      "additive": true
+    },
+    {
+      "name": "glow",
+      "bone": "glow",
+      "attachment": "flash",
+      "additive": true
+    }
+  ],
+  "skins": {
+    "default": {
+      "slot_line2": {
+        "slot1_3": {
+          "name": "slot1_3",
+          "path": "slot1_3",
+          "scaleX": 2.240000009536743,
+          "scaleY": 2.240000009536743,
+          "color": "FFFFFFFF",
+          "width": 335,
+          "height": 131
+        }
+      },
+      "slot_line": {
+        "slot1_3": {
+          "name": "slot1_3",
+          "path": "slot1_3",
+          "scaleX": 2.240000009536743,
+          "scaleY": 2.240000009536743,
+          "color": "FFFFFFFF",
+          "width": 335,
+          "height": 131
+        }
+      },
+      "slot_glow_n": {
+        "slot1_1": {
+          "name": "slot1_1",
+          "path": "slot1_1",
+          "scaleX": 2.240000009536743,
+          "scaleY": 2.240000009536743,
+          "color": "FFFFFFFF",
+          "width": 335,
+          "height": 131
+        }
+      },
+      "slot_glow_g": {
+        "slot1_2": {
+          "name": "slot1_2",
+          "path": "slot1_2",
+          "scaleX": 2.240000009536743,
+          "scaleY": 2.240000009536743,
+          "color": "FFFFFFFF",
+          "width": 335,
+          "height": 131
+        }
+      },
+      "slot_glow_a": {
+        "slot1_1": {
+          "name": "slot1_1",
+          "path": "slot1_1",
+          "scaleX": 2.240000009536743,
+          "scaleY": 2.240000009536743,
+          "color": "FFFFFFFF",
+          "width": 335,
+          "height": 131
+        }
+      },
+      "glow": {
+        "flash": {
+          "name": "flash",
+          "path": "flash",
+          "scaleX": 1,
+          "scaleY": 1,
+          "color": "FFFFFFFF",
+          "width": 256,
+          "height": 256
+        }
+      }
+    }
+  },
+  "animations": {
+    "blue_idle": {
+      "slots": {
+        "glow": {
+          "color": [
+            {
+              "time": 0.0,
+              "color": "5676FF00"
+            }
+          ]
+        },
+        "slot_glow_a": {
+          "color": [
+            {
+              "time": 0.0,
+              "color": "FFFFFF00"
+            }
+          ]
+        },
+        "slot_glow_g": {
+          "color": [
+            {
+              "time": 0.0,
+              "color": "FFFFFF00"
+            }
+          ]
+        },
+        "slot_glow_n": {
+          "color": [
+            {
+              "time": 0.0,
+              "color": "FFFFFF00"
+            }
+          ]
+        },
+        "slot_line": {
+          "color": [
+            {
+              "time": 0.0,
+              "color": "86EDFFFF",
+              "curve": [
+                0.25,
+                0.0,
+                0.75,
+                1.0
+              ]
+            },
+            {
+              "time": 0.5,
+              "color": "86EDFF35",
+              "curve": [
+                0.25,
+                0.0,
+                0.75,
+                1.0
+              ]
+            },
+            {
+              "time": 1.0,
+              "color": "86EDFFFF"
+            }
+          ]
+        },
+        "slot_line2": {
+          "color": [
+            {
+              "time": 0.0,
+              "color": "282CFFFF",
+              "curve": [
+                0.25,
+                0.0,
+                0.75,
+                1.0
+              ]
+            },
+            {
+              "time": 0.5,
+              "color": "282CFF35",
+              "curve": [
+                0.25,
+                0.0,
+                0.75,
+                1.0
+              ]
+            },
+            {
+              "time": 1.0,
+              "color": "282CFFFF"
+            }
+          ]
+        }
+      },
+      "bones": {
+        "pivot": {
+          "rotate": [
+            {
+              "time": 0.0,
+              "angle": 0.0
+            }
+          ],
+          "translate": [
+            {
+              "time": 0.0
+            }
+          ],
+          "scale": [
+            {
+              "time": 0.0,
+              "x": 1.0,
+              "y": 1.0
+            }
+          ]
+        },
+        "slot": {
+          "rotate": [
+            {
+              "time": 0.0,
+              "angle": 0.0
+            }
+          ],
+          "translate": [
+            {
+              "time": 0.0
+            }
+          ],
+          "scale": [
+            {
+              "time": 0.0,
+              "x": 1.0,
+              "y": 1.0
+            }
+          ]
+        },
+        "glow": {
+          "rotate": [
+            {
+              "time": 0.0,
+              "angle": 0.0
+            }
+          ],
+          "translate": [
+            {
+              "time": 0.0
+            }
+          ],
+          "scale": [
+            {
+              "time": 0.0,
+              "x": 1.0,
+              "y": 1.0
+            }
+          ]
+        }
+      }
+    },
+    "blue_set": {
+      "slots": {
+        "glow": {
+          "color": [
+            {
+              "time": 0.0,
+              "color": "3B43FF70",
+              "curve": "stepped"
+            },
+            {
+              "time": 0.10000000149011612,
+              "color": "3B43FF70"
+            },
+            {
+              "time": 0.6665999889373779,
+              "color": "3B43FF00"
+            }
+          ]
+        },
+        "slot_glow_a": {
+          "color": [
+            {
+              "time": 0.0,
+              "color": "7992FFFF",
+              "curve": "stepped"
+            },
+            {
+              "time": 0.10000000149011612,
+              "color": "7992FFFF"
+            },
+            {
+              "time": 0.26660001277923584,
+              "color": "7992FF00"
+            }
+          ]
+        },
+        "slot_glow_g": {
+          "color": [
+            {
+              "time": 0.0,
+              "color": "6093FFFF",
+              "curve": "stepped"
+            },
+            {
+              "time": 0.10000000149011612,
+              "color": "6093FFFF",
+              "curve": "stepped"
+            },
+            {
+              "time": 0.26660001277923584,
+              "color": "6093FFFF"
+            },
+            {
+              "time": 0.4666000008583069,
+              "color": "6093FF00"
+            }
+          ]
+        },
+        "slot_glow_n": {
+          "color": [
+            {
+              "time": 0.0,
+              "color": "85ACFFFF",
+              "curve": "stepped"
+            },
+            {
+              "time": 0.10000000149011612,
+              "color": "85ACFFFF"
+            },
+            {
+              "time": 0.26660001277923584,
+              "color": "85ACFF00"
+            }
+          ]
+        },
+        "slot_line": {
+          "color": [
+            {
+              "time": 0.0,
+              "color": "86EDFFFF",
+              "curve": "stepped"
+            },
+            {
+              "time": 0.10000000149011612,
+              "color": "86EDFFFF"
+            },
+            {
+              "time": 0.6665999889373779,
+              "color": "86EDFF00"
+            }
+          ]
+        },
+        "slot_line2": {
+          "color": [
+            {
+              "time": 0.0,
+              "color": "282CFFFF",
+              "curve": "stepped"
+            },
+            {
+              "time": 0.10000000149011612,
+              "color": "282CFFFF"
+            },
+            {
+              "time": 0.6665999889373779,
+              "color": "282CFF00"
+            }
+          ]
+        }
+      },
+      "bones": {
+        "slot": {
+          "rotate": [
+            {
+              "time": 0.0,
+              "angle": 0.0
+            }
+          ],
+          "translate": [
+            {
+              "time": 0.0
+            }
+          ],
+          "scale": [
+            {
+              "time": 0.0,
+              "x": 1.0,
+              "y": 1.0
+            }
+          ]
+        },
+        "pivot": {
+          "rotate": [
+            {
+              "time": 0.0,
+              "angle": 0.0
+            }
+          ],
+          "translate": [
+            {
+              "time": 0.0
+            }
+          ],
+          "scale": [
+            {
+              "time": 0.0,
+              "x": 1.0,
+              "y": 1.0
+            }
+          ]
+        },
+        "glow": {
+          "rotate": [
+            {
+              "time": 0.0,
+              "angle": 0.0
+            }
+          ],
+          "translate": [
+            {
+              "time": 0.0
+            }
+          ],
+          "scale": [
+            {
+              "time": 0.0,
+              "x": 1.0,
+              "y": 1.0
+            }
+          ]
+        }
+      }
+    },
+    "red_idle": {
+      "slots": {
+        "glow": {
+          "color": [
+            {
+              "time": 0.0,
+              "color": "5676FF00"
+            }
+          ]
+        },
+        "slot_glow_a": {
+          "color": [
+            {
+              "time": 0.0,
+              "color": "FFFFFF00"
+            }
+          ]
+        },
+        "slot_glow_g": {
+          "color": [
+            {
+              "time": 0.0,
+              "color": "FFFFFF00"
+            }
+          ]
+        },
+        "slot_glow_n": {
+          "color": [
+            {
+              "time": 0.0,
+              "color": "FFFFFF00"
+            }
+          ]
+        },
+        "slot_line": {
+          "color": [
+            {
+              "time": 0.0,
+              "color": "FFF38CFF",
+              "curve": [
+                0.25,
+                0.0,
+                0.75,
+                1.0
+              ]
+            },
+            {
+              "time": 0.5,
+              "color": "FFF38C34",
+              "curve": [
+                0.25,
+                0.0,
+                0.75,
+                1.0
+              ]
+            },
+            {
+              "time": 1.0,
+              "color": "FFF38CFF"
+            }
+          ]
+        },
+        "slot_line2": {
+          "color": [
+            {
+              "time": 0.0,
+              "color": "FF0107FF",
+              "curve": [
+                0.25,
+                0.0,
+                0.75,
+                1.0
+              ]
+            },
+            {
+              "time": 0.5,
+              "color": "FF010734",
+              "curve": [
+                0.25,
+                0.0,
+                0.75,
+                1.0
+              ]
+            },
+            {
+              "time": 1.0,
+              "color": "FF0107FF"
+            }
+          ]
+        }
+      },
+      "bones": {
+        "pivot": {
+          "rotate": [
+            {
+              "time": 0.0,
+              "angle": 0.0
+            }
+          ],
+          "translate": [
+            {
+              "time": 0.0
+            }
+          ],
+          "scale": [
+            {
+              "time": 0.0,
+              "x": -1.0,
+              "y": 1.0
+            }
+          ]
+        },
+        "slot": {
+          "rotate": [
+            {
+              "time": 0.0,
+              "angle": 0.0
+            }
+          ],
+          "translate": [
+            {
+              "time": 0.0
+            }
+          ],
+          "scale": [
+            {
+              "time": 0.0,
+              "x": 1.0,
+              "y": 1.0
+            }
+          ]
+        },
+        "glow": {
+          "rotate": [
+            {
+              "time": 0.0,
+              "angle": 0.0
+            }
+          ],
+          "translate": [
+            {
+              "time": 0.0
+            }
+          ],
+          "scale": [
+            {
+              "time": 0.0,
+              "x": 1.0,
+              "y": 1.0
+            }
+          ]
+        }
+      }
+    },
+    "red_set": {
+      "slots": {
+        "glow": {
+          "color": [
+            {
+              "time": 0.0,
+              "color": "FF494770",
+              "curve": "stepped"
+            },
+            {
+              "time": 0.10000000149011612,
+              "color": "FF494770"
+            },
+            {
+              "time": 0.6665999889373779,
+              "color": "FF494700"
+            }
+          ]
+        },
+        "slot_glow_a": {
+          "color": [
+            {
+              "time": 0.0,
+              "color": "FFA971FF",
+              "curve": "stepped"
+            },
+            {
+              "time": 0.10000000149011612,
+              "color": "FFA971FF"
+            },
+            {
+              "time": 0.26660001277923584,
+              "color": "FFA97100"
+            }
+          ]
+        },
+        "slot_glow_g": {
+          "color": [
+            {
+              "time": 0.0,
+              "color": "FFF099FF",
+              "curve": "stepped"
+            },
+            {
+              "time": 0.10000000149011612,
+              "color": "FFF099FF",
+              "curve": "stepped"
+            },
+            {
+              "time": 0.26660001277923584,
+              "color": "FFF099FF"
+            },
+            {
+              "time": 0.4666000008583069,
+              "color": "FFF09900"
+            }
+          ]
+        },
+        "slot_glow_n": {
+          "color": [
+            {
+              "time": 0.0,
+              "color": "FFCB72FF",
+              "curve": "stepped"
+            },
+            {
+              "time": 0.10000000149011612,
+              "color": "FFCB72FF"
+            },
+            {
+              "time": 0.26660001277923584,
+              "color": "FFCB7200"
+            }
+          ]
+        },
+        "slot_line": {
+          "color": [
+            {
+              "time": 0.0,
+              "color": "FFF38CFF",
+              "curve": "stepped"
+            },
+            {
+              "time": 0.10000000149011612,
+              "color": "FFF38CFF",
+              "curve": [
+                0.25,
+                0.0,
+                0.75,
+                1.0
+              ]
+            },
+            {
+              "time": 0.6665999889373779,
+              "color": "FFF38C00"
+            }
+          ]
+        },
+        "slot_line2": {
+          "color": [
+            {
+              "time": 0.0,
+              "color": "FF0107FF",
+              "curve": "stepped"
+            },
+            {
+              "time": 0.10000000149011612,
+              "color": "FF0107FF",
+              "curve": [
+                0.25,
+                0.0,
+                0.75,
+                1.0
+              ]
+            },
+            {
+              "time": 0.6665999889373779,
+              "color": "FF010700"
+            }
+          ]
+        }
+      },
+      "bones": {
+        "slot": {
+          "rotate": [
+            {
+              "time": 0.0,
+              "angle": 0.0
+            }
+          ],
+          "translate": [
+            {
+              "time": 0.0
+            }
+          ],
+          "scale": [
+            {
+              "time": 0.0,
+              "x": 1.0,
+              "y": 1.0
+            }
+          ]
+        },
+        "pivot": {
+          "rotate": [
+            {
+              "time": 0.0,
+              "angle": 0.0
+            }
+          ],
+          "translate": [
+            {
+              "time": 0.0
+            }
+          ],
+          "scale": [
+            {
+              "time": 0.0,
+              "x": -1.0,
+              "y": 1.0
+            }
+          ]
+        },
+        "glow": {
+          "rotate": [
+            {
+              "time": 0.0,
+              "angle": 0.0
+            }
+          ],
+          "translate": [
+            {
+              "time": 0.0
+            }
+          ],
+          "scale": [
+            {
+              "time": 0.0,
+              "x": 1.0,
+              "y": 1.0
+            }
+          ]
+        }
+      }
+    }
+  }
+}

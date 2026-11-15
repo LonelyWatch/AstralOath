@@ -134,6 +134,8 @@ namespace AstralOath.Client.BattleScene
                 root.SetActive(true);
             }
 
+            public void SetOpacity(float opacity) => material.SetFloat("_PresentationOpacity", opacity);
+
             public void Stop()
             {
                 if (root)
@@ -384,6 +386,12 @@ namespace AstralOath.Client.BattleScene
             time += delta;
             foreach (var emitter in emitters)
                 emitter.Tick(previous, time, random);
+        }
+
+        public void SetOpacity(float opacity)
+        {
+            foreach (var emitter in emitters)
+                emitter.SetOpacity(Mathf.Clamp01(opacity));
         }
 
         public void Stop()

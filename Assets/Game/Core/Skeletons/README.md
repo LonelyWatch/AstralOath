@@ -12,6 +12,8 @@ TryGetBonePose 返回官方内核计算后的只读局部位置（已按 source.
 
 `Resources/AstralOathSkeleton.shader` 是母包内置 URP unlit shader，支持 straight/PMA atlas、normal/additive/multiply/screen、slot/attachment tint 和 3.8 two-color tint。PMA 由调用方显式指定，不从纹理内容猜测。Atlas 纹理导入器负责过滤、wrap、色彩空间；桥接不修改借入纹理。Linear 项目中对 sRGB PMA 输入先取消 sRGB 预乘，再在线性空间重新预乘。PMA 输入应保留源 RGB，导入器关闭 alphaIsTransparency。2.1 官方 core 的 normal/additive 字段仍由官方读取。SCSP 2.1 额外的 multiply/screen 槽位由桥接在同一份不可变解析缓存内读取命名 blend 字段，并复用 3.8 已有材质配置。席可的立绘实际包含 multiply 的 `1/hairs` 槽位。本次桥接变更需要重新构建 AOT 母包。
 
+母包骨骼材质允许离屏特效给 RGB 与 alpha 分别指定混合因子。竞技场确认光在实例材质上启用，普通骨骼仍使用默认覆盖行为；加色层只累加亮度，避免后续 UI 合成把光误当作遮罩。竞技场源骨骼的 sRGB 颜色转换与粒子的柔光衰减也仅对该实例启用。
+
 本桥接不是 Canvas Graphic，Root 使用 MeshRenderer，需要场景 Camera，或由上层将相机 RenderTexture 显示到 UI。EditMode 测试验证动画/几何/生命周期/材质配置；shader 最终像素、真实资源画面及 Windows IL2CPP 播放另做验收，不以编译或合成测试代替。
 
 ## 2.1 动画状态约定

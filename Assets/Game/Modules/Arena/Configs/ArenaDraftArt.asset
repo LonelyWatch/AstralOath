@@ -11,7 +11,57 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bb092d138f31cff47a21db9dc90133f2, type: 3}
   m_Name: ArenaDraftArt
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
+  BluePick:
+  - Skeleton: {fileID: 4900000, guid: 4c12be0b5a595b21917211f324c54477, type: 3}
+    Atlas: {fileID: 4900000, guid: 750e1f02d2c4568f804ccd6d0dfba8d4, type: 3}
+    Particles: {fileID: 4900000, guid: 86e0ee0f58985d56a3c07b107b42752e, type: 3}
+    Page: {fileID: 2800000, guid: 69f7c00fcc6b5428a060c464121e3be6, type: 3}
+  - Skeleton: {fileID: 4900000, guid: 192678a09560556b9d6bdd2ba5bc81a5, type: 3}
+    Atlas: {fileID: 4900000, guid: 95570a7020b95f0782d781e9bf258886, type: 3}
+    Particles: {fileID: 4900000, guid: aa9eb021bd1d5fa3927e4e1123e1b134, type: 3}
+    Page: {fileID: 2800000, guid: 9b9e79abadd75c92aa6d814595d5a118, type: 3}
+  - Skeleton: {fileID: 4900000, guid: df0a6a2e34455a13b820e67472aaee7e, type: 3}
+    Atlas: {fileID: 4900000, guid: 1454b6d858ad557dbfc0d51b5bc1e1d0, type: 3}
+    Particles: {fileID: 4900000, guid: 53f964c2933855faa209ce683e673ea6, type: 3}
+    Page: {fileID: 2800000, guid: 1bd880468139501cb6e9303dd200cf08, type: 3}
+  - Skeleton: {fileID: 4900000, guid: b89f1014def8548e9f04843d5fb7faa7, type: 3}
+    Atlas: {fileID: 4900000, guid: c4ef8822dbfa5c3d8834e2a0696fba36, type: 3}
+    Particles: {fileID: 4900000, guid: 2d63d37a34955382b9e433b777660f66, type: 3}
+    Page: {fileID: 2800000, guid: dabafa1da6e5535d9d5dd17aad97c481, type: 3}
+  - Skeleton: {fileID: 4900000, guid: 77cb87ac51d95c3d999dc763bd69f4d0, type: 3}
+    Atlas: {fileID: 4900000, guid: 6fe7665af4b656ccaca86bb0368e61ca, type: 3}
+    Particles: {fileID: 4900000, guid: 256414e5f8d9540ba19b6e5b6feb7206, type: 3}
+    Page: {fileID: 2800000, guid: f9badb8545315f75ae30f69bf9b80c7e, type: 3}
+  RedPick:
+  - Skeleton: {fileID: 4900000, guid: 4c12be0b5a595b21917211f324c54477, type: 3}
+    Atlas: {fileID: 4900000, guid: 750e1f02d2c4568f804ccd6d0dfba8d4, type: 3}
+    Particles: {fileID: 4900000, guid: ba8b2ced7ee556b38e81f1bf18d502ed, type: 3}
+    Page: {fileID: 2800000, guid: 69f7c00fcc6b5428a060c464121e3be6, type: 3}
+  - Skeleton: {fileID: 4900000, guid: 192678a09560556b9d6bdd2ba5bc81a5, type: 3}
+    Atlas: {fileID: 4900000, guid: 95570a7020b95f0782d781e9bf258886, type: 3}
+    Particles: {fileID: 4900000, guid: 42db17d67539555cbaea41d84ab8e5c2, type: 3}
+    Page: {fileID: 2800000, guid: 9b9e79abadd75c92aa6d814595d5a118, type: 3}
+  - Skeleton: {fileID: 4900000, guid: df0a6a2e34455a13b820e67472aaee7e, type: 3}
+    Atlas: {fileID: 4900000, guid: 1454b6d858ad557dbfc0d51b5bc1e1d0, type: 3}
+    Particles: {fileID: 4900000, guid: 48efffd02076516caa7c5c870b0c1d72, type: 3}
+    Page: {fileID: 2800000, guid: 1bd880468139501cb6e9303dd200cf08, type: 3}
+  - Skeleton: {fileID: 4900000, guid: b89f1014def8548e9f04843d5fb7faa7, type: 3}
+    Atlas: {fileID: 4900000, guid: c4ef8822dbfa5c3d8834e2a0696fba36, type: 3}
+    Particles: {fileID: 4900000, guid: 1006975558865e48b226c738f75e3cf8, type: 3}
+    Page: {fileID: 2800000, guid: dabafa1da6e5535d9d5dd17aad97c481, type: 3}
+  - Skeleton: {fileID: 4900000, guid: 77cb87ac51d95c3d999dc763bd69f4d0, type: 3}
+    Atlas: {fileID: 4900000, guid: 6fe7665af4b656ccaca86bb0368e61ca, type: 3}
+    Particles: {fileID: 4900000, guid: ece08eaabe65556091972a59a630d13d, type: 3}
+    Page: {fileID: 2800000, guid: f9badb8545315f75ae30f69bf9b80c7e, type: 3}
+  FinalBan:
+    Skeleton: {fileID: 4900000, guid: 6947daf4031c5795b23b93ba6bc0a3d7, type: 3}
+    Atlas: {fileID: 4900000, guid: 45cdfb6ec0ff56afa2e1b8ed0deddb04, type: 3}
+    Particles: {fileID: 4900000, guid: 7512f2e7bd9a5466a4d096e3a8337faf, type: 3}
+    Page: {fileID: 2800000, guid: 1c7cc4cb4ec6507ba2fb7a2b34423dc1, type: 3}
+  ParticleTextures:
+  - {fileID: 2800000, guid: 78d168fc867d5e2288fb3671aa940a1b, type: 3}
+  - {fileID: 2800000, guid: af6b0801568d58958ff86f9feea7da33, type: 3}
   Heroes:
   - Id: c1001
     Name: "\u62C9\u65AF"

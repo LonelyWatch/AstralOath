@@ -32,10 +32,18 @@ namespace AstralOath.Client.Tests
                 var card = bindings.Require<BindingMap>(side + index);
                 var tray = (Image)card.Require<GameButton>("button").targetGraphic;
                 var pending = card.Require<Image>("pending");
-                Assert.That(pending.sprite.name, Is.EqualTo(tray.sprite.name + "_select"));
-                Assert.That(pending.rectTransform.anchorMin, Is.EqualTo(tray.rectTransform.anchorMin));
-                Assert.That(pending.rectTransform.anchorMax, Is.EqualTo(tray.rectTransform.anchorMax));
-                Assert.That(pending.rectTransform.localScale.x, Is.EqualTo(tray.rectTransform.localScale.x));
+                var confirmation = card.Require<RawImage>("confirm");
+                Vector2 center = Center(tray.rectTransform);
+                Assert.That(pending.sprite.name, Is.EqualTo(tray.sprite.name + "_glow_" + side));
+                Assert.That(Vector2.Distance(Center(pending.rectTransform), center), Is.LessThan(.001f));
+                Assert.That(Vector2.Distance(Center(confirmation.rectTransform), center), Is.LessThan(.001f));
+                Assert.That(pending.rectTransform.anchorMin.x, Is.LessThan(tray.rectTransform.anchorMin.x));
+                Assert.That(pending.rectTransform.localScale.x, Is.GreaterThan(0),
+                    "The source red outline is already mirrored.");
+                Assert.That(confirmation.raycastTarget, Is.False);
+                Assert.That(confirmation.transform.GetSiblingIndex(), Is.GreaterThan(pending.transform.GetSiblingIndex()));
+
+                Vector2 Center(RectTransform picture) => (picture.anchorMin + picture.anchorMax) * .5f;
             }
         }
 

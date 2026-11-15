@@ -1,0 +1,34 @@
+
+ui_livepvp_slot_eff_01.sct
+size: 224,437
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 2, 266
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+slot1_1
+  rotate: false
+  xy: 2, 2
+  size: 220, 86
+  orig: 220, 86
+  offset: 0, 0
+  index: -1
+slot1_2
+  rotate: false
+  xy: 2, 90
+  size: 220, 86
+  orig: 220, 86
+  offset: 0, 0
+  index: -1
+slot1_3
+  rotate: false
+  xy: 2, 178
+  size: 220, 86
+  orig: 220, 86
+  offset: 0, 0
+  index: -1

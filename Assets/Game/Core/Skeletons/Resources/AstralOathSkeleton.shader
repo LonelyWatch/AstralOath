@@ -9,6 +9,10 @@ Shader "AstralOath/Skeleton"
         [HideInInspector] _PresentationOpacity("Presentation opacity", Float) = 1
         [HideInInspector] _SrcBlend("Source", Float) = 1
         [HideInInspector] _DstBlend("Destination", Float) = 10
+        [HideInInspector] _SrcAlphaBlend("Source alpha", Float) = 1
+        [HideInInspector] _DstAlphaBlend("Destination alpha", Float) = 10
+        [HideInInspector] _SrgbVertexTint("Vertex tint authored in sRGB", Float) = 0
+        [HideInInspector] _SoftEmissionFalloff("Reduce low-alpha emission", Float) = 0
     }
     SubShader
     {
@@ -18,7 +22,7 @@ Shader "AstralOath/Skeleton"
             Name "SkeletonUnlit"
             Tags { "LightMode"="SRPDefaultUnlit" }
             Cull Off ZWrite Off ZTest LEqual
-            Blend [_SrcBlend] [_DstBlend], One OneMinusSrcAlpha
+            Blend [_SrcBlend] [_DstBlend], [_SrcAlphaBlend] [_DstAlphaBlend]
             HLSLPROGRAM
             #pragma vertex Vert
             #pragma fragment Frag
@@ -30,6 +34,8 @@ Shader "AstralOath/Skeleton"
                 float _PmaSrgb;
                 float _PresentationBrightness;
                 float _PresentationOpacity;
+                float _SrgbVertexTint;
+                float _SoftEmissionFalloff;
             CBUFFER_END
             struct Attributes { float4 positionOS:POSITION; float2 uv:TEXCOORD0; half4 light:COLOR; half4 dark:TEXCOORD1; };
             struct Varyings { float4 positionCS:SV_POSITION; float2 uv:TEXCOORD0; half4 light:COLOR; half3 dark:TEXCOORD1; };
@@ -50,7 +56,12 @@ Shader "AstralOath/Skeleton"
                 else
                     tex.rgb *= lerp(tex.a, 1.0h, (half)_PremultipliedAlpha);
                 // Two-color tint in premultiplied space works for either atlas encoding.
-                half3 rgb = (tex.rgb * input.light.rgb + (tex.a - tex.rgb) * input.dark) * input.light.a;
+                half3 lightTint = input.light.rgb;
+                if (_SrgbVertexTint > 0.5)
+                    lightTint = SRGBToLinear(lightTint);
+                half3 rgb = (tex.rgb * lightTint + (tex.a - tex.rgb) * input.dark) * input.light.a;
+                if (_SoftEmissionFalloff > 0.5)
+                    rgb *= sqrt(saturate(tex.a));
                 return half4(rgb * saturate(_PresentationBrightness) * saturate(_PresentationOpacity),
                     tex.a * input.light.a * saturate(_PresentationOpacity));
             }

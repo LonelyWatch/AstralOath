@@ -114,6 +114,9 @@ namespace AstralOath.Editor
                 new Vector2(trayEdge + (enemy ? NativeRedBanXs[index] : NativeBlueBanXs[index]), 39.5f),
                 new Vector2(341 * .45f * .78f, 284 * .45f * .78f), new Vector2(.5f, .5f));
             selection.enabled = guard.enabled = mark.enabled = false;
+            // The set rig uses the same center as the slot glow with additional room for sparks.
+            var confirm = Raw(root, "Confirmed pick effect", -104f / width, -104f / NativeSlotHeight,
+                (width + 208f) / width, (NativeSlotHeight + 208f) / NativeSlotHeight);
             Image guardPlate = null;
             Image filledGuard = null;
             GameText guardCaption = null;
@@ -151,6 +154,8 @@ namespace AstralOath.Editor
                 keys.Add(("guardCaption", guardCaption));
                 keys.Add(("filledGuard", filledGuard));
             }
+            confirm.transform.SetAsLastSibling();
+            keys.Add(("confirm", confirm));
             for (int star = 0; star < starImages.Length; star++)
                 keys.Add(("star" + star, starImages[star]));
             Bind(root, keys.ToArray());

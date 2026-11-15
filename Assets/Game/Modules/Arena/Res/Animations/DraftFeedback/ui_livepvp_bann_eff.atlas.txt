@@ -1,0 +1,27 @@
+
+ui_livepvp_bann_eff.sct
+size: 773,253
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+ban
+  rotate: false
+  xy: 2, 2
+  size: 298, 249
+  orig: 298, 249
+  offset: 0, 0
+  index: -1
+ban_glow
+  rotate: false
+  xy: 302, 2
+  size: 298, 249
+  orig: 298, 249
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 602, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
