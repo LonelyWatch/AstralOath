@@ -38,6 +38,22 @@ try {
         [void][IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($destination))
         Copy-Item -LiteralPath (Join-Path $repo $file) -Destination $destination
     }
+    # The isolated fixture needs the same provisioned title art as the current source table.
+    $titleRows = @(Read-LubanRows (Join-Path $work 'Config/Tables/entry_title_themes.csv'))
+    if ($titleRows.Count -ne 1 -or $titleRows[0].id -cne 'current' -or
+        $titleRows[0].backgroundAddress -cnotmatch '\Aentry/backgrounds/(?<name>[a-z0-9_]+)\z') {
+        throw 'The entry fixture needs the current title theme.'
+    }
+    $titleName = $Matches.name
+    $titleSourceDirectory = 'Assets/Game/Modules/Home/Res/Textures/Entry'
+    $titleSource = @(Get-ChildItem -LiteralPath (Join-Path $repo $titleSourceDirectory) -File | Where-Object {
+        $_.BaseName -ceq $titleName -and $_.Extension -cin '.jpg','.png'
+    })
+    if ($titleSource.Count -ne 1) { throw "Expected one source texture for the fixture title: $titleName" }
+    $titleTargetDirectory = [IO.Directory]::CreateDirectory((Join-Path $work $titleSourceDirectory)).FullName
+    $titleTarget = Join-Path $titleTargetDirectory $titleSource[0].Name
+    Copy-Item -LiteralPath $titleSource[0].FullName -Destination $titleTarget
+
     $battleSkills = Read-LubanRows (Join-Path $work 'Config/Tables/battle_skills.csv')
     # Both the base skill and optional variant icons are required by the production validator.
     $skillIcons = @($battleSkills.iconAsset) + @($battleSkills.speedUpIconAsset)
@@ -134,6 +150,21 @@ function global:tar { throw 'System tar is unavailable: LZMA codec is unsupporte
     }
     & $pwsh -NoProfile -File $generate -Dotnet $dotnet -VerifyAccessors -CheckClient
     if ($LASTEXITCODE -ne 0) { throw 'Generated client snapshots failed the freshness check.' }
+
+    $titleSnapshot = Join-Path $work 'Assets/Game/Modules/Home/Configs/entry-theme.json'
+    $titleJson = [IO.File]::ReadAllText($titleSnapshot)
+    if (($titleJson | ConvertFrom-Json).backgroundAddress -cne $titleRows[0].backgroundAddress) {
+        throw 'The entry theme snapshot did not pick up the source table.'
+    }
+    Move-Item -LiteralPath $titleTarget -Destination "$titleTarget.unavailable"
+    $missingTitle = & $pwsh -NoProfile -File $generate -Dotnet $dotnet -SyncClient 2>&1
+    if ($LASTEXITCODE -eq 0 -or ($missingTitle -join "`n") -notmatch 'Entry theme references a missing or ambiguous texture') {
+        throw "The missing entry theme was not rejected by the expected validator: $($missingTitle -join "`n")"
+    }
+    if ([IO.File]::ReadAllText($titleSnapshot) -cne $titleJson) {
+        throw 'A missing title texture changed the published entry theme snapshot.'
+    }
+    Move-Item -LiteralPath "$titleTarget.unavailable" -Destination $titleTarget
 
     foreach ($invalid in @('presentation', 'slot', 'coefficient')) {
         $skillRows = @(Read-LubanRows $skillTable)
