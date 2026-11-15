@@ -16,7 +16,10 @@ namespace AstralOath.Client.Arena
         private readonly bool miniature;
         private readonly Vector2? nativeEffectSize;
         private readonly Vector2? effectRightFade;
-        private readonly bool blendCardLight;
+        private readonly bool blendCardLight, centralBanLight;
+        private RectTransform effectPlacement;
+        private float effectScale = 1f;
+        private bool BanLight => centralBanLight || effectPlacement != null;
         private readonly Material originalMaterial;
         private readonly ISkeletonPlayerFactory factory = new SkeletonPlayerFactory();
 
@@ -47,7 +50,7 @@ namespace AstralOath.Client.Arena
             : this(output, miniature, null) { }
 
         internal ArenaDraftPortrait(RawImage output, bool miniature = false, Vector2? nativeEffectSize = null,
-            Vector2? effectRightFade = null, bool blendCardLight = false)
+            Vector2? effectRightFade = null, bool blendCardLight = false, bool centralBanLight = false)
         {
             this.output = output ? output : throw new ArgumentNullException(nameof(output));
             this.miniature = miniature;
@@ -56,6 +59,7 @@ namespace AstralOath.Client.Arena
             this.nativeEffectSize = nativeEffectSize;
             this.effectRightFade = effectRightFade;
             this.blendCardLight = blendCardLight;
+            this.centralBanLight = centralBanLight;
             originalMaterial = output.material;
             output.raycastTarget = false;
             output.enabled = false;
@@ -80,6 +84,8 @@ namespace AstralOath.Client.Arena
             bool same = !oneShot && ReferenceEquals(this.source, source) && this.skin == skin && this.animation == animation;
             if (same && player != null) return true;
             oneShot = false;
+            effectPlacement = null;
+            effectScale = 1f;
             this.source = source;
             this.skin = skin;
             this.animation = animation;
@@ -91,7 +97,7 @@ namespace AstralOath.Client.Arena
             return StartPlayer();
         }
 
-        internal bool PlayOneShot(SkeletonPlayerSource source, string animation)
+        internal bool PlayOneShot(SkeletonPlayerSource source, string animation, RectTransform placement = null, float scale = 1f)
         {
             if (disposed || !output) return false;
             if (source == null || string.IsNullOrWhiteSpace(animation)) { Clear(); return false; }
@@ -100,6 +106,8 @@ namespace AstralOath.Client.Arena
             this.skin = null;
             this.animation = animation;
             oneShot = true;
+            effectPlacement = placement;
+            effectScale = scale;
             if (!output.gameObject.activeInHierarchy)
             {
                 ReleaseStage();
@@ -111,20 +119,20 @@ namespace AstralOath.Client.Arena
         internal bool IsVisible => output && output.enabled;
 
         internal void AddParticles(TextAsset definition, IReadOnlyDictionary<string, Texture2D> textures,
-            float delay, float angle, float opacity)
+            float delay, float angle)
         {
             if (!definition || !stage) return;
             ReleaseParticles();
             particleAnchor = new GameObject("Draft effect particles") { layer = PreviewLayer };
             particleAnchor.transform.SetParent(stage.transform, false);
             particleAnchor.transform.localRotation = Quaternion.Euler(0f, 0f, angle);
+            particleAnchor.transform.localScale = Vector3.one * effectScale;
             particleDelay = delay;
             particles = new BattleHudParticles(definition, textures, particleAnchor.transform, Vector2.zero, .01f, 5,
                 premultiplied: true, sourceColorsSrgb: true);
-            particles.SetOpacity(opacity);
-            if (blendCardLight)
+            if (blendCardLight || BanLight)
                 foreach (var renderer in particleAnchor.GetComponentsInChildren<MeshRenderer>(true))
-                    ConfigurePickLight(renderer, particle: true);
+                    ConfigureEffectLight(renderer, particle: true);
             if (delay == 0f) particles.Play();
         }
 
@@ -160,6 +168,9 @@ namespace AstralOath.Client.Arena
             }
             if (source == null || (player == null && !StartPlayer())) return;
             FrameOutput();
+            // Formation can load four previews in the frame that starts the ban reveal.
+            // Keep the stamp's impact visible instead of consuming its whole clip in that frame.
+            if (oneShot && BanLight) unscaledDeltaTime = Mathf.Min(unscaledDeltaTime, .10f);
             if (unscaledDeltaTime > 0) player.Tick(unscaledDeltaTime);
             if (particles != null && unscaledDeltaTime > 0f)
             {
@@ -200,6 +211,8 @@ namespace AstralOath.Client.Arena
             skin = null;
             animation = null;
             oneShot = false;
+            effectPlacement = null;
+            effectScale = 1f;
             ReleaseStage();
         }
 
@@ -217,8 +230,10 @@ namespace AstralOath.Client.Arena
                 ResetFeedback();
                 ReleaseParticles();
                 if (!stage) CreateStage();
+                material.SetFloat("_PreserveBanLight", BanLight ? 1f : 0f);
                 player?.Dispose();
                 player = factory.Create(source, stage.transform);
+                player.Root.transform.localScale *= effectScale;
                 var chosenSkin = skin ?? (miniature || nativeEffectSize.HasValue ? null : "normal");
                 if (chosenSkin != null && HasSkin(chosenSkin)) player.SetSkin(chosenSkin);
 
@@ -236,8 +251,8 @@ namespace AstralOath.Client.Arena
 
                 var mesh = player.Root.GetComponent<MeshFilter>().sharedMesh;
                 if (!mesh || mesh.vertexCount == 0) throw new InvalidOperationException("骨骼预览没有可见网格。");
-                if (blendCardLight)
-                    ConfigurePickLight(player.Root.GetComponent<MeshRenderer>(), particle: false);
+                if (blendCardLight || BanLight)
+                    ConfigureEffectLight(player.Root.GetComponent<MeshRenderer>(), particle: false);
                 framingBounds = mesh.bounds;
                 FrameOutput();
                 output.texture = target;
@@ -253,10 +268,9 @@ namespace AstralOath.Client.Arena
             }
         }
 
-        private static void ConfigurePickLight(MeshRenderer renderer, bool particle)
+        private void ConfigureEffectLight(MeshRenderer renderer, bool particle)
         {
-            // The five pick rigs have a single atlas. Their two blend materials are
-            // created at the first frame and owned by this player instance.
+            // Additive RGB must not contribute to the offscreen coverage mask.
             foreach (var layer in renderer.sharedMaterials)
             {
                 // Particle vertices already use linear colors. The Spine keys are sRGB.
@@ -265,7 +279,22 @@ namespace AstralOath.Client.Arena
                 if (layer.GetInt("_DstBlend") != (int)UnityEngine.Rendering.BlendMode.One) continue;
                 layer.SetInt("_SrcAlphaBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
                 layer.SetInt("_DstAlphaBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                if (particle) layer.SetFloat("_SoftEmissionFalloff", 1f);
+                if (!particle)
+                {
+                    if (effectPlacement)
+                    {
+                        // The small card reveal keeps a concentrated flash at the stamp.
+                        // Reduce the low-alpha red Spine halo before compositing it over the card.
+                        layer.SetFloat("_SoftEmissionFalloff", 1f);
+                        layer.SetFloat("_PresentationOpacity", .68f);
+                    }
+                    continue;
+                }
+                // The broad native halo and compact sparks use different textures.
+                // Keep the spark cores bright while letting the halo fall away quickly.
+                bool banHalo = BanLight && layer.mainTexture && layer.mainTexture.name == "pati_03";
+                if (!BanLight || banHalo) layer.SetFloat("_SoftEmissionFalloff", 1f);
+                if (banHalo) layer.SetFloat("_PresentationOpacity", .34f);
             }
         }
 
@@ -305,7 +334,7 @@ namespace AstralOath.Client.Arena
             camera.allowHDR = nativeEffectSize.HasValue && SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.ARGBHalf);
             camera.allowMSAA = false;
             camera.depth = -100;
-            int size = miniature ? 256 : 768;
+            int size = miniature ? 384 : 768;
             var format = camera.allowHDR ? RenderTextureFormat.ARGBHalf : RenderTextureFormat.ARGB32;
             target = new RenderTexture(size, size, 16, format)
             {
@@ -316,6 +345,7 @@ namespace AstralOath.Client.Arena
             material = new Material(shader) { hideFlags = HideFlags.HideAndDontSave };
             if (nativeEffectSize.HasValue) material.SetFloat("_SoftEffectEdges", 1f);
             if (blendCardLight) material.SetFloat("_BlendCardLight", 1f);
+
             if (effectRightFade.HasValue)
             {
                 var fade = effectRightFade.Value;
@@ -332,14 +362,31 @@ namespace AstralOath.Client.Arena
             {
                 // Effect sources use .01 world units per native pixel and an authored origin.
                 var size = nativeEffectSize.Value;
-                camera.orthographicSize = Mathf.Max(size.y, size.x / aspect) * .005f;
-                camera.transform.localPosition = new Vector3(0, 0, -10);
+                float halfHeight = Mathf.Max(size.y, size.x / aspect) * .005f;
+                camera.orthographicSize = halfHeight;
+                var center = new Vector3(0, 0, -10);
+                if (effectPlacement && rect.width > 0f && rect.height > 0f)
+                {
+                    var stamp = effectPlacement.TransformPoint(effectPlacement.rect.center);
+                    Vector2 local = (Vector2)output.rectTransform.InverseTransformPoint(stamp) - rect.center;
+                    center.x = -local.x / rect.width * halfHeight * 2f * aspect;
+                    center.y = -local.y / rect.height * halfHeight * 2f;
+                }
+                camera.transform.localPosition = center;
             }
             else if (miniature)
             {
-                // CSB specifies the floor anchors, not the runtime model scale. Use one
-                // display scale for the roster; only oversized meshes are reduced once.
-                // Keep the rig origin on the floor (120,50), never recenter on animated bounds.
+                // Enlarge only the model surface about its authored floor point. The input,
+                // floor ring and change control stay on the prefab slot. Keeping the wider
+                // render area preserves the existing framing allowance for large weapons.
+                const float addedScale = .5f;
+                const float floorY = 50f / 240f;
+                var surface = output.rectTransform;
+                surface.anchorMin = new Vector2(-addedScale * .5f, -addedScale * floorY);
+                surface.anchorMax = new Vector2(1f + addedScale * .5f, 1f + addedScale * (1f - floorY));
+                surface.offsetMin = surface.offsetMax = Vector2.zero;
+
+                // Size the camera from the initial pose once; subsequent animation cannot zoom or shift the floor.
                 float pixelsPerUnit = MiniaturePixelsPerUnit(framingBounds);
                 camera.orthographicSize = 120f / pixelsPerUnit;
                 camera.transform.localPosition = new Vector3(0, 70f / pixelsPerUnit, -10);

@@ -309,8 +309,10 @@ namespace AstralOath.Client.Tests
             Assert.That(draft.Require<GameButton>("action").targetGraphic.color.a, Is.LessThan(.65f));
             yield return Capture("bp-final-ban-waiting");
             yield return Wait(() => draft.Require<RawImage>("banFeedback").enabled, "The native BANNED effect did not play.");
-            yield return new WaitForSecondsRealtime(.46f);
-            yield return Capture("bp-final-ban-effect");
+            yield return new WaitForSecondsRealtime(.20f);
+            yield return Capture("bp-final-ban-impact", sameFrame: true);
+            yield return new WaitForSecondsRealtime(.20f);
+            yield return Capture("bp-final-ban-effect", sameFrame: true);
             yield return new WaitForSecondsRealtime(.36f);
             yield return Capture("bp-final-ban-stamp");
             string hostBanned = (string)state["host"]["picks"][0];
@@ -325,6 +327,17 @@ namespace AstralOath.Client.Tests
                 Assert.That(banned.Require<Image>("portrait").color.r, Is.LessThan(.5f));
             }
             Assert.That(draft.Require<RawImage>("banFeedback").enabled, Is.False);
+            foreach (string slot in new[] { "blue0", "red0" })
+                Assert.That(draft.Require<BindingMap>(slot).Require<RawImage>("confirm").enabled, Is.True,
+                    slot + " should play its stamp impact when both bans are revealed.");
+            yield return new WaitForSecondsRealtime(.16f);
+            foreach (string slot in new[] { "blue0", "red0" })
+                Assert.That(draft.Require<BindingMap>(slot).Require<RawImage>("confirm").enabled, Is.True,
+                    slot + " must still be visible at the impact capture.");
+            yield return Capture("bp-final-ban-card-impact", sameFrame: true);
+            yield return Wait(() => !draft.Require<BindingMap>("blue0").Require<RawImage>("confirm").enabled &&
+                !draft.Require<BindingMap>("red0").Require<RawImage>("confirm").enabled,
+                "Ban card bursts must end and leave their static stamps visible.");
             var hostPicksSurviving = state["host"]["picks"].Values<string>().Where(id => id != hostBanned).ToArray();
             var guestPicksSurviving = state["guest"]["picks"].Values<string>().Where(id => id != (string)state["host"]["ban"]).ToArray();
             var first = draft.Require<BindingMap>("formation0").Require<GameButton>("button");
@@ -699,12 +712,12 @@ namespace AstralOath.Client.Tests
             if (surface.enabled) yield return Capture(label + "-outline");
         }
 
-        private static IEnumerator Capture(string label)
+        private static IEnumerator Capture(string label, bool sameFrame = false)
         {
             string path = Environment.GetEnvironmentVariable("ASTRAL_ARENA_CAPTURE_DIR");
             if (string.IsNullOrEmpty(path)) yield break;
             Directory.CreateDirectory(path);
-            yield return null;
+            if (!sameFrame) yield return null;
             var roots = SceneManager.GetActiveScene().GetRootGameObjects();
             var camera = roots.SelectMany(root => root.GetComponentsInChildren<Camera>()).First(item => item && item.enabled);
             var canvas = roots.SelectMany(root => root.GetComponentsInChildren<Canvas>()).First(item => item && item.isRootCanvas);
@@ -727,7 +740,7 @@ namespace AstralOath.Client.Tests
                 canvas.worldCamera = camera;
                 canvas.planeDistance = 1;
                 Canvas.ForceUpdateCanvases();
-                yield return null;
+                if (!sameFrame) yield return null;
                 camera.Render();
                 RenderTexture.active = target;
                 image.ReadPixels(new Rect(0, 0, width, height), 0, 0);

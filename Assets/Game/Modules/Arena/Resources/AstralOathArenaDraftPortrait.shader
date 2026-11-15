@@ -8,6 +8,7 @@ Shader "AstralOath/UI/ArenaDraftPortrait"
         _SoftEffectEdges ("Soft Effect Edges", Range(0, 1)) = 0
         _RightFade ("Right Fade", Vector) = (1, 2, 0, 0)
         _BlendCardLight ("Blend Card Light", Range(0, 1)) = 0
+        _PreserveBanLight ("Preserve Ban Light", Range(0, 1)) = 0
         _StencilComp ("Stencil Comparison", Float) = 8
         _Stencil ("Stencil ID", Float) = 0
         _StencilOp ("Stencil Operation", Float) = 0
@@ -58,7 +59,7 @@ Shader "AstralOath/UI/ArenaDraftPortrait"
 
             sampler2D _MainTex;
             float4 _ClipRect;
-            half _WhiteFlash, _Desaturation, _SoftEffectEdges, _BlendCardLight;
+            half _WhiteFlash, _Desaturation, _SoftEffectEdges, _BlendCardLight, _PreserveBanLight;
             float4 _RightFade;
 
             Varyings Vert(Input input)
@@ -81,7 +82,8 @@ Shader "AstralOath/UI/ArenaDraftPortrait"
                 // Confirmed picks preserve separate coverage for normal and additive layers.
                 // Keep the authored RGB over 1 so the slot can briefly peak white, then reveal
                 // the portrait as the filled slots fade before the line slots.
-                color.rgb *= lerp(rcp(max(1.0h, peak)), 1.12h, _BlendCardLight);
+                half gain = lerp(rcp(max(1.0h, peak)), 1.12h, _BlendCardLight);
+                color.rgb *= lerp(gain, 1.0h, _PreserveBanLight);
                 color.a = saturate(color.a);
                 color *= half4(input.color.rgb, 1) * input.color.a;
                 // A white silhouette inside the captured alpha, still premultiplied.

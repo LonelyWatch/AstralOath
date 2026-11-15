@@ -22,9 +22,15 @@ namespace AstralOath.Client.Tests
             var art = AssetDatabase.LoadAssetAtPath<ArenaDraftArt>("Assets/Game/Modules/Arena/Configs/ArenaDraftArt.asset");
             var type = typeof(ArenaDraftArt).Assembly.GetType("AstralOath.Client.Arena.ArenaDraftPortrait", true);
             const BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
-            var root = new GameObject("Preview regression", typeof(RectTransform), typeof(RawImage));
-            var image = root.GetComponent<RawImage>();
-            image.rectTransform.sizeDelta = new Vector2(240, 240);
+            var root = new GameObject("Preview regression", typeof(RectTransform));
+            ((RectTransform)root.transform).sizeDelta = new Vector2(240, 240);
+            var image = new GameObject("Battle model", typeof(RectTransform), typeof(RawImage)).GetComponent<RawImage>();
+            var surface = image.rectTransform;
+            surface.SetParent(root.transform, false);
+            surface.anchorMin = Vector2.zero;
+            surface.anchorMax = Vector2.one;
+            surface.offsetMin = surface.offsetMax = Vector2.zero;
+            var expectedFoot = root.transform.TransformPoint(new Vector3(0, -70f, 0));
             var preview = (IDisposable)Activator.CreateInstance(type, flags, null, new object[] { image, true }, null);
             try
             {
@@ -39,6 +45,10 @@ namespace AstralOath.Client.Tests
                     Vector3 foot = camera.WorldToViewportPoint(player.Root.transform.position);
                     Assert.That(foot.x, Is.EqualTo(.5f).Within(.001f), hero.Id);
                     Assert.That(foot.y, Is.EqualTo(50f / 240f).Within(.001f), hero.Id);
+                    Assert.That(surface.rect.width, Is.EqualTo(360f).Within(.1f), hero.Id + " display width");
+                    Assert.That(surface.rect.height, Is.EqualTo(360f).Within(.1f), hero.Id + " display height");
+                    var drawnFoot = surface.TransformPoint(surface.rect.min + Vector2.Scale(surface.rect.size, foot));
+                    Assert.That(Vector3.Distance(drawnFoot, expectedFoot), Is.LessThan(.1f), hero.Id + " floor anchor");
                     for (int frame = 0; frame < 8; frame++)
                     {
                         type.GetMethod("Tick", flags).Invoke(preview, new object[] { .12f });

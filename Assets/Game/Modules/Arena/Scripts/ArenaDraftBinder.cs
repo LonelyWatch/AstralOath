@@ -55,7 +55,7 @@ namespace AstralOath.Client.Arena
         private readonly Dictionary<string, Texture2D> particleTextures;
         private static readonly int[] NativeSlotWidths = { 291, 226, 196, 196, 226 };
         private float lastPickFeedbackUntil;
-        private bool banIntroPlaying;
+        private bool banIntroPlaying, revealBanCards;
         private readonly string[] shownFormation = new string[4];
 
         private BindingScope scope;
@@ -91,7 +91,10 @@ namespace AstralOath.Client.Arena
 
             Image[] Clock(string key) => new[] { view.Picture(key + "Tens"), view.Picture(key + "Units"), view.Picture(key + "Single") };
             feature = new ArenaDraftPortrait(view.Surface("featured"));
-            banFeedback = new ArenaDraftPortrait(view.Surface("banFeedback"), nativeEffectSize: new Vector2(1040, 620) * 2.60f);
+            var banSurface = view.Surface("banFeedback");
+            banSurface.color = Color.white;
+            banFeedback = new ArenaDraftPortrait(banSurface,
+                nativeEffectSize: new Vector2(1040, 620) * 2.60f, centralBanLight: true);
             particleTextures = artwork.ParticleTextures.ToDictionary(texture => texture.name, StringComparer.Ordinal);
             for (int index = 0; index < 5; index++)
             {
@@ -127,7 +130,7 @@ namespace AstralOath.Client.Arena
             formation = Empty;
             swapIndex = -1;
             revealUntil = lastPickFeedbackUntil = 0f;
-            sending = launching = banIntroPlaying = false;
+            sending = launching = banIntroPlaying = revealBanCards = false;
             localLatency = null;
             prebans.Clear();
             lastSecond = int.MinValue;
@@ -339,9 +342,10 @@ namespace AstralOath.Client.Arena
                 if (draft.phase == "ban") lastPickFeedbackUntil = Time.unscaledTime + .30f;
             }
             if (previousPhase == "ban" && draft.Own.ban != null && previousBan != draft.Own.ban)
-                banIntroPlaying = PlayEffect(banFeedback, artwork.FinalBan, "intro", .10f, 7f, .46f);
+                banIntroPlaying = PlayEffect(banFeedback, artwork.FinalBan, "intro", .10f, 7f);
             else if (previousPhase == null && draft.phase == "ban" && draft.Own.submitted)
                 banFeedback.Show(artwork.FinalBan.MakeSource(), animation: "loop");
+            if (previousPhase == "ban" && draft.phase == "formation") revealBanCards = true;
             if (changedPhase && draft.phase != "ban" && !banIntroPlaying)
                 banFeedback.Clear();
             if (draft.phase == "preban" && draft.Own.submitted)
@@ -383,11 +387,18 @@ namespace AstralOath.Client.Arena
         }
 
         private bool PlayEffect(ArenaDraftPortrait target, ArenaDraftArt.NativeEffect effect, string animation,
-            float particleDelay = 0f, float particleRotation = 0f, float particleOpacity = 1f)
+            float particleDelay = 0f, float particleRotation = 0f, RectTransform placement = null, float scale = 1f)
         {
-            if (!target.PlayOneShot(effect.MakeSource(), animation)) return false;
-            target.AddParticles(effect.Particles, particleTextures, particleDelay, particleRotation, particleOpacity);
+            if (!target.PlayOneShot(effect.MakeSource(), animation, placement, scale)) return false;
+            target.AddParticles(effect.Particles, particleTextures, particleDelay, particleRotation);
             return true;
+        }
+
+        private void PlayBanCard(Choice[] team, ArenaDraftPortrait[] effects, string bannedHero)
+        {
+            int index = Array.FindIndex(team, card => card.Id == bannedHero && card.Mark.enabled);
+            if (index >= 0)
+                PlayEffect(effects[index], artwork.FinalBan, "intro", .10f, 7f, team[index].Mark.rectTransform, .30f);
         }
 
         private string[] DraftFormation() => Count(draft.Own.formation) == 4
@@ -429,10 +440,10 @@ namespace AstralOath.Client.Arena
             view.Picture("red").enabled = !pick || !draft.OwnTurn;
             view.Picture("banMark").enabled = ban && !banFeedback.IsVisible;
             view.Picture("banGlow").enabled = ban;
-            // Source final-ban prompt is above the red ban emblem.
+            // Keep the final-ban instruction below the stamp and its brightest sparks.
             var hintRect = view.Label("hint").rectTransform;
-            hintRect.anchorMin = new Vector2(.285f, ban ? .279f : arrange ? .161f : .244f);
-            hintRect.anchorMax = new Vector2(.713f, ban ? .368f : arrange ? .234f : .317f);
+            hintRect.anchorMin = new Vector2(.285f, ban ? .139f : arrange ? .161f : .244f);
+            hintRect.anchorMax = new Vector2(.713f, ban ? .206f : arrange ? .234f : .317f);
             hintRect.offsetMin = hintRect.offsetMax = Vector2.zero;
 
             RenderTeam(left, draft.Own, draft.Opponent, pick && draft.OwnTurn, false, ban);
@@ -457,6 +468,12 @@ namespace AstralOath.Client.Arena
             foreach (var choice in revealedOwn.Concat(revealedEnemy)) choice.Button.interactable = false;
 
             if (arrange) RenderFormation(canAct);
+            if (arrange && draft.phase == "formation" && revealBanCards)
+            {
+                revealBanCards = false;
+                PlayBanCard(left, blueFeedback, draft.Opponent.ban);
+                PlayBanCard(right, redFeedback, draft.Own.ban);
+            }
             string activeCandidate = draft.OwnTurn ? candidate : draft.previewHeroId;
             string portraitId = pre || arrange ? null : ban
                 ? candidate ?? draft.Own.ban ?? (lastPickFeedbackUntil > 0f ? featured : null)
