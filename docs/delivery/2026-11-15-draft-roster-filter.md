@@ -9,4 +9,6 @@
 
 `ArenaDraftArt` 的筛选字段随原目录生成。素材导入及来源哈希可用 `Tools/Arena/ImportArenaArt.py --draft-filters-only --check` 核对。18 张原版 PNG 已逐字节校验，来源清单同时记录 `filter_sector3`、`filter_sorting_item` 和 `filter_list_group` 的布局文件哈希。实际 Unity 运行验证见同批选禁交付记录。
 
-联合真实联机 PlayMode 覆盖筛选打开、火属性与全部选项、关闭和滚动焦点，最终 7/7 通过；不代表有玩家养成数据的选项已实现。
+联合本地服务端的 PlayMode 覆盖打开、关闭、火属性和全部选项，以及右栏第三槽焦点和滚动层级。灰显的养成数据选项仍未接入。
+
+面板底图保持原包 `filter_main_bg.png` 字节不变。依据 `filter_sector3.csb` 的内部切片区域 `(55,50,2,472)` 设置 Unity 九宫边距，图上的圆角边框与蓝色渐变延伸至内容区域四边，纹理自带软阴影位于控件区域之外。标题条使用 `filter_group_main_item.csb` 的原始切片，底部分隔使用原包 `_bar_5`。

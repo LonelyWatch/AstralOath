@@ -34,8 +34,7 @@ namespace AstralOath.Editor
             var outside = Button(Area(overlay, "Dismiss roster filters", 0, 0, 1, 1), null, Color.clear);
             outside.transition = Selectable.Transition.None;
             var panel = Area(overlay, "Native roster filter panel", .015f, .136f, .94f, .566f);
-            Paint(Area(panel, "Filter panel backing", 0, 0, 1, 1), FilterSprite("filter_main_bg"), Color.white, true, true);
-            Paint(Area(panel, "Filter panel inner opacity", .003f, .010f, .994f, .980f), null, new Color32(10, 31, 53, 225));
+            PaintFilterPanel(panel);
             var controls = new List<(string, Object)> { ("close", outside) };
 
             FilterHeading(panel, "set", .021f, .034f, .276f);
@@ -68,8 +67,7 @@ namespace AstralOath.Editor
                 new[] { "icon_menu_warrior", "icon_menu_roleknight", "icon_menu_roleassassin", "icon_menu_ranger", "icon_menu_rolemage", "icon_menu_rolremanauser" });
             BuildAttributeOptions("rarity", .493f, new[] { "6", "5", "4", "3", "2" }, null);
 
-            var line = Picture(panel, "Options border", FilterSprite("filter_img_line"), .019f, .752f, .714f, .018f);
-            line.color = new Color(1, 1, 1, .45f);
+            NativeRule(panel, "Options divider", .019f, .752f, .714f, .014f, new Color(1, 1, 1, .20f), "_bar_5");
             var max = Button(Area(panel, "Hide max level toggle", .028f, .795f, .224f, .063f), null, Color.clear);
             var maxRow = (RectTransform)max.transform;
             var maxMark = FilterCheckbox(maxRow, "hideMax", Color.white);
@@ -79,7 +77,9 @@ namespace AstralOath.Editor
             FilterCheckbox(Area(panel, "Friendship filter unavailable", .505f, .795f, .225f, .063f), "bond15", FilterMuted).enabled = false;
             FilterText(panel, "Unavailable account filters", "unavailable", 18, .277f, .867f, .43f, .063f, FilterMuted);
 
-            VerticalRule(panel, "Sort column divider", .746f, .040f, .006f, .90f, new Color(1, 1, 1, .52f));
+            var sortDivider = Area(panel, "Sort column divider", .749f, .042f, 0, .917f);
+            sortDivider.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1.5f);
+            Paint(sortDivider, null, new Color32(167, 190, 208, 75));
             string[] sort = { "stars", "level", "name", "bond", "imprint", "acquired" };
             for (int index = 0; index < sort.Length; index++)
             {
@@ -98,8 +98,7 @@ namespace AstralOath.Editor
             controls.Add(("compactCheck", FilterCheckbox((RectTransform)compact.transform, "compact", Color.white)));
 
             var effects = Area(panel, "Skill effect choices", .305f, .081f, .432f, .657f);
-            Paint(Area(effects, "Effect panel backing", 0, 0, 1, 1), FilterSprite("filter_main_bg"), Color.white, true, true);
-            Paint(Area(effects, "Effect panel inner opacity", .003f, .010f, .994f, .980f), null, new Color32(10, 31, 53, 249));
+            PaintFilterPanel(effects);
             controls.Add(("effectList", effects.gameObject));
             var effectLabels = catalog.messages.ToDictionary(row => row.key, row => row.zhCn, StringComparer.Ordinal);
             foreach (var group in groups)
@@ -139,8 +138,7 @@ namespace AstralOath.Editor
             void BuildAttributeOptions(string key, float y, string[] options, string[] icons)
             {
                 var area = Area(panel, "Filter " + key, .318f, y, .412f, .208f);
-                var titleArt = Picture(area, "Heading shade", FilterSprite("filter_img_deco"), 0, .085f, .80f, .18f);
-                titleArt.color = new Color(1, 1, 1, .12f);
+                PaintFilterHeadingShade(area, 0, .085f, .53f, .11f);
                 FilterText(area, "Filter group heading", key, 22, 0, 0, .90f, .37f, new Color32(180, 191, 199, 255));
                 var row = Area(area, "Options", 0, .435f, 1, .54f);
                 const float cell = .135f, gap = .009f;
@@ -167,6 +165,20 @@ namespace AstralOath.Editor
             }
         }
 
+        private static void PaintFilterPanel(RectTransform panel)
+        {
+            var hit = Paint(panel, null, Color.clear, true);
+            hit.canvasRenderer.cullTransparentMesh = false;
+            var background = Area(panel, "Native filter gradient and frame", 0, 0, 1, 1);
+            // The CSB texture has a soft shadow beyond its visible frame: left/right 34,
+            // bottom 37, top 31 native pixels. Keep those margins outside the control area.
+            const float designScale = 1.5f;
+            background.offsetMin = new Vector2(-34f, -37f) * designScale;
+            background.offsetMax = new Vector2(34f, 31f) * designScale;
+            var image = Paint(background, FilterSprite("filter_main_bg"), Color.white, sliced: true);
+            image.pixelsPerUnitMultiplier = 1f / designScale;
+        }
+
         private static GameButton FilterButton(RectTransform rect)
         {
             var button = Button(rect, FilterSprite("_btn_small_black"), Color.white);
@@ -180,9 +192,14 @@ namespace AstralOath.Editor
 
         private static void FilterHeading(RectTransform parent, string key, float x, float y, float w)
         {
-            var bar = Picture(parent, "Heading shade", FilterSprite("filter_img_deco"), x, y + .015f, w, .039f);
-            bar.color = new Color(1, 1, 1, .12f);
+            PaintFilterHeadingShade(parent, x, y + .02f, w * .82f, .032f);
             FilterText(parent, "Filter group heading", key, 22, x + .004f, y, w, .11f, new Color32(180, 191, 199, 255));
+        }
+
+        private static void PaintFilterHeadingShade(RectTransform parent, float x, float y, float w, float h)
+        {
+            Paint(Area(parent, "Heading shade", x, y, w, h), FilterSprite("filter_img_deco"),
+                new Color32(255, 255, 255, 25), sliced: true);
         }
 
         private static Image FilterCheckbox(RectTransform row, string key, Color color)

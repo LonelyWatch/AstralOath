@@ -38,7 +38,7 @@ main_hud_btn_arena main_hud_btn_arena_p cm_hud_top_btn_mail cm_hud_top_btn_bag c
 cm_hud_top_btn_chatting cm_hud_top_btn_quick cm_hud_top_titlebg_renew hero_rank
 """.split()
 BORDERS = {
-    "filter_main_bg": (14, 14, 14, 14),
+    "filter_main_bg": (55, 50, 55, 50), "filter_img_deco": (10, 5, 19, 5),
     "_box_black_gold": (32, 32, 32, 32), "_box_blue2": (10, 10, 10, 10),
     "_box_w4": (13, 13, 13, 13), "_box_r_w4": (16, 16, 16, 16),
     "_box_r_op80": (16, 16, 16, 16), "_tap_select": (24, 20, 24, 20),
@@ -442,6 +442,17 @@ def draft_roster_filters(root, check):
              "_btn_small_black", "_btn_small_black_p", "cm_icon_profire", "cm_icon_proice", "cm_icon_prowind",
              "cm_icon_prolight", "cm_icon_prodark", "icon_menu_warrior", "icon_menu_roleknight", "icon_menu_roleassassin",
              "icon_menu_ranger", "icon_menu_rolemage", "icon_menu_rolremanauser")
+    if not check:
+        for name in ("filter_main_bg", "filter_img_deco"):
+            meta = folder / f"{name}.png.meta"
+            if not meta.is_file():
+                continue
+            current = meta.read_bytes()
+            border = ", ".join(f"{axis}: {value}" for axis, value in zip("xyzw", BORDERS[name]))
+            corrected, count = re.subn(rb"(?m)^  spriteBorder: [^\r\n]+", f"  spriteBorder: {{{border}}}".encode(), current)
+            if count != 1:
+                raise ValueError(f"Missing Unity sprite border: {meta}")
+            write(meta, corrected, False)
     entries = [draft_png(root, check, f"img/{name}.png", f"Filters/{name}.png") for name in names]
     layouts = ("filter_sector3", "filter_sorting_item", "filter_list_group")
     manifest_data = {"schemaVersion": 1, "assets": entries, "sourceLayouts": [

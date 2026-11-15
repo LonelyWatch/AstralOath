@@ -28,12 +28,25 @@ def main():
     descriptor = read_source(source, "font/score.fnt")
     page = read_source(source, "font/score_0.png")
     sprites = [(name, "img/" + name + ".png", read_source(source, "img/" + name + ".png"), None) for name in NAMES]
+    score_glyphs = []
     with Image.open(BytesIO(page)) as atlas:
+        text = descriptor.decode("ascii")
         for digit in range(10):
-            match = re.search(rf"(?m)^char id={48 + digit}\s+x=(\d+)\s+y=(\d+)\s+width=(\d+)\s+height=(\d+)", descriptor.decode("ascii"))
-            x, y, w, h = map(int, match.groups())
+            match = re.search(rf"(?m)^char id={48 + digit}\s+(.*)$", text)
+            if not match:
+                raise ValueError(f"Native score descriptor lacks digit {digit}.")
+            metrics = {key: int(value) for key, value in re.findall(r"(\w+)=(-?\d+)", match[1])}
+            x, y, w, h = (metrics[key] for key in ("x", "y", "width", "height"))
+            glyph = atlas.crop((x, y, x + w, y + h))
+            # Use the visible body, including the dark border but excluding near-transparent fringes.
+            bounds = glyph.convert("RGBA").getchannel("A").point(lambda value: 255 if value > 15 else 0).getbbox()
+            if not bounds:
+                raise ValueError(f"Native score glyph {digit} has no visible pixels.")
+            left, top, right, bottom = bounds
+            score_glyphs.append(dict(xOffset=metrics["xoffset"], yOffset=metrics["yoffset"],
+                                     advance=metrics["xadvance"], left=left, top=top, right=right, bottom=bottom))
             output = BytesIO()
-            atlas.crop((x, y, x + w, y + h)).save(output, format="PNG")
+            glyph.save(output, format="PNG")
             sprites.append(("score_" + str(digit), "font/score_0.png", output.getvalue(), [x, y, w, h]))
     for name, relative, data, crop in sprites:
         target = OUTPUT / (name + ".png")
@@ -52,7 +65,7 @@ def main():
             row.update(sourceSha256=digest(page), descriptor="font/score.fnt", descriptorSha256=digest(descriptor), crop=crop)
         rows.append(row)
     layout = "wnd/pvplive_global_hp.csb"
-    report = {"sourceRoot": str(source), "assets": rows,
+    report = {"sourceRoot": str(source), "assets": rows, "scoreGlyphs": score_glyphs,
               "layout": {"source": layout, "sha256": digest(read_source(source, layout))},
               "transfer": "Selected PNGs are byte-identical; score glyphs are cropped by the native descriptor. CSB is layout evidence only."}
     manifest = OUTPUT / "source.json"

@@ -22,8 +22,9 @@ namespace AstralOath.Client.Arena
         private readonly ILocaleService locale;
         private readonly Func<Task> returnToRoom;
         private readonly ArenaDraftRosterFilter rosterFilter;
+        private static readonly Vector2 RosterCardSize = new Vector2(361f, 112f);
         private Choice[] visibleRoster = Array.Empty<Choice>();
-        private float lastRosterOffset = float.NaN, lastRosterWidth, lastRosterHeight;
+        private float lastRosterOffset = float.NaN, lastRosterWidth, lastRosterHeight, lastRosterStep;
         private int? localLatency;
         private int lastRosterFocus = -1;
         private readonly Dictionary<string, ArenaDraftArt.Hero> art;
@@ -110,6 +111,9 @@ namespace AstralOath.Client.Arena
             view.Label("status").text = "";
             view.Search("search").SetTextWithoutNotify("");
             view.Search("preSearch").SetTextWithoutNotify("");
+            var rosterScroll = view.Scroll("roster");
+            rosterScroll.StopMovement();
+            rosterScroll.content.anchoredPosition = Vector2.zero;
             WatchSearch("search");
             WatchSearch("preSearch");
             Listen(view.Button("action"), SubmitAsync);
@@ -349,7 +353,7 @@ namespace AstralOath.Client.Arena
                 choice.Selection.enabled = choice.Id == candidate && pick;
                 bool taken = Used(choice.Id);
                 bool banned = IsPrebanned(choice.Id);
-                choice.SetState(taken ? "✓ " + L("arena.draft.picked") :
+                choice.SetState(taken ? L("arena.draft.picked") :
                     banned ? L("arena.draft.banned") : null, banned);
             }
             foreach (var choice in grid.Concat(recent).Concat(selected))
@@ -469,7 +473,7 @@ namespace AstralOath.Client.Arena
                 {
                     var scroll = view.Scroll("roster");
                     scroll.StopMovement();
-                    scroll.content.anchoredPosition = new Vector2(0, selectedIndex * (rosterFilter.Compact ? 57f : 73f));
+                    scroll.content.anchoredPosition = new Vector2(0, selectedIndex * RosterStep);
                 }
             }
             Render();
@@ -601,10 +605,14 @@ namespace AstralOath.Client.Arena
         private void ApplySearch()
         {
             Filter(roster, view.Search("search").text);
-            visibleRoster = rosterFilter.Order(roster.Where(row => row.Button.gameObject.activeSelf), row => art[row.Id]).ToArray();
+            var filtered = rosterFilter.Order(roster.Where(row => row.Button.gameObject.activeSelf), row => art[row.Id]).ToArray();
+            if (!visibleRoster.SequenceEqual(filtered))
+            {
+                visibleRoster = filtered;
+                lastRosterOffset = float.NaN;
+                lastRosterFocus = -1;
+            }
             view.Node("rosterEmpty").SetActive(visibleRoster.Length == 0);
-            lastRosterOffset = float.NaN;
-            lastRosterFocus = -1;
             LayoutRoster();
             Filter(grid, view.Search("preSearch").text);
         }
@@ -622,45 +630,54 @@ namespace AstralOath.Client.Arena
             }
         }
 
+        private float RosterStep => rosterFilter.Compact ? 57f : 73f;
+
         private void LayoutRoster()
         {
             var scroll = view.Scroll("roster");
             float width = scroll.viewport.rect.width, height = scroll.viewport.rect.height;
-            if (width <= 0f || height <= 0f) return;
-            float step = rosterFilter.Compact ? 57f : 73f;
-            float baseHeight = rosterFilter.Compact ? 65f : 84f;
-            float focusLine = Mathf.Min(height * .19f, step * 2f);
-            float edge = focusLine - step * .5f;
-            float extent = Mathf.Max(height, focusLine + (visibleRoster.Length - 1) * step + height - focusLine);
-            if (scroll.content.sizeDelta.y != extent) scroll.content.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, extent);
-            float offset = Mathf.Clamp(scroll.content.anchoredPosition.y, 0, extent - height);
+            if (width <= 8f || height <= 0f) return;
+            float step = RosterStep;
+            // The first hero starts on the third position. Dragging down to later heroes
+            // reveals the two prior cards above the focus line.
+            float focusLine = Mathf.Min(height * .23f, 2.5f * step);
+            float maxOffset = Mathf.Max(0, visibleRoster.Length - 1) * step;
+            float extent = height + maxOffset;
+            if (!Mathf.Approximately(scroll.content.rect.height, extent))
+                scroll.content.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, extent);
+            float offset = Mathf.Clamp(scroll.content.anchoredPosition.y, 0, maxOffset);
             if (!Mathf.Approximately(scroll.content.anchoredPosition.y, offset))
                 scroll.content.anchoredPosition = new Vector2(0, offset);
-            if (Mathf.Abs(lastRosterOffset - offset) < .02f && lastRosterWidth == width && lastRosterHeight == height) return;
-            lastRosterOffset = offset; lastRosterWidth = width; lastRosterHeight = height;
+            if (Mathf.Abs(lastRosterOffset - offset) < .02f && lastRosterWidth == width && lastRosterHeight == height &&
+                lastRosterStep == step) return;
+            lastRosterOffset = offset;
+            lastRosterWidth = width;
+            lastRosterHeight = height;
+            lastRosterStep = step;
             float focus = offset / step;
             int nearest = Mathf.Clamp(Mathf.RoundToInt(focus), 0, Mathf.Max(0, visibleRoster.Length - 1));
+            float fullScale = (width - 8f) / RosterCardSize.x * (rosterFilter.Compact ? .86f : 1f);
             for (int i = 0; i < visibleRoster.Length; i++)
             {
                 var row = (RectTransform)visibleRoster[i].Button.transform;
                 float distance = Mathf.Abs(i - focus);
-                float prominence = 1f - Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(distance / 3.8f));
+                float scale = fullScale * Mathf.Lerp(.65f, 1f, Mathf.Exp(-distance * .58f));
                 row.anchorMin = row.anchorMax = new Vector2(1, 1);
                 row.pivot = new Vector2(1, .5f);
-                row.anchoredPosition = new Vector2(-4f, -(edge + (i + .5f) * step));
-                row.sizeDelta = new Vector2((width - 8f) * Mathf.Lerp(.66f, 1f, prominence), baseHeight * Mathf.Lerp(.88f, 1.25f, prominence));
-
+                row.anchoredPosition = new Vector2(-4f, -(focusLine + i * step));
+                row.sizeDelta = RosterCardSize;
+                row.localScale = new Vector3(scale, scale, 1f);
             }
-            // Far rows are raised first. The card at the focus line draws on top of both neighbors.
+            // Far rows are raised first. The focused card draws on top of both neighbors.
             if (visibleRoster.Length == 0 || nearest == lastRosterFocus) return;
             lastRosterFocus = nearest;
             int maxDistance = Mathf.Max(nearest, visibleRoster.Length - 1 - nearest);
-            for (int distance = maxDistance; distance > 0 && visibleRoster.Length > 0; distance--)
+            for (int distance = maxDistance; distance > 0; distance--)
             {
                 if (nearest - distance >= 0) visibleRoster[nearest - distance].Button.transform.SetAsLastSibling();
                 if (nearest + distance < visibleRoster.Length) visibleRoster[nearest + distance].Button.transform.SetAsLastSibling();
             }
-            if (visibleRoster.Length > 0) visibleRoster[nearest].Button.transform.SetAsLastSibling();
+            visibleRoster[nearest].Button.transform.SetAsLastSibling();
         }
 
         private void WatchSearch(string key)
@@ -675,8 +692,9 @@ namespace AstralOath.Client.Arena
         {
             var row = UnityEngine.Object.Instantiate(view.Node(template), parent, false);
             row.name = id;
-            var card = new Choice(row.GetComponent<BindingMap>());
-            card.Set(id, GetArt(id), asCard: template == "row", tags: template != "chip");
+            bool rosterCard = template == "row";
+            var card = new Choice(row.GetComponent<BindingMap>(), artwork.LevelDigits, rosterCard: rosterCard);
+            card.Set(id, GetArt(id), asCard: rosterCard, tags: template != "chip");
             UnityAction select = () => Select(card.Id);
             card.Button.onClick.AddListener(select);
             list.Add(card);
@@ -746,10 +764,12 @@ namespace AstralOath.Client.Arena
             private readonly GameObject levelRoot, starRoot;
             private readonly Image tens, units;
             private readonly Sprite[] levelDigits;
-            private readonly Image[] grade;
+            private readonly Image[] grade, speed;
+            private readonly Image pickedIcon, bannedIcon;
             private readonly GameText title, stars, state;
 
-            internal Choice(BindingMap map, Sprite[] digits = null, bool teamSlot = false, bool protectedSlot = false, bool miniature = false)
+            internal Choice(BindingMap map, Sprite[] digits = null, bool teamSlot = false, bool protectedSlot = false,
+                bool miniature = false, bool rosterCard = false)
             {
                 Button = map.Require<GameButton>("button");
                 Portrait = map.Require<Image>("portrait");
@@ -779,6 +799,14 @@ namespace AstralOath.Client.Arena
                     }
                 }
                 if (miniature) Change = map.Require<Image>("change");
+                if (rosterCard)
+                {
+                    levelDigits = digits;
+                    speed = Enumerable.Range(0, 3).Select(index => map.Require<Image>("speed" + index)).ToArray();
+                    grade = Enumerable.Range(0, 6).Select(index => map.Require<Image>("star" + index)).ToArray();
+                    pickedIcon = map.Require<Image>("pickedIcon");
+                    bannedIcon = map.Require<Image>("bannedIcon");
+                }
             }
 
             internal void Set(string id, ArenaDraftArt.Hero hero, bool asCard, bool tags, bool levelLabel = false)
@@ -803,7 +831,25 @@ namespace AstralOath.Client.Arena
                 role.sprite = hero?.ClassIcon;
                 element.enabled = tags && element.sprite;
                 role.enabled = tags && role.sprite;
-                stars.text = tags && hero != null ? new string('★', hero.Stars) : "";
+                stars.text = speed == null && tags && hero != null ? new string('★', hero.Stars) : "";
+                if (speed != null && hero != null) SetRosterDetails(hero);
+            }
+
+            private void SetRosterDetails(ArenaDraftArt.Hero hero)
+            {
+                if (Portrait.sprite)
+                {
+                    var rect = Portrait.rectTransform;
+                    rect.anchorMin = new Vector2(rect.anchorMax.x - Portrait.sprite.rect.width / RosterCardSize.x, rect.anchorMin.y);
+                }
+                int value = Mathf.Clamp(hero.Speed, 0, 999);
+                speed[0].sprite = levelDigits[value / 100];
+                speed[1].sprite = levelDigits[value / 10 % 10];
+                speed[2].sprite = levelDigits[value % 10];
+                speed[0].enabled = value >= 100;
+                speed[1].enabled = value >= 10;
+                speed[2].enabled = true;
+                for (int index = 0; index < grade.Length; index++) grade[index].enabled = index < hero.Stars;
             }
 
             internal void SetFormationLevel(ArenaDraftArt.Hero hero)
@@ -819,10 +865,11 @@ namespace AstralOath.Client.Arena
                 state.color = banned ? new Color32(255, 145, 134, 255) : new Color32(140, 205, 94, 255);
                 state.gameObject.SetActive(caption);
                 dim.gameObject.SetActive(caption || banned);
-                dim.color = banned ? new Color(.22f, .040f, .041f, .72f) : new Color(.012f, .022f, .055f, .70f);
+                dim.color = banned ? new Color(.22f, .040f, .041f, .72f) : new Color(.012f, .022f, .055f, .62f);
                 title.enabled = !caption;
                 role.enabled = role.sprite && !caption;
-                element.enabled = element.sprite && !caption;
+                if (pickedIcon) pickedIcon.gameObject.SetActive(caption && !banned);
+                if (bannedIcon) bannedIcon.gameObject.SetActive(banned);
             }
         }
     }

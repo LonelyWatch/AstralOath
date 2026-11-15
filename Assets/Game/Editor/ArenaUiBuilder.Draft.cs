@@ -111,8 +111,7 @@ namespace AstralOath.Editor
             Object.DestroyImmediate(roster.content.GetComponent<VerticalLayoutGroup>());
             Object.DestroyImmediate(roster.content.GetComponent<ContentSizeFitter>());
             Add("roster", roster);
-            DraftTemplate(root, "Roster hero template", 105, DraftSprite("hero_bg_normal"), true, false, out var rowTemplate);
-            Add("row", rowTemplate.gameObject);
+            Add("row", BuildDraftRosterRow(root).gameObject);
             DraftTemplate(root, "Preban hero template", 92, DraftSprite("cm_hero_cirbg2"), false, true, out var gridTemplate);
             Add("gridCell", gridTemplate.gameObject);
             DraftTemplate(root, "Banned portrait template", 62, DraftSprite("cm_hero_cirbg2"), false, true, out var chip);

@@ -91,13 +91,27 @@ namespace AstralOath.Client.Tests
             Assert.That(draft.transform.Find("Native reference layout/Draft stage/Exit draft"), Is.Null);
             Assert.That(draft.Require<GameObject>("revealedOwn").transform.childCount, Is.EqualTo(2));
             Assert.That(draft.Require<GameObject>("revealedEnemy").transform.childCount, Is.EqualTo(2));
+            yield return Wait(() => draft.Require<GameButton>("openRosterFilters").interactable,
+                "The roster did not become interactive after the reveal.");
             var scroll = draft.Require<ScrollRect>("roster");
             var rollFirst = (RectTransform)Hero(draft, "roster", pool[0]).transform;
             var rollThird = (RectTransform)Hero(draft, "roster", pool[2]).transform;
-            Assert.That(rollFirst.rect.width, Is.GreaterThan(rollThird.rect.width));
-            scroll.content.anchoredPosition = new Vector2(0, 146);
-            yield return Wait(() => rollThird.rect.width > rollFirst.rect.width, "Roster focus did not follow scroll.");
+            float rowStep = (rollFirst.anchoredPosition.y - rollThird.anchoredPosition.y) / 2f;
+            Assert.That(-rollFirst.anchoredPosition.y, Is.GreaterThan(2f * rowStep), "First row must begin on the third slot.");
+            Assert.That(rollFirst.localScale.x, Is.GreaterThan(rollThird.localScale.x));
+            var rowMap = rollFirst.GetComponent<BindingMap>();
+            var star = rowMap.Require<Image>("star0");
+            var nextStar = rowMap.Require<Image>("star1");
+            Assert.That(star.sprite.name, Is.EqualTo("cm_icon_star_j"));
+            Assert.That(nextStar.rectTransform.anchorMin.x - star.rectTransform.anchorMin.x,
+                Is.LessThan(star.rectTransform.anchorMax.x - star.rectTransform.anchorMin.x));
+            yield return Capture("arena-draft-roster-initial");
+            scroll.content.anchoredPosition = new Vector2(0, rowStep * 2f);
+            yield return Wait(() => rollThird.localScale.x > rollFirst.localScale.x, "Roster focus did not follow scroll.");
             Assert.That(rollThird.GetSiblingIndex(), Is.EqualTo(scroll.content.childCount - 1));
+            Assert.That(scroll.content.anchoredPosition.y + rollFirst.anchoredPosition.y,
+                Is.GreaterThan(scroll.content.anchoredPosition.y + rollThird.anchoredPosition.y));
+            yield return Capture("arena-draft-roster-scrolled");
             scroll.content.anchoredPosition = Vector2.zero;
             yield return Wait(() => draft.Require<GameButton>("openRosterFilters").interactable,
                 "Roster filter was not enabled after the reveal.");

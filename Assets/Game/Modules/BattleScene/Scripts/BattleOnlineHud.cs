@@ -17,9 +17,11 @@ namespace AstralOath.Client.BattleScene
         private readonly GameText turn;
         private readonly RectTransform clockRoot;
         private readonly Image clockProgress;
-        private static readonly int[] ScoreAdvance = { 46, 32, 48, 46, 46, 46, 45, 40, 46, 44 };
-        private readonly Image digitFirst, digitSecond, digitThird;
+        private const float ScoreScale = .55f * 1.5f;
+        private const float ScoreWidthLimit = 103f;
+        private readonly Image[] digits = new Image[3];
         private readonly Sprite[] scoreDigits;
+        private readonly ScoreGlyph[] scoreGlyphs;
         private readonly Image[] localPing;
         private readonly GameObject localPingRoot;
         private readonly Material playerNameShadow;
@@ -30,6 +32,19 @@ namespace AstralOath.Client.BattleScene
         private readonly RectTransform speed;
         private readonly Vector2 speedMin, speedMax, speedPosition;
 
+        [Serializable]
+        private sealed class ScoreLayout
+        {
+            public ScoreGlyph[] scoreGlyphs;
+        }
+
+        [Serializable]
+        private struct ScoreGlyph
+        {
+            public int xOffset, yOffset, advance;
+            public int left, top, right, bottom;
+        }
+
         internal BattleOnlineHud(BindingMap map, BattleOnlinePlayers players, BattleOnlineTransitionAssets.Copy copy,
             IReadOnlyDictionary<string, Sprite> roster)
         {
@@ -39,6 +54,12 @@ namespace AstralOath.Client.BattleScene
                 "game_hud_bar_hp_red", "game_hud_bar_split", "_hero_s_frame_enemy", "_hero_s_bg_ally",
                 "time_progress_bg", "time_progress_bar_blue", "time_progress_bar_red" })
                 if (!art.ContainsKey(name)) throw new InvalidOperationException("Online battle HUD art is missing: " + name);
+            scoreDigits = Enumerable.Range(0, 10).Select(i => art["score_" + i]).ToArray();
+            var source = Resources.Load<TextAsset>("AstralOathOnlineHud/source");
+            scoreGlyphs = source ? JsonUtility.FromJson<ScoreLayout>(source.text)?.scoreGlyphs : null;
+            if (scoreGlyphs?.Length != scoreDigits.Length || scoreGlyphs.Any(glyph =>
+                glyph.advance <= 0 || glyph.right <= glyph.left || glyph.bottom <= glyph.top))
+                throw new InvalidOperationException("Online HUD score glyph metrics are missing or invalid.");
             var font = map.Require<GameText>("activeName");
             // Sibling of the ordinary HUD: team identities remain visible during the entry HUD fade.
             root = Rect(map.transform.parent, "Online PvP HUD", Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
@@ -90,12 +111,9 @@ namespace AstralOath.Client.BattleScene
             clockProgress.fillMethod = Image.FillMethod.Radial360;
             clockProgress.fillOrigin = (int)Image.Origin360.Top;
             clockProgress.fillClockwise = false;
-            scoreDigits = Enumerable.Range(0, 10).Select(i => art["score_" + i]).ToArray();
-            digitFirst = Digit("Countdown tens or single");
-            digitSecond = Digit("Countdown units");
-            digitThird = Digit("Countdown hundreds overflow");
-            Image Digit(string name) => Picture(clockRoot, name, scoreDigits[0], new Vector2(.5f, .5f),
-                new Vector2(.5f, .5f), Vector2.zero, Vector2.zero);
+            for (int i = 0; i < digits.Length; i++)
+                digits[i] = Picture(clockRoot, "Countdown digit " + (i + 1), scoreDigits[0], Vector2.one * .5f,
+                    Vector2.one * .5f, Vector2.zero, Vector2.zero);
             var pingAnchor = new Vector2(.5f, 1f);
             var ping = Rect(root, "Local Connection Quality", pingAnchor, pingAnchor, new Vector2(-507f, -27f), Vector2.zero);
             localPingRoot = ping.gameObject;
@@ -184,27 +202,42 @@ namespace AstralOath.Client.BattleScene
         {
             if (seconds == shownSeconds) return;
             shownSeconds = seconds;
-            // The battle layout scales the same native score atlas to .55 of source size.
-            const float scale = .55f * 1.5f;
-            int units = seconds % 10;
-            int tens = seconds / 10 % 10;
-            int hundreds = seconds / 100;
-            digitThird.enabled = hundreds > 0;
-            digitSecond.enabled = seconds >= 10;
-            int first = hundreds > 0 ? hundreds : seconds >= 10 ? tens : units;
-            float advance = ScoreAdvance[first] + (seconds >= 10 ? ScoreAdvance[units] : 0) + (hundreds > 0 ? ScoreAdvance[tens] : 0);
-            float x = -advance * .5f;
-            Place(digitFirst, first);
-            if (hundreds > 0) Place(digitThird, tens);
-            if (seconds >= 10) Place(digitSecond, units);
-
-            void Place(Image image, int digit)
+            int divisor = seconds >= 100 ? 100 : seconds >= 10 ? 10 : 1;
+            int pen = 0;
+            int left = int.MaxValue, right = int.MinValue;
+            int top = int.MaxValue, bottom = int.MinValue;
+            foreach (var image in digits)
             {
-                image.sprite = scoreDigits[digit];
+                image.enabled = divisor > 0;
+                if (!image.enabled) continue;
+
+                int digit = seconds / divisor % 10;
+                var metric = scoreGlyphs[digit];
+                var sprite = scoreDigits[digit];
+                image.sprite = sprite;
+                int x = pen + metric.xOffset;
+                int y = metric.yOffset;
                 var rect = image.rectTransform;
-                rect.sizeDelta = image.sprite.rect.size * scale;
-                rect.anchoredPosition = new Vector2((x + (ScoreAdvance[digit] - 2) * .5f) * scale, 0);
-                x += ScoreAdvance[digit];
+                rect.sizeDelta = sprite.rect.size;
+                rect.anchoredPosition = new Vector2(x, -y) + Vector2.Scale(rect.sizeDelta, new Vector2(.5f, -.5f));
+                left = Math.Min(left, x + metric.left);
+                right = Math.Max(right, x + metric.right);
+                top = Math.Min(top, y + metric.top);
+                bottom = Math.Max(bottom, y + metric.bottom);
+                pen += metric.advance;
+                divisor /= 10;
+            }
+
+            // Center the visible pixel union. The crop rectangles include transparent space,
+            // and the source advance sets spacing rather than the glyph's visible center.
+            var center = new Vector2((left + right) * .5f, -(top + bottom) * .5f);
+            float scale = Mathf.Min(ScoreScale, ScoreWidthLimit / (right - left));
+            foreach (var image in digits)
+            {
+                if (!image.enabled) continue;
+                var rect = image.rectTransform;
+                rect.anchoredPosition = (rect.anchoredPosition - center) * scale;
+                rect.sizeDelta *= scale;
             }
         }
 

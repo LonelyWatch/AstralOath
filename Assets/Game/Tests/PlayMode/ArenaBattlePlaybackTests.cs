@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using AstralOath.Client.BattleScene;
+using AstralOath.Client.Common;
 using AstralOath.Shared.Battle;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -137,6 +138,64 @@ namespace AstralOath.Client.Tests
             }
             yield return null;
             Assert.That(GameObject.Find("Online Battle Gate"), Is.Null);
+        }
+
+        [UnityTest]
+        public IEnumerator CountdownVisiblePixelsCenterOnTheNativeRing()
+        {
+            const string prefabPath = "Assets/Game/Modules/BattleScene/Res/Prefab/BattleHud.prefab";
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+            var canvas = new GameObject("Countdown test", typeof(RectTransform), typeof(Canvas));
+            var bindings = UnityEngine.Object.Instantiate(prefab, canvas.transform, false).GetComponent<BindingMap>();
+            var resource = Resources.Load("AstralOathOnlineTransition");
+            var assetType = resource.GetType();
+            var copyType = assetType.GetNestedType("Copy", BindingFlags.NonPublic);
+            var copy = copyType.GetMethod("Load", BindingFlags.Static | BindingFlags.NonPublic).Invoke(null,
+                new[] { assetType.GetField("zhHans", Members).GetValue(resource) });
+            var type = typeof(BattleOnlineLaunch).Assembly.GetType("AstralOath.Client.BattleScene.BattleOnlineHud", true);
+            try
+            {
+                using var view = (IDisposable)Activator.CreateInstance(type, Members, null,
+                    new object[] { bindings, null, copy, null }, null);
+                var draw = type.GetMethod("ShowTurn", Members);
+                var clockRoot = (RectTransform)type.GetField("clockRoot", Members).GetValue(view);
+                var allDigits = clockRoot.GetComponentsInChildren<UnityEngine.UI.Image>(true)
+                    .Where(item => item.name.StartsWith("Countdown ", StringComparison.Ordinal)).ToArray();
+                foreach (int seconds in new[] { 0, 1, 9, 10, 30, 88, 100, 120, 9 })
+                {
+                    var clock = new BattleTurnClockView { DecisionSeconds = 120, ServerNowUnixMilliseconds = 1000,
+                        DeadlineUnixMilliseconds = 1000 + seconds * 1000L };
+                    draw.Invoke(view, new object[] { BattleSide.Ally, true, clock, 0d });
+                    var visible = allDigits.Where(item => item.enabled).ToArray();
+                    Assert.That(visible.Length, Is.EqualTo(seconds < 10 ? 1 : seconds < 100 ? 2 : 3));
+                    Vector2 low = Vector2.one * float.PositiveInfinity;
+                    Vector2 high = Vector2.one * float.NegativeInfinity;
+                    foreach (var glyph in visible)
+                    {
+                        // Decode the actual Unity sprite input. Do not test the generated metrics against themselves.
+                        var pixels = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+                        try
+                        {
+                            Assert.That(pixels.LoadImage(File.ReadAllBytes(AssetDatabase.GetAssetPath(glyph.sprite))), Is.True);
+                            var colors = pixels.GetPixels32();
+                            var rect = glyph.rectTransform;
+                            var size = rect.sizeDelta;
+                            var origin = rect.anchoredPosition - size * .5f;
+                            for (int y = 0; y < pixels.height; y++)
+                            for (int x = 0; x < pixels.width; x++)
+                            {
+                                if (colors[y * pixels.width + x].a <= 15) continue;
+                                low = Vector2.Min(low, origin + Vector2.Scale(size, new Vector2(x / (float)pixels.width, y / (float)pixels.height)));
+                                high = Vector2.Max(high, origin + Vector2.Scale(size, new Vector2((x + 1f) / pixels.width, (y + 1f) / pixels.height)));
+                            }
+                        }
+                        finally { UnityEngine.Object.Destroy(pixels); }
+                    }
+                    Assert.That(((low + high) * .5f).magnitude, Is.LessThan(.05f), $"{seconds} must center its visible pixels.");
+                }
+            }
+            finally { UnityEngine.Object.Destroy(canvas); }
+            yield return null;
         }
 
         [UnityTest]

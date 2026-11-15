@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "assets": [
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Roster/cm_icon_check_b.png",
+      "sources": [
+        {
+          "source": "img/cm_icon_check_b.png",
+          "sha256": "0aa2f9edc12749491b42fc5d50fba24287ecc0061f09bb8110be34356340c9bf"
+        }
+      ],
+      "outputSha256": "0aa2f9edc12749491b42fc5d50fba24287ecc0061f09bb8110be34356340c9bf",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 30,
+        "height": 22
+      }
+    }
+  ],
+  "sourceLayout": "wnd/unit_bar.csb",
+  "sourceLayoutSha256": "0c8ecba55b1c56b266d3dfd7f03bf8e97261be8c434f19746edf05a75d0dd367"
+}
