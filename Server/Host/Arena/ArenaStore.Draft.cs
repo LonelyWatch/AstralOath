@@ -11,6 +11,42 @@ internal sealed partial class ArenaStore
 {
     private const int MinimumHeroesForDraft = 10;
 
+    public async Task<ArenaRoomState> UpdateDraftSettings(string id, ArenaPlayer player, ArenaDraftSettingsRequest request,
+        ArenaBattleCatalog catalog, CancellationToken token)
+    {
+        await using var connection = await Open(token);
+        await using var transaction = await connection.BeginTransactionAsync(IsolationLevel.ReadCommitted, token);
+        var room = await LockActiveRoom(connection, transaction, id, token);
+        await RequireMember(connection, transaction, id, player.Id, token);
+        if (room.HostId != player.Id) throw new ArenaProblem(403, "draft_host_only");
+        if (room.Rule != "basic") throw new ArenaProblem(409, "draft_rule_unsupported");
+        var draft = await LoadDraft(connection, transaction, id, token);
+        await RequireIdleDraft(connection, transaction, draft, catalog, token);
+
+        var updated = room with
+        {
+            PrebanCount = request.PrebanCount ?? room.PrebanCount,
+            FirstPick = request.FirstPick ?? room.FirstPick,
+            BanProtection = request.BanProtection ?? room.BanProtection
+        };
+        if (updated != room)
+        {
+            using var write = Command(connection, transaction, """
+                INSERT INTO arena_room_draft_settings (room_id, preban_count, first_pick, ban_protection)
+                VALUES (@id, @preban, @first, @protection)
+                ON DUPLICATE KEY UPDATE preban_count = @preban, first_pick = @first, ban_protection = @protection;
+                """, ("@id", id), ("@preban", updated.PrebanCount), ("@first", updated.FirstPick),
+                ("@protection", updated.BanProtection));
+            await write.ExecuteNonQueryAsync(token);
+            await AuditRoom(connection, transaction, "arena.draft.settings", player, id, token);
+        }
+
+        var members = await Members(connection, transaction, id, token);
+        await RenewLease(connection, transaction, player.Id, token);
+        await transaction.CommitAsync(token);
+        return State(updated, members);
+    }
+
     public async Task<ArenaDraftView> StartDraft(string id, ArenaPlayer player, ArenaDraftStartRequest request,
         ArenaBattleCatalog catalog, CancellationToken token)
     {
@@ -27,12 +63,7 @@ internal sealed partial class ArenaStore
             return current.View(player, catalog);
         }
         if (room.Rule != "basic") throw new ArenaProblem(409, "draft_rule_unsupported");
-        if (current is not null && current.Phase != "cancelled")
-        {
-            if (current.Phase != "battle" ||
-                (await LoadBattle(connection, transaction, current, catalog, token)).Read(0).Snapshot.Outcome == BattleOutcome.InProgress)
-                throw new ArenaProblem(409, "draft_already_started");
-        }
+        await RequireIdleDraft(connection, transaction, current, catalog, token);
         var members = await Members(connection, transaction, id, token);
         var opponent = members.FirstOrDefault(member => member.Id != player.Id);
         if (opponent is null) throw new ArenaProblem(409, "draft_needs_two_players");
@@ -79,6 +110,30 @@ internal sealed partial class ArenaStore
         await RenewLease(connection, transaction, player.Id, token);
         await transaction.CommitAsync(token);
         return draft?.View(player, catalog);
+    }
+
+    public async Task<ArenaDraftView> UpdateDraftPreview(string id, ArenaPlayer player, ArenaDraftPreviewRequest request,
+        ArenaBattleCatalog catalog, CancellationToken token)
+    {
+        await using var connection = await Open(token);
+        await using var transaction = await connection.BeginTransactionAsync(IsolationLevel.ReadCommitted, token);
+        await LockActiveRoom(connection, transaction, id, token);
+        await RequireMember(connection, transaction, id, player.Id, token);
+        var draft = await LoadDraft(connection, transaction, id, token) ?? throw new ArenaProblem(404, "draft_not_found");
+        _ = draft.SideOf(player);
+        await AdvanceExpiredDraft(connection, transaction, draft, catalog, token);
+        bool changed;
+        try { changed = draft.SetPreview(player, request, catalog); }
+        catch (ArenaProblem)
+        {
+            // Preserve any authoritative advancement caused by an expired deadline.
+            await transaction.CommitAsync(token);
+            throw;
+        }
+        if (changed) await SaveDraft(connection, transaction, draft, token);
+        await RenewLease(connection, transaction, player.Id, token);
+        await transaction.CommitAsync(token);
+        return draft.View(player, catalog);
     }
 
     public async Task<ArenaDraftView> DraftAction(string id, ArenaPlayer player, ArenaDraftActionRequest request,
@@ -207,6 +262,15 @@ internal sealed partial class ArenaStore
                 throw new InvalidOperationException("An accepted Arena battle command could not be replayed.");
         }
         return room;
+    }
+
+    private static async Task RequireIdleDraft(MySqlConnection connection, MySqlTransaction transaction, ArenaDraft? draft,
+        ArenaBattleCatalog catalog, CancellationToken token)
+    {
+        if (draft is null || draft.Phase == "cancelled") return;
+        if (draft.Phase != "battle" ||
+            (await LoadBattle(connection, transaction, draft, catalog, token)).Read(0).Snapshot.Outcome == BattleOutcome.InProgress)
+            throw new ArenaProblem(409, "draft_already_started");
     }
 
     private static async Task<ArenaDraft?> LoadDraft(MySqlConnection connection, MySqlTransaction transaction, string id,

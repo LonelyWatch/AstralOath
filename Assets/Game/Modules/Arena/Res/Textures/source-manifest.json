@@ -2971,6 +2971,114 @@
         ],
         "nativePivotMirrorBaked": true
       }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/preban_banned_icon.png",
+      "sources": [
+        {
+          "source": "effect/preben_effect_spine.scsp",
+          "sha256": "6c553cd987167fc9a7e30b2e5a64b6eb8c65fe3879b042f5aa59a0a16119b069"
+        },
+        {
+          "source": "effect/preben_effect_spine.atlas",
+          "sha256": "a125fbf322b17412b0480a1514848be313db45503e68d84dab7f8e4b3140faad"
+        },
+        {
+          "source": "effect/preben_effect_spine.sct",
+          "sha256": "caa562b90996061e7ca646f190d549898434fd56487efa3f524db067246bb7c2"
+        },
+        {
+          "source": "effect/ui_pre_banned.cfx",
+          "sha256": "a735dc79678208a2e0cd78a20e2f67db0de4cebc6966f87a265269ceab2c7229"
+        }
+      ],
+      "outputSha256": "07cbe8c978b412ab4872078a04574ed79e8acbe9a558574cccb0ddffa43cea75",
+      "conversion": {
+        "method": "native-spine-region-to-straight-alpha",
+        "atlasRegion": "banned_icon",
+        "crop": [
+          103,
+          173,
+          63,
+          71
+        ],
+        "clips": [
+          "intro",
+          "loop"
+        ]
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/preban_icon_glow.png",
+      "sources": [
+        {
+          "source": "effect/preben_effect_spine.scsp",
+          "sha256": "6c553cd987167fc9a7e30b2e5a64b6eb8c65fe3879b042f5aa59a0a16119b069"
+        },
+        {
+          "source": "effect/preben_effect_spine.atlas",
+          "sha256": "a125fbf322b17412b0480a1514848be313db45503e68d84dab7f8e4b3140faad"
+        },
+        {
+          "source": "effect/preben_effect_spine.sct",
+          "sha256": "caa562b90996061e7ca646f190d549898434fd56487efa3f524db067246bb7c2"
+        },
+        {
+          "source": "effect/ui_pre_banned.cfx",
+          "sha256": "a735dc79678208a2e0cd78a20e2f67db0de4cebc6966f87a265269ceab2c7229"
+        }
+      ],
+      "outputSha256": "059f86aab7ab8469cb23a5c3213dea5f047d1fd50fcf0e2b3b45623bb9ff0883",
+      "conversion": {
+        "method": "native-spine-region-to-straight-alpha",
+        "atlasRegion": "icon_glow",
+        "crop": [
+          2,
+          173,
+          99,
+          99
+        ],
+        "clips": [
+          "intro",
+          "loop"
+        ]
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/preban_flash.png",
+      "sources": [
+        {
+          "source": "effect/preben_effect_spine.scsp",
+          "sha256": "6c553cd987167fc9a7e30b2e5a64b6eb8c65fe3879b042f5aa59a0a16119b069"
+        },
+        {
+          "source": "effect/preben_effect_spine.atlas",
+          "sha256": "a125fbf322b17412b0480a1514848be313db45503e68d84dab7f8e4b3140faad"
+        },
+        {
+          "source": "effect/preben_effect_spine.sct",
+          "sha256": "caa562b90996061e7ca646f190d549898434fd56487efa3f524db067246bb7c2"
+        },
+        {
+          "source": "effect/ui_pre_banned.cfx",
+          "sha256": "a735dc79678208a2e0cd78a20e2f67db0de4cebc6966f87a265269ceab2c7229"
+        }
+      ],
+      "outputSha256": "9df87075f22ee8261f4f457a60292115f499654397840468a60da389ec14c38d",
+      "conversion": {
+        "method": "native-spine-region-to-straight-alpha",
+        "atlasRegion": "flash",
+        "crop": [
+          2,
+          2,
+          169,
+          169
+        ],
+        "clips": [
+          "intro",
+          "loop"
+        ]
+      }
     }
   ],
   "sourceLayouts": [

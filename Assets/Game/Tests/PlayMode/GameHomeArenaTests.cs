@@ -71,7 +71,7 @@ namespace AstralOath.Client.Tests
                 var create = ScreenMap("ArenaCreateRoom");
                 Assert.That(create.Require<Image>("selection_basic").enabled, Is.True);
                 Assert.That(create.Require<ScrollRect>("rules").horizontalNormalizedPosition, Is.EqualTo(1f).Within(.01f));
-                Assert.That(create.Require<GameObject>("draftOptions").activeInHierarchy, Is.True);
+                Assert.Throws<InvalidOperationException>(() => create.Require<GameObject>("draftOptions"));
                 var allow = create.Require<GameButton>("allow");
                 var deny = create.Require<GameButton>("deny");
                 deny.onClick.Invoke();
@@ -133,6 +133,42 @@ namespace AstralOath.Client.Tests
                 Assert.That(peer.RoomId, Is.Not.Null);
                 yield return Complete(peer.Join());
                 yield return Wait(() => room.Require<GameText>("count").text == "2/50", "Peer did not appear in room.");
+                Assert.That(room.Require<GameObject>("draftSettings").activeInHierarchy, Is.True);
+                var preban = room.Require<GameButton>("prebanCount");
+                var protection = room.Require<GameButton>("banProtection");
+                var firstPick = room.Require<GameButton>("firstPick");
+                var prebanPicker = room.Require<GameObject>("prebanPicker").GetComponent<BindingMap>();
+                var protectionPicker = room.Require<GameObject>("protectionPicker").GetComponent<BindingMap>();
+                Assert.That(preban.interactable && protection.interactable && firstPick.interactable, Is.True);
+                Assert.That(room.Require<GameText>("prebanLabel").text, Is.EqualTo("2"));
+                Assert.That(room.Require<Image>("firstPickCheck").enabled, Is.True);
+
+                preban.onClick.Invoke();
+                Assert.That(prebanPicker.gameObject.activeInHierarchy, Is.True);
+                Assert.That(prebanPicker.Require<Image>("selected2").enabled, Is.True);
+                yield return Capture("arena-room-preban-picker");
+                prebanPicker.Require<GameButton>("choice3").onClick.Invoke();
+                yield return Wait(() => room.Require<GameText>("prebanLabel").text == "3" && preban.interactable,
+                    "The host did not save three pre-bans.");
+                Assert.That(prebanPicker.gameObject.activeInHierarchy, Is.False);
+
+                protection.onClick.Invoke();
+                Assert.That(protectionPicker.gameObject.activeInHierarchy, Is.True);
+                Assert.That(protectionPicker.Require<Image>("selected1").enabled, Is.True);
+                yield return Capture("arena-room-protection-picker");
+                protectionPicker.Require<GameButton>("choice0").onClick.Invoke();
+                yield return Wait(() => room.Require<GameText>("protectionLabel").text == "OFF" && protection.interactable,
+                    "The host did not disable ban protection.");
+
+                firstPick.onClick.Invoke();
+                yield return Wait(() => room.Require<Image>("guestFirstPickCheck").enabled && firstPick.interactable,
+                    "The first-pick indicator did not move to the guest.");
+                Assert.That(room.Require<Image>("firstPickCheck").enabled, Is.False);
+                yield return Complete(peer.ReadRoom());
+                Assert.That(peer.RoomSettings, Is.EqualTo((3, "guest", false)),
+                    "The guest did not see all three persisted changes.");
+                yield return Capture("arena-room-draft-settings");
+
                 room.Require<TMP_InputField>("message").text = "来自 Unity";
                 float sendStarted = Time.realtimeSinceStartup;
                 room.Require<GameButton>("send").onClick.Invoke();
@@ -403,7 +439,12 @@ namespace AstralOath.Client.Tests
         [Serializable] private sealed class Session { public string token; }
         [Serializable] private sealed class Identity { public string displayName; public string avatarId = "c1001"; }
         [Serializable] private sealed class Rooms { public Room[] rooms; }
-        [Serializable] private sealed class Room { public string id, name; public int memberCount; }
+        [Serializable] private sealed class Room
+        {
+            public string id, name, firstPick;
+            public int memberCount, prebanCount;
+            public bool banProtection;
+        }
         [Serializable] private sealed class RoomState { public Room room; }
         [Serializable] private sealed class CreateRoom { public string name, password; public string rule = "basic"; public bool allowChat = true; }
 
@@ -414,6 +455,7 @@ namespace AstralOath.Client.Tests
             public string RoomId { get; private set; }
             public string Chat { get; private set; }
             public int MemberCount { get; private set; }
+            public (int PrebanCount, string FirstPick, bool BanProtection) RoomSettings { get; private set; }
             public Peer(string endpoint) => url = endpoint.TrimEnd('/') + "/api/arena/";
             public async Task Open(string displayName = "第二会话") =>
                 token = JsonUtility.FromJson<Session>(await Call("sessions",
@@ -433,8 +475,12 @@ namespace AstralOath.Client.Tests
                 RoomId = null;
             }
 
-            public async Task ReadRoom() =>
-                MemberCount = JsonUtility.FromJson<RoomState>(await Call("rooms/" + RoomId)).room.memberCount;
+            public async Task ReadRoom()
+            {
+                var room = JsonUtility.FromJson<RoomState>(await Call("rooms/" + RoomId)).room;
+                MemberCount = room.memberCount;
+                RoomSettings = (room.prebanCount, room.firstPick, room.banProtection);
+            }
             public async Task Read() => Chat = await Call("rooms/" + RoomId + "/messages?after=0");
             public Task Send() => Call("rooms/" + RoomId + "/messages", "{\"text\":\"来自第二会话\"}");
             public Task SendSticker(string id) => Call("rooms/" + RoomId + "/messages",

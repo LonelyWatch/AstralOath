@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AstralOath.Client.Common;
 using AstralOath.Client.Core;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace AstralOath.Client.Arena
@@ -22,6 +23,10 @@ namespace AstralOath.Client.Arena
         private readonly GameToastBinder toast;
         private const int ChatHistoryLimit = 100;
         private const string StickerWindow = "arena/stickers";
+        private const string PrebanWindow = "arena/room-preban";
+        private const string ProtectionWindow = "arena/room-protection";
+        private static readonly Color InactivePickColor = new Color32(150, 153, 157, 255);
+        private static readonly Color SelectedChoiceColor = new Color32(20, 21, 23, 255);
         private readonly Dictionary<string, Sprite> stickers = new Dictionary<string, Sprite>(StringComparer.Ordinal);
         private static readonly Color SelfNameColor = new Color32(137, 201, 62, 255);
         private readonly SortedList<long, MessageRow> messages = new SortedList<long, MessageRow>();
@@ -43,7 +48,8 @@ namespace AstralOath.Client.Arena
         private ArenaRoomState state;
         private long cursor;
         private string memberSignature, roomError, chatError, actionError;
-        private bool leaving, sending, starting, transitioning;
+        private bool leaving, sending, starting, transitioning, savingSettings;
+        private int settingsRevision;
 
         public ArenaRoomBinder(ArenaRoom view, ILocaleService locale, ArenaApi api, WindowCoordinator windows, Func<Task> goBack, Func<ArenaDraftState, Task> openDraft = null)
         {
@@ -71,6 +77,9 @@ namespace AstralOath.Client.Arena
             var start = view.Start;
             start.onClick.AddListener(StartClick);
             screen.Add(() => { if (start) start.onClick.RemoveListener(StartClick); });
+            Listen(view.PrebanCount, OpenPrebanPicker);
+            Listen(view.BanProtection, OpenProtectionPicker);
+            Listen(view.FirstPick, ChangeFirstPick);
             view.Send.interactable = initial.room.allowChat;
             view.Emoji.interactable = initial.room.allowChat;
             if (initial.room.allowChat)
@@ -93,7 +102,11 @@ namespace AstralOath.Client.Arena
                 {
                     try
                     {
-                        Render(await api.GetAsync(id, token));
+                        int revision = settingsRevision;
+                        var current = await api.GetAsync(id, token);
+                        if (token.IsCancellationRequested) return;
+                        if (revision == settingsRevision && !savingSettings)
+                            Render(current);
                         RefreshMessageAges();
                         roomError = null;
                         ShowStatus();
@@ -159,8 +172,7 @@ namespace AstralOath.Client.Arena
             view.Rule.text = locale.Resolve("arena.rule." + next.room.rule);
             view.Count.text = $"{next.room.memberCount}/{next.room.capacity}";
             view.Message.interactable = next.room.allowChat;
-            view.Start.GetComponent<CanvasGroup>().alpha =
-                next.room.rule == "basic" && next.room.host?.id == api.Player?.id && members.Length >= 2 ? 1f : .55f;
+            RenderDraftSettings();
             if (memberSignature == signature) return;
             memberSignature = signature;
             var host = next.room.host;
@@ -185,6 +197,138 @@ namespace AstralOath.Client.Arena
             }
         }
 
+        private bool IsDraftHost => state?.room?.host?.id != null && state.room.host.id == api.Player?.id;
+
+        private bool CanEditDraftSettings => state?.room.rule == "basic" && IsDraftHost &&
+            screen != null && !screen.Token.IsCancellationRequested &&
+            !savingSettings && !starting && !transitioning && !leaving;
+
+        private void RenderDraftSettings()
+        {
+            var room = state.room;
+            bool basic = room.rule == "basic";
+            bool guestPresent = (state.members?.Length ?? 0) >= 2;
+            view.DraftSettings.SetActive(basic);
+            view.GuestFirstPick.SetActive(basic && guestPresent);
+            view.Start.GetComponent<CanvasGroup>().alpha =
+                basic && IsDraftHost && guestPresent && !savingSettings ? 1f : .55f;
+            if (!basic) return;
+
+            view.PrebanCount.interactable = view.BanProtection.interactable =
+                view.FirstPick.interactable = CanEditDraftSettings;
+            view.PrebanLabel.text = room.prebanCount.ToString(CultureInfo.InvariantCulture);
+            view.ProtectionLabel.text = locale.Resolve(room.banProtection ? "arena.draft.room_on" : "arena.draft.room_off");
+
+            bool hostFirst = room.firstPick == "host";
+            bool guestFirst = room.firstPick == "guest";
+            view.FirstPickCheck.enabled = hostFirst;
+            view.GuestFirstPickCheck.enabled = guestFirst;
+            view.FirstPickLabel.color = hostFirst ? SelfNameColor : InactivePickColor;
+            view.GuestFirstPickLabel.color = guestFirst ? SelfNameColor : InactivePickColor;
+        }
+
+        private void Listen(GameButton button, UnityAction action)
+        {
+            button.onClick.AddListener(action);
+            screen.Add(() => { if (button) button.onClick.RemoveListener(action); });
+        }
+
+        private void OpenPrebanPicker()
+        {
+            if (!CanEditDraftSettings) return;
+            ShowDraftPicker(PrebanWindow, view.PrebanPicker, view.PrebanCount, state.room.prebanCount, 4,
+                api.SetPrebanCountAsync);
+        }
+
+        private void OpenProtectionPicker()
+        {
+            if (!CanEditDraftSettings) return;
+            ShowDraftPicker(ProtectionWindow, view.ProtectionPicker, view.BanProtection,
+                state.room.banProtection ? 1 : 0, 2, (id, choice, token) => api.SetBanProtectionAsync(id, choice == 1, token));
+        }
+
+        private void ShowDraftPicker(string window, GameObject picker, GameButton source, int selected,
+            int choices, Func<string, int, CancellationToken, Task<ArenaRoomState>> save)
+        {
+            windows.ShowOverlay(window, overlay =>
+            {
+                picker.SetActive(true);
+                overlay.Add(() => { if (picker) picker.SetActive(false); });
+                var bindings = picker.GetComponent<BindingMap>();
+                bindings.Require<GameButton>("dismiss").Bind(overlay, _ =>
+                {
+                    windows.CloseOverlay(window);
+                    return Task.CompletedTask;
+                });
+                for (int i = 0; i < choices; i++)
+                {
+                    int choice = i;
+                    string suffix = i.ToString(CultureInfo.InvariantCulture);
+                    var button = bindings.Require<GameButton>("choice" + suffix);
+                    bindings.Require<Image>("selected" + suffix).enabled = choice == selected;
+                    bindings.Require<GameText>("choiceLabel" + suffix).color =
+                        choice == selected ? SelectedChoiceColor : Color.white;
+                    button.Bind(overlay, _ =>
+                    {
+                        // Saving belongs to the room, so closing the popup does not cancel it.
+                        windows.CloseOverlay(window);
+                        return choice == selected ? Task.CompletedTask :
+                            SaveDraftSettingAsync(source, (id, token) => save(id, choice, token));
+                    });
+                }
+            });
+        }
+
+        private async void ChangeFirstPick()
+        {
+            await SaveDraftSettingAsync(view.FirstPick, (id, token) =>
+                api.SetFirstPickAsync(id, state.room.firstPick == "host" ? "guest" : "host", token));
+        }
+
+        private async Task SaveDraftSettingAsync(GameButton source,
+            Func<string, CancellationToken, Task<ArenaRoomState>> save)
+        {
+            if (!CanEditDraftSettings) return;
+            var owner = screen;
+            savingSettings = true;
+            ++settingsRevision;
+            RenderDraftSettings();
+            try
+            {
+                var next = await save(state.room.id, owner.Token);
+                if (StillOpen())
+                {
+                    Render(next);
+                    actionError = null;
+                    ShowStatus();
+                }
+            }
+            catch (OperationCanceledException) when (owner.Token.IsCancellationRequested) { }
+            catch (ArenaRequestException error) when (StillOpen())
+            {
+                GameUiFeedback.Play(source, GameUiFeedback.Sound.Blocked);
+                toast.Show(error.Code == "draft_host_only" ? locale.Resolve("arena.error.room_settings_host_only") :
+                    ArenaError.Text(locale, error), owner);
+            }
+            catch (Exception error)
+            {
+                Debug.LogException(error);
+                if (StillOpen()) toast.Show(locale.Resolve("arena.error.request_failed"), owner);
+            }
+            finally
+            {
+                if (StillOpen())
+                {
+                    // A GET started while saving can still carry the pre-save settings.
+                    ++settingsRevision;
+                    savingSettings = false;
+                    RenderDraftSettings();
+                }
+            }
+
+            bool StillOpen() => screen == owner && !owner.Token.IsCancellationRequested;
+        }
+
         private void SetPlayerName(GameText label, ArenaPlayer player)
         {
             bool isSelf = player != null && player.id == api.Player?.id;
@@ -196,7 +340,7 @@ namespace AstralOath.Client.Arena
         private async void StartClick()
         {
             var owner = screen;
-            if (owner == null || starting || leaving) return;
+            if (owner == null || starting || leaving || savingSettings) return;
             string denial = state.room.rule != "basic" || openDraft == null ? "arena.error.draft_rule_unsupported"
                 : state.room.host?.id != api.Player?.id ? "arena.error.draft_host_only"
                 : (state.members?.Length ?? 0) < 2 ? "arena.no_player" : null;
@@ -207,6 +351,7 @@ namespace AstralOath.Client.Arena
                 return;
             }
             starting = true;
+            RenderDraftSettings();
             GameUiFeedback.Play(view.Start, GameUiFeedback.Sound.Confirm);
             try
             {
@@ -224,7 +369,11 @@ namespace AstralOath.Client.Arena
                 Debug.LogException(error);
                 if (scopeStillOpen()) toast.Show(locale.Resolve("arena.error.request_failed"), owner);
             }
-            finally { starting = false; }
+            finally
+            {
+                starting = false;
+                if (scopeStillOpen()) RenderDraftSettings();
+            }
 
             bool scopeStillOpen() => screen == owner && !owner.Token.IsCancellationRequested;
         }
@@ -236,7 +385,7 @@ namespace AstralOath.Client.Arena
                 while (!token.IsCancellationRequested)
                 {
                     await Task.Delay(750, token);
-                    if (transitioning || starting || leaving) continue;
+                    if (transitioning || starting || leaving || savingSettings) continue;
                     try { await EnterDraftAsync(await api.DraftAsync(id, token)); }
                     catch (ArenaRequestException error) when (error.Code is "not_in_room" or "room_not_found")
                     { return; }
@@ -251,9 +400,17 @@ namespace AstralOath.Client.Arena
         private async Task EnterDraftAsync(ArenaDraftState draft)
         {
             if (draft == null || draft.phase == "cancelled" || transitioning || screen == null || screen.Token.IsCancellationRequested) return;
+            var owner = screen;
             transitioning = true;
+            RenderDraftSettings();
+            windows.CloseOverlay(PrebanWindow);
+            windows.CloseOverlay(ProtectionWindow);
             try { await openDraft(draft); }
-            finally { transitioning = false; }
+            finally
+            {
+                transitioning = false;
+                if (screen == owner && !owner.Token.IsCancellationRequested) RenderDraftSettings();
+            }
         }
 
         private void ToggleStickerPicker()
@@ -451,7 +608,7 @@ namespace AstralOath.Client.Arena
         {
             toast.Hide();
             screen = null;
-            sending = false;
+            sending = savingSettings = false;
             roster?.Dispose();
             roster = null;
             foreach (var row in messages.Values)

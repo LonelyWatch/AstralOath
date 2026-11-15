@@ -21,6 +21,7 @@ namespace AstralOath.Client.BattleScene
         private readonly List<(RectTransform Item, Vector2 Position)> topRight = new List<(RectTransform, Vector2)>();
         private Backdrop sky, ground;
         private SpriteRenderer onlineBackdrop;
+        private float onlineBackdropScale = 1f;
         private Vector2 railPosition, railScale, layoutScreen;
         internal float BaselineSize { get; private set; }
         internal int LayoutRevision { get; private set; }
@@ -190,12 +191,29 @@ namespace AstralOath.Client.BattleScene
             ResizeBackdrop();
         }
 
+        internal void BeginOnlineEntry(float wideScale)
+        {
+            onlineBackdropScale = wideScale;
+            ResizeBackdrop();
+            SetOnlineEntryScale(wideScale);
+        }
+
+        internal void SetOnlineEntryScale(float scale) => stageCamera.orthographicSize = BaselineSize * scale;
+
+        internal float OnlineEntryRightEdge(Vector3 worldPoint)
+        {
+            float depth = stageCamera.WorldToViewportPoint(worldPoint).z;
+            return stageCamera.ViewportToWorldPoint(new Vector3(1f, .5f, depth)).x;
+        }
+
         internal void ResizeBackdrop()
         {
             if (onlineBackdrop)
             {
                 float scale = Mathf.Max(2f * BaselineSize / onlineBackdrop.sprite.bounds.size.y,
                     2f * BaselineSize * stageCamera.aspect / onlineBackdrop.sprite.bounds.size.x);
+                // Keep the stage fixed in world space while the entry camera moves closer.
+                scale *= onlineBackdropScale;
                 onlineBackdrop.transform.localScale = new Vector3(scale, scale, 1f);
                 return;
             }

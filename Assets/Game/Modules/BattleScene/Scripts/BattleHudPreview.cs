@@ -143,13 +143,18 @@ namespace AstralOath.Client.BattleScene
             entryHud.alpha = 0f;
             entryHud.blocksRaycasts = false;
             InstallBattle(catalog, allyActors, enemyActors, Team(BattleSide.Ally), Team(BattleSide.Enemy), null);
-            arrival = new BattleOnlineArrival(units, allyActors.Concat(enemyActors), readyDust);
-            arrival.HoldAboveStage();
+            var viewport = GetComponent<Canvas>().worldCamera.GetComponent<BattlePreviewViewport>();
+            arrival = new BattleOnlineArrival(units, viewport, allyActors, enemyActors, readyDust);
+            arrival.Prepare();
         }
 
         internal void BeginOnlineArrival()
         {
             arrival?.Begin();
+            // Level and HP follow the characters during the entry without enabling the action HUD.
+            entryUnitStatus = hud.transform.Find("Unit Status").gameObject.AddComponent<CanvasGroup>();
+            entryUnitStatus.ignoreParentGroups = true;
+            entryUnitStatus.blocksRaycasts = false;
             var title = new GameObject("PvP Arena Title", typeof(RectTransform), typeof(GameText));
             title.transform.SetParent(transform, false);
             var rect = (RectTransform)title.transform;
@@ -177,6 +182,9 @@ namespace AstralOath.Client.BattleScene
             var canvas = GetComponent<Canvas>();
             canvas.worldCamera.GetComponent<BattlePreviewViewport>().UseOnlineBackdrop(renderer);
         }
+        internal bool OnlineArrivalIgnitionReady => arrival?.IgnitionReady ?? true;
+        internal bool OnlineArrivalActorsReady => arrival?.ActorsReady ?? true;
+        internal bool OnlineArrivalCameraBlending => arrival?.CameraBlending == true;
         internal bool OnlineArrivalComplete => arrival?.Complete ?? true;
         internal bool OnlineArrivalEffectsComplete => arrival?.EffectsComplete ?? true;
 
@@ -270,13 +278,6 @@ namespace AstralOath.Client.BattleScene
             // EventSystem.Update must use the camera and screen-space HUD pose from the same
             // rendered frame. Advance the cinematic camera only after this frame's input.
             arrival?.Tick(Time.unscaledDeltaTime);
-            if (arrival?.Complete == true && !entryUnitStatus)
-            {
-                // The native intro shows landed heroes' level and health under the title.
-                entryUnitStatus = hud.transform.Find("Unit Status").gameObject.AddComponent<CanvasGroup>();
-                entryUnitStatus.ignoreParentGroups = true;
-                entryUnitStatus.blocksRaycasts = false;
-            }
             simulation?.Tick(Time.unscaledDeltaTime);
             if (!IsPaused) binder?.Tick(Time.unscaledDeltaTime);
         }

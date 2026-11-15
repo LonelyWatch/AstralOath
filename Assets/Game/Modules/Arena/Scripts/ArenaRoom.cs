@@ -11,6 +11,19 @@ namespace AstralOath.Client.Arena
         public override string PrefabPath => Address;
         public GameButton Leave => Bindings.Require<GameButton>("leave");
         public GameButton Start => Bindings.Require<GameButton>("start");
+        internal GameObject DraftSettings => Bindings.Require<GameObject>("draftSettings");
+        internal GameButton PrebanCount => Bindings.Require<GameButton>("prebanCount");
+        internal GameText PrebanLabel => Bindings.Require<GameText>("prebanLabel");
+        internal GameObject PrebanPicker => Bindings.Require<GameObject>("prebanPicker");
+        internal GameButton BanProtection => Bindings.Require<GameButton>("banProtection");
+        internal GameText ProtectionLabel => Bindings.Require<GameText>("protectionLabel");
+        internal GameObject ProtectionPicker => Bindings.Require<GameObject>("protectionPicker");
+        internal GameButton FirstPick => Bindings.Require<GameButton>("firstPick");
+        internal Image FirstPickCheck => Bindings.Require<Image>("firstPickCheck");
+        internal GameText FirstPickLabel => Bindings.Require<GameText>("firstPickLabel");
+        internal GameObject GuestFirstPick => Bindings.Require<GameObject>("guestFirstPick");
+        internal Image GuestFirstPickCheck => Bindings.Require<Image>("guestFirstPickCheck");
+        internal GameText GuestFirstPickLabel => Bindings.Require<GameText>("guestFirstPickLabel");
         public GameObject Toast => Bindings.Require<GameObject>("toast");
         public Image RoomLock => Bindings.Require<Image>("roomLock");
         public GameButton Send => Bindings.Require<GameButton>("send");
@@ -36,7 +49,24 @@ namespace AstralOath.Client.Arena
         {
             _ = Leave; _ = Send; _ = RoomName; _ = Rule; _ = Count; _ = HostName; _ = GuestName; _ = Status; _ = StatusBoard;
             _ = Emoji; _ = EmojiPicker; _ = Start; _ = Toast; _ = RoomLock;
+            _ = DraftSettings; _ = PrebanCount; _ = PrebanLabel; _ = BanProtection; _ = ProtectionLabel;
+            _ = FirstPick; _ = FirstPickCheck; _ = FirstPickLabel;
+            _ = GuestFirstPick; _ = GuestFirstPickCheck; _ = GuestFirstPickLabel;
+            ValidateSettingsPicker(PrebanPicker, 4);
+            ValidateSettingsPicker(ProtectionPicker, 2);
             _ = Message; _ = Host; _ = Guest; _ = Vacant; _ = EmptyInfo; _ = Members; _ = MemberRow; _ = Messages; _ = ChatRow;
+        }
+
+        private static void ValidateSettingsPicker(GameObject picker, int choices)
+        {
+            var bindings = picker.GetComponent<BindingMap>();
+            _ = bindings.Require<GameButton>("dismiss");
+            for (int i = 0; i < choices; i++)
+            {
+                _ = bindings.Require<GameButton>("choice" + i);
+                _ = bindings.Require<GameText>("choiceLabel" + i);
+                _ = bindings.Require<Image>("selected" + i);
+            }
         }
     }
 }

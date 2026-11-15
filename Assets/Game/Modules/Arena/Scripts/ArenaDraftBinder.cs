@@ -29,6 +29,10 @@ namespace AstralOath.Client.Arena
         private float lastRosterOffset = float.NaN, lastRosterWidth, lastRosterHeight, lastRosterStep;
         private int? localLatency;
         private int lastRosterFocus = -1;
+        private ArenaDraftRosterGesture rosterGesture;
+        private float observedRosterOffset, rosterMovedAt, snapFrom, snapTime;
+        private int snapIndex = -1, previewSequence;
+        private bool rosterMoving;
         private readonly Dictionary<string, ArenaDraftArt.Hero> art;
         private readonly Sprite[] scoreDigits;
         private readonly ArenaDraftArt artwork;
@@ -118,6 +122,11 @@ namespace AstralOath.Client.Arena
             var rosterScroll = view.Scroll("roster");
             rosterScroll.StopMovement();
             rosterScroll.content.anchoredPosition = Vector2.zero;
+            if (!rosterScroll.TryGetComponent(out rosterGesture))
+                rosterGesture = rosterScroll.gameObject.AddComponent<ArenaDraftRosterGesture>();
+            rosterGesture.ResetDrag();
+            previewSequence = 0;
+            ResetRosterMotion(rosterScroll);
             WatchSearch("search");
             WatchSearch("preSearch");
             Listen(view.Button("action"), SubmitAsync);
@@ -161,6 +170,7 @@ namespace AstralOath.Client.Arena
             view.FitLayout();
             UpdateTimer();
             LayoutRoster();
+            UpdateRosterSnap(seconds);
             FitGrid(prebanLayout, gridViewport.rect.width);
             FitGrid(recentLayout, recentGrid.rect.width);
             feature.Tick(seconds);
@@ -245,7 +255,15 @@ namespace AstralOath.Client.Arena
         private void Adopt(ArenaDraftState next)
         {
             if (draft != null && (next.id != draft.id || next.version < draft.version)) return;
-            if (draft != null && next.version == draft.version) return;
+            if (draft != null && next.version == draft.version)
+            {
+                if (next.previewSequence <= draft.previewSequence) return;
+                draft.previewSequence = next.previewSequence;
+                draft.previewHeroId = next.previewHeroId;
+                if (!draft.OwnTurn && draft.phase == "pick") Render();
+                return;
+            }
+            previewSequence = next.previewSequence;
             bool changedPhase = draft?.phase != next.phase;
             bool revealPreban = draft?.phase == "preban" && next.phase == "pick";
             int priorHostPicks = Count(draft?.host?.picks);
@@ -360,11 +378,13 @@ namespace AstralOath.Client.Arena
                 choice.SetState(taken ? L("arena.draft.picked") :
                     banned ? L("arena.draft.banned") : null, banned);
             }
-            foreach (var choice in grid.Concat(recent).Concat(selected))
+            bool canEditPrebans = pre && !draft.Own.submitted && !sending;
+            foreach (var choice in grid.Concat(recent))
             {
-                choice.Selection.enabled = prebans.Contains(choice.Id);
-                choice.Button.interactable = pre && !draft.Own.submitted && !sending;
+                choice.SetPrebanMark(pre && prebans.Contains(choice.Id));
+                choice.Button.interactable = canEditPrebans;
             }
+            foreach (var choice in selected) choice.Button.interactable = canEditPrebans;
             foreach (var choice in revealedOwn.Concat(revealedEnemy)) choice.Button.interactable = false;
 
             if (arrange) RenderFormation(canAct);
@@ -396,18 +416,24 @@ namespace AstralOath.Client.Arena
             {
                 string id = index < taken ? seat.picks[index] : null;
                 var item = team[index];
-                item.Set(id, GetArt(id), asCard: true, tags: true, levelLabel: true);
+                string preview = active && index == taken && draft.picksRemainingInWindow > 0
+                    ? enemy ? draft.previewHeroId : candidate
+                    : null;
+                var hero = GetArt(id ?? preview);
+                bool provisional = id == null && hero != null;
+                item.Set(id, hero, asCard: true, tags: true, levelLabel: true);
+                item.SetProvisional(provisional);
                 bool protect = id != null && id == seat.protectedHeroId;
                 bool isBanned = id != null && (draft.phase is "formation" or "battle") && id == opponent.ban;
                 item.Button.interactable = id != null && (!enemy || draft.phase != "ban" || CanSelect(id));
                 item.Pending.enabled = active && index >= taken && index < taken + draft.picksRemainingInWindow;
-                item.Pending.color = enemy ? new Color32(255, 104, 95, 72) : new Color32(111, 204, 255, 72);
                 item.Selection.enabled = enemy && id != null && id == candidate && draft.phase == "ban";
                 ((Image)item.Button.targetGraphic).color = Color.white;
-                item.Guard.enabled = protect || draft.banProtection && index == 2 && id == null;
+                bool showSlotProtection = draft.banProtection && index == 2 && hero == null;
+                item.Guard.enabled = showSlotProtection;
                 if (item.GuardPlate)
                 {
-                    bool showSlotProtection = item.Guard.enabled && id == null;
+                    item.FilledGuard.enabled = protect;
                     item.GuardPlate.enabled = item.GuardCaption.enabled = showSlotProtection;
                     item.GuardCaption.text = L("arena.draft.safeguard");
                 }
@@ -459,7 +485,7 @@ namespace AstralOath.Client.Arena
 
         private void Select(string id)
         {
-            if (!CanSelect(id) || sending) return;
+            if (!CanSelect(id) || sending || (draft.phase == "pick" && !draft.OwnTurn)) return;
             if (draft.phase == "preban")
             {
                 if (!prebans.Remove(id))
@@ -478,6 +504,8 @@ namespace AstralOath.Client.Arena
                     var scroll = view.Scroll("roster");
                     scroll.StopMovement();
                     scroll.content.anchoredPosition = new Vector2(0, selectedIndex * RosterStep);
+                    ResetRosterMotion(scroll);
+                    PublishPreview(id);
                 }
             }
             Render();
@@ -563,6 +591,16 @@ namespace AstralOath.Client.Arena
 
         private void UpdateTimer()
         {
+            float now = Time.unscaledTime;
+            float pulse = Mathf.SmoothStep(0f, 1f, Mathf.Abs(Mathf.Repeat(now, 1f) * 2f - 1f));
+            foreach (var card in left) card.AnimatePick(pulse);
+            foreach (var card in right) card.AnimatePick(pulse);
+            if (draft?.phase == "preban")
+            {
+                foreach (var card in grid) card.AnimatePreban(now);
+                foreach (var card in recent) card.AnimatePreban(now);
+            }
+
             double remaining = deadline == default ? -1 : (deadline - DateTimeOffset.UtcNow).TotalSeconds;
             int picksTaken = Count(draft?.Own.picks) + Count(draft?.Opponent.picks);
             // Opening and closing single picks use 30 seconds; the shared two-pick window is 60.
@@ -610,7 +648,8 @@ namespace AstralOath.Client.Arena
         {
             Filter(roster, view.Search("search").text);
             var filtered = rosterFilter.Order(roster.Where(row => row.Button.gameObject.activeSelf), row => art[row.Id]).ToArray();
-            if (!visibleRoster.SequenceEqual(filtered))
+            bool changed = !visibleRoster.SequenceEqual(filtered);
+            if (changed)
             {
                 visibleRoster = filtered;
                 lastRosterOffset = float.NaN;
@@ -618,6 +657,7 @@ namespace AstralOath.Client.Arena
             }
             view.Node("rosterEmpty").SetActive(visibleRoster.Length == 0);
             LayoutRoster();
+            if (changed) ResetRosterMotion(view.Scroll("roster"));
             Filter(grid, view.Search("preSearch").text);
         }
 
@@ -685,6 +725,89 @@ namespace AstralOath.Client.Arena
             visibleRoster[nearest].Button.transform.SetAsLastSibling();
         }
 
+        private void ResetRosterMotion(ScrollRect scroll)
+        {
+            observedRosterOffset = scroll.content.anchoredPosition.y;
+            rosterMoving = false;
+            snapIndex = -1;
+        }
+
+        private void UpdateRosterSnap(float seconds)
+        {
+            var scroll = view.Scroll("roster");
+            float offset = scroll.content.anchoredPosition.y;
+            bool moved = Mathf.Abs(offset - observedRosterOffset) > .1f;
+            observedRosterOffset = offset;
+            if (moved || rosterGesture.Dragging)
+            {
+                if (moved)
+                {
+                    rosterMoving = true;
+                    snapIndex = -1;
+                }
+                rosterMovedAt = Time.unscaledTime;
+                return;
+            }
+
+            if (snapIndex >= 0)
+            {
+                snapTime += seconds;
+                float progress = Mathf.Clamp01(snapTime / .12f);
+                scroll.content.anchoredPosition = new Vector2(0, Mathf.SmoothStep(snapFrom, snapIndex * RosterStep, progress));
+                observedRosterOffset = scroll.content.anchoredPosition.y;
+                if (progress < 1f) return;
+
+                string id = visibleRoster[snapIndex].Id;
+                ResetRosterMotion(scroll);
+                if (CanPreviewRoster && CanSelect(id)) Select(id);
+                return;
+            }
+
+            if (!rosterMoving || visibleRoster.Length == 0 || Time.unscaledTime - rosterMovedAt < .12f) return;
+            scroll.StopMovement();
+            snapIndex = Mathf.Clamp(Mathf.RoundToInt(offset / RosterStep), 0, visibleRoster.Length - 1);
+            if (CanPreviewRoster && !CanSelect(visibleRoster[snapIndex].Id))
+            {
+                // Keep the focus on a legal candidate after passing a picked or banned card.
+                int nearest = snapIndex;
+                for (int distance = 1; distance < visibleRoster.Length; distance++)
+                {
+                    int after = nearest + distance;
+                    int before = nearest - distance;
+                    if (after < visibleRoster.Length && CanSelect(visibleRoster[after].Id)) { snapIndex = after; break; }
+                    if (before >= 0 && CanSelect(visibleRoster[before].Id)) { snapIndex = before; break; }
+                }
+            }
+            snapFrom = offset;
+            snapTime = 0f;
+            rosterMoving = false;
+        }
+
+        private bool CanPreviewRoster => draft?.phase == "pick" && draft.OwnTurn && !sending && revealUntil == 0f;
+
+        private void PublishPreview(string heroId)
+        {
+            if (!CanPreviewRoster || scope.Token.IsCancellationRequested) return;
+            previewSequence = Math.Max(previewSequence, draft.previewSequence) + 1;
+            var request = new ArenaDraftPreview
+            {
+                draftId = draft.id, version = draft.version, sequence = previewSequence, heroId = heroId
+            };
+            _ = PublishPreviewAsync(draft.roomId, request, scope.Token);
+        }
+
+        private async Task PublishPreviewAsync(string roomId, ArenaDraftPreview request, CancellationToken token)
+        {
+            try
+            {
+                var next = await api.PreviewDraftAsync(roomId, request, token);
+                if (!token.IsCancellationRequested && next != null) Adopt(next);
+            }
+            catch (OperationCanceledException) when (token.IsCancellationRequested) { }
+            catch (ArenaRequestException) { } // A preview may race a turn change; the authoritative poll still runs.
+            catch (Exception error) { Debug.LogException(error); }
+        }
+
         private void WatchSearch(string key)
         {
             var input = view.Search(key);
@@ -698,7 +821,8 @@ namespace AstralOath.Client.Arena
             var row = UnityEngine.Object.Instantiate(view.Node(template), parent, false);
             row.name = id;
             bool rosterCard = template == "row";
-            var card = new Choice(row.GetComponent<BindingMap>(), artwork.LevelDigits, rosterCard: rosterCard);
+            var card = new Choice(row.GetComponent<BindingMap>(), artwork.LevelDigits, rosterCard: rosterCard,
+                prebanCard: template == "gridCell");
             card.Set(id, GetArt(id), asCard: rosterCard, tags: template != "chip");
             UnityAction select = () => Select(card.Id);
             card.Button.onClick.AddListener(select);
@@ -710,7 +834,8 @@ namespace AstralOath.Client.Arena
         {
             if (chips.Select(item => item.Id).SequenceEqual(heroes)) return;
             Release(chips);
-            foreach (string id in heroes) if (art.ContainsKey(id)) AddHero(chips, "chip", view.Node(parent).transform, id);
+            string template = parent == "preSelected" ? "gridCell" : "chip";
+            foreach (string id in heroes) if (art.ContainsKey(id)) AddHero(chips, template, view.Node(parent).transform, id);
         }
 
         private void Listen(GameButton button, Func<Task> handler)
@@ -764,17 +889,25 @@ namespace AstralOath.Client.Arena
             internal readonly Image Portrait, Selection, Guard, Mark, Filled;
             internal RawImage Model;
             private readonly Image element, role, dim;
-            internal readonly Image GuardPlate, Change, Pending;
+            internal readonly Image GuardPlate, FilledGuard, Change, Pending;
             internal readonly GameText GuardCaption;
-            private readonly GameObject levelRoot, starRoot;
+            private readonly CanvasGroup levelVisibility, starVisibility;
             private readonly Image tens, units;
             private readonly Sprite[] levelDigits;
             private readonly Image[] grade, speed;
             private readonly Image pickedIcon, bannedIcon;
             private readonly GameText title, stars, state;
+            private readonly Image prebanFlash, prebanGlow;
+            private ArenaDraftArt.Hero displayedHero;
+            private bool provisional;
+            private float prebanStarted;
+            // Scale keys from preben_effect_spine/intro. The mark holds its settled pose during the loop.
+            private static readonly AnimationCurve PrebanStrikeScale = new AnimationCurve(
+                new Keyframe(0f, 5f), new Keyframe(.1f, 1f), new Keyframe(.1333f, 3f),
+                new Keyframe(.2f, 1f), new Keyframe(.2333f, 1.05f), new Keyframe(.3333f, 1f));
 
             internal Choice(BindingMap map, Sprite[] digits = null, bool teamSlot = false, bool protectedSlot = false,
-                bool miniature = false, bool rosterCard = false)
+                bool miniature = false, bool rosterCard = false, bool prebanCard = false)
             {
                 Button = map.Require<GameButton>("button");
                 Portrait = map.Require<Image>("portrait");
@@ -791,8 +924,8 @@ namespace AstralOath.Client.Arena
                 if (teamSlot)
                 {
                     levelDigits = digits;
-                    levelRoot = map.Require<GameObject>("levelRoot");
-                    starRoot = map.Require<GameObject>("starRoot");
+                    levelVisibility = map.Require<GameObject>("levelRoot").GetComponent<CanvasGroup>();
+                    starVisibility = map.Require<GameObject>("starRoot").GetComponent<CanvasGroup>();
                     tens = map.Require<Image>("levelTens");
                     units = map.Require<Image>("levelUnits");
                     grade = Enumerable.Range(0, 6).Select(index => map.Require<Image>("star" + index)).ToArray();
@@ -800,6 +933,7 @@ namespace AstralOath.Client.Arena
                     if (protectedSlot)
                     {
                         GuardPlate = map.Require<Image>("guardPlate");
+                        FilledGuard = map.Require<Image>("filledGuard");
                         GuardCaption = map.Require<GameText>("guardCaption");
                     }
                 }
@@ -812,14 +946,23 @@ namespace AstralOath.Client.Arena
                     pickedIcon = map.Require<Image>("pickedIcon");
                     bannedIcon = map.Require<Image>("bannedIcon");
                 }
+                if (prebanCard)
+                {
+                    prebanFlash = map.Require<Image>("prebanFlash");
+                    prebanGlow = map.Require<Image>("prebanGlow");
+                    grade = Enumerable.Range(0, 6).Select(index => map.Require<Image>("star" + index)).ToArray();
+                }
             }
 
             internal void Set(string id, ArenaDraftArt.Hero hero, bool asCard, bool tags, bool levelLabel = false)
             {
-                if (levelRoot)
+                if (Id == id && displayedHero == hero) return;
+                Id = id;
+                displayedHero = hero;
+                if (levelVisibility)
                 {
-                    levelRoot.SetActive(hero != null);
-                    starRoot.SetActive(hero != null);
+                    levelVisibility.gameObject.SetActive(hero != null);
+                    starVisibility.gameObject.SetActive(hero != null);
                     if (hero != null)
                     {
                         tens.sprite = levelDigits[Mathf.Clamp(hero.Level / 10, 0, 9)];
@@ -827,8 +970,6 @@ namespace AstralOath.Client.Arena
                         for (int index = 0; index < grade.Length; index++) grade[index].enabled = index < hero.Stars;
                     }
                 }
-                if (Id == id) return;
-                Id = id;
                 Portrait.sprite = asCard ? hero?.Card : hero?.Face;
                 Portrait.enabled = Portrait.sprite;
                 title.text = levelLabel && hero != null ? "Lv." + hero.Level : asCard ? hero?.Name ?? "" : "";
@@ -836,8 +977,85 @@ namespace AstralOath.Client.Arena
                 role.sprite = hero?.ClassIcon;
                 element.enabled = tags && element.sprite;
                 role.enabled = tags && role.sprite;
-                stars.text = speed == null && tags && hero != null ? new string('★', hero.Stars) : "";
+                stars.text = grade == null && tags && hero != null ? new string('★', hero.Stars) : "";
                 if (speed != null && hero != null) SetRosterDetails(hero);
+                if (prebanFlash && hero != null) SetPrebanGrade(hero);
+            }
+
+            private void SetPrebanGrade(ArenaDraftArt.Hero hero)
+            {
+                int count = Mathf.Clamp(hero.BaseStars > 0 ? hero.BaseStars : hero.Stars, 1, grade.Length);
+                const float width = .177f;
+                const float stride = width * 20f / 30f;
+                float first = .5f - (width + stride * (count - 1)) / 2f;
+                for (int index = 0; index < grade.Length; index++)
+                {
+                    var star = grade[index];
+                    star.enabled = index < count;
+                    var rect = star.rectTransform;
+                    float x = first + index * stride;
+                    rect.anchorMin = new Vector2(x, rect.anchorMin.y);
+                    rect.anchorMax = new Vector2(x + width, rect.anchorMax.y);
+                }
+            }
+
+            internal void SetPrebanMark(bool visible)
+            {
+                if (Mark.enabled == visible) return;
+                Mark.enabled = visible;
+                if (visible)
+                {
+                    prebanStarted = Time.unscaledTime;
+                    AnimatePreban(prebanStarted);
+                }
+                else
+                {
+                    prebanFlash.enabled = prebanGlow.enabled = false;
+                }
+            }
+
+            internal void AnimatePreban(float now)
+            {
+                if (!Mark.enabled || !Mark.gameObject.activeInHierarchy) return;
+                float elapsed = now - prebanStarted;
+                float size = PrebanStrikeScale.Evaluate(elapsed);
+                Mark.rectTransform.localScale = new Vector3(size, size, 1f);
+                SetOpacity(Mark, Mathf.Clamp01(elapsed / .1f));
+                prebanFlash.enabled = true;
+                float pulse = .5f + .5f * Mathf.Cos(Mathf.Max(0f, elapsed - .5f) * Mathf.PI * 2f);
+                float flare = 1f - Mathf.Clamp01(elapsed / .2666f);
+                prebanFlash.color = new Color(1f, .114f, 0f, Mathf.Lerp(.27f, .47f, pulse) + flare * .43f);
+                prebanGlow.enabled = elapsed < .2333f;
+                if (prebanGlow.enabled) SetOpacity(prebanGlow, 1f - elapsed / .2333f);
+            }
+
+            internal void SetProvisional(bool value)
+            {
+                if (provisional == value) return;
+                provisional = value;
+                SetPickCardOpacity(value ? .18f : 1f);
+            }
+
+            internal void AnimatePick(float pulse)
+            {
+                // Native blue_idle/red_idle fade from 255 to about 53 and back in one second.
+                if (Pending.enabled) SetOpacity(Pending, Mathf.Lerp(.207f, 1f, pulse));
+                if (provisional) SetPickCardOpacity(Mathf.Lerp(.17f, .48f, pulse));
+            }
+
+            private void SetPickCardOpacity(float opacity)
+            {
+                SetOpacity(Portrait, opacity);
+                SetOpacity(role, opacity);
+                SetOpacity(element, opacity);
+                levelVisibility.alpha = starVisibility.alpha = opacity;
+            }
+
+            private static void SetOpacity(Graphic graphic, float opacity)
+            {
+                var color = graphic.color;
+                color.a = opacity;
+                graphic.color = color;
             }
 
             private void SetRosterDetails(ArenaDraftArt.Hero hero)

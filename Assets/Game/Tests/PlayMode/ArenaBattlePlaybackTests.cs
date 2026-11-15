@@ -293,7 +293,7 @@ namespace AstralOath.Client.Tests
         }
 
         [UnityTest]
-        public IEnumerator BothTeamsLandWithTheGroundShadowHeldAndReleaseAllEffects()
+        public IEnumerator ArenaEntryWarnsAlliesRunsEnemiesOnTheGroundAndThenZooms()
         {
             var scene = EditorSceneManager.LoadSceneInPlayMode(BattleOnlineLaunch.ScenePath,
                 new UnityEngine.SceneManagement.LoadSceneParameters(UnityEngine.SceneManagement.LoadSceneMode.Additive));
@@ -301,29 +301,63 @@ namespace AstralOath.Client.Tests
             {
                 yield return null;
                 var host = scene.GetRootGameObjects().Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+                var camera = host.GetComponent<Canvas>().worldCamera;
+                var viewport = camera.GetComponent<BattlePreviewViewport>();
+                float baseline = camera.orthographicSize;
                 var units = scene.GetRootGameObjects().Single(root => root.name == "Units").transform;
-                var actors = units.GetComponentsInChildren<BattlePreviewActor>(true);
-                var originalPositions = actors.Select(actor => actor.transform.position).ToArray();
-                var originalShadows = actors.Select(actor => actor.transform.Find("Shadow").position).ToArray();
+                var allies = units.Find("Allies").GetComponentsInChildren<BattlePreviewActor>(true);
+                var enemies = units.Find("Enemies").GetComponentsInChildren<BattlePreviewActor>(true);
+                var allyPositions = allies.Select(actor => actor.transform.position).ToArray();
+                var enemyPositions = enemies.Select(actor => actor.transform.position).ToArray();
+                var enemyShadows = enemies.Select(actor => actor.transform.Find("Shadow").position).ToArray();
                 var type = typeof(BattleHudPreview).Assembly.GetType("AstralOath.Client.BattleScene.BattleOnlineArrival", true);
                 var dust = typeof(BattleHudPreview).GetField("readyDust", Members).GetValue(host);
                 using (var animation = (IDisposable)Activator.CreateInstance(type, Members, null,
-                           new object[] { units, actors, dust }, null))
+                           new object[] { units, viewport, allies, enemies, dust }, null))
                 {
-                    type.GetMethod("HoldAboveStage", Members).Invoke(animation, null);
-                    for (int i = 0; i < actors.Length; i++)
-                    {
-                        Assert.That(actors[i].transform.position.y, Is.GreaterThan(originalPositions[i].y + 3f));
-                        Assert.That(actors[i].transform.Find("Shadow").position.y, Is.EqualTo(originalShadows[i].y).Within(.0001f));
-                    }
+                    float FrontX(BattlePreviewActor actor) => camera.WorldToViewportPoint(actor.Bounds.min).x;
+                    bool Flag(string name) => (bool)type.GetProperty(name, Members).GetValue(animation);
+                    void Tick(float delta) => type.GetMethod("Tick", Members).Invoke(animation, new object[] { delta });
+
+                    type.GetMethod("Prepare", Members).Invoke(animation, null);
+                    float wide = camera.orthographicSize;
+                    var warnings = units.GetComponentsInChildren<MeshFilter>(true)
+                        .Where(mesh => mesh.name.StartsWith("PvP Arrival Warning ", StringComparison.Ordinal)).ToArray();
+                    Assert.That(wide, Is.GreaterThan(baseline));
+                    Assert.That(warnings, Has.Length.EqualTo(allies.Length));
+                    Assert.That(warnings.All(warning => !warning.gameObject.activeSelf), Is.True);
+                    Assert.That(allies.Select(actor => actor.transform.position), Is.EqualTo(allyPositions));
+                    Assert.That(enemies.All(actor => FrontX(actor) > 1f), Is.True);
+                    Assert.That(enemies.Select(actor => actor.transform.position.y), Is.EqualTo(enemyPositions.Select(pos => pos.y)));
+                    Assert.That(enemies.Select(actor => actor.transform.Find("Shadow").position.y),
+                        Is.EqualTo(enemyShadows.Select(pos => pos.y)));
+
+                    float firstEnemyStartX = enemies[0].transform.position.x;
                     type.GetMethod("Begin", Members).Invoke(animation, null);
-                    for (int step = 0; step < 20; step++)
-                        type.GetMethod("Tick", Members).Invoke(animation, new object[] { .04f });
-                    Assert.That(type.GetProperty("Complete", Members).GetValue(animation), Is.True);
-                    Assert.That(actors.Select(actor => actor.transform.position), Is.EqualTo(originalPositions));
+                    Tick(.25f);
+                    Assert.That(warnings.All(warning => warning.gameObject.activeSelf && warning.sharedMesh.vertexCount > 0), Is.True);
+                    Assert.That(enemies[0].transform.position.x, Is.LessThan(firstEnemyStartX));
+                    Assert.That(FrontX(enemies[3]), Is.GreaterThan(1f));
+                    Assert.That(enemies[0].transform.position.y, Is.EqualTo(enemyPositions[0].y));
+                    Assert.That(camera.orthographicSize, Is.EqualTo(wide));
+
+                    for (int step = 0; step < 30 && !Flag("ActorsReady"); step++)
+                        Tick(.04f);
+                    Assert.That(Flag("ActorsReady"), Is.True);
+                    Assert.That(Flag("CameraBlending"), Is.True);
+                    Assert.That(camera.orthographicSize, Is.EqualTo(wide));
+                    Assert.That(allies.Select(actor => actor.transform.position), Is.EqualTo(allyPositions));
+                    Assert.That(enemies.Select(actor => actor.transform.position), Is.EqualTo(enemyPositions));
+                    Assert.That(enemies.Select(actor => actor.transform.Find("Shadow").position), Is.EqualTo(enemyShadows));
+                    Tick(.17f);
+                    Assert.That(camera.orthographicSize, Is.GreaterThan(baseline).And.LessThan(wide));
+                    Tick(.3f);
+                    Assert.That(Flag("Complete"), Is.True);
+                    Assert.That(camera.orthographicSize, Is.EqualTo(baseline).Within(.0001f));
                 }
                 yield return null;
-                Assert.That(units.GetComponentsInChildren<Transform>(true).Any(tr => tr.name == "Battle Arrival Dust"), Is.False);
+                Assert.That(units.GetComponentsInChildren<Transform>(true).Any(tr =>
+                    tr.name == "Battle Arrival Dust" || tr.name.StartsWith("PvP Arrival Warning ", StringComparison.Ordinal)), Is.False);
             }
             finally { UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(scene); }
         }

@@ -111,7 +111,7 @@ internal static class ArenaEndpoints
                 throw new ArenaProblem(400, "invalid_room");
             int prebanCount = request.PrebanCount ?? 2;
             string firstPick = request.FirstPick ?? "host";
-            if (prebanCount is < 0 or > 2 || firstPick is not ("host" or "guest"))
+            if (prebanCount is < 0 or > 3 || firstPick is not ("host" or "guest"))
                 throw new ArenaProblem(400, "invalid_room");
             return Results.Ok(await store.CreateRoom(Player(http), name, password, request.AllowChat, request.Rule,
                 prebanCount, firstPick, request.BanProtection ?? true, cancellation));

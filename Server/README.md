@@ -14,6 +14,8 @@
 
 ## 模拟战目录、房间与竞技场聊天
 
+房间选禁设置和当前回合候选的写入、读取及迁移见[联机选禁与入场](../docs/development/arena-draft.md)。
+
 启动前用原有迁移入口应用 `002_arena_rooms.sql`、`003_game_operation_audit.sql`、`004_arena_chat_stickers.sql`、`005_arena_room_member_lease.sql`。服务运行账户需要 `arena_player` 的 SELECT/INSERT/UPDATE（`FOR UPDATE` 行锁需要 UPDATE 权限），`arena_room` 的 SELECT/INSERT/UPDATE/DELETE，`arena_room_member` 的 SELECT/INSERT/DELETE，`arena_room_member_lease` 的 SELECT/INSERT/UPDATE，`arena_room_message` 和 `arena_room_message_sticker` 的 SELECT/INSERT，以及 `game_operation_audit` 的 INSERT。服务启动沿用 `Server` 的现有监听和 TLS 约束。本机明文开发入口为 `http://127.0.0.1:5080`。其他地址使用 HTTPS。
 
 - `POST /api/arena/sessions` 用 `{displayName, avatarId}` 创建独立访客会话。返回 `{token, player}`，后续请求使用 Bearer。服务端持久化随机令牌的 SHA-256，返回给客户端的明文令牌需要由客户端保存以便重连。

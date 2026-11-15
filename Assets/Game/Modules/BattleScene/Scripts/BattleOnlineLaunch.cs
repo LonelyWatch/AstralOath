@@ -89,6 +89,11 @@ namespace AstralOath.Client.BattleScene
                 session = null;
                 await gate.OpenAsync(cancellationToken);
                 host.BeginOnlineArrival();
+                while (!host.OnlineArrivalIgnitionReady)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    await Task.Yield();
+                }
                 await gate.IgniteAsync(cancellationToken);
                 while (!host.OnlineArrivalComplete)
                 {

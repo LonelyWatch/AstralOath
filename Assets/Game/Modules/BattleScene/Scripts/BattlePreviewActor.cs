@@ -141,17 +141,11 @@ namespace AstralOath.Client.BattleScene
             enabled = wasEnabled;
         }
 
-        internal void BeginArrivalPose()
+        internal void BeginArrivalRun()
         {
             BeginPresentationControl();
-            if (player != null)
-                foreach (var clip in player.Animations)
-                    if (clip.Name == "appear")
-                    {
-                        player.Play("appear", false);
-                        player.Seek(0f);
-                        break;
-                    }
+            if (GetBattleAnimationDuration("run") > 0f)
+                player.Play("run", true);
         }
 
         internal void EndArrivalPose()

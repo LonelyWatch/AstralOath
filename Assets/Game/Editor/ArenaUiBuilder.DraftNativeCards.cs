@@ -17,7 +17,6 @@ namespace AstralOath.Editor
         private static readonly int[] NativeRedStarXs = { -237, -200, -177, -187, -218 };
         private static readonly int[] NativeBlueBanXs = { 210, 169, 150, 150, 172 };
         private static readonly int[] NativeRedBanXs = { -204, -161, -144, -144, -169 };
-        private static readonly int[] NativeSlotEffectXs = { 146, 113, 98, 98, 113 };
         private const float NativeSlotHeight = 85f;
 
         private static BindingMap NativeTeamCard(RectTransform root, int index, bool enemy)
@@ -67,6 +66,7 @@ namespace AstralOath.Editor
 
             float levelX = trayEdge + (enemy ? NativeRedLevelXs[index] : NativeBlueLevelXs[index]);
             var level = Area(root, "Level", 0, 0, 1, 1);
+            level.gameObject.AddComponent<CanvasGroup>();
             TeamCardPicture(level, "Level plate", DraftSprite("TeamBadges/hero_lv"), width,
                 new Vector2(levelX, 30.5f), new Vector2(43 * .65f, 30 * .65f), Vector2.zero);
             var tens = TeamCardPicture(level, "Level tens", DraftSprite("TeamBadges/hero_lv_6"), width,
@@ -76,6 +76,7 @@ namespace AstralOath.Editor
             level.gameObject.SetActive(false);
 
             var starRoot = Area(root, "Native stars", 0, 0, 1, 1);
+            starRoot.gameObject.AddComponent<CanvasGroup>();
             float starX = trayEdge + (enemy ? NativeRedStarXs[index] : NativeBlueStarXs[index]);
             var starImages = new Image[6];
             for (int star = 0; star < starImages.Length; star++)
@@ -93,15 +94,17 @@ namespace AstralOath.Editor
             if (!enemy) dim.rectTransform.localScale = new Vector3(-1, 1, 1);
             dim.gameObject.SetActive(false);
 
-            // The inset glow is a candidate effect. The pending pick uses the full CSB img_sel art.
-            var pending = TeamCardPicture(root, "Native pending pick", DraftSprite(slot + "_select"), width,
-                new Vector2(width * .5f, 42.5f), new Vector2(width, 85), new Vector2(.5f, .5f));
-            pending.rectTransform.localScale = visual.rectTransform.localScale;
+            // The original Spine outline atlas is downsampled and contains transparent padding.
+            // Enlarge its rendered rect to register the luminous contour onto the slot silhouette.
+            Sprite glow = DraftSprite(slot + "_glow_blue");
+            var pending = TeamCardPicture(root, "Breathing pick outline", glow, width,
+                new Vector2(width / 2, 42.5f), new Vector2(width + 26, 106), new Vector2(.5f, .5f));
+            if (enemy) pending.rectTransform.localScale = new Vector3(-1, 1, 1);
+            pending.color = new Color(.67f, .80f, 1f);
             pending.enabled = false;
-            Sprite glow = DraftSprite(slot + (enemy ? "_glow_red" : "_glow_blue"));
-            var selection = TeamCardPicture(root, "Native selection glow", glow, width,
-                new Vector2(trayEdge + direction * NativeSlotEffectXs[index], 42.5f + (index == 1 ? -1 : 0)),
-                glow.rect.size, new Vector2(.5f, .5f));
+            var selection = TeamCardPicture(root, "Final ban target", DraftSprite("preban_banned_icon"), width,
+                new Vector2(trayEdge + direction * 70, 42.5f),
+                new Vector2(75, 84), new Vector2(.5f, .5f), true);
             var guard = TeamCardPicture(root, "Native safeguard", DraftSprite("_cm_safeguard"), width,
                 new Vector2(width / 2, 53.5f), new Vector2(62 * .96f, 66 * .96f), new Vector2(.5f, .5f));
             var mark = TeamCardPicture(root, "Native banned stamp", DraftSprite("_cm_banned_res"), width,
@@ -109,9 +112,14 @@ namespace AstralOath.Editor
                 new Vector2(341 * .45f * .78f, 284 * .45f * .78f), new Vector2(.5f, .5f));
             selection.enabled = guard.enabled = mark.enabled = false;
             Image guardPlate = null;
+            Image filledGuard = null;
             GameText guardCaption = null;
             if (index == 2)
             {
+                // The two CSB anchors both sit 31 px in from the outside edge of slot three.
+                filledGuard = TeamCardPicture(root, "Native active safeguard", DraftSprite("_cm_safeguard_glow"),
+                    width, new Vector2(trayEdge + direction * 31, 54.5f), new Vector2(54, 57), new Vector2(.5f, .5f));
+                filledGuard.enabled = false;
                 guardPlate = TeamCardPicture(root, "Native safeguard plate", DraftSprite("pvplive_slot3_safeguard"),
                     width, new Vector2(width / 2 + (enemy ? .5f : -.5f), 42.5f), new Vector2(197, 85), new Vector2(.5f, .5f));
                 if (enemy) guardPlate.rectTransform.localScale = new Vector3(-1, 1, 1);
@@ -138,6 +146,7 @@ namespace AstralOath.Editor
             {
                 keys.Add(("guardPlate", guardPlate));
                 keys.Add(("guardCaption", guardCaption));
+                keys.Add(("filledGuard", filledGuard));
             }
             for (int star = 0; star < starImages.Length; star++)
                 keys.Add(("star" + star, starImages[star]));

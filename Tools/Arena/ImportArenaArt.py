@@ -336,6 +336,7 @@ def arena_draft_art(root, check):
             entries.append(draft_png(root, check, illustration, f"Heroes/{hero_id}_fu.png"))
     entries += draft_digits(root, check)
     entries += draft_slot_glows(root, check)
+    entries += draft_preban_effect(root, check)
     return entries
 
 
@@ -396,6 +397,32 @@ def draft_slot_glows(root, check):
                            png_bytes(result), sources, check,
                            {"method": "native-additive-outline-preview", "clip": clip, "time": 0,
                             "atlasRegion": f"slot{index}_3", "colors": colors, "nativePivotMirrorBaked": True}))
+    return entries
+
+
+def draft_preban_effect(root, check):
+    base = "effect/preben_effect_spine"
+    scsp, atlas, sct = (base + suffix for suffix in (".scsp", ".atlas", ".sct"))
+    source_paths = (scsp, atlas, sct, "effect/ui_pre_banned.cfx")
+    source_data = [read_source(root, path) for path in source_paths]
+    sources = [{"source": path, "sha256": digest(data)} for path, data in zip(source_paths, source_data)]
+    document, _ = decode_scsp(source_data[0])
+    image, _ = decode_sct(source_data[2])
+    layout = source_data[1].decode("utf-8-sig")
+    entries = []
+    for name in ("banned_icon", "icon_glow", "flash"):
+        region = re.search(rf"(?m)^{name}\r?\n +rotate: false\r?\n +xy: (\d+), (\d+)\r?\n +size: (\d+), (\d+)", layout)
+        if region is None:
+            raise ValueError(f"Missing preban Spine atlas region {name}")
+        x, y, width, height = map(int, region.groups())
+        premultiplied = np.asarray(image.crop((x, y, x + width, y + height)), dtype=np.float32)
+        alpha = premultiplied[:, :, 3:4]
+        rgb = np.divide(premultiplied[:, :, :3] * 255, alpha,
+                        out=np.zeros_like(premultiplied[:, :, :3]), where=alpha > 0)
+        sprite = Image.fromarray(np.rint(np.concatenate((np.clip(rgb, 0, 255), alpha), axis=2)).astype(np.uint8), "RGBA")
+        entries.append(write_converted("Arena", f"Textures/Draft/preban_{name}.png", png_bytes(sprite), sources, check,
+                       {"method": "native-spine-region-to-straight-alpha", "atlasRegion": name,
+                        "crop": [x, y, width, height], "clips": [clip for clip in ("intro", "loop") if clip in document["animations"]]}))
     return entries
 
 

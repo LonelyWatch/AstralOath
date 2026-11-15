@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "converterSha256": "6dacb9c4857aca8051a20a24f17cdd64ce72d058a0cbbe1cf8ad06f78025a707",
+  "roots": [
+    "effect/encounter_01.cfx"
+  ],
+  "files": [
+    {
+      "source": "原始资源/effect/encounter_01.atlas",
+      "sourceSha256": "5c4fc919e0110ed9a13363cf5762de2c174484f207fdfdf20003b8cfc88c3f52",
+      "asset": "encounter_01.atlas.txt",
+      "dependencies": [
+        "encounter_01.png"
+      ],
+      "assetSha256": "5c4fc919e0110ed9a13363cf5762de2c174484f207fdfdf20003b8cfc88c3f52"
+    },
+    {
+      "source": "原始资源/effect/encounter_01.cfx",
+      "sourceSha256": "1adb9ab97d413adfbfaad88164288ff0064bde4116747368edd890dc32636c62",
+      "asset": "encounter_01.cfx.json",
+      "dependencies": [
+        "encounter_01.spine.json"
+      ],
+      "assetSha256": "f96bd1fd23cdfa244ff0537583e73fb971cac98068732200d55c2090beaa3b21"
+    },
+    {
+      "source": "原始资源/effect/encounter_01.scsp",
+      "sourceSha256": "c08da51ce8beb8293d1ce951f909d5af692efc06e7bd8075fb7fc088c7b2d07c",
+      "asset": "encounter_01.spine.json",
+      "dependencies": [
+        "encounter_01.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 0.833299994468689
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "encounter_01.sct",
+          "asset": "encounter_01.png"
+        }
+      ],
+      "assetSha256": "0bcda9055fb725204657e5d2b787ac2dbc862ff10bc1730cab260192acc236ba"
+    },
+    {
+      "source": "原始资源/effect/encounter_01.sct",
+      "sourceSha256": "ced1b97d723ab88924482892f0bfdf349e51c99ca833e2e894e5160069d2f54f",
+      "asset": "encounter_01.png",
+      "dependencies": [],
+      "texture": {
+        "width": 166,
+        "height": 131,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "9e6bf29ba518f95f93bd1cf1bff37c83f6f5944e97effbd25cbabf4d47fac12b"
+    }
+  ]
+}

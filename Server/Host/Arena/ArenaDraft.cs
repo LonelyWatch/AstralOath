@@ -9,7 +9,8 @@ internal sealed record ArenaDraftSeatView(ArenaPlayer Player, string[] Prebans, 
     string? Ban, string[] Formation, bool Submitted, string? ProtectedHeroId);
 internal sealed record ArenaDraftView(string Id, string RoomId, string Phase, int Version, int PrebanCount,
     string FirstPick, string? ActiveSide, string MySide, string[] EligibleHeroIds, ArenaDraftSeatView Host, ArenaDraftSeatView Guest,
-    string? BattleId, string ContentHash, DateTimeOffset? DeadlineAt, bool BanProtection, int PicksRemainingInWindow);
+    string? BattleId, string ContentHash, DateTimeOffset? DeadlineAt, bool BanProtection, int PicksRemainingInWindow,
+    string? PreviewHeroId, int PreviewSequence);
 
 internal sealed class ArenaDraft
 {
@@ -30,6 +31,8 @@ internal sealed class ArenaDraft
     public string Phase { get; set; } = "preban";
     public int Version { get; set; } = 1;
     public int PhaseVersion { get; set; } = 1;
+    public string? PreviewHeroId { get; set; }
+    public int PreviewSequence { get; set; }
     public ulong Seed { get; init; }
     public List<ArenaDraftReceipt> Receipts { get; init; } = [];
     public string? BattleId => Phase == "battle" ? Id : null;
@@ -46,6 +49,23 @@ internal sealed class ArenaDraft
 
     public string SideOf(ArenaPlayer player) => player.Id == Host.Player.Id ? "host" :
         player.Id == Guest.Player.Id ? "guest" : throw new ArenaProblem(403, "draft_not_seated");
+
+    public bool SetPreview(ArenaPlayer player, ArenaDraftPreviewRequest request, ArenaBattleCatalog catalog)
+    {
+        string side = SideOf(player);
+        if (request.DraftId != Id) throw new ArenaProblem(409, "draft_changed");
+        if (Phase != "pick" || request.Version != Version)
+            throw new ArenaProblem(409, "draft_version");
+        if (side != ActiveSide) throw new ArenaProblem(409, "draft_turn");
+        if (!string.Equals(catalog.ContentHash, ContentHash, StringComparison.Ordinal))
+            throw new ArenaProblem(409, "battle_content_mismatch");
+        if (request.Sequence <= PreviewSequence) return false;
+        if (request.HeroId is { } hero && (!catalog.Contains(hero) || !CanPick(hero)))
+            throw new ArenaProblem(409, "draft_hero_unavailable");
+        PreviewHeroId = request.HeroId;
+        PreviewSequence = request.Sequence;
+        return true;
+    }
 
     public bool Apply(ArenaPlayer player, ArenaDraftActionRequest body, ArenaBattleCatalog catalog, DateTimeOffset now)
     {
@@ -97,6 +117,7 @@ internal sealed class ArenaDraft
                 own.Submitted = true;
                 break;
         }
+        ClearPreview();
         Version++;
         Receipts.Add(new ArenaDraftReceipt(player.Id, id, body.Version, body.Kind, heroes));
         if (Phase == "pick")
@@ -113,6 +134,7 @@ internal sealed class ArenaDraft
     public bool Cancel()
     {
         if (Phase == "cancelled") return false;
+        ClearPreview();
         Version++;
         Advance("cancelled", DateTimeOffset.UtcNow);
         return true;
@@ -123,7 +145,7 @@ internal sealed class ArenaDraft
         string side = SideOf(player);
         return new ArenaDraftView(Id, RoomId, Phase, Version, PrebanCount, FirstPick, ActiveSide, side,
             catalog.EligibleHeroIds, SeatView(Host, side == "host"), SeatView(Guest, side == "guest"),
-            BattleId, ContentHash, DeadlineAt, BanProtection, PicksRemainingInWindow);
+            BattleId, ContentHash, DeadlineAt, BanProtection, PicksRemainingInWindow, PreviewHeroId, PreviewSequence);
     }
 
     public static string NormalizeRequestId(string? id) => Guid.TryParseExact(id, "N", out var parsed) && parsed != Guid.Empty
@@ -191,6 +213,12 @@ internal sealed class ArenaDraft
     private string? ProtectedHero(ArenaDraftSeat seat) => BanProtection && seat.Picks.Count >= 3 ? seat.Picks[2] : null;
 
     private bool CanBan(ArenaDraftSeat opponent, string id) => opponent.Picks.Contains(id) && ProtectedHero(opponent) != id;
+
+    private void ClearPreview()
+    {
+        PreviewHeroId = null;
+        PreviewSequence = 0;
+    }
 
     private bool CanPick(string id) => !Host.Prebans.Contains(id) && !Guest.Prebans.Contains(id) &&
         !Host.Picks.Contains(id) && !Guest.Picks.Contains(id);

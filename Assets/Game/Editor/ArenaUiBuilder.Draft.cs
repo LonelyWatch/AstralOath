@@ -117,7 +117,7 @@ namespace AstralOath.Editor
             Object.DestroyImmediate(roster.content.GetComponent<ContentSizeFitter>());
             Add("roster", roster);
             Add("row", BuildDraftRosterRow(root).gameObject);
-            DraftTemplate(root, "Preban hero template", 92, DraftSprite("cm_hero_cirbg2"), false, true, out var gridTemplate);
+            DraftTemplate(root, "Preban hero template", 92, HudSprite("_hero_s_bg_ally"), false, true, out var gridTemplate, prebanCard: true);
             Add("gridCell", gridTemplate.gameObject);
             DraftTemplate(root, "Banned portrait template", 62, DraftSprite("cm_hero_cirbg2"), false, true, out var chip);
             Add("chip", chip.gameObject);
@@ -182,12 +182,14 @@ namespace AstralOath.Editor
             return outer.gameObject;
         }
 
-        private static BindingMap DraftCard(RectTransform root, Sprite background, Sprite filled, bool reverse, bool horizontal, bool miniature, Sprite outline = null)
+        private static BindingMap DraftCard(RectTransform root, Sprite background, Sprite filled, bool reverse, bool horizontal, bool miniature, Sprite outline = null, bool prebanCard = false)
         {
             bool rosterRow = filled == null;
             var button = Button(root, null, Color.clear);
             button.BlockedFeedback = true;
-            var target = Picture(root, "Card background", background, 0, 0, 1, 1);
+            var target = prebanCard
+                ? Picture(root, "Card background", background, .082f, .095f, .84f, .797f, true)
+                : Picture(root, "Card background", background, 0, 0, 1, 1);
             button.targetGraphic = target;
             target.color = Color.white;
             var colors = button.colors;
@@ -219,6 +221,7 @@ namespace AstralOath.Editor
                 horizontal ? .872f : .822f, !horizontal || rosterRow);
             if (!horizontal && !miniature)
                 Picture(root, "Gold face frame", HudSprite("_hero_s_frame_ally"), .025f, .008f, .95f, .923f, true);
+            if (prebanCard) Place(portrait.rectTransform, .082f, .095f, .84f, .797f);
             var guard = Picture(root, "Ban protection", DraftSprite("_cm_safeguard"), reverse ? .77f : .035f,
                 .08f, .18f, .46f, true);
             var mark = Picture(root, "Banned stamp", DraftSprite("_cm_banned_res"), .32f, .025f, .66f, .94f, true);
@@ -253,6 +256,25 @@ namespace AstralOath.Editor
             var keys = new List<(string, Object)> { ("button", button), ("filled", book), ("selection", selection), ("portrait", portrait),
                 ("guard", guard), ("mark", mark), ("element", element), ("role", role), ("name", name),
                 ("stars", stars), ("state", state), ("dim", dim) };
+            if (prebanCard)
+            {
+                // pvplive_ready_pre_ben_item.csb uses gold cm_icon_star art with a 20/30 stride.
+                for (int index = 0; index < 6; index++)
+                {
+                    var star = Picture(root, "Original rarity star " + (index + 1),
+                        DraftSprite("TeamBadges/cm_icon_star"), 0, .796f, .177f, .164f, true);
+                    star.enabled = false;
+                    keys.Add(("star" + index, star));
+                }
+                var flash = Picture(root, "Preban red flash", DraftSprite("preban_flash"), -.15f, -.13f, 1.3f, 1.3f, true);
+                var glow = Picture(root, "Preban strike glow", DraftSprite("preban_icon_glow"), -.04f, -.02f, 1.08f, 1.08f, true);
+                mark.sprite = DraftSprite("preban_banned_icon");
+                Place(mark.rectTransform, .063f, -.007f, .872f, .985f);
+                mark.transform.SetAsLastSibling();
+                flash.enabled = glow.enabled = false;
+                keys.Add(("prebanFlash", flash));
+                keys.Add(("prebanGlow", glow));
+            }
             if (miniature)
             {
                 var model = Raw(root, "Battle model", 0, 0, 1, 1);
@@ -280,10 +302,10 @@ namespace AstralOath.Editor
         }
 
         private static void DraftTemplate(RectTransform parent, string name, int size, Sprite background, bool horizontal, bool circle,
-            out RectTransform template)
+            out RectTransform template, bool prebanCard = false)
         {
             template = Area(parent, name, 0, 0, 1, 1);
-            DraftCard(template, background, null, false, horizontal, false);
+            DraftCard(template, background, null, false, horizontal, false, prebanCard: prebanCard);
             var layout = template.gameObject.AddComponent<LayoutElement>();
             layout.preferredHeight = size;
             if (circle) layout.preferredWidth = size;

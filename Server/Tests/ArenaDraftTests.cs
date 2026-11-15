@@ -66,6 +66,33 @@ public sealed class ArenaDraftTests
                        new { requestId = RequestId(), draftId, version = Version(replay), kind = "pick", heroIds = new[] { picks[0] } }, ct))
                 Assert.Equal(HttpStatusCode.Conflict, wrongTurn.StatusCode);
             int pickVersion = Version(replay);
+            string previewPath = draftPath + "/preview";
+            var firstPreview = new { draftId, version = pickVersion, heroId = picks[0], sequence = 1 };
+            using (var wrongPreviewSeat = await guest.PostAsJsonAsync(Api(previewPath), firstPreview, ct))
+                Assert.Equal(HttpStatusCode.Conflict, wrongPreviewSeat.StatusCode);
+            using (var spectatorPreview = await spectator.PostAsJsonAsync(Api(previewPath), firstPreview, ct))
+                Assert.Equal(HttpStatusCode.Forbidden, spectatorPreview.StatusCode);
+            using (var bannedPreview = await host.PostAsJsonAsync(Api(previewPath), firstPreview with { heroId = eligible[0] }, ct))
+                Assert.Equal(HttpStatusCode.Conflict, bannedPreview.StatusCode);
+
+            var deadline = replay.GetProperty("deadlineAt").GetDateTimeOffset();
+            var preview = await Send(host, previewPath, firstPreview);
+            Assert.Equal(pickVersion, Version(preview));
+            Assert.Equal(deadline, preview.GetProperty("deadlineAt").GetDateTimeOffset());
+            Assert.Equal(picks[0], preview.GetProperty("previewHeroId").GetString());
+            Assert.Empty(preview.GetProperty("host").GetProperty("picks").EnumerateArray());
+            preview = await Send(host, previewPath, firstPreview with { heroId = picks[1], sequence = 3 });
+            Assert.Equal(picks[1], preview.GetProperty("previewHeroId").GetString());
+            preview = await Send(host, previewPath, firstPreview with { sequence = 2 });
+            Assert.Equal(3, preview.GetProperty("previewSequence").GetInt32());
+            observer = await Read(guest, draftPath);
+            Assert.Equal(3, observer.GetProperty("previewSequence").GetInt32());
+            Assert.Equal(picks[1], observer.GetProperty("previewHeroId").GetString());
+
+            preview = await Send(host, previewPath, new { draftId, version = pickVersion, sequence = 4 });
+            Assert.Equal(JsonValueKind.Null, preview.GetProperty("previewHeroId").ValueKind);
+            Assert.Equal(4, preview.GetProperty("previewSequence").GetInt32());
+            await Send(host, previewPath, firstPreview with { sequence = 5 });
             var requests = new[] { RequestId(), RequestId() }.Select(requestId => host.PostAsJsonAsync(
                 Api(draftPath + "/actions"), new { requestId, draftId, version = pickVersion, kind = "pick", heroIds = new[] { picks[0] } }, ct));
             var replies = await Task.WhenAll(requests);
@@ -76,11 +103,18 @@ public sealed class ArenaDraftTests
             }
             finally { foreach (var reply in replies) reply.Dispose(); }
             replay = await Read(host, draftPath);
+            Assert.Equal(JsonValueKind.Null, replay.GetProperty("previewHeroId").ValueKind);
+            Assert.Equal(0, replay.GetProperty("previewSequence").GetInt32());
+            using (var latePreview = await host.PostAsJsonAsync(Api(previewPath), firstPreview with { sequence = 6 }, ct))
+                Assert.Equal(HttpStatusCode.Conflict, latePreview.StatusCode);
             Assert.Equal(2, replay.GetProperty("picksRemainingInWindow").GetInt32());
             var pairDeadline = replay.GetProperty("deadlineAt").GetDateTimeOffset();
+            await Send(guest, previewPath, firstPreview with { version = Version(replay), heroId = picks[1] });
             replay = await Action(guest, draftId, Version(replay), "pick", picks[1]);
             Assert.Equal(1, replay.GetProperty("picksRemainingInWindow").GetInt32());
             Assert.Equal(pairDeadline, replay.GetProperty("deadlineAt").GetDateTimeOffset());
+            Assert.Equal(JsonValueKind.Null, replay.GetProperty("previewHeroId").ValueKind);
+            Assert.Equal(0, replay.GetProperty("previewSequence").GetInt32());
             for (int i = 2; i < order.Length; i++)
                 replay = await Action(order[i], draftId, Version(replay), "pick", picks[i]);
             Assert.Equal("ban", Phase(replay));
@@ -185,6 +219,104 @@ public sealed class ArenaDraftTests
             using var response = await client.GetAsync(Api(route), ct);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<JsonElement>(ct);
+        }
+    }
+
+    [MySqlFact]
+    public async Task HostChangesRoomDraftSettingsAtomicallyBeforeDraftStarts()
+    {
+        var connection = Environment.GetEnvironmentVariable("ASTRALOATH_MYSQL_TEST")!;
+        using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(35));
+        var ct = timeout.Token;
+        await DatabaseMigrator.ApplyAsync(connection, ct);
+        await using var source = new WebApplicationFactory<Program>();
+        await using var factory = Configure(source, connection);
+        using var host = factory.CreateClient();
+        using var guest = factory.CreateClient();
+        using var outsider = factory.CreateClient();
+
+        await Login(host, "设置房主");
+        await Login(guest, "设置对手");
+        await Login(outsider, "房外访客");
+        var room = (await Send(host, "rooms", new { name = "房间选禁设置", rule = "basic" })).GetProperty("room");
+        string roomPath = "rooms/" + room.GetProperty("id").GetString();
+        string settings = roomPath + "/draft/settings";
+        string? otherRoomPath = null;
+        try
+        {
+            AssertSettings(room, 2, "host", true);
+            await Send(guest, roomPath + "/join", new { });
+            await ExpectFailure(guest, settings, new { prebanCount = 1 }, HttpStatusCode.Forbidden, "draft_host_only");
+            await ExpectFailure(outsider, settings, new { banProtection = false }, HttpStatusCode.Forbidden, "not_in_room");
+            await ExpectFailure(host, settings, new { }, HttpStatusCode.BadRequest, "invalid_draft_settings");
+            await ExpectFailure(host, settings, new { prebanCount = 4 }, HttpStatusCode.BadRequest, "invalid_draft_settings");
+            await ExpectFailure(host, settings, new { firstPick = "unknown" }, HttpStatusCode.BadRequest, "invalid_draft_settings");
+
+            // Concurrent updates to different fields must preserve both settings.
+            await Task.WhenAll(Send(host, settings, new { prebanCount = 3 }),
+                Send(host, settings, new { firstPick = "guest" }));
+            var updated = (await Send(host, settings, new { banProtection = false })).GetProperty("room");
+            AssertSettings(updated, 3, "guest", false);
+            var guestRoom = (await guest.GetFromJsonAsync<JsonElement>(Api(roomPath), ct)).GetProperty("room");
+            AssertSettings(guestRoom, 3, "guest", false);
+
+            var draft = await Send(host, roomPath + "/draft/start", new { requestId = RequestId() });
+            Assert.Equal("preban", Phase(draft));
+            AssertSettings(draft, 3, "guest", false);
+            var eligible = draft.GetProperty("eligibleHeroIds").EnumerateArray().Select(row => row.GetString()!).ToArray();
+            Assert.True(eligible.Length >= 16);
+            var id = draft.GetProperty("id").GetString();
+            int version = Version(draft);
+            await Send(host, roomPath + "/draft/actions",
+                new { requestId = RequestId(), draftId = id, version, kind = "preban", heroIds = eligible[..3] });
+            var pick = await Send(guest, roomPath + "/draft/actions",
+                new { requestId = RequestId(), draftId = id, version, kind = "preban", heroIds = eligible[3..6] });
+            Assert.Equal("pick", Phase(pick));
+            Assert.Equal("guest", pick.GetProperty("activeSide").GetString());
+            await ExpectFailure(host, settings, new { prebanCount = 0 }, HttpStatusCode.Conflict, "draft_already_started");
+            guestRoom = (await guest.GetFromJsonAsync<JsonElement>(Api(roomPath), ct)).GetProperty("room");
+            AssertSettings(guestRoom, 3, "guest", false);
+
+            var otherRoom = (await Send(outsider, "rooms", new { name = "其他规则设置", rule = "round" })).GetProperty("room");
+            otherRoomPath = "rooms/" + otherRoom.GetProperty("id").GetString();
+            await ExpectFailure(outsider, otherRoomPath + "/draft/settings", new { prebanCount = 1 },
+                HttpStatusCode.Conflict, "draft_rule_unsupported");
+        }
+        finally
+        {
+            using var cleanup = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+            await guest.PostAsJsonAsync(Api(roomPath + "/leave"), new { }, cleanup.Token);
+            await host.PostAsJsonAsync(Api(roomPath + "/leave"), new { }, cleanup.Token);
+            if (otherRoomPath != null)
+                await outsider.PostAsJsonAsync(Api(otherRoomPath + "/leave"), new { }, cleanup.Token);
+        }
+
+        static void AssertSettings(JsonElement target, int count, string first, bool protection)
+        {
+            Assert.Equal(count, target.GetProperty("prebanCount").GetInt32());
+            Assert.Equal(first, target.GetProperty("firstPick").GetString());
+            Assert.Equal(protection, target.GetProperty("banProtection").GetBoolean());
+        }
+
+        async Task Login(HttpClient client, string name)
+        {
+            var session = await Send(client, "sessions", new { displayName = name });
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", session.GetProperty("token").GetString());
+        }
+
+        async Task<JsonElement> Send(HttpClient client, string route, object body)
+        {
+            using var response = await client.PostAsJsonAsync(Api(route), body, ct);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<JsonElement>(ct);
+        }
+
+        async Task ExpectFailure(HttpClient client, string route, object body, HttpStatusCode status, string code)
+        {
+            using var response = await client.PostAsJsonAsync(Api(route), body, ct);
+            Assert.Equal(status, response.StatusCode);
+            var error = await response.Content.ReadFromJsonAsync<JsonElement>(ct);
+            Assert.Equal(code, error.GetProperty("code").GetString());
         }
     }
 

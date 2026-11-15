@@ -75,8 +75,17 @@ namespace AstralOath.Client.Tests
             Assert.That((string)state["phase"], Is.EqualTo("preban"));
             var pool = state["eligibleHeroIds"].Values<string>().ToArray();
             ClickHero(draft, "grid", pool[0]);
-            yield return Capture("arena-draft-preban");
             ClickHero(draft, "grid", pool[1]);
+            var selectedMark = Hero(draft, "grid", pool[1]).GetComponent<BindingMap>().Require<Image>("mark");
+            Assert.That(selectedMark.sprite.name, Is.EqualTo("preban_banned_icon"));
+            var footer = draft.Require<GameObject>("preSelected").transform;
+            var footerCards = footer.Cast<Transform>().Where(card => card.gameObject.activeSelf).ToArray();
+            Assert.That(footerCards.Length, Is.EqualTo(2));
+            var footerStar = footerCards[1].GetComponent<BindingMap>().Require<Image>("star0");
+            var gridStar = Hero(draft, "grid", pool[1]).GetComponent<BindingMap>().Require<Image>("star0");
+            Assert.That(footerStar.sprite, Is.SameAs(gridStar.sprite));
+            yield return new WaitForSecondsRealtime(.35f);
+            yield return Capture("arena-draft-preban");
             Click(draft, "preAction");
             yield return ObserveHostSubmission(route, "preban", next => state = next);
             Assert.That(state["host"]["prebans"].Count(), Is.EqualTo(0));
@@ -105,6 +114,12 @@ namespace AstralOath.Client.Tests
             Assert.That(star.sprite.name, Is.EqualTo("cm_icon_star_j"));
             Assert.That(nextStar.rectTransform.anchorMin.x - star.rectTransform.anchorMin.x,
                 Is.LessThan(star.rectTransform.anchorMax.x - star.rectTransform.anchorMin.x));
+            var emptyOutline = draft.Require<BindingMap>("blue0").Require<Image>("pending");
+            Assert.That(emptyOutline.enabled, Is.True);
+            float previousAlpha = emptyOutline.color.a;
+            yield return Wait(() => Mathf.Abs(emptyOutline.color.a - previousAlpha) > .2f,
+                "The pending slot outline did not breathe.", 2f);
+            yield return Wait(() => emptyOutline.color.a > .88f, "The pending slot outline did not brighten.", 2f);
             yield return Capture("arena-draft-roster-initial");
             scroll.content.anchoredPosition = new Vector2(0, rowStep * 2f);
             yield return Wait(() => rollThird.localScale.x > rollFirst.localScale.x, "Roster focus did not follow scroll.");
@@ -150,12 +165,48 @@ namespace AstralOath.Client.Tests
             Assert.That(Hero(draft, "roster", "c1003").gameObject.activeSelf, Is.True);
             Click(filter, "close");
 
+            int beforePreview = (int)state["version"];
+            string scrolledCandidate = pool[5];
+            var focusedRow = (RectTransform)Hero(draft, "roster", scrolledCandidate).transform;
+            float focusOffset = rollFirst.anchoredPosition.y - focusedRow.anchoredPosition.y;
+            scroll.content.anchoredPosition = new Vector2(0, focusOffset + .27f * rowStep);
+            yield return ReadUntil(route, next => (string)next["previewHeroId"] == scrolledCandidate, next => state = next);
+            Assert.That(scroll.content.anchoredPosition.y, Is.EqualTo(focusOffset).Within(1f));
+            Assert.That((int)state["version"], Is.EqualTo(beforePreview));
+            Assert.That(state["host"]["picks"].Count(), Is.Zero);
+            Assert.That(draft.Require<GameButton>("action").interactable, Is.True);
+            yield return Capture("arena-draft-scroll-preview");
+
             bool[] hostPicks = { true, false, false, true, true, false, false, true, true, false };
             for (int i = 0; i < hostPicks.Length; i++)
             {
                 string candidate = pool[4 + i];
                 if (!hostPicks[i])
                 {
+                    if (i == 1)
+                    {
+                        var opponentCard = draft.Require<BindingMap>("red0");
+                        var portrait = opponentCard.Require<Image>("portrait");
+                        string opponentPreview = pool[7];
+                        yield return Peer(route + "/preview", new
+                        {
+                            draftId = (string)state["id"], version = (int)state["version"],
+                            heroId = opponentPreview, sequence = 1
+                        }, next =>
+                        {
+                            Assert.That((string)next["previewHeroId"], Is.EqualTo(opponentPreview));
+                            Assert.That((int)next["version"], Is.EqualTo((int)state["version"]));
+                            Assert.That(next["guest"]["picks"].Count(), Is.Zero);
+                        });
+                        yield return Wait(() => portrait.enabled && portrait.sprite, "The remote candidate did not show in the empty team slot.");
+                        Assert.That(opponentCard.Require<GameButton>("button").interactable, Is.False);
+                        Assert.That(opponentCard.Require<Image>("pending").sprite.name, Does.EndWith("_glow_blue"));
+                        float portraitAlpha = portrait.color.a;
+                        yield return Wait(() => Mathf.Abs(portrait.color.a - portraitAlpha) > .14f,
+                            "The opponent candidate did not flash.", 2f);
+                        yield return Capture("arena-draft-opponent-preview");
+                    }
+
                     yield return PeerAction(route, state, "pick", new[] { candidate }, next => state = next);
                     continue;
                 }
@@ -177,7 +228,7 @@ namespace AstralOath.Client.Tests
             var protectedSlot = draft.Require<BindingMap>("red2");
             yield return Wait(() => target.interactable && !protectedSlot.Require<GameButton>("button").interactable,
                 "Final ban did not enable ordinary targets and protect the third pick.");
-            Assert.That(protectedSlot.Require<Image>("guard").enabled, Is.True);
+            Assert.That(protectedSlot.Require<Image>("filledGuard").enabled, Is.True);
             target.onClick.Invoke();
             yield return Capture("arena-draft-final-ban");
             Click(draft, "action");
@@ -217,10 +268,25 @@ namespace AstralOath.Client.Tests
             var online = typeof(BattleHudPreview).GetField("online", flags);
             if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("ASTRAL_ARENA_CAPTURE_DIR")))
             {
-                var ready = typeof(BattleHudPreview).GetProperty("OnlineArrivalComplete", flags);
-                yield return Wait(() => arrival.GetValue(hostHud) != null && (bool)ready.GetValue(hostHud),
-                    "The online battle did not reach the landing frame.", 35);
-                yield return CaptureBattle(battleScene, hostHud, "arena-draft-landing", 1920, 900, gateOverlay: true);
+                var actorsReady = typeof(BattleHudPreview).GetProperty("OnlineArrivalActorsReady", flags);
+                var cameraBlending = typeof(BattleHudPreview).GetProperty("OnlineArrivalCameraBlending", flags);
+                var arrivalTime = arrival.FieldType.GetField("time", flags);
+                var blendTime = arrival.FieldType.GetField("cameraTime", flags);
+                bool InArrival() => arrival.GetValue(hostHud) != null;
+                yield return Wait(() => InArrival() && (float)arrivalTime.GetValue(arrival.GetValue(hostHud)) >= .47f &&
+                    battleScene.GetRootGameObjects()
+                    .SelectMany(root => root.GetComponentsInChildren<Transform>())
+                    .Any(node => node.name.StartsWith("PvP Arrival Warning ", StringComparison.Ordinal) &&
+                        node.GetComponentsInChildren<MeshRenderer>().Any(renderer => renderer.enabled)),
+                    "The original warning Spine effect did not appear.", 35);
+                yield return CaptureBattle(battleScene, hostHud, "arena-draft-entry-warning", 1920, 900, gateOverlay: true);
+                yield return Wait(() => InArrival() && (bool)actorsReady.GetValue(hostHud),
+                    "All actors did not arrive before the camera transition.", 10);
+                yield return CaptureBattle(battleScene, hostHud, "arena-draft-entry-grounded", 1920, 900, gateOverlay: true);
+                yield return Wait(() => InArrival() && (bool)cameraBlending.GetValue(hostHud) &&
+                    (float)blendTime.GetValue(arrival.GetValue(hostHud)) >= .25f,
+                    "The camera did not move closer at the end of entry.", 10);
+                yield return CaptureBattle(battleScene, hostHud, "arena-draft-entry-camera", 1920, 900, gateOverlay: true);
             }
             yield return Wait(() => online.GetValue(hostHud) != null && arrival.GetValue(hostHud) == null,
                 "The online battle did not complete stage entry.", 40);

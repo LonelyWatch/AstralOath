@@ -7,7 +7,8 @@ namespace AstralOath.Client.Arena
     public sealed class ArenaDraftState
     {
         public string id, roomId, phase, firstPick, activeSide, mySide, battleId, contentHash, deadlineAt;
-        public int version, prebanCount, picksRemainingInWindow;
+        public int version, prebanCount, picksRemainingInWindow, previewSequence;
+        public string previewHeroId;
         public bool banProtection;
         public string[] eligibleHeroIds;
         public ArenaDraftSeat host, guest;
@@ -26,6 +27,13 @@ namespace AstralOath.Client.Arena
         public string[] prebans, picks, formation;
         public string ban, protectedHeroId;
         public bool submitted;
+    }
+
+    [Serializable, Preserve]
+    internal sealed class ArenaDraftPreview
+    {
+        public string draftId, heroId;
+        public int version, sequence;
     }
 
     [Serializable, Preserve]

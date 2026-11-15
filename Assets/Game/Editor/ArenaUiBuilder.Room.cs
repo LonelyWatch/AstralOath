@@ -8,14 +8,6 @@ namespace AstralOath.Editor
 {
     public static partial class ArenaUiBuilder
     {
-        private static GameButton DraftOption(RectTransform root, string name, float x, float w, out GameText label)
-        {
-            var rect = Area(root, name, x, .031f, w, .938f);
-            var button = Button(rect, Art("_btn_small_black"), Color.white);
-            label = Text(rect, "Value", null, 21, .035f, 0, .93f, 1, Mist, TextAlignmentOptions.Center);
-            return button;
-        }
-
         private static GameObject BuildCreate()
         {
             var root = Root("ArenaCreateRoom");
@@ -70,18 +62,11 @@ namespace AstralOath.Editor
             denySelection.enabled = false;
             Text(card, "Rules label", "arena.rules", 30, .05f, .638f, .19f, .070f, Mist);
             var rules = Scroll(card, "Rules", .256f, .510f, .719f, .345f, horizontal: true);
-            var draftOptions = Area(card, "Basic draft settings", .259f, .789f, .70f, .062f);
-            var prebanCount = DraftOption(draftOptions, "Preban count", 0, .356f, out var prebanLabel);
-            var firstPick = DraftOption(draftOptions, "First pick", .367f, .273f, out var firstPickLabel);
-            var protection = DraftOption(draftOptions, "Ban protection", .651f, .349f, out var protectionLabel);
             var keys = new System.Collections.Generic.List<(string, Object)>
             {
                 ("name", name), ("password", password), ("passwordState", passwordState), ("locked", toggle),
                 ("allow", allow), ("deny", deny), ("allowCaption", allowCaption), ("denyCaption", denyCaption),
-                ("allowSelection", allowSelection), ("denySelection", denySelection), ("rules", rules),
-                ("draftOptions", draftOptions.gameObject), ("prebanCount", prebanCount), ("firstPick", firstPick),
-                ("banProtection", protection), ("prebanLabel", prebanLabel), ("firstPickLabel", firstPickLabel),
-                ("protectionLabel", protectionLabel)
+                ("allowSelection", allowSelection), ("denySelection", denySelection), ("rules", rules)
             };
             foreach (var (id, index) in new[] { ("wild",5), ("draft",4), ("round",3), ("no_duplicate_class",2), ("basic",1) })
             {
@@ -262,14 +247,90 @@ namespace AstralOath.Editor
             var message = Input(composer, "Message", "arena.message", 200, .132f, .325f, .558f, .538f);
             var send = CommonButton(composer, "ConfirmButton", "arena.send", .707f, .325f, .26f, .538f);
             FollowKeyboard(composer, message);
+            var draftSettings = Area(left, "Basic room draft settings", 0, 0, 1, 1);
+            var protection = RoomDraftButton(draftSettings, "Ban protection", "icon_menu_safeguard", .537f, .105f, out var protectionLabel);
+            var prebans = RoomDraftButton(draftSettings, "Preban count", "icon_menu_banned", .648f, .072f, out var prebanLabel);
+            var firstPick = RoomFirstPick(draftSettings, "Host first pick", .190f, out var firstPickCheck, out var firstPickLabel);
+            var guestFirstPick = RoomFirstPick(draftSettings, "Guest first pick", .681f, out var guestFirstPickCheck, out var guestFirstPickLabel);
+            guestFirstPick.interactable = false;
+            guestFirstPick.targetGraphic.raycastTarget = false;
+            guestFirstPick.gameObject.SetActive(false);
+            var prebanPicker = BuildRoomDraftPicker(root, true);
+            var protectionPicker = BuildRoomDraftPicker(root, false);
             var emojiPicker = BuildEmojiPicker(root);
             var toast = CreateDirectoryToast(root);
             Bind(root, ("leave", leave), ("send", send), ("emoji", emoji), ("emojiPicker", emojiPicker), ("name", name), ("rule", rule), ("count", count),
                 ("hostName", hostName), ("guestName", guestName), ("status", status), ("statusBoard", notice.gameObject), ("message", message),
                 ("roomLock", roomLock), ("start", start), ("toast", toast),
                 ("host", host), ("guest", guest), ("vacant", vacant), ("emptyInfo", emptyInfo.gameObject), ("members", members), ("memberRow", memberRow.gameObject),
-                ("messages", history), ("chatRow", chatRow.gameObject));
+                ("messages", history), ("chatRow", chatRow.gameObject),
+                ("draftSettings", draftSettings.gameObject), ("prebanCount", prebans), ("prebanLabel", prebanLabel),
+                ("banProtection", protection), ("protectionLabel", protectionLabel), ("firstPick", firstPick),
+                ("firstPickCheck", firstPickCheck), ("firstPickLabel", firstPickLabel),
+                ("guestFirstPick", guestFirstPick.gameObject), ("guestFirstPickCheck", guestFirstPickCheck),
+                ("guestFirstPickLabel", guestFirstPickLabel), ("prebanPicker", prebanPicker), ("protectionPicker", protectionPicker));
             return root.gameObject;
+        }
+
+        private static GameButton RoomDraftButton(RectTransform parent, string name, string icon, float x, float width,
+            out GameText label)
+        {
+            var rect = Area(parent, name, x, .101f, width, .065f);
+            var button = Button(rect, CommonArt("_btn_small_black"), Color.white);
+            PressSmallBlack(button);
+            Picture(rect, "Icon", Art(icon), .05f, .13f, width < .08f ? .68f : .39f, .74f, true);
+            float labelX = width < .08f ? .64f : .44f;
+            label = Text(rect, "Value", null, 28, labelX, 0, .95f - labelX, 1, Color.white, TextAlignmentOptions.Center);
+            return button;
+        }
+
+        private static GameButton RoomFirstPick(RectTransform parent, string name, float x,
+            out Image check, out GameText label)
+        {
+            var rect = Area(parent, name, x, .489f, .190f, .054f);
+            var button = Button(rect, null, Color.clear);
+            button.transition = Selectable.Transition.None;
+            Picture(rect, "Check box", CommonArt("cm_checkbg"), .02f, .07f, .22f, .86f, true);
+            check = Picture(rect, "Check", CommonArt("cm_checkicon2"), .02f, .07f, .22f, .86f, true);
+            check.enabled = false;
+            label = Text(rect, "First pick", "arena.draft.room_first_pick", 24, .258f, 0, .74f, 1, Mist);
+            return button;
+        }
+
+        private static GameObject BuildRoomDraftPicker(RectTransform root, bool preban)
+        {
+            var picker = Area(root, preban ? "Preban picker" : "Protection picker", 0, 0, 1, 1);
+            var dismiss = Button(Area(picker, "Dismiss", 0, 0, 1, 1), null, Color.clear);
+            var panel = Area(picker, "Panel", preban ? .358f : .224f, .180f, .226f, preban ? .312f : .279f);
+            Paint(panel, preban ? Art("_box_black_gold") : CommonArt("_box_black_white"), Color.white, true, true);
+            string key = preban ? "arena.draft.room_preban_" : "arena.draft.room_protection_";
+            Text(panel, "Title", key + "title", 27, .04f, .044f, .92f, .175f, Color.white, TextAlignmentOptions.Center);
+            NativeRule(panel, "Divider", .063f, .232f, .874f, .033f, Gold, "_bar_1");
+            Text(panel, "Description", key + "hint", 23, .086f, .303f, .828f, .232f, preban ? Gold : Color.white,
+                TextAlignmentOptions.Center, wrap: true);
+
+            var bindings = new System.Collections.Generic.List<(string, Object)> { ("dismiss", dismiss) };
+            int count = preban ? 4 : 2;
+            float cell = .9f / count;
+            for (int index = 0; index < count; index++)
+            {
+                int column = preban ? index : 1 - index;
+                var rect = Area(panel, "Choice " + index, .05f + column * cell, .648f, cell - .025f, .247f);
+                var button = Button(rect, CommonArt("_btn_small_black"), Color.white);
+                PressSmallBlack(button);
+                var selected = Paint(Area(rect, "Selected", 0, 0, 1, 1), CommonArt("_btn_small_white"), Color.white, sliced: true);
+                PressDecorations(button, (selected, Art("_btn_small_white_p")));
+                selected.enabled = false;
+                string option = preban ? null : index == 0 ? "arena.draft.room_off" : "arena.draft.room_on";
+                var label = Text(rect, "Choice value", option, 28, 0, 0, 1, 1, Color.white, TextAlignmentOptions.Center);
+                if (preban) label.text = index.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                bindings.Add(("choice" + index, button));
+                bindings.Add(("selected" + index, selected));
+                bindings.Add(("choiceLabel" + index, label));
+            }
+            Bind(picker, bindings.ToArray());
+            picker.gameObject.SetActive(false);
+            return picker.gameObject;
         }
 
         private static void InlineHeading(RectTransform area, float spacing)
