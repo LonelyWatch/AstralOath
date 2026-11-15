@@ -116,6 +116,8 @@ namespace AstralOath.Client.Tests
                 Is.LessThan(star.rectTransform.anchorMax.x - star.rectTransform.anchorMin.x));
             var emptyOutline = draft.Require<BindingMap>("blue0").Require<Image>("pending");
             Assert.That(emptyOutline.enabled, Is.True);
+            Assert.That(emptyOutline.sprite.name, Does.EndWith("_glow_blue"));
+            Assert.That(emptyOutline.color.b, Is.GreaterThan(emptyOutline.color.r));
             float previousAlpha = emptyOutline.color.a;
             yield return Wait(() => Mathf.Abs(emptyOutline.color.a - previousAlpha) > .2f,
                 "The pending slot outline did not breathe.", 2f);
@@ -200,10 +202,15 @@ namespace AstralOath.Client.Tests
                         });
                         yield return Wait(() => portrait.enabled && portrait.sprite, "The remote candidate did not show in the empty team slot.");
                         Assert.That(opponentCard.Require<GameButton>("button").interactable, Is.False);
-                        Assert.That(opponentCard.Require<Image>("pending").sprite.name, Does.EndWith("_glow_blue"));
+                        var opponentOutline = opponentCard.Require<Image>("pending");
+                        Assert.That(opponentOutline.enabled, Is.True);
+                        Assert.That(opponentOutline.sprite.name, Does.EndWith("_glow_red"));
+                        Assert.That(opponentOutline.color.r, Is.GreaterThan(.9f));
+                        Assert.That(opponentOutline.color.g, Is.LessThan(.5f));
                         float portraitAlpha = portrait.color.a;
                         yield return Wait(() => Mathf.Abs(portrait.color.a - portraitAlpha) > .14f,
                             "The opponent candidate did not flash.", 2f);
+                        yield return Wait(() => opponentOutline.color.a > .88f, "The red pending outline did not brighten.", 2f);
                         yield return Capture("arena-draft-opponent-preview");
                     }
 

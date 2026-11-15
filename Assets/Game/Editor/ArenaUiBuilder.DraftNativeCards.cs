@@ -96,11 +96,11 @@ namespace AstralOath.Editor
 
             // The original Spine outline atlas is downsampled and contains transparent padding.
             // Enlarge its rendered rect to register the luminous contour onto the slot silhouette.
-            Sprite glow = DraftSprite(slot + "_glow_blue");
+            Sprite glow = DraftSprite(slot + (enemy ? "_glow_red" : "_glow_blue"));
             var pending = TeamCardPicture(root, "Breathing pick outline", glow, width,
                 new Vector2(width / 2, 42.5f), new Vector2(width + 26, 106), new Vector2(.5f, .5f));
-            if (enemy) pending.rectTransform.localScale = new Vector3(-1, 1, 1);
-            pending.color = new Color(.67f, .80f, 1f);
+            // The red sprite is already mirrored and its baked glow is gold before tinting.
+            pending.color = enemy ? new Color(1f, .30f, .46f) : new Color(.67f, .80f, 1f);
             pending.enabled = false;
             var selection = TeamCardPicture(root, "Final ban target", DraftSprite("preban_banned_icon"), width,
                 new Vector2(trayEdge + direction * 70, 42.5f),

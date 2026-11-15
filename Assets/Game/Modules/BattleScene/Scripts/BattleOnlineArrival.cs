@@ -15,6 +15,9 @@ namespace AstralOath.Client.BattleScene
         private const float RunSeconds = .64f;
         private const float StaggerSeconds = .105f;
         private const float CameraSeconds = .43f;
+        private const float DustScale = .0033f;
+        private const float DustOpacity = .28f;
+        private static readonly int PresentationOpacity = Shader.PropertyToID("_PresentationOpacity");
         private readonly BattlePreviewViewport viewport;
         private readonly Slot[] allies, enemies;
         private float time, cameraTime;
@@ -41,7 +44,9 @@ namespace AstralOath.Client.BattleScene
         {
             this.viewport = viewport;
             var warning = LoadWarning();
-            var dust = dustAsset != null && dustAsset.skeleton && dustAsset.atlas && dustAsset.page ? dustAsset.CreateSource(.0055f) : null;
+            var dust = dustAsset != null && dustAsset.skeleton && dustAsset.atlas && dustAsset.page ? dustAsset.CreateSource(DustScale) : null;
+            var dustAppearance = new MaterialPropertyBlock();
+            dustAppearance.SetFloat(PresentationOpacity, DustOpacity);
             var factory = new SkeletonPlayerFactory();
             var built = new List<Slot>();
             try
@@ -61,6 +66,7 @@ namespace AstralOath.Client.BattleScene
                     slot.Effect.Root.transform.position = slot.ShadowPosition;
                     if (!isAlly)
                     {
+                        renderer.SetPropertyBlock(dustAppearance);
                         var scale = actor.transform.lossyScale;
                         slot.Effect.Root.transform.localScale = new Vector3(actor.FacingDirection * scale.x, scale.y, 1f);
                     }

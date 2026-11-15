@@ -344,6 +344,15 @@ namespace AstralOath.Client.Tests
                     for (int step = 0; step < 30 && !Flag("ActorsReady"); step++)
                         Tick(.04f);
                     Assert.That(Flag("ActorsReady"), Is.True);
+                    var dustRenderers = units.GetComponentsInChildren<MeshRenderer>()
+                        .Where(renderer => renderer.name == "Battle Arrival Dust").ToArray();
+                    Assert.That(dustRenderers, Has.Length.EqualTo(enemies.Length));
+                    var appearance = new MaterialPropertyBlock();
+                    foreach (var renderer in dustRenderers)
+                    {
+                        renderer.GetPropertyBlock(appearance);
+                        Assert.That(appearance.GetFloat("_PresentationOpacity"), Is.InRange(.2f, .4f));
+                    }
                     Assert.That(Flag("CameraBlending"), Is.True);
                     Assert.That(camera.orthographicSize, Is.EqualTo(wide));
                     Assert.That(allies.Select(actor => actor.transform.position), Is.EqualTo(allyPositions));
