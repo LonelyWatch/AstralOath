@@ -31,5 +31,3 @@ Common 提供通用组件和资源，业务文案、图标数据、事件和生�
 `ui_touch_def` 主体采用原版 Spine 2.1 网格和淡出曲线，按录屏收细外圈。外围粒子采用原版贴图、两组发射参数、色带与叠加混合，环淡出后仍短暂可见。32 帧共用一个图集和一组固定池容量，每次点击有不同粒子方向，拖动取消且图元不参与射线。`GameButton` 的 Sprite Swap 使用预制的正常／按下纹理，附属箭头等图片可共用同一按压状态。`DesktopDisplayMode` 管理 Windows F11、无边框全屏和可缩放窗口，窗口尺寸在本次运行内恢复。
 
 玩家名细阴影共用 `Res/Materials/Resources/AstralOathPlayerNameShadow.mat`，与 EpicSeven TMP 字体及同一图集配套。它使用细黑底阴影，不对全局字体实例改写；新增使用场景应为对应 GameText 指定该字体与材质。
-
-确认和取消按钮以及右键创建的 GameButton 文本统一使用 EpicSeven 粗体和 `GameButtonCaption.mat`。在业务界面复用通用按钮时沿用预制体的文字材质，绑定文本时无需再替换字体或材质。

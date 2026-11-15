@@ -8,7 +8,7 @@
 - 「轻触画面开始」后的活动背景从经校验的 Foundation YooAsset 包加载。改动 `Config/Tables/entry_title_themes.csv` 的 `current` 行即可换图；图片放入 `Assets/Game/Modules/Home/Res/Textures/Entry/`，文件名用小写字母、数字或下划线。用 **Tools → 导表** 生成客户端配置；导表校验文件存在与唯一，构建确认配置和 Sprite 都有正确资源地址。首张配置使用 `entry/backgrounds/26_halloween_bg`；若配置或图不可读，则保留母包里的湖景。
 - 资源来源和校验记录见 `Assets/Game/Bootstrap/EntryAssetSources.json`。启动背景使用已解包 CFX 的原始图层合成静帧，活动背景是参考图的原始图。目前源包只有英文 Logo；未用参考截图直接裁切素材。
 
-- 外观以 `title.csb` 的节点为资源来源。补丁面板使用 `n_patch_ask_popup/window_frame` 对应的 `renew_popup_bg_2.png`，面板透明度为 216/255，背景黑色遮罩为 127/255。Unity 线性色彩项目按原界面透过的亮度换算这两层透明度；选服使用另一张 `renew_popup_bg.png`。圆角绿钮沿用原始轮廓和按下素材，正常态加强暗部与底部高光；按钮文字独立使用偏暗颜色与粗体。
+- 外观以 `title.csb` 的节点为资源来源。补丁面板使用 `n_patch_ask_popup/window_frame` 对应的 `renew_popup_bg_2.png`，面板透明度为 216/255，背景黑色遮罩为 127/255。Unity 线性色彩项目按原界面透过的亮度换算这两层透明度；选服使用另一张 `renew_popup_bg.png`。圆角绿钮沿用原始轮廓和按下素材，正常态加强暗部与底部高光；补丁按钮文字使用偏暗的常规字重。
 - 启动页通过首场景的 `entryFont` 明确引用 Common 的 `EpicSeven.asset`。其源字体与启动包 `font/daum.ttf` 哈希一致；原包布局额外引用的 `daum_zl.ttf` 不在当前解包目录。共享的 Foundation 演示字体保持原样。
 
 ## 服务端配置

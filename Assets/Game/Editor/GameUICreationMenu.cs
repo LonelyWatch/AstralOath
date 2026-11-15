@@ -97,7 +97,6 @@ namespace AstralOath.Editor
             var label = CreateTextObject();
             GameObjectUtility.SetParentAndAlign(label, element);
             var text = label.GetComponent<GameText>();
-            CommonUiPrefabs.ApplyButtonCaption(text);
             text.text = "Button";
             text.fontSize = 24;
             text.color = new Color(0.2f, 0.2f, 0.2f, 1);

@@ -571,7 +571,7 @@ namespace AstralOath.Client.Bootstrap
             bool patchButton = artName == "ButtonGreenRound";
             Color caption = patchButton ? (Color)new Color32(220, 226, 223, 255) : White;
             Label(Box("Button label", rect, .06f, .04f, .94f, .96f), title, fontSize, caption,
-                TextAlignmentOptions.Center, artName != "LoginButton", !patchButton);
+                TextAlignmentOptions.Center, !patchButton && artName != "LoginButton", !patchButton);
             button.onClick.AddListener(() => action());
             return button;
         }

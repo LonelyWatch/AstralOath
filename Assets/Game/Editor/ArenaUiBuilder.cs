@@ -304,6 +304,8 @@ namespace AstralOath.Editor
             var rect = Prefab(parent, prefab, x, y, w, h);
             var map = rect.GetComponent<BindingMap>();
             var label = map.Require<GameText>("label");
+            label.font = font;
+            label.fontSharedMaterial = font.material;
             label.text = labels[key];
             var button = map.Require<GameButton>("button");
             button.FeedbackSound = key switch
