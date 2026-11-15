@@ -87,13 +87,38 @@ try {
     if ($draft.phase -ne 'preban' -or $pool.Count -lt 14) { throw 'The preban fixture did not start.' }
     $draft = Submit-Draft $hostBearer $draft 'preban' $pool[0..1]
     $draft = Submit-Draft $guestBearer $draft 'preban' $pool[2..3]
+    $previewedSides = @()
     foreach ($hero in $pool[4..13]) {
         if ($draft.phase -ne 'pick' -or $draft.activeSide -notin @('host','guest')) {
             throw 'The draft fixture did not advance through picks.'
         }
-        $seat = if ($draft.activeSide -eq 'host') { $hostBearer } else { $guestBearer }
+        $activeSide = $draft.activeSide
+        $seat, $observer = if ($activeSide -eq 'host') { $hostBearer, $guestBearer } else { $guestBearer, $hostBearer }
+        if ($activeSide -notin $previewedSides) {
+            $other = Invoke-Arena ($roomPath + '/draft') $observer
+            try {
+                $sent = Invoke-Arena ($roomPath + '/draft/preview') $seat @{
+                    draftId = $draft.id
+                    version = $draft.version
+                    sequence = 1
+                    heroId = $hero
+                }
+            } catch {
+                throw "The $activeSide draft preview could not be sent. Verify the client and server builds are paired. $_"
+            }
+            $seen = Invoke-Arena ($roomPath + '/draft') $observer
+            if ($sent.previewHeroId -ne $hero -or $seen.previewHeroId -ne $hero -or $seen.previewSequence -ne 1 -or
+                $seen.version -ne $draft.version -or $seen.mySide -eq $activeSide -or
+                @($seen.$activeSide.picks).Count -ne @($other.$activeSide.picks).Count) {
+                throw "The other seat did not receive the $activeSide preview without locking a pick."
+            }
+            $previewedSides += $activeSide
+        }
         $draft = Submit-Draft $seat $draft 'pick' @($hero)
+        if ($draft.previewHeroId -or $draft.previewSequence -ne 0) { throw 'The draft preview did not clear after locking a pick.' }
     }
+    if ($previewedSides.Count -ne 2) { throw 'Both seats must be tested for draft preview sync.' }
+    Write-Output 'Arena draft preview synchronized both ways before confirmation.'
     if ($draft.phase -ne 'ban') { throw 'The final ban fixture did not start.' }
     $allies = @($draft.host.picks)
     $enemies = @($draft.guest.picks)

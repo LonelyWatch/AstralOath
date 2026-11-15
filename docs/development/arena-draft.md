@@ -40,4 +40,6 @@ $env:ASTRAL_ARENA_TEST_URL = 'http://127.0.0.1:5080'
 pwsh -NoProfile -File Tools/Invoke-Unity.ps1 -Mode PlayMode -Graphics -TestFilter 'AstralOath.Client.Tests.ArenaDraftOnlineTests|AstralOath.Client.Tests.ArenaBattlePlaybackTests|AstralOath.Client.Tests.GameHomeArenaTests'
 ```
 
-Windows 开发包另跑 `Tools/Test-WindowsArenaBattle.ps1 -Player <解压后的 AstralOath.exe>`。脚本以两个独立访客通过本机服务完成预禁、选人、终禁和阵型，再由打包后的 Player 运行实际入场代码，检查八个角色模型、服务端回合计时及首条战斗命令。该入口只对显式请求的联调包开放，服务地址必须为回环地址。
+Windows 开发包另跑 `Tools/Test-WindowsArenaBattle.ps1 -Player <解压后的 AstralOath.exe>`。脚本以两个独立访客通过本机服务完成预禁、选人、终禁和阵型，再由打包后的 Player 运行实际入场代码，检查八个角色模型、服务端回合计时及首条战斗命令。该入口只对显式请求的联调包开放，服务地址必须为回环地址。Windows 成品验收还会在正式选人前让房主和客席分别发送一次预选，由另一席读取相同英雄，并确认不推进版本、不提前锁定，正式选人后清空。脚本在图形 Player 启动前完成此协议检查；对手红槽、闪烁和中央立绘由 Unity 图形 PlayMode 回归验证。
+
+0.1.13 若出现「自己看得到预选，对手只有空红框」，先检查客户端实际连接的进程。服务端健康探针返回 200 只表明服务与数据库可用。旧服务可正常进入 BP 和正式选人，但真正的预选 POST 返回 404；配套服务对同一路径的无登录 POST 返回 401，表示该接口存在且需要登录。应使用同批次的客户端和服务端发布物，备份原库、用迁移账户应用缺失的 006–008，再以原运行账户切换至新版进程。切换后用新房间验证双方预选，避免把旧对局状态带入验收。该问题无需重装 0.1.13 客户端。
