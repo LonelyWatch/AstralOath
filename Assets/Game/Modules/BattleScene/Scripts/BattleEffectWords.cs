@@ -25,8 +25,8 @@ namespace AstralOath.Client.BattleScene
         private const float Rise = 28f;
         private const int Capacity = 8;
         private static readonly Vector2 MarkerOffset = new Vector2(12f, -63f);
-        private static readonly Color Gold = new Color32(214, 191, 123, 255);
-        private static readonly Color Violet = new Color32(220, 174, 215, 255);
+        private static readonly Color Gold = new Color32(247, 218, 137, 255);
+        private static readonly Color Violet = new Color32(242, 195, 235, 255);
         private readonly RectTransform layer;
         private readonly TMP_FontAsset font;
         private readonly Material outlinePreset;
@@ -146,11 +146,12 @@ namespace AstralOath.Client.BattleScene
                 {
                     // Keep older character profiles readable before their authored material is updated.
                     fallbackOutline = new Material(font.material) { name = "Battle Effect Word Outline (Fallback)" };
-                    // A centered underlay draws the edge behind the face without narrowing thin strokes.
-                    fallbackOutline.SetColor(ShaderUtilities.ID_UnderlayColor, new Color32(25, 18, 8, 255));
-                    fallbackOutline.SetFloat(ShaderUtilities.ID_UnderlayDilate, .56f);
-                    fallbackOutline.SetFloat(ShaderUtilities.ID_UnderlaySoftness, .035f);
-                    fallbackOutline.EnableKeyword(ShaderUtilities.Keyword_Underlay);
+                    var shader = Shader.Find("TextMeshPro/Distance Field");
+                    if (shader) fallbackOutline.shader = shader;
+                    fallbackOutline.SetColor(ShaderUtilities.ID_OutlineColor, Color.black);
+                    fallbackOutline.SetFloat(ShaderUtilities.ID_OutlineWidth, .24f);
+                    fallbackOutline.SetFloat(ShaderUtilities.ID_FaceDilate, .29f);
+                    if (!shader) fallbackOutline.EnableKeyword(ShaderUtilities.Keyword_Outline);
                 }
                 text.fontSharedMaterial = outlinePreset ? outlinePreset : fallbackOutline;
                 text.UpdateMeshPadding();

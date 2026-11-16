@@ -62,10 +62,11 @@ namespace AstralOath.Client.Tests
 
                 var type = Type.GetType("AstralOath.Client.BattleScene.BattleEffectWords, AstralOath.Client.BattleScene", true);
                 var outline = (Material)profile.GetType().GetField("EffectWordOutline").GetValue(profile);
-                Assert.That(outline && outline.IsKeywordEnabled(TMPro.ShaderUtilities.Keyword_Underlay), Is.True,
-                    "Keep the underlay variant in the material referenced by the asset bundle.");
-                Assert.That(outline.GetFloat(TMPro.ShaderUtilities.ID_OutlineWidth), Is.Zero,
-                    "The edge sits behind the face instead of taking pixels from thin strokes.");
+                Assert.That(outline, Is.Not.Null);
+                Assert.That(outline.shader.name, Is.EqualTo("TextMeshPro/Distance Field"),
+                    "Use the outline rendered by the base SDF pass in both editor and player.");
+                Assert.That(outline.GetFloat(TMPro.ShaderUtilities.ID_OutlineWidth), Is.GreaterThanOrEqualTo(.2f));
+                Assert.That(outline.GetColor(TMPro.ShaderUtilities.ID_OutlineColor), Is.EqualTo(Color.black));
                 Assert.That(outline.mainTexture, Is.SameAs(font.atlasTexture));
                 words = (IDisposable)Activator.CreateInstance(type, (RectTransform)marker.transform, font, outline);
                 object[] popup = { "抵抗", null, false };
@@ -85,6 +86,8 @@ namespace AstralOath.Client.Tests
                 var icon = second.Find("Icon").GetComponent<UnityEngine.UI.Image>();
                 Assert.That(caption.raycastTarget, Is.False);
                 Assert.That(caption.fontSharedMaterial, Is.SameAs(outline));
+                Assert.That(((Color32)caption.color).r, Is.GreaterThanOrEqualTo(240));
+                Assert.That(((Color32)caption.color).g, Is.GreaterThanOrEqualTo(210));
                 Assert.That(caption.fontStyle, Is.EqualTo(TMPro.FontStyles.Normal), "Use the weight from the original font face.");
                 Assert.That(captionWithIcon.rectTransform.anchoredPosition.x,
                     Is.EqualTo(caption.rectTransform.anchoredPosition.x).Within(.01f),
