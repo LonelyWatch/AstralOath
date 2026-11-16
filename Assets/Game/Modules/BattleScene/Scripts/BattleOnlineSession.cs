@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -11,7 +14,6 @@ using AstralOath.Shared.Battle;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace AstralOath.Client.BattleScene
 {
@@ -32,6 +34,7 @@ namespace AstralOath.Client.BattleScene
 
         private const float PollInterval = .30f;
         private readonly Uri url;
+        private readonly HttpClient http;
         private readonly string battleId, contentHash, bearer;
         private readonly bool localIsHost;
         private readonly CancellationTokenSource lifetime = new CancellationTokenSource();
@@ -66,6 +69,7 @@ namespace AstralOath.Client.BattleScene
             this.contentHash = contentHash;
             this.bearer = bearer;
             this.localIsHost = localIsHost;
+            http = new HttpClient(new HttpClientHandler { AllowAutoRedirect = false, UseProxy = !endpoint.IsLoopback });
         }
 
         internal async Task<(JObject Payload, double SentAt, double ReceivedAt)> FetchOpeningAsync(CancellationToken token)
@@ -177,51 +181,50 @@ namespace AstralOath.Client.BattleScene
             token.ThrowIfCancellationRequested();
             string after = "?after=" + cursor.ToString(CultureInfo.InvariantCulture);
             string suffix = ready ? "/ready" + after : command == null ? after : "/commands";
-            using var web = new UnityWebRequest(url.AbsoluteUri + suffix,
-                command == null ? UnityWebRequest.kHttpVerbGET : UnityWebRequest.kHttpVerbPOST)
-            {
-                downloadHandler = new DownloadHandlerBuffer(), timeout = 8, redirectLimit = 0
-            };
+            using var deadline = CancellationTokenSource.CreateLinkedTokenSource(token);
+            deadline.CancelAfter(TimeSpan.FromSeconds(8));
+            using var request = new HttpRequestMessage(command == null ? HttpMethod.Get : HttpMethod.Post,
+                new Uri(url.AbsoluteUri + suffix));
             if (command != null)
-            {
-                web.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(command.ToString(Formatting.None)));
-                web.SetRequestHeader("Content-Type", "application/json");
-            }
-            web.SetRequestHeader("Accept", "application/json");
-            web.SetRequestHeader("Authorization", "Bearer " + bearer);
+                request.Content = new StringContent(command.ToString(Formatting.None), Encoding.UTF8, "application/json");
+            request.Headers.TryAddWithoutValidation("Accept", "application/json");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", bearer);
+
             double sentAt = Time.realtimeSinceStartupAsDouble;
-            var operation = web.SendWebRequest();
-            if (!operation.isDone)
+            try
             {
-                var completion = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
-                void Complete(AsyncOperation _) => completion.TrySetResult(true);
-                operation.completed += Complete;
-                try
+                using var response = await http.SendAsync(request, HttpCompletionOption.ResponseContentRead, deadline.Token);
+                deadline.Token.ThrowIfCancellationRequested();
+                if (response.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.Forbidden or HttpStatusCode.NotFound or HttpStatusCode.Gone)
+                    throw new InvalidDataException("Battle room access has ended.");
+
+                string json = await response.Content.ReadAsStringAsync();
+                deadline.Token.ThrowIfCancellationRequested();
+                if (response.StatusCode == HttpStatusCode.Conflict)
                 {
-                    using var cancellation = token.Register(() => completion.TrySetCanceled(token));
-                    await completion.Task;
+                    JObject conflict = null;
+                    try { conflict = JObject.Parse(json); }
+                    catch (JsonException) { }
+                    if ((string)conflict?["code"] is "battle_content_mismatch" or "battle_changed")
+                        throw new InvalidDataException("The battle version changed.");
+                    if ((string)conflict?["code"] == "battle_not_started")
+                        throw new InvalidDataException("The battle was cancelled or the seated player's lease expired.");
                 }
-                catch (OperationCanceledException) when (token.IsCancellationRequested) { web.Abort(); throw; }
-                finally { operation.completed -= Complete; }
+                if (!response.IsSuccessStatusCode)
+                    throw new IOException("Battle service did not respond.");
+                double receivedAt = Time.realtimeSinceStartupAsDouble;
+                try { return (JObject.Parse(json), sentAt, receivedAt); }
+                catch (JsonException error) { throw new InvalidDataException("Battle service returned invalid data.", error); }
             }
-            token.ThrowIfCancellationRequested();
-            if (web.responseCode is 401 or 403 or 404 or 410)
-                throw new InvalidDataException("Battle room access has ended.");
-            if (web.responseCode == 409)
+            catch (OperationCanceledException error) when (!token.IsCancellationRequested)
             {
-                JObject conflict = null;
-                try { conflict = JObject.Parse(web.downloadHandler.text); }
-                catch (JsonException) { }
-                if ((string)conflict?["code"] is "battle_content_mismatch" or "battle_changed")
-                    throw new InvalidDataException("The battle version changed.");
-                if ((string)conflict?["code"] == "battle_not_started")
-                    throw new InvalidDataException("The battle was cancelled or the seated player's lease expired.");
+                throw new IOException("Battle service did not respond.", error);
             }
-            if (web.result != UnityWebRequest.Result.Success)
-                throw new IOException("Battle service did not respond.");
-            double receivedAt = Time.realtimeSinceStartupAsDouble;
-            try { return (JObject.Parse(web.downloadHandler.text), sentAt, receivedAt); }
-            catch (JsonException error) { throw new InvalidDataException("Battle service returned invalid data.", error); }
+            catch (HttpRequestException error)
+            {
+                token.ThrowIfCancellationRequested();
+                throw new IOException("Battle service did not respond.", error);
+            }
         }
 
         private Update Decode((JObject Payload, double SentAt, double ReceivedAt) response, JObject command, ulong cursor, bool ready)
@@ -354,6 +357,7 @@ namespace AstralOath.Client.BattleScene
             if (disposed) return;
             disposed = true;
             lifetime.Cancel();
+            http.Dispose();
             lifetime.Dispose();
             Observe(request);
             request = null;
