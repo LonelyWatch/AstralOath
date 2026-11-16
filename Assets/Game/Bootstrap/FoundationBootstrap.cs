@@ -48,6 +48,7 @@ namespace AstralOath.Client.Bootstrap
             var scope = new BindingScope(default);
             var bootLocale = new LocaleService(BootMessages, "zh-Hans", "ja", "ja");
             lifetime = scope;
+            StartupContent content = null;
             try
             {
                 var services = new ServiceRegistry(scope.Token);
@@ -74,7 +75,6 @@ namespace AstralOath.Client.Bootstrap
                         recovered = true;
                         Debug.LogWarning("Foundation content update: " + message);
                     }, confirm, report);
-                StartupContent content;
                 if (interactive)
                 {
                     startupStatus.gameObject.SetActive(false);
@@ -158,6 +158,7 @@ namespace AstralOath.Client.Bootstrap
                     Quit(1);
                 }
             }
+            finally { content?.ReleaseStartupLease(); }
         }
 
         private static IEnumerator CaptureSmokeScreenshot(string destination)

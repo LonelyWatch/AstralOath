@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace AstralOath.Shared.Updates
 {
@@ -12,11 +16,49 @@ namespace AstralOath.Shared.Updates
         private const string Header = "AstralOathCodeBoot/1";
         private const int MaxJournalBytes = 1024 * 1024;
         private const int DigestLength = 64;
+        private static readonly TimeSpan StartupWaitLimit = TimeSpan.FromMinutes(5);
+        private static readonly TimeSpan StartupRetryInterval = TimeSpan.FromMilliseconds(100);
         private readonly string path;
 
         public CodeBootJournal(string path)
         {
             this.path = Path.GetFullPath(path);
+        }
+
+        // Own this lease from recovery through code confirmation. The OS also releases it on process exit.
+        public async Task<IDisposable> AcquireStartupLeaseAsync(CancellationToken token)
+        {
+            token.ThrowIfCancellationRequested();
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            string lockPath = path + ".startup.lock";
+            var elapsed = Stopwatch.StartNew();
+            while (true)
+            {
+                token.ThrowIfCancellationRequested();
+                try
+                {
+                    return new FileStream(lockPath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+                }
+                catch (IOException error) when (IsStartupLockBusy(error))
+                {
+                    var remaining = StartupWaitLimit - elapsed.Elapsed;
+                    if (remaining <= TimeSpan.Zero)
+                        throw new TimeoutException("Another client still owns the content startup lease.", error);
+                    var delay = remaining < StartupRetryInterval ? remaining : StartupRetryInterval;
+                    await Task.Delay(delay, token).ConfigureAwait(false);
+                }
+            }
+        }
+
+        private static bool IsStartupLockBusy(IOException error)
+        {
+            int code = error.HResult;
+            if (code == unchecked((int)0x80070020) || code == unchecked((int)0x80070021))
+                return true; // Win32 sharing and lock violations, including runtimes that emulate them.
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                return code == 32 || code == 33;
+            // .NET Unix reports non-blocking FLock contention with the platform's raw EWOULDBLOCK errno.
+            return code == (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? 35 : 11);
         }
 
         public long? LastHealthyVersion

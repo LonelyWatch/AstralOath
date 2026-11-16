@@ -37,6 +37,7 @@ namespace AstralOath.Client.Bootstrap
         }
         private readonly HotUpdateCodeLoader code;
         private readonly CodeBootJournal journal;
+        private IDisposable startupLease;
         private StartupContent(YooAssetService assets, HotUpdateCodeLoader code, CodeBootJournal journal, long? version)
         {
             Assets = assets;
@@ -59,7 +60,18 @@ namespace AstralOath.Client.Bootstrap
         }
         internal void ConfirmStartup()
         {
-            if (ReleaseVersion.HasValue) journal.Confirm(ReleaseVersion.Value);
+            try
+            {
+                if (ReleaseVersion.HasValue) journal.Confirm(ReleaseVersion.Value);
+            }
+            finally { ReleaseStartupLease(); }
+        }
+
+        internal void ReleaseStartupLease()
+        {
+            var lease = startupLease;
+            startupLease = null;
+            lease?.Dispose();
         }
         internal static async Task<StartupContent> OpenAsync(string manifest, string signature, TextAsset key,
             CancellationToken lifetime, Action<string> failedUpdate,
@@ -80,6 +92,34 @@ namespace AstralOath.Client.Bootstrap
                 throw new InvalidDataException("Invalid built-in player baseline.");
             string storePath = Path.Combine(Application.persistentDataPath, "FoundationContent", baseline.baselineId);
             var journal = new CodeBootJournal(Path.Combine(storePath, "code-boot.state"));
+            IDisposable lease;
+            try { lease = await journal.AcquireStartupLeaseAsync(lifetime); }
+            catch (TimeoutException error)
+            {
+                throw new StartupContentUnavailableException("另一个客户端仍在检查或安装更新。请等它完成后再重试。", error);
+            }
+
+            try
+            {
+                var content = await OpenVersionedAsync(baseline, storePath, journal, remote, manifest, signature,
+                    key, lifetime, failedUpdate, approveDownload, downloadProgress);
+                if (content != null && !content.RestartRequired)
+                {
+                    content.startupLease = lease;
+                    lease = null;
+                }
+                return content;
+            }
+            finally { lease?.Dispose(); }
+#endif
+        }
+
+#if !UNITY_EDITOR
+        private static async Task<StartupContent> OpenVersionedAsync(PlayerBaseline baseline, string storePath,
+            CodeBootJournal journal, bool remote, string manifest, string signature, TextAsset key,
+            CancellationToken lifetime, Action<string> failedUpdate,
+            Func<long, CancellationToken, Task<bool>> approveDownload, Action<ContentDownloadProgress> downloadProgress)
+        {
             long? interrupted = journal.RecoverInterruptedBoot();
             if (interrupted.HasValue)
                 failedUpdate("上次 C# 启动未完成，已隔离版本 " + interrupted.Value);
@@ -178,8 +218,8 @@ namespace AstralOath.Client.Bootstrap
                 declined = !approved;
                 return approved;
             }
-#endif
         }
+#endif
         private static (Uri manifest, Uri signature) ConfigureSource(RSA rsa, bool minimal,
             string manifest, string signature, TextAsset key)
         {
@@ -282,8 +322,12 @@ namespace AstralOath.Client.Bootstrap
         }
         public void Dispose()
         {
-            code?.Dispose();
-            Assets.Dispose();
+            try
+            {
+                code?.Dispose();
+                Assets.Dispose();
+            }
+            finally { ReleaseStartupLease(); }
         }
     }
 }

@@ -33,3 +33,5 @@ CharacterLab 的 YooAsset 收集设置由编辑器按导入清单维护，本次
 正式启动的 Windows Canvas 提供 `DesktopDisplayMode`，由 Home Binder 显示切换入口。Arena 房间的表情浮层与其他窗口共用启动阶段创建的 `WindowCoordinator`。
 
 BP 复用主页 `WindowCoordinator` 统一管理选人筛选浮层，窗口退出释放筛选订阅；选人舞台本身不显示返回箭头。
+
+Windows 双端联机验证应为独立访客会话。开发 Player 测试入口使用预生成房间，按实际房主或客席身份进入同一场战斗，验证双方座位、回合时钟和事件同步。

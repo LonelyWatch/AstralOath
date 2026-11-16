@@ -22,7 +22,7 @@ namespace AstralOath.Client.FoundationDemo
         private sealed class Fixture
         {
             public string roomId, battleId, contentHash, bearer;
-            public bool preload;
+            public bool preload, guest;
         }
 
         internal static void StartIfRequested(GameLaunchContext context, CancellationToken lifetime)
@@ -67,7 +67,7 @@ namespace AstralOath.Client.FoundationDemo
                     Debug.Log("ASTRAL_ARENA_BATTLE_PRELOAD_OK");
                 }
                 await BattleOnlineLaunch.LoadAsync(assets, scenes, endpoint, fixture.roomId, fixture.battleId,
-                    fixture.contentHash, fixture.bearer, true, deadline.Token, prepared: prepared);
+                    fixture.contentHash, fixture.bearer, !fixture.guest, deadline.Token, prepared: prepared);
 
                 var scene = SceneManager.GetSceneByPath(BattleOnlineLaunch.ScenePath);
                 if (!scene.isLoaded || SceneManager.GetActiveScene() != scene)
@@ -91,6 +91,12 @@ namespace AstralOath.Client.FoundationDemo
                 var snapshot = simulation?.GetType().GetProperty("Snapshot", flags);
                 if (snapshot == null)
                     throw new InvalidOperationException("The online simulation snapshot is unavailable.");
+                string friendlyPrefix = fixture.guest ? "enemy-" : "ally-";
+                if (snapshot.GetValue(simulation) is not BattleSnapshot opening ||
+                    opening.Units.Count(unit => unit.Slot.Side == BattleSide.Ally &&
+                        unit.InstanceId.StartsWith(friendlyPrefix, StringComparison.Ordinal)) != 4)
+                    throw new InvalidOperationException("The arena smoke loaded the wrong player's perspective.");
+                Debug.Log("ASTRAL_ARENA_BATTLE_SIDE_OK seat=" + (fixture.guest ? "guest" : "host"));
                 await WaitUntilAsync(() => snapshot.GetValue(simulation) is BattleSnapshot value &&
                     value.LastCommandSequence >= 1, deadline.Token);
 

@@ -26,6 +26,7 @@ await fixture.RepairRestoresAfterTransientRollbackLock(lockCandidate: true);
 await fixture.RepairFailsBoundedlyUnderPersistentRollbackLock();
 await fixture.PermanentRollbackErrorKeepsBothFailures();
 CodeUpdateTests.Run();
+await fixture.StartupLeaseSerializesCodeBoots();
 Console.WriteLine("All content and code update scenarios passed");
 
 sealed partial class Fixture : IAsyncDisposable
@@ -54,6 +55,46 @@ sealed partial class Fixture : IAsyncDisposable
         fixture.server.MapGet("/replacement.bytes", fixture.SendContent);
         await fixture.server.StartAsync();
         return fixture;
+    }
+
+    public async Task StartupLeaseSerializesCodeBoots()
+    {
+        string journalPath = Path.Combine(store, "concurrent-boot", "code-boot.state");
+        var first = new CodeBootJournal(journalPath);
+        var second = new CodeBootJournal(journalPath);
+        using var testDeadline = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+
+        Task<IDisposable> waiting;
+        using (await first.AcquireStartupLeaseAsync(testDeadline.Token))
+        {
+            Require(first.RecoverInterruptedBoot() == null, "new startup has no interrupted boot");
+            first.Begin(20);
+            waiting = second.AcquireStartupLeaseAsync(testDeadline.Token);
+            Require(!waiting.IsCompleted, "the second client cannot inspect a running boot");
+
+            using var cancelled = new CancellationTokenSource();
+            Task<IDisposable> abandoning = second.AcquireStartupLeaseAsync(cancelled.Token);
+            Require(!abandoning.IsCompleted, "the cancelled client initially waits for the startup lock");
+            cancelled.Cancel();
+            await Expect<OperationCanceledException>(() => abandoning);
+            Require(!waiting.IsCompleted, "cancelling one waiter does not release another client's lock");
+
+            first.Confirm(20);
+        }
+
+        using (await waiting)
+        {
+            Require(second.RecoverInterruptedBoot() == null && second.LastHealthyVersion == 20 && !second.IsRejected(20),
+                "the second client observes the confirmed version without quarantining it");
+            second.Begin(21);
+            // Closing only the file handle simulates the OS releasing it after a process crash.
+        }
+
+        using (await first.AcquireStartupLeaseAsync(testDeadline.Token))
+        {
+            Require(first.RecoverInterruptedBoot() == 21 && first.IsRejected(21) && first.LastHealthyVersion == 20,
+                "an unconfirmed boot is still isolated after the owning process exits");
+        }
     }
 
     public async Task ValidInstallAndRestart()
