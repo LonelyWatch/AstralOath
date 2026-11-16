@@ -1,5 +1,8 @@
 using System;
+using AstralOath.Client.Common;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace AstralOath.Client.BattleScene
 {
@@ -24,6 +27,62 @@ namespace AstralOath.Client.BattleScene
             marker.name = slotName;
             marker.SetActive(true);
             return marker;
+        }
+    }
+
+    internal sealed class BattleTargetBadge
+    {
+        private readonly Image background;
+        private readonly Image digit;
+        private readonly GameButton button;
+        private readonly UnityAction click;
+
+        internal BattleTargetBadge(RectTransform parent, Vector2 position, Vector2 size, UnityAction click = null)
+        {
+            this.click = click;
+            var root = new GameObject("Target Number", typeof(RectTransform), typeof(Image));
+            root.SetActive(false);
+            Root = (RectTransform)root.transform;
+            Root.SetParent(parent, false);
+            Root.anchoredPosition = position;
+            Root.sizeDelta = size;
+            background = root.GetComponent<Image>();
+            background.raycastTarget = click != null;
+            background.preserveAspect = true;
+            var number = new GameObject("Number", typeof(RectTransform), typeof(Image));
+            var numberRect = (RectTransform)number.transform;
+            numberRect.SetParent(Root, false);
+            numberRect.anchoredPosition = new Vector2(0, 1f);
+            numberRect.sizeDelta = new Vector2(size.x * .65f, size.y * .68f);
+            digit = number.GetComponent<Image>();
+            digit.preserveAspect = true;
+            digit.raycastTarget = false;
+            if (click == null) return;
+            button = root.AddComponent<GameButton>();
+            button.targetGraphic = background;
+            button.transition = Selectable.Transition.None;
+            button.navigation = new Navigation { mode = Navigation.Mode.None };
+            button.FeedbackSound = GameUiFeedback.Sound.Silent;
+            button.onClick.AddListener(click);
+        }
+
+        internal RectTransform Root { get; }
+        internal bool IsShown => Root.gameObject.activeSelf;
+
+        internal void Show(Sprite art, Sprite number)
+        {
+            bool visible = art && number;
+            if (visible)
+            {
+                background.sprite = art;
+                digit.sprite = number;
+            }
+            if (Root.gameObject.activeSelf != visible) Root.gameObject.SetActive(visible);
+        }
+
+        internal void RemoveClick()
+        {
+            if (button) button.onClick.RemoveListener(click);
         }
     }
 }

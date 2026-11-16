@@ -51,12 +51,14 @@ namespace AstralOath.Client.BattleScene.Editor
             Picture(active, "Element", "cm_icon_promfire", 418, 66, 28, 28);
             Picture(active, "Class", "cm_icon_role_knight", 450, 66, 26, 26);
             bindings.Add("activeName", Text(active, "Active Name", "拉斯", 338, 66, 136, 28, 20, TextAlignmentOptions.MidlineRight));
-            var activeHp = Picture(active, "Active HP Fill", "game_hud_bar_hp", 437, 34, 85, 6);
+            var activeHp = Item(active, "Active HP Fill", 437, 34, 85, 8).gameObject.AddComponent<BattleActiveHealthBar>();
+            activeHp.raycastTarget = false;
             SetFill(activeHp, 1f);
             bindings.Add("activeHpFill", activeHp);
-            var hpText = Text(active, "Active HP", "1260/1260", 325, 34, 116, 27, 17, TextAlignmentOptions.MidlineRight);
+            var hpText = Text(active, "Active HP", "1260/1260", 310, 34, 156, 30, 24, TextAlignmentOptions.MidlineRight);
             ApplyFont(hpText, healthFont);
-            hpText.color = new Color32(153, 195, 42, 255);
+            hpText.fontSharedMaterial = Asset<Material>(HealthFontDirectory + "/BattleActiveHpDigits.mat");
+            hpText.color = new Color32(178, 211, 60, 255);
             bindings.Add("activeHp", hpText);
 
             var soul = Group("Soul Gauge", rect);

@@ -85,7 +85,7 @@ namespace AstralOath.Client.BattleScene
                 return popup;
 
             var root = Rect(feedbackLayer, "Feedback", Vector2.zero, Vector2.zero);
-            var amount = Text(root, "Impact", "", Vector2.zero, new Vector2(450f, 110f), 54f, numberSource);
+            var amount = Text(root, "Impact", "", Vector2.zero, new Vector2(450f, 110f), 54f, numberSource, material: numberSource.font.material);
             if (damageFont)
             {
                 amount.font = damageFont;

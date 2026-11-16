@@ -1,0 +1,83 @@
+
+stse_counter.sct
+size: 1422,242
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+add_sk5_2
+  rotate: false
+  xy: 242, 2
+  size: 346, 108
+  orig: 346, 108
+  offset: 0, 0
+  index: -1
+add_sk5_3
+  rotate: false
+  xy: 242, 112
+  size: 344, 94
+  orig: 344, 94
+  offset: 0, 0
+  index: -1
+add_sk5_4
+  rotate: false
+  xy: 588, 112
+  size: 346, 92
+  orig: 346, 92
+  offset: 0, 0
+  index: -1
+buff_pist
+  rotate: true
+  xy: 799, 2
+  size: 94, 52
+  orig: 94, 52
+  offset: 0, 0
+  index: -1
+ex_center
+  rotate: false
+  xy: 853, 2
+  size: 57, 75
+  orig: 57, 75
+  offset: 0, 0
+  index: -1
+flare/blight
+  rotate: true
+  xy: 1278, 2
+  size: 174, 142
+  orig: 174, 142
+  offset: 0, 0
+  index: -1
+flare/shockwave03_04
+  rotate: false
+  xy: 936, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 1107, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: false
+  xy: 242, 208
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1
+star_light2
+  rotate: false
+  xy: 2, 2
+  size: 238, 238
+  orig: 238, 238
+  offset: 0, 0
+  index: -1
+tornado_wave_01
+  rotate: false
+  xy: 590, 2
+  size: 207, 86
+  orig: 207, 86
+  offset: 0, 0
+  index: -1

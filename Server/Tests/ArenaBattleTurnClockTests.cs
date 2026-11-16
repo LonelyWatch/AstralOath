@@ -13,6 +13,25 @@ public sealed class ArenaBattleTurnClockTests
         (bool)Call(clock, "Ready", host, sequence, events, actor, now)!;
 
     [Fact]
+    public void NewArenaBattleDefaultsToFifteenDecisionSecondsAfterBothSeatsAreReady()
+    {
+        var catalogType = typeof(Program).Assembly.GetType("AstralOath.Server.Battle.ArenaBattleCatalog", true)!;
+        using var catalog = (IDisposable)Activator.CreateInstance(catalogType, new object?[] { null })!;
+        var decision = (int)catalogType.GetProperty("TurnSeconds")!.GetValue(catalog)!;
+        var presentation = (int)catalogType.GetProperty("PresentationWaitSeconds")!.GetValue(catalog)!;
+        Assert.Equal(15, decision);
+        Assert.Equal(30, presentation);
+
+        var clock = Activator.CreateInstance(ClockType, 3UL, 19UL, "ally-1", 1000L, decision, presentation)!;
+        Assert.True(Ready(clock, true, 2000));
+        Assert.Null(Deadline(clock));
+        Assert.True(Ready(clock, false, 4500));
+        Assert.Equal(19500L, Deadline(clock));
+        Assert.False((bool)Call(clock, "IsExpired", 19499L)!);
+        Assert.True((bool)Call(clock, "IsExpired", 19500L)!);
+    }
+
+    [Fact]
     public void DecisionClockStartsOnlyWhenBothSidesHavePresentedTheSameWindow()
     {
         var clock = New();

@@ -1,0 +1,55 @@
+
+stse_addturn_renew.sct
+size: 237,813
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+arrows
+  rotate: false
+  xy: 174, 232
+  size: 45, 182
+  orig: 45, 182
+  offset: 0, 0
+  index: -1
+back
+  rotate: false
+  xy: 2, 232
+  size: 170, 170
+  orig: 170, 170
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 404
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+font3
+  rotate: true
+  xy: 173, 416
+  size: 144, 62
+  orig: 144, 62
+  offset: 0, 0
+  index: -1
+panel
+  rotate: false
+  xy: 2, 575
+  size: 224, 113
+  orig: 224, 113
+  offset: 0, 0
+  index: -1
+ring_01
+  rotate: false
+  xy: 2, 2
+  size: 228, 228
+  orig: 228, 228
+  offset: 0, 0
+  index: -1
+ring_flash
+  rotate: false
+  xy: 2, 690
+  size: 121, 121
+  orig: 121, 121
+  offset: 0, 0
+  index: -1

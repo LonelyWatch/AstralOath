@@ -389,9 +389,49 @@ namespace AstralOath.Client.Tests
             Assert.That(ones.rectTransform.anchoredPosition.x, Is.EqualTo(7.5f).Within(.001f));
             var health = marker.Find("HP").GetComponent<Image>();
             float originalFill = health.fillAmount;
+            Assert.That(EffectVisible(map.Require<GameButton>("skill1").transform, "Skill Selection"), Is.True);
+            float BodyBrightness(BattleSide side, int position = 1)
+            {
+                var units = unitGroups.Find(side == BattleSide.Ally ? "Allies" : "Enemies");
+                var unit = units.GetChild(position - 1).GetComponentInChildren<BattlePreviewActor>();
+                var body = (Renderer)typeof(BattlePreviewActor).GetProperty("PresentationRenderer", PrivateInstance).GetValue(unit);
+                var properties = new MaterialPropertyBlock();
+                body.GetPropertyBlock(properties);
+                int brightness = Shader.PropertyToID("_PresentationBrightness");
+                return properties.HasFloat(brightness) ? properties.GetFloat(brightness) : 1f;
+            }
+            var caster = initial.GetUnit(initial.CurrentActorId);
+            var nonTarget = initial.Units.First(unit => unit.Slot.Side == BattleSide.Ally && unit.InstanceId != caster.InstanceId);
+            Assert.That(BodyBrightness(BattleSide.Ally, nonTarget.Slot.Position), Is.LessThan(1f));
+            Assert.That(BodyBrightness(BattleSide.Ally, caster.Slot.Position), Is.EqualTo(1f), "The acting hero remains lit.");
+            Assert.That(BodyBrightness(BattleSide.Enemy), Is.EqualTo(1f));
+            var legalBadge = marker.Find("Target Number");
+            var invalidMarker = map.transform.Find("Unit Status/Allies").GetChild(0);
+            Assert.That(legalBadge, Is.Not.Null, "A legal target has a numbered click surface beside the level badge.");
+            Assert.That(legalBadge.gameObject.activeInHierarchy, Is.True);
+            Assert.That(invalidMarker.Find("Target Number").gameObject.activeInHierarchy, Is.False);
+            var railBadge = readiness.Find("enemy-1/Target Number");
+            Assert.That(railBadge, Is.Not.Null);
+            Assert.That(railBadge.Find("Number").GetComponent<Image>().sprite,
+                Is.SameAs(legalBadge.Find("Number").GetComponent<Image>().sprite));
+            var rankedEnemies = initial.Units.Where(unit => unit.Slot.Side == BattleSide.Enemy)
+                .OrderByDescending(unit => unit.ReadinessBp).ThenBy(unit => unit.Slot.Position).ToArray();
+            for (int rank = 0; rank < rankedEnemies.Length; ++rank)
+            {
+                var target = rankedEnemies[rank];
+                var badge = map.transform.Find("Unit Status/Enemies").GetChild(target.Slot.Position - 1).Find("Target Number");
+                var compactBadge = readiness.Find(target.InstanceId + "/Target Number");
+                Assert.That(badge.GetComponent<Image>().sprite.name, Is.EqualTo("game_hud_target1"));
+                Assert.That(compactBadge.GetComponent<Image>().sprite.name, Is.EqualTo("game_hud_target2"));
+                Assert.That(badge.Find("Number").GetComponent<Image>().sprite.name, Is.EqualTo($"itxt_num{rank + 1}_b"));
+                Assert.That(compactBadge.Find("Number").GetComponent<Image>().sprite,
+                    Is.SameAs(badge.Find("Number").GetComponent<Image>().sprite));
+            }
             Assert.That(preview.TrySelectBattleTarget("ally-1"), Is.False);
             Assert.That(preview.SimulationSnapshot.LastCommandSequence, Is.Zero);
-            Assert.That(preview.TrySelectBattleTarget("enemy-1"), Is.True);
+            Click(legalBadge.GetComponent<GameButton>(), raycaster, eventSystem);
+            Assert.That(legalBadge.gameObject.activeInHierarchy, Is.False, "Submitting hides the target click surface immediately.");
+            Assert.That(BodyBrightness(BattleSide.Ally, nonTarget.Slot.Position), Is.EqualTo(1f), "Submitting restores dimmed models before presentation.");
             Assert.That(preview.SimulationSnapshot.LastCommandSequence, Is.EqualTo(1UL));
             Assert.That(preview.SimulationSnapshot.GetUnit("enemy-1").CurrentHealth,
                 Is.LessThan(initial.GetUnit("enemy-1").CurrentHealth));

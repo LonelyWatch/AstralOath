@@ -58,6 +58,12 @@ namespace AstralOath.Client.Tests
             Assert.That(mine.DefinitionId, Is.EqualTo(host ? "c1001" : "c1003"));
             Assert.That(mine.InstanceId, Is.EqualTo(host ? "ally-1" : "enemy-1"), "The server's IDs still determine legal commands.");
             Assert.That(snapshot.AllySoul, Is.EqualTo(host ? result.Snapshot.AllySoul : result.Snapshot.EnemySoul));
+            Assert.That(snapshot.EnemySoul, Is.EqualTo(host ? result.Snapshot.EnemySoul : result.Snapshot.AllySoul));
+            var soulEvents = result.Events.Where(item => item.Kind == BattleFlowEventKind.SoulChanged).ToArray();
+            Assert.That(soulEvents.Length, Is.Positive);
+            Assert.That(events.Where(item => item.Kind == BattleFlowEventKind.SoulChanged).Select(item => item.Side),
+                Is.EqualTo(soulEvents.Select(item => host ? item.Side :
+                    item.Side == BattleSide.Ally ? BattleSide.Enemy : BattleSide.Ally)));
             Assert.That(snapshot.LastEventSequence, Is.EqualTo(result.Snapshot.LastEventSequence));
             Assert.That(events.Select(item => item.Sequence), Is.EqualTo(result.Events.Select(item => item.Sequence)));
 
@@ -158,7 +164,7 @@ namespace AstralOath.Client.Tests
             try
             {
                 using var view = (IDisposable)Activator.CreateInstance(type, Members, null,
-                    new object[] { bindings, null, copy, null, resource }, null);
+                    new object[] { bindings, null, copy, null, resource, null }, null);
                 var draw = type.GetMethod("ShowTurn", Members);
                 var clockRoot = (RectTransform)type.GetField("clockRoot", Members).GetValue(view);
                 var allDigits = clockRoot.GetComponentsInChildren<UnityEngine.UI.Image>(true)
@@ -379,6 +385,36 @@ namespace AstralOath.Client.Tests
                 var unloading = SceneManager.UnloadSceneAsync(Scene);
                 while (unloading != null && !unloading.isDone) await Task.Yield();
             }
+        }
+
+        [UnityTest]
+        public IEnumerator OnlineActorDisplayScalePreservesShadowAndGroundFeet()
+        {
+            var scene = EditorSceneManager.LoadSceneInPlayMode(BattleOnlineLaunch.ScenePath,
+                new LoadSceneParameters(LoadSceneMode.Additive));
+            try
+            {
+                yield return null;
+                var units = scene.GetRootGameObjects().Single(root => root.name == "Units").transform;
+                var actors = units.GetComponentsInChildren<BattlePreviewActor>(true);
+                var scale = typeof(BattlePreviewActor).GetMethod("SetBattleDisplayScale", Members);
+                Assert.That(scale, Is.Not.Null);
+                Assert.That(actors, Has.Length.EqualTo(8));
+                foreach (var actor in actors)
+                {
+                    var feet = actor.transform.position;
+                    var shadow = actor.transform.Find("Shadow").position;
+                    var bounds = actor.Bounds;
+                    Assert.That(bounds.size.y, Is.GreaterThan(0f));
+                    scale.Invoke(actor, new object[] { 1.17f });
+                    Assert.That(actor.transform.position, Is.EqualTo(feet));
+                    Assert.That(actor.transform.Find("Shadow").position, Is.EqualTo(shadow));
+                    Assert.That(actor.Bounds.size.y / bounds.size.y, Is.EqualTo(1.17f).Within(.001f));
+                    scale.Invoke(actor, new object[] { 1f });
+                    Assert.That(actor.Bounds.size.y, Is.EqualTo(bounds.size.y).Within(.001f));
+                }
+            }
+            finally { SceneManager.UnloadSceneAsync(scene); }
         }
 
         [UnityTest]

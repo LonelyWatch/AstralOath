@@ -65,7 +65,7 @@ public sealed class ArenaBattleClockIntegrationTests
                 Send(host, battle + "/ready", Ready(snapshot)));
             var bothReady = readyRace[0];
             long expires = bothReady.GetProperty("clock").GetProperty("deadlineUnixMilliseconds").GetInt64();
-            Assert.Equal(30000L, expires - bothReady.GetProperty("clock").GetProperty("serverNowUnixMilliseconds").GetInt64());
+            Assert.Equal(15_000L, expires - bothReady.GetProperty("clock").GetProperty("serverNowUnixMilliseconds").GetInt64());
             Assert.Equal(expires, (await Send(host, battle + "/ready", Ready(snapshot))).GetProperty("clock").GetProperty("deadlineUnixMilliseconds").GetInt64());
 
             await using var restarted = Configure(source, connection);

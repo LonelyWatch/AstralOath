@@ -1,0 +1,18 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "stse_chain",
+      "x": "0",
+      "y": "0",
+      "z": "5",
+      "scale": "1.2",
+      "rotate": "0",
+      "format": "spine"
+    },
+    {
+      "source": "stse_chain_back",
+      "format": "spine"
+    }
+  ]
+}

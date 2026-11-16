@@ -102,11 +102,29 @@ namespace AstralOath.Client.Tests
             Assert.That(draft.Require<GameButton>("preAction").targetGraphic.color.r, Is.LessThan(.5f));
             yield return Capture("bp-preban-waiting");
             yield return PeerAction(route, state, "preban", pool.Skip(2).Take(2).ToArray(), next => state = next);
-            if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("ASTRAL_ARENA_CAPTURE_DIR")))
-            {
-                yield return Wait(() => draft.Require<GameObject>("reveal").activeInHierarchy, "Preban reveal did not show.");
-                yield return Capture("arena-draft-preban-reveal");
-            }
+            var prebanReveal = draft.Require<GameObject>("reveal");
+            var revealedHeader = draft.Require<GameObject>("preHeader");
+            yield return Wait(() => prebanReveal.activeInHierarchy, "Preban reveal did not show.");
+            var halves = prebanReveal.GetComponentsInChildren<RawImage>()
+                .Where(half => half.name.StartsWith("Own reveal portrait ", StringComparison.Ordinal) ||
+                    half.name.StartsWith("Opponent reveal portrait ", StringComparison.Ordinal)).ToArray();
+            Assert.That(halves, Has.Length.EqualTo(2), "Each round needs one diagonal portrait surface per side.");
+            Assert.That(halves.All(half => half.texture && !half.raycastTarget), Is.True);
+            Assert.That(revealedHeader.activeInHierarchy, Is.False, "The footer must wait for the full reveal.");
+            var firstPair = halves.Select(half => half.name).ToArray();
+            var stamp = prebanReveal.GetComponentsInChildren<RawImage>().Single(item => item.name == "Preban BANNED stamp");
+            Assert.That(stamp.texture, Is.Not.Null);
+            var stampPage = stamp.texture;
+            yield return Capture("arena-draft-preban-reveal");
+            yield return Wait(() => halves.Select(half => half.name).Zip(firstPair, (current, first) => current != first).All(changed => changed),
+                "The second preban pair did not replace both portraits.");
+            Assert.That(prebanReveal.activeInHierarchy, Is.True);
+            yield return Wait(() => halves.All(half => half.material.HasProperty("_Desaturation") &&
+                half.material.GetFloat("_Desaturation") >= .84f), "The revealed portraits did not settle to gray.");
+            Assert.That(stamp.texture, Is.SameAs(stampPage), "The reveal stamp and its particle stage must survive the pair transition.");
+            yield return Capture("arena-draft-preban-reveal-second", sameFrame: true);
+            yield return Wait(() => !prebanReveal.activeInHierarchy && revealedHeader.activeInHierarchy,
+                "Revealed footer did not replace the overlay.");
 
             yield return Wait(() => draft.Require<GameText>("title").text == "你的回合", "The draft did not enter the host turn.");
             Assert.That(draft.transform.Find("Native reference layout/Draft stage/Exit draft"), Is.Null);
@@ -145,6 +163,9 @@ namespace AstralOath.Client.Tests
             Assert.That(emptyOutline.enabled, Is.True);
             Assert.That(emptyOutline.sprite.name, Does.EndWith("_glow_blue"));
             Assert.That(emptyOutline.color.b, Is.GreaterThan(emptyOutline.color.r));
+            var emptyPlate = draft.Require<BindingMap>("blue0").Require<GameButton>("button").targetGraphic;
+            Assert.That(emptyPlate.color.r, Is.InRange(.5f, .65f),
+                "A vacant slot must retain a dim silhouette behind the native outline.");
             float previousAlpha = emptyOutline.color.a;
             yield return Wait(() => Mathf.Abs(emptyOutline.color.a - previousAlpha) > .2f,
                 "The pending slot outline did not breathe.", 2f);
@@ -454,6 +475,13 @@ namespace AstralOath.Client.Tests
             Assert.That(LiveSnapshot().GetUnit(LiveSnapshot().CurrentActorId).Slot.Side, Is.EqualTo(BattleSide.Ally));
             Assert.That((bool)simulation.GetType().GetProperty("IsTurnEntryPlaying", flags).GetValue(simulation), Is.False,
                 "The authoritative clock must wait for the visible turn-entry animation.");
+            var opponentRail = hostHud.GetComponentsInChildren<RectTransform>(true)
+                .Single(node => node.name == "Opponent Soul Rail");
+            Assert.That(opponentRail.childCount, Is.EqualTo(8));
+            Assert.That(opponentRail.Cast<Transform>().Count(slot => slot.Find("Soul") is Transform soul && soul.gameObject.activeSelf),
+                Is.EqualTo(LiveSnapshot().EnemySoul / BattleFlowRules.SoulPerSlot),
+                "The rendered rail shows the remote seat's authoritative whole souls.");
+            Assert.That(opponentRail.Cast<Transform>().All(slot => slot.GetComponent<Image>().sprite?.name == "game_hud_soul_dot"), Is.True);
             yield return CaptureBattle(battleScene, hostHud, "arena-draft-my-turn-16x9", 1920, 1080);
             yield return CaptureBattle(battleScene, hostHud, "arena-draft-my-turn-21x9", 2240, 960);
             var unit = LiveSnapshot().Units.First(entry => entry.Slot.Side == BattleSide.Enemy && entry.IsAlive);
@@ -477,6 +505,35 @@ namespace AstralOath.Client.Tests
                 yield return CaptureBattle(battleScene, hostHud, "arena-death-silhouette", 1920, 1080);
                 Present("TickVisual", .26f);
                 yield return CaptureBattle(battleScene, hostHud, "arena-death-red-burst", 1920, 1080);
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator PrebanRevealCanReleaseAfterViewIsDestroyed()
+        {
+            var root = new GameObject("Preban reveal lifecycle fixture", typeof(RectTransform));
+            var chips = new GameObject("Legacy chips", typeof(RectTransform));
+            chips.transform.SetParent(root.transform, false);
+            var type = typeof(ArenaDraft).Assembly.GetType("AstralOath.Client.Arena.ArenaPrebanReveal", true);
+            const BindingFlags instance = BindingFlags.Instance | BindingFlags.NonPublic;
+            var reveal = type.GetConstructor(instance, null, new[] { typeof(GameObject), typeof(GameObject) }, null)
+                .Invoke(new object[] { root, chips });
+            try
+            {
+                type.GetMethod("Start", instance).Invoke(reveal, new object[]
+                {
+                    new[] { new ArenaDraftArt.Hero { Id = "fixture" } }, Array.Empty<ArenaDraftArt.Hero>(), null, null
+                });
+                Assert.That(root.GetComponent<CanvasGroup>().alpha, Is.EqualTo(1f));
+                UnityEngine.Object.Destroy(root);
+                yield return null;
+                Assert.That(!root, Is.True);
+                Assert.DoesNotThrow(() => type.GetMethod("Clear", instance).Invoke(reveal, null));
+            }
+            finally
+            {
+                if (root) UnityEngine.Object.Destroy(root);
+                ((IDisposable)reveal).Dispose();
             }
         }
 

@@ -89,6 +89,31 @@ namespace AstralOath.Client.Tests
         }
 
         [Test]
+        public void TargetRanksFollowReadinessWithinEachSide()
+        {
+            var actingSide = snapshot.GetUnit(snapshot.CurrentActorId).Slot.Side;
+            var targets = snapshot.Units.Where(unit => unit.Slot.Side != actingSide)
+                .OrderBy(unit => unit.Slot.Position).ToArray();
+            Assert.That(targets.Length, Is.GreaterThanOrEqualTo(2));
+            foreach (var target in targets) Invoke("SetReadiness", target.InstanceId, 2000 + target.Slot.Position * 1000);
+            Assert.That(Invoke("GetTargetRank", targets[0].InstanceId), Is.EqualTo(targets.Length));
+            Assert.That(Invoke("GetTargetRank", targets[targets.Length - 1].InstanceId), Is.EqualTo(1));
+            Assert.That(Invoke("GetTargetRank", snapshot.CurrentActorId), Is.EqualTo(1));
+
+            int initialRank = (int)Invoke("GetTargetRank", targets[0].InstanceId);
+            var badgeArt = AssetDatabase.LoadAssetAtPath<Sprite>(Module + "Res/Textures/Hud/game_hud_target2.png");
+            var digit = AssetDatabase.LoadAssetAtPath<Sprite>($"{Module}Res/Textures/Hud/itxt_num{initialRank}_b.png");
+            Invoke("ShowTargetNumber", targets[0].InstanceId, badgeArt, digit);
+            Assert.That(portraits.Find(targets[0].InstanceId + "/Target Number/Number").GetComponent<Image>().sprite, Is.SameAs(digit));
+            Assert.That(portraits.Find(targets[1].InstanceId + "/Target Number").gameObject.activeSelf, Is.False);
+
+            Invoke("SetReadiness", targets[0].InstanceId, 9900);
+            Assert.That(Invoke("GetTargetRank", targets[0].InstanceId), Is.EqualTo(1));
+            Assert.That(Invoke("GetTargetRank", targets[targets.Length - 1].InstanceId), Is.EqualTo(2));
+            Assert.That(Invoke("GetTargetRank", snapshot.CurrentActorId), Is.EqualTo(1));
+        }
+
+        [Test]
         public void HiddenDetailsWaitUntilOpenedBeforeRebuildingRows()
         {
             string id = snapshot.Units.First(unit => unit.InstanceId != snapshot.CurrentActorId).InstanceId;
@@ -215,7 +240,7 @@ namespace AstralOath.Client.Tests
         }
 
         private float Position(string id) => ((RectTransform)portraits.Find(id)).anchoredPosition.y;
-        private void Invoke(string method, params object[] args) => hudType.GetMethod(method, PrivateInstance).Invoke(turnHud, args);
+        private object Invoke(string method, params object[] args) => hudType.GetMethod(method, PrivateInstance).Invoke(turnHud, args);
 
         [TearDown]
         public void TearDown()

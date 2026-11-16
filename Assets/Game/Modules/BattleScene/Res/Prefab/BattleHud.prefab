@@ -1217,7 +1217,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 655.5, y: 51}
-  m_SizeDelta: {x: 127.5, y: 9}
+  m_SizeDelta: {x: 127.5, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7380147328183916563
 CanvasRenderer:
@@ -1236,7 +1236,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2509311054259259554}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: 728e4ee0882a4219a5fc0021f27cd19a, type: 3}
   m_Name:
   m_EditorClassIdentifier:
   m_Material: {fileID: 0}
@@ -1247,7 +1247,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cc1a185738858624789ccde748aaf6b0, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2928,8 +2928,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 487.5, y: 51}
-  m_SizeDelta: {x: 174, y: 40.5}
+  m_AnchoredPosition: {x: 465, y: 51}
+  m_SizeDelta: {x: 234, y: 45}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1341746635185896284
 CanvasRenderer:
@@ -2962,14 +2962,14 @@ MonoBehaviour:
   m_text: 1260/1260
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 79be34845457eaa47a19d5b3e1d88f2d, type: 2}
-  m_sharedMaterial: {fileID: -1349750702500859541, guid: 79be34845457eaa47a19d5b3e1d88f2d, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 7b2ac3e7d5cc4604a94f2d089d81c09e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 0.6, g: 0.7647059, b: 0.16470589, a: 1}
+  m_fontColor: {r: 0.6980392, g: 0.827451, b: 0.23529412, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2986,8 +2986,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25.5
-  m_fontSizeBase: 25.5
+  m_fontSize: 36
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

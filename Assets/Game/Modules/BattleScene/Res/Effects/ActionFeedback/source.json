@@ -1,0 +1,361 @@
+{
+  "schemaVersion": 1,
+  "converterSha256": "6dacb9c4857aca8051a20a24f17cdd64ce72d058a0cbbe1cf8ad06f78025a707",
+  "roots": [
+    "effect/ui_livepvp_soulburn_eff.cfx",
+    "effect/stse_counter.cfx",
+    "effect/stse_chain.cfx",
+    "effect/stse_addturn.cfx"
+  ],
+  "files": [
+    {
+      "source": "原始资源/effect/stse_addturn.cfx",
+      "sourceSha256": "7e75434eee0e7321d91daca40202ddc0edb8b6572f49b338590f29ed718b5ce7",
+      "asset": "stse_addturn.cfx.json",
+      "dependencies": [
+        "Particles/stse_addturn_pati1.particle.json",
+        "stse_addturn_renew.spine.json"
+      ],
+      "assetSha256": "d1237417d036bebaa588269828b6eee3be25429f68a02761af8ec3188c1a8694"
+    },
+    {
+      "source": "原始资源/effect/stse_addturn_pati1.particle",
+      "sourceSha256": "801ca5ce9c2169cca50d34f3f493a67da7a74943a38d4a818d49098d377e399f",
+      "asset": "Particles/stse_addturn_pati1.particle.json",
+      "dependencies": [
+        "Particles/pati_01.png"
+      ],
+      "assetSha256": "eb839259e50cb4276f20ca3fc08d5f9a5dd5ec194b93db935a8f1de5ca18cf16"
+    },
+    {
+      "source": "原始资源/effect/stse_addturn_renew.atlas",
+      "sourceSha256": "fa209a04c1caf9ad017833d84bb632381e0db25bd87aa35d46429ce3614ea002",
+      "asset": "stse_addturn_renew.atlas.txt",
+      "dependencies": [
+        "stse_addturn_renew.png"
+      ],
+      "assetSha256": "fa209a04c1caf9ad017833d84bb632381e0db25bd87aa35d46429ce3614ea002"
+    },
+    {
+      "source": "原始资源/effect/stse_addturn_renew.scsp",
+      "sourceSha256": "b924d693d3f19745c7d1ba945c107f3efc97bccd407290d199e88a229b909f1c",
+      "asset": "stse_addturn_renew.spine.json",
+      "dependencies": [
+        "stse_addturn_renew.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 1.166599988937378
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "stse_addturn_renew.sct",
+          "asset": "stse_addturn_renew.png"
+        }
+      ],
+      "assetSha256": "bfe0d8dc3b7c34f51b528dceb756fcaea66410b5379fb741a607500ff395b83c"
+    },
+    {
+      "source": "原始资源/effect/stse_addturn_renew.sct",
+      "sourceSha256": "5f93d014a3956ba61438f18d82a63d77048d57489a602bd168c6e619352aa25b",
+      "asset": "stse_addturn_renew.png",
+      "dependencies": [],
+      "texture": {
+        "width": 237,
+        "height": 813,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "6de66020e151d6d76b6c642030dfcfb65eee0804a32826cd813aad27f9b3773e"
+    },
+    {
+      "source": "原始资源/effect/stse_chain.atlas",
+      "sourceSha256": "8759dd8c2fedf203fcf04e1d1f8d0e1d210695b60f7c5067cbaac48360839124",
+      "asset": "stse_chain.atlas.txt",
+      "dependencies": [
+        "stse_chain.png"
+      ],
+      "assetSha256": "8759dd8c2fedf203fcf04e1d1f8d0e1d210695b60f7c5067cbaac48360839124"
+    },
+    {
+      "source": "原始资源/effect/stse_chain.cfx",
+      "sourceSha256": "8f453665795a9bc7d1da5995b64e5df39e31b5b05326c90cf465f86dc2f45cd1",
+      "asset": "stse_chain.cfx.json",
+      "dependencies": [
+        "stse_chain.spine.json",
+        "stse_chain_back.spine.json"
+      ],
+      "assetSha256": "c6db99aeff26df9193bf8d57cb5fe2af280d505c862bb3b37568f214097a833d"
+    },
+    {
+      "source": "原始资源/effect/stse_chain.scsp",
+      "sourceSha256": "777e64718bc7f3d8a0a1f229d8e50f71679a0011b48ac96c3321f8d19d52d3d5",
+      "asset": "stse_chain.spine.json",
+      "dependencies": [
+        "stse_chain.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 0.5
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "stse_chain.sct",
+          "asset": "stse_chain.png"
+        }
+      ],
+      "assetSha256": "d810d2c04d021534844b877c9737e11183b59c823dbf8d3266b6d3cef590e4d6"
+    },
+    {
+      "source": "原始资源/effect/stse_chain.sct",
+      "sourceSha256": "1e9c1a900ccedd3044ffa4934f3ad716a59a798c48663bb4be373eb2c6851cd7",
+      "asset": "stse_chain.png",
+      "dependencies": [],
+      "texture": {
+        "width": 936,
+        "height": 511,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "e13a876221b9cb1b4ccdac8c7e16114d00416a1159b0f649c2a1851582f26198"
+    },
+    {
+      "source": "原始资源/effect/stse_chain_back.atlas",
+      "sourceSha256": "a5f1f9957d706dff76174d0af9c3c3ff97dc37438d4831a9b5434e8646d122de",
+      "asset": "stse_chain_back.atlas.txt",
+      "dependencies": [
+        "stse_chain_back.png"
+      ],
+      "assetSha256": "a5f1f9957d706dff76174d0af9c3c3ff97dc37438d4831a9b5434e8646d122de"
+    },
+    {
+      "source": "原始资源/effect/stse_chain_back.scsp",
+      "sourceSha256": "62032ad38263762e79ad1e49cfe1107dd01fd4a7b9a6c0bb905d88563eab2182",
+      "asset": "stse_chain_back.spine.json",
+      "dependencies": [
+        "stse_chain_back.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 0.5
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "stse_chain_back.sct",
+          "asset": "stse_chain_back.png"
+        }
+      ],
+      "assetSha256": "4cd973f2e2a3983bc98dde662de185b3c5c34dc58019aa46270d2f498a5edcc5"
+    },
+    {
+      "source": "原始资源/effect/stse_chain_back.sct",
+      "sourceSha256": "bb05e5da7e2ba073dd5e568ae4e9595b289f0dff45d53dba6bd044157922eb56",
+      "asset": "stse_chain_back.png",
+      "dependencies": [],
+      "texture": {
+        "width": 173,
+        "height": 173,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "cbdc7eefdd7569ee37d4f178215345006a5a6aea124f8e50680ad873282656a4"
+    },
+    {
+      "source": "原始资源/effect/stse_counter.atlas",
+      "sourceSha256": "aa0410c55d563b6b75440b21c193a4b33ecbcb790b2114788693362688868c59",
+      "asset": "stse_counter.atlas.txt",
+      "dependencies": [
+        "stse_counter.png"
+      ],
+      "assetSha256": "aa0410c55d563b6b75440b21c193a4b33ecbcb790b2114788693362688868c59"
+    },
+    {
+      "source": "原始资源/effect/stse_counter.cfx",
+      "sourceSha256": "e17e06c69ec4fe215bd8b02eb36979bde812086500a0998e873bd6b9e7af495c",
+      "asset": "stse_counter.cfx.json",
+      "dependencies": [
+        "stse_counter.spine.json"
+      ],
+      "assetSha256": "cd7b181c413ac7638e51029f2d9a857e98f71a31e5bf75285701ee641643c446"
+    },
+    {
+      "source": "原始资源/effect/stse_counter.scsp",
+      "sourceSha256": "a932e769202400bf741a753d77449444addc677db9f0f18407941b3c814255ee",
+      "asset": "stse_counter.spine.json",
+      "dependencies": [
+        "stse_counter.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 1.5333000421524048
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "stse_counter.sct",
+          "asset": "stse_counter.png"
+        }
+      ],
+      "assetSha256": "a29a1a6385de4d7aae1dbf037f2cf0fe272d31d0046889b621c94665b86d0457"
+    },
+    {
+      "source": "原始资源/effect/stse_counter.sct",
+      "sourceSha256": "e5e4b1592ffb673330ab36370fc6219227f336dd95bd1a854b165c7a1b609302",
+      "asset": "stse_counter.png",
+      "dependencies": [],
+      "texture": {
+        "width": 1422,
+        "height": 242,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "a2e3fb9900cda8e01bf2bc1b0239575884f4654cf8823ab62877e07b049886bd"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_soulburn_eff.atlas",
+      "sourceSha256": "97d81fa3e010523b484b519f72981f382e1829dfe31bd8d2ed0df3feb8396238",
+      "asset": "ui_livepvp_soulburn_eff.atlas.txt",
+      "dependencies": [
+        "ui_livepvp_soulburn_eff.png"
+      ],
+      "assetSha256": "97d81fa3e010523b484b519f72981f382e1829dfe31bd8d2ed0df3feb8396238"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_soulburn_eff.cfx",
+      "sourceSha256": "3868c2d654046878d42b6da50028218a737f2495b93f70ddc14a65fe6f7134b4",
+      "asset": "ui_livepvp_soulburn_eff.cfx.json",
+      "dependencies": [
+        "ui_livepvp_soulburn_eff.spine.json",
+        "Particles/ui_livepvp_soulburn_pati1.particle.json"
+      ],
+      "assetSha256": "50a386f7345dad73fe350f4cae77065f4414134a2149fb66bc12584108cc160a"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_soulburn_eff.scsp",
+      "sourceSha256": "dd63cd3ae7611b11af1d4ba1c5677a855caae4dc4f9e090fa75d8843e9e53c8a",
+      "asset": "ui_livepvp_soulburn_eff.spine.json",
+      "dependencies": [
+        "ui_livepvp_soulburn_eff.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "intro",
+          "duration": 1.0
+        },
+        {
+          "name": "loop",
+          "duration": 0.33329999446868896
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "ui_livepvp_soulburn_eff.sct",
+          "asset": "ui_livepvp_soulburn_eff.png"
+        }
+      ],
+      "assetSha256": "faf606ec0cb67c1c8a6838593d5d7e60431c0d7c3ee804b721b37fa200e85ad5"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_soulburn_eff.sct",
+      "sourceSha256": "38ab94980e39f4ceae646a59050ab8565ea45376747d68ee59f7024ccb531666",
+      "asset": "ui_livepvp_soulburn_eff.png",
+      "dependencies": [],
+      "texture": {
+        "width": 944,
+        "height": 398,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "ab678fcded75d949de8d325a9978dab6b84572700e4beaf77d1c9c27d0437c1d"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_soulburn_pati1.particle",
+      "sourceSha256": "15e1f8b6d56df02aa776b3c9d4b095b0a072e8e902a215daf8aedb815f7a4a86",
+      "asset": "Particles/ui_livepvp_soulburn_pati1.particle.json",
+      "dependencies": [
+        "Particles/aura_02.png",
+        "Particles/aura_03.png",
+        "Particles/aura_04.png",
+        "Particles/ticle_02.png"
+      ],
+      "assetSha256": "92da1544baeda129730f18b158f389b305a8528263560b944fd15a56cef3eae9"
+    },
+    {
+      "source": "原始资源/particle/aura_02.sct",
+      "sourceSha256": "98e1167f35f2128f491569536ffb86bbcbb2fafbcef4c4f2b698f8215e053549",
+      "asset": "Particles/aura_02.png",
+      "dependencies": [],
+      "texture": {
+        "width": 128,
+        "height": 128,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "c15a808f4e882304a7988703d7a403b33f3d4650f6b3ecf4ca7aadb71c7168dc"
+    },
+    {
+      "source": "原始资源/particle/aura_03.sct",
+      "sourceSha256": "ed16c22ff83c714228bf715a22ec9bbba60f44fc9a17f4c7bb50e6b998077bcc",
+      "asset": "Particles/aura_03.png",
+      "dependencies": [],
+      "texture": {
+        "width": 128,
+        "height": 128,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "fe02ce3fd79d1ad3a49524709e6bb9b4f47353b6b43c7d2fd0a75e61ff93668e"
+    },
+    {
+      "source": "原始资源/particle/aura_04.sct",
+      "sourceSha256": "64e3d4e72158a90a11eaac129ad00f0d6f9a22a0859fc04b2a27ffe15a9b63a1",
+      "asset": "Particles/aura_04.png",
+      "dependencies": [],
+      "texture": {
+        "width": 128,
+        "height": 128,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "27ea6b15b4f9f7b0fe98760741f7cd79061514d3b48029e10e0eb034a03da5f4"
+    },
+    {
+      "source": "原始资源/particle/pati_01.sct",
+      "sourceSha256": "c54340504fd79d0844917fd4e69d46ba4261e31061c3f1edfaf005263410db59",
+      "asset": "Particles/pati_01.png",
+      "dependencies": [],
+      "texture": {
+        "width": 120,
+        "height": 120,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "b781ef81c5198b0e2f2124edba9756e7de944947f1edc54eba66672bf2251fd5"
+    },
+    {
+      "source": "原始资源/particle/ticle_02.sct",
+      "sourceSha256": "8f536d32d8984e0370e17ab9f1291be45b3908afce37ea8cb057ae1df4d2b9d2",
+      "asset": "Particles/ticle_02.png",
+      "dependencies": [],
+      "texture": {
+        "width": 66,
+        "height": 66,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "1be5fa2daba5583e21856ff31fff66b5a72d5e5ba8f1bcc15b9448a065e43007"
+    }
+  ]
+}

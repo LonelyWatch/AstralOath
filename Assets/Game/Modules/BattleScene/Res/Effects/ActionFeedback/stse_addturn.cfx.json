@@ -1,0 +1,20 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "stse_addturn_renew",
+      "y": "-100",
+      "z": "0",
+      "scale": "1.2",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "stse_addturn_pati1",
+      "y": "-100",
+      "delay": "167",
+      "format": "particle",
+      "globalZ": 1.1
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+
+ui_livepvp_soulburn_eff.sct
+size: 944,398
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+circle_light1
+  rotate: false
+  xy: 355, 2
+  size: 314, 314
+  orig: 314, 314
+  offset: 0, 0
+  index: -1
+circle_light2
+  rotate: false
+  xy: 2, 2
+  size: 351, 351
+  orig: 351, 351
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 671, 227
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+ray
+  rotate: false
+  xy: 2, 355
+  size: 225, 26
+  orig: 225, 26
+  offset: 0, 0
+  index: -1
+shine_01
+  rotate: false
+  xy: 671, 2
+  size: 223, 223
+  orig: 223, 223
+  offset: 0, 0
+  index: -1
+user_glow
+  rotate: false
+  xy: 842, 227
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1

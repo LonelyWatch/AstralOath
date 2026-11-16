@@ -276,6 +276,12 @@ namespace AstralOath.Client.BattleScene
             if (simulation != null) ClearBinding();
             ApplyTeam(allySlots);
             ApplyTeam(enemySlots);
+            if (onlineAssets != null)
+            {
+                var viewport = GetComponent<Canvas>().worldCamera.GetComponent<BattlePreviewViewport>();
+                viewport.ApplyOnlineActorScale(allyActors);
+                viewport.ApplyOnlineActorScale(enemyActors);
+            }
             double modelsReady = Time.realtimeSinceStartupAsDouble;
             UpdateBinding(catalog);
             double binderReady = Time.realtimeSinceStartupAsDouble;

@@ -215,6 +215,7 @@ namespace AstralOath.Client.BattleScene.Editor
             SetArray("battleGraphs", graphs);
             SetObject("skillTimelineOverrides", Asset<TextAsset>(SkillTimelineOverrides.AssetPath));
             BattleSkillPresentationAssets.Collect(properties.FindProperty("skillAssets"), graphs);
+            BattleActionFeedbackAssets.AppendTo(properties.FindProperty("skillAssets"));
             var classIcons = heroes.Select(row => (string)row["heroClass"]).Distinct(StringComparer.Ordinal)
                 .Select(role => "cm_icon_role_" + (role == "soul_weaver" ? "manauser" : role == "thief" ? "assassin" : role));
             var elementIcons = heroes.Select(row => "cm_icon_prom" + (string)row["element"]).Distinct(StringComparer.Ordinal);
@@ -226,8 +227,9 @@ namespace AstralOath.Client.BattleScene.Editor
                 .Concat(heroes.SelectMany(row => new[] { Asset<Sprite>(HudTextures + $"Faces/{row["id"]}_su.png"),
                     Asset<Sprite>(HudTextures + $"Faces/{row["id"]}_s.png") }))
                 .Concat(classIcons.Concat(elementIcons).Concat(markerElements).Concat(new[] { "_hero_s_bg_ally", "_hero_s_bg_enemy", "_hero_s_frame_ally",
-                    "_hero_s_frame_enemy", "cm_hero_circool1", "game_hud_arrow", "Faces/pet_slime1_n_grade1_1_s" })
+                    "_hero_s_frame_enemy", "cm_hero_circool1", "game_hud_arrow", "game_hud_target1", "game_hud_target2", "game_hud_soul_dot", "Faces/pet_slime1_n_grade1_1_s" })
                     .Distinct(StringComparer.Ordinal).Select(name => Asset<Sprite>(HudTextures + name + ".png")))
+                .Concat(Enumerable.Range(1, 4).Select(number => Asset<Sprite>(HudTextures + $"itxt_num{number}_b.png")))
                 .Concat(BattleTurnHudAssets.Sprites()).Concat(BattleDamageFeedbackAssets.Sprites()).Distinct().ToArray());
             if (rosterOnly)
             {

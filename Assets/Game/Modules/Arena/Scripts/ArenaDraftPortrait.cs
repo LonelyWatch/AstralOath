@@ -25,7 +25,7 @@ namespace AstralOath.Client.Arena
 
         private SkeletonPlayerSource source;
         private string skin;
-        private string animation;
+        private string animation, completionClip;
         private ISkeletonPlayer player;
         private GameObject stage;
         private Camera camera;
@@ -84,6 +84,7 @@ namespace AstralOath.Client.Arena
             bool same = !oneShot && ReferenceEquals(this.source, source) && this.skin == skin && this.animation == animation;
             if (same && player != null) return true;
             oneShot = false;
+            completionClip = null;
             effectPlacement = null;
             effectScale = 1f;
             this.source = source;
@@ -97,7 +98,8 @@ namespace AstralOath.Client.Arena
             return StartPlayer();
         }
 
-        internal bool PlayOneShot(SkeletonPlayerSource source, string animation, RectTransform placement = null, float scale = 1f)
+        internal bool PlayOneShot(SkeletonPlayerSource source, string animation, RectTransform placement = null,
+            float scale = 1f, string loopAfter = null)
         {
             if (disposed || !output) return false;
             if (source == null || string.IsNullOrWhiteSpace(animation)) { Clear(); return false; }
@@ -106,6 +108,7 @@ namespace AstralOath.Client.Arena
             this.skin = null;
             this.animation = animation;
             oneShot = true;
+            completionClip = loopAfter;
             effectPlacement = placement;
             effectScale = scale;
             if (!output.gameObject.activeInHierarchy)
@@ -171,6 +174,7 @@ namespace AstralOath.Client.Arena
             // Formation can load four previews in the frame that starts the ban reveal.
             // Keep the stamp's impact visible instead of consuming its whole clip in that frame.
             if (oneShot && BanLight) unscaledDeltaTime = Mathf.Min(unscaledDeltaTime, .10f);
+            float before = player.Time;
             if (unscaledDeltaTime > 0) player.Tick(unscaledDeltaTime);
             if (particles != null && unscaledDeltaTime > 0f)
             {
@@ -185,8 +189,18 @@ namespace AstralOath.Client.Arena
             }
             if (oneShot && player.Time >= player.Duration)
             {
-                Clear();
-                return;
+                if (completionClip == null)
+                {
+                    Clear();
+                    return;
+                }
+                // Keep the authored particles and the render target across a requested intro-to-loop handoff.
+                float overflow = Mathf.Max(0f, before + unscaledDeltaTime - player.Duration);
+                animation = completionClip;
+                completionClip = null;
+                oneShot = false;
+                player.Play(animation, true);
+                if (overflow > 0f) player.Tick(overflow);
             }
             if (feedbackActive)
             {
@@ -211,6 +225,7 @@ namespace AstralOath.Client.Arena
             skin = null;
             animation = null;
             oneShot = false;
+            completionClip = null;
             effectPlacement = null;
             effectScale = 1f;
             ReleaseStage();
@@ -246,6 +261,8 @@ namespace AstralOath.Client.Arena
                             break;
                         }
 
+                if (completionClip != null && !HasAnimation(completionClip))
+                    throw new ArgumentException("未知骨骼动画 " + completionClip);
                 if (HasAnimation(clip)) player.Play(clip, !oneShot);
                 else if (animation != null) throw new ArgumentException("未知骨骼动画 " + clip);
 

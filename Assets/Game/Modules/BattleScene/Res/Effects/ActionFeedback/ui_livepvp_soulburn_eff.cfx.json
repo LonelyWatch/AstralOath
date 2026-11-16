@@ -1,0 +1,18 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "ui_livepvp_soulburn_eff",
+      "ani": "intro,loop",
+      "z": "3",
+      "format": "spine",
+      "loop": 1
+    },
+    {
+      "source": "ui_livepvp_soulburn_pati1",
+      "z": "5",
+      "scale": "0.75",
+      "format": "particle"
+    }
+  ]
+}

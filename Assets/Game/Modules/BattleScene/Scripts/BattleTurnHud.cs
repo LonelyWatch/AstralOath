@@ -153,6 +153,27 @@ namespace AstralOath.Client.BattleScene
             ArrangePortraits();
         }
 
+        internal int GetTargetRank(string id)
+        {
+            if (!portraits.TryGetValue(id, out var portrait)) return 0;
+            if (portrait.Visible) return portrait.TargetRank;
+
+            // Legal revival targets follow the living rail in their side's formation order.
+            var slot = portrait.Unit.Slot;
+            int rank = 1;
+            foreach (var other in portraits.Values)
+                if (other.Unit.Slot.Side == slot.Side && (other.Visible || other.Unit.Slot.Position < slot.Position))
+                    ++rank;
+            return rank;
+        }
+
+        internal void ShowTargetNumber(string id, Sprite art, Sprite digit)
+        {
+            if (!portraits.TryGetValue(id, out var portrait)) return;
+            portrait.TargetNumber.Show(art, digit);
+            portrait.DetailTargetNumber.Show(art, digit);
+        }
+
         internal int SetReadiness(string id, int readinessBp)
         {
             if (!portraits.TryGetValue(id, out var portrait) || !portrait.Visible)
@@ -224,7 +245,7 @@ namespace AstralOath.Client.BattleScene
                 Icon(root, "Face", face, 112f * 0.69f * 0.7f * SourceScale, Color.white);
             else
                 Text(root, "Slot", unit.Slot.Position.ToString(), Vector2.zero, new Vector2(38f, 35f),
-                    26f, numberSource).color = ElementColor(unit.Element);
+                    26f, numberSource, material: numberSource.font.material).color = ElementColor(unit.Element);
             var ring = sprites.GetValueOrDefault("cm_hero_circool1");
             Color sideColor = ally ? Color.white : new Color32(241, 42, 48, 255);
             float ringSize = 82f * 0.7f * SourceScale;
@@ -275,9 +296,11 @@ namespace AstralOath.Client.BattleScene
                 if (portrait.Visible) ordered.Add(portrait);
             }
             ordered.Sort(comparePortraits);
+            int allyRank = 0, enemyRank = 0;
             for (int index = 0; index < ordered.Count; index++)
             {
                 var portrait = ordered[index];
+                portrait.TargetRank = portrait.Unit.Slot.Side == BattleSide.Ally ? ++allyRank : ++enemyRank;
                 bool acting = portrait.Unit.InstanceId == activeId;
                 float readiness = Mathf.Clamp01(portrait.ReadinessBp / (float)FullReadiness);
                 float y = Mathf.Lerp(TrackTop, TrackBottom, acting ? 1f : readiness);
@@ -344,12 +367,12 @@ namespace AstralOath.Client.BattleScene
         }
 
         private static GameText Text(Transform parent, string name, string content, Vector2 position, Vector2 size,
-            float fontSize, GameText source, TextAlignmentOptions alignment = TextAlignmentOptions.Center)
+            float fontSize, GameText source, TextAlignmentOptions alignment = TextAlignmentOptions.Center, Material material = null)
         {
             var text = Rect(parent, name, position, size).gameObject.AddComponent<GameText>();
             text.text = content;
             text.font = source.font;
-            text.fontSharedMaterial = source.fontSharedMaterial;
+            text.fontSharedMaterial = material ? material : source.fontSharedMaterial;
             text.fontSize = fontSize;
             text.alignment = alignment;
             text.enableWordWrapping = false;
@@ -392,6 +415,10 @@ namespace AstralOath.Client.BattleScene
             {
                 Root = root;
                 Highlight = highlight;
+                var badgeOffset = new Vector2(45f, 0f);
+                var badgeSize = new Vector2(42f, 48f);
+                TargetNumber = new BattleTargetBadge(root, badgeOffset, badgeSize);
+                DetailTargetNumber = new BattleTargetBadge((RectTransform)detail.Root.Find("Portrait"), badgeOffset, badgeSize);
                 Detail = detail;
                 face = root.Find("Face")?.GetComponent<Image>();
                 detailFace = detail.Root.Find("Portrait/Face")?.GetComponent<Image>();
@@ -428,6 +455,9 @@ namespace AstralOath.Client.BattleScene
 
             internal RectTransform Root { get; }
             internal Image Highlight { get; }
+            internal BattleTargetBadge TargetNumber { get; }
+            internal BattleTargetBadge DetailTargetNumber { get; }
+            internal int TargetRank { get; set; }
             internal DetailRow Detail { get; }
             internal BattleUnitSnapshot Unit { get; set; }
             internal Vector2 Position { get; set; }

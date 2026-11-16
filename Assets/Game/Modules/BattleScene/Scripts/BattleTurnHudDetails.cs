@@ -34,7 +34,7 @@ namespace AstralOath.Client.BattleScene
             healthFill.color = unit.Slot.Side == BattleSide.Ally ? new Color32(153, 195, 42, 255) : new Color32(220, 57, 50, 255);
             healthFill.raycastTarget = false;
             var health = Text(root, "Health", "", new Vector2(195f, 10f) * SourceScale,
-                new Vector2(112f, 24f) * SourceScale, 16f * SourceScale, numberSource);
+                new Vector2(112f, 24f) * SourceScale, 16f * SourceScale, numberSource, material: numberSource.font.material);
             foreach (float x in new[] { 261f, 446f })
             {
                 var divider = Rect(root, "Divider", new Vector2(x, 0f) * SourceScale,

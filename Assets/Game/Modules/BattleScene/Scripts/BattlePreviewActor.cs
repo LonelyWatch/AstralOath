@@ -27,6 +27,7 @@ namespace AstralOath.Client.BattleScene
         [SerializeField] private Vector3 shadowOffset;
         private bool shadowNormalized;
         private ISkeletonPlayer player;
+        private float battleDisplayScale = 1f;
         private string resolvedHeroId;
         private string idleAnimation;
         private string turnIdleAnimation;
@@ -266,6 +267,17 @@ namespace AstralOath.Client.BattleScene
         public Bounds Bounds => player != null
             ? player.Root.GetComponent<MeshRenderer>().bounds : new Bounds(transform.position, Vector3.zero);
 
+        internal void SetBattleDisplayScale(float value)
+        {
+            if (!float.IsFinite(value) || value <= 0f)
+                throw new ArgumentOutOfRangeException(nameof(value));
+            battleDisplayScale = value;
+            if (player != null) ApplyBattleDisplayScale(player);
+        }
+
+        private void ApplyBattleDisplayScale(ISkeletonPlayer model) =>
+            model.Root.transform.localScale = new Vector3(FacingDirection * battleDisplayScale, battleDisplayScale, 1f);
+
         internal string HeroId => resolvedHeroId ?? heroId;
         internal string AuthoredHeroId => heroId;
         private bool FacesLeft
@@ -487,8 +499,7 @@ namespace AstralOath.Client.BattleScene
                     throw new InvalidOperationException($"Battle preview actor {name} has no playable idle animation.");
 
                 instance.Root.GetComponent<MeshRenderer>().sortingOrder = drawOrder;
-                if (FacesLeft)
-                    instance.Root.transform.localScale = new Vector3(-1, 1, 1);
+                ApplyBattleDisplayScale(instance);
                 instance.Play(idleAnimation, true);
                 PreparePresentation();
                 player = instance;

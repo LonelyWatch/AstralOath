@@ -11,6 +11,8 @@ namespace AstralOath.Client.BattleScene
         private const float DesignAspect = 16f / 9f;
         private const float MaximumHorizontalExpansion = 1.12f;
         private const float OnlineBattleCameraScale = .90f;
+        private const float OnlineBattleActorScale = 1.17f;
+        private const float OnlineBorderMargin = .02f;
         private const float ArenaBackdropHorizontalZoom = 1.65f;
         private const float ArenaBackdropVerticalZoom = 1.55f;
         private const float ArenaBackdropCenterY = .674f;
@@ -231,6 +233,25 @@ namespace AstralOath.Client.BattleScene
             {
                 var slot = actor.transform.parent;
                 slot.position = new Vector3(x, y, slot.position.z);
+            }
+        }
+
+        internal void ApplyOnlineActorScale(IReadOnlyList<BattlePreviewActor> team)
+        {
+            // Startup idle bounds are evaluated once. Larger silhouettes keep their
+            // authored composition as camera or attachments move during skills.
+            float halfWidth = designSize * OnlineBattleCameraScale * DesignAspect * (1f - 2f * OnlineBorderMargin);
+            foreach (var actor in team)
+            {
+                actor.SetBattleDisplayScale(1f);
+                var bounds = actor.Bounds;
+                float feet = actor.transform.position.x;
+                float scale = OnlineBattleActorScale;
+                if (bounds.min.x < feet)
+                    scale = Mathf.Min(scale, (feet + halfWidth) / (feet - bounds.min.x));
+                if (bounds.max.x > feet)
+                    scale = Mathf.Min(scale, (halfWidth - feet) / (bounds.max.x - feet));
+                actor.SetBattleDisplayScale(Mathf.Max(1f, scale));
             }
         }
 

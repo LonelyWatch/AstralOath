@@ -1951,6 +1951,7 @@ MonoBehaviour:
   - {fileID: 4900000, guid: ba3d1f38d8817b9428ff0978be610ffa, type: 3}
   skillTimelineOverrides: {fileID: 4900000, guid: 5ed7d169d4b347de8b383e99d679f8ae, type: 3}
   battleSprites:
+  - {fileID: 21300000, guid: 2da0bc3d23e26ef4fb62b6c9be05084f, type: 3}
   - {fileID: 21300000, guid: 33e47b64c0c95444e9c984922136807b, type: 3}
   - {fileID: 21300000, guid: 41a68f0a126863f4282516701892f15d, type: 3}
   - {fileID: 21300000, guid: f2563a9aac1b9674bb7a527ddd6941fd, type: 3}
@@ -2157,6 +2158,12 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 14ae966de5a3f8b4691ebc34dd324237, type: 3}
   - {fileID: 21300000, guid: b0851859529a9954fa7e23c3507ae420, type: 3}
   - {fileID: 21300000, guid: b4c29cd78eda956439cd94422e9708b1, type: 3}
+  - {fileID: 21300000, guid: f2c94aa7b62749143937585e9256b91f, type: 3}
+  - {fileID: 21300000, guid: 2c5566574a6f18641ab96e7dea0bb3f5, type: 3}
+  - {fileID: 21300000, guid: f902d79899128bd438c8c685df775f07, type: 3}
+  - {fileID: 21300000, guid: 5bf9acc4b877ec74fa906169b4e266a1, type: 3}
+  - {fileID: 21300000, guid: 0fc48c9a10dec3a4dbd9c1f254bb0942, type: 3}
+  - {fileID: 21300000, guid: 54af6e4a13186e34cb1a962db0ed5760, type: 3}
   skillAssets:
   - source: camera/achates_skill_01_cm.scsp
     document: {fileID: 4900000, guid: 0eef05f151e761849aa7261f9a6517ec, type: 3}
@@ -10895,6 +10902,160 @@ MonoBehaviour:
     texture: {fileID: 2800000, guid: a6a17aac7e874edca6f7190adcb07cd0, type: 3}
     premultipliedAlpha: 0
     scale: 0
+  - source: effect/stse_addturn.cfx
+    document: {fileID: 4900000, guid: 03c36876b4487854cb0e9929f604a088, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_addturn_pati1.particle
+    document: {fileID: 4900000, guid: 043fc66bee3829c458adb3ad4e0ce253, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_addturn_renew.scsp
+    document: {fileID: 4900000, guid: 92335e5b793f2244983a32f742b77af8, type: 3}
+    atlas: {fileID: 4900000, guid: 289ba1514859f8a4c8880ed3c58edca2, type: 3}
+    pageNames:
+    - stse_addturn_renew.sct
+    pages:
+    - {fileID: 2800000, guid: 43d184e886780a34dabfaf5d6161a754, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_addturn_renew.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: 43d184e886780a34dabfaf5d6161a754, type: 3}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_chain.cfx
+    document: {fileID: 4900000, guid: 1957898d271e0cf489fc95618d2e7d57, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_chain.scsp
+    document: {fileID: 4900000, guid: 75b29d0f26d788e4fa44e77b60d46229, type: 3}
+    atlas: {fileID: 4900000, guid: fb9f5ce178e14104fb9213cdd6ace28d, type: 3}
+    pageNames:
+    - stse_chain.sct
+    pages:
+    - {fileID: 2800000, guid: dbb68841d01f1294a9406650fe083dff, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_chain.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: dbb68841d01f1294a9406650fe083dff, type: 3}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_chain_back.scsp
+    document: {fileID: 4900000, guid: 983d3a5231ad366488ca55a9e283a878, type: 3}
+    atlas: {fileID: 4900000, guid: 184c8bc1d4c41ed4f9eb9d37d1a0f942, type: 3}
+    pageNames:
+    - stse_chain_back.sct
+    pages:
+    - {fileID: 2800000, guid: 43d71e717e1ca9f4a8e73f4894a4d72d, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_chain_back.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: 43d71e717e1ca9f4a8e73f4894a4d72d, type: 3}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_counter.cfx
+    document: {fileID: 4900000, guid: ec24947242d3971409fd5a58c0cbfab3, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_counter.scsp
+    document: {fileID: 4900000, guid: 73ba7c689649de7469fc2573193b77b2, type: 3}
+    atlas: {fileID: 4900000, guid: 5e6d0dee4c09cd142a416fe70641a7d4, type: 3}
+    pageNames:
+    - stse_counter.sct
+    pages:
+    - {fileID: 2800000, guid: b53a5bc6c344f684d82d806974f24b6b, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_counter.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: b53a5bc6c344f684d82d806974f24b6b, type: 3}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/ui_livepvp_soulburn_eff.cfx
+    document: {fileID: 4900000, guid: 2aedbfea6c1be094f83aabd90ddaa317, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/ui_livepvp_soulburn_eff.scsp
+    document: {fileID: 4900000, guid: 9bb61258ce861e74a9853b280f220ef0, type: 3}
+    atlas: {fileID: 4900000, guid: 40ee651405a2751468fcf72361809330, type: 3}
+    pageNames:
+    - ui_livepvp_soulburn_eff.sct
+    pages:
+    - {fileID: 2800000, guid: bbd542c7217eee24383ba3a4205fb6e0, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/ui_livepvp_soulburn_eff.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: bbd542c7217eee24383ba3a4205fb6e0, type: 3}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/ui_livepvp_soulburn_pati1.particle
+    document: {fileID: 4900000, guid: d19d8f49b6c3aa54496bad31bb385058, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: particle/aura_02.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: b10e65f22e27fe948936076e6350a1fb, type: 3}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: particle/aura_03.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: 925c14f0023b7e24cbe99968f3101a10, type: 3}
+    premultipliedAlpha: 1
+    scale: 0.01
   audioCatalog: {fileID: 4900000, guid: c0e9bd68f30f77b43a84e4c1337460f8, type: 3}
   audioBanks:
   - {fileID: 4900000, guid: 8ce39ee0470274746bd7081d980abe12, type: 3}

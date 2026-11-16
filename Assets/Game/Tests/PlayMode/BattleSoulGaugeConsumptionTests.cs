@@ -7,6 +7,7 @@ using AstralOath.Client.BattleScene;
 using AstralOath.Client.Common;
 using AstralOath.Shared.Battle;
 using NUnit.Framework;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
@@ -99,6 +100,39 @@ namespace AstralOath.Client.Tests
             Assert.That(ActiveSlots().Select(slot => slot.name), Is.EqualTo(new[] { "Soul Consume 6", "Soul Consume 7" }));
             tick.Invoke(gauge, new object[] { 5f });
             Assert.That(ActiveSlots(), Is.Empty);
+        }
+
+        [Test]
+        public void OpponentRailRestoresAndSpendsOnlyWholeSlotsOnTheRight()
+        {
+            var railType = typeof(BattleHudPreview).Assembly.GetType("AstralOath.Client.BattleScene.BattleOpponentSoulRail", true);
+            var effect = typeof(BattleHudPreview).GetField("soulDisplay", PrivateInstance).GetValue(host);
+            var dot = AssetDatabase.LoadAssetAtPath<Sprite>(
+                "Assets/Game/Modules/BattleScene/Res/Textures/Hud/game_hud_soul_dot.png");
+            using var rail = (IDisposable)Activator.CreateInstance(railType, PrivateInstance, null,
+                new object[] { (RectTransform)map.transform.parent, effect, dot }, null);
+            var railRoot = (RectTransform)map.transform.parent.Find("Opponent Soul Rail");
+            var show = railType.GetMethod("Show", PrivateInstance);
+            var restore = railType.GetMethod("Restore", PrivateInstance);
+            Assert.That(railRoot.anchorMin, Is.EqualTo(new Vector2(.82f, 1f)));
+            Assert.That(railRoot.anchoredPosition, Is.EqualTo(new Vector2(-92.4f, -120f)));
+            Assert.That(railRoot.childCount, Is.EqualTo(8));
+
+            restore.Invoke(rail, new object[] { 29 });
+            Assert.That(Occupied(), Is.EqualTo(new[] { "Soul 1", "Soul 2" }));
+            Assert.That(railRoot.GetChild(1).localPosition.x, Is.LessThan(railRoot.GetChild(0).localPosition.x));
+            show.Invoke(rail, new object[] { 31, true });
+            Assert.That(Occupied(), Is.EqualTo(new[] { "Soul 1", "Soul 2", "Soul 3" }));
+            show.Invoke(rail, new object[] { 11, true });
+            Assert.That(Occupied(), Is.EqualTo(new[] { "Soul 1" }));
+            restore.Invoke(rail, new object[] { 9 });
+            Assert.That(Occupied(), Is.Empty);
+            restore.Invoke(rail, new object[] { 80 });
+            Assert.That(Occupied(), Has.Length.EqualTo(8));
+            Assert.That(host.SimulationSnapshot.AllySoul, Is.EqualTo(20), "The enemy display does not alter local souls.");
+
+            string[] Occupied() => railRoot.Cast<Transform>().Select(slot => slot.Find("Soul"))
+                .Where(mark => mark && mark.gameObject.activeSelf).Select(mark => mark.parent.name).ToArray();
         }
 
         private Transform[] ActiveSlots()

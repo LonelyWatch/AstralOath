@@ -144,7 +144,9 @@ namespace AstralOath.Client.BattleScene
                 mesh.Clear();
             }
 
-            public void Tick(double previous, double time, System.Random random)
+            public bool HasParticles => particles.Count != 0;
+
+            public void Tick(double previous, double time, System.Random random, bool emit)
             {
                 float delta = (float)(time - previous);
                 for (int index = particles.Count - 1; index >= 0; index--)
@@ -156,7 +158,7 @@ namespace AstralOath.Client.BattleScene
                         particles.RemoveAt(index);
                 }
 
-                if (data.burningType == 1)
+                if (emit && data.burningType == 1)
                 {
                     while (nextBurst < repetitions && delay + nextBurst * data.interval <= time)
                     {
@@ -166,7 +168,7 @@ namespace AstralOath.Client.BattleScene
                         nextBurst++;
                     }
                 }
-                else if (data.emissionRate > 0 && particles.Count < capacity)
+                else if (emit && data.emissionRate > 0 && particles.Count < capacity)
                 {
                     // Count crossed emission times so a long frame cannot extend a finite emitter.
                     for (int repetition = 0; repetition < repetitions && particles.Count < capacity; repetition++)
@@ -314,7 +316,7 @@ namespace AstralOath.Client.BattleScene
         private readonly List<Emitter> emitters = new List<Emitter>();
         private System.Random random;
         private double time;
-        private bool playing, disposed;
+        private bool playing, disposed, emitting;
 
         public BattleHudParticles(TextAsset definition, IReadOnlyDictionary<string, Texture2D> textures, Transform parent,
             Vector2 offset, float scale, int sortingOrder) : this(definition, textures, parent, offset, scale, sortingOrder, false) { }
@@ -371,6 +373,7 @@ namespace AstralOath.Client.BattleScene
             time = 0;
             random = new System.Random(1);
             playing = true;
+            emitting = true;
             foreach (var emitter in emitters)
                 emitter.Play(random);
             Tick(0);
@@ -385,7 +388,20 @@ namespace AstralOath.Client.BattleScene
             double previous = time;
             time += delta;
             foreach (var emitter in emitters)
-                emitter.Tick(previous, time, random);
+                emitter.Tick(previous, time, random, emitting);
+        }
+
+        // Opt-in for an owner that wants the original particle lifespan tail.
+        // Play restores emission; the existing Stop contract still clears immediately.
+        public void StopEmission() => emitting = false;
+
+        public bool HasLiveParticles
+        {
+            get
+            {
+                foreach (var emitter in emitters) if (emitter.HasParticles) return true;
+                return false;
+            }
         }
 
         public void SetOpacity(float opacity)

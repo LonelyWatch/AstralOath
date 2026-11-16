@@ -1,0 +1,76 @@
+
+stse_chain.sct
+size: 936,511
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+b_lightning_1_1
+  rotate: false
+  xy: 2, 2
+  size: 168, 337
+  orig: 168, 337
+  offset: 0, 0
+  index: -1
+b_lightning_1_2
+  rotate: true
+  xy: 2, 341
+  size: 168, 337
+  orig: 168, 337
+  offset: 0, 0
+  index: -1
+b_lightning_1_3
+  rotate: false
+  xy: 172, 2
+  size: 168, 337
+  orig: 168, 337
+  offset: 0, 0
+  index: -1
+b_lightning_1_4
+  rotate: true
+  xy: 341, 341
+  size: 168, 337
+  orig: 168, 337
+  offset: 0, 0
+  index: -1
+b_lightning_1_5
+  rotate: false
+  xy: 342, 2
+  size: 168, 337
+  orig: 168, 337
+  offset: 0, 0
+  index: -1
+b_line_light
+  rotate: false
+  xy: 512, 255
+  size: 191, 36
+  orig: 191, 36
+  offset: 0, 0
+  index: -1
+ball1
+  rotate: false
+  xy: 765, 173
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+circle1
+  rotate: false
+  xy: 512, 2
+  size: 251, 251
+  orig: 251, 251
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 765, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+lense_circle1
+  rotate: false
+  xy: 680, 293
+  size: 198, 198
+  orig: 198, 198
+  offset: 0, 0
+  index: -1

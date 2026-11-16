@@ -13,6 +13,9 @@ namespace AstralOath.Client.BattleScene
     internal sealed class BattleOnlineHud : IDisposable
     {
         private readonly RectTransform root;
+        private readonly BattleNativeFeedbackEffect.Library feedbackLibrary;
+        private readonly BattleNativeFeedbackEffect[] soulBurnEffects = new BattleNativeFeedbackEffect[2];
+        private readonly RectTransform[] soulBurnAnchors = new RectTransform[2];
         private readonly Image allyHealth, enemyHealth;
         private readonly GameText turn;
         private readonly RectTransform clockRoot;
@@ -46,9 +49,10 @@ namespace AstralOath.Client.BattleScene
         }
 
         internal BattleOnlineHud(BindingMap map, BattleOnlinePlayers players, BattleOnlineTransitionAssets.Copy copy,
-            IReadOnlyDictionary<string, Sprite> roster, BattleOnlineTransitionAssets assets)
+            IReadOnlyDictionary<string, Sprite> roster, BattleOnlineTransitionAssets assets, BattleSkillPresentationAsset[] feedbackAssets = null)
         {
             this.copy = copy ?? throw new ArgumentNullException(nameof(copy));
+            feedbackLibrary = new BattleNativeFeedbackEffect.Library(feedbackAssets);
             var art = assets.hudSprites.ToDictionary(item => item.name, StringComparer.Ordinal);
             foreach (string name in new[] { "_battle_pvp_icon_vs", "game_hud_bar_pvplive", "game_hud_bar_hp",
                 "game_hud_bar_hp_red", "game_hud_bar_split", "_hero_s_frame_enemy", "_hero_s_bg_ally",
@@ -68,6 +72,7 @@ namespace AstralOath.Client.BattleScene
             group.blocksRaycasts = false;
             group.interactable = false;
             Hide(map.Require<GameText>("wave").gameObject);
+            Hide(map.Require<GameText>("soulCount").gameObject);
             Hide(map.transform.Find("Top Bar/Wave Plate")?.gameObject);
             Hide(map.transform.Find("Top Bar/Help")?.gameObject);
             speed = map.Require<GameButton>("speed").GetComponent<RectTransform>();
@@ -165,8 +170,42 @@ namespace AstralOath.Client.BattleScene
                     Picture(root, side + " Player Avatar", avatar, faceAnchor, faceAnchor, new Vector2(0, -72f), Vector2.one * 116f);
                 Picture(root, side + " Avatar Frame", art["_hero_s_frame_enemy"], faceAnchor, faceAnchor,
                     new Vector2(1.5f, -73.5f), Vector2.one * 132.3f);
+                soulBurnAnchors[ally ? 0 : 1] = Rect(root, side + " Soul Burn Anchor", faceAnchor, faceAnchor,
+                    new Vector2(0, -72f), Vector2.zero);
                 return health;
             }
+        }
+
+        // Called only by a first-consumed authoritative primary Action.UseSoulBurn event.
+        internal void PlaySoulBurn(BattleSide side)
+        {
+            const string source = "ui_livepvp_soulburn_eff";
+            if (!root || !feedbackLibrary.Contains(source)) return;
+            int index = side == BattleSide.Ally ? 0 : 1;
+            if (soulBurnEffects[index] == null)
+            {
+                var canvas = root.GetComponentInParent<Canvas>();
+                // P2 13:41 shows viewport-spanning intro rays and a 230-260px
+                // sustained fire ring around the ~130px profile at 1080p.
+                soulBurnEffects[index] = new BattleNativeFeedbackEffect(feedbackLibrary, source,
+                    soulBurnAnchors[index], .36f, canvas.sortingLayerID, canvas.sortingOrder + 2);
+            }
+            soulBurnEffects[index].PlayUntilFinished();
+        }
+
+        internal void Tick(float delta)
+        {
+            foreach (var effect in soulBurnEffects) effect?.Tick(delta);
+        }
+
+        internal void FinishSoulBurn()
+        {
+            foreach (var effect in soulBurnEffects) effect?.Finish();
+        }
+
+        internal void ClearFeedback()
+        {
+            foreach (var effect in soulBurnEffects) effect?.Stop();
         }
 
         internal void SetHealth(long allyCurrent, long allyMaximum, long enemyCurrent, long enemyMaximum)
@@ -281,6 +320,7 @@ namespace AstralOath.Client.BattleScene
 
         public void Dispose()
         {
+            foreach (var effect in soulBurnEffects) effect?.Dispose();
             foreach (var (item, active) in hidden) if (item) item.SetActive(active);
             hidden.Clear();
             if (speed) { speed.anchorMin = speedMin; speed.anchorMax = speedMax; speed.anchoredPosition = speedPosition; }

@@ -19,7 +19,7 @@ internal sealed class ArenaBattleCatalog : IDisposable
 
     public ArenaBattleCatalog(IConfiguration? configuration = null)
     {
-        TurnSeconds = configuration?.GetValue<int?>("Arena:BattleTurnSeconds") ?? 30;
+        TurnSeconds = configuration?.GetValue<int?>("Arena:BattleTurnSeconds") ?? 15;
         PresentationWaitSeconds = configuration?.GetValue<int?>("Arena:BattlePresentationWaitSeconds") ?? 30;
         if (TurnSeconds is < 5 or > 120 || PresentationWaitSeconds is < 5 or > 120)
             throw new InvalidOperationException("Arena battle clock durations must be between 5 and 120 seconds.");

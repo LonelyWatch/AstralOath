@@ -181,6 +181,8 @@ Luban 快照 `Configs/battle-catalog.json` 含十名英雄、成长模板、觉�
 
 `BattleOnlineHud` 在战斗安全区上缘展示双方头像、名称、分段总生命条和原版 VS。生命聚合当前实际呈现的单位生命，随受击演出更新；回合文字与原版红／蓝计时环只在权威决策窗口显示，入场、动作播放、断线和结束时隐藏。双方演出完成通过会话 ready 接口同步，服务器保存期限并处理超时合法默认动作，客户端只投影剩余秒数。服务版本不支持计时时显示明确错误并停止输入。该图层不接收射线，不改变鼠标和触摸命中。协议、等待上限和验收见[在线计时记录](../../../../docs/delivery/2026-11-15-online-turn-clock.md)。
 
+联机参与者的对手魂量在右头像旁显示为八格。以 `pvplive_global_hp.csb` 中 `n_gauge_right/n_soul_burn` 为依据，使用 `game_hud_soul_dot` 和已有的原版 `soul_01` 动画，满十点亮一格，从右向左。P2 8:12 的右头像旁可见一格，13:41 对手魂燃时扣除当次消耗，13:44 的头像火环另由权威魂燃动作控制。本机魂量继续显示在底栏。队伍镜像解析、战斗快照恢复、魂量事件和魂燃预扣沿用权威服务端数据。
+
 入场标题在 IGNITION 下方显示金色竞技场与白色决斗场，入场结束释放标题，队伍 HUD 持续显示。独立图层避免被普通 HUD 的入场淡出一同隐藏，退出战斗恢复原波次与速度按钮布局。
 
 素材入口为 `Tools/BattleScene/ImportOnlineHud.py`；`--check` 验证 15 张来源 PNG 逐字节一致及 10 张原版 `score.fnt` 位图数字按字框裁切，`Res/Online/AstralOathOnlineHud/source.json` 记录每张文件与 `wnd/pvplive_global_hp.csb` 布局证据的 SHA-256。CSB 仅作布局依据，不进入运行时。联机 HUD 与入场演出由签名资源包地址 battle/online-transition 持有，联机预加载阶段一次取得。Unity 编译与 16:9、21:9 实帧截图分别验收；资源校验不能替代视觉对照。
