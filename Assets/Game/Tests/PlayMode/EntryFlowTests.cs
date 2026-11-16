@@ -24,7 +24,7 @@ namespace AstralOath.Client.Tests
     {
         private const string ScenePath = "Assets/Game/Modules/Home/Scenes/GameHome.unity";
         private Scene scene;
-        private string oldEndpoint, oldSkip;
+        private string oldEndpoint, oldSkip, oldRequireAccount;
         private EntryServer server;
 
         [UnityTest, Timeout(90000)]
@@ -57,6 +57,49 @@ namespace AstralOath.Client.Tests
             Assert.That(Find<BindingMap>("HomeWindow"), Is.Null);
         }
 
+        [UnityTest, Timeout(60000)]
+        public IEnumerator TestLoginOpensHomeWhenAccountRoutesAreUnavailable()
+        {
+            Boot("", requireAccount: false, hasVersionRoute: false);
+            yield return ClickTestLoginAndWaitFor(() => Find<BindingMap>("HomeWindow"));
+
+            Assert.That(Find<BindingMap>("HomeWindow"), Is.Not.Null);
+            AssertNoAccountOrRealmFlow();
+            Assert.That(Find<Button>("Tap to start"), Is.Null);
+            Assert.That(server.VersionChecks, Is.EqualTo(1));
+        }
+
+        [UnityTest, Timeout(60000)]
+        public IEnumerator TestLoginRespectsMandatoryUpdateFromAvailableVersionRoute()
+        {
+            Boot("999.0.0", requireAccount: false);
+            yield return ClickTestLoginAndWaitFor(() => Find<GameText>("QQ update instruction"));
+
+            var instruction = Find<GameText>("QQ update instruction");
+            Assert.That(instruction, Is.Not.Null);
+            Assert.That(instruction.text, Does.Contain("QQ群"));
+            AssertNoAccountOrRealmFlow();
+            Assert.That(server.VersionChecks, Is.EqualTo(1));
+            Assert.That(Find<BindingMap>("HomeWindow"), Is.Null);
+        }
+
+        private IEnumerator ClickTestLoginAndWaitFor(Func<bool> completed)
+        {
+            yield return Wait(() => Find<Button>("Login"), "Login entry did not show.");
+            Find<Button>("Login").onClick.Invoke();
+            yield return Wait(() => completed() || Find<Button>("Submit account form"),
+                "Test login reached neither the expected destination nor the account form.");
+            Assert.That(Find<Button>("Submit account form"), Is.Null, "Test login opened an account form.");
+        }
+
+        private void AssertNoAccountOrRealmFlow()
+        {
+            Assert.That(Find<TMP_InputField>("entry.account"), Is.Null);
+            Assert.That(Find<Button>("Select realm"), Is.Null);
+            Assert.That(server.AccountLogins, Is.Zero);
+            Assert.That(server.Selections, Is.Zero);
+        }
+
         private IEnumerator SignIn()
         {
             yield return Wait(() => Find<Button>("Login"), "Login entry did not show.");
@@ -70,13 +113,15 @@ namespace AstralOath.Client.Tests
             Find<Button>("Submit account form").onClick.Invoke();
         }
 
-        private void Boot(string minimum)
+        private void Boot(string minimum, bool requireAccount = true, bool hasVersionRoute = true)
         {
-            server = new EntryServer(minimum);
+            server = new EntryServer(minimum, hasVersionRoute);
             oldEndpoint = Environment.GetEnvironmentVariable("ASTRAL_FOUNDATION_URL");
             oldSkip = Environment.GetEnvironmentVariable("ASTRAL_TEST_SKIP_ENTRY");
+            oldRequireAccount = Environment.GetEnvironmentVariable("ASTRAL_TEST_REQUIRE_ACCOUNT_ENTRY");
             Environment.SetEnvironmentVariable("ASTRAL_FOUNDATION_URL", server.Address);
             Environment.SetEnvironmentVariable("ASTRAL_TEST_SKIP_ENTRY", null);
+            Environment.SetEnvironmentVariable("ASTRAL_TEST_REQUIRE_ACCOUNT_ENTRY", requireAccount ? "1" : null);
             scene = EditorSceneManager.LoadSceneInPlayMode(ScenePath, new LoadSceneParameters(LoadSceneMode.Additive));
         }
 
@@ -88,6 +133,7 @@ namespace AstralOath.Client.Tests
             server?.Dispose();
             Environment.SetEnvironmentVariable("ASTRAL_FOUNDATION_URL", oldEndpoint);
             Environment.SetEnvironmentVariable("ASTRAL_TEST_SKIP_ENTRY", oldSkip);
+            Environment.SetEnvironmentVariable("ASTRAL_TEST_REQUIRE_ACCOUNT_ENTRY", oldRequireAccount);
             yield return null;
         }
 
@@ -106,12 +152,14 @@ namespace AstralOath.Client.Tests
         {
             private readonly HttpListener listener = new HttpListener();
             private readonly Task serving;
-            private int selections, authorized;
+            private int selections, authorized, accountLogins, versionChecks;
             public string Address { get; }
             public int Selections => Volatile.Read(ref selections);
+            public int AccountLogins => Volatile.Read(ref accountLogins);
+            public int VersionChecks => Volatile.Read(ref versionChecks);
             public bool AuthorizedRealmSelection => Volatile.Read(ref authorized) == 1;
 
-            internal EntryServer(string minimum)
+            internal EntryServer(string minimum, bool hasVersionRoute)
             {
                 var ephemeral = new TcpListener(IPAddress.Loopback, 0);
                 ephemeral.Start();
@@ -121,10 +169,10 @@ namespace AstralOath.Client.Tests
                 Address = "http://127.0.0.1:" + port;
                 listener.Prefixes.Add(Address + "/");
                 listener.Start();
-                serving = Serve(minimum);
+                serving = Serve(minimum, hasVersionRoute);
             }
 
-            private async Task Serve(string minimum)
+            private async Task Serve(string minimum, bool hasVersionRoute)
             {
                 while (listener.IsListening)
                 {
@@ -138,9 +186,17 @@ namespace AstralOath.Client.Tests
                         switch (request.Request.Url.AbsolutePath)
                         {
                             case "/api/entry/login":
+                                Interlocked.Increment(ref accountLogins);
                                 reply = "{\"token\":\"fixture-admission\"}";
                                 break;
                             case "/api/entry/version":
+                                Interlocked.Increment(ref versionChecks);
+                                if (!hasVersionRoute)
+                                {
+                                    request.Response.StatusCode = 404;
+                                    reply = "{}";
+                                    break;
+                                }
                                 reply = "{\"minimumAppVersion\":\"" + minimum + "\",\"realmId\":\"undying-memory\"}";
                                 break;
                             case "/api/entry/select-realm":

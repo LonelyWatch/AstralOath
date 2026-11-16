@@ -17,13 +17,15 @@ namespace AstralOath.Client.Bootstrap
         private readonly EntryWebClient web;
         private readonly EntryScreen screen;
         private readonly bool production;
+        private readonly bool guestEntry;
         private readonly string appVersion;
 
-        internal EntryFlow(EntryWebClient web, EntryScreen screen, string appVersion, bool production)
+        internal EntryFlow(EntryWebClient web, EntryScreen screen, string appVersion, bool production, bool guestEntry)
         {
             this.web = web;
             this.screen = screen;
             this.production = production;
+            this.guestEntry = guestEntry;
             this.appVersion = appVersion;
         }
 
@@ -37,29 +39,34 @@ namespace AstralOath.Client.Bootstrap
             while (true)
             {
                 await screen.WaitForLoginAsync(lifetime);
-                var admission = await AuthenticateAsync(lifetime);
-                if (admission == null) continue;
+                var admission = guestEntry ? null : await AuthenticateAsync(lifetime);
+                if (!guestEntry && admission == null) continue;
 
-                while (await screen.SelectRealmAsync("不凋零回忆", lifetime))
+                while (guestEntry || await screen.SelectRealmAsync("不凋零回忆", lifetime))
                 {
                     GameAccountSession session;
                     StartupContent content;
                     try
                     {
                         screen.ShowChecking();
-                        var policy = await web.ReadPolicyAsync(lifetime);
-                        if (policy.realmId != EntryWebClient.RealmId)
+                        var policy = await web.ReadPolicyAsync(lifetime, allowUnavailable: guestEntry);
+                        if ((policy != null && policy.realmId != EntryWebClient.RealmId) || (policy == null && !guestEntry))
                             throw new EntryRequestException("invalid_realm");
-                        if (EntryWebClient.RequiresNewPlayer(appVersion, policy.minimumAppVersion))
+                        if (EntryWebClient.RequiresNewPlayer(appVersion, policy?.minimumAppVersion))
                         {
                             // There is no continuation to game content on an obsolete installation.
                             await screen.ShowForceAsync(policy.minimumAppVersion, lifetime);
+                            if (guestEntry) break;
                             continue;
                         }
 
-                        session = await web.SelectRealmAsync(admission, appVersion, lifetime);
+                        session = guestEntry ? null : await web.SelectRealmAsync(admission, appVersion, lifetime);
                         content = await LoadContentAsync(openContent, lifetime);
-                        if (content == null) continue; // player declined before the first file request
+                        if (content == null)
+                        {
+                            if (guestEntry) break;
+                            continue;
+                        }
                     }
                     catch (OperationCanceledException) when (lifetime.IsCancellationRequested) { throw; }
                     catch (EntryRequestException error)
@@ -101,9 +108,12 @@ namespace AstralOath.Client.Bootstrap
                             return default;
                         }
 
-                        using var display = new BindingScope(lifetime);
-                        var background = await ReadThemeAsync(content, display);
-                        await screen.WaitForStartAsync(background, lifetime);
+                        if (!guestEntry)
+                        {
+                            using var display = new BindingScope(lifetime);
+                            var background = await ReadThemeAsync(content, display);
+                            await screen.WaitForStartAsync(background, lifetime);
+                        }
                         return (content, session);
                     }
                     catch

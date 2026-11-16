@@ -59,9 +59,11 @@ namespace AstralOath.Client.Bootstrap
                 bool arenaSmoke = Debug.isDebugBuild &&
                     Array.Exists(Environment.GetCommandLineArgs(), arg => arg == "-astral-arena-battle-smoke");
                 bool interactive = showGameHome && !automation && !arenaSmoke;
+                bool guestEntry = Debug.isDebugBuild;
 #if UNITY_EDITOR
-                // Legacy Arena UI tests verify the scene separately from the account admission flow.
+                // Arena-only tests skip the title screen. Account tests opt into the full admission flow.
                 interactive &= Environment.GetEnvironmentVariable("ASTRAL_TEST_SKIP_ENTRY") != "1";
+                guestEntry = Environment.GetEnvironmentVariable("ASTRAL_TEST_REQUIRE_ACCOUNT_ENTRY") != "1";
 #endif
 
                 Task<StartupContent> OpenContent(
@@ -79,7 +81,7 @@ namespace AstralOath.Client.Bootstrap
                     open.gameObject.SetActive(false);
                     if (entryFont) startupStatus.font = entryFont;
                     using var screen = new EntryScreen(viewRoot, startupStatus);
-                    var flow = new EntryFlow(new EntryWebClient(server.Address), screen, Application.version, !Application.isEditor);
+                    var flow = new EntryFlow(new EntryWebClient(server.Address), screen, Application.version, !Application.isEditor, guestEntry);
                     var admission = await flow.OpenAsync(OpenContent, scope.Token);
                     content = admission.content;
                     if (content == null)
@@ -92,7 +94,8 @@ namespace AstralOath.Client.Bootstrap
                         content.Dispose();
                         scope.Token.ThrowIfCancellationRequested();
                     }
-                    services.Add(admission.session);
+                    if (admission.session != null)
+                        services.Add(admission.session);
                     screen.Hide();
                     startupStatus.gameObject.SetActive(true);
                 }

@@ -17,8 +17,8 @@ namespace AstralOath.Client.Bootstrap
 
         internal EntryWebClient(Uri endpoint) => this.endpoint = endpoint;
 
-        internal Task<Policy> ReadPolicyAsync(CancellationToken token) =>
-            SendAsync<Policy>("version", null, null, token);
+        internal Task<Policy> ReadPolicyAsync(CancellationToken token, bool allowUnavailable = false) =>
+            SendAsync<Policy>("version", null, null, token, allowUnavailable);
 
         internal Task RequestCodeAsync(string email, CancellationToken token) =>
             SendAsync<Reply>("email-code", new Credentials { email = email }, null, token);
@@ -61,13 +61,14 @@ namespace AstralOath.Client.Bootstrap
             return new Version(version.Major, version.Minor, Math.Max(0, version.Build), Math.Max(0, version.Revision));
         }
 
-        private async Task<T> SendAsync<T>(string path, object data, string bearer, CancellationToken token) where T : class
+        private async Task<T> SendAsync<T>(string path, object data, string bearer, CancellationToken token,
+            bool allowUnavailable = false) where T : class
         {
             token.ThrowIfCancellationRequested();
             var uri = new Uri(endpoint, "/api/entry/" + path);
             using var request = new UnityWebRequest(uri, data == null ? "GET" : "POST")
             {
-                timeout = 20,
+                timeout = allowUnavailable ? 3 : 20,
                 redirectLimit = 0,
                 downloadHandler = new DownloadHandlerBuffer()
             };
@@ -100,6 +101,10 @@ namespace AstralOath.Client.Bootstrap
             token.ThrowIfCancellationRequested();
             if (request.result != UnityWebRequest.Result.Success)
             {
+                // The test entry can use signed content with an older server or no game server.
+                if (allowUnavailable && (request.responseCode == 404 || request.result == UnityWebRequest.Result.ConnectionError))
+                    return null;
+
                 // Display only our local, approved copy. Never display or log a raw authentication response.
                 if (request.responseCode >= 400)
                 {
