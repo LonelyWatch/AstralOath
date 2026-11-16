@@ -7,4 +7,13 @@
     <type fullname="AstralOath.Shared.Updates.HotUpdateFile" preserve="all" />
     <type fullname="AstralOath.Shared.Updates.PlayerBaseline" preserve="all" />
   </assembly>
+  <!-- The hot-update Arena client calls these HTTP request APIs. -->
+  <assembly fullname="System.Net.Http">
+    <type fullname="System.Net.Http.HttpMethod" preserve="all" />
+    <type fullname="System.Net.Http.HttpRequestMessage" preserve="all" />
+    <type fullname="System.Net.Http.StringContent" preserve="all" />
+    <type fullname="System.Net.Http.Headers.HttpHeaders" preserve="all" />
+    <type fullname="System.Net.Http.Headers.HttpRequestHeaders" preserve="all" />
+    <type fullname="System.Net.Http.Headers.AuthenticationHeaderValue" preserve="all" />
+  </assembly>
 </linker>

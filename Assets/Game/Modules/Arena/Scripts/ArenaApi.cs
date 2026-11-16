@@ -1,12 +1,14 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AstralOath.Client.Core;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.Scripting;
 
 namespace AstralOath.Client.Arena
@@ -37,7 +39,7 @@ namespace AstralOath.Client.Arena
         internal ArenaRequestException(string code) : base(code) { Code = code; }
     }
 
-    public sealed class ArenaApi
+    public sealed class ArenaApi : IDisposable
     {
         [Serializable, Preserve] private sealed class Session { public string token; public ArenaPlayer player; }
         [Serializable, Preserve] private sealed class Identity { public string displayName, avatarId; }
@@ -57,6 +59,7 @@ namespace AstralOath.Client.Arena
         internal Uri Endpoint => endpoint;
         internal string Bearer => session?.token;
         private readonly Uri endpoint;
+        private readonly HttpClient http;
         private readonly CancellationToken lifetime;
         private Session session;
         private int pendingOperations;
@@ -64,6 +67,10 @@ namespace AstralOath.Client.Arena
         {
             this.endpoint = endpoint ?? throw new ArgumentNullException(nameof(endpoint));
             this.lifetime = lifetime;
+            http = new HttpClient(new HttpClientHandler { AllowAutoRedirect = false, UseProxy = !endpoint.IsLoopback })
+            {
+                MaxResponseContentBufferSize = 2 * 1024 * 1024
+            };
             if (account != null)
             {
                 session = new Session
@@ -91,9 +98,10 @@ namespace AstralOath.Client.Arena
         public async Task ConnectAsync(string displayName, string avatarId, CancellationToken token)
         {
             if (session != null) return;
-            session = await Send<Session>("sessions", new Identity { displayName = displayName, avatarId = avatarId }, token);
-            if (session.player == null || string.IsNullOrWhiteSpace(session.token))
+            var connected = await Send<Session>("sessions", new Identity { displayName = displayName, avatarId = avatarId }, token);
+            if (connected?.player == null || string.IsNullOrWhiteSpace(connected.token))
                 throw new ArenaRequestException("invalid_response");
+            session = connected;
         }
 
         public async Task<ArenaRoomInfo[]> ListAsync(string visibility, string sort, bool ascending, string query, CancellationToken token)
@@ -148,55 +156,54 @@ namespace AstralOath.Client.Arena
             Send<ArenaDraftState>(Room(id) + "/draft/preview", preview, token, 4);
         private static string Room(string id) => "rooms/" + Uri.EscapeDataString(id);
 
+        public void Dispose() => http.Dispose();
+
         private async Task<T> Send<T>(string path, object data, CancellationToken token, int timeout = 10) where T : class
         {
             token.ThrowIfCancellationRequested();
+            lifetime.ThrowIfCancellationRequested();
+            using var deadline = CancellationTokenSource.CreateLinkedTokenSource(token, lifetime);
+            deadline.CancelAfter(TimeSpan.FromSeconds(timeout));
             var url = new Uri(endpoint, "/api/arena/" + path);
-            using var request = new UnityWebRequest(url, data == null ? UnityWebRequest.kHttpVerbGET : UnityWebRequest.kHttpVerbPOST)
-            {
-                downloadHandler = new DownloadHandlerBuffer(),
-                timeout = timeout,
-                redirectLimit = 0
-            };
+            using var request = new HttpRequestMessage(data == null ? HttpMethod.Get : HttpMethod.Post, url);
             if (data != null)
-            {
-                request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(JsonUtility.ToJson(data)));
-                request.SetRequestHeader("Content-Type", "application/json");
-            }
-            request.SetRequestHeader("Accept", "application/json");
+                request.Content = new StringContent(JsonUtility.ToJson(data), Encoding.UTF8, "application/json");
+            request.Headers.TryAddWithoutValidation("Accept", "application/json");
             var requestSession = session;
-            if (requestSession != null) request.SetRequestHeader("Authorization", "Bearer " + requestSession.token);
-            var operation = request.SendWebRequest();
-            if (!operation.isDone)
+            if (requestSession != null)
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", requestSession.token);
+
+            try
             {
-                var completion = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
-                void Complete(AsyncOperation _) => completion.TrySetResult(true);
-                operation.completed += Complete;
-                try
+                using var response = await http.SendAsync(request, HttpCompletionOption.ResponseContentRead, deadline.Token);
+                deadline.Token.ThrowIfCancellationRequested();
+                if (response.StatusCode == HttpStatusCode.Unauthorized && session == requestSession)
+                    session = null;
+                if (response.StatusCode == HttpStatusCode.NoContent)
+                    return null;
+
+                string json = await response.Content.ReadAsStringAsync();
+                deadline.Token.ThrowIfCancellationRequested();
+                if (!response.IsSuccessStatusCode)
                 {
-                    using var cancellation = token.Register(() => completion.TrySetCanceled(token));
-                    await completion.Task;
+                    string code = null;
+                    try { if (!string.IsNullOrEmpty(json)) code = JsonUtility.FromJson<Error>(json)?.code; }
+                    catch (ArgumentException) { }
+                    throw new ArenaRequestException(code ?? "request_failed");
                 }
-                catch (OperationCanceledException) when (token.IsCancellationRequested)
-                {
-                    request.Abort();
-                    throw;
-                }
-                finally { operation.completed -= Complete; }
+                try { return JsonUtility.FromJson<T>(json) ?? throw new ArenaRequestException("invalid_response"); }
+                catch (ArgumentException) { throw new ArenaRequestException("invalid_response"); }
             }
-            token.ThrowIfCancellationRequested();
-            string json = request.downloadHandler.text;
-            if (request.result != UnityWebRequest.Result.Success)
+            catch (OperationCanceledException) when (!token.IsCancellationRequested && !lifetime.IsCancellationRequested)
             {
-                string code = null;
-                try { if (!string.IsNullOrEmpty(json)) code = JsonUtility.FromJson<Error>(json)?.code; }
-                catch (ArgumentException) { }
-                if (request.responseCode == 401 && session == requestSession) session = null;
-                throw new ArenaRequestException(code ?? (request.responseCode == 0 ? "unavailable" : "request_failed"));
+                throw new ArenaRequestException("unavailable");
             }
-            if (request.responseCode == 204) return null;
-            try { return JsonUtility.FromJson<T>(json) ?? throw new ArenaRequestException("invalid_response"); }
-            catch (ArgumentException) { throw new ArenaRequestException("invalid_response"); }
+            catch (HttpRequestException)
+            {
+                token.ThrowIfCancellationRequested();
+                lifetime.ThrowIfCancellationRequested();
+                throw new ArenaRequestException("unavailable");
+            }
         }
     }
 }

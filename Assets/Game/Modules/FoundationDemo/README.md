@@ -13,7 +13,7 @@ YooAsset 包 `Foundation` 提供下列业务资源。构建另外生成代码清
 
 正式 GameHome 导航在进入选禁时才加载 ArenaDraft 和角色预览资源。Foundation 母包的内置场景为 GameHome。从当前 Foundation YooAsset 包预载 `battle/online-transition` 和 `battle/online-scene`；选禁完成且权威快照有效后，才在闸门遮挡下激活对局。Windows 冒烟脚本的 `-Preload` 选项演练预载及正式衔接。新增场景加载服务属于 AOT 层，0.1.9 及更早版本需安装新 Windows 母包。
 
-窗口每次打开建立新作用域，关闭时取消请求并释放资源、事件和动画。演示文案使用 key，默认为简体中文，语音选择独立。详细启动、更新和构建步骤见 `docs/architecture/client.md`。
+窗口每次打开建立新作用域，关闭时取消请求并释放资源、事件和动画。GameHome 入口作用域持有竞技场 HTTP 客户端，退出入口时统一取消请求并释放连接。演示文案使用 key，默认为简体中文，语音选择独立。详细启动、更新和构建步骤见 `docs/architecture/client.md`。
 
 `AssetBundleCollectorSetting.asset` 同时保存 CharacterLab 包的收集配置。十名角色接入后，角色实验室组由导入清单重新生成，继续使用原稳定地址和角色分包规则。见[十名角色接入](../../../../docs/delivery/2026-11-13-ten-hero-roster.md)。
 
