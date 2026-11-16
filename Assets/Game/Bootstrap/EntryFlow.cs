@@ -49,7 +49,9 @@ namespace AstralOath.Client.Bootstrap
                     try
                     {
                         screen.ShowChecking();
-                        var policy = await web.ReadPolicyAsync(lifetime, allowUnavailable: guestEntry);
+                        var policy = guestEntry
+                            ? await web.ReadGuestPolicyAsync(lifetime)
+                            : await web.ReadPolicyAsync(lifetime);
                         if ((policy != null && policy.realmId != EntryWebClient.RealmId) || (policy == null && !guestEntry))
                             throw new EntryRequestException("invalid_realm");
                         if (EntryWebClient.RequiresNewPlayer(appVersion, policy?.minimumAppVersion))
