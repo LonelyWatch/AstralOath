@@ -17,6 +17,7 @@
 - 初次启动和目录：[根 README](../README.md)、[客户端架构](architecture/client.md)、[服务端 README](../Server/README.md)。
 - 新系统/模块：[通用规范](development/project-standards.md)、目标模块 README、[AI 开发流程](development/ai-workflow.md)。
 - UI：[UIBaseView / Binder / 控件](development/ui-binder.md)、[控件决策](architecture/adr/009-ui-controls.md)。
+- 账号和英雄背包：[录像、数据模型与验收](plans/2026-11-17-hero-inventory.md)、[服务端接口与迁移](../Server/README.md)。
 - 主页与竞技场：[启动、房间与聊天](development/arena-lobby.md)、[Arena](../Assets/Game/Modules/Arena/README.md)。
 - 操作留痕：[规则和接口](development/operation-audit.md)、[窗口与交互 ADR](architecture/adr/016-window-feedback-operation-audit.md)。
 - 配表：[Config README](../Config/README.md)、[配置与内容更新](architecture/content.md)。

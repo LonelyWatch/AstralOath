@@ -1,0 +1,110 @@
+{
+  "referenceLayouts": [
+    {
+      "source": "wnd/inventory_renewal.csb",
+      "sha256": "23380454e3f9e6a7febcb8217001351e6be791e64905f5c6ae1686235c1583d4"
+    },
+    {
+      "source": "wnd/hero_detail_base.csb",
+      "sha256": "18abdad87481255b26ce6850ad8c3a8ef84328c6d5f67c4d6431b46dda8e6111"
+    },
+    {
+      "source": "wnd/hero_detail_list.csb",
+      "sha256": "f95946915e879ff2a5b5d096c2990ccf3f76d3c711dfca2e1e02260c6cde6218"
+    },
+    {
+      "source": "wnd/quick_menu_renew.csb",
+      "sha256": "9b9957712ecbae18f9430fa59b683b516d6e12ee19cc4b06276996817d3acf6b"
+    }
+  ],
+  "assets": [
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/base_inventory.png",
+      "source": "img/base_inventory.png",
+      "sourceSha256": "ff6bf4c867fd58067e5583cd6f5c9bcf0be6b0384bb57e9bfbf45509924d4292",
+      "outputSha256": "ff6bf4c867fd58067e5583cd6f5c9bcf0be6b0384bb57e9bfbf45509924d4292",
+      "width": 320,
+      "height": 144
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/base_unit_hero.png",
+      "source": "img/base_unit_hero.png",
+      "sourceSha256": "aa9b830dc1c47044545cc11ddcc8928d5bd5b4347a5bca94192ca9940be74bf4",
+      "outputSha256": "aa9b830dc1c47044545cc11ddcc8928d5bd5b4347a5bca94192ca9940be74bf4",
+      "width": 256,
+      "height": 144
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/_tap_select_blue.png",
+      "source": "img/_tap_select_blue.png",
+      "sourceSha256": "ab555a1d69626eb0bf71410f16d1c023d8419fa0399faedb0027686df2bb99fe",
+      "outputSha256": "ab555a1d69626eb0bf71410f16d1c023d8419fa0399faedb0027686df2bb99fe",
+      "width": 116,
+      "height": 62
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/_grow_inventory_top.png",
+      "source": "img/_grow_inventory_top.png",
+      "sourceSha256": "b92b3291cb5d56fe798c2ef5354f93d10ecd818d823eaba9bac0c4f92fbeb1bc",
+      "outputSha256": "b92b3291cb5d56fe798c2ef5354f93d10ecd818d823eaba9bac0c4f92fbeb1bc",
+      "width": 320,
+      "height": 49
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/icon_menu_equip.png",
+      "source": "img/icon_menu_equip.png",
+      "sourceSha256": "cab7d968f64257de0b44af09d96772d9707cd4d6463ea9f2c0b67176014fa64e",
+      "outputSha256": "cab7d968f64257de0b44af09d96772d9707cd4d6463ea9f2c0b67176014fa64e",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/icon_menu_equipment.png",
+      "source": "img/icon_menu_equipment.png",
+      "sourceSha256": "58c4cc7fadd266760a33dbe605f24598d5776dee219f772f9b1cede82869070a",
+      "outputSha256": "58c4cc7fadd266760a33dbe605f24598d5776dee219f772f9b1cede82869070a",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/icon_menu_pararti.png",
+      "source": "img/icon_menu_pararti.png",
+      "sourceSha256": "de12253670da829d9ca746f4b71cae0a8b05249dc8149076e3a2921179440a1f",
+      "outputSha256": "de12253670da829d9ca746f4b71cae0a8b05249dc8149076e3a2921179440a1f",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/renew_icon_quick_hero.png",
+      "source": "img/renew_icon_quick_hero.png",
+      "sourceSha256": "7056e8255d1f13b7efb94d8a791d4c21e4ecfda26f74195863689448c741d34f",
+      "outputSha256": "7056e8255d1f13b7efb94d8a791d4c21e4ecfda26f74195863689448c741d34f",
+      "width": 64,
+      "height": 64
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/renew_icon_quick_hero_p.png",
+      "source": "img/renew_icon_quick_hero_p.png",
+      "sourceSha256": "677c08882c1144b536e16d0ca28583aee5891869d395212c6d724c5386fd6c2b",
+      "outputSha256": "677c08882c1144b536e16d0ca28583aee5891869d395212c6d724c5386fd6c2b",
+      "width": 64,
+      "height": 64
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/quick_esc.png",
+      "source": "img/quick_esc.png",
+      "sourceSha256": "f041890171e126c45e99f92de00f6e0192fa3a0960733d69d662b2a7de0c59a1",
+      "outputSha256": "f041890171e126c45e99f92de00f6e0192fa3a0960733d69d662b2a7de0c59a1",
+      "width": 64,
+      "height": 66
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/quick_esc_p.png",
+      "source": "img/quick_esc_p.png",
+      "sourceSha256": "0f4ee645b4cad07415a87fd0a87976a5305dd8a72bfb22ee512f836166f8c3ee",
+      "outputSha256": "0f4ee645b4cad07415a87fd0a87976a5305dd8a72bfb22ee512f836166f8c3ee",
+      "width": 64,
+      "height": 66
+    }
+  ]
+}

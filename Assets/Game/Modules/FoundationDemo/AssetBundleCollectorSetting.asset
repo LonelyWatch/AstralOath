@@ -139,6 +139,30 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags:
         UserData:
+      - CollectPath: Assets/Game/Modules/Home/Res/Prefab/HeroInventory.prefab
+        CollectorGUID: 5df659e978850ac4abd5aaa2b21c121a
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/Home/Res/Prefab/HomeMoreMenu.prefab
+        CollectorGUID: 8a921a2dcf1e5e04dba8be133d012ba6
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/Home/Configs/HomeHeroArt.asset
+        CollectorGUID: 5bff0c3434a542a4da9cb057d9519fbf
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
     - GroupName: EntryTheme
       GroupDesc:
       AssetTags:

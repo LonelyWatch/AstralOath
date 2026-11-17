@@ -4,6 +4,8 @@
 
 `HomeWindow : UIBaseView` 和 `HomeWindowBinder` 分离组件与导航。主页使用原版 `bgpack/lobby_bg3.png` 和夏日夏绿蒂 c5009 的 Spine 3.8.99 立绘，来源见 `Res/Textures/source-manifest.json`。预制体沿安全区锚定，采用高度匹配的 CanvasScaler。退出主页会回收立绘 Camera、RenderTexture 和 Spine 实例。
 
+主页右上「更多」打开快捷浮层，点击「英雄」进入英雄详情及可展开的持有列表。右上「背包」进入独立布局，按英雄分行展示等级、星级与空装备槽、神器槽。装备与神器分页可以切换，首版为空。容量来自服务器，列表按实例 ID 展示并复用可见行，详见[账号与英雄背包](../../../../docs/plans/2026-11-17-hero-inventory.md)。
+
 业务程序集由 Foundation 热更清单登记。稳定启动契约和立绘桥改动需要新母包。 [操作与验收](../../../../docs/development/arena-lobby.md)
 
 主页入口显示“竞技场”，直接打开模拟战目录。舞台沿用原背景和原版贴纸资源。页面切换交给 `WindowCoordinator`，点击泛光和普通音效由启动 Canvas 负责。

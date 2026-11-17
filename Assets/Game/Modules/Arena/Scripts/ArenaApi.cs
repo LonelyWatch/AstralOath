@@ -95,13 +95,20 @@ namespace AstralOath.Client.Arena
         }
         public ArenaPlayer Player => session?.player;
 
+        public async Task<string> GetSessionTokenAsync(string displayName, CancellationToken token)
+        {
+            await ConnectAsync(displayName, "c1001", token);
+            token.ThrowIfCancellationRequested();
+            return session?.token ?? throw new ArenaRequestException("unauthorized");
+        }
+
         public async Task ConnectAsync(string displayName, string avatarId, CancellationToken token)
         {
             if (session != null) return;
             var connected = await Send<Session>("sessions", new Identity { displayName = displayName, avatarId = avatarId }, token);
             if (connected?.player == null || string.IsNullOrWhiteSpace(connected.token))
                 throw new ArenaRequestException("invalid_response");
-            session = connected;
+            if (session == null) session = connected;
         }
 
         public async Task<ArenaRoomInfo[]> ListAsync(string visibility, string sort, bool ascending, string query, CancellationToken token)

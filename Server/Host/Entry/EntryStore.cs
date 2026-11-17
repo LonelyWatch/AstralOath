@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 using AstralOath.Server.Arena;
 using AstralOath.Server.Foundation;
+using AstralOath.Server.Inventory;
 using MySqlConnector;
 
 namespace AstralOath.Server.Entry;
@@ -196,6 +197,7 @@ internal sealed class EntryStore(string? connectionString)
             UPDATE entry_account SET arena_expires_at = UTC_TIMESTAMP(6) + INTERVAL 24 HOUR WHERE player_id = @id;
             """, ("@id", player.Id));
         await expire.ExecuteNonQueryAsync(cancellation);
+        await InventoryStore.EnsureStarters(connection, transaction, player.Id, cancellation);
         await OperationAudit.Record(connection, transaction, "entry.realm.select", "account", player.Id,
             "realm", EntryEndpoints.RealmId, null, cancellation);
         await transaction.CommitAsync(cancellation);

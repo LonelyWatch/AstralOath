@@ -11,13 +11,18 @@ namespace AstralOath.Client.Home
         private readonly HomeWindow view;
         private readonly ILocaleService locale;
         private readonly Func<CancellationToken, Task> openArena;
+        private readonly Func<CancellationToken, Task> openMore;
+        private readonly Func<CancellationToken, Task> openBag;
         private readonly DesktopDisplayMode display;
 
-        public HomeWindowBinder(HomeWindow view, ILocaleService locale, Func<CancellationToken, Task> openArena, DesktopDisplayMode display)
+        public HomeWindowBinder(HomeWindow view, ILocaleService locale, Func<CancellationToken, Task> openArena,
+            Func<CancellationToken, Task> openMore, Func<CancellationToken, Task> openBag, DesktopDisplayMode display)
         {
             this.view = view;
             this.locale = locale;
             this.openArena = openArena;
+            this.openMore = openMore;
+            this.openBag = openBag;
             this.display = display;
         }
 
@@ -28,6 +33,8 @@ namespace AstralOath.Client.Home
             view.ArenaLabel.Bind(locale, screen, "home.arena");
             view.Profile.Bind(locale, screen, "home.profile");
             view.Arena.Bind(screen, openArena);
+            view.More.Bind(screen, openMore);
+            view.Bag.Bind(screen, openBag);
             var button = view.DisplayMode;
             button.gameObject.SetActive(display && display.Available);
             if (button.gameObject.activeSelf)

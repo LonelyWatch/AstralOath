@@ -1,0 +1,215 @@
+#if UNITY_EDITOR
+using System;
+using System.Collections;
+using System.IO;
+using System.Linq;
+using AstralOath.Client.Common;
+using NUnit.Framework;
+using TMPro;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.TestTools;
+using UnityEngine.UI;
+
+namespace AstralOath.Client.Tests
+{
+    public sealed class HeroInventoryOnlineTests
+    {
+        private const string HomePath = "Assets/Game/Modules/Home/Scenes/GameHome.unity";
+        private static readonly string[] StarterNames = { "拉斯", "梅赛德丝", "安洁莉卡" };
+        private Scene home, priorScene;
+        private string priorEndpoint, priorSkipEntry;
+        private bool settingsChanged;
+
+        [UnityTest, Timeout(165000)]
+        public IEnumerator HomeRoutesToOwnedHeroesAndDistinctEmptyBagPages()
+        {
+            string endpoint = Environment.GetEnvironmentVariable("ASTRAL_INVENTORY_TEST_URL");
+            if (string.IsNullOrWhiteSpace(endpoint))
+                Assert.Ignore("Set ASTRAL_INVENTORY_TEST_URL to an isolated local server with migration 010 and developer guests enabled.");
+            Assert.That(new Uri(endpoint).IsLoopback, Is.True, "Use a local development test database.");
+
+            priorEndpoint = Environment.GetEnvironmentVariable("ASTRAL_FOUNDATION_URL");
+            priorSkipEntry = Environment.GetEnvironmentVariable("ASTRAL_TEST_SKIP_ENTRY");
+            settingsChanged = true;
+            Environment.SetEnvironmentVariable("ASTRAL_FOUNDATION_URL", endpoint);
+            Environment.SetEnvironmentVariable("ASTRAL_TEST_SKIP_ENTRY", "1");
+            priorScene = SceneManager.GetActiveScene();
+            home = EditorSceneManager.LoadSceneInPlayMode(HomePath, new LoadSceneParameters(LoadSceneMode.Additive));
+            yield return Wait(() => home.IsValid() && home.isLoaded && FindWindow("HomeWindow"), "Home did not load.");
+            Assert.That(SceneManager.SetActiveScene(home), Is.True);
+
+            Click(FindWindow("HomeWindow"), "more");
+            yield return Wait(() => FindWindow("HomeMoreMenu"), "The More menu did not open.");
+            yield return Capture("inventory-more", 1920, 1080);
+            Click(FindWindow("HomeMoreMenu"), "heroes");
+            yield return Wait(() =>
+            {
+                var screen = FindWindow("HeroInventory");
+                return screen && screen.Require<GameObject>("roster").activeInHierarchy &&
+                    VisibleRows(screen, "rosterScroll").Length == StarterNames.Length;
+            }, "The hero page did not show the three initial owned hero records.");
+            Assert.That(FindWindow("HomeMoreMenu"), Is.Null, "Opening the hero page should dismiss its menu.");
+            var roster = FindWindow("HeroInventory");
+            Assert.That(roster.Require<GameObject>("bag").activeInHierarchy, Is.False);
+            AssertOwnedHeroes(roster, "rosterScroll");
+            Assert.That(roster.Require<Image>("detailIllustration").sprite, Is.Not.Null);
+            Assert.That(StarterNames, Does.Contain(roster.Require<GameText>("detailName").text));
+            yield return Capture("inventory-hero-detail", 1920, 1080);
+
+            var search = roster.Require<TMP_InputField>("search");
+            search.text = StarterNames[2];
+            yield return Wait(() => VisibleRows(roster, "rosterScroll").Length == 1, "Search did not reduce the owned roster.");
+            Assert.That(VisibleRows(roster, "rosterScroll").Single().Require<GameText>("name").text, Is.EqualTo(StarterNames[2]));
+            search.text = "";
+            yield return Wait(() => VisibleRows(roster, "rosterScroll").Length == StarterNames.Length, "Clearing search did not restore the roster.");
+            Click(roster, "expand");
+            yield return Wait(() => !roster.Require<RectTransform>("rosterDetail").gameObject.activeInHierarchy,
+                "The expanded grid did not replace the detailed panel.");
+            AssertOwnedHeroes(roster, "rosterScroll");
+            yield return Capture("inventory-hero-grid", 1920, 900);
+            string otherHero = StarterNames.First(hero => hero != roster.Require<GameText>("detailName").text);
+            var other = VisibleRows(roster, "rosterScroll").Single(row =>
+                row.Require<GameText>("name").text == otherHero);
+            Click(other.GetComponent<GameButton>(), otherHero);
+            yield return Wait(() => roster.Require<RectTransform>("rosterDetail").gameObject.activeInHierarchy,
+                "Selecting a hero in the expanded grid did not return to that hero's detail page.");
+            Assert.That(roster.Require<GameText>("detailName").text, Is.EqualTo(otherHero));
+            Click(roster, "expand");
+            yield return Wait(() => !roster.Require<RectTransform>("rosterDetail").gameObject.activeInHierarchy,
+                "The expanded grid did not reopen.");
+            Click(roster, "back");
+            yield return Wait(() => roster.Require<RectTransform>("rosterDetail").gameObject.activeInHierarchy,
+                "Back from the expanded grid should return to the detail page.");
+            Click(roster, "back");
+
+            yield return Wait(() => FindWindow("HomeWindow") && !FindWindow("HeroInventory"), "Back did not return to Home.");
+            Click(FindWindow("HomeWindow"), "bag");
+            yield return Wait(() =>
+            {
+                var screen = FindWindow("HeroInventory");
+                return screen && screen.Require<GameObject>("bag").activeInHierarchy &&
+                    VisibleRows(screen, "bagScroll").Length == StarterNames.Length;
+            }, "The Bag entry did not show the hero rows.");
+            var bag = FindWindow("HeroInventory");
+            Assert.That(bag.Require<GameObject>("roster").activeInHierarchy, Is.False);
+            AssertOwnedHeroes(bag, "bagScroll");
+            yield return Capture("inventory-bag-heroes", 1920, 900);
+
+            Click(bag, "tabEquipment");
+            yield return Wait(() => ShowsEmptyTab(bag, "暂无装备"), "The equipment tab did not display its empty state.");
+            yield return Capture("inventory-bag-equipment-empty", 1920, 1080);
+            Click(bag, "tabArtifacts");
+            yield return Wait(() => ShowsEmptyTab(bag, "暂无神器"), "The artifact tab did not display its empty state.");
+            yield return Capture("inventory-bag-artifacts-empty", 1920, 1080);
+            Click(bag, "tabHeroes");
+            yield return Wait(() => VisibleRows(bag, "bagScroll").Length == StarterNames.Length,
+                "Switching back to Heroes did not restore the owned records.");
+            AssertOwnedHeroes(bag, "bagScroll");
+        }
+
+        private static bool ShowsEmptyTab(BindingMap bag, string text)
+        {
+            var status = bag.Require<GameText>("status");
+            return status.gameObject.activeInHierarchy && status.text == text &&
+                VisibleRows(bag, "bagScroll").Length == 0;
+        }
+
+        private static void AssertOwnedHeroes(BindingMap screen, string scroll)
+        {
+            var rows = VisibleRows(screen, scroll);
+            var names = rows.Select(row => row.Require<GameText>("name").text).ToArray();
+            Assert.That(names, Is.EquivalentTo(StarterNames));
+            Assert.That(rows.Select(row => row.gameObject.name), Is.Unique, "Hero rows use unique instance IDs.");
+            Assert.That(rows.All(row => row.Require<Image>("portrait").sprite), Is.True, "All three heroes require actual portraits.");
+            string capacity = string.Concat(screen.Require<GameText>("capacity").text.Where(c => !char.IsWhiteSpace(c)));
+            Assert.That(capacity, Is.EqualTo("3/1000"));
+        }
+
+        private static BindingMap[] VisibleRows(BindingMap screen, string scroll) =>
+            screen.Require<ScrollRect>(scroll).content.GetComponentsInChildren<BindingMap>()
+                .Where(map => map != screen.Require<ScrollRect>(scroll).content.GetComponent<BindingMap>())
+                .ToArray();
+
+        private BindingMap FindWindow(string name) => !home.IsValid() || !home.isLoaded ? null : home.GetRootGameObjects()
+            .SelectMany(root => root.GetComponentsInChildren<BindingMap>()).FirstOrDefault(map =>
+                map.gameObject.name == name || map.gameObject.name == name + "(Clone)");
+
+        private static void Click(BindingMap window, string key) => Click(window.Require<GameButton>(key), key);
+
+        private static void Click(GameButton button, string key)
+        {
+            Assert.That(button, Is.Not.Null, key);
+            Assert.That(button.gameObject.activeInHierarchy && button.IsInteractable(), Is.True, key);
+            button.onClick.Invoke();
+        }
+
+        private static IEnumerator Wait(Func<bool> condition, string message)
+        {
+            float expiry = Time.realtimeSinceStartup + 15f;
+            while (!condition() && Time.realtimeSinceStartup < expiry)
+                yield return null;
+            Assert.That(condition(), Is.True, message);
+        }
+
+        private IEnumerator Capture(string name, int width, int height)
+        {
+            string path = Environment.GetEnvironmentVariable("ASTRAL_INVENTORY_CAPTURE_DIR");
+            if (string.IsNullOrWhiteSpace(path)) yield break;
+            Directory.CreateDirectory(path);
+            var roots = home.GetRootGameObjects();
+            var camera = roots.SelectMany(root => root.GetComponentsInChildren<Camera>()).First(item => item.enabled);
+            var canvas = roots.SelectMany(root => root.GetComponentsInChildren<Canvas>()).First(item => item.isRootCanvas);
+            var target = RenderTexture.GetTemporary(width, height, 24);
+            var image = new Texture2D(width, height, TextureFormat.RGB24, false);
+            var priorTarget = camera.targetTexture;
+            var priorActive = RenderTexture.active;
+            var priorMask = camera.cullingMask;
+            var priorMode = canvas.renderMode;
+            var priorCamera = canvas.worldCamera;
+            var priorDistance = canvas.planeDistance;
+            try
+            {
+                camera.targetTexture = target;
+                camera.cullingMask = ~0;
+                canvas.renderMode = RenderMode.ScreenSpaceCamera;
+                canvas.worldCamera = camera;
+                canvas.planeDistance = 1f;
+                Canvas.ForceUpdateCanvases();
+                yield return null;
+                camera.Render();
+                RenderTexture.active = target;
+                image.ReadPixels(new Rect(0, 0, width, height), 0, 0);
+                image.Apply();
+                File.WriteAllBytes(Path.Combine(path, name + ".png"), image.EncodeToPNG());
+            }
+            finally
+            {
+                camera.targetTexture = priorTarget;
+                camera.cullingMask = priorMask;
+                canvas.renderMode = priorMode;
+                canvas.worldCamera = priorCamera;
+                canvas.planeDistance = priorDistance;
+                RenderTexture.active = priorActive;
+                RenderTexture.ReleaseTemporary(target);
+                UnityEngine.Object.Destroy(image);
+            }
+        }
+
+        [UnityTearDown]
+        public IEnumerator CleanUp()
+        {
+            if (priorScene.IsValid() && priorScene.isLoaded)
+                SceneManager.SetActiveScene(priorScene);
+            if (home.IsValid() && home.isLoaded)
+                yield return SceneManager.UnloadSceneAsync(home);
+            if (settingsChanged)
+            {
+                Environment.SetEnvironmentVariable("ASTRAL_FOUNDATION_URL", priorEndpoint);
+                Environment.SetEnvironmentVariable("ASTRAL_TEST_SKIP_ENTRY", priorSkipEntry);
+            }
+        }
+    }
+}
+#endif

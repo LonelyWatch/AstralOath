@@ -36,6 +36,9 @@ namespace AstralOath.Editor
             (DraftArtPath, ArenaDraftArt.Address),
             (OnlineBattleScene, "battle/online-scene"),
             (OnlineBattleTransition, "battle/online-transition"),
+            (HeroInventoryPrefabPath, HeroInventory.Address),
+            (HomeMoreMenuPrefabPath, HomeMoreMenu.Address),
+            (HomeHeroArtPath, HomeHeroArt.Address),
         };
         private static readonly Color Gold = new Color32(166, 139, 92, 255);
         private static readonly Color Mist = new Color32(180, 206, 216, 255);
@@ -63,6 +66,7 @@ namespace AstralOath.Editor
             Save(BuildRoom(), Assets[3].Path);
             Save(BuildDraft(), DraftPrefabPath);
             BuildDraftArt();
+            BuildInventoryAssets();
             ConfigureCollectors();
             BuildStartupScene();
             Validate();
@@ -92,6 +96,9 @@ namespace AstralOath.Editor
         public static void Validate()
         {
             UIViewRegistry.ValidatePrefab<HomeWindow>(Load<GameObject>(Assets[0].Path));
+            UIViewRegistry.ValidatePrefab<HeroInventory>(Load<GameObject>(HeroInventoryPrefabPath));
+            UIViewRegistry.ValidatePrefab<HomeMoreMenu>(Load<GameObject>(HomeMoreMenuPrefabPath));
+            _ = Load<HomeHeroArt>(HomeHeroArtPath);
             UIViewRegistry.ValidatePrefab<ArenaDirectory>(Load<GameObject>(Assets[1].Path));
             UIViewRegistry.ValidatePrefab<ArenaCreateRoom>(Load<GameObject>(Assets[2].Path));
             UIViewRegistry.ValidatePrefab<ArenaRoom>(Load<GameObject>(Assets[3].Path));
@@ -111,6 +118,13 @@ namespace AstralOath.Editor
         }
 
         internal static string AddressFor(string path) => Assets.Single(item => item.Path == path).Address;
+
+        private static void SaveInventoryNavigation()
+        {
+            Save(BuildHome(), Assets[0].Path);
+            ConfigureCollectors();
+            Validate();
+        }
 
         private static void ConfigureCollectors()
         {

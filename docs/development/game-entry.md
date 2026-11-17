@@ -16,7 +16,7 @@
 
 ## 服务端配置
 
-先应用 MySQL 迁移 `009_entry_account.sql`。在首场景的 `FoundationBootstrap` 设置服务地址 `baseUrl`，本机也可临时用 `ASTRAL_FOUNDATION_URL` 指向测试服务。生产服务使用 HTTPS。已有内容 CDN 的清单、签名 URL 与公钥仍按[客户端地基](../architecture/client.md)配置；这三项要成组配置。普通完整包三项为空时使用内置资源，仍查询服务端最低应用版本。Windows 最小母包从构建时固定的公开配置获取端点。首次启动下载配套签名资源。
+先应用 MySQL 迁移 `009_entry_account.sql` 与 `010_player_inventory.sql`。账号选服成功时为当前区服初始化英雄背包，客户端通过已选区服的会话读取。测试访客仍可直接登录，由既有访客会话独立初始化。[背包方案](../plans/2026-11-17-hero-inventory.md)在首场景的 `FoundationBootstrap` 设置服务地址 `baseUrl`，本机也可临时用 `ASTRAL_FOUNDATION_URL` 指向测试服务。生产服务使用 HTTPS。已有内容 CDN 的清单、签名 URL 与公钥仍按[客户端地基](../architecture/client.md)配置；这三项要成组配置。普通完整包三项为空时使用内置资源，仍查询服务端最低应用版本。Windows 最小母包从构建时固定的公开配置获取端点。首次启动下载配套签名资源。
 
 - `Entry__MinimumAppVersion` 控制强更，例如 `1.0.1`；为空时不要求强更。版本低于门槛时显示「请前往QQ群下载最新版」，停止进入大厅与下载热更。服务端选服接口再次检查版本以处理配置在两步之间发生变化的情况。应先确认新版安装包已在 QQ 群提供，再上调最低版本。
 - SMTP 配置包括 `Entry__Smtp__Host`、`Entry__Smtp__Port`、`Entry__Smtp__From` 和服务商要求的 `Entry__Smtp__Username`、`Entry__Smtp__Password`。默认端口 587，通过 STARTTLS 发信。验证码及认证信息不会写入客户端首选项或操作日志。凭据配置在服务进程环境中。

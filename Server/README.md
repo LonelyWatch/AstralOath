@@ -59,3 +59,12 @@
 SMTP 使用 `Entry__Smtp__Host`、`Entry__Smtp__Port`、`Entry__Smtp__From` 以及服务商要求的 `Entry__Smtp__Username`、`Entry__Smtp__Password`。端口默认 587，使用 STARTTLS。把凭据配置到服务器环境变量。测试 SMTP 可以在 Development 对回环 IP 显式设置 `Entry__Smtp__UseStartTls=false`，供本地捕获验证码邮件。
 
 使用已有的隔离 MySQL 8.4 测试配置运行 `dotnet test Server/Tests --filter FullyQualifiedName~EntryAccountTests`。测试会在本地回环监听器接收验证码，并验证注册、防重放、选服及竞技场身份。
+
+## 区服英雄背包
+
+服务更新前应用迁移 `010_player_inventory.sql`。运行账户需具有 `inventory_capacity` 的 SELECT、INSERT、UPDATE 权限，以及 `inventory_hero` 的 SELECT、INSERT 权限。初始发放与审计写入共用事务。迁移使用专用账户，生产运行账户无需 DDL 权限。
+
+- `GET /api/inventory/heroes` 使用选服返回的 Bearer。在测试服务开启访客时，也接受该进程的独立竞技场访客会话。玩家取自服务端 Bearer 校验结果，区服为 `undying-memory`。客户端提交的其他玩家或区服参数不会改变结果。未授权返回 401，数据库不可用返回 503，响应禁止缓存。
+- 返回 `{capacity,used,heroes:[{instanceId,templateId,level,stars}]}`，以获得顺序排列。当前区服默认 1000 格。同模板可重复，每只英雄用独立实例 ID，计入一格。正式账号首次成功选服时发放拉斯、梅赛德丝、安洁莉卡各一只，已有账号或开发访客也可首次查看背包时补发。再次选服、并发访问或服务重启保留原实例。
+- 目前仅提供读取。后续写入入口须在同一事务内锁定对应背包头并检查剩余容量。既有选禁模板池仍独立。
+- 实际测试命令为 `dotnet test Server/Tests --filter 'FullyQualifiedName~InventoryTests|FullyQualifiedName~EntryAccountTests'`。须在隔离 MySQL 8.4 测试库设置 `ASTRALOATH_MYSQL_TEST`。覆盖首次发放、并发、重启、重复模板、两账号隔离、失效令牌，以及相同密码对应不同随机盐和实际派生摘要。

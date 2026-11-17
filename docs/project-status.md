@@ -4,6 +4,8 @@
 
 ## 主界面与模拟战
 
+2026-11-18，主页更多→英雄、背包→英雄／装备／神器已接入。英雄绑定区服身份及实例 ID，容量默认 1000，正式账号与测试访客有三名初始英雄，装备和神器页为空。服务端迁移 010 与 Windows 0.1.19 R7 在本机验收。 [英雄背包系统与证据](plans/2026-11-17-hero-inventory.md)
+
 现行 UI 制作统一按 Canvas Image 和锚点布局。世界场景精灵使用 SpriteRenderer，选禁模型预览和战斗头顶信息分别沿用 RenderTexture 与坐标投影。[UI 通用规范](development/project-standards.md#ui-与交互)
 
 BP 进一步修订待选与保护槽、顶部玩家信息、预禁分组、右栏筛选与动态叠层；入场切换白字红光原版 IGNITION，局内倒计时使用原版位图。见[本轮实机复核](delivery/2026-11-15-arena-fidelity-pass.md)。

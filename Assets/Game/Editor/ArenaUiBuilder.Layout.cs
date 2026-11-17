@@ -61,9 +61,28 @@ namespace AstralOath.Editor
 
             var displayMode = Action(root, "Display mode", "home.window.fullscreen", 24, .85f, .026f, .13f, .055f,
                 out var windowLabel, Art("_box_r_op80"), Color.white);
+            Picture(root, "Home notifications", Art("cm_hud_top_btn_alarm", Home), .808f, .044f, .034f, .046f, true)
+                .color = new Color32(255, 255, 255, 185);
+            Picture(root, "Home mail", Art("cm_hud_top_btn_mail", Home), .895f, .044f, .034f, .046f, true)
+                .color = new Color32(255, 255, 255, 185);
+            Picture(root, "Home chat", Art("cm_hud_top_btn_chatting", Home), .929f, .044f, .034f, .046f, true)
+                .color = new Color32(255, 255, 255, 185);
+            var more = HomeIcon(root, "More", "cm_hud_top_btn_quick", -.014f);
+            var bag = HomeIcon(root, "Bag", "cm_hud_top_btn_bag", -.107f);
             Bind(root, ("arena", arena), ("arenaLabel", label), ("profile", profileName),
-                ("displayMode", displayMode), ("displayModeLabel", windowLabel));
+                ("displayMode", displayMode), ("displayModeLabel", windowLabel), ("more", more), ("bag", bag));
             return root.gameObject;
+        }
+
+        private static GameButton HomeIcon(RectTransform root, string name, string icon, float x)
+        {
+            var rect = Area(root, name, 0, 0, .04f, .08f);
+            rect.anchorMin = rect.anchorMax = rect.pivot = Vector2.one;
+            rect.sizeDelta = new Vector2(67, 67);
+            rect.anchoredPosition = new Vector2(x, -.020f) * 1920f;
+            var button = Button(rect, Art(icon, Home), Color.white);
+            ((Image)button.targetGraphic).preserveAspect = true;
+            return button;
         }
 
         private static GameObject BuildDirectory()
