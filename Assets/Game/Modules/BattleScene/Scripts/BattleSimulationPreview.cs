@@ -935,6 +935,7 @@ namespace AstralOath.Client.BattleScene
             turnHud.ShowPeriodicDamage(item, view.FeedbackAnchor, view.Actor.Bounds.center, camera);
             if (item.StatusKind.HasValue && (item.Amount > 0 || absorbed > 0))
                 ShowStatusWord(view, item.StatusKind.Value);
+            ShowImmortalitySave(item, view);
             if (!HasLaterTurnDamage(item.TurnNumber)) FinishDamageSequence();
         }
 
@@ -951,7 +952,8 @@ namespace AstralOath.Client.BattleScene
                 var hit = hits[index];
                 lastDamageImpact = hit.At;
                 bool first = index == 0;
-                bool releaseTrail = closesTrail && index == hits.Length - 1;
+                bool last = index == hits.Length - 1;
+                bool releaseTrail = closesTrail && last;
                 int shieldLoss = Math.Min(absorbed, hit.Amount);
                 int healthLoss = hit.Amount - shieldLoss;
                 absorbed -= shieldLoss;
@@ -972,8 +974,15 @@ namespace AstralOath.Client.BattleScene
                     var world = bounds.center;
                     world.y = bounds.min.y + 0.27f * bounds.size.y;
                     turnHud.ShowDamageHit(item.TargetId, healthLoss, item.HitKind, view.FeedbackAnchor, world, camera);
+                    if (last) ShowImmortalitySave(item, view);
                 });
             }
+        }
+
+        private void ShowImmortalitySave(BattleFlowEvent item, View view)
+        {
+            if (item.ImmortalityPreventedLethalDamage)
+                view.ShowEffectWord(inspectionContent.StatusName(BattleStatusKind.Immortality));
         }
 
         private bool HasLaterTurnDamage(int turn)
@@ -1374,7 +1383,7 @@ namespace AstralOath.Client.BattleScene
             private MaterialPropertyBlock targetBlock;
             private float undimmedBrightness;
             private Vector3 defeatStatusAnchor;
-            private const float TargetShade = .53f;
+            private const float TargetShade = .24f;
             private static readonly int BodyBrightness = Shader.PropertyToID("_PresentationBrightness");
             private static readonly int BodyOpacity = Shader.PropertyToID("_PresentationOpacity");
             private const float StealthOpacity = .55f;

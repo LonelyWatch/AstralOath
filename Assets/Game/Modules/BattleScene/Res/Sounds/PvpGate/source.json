@@ -24,6 +24,17 @@
       "sampleRate": 48000,
       "sampleFrames": 98880,
       "channels": 2
+    },
+    {
+      "name": "effect/ui_livepvp_soulburn_eff",
+      "eventId": "5f151765-7475-467b-8c1e-f0f559099301",
+      "sourceSample": "assets\\ui\\ui_livepvp_soulburn_eff.wav",
+      "bank": "ui1",
+      "asset": "SoulBurnRelease.wav",
+      "sha256": "f2c5e394bdcc104ab2a4e1dd7a96695571a4e1c1314003bfd18366cb21bd1a1b",
+      "sampleRate": 48000,
+      "sampleFrames": 76800,
+      "channels": 2
     }
   ],
   "sources": [

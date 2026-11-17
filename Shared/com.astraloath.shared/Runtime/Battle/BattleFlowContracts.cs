@@ -225,12 +225,14 @@ namespace AstralOath.Shared.Battle
             string presentationId = null, BattleActionOrigin origin = BattleActionOrigin.Primary,
             BattleStatusKind? statusKind = null, BattleStatusSnapshot status = null, BattleSide? side = null,
             BattleOutcome? outcome = null, BattleHitKind hitKind = BattleHitKind.None,
-            BattleEffectRejection? effectRejection = null, bool useSoulBurn = false, int? remainingHealth = null, int? maximumHealth = null)
+            BattleEffectRejection? effectRejection = null, bool useSoulBurn = false, int? remainingHealth = null,
+            int? maximumHealth = null, bool immortalityPreventedLethalDamage = false)
         {
             Sequence = sequence; TurnNumber = turn; Kind = kind; SourceId = sourceId; TargetId = targetId;
             Amount = amount; SkillId = skillId; PresentationId = presentationId; Origin = origin;
             StatusKind = statusKind; Status = status; Side = side; Outcome = outcome; HitKind = hitKind;
             EffectRejection = effectRejection; UseSoulBurn = useSoulBurn; RemainingHealth = remainingHealth; MaximumHealth = maximumHealth;
+            ImmortalityPreventedLethalDamage = immortalityPreventedLethalDamage;
         }
         public ulong Sequence { get; }
         public int TurnNumber { get; }
@@ -248,6 +250,7 @@ namespace AstralOath.Shared.Battle
         public BattleHitKind HitKind { get; }
         public BattleEffectRejection? EffectRejection { get; }
         public bool UseSoulBurn { get; }
+        public bool ImmortalityPreventedLethalDamage { get; }
         public int? RemainingHealth { get; }
         public int? MaximumHealth { get; }
     }
@@ -302,11 +305,13 @@ namespace AstralOath.Shared.Battle
         private BattleChange(BattleFlowEventKind kind, string source, string target, int amount = 0,
             string skillId = null, string presentationId = null, BattleActionOrigin origin = BattleActionOrigin.Primary,
             BattleStatusKind? status = null, int turns = 0, BattleSide side = default,
-            BattleHitKind hitKind = default, BattleEffectRejection rejection = default, ulong statusInstanceId = 0)
+            BattleHitKind hitKind = default, BattleEffectRejection rejection = default, ulong statusInstanceId = 0,
+            bool immortalityPreventedLethalDamage = false)
         {
             Kind = kind; SourceId = source; TargetId = target; Amount = amount; SkillId = skillId;
             PresentationId = presentationId; Origin = origin; Status = status; Turns = turns;
             Side = side; HitKind = hitKind; Rejection = rejection; StatusInstanceId = statusInstanceId;
+            ImmortalityPreventedLethalDamage = immortalityPreventedLethalDamage;
         }
         internal BattleFlowEventKind Kind { get; }
         internal string SourceId { get; }
@@ -321,15 +326,21 @@ namespace AstralOath.Shared.Battle
         internal BattleSide Side { get; }
         internal BattleHitKind HitKind { get; }
         internal BattleEffectRejection Rejection { get; }
+        internal bool ImmortalityPreventedLethalDamage { get; }
 
-        internal static BattleChange PeriodicDamage(BattleStatusSnapshot status, string target, int amount) =>
+        internal static BattleChange PeriodicDamage(BattleStatusSnapshot status, string target, int amount,
+            bool immortalityPreventedLethalDamage) =>
             new BattleChange(BattleFlowEventKind.Damage, status.SourceId, target, amount, status: status.Kind,
-                statusInstanceId: status.InstanceId);
+                statusInstanceId: status.InstanceId, immortalityPreventedLethalDamage: immortalityPreventedLethalDamage);
         internal static BattleChange PeriodicHealing(BattleStatusSnapshot status, string target, int amount) =>
             new BattleChange(BattleFlowEventKind.Healing, status.SourceId, target, amount, status: status.Kind,
                 statusInstanceId: status.InstanceId);
         public static BattleChange Damage(string source, string target, int amount, BattleHitKind hitKind = BattleHitKind.Normal) =>
-            new BattleChange(BattleFlowEventKind.Damage, source, target, amount, hitKind: hitKind);
+            Damage(source, target, amount, hitKind, false);
+        internal static BattleChange Damage(string source, string target, int amount, BattleHitKind hitKind,
+            bool immortalityPreventedLethalDamage) =>
+            new BattleChange(BattleFlowEventKind.Damage, source, target, amount, hitKind: hitKind,
+                immortalityPreventedLethalDamage: immortalityPreventedLethalDamage);
         internal static BattleChange UpdateStatusDuration(string source, string target, BattleStatusSnapshot status) =>
             new BattleChange(BattleFlowEventKind.StatusDurationChanged, source, target, status.Strength, status: status.Kind,
                 turns: status.RemainingTurns, statusInstanceId: status.InstanceId);
@@ -392,8 +403,10 @@ namespace AstralOath.Shared.Battle
         public static BattleFlowEvent Event(ulong sequence, int turn, BattleFlowEventKind kind, string sourceId, string targetId,
             int amount, string skillId, string presentationId, BattleActionOrigin origin, BattleStatusKind? statusKind,
             BattleStatusSnapshot status, BattleSide? side, BattleOutcome? outcome, BattleHitKind hitKind,
-            BattleEffectRejection? effectRejection, bool useSoulBurn, int? remainingHealth, int? maximumHealth) =>
+            BattleEffectRejection? effectRejection, bool useSoulBurn, int? remainingHealth, int? maximumHealth,
+            bool immortalityPreventedLethalDamage = false) =>
             new BattleFlowEvent(sequence, turn, kind, sourceId, targetId, amount, skillId, presentationId,
-                origin, statusKind, status, side, outcome, hitKind, effectRejection, useSoulBurn, remainingHealth, maximumHealth);
+                origin, statusKind, status, side, outcome, hitKind, effectRejection, useSoulBurn, remainingHealth, maximumHealth,
+                immortalityPreventedLethalDamage);
     }
 }

@@ -218,6 +218,62 @@ public sealed class BattleRoster21To25Tests
         Assert.Equal(ally.Stats.MaxHealth * 35 / 100, incoming);
     }
 
+    [Theory]
+    [InlineData(100, false, true)]
+    [InlineData(1000000, false, false)]
+    [InlineData(100, true, false)]
+    public void ImmortalityFeedbackMarksOnlyHitsThatWouldBeLethal(int health, bool invincible, bool expected)
+    {
+        const string attackId = "setup.immortality";
+        var catalog = Catalog();
+        var effects = new List<BattleCatalogData.EffectRow>
+        {
+            Effect(attackId, 1, "apply_status", "Immortality", 2)
+        };
+        if (invincible) effects.Add(Effect(attackId, effects.Count + 1, "apply_status", "Invincible", 2));
+        effects.Add(Effect(attackId, effects.Count + 1, "damage"));
+        effects.Add(Effect(attackId, effects.Count + 1, "damage"));
+        AddEnemySkill(catalog, attackId, effects.ToArray());
+        var ally = Monster("ally", BattleSide.Ally, 1, health: health);
+        var enemy = Monster("enemy", BattleSide.Enemy, 1, speed: 100, attack: 100000, skill: attackId);
+
+        var result = Cast(Match(catalog, new[] { ally, enemy }), "enemy", attackId, "ally");
+
+        var hits = result.Events.Where(item => item.Kind == BattleFlowEventKind.Damage && item.TargetId == "ally").ToArray();
+        Assert.Equal(2, hits.Length);
+        Assert.All(hits, hit => Assert.Equal(expected, hit.ImmortalityPreventedLethalDamage));
+        Assert.DoesNotContain(result.Events, item => item.Kind == BattleFlowEventKind.UnitDefeated);
+        if (expected)
+        {
+            Assert.All(hits, hit => Assert.Equal(1, hit.RemainingHealth));
+            Assert.Equal(0, hits[1].Amount);
+        }
+    }
+
+    [Fact]
+    public void LethalPoisonKeepsItsStatusAndReportsImmortalitySave()
+    {
+        const string poisonId = "setup.lethal_poison";
+        var catalog = Catalog();
+        AddEnemySkill(catalog, poisonId, new[]
+        {
+            Effect(poisonId, 1, "apply_status", "Immortality", 2),
+            Effect(poisonId, 2, "apply_status", "Poison", 2, 500)
+        });
+        var ally = Monster("ally", BattleSide.Ally, 1, speed: 99);
+        ally.ApplyDamage(ally.CurrentHealth - 1);
+        var enemy = Monster("enemy", BattleSide.Enemy, 1, speed: 100, skill: poisonId);
+        var hit = Enumerable.Range(1, 32).Select(seed =>
+            Cast(Match(catalog, new[] { ally, enemy }, (ulong)seed), "enemy", poisonId, "ally"))
+            .SelectMany(result => result.Events).First(item => item.Kind == BattleFlowEventKind.Damage &&
+                item.TargetId == "ally" && item.StatusKind == BattleStatusKind.Poison);
+
+        Assert.True(hit.ImmortalityPreventedLethalDamage);
+        Assert.Equal(BattleStatusKind.Poison, hit.Status.Kind);
+        Assert.Equal(1, hit.RemainingHealth);
+        Assert.Equal(0, hit.Amount);
+    }
+
     [Fact]
     public void KayronLethalProtectionTriggersOnTurnStartPoison()
     {

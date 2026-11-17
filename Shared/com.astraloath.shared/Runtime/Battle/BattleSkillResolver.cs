@@ -731,8 +731,9 @@ namespace AstralOath.Shared.Battle
                     limitedDamage[target.Id] = alreadyApplied + damage;
                 }
                 int floor = target.Has(BattleStatusKind.Immortality) ? 1 : 0;
-                var lethal = damage - (barrier?.Strength ?? 0) >= target.Health && floor == 0
-                    ? LethalProtection(target) : null;
+                bool lethalAfterBarrier = damage - (barrier?.Strength ?? 0) >= target.Health;
+                bool immortalityPreventedLethalDamage = floor == 1 && lethalAfterBarrier;
+                var lethal = lethalAfterBarrier && floor == 0 ? LethalProtection(target) : null;
                 if (lethal != null)
                     floor = Math.Min(target.Health, Math.Max(1, ScaleHealth(target.MaximumHealth,
                         lethal.Effects.Single(effect => effect.phase == "on_lethal_damage" && effect.operation == "life_floor").value)));
@@ -744,7 +745,7 @@ namespace AstralOath.Shared.Battle
                     else SetStatus(target, barrier.Kind, barrier.RemainingTurns, barrier.Strength - absorb, barrier.SourceId);
                 }
                 target.Health = Math.Max(0, target.Health - (damage - absorb));
-                EmitDamage(damage);
+                EmitDamage(damage, immortalityPreventedLethalDamage);
                 if (lethal != null) ResolveLethalProtection(target, lethal);
                 if (!target.Alive && target.Has(BattleStatusKind.SpiritlordProtection))
                 {
@@ -762,9 +763,9 @@ namespace AstralOath.Shared.Battle
                     }
                 }
 
-                void EmitDamage(int amount) => Changes.Add(periodic == null
-                    ? BattleChange.Damage(source.Id, target.Id, amount, hit)
-                    : BattleChange.PeriodicDamage(periodic, target.Id, amount));
+                void EmitDamage(int amount, bool prevented = false) => Changes.Add(periodic == null
+                    ? BattleChange.Damage(source.Id, target.Id, amount, hit, prevented)
+                    : BattleChange.PeriodicDamage(periodic, target.Id, amount, prevented));
             }
 
             private Program FindProgram(Unit actor, int slot) => actor.Source.Form.SkillIds

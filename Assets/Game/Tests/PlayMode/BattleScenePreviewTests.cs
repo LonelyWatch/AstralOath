@@ -402,9 +402,13 @@ namespace AstralOath.Client.Tests
             }
             var caster = initial.GetUnit(initial.CurrentActorId);
             var nonTarget = initial.Units.First(unit => unit.Slot.Side == BattleSide.Ally && unit.InstanceId != caster.InstanceId);
-            Assert.That(BodyBrightness(BattleSide.Ally, nonTarget.Slot.Position), Is.LessThan(1f));
+            foreach (var ally in initial.Units.Where(unit => unit.Slot.Side == BattleSide.Ally && unit.InstanceId != caster.InstanceId))
+                Assert.That(BodyBrightness(BattleSide.Ally, ally.Slot.Position), Is.InRange(.20f, .27f),
+                    "Non-target models should be clearly darker while their HUD stays visible.");
             Assert.That(BodyBrightness(BattleSide.Ally, caster.Slot.Position), Is.EqualTo(1f), "The acting hero remains lit.");
             Assert.That(BodyBrightness(BattleSide.Enemy), Is.EqualTo(1f));
+            if (!string.IsNullOrWhiteSpace(output))
+                Capture(raycaster.eventCamera, output, "battle-target-selection.png");
             var legalBadge = marker.Find("Target Number");
             var invalidMarker = map.transform.Find("Unit Status/Allies").GetChild(0);
             Assert.That(legalBadge, Is.Not.Null, "A legal target has a numbered click surface beside the level badge.");
@@ -498,6 +502,58 @@ namespace AstralOath.Client.Tests
             Assert.That(secondSkill.IsInteractable(), Is.False);
             if (!string.IsNullOrWhiteSpace(output))
                 Capture(canvas.worldCamera, output, "battle-skill-cast.png");
+        }
+
+        [UnityTest]
+        public IEnumerator ImmortalitySaveRisesFromTheProtectedActorOnlyAtDamageFeedback()
+        {
+            scene = LoadPlayerOpeningScene();
+            yield return null;
+            yield return null;
+            var roots = scene.GetRootGameObjects();
+            var preview = roots.Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            var map = roots.SelectMany(root => root.GetComponentsInChildren<BindingMap>()).Single();
+            var target = preview.SimulationSnapshot.GetUnit("enemy-1");
+            var words = map.transform.Find("Unit Status/Enemies").GetChild(target.Slot.Position - 1).Find("Effect Words");
+            var simulation = typeof(BattleHudPreview).GetField("simulation", PrivateInstance).GetValue(preview);
+            var simulationType = simulation.GetType();
+            var present = simulationType.GetMethod("Present", PrivateInstance);
+            var showDueFeedback = simulationType.GetMethod("ShowDueFeedback", PrivateInstance);
+            simulationType.GetField("hitTimes", PrivateInstance).SetValue(simulation, new[] { .1f, .3f });
+            var clock = simulationType.GetField("actionElapsed", PrivateInstance);
+            int CountImmortalityWords() => words.GetComponentsInChildren<GameText>()
+                .Count(word => word.text == "不死");
+            BattleFlowEvent Hit(ulong sequence, bool prevented, BattleStatusKind? periodic = null) =>
+                BattlePresentationWire.Event(sequence, preview.SimulationSnapshot.TurnNumber, BattleFlowEventKind.Damage,
+                    preview.SimulationSnapshot.CurrentActorId, target.InstanceId, 0, null, null, BattleActionOrigin.Primary,
+                    periodic, null, null, null, BattleHitKind.Normal, null, false, 1, target.MaximumHealth, prevented);
+            void Advance(float time)
+            {
+                clock.SetValue(simulation, time);
+                showDueFeedback.Invoke(simulation, null);
+            }
+
+            present.Invoke(simulation, new object[] { Hit(1, false) });
+            Advance(.3f);
+            Assert.That(CountImmortalityWords(), Is.Zero, "Zero damage alone does not trigger the word.");
+
+            present.Invoke(simulation, new object[] { Hit(2, true) });
+            Advance(.1f);
+            Assert.That(CountImmortalityWords(), Is.Zero, "Wait for the authored last hit.");
+            Advance(.3f);
+            Assert.That(CountImmortalityWords(), Is.EqualTo(1));
+
+            present.Invoke(simulation, new object[] { Hit(3, true, BattleStatusKind.Poison) });
+            Assert.That(CountImmortalityWords(), Is.EqualTo(2), "A lethal status tick shows the word immediately.");
+            Assert.That(words.GetComponentsInChildren<GameText>().Where(word => word.text == "不死")
+                .All(word => !word.transform.parent.Find("Icon").GetComponent<Image>().enabled), Is.True);
+            string output = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_CAPTURE_DIR");
+            if (!string.IsNullOrWhiteSpace(output))
+            {
+                yield return null;
+                yield return null;
+                Capture(map.GetComponentInParent<Canvas>().worldCamera, output, "battle-immortality-save.png");
+            }
         }
 
         [UnityTest]

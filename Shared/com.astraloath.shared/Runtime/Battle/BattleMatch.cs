@@ -178,7 +178,8 @@ namespace AstralOath.Shared.Battle
             switch (change.Kind)
             {
                 case BattleFlowEventKind.Damage:
-                    ApplyDamage(unit, source, change.Amount, change.HitKind, events, PeriodicStatus(unit, change));
+                    ApplyDamage(unit, source, change.Amount, change.HitKind, events, PeriodicStatus(unit, change),
+                        change.ImmortalityPreventedLethalDamage);
                     break;
                 case BattleFlowEventKind.ResourceChanged:
                     ChangeResource(unit, source, change.Amount, events);
@@ -244,14 +245,18 @@ namespace AstralOath.Shared.Battle
         }
 
         private void ApplyDamage(State unit, string source, int amount, BattleHitKind hit, List<BattleFlowEvent> events,
-            BattleStatusSnapshot periodic = null)
+            BattleStatusSnapshot periodic = null, bool projectedImmortalitySave = false)
         {
             int floor = unit.Statuses.Any(item => item.Kind == BattleStatusKind.Immortality) ? 1 : 0;
-            int damage = unit.Statuses.Any(item => item.Kind == BattleStatusKind.Invincible)
-                ? 0 : Math.Min(unit.Health - floor, Absorb(unit, amount, source, events));
+            bool invincible = unit.Statuses.Any(item => item.Kind == BattleStatusKind.Invincible);
+            int afterBarrier = invincible ? 0 : Absorb(unit, amount, source, events);
+            bool immortalityPreventedLethalDamage = floor == 1 && !invincible &&
+                (projectedImmortalitySave || afterBarrier >= unit.Health);
+            int damage = Math.Min(unit.Health - floor, afterBarrier);
             unit.Health -= damage;
             Emit(events, BattleFlowEventKind.Damage, source, unit.Id, damage, statusKind: periodic?.Kind,
-                status: periodic, hitKind: hit, remainingHealth: unit.Health, maximumHealth: unit.MaximumHealth);
+                status: periodic, hitKind: hit, remainingHealth: unit.Health, maximumHealth: unit.MaximumHealth,
+                immortalityPreventedLethalDamage: immortalityPreventedLethalDamage);
             if (unit.Health == 0)
                 Emit(events, BattleFlowEventKind.UnitDefeated, source, unit.Id, statusKind: periodic?.Kind, status: periodic);
         }
@@ -425,9 +430,11 @@ namespace AstralOath.Shared.Battle
             BattleActionOrigin origin = BattleActionOrigin.Primary, BattleStatusKind? statusKind = null,
             BattleStatusSnapshot status = null, BattleSide? side = null, BattleOutcome? result = null,
             BattleHitKind hitKind = BattleHitKind.None, BattleEffectRejection? rejection = null,
-            bool useSoulBurn = false, int? remainingHealth = null, int? maximumHealth = null) =>
+            bool useSoulBurn = false, int? remainingHealth = null, int? maximumHealth = null,
+            bool immortalityPreventedLethalDamage = false) =>
             events.Add(new BattleFlowEvent(++eventSequence, turn, kind, source, target, amount, skillId, presentationId,
-                origin, statusKind, status, side, result, hitKind, rejection, useSoulBurn, remainingHealth, maximumHealth));
+                origin, statusKind, status, side, result, hitKind, rejection, useSoulBurn, remainingHealth, maximumHealth,
+                immortalityPreventedLethalDamage));
 
         private sealed class State
         {

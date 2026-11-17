@@ -42,6 +42,10 @@ namespace AstralOath.Client.Tests
                 "Assets/Game/Modules/BattleScene/Configs/AstralOathOnlineTransition.asset");
             var copyType = typeof(BattleOnlineTransitionAssets).GetNestedType("Copy", BindingFlags.NonPublic);
             var copy = copyType.GetMethod("Load", BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, new[] { Field(onlineAssets, "zhHans") });
+            var releaseClip = (AudioClip)Field(onlineAssets, "soulBurnRelease");
+            Assert.That(releaseClip, Is.Not.Null, "Online Battle must reference the original release clip.");
+            Assert.That(releaseClip.name, Is.EqualTo("SoulBurnRelease"));
+            Assert.That(releaseClip.length, Is.EqualTo(1.6f).Within(.01f));
             var sprites = ((Sprite[])Field(host, "battleSprites")).GroupBy(s => s.name).ToDictionary(g => g.Key, g => g.First());
             onlineHud = Create("BattleOnlineHud", map, new BattleOnlinePlayers("本方测试", "对方测试", "c1001", "c1005"), copy, sprites, onlineAssets, assets);
             var actor = roots.SelectMany(x => x.GetComponentsInChildren<BattlePreviewActor>()).First(x => x.name.StartsWith("Ras ", StringComparison.Ordinal));
@@ -57,6 +61,8 @@ namespace AstralOath.Client.Tests
                 Assert.That(anchor.GetComponentsInChildren<MeshRenderer>().Any(r => r.enabled && r.GetComponent<MeshFilter>().sharedMesh.vertexCount > 0), Is.True);
                 yield return Capture("fixture-soul-burn-" + sideName.ToLowerInvariant());
                 Call(onlineHud, "Tick", 2f);
+                Assert.That(anchor.localScale.x, Is.GreaterThan(1.3f),
+                    "The sustained fire is wider than the original-sized intro rays at their common origin.");
                 Assert.That(anchor.GetComponentsInChildren<MeshRenderer>(), Is.Not.Empty,
                     "The authored avatar loop lasts until the action chain settles.");
                 yield return Capture("fixture-soul-burn-" + sideName.ToLowerInvariant() + "-loop");

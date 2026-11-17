@@ -1,4 +1,4 @@
-"""Import the original FMOD World Arena door sound events as deterministic PCM clips."""
+"""Import the original FMOD World Arena door and Soul Burn sound events as deterministic PCM clips."""
 
 import argparse
 import io
@@ -17,8 +17,12 @@ from ImportArenaArt import digest, metadata, read_source, write
 
 OUTPUT = MODULE / "Res/Sounds/PvpGate"
 CLIPS = (
-    ("DoorClose", "close", "84290154-dee4-4e6f-933a-e106c1ffc24f", 94_080),
-    ("DoorOpen", "open", "e04705e6-c46c-40db-abbd-a8874d1431ab", 98_880),
+    ("DoorClose", "close", r"ui\pvp\door_close", r"assets\ui\treff_pd_pvp_battle_close.wav",
+     "84290154-dee4-4e6f-933a-e106c1ffc24f", 94_080),
+    ("DoorOpen", "open", r"ui\pvp\door_open", r"assets\ui\treff_pd_pvp_battle_open.wav",
+     "e04705e6-c46c-40db-abbd-a8874d1431ab", 98_880),
+    ("SoulBurnRelease", "soul-burn", r"effect\ui_livepvp_soulburn_eff", r"assets\ui\ui_livepvp_soulburn_eff.wav",
+     "5f151765-7475-467b-8c1e-f0f559099301", 76_800),
 )
 MIXER_PADDING = 5120
 FOLDER_IMPORTER = "folderAsset: yes\nDefaultImporter:\n  externalObjects: {}\n"
@@ -33,11 +37,11 @@ def rendered(probe, source, temp, direction, output_frames):
                     "--record-pvp-" + direction, str(target)], check=True, env=environment)
     with wave.open(str(target), "rb") as raw:
         if (raw.getnchannels(), raw.getsampwidth(), raw.getframerate()) != (2, 2, 48_000):
-            raise ValueError("Unexpected PCM format from original door event: " + direction)
+            raise ValueError("Unexpected PCM format from original PvP event: " + direction)
         raw.setpos(MIXER_PADDING)
         data = raw.readframes(output_frames)
     if len(data) != output_frames * 4 or not any(data):
-        raise ValueError("Native door event produced incomplete or silent PCM: " + direction)
+        raise ValueError("Native PvP event produced incomplete or silent PCM: " + direction)
     writer = io.BytesIO()
     with wave.open(writer, "wb") as result:
         result.setparams((2, 2, 48_000, output_frames, "NONE", "not compressed"))
@@ -54,7 +58,7 @@ def main():
     args = parser.parse_args()
     source = (args.source / RAW_DIRECTORY).resolve(strict=True)
     if OUTPUT.resolve().is_relative_to(source):
-        raise ValueError("Door audio must stay outside the read-only source directory.")
+        raise ValueError("PvP audio must stay outside the read-only source directory.")
     project = TOOLS.parent
     index = read_source(source, "sound/events.yml").decode("utf-8-sig")
     manifest = {"schemaVersion": 1, "method": "FMOD Studio 2.03.15 authored event PCM render",
@@ -65,18 +69,16 @@ def main():
         OUTPUT.mkdir(parents=True, exist_ok=True)
     metadata(OUTPUT, args.check, FOLDER_IMPORTER)
     template = (project / "Assets/Game/Common/Res/Sounds/UiConfirm.wav.meta").read_text(encoding="utf-8-sig")
-    importer = "\n".join(template.splitlines()[2:]) + "\n"
+    importer = "\n".join(line.rstrip() for line in template.splitlines()[2:]) + "\n"
     importer = importer.replace("    compressionFormat: 1", "    compressionFormat: 0")
     importer = re.sub(r"(?m)^  userData:.*$", "  userData: AstralOath.ImportOverride", importer)
     artifact_dir = project / ".artifacts"
     artifact_dir.mkdir(exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="pvp-gate-audio-", dir=artifact_dir) as tmp:
-        for clip, direction, event_id, frames in CLIPS:
-            native_name = rf"ui\pvp\door_{direction}"
-            sample = rf"assets\ui\treff_pd_pvp_battle_{direction}.wav"
+        for clip, direction, native_name, sample, event_id, frames in CLIPS:
             match = re.search(r"(?m)^" + re.escape(native_name) + r":\n((?: +.+\n)+)", index)
             if not match or event_id not in match[1] or sample not in match[1] or "Bank Name: ui1" not in match[1]:
-                raise ValueError("Unexpected original FMOD door event mapping: " + native_name)
+                raise ValueError("Unexpected original FMOD PvP event mapping: " + native_name)
             wave_data = rendered((args.dotnet.resolve(), args.probe.resolve()), source, Path(tmp), direction, frames)
             filename = clip + ".wav"
             output = OUTPUT / filename
@@ -88,7 +90,7 @@ def main():
     output = OUTPUT / "source.json"
     write(output, json_bytes(manifest), args.check)
     metadata(output, args.check, TEXT_IMPORTER)
-    print(f"{'Verified' if args.check else 'Imported'} two native World Arena door events (resolved FMOD IDs + PCM).")
+    print(f"{'Verified' if args.check else 'Imported'} three native World Arena events (resolved FMOD IDs + PCM).")
 
 
 if __name__ == "__main__":

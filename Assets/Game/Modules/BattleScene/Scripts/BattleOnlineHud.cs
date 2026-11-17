@@ -14,7 +14,10 @@ namespace AstralOath.Client.BattleScene
     {
         private readonly RectTransform root;
         private readonly BattleNativeFeedbackEffect.Library feedbackLibrary;
+        private const float SoulBurnIntroPixelScale = .36f;
+        private const float SoulBurnLoopPixelScale = .50f;
         private readonly BattleNativeFeedbackEffect[] soulBurnEffects = new BattleNativeFeedbackEffect[2];
+        private readonly AudioSource soulBurnAudio;
         private readonly RectTransform[] soulBurnAnchors = new RectTransform[2];
         private readonly Image allyHealth, enemyHealth;
         private readonly GameText turn;
@@ -71,6 +74,14 @@ namespace AstralOath.Client.BattleScene
             var group = root.gameObject.AddComponent<CanvasGroup>();
             group.blocksRaycasts = false;
             group.interactable = false;
+            if (assets.soulBurnRelease)
+            {
+                soulBurnAudio = root.gameObject.AddComponent<AudioSource>();
+                soulBurnAudio.playOnAwake = false;
+                soulBurnAudio.spatialBlend = 0f;
+                soulBurnAudio.clip = assets.soulBurnRelease;
+                soulBurnAudio.clip.LoadAudioData();
+            }
             Hide(map.Require<GameText>("wave").gameObject);
             Hide(map.Require<GameText>("soulCount").gameObject);
             Hide(map.transform.Find("Top Bar/Wave Plate")?.gameObject);
@@ -180,22 +191,33 @@ namespace AstralOath.Client.BattleScene
         internal void PlaySoulBurn(BattleSide side)
         {
             const string source = "ui_livepvp_soulburn_eff";
-            if (!root || !feedbackLibrary.Contains(source)) return;
+            if (!root) return;
+            if (soulBurnAudio) soulBurnAudio.PlayOneShot(soulBurnAudio.clip);
+            if (!feedbackLibrary.Contains(source)) return;
             int index = side == BattleSide.Ally ? 0 : 1;
+            soulBurnAnchors[index].localScale = Vector3.one;
             if (soulBurnEffects[index] == null)
             {
                 var canvas = root.GetComponentInParent<Canvas>();
-                // P2 13:41 shows viewport-spanning intro rays and a 230-260px
-                // sustained fire ring around the ~130px profile at 1080p.
                 soulBurnEffects[index] = new BattleNativeFeedbackEffect(feedbackLibrary, source,
-                    soulBurnAnchors[index], .36f, canvas.sortingLayerID, canvas.sortingOrder + 2);
+                    soulBurnAnchors[index], SoulBurnIntroPixelScale, canvas.sortingLayerID, canvas.sortingOrder + 2);
             }
             soulBurnEffects[index].PlayUntilFinished();
         }
 
         internal void Tick(float delta)
         {
-            foreach (var effect in soulBurnEffects) effect?.Tick(delta);
+            for (int index = 0; index < soulBurnEffects.Length; index++)
+            {
+                var effect = soulBurnEffects[index];
+                if (effect?.Active != true) continue;
+                effect.Tick(delta);
+                // Retain the original-sized opening rays. Expand as they fade into the fire
+                // ring, which spans about 260px around the 130px portrait in P2 at 13:44.5.
+                float progress = Mathf.InverseLerp(.65f, 1f, effect.Elapsed);
+                float scale = Mathf.SmoothStep(1f, SoulBurnLoopPixelScale / SoulBurnIntroPixelScale, progress);
+                soulBurnAnchors[index].localScale = Vector3.one * scale;
+            }
         }
 
         internal void FinishSoulBurn()
@@ -206,6 +228,7 @@ namespace AstralOath.Client.BattleScene
         internal void ClearFeedback()
         {
             foreach (var effect in soulBurnEffects) effect?.Stop();
+            if (soulBurnAudio) soulBurnAudio.Stop();
         }
 
         internal void SetHealth(long allyCurrent, long allyMaximum, long enemyCurrent, long enemyMaximum)

@@ -150,6 +150,12 @@ static class Program
                 RecordUiEvent(sounds, args[3], "event:/ui/btn_normal", "{1d184b0f-78fa-4e74-b456-1388254dc51f}", 900, false);
                 return 0;
             }
+            if (args.Length == 4 && args[2] == "--record-pvp-soul-burn")
+            {
+                RecordUiEvent(sounds, args[3], "event:/effect/ui_livepvp_soulburn_eff",
+                    "{5f151765-7475-467b-8c1e-f0f559099301}", 3000, true);
+                return 0;
+            }
             if (args.Length == 4 && args[2] is "--record-pvp-close" or "--record-pvp-open")
             {
                 bool close = args[2] == "--record-pvp-close";

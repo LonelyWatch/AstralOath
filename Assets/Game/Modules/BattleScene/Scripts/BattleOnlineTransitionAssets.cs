@@ -12,7 +12,7 @@ namespace AstralOath.Client.BattleScene
     {
         public const string Address = "battle/online-transition";
         [SerializeField] internal BattleHudPreview.SpineEffect[] skeletons;
-        [SerializeField] internal AudioClip doorClose, doorOpen;
+        [SerializeField] internal AudioClip doorClose, doorOpen, soulBurnRelease;
         [SerializeField] internal TextAsset closeCfx, openCfx, ignitionCfx;
         [SerializeField] internal TextAsset[] particles;
         [SerializeField] internal Texture2D[] textures;
@@ -48,7 +48,7 @@ namespace AstralOath.Client.BattleScene
             if (!asset || asset.skeletons == null || asset.skeletons.Length == 0 ||
                 asset.skeletons.Any(IsIncomplete) ||
                 asset.skeletons.Select(item => item.page.name).Distinct(StringComparer.Ordinal).Count() != asset.skeletons.Length ||
-                !asset.closeCfx || !asset.openCfx || !asset.ignitionCfx || !asset.doorClose || !asset.doorOpen ||
+                !asset.closeCfx || !asset.openCfx || !asset.ignitionCfx || !asset.doorClose || !asset.doorOpen || !asset.soulBurnRelease ||
                 !asset.arenaBackdrop || !asset.zhHans ||
                 !asset.hudScoreLayout || asset.hudSprites == null || asset.hudSprites.Length == 0 || asset.hudSprites.Any(item => !item) ||
                 IsIncomplete(asset.arrivalWarning) || IsIncomplete(asset.arrivalDust) ||
