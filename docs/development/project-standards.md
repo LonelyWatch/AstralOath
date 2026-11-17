@@ -24,6 +24,8 @@
 - Foo.prefab 对应普通 Foo.cs / Foo : UIBaseView 与 FooBinder.cs，大小写一致，不额外加 View 后缀。View 重写 PrefabPath；稳定资源地址不随文件重命名自动变化。
 - 预制体用通用 BindingMap 保存引用；业务 View/Binder 不作为组件。View只维护显示，C# Binder负责界面业务/订阅，领域规则放业务服务。
 - 项目文本用 GameText : TextMeshProUGUI，按钮用 GameButton : Button；不可再叠加原版同类组件。右键 UI 创建完整控件，Add Component只添加组件。官方Inspector排版/导航继续使用。
+- 界面按 Canvas 布局。按钮底板、图标、头像、立绘、页背景、血条等 Sprite 默认用 UGUI Image。精灵有切片边框的面板和按钮可用 Sliced，头像和立绘按设计保比例。原始 Texture 或 RenderTexture 用 RawImage（如选禁的阵型模型投影和切门画面）。确需自定义网格或遮罩时用合适的 Canvas Graphic。
+- 场景按世界坐标布置。SpriteRenderer 适用于以世界相机、深度或排序、遮挡和场景特效为依据的精灵，例如战场远景、地层和角色地面阴影。混合显示按每一层的用途选组件。世界空间 Canvas 上的 UI 也沿用 UGUI 控件。角色头顶的血条、等级、Buff 和目标按钮属于 HUD，在 Canvas 内渲染，世界挂点由显示代码投影。骨骼和粒子按演出需要使用对应的渲染组件。
 - GameText.Bind 不覆盖作者排版；实际界面文案使用稳定 key。新建菜单占位不是业务文案。GameButton.Bind提供异步点击去重与取消，奖励/扣费还必须由服务器事务与幂等保障。
 - 通用动画通过 IAnimationService / DOTween 管理，池化复用和关闭必须终止并复位；动画回调不得结算战斗或发放奖励。
 - 修改BindingMap后检查空引用、重复key、对象归属、生成映射和Prefab保存；移动资产带原.meta，已有GUID不得重建。
@@ -31,6 +33,7 @@
 ## 全面屏、平板、Android、PC
 
 - 横屏设计，1920×1080参考尺寸；背景按视觉需要铺满，关键交互放Safe Area。使用锚点、布局组件和滚动，不写死物理屏幕像素。
+- 优先在预制体或生成器里用 RectTransform 的 anchor、pivot 和相对偏移表达布局。边缘控件锚到相应容器边缘，背景在容器内拉伸或按比例裁切，列表交给布局与滚动组件。固定尺寸用设计参考单位。代码只补标准布局无法表达的情况，例如极端宽高比重排、软键盘避让、世界坐标投影或按视口更新 RenderTexture。窗口断点在视口、容器或安全区变化时重算，世界跟随按画面更新，避免为了单个控件逐帧重建整个 Canvas。
 - SafeAreaLayout已按Screen.safeArea与窗口尺寸更新；它只应挂在与Canvas归一化坐标一致的安全区容器，不能任意嵌套后假定结果相同。
 - CanvasScaler需要按界面选择并记录策略：Foundation为MatchWidthOrHeight/0.5，CharacterLab为Expand。右键自动补的Canvas是Unity默认设置，制作正式界面时必须配置参考尺寸和安全区。
 - Windows 客户端开启 Unity Player 的后台运行，失焦不暂停界面、计时或网络。PlayerSettings 变更随下一次完整安装包交付，验收使用常规启动的 Player 切换焦点，避免使用会强制开启后台运行的冒烟入口。

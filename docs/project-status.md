@@ -4,6 +4,8 @@
 
 ## 主界面与模拟战
 
+现行 UI 制作统一按 Canvas Image 和锚点布局。世界场景精灵使用 SpriteRenderer，选禁模型预览和战斗头顶信息分别沿用 RenderTexture 与坐标投影。[UI 通用规范](development/project-standards.md#ui-与交互)
+
 BP 进一步修订待选与保护槽、顶部玩家信息、预禁分组、右栏筛选与动态叠层；入场切换白字红光原版 IGNITION，局内倒计时使用原版位图。见[本轮实机复核](delivery/2026-11-15-arena-fidelity-pass.md)。
 
 2026-11-15：04 选人、05 终禁、06 阵型按原版 CSB 重新定位并补齐原图等级／觉醒星和换位控件；IGNITION 改为目标宽高比离屏渲染，消除宽屏两侧硬裁切。在线战斗显示原图红蓝计时格与服务端截止时间。最新实测与待用户画面审批见[修订报告](delivery/2026-11-15-draft-visual-revision.md)，本轮未出客户端包。

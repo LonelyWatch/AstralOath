@@ -24,6 +24,7 @@
 - Git 提交标题和正文统一使用中文撰写，清楚说明改动及目的；代码标识符、文件路径和专有名称保留原文。例如：`规范：统一 Git 提交信息使用中文`。
 - 需要新增基础架构决策时记录 ADR；用户已经决定的选型不得静默替换。
 - 通用文本与按钮使用直接继承原控件的 GameText / GameButton，不再叠加对应原版组件；保留基类生命周期与现有 GUID，业务继续归普通 C# Binder。
+- 界面精灵默认用 Canvas 下的 UGUI Image。尺寸适配优先用 RectTransform 锚点、CanvasScaler、布局组件和安全区，极端比例或动态坐标转换才由表现层代码补充。SpriteRenderer 用于需要跟随世界相机、场景排序或世界遮挡的精灵。RenderTexture 等 Canvas 例外和验收见 [UI 通用规范](docs/development/project-standards.md#ui-与交互)。
 - 每完成一个可验收改动就同步相应模块 README 与 `docs/development/change-log.md`，接口/配置/资源/构建行为改变必须与文档同批提交。状态或边界变化同步 `docs/project-status.md`，新增架构决策写 ADR；禁止只把交接留在聊天中。
 - 提交前执行 `node Tools/check-docs.mjs --staged`。源码/配置/资源/构建改动缺变更日志，业务模块缺对应 README 时拒绝提交；机械检查不替代语义审查。
 - 打包默认选择与当前已分发母包兼容的签名热更包。启动、更新器或可信公钥等 AOT 边界、原生组件、协议不兼容或没有可复用母包时才构建强更包。强更最小包只内置启动和运行必需资源，业务内容走签名 YooAsset。热更安装完成必须提示退出后重新打开，下一进程才加载新业务程序集。验收与命令见 docs/development/hot-update.md。

@@ -49,6 +49,12 @@ public sealed class InventoryWindow : UIBaseView
 
 `UIBaseView` 提供显示和组件访问；订阅、按钮行为、网络请求等继续由C# Binder组织，并用当前窗口的 BindingScope 取消与解绑。不要把业务类重新挂到预制体上，也不要把层级名称当作运行时查找路径。
 
+## 图片与尺寸适配
+
+预制体及其生成器按 [UI 通用规范](project-standards.md#ui-与交互)制作。普通精灵用 Canvas 下的 `Image`。输入面板、底栏和弹窗以各自容器作为锚定基准，在 Prefab Mode 改变父容器尺寸就能检查拉伸与对齐。固定宽高、间距和偏移用设计参考单位。View 或可复用的布局组件负责计算显示位置，Binder 继续管理业务。
+
+例如，选禁卡片的头像、等级和标记用 `Image`，独立相机渲染的阵型模型放到 `RawImage`。战斗血条和可点击的目标按钮留在 HUD，由显示代码把角色挂点投到 HUD 的局部坐标。舞台背景和角色地面阴影用 `SpriteRenderer`，随世界相机和场景排序。涉及自定义适配时，验收窗口缩放、4:3、16:9、长屏和刘海安全区，检查可见范围与点击位置。
+
 ## 页面、浮层与交互反馈
 
 正式页通过 Core `WindowCoordinator.ShowPageAsync` 打开。窗口协调器负责替换时先关闭浮层，再解绑旧页面并取消请求。每次打开都获得新的 `BindingScope`。`ShowOverlay` 和 `CloseOverlay` 操作当前页面的命名浮层，页面、筛选、搜索、创建和密码都走同一入口。UIBaseView 继续只负责组件和显示，Binder 将恢复、轮询与事件注册到本次的 scope。
