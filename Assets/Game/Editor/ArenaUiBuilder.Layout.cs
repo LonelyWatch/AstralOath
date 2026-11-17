@@ -41,6 +41,7 @@ namespace AstralOath.Editor
             Picture(root, "Lobby heart sticker", Art("ma_sticker_emo1", Home), .761f, .472f, .176f, .411f, true).color
                 = new Color32(226, 226, 226, 255);
 
+            DrawHomeShortcutRail(root);
             var profile = Area(root, "Profile", .015f, .023f, .25f, .112f);
             var avatar = Avatar(profile, "Avatar", 0, 0, .27f, 1);
             avatar.Require<Image>("portrait").sprite = Art("c5009_s", Home);
@@ -50,6 +51,7 @@ namespace AstralOath.Editor
             var profileName = Text(profile, "Profile Name", "home.profile", 32, .30f, .02f, .66f, .45f);
             Picture(profile, "Profile gauge backing", Art("renew_gauge_profile_bg", Home), .30f, .71f, .45f, .09f);
             Picture(profile, "Profile gauge", Art("renew_gauge_profile_bar", Home), .30f, .71f, .45f, .09f);
+            DrawHomeNavigationBackground(root);
             var navigation = Area(root, "Arena entry", .852f, .522f, .132f, .073f);
             var arena = Action(navigation, "Arena", "home.arena", 36, 0, 0, 1, 1, out var label,
                 Art("_box_r_op80"), new Color32(184, 197, 222, 164));
@@ -59,30 +61,14 @@ namespace AstralOath.Editor
             label.fontSizeMin = 21;
             label.fontSizeMax = 36;
 
-            var displayMode = Action(root, "Display mode", "home.window.fullscreen", 24, .85f, .026f, .13f, .055f,
+            DrawHomeTopRule(root);
+            var displayRect = HomeRightRect(root, "Desktop display control", -313, 14, 121, 39, Vector2.one);
+            var displayMode = Action(displayRect, "Display mode", "home.window.fullscreen", 24, 0, 0, 1, 1,
                 out var windowLabel, Art("_box_r_op80"), Color.white);
-            Picture(root, "Home notifications", Art("cm_hud_top_btn_alarm", Home), .808f, .044f, .034f, .046f, true)
-                .color = new Color32(255, 255, 255, 185);
-            Picture(root, "Home mail", Art("cm_hud_top_btn_mail", Home), .895f, .044f, .034f, .046f, true)
-                .color = new Color32(255, 255, 255, 185);
-            Picture(root, "Home chat", Art("cm_hud_top_btn_chatting", Home), .929f, .044f, .034f, .046f, true)
-                .color = new Color32(255, 255, 255, 185);
-            var more = HomeIcon(root, "More", "cm_hud_top_btn_quick", -.014f);
-            var bag = HomeIcon(root, "Bag", "cm_hud_top_btn_bag", -.107f);
-            Bind(root, ("arena", arena), ("arenaLabel", label), ("profile", profileName),
+            var (more, bag) = BuildNativeTopBarIcons(root);
+            Bind(root, ("arena", arena), ("arenaLabel", label), ("arenaNavigation", navigation), ("profile", profileName),
                 ("displayMode", displayMode), ("displayModeLabel", windowLabel), ("more", more), ("bag", bag));
             return root.gameObject;
-        }
-
-        private static GameButton HomeIcon(RectTransform root, string name, string icon, float x)
-        {
-            var rect = Area(root, name, 0, 0, .04f, .08f);
-            rect.anchorMin = rect.anchorMax = rect.pivot = Vector2.one;
-            rect.sizeDelta = new Vector2(67, 67);
-            rect.anchoredPosition = new Vector2(x, -.020f) * 1920f;
-            var button = Button(rect, Art(icon, Home), Color.white);
-            ((Image)button.targetGraphic).preserveAspect = true;
-            return button;
         }
 
         private static GameObject BuildDirectory()

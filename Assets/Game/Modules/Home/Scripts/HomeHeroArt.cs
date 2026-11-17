@@ -1,4 +1,5 @@
 using System;
+using AstralOath.Shared.Battle;
 using UnityEngine;
 
 namespace AstralOath.Client.Home
@@ -10,8 +11,9 @@ namespace AstralOath.Client.Home
         [Serializable]
         public sealed class Hero
         {
-            public string id, name, heroClass;
-            public Sprite portrait, illustration, element, role;
+            public string id, name, heroClass, elementId, zodiac;
+            public BattleCatalogData.GrowthRow growth;
+            public Sprite portrait, cardPortrait, illustration, element, cardElement, role, zodiacIcon;
             public TextAsset skeleton, atlas;
             public Texture2D page;
         }

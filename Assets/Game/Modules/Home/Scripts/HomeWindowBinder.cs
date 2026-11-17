@@ -47,6 +47,14 @@ namespace AstralOath.Client.Home
             return Task.CompletedTask;
         }
 
+        public void HideArenaWhile(BindingScope overlay)
+        {
+            var navigation = view.ArenaNavigation.gameObject;
+            bool wasActive = navigation.activeSelf;
+            navigation.SetActive(false);
+            overlay.Add(() => { if (navigation) navigation.SetActive(wasActive); });
+        }
+
         private void UpdateDisplayLabel() => view.DisplayModeLabel.text = locale.Resolve(display.FullScreen
             ? "home.window.windowed" : "home.window.fullscreen");
     }

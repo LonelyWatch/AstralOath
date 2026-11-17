@@ -106,6 +106,7 @@ namespace AstralOath.Client.FoundationDemo
                 cancellation.ThrowIfCancellationRequested();
                 windows.ShowOverlay(MoreOverlay, scope =>
                 {
+                    home.HideArenaWhile(scope);
                     scope.Add(detach);
                     scope.Add(loading.Dispose);
                     var binder = new HomeMoreMenuBinder(view, locale, ct => OpenInventory(true, ct),

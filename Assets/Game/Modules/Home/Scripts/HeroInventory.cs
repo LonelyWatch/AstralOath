@@ -14,6 +14,21 @@ namespace AstralOath.Client.Home
         internal GameButton Back => Bindings.Require<GameButton>("back");
         internal GameText Title => Bindings.Require<GameText>("title");
         internal GameText Capacity => Bindings.Require<GameText>("capacity");
+        internal GameText RosterCapacity => Bindings.Require<GameText>("rosterCapacity");
+        internal GameObject RosterExpandIcon => Bindings.Require<GameObject>("rosterExpandIcon");
+        internal GameObject RosterCollapseIcon => Bindings.Require<GameObject>("rosterCollapseIcon");
+        internal GameObject RosterExpandedHint => Bindings.Require<GameObject>("rosterExpandedHint");
+        internal RectTransform RosterCollapsedFooter => Bindings.Require<RectTransform>("rosterCollapsedFooter");
+        internal GameText RosterSortCaption => Bindings.Require<GameText>("rosterSortCaption");
+        internal GameObject EmptyEquipment => Bindings.Require<GameObject>("emptyEquipmentChrome");
+        internal GameObject EmptyArtifacts => Bindings.Require<GameObject>("emptyArtifactChrome");
+        internal GameText BagCaption(string key) => Bindings.Require<GameText>("bag" + key + "Label");
+        internal GameText DetailElementName => Bindings.Require<GameText>("detailElementName");
+        internal GameText DetailRoleName => Bindings.Require<GameText>("detailRoleName");
+        internal Image DetailZodiac => Bindings.Require<Image>("detailZodiac");
+        internal GameText DetailZodiacName => Bindings.Require<GameText>("detailZodiacName");
+        internal Image DetailStar(int index) => Bindings.Require<Image>("detailStar" + index);
+        internal GameText DetailStat(string key) => Bindings.Require<GameText>("detailStat_" + key);
         internal GameButton TabHeroes => Bindings.Require<GameButton>("tabHeroes");
         internal GameButton TabEquipment => Bindings.Require<GameButton>("tabEquipment");
         internal GameButton TabArtifacts => Bindings.Require<GameButton>("tabArtifacts");
@@ -55,6 +70,11 @@ namespace AstralOath.Client.Home
             _ = Search; _ = SearchHint; _ = Expand; _ = ExpandLabel; _ = Status; _ = Retry; _ = RetryLabel;
             _ = DetailName; _ = DetailLevel; _ = DetailStars; _ = DetailIllustration; _ = DetailElement; _ = DetailRole;
             _ = DetailPortrait; _ = BagFilter;
+            _ = RosterCapacity; _ = RosterExpandIcon; _ = RosterCollapseIcon; _ = RosterExpandedHint;
+            _ = RosterCollapsedFooter; _ = RosterSortCaption; _ = EmptyEquipment; _ = EmptyArtifacts;
+            _ = DetailElementName; _ = DetailRoleName; _ = DetailZodiac; _ = DetailZodiacName;
+            for (int index = 0; index < 6; ++index)
+                _ = DetailStar(index);
             foreach (string name in ClassNames)
             {
                 _ = ClassFilter(name);

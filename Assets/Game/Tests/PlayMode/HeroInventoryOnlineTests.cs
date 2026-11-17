@@ -42,7 +42,8 @@ namespace AstralOath.Client.Tests
 
             Click(FindWindow("HomeWindow"), "more");
             yield return Wait(() => FindWindow("HomeMoreMenu"), "The More menu did not open.");
-            yield return Capture("inventory-more", 1920, 1080);
+            yield return new WaitForSecondsRealtime(.20f);
+            yield return Capture("inventory-more", 1478, 720);
             Click(FindWindow("HomeMoreMenu"), "heroes");
             yield return Wait(() =>
             {
@@ -56,7 +57,10 @@ namespace AstralOath.Client.Tests
             AssertOwnedHeroes(roster, "rosterScroll");
             Assert.That(roster.Require<Image>("detailIllustration").sprite, Is.Not.Null);
             Assert.That(StarterNames, Does.Contain(roster.Require<GameText>("detailName").text));
-            yield return Capture("inventory-hero-detail", 1920, 1080);
+            Assert.That(int.TryParse(roster.Require<GameText>("detailStat_attack").text, out var attack) && attack > 0);
+            Assert.That(roster.Require<Image>("detailStar0").sprite, Is.Not.Null);
+            yield return Capture("inventory-hero-detail", 1478, 720);
+            yield return Capture("inventory-hero-detail-16x9", 1920, 1080);
 
             var search = roster.Require<TMP_InputField>("search");
             search.text = StarterNames[2];
@@ -68,7 +72,10 @@ namespace AstralOath.Client.Tests
             yield return Wait(() => !roster.Require<RectTransform>("rosterDetail").gameObject.activeInHierarchy,
                 "The expanded grid did not replace the detailed panel.");
             AssertOwnedHeroes(roster, "rosterScroll");
-            yield return Capture("inventory-hero-grid", 1920, 900);
+            var grid = VisibleRows(roster, "rosterScroll").Select(row => (RectTransform)row.transform).ToArray();
+            Assert.That(grid.Select(card => card.anchorMax.x), Is.EquivalentTo(new[] { .25f, .5f, .75f }));
+            Assert.That(VisibleRows(roster, "rosterScroll").All(row => !row.Require<Image>("selection").enabled));
+            yield return Capture("inventory-hero-grid", 1478, 720);
             string otherHero = StarterNames.First(hero => hero != roster.Require<GameText>("detailName").text);
             var other = VisibleRows(roster, "rosterScroll").Single(row =>
                 row.Require<GameText>("name").text == otherHero);
@@ -95,24 +102,36 @@ namespace AstralOath.Client.Tests
             var bag = FindWindow("HeroInventory");
             Assert.That(bag.Require<GameObject>("roster").activeInHierarchy, Is.False);
             AssertOwnedHeroes(bag, "bagScroll");
-            yield return Capture("inventory-bag-heroes", 1920, 900);
+            foreach (var row in VisibleRows(bag, "bagScroll"))
+            {
+                for (int slot = 0; slot < 6; ++slot)
+                    Assert.That(row.Require<Image>("emptyGear" + slot).sprite.name, Is.EqualTo("cm_item_slot"));
+                Assert.That(row.Require<Image>("emptyArtifact").sprite.name, Is.EqualTo("cm_item_slot_arti"));
+                Assert.That(row.Require<Image>("emptyExclusive").sprite.name, Is.EqualTo("cm_item_slot_private"));
+                Assert.That(row.Require<Image>("bagLevelFirst").sprite.name, Is.EqualTo("hero_lv_1"));
+            }
+            yield return Capture("inventory-bag-heroes", 1478, 720);
+            yield return Capture("inventory-bag-heroes-16x9", 1920, 1080);
+            Click(bag, "filter_knight");
+            yield return Wait(() => VisibleRows(bag, "bagScroll").Length == 1, "The knight filter should show one starter.");
+            Assert.That(VisibleRows(bag, "bagScroll").Single().Require<GameText>("name").text, Is.EqualTo(StarterNames[0]));
+            Click(bag, "filter_all");
 
             Click(bag, "tabEquipment");
-            yield return Wait(() => ShowsEmptyTab(bag, "暂无装备"), "The equipment tab did not display its empty state.");
-            yield return Capture("inventory-bag-equipment-empty", 1920, 1080);
+            yield return Wait(() => ShowsEmptyTab(bag, "emptyEquipmentChrome"), "The equipment tab did not display its empty state.");
+            yield return Capture("inventory-bag-equipment-empty", 1478, 720);
             Click(bag, "tabArtifacts");
-            yield return Wait(() => ShowsEmptyTab(bag, "暂无神器"), "The artifact tab did not display its empty state.");
-            yield return Capture("inventory-bag-artifacts-empty", 1920, 1080);
+            yield return Wait(() => ShowsEmptyTab(bag, "emptyArtifactChrome"), "The artifact tab did not display its empty state.");
+            yield return Capture("inventory-bag-artifacts-empty", 1478, 720);
             Click(bag, "tabHeroes");
             yield return Wait(() => VisibleRows(bag, "bagScroll").Length == StarterNames.Length,
                 "Switching back to Heroes did not restore the owned records.");
             AssertOwnedHeroes(bag, "bagScroll");
         }
 
-        private static bool ShowsEmptyTab(BindingMap bag, string text)
+        private static bool ShowsEmptyTab(BindingMap bag, string chrome)
         {
-            var status = bag.Require<GameText>("status");
-            return status.gameObject.activeInHierarchy && status.text == text &&
+            return bag.Require<GameObject>(chrome).activeInHierarchy && !bag.Require<GameText>("status").gameObject.activeInHierarchy &&
                 VisibleRows(bag, "bagScroll").Length == 0;
         }
 
@@ -123,7 +142,7 @@ namespace AstralOath.Client.Tests
             Assert.That(names, Is.EquivalentTo(StarterNames));
             Assert.That(rows.Select(row => row.gameObject.name), Is.Unique, "Hero rows use unique instance IDs.");
             Assert.That(rows.All(row => row.Require<Image>("portrait").sprite), Is.True, "All three heroes require actual portraits.");
-            string capacity = string.Concat(screen.Require<GameText>("capacity").text.Where(c => !char.IsWhiteSpace(c)));
+            string capacity = string.Concat(screen.Require<GameText>(scroll == "rosterScroll" ? "rosterCapacity" : "capacity").text.Where(c => !char.IsWhiteSpace(c)));
             Assert.That(capacity, Is.EqualTo("3/1000"));
         }
 

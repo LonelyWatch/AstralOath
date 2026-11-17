@@ -1,0 +1,226 @@
+{
+  "referenceLayouts": [
+    {
+      "source": "wnd/quick_menu_renew.csb",
+      "sha256": "9b9957712ecbae18f9430fa59b683b516d6e12ee19cc4b06276996817d3acf6b"
+    },
+    {
+      "source": "wnd/top_bar.csb",
+      "sha256": "a2651949d1acba21455357b07b0a8beb29855b4b145302680dea74b9429eff98"
+    },
+    {
+      "source": "wnd/lobby_ui_renew.csb",
+      "sha256": "b3feab99142e1b78607e8b880137df4e666a3db187b9049ec8ae7b02282d3aa2"
+    }
+  ],
+  "assets": [
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/cm_hud_top_btn_bag_p.png",
+      "source": "img/cm_hud_top_btn_bag_p.png",
+      "sourceSha256": "ca0c5e1f23ae4d4e503983bf39ac342e743bf9fd8435cea25c46f6a5457a45f4",
+      "outputSha256": "ca0c5e1f23ae4d4e503983bf39ac342e743bf9fd8435cea25c46f6a5457a45f4",
+      "width": 59,
+      "height": 66
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/cm_hud_top_btn_quick_p.png",
+      "source": "img/cm_hud_top_btn_quick_p.png",
+      "sourceSha256": "afdee25ac571eb2858c2bb10ebf0c42db0a915f1bc6c823fa8ce044bad77dd36",
+      "outputSha256": "afdee25ac571eb2858c2bb10ebf0c42db0a915f1bc6c823fa8ce044bad77dd36",
+      "width": 68,
+      "height": 66
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/renew_glow_quick.png",
+      "source": "img/renew_glow_quick.png",
+      "sourceSha256": "db0b769726e05b47aa067c770ed64ede9e75a05dccf492c5f81db1d29af7afe9",
+      "outputSha256": "db0b769726e05b47aa067c770ed64ede9e75a05dccf492c5f81db1d29af7afe9",
+      "width": 1000,
+      "height": 720
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/renew_glow_quick_2.png",
+      "source": "img/renew_glow_quick_2.png",
+      "sourceSha256": "3412b00703ce595edccf1a87ea7bede2eb2d8151607911e317429690cfb35356",
+      "outputSha256": "3412b00703ce595edccf1a87ea7bede2eb2d8151607911e317429690cfb35356",
+      "width": 129,
+      "height": 72
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/renew_main_hud_btn_deco_1.png",
+      "source": "img/renew_main_hud_btn_deco_1.png",
+      "sourceSha256": "96fd68cdb33999ba4cd8d80158336e527e500401042cd150721669277aa3f38f",
+      "outputSha256": "96fd68cdb33999ba4cd8d80158336e527e500401042cd150721669277aa3f38f",
+      "width": 28,
+      "height": 28
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/icon_lobby_master_guide.png",
+      "source": "img/icon_lobby_master_guide.png",
+      "sourceSha256": "60687411d9d79defb83413975792c5cbc9d257cb6ef6ba2234a82e8a5eb2e6b1",
+      "outputSha256": "60687411d9d79defb83413975792c5cbc9d257cb6ef6ba2234a82e8a5eb2e6b1",
+      "width": 64,
+      "height": 64
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/renew_icon_quick_dictionary.png",
+      "source": "img/renew_icon_quick_dictionary.png",
+      "sourceSha256": "c979d90bbf601f1e20344c3ca1f8ade1a5301b5a2fb54cc5c6465583653585b2",
+      "outputSha256": "c979d90bbf601f1e20344c3ca1f8ade1a5301b5a2fb54cc5c6465583653585b2",
+      "width": 64,
+      "height": 64
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/renew_icon_quick_blessing.png",
+      "source": "img/renew_icon_quick_blessing.png",
+      "sourceSha256": "fb465478c86645e95f390d833f7bdf3ec422463731853420a8f00cd3b6ad6d19",
+      "outputSha256": "fb465478c86645e95f390d833f7bdf3ec422463731853420a8f00cd3b6ad6d19",
+      "width": 64,
+      "height": 64
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/renew_icon_quick_pet.png",
+      "source": "img/renew_icon_quick_pet.png",
+      "sourceSha256": "799fabdaa0dd75e77c66ed7eb4e1a7e285e4ed727bebebd9aaa4d06fb0239753",
+      "outputSha256": "799fabdaa0dd75e77c66ed7eb4e1a7e285e4ed727bebebd9aaa4d06fb0239753",
+      "width": 64,
+      "height": 64
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/renew_icon_quick_recruit.png",
+      "source": "img/renew_icon_quick_recruit.png",
+      "sourceSha256": "06b78c48c2284e07ecc7748adc64e73cf9bac41cadb325ccd0e5f6879062faaa",
+      "outputSha256": "06b78c48c2284e07ecc7748adc64e73cf9bac41cadb325ccd0e5f6879062faaa",
+      "width": 64,
+      "height": 64
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/renew_icon_quick_friend.png",
+      "source": "img/renew_icon_quick_friend.png",
+      "sourceSha256": "b4ad1a0e9bf37f65753cab080045819d5070089d680177f5994dc1ca22bafe50",
+      "outputSha256": "b4ad1a0e9bf37f65753cab080045819d5070089d680177f5994dc1ca22bafe50",
+      "width": 64,
+      "height": 64
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/renew_icon_quick_knightage.png",
+      "source": "img/renew_icon_quick_knightage.png",
+      "sourceSha256": "0356fa4bae2f0ecc7b2a2034666fcc2e013408a505cec82d54eee3f63e5a2542",
+      "outputSha256": "0356fa4bae2f0ecc7b2a2034666fcc2e013408a505cec82d54eee3f63e5a2542",
+      "width": 64,
+      "height": 64
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/renew_icon_quick_create.png",
+      "source": "img/renew_icon_quick_create.png",
+      "sourceSha256": "8d4a12f70a52d40def1be65fd51d3c62b2813bef7245abb34cc3bfdbcca1b2d1",
+      "outputSha256": "8d4a12f70a52d40def1be65fd51d3c62b2813bef7245abb34cc3bfdbcca1b2d1",
+      "width": 64,
+      "height": 64
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/renew_icon_quick_achieve.png",
+      "source": "img/renew_icon_quick_achieve.png",
+      "sourceSha256": "1f22f4883b4f247a53fd32f97ed4deed07ce630756ced00d45de96bef0d82263",
+      "outputSha256": "1f22f4883b4f247a53fd32f97ed4deed07ce630756ced00d45de96bef0d82263",
+      "width": 64,
+      "height": 64
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/renew_icon_quick_storage.png",
+      "source": "img/renew_icon_quick_storage.png",
+      "sourceSha256": "4efe9e34615d610e290b3c8a276c8f40236b1852b40d2e58d4de9a709ea2b5bc",
+      "outputSha256": "4efe9e34615d610e290b3c8a276c8f40236b1852b40d2e58d4de9a709ea2b5bc",
+      "width": 64,
+      "height": 64
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/soul_imprint_board.png",
+      "source": "img/soul_imprint_board.png",
+      "sourceSha256": "5b14c4267292173f5853eb1da1f95e8e56dfe337d776b185f67e0d237aef2cc0",
+      "outputSha256": "5b14c4267292173f5853eb1da1f95e8e56dfe337d776b185f67e0d237aef2cc0",
+      "width": 64,
+      "height": 64
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/renew_icon_quick_notice.png",
+      "source": "img/renew_icon_quick_notice.png",
+      "sourceSha256": "2f65fed3ffd9f718d1c611ba444851181a9a0f34cab2226d31626700e47bd07c",
+      "outputSha256": "2f65fed3ffd9f718d1c611ba444851181a9a0f34cab2226d31626700e47bd07c",
+      "width": 64,
+      "height": 64
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/renew_icon_quick_lobby_custom.png",
+      "source": "img/renew_icon_quick_lobby_custom.png",
+      "sourceSha256": "3add2ccff913f9750087b9e9c3c57f309b922ea3ca6b4d1a68e473e6cb78a28a",
+      "outputSha256": "3add2ccff913f9750087b9e9c3c57f309b922ea3ca6b4d1a68e473e6cb78a28a",
+      "width": 64,
+      "height": 64
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/renew_icon_quick_pub.png",
+      "source": "img/renew_icon_quick_pub.png",
+      "sourceSha256": "042a06021b952f59c9f9c30eceabd13be8400d342df28e6cbcd082c0412c044d",
+      "outputSha256": "042a06021b952f59c9f9c30eceabd13be8400d342df28e6cbcd082c0412c044d",
+      "width": 64,
+      "height": 64
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/renew_icon_quick_setting.png",
+      "source": "img/renew_icon_quick_setting.png",
+      "sourceSha256": "58de38f2aed20cc80000a83e401ff66f484c87467a5a430b92375eb345f68fb5",
+      "outputSha256": "58de38f2aed20cc80000a83e401ff66f484c87467a5a430b92375eb345f68fb5",
+      "width": 64,
+      "height": 64
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/renew_music_player_bg.png",
+      "source": "img/renew_music_player_bg.png",
+      "sourceSha256": "bd5687b521d810e8a3d53468e1cdcbf2e63148a2f1a68c701bfd65376eab56a3",
+      "outputSha256": "bd5687b521d810e8a3d53468e1cdcbf2e63148a2f1a68c701bfd65376eab56a3",
+      "width": 56,
+      "height": 56
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/icon_menu_playerff.png",
+      "source": "img/icon_menu_playerff.png",
+      "sourceSha256": "c4c11f230e805d736b6829176412d0715bd133d205344cf50d53142a8f2927be",
+      "outputSha256": "c4c11f230e805d736b6829176412d0715bd133d205344cf50d53142a8f2927be",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/icon_menu_play_music.png",
+      "source": "img/icon_menu_play_music.png",
+      "sourceSha256": "51422d6ca2c3ba56e9a6cb2b8c6334107f67385cfc22b12829a465b1f8620bba",
+      "outputSha256": "51422d6ca2c3ba56e9a6cb2b8c6334107f67385cfc22b12829a465b1f8620bba",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/music_s_epi1_intro1.png",
+      "source": "musicplayer/music_s_epi1_intro1.png",
+      "sourceSha256": "cd52aceb60f0b98d023976df473160bfcb0a29e06410068af1f61e88ba91b640",
+      "outputSha256": "cd52aceb60f0b98d023976df473160bfcb0a29e06410068af1f61e88ba91b640",
+      "width": 60,
+      "height": 60
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/cm_icon_account_alram.png",
+      "source": "img/cm_icon_account_alram.png",
+      "sourceSha256": "c369cdc379214b84c34fa61b7ad9f663ac4f281189c7aa784dd5d705bbcb5d1b",
+      "outputSha256": "c369cdc379214b84c34fa61b7ad9f663ac4f281189c7aa784dd5d705bbcb5d1b",
+      "width": 64,
+      "height": 64
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/renew_glow_4.png",
+      "source": "img/renew_glow_4.png",
+      "sourceSha256": "4ca76c87bbd500a6612f27740d182fcc077ff243952e68341bd769c5c66cadb3",
+      "outputSha256": "4ca76c87bbd500a6612f27740d182fcc077ff243952e68341bd769c5c66cadb3",
+      "width": 520,
+      "height": 720
+    }
+  ]
+}

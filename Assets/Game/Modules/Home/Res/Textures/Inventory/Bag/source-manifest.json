@@ -1,0 +1,162 @@
+{
+  "referenceLayouts": [
+    {
+      "source": "wnd/inventory_renewal.csb",
+      "sha256": "23380454e3f9e6a7febcb8217001351e6be791e64905f5c6ae1686235c1583d4"
+    },
+    {
+      "source": "wnd/inventory_wearing.csb",
+      "sha256": "4ebaa05babc5d20473271824e176f0324b275472ded376f05f2db614fe9163b0"
+    },
+    {
+      "source": "wnd/sorting_renewal.csb",
+      "sha256": "6769fbe932cc207f0b1425d6978ced4bc03143e02b66f1b70d046bc97710e35a"
+    }
+  ],
+  "assets": [
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Bag/_tap_select_blue.png",
+      "source": "img/_tap_select_blue.png",
+      "sourceSha256": "ab555a1d69626eb0bf71410f16d1c023d8419fa0399faedb0027686df2bb99fe",
+      "outputSha256": "ab555a1d69626eb0bf71410f16d1c023d8419fa0399faedb0027686df2bb99fe",
+      "width": 116,
+      "height": 62
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Bag/_tap_select_blue2.png",
+      "source": "img/_tap_select_blue2.png",
+      "sourceSha256": "4bc480a3b763dd5cbffa26216fdf46eee1ce1007da9ead93457d00275e5a6f30",
+      "outputSha256": "4bc480a3b763dd5cbffa26216fdf46eee1ce1007da9ead93457d00275e5a6f30",
+      "width": 120,
+      "height": 54
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Bag/_line_equip_wearing.png",
+      "source": "img/_line_equip_wearing.png",
+      "sourceSha256": "412897ce68b48cb2329c5e0b4c7d1d38b9e9319c993e1b62a5f3203af901d3fb",
+      "outputSha256": "412897ce68b48cb2329c5e0b4c7d1d38b9e9319c993e1b62a5f3203af901d3fb",
+      "width": 95,
+      "height": 49
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Bag/_bar_2.png",
+      "source": "img/_bar_2.png",
+      "sourceSha256": "81e716524df5b87bb2ab8422d14e6b6c348726d8e7f65ea1f844f27144678729",
+      "outputSha256": "81e716524df5b87bb2ab8422d14e6b6c348726d8e7f65ea1f844f27144678729",
+      "width": 98,
+      "height": 10
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Bag/_btn_small_black.png",
+      "source": "img/_btn_small_black.png",
+      "sourceSha256": "5d2458be3abf2d92a1f75d77b58d741d69c62571052ae80c4524c7ed0969a966",
+      "outputSha256": "5d2458be3abf2d92a1f75d77b58d741d69c62571052ae80c4524c7ed0969a966",
+      "width": 36,
+      "height": 34
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Bag/_box_equip_none.png",
+      "source": "img/_box_equip_none.png",
+      "sourceSha256": "179ae68a991ebbcfecfcec1f670657386255e5ed3af572c4c02e271cb4d45ba8",
+      "outputSha256": "179ae68a991ebbcfecfcec1f670657386255e5ed3af572c4c02e271cb4d45ba8",
+      "width": 84,
+      "height": 605
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Bag/_sorting2.png",
+      "source": "img/_sorting2.png",
+      "sourceSha256": "7c18f0e6ba8d03c052bea37ab52ea9bcd6ac55088ba5b2b11d6e87f84d9eba6b",
+      "outputSha256": "7c18f0e6ba8d03c052bea37ab52ea9bcd6ac55088ba5b2b11d6e87f84d9eba6b",
+      "width": 28,
+      "height": 27
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Bag/cm_icon_all.png",
+      "source": "img/cm_icon_all.png",
+      "sourceSha256": "088c8d634a5bdbcaa2f36a32425864344b67c1b73144785bbc4e119e73432dd0",
+      "outputSha256": "088c8d634a5bdbcaa2f36a32425864344b67c1b73144785bbc4e119e73432dd0",
+      "width": 33,
+      "height": 33
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Bag/cm_item_slot.png",
+      "source": "img/cm_item_slot.png",
+      "sourceSha256": "286d6c1dab8c6596bd56d9f3c3067ef8ec70e2f263e9e04aa1b243189b87ea4f",
+      "outputSha256": "286d6c1dab8c6596bd56d9f3c3067ef8ec70e2f263e9e04aa1b243189b87ea4f",
+      "width": 98,
+      "height": 99
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Bag/cm_item_slot_arti.png",
+      "source": "img/cm_item_slot_arti.png",
+      "sourceSha256": "2adde09cc10839e673858d25d038c182b4a61badfa232b62ca221066fb0a5542",
+      "outputSha256": "2adde09cc10839e673858d25d038c182b4a61badfa232b62ca221066fb0a5542",
+      "width": 123,
+      "height": 137
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Bag/cm_item_slot_private.png",
+      "source": "img/cm_item_slot_private.png",
+      "sourceSha256": "d329c4f83adb744768b645787de05c54447788111f164f99032e4f69425f2026",
+      "outputSha256": "d329c4f83adb744768b645787de05c54447788111f164f99032e4f69425f2026",
+      "width": 110,
+      "height": 127
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Bag/cm_icon_parprivate.png",
+      "source": "img/cm_icon_parprivate.png",
+      "sourceSha256": "acde313f7c113cceadfa6e3b29b04fb125c954a2b9b3c9fbf99992305f4e4ae5",
+      "outputSha256": "acde313f7c113cceadfa6e3b29b04fb125c954a2b9b3c9fbf99992305f4e4ae5",
+      "width": 34,
+      "height": 34
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Bag/icon_menu_private.png",
+      "source": "img/icon_menu_private.png",
+      "sourceSha256": "add6922b7023b69551a64783e8b72810de05f5dd2b388dc634c0d9ba39515828",
+      "outputSha256": "add6922b7023b69551a64783e8b72810de05f5dd2b388dc634c0d9ba39515828",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Bag/icon_menu_stuff.png",
+      "source": "img/icon_menu_stuff.png",
+      "sourceSha256": "d6020c071906661382a43e31b9bfde2f97711ed6700c4c80d95f4ed3e98684f6",
+      "outputSha256": "d6020c071906661382a43e31b9bfde2f97711ed6700c4c80d95f4ed3e98684f6",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Bag/icon_menu_reward_box.png",
+      "source": "img/icon_menu_reward_box.png",
+      "sourceSha256": "998565335a7032a7146d75d01ef8039f462f7669f6a7da479abd5817fe6b3d8f",
+      "outputSha256": "998565335a7032a7146d75d01ef8039f462f7669f6a7da479abd5817fe6b3d8f",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Bag/icon_menu_equipstorage.png",
+      "source": "img/icon_menu_equipstorage.png",
+      "sourceSha256": "659b9178f7e826262dbae49908913744646b932334cb4abe34a5deae805b6568",
+      "outputSha256": "659b9178f7e826262dbae49908913744646b932334cb4abe34a5deae805b6568",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Bag/cm_icon_arti_public.png",
+      "source": "img/cm_icon_arti_public.png",
+      "sourceSha256": "c0f4ec3cc52810162c26134ea1ae3d4639350b74fbe8856daeab040b4c7792b0",
+      "outputSha256": "c0f4ec3cc52810162c26134ea1ae3d4639350b74fbe8856daeab040b4c7792b0",
+      "width": 55,
+      "height": 55
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Bag/hero_lv_max.png",
+      "source": "img/hero_lv_max.png",
+      "sourceSha256": "7b2cd844bddb3f7be677e289f474050b6c62822519dd3d08b911d0c5207863ca",
+      "outputSha256": "7b2cd844bddb3f7be677e289f474050b6c62822519dd3d08b911d0c5207863ca",
+      "width": 61,
+      "height": 30
+    }
+  ]
+}

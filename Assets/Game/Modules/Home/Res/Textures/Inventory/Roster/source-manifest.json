@@ -1,0 +1,330 @@
+{
+  "referenceLayouts": [
+    {
+      "source": "wnd/hero_detail_base.csb",
+      "sha256": "18abdad87481255b26ce6850ad8c3a8ef84328c6d5f67c4d6431b46dda8e6111"
+    },
+    {
+      "source": "wnd/hero_detail_list.csb",
+      "sha256": "f95946915e879ff2a5b5d096c2990ccf3f76d3c711dfca2e1e02260c6cde6218"
+    },
+    {
+      "source": "wnd/unit_detail.csb",
+      "sha256": "d254e31e4311087178040347d7ace1aed95dc606eed05c33b260f5f39954b336"
+    },
+    {
+      "source": "wnd/unit_bar.csb",
+      "sha256": "0c8ecba55b1c56b266d3dfd7f03bf8e97261be8c434f19746edf05a75d0dd367"
+    },
+    {
+      "source": "wnd/unit_list_unfold.csb",
+      "sha256": "988f154633ff991ba2f8c8188b12ea044ab91065e03ffed421e058c9a41cc9af"
+    }
+  ],
+  "assets": [
+    {
+      "source": "img/base_unit_blue.png",
+      "sourceSha256": "2d387742c75c44fc3332816b1815cb1e41cc5d47318a0d9132ac06bc0fe86750",
+      "outputSha256": "2d387742c75c44fc3332816b1815cb1e41cc5d47318a0d9132ac06bc0fe86750",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/base_unit_blue.png",
+      "width": 1600,
+      "height": 720
+    },
+    {
+      "source": "img/_box_gray.png",
+      "sourceSha256": "e794d08d51e1146ac82d02e50b230402c937a303a6d5d34fe46b561a3683f12d",
+      "outputSha256": "e794d08d51e1146ac82d02e50b230402c937a303a6d5d34fe46b561a3683f12d",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/_box_gray.png",
+      "width": 30,
+      "height": 30
+    },
+    {
+      "source": "img/_btn_blue_r.png",
+      "sourceSha256": "e962249bef653399170846e6e7b61e73675c893ff08e3df284772f8ca03462ee",
+      "outputSha256": "e962249bef653399170846e6e7b61e73675c893ff08e3df284772f8ca03462ee",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/_btn_blue_r.png",
+      "width": 95,
+      "height": 97
+    },
+    {
+      "source": "img/icon_menu_hero.png",
+      "sourceSha256": "9ec06f21d1231fcd18f2241cadfea6b24ce9edbfe3fffc49061209f1536560bc",
+      "outputSha256": "9ec06f21d1231fcd18f2241cadfea6b24ce9edbfe3fffc49061209f1536560bc",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/icon_menu_hero.png",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "source": "img/icon_menu_profile.png",
+      "sourceSha256": "883667f6e1469eef346daa2572b211bee31d26c42c00a9a4e9b3851016a4fb75",
+      "outputSha256": "883667f6e1469eef346daa2572b211bee31d26c42c00a9a4e9b3851016a4fb75",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/icon_menu_profile.png",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "source": "img/icon_menu_story.png",
+      "sourceSha256": "11cb6bb5cc0ea3f1f3bc81d755d4120549e134f0b0e580d1aa7e87de4f9129ee",
+      "outputSha256": "11cb6bb5cc0ea3f1f3bc81d755d4120549e134f0b0e580d1aa7e87de4f9129ee",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/icon_menu_story.png",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "source": "img/cm_item_slot_0.png",
+      "sourceSha256": "55c2e358a75facca6f8060a7e489fea9d155c5c53cd2c115211364b0d2ec3428",
+      "outputSha256": "55c2e358a75facca6f8060a7e489fea9d155c5c53cd2c115211364b0d2ec3428",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/cm_item_slot_0.png",
+      "width": 98,
+      "height": 99
+    },
+    {
+      "source": "img/cm_item_slot_arti_0.png",
+      "sourceSha256": "bd027507defd465ec7c30ccd1eade2e538e353afb2be2aeacdd49d4823532f65",
+      "outputSha256": "bd027507defd465ec7c30ccd1eade2e538e353afb2be2aeacdd49d4823532f65",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/cm_item_slot_arti_0.png",
+      "width": 123,
+      "height": 137
+    },
+    {
+      "source": "img/cm_icon_parweapon.png",
+      "sourceSha256": "b446dc0cce592c2d6e98abc79e1cbb1c4e0233374b8088f1c3c9f270ad2bf522",
+      "outputSha256": "b446dc0cce592c2d6e98abc79e1cbb1c4e0233374b8088f1c3c9f270ad2bf522",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/cm_icon_parweapon.png",
+      "width": 33,
+      "height": 33
+    },
+    {
+      "source": "img/cm_icon_parhelm.png",
+      "sourceSha256": "f9f15e9216863eb58f6577593c4c52e14a43b6a016c9ddde33dd8dc65f8699eb",
+      "outputSha256": "f9f15e9216863eb58f6577593c4c52e14a43b6a016c9ddde33dd8dc65f8699eb",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/cm_icon_parhelm.png",
+      "width": 33,
+      "height": 33
+    },
+    {
+      "source": "img/cm_icon_pararmor.png",
+      "sourceSha256": "3201be733a35dc69c013c4175166c34469d0e9727a2b929ba4fd9ea6a484736a",
+      "outputSha256": "3201be733a35dc69c013c4175166c34469d0e9727a2b929ba4fd9ea6a484736a",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/cm_icon_pararmor.png",
+      "width": 33,
+      "height": 33
+    },
+    {
+      "source": "img/cm_icon_parneck.png",
+      "sourceSha256": "5846eefbd6652f08a65ffcbd9d368c58cdeb800761fbd4d87d5e16607b2ccc19",
+      "outputSha256": "5846eefbd6652f08a65ffcbd9d368c58cdeb800761fbd4d87d5e16607b2ccc19",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/cm_icon_parneck.png",
+      "width": 33,
+      "height": 33
+    },
+    {
+      "source": "img/cm_icon_parring.png",
+      "sourceSha256": "e2fd9144b738c917326b4ceec28069f50fd6b4688dc8b92c6767b8338cbb13bc",
+      "outputSha256": "e2fd9144b738c917326b4ceec28069f50fd6b4688dc8b92c6767b8338cbb13bc",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/cm_icon_parring.png",
+      "width": 33,
+      "height": 33
+    },
+    {
+      "source": "img/cm_icon_parboots.png",
+      "sourceSha256": "9fa2dedd648ccbe092500ee41e0ff05ec41c57f82e904b40ac710477822f15b4",
+      "outputSha256": "9fa2dedd648ccbe092500ee41e0ff05ec41c57f82e904b40ac710477822f15b4",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/cm_icon_parboots.png",
+      "width": 33,
+      "height": 33
+    },
+    {
+      "source": "img/cm_icon_pararti.png",
+      "sourceSha256": "f8193cea8bd84a37a2b29530ec8c6db9ab6f819fa096a715543e32adccab357e",
+      "outputSha256": "f8193cea8bd84a37a2b29530ec8c6db9ab6f819fa096a715543e32adccab357e",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/cm_icon_pararti.png",
+      "width": 33,
+      "height": 33
+    },
+    {
+      "source": "img/icon_menu_equip_auto.png",
+      "sourceSha256": "f046a98fb0687a0cfca3a734ef19dcffe570087710db6ea54288cd7337225261",
+      "outputSha256": "f046a98fb0687a0cfca3a734ef19dcffe570087710db6ea54288cd7337225261",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/icon_menu_equip_auto.png",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "source": "img/icon_menu_unequip_auto.png",
+      "sourceSha256": "094bc021353e10068fae6513d93c38ebf6e9392956838756c94301888b1ee7b8",
+      "outputSha256": "094bc021353e10068fae6513d93c38ebf6e9392956838756c94301888b1ee7b8",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/icon_menu_unequip_auto.png",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "source": "img/icon_menu_equip_undo.png",
+      "sourceSha256": "c0ba2ecbc864002208ccdc7e640090b6c6b8aa0375817842a5a28af4b619698e",
+      "outputSha256": "c0ba2ecbc864002208ccdc7e640090b6c6b8aa0375817842a5a28af4b619698e",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/icon_menu_equip_undo.png",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "source": "img/icon_quick_transfer.png",
+      "sourceSha256": "568368b624a896b0962c100a9322a3cad4c0f9969ec56e7ea79d1dc3e9a71042",
+      "outputSha256": "568368b624a896b0962c100a9322a3cad4c0f9969ec56e7ea79d1dc3e9a71042",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/icon_quick_transfer.png",
+      "width": 120,
+      "height": 114
+    },
+    {
+      "source": "img/icon_menu_zoom.png",
+      "sourceSha256": "6c2dbee86e1eefa24febb38d8eb0330d256f10e3bbc25618baa80a22ab2671d1",
+      "outputSha256": "6c2dbee86e1eefa24febb38d8eb0330d256f10e3bbc25618baa80a22ab2671d1",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/icon_menu_zoom.png",
+      "width": 100,
+      "height": 99
+    },
+    {
+      "source": "img/icon_menu_arrow2.png",
+      "sourceSha256": "4a9fef47c51b56738c0d6a15cd5a26ad0b2bff557307be63ab9f89e307f34802",
+      "outputSha256": "4a9fef47c51b56738c0d6a15cd5a26ad0b2bff557307be63ab9f89e307f34802",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/icon_menu_arrow2.png",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "source": "img/cm_icon_etcbp.png",
+      "sourceSha256": "dd9cea9b6f9d5c54a90c08a8f2023d4368cf836c23ce6a7fedf4485f0d06a107",
+      "outputSha256": "dd9cea9b6f9d5c54a90c08a8f2023d4368cf836c23ce6a7fedf4485f0d06a107",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/cm_icon_etcbp.png",
+      "width": 27,
+      "height": 26
+    },
+    {
+      "source": "img/_plus.png",
+      "sourceSha256": "b985cc12f9d7a700c4710591cf6715facf6a74c22562e1c423d6e33373b43999",
+      "outputSha256": "b985cc12f9d7a700c4710591cf6715facf6a74c22562e1c423d6e33373b43999",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/_plus.png",
+      "width": 28,
+      "height": 23
+    },
+    {
+      "source": "img/cm_icon_profire.png",
+      "sourceSha256": "2582f4d3231f40253520285e017e7ec3bc6a920c5db8f0b176bdfd990d5a8f29",
+      "outputSha256": "2582f4d3231f40253520285e017e7ec3bc6a920c5db8f0b176bdfd990d5a8f29",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/cm_icon_profire.png",
+      "width": 34,
+      "height": 34
+    },
+    {
+      "source": "img/cm_icon_proice.png",
+      "sourceSha256": "b088b20d06cc763a04d23d3c24bbc473fb773e9c39611469add44a331fdb596a",
+      "outputSha256": "b088b20d06cc763a04d23d3c24bbc473fb773e9c39611469add44a331fdb596a",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/cm_icon_proice.png",
+      "width": 34,
+      "height": 34
+    },
+    {
+      "source": "img/cm_icon_prowind.png",
+      "sourceSha256": "e9016fd03e867fd4fe999fe4f963782da3ba5502b54b354001c392e76f890cc7",
+      "outputSha256": "e9016fd03e867fd4fe999fe4f963782da3ba5502b54b354001c392e76f890cc7",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/cm_icon_prowind.png",
+      "width": 34,
+      "height": 34
+    },
+    {
+      "source": "img/cm_icon_zodiac_archer.png",
+      "sourceSha256": "54fb41568efae15cdfd88f189925fa16829b7f99c61fa0490e404557b40de97b",
+      "outputSha256": "54fb41568efae15cdfd88f189925fa16829b7f99c61fa0490e404557b40de97b",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/cm_icon_zodiac_archer.png",
+      "width": 58,
+      "height": 58
+    },
+    {
+      "source": "img/cm_icon_zodiac_bull.png",
+      "sourceSha256": "0d4a11a4e1909ccd344dd14ede8c4aa2e7e972c3abccef2c625830750efa836f",
+      "outputSha256": "0d4a11a4e1909ccd344dd14ede8c4aa2e7e972c3abccef2c625830750efa836f",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/cm_icon_zodiac_bull.png",
+      "width": 58,
+      "height": 58
+    },
+    {
+      "source": "img/cm_icon_zodiac_crab.png",
+      "sourceSha256": "08083f334c43e88a079a24a62621de8abf27b291609a3a8b500ca0c3d1f2c3e1",
+      "outputSha256": "08083f334c43e88a079a24a62621de8abf27b291609a3a8b500ca0c3d1f2c3e1",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/cm_icon_zodiac_crab.png",
+      "width": 58,
+      "height": 58
+    },
+    {
+      "source": "img/cm_icon_zodiac_fish.png",
+      "sourceSha256": "3c82093c6108e5ca79cce67b26600757706596d69e073d02c2931a4bf7358f31",
+      "outputSha256": "3c82093c6108e5ca79cce67b26600757706596d69e073d02c2931a4bf7358f31",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/cm_icon_zodiac_fish.png",
+      "width": 58,
+      "height": 58
+    },
+    {
+      "source": "img/cm_icon_zodiac_goat.png",
+      "sourceSha256": "2d1b9545ae8243684ff2f8568bbaa074ad569f57ac38365171b851056b014549",
+      "outputSha256": "2d1b9545ae8243684ff2f8568bbaa074ad569f57ac38365171b851056b014549",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/cm_icon_zodiac_goat.png",
+      "width": 58,
+      "height": 58
+    },
+    {
+      "source": "img/cm_icon_zodiac_lion.png",
+      "sourceSha256": "37c2f64d8935f7a926d5692180c9b829db460b549dc481415989491e00a00095",
+      "outputSha256": "37c2f64d8935f7a926d5692180c9b829db460b549dc481415989491e00a00095",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/cm_icon_zodiac_lion.png",
+      "width": 58,
+      "height": 58
+    },
+    {
+      "source": "img/cm_icon_zodiac_maiden.png",
+      "sourceSha256": "e6b9809bc53201657fe08913a05f09807d05ba8682a9179f551945e24d8ecab8",
+      "outputSha256": "e6b9809bc53201657fe08913a05f09807d05ba8682a9179f551945e24d8ecab8",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/cm_icon_zodiac_maiden.png",
+      "width": 58,
+      "height": 58
+    },
+    {
+      "source": "img/cm_icon_zodiac_ram.png",
+      "sourceSha256": "4b32f9fb12d46d1794b62734d837f49cd247b89637811d56abf3a1b947612e0b",
+      "outputSha256": "4b32f9fb12d46d1794b62734d837f49cd247b89637811d56abf3a1b947612e0b",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/cm_icon_zodiac_ram.png",
+      "width": 58,
+      "height": 58
+    },
+    {
+      "source": "img/cm_icon_zodiac_scales.png",
+      "sourceSha256": "b30f2278e0a83cfacac46d8883e0908f6b3a5794ddbd209e9ca75b6e647759e4",
+      "outputSha256": "b30f2278e0a83cfacac46d8883e0908f6b3a5794ddbd209e9ca75b6e647759e4",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/cm_icon_zodiac_scales.png",
+      "width": 58,
+      "height": 58
+    },
+    {
+      "source": "img/cm_icon_zodiac_scorpion.png",
+      "sourceSha256": "66e9629d115d7e32972ea23be68175f5cffb62c955aca052b316e4b29db1797c",
+      "outputSha256": "66e9629d115d7e32972ea23be68175f5cffb62c955aca052b316e4b29db1797c",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/cm_icon_zodiac_scorpion.png",
+      "width": 58,
+      "height": 58
+    },
+    {
+      "source": "img/cm_icon_zodiac_twins.png",
+      "sourceSha256": "08c40280371e5d352564bfe3e2425f75aa8a95b4f68a4582567b6f87dc5f10d0",
+      "outputSha256": "08c40280371e5d352564bfe3e2425f75aa8a95b4f68a4582567b6f87dc5f10d0",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/cm_icon_zodiac_twins.png",
+      "width": 58,
+      "height": 58
+    },
+    {
+      "source": "img/cm_icon_zodiac_waterbearer.png",
+      "sourceSha256": "03b89960919f5a55234669e15b6ae22c0bf9ae03c4200e527fa6583fa8a0e5c5",
+      "outputSha256": "03b89960919f5a55234669e15b6ae22c0bf9ae03c4200e527fa6583fa8a0e5c5",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/cm_icon_zodiac_waterbearer.png",
+      "width": 58,
+      "height": 58
+    }
+  ]
+}

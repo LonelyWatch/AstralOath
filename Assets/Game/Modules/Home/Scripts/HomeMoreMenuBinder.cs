@@ -29,6 +29,7 @@ namespace AstralOath.Client.Home
             view.Heroes.Bind(scope, openHeroes);
             view.Close.Bind(scope, CloseAsync);
             view.Outside.Bind(scope, CloseAsync);
+            _ = view.AnimateOpeningAsync(scope.Token);
         }
 
         private Task CloseAsync(CancellationToken token)
