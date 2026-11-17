@@ -1429,8 +1429,11 @@ namespace AstralOath.Client.BattleScene
                 var level = (RectTransform)marker.transform.Find("Level");
                 levelBadge = new BattleUnitLevelBadge(level.GetComponent<Image>(), profile ? profile.LevelDigits : null);
                 targetBadgeOffset = level.anchoredPosition + new Vector2(-42f, 0f);
+                var targetBadgeSize = new Vector2(52f, 48f);
+                // Preserve the digit offset from the original 40×39 hud_order badge artwork.
+                var digitOffset = new Vector2(-2f, 4f) * Mathf.Min(targetBadgeSize.x / 40f, targetBadgeSize.y / 39f);
                 targetBadge = new BattleTargetBadge((RectTransform)marker.transform, targetBadgeOffset,
-                    new Vector2(52f, 48f), targetClick);
+                    targetBadgeSize, targetClick, digitOffset);
                 var wordFont = profile && profile.EffectWordFont ? profile.EffectWordFont : fontSource.font;
                 effectWords = new BattleEffectWords((RectTransform)marker.transform, wordFont,
                     profile ? profile.EffectWordOutline : null);

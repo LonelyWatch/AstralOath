@@ -37,7 +37,8 @@ namespace AstralOath.Client.BattleScene
         private readonly GameButton button;
         private readonly UnityAction click;
 
-        internal BattleTargetBadge(RectTransform parent, Vector2 position, Vector2 size, UnityAction click = null)
+        internal BattleTargetBadge(RectTransform parent, Vector2 position, Vector2 size, UnityAction click = null,
+            Vector2? digitOffset = null)
         {
             this.click = click;
             var root = new GameObject("Target Number", typeof(RectTransform), typeof(Image));
@@ -52,7 +53,7 @@ namespace AstralOath.Client.BattleScene
             var number = new GameObject("Number", typeof(RectTransform), typeof(Image));
             var numberRect = (RectTransform)number.transform;
             numberRect.SetParent(Root, false);
-            numberRect.anchoredPosition = new Vector2(0, 1f);
+            numberRect.anchoredPosition = digitOffset ?? new Vector2(0, 1f);
             numberRect.sizeDelta = new Vector2(size.x * .65f, size.y * .68f);
             digit = number.GetComponent<Image>();
             digit.preserveAspect = true;

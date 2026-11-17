@@ -423,6 +423,14 @@ namespace AstralOath.Client.Tests
                 var compactBadge = readiness.Find(target.InstanceId + "/Target Number");
                 Assert.That(badge.GetComponent<Image>().sprite.name, Is.EqualTo("game_hud_target1"));
                 Assert.That(compactBadge.GetComponent<Image>().sprite.name, Is.EqualTo("game_hud_target2"));
+                var badgeRect = (RectTransform)badge;
+                var digitRect = (RectTransform)badge.Find("Number");
+                // Centers of the visible red face and the white digits in the original HUD art.
+                Vector2 faceCenter = new Vector2(-3f, 5f) * (badgeRect.rect.height / 39f);
+                Vector2 inkCenter = new Vector2(rank == 0 ? -1.5f : -1f, 1.5f)
+                    * (digitRect.rect.height / 34f);
+                Assert.That(Vector2.Distance(digitRect.anchoredPosition + inkCenter, faceCenter), Is.LessThan(1f),
+                    $"Target rank {rank + 1} must sit in the red face.");
                 Assert.That(badge.Find("Number").GetComponent<Image>().sprite.name, Is.EqualTo($"itxt_num{rank + 1}_b"));
                 Assert.That(compactBadge.Find("Number").GetComponent<Image>().sprite,
                     Is.SameAs(badge.Find("Number").GetComponent<Image>().sprite));
