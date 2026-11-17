@@ -27,6 +27,7 @@ namespace AstralOath.Editor
         internal const string BuildReceiptName = "package.complete.json";
         private const ApiCompatibilityLevel BuildApiLevel = ApiCompatibilityLevel.NET_Unity_4_8;
         private const string RuntimeVersion = "9.0.1";
+        private const string BundleCacheDirectoryName = "OutputCache";
         private const string PackageVersion = "9.0.3";
         private const string RuntimeCommit = "83929787581bce6c7219418f62348a10c33582ee";
         private const string Il2CppCommit = "ba3a76c9979d14cee404fb5d44301773e0768866";
@@ -174,7 +175,7 @@ namespace AstralOath.Editor
                 (full ? "player" : "hot") + "-v" + options.contentVersion.ToString(CultureInfo.InvariantCulture) + "-" +
                 Guid.NewGuid().ToString("N")));
             string bundleCachePrefix = Path.Combine(output, "bundles", target.ToString(),
-                profile.PackageName, "OutputCache") + Path.DirectorySeparatorChar;
+                profile.PackageName, BundleCacheDirectoryName) + Path.DirectorySeparatorChar;
             if (Application.platform == RuntimePlatform.WindowsEditor &&
                 !HotUpdateBuildInputs.FitsWindowsPathBudget(bundleCachePrefix, 64))
                 throw new BuildFailedException("输出目录太长，YooAsset 需要在其下创建缓存文件。请选择较短的目录，例如 .artifacts/b：" + output);
@@ -583,22 +584,29 @@ namespace AstralOath.Editor
                 AddressRuleName = nameof(HotUpdateAddressRule),
                 PackRuleName = nameof(HotUpdatePackRule)
             });
+            bool foundation = profile == CharacterLabBuildProfile.Foundation;
+            var characterDependencies = foundation ? CreateBattleCharacterDependencies() : null;
             package.Groups.Add(collector);
+            if (characterDependencies != null)
+                package.Groups.Add(characterDependencies);
             try
             {
-                var result = new BuiltinBuildPipeline().Run(new BuiltinBuildParameters
-                {
-                    BuildOutputRoot = bundleRoot,
-                    BuildinFileRoot = embeddedRoot,
-                    BuildPipeline = EBuildPipeline.BuiltinBuildPipeline.ToString(),
-                    BuildBundleType = (int)EBuildBundleType.AssetBundle,
-                    BuildTarget = target,
-                    PackageName = profile.PackageName,
-                    PackageVersion = packageVersion,
-                    CompressOption = ECompressOption.LZ4,
-                    BuildinFileCopyOption = embed ? EBuildinFileCopyOption.ClearAndCopyAll : EBuildinFileCopyOption.None,
-                    VerifyBuildingResult = true
-                }, false);
+                // Keep Unity's incremental output under the same project between releases.
+                BuiltinBuildParameters build = foundation
+                    ? new FoundationBundleBuildParameters(player.baselineId, target)
+                    : new BuiltinBuildParameters();
+                build.BuildOutputRoot = bundleRoot;
+                build.BuildinFileRoot = embeddedRoot;
+                build.BuildPipeline = EBuildPipeline.BuiltinBuildPipeline.ToString();
+                build.BuildBundleType = (int)EBuildBundleType.AssetBundle;
+                build.BuildTarget = target;
+                build.PackageName = profile.PackageName;
+                build.PackageVersion = packageVersion;
+                build.CompressOption = ECompressOption.LZ4;
+                build.BuildinFileCopyOption = embed ? EBuildinFileCopyOption.ClearAndCopyAll : EBuildinFileCopyOption.None;
+                build.VerifyBuildingResult = true;
+                var result = new BuiltinBuildPipeline().Run(build, false);
+
                 if (!result.Success)
                     throw new BuildFailedException(result.ErrorInfo);
                 if (profile == CharacterLabBuildProfile.Foundation)
@@ -616,7 +624,45 @@ namespace AstralOath.Editor
             finally
             {
                 package.Groups.Remove(collector);
+                if (characterDependencies != null)
+                    package.Groups.Remove(characterDependencies);
             }
+        }
+
+        private static AssetBundleCollectorGroup CreateBattleCharacterDependencies()
+        {
+            const string characterRes = "Assets/Game/Modules/CharacterPresentation/Res/";
+            var group = new AssetBundleCollectorGroup { GroupName = "BattleCharacterDependencies" };
+            group.Collectors.Add(CharacterDependencyCollector(characterRes + "Characters", nameof(PackTopDirectory)));
+            group.Collectors.Add(CharacterDependencyCollector(characterRes + "Shared", nameof(PackDirectory)));
+            return group;
+        }
+
+        private static AssetBundleCollector CharacterDependencyCollector(string path, string packRule) =>
+            new AssetBundleCollector
+            {
+                CollectPath = path,
+                CollectorGUID = AssetDatabase.AssetPathToGUID(path),
+                CollectorType = ECollectorType.DependAssetCollector,
+                PackRuleName = packRule
+            };
+
+        private sealed class FoundationBundleBuildParameters : BuiltinBuildParameters
+        {
+            private readonly string pipelineDirectory;
+
+            internal FoundationBundleBuildParameters(string baselineId, BuildTarget target)
+            {
+                string variant = Variant(target, target == BuildTarget.Android
+                    ? (int)EditorUserBuildSettings.androidBuildSubtarget : 0);
+                pipelineDirectory = Path.GetFullPath(Path.Combine(".artifacts", "fb", variant,
+                    baselineId, BundleCacheDirectoryName));
+                if (Application.platform == RuntimePlatform.WindowsEditor &&
+                    !HotUpdateBuildInputs.FitsWindowsPathBudget(pipelineDirectory + Path.DirectorySeparatorChar, 96))
+                    throw new BuildFailedException("Unity 工程路径太长，无法保存 Foundation 增量构建缓存。");
+            }
+
+            public override string GetPipelineOutputDirectory() => pipelineDirectory;
         }
 
         [Serializable]

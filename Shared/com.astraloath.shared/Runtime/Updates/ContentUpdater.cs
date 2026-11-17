@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Security.Cryptography;
@@ -132,6 +133,11 @@ namespace AstralOath.Shared.Updates
                 {
                     string staging = SafePath(SafePath(store, "staging"), Digest(bytes));
                     string payload = SafePath(staging, "files");
+                    // Same-version repair retains its original download and recovery path.
+                    bool usePriorReleases = manifest.Version > pointer.active;
+                    var active = usePriorReleases ? ReadReuseSource(pointer.active) : default;
+                    var previous = usePriorReleases ? ReadReuseSource(pointer.previous) : default;
+                    var reuse = new Dictionary<string, string>(StringComparer.Ordinal);
                     long total = 0;
                     long retained = 0;
                     long required = DiskSafetyBytes + bytes.Length + signature.Length;
@@ -142,6 +148,13 @@ namespace AstralOath.Shared.Updates
                         long have = File.Exists(local) ? new FileInfo(local).Length : 0;
                         if (have == entry.Size && File.Exists(local) && Matches(local, entry, token))
                             continue;
+                        string cached = FindReusableFile(active, entry, token) ?? FindReusableFile(previous, entry, token);
+                        if (cached != null)
+                        {
+                            reuse.Add(entry.Path, cached);
+                            required = checked(required + entry.Size);
+                            continue;
+                        }
                         if (have >= entry.Size) have = 0;
                         total = checked(total + entry.Size);
                         retained = checked(retained + have);
@@ -151,16 +164,25 @@ namespace AstralOath.Shared.Updates
                         !await approveDownload(total - retained, token).ConfigureAwait(false))
                         return null;
                     token.ThrowIfCancellationRequested();
+                    string pendingCopy = SafePath(staging, "reuse.pending");
+                    if (File.Exists(pendingCopy))
+                        File.Delete(pendingCopy);
                     if (availableBytes() < required)
                         throw new IOException("Insufficient disk space for the remaining content and safety reserve.");
                     SafeDirectory(SafeDirectory(SafeDirectory(store, "staging"), Digest(bytes)), "files");
 
                     long received = retained;
-                    downloadProgress?.Invoke(new ContentDownloadProgress(received, total));
+                    if (total > 0)
+                        downloadProgress?.Invoke(new ContentDownloadProgress(received, total));
                     foreach (var entry in manifest.Files)
                     {
                         token.ThrowIfCancellationRequested();
                         string local = ResolveFile(payload, entry.Path, true);
+                        if (reuse.TryGetValue(entry.Path, out string cached))
+                        {
+                            await CopyReusableFileAsync(cached, local, pendingCopy, token).ConfigureAwait(false);
+                            continue;
+                        }
                         long have = File.Exists(local) ? new FileInfo(local).Length : 0;
                         if (File.Exists(local) && have == entry.Size && Matches(local, entry, token))
                             continue;
@@ -264,6 +286,64 @@ namespace AstralOath.Shared.Updates
                 SwitchPointer(pointer.previous, pointer.active, token);
                 return Task.FromResult(previous);
             }
+        }
+
+        private (string payload, Dictionary<string, ContentEntry> files) ReadReuseSource(long version)
+        {
+            if (version == 0)
+                return default;
+            try
+            {
+                string path = SafePath(SafePath(store, "releases"), VersionName(version));
+                var manifest = ParseVerified(ReadBounded(SafePath(path, "manifest.json"), MaxManifestBytes),
+                    ReadBounded(SafePath(path, "manifest.sig"), trustedKey.KeySize / 8));
+                RequireCompatible(manifest);
+                if (manifest.Version != version)
+                    return default;
+                string payload = SafePath(path, "files");
+                var files = new Dictionary<string, ContentEntry>(StringComparer.Ordinal);
+                foreach (var entry in manifest.Files)
+                    files.Add(entry.Path, entry);
+                return (payload, files);
+            }
+            catch (Exception error) when (error is IOException || error is InvalidDataException || error is UnauthorizedAccessException)
+            {
+                return default;
+            }
+        }
+
+        private static string FindReusableFile((string payload, Dictionary<string, ContentEntry> files) source,
+            ContentEntry entry, CancellationToken token)
+        {
+            if (source.files == null || !source.files.TryGetValue(entry.Path, out var candidate) ||
+                candidate.Size != entry.Size || candidate.Sha256 != entry.Sha256)
+                return null;
+            try
+            {
+                string path = ResolveFile(source.payload, entry.Path, false);
+                return Matches(path, entry, token) ? path : null;
+            }
+            catch (Exception error) when (error is IOException || error is InvalidDataException || error is UnauthorizedAccessException)
+            {
+                return null;
+            }
+        }
+
+        private static async Task CopyReusableFileAsync(string source, string destination, string pending,
+            CancellationToken token)
+        {
+            // Keep an interrupted local copy outside the payload so it is never resumed as an HTTP prefix.
+            using (var input = File.OpenRead(source))
+            using (var output = new FileStream(pending, FileMode.CreateNew, FileAccess.Write, FileShare.None, 65536, true))
+            {
+                await input.CopyToAsync(output, 65536, token).ConfigureAwait(false);
+                output.Flush(true);
+            }
+            token.ThrowIfCancellationRequested();
+            if (File.Exists(destination))
+                File.Replace(pending, destination, null);
+            else
+                File.Move(pending, destination);
         }
 
         private ContentRelease ReadRelease(long version, CancellationToken token)

@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 
 await using var fixture = await Fixture.StartAsync();
 await fixture.ValidInstallAndRestart();
+await fixture.ReuseVerifiedPayloadAcrossReleases();
 await fixture.ConsentPrecedesPayloadAndKeepsActiveRelease();
 await fixture.BadSignatureAndTraversal();
 await fixture.BadHashAndShortBody();
@@ -114,7 +115,7 @@ sealed partial class Fixture : IAsyncDisposable
     public async Task ConsentPrecedesPayloadAndKeepsActiveRelease()
     {
         const int version = 2;
-        SetRelease(version);
+        SetRelease(version, includeReplacement: true);
         int before = contentRequests;
         var updater = Updater();
         var progress = new List<ContentDownloadProgress>();
@@ -138,14 +139,60 @@ sealed partial class Fixture : IAsyncDisposable
         var installed = await isolated.InstallAsync(new Uri(server.Urls.Single() + "/manifest.json"),
             new Uri(server.Urls.Single() + "/manifest.sig"), default, approveDownload: (_, _) => Task.FromResult(true),
             downloadProgress: progress.Add);
-        Require(installed.Version == version && progress.Last().Received == Body.Length &&
-            progress.Last().Total == Body.Length, "consent installs and publishes byte progress");
+        Require(installed.Version == version && progress.Last().Received == 2 * Body.Length &&
+            progress.Last().Total == 2 * Body.Length, "cold install publishes the full download byte progress");
         await isolated.InstallAsync(new Uri(server.Urls.Single() + "/manifest.json"),
             new Uri(server.Urls.Single() + "/manifest.sig"), default,
             approveDownload: (_, _) => throw new Exception("an installed version must not ask for download approval"));
         // Restore the fixture to the first release for subsequent failure scenarios.
         SetRelease(1);
     }
+    public async Task ReuseVerifiedPayloadAcrossReleases()
+    {
+        var location = Path.Combine(store, "cross-release");
+        var updater = new ContentUpdater(location, http, key, 1, 1);
+        var index = new Uri(server.Urls.Single() + "/manifest.json");
+        var sig = new Uri(server.Urls.Single() + "/manifest.sig");
+
+        SetRelease(1);
+        var first = await Install(updater);
+        SetRelease(2, includeReplacement: true);
+        int before = contentRequests;
+        var progress = new List<ContentDownloadProgress>();
+        var second = await updater.InstallAsync(index, sig, default, approveDownload: (bytes, _) =>
+        {
+            Require(bytes == Body.Length && contentRequests == before, "incremental approval counts only the missing file");
+            return Task.FromResult(true);
+        }, downloadProgress: progress.Add);
+        Require(second.WasActivated && contentRequests == before + 1 && progress.Last().Received == Body.Length &&
+            progress.Last().Total == Body.Length && File.ReadAllBytes(Path.Combine(second.DirectoryPath, FilePath)).SequenceEqual(Body),
+            "incremental transfer reuses the signed unchanged bundle");
+
+        string secondBundle = Path.Combine(second.DirectoryPath, FilePath);
+        File.WriteAllBytes(secondBundle, new byte[Body.Length]);
+        SetRelease(3);
+        before = contentRequests;
+        var third = await updater.InstallAsync(index, sig, default,
+            approveDownload: (_, _) => throw new Exception("the verified previous release covers the damaged active bundle"));
+        Require(third.WasActivated && contentRequests == before &&
+            File.ReadAllBytes(Path.Combine(third.DirectoryPath, FilePath)).SequenceEqual(Body),
+            "damaged active file is skipped while verified previous content can be reused");
+        Require(File.ReadAllBytes(Path.Combine(first.DirectoryPath, FilePath)).SequenceEqual(Body),
+            "reuse and corruption in a later release do not change the previous file");
+
+        File.WriteAllBytes(Path.Combine(third.DirectoryPath, FilePath), new byte[Body.Length]);
+        SetRelease(4);
+        var fourth = await updater.InstallAsync(index, sig, default, approveDownload: (bytes, _) =>
+        {
+            Require(bytes == Body.Length, "corrupt local files still require a download");
+            return Task.FromResult(true);
+        });
+        Require(contentRequests == before + 1 &&
+            File.ReadAllBytes(Path.Combine(fourth.DirectoryPath, FilePath)).SequenceEqual(Body),
+            "a damaged cache falls back to the signed network file");
+        SetRelease(1);
+    }
+
     public async Task BadSignatureAndTraversal()
     {
         SetRelease(2);
@@ -158,7 +205,7 @@ sealed partial class Fixture : IAsyncDisposable
 
     public async Task BadHashAndShortBody()
     {
-        SetRelease(2);
+        SetRelease(2, "replacement.bytes");
         body = new byte[64];
         await Expect<InvalidDataException>(() => Install(Updater()));
         body = new byte[8];
@@ -174,7 +221,7 @@ sealed partial class Fixture : IAsyncDisposable
     {
         for (long version = 3; version <= 4; version++)
         {
-            SetRelease(version);
+            SetRelease(version, content: Body.Select(value => (byte)(value + version)).ToArray());
             interrupt = true;
             await Expect<InvalidDataException>(() => Install(Updater()));
             interrupt = false;
@@ -196,7 +243,7 @@ sealed partial class Fixture : IAsyncDisposable
 
     public async Task NoSpaceAndCancellation()
     {
-        SetRelease(5);
+        SetRelease(5, content: Body.Reverse().ToArray());
         await Expect<IOException>(() => Install(Updater(availableBytes: () => 0)));
         using var cancel = new CancellationTokenSource();
         cancelOnContent = cancel;
@@ -377,15 +424,18 @@ sealed partial class Fixture : IAsyncDisposable
     private Task<ContentRelease> Install(ContentUpdater updater, CancellationToken token = default) =>
         updater.InstallAsync(new Uri(server.Urls.Single() + "/manifest.json"), new Uri(server.Urls.Single() + "/manifest.sig"), token);
 
-    private void SetRelease(long version, string path = FilePath, int schema = 1)
+    private void SetRelease(long version, string path = FilePath, int schema = 1, bool includeReplacement = false,
+        byte[] content = null)
     {
-        body = Body;
+        body = content ?? Body;
+        var paths = includeReplacement ? new[] { path, "replacement.bytes" } : new[] { path };
+        string sha256 = Convert.ToHexString(SHA256.HashData(body)).ToLowerInvariant();
         manifest = JsonSerializer.SerializeToUtf8Bytes(new
         {
             version,
             protocolVersion = 1,
             schemaVersion = schema,
-            files = new[] { new { path, size = Body.Length, sha256 = Convert.ToHexString(SHA256.HashData(Body)).ToLowerInvariant() } }
+            files = paths.Select(file => new { path = file, size = body.Length, sha256 })
         });
         signature = key.SignData(manifest, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
     }
