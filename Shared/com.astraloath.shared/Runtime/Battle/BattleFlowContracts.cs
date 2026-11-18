@@ -15,14 +15,16 @@ namespace AstralOath.Shared.Battle
         SpeedUp, SpeedDown, AttackDown, DefenseDown, Unhealable, Silence, EvasionUp, CriticalResistanceUp, Stealth, Provoke, Indomitable,
         GreaterSpeedUp, CriticalDamageUp, EffectivenessUp, Poison, Invincible,
         CriticalChanceUp, ContinuousHealing, Burn, Bleed, Immortality, HitChanceDown,
-        GreaterAttackUp, Unbuffable, DamageLimit, SpiritlordProtection, Rage
+        GreaterAttackUp, Unbuffable, DamageLimit, SpiritlordProtection, Rage, Targeted
     }
     public enum BattleFlowEventKind
     {
         BattleStarted, TurnStarted, Action, Damage, Healing, ReadinessChanged,
         StatusApplied, StatusRemoved, CooldownChanged, SoulChanged, BarrierAbsorbed,
-        UnitDefeated, TurnSkipped, TurnEnded, BattleEnded, EffectRejected, ResourceChanged, StatusDurationChanged, ExtraTurnGranted, InjuryApplied, OpeningAttackBonusApplied, TurnEffectTriggered, UnitRevived
+        UnitDefeated, TurnSkipped, TurnEnded, BattleEnded, EffectRejected, ResourceChanged, StatusDurationChanged, ExtraTurnGranted, InjuryApplied, OpeningAttackBonusApplied, TurnEffectTriggered, UnitRevived, ArtifactStateChanged, ArtifactTriggered
     }
+    internal enum ArtifactCounter { Stack, Cooldown, DelayedTurn }
+
     public enum BattleCommandStatus
     {
         Accepted, Duplicate, WrongBattle, WrongRulesVersion, SequenceMismatch, WrongActor,
@@ -127,18 +129,20 @@ namespace AstralOath.Shared.Battle
     {
         internal BattleUnitSnapshot(BattleUnit unit, int health, int readinessBp,
             IReadOnlyDictionary<string, int> cooldowns, IReadOnlyList<BattleStatusSnapshot> statuses,
-            int resourceAmount, int injuryAmount, int openingAttackBonus, IReadOnlyCollection<string> triggeredTurnEffects)
+            int resourceAmount, int injuryAmount, int openingAttackBonus, IReadOnlyCollection<string> triggeredTurnEffects,
+            IReadOnlyDictionary<ArtifactCounter, int> artifactCounters)
             : this(unit.InstanceId, unit.Definition.Id, unit.Definition.NameKey, unit.Level, unit.Definition.Element,
                 unit.Slot, unit.Form, unit.Stats, health, readinessBp, cooldowns, statuses,
                 (unit.Definition as HeroDefinition)?.Resource, resourceAmount, injuryAmount, openingAttackBonus,
-                unit.Awakenings ?? 0, unit.Definition is HeroDefinition, triggeredTurnEffects)
+                unit.Awakenings ?? 0, unit.Definition is HeroDefinition, triggeredTurnEffects, unit.Artifact, unit.ArtifactLevel, artifactCounters)
         { }
 
         internal BattleUnitSnapshot(string instanceId, string definitionId, string nameKey, int level, BattleElement element,
             BattleSlot slot, BattleUnitForm form, BattleStats stats, int health, int readinessBp,
             IReadOnlyDictionary<string, int> cooldowns, IReadOnlyList<BattleStatusSnapshot> statuses,
             BattleResourceDefinition resourceRules, int resourceAmount, int injuryAmount, int openingAttackBonus,
-            int awakenings, bool isHero, IReadOnlyCollection<string> triggeredTurnEffects)
+            int awakenings, bool isHero, IReadOnlyCollection<string> triggeredTurnEffects, ArtifactTemplate artifact = null,
+            int artifactLevel = 0, IReadOnlyDictionary<ArtifactCounter, int> artifactCounters = null)
         {
             InstanceId = instanceId;
             DefinitionId = definitionId;
@@ -154,6 +158,9 @@ namespace AstralOath.Shared.Battle
             InjuryAmount = injuryAmount;
             OpeningAttackBonus = openingAttackBonus;
             TriggeredTurnEffects = triggeredTurnEffects;
+            Artifact = artifact;
+            ArtifactLevel = artifactLevel;
+            ArtifactCounters = artifactCounters;
             ReadinessBp = readinessBp;
             Cooldowns = cooldowns;
             Statuses = statuses;
@@ -174,6 +181,9 @@ namespace AstralOath.Shared.Battle
         public int OpeningAttackBonus { get; }
         internal IReadOnlyCollection<string> TriggeredTurnEffects { get; }
         internal bool IsHero { get; }
+        internal ArtifactTemplate Artifact { get; }
+        internal int ArtifactLevel { get; }
+        internal IReadOnlyDictionary<ArtifactCounter, int> ArtifactCounters { get; }
         public bool IsAlive => CurrentHealth > 0;
         public int ReadinessBp { get; }
         public BattleResourceSnapshot Resource { get; }
@@ -276,9 +286,9 @@ namespace AstralOath.Shared.Battle
 
     internal interface IBattleLifecycleResolver
     {
-        IReadOnlyList<BattleChange> BattleStart(BattleSnapshot snapshot);
-        IReadOnlyList<BattleChange> StartOfTurn(BattleSnapshot snapshot, string actorId);
-        IReadOnlyList<BattleChange> TurnEnd(BattleSnapshot snapshot, string actorId);
+        IReadOnlyList<BattleChange> BattleStart(BattleSnapshot snapshot, BattleRandom random);
+        IReadOnlyList<BattleChange> StartOfTurn(BattleSnapshot snapshot, string actorId, BattleRandom random);
+        IReadOnlyList<BattleChange> TurnEnd(BattleSnapshot snapshot, string actorId, BattleRandom random);
     }
 
     public sealed class BattleActionContext
@@ -313,6 +323,7 @@ namespace AstralOath.Shared.Battle
             Side = side; HitKind = hitKind; Rejection = rejection; StatusInstanceId = statusInstanceId;
             ImmortalityPreventedLethalDamage = immortalityPreventedLethalDamage;
         }
+        internal ArtifactCounter Counter => (ArtifactCounter)Turns;
         internal BattleFlowEventKind Kind { get; }
         internal string SourceId { get; }
         internal string TargetId { get; }
@@ -346,6 +357,10 @@ namespace AstralOath.Shared.Battle
                 turns: status.RemainingTurns, statusInstanceId: status.InstanceId);
         internal static BattleChange Revive(string source, string target, int health) =>
             new BattleChange(BattleFlowEventKind.UnitRevived, source, target, health);
+        internal static BattleChange SetArtifactCounter(string source, ArtifactCounter counter, int value) =>
+            new BattleChange(BattleFlowEventKind.ArtifactStateChanged, source, source, value, turns: (int)counter);
+        internal static BattleChange TriggerArtifact(string source, string id) =>
+            new BattleChange(BattleFlowEventKind.ArtifactTriggered, source, source, skillId: id);
         public static BattleChange Healing(string source, string target, int amount) =>
             new BattleChange(BattleFlowEventKind.Healing, source, target, amount);
         public static BattleChange Readiness(string source, string target, int deltaBp) =>

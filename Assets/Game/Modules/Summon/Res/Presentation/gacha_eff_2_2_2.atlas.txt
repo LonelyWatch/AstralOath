@@ -1,0 +1,76 @@
+
+gacha_eff_2_2_2.sct
+size: 835,1988
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 664, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+stars_22
+  rotate: false
+  xy: 2, 2
+  size: 660, 660
+  orig: 660, 660
+  offset: 0, 0
+  index: -1
+stars_23
+  rotate: false
+  xy: 2, 664
+  size: 660, 660
+  orig: 660, 660
+  offset: 0, 0
+  index: -1
+stars_24
+  rotate: false
+  xy: 2, 1326
+  size: 660, 660
+  orig: 660, 660
+  offset: 0, 0
+  index: -1
+tornado_t2_01
+  rotate: false
+  xy: 664, 704
+  size: 81, 79
+  orig: 81, 79
+  offset: 0, 0
+  index: -1
+tornado_t2_02
+  rotate: true
+  xy: 664, 613
+  size: 89, 117
+  orig: 89, 117
+  offset: 0, 0
+  index: -1
+tornado_t2_03
+  rotate: true
+  xy: 664, 173
+  size: 139, 165
+  orig: 139, 165
+  offset: 0, 0
+  index: -1
+tornado_t2_04
+  rotate: true
+  xy: 664, 492
+  size: 119, 125
+  orig: 119, 125
+  offset: 0, 0
+  index: -1
+tornado_t2_05
+  rotate: true
+  xy: 664, 314
+  size: 107, 149
+  orig: 107, 149
+  offset: 0, 0
+  index: -1
+tornado_t2_06
+  rotate: true
+  xy: 664, 423
+  size: 67, 145
+  orig: 67, 145
+  offset: 0, 0
+  index: -1

@@ -4,6 +4,7 @@ using AstralOath.Server.Battle;
 using AstralOath.Server.Foundation;
 using AstralOath.Server.Entry;
 using AstralOath.Server.Inventory;
+using AstralOath.Server.Summon;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting.WindowsServices;
@@ -64,6 +65,7 @@ builder.Services.AddRequestTimeouts();
 builder.Services.AddArena();
 builder.Services.AddEntry();
 builder.Services.AddInventory();
+builder.Services.AddSummon();
 
 var app = builder.Build();
 if (app.Configuration.GetValue<bool>(WebHostDefaults.PreferHostingUrlsKey)
@@ -77,6 +79,7 @@ app.MapFoundationEcho(isDevelopment);
 app.MapArena();
 app.MapEntry();
 app.MapInventory();
+app.MapSummon();
 if (app.Configuration.GetValue<bool>("BattlePreview:Enabled"))
 {
     if (!isDevelopment || !IPAddress.IsLoopback(bindAddress))

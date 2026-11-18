@@ -16,11 +16,13 @@ namespace AstralOath.Shared.Battle
         public int? Stars { get; }
         public int? Awakenings { get; }
         public MonsterRank? MonsterRank { get; }
+        internal ArtifactTemplate Artifact { get; }
+        internal int ArtifactLevel { get; }
         public int CurrentHealth { get; private set; }
         public bool IsAlive => CurrentHealth > 0;
 
         private BattleUnit(string instanceId, BattleUnitDefinition definition, BattleSlot slot, BattleStats stats,
-            int level, int? stars, int? awakenings, MonsterRank? monsterRank)
+            int level, int? stars, int? awakenings, MonsterRank? monsterRank, ArtifactTemplate artifact = null, int artifactLevel = 0)
         {
             InstanceId = BattleUnitDefinition.RequireKey(instanceId, nameof(instanceId));
             _ = slot.GetIndex();
@@ -32,16 +34,28 @@ namespace AstralOath.Shared.Battle
             Stars = stars;
             Awakenings = awakenings;
             MonsterRank = monsterRank;
+            Artifact = artifact;
+            ArtifactLevel = artifactLevel;
             CurrentHealth = stats.MaxHealth;
         }
 
         public static BattleUnit CreateHero(string instanceId, HeroDefinition definition, BattleSlot slot,
-            int level, int stars, int awakenings)
+            int level, int stars, int awakenings, ArtifactTemplate artifact = null, int artifactLevel = 0)
         {
             if (definition == null)
                 throw new ArgumentNullException(nameof(definition));
             var stats = HeroStatCalculator.Calculate(definition.GrowthPreset, level, stars, awakenings, definition.AwakeningSteps);
-            return new BattleUnit(instanceId, definition, slot, stats, level, stars, awakenings, null);
+            if ((artifact == null && artifactLevel != 0) || artifactLevel < 0 || artifactLevel > 30)
+                throw new ArgumentOutOfRangeException(nameof(artifactLevel));
+            if (artifact != null)
+            {
+                if (!string.IsNullOrEmpty(artifact.HeroClass) && artifact.HeroClass != definition.HeroClass)
+                    throw new ArgumentException("The artifact does not match the hero profession.", nameof(artifact));
+                stats = new BattleStats(stats.Attack + artifact.AttackAt(artifactLevel),
+                    stats.MaxHealth + artifact.HealthAt(artifactLevel), stats.Defense, stats.Speed,
+                    stats.CritChanceBp, stats.CritDamageBp, stats.EffectivenessBp, stats.EffectResistanceBp);
+            }
+            return new BattleUnit(instanceId, definition, slot, stats, level, stars, awakenings, null, artifact, artifactLevel);
         }
 
         public static BattleUnit CreateMonster(string instanceId, MonsterDefinition definition, BattleSlot slot,

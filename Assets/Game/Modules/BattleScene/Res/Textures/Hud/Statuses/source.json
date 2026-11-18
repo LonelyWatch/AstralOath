@@ -172,6 +172,11 @@
       "kind": "Rage",
       "group": "Buff",
       "asset": "stic_madness.png"
+    },
+    {
+      "kind": "Targeted",
+      "group": "Debuff",
+      "asset": "stic_target.png"
     }
   ],
   "files": [
@@ -372,6 +377,12 @@
       "asset": "stic_madness.png",
       "sourceSha256": "d36cca02d4f259c5ed66aa1e8300fe87f22db91be1fad7afa7d6350e0ac50d91",
       "assetSha256": "f3fdb87644574d75459e96317056a8448541df633282e5b01cbc1f667456c6c6"
+    },
+    {
+      "source": "原始资源/buff/stic_target.png",
+      "asset": "stic_target.png",
+      "sourceSha256": "1a86a6e12594b91d18f2e4c5b7a5b429c7913b5ec1104cc34ccb9815833ee3b7",
+      "assetSha256": "9b93702ab917cd29a73f6b928551a538e703300d23bfa6b6b7d9a1a50bde6ea8"
     },
     {
       "source": "原始资源/img/itxt_num0.png",

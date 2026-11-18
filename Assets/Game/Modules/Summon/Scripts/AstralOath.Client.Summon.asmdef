@@ -1,0 +1,8 @@
+{
+  "name": "AstralOath.Client.Summon",
+  "references": [
+    "AstralOath.Client.Common", "AstralOath.Client.Core", "AstralOath.Client.Home",
+    "AstralOath.Battle", "AstralOath.Client.Skeletons", "UnityEngine.UI", "Unity.TextMeshPro"
+  ],
+  "autoReferenced": false
+}

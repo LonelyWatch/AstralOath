@@ -101,6 +101,27 @@ namespace AstralOath.Shared.Battle
         }
     }
 
+    public sealed class BattleOwnedHero
+    {
+        public BattleOwnedHero(string heroId, int level, int stars, int awakenings,
+            ArtifactTemplate artifact = null, int artifactLevel = 0)
+        {
+            HeroId = heroId;
+            Level = level;
+            Stars = stars;
+            Awakenings = awakenings;
+            Artifact = artifact;
+            ArtifactLevel = artifactLevel;
+        }
+
+        public string HeroId { get; }
+        public int Level { get; }
+        public int Stars { get; }
+        public int Awakenings { get; }
+        public ArtifactTemplate Artifact { get; }
+        public int ArtifactLevel { get; }
+    }
+
     public static class BattlePreviewFactory
     {
         public const uint RulesVersion = 12;
@@ -111,13 +132,28 @@ namespace AstralOath.Shared.Battle
             IReadOnlyList<string> allyHeroIds = null) => Create(battleId, seed, data, allyHeroIds, null, duel);
 
         public static BattleMatch Create(string battleId, ulong seed, BattleCatalogData data,
-            IReadOnlyList<string> allyHeroIds, IReadOnlyList<string> enemyHeroIds, bool duel = false)
+            IReadOnlyList<string> allyHeroIds, IReadOnlyList<string> enemyHeroIds, bool duel = false) =>
+            CreateMatch(battleId, seed, data, allyHeroIds, enemyHeroIds, duel, null);
+
+        public static BattleMatch CreateOwned(string battleId, ulong seed, BattleCatalogData data,
+            IReadOnlyList<BattleOwnedHero> allyHeroes)
+        {
+            if (allyHeroes == null || allyHeroes.Count < 1 || allyHeroes.Count > BattleSlot.PositionsPerSide ||
+                allyHeroes.Any(hero => hero == null))
+                throw new ArgumentException("Select one to four owned heroes.", nameof(allyHeroes));
+            return CreateMatch(battleId, seed, data, allyHeroes.Select(hero => hero.HeroId).ToArray(), null, false, allyHeroes);
+        }
+
+        private static BattleMatch CreateMatch(string battleId, ulong seed, BattleCatalogData data,
+            IReadOnlyList<string> allyHeroIds, IReadOnlyList<string> enemyHeroIds, bool duel,
+            IReadOnlyList<BattleOwnedHero> owned)
         {
             if (data == null) throw new ArgumentNullException(nameof(data));
             if (data.schemaVersion != 2) throw new ArgumentException("Unsupported battle catalog schema.", nameof(data));
             var heroes = data.heroes.ToDictionary(row => row.id, StringComparer.Ordinal);
             var allies = allyHeroIds ?? DefaultHeroIds;
-            var enemies = enemyHeroIds ?? (duel ? allies : null);
+            var enemies = enemyHeroIds ?? (owned != null ? DefaultHeroIds.Take(allies.Count).ToArray() :
+                (duel ? allies : null));
             ValidateRoster(allies, nameof(allyHeroIds));
             if (enemies != null) ValidateRoster(enemies, nameof(enemyHeroIds));
 
@@ -128,21 +164,23 @@ namespace AstralOath.Shared.Battle
             for (int index = 0; index < allies.Count; index++)
             {
                 int slot = index + 1;
-                roster.Add(CreateHero(allies[index], BattleSide.Ally, "ally-", slot));
-                roster.Add(enemies == null ? Slime(slot) : CreateHero(enemies[index], BattleSide.Enemy, "enemy-", slot));
+                roster.Add(CreateHero(allies[index], BattleSide.Ally, "ally-", slot, owned?[index]));
+                roster.Add(enemies == null ? Slime(slot) : CreateHero(enemies[index], BattleSide.Enemy, "enemy-", slot,
+                    owned == null ? null : new BattleOwnedHero(enemies[index], owned[index].Level,
+                        Math.Max(growth[heroes[enemies[index]].growthPresetId].nativeStars, owned[index].Stars), 0)));
             }
 
             // The local exercise starts with souls to make all three heroes' Soul Burns testable.
-            var rules = new BattleFlowRules(openingReadinessMaxBp: 500, initialAllySoul: duel ? 0 : 20);
+            var rules = new BattleFlowRules(openingReadinessMaxBp: 500, initialAllySoul: duel || owned != null ? 0 : 20);
             return new BattleMatch(battleId, RulesVersion, seed, new BattleFormation(roster), programs, rules);
 
             void ValidateRoster(IReadOnlyList<string> selection, string parameter)
             {
-                if (selection.Count != DefaultHeroIds.Count || selection.Any(id => id == null || !heroes.ContainsKey(id)))
-                    throw new ArgumentException("The battle roster must specify four known heroes.", parameter);
+                if ((owned == null && selection.Count != DefaultHeroIds.Count) || selection.Any(id => id == null || !heroes.ContainsKey(id)))
+                    throw new ArgumentException("The battle roster must specify known heroes and fill a standard formation.", parameter);
             }
 
-            BattleUnit CreateHero(string id, BattleSide side, string prefix, int slot)
+            BattleUnit CreateHero(string id, BattleSide side, string prefix, int slot, BattleOwnedHero ownedHero = null)
             {
                 var row = heroes[id];
                 if (!definitions.TryGetValue(id, out var hero))
@@ -160,7 +198,8 @@ namespace AstralOath.Shared.Battle
                         row.heroClass, row.zodiac, form, preset, steps, row.GetResourceDefinition());
                     definitions.Add(id, hero);
                 }
-                return BattleUnit.CreateHero(prefix + slot, hero, new BattleSlot(side, slot), row.level, row.stars, row.awakenings);
+                return BattleUnit.CreateHero(prefix + slot, hero, new BattleSlot(side, slot), ownedHero?.Level ?? row.level,
+                    ownedHero?.Stars ?? row.stars, ownedHero?.Awakenings ?? row.awakenings, ownedHero?.Artifact, ownedHero?.ArtifactLevel ?? 0);
             }
         }
 

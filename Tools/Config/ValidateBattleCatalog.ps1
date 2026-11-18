@@ -172,7 +172,8 @@ function Export-BattleCatalog {
     $beneficialStatuses = @('AttackUp','DefenseUp','Immunity','Barrier','Counter','SpeedUp','EvasionUp','CriticalResistanceUp','Stealth','Indomitable',
         'GreaterSpeedUp','CriticalDamageUp','EffectivenessUp','Invincible','CriticalChanceUp','ContinuousHealing',
         'Immortality','GreaterAttackUp','DamageLimit','SpiritlordProtection','Rage')
-    $harmfulStatuses = @('Stun','SpeedDown','AttackDown','DefenseDown','Unhealable','Silence','Provoke','Poison','Burn','Bleed','HitChanceDown','Unbuffable')
+    $harmfulStatuses = @('Stun','SpeedDown','AttackDown','DefenseDown','Unhealable','Silence','Provoke','Poison','Burn','Bleed',
+        'HitChanceDown','Unbuffable','Targeted')
     $validStatuses = @('none') + $beneficialStatuses + $harmfulStatuses
     Confirm-BattleOriginalText -Repo $Repo -Messages $messages -Skills $skills -Statuses ($beneficialStatuses + $harmfulStatuses)
     foreach ($skill in $skills) {
@@ -358,6 +359,7 @@ function Export-BattleCatalog {
         enhancements = $enhancements
         messages = @($messages) + @($heroNames)
     }
-    [IO.File]::WriteAllText((Join-Path $JsonDir 'battle-catalog.json'), ($runtime | ConvertTo-Json -Depth 20) + "`n",
+    $canonicalJson = ($runtime | ConvertTo-Json -Depth 20).Replace(([string][char]13 + [char]10), [string][char]10)
+    [IO.File]::WriteAllText((Join-Path $JsonDir 'battle-catalog.json'), $canonicalJson + [char]10,
         [Text.UTF8Encoding]::new($false))
 }

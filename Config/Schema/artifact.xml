@@ -1,0 +1,38 @@
+<module name="artifact">
+  <bean name="Template">
+    <var name="id" type="string"/>
+    <var name="name" type="string"/>
+    <var name="heroClass" type="string"/>
+    <var name="stars" type="int"/>
+    <var name="icon" type="string"/>
+    <var name="description" type="string"/>
+    <var name="baseAttack" type="int"/>
+    <var name="baseHealth" type="int"/>
+    <var name="effect" type="string"/>
+    <var name="effectBase" type="int"/>
+    <var name="effectMax" type="int"/>
+    <var name="secondaryBase" type="int"/>
+    <var name="secondaryMax" type="int"/>
+    <var name="canSummon" type="bool"/>
+    <var name="canUseBottle" type="bool"/>
+    <var name="sellGold" type="int"/>
+    <var name="sellPowder" type="int"/>
+  </bean>
+  <bean name="EnhancementLevel">
+    <var name="level" type="int"/>
+    <var name="experience" type="int"/>
+  </bean>
+  <bean name="Economy">
+    <var name="id" type="string"/>
+    <var name="goldPerExperience" type="int"/>
+    <var name="threeStarMaterialExperience" type="int"/>
+    <var name="fourStarMaterialExperience" type="int"/>
+    <var name="fiveStarMaterialExperience" type="int"/>
+    <var name="lesserCharmExperience" type="int"/>
+    <var name="greaterCharmExperience" type="int"/>
+    <var name="epicCharmExperience" type="int"/>
+  </bean>
+  <table name="Templates" value="Template" input="artifact_templates.csv"/>
+  <table name="EnhancementLevels" value="EnhancementLevel" index="level" input="artifact_enhancement_levels.csv"/>
+  <table name="Economies" value="Economy" input="artifact_economies.csv"/>
+</module>

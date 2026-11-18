@@ -9,6 +9,7 @@ namespace AstralOath.Client.Home
     {
         public const string Address = "home/more-menu";
         public override string PrefabPath => Address;
+        internal GameButton Summon => Bindings.Require<GameButton>("summon");
         internal GameButton Heroes => Bindings.Require<GameButton>("heroes");
         internal GameText HeroesLabel => Bindings.Require<GameText>("heroesLabel");
         internal GameButton Close => Bindings.Require<GameButton>("close");
@@ -18,7 +19,7 @@ namespace AstralOath.Client.Home
 
         public override void Validate()
         {
-            _ = Heroes; _ = HeroesLabel; _ = Close; _ = Outside;
+            _ = Heroes; _ = Summon; _ = HeroesLabel; _ = Close; _ = Outside;
             _ = Drawer; _ = Shade;
         }
 

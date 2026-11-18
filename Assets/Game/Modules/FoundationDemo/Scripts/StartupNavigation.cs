@@ -6,6 +6,7 @@ using AstralOath.Client.BattleScene;
 using AstralOath.Client.Common;
 using AstralOath.Client.Core;
 using AstralOath.Client.Home;
+using AstralOath.Client.Summon;
 using UnityEngine;
 
 namespace AstralOath.Client.FoundationDemo
@@ -25,15 +26,22 @@ namespace AstralOath.Client.FoundationDemo
         private const string MoreOverlay = "home-more";
         private readonly ArenaApi api;
         private readonly HeroInventoryApi inventory;
+        private readonly ArtifactInventoryApi artifacts;
+        private readonly SummonApi summon;
+        private readonly Uri endpoint;
         private readonly CancellationToken token;
         private string roomId;
 
         private StartupNavigation(BindingScope lifetime, HomeWindow homeView, ArenaDirectory directoryView,
             ArenaCreateRoom createView, ArenaRoom roomView, UIViewRegistry views, IAssetService assets, ISceneAssetService scenes, Transform parent,
-            ILocaleService locale, ArenaApi api, HeroInventoryApi inventory, string playerName, DesktopDisplayMode display)
+            ILocaleService locale, ArenaApi api, HeroInventoryApi inventory, ArtifactInventoryApi artifacts,
+            SummonApi summon, Uri endpoint, string playerName, DesktopDisplayMode display)
         {
             this.api = api;
             this.inventory = inventory;
+            this.artifacts = artifacts;
+            this.summon = summon;
+            this.endpoint = endpoint;
             this.views = views;
             this.assets = assets;
             this.scenes = scenes;
@@ -57,6 +65,7 @@ namespace AstralOath.Client.FoundationDemo
             views.Register<HomeWindow>();
             views.Register<HomeMoreMenu>();
             views.Register<HeroInventory>();
+            views.Register<SummonWindow>();
             views.Register<ArenaDirectory>();
             views.Register<ArenaCreateRoom>();
             views.Register<ArenaRoom>();
@@ -83,11 +92,18 @@ namespace AstralOath.Client.FoundationDemo
             }
             var display = context.ViewRoot.GetComponentInParent<DesktopDisplayMode>();
             var scenes = context.Services.Get<ISceneAssetService>();
-            var inventory = new HeroInventoryApi(context.Services.Get<GameServerEndpoint>().Address,
-                ct => account == null ? api.GetSessionTokenAsync(name, ct) : Task.FromResult(account.Token), owner.Token);
+            var endpoint = context.Services.Get<GameServerEndpoint>().Address;
+            Task<string> Bearer(CancellationToken ct) =>
+                account == null ? api.GetSessionTokenAsync(name, ct) : Task.FromResult(account.Token);
+
+            var inventory = new HeroInventoryApi(endpoint, Bearer, owner.Token);
+            var artifacts = new ArtifactInventoryApi(endpoint, Bearer, owner.Token);
+            var summon = new SummonApi(endpoint, Bearer, owner.Token);
             owner.Add(inventory.Dispose);
+            owner.Add(artifacts.Dispose);
+            owner.Add(summon.Dispose);
             var navigation = new StartupNavigation(owner, home, directory, create, room, views, assets, scenes,
-                context.ViewRoot, locale, api, inventory, name, display);
+                context.ViewRoot, locale, api, inventory, artifacts, summon, endpoint, name, display);
             await navigation.ShowHome();
             context.Services.Add<ILocaleService>(locale);
             context.OpenButton.gameObject.SetActive(false);
@@ -109,7 +125,7 @@ namespace AstralOath.Client.FoundationDemo
                     home.HideArenaWhile(scope);
                     scope.Add(detach);
                     scope.Add(loading.Dispose);
-                    var binder = new HomeMoreMenuBinder(view, locale, ct => OpenInventory(true, ct),
+                    var binder = new HomeMoreMenuBinder(view, locale, ct => OpenInventory(true, ct), OpenSummon,
                         () => windows.CloseOverlay(MoreOverlay));
                     binder.Open(scope);
                 });
@@ -122,6 +138,34 @@ namespace AstralOath.Client.FoundationDemo
             }
         }
 
+        private async Task OpenSummon(CancellationToken cancellation)
+        {
+            var loading = new BindingScope(token);
+            var detach = lifetime.Add(loading.Dispose);
+            bool opened = false;
+            try
+            {
+                var view = await views.CreateAsync<SummonWindow>(assets, parent, loading);
+                var art = await assets.LoadAsync<HomeHeroArt>(HomeHeroArt.Address, loading);
+                var artifacts = await assets.LoadAsync<ArtifactArtCatalog>(ArtifactArtCatalog.Address, loading);
+                var presentation = await assets.LoadAsync<SummonPresentation>(SummonPresentation.Address, loading);
+                var featuredLoop = await assets.LoadAsync<SummonSkillLoop>(SummonSkillLoop.Address, loading);
+                cancellation.ThrowIfCancellationRequested();
+                await windows.ShowPageAsync(scope =>
+                {
+                    scope.Add(detach);
+                    scope.Add(loading.Dispose);
+                    var binder = new SummonWindowBinder(view, summon, art, artifacts, presentation, featuredLoop, locale, ShowHome);
+                    opened = true;
+                    return binder.OpenAsync(scope);
+                });
+            }
+            finally
+            {
+                if (!opened) { detach(); loading.Dispose(); }
+            }
+        }
+
         private async Task OpenInventory(bool roster, CancellationToken cancellation)
         {
             var loading = new BindingScope(token);
@@ -131,12 +175,17 @@ namespace AstralOath.Client.FoundationDemo
             {
                 var view = await views.CreateAsync<HeroInventory>(assets, parent, loading);
                 var art = await assets.LoadAsync<HomeHeroArt>(HomeHeroArt.Address, loading);
+                var artifactArt = await assets.LoadAsync<ArtifactArtCatalog>(ArtifactArtCatalog.Address, loading);
                 cancellation.ThrowIfCancellationRequested();
                 await windows.ShowPageAsync(scope =>
                 {
                     scope.Add(detach);
                     scope.Add(loading.Dispose);
-                    var binder = new HeroInventoryBinder(view, art, locale, inventory.FetchAsync, ShowHome);
+                    Func<string, CancellationToken, Task> startTrial = null;
+                    if (Debug.isDebugBuild && endpoint.IsLoopback)
+                        startTrial = (hero, ct) => StartArtifactTrialAsync(hero, artifactArt, ct);
+                    var binder = new HeroInventoryBinder(view, art, locale, inventory.FetchAsync, ShowHome,
+                        artifactArt, artifacts, startTrial);
                     opened = true;
                     return binder.OpenAsync(roster, scope);
                 });
@@ -145,6 +194,19 @@ namespace AstralOath.Client.FoundationDemo
             {
                 if (!opened) { detach(); loading.Dispose(); }
             }
+        }
+
+        private async Task StartArtifactTrialAsync(string heroInstanceId, ArtifactArtCatalog art, CancellationToken cancellation)
+        {
+            if (BattleOnlineLaunch.IsActive) return;
+            var invitation = await artifacts.StartTrialAsync(heroInstanceId, cancellation);
+            await BattleOnlineLaunch.LoadOwnedTrialAsync(assets, scenes, endpoint, invitation.roomId,
+                invitation.opening.snapshot.battleId, invitation.contentHash, invitation.battleContentHash,
+                invitation.allyToken, cancellation, id =>
+                {
+                    var item = art.Find(id);
+                    return (item?.template.Name, item?.combatIcon);
+                });
         }
 
         private Task OpenDirectory(CancellationToken token)

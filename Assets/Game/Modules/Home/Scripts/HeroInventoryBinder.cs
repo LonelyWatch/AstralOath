@@ -23,6 +23,8 @@ namespace AstralOath.Client.Home
         private readonly Func<Task> goHome;
         private readonly Dictionary<string, HomeHeroArt.Hero> artwork;
         private readonly Sprite star;
+        private readonly ArtifactInventoryBinder artifacts;
+        private readonly Func<string, CancellationToken, Task> startTrial;
         private readonly List<Card> cards = new List<Card>();
 
         private BindingScope screen;
@@ -32,17 +34,25 @@ namespace AstralOath.Client.Home
         private bool roster, expanded, loading, failed;
         private Tab tab;
         private string classFilter;
+        private bool trialPending;
+        private string failedTrialHero;
         private HeroRosterPortrait portrait;
 
         public HeroInventoryBinder(HeroInventory view, HomeHeroArt art, ILocaleService locale,
-            Func<CancellationToken, Task<HeroInventorySnapshot>> fetch, Func<Task> goHome)
+            Func<CancellationToken, Task<HeroInventorySnapshot>> fetch, Func<Task> goHome,
+            ArtifactArtCatalog artifactArt = null, ArtifactInventoryApi artifactApi = null,
+            Func<string, CancellationToken, Task> startTrial = null)
         {
             this.view = view;
             this.locale = locale;
             this.fetch = fetch;
             this.goHome = goHome;
+            this.startTrial = startTrial;
             artwork = art.heroes.ToDictionary(item => item.id, StringComparer.Ordinal);
             star = art.star;
+            if (artifactArt != null && artifactApi != null)
+                artifacts = new ArtifactInventoryBinder(view.Artifacts, artifactApi, artifactArt, locale,
+                    () => selected, ClassForTemplate, HeroNameForInstance, OnArtifactsChanged);
         }
 
         public async Task OpenAsync(bool roster, BindingScope scope)
@@ -102,16 +112,31 @@ namespace AstralOath.Client.Home
 
             view.Bag.SetActive(!roster);
             view.Roster.SetActive(roster);
-            view.Back.Bind(scope, _ => expanded ? ToggleExpanded() : goHome());
+            var trialButton = view.ArtifactTrial;
+            trialButton.gameObject.SetActive(roster && startTrial != null);
+            if (roster && startTrial != null)
+            {
+                view.ArtifactTrialLabel.text = locale.Resolve(TextPrefix + "artifact_trial");
+                view.ArtifactTrialStatus.text = locale.Resolve(TextPrefix + "artifact_trial_failed");
+                PaintTrial();
+                trialButton.onClick.AddListener(StartTrial);
+                scope.Add(() => { if (trialButton) trialButton.onClick.RemoveListener(StartTrial); });
+            }
+            view.Back.Bind(scope, _ => artifacts?.Back() == true ? Task.CompletedTask : expanded ? ToggleExpanded() : goHome());
             view.Expand.Bind(scope, _ => ToggleExpanded());
             view.Retry.Bind(scope, ReloadAsync);
-            view.TabHeroes.Bind(scope, _ => SelectTab(Tab.Heroes));
-            view.TabEquipment.Bind(scope, _ => SelectTab(Tab.Equipment));
-            view.TabArtifacts.Bind(scope, _ => SelectTab(Tab.Artifacts));
+            view.TabHeroes.Bind(scope, ct => SelectTab(Tab.Heroes, ct));
+            view.TabEquipment.Bind(scope, ct => SelectTab(Tab.Equipment, ct));
+            view.TabArtifacts.Bind(scope, ct => SelectTab(Tab.Artifacts, ct));
             foreach (string name in HeroInventory.ClassNames)
                 view.ClassFilter(name).Bind(scope, _ => SelectClass(name));
             SetExpanded(false);
-            await ReloadAsync(scope.Token);
+            if (artifacts != null)
+            {
+                artifacts.Bind(scope);
+                await Task.WhenAll(ReloadAsync(scope.Token), artifacts.PreloadAsync(scope.Token));
+            }
+            else await ReloadAsync(scope.Token);
         }
 
         private ScrollRect Scroll => roster ? view.RosterScroll : view.BagScroll;
@@ -144,15 +169,29 @@ namespace AstralOath.Client.Home
                 Refresh(resetScroll: true);
         }
 
-        private Task SelectTab(Tab next)
+        private async Task SelectTab(Tab next, CancellationToken token)
         {
-            if (tab != next)
-            {
-                tab = next;
-                classFilter = "all";
-                Refresh(resetScroll: true);
-            }
-            return Task.CompletedTask;
+            if (tab == next) return;
+            tab = next;
+            classFilter = "all";
+            if (next != Tab.Artifacts) artifacts?.HideTab();
+            Refresh(resetScroll: true);
+            if (next == Tab.Artifacts && artifacts != null) await artifacts.ShowTabAsync(token);
+        }
+
+        private string ClassForTemplate(string templateId) =>
+            artwork.TryGetValue(templateId, out var item) ? item.heroClass : "";
+
+        private string HeroNameForInstance(string instanceId)
+        {
+            var item = snapshot?.heroes?.FirstOrDefault(hero => hero.instanceId == instanceId);
+            return item == null ? locale.Resolve(TextPrefix + "unknown_hero") : Name(item);
+        }
+
+        private void OnArtifactsChanged()
+        {
+            SetDetail();
+            ShowCards();
         }
 
         private Task SelectClass(string next)
@@ -290,6 +329,7 @@ namespace AstralOath.Client.Home
                 card.Root.sizeDelta = new Vector2(roster ? -8f : 0f, visualHeight);
                 card.Root.anchoredPosition = new Vector2(x, -CompactInset - (itemIndex / columns) * height);
                 card.Display(item, Name(item), Level(item), art, star, active);
+                if (!roster) card.DisplayArtifact(artifacts?.EquippedCard(item.instanceId) ?? (null, 0));
                 if (compact)
                 {
                     card.Root.SetAsLastSibling();
@@ -319,7 +359,39 @@ namespace AstralOath.Client.Home
             view.DetailZodiacName.text = DetailLabel("zodiac", art?.zodiac);
             for (int index = 0; index < 6; ++index)
                 SetSprite(view.DetailStar(index), selected != null && index < selected.stars ? star : null);
+            artifacts?.PaintSlot(selected);
+            PaintTrial();
             SetDetailStats(art?.growth);
+        }
+
+        private void PaintTrial()
+        {
+            if (!roster || startTrial == null) return;
+            string id = selected?.instanceId;
+            view.ArtifactTrial.interactable = id != null && !trialPending;
+            view.ArtifactTrialStatus.enabled = id != null && failedTrialHero == id;
+        }
+
+        private async void StartTrial()
+        {
+            if (screen == null || selected == null || trialPending || !view.ArtifactTrial.IsInteractable()) return;
+            var scope = screen;
+            string hero = selected.instanceId;
+            trialPending = true;
+            failedTrialHero = null;
+            PaintTrial();
+            try { await startTrial(hero, scope.Token); }
+            catch (OperationCanceledException) when (scope.Token.IsCancellationRequested) { }
+            catch (Exception error)
+            {
+                failedTrialHero = hero;
+                Debug.LogWarning("Artifact trial could not start: " + error.GetType().Name);
+            }
+            finally
+            {
+                trialPending = false;
+                if (screen == scope) PaintTrial();
+            }
         }
 
         private string DetailLabel(string category, string value) => string.IsNullOrEmpty(value)
@@ -336,9 +408,11 @@ namespace AstralOath.Client.Home
                 stats = HeroStatCalculator.Calculate(preset, selected.level, selected.stars, 0,
                     Array.Empty<HeroAwakeningStep>());
             }
-            view.DetailStat("attack").text = StatNumber(stats?.Attack);
+            var (artifactAttack, artifactHealth) = selected == null
+                ? (0, 0) : artifacts?.EquippedStats(selected.instanceId) ?? (0, 0);
+            view.DetailStat("attack").text = StatNumber(stats?.Attack + artifactAttack);
             view.DetailStat("defense").text = StatNumber(stats?.Defense);
-            view.DetailStat("health").text = StatNumber(stats?.MaxHealth);
+            view.DetailStat("health").text = StatNumber(stats?.MaxHealth + artifactHealth);
             view.DetailStat("speed").text = StatNumber(stats?.Speed);
             view.DetailStat("critChance").text = StatPercent(stats?.CritChanceBp);
             view.DetailStat("critDamage").text = StatPercent(stats?.CritDamageBp);
@@ -369,6 +443,8 @@ namespace AstralOath.Client.Home
             private readonly Image[] stars;
             private readonly Image firstLevelDigit, secondLevelDigit, maximumLevel;
             private readonly Sprite[] levelDigits;
+            private readonly Image artifact;
+            private readonly GameText artifactLevel;
 
             internal readonly RectTransform Root;
             internal readonly GameButton Button;
@@ -391,8 +467,16 @@ namespace AstralOath.Client.Home
                     firstLevelDigit = map.Require<Image>("bagLevelFirst");
                     secondLevelDigit = map.Require<Image>("bagLevelSecond");
                     maximumLevel = map.Require<Image>("bagLevelMax");
+                    artifact = map.Require<Image>("bagEquippedArtifact");
+                    artifactLevel = map.Require<GameText>("bagEquippedArtifactLevel");
                     levelDigits = Enumerable.Range(0, 10).Select(index => map.Require<Image>("bagLevelDigit" + index).sprite).ToArray();
                 }
+            }
+
+            internal void DisplayArtifact((Sprite Portrait, int Level) equipped)
+            {
+                SetSprite(artifact, equipped.Portrait);
+                artifactLevel.text = equipped.Portrait ? "+" + equipped.Level.ToString(CultureInfo.InvariantCulture) : "";
             }
 
             internal void Display(HeroInventoryItem item, string title, string levelText, HomeHeroArt.Hero art, Sprite star,

@@ -9,6 +9,7 @@ namespace AstralOath.Client.Home
     {
         public const string Address = "home/hero-inventory";
         public override string PrefabPath => Address;
+        internal ArtifactInventoryBindings Artifacts => new ArtifactInventoryBindings(Bindings);
         internal GameObject Bag => Bindings.Require<GameObject>("bag");
         internal GameObject Roster => Bindings.Require<GameObject>("roster");
         internal GameButton Back => Bindings.Require<GameButton>("back");
@@ -48,6 +49,9 @@ namespace AstralOath.Client.Home
         internal GameText Status => Bindings.Require<GameText>("status");
         internal GameButton Retry => Bindings.Require<GameButton>("retry");
         internal GameText RetryLabel => Bindings.Require<GameText>("retryLabel");
+        internal GameButton ArtifactTrial => Bindings.Require<GameButton>("artifactTrial");
+        internal GameText ArtifactTrialLabel => Bindings.Require<GameText>("artifactTrialLabel");
+        internal GameText ArtifactTrialStatus => Bindings.Require<GameText>("artifactTrialStatus");
         internal GameText DetailName => Bindings.Require<GameText>("detailName");
         internal GameText DetailLevel => Bindings.Require<GameText>("detailLevel");
         internal GameText DetailStars => Bindings.Require<GameText>("detailStars");
@@ -81,6 +85,8 @@ namespace AstralOath.Client.Home
                 _ = ClassSelection(name);
             }
             _ = TabSelection("heroes"); _ = TabSelection("equipment"); _ = TabSelection("artifacts");
+            _ = ArtifactTrial; _ = ArtifactTrialLabel; _ = ArtifactTrialStatus;
+            Artifacts.Validate();
         }
     }
 }

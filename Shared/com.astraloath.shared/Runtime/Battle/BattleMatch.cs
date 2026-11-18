@@ -45,7 +45,7 @@ namespace AstralOath.Shared.Battle
             Emit(opening, BattleFlowEventKind.BattleStarted);
             foreach (var unit in units)
                 ChangeResource(unit, unit.Id, unit.Resource?.OpeningGain ?? 0, opening);
-            if (resolver is IBattleLifecycleResolver lifecycle) ApplyLifecycle(lifecycle.BattleStart(Capture()), opening);
+            if (resolver is IBattleLifecycleResolver lifecycle) ApplyLifecycle(lifecycle.BattleStart(Capture(), ArtifactRandom(0)), opening);
             Advance(opening);
             OpeningEvents = opening.AsReadOnly();
             Snapshot = Capture();
@@ -105,6 +105,9 @@ namespace AstralOath.Shared.Battle
         private BattleCommandResult Reject(BattleCommandStatus status) =>
             new BattleCommandResult(status, Snapshot, Array.Empty<BattleFlowEvent>());
 
+        private BattleRandom ArtifactRandom(ulong phase) =>
+            new BattleRandom(unchecked(seed ^ ((ulong)turn * 3 + phase) * 0xD1B54A32D192ED03UL));
+
         private bool IsValid(BattleChange change)
         {
             if (change == null || change.SourceId == null || !byId.TryGetValue(change.SourceId, out var source))
@@ -127,6 +130,11 @@ namespace AstralOath.Shared.Battle
                 case BattleFlowEventKind.ResourceChanged: return target.Resource != null;
                 case BattleFlowEventKind.InjuryApplied: return target.Unit.Definition is HeroDefinition && change.Amount > 0;
                 case BattleFlowEventKind.OpeningAttackBonusApplied: return source == target && change.Amount > 0;
+                case BattleFlowEventKind.ArtifactStateChanged:
+                    return source == target && target.Unit.Artifact != null &&
+                        Enum.IsDefined(typeof(ArtifactCounter), change.Counter) && change.Amount >= 0 && change.Amount <= 10;
+                case BattleFlowEventKind.ArtifactTriggered:
+                    return source == target && target.Unit.Artifact?.Id == change.SkillId;
                 case BattleFlowEventKind.TurnEffectTriggered: return source == target && !string.IsNullOrWhiteSpace(change.SkillId);
                 case BattleFlowEventKind.StatusApplied: return change.Status.HasValue && change.Turns > 0 && change.Turns <= 60 && change.Amount >= 0;
                 case BattleFlowEventKind.StatusRemoved: return change.Status.HasValue;
@@ -197,6 +205,12 @@ namespace AstralOath.Shared.Battle
                     break;
                 case BattleFlowEventKind.TurnEffectTriggered:
                     unit.TriggeredTurnEffects.Add(change.SkillId);
+                    break;
+                case BattleFlowEventKind.ArtifactStateChanged:
+                    unit.ArtifactCounters[change.Counter] = change.Amount;
+                    break;
+                case BattleFlowEventKind.ArtifactTriggered:
+                    Emit(events, change.Kind, source, target, skillId: change.SkillId);
                     break;
                 case BattleFlowEventKind.Healing:
                     int healing = Math.Min(change.Amount, unit.MaximumHealth - unit.Health);
@@ -269,7 +283,7 @@ namespace AstralOath.Shared.Battle
         {
             if (resolver is IBattleLifecycleResolver lifecycle)
             {
-                var changes = lifecycle.StartOfTurn(Capture(), unit.Id);
+                var changes = lifecycle.StartOfTurn(Capture(), unit.Id, ArtifactRandom(1));
                 if (changes.Count > 512 || changes.Any(change => !IsValid(change) ||
                     change.Kind == BattleFlowEventKind.Action || change.Kind == BattleFlowEventKind.ExtraTurnGranted))
                     throw new InvalidOperationException("Battle periodic program returned invalid changes.");
@@ -353,7 +367,7 @@ namespace AstralOath.Shared.Battle
                 }
             }
             if (unit.Health > 0 && resolver is IBattleLifecycleResolver lifecycle)
-                ApplyLifecycle(lifecycle.TurnEnd(Capture(), unit.Id), events);
+                ApplyLifecycle(lifecycle.TurnEnd(Capture(), unit.Id, ArtifactRandom(2)), events);
             Emit(events, BattleFlowEventKind.TurnEnded, unit.Id);
         }
 
@@ -361,7 +375,11 @@ namespace AstralOath.Shared.Battle
         {
             if (changes.Count > 512 || changes.Any(change => !IsValid(change) ||
                 change.Kind != BattleFlowEventKind.StatusApplied && change.Kind != BattleFlowEventKind.StatusRemoved &&
-                !(turn == 0 && change.Kind == BattleFlowEventKind.OpeningAttackBonusApplied)))
+                change.Kind != BattleFlowEventKind.ArtifactStateChanged && change.Kind != BattleFlowEventKind.ArtifactTriggered &&
+                change.Kind != BattleFlowEventKind.ReadinessChanged && change.Kind != BattleFlowEventKind.ExtraTurnGranted &&
+                change.Kind != BattleFlowEventKind.CooldownChanged &&
+                !(turn == 0 && (change.Kind == BattleFlowEventKind.OpeningAttackBonusApplied ||
+                    change.Kind == BattleFlowEventKind.SoulChanged))))
                 throw new InvalidOperationException("Battle lifecycle program returned invalid changes.");
             foreach (var change in changes) Apply(change, events);
         }
@@ -441,6 +459,7 @@ namespace AstralOath.Shared.Battle
             public State(BattleUnit unit, int readiness)
             {
                 Unit = unit; Health = unit.CurrentHealth; Readiness = readiness;
+                if (unit.Artifact != null) ArtifactCounters = new Dictionary<ArtifactCounter, int>();
             }
             public BattleUnit Unit { get; }
             public string Id => Unit.InstanceId;
@@ -452,17 +471,21 @@ namespace AstralOath.Shared.Battle
             public BattleResourceDefinition Resource => (Unit.Definition as HeroDefinition)?.Resource;
             public int ResourceAmount { get; set; }
             public int Readiness { get; set; }
+            public Dictionary<ArtifactCounter, int> ArtifactCounters { get; }
             public Dictionary<string, int> Cooldowns { get; } = new Dictionary<string, int>(StringComparer.Ordinal);
             public List<BattleStatusSnapshot> Statuses { get; } = new List<BattleStatusSnapshot>();
             public long Speed => Unit.Stats.Speed * Math.Max(0L, 10000L +
                 Math.Max(Statuses.FirstOrDefault(item => item.Kind == BattleStatusKind.SpeedUp)?.Strength ?? 0,
                     Statuses.FirstOrDefault(item => item.Kind == BattleStatusKind.GreaterSpeedUp)?.Strength ?? 0) -
                 (Statuses.FirstOrDefault(item => item.Kind == BattleStatusKind.SpeedDown)?.Strength ?? 0) +
-                (Statuses.FirstOrDefault(item => item.Kind == BattleStatusKind.Rage)?.Strength ?? 0)) / 10000L;
+                (Statuses.FirstOrDefault(item => item.Kind == BattleStatusKind.Rage)?.Strength ?? 0) +
+                BattleArtifactStats.SpeedBonus(Unit.Artifact, Unit.ArtifactLevel, Health, MaximumHealth,
+                    ArtifactCounters?.GetValueOrDefault(ArtifactCounter.Stack) ?? 0)) / 10000L;
             public BattleUnitSnapshot Snapshot() => new BattleUnitSnapshot(Unit, Health, Readiness,
                 new ReadOnlyDictionary<string, int>(new Dictionary<string, int>(Cooldowns, StringComparer.Ordinal)),
                 Array.AsReadOnly(Statuses.ToArray()), ResourceAmount, InjuryAmount, OpeningAttackBonus,
-                Array.AsReadOnly(TriggeredTurnEffects.ToArray()));
+                Array.AsReadOnly(TriggeredTurnEffects.ToArray()), ArtifactCounters == null ? null :
+                    new ReadOnlyDictionary<ArtifactCounter, int>(new Dictionary<ArtifactCounter, int>(ArtifactCounters)));
         }
     }
 }

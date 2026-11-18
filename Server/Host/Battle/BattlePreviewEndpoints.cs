@@ -1,6 +1,6 @@
 using System.Buffers.Binary;
 using System.Security.Cryptography;
-using System.Text.Json;
+using System.Text.Json.Serialization;
 using AstralOath.Shared.Battle;
 
 namespace AstralOath.Server.Battle;
@@ -9,19 +9,13 @@ internal static class BattlePreviewEndpoints
 {
     public static void MapBattlePreview(this WebApplication app)
     {
-        using var stream = typeof(BattlePreviewEndpoints).Assembly.GetManifestResourceStream("AstralOath.BattleCatalog")
-            ?? throw new InvalidOperationException("The generated battle catalog is missing from the server build.");
-        using var memory = new MemoryStream();
-        stream.CopyTo(memory);
-        var bytes = memory.ToArray();
-        var catalog = JsonSerializer.Deserialize<BattleCatalogData>(bytes, new JsonSerializerOptions { IncludeFields = true })
-            ?? throw new InvalidOperationException("The battle catalog could not be read.");
-        string hash = Convert.ToHexString(SHA256.HashData(bytes));
+        var (catalog, hash) = ArenaBattleCatalog.ReadEmbeddedCatalog();
         var ai = new BattleAiPolicy(catalog);
         var rooms = new BattlePreviewRooms((id, seed) => BattlePreviewFactory.Create(id, seed, catalog, duel: true), hash, ai);
         // Validate the same authoritative roster and program during startup.
         _ = BattlePreviewFactory.Create("startup-validation", 0, catalog, duel: true);
         var routes = app.MapGroup("/api/battle-preview");
+        routes.MapOwnedBattleTrial(rooms, catalog, app.Logger);
         routes.MapPost("/rooms", () => rooms.TryCreate(out var room)
             ? Results.Ok(room) : Results.StatusCode(StatusCodes.Status429TooManyRequests));
         routes.MapGet("/rooms/{id}", (string id, ulong? after, HttpRequest request) =>
@@ -32,7 +26,7 @@ internal static class BattlePreviewEndpoints
         routes.MapPost("/rooms/{id}/commands", (string id, BattlePreviewCommand command, HttpRequest request) =>
         {
             if (!rooms.TryGet(id, Token(request), out var room, out var side)) return Results.NotFound();
-            if (command.ContentHash != rooms.ContentHash || !command.IsValid()) return Results.BadRequest();
+            if (command.ContentHash != room.ContentHash || !command.IsValid()) return Results.BadRequest();
             var reply = room.Submit(side, command);
             if (reply == null) return Results.StatusCode(StatusCodes.Status403Forbidden);
             return Results.Ok(reply);
@@ -76,7 +70,11 @@ internal sealed class BattlePreviewRooms
     }
     public string ContentHash { get; }
 
-    public bool TryCreate(out BattlePreviewInvitation? invitation)
+    public bool TryCreate(out BattlePreviewInvitation? invitation) =>
+        TryCreate(createMatch, automaticEnemy: false, out invitation);
+
+    internal bool TryCreate(Func<string, ulong, BattleMatch> matchFactory, bool automaticEnemy,
+        out BattlePreviewInvitation? invitation, string? matchContentHash = null)
     {
         lock (rooms)
         {
@@ -91,10 +89,12 @@ internal sealed class BattlePreviewRooms
             string id = Guid.NewGuid().ToString("N");
             ulong seed = BinaryPrimitives.ReadUInt64LittleEndian(RandomNumberGenerator.GetBytes(sizeof(ulong)));
             string ally = Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
-            string enemy = Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
-            var room = new BattlePreviewRoom(createMatch(id, seed), ally, enemy, now.Add(Lifetime), ContentHash, ai);
+            string enemy = automaticEnemy ? string.Empty : Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
+            var room = new BattlePreviewRoom(matchFactory(id, seed), ally, enemy, now.Add(Lifetime), matchContentHash ?? ContentHash, ai,
+                automaticEnemy);
             rooms.Add(id, room);
-            invitation = new BattlePreviewInvitation(id, ally, enemy, room.ExpiresAt, ContentHash, room.Read(0));
+            invitation = new BattlePreviewInvitation(id, ally, enemy, room.ExpiresAt, room.ContentHash, room.Read(0))
+                { BattleContentHash = matchContentHash is null ? null : ContentHash };
             return true;
         }
     }
@@ -125,20 +125,28 @@ internal sealed class BattlePreviewRoom
     private readonly BattleMatch match;
     private readonly byte[] allyToken;
     private readonly byte[] enemyToken;
-    private readonly string contentHash;
+    internal string ContentHash { get; }
     private readonly List<BattleFlowEvent> history;
     private readonly BattleAiPolicy ai;
+    private readonly bool automaticEnemy;
     private readonly Dictionary<BattleSnapshot, BattlePreviewCommandReply> commandReplies = new();
 
     public BattlePreviewRoom(BattleMatch match, string ally, string enemy, DateTimeOffset expiresAt, string contentHash, BattleAiPolicy ai)
+        : this(match, ally, enemy, expiresAt, contentHash, ai, automaticEnemy: false) { }
+
+    internal BattlePreviewRoom(BattleMatch match, string ally, string enemy, DateTimeOffset expiresAt,
+        string contentHash, BattleAiPolicy ai, bool automaticEnemy)
     {
         this.match = match;
         this.ai = ai;
+        this.automaticEnemy = automaticEnemy;
         allyToken = System.Text.Encoding.ASCII.GetBytes(ally);
         enemyToken = System.Text.Encoding.ASCII.GetBytes(enemy);
-        this.contentHash = contentHash;
+        ContentHash = contentHash;
         ExpiresAt = expiresAt;
         history = match.OpeningEvents.ToList();
+        if (automaticEnemy)
+            ResolveAutomaticTurns(history);
     }
     public DateTimeOffset ExpiresAt { get; }
 
@@ -146,7 +154,7 @@ internal sealed class BattlePreviewRoom
     {
         var bytes = System.Text.Encoding.ASCII.GetBytes(token);
         bool ally = CryptographicOperations.FixedTimeEquals(bytes, allyToken);
-        bool enemy = CryptographicOperations.FixedTimeEquals(bytes, enemyToken);
+        bool enemy = !automaticEnemy && CryptographicOperations.FixedTimeEquals(bytes, enemyToken);
         side = ally ? BattleSide.Ally : BattleSide.Enemy;
         return ally || enemy;
     }
@@ -157,7 +165,7 @@ internal sealed class BattlePreviewRoom
         {
             var snapshot = match.Snapshot;
             bool reset = after > snapshot.LastEventSequence || (history.Count > 0 && after < history[0].Sequence - 1);
-            return new BattlePreviewUpdate(contentHash, snapshot, reset, reset
+            return new BattlePreviewUpdate(ContentHash, snapshot, reset, reset
                 ? Array.Empty<BattleFlowEvent>() : history.Where(item => item.Sequence > after).ToArray());
         }
     }
@@ -184,18 +192,7 @@ internal sealed class BattlePreviewRoom
             if (result.Status != BattleCommandStatus.Accepted) return BattlePreviewCommandReply.From(result);
 
             var events = new List<BattleFlowEvent>(result.Events);
-            while (ai.IsForcedAction(match.Snapshot))
-            {
-                snapshot = match.Snapshot;
-                var forced = ai.ChooseAction(snapshot);
-                if (forced == null) break;
-                ulong sequence = snapshot.LastCommandSequence + 1;
-                var forcedResult = match.Submit(new BattleSkillCommand(snapshot.BattleId, snapshot.RulesVersion,
-                    sequence, $"forced:{sequence}", snapshot.CurrentActorId, forced.SkillId, forced.TargetId));
-                if (forcedResult.Status != BattleCommandStatus.Accepted)
-                    throw new InvalidOperationException($"Forced battle action was rejected: {forcedResult.Status}.");
-                events.AddRange(forcedResult.Events);
-            }
+            ResolveAutomaticTurns(events);
             history.AddRange(events);
             if (history.Count > MaximumRetainedEvents)
                 history.RemoveRange(0, history.Count - MaximumRetainedEvents);
@@ -203,6 +200,26 @@ internal sealed class BattlePreviewRoom
             var completed = new BattlePreviewCommandReply(BattleCommandStatus.Accepted, match.Snapshot, events.AsReadOnly());
             commandReplies.Add(result.Snapshot, completed);
             return completed;
+        }
+    }
+
+    private void ResolveAutomaticTurns(List<BattleFlowEvent> events)
+    {
+        var snapshot = match.Snapshot;
+        while (snapshot.Outcome == BattleOutcome.InProgress)
+        {
+            bool enemyTurn = automaticEnemy && snapshot.GetUnit(snapshot.CurrentActorId)?.Slot.Side == BattleSide.Enemy;
+            if (!enemyTurn && !ai.IsForcedAction(snapshot)) break;
+            var choice = ai.ChooseAction(snapshot);
+            if (choice == null) break;
+            ulong sequence = snapshot.LastCommandSequence + 1;
+            string actorType = enemyTurn ? "trial-enemy" : "forced";
+            var result = match.Submit(new BattleSkillCommand(snapshot.BattleId, snapshot.RulesVersion, sequence,
+                $"{actorType}:{sequence}", snapshot.CurrentActorId, choice.SkillId, choice.TargetId));
+            if (result.Status != BattleCommandStatus.Accepted)
+                throw new InvalidOperationException($"Automatic battle action was rejected: {result.Status}.");
+            events.AddRange(result.Events);
+            snapshot = match.Snapshot;
         }
     }
 }
@@ -220,4 +237,8 @@ internal sealed record BattlePreviewUpdate(string ContentHash, BattleSnapshot Sn
     public BattleTurnClockView? Clock { get; init; }
 }
 internal sealed record BattlePreviewInvitation(string RoomId, string AllyToken, string EnemyToken,
-    DateTimeOffset ExpiresAt, string ContentHash, BattlePreviewUpdate Opening);
+    DateTimeOffset ExpiresAt, string ContentHash, BattlePreviewUpdate Opening)
+{
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? BattleContentHash { get; init; }
+}

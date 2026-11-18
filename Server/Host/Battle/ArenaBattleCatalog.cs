@@ -23,20 +23,27 @@ internal sealed class ArenaBattleCatalog : IDisposable
         PresentationWaitSeconds = configuration?.GetValue<int?>("Arena:BattlePresentationWaitSeconds") ?? 30;
         if (TurnSeconds is < 5 or > 120 || PresentationWaitSeconds is < 5 or > 120)
             throw new InvalidOperationException("Arena battle clock durations must be between 5 and 120 seconds.");
+        (catalog, ContentHash) = ReadEmbeddedCatalog();
+        heroes = new HashSet<string>(catalog.heroes.Select(row => row.id), StringComparer.Ordinal);
+        EligibleHeroIds = heroes.Order(StringComparer.Ordinal).ToArray();
+
+        ai = new BattleAiPolicy(catalog);
+    }
+
+    internal static (BattleCatalogData Catalog, string Hash) ReadEmbeddedCatalog()
+    {
         using var stream = typeof(ArenaBattleCatalog).Assembly.GetManifestResourceStream("AstralOath.BattleCatalog")
             ?? throw new InvalidOperationException("The generated battle catalog is missing from the server build.");
         using var reader = new StreamReader(stream, Encoding.UTF8);
-        var data = reader.ReadToEnd().TrimStart('\uFEFF').Replace("\r\n", "\n", StringComparison.Ordinal);
-        catalog = JsonSerializer.Deserialize<BattleCatalogData>(data, new JsonSerializerOptions { IncludeFields = true })
+        var canonical = reader.ReadToEnd().TrimStart('\uFEFF').Replace("\r\n", "\n", StringComparison.Ordinal);
+        var catalog = JsonSerializer.Deserialize<BattleCatalogData>(canonical, new JsonSerializerOptions { IncludeFields = true })
             ?? throw new InvalidOperationException("The battle catalog could not be read.");
-        heroes = new HashSet<string>(catalog.heroes.Select(row => row.id), StringComparer.Ordinal);
-        EligibleHeroIds = heroes.Order(StringComparer.Ordinal).ToArray();
-        ContentHash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(data)));
-        ai = new BattleAiPolicy(catalog);
+        return (catalog, Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(canonical))));
     }
 
     public string[] EligibleHeroIds { get; }
     public bool Contains(string? id) => id != null && heroes.Contains(id);
+    internal string? HeroClassFor(string id) => Array.Find(catalog.heroes, row => row.id == id)?.heroClass;
     public BattleAiChoice? ChooseTimeoutAction(BattleSnapshot snapshot) => ai.ChooseAction(snapshot);
     public static ulong NewSeed() => BinaryPrimitives.ReadUInt64LittleEndian(RandomNumberGenerator.GetBytes(sizeof(ulong)));
 

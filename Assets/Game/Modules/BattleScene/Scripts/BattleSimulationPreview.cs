@@ -26,6 +26,7 @@ namespace AstralOath.Client.BattleScene
         private bool entering;
         private bool onlineInputSuspended;
         private readonly BattleAiPolicy ai;
+        private readonly Func<string, (string Name, Sprite Icon)> artifactCue;
         private readonly BattleHudBinder binder;
         private readonly BindingMap hud;
         private readonly Camera camera;
@@ -83,12 +84,14 @@ namespace AstralOath.Client.BattleScene
             TextAsset[] particles, Texture2D[] particleTextures, BattleMatch match, GameObject inspectionPrefab = null,
             BattleHudPreview.SpineEffect readyDust = null, TextAsset skillTimelineOverrides = null,
             BattleOnlineSession online = null, BattleOnlineTransitionAssets.Copy onlineCopy = null,
-            BattleOnlineTransitionAssets onlineAssets = null)
+            BattleOnlineTransitionAssets onlineAssets = null,
+            Func<string, (string Name, Sprite Icon)> artifactCue = null)
         {
             bool measureEntry = online != null && Debug.isDebugBuild;
             double started = measureEntry ? Time.realtimeSinceStartupAsDouble : 0d;
             this.hud = hud;
             this.binder = binder;
+            this.artifactCue = artifactCue;
             inspectionContent = new BattleInspectionContent(catalog);
             if (inspectionPrefab) inspection = new InfoPanelBinder(inspectionPrefab, (RectTransform)hud.transform);
             camera = hud.GetComponentInParent<Canvas>().worldCamera;
@@ -272,6 +275,12 @@ namespace AstralOath.Client.BattleScene
 
         private void ShowOpeningEffectWords()
         {
+            var opening = online?.OpeningArtifactEvents ?? match?.OpeningEvents;
+            if (opening != null && artifactCue != null)
+                foreach (var item in opening)
+                    if (item.Kind == BattleFlowEventKind.ArtifactTriggered)
+                        ShowArtifactWord(item);
+
             if (Snapshot.LastCommandSequence != 0) return;
             foreach (var unit in Snapshot.Units)
                 if (unit.IsAlive)
@@ -772,6 +781,10 @@ namespace AstralOath.Client.BattleScene
                             break;
                     }
                     break;
+                case BattleFlowEventKind.ArtifactTriggered:
+                    if (artifactCue != null)
+                        ScheduleFeedback(AfterLastHitAt(item.SourceId), item.SourceId, () => ShowArtifactWord(item));
+                    break;
                 case BattleFlowEventKind.BarrierAbsorbed:
                     pendingAbsorption = item;
                     break;
@@ -911,6 +924,14 @@ namespace AstralOath.Client.BattleScene
 
         private string EffectWordLabel(string key) => effectWordCopy != null && effectWordCopy.TryGetValue(key, out var text)
             ? text : messages.GetValueOrDefault(key);
+
+        private void ShowArtifactWord(BattleFlowEvent item)
+        {
+            if (string.IsNullOrEmpty(item.SkillId) || !views.TryGetValue(item.SourceId, out var view)) return;
+            var cue = artifactCue(item.SkillId);
+            if (!string.IsNullOrEmpty(cue.Name))
+                view.ShowEffectWord(cue.Name, cue.Icon, passive: true);
+        }
 
         private void ShowStatusWord(View view, BattleStatusKind kind)
         {

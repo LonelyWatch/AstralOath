@@ -48,6 +48,7 @@ STATUSES = (
     ("DamageLimit", "Buff", "stic_dmg_limit"),
     ("SpiritlordProtection", "Buff", "stic_spiritlord_keep"),
     ("Rage", "Buff", "stic_madness"),
+    ("Targeted", "Debuff", "stic_target"),
 )
 
 

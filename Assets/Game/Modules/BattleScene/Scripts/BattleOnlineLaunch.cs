@@ -165,9 +165,22 @@ namespace AstralOath.Client.BattleScene
             }
         }
 
-        public static async Task LoadAsync(IAssetService assets, ISceneAssetService scenes, Uri endpoint,
+        public static Task LoadAsync(IAssetService assets, ISceneAssetService scenes, Uri endpoint,
             string roomId, string battleId, string contentHash, string arenaBearer, bool localIsHost,
-            CancellationToken cancellationToken, BattleOnlinePlayers players = null, Preparation prepared = null)
+            CancellationToken cancellationToken, BattleOnlinePlayers players = null, Preparation prepared = null) =>
+            LoadCoreAsync(assets, scenes, endpoint, roomId, battleId, contentHash, arenaBearer, localIsHost,
+                cancellationToken, players, prepared, battleContentHash: null, artifactCueLookup: null);
+
+        public static Task LoadOwnedTrialAsync(IAssetService assets, ISceneAssetService scenes, Uri endpoint,
+            string roomId, string battleId, string contentHash, string battleContentHash, string allyToken, CancellationToken cancellationToken,
+            Func<string, (string Name, Sprite Icon)> artifactCueLookup) =>
+            LoadCoreAsync(assets, scenes, endpoint, roomId, battleId, contentHash, allyToken, true,
+                cancellationToken, null, null, battleContentHash ?? throw new ArgumentNullException(nameof(battleContentHash)), artifactCueLookup);
+
+        private static async Task LoadCoreAsync(IAssetService assets, ISceneAssetService scenes, Uri endpoint,
+            string roomId, string battleId, string contentHash, string bearer, bool localIsHost,
+            CancellationToken cancellationToken, BattleOnlinePlayers players, Preparation prepared, string battleContentHash,
+            Func<string, (string Name, Sprite Icon)> artifactCueLookup)
         {
             cancellationToken.ThrowIfCancellationRequested();
             if (assets == null || scenes == null)
@@ -185,7 +198,7 @@ namespace AstralOath.Client.BattleScene
             double started = Time.realtimeSinceStartupAsDouble;
             try
             {
-                session = new BattleOnlineSession(endpoint, roomId, battleId, contentHash, arenaBearer, localIsHost)
+                session = new BattleOnlineSession(endpoint, roomId, battleId, contentHash, bearer, localIsHost, battleContentHash)
                 {
                     Players = players
                 };
@@ -209,6 +222,7 @@ namespace AstralOath.Client.BattleScene
                 onlineScene = sceneHandle.Scene;
                 cancellationToken.ThrowIfCancellationRequested();
                 double installing = Time.realtimeSinceStartupAsDouble;
+                if (artifactCueLookup != null) staged.Host.SetArtifactCueLookup(artifactCueLookup);
                 var catalog = staged.Host.AcceptOnlineSnapshot(session, response);
                 double authenticated = Time.realtimeSinceStartupAsDouble;
                 var roster = staged.Host.ConfigureOnlineRosterAsync(session.Snapshot, cancellationToken);

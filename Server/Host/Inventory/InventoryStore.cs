@@ -1,11 +1,14 @@
 using System.Data;
 using AstralOath.Server.Entry;
+using AstralOath.Server.Battle;
+using AstralOath.Shared.Battle;
 using AstralOath.Server.Foundation;
 using MySqlConnector;
 
 namespace AstralOath.Server.Inventory;
 
-internal sealed class InventoryStore(string? connectionString)
+internal sealed partial class InventoryStore(string? connectionString, ArtifactCatalog? artifactCatalog = null,
+    ArenaBattleCatalog? heroes = null, bool development = false)
 {
     internal const int DefaultCapacity = 1000;
 

@@ -1,0 +1,105 @@
+{
+  "frameCount": 269,
+  "framesPerSecond": 24,
+  "columns": 4,
+  "rows": 4,
+  "gutterPixels": 2,
+  "width": 640,
+  "height": 360,
+  "sourceGraph": "c_iseria_skill_03",
+  "sourceTargetCount": 1,
+  "sourceGraphSha256": "c0ca64fc1b1357afadd7136c795834ad71f9becaed23a0aac02442dceb0c943a",
+  "sourceFramesSha256": "72b3c5128325090d855962f7ff4bf192ae5d87b4411c6900db637fbf2a56f518",
+  "sourceFramesPerSecond": 30,
+  "sourceStartSeconds": 0.0,
+  "sourceEndSeconds": 11.2,
+  "pages": [
+    "frame-atlas-00.jpg",
+    "frame-atlas-01.jpg",
+    "frame-atlas-02.jpg",
+    "frame-atlas-03.jpg",
+    "frame-atlas-04.jpg",
+    "frame-atlas-05.jpg",
+    "frame-atlas-06.jpg",
+    "frame-atlas-07.jpg",
+    "frame-atlas-08.jpg",
+    "frame-atlas-09.jpg",
+    "frame-atlas-10.jpg",
+    "frame-atlas-11.jpg",
+    "frame-atlas-12.jpg",
+    "frame-atlas-13.jpg",
+    "frame-atlas-14.jpg",
+    "frame-atlas-15.jpg",
+    "frame-atlas-16.jpg"
+  ],
+  "atlasHashes": [
+    {
+      "path": "frame-atlas-00.jpg",
+      "sha256": "f5f1c7d1b594abc12c10f6f474f9cabf9f93bf3289c7e19688c9b169501122fc"
+    },
+    {
+      "path": "frame-atlas-01.jpg",
+      "sha256": "a44ebe3bbd3cf3dfdf249276a6baab532420059c396510b421686a567e1f5afb"
+    },
+    {
+      "path": "frame-atlas-02.jpg",
+      "sha256": "d1dd3f5740ada0d50668315567a3433ef3952442cdc11f03f164253fd28609a4"
+    },
+    {
+      "path": "frame-atlas-03.jpg",
+      "sha256": "9ce939310db5d3075ab9c773b56c2572328e4f1b95b4798fd638403928cbac43"
+    },
+    {
+      "path": "frame-atlas-04.jpg",
+      "sha256": "9294a3c65232e045935ede30543104a3d7f2dd3c13eb11c139a26d7fb86f7677"
+    },
+    {
+      "path": "frame-atlas-05.jpg",
+      "sha256": "ec190d8a140dab706c2e0eb957cd3f4a686755e8ed9cb29be0dc309a41b39491"
+    },
+    {
+      "path": "frame-atlas-06.jpg",
+      "sha256": "37329c6716065858c5e3a2009e36bb4f859442e90f2552e26a6d82d631b5739a"
+    },
+    {
+      "path": "frame-atlas-07.jpg",
+      "sha256": "3538067625e1145d5dee7daa92b3562610df213140ab24ab1e983285c6f6a5cd"
+    },
+    {
+      "path": "frame-atlas-08.jpg",
+      "sha256": "446d036fdc31f502023d252f259958cd18e5702add9f906877f4f606f5a22733"
+    },
+    {
+      "path": "frame-atlas-09.jpg",
+      "sha256": "2e67269cb7ee57553035d28d8c1d94f2136b849f645ebf35cc154a5f50cae149"
+    },
+    {
+      "path": "frame-atlas-10.jpg",
+      "sha256": "89dbe713a162ac5e57b8e916ac18ed733a2a56cb7b3fd7f1260c30501ac6c1d6"
+    },
+    {
+      "path": "frame-atlas-11.jpg",
+      "sha256": "70e354267aaa241aca5847b7408a1f4aebf57c9501c469981ad352293b4922e1"
+    },
+    {
+      "path": "frame-atlas-12.jpg",
+      "sha256": "cc0bbb52be04e777fcad1bf032752070f0fa50414705c9f635eaba2697f4b465"
+    },
+    {
+      "path": "frame-atlas-13.jpg",
+      "sha256": "b96e6211a54b4a6eb933f9f832f375c02feec1942d4cfa41a028188664ad8aa8"
+    },
+    {
+      "path": "frame-atlas-14.jpg",
+      "sha256": "5b6decbdcd35fdce50ce15b950651b670977d46ba98ad168f01aa41897a47576"
+    },
+    {
+      "path": "frame-atlas-15.jpg",
+      "sha256": "9bd2f06ebed39fbfc2fc4c703bf241ffd17c414eed2a8c35fc9a473f49f02d3c"
+    },
+    {
+      "path": "frame-atlas-16.jpg",
+      "sha256": "92039466fd48c209b76633d5e1e64a2f045eab86d3073bae328a6738929dbfdc"
+    }
+  ]
+}

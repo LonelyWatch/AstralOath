@@ -134,7 +134,7 @@ namespace AstralOath.Editor
             close.FeedbackSound = GameUiFeedback.Sound.Back;
             PressSprites(close, closeIcon, InventoryArt("quick_esc_p"));
 
-            DrawMoreMainLinks(drawer);
+            var summon = DrawMoreMainLinks(drawer);
             var entries = new (string Key, string Sprite)[]
             {
                 ("guide", "icon_lobby_master_guide"), ("collection", "renew_icon_quick_dictionary"), (null, null),
@@ -169,7 +169,7 @@ namespace AstralOath.Editor
             DrawMoreBottom(drawer);
 
             Bind(root, ("heroes", heroes), ("heroesLabel", heroCaption), ("close", close), ("outside", outside),
-                ("drawer", drawer), ("shade", shade));
+                ("drawer", drawer), ("shade", shade), ("summon", summon));
             return root.gameObject;
         }
 
@@ -181,7 +181,7 @@ namespace AstralOath.Editor
             return Text(rect, "Text", key, 24, 0, 0, 1, 1, color, TextAlignmentOptions.Center);
         }
 
-        private static void DrawMoreMainLinks(RectTransform root)
+        private static GameButton DrawMoreMainLinks(RectTransform root)
         {
             var entries = new (string Key, int CenterY, int Width)[]
             {
@@ -189,15 +189,18 @@ namespace AstralOath.Editor
                 (MorePrefix + "battle", 324, 54), ("home.arena", 389, 81),
                 (MorePrefix + "summon", 454, 54), (MorePrefix + "shop", 519, 54)
             };
+            GameButton summon = null;
             foreach (var (key, y, width) in entries)
             {
                 var background = HomeRightRect(root, key + " backing", -413, y + 6, width, 27,
                     new Vector2(1f, .5f));
                 Paint(background, HomeMoreArt("renew_main_hud_btn_deco_1"), new Color32(255, 255, 255, 76), sliced: true);
                 var rect = HomeRightRect(root, key, -422, y, 182, 46, new Vector2(1f, .5f));
+                if (key == MorePrefix + "summon") summon = Button(rect, null, Color.clear);
                 Text(rect, "Text", key, key == MorePrefix + "episode" ? 45 : 33,
                     0, 0, 1, 1, alignment: TextAlignmentOptions.MidlineRight);
             }
+            return summon;
         }
 
         private static void DrawMoreBottom(RectTransform root)

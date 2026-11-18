@@ -1,0 +1,580 @@
+
+n_biblika.sct
+size: 491,1264
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 280, 315
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+leo_mouth_3
+  rotate: true
+  xy: 443, 1248
+  size: 13, 12
+  orig: 13, 12
+  offset: 0, 0
+  index: -1
+light_halfcicle_01
+  rotate: false
+  xy: 2, 528
+  size: 211, 136
+  orig: 211, 136
+  offset: 0, 0
+  index: -1
+lika_acc_star
+  rotate: true
+  xy: 430, 890
+  size: 73, 57
+  orig: 73, 57
+  offset: 0, 0
+  index: -1
+lika_acc_star_ribbon_a
+  rotate: true
+  xy: 462, 214
+  size: 67, 27
+  orig: 67, 27
+  offset: 0, 0
+  index: -1
+lika_acc_star_ribbon_b
+  rotate: true
+  xy: 303, 1193
+  size: 66, 24
+  orig: 66, 24
+  offset: 0, 0
+  index: -1
+lika_arm_collar_lu
+  rotate: true
+  xy: 227, 360
+  size: 69, 49
+  orig: 69, 49
+  offset: 0, 0
+  index: -1
+lika_arm_collar_ru
+  rotate: true
+  xy: 168, 981
+  size: 86, 103
+  orig: 86, 103
+  offset: 0, 0
+  index: -1
+lika_arm_ld
+  rotate: true
+  xy: 280, 59
+  size: 150, 187
+  orig: 150, 187
+  offset: 0, 0
+  index: -1
+lika_arm_lu
+  rotate: false
+  xy: 427, 965
+  size: 61, 76
+  orig: 61, 76
+  offset: 0, 0
+  index: -1
+lika_arm_rd
+  rotate: false
+  xy: 273, 1066
+  size: 140, 125
+  orig: 140, 125
+  offset: 0, 0
+  index: -1
+lika_arm_ru
+  rotate: false
+  xy: 422, 1043
+  size: 66, 70
+  orig: 66, 70
+  offset: 0, 0
+  index: -1
+lika_cloth_grey_1
+  rotate: true
+  xy: 2, 396
+  size: 130, 218
+  orig: 130, 218
+  offset: 0, 0
+  index: -1
+lika_cloth_grey_2
+  rotate: true
+  xy: 277, 524
+  size: 132, 212
+  orig: 132, 212
+  offset: 0, 0
+  index: -1
+lika_cloth_grey_frill_1
+  rotate: false
+  xy: 273, 988
+  size: 147, 76
+  orig: 147, 76
+  offset: 0, 0
+  index: -1
+lika_cloth_grey_frill_2
+  rotate: false
+  xy: 274, 729
+  size: 159, 84
+  orig: 159, 84
+  offset: 0, 0
+  index: -1
+lika_cloth_u_back
+  rotate: false
+  xy: 2, 251
+  size: 223, 143
+  orig: 223, 143
+  offset: 0, 0
+  index: -1
+lika_cloth_u_l
+  rotate: false
+  xy: 451, 375
+  size: 38, 147
+  orig: 38, 147
+  offset: 0, 0
+  index: -1
+lika_cloth_u_m
+  rotate: true
+  xy: 280, 211
+  size: 48, 180
+  orig: 48, 180
+  offset: 0, 0
+  index: -1
+lika_cloth_u_r
+  rotate: false
+  xy: 251, 191
+  size: 27, 113
+  orig: 27, 113
+  offset: 0, 0
+  index: -1
+lika_coat_a
+  rotate: true
+  xy: 2, 2
+  size: 187, 276
+  orig: 187, 276
+  offset: 0, 0
+  index: -1
+lika_coat_b
+  rotate: false
+  xy: 2, 808
+  size: 165, 65
+  orig: 165, 65
+  offset: 0, 0
+  index: -1
+lika_coat_frill_a
+  rotate: false
+  xy: 276, 658
+  size: 211, 69
+  orig: 211, 69
+  offset: 0, 0
+  index: -1
+lika_coat_frill_b
+  rotate: false
+  xy: 137, 1193
+  size: 131, 69
+  orig: 131, 69
+  offset: 0, 0
+  index: -1
+lika_eyebrows
+  rotate: true
+  xy: 227, 251
+  size: 53, 16
+  orig: 53, 16
+  offset: 0, 0
+  index: -1
+lika_eyelid
+  rotate: false
+  xy: 168, 959
+  size: 44, 20
+  orig: 44, 20
+  offset: 0, 0
+  index: -1
+lika_eyes_close
+  rotate: false
+  xy: 2, 1038
+  size: 85, 28
+  orig: 85, 28
+  offset: 0, 0
+  index: -1
+lika_eyes_dot
+  rotate: false
+  xy: 215, 601
+  size: 60, 40
+  orig: 60, 40
+  offset: 0, 0
+  index: -1
+lika_eyes_line
+  rotate: true
+  xy: 452, 283
+  size: 90, 37
+  orig: 90, 37
+  offset: 0, 0
+  index: -1
+lika_eyes_twinkl
+  rotate: false
+  xy: 222, 431
+  size: 56, 35
+  orig: 56, 35
+  offset: 0, 0
+  index: -1
+lika_eyes_white
+  rotate: true
+  xy: 171, 736
+  size: 73, 42
+  orig: 73, 42
+  offset: 0, 0
+  index: -1
+lika_face
+  rotate: true
+  xy: 46, 1167
+  size: 24, 87
+  orig: 24, 87
+  offset: 0, 0
+  index: -1
+lika_foot_l
+  rotate: true
+  xy: 443, 1222
+  size: 24, 46
+  orig: 24, 46
+  offset: 0, 0
+  index: -1
+lika_foot_r
+  rotate: true
+  xy: 176, 1151
+  size: 39, 20
+  orig: 39, 20
+  offset: 0, 0
+  index: -1
+lika_hair_f_l_1a
+  rotate: true
+  xy: 215, 643
+  size: 20, 59
+  orig: 20, 59
+  offset: 0, 0
+  index: -1
+lika_hair_f_l_1b
+  rotate: false
+  xy: 172, 666
+  size: 41, 68
+  orig: 41, 68
+  offset: 0, 0
+  index: -1
+lika_hair_f_l_2
+  rotate: false
+  xy: 34, 1069
+  size: 48, 96
+  orig: 48, 96
+  offset: 0, 0
+  index: -1
+lika_hair_f_r_1a
+  rotate: true
+  xy: 215, 665
+  size: 15, 59
+  orig: 15, 59
+  offset: 0, 0
+  index: -1
+lika_hair_f_r_1b
+  rotate: false
+  xy: 469, 147
+  size: 20, 65
+  orig: 20, 65
+  offset: 0, 0
+  index: -1
+lika_hair_f_r_2
+  rotate: false
+  xy: 415, 1174
+  size: 26, 88
+  orig: 26, 88
+  offset: 0, 0
+  index: -1
+lika_hair_f_r_3
+  rotate: false
+  xy: 169, 811
+  size: 44, 146
+  orig: 44, 146
+  offset: 0, 0
+  index: -1
+lika_hair_l_1a
+  rotate: true
+  xy: 2, 1193
+  size: 69, 133
+  orig: 69, 133
+  offset: 0, 0
+  index: -1
+lika_hair_l_1b
+  rotate: true
+  xy: 280, 2
+  size: 55, 209
+  orig: 55, 209
+  offset: 0, 0
+  index: -1
+lika_hair_l_1c
+  rotate: false
+  xy: 89, 1038
+  size: 46, 125
+  orig: 46, 125
+  offset: 0, 0
+  index: -1
+lika_hair_l_2
+  rotate: true
+  xy: 2, 730
+  size: 76, 167
+  orig: 76, 167
+  offset: 0, 0
+  index: -1
+lika_hair_l_add
+  rotate: false
+  xy: 270, 1193
+  size: 31, 66
+  orig: 31, 66
+  offset: 0, 0
+  index: -1
+lika_hair_r_1a
+  rotate: false
+  xy: 2, 1069
+  size: 30, 97
+  orig: 30, 97
+  offset: 0, 0
+  index: -1
+lika_hair_r_1b
+  rotate: false
+  xy: 469, 59
+  size: 20, 86
+  orig: 20, 86
+  offset: 0, 0
+  index: -1
+lika_hair_r_2a
+  rotate: false
+  xy: 280, 261
+  size: 170, 52
+  orig: 170, 52
+  offset: 0, 0
+  index: -1
+lika_hair_r_2b
+  rotate: false
+  xy: 198, 1069
+  size: 49, 15
+  orig: 49, 15
+  offset: 0, 0
+  index: -1
+lika_hand_r
+  rotate: true
+  xy: 327, 486
+  size: 36, 24
+  orig: 36, 24
+  offset: 0, 0
+  index: -1
+lika_hat
+  rotate: false
+  xy: 415, 1115
+  size: 73, 57
+  orig: 73, 57
+  offset: 0, 0
+  index: -1
+lika_hat_acc
+  rotate: false
+  xy: 198, 1086
+  size: 48, 37
+  orig: 48, 37
+  offset: 0, 0
+  index: -1
+lika_hat_chain_a
+  rotate: true
+  xy: 249, 1069
+  size: 48, 14
+  orig: 48, 14
+  offset: 0, 0
+  index: -1
+lika_hat_chain_b
+  rotate: false
+  xy: 2, 1168
+  size: 42, 22
+  orig: 42, 22
+  offset: 0, 0
+  index: -1
+lika_head
+  rotate: false
+  xy: 2, 875
+  size: 164, 161
+  orig: 164, 161
+  offset: 0, 0
+  index: -1
+lika_leg_l1
+  rotate: false
+  xy: 329, 1193
+  size: 63, 63
+  orig: 63, 63
+  offset: 0, 0
+  index: -1
+lika_leg_l2
+  rotate: false
+  xy: 215, 840
+  size: 57, 127
+  orig: 57, 127
+  offset: 0, 0
+  index: -1
+lika_leg_r1
+  rotate: true
+  xy: 227, 306
+  size: 52, 51
+  orig: 52, 51
+  offset: 0, 0
+  index: -1
+lika_leg_r2
+  rotate: true
+  xy: 222, 468
+  size: 131, 53
+  orig: 131, 53
+  offset: 0, 0
+  index: -1
+lika_mouth_2
+  rotate: false
+  xy: 394, 1237
+  size: 19, 11
+  orig: 19, 11
+  offset: 0, 0
+  index: -1
+lika_neck
+  rotate: false
+  xy: 135, 1165
+  size: 39, 26
+  orig: 39, 26
+  offset: 0, 0
+  index: -1
+lika_ribbon_a
+  rotate: true
+  xy: 411, 486
+  size: 28, 22
+  orig: 28, 22
+  offset: 0, 0
+  index: -1
+lika_ribbon_b
+  rotate: false
+  xy: 457, 1248
+  size: 19, 12
+  orig: 19, 12
+  offset: 0, 0
+  index: -1
+lika_ribbon_chain_a
+  rotate: true
+  xy: 395, 486
+  size: 32, 14
+  orig: 32, 14
+  offset: 0, 0
+  index: -1
+lika_ribbon_chain_b
+  rotate: false
+  xy: 394, 1250
+  size: 16, 9
+  orig: 16, 9
+  offset: 0, 0
+  index: -1
+lika_ribbon_tail_a
+  rotate: false
+  xy: 394, 1193
+  size: 19, 42
+  orig: 19, 42
+  offset: 0, 0
+  index: -1
+lika_ribbon_tail_b
+  rotate: true
+  xy: 214, 969
+  size: 10, 44
+  orig: 10, 44
+  offset: 0, 0
+  index: -1
+lika_thigh_l1
+  rotate: true
+  xy: 274, 880
+  size: 52, 154
+  orig: 52, 154
+  offset: 0, 0
+  index: -1
+lika_thigh_l2
+  rotate: true
+  xy: 274, 934
+  size: 52, 151
+  orig: 52, 151
+  offset: 0, 0
+  index: -1
+lika_thigh_r1
+  rotate: false
+  xy: 274, 815
+  size: 155, 63
+  orig: 155, 63
+  offset: 0, 0
+  index: -1
+lika_thigh_r2
+  rotate: true
+  xy: 215, 682
+  size: 156, 57
+  orig: 156, 57
+  offset: 0, 0
+  index: -1
+lika_twinhair_l_a
+  rotate: false
+  xy: 435, 729
+  size: 52, 159
+  orig: 52, 159
+  offset: 0, 0
+  index: -1
+lika_twinhair_l_add
+  rotate: false
+  xy: 435, 486
+  size: 13, 27
+  orig: 13, 27
+  offset: 0, 0
+  index: -1
+lika_twinhair_l_b
+  rotate: false
+  xy: 2, 666
+  size: 168, 62
+  orig: 168, 62
+  offset: 0, 0
+  index: -1
+lika_twinhair_r_a
+  rotate: false
+  xy: 2, 191
+  size: 247, 58
+  orig: 247, 58
+  offset: 0, 0
+  index: -1
+lika_twinhair_r_b
+  rotate: true
+  xy: 137, 1038
+  size: 39, 22
+  orig: 39, 22
+  offset: 0, 0
+  index: -1
+lika_twinhair_side_l_a
+  rotate: true
+  xy: 353, 486
+  size: 34, 40
+  orig: 34, 40
+  offset: 0, 0
+  index: -1
+lika_twinhair_side_l_b
+  rotate: true
+  xy: 277, 486
+  size: 36, 48
+  orig: 36, 48
+  offset: 0, 0
+  index: -1
+lika_twinhair_side_r
+  rotate: true
+  xy: 137, 1079
+  size: 70, 48
+  orig: 70, 48
+  offset: 0, 0
+  index: -1
+lika_twinhair_top_l
+  rotate: false
+  xy: 443, 1174
+  size: 46, 46
+  orig: 46, 46
+  offset: 0, 0
+  index: -1
+lika_twinhair_top_r
+  rotate: true
+  xy: 198, 1125
+  size: 47, 37
+  orig: 47, 37
+  offset: 0, 0
+  index: -1

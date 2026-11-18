@@ -163,6 +163,38 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags:
         UserData:
+      - CollectPath: Assets/Game/Modules/Home/Configs/ArtifactArtCatalog.asset
+        CollectorGUID: 9c006f3b6fe87b64aa15bdb9215ed269
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/Summon/Res/Prefab/SummonWindow.prefab
+        CollectorGUID: e9f716bbe71a9044582daa40ed8deb5a
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/Summon/Res/Presentation/SummonPresentation.asset
+        CollectorGUID: 60067e112fd96934fae0373350d9f11e
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/Summon/Res/Presentation/IseriaSkillLoop/IseriaSkillLoop.asset
+        CollectorGUID: c3ed11a148d907241aebfa95ca1e0362
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
     - GroupName: EntryTheme
       GroupDesc:
       AssetTags:

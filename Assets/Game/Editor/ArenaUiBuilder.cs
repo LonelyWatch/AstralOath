@@ -6,6 +6,7 @@ using AstralOath.Client.Arena;
 using AstralOath.Client.Bootstrap;
 using AstralOath.Client.Common;
 using AstralOath.Client.Home;
+using AstralOath.Client.Summon;
 using TMPro;
 using UnityEditor;
 using UnityEditor.Build;
@@ -39,6 +40,10 @@ namespace AstralOath.Editor
             (HeroInventoryPrefabPath, HeroInventory.Address),
             (HomeMoreMenuPrefabPath, HomeMoreMenu.Address),
             (HomeHeroArtPath, HomeHeroArt.Address),
+            (ArtifactArtPath, ArtifactArtCatalog.Address),
+            (SummonPrefabPath, SummonWindow.Address),
+            (SummonPresentationBuilder.AssetPath, SummonPresentation.Address),
+            (FeaturedSkillAssetPath, SummonSkillLoop.Address),
         };
         private static readonly Color Gold = new Color32(166, 139, 92, 255);
         private static readonly Color Mist = new Color32(180, 206, 216, 255);
@@ -66,6 +71,7 @@ namespace AstralOath.Editor
             Save(BuildRoom(), Assets[3].Path);
             Save(BuildDraft(), DraftPrefabPath);
             BuildDraftArt();
+            BuildSummonAssets();
             BuildInventoryAssets();
             ConfigureCollectors();
             BuildStartupScene();
@@ -99,6 +105,9 @@ namespace AstralOath.Editor
             UIViewRegistry.ValidatePrefab<HeroInventory>(Load<GameObject>(HeroInventoryPrefabPath));
             UIViewRegistry.ValidatePrefab<HomeMoreMenu>(Load<GameObject>(HomeMoreMenuPrefabPath));
             _ = Load<HomeHeroArt>(HomeHeroArtPath);
+            _ = Load<ArtifactArtCatalog>(ArtifactArtPath).Catalog;
+            _ = Load<SummonPresentation>(SummonPresentationBuilder.AssetPath);
+            UIViewRegistry.ValidatePrefab<SummonWindow>(Load<GameObject>(SummonPrefabPath));
             UIViewRegistry.ValidatePrefab<ArenaDirectory>(Load<GameObject>(Assets[1].Path));
             UIViewRegistry.ValidatePrefab<ArenaCreateRoom>(Load<GameObject>(Assets[2].Path));
             UIViewRegistry.ValidatePrefab<ArenaRoom>(Load<GameObject>(Assets[3].Path));

@@ -1,0 +1,2430 @@
+{
+  "groups": [
+    {
+      "id": "1_blue",
+      "parts": [
+        {
+          "source": "gacha_eff_1_b_1_1",
+          "animation": "blue",
+          "order": 8,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 10.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_b_1_2",
+          "animation": "blue",
+          "order": 9,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 11.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_b_1_3",
+          "animation": "blue",
+          "order": 10,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 12.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_b_2",
+          "animation": "blue",
+          "order": 0,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 20.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_b_3",
+          "animation": "blue",
+          "order": 1,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 30.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "n_bibleo",
+          "animation": "animation",
+          "order": 2,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 40.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "n_biblika",
+          "animation": "animation",
+          "order": 3,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 50.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_f",
+          "animation": "animation",
+          "order": 4,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 60.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_2",
+          "animation": "blue",
+          "order": 5,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 70.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_2_f1",
+          "animation": "animation",
+          "order": 6,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 80.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_2_f2",
+          "animation": "blue",
+          "order": 7,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 90.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        }
+      ]
+    },
+    {
+      "id": "1_yellow1",
+      "parts": [
+        {
+          "source": "gacha_eff_1_b_1_1",
+          "animation": "yellow",
+          "order": 8,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 10.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_b_1_2",
+          "animation": "yellow",
+          "order": 9,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 11.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_b_1_3",
+          "animation": "yellow",
+          "order": 10,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 12.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_b_2",
+          "animation": "yellow",
+          "order": 0,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 20.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_b_3",
+          "animation": "yellow",
+          "order": 1,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 30.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "n_bibleo",
+          "animation": "animation",
+          "order": 2,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 40.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "n_biblika",
+          "animation": "animation",
+          "order": 3,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 50.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_f",
+          "animation": "animation",
+          "order": 4,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 60.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_2",
+          "animation": "yellow",
+          "order": 5,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 70.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_2_f1",
+          "animation": "animation",
+          "order": 6,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 80.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_2_f2",
+          "animation": "yellow",
+          "order": 7,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 90.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        }
+      ]
+    },
+    {
+      "id": "1_violet1",
+      "parts": [
+        {
+          "source": "gacha_eff_1_b_1_1",
+          "animation": "violet",
+          "order": 8,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 10.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_b_1_2",
+          "animation": "violet",
+          "order": 9,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 11.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_b_1_3",
+          "animation": "violet",
+          "order": 10,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 12.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_b_2",
+          "animation": "violet",
+          "order": 0,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 20.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_b_3",
+          "animation": "violet",
+          "order": 1,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 30.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "n_bibleo",
+          "animation": "animation",
+          "order": 2,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 40.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "n_biblika",
+          "animation": "animation",
+          "order": 3,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 50.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_f",
+          "animation": "animation",
+          "order": 4,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 60.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_2",
+          "animation": "violet",
+          "order": 5,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 70.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_2_f1",
+          "animation": "animation",
+          "order": 6,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 80.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_2_f2",
+          "animation": "violet",
+          "order": 7,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 90.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        }
+      ]
+    },
+    {
+      "id": "2_b_blue",
+      "parts": [
+        {
+          "source": "gacha_eff_2_b_1",
+          "animation": "animation",
+          "order": 0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 10.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_2_b_2",
+          "animation": "animation",
+          "order": 1,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 20.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_2_f",
+          "animation": "blue",
+          "order": 2,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 30.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        }
+      ]
+    },
+    {
+      "id": "2_b_yellow",
+      "parts": [
+        {
+          "source": "gacha_eff_2_b_1",
+          "animation": "animation",
+          "order": 0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 10.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_2_b_2",
+          "animation": "animation",
+          "order": 1,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 20.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_2_f",
+          "animation": "yellow",
+          "order": 2,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 30.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        }
+      ]
+    },
+    {
+      "id": "2_b_violet",
+      "parts": [
+        {
+          "source": "gacha_eff_2_b_1",
+          "animation": "animation",
+          "order": 0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 10.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_2_b_2",
+          "animation": "animation",
+          "order": 1,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 20.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_2_f",
+          "animation": "violet",
+          "order": 2,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 30.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        }
+      ]
+    },
+    {
+      "id": "2_class",
+      "parts": [
+        {
+          "source": "gacha_eff_2_figure",
+          "animation": "artifact",
+          "order": 0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 35.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        }
+      ]
+    },
+    {
+      "id": "2_blue",
+      "parts": [
+        {
+          "source": "gacha_eff_2_figure2",
+          "animation": "blue",
+          "order": 1,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 39.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_2_figure_f",
+          "animation": "animation",
+          "order": 0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 40.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_2_2_1",
+          "animation": "blue",
+          "order": 2,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 50.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_2_2_2",
+          "animation": "blue",
+          "order": 3,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 51.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        }
+      ]
+    },
+    {
+      "id": "2_yellow",
+      "parts": [
+        {
+          "source": "gacha_eff_2_figure2",
+          "animation": "yellow",
+          "order": 1,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 39.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_2_figure_f",
+          "animation": "animation",
+          "order": 0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 40.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_2_2_1",
+          "animation": "yellow",
+          "order": 2,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 50.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_2_2_2",
+          "animation": "yellow",
+          "order": 3,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 51.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        }
+      ]
+    },
+    {
+      "id": "2_violet",
+      "parts": [
+        {
+          "source": "gacha_eff_2_figure2",
+          "animation": "violet",
+          "order": 1,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 39.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_2_figure_f",
+          "animation": "animation",
+          "order": 0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 40.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_2_2_1",
+          "animation": "violet",
+          "order": 2,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 50.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_2_2_2",
+          "animation": "violet",
+          "order": 3,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 51.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        }
+      ]
+    },
+    {
+      "id": "2_blue_yellow",
+      "parts": [
+        {
+          "source": "gacha_eff_2_figure2",
+          "animation": "blue",
+          "order": 1,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 39.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_2_figure_f",
+          "animation": "animation",
+          "order": 0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 40.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_2_2_1",
+          "animation": "blue_yellow",
+          "order": 2,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 50.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_2_2_2",
+          "animation": "blue_yellow",
+          "order": 3,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 51.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        }
+      ]
+    },
+    {
+      "id": "2_blue_violet",
+      "parts": [
+        {
+          "source": "gacha_eff_2_figure2",
+          "animation": "blue",
+          "order": 1,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 39.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_2_figure_f",
+          "animation": "animation",
+          "order": 0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 40.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_2_2_1",
+          "animation": "blue_violet",
+          "order": 2,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 50.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_2_2_2",
+          "animation": "blue_violet",
+          "order": 3,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 51.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        }
+      ]
+    },
+    {
+      "id": "2_yellow_violet",
+      "parts": [
+        {
+          "source": "gacha_eff_2_figure2",
+          "animation": "yellow",
+          "order": 1,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 39.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_2_figure_f",
+          "animation": "animation",
+          "order": 0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 40.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_2_2_1",
+          "animation": "yellow_violet",
+          "order": 2,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 50.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_2_2_2",
+          "animation": "yellow_violet",
+          "order": 3,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 51.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        }
+      ]
+    },
+    {
+      "id": "3_b",
+      "parts": [
+        {
+          "source": "gacha_eff_3_loop_1",
+          "animation": "animation",
+          "order": 2,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 5.0,
+          "globalZ": 0.0,
+          "delay": 2400.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": true
+        },
+        {
+          "source": "gacha_eff_3_loop_2",
+          "animation": "animation",
+          "order": 3,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 8.0,
+          "globalZ": 0.0,
+          "delay": 2400.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": true
+        },
+        {
+          "source": "gacha_eff_3_intro_1",
+          "animation": "animation",
+          "order": 0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 10.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_3_intro_2",
+          "animation": "animation",
+          "order": 1,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 20.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        }
+      ]
+    },
+    {
+      "id": "3_f",
+      "parts": [
+        {
+          "source": "gacha_eff_3_f",
+          "animation": "animation",
+          "order": 0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 50.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        }
+      ]
+    },
+    {
+      "id": "3_character_bone",
+      "parts": [
+        {
+          "source": "gacha_eff_3_character_bone",
+          "animation": "intro,loop",
+          "order": 0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 30.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": true
+        }
+      ]
+    },
+    {
+      "id": "3_portrait_bone",
+      "parts": [
+        {
+          "source": "gacha_eff_3_portrait_bone",
+          "animation": "intro,loop",
+          "order": 0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 40.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": true
+        }
+      ]
+    },
+    {
+      "id": "3_artifact_bone",
+      "parts": [
+        {
+          "source": "gacha_eff_3_artifact_bone",
+          "animation": "intro,loop",
+          "order": 0,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 40.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": true
+        }
+      ]
+    }
+  ],
+  "skeletons": [
+    {
+      "id": "gacha_eff_1_b_2",
+      "document": "gacha_eff_1_b_2.spine.json",
+      "atlas": "gacha_eff_1_b_2.atlas.txt",
+      "pages": [
+        {
+          "name": "gacha_eff_1_b_2.sct",
+          "asset": "gacha_eff_1_b_2.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "blue",
+          "duration": 2.5
+        },
+        {
+          "name": "violet",
+          "duration": 2.5
+        },
+        {
+          "name": "yellow",
+          "duration": 2.5
+        }
+      ]
+    },
+    {
+      "id": "gacha_eff_1_b_3",
+      "document": "gacha_eff_1_b_3.spine.json",
+      "atlas": "gacha_eff_1_b_3.atlas.txt",
+      "pages": [
+        {
+          "name": "gacha_eff_1_b_3.sct",
+          "asset": "gacha_eff_1_b_3.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "blue",
+          "duration": 2.5
+        },
+        {
+          "name": "violet",
+          "duration": 2.5
+        },
+        {
+          "name": "yellow",
+          "duration": 2.5
+        }
+      ]
+    },
+    {
+      "id": "n_bibleo",
+      "document": "n_bibleo.spine.json",
+      "atlas": "n_bibleo.atlas.txt",
+      "pages": [
+        {
+          "name": "n_bibleo.sct",
+          "asset": "n_bibleo.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 2.5
+        }
+      ]
+    },
+    {
+      "id": "n_biblika",
+      "document": "n_biblika.spine.json",
+      "atlas": "n_biblika.atlas.txt",
+      "pages": [
+        {
+          "name": "n_biblika.sct",
+          "asset": "n_biblika.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 2.5
+        }
+      ]
+    },
+    {
+      "id": "gacha_eff_1_f",
+      "document": "gacha_eff_1_f.spine.json",
+      "atlas": "gacha_eff_1_f.atlas.txt",
+      "pages": [
+        {
+          "name": "gacha_eff_1_f.sct",
+          "asset": "gacha_eff_1_f.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 2.5
+        }
+      ]
+    },
+    {
+      "id": "gacha_eff_1_2",
+      "document": "gacha_eff_1_2.spine.json",
+      "atlas": "gacha_eff_1_2.atlas.txt",
+      "pages": [
+        {
+          "name": "gacha_eff_1_2.sct",
+          "asset": "gacha_eff_1_2.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "blue",
+          "duration": 4.133299827575684
+        },
+        {
+          "name": "violet",
+          "duration": 4.133299827575684
+        },
+        {
+          "name": "yellow",
+          "duration": 4.133299827575684
+        }
+      ]
+    },
+    {
+      "id": "gacha_eff_1_2_f1",
+      "document": "gacha_eff_1_2_f1.spine.json",
+      "atlas": "gacha_eff_1_2_f1.atlas.txt",
+      "pages": [
+        {
+          "name": "gacha_eff_1_2_f1.sct",
+          "asset": "gacha_eff_1_2_f1.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 4.133299827575684
+        }
+      ]
+    },
+    {
+      "id": "gacha_eff_1_2_f2",
+      "document": "gacha_eff_1_2_f2.spine.json",
+      "atlas": "gacha_eff_1_2_f2.atlas.txt",
+      "pages": [
+        {
+          "name": "gacha_eff_1_2_f2.sct",
+          "asset": "gacha_eff_1_2_f2.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "blue",
+          "duration": 4.133299827575684
+        },
+        {
+          "name": "violet",
+          "duration": 4.133299827575684
+        },
+        {
+          "name": "yellow",
+          "duration": 4.133299827575684
+        }
+      ]
+    },
+    {
+      "id": "gacha_eff_1_b_1_1",
+      "document": "gacha_eff_1_b_1_1.spine.json",
+      "atlas": "gacha_eff_1_b_1_1.atlas.txt",
+      "pages": [
+        {
+          "name": "gacha_eff_1_b_1_1.sct",
+          "asset": "gacha_eff_1_b_1_1.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "blue",
+          "duration": 2.5
+        },
+        {
+          "name": "violet",
+          "duration": 2.5
+        },
+        {
+          "name": "yellow",
+          "duration": 2.5
+        }
+      ]
+    },
+    {
+      "id": "gacha_eff_1_b_1_2",
+      "document": "gacha_eff_1_b_1_2.spine.json",
+      "atlas": "gacha_eff_1_b_1_2.atlas.txt",
+      "pages": [
+        {
+          "name": "gacha_eff_1_b_1_2.sct",
+          "asset": "gacha_eff_1_b_1_2.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "blue",
+          "duration": 2.5
+        },
+        {
+          "name": "violet",
+          "duration": 2.5
+        },
+        {
+          "name": "yellow",
+          "duration": 2.5
+        }
+      ]
+    },
+    {
+      "id": "gacha_eff_1_b_1_3",
+      "document": "gacha_eff_1_b_1_3.spine.json",
+      "atlas": "gacha_eff_1_b_1_3.atlas.txt",
+      "pages": [
+        {
+          "name": "gacha_eff_1_b_1_3.sct",
+          "asset": "gacha_eff_1_b_1_3.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "blue",
+          "duration": 2.5
+        },
+        {
+          "name": "violet",
+          "duration": 2.5
+        },
+        {
+          "name": "yellow",
+          "duration": 2.5
+        }
+      ]
+    },
+    {
+      "id": "gacha_eff_2_b_1",
+      "document": "gacha_eff_2_b_1.spine.json",
+      "atlas": "gacha_eff_2_b_1.atlas.txt",
+      "pages": [
+        {
+          "name": "gacha_eff_2_b_1.sct",
+          "asset": "gacha_eff_2_b_1.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 4.766600131988525
+        }
+      ]
+    },
+    {
+      "id": "gacha_eff_2_b_2",
+      "document": "gacha_eff_2_b_2.spine.json",
+      "atlas": "gacha_eff_2_b_2.atlas.txt",
+      "pages": [
+        {
+          "name": "gacha_eff_2_b_2.sct",
+          "asset": "gacha_eff_2_b_2.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 4.633299827575684
+        }
+      ]
+    },
+    {
+      "id": "gacha_eff_2_f",
+      "document": "gacha_eff_2_f.spine.json",
+      "atlas": "gacha_eff_2_f.atlas.txt",
+      "pages": [
+        {
+          "name": "gacha_eff_2_f.sct",
+          "asset": "gacha_eff_2_f.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "blue",
+          "duration": 1.6332999467849731
+        },
+        {
+          "name": "violet",
+          "duration": 1.6332999467849731
+        },
+        {
+          "name": "yellow",
+          "duration": 1.6332999467849731
+        }
+      ]
+    },
+    {
+      "id": "gacha_eff_2_figure",
+      "document": "gacha_eff_2_figure.spine.json",
+      "atlas": "gacha_eff_2_figure.atlas.txt",
+      "pages": [
+        {
+          "name": "gacha_eff_2_figure.sct",
+          "asset": "gacha_eff_2_figure.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "artifact",
+          "duration": 4.766600131988525
+        },
+        {
+          "name": "assassin",
+          "duration": 4.766600131988525
+        },
+        {
+          "name": "knight",
+          "duration": 4.766600131988525
+        },
+        {
+          "name": "mage",
+          "duration": 4.766600131988525
+        },
+        {
+          "name": "manauser",
+          "duration": 4.766600131988525
+        },
+        {
+          "name": "ranger",
+          "duration": 4.766600131988525
+        },
+        {
+          "name": "warrior",
+          "duration": 4.766600131988525
+        }
+      ]
+    },
+    {
+      "id": "gacha_eff_2_figure_f",
+      "document": "gacha_eff_2_figure_f.spine.json",
+      "atlas": "gacha_eff_2_figure_f.atlas.txt",
+      "pages": [
+        {
+          "name": "gacha_eff_2_figure_f.sct",
+          "asset": "gacha_eff_2_figure_f.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 4.666600227355957
+        }
+      ]
+    },
+    {
+      "id": "gacha_eff_2_figure2",
+      "document": "gacha_eff_2_figure2.spine.json",
+      "atlas": "gacha_eff_2_figure2.atlas.txt",
+      "pages": [
+        {
+          "name": "gacha_eff_2_figure2.sct",
+          "asset": "gacha_eff_2_figure2.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "blue",
+          "duration": 4.0665998458862305
+        },
+        {
+          "name": "violet",
+          "duration": 4.0665998458862305
+        },
+        {
+          "name": "yellow",
+          "duration": 4.0665998458862305
+        }
+      ]
+    },
+    {
+      "id": "gacha_eff_2_2_1",
+      "document": "gacha_eff_2_2_1.spine.json",
+      "atlas": "gacha_eff_2_2_1.atlas.txt",
+      "pages": [
+        {
+          "name": "gacha_eff_2_2_1.sct",
+          "asset": "gacha_eff_2_2_1.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "blue",
+          "duration": 4.300000190734863
+        },
+        {
+          "name": "blue_violet",
+          "duration": 5.266600131988525
+        },
+        {
+          "name": "blue_yellow",
+          "duration": 5.266600131988525
+        },
+        {
+          "name": "violet",
+          "duration": 4.300000190734863
+        },
+        {
+          "name": "violet_violet",
+          "duration": 5.266600131988525
+        },
+        {
+          "name": "yellow",
+          "duration": 4.300000190734863
+        },
+        {
+          "name": "yellow_violet",
+          "duration": 5.266600131988525
+        },
+        {
+          "name": "yellow_yellow",
+          "duration": 5.266600131988525
+        }
+      ]
+    },
+    {
+      "id": "gacha_eff_2_2_2",
+      "document": "gacha_eff_2_2_2.spine.json",
+      "atlas": "gacha_eff_2_2_2.atlas.txt",
+      "pages": [
+        {
+          "name": "gacha_eff_2_2_2.sct",
+          "asset": "gacha_eff_2_2_2.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "blue",
+          "duration": 3.8333001136779785
+        },
+        {
+          "name": "blue_violet",
+          "duration": 4.766600131988525
+        },
+        {
+          "name": "blue_yellow",
+          "duration": 4.766600131988525
+        },
+        {
+          "name": "violet",
+          "duration": 3.8333001136779785
+        },
+        {
+          "name": "violet_violet",
+          "duration": 4.766600131988525
+        },
+        {
+          "name": "yellow",
+          "duration": 3.8333001136779785
+        },
+        {
+          "name": "yellow_violet",
+          "duration": 4.766600131988525
+        },
+        {
+          "name": "yellow_yellow",
+          "duration": 4.766600131988525
+        }
+      ]
+    },
+    {
+      "id": "gacha_eff_3_intro_1",
+      "document": "gacha_eff_3_intro_1.spine.json",
+      "atlas": "gacha_eff_3_intro_1.atlas.txt",
+      "pages": [
+        {
+          "name": "gacha_eff_3_intro_1.sct",
+          "asset": "gacha_eff_3_intro_1.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 2.4000000953674316
+        }
+      ]
+    },
+    {
+      "id": "gacha_eff_3_intro_2",
+      "document": "gacha_eff_3_intro_2.spine.json",
+      "atlas": "gacha_eff_3_intro_2.atlas.txt",
+      "pages": [
+        {
+          "name": "gacha_eff_3_intro_2.sct",
+          "asset": "gacha_eff_3_intro_2.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 2.4000000953674316
+        }
+      ]
+    },
+    {
+      "id": "gacha_eff_3_loop_1",
+      "document": "gacha_eff_3_loop_1.spine.json",
+      "atlas": "gacha_eff_3_loop_1.atlas.txt",
+      "pages": [
+        {
+          "name": "gacha_eff_3_loop_1.sct",
+          "asset": "gacha_eff_3_loop_1.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 1.2000000476837158
+        }
+      ]
+    },
+    {
+      "id": "gacha_eff_3_loop_2",
+      "document": "gacha_eff_3_loop_2.spine.json",
+      "atlas": "gacha_eff_3_loop_2.atlas.txt",
+      "pages": [
+        {
+          "name": "gacha_eff_3_loop_2.sct",
+          "asset": "gacha_eff_3_loop_2.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 1.2000000476837158
+        }
+      ]
+    },
+    {
+      "id": "gacha_eff_3_f",
+      "document": "gacha_eff_3_f.spine.json",
+      "atlas": "gacha_eff_3_f.atlas.txt",
+      "pages": [
+        {
+          "name": "gacha_eff_3_f.sct",
+          "asset": "gacha_eff_3_f.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 0.5666000247001648
+        }
+      ]
+    },
+    {
+      "id": "gacha_eff_3_character_bone",
+      "document": "gacha_eff_3_character_bone.spine.json",
+      "atlas": "gacha_eff_3_character_bone.atlas.txt",
+      "pages": [
+        {
+          "name": "gacha_eff_3_character_bone.sct",
+          "asset": "gacha_eff_3_character_bone.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "intro",
+          "duration": 2.4000000953674316
+        },
+        {
+          "name": "loop",
+          "duration": 1.2000000476837158
+        }
+      ]
+    },
+    {
+      "id": "gacha_eff_3_portrait_bone",
+      "document": "gacha_eff_3_portrait_bone.spine.json",
+      "atlas": "gacha_eff_3_portrait_bone.atlas.txt",
+      "pages": [
+        {
+          "name": "gacha_eff_3_portrait_bone.sct",
+          "asset": "gacha_eff_3_portrait_bone.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "intro",
+          "duration": 2.4000000953674316
+        },
+        {
+          "name": "loop",
+          "duration": 1.2000000476837158
+        }
+      ]
+    },
+    {
+      "id": "gacha_eff_3_artifact_bone",
+      "document": "gacha_eff_3_artifact_bone.spine.json",
+      "atlas": "gacha_eff_3_artifact_bone.atlas.txt",
+      "pages": [
+        {
+          "name": "gacha_eff_3_artifact_bone.sct",
+          "asset": "gacha_eff_3_artifact_bone.png"
+        }
+      ],
+      "animations": [
+        {
+          "name": "intro",
+          "duration": 2.4000000953674316
+        },
+        {
+          "name": "loop",
+          "duration": 1.2000000476837158
+        }
+      ]
+    }
+  ],
+  "audio": [
+    {
+      "id": "OpenBlue",
+      "event": "event:/ui/gacha_new/gocha_effect_01_normal",
+      "guid": "0742251e-4240-48c5-b025-25a64a800525",
+      "bank": "ui1",
+      "samples": [
+        "assets\\ui\\gocha_effect_01_normal.wav",
+        "assets\\ui\\se_ui_gacha_card_new.wav"
+      ],
+      "asset": "OpenBlue.wav",
+      "sampleFrames": 134160,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "OpenGold",
+      "event": "event:/ui/gacha_new/gocha_effect_01_rare",
+      "guid": "655e1a59-45c0-47ef-84d7-607e9a97457e",
+      "bank": "ui1",
+      "samples": [
+        "assets\\ui\\gocha_effect_01_rare.wav",
+        "assets\\ui\\se_ui_gacha_card_new.wav"
+      ],
+      "asset": "OpenGold.wav",
+      "sampleFrames": 190128,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "OpenViolet",
+      "event": "event:/ui/gacha_new/gocha_effect_01_special",
+      "guid": "a669f6ce-82ae-4338-a506-3e6ec23966bd",
+      "bank": "ui1",
+      "samples": [
+        "assets\\ui\\gocha_effect_01_special.wav",
+        "assets\\ui\\se_ui_gacha_card_new.wav"
+      ],
+      "asset": "OpenViolet.wav",
+      "sampleFrames": 190128,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "OpenGoldMoonlight",
+      "event": "event:/ui/gacha_new/gocha_effect_01_rare_moonlight",
+      "guid": "b199f733-4a72-4f95-8a0b-cfc4ce0b2d9a",
+      "bank": "ui1",
+      "samples": [
+        "assets\\ui\\gocha_effect_01_rare_moonlight.wav",
+        "assets\\ui\\se_ui_gacha_card_new.wav"
+      ],
+      "asset": "OpenGoldMoonlight.wav",
+      "sampleFrames": 175392,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "OpenVioletMoonlight",
+      "event": "event:/ui/gacha_new/gocha_effect_01_special_moonlight",
+      "guid": "5d07f364-7cac-46a8-bd95-9d2325205239",
+      "bank": "ui1",
+      "samples": [
+        "assets\\ui\\gocha_effect_01_special_moonlight.wav",
+        "assets\\ui\\se_ui_gacha_card_new.wav"
+      ],
+      "asset": "OpenVioletMoonlight.wav",
+      "sampleFrames": 190128,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Hall",
+      "event": "event:/ui/gacha_new/gocha_effect_02",
+      "guid": "25241eed-d0a6-48cf-a469-a7cee37538a7",
+      "bank": "ui1",
+      "samples": [
+        "assets\\ui\\gocha_effect_02.wav"
+      ],
+      "asset": "Hall.wav",
+      "sampleFrames": 216768,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "HallMoonlight",
+      "event": "event:/ui/gacha_new/gocha_effect_02_moonlight",
+      "guid": "4682c54c-0ad7-46e5-82ec-49d5634b5827",
+      "bank": "ui1",
+      "samples": [
+        "assets\\ui\\gocha_effect_02_moonlight.wav"
+      ],
+      "asset": "HallMoonlight.wav",
+      "sampleFrames": 216768,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Figure",
+      "event": "event:/ui/gacha_new/gocha_effect_03",
+      "guid": "c2d61767-dc27-4d0f-81d2-a5646eb364a1",
+      "bank": "ui1",
+      "samples": [
+        "assets\\ui\\gocha_effect_03.wav"
+      ],
+      "asset": "Figure.wav",
+      "sampleFrames": 218880,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "BurstBlue",
+      "event": "event:/ui/gacha_new/gocha_effect_04_normal",
+      "guid": "da4bad53-6f6f-448e-bd5f-f08230d96d4b",
+      "bank": "ui1",
+      "samples": [
+        "assets\\ui\\gocha_effect_04_normal.wav"
+      ],
+      "asset": "BurstBlue.wav",
+      "sampleFrames": 182304,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "BurstGold",
+      "event": "event:/ui/gacha_new/gocha_effect_04_rare",
+      "guid": "992456a2-b218-4a88-92bf-712ec707fe2d",
+      "bank": "ui1",
+      "samples": [
+        "assets\\ui\\gocha_effect_04_rare.wav"
+      ],
+      "asset": "BurstGold.wav",
+      "sampleFrames": 182304,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "BurstViolet",
+      "event": "event:/ui/gacha_new/gocha_effect_04_special",
+      "guid": "49dc0e12-3b27-453f-97b5-d9318547caa6",
+      "bank": "ui1",
+      "samples": [
+        "assets\\ui\\gocha_effect_04_special.wav"
+      ],
+      "asset": "BurstViolet.wav",
+      "sampleFrames": 182304,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "BurstFakeGold",
+      "event": "event:/ui/gacha_new/gocha_effect_04_fake_rare",
+      "guid": "f4184d37-98e6-49c9-9899-e7229a44add2",
+      "bank": "ui1",
+      "samples": [
+        "assets\\ui\\gocha_effect_04_fake_rare.wav"
+      ],
+      "asset": "BurstFakeGold.wav",
+      "sampleFrames": 228816,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "BurstFakeViolet",
+      "event": "event:/ui/gacha_new/gocha_effect_04_fake_special",
+      "guid": "81457faf-a3fc-4c74-b900-50e4b6fa0c25",
+      "bank": "ui1",
+      "samples": [
+        "assets\\ui\\gocha_effect_04_fake_special.wav"
+      ],
+      "asset": "BurstFakeViolet.wav",
+      "sampleFrames": 243168,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "BurstFakeViolet2",
+      "event": "event:/ui/gacha_new/gocha_effect_04_fake_special2",
+      "guid": "5c811c43-72de-4fd1-969e-16b9008431a2",
+      "bank": "ui1",
+      "samples": [
+        "assets\\ui\\gocha_effect_04_fake_special2.wav"
+      ],
+      "asset": "BurstFakeViolet2.wav",
+      "sampleFrames": 243168,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Summary",
+      "event": "event:/ui/gacha_new/gocha_effect_05",
+      "guid": "98143e14-5e9f-41d6-a5e4-68a84926c683",
+      "bank": "ui1",
+      "samples": [
+        "assets\\ui\\gocha_effect_05.wav"
+      ],
+      "asset": "Summary.wav",
+      "sampleFrames": 73920,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "ArtifactReveal",
+      "event": "event:/ui/gacha/summon_result_artifact",
+      "guid": "f7b66b00-6b4a-477a-9446-93d23dbc1c38",
+      "bank": "ui1",
+      "samples": [
+        "assets\\ui\\se_ui_summon_06_artefact(1).wav"
+      ],
+      "asset": "ArtifactReveal.wav",
+      "sampleFrames": 233280,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "FlipCommon",
+      "event": "event:/ui/gacha_card_flip_common",
+      "guid": "cefd9b40-ff68-4458-aad0-16d058aec714",
+      "bank": "ui1",
+      "samples": [
+        "assets\\ui\\se_ui_gacha_card_flip1_02_common_flip.wav"
+      ],
+      "asset": "FlipCommon.wav",
+      "sampleFrames": 101760,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "FlipRare",
+      "event": "event:/ui/gacha_card_flip_rare",
+      "guid": "066f9a1a-49ca-4c65-9577-a10560b05990",
+      "bank": "ui1",
+      "samples": [
+        "assets\\ui\\se_ui_gacha_card_flip2_rare_flip.wav"
+      ],
+      "asset": "FlipRare.wav",
+      "sampleFrames": 206784,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "FlipReady",
+      "event": "event:/ui/gacha_card_flip_ready",
+      "guid": "65012b5e-5095-4b94-9444-3c6dd0cc4221",
+      "bank": "ui1",
+      "samples": [
+        "assets\\ui\\se_ui_gacha_card_flip1_01_ready.wav"
+      ],
+      "asset": "FlipReady.wav",
+      "sampleFrames": 59520,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "New",
+      "event": "event:/ui/gacha_card_new",
+      "guid": "f5794303-deb5-4850-bd1b-ccb6fa7f595b",
+      "bank": "ui1",
+      "samples": [
+        "assets\\ui\\se_ui_gacha_card_new.wav"
+      ],
+      "asset": "New.wav",
+      "sampleFrames": 146016,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Theme",
+      "event": "event:/bgm/summon_title",
+      "guid": "3f27ce13-e03d-401a-8fd5-f72f1cbd35aa",
+      "bank": "bgm4",
+      "samples": [
+        "assets\\bgm\\summon_title.wav"
+      ],
+      "asset": "Theme.wav",
+      "sampleFrames": 4466928,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Ceremony",
+      "event": "event:/bgm/summon_efx",
+      "guid": "21484a6a-225a-4c99-a3df-53c78bf1d37d",
+      "bank": "bgm4",
+      "samples": [
+        "assets\\bgm\\summon_efx.wav"
+      ],
+      "asset": "Ceremony.wav",
+      "sampleFrames": 4200000,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1001",
+      "event": "event:/voc/character/ras/evt/get",
+      "guid": "27e8b9ce-72c3-461e-9cfc-aa4fd0e01bad",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1001_get"
+      ],
+      "asset": "Voice_c1001.wav",
+      "audioTableKey": "voc_c1001_get",
+      "sampleFrames": 129504,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1002",
+      "event": "event:/voc/character/cecilia/evt/get",
+      "guid": "2154a732-dbf0-4333-9e2e-be20827e72ba",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1002_get_1"
+      ],
+      "asset": "Voice_c1002.wav",
+      "audioTableKey": "voc_c1002_get_1",
+      "sampleFrames": 543744,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1003",
+      "event": "event:/voc/character/rose/evt/get",
+      "guid": "adc4da2b-1050-40fe-8c66-f9c4989fe849",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1003_get_1"
+      ],
+      "asset": "Voice_c1003.wav",
+      "audioTableKey": "voc_c1003_get_1",
+      "sampleFrames": 336384,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1004",
+      "event": "event:/voc/character/silk/evt/get",
+      "guid": "185da00a-a9a6-48fe-9601-32127eed486a",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1004_get"
+      ],
+      "asset": "Voice_c1004.wav",
+      "audioTableKey": "voc_c1004_get",
+      "sampleFrames": 397296,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1005",
+      "event": "event:/voc/character/mercedes/evt/get",
+      "guid": "44a5af42-ab90-482d-a02b-c8a69db52d12",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1005_get_1"
+      ],
+      "asset": "Voice_c1005.wav",
+      "audioTableKey": "voc_c1005_get_1",
+      "sampleFrames": 159744,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1006",
+      "event": "event:/voc/character/kise/evt/get",
+      "guid": "4e7af6dd-08c9-49c0-91e4-e0d25eab8615",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1006_get_1"
+      ],
+      "asset": "Voice_c1006.wav",
+      "audioTableKey": "voc_c1006_get_1",
+      "sampleFrames": 317952,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1007",
+      "event": "event:/voc/character/wildred/evt/get",
+      "guid": "4f4ed91d-71e6-447d-85a6-2b38530d86fd",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1007_get_1"
+      ],
+      "asset": "Voice_c1007.wav",
+      "audioTableKey": "voc_c1007_get_1",
+      "sampleFrames": 336384,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1008",
+      "event": "event:/voc/character/arming/evt/get",
+      "guid": "c10f8583-16e8-4b3e-80a8-cd7bcf08fce0",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1008_get"
+      ],
+      "asset": "Voice_c1008.wav",
+      "audioTableKey": "voc_c1008_get",
+      "sampleFrames": 431616,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1009",
+      "event": "event:/voc/character/charlotte/evt/get",
+      "guid": "374b6ea2-02d9-4af0-ad2e-ec1e4dfa6cd8",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1009_gc_1"
+      ],
+      "asset": "Voice_c1009.wav",
+      "audioTableKey": "voc_c1009_gc_1",
+      "sampleFrames": 179712,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1010",
+      "event": "event:/voc/character/zerato/evt/get",
+      "guid": "8033159f-37a6-4204-9ba6-73ad597eb625",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1010_get"
+      ],
+      "asset": "Voice_c1010.wav",
+      "audioTableKey": "voc_c1010_get",
+      "sampleFrames": 255984,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1011",
+      "event": "event:/voc/character/karin/evt/get",
+      "guid": "ca451171-c062-4514-bfe5-cd3a6ccd0178",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1011_get_1"
+      ],
+      "asset": "Voice_c1011.wav",
+      "audioTableKey": "voc_c1011_get_1",
+      "sampleFrames": 469488,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1012",
+      "event": "event:/voc/character/corvus/evt/get",
+      "guid": "d46343b2-e286-493e-8811-a2e6055a4559",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1012_get_1"
+      ],
+      "asset": "Voice_c1012.wav",
+      "audioTableKey": "voc_c1012_get_1",
+      "sampleFrames": 472032,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1013",
+      "event": "event:/voc/character/kartua/evt/get",
+      "guid": "b47f5b95-9fcf-438f-9916-836e90e7abb9",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1013_get_1"
+      ],
+      "asset": "Voice_c1013.wav",
+      "audioTableKey": "voc_c1013_get_1",
+      "sampleFrames": 201216,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1014",
+      "event": "event:/voc/character/cedars/evt/get",
+      "guid": "82eef9bd-6b5a-4141-981c-bb46852c1824",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1014_get_1"
+      ],
+      "asset": "Voice_c1014.wav",
+      "audioTableKey": "voc_c1014_get_1",
+      "sampleFrames": 293856,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1015",
+      "event": "event:/voc/character/baal_sezan/evt/get",
+      "guid": "906005d2-ec7b-4b19-8aed-0bbd04fa16bf",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1015_get_1"
+      ],
+      "asset": "Voice_c1015.wav",
+      "audioTableKey": "voc_c1015_get_1",
+      "sampleFrames": 195072,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1016",
+      "event": "event:/voc/character/yupine/evt/get",
+      "guid": "5e479a70-cbe9-4e7d-aaca-0dca3fb0ff5f",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1016_get_1"
+      ],
+      "asset": "Voice_c1016.wav",
+      "audioTableKey": "voc_c1016_get_1",
+      "sampleFrames": 217056,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1017",
+      "event": "event:/voc/character/achates/evt/get",
+      "guid": "ac2de8e0-2e69-41b9-9e10-af81966c982e",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1017_get_1"
+      ],
+      "asset": "Voice_c1017.wav",
+      "audioTableKey": "voc_c1017_get_1",
+      "sampleFrames": 366048,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1018",
+      "event": "event:/voc/character/aither/evt/get",
+      "guid": "c81f8557-65d7-4888-b691-be6612af90ea",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1018_get"
+      ],
+      "asset": "Voice_c1018.wav",
+      "audioTableKey": "voc_c1018_get",
+      "sampleFrames": 570864,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1019",
+      "event": "event:/voc/character/ravi/evt/get",
+      "guid": "28ff30af-fb25-479a-817d-6bb6778da313",
+      "bank": "ja/voc3.audio_ja",
+      "samples": [
+        "voc_c1019_get"
+      ],
+      "asset": "Voice_c1019.wav",
+      "audioTableKey": "voc_c1019_get",
+      "sampleFrames": 390624,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1020",
+      "event": "event:/voc/character/schuri/evt/get",
+      "guid": "96d3b50f-0318-414a-abc7-e9f83c65adc9",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1020_get_1"
+      ],
+      "asset": "Voice_c1020.wav",
+      "audioTableKey": "voc_c1020_get_1",
+      "sampleFrames": 545760,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1021",
+      "event": "event:/voc/character/dinggo/evt/get",
+      "guid": "f84ea2c6-576c-4358-824f-d8579cd6fdc0",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1021_get_1"
+      ],
+      "asset": "Voice_c1021.wav",
+      "audioTableKey": "voc_c1021_get_1",
+      "sampleFrames": 180192,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1022",
+      "event": "event:/voc/character/ruell/evt/get",
+      "guid": "d150b9e0-9672-4c6c-b6ed-9d0da844b2eb",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1022_get"
+      ],
+      "asset": "Voice_c1022.wav",
+      "audioTableKey": "voc_c1022_get",
+      "sampleFrames": 371184,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1023",
+      "event": "event:/voc/character/kylon/evt/get",
+      "guid": "bf785243-ba5d-4eb2-bac0-3be7014e0014",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1023_get_1"
+      ],
+      "asset": "Voice_c1023.wav",
+      "audioTableKey": "voc_c1023_get_1",
+      "sampleFrames": 445920,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1024",
+      "event": "event:/voc/character/iseria/evt/get",
+      "guid": "2a2c9413-85e6-4a53-b6de-6ff4edd863bb",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1024_get_1"
+      ],
+      "asset": "Voice_c1024.wav",
+      "audioTableKey": "voc_c1024_get_1",
+      "sampleFrames": 379392,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1027",
+      "event": "event:/voc/character/charles/evt/get",
+      "guid": "94a5a1cb-2289-4466-84de-e1bae155de51",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1027_get_1"
+      ],
+      "asset": "Voice_c1027.wav",
+      "audioTableKey": "voc_c1027_get_1",
+      "sampleFrames": 348672,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1028",
+      "event": "event:/voc/character/clarisa/evt/get",
+      "guid": "021a70ba-a7c8-444a-88b1-3002b28e5d14",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1028_get_1"
+      ],
+      "asset": "Voice_c1028.wav",
+      "audioTableKey": "voc_c1028_get_1",
+      "sampleFrames": 352224,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1029",
+      "event": "event:/voc/character/leo/evt/get",
+      "guid": "ba3548bd-be2c-4a58-a488-c550346d4104",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1029_get_1"
+      ],
+      "asset": "Voice_c1029.wav",
+      "audioTableKey": "voc_c1029_get_1",
+      "sampleFrames": 427008,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1030",
+      "event": "event:/voc/character/yuna/evt/get",
+      "guid": "2a08e801-46f6-49de-8f15-61f2d4854d21",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1030_get_1"
+      ],
+      "asset": "Voice_c1030.wav",
+      "audioTableKey": "voc_c1030_get_1",
+      "sampleFrames": 422880,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1031",
+      "event": "event:/voc/character/lots/evt/get",
+      "guid": "8fe5ba7a-9341-412d-9834-e133988f94bd",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1031_get_1"
+      ],
+      "asset": "Voice_c1031.wav",
+      "audioTableKey": "voc_c1031_get_1",
+      "sampleFrames": 264672,
+      "mixerPaddingFrames": 2560
+    },
+    {
+      "id": "Voice_c1062",
+      "event": "event:/voc/character/angelica/evt/get",
+      "guid": "acb871bd-9bbf-4b40-878a-67eceb4ee497",
+      "bank": "ja/voc1.audio_ja",
+      "samples": [
+        "voc_c1062_get_1"
+      ],
+      "asset": "Voice_c1062.wav",
+      "audioTableKey": "voc_c1062_get_1",
+      "sampleFrames": 372192,
+      "mixerPaddingFrames": 2560
+    }
+  ]
+}

@@ -22,6 +22,7 @@ $clientFiles = @{
     'characterlab-catalog-runtime.json' = 'CharacterLab/Configs/catalog.json'
     'characterlab-localization-runtime.json' = 'CharacterLab/Configs/localization.json'
     'battle-catalog.json' = 'BattleScene/Configs/battle-catalog.json'
+    'artifact-catalog.json' = 'Home/Configs/artifact-catalog.json'
 }
 if (-not $Dotnet) {
     $local = Join-Path $repo '.tools/dotnet/dotnet.exe'
@@ -109,6 +110,33 @@ try {
     })
     [IO.File]::WriteAllText((Join-Path $staging 'json/characterlab-catalog-runtime.json'), ($catalog | ConvertTo-Json -Depth 80) + "`n", [Text.UTF8Encoding]::new($false))
     [IO.File]::WriteAllText((Join-Path $staging 'json/characterlab-localization-runtime.json'), (@{rows=$labMessages} | ConvertTo-Json -Depth 10) + "`n", [Text.UTF8Encoding]::new($false))
+    $templates = @(Get-Content -LiteralPath (Join-Path $staging 'json/artifact_templates.json') -Raw -Encoding UTF8 | ConvertFrom-Json)
+    $levels = @(Get-Content -LiteralPath (Join-Path $staging 'json/artifact_enhancementlevels.json') -Raw -Encoding UTF8 | ConvertFrom-Json | Sort-Object level)
+    $economy = @(Get-Content -LiteralPath (Join-Path $staging 'json/artifact_economies.json') -Raw -Encoding UTF8 | ConvertFrom-Json)
+    if ($levels.Count -ne 31 -or $levels[0].experience -ne 0 -or $economy.Count -ne 1 -or !$templates.Count) {
+        throw 'Artifact tables must include 31 levels, one economy and at least one template.'
+    }
+    for ($index = 1; $index -lt $levels.Count; $index++) {
+        if ($levels[$index].level -ne $index -or $levels[$index].experience -le $levels[$index - 1].experience) {
+            throw "Invalid artifact experience threshold at +$index."
+        }
+    }
+    foreach ($artifact in $templates) {
+        if ($artifact.id -cnotmatch '\Aef[a-z0-9]{3}\z' -or $artifact.stars -notin 3,4,5 -or
+            $artifact.icon -cnotmatch '\Aart[a-z0-9_]+\z' -or !$artifact.description -or
+            $artifact.heroClass -cnotin '', 'knight', 'warrior', 'ranger', 'thief', 'mage', 'soul_weaver') {
+            throw "Invalid artifact template $($artifact.id)."
+        }
+    }
+    $artifactCatalog = [ordered]@{
+        templates = $templates
+        experienceByLevel = @($levels.experience)
+        goldPerExperience = $economy[0].goldPerExperience
+        materialExperience = @($economy[0].threeStarMaterialExperience, $economy[0].fourStarMaterialExperience, $economy[0].fiveStarMaterialExperience)
+        charmExperience = @($economy[0].lesserCharmExperience, $economy[0].greaterCharmExperience, $economy[0].epicCharmExperience)
+    }
+    [IO.File]::WriteAllText((Join-Path $staging 'json/artifact-catalog.json'), ($artifactCatalog | ConvertTo-Json -Depth 10) + [char]10,
+        [Text.UTF8Encoding]::new($false))
     . (Join-Path $PSScriptRoot 'ValidateBattleCatalog.ps1')
     Export-BattleCatalog -Repo $repo -JsonDir (Join-Path $staging 'json') -CharacterCatalog $catalog -CharacterMessages $labMessages
     & $Dotnet --roll-forward Major $dll --conf Config/luban.conf -t client -c cs-bin -d bin --strict -x "outputCodeDir=$staging/csharp" -x "outputDataDir=$staging/bin"

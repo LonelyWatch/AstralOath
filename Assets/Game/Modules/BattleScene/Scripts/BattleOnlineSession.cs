@@ -35,7 +35,7 @@ namespace AstralOath.Client.BattleScene
         private const float PollInterval = .30f;
         private readonly Uri url;
         private readonly HttpClient http;
-        private readonly string battleId, contentHash, bearer;
+        private readonly string battleId, contentHash, battleContentHash, bearer;
         private readonly bool localIsHost;
         private readonly CancellationTokenSource lifetime = new CancellationTokenSource();
         private Dictionary<string, BattleCatalogData.HeroRow> heroes;
@@ -45,6 +45,7 @@ namespace AstralOath.Client.BattleScene
         private ulong? readySequence, readyEventSequence;
         private double clockSampleTime;
         internal BattleSnapshot Snapshot { get; private set; }
+        internal IReadOnlyList<BattleFlowEvent> OpeningArtifactEvents { get; private set; } = Array.Empty<BattleFlowEvent>();
         internal BattleOnlinePlayers Players { get; set; }
         internal bool Submitting { get; private set; }
         internal int? LatencyMilliseconds { get; private set; }
@@ -53,18 +54,23 @@ namespace AstralOath.Client.BattleScene
         internal bool ClockUnavailable { get; private set; }
         internal BattleTurnClockView Clock { get; private set; }
         internal double ClockElapsed => Math.Max(0d, Time.realtimeSinceStartupAsDouble - clockSampleTime);
-        internal bool CanSubmit => Healthy && !Terminated && !Submitting && Clock != null &&
-            Clock.CommandSequence == Snapshot.LastCommandSequence && Clock.EventSequence == Snapshot.LastEventSequence &&
-            Clock.ActorId == Snapshot.CurrentActorId && Clock.DeadlineUnixMilliseconds.HasValue && Clock.RemainingSeconds(ClockElapsed) > 0;
+        internal bool IsOwnedTrial { get; }
+        internal bool CanSubmit => Healthy && !Terminated && !Submitting && Snapshot?.Outcome == BattleOutcome.InProgress &&
+            (IsOwnedTrial ? Snapshot.GetUnit(Snapshot.CurrentActorId)?.Slot.Side == BattleSide.Ally :
+                Clock != null && Clock.CommandSequence == Snapshot.LastCommandSequence && Clock.EventSequence == Snapshot.LastEventSequence &&
+                Clock.ActorId == Snapshot.CurrentActorId && Clock.DeadlineUnixMilliseconds.HasValue && Clock.RemainingSeconds(ClockElapsed) > 0);
 
         internal BattleOnlineSession(Uri endpoint, string roomId, string battleId, string contentHash,
-            string bearer, bool localIsHost)
+            string bearer, bool localIsHost, string trialBattleContentHash = null)
         {
             if (endpoint == null || !endpoint.IsAbsoluteUri) throw new ArgumentException("Invalid battle endpoint.");
             if (string.IsNullOrWhiteSpace(roomId) || string.IsNullOrWhiteSpace(battleId) ||
                 string.IsNullOrWhiteSpace(contentHash) || string.IsNullOrWhiteSpace(bearer))
                 throw new ArgumentException("Battle invitation is incomplete.");
-            url = new Uri(endpoint, "/api/arena/rooms/" + Uri.EscapeDataString(roomId) + "/battle");
+            IsOwnedTrial = trialBattleContentHash != null;
+            battleContentHash = trialBattleContentHash ?? contentHash;
+            string room = Uri.EscapeDataString(roomId);
+            url = new Uri(endpoint, IsOwnedTrial ? "/api/battle-preview/rooms/" + room : "/api/arena/rooms/" + room + "/battle");
             this.battleId = battleId;
             this.contentHash = contentHash;
             this.bearer = bearer;
@@ -83,10 +89,11 @@ namespace AstralOath.Client.BattleScene
             using var hash = SHA256.Create();
             string canonical = asset.text.TrimStart('\ufeff').Replace("\r\n", "\n");
             string localHash = BitConverter.ToString(hash.ComputeHash(Encoding.UTF8.GetBytes(canonical))).Replace("-", "");
-            if (!string.Equals(localHash, contentHash, StringComparison.OrdinalIgnoreCase))
+            if (!string.Equals(localHash, battleContentHash, StringComparison.OrdinalIgnoreCase))
                 throw new InvalidDataException("Client and server battle data differ.");
             heroes = catalog.heroes.ToDictionary(row => row.id, StringComparer.Ordinal);
             var update = Decode(response, null, 0, false);
+            OpeningArtifactEvents = update.Events.Where(item => item.Kind == BattleFlowEventKind.ArtifactTriggered).ToArray();
             Snapshot = update.Snapshot;
             ApplyClock(update);
         }
@@ -150,7 +157,7 @@ namespace AstralOath.Client.BattleScene
             if (request == null && canPoll && Time.unscaledTime >= nextPoll &&
                 Snapshot.Outcome == BattleOutcome.InProgress)
             {
-                bool needsReady = canReady && (readySequence != Snapshot.LastCommandSequence || readyEventSequence != Snapshot.LastEventSequence);
+                bool needsReady = !IsOwnedTrial && canReady && (readySequence != Snapshot.LastCommandSequence || readyEventSequence != Snapshot.LastEventSequence);
                 var ready = needsReady ? new JObject
                 {
                     ["battleId"] = battleId, ["commandSequence"] = Snapshot.LastCommandSequence,
@@ -252,12 +259,20 @@ namespace AstralOath.Client.BattleScene
             if (root["snapshot"] is not JObject state || (string)state["battleId"] != battleId ||
                 (uint?)state["rulesVersion"] != BattlePreviewFactory.RulesVersion)
                 throw new InvalidDataException("Battle identity or rules version changed.");
-            if (state["units"] is not JArray rows || rows.Count != 8)
-                throw new InvalidDataException("A draft battle must contain exactly eight combatants.");
+            if (state["units"] is not JArray rows || (IsOwnedTrial ? rows.Count < 2 || rows.Count > 8 : rows.Count != 8))
+                throw new InvalidDataException("Invalid battle formation size.");
             var units = rows.OfType<JObject>().Select(ReadUnit).ToArray();
-            if (units.Length != 8 || units.Select(unit => unit.Slot).Distinct().Count() != 8 ||
-                units.Select(unit => unit.InstanceId).Distinct(StringComparer.Ordinal).Count() != 8)
+            if (units.Length != rows.Count || units.Select(unit => unit.InstanceId).Distinct(StringComparer.Ordinal).Count() != units.Length ||
+                !ValidTeam(BattleSide.Ally) || !ValidTeam(BattleSide.Enemy))
                 throw new InvalidDataException("Battle formation contains duplicate or missing positions.");
+
+            bool ValidTeam(BattleSide side)
+            {
+                var positions = units.Where(unit => unit.Slot.Side == side).Select(unit => (int)unit.Slot.Position)
+                    .OrderBy(position => position).ToArray();
+                return positions.Length >= 1 && positions.Length <= 4 &&
+                    positions.SequenceEqual(Enumerable.Range(1, positions.Length));
+            }
             ulong last = (ulong)state["lastEventSequence"];
             var events = ((JArray)root["events"]).OfType<JObject>().Select(ReadEvent)
                 .Where(item => item.Sequence > cursor).ToArray();
@@ -288,7 +303,7 @@ namespace AstralOath.Client.BattleScene
                     update.Clock.DecisionSeconds < 5 || update.Clock.DecisionSeconds > 120 ||
                     update.Clock.ServerNowUnixMilliseconds <= 0 || string.IsNullOrWhiteSpace(update.Clock.ActorId);
             }
-            else update.ClockUnavailable = outcome == BattleOutcome.InProgress;
+            else update.ClockUnavailable = !IsOwnedTrial && outcome == BattleOutcome.InProgress;
             return update;
         }
 

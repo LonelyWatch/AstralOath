@@ -18,7 +18,11 @@ STATUS_ASSETS = ROOT / "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Statuse
 PERCENT = re.compile(r"\{per(?:_s)?\((\w+)\)\}")
 COLOR = re.compile(r"<#([\da-fA-F]{6})>")
 TEXT_PATH = "text/zhs/text.db"
-STATUS_TEXT_IDS = {"stic_debuf_impossible": "stic_res_up", "stic_spiritlord_keep": "stic_spiritlord"}
+STATUS_TEXT_IDS = {
+    "stic_debuf_impossible": "stic_res_up",
+    "stic_spiritlord_keep": "stic_spiritlord",
+    "stic_target": "stic_sign",
+}
 
 
 def read_json(path):

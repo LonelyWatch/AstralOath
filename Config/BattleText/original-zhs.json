@@ -2123,6 +2123,18 @@
       "text": "晕眩",
       "displaySha256": "8031ddd40a273577296568944a705b1bc6c233077b06664b80482400538f565f"
     },
+    "battle.status.targeted.description": {
+      "sourceId": "stic_target",
+      "textId": "stic_sign_de",
+      "text": "所受伤害量提升15%，回避降低50%。",
+      "displaySha256": "0680246a95389184e53460317313143a0b3691eb803ee3f76ed977ee7a901ae8"
+    },
+    "battle.status.targeted.name": {
+      "sourceId": "stic_target",
+      "textId": "stic_sign_skeffnm",
+      "text": "标靶",
+      "displaySha256": "35f76e77eeb4d70b47ee995a116df85a6663211a1238a07077d418a221c4b9c8"
+    },
     "battle.status.unbuffable.description": {
       "sourceId": "stic_buf_impossible",
       "textId": "stic_buf_impossible_de",

@@ -1,6 +1,8 @@
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using AstralOath.Shared.Battle;
 using Microsoft.AspNetCore.Hosting;
@@ -86,6 +88,12 @@ public sealed class BattlePreviewRoomTests
         using var creation = await organizer.PostAsync("/api/battle-preview/rooms", null);
         creation.EnsureSuccessStatusCode();
         var invite = await creation.Content.ReadFromJsonAsync<JsonElement>();
+        using var stream = typeof(Program).Assembly.GetManifestResourceStream("AstralOath.BattleCatalog")!;
+        using var reader = new StreamReader(stream, Encoding.UTF8);
+        string canonical = reader.ReadToEnd().TrimStart('\uFEFF').Replace("\r\n", "\n", StringComparison.Ordinal);
+        string clientHash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(canonical)));
+        Assert.Equal(clientHash, invite.GetProperty("contentHash").GetString());
+        Assert.Equal(clientHash, invite.GetProperty("opening").GetProperty("contentHash").GetString());
         var opening = invite.GetProperty("opening").GetProperty("snapshot");
         string path = "/api/battle-preview/rooms/" + invite.GetProperty("roomId").GetString();
         using var ally = Seat("allyToken");

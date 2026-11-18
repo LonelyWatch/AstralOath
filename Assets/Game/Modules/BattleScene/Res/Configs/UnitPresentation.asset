@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1bccc6d1c61c44269e2b654b96017079, type: 3}
   m_Name: UnitPresentation
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   StatusAnchor: top
   StatusOffset: {x: 0, y: 0}
   HealthSections: 10
@@ -58,6 +58,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: d8a131740cab50eb8ff9f2015a881ff7, type: 3}
   - {fileID: 21300000, guid: a5309bd270835c3bafc815488f181ded, type: 3}
   - {fileID: 21300000, guid: 33f480c9df5c5659afadf3da2236d1f8, type: 3}
+  - {fileID: 21300000, guid: eddeb57e30055aa08cb5194d31d1444c, type: 3}
   StatusDigits:
   - {fileID: 21300000, guid: 6cd7d19e8ddd599280e8b82a19a09ba9, type: 3}
   - {fileID: 21300000, guid: e5a5e0cefc835535ab31ae475d0b17b2, type: 3}

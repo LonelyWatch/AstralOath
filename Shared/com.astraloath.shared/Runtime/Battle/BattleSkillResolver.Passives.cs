@@ -7,14 +7,14 @@ namespace AstralOath.Shared.Battle
 {
     public sealed partial class BattleSkillResolver
     {
-        IReadOnlyList<BattleChange> IBattleLifecycleResolver.BattleStart(BattleSnapshot snapshot) =>
-            new Execution(this, snapshot, new BattleRandom(0)).ApplyLifecycle("battle_start", null);
+        IReadOnlyList<BattleChange> IBattleLifecycleResolver.BattleStart(BattleSnapshot snapshot, BattleRandom random) =>
+            new Execution(this, snapshot, random).ApplyLifecycle("battle_start", null);
 
-        IReadOnlyList<BattleChange> IBattleLifecycleResolver.StartOfTurn(BattleSnapshot snapshot, string actorId) =>
-            new Execution(this, snapshot, new BattleRandom(0)).ApplyPeriodicEffects(actorId);
+        IReadOnlyList<BattleChange> IBattleLifecycleResolver.StartOfTurn(BattleSnapshot snapshot, string actorId, BattleRandom random) =>
+            new Execution(this, snapshot, random).ApplyPeriodicEffects(actorId);
 
-        IReadOnlyList<BattleChange> IBattleLifecycleResolver.TurnEnd(BattleSnapshot snapshot, string actorId) =>
-            new Execution(this, snapshot, new BattleRandom(0)).ApplyLifecycle("turn_end", actorId);
+        IReadOnlyList<BattleChange> IBattleLifecycleResolver.TurnEnd(BattleSnapshot snapshot, string actorId, BattleRandom random) =>
+            new Execution(this, snapshot, random).ApplyLifecycle("turn_end", actorId);
 
         private sealed partial class Execution
         {
@@ -23,6 +23,7 @@ namespace AstralOath.Shared.Battle
 
             public IReadOnlyList<BattleChange> ApplyLifecycle(string phase, string actorId)
             {
+                ApplyArtifactLifecycle(phase, actorId);
                 foreach (var actor in units)
                 {
                     if (!actor.Alive || (actorId != null && actorId != actor.Id)) continue;
@@ -69,6 +70,7 @@ namespace AstralOath.Shared.Battle
                     }
                     if (!target.Statuses.Contains(status)) break; // A self-revive cleared the queue.
                 }
+                if (target.Alive) StartArtifactTurn(target);
                 return Changes;
             }
 
@@ -86,6 +88,16 @@ namespace AstralOath.Shared.Battle
 
             private void ResolveEnemyDefeats(Unit attacker, int count)
             {
+                foreach (var ally in Allies(attacker))
+                {
+                    if (ally.ArtifactEffect != "enemy_defeated_soul") continue;
+                    for (int index = 0; index < count; index++)
+                    {
+                        if (!Roll(random, ally.ArtifactValue)) continue;
+                        ShowArtifact(ally);
+                        Changes.Add(BattleChange.Soul(ally.Id, ally.Side, 1));
+                    }
+                }
                 foreach (var ally in Allies(attacker))
                 foreach (string id in ally.Source.Form.SkillIds)
                 {
@@ -231,9 +243,12 @@ namespace AstralOath.Shared.Battle
                 return false;
             }
 
-            private int DamageReduction(Unit recipient, bool allTargets)
+            private int DamageReduction(Unit recipient, bool allTargets, BattleHitKind hit)
             {
-                int highest = 0;
+                int highest = recipient.ArtifactEffect == "received_attack_damage_reduction" ? recipient.ArtifactValue : 0;
+                if (hit == BattleHitKind.Critical)
+                    highest = Math.Max(highest, Allies(recipient).Where(ally => ally.ArtifactEffect == "team_critical_reduction")
+                        .Select(ally => ally.ArtifactValue).DefaultIfEmpty(0).Max());
                 foreach (var ally in Allies(recipient))
                 foreach (var passive in Passives(ally))
                 foreach (var effect in passive.Effects)

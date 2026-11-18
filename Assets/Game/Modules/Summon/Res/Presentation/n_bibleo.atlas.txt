@@ -1,0 +1,601 @@
+
+n_bibleo.sct
+size: 1707,511
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 1103, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+leo_acc_moon
+  rotate: true
+  xy: 1462, 352
+  size: 70, 58
+  orig: 70, 58
+  offset: 0, 0
+  index: -1
+leo_acc_moon_ribbon_a
+  rotate: true
+  xy: 1514, 468
+  size: 37, 51
+  orig: 37, 51
+  offset: 0, 0
+  index: -1
+leo_acc_moon_ribbon_b
+  rotate: false
+  xy: 1608, 265
+  size: 64, 26
+  orig: 64, 26
+  offset: 0, 0
+  index: -1
+leo_arm_acc_lu_2
+  rotate: true
+  xy: 1149, 242
+  size: 13, 28
+  orig: 13, 28
+  offset: 0, 0
+  index: -1
+leo_arm_acc_ru
+  rotate: true
+  xy: 1247, 447
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
+leo_arm_ld_1
+  rotate: false
+  xy: 1562, 206
+  size: 102, 57
+  orig: 102, 57
+  offset: 0, 0
+  index: -1
+leo_arm_ld_2
+  rotate: true
+  xy: 293, 313
+  size: 195, 114
+  orig: 195, 114
+  offset: 0, 0
+  index: -1
+leo_arm_ld_inner_1
+  rotate: false
+  xy: 1481, 139
+  size: 84, 31
+  orig: 84, 31
+  offset: 0, 0
+  index: -1
+leo_arm_ld_inner_2
+  rotate: false
+  xy: 1401, 168
+  size: 45, 111
+  orig: 45, 111
+  offset: 0, 0
+  index: -1
+leo_arm_lu_2
+  rotate: true
+  xy: 1659, 401
+  size: 55, 44
+  orig: 55, 44
+  offset: 0, 0
+  index: -1
+leo_arm_rd_1
+  rotate: false
+  xy: 1368, 283
+  size: 92, 149
+  orig: 92, 149
+  offset: 0, 0
+  index: -1
+leo_arm_rd_2
+  rotate: false
+  xy: 958, 2
+  size: 143, 257
+  orig: 143, 257
+  offset: 0, 0
+  index: -1
+leo_arm_rd_inner_1
+  rotate: false
+  xy: 1448, 142
+  size: 31, 137
+  orig: 31, 137
+  offset: 0, 0
+  index: -1
+leo_arm_rd_inner_2
+  rotate: true
+  xy: 1321, 2
+  size: 149, 69
+  orig: 149, 69
+  offset: 0, 0
+  index: -1
+leo_arm_ru_1
+  rotate: true
+  xy: 1570, 2
+  size: 72, 131
+  orig: 72, 131
+  offset: 0, 0
+  index: -1
+leo_arm_ru_2
+  rotate: true
+  xy: 1481, 172
+  size: 70, 79
+  orig: 70, 79
+  offset: 0, 0
+  index: -1
+leo_cloth_grey_1a
+  rotate: true
+  xy: 1291, 168
+  size: 113, 108
+  orig: 113, 108
+  offset: 0, 0
+  index: -1
+leo_cloth_grey_1b
+  rotate: true
+  xy: 1192, 173
+  size: 109, 97
+  orig: 109, 97
+  offset: 0, 0
+  index: -1
+leo_cloth_grey_2
+  rotate: false
+  xy: 2, 349
+  size: 289, 159
+  orig: 289, 159
+  offset: 0, 0
+  index: -1
+leo_cloth_grey_frill_1
+  rotate: false
+  xy: 1328, 435
+  size: 147, 74
+  orig: 147, 74
+  offset: 0, 0
+  index: -1
+leo_cloth_grey_frill_2
+  rotate: true
+  xy: 583, 310
+  size: 188, 65
+  orig: 188, 65
+  offset: 0, 0
+  index: -1
+leo_cloth_u_back
+  rotate: true
+  xy: 816, 2
+  size: 284, 140
+  orig: 284, 140
+  offset: 0, 0
+  index: -1
+leo_cloth_u_m
+  rotate: true
+  xy: 527, 310
+  size: 189, 54
+  orig: 189, 54
+  offset: 0, 0
+  index: -1
+leo_cloth_u_r
+  rotate: true
+  xy: 1326, 283
+  size: 150, 40
+  orig: 150, 40
+  offset: 0, 0
+  index: -1
+leo_coat_1
+  rotate: true
+  xy: 427, 2
+  size: 306, 229
+  orig: 306, 229
+  offset: 0, 0
+  index: -1
+leo_coat_2
+  rotate: false
+  xy: 246, 2
+  size: 179, 309
+  orig: 179, 309
+  offset: 0, 0
+  index: -1
+leo_coat_frill_1
+  rotate: false
+  xy: 658, 2
+  size: 156, 294
+  orig: 156, 294
+  offset: 0, 0
+  index: -1
+leo_coat_frill_2
+  rotate: true
+  xy: 868, 288
+  size: 219, 89
+  orig: 219, 89
+  offset: 0, 0
+  index: -1
+leo_coat_inner_2
+  rotate: true
+  xy: 2, 2
+  size: 345, 242
+  orig: 345, 242
+  offset: 0, 0
+  index: -1
+leo_eyebrows
+  rotate: false
+  xy: 1608, 293
+  size: 64, 20
+  orig: 64, 20
+  offset: 0, 0
+  index: -1
+leo_eyes_close
+  rotate: false
+  xy: 1500, 320
+  size: 93, 29
+  orig: 93, 29
+  offset: 0, 0
+  index: -1
+leo_eyes_dot
+  rotate: false
+  xy: 1595, 345
+  size: 66, 42
+  orig: 66, 42
+  offset: 0, 0
+  index: -1
+leo_eyes_line
+  rotate: false
+  xy: 1567, 160
+  size: 105, 44
+  orig: 105, 44
+  offset: 0, 0
+  index: -1
+leo_eyes_twinkl
+  rotate: false
+  xy: 1608, 315
+  size: 61, 28
+  orig: 61, 28
+  offset: 0, 0
+  index: -1
+leo_eyes_white
+  rotate: true
+  xy: 1103, 173
+  size: 85, 44
+  orig: 85, 44
+  offset: 0, 0
+  index: -1
+leo_face
+  rotate: true
+  xy: 1032, 261
+  size: 23, 68
+  orig: 23, 68
+  offset: 0, 0
+  index: -1
+leo_hair_add_1
+  rotate: false
+  xy: 958, 261
+  size: 56, 24
+  orig: 56, 24
+  offset: 0, 0
+  index: -1
+leo_hair_add_2
+  rotate: false
+  xy: 1321, 153
+  size: 57, 13
+  orig: 57, 13
+  offset: 0, 0
+  index: -1
+leo_hair_add_3
+  rotate: false
+  xy: 1297, 442
+  size: 29, 67
+  orig: 29, 67
+  offset: 0, 0
+  index: -1
+leo_hair_add_4
+  rotate: true
+  xy: 1617, 458
+  size: 47, 20
+  orig: 47, 20
+  offset: 0, 0
+  index: -1
+leo_hair_f1
+  rotate: true
+  xy: 1481, 244
+  size: 74, 75
+  orig: 74, 75
+  offset: 0, 0
+  index: -1
+leo_hair_f2
+  rotate: true
+  xy: 1465, 2
+  size: 135, 103
+  orig: 135, 103
+  offset: 0, 0
+  index: -1
+leo_hair_f_l1
+  rotate: true
+  xy: 1522, 351
+  size: 27, 65
+  orig: 27, 65
+  offset: 0, 0
+  index: -1
+leo_hair_f_l2
+  rotate: false
+  xy: 1102, 261
+  size: 88, 22
+  orig: 88, 22
+  offset: 0, 0
+  index: -1
+leo_hair_f_r
+  rotate: false
+  xy: 1462, 281
+  size: 16, 69
+  orig: 16, 69
+  offset: 0, 0
+  index: -1
+leo_hair_inner
+  rotate: true
+  xy: 1671, 316
+  size: 38, 32
+  orig: 38, 32
+  offset: 0, 0
+  index: -1
+leo_hair_l1
+  rotate: false
+  xy: 1274, 2
+  size: 45, 164
+  orig: 45, 164
+  offset: 0, 0
+  index: -1
+leo_hair_l2
+  rotate: false
+  xy: 1674, 160
+  size: 30, 105
+  orig: 30, 105
+  offset: 0, 0
+  index: -1
+leo_hair_r1
+  rotate: false
+  xy: 1258, 284
+  size: 66, 156
+  orig: 66, 156
+  offset: 0, 0
+  index: -1
+leo_hair_r2
+  rotate: false
+  xy: 650, 310
+  size: 78, 185
+  orig: 78, 185
+  offset: 0, 0
+  index: -1
+leo_hat
+  rotate: true
+  xy: 1392, 2
+  size: 138, 71
+  orig: 138, 71
+  offset: 0, 0
+  index: -1
+leo_hat_acc
+  rotate: false
+  xy: 1571, 458
+  size: 44, 47
+  orig: 44, 47
+  offset: 0, 0
+  index: -1
+leo_head
+  rotate: false
+  xy: 959, 287
+  size: 168, 170
+  orig: 168, 170
+  offset: 0, 0
+  index: -1
+leo_leg_cloth_inner_l1
+  rotate: false
+  xy: 1477, 468
+  size: 35, 39
+  orig: 35, 39
+  offset: 0, 0
+  index: -1
+leo_leg_cloth_inner_l2
+  rotate: false
+  xy: 1521, 431
+  size: 48, 35
+  orig: 48, 35
+  offset: 0, 0
+  index: -1
+leo_leg_cloth_inner_r1
+  rotate: false
+  xy: 1663, 356
+  size: 42, 43
+  orig: 42, 43
+  offset: 0, 0
+  index: -1
+leo_leg_cloth_inner_r2
+  rotate: false
+  xy: 1477, 424
+  size: 42, 42
+  orig: 42, 42
+  offset: 0, 0
+  index: -1
+leo_leg_cloth_l1
+  rotate: false
+  xy: 1113, 459
+  size: 49, 50
+  orig: 49, 50
+  offset: 0, 0
+  index: -1
+leo_leg_cloth_l2
+  rotate: true
+  xy: 1522, 380
+  size: 49, 59
+  orig: 49, 59
+  offset: 0, 0
+  index: -1
+leo_leg_cloth_r1
+  rotate: false
+  xy: 1558, 267
+  size: 48, 51
+  orig: 48, 51
+  offset: 0, 0
+  index: -1
+leo_leg_cloth_r2
+  rotate: false
+  xy: 1583, 389
+  size: 58, 49
+  orig: 58, 49
+  offset: 0, 0
+  index: -1
+leo_leg_l1
+  rotate: true
+  xy: 1149, 173
+  size: 67, 40
+  orig: 67, 40
+  offset: 0, 0
+  index: -1
+leo_leg_l2
+  rotate: true
+  xy: 1570, 121
+  size: 37, 123
+  orig: 37, 123
+  offset: 0, 0
+  index: -1
+leo_leg_r1
+  rotate: false
+  xy: 1164, 457
+  size: 81, 51
+  orig: 81, 51
+  offset: 0, 0
+  index: -1
+leo_leg_r2
+  rotate: false
+  xy: 1570, 76
+  size: 129, 43
+  orig: 129, 43
+  offset: 0, 0
+  index: -1
+leo_mouth_1
+  rotate: false
+  xy: 1380, 153
+  size: 20, 13
+  orig: 20, 13
+  offset: 0, 0
+  index: -1
+leo_mouth_2
+  rotate: false
+  xy: 527, 501
+  size: 13, 5
+  orig: 13, 5
+  offset: 0, 0
+  index: -1
+leo_mouth_3
+  rotate: false
+  xy: 671, 497
+  size: 13, 12
+  orig: 13, 12
+  offset: 0, 0
+  index: -1
+leo_mouth_4
+  rotate: true
+  xy: 1016, 261
+  size: 24, 14
+  orig: 24, 14
+  offset: 0, 0
+  index: -1
+leo_neck
+  rotate: true
+  xy: 1674, 267
+  size: 47, 29
+  orig: 47, 29
+  offset: 0, 0
+  index: -1
+leo_neck_base
+  rotate: false
+  xy: 246, 326
+  size: 40, 20
+  orig: 40, 20
+  offset: 0, 0
+  index: -1
+leo_ribbon_a
+  rotate: true
+  xy: 1480, 320
+  size: 30, 18
+  orig: 30, 18
+  offset: 0, 0
+  index: -1
+leo_ribbon_b
+  rotate: false
+  xy: 650, 497
+  size: 19, 12
+  orig: 19, 12
+  offset: 0, 0
+  index: -1
+leo_ribbon_chain_a
+  rotate: false
+  xy: 686, 497
+  size: 28, 11
+  orig: 28, 11
+  offset: 0, 0
+  index: -1
+leo_ribbon_chain_b
+  rotate: false
+  xy: 583, 500
+  size: 16, 9
+  orig: 16, 9
+  offset: 0, 0
+  index: -1
+leo_ribbon_tail_a
+  rotate: false
+  xy: 1639, 458
+  size: 19, 42
+  orig: 19, 42
+  offset: 0, 0
+  index: -1
+leo_ribbon_tail_b
+  rotate: true
+  xy: 246, 313
+  size: 11, 44
+  orig: 11, 44
+  offset: 0, 0
+  index: -1
+leo_thigh_l1
+  rotate: true
+  xy: 959, 459
+  size: 50, 152
+  orig: 50, 152
+  offset: 0, 0
+  index: -1
+leo_thigh_l2
+  rotate: false
+  xy: 409, 313
+  size: 116, 193
+  orig: 116, 193
+  offset: 0, 0
+  index: -1
+leo_thigh_r1
+  rotate: false
+  xy: 1129, 285
+  size: 67, 170
+  orig: 67, 170
+  offset: 0, 0
+  index: -1
+leo_thigh_r2
+  rotate: true
+  xy: 1198, 284
+  size: 161, 58
+  orig: 161, 58
+  offset: 0, 0
+  index: -1
+light_halfcicle_01
+  rotate: true
+  xy: 730, 298
+  size: 211, 136
+  orig: 211, 136
+  offset: 0, 0
+  index: -1
+lika_hat_chain_a
+  rotate: true
+  xy: 1643, 389
+  size: 48, 14
+  orig: 48, 14
+  offset: 0, 0
+  index: -1
+lika_hat_chain_b
+  rotate: false
+  xy: 1402, 142
+  size: 42, 22
+  orig: 42, 22
+  offset: 0, 0
+  index: -1

@@ -225,8 +225,8 @@ namespace AstralOath.Client.BattleScene
                 var feet = OnlineAllyFeet[index];
                 float x = (feet.x - .5f) * width;
                 float y = (feet.y - .5f) * halfHeight * 2f;
-                SetSlot(allies[index], x, y);
-                SetSlot(enemies[index], -x, y);
+                if (index < allies.Count) SetSlot(allies[index], x, y);
+                if (index < enemies.Count) SetSlot(enemies[index], -x, y);
             }
 
             void SetSlot(BattlePreviewActor actor, float x, float y)

@@ -234,6 +234,13 @@ namespace AstralOath.Editor
             BagImage(Area(artifact.rectTransform, "Native artifact symbol", 69.5f / 123, 23.5f / 137, 33f / 123, 33f / 137),
                 RosterArt("cm_icon_pararti"), BagEmptyIcon);
             bindings.Add(("emptyArtifact", artifact));
+            var equippedArt = Paint(Area(artifact.rectTransform, "Equipped artifact portrait", .04f, .04f, .92f, .92f),
+                null, Color.white);
+            equippedArt.preserveAspect = true;
+            equippedArt.enabled = false;
+            bindings.Add(("bagEquippedArtifact", equippedArt));
+            bindings.Add(("bagEquippedArtifactLevel", Text(equippedArt.rectTransform, "Equipped artifact level", null, 24,
+                .46f, .005f, .50f, .20f, new Color32(255, 177, 72, 255), TextAlignmentOptions.Right)));
 
             var exclusive = BagImage(BagRowArea(row, "Empty exclusive equipment slot", 984.4f, 12.58f, 101.2f, 116.84f),
                 BagArt("cm_item_slot_private"), Color.white);

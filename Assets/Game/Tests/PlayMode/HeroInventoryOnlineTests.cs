@@ -3,7 +3,9 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Linq;
+using AstralOath.Client.BattleScene;
 using AstralOath.Client.Common;
+using AstralOath.Shared.Battle;
 using NUnit.Framework;
 using TMPro;
 using UnityEditor.SceneManagement;
@@ -129,6 +131,64 @@ namespace AstralOath.Client.Tests
             AssertOwnedHeroes(bag, "bagScroll");
         }
 
+        [UnityTest, Timeout(90000)]
+        public IEnumerator ArtifactTrialEntersAuthoritativeBattleAndReturnsToSelectedHero()
+        {
+            string endpoint = Environment.GetEnvironmentVariable("ASTRAL_TRIAL_TEST_URL");
+            if (string.IsNullOrWhiteSpace(endpoint))
+                Assert.Ignore("Set ASTRAL_TRIAL_TEST_URL to the isolated Development host with BattlePreview enabled.");
+            Assert.That(new Uri(endpoint).IsLoopback, Is.True);
+
+            priorEndpoint = Environment.GetEnvironmentVariable("ASTRAL_FOUNDATION_URL");
+            priorSkipEntry = Environment.GetEnvironmentVariable("ASTRAL_TEST_SKIP_ENTRY");
+            settingsChanged = true;
+            Environment.SetEnvironmentVariable("ASTRAL_FOUNDATION_URL", endpoint);
+            Environment.SetEnvironmentVariable("ASTRAL_TEST_SKIP_ENTRY", "1");
+            priorScene = SceneManager.GetActiveScene();
+            home = EditorSceneManager.LoadSceneInPlayMode(HomePath, new LoadSceneParameters(LoadSceneMode.Additive));
+            yield return Wait(() => FindWindow("HomeWindow"), "Home did not load.");
+            Assert.That(SceneManager.SetActiveScene(home), Is.True);
+            Click(FindWindow("HomeWindow"), "more");
+            yield return Wait(() => FindWindow("HomeMoreMenu"), "The More menu did not open.");
+            yield return new WaitForSecondsRealtime(.20f);
+            Click(FindWindow("HomeMoreMenu"), "heroes");
+            yield return Wait(() =>
+            {
+                var page = FindWindow("HeroInventory");
+                return page && page.Require<GameButton>("artifactTrial").IsInteractable();
+            }, "The selected hero trial did not become available.");
+            var roster = FindWindow("HeroInventory");
+            string selected = roster.Require<GameText>("detailName").text;
+            Click(roster, "artifactTrial");
+
+            BattleHudPreview battle = null;
+            Scene battleScene = default;
+            yield return Wait(() =>
+            {
+                battleScene = SceneManager.GetSceneByPath(BattleOnlineLaunch.ScenePath);
+                if (!battleScene.isLoaded) return false;
+                battle = battleScene.GetRootGameObjects().SelectMany(root => root.GetComponentsInChildren<BattleHudPreview>())
+                    .FirstOrDefault();
+                return battle && battle.SimulationSnapshot != null;
+            }, "The real trial did not load the battle scene.", 30);
+            var opening = battle.SimulationSnapshot;
+            var enemy = opening.Units.Single(unit => unit.Slot.Side == BattleSide.Enemy);
+            Assert.That(opening.Units.Count, Is.EqualTo(2), "The selected hero must be launched alone against the training opponent.");
+            ulong sequence = opening.LastCommandSequence;
+            bool submitted = false;
+            yield return Wait(() => submitted || (submitted = battle.TrySelectBattleTarget(enemy.InstanceId)),
+                "The owned hero could not target and submit their first skill.");
+            yield return Wait(() => battle.SimulationSnapshot.LastCommandSequence > sequence,
+                "The trial server did not advance the authoritative command sequence.");
+
+            var battleHud = battleScene.GetRootGameObjects().SelectMany(root => root.GetComponentsInChildren<BindingMap>())
+                .Single(map => map.name == "BattleHud");
+            Click(battleHud, "pause");
+            yield return Wait(() => !BattleOnlineLaunch.IsActive, "The trial did not exit.");
+            Assert.That(FindWindow("HeroInventory"), Is.SameAs(roster));
+            Assert.That(roster.Require<GameText>("detailName").text, Is.EqualTo(selected));
+        }
+
         private static bool ShowsEmptyTab(BindingMap bag, string chrome)
         {
             return bag.Require<GameObject>(chrome).activeInHierarchy && !bag.Require<GameText>("status").gameObject.activeInHierarchy &&
@@ -164,9 +224,9 @@ namespace AstralOath.Client.Tests
             button.onClick.Invoke();
         }
 
-        private static IEnumerator Wait(Func<bool> condition, string message)
+        private static IEnumerator Wait(Func<bool> condition, string message, float seconds = 15f)
         {
-            float expiry = Time.realtimeSinceStartup + 15f;
+            float expiry = Time.realtimeSinceStartup + seconds;
             while (!condition() && Time.realtimeSinceStartup < expiry)
                 yield return null;
             Assert.That(condition(), Is.True, message);
@@ -219,6 +279,11 @@ namespace AstralOath.Client.Tests
         [UnityTearDown]
         public IEnumerator CleanUp()
         {
+            if (BattleOnlineLaunch.IsActive && SceneManager.GetSceneByPath(BattleOnlineLaunch.ScenePath).isLoaded)
+            {
+                var exit = BattleOnlineLaunch.ExitAsync();
+                while (!exit.IsCompleted) yield return null;
+            }
             if (priorScene.IsValid() && priorScene.isLoaded)
                 SceneManager.SetActiveScene(priorScene);
             if (home.IsValid() && home.isLoaded)

@@ -89,6 +89,7 @@ namespace AstralOath.Client.BattleScene
         [SerializeField, HideInInspector] private HeroModel[] heroModels;
         private BattleHudBinder binder;
         private BattleSimulationPreview simulation;
+        private Func<string, (string Name, Sprite Icon)> artifactCue;
         private BattleOnlineSession online;
         private BattleOnlineArrival arrival;
         private CanvasGroup entryHud, entryUnitStatus;
@@ -106,6 +107,7 @@ namespace AstralOath.Client.BattleScene
         public void PauseBattle() => binder?.PauseBattle();
         public void ResumeBattle() => binder?.ResumeBattle();
         public void RestartBattle() => StartBattle();
+        public void SetArtifactCueLookup(Func<string, (string Name, Sprite Icon)> lookup) => artifactCue = lookup;
 
         public BattleSnapshot SimulationSnapshot => simulation?.Snapshot;
         public int StartedSkillVoices => simulation?.StartedSkillVoices ?? 0;
@@ -171,21 +173,31 @@ namespace AstralOath.Client.BattleScene
             preparedModels.Clear();
 
             var units = gameObject.scene.GetRootGameObjects().Single(root => root.name == "Units").transform;
-            ApplyTeam(ResolveTeam(GetTeamActors(units.Find("Allies"), DefaultAllyHeroIds.Count), allies, models), loaded);
-            ApplyTeam(ResolveTeam(GetTeamActors(units.Find("Enemies"), DefaultEnemyHeroIds.Count), enemies, models), loaded);
+            ApplyTeam(ResolveTeam(UseOnlineSlots(units.Find("Allies"), allies.Length), allies, models), loaded);
+            ApplyTeam(ResolveTeam(UseOnlineSlots(units.Find("Enemies"), enemies.Length), enemies, models), loaded);
         }
 
         private static string[] OnlineTeam(BattleSnapshot snapshot, BattleSide side) =>
             snapshot.Units.Where(unit => unit.Slot.Side == side)
                 .OrderBy(unit => unit.Slot.Position).Select(unit => unit.DefinitionId).ToArray();
 
+        private static BattlePreviewActor[] UseOnlineSlots(Transform team, int count)
+        {
+            var slots = GetTeamActors(team, 4);
+            for (int index = count; index < slots.Length; index++)
+                team.GetChild(index).gameObject.SetActive(false);
+            return slots.Take(count).ToArray();
+        }
+
         internal void PrepareOnline(BattleOnlineSession session, BattleOnlineTransitionAssets assets, BattleCatalogData catalog)
         {
             double started = Time.realtimeSinceStartupAsDouble;
             autoStartBattle = false;
             var units = gameObject.scene.GetRootGameObjects().Single(root => root.name == "Units").transform;
-            var allyActors = GetTeamActors(units.Find("Allies"), DefaultAllyHeroIds.Count);
-            var enemyActors = GetTeamActors(units.Find("Enemies"), DefaultEnemyHeroIds.Count);
+            string[] allies = OnlineTeam(session.Snapshot, BattleSide.Ally);
+            string[] enemies = OnlineTeam(session.Snapshot, BattleSide.Enemy);
+            var allyActors = UseOnlineSlots(units.Find("Allies"), allies.Length);
+            var enemyActors = UseOnlineSlots(units.Find("Enemies"), enemies.Length);
             online = session;
             onlineCopy = BattleOnlineTransitionAssets.Copy.Load(assets.zhHans);
             var viewport = GetComponent<Canvas>().worldCamera.GetComponent<BattlePreviewViewport>();
@@ -195,8 +207,8 @@ namespace AstralOath.Client.BattleScene
             entryHud.alpha = 0f;
             entryHud.blocksRaycasts = false;
             double layoutReady = Time.realtimeSinceStartupAsDouble;
-            var timings = InstallBattle(catalog, allyActors, enemyActors,
-                OnlineTeam(session.Snapshot, BattleSide.Ally), OnlineTeam(session.Snapshot, BattleSide.Enemy), null, assets);
+            var timings = InstallBattle(catalog, allyActors, enemyActors, allies, enemies, null, assets);
+            if (session.IsOwnedTrial) binder.ShowOnlineReturn();
             double battleReady = Time.realtimeSinceStartupAsDouble;
             arrival = new BattleOnlineArrival(units, viewport, allyActors, enemyActors, assets);
             arrival.Prepare();
@@ -216,6 +228,7 @@ namespace AstralOath.Client.BattleScene
             entryUnitStatus = hud.transform.Find("Unit Status").gameObject.AddComponent<CanvasGroup>();
             entryUnitStatus.ignoreParentGroups = true;
             entryUnitStatus.blocksRaycasts = false;
+            if (online.IsOwnedTrial) return;
             var title = new GameObject("PvP Arena Title", typeof(RectTransform), typeof(GameText));
             title.transform.SetParent(transform, false);
             var rect = (RectTransform)title.transform;
@@ -288,7 +301,8 @@ namespace AstralOath.Client.BattleScene
             simulation = new BattleSimulationPreview(gameObject.scene, hud, binder, catalog, battleSprites, battleGraphs,
                 skillAssets, audioCatalog, audioBanks, battleDamageFont, impactBank, stageBackground,
                 soulDisplay, soulConsume, particles, particleTextures, nextMatch, inspectionPrefab, readyDust: readyDust,
-                skillTimelineOverrides: skillTimelineOverrides, online: online, onlineCopy: onlineCopy, onlineAssets: onlineAssets);
+                skillTimelineOverrides: skillTimelineOverrides, online: online, onlineCopy: onlineCopy, onlineAssets: onlineAssets,
+                artifactCue: artifactCue);
             binder.AttachSimulation(simulation, online != null);
             return (modelsReady, binderReady);
         }

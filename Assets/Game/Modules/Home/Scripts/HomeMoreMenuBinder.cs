@@ -9,15 +9,16 @@ namespace AstralOath.Client.Home
     {
         private readonly HomeMoreMenu view;
         private readonly ILocaleService locale;
-        private readonly Func<CancellationToken, Task> openHeroes;
+        private readonly Func<CancellationToken, Task> openHeroes, openSummon;
         private readonly Action close;
 
         public HomeMoreMenuBinder(HomeMoreMenu view, ILocaleService locale,
-            Func<CancellationToken, Task> openHeroes, Action close)
+            Func<CancellationToken, Task> openHeroes, Func<CancellationToken, Task> openSummon, Action close)
         {
             this.view = view;
             this.locale = locale;
             this.openHeroes = openHeroes;
+            this.openSummon = openSummon;
             this.close = close;
         }
 
@@ -27,6 +28,7 @@ namespace AstralOath.Client.Home
             scope.Add(() => { if (view.Root) view.Hide(); });
             view.HeroesLabel.Bind(locale, scope, "home.hero_inventory.heroes");
             view.Heroes.Bind(scope, openHeroes);
+            view.Summon.Bind(scope, openSummon);
             view.Close.Bind(scope, CloseAsync);
             view.Outside.Bind(scope, CloseAsync);
             _ = view.AnimateOpeningAsync(scope.Token);

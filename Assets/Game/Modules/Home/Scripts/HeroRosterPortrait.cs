@@ -10,10 +10,14 @@ using Object = UnityEngine.Object;
 namespace AstralOath.Client.Home
 {
     /// <summary>One isolated source portrait camera. The inventory page owns its lifetime.</summary>
-    internal sealed class HeroRosterPortrait : IDisposable
+    public sealed class HeroRosterPortrait : IDisposable
     {
         private const int Layer = 30;
         private readonly RawImage output;
+        private readonly int renderSize;
+        private readonly int positionOffset;
+        private readonly bool animated;
+        private readonly float framing, headFocus;
         private GameObject stage;
         private RenderTexture target;
         private Material material;
@@ -22,9 +26,18 @@ namespace AstralOath.Client.Home
         private bool visible;
         private int lastFrame = -1;
 
-        internal HeroRosterPortrait(RawImage output) => this.output = output;
+        public HeroRosterPortrait(RawImage output, int renderSize = 768, bool animated = true,
+            int positionOffset = 0, float framing = 1.07f, float headFocus = 0f)
+        {
+            this.output = output;
+            this.renderSize = renderSize;
+            this.animated = animated;
+            this.positionOffset = positionOffset;
+            this.framing = framing;
+            this.headFocus = headFocus;
+        }
 
-        internal bool Show(HomeHeroArt.Hero next)
+        public bool Show(HomeHeroArt.Hero next)
         {
             if (ReferenceEquals(next, source) && player != null)
                 return SetVisible(true);
@@ -41,7 +54,7 @@ namespace AstralOath.Client.Home
                 var shader = Resources.Load<Shader>("AstralOathArenaDraftPortrait");
                 if (!shader) return false;
                 stage = new GameObject("Inventory hero portrait") { layer = Layer, hideFlags = HideFlags.HideAndDontSave };
-                stage.transform.position = new Vector3(24000, 16000, 0);
+                stage.transform.position = new Vector3(24000 + positionOffset, 16000, 0);
                 player = new SkeletonPlayerFactory().Create(new SkeletonPlayerSource(next.skeleton.text, next.atlas.text,
                     new Dictionary<string, Texture2D>(StringComparer.Ordinal) { [pageName] = next.page },
                     premultipliedAlpha: true), stage.transform);
@@ -64,10 +77,15 @@ namespace AstralOath.Client.Home
                 var bounds = mesh.bounds;
                 var center = bounds.center;
                 // Keep the full authored idle pose inside a square UI surface with breathing room.
-                camera.orthographicSize = Mathf.Max(bounds.extents.x, bounds.extents.y) * 1.07f;
-                camera.transform.localPosition = new Vector3(center.x, center.y, -10f);
-                target = new RenderTexture(768, 768, 16, RenderTextureFormat.ARGB32) { name = "Owned hero portrait" };
+                camera.orthographicSize = Mathf.Max(bounds.extents.x, bounds.extents.y) * framing;
+                camera.transform.localPosition = new Vector3(center.x, center.y + headFocus * bounds.extents.y, -10f);
+                target = new RenderTexture(renderSize, renderSize, 16, RenderTextureFormat.ARGB32) { name = "Owned hero portrait" };
                 camera.targetTexture = target;
+                if (!animated)
+                {
+                    camera.enabled = false;
+                    camera.Render();
+                }
                 material = new Material(shader) { hideFlags = HideFlags.HideAndDontSave };
                 output.texture = target;
                 output.material = material;
@@ -82,7 +100,7 @@ namespace AstralOath.Client.Home
             }
         }
 
-        internal bool SetVisible(bool active)
+        public bool SetVisible(bool active)
         {
             visible = active && player != null;
             if (stage) stage.SetActive(visible);
@@ -90,7 +108,7 @@ namespace AstralOath.Client.Home
             return visible;
         }
 
-        internal void Tick()
+        public void Tick()
         {
             if (!visible || lastFrame == Time.frameCount) return;
             lastFrame = Time.frameCount;

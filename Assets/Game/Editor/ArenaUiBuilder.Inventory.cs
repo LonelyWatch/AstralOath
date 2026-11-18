@@ -28,6 +28,7 @@ namespace AstralOath.Editor
             font = Load<TMP_FontAsset>(Common + "Fonts/EpicSeven.asset");
             labels = JsonUtility.FromJson<LabelFile>(File.ReadAllText(Assets[4].Path)).rows
                 .ToDictionary(row => row.key, row => row.text);
+            BuildSummonAssets();
             BuildInventoryAssets();
             SaveInventoryNavigation();
         }
@@ -76,6 +77,7 @@ namespace AstralOath.Editor
             };
             bindings.AddRange(bagBindings);
             bindings.AddRange(rosterBindings);
+            BuildNativeArtifactManagement(root, bag, roster, bindings);
             Bind(root, bindings.ToArray());
             roster.gameObject.SetActive(false);
             return root.gameObject;

@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "resetHourUtc": 19,
+  "developmentBooks": 60,
+  "storageCapacity": 400,
+  "wishlistSize": 7,
+  "heroes": [
+    "c1001", "c1002", "c1003", "c1004", "c1005", "c1006", "c1007", "c1008",
+    "c1009", "c1010", "c1011", "c1012", "c1013", "c1014", "c1015", "c1016",
+    "c1017", "c1018", "c1019", "c1020", "c1021", "c1022", "c1023", "c1024",
+    "c1027", "c1028", "c1029", "c1031", "c1062"
+  ],
+  "banners": [
+    {
+      "id": "covenant",
+      "title": "誓约召唤",
+      "bookmarksPerDraw": 5,
+      "dailyFree": true,
+      "allowsEpicBookmarks": true,
+      "usesWishlist": true,
+      "pityMisses": 0,
+      "groups": [
+        { "kind": "hero", "stars": 3, "selection": "elemental", "basisPoints": 4535 },
+        { "kind": "hero", "stars": 4, "selection": "elemental", "basisPoints": 500 },
+        { "kind": "hero", "stars": 5, "selection": "wish", "basisPoints": 125 },
+        { "kind": "hero", "stars": 5, "selection": "moonlight", "basisPoints": 15 },
+        { "kind": "artifact", "stars": 3, "selection": "all", "basisPoints": 4000 },
+        { "kind": "artifact", "stars": 4, "selection": "all", "basisPoints": 650 },
+        { "kind": "artifact", "stars": 5, "selection": "wish", "basisPoints": 175 }
+      ]
+    },
+    {
+      "id": "iseria",
+      "title": "伊赛丽亚／星辰之歌",
+      "featuredHero": "c1024",
+      "featuredArtifact": "efr02",
+      "bookmarksPerDraw": 5,
+      "pityMisses": 120,
+      "groups": [
+        { "kind": "hero", "stars": 3, "selection": "elemental", "basisPoints": 4125 },
+        { "kind": "hero", "stars": 4, "selection": "elemental", "basisPoints": 450 },
+        { "kind": "hero", "stars": 5, "selection": "featured", "basisPoints": 100 },
+        { "kind": "artifact", "stars": 3, "selection": "all", "basisPoints": 4500 },
+        { "kind": "artifact", "stars": 4, "selection": "all", "basisPoints": 650 },
+        { "kind": "artifact", "stars": 5, "selection": "featured", "basisPoints": 105 },
+        { "kind": "artifact", "stars": 5, "selection": "other", "basisPoints": 70 }
+      ]
+    }
+  ]
+}

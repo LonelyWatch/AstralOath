@@ -1,0 +1,674 @@
+{
+  "assets": [
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/_btn_gacha_gray.png",
+      "source": "img/_btn_gacha_gray.png",
+      "sourceSha256": "4e7bc4013ca8aba86b86083c38eff0f8e1822fdb8eb877d2d27716a554b91433",
+      "outputSha256": "4e7bc4013ca8aba86b86083c38eff0f8e1822fdb8eb877d2d27716a554b91433",
+      "width": 256,
+      "height": 76
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/_btn_gacha_gray_p.png",
+      "source": "img/_btn_gacha_gray_p.png",
+      "sourceSha256": "ada3071841f793617958d628e1364a47be9271d99f295d7a2d50c7bf0f75a189",
+      "outputSha256": "ada3071841f793617958d628e1364a47be9271d99f295d7a2d50c7bf0f75a189",
+      "width": 256,
+      "height": 76
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/_btn_gacha_gold.png",
+      "source": "img/_btn_gacha_gold.png",
+      "sourceSha256": "f6c6a12e19027eaadf1023236384fe041edf0f7cf0a67d912093cac2e46390aa",
+      "outputSha256": "f6c6a12e19027eaadf1023236384fe041edf0f7cf0a67d912093cac2e46390aa",
+      "width": 256,
+      "height": 76
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/_btn_gacha_gold_p.png",
+      "source": "img/_btn_gacha_gold_p.png",
+      "sourceSha256": "219679186b295286c5b7586db780c51bc5a42b0cb00614e8054a4c55cccb85d2",
+      "outputSha256": "219679186b295286c5b7586db780c51bc5a42b0cb00614e8054a4c55cccb85d2",
+      "width": 256,
+      "height": 76
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_title_bg.png",
+      "source": "img/gacha_title_bg.png",
+      "sourceSha256": "cf25d4f1aa72bee64b29b244cf44b5f116b489612a1bde5e7ed7d0959f65cb81",
+      "outputSha256": "cf25d4f1aa72bee64b29b244cf44b5f116b489612a1bde5e7ed7d0959f65cb81",
+      "width": 610,
+      "height": 329
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_title_arti_bg.png",
+      "source": "img/gacha_title_arti_bg.png",
+      "sourceSha256": "9e3f8adb1e12a3fc236b6337674916683230defa6f42675313f1ab99341e551e",
+      "outputSha256": "9e3f8adb1e12a3fc236b6337674916683230defa6f42675313f1ab99341e551e",
+      "width": 361,
+      "height": 93
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_get_bg1.png",
+      "source": "img/gacha_get_bg1.png",
+      "sourceSha256": "83c7c99c4acc540a16db0d2240973ea9343d866f4a1debbcf769b577889d07ca",
+      "outputSha256": "83c7c99c4acc540a16db0d2240973ea9343d866f4a1debbcf769b577889d07ca",
+      "width": 1192,
+      "height": 286
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_get_bg2.png",
+      "source": "img/gacha_get_bg2.png",
+      "sourceSha256": "5582257ca76394288e2b5fe95791bfb39266a4a75adc50bdf1977c02df7830fb",
+      "outputSha256": "5582257ca76394288e2b5fe95791bfb39266a4a75adc50bdf1977c02df7830fb",
+      "width": 1069,
+      "height": 318
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_10bg_fire.png",
+      "source": "img/gacha_10bg_fire.png",
+      "sourceSha256": "8595c0884d4df7a9c21f183c28fd355a9ccc0c113d3326a32203dc765e529c94",
+      "outputSha256": "8595c0884d4df7a9c21f183c28fd355a9ccc0c113d3326a32203dc765e529c94",
+      "width": 338,
+      "height": 98
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_10bg_ice.png",
+      "source": "img/gacha_10bg_ice.png",
+      "sourceSha256": "2ba6585eec44db252fe8c436490bdccd140c1fb0f3ca559f161e4e7f287ae046",
+      "outputSha256": "2ba6585eec44db252fe8c436490bdccd140c1fb0f3ca559f161e4e7f287ae046",
+      "width": 338,
+      "height": 98
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_10bg_wind.png",
+      "source": "img/gacha_10bg_wind.png",
+      "sourceSha256": "2ad6d4e47181c01985d387606aafc6f36d296a8070a5b6a7d7025c682059e5ff",
+      "outputSha256": "2ad6d4e47181c01985d387606aafc6f36d296a8070a5b6a7d7025c682059e5ff",
+      "width": 338,
+      "height": 98
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_10bg_light.png",
+      "source": "img/gacha_10bg_light.png",
+      "sourceSha256": "5b906a3b7047f716a31b3394f32083002874cea62128d60a6b15187eeb59b111",
+      "outputSha256": "5b906a3b7047f716a31b3394f32083002874cea62128d60a6b15187eeb59b111",
+      "width": 338,
+      "height": 98
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_10bg_dark.png",
+      "source": "img/gacha_10bg_dark.png",
+      "sourceSha256": "c5cd950e8260a90869990d9e9fc0a50f6e7a1c452cf966a523bf2ab74cd4825e",
+      "outputSha256": "c5cd950e8260a90869990d9e9fc0a50f6e7a1c452cf966a523bf2ab74cd4825e",
+      "width": 338,
+      "height": 98
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/icon_menu_bookmark.png",
+      "source": "img/icon_menu_bookmark.png",
+      "sourceSha256": "4c351ae0c44b8fb1f029a5797ffe53cc40d0d7beb920efd299e8d0114b9b9de4",
+      "outputSha256": "4c351ae0c44b8fb1f029a5797ffe53cc40d0d7beb920efd299e8d0114b9b9de4",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/icon_menu_bookmarkmoon.png",
+      "source": "img/icon_menu_bookmarkmoon.png",
+      "sourceSha256": "b4838c078ca56046919b0aca3bdb9c703be24e4437522e2cbe44b8dec47cbae6",
+      "outputSha256": "b4838c078ca56046919b0aca3bdb9c703be24e4437522e2cbe44b8dec47cbae6",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_renew_select_bg.png",
+      "source": "img/gacha_renew_select_bg.png",
+      "sourceSha256": "a504276bbb253cd4fa11240f7014dc065918044871ec73210d18b81d74022f2f",
+      "outputSha256": "a504276bbb253cd4fa11240f7014dc065918044871ec73210d18b81d74022f2f",
+      "width": 1600,
+      "height": 720
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/_btn_circle_black_76.png",
+      "source": "img/_btn_circle_black_76.png",
+      "sourceSha256": "8bbb2cdd455212f223de2babc313472c624c821a9338deb33c37e64c7d11ea2c",
+      "outputSha256": "8bbb2cdd455212f223de2babc313472c624c821a9338deb33c37e64c7d11ea2c",
+      "width": 76,
+      "height": 76
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/_btn_circle_black_76_p.png",
+      "source": "img/_btn_circle_black_76_p.png",
+      "sourceSha256": "ca6c820becc56d0189ae2984d9350ae62770babb73e4aa01a1a9fa848eb45f1f",
+      "outputSha256": "ca6c820becc56d0189ae2984d9350ae62770babb73e4aa01a1a9fa848eb45f1f",
+      "width": 76,
+      "height": 76
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/_btn_small_black.png",
+      "source": "img/_btn_small_black.png",
+      "sourceSha256": "5d2458be3abf2d92a1f75d77b58d741d69c62571052ae80c4524c7ed0969a966",
+      "outputSha256": "5d2458be3abf2d92a1f75d77b58d741d69c62571052ae80c4524c7ed0969a966",
+      "width": 36,
+      "height": 34
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/_btn_small_black_p.png",
+      "source": "img/_btn_small_black_p.png",
+      "sourceSha256": "a890885cd4d3c14f36114f4877771d47618eb31164ef388aaa298b03008f4df7",
+      "outputSha256": "a890885cd4d3c14f36114f4877771d47618eb31164ef388aaa298b03008f4df7",
+      "width": 36,
+      "height": 34
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/icon_menu_info.png",
+      "source": "img/icon_menu_info.png",
+      "sourceSha256": "d6b7bf234865e406fb8a6d2f8a57be0af1fdadb779c150e9275a8e0f72c69186",
+      "outputSha256": "d6b7bf234865e406fb8a6d2f8a57be0af1fdadb779c150e9275a8e0f72c69186",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/icon_quick_tmp_inven.png",
+      "source": "img/icon_quick_tmp_inven.png",
+      "sourceSha256": "f98efb6407d58920efef100af04f4483a098e55662abcca956c12160c3f1cd8a",
+      "outputSha256": "f98efb6407d58920efef100af04f4483a098e55662abcca956c12160c3f1cd8a",
+      "width": 120,
+      "height": 114
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/renew_icon_quick_setting.png",
+      "source": "img/renew_icon_quick_setting.png",
+      "sourceSha256": "58de38f2aed20cc80000a83e401ff66f484c87467a5a430b92375eb345f68fb5",
+      "outputSha256": "58de38f2aed20cc80000a83e401ff66f484c87467a5a430b92375eb345f68fb5",
+      "width": 64,
+      "height": 64
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/icon_menu_change.png",
+      "source": "img/icon_menu_change.png",
+      "sourceSha256": "cbee9086618a41a147da6306946aa9811510603c1a2a05bb006b638ecd420d86",
+      "outputSha256": "cbee9086618a41a147da6306946aa9811510603c1a2a05bb006b638ecd420d86",
+      "width": 100,
+      "height": 99
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/banner_cliping.png",
+      "source": "img/banner_cliping.png",
+      "sourceSha256": "96b1e89ea47168766434c74b860f2ae32d19770aae735f417dae364f70510797",
+      "outputSha256": "96b1e89ea47168766434c74b860f2ae32d19770aae735f417dae364f70510797",
+      "width": 320,
+      "height": 133
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/banner_cliping_outline.png",
+      "source": "img/banner_cliping_outline.png",
+      "sourceSha256": "a09cd4fe740a2a99de934766b3ebfd552655e77e5f3a4961a073dff1f912f386",
+      "outputSha256": "a09cd4fe740a2a99de934766b3ebfd552655e77e5f3a4961a073dff1f912f386",
+      "width": 320,
+      "height": 133
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_banner_title.png",
+      "source": "img/gacha_banner_title.png",
+      "sourceSha256": "c967ae0e299151bf5564cb0f10e4ab5a04666406cca515905af7f2998a545afc",
+      "outputSha256": "c967ae0e299151bf5564cb0f10e4ab5a04666406cca515905af7f2998a545afc",
+      "width": 300,
+      "height": 133
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/cm_btn_helpd.png",
+      "source": "img/cm_btn_helpd.png",
+      "sourceSha256": "6c4aa9a9fbef37eaa99ce2ca61e5f9c816a44552c01daa4b9fefdf048fa668c7",
+      "outputSha256": "6c4aa9a9fbef37eaa99ce2ca61e5f9c816a44552c01daa4b9fefdf048fa668c7",
+      "width": 60,
+      "height": 66
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/cm_hud_top_btn_plus.png",
+      "source": "img/cm_hud_top_btn_plus.png",
+      "sourceSha256": "6d76a8eeecbe10f4f14c28808c9c1f6376b2c64919bdd0fa9fe900d5327dda4a",
+      "outputSha256": "6d76a8eeecbe10f4f14c28808c9c1f6376b2c64919bdd0fa9fe900d5327dda4a",
+      "width": 28,
+      "height": 28
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/cm_icon_etcarrow2.png",
+      "source": "img/cm_icon_etcarrow2.png",
+      "sourceSha256": "281ca6a7645e0bd58f81124d295a95dd4a28b5a578c4775679ebff8c0bc24bf2",
+      "outputSha256": "281ca6a7645e0bd58f81124d295a95dd4a28b5a578c4775679ebff8c0bc24bf2",
+      "width": 15,
+      "height": 24
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/_grow_white.png",
+      "source": "img/_grow_white.png",
+      "sourceSha256": "b63dd6ce5325599d3a9bc68201a8718cd0eb24d470f428f9764d8909e257f770",
+      "outputSha256": "b63dd6ce5325599d3a9bc68201a8718cd0eb24d470f428f9764d8909e257f770",
+      "width": 164,
+      "height": 167
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/renew_popup_bg_2_alpha.png",
+      "source": "img/renew_popup_bg_2_alpha.png",
+      "sourceSha256": "5a6f560c1e9ca90bc466fa88b11ae1e4fc140e3da678e31fb2aef481186e8c20",
+      "outputSha256": "5a6f560c1e9ca90bc466fa88b11ae1e4fc140e3da678e31fb2aef481186e8c20",
+      "width": 256,
+      "height": 410
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/_itembg_stuff_2.png",
+      "source": "img/_itembg_stuff_2.png",
+      "sourceSha256": "41a85df7b0dc1209dacc41a3377540b29b2e5e5e3b51eb8e2819e5655155a5bf",
+      "outputSha256": "41a85df7b0dc1209dacc41a3377540b29b2e5e5e3b51eb8e2819e5655155a5bf",
+      "width": 96,
+      "height": 96
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/_btn_gold_r_2.png",
+      "source": "img/_btn_gold_r_2.png",
+      "sourceSha256": "847723d45c50505b6eae321dea329e1aebc9b4dcdf8ac32867056fb414375a48",
+      "outputSha256": "847723d45c50505b6eae321dea329e1aebc9b4dcdf8ac32867056fb414375a48",
+      "width": 200,
+      "height": 128
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/_btn_gold_r_p_2.png",
+      "source": "img/_btn_gold_r_p_2.png",
+      "sourceSha256": "1162ea8b10105440656301cf213b3828a96114aeeb6b696099a06bebb4ae67d2",
+      "outputSha256": "1162ea8b10105440656301cf213b3828a96114aeeb6b696099a06bebb4ae67d2",
+      "width": 200,
+      "height": 128
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/_btn_blue_r_3.png",
+      "source": "img/_btn_blue_r_3.png",
+      "sourceSha256": "ec74a45cc93b0a9b0813fceb0633d9b49d17ff2f1fc54171fd772164f48ca9f6",
+      "outputSha256": "ec74a45cc93b0a9b0813fceb0633d9b49d17ff2f1fc54171fd772164f48ca9f6",
+      "width": 200,
+      "height": 128
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/_btn_blue_r_p_3.png",
+      "source": "img/_btn_blue_r_p_3.png",
+      "sourceSha256": "3cfccfb1ed34de80ce970698ec4979f5fa25c9df6934c75b446b7f555e0e0add",
+      "outputSha256": "3cfccfb1ed34de80ce970698ec4979f5fa25c9df6934c75b446b7f555e0e0add",
+      "width": 200,
+      "height": 128
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_10frame_fire.png",
+      "source": "img/gacha_10frame_fire.png",
+      "sourceSha256": "e1f7aad386e91d15a93ddd22702e2bdcb5bbad1db1b6761a1df2ab544f088d70",
+      "outputSha256": "e1f7aad386e91d15a93ddd22702e2bdcb5bbad1db1b6761a1df2ab544f088d70",
+      "width": 355,
+      "height": 120
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_10frame_ice.png",
+      "source": "img/gacha_10frame_ice.png",
+      "sourceSha256": "7a391798c8c424dd2486cfbd68ea9f2c270323dadbb3590c733dcc285aab2a81",
+      "outputSha256": "7a391798c8c424dd2486cfbd68ea9f2c270323dadbb3590c733dcc285aab2a81",
+      "width": 355,
+      "height": 120
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_10frame_wind.png",
+      "source": "img/gacha_10frame_wind.png",
+      "sourceSha256": "244b1b5efc22038b2136a3839b042c99c2247aaca828e7bbacf950c3279b87aa",
+      "outputSha256": "244b1b5efc22038b2136a3839b042c99c2247aaca828e7bbacf950c3279b87aa",
+      "width": 355,
+      "height": 120
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_10frame_light.png",
+      "source": "img/gacha_10frame_light.png",
+      "sourceSha256": "20be9d24dfc864497ac0460b4e533bd901b9554cc63e2ab02d16ff068f8df9a8",
+      "outputSha256": "20be9d24dfc864497ac0460b4e533bd901b9554cc63e2ab02d16ff068f8df9a8",
+      "width": 355,
+      "height": 120
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_10frame_dark.png",
+      "source": "img/gacha_10frame_dark.png",
+      "sourceSha256": "088011319cdac9dc27bafc177adab9b0ee90e56aef68ac1531d155528f630561",
+      "outputSha256": "088011319cdac9dc27bafc177adab9b0ee90e56aef68ac1531d155528f630561",
+      "width": 355,
+      "height": 120
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_new.png",
+      "source": "img/gacha_new.png",
+      "sourceSha256": "7596a52faba7017354aef3efa5b917f7bd58c0efa43e00312f46f387a611df4f",
+      "outputSha256": "7596a52faba7017354aef3efa5b917f7bd58c0efa43e00312f46f387a611df4f",
+      "width": 74,
+      "height": 75
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/cm_icon_etcshare.png",
+      "source": "img/cm_icon_etcshare.png",
+      "sourceSha256": "ae6c43a4230b7805ca92b9553115f28b15f8b151c9e8ff23294f4522b7609ba3",
+      "outputSha256": "ae6c43a4230b7805ca92b9553115f28b15f8b151c9e8ff23294f4522b7609ba3",
+      "width": 28,
+      "height": 28
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/cm_ballonsm.png",
+      "source": "img/cm_ballonsm.png",
+      "sourceSha256": "4402c702c60c47d962270871f3ac055c70faf51f3dff25149f79e191495603dc",
+      "outputSha256": "4402c702c60c47d962270871f3ac055c70faf51f3dff25149f79e191495603dc",
+      "width": 58,
+      "height": 58
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/z_tile_bar.png",
+      "source": "img/z_tile_bar.png",
+      "sourceSha256": "71bc4f474863e96eb4d15ecc0d4079e8af5931ff4eebca620a8d85112e20517b",
+      "outputSha256": "71bc4f474863e96eb4d15ecc0d4079e8af5931ff4eebca620a8d85112e20517b",
+      "width": 64,
+      "height": 4
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_wish_deco_3.png",
+      "source": "img/gacha_wish_deco_3.png",
+      "sourceSha256": "b3e5303f4f594d5175dd9b1b6d0cc950c802b23a461340a78fde7ca1d3623e2a",
+      "outputSha256": "b3e5303f4f594d5175dd9b1b6d0cc950c802b23a461340a78fde7ca1d3623e2a",
+      "width": 35,
+      "height": 553
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_wish_deco_4.png",
+      "source": "img/gacha_wish_deco_4.png",
+      "sourceSha256": "64b81405fe41ad8239cf9a694f2f97da969803861651387175a0ae238f34e31b",
+      "outputSha256": "64b81405fe41ad8239cf9a694f2f97da969803861651387175a0ae238f34e31b",
+      "width": 28,
+      "height": 653
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_wish_deco_5.png",
+      "source": "img/gacha_wish_deco_5.png",
+      "sourceSha256": "caea3512383bc382c72e11d1266f71e5015de101f542be581f4a89bfaf5c287e",
+      "outputSha256": "caea3512383bc382c72e11d1266f71e5015de101f542be581f4a89bfaf5c287e",
+      "width": 42,
+      "height": 604
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_wish_deco_6.png",
+      "source": "img/gacha_wish_deco_6.png",
+      "sourceSha256": "8e73f375258ef2130b2b2d71fad901917f8096b9b911694dfda6c45a79af09ea",
+      "outputSha256": "8e73f375258ef2130b2b2d71fad901917f8096b9b911694dfda6c45a79af09ea",
+      "width": 5,
+      "height": 613
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_wish_deco_7.png",
+      "source": "img/gacha_wish_deco_7.png",
+      "sourceSha256": "25afc6e303101dd989f79c018c98fccfcd2641eb05a36b628c89fcab387f1184",
+      "outputSha256": "25afc6e303101dd989f79c018c98fccfcd2641eb05a36b628c89fcab387f1184",
+      "width": 26,
+      "height": 610
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_wish_deco_8.png",
+      "source": "img/gacha_wish_deco_8.png",
+      "sourceSha256": "a7ca768ab3adb234098ea572884812ee9564fab53d5ecb7e23f6f1275484ece7",
+      "outputSha256": "a7ca768ab3adb234098ea572884812ee9564fab53d5ecb7e23f6f1275484ece7",
+      "width": 52,
+      "height": 575
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/arti_gauge_bg.png",
+      "source": "img/arti_gauge_bg.png",
+      "sourceSha256": "af8f9d743971ea7756a60a39f8c1daea1f8815821c58ce53b53aef46b1980860",
+      "outputSha256": "af8f9d743971ea7756a60a39f8c1daea1f8815821c58ce53b53aef46b1980860",
+      "width": 34,
+      "height": 11
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/cm_icon_tmp_inven.png",
+      "source": "img/cm_icon_tmp_inven.png",
+      "sourceSha256": "f5f6baa9c293c5a4326fafae96582288af623dbe35cab89b9106ff89ed7a5444",
+      "outputSha256": "f5f6baa9c293c5a4326fafae96582288af623dbe35cab89b9106ff89ed7a5444",
+      "width": 47,
+      "height": 44
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_wish_slot_arti.png",
+      "source": "img/gacha_wish_slot_arti.png",
+      "sourceSha256": "4da3f10dff60751f2ab37f99dffff73ecd0f12e1d1e014a3daa51adbc436372e",
+      "outputSha256": "4da3f10dff60751f2ab37f99dffff73ecd0f12e1d1e014a3daa51adbc436372e",
+      "width": 80,
+      "height": 90
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_wish_slot_cir.png",
+      "source": "img/gacha_wish_slot_cir.png",
+      "sourceSha256": "26fdc07515dd8ab161ad97235d31dfa94f96d77686628693de55400f76fcf957",
+      "outputSha256": "26fdc07515dd8ab161ad97235d31dfa94f96d77686628693de55400f76fcf957",
+      "width": 87,
+      "height": 87
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_wish_box_1.png",
+      "source": "img/gacha_wish_box_1.png",
+      "sourceSha256": "60fe3d5fc8c36736ac9d952823900d6cc026cbca57e388a600409256070d122a",
+      "outputSha256": "60fe3d5fc8c36736ac9d952823900d6cc026cbca57e388a600409256070d122a",
+      "width": 145,
+      "height": 184
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_wish_box_2.png",
+      "source": "img/gacha_wish_box_2.png",
+      "sourceSha256": "669eabce8944df5590e5e0fb59d130d776c1f98593536d43b2a641236f4dbd55",
+      "outputSha256": "669eabce8944df5590e5e0fb59d130d776c1f98593536d43b2a641236f4dbd55",
+      "width": 87,
+      "height": 90
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_wish_bg_2.png",
+      "source": "banner/gacha_wish_bg_2.png",
+      "sourceSha256": "ad8c37caca978be4948adce03f5f88b49e3e3667c41f4a0018e38d3863fdb586",
+      "outputSha256": "ad8c37caca978be4948adce03f5f88b49e3e3667c41f4a0018e38d3863fdb586",
+      "width": 1600,
+      "height": 720
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_wish_bg_3.png",
+      "source": "banner/gacha_wish_bg_3.png",
+      "sourceSha256": "c99fc5346aaca38cb98000987acb1753c4b625cf8da54b8c334840dfdedf609d",
+      "outputSha256": "c99fc5346aaca38cb98000987acb1753c4b625cf8da54b8c334840dfdedf609d",
+      "width": 1600,
+      "height": 720
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/banner_gacha_wish.png",
+      "source": "banner/banner_gacha_wish.png",
+      "sourceSha256": "a9cdd252b2e4ed902d4d7c271839e3317fcc59e19bcbe158a88f93f67d1c73a3",
+      "outputSha256": "a9cdd252b2e4ed902d4d7c271839e3317fcc59e19bcbe158a88f93f67d1c73a3",
+      "width": 356,
+      "height": 174
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_c1024_01_bg.png",
+      "source": "banner/gacha_c1024_01_bg.png",
+      "sourceSha256": "6822263ffdf2938b566e80751ec5e827ea34a27ede1d128bae92ec986717817b",
+      "outputSha256": "6822263ffdf2938b566e80751ec5e827ea34a27ede1d128bae92ec986717817b",
+      "width": 1600,
+      "height": 720
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_c1024_01_banner.png",
+      "source": "banner/gacha_c1024_01_banner.png",
+      "sourceSha256": "390b70c1ef13f0b5bb8d83eeb79493e33b8c77dec3fe462ce8b01440d56aef77",
+      "outputSha256": "390b70c1ef13f0b5bb8d83eeb79493e33b8c77dec3fe462ce8b01440d56aef77",
+      "width": 342,
+      "height": 174
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/renew_popup_bg_alpha.png",
+      "source": "img/renew_popup_bg_alpha.png",
+      "sourceSha256": "7aa82d305f97434ab9f4044915a879b23f14814cb8bcd1cca7f4386b6995e270",
+      "outputSha256": "7aa82d305f97434ab9f4044915a879b23f14814cb8bcd1cca7f4386b6995e270",
+      "width": 366,
+      "height": 578
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/_btn_blue.png",
+      "source": "img/_btn_blue.png",
+      "sourceSha256": "caf8e5af4da6d8222ec1fa2b2ae5fcd8c51dce3e40bdff535cda2144928a815a",
+      "outputSha256": "caf8e5af4da6d8222ec1fa2b2ae5fcd8c51dce3e40bdff535cda2144928a815a",
+      "width": 152,
+      "height": 61
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/_btn_gold.png",
+      "source": "img/_btn_gold.png",
+      "sourceSha256": "4c4861a4aae376a620c706ac2fa3c778f5bf221537187cac8f17a7f9e57d699b",
+      "outputSha256": "4c4861a4aae376a620c706ac2fa3c778f5bf221537187cac8f17a7f9e57d699b",
+      "width": 152,
+      "height": 61
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/_box_w5.png",
+      "source": "img/_box_w5.png",
+      "sourceSha256": "10aa577144ab3de1a0daebc48b9cfc6d782d17ea84a3771277b2ae4e962332be",
+      "outputSha256": "10aa577144ab3de1a0daebc48b9cfc6d782d17ea84a3771277b2ae4e962332be",
+      "width": 111,
+      "height": 88
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_title_flag.png",
+      "source": "img/gacha_title_flag.png",
+      "sourceSha256": "d885e3502902ac22dde40407bb81350584347573ef9b7643d917812d4af69a84",
+      "outputSha256": "d885e3502902ac22dde40407bb81350584347573ef9b7643d917812d4af69a84",
+      "width": 371,
+      "height": 84
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_wish_btn.png",
+      "source": "img/gacha_wish_btn.png",
+      "sourceSha256": "ce7a3db14536a150e0fdf540eddca2e1d0790ed0c773ad6024b5fdb63c51760c",
+      "outputSha256": "ce7a3db14536a150e0fdf540eddca2e1d0790ed0c773ad6024b5fdb63c51760c",
+      "width": 167,
+      "height": 75
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_wish_btn_p.png",
+      "source": "img/gacha_wish_btn_p.png",
+      "sourceSha256": "bd2b72b493b3d5bc1ac679ab54ac79210402a091122f54ccfa4cd1e993f9e486",
+      "outputSha256": "bd2b72b493b3d5bc1ac679ab54ac79210402a091122f54ccfa4cd1e993f9e486",
+      "width": 167,
+      "height": 75
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_wish_mask.png",
+      "source": "img/gacha_wish_mask.png",
+      "sourceSha256": "d900464fe7316bce2c3f5b39902d3a8c6f45db9d8adfc54bc4f6b914af854614",
+      "outputSha256": "d900464fe7316bce2c3f5b39902d3a8c6f45db9d8adfc54bc4f6b914af854614",
+      "width": 158,
+      "height": 72
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_wish_bar.png",
+      "source": "img/gacha_wish_bar.png",
+      "sourceSha256": "c081d80b10b3e054616381349a74b921088aad7a6cbd59c8478264deb4a621d9",
+      "outputSha256": "c081d80b10b3e054616381349a74b921088aad7a6cbd59c8478264deb4a621d9",
+      "width": 462,
+      "height": 68
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/arti_frame_deco_1.png",
+      "source": "item_arti/arti_frame_deco_1.png",
+      "sourceSha256": "adeb143ff0a03311c3b88ff6948c2ab172b2f1f5eb338e4191d7a6088dbd77fd",
+      "outputSha256": "adeb143ff0a03311c3b88ff6948c2ab172b2f1f5eb338e4191d7a6088dbd77fd",
+      "width": 170,
+      "height": 242
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/arti_frame_small.png",
+      "source": "item_arti/arti_frame_small.png",
+      "sourceSha256": "1bba95b5b3b1f1fd89d52980ea525757c62a1bd09f73607db538cbc72b84004a",
+      "outputSha256": "1bba95b5b3b1f1fd89d52980ea525757c62a1bd09f73607db538cbc72b84004a",
+      "width": 272,
+      "height": 114
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/token_ticket_rare.png",
+      "source": "item/token_ticket_rare.png",
+      "sourceSha256": "1ff9c137a6f89a3dfae0c9b46759ed51da41933990aeec834dab18f9139f1d36",
+      "outputSha256": "1ff9c137a6f89a3dfae0c9b46759ed51da41933990aeec834dab18f9139f1d36",
+      "width": 84,
+      "height": 84
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/token_rarecoin.png",
+      "source": "item/token_rarecoin.png",
+      "sourceSha256": "205ae4d9f34fb483cb2a1156012a89e87e2f1c3ebd8b1119b2f3d90a7c1bc355",
+      "outputSha256": "205ae4d9f34fb483cb2a1156012a89e87e2f1c3ebd8b1119b2f3d90a7c1bc355",
+      "width": 84,
+      "height": 84
+    }
+  ],
+  "referenceLayouts": [
+    {
+      "source": "wnd/gacha_renew.csb",
+      "sha256": "04b5793f5742cccf00cad2bceddcb141e2f9117e2fe14815f10364711dd95c1f"
+    },
+    {
+      "source": "wnd/gacha_renew_covenant.csb",
+      "sha256": "6de6bdcbe6e55395e9ab7dddbff0e53490e929f400ca660e6c2827c27042b2f1"
+    },
+    {
+      "source": "wnd/gacha_renew_pickup.csb",
+      "sha256": "41e788a3f3234d35212625d6f82ba4f6667bcb8412aaba8ab737c6e5cd48a103"
+    },
+    {
+      "source": "wnd/gacha_renew_info_popup.csb",
+      "sha256": "189d5a69f9898686ce1144f3caf468ec6fed3923ca733603c96a3e776a01cdf9"
+    },
+    {
+      "source": "wnd/gacha_renew_bar_banner.csb",
+      "sha256": "bdaab9e00454d251aac4cee9c7c011c3bd6454cc731e5fe3ca37c8f2b488fb1a"
+    },
+    {
+      "source": "wnd/gacha_special_summon_p.csb",
+      "sha256": "5416c9148596242ce5f3ef1c7b3ecdc62acd2334066dba70fca93dd88dce2c8f"
+    },
+    {
+      "source": "wnd/top_bar.csb",
+      "sha256": "a2651949d1acba21455357b07b0a8beb29855b4b145302680dea74b9429eff98"
+    },
+    {
+      "source": "wnd/top_bar_token.csb",
+      "sha256": "b480a8afb3e7f75b28708d6902687e278b7855c8bb5f41e494e22b64a828c097"
+    },
+    {
+      "source": "wnd/gacha_unit_bar.csb",
+      "sha256": "299466a4156f37792027d354209eab601ed6a25300e0a8d117e24ab29054cc29"
+    },
+    {
+      "source": "wnd/gacha_wish_choose.csb",
+      "sha256": "a201d0ded97a427590329343b1fdf236e5c407c28085e8da714db0b871e7ab8d"
+    },
+    {
+      "source": "wnd/gacha_result_unit.csb",
+      "sha256": "06f354adf4cf3cef6e5778ff7da0941928051e366e6f3a0bf741befa474e94da"
+    },
+    {
+      "source": "wnd/gacha_result_artifact.csb",
+      "sha256": "620b07531845d79d49f973a86a66e12532d9a7559462edfeca53eece97629284"
+    },
+    {
+      "source": "wnd/gacha_summary.csb",
+      "sha256": "2939e65b289e515171fd09a5473e8c8c8914a5f1049b81ed607c7752cdc0501e"
+    },
+    {
+      "source": "wnd/gacha_inven.csb",
+      "sha256": "8e2cf27254098905096ade672a896139e6660b3cc683f548e19fd4e1dd9dcbcb"
+    },
+    {
+      "source": "wnd/gacha_skip_btn.csb",
+      "sha256": "ccdf0e9445242e041ca4cdc984e67ca3c2c5b60c6805c4867ab1da0d58d8e25f"
+    }
+  ]
+}

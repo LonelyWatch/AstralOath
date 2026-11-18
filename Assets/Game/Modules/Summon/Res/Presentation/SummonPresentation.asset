@@ -1,0 +1,1207 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 287ec2d076fd41dfbd51a53b9ab6797b, type: 3}
+  m_Name: SummonPresentation
+  m_EditorClassIdentifier: 
+  phases:
+  - id: 1_blue
+    parts:
+    - animation: blue
+      skeleton: {fileID: 4900000, guid: 8982681f89a55ce8ac62e74124438c88, type: 3}
+      atlas: {fileID: 4900000, guid: 74f6d0420d3a5ed7ae37a1dacd99754a, type: 3}
+      pageNames:
+      - gacha_eff_1_b_1_1.sct
+      pages:
+      - {fileID: 2800000, guid: 9a88cc8998fa5390846e8bfcbd181f94, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: blue
+      skeleton: {fileID: 4900000, guid: 5a1f9e2117ee5b3b95fd54db129b30d3, type: 3}
+      atlas: {fileID: 4900000, guid: 62f804ad5a5d59b293bacb821ae6afc5, type: 3}
+      pageNames:
+      - gacha_eff_1_b_1_2.sct
+      pages:
+      - {fileID: 2800000, guid: 03b43fccfeb757c781d53eaa87451e3c, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: blue
+      skeleton: {fileID: 4900000, guid: 8419726149a85733b72fcc0a1d5afa03, type: 3}
+      atlas: {fileID: 4900000, guid: f546e89d178c5bebbfd8a26d456d1694, type: 3}
+      pageNames:
+      - gacha_eff_1_b_1_3.sct
+      pages:
+      - {fileID: 2800000, guid: 1a5d6455f0155136a7669f100080fc38, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: blue
+      skeleton: {fileID: 4900000, guid: 7da9a78e95a85684942d2d85cccfb40a, type: 3}
+      atlas: {fileID: 4900000, guid: 3666778487c55f27bd67a7279b6bfc8f, type: 3}
+      pageNames:
+      - gacha_eff_1_b_2.sct
+      pages:
+      - {fileID: 2800000, guid: b228286d798059c385363bae717ecbbe, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: blue
+      skeleton: {fileID: 4900000, guid: 88baf93de43a5f6dbf04497b34ead83d, type: 3}
+      atlas: {fileID: 4900000, guid: 5b319c9c3ccc537faffc955bddc31b60, type: 3}
+      pageNames:
+      - gacha_eff_1_b_3.sct
+      pages:
+      - {fileID: 2800000, guid: 5ead09bdb98f56f5ad2ea0817ce16129, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: 43fc30e0b27354a99559b6eefa4df848, type: 3}
+      atlas: {fileID: 4900000, guid: 150865f83e715e629504d280275b9d35, type: 3}
+      pageNames:
+      - n_bibleo.sct
+      pages:
+      - {fileID: 2800000, guid: bc985053c4205d919bd66f3117ad6b74, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: b9091e68d4fb5af3b56c303608ccea80, type: 3}
+      atlas: {fileID: 4900000, guid: 3f99f0551aea535d89b7545d7f9929d8, type: 3}
+      pageNames:
+      - n_biblika.sct
+      pages:
+      - {fileID: 2800000, guid: fd7771130ff55a7caa1820f4dbfe332b, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: f239f7250e0d572cb7a448c7f9032832, type: 3}
+      atlas: {fileID: 4900000, guid: 922288d94ffd548e8aaba5adc1a979a8, type: 3}
+      pageNames:
+      - gacha_eff_1_f.sct
+      pages:
+      - {fileID: 2800000, guid: d4a94be99f6a5e8e8ade686d1212681c, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: blue
+      skeleton: {fileID: 4900000, guid: 1c1097b5373651378181703aa24a830e, type: 3}
+      atlas: {fileID: 4900000, guid: ec35f09b089c5c129a537293c9210ea9, type: 3}
+      pageNames:
+      - gacha_eff_1_2.sct
+      pages:
+      - {fileID: 2800000, guid: f1bf41d9719750f3af6435605a670c7b, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: ccfdd2b370655b44bb184c29b438b686, type: 3}
+      atlas: {fileID: 4900000, guid: 0982801d3a5458288928af900282f6ef, type: 3}
+      pageNames:
+      - gacha_eff_1_2_f1.sct
+      pages:
+      - {fileID: 2800000, guid: cf5c77f8271d5cec8190d2aaa7b71b27, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: blue
+      skeleton: {fileID: 4900000, guid: 6ef06a787e8b5d83b4fbcdd483ceb150, type: 3}
+      atlas: {fileID: 4900000, guid: dfe4ee1f46035192beab95c8b14d3ae2, type: 3}
+      pageNames:
+      - gacha_eff_1_2_f2.sct
+      pages:
+      - {fileID: 2800000, guid: f69caec9f4515c4e8c69c1f26f9dcfeb, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+  - id: 1_yellow1
+    parts:
+    - animation: yellow
+      skeleton: {fileID: 4900000, guid: 8982681f89a55ce8ac62e74124438c88, type: 3}
+      atlas: {fileID: 4900000, guid: 74f6d0420d3a5ed7ae37a1dacd99754a, type: 3}
+      pageNames:
+      - gacha_eff_1_b_1_1.sct
+      pages:
+      - {fileID: 2800000, guid: 9a88cc8998fa5390846e8bfcbd181f94, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: yellow
+      skeleton: {fileID: 4900000, guid: 5a1f9e2117ee5b3b95fd54db129b30d3, type: 3}
+      atlas: {fileID: 4900000, guid: 62f804ad5a5d59b293bacb821ae6afc5, type: 3}
+      pageNames:
+      - gacha_eff_1_b_1_2.sct
+      pages:
+      - {fileID: 2800000, guid: 03b43fccfeb757c781d53eaa87451e3c, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: yellow
+      skeleton: {fileID: 4900000, guid: 8419726149a85733b72fcc0a1d5afa03, type: 3}
+      atlas: {fileID: 4900000, guid: f546e89d178c5bebbfd8a26d456d1694, type: 3}
+      pageNames:
+      - gacha_eff_1_b_1_3.sct
+      pages:
+      - {fileID: 2800000, guid: 1a5d6455f0155136a7669f100080fc38, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: yellow
+      skeleton: {fileID: 4900000, guid: 7da9a78e95a85684942d2d85cccfb40a, type: 3}
+      atlas: {fileID: 4900000, guid: 3666778487c55f27bd67a7279b6bfc8f, type: 3}
+      pageNames:
+      - gacha_eff_1_b_2.sct
+      pages:
+      - {fileID: 2800000, guid: b228286d798059c385363bae717ecbbe, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: yellow
+      skeleton: {fileID: 4900000, guid: 88baf93de43a5f6dbf04497b34ead83d, type: 3}
+      atlas: {fileID: 4900000, guid: 5b319c9c3ccc537faffc955bddc31b60, type: 3}
+      pageNames:
+      - gacha_eff_1_b_3.sct
+      pages:
+      - {fileID: 2800000, guid: 5ead09bdb98f56f5ad2ea0817ce16129, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: 43fc30e0b27354a99559b6eefa4df848, type: 3}
+      atlas: {fileID: 4900000, guid: 150865f83e715e629504d280275b9d35, type: 3}
+      pageNames:
+      - n_bibleo.sct
+      pages:
+      - {fileID: 2800000, guid: bc985053c4205d919bd66f3117ad6b74, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: b9091e68d4fb5af3b56c303608ccea80, type: 3}
+      atlas: {fileID: 4900000, guid: 3f99f0551aea535d89b7545d7f9929d8, type: 3}
+      pageNames:
+      - n_biblika.sct
+      pages:
+      - {fileID: 2800000, guid: fd7771130ff55a7caa1820f4dbfe332b, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: f239f7250e0d572cb7a448c7f9032832, type: 3}
+      atlas: {fileID: 4900000, guid: 922288d94ffd548e8aaba5adc1a979a8, type: 3}
+      pageNames:
+      - gacha_eff_1_f.sct
+      pages:
+      - {fileID: 2800000, guid: d4a94be99f6a5e8e8ade686d1212681c, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: yellow
+      skeleton: {fileID: 4900000, guid: 1c1097b5373651378181703aa24a830e, type: 3}
+      atlas: {fileID: 4900000, guid: ec35f09b089c5c129a537293c9210ea9, type: 3}
+      pageNames:
+      - gacha_eff_1_2.sct
+      pages:
+      - {fileID: 2800000, guid: f1bf41d9719750f3af6435605a670c7b, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: ccfdd2b370655b44bb184c29b438b686, type: 3}
+      atlas: {fileID: 4900000, guid: 0982801d3a5458288928af900282f6ef, type: 3}
+      pageNames:
+      - gacha_eff_1_2_f1.sct
+      pages:
+      - {fileID: 2800000, guid: cf5c77f8271d5cec8190d2aaa7b71b27, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: yellow
+      skeleton: {fileID: 4900000, guid: 6ef06a787e8b5d83b4fbcdd483ceb150, type: 3}
+      atlas: {fileID: 4900000, guid: dfe4ee1f46035192beab95c8b14d3ae2, type: 3}
+      pageNames:
+      - gacha_eff_1_2_f2.sct
+      pages:
+      - {fileID: 2800000, guid: f69caec9f4515c4e8c69c1f26f9dcfeb, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+  - id: 1_violet1
+    parts:
+    - animation: violet
+      skeleton: {fileID: 4900000, guid: 8982681f89a55ce8ac62e74124438c88, type: 3}
+      atlas: {fileID: 4900000, guid: 74f6d0420d3a5ed7ae37a1dacd99754a, type: 3}
+      pageNames:
+      - gacha_eff_1_b_1_1.sct
+      pages:
+      - {fileID: 2800000, guid: 9a88cc8998fa5390846e8bfcbd181f94, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: violet
+      skeleton: {fileID: 4900000, guid: 5a1f9e2117ee5b3b95fd54db129b30d3, type: 3}
+      atlas: {fileID: 4900000, guid: 62f804ad5a5d59b293bacb821ae6afc5, type: 3}
+      pageNames:
+      - gacha_eff_1_b_1_2.sct
+      pages:
+      - {fileID: 2800000, guid: 03b43fccfeb757c781d53eaa87451e3c, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: violet
+      skeleton: {fileID: 4900000, guid: 8419726149a85733b72fcc0a1d5afa03, type: 3}
+      atlas: {fileID: 4900000, guid: f546e89d178c5bebbfd8a26d456d1694, type: 3}
+      pageNames:
+      - gacha_eff_1_b_1_3.sct
+      pages:
+      - {fileID: 2800000, guid: 1a5d6455f0155136a7669f100080fc38, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: violet
+      skeleton: {fileID: 4900000, guid: 7da9a78e95a85684942d2d85cccfb40a, type: 3}
+      atlas: {fileID: 4900000, guid: 3666778487c55f27bd67a7279b6bfc8f, type: 3}
+      pageNames:
+      - gacha_eff_1_b_2.sct
+      pages:
+      - {fileID: 2800000, guid: b228286d798059c385363bae717ecbbe, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: violet
+      skeleton: {fileID: 4900000, guid: 88baf93de43a5f6dbf04497b34ead83d, type: 3}
+      atlas: {fileID: 4900000, guid: 5b319c9c3ccc537faffc955bddc31b60, type: 3}
+      pageNames:
+      - gacha_eff_1_b_3.sct
+      pages:
+      - {fileID: 2800000, guid: 5ead09bdb98f56f5ad2ea0817ce16129, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: 43fc30e0b27354a99559b6eefa4df848, type: 3}
+      atlas: {fileID: 4900000, guid: 150865f83e715e629504d280275b9d35, type: 3}
+      pageNames:
+      - n_bibleo.sct
+      pages:
+      - {fileID: 2800000, guid: bc985053c4205d919bd66f3117ad6b74, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: b9091e68d4fb5af3b56c303608ccea80, type: 3}
+      atlas: {fileID: 4900000, guid: 3f99f0551aea535d89b7545d7f9929d8, type: 3}
+      pageNames:
+      - n_biblika.sct
+      pages:
+      - {fileID: 2800000, guid: fd7771130ff55a7caa1820f4dbfe332b, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: f239f7250e0d572cb7a448c7f9032832, type: 3}
+      atlas: {fileID: 4900000, guid: 922288d94ffd548e8aaba5adc1a979a8, type: 3}
+      pageNames:
+      - gacha_eff_1_f.sct
+      pages:
+      - {fileID: 2800000, guid: d4a94be99f6a5e8e8ade686d1212681c, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: violet
+      skeleton: {fileID: 4900000, guid: 1c1097b5373651378181703aa24a830e, type: 3}
+      atlas: {fileID: 4900000, guid: ec35f09b089c5c129a537293c9210ea9, type: 3}
+      pageNames:
+      - gacha_eff_1_2.sct
+      pages:
+      - {fileID: 2800000, guid: f1bf41d9719750f3af6435605a670c7b, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: ccfdd2b370655b44bb184c29b438b686, type: 3}
+      atlas: {fileID: 4900000, guid: 0982801d3a5458288928af900282f6ef, type: 3}
+      pageNames:
+      - gacha_eff_1_2_f1.sct
+      pages:
+      - {fileID: 2800000, guid: cf5c77f8271d5cec8190d2aaa7b71b27, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: violet
+      skeleton: {fileID: 4900000, guid: 6ef06a787e8b5d83b4fbcdd483ceb150, type: 3}
+      atlas: {fileID: 4900000, guid: dfe4ee1f46035192beab95c8b14d3ae2, type: 3}
+      pageNames:
+      - gacha_eff_1_2_f2.sct
+      pages:
+      - {fileID: 2800000, guid: f69caec9f4515c4e8c69c1f26f9dcfeb, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+  - id: 2_b_blue
+    parts:
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: b99854180e2a565381e45001a9330a9d, type: 3}
+      atlas: {fileID: 4900000, guid: 1448b25860f65bd693db779a2b27b6df, type: 3}
+      pageNames:
+      - gacha_eff_2_b_1.sct
+      pages:
+      - {fileID: 2800000, guid: d959a6105f835d26874f26174817469d, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: 3822fa5a5c8b5dd5a4ebb3e6b77848c6, type: 3}
+      atlas: {fileID: 4900000, guid: 94c54a32b3fd543da6f5f0607aa62b74, type: 3}
+      pageNames:
+      - gacha_eff_2_b_2.sct
+      pages:
+      - {fileID: 2800000, guid: fd2c845d0e5a5dfcbd8bcc0f087cf49e, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: blue
+      skeleton: {fileID: 4900000, guid: af82dd30b7c45c3b95f3193687372c6c, type: 3}
+      atlas: {fileID: 4900000, guid: cfa0bf60a64651d6b0e175311ede8411, type: 3}
+      pageNames:
+      - gacha_eff_2_f.sct
+      pages:
+      - {fileID: 2800000, guid: f6b1639bda575b27b89ed80c38274b13, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+  - id: 2_b_yellow
+    parts:
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: b99854180e2a565381e45001a9330a9d, type: 3}
+      atlas: {fileID: 4900000, guid: 1448b25860f65bd693db779a2b27b6df, type: 3}
+      pageNames:
+      - gacha_eff_2_b_1.sct
+      pages:
+      - {fileID: 2800000, guid: d959a6105f835d26874f26174817469d, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: 3822fa5a5c8b5dd5a4ebb3e6b77848c6, type: 3}
+      atlas: {fileID: 4900000, guid: 94c54a32b3fd543da6f5f0607aa62b74, type: 3}
+      pageNames:
+      - gacha_eff_2_b_2.sct
+      pages:
+      - {fileID: 2800000, guid: fd2c845d0e5a5dfcbd8bcc0f087cf49e, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: yellow
+      skeleton: {fileID: 4900000, guid: af82dd30b7c45c3b95f3193687372c6c, type: 3}
+      atlas: {fileID: 4900000, guid: cfa0bf60a64651d6b0e175311ede8411, type: 3}
+      pageNames:
+      - gacha_eff_2_f.sct
+      pages:
+      - {fileID: 2800000, guid: f6b1639bda575b27b89ed80c38274b13, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+  - id: 2_b_violet
+    parts:
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: b99854180e2a565381e45001a9330a9d, type: 3}
+      atlas: {fileID: 4900000, guid: 1448b25860f65bd693db779a2b27b6df, type: 3}
+      pageNames:
+      - gacha_eff_2_b_1.sct
+      pages:
+      - {fileID: 2800000, guid: d959a6105f835d26874f26174817469d, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: 3822fa5a5c8b5dd5a4ebb3e6b77848c6, type: 3}
+      atlas: {fileID: 4900000, guid: 94c54a32b3fd543da6f5f0607aa62b74, type: 3}
+      pageNames:
+      - gacha_eff_2_b_2.sct
+      pages:
+      - {fileID: 2800000, guid: fd2c845d0e5a5dfcbd8bcc0f087cf49e, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: violet
+      skeleton: {fileID: 4900000, guid: af82dd30b7c45c3b95f3193687372c6c, type: 3}
+      atlas: {fileID: 4900000, guid: cfa0bf60a64651d6b0e175311ede8411, type: 3}
+      pageNames:
+      - gacha_eff_2_f.sct
+      pages:
+      - {fileID: 2800000, guid: f6b1639bda575b27b89ed80c38274b13, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+  - id: 2_class
+    parts:
+    - animation: artifact
+      skeleton: {fileID: 4900000, guid: 894208ef03c65bdc8347693bc20cdb93, type: 3}
+      atlas: {fileID: 4900000, guid: 062a8c764ecb5157b8ba7c954eaf01de, type: 3}
+      pageNames:
+      - gacha_eff_2_figure.sct
+      pages:
+      - {fileID: 2800000, guid: 970eed5367895e4ca1a26433c29c3abf, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+  - id: 2_blue
+    parts:
+    - animation: blue
+      skeleton: {fileID: 4900000, guid: 8615ec4ed3115de9a3ee159bc7715e31, type: 3}
+      atlas: {fileID: 4900000, guid: 7f61627de1ad5b1bbd1321e98cbd219b, type: 3}
+      pageNames:
+      - gacha_eff_2_figure2.sct
+      pages:
+      - {fileID: 2800000, guid: dae77ed17d2b54d9b37fc119f41dc8ea, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: cceac4b09e5d5cc18fbf0d4768b4c1c9, type: 3}
+      atlas: {fileID: 4900000, guid: 88a6869230445373bef8bf27aab062f9, type: 3}
+      pageNames:
+      - gacha_eff_2_figure_f.sct
+      pages:
+      - {fileID: 2800000, guid: 4afe4a8ce76e5180b6f4ef6191b53eb3, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: blue
+      skeleton: {fileID: 4900000, guid: bec41d06004351089d02fa367c2a8ee9, type: 3}
+      atlas: {fileID: 4900000, guid: bcbb27d846ce5deeb91cbeeb73ac8e06, type: 3}
+      pageNames:
+      - gacha_eff_2_2_1.sct
+      pages:
+      - {fileID: 2800000, guid: 5e4e82556e6f5c42a64bdd952725b72a, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: blue
+      skeleton: {fileID: 4900000, guid: d6fa56fb126450f0a16b5d2a40155108, type: 3}
+      atlas: {fileID: 4900000, guid: d115043d20b054509fd7784f9c5e4ee2, type: 3}
+      pageNames:
+      - gacha_eff_2_2_2.sct
+      pages:
+      - {fileID: 2800000, guid: f60e8d35a73b51e2bd86a707dac9fd5b, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+  - id: 2_yellow
+    parts:
+    - animation: yellow
+      skeleton: {fileID: 4900000, guid: 8615ec4ed3115de9a3ee159bc7715e31, type: 3}
+      atlas: {fileID: 4900000, guid: 7f61627de1ad5b1bbd1321e98cbd219b, type: 3}
+      pageNames:
+      - gacha_eff_2_figure2.sct
+      pages:
+      - {fileID: 2800000, guid: dae77ed17d2b54d9b37fc119f41dc8ea, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: cceac4b09e5d5cc18fbf0d4768b4c1c9, type: 3}
+      atlas: {fileID: 4900000, guid: 88a6869230445373bef8bf27aab062f9, type: 3}
+      pageNames:
+      - gacha_eff_2_figure_f.sct
+      pages:
+      - {fileID: 2800000, guid: 4afe4a8ce76e5180b6f4ef6191b53eb3, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: yellow
+      skeleton: {fileID: 4900000, guid: bec41d06004351089d02fa367c2a8ee9, type: 3}
+      atlas: {fileID: 4900000, guid: bcbb27d846ce5deeb91cbeeb73ac8e06, type: 3}
+      pageNames:
+      - gacha_eff_2_2_1.sct
+      pages:
+      - {fileID: 2800000, guid: 5e4e82556e6f5c42a64bdd952725b72a, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: yellow
+      skeleton: {fileID: 4900000, guid: d6fa56fb126450f0a16b5d2a40155108, type: 3}
+      atlas: {fileID: 4900000, guid: d115043d20b054509fd7784f9c5e4ee2, type: 3}
+      pageNames:
+      - gacha_eff_2_2_2.sct
+      pages:
+      - {fileID: 2800000, guid: f60e8d35a73b51e2bd86a707dac9fd5b, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+  - id: 2_violet
+    parts:
+    - animation: violet
+      skeleton: {fileID: 4900000, guid: 8615ec4ed3115de9a3ee159bc7715e31, type: 3}
+      atlas: {fileID: 4900000, guid: 7f61627de1ad5b1bbd1321e98cbd219b, type: 3}
+      pageNames:
+      - gacha_eff_2_figure2.sct
+      pages:
+      - {fileID: 2800000, guid: dae77ed17d2b54d9b37fc119f41dc8ea, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: cceac4b09e5d5cc18fbf0d4768b4c1c9, type: 3}
+      atlas: {fileID: 4900000, guid: 88a6869230445373bef8bf27aab062f9, type: 3}
+      pageNames:
+      - gacha_eff_2_figure_f.sct
+      pages:
+      - {fileID: 2800000, guid: 4afe4a8ce76e5180b6f4ef6191b53eb3, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: violet
+      skeleton: {fileID: 4900000, guid: bec41d06004351089d02fa367c2a8ee9, type: 3}
+      atlas: {fileID: 4900000, guid: bcbb27d846ce5deeb91cbeeb73ac8e06, type: 3}
+      pageNames:
+      - gacha_eff_2_2_1.sct
+      pages:
+      - {fileID: 2800000, guid: 5e4e82556e6f5c42a64bdd952725b72a, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: violet
+      skeleton: {fileID: 4900000, guid: d6fa56fb126450f0a16b5d2a40155108, type: 3}
+      atlas: {fileID: 4900000, guid: d115043d20b054509fd7784f9c5e4ee2, type: 3}
+      pageNames:
+      - gacha_eff_2_2_2.sct
+      pages:
+      - {fileID: 2800000, guid: f60e8d35a73b51e2bd86a707dac9fd5b, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+  - id: 2_blue_yellow
+    parts:
+    - animation: blue
+      skeleton: {fileID: 4900000, guid: 8615ec4ed3115de9a3ee159bc7715e31, type: 3}
+      atlas: {fileID: 4900000, guid: 7f61627de1ad5b1bbd1321e98cbd219b, type: 3}
+      pageNames:
+      - gacha_eff_2_figure2.sct
+      pages:
+      - {fileID: 2800000, guid: dae77ed17d2b54d9b37fc119f41dc8ea, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: cceac4b09e5d5cc18fbf0d4768b4c1c9, type: 3}
+      atlas: {fileID: 4900000, guid: 88a6869230445373bef8bf27aab062f9, type: 3}
+      pageNames:
+      - gacha_eff_2_figure_f.sct
+      pages:
+      - {fileID: 2800000, guid: 4afe4a8ce76e5180b6f4ef6191b53eb3, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: blue_yellow
+      skeleton: {fileID: 4900000, guid: bec41d06004351089d02fa367c2a8ee9, type: 3}
+      atlas: {fileID: 4900000, guid: bcbb27d846ce5deeb91cbeeb73ac8e06, type: 3}
+      pageNames:
+      - gacha_eff_2_2_1.sct
+      pages:
+      - {fileID: 2800000, guid: 5e4e82556e6f5c42a64bdd952725b72a, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: blue_yellow
+      skeleton: {fileID: 4900000, guid: d6fa56fb126450f0a16b5d2a40155108, type: 3}
+      atlas: {fileID: 4900000, guid: d115043d20b054509fd7784f9c5e4ee2, type: 3}
+      pageNames:
+      - gacha_eff_2_2_2.sct
+      pages:
+      - {fileID: 2800000, guid: f60e8d35a73b51e2bd86a707dac9fd5b, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+  - id: 2_blue_violet
+    parts:
+    - animation: blue
+      skeleton: {fileID: 4900000, guid: 8615ec4ed3115de9a3ee159bc7715e31, type: 3}
+      atlas: {fileID: 4900000, guid: 7f61627de1ad5b1bbd1321e98cbd219b, type: 3}
+      pageNames:
+      - gacha_eff_2_figure2.sct
+      pages:
+      - {fileID: 2800000, guid: dae77ed17d2b54d9b37fc119f41dc8ea, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: cceac4b09e5d5cc18fbf0d4768b4c1c9, type: 3}
+      atlas: {fileID: 4900000, guid: 88a6869230445373bef8bf27aab062f9, type: 3}
+      pageNames:
+      - gacha_eff_2_figure_f.sct
+      pages:
+      - {fileID: 2800000, guid: 4afe4a8ce76e5180b6f4ef6191b53eb3, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: blue_violet
+      skeleton: {fileID: 4900000, guid: bec41d06004351089d02fa367c2a8ee9, type: 3}
+      atlas: {fileID: 4900000, guid: bcbb27d846ce5deeb91cbeeb73ac8e06, type: 3}
+      pageNames:
+      - gacha_eff_2_2_1.sct
+      pages:
+      - {fileID: 2800000, guid: 5e4e82556e6f5c42a64bdd952725b72a, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: blue_violet
+      skeleton: {fileID: 4900000, guid: d6fa56fb126450f0a16b5d2a40155108, type: 3}
+      atlas: {fileID: 4900000, guid: d115043d20b054509fd7784f9c5e4ee2, type: 3}
+      pageNames:
+      - gacha_eff_2_2_2.sct
+      pages:
+      - {fileID: 2800000, guid: f60e8d35a73b51e2bd86a707dac9fd5b, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+  - id: 2_yellow_violet
+    parts:
+    - animation: yellow
+      skeleton: {fileID: 4900000, guid: 8615ec4ed3115de9a3ee159bc7715e31, type: 3}
+      atlas: {fileID: 4900000, guid: 7f61627de1ad5b1bbd1321e98cbd219b, type: 3}
+      pageNames:
+      - gacha_eff_2_figure2.sct
+      pages:
+      - {fileID: 2800000, guid: dae77ed17d2b54d9b37fc119f41dc8ea, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: cceac4b09e5d5cc18fbf0d4768b4c1c9, type: 3}
+      atlas: {fileID: 4900000, guid: 88a6869230445373bef8bf27aab062f9, type: 3}
+      pageNames:
+      - gacha_eff_2_figure_f.sct
+      pages:
+      - {fileID: 2800000, guid: 4afe4a8ce76e5180b6f4ef6191b53eb3, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: yellow_violet
+      skeleton: {fileID: 4900000, guid: bec41d06004351089d02fa367c2a8ee9, type: 3}
+      atlas: {fileID: 4900000, guid: bcbb27d846ce5deeb91cbeeb73ac8e06, type: 3}
+      pageNames:
+      - gacha_eff_2_2_1.sct
+      pages:
+      - {fileID: 2800000, guid: 5e4e82556e6f5c42a64bdd952725b72a, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: yellow_violet
+      skeleton: {fileID: 4900000, guid: d6fa56fb126450f0a16b5d2a40155108, type: 3}
+      atlas: {fileID: 4900000, guid: d115043d20b054509fd7784f9c5e4ee2, type: 3}
+      pageNames:
+      - gacha_eff_2_2_2.sct
+      pages:
+      - {fileID: 2800000, guid: f60e8d35a73b51e2bd86a707dac9fd5b, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+  - id: 3_b
+    parts:
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: d9aef2f792ad5609808f76b279ad245f, type: 3}
+      atlas: {fileID: 4900000, guid: b6dd3eafbe8253d1b8c3d3fd071b33d2, type: 3}
+      pageNames:
+      - gacha_eff_3_loop_1.sct
+      pages:
+      - {fileID: 2800000, guid: 92a7ed17002a5d31826d782314fba562, type: 3}
+      x: 0
+      y: 0
+      delay: 2400
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 1
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: e74ffbdcdc475855a670ed5c0461b4e9, type: 3}
+      atlas: {fileID: 4900000, guid: a7eeaf27064e5ce39de073fba5cad78f, type: 3}
+      pageNames:
+      - gacha_eff_3_loop_2.sct
+      pages:
+      - {fileID: 2800000, guid: d0c6e5de14a45dd48ae0fcf0b283404b, type: 3}
+      x: 0
+      y: 0
+      delay: 2400
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 1
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: e64c622f398a5ee692bc945e342f99c7, type: 3}
+      atlas: {fileID: 4900000, guid: 219a09de68f65a76940d22cbe0ddf334, type: 3}
+      pageNames:
+      - gacha_eff_3_intro_1.sct
+      pages:
+      - {fileID: 2800000, guid: fc124aa16e675034aafea1fca7734adf, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: 3fb474c7dc3358419e3a27f6ae2d31e5, type: 3}
+      atlas: {fileID: 4900000, guid: b330bf69828d539d82ce709f1d13f584, type: 3}
+      pageNames:
+      - gacha_eff_3_intro_2.sct
+      pages:
+      - {fileID: 2800000, guid: 81cd64d4efd6573e87ef23bc8d9067ec, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+  - id: 3_f
+    parts:
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: d654d171c82257f2902f7b26bb2389cf, type: 3}
+      atlas: {fileID: 4900000, guid: 91f25482e4db5754a648316f1d33aeb5, type: 3}
+      pageNames:
+      - gacha_eff_3_f.sct
+      pages:
+      - {fileID: 2800000, guid: 8e56390056705240ae0a97d421cba264, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+  - id: 3_character_bone
+    parts:
+    - animation: intro,loop
+      skeleton: {fileID: 4900000, guid: cd16f62bf7fd5c98bf7096e36673ba7d, type: 3}
+      atlas: {fileID: 4900000, guid: 1f8f542b9d33545fa98f091f3550d70d, type: 3}
+      pageNames:
+      - gacha_eff_3_character_bone.sct
+      pages:
+      - {fileID: 2800000, guid: 1418422cbe015a538c032d3be3c44a83, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 1
+  - id: 3_portrait_bone
+    parts:
+    - animation: intro,loop
+      skeleton: {fileID: 4900000, guid: 16c20c344a8650ff8e62594292668208, type: 3}
+      atlas: {fileID: 4900000, guid: c53f30f62d3a53369f43fab68eb24370, type: 3}
+      pageNames:
+      - gacha_eff_3_portrait_bone.sct
+      pages:
+      - {fileID: 2800000, guid: b2248a35f81d53a0a66dc63316035fa1, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 1
+  - id: 3_artifact_bone
+    parts:
+    - animation: intro,loop
+      skeleton: {fileID: 4900000, guid: ec3aebb06aaa5ef0b1f2451008062c9b, type: 3}
+      atlas: {fileID: 4900000, guid: 9f8e6b15a4635061b1fb1cb6cf7f94a7, type: 3}
+      pageNames:
+      - gacha_eff_3_artifact_bone.sct
+      pages:
+      - {fileID: 2800000, guid: 8d008d2a47835ceb9045d0691b18519d, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 1
+  cues:
+  - id: OpenBlue
+    clip: {fileID: 8300000, guid: 39da462122385c63a0945f00e2852a81, type: 3}
+  - id: OpenGold
+    clip: {fileID: 8300000, guid: a357458c3eae52618ccf83699b63e9bc, type: 3}
+  - id: OpenViolet
+    clip: {fileID: 8300000, guid: c21f1b94f93355bcadac242c588e16b2, type: 3}
+  - id: OpenGoldMoonlight
+    clip: {fileID: 8300000, guid: be3e397ca0b852e98b4272a9cf76553a, type: 3}
+  - id: OpenVioletMoonlight
+    clip: {fileID: 8300000, guid: c0bd9819cbda5ad3ba43c3b5daa8a7f9, type: 3}
+  - id: Hall
+    clip: {fileID: 8300000, guid: 02b1069b1c8e5ed58fc650807641d0ba, type: 3}
+  - id: HallMoonlight
+    clip: {fileID: 8300000, guid: a4d33975947055508a6ded50b707c4aa, type: 3}
+  - id: Figure
+    clip: {fileID: 8300000, guid: 0a3fe1dd5d0255e28345ae0720e665f3, type: 3}
+  - id: BurstBlue
+    clip: {fileID: 8300000, guid: 500917d9beff5beb863223f7493b9afa, type: 3}
+  - id: BurstGold
+    clip: {fileID: 8300000, guid: 85450e1cc7015a879a90ca3db5fa5085, type: 3}
+  - id: BurstViolet
+    clip: {fileID: 8300000, guid: ec541a36ed625076a80e616718539644, type: 3}
+  - id: BurstFakeGold
+    clip: {fileID: 8300000, guid: 62ec33018a4d5617933b93ce1a7123e6, type: 3}
+  - id: BurstFakeViolet
+    clip: {fileID: 8300000, guid: 98517f9bd04c52dba66b4be97585d4cf, type: 3}
+  - id: BurstFakeViolet2
+    clip: {fileID: 8300000, guid: 3a9fa73708b65b069f05a29855f5d6a4, type: 3}
+  - id: Summary
+    clip: {fileID: 8300000, guid: 8d276018861f5abeb870c292697832c2, type: 3}
+  - id: ArtifactReveal
+    clip: {fileID: 8300000, guid: de84641800f15bb1ba85bc49b4355faf, type: 3}
+  - id: FlipCommon
+    clip: {fileID: 8300000, guid: 7081e91e2f6f58209404502014fe140c, type: 3}
+  - id: FlipRare
+    clip: {fileID: 8300000, guid: cc80e4abd4a858088b456e6e445fc9ea, type: 3}
+  - id: FlipReady
+    clip: {fileID: 8300000, guid: 18e4334562f957a6a996fa1397d50de5, type: 3}
+  - id: New
+    clip: {fileID: 8300000, guid: 8206c9d932695b5093006a60bf3edb92, type: 3}
+  - id: Theme
+    clip: {fileID: 8300000, guid: 7ebcddd54ae95a6ca42af3ef1b8c9358, type: 3}
+  - id: Ceremony
+    clip: {fileID: 8300000, guid: 5038678ce6ab55729d60bcc3e8822870, type: 3}
+  - id: Voice_c1001
+    clip: {fileID: 8300000, guid: 91bbf4426c065a1980bcb82594f0e8a4, type: 3}
+  - id: Voice_c1002
+    clip: {fileID: 8300000, guid: 438725ea9617540e8fb686a59163d288, type: 3}
+  - id: Voice_c1003
+    clip: {fileID: 8300000, guid: dc8c3453035452bda21ae68aebfa0fb2, type: 3}
+  - id: Voice_c1004
+    clip: {fileID: 8300000, guid: 790180595c83557887df7201e65bed69, type: 3}
+  - id: Voice_c1005
+    clip: {fileID: 8300000, guid: 0505f2bd70425880a1ca4b3cdb67f1f9, type: 3}
+  - id: Voice_c1006
+    clip: {fileID: 8300000, guid: cb6d81d9276656deb0679838648a73ff, type: 3}
+  - id: Voice_c1007
+    clip: {fileID: 8300000, guid: 1b007c5f93925af8a4a4cec25a142453, type: 3}
+  - id: Voice_c1008
+    clip: {fileID: 8300000, guid: f654955668d95fec999f9fa26aca9235, type: 3}
+  - id: Voice_c1009
+    clip: {fileID: 8300000, guid: f82ee476a4015d47b4af61a228da042b, type: 3}
+  - id: Voice_c1010
+    clip: {fileID: 8300000, guid: 722d57aafc615871aa0fdb614503cc0a, type: 3}
+  - id: Voice_c1011
+    clip: {fileID: 8300000, guid: 0cfc53bcbeef5a10bc7b9b1eaa974bd8, type: 3}
+  - id: Voice_c1012
+    clip: {fileID: 8300000, guid: 9ee4858cb8805b2abb64fc94784beb52, type: 3}
+  - id: Voice_c1013
+    clip: {fileID: 8300000, guid: b103f0b713365137bb17e96ab9886394, type: 3}
+  - id: Voice_c1014
+    clip: {fileID: 8300000, guid: 8fa913580f73589f842172c87dadac1a, type: 3}
+  - id: Voice_c1015
+    clip: {fileID: 8300000, guid: e53a388c753a5531b24251d4987b42cd, type: 3}
+  - id: Voice_c1016
+    clip: {fileID: 8300000, guid: 77c86694dbe2540a8c955e188a2bff69, type: 3}
+  - id: Voice_c1017
+    clip: {fileID: 8300000, guid: 4fb35fff39a6538ab2a676ea8b88495d, type: 3}
+  - id: Voice_c1018
+    clip: {fileID: 8300000, guid: bf1c4d18dfdb5abb8d5ba4dc6822b3d5, type: 3}
+  - id: Voice_c1019
+    clip: {fileID: 8300000, guid: 1c647744141a5cdb94d67a1bdd29694f, type: 3}
+  - id: Voice_c1020
+    clip: {fileID: 8300000, guid: a8be96de17785f5a851127dd5b2a0aed, type: 3}
+  - id: Voice_c1021
+    clip: {fileID: 8300000, guid: ffbed13a089d5c76ab50425f6a65847d, type: 3}
+  - id: Voice_c1022
+    clip: {fileID: 8300000, guid: 22d977f16fac5eadb7ddd42d411fe0cb, type: 3}
+  - id: Voice_c1023
+    clip: {fileID: 8300000, guid: 2fe9f5b84ce1546eaced346cea53ad51, type: 3}
+  - id: Voice_c1024
+    clip: {fileID: 8300000, guid: 7e7fbe563b9d57fcaffdd39f57ebaab8, type: 3}
+  - id: Voice_c1027
+    clip: {fileID: 8300000, guid: 8259d2164d4a5406a8ec3a94260b9ace, type: 3}
+  - id: Voice_c1028
+    clip: {fileID: 8300000, guid: baaeaa11b6035138954a90d883921f9f, type: 3}
+  - id: Voice_c1029
+    clip: {fileID: 8300000, guid: b8dde45aa8b757bfbaad68154f479f8d, type: 3}
+  - id: Voice_c1030
+    clip: {fileID: 8300000, guid: cb74a33660f855659fa92d2a003be3c6, type: 3}
+  - id: Voice_c1031
+    clip: {fileID: 8300000, guid: 9f54674f78885a5095d3451752cf43f9, type: 3}
+  - id: Voice_c1062
+    clip: {fileID: 8300000, guid: 8a9c47b5641a5e3890e1cff9b7e0f9e8, type: 3}
+  composite: {fileID: 4800000, guid: 523e3661f4e1429681c582fd27d75b40, type: 3}
