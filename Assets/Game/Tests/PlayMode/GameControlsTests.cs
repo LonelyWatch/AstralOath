@@ -174,6 +174,37 @@ namespace AstralOath.Client.Tests
         }
 
         [UnityTest]
+        public IEnumerator HeaderBackSurvivesTemporaryHidingAndReleasesWithItsWindow()
+        {
+            var go = new GameObject("Back", typeof(RectTransform), typeof(Image), typeof(GameButton));
+            using var scope = new BindingScope(default);
+            var pending = new TaskCompletionSource<bool>();
+            try
+            {
+                var control = go.GetComponent<GameButton>();
+                control.targetGraphic = go.GetComponent<Image>();
+                int old = 0, calls = 0;
+                control.BindBack(scope, () => { old++; return Task.CompletedTask; });
+                control.BindBack(scope, () => { calls++; return pending.Task; });
+                go.SetActive(false);
+                go.SetActive(true);
+                control.onClick.Invoke();
+                go.SetActive(false);
+                go.SetActive(true);
+                control.onClick.Invoke();
+                Assert.That((old, calls), Is.EqualTo((0, 1)));
+                pending.SetResult(true);
+                yield return null;
+                control.onClick.Invoke();
+                Assert.That(calls, Is.EqualTo(2));
+                scope.Dispose();
+                control.onClick.Invoke();
+                Assert.That(calls, Is.EqualTo(2));
+            }
+            finally { UnityEngine.Object.Destroy(go); }
+        }
+
+        [UnityTest]
         public IEnumerator TweenUsesUnscaledTimeAndRestoresInitialScaleOnClose()
         {
             var owner = new GameObject("Tween");

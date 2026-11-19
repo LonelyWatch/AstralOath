@@ -11,6 +11,29 @@ namespace AstralOath.Client.Tests
         private const string Prefab = "Assets/Game/Modules/Summon/Res/Prefab/SummonWindow.prefab";
 
         [Test]
+        public void SummonHeaderUsesSharedControlsAndWhiteLabelsHaveARealOutline()
+        {
+            var map = AssetDatabase.LoadAssetAtPath<GameObject>(Prefab).GetComponent<BindingMap>();
+            foreach (var key in new[] { "singleLabel", "tenLabel", "wishHero0Name", "wishHero6Name" })
+            {
+                var material = map.Require<GameText>(key).fontSharedMaterial;
+                Assert.That(material.IsKeywordEnabled("OUTLINE_ON"), Is.True, key);
+                Assert.That(material.GetFloat("_OutlineWidth"), Is.GreaterThan(.15f), key);
+            }
+            foreach (var key in new[] { "transmitBalance", "moonBalance", "mysticBalance", "balance", "skyBalance" })
+            {
+                var label = map.Require<GameText>(key);
+                var source = PrefabUtility.GetCorrespondingObjectFromOriginalSource(label);
+                Assert.That(AssetDatabase.GetAssetPath(source), Does.EndWith("/TopBarToken.prefab"), key);
+            }
+            var back = map.Require<GameButton>("back");
+            Assert.That(back.image.sprite.name, Is.EqualTo("cm_hud_top_btn_back"));
+            Assert.That(back.spriteState.pressedSprite.name, Is.EqualTo("cm_hud_top_btn_back_p"));
+            Assert.That(map.Require<GameButton>("settings").transform.Find("Native settings icon")
+                .GetComponent<Image>().sprite.name, Is.EqualTo("renew_icon_quick_setting"));
+        }
+
+        [Test]
         public void CardsKeepTheirNativeAspectAndThePriceUsesOneLinearSpaceOverlay()
         {
             var view = AssetDatabase.LoadAssetAtPath<GameObject>(Prefab).GetComponent<BindingMap>();

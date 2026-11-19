@@ -16,6 +16,8 @@ namespace AstralOath.Client.Home
             public Sprite portrait, cardPortrait, illustration, element, cardElement, role, zodiacIcon;
             public TextAsset skeleton, atlas;
             public Texture2D page;
+            public TextAsset modelSkeleton, modelAtlas;
+            public Texture2D modelPage;
         }
 
         public Hero[] heroes = Array.Empty<Hero>();

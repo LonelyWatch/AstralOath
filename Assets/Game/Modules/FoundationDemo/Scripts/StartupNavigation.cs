@@ -138,20 +138,25 @@ namespace AstralOath.Client.FoundationDemo
             }
         }
 
-        internal async Task VerifySummonAsync(CancellationToken cancellation)
+        internal async Task VerifySummonAsync(CancellationToken cancellation, SummonApi isolatedGuest = null)
         {
             await OpenMore(cancellation);
-            var view = await ShowSummonPageAsync(cancellation);
+            var view = await ShowSummonPageAsync(cancellation, isolatedGuest);
             var bindings = view.Root.GetComponent<BindingMap>();
             bool covenant = bindings.Require<GameButton>("covenant").interactable;
             bool iseria = bindings.Require<GameButton>("iseria").interactable;
-            if (!view.Root.activeInHierarchy || !covenant || !iseria)
-                throw new InvalidOperationException($"The packaged Summon page failed to activate both banners. Active={view.Root.activeInHierarchy}, covenant={covenant}, iseria={iseria}.");
+            var published = await (isolatedGuest ?? summon).GetAsync(cancellation);
+            bool expectIseria = Array.Exists(published.banners, banner => banner.id == "iseria");
+            if (!view.Root.activeInHierarchy || !covenant || iseria != expectIseria)
+                throw new InvalidOperationException($"Packaged banner availability disagrees with the service. Active={view.Root.activeInHierarchy}, covenant={covenant}, iseria={iseria}, publishedIseria={expectIseria}.");
 
             var preview = bindings.Require<UnityEngine.UI.RawImage>("featuredSkillCanvas");
-            var poster = bindings.Require<CanvasGroup>("featuredActorLayer");
-            while (!preview.enabled || !preview.texture || poster.alpha > .05f || preview.color.a < .95f)
-                await Task.Delay(50, cancellation);
+            if (expectIseria)
+            {
+                var poster = bindings.Require<CanvasGroup>("featuredActorLayer");
+                while (!preview.enabled || !preview.texture || poster.alpha > .05f || preview.color.a < .95f)
+                    await Task.Delay(50, cancellation);
+            }
             bindings.Require<GameButton>("covenant").onClick.Invoke();
             if (preview.enabled || !bindings.Require<GameObject>("wishRoster").activeInHierarchy)
                 throw new InvalidOperationException("The covenant roster did not replace the featured preview.");
@@ -161,11 +166,12 @@ namespace AstralOath.Client.FoundationDemo
                 bindings.Require<RectTransform>("wishSelectedArtifacts").childCount < 7)
                 throw new InvalidOperationException("The packaged artifact wishlist did not display its selected items.");
             bindings.Require<GameButton>("wishClose").onClick.Invoke();
+            if (isolatedGuest != null) await SummonPlayerSmoke.VerifyResultResizeAsync(bindings, cancellation);
         }
 
         private Task OpenSummon(CancellationToken cancellation) => ShowSummonPageAsync(cancellation);
 
-        private async Task<SummonWindow> ShowSummonPageAsync(CancellationToken cancellation)
+        private async Task<SummonWindow> ShowSummonPageAsync(CancellationToken cancellation, SummonApi isolatedGuest = null)
         {
             var loading = new BindingScope(token);
             var detach = lifetime.Add(loading.Dispose);
@@ -182,7 +188,7 @@ namespace AstralOath.Client.FoundationDemo
                 {
                     scope.Add(detach);
                     scope.Add(loading.Dispose);
-                    var binder = new SummonWindowBinder(view, summon, art, artifacts, presentation, featuredLoop, locale, ShowHome);
+                    var binder = new SummonWindowBinder(view, isolatedGuest ?? summon, art, artifacts, presentation, featuredLoop, locale, ShowHome);
                     opened = true;
                     return binder.OpenAsync(scope);
                 });

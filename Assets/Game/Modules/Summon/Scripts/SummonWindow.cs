@@ -11,20 +11,20 @@ namespace AstralOath.Client.Summon
 
         internal static readonly string[] ButtonKeys =
         {
-            "back", "help", "covenant", "iseria", "single", "ten", "free", "epic", "info", "wish", "storage",
+            "settings", "previewToggle", "settingsClose", "back", "help", "covenant", "iseria", "single", "ten", "free", "epic", "info", "wish", "storage",
             "recovery", "confirmYes", "confirmNo", "infoClose", "wishHero", "wishArtifact", "wishSave",
             "wishDismiss", "wishInfo", "wishFilter", "wishRecommend", "wishClose", "wishUnowned", "storageClose", "resultClose", "resultAgain", "skip", "next"
         };
 
         internal static readonly string[] LabelKeys =
         {
-            "title", "balance", "epicBalance", "singlePrice", "tenPrice", "bannerTitle", "featuredHero", "featuredHeroShadow", "featuredArtifact", "pity", "status",
+            "title", "balance", "transmitBalance", "moonBalance", "mysticBalance", "skyBalance", "singlePrice", "tenPrice", "bannerTitle", "featuredHero", "featuredHeroShadow", "featuredArtifact", "pity", "eventCountdown", "status",
             "singleLabel", "tenLabel", "freeLabel", "confirmTitle", "confirmPrompt", "confirmBody", "confirmHeroName", "confirmHeroPity", "confirmCost", "confirmCurrency", "infoTitle", "wishTitle",
             "storageTitle", "resultTitle", "wishCount", "wishButtonLabel", "skipLabel", "nextLabel", "revealName", "revealStars", "revealLabel"
         };
 
         internal static readonly string[] PanelKeys =
-            { "confirmPanel", "infoPanel", "wishPanel", "storagePanel", "resultPanel", "revealPanel" };
+            { "settingsPanel", "confirmPanel", "infoPanel", "wishPanel", "storagePanel", "resultPanel", "revealPanel" };
 
         private static readonly string[] ListKeys = { "infoItems", "wishItems", "wishSelectedItems", "wishSelectedHeroes", "wishSelectedArtifacts", "storageItems", "resultItems", "wishPortraitStrip", "wishCaptionStrip" };
         private static readonly string[] ImageKeys = { "artifactArt", "artifactEmblem", "artifactRole", "revealArt", "singleCoin", "tenCoin", "confirmCoin", "confirmHeroPortrait", "featuredElement", "featuredRole" };
@@ -90,6 +90,7 @@ namespace AstralOath.Client.Summon
                 portrait.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, portrait.rect.height);
             }
 
+            var infoSheet = Items("infoSheet");
             var viewport = (RectTransform)Root.transform;
             Vector2 lastSize = Vector2.zero;
             void Resize()
@@ -97,6 +98,8 @@ namespace AstralOath.Client.Summon
                 Vector2 size = viewport.rect.size;
                 if (size == lastSize || size.x <= 0f || size.y <= 0f) return;
                 lastSize = size;
+                float sheetScale = Mathf.Min(size.x / (infoSheet.sizeDelta.x + 24f), size.y / 1080f);
+                infoSheet.localScale = new Vector3(sheetScale, sheetScale, 1f);
                 float scale = Mathf.Min(size.x / CardDesignSize.x, size.y / CardDesignSize.y);
                 foreach (var group in groups)
                     group.localScale = new Vector3(scale, scale, 1f);
@@ -110,6 +113,13 @@ namespace AstralOath.Client.Summon
         {
             foreach (string key in ButtonKeys) Button(key);
             foreach (string key in LabelKeys) Text(key);
+            _ = Panel("mainPage");
+            _ = Items("infoSheet");
+            _ = Items("infoHeroColumn");
+            _ = Items("infoArtifactColumn");
+            _ = Panel("infoRowTemplate");
+            _ = Button("infoNotesTab");
+            _ = Button("infoRatesTab");
             foreach (string key in PanelKeys) Panel(key);
             foreach (string key in ListKeys) Items(key);
             foreach (string key in ImageKeys) Image(key);
@@ -128,6 +138,17 @@ namespace AstralOath.Client.Summon
             _ = Raw("upPortrait");
             for (int star = 0; star < 6; star++) _ = Panel("artifactStar" + star);
             _ = Raw("revealHero");
+            foreach (string key in new[] { "revealVoice", "revealDetails", "revealDismiss" }) _ = Button(key);
+            foreach (string key in new[] { "revealElement", "revealRole", "revealZodiac" })
+            {
+                _ = Image(key);
+                _ = Text(key + "Text");
+            }
+            foreach (string key in new[] { "revealCV", "revealSpeaker", "revealQuote" }) _ = Text(key);
+            foreach (string key in new[] { "revealNew", "revealCaption", "revealSpeech" }) _ = Panel(key);
+            _ = Items("revealGrade");
+            _ = Group("revealCaptionFade");
+            for (int star = 0; star < 6; star++) _ = Panel("revealStar" + star);
             for (int index = 0; index < 7; index++)
             {
                 string key = "wishHero" + index;

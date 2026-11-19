@@ -165,7 +165,8 @@ internal sealed partial class SummonStore(string? connectionString, SummonCatalo
         }
         var reset = catalog.LastReset(now);
         return new SummonState(now, IsFree(wallet, DateOnly.FromDateTime(reset.UtcDateTime)), reset.AddDays(1),
-            wallet.Bookmarks, wallet.EpicBookmarks, wallet.Wishlist.Heroes!, wallet.Wishlist.Artifacts!,
+            wallet.Bookmarks, wallet.EpicBookmarks, wallet.GoldTransmitStones, wallet.GalaxyBookmarks,
+            wallet.MysticMedals, wallet.Skystones, wallet.Wishlist.Heroes!, wallet.Wishlist.Artifacts!,
             catalog.WishHeroCandidates, catalog.WishArtifactCandidates,
             await ReadOwnedWishCandidates(connection, transaction, player, ct), banners.ToArray());
     }
@@ -219,8 +220,11 @@ internal sealed partial class SummonStore(string? connectionString, SummonCatalo
         CancellationToken ct)
     {
         const string select = """
-            SELECT bookmarks, epic_bookmarks, free_period, wishlist
-            FROM summon_wallet WHERE player_id = @player AND realm_id = @realm;
+            SELECT bookmarks, epic_bookmarks, free_period, wishlist,
+                   COALESCE(gold_transmit_stones, 0), COALESCE(galaxy_bookmarks, 0),
+                   COALESCE(mystic_medals, 0), COALESCE(skystones, 0)
+            FROM summon_wallet LEFT JOIN summon_wallet_materials USING (player_id, realm_id)
+            WHERE player_id = @player AND realm_id = @realm;
             """;
         using (var current = Command(connection, transaction, player, select))
         {
@@ -229,7 +233,8 @@ internal sealed partial class SummonStore(string? connectionString, SummonCatalo
                 return new Wallet(reader.GetInt32(0), reader.GetInt32(1),
                     reader.IsDBNull(2) ? null : DateOnly.FromDateTime(reader.GetDateTime(2)),
                     catalog.RestoreWishlist(reader.IsDBNull(3) ? null :
-                        JsonSerializer.Deserialize<SummonWishlist>(reader.GetString(3), SummonCatalog.JsonOptions)));
+                        JsonSerializer.Deserialize<SummonWishlist>(reader.GetString(3), SummonCatalog.JsonOptions)),
+                    reader.GetInt32(4), reader.GetInt32(5), reader.GetInt32(6), reader.GetInt32(7));
         }
 
         int starter = 0;
@@ -244,7 +249,7 @@ internal sealed partial class SummonStore(string? connectionString, SummonCatalo
             await create.ExecuteNonQueryAsync(ct);
         if (starter > 0)
             await WalletLedger(connection, transaction, player, "development-starter", Bookmarks, starter, starter, ct);
-        return new Wallet(starter, 0, null, catalog.DefaultWishlist());
+        return new Wallet(starter, 0, null, catalog.DefaultWishlist(), 0, 0, 0, 0);
     }
 
     private static async Task WalletLedger(MySqlConnection connection, MySqlTransaction transaction, string player,
@@ -278,7 +283,8 @@ internal sealed partial class SummonStore(string? connectionString, SummonCatalo
         return command;
     }
 
-    private sealed record Wallet(int Bookmarks, int EpicBookmarks, DateOnly? FreePeriod, SummonWishlist Wishlist);
+    private sealed record Wallet(int Bookmarks, int EpicBookmarks, DateOnly? FreePeriod, SummonWishlist Wishlist,
+        int GoldTransmitStones, int GalaxyBookmarks, int MysticMedals, int Skystones);
 }
 
 internal sealed record SummonRequest(string? RequestId, string? BannerId, string? Revision, int Count, string? Payment);
@@ -286,7 +292,8 @@ internal sealed record SummonBannerView(string Id, string Revision, string Title
     int Misses, int GuaranteeAfter, int BookmarksPerDraw, bool DailyFree, bool AllowsEpicBookmarks, bool UsesWishlist,
     DateTimeOffset? StartUtc, DateTimeOffset? EndUtc, SummonEntry[] Entries);
 internal sealed record SummonState(DateTimeOffset ServerTimeUtc, bool FreeAvailable, DateTimeOffset FreeResetUtc,
-    int Bookmarks, int EpicBookmarks, string[] WishHeroes, string[] WishArtifacts, string[] WishHeroCandidates,
+    int Bookmarks, int EpicBookmarks, int GoldTransmitStones, int GalaxyBookmarks, int MysticMedals, int Skystones,
+    string[] WishHeroes, string[] WishArtifacts, string[] WishHeroCandidates,
     string[] WishArtifactCandidates, string[] OwnedWishIds, SummonBannerView[] Banners);
 internal sealed record SummonReceipt(string RequestId, string BannerId, string Revision, int Count, string Payment,
     int Cost, int Bookmarks, int EpicBookmarks, bool FreeAvailable, int Misses, SummonResult[] Results);

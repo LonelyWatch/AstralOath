@@ -1,6 +1,22 @@
 {
   "assets": [
     {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/icon_menu_mic.png",
+      "source": "img/icon_menu_mic.png",
+      "sourceSha256": "3dc1862f624714e125f0bdc112244be0f12aeffe98027093187ad07ac5078d1b",
+      "outputSha256": "3dc1862f624714e125f0bdc112244be0f12aeffe98027093187ad07ac5078d1b",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/cm_talk_next1.png",
+      "source": "img/cm_talk_next1.png",
+      "sourceSha256": "98572a2f7337ad2d772107dffba73d02425b13057bee6344c786f0e6c073d1e4",
+      "outputSha256": "98572a2f7337ad2d772107dffba73d02425b13057bee6344c786f0e6c073d1e4",
+      "width": 34,
+      "height": 22
+    },
+    {
       "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_wish_deco_1.png",
       "source": "img/gacha_wish_deco_1.png",
       "sourceSha256": "4753e27dfe7cc7b652ef720dc11ed09819b0c1679df729e45b8b4a12c331ecf2",
@@ -295,6 +311,14 @@
       "outputSha256": "a890885cd4d3c14f36114f4877771d47618eb31164ef388aaa298b03008f4df7",
       "width": 36,
       "height": 34
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/cm_icon_etctime_b.png",
+      "source": "img/cm_icon_etctime_b.png",
+      "sourceSha256": "18498283d251aca5e2aaf3af40c50b90dfd4a07be136c99c44cf46e3343e67b8",
+      "outputSha256": "18498283d251aca5e2aaf3af40c50b90dfd4a07be136c99c44cf46e3343e67b8",
+      "width": 28,
+      "height": 32
     },
     {
       "asset": "Assets/Game/Modules/Summon/Res/Textures/icon_menu_info.png",
@@ -601,6 +625,15 @@
       "height": 90
     },
     {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/renew_popup_bg_2_linear.png",
+      "source": "img/renew_popup_bg_2_alpha.png",
+      "sourceSha256": "5a6f560c1e9ca90bc466fa88b11ae1e4fc140e3da678e31fb2aef481186e8c20",
+      "outputSha256": "9ce5b5e7f5c8052d6532ff515d0d4205680e4c3b18070e0914eaf29c60bb0762",
+      "width": 256,
+      "height": 410,
+      "conversion": "sRGB white top and bottom rules on the dark dialog to linear alpha"
+    },
+    {
       "asset": "Assets/Game/Modules/Summon/Res/Textures/_btn_small_black_linear.png",
       "source": "img/_btn_small_black.png",
       "sourceSha256": "5d2458be3abf2d92a1f75d77b58d741d69c62571052ae80c4524c7ed0969a966",
@@ -759,6 +792,38 @@
       "source": "item/token_rarecoin.png",
       "sourceSha256": "205ae4d9f34fb483cb2a1156012a89e87e2f1c3ebd8b1119b2f3d90a7c1bc355",
       "outputSha256": "205ae4d9f34fb483cb2a1156012a89e87e2f1c3ebd8b1119b2f3d90a7c1bc355",
+      "width": 84,
+      "height": 84
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/token_hero2.png",
+      "source": "item/token_hero2.png",
+      "sourceSha256": "0cc5b52d23253fdf78bc9f185cdc45e520d085e9fd855e10c91c38ad5c50bc4a",
+      "outputSha256": "0cc5b52d23253fdf78bc9f185cdc45e520d085e9fd855e10c91c38ad5c50bc4a",
+      "width": 84,
+      "height": 84
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/token_ticket_moon.png",
+      "source": "item/token_ticket_moon.png",
+      "sourceSha256": "78d28612dd8e5e6a15a86bec2f6d999e1b505f41688f402a2d92600348b5f077",
+      "outputSha256": "78d28612dd8e5e6a15a86bec2f6d999e1b505f41688f402a2d92600348b5f077",
+      "width": 84,
+      "height": 84
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/token_ticket_special.png",
+      "source": "item/token_ticket_special.png",
+      "sourceSha256": "5d0b919fe8c7ae3dfc76cd98aa58f421c77baac36cacd829119af035696abeb6",
+      "outputSha256": "5d0b919fe8c7ae3dfc76cd98aa58f421c77baac36cacd829119af035696abeb6",
+      "width": 84,
+      "height": 84
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/token_crystal.png",
+      "source": "item/token_crystal.png",
+      "sourceSha256": "64aa84cfda19556b303a0b86920e517346ff06af3a7d86a285bce39e7553efaf",
+      "outputSha256": "64aa84cfda19556b303a0b86920e517346ff06af3a7d86a285bce39e7553efaf",
       "width": 84,
       "height": 84
     }

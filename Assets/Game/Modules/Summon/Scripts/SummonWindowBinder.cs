@@ -15,7 +15,7 @@ using Object = UnityEngine.Object;
 
 namespace AstralOath.Client.Summon
 {
-    public sealed class SummonWindowBinder
+    public sealed partial class SummonWindowBinder
     {
         private const string Prefix = "summon.";
         private const string Covenant = "covenant";
@@ -37,8 +37,10 @@ namespace AstralOath.Client.Summon
 
         private BindingScope screen;
         private HeroRosterPortrait featuredPortrait, revealPortrait;
+        private SummonReward displayedReward;
         private SummonSkillLoop.Player featuredSkill;
         private string activePanel;
+        private UIPageLayers layers;
         private string wishRoleFilter;
         private HeroRosterPortrait[] wishPortraits;
         private SummonPresentation.Player player;
@@ -67,15 +69,19 @@ namespace AstralOath.Client.Summon
         public async Task OpenAsync(BindingScope scope)
         {
             screen = scope;
+            WatchBannerSchedule(scope);
             view.Show();
             view.BindCardLayout(scope);
+            layers = new UIPageLayers(
+                new[] { view.Panel("mainPage"), view.Panel("resultPanel"), view.Panel("revealPanel") },
+                new[] { view.Panel("confirmPanel"), view.Panel("infoPanel"), view.Panel("wishPanel"), view.Panel("storagePanel"), view.Panel("settingsPanel") });
             ShowPanel(null);
             player = presentation.CreatePlayer(view.Effects, view.Audio);
             featuredSkill = featuredLoop.CreatePlayer(view.Raw("featuredSkillCanvas"), view.FeaturedSkillAudio, scope,
                 view.Group("featuredScenery"), view.Group("featuredActorLayer"),
                 view.Group("featuredOfferLayer"));
             featuredPortrait = new HeroRosterPortrait(view.Raw("upPortrait"), renderSize: 1024, positionOffset: 2000, framing: 1.04f, headFocus: .23f);
-            revealPortrait = new HeroRosterPortrait(view.Raw("revealHero"), positionOffset: 3000);
+            revealPortrait = new HeroRosterPortrait(view.Raw("revealHero"), renderSize: 1024, positionOffset: 3000, framing: .90f, headFocus: .26f);
             wishPortraits = Enumerable.Range(0, 7).Select(index => new HeroRosterPortrait(view.Raw("wishHero" + index),
                 renderSize: 480, animated: false, positionOffset: 4000 + index * 1000, framing: .83f, headFocus: .30f)).ToArray();
             Canvas.willRenderCanvases += featuredPortrait.Tick;
@@ -91,12 +97,12 @@ namespace AstralOath.Client.Summon
                 player.Dispose();
                 if (!view.Root) return;
                 if (view.Music) view.Music.Stop();
-                foreach (string list in new[] { "infoItems", "wishItems", "wishSelectedHeroes", "wishSelectedArtifacts", "storageItems", "resultItems" })
+                foreach (string list in new[] { "infoHeroColumn", "infoArtifactColumn", "wishItems", "wishSelectedHeroes", "wishSelectedArtifacts", "storageItems", "resultItems" })
                     Clear(list);
                 if (view.Root) view.Hide();
             });
 
-            Hook("back", _ => goHome());
+            view.Button("back").BindBack(scope, () => busy ? Task.CompletedTask : layers.BackAsync(goHome));
             Hook("covenant", _ => ChooseBanner(Covenant));
             Hook("iseria", _ => ChooseBanner(Up));
             Hook("single", _ => Quote(1, epic ? EpicBookmarks : Bookmarks));
@@ -104,19 +110,25 @@ namespace AstralOath.Client.Summon
             Hook("free", _ => Quote(1, Free));
             Hook("epic", _ => { epic = !epic; RenderMain(); return Task.CompletedTask; });
             Hook("info", _ => ShowInfo());
+            Hook("infoNotesTab", _ => ShowRateTab(false));
+            Hook("infoRatesTab", _ => ShowRateTab(true));
             Hook("wish", _ => ShowWishes());
             Hook("help", _ => ShowInfo());
             Hook("storage", OpenStorage);
+            Hook("settings", _ => { ShowPanel("settingsPanel"); return Task.CompletedTask; });
+            Hook("previewToggle", _ => { PreviewEnabled = !PreviewEnabled; RefreshSummonSettings(); return Task.CompletedTask; });
+            Hook("settingsClose", ClosePanel);
             Hook("recovery", Recover);
+            RefreshSummonSettings();
             Hook("confirmYes", Confirm);
-            Hook("confirmNo", _ => { quote = null; ReturnFromConfirmation(); return Task.CompletedTask; });
-            Hook("infoClose", ClosePanel);
+            Hook("confirmNo", _ => layers.BackAsync(() => ClosePanel(screen.Token)));
+            Hook("infoClose", _ => layers.BackAsync(() => ClosePanel(screen.Token)));
             Hook("wishHero", _ => ShowWishCategory(false));
             Hook("wishArtifact", _ => ShowWishCategory(true));
             Hook("wishSave", SaveWishes);
             Hook("wishUnowned", _ => { onlyUnowned = !onlyUnowned; return ShowWishCategory(wantsArtifacts); });
-            Hook("wishClose", ClosePanel);
-            Hook("wishDismiss", ClosePanel);
+            Hook("wishClose", _ => layers.BackAsync(() => ClosePanel(screen.Token)));
+            Hook("wishDismiss", _ => layers.BackAsync(() => ClosePanel(screen.Token)));
             Hook("wishInfo", _ => ToggleWishOverlay("wishHelp"));
             Hook("wishFilter", _ => ToggleWishOverlay("wishFilters"));
             foreach (string role in new[] { "all", "knight", "warrior", "mage", "ranger", "thief", "soul_weaver" })
@@ -133,11 +145,14 @@ namespace AstralOath.Client.Summon
                 wishArtifacts.UnionWith(state.wishArtifactCandidates.Take(7));
                 return ShowWishCategory(wantsArtifacts);
             });
-            Hook("storageClose", ClosePanel);
-            Hook("resultClose", ClosePanel);
+            Hook("storageClose", _ => layers.BackAsync(() => ClosePanel(screen.Token)));
+            Hook("resultClose", _ => layers.BackAsync(() => ClosePanel(screen.Token)));
             Hook("resultAgain", _ => Quote(lastReceipt.count, RepeatPayment(lastReceipt)));
             Hook("skip", _ => { playback?.Cancel(); return Task.CompletedTask; }, allowBusy: true);
             Hook("next", Next, allowBusy: true);
+            Hook("revealDismiss", _ => { CloseRewardDialogue(); return Task.CompletedTask; }, allowBusy: true);
+            Hook("revealDetails", _ => ShowRewardDialogue(voice: false), allowBusy: true);
+            Hook("revealVoice", _ => ShowRewardDialogue(voice: true), allowBusy: true);
 
             view.Text("title").text = L("title");
             view.Text("infoTitle").text = L("info.title");
@@ -185,9 +200,15 @@ namespace AstralOath.Client.Summon
 
         private void RenderMain()
         {
+            RefreshBannerSchedule();
             var banner = Banner;
-            view.Text("balance").text = state?.bookmarks.ToString(CultureInfo.InvariantCulture) ?? "";
-            view.Text("epicBalance").text = state?.epicBookmarks.ToString(CultureInfo.InvariantCulture) ?? "";
+            void Balance(string key, int? value) =>
+                view.Text(key).text = value?.ToString("#,0", CultureInfo.InvariantCulture) ?? "—";
+            Balance("balance", state?.bookmarks);
+            Balance("transmitBalance", state?.goldTransmitStones);
+            Balance("moonBalance", state?.galaxyBookmarks);
+            Balance("mysticBalance", state?.mysticMedals);
+            Balance("skyBalance", state?.skystones);
             view.Text("bannerTitle").text = banner == null ? "" : bannerId == Covenant ? banner.title : L("banner.pickup_tag");
             view.Text("featuredHero").text = string.IsNullOrEmpty(banner?.featuredHero) ? "" : Name("hero", banner.featuredHero);
             view.Text("featuredHeroShadow").text = view.Text("featuredHero").text;
@@ -262,8 +283,17 @@ namespace AstralOath.Client.Summon
             view.Panel("pickupUnowned").SetActive(ownershipKnown && !state.ownedWishIds.Contains(hero));
         }
 
+        private bool PreviewEnabled
+        {
+            get => PlayerPrefs.GetInt("Summon.FeaturedSkillPreview", 1) != 0;
+            set { PlayerPrefs.SetInt("Summon.FeaturedSkillPreview", value ? 1 : 0); PlayerPrefs.Save(); }
+        }
+
+        private void RefreshSummonSettings() =>
+            view.Text("previewState").text = L(PreviewEnabled ? "settings.preview_on" : "settings.preview_off");
+
         private void UpdateFeaturedSkill() =>
-            featuredSkill?.SetState(bannerId == Up && Banner != null, activePanel != null || busy);
+            featuredSkill?.SetState(PreviewEnabled && bannerId == Up && Banner != null, activePanel != null || busy);
 
         private void RenderWishRoster(bool visible)
         {
@@ -320,7 +350,7 @@ namespace AstralOath.Client.Summon
             SetImage(view.Image("confirmCoin"), payment == Free ? null : view.Coin(payment == EpicBookmarks));
             bool showFeatured = !string.IsNullOrEmpty(banner.featuredHero);
             view.Panel("confirmHeroRow").SetActive(showFeatured);
-            SetImage(view.Image("confirmHeroPortrait"), SpriteFor("hero", banner.featuredHero));
+            SetImage(view.Image("confirmHeroPortrait"), showFeatured && heroes.TryGetValue(banner.featuredHero, out var previewHero) ? previewHero.portrait : null);
             view.Text("confirmHeroName").text = showFeatured ? Name("hero", banner.featuredHero) : "";
             view.Text("confirmHeroPity").text = showFeatured ?
                 F("remaining", Math.Max(0, banner.guaranteeAfter - banner.misses)) : "";
@@ -335,7 +365,7 @@ namespace AstralOath.Client.Summon
             if (request == null) return;
             quote = null;
             api.Pending = request;
-            ShowPanel(null);
+            ReturnFromConfirmation();
             await DrawPending(request, token);
         }
 
@@ -376,23 +406,6 @@ namespace AstralOath.Client.Summon
             {
                 SetStatus(api.Pending == null ? "status.error" : "status.recover");
             }
-        }
-
-        private Task ShowInfo()
-        {
-            var banner = Banner;
-            if (banner == null) return Task.CompletedTask;
-            Clear("infoItems");
-            if (banner.guaranteeAfter > 0)
-                AddRow("infoItems", L("info.title"), F("info.pity", banner.guaranteeAfter), null, null);
-            foreach (var entry in banner.entries.OrderByDescending(item => item.stars).ThenBy(item => item.kind).ThenByDescending(item => item.featured))
-            {
-                string probability = entry.probability.ToString("0.#####", CultureInfo.InvariantCulture) + "%";
-                AddRow("infoItems", Name(entry.kind, entry.templateId),
-                    F("entry.stars", entry.stars) + "   " + probability, SpriteFor(entry.kind, entry.templateId), null);
-            }
-            ShowPanel("infoPanel");
-            return Task.CompletedTask;
         }
 
         private Task ShowWishes()
@@ -610,18 +623,18 @@ namespace AstralOath.Client.Summon
                     {
                         FillReveal(result);
                         player.PlayCardFlip(result.stars >= 4, result.isNew);
-                        if (!isArtifact)
-                        {
-                            if (hero != null) player.ShowHeroMiniature(hero.skeleton, hero.atlas, hero.page);
-                            player.PlayHeroVoice(result.templateId);
-                        }
-                    }, view.Image("revealArt").rectTransform, hero?.heroClass);
+                        if (hero != null)
+                            player.ShowHeroMiniature(hero.modelSkeleton, hero.modelAtlas, hero.modelPage);
+                    }, view.Image("revealArt").rectTransform, hero?.heroClass,
+                        opacity => view.Group("revealCaptionFade").alpha = opacity);
                     player.PlayCardReady();
                     token.ThrowIfCancellationRequested();
                     var step = new TaskCompletionSource<bool>();
                     next = step;
                     view.Button("next").gameObject.SetActive(true);
                     view.Text("nextLabel").text = L("reveal.next");
+                    if (result.isNew && hero != null)
+                        await ShowRewardDialogue(voice: true);
                     using var cancel = token.Register(() => step.TrySetCanceled(token));
                     await step.Task;
                     next = null;
@@ -646,9 +659,16 @@ namespace AstralOath.Client.Summon
 
         private Task Next(CancellationToken token)
         {
+            if (view.Panel("revealSpeech").activeSelf)
+            {
+                CloseRewardDialogue();
+                return Task.CompletedTask;
+            }
             if (showingDetail)
             {
                 showingDetail = false;
+                ResetReveal();
+                player.PlaySummary(playCue: false);
                 ShowPanel("resultPanel");
             }
             else next?.TrySetResult(true);
@@ -657,6 +677,9 @@ namespace AstralOath.Client.Summon
 
         private void ResetReveal()
         {
+            displayedReward = null;
+            CloseRewardDialogue();
+            view.Panel("revealCaption").SetActive(false);
             view.Panel("heroCaption").SetActive(false);
             view.Panel("artifactCaption").SetActive(false);
             view.Text("revealName").text = "";
@@ -668,14 +691,61 @@ namespace AstralOath.Client.Summon
 
         private void FillReveal(SummonReward reward)
         {
-            view.Panel("heroCaption").SetActive(reward.kind == "hero");
-            view.Panel("artifactCaption").SetActive(reward.kind == "artifact");
-            view.Text("revealName").text = Name(reward.kind, reward.templateId);
-            view.Text("revealStars").text = F("entry.stars", reward.stars);
-            view.Text("revealLabel").text = L(reward.isNew ? "result.new" : "entry." + reward.kind);
-            bool shown = reward.kind == "hero" && heroes.TryGetValue(reward.templateId, out var hero) && revealPortrait.Show(hero);
-            if (!shown) revealPortrait.SetVisible(false);
-            SetImage(view.Image("revealArt"), shown ? null : SpriteFor(reward.kind, reward.templateId, fullArt: true));
+            displayedReward = reward;
+            view.Group("revealCaptionFade").alpha = 1f;
+            CloseRewardDialogue();
+            heroes.TryGetValue(reward.templateId, out var hero);
+            var artifact = reward.kind == "artifact" ? artifactArt.Find(reward.templateId) : null;
+            bool isHero = reward.kind == "hero" && hero != null;
+            string name = Name(reward.kind, reward.templateId);
+
+            view.Panel("revealCaption").SetActive(true);
+            view.Panel("heroCaption").SetActive(isHero);
+            view.Panel("artifactCaption").SetActive(!isHero);
+            view.Panel("revealNew").SetActive(reward.isNew);
+            view.Button("revealVoice").gameObject.SetActive(isHero);
+            view.Text("revealName").text = name;
+            view.Text("revealStars").text = isHero ? "" : L("entry.artifact");
+            view.Text("revealLabel").text = isHero ? L("reveal." + reward.templateId + ".intro") : artifact?.template.DescriptionAt(1);
+            var grade = view.Items("revealGrade");
+            var label = view.Text("revealName");
+            // Text length varies independently of the name box. Place the first star at the rendered name edge.
+            grade.anchoredPosition = new Vector2(31f * 1.5f + label.GetPreferredValues(name).x + 8f, grade.anchoredPosition.y);
+            for (int i = 0; i < 6; i++) view.Panel("revealStar" + i).SetActive(i < reward.stars);
+            if (isHero)
+            {
+                SetImage(view.Image("revealElement"), hero.element);
+                SetImage(view.Image("revealRole"), hero.role);
+                SetImage(view.Image("revealZodiac"), hero.zodiacIcon);
+                view.Text("revealElementText").text = L("reveal.element." + hero.elementId);
+                view.Text("revealRoleText").text = L("reveal.role." + hero.heroClass);
+                view.Text("revealZodiacText").text = L("reveal.zodiac." + hero.zodiac);
+                view.Text("revealCV").text = L("reveal." + hero.id + ".cv");
+            }
+
+            bool animated = isHero && revealPortrait.Show(hero);
+            if (!animated) revealPortrait.SetVisible(false);
+            SetImage(view.Image("revealArt"), animated ? null : SpriteFor(reward.kind, reward.templateId, fullArt: true));
+        }
+
+        private Task ShowRewardDialogue(bool voice)
+        {
+            if (displayedReward == null) return Task.CompletedTask;
+            var reward = displayedReward;
+            bool isHero = reward.kind == "hero";
+            view.Text("revealSpeaker").text = Name(reward.kind, reward.templateId);
+            view.Text("revealQuote").text = isHero
+                ? L("reveal." + reward.templateId + (voice ? ".line" : ".story"))
+                : artifactArt.Find(reward.templateId)?.template.DescriptionAt(1);
+            view.Panel("revealSpeech").SetActive(true);
+            if (voice && isHero) player.PlayHeroVoice(reward.templateId);
+            return Task.CompletedTask;
+        }
+
+        private void CloseRewardDialogue()
+        {
+            view.Panel("revealSpeech").SetActive(false);
+            player?.StopHeroVoice();
         }
 
         private void ShowSummary()
@@ -698,6 +768,7 @@ namespace AstralOath.Client.Summon
                     showingDetail = true;
                     player.PlayCardFlip(result.stars >= 4, isNew: false);
                     ShowPanel("revealPanel");
+                    player.ShowRewardDetail(result.kind == "artifact", view.Image("revealArt").rectTransform, hero);
                     FillReveal(result);
                     view.Button("skip").gameObject.SetActive(false);
                     view.Button("next").gameObject.SetActive(true);
@@ -796,11 +867,28 @@ namespace AstralOath.Client.Summon
         {
             activePanel = active;
             UpdateFeaturedSkill();
-            bool confirmFromResults = active == "confirmPanel" && lastReceipt != null;
-            foreach (string key in SummonWindow.PanelKeys)
-                view.Panel(key).SetActive(key == active || confirmFromResults && key == "resultPanel");
+            switch (active)
+            {
+                case null:
+                    layers.ShowPage(view.Panel("mainPage"));
+                    break;
+                case "resultPanel":
+                case "revealPanel":
+                    layers.ShowPage(view.Panel(active));
+                    break;
+                case "confirmPanel":
+                    layers.ShowOverlay(view.Panel(active), () =>
+                    {
+                        quote = null;
+                        ReturnFromConfirmation();
+                        return Task.CompletedTask;
+                    });
+                    break;
+                default:
+                    layers.ShowOverlay(view.Panel(active), () => ClosePanel(screen.Token));
+                    break;
+            }
             if (active != "revealPanel") revealPortrait?.SetVisible(false);
-            if (active == "confirmPanel") view.Panel(active).transform.SetAsLastSibling();
         }
 
         private void ReturnFromConfirmation() => ShowPanel(lastReceipt == null ? null : "resultPanel");

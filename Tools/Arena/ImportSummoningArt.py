@@ -10,6 +10,7 @@ from PIL import Image
 from ImportArenaArt import REPO, SOURCE_FOLDER, digest, metadata, read_source, texture_importer, write
 
 NATIVE_UI = (
+    "icon_menu_mic", "cm_talk_next1",
     "gacha_wish_deco_1", "gacha_wish_deco_2", "btn_minus", "glow_white_circle_2", "_checked",
     "_btn_white", "icon_menu_good", "cm_ballonsm_p", "cm_ballonsm_arrow",
     "renew_main_hud_btn_deco_pickup", "cm_icon_star_big", "glow_banner_right", "_bar_23", "_itembg_stuff_3",
@@ -19,7 +20,7 @@ NATIVE_UI = (
     "icon_menu_bookmark", "icon_menu_bookmarkmoon", "gacha_renew_select_bg",
     "_btn_green", "_btn_green_p", "_btn_gold_p",
     "_btn_circle_black_76", "_btn_circle_black_76_p", "_btn_small_black", "_btn_small_black_p",
-    "icon_menu_info", "icon_quick_tmp_inven", "renew_icon_quick_setting", "icon_menu_change",
+    "cm_icon_etctime_b", "icon_menu_info", "icon_quick_tmp_inven", "renew_icon_quick_setting", "icon_menu_change",
     "banner_cliping", "banner_cliping_outline", "gacha_banner_title", "cm_btn_helpd",
     "cm_hud_top_btn_plus", "cm_icon_etcarrow2", "_grow_white", "renew_popup_bg_2_alpha",
     "_itembg_stuff_2", "_btn_gold_r_2", "_btn_gold_r_p_2", "_btn_blue_r_3", "_btn_blue_r_p_3",
@@ -30,6 +31,7 @@ NATIVE_UI = (
 )
 # Cocos cap rects in the source sprite's top-left coordinate system.
 DRAW_CAP_RECTS = {
+    "renew_popup_bg_2_alpha": (30, 38, 196, 334),
     "cm_ballonsm": (20, 20, 18, 18), "cm_ballonsm_p": (20, 20, 18, 18),
     "_btn_white": (18, 18, 116, 25), "_bar_23": (32, 4, 10, 4), "z_tile_bar": (5, 1, 54, 2),
     "gacha_wish_btn": (80, 11, 7, 53), "gacha_wish_btn_p": (80, 11, 7, 53),
@@ -61,13 +63,29 @@ def linear_black_overlay(image):
     overlay.save(output, format="PNG")
     return output.getvalue()
 
-def import_sprite(root, relative, dest, check, linear_price=False):
+def linear_confirmation_rules(image):
+    rgba = image.convert("RGBA")
+    for y in (*range(8), *range(rgba.height - 9, rgba.height)):
+        for x in range(rgba.width):
+            r, g, b, a = rgba.getpixel((x, y))
+            if min(r, g, b) < 230:
+                continue
+            coverage = a / 255
+            linear = coverage / 12.92 if coverage <= .04045 else ((coverage + .055) / 1.055) ** 2.4
+            rgba.putpixel((x, y), (r, g, b, round(255 * linear)))
+    output = io.BytesIO()
+    rgba.save(output, format="PNG")
+    return output.getvalue()
+
+def import_sprite(root, relative, dest, check, linear_price=False, linear_rules=False):
     data = read_source(root, relative)
     source_checksum = digest(data)
     with Image.open(io.BytesIO(data)) as image:
         width, height = image.size
         if linear_price:
             data = linear_black_overlay(image)
+        if linear_rules:
+            data = linear_confirmation_rules(image)
     write(dest, data, check)
     importer = texture_importer(dest, sprite=True)
     importer = re.sub(r"(?m)^(\s+textureCompression:) \d+$", r"\1 0", importer)
@@ -92,6 +110,8 @@ def import_sprite(root, relative, dest, check, linear_price=False):
               "outputSha256": digest(data), "width": width, "height": height}
     if linear_price:
         record["conversion"] = "sRGB black-overlay transmission to linear alpha"
+    if linear_rules:
+        record["conversion"] = "sRGB white top and bottom rules on the dark dialog to linear alpha"
     return record
 
 def manifest(dest, root, layouts, assets, check):
@@ -122,6 +142,8 @@ def main():
     manifest(HOME / "Res/Textures/Artifacts/source-manifest.json", root, LAYOUTS[-2:], portraits, opts.check)
     artwork = [import_sprite(root, f"img/{name}.png", SUMMON / "Res/Textures" / (name + ".png"), opts.check)
                for name in NATIVE_UI]
+    artwork.append(import_sprite(root, "img/renew_popup_bg_2_alpha.png",
+                                 SUMMON / "Res/Textures/renew_popup_bg_2_linear.png", opts.check, linear_rules=True))
     for name in ("_btn_small_black", "_btn_small_black_p"):
         artwork.append(import_sprite(root, f"img/{name}.png",
                                      SUMMON / "Res/Textures" / (name + "_linear.png"), opts.check, linear_price=True))
@@ -132,7 +154,7 @@ def main():
     for name in ("arti_frame_deco_1", "arti_frame_small"):
         artwork.append(import_sprite(root, f"item_arti/{name}.png",
                                      SUMMON / "Res/Textures" / (name + ".png"), opts.check))
-    for name in ("token_ticket_rare", "token_rarecoin"):
+    for name in ("token_ticket_rare", "token_rarecoin", "token_hero2", "token_ticket_moon", "token_ticket_special", "token_crystal"):
         artwork.append(import_sprite(root, f"item/{name}.png", SUMMON / "Res/Textures" / (name + ".png"), opts.check))
     manifest(SUMMON / "Res/Textures/source-manifest.json", root, LAYOUTS[:-2], artwork, opts.check)
     print(f"{'Verified' if opts.check else 'Imported'} {len(artwork)} native UI images and {len(portraits)} artifact cards.")

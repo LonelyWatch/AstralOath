@@ -19,6 +19,7 @@ namespace AstralOath.Client.Summon
         public string serverTimeUtc, freeResetUtc;
         public bool freeAvailable;
         public int bookmarks, epicBookmarks;
+        public int? goldTransmitStones, galaxyBookmarks, mysticMedals, skystones;
         public string[] wishHeroes, wishArtifacts, wishHeroCandidates, wishArtifactCandidates;
         public SummonBanner[] banners;
     }

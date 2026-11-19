@@ -1,3 +1,4 @@
+import json
 import unittest
 from pathlib import Path
 
@@ -5,6 +6,11 @@ from ImportSummonPresentation import DEST, ROOTS, collect_visual, validate_music
 
 
 class NativeSummonPresentation(unittest.TestCase):
+    def test_featured_skill_captures_a_slime_as_the_only_enemy(self):
+        loop = json.loads((DEST / "IseriaSkillLoop/loop.json").read_text(encoding="utf-8"))
+        self.assertEqual("preview.slime", loop.get("sourceTargetModel"))
+        self.assertEqual(1, loop["sourceTargetCount"])
+
     def test_streamed_music_advances_past_the_decoder_buffer(self):
         for name in ("Theme.wav", "Ceremony.wav"):
             with self.subTest(name=name):

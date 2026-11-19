@@ -39,3 +39,5 @@ BP 复用主页 `WindowCoordinator` 统一管理选人筛选浮层，窗口退�
 Windows 双端联机验证应为独立访客会话。开发 Player 测试入口使用预生成房间，按实际房主或客席身份进入同一场战斗，验证双方座位、回合时钟和事件同步。
 
 Windows 开发包同时传入 `-astral-startup-smoke -astral-summon-smoke` 可用回环测试服检查召唤入口。检查会等待两个卡池就绪及伊赛丽亚技能预览显现，再切到誓约池，确认技能收起并显示七人愿望单立绘。通过时写入 `ASTRAL_SUMMON_PLAYER_OK`。
+
+Windows Development 客户端在回环测试服上可使用 `-astral-startup-smoke -astral-summon-resize-smoke`。使用专属访客十连并切换原生窗口尺寸，成功写入 ASTRAL_SUMMON_RESIZE_OK 和 ASTRAL_SUMMON_PLAYER_OK。

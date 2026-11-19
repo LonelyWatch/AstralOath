@@ -21,3 +21,9 @@
 - GET /api/summon/storage 读保管箱。POST /api/summon/storage/claim 根据 instanceIds 原子领取不超过 10 个实例。
 
 抽取、收费、回执、保底、物品发放和审计同事务完成。抽卡前按整批最坏情况核验英雄、神器和保管箱组合容量。背包存满后剩余实例进入保管箱，领取时保留原实例 ID。保管箱最多 400 件。
+
+### 活动时间与顶栏道具
+
+本机伊赛丽亚测试池在北京时间 2026-12-03 03:00 结束，由 summon-banners.json 的 endUtc 控制。保留原有起点与保底记录。状态返回 serverTimeUtc 和当前有效池的 endUtc，服务端在截止时立即拒绝该池的新抽取，已有回执可继续读取。
+
+迁移 013 为已有区服钱包增加道具余额表。GET /api/summon 额外返回 goldTransmitStones、galaxyBookmarks、mysticMedals、skystones 四个整数。没有发放记录的玩家为零；誓约书签、史诗书签、免费次数维持原有来源。隔离 MySQL 用例验证非零余额在十连和服务重启后仍可读取。

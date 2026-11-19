@@ -122,7 +122,7 @@ namespace AstralOath.Client.Home
                 trialButton.onClick.AddListener(StartTrial);
                 scope.Add(() => { if (trialButton) trialButton.onClick.RemoveListener(StartTrial); });
             }
-            view.Back.Bind(scope, _ => artifacts?.Back() == true ? Task.CompletedTask : expanded ? ToggleExpanded() : goHome());
+            view.Back.BindBack(scope, () => artifacts?.Back() == true ? Task.CompletedTask : expanded ? ToggleExpanded() : goHome());
             view.Expand.Bind(scope, _ => ToggleExpanded());
             view.Retry.Bind(scope, ReloadAsync);
             view.TabHeroes.Bind(scope, ct => SelectTab(Tab.Heroes, ct));

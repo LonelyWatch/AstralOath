@@ -31,7 +31,7 @@
 - 音频从原版 event:/skill/c_iseria_skill_03（GUID aeefb2c6-0f86-4ee3-a848-b4db99372674）与 event:/voc/skill/c_iseria_skill_03（GUID 24e5dc35-73bc-4171-8e4f-ffd4d45334c6）混录，沿用 FMOD 事件起点和内部时间轴。原始 bank 为 sfx1.bank（6a01d3cded5e）、voc.event.bank（1f2ddf6409e6）和 ja/voc1.audio_ja.bank（0ce45d4f6ad1）。技能音效事件原长 10.820 秒，样本使用日语 voc_c1024_skill3_1_1、voc_c1024_skill3_1_2。打包音频为 48 kHz 双声道 538,000 帧，尾端淡出 100 ms，实测峰值 −2.40 dBFS，削波样本为零。
 - 现有演出引擎仍会为 3 处未确认定位的特效绑定主目标，并报告 iseria_skill_03_final_front 的 Fire 动作未映射。默认移动曲线和跳跃轨迹沿用项目复原结果。录屏内的梅铃及其他卡池仅用于视觉结构对照。
 
-从 Tools/Summon/SummonFeaturedSkillCapture.cs 复制导出入口到独立 Unity 工程 Assets/Game/Modules/BattleScene/Editor，确保独立工程中的已生成 BattleScene.unity 包含伊赛丽亚技能图。指定 ASTRAL_SUMMON_SKILL_FRAMES 为存在的临时目录，用 Unity 的 `-batchmode -quit -executeMethod AstralOath.Client.BattleScene.Editor.SummonFeaturedSkillCapture.Run` 图形模式生成帧。主工作区的 .artifacts/summon-presentation/Unity-iseria-s3-final.log 保留采集结果。AudioProbe 的一次参数组可用 `|` 分隔两个事件路径、两个带花括号的 GUID 和三个 bank 路径。输出按 11.208333 秒裁剪，并对末尾 100 ms 淡出。
+从 Tools/Summon/SummonFeaturedSkillCapture.cs 复制导出入口到独立 Unity 工程 Assets/Game/Modules/BattleScene/Editor，确保独立工程中的已生成 BattleScene.unity 包含伊赛丽亚技能图。指定 ASTRAL_SUMMON_SKILL_FRAMES 为存在的临时目录，用 Unity 的 `-batchmode -quit -executeMethod AstralOath.Client.BattleScene.Editor.SummonFeaturedSkillCapture.Run` 图形模式生成帧。2026-11-20 重录使用原始冰史莱姆作为唯一敌方。独立工程需同步 SkillTimelinePreviewSession.cs，用 Tools/Summon/RepackFeaturedSkill.py 对采集目录重新打图集，保留音轨和资源 GUID。原始 436 帧位于 .artifacts/summon-presentation/iseria-s3-slime-frames，frame-0325.png 可见伊赛丽亚与史莱姆。采集日志为 .artifacts/summon-presentation/iseria-s3-slime.log。AudioProbe 的一次参数组可用 `|` 分隔两个事件路径、两个带花括号的 GUID 和三个 bank 路径。输出按 11.208333 秒裁剪，并对末尾 100 ms 淡出。
 
 ## 验收命令
 

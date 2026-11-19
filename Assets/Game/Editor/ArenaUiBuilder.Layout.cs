@@ -79,9 +79,7 @@ namespace AstralOath.Editor
             Paint(Area(root, "Directory shading", 0, 0, 1, 1), null, Black(.20f));
             var top = Area(root, "Header", 0, 0, 1, .092f);
             Paint(top, null, Black(.65f));
-            var back = Button(Area(top, "Back", .013f, .12f, .035f, .76f), null, Color.clear);
-            back.FeedbackSound = GameUiFeedback.Sound.Back;
-            Picture((RectTransform)back.transform, "Back icon", Art("cm_icon_etcback"), .08f, .01f, .84f, .98f, true);
+            var back = SharedHeaderBack(top);
             Text(top, "Title", "arena.title", 37, .049f, .09f, .35f, .82f);
             Paint(Area(top, "Bottom border", 0, .98f, 1, .015f), null, new Color32(126, 119, 111, 115));
 

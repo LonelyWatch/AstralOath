@@ -13,6 +13,19 @@ using Xunit;
 public sealed class SummonTests
 {
     [Fact]
+    public void PickupEndsAtItsPublishedDeadlineAndCovenantStaysOpen()
+    {
+        var catalog = SummonCatalog.Load(AstralOath.Server.Battle.ArtifactCatalogReader.Load());
+        var pickup = Assert.Single(catalog.Active(new DateTimeOffset(2026, 11, 20, 0, 0, 0, TimeSpan.Zero)),
+            banner => banner.Id == "iseria");
+        Assert.True(pickup.EndUtc.HasValue);
+        var end = pickup.EndUtc.Value;
+        Assert.Contains(catalog.Active(end.AddTicks(-1)), banner => banner.Id == pickup.Id);
+        Assert.DoesNotContain(catalog.Active(end), banner => banner.Id == pickup.Id);
+        Assert.Contains(catalog.Active(end), banner => banner.Id == "covenant" && banner.EndUtc == null);
+    }
+
+    [Fact]
     public void WeightedBoundariesAndPityFollowDrawOrder()
     {
         const int total = SummonCatalog.TotalWeight;
@@ -69,6 +82,19 @@ public sealed class SummonTests
         {
             var snapshot = await client.GetFromJsonAsync<JsonElement>("/api/summon", ct);
             Assert.Equal(60, snapshot.GetProperty("bookmarks").GetInt32());
+            foreach (string key in new[] { "goldTransmitStones", "galaxyBookmarks", "mysticMedals", "skystones" })
+                Assert.Equal(0, snapshot.GetProperty(key).GetInt32());
+            await using (var walletDatabase = new MySqlConnection(connection))
+            {
+                await walletDatabase.OpenAsync(ct);
+                using var grant = new MySqlCommand("""
+                    INSERT INTO summon_wallet_materials
+                        (player_id, realm_id, gold_transmit_stones, galaxy_bookmarks, mystic_medals, skystones)
+                    SELECT player_id, realm_id, 7, 11, 29, 501 FROM summon_wallet WHERE player_id = @player;
+                    """, walletDatabase);
+                grant.Parameters.AddWithValue("@player", playerId);
+                Assert.Equal(1, await grant.ExecuteNonQueryAsync(ct));
+            }
             Assert.True(snapshot.GetProperty("freeAvailable").GetBoolean());
             string revision = snapshot.GetProperty("banners").EnumerateArray()
                 .Single(banner => banner.GetProperty("id").GetString() == "covenant").GetProperty("revision").GetString()!;
@@ -103,6 +129,11 @@ public sealed class SummonTests
             resumed.DefaultRequestHeaders.Authorization = client.DefaultRequestHeaders.Authorization;
             Assert.Equal(bodies[0], await resumed.GetStringAsync("/api/summon/draw/" + requestId, ct));
             Assert.Equal(bodies[0], await resumed.GetStringAsync("/api/summon/draw/latest", ct));
+            var balances = await resumed.GetFromJsonAsync<JsonElement>("/api/summon", ct);
+            Assert.Equal(7, balances.GetProperty("goldTransmitStones").GetInt32());
+            Assert.Equal(11, balances.GetProperty("galaxyBookmarks").GetInt32());
+            Assert.Equal(29, balances.GetProperty("mysticMedals").GetInt32());
+            Assert.Equal(501, balances.GetProperty("skystones").GetInt32());
 
             var free = new { requestId = Guid.NewGuid().ToString("N"), bannerId = "covenant", revision, count = 1, payment = "free" };
             using var first = await client.PostAsJsonAsync("/api/summon/draw", free, ct);

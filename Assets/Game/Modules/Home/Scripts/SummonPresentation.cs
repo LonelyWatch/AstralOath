@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AstralOath.Client.Home;
 using AstralOath.Client.Skeletons;
 using UnityEngine;
 using UnityEngine.UI;
@@ -69,7 +70,7 @@ namespace AstralOath.Client.Summon
             }
 
             private readonly RawImage output;
-            private readonly AudioSource audio;
+            private readonly AudioSource audio, voice;
             private AudioSource soundtrack;
             private readonly GameObject scene;
             private readonly Camera camera;
@@ -107,6 +108,10 @@ namespace AstralOath.Client.Summon
 
                 scene = new GameObject("Native summon scene") { layer = RenderLayer, hideFlags = HideFlags.HideAndDontSave };
                 scene.transform.position = new Vector3(32000, 20000, 0);
+                voice = scene.AddComponent<AudioSource>();
+                voice.playOnAwake = false;
+                voice.spatialBlend = 0;
+                voice.outputAudioMixerGroup = audio.outputAudioMixerGroup;
                 camera = new GameObject("Summon scene camera").AddComponent<Camera>();
                 camera.transform.SetParent(scene.transform, false);
                 camera.transform.localPosition = new Vector3(0, 0, -10f);
@@ -143,7 +148,7 @@ namespace AstralOath.Client.Summon
                 finally { FinishOperation(operation); }
             }
 
-            public async Task PlayRevealAsync(int rarity, bool artifact, CancellationToken token, Action revealReady = null, RectTransform artwork = null, string heroClass = null)
+            public async Task PlayRevealAsync(int rarity, bool artifact, CancellationToken token, Action revealReady = null, RectTransform artwork = null, string heroClass = null, Action<float> captionOpacity = null)
             {
                 var operation = StartOperation(token);
                 try
@@ -162,7 +167,8 @@ namespace AstralOath.Client.Summon
                     else SetScenes("3_b", "3_character_bone", "3_portrait_bone", "3_f");
                     AttachReward(artwork, artifact);
                     revealReady?.Invoke();
-                    await WaitUntilAsync(2.4f, operation.Token);
+                    captionOpacity?.Invoke(0f);
+                    await WaitUntilAsync(2.4f, operation.Token, captionOpacity);
                 }
                 finally { FinishOperation(operation); }
             }
@@ -186,20 +192,44 @@ namespace AstralOath.Client.Summon
                 if (isNew) Play("New");
             }
 
-            public void PlaySummary()
+            public void PlaySummary(bool playCue = true)
             {
                 ThrowIfDisposed();
                 audio.Stop();
+                StopHeroVoice();
                 if (soundtrack && !soundtrack.isPlaying) soundtrack.Play();
                 SetScenes("3_b");
                 Advance(2.4f);
-                Play("Summary");
+                camera.Render();
+                if (playCue) Play("Summary");
+            }
+
+            public void ShowRewardDetail(bool artifact, RectTransform artwork, HomeHeroArt.Hero hero)
+            {
+                ThrowIfDisposed();
+                if (artifact) SetScenes("3_b", "3_artifact_bone", "3_f");
+                else SetScenes("3_b", "3_character_bone", "3_portrait_bone", "3_f");
+                AttachReward(artwork, artifact);
+                if (hero != null) ShowHeroMiniature(hero.modelSkeleton, hero.modelAtlas, hero.modelPage);
+                Advance(2.4f);
+                // A detail can open after this camera rendered. Publish the final hall and actor together.
+                camera.Render();
             }
 
             public void PlayHeroVoice(string heroId)
             {
                 ThrowIfDisposed();
-                Play("Voice_" + heroId);
+                voice.Stop();
+                if (cues.TryGetValue("Voice_" + heroId, out var clip) && clip)
+                {
+                    voice.clip = clip;
+                    voice.Play();
+                }
+            }
+
+            public void StopHeroVoice()
+            {
+                if (voice) voice.Stop();
             }
 
             public void PlayCardReady()
@@ -217,6 +247,7 @@ namespace AstralOath.Client.Summon
                 if (output) output.enabled = false;
                 if (camera) camera.enabled = false;
                 if (audio) audio.Stop();
+                StopHeroVoice();
                 if (soundtrack) soundtrack.Stop();
             }
 
@@ -368,7 +399,7 @@ namespace AstralOath.Client.Summon
                     return;
                 }
 
-                miniatureSize = camera.orthographicSize * .50f / mesh.bounds.size.y;
+                miniatureSize = camera.orthographicSize * .70f / mesh.bounds.size.y;
                 rewardMiniature.Root.transform.localScale = miniatureSize * Vector3.one;
                 UpdateHeroMiniature(0f);
             }
@@ -383,7 +414,7 @@ namespace AstralOath.Client.Summon
                 Vector3 offset = miniatureTrack.looping
                     ? Vector3.zero
                     : miniatureTrack.stage.transform.TransformVector(position - miniatureRest);
-                Vector3 rest = new Vector3(-.17f * camera.aspect, -.67f, 0) * camera.orthographicSize;
+                Vector3 rest = new Vector3(-.23f * camera.aspect, -.77f, 0) * camera.orthographicSize;
                 rewardMiniature.Root.transform.localPosition = rest + offset -
                     miniatureSize * new Vector3(bounds.center.x, bounds.min.y, 0);
             }
@@ -457,11 +488,29 @@ namespace AstralOath.Client.Summon
                 float ratio = rect.width > 0 && rect.height > 0 ? Mathf.Clamp(rect.width / rect.height, 1, 3) : 16f / 9f;
                 int width = Mathf.RoundToInt(720 * ratio);
                 if (target && target.width == width) return;
-                if (target) { target.Release(); UnityEngine.Object.Destroy(target); }
-                target = new RenderTexture(width, 720, 16, RenderTextureFormat.ARGB32) { name = "Original summon canvas" };
-                camera.targetTexture = target;
-                camera.aspect = (float)width / target.height;
-                output.texture = target;
+                var previous = target;
+                var replacement = new RenderTexture(width, 720, 16, RenderTextureFormat.ARGB32) { name = "Original summon canvas" };
+                // Canvas can resize after the scene camera has rendered this frame. Seed the replacement
+                // before publishing it so the UI always samples a completed frame while dragging.
+                var priorActive = RenderTexture.active;
+                try
+                {
+                    if (previous && previous.IsCreated()) Graphics.Blit(previous, replacement);
+                    else
+                    {
+                        RenderTexture.active = replacement;
+                        GL.Clear(true, true, Color.black);
+                    }
+                }
+                finally { RenderTexture.active = priorActive; }
+                target = replacement;
+                camera.targetTexture = replacement;
+                camera.aspect = (float)width / replacement.height;
+                output.texture = replacement;
+                // This can run after Graphic.UpdateMaterial in willRenderCanvases. The current batch
+                // needs the same texture as RawImage, and an already submitted batch can still use the old one.
+                output.canvasRenderer.SetTexture(replacement);
+                if (previous) UnityEngine.Object.Destroy(previous);
             }
 
             private void Update()
@@ -499,7 +548,7 @@ namespace AstralOath.Client.Summon
                 UpdateHeroMiniature(tick);
             }
 
-            private async Task WaitUntilAsync(float seconds, CancellationToken token)
+            private async Task WaitUntilAsync(float seconds, CancellationToken token, Action<float> captionOpacity = null)
             {
                 while (elapsed < seconds)
                 {
@@ -507,6 +556,7 @@ namespace AstralOath.Client.Summon
                     if (!output || !output.gameObject.activeInHierarchy)
                         throw new OperationCanceledException("The summon presentation was closed.", token);
                     Update();
+                    captionOpacity?.Invoke(Mathf.InverseLerp(.45f, .80f, elapsed));
                     if (elapsed < seconds) await Task.Yield();
                 }
                 token.ThrowIfCancellationRequested();

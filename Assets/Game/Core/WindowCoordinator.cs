@@ -81,6 +81,13 @@ namespace AstralOath.Client.Core
             if (IsOverlayOpen(name)) CloseCurrentOverlay();
         }
 
+        public bool TryCloseOverlay()
+        {
+            if (overlay == null) return false;
+            CloseCurrentOverlay();
+            return true;
+        }
+
         private void CloseCurrentOverlay()
         {
             var previous = overlay;

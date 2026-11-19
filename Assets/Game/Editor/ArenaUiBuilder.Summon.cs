@@ -34,12 +34,14 @@ namespace AstralOath.Editor
                 .ToDictionary(row => row.key, row => row.text);
             BuildSummonAssets();
             BuildInventoryAssets();
+            Save(BuildDirectory(), Assets[1].Path);
             SaveInventoryNavigation();
         }
 
         private static void BuildSummonAssets()
         {
             Directory.CreateDirectory(Path.GetDirectoryName(SummonPrefabPath));
+            GenerateHeaderControls();
             SummonPresentationBuilder.Generate();
             BuildFeaturedSkillLoop();
             var source = Load<TextAsset>(ArtifactCatalogSource);
@@ -87,6 +89,9 @@ namespace AstralOath.Editor
             var root = Root("SummonWindow");
             var binding = new List<(string Key, Object Target)>();
             Paint(root, null, Color.black, true);
+            var windowRoot = root;
+            root = Area(windowRoot, "Summon banner page", 0, 0, 1, 1);
+            binding.Add(("mainPage", root.gameObject));
             var covenantBackdrop = Area(root, "Covenant composition", 0, 0, 1, 1);
             Cover(covenantBackdrop, "Native Covenant backdrop", SummonArt("gacha_wish_bg_3"));
             var upBackdrop = Area(root, "Iseria composition", 0, 0, 1, 1);
@@ -112,17 +117,12 @@ namespace AstralOath.Editor
             Paint(Area(top, "Native top bar shade", 0, 0, 1, .093f), null, Black(.52f));
             Paint(Area(top, "Native top bar rule", 0, .093f, 1, .0016f), null, new Color32(255, 255, 255, 37));
 
-            var back = Button(Area(top, "Back", .012f, .014f, .026f, .065f), null, Color.clear);
-            Picture((RectTransform)back.transform, "Back icon", Art("cm_icon_etcback"), 0, 0, 1, 1, true);
-            back.FeedbackSound = GameUiFeedback.Sound.Back;
+            var back = SharedHeaderBack(top);
             binding.Add(("back", back));
             AddSummonLabel(top, binding, "title", "summon.title", 38, .052f, .013f, .13f, .069f);
             DrawNativeTopBarIcons(top);
             SummonIconButton(top, binding, "help", "cm_btn_helpd", .124f, .018f, .029f, .054f, false);
-            Picture(top, "Epic bookmark currency", SummonArt("token_rarecoin"), .593f, .021f, .025f, .046f, true);
-            AddSummonLabel(top, binding, "epicBalance", null, 24, .618f, .015f, .042f, .062f);
-            Picture(top, "Covenant bookmark currency", SummonArt("token_ticket_rare"), .664f, .021f, .025f, .046f, true);
-            AddSummonLabel(top, binding, "balance", null, 24, .689f, .015f, .058f, .062f);
+            BuildSummonCurrencies(top, binding);
 
             var roster = Area(root, "Covenant wish roster", 0, 0, 1, 1);
             binding.Add(("wishRoster", roster.gameObject));
@@ -130,7 +130,7 @@ namespace AstralOath.Editor
             BuildPickupPoster(actorLayer, offerLayer, binding);
             StoreSummonSprite(root, binding, "normalCoin", "token_ticket_rare");
             StoreSummonSprite(root, binding, "epicCoin", "token_rarecoin");
-            AddSummonLabel(root, binding, "pity", null, 26, .728f, .795f, .25f, .05f, true);
+            BuildSummonSchedule(root, binding);
             AddSummonLabel(root, binding, "status", null, 30, .17f, .736f, .59f, .055f);
             SummonBannerButton(root, binding, "iseria", 134, "gacha_c1024_01_banner");
             SummonBannerButton(root, binding, "covenant", 241, "banner_gacha_wish");
@@ -139,7 +139,7 @@ namespace AstralOath.Editor
             DrawSummonFreeBubble(root, binding);
             SummonFooterIcon(root, binding, "info", "icon_menu_info", 250, 39, 39, 57, 57);
             SummonFooterIcon(root, binding, "storage", "icon_quick_tmp_inven", 342, 39, 29, 96, 91.2f);
-            SummonFooterIcon(root, binding, "recovery", "icon_menu_change", 437, 38, 40, 57.6f, 57.6f);
+            SummonFooterIcon(root, binding, "settings", "renew_icon_quick_setting", 437, 38, 40, 57.6f, 57.6f);
             var wishButton = Area(root, "wish", .5f, .5f, 0, 0);
             wishButton.pivot = new Vector2(.5f, .5f);
             wishButton.anchoredPosition = new Vector2(90, -200) * SummonCanvasScale;
@@ -156,6 +156,7 @@ namespace AstralOath.Editor
             SummonFooterIcon(root, binding, "epic", "token_rarecoin", 533, 38, 38, 58.8f, 58.8f);
 
             top.SetAsLastSibling();
+            root = windowRoot;
             var sound = Area(root, "Summon audio", 0, 0, 0, 0).gameObject.AddComponent<AudioSource>();
             var music = Area(root, "Summon music", 0, 0, 0, 0).gameObject.AddComponent<AudioSource>();
             var skillAudio = Area(root, "Featured skill audio", 0, 0, 0, 0).gameObject.AddComponent<AudioSource>();
@@ -185,7 +186,7 @@ namespace AstralOath.Editor
             portraitAspect.aspectRatio = 1f;
             bindings.Add(("upPortrait", portrait));
 
-            var caption = Area(actorLayer, "Pickup hero caption", .168f, .478f, 0, 0);
+            var caption = Area(actorLayer, "Pickup hero caption", .168f, .502f, 0, 0);
             caption.pivot = new Vector2(0f, 1f);
             caption.sizeDelta = new Vector2(306f, 140f) * SummonCanvasScale;
             var softShade = Picture(caption, "Original title glow", SummonArt("_grow_white"), -.67f, -.40f, 2.63f, 2.50f);
@@ -193,8 +194,10 @@ namespace AstralOath.Editor
             var tag = Picture(caption, "Normal pickup category", SummonArt("renew_main_hud_btn_deco_pickup"),
                 -.028f, .012f, .352f, .314f);
             AddSummonLabel(tag.rectTransform, bindings, "bannerTitle", null, 21, .065f, .09f, .87f, .82f, true);
-            var shade = Text(caption, "Featured name shadow", null, 56, .006f, .322f, .99f, .366f, Black(.87f));
-            var name = Text(caption, "Featured hero name", null, 56, 0, .303f, .99f, .366f);
+            var shade = Text(caption, "Featured name shadow", null, 64, .006f, .316f, .99f, .366f, Black(.87f));
+            var name = Text(caption, "Featured hero name", null, 64, 0, .297f, .99f, .366f);
+            shade.enableAutoSizing = name.enableAutoSizing = false;
+            shade.overflowMode = name.overflowMode = TextOverflowModes.Overflow;
             shade.fontStyle = name.fontStyle = FontStyles.Bold;
             bindings.Add(("featuredHeroShadow", shade));
             bindings.Add(("featuredHero", name));
@@ -346,7 +349,12 @@ namespace AstralOath.Editor
             var rect = SummonFooterButton(root, bindings, key, "_btn_circle_black_76", false, left, 19, 76, 76);
             var icon = Picture(rect, "Native " + key + " icon", SummonArt(artwork),
                 (centerX - width * .5f) / 76f, (76f - centerY - height * .5f) / 76f, width / 76f, height / 76f, true);
-            if (key != "epic") icon.color = new Color32(255, 255, 255, 127);
+            if (key != "epic")
+                icon.color = new Color32(255, 255, 255, QualitySettings.activeColorSpace == ColorSpace.Linear ? (byte)85 : (byte)127);
+            var press = new SerializedObject(rect.GetComponent<GameButton>());
+            press.FindProperty("pressedContent").objectReferenceValue = icon.rectTransform;
+            press.FindProperty("pressedOffset").vector2Value = new Vector2(0, -4f * SummonCanvasScale);
+            press.ApplyModifiedPropertiesWithoutUndo();
         }
 
         private static void SummonIconButton(RectTransform root, List<(string Key, Object Target)> bindings,
@@ -466,7 +474,7 @@ namespace AstralOath.Editor
 
         private static void BuildSummonModalPanels(RectTransform root, List<(string Key, Object Target)> bindings)
         {
-            var confirm = SummonPanel(root, bindings, "confirmPanel", 0f, .104f, 1f, .792f, SummonArt("renew_popup_bg_2_alpha"));
+            var confirm = SummonPanel(root, bindings, "confirmPanel", 0f, .104f, 1f, .792f, SummonArt(QualitySettings.activeColorSpace == ColorSpace.Linear ? "renew_popup_bg_2_linear" : "renew_popup_bg_2_alpha"));
             confirm.anchorMin = new Vector2(0f, .5f);
             confirm.anchorMax = new Vector2(1f, .5f);
             confirm.pivot = new Vector2(.5f, .5f);
@@ -560,11 +568,20 @@ namespace AstralOath.Editor
                 ApplySummonTextOutline(label, light: true);
             }
 
-            var info = SummonPanel(root, bindings, "infoPanel", .225f, .086f, .55f, .828f);
-            AddSummonLabel(info, bindings, "infoTitle", null, 38, .08f, .03f, .84f, .11f, true);
-            SummonScroll(info, bindings, "infoItems", .055f, .161f, .89f, .731f);
-            SummonButton(info, bindings, "infoClose", "summon.button.close", .377f, .909f, .245f, .077f);
-
+            BuildSummonRatePanel(root, bindings);
+            var settings = SummonPanel(root, bindings, "settingsPanel", .21f, .18f, .58f, .64f);
+            settings.GetComponent<Image>().type = Image.Type.Sliced;
+            AddSummonLabel(settings, bindings, "settingsTitle", "summon.settings.title", 38,
+                .1f, .055f, .8f, .12f, true);
+            Picture(settings, "Title divider", SummonArt("_bar_23"), .055f, .18f, .89f, .016f);
+            AddSummonLabel(settings, bindings, "previewDescription", "summon.settings.preview", 29,
+                .08f, .265f, .50f, .13f);
+            SummonButton(settings, bindings, "previewToggle", null, .64f, .27f, .27f, .12f,
+                CommonArt("_btn_small_black"), null, "previewState");
+            SummonButton(settings, bindings, "recovery", "summon.settings.receipt", .21f, .52f, .58f, .135f,
+                CommonArt("_btn_small_black"));
+            SummonButton(settings, bindings, "settingsClose", "summon.button.close", .35f, .79f, .3f, .13f,
+                CommonArt("_btn_gold"));
             BuildSummonWishPanel(root, bindings);
 
             var storage = SummonPanel(root, bindings, "storagePanel", .235f, .075f, .53f, .85f);
@@ -584,26 +601,7 @@ namespace AstralOath.Editor
 
         private static void BuildSummonReveal(RectTransform root, List<(string Key, Object Target)> bindings)
         {
-            var reveal = Area(root, "Summon reveal", 0, 0, 1, 1);
-            var shield = Paint(reveal, null, Color.clear, true);
-            shield.canvasRenderer.cullTransparentMesh = false;
-            bindings.Add(("revealPanel", reveal.gameObject));
-            bindings.Add(("heroCaption", Picture(reveal, "Hero reveal caption", SummonArt("gacha_title_bg"),
-                .009f, .037f, .435f, .22f).gameObject));
-            bindings.Add(("artifactCaption", Picture(reveal, "Artifact reveal caption", SummonArt("gacha_title_arti_bg"),
-                .009f, .037f, .435f, .22f).gameObject));
-            var revealArt = Picture(reveal, "Original reveal reward art", null, .554f, .063f, .437f, .816f, true);
-            bindings.Add(("revealArt", revealArt));
-            var rewardHero = Area(revealArt.rectTransform, "Original reward hero", -.22f, -.05f, 1.40f, 1.12f)
-                .gameObject.AddComponent<RawImage>();
-            rewardHero.raycastTarget = false;
-            bindings.Add(("revealHero", rewardHero));
-            AddSummonLabel(reveal, bindings, "revealName", null, 51, .025f, .068f, .47f, .10f);
-            AddSummonLabel(reveal, bindings, "revealStars", null, 33, .025f, .171f, .48f, .055f);
-            AddSummonLabel(reveal, bindings, "revealLabel", null, 25, .025f, .253f, .438f, .16f, false, true);
-            SummonButton(reveal, bindings, "skip", null, .912f, .019f, .073f, .052f, null, null, "skipLabel");
-            SummonButton(reveal, bindings, "next", null, .810f, .898f, .169f, .071f, CommonArt("_btn_green"), null, "nextLabel");
-            reveal.gameObject.SetActive(false);
+            BuildSummonRewardStage(root, bindings);
 
             BuildSummonResultLayout(root, bindings);
 

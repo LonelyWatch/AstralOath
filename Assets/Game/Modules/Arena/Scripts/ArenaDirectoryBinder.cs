@@ -60,7 +60,7 @@ namespace AstralOath.Client.Arena
             view.SearchPanel.SetActive(false);
             view.Choice.SetActive(false);
             view.Password.SetActive(false);
-            view.Back.Bind(owner, _ => goHome());
+            view.Back.BindBack(owner, () => windows.TryCloseOverlay() ? Task.CompletedTask : goHome());
             view.Create.Bind(owner, ignored =>
             {
                 if (!busy)

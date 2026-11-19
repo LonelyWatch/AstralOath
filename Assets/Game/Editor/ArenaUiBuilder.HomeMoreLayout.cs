@@ -183,22 +183,34 @@ namespace AstralOath.Editor
 
         private static GameButton DrawMoreMainLinks(RectTransform root)
         {
+            // CN labels have different advances from the Korean template. Plate widths below
+            // are measured in the 720-high recording, with the phone's left margin excluded.
             var entries = new (string Key, int CenterY, int Width)[]
             {
-                (MorePrefix + "episode", 184, 109), (MorePrefix + "side_story", 259, 104),
-                (MorePrefix + "battle", 324, 54), ("home.arena", 389, 81),
-                (MorePrefix + "summon", 454, 54), (MorePrefix + "shop", 519, 54)
+                (MorePrefix + "episode", 184, 112), (MorePrefix + "side_story", 259, 102),
+                (MorePrefix + "battle", 324, 60), ("home.arena", 389, 80),
+                (MorePrefix + "summon", 454, 60), (MorePrefix + "shop", 519, 60)
             };
             GameButton summon = null;
             foreach (var (key, y, width) in entries)
             {
-                var background = HomeRightRect(root, key + " backing", -413, y + 6, width, 27,
-                    new Vector2(1f, .5f));
-                Paint(background, HomeMoreArt("renew_main_hud_btn_deco_1"), new Color32(255, 255, 255, 76), sliced: true);
-                var rect = HomeRightRect(root, key, -422, y, 182, 46, new Vector2(1f, .5f));
+                bool episode = key == MorePrefix + "episode";
+                float right = key == MorePrefix + "shop" ? -421f : episode ? -424f : -422f;
+                var background = HomeRightRect(root, key + " backing", right + 12, y + 14, width,
+                    episode ? 28f : 28f * .85f, new Vector2(1f, .5f));
+                var plate = Paint(background, HomeMoreArt("renew_main_hud_btn_deco_1"),
+                    new Color32(255, 255, 255, QualitySettings.activeColorSpace == ColorSpace.Linear ? (byte)22 : (byte)76), sliced: true);
+                plate.pixelsPerUnitMultiplier = 1f / HomeDesignScale;
+                var rect = HomeRightRect(root, key, right, episode ? y + 3 : y, 182, 46, new Vector2(1f, .5f));
                 if (key == MorePrefix + "summon") summon = Button(rect, null, Color.clear);
-                Text(rect, "Text", key, key == MorePrefix + "episode" ? 45 : 33,
-                    0, 0, 1, 1, alignment: TextAlignmentOptions.MidlineRight);
+
+                // quick_menu_renew.csb has a second faint white label two pixels right
+                // and three pixels below the foreground. Keep both on the same reference grid.
+                float size = 50f * (episode ? .57f : .47f) * HomeDesignScale;
+                var echo = Text(rect, "Label decoration", key, size, 0, 0, 1, 1,
+                    new Color32(255, 255, 255, 25), TextAlignmentOptions.MidlineRight);
+                echo.rectTransform.anchoredPosition += new Vector2(2f, -3f) * HomeDesignScale;
+                Text(rect, "Text", key, size, 0, 0, 1, 1, alignment: TextAlignmentOptions.MidlineRight);
             }
             return summon;
         }

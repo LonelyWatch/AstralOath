@@ -13,6 +13,7 @@ namespace AstralOath.Client.BattleScene.Editor
 {
     internal sealed class SkillTimelinePreviewSession : IDisposable
     {
+        internal const string SlimeTarget = "preview.slime";
         private const int PreviewStepsPerSecond = 120;
         private const int Width = 960;
         private const int Height = 540;
@@ -333,6 +334,22 @@ namespace AstralOath.Client.BattleScene.Editor
 
         private void BindActor(BattlePreviewActor actor, SerializedProperty modelRows, string heroId)
         {
+            if (heroId == SlimeTarget)
+            {
+                const string prefix = "Assets/Game/Modules/BattleScene/Res/Units/Slime/slime";
+                actor.UseModel(new BattleSkillPresentationAsset
+                {
+                    document = AssetDatabase.LoadAssetAtPath<TextAsset>(prefix + ".spine.json"),
+                    atlas = AssetDatabase.LoadAssetAtPath<TextAsset>(prefix + ".atlas.txt"),
+                    pages = new[] { AssetDatabase.LoadAssetAtPath<Texture2D>(prefix + ".png") },
+                    pageNames = new[] { "slime.sct" },
+                    premultipliedAlpha = true,
+                    scale = .01f
+                }, "ice", "Slime");
+                actor.EnableEditorPreview();
+                initializedActors.Add(actor);
+                return;
+            }
             for (int index = 0; index < modelRows.arraySize; index++)
             {
                 var model = modelRows.GetArrayElementAtIndex(index);

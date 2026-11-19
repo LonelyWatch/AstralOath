@@ -26,11 +26,11 @@ namespace AstralOath.Client.Tests
                     Assert.That(nameMaterial.GetTexture("_MainTex"), Is.EqualTo(caption.font.atlasTextures[0]));
                     Assert.That(caption.color, Is.EqualTo(Color.white));
                     Assert.That(nameMaterial.GetColor("_FaceColor"), Is.EqualTo(Color.white));
-                    Assert.That(nameMaterial.IsKeywordEnabled("UNDERLAY_ON"), Is.True);
-                    Assert.That(nameMaterial.GetFloat("_UnderlayDilate"), Is.GreaterThan(0f));
-                    Assert.That(nameMaterial.GetFloat("_UnderlayOffsetX"), Is.Zero);
-                    Assert.That(nameMaterial.GetFloat("_UnderlayOffsetY"), Is.Zero);
-                    Assert.That(nameMaterial.GetColor("_UnderlayColor").a, Is.EqualTo(1f));
+                    Assert.That(nameMaterial.IsKeywordEnabled("OUTLINE_ON"), Is.True);
+                    Assert.That(nameMaterial.GetFloat("_OutlineWidth"), Is.GreaterThan(.15f));
+                    var outline = nameMaterial.GetColor("_OutlineColor");
+                    Assert.That(outline.a, Is.EqualTo(1f));
+                    Assert.That(outline.maxColorComponent, Is.LessThan(.1f));
                     var label = caption.transform.parent.Find("Ownership/Ownership label shade") as RectTransform;
                     Assert.That(label.rect.size, Is.EqualTo(new Vector2(164, 48) * 1.5f));
                     var line = caption.transform.parent.Find("Native banner divider").GetComponent<UnityEngine.UI.Image>();

@@ -9,7 +9,7 @@
   "sourceGraph": "c_iseria_skill_03",
   "sourceTargetCount": 1,
   "sourceGraphSha256": "c0ca64fc1b1357afadd7136c795834ad71f9becaed23a0aac02442dceb0c943a",
-  "sourceFramesSha256": "72b3c5128325090d855962f7ff4bf192ae5d87b4411c6900db637fbf2a56f518",
+  "sourceFramesSha256": "106e3aec98be4f65c6643d608f52fa4aae488db93a18451ba5a88589b0625835",
   "sourceFramesPerSecond": 30,
   "sourceStartSeconds": 0.0,
   "sourceEndSeconds": 11.2,
@@ -63,43 +63,44 @@
     },
     {
       "path": "frame-atlas-07.jpg",
-      "sha256": "3538067625e1145d5dee7daa92b3562610df213140ab24ab1e983285c6f6a5cd"
+      "sha256": "b30a7eed3a99cfbaba98712a93fdb009a467972841a7aec29494463e57bcb476"
     },
     {
       "path": "frame-atlas-08.jpg",
-      "sha256": "446d036fdc31f502023d252f259958cd18e5702add9f906877f4f606f5a22733"
+      "sha256": "8fd33f9077a0a9e0f1b0f8a97de333eef92a9e4ef74236d6a062e913edab5617"
     },
     {
       "path": "frame-atlas-09.jpg",
-      "sha256": "2e67269cb7ee57553035d28d8c1d94f2136b849f645ebf35cc154a5f50cae149"
+      "sha256": "108c36a50ca31e15f656889206866e1c5521bbfb771771aeb1f185b365164220"
     },
     {
       "path": "frame-atlas-10.jpg",
-      "sha256": "89dbe713a162ac5e57b8e916ac18ed733a2a56cb7b3fd7f1260c30501ac6c1d6"
+      "sha256": "052a2da116585cb9c5cfc48f9282df8ed6ce2c827d70718402597bf127fb3ac2"
     },
     {
       "path": "frame-atlas-11.jpg",
-      "sha256": "70e354267aaa241aca5847b7408a1f4aebf57c9501c469981ad352293b4922e1"
+      "sha256": "a5970f062ca5fba907c43c075db9d7eb360c339dbf9a1d727f90360e20d8f016"
     },
     {
       "path": "frame-atlas-12.jpg",
-      "sha256": "cc0bbb52be04e777fcad1bf032752070f0fa50414705c9f635eaba2697f4b465"
+      "sha256": "799313e45b451c7c88b1d1cafe7d27046d041e0d6173a8f6f793f7d8a924a39a"
     },
     {
       "path": "frame-atlas-13.jpg",
-      "sha256": "b96e6211a54b4a6eb933f9f832f375c02feec1942d4cfa41a028188664ad8aa8"
+      "sha256": "9ab2500d306c0071431ebd6a03a76f3e075167b4cbf1e3a017dc95a28c280d6a"
     },
     {
       "path": "frame-atlas-14.jpg",
-      "sha256": "5b6decbdcd35fdce50ce15b950651b670977d46ba98ad168f01aa41897a47576"
+      "sha256": "452512998adb61835302440d1d6738b96c2ce0abe2e5be59c0b2e91093999a5b"
     },
     {
       "path": "frame-atlas-15.jpg",
-      "sha256": "9bd2f06ebed39fbfc2fc4c703bf241ffd17c414eed2a8c35fc9a473f49f02d3c"
+      "sha256": "8d38ddfe7846df326dff5421ad8e8adff27b04d130774ac123402f5055bae288"
     },
     {
       "path": "frame-atlas-16.jpg",
-      "sha256": "92039466fd48c209b76633d5e1e64a2f045eab86d3073bae328a6738929dbfdc"
+      "sha256": "08b7cfec5c6c0056fe75e460cab95abcefd7fb16064a2ae2aba663c339a67be0"
     }
-  ]
+  ],
+  "sourceTargetModel": "preview.slime"
 }

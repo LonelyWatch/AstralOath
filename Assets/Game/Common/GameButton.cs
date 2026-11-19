@@ -21,7 +21,12 @@ namespace AstralOath.Client.Common
             public Sprite pressed;
         }
         [SerializeField] private PressDecoration[] pressDecorations = Array.Empty<PressDecoration>();
+        [SerializeField] private RectTransform pressedContent;
+        [SerializeField] private Vector2 pressedOffset;
+        private Vector2 restingPosition;
+        private bool contentPressed;
         private BindingScope current;
+        private bool retainBindingWhileHidden;
         private bool dispatching;
 
         public GameUiFeedback.Sound FeedbackSound { get => feedbackSound; set => feedbackSound = value; }
@@ -57,6 +62,13 @@ namespace AstralOath.Client.Common
         protected override void DoStateTransition(SelectionState state, bool instant)
         {
             base.DoStateTransition(state, instant);
+            bool pressed = state == SelectionState.Pressed;
+            if (pressedContent && contentPressed != pressed)
+            {
+                if (pressed) restingPosition = pressedContent.anchoredPosition;
+                pressedContent.anchoredPosition = pressed ? restingPosition + pressedOffset : restingPosition;
+                contentPressed = pressed;
+            }
             foreach (var decoration in pressDecorations)
                 if (decoration.image) decoration.image.overrideSprite = state == SelectionState.Pressed ? decoration.pressed : null;
         }
@@ -72,12 +84,24 @@ namespace AstralOath.Client.Common
             if (!dispatching && IsActive() && IsInteractable()) GameUiFeedback.Play(this, feedbackSound, clickAudio);
         }
 
-        public void Bind(BindingScope owner, Func<CancellationToken, Task> handler)
+        // A header can be covered by an exclusive child page. Its navigation action belongs
+        // to the window scope, including a return already in flight when it is covered.
+        public void BindBack(BindingScope owner, Func<Task> navigate)
+        {
+            if (navigate == null) throw new ArgumentNullException(nameof(navigate));
+            Bind(owner, _ => navigate(), retainWhileHidden: true);
+        }
+
+        public void Bind(BindingScope owner, Func<CancellationToken, Task> handler) =>
+            Bind(owner, handler, retainWhileHidden: false);
+
+        private void Bind(BindingScope owner, Func<CancellationToken, Task> handler, bool retainWhileHidden)
         {
             Unbind();
             owner.Token.ThrowIfCancellationRequested();
             var binding = new BindingScope(owner.Token);
             current = binding;
+            retainBindingWhileHidden = retainWhileHidden;
             Button button = this;
             bool wasInteractable = button.interactable;
             bool busy = false;
@@ -122,7 +146,7 @@ namespace AstralOath.Client.Common
         {
             onClick.RemoveListener(PlayClickSound);
             if (clickAudio) clickAudio.Stop();
-            try { Unbind(); }
+            try { if (!retainBindingWhileHidden) Unbind(); }
             finally { base.OnDisable(); }
         }
 
@@ -136,6 +160,7 @@ namespace AstralOath.Client.Common
         {
             BindingScope binding = current;
             current = null;
+            retainBindingWhileHidden = false;
             binding?.Dispose();
         }
     }

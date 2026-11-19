@@ -60,9 +60,7 @@ namespace AstralOath.Editor
 
             var top = Area(root, "Title bar", 0, 0, 1, .092f);
             Paint(Area(top, "Header rule", 0, .985f, 1, .015f), null, new Color32(255, 255, 255, 34));
-            var back = Button(Area(top, "Back", .011f, .035f, .030f, .84f), null, Color.clear);
-            back.FeedbackSound = GameUiFeedback.Sound.Back;
-            Picture(back.transform as RectTransform, "Back icon", Art("cm_icon_etcback"), .12f, .1f, .76f, .8f, true);
+            var back = SharedHeaderBack(top);
             var title = Text(top, "Title", InventoryPrefix + "bag", 36, .048f, .035f, .28f, .84f);
             title.fontStyle = FontStyles.Bold;
             var status = Text(root, "Inventory status", InventoryPrefix + "loading", 31, .30f, .398f, .41f, .074f,
@@ -118,6 +116,9 @@ namespace AstralOath.Editor
             {
                 string role = hero.heroClass == "soul_weaver" ? "manauser" : hero.heroClass == "thief" ? "assassin" : hero.heroClass;
                 string portrait = "Assets/Game/Modules/CharacterPresentation/Res/Characters/" + hero.id + "/";
+                var modelFiles = Directory.GetFiles(portrait + "Animations/model", "*.spine.json");
+                if (modelFiles.Length != 1) throw new InvalidDataException("Expected one battle model for " + hero.id);
+                string model = Path.GetFileName(modelFiles[0]).Replace(".spine.json", "");
                 return new HomeHeroArt.Hero
                 {
                     id = hero.id,
@@ -127,6 +128,9 @@ namespace AstralOath.Editor
                     zodiac = hero.zodiac,
                     zodiacIcon = HeroZodiacArt(hero.zodiac),
                     growth = growth[hero.growthPresetId],
+                    modelSkeleton = Load<TextAsset>(portrait + "Animations/model/" + model + ".spine.json"),
+                    modelAtlas = Load<TextAsset>(portrait + "Atlas/model/" + model + ".atlas.txt"),
+                    modelPage = Load<Texture2D>(portrait + "Textures/model/" + model + ".png"),
                     skeleton = Load<TextAsset>(portrait + "Animations/portrait/" + hero.id + ".spine.json"),
                     atlas = Load<TextAsset>(portrait + "Atlas/portrait/" + hero.id + ".atlas.txt"),
                     page = Load<Texture2D>(portrait + "Textures/portrait/" + hero.id + ".png"),

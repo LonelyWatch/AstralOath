@@ -190,3 +190,5 @@ Luban 快照 `Configs/battle-catalog.json` 含十名英雄、成长模板、觉�
 联机转场配置和战斗场景由当前 Foundation YooAsset 包在热更新程序集加载后读取。选位确认后先加载关门素材，再增量加载场景；退出时卸载该场景，释放转场资源句柄并恢复主页。Windows 安装包验收见[模拟战选禁与入场](../../../../docs/development/arena-draft.md)。
 
 联机入场改用原包 `effect/eff_pvp_intro.cfx` 指定的 `eff_pvp_outro_draw / ignition`。源轨包含白色衬线字、半透明横条和红光柱，时长 1.8667 秒；原火焰粒子不再由联机入场引用。进入在线场景时以本机视角区分阵营。我方留在站位上播放原版 `effect/encounter_01.cfx` 的白色星芒和红色感叹号，对方按入场顺序从镜头右侧沿地面跑进各自站位，停止后按足底位置播放原版 `effect/dust_landing.scsp` 的浅色尘团，保留源网格变形、配色和约 0.567 秒时长。头顶等级和生命值从入场开始跟随角色。最后一名对手入位后镜头才平滑推近，镜头完成和 IGNITION 播放结束后才开放权威战斗输入。素材通过 `Tools/BattleScene/ImportOnlineArrival.py --check` 核对，来源及哈希见 `Res/Online/AstralOathBattleArrival/source.json`。局内权威倒计时用源位图数字，保持原字距，并把整组数字的可见像素边界居中对齐回合环；回合环仍按己／敌方着色。队伍顶栏恢复 `pvplive_global_hp.csb` 的 `_grow` 半透明底和通用昵称微投影，仅显示实际可取得的玩家资料与本机请求延迟。
+
+技能预览工具支持 preview.slime 目标。召唤预览录制固定使用冰皮肤及原版 slime 骨骼、图集和纹理，保留伊赛丽亚 S3 的单体目标数与命中时间。

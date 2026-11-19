@@ -98,3 +98,7 @@ View 继续绑定 GameText / GameButton，普通 C# Binder 继续调用 Bind。G
 关闭/销毁控件会解绑事件、取消所属操作，并执行原生 TMP / Selectable 的生命周期清理。更换通用控件代码需要按 Common/AOT 边界重新构建母包，不能只推资源热更。决策见 [ADR 009](../architecture/adr/009-ui-controls.md)。
 
 按钮按下造型使用对应正常和按下贴图。按钮带独立箭头等装饰时，在 `GameButton` 中为装饰指定按下贴图，共用同一原生状态，避免单独叠加事件监听。点击泛光素材与验证见[竞技场界面复核](../delivery/2026-11-14-arena-ui-fidelity.md)。
+
+### 全屏子页、透明浮层和返回
+同一窗口里互相替换的全屏子页交给窗口持有的 `UIPageLayers`，每页用一个铺满容器的根。只有当前页参与绘制和点击。确认、说明等浮层显式挂到当前页的浮层栈，取消后恢复该页。独立渲染的场景背景在窗口缩放时先保留上一帧，再将新纹理交给 Canvas。应在连续改变宽度的过程中验证层级和纹理首帧。
+左上角返回使用 `Common/Res/Prefab/HeaderBackButton.prefab`，其 66×66 的热区与标题分开。通过 `GameButton.BindBack` 将返回动作绑定到窗口作用域；先处理最上层浮层或局部详情，再执行页面返回。各业务窗口传入自己的导航回调。顶部各币种复用 `TopBarToken.prefab` 的图标、附加标记和数值槽。

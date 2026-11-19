@@ -68,3 +68,13 @@ SMTP 使用 `Entry__Smtp__Host`、`Entry__Smtp__Port`、`Entry__Smtp__From` 以�
 - 返回 `{capacity,used,heroes:[{instanceId,templateId,level,stars}]}`，以获得顺序排列。当前区服默认 1000 格。同模板可重复，每只英雄用独立实例 ID，计入一格。正式账号首次成功选服时发放拉斯、梅赛德丝、安洁莉卡各一只，已有账号或开发访客也可首次查看背包时补发。再次选服、并发访问或服务重启保留原实例。
 - 目前仅提供读取。后续写入入口须在同一事务内锁定对应背包头并检查剩余容量。既有选禁模板池仍独立。
 - 实际测试命令为 `dotnet test Server/Tests --filter 'FullyQualifiedName~InventoryTests|FullyQualifiedName~EntryAccountTests'`。须在隔离 MySQL 8.4 测试库设置 `ASTRALOATH_MYSQL_TEST`。覆盖首次发放、并发、重启、重复模板、两账号隔离、失效令牌，以及相同密码对应不同随机盐和实际派生摘要。
+
+### 本机联调服务复启
+
+已有测试数据库、已发布的服务 DLL 和已签名的资源目录时，在主工程根目录运行：
+
+```powershell
+pwsh -File Server/Ops/Start-LocalTestStack.ps1 -ServerDll ".artifacts/local-game-server/r17-summon/server/AstralOath.Server.dll" -FeedDirectory ".artifacts/update-and-battle-2026-11-17/local-release" -MinimumAppVersion "0.1.20"
+```
+
+脚本复用开发环境已安装的 MySQL、.NET、Python，按需启动本机回环 3307、5080、5093。它检查 /health/ready、/api/entry/version 与签名目录对应的清单版本。最低客户端版本与内容发布必须配套，0.1.20 门槛只在对应母包已分发后启用。现有 0.1.19/R16 环境使用空门槛。此命令不注册开机计划或系统服务。
