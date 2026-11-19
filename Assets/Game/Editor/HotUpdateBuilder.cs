@@ -122,6 +122,7 @@ namespace AstralOath.Editor
             var profile = CharacterLabBuildProfile.Foundation;
             var config = ReadAssemblyConfig(profile);
             var archive = ReadBaseline(profile, options, target, null);
+            CheckBundleScriptAssemblies(profile, target, options.baselinePath);
             string compiled = Path.Combine("Temp", "AstralOath", Guid.NewGuid().ToString("N"));
             try
             {
@@ -217,12 +218,35 @@ namespace AstralOath.Editor
         private static PackageReceipt BuildHotPackage(CharacterLabBuildProfile profile, BuildTarget target, HotUpdateBuildSettings options,
             AssemblyConfig config, string output, BaselineArchive archive)
         {
+            CheckBundleScriptAssemblies(profile, target, options.baselinePath);
             string compiled = Path.Combine(output, "compiled");
             CompileHotAssemblies(compiled, target, archive.development);
             string aot = AotDirectory(options.baselinePath);
             var assemblies = CheckAssemblies(profile, config, compiled, aot);
             return BuildPackage(profile, output, target, options.contentVersion, archive.player, config, assemblies,
                 compiled, aot, RequiredHotMetadata(compiled, config, aot, archive), false);
+        }
+
+        private static void CheckBundleScriptAssemblies(CharacterLabBuildProfile profile, BuildTarget target, string baselinePath)
+        {
+            if (profile != CharacterLabBuildProfile.Foundation || target != BuildTarget.StandaloneWindows64)
+                return;
+
+            string registry = Path.Combine(baselinePath, profile.ExecutableName + "_Data", "ScriptingAssemblies.json");
+            if (!File.Exists(registry))
+            {
+                Debug.LogWarning("母包归档缺少 ScriptingAssemblies.json，未核对资源脚本程序集登记。");
+                return;
+            }
+
+            var assets = AssetBundleCollectorSettingData.Setting.BeginCollect(profile.PackageName, true, false)
+                .CollectAssets
+                .Where(asset => asset.CollectorType == ECollectorType.MainAssetCollector)
+                .Select(asset => (asset.Address, asset.AssetInfo.AssetPath,
+                    Type: AssetDatabase.GetMainAssetTypeAtPath(asset.AssetInfo.AssetPath)))
+                .Where(asset => asset.Type != null && typeof(ScriptableObject).IsAssignableFrom(asset.Type))
+                .Select(asset => (asset.Address, asset.AssetPath, asset.Type.Assembly.GetName().Name));
+            HotUpdateBuildInputs.RequireRegisteredScriptAssemblies(File.ReadAllText(registry), assets);
         }
 
         private static PackageReceipt BuildPlayer(CharacterLabBuildProfile profile, BuildTarget target, string variant, HotUpdateBuildSettings options,
@@ -605,6 +629,7 @@ namespace AstralOath.Editor
                 build.CompressOption = ECompressOption.LZ4;
                 build.BuildinFileCopyOption = embed ? EBuildinFileCopyOption.ClearAndCopyAll : EBuildinFileCopyOption.None;
                 build.VerifyBuildingResult = true;
+                if (foundation) build.IgnoreTypeTreeChanges = false;
                 var result = new BuiltinBuildPipeline().Run(build, false);
 
                 if (!result.Success)

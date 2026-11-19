@@ -141,8 +141,9 @@ namespace AstralOath.Client.Summon
                     bannerId = state.banners?.FirstOrDefault()?.id ?? Covenant;
                 SetStatus(null);
             }
-            catch (IOException) when (!token.IsCancellationRequested)
+            catch (IOException error) when (!token.IsCancellationRequested)
             {
+                Debug.LogWarning("Could not read summon state: " + error.GetType().Name + ". " + error.Message);
                 SetStatus("status.error");
             }
             RenderMain();

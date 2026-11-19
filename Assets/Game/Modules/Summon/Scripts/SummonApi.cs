@@ -7,7 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using UnityEngine;
+using Newtonsoft.Json;
 using UnityEngine.Scripting;
 
 namespace AstralOath.Client.Summon
@@ -120,14 +120,21 @@ namespace AstralOath.Client.Summon
                 string session = await bearer(deadline.Token);
                 using var request = new HttpRequestMessage(method, service.AbsoluteUri + path);
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", session);
-                if (body != null) request.Content = new StringContent(JsonUtility.ToJson(body), Encoding.UTF8, "application/json");
+                if (body != null) request.Content = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json");
                 using var response = await http.SendAsync(request, HttpCompletionOption.ResponseContentRead, deadline.Token);
                 if (missingAllowed && response.StatusCode == HttpStatusCode.NotFound) return null;
                 if (!response.IsSuccessStatusCode)
                     throw new SummonRequestException((int)response.StatusCode);
                 string json = await response.Content.ReadAsStringAsync();
                 deadline.Token.ThrowIfCancellationRequested();
-                return JsonUtility.FromJson<T>(json) ?? throw new IOException("Missing summon response.");
+                try
+                {
+                    return JsonConvert.DeserializeObject<T>(json) ?? throw new IOException("Missing summon response.");
+                }
+                catch (JsonException error)
+                {
+                    throw new IOException("Invalid summon response.", error);
+                }
             }
             catch (OperationCanceledException) when (!lifetime.IsCancellationRequested && !cancellation.IsCancellationRequested)
             {

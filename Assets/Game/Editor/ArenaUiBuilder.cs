@@ -148,7 +148,8 @@ namespace AstralOath.Editor
                     CollectPath = path,
                     CollectorGUID = AssetDatabase.AssetPathToGUID(path),
                     AddressRuleName = nameof(HomeArenaAddressRule),
-                    PackRuleName = path == OnlineBattleScene ? nameof(PackSeparately) : nameof(PackDirectory)
+                    PackRuleName = path == OnlineBattleScene || path == SummonPresentationBuilder.AssetPath ||
+                        path == FeaturedSkillAssetPath ? nameof(PackSeparately) : nameof(PackDirectory)
                 });
             EditorUtility.SetDirty(settings);
             AssetDatabase.SaveAssets();

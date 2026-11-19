@@ -52,6 +52,31 @@ namespace AstralOath.Client.Tests
             Assert.That(HotUpdateBuildInputs.SupportsTarget("Android", "ARM64", "Android-ASTC", "Android", "Android-ASTC"), Is.True);
         }
 
+        [Test]
+        public void AddressedScriptableObjectsCanUseAssembliesRegisteredByTheSelectedPlayer()
+        {
+            const string registry = "{\"names\":[\"AstralOath.Client.Home.dll\",\"AstralOath.Client.Arena.dll\"]}";
+            Assert.DoesNotThrow(() => HotUpdateBuildInputs.RequireRegisteredScriptAssemblies(registry, new[]
+            {
+                ("summon/presentation", "Assets/Example.asset", "AstralOath.Client.Home"),
+                ("arena/draft-art", "Assets/Draft.asset", "AstralOath.Client.Arena"),
+            }));
+        }
+
+        [Test]
+        public void AddressedScriptableObjectRejectsAnAssemblyMissingFromTheSelectedPlayer()
+        {
+            const string registry = "{\"names\":[\"AstralOath.Client.Home.dll\"]}";
+            var failure = Assert.Throws<UnityEditor.Build.BuildFailedException>(() =>
+                HotUpdateBuildInputs.RequireRegisteredScriptAssemblies(registry, new[]
+                {
+                    ("summon/presentation", "Assets/Example.asset", "AstralOath.Client.Summon"),
+                }));
+            StringAssert.Contains("summon/presentation", failure.Message);
+            StringAssert.Contains("Assets/Example.asset", failure.Message);
+            StringAssert.Contains("AstralOath.Client.Summon.dll", failure.Message);
+        }
+
         [TestCase(1)]
         [TestCase(23)]
         public void GenericMetadataAnalysisMustResolveTheArchiveAndReachAFixedPoint(int chainLength)

@@ -82,12 +82,15 @@ pwsh -File Tools/Content/Release.ps1 -Action Verify -Key .artifacts/keys/dev/pub
 ## 构建边界
 
 - 母包固定 Bootstrap、Core、Common、稳定骨骼桥接、原生插件、裁剪结果与桥接能力。GameText、GameButton、UIBaseView 和稳定入口接口属于此边界。改动这些内容或引入归档里缺失的 AOT 类型和成员时，需要重新构建母包；业务 View/Binder 所在的已登记程序集才属于热更业务。
+- Foundation Windows 兼容检查与热更打包读取母包的 ScriptingAssemblies.json。Foundation 中可直接寻址的 ScriptableObject 必须使用母包登记过的程序集。0.1.19 的召唤演出和技能资源使用已登记的 AstralOath.Client.Home，业务界面代码仍在 AstralOath.Client.Summon。
 - 热更重编译已登记的程序集，并重新分析新 DLL 所需的 AOT 泛型元数据。锁定的 HybridCLR 9.0.3 分析器分别运行 20 和 21 轮上限，比较公开的单调增长泛型集合计数，若仍增长则拒绝构建。发布包包含母包初始元数据和新增所需模块，全部补充 DLL 从原母包的 `stripped-aot` 取用。元数据模块缺失、归档哈希不符或兼容分析失败时中止构建。反射动态引入的泛型及原生桥接行为仍需目标 Player 验收。
 - 配置改动从 Luban 源表生成，资源改动进入对应平台和变体的 YooAsset 包。Foundation 即使只改配置或资源，也以该母包为目标生成同批代码与资源的完整签名发布包。CharacterLab 当前重新构建独立离线测试包，按其实验室流程验证。
 
 Foundation 构建将战斗角色资源按角色分包，共享音频和素材按目录分包。Unity 构建缓存按工程、平台变体和母包分别保留。发布前用前后两版的签名清单按路径和 SHA-256 核对差异，并以已有旧版缓存的客户端测下载量。纯业务代码改动若带动大资源包换哈希，先排查依赖和构建缓存。
 
 ## 验收
+
+Windows 开发包使用 `-astral-startup-smoke -astral-summon-smoke` 走实际主页和召唤加载流程。保留图形支持并接入回环测试服，检查日志中的 ASTRAL_SUMMON_PLAYER_OK 和预期 ASTRAL_CONTENT_ACTIVE 版本。这个检查会用测试访客读取卡池。
 
 Windows IL2CPP 和 Android ARM64 需分别演练。先用新母包验证内置内容，再签名发布更高资源版本，保留该安装包并冷启动，验证可见的 C# 业务变化、回显和关闭清理。分别验证错签名、错误母包或平台、损坏程序集和入口启动失败后的下次冷启动恢复。Editor、共享测试及兼容检查的结果不能充当目标 Player 热更验收。实际结果以交付验证记录为准。
 

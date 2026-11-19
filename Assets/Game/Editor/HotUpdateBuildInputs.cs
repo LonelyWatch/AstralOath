@@ -1,7 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
+using UnityEditor.Build;
+using UnityEngine;
 
 namespace AstralOath.Editor
 {
@@ -29,6 +32,28 @@ namespace AstralOath.Editor
                 "Android" => architecture == "ARM64" && (variant == "Android-ASTC" || variant == "Android-ETC2"),
                 _ => false
             };
+        }
+
+        [Serializable]
+        private sealed class PlayerScriptingAssemblies
+        {
+            public string[] names;
+        }
+
+        public static void RequireRegisteredScriptAssemblies(string registry,
+            IEnumerable<(string Address, string AssetPath, string AssemblyName)> assets)
+        {
+            string[] names = JsonUtility.FromJson<PlayerScriptingAssemblies>(registry)?.names;
+            if (names == null || names.Length == 0)
+                throw new BuildFailedException("母包 ScriptingAssemblies.json 缺少程序集登记。");
+            var registered = new HashSet<string>(names, StringComparer.Ordinal);
+            foreach (var (address, assetPath, assemblyName) in assets)
+            {
+                string assembly = assemblyName + ".dll";
+                if (!registered.Contains(assembly))
+                    throw new BuildFailedException(
+                        $"母包未登记 {assembly}，无法加载脚本资源 {address} ({assetPath})。");
+            }
         }
 
         public static bool HasCompletedBaseline(string directory) => File.Exists(Path.Combine(directory, CompletionFile));

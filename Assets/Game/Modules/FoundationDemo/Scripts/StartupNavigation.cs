@@ -138,7 +138,20 @@ namespace AstralOath.Client.FoundationDemo
             }
         }
 
-        private async Task OpenSummon(CancellationToken cancellation)
+        internal async Task VerifySummonAsync(CancellationToken cancellation)
+        {
+            await OpenMore(cancellation);
+            var view = await ShowSummonPageAsync(cancellation);
+            var bindings = view.Root.GetComponent<BindingMap>();
+            bool covenant = bindings.Require<GameButton>("covenant").interactable;
+            bool iseria = bindings.Require<GameButton>("iseria").interactable;
+            if (!view.Root.activeInHierarchy || !covenant || !iseria)
+                throw new InvalidOperationException($"The packaged Summon page failed to activate both banners. Active={view.Root.activeInHierarchy}, covenant={covenant}, iseria={iseria}.");
+        }
+
+        private Task OpenSummon(CancellationToken cancellation) => ShowSummonPageAsync(cancellation);
+
+        private async Task<SummonWindow> ShowSummonPageAsync(CancellationToken cancellation)
         {
             var loading = new BindingScope(token);
             var detach = lifetime.Add(loading.Dispose);
@@ -159,6 +172,7 @@ namespace AstralOath.Client.FoundationDemo
                     opened = true;
                     return binder.OpenAsync(scope);
                 });
+                return view;
             }
             finally
             {

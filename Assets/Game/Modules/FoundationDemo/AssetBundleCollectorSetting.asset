@@ -183,7 +183,7 @@ MonoBehaviour:
         CollectorGUID: 60067e112fd96934fae0373350d9f11e
         CollectorType: 0
         AddressRuleName: HomeArenaAddressRule
-        PackRuleName: PackDirectory
+        PackRuleName: PackSeparately
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 
@@ -191,7 +191,7 @@ MonoBehaviour:
         CollectorGUID: c3ed11a148d907241aebfa95ca1e0362
         CollectorType: 0
         AddressRuleName: HomeArenaAddressRule
-        PackRuleName: PackDirectory
+        PackRuleName: PackSeparately
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 

@@ -30,10 +30,14 @@ namespace AstralOath.Client.FoundationDemo
             detach = context.Lifetime.Add(Dispose);
             try
             {
-                if (context.ShowHome)
+                bool verifySummon = SummonPlayerSmoke.IsRequested();
+                if (context.ShowHome || verifySummon)
                 {
-                    await StartupNavigation.StartAsync(context, scope);
-                    ArenaBattlePlayerSmoke.StartIfRequested(context, scope.Token);
+                    var navigation = await StartupNavigation.StartAsync(context, scope);
+                    if (verifySummon)
+                        await SummonPlayerSmoke.RunAsync(context, navigation, scope.Token);
+                    else
+                        ArenaBattlePlayerSmoke.StartIfRequested(context, scope.Token);
                     return;
                 }
                 var services = context.Services;
