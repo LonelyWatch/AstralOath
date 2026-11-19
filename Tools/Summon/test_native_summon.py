@@ -1,10 +1,15 @@
 import unittest
 from pathlib import Path
 
-from ImportSummonPresentation import ROOTS, collect_visual
+from ImportSummonPresentation import DEST, ROOTS, collect_visual, validate_music_stream
 
 
 class NativeSummonPresentation(unittest.TestCase):
+    def test_streamed_music_advances_past_the_decoder_buffer(self):
+        for name in ("Theme.wav", "Ceremony.wav"):
+            with self.subTest(name=name):
+                validate_music_stream((DEST / name).read_bytes(), name)
+
     def test_requires_every_native_visual_phase_and_preserves_colors(self):
         source = Path("D:/sevenepic/原始资源")
         if not source.is_dir():

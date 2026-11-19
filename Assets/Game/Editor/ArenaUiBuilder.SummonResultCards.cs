@@ -14,26 +14,29 @@ namespace AstralOath.Editor
             var result = Area(root, "Summon result", 0, 0, 1, 1);
             Paint(result, null, new Color32(1, 11, 30, 65), true);
             bindings.Add(("resultPanel", result.gameObject));
-            AddSummonLabel(result, bindings, "resultTitle", null, 55, .021f, .025f, .50f, .083f);
-            var hint = Text(result, "Native summary guide", "summon.result.hint", 24, .021f, .118f, .19f, .063f,
-                new Color32(95, 167, 210, 255), TextAlignmentOptions.TopLeft, wrap: true);
-            hint.fontStyle = FontStyles.Bold;
+            var title = Text(result, "Result title", null, 55.5f, .021f, .025f, .50f, .083f);
+            ApplySummonTextOutline(title, light: true);
+            bindings.Add(("resultTitle", title));
+            var hint = Text(result, "Native summary guide", "summon.result.hint", 28.08f, .021f, .118f, .19f, .063f,
+                new Color32(79, 149, 221, 255), TextAlignmentOptions.TopLeft, wrap: true);
+            ApplySummonTextOutline(hint);
             bindings.Add(("resultItems", Area(result, "Result cards", 0, 0, 1, 1)));
 
-            SummonButton(result, bindings, "resultClose", "summon.button.back", .024f, .875f, .162f, .09f, SummonArt("_btn_gold"));
-            var back = result.GetChild(result.childCount - 1) as RectTransform;
+            var back = SummonFooterButton(result, bindings, "resultClose", "_btn_gold", false, 32, 21, 248, 72);
+            ApplySummonTextOutline(Text(back, "Text", "summon.button.back", 32.25f, .04f, .045f, .92f, .91f, alignment: TextAlignmentOptions.Center), light: true);
             var arrow = Picture(back, "Native back arrow", Art("cm_icon_etcback"), .07f, .26f, .13f, .48f, true);
             arrow.color = new Color32(211, 178, 119, 255);
-            SummonButton(result, bindings, "resultAgain", null, .758f, .875f, .224f, .09f, CommonArt("_btn_green"));
-            var again = result.GetChild(result.childCount - 1) as RectTransform;
-            Text(again, "Summon again", "summon.button.again", 26, .46f, 0, .51f, 1, alignment: TextAlignmentOptions.Center);
-            Picture(again, "Native repeat price plate", SummonArt("_btn_small_black"), .15f, .245f, .27f, .51f);
-            bindings.Add(("resultAgainCurrency", Picture(again, "Repeat summon currency", SummonArt("icon_menu_bookmark"),
+            var again = SummonFooterButton(result, bindings, "resultAgain", "_btn_green", true, -361, 20, 340, 71);
+            ApplySummonTextOutline(Text(again, "Summon again", "summon.button.again", 32.25f, .46f, 0, .51f, 1, alignment: TextAlignmentOptions.Center), light: true);
+            SummonPricePlate(again, "Native repeat price plate", "_btn_small_black", 41f / 340, 11f / 71, 106f / 340, 45f / 71);
+            bindings.Add(("resultAgainCurrency", Picture(again, "Repeat summon currency", SummonArt("token_ticket_rare"),
                 .039f, .16f, .14f, .67f, true)));
-            bindings.Add(("resultAgainEpicCurrency", Picture(again, "Repeat summon epic currency", SummonArt("icon_menu_bookmarkmoon"),
+            bindings.Add(("resultAgainEpicCurrency", Picture(again, "Repeat summon epic currency", SummonArt("token_rarecoin"),
                 .039f, .16f, .14f, .67f, true)));
-            bindings.Add(("resultAgainPrice", Text(again, "Repeat summon cost", null, 26, .18f, 0, .21f, 1,
-                new Color32(255, 223, 124, 255), TextAlignmentOptions.Center)));
+            var cost = Text(again, "Repeat summon cost", null, 28.8f, .18f, 0, .21f, 1,
+                new Color32(255, 220, 78, 255), TextAlignmentOptions.Center);
+            ApplySummonTextOutline(cost);
+            bindings.Add(("resultAgainPrice", cost));
             result.gameObject.SetActive(false);
             BuildSummonResultCard(root, bindings);
         }

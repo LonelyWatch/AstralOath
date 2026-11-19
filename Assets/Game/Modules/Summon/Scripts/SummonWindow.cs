@@ -13,12 +13,12 @@ namespace AstralOath.Client.Summon
         {
             "back", "help", "covenant", "iseria", "single", "ten", "free", "epic", "info", "wish", "storage",
             "recovery", "confirmYes", "confirmNo", "infoClose", "wishHero", "wishArtifact", "wishSave",
-            "wishClose", "wishUnowned", "storageClose", "resultClose", "resultAgain", "skip", "next"
+            "wishDismiss", "wishInfo", "wishFilter", "wishRecommend", "wishClose", "wishUnowned", "storageClose", "resultClose", "resultAgain", "skip", "next"
         };
 
         internal static readonly string[] LabelKeys =
         {
-            "title", "balance", "epicBalance", "singlePrice", "tenPrice", "bannerTitle", "featuredHero", "featuredArtifact", "pity", "status",
+            "title", "balance", "epicBalance", "singlePrice", "tenPrice", "bannerTitle", "featuredHero", "featuredHeroShadow", "featuredArtifact", "pity", "status",
             "singleLabel", "tenLabel", "freeLabel", "confirmTitle", "confirmPrompt", "confirmBody", "confirmHeroName", "confirmHeroPity", "confirmCost", "confirmCurrency", "infoTitle", "wishTitle",
             "storageTitle", "resultTitle", "wishCount", "wishButtonLabel", "skipLabel", "nextLabel", "revealName", "revealStars", "revealLabel"
         };
@@ -26,24 +26,85 @@ namespace AstralOath.Client.Summon
         internal static readonly string[] PanelKeys =
             { "confirmPanel", "infoPanel", "wishPanel", "storagePanel", "resultPanel", "revealPanel" };
 
-        private static readonly string[] ListKeys = { "infoItems", "wishItems", "wishSelectedItems", "storageItems", "resultItems" };
-        private static readonly string[] ImageKeys = { "artifactArt", "revealArt", "singleCoin", "tenCoin", "confirmCoin", "confirmHeroPortrait", "featuredElement", "featuredRole" };
+        private static readonly string[] ListKeys = { "infoItems", "wishItems", "wishSelectedItems", "wishSelectedHeroes", "wishSelectedArtifacts", "storageItems", "resultItems", "wishPortraitStrip", "wishCaptionStrip" };
+        private static readonly string[] ImageKeys = { "artifactArt", "artifactEmblem", "artifactRole", "revealArt", "singleCoin", "tenCoin", "confirmCoin", "confirmHeroPortrait", "featuredElement", "featuredRole" };
 
         internal GameButton Button(string key) => Bindings.Require<GameButton>(key);
         internal GameText Text(string key) => Bindings.Require<GameText>(key);
         internal GameObject Panel(string key) => Bindings.Require<GameObject>(key);
         internal RectTransform Items(string key) => Bindings.Require<RectTransform>(key);
         internal Image Image(string key) => Bindings.Require<Image>(key);
+        internal CanvasGroup Group(string key) => Bindings.Require<CanvasGroup>(key);
         internal RawImage Raw(string key) => Bindings.Require<RawImage>(key);
         internal RawImage Effects => Raw("effectCanvas");
         internal AudioSource FeaturedSkillAudio => Bindings.Require<AudioSource>("featuredSkillAudio");
         internal Sprite Coin(bool epic) => Image(epic ? "epicCoin" : "normalCoin").sprite;
-        internal RectTransform ConfirmPriceRow => Bindings.Require<RectTransform>("confirmPriceRow");
+        internal void LayoutConfirmation(bool featured)
+        {
+            const float scale = 1080f / 720f;
+            var panel = (RectTransform)Panel("confirmHeroRow").transform.parent;
+            panel.sizeDelta = new Vector2(0f, (featured ? 571f : 498f) * scale);
+            panel.anchoredPosition = new Vector2(0f, (featured ? 0f : 16f) * scale);
+            foreach (string key in new[] { "confirmNo", "confirmYes" })
+            {
+                var rect = (RectTransform)Button(key).transform;
+                rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, (featured ? 57f : 48f) * scale);
+            }
+            var price = Items("confirmPriceRow");
+            price.anchoredPosition = (featured ? new Vector2(0, -356) : new Vector2(124, -266)) * scale;
+            Panel("confirmPriceDivider").SetActive(featured);
+            var caption = Items("confirmCurrencyCaption");
+            caption.anchoredPosition = new Vector2(featured ? 0f : -26f, -3f) * scale;
+            var owned = Text("confirmBody");
+            var ownedBox = (RectTransform)owned.transform.parent;
+            ownedBox.anchoredPosition = (featured ? new Vector2(125, -76) : new Vector2(-124, -132)) * scale;
+            owned.alignment = featured ? TMPro.TextAlignmentOptions.MidlineLeft : TMPro.TextAlignmentOptions.Center;
+        }
         internal AudioSource Audio => Bindings.Require<AudioSource>("audio");
         internal AudioSource Music => Bindings.Require<AudioSource>("music");
         internal GameObject WishTemplate => Bindings.Require<GameObject>("wishTemplate");
-        internal Sprite WishFrame(bool artifact) => Image(artifact ? "artifactWishFrame" : "heroWishFrame").sprite;
         internal GameObject RowTemplate => Bindings.Require<GameObject>("rowTemplate");
+
+        // The recording has a 2464 × 1200 game viewport after the device margin.
+        // Use its aspect at the game canvas's 1080-unit design height.
+        private static readonly Vector2 CardDesignSize = new Vector2(2217.6f, 1080f);
+
+        internal void BindCardLayout(AstralOath.Client.Core.BindingScope scope)
+        {
+            var wishDialog = (RectTransform)Text("wishTitle").transform.parent;
+            var groups = new[] { Items("wishPortraitStrip"), Items("wishCaptionStrip"), Items("resultItems"), wishDialog };
+            foreach (var group in groups)
+            {
+                Vector2 center = (group.anchorMin + group.anchorMax) * .5f;
+                Vector2 size = Vector2.Scale(group.anchorMax - group.anchorMin, CardDesignSize);
+                group.anchorMin = group.anchorMax = center;
+                group.pivot = new Vector2(.5f, .5f);
+                group.anchoredPosition = Vector2.zero;
+                group.sizeDelta = size;
+            }
+
+            // Each portrait camera renders to a square. The tilted mask crops that square.
+            for (int index = 0; index < 7; index++)
+            {
+                RectTransform portrait = Raw("wishHero" + index).rectTransform;
+                portrait.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, portrait.rect.height);
+            }
+
+            var viewport = (RectTransform)Root.transform;
+            Vector2 lastSize = Vector2.zero;
+            void Resize()
+            {
+                Vector2 size = viewport.rect.size;
+                if (size == lastSize || size.x <= 0f || size.y <= 0f) return;
+                lastSize = size;
+                float scale = Mathf.Min(size.x / CardDesignSize.x, size.y / CardDesignSize.y);
+                foreach (var group in groups)
+                    group.localScale = new Vector3(scale, scale, 1f);
+            }
+            Resize();
+            Canvas.preWillRenderCanvases += Resize;
+            scope.Add(() => Canvas.preWillRenderCanvases -= Resize);
+        }
 
         public override void Validate()
         {
@@ -53,12 +114,19 @@ namespace AstralOath.Client.Summon
             foreach (string key in ListKeys) Items(key);
             foreach (string key in ImageKeys) Image(key);
             foreach (string key in new[] { "covenantBackdrop", "upBackdrop", "wishRoster", "heroCaption", "artifactCaption", "artifactFrame", "featuredBadges", "confirmHeroRow", "covenantSelected", "iseriaSelected" }) _ = Panel(key);
+            _ = Group("featuredActorLayer");
+            _ = Group("featuredOfferLayer");
+            _ = Group("featuredScenery");
             _ = Raw("featuredSkillCanvas");
             _ = FeaturedSkillAudio;
-            _ = ConfirmPriceRow;
+            _ = Items("confirmPriceRow");
+            _ = Items("confirmCurrencyCaption");
+            _ = Panel("confirmPriceDivider");
+            _ = Text("confirmType");
             _ = Coin(false);
             _ = Coin(true);
             _ = Raw("upPortrait");
+            for (int star = 0; star < 6; star++) _ = Panel("artifactStar" + star);
             _ = Raw("revealHero");
             for (int index = 0; index < 7; index++)
             {
@@ -73,12 +141,13 @@ namespace AstralOath.Client.Summon
             _ = Effects;
             _ = Audio;
             _ = Music;
-            _ = WishFrame(false);
-            _ = WishFrame(true);
             var wish = WishTemplate.GetComponent<BindingMap>();
             _ = wish.Require<GameButton>("button");
             _ = wish.Require<Image>("icon");
             _ = wish.Require<Image>("selected");
+            _ = wish.Require<Image>("role");
+            _ = wish.Require<Image>("element");
+            _ = wish.Require<GameObject>("remove");
             _ = wish.Require<GameText>("name");
             var template = RowTemplate.GetComponent<BindingMap>();
             _ = template.Require<GameButton>("button");

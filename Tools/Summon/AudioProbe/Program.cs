@@ -27,7 +27,7 @@ void Record(string path, string guid, string bank, string target)
         Check(studio.getCoreSystem(out var core), "Get recording mixer");
         Check(core.setSoftwareFormat(48000, FMOD.SPEAKERMODE.STEREO, 0), "48 kHz stereo");
         Check(core.setOutput(FMOD.OUTPUTTYPE.WAVWRITER_NRT), "Offline WAV writer");
-        Check(studio.initialize(32, FMOD.Studio.INITFLAGS.SYNCHRONOUS_UPDATE, FMOD.INITFLAGS.NORMAL, output), "Initialize recording");
+        Check(studio.initialize(32, FMOD.Studio.INITFLAGS.SYNCHRONOUS_UPDATE, FMOD.INITFLAGS.STREAM_FROM_UPDATE, output), "Initialize recording");
         foreach (string file in (path.StartsWith("event:/", StringComparison.Ordinal)
             ? new[] { "master.bank", "master.strings.bank" }.Concat(bank.Split('|').Select(entry => entry + ".bank"))
             : new[] { "master.bank", "master.strings.bank", "voc.event.bank", bank + ".bank" }))

@@ -86,18 +86,28 @@ namespace AstralOath.Editor
         {
             var root = Root("SummonWindow");
             var binding = new List<(string Key, Object Target)>();
-            Paint(root, null, new Color32(4, 17, 31, 255), true);
+            Paint(root, null, Color.black, true);
             var covenantBackdrop = Area(root, "Covenant composition", 0, 0, 1, 1);
             Cover(covenantBackdrop, "Native Covenant backdrop", SummonArt("gacha_wish_bg_3"));
             var upBackdrop = Area(root, "Iseria composition", 0, 0, 1, 1);
-            var forest = Area(upBackdrop, "Iseria's original forest", .141f, 0, .859f, 1).gameObject.AddComponent<RawImage>();
+            var scenery = upBackdrop.gameObject.AddComponent<CanvasGroup>();
+            binding.Add(("featuredScenery", scenery));
+            var forest = Area(upBackdrop, "Iseria's original forest", 0, 0, 1, 1).gameObject.AddComponent<RawImage>();
             forest.texture = SummonArt("gacha_c1024_01_bg").texture;
             // The old layout baked the artifact on the left. The current layout uses its separate original card at the right.
             forest.uvRect = new Rect(.263f, 0, .737f, 1);
             forest.raycastTarget = false;
             binding.Add(("covenantBackdrop", covenantBackdrop.gameObject));
             binding.Add(("upBackdrop", upBackdrop.gameObject));
-            Paint(Area(root, "Left banner shade", 0, .093f, .145f, .907f), null, Black(.78f));
+            var preview = Area(root, "Iseria native skill preview", 0, 0, 1, 1).gameObject.AddComponent<RawImage>();
+            preview.raycastTarget = false;
+            preview.enabled = false;
+            binding.Add(("featuredSkillCanvas", preview));
+            var actorLayer = Area(root, "Featured hero poster", 0, 0, 1, 1);
+            var offerLayer = Area(root, "Featured artifact poster", 0, 0, 1, 1);
+            binding.Add(("featuredActorLayer", actorLayer.gameObject.AddComponent<CanvasGroup>()));
+            binding.Add(("featuredOfferLayer", offerLayer.gameObject.AddComponent<CanvasGroup>()));
+            DrawSummonSidebarShade(root);
             var top = Area(root, "Summon top bar", 0, 0, 1, 1);
             Paint(Area(top, "Native top bar shade", 0, 0, 1, .093f), null, Black(.52f));
             Paint(Area(top, "Native top bar rule", 0, .093f, 1, .0016f), null, new Color32(255, 255, 255, 37));
@@ -114,45 +124,36 @@ namespace AstralOath.Editor
             Picture(top, "Covenant bookmark currency", SummonArt("token_ticket_rare"), .664f, .021f, .025f, .046f, true);
             AddSummonLabel(top, binding, "balance", null, 24, .689f, .015f, .058f, .062f);
 
-            var roster = Area(root, "Covenant wish roster", .149f, .015f, .815f, .704f);
+            var roster = Area(root, "Covenant wish roster", 0, 0, 1, 1);
             binding.Add(("wishRoster", roster.gameObject));
             DrawSummonWishRoster(roster, binding);
-            var hero = Area(root, "Featured original hero artwork", .201f, .003f, .533f, .99f).gameObject.AddComponent<RawImage>();
-            hero.raycastTarget = false;
-            var artifact = Picture(root, "Featured artifact card", null, .799f, .142f, .177f, .60f, true);
-            binding.Add(("upPortrait", hero));
-            binding.Add(("artifactArt", artifact));
-            binding.Add(("artifactFrame", Picture(root, "Original artifact frame", SummonArt("arti_frame_deco_1"),
-                .802f, .148f, .047f, .089f, true).gameObject));
-            AddSummonLabel(root, binding, "featuredArtifact", null, 25, .799f, .689f, .177f, .053f, true);
-            var preview = Area(root, "Iseria native skill preview", .145f, 0, .855f, 1).gameObject.AddComponent<RawImage>();
-            preview.raycastTarget = false;
-            preview.enabled = false;
-            binding.Add(("featuredSkillCanvas", preview));
+            BuildPickupPoster(actorLayer, offerLayer, binding);
             StoreSummonSprite(root, binding, "normalCoin", "token_ticket_rare");
             StoreSummonSprite(root, binding, "epicCoin", "token_rarecoin");
-            AddSummonLabel(root, binding, "bannerTitle", null, 23, .168f, .501f, .46f, .048f);
-            AddSummonLabel(root, binding, "featuredHero", null, 48, .168f, .553f, .43f, .068f);
-            var featuredBadges = Area(root, "Original hero badges", .168f, .627f, .155f, .045f);
-            binding.Add(("featuredBadges", featuredBadges.gameObject));
-            binding.Add(("featuredElement", Picture(featuredBadges, "Element", null, 0, 0, .15f, 1, true)));
-            binding.Add(("featuredRole", Picture(featuredBadges, "Role", null, .17f, 0, .15f, 1, true)));
-            for (int star = 0; star < 5; star++)
-                Picture(featuredBadges, "Star", DraftSprite("TeamBadges/cm_icon_star"), .36f + star * .126f, 0, .13f, 1, true);
             AddSummonLabel(root, binding, "pity", null, 26, .728f, .795f, .25f, .05f, true);
             AddSummonLabel(root, binding, "status", null, 30, .17f, .736f, .59f, .055f);
-            SummonBannerButton(root, binding, "iseria", "summon.banner.iseria", .101f, "gacha_c1024_01_banner");
-            SummonBannerButton(root, binding, "covenant", "summon.banner.covenant", .246f, "banner_gacha_wish");
-            SummonDrawButton(root, binding, "single", .647f, "gray");
-            SummonDrawButton(root, binding, "ten", .821f, "gold");
-            SummonButton(root, binding, "free", null, .666f, .821f, .119f, .046f, SummonArt("_btn_gacha_gray"),
-                SummonArt("_btn_gacha_gray_p"), "freeLabel");
-            SummonIconButton(root, binding, "info", "icon_menu_info", .172f, .870f, .043f, .092f);
-            SummonIconButton(root, binding, "storage", "icon_quick_tmp_inven", .234f, .870f, .043f, .092f);
-            SummonIconButton(root, binding, "recovery", "icon_menu_change", .296f, .870f, .043f, .092f);
-            SummonButton(root, binding, "wish", "summon.button.wish", .428f, .734f, .257f, .089f,
-                SummonArt("gacha_wish_btn"), SummonArt("gacha_wish_btn_p"), "wishButtonLabel");
-            SummonIconButton(root, binding, "epic", "token_rarecoin", .358f, .870f, .043f, .092f);
+            SummonBannerButton(root, binding, "iseria", 134, "gacha_c1024_01_banner");
+            SummonBannerButton(root, binding, "covenant", 241, "banner_gacha_wish");
+            SummonDrawButton(root, binding, "single", -528, "gray", 94);
+            SummonDrawButton(root, binding, "ten", -271, "gold", 84);
+            DrawSummonFreeBubble(root, binding);
+            SummonFooterIcon(root, binding, "info", "icon_menu_info", 250, 39, 39, 57, 57);
+            SummonFooterIcon(root, binding, "storage", "icon_quick_tmp_inven", 342, 39, 29, 96, 91.2f);
+            SummonFooterIcon(root, binding, "recovery", "icon_menu_change", 437, 38, 40, 57.6f, 57.6f);
+            var wishButton = Area(root, "wish", .5f, .5f, 0, 0);
+            wishButton.pivot = new Vector2(.5f, .5f);
+            wishButton.anchoredPosition = new Vector2(90, -200) * SummonCanvasScale;
+            wishButton.sizeDelta = new Vector2(406, 75) * SummonCanvasScale;
+            var wishControl = Button(wishButton, SummonArt("gacha_wish_btn"), Color.white);
+            PressSprites(wishControl, SummonArt("gacha_wish_btn"), SummonArt("gacha_wish_btn_p"));
+            wishControl.image.pixelsPerUnitMultiplier = 1f / SummonCanvasScale;
+            binding.Add(("wish", wishControl));
+            var wishLabel = Text(wishButton, "Wish count", null, 31.32f, .08f, 0, .84f, .91f,
+                alignment: TextAlignmentOptions.Center);
+            ApplySummonTextOutline(wishLabel);
+            wishLabel.richText = true;
+            binding.Add(("wishButtonLabel", wishLabel));
+            SummonFooterIcon(root, binding, "epic", "token_rarecoin", 533, 38, 38, 58.8f, 58.8f);
 
             top.SetAsLastSibling();
             var sound = Area(root, "Summon audio", 0, 0, 0, 0).gameObject.AddComponent<AudioSource>();
@@ -172,34 +173,180 @@ namespace AstralOath.Editor
             return root.gameObject;
         }
 
-        private static void SummonBannerButton(RectTransform root, List<(string Key, Object Target)> bindings,
-            string key, string labelKey, float top, string image)
+        private static void BuildPickupPoster(RectTransform actorLayer, RectTransform offerLayer, List<(string Key, Object Target)> bindings)
         {
-            var rect = Area(root, key, .009f, top, .127f, .122f);
-            var button = Button(rect, null, Color.clear);
-            bindings.Add((key, button));
-            var highlight = Picture(rect, "Native selected banner outline", SummonArt("banner_cliping_outline"), 0, 0, 1, 1);
-            highlight.color = new Color32(121, 213, 236, 230);
-            bindings.Add((key + "Selected", highlight.gameObject));
-            var mask = Area(rect, "Original clipped banner", .014f, .034f, .972f, .932f);
+            // gacha_renew_pickup.csb places n_pos1 at 1.5x. Match the upright half-body crop
+            // against the 720-high recording while keeping the native portrait camera square.
+            var portrait = Area(actorLayer, "Featured original hero artwork", .158f, 0f, .516f, 1.575f)
+                .gameObject.AddComponent<RawImage>();
+            portrait.raycastTarget = false;
+            var portraitAspect = portrait.gameObject.AddComponent<AspectRatioFitter>();
+            portraitAspect.aspectMode = AspectRatioFitter.AspectMode.HeightControlsWidth;
+            portraitAspect.aspectRatio = 1f;
+            bindings.Add(("upPortrait", portrait));
+
+            var caption = Area(actorLayer, "Pickup hero caption", .168f, .478f, 0, 0);
+            caption.pivot = new Vector2(0f, 1f);
+            caption.sizeDelta = new Vector2(306f, 140f) * SummonCanvasScale;
+            var softShade = Picture(caption, "Original title glow", SummonArt("_grow_white"), -.67f, -.40f, 2.63f, 2.50f);
+            softShade.color = Black(.4f);
+            var tag = Picture(caption, "Normal pickup category", SummonArt("renew_main_hud_btn_deco_pickup"),
+                -.028f, .012f, .352f, .314f);
+            AddSummonLabel(tag.rectTransform, bindings, "bannerTitle", null, 21, .065f, .09f, .87f, .82f, true);
+            var shade = Text(caption, "Featured name shadow", null, 56, .006f, .322f, .99f, .366f, Black(.87f));
+            var name = Text(caption, "Featured hero name", null, 56, 0, .303f, .99f, .366f);
+            shade.fontStyle = name.fontStyle = FontStyles.Bold;
+            bindings.Add(("featuredHeroShadow", shade));
+            bindings.Add(("featuredHero", name));
+
+            var badges = Area(caption, "Original hero badges", 0f, .681f, .780f, .288f);
+            bindings.Add(("featuredBadges", badges.gameObject));
+            bindings.Add(("featuredElement", Picture(badges, "Element", null, 0f, .04f, .147f, .90f, true)));
+            bindings.Add(("featuredRole", Picture(badges, "Role", null, .169f, .04f, .147f, .90f, true)));
+            for (int star = 0; star < 5; star++)
+                Picture(badges, "Star " + (star + 1), SummonArt("cm_icon_star_big"), .340f + star * .111f, 0f, .175f, 1f, true);
+
+            // The source card is 378 x 598 at 0.72x. Children share the card's fixed aspect,
+            // including its corner frame, artifact emblem and descending row of grade stars.
+            var card = Area(offerLayer, "Featured artifact card", .982f, .142f, 0f, .598f);
+            card.pivot = new Vector2(1f, .5f);
+            var cardAspect = card.gameObject.AddComponent<AspectRatioFitter>();
+            cardAspect.aspectMode = AspectRatioFitter.AspectMode.HeightControlsWidth;
+            cardAspect.aspectRatio = 378f / 598f;
+            bindings.Add(("artifactFrame", card.gameObject));
+            var blur = Picture(card, "Original card shadow", SummonArt("_grow_white"), -.095f, -.065f, 1.185f, 1.130f);
+            blur.color = Black(.5f);
+            bindings.Add(("artifactArt", Picture(card, "Featured artifact illustration", null, 0, 0, 1, 1, true)));
+            Picture(card, "Original artifact frame", SummonArt("arti_frame_deco_1"), 0, 0, 170f / 378f, 242f / 598f);
+            bindings.Add(("artifactEmblem", Picture(card, "Artifact emblem", null, .005f, .001f, .215f, .150f, true)));
+            for (int star = 0; star < 6; star++)
+            {
+                var grade = Picture(card, "Artifact star " + (star + 1), DraftSprite("TeamBadges/cm_icon_star"),
+                    339f / 378f, (13f + star * 30f) / 598f, 30f / 378f, 29f / 598f, true);
+                bindings.Add(("artifactStar" + star, grade.gameObject));
+            }
+            var nameShade = Picture(card, "Original artifact name glow", SummonArt("_grow_white"), -.07f, .897f, 1.14f, .092f);
+            nameShade.color = Black(.5f);
+            var nameRow = Area(card, "Artifact class and name", .015f, .893f, .97f, .094f);
+            var horizontal = nameRow.gameObject.AddComponent<HorizontalLayoutGroup>();
+            horizontal.childAlignment = TextAnchor.MiddleCenter;
+            horizontal.childControlWidth = horizontal.childControlHeight = true;
+            horizontal.childForceExpandWidth = horizontal.childForceExpandHeight = false;
+            horizontal.spacing = 4f;
+            var role = Picture(nameRow, "Artifact role", null, 0, 0, 0, 0, true);
+            var roleSize = role.gameObject.AddComponent<LayoutElement>();
+            roleSize.preferredWidth = roleSize.preferredHeight = 34f;
+            bindings.Add(("artifactRole", role));
+            AddSummonLabel(nameRow, bindings, "featuredArtifact", null, 25, 0, 0, 0, 0, true);
+        }
+
+        private static void DrawSummonSidebarShade(RectTransform root)
+        {
+            var shade = Picture(root, "Native sidebar gradient", Art("_grow"), 0, 0, 0, 0);
+            var rect = shade.rectTransform;
+            rect.anchorMin = rect.anchorMax = new Vector2(0f, .5f);
+            rect.anchoredPosition = new Vector2(-250, 1) * SummonCanvasScale;
+            rect.sizeDelta = new Vector2(344f * 3.6f, 167f * 12.42f) * SummonCanvasScale;
+            shade.color = new Color32(255, 255, 255, 216);
+        }
+
+        private static void SummonBannerButton(RectTransform root, List<(string Key, Object Target)> bindings,
+            string key, float centerFromTop, string image)
+        {
+            var rect = Area(root, key, 0, 0, 0, 0);
+            rect.anchorMin = rect.anchorMax = new Vector2(0f, 1f);
+            rect.pivot = new Vector2(0f, .5f);
+            rect.anchoredPosition = new Vector2(16f, -centerFromTop) * SummonCanvasScale;
+            rect.sizeDelta = new Vector2(320.5f, 131f) * (.65f / 1.1f * SummonCanvasScale);
+            bindings.Add((key, Button(rect, null, Color.clear)));
+
+            var edge = Picture(rect, "Original banner outline", SummonArt("banner_cliping_outline"), 0, 0, 1, 1);
+            edge.color = new Color32(255, 255, 255, 127);
+            bindings.Add((key + "Selected", edge.gameObject));
+            var mask = Area(rect, "Original clipped banner", .5f / 320.5f, 0, 319.5f / 320.5f, 1);
             Paint(mask, SummonArt("banner_cliping"), Color.white);
             mask.gameObject.AddComponent<Mask>().showMaskGraphic = false;
-            Picture(mask, "Original banner texture", SummonArt(image), 0, 0, 1, 1);
-            Text(rect, "Banner name", labelKey, 22, .032f, .60f, .936f, .27f, alignment: TextAlignmentOptions.Center);
+            var poster = Picture(mask, "Original banner texture", SummonArt(image),
+                -17f / 319.5f, -20f / 131f, 356f / 319.5f, 174f / 131f);
+            bindings.Add((key + "Poster", poster));
+            if (key == "covenant")
+            {
+                var crest = Text(mask, "Covenant title", "summon.banner.covenant", 34, .04f, .22f, .92f, .56f,
+                    new Color32(30, 52, 91, 255), TextAlignmentOptions.Center);
+                crest.fontStyle = FontStyles.Bold;
+                ApplySummonTextOutline(crest, true);
+            }
+            else
+            {
+                var shade = Picture(mask, "Ownership caption shade", SummonArt("glow_banner_right"),
+                    .58f, .57f, .42f, .43f);
+                var owned = Text(shade.rectTransform, "Ownership", "summon.wish.unowned_badge", 22,
+                    0, .02f, .92f, .91f, new Color32(210, 210, 210, 255), TextAlignmentOptions.MidlineRight);
+                ApplySummonTextOutline(owned);
+                bindings.Add(("pickupUnowned", shade.gameObject));
+            }
+        }
+
+        // Summon layouts use a 720-high design surface. The UI canvas uses a reference height of 1080.
+        private const float SummonCanvasScale = 1080f / 720f;
+
+        private static RectTransform SummonFooterButton(RectTransform root, List<(string Key, Object Target)> bindings,
+            string key, string artwork, bool right, float x, float bottom, float width, float height)
+        {
+            var rect = Area(root, key, 0, 0, 0, 0);
+            rect.anchorMin = rect.anchorMax = new Vector2(right ? 1 : 0, 0);
+            rect.pivot = Vector2.zero;
+            rect.anchoredPosition = new Vector2(x, bottom) * SummonCanvasScale;
+            rect.sizeDelta = new Vector2(width, height) * SummonCanvasScale;
+            var normal = SummonArt(artwork);
+            var button = Button(rect, normal, Color.white);
+            PressSprites(button, normal, SummonArt(artwork + "_p"));
+            ((Image)button.targetGraphic).pixelsPerUnitMultiplier = 1f / SummonCanvasScale;
+            bindings.Add((key, button));
+            return rect;
+        }
+
+        private static void SummonPricePlate(RectTransform rect, string name, string sprite,
+            float left, float top, float width, float height)
+        {
+            var plate = Picture(rect, name, SummonArt(sprite + "_linear"), left, top, width, height);
+            plate.type = Image.Type.Sliced;
+            plate.pixelsPerUnitMultiplier = 1f / SummonCanvasScale;
         }
 
         private static void SummonDrawButton(RectTransform root, List<(string Key, Object Target)> bindings,
-            string key, float x, string color)
+            string key, float x, string color, float badgeWidth)
         {
-            var rect = Area(root, key, x, .875f, .165f, .092f);
-            var normal = SummonArt("_btn_gacha_" + color);
-            var button = Button(rect, normal, Color.white);
-            PressSprites(button, normal, SummonArt("_btn_gacha_" + color + "_p"));
-            bindings.Add((key, button));
-            Picture(rect, "Price badge", SummonArt("_btn_small_black_p"), .06f, .24f, .39f, .51f);
-            bindings.Add((key + "Coin", Picture(rect, "Currency", null, .021f, .10f, .17f, .80f, true)));
-            AddSummonLabel(rect, bindings, key + "Price", null, 27, .17f, .21f, .22f, .54f, true);
-            AddSummonLabel(rect, bindings, key + "Label", null, 29, .46f, .12f, .50f, .75f, true);
+            var rect = SummonFooterButton(root, bindings, key, "_btn_gacha_" + color, true, x, 21, 256, 76);
+            SummonPricePlate(rect, "Price badge", "_btn_small_black_p", 24f / 256, 16f / 76, badgeWidth / 256, 40f / 76);
+            bindings.Add((key + "Coin", Picture(rect, "Currency", null, 3f / 256, 8f / 76, 55f / 256, 55f / 76, true)));
+            var price = Text(rect, "Price", null, 28.8f, badgeWidth * .56f / 256f,
+                14.8f / 76, 48f / 256, 41.6f / 76, new Color32(255, 220, 78, 255), TextAlignmentOptions.Center);
+            ApplySummonTextOutline(price);
+            bindings.Add((key + "Price", price));
+            var label = Text(rect, key + "Label", null, 31.5f, 118f / 256, 13f / 76, 124f / 256, 50f / 76,
+                Color.white, TextAlignmentOptions.Center);
+            label.fontSharedMaterial = Load<Material>(SummonPath + "Res/Materials/SummonDrawLabelOutline.mat");
+            bindings.Add((key + "Label", label));
+        }
+
+        private static void DrawSummonFreeBubble(RectTransform root, List<(string Key, Object Target)> bindings)
+        {
+            var bubble = SummonFooterButton(root, bindings, "free", "cm_ballonsm", true, -516, 88, 239, 45);
+            Picture(bubble, "Bubble pointer", SummonArt("cm_ballonsm_arrow"), 108f / 239, 36f / 45, 24f / 239, 14f / 45);
+            var label = Text(bubble, "Free draw", null, 25.56f, .035f, 0f, .93f, 1f,
+                new Color32(25, 107, 0, 255), TextAlignmentOptions.Center);
+            ApplySummonTextOutline(label, true);
+            bindings.Add(("freeLabel", label));
+        }
+
+        private static void SummonFooterIcon(RectTransform root, List<(string Key, Object Target)> bindings,
+            string key, string artwork, float left, float centerX, float centerY, float width, float height)
+        {
+            var rect = SummonFooterButton(root, bindings, key, "_btn_circle_black_76", false, left, 19, 76, 76);
+            var icon = Picture(rect, "Native " + key + " icon", SummonArt(artwork),
+                (centerX - width * .5f) / 76f, (76f - centerY - height * .5f) / 76f, width / 76f, height / 76f, true);
+            if (key != "epic") icon.color = new Color32(255, 255, 255, 127);
         }
 
         private static void SummonIconButton(RectTransform root, List<(string Key, Object Target)> bindings,
@@ -213,68 +360,205 @@ namespace AstralOath.Editor
             Picture(rect, "Native " + key + " icon", SummonArt(icon), .16f, .16f, .68f, .68f, true);
         }
 
+        // Coordinates from gacha_wish.csb are relative to a centered 1280 × 720 layer.
+        // Cocos locates each child from its parent's lower left, even when its pivot is elsewhere.
+        private static RectTransform WishRect(RectTransform parent, string name, float x, float y,
+            float width, float height, float pivotX = 0, float pivotY = 0)
+        {
+            var rect = Area(parent, name, 0, 0, 0, 0);
+            rect.anchorMin = rect.anchorMax = Vector2.zero;
+            rect.pivot = new Vector2(pivotX, pivotY);
+            rect.anchoredPosition = new Vector2(x, y) * SummonCanvasScale;
+            rect.sizeDelta = new Vector2(width, height) * SummonCanvasScale;
+            return rect;
+        }
+
         private static void DrawSummonWishRoster(RectTransform root, List<(string Key, Object Target)> bindings)
         {
-            const int count = 7;
-            var portraits = Area(root, "Clipped originals", 0, 0, 1, 1);
-            Picture(root, "Original gradient over portraits", SummonArt("gacha_wish_bg_2"),
-                -.183f, -.021f, 1.227f, 1.421f);
-            for (int index = 0; index < count; index++)
+            const float layerWidth = 1280f / (2464f * 720f / 1200f);
+            const float left = (1f - layerWidth) * .5f;
+            var material = Load<Material>(SummonPath + "Res/Materials/SummonWishPortrait.mat");
+            var nameOutline = Load<Material>(SummonPath + "Res/Materials/SummonWishNameOutline.mat");
+            var portraits = Area(root, "Clipped originals", left, 0, layerWidth, 1);
+            Cover(root, "Original gradient over portraits", SummonArt("gacha_wish_bg_2"));
+            var captions = Area(root, "Roster captions", left, 0, layerWidth, 1);
+            bindings.Add(("wishPortraitStrip", portraits));
+            bindings.Add(("wishCaptionStrip", captions));
+
+            // Native mask origin, width and the portrait's authored face attachment within it.
+            var poses = new (float X, float Y, float Width, float FaceX, float FaceY)[]
+            {
+                (303, -226, 500, 414, 739), (307, -203, 134, 65, 723),
+                (443, -203, 135, 68, 742), (580, -203, 135, 68, 771),
+                (717, -203, 136, 65, 747), (855, -203, 134, 66, 765),
+                (991, -203, 500, 77, 716)
+            };
+            float[] captionOrigins = { 238, 376, 512, 649, 786, 923, 1067 };
+            for (int index = 0; index < poses.Length; index++)
             {
                 string key = "wishHero" + index;
-                var card = Area(root, key, index / (float)count, 0, 1f / count, 1);
-                bindings.Add((key + "Card", card.gameObject));
-                float column = index / (float)count;
-                var clip = Area(portraits, "Native slanted portrait mask", column, -.13f, 1f / count, 1.116f);
-                Paint(clip, null, Color.white);
+                var pose = poses[index];
+                var clip = WishRect(portraits, "Native slanted portrait mask", pose.X, pose.Y,
+                    pose.Width, 1200, index == 0 ? 1 : 0);
                 clip.localEulerAngles = new Vector3(0, 0, -9.5f);
+                Paint(clip, null, Color.white);
                 clip.gameObject.AddComponent<Mask>().showMaskGraphic = false;
-                var frame = Area(clip, "Original portrait", -.74f, .10f, 2.48f, 1.04f);
-                frame.localEulerAngles = new Vector3(0, 0, 9.5f);
+
+                // The camera places ui_face 30% from the top of its square. Place that point
+                // at n_pos rather than using the geometric center of the variable-width mask.
+                const float portraitSize = 580;
+                var frame = WishRect(clip, "Original portrait", pose.FaceX, pose.FaceY,
+                    portraitSize, portraitSize, .5f, .70f);
+                frame.localEulerAngles = new Vector3(0, 0, 10f);
                 var portrait = frame.gameObject.AddComponent<RawImage>();
+                portrait.material = material;
                 portrait.raycastTarget = false;
                 bindings.Add((key, portrait));
-                Paint(Area(card, "Ownership label shade", .26f, .683f, .48f, .051f),
+
+                var card = WishRect(captions, key, captionOrigins[index], 0, 138, 720);
+                bindings.Add((key + "Card", card.gameObject));
+                var ownership = WishRect(card, "Ownership", 94, 343, 164, 48, .5f, .5f);
+                Paint(Area(ownership, "Ownership label shade", 0, 0, 1, 1),
                     SummonArt("_grow_white"), new Color32(37, 46, 61, 191));
-                AddSummonLabel(card, bindings, key + "Owned", null, 18, .04f, .677f, .92f, .068f, true);
-                AddSummonLabel(card, bindings, key + "Name", null, 25, .02f, .779f, .96f, .072f, true);
-                if (index > 0)
-                    Picture(card, "Original slanted divider", SummonArt("gacha_wish_deco_" + (index + 2)), -.45f, 0, .55f, .82f);
-                Picture(card, "Native banner divider", SummonArt("gacha_wish_bar"), 0, .851f, 1, .012f);
+                var owned = Text(ownership, key + "Owned", null, 24 * .65f * SummonCanvasScale, 0, 0, 1, 1,
+                    new Color32(210, 210, 210, 255), TextAlignmentOptions.Center);
+                owned.fontStyle = FontStyles.Italic;
+                bindings.Add((key + "Owned", owned));
+
+                var label = Text(card, key + "Name", null, 24 * .89f * SummonCanvasScale,
+                    (139 - 141 * .89f) / 138, (720 - 274 - 56 * .89f) / 720, 141 * .89f / 138,
+                    56 * .89f / 720, alignment: TextAlignmentOptions.BottomRight, wrap: true);
+                label.fontStyle = FontStyles.Italic;
+                label.fontSharedMaterial = nameOutline;
+                bindings.Add((key + "Name", label));
+
+                bool last = index == poses.Length - 1;
+                var bar = last
+                    ? WishRect(card, "Native banner divider", 11, 266, 151, 25, 0, .5f)
+                    : WishRect(card, "Native banner divider", 82, 266, 131, 7, .5f, .5f);
+                Paint(bar, SummonArt(last ? "gacha_wish_deco_2" : "gacha_wish_deco_1"), Color.white);
                 for (int star = 0; star < 5; star++)
-                    Picture(card, "Star", DraftSprite("TeamBadges/cm_icon_star"), .14f + star * .145f, .863f, .152f, .06f, true);
-                bindings.Add((key + "Role", Picture(card, "Role", null, .34f, .93f, .15f, .055f, true)));
-                bindings.Add((key + "Element", Picture(card, "Element", null, .51f, .93f, .15f, .055f, true)));
+                    Paint(WishRect(card, "Star", 45 + star * 19 * .85f, 236, 30 * .85f, 29 * .85f),
+                        DraftSprite("TeamBadges/cm_icon_star"), Color.white);
+                var role = Paint(WishRect(card, "Role", 95, 217, 46 * .6f, 46 * .6f, 1, .5f), null, Color.white);
+                var element = Paint(WishRect(card, "Element", 112, 218, 34 * .85f, 34 * .85f, .5f, .5f), null, Color.white);
+                role.preserveAspect = element.preserveAspect = true;
+                role.enabled = element.enabled = false;
+                bindings.Add((key + "Role", role));
+                bindings.Add((key + "Element", element));
+            }
+
+            // The six narrow separator textures each have their own dimensions and center.
+            var seams = new (float X, float Y, float Width, float Height)[]
+            {
+                (166, 373, 35, 553), (303, 383, 28, 653), (442, 399, 42, 604),
+                (580, 394, 5, 613), (718, 402, 26, 610), (850, 377, 52, 575)
+            };
+            for (int index = 0; index < seams.Length; index++)
+            {
+                var seam = seams[index];
+                var rect = WishRect(captions, "Original slanted divider", 238 + seam.X, seam.Y,
+                    seam.Width, seam.Height, .5f, .5f);
+                rect.localEulerAngles = new Vector3(0, 0, -9.5f);
+                Paint(rect, SummonArt("gacha_wish_deco_" + (index + 3)), Color.white);
             }
         }
 
         private static void BuildSummonModalPanels(RectTransform root, List<(string Key, Object Target)> bindings)
         {
-            var confirm = SummonPanel(root, bindings, "confirmPanel", 0, .108f, 1, .783f, SummonArt("renew_popup_bg_2_alpha"));
-            AddSummonLabel(confirm, bindings, "confirmTitle", null, 41, .28f, .047f, .44f, .095f, true);
-            Picture(confirm, "Native confirmation divider", Art("_bar_23"), .251f, .154f, .498f, .022f);
-            AddSummonLabel(confirm, bindings, "confirmPrompt", null, 25, .25f, .206f, .50f, .070f, true);
-            var heroPreview = Area(confirm, "Featured hero offer", .326f, .321f, .376f, .186f);
-            var price = Area(confirm, "Currency offer", .326f, .505f, .376f, .186f);
+            var confirm = SummonPanel(root, bindings, "confirmPanel", 0f, .104f, 1f, .792f, SummonArt("renew_popup_bg_2_alpha"));
+            confirm.anchorMin = new Vector2(0f, .5f);
+            confirm.anchorMax = new Vector2(1f, .5f);
+            confirm.pivot = new Vector2(.5f, .5f);
+            confirm.sizeDelta = new Vector2(0f, 571f * SummonCanvasScale);
+            confirm.anchoredPosition = Vector2.zero;
+            // On held confirmation frames, the unoccluded white HUD behind the modal drops to 46/255.
+            float screenTransmission = 46f / 255f;
+            if (QualitySettings.activeColorSpace == ColorSpace.Linear)
+                screenTransmission = Mathf.GammaToLinearSpace(screenTransmission);
+            confirm.parent.GetComponent<Image>().color = Black(1f - screenTransmission);
+            confirm.GetComponent<Image>().type = Image.Type.Sliced;
+            confirm.GetComponent<Image>().pixelsPerUnitMultiplier = 1f / SummonCanvasScale;
+
+            // Coordinates use the native 720-high dialog and remain centred on ultrawide displays.
+            RectTransform Box(RectTransform container, string name, float x, float y, float width, float height, bool bottom = false)
+            {
+                var rect = Area(container, name, 0, 0, 0, 0);
+                rect.anchorMin = rect.anchorMax = new Vector2(.5f, bottom ? 0f : 1f);
+                rect.pivot = new Vector2(.5f, .5f);
+                rect.sizeDelta = new Vector2(width, height) * SummonCanvasScale;
+                rect.anchoredPosition = new Vector2(x, bottom ? y : -y) * SummonCanvasScale;
+                return rect;
+            }
+            GameText Label(RectTransform box, string key, float nativeSize, Color color, bool centered = false, bool light = false,
+                string initial = null)
+            {
+                var text = Text(box, key, initial, nativeSize * SummonCanvasScale, 0, 0, 1, 1, color,
+                    centered ? TextAlignmentOptions.Center : TextAlignmentOptions.MidlineLeft);
+                ApplySummonTextOutline(text, light);
+                bindings.Add((key, text));
+                return text;
+            }
+            void Divider(RectTransform box, float x)
+            {
+                var line = Picture(box, "Original divider", SummonArt("z_tile_bar"), 0, 0, 1, 1);
+                line.rectTransform.anchorMin = line.rectTransform.anchorMax = new Vector2(0, .5f);
+                line.rectTransform.sizeDelta = new Vector2(100f, 4f) * SummonCanvasScale;
+                line.rectTransform.anchoredPosition = new Vector2(x * SummonCanvasScale, 0f);
+                line.rectTransform.localEulerAngles = Vector3.forward * 90f;
+                line.type = Image.Type.Sliced;
+                line.pixelsPerUnitMultiplier = 1f / SummonCanvasScale;
+                line.color = new Color32(255, 255, 255, 102);
+            }
+
+            Color subdued = new Color32(180, 180, 180, 255);
+            Color secondary = new Color32(166, 204, 210, 255);
+            Label(Box(confirm, "Confirmation title", 0, 56, 600, 48), "confirmTitle", 31.5f, Color.white, true, true);
+            var bar = Picture(Box(confirm, "Confirmation title divider", 0, 96, 640, 12), "Original divider",
+                SummonArt("_bar_23"), 0, 0, 1, 1);
+            bar.type = Image.Type.Sliced;
+            bar.pixelsPerUnitMultiplier = 1f / SummonCanvasScale;
+            bar.color = new Color32(255, 255, 255, 127);
+            Label(Box(confirm, "Confirmation prompt", 0, 147, 725, 52), "confirmPrompt", 19.92f, subdued, true);
+            var heroPreview = Box(confirm, "Featured hero offer", 0, 238, 500, 100);
             bindings.Add(("confirmHeroRow", heroPreview.gameObject));
+            Picture(heroPreview, "Character background", CommonArt("_hero_s_bg_ally"), 0f, .04f, .184f, .92f, true);
+            bindings.Add(("confirmHeroPortrait", Picture(heroPreview, "Featured portrait", null, 0f, .04f, .184f, .92f, true)));
+            Picture(heroPreview, "Character frame", CommonArt("_hero_s_frame_enemy"), -.009f, -.025f, .205f, 1.05f, true);
+            Divider(heroPreview, 114f);
+            Label(Area(heroPreview, "Hero name", .254f, .095f, .735f, .33f), "confirmHeroName", 21.84f, Color.white);
+            Label(Area(heroPreview, "Hero guarantee", .254f, .403f, .735f, .36f), "confirmHeroPity", 19.92f, subdued);
+
+            var price = Box(confirm, "Currency offer", 0, 356, 500, 100);
             bindings.Add(("confirmPriceRow", price));
-            Picture(heroPreview, "Character icon frame", CommonArt("_hero_s_bg_ally"), 0, .03f, .175f, .91f, true);
-            bindings.Add(("confirmHeroPortrait", Picture(heroPreview, "Featured portrait", null, .02f, .09f, .137f, .787f, true)));
-            var heroDivider = Picture(heroPreview, "Divider", SummonArt("z_tile_bar"), .135f, .441f, .20f, .04f);
-            heroDivider.rectTransform.localEulerAngles = Vector3.forward * 90;
-            AddSummonLabel(heroPreview, bindings, "confirmHeroName", null, 26, .228f, .16f, .67f, .31f);
-            AddSummonLabel(heroPreview, bindings, "confirmHeroPity", null, 22, .228f, .49f, .67f, .34f);
-            Picture(price, "Original price tile", SummonArt("_itembg_stuff_2"), 0, .029f, .175f, .91f, true);
-            bindings.Add(("confirmCoin", Picture(price, "Currency", null, .021f, .09f, .13f, .65f, true)));
-            AddSummonLabel(price, bindings, "confirmCost", null, 20, .021f, .674f, .137f, .21f, true);
-            var priceDivider = Picture(price, "Divider", SummonArt("z_tile_bar"), .135f, .441f, .20f, .04f);
-            priceDivider.rectTransform.localEulerAngles = Vector3.forward * 90;
-            AddSummonLabel(price, bindings, "confirmCurrency", null, 24, .228f, .17f, .67f, .42f);
-            AddSummonLabel(price, bindings, "confirmBody", null, 21, .228f, .625f, .72f, .24f, wrap: true);
-            SummonButton(confirm, bindings, "confirmNo", "summon.button.cancel", .365f, .807f, .125f, .132f,
-                SummonArt("_btn_gold_r_2"), SummonArt("_btn_gold_r_p_2"));
-            SummonButton(confirm, bindings, "confirmYes", "summon.button.ok", .510f, .807f, .125f, .132f,
-                SummonArt("_btn_blue_r_3"), SummonArt("_btn_blue_r_p_3"));
+            var item = Area(price, "Currency item", -.004f, .02f, .192f, .96f);
+            Picture(item, "Original price tile", SummonArt("_itembg_stuff_3"), 0, 0, 1, 1);
+            bindings.Add(("confirmCoin", Picture(item, "Currency", null, .0625f, .0625f, .875f, .875f, true)));
+            Label(Area(item, "Price", -.08f, .77f, 1.16f, .32f), "confirmCost", 21.6f, Color.white, true);
+            var divide = Area(price, "Currency divider", 0, 0, 1, 1);
+            Divider(divide, 114f);
+            bindings.Add(("confirmPriceDivider", divide.gameObject));
+            var caption = Area(price, "Currency type and name", .254f, 0, .735f, 1);
+            bindings.Add(("confirmCurrencyCaption", caption));
+            Label(Area(caption, "Currency type", 0f, .089f, 1f, .27f), "confirmType", 18f, secondary, initial: "summon.title");
+            Label(Area(caption, "Currency name", 0f, .307f, 1f, .35f), "confirmCurrency", 21.84f, Color.white);
+            var owned = Box(price, "Owned currency", 125, 74f, 492, 38);
+            Label(owned, "confirmBody", 19.92f, secondary);
+            foreach (bool yes in new[] { false, true })
+            {
+                string key = yes ? "confirmYes" : "confirmNo";
+                string normal = yes ? "_btn_blue_r_3" : "_btn_gold_r_2";
+                string down = yes ? "_btn_blue_r_p_3" : "_btn_gold_r_p_2";
+                var buttonRect = Box(confirm, key, yes ? 107f : -107f, 57f, 388f * .53f, 128f * .53f, bottom: true);
+                var button = Button(buttonRect, SummonArt(normal), Color.white);
+                PressSprites(button, SummonArt(normal), SummonArt(down));
+                ((Image)button.targetGraphic).pixelsPerUnitMultiplier = 1f / (.53f * SummonCanvasScale);
+                bindings.Add((key, button));
+                // Original label is 50 x .75 within a .53-scale button and sits 6 px above its centre.
+                var label = Text(buttonRect, "Text", yes ? "summon.button.ok" : "summon.button.cancel",
+                    50f * .75f * .53f * SummonCanvasScale, 0f, -.047f, 1f, 1f, alignment: TextAlignmentOptions.Center);
+                ApplySummonTextOutline(label, light: true);
+            }
 
             var info = SummonPanel(root, bindings, "infoPanel", .225f, .086f, .55f, .828f);
             AddSummonLabel(info, bindings, "infoTitle", null, 38, .08f, .03f, .84f, .11f, true);
@@ -289,54 +573,13 @@ namespace AstralOath.Editor
             SummonButton(storage, bindings, "storageClose", "summon.button.close", .366f, .899f, .265f, .083f);
         }
 
-        private static void BuildSummonWishPanel(RectTransform root, List<(string Key, Object Target)> bindings)
+        private static void SummonWishGrid(RectTransform content, List<(string Key, Object Target)> bindings, string key, int columns)
         {
-            var wish = SummonPanel(root, bindings, "wishPanel", .115f, .058f, .77f, .882f);
-            AddSummonLabel(wish, bindings, "wishTitle", null, 37, .022f, .026f, .47f, .076f);
-            Picture(wish, "Original header divider", Art("_bar_23"), .018f, .088f, .96f, .012f);
-            var selectedSurface = Picture(wish, "Original selected wish area", SummonArt("gacha_wish_box_1"),
-                .022f, .190f, .441f, .67f);
-            selectedSurface.color = new Color32(96, 155, 216, 75);
-            var candidateSurface = Picture(wish, "Original candidate area", SummonArt("gacha_wish_box_2"),
-                .486f, .190f, .493f, .67f);
-            candidateSurface.color = new Color32(29, 57, 85, 121);
-            AddSummonLabel(wish, bindings, "wishCount", null, 23, .043f, .822f, .386f, .05f, true);
-            SummonButton(wish, bindings, "wishHero", "summon.button.wishHeroes", .038f, .112f, .208f, .064f);
-            SummonButton(wish, bindings, "wishArtifact", "summon.button.wishArtifacts", .249f, .112f, .208f, .064f);
-            SummonButton(wish, bindings, "wishUnowned", "summon.wish.unowned", .534f, .112f, .356f, .064f);
-            SummonWishGrid(wish, bindings, "wishSelectedItems", .042f, .211f, .401f, .610f, 4);
-            SummonWishGrid(wish, bindings, "wishItems", .508f, .210f, .451f, .620f, 6);
-            SummonButton(wish, bindings, "wishClose", "summon.button.close", .332f, .871f, .152f, .096f);
-            SummonButton(wish, bindings, "wishSave", "summon.button.ok", .515f, .871f, .152f, .096f, SummonArt("_btn_blue"));
-            var card = Area(root, "Original circular wish entry", 0, 0, .08f, .10f);
-            var button = Button(card, SummonArt("gacha_wish_slot_cir"), Color.white);
-            var icon = Picture(card, "Hero or artifact icon", null, .10f, .03f, .80f, .84f, true);
-            var selected = Picture(card, "Native selection", CommonArt("cm_checkicon2"), .64f, .02f, .29f, .32f, true);
-            var name = Text(card, "Name", null, 19, .019f, .77f, .962f, .21f, alignment: TextAlignmentOptions.Center);
-            Bind(card, ("button", button), ("icon", icon), ("selected", selected), ("name", name));
-            card.gameObject.SetActive(false);
-            bindings.Add(("wishTemplate", card.gameObject));
-            StoreSummonSprite(root, bindings, "heroWishFrame", "gacha_wish_slot_cir");
-            StoreSummonSprite(root, bindings, "artifactWishFrame", "gacha_wish_slot_arti");
-        }
-
-        private static void StoreSummonSprite(RectTransform root, List<(string Key, Object Target)> bindings, string key, string source)
-        {
-            var stored = Picture(root, "Source " + key, SummonArt(source), 0, 0, 0, 0);
-            stored.gameObject.SetActive(false);
-            bindings.Add((key, stored));
-        }
-
-        private static void SummonWishGrid(RectTransform panel, List<(string Key, Object Target)> bindings,
-            string key, float x, float y, float width, float height, int columns)
-        {
-            var scroll = InventoryScroll(panel, key, x, y, width, height);
-            var grid = scroll.content.gameObject.AddComponent<GridLayoutGroup>();
+            var grid = content.gameObject.AddComponent<GridLayoutGroup>();
             grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
             grid.constraintCount = columns;
             grid.spacing = new Vector2(8, 8);
-            scroll.content.gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-            bindings.Add((key, scroll.content));
+            bindings.Add((key, content));
         }
 
         private static void BuildSummonReveal(RectTransform root, List<(string Key, Object Target)> bindings)

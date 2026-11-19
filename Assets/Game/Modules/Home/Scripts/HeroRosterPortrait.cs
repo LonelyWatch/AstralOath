@@ -14,6 +14,7 @@ namespace AstralOath.Client.Home
     {
         private const int Layer = 30;
         private readonly RawImage output;
+        private readonly Material authoredMaterial;
         private readonly int renderSize;
         private readonly int positionOffset;
         private readonly bool animated;
@@ -30,6 +31,7 @@ namespace AstralOath.Client.Home
             int positionOffset = 0, float framing = 1.07f, float headFocus = 0f)
         {
             this.output = output;
+            authoredMaterial = output && output.material != output.defaultMaterial ? output.material : null;
             this.renderSize = renderSize;
             this.animated = animated;
             this.positionOffset = positionOffset;
@@ -51,7 +53,7 @@ namespace AstralOath.Client.Home
                 do { pageName = atlas.ReadLine()?.Trim().TrimStart('\uFEFF'); }
                 while (pageName != null && pageName.Length == 0);
                 if (string.IsNullOrEmpty(pageName)) return false;
-                var shader = Resources.Load<Shader>("AstralOathArenaDraftPortrait");
+                var shader = authoredMaterial ? authoredMaterial.shader : Resources.Load<Shader>("AstralOathArenaDraftPortrait");
                 if (!shader) return false;
                 stage = new GameObject("Inventory hero portrait") { layer = Layer, hideFlags = HideFlags.HideAndDontSave };
                 stage.transform.position = new Vector3(24000 + positionOffset, 16000, 0);
@@ -78,7 +80,14 @@ namespace AstralOath.Client.Home
                 var center = bounds.center;
                 // Keep the full authored idle pose inside a square UI surface with breathing room.
                 camera.orthographicSize = Mathf.Max(bounds.extents.x, bounds.extents.y) * framing;
-                camera.transform.localPosition = new Vector3(center.x, center.y + headFocus * bounds.extents.y, -10f);
+                if (headFocus > 0f && player.TryGetBoneSkeletonPosition("ui_face", out var face) && face.y > 0f)
+                {
+                    // The art defines this point for UI crops, independent of wings, weapons and cloth.
+                    camera.orthographicSize = face.y * .5f * framing;
+                    center.x = face.x;
+                    center.y = face.y - camera.orthographicSize * (1f - 2f * headFocus);
+                }
+                camera.transform.localPosition = new Vector3(center.x, center.y, -10f);
                 target = new RenderTexture(renderSize, renderSize, 16, RenderTextureFormat.ARGB32) { name = "Owned hero portrait" };
                 camera.targetTexture = target;
                 if (!animated)
@@ -86,9 +95,9 @@ namespace AstralOath.Client.Home
                     camera.enabled = false;
                     camera.Render();
                 }
-                material = new Material(shader) { hideFlags = HideFlags.HideAndDontSave };
+                if (!authoredMaterial) material = new Material(shader) { hideFlags = HideFlags.HideAndDontSave };
                 output.texture = target;
-                output.material = material;
+                output.material = authoredMaterial ? authoredMaterial : material;
                 source = next;
                 return SetVisible(true);
             }
@@ -123,7 +132,7 @@ namespace AstralOath.Client.Home
             source = null;
             if (output)
             {
-                output.material = null;
+                output.material = authoredMaterial;
                 output.texture = null;
             }
             if (stage) { Object.Destroy(stage); stage = null; }

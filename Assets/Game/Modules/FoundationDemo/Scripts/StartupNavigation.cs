@@ -147,6 +147,20 @@ namespace AstralOath.Client.FoundationDemo
             bool iseria = bindings.Require<GameButton>("iseria").interactable;
             if (!view.Root.activeInHierarchy || !covenant || !iseria)
                 throw new InvalidOperationException($"The packaged Summon page failed to activate both banners. Active={view.Root.activeInHierarchy}, covenant={covenant}, iseria={iseria}.");
+
+            var preview = bindings.Require<UnityEngine.UI.RawImage>("featuredSkillCanvas");
+            var poster = bindings.Require<CanvasGroup>("featuredActorLayer");
+            while (!preview.enabled || !preview.texture || poster.alpha > .05f || preview.color.a < .95f)
+                await Task.Delay(50, cancellation);
+            bindings.Require<GameButton>("covenant").onClick.Invoke();
+            if (preview.enabled || !bindings.Require<GameObject>("wishRoster").activeInHierarchy)
+                throw new InvalidOperationException("The covenant roster did not replace the featured preview.");
+            bindings.Require<GameButton>("wish").onClick.Invoke();
+            bindings.Require<GameButton>("wishArtifact").onClick.Invoke();
+            if (!bindings.Require<GameObject>("wishArtifactHighlight").activeInHierarchy ||
+                bindings.Require<RectTransform>("wishSelectedArtifacts").childCount < 7)
+                throw new InvalidOperationException("The packaged artifact wishlist did not display its selected items.");
+            bindings.Require<GameButton>("wishClose").onClick.Invoke();
         }
 
         private Task OpenSummon(CancellationToken cancellation) => ShowSummonPageAsync(cancellation);

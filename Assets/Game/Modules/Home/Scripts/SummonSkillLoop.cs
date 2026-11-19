@@ -13,7 +13,13 @@ namespace AstralOath.Client.Summon
         [SerializeField] private int frameCount, columns, rows, gutterPixels;
         [SerializeField] private float framesPerSecond;
 
-        private const double PosterSeconds = 5.5d;
+        private const double PosterSeconds = 3.25d;
+        private const double PosterFade = .375d;
+        private const double MovieFade = .45d;
+        private const double HeroReturn = 1.10d;
+        private const double HeroHold = 2.65d;
+        private const double ExitFade = .5d;
+        private const double PosterReturn = .65d;
         private double SkillSeconds => frameCount / (double)framesPerSecond;
         private int PageCapacity => columns * rows;
 
@@ -30,11 +36,12 @@ namespace AstralOath.Client.Summon
             Validate();
         }
 
-        public Player CreatePlayer(RawImage output, AudioSource audio, BindingScope owner)
+        public Player CreatePlayer(RawImage output, AudioSource audio, BindingScope owner,
+            CanvasGroup scenery, CanvasGroup hero, CanvasGroup offer)
         {
             owner.Token.ThrowIfCancellationRequested();
             Validate();
-            var player = new Player(this, output, audio);
+            var player = new Player(this, output, audio, scenery, hero, offer);
             owner.Add(player.Dispose);
             return player;
         }
@@ -59,10 +66,21 @@ namespace AstralOath.Client.Summon
             float width = page.width / columns, height = page.height / rows;
             float inset = gutterPixels + .5f;
             output.texture = page;
-            output.uvRect = new Rect(
+            var tileRect = new Rect(
                 ((tile % columns) * width + inset) / page.width,
                 ((rows - 1 - tile / columns) * height + inset) / page.height,
                 (width - 2f * inset) / page.width, (height - 2f * inset) / page.height);
+            Rect viewport = output.rectTransform.rect;
+            if (viewport.width > 0f && viewport.height > 0f)
+            {
+                float relativeAspect = (viewport.width / viewport.height) /
+                    ((width - 2f * gutterPixels) / (height - 2f * gutterPixels));
+                Vector2 center = tileRect.center;
+                if (relativeAspect > 1f) tileRect.height /= relativeAspect;
+                else tileRect.width *= relativeAspect;
+                tileRect.center = center;
+            }
+            output.uvRect = tileRect;
         }
 
         public sealed class Player : IDisposable
@@ -70,6 +88,8 @@ namespace AstralOath.Client.Summon
             private readonly SummonSkillLoop clip;
             private readonly RawImage output;
             private readonly AudioSource audio;
+            private readonly CanvasGroup scenery, hero, offer;
+            private readonly Color originalColor;
             private readonly Texture savedTexture;
             private readonly Rect savedUv;
             private readonly bool savedEnabled, savedRaycast;
@@ -79,11 +99,15 @@ namespace AstralOath.Client.Summon
             private double elapsed, lastTime;
             private int displayedFrame = -1;
 
-            internal Player(SummonSkillLoop clip, RawImage output, AudioSource audio)
+            internal Player(SummonSkillLoop clip, RawImage output, AudioSource audio, CanvasGroup scenery, CanvasGroup hero, CanvasGroup offer)
             {
                 this.clip = clip;
                 this.output = output ? output : throw new ArgumentNullException(nameof(output));
                 this.audio = audio;
+                this.scenery = scenery;
+                this.hero = hero;
+                this.offer = offer;
+                originalColor = output.color;
                 savedTexture = output.texture;
                 savedUv = output.uvRect;
                 savedEnabled = output.enabled;
@@ -126,23 +150,38 @@ namespace AstralOath.Client.Summon
                 elapsed += Math.Max(0d, now - lastTime);
                 lastTime = now;
 
-                double cycleSeconds = PosterSeconds + clip.SkillSeconds;
-                if (elapsed >= cycleSeconds)
+                double movieStart = PosterSeconds + PosterFade;
+                double movieTime = elapsed - movieStart;
+                double exitTime = movieTime - clip.SkillSeconds - HeroHold;
+                if (exitTime >= ExitFade + PosterReturn)
                 {
-                    elapsed %= cycleSeconds;
+                    elapsed %= movieStart + clip.SkillSeconds + HeroHold + ExitFade + PosterReturn;
                     HideSkill();
+                    return;
                 }
-                if (elapsed < PosterSeconds) return;
 
-                int frame = Math.Min(clip.frameCount - 1, (int)((elapsed - PosterSeconds) * clip.framesPerSecond));
-                if (frame == displayedFrame) return;
+                if (movieTime < 0 || exitTime >= ExitFade)
+                {
+                    float poster = movieTime < 0 ? Ramp(-movieTime / PosterFade) : Ramp((exitTime - ExitFade) / PosterReturn);
+                    scenery.alpha = hero.alpha = offer.alpha = poster;
+                    output.enabled = false;
+                    return;
+                }
+
+                float exitOpacity = 1f - Ramp(exitTime / ExitFade);
+                scenery.alpha = offer.alpha = 0f;
+                hero.alpha = Ramp((movieTime - clip.SkillSeconds + HeroReturn) / HeroReturn) * exitOpacity;
+                var tint = originalColor;
+                tint.a *= Ramp(movieTime / MovieFade) * exitOpacity;
+                output.color = tint;
+                int frame = Mathf.Min(clip.frameCount - 1, (int)(movieTime * clip.framesPerSecond));
                 clip.Render(output, frame);
                 if (displayedFrame < 0)
                 {
                     output.enabled = true;
                     if (audio && clip.originalAudio)
                     {
-                        audio.time = Mathf.Clamp((float)(elapsed - PosterSeconds), 0f,
+                        audio.time = Mathf.Clamp((float)movieTime, 0f,
                             Mathf.Max(0f, clip.originalAudio.length - .001f));
                         audio.Play();
                     }
@@ -150,9 +189,14 @@ namespace AstralOath.Client.Summon
                 displayedFrame = frame;
             }
 
+            private static float Ramp(double value) => Mathf.SmoothStep(0f, 1f, Mathf.Clamp01((float)value));
+
             private void HideSkill()
             {
-                if (output) output.enabled = false;
+                if (output) { output.enabled = false; output.color = originalColor; }
+                if (scenery) scenery.alpha = 1f;
+                if (hero) hero.alpha = 1f;
+                if (offer) offer.alpha = 1f;
                 if (audio && displayedFrame >= 0) audio.Stop();
                 displayedFrame = -1;
             }

@@ -50,17 +50,30 @@ namespace AstralOath.Client.Tests
 
             Assert.That(FindWindow("HomeMoreMenu"), Is.Null);
             var summon = FindWindow("SummonWindow");
-            Assert.That(summon.Require<GameText>("bannerTitle").text, Does.Contain("誓约"));
-            Assert.That(summon.Require<GameButton>("free").IsInteractable(), Is.True);
-            yield return Capture("summon-covenant");
-            Click(summon, "iseria");
-            Assert.That(summon.Require<GameText>("bannerTitle").text, Does.Contain("伊赛丽亚"));
+            foreach (string key in new[] { "single", "ten", "free", "resultClose", "resultAgain" })
+            {
+                var button = summon.Require<GameButton>(key);
+                var face = (Image)button.targetGraphic;
+                Assert.That(face.type, Is.EqualTo(Image.Type.Sliced), key);
+                Assert.That(face.sprite.border, Is.Not.EqualTo(Vector4.zero), key);
+                Assert.That(button.spriteState.pressedSprite, Is.Not.Null, key);
+                Assert.That(button.spriteState.pressedSprite.border, Is.EqualTo(face.sprite.border), key);
+            }
+            Assert.That(summon.Require<GameButton>("single").transform.Find("Price badge").GetComponent<Image>().type,
+                Is.EqualTo(Image.Type.Sliced));
+            Assert.That(summon.Require<GameButton>("resultAgain").transform.Find("Native repeat price plate").GetComponent<Image>().type,
+                Is.EqualTo(Image.Type.Sliced));
+            Assert.That(summon.Require<GameText>("bannerTitle").text, Is.EqualTo("召唤几率UP"));
+            Assert.That(summon.Require<GameText>("featuredHero").text, Does.Contain("伊赛丽亚"));
             Assert.That(summon.Require<GameText>("pity").text, Does.Contain("120"));
             Assert.That(summon.Require<Image>("artifactArt").sprite, Is.Not.Null);
             yield return Capture("summon-iseria-up");
             var preview = summon.Require<RawImage>("featuredSkillCanvas");
             yield return Until(() => preview.enabled && preview.texture, "The UP pool did not start the real Iseria S3 preview.");
             yield return new WaitForSecondsRealtime(3.15f);
+            Assert.That(summon.Require<GameText>("featuredHero").GetComponentInParent<CanvasGroup>().alpha, Is.LessThan(.05f));
+            Assert.That(summon.Require<Image>("artifactArt").GetComponentInParent<CanvasGroup>().alpha, Is.LessThan(.05f));
+            Assert.That(preview.rectTransform.rect.width, Is.EqualTo(((RectTransform)summon.transform).rect.width).Within(1));
             yield return Capture("summon-iseria-s3-cutin");
             Click(summon, "ten");
             Assert.That(Panel(summon, "confirmPanel"), Is.True);
@@ -70,17 +83,52 @@ namespace AstralOath.Client.Tests
             Click(summon, "confirmNo");
             yield return Until(() => preview.uvRect != pausedFrame, "The skill preview did not resume.");
 
+            var heroLayer = summon.Require<GameText>("featuredHero").GetComponentInParent<CanvasGroup>();
+            var artifactLayer = summon.Require<Image>("artifactArt").GetComponentInParent<CanvasGroup>();
+            yield return Until(() => preview.enabled && heroLayer.alpha > .8f && artifactLayer.alpha < .05f,
+                "The hero did not return over the skill background before the artifact.");
+            yield return Capture("summon-iseria-return");
+            yield return Until(() => !preview.enabled && artifactLayer.alpha > .98f, "The poster did not return.");
             Click(summon, "covenant");
             Assert.That(preview.enabled, Is.False);
+            Assert.That(summon.Require<GameText>("bannerTitle").text, Does.Contain("誓约"));
+            Assert.That(summon.Require<GameButton>("free").IsInteractable(), Is.True);
+            SummonCardLayoutChecks.Verify(summon, (RectTransform)summon.Require<GameObject>("wishHero0Card").transform);
+            yield return Capture("summon-covenant");
+            yield return Capture("summon-covenant-4x3", 960, 720);
+            yield return Capture("summon-covenant-21x9", 1680, 720);
             Click(summon, "info");
             Assert.That(Rows(summon, "infoItems").Any(row => row.Require<GameText>("detail").text.Contains("%")), Is.True);
             yield return Capture("summon-probability");
             Click(summon, "infoClose");
             Click(summon, "wish");
-            Assert.That(Rows(summon, "wishSelectedItems").Length, Is.EqualTo(7));
+            Assert.That(Rows(summon, "wishSelectedItems").Length, Is.EqualTo(14));
+            Assert.That(summon.Require<RectTransform>("wishItems").GetComponent<GridLayoutGroup>().constraintCount, Is.EqualTo(5));
             Click(summon, "wishArtifact");
             Assert.That(Rows(summon, "wishItems").Length, Is.GreaterThan(7));
+            Assert.That(Rows(summon, "wishSelectedHeroes").Length, Is.EqualTo(7));
+            Assert.That(Rows(summon, "wishSelectedArtifacts").Length, Is.EqualTo(7));
+            SummonCardLayoutChecks.Verify(summon, (RectTransform)Rows(summon, "wishSelectedItems")[0].transform);
+            Assert.That(summon.Require<GameObject>("wishArtifactHighlight").activeSelf, Is.True);
+            Assert.That(summon.Require<GameObject>("wishHeroHighlight").activeSelf, Is.False);
+            Assert.That(summon.Require<GameObject>("wishFilters").activeSelf, Is.False);
+            Assert.That(Rows(summon, "wishSelectedHeroes")[0].Require<GameObject>("remove").activeSelf, Is.False);
+            Assert.That(Rows(summon, "wishSelectedArtifacts")[0].Require<GameObject>("remove").activeSelf, Is.True);
             yield return Capture("summon-wishlist");
+            Click(summon, "wishFilter");
+            Click(summon, "wishRole_knight");
+            Assert.That(Rows(summon, "wishItems").Length, Is.LessThan(8));
+            Click(summon, "wishFilter");
+            Click(summon, "wishRole_all");
+            Click(Rows(summon, "wishSelectedHeroes")[0], "button");
+            Assert.That(Rows(summon, "wishSelectedHeroes").Length, Is.EqualTo(6));
+            Assert.That(Rows(summon, "wishSelectedArtifacts").Length, Is.EqualTo(7));
+            Assert.That(summon.Require<GameButton>("wishSave").IsInteractable(), Is.False);
+            Click(summon, "wishRecommend");
+            Assert.That(Rows(summon, "wishSelectedHeroes").Length, Is.EqualTo(7));
+            Click(summon, "wishClose");
+            Click(summon, "wish");
+            Assert.That(Rows(summon, "wishSelectedItems").Length, Is.EqualTo(14));
             Click(summon, "wishClose");
 
             Click(summon, "ten");
@@ -106,7 +154,10 @@ namespace AstralOath.Client.Tests
             Assert.That(summon.Require<GameButton>("free").IsInteractable(), Is.True);
             Assert.That(result.All(row => row.Require<Image>("icon").sprite), Is.True);
             string[] labels = result.Select(row => row.Require<GameText>("name").text).ToArray();
+            SummonCardLayoutChecks.Verify(summon, (RectTransform)result[0].transform);
             yield return Capture("summon-ten-results");
+            yield return Capture("summon-ten-results-4x3", 960, 720);
+            yield return Capture("summon-ten-results-21x9", 1680, 720);
 
             Click(result[0], "button");
             Assert.That(Panel(summon, "revealPanel"), Is.True);
@@ -146,7 +197,7 @@ namespace AstralOath.Client.Tests
             Assert.That(condition(), Is.True, message);
         }
 
-        private IEnumerator Capture(string name)
+        private IEnumerator Capture(string name, int width = 1478, int height = 720)
         {
             string path = Environment.GetEnvironmentVariable("ASTRAL_SUMMON_CAPTURE_DIR");
             if (string.IsNullOrWhiteSpace(path)) yield break;
@@ -155,8 +206,8 @@ namespace AstralOath.Client.Tests
             var canvas = roots.SelectMany(root => root.GetComponentsInChildren<Canvas>()).First(item => item.isRootCanvas);
             var camera = roots.SelectMany(root => root.GetComponentsInChildren<Camera>())
                 .First(item => item.enabled && item.targetTexture == null);
-            var target = RenderTexture.GetTemporary(1478, 720, 24);
-            var pixels = new Texture2D(1478, 720, TextureFormat.RGB24, false);
+            var target = RenderTexture.GetTemporary(width, height, 24);
+            var pixels = new Texture2D(width, height, TextureFormat.RGB24, false);
             var priorTarget = camera.targetTexture;
             var priorActive = RenderTexture.active;
             var priorMask = camera.cullingMask;
@@ -174,7 +225,7 @@ namespace AstralOath.Client.Tests
                 yield return null;
                 camera.Render();
                 RenderTexture.active = target;
-                pixels.ReadPixels(new Rect(0, 0, 1478, 720), 0, 0);
+                pixels.ReadPixels(new Rect(0, 0, width, height), 0, 0);
                 pixels.Apply();
                 File.WriteAllBytes(Path.Combine(path, name + ".png"), pixels.EncodeToPNG());
             }

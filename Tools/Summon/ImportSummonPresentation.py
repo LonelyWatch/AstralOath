@@ -225,6 +225,20 @@ def stereo_clip(path, expected_frames, normalize_master_padding):
     return buffer.getvalue()
 
 
+def validate_music_stream(content, name):
+    # A stalled streaming decoder repeats its active PCM buffer bit for bit.
+    # Check audible one-second windows at separate points in the music.
+    with wave.open(io.BytesIO(content)) as clip:
+        rate = clip.getframerate()
+        for second in (2, 5, 12, 20):
+            clip.setpos(second * rate)
+            window = clip.readframes(2 * rate)
+            stride = clip.getnchannels() * clip.getsampwidth()
+            probe = window[:rate * stride]
+            if len(window) == 2 * len(probe) and any(probe) and window.find(probe, stride) >= 0:
+                raise ValueError(f"{name} repeats the streaming decoder buffer at {second}s.")
+
+
 def record_audio(source, dotnet, probe, rows, check):
     work = REPO / ".artifacts/summon-presentation"
     work.mkdir(parents=True, exist_ok=True)
@@ -246,6 +260,8 @@ def record_audio(source, dotnet, probe, rows, check):
             frames = duration * 48
             padding = buffer_size * 5
             acquired = stereo_clip(folder / row["asset"], frames, padding)
+            if row['bank'] == 'bgm4':
+                validate_music_stream(acquired, row['asset'])
             if check:
                 # FMOD can use different native random event variations.
                 # A fresh non-silent render proves the source is available.
@@ -255,6 +271,8 @@ def record_audio(source, dotnet, probe, rows, check):
                     if (music.getnchannels(), music.getsampwidth(), music.getframerate(), music.getnframes()) != (2, 2, 48000, frames):
                         raise ValueError(f"Unexpected archived native audio format: {persisted}")
                 acquired = persisted.read_bytes()
+                if row['bank'] == 'bgm4':
+                    validate_music_stream(acquired, row['asset'])
             payloads[row["asset"]] = acquired
             row.update(sampleFrames=frames, mixerPaddingFrames=padding)
         return payloads

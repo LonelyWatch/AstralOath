@@ -39,6 +39,7 @@ namespace AstralOath.Client.Summon
         private HeroRosterPortrait featuredPortrait, revealPortrait;
         private SummonSkillLoop.Player featuredSkill;
         private string activePanel;
+        private string wishRoleFilter;
         private HeroRosterPortrait[] wishPortraits;
         private SummonPresentation.Player player;
         private SummonState state;
@@ -47,7 +48,7 @@ namespace AstralOath.Client.Summon
         private SummonStorage storage;
         private CancellationTokenSource playback;
         private TaskCompletionSource<bool> next;
-        private string bannerId = Covenant;
+        private string bannerId = Up;
         private bool busy, epic, wantsArtifacts, onlyUnowned, showingDetail;
 
         public SummonWindowBinder(SummonWindow view, SummonApi api, HomeHeroArt heroArt,
@@ -67,10 +68,13 @@ namespace AstralOath.Client.Summon
         {
             screen = scope;
             view.Show();
+            view.BindCardLayout(scope);
             ShowPanel(null);
             player = presentation.CreatePlayer(view.Effects, view.Audio);
-            featuredSkill = featuredLoop.CreatePlayer(view.Raw("featuredSkillCanvas"), view.FeaturedSkillAudio, scope);
-            featuredPortrait = new HeroRosterPortrait(view.Raw("upPortrait"), positionOffset: 2000);
+            featuredSkill = featuredLoop.CreatePlayer(view.Raw("featuredSkillCanvas"), view.FeaturedSkillAudio, scope,
+                view.Group("featuredScenery"), view.Group("featuredActorLayer"),
+                view.Group("featuredOfferLayer"));
+            featuredPortrait = new HeroRosterPortrait(view.Raw("upPortrait"), renderSize: 1024, positionOffset: 2000, framing: 1.04f, headFocus: .23f);
             revealPortrait = new HeroRosterPortrait(view.Raw("revealHero"), positionOffset: 3000);
             wishPortraits = Enumerable.Range(0, 7).Select(index => new HeroRosterPortrait(view.Raw("wishHero" + index),
                 renderSize: 480, animated: false, positionOffset: 4000 + index * 1000, framing: .83f, headFocus: .30f)).ToArray();
@@ -85,8 +89,9 @@ namespace AstralOath.Client.Summon
                 revealPortrait.Dispose();
                 foreach (var portrait in wishPortraits) portrait.Dispose();
                 player.Dispose();
+                if (!view.Root) return;
                 if (view.Music) view.Music.Stop();
-                foreach (string list in new[] { "infoItems", "wishItems", "wishSelectedItems", "storageItems", "resultItems" })
+                foreach (string list in new[] { "infoItems", "wishItems", "wishSelectedHeroes", "wishSelectedArtifacts", "storageItems", "resultItems" })
                     Clear(list);
                 if (view.Root) view.Hide();
             });
@@ -111,6 +116,23 @@ namespace AstralOath.Client.Summon
             Hook("wishSave", SaveWishes);
             Hook("wishUnowned", _ => { onlyUnowned = !onlyUnowned; return ShowWishCategory(wantsArtifacts); });
             Hook("wishClose", ClosePanel);
+            Hook("wishDismiss", ClosePanel);
+            Hook("wishInfo", _ => ToggleWishOverlay("wishHelp"));
+            Hook("wishFilter", _ => ToggleWishOverlay("wishFilters"));
+            foreach (string role in new[] { "all", "knight", "warrior", "mage", "ranger", "thief", "soul_weaver" })
+                Hook("wishRole_" + role, _ =>
+                {
+                    wishRoleFilter = role == "all" ? null : role;
+                    return ShowWishCategory(wantsArtifacts);
+                });
+            Hook("wishRecommend", _ =>
+            {
+                wishHeroes.Clear();
+                wishArtifacts.Clear();
+                wishHeroes.UnionWith(state.wishHeroCandidates.Take(7));
+                wishArtifacts.UnionWith(state.wishArtifactCandidates.Take(7));
+                return ShowWishCategory(wantsArtifacts);
+            });
             Hook("storageClose", ClosePanel);
             Hook("resultClose", ClosePanel);
             Hook("resultAgain", _ => Quote(lastReceipt.count, RepeatPayment(lastReceipt)));
@@ -166,8 +188,9 @@ namespace AstralOath.Client.Summon
             var banner = Banner;
             view.Text("balance").text = state?.bookmarks.ToString(CultureInfo.InvariantCulture) ?? "";
             view.Text("epicBalance").text = state?.epicBookmarks.ToString(CultureInfo.InvariantCulture) ?? "";
-            view.Text("bannerTitle").text = banner?.title ?? "";
+            view.Text("bannerTitle").text = banner == null ? "" : bannerId == Covenant ? banner.title : L("banner.pickup_tag");
             view.Text("featuredHero").text = string.IsNullOrEmpty(banner?.featuredHero) ? "" : Name("hero", banner.featuredHero);
+            view.Text("featuredHeroShadow").text = view.Text("featuredHero").text;
             view.Text("featuredArtifact").text = string.IsNullOrEmpty(banner?.featuredArtifact) ? "" : Name("artifact", banner.featuredArtifact);
             view.Text("pity").text = banner?.guaranteeAfter > 0 ?
                 F("remaining", Math.Max(0, banner.guaranteeAfter - banner.misses)) : "";
@@ -184,10 +207,19 @@ namespace AstralOath.Client.Summon
             view.Panel("featuredBadges").SetActive(featured != null);
             SetImage(view.Image("featuredElement"), featured?.element);
             SetImage(view.Image("featuredRole"), featured?.role);
-            SetImage(view.Image("artifactArt"), SpriteFor("artifact", banner?.featuredArtifact, fullArt: true));
-            view.Panel("artifactFrame").SetActive(!covenant && view.Image("artifactArt").enabled);
-            view.Panel("covenantSelected").SetActive(covenant);
-            view.Panel("iseriaSelected").SetActive(!covenant);
+            var artifact = covenant ? null : artifactArt.Find(banner?.featuredArtifact);
+            SetImage(view.Image("artifactArt"), artifact?.card);
+            SetImage(view.Image("artifactEmblem"), artifact?.combatIcon);
+            var artifactRole = artifact == null ? null :
+                heroes.Values.FirstOrDefault(hero => hero.heroClass == artifact.template.HeroClass)?.role;
+            var roleIcon = view.Image("artifactRole");
+            SetImage(roleIcon, artifactRole);
+            roleIcon.gameObject.SetActive(artifactRole != null);
+            for (int star = 0; star < 6; star++)
+                view.Panel("artifactStar" + star).SetActive(artifact != null && star < artifact.template.Stars);
+            view.Panel("artifactFrame").SetActive(artifact != null && artifact.card);
+            StyleBanner(Covenant, covenant);
+            StyleBanner(Up, !covenant && banner != null);
             UpdateFeaturedSkill();
             RenderWishRoster(covenant);
 
@@ -211,9 +243,23 @@ namespace AstralOath.Client.Summon
             view.Button("help").interactable = banner != null;
             view.Button("wish").gameObject.SetActive(covenant);
             view.Button("wish").interactable = banner?.usesWishlist == true;
-            view.Text("wishButtonLabel").text = F("wish.total", (state?.wishHeroes?.Length ?? 0) + (state?.wishArtifacts?.Length ?? 0));
+            int wishCount = (state?.wishHeroes?.Length ?? 0) + (state?.wishArtifacts?.Length ?? 0);
+            string countText = wishCount.ToString(CultureInfo.CurrentCulture);
+            view.Text("wishButtonLabel").text = F("wish.total", wishCount == 14 ? "<color=#9DCC49>" + countText + "</color>" : countText);
             view.Button("covenant").interactable = state?.banners?.Any(item => item.id == Covenant) == true;
             view.Button("iseria").interactable = state?.banners?.Any(item => item.id == Up) == true;
+        }
+
+        private void StyleBanner(string id, bool selected)
+        {
+            var button = view.Button(id);
+            button.transform.localScale = Vector3.one * (selected ? 1.1f : 1f);
+            view.Image(id + "Poster").color = selected ? Color.white : new Color32(160, 160, 160, 255);
+            view.Panel(id + "Selected").SetActive(selected);
+            if (id != Up) return;
+            string hero = state?.banners?.FirstOrDefault(item => item.id == id)?.featuredHero;
+            bool ownershipKnown = state?.wishHeroCandidates?.Contains(hero) == true && state.ownedWishIds != null;
+            view.Panel("pickupUnowned").SetActive(ownershipKnown && !state.ownedWishIds.Contains(hero));
         }
 
         private void UpdateFeaturedSkill() =>
@@ -235,7 +281,9 @@ namespace AstralOath.Client.Summon
                 }
                 card.SetActive(true);
                 wishPortraits[index].Show(selected);
-                view.Text(key + "Owned").text = L(owned.Contains(selected.id) ? "wish.owned_badge" : "wish.unowned_badge");
+                var ownership = view.Text(key + "Owned");
+                ownership.text = L("wish.unowned_badge");
+                ownership.transform.parent.gameObject.SetActive(!owned.Contains(selected.id));
                 view.Text(key + "Name").text = selected.name;
                 SetImage(view.Image(key + "Role"), selected.role);
                 SetImage(view.Image(key + "Element"), selected.element);
@@ -264,10 +312,11 @@ namespace AstralOath.Client.Summon
                 count = count, payment = payment
             };
             view.Text("confirmTitle").text = L(count == 10 ? "confirm.ten" : "confirm.single");
-            view.Text("confirmPrompt").text = L(count == 10 ? "confirm.prompt_ten" : "confirm.prompt_single");
-            view.Text("confirmCurrency").text = L("payment." + payment);
+            string currency = L("payment." + payment);
+            view.Text("confirmPrompt").text = F(count == 10 ? "confirm.prompt_ten" : "confirm.prompt_single", currency);
+            view.Text("confirmCurrency").text = currency;
             view.Text("confirmCost").text = cost.ToString(CultureInfo.InvariantCulture);
-            view.Text("confirmBody").text = balance < cost ? L("status.insufficient") : F("confirm.owned", balance);
+            view.Text("confirmBody").text = balance < cost ? L("status.insufficient") : F("confirm.owned", currency, balance);
             SetImage(view.Image("confirmCoin"), payment == Free ? null : view.Coin(payment == EpicBookmarks));
             bool showFeatured = !string.IsNullOrEmpty(banner.featuredHero);
             view.Panel("confirmHeroRow").SetActive(showFeatured);
@@ -275,7 +324,7 @@ namespace AstralOath.Client.Summon
             view.Text("confirmHeroName").text = showFeatured ? Name("hero", banner.featuredHero) : "";
             view.Text("confirmHeroPity").text = showFeatured ?
                 F("remaining", Math.Max(0, banner.guaranteeAfter - banner.misses)) : "";
-            view.ConfirmPriceRow.anchoredPosition = new Vector2(0, showFeatured ? 0 : view.ConfirmPriceRow.rect.height * .48f);
+            view.LayoutConfirmation(showFeatured);
             ShowPanel("confirmPanel");
             return Task.CompletedTask;
         }
@@ -354,69 +403,119 @@ namespace AstralOath.Client.Summon
             wishArtifacts.Clear();
             wishArtifacts.UnionWith(state.wishArtifacts);
             onlyUnowned = false;
+            wishRoleFilter = null;
             ShowPanel("wishPanel");
             return ShowWishCategory(false);
+        }
+
+        private Task ToggleWishOverlay(string key)
+        {
+            bool open = !view.Panel(key).activeSelf;
+            view.Panel("wishHelp").SetActive(false);
+            view.Panel("wishFilters").SetActive(false);
+            view.Panel(key).SetActive(open);
+            return Task.CompletedTask;
         }
 
         private Task ShowWishCategory(bool artifacts)
         {
             wantsArtifacts = artifacts;
+            view.Panel("wishHelp").SetActive(false);
+            view.Panel("wishFilters").SetActive(false);
+            Canvas.ForceUpdateCanvases();
+            RenderSelectedWishes("wishSelectedHeroes", "hero", wishHeroes);
+            RenderSelectedWishes("wishSelectedArtifacts", "artifact", wishArtifacts);
             Clear("wishItems");
-            Clear("wishSelectedItems");
+            ResizeWishGrid("wishItems", false);
             var selected = artifacts ? wishArtifacts : wishHeroes;
             string kind = artifacts ? "artifact" : "hero";
             var candidates = artifacts ? state.wishArtifactCandidates : state.wishHeroCandidates;
-            Canvas.ForceUpdateCanvases();
-            ResizeWishGrid("wishSelectedItems");
-            ResizeWishGrid("wishItems");
-            foreach (string id in selected.OrderBy(value => value, StringComparer.Ordinal))
-                AddWishCard("wishSelectedItems", kind, id, false);
             var known = state.ownedWishIds ?? Array.Empty<string>();
-            foreach (string id in candidates)
+            foreach (string id in candidates.OrderBy(id => selected.Contains(id)))
             {
                 if (onlyUnowned && known.Contains(id)) continue;
-                AddWishCard("wishItems", kind, id, selected.Contains(id));
+                if (wishRoleFilter != null)
+                {
+                    string role = artifacts ? artifactArt.Find(id)?.template.HeroClass :
+                        heroes.TryGetValue(id, out var candidate) ? candidate.heroClass : null;
+                    if (role != wishRoleFilter) continue;
+                }
+                AddWishCard("wishItems", kind, id, selected.Contains(id), false);
+            }
+            foreach (bool artifactTab in new[] { false, true })
+            {
+                var tab = view.Button(artifactTab ? "wishArtifact" : "wishHero");
+                bool active = artifactTab == artifacts;
+                tab.image.color = active ? new Color32(255, 255, 255, 229) : Color.clear;
+                tab.GetComponentInChildren<GameText>(true).color = active ? Color.black : new Color32(184, 188, 191, 255);
+                view.Panel((artifactTab ? "wishArtifact" : "wishHero") + "Highlight").SetActive(active);
             }
             view.Text("wishCount").text = F("wish.count", wishHeroes.Count, wishArtifacts.Count);
-            var filter = view.Button("wishUnowned");
-            var caption = filter.GetComponentInChildren<GameText>(true);
-            if (caption) caption.text = (onlyUnowned ? "✓ " : "") + L("wish.unowned");
-            view.Button("wishSave").interactable = wishHeroes.Count == 7 && wishArtifacts.Count == 7;
+            view.Image("wishUnownedCheck").enabled = onlyUnowned;
+            view.Button("wishFilter").GetComponentInChildren<GameText>(true).text = locale.Resolve(
+                wishRoleFilter == null ? "arena.draft.filter.button" : "home.hero_inventory.role." + wishRoleFilter);
+            bool dirty = !wishHeroes.SetEquals(state.wishHeroes) || !wishArtifacts.SetEquals(state.wishArtifacts);
+            view.Text("wishCount").gameObject.SetActive(dirty);
+            var save = view.Button("wishSave");
+            save.interactable = wishHeroes.Count == 7 && wishArtifacts.Count == 7;
+            save.gameObject.SetActive(dirty);
+            bool recommended = wishHeroes.SetEquals(state.wishHeroCandidates.Take(7)) &&
+                wishArtifacts.SetEquals(state.wishArtifactCandidates.Take(7));
+            var recommend = view.Button("wishRecommend");
+            recommend.interactable = !recommended;
+            recommend.GetComponentInChildren<GameText>(true).color = recommended ? new Color32(255, 255, 255, 127) : Color.white;
             return Task.CompletedTask;
         }
 
-        private void ResizeWishGrid(string key)
+        private void RenderSelectedWishes(string list, string kind, HashSet<string> selected)
+        {
+            Clear(list);
+            ResizeWishGrid(list, true);
+            foreach (string id in selected.OrderBy(value => value, StringComparer.Ordinal))
+                AddWishCard(list, kind, id, false, true);
+        }
+
+        private void ResizeWishGrid(string key, bool chosen)
         {
             var items = view.Items(key);
             var grid = items.GetComponent<GridLayoutGroup>();
             float side = (items.rect.width - (grid.constraintCount - 1) * grid.spacing.x) / grid.constraintCount;
-            if (side > 24) grid.cellSize = new Vector2(side, side);
+            if (chosen) side = Mathf.Min(side, (items.rect.height - 3f * grid.spacing.y) / 4f);
+            if (side > 0) grid.cellSize = new Vector2(side, side);
         }
 
-        private void AddWishCard(string list, string kind, string id, bool selected)
+        private void AddWishCard(string list, string kind, string id, bool selected, bool chosen)
         {
             bool isArtifact = kind == "artifact";
             var entry = Object.Instantiate(view.WishTemplate, view.Items(list), false);
             var bindings = entry.GetComponent<BindingMap>();
             var button = bindings.Require<GameButton>("button");
-            button.image.sprite = view.WishFrame(isArtifact);
-            button.onClick.AddListener(() => RunClick(_ => ToggleWish(id), false));
-            var icon = isArtifact ? artifactArt.Find(id)?.combatIcon :
-                heroes.TryGetValue(id, out var hero) ? hero.portrait : null;
-            SetImage(bindings.Require<Image>("icon"), icon);
+            button.onClick.AddListener(() => RunClick(_ => ToggleWish(id, isArtifact), false));
+            heroes.TryGetValue(id, out var hero);
+            var artifact = isArtifact ? artifactArt.Find(id) : null;
+            var icon = bindings.Require<Image>("icon");
+            SetImage(icon, isArtifact ? artifact?.combatIcon : hero?.portrait);
+            bindings.Require<Image>("heroFrame").enabled = !isArtifact;
+            icon.color = selected ? new Color32(150, 150, 150, 255) : Color.white;
+            var role = isArtifact && artifact != null
+                ? heroes.Values.FirstOrDefault(item => item.heroClass == artifact.template.HeroClass)?.role : hero?.role;
+            SetImage(bindings.Require<Image>("role"), role);
+            SetImage(bindings.Require<Image>("element"), hero?.element);
             bindings.Require<Image>("selected").enabled = selected;
+            bindings.Require<GameObject>("remove").SetActive(chosen && wantsArtifacts == isArtifact);
             bindings.Require<GameText>("name").text = Name(kind, id);
             entry.SetActive(true);
         }
 
-        private Task ToggleWish(string id)
+        private Task ToggleWish(string id, bool isArtifact)
         {
-            var selected = wantsArtifacts ? wishArtifacts : wishHeroes;
+            var selected = isArtifact ? wishArtifacts : wishHeroes;
             if (!selected.Remove(id))
             {
                 if (selected.Count >= 7)
                 {
-                    SetStatus("wish.full");
+                    view.Text("wishCount").gameObject.SetActive(true);
+                    view.Text("wishCount").text = L("wish.full");
                     return Task.CompletedTask;
                 }
                 selected.Add(id);
@@ -682,9 +781,12 @@ namespace AstralOath.Client.Summon
         {
             showingDetail = false;
             quote = null;
-            lastReceipt = null;
-            player.Stop();
-            if (view.Music) player.PlayTheme(view.Music, ceremony: false);
+            if (lastReceipt != null)
+            {
+                lastReceipt = null;
+                player.Stop();
+                if (view.Music) player.PlayTheme(view.Music, ceremony: false);
+            }
             ShowPanel(null);
             SetStatus(null);
             return Task.CompletedTask;
