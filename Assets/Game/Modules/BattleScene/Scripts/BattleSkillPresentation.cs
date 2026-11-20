@@ -311,7 +311,7 @@ namespace AstralOath.Client.BattleScene
                         Schedule(at, () => cinematic.Play(node));
                         break;
                     case "STOP":
-                        Schedule(at, () => { ReleaseTargetLayer((string)node["targetId"]); cinematic.Play(node); });
+                        Schedule(at, () => { StopTargetLayer(node); cinematic.Play(node); });
                         break;
                     case "MOVE":
                         Schedule(at, () => PlayMove(node, primary, recipients, cue.Duration));
@@ -321,7 +321,8 @@ namespace AstralOath.Client.BattleScene
                         break;
                     case "COLOR_BLEND":
                         if (IsTargetHide(node) && !nodes.Any(other => Kind(other) == "STOP" &&
-                            (string)other["targetId"] == (string)node["id"] && Number(other, "time") != 0f))
+                            (string)other["targetId"] == (string)node["id"] && Number(other, "time") != 0f &&
+                            ((int?)node["blend_target"] != 55 || Number(other, "time") != Number(node, "fadeOut"))))
                             Schedule(at, () => HoldTargetLayer(node, recipients));
                         else WarnSource($"COLOR_BLEND {node["guid"]} tint layering is pending source verification.");
                         break;
@@ -938,8 +939,35 @@ namespace AstralOath.Client.BattleScene
             }
             float scale = Number(node, "scale", 1f);
             if (fullSky && camera) scale *= Mathf.Max(1f, camera.aspect / (16f / 9f));
+            if ((int?)node["location"] == 5 && SharesCasterMotion(node, source)) primary = caster;
             Cfx(source, primary, targets, location, scale, offset, false,
                 anchorName: anchorName, disableAutoFlipX: disableAutoFlipX, fixedArtwork: fixedArtwork);
+        }
+
+        private bool SharesCasterMotion(JObject effect, string source)
+        {
+            var stage = effect.Ancestors().OfType<JObject>().FirstOrDefault();
+            if (!(stage?["connections"] is JArray links)) return false;
+            var starts = links.OfType<JObject>().Where(link => (int?)link["to"] == (int?)effect["guid"])
+                .Select(Start).ToHashSet();
+            var siblings = links.OfType<JObject>().Where(link => starts.Contains(Start(link)))
+                .Select(link => (int?)link["to"]).ToHashSet();
+            foreach (var node in stage["entities"].OfType<JObject>().Where(node => siblings.Contains((int?)node["guid"]) &&
+                Kind(node) == "NODE_ANI" && (int?)node["target_node"] == 5))
+            {
+                string rig = System.IO.Path.GetFileNameWithoutExtension((string)node["source"]);
+                const string suffix = "_node_self";
+                if (rig == null || !rig.EndsWith(suffix, StringComparison.Ordinal)) continue;
+                string family = rig.Substring(0, rig.Length - suffix.Length) + "_";
+                string key = source.StartsWith(EffectPath, StringComparison.Ordinal) ? source : EffectPath + source;
+                if (!key.EndsWith(".cfx", StringComparison.Ordinal)) key += ".cfx";
+                if (Document(key)?["primitive"] is JArray parts && parts.OfType<JObject>().Any(part =>
+                    ((string)part["source"])?.StartsWith(family, StringComparison.Ordinal) == true)) return true;
+            }
+            return false;
+
+            static (int?, int, float) Start(JObject link) =>
+                ((int?)link["from"], (int?)link["when"] ?? 0, Number(link, "delay"));
         }
 
         private void Cfx(string source, BattlePreviewActor primary, BattlePreviewActor[] targets, int? location,
@@ -972,7 +1000,7 @@ namespace AstralOath.Client.BattleScene
                 }
                 return;
             }
-            if (location == 32 && key == EffectPath + "schniel_skeff_sk2_3.cfx")
+            if (location == 32)
             {
                 if (TryGetCasterFormationCenter(Position, out Vector3 center))
                     SpawnAt(() => center, caster, false);

@@ -1,0 +1,251 @@
+
+luluka_sk3_waterburst_3_1.sct
+size: 1008,1422
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+eff_wind_twist_01
+  rotate: false
+  xy: 589, 573
+  size: 50, 44
+  orig: 50, 44
+  offset: 0, 0
+  index: -1
+global_glow
+  rotate: false
+  xy: 903, 1224
+  size: 84, 84
+  orig: 84, 84
+  offset: 0, 0
+  index: -1
+heal_3
+  rotate: true
+  xy: 609, 858
+  size: 159, 172
+  orig: 159, 172
+  offset: 0, 0
+  index: -1
+lightning_core_05
+  rotate: false
+  xy: 220, 1304
+  size: 107, 107
+  orig: 107, 107
+  offset: 0, 0
+  index: -1
+luluka/luluka_01
+  rotate: false
+  xy: 2, 640
+  size: 330, 330
+  orig: 330, 330
+  offset: 0, 0
+  index: -1
+luluka/luluka_02
+  rotate: false
+  xy: 2, 972
+  size: 330, 330
+  orig: 330, 330
+  offset: 0, 0
+  index: -1
+luluka/luluka_03
+  rotate: true
+  xy: 709, 1317
+  size: 98, 129
+  orig: 98, 129
+  offset: 0, 0
+  index: -1
+luluka/luluka_04
+  rotate: false
+  xy: 709, 1185
+  size: 100, 130
+  orig: 100, 130
+  offset: 0, 0
+  index: -1
+luluka/luluka_05
+  rotate: false
+  xy: 767, 1019
+  size: 99, 130
+  orig: 99, 130
+  offset: 0, 0
+  index: -1
+luluka/luluka_flare_01
+  rotate: false
+  xy: 711, 2
+  size: 281, 281
+  orig: 281, 281
+  offset: 0, 0
+  index: -1
+luluka/luluka_flare_02
+  rotate: false
+  xy: 334, 648
+  size: 273, 273
+  orig: 273, 273
+  offset: 0, 0
+  index: -1
+luluka/luluka_flare_03
+  rotate: false
+  xy: 334, 923
+  size: 265, 265
+  orig: 265, 265
+  offset: 0, 0
+  index: -1
+luluka/luluka_sh
+  rotate: true
+  xy: 783, 858
+  size: 157, 152
+  orig: 157, 152
+  offset: 0, 0
+  index: -1
+luluka/rose_1_1
+  rotate: true
+  xy: 903, 1134
+  size: 88, 79
+  orig: 88, 79
+  offset: 0, 0
+  index: -1
+luluka/rose_1_2
+  rotate: true
+  xy: 937, 858
+  size: 87, 69
+  orig: 87, 69
+  offset: 0, 0
+  index: -1
+luluka/rose_2_1
+  rotate: false
+  xy: 840, 1310
+  size: 87, 81
+  orig: 87, 81
+  offset: 0, 0
+  index: -1
+luluka/rose_2_1_blur
+  rotate: true
+  xy: 855, 768
+  size: 88, 82
+  orig: 88, 82
+  offset: 0, 0
+  index: -1
+luluka/rose_2_2
+  rotate: true
+  xy: 929, 1310
+  size: 85, 71
+  orig: 85, 71
+  offset: 0, 0
+  index: -1
+luluka/top_base_01
+  rotate: false
+  xy: 334, 1190
+  size: 186, 186
+  orig: 186, 186
+  offset: 0, 0
+  index: -1
+luluka/top_base_02
+  rotate: true
+  xy: 335, 308
+  size: 338, 252
+  orig: 338, 252
+  offset: 0, 0
+  index: -1
+luluka/top_base_03
+  rotate: false
+  xy: 409, 2
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+luluka/top_bubble_01
+  rotate: false
+  xy: 748, 448
+  size: 257, 171
+  orig: 257, 171
+  offset: 0, 0
+  index: -1
+luluka/top_bubble_02
+  rotate: false
+  xy: 2, 1304
+  size: 216, 116
+  orig: 216, 116
+  offset: 0, 0
+  index: -1
+luluka/top_bubble_03
+  rotate: true
+  xy: 589, 304
+  size: 267, 157
+  orig: 267, 157
+  offset: 0, 0
+  index: -1
+luluka/top_bubble_04
+  rotate: false
+  xy: 748, 285
+  size: 258, 161
+  orig: 258, 161
+  offset: 0, 0
+  index: -1
+luluka/top_bubble_a_01
+  rotate: false
+  xy: 811, 1151
+  size: 90, 92
+  orig: 90, 92
+  offset: 0, 0
+  index: -1
+luluka/top_bubble_a_02
+  rotate: false
+  xy: 939, 768
+  size: 25, 24
+  orig: 25, 24
+  offset: 0, 0
+  index: -1
+luluka/top_bubble_a_03
+  rotate: false
+  xy: 994, 2
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+luluka/top_bubble_b_01
+  rotate: false
+  xy: 868, 1017
+  size: 114, 115
+  orig: 114, 115
+  offset: 0, 0
+  index: -1
+luluka/whale_01
+  rotate: false
+  xy: 2, 2
+  size: 405, 304
+  orig: 405, 304
+  offset: 0, 0
+  index: -1
+luluka/whale_02
+  rotate: false
+  xy: 2, 308
+  size: 331, 330
+  orig: 331, 330
+  offset: 0, 0
+  index: -1
+luluka/whale_03
+  rotate: false
+  xy: 601, 1019
+  size: 164, 164
+  orig: 164, 164
+  offset: 0, 0
+  index: -1
+luluka/whale_04
+  rotate: false
+  xy: 522, 1190
+  size: 185, 186
+  orig: 185, 186
+  offset: 0, 0
+  index: -1
+luluka/whale_05
+  rotate: false
+  xy: 609, 621
+  size: 244, 235
+  orig: 244, 235
+  offset: 0, 0
+  index: -1
+ring_flash
+  rotate: false
+  xy: 855, 621
+  size: 145, 145
+  orig: 145, 145
+  offset: 0, 0
+  index: -1

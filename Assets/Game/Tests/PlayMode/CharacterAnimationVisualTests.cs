@@ -96,7 +96,7 @@ namespace AstralOath.Client.Tests
                 yield return CaptureTamarinneForms();
                 yield break;
             }
-            if (group == "roster31-40" || group == "roster41-50" || group=="roster51-60")
+            if (group == "roster31-40" || group == "roster41-50" || group=="roster51-60" || group=="roster61-70")
             {
                 yield return CaptureRosterSkillBoundaries(group);
                 yield break;
@@ -182,6 +182,7 @@ namespace AstralOath.Client.Tests
             if ((bool)Read(binder, "loop")) Click("loop");
             string[] ids=group switch
             {
+                "roster61-70"=>new[]{"c1076","c1079","c1080","c1081","c1082","c1083","c1085","c1086","c1087","c1088"},
                 "roster51-60"=>new[]{"c1060","c1065","c1066","c1067","c1069","c1070","c1071","c1072","c1073","c1074"},
                 "roster41-50"=>new[]{"c1043","c1044","c1046","c1047","c1048","c1049","c1050","c1053","c1054","c1055"},
                 _=>new[]{"c1032","c1033","c1034","c1035","c1036","c1037","c1038","c1039","c1040","c1042"}

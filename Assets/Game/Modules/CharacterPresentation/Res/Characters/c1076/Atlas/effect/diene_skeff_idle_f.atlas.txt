@@ -1,0 +1,48 @@
+
+diene_skeff_idle_f.sct
+size: 26,32
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+diena/ball_01
+  rotate: false
+  xy: 2, 21
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+diena/ball_07
+  rotate: false
+  xy: 21, 2
+  size: 3, 3
+  orig: 3, 3
+  offset: 0, 0
+  index: -1
+diena/ball_08
+  rotate: false
+  xy: 21, 10
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+diena/ball_10
+  rotate: false
+  xy: 21, 7
+  size: 2, 1
+  orig: 2, 1
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 2
+  size: 17, 17
+  orig: 17, 17
+  offset: 0, 0
+  index: -1
+global_glow
+  rotate: false
+  xy: 13, 21
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1

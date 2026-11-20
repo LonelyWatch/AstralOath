@@ -1,0 +1,25 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "kawana_sk2eff_target_b",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "kawana_sk2eff_target_b2",
+      "format": "spine",
+      "globalZ": -2.0
+    },
+    {
+      "source": "kawana_sk2eff_target_f",
+      "z": "100",
+      "format": "spine"
+    },
+    {
+      "source": "kawana_sk2eff_target_f2",
+      "format": "spine",
+      "globalZ": 1.0
+    }
+  ]
+}

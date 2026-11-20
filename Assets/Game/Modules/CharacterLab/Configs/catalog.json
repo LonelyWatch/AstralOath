@@ -13168,6 +13168,2301 @@
       ],
       "battleSkin": "default",
       "portraitSkin": "normal"
+    },
+    {
+      "id": "c1076",
+      "name": "迪埃妮",
+      "displayNameKey": "character.diene.name",
+      "battleSkeletonAddress": "characterlab/source/model/diene.scsp",
+      "portraitSkeletonAddress": "characterlab/source/portrait/c1076.scsp",
+      "voiceBankAddress": "characterlab/source/sound/ja/voc3.audio_ja.bank",
+      "timelineAddress": "characterlab/source/model/diene.timeline",
+      "voices": [
+        {
+          "id": "voc_c1076_answer_1",
+          "audioTableKey": "voc_c1076_answer_1",
+          "eventPath": "event:/voc/skill/c_diene_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1076_answer_1"
+        },
+        {
+          "id": "voc_c1076_answer_2",
+          "audioTableKey": "voc_c1076_answer_2",
+          "eventPath": "event:/voc/skill/c_diene_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1076_answer_2"
+        },
+        {
+          "id": "voc_c1076_attacked_1",
+          "audioTableKey": "voc_c1076_attacked_1",
+          "eventPath": "event:/voc/character/diene/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1076_attacked_1"
+        },
+        {
+          "id": "voc_c1076_attacked_2",
+          "audioTableKey": "voc_c1076_attacked_2",
+          "eventPath": "event:/voc/character/diene/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1076_attacked_2"
+        },
+        {
+          "id": "voc_c1076_call_1",
+          "audioTableKey": "voc_c1076_call_1",
+          "eventPath": "event:/voc/skill/c_diene_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1076_call_1"
+        },
+        {
+          "id": "voc_c1076_call_2",
+          "audioTableKey": "voc_c1076_call_2",
+          "eventPath": "event:/voc/skill/c_diene_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1076_call_2"
+        },
+        {
+          "id": "voc_c1076_dead_1",
+          "audioTableKey": "voc_c1076_dead_1",
+          "eventPath": "event:/voc/character/diene/evt/dead",
+          "displayNameKey": "character.voice.voc_c1076_dead_1"
+        },
+        {
+          "id": "voc_c1076_dead_2",
+          "audioTableKey": "voc_c1076_dead_2",
+          "eventPath": "event:/voc/character/diene/evt/dead",
+          "displayNameKey": "character.voice.voc_c1076_dead_2"
+        },
+        {
+          "id": "voc_c1076_get_1",
+          "audioTableKey": "voc_c1076_get_1",
+          "eventPath": "event:/voc/character/diene/evt/get",
+          "displayNameKey": "character.voice.voc_c1076_get_1"
+        },
+        {
+          "id": "voc_c1076_idle_1",
+          "audioTableKey": "voc_c1076_idle_1",
+          "eventPath": "event:/voc/character/diene/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1076_idle_1"
+        },
+        {
+          "id": "voc_c1076_idle_2",
+          "audioTableKey": "voc_c1076_idle_2",
+          "eventPath": "event:/voc/character/diene/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1076_idle_2"
+        },
+        {
+          "id": "voc_c1076_idle_3",
+          "audioTableKey": "voc_c1076_idle_3",
+          "eventPath": "event:/voc/character/diene/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1076_idle_3"
+        },
+        {
+          "id": "voc_c1076_lose_1",
+          "audioTableKey": "voc_c1076_lose_1",
+          "eventPath": "event:/voc/character/diene/evt/defeat",
+          "displayNameKey": "character.voice.voc_c1076_lose_1"
+        },
+        {
+          "id": "voc_c1076_lvup_1",
+          "audioTableKey": "voc_c1076_lvup_1",
+          "eventPath": "event:/voc/character/diene/evt/lvup",
+          "displayNameKey": "character.voice.voc_c1076_lvup_1"
+        },
+        {
+          "id": "voc_c1076_skill1_1",
+          "audioTableKey": "voc_c1076_skill1_1",
+          "eventPath": "event:/voc/skill/c_diene_skill_01",
+          "displayNameKey": "character.voice.voc_c1076_skill1_1"
+        },
+        {
+          "id": "voc_c1076_skill1_2",
+          "audioTableKey": "voc_c1076_skill1_2",
+          "eventPath": "event:/voc/skill/c_diene_skill_01",
+          "displayNameKey": "character.voice.voc_c1076_skill1_2"
+        },
+        {
+          "id": "voc_c1076_skill2_1",
+          "audioTableKey": "voc_c1076_skill2_1",
+          "eventPath": "event:/voc/skill/c_diene_skill_02",
+          "displayNameKey": "character.voice.voc_c1076_skill2_1"
+        },
+        {
+          "id": "voc_c1076_skill2_2",
+          "audioTableKey": "voc_c1076_skill2_2",
+          "eventPath": "event:/voc/skill/c_diene_skill_02",
+          "displayNameKey": "character.voice.voc_c1076_skill2_2"
+        },
+        {
+          "id": "voc_c1076_skill2_3",
+          "audioTableKey": "voc_c1076_skill2_3",
+          "eventPath": "event:/voc/skill/c_diene_skill_02",
+          "displayNameKey": "character.voice.voc_c1076_skill2_3"
+        },
+        {
+          "id": "voc_c1076_skill3_1_1",
+          "audioTableKey": "voc_c1076_skill3_1_1",
+          "eventPath": "event:/voc/skill/c_diene_skill_03",
+          "displayNameKey": "character.voice.voc_c1076_skill3_1_1"
+        },
+        {
+          "id": "voc_c1076_skill3_1_2",
+          "audioTableKey": "voc_c1076_skill3_1_2",
+          "eventPath": "event:/voc/skill/c_diene_skill_03",
+          "displayNameKey": "character.voice.voc_c1076_skill3_1_2"
+        },
+        {
+          "id": "voc_c1076_skill3_2_1",
+          "audioTableKey": "voc_c1076_skill3_2_1",
+          "eventPath": "event:/voc/skill/c_diene_skill_03",
+          "displayNameKey": "character.voice.voc_c1076_skill3_2_1"
+        },
+        {
+          "id": "voc_c1076_skill3_2_2",
+          "audioTableKey": "voc_c1076_skill3_2_2",
+          "eventPath": "event:/voc/skill/c_diene_skill_03",
+          "displayNameKey": "character.voice.voc_c1076_skill3_2_2"
+        },
+        {
+          "id": "voc_c1076_skill3_3_1",
+          "audioTableKey": "voc_c1076_skill3_3_1",
+          "eventPath": "event:/voc/skill/c_diene_skill_03",
+          "displayNameKey": "character.voice.voc_c1076_skill3_3_1"
+        },
+        {
+          "id": "voc_c1076_skill3_3_2",
+          "audioTableKey": "voc_c1076_skill3_3_2",
+          "eventPath": "event:/voc/skill/c_diene_skill_03",
+          "displayNameKey": "character.voice.voc_c1076_skill3_3_2"
+        },
+        {
+          "id": "voc_c1076_utterance_1",
+          "audioTableKey": "voc_c1076_utterance_1",
+          "eventPath": "event:/voc/character/diene/evt/utterance_01",
+          "displayNameKey": "character.voice.voc_c1076_utterance_1"
+        },
+        {
+          "id": "voc_c1076_utterance_2",
+          "audioTableKey": "voc_c1076_utterance_2",
+          "eventPath": "event:/voc/character/diene/evt/utterance_02",
+          "displayNameKey": "character.voice.voc_c1076_utterance_2"
+        },
+        {
+          "id": "voc_c1076_win_1",
+          "audioTableKey": "voc_c1076_win_1",
+          "eventPath": "event:/voc/character/diene/evt/win",
+          "displayNameKey": "character.voice.voc_c1076_win_1"
+        }
+      ],
+      "skills": [
+        {
+          "id": "c_diene_skill_01",
+          "displayNameKey": "character.diene.skill1",
+          "graphAddress": "characterlab/source/stagept/c_diene_skill_01.stg",
+          "eventPath": "event:/skill/c_diene_skill_01",
+          "voiceEventPath": "event:/voc/skill/c_diene_skill_01",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_diene_skill_01_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_diene_skill_01_a"
+        },
+        {
+          "id": "c_diene_skill_02",
+          "displayNameKey": "character.diene.skill2",
+          "graphAddress": "characterlab/source/stagept/c_diene_skill_02.stg",
+          "eventPath": "event:/skill/c_diene_skill_02",
+          "voiceEventPath": "event:/voc/skill/c_diene_skill_02",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        },
+        {
+          "id": "c_diene_skill_03",
+          "displayNameKey": "character.diene.skill3",
+          "graphAddress": "characterlab/source/stagept/c_diene_skill_03.stg",
+          "eventPath": "event:/skill/c_diene_skill_03",
+          "voiceEventPath": "event:/voc/skill/c_diene_skill_03",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        }
+      ],
+      "battleSkin": "default",
+      "portraitSkin": "normal"
+    },
+    {
+      "id": "c1079",
+      "name": "洁若米亚",
+      "displayNameKey": "character.chermia.name",
+      "battleSkeletonAddress": "characterlab/source/model/chermia.scsp",
+      "portraitSkeletonAddress": "characterlab/source/portrait/c1079.scsp",
+      "voiceBankAddress": "characterlab/source/sound/ja/voc3.audio_ja.bank",
+      "timelineAddress": "characterlab/source/model/chermia.timeline",
+      "voices": [
+        {
+          "id": "voc_c1079_answer_1",
+          "audioTableKey": "voc_c1079_answer_1",
+          "eventPath": "event:/voc/skill/c_chermia_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1079_answer_1"
+        },
+        {
+          "id": "voc_c1079_answer_2",
+          "audioTableKey": "voc_c1079_answer_2",
+          "eventPath": "event:/voc/skill/c_chermia_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1079_answer_2"
+        },
+        {
+          "id": "voc_c1079_attacked_1",
+          "audioTableKey": "voc_c1079_attacked_1",
+          "eventPath": "event:/voc/character/chermia/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1079_attacked_1"
+        },
+        {
+          "id": "voc_c1079_attacked_2",
+          "audioTableKey": "voc_c1079_attacked_2",
+          "eventPath": "event:/voc/character/chermia/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1079_attacked_2"
+        },
+        {
+          "id": "voc_c1079_attacked_3",
+          "audioTableKey": "voc_c1079_attacked_3",
+          "eventPath": "event:/voc/character/chermia/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1079_attacked_3"
+        },
+        {
+          "id": "voc_c1079_attacked_4",
+          "audioTableKey": "voc_c1079_attacked_4",
+          "eventPath": "event:/voc/character/chermia/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1079_attacked_4"
+        },
+        {
+          "id": "voc_c1079_call_1",
+          "audioTableKey": "voc_c1079_call_1",
+          "eventPath": "event:/voc/skill/c_chermia_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1079_call_1"
+        },
+        {
+          "id": "voc_c1079_call_2",
+          "audioTableKey": "voc_c1079_call_2",
+          "eventPath": "event:/voc/skill/c_chermia_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1079_call_2"
+        },
+        {
+          "id": "voc_c1079_dead_1",
+          "audioTableKey": "voc_c1079_dead_1",
+          "eventPath": "event:/voc/character/chermia/evt/dead",
+          "displayNameKey": "character.voice.voc_c1079_dead_1"
+        },
+        {
+          "id": "voc_c1079_dead_2",
+          "audioTableKey": "voc_c1079_dead_2",
+          "eventPath": "event:/voc/character/chermia/evt/dead",
+          "displayNameKey": "character.voice.voc_c1079_dead_2"
+        },
+        {
+          "id": "voc_c1079_get_1",
+          "audioTableKey": "voc_c1079_get_1",
+          "eventPath": "event:/voc/character/chermia/evt/get",
+          "displayNameKey": "character.voice.voc_c1079_get_1"
+        },
+        {
+          "id": "voc_c1079_idle_1",
+          "audioTableKey": "voc_c1079_idle_1",
+          "eventPath": "event:/voc/character/chermia/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1079_idle_1"
+        },
+        {
+          "id": "voc_c1079_idle_2",
+          "audioTableKey": "voc_c1079_idle_2",
+          "eventPath": "event:/voc/character/chermia/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1079_idle_2"
+        },
+        {
+          "id": "voc_c1079_idle_3",
+          "audioTableKey": "voc_c1079_idle_3",
+          "eventPath": "event:/voc/character/chermia/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1079_idle_3"
+        },
+        {
+          "id": "voc_c1079_idle_4",
+          "audioTableKey": "voc_c1079_idle_4",
+          "eventPath": "event:/voc/character/chermia/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1079_idle_4"
+        },
+        {
+          "id": "voc_c1079_idle_5",
+          "audioTableKey": "voc_c1079_idle_5",
+          "eventPath": "event:/voc/character/chermia/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1079_idle_5"
+        },
+        {
+          "id": "voc_c1079_lose_1",
+          "audioTableKey": "voc_c1079_lose_1",
+          "eventPath": "event:/voc/character/chermia/evt/defeat",
+          "displayNameKey": "character.voice.voc_c1079_lose_1"
+        },
+        {
+          "id": "voc_c1079_lvup_1",
+          "audioTableKey": "voc_c1079_lvup_1",
+          "eventPath": "event:/voc/character/chermia/evt/lvup",
+          "displayNameKey": "character.voice.voc_c1079_lvup_1"
+        },
+        {
+          "id": "voc_c1079_skill1_1",
+          "audioTableKey": "voc_c1079_skill1_1",
+          "eventPath": "event:/voc/skill/c_chermia_skill_01",
+          "displayNameKey": "character.voice.voc_c1079_skill1_1"
+        },
+        {
+          "id": "voc_c1079_skill1_2",
+          "audioTableKey": "voc_c1079_skill1_2",
+          "eventPath": "event:/voc/skill/c_chermia_skill_01",
+          "displayNameKey": "character.voice.voc_c1079_skill1_2"
+        },
+        {
+          "id": "voc_c1079_skill1_3",
+          "audioTableKey": "voc_c1079_skill1_3",
+          "eventPath": "event:/voc/skill/c_chermia_skill_01",
+          "displayNameKey": "character.voice.voc_c1079_skill1_3"
+        },
+        {
+          "id": "voc_c1079_skill1_4",
+          "audioTableKey": "voc_c1079_skill1_4",
+          "eventPath": "event:/voc/skill/c_chermia_skill_01",
+          "displayNameKey": "character.voice.voc_c1079_skill1_4"
+        },
+        {
+          "id": "voc_c1079_skill2_1",
+          "audioTableKey": "voc_c1079_skill2_1",
+          "eventPath": "event:/voc/skill/c_chermia_skill_02",
+          "displayNameKey": "character.voice.voc_c1079_skill2_1"
+        },
+        {
+          "id": "voc_c1079_skill2_2",
+          "audioTableKey": "voc_c1079_skill2_2",
+          "eventPath": "event:/voc/skill/c_chermia_skill_02",
+          "displayNameKey": "character.voice.voc_c1079_skill2_2"
+        },
+        {
+          "id": "voc_c1079_skill2_3",
+          "audioTableKey": "voc_c1079_skill2_3",
+          "eventPath": "event:/voc/skill/c_chermia_skill_02",
+          "displayNameKey": "character.voice.voc_c1079_skill2_3"
+        },
+        {
+          "id": "voc_c1079_skill3_1_1",
+          "audioTableKey": "voc_c1079_skill3_1_1",
+          "eventPath": "event:/voc/skill/c_chermia_skill_03",
+          "displayNameKey": "character.voice.voc_c1079_skill3_1_1"
+        },
+        {
+          "id": "voc_c1079_skill3_1_2",
+          "audioTableKey": "voc_c1079_skill3_1_2",
+          "eventPath": "event:/voc/skill/c_chermia_skill_03",
+          "displayNameKey": "character.voice.voc_c1079_skill3_1_2"
+        },
+        {
+          "id": "voc_c1079_skill3_2_1",
+          "audioTableKey": "voc_c1079_skill3_2_1",
+          "eventPath": "event:/voc/skill/c_chermia_skill_03",
+          "displayNameKey": "character.voice.voc_c1079_skill3_2_1"
+        },
+        {
+          "id": "voc_c1079_skill3_2_2",
+          "audioTableKey": "voc_c1079_skill3_2_2",
+          "eventPath": "event:/voc/skill/c_chermia_skill_03",
+          "displayNameKey": "character.voice.voc_c1079_skill3_2_2"
+        },
+        {
+          "id": "voc_c1079_skill3_3_1",
+          "audioTableKey": "voc_c1079_skill3_3_1",
+          "eventPath": "event:/voc/skill/c_chermia_skill_03",
+          "displayNameKey": "character.voice.voc_c1079_skill3_3_1"
+        },
+        {
+          "id": "voc_c1079_skill3_3_2",
+          "audioTableKey": "voc_c1079_skill3_3_2",
+          "eventPath": "event:/voc/skill/c_chermia_skill_03",
+          "displayNameKey": "character.voice.voc_c1079_skill3_3_2"
+        },
+        {
+          "id": "voc_c1079_utterance_1",
+          "audioTableKey": "voc_c1079_utterance_1",
+          "eventPath": "event:/voc/character/chermia/evt/utterance_01",
+          "displayNameKey": "character.voice.voc_c1079_utterance_1"
+        },
+        {
+          "id": "voc_c1079_utterance_2",
+          "audioTableKey": "voc_c1079_utterance_2",
+          "eventPath": "event:/voc/character/chermia/evt/utterance_02",
+          "displayNameKey": "character.voice.voc_c1079_utterance_2"
+        },
+        {
+          "id": "voc_c1079_win_1",
+          "audioTableKey": "voc_c1079_win_1",
+          "eventPath": "event:/voc/character/chermia/evt/win",
+          "displayNameKey": "character.voice.voc_c1079_win_1"
+        }
+      ],
+      "skills": [
+        {
+          "id": "c_chermia_skill_01",
+          "displayNameKey": "character.chermia.skill1",
+          "graphAddress": "characterlab/source/stagept/c_chermia_skill_01.stg",
+          "eventPath": "event:/skill/c_chermia_skill_01",
+          "voiceEventPath": "event:/voc/skill/c_chermia_skill_01",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_chermia_skill_01_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_chermia_skill_01_a"
+        },
+        {
+          "id": "c_chermia_skill_02",
+          "displayNameKey": "character.chermia.skill2",
+          "graphAddress": "characterlab/source/stagept/c_chermia_skill_02.stg",
+          "eventPath": "event:/skill/c_chermia_skill_02",
+          "voiceEventPath": "event:/voc/skill/c_chermia_skill_02",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        },
+        {
+          "id": "c_chermia_skill_03",
+          "displayNameKey": "character.chermia.skill3",
+          "graphAddress": "characterlab/source/stagept/c_chermia_skill_03.stg",
+          "eventPath": "event:/skill/c_chermia_skill_03",
+          "voiceEventPath": "event:/voc/skill/c_chermia_skill_03",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        }
+      ],
+      "battleSkin": "default",
+      "portraitSkin": "normal"
+    },
+    {
+      "id": "c1080",
+      "name": "帕贝尔",
+      "displayNameKey": "character.pavel.name",
+      "battleSkeletonAddress": "characterlab/source/model/pavel.scsp",
+      "portraitSkeletonAddress": "characterlab/source/portrait/c1080.scsp",
+      "voiceBankAddress": "characterlab/source/sound/ja/voc3.audio_ja.bank",
+      "timelineAddress": "characterlab/source/model/pavel.timeline",
+      "voices": [
+        {
+          "id": "voc_c1080_answer_1",
+          "audioTableKey": "voc_c1080_answer_1",
+          "eventPath": "event:/voc/skill/c_pavel_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1080_answer_1"
+        },
+        {
+          "id": "voc_c1080_answer_2",
+          "audioTableKey": "voc_c1080_answer_2",
+          "eventPath": "event:/voc/skill/c_pavel_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1080_answer_2"
+        },
+        {
+          "id": "voc_c1080_attacked_1",
+          "audioTableKey": "voc_c1080_attacked_1",
+          "eventPath": "event:/voc/character/pavel/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1080_attacked_1"
+        },
+        {
+          "id": "voc_c1080_attacked_2",
+          "audioTableKey": "voc_c1080_attacked_2",
+          "eventPath": "event:/voc/character/pavel/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1080_attacked_2"
+        },
+        {
+          "id": "voc_c1080_attacked_3",
+          "audioTableKey": "voc_c1080_attacked_3",
+          "eventPath": "event:/voc/character/pavel/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1080_attacked_3"
+        },
+        {
+          "id": "voc_c1080_call_1",
+          "audioTableKey": "voc_c1080_call_1",
+          "eventPath": "event:/voc/skill/c_pavel_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1080_call_1"
+        },
+        {
+          "id": "voc_c1080_call_2",
+          "audioTableKey": "voc_c1080_call_2",
+          "eventPath": "event:/voc/skill/c_pavel_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1080_call_2"
+        },
+        {
+          "id": "voc_c1080_dead_1",
+          "audioTableKey": "voc_c1080_dead_1",
+          "eventPath": "event:/voc/character/pavel/evt/dead",
+          "displayNameKey": "character.voice.voc_c1080_dead_1"
+        },
+        {
+          "id": "voc_c1080_dead_2",
+          "audioTableKey": "voc_c1080_dead_2",
+          "eventPath": "event:/voc/character/pavel/evt/dead",
+          "displayNameKey": "character.voice.voc_c1080_dead_2"
+        },
+        {
+          "id": "voc_c1080_dead_3",
+          "audioTableKey": "voc_c1080_dead_3",
+          "eventPath": "event:/voc/character/pavel/evt/dead",
+          "displayNameKey": "character.voice.voc_c1080_dead_3"
+        },
+        {
+          "id": "voc_c1080_get_1",
+          "audioTableKey": "voc_c1080_get_1",
+          "eventPath": "event:/voc/character/pavel/evt/get",
+          "displayNameKey": "character.voice.voc_c1080_get_1"
+        },
+        {
+          "id": "voc_c1080_idle_1",
+          "audioTableKey": "voc_c1080_idle_1",
+          "eventPath": "event:/voc/character/pavel/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1080_idle_1"
+        },
+        {
+          "id": "voc_c1080_idle_2",
+          "audioTableKey": "voc_c1080_idle_2",
+          "eventPath": "event:/voc/character/pavel/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1080_idle_2"
+        },
+        {
+          "id": "voc_c1080_idle_3",
+          "audioTableKey": "voc_c1080_idle_3",
+          "eventPath": "event:/voc/character/pavel/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1080_idle_3"
+        },
+        {
+          "id": "voc_c1080_idle_4",
+          "audioTableKey": "voc_c1080_idle_4",
+          "eventPath": "event:/voc/character/pavel/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1080_idle_4"
+        },
+        {
+          "id": "voc_c1080_lose_1",
+          "audioTableKey": "voc_c1080_lose_1",
+          "eventPath": "event:/voc/character/pavel/evt/defeat",
+          "displayNameKey": "character.voice.voc_c1080_lose_1"
+        },
+        {
+          "id": "voc_c1080_lvup_1",
+          "audioTableKey": "voc_c1080_lvup_1",
+          "eventPath": "event:/voc/character/pavel/evt/lvup",
+          "displayNameKey": "character.voice.voc_c1080_lvup_1"
+        },
+        {
+          "id": "voc_c1080_skill1_1",
+          "audioTableKey": "voc_c1080_skill1_1",
+          "eventPath": "event:/voc/skill/c_pavel_skill_01",
+          "displayNameKey": "character.voice.voc_c1080_skill1_1"
+        },
+        {
+          "id": "voc_c1080_skill1_2",
+          "audioTableKey": "voc_c1080_skill1_2",
+          "eventPath": "event:/voc/skill/c_pavel_skill_01",
+          "displayNameKey": "character.voice.voc_c1080_skill1_2"
+        },
+        {
+          "id": "voc_c1080_skill1_3",
+          "audioTableKey": "voc_c1080_skill1_3",
+          "eventPath": "event:/voc/skill/c_pavel_skill_01",
+          "displayNameKey": "character.voice.voc_c1080_skill1_3"
+        },
+        {
+          "id": "voc_c1080_skill1_4",
+          "audioTableKey": "voc_c1080_skill1_4",
+          "eventPath": "event:/voc/skill/c_pavel_skill_01",
+          "displayNameKey": "character.voice.voc_c1080_skill1_4"
+        },
+        {
+          "id": "voc_c1080_skill2_1",
+          "audioTableKey": "voc_c1080_skill2_1",
+          "eventPath": "event:/voc/skill/c_pavel_skill_02",
+          "displayNameKey": "character.voice.voc_c1080_skill2_1"
+        },
+        {
+          "id": "voc_c1080_skill2_2",
+          "audioTableKey": "voc_c1080_skill2_2",
+          "eventPath": "event:/voc/skill/c_pavel_skill_02",
+          "displayNameKey": "character.voice.voc_c1080_skill2_2"
+        },
+        {
+          "id": "voc_c1080_skill2_3(J)",
+          "audioTableKey": "voc_c1080_skill2_3(J)",
+          "eventPath": "event:/voc/skill/c_pavel_skill_02",
+          "displayNameKey": "character.voice.voc_c1080_skill2_3_j"
+        },
+        {
+          "id": "voc_c1080_skill3_1",
+          "audioTableKey": "voc_c1080_skill3_1",
+          "eventPath": "event:/voc/skill/c_pavel_skill_03",
+          "displayNameKey": "character.voice.voc_c1080_skill3_1"
+        },
+        {
+          "id": "voc_c1080_skill3_2",
+          "audioTableKey": "voc_c1080_skill3_2",
+          "eventPath": "event:/voc/skill/c_pavel_skill_03",
+          "displayNameKey": "character.voice.voc_c1080_skill3_2"
+        },
+        {
+          "id": "voc_c1080_skill3_3",
+          "audioTableKey": "voc_c1080_skill3_3",
+          "eventPath": "event:/voc/skill/c_pavel_skill_03",
+          "displayNameKey": "character.voice.voc_c1080_skill3_3"
+        },
+        {
+          "id": "voc_c1080_utterance_1",
+          "audioTableKey": "voc_c1080_utterance_1",
+          "eventPath": "event:/voc/character/pavel/evt/utterance_01",
+          "displayNameKey": "character.voice.voc_c1080_utterance_1"
+        },
+        {
+          "id": "voc_c1080_utterance_2",
+          "audioTableKey": "voc_c1080_utterance_2",
+          "eventPath": "event:/voc/character/pavel/evt/utterance_02",
+          "displayNameKey": "character.voice.voc_c1080_utterance_2"
+        },
+        {
+          "id": "voc_c1080_win_1",
+          "audioTableKey": "voc_c1080_win_1",
+          "eventPath": "event:/voc/character/pavel/evt/win",
+          "displayNameKey": "character.voice.voc_c1080_win_1"
+        }
+      ],
+      "skills": [
+        {
+          "id": "c_pavel_skill_01",
+          "displayNameKey": "character.pavel.skill1",
+          "graphAddress": "characterlab/source/stagept/c_pavel_skill_01.stg",
+          "eventPath": "event:/skill/c_pavel_skill_01",
+          "voiceEventPath": "event:/voc/skill/c_pavel_skill_01",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_pavel_skill_01_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_pavel_skill_01_a"
+        },
+        {
+          "id": "c_pavel_skill_02",
+          "displayNameKey": "character.pavel.skill2",
+          "graphAddress": "characterlab/source/stagept/c_pavel_skill_02.stg",
+          "eventPath": "event:/skill/c_pavel_skill_02",
+          "voiceEventPath": "event:/voc/skill/c_pavel_skill_02",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        },
+        {
+          "id": "c_pavel_skill_03",
+          "displayNameKey": "character.pavel.skill3",
+          "graphAddress": "characterlab/source/stagept/c_pavel_skill_03.stg",
+          "eventPath": "event:/skill/c_pavel_skill_03",
+          "voiceEventPath": "event:/voc/skill/c_pavel_skill_03",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        }
+      ],
+      "battleSkin": "default",
+      "portraitSkin": "normal"
+    },
+    {
+      "id": "c1081",
+      "name": "赛瑞丝",
+      "displayNameKey": "character.ceris.name",
+      "battleSkeletonAddress": "characterlab/source/model/ceris.scsp",
+      "portraitSkeletonAddress": "characterlab/source/portrait/c1081.scsp",
+      "voiceBankAddress": "characterlab/source/sound/ja/voc3.audio_ja.bank",
+      "timelineAddress": "characterlab/source/model/ceris.timeline",
+      "voices": [
+        {
+          "id": "voc_c1081_answer_1",
+          "audioTableKey": "voc_c1081_answer_1",
+          "eventPath": "event:/voc/skill/c_ceris_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1081_answer_1"
+        },
+        {
+          "id": "voc_c1081_answer_2",
+          "audioTableKey": "voc_c1081_answer_2",
+          "eventPath": "event:/voc/skill/c_ceris_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1081_answer_2"
+        },
+        {
+          "id": "voc_c1081_attacked_1",
+          "audioTableKey": "voc_c1081_attacked_1",
+          "eventPath": "event:/voc/character/ceris/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1081_attacked_1"
+        },
+        {
+          "id": "voc_c1081_attacked_2",
+          "audioTableKey": "voc_c1081_attacked_2",
+          "eventPath": "event:/voc/character/ceris/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1081_attacked_2"
+        },
+        {
+          "id": "voc_c1081_attacked_3",
+          "audioTableKey": "voc_c1081_attacked_3",
+          "eventPath": "event:/voc/character/ceris/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1081_attacked_3"
+        },
+        {
+          "id": "voc_c1081_call_1",
+          "audioTableKey": "voc_c1081_call_1",
+          "eventPath": "event:/voc/skill/c_ceris_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1081_call_1"
+        },
+        {
+          "id": "voc_c1081_call_2",
+          "audioTableKey": "voc_c1081_call_2",
+          "eventPath": "event:/voc/skill/c_ceris_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1081_call_2"
+        },
+        {
+          "id": "voc_c1081_dead_1",
+          "audioTableKey": "voc_c1081_dead_1",
+          "eventPath": "event:/voc/character/ceris/evt/dead",
+          "displayNameKey": "character.voice.voc_c1081_dead_1"
+        },
+        {
+          "id": "voc_c1081_dead_2",
+          "audioTableKey": "voc_c1081_dead_2",
+          "eventPath": "event:/voc/character/ceris/evt/dead",
+          "displayNameKey": "character.voice.voc_c1081_dead_2"
+        },
+        {
+          "id": "voc_c1081_get_1",
+          "audioTableKey": "voc_c1081_get_1",
+          "eventPath": "event:/voc/character/ceris/evt/get",
+          "displayNameKey": "character.voice.voc_c1081_get_1"
+        },
+        {
+          "id": "voc_c1081_idle_1",
+          "audioTableKey": "voc_c1081_idle_1",
+          "eventPath": "event:/voc/character/ceris/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1081_idle_1"
+        },
+        {
+          "id": "voc_c1081_idle_2",
+          "audioTableKey": "voc_c1081_idle_2",
+          "eventPath": "event:/voc/character/ceris/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1081_idle_2"
+        },
+        {
+          "id": "voc_c1081_idle_3",
+          "audioTableKey": "voc_c1081_idle_3",
+          "eventPath": "event:/voc/character/ceris/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1081_idle_3"
+        },
+        {
+          "id": "voc_c1081_idle_4",
+          "audioTableKey": "voc_c1081_idle_4",
+          "eventPath": "event:/voc/character/ceris/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1081_idle_4"
+        },
+        {
+          "id": "voc_c1081_lose_1",
+          "audioTableKey": "voc_c1081_lose_1",
+          "eventPath": "event:/voc/character/ceris/evt/defeat",
+          "displayNameKey": "character.voice.voc_c1081_lose_1"
+        },
+        {
+          "id": "voc_c1081_lvup_1",
+          "audioTableKey": "voc_c1081_lvup_1",
+          "eventPath": "event:/voc/character/ceris/evt/lvup",
+          "displayNameKey": "character.voice.voc_c1081_lvup_1"
+        },
+        {
+          "id": "voc_c1081_skill1_1",
+          "audioTableKey": "voc_c1081_skill1_1",
+          "eventPath": "event:/voc/skill/c_ceris_skill_01",
+          "displayNameKey": "character.voice.voc_c1081_skill1_1"
+        },
+        {
+          "id": "voc_c1081_skill1_2",
+          "audioTableKey": "voc_c1081_skill1_2",
+          "eventPath": "event:/voc/skill/c_ceris_skill_01",
+          "displayNameKey": "character.voice.voc_c1081_skill1_2"
+        },
+        {
+          "id": "voc_c1081_skill1_3",
+          "audioTableKey": "voc_c1081_skill1_3",
+          "eventPath": "event:/voc/skill/c_ceris_skill_01",
+          "displayNameKey": "character.voice.voc_c1081_skill1_3"
+        },
+        {
+          "id": "voc_c1081_skill1_4",
+          "audioTableKey": "voc_c1081_skill1_4",
+          "eventPath": "event:/voc/skill/c_ceris_skill_01",
+          "displayNameKey": "character.voice.voc_c1081_skill1_4"
+        },
+        {
+          "id": "voc_c1081_skill1_5",
+          "audioTableKey": "voc_c1081_skill1_5",
+          "eventPath": "event:/voc/skill/c_ceris_skill_01",
+          "displayNameKey": "character.voice.voc_c1081_skill1_5"
+        },
+        {
+          "id": "voc_c1081_skill2_1",
+          "audioTableKey": "voc_c1081_skill2_1",
+          "eventPath": "event:/voc/skill/c_ceris_skill_02",
+          "displayNameKey": "character.voice.voc_c1081_skill2_1"
+        },
+        {
+          "id": "voc_c1081_skill2_2",
+          "audioTableKey": "voc_c1081_skill2_2",
+          "eventPath": "event:/voc/skill/c_ceris_skill_02",
+          "displayNameKey": "character.voice.voc_c1081_skill2_2"
+        },
+        {
+          "id": "voc_c1081_skill2_3",
+          "audioTableKey": "voc_c1081_skill2_3",
+          "eventPath": "event:/voc/skill/c_ceris_skill_02",
+          "displayNameKey": "character.voice.voc_c1081_skill2_3"
+        },
+        {
+          "id": "voc_c1081_skill3_1_1",
+          "audioTableKey": "voc_c1081_skill3_1_1",
+          "eventPath": "event:/voc/skill/c_ceris_skill_03",
+          "displayNameKey": "character.voice.voc_c1081_skill3_1_1"
+        },
+        {
+          "id": "voc_c1081_skill3_1_2",
+          "audioTableKey": "voc_c1081_skill3_1_2",
+          "eventPath": "event:/voc/skill/c_ceris_skill_03",
+          "displayNameKey": "character.voice.voc_c1081_skill3_1_2"
+        },
+        {
+          "id": "voc_c1081_skill3_2_1",
+          "audioTableKey": "voc_c1081_skill3_2_1",
+          "eventPath": "event:/voc/skill/c_ceris_skill_03",
+          "displayNameKey": "character.voice.voc_c1081_skill3_2_1"
+        },
+        {
+          "id": "voc_c1081_skill3_2_2",
+          "audioTableKey": "voc_c1081_skill3_2_2",
+          "eventPath": "event:/voc/skill/c_ceris_skill_03",
+          "displayNameKey": "character.voice.voc_c1081_skill3_2_2"
+        },
+        {
+          "id": "voc_c1081_skill3_3_1",
+          "audioTableKey": "voc_c1081_skill3_3_1",
+          "eventPath": "event:/voc/skill/c_ceris_skill_03",
+          "displayNameKey": "character.voice.voc_c1081_skill3_3_1"
+        },
+        {
+          "id": "voc_c1081_skill3_3_2",
+          "audioTableKey": "voc_c1081_skill3_3_2",
+          "eventPath": "event:/voc/skill/c_ceris_skill_03",
+          "displayNameKey": "character.voice.voc_c1081_skill3_3_2"
+        },
+        {
+          "id": "voc_c1081_utterance_1",
+          "audioTableKey": "voc_c1081_utterance_1",
+          "eventPath": "event:/voc/character/ceris/evt/utterance_01",
+          "displayNameKey": "character.voice.voc_c1081_utterance_1"
+        },
+        {
+          "id": "voc_c1081_utterance_2",
+          "audioTableKey": "voc_c1081_utterance_2",
+          "eventPath": "event:/voc/character/ceris/evt/utterance_02",
+          "displayNameKey": "character.voice.voc_c1081_utterance_2"
+        },
+        {
+          "id": "voc_c1081_win_1",
+          "audioTableKey": "voc_c1081_win_1",
+          "eventPath": "event:/voc/character/ceris/evt/win",
+          "displayNameKey": "character.voice.voc_c1081_win_1"
+        }
+      ],
+      "skills": [
+        {
+          "id": "c_ceris_skill_01",
+          "displayNameKey": "character.ceris.skill1",
+          "graphAddress": "characterlab/source/stagept/c_ceris_skill_01.stg",
+          "eventPath": "event:/skill/c_ceris_skill_01",
+          "voiceEventPath": "event:/voc/skill/c_ceris_skill_01",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_ceris_skill_01_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_ceris_skill_01_a"
+        },
+        {
+          "id": "c_ceris_skill_02",
+          "displayNameKey": "character.ceris.skill2",
+          "graphAddress": "characterlab/source/stagept/c_ceris_skill_02.stg",
+          "eventPath": "event:/skill/c_ceris_skill_02",
+          "voiceEventPath": "event:/voc/skill/c_ceris_skill_02",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        },
+        {
+          "id": "c_ceris_skill_03",
+          "displayNameKey": "character.ceris.skill3",
+          "graphAddress": "characterlab/source/stagept/c_ceris_skill_03.stg",
+          "eventPath": "event:/skill/c_ceris_skill_03",
+          "voiceEventPath": "event:/voc/skill/c_ceris_skill_03",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        }
+      ],
+      "battleSkin": "default",
+      "portraitSkin": "normal"
+    },
+    {
+      "id": "c1082",
+      "name": "璐璐卡",
+      "displayNameKey": "character.luluka.name",
+      "battleSkeletonAddress": "characterlab/source/model/luluka.scsp",
+      "portraitSkeletonAddress": "characterlab/source/portrait/c1082.scsp",
+      "voiceBankAddress": "characterlab/source/sound/ja/voc3.audio_ja.bank",
+      "timelineAddress": "characterlab/source/model/luluka.timeline",
+      "voices": [
+        {
+          "id": "voc_c1082_answer_1",
+          "audioTableKey": "voc_c1082_answer_1",
+          "eventPath": "event:/voc/skill/c_luluka_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1082_answer_1"
+        },
+        {
+          "id": "voc_c1082_answer_2",
+          "audioTableKey": "voc_c1082_answer_2",
+          "eventPath": "event:/voc/skill/c_luluka_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1082_answer_2"
+        },
+        {
+          "id": "voc_c1082_attacked_1",
+          "audioTableKey": "voc_c1082_attacked_1",
+          "eventPath": "event:/voc/character/luluka/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1082_attacked_1"
+        },
+        {
+          "id": "voc_c1082_attacked_2",
+          "audioTableKey": "voc_c1082_attacked_2",
+          "eventPath": "event:/voc/character/luluka/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1082_attacked_2"
+        },
+        {
+          "id": "voc_c1082_attacked_3",
+          "audioTableKey": "voc_c1082_attacked_3",
+          "eventPath": "event:/voc/character/luluka/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1082_attacked_3"
+        },
+        {
+          "id": "voc_c1082_attacked_4",
+          "audioTableKey": "voc_c1082_attacked_4",
+          "eventPath": "event:/voc/character/luluka/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1082_attacked_4"
+        },
+        {
+          "id": "voc_c1082_call_1",
+          "audioTableKey": "voc_c1082_call_1",
+          "eventPath": "event:/voc/skill/c_luluka_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1082_call_1"
+        },
+        {
+          "id": "voc_c1082_call_2",
+          "audioTableKey": "voc_c1082_call_2",
+          "eventPath": "event:/voc/skill/c_luluka_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1082_call_2"
+        },
+        {
+          "id": "voc_c1082_dead_1",
+          "audioTableKey": "voc_c1082_dead_1",
+          "eventPath": "event:/voc/character/luluka/evt/dead",
+          "displayNameKey": "character.voice.voc_c1082_dead_1"
+        },
+        {
+          "id": "voc_c1082_dead_2",
+          "audioTableKey": "voc_c1082_dead_2",
+          "eventPath": "event:/voc/character/luluka/evt/dead",
+          "displayNameKey": "character.voice.voc_c1082_dead_2"
+        },
+        {
+          "id": "voc_c1082_get_1",
+          "audioTableKey": "voc_c1082_get_1",
+          "eventPath": "event:/voc/character/luluka/evt/get",
+          "displayNameKey": "character.voice.voc_c1082_get_1"
+        },
+        {
+          "id": "voc_c1082_idle_1",
+          "audioTableKey": "voc_c1082_idle_1",
+          "eventPath": "event:/voc/character/luluka/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1082_idle_1"
+        },
+        {
+          "id": "voc_c1082_idle_2",
+          "audioTableKey": "voc_c1082_idle_2",
+          "eventPath": "event:/voc/character/luluka/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1082_idle_2"
+        },
+        {
+          "id": "voc_c1082_idle_3",
+          "audioTableKey": "voc_c1082_idle_3",
+          "eventPath": "event:/voc/character/luluka/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1082_idle_3"
+        },
+        {
+          "id": "voc_c1082_idle_4",
+          "audioTableKey": "voc_c1082_idle_4",
+          "eventPath": "event:/voc/character/luluka/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1082_idle_4"
+        },
+        {
+          "id": "voc_c1082_lose_1",
+          "audioTableKey": "voc_c1082_lose_1",
+          "eventPath": "event:/voc/character/luluka/evt/defeat",
+          "displayNameKey": "character.voice.voc_c1082_lose_1"
+        },
+        {
+          "id": "voc_c1082_lvup_1",
+          "audioTableKey": "voc_c1082_lvup_1",
+          "eventPath": "event:/voc/character/luluka/evt/lvup",
+          "displayNameKey": "character.voice.voc_c1082_lvup_1"
+        },
+        {
+          "id": "voc_c1082_skill1_1",
+          "audioTableKey": "voc_c1082_skill1_1",
+          "eventPath": "event:/voc/skill/c_luluka_skill_01",
+          "displayNameKey": "character.voice.voc_c1082_skill1_1"
+        },
+        {
+          "id": "voc_c1082_skill1_2",
+          "audioTableKey": "voc_c1082_skill1_2",
+          "eventPath": "event:/voc/skill/c_luluka_skill_01",
+          "displayNameKey": "character.voice.voc_c1082_skill1_2"
+        },
+        {
+          "id": "voc_c1082_skill1_3",
+          "audioTableKey": "voc_c1082_skill1_3",
+          "eventPath": "event:/voc/skill/c_luluka_skill_01",
+          "displayNameKey": "character.voice.voc_c1082_skill1_3"
+        },
+        {
+          "id": "voc_c1082_skill1_4",
+          "audioTableKey": "voc_c1082_skill1_4",
+          "eventPath": "event:/voc/skill/c_luluka_skill_01",
+          "displayNameKey": "character.voice.voc_c1082_skill1_4"
+        },
+        {
+          "id": "voc_c1082_skill2_1",
+          "audioTableKey": "voc_c1082_skill2_1",
+          "eventPath": "event:/voc/skill/c_luluka_skill_02",
+          "displayNameKey": "character.voice.voc_c1082_skill2_1"
+        },
+        {
+          "id": "voc_c1082_skill2_2",
+          "audioTableKey": "voc_c1082_skill2_2",
+          "eventPath": "event:/voc/skill/c_luluka_skill_02",
+          "displayNameKey": "character.voice.voc_c1082_skill2_2"
+        },
+        {
+          "id": "voc_c1082_skill2_3",
+          "audioTableKey": "voc_c1082_skill2_3",
+          "eventPath": "event:/voc/skill/c_luluka_skill_02",
+          "displayNameKey": "character.voice.voc_c1082_skill2_3"
+        },
+        {
+          "id": "voc_c1082_skill3_1(J)",
+          "audioTableKey": "voc_c1082_skill3_1(J)",
+          "eventPath": "event:/voc/skill/c_luluka_skill_03",
+          "displayNameKey": "character.voice.voc_c1082_skill3_1_j"
+        },
+        {
+          "id": "voc_c1082_skill3_2(J)",
+          "audioTableKey": "voc_c1082_skill3_2(J)",
+          "eventPath": "event:/voc/skill/c_luluka_skill_03",
+          "displayNameKey": "character.voice.voc_c1082_skill3_2_j"
+        },
+        {
+          "id": "voc_c1082_skill3_3(J)",
+          "audioTableKey": "voc_c1082_skill3_3(J)",
+          "eventPath": "event:/voc/skill/c_luluka_skill_03",
+          "displayNameKey": "character.voice.voc_c1082_skill3_3_j"
+        },
+        {
+          "id": "voc_c1082_utterance_1",
+          "audioTableKey": "voc_c1082_utterance_1",
+          "eventPath": "event:/voc/character/luluka/evt/utterance_01",
+          "displayNameKey": "character.voice.voc_c1082_utterance_1"
+        },
+        {
+          "id": "voc_c1082_utterance_2",
+          "audioTableKey": "voc_c1082_utterance_2",
+          "eventPath": "event:/voc/character/luluka/evt/utterance_02",
+          "displayNameKey": "character.voice.voc_c1082_utterance_2"
+        },
+        {
+          "id": "voc_c1082_win_1",
+          "audioTableKey": "voc_c1082_win_1",
+          "eventPath": "event:/voc/character/luluka/evt/win",
+          "displayNameKey": "character.voice.voc_c1082_win_1"
+        }
+      ],
+      "skills": [
+        {
+          "id": "c_luluka_skill_01",
+          "displayNameKey": "character.luluka.skill1",
+          "graphAddress": "characterlab/source/stagept/c_luluka_skill_01.stg",
+          "eventPath": "event:/skill/c_luluka_skill_01",
+          "voiceEventPath": "event:/voc/skill/c_luluka_skill_01",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_luluka_skill_01_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_luluka_skill_01_a"
+        },
+        {
+          "id": "c_luluka_skill_02",
+          "displayNameKey": "character.luluka.skill2",
+          "graphAddress": "characterlab/source/stagept/c_luluka_skill_02.stg",
+          "eventPath": "event:/skill/c_luluka_skill_02",
+          "voiceEventPath": "event:/voc/skill/c_luluka_skill_02",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        },
+        {
+          "id": "c_luluka_skill_03",
+          "displayNameKey": "character.luluka.skill3",
+          "graphAddress": "characterlab/source/stagept/c_luluka_skill_03.stg",
+          "eventPath": "event:/skill/c_luluka_skill_03",
+          "voiceEventPath": "event:/voc/skill/c_luluka_skill_03",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        }
+      ],
+      "battleSkin": "default",
+      "portraitSkin": "normal"
+    },
+    {
+      "id": "c1083",
+      "name": "杰诺",
+      "displayNameKey": "character.zeno.name",
+      "battleSkeletonAddress": "characterlab/source/model/zeno.scsp",
+      "portraitSkeletonAddress": "characterlab/source/portrait/c1083.scsp",
+      "voiceBankAddress": "characterlab/source/sound/ja/voc1.audio_ja.bank",
+      "timelineAddress": "",
+      "voices": [
+        {
+          "id": "voc_c1083_answer_1",
+          "audioTableKey": "voc_c1083_answer_1",
+          "eventPath": "event:/voc/skill/c_zeno_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1083_answer_1"
+        },
+        {
+          "id": "voc_c1083_answer_2",
+          "audioTableKey": "voc_c1083_answer_2",
+          "eventPath": "event:/voc/skill/c_zeno_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1083_answer_2"
+        },
+        {
+          "id": "voc_c1083_attacked_1",
+          "audioTableKey": "voc_c1083_attacked_1",
+          "eventPath": "event:/voc/character/zeno/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1083_attacked_1"
+        },
+        {
+          "id": "voc_c1083_attacked_2",
+          "audioTableKey": "voc_c1083_attacked_2",
+          "eventPath": "event:/voc/character/zeno/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1083_attacked_2"
+        },
+        {
+          "id": "voc_c1083_attacked_3",
+          "audioTableKey": "voc_c1083_attacked_3",
+          "eventPath": "event:/voc/character/zeno/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1083_attacked_3"
+        },
+        {
+          "id": "voc_c1083_call_1",
+          "audioTableKey": "voc_c1083_call_1",
+          "eventPath": "event:/voc/skill/c_zeno_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1083_call_1"
+        },
+        {
+          "id": "voc_c1083_call_2",
+          "audioTableKey": "voc_c1083_call_2",
+          "eventPath": "event:/voc/skill/c_zeno_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1083_call_2"
+        },
+        {
+          "id": "voc_c1083_dead_1",
+          "audioTableKey": "voc_c1083_dead_1",
+          "eventPath": "event:/voc/character/zeno/evt/dead",
+          "displayNameKey": "character.voice.voc_c1083_dead_1"
+        },
+        {
+          "id": "voc_c1083_dead_2",
+          "audioTableKey": "voc_c1083_dead_2",
+          "eventPath": "event:/voc/character/zeno/evt/dead",
+          "displayNameKey": "character.voice.voc_c1083_dead_2"
+        },
+        {
+          "id": "voc_c1083_get_1",
+          "audioTableKey": "voc_c1083_get_1",
+          "eventPath": "event:/voc/character/zeno/evt/get",
+          "displayNameKey": "character.voice.voc_c1083_get_1"
+        },
+        {
+          "id": "voc_c1083_idle_1",
+          "audioTableKey": "voc_c1083_idle_1",
+          "eventPath": "event:/voc/character/zeno/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1083_idle_1"
+        },
+        {
+          "id": "voc_c1083_idle_2",
+          "audioTableKey": "voc_c1083_idle_2",
+          "eventPath": "event:/voc/character/zeno/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1083_idle_2"
+        },
+        {
+          "id": "voc_c1083_idle_3",
+          "audioTableKey": "voc_c1083_idle_3",
+          "eventPath": "event:/voc/character/zeno/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1083_idle_3"
+        },
+        {
+          "id": "voc_c1083_idle_4",
+          "audioTableKey": "voc_c1083_idle_4",
+          "eventPath": "event:/voc/character/zeno/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1083_idle_4"
+        },
+        {
+          "id": "voc_c1083_idle_5",
+          "audioTableKey": "voc_c1083_idle_5",
+          "eventPath": "event:/voc/character/zeno/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1083_idle_5"
+        },
+        {
+          "id": "voc_c1083_lose_1",
+          "audioTableKey": "voc_c1083_lose_1",
+          "eventPath": "event:/voc/character/zeno/evt/defeat",
+          "displayNameKey": "character.voice.voc_c1083_lose_1"
+        },
+        {
+          "id": "voc_c1083_lvup_1",
+          "audioTableKey": "voc_c1083_lvup_1",
+          "eventPath": "event:/voc/character/zeno/evt/lvup",
+          "displayNameKey": "character.voice.voc_c1083_lvup_1"
+        },
+        {
+          "id": "voc_c1083_skill1_1",
+          "audioTableKey": "voc_c1083_skill1_1",
+          "eventPath": "event:/voc/skill/c_zeno_skill_01",
+          "displayNameKey": "character.voice.voc_c1083_skill1_1"
+        },
+        {
+          "id": "voc_c1083_skill1_2",
+          "audioTableKey": "voc_c1083_skill1_2",
+          "eventPath": "event:/voc/skill/c_zeno_skill_01",
+          "displayNameKey": "character.voice.voc_c1083_skill1_2"
+        },
+        {
+          "id": "voc_c1083_skill1_3",
+          "audioTableKey": "voc_c1083_skill1_3",
+          "eventPath": "event:/voc/skill/c_zeno_skill_01",
+          "displayNameKey": "character.voice.voc_c1083_skill1_3"
+        },
+        {
+          "id": "voc_c1083_skill3_1_1",
+          "audioTableKey": "voc_c1083_skill3_1_1",
+          "eventPath": "event:/voc/skill/c_zeno_skill_03",
+          "displayNameKey": "character.voice.voc_c1083_skill3_1_1"
+        },
+        {
+          "id": "voc_c1083_skill3_1_2",
+          "audioTableKey": "voc_c1083_skill3_1_2",
+          "eventPath": "event:/voc/skill/c_zeno_skill_03",
+          "displayNameKey": "character.voice.voc_c1083_skill3_1_2"
+        },
+        {
+          "id": "voc_c1083_skill3_2_1",
+          "audioTableKey": "voc_c1083_skill3_2_1",
+          "eventPath": "event:/voc/skill/c_zeno_skill_03",
+          "displayNameKey": "character.voice.voc_c1083_skill3_2_1"
+        },
+        {
+          "id": "voc_c1083_skill3_2_2",
+          "audioTableKey": "voc_c1083_skill3_2_2",
+          "eventPath": "event:/voc/skill/c_zeno_skill_03",
+          "displayNameKey": "character.voice.voc_c1083_skill3_2_2"
+        },
+        {
+          "id": "voc_c1083_skill3_3_2",
+          "audioTableKey": "voc_c1083_skill3_3_2",
+          "eventPath": "event:/voc/skill/c_zeno_skill_03",
+          "displayNameKey": "character.voice.voc_c1083_skill3_3_2"
+        },
+        {
+          "id": "voc_c1083_skill3_4_2",
+          "audioTableKey": "voc_c1083_skill3_4_2",
+          "eventPath": "event:/voc/skill/c_zeno_skill_03",
+          "displayNameKey": "character.voice.voc_c1083_skill3_4_2"
+        },
+        {
+          "id": "voc_c1083_utterance_1",
+          "audioTableKey": "voc_c1083_utterance_1",
+          "eventPath": "event:/voc/character/zeno/evt/utterance_01",
+          "displayNameKey": "character.voice.voc_c1083_utterance_1"
+        },
+        {
+          "id": "voc_c1083_utterance_2",
+          "audioTableKey": "voc_c1083_utterance_2",
+          "eventPath": "event:/voc/character/zeno/evt/utterance_02",
+          "displayNameKey": "character.voice.voc_c1083_utterance_2"
+        },
+        {
+          "id": "voc_c1083_win_1",
+          "audioTableKey": "voc_c1083_win_1",
+          "eventPath": "event:/voc/character/zeno/evt/win",
+          "displayNameKey": "character.voice.voc_c1083_win_1"
+        }
+      ],
+      "skills": [
+        {
+          "id": "c_zeno_skill_01",
+          "displayNameKey": "character.zeno.skill1",
+          "graphAddress": "characterlab/source/stagept/c_zeno_skill_01.stg",
+          "eventPath": "event:/skill/c_zeno_skill_01",
+          "voiceEventPath": "event:/voc/skill/c_zeno_skill_01",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_zeno_skill_01_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_zeno_skill_01_a"
+        },
+        {
+          "id": "c_zeno_skill_03",
+          "displayNameKey": "character.zeno.skill3",
+          "graphAddress": "characterlab/source/stagept/c_zeno_skill_03.stg",
+          "eventPath": "event:/skill/c_zeno_skill_03",
+          "voiceEventPath": "event:/voc/skill/c_zeno_skill_03",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        }
+      ],
+      "battleSkin": "default",
+      "portraitSkin": "normal"
+    },
+    {
+      "id": "c1085",
+      "name": "卡瓦朱",
+      "displayNameKey": "character.kawazu.name",
+      "battleSkeletonAddress": "characterlab/source/model/kawazu.scsp",
+      "portraitSkeletonAddress": "characterlab/source/portrait/c1085.scsp",
+      "voiceBankAddress": "characterlab/source/sound/ja/voc1.audio_ja.bank",
+      "timelineAddress": "characterlab/source/model/kawazu.timeline",
+      "voices": [
+        {
+          "id": "voc_c1085_answer_1",
+          "audioTableKey": "voc_c1085_answer_1",
+          "eventPath": "event:/voc/skill/c_kawazu_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1085_answer_1"
+        },
+        {
+          "id": "voc_c1085_answer_2",
+          "audioTableKey": "voc_c1085_answer_2",
+          "eventPath": "event:/voc/skill/c_kawazu_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1085_answer_2"
+        },
+        {
+          "id": "voc_c1085_attacked_1",
+          "audioTableKey": "voc_c1085_attacked_1",
+          "eventPath": "event:/voc/character/kawazu/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1085_attacked_1"
+        },
+        {
+          "id": "voc_c1085_attacked_2",
+          "audioTableKey": "voc_c1085_attacked_2",
+          "eventPath": "event:/voc/character/kawazu/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1085_attacked_2"
+        },
+        {
+          "id": "voc_c1085_attacked_3",
+          "audioTableKey": "voc_c1085_attacked_3",
+          "eventPath": "event:/voc/character/kawazu/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1085_attacked_3"
+        },
+        {
+          "id": "voc_c1085_attacked_4",
+          "audioTableKey": "voc_c1085_attacked_4",
+          "eventPath": "event:/voc/character/kawazu/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1085_attacked_4"
+        },
+        {
+          "id": "voc_c1085_call_1",
+          "audioTableKey": "voc_c1085_call_1",
+          "eventPath": "event:/voc/skill/c_kawazu_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1085_call_1"
+        },
+        {
+          "id": "voc_c1085_call_2",
+          "audioTableKey": "voc_c1085_call_2",
+          "eventPath": "event:/voc/skill/c_kawazu_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1085_call_2"
+        },
+        {
+          "id": "voc_c1085_dead_1",
+          "audioTableKey": "voc_c1085_dead_1",
+          "eventPath": "event:/voc/character/kawazu/evt/dead",
+          "displayNameKey": "character.voice.voc_c1085_dead_1"
+        },
+        {
+          "id": "voc_c1085_dead_2",
+          "audioTableKey": "voc_c1085_dead_2",
+          "eventPath": "event:/voc/character/kawazu/evt/dead",
+          "displayNameKey": "character.voice.voc_c1085_dead_2"
+        },
+        {
+          "id": "voc_c1085_get_1",
+          "audioTableKey": "voc_c1085_get_1",
+          "eventPath": "event:/voc/character/kawazu/evt/get",
+          "displayNameKey": "character.voice.voc_c1085_get_1"
+        },
+        {
+          "id": "voc_c1085_idle_1",
+          "audioTableKey": "voc_c1085_idle_1",
+          "eventPath": "event:/voc/character/kawazu/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1085_idle_1"
+        },
+        {
+          "id": "voc_c1085_idle_2",
+          "audioTableKey": "voc_c1085_idle_2",
+          "eventPath": "event:/voc/character/kawazu/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1085_idle_2"
+        },
+        {
+          "id": "voc_c1085_idle_3",
+          "audioTableKey": "voc_c1085_idle_3",
+          "eventPath": "event:/voc/character/kawazu/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1085_idle_3"
+        },
+        {
+          "id": "voc_c1085_idle_4",
+          "audioTableKey": "voc_c1085_idle_4",
+          "eventPath": "event:/voc/character/kawazu/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1085_idle_4"
+        },
+        {
+          "id": "voc_c1085_lose_1",
+          "audioTableKey": "voc_c1085_lose_1",
+          "eventPath": "event:/voc/character/kawazu/evt/defeat",
+          "displayNameKey": "character.voice.voc_c1085_lose_1"
+        },
+        {
+          "id": "voc_c1085_lvup_1",
+          "audioTableKey": "voc_c1085_lvup_1",
+          "eventPath": "event:/voc/character/kawazu/evt/lvup",
+          "displayNameKey": "character.voice.voc_c1085_lvup_1"
+        },
+        {
+          "id": "voc_c1085_skill1_1",
+          "audioTableKey": "voc_c1085_skill1_1",
+          "eventPath": "event:/voc/skill/c_kawazu_skill_01",
+          "displayNameKey": "character.voice.voc_c1085_skill1_1"
+        },
+        {
+          "id": "voc_c1085_skill1_2",
+          "audioTableKey": "voc_c1085_skill1_2",
+          "eventPath": "event:/voc/skill/c_kawazu_skill_01",
+          "displayNameKey": "character.voice.voc_c1085_skill1_2"
+        },
+        {
+          "id": "voc_c1085_skill1_3",
+          "audioTableKey": "voc_c1085_skill1_3",
+          "eventPath": "event:/voc/skill/c_kawazu_skill_01",
+          "displayNameKey": "character.voice.voc_c1085_skill1_3"
+        },
+        {
+          "id": "voc_c1085_skill1_4",
+          "audioTableKey": "voc_c1085_skill1_4",
+          "eventPath": "event:/voc/skill/c_kawazu_skill_01",
+          "displayNameKey": "character.voice.voc_c1085_skill1_4"
+        },
+        {
+          "id": "voc_c1085_skill2_1",
+          "audioTableKey": "voc_c1085_skill2_1",
+          "eventPath": "event:/voc/skill/c_kawazu_skill_02",
+          "displayNameKey": "character.voice.voc_c1085_skill2_1"
+        },
+        {
+          "id": "voc_c1085_skill2_2",
+          "audioTableKey": "voc_c1085_skill2_2",
+          "eventPath": "event:/voc/skill/c_kawazu_skill_02",
+          "displayNameKey": "character.voice.voc_c1085_skill2_2"
+        },
+        {
+          "id": "voc_c1085_skill2_3",
+          "audioTableKey": "voc_c1085_skill2_3",
+          "eventPath": "event:/voc/skill/c_kawazu_skill_02",
+          "displayNameKey": "character.voice.voc_c1085_skill2_3"
+        },
+        {
+          "id": "voc_c1085_skill3_1",
+          "audioTableKey": "voc_c1085_skill3_1",
+          "eventPath": "event:/voc/skill/c_kawazu_skill_03",
+          "displayNameKey": "character.voice.voc_c1085_skill3_1"
+        },
+        {
+          "id": "voc_c1085_skill3_2",
+          "audioTableKey": "voc_c1085_skill3_2",
+          "eventPath": "event:/voc/skill/c_kawazu_skill_03",
+          "displayNameKey": "character.voice.voc_c1085_skill3_2"
+        },
+        {
+          "id": "voc_c1085_skill3_3",
+          "audioTableKey": "voc_c1085_skill3_3",
+          "eventPath": "event:/voc/skill/c_kawazu_skill_03",
+          "displayNameKey": "character.voice.voc_c1085_skill3_3"
+        },
+        {
+          "id": "voc_c1085_utterance_1",
+          "audioTableKey": "voc_c1085_utterance_1",
+          "eventPath": "event:/voc/character/kawazu/evt/utterance_01",
+          "displayNameKey": "character.voice.voc_c1085_utterance_1"
+        },
+        {
+          "id": "voc_c1085_utterance_2",
+          "audioTableKey": "voc_c1085_utterance_2",
+          "eventPath": "event:/voc/character/kawazu/evt/utterance_02",
+          "displayNameKey": "character.voice.voc_c1085_utterance_2"
+        },
+        {
+          "id": "voc_c1085_win_1",
+          "audioTableKey": "voc_c1085_win_1",
+          "eventPath": "event:/voc/character/kawazu/evt/win",
+          "displayNameKey": "character.voice.voc_c1085_win_1"
+        }
+      ],
+      "skills": [
+        {
+          "id": "c_kawazu_skill_01",
+          "displayNameKey": "character.kawazu.skill1",
+          "graphAddress": "characterlab/source/stagept/c_kawazu_skill_01.stg",
+          "eventPath": "event:/skill/c_kawazu_skill_01",
+          "voiceEventPath": "event:/voc/skill/c_kawazu_skill_01",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_kawazu_skill_01_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_kawazu_skill_01_a"
+        },
+        {
+          "id": "c_kawazu_skill_02",
+          "displayNameKey": "character.kawazu.skill2",
+          "graphAddress": "characterlab/source/stagept/c_kawazu_skill_02.stg",
+          "eventPath": "event:/skill/c_kawazu_skill_02",
+          "voiceEventPath": "event:/voc/skill/c_kawazu_skill_02",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        },
+        {
+          "id": "c_kawazu_skill_03",
+          "displayNameKey": "character.kawazu.skill3",
+          "graphAddress": "characterlab/source/stagept/c_kawazu_skill_03.stg",
+          "eventPath": "event:/skill/c_kawazu_skill_03",
+          "voiceEventPath": "event:/voc/skill/c_kawazu_skill_03",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        }
+      ],
+      "battleSkin": "default",
+      "portraitSkin": "normal"
+    },
+    {
+      "id": "c1086",
+      "name": "卡瓦娜",
+      "displayNameKey": "character.kawana.name",
+      "battleSkeletonAddress": "characterlab/source/model/kawana.scsp",
+      "portraitSkeletonAddress": "characterlab/source/portrait/c1086.scsp",
+      "voiceBankAddress": "characterlab/source/sound/ja/voc1.audio_ja.bank",
+      "timelineAddress": "characterlab/source/model/kawana.timeline",
+      "voices": [
+        {
+          "id": "voc_c1086_answer_1",
+          "audioTableKey": "voc_c1086_answer_1",
+          "eventPath": "event:/voc/skill/c_kawana_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1086_answer_1"
+        },
+        {
+          "id": "voc_c1086_answer_2",
+          "audioTableKey": "voc_c1086_answer_2",
+          "eventPath": "event:/voc/skill/c_kawana_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1086_answer_2"
+        },
+        {
+          "id": "voc_c1086_attacked_1",
+          "audioTableKey": "voc_c1086_attacked_1",
+          "eventPath": "event:/voc/character/kawana/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1086_attacked_1"
+        },
+        {
+          "id": "voc_c1086_attacked_2",
+          "audioTableKey": "voc_c1086_attacked_2",
+          "eventPath": "event:/voc/character/kawana/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1086_attacked_2"
+        },
+        {
+          "id": "voc_c1086_attacked_3",
+          "audioTableKey": "voc_c1086_attacked_3",
+          "eventPath": "event:/voc/character/kawana/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1086_attacked_3"
+        },
+        {
+          "id": "voc_c1086_attacked_4",
+          "audioTableKey": "voc_c1086_attacked_4",
+          "eventPath": "event:/voc/character/kawana/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1086_attacked_4"
+        },
+        {
+          "id": "voc_c1086_call_1",
+          "audioTableKey": "voc_c1086_call_1",
+          "eventPath": "event:/voc/skill/c_kawana_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1086_call_1"
+        },
+        {
+          "id": "voc_c1086_call_2",
+          "audioTableKey": "voc_c1086_call_2",
+          "eventPath": "event:/voc/skill/c_kawana_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1086_call_2"
+        },
+        {
+          "id": "voc_c1086_call_3",
+          "audioTableKey": "voc_c1086_call_3",
+          "eventPath": "event:/voc/skill/c_kawana_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1086_call_3"
+        },
+        {
+          "id": "voc_c1086_dead_1",
+          "audioTableKey": "voc_c1086_dead_1",
+          "eventPath": "event:/voc/character/kawana/evt/dead",
+          "displayNameKey": "character.voice.voc_c1086_dead_1"
+        },
+        {
+          "id": "voc_c1086_dead_2",
+          "audioTableKey": "voc_c1086_dead_2",
+          "eventPath": "event:/voc/character/kawana/evt/dead",
+          "displayNameKey": "character.voice.voc_c1086_dead_2"
+        },
+        {
+          "id": "voc_c1086_dead_3",
+          "audioTableKey": "voc_c1086_dead_3",
+          "eventPath": "event:/voc/character/kawana/evt/dead",
+          "displayNameKey": "character.voice.voc_c1086_dead_3"
+        },
+        {
+          "id": "voc_c1086_get_1",
+          "audioTableKey": "voc_c1086_get_1",
+          "eventPath": "event:/voc/character/kawana/evt/get",
+          "displayNameKey": "character.voice.voc_c1086_get_1"
+        },
+        {
+          "id": "voc_c1086_idle_1",
+          "audioTableKey": "voc_c1086_idle_1",
+          "eventPath": "event:/voc/character/kawana/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1086_idle_1"
+        },
+        {
+          "id": "voc_c1086_idle_2",
+          "audioTableKey": "voc_c1086_idle_2",
+          "eventPath": "event:/voc/character/kawana/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1086_idle_2"
+        },
+        {
+          "id": "voc_c1086_idle_3",
+          "audioTableKey": "voc_c1086_idle_3",
+          "eventPath": "event:/voc/character/kawana/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1086_idle_3"
+        },
+        {
+          "id": "voc_c1086_idle_4",
+          "audioTableKey": "voc_c1086_idle_4",
+          "eventPath": "event:/voc/character/kawana/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1086_idle_4"
+        },
+        {
+          "id": "voc_c1086_lose_1",
+          "audioTableKey": "voc_c1086_lose_1",
+          "eventPath": "event:/voc/character/kawana/evt/defeat",
+          "displayNameKey": "character.voice.voc_c1086_lose_1"
+        },
+        {
+          "id": "voc_c1086_lvup_1",
+          "audioTableKey": "voc_c1086_lvup_1",
+          "eventPath": "event:/voc/character/kawana/evt/lvup",
+          "displayNameKey": "character.voice.voc_c1086_lvup_1"
+        },
+        {
+          "id": "voc_c1086_skill1_1",
+          "audioTableKey": "voc_c1086_skill1_1",
+          "eventPath": "event:/voc/skill/c_kawana_skill_01",
+          "displayNameKey": "character.voice.voc_c1086_skill1_1"
+        },
+        {
+          "id": "voc_c1086_skill1_2",
+          "audioTableKey": "voc_c1086_skill1_2",
+          "eventPath": "event:/voc/skill/c_kawana_skill_01",
+          "displayNameKey": "character.voice.voc_c1086_skill1_2"
+        },
+        {
+          "id": "voc_c1086_skill1_3",
+          "audioTableKey": "voc_c1086_skill1_3",
+          "eventPath": "event:/voc/skill/c_kawana_skill_01",
+          "displayNameKey": "character.voice.voc_c1086_skill1_3"
+        },
+        {
+          "id": "voc_c1086_skill1_4",
+          "audioTableKey": "voc_c1086_skill1_4",
+          "eventPath": "event:/voc/skill/c_kawana_skill_01",
+          "displayNameKey": "character.voice.voc_c1086_skill1_4"
+        },
+        {
+          "id": "voc_c1086_skill2_1",
+          "audioTableKey": "voc_c1086_skill2_1",
+          "eventPath": "event:/voc/skill/c_kawana_skill_02",
+          "displayNameKey": "character.voice.voc_c1086_skill2_1"
+        },
+        {
+          "id": "voc_c1086_skill2_2",
+          "audioTableKey": "voc_c1086_skill2_2",
+          "eventPath": "event:/voc/skill/c_kawana_skill_02",
+          "displayNameKey": "character.voice.voc_c1086_skill2_2"
+        },
+        {
+          "id": "voc_c1086_skill2_3",
+          "audioTableKey": "voc_c1086_skill2_3",
+          "eventPath": "event:/voc/skill/c_kawana_skill_02",
+          "displayNameKey": "character.voice.voc_c1086_skill2_3"
+        },
+        {
+          "id": "voc_c1086_skill3_1_1(J)",
+          "audioTableKey": "voc_c1086_skill3_1_1(J)",
+          "eventPath": "event:/voc/skill/c_kawana_skill_03",
+          "displayNameKey": "character.voice.voc_c1086_skill3_1_1_j"
+        },
+        {
+          "id": "voc_c1086_skill3_1_2(J)",
+          "audioTableKey": "voc_c1086_skill3_1_2(J)",
+          "eventPath": "event:/voc/skill/c_kawana_skill_03",
+          "displayNameKey": "character.voice.voc_c1086_skill3_1_2_j"
+        },
+        {
+          "id": "voc_c1086_skill3_2_1(J)",
+          "audioTableKey": "voc_c1086_skill3_2_1(J)",
+          "eventPath": "event:/voc/skill/c_kawana_skill_03",
+          "displayNameKey": "character.voice.voc_c1086_skill3_2_1_j"
+        },
+        {
+          "id": "voc_c1086_skill3_2_2(J)",
+          "audioTableKey": "voc_c1086_skill3_2_2(J)",
+          "eventPath": "event:/voc/skill/c_kawana_skill_03",
+          "displayNameKey": "character.voice.voc_c1086_skill3_2_2_j"
+        },
+        {
+          "id": "voc_c1086_skill3_3_1(J)",
+          "audioTableKey": "voc_c1086_skill3_3_1(J)",
+          "eventPath": "event:/voc/skill/c_kawana_skill_03",
+          "displayNameKey": "character.voice.voc_c1086_skill3_3_1_j"
+        },
+        {
+          "id": "voc_c1086_skill3_3_2(J)",
+          "audioTableKey": "voc_c1086_skill3_3_2(J)",
+          "eventPath": "event:/voc/skill/c_kawana_skill_03",
+          "displayNameKey": "character.voice.voc_c1086_skill3_3_2_j"
+        },
+        {
+          "id": "voc_c1086_utterance_1",
+          "audioTableKey": "voc_c1086_utterance_1",
+          "eventPath": "event:/voc/character/kawana/evt/utterance_01",
+          "displayNameKey": "character.voice.voc_c1086_utterance_1"
+        },
+        {
+          "id": "voc_c1086_utterance_2",
+          "audioTableKey": "voc_c1086_utterance_2",
+          "eventPath": "event:/voc/character/kawana/evt/utterance_02",
+          "displayNameKey": "character.voice.voc_c1086_utterance_2"
+        },
+        {
+          "id": "voc_c1086_win_1",
+          "audioTableKey": "voc_c1086_win_1",
+          "eventPath": "event:/voc/character/kawana/evt/win",
+          "displayNameKey": "character.voice.voc_c1086_win_1"
+        }
+      ],
+      "skills": [
+        {
+          "id": "c_kawana_skill_01",
+          "displayNameKey": "character.kawana.skill1",
+          "graphAddress": "characterlab/source/stagept/c_kawana_skill_01.stg",
+          "eventPath": "event:/skill/c_kawana_skill_01",
+          "voiceEventPath": "event:/voc/skill/c_kawana_skill_01",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_kawana_skill_01_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_kawana_skill_01_a"
+        },
+        {
+          "id": "c_kawana_skill_02",
+          "displayNameKey": "character.kawana.skill2",
+          "graphAddress": "characterlab/source/stagept/c_kawana_skill_02.stg",
+          "eventPath": "event:/skill/c_kawana_skill_02",
+          "voiceEventPath": "event:/voc/skill/c_kawana_skill_02",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        },
+        {
+          "id": "c_kawana_skill_03",
+          "displayNameKey": "character.kawana.skill3",
+          "graphAddress": "characterlab/source/stagept/c_kawana_skill_03.stg",
+          "eventPath": "event:/skill/c_kawana_skill_03",
+          "voiceEventPath": "event:/voc/skill/c_kawana_skill_03",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        }
+      ],
+      "battleSkin": "default",
+      "portraitSkin": "normal"
+    },
+    {
+      "id": "c1087",
+      "name": "尤贝乌斯",
+      "displayNameKey": "character.furious.name",
+      "battleSkeletonAddress": "characterlab/source/model/furious.scsp",
+      "portraitSkeletonAddress": "characterlab/source/portrait/c1087.scsp",
+      "voiceBankAddress": "characterlab/source/sound/ja/voc1.audio_ja.bank",
+      "timelineAddress": "characterlab/source/model/furious.timeline",
+      "voices": [
+        {
+          "id": "voc_c1087_answer_1",
+          "audioTableKey": "voc_c1087_answer_1",
+          "eventPath": "event:/voc/skill/c_furious_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1087_answer_1"
+        },
+        {
+          "id": "voc_c1087_answer_2",
+          "audioTableKey": "voc_c1087_answer_2",
+          "eventPath": "event:/voc/skill/c_furious_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1087_answer_2"
+        },
+        {
+          "id": "voc_c1087_attacked_1",
+          "audioTableKey": "voc_c1087_attacked_1",
+          "eventPath": "event:/voc/character/furious/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1087_attacked_1"
+        },
+        {
+          "id": "voc_c1087_attacked_2",
+          "audioTableKey": "voc_c1087_attacked_2",
+          "eventPath": "event:/voc/character/furious/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1087_attacked_2"
+        },
+        {
+          "id": "voc_c1087_attacked_3",
+          "audioTableKey": "voc_c1087_attacked_3",
+          "eventPath": "event:/voc/character/furious/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1087_attacked_3"
+        },
+        {
+          "id": "voc_c1087_attacked_4",
+          "audioTableKey": "voc_c1087_attacked_4",
+          "eventPath": "event:/voc/character/furious/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1087_attacked_4"
+        },
+        {
+          "id": "voc_c1087_call_1",
+          "audioTableKey": "voc_c1087_call_1",
+          "eventPath": "event:/voc/skill/c_furious_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1087_call_1"
+        },
+        {
+          "id": "voc_c1087_call_2",
+          "audioTableKey": "voc_c1087_call_2",
+          "eventPath": "event:/voc/skill/c_furious_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1087_call_2"
+        },
+        {
+          "id": "voc_c1087_dead_1",
+          "audioTableKey": "voc_c1087_dead_1",
+          "eventPath": "event:/voc/character/furious/evt/dead",
+          "displayNameKey": "character.voice.voc_c1087_dead_1"
+        },
+        {
+          "id": "voc_c1087_dead_2",
+          "audioTableKey": "voc_c1087_dead_2",
+          "eventPath": "event:/voc/character/furious/evt/dead",
+          "displayNameKey": "character.voice.voc_c1087_dead_2"
+        },
+        {
+          "id": "voc_c1087_dead_3",
+          "audioTableKey": "voc_c1087_dead_3",
+          "eventPath": "event:/voc/character/furious/evt/dead",
+          "displayNameKey": "character.voice.voc_c1087_dead_3"
+        },
+        {
+          "id": "voc_c1087_dead_4",
+          "audioTableKey": "voc_c1087_dead_4",
+          "eventPath": "event:/voc/character/furious/evt/dead",
+          "displayNameKey": "character.voice.voc_c1087_dead_4"
+        },
+        {
+          "id": "voc_c1087_get_1",
+          "audioTableKey": "voc_c1087_get_1",
+          "eventPath": "event:/voc/character/furious/evt/get",
+          "displayNameKey": "character.voice.voc_c1087_get_1"
+        },
+        {
+          "id": "voc_c1087_idle_1",
+          "audioTableKey": "voc_c1087_idle_1",
+          "eventPath": "event:/voc/character/furious/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1087_idle_1"
+        },
+        {
+          "id": "voc_c1087_idle_2",
+          "audioTableKey": "voc_c1087_idle_2",
+          "eventPath": "event:/voc/character/furious/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1087_idle_2"
+        },
+        {
+          "id": "voc_c1087_idle_3",
+          "audioTableKey": "voc_c1087_idle_3",
+          "eventPath": "event:/voc/character/furious/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1087_idle_3"
+        },
+        {
+          "id": "voc_c1087_idle_4",
+          "audioTableKey": "voc_c1087_idle_4",
+          "eventPath": "event:/voc/character/furious/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1087_idle_4"
+        },
+        {
+          "id": "voc_c1087_lose_1",
+          "audioTableKey": "voc_c1087_lose_1",
+          "eventPath": "event:/voc/character/furious/evt/defeat",
+          "displayNameKey": "character.voice.voc_c1087_lose_1"
+        },
+        {
+          "id": "voc_c1087_lvup_1",
+          "audioTableKey": "voc_c1087_lvup_1",
+          "eventPath": "event:/voc/character/furious/evt/lvup",
+          "displayNameKey": "character.voice.voc_c1087_lvup_1"
+        },
+        {
+          "id": "voc_c1087_skill1_1",
+          "audioTableKey": "voc_c1087_skill1_1",
+          "eventPath": "event:/voc/skill/c_furious_skill_01",
+          "displayNameKey": "character.voice.voc_c1087_skill1_1"
+        },
+        {
+          "id": "voc_c1087_skill1_2",
+          "audioTableKey": "voc_c1087_skill1_2",
+          "eventPath": "event:/voc/skill/c_furious_skill_01",
+          "displayNameKey": "character.voice.voc_c1087_skill1_2"
+        },
+        {
+          "id": "voc_c1087_skill1_3",
+          "audioTableKey": "voc_c1087_skill1_3",
+          "eventPath": "event:/voc/skill/c_furious_skill_01",
+          "displayNameKey": "character.voice.voc_c1087_skill1_3"
+        },
+        {
+          "id": "voc_c1087_skill1_4",
+          "audioTableKey": "voc_c1087_skill1_4",
+          "eventPath": "event:/voc/skill/c_furious_skill_01",
+          "displayNameKey": "character.voice.voc_c1087_skill1_4"
+        },
+        {
+          "id": "voc_c1087_skill2_1",
+          "audioTableKey": "voc_c1087_skill2_1",
+          "eventPath": "event:/voc/skill/c_furious_skill_02",
+          "displayNameKey": "character.voice.voc_c1087_skill2_1"
+        },
+        {
+          "id": "voc_c1087_skill2_2",
+          "audioTableKey": "voc_c1087_skill2_2",
+          "eventPath": "event:/voc/skill/c_furious_skill_02",
+          "displayNameKey": "character.voice.voc_c1087_skill2_2"
+        },
+        {
+          "id": "voc_c1087_skill2_3",
+          "audioTableKey": "voc_c1087_skill2_3",
+          "eventPath": "event:/voc/skill/c_furious_skill_02",
+          "displayNameKey": "character.voice.voc_c1087_skill2_3"
+        },
+        {
+          "id": "voc_c1087_skill3_1_1(J)",
+          "audioTableKey": "voc_c1087_skill3_1_1(J)",
+          "eventPath": "event:/voc/skill/c_furious_skill_03",
+          "displayNameKey": "character.voice.voc_c1087_skill3_1_1_j"
+        },
+        {
+          "id": "voc_c1087_skill3_1_2(J)",
+          "audioTableKey": "voc_c1087_skill3_1_2(J)",
+          "eventPath": "event:/voc/skill/c_furious_skill_03",
+          "displayNameKey": "character.voice.voc_c1087_skill3_1_2_j"
+        },
+        {
+          "id": "voc_c1087_skill3_2_1(J)",
+          "audioTableKey": "voc_c1087_skill3_2_1(J)",
+          "eventPath": "event:/voc/skill/c_furious_skill_03",
+          "displayNameKey": "character.voice.voc_c1087_skill3_2_1_j"
+        },
+        {
+          "id": "voc_c1087_skill3_2_2(J)",
+          "audioTableKey": "voc_c1087_skill3_2_2(J)",
+          "eventPath": "event:/voc/skill/c_furious_skill_03",
+          "displayNameKey": "character.voice.voc_c1087_skill3_2_2_j"
+        },
+        {
+          "id": "voc_c1087_skill3_3_1(J)",
+          "audioTableKey": "voc_c1087_skill3_3_1(J)",
+          "eventPath": "event:/voc/skill/c_furious_skill_03",
+          "displayNameKey": "character.voice.voc_c1087_skill3_3_1_j"
+        },
+        {
+          "id": "voc_c1087_skill3_3_2(J)",
+          "audioTableKey": "voc_c1087_skill3_3_2(J)",
+          "eventPath": "event:/voc/skill/c_furious_skill_03",
+          "displayNameKey": "character.voice.voc_c1087_skill3_3_2_j"
+        },
+        {
+          "id": "voc_c1087_utterance_1",
+          "audioTableKey": "voc_c1087_utterance_1",
+          "eventPath": "event:/voc/character/furious/evt/utterance_01",
+          "displayNameKey": "character.voice.voc_c1087_utterance_1"
+        },
+        {
+          "id": "voc_c1087_utterance_2",
+          "audioTableKey": "voc_c1087_utterance_2",
+          "eventPath": "event:/voc/character/furious/evt/utterance_02",
+          "displayNameKey": "character.voice.voc_c1087_utterance_2"
+        },
+        {
+          "id": "voc_c1087_win_1",
+          "audioTableKey": "voc_c1087_win_1",
+          "eventPath": "event:/voc/character/furious/evt/win",
+          "displayNameKey": "character.voice.voc_c1087_win_1"
+        }
+      ],
+      "skills": [
+        {
+          "id": "c_furious_skill_01",
+          "displayNameKey": "character.furious.skill1",
+          "graphAddress": "characterlab/source/stagept/c_furious_skill_01.stg",
+          "eventPath": "event:/skill/c_furious_skill_01",
+          "voiceEventPath": "event:/voc/skill/c_furious_skill_01",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_furious_skill_01_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_furious_skill_01_a"
+        },
+        {
+          "id": "c_furious_skill_02",
+          "displayNameKey": "character.furious.skill2",
+          "graphAddress": "characterlab/source/stagept/c_furious_skill_02.stg",
+          "eventPath": "event:/skill/c_furious_skill_02",
+          "voiceEventPath": "event:/voc/skill/c_furious_skill_02",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        },
+        {
+          "id": "c_furious_skill_03",
+          "displayNameKey": "character.furious.skill3",
+          "graphAddress": "characterlab/source/stagept/c_furious_skill_03.stg",
+          "eventPath": "event:/skill/c_furious_skill_03",
+          "voiceEventPath": "event:/voc/skill/c_furious_skill_03",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        }
+      ],
+      "battleSkin": "default",
+      "portraitSkin": "normal"
+    },
+    {
+      "id": "c1088",
+      "name": "薇薇安",
+      "displayNameKey": "character.vivian.name",
+      "battleSkeletonAddress": "characterlab/source/model/vivian.scsp",
+      "portraitSkeletonAddress": "characterlab/source/portrait/c1088.scsp",
+      "voiceBankAddress": "characterlab/source/sound/ja/voc3.audio_ja.bank",
+      "timelineAddress": "characterlab/source/model/vivian.timeline",
+      "voices": [
+        {
+          "id": "voc_c1088_answer_1",
+          "audioTableKey": "voc_c1088_answer_1",
+          "eventPath": "event:/voc/skill/c_vivian_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1088_answer_1"
+        },
+        {
+          "id": "voc_c1088_answer_2",
+          "audioTableKey": "voc_c1088_answer_2",
+          "eventPath": "event:/voc/skill/c_vivian_skill_01_a",
+          "displayNameKey": "character.voice.voc_c1088_answer_2"
+        },
+        {
+          "id": "voc_c1088_attacked_1",
+          "audioTableKey": "voc_c1088_attacked_1",
+          "eventPath": "event:/voc/character/vivian/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1088_attacked_1"
+        },
+        {
+          "id": "voc_c1088_attacked_2",
+          "audioTableKey": "voc_c1088_attacked_2",
+          "eventPath": "event:/voc/character/vivian/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1088_attacked_2"
+        },
+        {
+          "id": "voc_c1088_attacked_3",
+          "audioTableKey": "voc_c1088_attacked_3",
+          "eventPath": "event:/voc/character/vivian/ani/attacked",
+          "displayNameKey": "character.voice.voc_c1088_attacked_3"
+        },
+        {
+          "id": "voc_c1088_call_1",
+          "audioTableKey": "voc_c1088_call_1",
+          "eventPath": "event:/voc/skill/c_vivian_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1088_call_1"
+        },
+        {
+          "id": "voc_c1088_call_2",
+          "audioTableKey": "voc_c1088_call_2",
+          "eventPath": "event:/voc/skill/c_vivian_skill_01_c",
+          "displayNameKey": "character.voice.voc_c1088_call_2"
+        },
+        {
+          "id": "voc_c1088_dead_1",
+          "audioTableKey": "voc_c1088_dead_1",
+          "eventPath": "event:/voc/character/vivian/evt/dead",
+          "displayNameKey": "character.voice.voc_c1088_dead_1"
+        },
+        {
+          "id": "voc_c1088_dead_2",
+          "audioTableKey": "voc_c1088_dead_2",
+          "eventPath": "event:/voc/character/vivian/evt/dead",
+          "displayNameKey": "character.voice.voc_c1088_dead_2"
+        },
+        {
+          "id": "voc_c1088_dead_3",
+          "audioTableKey": "voc_c1088_dead_3",
+          "eventPath": "event:/voc/character/vivian/evt/dead",
+          "displayNameKey": "character.voice.voc_c1088_dead_3"
+        },
+        {
+          "id": "voc_c1088_dead_4",
+          "audioTableKey": "voc_c1088_dead_4",
+          "eventPath": "event:/voc/character/vivian/evt/dead",
+          "displayNameKey": "character.voice.voc_c1088_dead_4"
+        },
+        {
+          "id": "voc_c1088_get_1",
+          "audioTableKey": "voc_c1088_get_1",
+          "eventPath": "event:/voc/character/vivian/evt/get",
+          "displayNameKey": "character.voice.voc_c1088_get_1"
+        },
+        {
+          "id": "voc_c1088_idle_1",
+          "audioTableKey": "voc_c1088_idle_1",
+          "eventPath": "event:/voc/character/vivian/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1088_idle_1"
+        },
+        {
+          "id": "voc_c1088_idle_2",
+          "audioTableKey": "voc_c1088_idle_2",
+          "eventPath": "event:/voc/character/vivian/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1088_idle_2"
+        },
+        {
+          "id": "voc_c1088_idle_3",
+          "audioTableKey": "voc_c1088_idle_3",
+          "eventPath": "event:/voc/character/vivian/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1088_idle_3"
+        },
+        {
+          "id": "voc_c1088_idle_4",
+          "audioTableKey": "voc_c1088_idle_4",
+          "eventPath": "event:/voc/character/vivian/ani/b_idle_ready",
+          "displayNameKey": "character.voice.voc_c1088_idle_4"
+        },
+        {
+          "id": "voc_c1088_lose_1",
+          "audioTableKey": "voc_c1088_lose_1",
+          "eventPath": "event:/voc/character/vivian/evt/defeat",
+          "displayNameKey": "character.voice.voc_c1088_lose_1"
+        },
+        {
+          "id": "voc_c1088_lvup_1",
+          "audioTableKey": "voc_c1088_lvup_1",
+          "eventPath": "event:/voc/character/vivian/evt/lvup",
+          "displayNameKey": "character.voice.voc_c1088_lvup_1"
+        },
+        {
+          "id": "voc_c1088_skill1_1",
+          "audioTableKey": "voc_c1088_skill1_1",
+          "eventPath": "event:/voc/skill/c_vivian_skill_01",
+          "displayNameKey": "character.voice.voc_c1088_skill1_1"
+        },
+        {
+          "id": "voc_c1088_skill1_2",
+          "audioTableKey": "voc_c1088_skill1_2",
+          "eventPath": "event:/voc/skill/c_vivian_skill_01",
+          "displayNameKey": "character.voice.voc_c1088_skill1_2"
+        },
+        {
+          "id": "voc_c1088_skill1_3",
+          "audioTableKey": "voc_c1088_skill1_3",
+          "eventPath": "event:/voc/skill/c_vivian_skill_01",
+          "displayNameKey": "character.voice.voc_c1088_skill1_3"
+        },
+        {
+          "id": "voc_c1088_skill2_1",
+          "audioTableKey": "voc_c1088_skill2_1",
+          "eventPath": "event:/voc/skill/c_vivian_skill_02",
+          "displayNameKey": "character.voice.voc_c1088_skill2_1"
+        },
+        {
+          "id": "voc_c1088_skill2_2",
+          "audioTableKey": "voc_c1088_skill2_2",
+          "eventPath": "event:/voc/skill/c_vivian_skill_02",
+          "displayNameKey": "character.voice.voc_c1088_skill2_2"
+        },
+        {
+          "id": "voc_c1088_skill2_3",
+          "audioTableKey": "voc_c1088_skill2_3",
+          "eventPath": "event:/voc/skill/c_vivian_skill_02",
+          "displayNameKey": "character.voice.voc_c1088_skill2_3"
+        },
+        {
+          "id": "voc_c1088_skill3_1",
+          "audioTableKey": "voc_c1088_skill3_1",
+          "eventPath": "event:/voc/skill/c_vivian_skill_03",
+          "displayNameKey": "character.voice.voc_c1088_skill3_1"
+        },
+        {
+          "id": "voc_c1088_skill3_2",
+          "audioTableKey": "voc_c1088_skill3_2",
+          "eventPath": "event:/voc/skill/c_vivian_skill_03",
+          "displayNameKey": "character.voice.voc_c1088_skill3_2"
+        },
+        {
+          "id": "voc_c1088_skill3_3",
+          "audioTableKey": "voc_c1088_skill3_3",
+          "eventPath": "event:/voc/skill/c_vivian_skill_03",
+          "displayNameKey": "character.voice.voc_c1088_skill3_3"
+        },
+        {
+          "id": "voc_c1088_utterance_1",
+          "audioTableKey": "voc_c1088_utterance_1",
+          "eventPath": "event:/voc/character/vivian/evt/utterance_01",
+          "displayNameKey": "character.voice.voc_c1088_utterance_1"
+        },
+        {
+          "id": "voc_c1088_utterance_2",
+          "audioTableKey": "voc_c1088_utterance_2",
+          "eventPath": "event:/voc/character/vivian/evt/utterance_02",
+          "displayNameKey": "character.voice.voc_c1088_utterance_2"
+        },
+        {
+          "id": "voc_c1088_win_1",
+          "audioTableKey": "voc_c1088_win_1",
+          "eventPath": "event:/voc/character/vivian/evt/win",
+          "displayNameKey": "character.voice.voc_c1088_win_1"
+        }
+      ],
+      "skills": [
+        {
+          "id": "c_vivian_skill_01",
+          "displayNameKey": "character.vivian.skill1",
+          "graphAddress": "characterlab/source/stagept/c_vivian_skill_01.stg",
+          "eventPath": "event:/skill/c_vivian_skill_01",
+          "voiceEventPath": "event:/voc/skill/c_vivian_skill_01",
+          "dualCallVoiceEventPath": "event:/voc/skill/c_vivian_skill_01_c",
+          "dualAnswerVoiceEventPath": "event:/voc/skill/c_vivian_skill_01_a"
+        },
+        {
+          "id": "c_vivian_skill_02",
+          "displayNameKey": "character.vivian.skill2",
+          "graphAddress": "characterlab/source/stagept/c_vivian_skill_02.stg",
+          "eventPath": "event:/skill/c_vivian_skill_02",
+          "voiceEventPath": "event:/voc/skill/c_vivian_skill_02",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        },
+        {
+          "id": "c_vivian_skill_03",
+          "displayNameKey": "character.vivian.skill3",
+          "graphAddress": "characterlab/source/stagept/c_vivian_skill_03.stg",
+          "eventPath": "event:/skill/c_vivian_skill_03",
+          "voiceEventPath": "event:/voc/skill/c_vivian_skill_03",
+          "dualCallVoiceEventPath": "",
+          "dualAnswerVoiceEventPath": ""
+        }
+      ],
+      "battleSkin": "default",
+      "portraitSkin": "normal"
     }
   ],
   "sharedBanks": [
@@ -13216,9 +15511,41 @@
     "voc_c1070_skill3_1",
     "voc_c1070_skill3_3",
     "voc_c1070_skill3_4",
-    "voc_c1072_skill2_3"
+    "voc_c1072_skill2_3",
+    "voc_c1083_skill3_4_1",
+    "voc_c1083_skill3_4_1k"
   ],
   "japaneseProgrammerAliases": [
+    {
+      "eventPath": "event:/voc/skill/c_furious_skill_03",
+      "requestedKey": "voc_c1087_skill3_1",
+      "audioTableKey": "voc_c1087_skill3_1_1(J)"
+    },
+    {
+      "eventPath": "event:/voc/skill/c_furious_skill_03",
+      "requestedKey": "voc_c1087_skill3_2",
+      "audioTableKey": "voc_c1087_skill3_2_1(J)"
+    },
+    {
+      "eventPath": "event:/voc/skill/c_furious_skill_03",
+      "requestedKey": "voc_c1087_skill3_3",
+      "audioTableKey": "voc_c1087_skill3_3_1(J)"
+    },
+    {
+      "eventPath": "event:/voc/skill/c_kawana_skill_03",
+      "requestedKey": "voc_c1086_skill3_1",
+      "audioTableKey": "voc_c1086_skill3_1_1(J)"
+    },
+    {
+      "eventPath": "event:/voc/skill/c_kawana_skill_03",
+      "requestedKey": "voc_c1086_skill3_2",
+      "audioTableKey": "voc_c1086_skill3_2_1(J)"
+    },
+    {
+      "eventPath": "event:/voc/skill/c_kawana_skill_03",
+      "requestedKey": "voc_c1086_skill3_3",
+      "audioTableKey": "voc_c1086_skill3_3_1(J)"
+    },
     {
       "eventPath": "event:/voc/skill/c_ken_skill_03",
       "requestedKey": "voc_c1047_skill3_1_1",
@@ -13235,6 +15562,21 @@
       "audioTableKey": "voc_c1047_skill3_1"
     },
     {
+      "eventPath": "event:/voc/skill/c_luluka_skill_03",
+      "requestedKey": "voc_c1082_skill3_1",
+      "audioTableKey": "voc_c1082_skill3_1(J)"
+    },
+    {
+      "eventPath": "event:/voc/skill/c_luluka_skill_03",
+      "requestedKey": "voc_c1082_skill3_2",
+      "audioTableKey": "voc_c1082_skill3_2(J)"
+    },
+    {
+      "eventPath": "event:/voc/skill/c_luluka_skill_03",
+      "requestedKey": "voc_c1082_skill3_3",
+      "audioTableKey": "voc_c1082_skill3_3(J)"
+    },
+    {
       "eventPath": "event:/voc/skill/c_mui_skill_03",
       "requestedKey": "voc_c1044_skill3_1_2",
       "audioTableKey": "voc_c1044_skill3_1_1"
@@ -13248,6 +15590,11 @@
       "eventPath": "event:/voc/skill/c_mui_skill_03",
       "requestedKey": "voc_c1044_skill3_3_2",
       "audioTableKey": "voc_c1044_skill3_3_1"
+    },
+    {
+      "eventPath": "event:/voc/skill/c_pavel_skill_02",
+      "requestedKey": "voc_c1080_skill2_3",
+      "audioTableKey": "voc_c1080_skill2_3(J)"
     },
     {
       "eventPath": "event:/voc/skill/c_schniel_skill_03",
@@ -13328,6 +15675,11 @@
       "eventPath": "event:/voc/skill/c_yupine_skill_02",
       "requestedKey": "voc_c1016_skill2_3",
       "audioTableKey": "voc_c1016_skill2_3_j"
+    },
+    {
+      "eventPath": "event:/voc/skill/c_zeno_skill_03",
+      "requestedKey": "voc_c1083_skill3_4_2k",
+      "audioTableKey": "voc_c1083_skill3_4_2"
     }
   ]
 }

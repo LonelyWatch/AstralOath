@@ -35,8 +35,18 @@ namespace AstralOath.Shared.Battle
                         case "passive_defense": unit.LowHealthDefense += bonus; break;
                         case "passive_critical_chance": unit.PassiveCriticalChance += bonus; break;
                         case "passive_critical_resistance": unit.PassiveCriticalResistance += bonus; break;
+                        case "enemy_evasion_reduction": unit.EnemyEvasionReduction = Math.Max(unit.EnemyEvasionReduction, bonus); break;
                     }
                 }
+            }
+
+            private int EnemyEvasionPenalty(Unit target)
+            {
+                int highest = 0;
+                foreach (var opponent in units)
+                    if (opponent.Alive && opponent.Side != target.Side)
+                        highest = Math.Max(highest, opponent.EnemyEvasionReduction);
+                return highest;
             }
 
             private void CleanseAtTurnStart(Unit actor)

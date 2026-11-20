@@ -1,0 +1,391 @@
+
+luluka_sk3_final_f.sct
+size: 512,1922
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bg&filter/bg
+  rotate: false
+  xy: 2, 706
+  size: 244, 119
+  orig: 244, 119
+  offset: 0, 0
+  index: -1
+dust&smoke/dust_ky_1_1
+  rotate: true
+  xy: 174, 1239
+  size: 145, 63
+  orig: 145, 63
+  offset: 0, 0
+  index: -1
+dust&smoke/dust_ky_1_2
+  rotate: false
+  xy: 234, 1457
+  size: 151, 136
+  orig: 151, 136
+  offset: 0, 0
+  index: -1
+dust&smoke/dust_ky_1_3
+  rotate: true
+  xy: 173, 1386
+  size: 123, 59
+  orig: 123, 59
+  offset: 0, 0
+  index: -1
+dust&smoke/dust_ky_1_4
+  rotate: false
+  xy: 231, 1691
+  size: 131, 77
+  orig: 131, 77
+  offset: 0, 0
+  index: -1
+dust&smoke/dust_soft_1
+  rotate: false
+  xy: 2, 408
+  size: 279, 144
+  orig: 279, 144
+  offset: 0, 0
+  index: -1
+dust&smoke/dust_soft_2
+  rotate: false
+  xy: 2, 554
+  size: 271, 150
+  orig: 271, 150
+  offset: 0, 0
+  index: -1
+dust&smoke/dust_soft_3
+  rotate: false
+  xy: 2, 2
+  size: 293, 110
+  orig: 293, 110
+  offset: 0, 0
+  index: -1
+dust&smoke/dust_ti_1
+  rotate: false
+  xy: 2, 1579
+  size: 133, 65
+  orig: 133, 65
+  offset: 0, 0
+  index: -1
+dust&smoke/dust_ti_2
+  rotate: false
+  xy: 2, 1646
+  size: 133, 65
+  orig: 133, 65
+  offset: 0, 0
+  index: -1
+dust&smoke/dust_tt_1_1
+  rotate: false
+  xy: 413, 1289
+  size: 95, 79
+  orig: 95, 79
+  offset: 0, 0
+  index: -1
+dust&smoke/dust_tt_1_2
+  rotate: false
+  xy: 136, 1730
+  size: 89, 88
+  orig: 89, 88
+  offset: 0, 0
+  index: -1
+dust&smoke/dust_tt_1_3
+  rotate: true
+  xy: 2, 1846
+  size: 74, 86
+  orig: 74, 86
+  offset: 0, 0
+  index: -1
+dust&smoke/dust_tt_1_4
+  rotate: false
+  xy: 413, 1199
+  size: 95, 88
+  orig: 95, 88
+  offset: 0, 0
+  index: -1
+dust&smoke/dust_tt_1_5
+  rotate: false
+  xy: 186, 966
+  size: 56, 87
+  orig: 56, 87
+  offset: 0, 0
+  index: -1
+dust&smoke/dust_tt_1_6
+  rotate: true
+  xy: 183, 1169
+  size: 68, 50
+  orig: 68, 50
+  offset: 0, 0
+  index: -1
+dust&smoke/dust_tt_1_7
+  rotate: true
+  xy: 464, 873
+  size: 57, 45
+  orig: 57, 45
+  offset: 0, 0
+  index: -1
+dust&smoke/dust_tt_1_9
+  rotate: true
+  xy: 186, 1106
+  size: 61, 51
+  orig: 61, 51
+  offset: 0, 0
+  index: -1
+dust&smoke/dustu_1_1
+  rotate: true
+  xy: 244, 1023
+  size: 140, 179
+  orig: 140, 179
+  offset: 0, 0
+  index: -1
+dust&smoke/dustu_1_2
+  rotate: true
+  xy: 2, 1469
+  size: 108, 152
+  orig: 108, 152
+  offset: 0, 0
+  index: -1
+dust&smoke/dustu_2_1
+  rotate: true
+  xy: 425, 1023
+  size: 86, 85
+  orig: 86, 85
+  offset: 0, 0
+  index: -1
+dust&smoke/dustu_2_1_1
+  rotate: true
+  xy: 425, 1111
+  size: 86, 85
+  orig: 86, 85
+  offset: 0, 0
+  index: -1
+dusts_midlle_1
+  rotate: false
+  xy: 244, 873
+  size: 218, 148
+  orig: 218, 148
+  offset: 0, 0
+  index: -1
+dusts_midlle_2
+  rotate: false
+  xy: 2, 827
+  size: 240, 137
+  orig: 240, 137
+  offset: 0, 0
+  index: -1
+dusts_midlle_3
+  rotate: false
+  xy: 283, 485
+  size: 221, 218
+  orig: 221, 218
+  offset: 0, 0
+  index: -1
+flame_s_1
+  rotate: true
+  xy: 258, 1819
+  size: 101, 108
+  orig: 101, 108
+  offset: 0, 0
+  index: -1
+flamedust_1
+  rotate: true
+  xy: 2, 966
+  size: 139, 182
+  orig: 139, 182
+  offset: 0, 0
+  index: -1
+flamedust_2
+  rotate: true
+  xy: 297, 2
+  size: 166, 201
+  orig: 166, 201
+  offset: 0, 0
+  index: -1
+flamedust_3
+  rotate: true
+  xy: 296, 170
+  size: 167, 214
+  orig: 167, 214
+  offset: 0, 0
+  index: -1
+flamedust_4
+  rotate: true
+  xy: 275, 705
+  size: 166, 235
+  orig: 166, 235
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 1298
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+heal_3
+  rotate: true
+  xy: 239, 1165
+  size: 159, 172
+  orig: 159, 172
+  offset: 0, 0
+  index: -1
+luluka/sk3_final_lay_part_01
+  rotate: true
+  xy: 136, 1820
+  size: 88, 120
+  orig: 88, 120
+  offset: 0, 0
+  index: -1
+luluka/sk3_final_lay_part_02
+  rotate: true
+  xy: 239, 1326
+  size: 129, 167
+  orig: 129, 167
+  offset: 0, 0
+  index: -1
+luluka/sk3_final_lay_part_03
+  rotate: true
+  xy: 2, 1190
+  size: 106, 170
+  orig: 106, 170
+  offset: 0, 0
+  index: -1
+luluka/sk3_final_lay_part_04
+  rotate: false
+  xy: 464, 932
+  size: 30, 54
+  orig: 30, 54
+  offset: 0, 0
+  index: -1
+luluka/sk3_final_lay_part_05
+  rotate: false
+  xy: 364, 1727
+  size: 49, 77
+  orig: 49, 77
+  offset: 0, 0
+  index: -1
+luluka/sk3_final_lay_part_06
+  rotate: true
+  xy: 296, 339
+  size: 125, 188
+  orig: 125, 188
+  offset: 0, 0
+  index: -1
+luluka/sk3_final_lay_part_07
+  rotate: true
+  xy: 233, 1595
+  size: 94, 136
+  orig: 94, 136
+  offset: 0, 0
+  index: -1
+luluka/sk3_final_lay_part_08
+  rotate: true
+  xy: 2, 1107
+  size: 81, 179
+  orig: 81, 179
+  offset: 0, 0
+  index: -1
+luluka/sk3_final_lay_smoke_01
+  rotate: false
+  xy: 486, 339
+  size: 20, 35
+  orig: 20, 35
+  offset: 0, 0
+  index: -1
+luluka/sk3_final_lay_smoke_02
+  rotate: false
+  xy: 486, 376
+  size: 20, 34
+  orig: 20, 34
+  offset: 0, 0
+  index: -1
+luluka/sk3_final_lay_smoke_03
+  rotate: true
+  xy: 186, 1055
+  size: 49, 55
+  orig: 49, 55
+  offset: 0, 0
+  index: -1
+luluka/sk3_final_lay_smoke_04
+  rotate: false
+  xy: 227, 1770
+  size: 49, 47
+  orig: 49, 47
+  offset: 0, 0
+  index: -1
+luluka/sk3_final_lay_smoke_09
+  rotate: true
+  xy: 486, 412
+  size: 35, 19
+  orig: 35, 19
+  offset: 0, 0
+  index: -1
+luluka/sk3_final_lay_smoke_10
+  rotate: true
+  xy: 486, 449
+  size: 34, 18
+  orig: 34, 18
+  offset: 0, 0
+  index: -1
+luluka/sk3_final_lay_smoke_13
+  rotate: true
+  xy: 387, 1502
+  size: 94, 122
+  orig: 94, 122
+  offset: 0, 0
+  index: -1
+luluka/sk3_final_lay_smoke_14
+  rotate: false
+  xy: 137, 1620
+  size: 92, 108
+  orig: 92, 108
+  offset: 0, 0
+  index: -1
+luluka/sk3_sp_center_01
+  rotate: false
+  xy: 2, 114
+  size: 292, 292
+  orig: 292, 292
+  offset: 0, 0
+  index: -1
+luluka/sk3_sp_center_02
+  rotate: true
+  xy: 2, 1713
+  size: 131, 132
+  orig: 131, 132
+  offset: 0, 0
+  index: -1
+luluka/sk3_sp_center_03
+  rotate: true
+  xy: 500, 2
+  size: 50, 1
+  orig: 50, 1
+  offset: 0, 0
+  index: -1
+luluka/sk3_sp_center_04
+  rotate: false
+  xy: 368, 1806
+  size: 112, 112
+  orig: 112, 112
+  offset: 0, 0
+  index: -1
+part_1
+  rotate: true
+  xy: 408, 1370
+  size: 130, 101
+  orig: 130, 101
+  offset: 0, 0
+  index: -1
+part_2
+  rotate: false
+  xy: 371, 1598
+  size: 134, 127
+  orig: 134, 127
+  offset: 0, 0
+  index: -1
+part_3
+  rotate: false
+  xy: 156, 1511
+  size: 75, 107
+  orig: 75, 107
+  offset: 0, 0
+  index: -1

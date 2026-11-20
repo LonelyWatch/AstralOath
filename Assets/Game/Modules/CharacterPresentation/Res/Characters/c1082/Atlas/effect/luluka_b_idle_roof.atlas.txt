@@ -1,0 +1,34 @@
+
+luluka_b_idle_roof.sct
+size: 256,285
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 2, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+flower2
+  rotate: false
+  xy: 2, 173
+  size: 125, 110
+  orig: 125, 110
+  offset: 0, 0
+  index: -1
+flower3
+  rotate: false
+  xy: 129, 173
+  size: 125, 110
+  orig: 125, 110
+  offset: 0, 0
+  index: -1
+flower4
+  rotate: false
+  xy: 173, 2
+  size: 74, 86
+  orig: 74, 86
+  offset: 0, 0
+  index: -1

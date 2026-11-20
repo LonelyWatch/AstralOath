@@ -1,0 +1,230 @@
+
+luluka_camping.sct
+size: 512,479
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+burst_sphear
+  rotate: false
+  xy: 2, 173
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+camping_b_ring1
+  rotate: false
+  xy: 323, 114
+  size: 187, 47
+  orig: 187, 47
+  offset: 0, 0
+  index: -1
+camping_b_ring2
+  rotate: false
+  xy: 323, 163
+  size: 187, 47
+  orig: 187, 47
+  offset: 0, 0
+  index: -1
+camping_b_ring3
+  rotate: false
+  xy: 323, 212
+  size: 187, 47
+  orig: 187, 47
+  offset: 0, 0
+  index: -1
+camping_b_ring4
+  rotate: false
+  xy: 263, 261
+  size: 187, 47
+  orig: 187, 47
+  offset: 0, 0
+  index: -1
+camping_flower1
+  rotate: true
+  xy: 470, 452
+  size: 25, 32
+  orig: 25, 32
+  offset: 0, 0
+  index: -1
+camping_flower2
+  rotate: false
+  xy: 461, 90
+  size: 24, 18
+  orig: 24, 18
+  offset: 0, 0
+  index: -1
+camping_flower3
+  rotate: false
+  xy: 129, 385
+  size: 21, 32
+  orig: 21, 32
+  offset: 0, 0
+  index: -1
+camping_flower4
+  rotate: true
+  xy: 136, 173
+  size: 25, 35
+  orig: 25, 35
+  offset: 0, 0
+  index: -1
+camping_flower5
+  rotate: true
+  xy: 434, 90
+  size: 19, 25
+  orig: 19, 25
+  offset: 0, 0
+  index: -1
+camping_flower6
+  rotate: false
+  xy: 136, 200
+  size: 32, 20
+  orig: 32, 20
+  offset: 0, 0
+  index: -1
+camping_m_flower1
+  rotate: false
+  xy: 475, 303
+  size: 32, 41
+  orig: 32, 41
+  offset: 0, 0
+  index: -1
+camping_m_flower2
+  rotate: false
+  xy: 475, 346
+  size: 32, 41
+  orig: 32, 41
+  offset: 0, 0
+  index: -1
+camping_obake1
+  rotate: false
+  xy: 279, 310
+  size: 96, 81
+  orig: 96, 81
+  offset: 0, 0
+  index: -1
+camping_obake2
+  rotate: false
+  xy: 377, 310
+  size: 96, 81
+  orig: 96, 81
+  offset: 0, 0
+  index: -1
+camping_obake3
+  rotate: false
+  xy: 152, 385
+  size: 96, 81
+  orig: 96, 81
+  offset: 0, 0
+  index: -1
+camping_obake4
+  rotate: false
+  xy: 250, 393
+  size: 96, 81
+  orig: 96, 81
+  offset: 0, 0
+  index: -1
+camping_one_impact
+  rotate: false
+  xy: 173, 2
+  size: 132, 116
+  orig: 132, 116
+  offset: 0, 0
+  index: -1
+camping_s_ring1
+  rotate: false
+  xy: 173, 120
+  size: 148, 49
+  orig: 148, 49
+  offset: 0, 0
+  index: -1
+camping_s_ring2
+  rotate: false
+  xy: 173, 171
+  size: 148, 49
+  orig: 148, 49
+  offset: 0, 0
+  index: -1
+camping_s_ring3
+  rotate: false
+  xy: 2, 419
+  size: 148, 49
+  orig: 148, 49
+  offset: 0, 0
+  index: -1
+camping_s_ring4
+  rotate: false
+  xy: 129, 334
+  size: 148, 49
+  orig: 148, 49
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+flower1
+  rotate: false
+  xy: 434, 2
+  size: 74, 86
+  orig: 74, 86
+  offset: 0, 0
+  index: -1
+flower2
+  rotate: false
+  xy: 2, 307
+  size: 125, 110
+  orig: 125, 110
+  offset: 0, 0
+  index: -1
+flower3
+  rotate: false
+  xy: 307, 2
+  size: 125, 110
+  orig: 125, 110
+  offset: 0, 0
+  index: -1
+flower4
+  rotate: true
+  xy: 348, 393
+  size: 74, 86
+  orig: 74, 86
+  offset: 0, 0
+  index: -1
+flower5
+  rotate: false
+  xy: 136, 222
+  size: 125, 110
+  orig: 125, 110
+  offset: 0, 0
+  index: -1
+par_flower1
+  rotate: true
+  xy: 436, 452
+  size: 25, 32
+  orig: 25, 32
+  offset: 0, 0
+  index: -1
+par_flower2
+  rotate: false
+  xy: 452, 261
+  size: 39, 40
+  orig: 39, 40
+  offset: 0, 0
+  index: -1
+par_flower3
+  rotate: false
+  xy: 263, 222
+  size: 57, 33
+  orig: 57, 33
+  offset: 0, 0
+  index: -1
+par_flower4
+  rotate: false
+  xy: 436, 393
+  size: 52, 57
+  orig: 52, 57
+  offset: 0, 0
+  index: -1

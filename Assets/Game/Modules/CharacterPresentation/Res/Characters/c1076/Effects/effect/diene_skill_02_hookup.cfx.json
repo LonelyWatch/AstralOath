@@ -1,0 +1,18 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "diene_skill_02_pati4",
+      "rotate": "40",
+      "format": "particle",
+      "globalZ": 1.0
+    },
+    {
+      "source": "diene_skill_02_pati4",
+      "scale": "-1.0,1.0",
+      "rotate": "-50",
+      "format": "particle",
+      "globalZ": -1.0
+    }
+  ]
+}

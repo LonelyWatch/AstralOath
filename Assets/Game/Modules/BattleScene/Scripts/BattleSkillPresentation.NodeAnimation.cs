@@ -74,7 +74,10 @@ namespace AstralOath.Client.BattleScene
 
         private void PlayNodeAnimation(JObject node, float at, BattlePreviewActor[] recipients)
         {
-            bool affectedActors = node["target_node"] == null;
+            // r4262 names node 76 "teamtarget" (Alencia) and "node_target" (Cerise).
+            // Its transform acts on the target formation, including the gaps between bodies.
+            bool targetFormation = (int?)node["target_node"] == 76;
+            bool affectedActors = node["target_node"] == null || targetFormation;
             if (!affectedActors && (int?)node["target_node"] != 5)
             {
                 WarnSource($"Unmapped NODE_ANI target_node {node["target_node"]}.");
@@ -150,7 +153,12 @@ namespace AstralOath.Client.BattleScene
                 foreach (string entry in frames.Values<string>())
                 {
                     string[] fields = entry?.Split(',');
-                    if (fields?.Length != 3 || !TryScalar(fields[0], out float delay) || delay < 0f || fields[2] != "1")
+                    // A zero-duration source clip has one visible pose regardless of looping.
+                    // Keep the unresolved flag diagnostic on moving clips.
+                    bool singlePose = fields?.Length == 3 && fields[2] == "0" &&
+                        actor.GetBattleAnimationDuration(fields[1]) == 0f;
+                    if (fields?.Length != 3 || !TryScalar(fields[0], out float delay) || delay < 0f ||
+                        (fields[2] != "1" && !singlePose))
                     {
                         WarnSource($"Unmapped NODE_ANI timeline entry '{entry}'.");
                         continue;
@@ -180,9 +188,11 @@ namespace AstralOath.Client.BattleScene
                     if (!Owns(binding)) continue;
                     var parent = binding.Body.parent;
                     Vector3 origin = parent.TransformPoint(binding.Position);
+                    Vector3 relative = formation[index];
+                    Vector3 transformed = targetFormation ? rotation * Vector3.Scale(relative, scale) : relative;
                     binding.Body.position = screenPivot
-                        ? cinematic.SourceScreenPoint(origin, translation + formation[index])
-                        : origin + translation;
+                        ? cinematic.SourceScreenPoint(origin, translation + transformed)
+                        : origin + translation + (transformed - relative);
                     binding.Body.localRotation = binding.Rotation * rotation;
                     binding.Body.localScale = Vector3.Scale(binding.Scale, scale) *
                         (screenPivot ? cinematic.SourceScreenScale : 1f);

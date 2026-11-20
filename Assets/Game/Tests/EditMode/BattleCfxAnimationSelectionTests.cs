@@ -281,27 +281,30 @@ namespace AstralOath.Tests
             runtime.GetField("caster", Private).SetValue(playback, actor);
         }
 
-        [TestCase(false)]
-        [TestCase(true)]
-        public void SchnielDetoxDrawsOneGroundRingAtHisFormation(bool enemy)
+        [TestCase("c1060", "c_schniel_skill_02", "schniel_skeff_sk2_3_ground_glow", 9, -1.7f, false)]
+        [TestCase("c1060", "c_schniel_skill_02", "schniel_skeff_sk2_3_ground_glow", 9, -1.7f, true)]
+        [TestCase("c1088", "c_vivian_skill_03", "vivian_skeff_sk3_ph3_f_1", 4, -1f, false)]
+        [TestCase("c1088", "c_vivian_skill_03", "vivian_skeff_sk3_ph3_f_1", 4, -1f, true)]
+        public void FormationEffectDrawsOneVisibleLayerAtTheAlliedCenter(string hero, string graphName,
+            string source, int layerCount, float expectedY, bool enemy)
         {
-            const string prefix = "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1060/";
-            const string source = "schniel_skeff_sk2_3_ground_glow";
+            string prefix = $"Assets/Game/Modules/CharacterPresentation/Res/Characters/{hero}/";
             var graph = JObject.Parse(AssetDatabase.LoadAssetAtPath<TextAsset>(prefix +
-                "Configs/stagept/c_schniel_skill_02.graph.json").text);
-            var node = graph["source"]["entities"].OfType<JObject>().Single(n => (int)n["guid"] == 9);
-            Assert.That((int)node["location"], Is.EqualTo(32));
+                $"Configs/stagept/{graphName}.graph.json").text);
+            var node = graph["source"]["entities"].OfType<JObject>()
+                .Single(n => (string)n["etty"] == "EFFECT" && (int?)n["location"] == 32);
+            string cfxPath = "effect/" + (string)node["source"];
             var cfx = JObject.Parse(AssetDatabase.LoadAssetAtPath<TextAsset>(prefix +
-                "Effects/effect/schniel_skeff_sk2_3.cfx.json").text);
-            Assert.That(cfx["primitive"].Count(), Is.EqualTo(9));
-            var ground = cfx["primitive"].Single(n => (string)n["source"] == source);
-            cfx["primitive"] = new JArray(ground.DeepClone());
+                "Effects/" + cfxPath + ".json").text);
+            Assert.That(cfx["primitive"].Count(), Is.EqualTo(layerCount));
+            var layer = cfx["primitive"].Single(n => (string)n["source"] == source);
+            cfx["primitive"] = new JArray(layer.DeepClone());
             Create(source, AssetDatabase.LoadAssetAtPath<TextAsset>(prefix + "Animations/effect/" + source + ".spine.json"),
                 AssetDatabase.LoadAssetAtPath<TextAsset>(prefix + "Atlas/effect/" + source + ".atlas.txt"),
                 AssetDatabase.LoadAssetAtPath<Texture2D>(prefix + "Textures/effect/" + source + ".png"), source + ".sct",
                 importScale:.01f);
             ((Dictionary<string, JObject>)runtime.GetProperty("documents", Private).GetValue(playback))
-                .Add("effect/schniel_skeff_sk2_3.cfx", cfx);
+                .Add(cfxPath, cfx);
             var actors = Type.GetType(Module + ".BattlePreviewActor, " + Module, true);
             float facing = enemy ? -1f : 1f;
             Component Actor(float x, float y, bool otherTeam)
@@ -331,11 +334,49 @@ namespace AstralOath.Tests
             recipients.SetValue(caster,0);
             runtime.GetMethod("Effect",Private).Invoke(playback,new object[]{node,caster,recipients});
             runtime.GetMethod("Tick").Invoke(playback,new object[]{.666f});
-            var rings = root.GetComponentsInChildren<MeshFilter>().Where(m => m.name == source).ToArray();
-            Assert.That(rings.Length,Is.EqualTo(1));
-            Assert.That(rings[0].sharedMesh.colors32.Any(c => c.a>0),Is.True);
-            Assert.That(rings[0].transform.parent.position.x,Is.EqualTo(-5f*facing).Within(.001f));
-            Assert.That(rings[0].transform.parent.position.y,Is.EqualTo(-1.7f).Within(.001f));
+            var layers = root.GetComponentsInChildren<MeshFilter>().Where(m => m.name == source).ToArray();
+            Assert.That(layers.Length, Is.EqualTo(1));
+            Assert.That(layers[0].sharedMesh.colors32.Any(c => c.a > 0), Is.True);
+            Assert.That(layers[0].transform.parent.position.x, Is.EqualTo(-5f * facing).Within(.001f));
+            Assert.That(layers[0].transform.parent.position.y, Is.EqualTo(expectedY).Within(.001f));
+        }
+
+        [TestCase(false, true)]
+        [TestCase(true, true)]
+        [TestCase(false, false)]
+        public void CerisePlacesHerOpeningMagicCircleAtHerOwnCast(bool mirrored, bool paired)
+        {
+            const string directory = "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1081/";
+            const string layer = "ceris_sk3_1eff_b";
+            var graph = JObject.Parse(AssetDatabase.LoadAssetAtPath<TextAsset>(directory + "Configs/stagept/c_ceris_skill_03.graph.json").text);
+            var node = graph["source"]["entities"].OfType<JObject>().Single(row => (int)row["guid"] == 21);
+            if (!paired) graph["source"]["connections"].Single(edge => (int)edge["to"] == 22)["delay"] = 100;
+            var cfx = JObject.Parse(AssetDatabase.LoadAssetAtPath<TextAsset>(directory + "Effects/effect/ceris_skill_03_01.cfx.json").text);
+            cfx["primitive"] = new JArray(cfx["primitive"].Single(row => (string)row["source"] == layer).DeepClone());
+            Create(layer, AssetDatabase.LoadAssetAtPath<TextAsset>(directory + "Animations/effect/" + layer + ".spine.json"),
+                AssetDatabase.LoadAssetAtPath<TextAsset>(directory + "Atlas/effect/" + layer + ".atlas.txt"),
+                AssetDatabase.LoadAssetAtPath<Texture2D>(directory + "Textures/effect/" + layer + ".png"), layer + ".sct", importScale: .01f);
+            ((Dictionary<string, JObject>)runtime.GetProperty("documents", Private).GetValue(playback)).Add("effect/ceris_skill_03_01.cfx", cfx);
+            var actorType = Type.GetType(Module + ".BattlePreviewActor, " + Module, true);
+            Component Actor(bool caster)
+            {
+                var go = new GameObject(caster ? "Caster" : "Opponent");
+                go.transform.SetParent(root.transform, false);
+                go.transform.position = Vector3.right * (caster == mirrored ? 4 : -4);
+                var actor = go.AddComponent(actorType);
+                actorType.GetField("faceLeft", Private).SetValue(actor, caster == mirrored);
+                return actor;
+            }
+            var source = Actor(true);
+            var target = Actor(false);
+            runtime.GetField("caster", Private).SetValue(playback, source);
+            var recipients = Array.CreateInstance(actorType, 1);
+            recipients.SetValue(target, 0);
+            runtime.GetMethod("Effect", Private).Invoke(playback, new object[] { node, target, recipients });
+            runtime.GetMethod("Tick").Invoke(playback, new object[] { 1.6f });
+            var circle = root.GetComponentsInChildren<MeshFilter>().Single(item => item.name == layer);
+            Assert.That(circle.sharedMesh.vertexCount, Is.GreaterThan(0));
+            Assert.That(circle.transform.parent.position.x, Is.EqualTo((paired ? source : target).transform.position.x).Within(.001f));
         }
 
         [Test]

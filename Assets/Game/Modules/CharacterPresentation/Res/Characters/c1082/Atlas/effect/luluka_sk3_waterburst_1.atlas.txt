@@ -1,0 +1,734 @@
+
+luluka_sk3_waterburst_1.sct
+size: 963,1655
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dust_soft_1
+  rotate: false
+  xy: 2, 503
+  size: 279, 144
+  orig: 279, 144
+  offset: 0, 0
+  index: -1
+dust_soft_2
+  rotate: false
+  xy: 673, 2
+  size: 271, 150
+  orig: 271, 150
+  offset: 0, 0
+  index: -1
+dust_soft_3
+  rotate: true
+  xy: 2, 1138
+  size: 293, 110
+  orig: 293, 110
+  offset: 0, 0
+  index: -1
+light_halfcicle_01
+  rotate: false
+  xy: 158, 1422
+  size: 211, 136
+  orig: 211, 136
+  offset: 0, 0
+  index: -1
+luluka/water_01
+  rotate: false
+  xy: 2, 2
+  size: 343, 252
+  orig: 343, 252
+  offset: 0, 0
+  index: -1
+luluka/water_02
+  rotate: false
+  xy: 2, 256
+  size: 318, 245
+  orig: 318, 245
+  offset: 0, 0
+  index: -1
+luluka/water_03
+  rotate: false
+  xy: 347, 2
+  size: 324, 232
+  orig: 324, 232
+  offset: 0, 0
+  index: -1
+luluka/water_04
+  rotate: false
+  xy: 620, 463
+  size: 196, 83
+  orig: 196, 83
+  offset: 0, 0
+  index: -1
+luluka/water_05
+  rotate: false
+  xy: 588, 548
+  size: 195, 107
+  orig: 195, 107
+  offset: 0, 0
+  index: -1
+luluka/water_06
+  rotate: false
+  xy: 385, 505
+  size: 201, 116
+  orig: 201, 116
+  offset: 0, 0
+  index: -1
+luluka/water_07
+  rotate: false
+  xy: 166, 1301
+  size: 203, 119
+  orig: 203, 119
+  offset: 0, 0
+  index: -1
+luluka/water_base
+  rotate: false
+  xy: 472, 852
+  size: 106, 153
+  orig: 106, 153
+  offset: 0, 0
+  index: -1
+luluka/water_base_line
+  rotate: false
+  xy: 584, 1211
+  size: 6, 168
+  orig: 6, 168
+  offset: 0, 0
+  index: -1
+luluka/water_black_01
+  rotate: false
+  xy: 196, 649
+  size: 94, 227
+  orig: 94, 227
+  offset: 0, 0
+  index: -1
+luluka/water_black_02
+  rotate: true
+  xy: 673, 233
+  size: 76, 224
+  orig: 76, 224
+  offset: 0, 0
+  index: -1
+luluka/water_black_03
+  rotate: false
+  xy: 322, 256
+  size: 102, 235
+  orig: 102, 235
+  offset: 0, 0
+  index: -1
+luluka/water_black_04
+  rotate: true
+  xy: 673, 154
+  size: 77, 239
+  orig: 77, 239
+  offset: 0, 0
+  index: -1
+luluka/water_black_05
+  rotate: false
+  xy: 114, 1138
+  size: 50, 241
+  orig: 50, 241
+  offset: 0, 0
+  index: -1
+luluka/water_black_06
+  rotate: true
+  xy: 785, 563
+  size: 105, 174
+  orig: 105, 174
+  offset: 0, 0
+  index: -1
+luluka/water_burst_1
+  rotate: false
+  xy: 426, 236
+  size: 190, 146
+  orig: 190, 146
+  offset: 0, 0
+  index: -1
+luluka/water_highlight_01
+  rotate: true
+  xy: 2, 1433
+  size: 217, 154
+  orig: 217, 154
+  offset: 0, 0
+  index: -1
+luluka/water_highlight_02
+  rotate: false
+  xy: 166, 1095
+  size: 200, 204
+  orig: 200, 204
+  offset: 0, 0
+  index: -1
+luluka/water_highlight_03
+  rotate: false
+  xy: 155, 878
+  size: 183, 215
+  orig: 183, 215
+  offset: 0, 0
+  index: -1
+luluka/water_highlight_04
+  rotate: false
+  xy: 620, 311
+  size: 185, 150
+  orig: 185, 150
+  offset: 0, 0
+  index: -1
+luluka/water_highlight_05
+  rotate: false
+  xy: 426, 384
+  size: 192, 119
+  orig: 192, 119
+  offset: 0, 0
+  index: -1
+luluka/water_highlight_06
+  rotate: false
+  xy: 2, 649
+  size: 192, 226
+  orig: 192, 226
+  offset: 0, 0
+  index: -1
+luluka/water_highlight_07
+  rotate: false
+  xy: 807, 311
+  size: 154, 123
+  orig: 154, 123
+  offset: 0, 0
+  index: -1
+luluka/water_splash_10
+  rotate: true
+  xy: 472, 1007
+  size: 79, 84
+  orig: 79, 84
+  offset: 0, 0
+  index: -1
+luluka/water_splash_11_1
+  rotate: false
+  xy: 699, 1210
+  size: 83, 86
+  orig: 83, 86
+  offset: 0, 0
+  index: -1
+luluka/water_splash_11_2
+  rotate: false
+  xy: 790, 1023
+  size: 78, 81
+  orig: 78, 81
+  offset: 0, 0
+  index: -1
+luluka/water_splash_11_3
+  rotate: false
+  xy: 760, 1521
+  size: 68, 67
+  orig: 68, 67
+  offset: 0, 0
+  index: -1
+luluka/water_splash_12_1
+  rotate: true
+  xy: 818, 436
+  size: 125, 138
+  orig: 125, 138
+  offset: 0, 0
+  index: -1
+luluka/water_splash_12_2
+  rotate: false
+  xy: 371, 1297
+  size: 114, 120
+  orig: 114, 120
+  offset: 0, 0
+  index: -1
+luluka/water_splash_12_3
+  rotate: false
+  xy: 487, 1333
+  size: 95, 84
+  orig: 95, 84
+  offset: 0, 0
+  index: -1
+luluka/water_splash_13_1
+  rotate: false
+  xy: 368, 1088
+  size: 116, 121
+  orig: 116, 121
+  offset: 0, 0
+  index: -1
+luluka/water_splash_13_2
+  rotate: true
+  xy: 689, 1402
+  size: 100, 96
+  orig: 100, 96
+  offset: 0, 0
+  index: -1
+luluka/water_splash_13_3
+  rotate: false
+  xy: 784, 1284
+  size: 78, 75
+  orig: 78, 75
+  offset: 0, 0
+  index: -1
+luluka/water_splash_14_1
+  rotate: true
+  xy: 268, 1560
+  size: 87, 104
+  orig: 87, 104
+  offset: 0, 0
+  index: -1
+luluka/water_splash_14_2
+  rotate: true
+  xy: 862, 1106
+  size: 77, 74
+  orig: 77, 74
+  offset: 0, 0
+  index: -1
+luluka/water_splash_14_3
+  rotate: false
+  xy: 758, 1590
+  size: 63, 63
+  orig: 63, 63
+  offset: 0, 0
+  index: -1
+luluka/water_splash_15_1
+  rotate: true
+  xy: 784, 670
+  size: 113, 114
+  orig: 113, 114
+  offset: 0, 0
+  index: -1
+luluka/water_splash_15_2
+  rotate: true
+  xy: 374, 1541
+  size: 112, 111
+  orig: 112, 111
+  offset: 0, 0
+  index: -1
+luluka/water_splash_15_3
+  rotate: true
+  xy: 870, 1012
+  size: 81, 69
+  orig: 81, 69
+  offset: 0, 0
+  index: -1
+luluka/water_splash_16_1
+  rotate: false
+  xy: 590, 1506
+  size: 96, 92
+  orig: 96, 92
+  offset: 0, 0
+  index: -1
+luluka/water_splash_16_2
+  rotate: false
+  xy: 783, 1106
+  size: 77, 88
+  orig: 77, 88
+  offset: 0, 0
+  index: -1
+luluka/water_splash_16_3
+  rotate: true
+  xy: 862, 1185
+  size: 69, 75
+  orig: 69, 75
+  offset: 0, 0
+  index: -1
+luluka/water_splash_17_1
+  rotate: true
+  xy: 385, 623
+  size: 153, 179
+  orig: 153, 179
+  offset: 0, 0
+  index: -1
+luluka/water_splash_17_2
+  rotate: false
+  xy: 787, 1443
+  size: 78, 76
+  orig: 78, 76
+  offset: 0, 0
+  index: -1
+luluka/water_splash_17_3
+  rotate: true
+  xy: 900, 735
+  size: 63, 61
+  orig: 63, 61
+  offset: 0, 0
+  index: -1
+luluka/water_splash_18
+  rotate: false
+  xy: 694, 1025
+  size: 84, 90
+  orig: 84, 90
+  offset: 0, 0
+  index: -1
+luluka/water_splash_19
+  rotate: true
+  xy: 870, 800
+  size: 71, 89
+  orig: 71, 89
+  offset: 0, 0
+  index: -1
+luluka/water_splash_1_1
+  rotate: false
+  xy: 493, 1419
+  size: 95, 116
+  orig: 95, 116
+  offset: 0, 0
+  index: -1
+luluka/water_splash_1_2
+  rotate: false
+  xy: 699, 1117
+  size: 82, 91
+  orig: 82, 91
+  offset: 0, 0
+  index: -1
+luluka/water_splash_1_3
+  rotate: true
+  xy: 867, 1482
+  size: 69, 70
+  orig: 69, 70
+  offset: 0, 0
+  index: -1
+luluka/water_splash_20_1
+  rotate: false
+  xy: 592, 1260
+  size: 105, 100
+  orig: 105, 100
+  offset: 0, 0
+  index: -1
+luluka/water_splash_20_2
+  rotate: false
+  xy: 493, 1537
+  size: 95, 94
+  orig: 95, 94
+  offset: 0, 0
+  index: -1
+luluka/water_splash_20_3
+  rotate: true
+  xy: 773, 859
+  size: 68, 73
+  orig: 68, 73
+  offset: 0, 0
+  index: -1
+luluka/water_splash_21
+  rotate: false
+  xy: 618, 236
+  size: 53, 56
+  orig: 53, 56
+  offset: 0, 0
+  index: -1
+luluka/water_splash_22_1
+  rotate: false
+  xy: 368, 1211
+  size: 117, 84
+  orig: 117, 84
+  offset: 0, 0
+  index: -1
+luluka/water_splash_22_2
+  rotate: true
+  xy: 790, 929
+  size: 92, 74
+  orig: 92, 74
+  offset: 0, 0
+  index: -1
+luluka/water_splash_22_3
+  rotate: true
+  xy: 699, 1298
+  size: 62, 58
+  orig: 62, 58
+  offset: 0, 0
+  index: -1
+luluka/water_splash_23
+  rotate: true
+  xy: 864, 1256
+  size: 74, 73
+  orig: 74, 73
+  offset: 0, 0
+  index: -1
+luluka/water_splash_24
+  rotate: true
+  xy: 689, 1504
+  size: 68, 69
+  orig: 68, 69
+  offset: 0, 0
+  index: -1
+luluka/water_splash_25_1
+  rotate: false
+  xy: 866, 926
+  size: 74, 84
+  orig: 74, 84
+  offset: 0, 0
+  index: -1
+luluka/water_splash_25_2
+  rotate: true
+  xy: 899, 233
+  size: 61, 62
+  orig: 61, 62
+  offset: 0, 0
+  index: -1
+luluka/water_splash_2_1
+  rotate: false
+  xy: 487, 1211
+  size: 95, 120
+  orig: 95, 120
+  offset: 0, 0
+  index: -1
+luluka/water_splash_2_2
+  rotate: false
+  xy: 784, 1196
+  size: 75, 86
+  orig: 75, 86
+  offset: 0, 0
+  index: -1
+luluka/water_splash_3
+  rotate: true
+  xy: 787, 1361
+  size: 80, 79
+  orig: 80, 79
+  offset: 0, 0
+  index: -1
+luluka/water_splash_4_1
+  rotate: true
+  xy: 592, 1152
+  size: 106, 105
+  orig: 106, 105
+  offset: 0, 0
+  index: -1
+luluka/water_splash_4_2
+  rotate: false
+  xy: 590, 1402
+  size: 97, 102
+  orig: 97, 102
+  offset: 0, 0
+  index: -1
+luluka/water_splash_4_3
+  rotate: true
+  xy: 692, 929
+  size: 94, 86
+  orig: 94, 86
+  offset: 0, 0
+  index: -1
+luluka/water_splash_5_1
+  rotate: true
+  xy: 566, 657
+  size: 136, 148
+  orig: 136, 148
+  offset: 0, 0
+  index: -1
+luluka/water_splash_5_2
+  rotate: false
+  xy: 340, 852
+  size: 130, 146
+  orig: 130, 146
+  offset: 0, 0
+  index: -1
+luluka/water_splash_5_3
+  rotate: false
+  xy: 283, 503
+  size: 100, 138
+  orig: 100, 138
+  offset: 0, 0
+  index: -1
+luluka/water_splash_6_1
+  rotate: false
+  xy: 371, 1419
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+luluka/water_splash_6_2
+  rotate: false
+  xy: 580, 832
+  size: 103, 113
+  orig: 103, 113
+  offset: 0, 0
+  index: -1
+luluka/water_splash_6_3
+  rotate: true
+  xy: 158, 1560
+  size: 93, 108
+  orig: 93, 108
+  offset: 0, 0
+  index: -1
+luluka/water_splash_7_1
+  rotate: false
+  xy: 830, 1553
+  size: 67, 66
+  orig: 67, 66
+  offset: 0, 0
+  index: -1
+luluka/water_splash_7_2
+  rotate: false
+  xy: 899, 1553
+  size: 56, 56
+  orig: 56, 56
+  offset: 0, 0
+  index: -1
+luluka/water_splash_7_3
+  rotate: false
+  xy: 114, 1420
+  size: 11, 11
+  orig: 11, 11
+  offset: 0, 0
+  index: -1
+luluka/water_splash_8
+  rotate: true
+  xy: 868, 1332
+  size: 76, 71
+  orig: 76, 71
+  offset: 0, 0
+  index: -1
+luluka/water_splash_9_1
+  rotate: true
+  xy: 586, 1043
+  size: 107, 106
+  orig: 107, 106
+  offset: 0, 0
+  index: -1
+luluka/water_splash_9_2
+  rotate: false
+  xy: 685, 832
+  size: 86, 95
+  orig: 86, 95
+  offset: 0, 0
+  index: -1
+luluka/water_splash_9_3
+  rotate: true
+  xy: 868, 1410
+  size: 70, 74
+  orig: 70, 74
+  offset: 0, 0
+  index: -1
+luluka/water_white_02
+  rotate: true
+  xy: 487, 1646
+  size: 7, 114
+  orig: 7, 114
+  offset: 0, 0
+  index: -1
+luluka/water_white_03
+  rotate: false
+  xy: 946, 2
+  size: 11, 159
+  orig: 11, 159
+  offset: 0, 0
+  index: -1
+luluka/water_white_04
+  rotate: false
+  xy: 780, 929
+  size: 8, 156
+  orig: 8, 156
+  offset: 0, 0
+  index: -1
+snow_long_01
+  rotate: false
+  xy: 773, 785
+  size: 95, 72
+  orig: 95, 72
+  offset: 0, 0
+  index: -1
+snow_long_02
+  rotate: false
+  xy: 590, 1600
+  size: 88, 44
+  orig: 88, 44
+  offset: 0, 0
+  index: -1
+snow_long_03
+  rotate: false
+  xy: 380, 778
+  size: 177, 72
+  orig: 177, 72
+  offset: 0, 0
+  index: -1
+snow_long_11
+  rotate: true
+  xy: 486, 1088
+  size: 121, 98
+  orig: 121, 98
+  offset: 0, 0
+  index: -1
+snow_long_12
+  rotate: true
+  xy: 2, 877
+  size: 259, 151
+  orig: 259, 151
+  offset: 0, 0
+  index: -1
+snow_long_13
+  rotate: true
+  xy: 716, 657
+  size: 121, 66
+  orig: 121, 66
+  offset: 0, 0
+  index: -1
+tornado_wave_01
+  rotate: true
+  xy: 292, 643
+  size: 207, 86
+  orig: 207, 86
+  offset: 0, 0
+  index: -1
+water_pillar_02
+  rotate: true
+  xy: 559, 795
+  size: 35, 132
+  orig: 35, 132
+  offset: 0, 0
+  index: -1
+water_pillar_03
+  rotate: true
+  xy: 592, 1362
+  size: 38, 125
+  orig: 38, 125
+  offset: 0, 0
+  index: -1
+water_pillar_04
+  rotate: true
+  xy: 716, 780
+  size: 44, 46
+  orig: 44, 46
+  offset: 0, 0
+  index: -1
+water_pillar_05
+  rotate: false
+  xy: 114, 1381
+  size: 46, 37
+  orig: 46, 37
+  offset: 0, 0
+  index: -1
+water_pillar_06
+  rotate: true
+  xy: 719, 1362
+  size: 38, 48
+  orig: 38, 48
+  offset: 0, 0
+  index: -1
+water_spray_02
+  rotate: false
+  xy: 688, 1574
+  size: 68, 68
+  orig: 68, 68
+  offset: 0, 0
+  index: -1
+water_spray_03
+  rotate: false
+  xy: 900, 670
+  size: 61, 63
+  orig: 61, 63
+  offset: 0, 0
+  index: -1
+water_spray_04
+  rotate: false
+  xy: 848, 873
+  size: 77, 51
+  orig: 77, 51
+  offset: 0, 0
+  index: -1
+water_spray_05
+  rotate: false
+  xy: 580, 947
+  size: 110, 94
+  orig: 110, 94
+  offset: 0, 0
+  index: -1
+water_spray_06
+  rotate: false
+  xy: 340, 1000
+  size: 130, 86
+  orig: 130, 86
+  offset: 0, 0
+  index: -1

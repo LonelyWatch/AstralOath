@@ -469,6 +469,68 @@ namespace AstralOath.Client.Tests
             Assert.That(body.localScale, Is.EqualTo(scale));
         }
 
+        [TestCase(false)]
+        [TestCase(true)]
+        public void CeriseMovesOnlyTheAcceptedTargetsAcrossTheBeamAndReleasesTheirBodies(bool mirrored)
+        {
+            const string directory = "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1081/";
+            var graph = JObject.Parse(File.ReadAllText(directory + "Configs/stagept/c_ceris_skill_03.graph.json"));
+            var node = graph["source"]["entities"].OfType<JObject>().Single(row => (int)row["guid"] == 26);
+            Assert.That((int)node["target_node"], Is.EqualTo(76));
+            var model = ReadModel("ras");
+            Component MakeActor(float x)
+            {
+                var actor = Create(model.json, model.atlas, model.page);
+                actor.transform.position = new Vector3(x, 0, 0);
+                return actor;
+            }
+            var caster = MakeActor(mirrored ? 4 : -4);
+            ActorType.GetField("faceLeft", Private).SetValue(caster, mirrored);
+            var targets = new[] { MakeActor(3), MakeActor(5) };
+            foreach (var target in targets) EnterBattleIdle(target, Player(target));
+            var bystander = MakeActor(1);
+            var bodies = targets.Select(actor => Player(actor).Root.transform).ToArray();
+            var starts = bodies.Select(body => body.position).ToArray();
+            var casterStart = Player(caster).Root.transform.position;
+            var bystanderStart = Player(bystander).Root.transform.position;
+            var assetType = ActorType.Assembly.GetType("AstralOath.Client.BattleScene.BattleSkillPresentationAsset", true);
+            var asset = Activator.CreateInstance(assetType);
+            var rig = new TextAsset(File.ReadAllText(directory + "Animations/spani/ceris_sk3_2eff_node_target.spine.json"));
+            assets.Add(rig);
+            assetType.GetField("document").SetValue(asset, rig);
+            assetType.GetField("source").SetValue(asset, "spani/" + (string)node["source"]);
+            assetType.GetField("scale").SetValue(asset, .01f);
+            var sources = Array.CreateInstance(assetType, 1);
+            sources.SetValue(asset, 0);
+            var type = ActorType.Assembly.GetType("AstralOath.Client.BattleScene.BattleSkillPresentation", true);
+            using var playback = (IDisposable)Activator.CreateInstance(type, root.transform,
+                Array.Empty<TextAsset>(), sources, null, null, null);
+            type.GetField("caster", Private).SetValue(playback, caster);
+            var accepted = Array.CreateInstance(ActorType, targets.Length);
+            Array.Copy(targets, accepted, targets.Length);
+            type.GetMethod("PlayNodeAnimation", Private).Invoke(playback, new object[] { node, 0f, accepted });
+
+            float direction = mirrored ? -1f : 1f;
+            // Source setup x=-1300 plus its first key x=3096.93; at 600 ms the key is -62.77.
+            Assert.That(bodies.Average(body => body.position.x) - starts.Average(p => p.x),
+                Is.EqualTo(17.9693f * direction).Within(.002f));
+            type.GetMethod("Tick").Invoke(playback, new object[] { .566f });
+            Assert.That(targets.Select(actor => Player(actor).CurrentAnimation), Is.All.EqualTo("b_idle"));
+            type.GetMethod("Tick").Invoke(playback, new object[] { .034f });
+            Assert.That(targets.Select(actor => Player(actor).CurrentAnimation), Is.All.EqualTo("attacked_damage"),
+                "Both Ras targets have this source reaction as a single setup pose at 567 ms.");
+            Assert.That(bodies.Average(body => body.position.x) - starts.Average(p => p.x),
+                Is.EqualTo(-13.6277f * direction).Within(.002f));
+            Assert.That(bodies.Select(body => body.localScale.x), Is.All.EqualTo(.5f).Within(.001f));
+            Assert.That(bodies[1].position.x - bodies[0].position.x,
+                Is.EqualTo((starts[1].x - starts[0].x) * .5f).Within(.001f));
+            Assert.That(Player(caster).Root.transform.position, Is.EqualTo(casterStart));
+            Assert.That(Player(bystander).Root.transform.position, Is.EqualTo(bystanderStart));
+            playback.Dispose();
+            Assert.That(bodies.Select(body => body.position), Is.EqualTo(starts));
+            Assert.That(targets.Select(actor => actor.transform.position.x), Is.EqualTo(new[] { 3f, 5f }));
+        }
+
         [TestCase("stop", true)]
         [TestCase("interrupt", true)]
         [TestCase("end", true)]
@@ -535,6 +597,62 @@ namespace AstralOath.Client.Tests
             Assert.That(Body(target).forceRenderingOff, Is.False);
             Assert.That(Body(alreadyHidden).forceRenderingOff, Is.True);
             Assert.That(target.transform.localPosition, Is.EqualTo(slot));
+        }
+
+        [TestCase("c1076", "diene", 9, 12, .25f, 0f)]
+        [TestCase("c1087", "furious", 22, 23, .2f, .2f)]
+        [TestCase("c1088", "vivian", 16, 0, .2f, .2f)]
+        public void SourceWithoutSelfLayersHideBothFormationsExceptTheCaster(
+            string hero, string modelName, int guid, int stopGuid, float fadeIn, float fadeOut)
+        {
+            var graph = JObject.Parse(File.ReadAllText($"Assets/Game/Modules/CharacterPresentation/Res/Characters/{hero}/Configs/stagept/c_{modelName}_skill_03.graph.json"));
+            var source = graph["source"];
+            var nodes = source["entities"].ToDictionary(n => (int)n["guid"]);
+            Assert.That((int)nodes[guid]["blend_target"], Is.EqualTo(55));
+            var links = new JArray(new JObject { ["from"] = 900, ["to"] = guid, ["when"] = 1 },
+                new JObject { ["from"] = 900, ["to"] = 901, ["when"] = 1, ["delay"] = 6000 });
+            var cues = new JArray(nodes[guid], new JObject { ["guid"] = 900, ["etty"] = "ANI", ["ani"] = "skill1" },
+                new JObject { ["guid"] = 901, ["etty"] = "IDLE" });
+            float releaseAt = (float)nodes[guid]["duration"] / 1000f;
+            if (stopGuid != 0)
+            {
+                cues.Add(nodes[stopGuid]);
+                links.Add(new JObject { ["from"] = 900, ["to"] = stopGuid, ["when"] = 1, ["delay"] = 700 });
+                releaseAt = .7f;
+            }
+            source["entrypoint"] = new JObject { ["start"] = 900 };
+            source["entities"] = cues;
+            source["connections"] = links;
+            graph["assets"] = new JArray();
+            var text = new TextAsset(graph.ToString()); assets.Add(text);
+            var model = ReadModel("ras");
+            Component Body() => Create(model.json, model.atlas, model.page);
+            var caster = Body(); var ally = Body(); var opponent = Body();
+            var recipients = Array.CreateInstance(ActorType, 1); recipients.SetValue(opponent, 0);
+            var type = ActorType.Assembly.GetType("AstralOath.Client.BattleScene.BattleSkillPresentation", true);
+            var assetType = ActorType.Assembly.GetType("AstralOath.Client.BattleScene.BattleSkillPresentationAsset", true);
+            using var playback = (IDisposable)Activator.CreateInstance(type, root.transform, new[] { text }, Array.CreateInstance(assetType, 0), null, null, null);
+            type.GetMethod("Begin").Invoke(playback, new object[] { (string)graph["id"], caster, opponent, recipients });
+            void Tick(float seconds) => type.GetMethod("Tick").Invoke(playback, new object[] { seconds });
+            Renderer Renderer(Component actor) => Player(actor).Root.GetComponent<Renderer>();
+            var block = new MaterialPropertyBlock();
+            float Alpha(Component actor)
+            {
+                Renderer(actor).GetPropertyBlock(block);
+                return block.HasFloat("_SkillBodyOpacity") ? block.GetFloat("_SkillBodyOpacity") : 1f;
+            }
+            Tick(fadeIn / 2f);
+            Assert.That(Alpha(ally), Is.EqualTo(.5f).Within(.002f));
+            Assert.That(Alpha(opponent), Is.EqualTo(.5f).Within(.002f));
+            Assert.That(Alpha(caster), Is.EqualTo(1f));
+            Tick(fadeIn / 2f + .001f);
+            Assert.That(Renderer(ally).forceRenderingOff && Renderer(opponent).forceRenderingOff, Is.True);
+            Assert.That(Renderer(caster).forceRenderingOff, Is.False);
+            Tick(releaseAt - fadeIn - .001f + fadeOut / 2f + .00001f);
+            Assert.That(Alpha(ally), Is.EqualTo(fadeOut == 0f ? 1f : .5f).Within(.002f));
+            Tick(fadeOut / 2f + .01f);
+            Assert.That(Alpha(opponent), Is.EqualTo(1f));
+            Assert.That(Renderer(ally).forceRenderingOff, Is.False);
         }
 
         [TestCase("c1070", "krau", 34, 3.5f, .2f, 0f)]

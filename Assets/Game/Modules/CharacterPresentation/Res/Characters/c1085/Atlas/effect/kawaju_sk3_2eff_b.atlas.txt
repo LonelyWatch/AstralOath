@@ -1,0 +1,41 @@
+
+kawaju_sk3_2eff_b.sct
+size: 212,236
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dust_black_3_1
+  rotate: false
+  xy: 87, 173
+  size: 46, 48
+  orig: 46, 48
+  offset: 0, 0
+  index: -1
+dust_black_3_2
+  rotate: false
+  xy: 173, 88
+  size: 33, 34
+  orig: 33, 34
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+wave_fire_b_1
+  rotate: true
+  xy: 173, 2
+  size: 84, 37
+  orig: 84, 37
+  offset: 0, 0
+  index: -1
+wave_fire_b_2
+  rotate: false
+  xy: 2, 173
+  size: 83, 61
+  orig: 83, 61
+  offset: 0, 0
+  index: -1

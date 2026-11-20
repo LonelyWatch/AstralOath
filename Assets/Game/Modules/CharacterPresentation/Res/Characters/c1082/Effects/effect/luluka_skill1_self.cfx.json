@@ -1,0 +1,28 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "luluka_skill1_self",
+      "z": "10",
+      "format": "spine"
+    },
+    {
+      "source": "luluka_skill1_self_obake",
+      "x": "-50",
+      "y": "450",
+      "z": "11",
+      "scale": "1,0.5",
+      "delay": "200",
+      "format": "particle"
+    },
+    {
+      "source": "luluka_skill1_self_boom",
+      "x": "-40",
+      "y": "290",
+      "z": "12",
+      "delay": "910",
+      "format": "particle",
+      "timeScale": 0.5
+    }
+  ]
+}

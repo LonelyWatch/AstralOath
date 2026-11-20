@@ -1,0 +1,434 @@
+{
+  "id": "c_kawana_skill_01",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 2
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "color": "0,0,0,255",
+        "accel": 1.0,
+        "opacity": 0.8,
+        "duration": -1,
+        "localZ": -1,
+        "globalZ": -1,
+        "fadeIn": 400,
+        "fadeOut": 400,
+        "id": "dk",
+        "guid": 1,
+        "etty": "DARK"
+      },
+      {
+        "state": "start",
+        "guid": 2,
+        "etty": "ENTRY"
+      },
+      {
+        "ani": "skill1",
+        "guid": 3,
+        "etty": "ANI"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 4,
+        "etty": "HIT"
+      },
+      {
+        "from": "jump",
+        "to": "landing",
+        "guid": 5,
+        "etty": "ANI_SCOPE"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "kawana_sk1eff_cm",
+        "guid": 6,
+        "etty": "SHAKE"
+      },
+      {
+        "guid": 7,
+        "etty": "CAM"
+      },
+      {
+        "targetId": "dk",
+        "time": 400,
+        "guid": 8,
+        "etty": "STOP"
+      },
+      {
+        "ver": 2,
+        "power": 50,
+        "location": 11,
+        "style": 2,
+        "guid": 9,
+        "etty": "MOVE"
+      },
+      {
+        "scale": "1",
+        "guid": 10,
+        "etty": "ZOOM"
+      },
+      {
+        "guid": 11,
+        "etty": "IDLE"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 12,
+        "etty": "HIT"
+      },
+      {
+        "ani": "jump_forward",
+        "guid": 13,
+        "etty": "ANI"
+      },
+      {
+        "ani": "jump_back",
+        "guid": 14,
+        "etty": "ANI"
+      },
+      {
+        "location": 12,
+        "y": -30.0,
+        "guid": 15,
+        "etty": "CAM"
+      },
+      {
+        "ver": 2,
+        "power": 50,
+        "curve": "0.01915709,0.2743055,1,1.003472",
+        "location": 16,
+        "style": 2,
+        "guid": 16,
+        "etty": "MOVE"
+      },
+      {
+        "scale": "1.3",
+        "curve": "0.2911877,0.9548611,1,1",
+        "guid": 17,
+        "etty": "ZOOM"
+      },
+      {
+        "from": "jump",
+        "to": "landing",
+        "guid": 18,
+        "etty": "ANI_SCOPE"
+      }
+    ],
+    "connections": [
+      {
+        "from": 3,
+        "to": 6,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 4,
+        "delay": 134,
+        "when": 1,
+        "Desc": "134",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 7,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 9,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 10,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 8,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 12,
+        "delay": 200,
+        "when": 1,
+        "Desc": "200",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 13,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 3,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 1,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 14,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 14,
+        "to": 11,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 18,
+        "to": 16,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 18,
+        "to": 15,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 18,
+        "to": 17,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 18,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 14,
+        "to": 5,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/kawana_sk1eff_cm.scsp",
+      "address": "characterlab/source/camera/kawana_sk1eff_cm.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_slash_01.atlas",
+      "address": "characterlab/source/effect/hit_new_slash_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_slash_01.scsp",
+      "address": "characterlab/source/effect/hit_new_slash_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_slash_01.sct",
+      "address": "characterlab/source/effect/hit_new_slash_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_slash_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_slash_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_slash_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_slash_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/kawana_b_idle_ready.cfx",
+      "address": "characterlab/source/effect/kawana_b_idle_ready.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/kawana_b_idle_readyeff.atlas",
+      "address": "characterlab/source/effect/kawana_b_idle_readyeff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/kawana_b_idle_readyeff.scsp",
+      "address": "characterlab/source/effect/kawana_b_idle_readyeff.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/kawana_b_idle_readyeff.sct",
+      "address": "characterlab/source/effect/kawana_b_idle_readyeff.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/kawana_sk1eff_b.atlas",
+      "address": "characterlab/source/effect/kawana_sk1eff_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/kawana_sk1eff_b.scsp",
+      "address": "characterlab/source/effect/kawana_sk1eff_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/kawana_sk1eff_b.sct",
+      "address": "characterlab/source/effect/kawana_sk1eff_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/kawana_sk1eff_b2.atlas",
+      "address": "characterlab/source/effect/kawana_sk1eff_b2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/kawana_sk1eff_b2.scsp",
+      "address": "characterlab/source/effect/kawana_sk1eff_b2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/kawana_sk1eff_b2.sct",
+      "address": "characterlab/source/effect/kawana_sk1eff_b2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/kawana_sk1eff_f.atlas",
+      "address": "characterlab/source/effect/kawana_sk1eff_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/kawana_sk1eff_f.scsp",
+      "address": "characterlab/source/effect/kawana_sk1eff_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/kawana_sk1eff_f.sct",
+      "address": "characterlab/source/effect/kawana_sk1eff_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/kawana_sk2eff_self_b.atlas",
+      "address": "characterlab/source/effect/kawana_sk2eff_self_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/kawana_sk2eff_self_b.scsp",
+      "address": "characterlab/source/effect/kawana_sk2eff_self_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/kawana_sk2eff_self_b.sct",
+      "address": "characterlab/source/effect/kawana_sk2eff_self_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/kawana_sk2eff_self_f.atlas",
+      "address": "characterlab/source/effect/kawana_sk2eff_self_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/kawana_sk2eff_self_f.scsp",
+      "address": "characterlab/source/effect/kawana_sk2eff_self_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/kawana_sk2eff_self_f.sct",
+      "address": "characterlab/source/effect/kawana_sk2eff_self_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/kawana_sk3_1eff_self_b.atlas",
+      "address": "characterlab/source/effect/kawana_sk3_1eff_self_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/kawana_sk3_1eff_self_b.scsp",
+      "address": "characterlab/source/effect/kawana_sk3_1eff_self_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/kawana_sk3_1eff_self_b.sct",
+      "address": "characterlab/source/effect/kawana_sk3_1eff_self_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/kawana_sk3_1eff_self_f.atlas",
+      "address": "characterlab/source/effect/kawana_sk3_1eff_self_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/kawana_sk3_1eff_self_f.scsp",
+      "address": "characterlab/source/effect/kawana_sk3_1eff_self_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/kawana_sk3_1eff_self_f.sct",
+      "address": "characterlab/source/effect/kawana_sk3_1eff_self_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/kawana_skill_01.cfx",
+      "address": "characterlab/source/effect/kawana_skill_01.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/kawana_skill_02_self.cfx",
+      "address": "characterlab/source/effect/kawana_skill_02_self.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/kawana_skill_03_01.cfx",
+      "address": "characterlab/source/effect/kawana_skill_03_01.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "model/kawana.timeline",
+      "address": "characterlab/source/model/kawana.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

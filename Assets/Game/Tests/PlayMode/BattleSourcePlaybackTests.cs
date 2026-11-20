@@ -397,6 +397,131 @@ namespace AstralOath.Client.Tests
         }
 
         [UnityTest]
+        [Timeout(240000)]
+        public IEnumerator CeriseKhawazuAndVivianDispatchTheirAcceptedFollowUpGraphs()
+        {
+            var roots = default(GameObject[]);
+            yield return LoadBattle(value => roots = value);
+            var host = roots.Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            var map = HostField<BindingMap>(host, "hud");
+            host.enabled = true;
+            foreach (var (ally, enemies, origin, graph, sample) in new[]
+            {
+                ("c1081", BattleScenePreviewTests.SlowEnemyIds(), BattleActionOrigin.DualAttack, "c_ceris_skill_01", "c1081-real-dual"),
+                ("c1081", Enumerable.Repeat("c1085", 4).ToArray(), BattleActionOrigin.Passive, "c_kawazu_skill_02", "c1085-real-passive"),
+                ("c1085", BattleScenePreviewTests.SlowEnemyIds(), BattleActionOrigin.ExtraAttack, "c_kawazu_skill_02", "c1085-real-extra"),
+                ("c1088", Enumerable.Repeat("c1079", 4).ToArray(), BattleActionOrigin.ExtraAttack, "c_vivian_skill_02", "c1088-real-extra")
+            })
+            {
+                typeof(BattleHudPreview).GetField("allyHeroIds", PrivateInstance).SetValue(host, Enumerable.Repeat(ally, 4).ToArray());
+                typeof(BattleHudPreview).GetField("enemyHeroIds", PrivateInstance).SetValue(host, enemies);
+                host.StartBattle();
+                var simulation = typeof(BattleHudPreview).GetField("simulation", PrivateInstance).GetValue(host);
+                var type = simulation.GetType();
+                var tick = type.GetMethod("Tick");
+                var queue = (Queue<BattleFlowEvent>)type.GetField("playback", PrivateInstance).GetValue(simulation);
+                var canAct = type.GetProperty("CanAct", PrivateInstance);
+                BattleFlowEvent accepted = null;
+                bool rendered = false;
+                for (int step = 0; step < 10000 && !rendered; step++)
+                {
+                    var snapshot = host.SimulationSnapshot;
+                    if (snapshot.Outcome != BattleOutcome.InProgress && queue.Count == 0 && accepted == null) break;
+                    if ((bool)canAct.GetValue(simulation))
+                    {
+                        var current = snapshot.GetUnit(snapshot.CurrentActorId);
+                        var opponent = snapshot.Units.Where(unit => unit.IsAlive && unit.Slot.Side == BattleSide.Enemy)
+                            .OrderBy(unit => unit.CurrentHealth).First();
+                        // The first Cerise opens S3; subsequent S1s use the real cooldown. Vivian
+                        // weakens a target with basics before trying to kill with her area attack.
+                        int slot = ally == "c1081" && snapshot.LastCommandSequence == 0 ? 3 :
+                            ally == "c1088" && current.GetCooldown("c1088.s2") == 0 &&
+                            opponent.CurrentHealth * 3 < opponent.MaximumHealth ? 2 : 1;
+                        map.Require<GameButton>("skill" + slot).onClick.Invoke();
+                        Assert.That(host.TrySelectBattleTarget(opponent.InstanceId), Is.True, sample + " S" + slot);
+                    }
+                    accepted ??= queue.FirstOrDefault(item => item.Kind == BattleFlowEventKind.Action && item.Origin == origin &&
+                        item.PresentationId == graph && item.SourceId != null && snapshot.GetUnit(item.SourceId).DefinitionId ==
+                        (origin == BattleActionOrigin.Passive ? "c1085" : ally));
+                    tick.Invoke(simulation, new object[] { .1f });
+                    if (accepted != null && !queue.Contains(accepted))
+                    {
+                        var stage = type.GetField("skillPresentation", PrivateInstance).GetValue(simulation);
+                        Assert.That(PresentationType.GetField("currentPresentationId", PrivateInstance).GetValue(stage), Is.EqualTo(graph));
+                        if ((float)PresentationType.GetProperty("StageTime").GetValue(stage) >= .3f)
+                        {
+                            if (captureTarget) File.WriteAllBytes(Path.Combine(captureDirectory, sample + ".png"), RenderFrame(null, null, null).Composite);
+                            TestContext.WriteLine(accepted.Origin + " " + accepted.SkillId + " " + accepted.PresentationId);
+                            rendered = true;
+                        }
+                    }
+                    if (step % 12 == 0) yield return null;
+                }
+                Assert.That(rendered, Is.True, sample + " must play through the real match queue");
+            }
+        }
+
+        [UnityTest]
+        [Timeout(120000)]
+        public IEnumerator DieneAndZenoShowTheirSourceGlyphsWhileLulucasAttackGrowthStaysHidden()
+        {
+            var roots = default(GameObject[]);
+            yield return LoadBattle(value => roots = value);
+            var host = roots.Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            var map = HostField<BindingMap>(host, "hud");
+            var art = PresentationType.Assembly.GetType("AstralOath.Client.BattleScene.BattleStatusArt", true);
+            var shown = art.GetMethod("IsDisplayed", BindingFlags.Static | BindingFlags.NonPublic);
+            host.enabled = true;
+            typeof(BattleHudPreview).GetField("enemyHeroIds", PrivateInstance).SetValue(host, BattleScenePreviewTests.SlowEnemyIds());
+            foreach (var (id, slot, status, glyph) in new[]
+            {
+                ("c1076", 3, BattleStatusKind.PenetrationResistanceUp, "stic_penres_up"),
+                ("c1083", 1, BattleStatusKind.Frostbite, "stic_freezing"),
+                ("c1083", 3, BattleStatusKind.Rupture, "stic_rupture"),
+                ("c1082", 3, BattleStatusKind.AttackGrowth, (string)null)
+            })
+            {
+                typeof(BattleHudPreview).GetField("allyHeroIds", PrivateInstance).SetValue(host, Enumerable.Repeat(id, 4).ToArray());
+                host.StartBattle();
+                var simulation = typeof(BattleHudPreview).GetField("simulation", PrivateInstance).GetValue(host);
+                var tick = simulation.GetType().GetMethod("Tick");
+                var canAct = simulation.GetType().GetProperty("CanAct", PrivateInstance);
+                bool received = false, rendered = false;
+                for (int frame = 0; frame < 2400; frame++)
+                {
+                    var snapshot = host.SimulationSnapshot;
+                    if (snapshot.Outcome != BattleOutcome.InProgress) break;
+                    if (!received && (bool)canAct.GetValue(simulation))
+                    {
+                        var current = snapshot.GetUnit(snapshot.CurrentActorId);
+                        int available = current.GetCooldown(id + ".s" + slot) == 0 ? slot : 1;
+                        string target = id == "c1076" && available == 3 ? current.InstanceId :
+                            snapshot.Units.First(unit => unit.IsAlive && unit.Slot.Side == BattleSide.Enemy).InstanceId;
+                        map.Require<GameButton>("skill" + available).onClick.Invoke();
+                        Assert.That(host.TrySelectBattleTarget(target), Is.True);
+                        received = host.SimulationSnapshot.Units.Any(unit => unit.GetStatus(status) != null);
+                    }
+                    tick.Invoke(simulation, new object[] { .1f });
+                    if (received && (bool)canAct.GetValue(simulation))
+                    {
+                        Assert.That(shown.Invoke(null, new object[] { status }), Is.EqualTo(glyph != null));
+                        if (glyph != null)
+                        {
+                            Assert.That(roots.SelectMany(root => root.GetComponentsInChildren<Image>(true)).Any(view =>
+                                view.gameObject.activeInHierarchy && view.sprite && view.sprite.name == glyph), Is.True, glyph);
+                            if (captureTarget)
+                                File.WriteAllBytes(Path.Combine(captureDirectory, $"{id}-status-{status}.png"), RenderFrame(null, null, null).Composite);
+                        }
+                        rendered = true;
+                        break;
+                    }
+                    if (frame % 12 == 0) yield return null;
+                }
+                Assert.That(rendered, Is.True, id + " " + status + " must reach the next normal battle HUD");
+            }
+        }
+
+        [UnityTest]
         public IEnumerator LunaWideSkyReachesBothEdgesForEitherTeam()
         {
             var roots = default(GameObject[]);

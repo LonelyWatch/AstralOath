@@ -256,7 +256,7 @@ namespace AstralOath.Editor
                 {
                     "AttackDown" or "DefenseDown" or "SpeedDown" or "Stun" or "Silence" or "Provoke" or "Burn" or "Bleed" or
                     "Poison" or "Unhealable" or "Unbuffable" or "HitChanceDown" or "Bomb" or "VampiricTouch" or
-                    "MagicNail" or "Sleep" or "Restrict" or "Bind" or "Venom" => "weaken",
+                    "MagicNail" or "Sleep" or "Restrict" or "Bind" or "Venom" or "Frostbite" or "Rupture" => "weaken",
                     "Indomitable" or "Rage" or "SpiritlordProtection" or "DamageLimit" => "general",
                     _ => "enhance"
                 };
@@ -272,11 +272,11 @@ namespace AstralOath.Editor
             "cleanse" or "cleanse_all" or "cleanse_once_on_critical" or "transfer_debuff" => "effect_cleanse",
             "dispel" or "dispel_all" => "effect_dispel",
             "readiness" or "readiness_bonus" or "readiness_per_critical" or "readiness_per_target" or "readiness_per_status_applied"
-                or "readiness_per_target_status" or "readiness_fixed" or "off_turn_readiness" => "effect_raise",
+                or "readiness_per_target_status" or "readiness_fixed" or "off_turn_readiness" or "trigger_readiness" => "effect_raise",
             "reduce_readiness" or "reduce_readiness_double" => "effect_reduce",
             "grant_extra_turn" => "effect_extra_turn",
             "revive" => "effect_revive",
-            "target_health_barrier" or "caster_health_barrier" => "effect_barrier",
+            "target_health_barrier" or "caster_health_barrier" or "caster_attack_barrier" => "effect_barrier",
             "reduce_cooldown" or "reduce_own_cooldown" or "reduce_third_cooldown" or "reset_cooldown" => "effect_reduce_cd",
             "extend_cooldown" or "max_cooldowns" => "effect_extend_cd",
             "injury" => "effect_injury",

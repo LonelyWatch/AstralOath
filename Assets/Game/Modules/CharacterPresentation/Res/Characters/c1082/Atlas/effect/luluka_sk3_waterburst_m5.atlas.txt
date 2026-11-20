@@ -1,0 +1,174 @@
+
+luluka_sk3_waterburst_m5.sct
+size: 1049,500
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flamedust_2
+  rotate: true
+  xy: 266, 246
+  size: 166, 201
+  orig: 166, 201
+  offset: 0, 0
+  index: -1
+flamedust_3
+  rotate: false
+  xy: 215, 2
+  size: 167, 214
+  orig: 167, 214
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 878, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+luluka/lay_ring_1_1
+  rotate: false
+  xy: 261, 425
+  size: 147, 73
+  orig: 147, 73
+  offset: 0, 0
+  index: -1
+luluka/lay_ring_1_2
+  rotate: false
+  xy: 563, 410
+  size: 147, 70
+  orig: 147, 70
+  offset: 0, 0
+  index: -1
+luluka/lay_ring_1_3
+  rotate: true
+  xy: 969, 352
+  size: 145, 67
+  orig: 145, 67
+  offset: 0, 0
+  index: -1
+luluka/lay_ring_2_1
+  rotate: false
+  xy: 410, 414
+  size: 151, 76
+  orig: 151, 76
+  offset: 0, 0
+  index: -1
+luluka/lay_ring_2_2
+  rotate: false
+  xy: 855, 173
+  size: 144, 68
+  orig: 144, 68
+  offset: 0, 0
+  index: -1
+luluka/lay_ring_2_3
+  rotate: true
+  xy: 594, 215
+  size: 149, 76
+  orig: 149, 76
+  offset: 0, 0
+  index: -1
+luluka/water_glow_01
+  rotate: true
+  xy: 384, 2
+  size: 121, 250
+  orig: 121, 250
+  offset: 0, 0
+  index: -1
+luluka/water_glow_02
+  rotate: true
+  xy: 2, 425
+  size: 69, 257
+  orig: 69, 257
+  offset: 0, 0
+  index: -1
+luluka/water_glow_03
+  rotate: true
+  xy: 636, 2
+  size: 95, 240
+  orig: 95, 240
+  offset: 0, 0
+  index: -1
+luluka/water_glow_04
+  rotate: true
+  xy: 2, 257
+  size: 166, 262
+  orig: 166, 262
+  offset: 0, 0
+  index: -1
+luluka/water_glow_05
+  rotate: false
+  xy: 682, 99
+  size: 171, 154
+  orig: 171, 154
+  offset: 0, 0
+  index: -1
+luluka/water_glow_06
+  rotate: true
+  xy: 384, 125
+  size: 88, 296
+  orig: 88, 296
+  offset: 0, 0
+  index: -1
+luluka/water_glow_07
+  rotate: false
+  xy: 2, 2
+  size: 211, 253
+  orig: 211, 253
+  offset: 0, 0
+  index: -1
+luluka/water_glow_08
+  rotate: false
+  xy: 844, 384
+  size: 123, 114
+  orig: 123, 114
+  offset: 0, 0
+  index: -1
+luluka/water_glow_09
+  rotate: false
+  xy: 469, 215
+  size: 123, 193
+  orig: 123, 193
+  offset: 0, 0
+  index: -1
+luluka/water_glow_10
+  rotate: true
+  xy: 672, 255
+  size: 129, 156
+  orig: 129, 156
+  offset: 0, 0
+  index: -1
+luluka/wave_2_10
+  rotate: true
+  xy: 594, 366
+  size: 40, 56
+  orig: 40, 56
+  offset: 0, 0
+  index: -1
+luluka/wave_2_11
+  rotate: true
+  xy: 215, 218
+  size: 26, 50
+  orig: 26, 50
+  offset: 0, 0
+  index: -1
+part_1
+  rotate: false
+  xy: 712, 386
+  size: 130, 101
+  orig: 130, 101
+  offset: 0, 0
+  index: -1
+part_2
+  rotate: false
+  xy: 830, 255
+  size: 134, 127
+  orig: 134, 127
+  offset: 0, 0
+  index: -1
+part_3
+  rotate: false
+  xy: 966, 243
+  size: 75, 107
+  orig: 75, 107
+  offset: 0, 0
+  index: -1

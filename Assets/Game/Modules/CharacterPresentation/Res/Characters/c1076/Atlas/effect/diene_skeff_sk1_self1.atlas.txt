@@ -1,0 +1,90 @@
+
+diene_skeff_sk1_self1.sct
+size: 255,306
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+diena/ball_01
+  rotate: false
+  xy: 2, 173
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: -1
+diena/ball_02
+  rotate: false
+  xy: 94, 173
+  size: 69, 57
+  orig: 69, 57
+  offset: 0, 0
+  index: -1
+diena/ball_03
+  rotate: false
+  xy: 173, 155
+  size: 71, 63
+  orig: 71, 63
+  offset: 0, 0
+  index: -1
+diena/ball_04
+  rotate: false
+  xy: 173, 2
+  size: 80, 82
+  orig: 80, 82
+  offset: 0, 0
+  index: -1
+diena/ball_05
+  rotate: true
+  xy: 173, 86
+  size: 67, 74
+  orig: 67, 74
+  offset: 0, 0
+  index: -1
+diena/ball_06
+  rotate: true
+  xy: 94, 232
+  size: 51, 54
+  orig: 51, 54
+  offset: 0, 0
+  index: -1
+diena/ball_07
+  rotate: false
+  xy: 2, 265
+  size: 27, 26
+  orig: 27, 26
+  offset: 0, 0
+  index: -1
+diena/ball_08
+  rotate: false
+  xy: 150, 232
+  size: 13, 10
+  orig: 13, 10
+  offset: 0, 0
+  index: -1
+diena/ball_09
+  rotate: true
+  xy: 150, 244
+  size: 10, 13
+  orig: 10, 13
+  offset: 0, 0
+  index: -1
+diena/ball_10
+  rotate: false
+  xy: 31, 265
+  size: 17, 16
+  orig: 17, 16
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+global_glow
+  rotate: false
+  xy: 165, 220
+  size: 84, 84
+  orig: 84, 84
+  offset: 0, 0
+  index: -1

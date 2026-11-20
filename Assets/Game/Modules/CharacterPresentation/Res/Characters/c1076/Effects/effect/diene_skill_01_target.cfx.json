@@ -1,0 +1,22 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "diene_skeff_sk1_target_f",
+      "z": "5",
+      "format": "spine"
+    },
+    {
+      "source": "diene_skeff_sk1_target_b",
+      "z": "-5",
+      "format": "spine"
+    },
+    {
+      "source": "diene_skill_01_pati1",
+      "x": "100",
+      "z": "7",
+      "delay": "1560",
+      "format": "particle"
+    }
+  ]
+}

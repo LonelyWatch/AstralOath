@@ -1,0 +1,179 @@
+{
+  "timeline": {
+    "default": {
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "flower"
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "luluka_skill2",
+              "location": 1,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "luluka_skill2_bg",
+              "location": 1,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "flower"
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "luluka_skill1_self",
+              "location": 1,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill3": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "flower"
+            }
+          },
+          {
+            "param": {}
+          }
+        ]
+      },
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "id": "flower",
+              "source": "luluka_b_idle_ready",
+              "location": 5,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "run"
+            }
+          }
+        ]
+      },
+      "attacked": {
+        "duration": 0,
+        "frames": []
+      },
+      "b_idle": {
+        "duration": 0,
+        "frames": [
+          {
+            "param": {}
+          }
+        ]
+      },
+      "camping": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "luluka_camping",
+              "location": 1,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "run": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "id": "run",
+              "source": "luluka_run",
+              "location": 1,
+              "scale": 1.0,
+              "z": 5
+            }
+          }
+        ]
+      },
+      "idle": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "run"
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "flower"
+            }
+          }
+        ]
+      },
+      "run_ch": {
+        "duration": 0,
+        "frames": []
+      },
+      "rise": {
+        "duration": 0,
+        "frames": []
+      },
+      "down": {
+        "duration": 0,
+        "frames": []
+      },
+      "flying": {
+        "duration": 0,
+        "frames": []
+      },
+      "jump_back": {
+        "duration": 0,
+        "frames": []
+      },
+      "jump_fowrard": {
+        "duration": 0,
+        "frames": []
+      },
+      "knock_down": {
+        "duration": 0,
+        "frames": []
+      },
+      "groggy": {
+        "duration": 0,
+        "frames": []
+      },
+      "flying_damage": {
+        "duration": 0,
+        "frames": []
+      }
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "diene_skeff_idle_f",
+      "z": "2",
+      "opacity": "0",
+      "scale": "1",
+      "format": "spine",
+      "timeScale": 0.8,
+      "loop": 1,
+      "actions": [
+        {
+          "action": "Opacity",
+          "interval": "500",
+          "from": "0",
+          "to": "1"
+        }
+      ]
+    },
+    {
+      "source": "diene_skeff_idle_b",
+      "z": "-2",
+      "opacity": "0",
+      "scale": "1",
+      "format": "spine",
+      "timeScale": 0.8,
+      "loop": 1,
+      "actions": [
+        {
+          "action": "Opacity",
+          "interval": "500",
+          "from": "0",
+          "to": "1"
+        }
+      ]
+    }
+  ]
+}

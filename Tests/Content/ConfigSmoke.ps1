@@ -24,7 +24,10 @@ function Write-LubanRows([string]$Path, [object[]]$Rows) {
     [IO.File]::WriteAllLines($Path, $lines, [Text.UTF8Encoding]::new($false))
 }
 
+$previousSharedCompilation = $env:UseSharedCompilation
 try {
+    # The fixture owns its temporary analyzer directory and removes it before returning.
+    $env:UseSharedCompilation = 'false'
     Copy-Item -LiteralPath (Join-Path $repo 'Config') -Destination $work -Recurse
     foreach ($file in @('Tools/Config/Generate.ps1', 'Tools/Config/ValidateBattleCatalog.ps1',
         'Tools/ProjectEnvironment.ps1', 'Tools/dependencies.lock.json',
@@ -56,7 +59,7 @@ try {
 
     $battleSkills = Read-LubanRows (Join-Path $work 'Config/Tables/battle_skills.csv')
     # Both the base skill and optional variant icons are required by the production validator.
-    $skillIcons = @($battleSkills.iconAsset) + @($battleSkills.speedUpIconAsset)
+    $skillIcons = @($battleSkills.iconAsset) + @($battleSkills.speedUpIconAsset) + @($battleSkills.alternateIconAsset)
     foreach ($icon in ($skillIcons | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Sort-Object -Unique)) {
         $destination = Join-Path $work $icon
         [void][IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($destination))
@@ -195,11 +198,16 @@ function global:tar { throw 'System tar is unavailable: LZMA codec is unsupporte
     foreach ($case in @(
         @{ Property = 'status'; Value = 'Stun'; Error = 'Battle triggered effect arguments' },
         @{ Property = 'chanceBp'; Value = '9000'; Error = 'Battle triggered effect arguments' },
-        @{ Property = 'phase'; Value = 'BATTLE_START'; Error = 'Battle skill effect sequence' }
+        @{ Property = 'phase'; Value = 'BATTLE_START'; Error = 'Battle skill effect sequence' },
+        @{ Operation = 'repeat_on_kill'; Property = 'turns'; Value = '2'; Error = 'Invalid follow-up attack stage' }
     )) {
         $effectRows = @(Read-LubanRows $effectTable)
-        $openingEffect = @($effectRows | Where-Object phase -CEQ 'battle_start')[0]
-        $openingEffect.($case.Property) = $case.Value
+        $effect = if ($case.Operation) {
+            @($effectRows | Where-Object operation -CEQ $case.Operation)[0]
+        } else {
+            @($effectRows | Where-Object phase -CEQ 'battle_start')[0]
+        }
+        $effect.($case.Property) = $case.Value
         Write-LubanRows $effectTable $effectRows
         $invalidLog = & $pwsh -NoProfile -File $generate -Dotnet $dotnet -SyncClient 2>&1
         if ($LASTEXITCODE -eq 0 -or ($invalidLog -join "`n") -notmatch [regex]::Escape($case.Error)) {
@@ -252,6 +260,7 @@ function global:tar { throw 'System tar is unavailable: LZMA codec is unsupporte
     }
     Write-Host 'Config fixture passed generation without tar, edited demo and battle snapshots, binary accessors, invalid presentation/slot/empty coefficient/passive lifecycle/growth preset/growth panel/awakening rank/bounds rejection and extractor checksum rejection.'
 } finally {
+    $env:UseSharedCompilation = $previousSharedCompilation
     $item = Get-Item -LiteralPath $work
     if ($item.Parent.FullName -ne (Join-Path $repo '.artifacts') -or
         $item.Name -notmatch '\Aconfig-test-[a-f0-9]{32}\z' -or

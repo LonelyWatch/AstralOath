@@ -1,0 +1,713 @@
+
+luluka_sk3_waterburst_3_3.sct
+size: 976,1179
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 550, 460
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+focus_1
+  rotate: false
+  xy: 721, 497
+  size: 165, 165
+  orig: 165, 165
+  offset: 0, 0
+  index: -1
+focus_2
+  rotate: false
+  xy: 308, 878
+  size: 165, 165
+  orig: 165, 165
+  offset: 0, 0
+  index: -1
+light_halfcicle_01
+  rotate: true
+  xy: 721, 284
+  size: 211, 136
+  orig: 211, 136
+  offset: 0, 0
+  index: -1
+luluka/bubble_b_01
+  rotate: false
+  xy: 518, 1042
+  size: 99, 104
+  orig: 99, 104
+  offset: 0, 0
+  index: -1
+luluka/bubble_b_02
+  rotate: true
+  xy: 557, 780
+  size: 94, 99
+  orig: 94, 99
+  offset: 0, 0
+  index: -1
+luluka/bubble_b_03
+  rotate: true
+  xy: 791, 1081
+  size: 37, 48
+  orig: 37, 48
+  offset: 0, 0
+  index: -1
+luluka/bubble_b_04
+  rotate: true
+  xy: 866, 891
+  size: 78, 30
+  orig: 78, 30
+  offset: 0, 0
+  index: -1
+luluka/bubble_b_05
+  rotate: true
+  xy: 944, 988
+  size: 33, 30
+  orig: 33, 30
+  offset: 0, 0
+  index: -1
+luluka/bubble_b_06
+  rotate: false
+  xy: 106, 1106
+  size: 94, 57
+  orig: 94, 57
+  offset: 0, 0
+  index: -1
+luluka/bubble_s_01
+  rotate: false
+  xy: 859, 375
+  size: 106, 106
+  orig: 106, 106
+  offset: 0, 0
+  index: -1
+luluka/bubble_s_02
+  rotate: true
+  xy: 609, 1148
+  size: 9, 8
+  orig: 9, 8
+  offset: 0, 0
+  index: -1
+luluka/bubble_s_03
+  rotate: false
+  xy: 418, 1157
+  size: 15, 16
+  orig: 15, 16
+  offset: 0, 0
+  index: -1
+luluka/bubble_s_04
+  rotate: false
+  xy: 865, 242
+  size: 21, 36
+  orig: 21, 36
+  offset: 0, 0
+  index: -1
+luluka/bubble_s_05
+  rotate: false
+  xy: 683, 991
+  size: 69, 68
+  orig: 69, 68
+  offset: 0, 0
+  index: -1
+luluka/bubble_s_06
+  rotate: true
+  xy: 888, 608
+  size: 92, 82
+  orig: 92, 82
+  offset: 0, 0
+  index: -1
+luluka/bubble_s_07
+  rotate: false
+  xy: 564, 1148
+  size: 43, 17
+  orig: 43, 17
+  offset: 0, 0
+  index: -1
+luluka/luluka_flare_04
+  rotate: false
+  xy: 475, 878
+  size: 105, 105
+  orig: 105, 105
+  offset: 0, 0
+  index: -1
+luluka/luluka_flare_06
+  rotate: false
+  xy: 582, 876
+  size: 105, 105
+  orig: 105, 105
+  offset: 0, 0
+  index: -1
+luluka/luluka_flare_07
+  rotate: false
+  xy: 801, 791
+  size: 99, 98
+  orig: 99, 98
+  offset: 0, 0
+  index: -1
+luluka/luluka_flare_08
+  rotate: false
+  xy: 887, 702
+  size: 83, 84
+  orig: 83, 84
+  offset: 0, 0
+  index: -1
+luluka/luluka_flare_09
+  rotate: false
+  xy: 698, 768
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+luluka/luluka_flare_10
+  rotate: false
+  xy: 898, 910
+  size: 41, 41
+  orig: 41, 41
+  offset: 0, 0
+  index: -1
+luluka/luluka_flare_11
+  rotate: false
+  xy: 300, 601
+  size: 181, 181
+  orig: 181, 181
+  offset: 0, 0
+  index: -1
+luluka/luluka_flare_12
+  rotate: false
+  xy: 2, 2
+  size: 366, 424
+  orig: 366, 424
+  offset: 0, 0
+  index: -1
+luluka/luluka_flare_13
+  rotate: false
+  xy: 2, 1075
+  size: 299, 29
+  orig: 299, 29
+  offset: 0, 0
+  index: -1
+luluka/wave_2_01
+  rotate: true
+  xy: 808, 2
+  size: 238, 165
+  orig: 238, 165
+  offset: 0, 0
+  index: -1
+luluka/wave_2_02
+  rotate: false
+  xy: 308, 1045
+  size: 129, 110
+  orig: 129, 110
+  offset: 0, 0
+  index: -1
+luluka/wave_2_03
+  rotate: true
+  xy: 952, 1085
+  size: 28, 22
+  orig: 28, 22
+  offset: 0, 0
+  index: -1
+luluka/wave_2_04
+  rotate: false
+  xy: 748, 1066
+  size: 41, 53
+  orig: 41, 53
+  offset: 0, 0
+  index: -1
+luluka/wave_2_05
+  rotate: false
+  xy: 965, 483
+  size: 9, 17
+  orig: 9, 17
+  offset: 0, 0
+  index: -1
+luluka/wave_2_06
+  rotate: false
+  xy: 788, 1121
+  size: 18, 40
+  orig: 18, 40
+  offset: 0, 0
+  index: -1
+luluka/wave_2_07
+  rotate: false
+  xy: 888, 242
+  size: 86, 131
+  orig: 86, 131
+  offset: 0, 0
+  index: -1
+luluka/wave_3_01
+  rotate: true
+  xy: 483, 631
+  size: 147, 152
+  orig: 147, 152
+  offset: 0, 0
+  index: -1
+luluka/wave_3_02
+  rotate: true
+  xy: 637, 631
+  size: 135, 81
+  orig: 135, 81
+  offset: 0, 0
+  index: -1
+luluka/wave_3_12
+  rotate: false
+  xy: 902, 788
+  size: 72, 88
+  orig: 72, 88
+  offset: 0, 0
+  index: -1
+luluka/wave_3_13
+  rotate: false
+  xy: 950, 1115
+  size: 23, 28
+  orig: 23, 28
+  offset: 0, 0
+  index: -1
+luluka/wave_3_14
+  rotate: false
+  xy: 925, 1107
+  size: 23, 32
+  orig: 23, 32
+  offset: 0, 0
+  index: -1
+luluka/wave_3_15
+  rotate: false
+  xy: 954, 1023
+  size: 20, 33
+  orig: 20, 33
+  offset: 0, 0
+  index: -1
+luluka/wave_3_16
+  rotate: true
+  xy: 809, 1162
+  size: 15, 22
+  orig: 15, 22
+  offset: 0, 0
+  index: -1
+luluka/wave_3_17
+  rotate: false
+  xy: 859, 314
+  size: 24, 44
+  orig: 24, 44
+  offset: 0, 0
+  index: -1
+luluka/wave_3_18
+  rotate: false
+  xy: 925, 1141
+  size: 18, 25
+  orig: 18, 25
+  offset: 0, 0
+  index: -1
+luluka/wave_4_05
+  rotate: false
+  xy: 846, 988
+  size: 30, 47
+  orig: 30, 47
+  offset: 0, 0
+  index: -1
+luluka/wave_4_06
+  rotate: false
+  xy: 689, 891
+  size: 100, 98
+  orig: 100, 98
+  offset: 0, 0
+  index: -1
+luluka/wave_4_07
+  rotate: false
+  xy: 723, 1119
+  size: 22, 58
+  orig: 22, 58
+  offset: 0, 0
+  index: -1
+luluka/wave_4_08
+  rotate: true
+  xy: 355, 1157
+  size: 20, 61
+  orig: 20, 61
+  offset: 0, 0
+  index: -1
+luluka/wave_4_09
+  rotate: false
+  xy: 462, 784
+  size: 93, 92
+  orig: 93, 92
+  offset: 0, 0
+  index: -1
+luluka/wave_5_01
+  rotate: false
+  xy: 370, 284
+  size: 349, 174
+  orig: 349, 174
+  offset: 0, 0
+  index: -1
+luluka/wave_6_01
+  rotate: false
+  xy: 300, 460
+  size: 248, 139
+  orig: 248, 139
+  offset: 0, 0
+  index: -1
+luluka/wave_6_02
+  rotate: false
+  xy: 559, 985
+  size: 75, 55
+  orig: 75, 55
+  offset: 0, 0
+  index: -1
+luluka/wave_6_03
+  rotate: false
+  xy: 920, 993
+  size: 22, 32
+  orig: 22, 32
+  offset: 0, 0
+  index: -1
+luluka/wave_6_04
+  rotate: true
+  xy: 808, 242
+  size: 40, 55
+  orig: 40, 55
+  offset: 0, 0
+  index: -1
+luluka/wave_6_05
+  rotate: false
+  xy: 300, 784
+  size: 160, 92
+  orig: 160, 92
+  offset: 0, 0
+  index: -1
+luluka/wave_6_06
+  rotate: false
+  xy: 658, 768
+  size: 38, 91
+  orig: 38, 91
+  offset: 0, 0
+  index: -1
+luluka/wave_6_07
+  rotate: false
+  xy: 636, 983
+  size: 45, 69
+  orig: 45, 69
+  offset: 0, 0
+  index: -1
+luluka/wave_7_01
+  rotate: false
+  xy: 888, 483
+  size: 75, 123
+  orig: 75, 123
+  offset: 0, 0
+  index: -1
+luluka/wave_7_02
+  rotate: false
+  xy: 791, 891
+  size: 73, 95
+  orig: 73, 95
+  offset: 0, 0
+  index: -1
+luluka/wave_7_03
+  rotate: true
+  xy: 483, 601
+  size: 28, 46
+  orig: 28, 46
+  offset: 0, 0
+  index: -1
+luluka/wave_7_04
+  rotate: false
+  xy: 847, 1037
+  size: 36, 42
+  orig: 36, 42
+  offset: 0, 0
+  index: -1
+luluka/wave_7_05
+  rotate: false
+  xy: 287, 1106
+  size: 16, 44
+  orig: 16, 44
+  offset: 0, 0
+  index: -1
+luluka/wave_7_06
+  rotate: false
+  xy: 475, 985
+  size: 82, 55
+  orig: 82, 55
+  offset: 0, 0
+  index: -1
+luluka/wave_7_07
+  rotate: false
+  xy: 941, 910
+  size: 33, 41
+  orig: 33, 41
+  offset: 0, 0
+  index: -1
+luluka/wave_7_08
+  rotate: true
+  xy: 794, 1040
+  size: 39, 51
+  orig: 39, 51
+  offset: 0, 0
+  index: -1
+luluka/wave_7_09
+  rotate: true
+  xy: 873, 1130
+  size: 36, 25
+  orig: 36, 25
+  offset: 0, 0
+  index: -1
+luluka/wave_7_10
+  rotate: true
+  xy: 866, 971
+  size: 15, 24
+  orig: 15, 24
+  offset: 0, 0
+  index: -1
+luluka/wave_7_11
+  rotate: true
+  xy: 287, 1157
+  size: 20, 66
+  orig: 20, 66
+  offset: 0, 0
+  index: -1
+luluka/wave_7_12
+  rotate: false
+  xy: 683, 1061
+  size: 63, 56
+  orig: 63, 56
+  offset: 0, 0
+  index: -1
+luluka/wave_7_13
+  rotate: true
+  xy: 619, 1054
+  size: 65, 62
+  orig: 65, 62
+  offset: 0, 0
+  index: -1
+luluka/wave_7_14
+  rotate: true
+  xy: 300, 428
+  size: 30, 68
+  orig: 30, 68
+  offset: 0, 0
+  index: -1
+luluka/wave_7_15
+  rotate: true
+  xy: 720, 664
+  size: 125, 165
+  orig: 125, 165
+  offset: 0, 0
+  index: -1
+luluka/wave_7_16
+  rotate: false
+  xy: 754, 991
+  size: 38, 73
+  orig: 38, 73
+  offset: 0, 0
+  index: -1
+luluka/wave_7_17
+  rotate: true
+  xy: 439, 1045
+  size: 111, 77
+  orig: 111, 77
+  offset: 0, 0
+  index: -1
+luluka/wave_8_01
+  rotate: true
+  xy: 2, 1106
+  size: 70, 102
+  orig: 70, 102
+  offset: 0, 0
+  index: -1
+luluka/wave_8_02
+  rotate: true
+  xy: 788, 1163
+  size: 14, 19
+  orig: 14, 19
+  offset: 0, 0
+  index: -1
+luluka/wave_8_03
+  rotate: true
+  xy: 859, 483
+  size: 12, 20
+  orig: 12, 20
+  offset: 0, 0
+  index: -1
+luluka/wave_8_04
+  rotate: false
+  xy: 698, 791
+  size: 101, 98
+  orig: 101, 98
+  offset: 0, 0
+  index: -1
+luluka/wave_8_05
+  rotate: false
+  xy: 841, 1081
+  size: 45, 47
+  orig: 45, 47
+  offset: 0, 0
+  index: -1
+luluka/wave_8_06
+  rotate: true
+  xy: 747, 1121
+  size: 53, 39
+  orig: 53, 39
+  offset: 0, 0
+  index: -1
+luluka/wave_8_07
+  rotate: false
+  xy: 944, 953
+  size: 30, 33
+  orig: 30, 33
+  offset: 0, 0
+  index: -1
+luluka/wave_8_08
+  rotate: false
+  xy: 859, 284
+  size: 27, 28
+  orig: 27, 28
+  offset: 0, 0
+  index: -1
+luluka/wave_8_09
+  rotate: true
+  xy: 531, 601
+  size: 27, 17
+  orig: 27, 17
+  offset: 0, 0
+  index: -1
+luluka/wave_8_10
+  rotate: true
+  xy: 898, 953
+  size: 38, 44
+  orig: 38, 44
+  offset: 0, 0
+  index: -1
+luluka/wave_8_11
+  rotate: false
+  xy: 950, 878
+  size: 24, 23
+  orig: 24, 23
+  offset: 0, 0
+  index: -1
+luluka/wave_8_12
+  rotate: false
+  xy: 619, 1121
+  size: 65, 56
+  orig: 65, 56
+  offset: 0, 0
+  index: -1
+luluka/wave_8_13
+  rotate: true
+  xy: 686, 1119
+  size: 58, 35
+  orig: 58, 35
+  offset: 0, 0
+  index: -1
+luluka/wave_8_14
+  rotate: false
+  xy: 794, 988
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+luluka/wave_8_15
+  rotate: false
+  xy: 836, 1130
+  size: 35, 35
+  orig: 35, 35
+  offset: 0, 0
+  index: -1
+luluka/wave_8_16
+  rotate: true
+  xy: 902, 878
+  size: 30, 46
+  orig: 30, 46
+  offset: 0, 0
+  index: -1
+luluka/wave_8_17
+  rotate: false
+  xy: 878, 993
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+luluka/wave_8_18
+  rotate: true
+  xy: 900, 1120
+  size: 38, 23
+  orig: 38, 23
+  offset: 0, 0
+  index: -1
+luluka/wave_8_19
+  rotate: true
+  xy: 919, 1037
+  size: 34, 33
+  orig: 34, 33
+  offset: 0, 0
+  index: -1
+luluka/wave_9_01
+  rotate: false
+  xy: 202, 1106
+  size: 83, 60
+  orig: 83, 60
+  offset: 0, 0
+  index: -1
+luluka/wave_9_02
+  rotate: false
+  xy: 922, 1073
+  size: 28, 32
+  orig: 28, 32
+  offset: 0, 0
+  index: -1
+luluka/wave_9_03
+  rotate: false
+  xy: 888, 1081
+  size: 32, 37
+  orig: 32, 37
+  offset: 0, 0
+  index: -1
+luluka/wave_9_04
+  rotate: false
+  xy: 885, 1037
+  size: 32, 42
+  orig: 32, 42
+  offset: 0, 0
+  index: -1
+luluka/wave_9_05
+  rotate: true
+  xy: 808, 1120
+  size: 40, 26
+  orig: 40, 26
+  offset: 0, 0
+  index: -1
+luluka/wave_9_06
+  rotate: true
+  xy: 518, 1148
+  size: 17, 44
+  orig: 17, 44
+  offset: 0, 0
+  index: -1
+luluka/wave_9_07
+  rotate: true
+  xy: 954, 1058
+  size: 25, 20
+  orig: 25, 20
+  offset: 0, 0
+  index: -1
+luluka/zoom_01
+  rotate: true
+  xy: 2, 428
+  size: 452, 296
+  orig: 452, 296
+  offset: 0, 0
+  index: -1
+luluka/zoom_02
+  rotate: false
+  xy: 2, 882
+  size: 304, 191
+  orig: 304, 191
+  offset: 0, 0
+  index: -1
+luluka/zoom_03
+  rotate: false
+  xy: 370, 2
+  size: 436, 280
+  orig: 436, 280
+  offset: 0, 0
+  index: -1

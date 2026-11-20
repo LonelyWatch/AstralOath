@@ -1,0 +1,68 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "diene_skeff_sk3_1",
+      "format": "spine",
+      "globalZ": 0.5
+    },
+    {
+      "source": "diene_skeff_sk3_2",
+      "format": "spine",
+      "globalZ": 0.8
+    },
+    {
+      "source": "diene_skeff_sk3_3",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "diene_skeff_sk3_bg",
+      "format": "spine",
+      "globalZ": -0.8
+    },
+    {
+      "source": "diene_skeff_sk3_bfangel",
+      "ani": "skill3_2_fx",
+      "z": "0",
+      "format": "spine",
+      "globalZ": 0.4
+    },
+    {
+      "source": "diene_skeff_sk3_angel",
+      "ani": "idle",
+      "z": "0",
+      "format": "spine",
+      "globalZ": 0.4
+    },
+    {
+      "source": "diene_skill_03_pati1",
+      "x": "350",
+      "y": "400",
+      "delay": "1200",
+      "format": "particle",
+      "globalZ": 1.0
+    },
+    {
+      "source": "diene_skill_03_wing_pati1",
+      "scale": "2.5",
+      "rotate": "17",
+      "delay": "3800",
+      "format": "particle",
+      "globalZ": 0.9
+    },
+    {
+      "source": "diene_skill_03_wing_pati1",
+      "scale": "2.5",
+      "rotate": "17",
+      "delay": "3850",
+      "format": "particle",
+      "globalZ": 0.9
+    },
+    {
+      "source": "diene_skeff_sk3_wingf",
+      "format": "spine",
+      "globalZ": 0.7
+    }
+  ]
+}

@@ -1,0 +1,478 @@
+{
+  "id": "c_furious_skill_01",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "color": "0,0,0,255",
+        "accel": 1.0,
+        "opacity": 0.7,
+        "duration": 1500,
+        "localZ": -1,
+        "globalZ": -1,
+        "fadeIn": 600,
+        "fadeOut": 600,
+        "guid": 2,
+        "etty": "DARK"
+      },
+      {
+        "ani": "skill1",
+        "guid": 3,
+        "etty": "ANI"
+      },
+      {
+        "from": "jump",
+        "to": "landing",
+        "guid": 4,
+        "etty": "ANI_SCOPE"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 5,
+        "etty": "HIT"
+      },
+      {
+        "scale": "1.6",
+        "curve": "0.2911877,0.9548611,1,1",
+        "guid": 6,
+        "etty": "ZOOM"
+      },
+      {
+        "effect": "hit_new_pierce_normal.cfx",
+        "offset_x": 0.0,
+        "offset_y": 70.0,
+        "guid": 7,
+        "etty": "HIT"
+      },
+      {
+        "from": "jump2",
+        "to": "landing2",
+        "guid": 8,
+        "etty": "ANI_SCOPE"
+      },
+      {
+        "guid": 9,
+        "etty": "CAM"
+      },
+      {
+        "ver": 2,
+        "power": 50,
+        "location": 16,
+        "style": 2,
+        "x": -40.0,
+        "y": -10.0,
+        "guid": 10,
+        "etty": "MOVE"
+      },
+      {
+        "location": 12,
+        "y": -30.0,
+        "guid": 11,
+        "etty": "CAM"
+      },
+      {
+        "ver": 2,
+        "power": 50,
+        "location": 11,
+        "style": 2,
+        "guid": 12,
+        "etty": "MOVE"
+      },
+      {
+        "scale": "1",
+        "guid": 13,
+        "etty": "ZOOM"
+      },
+      {
+        "guid": 14,
+        "etty": "IDLE"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "furious_sk1eff_cm",
+        "guid": 15,
+        "etty": "SHAKE"
+      }
+    ],
+    "connections": [
+      {
+        "from": 3,
+        "to": 5,
+        "delay": 934,
+        "when": 1,
+        "Desc": "934",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 7,
+        "delay": 1700,
+        "when": 1,
+        "Desc": "1700",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 6,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 10,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 11,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 9,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 12,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 13,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 4,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 3,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 2,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 8,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 14,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 15,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/furious_sk1eff_cm.scsp",
+      "address": "characterlab/source/camera/furious_sk1eff_cm.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/furious_b_idle_ready.cfx",
+      "address": "characterlab/source/effect/furious_b_idle_ready.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/furious_b_idle_readyeff_b.atlas",
+      "address": "characterlab/source/effect/furious_b_idle_readyeff_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/furious_b_idle_readyeff_b.scsp",
+      "address": "characterlab/source/effect/furious_b_idle_readyeff_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/furious_b_idle_readyeff_b.sct",
+      "address": "characterlab/source/effect/furious_b_idle_readyeff_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/furious_b_idle_readyeff_f.atlas",
+      "address": "characterlab/source/effect/furious_b_idle_readyeff_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/furious_b_idle_readyeff_f.scsp",
+      "address": "characterlab/source/effect/furious_b_idle_readyeff_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/furious_b_idle_readyeff_f.sct",
+      "address": "characterlab/source/effect/furious_b_idle_readyeff_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/furious_sk1eff_b.atlas",
+      "address": "characterlab/source/effect/furious_sk1eff_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/furious_sk1eff_b.scsp",
+      "address": "characterlab/source/effect/furious_sk1eff_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/furious_sk1eff_b.sct",
+      "address": "characterlab/source/effect/furious_sk1eff_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/furious_sk1eff_b2.atlas",
+      "address": "characterlab/source/effect/furious_sk1eff_b2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/furious_sk1eff_b2.scsp",
+      "address": "characterlab/source/effect/furious_sk1eff_b2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/furious_sk1eff_b2.sct",
+      "address": "characterlab/source/effect/furious_sk1eff_b2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/furious_sk1eff_f.atlas",
+      "address": "characterlab/source/effect/furious_sk1eff_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/furious_sk1eff_f.scsp",
+      "address": "characterlab/source/effect/furious_sk1eff_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/furious_sk1eff_f.sct",
+      "address": "characterlab/source/effect/furious_sk1eff_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/furious_sk1eff_f2.atlas",
+      "address": "characterlab/source/effect/furious_sk1eff_f2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/furious_sk1eff_f2.scsp",
+      "address": "characterlab/source/effect/furious_sk1eff_f2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/furious_sk1eff_f2.sct",
+      "address": "characterlab/source/effect/furious_sk1eff_f2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/furious_sk2eff_self_b.atlas",
+      "address": "characterlab/source/effect/furious_sk2eff_self_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/furious_sk2eff_self_b.scsp",
+      "address": "characterlab/source/effect/furious_sk2eff_self_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/furious_sk2eff_self_b.sct",
+      "address": "characterlab/source/effect/furious_sk2eff_self_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/furious_sk2eff_self_f.atlas",
+      "address": "characterlab/source/effect/furious_sk2eff_self_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/furious_sk2eff_self_f.scsp",
+      "address": "characterlab/source/effect/furious_sk2eff_self_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/furious_sk2eff_self_f.sct",
+      "address": "characterlab/source/effect/furious_sk2eff_self_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/furious_sk3_1eff.atlas",
+      "address": "characterlab/source/effect/furious_sk3_1eff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/furious_sk3_1eff.scsp",
+      "address": "characterlab/source/effect/furious_sk3_1eff.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/furious_sk3_1eff.sct",
+      "address": "characterlab/source/effect/furious_sk3_1eff.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/furious_sk3_2eff_b.atlas",
+      "address": "characterlab/source/effect/furious_sk3_2eff_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/furious_sk3_2eff_b.scsp",
+      "address": "characterlab/source/effect/furious_sk3_2eff_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/furious_sk3_2eff_b.sct",
+      "address": "characterlab/source/effect/furious_sk3_2eff_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/furious_sk3_2eff_f.atlas",
+      "address": "characterlab/source/effect/furious_sk3_2eff_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/furious_sk3_2eff_f.scsp",
+      "address": "characterlab/source/effect/furious_sk3_2eff_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/furious_sk3_2eff_f.sct",
+      "address": "characterlab/source/effect/furious_sk3_2eff_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/furious_skill_01_01.cfx",
+      "address": "characterlab/source/effect/furious_skill_01_01.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/furious_skill_01_02.cfx",
+      "address": "characterlab/source/effect/furious_skill_01_02.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/furious_skill_02_self.cfx",
+      "address": "characterlab/source/effect/furious_skill_02_self.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/furious_skill_03_01.cfx",
+      "address": "characterlab/source/effect/furious_skill_03_01.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/furious_skill_03_02.cfx",
+      "address": "characterlab/source/effect/furious_skill_03_02.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.atlas",
+      "address": "characterlab/source/effect/hit_new_blunt_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.scsp",
+      "address": "characterlab/source/effect/hit_new_blunt_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.sct",
+      "address": "characterlab/source/effect/hit_new_blunt_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_blunt_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_blunt_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_blunt_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/hit_new_pierce_normal.atlas",
+      "address": "characterlab/source/effect/hit_new_pierce_normal.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_pierce_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_pierce_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_pierce_normal.scsp",
+      "address": "characterlab/source/effect/hit_new_pierce_normal.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_pierce_normal.sct",
+      "address": "characterlab/source/effect/hit_new_pierce_normal.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_pierce_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_pierce_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "model/furious.timeline",
+      "address": "characterlab/source/model/furious.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

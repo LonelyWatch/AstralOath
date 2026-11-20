@@ -1,0 +1,43 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "luluka_b_idle_roof",
+      "z": "10",
+      "delay": "1150",
+      "format": "spine",
+      "loop": 1
+    },
+    {
+      "source": "luluka_b_idle",
+      "z": "12",
+      "format": "spine"
+    },
+    {
+      "source": "luluka_b_idle_par",
+      "x": "-75",
+      "y": "360",
+      "z": "15",
+      "scale": "0.7,0.5",
+      "delay": "550",
+      "format": "particle"
+    },
+    {
+      "source": "luluka_b_idle_ready_par",
+      "x": "100",
+      "y": "360",
+      "z": "11",
+      "rotate": "20",
+      "delay": "360",
+      "format": "particle"
+    },
+    {
+      "source": "luluka_b_idle_ready_boom",
+      "x": "-100",
+      "y": "400",
+      "z": "13",
+      "delay": "650",
+      "format": "particle"
+    }
+  ]
+}

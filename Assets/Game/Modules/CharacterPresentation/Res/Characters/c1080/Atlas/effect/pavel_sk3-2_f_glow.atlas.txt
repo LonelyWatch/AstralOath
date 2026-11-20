@@ -1,0 +1,20 @@
+
+pavel_sk3-2_f_glow.sct
+size: 305,159
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 159, 2
+  size: 144, 144
+  orig: 144, 144
+  offset: 0, 0
+  index: -1
+glow_edge
+  rotate: false
+  xy: 2, 2
+  size: 155, 155
+  orig: 155, 155
+  offset: 0, 0
+  index: -1

@@ -86,3 +86,7 @@ pwsh -File Server/Ops/Start-LocalTestStack.ps1 -ServerDll ".artifacts/local-game
 ## 第 51–60 名英雄
 
 共享战斗规则版本 15 使用本批技能、资源和状态，选禁和战斗消费同一目录。战斗事件返回实际选中的技能图号，重放用此图号复现。 [本批权威行为](../docs/delivery/2026-11-20-roster51-60.md)
+
+## 第 61–70 名战斗规则
+
+共享战斗规则版本 16 接入迪埃妮至薇薇安，客户端与房间服务使用同版战斗目录。杰诺的冻伤、破裂及薇薇安击杀后的连续攻击由共享规则结算。 [批次记录](../docs/delivery/2026-11-20-roster61-70.md)

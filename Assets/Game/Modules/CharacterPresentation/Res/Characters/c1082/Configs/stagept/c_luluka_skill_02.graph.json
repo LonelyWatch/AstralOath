@@ -1,0 +1,466 @@
+{
+  "id": "c_luluka_skill_02",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "ani": "skill2",
+        "guid": 2,
+        "etty": "ANI"
+      },
+      {
+        "time": 200,
+        "guid": 3,
+        "etty": "BGSHOW"
+      },
+      {
+        "location": 1,
+        "y": -30.0,
+        "curve": "0.05363985,0.2638889,0.348659,0.96875",
+        "time": 200,
+        "guid": 4,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.3",
+        "curve": "0.05363985,0.2638889,0.348659,0.96875",
+        "time": 200,
+        "guid": 5,
+        "etty": "ZOOM"
+      },
+      {
+        "show": true,
+        "time": 500,
+        "guid": 6,
+        "etty": "BGSHOW"
+      },
+      {
+        "curve": "0.1685824,0.2569444,0,0.9583333",
+        "time": 500,
+        "guid": 7,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1",
+        "curve": "0.1685824,0.2569444,0,0.9583333",
+        "time": 500,
+        "guid": 8,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.7",
+        "curve": "0.0651341,0.4999999,0.6551724,0.96875",
+        "time": 1000,
+        "guid": 9,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "y": 30.0,
+        "curve": "0.0651341,0.4999999,0.6551724,0.96875",
+        "time": 1000,
+        "guid": 10,
+        "etty": "CAM"
+      },
+      {
+        "location": 1,
+        "y": -20.0,
+        "curve": "0.03065134,1.010417,0.07662835,0.9791666",
+        "time": 1533,
+        "guid": 11,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.1",
+        "curve": "0.03065134,1.010417,0.07662835,0.9791666",
+        "time": 1533,
+        "guid": 12,
+        "etty": "ZOOM"
+      },
+      {
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 13,
+        "etty": "HIT"
+      },
+      {
+        "guid": 14,
+        "etty": "IDLE"
+      },
+      {
+        "blend_target": 55,
+        "duration": -1,
+        "fadeIn": 200,
+        "fadeOut": 500,
+        "alpha_channel": 0.0,
+        "id": "cb",
+        "guid": 15,
+        "etty": "COLOR_BLEND"
+      },
+      {
+        "targetId": "cb",
+        "guid": 16,
+        "etty": "STOP"
+      }
+    ],
+    "connections": [
+      {
+        "from": 1,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 4,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 5,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 3,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 8,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 10,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 9,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 11,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 12,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 14,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 15,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 16,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 7,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 6,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 13,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "effect/luluka_b_idle.atlas",
+      "address": "characterlab/source/effect/luluka_b_idle.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/luluka_b_idle.scsp",
+      "address": "characterlab/source/effect/luluka_b_idle.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/luluka_b_idle.sct",
+      "address": "characterlab/source/effect/luluka_b_idle.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/luluka_b_idle_par.particle",
+      "address": "characterlab/source/effect/luluka_b_idle_par.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/luluka_b_idle_ready.cfx",
+      "address": "characterlab/source/effect/luluka_b_idle_ready.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/luluka_b_idle_ready_boom.particle",
+      "address": "characterlab/source/effect/luluka_b_idle_ready_boom.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/luluka_b_idle_ready_par.particle",
+      "address": "characterlab/source/effect/luluka_b_idle_ready_par.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/luluka_b_idle_roof.atlas",
+      "address": "characterlab/source/effect/luluka_b_idle_roof.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/luluka_b_idle_roof.scsp",
+      "address": "characterlab/source/effect/luluka_b_idle_roof.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/luluka_b_idle_roof.sct",
+      "address": "characterlab/source/effect/luluka_b_idle_roof.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/luluka_camping.atlas",
+      "address": "characterlab/source/effect/luluka_camping.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/luluka_camping.cfx",
+      "address": "characterlab/source/effect/luluka_camping.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/luluka_camping.particle",
+      "address": "characterlab/source/effect/luluka_camping.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/luluka_camping.scsp",
+      "address": "characterlab/source/effect/luluka_camping.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/luluka_camping.sct",
+      "address": "characterlab/source/effect/luluka_camping.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/luluka_run.cfx",
+      "address": "characterlab/source/effect/luluka_run.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/luluka_run.particle",
+      "address": "characterlab/source/effect/luluka_run.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/luluka_skill1_self.atlas",
+      "address": "characterlab/source/effect/luluka_skill1_self.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/luluka_skill1_self.cfx",
+      "address": "characterlab/source/effect/luluka_skill1_self.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/luluka_skill1_self.scsp",
+      "address": "characterlab/source/effect/luluka_skill1_self.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/luluka_skill1_self.sct",
+      "address": "characterlab/source/effect/luluka_skill1_self.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/luluka_skill1_self_boom.particle",
+      "address": "characterlab/source/effect/luluka_skill1_self_boom.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/luluka_skill1_self_obake.particle",
+      "address": "characterlab/source/effect/luluka_skill1_self_obake.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/luluka_skill1_target_bot.particle",
+      "address": "characterlab/source/effect/luluka_skill1_target_bot.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/luluka_skill2.cfx",
+      "address": "characterlab/source/effect/luluka_skill2.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/luluka_skill2_back.atlas",
+      "address": "characterlab/source/effect/luluka_skill2_back.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/luluka_skill2_back.scsp",
+      "address": "characterlab/source/effect/luluka_skill2_back.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/luluka_skill2_back.sct",
+      "address": "characterlab/source/effect/luluka_skill2_back.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/luluka_skill2_bg.cfx",
+      "address": "characterlab/source/effect/luluka_skill2_bg.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/luluka_skill2_boom.particle",
+      "address": "characterlab/source/effect/luluka_skill2_boom.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/luluka_skill2_boom2.particle",
+      "address": "characterlab/source/effect/luluka_skill2_boom2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/luluka_skill2_boom_bg.particle",
+      "address": "characterlab/source/effect/luluka_skill2_boom_bg.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/luluka_skill2_boomobake_part1.particle",
+      "address": "characterlab/source/effect/luluka_skill2_boomobake_part1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/luluka_skill2_front.atlas",
+      "address": "characterlab/source/effect/luluka_skill2_front.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/luluka_skill2_front.scsp",
+      "address": "characterlab/source/effect/luluka_skill2_front.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/luluka_skill2_front.sct",
+      "address": "characterlab/source/effect/luluka_skill2_front.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/luluka_skill2_logo_par.particle",
+      "address": "characterlab/source/effect/luluka_skill2_logo_par.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/luluka_skill2_obake_part1.particle",
+      "address": "characterlab/source/effect/luluka_skill2_obake_part1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/luluka_skill2_obake_part2.particle",
+      "address": "characterlab/source/effect/luluka_skill2_obake_part2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/luluka_skill2_obake_part3.particle",
+      "address": "characterlab/source/effect/luluka_skill2_obake_part3.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/luluka_skill2_self.atlas",
+      "address": "characterlab/source/effect/luluka_skill2_self.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/luluka_skill2_self.scsp",
+      "address": "characterlab/source/effect/luluka_skill2_self.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/luluka_skill2_self.sct",
+      "address": "characterlab/source/effect/luluka_skill2_self.sct",
+      "type": "texture"
+    },
+    {
+      "source": "model/luluka.timeline",
+      "address": "characterlab/source/model/luluka.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/pati_03.sct",
+      "address": "characterlab/source/particle/pati_03.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/petal_01.sct",
+      "address": "characterlab/source/particle/petal_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/petal_02.sct",
+      "address": "characterlab/source/particle/petal_02.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

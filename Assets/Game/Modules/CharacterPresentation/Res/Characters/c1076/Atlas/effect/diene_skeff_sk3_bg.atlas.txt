@@ -1,0 +1,251 @@
+
+diene_skeff_sk3_bg.sct
+size: 908,1152
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bg&filter/white
+  rotate: false
+  xy: 783, 1110
+  size: 32, 18
+  orig: 32, 18
+  offset: 0, 0
+  index: -1
+diena/063
+  rotate: true
+  xy: 2, 2
+  size: 1003, 475
+  orig: 1003, 475
+  offset: 0, 0
+  index: -1
+diena/angel_flare_03
+  rotate: true
+  xy: 2, 1007
+  size: 6, 283
+  orig: 6, 283
+  offset: 0, 0
+  index: -1
+diena/angel_flare_04
+  rotate: false
+  xy: 884, 2
+  size: 6, 283
+  orig: 6, 283
+  offset: 0, 0
+  index: -1
+diena/w_shadow_1_1
+  rotate: false
+  xy: 176, 1015
+  size: 155, 61
+  orig: 155, 61
+  offset: 0, 0
+  index: -1
+diena/w_shadow_1_2
+  rotate: false
+  xy: 2, 1076
+  size: 169, 59
+  orig: 169, 59
+  offset: 0, 0
+  index: -1
+diena/w_shadow_1_3
+  rotate: false
+  xy: 173, 1078
+  size: 162, 57
+  orig: 162, 57
+  offset: 0, 0
+  index: -1
+diena/w_shadow_1_4
+  rotate: true
+  xy: 850, 911
+  size: 162, 56
+  orig: 162, 56
+  offset: 0, 0
+  index: -1
+diena/w_shadow_1_5
+  rotate: false
+  xy: 337, 1057
+  size: 156, 63
+  orig: 156, 63
+  offset: 0, 0
+  index: -1
+diena/w_shadow_1_6
+  rotate: false
+  xy: 495, 1030
+  size: 152, 61
+  orig: 152, 61
+  offset: 0, 0
+  index: -1
+diena/w_shadow_1_7
+  rotate: false
+  xy: 2, 1015
+  size: 172, 59
+  orig: 172, 59
+  offset: 0, 0
+  index: -1
+diena/w_shadow_1_8
+  rotate: false
+  xy: 495, 1093
+  size: 154, 57
+  orig: 154, 57
+  offset: 0, 0
+  index: -1
+diena/w_shadow_2_1
+  rotate: false
+  xy: 479, 980
+  size: 173, 48
+  orig: 173, 48
+  offset: 0, 0
+  index: -1
+diena/w_shadow_2_2
+  rotate: false
+  xy: 333, 1007
+  size: 142, 48
+  orig: 142, 48
+  offset: 0, 0
+  index: -1
+diena/w_shadow_2_3
+  rotate: false
+  xy: 651, 1082
+  size: 130, 52
+  orig: 130, 52
+  offset: 0, 0
+  index: -1
+diena/w_splash_01
+  rotate: false
+  xy: 479, 764
+  size: 398, 145
+  orig: 398, 145
+  offset: 0, 0
+  index: -1
+diena/w_splash_02
+  rotate: false
+  xy: 479, 614
+  size: 401, 148
+  orig: 401, 148
+  offset: 0, 0
+  index: -1
+diena/w_splash_03
+  rotate: false
+  xy: 479, 310
+  size: 403, 150
+  orig: 403, 150
+  offset: 0, 0
+  index: -1
+diena/w_splash_04
+  rotate: false
+  xy: 479, 462
+  size: 402, 150
+  orig: 402, 150
+  offset: 0, 0
+  index: -1
+diena/w_splash_05
+  rotate: false
+  xy: 479, 157
+  size: 403, 151
+  orig: 403, 151
+  offset: 0, 0
+  index: -1
+diena/w_splash_06
+  rotate: false
+  xy: 479, 2
+  size: 403, 153
+  orig: 403, 153
+  offset: 0, 0
+  index: -1
+diena/wing_s_01
+  rotate: true
+  xy: 879, 764
+  size: 89, 27
+  orig: 89, 27
+  offset: 0, 0
+  index: -1
+diena/wing_s_02
+  rotate: true
+  xy: 651, 1136
+  size: 11, 59
+  orig: 11, 59
+  offset: 0, 0
+  index: -1
+diena/wing_s_03
+  rotate: false
+  xy: 892, 2
+  size: 14, 56
+  orig: 14, 56
+  offset: 0, 0
+  index: -1
+diena/wing_s_04
+  rotate: false
+  xy: 654, 980
+  size: 20, 45
+  orig: 20, 45
+  offset: 0, 0
+  index: -1
+diena/wing_s_05
+  rotate: false
+  xy: 468, 1122
+  size: 10, 18
+  orig: 10, 18
+  offset: 0, 0
+  index: -1
+diena/wing_s_06
+  rotate: false
+  xy: 862, 1075
+  size: 43, 38
+  orig: 43, 38
+  offset: 0, 0
+  index: -1
+diena/wing_s_07
+  rotate: false
+  xy: 783, 1082
+  size: 77, 26
+  orig: 77, 26
+  offset: 0, 0
+  index: -1
+diena/wing_s_08
+  rotate: false
+  xy: 337, 1122
+  size: 129, 28
+  orig: 129, 28
+  offset: 0, 0
+  index: -1
+diena/wing_s_09
+  rotate: true
+  xy: 884, 372
+  size: 58, 20
+  orig: 58, 20
+  offset: 0, 0
+  index: -1
+diena/wing_s_10
+  rotate: true
+  xy: 879, 855
+  size: 54, 20
+  orig: 54, 20
+  offset: 0, 0
+  index: -1
+diena/wing_s_11
+  rotate: false
+  xy: 2, 1137
+  size: 55, 13
+  orig: 55, 13
+  offset: 0, 0
+  index: -1
+diena/wing_s_12
+  rotate: true
+  xy: 884, 287
+  size: 83, 22
+  orig: 83, 22
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 679, 911
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+shot_glow_g
+  rotate: false
+  xy: 479, 911
+  size: 198, 67
+  orig: 198, 67
+  offset: 0, 0
+  index: -1

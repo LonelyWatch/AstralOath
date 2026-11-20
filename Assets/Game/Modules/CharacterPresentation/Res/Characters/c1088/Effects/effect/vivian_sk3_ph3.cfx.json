@@ -1,0 +1,26 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "vivian_skeff_sk3_ph3_f_1",
+      "format": "spine",
+      "globalZ": 0.6
+    },
+    {
+      "source": "vivian_skeff_sk3_ph3_f_2",
+      "format": "spine",
+      "globalZ": 0.5
+    },
+    {
+      "source": "vivian_skeff_sk3_ph3_b",
+      "format": "spine",
+      "globalZ": -0.5
+    },
+    {
+      "source": "vivian_pat_sk3",
+      "y": "-50",
+      "delay": "700",
+      "format": "particle"
+    }
+  ]
+}

@@ -62,6 +62,9 @@ STATUSES = (
     ("Venom", "Debuff", "stic_venom"),
     ("Perception", "Buff", "stic_detection_keep"),
     ("MagicBarrier", "Buff", "stic_manafield_keep"),
+    ("Frostbite", "Debuff", "stic_freezing"),
+    ("Rupture", "Debuff", "stic_rupture"),
+    ("PenetrationResistanceUp", "Buff", "stic_penres_up"),
 )
 
 

@@ -1,0 +1,25 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "ceris_sk3_1eff_b",
+      "format": "spine",
+      "globalZ": -4.0
+    },
+    {
+      "source": "ceris_sk3_1eff_f",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "ceris_skill_03_pati_01",
+      "x": "0",
+      "y": "0",
+      "scale": "2.7",
+      "delay": "1234",
+      "format": "particle",
+      "globalZ": -1.0,
+      "attach": "ceris_sk3_1eff_b/eng_round_b_1"
+    }
+  ]
+}

@@ -1,0 +1,348 @@
+{
+  "id": "c_ceris_skill_01",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "ani": "skill1",
+        "guid": 2,
+        "etty": "ANI"
+      },
+      {
+        "location": 1,
+        "x": 150.0,
+        "curve": "0.348659,-0.0104167,0.1570881,0.9826389",
+        "time": 700,
+        "guid": 3,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.5",
+        "curve": "0.348659,-0.0104167,0.1570881,0.9826389",
+        "time": 700,
+        "guid": 4,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 41,
+        "y": -30.0,
+        "curve": "0,1,0.4559387,0.9652778",
+        "time": 600,
+        "guid": 5,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.2",
+        "curve": "0,1,0.4559387,0.9652778",
+        "time": 600,
+        "guid": 6,
+        "etty": "ZOOM"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "ceris_sk1eff_cm",
+        "guid": 7,
+        "etty": "SHAKE"
+      },
+      {
+        "guid": 8,
+        "etty": "IDLE"
+      },
+      {
+        "effect": "hit_new_pierce_normal.cfx",
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 9,
+        "etty": "HIT"
+      },
+      {
+        "curve": "0.2796935,-2.980232E-08,0.7624521,1",
+        "time": 300,
+        "guid": 10,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1",
+        "curve": "0.3524904,-0.003472252,0.7547893,0.9965278",
+        "time": 300,
+        "guid": 11,
+        "etty": "ZOOM"
+      },
+      {
+        "color": "0,0,0,255",
+        "accel": 1.0,
+        "opacity": 0.5,
+        "duration": -1,
+        "localZ": -1,
+        "globalZ": -1,
+        "fadeIn": 500,
+        "fadeOut": 300,
+        "id": "dk",
+        "guid": 12,
+        "etty": "DARK"
+      },
+      {
+        "targetId": "dk",
+        "time": 300,
+        "guid": 13,
+        "etty": "STOP"
+      }
+    ],
+    "connections": [
+      {
+        "from": 1,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 3,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 4,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 5,
+        "delay": 800,
+        "Desc": "800",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 8,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 6,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 10,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 11,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 9,
+        "delay": 1500,
+        "when": 1,
+        "Desc": "1500",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 12,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 13,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/ceris_sk1eff_cm.scsp",
+      "address": "characterlab/source/camera/ceris_sk1eff_cm.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/ceris_b_idle_pati.particle",
+      "address": "characterlab/source/effect/ceris_b_idle_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/ceris_b_idle_ready.cfx",
+      "address": "characterlab/source/effect/ceris_b_idle_ready.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/ceris_b_idle_ready_pati.cfx",
+      "address": "characterlab/source/effect/ceris_b_idle_ready_pati.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/ceris_b_idle_readyeff_b.atlas",
+      "address": "characterlab/source/effect/ceris_b_idle_readyeff_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/ceris_b_idle_readyeff_b.scsp",
+      "address": "characterlab/source/effect/ceris_b_idle_readyeff_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/ceris_b_idle_readyeff_b.sct",
+      "address": "characterlab/source/effect/ceris_b_idle_readyeff_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/ceris_b_idle_readyeff_f.atlas",
+      "address": "characterlab/source/effect/ceris_b_idle_readyeff_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/ceris_b_idle_readyeff_f.scsp",
+      "address": "characterlab/source/effect/ceris_b_idle_readyeff_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/ceris_b_idle_readyeff_f.sct",
+      "address": "characterlab/source/effect/ceris_b_idle_readyeff_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/ceris_sk1eff_b.atlas",
+      "address": "characterlab/source/effect/ceris_sk1eff_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/ceris_sk1eff_b.scsp",
+      "address": "characterlab/source/effect/ceris_sk1eff_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/ceris_sk1eff_b.sct",
+      "address": "characterlab/source/effect/ceris_sk1eff_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/ceris_sk1eff_f.atlas",
+      "address": "characterlab/source/effect/ceris_sk1eff_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/ceris_sk1eff_f.scsp",
+      "address": "characterlab/source/effect/ceris_sk1eff_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/ceris_sk1eff_f.sct",
+      "address": "characterlab/source/effect/ceris_sk1eff_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/ceris_sk2eff_self.atlas",
+      "address": "characterlab/source/effect/ceris_sk2eff_self.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/ceris_sk2eff_self.scsp",
+      "address": "characterlab/source/effect/ceris_sk2eff_self.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/ceris_sk2eff_self.sct",
+      "address": "characterlab/source/effect/ceris_sk2eff_self.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/ceris_skill_01.cfx",
+      "address": "characterlab/source/effect/ceris_skill_01.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/ceris_skill_02_self.cfx",
+      "address": "characterlab/source/effect/ceris_skill_02_self.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_pierce_normal.atlas",
+      "address": "characterlab/source/effect/hit_new_pierce_normal.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_pierce_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_pierce_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_pierce_normal.scsp",
+      "address": "characterlab/source/effect/hit_new_pierce_normal.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_pierce_normal.sct",
+      "address": "characterlab/source/effect/hit_new_pierce_normal.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_pierce_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_pierce_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "model/ceris.timeline",
+      "address": "characterlab/source/model/ceris.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/flash.sct",
+      "address": "characterlab/source/particle/flash.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/zodiac_star1.sct",
+      "address": "characterlab/source/particle/zodiac_star1.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

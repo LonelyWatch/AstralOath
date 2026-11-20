@@ -1,0 +1,19 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "luluka_camping",
+      "z": "5",
+      "format": "spine",
+      "loop": 1
+    },
+    {
+      "source": "luluka_camping",
+      "x": "100",
+      "y": "250",
+      "z": "6",
+      "scale": "0.8",
+      "format": "particle"
+    }
+  ]
+}

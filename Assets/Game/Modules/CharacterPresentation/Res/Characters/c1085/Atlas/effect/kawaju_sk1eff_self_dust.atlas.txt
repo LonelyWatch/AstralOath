@@ -1,0 +1,41 @@
+
+kawaju_sk1eff_self_dust.sct
+size: 374,162
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+kr_ptc_2
+  rotate: true
+  xy: 186, 124
+  size: 27, 44
+  orig: 27, 44
+  offset: 0, 0
+  index: -1
+kr_ptc_3
+  rotate: true
+  xy: 232, 124
+  size: 24, 39
+  orig: 24, 39
+  offset: 0, 0
+  index: -1
+smoke_02
+  rotate: false
+  xy: 2, 2
+  size: 182, 158
+  orig: 182, 158
+  offset: 0, 0
+  index: -1
+smoke_1
+  rotate: true
+  xy: 186, 2
+  size: 120, 119
+  orig: 120, 119
+  offset: 0, 0
+  index: -1
+smoke_s1
+  rotate: false
+  xy: 307, 2
+  size: 65, 80
+  orig: 65, 80
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,37 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "chermia_skeff_sk2",
+      "z": "5",
+      "format": "spine"
+    },
+    {
+      "source": "chermia_skeff_sk2_pati1",
+      "y": "750",
+      "z": "7",
+      "delay": "1140",
+      "format": "particle"
+    },
+    {
+      "source": "chermia_skeff_sk2_pati2",
+      "x": "-35",
+      "y": "310",
+      "z": "1",
+      "scale": "0.8,0.6",
+      "rotate": "-27",
+      "delay": "420",
+      "format": "particle"
+    },
+    {
+      "source": "chermia_skeff_sk2_pati2",
+      "x": "0",
+      "y": "350",
+      "z": "2",
+      "scale": "-0.85,0.85",
+      "rotate": "-27",
+      "delay": "780",
+      "format": "particle"
+    }
+  ]
+}

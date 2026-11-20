@@ -95,7 +95,7 @@ namespace AstralOath.Shared.Battle
         internal static bool IsHarmful(BattleStatusKind kind) =>
             IsImmobilizing(kind) || kind == BattleStatusKind.MagicNail || kind == BattleStatusKind.SpeedDown ||
             kind == BattleStatusKind.AttackDown || kind == BattleStatusKind.DefenseDown ||
-            kind == BattleStatusKind.Restrict || kind == BattleStatusKind.Bind ||
+            kind == BattleStatusKind.Restrict || kind == BattleStatusKind.Bind || kind == BattleStatusKind.Frostbite || kind == BattleStatusKind.Rupture ||
             kind == BattleStatusKind.VampiricTouch || kind == BattleStatusKind.Bomb || kind == BattleStatusKind.Venom || kind == BattleStatusKind.Poison || kind == BattleStatusKind.Burn || kind == BattleStatusKind.Bleed ||
             kind == BattleStatusKind.HitChanceDown || kind == BattleStatusKind.Unbuffable || kind == BattleStatusKind.Unhealable || kind == BattleStatusKind.Silence || kind == BattleStatusKind.Provoke || kind == BattleStatusKind.Targeted;
 
@@ -201,6 +201,7 @@ namespace AstralOath.Shared.Battle
             public readonly BattleUnitSnapshot Source;
             public readonly List<BattleStatusSnapshot> Statuses;
             public int HighHealthAttack, LowHealthDefense, PassiveCriticalChance, PassiveCriticalResistance;
+            public int EnemyEvasionReduction;
             public int Health;
             public bool Extinct;
             public bool LethalProtectionConsumed;
@@ -251,7 +252,7 @@ namespace AstralOath.Shared.Battle
             public int MaximumHealth => Source.Stats.MaxHealth - InjuryAmount;
             public decimal Attack => Source.Stats.Attack * Math.Max(0m, 1m +
                 (Math.Max(Strength(BattleStatusKind.AttackUp), Strength(BattleStatusKind.GreaterAttackUp)) +
-                    Strength(BattleStatusKind.Rage) + Strength(BattleStatusKind.Vigor) +
+                    Strength(BattleStatusKind.Rage) + Strength(BattleStatusKind.Vigor) + Strength(BattleStatusKind.AttackGrowth) +
                     (2L * Health >= MaximumHealth ? HighHealthAttack : 0) + ArtifactAttack - (decimal)Strength(BattleStatusKind.AttackDown)) / Basis) + Source.OpeningAttackBonus;
             public int CriticalChance => Source.Stats.CritChanceBp + PassiveCriticalChance + Strength(BattleStatusKind.CriticalChanceUp) + Strength(BattleStatusKind.Perception) +
                 (ArtifactEffect == "critical_chance" ? ArtifactValue :
@@ -309,7 +310,7 @@ namespace AstralOath.Shared.Battle
             }
 
             public string Cast(Unit actor, Program program, Unit selected, bool soulBurn, BattleActionOrigin origin,
-                string triggerPhase = null)
+                string triggerPhase = null, int repeatStage = 0)
             {
                 var skill = program.Row;
                 var modifiers = owner.ModifiersFor(actor, program);
@@ -364,11 +365,14 @@ namespace AstralOath.Shared.Battle
                 Dictionary<string, int> damageDealt = null;
                 bool defeatedTarget = false;
                 var defeated = new HashSet<string>(StringComparer.Ordinal);
+                Dictionary<Unit, int> pendingRuptures = null;
                 int attackRateOverride = SkillModifier(program, "attack_rate_override", actor, actor, multiTargetAttack,
                     fullResource: fullResource, nonDualBuffed: nonDualBuffed, soulBurn: soulBurn);
                 if (origin == BattleActionOrigin.ExtraAttack)
                     attackRateOverride = Math.Max(attackRateOverride, SkillModifier(program, "triggered_attack_rate_override", actor, actor, multiTargetAttack));
                 if (weightedAttack != null) attackRateOverride = weightedAttack.value;
+                if (repeatStage > 0)
+                    attackRateOverride = program.Effects.Single(e => e.operation == "repeat_on_kill" && e.turns == repeatStage).value;
                 int missingTargetsBonus = Math.Max(0, 4 - targets.Length) *
                     SkillModifier(program, "damage_bonus_per_missing_target", actor, actor, multiTargetAttack);
                 foreach (var effect in program.Effects)
@@ -376,6 +380,8 @@ namespace AstralOath.Shared.Battle
                     if ((triggerPhase != null && effect.phase != triggerPhase) ||
                         (triggerPhase == null && effect.phase != "impact" && effect.phase != "after_hit" &&
                             effect.phase != "after_attack" && effect.phase != "before_attack")) continue;
+                    if (pendingRuptures != null && (effect.phase == "after_hit" || effect.phase == "after_attack"))
+                        ResolveRuptures();
                     switch (effect.operation)
                     {
                         case "trigger":
@@ -383,6 +389,8 @@ namespace AstralOath.Shared.Battle
                         case "cooldown_immune":
                         case "full_resource_damage_bonus":
                         case "normal_hit_only":
+                        case "ignore_damage_share":
+                        case "random_dual_attack_if_third_cooling":
                         case "missing_health_base_per_100000":
                         case "resource_nullifier":
                         case "ready_evasion_counter":
@@ -421,6 +429,25 @@ namespace AstralOath.Shared.Battle
                         case "trigger_on_target_half":
                             if (selected?.Alive == true && 2L * selected.Health <= selected.MaximumHealth)
                                 TriggerSkill(actor, effect, selected);
+                            continue;
+                        case "trigger_readiness":
+                            if (CanReact(actor) && CanActivateOffTurn(actor) && Roll(random, effect.chanceBp))
+                            {
+                                var presentation = FindProgram(actor, effect.turns).Row.presentationId;
+                                Changes.Add(BattleChange.Action(actor.Id, actor.Id, skill.id, BattleActionOrigin.ExtraAttack, presentation));
+                                ChangeReadiness(actor, actor, effect.value);
+                            }
+                            continue;
+                        case "repeat_on_kill":
+                            if (effect.turns == repeatStage + 1 && defeatedTarget && CanReact(actor) && CanActivateOffTurn(actor))
+                            {
+                                var next = units.FirstOrDefault(unit => unit.Alive && unit.Side != actor.Side);
+                                if (next != null)
+                                {
+                                    Cast(actor, program, next, false, BattleActionOrigin.ExtraAttack, repeatStage: effect.turns);
+                                    if (skill.soulGain > 0) Changes.Add(BattleChange.Soul(actor.Id, actor.Side, skill.soulGain));
+                                }
+                            }
                             continue;
                         case "repeat_random_spend":
                             if (origin != BattleActionOrigin.ExtraAttack && actor.ResourceAmount >= effect.value &&
@@ -541,7 +568,15 @@ namespace AstralOath.Shared.Battle
                             effectModifiers.DamageBp += basicModifiers.DamageBp;
                             effectModifiers.ChanceBp += basicModifiers.ChanceBp;
                         }
-                        int healthLost = ApplyEffect(actor, target, skill, effect, effectModifiers, soulBurn, lastHit, hit, target == highestDefense,
+                        if (effect.operation == "damage" && !attacked.Contains(target.Id) && target.Status(BattleStatusKind.Rupture) is { } rupture)
+                        {
+                            pendingRuptures ??= new Dictionary<Unit, int>();
+                            pendingRuptures[target] = rupture.Strength;
+                        }
+                        // A post-attack status or dispel uses its own condition and resistance roll.
+                        var effectHit = effect.phase == "after_attack" && (effect.operation == "apply_status" || effect.operation == "dispel")
+                            ? BattleHitKind.None : lastHit;
+                        int healthLost = ApplyEffect(actor, target, skill, effect, effectModifiers, soulBurn, effectHit, hit, target == highestDefense,
                             allTargetAttack, program, multiTargetAttack, speedVariant, speedBuffed,
                             attackRateOverride, SkillModifier(program, "ignore_resistance", actor, target, multiTargetAttack, fullResource: fullResource) > 0,
                             missingTargetsBonus, fullResource, limitedDamage, target == highestHealth ? healthPenetration : 0,
@@ -551,7 +586,8 @@ namespace AstralOath.Shared.Battle
                             readinessDrained ??= new HashSet<string>(StringComparer.Ordinal);
                             readinessDrained.Add(target.Id);
                         }
-                        if (effect.operation == "fixed_damage" && !target.Alive && actor.Side != target.Side)
+                        if ((effect.operation == "fixed_damage" || effect.operation == "attacker_scaled_damage") &&
+                            !target.Alive && actor.Side != target.Side)
                         {
                             defeated.Add(target.Id);
                             defeatedTarget = true;
@@ -574,6 +610,7 @@ namespace AstralOath.Shared.Battle
                     }
                 }
 
+                if (pendingRuptures != null) ResolveRuptures();
                 if (weightedAttack != null)
                     foreach (var id in actor.Source.Form.SkillIds.Where(id => actor.Cooldowns.GetValueOrDefault(id) > 0 && !IsCooldownImmune(id)))
                         ChangeCooldown(actor, actor, id, -weightedAttack.turns);
@@ -607,7 +644,9 @@ namespace AstralOath.Shared.Battle
                     selected?.Alive == true && (!soulBurn || (skill.soulBurnKind != "increase_damage_no_dual" && skill.soulBurnKind != "increase_healing_no_dual")))
                 {
                     var eligible = Allies(actor).Where(unit => unit != actor && CanReact(unit) && CanActivateOffTurn(unit)).ToArray();
-                    var helper = RandomDualHelper(eligible, actor);
+                    bool forced = eligible.Length > 0 && program.Effects.Any(e => e.operation == "random_dual_attack_if_third_cooling") &&
+                        actor.Cooldowns.GetValueOrDefault(FindProgram(actor, 3).Row.id) > 0;
+                    var helper = forced ? Choose(eligible) : RandomDualHelper(eligible, actor);
                     if (helper != null) CastBasic(helper, selected, BattleActionOrigin.DualAttack);
                 }
                 if (SkillModifier(program, "suppress_counter", actor, actor, multiTargetAttack) > 0) return presentationId;
@@ -631,6 +670,20 @@ namespace AstralOath.Shared.Battle
                     }
                 }
                 return presentationId;
+
+                void ResolveRuptures()
+                {
+                    foreach (var pair in pendingRuptures)
+                    {
+                        var target = pair.Key;
+                        if (!target.Alive || nullifiedTargets.Contains(target.Id) || !target.Has(BattleStatusKind.Rupture)) continue;
+                        ProjectDamage(actor, target, ScaleHealth(target.MaximumHealth, pair.Value), BattleHitKind.None, limitedDamage);
+                        if (target.Alive) continue;
+                        defeatedTarget = true;
+                        defeated.Add(target.Id);
+                    }
+                    pendingRuptures = null;
+                }
             }
 
             private Unit RandomDualHelper(Unit[] candidates, Unit actor)
@@ -674,7 +727,8 @@ namespace AstralOath.Shared.Battle
                             speedBuffed) > 0 ? 1 : ElementRelation(actor.Source.Element, target.Source.Element);
                         int sleepPenalty = target.Has(BattleStatusKind.Sleep) ? Basis : 0;
                         var result = RollHit(random, relation, actor.CriticalChance,
-                            target.Strength(BattleStatusKind.EvasionUp) + ReadySkillEffect(target, "ready_evasion_counter") - sleepPenalty - (target.Has(BattleStatusKind.Targeted) ? 5000 : 0) +
+                            target.Strength(BattleStatusKind.EvasionUp) + ReadySkillEffect(target, "ready_evasion_counter") - sleepPenalty -
+                                EnemyEvasionPenalty(target) - (target.Has(BattleStatusKind.Targeted) ? 5000 : 0) +
                                 (target.ArtifactEffect == "evasion_attack_buff" ? target.ArtifactValue : 0),
                             target.Strength(BattleStatusKind.CriticalResistanceUp) + target.PassiveCriticalResistance - sleepPenalty,
                             hitChance: (actor.ArtifactEffect == "hit_chance" ? actor.ArtifactValue : 0) -
@@ -695,8 +749,10 @@ namespace AstralOath.Shared.Battle
                             (actor.Has(BattleStatusKind.Stealth) ? skill.stealthPenetrationBp ?? 0 : 0) +
                             (highestDefense ? skill.highestDefensePenetrationBp ?? 0 : 0) +
                             SkillModifier(program, "defense_penetration", actor, target, multiTargetAttack);
+                        decimal effectivePenetration = Math.Min(Basis, penetration) *
+                            (1m - target.Strength(BattleStatusKind.PenetrationResistanceUp) / (decimal)Basis);
                         decimal defense = target.Defense * (1m + DefenseAura(target) / (decimal)Basis) *
-                            (1m - Math.Min(Basis, penetration) / (decimal)Basis);
+                            (1m - effectivePenetration / Basis);
                         int speedScale = (soulBurn ? skill.burnSpeedDamagePpm : null) ?? skill.casterSpeedDamagePpm ?? 0;
                         int perDebuff = SkillModifier(program, "damage_bonus_per_debuff", actor, target, multiTargetAttack);
                         int debuffBonus = perDebuff == 0 ? 0 : perDebuff * target.Statuses.Count(status => IsHarmful(status.Kind));
@@ -714,7 +770,8 @@ namespace AstralOath.Shared.Battle
                             (HasBuff(target) ? (skill.damageAgainstBuffBp ?? 0) / (decimal)Basis : 0m) +
                             (debuffBonus + missingTargetsBonus + ArtifactDamageBonus(actor, target, program?.ReplacesBasicCounter == true ? 1 : skill.slot) + SkillModifier(program, "damage_bonus", actor, target, multiTargetAttack) +
                                 Passives(actor).Sum(passive => SkillModifier(passive, "damage_bonus", actor, target, multiTargetAttack))) / (decimal)Basis;
-                        int reduction = DamageReduction(target, multiTargetAttack, result);
+                        bool frozen = target.Has(BattleStatusKind.Frostbite);
+                        int reduction = frozen ? 0 : DamageReduction(target, multiTargetAttack, result);
                         int criticalDamage = actor.CriticalDamage +
                             SkillModifier(program, "critical_damage_bonus", actor, target, multiTargetAttack);
                         int power = (speedVariant ? skill.speedUpPowerBp : null) ?? skill.powerBp.Value;
@@ -728,7 +785,7 @@ namespace AstralOath.Shared.Battle
                                 (decimal)SkillModifier(program, "missing_health_base_per_100000", actor, target, multiTargetAttack, soulBurn: soulBurn) / 100000 +
                                 (actor.Defense * defenseRate + target.MaximumHealth * (decimal)targetHealthDamage) / Basis,
                             damageMultiplier: (1m + damageBonus) * (1m - reduction / (decimal)Basis) *
-                                (allTargetAttack && target.Has(BattleStatusKind.Stealth) ? .5m : 1m));
+                                (allTargetAttack && !frozen && target.Has(BattleStatusKind.Stealth) ? .5m : 1m));
                         hit[target.Id] = result;
                         if (target.Has(BattleStatusKind.MagicBarrier) && nullifiedTargets?.Contains(target.Id) != true)
                         {
@@ -748,7 +805,8 @@ namespace AstralOath.Shared.Battle
                             nullifiedTargets?.Add(target.Id);
                         }
                         if (nullifier != null || nullifiedTargets?.Contains(target.Id) == true) damage = 0;
-                        var sharing = DamageShareHolder(target);
+                        var sharing = frozen || SkillModifier(program, "ignore_damage_share", actor, target, multiTargetAttack) > 0
+                            ? null : DamageShareHolder(target);
                         int shared = sharing == null || target.Has(BattleStatusKind.Invincible) ? 0 :
                             ScaleHealth(damage, ShareStrength(sharing));
                         int reflect = target.Strength(BattleStatusKind.Reflect);
@@ -783,6 +841,20 @@ namespace AstralOath.Shared.Battle
                     case "fixed_damage":
                         if (!(nullifiedTargets?.Contains(target.Id) ?? false)) ProjectDamage(actor, target, effect.value, BattleHitKind.None, limitedDamage);
                         break;
+                    case "attacker_scaled_damage":
+                        if (!(nullifiedTargets?.Contains(target.Id) ?? false))
+                            ProjectDamage(actor, target, PeriodicDamage(ScaleHealth(actor.Attack, effect.value), target.Defense),
+                                BattleHitKind.None, limitedDamage);
+                        break;
+                    case "stack_attack":
+                        int strengthAfterCast = Math.Min(effect.value * effect.turns, target.Strength(BattleStatusKind.AttackGrowth) + effect.value);
+                        if (strengthAfterCast > target.Strength(BattleStatusKind.AttackGrowth))
+                            ApplyStatus(actor, target, BattleStatusKind.AttackGrowth, 1, strengthAfterCast);
+                        break;
+                    case "caster_attack_barrier":
+                        ApplyStatus(actor, target, BattleStatusKind.Barrier, effect.turns,
+                            ScaleHealth(actor.Attack, effect.value + modifiers.BarrierBp, modifiers.BarrierMultiplierBp));
+                        break;
                     case "caster_health_barrier":
                         ApplyStatus(actor, target, BattleStatusKind.Barrier, effect.turns,
                             ScaleHealth(actor.MaximumHealth, effect.value + modifiers.BarrierBp, modifiers.BarrierMultiplierBp));
@@ -810,7 +882,7 @@ namespace AstralOath.Shared.Battle
                         break;
                     case "extend_buffs":
                         foreach (var status in target.Statuses.Where(item => !IsHarmful(item.Kind) &&
-                            item.Kind != BattleStatusKind.Idol && item.Kind != BattleStatusKind.SpiritlordProtection && item.Kind != BattleStatusKind.SkillNullifier).ToArray())
+                            item.Kind != BattleStatusKind.Idol && item.Kind != BattleStatusKind.AttackGrowth && item.Kind != BattleStatusKind.SpiritlordProtection && item.Kind != BattleStatusKind.SkillNullifier).ToArray())
                             UpdateStatusDuration(actor, target, status, effect.value);
                         break;
                     case "readiness":
@@ -957,7 +1029,9 @@ namespace AstralOath.Shared.Battle
 
             private void ApplyStatus(Unit actor, Unit target, BattleStatusKind kind, int duration, int strength, string sourceId = null)
             {
-                if (!IsHarmful(kind) && kind != BattleStatusKind.MagicBarrier && kind != BattleStatusKind.SpiritlordProtection && kind != BattleStatusKind.Idol && target.Has(BattleStatusKind.Unbuffable))
+                if ((kind == BattleStatusKind.Frostbite || kind == BattleStatusKind.Rupture) && !target.Source.IsHero) return;
+                if (!IsHarmful(kind) && kind != BattleStatusKind.MagicBarrier && kind != BattleStatusKind.SpiritlordProtection && kind != BattleStatusKind.Idol &&
+                    kind != BattleStatusKind.AttackGrowth && target.Has(BattleStatusKind.Unbuffable))
                 {
                     Changes.Add(BattleChange.EffectRejected(actor.Id, target.Id, kind, BattleEffectRejection.Blocked));
                     return;
@@ -997,7 +1071,7 @@ namespace AstralOath.Shared.Battle
 
             private static bool IsDispellableBuff(BattleStatusKind kind) =>
                 !IsHarmful(kind) && kind != BattleStatusKind.Perception && kind != BattleStatusKind.MagicBarrier && kind != BattleStatusKind.Indomitable &&
-                kind != BattleStatusKind.Rage && kind != BattleStatusKind.Idol && kind != BattleStatusKind.Vigor && kind != BattleStatusKind.SpiritlordProtection;
+                kind != BattleStatusKind.Rage && kind != BattleStatusKind.Idol && kind != BattleStatusKind.AttackGrowth && kind != BattleStatusKind.Vigor && kind != BattleStatusKind.SpiritlordProtection;
 
             private static int BarrierStrength(Unit actor, BattleCatalogData.SkillRow skill, int enhancementBp)
             {
@@ -1013,7 +1087,8 @@ namespace AstralOath.Shared.Battle
                 if (hostile && hit == BattleHitKind.Miss)
                     reason = BattleEffectRejection.Missed;
                 else if (hostile && checksImmunity && (target.Has(BattleStatusKind.Immunity) ||
-                    ((kind == BattleStatusKind.Bind || kind == BattleStatusKind.Venom) && !target.Source.IsHero) ||
+                    ((kind == BattleStatusKind.Bind || kind == BattleStatusKind.Venom || kind == BattleStatusKind.Frostbite ||
+                        kind == BattleStatusKind.Rupture) && !target.Source.IsHero) ||
                     (kind.HasValue && IsImmobilizing(kind.Value) && Passives(target).Any(p => p.Effects.Any(e => e.operation == "immobilize_immunity")))))
                     reason = BattleEffectRejection.Blocked;
                 else if (!Roll(random, chance))
@@ -1211,7 +1286,8 @@ namespace AstralOath.Shared.Battle
             private Unit Choose(Unit[] candidates) => candidates.Length == 1 ? candidates[0]
                 : candidates[(int)(random.NextUInt64() % (ulong)candidates.Length)];
             private Unit[] Allies(Unit actor) => units.Where(unit => unit.Alive && unit.Side == actor.Side).ToArray();
-            private static bool HasBuff(Unit unit) => unit.Statuses.Any(status => status.Kind != BattleStatusKind.Idol && !IsHarmful(status.Kind));
+            private static bool HasBuff(Unit unit) => unit.Statuses.Any(status => status.Kind != BattleStatusKind.Idol &&
+                status.Kind != BattleStatusKind.AttackGrowth && !IsHarmful(status.Kind));
             private static bool CanReact(Unit unit) => unit.Alive && !unit.Has(BattleStatusKind.Stun) && !unit.Has(BattleStatusKind.Sleep);
             private static bool CanActivateOffTurn(Unit unit) => !unit.IsOffTurn || !unit.Has(BattleStatusKind.Bind);
             private static BattleStatusKind ParseStatus(string value) => Enum.Parse<BattleStatusKind>(value);

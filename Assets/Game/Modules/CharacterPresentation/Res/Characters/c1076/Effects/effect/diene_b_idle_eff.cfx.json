@@ -1,0 +1,17 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "diene_skeff_biready",
+      "z": "5",
+      "format": "spine"
+    },
+    {
+      "source": "diene_skeff_bi",
+      "z": "3",
+      "delay": "1000",
+      "format": "spine",
+      "loop": 1
+    }
+  ]
+}

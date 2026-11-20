@@ -1,0 +1,76 @@
+
+luluka_skill2_front.sct
+size: 1968,240
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 1882, 96
+  size: 84, 84
+  orig: 84, 84
+  offset: 0, 0
+  index: -1
+impact_shock
+  rotate: true
+  xy: 1882, 2
+  size: 92, 67
+  orig: 92, 67
+  offset: 0, 0
+  index: -1
+m_line1_1
+  rotate: false
+  xy: 2, 2
+  size: 320, 205
+  orig: 320, 205
+  offset: 0, 0
+  index: -1
+m_line1_2
+  rotate: false
+  xy: 324, 2
+  size: 320, 205
+  orig: 320, 205
+  offset: 0, 0
+  index: -1
+m_line1_3
+  rotate: false
+  xy: 646, 2
+  size: 320, 205
+  orig: 320, 205
+  offset: 0, 0
+  index: -1
+m_line1_4
+  rotate: false
+  xy: 968, 2
+  size: 320, 205
+  orig: 320, 205
+  offset: 0, 0
+  index: -1
+m_line3_1
+  rotate: false
+  xy: 1290, 2
+  size: 294, 117
+  orig: 294, 117
+  offset: 0, 0
+  index: -1
+m_line3_2
+  rotate: false
+  xy: 1586, 2
+  size: 294, 117
+  orig: 294, 117
+  offset: 0, 0
+  index: -1
+m_line3_3
+  rotate: false
+  xy: 1290, 121
+  size: 294, 117
+  orig: 294, 117
+  offset: 0, 0
+  index: -1
+m_line3_4
+  rotate: false
+  xy: 1586, 121
+  size: 294, 117
+  orig: 294, 117
+  offset: 0, 0
+  index: -1

@@ -16,7 +16,8 @@ namespace AstralOath.Shared.Battle
         GreaterSpeedUp, CriticalDamageUp, EffectivenessUp, Poison, Invincible,
         CriticalChanceUp, ContinuousHealing, Burn, Bleed, Immortality, HitChanceDown,
         GreaterAttackUp, Unbuffable, DamageLimit, SpiritlordProtection, Rage, Targeted, Reflect, Bomb, VampiricTouch,
-        MagicNail, Sleep, Restrict, Bind, SkillNullifier, Vigor, Idol, Venom, Perception, MagicBarrier
+        MagicNail, Sleep, Restrict, Bind, SkillNullifier, Vigor, Idol, Venom, Perception, MagicBarrier,
+        Frostbite, Rupture, PenetrationResistanceUp, AttackGrowth
     }
     public enum BattleFlowEventKind
     {
@@ -136,7 +137,7 @@ namespace AstralOath.Shared.Battle
                 unit.Slot, unit.Form, unit.Stats, health, readinessBp, cooldowns, statuses,
                 (unit.Definition as HeroDefinition)?.Resource, resourceAmount, injuryAmount, openingAttackBonus,
                 unit.Awakenings ?? 0, unit.Definition is HeroDefinition, triggeredTurnEffects, unit.Artifact, unit.ArtifactLevel, artifactCounters, isExtinct, lethalProtectionConsumed)
-        { }
+        { MonsterRank = unit.MonsterRank; }
 
         internal BattleUnitSnapshot(string instanceId, string definitionId, string nameKey, int level, BattleElement element,
             BattleSlot slot, BattleUnitForm form, BattleStats stats, int health, int readinessBp,
@@ -185,6 +186,7 @@ namespace AstralOath.Shared.Battle
         public int OpeningAttackBonus { get; }
         internal IReadOnlyCollection<string> TriggeredTurnEffects { get; }
         internal bool IsHero { get; }
+        internal MonsterRank? MonsterRank { get; }
         internal ArtifactTemplate Artifact { get; }
         internal int ArtifactLevel { get; }
         internal IReadOnlyDictionary<ArtifactCounter, int> ArtifactCounters { get; }

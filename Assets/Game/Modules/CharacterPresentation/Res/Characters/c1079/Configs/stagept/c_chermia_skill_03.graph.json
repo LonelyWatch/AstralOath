@@ -1,0 +1,721 @@
+{
+  "id": "c_chermia_skill_03",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "ani": "skill3_1",
+        "guid": 2,
+        "etty": "ANI"
+      },
+      {
+        "source": "chermia_sk3_self_ready.cfx",
+        "scale": 1.0,
+        "location": 1,
+        "guid": 3,
+        "etty": "EFFECT"
+      },
+      {
+        "location": 1,
+        "x": 50.0,
+        "y": -40.0,
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 4,
+        "etty": "CAM"
+      },
+      {
+        "alone": true,
+        "fade": 200,
+        "time": 400,
+        "curve": "0,1,1,1",
+        "away_x": 2000.0,
+        "guid": 5,
+        "etty": "LAYOUT"
+      },
+      {
+        "scale": "1.5",
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 6,
+        "etty": "ZOOM"
+      },
+      {
+        "time": 400,
+        "guid": 7,
+        "etty": "BGSHOW"
+      },
+      {
+        "ani": "skill3_2",
+        "guid": 8,
+        "etty": "ANI"
+      },
+      {
+        "args": "sk_c1079_3",
+        "curtain_color": "0,0,0,255",
+        "guid": 9,
+        "etty": "CUTIN"
+      },
+      {
+        "source": "chermia_sk3_self.cfx",
+        "scale": 1.0,
+        "location": 1,
+        "guid": 10,
+        "etty": "EFFECT"
+      },
+      {
+        "mode": 1,
+        "fade": 100,
+        "log": 15.0,
+        "guid": 11,
+        "etty": "LAYOUT"
+      },
+      {
+        "scale": "1",
+        "curve": "0,1,1,1",
+        "time": 400,
+        "guid": 12,
+        "etty": "ZOOM"
+      },
+      {
+        "curve": "0,1,1,1",
+        "time": 400,
+        "guid": 13,
+        "etty": "CAM"
+      },
+      {
+        "show": true,
+        "time": 400,
+        "guid": 14,
+        "etty": "BGSHOW"
+      },
+      {
+        "guid": 15,
+        "etty": "IDLE"
+      },
+      {
+        "source": "chermia_sk3_target.cfx",
+        "scale": 1.0,
+        "location": 6,
+        "guid": 16,
+        "etty": "EFFECT"
+      },
+      {
+        "location": 2,
+        "x": -500.0,
+        "y": -50.0,
+        "curve": "0,1,1,1",
+        "guid": 17,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1",
+        "curve": "0,1,1,1",
+        "guid": 18,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1",
+        "curve": "0.2988506,1.055556,1,1",
+        "time": 200,
+        "guid": 19,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 2,
+        "x": -200.0,
+        "y": -50.0,
+        "curve": "0.2988506,1.055556,1,1",
+        "time": 500,
+        "guid": 20,
+        "etty": "CAM"
+      },
+      {
+        "location": 1,
+        "x": 50.0,
+        "y": -100.0,
+        "curve": "0,1,1,1",
+        "guid": 21,
+        "etty": "CAM"
+      },
+      {
+        "scale": "0.8",
+        "curve": "0,1,1,1",
+        "guid": 22,
+        "etty": "ZOOM"
+      },
+      {
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 23,
+        "etty": "HIT"
+      },
+      {
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.8,
+        "guid": 24,
+        "etty": "HIT"
+      },
+      {
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 25,
+        "etty": "HIT"
+      },
+      {
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.8,
+        "guid": 26,
+        "etty": "HIT"
+      },
+      {
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.8,
+        "guid": 27,
+        "etty": "HIT"
+      },
+      {
+        "effect": "serilla_skill_03_target.cfx",
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 28,
+        "etty": "HIT"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "chermia_cm_sk3_1",
+        "guid": 29,
+        "etty": "SHAKE"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "chermia_cm_sk3_2",
+        "guid": 30,
+        "etty": "SHAKE"
+      },
+      {
+        "source": "chermia_skeff_sk3_hookup.cfx",
+        "x": 200.0,
+        "y": 216.0,
+        "scale": 1.0,
+        "guid": 31,
+        "etty": "EFFECT"
+      }
+    ],
+    "connections": [
+      {
+        "from": 1,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 3,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 5,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 4,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 6,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 9,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 8,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 10,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 12,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 11,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 14,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 15,
+        "delay": 500,
+        "Desc": "500",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 17,
+        "to": 18,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 17,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 17,
+        "to": 16,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 20,
+        "to": 19,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 17,
+        "to": 20,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 16,
+        "to": 13,
+        "delay": 1466,
+        "when": 1,
+        "Desc": "1466",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 21,
+        "to": 22,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 21,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 16,
+        "to": 23,
+        "delay": 700,
+        "when": 1,
+        "Desc": "700",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 23,
+        "to": 24,
+        "delay": 300,
+        "Desc": "300",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 24,
+        "to": 25,
+        "delay": 150,
+        "Desc": "150",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 25,
+        "to": 27,
+        "delay": 150,
+        "Desc": "150",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 27,
+        "to": 28,
+        "delay": 150,
+        "Desc": "150",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 28,
+        "to": 26,
+        "delay": 150,
+        "Desc": "150",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 29,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 16,
+        "to": 30,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 16,
+        "to": 31,
+        "delay": 1500,
+        "when": 1,
+        "Desc": "1500",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/chermia_cm_sk3_1.scsp",
+      "address": "characterlab/source/camera/chermia_cm_sk3_1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "camera/chermia_cm_sk3_2.scsp",
+      "address": "characterlab/source/camera/chermia_cm_sk3_2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "cut/fhd/sk_c1079_3.webp",
+      "address": "characterlab/source/cut/fhd/sk_c1079_3.webp",
+      "type": "cutin"
+    },
+    {
+      "source": "effect/chermia_bi_loop_pati1.particle",
+      "address": "characterlab/source/effect/chermia_bi_loop_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/chermia_bi_ready_pati1.particle",
+      "address": "characterlab/source/effect/chermia_bi_ready_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/chermia_sk3_self.cfx",
+      "address": "characterlab/source/effect/chermia_sk3_self.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/chermia_sk3_self_ready.cfx",
+      "address": "characterlab/source/effect/chermia_sk3_self_ready.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/chermia_sk3_target.cfx",
+      "address": "characterlab/source/effect/chermia_sk3_target.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/chermia_skeff_bi_loop.atlas",
+      "address": "characterlab/source/effect/chermia_skeff_bi_loop.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/chermia_skeff_bi_loop.cfx",
+      "address": "characterlab/source/effect/chermia_skeff_bi_loop.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/chermia_skeff_bi_loop.scsp",
+      "address": "characterlab/source/effect/chermia_skeff_bi_loop.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/chermia_skeff_bi_loop.sct",
+      "address": "characterlab/source/effect/chermia_skeff_bi_loop.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/chermia_skeff_bi_ready.atlas",
+      "address": "characterlab/source/effect/chermia_skeff_bi_ready.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/chermia_skeff_bi_ready.cfx",
+      "address": "characterlab/source/effect/chermia_skeff_bi_ready.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/chermia_skeff_bi_ready.scsp",
+      "address": "characterlab/source/effect/chermia_skeff_bi_ready.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/chermia_skeff_bi_ready.sct",
+      "address": "characterlab/source/effect/chermia_skeff_bi_ready.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/chermia_skeff_sk1_attach.atlas",
+      "address": "characterlab/source/effect/chermia_skeff_sk1_attach.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/chermia_skeff_sk1_attach.cfx",
+      "address": "characterlab/source/effect/chermia_skeff_sk1_attach.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/chermia_skeff_sk1_attach.scsp",
+      "address": "characterlab/source/effect/chermia_skeff_sk1_attach.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/chermia_skeff_sk1_attach.sct",
+      "address": "characterlab/source/effect/chermia_skeff_sk1_attach.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/chermia_skeff_sk1_notattach.atlas",
+      "address": "characterlab/source/effect/chermia_skeff_sk1_notattach.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/chermia_skeff_sk1_notattach.cfx",
+      "address": "characterlab/source/effect/chermia_skeff_sk1_notattach.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/chermia_skeff_sk1_notattach.scsp",
+      "address": "characterlab/source/effect/chermia_skeff_sk1_notattach.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/chermia_skeff_sk1_notattach.sct",
+      "address": "characterlab/source/effect/chermia_skeff_sk1_notattach.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/chermia_skeff_sk1_pati1.particle",
+      "address": "characterlab/source/effect/chermia_skeff_sk1_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/chermia_skeff_sk1_target_pati1.particle",
+      "address": "characterlab/source/effect/chermia_skeff_sk1_target_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/chermia_skeff_sk2.atlas",
+      "address": "characterlab/source/effect/chermia_skeff_sk2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/chermia_skeff_sk2.cfx",
+      "address": "characterlab/source/effect/chermia_skeff_sk2.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/chermia_skeff_sk2.scsp",
+      "address": "characterlab/source/effect/chermia_skeff_sk2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/chermia_skeff_sk2.sct",
+      "address": "characterlab/source/effect/chermia_skeff_sk2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/chermia_skeff_sk2_pati1.particle",
+      "address": "characterlab/source/effect/chermia_skeff_sk2_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/chermia_skeff_sk2_pati2.particle",
+      "address": "characterlab/source/effect/chermia_skeff_sk2_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/chermia_skeff_sk3_hookup.cfx",
+      "address": "characterlab/source/effect/chermia_skeff_sk3_hookup.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/chermia_skeff_sk3_pati1.particle",
+      "address": "characterlab/source/effect/chermia_skeff_sk3_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/chermia_skeff_sk3_pati2.particle",
+      "address": "characterlab/source/effect/chermia_skeff_sk3_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/chermia_skeff_sk3_ready.atlas",
+      "address": "characterlab/source/effect/chermia_skeff_sk3_ready.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/chermia_skeff_sk3_ready.scsp",
+      "address": "characterlab/source/effect/chermia_skeff_sk3_ready.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/chermia_skeff_sk3_ready.sct",
+      "address": "characterlab/source/effect/chermia_skeff_sk3_ready.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/chermia_skeff_sk3_self.atlas",
+      "address": "characterlab/source/effect/chermia_skeff_sk3_self.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/chermia_skeff_sk3_self.scsp",
+      "address": "characterlab/source/effect/chermia_skeff_sk3_self.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/chermia_skeff_sk3_self.sct",
+      "address": "characterlab/source/effect/chermia_skeff_sk3_self.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/chermia_skeff_sk3_target.atlas",
+      "address": "characterlab/source/effect/chermia_skeff_sk3_target.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/chermia_skeff_sk3_target.scsp",
+      "address": "characterlab/source/effect/chermia_skeff_sk3_target.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/chermia_skeff_sk3_target.sct",
+      "address": "characterlab/source/effect/chermia_skeff_sk3_target.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/serilla_skill_03_target.atlas",
+      "address": "characterlab/source/effect/serilla_skill_03_target.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/serilla_skill_03_target.cfx",
+      "address": "characterlab/source/effect/serilla_skill_03_target.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/serilla_skill_03_target.scsp",
+      "address": "characterlab/source/effect/serilla_skill_03_target.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/serilla_skill_03_target.sct",
+      "address": "characterlab/source/effect/serilla_skill_03_target.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/serilla_skill_03_target_pati1.particle",
+      "address": "characterlab/source/effect/serilla_skill_03_target_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "model/chermia.timeline",
+      "address": "characterlab/source/model/chermia.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/pati_03.sct",
+      "address": "characterlab/source/particle/pati_03.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_01.sct",
+      "address": "characterlab/source/particle/ticle_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

@@ -1,0 +1,239 @@
+{
+  "timeline": {
+    "default": {
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "id": "ready",
+              "source": "ceris_b_idle_ready",
+              "location": 1,
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 330,
+            "func": "effect",
+            "param": {
+              "id": "ready_pati",
+              "source": "ceris_b_idle_ready_pati",
+              "location": 1,
+              "locationBone": "eff_pos",
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "ceris_skill_01",
+              "location": 1,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "ready"
+            }
+          },
+          {
+            "time": 2350,
+            "func": "remove",
+            "param": {
+              "targetId": "ready_pati"
+            }
+          }
+        ]
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "ceris_skill_02_self",
+              "location": 1,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "ready"
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "ready_pati"
+            }
+          }
+        ]
+      },
+      "skill3_1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "ready"
+            }
+          },
+          {
+            "time": 1500,
+            "func": "remove",
+            "param": {
+              "targetId": "ready_pati"
+            }
+          }
+        ]
+      },
+      "skill3_3": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill3_2": {
+        "duration": 0,
+        "frames": []
+      },
+      "attacked_damage": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "ready_pati"
+            }
+          }
+        ]
+      },
+      "b_idle": {
+        "duration": 0,
+        "frames": []
+      },
+      "flying_damage": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "ready_pati"
+            }
+          }
+        ]
+      },
+      "run": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "ready"
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "ready_pati"
+            }
+          }
+        ]
+      },
+      "attacked": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "ready_pati"
+            }
+          }
+        ]
+      },
+      "camping": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "ready_pati"
+            }
+          }
+        ]
+      },
+      "down": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "ready_pati"
+            }
+          }
+        ]
+      },
+      "flying": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "ready_pati"
+            }
+          }
+        ]
+      },
+      "groggy": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "ready_pati"
+            }
+          }
+        ]
+      },
+      "idle": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "ready_pati"
+            }
+          }
+        ]
+      },
+      "knock_down": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "ready_pati"
+            }
+          }
+        ]
+      },
+      "rise": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "ready_pati"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

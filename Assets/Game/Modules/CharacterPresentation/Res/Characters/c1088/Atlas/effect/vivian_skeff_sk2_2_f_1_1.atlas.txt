@@ -1,0 +1,111 @@
+
+vivian_skeff_sk2_2_f_1_1.sct
+size: 516,505
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+energy/self_fire_s3_1
+  rotate: false
+  xy: 142, 412
+  size: 111, 91
+  orig: 111, 91
+  offset: 0, 0
+  index: -1
+energy/self_fire_s3_2
+  rotate: false
+  xy: 255, 412
+  size: 111, 91
+  orig: 111, 91
+  offset: 0, 0
+  index: -1
+energy/self_fire_s3_3
+  rotate: false
+  xy: 368, 412
+  size: 111, 91
+  orig: 111, 91
+  offset: 0, 0
+  index: -1
+fire/fire_c_g3_1
+  rotate: false
+  xy: 2, 2
+  size: 138, 140
+  orig: 138, 140
+  offset: 0, 0
+  index: -1
+fire/fire_c_g3_2
+  rotate: false
+  xy: 2, 144
+  size: 138, 140
+  orig: 138, 140
+  offset: 0, 0
+  index: -1
+fire/fire_c_g3_3
+  rotate: false
+  xy: 2, 286
+  size: 138, 140
+  orig: 138, 140
+  offset: 0, 0
+  index: -1
+fire/fire_c_g3_4
+  rotate: false
+  xy: 142, 2
+  size: 138, 140
+  orig: 138, 140
+  offset: 0, 0
+  index: -1
+fire/shoot1_g2_1
+  rotate: false
+  xy: 142, 278
+  size: 125, 132
+  orig: 125, 132
+  offset: 0, 0
+  index: -1
+fire/shoot1_g2_2
+  rotate: false
+  xy: 269, 144
+  size: 125, 132
+  orig: 125, 132
+  offset: 0, 0
+  index: -1
+fire/shoot1_g2_3
+  rotate: false
+  xy: 269, 278
+  size: 125, 132
+  orig: 125, 132
+  offset: 0, 0
+  index: -1
+fire/shoot1_g2_4
+  rotate: false
+  xy: 142, 144
+  size: 125, 132
+  orig: 125, 132
+  offset: 0, 0
+  index: -1
+fire/start_b1_g1
+  rotate: false
+  xy: 282, 2
+  size: 115, 133
+  orig: 115, 133
+  offset: 0, 0
+  index: -1
+fire/start_b1_g2
+  rotate: false
+  xy: 396, 137
+  size: 115, 133
+  orig: 115, 133
+  offset: 0, 0
+  index: -1
+fire/start_b1_g3
+  rotate: false
+  xy: 399, 2
+  size: 115, 133
+  orig: 115, 133
+  offset: 0, 0
+  index: -1
+fire/start_b1_g4
+  rotate: false
+  xy: 396, 272
+  size: 115, 133
+  orig: 115, 133
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,159 @@
+{
+  "timeline": {
+    "default": {
+      "idle": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "id": "idle",
+              "source": "diene_idle_eff",
+              "location": 1,
+              "locationBone": "",
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "id": "b_idle",
+              "source": "diene_b_idle_eff",
+              "location": 1,
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 500,
+            "func": "remove",
+            "param": {
+              "targetId": "idle"
+            }
+          }
+        ]
+      },
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "diene_skill_01_self",
+              "location": 5,
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 1,
+            "func": "remove",
+            "param": {
+              "targetId": "b_idle"
+            }
+          },
+          {
+            "time": 1,
+            "func": "remove",
+            "param": {
+              "targetId": "idle"
+            }
+          }
+        ]
+      },
+      "flying_damage": {
+        "duration": 0,
+        "frames": []
+      },
+      "groggy": {
+        "duration": 0,
+        "frames": []
+      },
+      "rise": {
+        "duration": 0,
+        "frames": []
+      },
+      "b_idle": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "diene_skill_02_self",
+              "location": 5,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "diene_skill_02",
+              "location": 5,
+              "y": -150,
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 1,
+            "func": "remove",
+            "param": {
+              "targetId": "b_idle"
+            }
+          },
+          {
+            "time": 1,
+            "func": "remove",
+            "param": {
+              "targetId": "idle"
+            }
+          }
+        ]
+      },
+      "appear": {
+        "duration": 0,
+        "frames": []
+      },
+      "attacked": {
+        "duration": 0,
+        "frames": []
+      },
+      "run": {
+        "duration": 0,
+        "frames": []
+      },
+      "knock_down": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill3_1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "idle"
+            }
+          },
+          {
+            "time": 1,
+            "func": "remove",
+            "param": {
+              "targetId": "b_idle"
+            }
+          }
+        ]
+      },
+      "skill3_2": {
+        "duration": 0,
+        "frames": []
+      }
+    }
+  }
+}

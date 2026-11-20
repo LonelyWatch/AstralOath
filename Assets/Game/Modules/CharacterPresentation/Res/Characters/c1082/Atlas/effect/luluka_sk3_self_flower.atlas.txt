@@ -1,0 +1,139 @@
+
+luluka_sk3_self_flower.sct
+size: 1280,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dust1
+  rotate: false
+  xy: 1158, 181
+  size: 66, 67
+  orig: 66, 67
+  offset: 0, 0
+  index: -1
+dust2
+  rotate: true
+  xy: 774, 173
+  size: 81, 84
+  orig: 81, 84
+  offset: 0, 0
+  index: -1
+ex_par1
+  rotate: true
+  xy: 674, 2
+  size: 209, 97
+  orig: 209, 97
+  offset: 0, 0
+  index: -1
+ex_par2
+  rotate: true
+  xy: 1168, 2
+  size: 91, 102
+  orig: 91, 102
+  offset: 0, 0
+  index: -1
+ex_par3
+  rotate: true
+  xy: 1060, 129
+  size: 112, 96
+  orig: 112, 96
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 773, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+flower2
+  rotate: true
+  xy: 944, 2
+  size: 125, 110
+  orig: 125, 110
+  offset: 0, 0
+  index: -1
+flower3
+  rotate: true
+  xy: 948, 129
+  size: 125, 110
+  orig: 125, 110
+  offset: 0, 0
+  index: -1
+flower4
+  rotate: true
+  xy: 860, 173
+  size: 74, 86
+  orig: 74, 86
+  offset: 0, 0
+  index: -1
+flower5
+  rotate: true
+  xy: 1056, 2
+  size: 125, 110
+  orig: 125, 110
+  offset: 0, 0
+  index: -1
+global_glow
+  rotate: false
+  xy: 1168, 95
+  size: 84, 84
+  orig: 84, 84
+  offset: 0, 0
+  index: -1
+obake3_3
+  rotate: true
+  xy: 446, 2
+  size: 218, 112
+  orig: 218, 112
+  offset: 0, 0
+  index: -1
+obake3_4
+  rotate: true
+  xy: 560, 2
+  size: 218, 112
+  orig: 218, 112
+  offset: 0, 0
+  index: -1
+obake_glow2
+  rotate: true
+  xy: 2, 2
+  size: 238, 220
+  orig: 238, 220
+  offset: 0, 0
+  index: -1
+obake_glow3
+  rotate: true
+  xy: 224, 2
+  size: 238, 220
+  orig: 238, 220
+  offset: 0, 0
+  index: -1
+par_flower1
+  rotate: false
+  xy: 446, 222
+  size: 25, 32
+  orig: 25, 32
+  offset: 0, 0
+  index: -1
+par_flower2
+  rotate: false
+  xy: 674, 213
+  size: 39, 40
+  orig: 39, 40
+  offset: 0, 0
+  index: -1
+par_flower3
+  rotate: false
+  xy: 715, 213
+  size: 57, 33
+  orig: 57, 33
+  offset: 0, 0
+  index: -1
+par_flower4
+  rotate: false
+  xy: 1226, 181
+  size: 52, 57
+  orig: 52, 57
+  offset: 0, 0
+  index: -1

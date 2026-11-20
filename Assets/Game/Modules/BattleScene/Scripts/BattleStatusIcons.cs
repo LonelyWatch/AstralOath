@@ -43,10 +43,13 @@ namespace AstralOath.Client.BattleScene
 
         public bool TryGet(BattleStatusKind kind, out Entry entry) => entries.TryGetValue(kind, out entry);
 
+        // pa_c1082_3 has cs_type=hidden and owns only Luluca's permanent stat increment.
+        internal static bool IsDisplayed(BattleStatusKind kind) => kind != BattleStatusKind.AttackGrowth;
+
         public void Validate()
         {
             foreach (BattleStatusKind kind in Enum.GetValues(typeof(BattleStatusKind)))
-                if (!entries.ContainsKey(kind))
+                if (IsDisplayed(kind) && !entries.ContainsKey(kind))
                     throw new InvalidOperationException("Missing battle status icon: " + kind);
             if (Digits.Length != 10) throw new InvalidOperationException("Battle status digits require ten sprites.");
             for (int digit = 0; digit < Digits.Length; digit++)

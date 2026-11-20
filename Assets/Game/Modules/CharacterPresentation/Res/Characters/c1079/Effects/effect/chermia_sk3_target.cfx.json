@@ -1,0 +1,25 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "chermia_skeff_sk3_target",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "chermia_skeff_sk3_pati1",
+      "y": "400",
+      "delay": "1300",
+      "format": "particle",
+      "globalZ": 1.5
+    },
+    {
+      "source": "chermia_skeff_sk3_pati2",
+      "x": "-500",
+      "y": "400",
+      "delay": "0",
+      "format": "particle",
+      "globalZ": 2.0
+    }
+  ]
+}

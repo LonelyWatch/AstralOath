@@ -1,0 +1,332 @@
+{
+  "id": "c_chermia_skill_02",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "location": 11,
+        "y": 20.0,
+        "curve": "0.1992337,0.08680553,0,0.9340278",
+        "time": 850,
+        "guid": 2,
+        "etty": "CAM"
+      },
+      {
+        "scale": "2.4",
+        "curve": "0.1992337,0.08680553,0,0.9340278",
+        "time": 850,
+        "guid": 3,
+        "etty": "ZOOM"
+      },
+      {
+        "ani": "skill2",
+        "guid": 4,
+        "etty": "ANI"
+      },
+      {
+        "time": 300,
+        "guid": 5,
+        "etty": "BGSHOW"
+      },
+      {
+        "blend_target": 55,
+        "duration": -1,
+        "fadeIn": 300,
+        "fadeOut": 300,
+        "alpha_channel": 0.0,
+        "id": "cb",
+        "guid": 6,
+        "etty": "COLOR_BLEND"
+      },
+      {
+        "location": 11,
+        "y": 70.0,
+        "curve": "0.08429119,0.7569444,0.05747126,0.9965278",
+        "time": 1500,
+        "guid": 7,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1",
+        "curve": "0.08429119,0.7569444,0.05747126,0.9965278",
+        "time": 1500,
+        "guid": 8,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1",
+        "curve": "0.2605364,0.125,0.09961686,0.829861",
+        "time": 500,
+        "guid": 9,
+        "etty": "ZOOM"
+      },
+      {
+        "curve": "0.2605364,0.125,0.09961686,0.829861",
+        "time": 500,
+        "guid": 10,
+        "etty": "CAM"
+      },
+      {
+        "show": true,
+        "time": 500,
+        "guid": 11,
+        "etty": "BGSHOW"
+      },
+      {
+        "targetId": "cb",
+        "guid": 12,
+        "etty": "STOP"
+      },
+      {
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 13,
+        "etty": "HIT"
+      }
+    ],
+    "connections": [
+      {
+        "from": 1,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 3,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 4,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 5,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 6,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 8,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 7,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 9,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 10,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 11,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 12,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 13,
+        "delay": 250,
+        "when": 1,
+        "Desc": "250",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "effect/chermia_bi_loop_pati1.particle",
+      "address": "characterlab/source/effect/chermia_bi_loop_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/chermia_bi_ready_pati1.particle",
+      "address": "characterlab/source/effect/chermia_bi_ready_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/chermia_skeff_bi_loop.atlas",
+      "address": "characterlab/source/effect/chermia_skeff_bi_loop.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/chermia_skeff_bi_loop.cfx",
+      "address": "characterlab/source/effect/chermia_skeff_bi_loop.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/chermia_skeff_bi_loop.scsp",
+      "address": "characterlab/source/effect/chermia_skeff_bi_loop.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/chermia_skeff_bi_loop.sct",
+      "address": "characterlab/source/effect/chermia_skeff_bi_loop.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/chermia_skeff_bi_ready.atlas",
+      "address": "characterlab/source/effect/chermia_skeff_bi_ready.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/chermia_skeff_bi_ready.cfx",
+      "address": "characterlab/source/effect/chermia_skeff_bi_ready.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/chermia_skeff_bi_ready.scsp",
+      "address": "characterlab/source/effect/chermia_skeff_bi_ready.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/chermia_skeff_bi_ready.sct",
+      "address": "characterlab/source/effect/chermia_skeff_bi_ready.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/chermia_skeff_sk1_attach.atlas",
+      "address": "characterlab/source/effect/chermia_skeff_sk1_attach.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/chermia_skeff_sk1_attach.cfx",
+      "address": "characterlab/source/effect/chermia_skeff_sk1_attach.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/chermia_skeff_sk1_attach.scsp",
+      "address": "characterlab/source/effect/chermia_skeff_sk1_attach.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/chermia_skeff_sk1_attach.sct",
+      "address": "characterlab/source/effect/chermia_skeff_sk1_attach.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/chermia_skeff_sk1_notattach.atlas",
+      "address": "characterlab/source/effect/chermia_skeff_sk1_notattach.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/chermia_skeff_sk1_notattach.cfx",
+      "address": "characterlab/source/effect/chermia_skeff_sk1_notattach.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/chermia_skeff_sk1_notattach.scsp",
+      "address": "characterlab/source/effect/chermia_skeff_sk1_notattach.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/chermia_skeff_sk1_notattach.sct",
+      "address": "characterlab/source/effect/chermia_skeff_sk1_notattach.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/chermia_skeff_sk1_pati1.particle",
+      "address": "characterlab/source/effect/chermia_skeff_sk1_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/chermia_skeff_sk1_target_pati1.particle",
+      "address": "characterlab/source/effect/chermia_skeff_sk1_target_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/chermia_skeff_sk2.atlas",
+      "address": "characterlab/source/effect/chermia_skeff_sk2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/chermia_skeff_sk2.cfx",
+      "address": "characterlab/source/effect/chermia_skeff_sk2.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/chermia_skeff_sk2.scsp",
+      "address": "characterlab/source/effect/chermia_skeff_sk2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/chermia_skeff_sk2.sct",
+      "address": "characterlab/source/effect/chermia_skeff_sk2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/chermia_skeff_sk2_pati1.particle",
+      "address": "characterlab/source/effect/chermia_skeff_sk2_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/chermia_skeff_sk2_pati2.particle",
+      "address": "characterlab/source/effect/chermia_skeff_sk2_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "model/chermia.timeline",
+      "address": "characterlab/source/model/chermia.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/pati_03.sct",
+      "address": "characterlab/source/particle/pati_03.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

@@ -1,0 +1,62 @@
+
+diene_skeff_sk2_bg2.sct
+size: 815,460
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+diena/die_bg1
+  rotate: false
+  xy: 2, 304
+  size: 263, 127
+  orig: 263, 127
+  offset: 0, 0
+  index: -1
+diena/die_bg2
+  rotate: false
+  xy: 391, 394
+  size: 245, 64
+  orig: 245, 64
+  offset: 0, 0
+  index: -1
+diena/die_circle_1
+  rotate: false
+  xy: 2, 2
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+diena/die_circle_2
+  rotate: false
+  xy: 304, 2
+  size: 288, 288
+  orig: 288, 288
+  offset: 0, 0
+  index: -1
+flare/prismlight_12
+  rotate: false
+  xy: 267, 304
+  size: 122, 122
+  orig: 122, 122
+  offset: 0, 0
+  index: -1
+flare/prismlight_24
+  rotate: false
+  xy: 594, 2
+  size: 219, 219
+  orig: 219, 219
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 594, 223
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+global_glow
+  rotate: false
+  xy: 391, 292
+  size: 84, 84
+  orig: 84, 84
+  offset: 0, 0
+  index: -1

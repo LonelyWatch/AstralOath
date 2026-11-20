@@ -242,6 +242,21 @@
       "kind": "MagicBarrier",
       "group": "Buff",
       "asset": "stic_manafield_keep.png"
+    },
+    {
+      "kind": "Frostbite",
+      "group": "Debuff",
+      "asset": "stic_freezing.png"
+    },
+    {
+      "kind": "Rupture",
+      "group": "Debuff",
+      "asset": "stic_rupture.png"
+    },
+    {
+      "kind": "PenetrationResistanceUp",
+      "group": "Buff",
+      "asset": "stic_penres_up.png"
     }
   ],
   "files": [
@@ -526,6 +541,24 @@
       "asset": "stic_manafield_keep.png",
       "sourceSha256": "6a3e84c7e4349b4acd5ef796ba7e9e418addec0cb4e9f4cc75a220dcf1d0bafb",
       "assetSha256": "e57df56f22f027c1a915268dad1268d0e5af7184db802ef36139ee9661a33077"
+    },
+    {
+      "source": "原始资源/buff/stic_freezing.png",
+      "asset": "stic_freezing.png",
+      "sourceSha256": "6373350b6c83fdfd4566b0c847f074defd9ac4075b5d860bfbf37c22867254e4",
+      "assetSha256": "adbcb8800ac104fb2da2fd1846123d189510eff4caae63fd78633a5d296f3f33"
+    },
+    {
+      "source": "原始资源/buff/stic_rupture.png",
+      "asset": "stic_rupture.png",
+      "sourceSha256": "90cd2d47e7f61d7f8e1380a698e3377f975cd61ddc29ca0de487dc9d2471e11e",
+      "assetSha256": "9b3e2211f29c40c3a647a62be7250f60d62cafadb3a099fd3072ff6b06906e9c"
+    },
+    {
+      "source": "原始资源/buff/stic_penres_up.png",
+      "asset": "stic_penres_up.png",
+      "sourceSha256": "138ffa5904343684ba6064613713e808f474891551320a1a58c4369042b8f131",
+      "assetSha256": "0fb4a78d9faf990f40129ed5b4128d04eed980450321aec774bd52ae169c4f86"
     },
     {
       "source": "原始资源/img/itxt_num0.png",

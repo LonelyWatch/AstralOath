@@ -942,6 +942,7 @@ namespace AstralOath.Client.BattleScene
 
         private void ShowStatusWord(View view, BattleStatusKind kind)
         {
+            if (!BattleStatusArt.IsDisplayed(kind)) return;
             statusArt.TryGet(kind, out var art);
             view.ShowEffectWord(inspectionContent.StatusName(kind), art.Icon);
         }

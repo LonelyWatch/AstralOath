@@ -93,11 +93,15 @@ foreach (var hero in tables.BattleHeroes.DataList)
         stats.Speed != hero.Speed || stats.CritChanceBp != hero.CritChanceBp ||
         stats.CritDamageBp != hero.CritDamageBp || stats.EffectivenessBp != hero.EffectivenessBp ||
         stats.EffectResistanceBp != hero.EffectResistanceBp)
-        throw new InvalidDataException($"Battle hero growth stats do not match the source panel for {hero.Id} " +
+    {
+        Console.Error.WriteLine($"Battle hero growth stats do not match the source panel for {hero.Id} " +
             $"at level {hero.Level}, stars {hero.Stars}, awakenings {hero.Awakenings}. " +
             $"Calculated attack/health/defense/speed: {stats.Attack}/{stats.MaxHealth}/{stats.Defense}/{stats.Speed}.");
+        return 1;
+    }
 }
 Console.WriteLine("Generated C# accessors match the current Luban JSON. Content references and hero growth panels were verified.");
+return 0;
 
 record UiData(int Id, string TitleKey, string MessageKey, int DisplaySeconds, string AssetAddress);
 record LocaleData(string Key, string ZhCn);

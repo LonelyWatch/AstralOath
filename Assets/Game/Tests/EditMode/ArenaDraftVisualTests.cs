@@ -47,6 +47,10 @@ namespace AstralOath.Client.Tests
         [TestCase("c1069", "effect_raise")]
         [TestCase("c1073", "status_MagicBarrier", "effect_extend_cd")]
         [TestCase("c1074", "status_Perception", "effect_raise")]
+        [TestCase("c1076", "status_PenetrationResistanceUp", "effect_cleanse", "effect_raise")]
+        [TestCase("c1082", "effect_barrier")]
+        [TestCase("c1085", "effect_raise")]
+        [TestCase("c1083", "status_Frostbite", "status_Rupture", "effect_dispel")]
         public void GeneratedHeroEffectsIncludeActualSkillOutcomes(string id, params string[] keys)
         {
             var rows = new SerializedObject(AssetDatabase.LoadAssetAtPath<ScriptableObject>(
@@ -71,6 +75,9 @@ namespace AstralOath.Client.Tests
         [TestCase("enhance", "Reflect")]
         [TestCase("weaken", "Bomb")]
         [TestCase("weaken", "VampiricTouch")]
+        [TestCase("weaken", "Frostbite")]
+        [TestCase("weaken", "Rupture")]
+        [TestCase("enhance", "PenetrationResistanceUp")]
         public void NewStatusFiltersAppearInTheirSourceGroup(string group, string status)
         {
             var view = AssetDatabase.LoadAssetAtPath<GameObject>(Path).GetComponent<BindingMap>();

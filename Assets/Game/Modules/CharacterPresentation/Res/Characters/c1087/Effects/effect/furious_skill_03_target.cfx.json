@@ -1,0 +1,28 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "furious_sk3eff_target_b",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "furious_sk3eff_target_f",
+      "z": "50",
+      "format": "spine"
+    },
+    {
+      "source": "furious_sk3eff_target_f2",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "furious_skill_03_pati",
+      "x": "500",
+      "y": "280",
+      "z": "200",
+      "delay": "234",
+      "format": "particle"
+    }
+  ]
+}

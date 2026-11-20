@@ -30,7 +30,7 @@ BP 进一步修订待选与保护槽、顶部玩家信息、预禁分组、右�
 
 ## 角色接入
 
-角色实验室与战斗目录已接入 60 名普通形态英雄，固定顺序至菲奥雷托。规则版本 15 覆盖露娜随机连击、塔玛林尔变身和克劳乌燃魂全体图。发布仍需与平台 AOT 母包、服务端规则版本一致。 [第 51–60 名交付记录](delivery/2026-11-20-roster51-60.md)
+角色实验室与战斗目录已接入 70 名普通形态英雄，固定顺序至薇薇安，角色演出目录有 217 张源图。共享战斗规则版本为 16，发布需与母包和服务端版本一致。 [第 61–70 名交付记录](delivery/2026-11-20-roster61-70.md)
 
 ## 魂槽、说明与全面屏
 
@@ -74,13 +74,13 @@ Unity 2022.3.62f3 / URP / UGUI / TMP；Common/AOT 通用设施；普通 C# UIBas
 - GameText / GameButton 直接继承 TMP / Button，右键 UI 提供创建入口；63对已有控件已迁移，GUID和配置保留。
 - Foundation 更新器：签名清单、哈希、断点、空间预检、原子版本切换、兼容预检、失败版本隔离及下次进程恢复。客户端可从配置的内容服务器取得兼容资源与 C# 业务 DLL。
 - 构建工具：Windows x64、Android ARM64 ASTC/ETC2 的完整母包和独立热更包，母包归档与签名发布工具。
-- CharacterLab：独立离线角色实验室，50 名角色；双版本 Spine 与 FMOD 已集成。该入口只读取内置实验室内容，不等于 Foundation 远端更新入口。
+- CharacterLab：独立离线角色实验室，70 名角色；双版本 Spine 与 FMOD 已集成。该入口只读取内置实验室内容，不等于 Foundation 远端更新入口。
 
 - BattleScene：首阶段独立冒险布局预览。两套原图分层森林、原作 HUD、双方各四个可编辑脚点及 Spine 待机；已按近期实战和本地原版布局修订 HUD，可交互预览 Burn、燃魂 S2 和技能选中效果。见[HUD 复核](delivery/2026-11-12-battle-hud-fidelity.md)。
 
 - 战斗第三步：共享回合与技能事件内核、本地 Unity 实战试玩和开发态双人 HTTP 房间已接入。BattleScene运行即开始本地试玩，Pause可继续/重开，燃魂仅Cancel解除。试玩包含三角色技能特效、原始 S3 Cut-in/全屏背景与镜头、Windows 日语 FMOD 和史莱姆攻击/受击、近战位移、随镜头定位的浮字、向下行动条及原版行结构详情与冷却遮罩。敌方回合技能组隐藏；已按源图接入命名起落事件、原相机曲线、脚点构图、可见地图约束与短时世界模糊；Cut-in独立时钟冻结舞台，夹攻在末击交接并保留回位尾段，骨骼与图数据在开战前准备；CFX显式片段、DARK退出与Cut-in幕布按源字段执行；浮字使用原字形并按源 HIT 分段累计。精细布局、后处理包络和部分曲线仍未完成原作逐帧验收；攻击入口已预备复用，但Editor设备扫描伴随的偶发长帧仍需环境/Player对照定位。[规则和操作](development/battle-execution.md)、[本轮实测](delivery/2026-11-13-battle-timing.md)
 
-- Battle 配表：五十名普通形态英雄、150 个技能槽、746 段技能强化、成长模板与觉醒节点已导出。Shared Battle 提供任意合法等级、星级与觉醒的裸面板计算，以及英雄、怪物、入场与四对四站位校验。见[等级与站位](development/battle-growth.md)和[配表来源](development/battle-character-data.md)。
+- Battle 配表：70 名普通形态英雄、210 个技能槽、1,046 段技能强化、成长模板与觉醒节点已导出。Shared Battle 提供任意合法等级、星级与觉醒的裸面板计算，以及英雄、怪物、入场与四对四站位校验。见[等级与站位](development/battle-growth.md)和[配表来源](development/battle-character-data.md)。
 
 ## 必须知道的缺口
 

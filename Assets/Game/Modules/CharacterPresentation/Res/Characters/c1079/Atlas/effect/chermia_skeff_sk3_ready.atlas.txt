@@ -1,0 +1,83 @@
+
+chermia_skeff_sk3_ready.sct
+size: 245,656
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+fire_blast1_02
+  rotate: false
+  xy: 191, 2
+  size: 46, 44
+  orig: 46, 44
+  offset: 0, 0
+  index: -1
+fire_blast1_04
+  rotate: false
+  xy: 143, 464
+  size: 88, 87
+  orig: 88, 87
+  offset: 0, 0
+  index: -1
+fire_cher/cher_bi_obk_6_1
+  rotate: false
+  xy: 173, 2
+  size: 16, 79
+  orig: 16, 79
+  offset: 0, 0
+  index: -1
+fire_cher/cher_bi_obk_6_2
+  rotate: false
+  xy: 233, 464
+  size: 9, 71
+  orig: 9, 71
+  offset: 0, 0
+  index: -1
+fire_cher/cher_sk3_ready_01
+  rotate: false
+  xy: 2, 173
+  size: 162, 173
+  orig: 162, 173
+  offset: 0, 0
+  index: -1
+fire_cher/cher_sk3_ready_02
+  rotate: false
+  xy: 2, 348
+  size: 139, 176
+  orig: 139, 176
+  offset: 0, 0
+  index: -1
+fire_cher/cher_sk3_ready_03
+  rotate: false
+  xy: 166, 173
+  size: 73, 84
+  orig: 73, 84
+  offset: 0, 0
+  index: -1
+flame_s_1
+  rotate: true
+  xy: 122, 553
+  size: 101, 108
+  orig: 101, 108
+  offset: 0, 0
+  index: -1
+flame_s_2
+  rotate: false
+  xy: 143, 348
+  size: 100, 114
+  orig: 100, 114
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+smoke_5
+  rotate: false
+  xy: 2, 526
+  size: 118, 110
+  orig: 118, 110
+  offset: 0, 0
+  index: -1

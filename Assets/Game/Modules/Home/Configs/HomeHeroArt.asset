@@ -1513,4 +1513,254 @@ MonoBehaviour:
     modelSkeleton: {fileID: 4900000, guid: 025411e3933f71743895807b1e26d396, type: 3}
     modelAtlas: {fileID: 4900000, guid: fb29c656956e66b41b0d984e79e99303, type: 3}
     modelPage: {fileID: 2800000, guid: 9ef3e270a40ffaa4fbb9a18cc034d086, type: 3}
+  - id: c1076
+    name: "\u8FEA\u57C3\u59AE"
+    heroClass: soul_weaver
+    elementId: ice
+    zodiac: taurus
+    growth:
+      id: soul_weaver_taurus_5
+      nativeStars: 5
+      attackCoefficientMilli: 36000
+      healthCoefficientMilli: 153600
+      defenseCoefficientMilli: 56100
+      speedMilli: 111250
+    portrait: {fileID: 21300000, guid: fa4069c517bb557eb38310b385bf3a17, type: 3}
+    cardPortrait: {fileID: 21300000, guid: 30f8a1a792015d0f9ce4c3f8d255ea6b, type: 3}
+    illustration: {fileID: 21300000, guid: 30f8a1a792015d0f9ce4c3f8d255ea6b, type: 3}
+    element: {fileID: 21300000, guid: c4381d6a80c91cb4d86a72515d4df803, type: 3}
+    cardElement: {fileID: 21300000, guid: c33b85b669825ea4ae0648c2f55a214c, type: 3}
+    role: {fileID: 21300000, guid: c99872c1997abca4085510777ee17d9e, type: 3}
+    zodiacIcon: {fileID: 21300000, guid: 2f887f0dc00752319ef6553380371ff4, type: 3}
+    skeleton: {fileID: 4900000, guid: dc1fd2b116700fb44a54f364371483d5, type: 3}
+    atlas: {fileID: 4900000, guid: bbb34275f84106644bd99f15a3fe15d3, type: 3}
+    page: {fileID: 2800000, guid: a4ef5351d741b704ea76d62b2036ff99, type: 3}
+    modelSkeleton: {fileID: 4900000, guid: e7499116045e4544889f71c8bad35532, type: 3}
+    modelAtlas: {fileID: 4900000, guid: 946ffe74f3d808e4fb2fa014cebc06be, type: 3}
+    modelPage: {fileID: 2800000, guid: e5f1bf49bf0be49438b81fefb4c21e86, type: 3}
+  - id: c1079
+    name: "\u6D01\u82E5\u7C73\u4E9A"
+    heroClass: warrior
+    elementId: fire
+    zodiac: leo
+    growth:
+      id: warrior_leo_5
+      nativeStars: 5
+      attackCoefficientMilli: 67800
+      healthCoefficientMilli: 177400
+      defenseCoefficientMilli: 50100
+      speedMilli: 105000
+    portrait: {fileID: 21300000, guid: 9e8f8ee4cfe15621a4d091ddecd4b5f1, type: 3}
+    cardPortrait: {fileID: 21300000, guid: ec022413bcc655da8814d0b05f26fb40, type: 3}
+    illustration: {fileID: 21300000, guid: ec022413bcc655da8814d0b05f26fb40, type: 3}
+    element: {fileID: 21300000, guid: 0c628788b569a3b48a97d60c9b405e67, type: 3}
+    cardElement: {fileID: 21300000, guid: 4941f882b1265ea884fe26b59e10d4a0, type: 3}
+    role: {fileID: 21300000, guid: ab70e30159c054cdba7fef2f4197a5ba, type: 3}
+    zodiacIcon: {fileID: 21300000, guid: bd7f4e8096ef5654a4925ea772672783, type: 3}
+    skeleton: {fileID: 4900000, guid: 0ae631f5e59b9054983019fd7c4042e8, type: 3}
+    atlas: {fileID: 4900000, guid: 9e7016fd06ef2294ba13f696c4f5c90f, type: 3}
+    page: {fileID: 2800000, guid: 7e5177f929ce18348b19f08bc1b92e68, type: 3}
+    modelSkeleton: {fileID: 4900000, guid: 858a45ec94266b14389b87113d05e50a, type: 3}
+    modelAtlas: {fileID: 4900000, guid: 0d20733c97c8a3943bae0af1d61154e1, type: 3}
+    modelPage: {fileID: 2800000, guid: 4073a657b9fa6a145b5d61166be4b97e, type: 3}
+  - id: c1080
+    name: "\u5E15\u8D1D\u5C14"
+    heroClass: ranger
+    elementId: wind
+    zodiac: virgo
+    growth:
+      id: ranger_virgo_5
+      nativeStars: 5
+      attackCoefficientMilli: 63600
+      healthCoefficientMilli: 157800
+      defenseCoefficientMilli: 45900
+      speedMilli: 120625
+    portrait: {fileID: 21300000, guid: eeb19496bf0e52dda60a13d48142ce04, type: 3}
+    cardPortrait: {fileID: 21300000, guid: b518e8a8ca525531a0c4d82bfcf6f7c4, type: 3}
+    illustration: {fileID: 21300000, guid: b518e8a8ca525531a0c4d82bfcf6f7c4, type: 3}
+    element: {fileID: 21300000, guid: 1fc8c70c515e513ea88829bd074402e8, type: 3}
+    cardElement: {fileID: 21300000, guid: 2acbe6db1448581fbb21346e51e0500d, type: 3}
+    role: {fileID: 21300000, guid: ecd53c2f9ea05742a2119a180ad27b97, type: 3}
+    zodiacIcon: {fileID: 21300000, guid: 25cf038cf4dc5e19af98340a160a2218, type: 3}
+    skeleton: {fileID: 4900000, guid: ebc70c3c0c60cb1428c87fe7e8dcda0f, type: 3}
+    atlas: {fileID: 4900000, guid: 2d6ad9bcdaac82f4897f7a8d15e64f93, type: 3}
+    page: {fileID: 2800000, guid: b365e0a68bb415b4f8feaa74c02d905a, type: 3}
+    modelSkeleton: {fileID: 4900000, guid: 330b3c20010a1fc49962702c70ed2e48, type: 3}
+    modelAtlas: {fileID: 4900000, guid: be9edb315f729b24a8ea6edc7acadc37, type: 3}
+    modelPage: {fileID: 2800000, guid: e98ade5631c12f8489e76c7098af2a14, type: 3}
+  - id: c1081
+    name: "\u8D5B\u745E\u4E1D"
+    heroClass: ranger
+    elementId: ice
+    zodiac: aquarius
+    growth:
+      id: ranger_aquarius_5
+      nativeStars: 5
+      attackCoefficientMilli: 49800
+      healthCoefficientMilli: 169000
+      defenseCoefficientMilli: 51600
+      speedMilli: 118125
+    portrait: {fileID: 21300000, guid: 746ec9605f135dc49123b02f72092f34, type: 3}
+    cardPortrait: {fileID: 21300000, guid: 7200e4848fd15d9d9a260c39926905fa, type: 3}
+    illustration: {fileID: 21300000, guid: 7200e4848fd15d9d9a260c39926905fa, type: 3}
+    element: {fileID: 21300000, guid: c4381d6a80c91cb4d86a72515d4df803, type: 3}
+    cardElement: {fileID: 21300000, guid: c33b85b669825ea4ae0648c2f55a214c, type: 3}
+    role: {fileID: 21300000, guid: ecd53c2f9ea05742a2119a180ad27b97, type: 3}
+    zodiacIcon: {fileID: 21300000, guid: 2cdf7f9fd6675e4a8e8148f5e21f3c04, type: 3}
+    skeleton: {fileID: 4900000, guid: a034d99f89683e3428c1a6d4a767d5c3, type: 3}
+    atlas: {fileID: 4900000, guid: 3d526551bbd686344818c9862407ad44, type: 3}
+    page: {fileID: 2800000, guid: 64a6b38b79511cc4cbd0f10a1a780677, type: 3}
+    modelSkeleton: {fileID: 4900000, guid: f2a58110e5b84f2428c23bf4839f0741, type: 3}
+    modelAtlas: {fileID: 4900000, guid: 9deea646ec86e3b40a7d2687f52f9088, type: 3}
+    modelPage: {fileID: 2800000, guid: 20d134ecab8aceb4298b109d523db31c, type: 3}
+  - id: c1082
+    name: "\u7490\u7490\u5361"
+    heroClass: mage
+    elementId: ice
+    zodiac: aquarius
+    growth:
+      id: mage_aquarius_5
+      nativeStars: 5
+      attackCoefficientMilli: 70800
+      healthCoefficientMilli: 142400
+      defenseCoefficientMilli: 61200
+      speedMilli: 108750
+    portrait: {fileID: 21300000, guid: c7601e5ec10a52499d1156f21fb8d9c9, type: 3}
+    cardPortrait: {fileID: 21300000, guid: fc44994ff9d15eb5ae4495f8e7f5d2b1, type: 3}
+    illustration: {fileID: 21300000, guid: fc44994ff9d15eb5ae4495f8e7f5d2b1, type: 3}
+    element: {fileID: 21300000, guid: c4381d6a80c91cb4d86a72515d4df803, type: 3}
+    cardElement: {fileID: 21300000, guid: c33b85b669825ea4ae0648c2f55a214c, type: 3}
+    role: {fileID: 21300000, guid: 093bf47c26044c24c9dfdb2e13c755cf, type: 3}
+    zodiacIcon: {fileID: 21300000, guid: 2cdf7f9fd6675e4a8e8148f5e21f3c04, type: 3}
+    skeleton: {fileID: 4900000, guid: fc0784155f3af4f42894d113640edc70, type: 3}
+    atlas: {fileID: 4900000, guid: 453842e2a02a7eb4fbb2ba34d05e061f, type: 3}
+    page: {fileID: 2800000, guid: 556edd72023b2f847bcd50e091154488, type: 3}
+    modelSkeleton: {fileID: 4900000, guid: 4fdc3d327f666784e85b5d4a72985efd, type: 3}
+    modelAtlas: {fileID: 4900000, guid: 10e45184b6c487a4a96e981f7d68646c, type: 3}
+    modelPage: {fileID: 2800000, guid: f50b9a3bbe699ff4fba978d2b2fd6f1b, type: 3}
+  - id: c1083
+    name: "\u6770\u8BFA"
+    heroClass: mage
+    elementId: ice
+    zodiac: taurus
+    growth:
+      id: mage_taurus_5
+      nativeStars: 5
+      attackCoefficientMilli: 58800
+      healthCoefficientMilli: 169000
+      defenseCoefficientMilli: 57600
+      speedMilli: 111250
+    portrait: {fileID: 21300000, guid: 09814d08166b5df28ee46469af63d7f0, type: 3}
+    cardPortrait: {fileID: 21300000, guid: 430ec87e9eb35f8394e415f68e12d32b, type: 3}
+    illustration: {fileID: 21300000, guid: 430ec87e9eb35f8394e415f68e12d32b, type: 3}
+    element: {fileID: 21300000, guid: c4381d6a80c91cb4d86a72515d4df803, type: 3}
+    cardElement: {fileID: 21300000, guid: c33b85b669825ea4ae0648c2f55a214c, type: 3}
+    role: {fileID: 21300000, guid: 093bf47c26044c24c9dfdb2e13c755cf, type: 3}
+    zodiacIcon: {fileID: 21300000, guid: 2f887f0dc00752319ef6553380371ff4, type: 3}
+    skeleton: {fileID: 4900000, guid: 340828b249e69324888e7b8e7907c89d, type: 3}
+    atlas: {fileID: 4900000, guid: a03a4eee986fbf545a5328392f0ac4df, type: 3}
+    page: {fileID: 2800000, guid: 140f29232370b224fb826660f6244404, type: 3}
+    modelSkeleton: {fileID: 4900000, guid: 35a36b203102ee14b840ec8300c4efb6, type: 3}
+    modelAtlas: {fileID: 4900000, guid: d198a1a946bc14a4cb4684a99a4cfe36, type: 3}
+    modelPage: {fileID: 2800000, guid: 47eaad368d9696647949ced503c62cf1, type: 3}
+  - id: c1085
+    name: "\u5361\u74E6\u6731"
+    heroClass: warrior
+    elementId: fire
+    zodiac: scorpio
+    growth:
+      id: warrior_scorpio_4
+      nativeStars: 4
+      attackCoefficientMilli: 58800
+      healthCoefficientMilli: 180200
+      defenseCoefficientMilli: 48000
+      speedMilli: 100625
+    portrait: {fileID: 21300000, guid: 3f3b0845875557b6b6a631d162550db6, type: 3}
+    cardPortrait: {fileID: 21300000, guid: aa94c3be9dbf545e854da722d7f089a9, type: 3}
+    illustration: {fileID: 21300000, guid: aa94c3be9dbf545e854da722d7f089a9, type: 3}
+    element: {fileID: 21300000, guid: 0c628788b569a3b48a97d60c9b405e67, type: 3}
+    cardElement: {fileID: 21300000, guid: 4941f882b1265ea884fe26b59e10d4a0, type: 3}
+    role: {fileID: 21300000, guid: ab70e30159c054cdba7fef2f4197a5ba, type: 3}
+    zodiacIcon: {fileID: 21300000, guid: 0a6fa4f696ca5ebe86cfef6df40013f6, type: 3}
+    skeleton: {fileID: 4900000, guid: 36bdd7bcb8c661945a07f0ee5037b2bc, type: 3}
+    atlas: {fileID: 4900000, guid: 87d7e8717fa84d146aac4e75b8b39b8e, type: 3}
+    page: {fileID: 2800000, guid: d664ce13009e7ee4b95ddc4339d6a762, type: 3}
+    modelSkeleton: {fileID: 4900000, guid: 709e8fd5aae6fef4e9e825664e2aabed, type: 3}
+    modelAtlas: {fileID: 4900000, guid: 4333a38eb760d4a4aa96ecd7b4eaf15a, type: 3}
+    modelPage: {fileID: 2800000, guid: a52fe57a5d9232946ac98d0e364c85ca, type: 3}
+  - id: c1086
+    name: "\u5361\u74E6\u5A1C"
+    heroClass: thief
+    elementId: fire
+    zodiac: pisces
+    growth:
+      id: thief_pisces_4
+      nativeStars: 4
+      attackCoefficientMilli: 53400
+      healthCoefficientMilli: 146600
+      defenseCoefficientMilli: 44100
+      speedMilli: 119375
+    portrait: {fileID: 21300000, guid: 02ca1423e4765ed48fec0803244ca6df, type: 3}
+    cardPortrait: {fileID: 21300000, guid: 63f67ee6e0d9568bb3ad5b9678316f7a, type: 3}
+    illustration: {fileID: 21300000, guid: 63f67ee6e0d9568bb3ad5b9678316f7a, type: 3}
+    element: {fileID: 21300000, guid: 0c628788b569a3b48a97d60c9b405e67, type: 3}
+    cardElement: {fileID: 21300000, guid: 4941f882b1265ea884fe26b59e10d4a0, type: 3}
+    role: {fileID: 21300000, guid: 36e1a1966c47543694055c3a4ac533d3, type: 3}
+    zodiacIcon: {fileID: 21300000, guid: cad30a25f7675b04b9252efd4e2391df, type: 3}
+    skeleton: {fileID: 4900000, guid: 7fe4c632b3935e54187ea46a350aa42e, type: 3}
+    atlas: {fileID: 4900000, guid: d355dfc3ae9c6c94384249357250bcba, type: 3}
+    page: {fileID: 2800000, guid: 6e366a00c5525824da99d005c3d63aa9, type: 3}
+    modelSkeleton: {fileID: 4900000, guid: f0b68eeffc613ad4f9b3fe05cd5e599f, type: 3}
+    modelAtlas: {fileID: 4900000, guid: 6a8322e8f1a513f44b458a22dca595fb, type: 3}
+    modelPage: {fileID: 2800000, guid: 5be6294891b8f7242842a9a1cdd6ae8c, type: 3}
+  - id: c1087
+    name: "\u5C24\u8D1D\u4E4C\u65AF"
+    heroClass: ranger
+    elementId: ice
+    zodiac: leo
+    growth:
+      id: ranger_leo_4
+      nativeStars: 4
+      attackCoefficientMilli: 55800
+      healthCoefficientMilli: 166200
+      defenseCoefficientMilli: 45900
+      speedMilli: 110000
+    portrait: {fileID: 21300000, guid: c8ba7c45a69c555e890620ef2841dfb7, type: 3}
+    cardPortrait: {fileID: 21300000, guid: e03d8a2222e8539a9ee6cb54eedec5b0, type: 3}
+    illustration: {fileID: 21300000, guid: e03d8a2222e8539a9ee6cb54eedec5b0, type: 3}
+    element: {fileID: 21300000, guid: c4381d6a80c91cb4d86a72515d4df803, type: 3}
+    cardElement: {fileID: 21300000, guid: c33b85b669825ea4ae0648c2f55a214c, type: 3}
+    role: {fileID: 21300000, guid: ecd53c2f9ea05742a2119a180ad27b97, type: 3}
+    zodiacIcon: {fileID: 21300000, guid: bd7f4e8096ef5654a4925ea772672783, type: 3}
+    skeleton: {fileID: 4900000, guid: 5eda1f95d4b554b4aa1c88aa1bfbccd3, type: 3}
+    atlas: {fileID: 4900000, guid: 557a2b8df4f367d409cae03f8e24ab33, type: 3}
+    page: {fileID: 2800000, guid: 70edacec34a3f8645b8754873966e03c, type: 3}
+    modelSkeleton: {fileID: 4900000, guid: 0194b5a59cd0aae4c91afdeea403b732, type: 3}
+    modelAtlas: {fileID: 4900000, guid: 11182e3221cf16a448af803c549e8697, type: 3}
+    modelPage: {fileID: 2800000, guid: 145bf6358214fc9409ba5ede84f12fb5, type: 3}
+  - id: c1088
+    name: "\u8587\u8587\u5B89"
+    heroClass: mage
+    elementId: wind
+    zodiac: sagittarius
+    growth:
+      id: mage_sagittarius_5
+      nativeStars: 5
+      attackCoefficientMilli: 65400
+      healthCoefficientMilli: 136800
+      defenseCoefficientMilli: 56700
+      speedMilli: 115625
+    portrait: {fileID: 21300000, guid: cc27624ad10251a5a92ddf41adc036ec, type: 3}
+    cardPortrait: {fileID: 21300000, guid: 2c194c18ab445bc88ab00a37d6e6524d, type: 3}
+    illustration: {fileID: 21300000, guid: 2c194c18ab445bc88ab00a37d6e6524d, type: 3}
+    element: {fileID: 21300000, guid: 1fc8c70c515e513ea88829bd074402e8, type: 3}
+    cardElement: {fileID: 21300000, guid: 2acbe6db1448581fbb21346e51e0500d, type: 3}
+    role: {fileID: 21300000, guid: 093bf47c26044c24c9dfdb2e13c755cf, type: 3}
+    zodiacIcon: {fileID: 21300000, guid: e9ac7098e61e5c47bafb507c4561ed44, type: 3}
+    skeleton: {fileID: 4900000, guid: bc8747e31adb0b14199bcaba94a23161, type: 3}
+    atlas: {fileID: 4900000, guid: b920d6b696b1df348816eee5ed9a2547, type: 3}
+    page: {fileID: 2800000, guid: 1df6876551e500241a42e9cd4c7896f1, type: 3}
+    modelSkeleton: {fileID: 4900000, guid: 8529d35e1b172da4ca8b578015068b30, type: 3}
+    modelAtlas: {fileID: 4900000, guid: 54fb3913c28269d4d89a9a9c4c1d27bc, type: 3}
+    modelPage: {fileID: 2800000, guid: b97434c320e02104d80f6c7ab036f9b0, type: 3}
   star: {fileID: 21300000, guid: 16314eb1ef285be79ef9c885cffb2e9b, type: 3}

@@ -3557,6 +3557,582 @@
       "text": "用剑锐利刺击后，消耗全部专注力。根据消耗的专注力点数等比提升伤害量。\\n若蝴蝶斩击未处于冷却状态，则回避提升35%，回避时，用优雅的砍击发动反击。",
       "displaySha256": "f5ae631260d66845b8d1a620dc394692d67956d8e3ebc6a87b45657165f8dc51"
     },
+    "battle.skill.c1076.s1.description": {
+      "sourceId": "sk_c1076_1",
+      "textId": "sk_c1076_1_de",
+      "text": "用灿烂光芒攻击敌人后，使自身速攻值提升<#FF9900>{per(sk_eff_value1)}%</>。若自身处于强化效果状态，则效果提升为2倍。",
+      "parameters": {
+        "sk_eff_value1": {
+          "sourceField": "sk_c1076_1.sk_eff_value1",
+          "value": "0.1"
+        }
+      },
+      "displaySha256": "757fd36f113af3a98fd8815cbc3a2d99cdc80129a1cecdbb191e70deb092884f"
+    },
+    "battle.skill.c1076.s1.name": {
+      "sourceId": "sk_c1076_1",
+      "textId": "sk_c1076_1_sknm",
+      "text": "审判之光",
+      "displaySha256": "81f72f5f5cd760e39649f05684d43c81fb1b757e8ea8cddc30529408c974bd15"
+    },
+    "battle.skill.c1076.s2.description": {
+      "sourceId": "sk_c1076_2",
+      "textId": "sk_c1076_2_de",
+      "text": "用女神的祝福使全体我军人员在2回合内获得<#FFFFFF>攻击力提升</>效果、根据目标最大生命值获得等比强度的<#FFFFFF>防护罩</>后，使速攻值提升15%。",
+      "displaySha256": "bdcbf71d2e03a624992241cd99582917e864eea37c6ff277e6c85d7a56fe3a59"
+    },
+    "battle.skill.c1076.s2.name": {
+      "sourceId": "sk_c1076_2",
+      "textId": "sk_c1076_2_sknm",
+      "text": "女神的祝福",
+      "displaySha256": "0bd30d194186fa0a92d605f3f738942ce9e680a65571c148128638d8190226d9"
+    },
+    "battle.skill.c1076.s3.burn.description": {
+      "sourceId": "sk_c1076_3us",
+      "textId": "sk_c1076_3us_de",
+      "text": "所有技能冷却时间减少2回合。",
+      "displaySha256": "e5fc3a2ee96d3ce6c60fb7bb0ad60ef37d36d6d16c12102345bda95e7f98dbc6"
+    },
+    "battle.skill.c1076.s3.description": {
+      "sourceId": "sk_c1076_3u",
+      "textId": "sk_c1076_3u_de",
+      "text": "用女神的奇迹解除全体我军人员的所有弱化效果后，使其在3回合内获得<#FFFFFF>防御力提升</>、<#FFFFFF>穿透抗性提升</>效果，使自身速攻值提升50%。",
+      "displaySha256": "91a849e215899e91d2d8e27c1a4b19e6b22e4b57a564db88e987472429281de3"
+    },
+    "battle.skill.c1076.s3.name": {
+      "sourceId": "sk_c1076_3u",
+      "textId": "sk_c1076_3u_sknm",
+      "text": "圣女的祈祷",
+      "displaySha256": "6ab1648d7e85d571ae062fa6027099d5a84511ebcc42731526469f25a31af7bd"
+    },
+    "battle.skill.c1076.s3.unawakened.description": {
+      "sourceId": "sk_c1076_3",
+      "textId": "sk_c1076_3_de",
+      "text": "用女神的奇迹解除全体我军人员的所有弱化效果后，使其在3回合内获得<#FFFFFF>防御力提升</>效果，使自身速攻值提升50%。",
+      "displaySha256": "62a8dd845284fb9ccad921a5df103fa130b8102744d8792c6bce49a4a1d5e7f0"
+    },
+    "battle.skill.c1079.s1.description": {
+      "sourceId": "sk_c1079_1",
+      "textId": "sk_c1079_1_de",
+      "text": "用燃烧之剑攻击敌人，有<#FF9900>{per(sk_add_rate1)}%</>的几率在1回合内使其<#FFFFFF>无法恢复</>。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1079_1.sk_add_rate1",
+          "value": "0.55"
+        }
+      },
+      "displaySha256": "6dd26835c619ff00e3a0f7517e9d2a3b0ca061e890c3681af0383654d70944f4"
+    },
+    "battle.skill.c1079.s1.name": {
+      "sourceId": "sk_c1079_1",
+      "textId": "sk_c1079_1_sknm",
+      "text": "轻轻一击！",
+      "displaySha256": "b74941a4aaa6eb87a9feedb6e5e78b53f94f96be6b306fcdf5e03a2576bdca23"
+    },
+    "battle.skill.c1079.s2.description": {
+      "sourceId": "sk_c1079_2u",
+      "textId": "sk_c1079_2u_de",
+      "text": "喷出火花，使自己在2回合内<#FFFFFF>攻击力大幅提升</>，重置一把烧尽！的冷却时间。获得<#FFFFFF>额外回合</>。",
+      "displaySha256": "e722b0f991938c9995f94e5a9ee37322fa44f9b6bc5e74ab205eda49b41f5910"
+    },
+    "battle.skill.c1079.s2.name": {
+      "sourceId": "sk_c1079_2u",
+      "textId": "sk_c1079_2u_sknm",
+      "text": "炙热燃烧！",
+      "displaySha256": "8eb5528fdb8fc33cd27ef4102ead9882a4b365323015aaaacf3d280130248e95"
+    },
+    "battle.skill.c1079.s2.unawakened.description": {
+      "sourceId": "sk_c1079_2",
+      "textId": "sk_c1079_2_de",
+      "text": "喷出火花，重置一把烧尽！的冷却时间。获得<#FFFFFF>额外回合</>。",
+      "displaySha256": "b83efa8dca155dcf8d4eb7182a5381c100dcbd841103295adbbc097e1d861704"
+    },
+    "battle.skill.c1079.s3.burn.description": {
+      "sourceId": "sk_c1079_3s",
+      "textId": "sk_c1079_3s_de",
+      "text": "伤害量提升。",
+      "displaySha256": "1b0f73ab02905b5b03d9a061d077a080aa48a0fe29cc2e5ca260bcfb450e6611"
+    },
+    "battle.skill.c1079.s3.description": {
+      "sourceId": "sk_c1079_3",
+      "textId": "sk_c1079_3_de",
+      "text": "用巨大火焰攻击敌人。造成50%的防御力<#FFFFFF>穿透</>。",
+      "displaySha256": "c847b04b58b425041f7ae17cb060a2d8c5ff7124e7b3c9a82ef5357025295f65"
+    },
+    "battle.skill.c1079.s3.name": {
+      "sourceId": "sk_c1079_3",
+      "textId": "sk_c1079_3_sknm",
+      "text": "一把烧尽！",
+      "displaySha256": "3d02981d2bbfb21f87897c20a353dcc363541cd226bdf72988086ace0038a100"
+    },
+    "battle.skill.c1080.s1.description": {
+      "sourceId": "sk_c1080_1",
+      "textId": "sk_c1080_1_de",
+      "text": "挥舞枪剑攻击敌人，有<#FF9900>{per(sk_add_rate1)}%</>的几率在1回合内造成<#FFFFFF>命中降低</>。根据自身速度等比提升伤害量。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1080_1.sk_add_rate1",
+          "value": "0.6"
+        }
+      },
+      "displaySha256": "dbeeb6f4e43797114a71c99ecc086b36f735b6b6569747cd1d34238fb69bcd23"
+    },
+    "battle.skill.c1080.s1.name": {
+      "sourceId": "sk_c1080_1",
+      "textId": "sk_c1080_1_sknm",
+      "text": "疾风之剑",
+      "displaySha256": "4c542b635bffb6b30b39c4159ca112da69cba32d7430635c0a9db9dcc81051a9"
+    },
+    "battle.skill.c1080.s2.burn.description": {
+      "sourceId": "sk_c1080_2us",
+      "textId": "sk_c1080_2us_de",
+      "text": "获得额外回合。",
+      "displaySha256": "65c9b7cc071587bb844b8f96a8fd88a62f9bf6814159429aa054a34b8c4723fa"
+    },
+    "battle.skill.c1080.s2.description": {
+      "sourceId": "sk_c1080_2u",
+      "textId": "sk_c1080_2u_de",
+      "text": "使自身在2回合内<#FFFFFF>攻击力提升</>，之后发射风压攻击全体敌人，根据自身速度等比提升伤害量。此攻击不会触发反击。",
+      "displaySha256": "8a7cc1f28e51ba56244fd98c9f9e04b53d16ec7a84be286bb34254a1776b958e"
+    },
+    "battle.skill.c1080.s2.name": {
+      "sourceId": "sk_c1080_2u",
+      "textId": "sk_c1080_2u_sknm",
+      "text": "风压弹",
+      "displaySha256": "f80c3e1f5cfd47b5f35d1230702c85907dcb030f379f3ea9b1fbb6b32362a169"
+    },
+    "battle.skill.c1080.s2.unawakened.description": {
+      "sourceId": "sk_c1080_2",
+      "textId": "sk_c1080_2_de",
+      "text": "发射风压攻击全体敌人，根据自身速度等比提升伤害量。此攻击不会触发反击。",
+      "displaySha256": "50d45e15347bf8b0f2781cafe752ff43df19af0a4b736985432eb4fdd94c8694"
+    },
+    "battle.skill.c1080.s3.description": {
+      "sourceId": "sk_c1080_3",
+      "textId": "sk_c1080_3_de",
+      "text": "疾速砍杀射击敌人。若目标非精英、首领怪物，则无视<#FFFFFF>伤害分配</>效果。根据自身速度等比提升伤害量。",
+      "displaySha256": "761ade3da0e2f52cd6622c5ab27ea844f4d8b44036f0fb9716fa0c605edcc444"
+    },
+    "battle.skill.c1080.s3.name": {
+      "sourceId": "sk_c1080_3",
+      "textId": "sk_c1080_3_sknm",
+      "text": "破坏的追踪者",
+      "displaySha256": "db7e428440f75b3770aabbaefc37c271395f548bcd940e815b4dec844374d20c"
+    },
+    "battle.skill.c1081.s1.description": {
+      "sourceId": "sk_c1081_1",
+      "textId": "sk_c1081_1_de",
+      "text": "召唤魔法之弓攻击敌人后，使自身速攻值提升<#FF9900>{per(sk_eff_value1)}%</>。若酷寒暴风处于冷却状态，则使随机我军人员发动<#FFFFFF>夹攻</>。",
+      "parameters": {
+        "sk_eff_value1": {
+          "sourceField": "sk_c1081_1.sk_eff_value1",
+          "value": "0.1"
+        }
+      },
+      "displaySha256": "5b4ea4d298e3c11e29d639b8f237fc4ee0248762a665dca4d829dbb99813d830"
+    },
+    "battle.skill.c1081.s1.name": {
+      "sourceId": "sk_c1081_1",
+      "textId": "sk_c1081_1_sknm",
+      "text": "神秘之箭",
+      "displaySha256": "d4542373b06bcedefc98ef46a9efc3ab26a5e56320374e09c47e006b840f6f8b"
+    },
+    "battle.skill.c1081.s2.burn.description": {
+      "sourceId": "sk_c1081_2s",
+      "textId": "sk_c1081_2s_de",
+      "text": "无视效果抗性。",
+      "displaySha256": "42b9bdee5ec503b4f8013643c51ce3517ef71da61e797dd87e3346711769023e"
+    },
+    "battle.skill.c1081.s2.description": {
+      "sourceId": "sk_c1081_2",
+      "textId": "sk_c1081_2_de",
+      "text": "引爆魔法球，在1回合内造成<#FFFFFF>晕眩</>、在2回合内造成<#FFFFFF>无法强化</>效果。使自身速攻值提升50%。",
+      "displaySha256": "d083c108156aa02652b67bcc4d154da3d2225bd5e467e9a521475762b22802e6"
+    },
+    "battle.skill.c1081.s2.name": {
+      "sourceId": "sk_c1081_2",
+      "textId": "sk_c1081_2_sknm",
+      "text": "璀璨爆发",
+      "displaySha256": "b74c1a6f34c87abfe5a52e89bcd73b3fe281cf7f3bd9115bc2297e82bd274bab"
+    },
+    "battle.skill.c1081.s3.description": {
+      "sourceId": "sk_c1081_3u",
+      "textId": "sk_c1081_3u_de",
+      "text": "用呼啸的寒气暴风攻击全体敌人，使强化效果减少1回合后，各有<#FF9900>{per(sk_add_rate2)}%</>的几率在2回合内造成<#FFFFFF>速度降低</>、<#FFFFFF>束缚</>效果。使自身在1回合内获得<#FFFFFF>无敌</>效果。用有利属性发动攻击。",
+      "parameters": {
+        "sk_add_rate2": {
+          "sourceField": "sk_c1081_3u.sk_add_rate2",
+          "value": "0.75"
+        }
+      },
+      "displaySha256": "f84ba9408c967d268af157fba817ceb336118396cbee84c9b89501cc28c33d20"
+    },
+    "battle.skill.c1081.s3.name": {
+      "sourceId": "sk_c1081_3u",
+      "textId": "sk_c1081_3u_sknm",
+      "text": "酷寒暴风",
+      "displaySha256": "951110d54b445627235e2f9b3564502447fdcef8447273f4a7fda76f6cd6437d"
+    },
+    "battle.skill.c1081.s3.unawakened.description": {
+      "sourceId": "sk_c1081_3",
+      "textId": "sk_c1081_3_de",
+      "text": "用呼啸的寒气暴风攻击全体敌人，使强化效果减少1回合后，各有<#FF9900>{per(sk_add_rate2)}%</>的几率在2回合内造成<#FFFFFF>速度降低</>、<#FFFFFF>束缚</>效果。用有利属性发动攻击。",
+      "parameters": {
+        "sk_add_rate2": {
+          "sourceField": "sk_c1081_3.sk_add_rate2",
+          "value": "0.75"
+        }
+      },
+      "displaySha256": "c0d008dd83b8683f170e9f136c1e9969f60a45cea2bed34be028aa94c7b1a2c5"
+    },
+    "battle.skill.c1082.s1.description": {
+      "sourceId": "sk_c1082_1",
+      "textId": "sk_c1082_1_de",
+      "text": "用强大的元素之力攻击敌人后，有50%的几率在2回合内造成<#FFFFFF>防御力降低</>。根据目标损失的生命值等比提升伤害量。",
+      "displaySha256": "e0746193eada376019ec19a5769b6206fbff5f5252dac4559f030089a9fa6a6a"
+    },
+    "battle.skill.c1082.s1.name": {
+      "sourceId": "sk_c1082_1",
+      "textId": "sk_c1082_1_sknm",
+      "text": "汹涌的浪涛",
+      "displaySha256": "f49ab49650c0c98d3770a24406c2541d4e3a3a6b1737104ce964952c9e4d31aa"
+    },
+    "battle.skill.c1082.s2.burn.description": {
+      "sourceId": "sk_c1082_2s",
+      "textId": "sk_c1037_2s_de",
+      "text": "所有技能冷却时间减少2回合。",
+      "displaySha256": "e5fc3a2ee96d3ce6c60fb7bb0ad60ef37d36d6d16c12102345bda95e7f98dbc6"
+    },
+    "battle.skill.c1082.s2.description": {
+      "sourceId": "sk_c1082_2",
+      "textId": "sk_c1082_2_de",
+      "text": "用星之祝福使全体我军人员在2回合内获得<#FFFFFF>防御力提升</>效果、根据自身攻击力使其获得等比强度的<#FFFFFF>防护罩</>。",
+      "displaySha256": "c44cfd338e49263eda0b02f0d224dbb29ca2b843f49842290b74026c950dc05b"
+    },
+    "battle.skill.c1082.s2.name": {
+      "sourceId": "sk_c1082_2",
+      "textId": "sk_c1082_2_sknm",
+      "text": "列科斯的祝福",
+      "displaySha256": "b6ecc99844d11d15c8d1e946f2bc86197082a205deb92dacf180a4f7bb1d0bfc"
+    },
+    "battle.skill.c1082.s3.description": {
+      "sourceId": "sk_c1082_3u",
+      "textId": "sk_c1082_3u_de",
+      "text": "用破灭之力攻击全体敌人，有<#FF9900>{per(sk_add_rate1)}%</>的几率在2回合内造成<#FFFFFF>防御力降低</>，之后使自身攻击力提升。攻击力提升效果最多可叠加3次。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1082_3u.sk_add_rate1",
+          "value": "0.75"
+        }
+      },
+      "displaySha256": "1e5111ce4d9a1f921bfbda98737391b53e1cc0b6c8b0c45ac590523cdcca3101"
+    },
+    "battle.skill.c1082.s3.name": {
+      "sourceId": "sk_c1082_3u",
+      "textId": "sk_c1082_3_sknm",
+      "text": "复仇的波动",
+      "displaySha256": "75e724582c789c90b63789b5a7aa770a99e4fc36df106f3f1b76504a88c73d31"
+    },
+    "battle.skill.c1082.s3.unawakened.description": {
+      "sourceId": "sk_c1082_3",
+      "textId": "sk_c1082_3_de",
+      "text": "用破灭之力攻击全体敌人，有<#FF9900>{per(sk_add_rate1)}%</>的几率在2回合内造成<#FFFFFF>防御力降低</>。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1082_3.sk_add_rate1",
+          "value": "0.75"
+        }
+      },
+      "displaySha256": "08d4abac9bffce42fa1340a1efc0a5f00d4bbe34aca8ef2336fcf62b97930f1d"
+    },
+    "battle.skill.c1083.s1.burn.description": {
+      "sourceId": "sk_c1083_1s",
+      "textId": "sk_c1083_1s_de",
+      "text": "获得额外回合。",
+      "displaySha256": "65c9b7cc071587bb844b8f96a8fd88a62f9bf6814159429aa054a34b8c4723fa"
+    },
+    "battle.skill.c1083.s1.description": {
+      "sourceId": "sk_c1083_1",
+      "textId": "sk_c1083_1_de",
+      "text": "冒出尖刺攻击敌人，在1回合内造成<#FFFFFF>冻伤</>效果。根据自身防御力等比提升伤害量。",
+      "displaySha256": "7c5aa39fb977d2ddb0129059e1cb10baf1b52927f24208981aebcf80ee668061"
+    },
+    "battle.skill.c1083.s1.name": {
+      "sourceId": "sk_c1083_1",
+      "textId": "sk_c1083_1_sknm",
+      "text": "黑夜荆棘",
+      "displaySha256": "d2bf5c656d78be18459cd15a107243c6474033eba2aca5bd38b9852ae07e77a8"
+    },
+    "battle.skill.c1083.s2.description": {
+      "sourceId": "sk_c1083_2",
+      "textId": "sk_c1083_2_de",
+      "text": "使敌人回避降低<#FF9900>{per(ps_refer)}%</>。\\n回合开始时，若敌人之中有人处于<#FFFFFF>冻伤</>状态，则使自身在2回合内获得<#FFFFFF>狂气</>、<#FFFFFF>防御力提升</>效果。",
+      "parameters": {
+        "ps_refer": {
+          "sourceField": "pa_c1083_2.cs_refer",
+          "value": "0.3"
+        }
+      },
+      "displaySha256": "89d928e4920b4011dae39cbd7b6f261d6734aeebe90c2711703b4dc2a65f121f"
+    },
+    "battle.skill.c1083.s2.name": {
+      "sourceId": "sk_c1083_2",
+      "textId": "sk_c1083_2_sknm",
+      "text": "星辰盔甲",
+      "displaySha256": "735c444127de8aff5557a421c2784e3de813831c7e63f2f2516fbc4ff97fd30a"
+    },
+    "battle.skill.c1083.s3.description": {
+      "sourceId": "sk_c1083_3u",
+      "textId": "sk_c1083_3u_de",
+      "text": "召唤古代怪兽攻击全体敌人，解除2个强化效果后，在2回合内造成<#FFFFFF>破裂</>、<#FFFFFF>无法强化</>效果。根据自身防御力等比提升伤害量。若自身处于<#FFFFFF>狂气</>状态，则无视效果抗性。",
+      "displaySha256": "7b49244c7111241f4de3b3893338120e841c2adf568f6b347915e7efbe70e477"
+    },
+    "battle.skill.c1083.s3.name": {
+      "sourceId": "sk_c1083_3u",
+      "textId": "sk_c1083_3u_sknm",
+      "text": "古代怪兽",
+      "displaySha256": "d10543627b63f831dd3f64e66e01bef6401f23d73bc1bfdd25183e0dd0f86ad1"
+    },
+    "battle.skill.c1083.s3.unawakened.description": {
+      "sourceId": "sk_c1083_3",
+      "textId": "sk_c1083_3_de",
+      "text": "召唤古代怪兽攻击全体敌人，解除2个强化效果后，在2回合内造成<#FFFFFF>破裂</>效果。根据自身防御力等比提升伤害量。若自身处于<#FFFFFF>狂气</>状态，则无视效果抗性。",
+      "displaySha256": "3f703d9124e1898b710ef042aa8462bc61a2366cf803f77fb38dd66f0f5e8971"
+    },
+    "battle.skill.c1085.s1.burn.description": {
+      "sourceId": "sk_c1085_1s",
+      "textId": "sk_c1085_1s_de",
+      "text": "防御力降低发生率变为100%。",
+      "displaySha256": "c80d903823e0f0a7b5fbcaada6dd1457ee36c1452128f57689cd13153288411f"
+    },
+    "battle.skill.c1085.s1.description": {
+      "sourceId": "sk_c1085_1",
+      "textId": "sk_c1085_1_de",
+      "text": "用火花之球攻击敌人，有<#FF9900>{per(sk_add_rate1)}%</>的几率在2回合内造成<#FFFFFF>防御力降低</>效果。攻击后，有35%的几率使用火焰之息。\\n火焰之息：使自身速攻值提升20%。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1085_1.sk_add_rate1",
+          "value": "0.25"
+        }
+      },
+      "displaySha256": "0a7fa62b2680314fc2fbbf69901bc9ada22b6e7a07436bcc89e9c131dc9c2b27"
+    },
+    "battle.skill.c1085.s1.name": {
+      "sourceId": "sk_c1085_1",
+      "textId": "sk_c1085_1_sknm",
+      "text": "火焰强击",
+      "displaySha256": "5b06a8fb8f72182fc67f6d1e6586b8215bcacda8a722fd10b90995d0127aa05a"
+    },
+    "battle.skill.c1085.s2.description": {
+      "sourceId": "sk_c1085_2",
+      "textId": "sk_c1085_2_de",
+      "text": "受到攻击后，若自身处于弱化效果状态，则解除所有弱化效果，在2回合内获得<#FFFFFF>攻击力提升</>效果。",
+      "displaySha256": "6845a9d5e72ed3acf7759d20a4efa35aa949b56b5c7a96f3f334dea9e941a45d"
+    },
+    "battle.skill.c1085.s2.name": {
+      "sourceId": "sk_c1085_2",
+      "textId": "sk_c1085_2_sknm",
+      "text": "咬牙切齿",
+      "displaySha256": "b63efcc5f200021c729236dbd9b4ff920fdc0cc2010f0e6c8235ff59579a233e"
+    },
+    "battle.skill.c1085.s3.description": {
+      "sourceId": "sk_c1085_3u",
+      "textId": "sk_c1085_3u_de",
+      "text": "引爆火焰攻击敌人，并各在2回合内造成<#FFFFFF>无法恢复</>效果、<#FFFFFF>防御力降低</>。",
+      "displaySha256": "4161e2e95ed004cc967cd88df1166667345c034d984df2fe2670f252cfd697e1"
+    },
+    "battle.skill.c1085.s3.name": {
+      "sourceId": "sk_c1085_3u",
+      "textId": "sk_c1085_3u_sknm",
+      "text": "火风",
+      "displaySha256": "a69ada564a1a6ef7e1d43e091f5e92071ef810feed274b358ed9cd2407ce6c10"
+    },
+    "battle.skill.c1085.s3.unawakened.description": {
+      "sourceId": "sk_c1085_3",
+      "textId": "sk_c1085_3_de",
+      "text": "引爆火焰攻击敌人，并各在1回合内造成<#FFFFFF>无法恢复</>效果、<#FFFFFF>防御力降低</>。",
+      "displaySha256": "18d53c65b81b18aa013f21711828b531437ab29cdfe87105758d5f80be352fda"
+    },
+    "battle.skill.c1086.s1.description": {
+      "sourceId": "sk_c1086_1u",
+      "textId": "sk_c1086_1u_de",
+      "text": "用锋利的镰刀攻击敌人，各有<#FF9900>{per(sk_add_rate1)}%</>的几率在2回合内造成2个<#FFFFFF>出血</>效果。攻击后，若目标处于弱化效果状态，则根据自身攻击力造成等比的额外伤害。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1086_1u.sk_add_rate1",
+          "value": "0.35"
+        }
+      },
+      "displaySha256": "1403f488bb39001efd0483734c29f43fa9da3777f183fc1e99e9fa8d51872088"
+    },
+    "battle.skill.c1086.s1.name": {
+      "sourceId": "sk_c1086_1u",
+      "textId": "sk_c1086_1u_sknm",
+      "text": "跃进",
+      "displaySha256": "8137470be12778deb5532179319529637ad232328b41c9f044c28d43fb7cf569"
+    },
+    "battle.skill.c1086.s1.unawakened.description": {
+      "sourceId": "sk_c1086_1",
+      "textId": "sk_c1086_1_de",
+      "text": "用锋利的镰刀攻击敌人，各有<#FF9900>{per(sk_add_rate1)}%</>的几率在2回合内造成2个<#FFFFFF>出血</>效果。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1086_1.sk_add_rate1",
+          "value": "0.35"
+        }
+      },
+      "displaySha256": "81e68284afe8de1da5503bbd2debe04b6a3ba44d3a81992e51b79589198f176a"
+    },
+    "battle.skill.c1086.s2.burn.description": {
+      "sourceId": "sk_c1086_2s",
+      "textId": "sk_c1086_2s_de",
+      "text": "获得额外回合。",
+      "displaySha256": "65c9b7cc071587bb844b8f96a8fd88a62f9bf6814159429aa054a34b8c4723fa"
+    },
+    "battle.skill.c1086.s2.description": {
+      "sourceId": "sk_c1086_2",
+      "textId": "sk_c1086_2_de",
+      "text": "射出火焰守卫攻击全体敌人后，使全体我军人员在2回合内<#FFFFFF>攻击力提升</>。使火焰属性的我军人员获得1次<#FFFFFF>技能伤害无效</>。根据自身速度等比提升伤害量。",
+      "displaySha256": "876a2529a803252fdd8f4f7d6d7861bb42b374465da35e865c6d80ec854c6609"
+    },
+    "battle.skill.c1086.s2.name": {
+      "sourceId": "sk_c1086_2",
+      "textId": "sk_c1086_2_sknm",
+      "text": "简单问候",
+      "displaySha256": "f8f83e80affdecacde124a3245cff4c8783d45dd557cae6ed02dcb5cf4cb1a61"
+    },
+    "battle.skill.c1086.s3.description": {
+      "sourceId": "sk_c1086_3",
+      "textId": "sk_c1086_3_de",
+      "text": "用火焰守卫攻击敌人，解除2个强化效果后，在1回合内造成<#FFFFFF>晕眩</>效果。使火焰属性的我军人员速攻值提升20%。根据自身速度等比提升伤害量。",
+      "displaySha256": "4473f857efae045d1c11ad1f2bd0a2c02b004d313f7efc584a6f30b82d2789d6"
+    },
+    "battle.skill.c1086.s3.name": {
+      "sourceId": "sk_c1086_3",
+      "textId": "sk_c1086_3_sknm",
+      "text": "热烈欢迎",
+      "displaySha256": "444992ce7c63ad4271fa47986158d6c843e64e6dfe128f183922ea45abf8bcf3"
+    },
+    "battle.skill.c1087.s1.description": {
+      "sourceId": "sk_c1087_1",
+      "textId": "sk_c1087_1_de",
+      "text": "跃向敌人拔枪射击，有<#FF9900>{per(sk_add_rate1)}%</>的几率在2回合内造成<#FFFFFF>烧伤</>效果。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1087_1.sk_add_rate1",
+          "value": "0.2"
+        }
+      },
+      "displaySha256": "851777ae5cb6e2eeeba63290caf948887a3fd12caeba9fca8f053917dc0b7bf0"
+    },
+    "battle.skill.c1087.s1.name": {
+      "sourceId": "sk_c1087_1",
+      "textId": "sk_c1087_1_sknm",
+      "text": "快速拔枪",
+      "displaySha256": "6e26fcf5f1b872e55bc7671ce6ce6c7004fefd14780e43c82c0d6df1b8cb775d"
+    },
+    "battle.skill.c1087.s2.description": {
+      "sourceId": "sk_c1087_2u",
+      "textId": "sk_c1087_2u_de",
+      "text": "提振士气，使全体我军人员在2回合内<#FFFFFF>暴击率提升</>后，获得<#FFFFFF>额外回合</>。",
+      "displaySha256": "853c726f29a906064c63e514eda9dca7b2349945103a1dbf258c15c80606c352"
+    },
+    "battle.skill.c1087.s2.name": {
+      "sourceId": "sk_c1087_2u",
+      "textId": "sk_c1087_2u_sknm",
+      "text": "增进士气",
+      "displaySha256": "13cf270accd83c5a9f6854ef78dc9cb3578ec1a558f842de7a30a05ed22f5867"
+    },
+    "battle.skill.c1087.s2.unawakened.description": {
+      "sourceId": "sk_c1087_2",
+      "textId": "sk_c1087_2_de",
+      "text": "增进士气，使全体我军人员在2回合内<#FFFFFF>暴击率提升</>。",
+      "displaySha256": "e04a07a59b85b4b3423c508576ec638f4dd03467a88329b0c9a2211a3a16e73b"
+    },
+    "battle.skill.c1087.s3.burn.description": {
+      "sourceId": "sk_c1087_3s",
+      "textId": "sk_c1087_3s_de",
+      "text": "伤害量提升。",
+      "displaySha256": "1b0f73ab02905b5b03d9a061d077a080aa48a0fe29cc2e5ca260bcfb450e6611"
+    },
+    "battle.skill.c1087.s3.description": {
+      "sourceId": "sk_c1087_3",
+      "textId": "sk_c1087_3_de",
+      "text": "用会心一发攻击敌人，有<#FF9900>{per(sk_add_rate1)}%</>的几率在2回合内造成<#FFFFFF>防御力降低</>。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1087_3.sk_add_rate1",
+          "value": "0.8"
+        }
+      },
+      "displaySha256": "4b751a9aadaf032efe59acc1e7178e12957ffe0fc30f77d161eafa8152f5c4bc"
+    },
+    "battle.skill.c1087.s3.name": {
+      "sourceId": "sk_c1087_3",
+      "textId": "sk_c1087_3_sknm",
+      "text": "会心一发",
+      "displaySha256": "10b82f1aae48d94cdb05ff1fc9133ea245450214f1fb9dee7d0549468c04b8e4"
+    },
+    "battle.skill.c1088.s1.description": {
+      "sourceId": "sk_c1088_1u",
+      "textId": "sk_c1088_1u_de",
+      "text": "用岩石砸击敌人，使自身速攻值提升<#FF9900>{per(sk_eff_value1)}%</>。发生暴击时自身速攻值额外提升10%。",
+      "parameters": {
+        "sk_eff_value1": {
+          "sourceField": "sk_c1088_1u.sk_eff_value1",
+          "value": "0.1"
+        }
+      },
+      "displaySha256": "548f2707f949133b442d5426429768e316569a74ecd3f18115e4c0f750c7394f"
+    },
+    "battle.skill.c1088.s1.name": {
+      "sourceId": "sk_c1088_1u",
+      "textId": "sk_c1088_1u_sknm",
+      "text": "吸收活力",
+      "displaySha256": "e958a58b5bf3d5cca3fbd018d4e9ed311fcb6b4c83cfee6b945e3e7f1c2bb0ca"
+    },
+    "battle.skill.c1088.s1.unawakened.description": {
+      "sourceId": "sk_c1088_1",
+      "textId": "sk_c1088_1_de",
+      "text": "用岩石砸击敌人，使自身速攻值提升<#FF9900>{per(sk_eff_value1)}%</>。",
+      "parameters": {
+        "sk_eff_value1": {
+          "sourceField": "sk_c1088_1.sk_eff_value1",
+          "value": "0.1"
+        }
+      },
+      "displaySha256": "dbb0b97a7c744ecd3a604a38fd03d9ec2045cc338f3d1ae9d7c148bcb4dbedf9"
+    },
+    "battle.skill.c1088.s2.burn.description": {
+      "sourceId": "sk_c1088_2s",
+      "textId": "sk_c1088_2s_de",
+      "text": "伤害量提升。",
+      "displaySha256": "1b0f73ab02905b5b03d9a061d077a080aa48a0fe29cc2e5ca260bcfb450e6611"
+    },
+    "battle.skill.c1088.s2.description": {
+      "sourceId": "sk_c1088_2",
+      "textId": "sk_c1088_2_de",
+      "text": "用落雷攻击全体敌人。消灭时，额外使用1次雷神咆哮。额外发动的雷神咆哮伤害量降低，最多可发动3次。",
+      "displaySha256": "9948370f8f84d9438e779a506c2f0b646d4474059c915ceb0ab5dd99e7d6a0f8"
+    },
+    "battle.skill.c1088.s2.name": {
+      "sourceId": "sk_c1088_2",
+      "textId": "sk_c1088_2_sknm",
+      "text": "雷神咆哮",
+      "displaySha256": "c3e7a857f98c09ab497fddbb8a8c15668e831d3872a5b1a2f9170d9920b2a940"
+    },
+    "battle.skill.c1088.s3.description": {
+      "sourceId": "sk_c1088_3",
+      "textId": "sk_c1088_3_de",
+      "text": "最大化增幅魔力，使全体我军人员在3回合内获得<#FFFFFF>免疫</>效果，并在3回合内使自身<#FFFFFF>攻击力大幅提升</>，并使除自身外的全体我军人员在3回合内<#FFFFFF>攻击力提升</>。",
+      "displaySha256": "beb50ad99b9579708d81470ed9d55b45e427bdce934d4b0d2fee52b31713b564"
+    },
+    "battle.skill.c1088.s3.name": {
+      "sourceId": "sk_c1088_3",
+      "textId": "sk_c1088_3_sknm",
+      "text": "魔力增幅",
+      "displaySha256": "c0330aeb926a9a185323016d02c8da9c9b89d478158482b44d99b081a401b904"
+    },
     "battle.status.attackdown.description": {
       "sourceId": "stic_att_dn",
       "textId": "stic_att_dn_de",
@@ -3761,6 +4337,18 @@
       "text": "回避提升",
       "displaySha256": "4efb439eb6f7b7506cecbf38dfd61f2c30f5505f24d9015b534fde6111cc20a1"
     },
+    "battle.status.frostbite.description": {
+      "sourceId": "stic_freezing",
+      "textId": "stic_freezing_de",
+      "text": "不受伤害降低及伤害分配效果的影响。冻伤效果只适用于英雄。",
+      "displaySha256": "c3cce4f635d1b65e1737189d74377a093199abfc29d1701dc33501206bc36895"
+    },
+    "battle.status.frostbite.name": {
+      "sourceId": "stic_freezing",
+      "textId": "stic_freezing_skeffnm",
+      "text": "冻伤",
+      "displaySha256": "05a32fc48eef48762a06c3fd1565c4ddf82872daa935251a212141ed20dfee1e"
+    },
     "battle.status.greaterattackup.description": {
       "sourceId": "stic_att_up2",
       "textId": "stic_att_up2_de",
@@ -3881,6 +4469,18 @@
       "text": "魔法钉",
       "displaySha256": "0e777b384caa47c519cc3ad8688f40a49dce159953d9dda412f0f974a80822f1"
     },
+    "battle.status.penetrationresistanceup.description": {
+      "sourceId": "stic_penres_up",
+      "textId": "stic_penres_up_de",
+      "text": "穿透抗性提升50%。",
+      "displaySha256": "d4f4444b913c8a2e9f74ecddfd42682f8b5098325ebe65c2b3563412195ece16"
+    },
+    "battle.status.penetrationresistanceup.name": {
+      "sourceId": "stic_penres_up",
+      "textId": "stic_penres_up_skeffnm",
+      "text": "穿透抗性提升",
+      "displaySha256": "ca91097818b547fb5fcfaa50863ae419b7757f1a9fd8627b1d76c64b10da205c"
+    },
     "battle.status.perception.description": {
       "sourceId": "stic_detection_keep",
       "textId": "stic_detection_de",
@@ -3952,6 +4552,18 @@
       "textId": "stic_ab_up_block_skeffnm",
       "text": "束缚",
       "displaySha256": "8b17d81cf52ef1dde10326bb3aad4186c10dde0833a702eb3077e017fe5195db"
+    },
+    "battle.status.rupture.description": {
+      "sourceId": "stic_rupture",
+      "textId": "stic_rupture_de",
+      "text": "受到攻击时，根据最大生命值产生等比的额外伤害。只适用于英雄。",
+      "displaySha256": "81a14c42bcc16f19e110855f51101cd359f288caa4f6c985ca1682ee25849403"
+    },
+    "battle.status.rupture.name": {
+      "sourceId": "stic_rupture",
+      "textId": "stic_rupture_skeffnm",
+      "text": "破裂",
+      "displaySha256": "499061fe1d5d603b404ad40932fb3e6f5df05b0900b7c4ad900ccba7c9cf00bd"
     },
     "battle.status.silence.description": {
       "sourceId": "stic_silence",

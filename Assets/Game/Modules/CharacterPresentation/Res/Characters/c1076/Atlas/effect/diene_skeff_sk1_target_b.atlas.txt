@@ -1,0 +1,41 @@
+
+diene_skeff_sk1_target_b.sct
+size: 927,237
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+diena/sk1_melt
+  rotate: false
+  xy: 2, 2
+  size: 663, 233
+  orig: 663, 233
+  offset: 0, 0
+  index: -1
+fire_blast1_02
+  rotate: true
+  xy: 667, 173
+  size: 46, 44
+  orig: 46, 44
+  offset: 0, 0
+  index: -1
+fire_blast1_03
+  rotate: false
+  xy: 713, 173
+  size: 129, 35
+  orig: 129, 35
+  offset: 0, 0
+  index: -1
+fire_blast1_04
+  rotate: true
+  xy: 838, 2
+  size: 88, 87
+  orig: 88, 87
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 667, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1

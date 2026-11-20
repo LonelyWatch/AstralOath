@@ -1,0 +1,20 @@
+
+zeno_sk3_1_b.sct
+size: 117,230
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bg&filter/white
+  rotate: false
+  xy: 2, 210
+  size: 32, 18
+  orig: 32, 18
+  offset: 0, 0
+  index: -1
+light_pillar_2
+  rotate: false
+  xy: 2, 2
+  size: 113, 206
+  orig: 113, 206
+  offset: 0, 0
+  index: -1

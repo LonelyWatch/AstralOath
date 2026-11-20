@@ -11,6 +11,8 @@ namespace AstralOath.Client.BattleScene
         {
             internal Renderer[] Bodies;
             internal float Start, FadeSeconds, HoldSeconds, FadeOutSeconds, Opacity;
+            internal float? ReleaseStart;
+            internal float ReleaseOpacity;
         }
 
         private sealed class TargetBody
@@ -27,9 +29,10 @@ namespace AstralOath.Client.BattleScene
         private readonly Dictionary<Renderer, TargetBody> targetBodyHolds;
 
         private static bool IsTargetHide(JObject node) =>
-            (int?)node["blend_target"] == 66 && Number(node, "alpha_channel", 1f) == 0f &&
+            (int?)node["blend_target"] is 55 or 66 && Number(node, "alpha_channel", 1f) == 0f &&
             Number(node, "fadeIn") >= 0f && Number(node, "fadeOut") >= 0f &&
-            ((Number(node, "duration") == -1f && Number(node, "fadeOut") == 0f && !string.IsNullOrEmpty((string)node["id"])) ||
+            ((Number(node, "duration") == -1f && ((int?)node["blend_target"] == 55 || Number(node, "fadeOut") == 0f) &&
+                !string.IsNullOrEmpty((string)node["id"])) ||
              (Number(node, "duration") > 0f && string.IsNullOrEmpty((string)node["id"])));
 
         private void HoldTargetLayer(JObject node, BattlePreviewActor[] recipients)
@@ -37,9 +40,11 @@ namespace AstralOath.Client.BattleScene
             string id = (string)node["id"];
             if (string.IsNullOrEmpty(id)) id = "\0" + (int)node["guid"];
             if (targetLayers.ContainsKey(id)) return;
+            // The fixed graphs explicitly call 55 "cb_without_self" and 66 "target_hide".
+            var affected = (int?)node["blend_target"] == 55 ? participants.Where(actor => actor != caster) : recipients;
             var layer = new TargetLayer
             {
-                Bodies = recipients.Where(actor => actor && actor.PresentationRenderer)
+                Bodies = affected.Where(actor => actor && actor.PresentationRenderer)
                     .Select(actor => actor.PresentationRenderer).Distinct().ToArray(),
                 Start = time,
                 FadeSeconds = Seconds(node, "fadeIn"),
@@ -75,11 +80,29 @@ namespace AstralOath.Client.BattleScene
                 float opacity = layer.FadeSeconds > 0f ? 1f - Mathf.Clamp01(elapsed / layer.FadeSeconds) : 0f;
                 if (layer.HoldSeconds > 0f && elapsed >= layer.HoldSeconds)
                     opacity = layer.FadeOutSeconds > 0f ? Mathf.Clamp01((elapsed - layer.HoldSeconds) / layer.FadeOutSeconds) : 1f;
+                if (layer.ReleaseStart is float start)
+                    opacity = Mathf.Lerp(layer.ReleaseOpacity, 1f, (time - start) / layer.FadeOutSeconds);
                 if (opacity == layer.Opacity) continue;
                 layer.Opacity = opacity;
                 foreach (var renderer in layer.Bodies)
                     if (renderer) ApplyTargetLayers(renderer, targetBodyHolds[renderer]);
             }
+        }
+
+        private void StopTargetLayer(JObject stop)
+        {
+            string id = (string)stop["targetId"];
+            if (id == null || !targetLayers.TryGetValue(id, out var layer)) return;
+            float duration = Seconds(stop, "time");
+            if (duration <= 0f) { ReleaseTargetLayer(id); return; }
+            if (layer.ReleaseStart.HasValue) return;
+            layer.ReleaseStart = time;
+            layer.ReleaseOpacity = layer.Opacity;
+            layer.FadeOutSeconds = duration;
+            Schedule(time + duration, () =>
+            {
+                if (targetLayers.TryGetValue(id, out var current) && current == layer) ReleaseTargetLayer(id);
+            });
         }
 
         private void ApplyTargetLayers(Renderer renderer, TargetBody body)

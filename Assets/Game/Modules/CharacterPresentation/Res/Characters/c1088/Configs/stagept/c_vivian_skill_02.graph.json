@@ -1,0 +1,754 @@
+{
+  "id": "c_vivian_skill_02",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 12
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "guid": 1,
+        "etty": "IDLE"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "vivian_cm_sk2",
+        "guid": 2,
+        "etty": "SHAKE"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 3,
+        "etty": "HIT"
+      },
+      {
+        "curve": "0,1,1,1",
+        "time": 400,
+        "guid": 4,
+        "etty": "CAM"
+      },
+      {
+        "ani": "skill2",
+        "guid": 5,
+        "etty": "ANI"
+      },
+      {
+        "source": "vivian_sk2_target.cfx",
+        "scale": 0.95,
+        "location": 42,
+        "locationParam": "shadow",
+        "guid": 6,
+        "etty": "EFFECT"
+      },
+      {
+        "location": 41,
+        "x": 50.0,
+        "curve": "0,1,1,1",
+        "time": 850,
+        "guid": 7,
+        "etty": "CAM"
+      },
+      {
+        "location": 11,
+        "x": 200.0,
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 8,
+        "etty": "CAM"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.4,
+        "guid": 9,
+        "etty": "HIT"
+      },
+      {
+        "scale": "1",
+        "curve": "0,1,1,1",
+        "time": 400,
+        "guid": 10,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.1",
+        "curve": "0,1,1,1",
+        "time": 850,
+        "guid": 11,
+        "etty": "ZOOM"
+      },
+      {
+        "state": "start",
+        "guid": 12,
+        "etty": "ENTRY"
+      },
+      {
+        "scale": "1.4",
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 13,
+        "etty": "ZOOM"
+      },
+      {
+        "color": "0,0,0,255",
+        "accel": 1.0,
+        "opacity": 0.8,
+        "duration": 2533,
+        "localZ": -1,
+        "fadeIn": 200,
+        "fadeOut": 200,
+        "id": "d1",
+        "guid": 14,
+        "etty": "DARK"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.8,
+        "guid": 15,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "guid": 16,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.7,
+        "guid": 17,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.8,
+        "guid": 18,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.7,
+        "guid": 19,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.6,
+        "guid": 20,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.7,
+        "guid": 21,
+        "etty": "HIT"
+      }
+    ],
+    "connections": [
+      {
+        "from": 5,
+        "to": 1,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 4,
+        "delay": 2666,
+        "when": 1,
+        "Desc": "2666",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 2,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 7,
+        "delay": 300,
+        "when": 1,
+        "Desc": "300",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 6,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 10,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 8,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 13,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 11,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 12,
+        "to": 5,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 12,
+        "to": 14,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 15,
+        "to": 16,
+        "delay": 200,
+        "Desc": "200",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 16,
+        "to": 17,
+        "delay": 200,
+        "Desc": "200",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 3,
+        "delay": 2000,
+        "when": 1,
+        "Desc": "2000",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 18,
+        "delay": 380,
+        "Desc": "380",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 18,
+        "to": 19,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 20,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 9,
+        "delay": 600,
+        "when": 1,
+        "Desc": "600",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 15,
+        "delay": 250,
+        "Desc": "250",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 17,
+        "to": 21,
+        "delay": 150,
+        "Desc": "150",
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/vivian_cm_sk2.scsp",
+      "address": "characterlab/source/camera/vivian_cm_sk2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.atlas",
+      "address": "characterlab/source/effect/hit_new_blunt_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.scsp",
+      "address": "characterlab/source/effect/hit_new_blunt_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.sct",
+      "address": "characterlab/source/effect/hit_new_blunt_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_blunt_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_blunt_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_blunt_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/hit_new_slash_01.atlas",
+      "address": "characterlab/source/effect/hit_new_slash_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_slash_01.scsp",
+      "address": "characterlab/source/effect/hit_new_slash_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_slash_01.sct",
+      "address": "characterlab/source/effect/hit_new_slash_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_slash_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_slash_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_slash_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_slash_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/vivian_bi.cfx",
+      "address": "characterlab/source/effect/vivian_bi.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/vivian_br.cfx",
+      "address": "characterlab/source/effect/vivian_br.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/vivian_pat_sk2.particle",
+      "address": "characterlab/source/effect/vivian_pat_sk2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/vivian_sk1_self.cfx",
+      "address": "characterlab/source/effect/vivian_sk1_self.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/vivian_sk2_self.cfx",
+      "address": "characterlab/source/effect/vivian_sk2_self.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/vivian_sk2_target.cfx",
+      "address": "characterlab/source/effect/vivian_sk2_target.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/vivian_sk3_self.cfx",
+      "address": "characterlab/source/effect/vivian_sk3_self.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/vivian_skeff_bi.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_bi.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_bi.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_bi.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_bi.sct",
+      "address": "characterlab/source/effect/vivian_skeff_bi.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_br.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_br.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_br.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_br.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_br.sct",
+      "address": "characterlab/source/effect/vivian_skeff_br.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_sk1_self.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_sk1_self.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_sk1_self.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_sk1_self.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_sk1_self.sct",
+      "address": "characterlab/source/effect/vivian_skeff_sk1_self.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_1_b.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_1_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_1_b.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_1_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_1_b.sct",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_1_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_1_f_1_1.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_1_f_1_1.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_1_f_1_1.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_1_f_1_1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_1_f_1_1.sct",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_1_f_1_1.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_1_f_1_2.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_1_f_1_2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_1_f_1_2.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_1_f_1_2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_1_f_1_2.sct",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_1_f_1_2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_1_f_2.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_1_f_2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_1_f_2.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_1_f_2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_1_f_2.sct",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_1_f_2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_1_f_3_1.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_1_f_3_1.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_1_f_3_1.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_1_f_3_1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_1_f_3_1.sct",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_1_f_3_1.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_1_f_3_2_1.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_1_f_3_2_1.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_1_f_3_2_1.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_1_f_3_2_1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_1_f_3_2_1.sct",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_1_f_3_2_1.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_1_f_3_2_2.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_1_f_3_2_2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_1_f_3_2_2.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_1_f_3_2_2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_1_f_3_2_2.sct",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_1_f_3_2_2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_1_f_3_3.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_1_f_3_3.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_1_f_3_3.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_1_f_3_3.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_1_f_3_3.sct",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_1_f_3_3.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_2_b.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_2_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_2_b.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_2_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_2_b.sct",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_2_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_2_f_1_1.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_2_f_1_1.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_2_f_1_1.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_2_f_1_1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_2_f_1_1.sct",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_2_f_1_1.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_2_f_1_2.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_2_f_1_2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_2_f_1_2.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_2_f_1_2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_2_f_1_2.sct",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_2_f_1_2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_2_f_2.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_2_f_2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_2_f_2.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_2_f_2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_2_f_2.sct",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_2_f_2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_2_m_1.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_2_m_1.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_2_m_1.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_2_m_1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_2_m_1.sct",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_2_m_1.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_2_m_2.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_2_m_2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_2_m_2.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_2_m_2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_2_m_2.sct",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_2_m_2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_mask.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_mask.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_mask.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_mask.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_mask.sct",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_mask.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_self.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_self.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_self.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_self.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_self.sct",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_self.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_sk3_self.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_sk3_self.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_sk3_self.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_sk3_self.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_sk3_self.sct",
+      "address": "characterlab/source/effect/vivian_skeff_sk3_self.sct",
+      "type": "texture"
+    },
+    {
+      "source": "model/vivian.timeline",
+      "address": "characterlab/source/model/vivian.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/crystal_pati_01.sct",
+      "address": "characterlab/source/particle/crystal_pati_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/pati_03.sct",
+      "address": "characterlab/source/particle/pati_03.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

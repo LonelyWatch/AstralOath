@@ -162,10 +162,12 @@ namespace AstralOath.Client.BattleScene
                     cooldowns[slot].gameObject.SetActive(remaining > 0);
                     turns[slot].text = remaining.ToString();
                 }
-                for (int index = 0; index < unit.Statuses.Count; index++)
+                int visibleCount = 0;
+                foreach (var status in unit.Statuses)
                 {
+                    if (!BattleStatusArt.IsDisplayed(status.Kind)) continue;
+                    int index = visibleCount++;
                     if (index == statusSlots.Count) statusSlots.Add(CreateStatusSlot(index));
-                    var status = unit.Statuses[index];
                     var slot = statusSlots[index];
                     if (slot.Status?.Kind != status.Kind) slot.Hold?.Cancel();
                     slot.Status = status;
@@ -176,7 +178,7 @@ namespace AstralOath.Client.BattleScene
                     slot.Icon.gameObject.SetActive(slot.Icon.sprite);
                     slot.Turns.text = status.RemainingTurns.ToString();
                 }
-                for (int index = unit.Statuses.Count; index < statusSlots.Count; index++)
+                for (int index = visibleCount; index < statusSlots.Count; index++)
                 {
                     var slot = statusSlots[index];
                     slot.Status = null;

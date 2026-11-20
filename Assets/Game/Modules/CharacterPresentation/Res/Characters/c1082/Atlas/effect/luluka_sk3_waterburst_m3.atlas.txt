@@ -1,0 +1,167 @@
+
+luluka_sk3_waterburst_m3.sct
+size: 1110,998
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+beam2
+  rotate: true
+  xy: 1093, 214
+  size: 262, 15
+  orig: 262, 15
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 748, 819
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: false
+  xy: 494, 280
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1
+luluka/lay_up
+  rotate: false
+  xy: 748, 643
+  size: 160, 174
+  orig: 160, 174
+  offset: 0, 0
+  index: -1
+luluka/luluka_01
+  rotate: false
+  xy: 494, 311
+  size: 330, 330
+  orig: 330, 330
+  offset: 0, 0
+  index: -1
+luluka/luluka_01_black
+  rotate: false
+  xy: 416, 643
+  size: 330, 330
+  orig: 330, 330
+  offset: 0, 0
+  index: -1
+luluka/luluka_01_black_glow
+  rotate: false
+  xy: 930, 2
+  size: 178, 210
+  orig: 178, 210
+  offset: 0, 0
+  index: -1
+luluka/luluka_01_eye_l
+  rotate: false
+  xy: 466, 334
+  size: 12, 11
+  orig: 12, 11
+  offset: 0, 0
+  index: -1
+luluka/luluka_01_eye_r
+  rotate: true
+  xy: 480, 334
+  size: 11, 12
+  orig: 11, 12
+  offset: 0, 0
+  index: -1
+luluka/luluka_03
+  rotate: true
+  xy: 266, 896
+  size: 98, 129
+  orig: 98, 129
+  offset: 0, 0
+  index: -1
+luluka/luluka_04
+  rotate: true
+  xy: 2, 896
+  size: 100, 130
+  orig: 100, 130
+  offset: 0, 0
+  index: -1
+luluka/luluka_05
+  rotate: true
+  xy: 134, 896
+  size: 99, 130
+  orig: 99, 130
+  offset: 0, 0
+  index: -1
+luluka/luluka_flare_03
+  rotate: false
+  xy: 826, 311
+  size: 265, 265
+  orig: 265, 265
+  offset: 0, 0
+  index: -1
+luluka/luluka_sh
+  rotate: true
+  xy: 919, 742
+  size: 157, 152
+  orig: 157, 152
+  offset: 0, 0
+  index: -1
+luluka/rose_1_1
+  rotate: false
+  xy: 930, 214
+  size: 88, 79
+  orig: 88, 79
+  offset: 0, 0
+  index: -1
+luluka/rose_1_2
+  rotate: true
+  xy: 1008, 901
+  size: 87, 69
+  orig: 87, 69
+  offset: 0, 0
+  index: -1
+luluka/rose_2_1
+  rotate: false
+  xy: 919, 901
+  size: 87, 81
+  orig: 87, 81
+  offset: 0, 0
+  index: -1
+luluka/rose_2_2
+  rotate: true
+  xy: 1020, 214
+  size: 85, 71
+  orig: 85, 71
+  offset: 0, 0
+  index: -1
+luluka/top_base_04
+  rotate: false
+  xy: 910, 578
+  size: 162, 162
+  orig: 162, 162
+  offset: 0, 0
+  index: -1
+luluka/whale_dark_21
+  rotate: false
+  xy: 2, 639
+  size: 412, 255
+  orig: 412, 255
+  offset: 0, 0
+  index: -1
+luluka/whale_dark_22
+  rotate: false
+  xy: 494, 2
+  size: 434, 276
+  orig: 434, 276
+  offset: 0, 0
+  index: -1
+luluka/whale_dark_23
+  rotate: false
+  xy: 2, 334
+  size: 462, 303
+  orig: 462, 303
+  offset: 0, 0
+  index: -1
+luluka/whale_dark_24
+  rotate: false
+  xy: 2, 2
+  size: 490, 330
+  orig: 490, 330
+  offset: 0, 0
+  index: -1

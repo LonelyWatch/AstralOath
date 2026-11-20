@@ -1,0 +1,18 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "chermia_skeff_bi_loop",
+      "z": "5",
+      "format": "spine",
+      "loop": 1
+    },
+    {
+      "source": "chermia_bi_loop_pati1",
+      "y": "50",
+      "z": "7",
+      "format": "particle",
+      "attach": "chermia_skeff_bi_loop/bone271"
+    }
+  ]
+}

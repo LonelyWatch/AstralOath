@@ -1,0 +1,377 @@
+
+diene_skeff_sk3_bfangel.sct
+size: 685,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+apron001
+  rotate: true
+  xy: 164, 2
+  size: 68, 137
+  orig: 68, 137
+  offset: 0, 0
+  index: -1
+apron002
+  rotate: false
+  xy: 594, 2
+  size: 29, 40
+  orig: 29, 40
+  offset: 0, 0
+  index: -1
+belt001
+  rotate: false
+  xy: 485, 115
+  size: 35, 11
+  orig: 35, 11
+  offset: 0, 0
+  index: -1
+belt002
+  rotate: false
+  xy: 589, 47
+  size: 36, 12
+  orig: 36, 12
+  offset: 0, 0
+  index: -1
+body_cape001
+  rotate: true
+  xy: 303, 2
+  size: 65, 43
+  orig: 65, 43
+  offset: 0, 0
+  index: -1
+body_cape004
+  rotate: false
+  xy: 662, 25
+  size: 20, 30
+  orig: 20, 30
+  offset: 0, 0
+  index: -1
+body_cape005
+  rotate: true
+  xy: 142, 78
+  size: 22, 34
+  orig: 22, 34
+  offset: 0, 0
+  index: -1
+chest_body001
+  rotate: false
+  xy: 408, 65
+  size: 40, 51
+  orig: 40, 51
+  offset: 0, 0
+  index: -1
+eye001
+  rotate: false
+  xy: 545, 48
+  size: 28, 13
+  orig: 28, 13
+  offset: 0, 0
+  index: -1
+eyebrow001
+  rotate: false
+  xy: 164, 72
+  size: 12, 4
+  orig: 12, 4
+  offset: 0, 0
+  index: -1
+eyebrow002
+  rotate: true
+  xy: 564, 115
+  size: 10, 4
+  orig: 10, 4
+  offset: 0, 0
+  index: -1
+face003
+  rotate: false
+  xy: 555, 2
+  size: 37, 43
+  orig: 37, 43
+  offset: 0, 0
+  index: -1
+foot002
+  rotate: false
+  xy: 626, 106
+  size: 17, 20
+  orig: 17, 20
+  offset: 0, 0
+  index: -1
+foot004
+  rotate: false
+  xy: 627, 43
+  size: 33, 28
+  orig: 33, 28
+  offset: 0, 0
+  index: -1
+foot005
+  rotate: true
+  xy: 661, 85
+  size: 19, 20
+  orig: 19, 20
+  offset: 0, 0
+  index: -1
+foot006
+  rotate: true
+  xy: 200, 102
+  size: 22, 16
+  orig: 22, 16
+  offset: 0, 0
+  index: -1
+foot008
+  rotate: true
+  xy: 627, 73
+  size: 27, 32
+  orig: 27, 32
+  offset: 0, 0
+  index: -1
+forarm001
+  rotate: false
+  xy: 496, 2
+  size: 26, 45
+  orig: 26, 45
+  offset: 0, 0
+  index: -1
+hair002
+  rotate: true
+  xy: 178, 72
+  size: 28, 64
+  orig: 28, 64
+  offset: 0, 0
+  index: -1
+hair003
+  rotate: false
+  xy: 244, 72
+  size: 44, 52
+  orig: 44, 52
+  offset: 0, 0
+  index: -1
+hair004
+  rotate: false
+  xy: 662, 57
+  size: 20, 26
+  orig: 20, 26
+  offset: 0, 0
+  index: -1
+hair005
+  rotate: true
+  xy: 645, 106
+  size: 19, 26
+  orig: 19, 26
+  offset: 0, 0
+  index: -1
+hair006
+  rotate: false
+  xy: 607, 93
+  size: 17, 31
+  orig: 17, 31
+  offset: 0, 0
+  index: -1
+hair007
+  rotate: false
+  xy: 450, 65
+  size: 21, 49
+  orig: 21, 49
+  offset: 0, 0
+  index: -1
+hair008
+  rotate: false
+  xy: 479, 2
+  size: 15, 48
+  orig: 15, 48
+  offset: 0, 0
+  index: -1
+hair009
+  rotate: false
+  xy: 290, 72
+  size: 26, 52
+  orig: 26, 52
+  offset: 0, 0
+  index: -1
+hair_cape001
+  rotate: true
+  xy: 625, 2
+  size: 39, 35
+  orig: 39, 35
+  offset: 0, 0
+  index: -1
+hair_ribbon001
+  rotate: false
+  xy: 526, 48
+  size: 17, 15
+  orig: 17, 15
+  offset: 0, 0
+  index: -1
+hair_ribbon002
+  rotate: true
+  xy: 522, 115
+  size: 11, 17
+  orig: 11, 17
+  offset: 0, 0
+  index: -1
+hand002
+  rotate: false
+  xy: 496, 49
+  size: 28, 14
+  orig: 28, 14
+  offset: 0, 0
+  index: -1
+leg001
+  rotate: true
+  xy: 2, 102
+  size: 24, 80
+  orig: 24, 80
+  offset: 0, 0
+  index: -1
+leg002
+  rotate: false
+  xy: 142, 2
+  size: 20, 74
+  orig: 20, 74
+  offset: 0, 0
+  index: -1
+longskirt001
+  rotate: true
+  xy: 2, 2
+  size: 98, 138
+  orig: 98, 138
+  offset: 0, 0
+  index: -1
+longskirt004
+  rotate: true
+  xy: 348, 2
+  size: 61, 129
+  orig: 61, 129
+  offset: 0, 0
+  index: -1
+longskirt005
+  rotate: true
+  xy: 473, 65
+  size: 48, 132
+  orig: 48, 132
+  offset: 0, 0
+  index: -1
+mouth001
+  rotate: true
+  xy: 570, 115
+  size: 9, 6
+  orig: 9, 6
+  offset: 0, 0
+  index: -1
+neck001
+  rotate: false
+  xy: 607, 61
+  size: 18, 30
+  orig: 18, 30
+  offset: 0, 0
+  index: -1
+neck_jewel001
+  rotate: false
+  xy: 218, 102
+  size: 8, 22
+  orig: 8, 22
+  offset: 0, 0
+  index: -1
+neck_jewel002
+  rotate: true
+  xy: 84, 102
+  size: 24, 48
+  orig: 24, 48
+  offset: 0, 0
+  index: -1
+neck_jewel003
+  rotate: true
+  xy: 408, 118
+  size: 8, 46
+  orig: 8, 46
+  offset: 0, 0
+  index: -1
+nose001
+  rotate: false
+  xy: 578, 115
+  size: 6, 7
+  orig: 6, 7
+  offset: 0, 0
+  index: -1
+retail001
+  rotate: false
+  xy: 662, 2
+  size: 21, 21
+  orig: 21, 21
+  offset: 0, 0
+  index: -1
+retail002
+  rotate: true
+  xy: 180, 102
+  size: 23, 18
+  orig: 23, 18
+  offset: 0, 0
+  index: -1
+retail003
+  rotate: true
+  xy: 228, 102
+  size: 20, 13
+  orig: 20, 13
+  offset: 0, 0
+  index: -1
+sholder_cape001
+  rotate: true
+  xy: 524, 2
+  size: 44, 29
+  orig: 44, 29
+  offset: 0, 0
+  index: -1
+sholder_cape002
+  rotate: true
+  xy: 575, 47
+  size: 13, 12
+  orig: 13, 12
+  offset: 0, 0
+  index: -1
+sholder_ribbon1
+  rotate: true
+  xy: 541, 115
+  size: 11, 10
+  orig: 11, 10
+  offset: 0, 0
+  index: -1
+sholder_ribbon2
+  rotate: false
+  xy: 471, 116
+  size: 12, 10
+  orig: 12, 10
+  offset: 0, 0
+  index: -1
+sholder_ribbon3
+  rotate: false
+  xy: 456, 116
+  size: 13, 10
+  orig: 13, 10
+  offset: 0, 0
+  index: -1
+sholder_ribbon4
+  rotate: false
+  xy: 553, 115
+  size: 9, 11
+  orig: 9, 11
+  offset: 0, 0
+  index: -1
+skirt001
+  rotate: true
+  xy: 370, 65
+  size: 56, 36
+  orig: 56, 36
+  offset: 0, 0
+  index: -1
+skirt002
+  rotate: true
+  xy: 318, 69
+  size: 57, 50
+  orig: 57, 50
+  offset: 0, 0
+  index: -1
+upperarm001
+  rotate: true
+  xy: 134, 102
+  size: 24, 44
+  orig: 24, 44
+  offset: 0, 0
+  index: -1

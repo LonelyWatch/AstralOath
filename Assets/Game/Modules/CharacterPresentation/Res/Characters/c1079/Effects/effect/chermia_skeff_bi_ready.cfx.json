@@ -1,0 +1,18 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "chermia_skeff_bi_ready",
+      "z": "3",
+      "format": "spine"
+    },
+    {
+      "source": "chermia_bi_ready_pati1",
+      "y": "250",
+      "z": "5",
+      "scale": "1.0,1.0",
+      "delay": "330",
+      "format": "particle"
+    }
+  ]
+}

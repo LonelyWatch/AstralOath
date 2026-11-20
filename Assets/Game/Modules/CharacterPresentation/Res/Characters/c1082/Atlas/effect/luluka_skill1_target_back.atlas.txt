@@ -1,0 +1,167 @@
+
+luluka_skill1_target_back.sct
+size: 500,1001
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bot_flower_1
+  rotate: false
+  xy: 369, 518
+  size: 113, 113
+  orig: 113, 113
+  offset: 0, 0
+  index: -1
+bot_flower_2
+  rotate: false
+  xy: 369, 633
+  size: 113, 113
+  orig: 113, 113
+  offset: 0, 0
+  index: -1
+bot_flower_3
+  rotate: false
+  xy: 368, 748
+  size: 113, 113
+  orig: 113, 113
+  offset: 0, 0
+  index: -1
+bot_flower_4
+  rotate: false
+  xy: 368, 863
+  size: 113, 113
+  orig: 113, 113
+  offset: 0, 0
+  index: -1
+bot_ring_b
+  rotate: false
+  xy: 2, 2
+  size: 203, 203
+  orig: 203, 203
+  offset: 0, 0
+  index: -1
+bot_ring_f
+  rotate: false
+  xy: 2, 207
+  size: 203, 203
+  orig: 203, 203
+  offset: 0, 0
+  index: -1
+bot_ring_g_b
+  rotate: false
+  xy: 207, 2
+  size: 203, 203
+  orig: 203, 203
+  offset: 0, 0
+  index: -1
+bot_ring_g_f
+  rotate: false
+  xy: 2, 412
+  size: 203, 203
+  orig: 203, 203
+  offset: 0, 0
+  index: -1
+burst_sphear
+  rotate: false
+  xy: 280, 900
+  size: 79, 79
+  orig: 79, 79
+  offset: 0, 0
+  index: -1
+m_flower_1
+  rotate: false
+  xy: 381, 402
+  size: 114, 114
+  orig: 114, 114
+  offset: 0, 0
+  index: -1
+m_flower_2
+  rotate: false
+  xy: 381, 286
+  size: 114, 114
+  orig: 114, 114
+  offset: 0, 0
+  index: -1
+m_flower_3
+  rotate: false
+  xy: 164, 758
+  size: 114, 114
+  orig: 114, 114
+  offset: 0, 0
+  index: -1
+m_flower_4
+  rotate: false
+  xy: 164, 874
+  size: 114, 114
+  orig: 114, 114
+  offset: 0, 0
+  index: -1
+main_b_flower2_1
+  rotate: true
+  xy: 412, 2
+  size: 140, 86
+  orig: 140, 86
+  offset: 0, 0
+  index: -1
+main_b_flower2_2
+  rotate: true
+  xy: 412, 144
+  size: 140, 86
+  orig: 140, 86
+  offset: 0, 0
+  index: -1
+main_b_flower2_3
+  rotate: false
+  xy: 197, 670
+  size: 140, 86
+  orig: 140, 86
+  offset: 0, 0
+  index: -1
+main_b_flower2_4
+  rotate: true
+  xy: 280, 758
+  size: 140, 86
+  orig: 140, 86
+  offset: 0, 0
+  index: -1
+main_b_flower2_g
+  rotate: false
+  xy: 2, 617
+  size: 193, 136
+  orig: 193, 136
+  offset: 0, 0
+  index: -1
+main_b_flower3_1
+  rotate: false
+  xy: 207, 424
+  size: 160, 121
+  orig: 160, 121
+  offset: 0, 0
+  index: -1
+main_b_flower3_2
+  rotate: false
+  xy: 2, 755
+  size: 160, 121
+  orig: 160, 121
+  offset: 0, 0
+  index: -1
+main_b_flower3_3
+  rotate: false
+  xy: 2, 878
+  size: 160, 121
+  orig: 160, 121
+  offset: 0, 0
+  index: -1
+main_b_flower3_4
+  rotate: false
+  xy: 207, 547
+  size: 160, 121
+  orig: 160, 121
+  offset: 0, 0
+  index: -1
+main_b_flower3_g
+  rotate: true
+  xy: 207, 207
+  size: 215, 172
+  orig: 215, 172
+  offset: 0, 0
+  index: -1

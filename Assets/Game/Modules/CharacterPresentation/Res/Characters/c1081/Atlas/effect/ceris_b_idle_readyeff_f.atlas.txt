@@ -1,0 +1,48 @@
+
+ceris_b_idle_readyeff_f.sct
+size: 410,360
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+crosslight_2
+  rotate: false
+  xy: 205, 173
+  size: 185, 185
+  orig: 185, 185
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 239, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+iceball_p_2
+  rotate: false
+  xy: 2, 173
+  size: 201, 173
+  orig: 201, 173
+  offset: 0, 0
+  index: -1
+obk_crs_bir_1
+  rotate: false
+  xy: 2, 70
+  size: 191, 101
+  orig: 191, 101
+  offset: 0, 0
+  index: -1
+obk_crs_bir_2
+  rotate: false
+  xy: 2, 2
+  size: 108, 45
+  orig: 108, 45
+  offset: 0, 0
+  index: -1
+obk_crs_bir_3
+  rotate: false
+  xy: 112, 2
+  size: 125, 66
+  orig: 125, 66
+  offset: 0, 0
+  index: -1

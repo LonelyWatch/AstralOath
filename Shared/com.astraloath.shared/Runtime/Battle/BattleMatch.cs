@@ -366,7 +366,8 @@ namespace AstralOath.Shared.Battle
             foreach (var status in previous)
             {
                 if (refreshed?.Contains(status.Kind) == true || status.Kind == BattleStatusKind.SpiritlordProtection ||
-                    status.Kind == BattleStatusKind.SkillNullifier || status.Kind == BattleStatusKind.MagicBarrier) continue;
+                    status.Kind == BattleStatusKind.SkillNullifier || status.Kind == BattleStatusKind.MagicBarrier ||
+                    status.Kind == BattleStatusKind.AttackGrowth) continue;
                 int index = unit.Statuses.FindIndex(item => item.Kind == status.Kind && item.InstanceId == status.InstanceId);
                 if (index < 0) continue;
                 var remaining = unit.Statuses[index];

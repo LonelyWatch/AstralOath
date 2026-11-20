@@ -1,0 +1,612 @@
+{
+  "id": "c_vivian_skill_03",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 4
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "color": "0,0,0,255",
+        "accel": 1.0,
+        "opacity": 0.8,
+        "duration": 1166,
+        "localZ": -1,
+        "fadeOut": 300,
+        "id": "d1",
+        "guid": 1,
+        "etty": "DARK"
+      },
+      {
+        "location": 11,
+        "x": 100.0,
+        "curve": "0,1,1,1",
+        "time": 400,
+        "guid": 2,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.6",
+        "curve": "0,1,1,1",
+        "time": 400,
+        "guid": 3,
+        "etty": "ZOOM"
+      },
+      {
+        "state": "start",
+        "guid": 4,
+        "etty": "ENTRY"
+      },
+      {
+        "ani": "skill3_1",
+        "guid": 5,
+        "etty": "ANI"
+      },
+      {
+        "location": 31,
+        "y": 400.0,
+        "curve": "0,1,1,1",
+        "guid": 6,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.4",
+        "curve": "0,1,1,1",
+        "guid": 7,
+        "etty": "ZOOM"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "vivian_cm_sk3",
+        "guid": 8,
+        "etty": "SHAKE"
+      },
+      {
+        "source": "vivian_sk3_ph2.cfx",
+        "y": 500.0,
+        "scale": 1.0,
+        "location": 31,
+        "guid": 9,
+        "etty": "EFFECT"
+      },
+      {
+        "location": 31,
+        "y": 100.0,
+        "curve": "0,1,1,1",
+        "guid": 10,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.4",
+        "curve": "0,1,1,1",
+        "guid": 11,
+        "etty": "ZOOM"
+      },
+      {
+        "guid": 12,
+        "etty": "IDLE"
+      },
+      {
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 13,
+        "etty": "HIT"
+      },
+      {
+        "time": 200,
+        "guid": 14,
+        "etty": "BGSHOW"
+      },
+      {
+        "show": true,
+        "time": 200,
+        "guid": 15,
+        "etty": "BGSHOW"
+      },
+      {
+        "blend_target": 55,
+        "duration": 2666,
+        "fadeIn": 200,
+        "fadeOut": 200,
+        "alpha_channel": 0.0,
+        "guid": 16,
+        "etty": "COLOR_BLEND"
+      },
+      {
+        "args": "sk_c1088_3",
+        "curtain_color": "0,0,0,255",
+        "guid": 17,
+        "etty": "CUTIN"
+      },
+      {
+        "source": "vivian_sk3_ph3.cfx",
+        "scale": 1.0,
+        "location": 32,
+        "guid": 18,
+        "etty": "EFFECT"
+      },
+      {
+        "curve": "0.164751,0.3993055,0,1.010417",
+        "time": 800,
+        "guid": 19,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1",
+        "curve": "0.164751,0.3993055,0,1.010417",
+        "time": 800,
+        "guid": 20,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 31,
+        "y": 500.0,
+        "curve": "0,1.027778,0.1685824,0.9618055",
+        "time": 1000,
+        "guid": 21,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1",
+        "curve": "0,1.027778,0.1685824,0.9618055",
+        "time": 1000,
+        "guid": 22,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.8",
+        "curve": "1,0,0.5095785,0.7604166",
+        "time": 900,
+        "guid": 23,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 11,
+        "x": 150.0,
+        "y": 10.0,
+        "curve": "1,0,0.5095785,0.7604166",
+        "time": 900,
+        "guid": 24,
+        "etty": "CAM"
+      },
+      {
+        "location": 31,
+        "x": 50.0,
+        "y": 350.0,
+        "curve": "1,0,0.7969348,0.673611",
+        "time": 400,
+        "guid": 25,
+        "etty": "CAM"
+      },
+      {
+        "ani": "skill3_2",
+        "guid": 26,
+        "etty": "ANI"
+      }
+    ],
+    "connections": [
+      {
+        "from": 5,
+        "to": 2,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 3,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 5,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 11,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 14,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 16,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 17,
+        "delay": 1333,
+        "when": 1,
+        "Desc": "1333",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 17,
+        "to": 9,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 6,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 18,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 18,
+        "to": 10,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 18,
+        "to": 15,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 15,
+        "to": 1,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 20,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 19,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 21,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 21,
+        "to": 22,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 24,
+        "to": 23,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 24,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 18,
+        "to": 8,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 21,
+        "to": 25,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 13,
+        "delay": 900,
+        "when": 1,
+        "Desc": "900",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 18,
+        "to": 26,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 26,
+        "to": 12,
+        "Desc": "",
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/vivian_cm_sk3.scsp",
+      "address": "characterlab/source/camera/vivian_cm_sk3.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "cut/fhd/sk_c1088_3.webp",
+      "address": "characterlab/source/cut/fhd/sk_c1088_3.webp",
+      "type": "cutin"
+    },
+    {
+      "source": "effect/vivian_bi.cfx",
+      "address": "characterlab/source/effect/vivian_bi.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/vivian_br.cfx",
+      "address": "characterlab/source/effect/vivian_br.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/vivian_pat_sk3.particle",
+      "address": "characterlab/source/effect/vivian_pat_sk3.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/vivian_sk1_self.cfx",
+      "address": "characterlab/source/effect/vivian_sk1_self.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/vivian_sk2_self.cfx",
+      "address": "characterlab/source/effect/vivian_sk2_self.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/vivian_sk3_ph2.cfx",
+      "address": "characterlab/source/effect/vivian_sk3_ph2.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/vivian_sk3_ph3.cfx",
+      "address": "characterlab/source/effect/vivian_sk3_ph3.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/vivian_sk3_self.cfx",
+      "address": "characterlab/source/effect/vivian_sk3_self.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/vivian_skeff_bi.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_bi.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_bi.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_bi.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_bi.sct",
+      "address": "characterlab/source/effect/vivian_skeff_bi.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_br.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_br.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_br.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_br.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_br.sct",
+      "address": "characterlab/source/effect/vivian_skeff_br.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_sk1_self.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_sk1_self.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_sk1_self.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_sk1_self.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_sk1_self.sct",
+      "address": "characterlab/source/effect/vivian_skeff_sk1_self.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_self.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_self.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_self.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_self.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_sk2_self.sct",
+      "address": "characterlab/source/effect/vivian_skeff_sk2_self.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_sk3_ph2_1.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_sk3_ph2_1.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_sk3_ph2_1.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_sk3_ph2_1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_sk3_ph2_1.sct",
+      "address": "characterlab/source/effect/vivian_skeff_sk3_ph2_1.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_sk3_ph2_2.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_sk3_ph2_2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_sk3_ph2_2.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_sk3_ph2_2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_sk3_ph2_2.sct",
+      "address": "characterlab/source/effect/vivian_skeff_sk3_ph2_2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_sk3_ph3_b.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_sk3_ph3_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_sk3_ph3_b.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_sk3_ph3_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_sk3_ph3_b.sct",
+      "address": "characterlab/source/effect/vivian_skeff_sk3_ph3_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_sk3_ph3_f_1.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_sk3_ph3_f_1.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_sk3_ph3_f_1.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_sk3_ph3_f_1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_sk3_ph3_f_1.sct",
+      "address": "characterlab/source/effect/vivian_skeff_sk3_ph3_f_1.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_sk3_ph3_f_2.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_sk3_ph3_f_2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_sk3_ph3_f_2.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_sk3_ph3_f_2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_sk3_ph3_f_2.sct",
+      "address": "characterlab/source/effect/vivian_skeff_sk3_ph3_f_2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/vivian_skeff_sk3_self.atlas",
+      "address": "characterlab/source/effect/vivian_skeff_sk3_self.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/vivian_skeff_sk3_self.scsp",
+      "address": "characterlab/source/effect/vivian_skeff_sk3_self.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/vivian_skeff_sk3_self.sct",
+      "address": "characterlab/source/effect/vivian_skeff_sk3_self.sct",
+      "type": "texture"
+    },
+    {
+      "source": "model/vivian.timeline",
+      "address": "characterlab/source/model/vivian.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/aura_04.sct",
+      "address": "characterlab/source/particle/aura_04.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/orb_03.sct",
+      "address": "characterlab/source/particle/orb_03.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/pati_01.sct",
+      "address": "characterlab/source/particle/pati_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/pati_03.sct",
+      "address": "characterlab/source/particle/pati_03.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/zodiac_star1.sct",
+      "address": "characterlab/source/particle/zodiac_star1.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

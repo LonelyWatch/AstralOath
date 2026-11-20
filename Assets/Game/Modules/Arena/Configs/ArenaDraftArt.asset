@@ -1743,6 +1743,284 @@ MonoBehaviour:
     ModelAtlas: {fileID: 4900000, guid: fb29c656956e66b41b0d984e79e99303, type: 3}
     PortraitPage: {fileID: 2800000, guid: d6506d29c2b98a743b11e7d14e09115b, type: 3}
     ModelPage: {fileID: 2800000, guid: 9ef3e270a40ffaa4fbb9a18cc034d086, type: 3}
+  - Id: c1076
+    Name: "\u8FEA\u57C3\u59AE"
+    Element: ice
+    Class: soul_weaver
+    Level: 60
+    Stars: 6
+    BaseStars: 5
+    Attack: 694
+    Defense: 655
+    Health: 4855
+    Speed: 117
+    FilterEffects:
+    - effect_raise
+    - status_AttackUp
+    - effect_barrier
+    - effect_cleanse
+    - status_DefenseUp
+    - status_PenetrationResistanceUp
+    - effect_reduce_cd
+    Face: {fileID: 21300000, guid: fa4069c517bb557eb38310b385bf3a17, type: 3}
+    Card: {fileID: 21300000, guid: 30f8a1a792015d0f9ce4c3f8d255ea6b, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: c4381d6a80c91cb4d86a72515d4df803, type: 3}
+    ClassIcon: {fileID: 21300000, guid: c99872c1997abca4085510777ee17d9e, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: dc1fd2b116700fb44a54f364371483d5, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: bbb34275f84106644bd99f15a3fe15d3, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: e7499116045e4544889f71c8bad35532, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 946ffe74f3d808e4fb2fa014cebc06be, type: 3}
+    PortraitPage: {fileID: 2800000, guid: a4ef5351d741b704ea76d62b2036ff99, type: 3}
+    ModelPage: {fileID: 2800000, guid: e5f1bf49bf0be49438b81fefb4c21e86, type: 3}
+  - Id: c1079
+    Name: "\u6D01\u82E5\u7C73\u4E9A"
+    Element: fire
+    Class: warrior
+    Level: 60
+    Stars: 6
+    BaseStars: 5
+    Attack: 1359
+    Defense: 585
+    Health: 5542
+    Speed: 105
+    FilterEffects:
+    - status_Unhealable
+    - status_GreaterAttackUp
+    - effect_reduce_cd
+    - effect_extra_turn
+    Face: {fileID: 21300000, guid: 9e8f8ee4cfe15621a4d091ddecd4b5f1, type: 3}
+    Card: {fileID: 21300000, guid: ec022413bcc655da8814d0b05f26fb40, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: 0c628788b569a3b48a97d60c9b405e67, type: 3}
+    ClassIcon: {fileID: 21300000, guid: ab70e30159c054cdba7fef2f4197a5ba, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: 0ae631f5e59b9054983019fd7c4042e8, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: 9e7016fd06ef2294ba13f696c4f5c90f, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: 858a45ec94266b14389b87113d05e50a, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 0d20733c97c8a3943bae0af1d61154e1, type: 3}
+    PortraitPage: {fileID: 2800000, guid: 7e5177f929ce18348b19f08bc1b92e68, type: 3}
+    ModelPage: {fileID: 2800000, guid: 4073a657b9fa6a145b5d61166be4b97e, type: 3}
+  - Id: c1080
+    Name: "\u5E15\u8D1D\u5C14"
+    Element: wind
+    Class: ranger
+    Level: 60
+    Stars: 6
+    BaseStars: 5
+    Attack: 1283
+    Defense: 536
+    Health: 4976
+    Speed: 124
+    FilterEffects:
+    - status_HitChanceDown
+    - status_AttackUp
+    Face: {fileID: 21300000, guid: eeb19496bf0e52dda60a13d48142ce04, type: 3}
+    Card: {fileID: 21300000, guid: b518e8a8ca525531a0c4d82bfcf6f7c4, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: 1fc8c70c515e513ea88829bd074402e8, type: 3}
+    ClassIcon: {fileID: 21300000, guid: ecd53c2f9ea05742a2119a180ad27b97, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: ebc70c3c0c60cb1428c87fe7e8dcda0f, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: 2d6ad9bcdaac82f4897f7a8d15e64f93, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: 330b3c20010a1fc49962702c70ed2e48, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: be9edb315f729b24a8ea6edc7acadc37, type: 3}
+    PortraitPage: {fileID: 2800000, guid: b365e0a68bb415b4f8feaa74c02d905a, type: 3}
+    ModelPage: {fileID: 2800000, guid: e98ade5631c12f8489e76c7098af2a14, type: 3}
+  - Id: c1081
+    Name: "\u8D5B\u745E\u4E1D"
+    Element: ice
+    Class: ranger
+    Level: 60
+    Stars: 6
+    BaseStars: 5
+    Attack: 970
+    Defense: 603
+    Health: 5299
+    Speed: 122
+    FilterEffects:
+    - effect_raise
+    - status_Stun
+    - status_Unbuffable
+    - status_SpeedDown
+    - status_Restrict
+    - status_Invincible
+    Face: {fileID: 21300000, guid: 746ec9605f135dc49123b02f72092f34, type: 3}
+    Card: {fileID: 21300000, guid: 7200e4848fd15d9d9a260c39926905fa, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: c4381d6a80c91cb4d86a72515d4df803, type: 3}
+    ClassIcon: {fileID: 21300000, guid: ecd53c2f9ea05742a2119a180ad27b97, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: a034d99f89683e3428c1a6d4a767d5c3, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: 3d526551bbd686344818c9862407ad44, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: f2a58110e5b84f2428c23bf4839f0741, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 9deea646ec86e3b40a7d2687f52f9088, type: 3}
+    PortraitPage: {fileID: 2800000, guid: 64a6b38b79511cc4cbd0f10a1a780677, type: 3}
+    ModelPage: {fileID: 2800000, guid: 20d134ecab8aceb4298b109d523db31c, type: 3}
+  - Id: c1082
+    Name: "\u7490\u7490\u5361"
+    Element: ice
+    Class: mage
+    Level: 60
+    Stars: 6
+    BaseStars: 5
+    Attack: 1316
+    Defense: 715
+    Health: 4777
+    Speed: 108
+    FilterEffects:
+    - status_DefenseDown
+    - status_DefenseUp
+    - effect_barrier
+    - effect_reduce_cd
+    Face: {fileID: 21300000, guid: c7601e5ec10a52499d1156f21fb8d9c9, type: 3}
+    Card: {fileID: 21300000, guid: fc44994ff9d15eb5ae4495f8e7f5d2b1, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: c4381d6a80c91cb4d86a72515d4df803, type: 3}
+    ClassIcon: {fileID: 21300000, guid: 093bf47c26044c24c9dfdb2e13c755cf, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: fc0784155f3af4f42894d113640edc70, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: 453842e2a02a7eb4fbb2ba34d05e061f, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: 4fdc3d327f666784e85b5d4a72985efd, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 10e45184b6c487a4a96e981f7d68646c, type: 3}
+    PortraitPage: {fileID: 2800000, guid: 556edd72023b2f847bcd50e091154488, type: 3}
+    ModelPage: {fileID: 2800000, guid: f50b9a3bbe699ff4fba978d2b2fd6f1b, type: 3}
+  - Id: c1083
+    Name: "\u6770\u8BFA"
+    Element: ice
+    Class: mage
+    Level: 60
+    Stars: 6
+    BaseStars: 5
+    Attack: 1039
+    Defense: 673
+    Health: 5299
+    Speed: 115
+    FilterEffects:
+    - status_Frostbite
+    - status_Rage
+    - status_DefenseUp
+    - effect_dispel
+    - status_Rupture
+    - status_Unbuffable
+    Face: {fileID: 21300000, guid: 09814d08166b5df28ee46469af63d7f0, type: 3}
+    Card: {fileID: 21300000, guid: 430ec87e9eb35f8394e415f68e12d32b, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: c4381d6a80c91cb4d86a72515d4df803, type: 3}
+    ClassIcon: {fileID: 21300000, guid: 093bf47c26044c24c9dfdb2e13c755cf, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: 340828b249e69324888e7b8e7907c89d, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: a03a4eee986fbf545a5328392f0ac4df, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: 35a36b203102ee14b840ec8300c4efb6, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: d198a1a946bc14a4cb4684a99a4cfe36, type: 3}
+    PortraitPage: {fileID: 2800000, guid: 140f29232370b224fb826660f6244404, type: 3}
+    ModelPage: {fileID: 2800000, guid: 47eaad368d9696647949ced503c62cf1, type: 3}
+  - Id: c1085
+    Name: "\u5361\u74E6\u6731"
+    Element: fire
+    Class: warrior
+    Level: 60
+    Stars: 6
+    BaseStars: 4
+    Attack: 1119
+    Defense: 594
+    Health: 6091
+    Speed: 100
+    FilterEffects:
+    - status_DefenseDown
+    - effect_raise
+    - effect_cleanse
+    - status_AttackUp
+    - status_Unhealable
+    Face: {fileID: 21300000, guid: 3f3b0845875557b6b6a631d162550db6, type: 3}
+    Card: {fileID: 21300000, guid: aa94c3be9dbf545e854da722d7f089a9, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: 0c628788b569a3b48a97d60c9b405e67, type: 3}
+    ClassIcon: {fileID: 21300000, guid: ab70e30159c054cdba7fef2f4197a5ba, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: 36bdd7bcb8c661945a07f0ee5037b2bc, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: 87d7e8717fa84d146aac4e75b8b39b8e, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: 709e8fd5aae6fef4e9e825664e2aabed, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 4333a38eb760d4a4aa96ecd7b4eaf15a, type: 3}
+    PortraitPage: {fileID: 2800000, guid: d664ce13009e7ee4b95ddc4339d6a762, type: 3}
+    ModelPage: {fileID: 2800000, guid: a52fe57a5d9232946ac98d0e364c85ca, type: 3}
+  - Id: c1086
+    Name: "\u5361\u74E6\u5A1C"
+    Element: fire
+    Class: thief
+    Level: 60
+    Stars: 6
+    BaseStars: 4
+    Attack: 957
+    Defense: 515
+    Health: 4653
+    Speed: 123
+    FilterEffects:
+    - status_Bleed
+    - status_AttackUp
+    - status_SkillNullifier
+    - effect_dispel
+    - status_Stun
+    - effect_raise
+    Face: {fileID: 21300000, guid: 02ca1423e4765ed48fec0803244ca6df, type: 3}
+    Card: {fileID: 21300000, guid: 63f67ee6e0d9568bb3ad5b9678316f7a, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: 0c628788b569a3b48a97d60c9b405e67, type: 3}
+    ClassIcon: {fileID: 21300000, guid: 36e1a1966c47543694055c3a4ac533d3, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: 7fe4c632b3935e54187ea46a350aa42e, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: d355dfc3ae9c6c94384249357250bcba, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: f0b68eeffc613ad4f9b3fe05cd5e599f, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 6a8322e8f1a513f44b458a22dca595fb, type: 3}
+    PortraitPage: {fileID: 2800000, guid: 6e366a00c5525824da99d005c3d63aa9, type: 3}
+    ModelPage: {fileID: 2800000, guid: 5be6294891b8f7242842a9a1cdd6ae8c, type: 3}
+  - Id: c1087
+    Name: "\u5C24\u8D1D\u4E4C\u65AF"
+    Element: ice
+    Class: ranger
+    Level: 60
+    Stars: 6
+    BaseStars: 4
+    Attack: 1068
+    Defense: 536
+    Health: 5650
+    Speed: 110
+    FilterEffects:
+    - status_Burn
+    - status_CriticalChanceUp
+    - effect_extra_turn
+    - status_DefenseDown
+    Face: {fileID: 21300000, guid: c8ba7c45a69c555e890620ef2841dfb7, type: 3}
+    Card: {fileID: 21300000, guid: e03d8a2222e8539a9ee6cb54eedec5b0, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: c4381d6a80c91cb4d86a72515d4df803, type: 3}
+    ClassIcon: {fileID: 21300000, guid: ecd53c2f9ea05742a2119a180ad27b97, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: 5eda1f95d4b554b4aa1c88aa1bfbccd3, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: 557a2b8df4f367d409cae03f8e24ab33, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: 0194b5a59cd0aae4c91afdeea403b732, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 11182e3221cf16a448af803c549e8697, type: 3}
+    PortraitPage: {fileID: 2800000, guid: 70edacec34a3f8645b8754873966e03c, type: 3}
+    ModelPage: {fileID: 2800000, guid: 145bf6358214fc9409ba5ede84f12fb5, type: 3}
+  - Id: c1088
+    Name: "\u8587\u8587\u5B89"
+    Element: wind
+    Class: mage
+    Level: 60
+    Stars: 6
+    BaseStars: 5
+    Attack: 1228
+    Defense: 662
+    Health: 4370
+    Speed: 119
+    FilterEffects:
+    - effect_raise
+    - status_Immunity
+    - status_GreaterAttackUp
+    - status_AttackUp
+    Face: {fileID: 21300000, guid: cc27624ad10251a5a92ddf41adc036ec, type: 3}
+    Card: {fileID: 21300000, guid: 2c194c18ab445bc88ab00a37d6e6524d, type: 3}
+    Illustration: {fileID: 0}
+    ElementIcon: {fileID: 21300000, guid: 1fc8c70c515e513ea88829bd074402e8, type: 3}
+    ClassIcon: {fileID: 21300000, guid: 093bf47c26044c24c9dfdb2e13c755cf, type: 3}
+    PortraitSkeleton: {fileID: 4900000, guid: bc8747e31adb0b14199bcaba94a23161, type: 3}
+    PortraitAtlas: {fileID: 4900000, guid: b920d6b696b1df348816eee5ed9a2547, type: 3}
+    ModelSkeleton: {fileID: 4900000, guid: 8529d35e1b172da4ca8b578015068b30, type: 3}
+    ModelAtlas: {fileID: 4900000, guid: 54fb3913c28269d4d89a9a9c4c1d27bc, type: 3}
+    PortraitPage: {fileID: 2800000, guid: 1df6876551e500241a42e9cd4c7896f1, type: 3}
+    ModelPage: {fileID: 2800000, guid: b97434c320e02104d80f6c7ab036f9b0, type: 3}
   ScoreDigits:
   - {fileID: 21300000, guid: 81990abd4cad51e1b0d739066cc01859, type: 3}
   - {fileID: 21300000, guid: 3cf74a1895b957289cc41c0d28d052e3, type: 3}

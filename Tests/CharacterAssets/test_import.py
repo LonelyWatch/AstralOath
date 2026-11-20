@@ -9,7 +9,7 @@ class ImportBoundaryTests(unittest.TestCase):
         with self.assertRaises(ValueError): importer.select_characters(["c9999"])
         self.assertEqual(len(importer.select_characters(["c1001"])),1)
     def test_base_roster_uses_exact_graph_roots_in_id_order(self):
-        self.assertEqual(list(importer.CHARACTERS), [f"c{i}" for i in (*range(1001, 1025), *range(1027, 1041), 1042, 1043, 1044, *range(1046, 1051), 1053, 1054, 1055, 1060, 1062, 1065, 1066, 1067, *range(1069, 1075))])
+        self.assertEqual(list(importer.CHARACTERS), [f"c{i}" for i in (*range(1001, 1025), *range(1027, 1041), 1042, 1043, 1044, *range(1046, 1051), 1053, 1054, 1055, 1060, 1062, 1065, 1066, 1067, *range(1069, 1075), 1076, *range(1079, 1084), *range(1085, 1089))])
         self.assertEqual(importer.skill_ids("c1007"), [f"c_wilderd_skill_{i:02}" for i in range(1, 4)])
         self.assertEqual(importer.skill_ids("c1009")[-1], "c_charlotte_skill_03_05")
         self.assertEqual(importer.skill_ids("c1010"), [f"c_jerato_skill_{i:02}" for i in range(1, 4)])
@@ -58,6 +58,22 @@ class ImportBoundaryTests(unittest.TestCase):
         self.assertIn("model/tamarinne_t.scsp",closure.dependencies["stagept/c_tamarinne_skill_03.stg"])
         self.assertIn("model/tamarinne_t.timeline",closure.dependencies["stagept/c_tamarinne_skill_03.stg"])
         self.assertEqual([row["id"] for row in records["c1067"]["skills"] if row.get("modelAddress")==idol["modelAddress"]],["c_tamarinne_skill_01_1","c_tamarinne_skill_02_2"])
+
+    def test_roster_61_to_70_preserves_zeno_passive_and_base_voice_banks(self):
+        self.assertEqual(importer.primary_graphs("c1083"), {1: "c_zeno_skill_01", 3: "c_zeno_skill_03"})
+        for cid in ("c1076", "c1079", "c1080", "c1081", "c1082", "c1088"):
+            self.assertEqual(importer.japanese_bank(cid), "sound/ja/voc3.audio_ja.bank")
+        for cid in ("c1083", "c1085", "c1086", "c1087"):
+            self.assertEqual(importer.japanese_bank(cid), "sound/ja/voc1.audio_ja.bank")
+
+    def test_roster_61_to_70_keeps_proven_japanese_takes_and_missing_zeno_first_half(self):
+        source = Path("D:/sevenepic/原始资源")
+        if not source.is_dir():
+            self.skipTest("Read-only asset source is unavailable.")
+        heroes = importer.select_characters(["c1080", "c1082", "c1083", "c1086", "c1087"])
+        catalog = importer.build_catalog(importer.Closure(source).build(heroes), heroes, True)
+        self.assertEqual(catalog["missingJapaneseProgrammerKeys"], ["voc_c1083_skill3_4_1", "voc_c1083_skill3_4_1k"])
+        self.assertEqual(len(catalog["japaneseProgrammerAliases"]), 11)
 
     def test_new_roster_keeps_native_graph_names_and_includes_burn_alternates(self):
         expected = {

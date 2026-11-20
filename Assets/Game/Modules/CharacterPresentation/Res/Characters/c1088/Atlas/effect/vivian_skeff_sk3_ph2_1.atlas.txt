@@ -1,0 +1,377 @@
+
+vivian_skeff_sk3_ph2_1.sct
+size: 1019,1674
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+axe_fire2
+  rotate: false
+  xy: 2, 1270
+  size: 274, 273
+  orig: 274, 273
+  offset: 0, 0
+  index: -1
+axe_fire3
+  rotate: false
+  xy: 2, 955
+  size: 316, 313
+  orig: 316, 313
+  offset: 0, 0
+  index: -1
+beam
+  rotate: false
+  xy: 627, 1637
+  size: 80, 22
+  orig: 80, 22
+  offset: 0, 0
+  index: -1
+bibian/blastsmoke_3_1
+  rotate: false
+  xy: 645, 918
+  size: 24, 116
+  orig: 24, 116
+  offset: 0, 0
+  index: -1
+bibian/blastsmoke_3_2
+  rotate: false
+  xy: 959, 746
+  size: 19, 162
+  orig: 19, 162
+  offset: 0, 0
+  index: -1
+bibian/groundsmoke_2_2
+  rotate: false
+  xy: 355, 918
+  size: 288, 51
+  orig: 288, 51
+  offset: 0, 0
+  index: -1
+bibian/magicring_top_01
+  rotate: false
+  xy: 2, 2
+  size: 901, 333
+  orig: 901, 333
+  offset: 0, 0
+  index: -1
+bibian/magicring_top_02
+  rotate: false
+  xy: 2, 337
+  size: 729, 263
+  orig: 729, 263
+  offset: 0, 0
+  index: -1
+bibian/magicring_top_03
+  rotate: true
+  xy: 905, 2
+  size: 352, 112
+  orig: 352, 112
+  offset: 0, 0
+  index: -1
+cloud_crack_03
+  rotate: true
+  xy: 980, 746
+  size: 63, 34
+  orig: 63, 34
+  offset: 0, 0
+  index: -1
+cloud_crack_05
+  rotate: true
+  xy: 900, 1629
+  size: 43, 48
+  orig: 43, 48
+  offset: 0, 0
+  index: -1
+dizzy/flameline_05
+  rotate: false
+  xy: 2, 1545
+  size: 372, 125
+  orig: 372, 125
+  offset: 0, 0
+  index: -1
+dust&smoke/ashes_1
+  rotate: false
+  xy: 733, 980
+  size: 226, 49
+  orig: 226, 49
+  offset: 0, 0
+  index: -1
+dust&smoke/cloud_09
+  rotate: false
+  xy: 699, 1198
+  size: 89, 50
+  orig: 89, 50
+  offset: 0, 0
+  index: -1
+dust&smoke/cloud_big_04
+  rotate: true
+  xy: 900, 1542
+  size: 85, 84
+  orig: 85, 84
+  offset: 0, 0
+  index: -1
+dust&smoke/cloud_big_08
+  rotate: false
+  xy: 795, 1031
+  size: 161, 81
+  orig: 161, 81
+  offset: 0, 0
+  index: -1
+dust&smoke/smoke_ky_1_1
+  rotate: false
+  xy: 939, 638
+  size: 76, 106
+  orig: 76, 106
+  offset: 0, 0
+  index: -1
+eff_dust_line3
+  rotate: true
+  xy: 376, 1540
+  size: 132, 79
+  orig: 132, 79
+  offset: 0, 0
+  index: -1
+eff_dust_line4
+  rotate: true
+  xy: 564, 971
+  size: 132, 79
+  orig: 132, 79
+  offset: 0, 0
+  index: -1
+energy/line
+  rotate: true
+  xy: 671, 602
+  size: 400, 29
+  orig: 400, 29
+  offset: 0, 0
+  index: -1
+energy/line2
+  rotate: true
+  xy: 702, 602
+  size: 400, 29
+  orig: 400, 29
+  offset: 0, 0
+  index: -1
+energy/self_fire_s3_1
+  rotate: true
+  xy: 712, 1498
+  size: 111, 91
+  orig: 111, 91
+  offset: 0, 0
+  index: -1
+energy/self_fire_s3_2
+  rotate: true
+  xy: 813, 1334
+  size: 111, 91
+  orig: 111, 91
+  offset: 0, 0
+  index: -1
+energy/self_fire_s3_3
+  rotate: false
+  xy: 906, 1348
+  size: 111, 91
+  orig: 111, 91
+  offset: 0, 0
+  index: -1
+energy/skill2_target_fire_b1_s1_1
+  rotate: true
+  xy: 795, 1114
+  size: 99, 122
+  orig: 99, 122
+  offset: 0, 0
+  index: -1
+energy/skill2_target_fire_b1_s1_2
+  rotate: false
+  xy: 704, 1250
+  size: 99, 122
+  orig: 99, 122
+  offset: 0, 0
+  index: -1
+energy/skill2_target_fire_b1_s1_3
+  rotate: false
+  xy: 712, 1374
+  size: 99, 122
+  orig: 99, 122
+  offset: 0, 0
+  index: -1
+energy/skill2_target_fire_ex1_1
+  rotate: false
+  xy: 813, 1447
+  size: 92, 93
+  orig: 92, 93
+  offset: 0, 0
+  index: -1
+energy/skill2_target_fire_ex1_2
+  rotate: false
+  xy: 907, 1441
+  size: 92, 93
+  orig: 92, 93
+  offset: 0, 0
+  index: -1
+energy/skill2_target_fire_ex1_3
+  rotate: true
+  xy: 805, 1542
+  size: 92, 93
+  orig: 92, 93
+  offset: 0, 0
+  index: -1
+flare/flare_line
+  rotate: false
+  xy: 929, 772
+  size: 28, 177
+  orig: 28, 177
+  offset: 0, 0
+  index: -1
+flare/prismlight_02
+  rotate: true
+  xy: 733, 537
+  size: 233, 204
+  orig: 233, 204
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 278, 1270
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+heal_1
+  rotate: true
+  xy: 351, 1109
+  size: 159, 172
+  orig: 159, 172
+  offset: 0, 0
+  index: -1
+heal_3
+  rotate: true
+  xy: 525, 1109
+  size: 159, 172
+  orig: 159, 172
+  offset: 0, 0
+  index: -1
+light_halfcicle_01
+  rotate: false
+  xy: 351, 971
+  size: 211, 136
+  orig: 211, 136
+  offset: 0, 0
+  index: -1
+light_slash_01
+  rotate: false
+  xy: 805, 1215
+  size: 116, 117
+  orig: 116, 117
+  offset: 0, 0
+  index: -1
+light_up_L
+  rotate: false
+  xy: 699, 1031
+  size: 94, 165
+  orig: 94, 165
+  offset: 0, 0
+  index: -1
+luluka/luluka_flare_13
+  rotate: true
+  xy: 320, 955
+  size: 299, 29
+  orig: 299, 29
+  offset: 0, 0
+  index: -1
+luluka/sk3_final_lay_smoke_13
+  rotate: false
+  xy: 923, 1114
+  size: 94, 122
+  orig: 94, 122
+  offset: 0, 0
+  index: -1
+luluka/sk3_final_lay_smoke_14
+  rotate: false
+  xy: 923, 1238
+  size: 92, 108
+  orig: 92, 108
+  offset: 0, 0
+  index: -1
+ring&circle/circle_light1
+  rotate: false
+  xy: 355, 602
+  size: 314, 314
+  orig: 314, 314
+  offset: 0, 0
+  index: -1
+ring&circle/circle_light2
+  rotate: false
+  xy: 2, 602
+  size: 351, 351
+  orig: 351, 351
+  offset: 0, 0
+  index: -1
+ring&circle/ring_flash
+  rotate: false
+  xy: 557, 1270
+  size: 145, 145
+  orig: 145, 145
+  offset: 0, 0
+  index: -1
+smoke_1
+  rotate: false
+  xy: 897, 356
+  size: 120, 119
+  orig: 120, 119
+  offset: 0, 0
+  index: -1
+tene_m/sm_01
+  rotate: true
+  xy: 278, 1441
+  size: 97, 175
+  orig: 97, 175
+  offset: 0, 0
+  index: -1
+tene_m/sm_02
+  rotate: false
+  xy: 733, 772
+  size: 194, 206
+  orig: 194, 206
+  offset: 0, 0
+  index: -1
+tene_m/sm_03
+  rotate: false
+  xy: 449, 1270
+  size: 106, 169
+  orig: 106, 169
+  offset: 0, 0
+  index: -1
+tene_m/sm_04
+  rotate: false
+  xy: 939, 477
+  size: 75, 159
+  orig: 75, 159
+  offset: 0, 0
+  index: -1
+wave_w7
+  rotate: false
+  xy: 457, 1441
+  size: 83, 218
+  orig: 83, 218
+  offset: 0, 0
+  index: -1
+wave_w8
+  rotate: false
+  xy: 542, 1441
+  size: 83, 218
+  orig: 83, 218
+  offset: 0, 0
+  index: -1
+wave_w9
+  rotate: false
+  xy: 627, 1417
+  size: 83, 218
+  orig: 83, 218
+  offset: 0, 0
+  index: -1
+wind_b_1_1
+  rotate: true
+  xy: 733, 337
+  size: 198, 162
+  orig: 198, 162
+  offset: 0, 0
+  index: -1

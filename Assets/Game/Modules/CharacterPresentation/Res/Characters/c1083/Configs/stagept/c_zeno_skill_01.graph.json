@@ -1,0 +1,427 @@
+{
+  "id": "c_zeno_skill_01",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 2
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "source": "zeno_sk1_self.cfx",
+        "scale": 1.0,
+        "location": 1,
+        "guid": 1,
+        "etty": "EFFECT"
+      },
+      {
+        "state": "start",
+        "guid": 2,
+        "etty": "ENTRY"
+      },
+      {
+        "name": "u_range",
+        "duration": 200,
+        "power": 20.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 3,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "ani": "skill1",
+        "guid": 4,
+        "etty": "ANI"
+      },
+      {
+        "location": 1,
+        "x": 150.0,
+        "curve": "0,1,1,1",
+        "time": 600,
+        "guid": 5,
+        "etty": "CAM"
+      },
+      {
+        "duration": 200,
+        "program": "sprite_blur",
+        "direction_x": 1.0,
+        "direction_y": 1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 6,
+        "etty": "PPEFFECT"
+      },
+      {
+        "source": "zeno_sk1_target.cfx",
+        "z": 1,
+        "scale": 1.0,
+        "location": 6,
+        "locationParam": "root",
+        "guid": 7,
+        "etty": "EFFECT"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "zeno_cm_sk1",
+        "guid": 8,
+        "etty": "SHAKE"
+      },
+      {
+        "guid": 9,
+        "etty": "IDLE"
+      },
+      {
+        "scale": "1.6",
+        "curve": "0,1,1,1",
+        "time": 600,
+        "guid": 10,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.1",
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 11,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 42,
+        "x": -250.0,
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 12,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1",
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 13,
+        "etty": "ZOOM"
+      },
+      {
+        "curve": "0.0651341,0.7083333,0.3869732,0.9618055",
+        "time": 200,
+        "guid": 14,
+        "etty": "CAM"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "guid": 15,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.8,
+        "guid": 16,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 17,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 18,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.8,
+        "guid": 19,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "guid": 20,
+        "etty": "HIT"
+      }
+    ],
+    "connections": [
+      {
+        "from": 2,
+        "to": 4,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 1,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 5,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 3,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 9,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 10,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 8,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 12,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 12,
+        "to": 11,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 14,
+        "delay": 700,
+        "Desc": "700",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 14,
+        "to": 13,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 15,
+        "delay": 1000,
+        "when": 1,
+        "Desc": "1000",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 15,
+        "to": 16,
+        "delay": 166,
+        "Desc": "166",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 16,
+        "to": 17,
+        "delay": 166,
+        "Desc": "166",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 18,
+        "to": 19,
+        "delay": 150,
+        "Desc": "150",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 20,
+        "delay": 150,
+        "Desc": "150",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 18,
+        "delay": 1700,
+        "when": 1,
+        "Desc": "1700",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 15,
+        "to": 6,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/zeno_cm_sk1.scsp",
+      "address": "characterlab/source/camera/zeno_cm_sk1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_slash_01.atlas",
+      "address": "characterlab/source/effect/hit_new_slash_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_slash_01.scsp",
+      "address": "characterlab/source/effect/hit_new_slash_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_slash_01.sct",
+      "address": "characterlab/source/effect/hit_new_slash_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_slash_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_slash_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_slash_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_slash_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/zeno_sk1_self.cfx",
+      "address": "characterlab/source/effect/zeno_sk1_self.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/zeno_sk1_self_b.atlas",
+      "address": "characterlab/source/effect/zeno_sk1_self_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/zeno_sk1_self_b.scsp",
+      "address": "characterlab/source/effect/zeno_sk1_self_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/zeno_sk1_self_b.sct",
+      "address": "characterlab/source/effect/zeno_sk1_self_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/zeno_sk1_self_f.atlas",
+      "address": "characterlab/source/effect/zeno_sk1_self_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/zeno_sk1_self_f.scsp",
+      "address": "characterlab/source/effect/zeno_sk1_self_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/zeno_sk1_self_f.sct",
+      "address": "characterlab/source/effect/zeno_sk1_self_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/zeno_sk1_target.cfx",
+      "address": "characterlab/source/effect/zeno_sk1_target.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/zeno_sk1_target_b.atlas",
+      "address": "characterlab/source/effect/zeno_sk1_target_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/zeno_sk1_target_b.scsp",
+      "address": "characterlab/source/effect/zeno_sk1_target_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/zeno_sk1_target_b.sct",
+      "address": "characterlab/source/effect/zeno_sk1_target_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/zeno_sk1_target_f.atlas",
+      "address": "characterlab/source/effect/zeno_sk1_target_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/zeno_sk1_target_f.scsp",
+      "address": "characterlab/source/effect/zeno_sk1_target_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/zeno_sk1_target_f.sct",
+      "address": "characterlab/source/effect/zeno_sk1_target_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

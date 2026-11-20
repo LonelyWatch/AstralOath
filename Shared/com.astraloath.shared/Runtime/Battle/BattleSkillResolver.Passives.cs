@@ -87,7 +87,14 @@ namespace AstralOath.Shared.Battle
                     }
                     if (!target.Statuses.Contains(status)) break; // A self-revive cleared the queue.
                 }
-                if (target.Alive) StartArtifactTurn(target);
+                if (target.Alive)
+                {
+                    foreach (var passive in Passives(target))
+                    foreach (var effect in passive.Effects)
+                        if (effect.phase == "turn_start" && effect.operation == "apply_status" && ConditionMet(effect, target, target, false))
+                            ApplyStatus(target, target, ParseStatus(effect.status), effect.turns, effect.value);
+                    StartArtifactTurn(target);
+                }
                 return Changes;
             }
 
@@ -232,6 +239,7 @@ namespace AstralOath.Shared.Battle
                         "ally_suffered_critical" => criticallyHit?.Contains(unit.Id) == true && CanReact(guardian),
                         "back_row_immobilized" => unit.Source.Slot.Position == 4 && unit.Statuses.Any(status => IsImmobilizing(status.Kind)) && CanReact(guardian),
                         "self_attacked_at_half" => unit == guardian && 2L * unit.Health <= unit.MaximumHealth && CanReact(guardian),
+                        "self_attacked_debuffed" => unit == guardian && guardian.Statuses.Any(status => IsHarmful(status.Kind)),
                         _ => ConditionMet(trigger, guardian, unit, false)
                     };
                 }
@@ -327,7 +335,7 @@ namespace AstralOath.Shared.Battle
                 return Math.Min(highest, Basis);
             }
 
-            private static int SkillModifier(Program program, string operation, Unit caster, Unit recipient, bool allTargets,
+            private int SkillModifier(Program program, string operation, Unit caster, Unit recipient, bool allTargets,
                 bool speedBuffed = false, bool fullResource = false, bool nonDualBuffed = false, bool soulBurn = false)
             {
                 if (program == null) return 0;
@@ -339,7 +347,7 @@ namespace AstralOath.Shared.Battle
                 return amount;
             }
 
-            private static bool ConditionMet(BattleCatalogData.EffectRow effect, Unit caster, Unit recipient, bool allTargets,
+            private bool ConditionMet(BattleCatalogData.EffectRow effect, Unit caster, Unit recipient, bool allTargets,
                 BattleHitKind targetHit = BattleHitKind.None, bool attackCritical = false, bool readinessDrained = false,
                 bool speedBuffed = false, bool defeatedTarget = false, bool fullResource = false,
                 bool nonDualBuffed = false, bool soulBurn = false)
@@ -359,8 +367,11 @@ namespace AstralOath.Shared.Battle
                     "resource_full" => fullResource,
                     "resource_not_full" => !fullResource,
                     "resource_full_after_awakening" => fullResource && caster.Source.Awakenings >= 3,
-                    "caster_at_least_three_buffs" => caster.Statuses.Count(status => !IsHarmful(status.Kind)) >= 3,
-                    "caster_fewer_than_three_buffs" => caster.Statuses.Count(status => !IsHarmful(status.Kind)) < 3,
+                    "caster_at_least_three_buffs" => caster.Statuses.Count(status => status.Kind != BattleStatusKind.AttackGrowth && !IsHarmful(status.Kind)) >= 3,
+                    "caster_fewer_than_three_buffs" => caster.Statuses.Count(status => status.Kind != BattleStatusKind.AttackGrowth && !IsHarmful(status.Kind)) < 3,
+                    "enemy_has_frostbite" => units.Any(unit => unit.Alive && unit.Side != caster.Side && unit.Has(BattleStatusKind.Frostbite)),
+                    "recipient_not_elite_or_boss" => recipient.Source.MonsterRank != MonsterRank.Elite && recipient.Source.MonsterRank != MonsterRank.Boss,
+                    "awakened_recipient_debuffed" => caster.Source.Awakenings >= 3 && recipient.Statuses.Any(status => IsHarmful(status.Kind)),
                     "recipient_fire" => recipient.Source.Element == BattleElement.Fire,
                     "recipient_magic_nail" => recipient.Has(BattleStatusKind.MagicNail),
                     "recipient_bleeding" => recipient.Has(BattleStatusKind.Bleed),

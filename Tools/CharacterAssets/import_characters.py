@@ -71,11 +71,21 @@ CHARACTERS={
     "c1072":("secrete","赛珂兰特"),
     "c1073":("kaweric","卡威利"),
     "c1074":("violetto","菲奥雷托"),
+    "c1076":("diene","迪埃妮"),
+    "c1079":("chermia","洁若米亚"),
+    "c1080":("pavel","帕贝尔"),
+    "c1081":("ceris","赛瑞丝"),
+    "c1082":("luluka","璐璐卡"),
+    "c1083":("zeno","杰诺"),
+    "c1085":("kawazu","卡瓦朱"),
+    "c1086":("kawana","卡瓦娜"),
+    "c1087":("furious","尤贝乌斯"),
+    "c1088":("vivian","薇薇安"),
 }
 # Keep source identifiers verbatim even where the model and STG stems differ.
 SKILL_STEMS={"c1002":"c_cecilia_skill_new","c1007":"c_wilderd_skill","c1008":"c_aming_skill","c1010":"c_jerato_skill","c1013":"c_cartuja_skill","c1015":"c_baal_skill","c1017":"c_acha_skill","c1018":"c_iterre_skill"}
 SKILL_VARIANTS={("c1055",2):"c_jenua_skill_03", ("c1055",3):"c_jenua_skill_02",
-                ("c1066",1):"c_lunabianca_skill_01_1", ("c1066",2):None,
+                ("c1066",1):"c_lunabianca_skill_01_1", ("c1066",2):None, ("c1083",2):None,
                 ("c1047",1):"c_ken_skill_01_02",
                 ("c1009",3):"c_charlotte_skill_03_05",
                 **{("c1014",index):f"c_cedars_skill_{index:02}_new" for index in range(1,4)}}
@@ -129,6 +139,12 @@ BANKS = (
 )
 DEFAULT_JAPANESE_BANK = "sound/ja/voc1.audio_ja.bank"
 JAPANESE_BANK_BY_CHARACTER = {
+    "c1076": "sound/ja/voc3.audio_ja.bank",
+    "c1079": "sound/ja/voc3.audio_ja.bank",
+    "c1080": "sound/ja/voc3.audio_ja.bank",
+    "c1081": "sound/ja/voc3.audio_ja.bank",
+    "c1082": "sound/ja/voc3.audio_ja.bank",
+    "c1088": "sound/ja/voc3.audio_ja.bank",
     "c1060": "sound/ja/voc5.audio_ja.bank", "c1066": "sound/ja/voc3.audio_ja.bank",
     "c1067": "sound/ja/voc3.audio_ja.bank", "c1073": "sound/ja/voc3.audio_ja.bank",
     "c1019": "sound/ja/voc3.audio_ja.bank", "c1044": "sound/ja/voc3.audio_ja.bank",
@@ -546,6 +562,13 @@ def canonical_programmer_key(key):
 
 # Explicit source provenance. A spelling match cannot authorize substitution between events.
 JAPANESE_PROGRAMMER_ALIASES = {
+    "event:/voc/skill/c_pavel_skill_02": (("voc_c1080_skill2_3", "voc_c1080_skill2_3(J)"),),
+    "event:/voc/skill/c_luluka_skill_03": tuple(
+        (key, key+"(J)") for key in (f"voc_c1082_skill3_{take}" for take in range(1, 4))),
+    **{f"event:/voc/skill/c_{model}_skill_03": tuple(
+        (f"voc_{cid}_skill3_{take}", f"voc_{cid}_skill3_{take}_1(J)") for take in range(1, 4))
+       for model, cid in (("kawana", "c1086"), ("furious", "c1087"))},
+    "event:/voc/skill/c_zeno_skill_03": (("voc_c1083_skill3_4_2k", "voc_c1083_skill3_4_2"),),
     "event:/voc/skill/c_schniel_skill_03": tuple(
         (key, key+"(jp)") for key in (f"voc_c1060_skill3_{phase}_{take}" for phase in range(1,4) for take in (1,2))),
     **{f"event:/voc/skill/c_schniel_skill_03_ex{phase}": tuple(

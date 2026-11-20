@@ -1,0 +1,13 @@
+{
+  "version": "2.1.27",
+  "jsonAddress": "characterlab/source/model/ceris.scsp/json",
+  "atlasAddress": "characterlab/source/model/ceris.atlas",
+  "pages": [
+    {
+      "name": "ceris.sct",
+      "address": "characterlab/source/model/ceris.sct"
+    }
+  ],
+  "premultipliedAlpha": true,
+  "scale": 0.01
+}

@@ -1,0 +1,636 @@
+{
+  "id": "c_zeno_skill_03",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "ani": "skill3",
+        "guid": 2,
+        "etty": "ANI"
+      },
+      {
+        "guid": 3,
+        "etty": "IDLE"
+      },
+      {
+        "args": "sk_c1083_3",
+        "curtain_color": "0,0,0,255",
+        "guid": 4,
+        "etty": "CUTIN"
+      },
+      {
+        "time": 200,
+        "guid": 5,
+        "etty": "BGSHOW"
+      },
+      {
+        "location": 1,
+        "y": -20.0,
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 6,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.7",
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 7,
+        "etty": "ZOOM"
+      },
+      {
+        "time": 200,
+        "log": 200.0,
+        "away_x": 500.0,
+        "guid": 8,
+        "etty": "LAYOUT"
+      },
+      {
+        "mode": 1,
+        "guid": 9,
+        "etty": "LAYOUT"
+      },
+      {
+        "curve": "0,1,1,1",
+        "guid": 10,
+        "etty": "CAM"
+      },
+      {
+        "show": true,
+        "time": 200,
+        "guid": 11,
+        "etty": "BGSHOW"
+      },
+      {
+        "scale": "1",
+        "curve": "0,1,1,1",
+        "guid": 12,
+        "etty": "ZOOM"
+      },
+      {
+        "source": "zeno_sk3.cfx",
+        "scale": 1.0,
+        "location": 42,
+        "guid": 13,
+        "etty": "EFFECT"
+      },
+      {
+        "duration": -1,
+        "alpha_channel": 0.0,
+        "id": "f1",
+        "guid": 14,
+        "etty": "COLOR_BLEND"
+      },
+      {
+        "targetId": "f1",
+        "guid": 15,
+        "etty": "STOP"
+      },
+      {
+        "location": 42,
+        "x": 50.0,
+        "curve": "0,1,1,1",
+        "guid": 16,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.8",
+        "curve": "0,1,1,1",
+        "guid": 17,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 42,
+        "x": 50.0,
+        "y": -900.0,
+        "curve": "0,0.5208333,0.9080459,0.6597221",
+        "time": 700,
+        "guid": 18,
+        "etty": "CAM"
+      },
+      {
+        "scale": "0.3",
+        "curve": "0,1,0.2490421,0.9652778",
+        "time": 700,
+        "guid": 19,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.2",
+        "curve": "0,1,1,1",
+        "guid": 20,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 42,
+        "x": 50.0,
+        "y": -50.0,
+        "curve": "0,1,1,1",
+        "guid": 21,
+        "etty": "CAM"
+      },
+      {
+        "location": 42,
+        "x": 50.0,
+        "y": -1300.0,
+        "curve": "0.532567,0.8541666,1,1",
+        "time": 433,
+        "guid": 22,
+        "etty": "CAM"
+      },
+      {
+        "scale": "0.2",
+        "curve": "0,1,0.2490421,0.9652778",
+        "time": 433,
+        "guid": 23,
+        "etty": "ZOOM"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "zeno_cm_sk3",
+        "guid": 24,
+        "etty": "SHAKE"
+      },
+      {
+        "target_node": 76,
+        "bone": "bone",
+        "source": "zeno_sk3_node.scsp",
+        "timeline": [
+          "0,flying,0"
+        ],
+        "guid": 25,
+        "etty": "NODE_ANI"
+      },
+      {
+        "color": "211,0,7,255",
+        "accel": 1.0,
+        "opacity": 1.0,
+        "duration": 200,
+        "localZ": -1,
+        "globalZ": 1,
+        "fadeIn": 100,
+        "fadeOut": 800,
+        "guid": 26,
+        "etty": "DARK"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.7,
+        "guid": 27,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.4,
+        "guid": 28,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "guid": 29,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.7,
+        "guid": 30,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.6,
+        "guid": 31,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.7,
+        "guid": 32,
+        "etty": "HIT"
+      },
+      {
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 33,
+        "etty": "HIT"
+      },
+      {
+        "source": "zeno_sk3_f2.cfx",
+        "scale": 1.0,
+        "guid": 34,
+        "etty": "EFFECT"
+      }
+    ],
+    "connections": [
+      {
+        "from": 1,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 4,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 3,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 8,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 6,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 5,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 10,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 11,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 12,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 14,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 16,
+        "to": 17,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 16,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 16,
+        "to": 13,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 21,
+        "to": 20,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 9,
+        "delay": 2500,
+        "Desc": "2500",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 21,
+        "delay": 1166,
+        "Desc": "1166",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 16,
+        "to": 18,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 17,
+        "to": 19,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 18,
+        "to": 22,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 23,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 15,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 24,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 25,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 26,
+        "delay": 2266,
+        "when": 1,
+        "Desc": "2266",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 24,
+        "to": 27,
+        "delay": 1266,
+        "when": 1,
+        "Desc": "1266",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 27,
+        "to": 28,
+        "delay": 150,
+        "Desc": "150",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 28,
+        "to": 29,
+        "delay": 150,
+        "Desc": "150",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 29,
+        "to": 30,
+        "delay": 150,
+        "Desc": "150",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 30,
+        "to": 31,
+        "delay": 150,
+        "Desc": "150",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 31,
+        "to": 32,
+        "delay": 150,
+        "Desc": "150",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 33,
+        "delay": 200,
+        "Desc": "200",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 34,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/zeno_cm_sk3.scsp",
+      "address": "characterlab/source/camera/zeno_cm_sk3.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "cut/fhd/sk_c1083_3.webp",
+      "address": "characterlab/source/cut/fhd/sk_c1083_3.webp",
+      "type": "cutin"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.atlas",
+      "address": "characterlab/source/effect/hit_new_blunt_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.scsp",
+      "address": "characterlab/source/effect/hit_new_blunt_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.sct",
+      "address": "characterlab/source/effect/hit_new_blunt_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_blunt_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_blunt_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_blunt_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/zeno_sk3.cfx",
+      "address": "characterlab/source/effect/zeno_sk3.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/zeno_sk3_1_b.atlas",
+      "address": "characterlab/source/effect/zeno_sk3_1_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/zeno_sk3_1_b.scsp",
+      "address": "characterlab/source/effect/zeno_sk3_1_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/zeno_sk3_1_b.sct",
+      "address": "characterlab/source/effect/zeno_sk3_1_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/zeno_sk3_1_f.atlas",
+      "address": "characterlab/source/effect/zeno_sk3_1_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/zeno_sk3_1_f.scsp",
+      "address": "characterlab/source/effect/zeno_sk3_1_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/zeno_sk3_1_f.sct",
+      "address": "characterlab/source/effect/zeno_sk3_1_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/zeno_sk3_2_b.atlas",
+      "address": "characterlab/source/effect/zeno_sk3_2_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/zeno_sk3_2_b.scsp",
+      "address": "characterlab/source/effect/zeno_sk3_2_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/zeno_sk3_2_b.sct",
+      "address": "characterlab/source/effect/zeno_sk3_2_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/zeno_sk3_2_f.atlas",
+      "address": "characterlab/source/effect/zeno_sk3_2_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/zeno_sk3_2_f.scsp",
+      "address": "characterlab/source/effect/zeno_sk3_2_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/zeno_sk3_2_f.sct",
+      "address": "characterlab/source/effect/zeno_sk3_2_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/zeno_sk3_2_f2.atlas",
+      "address": "characterlab/source/effect/zeno_sk3_2_f2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/zeno_sk3_2_f2.scsp",
+      "address": "characterlab/source/effect/zeno_sk3_2_f2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/zeno_sk3_2_f2.sct",
+      "address": "characterlab/source/effect/zeno_sk3_2_f2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/zeno_sk3_f2.cfx",
+      "address": "characterlab/source/effect/zeno_sk3_f2.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "spani/zeno_sk3_node.scsp",
+      "address": "characterlab/source/spani/zeno_sk3_node.scsp",
+      "type": "skeleton"
+    }
+  ],
+  "diagnostics": []
+}

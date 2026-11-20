@@ -1,0 +1,258 @@
+
+diene_skeff_biready.sct
+size: 503,1826
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+diena/ball_01
+  rotate: false
+  xy: 311, 698
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: -1
+diena/ball_02
+  rotate: true
+  xy: 237, 1089
+  size: 69, 57
+  orig: 69, 57
+  offset: 0, 0
+  index: -1
+diena/ball_03
+  rotate: true
+  xy: 242, 859
+  size: 71, 63
+  orig: 71, 63
+  offset: 0, 0
+  index: -1
+diena/ball_04
+  rotate: true
+  xy: 419, 1744
+  size: 80, 82
+  orig: 80, 82
+  offset: 0, 0
+  index: -1
+diena/ball_05
+  rotate: false
+  xy: 242, 783
+  size: 67, 74
+  orig: 67, 74
+  offset: 0, 0
+  index: -1
+diena/ball_06
+  rotate: true
+  xy: 404, 321
+  size: 51, 54
+  orig: 51, 54
+  offset: 0, 0
+  index: -1
+diena/ball_07
+  rotate: false
+  xy: 404, 374
+  size: 27, 26
+  orig: 27, 26
+  offset: 0, 0
+  index: -1
+diena/ball_08
+  rotate: false
+  xy: 433, 392
+  size: 13, 10
+  orig: 13, 10
+  offset: 0, 0
+  index: -1
+diena/ball_09
+  rotate: false
+  xy: 448, 392
+  size: 10, 13
+  orig: 10, 13
+  offset: 0, 0
+  index: -1
+diena/ball_10
+  rotate: false
+  xy: 433, 374
+  size: 17, 16
+  orig: 17, 16
+  offset: 0, 0
+  index: -1
+diena/ball_twit_1_1
+  rotate: true
+  xy: 404, 432
+  size: 192, 96
+  orig: 192, 96
+  offset: 0, 0
+  index: -1
+diena/ball_twit_1_2
+  rotate: true
+  xy: 403, 626
+  size: 187, 96
+  orig: 187, 96
+  offset: 0, 0
+  index: -1
+diena/ball_twit_1_3
+  rotate: true
+  xy: 422, 1168
+  size: 151, 79
+  orig: 151, 79
+  offset: 0, 0
+  index: -1
+diena/ball_twit_2_1
+  rotate: false
+  xy: 311, 815
+  size: 187, 175
+  orig: 187, 175
+  offset: 0, 0
+  index: -1
+diena/ball_twit_2_2
+  rotate: false
+  xy: 306, 992
+  size: 183, 174
+  orig: 183, 174
+  offset: 0, 0
+  index: -1
+diena/ball_twit_2_3
+  rotate: false
+  xy: 237, 1168
+  size: 183, 174
+  orig: 183, 174
+  offset: 0, 0
+  index: -1
+diena/ball_twit_3_1
+  rotate: true
+  xy: 2, 1670
+  size: 150, 164
+  orig: 150, 164
+  offset: 0, 0
+  index: -1
+diena/ball_twit_3_2
+  rotate: true
+  xy: 168, 1670
+  size: 150, 163
+  orig: 150, 163
+  offset: 0, 0
+  index: -1
+diena/ball_twit_3_3
+  rotate: true
+  xy: 333, 1516
+  size: 141, 163
+  orig: 141, 163
+  offset: 0, 0
+  index: -1
+diena/ball_twit_3_4
+  rotate: false
+  xy: 173, 1516
+  size: 104, 148
+  orig: 104, 148
+  offset: 0, 0
+  index: -1
+flare/blight
+  rotate: false
+  xy: 2, 1355
+  size: 174, 142
+  orig: 174, 142
+  offset: 0, 0
+  index: -1
+flare/prismlight_02
+  rotate: false
+  xy: 2, 978
+  size: 233, 204
+  orig: 233, 204
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 1499
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+global_glow
+  rotate: false
+  xy: 333, 1659
+  size: 84, 84
+  orig: 84, 84
+  offset: 0, 0
+  index: -1
+lightning_core_05
+  rotate: false
+  xy: 361, 1344
+  size: 107, 107
+  orig: 107, 107
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: true
+  xy: 461, 2
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1
+ludwig/light_ludwig_01
+  rotate: false
+  xy: 2, 2
+  size: 457, 317
+  orig: 457, 317
+  offset: 0, 0
+  index: -1
+ludwig/light_ludwig_02
+  rotate: false
+  xy: 2, 321
+  size: 400, 275
+  orig: 400, 275
+  offset: 0, 0
+  index: -1
+ludwig/light_ludwig_03
+  rotate: false
+  xy: 2, 598
+  size: 307, 183
+  orig: 307, 183
+  offset: 0, 0
+  index: -1
+ludwig/light_ludwig_04
+  rotate: true
+  xy: 242, 932
+  size: 59, 62
+  orig: 59, 62
+  offset: 0, 0
+  index: -1
+water/water_spread_2
+  rotate: true
+  xy: 311, 598
+  size: 98, 90
+  orig: 98, 90
+  offset: 0, 0
+  index: -1
+water/water_spread_3
+  rotate: true
+  xy: 237, 993
+  size: 94, 59
+  orig: 94, 59
+  offset: 0, 0
+  index: -1
+water/water_spread_4
+  rotate: false
+  xy: 419, 1659
+  size: 82, 83
+  orig: 82, 83
+  offset: 0, 0
+  index: -1
+water/water_spread_5
+  rotate: false
+  xy: 182, 1344
+  size: 177, 170
+  orig: 177, 170
+  offset: 0, 0
+  index: -1
+water/water_spread_6
+  rotate: false
+  xy: 2, 783
+  size: 238, 193
+  orig: 238, 193
+  offset: 0, 0
+  index: -1
+water/water_spread_7
+  rotate: false
+  xy: 2, 1184
+  size: 178, 169
+  orig: 178, 169
+  offset: 0, 0
+  index: -1

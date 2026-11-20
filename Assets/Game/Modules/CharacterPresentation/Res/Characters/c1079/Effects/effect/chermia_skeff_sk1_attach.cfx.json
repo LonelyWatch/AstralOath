@@ -1,0 +1,39 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "chermia_skeff_sk1_attach",
+      "z": "3",
+      "format": "spine"
+    },
+    {
+      "source": "chermia_bi_ready_pati1",
+      "x": "80",
+      "y": "230",
+      "z": "4",
+      "scale": "-1.1,0.95",
+      "delay": "133",
+      "format": "particle"
+    },
+    {
+      "source": "chermia_bi_ready_pati1",
+      "x": "180",
+      "y": "550",
+      "z": "5",
+      "scale": "1.1,1.6",
+      "rotate": "-140",
+      "delay": "400",
+      "format": "particle"
+    },
+    {
+      "source": "chermia_skeff_sk1_pati1",
+      "x": "350",
+      "y": "400",
+      "z": "6",
+      "scale": "0.9,1.1",
+      "rotate": "55",
+      "delay": "850",
+      "format": "particle"
+    }
+  ]
+}

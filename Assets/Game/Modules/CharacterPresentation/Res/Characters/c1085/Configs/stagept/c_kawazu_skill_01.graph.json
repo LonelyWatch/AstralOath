@@ -1,0 +1,506 @@
+{
+  "id": "c_kawazu_skill_01",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "color": "0,0,0,255",
+        "accel": 1.0,
+        "opacity": 0.7,
+        "duration": -1,
+        "localZ": -1,
+        "globalZ": -1,
+        "fadeIn": 500,
+        "fadeOut": 500,
+        "id": "dk",
+        "guid": 2,
+        "etty": "DARK"
+      },
+      {
+        "ani": "skill1",
+        "guid": 3,
+        "etty": "ANI"
+      },
+      {
+        "from": "jump",
+        "to": "landing",
+        "guid": 4,
+        "etty": "ANI_SCOPE"
+      },
+      {
+        "scale": "1.2",
+        "curve": "0.7471265,-2.980232E-08,0.7509578,1",
+        "guid": 5,
+        "etty": "ZOOM"
+      },
+      {
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 6,
+        "etty": "HIT"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "kawaju_sk1eff_cm",
+        "guid": 7,
+        "etty": "SHAKE"
+      },
+      {
+        "ver": 2,
+        "power": 50,
+        "curve": "0,0.2430555,0.8735632,1.003472",
+        "location": 16,
+        "style": 1,
+        "x": -40.0,
+        "guid": 8,
+        "etty": "MOVE"
+      },
+      {
+        "location": 12,
+        "x": -37.0,
+        "y": -30.0,
+        "curve": "0.7471265,-2.980232E-08,0.7509578,1",
+        "guid": 9,
+        "etty": "CAM"
+      },
+      {
+        "from": "jump2",
+        "to": "landing2",
+        "guid": 10,
+        "etty": "ANI_SCOPE"
+      },
+      {
+        "guid": 11,
+        "etty": "CAM"
+      },
+      {
+        "ver": 2,
+        "power": 50,
+        "location": 11,
+        "style": 2,
+        "guid": 12,
+        "etty": "MOVE"
+      },
+      {
+        "scale": "1",
+        "guid": 13,
+        "etty": "ZOOM"
+      },
+      {
+        "guid": 14,
+        "etty": "IDLE"
+      },
+      {
+        "targetId": "dk",
+        "time": 500,
+        "guid": 15,
+        "etty": "STOP"
+      },
+      {
+        "location": 1,
+        "x": 120.0,
+        "curve": "0.2183908,-2.980232E-08,0.5440613,1",
+        "time": 400,
+        "guid": 16,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.5",
+        "curve": "0.2183908,-2.980232E-08,0.5440613,1",
+        "time": 400,
+        "guid": 17,
+        "etty": "ZOOM"
+      },
+      {
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 18,
+        "etty": "HIT"
+      }
+    ],
+    "connections": [
+      {
+        "from": 3,
+        "to": 6,
+        "delay": 900,
+        "when": 1,
+        "Desc": "900",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 5,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 8,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 9,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 11,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 12,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 13,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 3,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 4,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 2,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 10,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 14,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 15,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 16,
+        "to": 17,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 16,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 18,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/kawaju_sk1eff_cm.scsp",
+      "address": "characterlab/source/camera/kawaju_sk1eff_cm.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/kawaju_b_idle_ready_eff_b.atlas",
+      "address": "characterlab/source/effect/kawaju_b_idle_ready_eff_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/kawaju_b_idle_ready_eff_b.scsp",
+      "address": "characterlab/source/effect/kawaju_b_idle_ready_eff_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/kawaju_b_idle_ready_eff_b.sct",
+      "address": "characterlab/source/effect/kawaju_b_idle_ready_eff_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/kawaju_b_idle_ready_eff_f.atlas",
+      "address": "characterlab/source/effect/kawaju_b_idle_ready_eff_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/kawaju_b_idle_ready_eff_f.scsp",
+      "address": "characterlab/source/effect/kawaju_b_idle_ready_eff_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/kawaju_b_idle_ready_eff_f.sct",
+      "address": "characterlab/source/effect/kawaju_b_idle_ready_eff_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/kawaju_sk1eff_self_1.atlas",
+      "address": "characterlab/source/effect/kawaju_sk1eff_self_1.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/kawaju_sk1eff_self_1.scsp",
+      "address": "characterlab/source/effect/kawaju_sk1eff_self_1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/kawaju_sk1eff_self_1.sct",
+      "address": "characterlab/source/effect/kawaju_sk1eff_self_1.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/kawaju_sk1eff_self_2.atlas",
+      "address": "characterlab/source/effect/kawaju_sk1eff_self_2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/kawaju_sk1eff_self_2.scsp",
+      "address": "characterlab/source/effect/kawaju_sk1eff_self_2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/kawaju_sk1eff_self_2.sct",
+      "address": "characterlab/source/effect/kawaju_sk1eff_self_2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/kawaju_sk1eff_self_3.atlas",
+      "address": "characterlab/source/effect/kawaju_sk1eff_self_3.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/kawaju_sk1eff_self_3.scsp",
+      "address": "characterlab/source/effect/kawaju_sk1eff_self_3.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/kawaju_sk1eff_self_3.sct",
+      "address": "characterlab/source/effect/kawaju_sk1eff_self_3.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/kawaju_sk1eff_self_dust.atlas",
+      "address": "characterlab/source/effect/kawaju_sk1eff_self_dust.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/kawaju_sk1eff_self_dust.scsp",
+      "address": "characterlab/source/effect/kawaju_sk1eff_self_dust.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/kawaju_sk1eff_self_dust.sct",
+      "address": "characterlab/source/effect/kawaju_sk1eff_self_dust.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/kawaju_sk2eff_b.atlas",
+      "address": "characterlab/source/effect/kawaju_sk2eff_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/kawaju_sk2eff_b.scsp",
+      "address": "characterlab/source/effect/kawaju_sk2eff_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/kawaju_sk2eff_b.sct",
+      "address": "characterlab/source/effect/kawaju_sk2eff_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/kawaju_sk2eff_f.atlas",
+      "address": "characterlab/source/effect/kawaju_sk2eff_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/kawaju_sk2eff_f.scsp",
+      "address": "characterlab/source/effect/kawaju_sk2eff_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/kawaju_sk2eff_f.sct",
+      "address": "characterlab/source/effect/kawaju_sk2eff_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/kawaju_sk3_1eff.atlas",
+      "address": "characterlab/source/effect/kawaju_sk3_1eff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/kawaju_sk3_1eff.scsp",
+      "address": "characterlab/source/effect/kawaju_sk3_1eff.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/kawaju_sk3_1eff.sct",
+      "address": "characterlab/source/effect/kawaju_sk3_1eff.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/kawaju_sk3_3eff_b.atlas",
+      "address": "characterlab/source/effect/kawaju_sk3_3eff_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/kawaju_sk3_3eff_b.scsp",
+      "address": "characterlab/source/effect/kawaju_sk3_3eff_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/kawaju_sk3_3eff_b.sct",
+      "address": "characterlab/source/effect/kawaju_sk3_3eff_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/kawaju_sk3_3eff_f.atlas",
+      "address": "characterlab/source/effect/kawaju_sk3_3eff_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/kawaju_sk3_3eff_f.scsp",
+      "address": "characterlab/source/effect/kawaju_sk3_3eff_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/kawaju_sk3_3eff_f.sct",
+      "address": "characterlab/source/effect/kawaju_sk3_3eff_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/kawazu_b_idle_ready.cfx",
+      "address": "characterlab/source/effect/kawazu_b_idle_ready.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/kawazu_dust_01.cfx",
+      "address": "characterlab/source/effect/kawazu_dust_01.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/kawazu_dust_02.cfx",
+      "address": "characterlab/source/effect/kawazu_dust_02.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/kawazu_skill_01_01.cfx",
+      "address": "characterlab/source/effect/kawazu_skill_01_01.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/kawazu_skill_01_02.cfx",
+      "address": "characterlab/source/effect/kawazu_skill_01_02.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/kawazu_skill_01_03.cfx",
+      "address": "characterlab/source/effect/kawazu_skill_01_03.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/kawazu_skill_01_pati1.particle",
+      "address": "characterlab/source/effect/kawazu_skill_01_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/kawazu_skill_02.cfx",
+      "address": "characterlab/source/effect/kawazu_skill_02.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/kawazu_skill_03_01.cfx",
+      "address": "characterlab/source/effect/kawazu_skill_03_01.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/kawazu_skill_03_03.cfx",
+      "address": "characterlab/source/effect/kawazu_skill_03_03.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "model/kawazu.timeline",
+      "address": "characterlab/source/model/kawazu.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/blood_pati_01.sct",
+      "address": "characterlab/source/particle/blood_pati_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/orb_04.sct",
+      "address": "characterlab/source/particle/orb_04.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/soft_smoke.sct",
+      "address": "characterlab/source/particle/soft_smoke.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}
