@@ -20,6 +20,32 @@ $provenance | ConvertTo-Json -Depth 8 | Set-Content "$staging/provenance.json"
 & ./Tools/Content/Release.ps1 -Action NewDevKey -Key "$staging/dev"
 & ./Tools/Content/Release.ps1 -Action Build -Key "$staging/dev/private.key" -PayloadRoot "$staging/input" -Provenance "$staging/provenance.json" -Release "$staging/release" -Version 1
 & ./Tools/Content/Release.ps1 -Action Verify -Key "$staging/dev/public.pem" -Release "$staging/release"
+
+# Exercise the metadata limits independently of how many files the small test payload contains.
+$auditFile = Join-Path $staging 'large-provenance.json'
+$auditJson = $provenance | ConvertTo-Json -Depth 8 -Compress
+[IO.File]::WriteAllText($auditFile, $auditJson.PadRight(1MB + 1))
+$auditRelease = Join-Path $staging 'large-audit-release'
+& ./Tools/Content/Release.ps1 -Action Build -Key "$staging/dev/private.key" -PayloadRoot "$staging/input" -Provenance $auditFile -Release $auditRelease -Version 2
+& ./Tools/Content/Release.ps1 -Action Verify -Key "$staging/dev/public.pem" -Release $auditRelease
+
+foreach ($case in @(
+    @{ path = $auditFile; size = 8MB + 1; action = 'Build' },
+    @{ path = (Join-Path $auditRelease 'manifest.json'); size = 1MB + 1; action = 'Verify' }
+)) {
+    $file = [IO.File]::OpenWrite($case.path)
+    try { $file.SetLength($case.size) } finally { $file.Dispose() }
+    $rejected = $false
+    try {
+        if ($case.action -eq 'Build') {
+            & ./Tools/Content/Release.ps1 -Action Build -Key "$staging/dev/private.key" -PayloadRoot "$staging/input" -Provenance $case.path -Release "$staging/oversize-audit-release" -Version 3
+        } else {
+            & ./Tools/Content/Release.ps1 -Action Verify -Key "$staging/dev/public.pem" -Release $auditRelease
+        }
+    } catch { $rejected = $_.Exception.Message -like '*Metadata exceeded its size limit*' }
+    if (-not $rejected) { throw "Unexpected metadata limit for $($case.action)." }
+}
+
 Add-Content "$staging/release/yooasset/demo.bytes" 'tampered'
 $rejected = $false
 try { & ./Tools/Content/Release.ps1 -Action Verify -Key "$staging/dev/public.pem" -Release "$staging/release" } catch { $rejected = $true }

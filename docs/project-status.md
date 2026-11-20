@@ -70,6 +70,8 @@ Unity 2022.3.62f3 / URP / UGUI / TMP；Common/AOT 通用设施；普通 C# UIBas
 
 ## 当前可用
 
+Windows x64 的 70 人本机试玩包为 0.1.21 / R18，配套服务端使用规则 17。压缩包可在本机独立启动游戏、内容服务和数据库。签名资源与新母包的冷启动已验收。[交付包与实机记录](delivery/2026-11-20-windows-roster70-package.md)
+
 - FoundationDemo：界面绑定、本地化、配置、资源、动画、网络回显和生命周期演示。服务端与客户端分别位于 Server 与 Assets/Game，共享契约在 Shared。
 - GameText / GameButton 直接继承 TMP / Button，右键 UI 提供创建入口；63对已有控件已迁移，GUID和配置保留。
 - Foundation 更新器：签名清单、哈希、断点、空间预检、原子版本切换、兼容预检、失败版本隔离及下次进程恢复。客户端可从配置的内容服务器取得兼容资源与 C# 业务 DLL。

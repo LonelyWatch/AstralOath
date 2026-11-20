@@ -91,7 +91,8 @@ function Assert-PathSet($Paths) {
 }
 
 function Read-Provenance([string]$InputFile) {
-    $document = [Text.Encoding]::UTF8.GetString((Get-BoundedBytes $InputFile 1MB)) | ConvertFrom-Json -AsHashtable
+    # The local audit records each source asset inside every bundle.
+    $document = [Text.Encoding]::UTF8.GetString((Get-BoundedBytes $InputFile 8MB)) | ConvertFrom-Json -AsHashtable
     if ($document.files -isnot [array] -or $document.files.Count -lt 1 -or $document.files.Count -gt 4096) {
         throw 'Provenance requires between 1 and 4096 explicit payload files.'
     }
