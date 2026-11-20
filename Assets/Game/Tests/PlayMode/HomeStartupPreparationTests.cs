@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ using AstralOath.Client.Common;
 using AstralOath.Client.Arena;
 using AstralOath.Client.Core;
 using AstralOath.Client.FoundationDemo;
+using AstralOath.Client.Home;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
@@ -59,6 +61,7 @@ namespace AstralOath.Client.Tests
             internal readonly TaskCompletionSource<bool> AllowResponse = new TaskCompletionSource<bool>();
             internal readonly TaskCompletionSource<bool> AllowDirectoryList = new TaskCompletionSource<bool>();
             internal bool CrossFreeReset, FailFirstArtifact, KeepArenaRoom, SlowDirectory;
+            internal int InventoryVersion;
             internal volatile string DraftId = "settled-draft";
             private bool left;
             private volatile bool stopping;
@@ -79,11 +82,14 @@ namespace AstralOath.Client.Tests
                         await AllowResponse.Task.ConfigureAwait(false);
                         string schedule = CrossFreeReset ? "\"serverTimeUtc\":\"2030-01-01T01:00:00Z\",\"freeResetUtc\":\"2030-01-01T01:00:00.001Z\"," : "";
                         string body = line[1].Contains("summon") ? "{" + schedule + "\"banners\":[{\"id\":\"covenant\",\"entries\":[]}],\"wishHeroes\":[],\"wishArtifacts\":[]}" :
-                            "{\"capacity\":1000,\"used\":0,\"heroes\":[],\"artifacts\":[],\"materials\":{}}";
+                            "{\"capacity\":" + (1000 + InventoryVersion) + ",\"used\":0,\"heroes\":[],\"artifacts\":[],\"materials\":{}}";
                         bool fail = FailFirstArtifact && line[1].EndsWith("/artifacts") && Calls.Count(x => x.EndsWith("/artifacts")) == 1;
                         string status = fail ? "503 Unavailable" : "200 OK";
+                        if (line[1] == "/api/arena/rooms/current") { status = "204 No Content"; body = ""; }
+                        if (line[1].StartsWith("/api/arena/rooms?", StringComparison.Ordinal)) body = "{\"rooms\":[]}";
                         if ((KeepArenaRoom || SlowDirectory) && line[1].StartsWith("/api/arena/rooms", StringComparison.Ordinal))
                         {
+                            status = "200 OK";
                             const string host = "{\"id\":\"host\",\"displayName\":\"Host\",\"avatarId\":\"c1001\"}";
                             const string guest = "{\"id\":\"test\",\"displayName\":\"Guest\",\"avatarId\":\"c1001\"}";
                             if (line[1].EndsWith("/leave"))
@@ -132,8 +138,120 @@ namespace AstralOath.Client.Tests
         [UnityTest] public IEnumerator FailedHomeLoadRemovesTheBlackScreen() => Check(false, true);
         [UnityTest] public IEnumerator SummonRereadsStateAfterTheFreeReset() => Check(false, false, crossFreeReset: true);
         [UnityTest] public IEnumerator BagRetriesOnlyTheUnavailableInitialRead() => Check(false, false, failFirstArtifact: true);
+        [UnityTest, Timeout(65000)]
+        public IEnumerator BagAndHeroSnapshotsStayResidentWhileWaitingInTheArena() => Check(false, false, waitInArena: true);
         [UnityTest] public IEnumerator BattleReturnReopensTheRoomWhenLeaveFailsAndCurrentStillContainsTheGuest() => Check(false, false, recoverRoom: true);
         [UnityTest] public IEnumerator ReturnedDirectoryCanCloseWhileTheRoomListIsStillLoading() => Check(false, false, slowDirectory: true);
+
+        private const BindingFlags PrivateInstance = BindingFlags.Instance | BindingFlags.NonPublic;
+
+        [UnityTest]
+        public IEnumerator LocalWritesInvalidateOnlyAffectedLoginSnapshotsAndAccountsDoNotShareReads()
+        {
+            using var server = new ReadServer();
+            server.AllowResponse.SetResult(true);
+            var navigationType = typeof(FoundationEntry).Assembly.GetType("AstralOath.Client.FoundationDemo.StartupNavigation", true);
+            var start = navigationType.GetMethod("StartAsync", BindingFlags.NonPublic | BindingFlags.Static);
+            for (int login = 1; login <= 2; ++login)
+            {
+                using var owner = new BindingScope(default);
+                using var services = new ServiceRegistry(owner.Token);
+                var canvas = new GameObject("Account pages", typeof(Canvas));
+                try
+                {
+                    var assets = new Art();
+                    assets.Gate.SetResult(true);
+                    services.Add<IAssetService>(assets);
+                    services.Add<ISceneAssetService>(assets);
+                    services.Add(new GameServerEndpoint(server.Address.AbsoluteUri));
+                    services.Add(new GameAccountSession("test-token-" + login, "p" + login, "Player", "c1001"));
+                    server.InventoryVersion = login * 10;
+                    var open = new GameObject("Open", typeof(RectTransform), typeof(GameButton)).GetComponent<GameButton>();
+                    var status = new GameObject("Status", typeof(RectTransform), typeof(GameText)).GetComponent<GameText>();
+                    open.transform.SetParent(canvas.transform, false);
+                    status.transform.SetParent(canvas.transform, false);
+                    var context = new GameLaunchContext(services, owner, canvas.transform, open, status, status, "zh-Hans", "ja", false, true);
+                    var opening = (Task)start.Invoke(null, new object[] { context, owner });
+                    yield return new WaitUntil(() => opening.IsCompleted);
+                    opening.GetAwaiter().GetResult();
+                    var nav = opening.GetType().GetProperty("Result").GetValue(opening);
+                    var cache = navigationType.GetField("firstReads", PrivateInstance).GetValue(nav);
+                    object Value(string name) => cache.GetType().GetProperty(name, PrivateInstance).GetValue(cache);
+                    Task Fetch(string name) => (Task)cache.GetType().GetMethod(name, PrivateInstance)
+                        .Invoke(cache, new object[] { owner.Token });
+                    var heroes = (HeroInventorySnapshot)Value("Heroes");
+                    Assert.That(heroes.capacity, Is.EqualTo(1000 + login * 10));
+                    Assert.That(((ArtifactInventorySnapshot)Value("Artifacts")).capacity, Is.EqualTo(1000 + login * 10));
+                    if (login == 2) continue;
+
+                    ++server.InventoryVersion;
+                    var artifacts = (ArtifactInventoryApi)navigationType.GetField("artifacts", PrivateInstance).GetValue(nav);
+                    var locking = artifacts.LockAsync("a1", Guid.NewGuid().ToString("N"), true, owner.Token);
+                    yield return new WaitUntil(() => locking.IsCompleted);
+                    locking.GetAwaiter().GetResult();
+                    Assert.That(Value("Artifacts"), Is.Null);
+                    Assert.That(Value("Heroes"), Is.SameAs(heroes));
+                    var refresh = Fetch("ReadArtifactsAsync");
+                    yield return new WaitUntil(() => refresh.IsCompleted);
+                    refresh.GetAwaiter().GetResult();
+                    Assert.That(((ArtifactInventorySnapshot)Value("Artifacts")).capacity, Is.EqualTo(1011));
+
+                    ++server.InventoryVersion;
+                    var summon = navigationType.GetField("summon", PrivateInstance).GetValue(nav);
+                    var draw = summon.GetType().GetMethod("DrawAsync");
+                    var requestType = draw.GetParameters()[0].ParameterType;
+                    var request = Activator.CreateInstance(requestType);
+                    requestType.GetField("requestId").SetValue(request, Guid.NewGuid().ToString("N"));
+                    requestType.GetField("bannerId").SetValue(request, "covenant");
+                    requestType.GetField("count").SetValue(request, 1);
+                    var drawing = (Task)draw.Invoke(summon, new object[] { request, owner.Token });
+                    yield return new WaitUntil(() => drawing.IsCompleted);
+                    drawing.GetAwaiter().GetResult();
+                    Assert.That(Value("Heroes"), Is.Null);
+                    Assert.That(Value("Artifacts"), Is.Null);
+                    var reload = Task.WhenAll(Fetch("ReadHeroesAsync"), Fetch("ReadArtifactsAsync"));
+                    yield return new WaitUntil(() => reload.IsCompleted);
+                    reload.GetAwaiter().GetResult();
+                    Assert.That(((HeroInventorySnapshot)Value("Heroes")).capacity, Is.EqualTo(1012));
+                    Assert.That(((ArtifactInventorySnapshot)Value("Artifacts")).capacity, Is.EqualTo(1012));
+                }
+                finally { owner.Dispose(); Object.Destroy(canvas); }
+            }
+            Assert.That(server.Calls.Count(x => x == "GET /api/inventory/heroes"), Is.EqualTo(3));
+            Assert.That(server.Calls.Count(x => x == "GET /api/inventory/artifacts"), Is.EqualTo(4));
+        }
+
+        [UnityTest]
+        public IEnumerator PendingReadCannotRestoreTheSnapshotInvalidatedByAWrite()
+        {
+            var type = typeof(FoundationEntry).Assembly.GetType("AstralOath.Client.FoundationDemo.HomeFirstReads", true)
+                .GetNestedType("Snapshot`1", BindingFlags.NonPublic).MakeGenericType(typeof(HeroInventorySnapshot));
+            var before = new TaskCompletionSource<HeroInventorySnapshot>();
+            var after = new TaskCompletionSource<HeroInventorySnapshot>();
+            int fetches = 0;
+            Func<CancellationToken, Task<HeroInventorySnapshot>> fetch = _ => ++fetches == 1 ? before.Task : after.Task;
+            var cache = Activator.CreateInstance(type, PrivateInstance, null, new object[] { fetch, CancellationToken.None }, null);
+            Task<HeroInventorySnapshot> Read(CancellationToken ct) =>
+                (Task<HeroInventorySnapshot>)type.GetMethod("GetAsync", PrivateInstance).Invoke(cache, new object[] { ct });
+            var first = Read(default);
+            using var closing = new CancellationTokenSource();
+            var closedPage = Read(closing.Token);
+            closing.Cancel();
+            yield return new WaitUntil(() => closedPage.IsCompleted);
+            Assert.That(closedPage.IsCanceled, Is.True);
+            Assert.That(fetches, Is.EqualTo(1), "Closing one page cannot cancel another page's account read.");
+            type.GetMethod("Invalidate", PrivateInstance).Invoke(cache, null);
+            var second = Read(default);
+            var authoritative = new HeroInventorySnapshot { used = 2 };
+            after.SetResult(authoritative);
+            yield return new WaitUntil(() => second.IsCompleted);
+            before.SetResult(new HeroInventorySnapshot { used = 1 });
+            yield return new WaitUntil(() => first.IsCompleted);
+            Assert.That(first.GetAwaiter().GetResult(), Is.SameAs(authoritative));
+            Assert.That(second.GetAwaiter().GetResult(), Is.SameAs(authoritative));
+            Assert.That(Read(default).Result, Is.SameAs(authoritative));
+            Assert.That(fetches, Is.EqualTo(2));
+        }
 
         [UnityTest]
         public IEnumerator ClosingTheReturnedDirectoryWhileItsRoomReadIsPendingIsANormalExit()
@@ -167,7 +285,7 @@ namespace AstralOath.Client.Tests
             finally { Object.Destroy(canvas); }
         }
 
-        private static IEnumerator Check(bool cancel, bool fail, bool crossFreeReset = false, bool failFirstArtifact = false, bool recoverRoom = false, bool slowDirectory = false)
+        private static IEnumerator Check(bool cancel, bool fail, bool crossFreeReset = false, bool failFirstArtifact = false, bool recoverRoom = false, bool slowDirectory = false, bool waitInArena = false)
         {
             using var server = new ReadServer { CrossFreeReset = crossFreeReset, FailFirstArtifact = failFirstArtifact, KeepArenaRoom = recoverRoom, SlowDirectory = slowDirectory };
             using var owner = new BindingScope(default);
@@ -214,6 +332,15 @@ namespace AstralOath.Client.Tests
                 Assert.That(server.Calls.All(x => x.StartsWith("GET ")), Is.True);
                 int beforeClicks = assets.Loaded.Count;
                 var home = Page("HomeWindow");
+                if (waitInArena)
+                {
+                    home.Require<GameButton>("arena").onClick.Invoke();
+                    yield return new WaitUntil(() => Page("ArenaDirectory")?.Require<GameButton>("create").interactable == true &&
+                        server.Calls.Any(call => call.StartsWith("GET /api/arena/rooms?")));
+                    yield return new WaitForSecondsRealtime(30.25f);
+                    Page("ArenaDirectory").Require<GameButton>("back").onClick.Invoke();
+                    yield return new WaitUntil(() => home.gameObject.activeInHierarchy);
+                }
                 if (recoverRoom || slowDirectory)
                 {
                     home.Require<GameButton>("arena").onClick.Invoke();
@@ -254,12 +381,26 @@ namespace AstralOath.Client.Tests
                 {
                     yield return new WaitUntil(() => server.Calls.Count == 4);
                     Assert.That(server.Calls.Count(x => x.EndsWith("/artifacts")), Is.EqualTo(2));
+                    inventory.Require<GameButton>("back").onClick.Invoke();
+                    home.Require<GameButton>("more").onClick.Invoke();
+                    Page("HomeMoreMenu").Require<GameButton>("heroes").onClick.Invoke();
+                    yield return new WaitForSecondsRealtime(.15f);
+                    Assert.That(server.Calls.Count(x => x.EndsWith("/artifacts")), Is.EqualTo(2),
+                        "A successful retry must be retained for the next page in this login.");
                     yield break;
                 }
                 inventory.Require<GameButton>("back").onClick.Invoke();
                 home.Require<GameButton>("more").onClick.Invoke();
                 Page("HomeMoreMenu").Require<GameButton>("heroes").onClick.Invoke();
                 Assert.That(Page("HeroInventory"), Is.SameAs(inventory));
+                if (waitInArena)
+                {
+                    yield return new WaitForSecondsRealtime(.15f);
+                    Assert.That(assets.Loaded.Count, Is.EqualTo(beforeClicks));
+                    Assert.That(server.Calls.Count(x => x == "GET /api/inventory/heroes"), Is.EqualTo(1));
+                    Assert.That(server.Calls.Count(x => x == "GET /api/inventory/artifacts"), Is.EqualTo(1));
+                    yield break;
+                }
                 inventory.Require<GameButton>("back").onClick.Invoke();
                 home.Require<GameButton>("more").onClick.Invoke();
                 Page("HomeMoreMenu").Require<GameButton>("summon").onClick.Invoke();

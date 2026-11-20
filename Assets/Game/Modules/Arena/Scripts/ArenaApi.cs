@@ -64,10 +64,13 @@ namespace AstralOath.Client.Arena
         private Session session;
         private int pendingOperations;
         public ArenaApi(Uri endpoint, CancellationToken lifetime, GameAccountSession account = null)
+            : this(endpoint, lifetime, account, null) { }
+
+        public ArenaApi(Uri endpoint, CancellationToken lifetime, GameAccountSession account, HttpMessageHandler transport)
         {
             this.endpoint = endpoint ?? throw new ArgumentNullException(nameof(endpoint));
             this.lifetime = lifetime;
-            http = new HttpClient(new HttpClientHandler { AllowAutoRedirect = false, UseProxy = !endpoint.IsLoopback })
+            http = new HttpClient(transport ?? new HttpClientHandler { AllowAutoRedirect = false, UseProxy = !endpoint.IsLoopback })
             {
                 MaxResponseContentBufferSize = 2 * 1024 * 1024
             };
@@ -116,6 +119,7 @@ namespace AstralOath.Client.Arena
             string search = Uri.EscapeDataString(query ?? "");
             string direction = ascending ? "asc" : "desc";
             var result = await Send<Directory>($"rooms?visibility={visibility}&sort={sort}&direction={direction}&query={search}", null, token);
+            if (result == null) throw new ArenaRequestException("invalid_response");
             return result.rooms ?? Array.Empty<ArenaRoomInfo>();
         }
 

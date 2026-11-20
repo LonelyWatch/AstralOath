@@ -33,6 +33,8 @@ namespace AstralOath.Client.Home
         private readonly Action onChanged;
         private readonly ScrollRect scroll;
         private readonly RectTransform browser;
+        private readonly EquipmentSlotBinder equipmentSlot;
+        private readonly GameButton slotButton;
         private readonly Sprite[] classIcons = new Sprite[FilterClasses.Length];
         private readonly List<Card> cards = new List<Card>();
 
@@ -45,12 +47,17 @@ namespace AstralOath.Client.Home
         private int filter;
         private string failure;
 
+        private readonly Func<CancellationToken, Task<ArtifactInventorySnapshot>> fetch;
+
         internal ArtifactInventoryBinder(ArtifactInventoryBindings ui, ArtifactInventoryApi api, ArtifactArtCatalog art,
             ILocaleService locale, Func<HeroInventoryItem> currentHero, Func<string, string> heroClass,
-            Func<string, string> heroName, Action onChanged)
+            Func<string, string> heroName, Action onChanged, Func<CancellationToken, Task<ArtifactInventorySnapshot>> fetch = null)
         {
             this.ui = ui;
+            equipmentSlot = new EquipmentSlotBinder(ui.Get<BindingMap>("EquipmentSlot"));
+            slotButton = ui.Get<GameButton>("Slot");
             this.api = api;
+            this.fetch = fetch ?? api.FetchAsync;
             this.art = art;
             this.locale = locale;
             this.currentHero = currentHero;
@@ -170,10 +177,9 @@ namespace AstralOath.Client.Home
 
         internal void PaintSlot(HeroInventoryItem hero)
         {
-            ui.Get<GameButton>("Slot").interactable = hero != null;
+            slotButton.interactable = hero != null;
             var (image, level) = hero == null ? (null, 0) : EquippedCard(hero.instanceId);
-            SetImage(ui.Get<Image>("SlotImage"), image);
-            ui.Get<GameText>("SlotLevel").text = image ? Plus(level) : "";
+            equipmentSlot.Set(image, level);
         }
 
         internal bool Back()
@@ -232,8 +238,12 @@ namespace AstralOath.Client.Home
             loading = true;
             failed = false;
             failure = null;
-            Refresh(reset: false);
-            try { snapshot = initial ?? await api.FetchAsync(token); }
+            try
+            {
+                var read = initial == null ? fetch(token) : Task.FromResult(initial);
+                if (!read.IsCompleted) Refresh(reset: false);
+                snapshot = await read;
+            }
             catch (OperationCanceledException) when (token.IsCancellationRequested) { return; }
             catch (Exception error)
             {

@@ -88,6 +88,72 @@ namespace AstralOath.Client.Tests
         }
 
         [UnityTest]
+        public IEnumerator ResizingHeroDetailKeepsEquipmentAndRosterInProportion()
+        {
+            var canvas = new GameObject("Hero detail resize", typeof(RectTransform), typeof(Canvas));
+            canvas.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+            var frame = new GameObject("Window", typeof(RectTransform)).GetComponent<RectTransform>();
+            frame.SetParent(canvas.transform, false);
+            frame.sizeDelta = new Vector2(1920, 1080);
+            using var scope = new BindingScope(CancellationToken.None);
+            try
+            {
+                var registry = new UIViewRegistry();
+                registry.Register<HeroInventory>();
+                var view = registry.CreateAsync<HeroInventory>(new InventoryPrefab(), frame, scope).GetAwaiter().GetResult();
+                var art = AssetDatabase.LoadAssetAtPath<HomeHeroArt>("Assets/Game/Modules/Home/Configs/HomeHeroArt.asset");
+                var heroes = new HeroInventorySnapshot { capacity = 1000, used = 3, heroes = Enumerable.Range(0, 3)
+                    .Select(i => new HeroInventoryItem { instanceId = "resize-" + i, templateId = "c1001", level = 3 - i, stars = 3 }).ToArray() };
+                var binder = new HeroInventoryBinder(view, art, new InventoryText(), _ => Task.FromResult(heroes), () => Task.CompletedTask);
+                binder.OpenAsync(true, scope, heroes, null).GetAwaiter().GetResult();
+                var map = view.Root.GetComponent<BindingMap>();
+                var detail = map.Require<RectTransform>("rosterDetail");
+                var list = map.Require<ScrollRect>("rosterScroll");
+                var corners = new Vector3[4];
+                Rect InWindow(RectTransform rect)
+                {
+                    rect.GetWorldCorners(corners);
+                    Vector2 min = frame.InverseTransformPoint(corners[0]), max = frame.InverseTransformPoint(corners[2]);
+                    return Rect.MinMaxRect(min.x, min.y, max.x, max.y);
+                }
+                foreach (var size in new[] { new Vector2(1040, 1108), new Vector2(1600, 1000), new Vector2(2520, 1080) })
+                {
+                    frame.sizeDelta = size;
+                    yield return null;
+                    Canvas.ForceUpdateCanvases();
+                    Assert.That(InWindow(detail).yMin, Is.EqualTo(frame.rect.yMin).Within(1f),
+                        "The hero section and its vignette must reach the bottom of the window at " + size);
+                    foreach (var name in new[] { "weapon", "helm", "armor", "neck", "ring", "boots", "artifact" })
+                    {
+                        bool artifact = name == "artifact";
+                        var plate = (RectTransform)detail.Find("Hero equipment slots/Empty " + name + " slot");
+                        Rect outer = InWindow(plate);
+                        float width = artifact ? 123 : 98, height = artifact ? 137 : 99;
+                        Assert.That(outer.width / outer.height, Is.EqualTo(width / height).Within(.01f), name + " plate " + size);
+                        var slot = plate.GetComponent<BindingMap>();
+                        Assert.That(slot, Is.Not.Null, name + " must use the shared equipment slot.");
+                        Rect icon = InWindow(slot.Require<Image>("placeholder").rectTransform);
+                        Assert.That(icon.width / icon.height, Is.EqualTo(1f).Within(.01f), name + " icon " + size);
+                        Assert.That(icon.width / outer.width, Is.EqualTo(33f / width).Within(.01f), name);
+                        float x = artifact ? 61 : name is "weapon" or "helm" or "armor" ? 23 : 71;
+                        Assert.That((icon.center.x - outer.xMin) / outer.width, Is.EqualTo(x / width).Within(.01f), name);
+                        Assert.That((icon.center.y - outer.yMin) / outer.height,
+                            Is.EqualTo((artifact ? 32f : 28f) / height).Within(.01f), name);
+                    }
+                    var manage = (RectTransform)detail.Find("roster_manage_equipment");
+                    Assert.That(manage.Find("Action caption"), Is.Not.Null, "Caption must follow the equipment control at " + size);
+                    Rect focused = InWindow((RectTransform)list.content.Find("resize-0"));
+                    Rect necklace = InWindow((RectTransform)detail.Find("Hero equipment slots/Empty neck slot"));
+                    Assert.That(focused.xMin, Is.GreaterThan(necklace.xMax - necklace.width * .15f),
+                        "The roster obscured the right equipment column at " + size);
+                    Assert.That(InWindow(map.Require<GameText>("title").rectTransform).center.y,
+                        Is.GreaterThan(frame.rect.yMax - .10f * size.y), "Header must stay at the top at " + size);
+                }
+            }
+            finally { UnityEngine.Object.Destroy(canvas); }
+        }
+
+        [UnityTest]
         public IEnumerator OwnedRosterScrollsShortListsAndSelectsEachInstanceOnRelease()
         {
             var art = AssetDatabase.LoadAssetAtPath<HomeHeroArt>("Assets/Game/Modules/Home/Configs/HomeHeroArt.asset");
@@ -138,12 +204,111 @@ namespace AstralOath.Client.Tests
                 ExecuteEvents.Execute(drag,pointer,ExecuteEvents.endDragHandler);
                 yield return Wait(() => stars.text == "★★★★★","Release did not select the last owned instance.");
                 Assert.That(scroll.content.anchoredPosition.y,Is.EqualTo(scroll.content.rect.height - scroll.viewport.rect.height).Within(1f));
+                AssertThreeCardStack(scroll);
+                var list = scroll.GetComponent<FocusedRosterScroll>();
+                list.OnBeginDrag(pointer);
+                scroll.content.anchoredPosition = new Vector2(0, scroll.scrollSensitivity * .8f);
+                yield return null;
+                yield return null;
+                list.OnEndDrag(pointer);
+                var panel = (RectTransform)view.Root.transform;
+                panel.offsetMin += Vector2.up * 32f;
+                yield return Wait(() => stars.text == "★★★★", "Resizing while the roster settles must finish the pending selection.");
             }
             finally
             {
                 if (eventObject) UnityEngine.Object.Destroy(eventObject);
                 UnityEngine.Object.Destroy(canvas);
             }
+        }
+
+        [UnityTest]
+        public IEnumerator HeroCardKeepsLongNamesAndLevelArtInsideItsPlate()
+        {
+            var art = AssetDatabase.LoadAssetAtPath<HomeHeroArt>("Assets/Game/Modules/Home/Configs/HomeHeroArt.asset");
+            var snapshot = new HeroInventorySnapshot { capacity = 1000, used = 3, heroes = new[] {
+                new HeroInventoryItem { instanceId = "first-level", templateId = "c1001", level = 1, stars = 3 },
+                new HeroInventoryItem { instanceId = "two-digits", templateId = "c1005", level = 59, stars = 6 },
+                new HeroInventoryItem { instanceId = "max-level", templateId = "c1062", level = 60, stars = 6 }
+            }};
+            var canvas = new GameObject("Roster card samples", typeof(RectTransform), typeof(Canvas));
+            canvas.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+            try
+            {
+                using var scope = new BindingScope(CancellationToken.None);
+                var registry = new UIViewRegistry();
+                registry.Register<HeroInventory>();
+                var load = registry.CreateAsync<HeroInventory>(new InventoryPrefab(), canvas.transform, scope);
+                yield return new WaitUntil(() => load.IsCompleted);
+                var view = load.GetAwaiter().GetResult();
+                var binder = new HeroInventoryBinder(view, art, new InventoryText(), _ => Task.FromResult(snapshot), () => Task.CompletedTask);
+                var open = binder.OpenAsync(true, scope);
+                yield return new WaitUntil(() => open.IsCompleted);
+                open.GetAwaiter().GetResult();
+                Canvas.ForceUpdateCanvases();
+                var rows = view.Root.GetComponent<BindingMap>().Require<ScrollRect>("rosterScroll").content;
+                var first = rows.Find("first-level").GetComponent<BindingMap>();
+                var twoDigits = rows.Find("two-digits").GetComponent<BindingMap>();
+                var max = rows.Find("max-level").GetComponent<BindingMap>();
+                var name = first.Require<GameText>("name");
+                name.text = "永劫漂流者鲁特比";
+                name.ForceMeshUpdate();
+                Assert.That(name.fontStyle.HasFlag(FontStyles.Bold), Is.False, "The roster name uses the regular face.");
+                Assert.That(name.fontSize, Is.EqualTo(20.4f).Within(.1f));
+                Assert.That(name.isTextTruncated, Is.False);
+                Assert.That(name.textInfo.characterCount, Is.EqualTo(name.text.Length));
+                var portrait = first.Require<Image>("portrait").rectTransform;
+                Assert.That(portrait.anchorMax.y, Is.EqualTo(1f - 10f / 112f).Within(.001f));
+                Assert.That(portrait.anchorMin.y, Is.EqualTo(1f - 99f / 112f).Within(.001f));
+                var digit = first.Require<Image>("rosterLevelFirst");
+                Assert.That(digit.enabled, Is.True);
+                Assert.That(digit.sprite.name, Is.EqualTo("hero_lv_1"));
+                Assert.That(first.Require<Image>("rosterLevelSecond").enabled, Is.False);
+                Assert.That(first.Require<Image>("rosterLevelMax").enabled, Is.False);
+                var units = twoDigits.Require<Image>("rosterLevelFirst");
+                var tens = twoDigits.Require<Image>("rosterLevelSecond");
+                Assert.That(units.enabled && tens.enabled, Is.True);
+                Assert.That(units.sprite.name, Is.EqualTo("hero_lv_9"));
+                Assert.That(tens.sprite.name, Is.EqualTo("hero_lv_5"));
+                Assert.That(twoDigits.Require<Image>("rosterLevelMax").enabled, Is.False);
+                float digitPitch = (units.rectTransform.anchorMin.x - tens.rectTransform.anchorMin.x) * 361f;
+                Assert.That(digitPitch, Is.EqualTo(13.73f).Within(.1f), "Native level digits run left-to-right within the number field.");
+                var maximum = max.Require<Image>("rosterLevelMax");
+                Assert.That(maximum.enabled, Is.True);
+                Assert.That(maximum.sprite.name, Is.EqualTo("hero_lv_max"));
+                Assert.That(max.Require<Image>("rosterLevelFirst").enabled, Is.False);
+                foreach (var graphic in new[] { digit, tens, units, maximum })
+                {
+                    var rect = graphic.rectTransform;
+                    Assert.That(rect.anchorMin.y, Is.GreaterThanOrEqualTo(1f - 99f / 112f),
+                        "Level art must fit within the solid bottom edge.");
+                    Assert.That(rect.anchorMax.x, Is.LessThanOrEqualTo(first.Require<Image>("element").rectTransform.anchorMin.x + .02f));
+                }
+            }
+            finally { UnityEngine.Object.Destroy(canvas); }
+        }
+
+        private static void AssertThreeCardStack(ScrollRect scroll)
+        {
+            var rows = scroll.content.Cast<RectTransform>().Where(row => row.gameObject.activeInHierarchy)
+                .OrderByDescending(row => row.anchoredPosition.y).ToArray();
+            Assert.That(rows.Length, Is.EqualTo(3));
+            float previousBottom = float.PositiveInfinity;
+            for (int i = 0; i < rows.Length; ++i)
+            {
+                var row = rows[i];
+                // The solid part of hero_bg_normal is y=10..98 from the top of its 361 x 112 image.
+                float Edge(float fromTop) => scroll.viewport.InverseTransformPoint(row.TransformPoint(
+                    new Vector3(row.rect.center.x, row.rect.yMax - fromTop))).y;
+                float top = Edge(10f);
+                Assert.That(top, Is.LessThanOrEqualTo(scroll.viewport.rect.yMax + .5f),
+                    "Even the second card above the focus must show its name and plate below the mask.");
+                Assert.That(Edge(99f), Is.GreaterThanOrEqualTo(scroll.viewport.rect.yMin - .5f));
+                if (i > 0) Assert.That(top, Is.GreaterThanOrEqualTo(previousBottom - .5f),
+                    "The opaque plates of adjacent heroes must meet after scaling.");
+                previousBottom = Edge(99f);
+            }
+            Assert.That(rows[2].GetSiblingIndex(), Is.GreaterThan(rows[1].GetSiblingIndex()));
         }
 
         [UnityTest]
@@ -223,6 +388,18 @@ namespace AstralOath.Client.Tests
             Assert.That(roster.Require<Image>("detailStar0").sprite, Is.Not.Null);
             yield return Capture("inventory-hero-detail", 1478, 720);
             yield return Capture("inventory-hero-detail-16x9", 1920, 1080);
+            yield return Capture("inventory-hero-detail-narrow", 1040, 1108);
+            yield return Capture("inventory-hero-detail-16x10", 1600, 1000);
+            yield return Capture("inventory-hero-detail-ultrawide", 2520, 1080);
+
+            var compactScroll = roster.Require<ScrollRect>("rosterScroll");
+            var third = VisibleRows(roster, "rosterScroll").OrderByDescending(
+                row => ((RectTransform)row.transform).anchoredPosition.y).Last();
+            Click(third.GetComponent<GameButton>(), "last owned hero");
+            yield return null;
+            yield return Capture("inventory-hero-last-16x10", 1560, 960);
+            yield return Capture("inventory-hero-last-16x9", 1920, 1080);
+            AssertThreeCardStack(compactScroll);
 
             var search = roster.Require<TMP_InputField>("search");
             search.text = StarterNames[2];
@@ -233,6 +410,7 @@ namespace AstralOath.Client.Tests
             Click(roster, "expand");
             yield return Wait(() => !roster.Require<RectTransform>("rosterDetail").gameObject.activeInHierarchy,
                 "The expanded grid did not replace the detailed panel.");
+            Assert.That(compactScroll.scrollSensitivity, Is.EqualTo(68f), "Restore the grid's own wheel sensitivity.");
             AssertOwnedHeroes(roster, "rosterScroll");
             var grid = VisibleRows(roster, "rosterScroll").Select(row => (RectTransform)row.transform).ToArray();
             Assert.That(grid.Select(card => card.anchorMax.x), Is.EquivalentTo(new[] { .25f, .5f, .75f }));
@@ -535,10 +713,12 @@ namespace AstralOath.Client.Tests
             Assert.That(capacity, Is.EqualTo("3/1000"));
         }
 
-        private static BindingMap[] VisibleRows(BindingMap screen, string scroll) =>
-            screen.Require<ScrollRect>(scroll).content.GetComponentsInChildren<BindingMap>()
-                .Where(map => map != screen.Require<ScrollRect>(scroll).content.GetComponent<BindingMap>())
-                .ToArray();
+        private static BindingMap[] VisibleRows(BindingMap screen, string scroll)
+        {
+            var content = screen.Require<ScrollRect>(scroll).content;
+            return content.GetComponentsInChildren<BindingMap>()
+                .Where(map => map.transform.parent == content).ToArray();
+        }
 
         private BindingMap FindWindow(string name) => !home.IsValid() || !home.isLoaded ? null : home.GetRootGameObjects()
             .SelectMany(root => root.GetComponentsInChildren<BindingMap>()).FirstOrDefault(map =>
@@ -587,6 +767,18 @@ namespace AstralOath.Client.Tests
                 Canvas.ForceUpdateCanvases();
                 yield return null;
                 camera.Render();
+                if (name.StartsWith("inventory-hero-last-", StringComparison.Ordinal))
+                {
+                    var scroll = FindWindow("HeroInventory").Require<ScrollRect>("rosterScroll");
+                    AssertThreeCardStack(scroll);
+                    var last = scroll.content.Cast<RectTransform>().Where(row => row.gameObject.activeInHierarchy)
+                        .OrderBy(row => row.anchoredPosition.y).First();
+                    Assert.That(last.GetComponent<BindingMap>().Require<Image>("selection").enabled, Is.True);
+                    float PixelY(float y) => RectTransformUtility.WorldToScreenPoint(camera,
+                        last.TransformPoint(new Vector3(last.rect.center.x, last.rect.yMax - y))).y;
+                    Assert.That((PixelY(10f) - PixelY(99f)) * 720f / height, Is.EqualTo(89f).Within(2f),
+                        "The selected hero must be the full-height native plate in both window shapes.");
+                }
                 RenderTexture.active = target;
                 image.ReadPixels(new Rect(0, 0, width, height), 0, 0);
                 image.Apply();

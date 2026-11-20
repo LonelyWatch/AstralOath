@@ -2,6 +2,8 @@
 
 Common 提供通用组件和资源，业务文案、图标数据、事件和生命周期由调用方持有。
 
+`EquipmentSlot.prefab` 内置底板、空位符号、装备图和一个嵌套的 `NotificationBadge.prefab`。各界面在自己的预制体中摆放槽位实例并指定底板、占位图和位置，`EquipmentSlotBinder.Set` 绑定当前物品和强化值。空槽只显示占位图，有装备时显示实际装备图，强化等级大于零时角标显示 `+N`。`NotificationBadgeBinder` 也可独立用于无数字红点；重复绑定会清除上一件物品的图和角标。
+
 - `Res/Prefab/ConfirmButton.prefab` 提供九宫格绿底、按下状态、`GameButton`、`GameText` 和本地点击音效。右键 `UI/通用确认按钮` 可创建预制体实例，通过 `BindingMap` 的 `button` 与 `label` 绑定行为及本地化文本。当前战斗暂停菜单复用该按钮。
 - `Res/Prefab/InfoPanel.prefab` 与普通 C# `InfoPanel` / `InfoPanelBinder` 配套。父界面传入预制体、Canvas 容器、来源图标和文本。Binder 复用主面板和关联说明，支持纯效果卡和带魂力、冷却、燃魂、强化分区的主卡；页面超长可滚动，弹板被限制在可用安全区。暂停、关闭或销毁所属界面时关闭并释放。
 - `GameLongPress` 统一 EventSystem 鼠标左键和触屏，使用非缩放时钟，默认 0.45 秒。移出、拖离、禁用及失去焦点取消。已消费的长按不会触发 `GameButton` 的点击，短按及键盘提交沿用原生 Button。
@@ -15,7 +17,7 @@ Common 提供通用组件和资源，业务文案、图标数据、事件和生�
 
 ## 竞技场复用组件
 
-- `FocusedRosterScroll` 为竖向选人列表计算首末卡都能到达的焦点线。它通过 `ScrollRect` 接收滚轮与拖拽，在松手、惯性停止后吸附到最近的可选行，再由所属 Binder 处理选择。
+- 英雄详情和模拟战目录使用同一个 `FocusedRosterScroll`。它按舞台高度排布 361×112 卡片，常规模式在 720 高参考画面中让实色牌面高 89、相邻中心距 59，焦点上方容纳两张前序卡。焦点卡覆盖邻卡，右边缘延伸出屏幕。改变窗口比例会保留当前滚动位置，鼠标滚轮和拖拽松手吸附到对应的可选行，由业务 Binder 决定如何预览或选中。
 - `ConfirmButton` 和 `CancelButton` 使用竞技场原版绿、棕正常及按下贴图。两者通过 `button` / `label` 绑定文本和行为，分别引用原版普通确认声 `UiConfirm.wav` 与取消声 `UiCancel.wav`，由 Canvas 级音频源播放。快速关闭面板时音效可继续播放。标准尺寸为 288×91.5，对应原版 1280×720 参考系的 192×61。正常图和按下图使用相同的原版九宫格切边，31.5 号粗体近似原版白色细描边，文字中心略向上。业务界面可按参考图覆盖实例尺寸。
 - `ChoicePopup` 提供占满父容器的 `dismiss`、可定位 `body` 和模板 `choiceTemplate`。单列选项可用普通 C# `ChoicePopupBinder`，多列筛选可向同一个 body 添加控件并绑定 dismiss。父界面负责将 body 约束在自己的安全区。
 - `PlayerAvatar` 通过遮罩、原版圆框和可选的房主标记及徽章显示头像。调用方提供已加载的 Sprite 和资源生命周期。可通过 `PlayerAvatar.FromInstance` 绑定现有实例。预制体自身不拦截点击。

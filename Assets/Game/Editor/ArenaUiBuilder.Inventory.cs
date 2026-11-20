@@ -35,6 +35,7 @@ namespace AstralOath.Editor
 
         private static void BuildInventoryAssets()
         {
+            BuildEquipmentSlotAssets();
             Save(BuildHomeMoreMenu(), HomeMoreMenuPrefabPath);
             Save(BuildHeroInventory(), HeroInventoryPrefabPath);
             BuildHomeHeroArt();
@@ -53,15 +54,16 @@ namespace AstralOath.Editor
                 new Color32(171, 179, 191, 255), TextAlignmentOptions.MidlineRight);
             bagBindings.Add(("capacity", capacity));
             var roster = Area(root, "Hero roster", 0, 0, 1, 1);
-            var rosterBindings = BuildHeroRosterLayout(roster);
+            var rosterBindings = BuildHeroRosterLayout(roster, out var heroComposition);
             DrawNativeTopBarIcons(Area(bag, "Bag top bar icons", 0, 0, 1, 1), dimmed: true);
             Picture(bag, "Bag help glyph", Art("cm_hud_top_btn_help"), .112f, .013f, .043f, .067f, true);
-            DrawNativeTopBarIcons(Area(roster, "Roster top bar icons", 0, 0, 1, 1));
-
-            var top = Area(root, "Title bar", 0, 0, 1, .092f);
+            var heading = Area(root, "Inventory header", 0, 0, 1, 1);
+            var top = Area(heading, "Title bar", 0, 0, 1, .092f);
             Paint(Area(top, "Header rule", 0, .985f, 1, .015f), null, new Color32(255, 255, 255, 34));
             var back = SharedHeaderBack(top);
             var title = Text(top, "Title", InventoryPrefix + "bag", 36, .048f, .035f, .28f, .84f);
+            title.rectTransform.anchorMin = new Vector2(0, title.rectTransform.anchorMin.y);
+            title.rectTransform.offsetMin = new Vector2(61f * HomeDesignScale, 0f);
             title.fontStyle = FontStyles.Bold;
             var status = Text(root, "Inventory status", InventoryPrefix + "loading", 31, .30f, .398f, .41f, .074f,
                 Mist, TextAlignmentOptions.Center);
@@ -71,11 +73,12 @@ namespace AstralOath.Editor
             var bindings = new List<(string Key, Object Target)>
             {
                 ("bag", bag.gameObject), ("roster", roster.gameObject), ("back", back), ("title", title),
+                ("inventoryHeader", heading),
                 ("status", status), ("retry", retry), ("retryLabel", retryLabel)
             };
             bindings.AddRange(bagBindings);
             bindings.AddRange(rosterBindings);
-            BuildNativeArtifactManagement(root, bag, roster, bindings);
+            BuildNativeArtifactManagement(root, bag, heroComposition, bindings);
             Bind(root, bindings.ToArray());
             roster.gameObject.SetActive(false);
             return root.gameObject;

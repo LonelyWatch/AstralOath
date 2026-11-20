@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AstralOath.Client.Arena;
@@ -25,10 +26,10 @@ namespace AstralOath.Client.FoundationDemo
         private readonly BindingScope lifetime;
         private readonly ILocaleService locale;
         private readonly HomePagePreparation pages;
-        private readonly HomeFirstReads firstReads = new HomeFirstReads();
+        private readonly HomeFirstReads firstReads;
+        private readonly HeroPortraitSources portraits = new HeroPortraitSources();
         private const string MoreOverlay = "home-more";
         private readonly ArenaApi api;
-        private readonly HeroInventoryApi inventory;
         private readonly ArtifactInventoryApi artifacts;
         private readonly SummonApi summon;
         private readonly Uri endpoint;
@@ -42,7 +43,6 @@ namespace AstralOath.Client.FoundationDemo
             SummonApi summon, Uri endpoint, string playerName, DesktopDisplayMode display)
         {
             this.api = api;
-            this.inventory = inventory;
             this.artifacts = artifacts;
             this.summon = summon;
             this.endpoint = endpoint;
@@ -53,12 +53,14 @@ namespace AstralOath.Client.FoundationDemo
             this.lifetime = lifetime;
             this.locale = locale;
             pages = new HomePagePreparation(views, assets, parent, lifetime);
+            firstReads = new HomeFirstReads(inventory, artifacts, lifetime.Token);
+            lifetime.Add(portraits.Clear);
             summon.InventoryMayChange += firstReads.Invalidate;
-            artifacts.InventoryMayChange += firstReads.Invalidate;
+            artifacts.InventoryMayChange += firstReads.InvalidateArtifacts;
             lifetime.Add(() =>
             {
                 summon.InventoryMayChange -= firstReads.Invalidate;
-                artifacts.InventoryMayChange -= firstReads.Invalidate;
+                artifacts.InventoryMayChange -= firstReads.InvalidateArtifacts;
             });
             token = lifetime.Token;
             windows = new WindowCoordinator(token);
@@ -140,7 +142,20 @@ namespace AstralOath.Client.FoundationDemo
             var navigation = new StartupNavigation(owner, home, directory, create, room, views, assets, scenes,
                 context.ViewRoot, locale, api, inventory, artifacts, summon, endpoint, name, display);
             await Task.WhenAll(navigation.pages.PrepareAsync(owner.Token),
-                navigation.firstReads.PrepareAsync(Bearer, inventory, artifacts, summon, owner.Token));
+                navigation.firstReads.PrepareAsync(Bearer, summon, owner.Token));
+            var first = navigation.firstReads.Heroes?.heroes?.OrderByDescending(hero => hero.level).FirstOrDefault();
+            if (first != null)
+            {
+                try
+                {
+                    var catalog = await navigation.pages.Heroes.Get();
+                    await navigation.portraits.PrepareAsync(catalog.heroes.FirstOrDefault(hero => hero.id == first.templateId), owner.Token);
+                }
+                catch (Exception error) when (!owner.Token.IsCancellationRequested)
+                {
+                    Debug.LogWarning("Initial hero portrait preparation: " + error.GetType().Name);
+                }
+            }
             owner.Token.ThrowIfCancellationRequested();
             await navigation.ShowHome();
             context.Services.Add<ILocaleService>(locale);
@@ -223,7 +238,8 @@ namespace AstralOath.Client.FoundationDemo
                 Func<string, CancellationToken, Task> startTrial = null;
                 if (Debug.isDebugBuild && endpoint.IsLoopback)
                     startTrial = (hero, ct) => StartArtifactTrialAsync(hero, artifactArt, ct);
-                var binder = new HeroInventoryBinder(view, art, locale, inventory.FetchAsync, ShowHome, artifactArt, artifacts, startTrial);
+                var binder = new HeroInventoryBinder(view, art, locale, firstReads.ReadHeroesAsync, ShowHome,
+                    artifactArt, artifacts, startTrial, firstReads.ReadArtifactsAsync, portraits);
                 return binder.OpenAsync(roster, scope, firstReads.Heroes, firstReads.Artifacts);
             });
         }

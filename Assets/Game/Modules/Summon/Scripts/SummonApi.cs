@@ -152,6 +152,10 @@ namespace AstralOath.Client.Summon
             {
                 throw new IOException("Summon request timed out.");
             }
+            finally
+            {
+                if (method == HttpMethod.Post) InventoryMayChange?.Invoke();
+            }
         }
 
         public void Dispose() => http.Dispose();

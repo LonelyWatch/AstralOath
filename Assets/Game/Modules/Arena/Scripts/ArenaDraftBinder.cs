@@ -24,7 +24,7 @@ namespace AstralOath.Client.Arena
         private readonly ISceneAssetService scenes;
         private readonly Func<Task> returnToRoom;
         private readonly ArenaDraftRosterFilter rosterFilter;
-        private static readonly Vector2 RosterCardSize = new Vector2(361f, 112f);
+        private readonly ScrollRect rosterScroll;
         private Choice[] visibleRoster = Array.Empty<Choice>();
         private float lastRosterOffset = float.NaN, lastRosterWidth, lastRosterHeight, lastRosterStep;
         private int? localLatency;
@@ -75,6 +75,7 @@ namespace AstralOath.Client.Arena
             this.scenes = scenes;
             this.returnToRoom = returnToRoom;
             rosterFilter = new ArenaDraftRosterFilter(view, locale, windows, ApplySearch);
+            rosterScroll = view.Scroll("roster");
             this.artwork = artwork;
             art = artwork.Heroes.ToDictionary(hero => hero.Id, StringComparer.Ordinal);
             scoreDigits = artwork.ScoreDigits;
@@ -89,9 +90,15 @@ namespace AstralOath.Client.Arena
 
             Image[] Clock(string key) => new[] { view.Picture(key + "Tens"), view.Picture(key + "Units"), view.Picture(key + "Single") };
             feature = new ArenaDraftPortrait(view.Surface("featured"));
-            var guideSize = new Vector2(420f, 640f) * 2.24f;
-            blueGuide = new ArenaDraftPortrait(view.Surface("blueGuide"), nativeEffectSize: guideSize, blendCardLight: true);
-            redGuide = new ArenaDraftPortrait(view.Surface("redGuide"), nativeEffectSize: guideSize, blendCardLight: true);
+            ArenaDraftPortrait Guide(string key)
+            {
+                var output = view.Surface(key);
+                var span = output.rectTransform.anchorMax - output.rectTransform.anchorMin;
+                var nativeSize = Vector2.Scale(span, new Vector2(998f, 720f)) * 2.24f;
+                return new ArenaDraftPortrait(output, nativeEffectSize: nativeSize, turnGuide: true);
+            }
+            blueGuide = Guide("blueGuide");
+            redGuide = Guide("redGuide");
             var banSurface = view.Surface("banFeedback");
             banSurface.color = Color.white;
             banFeedback = new ArenaDraftPortrait(banSurface,
@@ -144,7 +151,6 @@ namespace AstralOath.Client.Arena
             view.Label("status").text = "";
             view.Search("search").SetTextWithoutNotify("");
             view.Search("preSearch").SetTextWithoutNotify("");
-            var rosterScroll = view.Scroll("roster");
             rosterScroll.StopMovement();
             rosterScroll.content.anchoredPosition = Vector2.zero;
             rosterScrollController = FocusedRosterScroll.Bind(rosterScroll, owner, CanFocusRosterIndex, FocusRosterIndex);
@@ -427,16 +433,9 @@ namespace AstralOath.Client.Arena
             RenderActions(canAct, pick, ban, arrange, finishingBan);
             view.Picture("blue").enabled = !pick || draft.OwnTurn;
             view.Picture("red").enabled = !pick || !draft.OwnTurn;
-            if (pick && !showingReveal)
-            {
-                blueGuide.Show(artwork.BlueGuide.MakeSource(), animation: "intro");
-                redGuide.Show(artwork.RedGuide.MakeSource(), animation: "intro");
-            }
-            else
-            {
-                blueGuide.Clear();
-                redGuide.Clear();
-            }
+            bool showGuide = pick && !showingReveal;
+            blueGuide.Show(showGuide && draft.OwnTurn ? artwork.BlueGuide.MakeSource() : null, animation: "intro");
+            redGuide.Show(showGuide && !draft.OwnTurn ? artwork.RedGuide.MakeSource() : null, animation: "intro");
             view.Picture("banMark").enabled = ban && !banFeedback.IsVisible;
             view.Picture("banGlow").enabled = ban;
             // Keep the final-ban instruction below the stamp and its brightest sparks.
@@ -799,15 +798,12 @@ namespace AstralOath.Client.Arena
             }
         }
 
-        private float RosterStep => rosterFilter.Compact ? 62f : 82f;
-
         private void LayoutRoster()
         {
-            var scroll = view.Scroll("roster");
+            var scroll = rosterScroll;
             float width = scroll.viewport.rect.width, height = scroll.viewport.rect.height;
             if (width <= 8f || height <= 0f) return;
-            float step = RosterStep;
-            rosterScrollController.Layout(visibleRoster.Length, step);
+            float step = rosterScrollController.LayoutCards(visibleRoster.Length, view.Layout.rect.height, rosterFilter.Compact);
             float offset = scroll.content.anchoredPosition.y;
             if (Mathf.Abs(lastRosterOffset - offset) < .02f && lastRosterWidth == width && lastRosterHeight == height &&
                 lastRosterStep == step) return;
@@ -817,8 +813,7 @@ namespace AstralOath.Client.Arena
             lastRosterStep = step;
             int nearest = rosterScrollController.Nearest;
             for (int i = 0; i < visibleRoster.Length; i++)
-                rosterScrollController.PlaceCard((RectTransform)visibleRoster[i].Button.transform, RosterCardSize, i,
-                    rosterFilter.Compact ? .86f : 1f);
+                rosterScrollController.PlaceCard((RectTransform)visibleRoster[i].Button.transform, i);
             if (visibleRoster.Length == 0 || nearest == lastRosterFocus) return;
             lastRosterFocus = nearest;
             FocusedRosterScroll.RaiseNearest(visibleRoster.Length, nearest, RaiseRosterCard);
@@ -1138,7 +1133,7 @@ namespace AstralOath.Client.Arena
                 if (Portrait.sprite)
                 {
                     var rect = Portrait.rectTransform;
-                    rect.anchorMin = new Vector2(rect.anchorMax.x - Portrait.sprite.rect.width / RosterCardSize.x, rect.anchorMin.y);
+                    rect.anchorMin = new Vector2(rect.anchorMax.x - Portrait.sprite.rect.width / FocusedRosterScroll.CardSize.x, rect.anchorMin.y);
                 }
                 int value = Mathf.Clamp(hero.Speed, 0, 999);
                 speed[0].sprite = levelDigits[value / 100];

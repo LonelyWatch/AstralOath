@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AstralOath.Client.Common;
@@ -28,10 +29,18 @@ namespace AstralOath.Client.Arena
         private readonly Func<ArenaRoomState, CancellationToken, Task> enter;
         private readonly Func<Task> goHome;
         private readonly string displayName;
-        private BindingScope screen, rows;
+        private sealed class RoomRow
+        {
+            internal BindingMap View;
+            internal ArenaRoomInfo Room;
+        }
+
+        private readonly List<RoomRow> rows = new List<RoomRow>();
+        private BindingScope screen;
         private readonly Sprite searchIdle, searchIdlePressed;
         private string visibility = "all", sort = "players", query = "";
-        private bool ascending, busy;
+        private bool ascending, busy, hasList;
+        private string renderedLocale;
 
         public ArenaDirectoryBinder(ArenaDirectory view, ArenaCreateRoom createView, ILocaleService locale, ArenaApi api,
             WindowCoordinator windows, Func<ArenaRoomState, CancellationToken, Task> enter, Func<Task> goHome, string displayName)
@@ -147,7 +156,7 @@ namespace AstralOath.Client.Arena
             else visibility = value;
             UpdateFilterLabel();
             RenderFilter(body);
-            return RefreshAsync(screen.Token, operation: "directory_filter");
+            return RefreshAsync(screen.Token, operation: "directory_filter", resetPosition: true);
         }
 
         private void UpdateFilterLabel() => view.FilterLabel.text = locale.Resolve("arena.filter." + visibility);
@@ -175,7 +184,7 @@ namespace AstralOath.Client.Arena
                 bool hasFilter = query.Length != 0;
                 query = "";
                 UpdateSearchLabel();
-                return hasFilter ? RefreshAsync(token) : Task.CompletedTask;
+                return hasFilter ? RefreshAsync(token, resetPosition: true) : Task.CompletedTask;
             }
             windows.ShowOverlay(SearchWindow, scope =>
             {
@@ -198,41 +207,65 @@ namespace AstralOath.Client.Arena
             if (busy) return Task.CompletedTask;
             query = view.Query.text.Trim();
             view.Query.DeactivateInputField();
-            return RefreshAsync(token, operation: "directory_search");
+            return RefreshAsync(token, operation: "directory_search", resetPosition: true);
         }
 
         private async Task RefreshAsync(CancellationToken token, bool recoverRoom = false, string operation = null,
-            TaskCompletionSource<bool> directoryConfirmed = null)
+            TaskCompletionSource<bool> directoryConfirmed = null, bool resetPosition = false)
         {
             if (busy) return;
             busy = true;
             var owner = screen;
             view.Create.interactable = false;
-            view.Status.text = locale.Resolve("arena.loading");
+            if (!hasList) view.Status.text = locale.Resolve("arena.loading");
+            using var listLifetime = CancellationTokenSource.CreateLinkedTokenSource(token);
+            Task<ArenaRoomInfo[]> pendingList = null;
             try
             {
                 await ConnectAsync(token);
+                var membership = recoverRoom ? api.CurrentAsync(token) : null;
+                // Initial/recovery navigation checks membership first. A manual refresh of an
+                // established directory can read both, but only membership decides navigation.
+                if (membership == null || hasList)
+                    pendingList = api.ListAsync(visibility, sort, ascending, query, listLifetime.Token);
                 if (operation != null) _ = api.RecordOperationAsync(operation);
-                if (recoverRoom)
+                if (membership != null)
                 {
-                    var current = await api.CurrentAsync(token);
+                    var current = await membership;
+                    token.ThrowIfCancellationRequested();
                     if (current != null) { await enter(current, token); return; }
                     directoryConfirmed?.TrySetResult(true);
                 }
-                var result = await api.ListAsync(visibility, sort, ascending, query, token);
-                Render(result);
+                var listing = pendingList ?? api.ListAsync(visibility, sort, ascending, query, token);
+                pendingList = null;
+                var result = await listing;
+                token.ThrowIfCancellationRequested();
+                Render(result, !hasList || resetPosition);
+                hasList = true;
                 view.Status.text = result.Length == 0 ? locale.Resolve("arena.empty") : "";
             }
             catch (OperationCanceledException) when (token.IsCancellationRequested) { }
             catch (ArenaRequestException error) { if (screen == owner) view.Status.text = ArenaError.Text(locale, error); }
             finally
             {
+                if (pendingList != null)
+                {
+                    listLifetime.Cancel();
+                    _ = DiscardListAsync(pendingList);
+                }
                 if (screen == owner)
                 {
                     busy = false;
                     if (view.Root) view.Create.interactable = true;
                 }
             }
+        }
+
+        private static async Task DiscardListAsync(Task<ArenaRoomInfo[]> listing)
+        {
+            try { await listing; }
+            catch (OperationCanceledException) { }
+            catch (ArenaRequestException) { }
         }
 
         private Task ConnectAsync(CancellationToken token) => api.ConnectAsync(displayName, "c1001", token);
@@ -252,28 +285,56 @@ namespace AstralOath.Client.Arena
             finally { if (screen == owner) busy = false; }
         }
 
-        private void Render(ArenaRoomInfo[] entries)
+        private void Render(ArenaRoomInfo[] entries, bool resetPosition)
         {
-            rows?.Dispose();
-            rows = new BindingScope(screen.Token);
-            foreach (var room in entries)
+            while (rows.Count > entries.Length) RemoveLastRow();
+            for (int i = 0; i < entries.Length; ++i)
             {
-                var clone = UnityEngine.Object.Instantiate(view.Row, view.List.content, false);
-                rows.Add(() => { if (clone) { clone.SetActive(false); UnityEngine.Object.Destroy(clone); } });
-                var row = clone.GetComponent<BindingMap>();
+                var room = entries[i];
+                if (i == rows.Count)
+                {
+                    var clone = UnityEngine.Object.Instantiate(view.Row, view.List.content, false);
+                    var added = new RoomRow { View = clone.GetComponent<BindingMap>() };
+                    rows.Add(added);
+                    clone.SetActive(true);
+                    added.View.Require<GameButton>("join").Bind(screen, token => added.Room.requiresPassword
+                        ? AskPassword(added.Room) : JoinAsync(added.Room.id, "", token));
+                }
+                var entry = rows[i];
+                var previous = entry.Room;
+                entry.Room = room;
+                if (renderedLocale == locale.TextLocale && SameRow(previous, room)) continue;
+                var row = entry.View;
                 ArenaArt.SetText(row.Require<GameText>("name"), room.name);
                 ArenaArt.SetText(row.Require<GameText>("hostName"), room.host?.displayName);
                 row.Require<GameText>("rule").text = locale.Resolve("arena.rule." + room.rule);
                 row.Require<GameText>("count").text = $"{room.memberCount}/{room.capacity}";
                 row.Require<Image>("lock").enabled = room.requiresPassword;
                 ArenaArt.SetAvatar(row.Require<BindingMap>("avatar"), room.host, true);
-                clone.SetActive(true);
-                row.Require<GameButton>("join").Bind(rows, token => room.requiresPassword
-                    ? AskPassword(room) : JoinAsync(room.id, "", token));
             }
-            Canvas.ForceUpdateCanvases();
-            view.List.StopMovement();
-            view.List.verticalNormalizedPosition = 1;
+            renderedLocale = locale.TextLocale;
+            if (resetPosition)
+            {
+                view.List.StopMovement();
+                var content = view.List.content;
+                content.anchoredPosition = new Vector2(content.anchoredPosition.x, 0f);
+            }
+        }
+
+        private static bool SameRow(ArenaRoomInfo previous, ArenaRoomInfo next) =>
+            previous != null && previous.id == next.id && previous.name == next.name && previous.rule == next.rule &&
+            previous.requiresPassword == next.requiresPassword && previous.memberCount == next.memberCount &&
+            previous.capacity == next.capacity && previous.host?.id == next.host?.id &&
+            previous.host?.displayName == next.host?.displayName && previous.host?.avatarId == next.host?.avatarId;
+
+        private void RemoveLastRow()
+        {
+            int index = rows.Count - 1;
+            var row = rows[index].View;
+            rows.RemoveAt(index);
+            if (!row) return;
+            row.gameObject.SetActive(false);
+            UnityEngine.Object.Destroy(row.gameObject);
         }
 
         private Task AskPassword(ArenaRoomInfo room)
@@ -311,8 +372,8 @@ namespace AstralOath.Client.Arena
         {
             screen = null;
             busy = false;
-            rows?.Dispose();
-            rows = null;
+            hasList = false;
+            while (rows.Count > 0) RemoveLastRow();
             if (view.Root)
             {
                 view.Create.interactable = true;

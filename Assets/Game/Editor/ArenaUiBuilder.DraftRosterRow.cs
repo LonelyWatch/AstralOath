@@ -28,9 +28,7 @@ namespace AstralOath.Editor
             crop.gameObject.AddComponent<Mask>().showMaskGraphic = false;
             var portrait = RosterPicture(crop.rectTransform, "Hero", null, 125, 10, 222, 89, true);
             var role = RosterPicture(root, "Class", null, 42, 23, 32, 32, true);
-            var title = Text(root, "Hero name", null, 24, 78f / 361, 20f / 112, 157f / 361, 36f / 112);
-            title.fontStyle = FontStyles.Bold;
-            title.richText = false;
+            var title = RosterName(root);
             var element = RosterPicture(root, "Element", null, 70, 67, 34, 34, true);
             var shade = RosterPicture(root, "State shade", DraftSprite("hero_bg_normal"), 0, 0, 361, 112);
             var picked = RosterPicture(root, "Picked icon", DraftSprite("Roster/cm_icon_check_b"), 45, 24, 30, 22, true);
@@ -63,6 +61,16 @@ namespace AstralOath.Editor
             Bind(root, keys.ToArray());
             root.gameObject.SetActive(false);
             return root;
+        }
+
+        private static GameText RosterName(RectTransform parent)
+        {
+            // unit_bar.csb places its regular 24 pt name at 0.85 scale, centred at (78, 37).
+            var label = Text(parent, "Hero name", null, 24f * .85f,
+                78f / 361f, 22f / 112f, 218f / 361f, 30f / 112f);
+            label.fontSharedMaterial = Resources.Load<Material>("AstralOathPlayerNameShadow");
+            label.richText = false;
+            return label;
         }
 
         private static Image RosterPicture(RectTransform parent, string name, Sprite sprite,

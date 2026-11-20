@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using AstralOath.Client.Common;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
@@ -223,32 +224,30 @@ namespace AstralOath.Editor
             };
             for (int index = 0; index < gearCenters.Length; ++index)
             {
-                var slot = BagImage(BagRowArea(row, "Empty equipment slot " + index, gearCenters[index] - 45, 12.95f, 90, 116.1f),
-                    BagArt("cm_item_slot"), Color.white, true);
-                BagImage(Area(slot.rectTransform, "Native slot symbol", (gearIconCenters[index] - 16.5f) / 100,
-                    4.5f / 129, .33f, 33f / 129), RosterArt(gearIcons[index]), BagEmptyIcon);
-                bindings.Add(("emptyGear" + index, slot));
+                var slot = BuildBagEquipmentSlot(row, "Empty equipment slot " + index, BagArt("cm_item_slot"),
+                    RosterArt(gearIcons[index]), new Rect(gearCenters[index] - 45, 12.95f, 90, 116.1f),
+                    new Rect((gearIconCenters[index] - 16.5f) / 100, 4.5f / 129, .33f, 33f / 129), sliced: true);
+                bindings.Add(("emptyGear" + index, slot.Require<Image>("frame")));
             }
-            var artifact = BagImage(BagRowArea(row, "Empty artifact slot", 533.65f, 10.35f, 110.7f, 123.3f),
-                BagArt("cm_item_slot_arti"), Color.white);
-            BagImage(Area(artifact.rectTransform, "Native artifact symbol", 69.5f / 123, 23.5f / 137, 33f / 123, 33f / 137),
-                RosterArt("cm_icon_pararti"), BagEmptyIcon);
-            bindings.Add(("emptyArtifact", artifact));
-            var equippedArt = Paint(Area(artifact.rectTransform, "Equipped artifact portrait", .04f, .04f, .92f, .92f),
-                null, Color.white);
-            equippedArt.preserveAspect = true;
-            equippedArt.enabled = false;
+            var artifact = BuildBagEquipmentSlot(row, "Empty artifact slot", BagArt("cm_item_slot_arti"), RosterArt("cm_icon_pararti"),
+                new Rect(533.65f, 10.35f, 110.7f, 123.3f), new Rect(69.5f / 123, 23.5f / 137, 33f / 123, 33f / 137));
+            var equippedArt = artifact.Require<Image>("item");
+            Place(equippedArt.rectTransform, .04f, .04f, .92f, .92f);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(equippedArt.rectTransform);
+            // The bag's emblem and its badge live a little inside the upper-right edge.
+            var badge = (RectTransform)artifact.Require<BindingMap>("badge").transform;
+            Place(badge, .637f, .003f, 31f / 123, 30f / 137);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(badge);
+            bindings.Add(("bagArtifactSlot", artifact));
+            bindings.Add(("emptyArtifact", artifact.Require<Image>("frame")));
             bindings.Add(("bagEquippedArtifact", equippedArt));
-            bindings.Add(("bagEquippedArtifactLevel", Text(equippedArt.rectTransform, "Equipped artifact level", null, 24,
-                .46f, .005f, .50f, .20f, new Color32(255, 177, 72, 255), TextAlignmentOptions.Right)));
-
-            var exclusive = BagImage(BagRowArea(row, "Empty exclusive equipment slot", 984.4f, 12.58f, 101.2f, 116.84f),
-                BagArt("cm_item_slot_private"), Color.white);
-            BagImage(Area(exclusive.rectTransform, "Native exclusive symbol", 36f / 110, 13f / 127, 34f / 110, 34f / 127),
-                BagArt("cm_icon_parprivate"), BagEmptyIcon);
+            var exclusive = BuildBagEquipmentSlot(row, "Empty exclusive equipment slot", BagArt("cm_item_slot_private"),
+                BagArt("cm_icon_parprivate"), new Rect(984.4f, 12.58f, 101.2f, 116.84f),
+                new Rect(36f / 110, 13f / 127, 34f / 110, 34f / 127));
             // The original only activates this reservation for heroes with supported exclusive equipment.
             exclusive.gameObject.SetActive(false);
-            bindings.Add(("emptyExclusive", exclusive));
+            PrefabUtility.RecordPrefabInstancePropertyModifications(exclusive.gameObject);
+            bindings.Add(("emptyExclusive", exclusive.Require<Image>("frame")));
 
             Bind(row, bindings.ToArray());
             row.gameObject.SetActive(false);
@@ -267,6 +266,27 @@ namespace AstralOath.Editor
 
         private static RectTransform BagRightArea(RectTransform parent, string name, float right, float top, float width, float height) =>
             BagArea(parent, name, -right - width, top, width, height, 1);
+
+        private static BindingMap BuildBagEquipmentSlot(RectTransform row, string name, Sprite frame, Sprite icon,
+            Rect area, Rect iconArea, bool sliced = false)
+        {
+            var slot = InstantiateEquipmentSlot(row, name, frame, icon);
+            var rect = (RectTransform)slot.transform;
+            Place(rect, area.x / BagRowSourceWidth, area.y / BagRowSourceHeight,
+                area.width / BagRowSourceWidth, area.height / BagRowSourceHeight);
+            var plate = slot.Require<Image>("frame");
+            plate.type = sliced ? Image.Type.Sliced : Image.Type.Simple;
+            plate.preserveAspect = !sliced;
+            if (sliced) plate.pixelsPerUnitMultiplier = 2f / 3f;
+            var symbol = slot.Require<Image>("placeholder");
+            Place(symbol.rectTransform, iconArea.x, iconArea.y, iconArea.width, iconArea.height);
+            symbol.color = BagEmptyIcon;
+            PrefabUtility.RecordPrefabInstancePropertyModifications(rect);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(plate);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(symbol);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(symbol.rectTransform);
+            return slot;
+        }
 
         private static RectTransform BagRowArea(RectTransform parent, string name, float left, float top, float width, float height) =>
             Area(parent, name, left / BagRowSourceWidth, top / BagRowSourceHeight, width / BagRowSourceWidth, height / BagRowSourceHeight);

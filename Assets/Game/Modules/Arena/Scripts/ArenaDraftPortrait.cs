@@ -11,12 +11,17 @@ namespace AstralOath.Client.Arena
     internal sealed class ArenaDraftPortrait : IDisposable
     {
         private const int PreviewLayer = 30;
+        // Unlit gold at the point of the native draft rails (left/right midpoint).
+        private static readonly Color GuideRailColor = new Color32(200, 173, 136, 255);
+        private static readonly Color GuideRailLinear = GuideRailColor.linear;
         private static readonly HashSet<int> ActiveStages = new HashSet<int>();
         private readonly RawImage output;
         private readonly bool miniature;
         private readonly Vector2? nativeEffectSize;
         private readonly Vector2? effectRightFade;
-        private readonly bool blendCardLight, centralBanLight;
+        private readonly bool blendCardLight, centralBanLight, turnGuide;
+        private readonly List<Color> guideTints;
+        private Mesh guideMesh;
         private RectTransform effectPlacement;
         private float effectScale = 1f;
         private bool BanLight => centralBanLight || effectPlacement != null;
@@ -50,7 +55,8 @@ namespace AstralOath.Client.Arena
             : this(output, miniature, null) { }
 
         internal ArenaDraftPortrait(RawImage output, bool miniature = false, Vector2? nativeEffectSize = null,
-            Vector2? effectRightFade = null, bool blendCardLight = false, bool centralBanLight = false)
+            Vector2? effectRightFade = null, bool blendCardLight = false, bool centralBanLight = false,
+            bool turnGuide = false)
         {
             this.output = output ? output : throw new ArgumentNullException(nameof(output));
             this.miniature = miniature;
@@ -60,6 +66,9 @@ namespace AstralOath.Client.Arena
             this.effectRightFade = effectRightFade;
             this.blendCardLight = blendCardLight;
             this.centralBanLight = centralBanLight;
+            this.turnGuide = turnGuide;
+            if (turnGuide && QualitySettings.activeColorSpace == ColorSpace.Linear)
+                guideTints = new List<Color>(16); // Four authored additive quads.
             originalMaterial = output.material;
             output.raycastTarget = false;
             output.enabled = false;
@@ -175,7 +184,11 @@ namespace AstralOath.Client.Arena
             // Keep the stamp's impact visible instead of consuming its whole clip in that frame.
             if (oneShot && BanLight) unscaledDeltaTime = Mathf.Min(unscaledDeltaTime, .10f);
             float before = player.Time;
-            if (unscaledDeltaTime > 0) player.Tick(unscaledDeltaTime);
+            if (unscaledDeltaTime > 0)
+            {
+                player.Tick(unscaledDeltaTime);
+                if (guideMesh) ApplyGuideOpacity();
+            }
             if (particles != null && unscaledDeltaTime > 0f)
             {
                 float activeTime = unscaledDeltaTime;
@@ -245,7 +258,7 @@ namespace AstralOath.Client.Arena
                 ResetFeedback();
                 ReleaseParticles();
                 if (!stage) CreateStage();
-                material.SetFloat("_PreserveBanLight", BanLight ? 1f : 0f);
+                material.SetFloat("_PreserveBanLight", BanLight || turnGuide ? 1f : 0f);
                 player?.Dispose();
                 player = factory.Create(source, stage.transform);
                 player.Root.transform.localScale *= effectScale;
@@ -268,8 +281,13 @@ namespace AstralOath.Client.Arena
 
                 var mesh = player.Root.GetComponent<MeshFilter>().sharedMesh;
                 if (!mesh || mesh.vertexCount == 0) throw new InvalidOperationException("骨骼预览没有可见网格。");
-                if (blendCardLight || BanLight)
+                if (blendCardLight || BanLight || turnGuide)
                     ConfigureEffectLight(player.Root.GetComponent<MeshRenderer>(), particle: false);
+                if (guideTints != null)
+                {
+                    guideMesh = mesh;
+                    ApplyGuideOpacity();
+                }
                 framingBounds = mesh.bounds;
                 FrameOutput();
                 output.texture = target;
@@ -285,6 +303,36 @@ namespace AstralOath.Client.Arena
             }
         }
 
+        private void ApplyGuideOpacity()
+        {
+            // The source varies additive light intensity in display space. The UI composite
+            // applies its node alpha once more after the linear render target.
+            float nodeAlpha = output.color.a;
+            if (nodeAlpha <= 0f) return;
+            guideMesh.GetColors(guideTints);
+            // Both source skeletons draw two identical arrow quads over the gold edge,
+            // followed by arrow_glow and the wide flash. Display-space addition on the
+            // lit rail emits more light than adding the same colours against black.
+            for (int i = 0; i < guideTints.Count; i += 4)
+            {
+                var tint = guideTints[i];
+                if (i < 8)
+                {
+                    float combinedAlpha = 2f * nodeAlpha;
+                    // The recorded edge stays cool-white through the 0x47 trough. Match
+                    // its measured contrast on gold while retaining the source timing.
+                    float pulse = Mathf.InverseLerp(71f / 255f, 1f, tint.a);
+                    float lineIntensity = Mathf.Lerp(.40f, .90f, pulse);
+                    var litRail = GuideRailColor + tint * (combinedAlpha * lineIntensity);
+                    tint = ((litRail.linear - GuideRailLinear) / combinedAlpha).gamma;
+                    tint.a = 1f;
+                }
+                else tint.a = Mathf.GammaToLinearSpace(tint.a * nodeAlpha) / nodeAlpha;
+                for (int vertex = i; vertex < i + 4; vertex++) guideTints[vertex] = tint;
+            }
+            guideMesh.SetColors(guideTints);
+        }
+
         private void ConfigureEffectLight(MeshRenderer renderer, bool particle)
         {
             // Additive RGB must not contribute to the offscreen coverage mask.
@@ -296,6 +344,9 @@ namespace AstralOath.Client.Arena
                 if (layer.GetInt("_DstBlend") != (int)UnityEngine.Rendering.BlendMode.One) continue;
                 layer.SetInt("_SrcAlphaBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
                 layer.SetInt("_DstAlphaBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                // The guide atlas stores the emitted light in its premultiplied RGB.
+                // Let the sRGB sampler decode it directly, including the dim outer halo.
+                if (turnGuide) layer.SetFloat("_PmaSrgb", 0f);
                 if (!particle)
                 {
                     if (effectPlacement)
@@ -353,14 +404,14 @@ namespace AstralOath.Client.Arena
             camera.depth = -100;
             int size = miniature ? 384 : 768;
             var format = camera.allowHDR ? RenderTextureFormat.ARGBHalf : RenderTextureFormat.ARGB32;
-            target = new RenderTexture(size, size, 16, format)
+            target = new RenderTexture(turnGuide ? 512 : size, turnGuide ? 1280 : size, 16, format)
             {
                 name = "Arena draft preview",
                 hideFlags = HideFlags.HideAndDontSave
             };
             camera.targetTexture = target;
             material = new Material(shader) { hideFlags = HideFlags.HideAndDontSave };
-            if (nativeEffectSize.HasValue) material.SetFloat("_SoftEffectEdges", 1f);
+            if (nativeEffectSize.HasValue && !turnGuide) material.SetFloat("_SoftEffectEdges", 1f);
             if (blendCardLight) material.SetFloat("_BlendCardLight", 1f);
 
             if (effectRightFade.HasValue)
@@ -456,6 +507,7 @@ namespace AstralOath.Client.Arena
                 camera = null;
             }
             ReleaseParticles();
+            guideMesh = null;
             player?.Dispose();
             player = null;
             if (stage)

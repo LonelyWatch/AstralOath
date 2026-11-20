@@ -60,12 +60,55 @@ namespace AstralOath.Client.FoundationDemo
     {
         private const double FreshSeconds = 30;
         private double started, summonReceived;
-        private HeroInventorySnapshot heroes;
-        private ArtifactInventorySnapshot artifacts;
+        private readonly Snapshot<HeroInventorySnapshot> heroes;
+        private readonly Snapshot<ArtifactInventorySnapshot> artifacts;
         private SummonState summon;
 
-        internal async Task PrepareAsync(Func<CancellationToken, Task<string>> session, HeroInventoryApi heroApi,
-            ArtifactInventoryApi artifactApi, SummonApi summonApi, CancellationToken lifetime)
+        internal HomeFirstReads(HeroInventoryApi heroApi, ArtifactInventoryApi artifactApi, CancellationToken login)
+        {
+            heroes = new Snapshot<HeroInventorySnapshot>(heroApi.FetchAsync, login);
+            artifacts = new Snapshot<ArtifactInventorySnapshot>(artifactApi.FetchAsync, login);
+        }
+
+        // A page can stop waiting without cancelling another page's read of the same account.
+        // A write detaches the pending read so it cannot repopulate the cache after invalidation.
+        private sealed class Snapshot<T> where T : class
+        {
+            private readonly Func<CancellationToken, Task<T>> fetch;
+            private readonly CancellationToken login;
+            private Task<T> current;
+            internal Snapshot(Func<CancellationToken, Task<T>> fetch, CancellationToken login)
+            {
+                this.fetch = fetch;
+                this.login = login;
+            }
+            internal T Value => current?.Status == TaskStatus.RanToCompletion ? current.Result : null;
+            internal void Invalidate() => current = null;
+
+            internal async Task<T> GetAsync(CancellationToken caller)
+            {
+                while (true)
+                {
+                    caller.ThrowIfCancellationRequested();
+                    login.ThrowIfCancellationRequested();
+                    if (current == null || current.IsCanceled || current.IsFaulted) current = fetch(login);
+                    var read = current;
+                    if (!read.IsCompleted)
+                    {
+                        var cancelled = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+                        using var registration = caller.Register(() => cancelled.TrySetResult(true));
+                        await Task.WhenAny(read, cancelled.Task);
+                        caller.ThrowIfCancellationRequested();
+                    }
+                    if (read == current) return await read;
+                }
+            }
+        }
+
+        internal Task<HeroInventorySnapshot> ReadHeroesAsync(CancellationToken token) => heroes.GetAsync(token);
+        internal Task<ArtifactInventorySnapshot> ReadArtifactsAsync(CancellationToken token) => artifacts.GetAsync(token);
+
+        internal async Task PrepareAsync(Func<CancellationToken, Task<string>> session, SummonApi summonApi, CancellationToken lifetime)
         {
             started = Time.realtimeSinceStartupAsDouble;
             using var deadline = CancellationTokenSource.CreateLinkedTokenSource(lifetime);
@@ -74,12 +117,10 @@ namespace AstralOath.Client.FoundationDemo
             {
                 // For development guests establish one identity before dispatching the three GETs.
                 await session(deadline.Token);
-                var heroRead = Optional(heroApi.FetchAsync, deadline.Token);
-                var artifactRead = Optional(artifactApi.FetchAsync, deadline.Token);
+                var heroRead = Optional(ReadHeroesAsync, deadline.Token);
+                var artifactRead = Optional(ReadArtifactsAsync, deadline.Token);
                 var summonRead = ReadSummon();
                 await Task.WhenAll(heroRead, artifactRead, summonRead);
-                heroes = await heroRead;
-                artifacts = await artifactRead;
                 summon = await summonRead;
             }
             catch (Exception error) when (!lifetime.IsCancellationRequested)
@@ -108,8 +149,8 @@ namespace AstralOath.Client.FoundationDemo
         }
 
         private bool Fresh => Time.realtimeSinceStartupAsDouble - started <= FreshSeconds;
-        internal HeroInventorySnapshot Heroes => Fresh ? heroes : null;
-        internal ArtifactInventorySnapshot Artifacts => Fresh ? artifacts : null;
+        internal HeroInventorySnapshot Heroes => heroes.Value;
+        internal ArtifactInventorySnapshot Artifacts => artifacts.Value;
 
         internal SummonState TakeSummon()
         {
@@ -132,8 +173,13 @@ namespace AstralOath.Client.FoundationDemo
 
         internal void Invalidate()
         {
-            heroes = null;
-            artifacts = null;
+            heroes.Invalidate();
+            InvalidateArtifacts();
+        }
+
+        internal void InvalidateArtifacts()
+        {
+            artifacts.Invalidate();
             summon = null;
         }
     }

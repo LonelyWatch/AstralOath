@@ -32,9 +32,10 @@ namespace AstralOath.Client.Home
             _ = Get<Image>("EmptyPlate");
             _ = Get<Image>("Portrait");
             _ = Get<Image>("SlotImage");
+            _ = Get<BindingMap>("EquipmentSlot");
             foreach (string item in new[] { "Card", "Detail", "Confirmation", "Materials", "EmptyIcon", "EmptyMessage" })
                 _ = Get<GameObject>(item);
-            foreach (string key in new[] { "Capacity", "Level", "SlotLevel", "Attack", "Health", "Status", "Title", "Wearer",
+            foreach (string key in new[] { "Capacity", "Level", "Attack", "Health", "Status", "Title", "Wearer",
                 "Skill", "PickerTitle", "ConfirmText", "ConfirmTitle", "RetryLabel", "SortLabel" })
                 _ = Get<GameText>(key);
             foreach (string key in Actions)

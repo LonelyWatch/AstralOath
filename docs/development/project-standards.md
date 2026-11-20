@@ -25,6 +25,8 @@
 
 - Foo.prefab 对应普通 Foo.cs / Foo : UIBaseView 与 FooBinder.cs，大小写一致，不额外加 View 后缀。View 重写 PrefabPath；稳定资源地址不随文件重命名自动变化。
 - 预制体用通用 BindingMap 保存引用；业务 View/Binder 不作为组件。View只维护显示，C# Binder负责界面业务/订阅，领域规则放业务服务。
+- 固定页面的控件在编辑器中排好并保存到页面预制体。多处共用的装备槽、角标等组件使用嵌套预制体，在父预制体上配置槽位图和位置。打开页面时绑定数据、替换图片、更新可见性。按持有数量变化的列表复用预制行模板。
+- 一组控件共用一个局部坐标系与缩放基准。验收装备槽时检查底板、符号、物品与角标的相对位置。验收滑条时以牌面实色边界测量露出量和行距，覆盖横屏、窄屏及运行中调整窗口。
 - 项目文本用 GameText : TextMeshProUGUI，按钮用 GameButton : Button；不可再叠加原版同类组件。右键 UI 创建完整控件，Add Component只添加组件。官方Inspector排版/导航继续使用。
 - 界面按 Canvas 布局。按钮底板、图标、头像、立绘、页背景、血条等 Sprite 默认用 UGUI Image。精灵有切片边框的面板和按钮可用 Sliced，头像和立绘按设计保比例。原始 Texture 或 RenderTexture 用 RawImage（如选禁的阵型模型投影和切门画面）。确需自定义网格或遮罩时用合适的 Canvas Graphic。
 - 场景按世界坐标布置。SpriteRenderer 适用于以世界相机、深度或排序、遮挡和场景特效为依据的精灵，例如战场远景、地层和角色地面阴影。混合显示按每一层的用途选组件。世界空间 Canvas 上的 UI 也沿用 UGUI 控件。角色头顶的血条、等级、Buff 和目标按钮属于 HUD，在 Canvas 内渲染，世界挂点由显示代码投影。骨骼和粒子按演出需要使用对应的渲染组件。

@@ -9,6 +9,45 @@ namespace AstralOath.Client.Home
     {
         public const string Address = "home/hero-inventory";
         public override string PrefabPath => Address;
+        private Vector2 previousWindow;
+        private bool rosterSized;
+        private RectTransform inventoryHeader, rosterComposition, rosterHeader;
+
+        internal void FitInventoryLayout(bool roster)
+        {
+            if (!roster)
+            {
+                if (!rosterSized) return;
+                inventoryHeader.anchorMin = Vector2.zero;
+                inventoryHeader.anchorMax = Vector2.one;
+                inventoryHeader.pivot = new Vector2(.5f, .5f);
+                inventoryHeader.localScale = Vector3.one;
+                inventoryHeader.offsetMin = inventoryHeader.offsetMax = Vector2.zero;
+                rosterSized = false;
+                return;
+            }
+            Vector2 window = ((RectTransform)Root.transform).rect.size;
+            if (window.x <= 0f || window.y <= 0f || (rosterSized && previousWindow == window)) return;
+            previousWindow = window;
+            rosterSized = true;
+            // Keep the original height-based density on landscape screens. On narrow
+            // screens width limits the whole composition, including fonts and card pitch.
+            float scale = Mathf.Min(window.y / 1080f, window.x / 1728f);
+            Vector2 size = new Vector2(Mathf.Min(window.x / scale, 2430f), 1080f);
+            // Spread the detail sections and their vignette over the available height.
+            // Their fixed-size controls retain the same uniform scale as the top bar.
+            FitFrame(rosterComposition, new Vector2(size.x, window.y / scale), scale, .5f);
+            FitFrame(rosterHeader, size, scale, 1f);
+            FitFrame(inventoryHeader, size, scale, 1f);
+        }
+
+        private static void FitFrame(RectTransform frame, Vector2 size, float scale, float verticalAnchor)
+        {
+            frame.anchorMin = frame.anchorMax = frame.pivot = new Vector2(.5f, verticalAnchor);
+            frame.sizeDelta = size;
+            frame.anchoredPosition = Vector2.zero;
+            frame.localScale = new Vector3(scale, scale, 1f);
+        }
         internal ArtifactInventoryBindings Artifacts => new ArtifactInventoryBindings(Bindings);
         internal GameObject Bag => Bindings.Require<GameObject>("bag");
         internal GameObject Roster => Bindings.Require<GameObject>("roster");
@@ -42,6 +81,7 @@ namespace AstralOath.Client.Home
         internal GameObject RosterRow => Bindings.Require<GameObject>("rosterRow");
         internal RectTransform RosterDetail => Bindings.Require<RectTransform>("rosterDetail");
         internal RectTransform RosterSidebar => Bindings.Require<RectTransform>("rosterSidebar");
+        internal RectTransform RosterShading => Bindings.Require<RectTransform>("rosterShading");
         internal TMP_InputField Search => Bindings.Require<TMP_InputField>("search");
         internal GameText SearchHint => Bindings.Require<GameText>("searchHint");
         internal GameButton Expand => Bindings.Require<GameButton>("expand");
@@ -67,6 +107,10 @@ namespace AstralOath.Client.Home
 
         public override void Validate()
         {
+            inventoryHeader = Bindings.Require<RectTransform>("inventoryHeader");
+            _ = RosterShading;
+            rosterComposition = Bindings.Require<RectTransform>("rosterComposition");
+            rosterHeader = Bindings.Require<RectTransform>("rosterHeaderComposition");
             _ = Bag; _ = Roster; _ = Back; _ = Title; _ = Capacity;
             _ = TabHeroes; _ = TabEquipment; _ = TabArtifacts; _ = TabHeroesLabel;
             _ = TabEquipmentLabel; _ = TabArtifactsLabel; _ = BagScroll; _ = RosterScroll;

@@ -143,7 +143,8 @@ namespace AstralOath.Client.Home
         private async Task<string> RequestAsync(HttpMethod method, string path, string payload, CancellationToken token)
         {
             using var deadline = CancellationTokenSource.CreateLinkedTokenSource(lifetime, token);
-            if (method != HttpMethod.Get && path.StartsWith(Path, StringComparison.Ordinal)) InventoryMayChange?.Invoke();
+            bool changesInventory = method != HttpMethod.Get && path.StartsWith(Path, StringComparison.Ordinal);
+            if (changesInventory) InventoryMayChange?.Invoke();
             deadline.CancelAfter(TimeSpan.FromSeconds(12));
             try
             {
@@ -162,6 +163,11 @@ namespace AstralOath.Client.Home
             catch (OperationCanceledException) when (!token.IsCancellationRequested && !lifetime.IsCancellationRequested)
             {
                 throw new IOException("Artifact inventory request timed out.");
+            }
+            finally
+            {
+                // A read can finish while a mutation is in flight, including an ambiguous timeout.
+                if (changesInventory) InventoryMayChange?.Invoke();
             }
         }
 

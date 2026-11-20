@@ -32,29 +32,35 @@ namespace AstralOath.Client.Home
         private HeroInventoryItem[] visible = Array.Empty<HeroInventoryItem>();
         private HeroInventoryItem selected;
         private FocusedRosterScroll focusedRoster;
-        private static readonly Vector2 RosterCardSize = new Vector2(361f, 112f);
+        private Vector2 compactViewport;
+        private RectTransform rosterStage;
+        private float RosterCardStageHeight => Mathf.Min(rosterStage.rect.height, rosterStage.rect.width * (10f / 16f));
+        private ScrollRect Scroll { get; set; }
         private bool roster, expanded, loading, failed;
         private Tab tab;
         private string classFilter;
         private bool trialPending;
         private string failedTrialHero;
         private HeroRosterPortrait portrait;
+        private readonly HeroPortraitSources portraitSources;
 
         public HeroInventoryBinder(HeroInventory view, HomeHeroArt art, ILocaleService locale,
             Func<CancellationToken, Task<HeroInventorySnapshot>> fetch, Func<Task> goHome,
             ArtifactArtCatalog artifactArt = null, ArtifactInventoryApi artifactApi = null,
-            Func<string, CancellationToken, Task> startTrial = null)
+            Func<string, CancellationToken, Task> startTrial = null,
+            Func<CancellationToken, Task<ArtifactInventorySnapshot>> fetchArtifacts = null, HeroPortraitSources portraitSources = null)
         {
             this.view = view;
             this.locale = locale;
             this.fetch = fetch;
             this.goHome = goHome;
             this.startTrial = startTrial;
+            this.portraitSources = portraitSources;
             artwork = art.heroes.ToDictionary(item => item.id, StringComparer.Ordinal);
             star = art.star;
             if (artifactArt != null && artifactApi != null)
                 artifacts = new ArtifactInventoryBinder(view.Artifacts, artifactApi, artifactArt, locale,
-                    () => selected, ClassForTemplate, HeroNameForInstance, OnArtifactsChanged);
+                    () => selected, ClassForTemplate, HeroNameForInstance, OnArtifactsChanged, fetchArtifacts);
         }
 
         public Task OpenAsync(bool roster, BindingScope scope) => OpenAsync(roster, scope, null, null);
@@ -68,10 +74,15 @@ namespace AstralOath.Client.Home
             tab = Tab.Heroes;
             classFilter = "all";
             view.Show();
+            view.FitInventoryLayout(roster);
+            Scroll = roster ? view.RosterScroll : view.BagScroll;
             if (roster)
             {
-                focusedRoster = FocusedRosterScroll.Bind(view.RosterScroll, scope, null, SelectFocusedInstance);
-                var currentPortrait = new HeroRosterPortrait(view.DetailPortrait);
+                rosterStage = view.RosterDetail;
+                focusedRoster = FocusedRosterScroll.Bind(Scroll, scope, null, SelectFocusedInstance);
+                Canvas.willRenderCanvases += OnRosterResized;
+                scope.Add(() => Canvas.willRenderCanvases -= OnRosterResized);
+                var currentPortrait = new HeroRosterPortrait(view.DetailPortrait, portraitSources);
                 portrait = currentPortrait;
                 Canvas.willRenderCanvases += currentPortrait.Tick;
                 scope.Add(() =>
@@ -145,15 +156,20 @@ namespace AstralOath.Client.Home
             else await ReloadAsync(scope.Token, initialHeroes);
         }
 
-        private ScrollRect Scroll => roster ? view.RosterScroll : view.BagScroll;
         private int Columns => roster && expanded ? 4 : 1;
-        private float RowHeight => roster ? (expanded ? 142.5f : 86f) : 217.5f;
-        private float CompactInset => roster && !expanded ? focusedRoster.FocusLine : 0f;
+        private float GridRowHeight => roster ? 142.5f : 217.5f;
 
         private Task ReloadAsync(CancellationToken token) => ReloadAsync(token, null);
 
         private async Task ReloadAsync(CancellationToken token, HeroInventorySnapshot initial)
         {
+            if (initial != null)
+            {
+                snapshot = initial;
+                failed = loading = false;
+                Refresh(resetScroll: true);
+                return;
+            }
             snapshot = null;
             selected = null;
             failed = false;
@@ -161,7 +177,7 @@ namespace AstralOath.Client.Home
             Refresh(resetScroll: true);
             try
             {
-                snapshot = initial ?? await fetch(token);
+                snapshot = await fetch(token);
                 token.ThrowIfCancellationRequested();
                 failed = snapshot == null;
             }
@@ -219,10 +235,15 @@ namespace AstralOath.Client.Home
         private void SetExpanded(bool enabled)
         {
             expanded = enabled;
-            if (roster) focusedRoster.enabled = !enabled;
+            if (roster)
+            {
+                focusedRoster.enabled = !enabled;
+                if (enabled) Scroll.viewport.offsetMin = Vector2.zero;
+            }
             view.RosterDetail.gameObject.SetActive(!expanded);
+            view.RosterShading.gameObject.SetActive(!expanded);
             view.RosterSidebar.anchorMin = expanded ? new Vector2(.012f, 0) : new Vector2(.780f, .129f);
-            view.RosterSidebar.anchorMax = new Vector2(expanded ? .820f : 1f, .810f);
+            view.RosterSidebar.anchorMax = expanded ? new Vector2(.820f, .810f) : new Vector2(1f, .840f);
             view.RosterCollapsedFooter.gameObject.SetActive(!expanded);
             view.RosterExpandedHint.SetActive(expanded);
             view.RosterExpandIcon.SetActive(!expanded);
@@ -232,6 +253,11 @@ namespace AstralOath.Client.Home
 
         private void OnSearch(string _) => Refresh(resetScroll: true);
         private void OnScroll(Vector2 _) => ShowCards();
+        private void OnRosterResized()
+        {
+            view.FitInventoryLayout(true);
+            if (!expanded && compactViewport != Scroll.viewport.rect.size) ShowCards();
+        }
         private void SelectFocusedInstance(int index)
         {
             if (selected != visible[index]) Select(visible[index]);
@@ -285,22 +311,16 @@ namespace AstralOath.Client.Home
             view.Status.gameObject.SetActive(status != null);
             if (status != null) view.Status.text = locale.Resolve(TextPrefix + status);
             view.Retry.gameObject.SetActive(heroes && failed);
-            if (roster && !expanded)
-                focusedRoster.Layout(visible.Length, RowHeight);
+            bool compact = roster && !expanded;
+            if (compact)
+                focusedRoster.LayoutCards(visible.Length, RosterCardStageHeight);
             else
-                Scroll.content.sizeDelta = new Vector2(0f, Mathf.CeilToInt((float)visible.Length / Columns) * RowHeight);
+                Scroll.content.sizeDelta = new Vector2(0f, Mathf.CeilToInt((float)visible.Length / Columns) * GridRowHeight);
             if (resetScroll)
             {
                 Scroll.StopMovement();
-                float offset = 0;
-                if (revealSelected && selected != null)
-                {
-                    Canvas.ForceUpdateCanvases();
-                    float maxOffset = Mathf.Max(0, Scroll.content.rect.height - Scroll.viewport.rect.height);
-                    offset = Mathf.Min(Array.IndexOf(visible, selected) * RowHeight, maxOffset);
-                }
-                Scroll.content.anchoredPosition = new Vector2(0, offset);
-                if (roster && !expanded) focusedRoster.ResetMotion();
+                if (compact) focusedRoster.Focus(revealSelected ? Array.IndexOf(visible, selected) : 0);
+                else Scroll.content.anchoredPosition = Vector2.zero;
             }
             SetDetail();
             ShowCards();
@@ -309,9 +329,11 @@ namespace AstralOath.Client.Home
         private void ShowCards()
         {
             int columns = Columns;
-            float height = RowHeight;
             bool compact = roster && !expanded;
-            float scrollY = Scroll.content.anchoredPosition.y - CompactInset;
+            float height = compact ? focusedRoster.LayoutCards(visible.Length, RosterCardStageHeight) : GridRowHeight;
+            if (compact) compactViewport = Scroll.viewport.rect.size;
+            if (height <= 0f) return;
+            float scrollY = Scroll.content.anchoredPosition.y - (compact ? focusedRoster.FocusLine : 0f);
             int firstRow = Mathf.Max(0, Mathf.FloorToInt(scrollY / height) - (compact ? 1 : 0));
             int viewRows = Mathf.CeilToInt(Mathf.Max(Scroll.viewport.rect.height, 1080f) / height) + 2;
             int first = firstRow * columns;
@@ -337,7 +359,7 @@ namespace AstralOath.Client.Home
                 int column = itemIndex % columns;
                 bool active = compact && itemIndex == selectedIndex;
                 if (compact)
-                    focusedRoster.PlaceCard(card.Root, RosterCardSize, itemIndex);
+                    focusedRoster.PlaceCard(card.Root, itemIndex);
                 else
                 {
                     card.Root.anchorMin = new Vector2((float)column / columns, 1);
@@ -459,8 +481,8 @@ namespace AstralOath.Client.Home
             private readonly Image[] stars;
             private readonly Image firstLevelDigit, secondLevelDigit, maximumLevel;
             private readonly Sprite[] levelDigits;
-            private readonly Image artifact;
-            private readonly GameText artifactLevel;
+            private readonly EquipmentSlotBinder artifactSlot;
+            private readonly bool roster;
 
             internal readonly RectTransform Root;
             internal readonly GameButton Button;
@@ -468,31 +490,31 @@ namespace AstralOath.Client.Home
 
             internal Card(GameObject instance, bool roster)
             {
+                this.roster = roster;
                 Root = (RectTransform)instance.transform;
                 var map = instance.GetComponent<BindingMap>();
                 name = map.Require<GameText>("name");
-                level = map.Require<GameText>("level");
                 portrait = map.Require<Image>("portrait");
                 selection = map.Require<Image>("selection");
                 element = map.Require<Image>("element");
                 role = map.Require<Image>("role");
                 stars = Enumerable.Range(0, 6).Select(index => map.Require<Image>("star" + index)).ToArray();
                 Button = instance.GetComponent<GameButton>();
+                string prefix = roster ? "rosterLevel" : "bagLevel";
+                firstLevelDigit = map.Require<Image>(prefix + "First");
+                secondLevelDigit = map.Require<Image>(prefix + "Second");
+                maximumLevel = map.Require<Image>(prefix + "Max");
+                levelDigits = Enumerable.Range(0, 10).Select(index => map.Require<Image>(prefix + "Digit" + index).sprite).ToArray();
                 if (!roster)
                 {
-                    firstLevelDigit = map.Require<Image>("bagLevelFirst");
-                    secondLevelDigit = map.Require<Image>("bagLevelSecond");
-                    maximumLevel = map.Require<Image>("bagLevelMax");
-                    artifact = map.Require<Image>("bagEquippedArtifact");
-                    artifactLevel = map.Require<GameText>("bagEquippedArtifactLevel");
-                    levelDigits = Enumerable.Range(0, 10).Select(index => map.Require<Image>("bagLevelDigit" + index).sprite).ToArray();
+                    level = map.Require<GameText>("level");
+                    artifactSlot = new EquipmentSlotBinder(map.Require<BindingMap>("bagArtifactSlot"));
                 }
             }
 
             internal void DisplayArtifact((Sprite Portrait, int Level) equipped)
             {
-                SetSprite(artifact, equipped.Portrait);
-                artifactLevel.text = equipped.Portrait ? "+" + equipped.Level.ToString(CultureInfo.InvariantCulture) : "";
+                artifactSlot.Set(equipped.Portrait, equipped.Level);
             }
 
             internal void Display(HeroInventoryItem item, string title, string levelText, HomeHeroArt.Hero art, Sprite star,
@@ -501,16 +523,23 @@ namespace AstralOath.Client.Home
                 Item = item;
                 Root.name = item.instanceId;
                 name.text = title;
-                level.text = levelText;
-                SetSprite(portrait, levelDigits == null && art?.cardPortrait ? art.cardPortrait : art?.portrait);
-                if (levelDigits != null)
+                if (level) level.text = levelText;
+                SetSprite(portrait, roster && art?.cardPortrait ? art.cardPortrait : art?.portrait);
+                if (roster && portrait.sprite)
                 {
-                    bool max = item.level == (item.stars == 1 ? 15 : item.stars * 10);
-                    maximumLevel.enabled = max;
-                    SetSprite(firstLevelDigit, max ? null : levelDigits[item.level >= 10 ? item.level / 10 : item.level]);
-                    SetSprite(secondLevelDigit, !max && item.level >= 10 ? levelDigits[item.level % 10] : null);
+                    var rect = portrait.rectTransform;
+                    rect.anchorMin = new Vector2(rect.anchorMax.x - portrait.sprite.rect.width / FocusedRosterScroll.CardSize.x,
+                        rect.anchorMin.y);
                 }
-                SetSprite(element, levelDigits == null && art?.cardElement ? art.cardElement : art?.element);
+                bool max = item.level == (item.stars == 1 ? 15 : item.stars * 10);
+                maximumLevel.enabled = max;
+                // The bag reads from the left. The roster's rank anchor reads units from the right.
+                bool tensFirst = !roster && item.level >= 10;
+                int first = tensFirst ? item.level / 10 : item.level % 10;
+                int second = tensFirst ? item.level % 10 : item.level / 10;
+                SetSprite(firstLevelDigit, max ? null : levelDigits[first]);
+                SetSprite(secondLevelDigit, !max && item.level >= 10 ? levelDigits[second] : null);
+                SetSprite(element, roster && art?.cardElement ? art.cardElement : art?.element);
                 SetSprite(role, art?.role);
                 selection.enabled = selected;
                 for (int index = 0; index < stars.Length; ++index)

@@ -43,18 +43,15 @@ namespace AstralOath.Editor
             bindings.Add(("artifactCapacity", capacity));
 
             var nativeSlot = (RectTransform)roster.Find("Selected hero detail/Hero equipment slots/Empty artifact slot");
+            var equipmentSlot = nativeSlot.GetComponent<BindingMap>();
             var slot = nativeSlot.gameObject.AddComponent<GameButton>();
-            slot.targetGraphic = nativeSlot.GetComponent<Image>();
+            slot.targetGraphic = equipmentSlot.Require<Image>("frame");
             slot.targetGraphic.raycastTarget = true;
+            UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(slot.targetGraphic);
             slot.transition = Selectable.Transition.None;
-            var equipped = Paint(Area(nativeSlot, "Equipped artifact art", .04f, .05f, .92f, .90f), null, Color.white);
-            equipped.preserveAspect = true;
-            equipped.enabled = false;
-            var level = Text(nativeSlot, "Equipped artifact level", null, 24, .40f, 0, .55f, .2f,
-                new Color32(255, 182, 66, 255), TextAlignmentOptions.Right);
             bindings.Add(("artifactSlot", slot));
-            bindings.Add(("artifactSlotImage", equipped));
-            bindings.Add(("artifactSlotLevel", level));
+            bindings.Add(("artifactEquipmentSlot", equipmentSlot));
+            bindings.Add(("artifactSlotImage", equipmentSlot.Require<Image>("item")));
 
             var heroDetail = (RectTransform)roster.Find("Selected hero detail");
             var trial = Action(heroDetail, "Artifact Trial", InventoryPrefix + "artifact_trial", 23,

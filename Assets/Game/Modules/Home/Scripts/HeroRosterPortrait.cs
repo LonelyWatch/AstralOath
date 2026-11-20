@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using AstralOath.Client.Skeletons;
 using UnityEngine;
@@ -18,6 +16,8 @@ namespace AstralOath.Client.Home
         private readonly int renderSize;
         private readonly int positionOffset;
         private readonly bool animated;
+        private readonly bool equipment;
+        private readonly HeroPortraitSources sources;
         private readonly float framing, headFocus;
         private GameObject stage;
         private Camera camera;
@@ -28,7 +28,10 @@ namespace AstralOath.Client.Home
         private bool visible;
         private int lastFrame = -1;
 
-        public HeroRosterPortrait(RawImage output, int renderSize = 768, bool animated = true,
+        public HeroRosterPortrait(RawImage equipmentPortrait, HeroPortraitSources sources = null)
+            : this(equipmentPortrait, 768) { equipment = true; this.sources = sources; }
+
+        public HeroRosterPortrait(RawImage output, int renderSize, bool animated = true,
             int positionOffset = 0, float framing = 1.07f, float headFocus = 0f)
         {
             this.output = output;
@@ -49,18 +52,13 @@ namespace AstralOath.Client.Home
                 return false;
             try
             {
-                using var atlas = new StringReader(next.atlas.text);
-                string pageName;
-                do { pageName = atlas.ReadLine()?.Trim().TrimStart('\uFEFF'); }
-                while (pageName != null && pageName.Length == 0);
-                if (string.IsNullOrEmpty(pageName)) return false;
+                var skeleton = sources == null ? HeroPortraitSources.Create(next) : sources.Get(next);
+                if (skeleton == null) return false;
                 var shader = authoredMaterial ? authoredMaterial.shader : Resources.Load<Shader>("AstralOathArenaDraftPortrait");
                 if (!shader) return false;
                 stage = new GameObject("Inventory hero portrait") { layer = Layer, hideFlags = HideFlags.HideAndDontSave };
                 stage.transform.position = new Vector3(24000 + positionOffset, 16000, 0);
-                player = new SkeletonPlayerFactory().Create(new SkeletonPlayerSource(next.skeleton.text, next.atlas.text,
-                    new Dictionary<string, Texture2D>(StringComparer.Ordinal) { [pageName] = next.page },
-                    premultipliedAlpha: true), stage.transform);
+                player = new SkeletonPlayerFactory().Create(skeleton, stage.transform);
                 if (player.Skins.Contains("normal")) player.SetSkin("normal");
                 if (player.Animations.Any(item => item.Name == "idle")) player.Play("idle", true);
                 var mesh = player.Root.GetComponent<MeshFilter>().sharedMesh;
@@ -77,18 +75,28 @@ namespace AstralOath.Client.Home
                 camera.allowHDR = false;
                 camera.allowMSAA = false;
                 camera.depth = -100f;
-                var bounds = mesh.bounds;
-                var center = bounds.center;
-                // Keep the full authored idle pose inside a square UI surface with breathing room.
-                camera.orthographicSize = Mathf.Max(bounds.extents.x, bounds.extents.y) * framing;
-                if (headFocus > 0f && player.TryGetBoneSkeletonPosition("ui_face", out var face) && face.y > 0f)
+                if (equipment)
                 {
-                    // The art defines this point for UI crops, independent of wings, weapons and cloth.
-                    camera.orthographicSize = face.y * .5f * framing;
-                    center.x = face.x;
-                    center.y = face.y - camera.orthographicSize * (1f - 2f * headFocus);
+                    // Equipment display: 720 design pixels cover 900 source pixels
+                    // (.01 world units each). The model origin is 20 design pixels
+                    // to the right of page centre at the bottom of the composition.
+                    camera.orthographicSize = 4.5f;
+                    camera.transform.localPosition = new Vector3(-.25f, 4.5f, -10f);
                 }
-                camera.transform.localPosition = new Vector3(center.x, center.y, -10f);
+                else
+                {
+                    var bounds = mesh.bounds;
+                    var center = bounds.center;
+                    camera.orthographicSize = Mathf.Max(bounds.extents.x, bounds.extents.y) * framing;
+                    if (headFocus > 0f && player.TryGetBoneSkeletonPosition("ui_face", out var face) && face.y > 0f)
+                    {
+                        // Summon crops around the character's authored face point.
+                        camera.orthographicSize = face.y * .5f * framing;
+                        center.x = face.x;
+                        center.y = face.y - camera.orthographicSize * (1f - 2f * headFocus);
+                    }
+                    camera.transform.localPosition = new Vector3(center.x, center.y, -10f);
+                }
                 EnsureTarget();
                 if (!animated)
                 {

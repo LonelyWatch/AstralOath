@@ -33,7 +33,6 @@ namespace AstralOath.Editor
             var refs = new List<(string, Object)>();
             void Add(string key, Object node) => refs.Add((key, node));
             Add("layout", root);
-            Picture(root, "Native blue and red backdrop", DraftSprite("base_pvplive_eff"), 0, 0, 998f / 1280, 1);
             var stage = Area(root, "Draft stage", 0, 0, 998f / 1280, 1);
             var center = Area(stage, "Featured hero", 0, 0, 1, 1);
             center.gameObject.AddComponent<RectMask2D>();
@@ -49,8 +48,6 @@ namespace AstralOath.Editor
             rightRail.rectTransform.localScale = new Vector3(-1, 1, 1);
             Add("blue", DraftArc(stage, false, "Blue active arc"));
             Add("red", DraftArc(stage, true, "Red active arc"));
-            Add("blueGuide", DraftGuide(stage, "Ally pick light", 274f));
-            Add("redGuide", DraftGuide(stage, "Enemy pick light", 722f));
             for (int row = 0; row < 5; row++)
             {
                 float width = NativeSlotWidths[row];
@@ -60,6 +57,8 @@ namespace AstralOath.Editor
                 Add("blue" + row, NativeTeamCard(left, row, false));
                 Add("red" + row, NativeTeamCard(right, row, true));
             }
+            Add("blueGuide", DraftGuide(stage, "Ally pick light", 274f));
+            Add("redGuide", DraftGuide(stage, "Enemy pick light", 722f));
             var formation = Area(stage, "Formation slots", 0, 0, 1, 1);
             Add("formation", formation.gameObject);
             // Native CSB places model origins independently of floor plate centers.
@@ -115,7 +114,7 @@ namespace AstralOath.Editor
             VerticalRule(pool, "Border", 0, .016f, .018f, .97f, Gold * .72f);
             Text(pool, "Roster caption", "arena.draft.roster", 23, .065f, .017f, .87f, .047f, Mist);
             Add("search", DraftSearch(pool, "Find hero", .52f, .071f, .43f, .062f));
-            var roster = Scroll(pool, "Scroll heroes", 0, .149f, 1, .841f);
+            var roster = Scroll(pool, "Scroll heroes", 0, .160f, 1, .830f);
             // The viewport reveals the overhang. Empty scroll space stays on the sidebar.
             roster.viewport.offsetMin = new Vector2(-90f, 0);
             Object.DestroyImmediate(roster.viewport.GetComponent<Image>());
@@ -123,6 +122,7 @@ namespace AstralOath.Editor
             scrollSurface.canvasRenderer.cullTransparentMesh = false;
             Object.DestroyImmediate(roster.content.GetComponent<VerticalLayoutGroup>());
             Object.DestroyImmediate(roster.content.GetComponent<ContentSizeFitter>());
+            roster.gameObject.AddComponent<FocusedRosterScroll>().enabled = false;
             Add("roster", roster);
             Add("row", BuildDraftRosterRow(root).gameObject);
             DraftTemplate(root, "Preban hero template", 92, HudSprite("_hero_s_bg_ally"), false, true, out var gridTemplate, prebanCard: true);
@@ -343,7 +343,7 @@ namespace AstralOath.Editor
         private static RawImage DraftGuide(RectTransform stage, string name, float x)
         {
             // pvplive_ready.csb places both effect origins at y=326 in bottom-left coordinates.
-            var light = Raw(stage, name, (x - 210f) / 998f, (720f - 326f - 320f) / 720f, 420f / 998f, 640f / 720f);
+            var light = Raw(stage, name, (x - 250f) / 998f, (720f - 326f - 600f) / 720f, 500f / 998f, 1200f / 720f);
             light.color = new Color32(255, 255, 255, 127);
             return light;
         }

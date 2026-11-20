@@ -20,10 +20,11 @@ namespace AstralOath.Client.Arena
         internal TMP_InputField Search(string key) => Bindings.Require<TMP_InputField>(key);
         internal BindingMap Card(string side, int index) => Bindings.Require<BindingMap>(side + index);
         internal BindingMap Avatar(string side) => Bindings.Require<BindingMap>(side + "Avatar");
+        internal RectTransform Layout { get; private set; }
 
         internal void FitLayout()
         {
-            var layout = Bindings.Require<RectTransform>("layout");
+            var layout = Layout;
             var parent = (RectTransform)layout.parent;
             float scale = Mathf.Min(parent.rect.width / 1920f, parent.rect.height / 1080f);
             layout.localScale = Vector3.one * Mathf.Max(.01f, scale);
@@ -47,7 +48,7 @@ namespace AstralOath.Client.Arena
             _ = Surface("blueGuide");
             _ = Surface("redGuide");
             _ = Picture("actionArrow");
-            _ = Bindings.Require<RectTransform>("layout");
+            Layout = Bindings.Require<RectTransform>("layout");
             _ = Picture("banGlow");
             _ = Node("hostPing");
             _ = Bindings.Require<BindingMap>("hostAvatar"); _ = Bindings.Require<BindingMap>("guestAvatar");

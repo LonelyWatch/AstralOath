@@ -159,7 +159,8 @@ namespace AstralOath.Client.Tests
             yield return Wait(() => draft.Require<GameText>("title").text == "你的回合", "The draft did not enter the host turn.");
             var allyGuide = draft.Require<RawImage>("blueGuide");
             var enemyGuide = draft.Require<RawImage>("redGuide");
-            Assert.That(allyGuide.enabled && enemyGuide.enabled && allyGuide.texture && enemyGuide.texture, Is.True);
+            Assert.That(allyGuide.enabled && allyGuide.texture, Is.True, "Our pick turn must light the allied arc.");
+            Assert.That(enemyGuide.enabled, Is.False, "The opponent's inactive arc must keep its base frame.");
             Assert.That(allyGuide.raycastTarget || enemyGuide.raycastTarget, Is.False);
             Assert.That(draft.transform.Find("Native reference layout/Draft stage/Exit draft"), Is.Null);
             Assert.That(draft.Require<GameObject>("revealedOwn").transform.childCount, Is.EqualTo(2));
@@ -215,9 +216,9 @@ namespace AstralOath.Client.Tests
                 "The focused card must extend visibly past the sidebar divider.");
             Assert.That(focusBounds.min.x, Is.GreaterThanOrEqualTo(viewportBounds.min.x),
                 "The scroll viewport must not clip the focused card horizontally.");
-            float plateRight = focusBounds.max.x - 8f * rollThird.localScale.x;
-            Assert.That(sidebar.rect.xMax - plateRight, Is.InRange(-1f, 4f),
-                "The focused card must align with the sidebar right edge.");
+            float rightOverhang = (focusBounds.max.x - sidebar.rect.xMax) / rollThird.localScale.x;
+            Assert.That(rightOverhang, Is.InRange(35f, 39f),
+                "The right edge must crop the focused card's transparent margin and part of its portrait.");
 
             var visibleRows = scroll.content.Cast<RectTransform>()
                 .Where(row => row.gameObject.activeInHierarchy)
@@ -334,13 +335,15 @@ namespace AstralOath.Client.Tests
                     var effect = draft.Require<BindingMap>("blue0").Require<RawImage>("confirm");
                     var pickPortrait = draft.Require<RawImage>("featured");
                     yield return Wait(() => effect.enabled && effect.texture, "Our confirmed pick did not play blue feedback.");
+                    Assert.That(enemyGuide.enabled && enemyGuide.texture && !allyGuide.enabled, Is.True,
+                        "The turn must switch to red while the confirmed allied card is still flashing.");
                     Assert.That(pickPortrait.rectTransform.anchoredPosition.y > 0f ||
                         pickPortrait.material.GetFloat("_WhiteFlash") > 0f, Is.True, "The featured hero did not hop or flash.");
                     yield return CapturePickSequence(effect, "bp-pick-confirm-blue");
                     yield return Wait(() => !effect.enabled, "The confirmed pick effect did not release.");
                     Assert.That(pickPortrait.material.GetFloat("_WhiteFlash"), Is.Zero);
                     Assert.That(draft.Require<GameText>("actionLabel").text, Does.StartWith("等待中"));
-                    Assert.That(allyGuide.enabled && enemyGuide.enabled, Is.True);
+                    Assert.That(enemyGuide.enabled && !allyGuide.enabled, Is.True);
                     Assert.That(draft.Require<GameButton>("action").interactable, Is.False);
                     Assert.That(draft.Require<Image>("actionArrow").enabled, Is.True);
                     Assert.That(draft.Require<GameButton>("action").targetGraphic.color.a, Is.LessThan(.4f));
