@@ -74,9 +74,9 @@ Unity 2022.3.62f3 / URP / UGUI / TMP；Common/AOT 通用设施；普通 C# UIBas
 
 ## 当前可用
 
-Windows x64 的 70 人本机试玩包为 0.1.21 / R18，配套服务端使用规则 17。压缩包可在本机独立启动游戏、内容服务和数据库。签名资源与新母包的冷启动已验收。[交付包与实机记录](delivery/2026-11-20-windows-roster70-package.md)
+首个 70 人 Windows x64 本机试玩包为 0.1.21 / R18，采用规则 17 服务端。[该版交付包与实机记录](delivery/2026-11-20-windows-roster70-package.md)
 
-当前本机游戏服务地址为 `http://127.0.0.1:7728`。从试玩目录重复打开 `AstralOath-Play.exe` 可同时运行多个客户端，各窗口共用同一个服务端。已分发的客户端使用 Windows 0.1.22 母包和 R21 内容。后续英雄页固定装备槽、宽窄屏滑条、立绘和行动方光效已通过 Unity 图形回归，登录库存缓存和本机真实神器操作也已验证。通用组件涉及 Common AOT，Windows 交付需新母包。[启动、关闭与多开说明](development/server.md#本机试玩与多开) · [英雄页与缓存验收](delivery/2026-11-21-hero-layout-and-navigation.md) · [选人光效](development/arena-draft.md#角色滑条与引导光复核)
+当前本机游戏服务为 `http://127.0.0.1:7728`，Windows 最低客户端版本为 0.1.23。0.1.23 / R22 完整试玩包已交付，内容源使用 5295。包含英雄页装备槽、宽窄屏滑条、立绘、选人光效与登录库存缓存。已验证 ZIP 解压、独立数据目录启动、R22 原生客户端无窗口激活与双进程回包、旧版本选服拒绝，普通窗口的强更弹窗未目视复核。[强更包及验收](delivery/2026-11-21-windows-r22.md) · [启动与多开](development/server.md#本机试玩与多开) · [英雄页实拍](delivery/2026-11-21-hero-layout-and-navigation.md)
 
 - FoundationDemo：界面绑定、本地化、配置、资源、动画、网络回显和生命周期演示。服务端与客户端分别位于 Server 与 Assets/Game，共享契约在 Shared。
 - GameText / GameButton 直接继承 TMP / Button，右键 UI 提供创建入口；63对已有控件已迁移，GUID和配置保留。
