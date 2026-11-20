@@ -29,10 +29,8 @@ namespace AstralOath.Client.Arena
         private float lastRosterOffset = float.NaN, lastRosterWidth, lastRosterHeight, lastRosterStep;
         private int? localLatency;
         private int lastRosterFocus = -1;
-        private ArenaDraftRosterGesture rosterGesture;
-        private float observedRosterOffset, rosterMovedAt, snapFrom, snapTime;
-        private int snapIndex = -1, previewSequence;
-        private bool rosterMoving;
+        private FocusedRosterScroll rosterScrollController;
+        private int previewSequence;
         private readonly Dictionary<string, ArenaDraftArt.Hero> art;
         private readonly Sprite[] scoreDigits;
         private readonly ArenaDraftArt artwork;
@@ -50,6 +48,7 @@ namespace AstralOath.Client.Arena
         private readonly Choice[] left = new Choice[5], right = new Choice[5], positions = new Choice[4];
         private readonly ArenaDraftPortrait[] modelSurfaces = new ArenaDraftPortrait[4];
         private readonly ArenaDraftPortrait feature, banFeedback;
+        private readonly ArenaDraftPortrait blueGuide, redGuide;
         private readonly ArenaDraftPortrait[] blueFeedback = new ArenaDraftPortrait[5], redFeedback = new ArenaDraftPortrait[5];
         private readonly Dictionary<string, Texture2D> particleTextures;
         private static readonly int[] NativeSlotWidths = { 291, 226, 196, 196, 226 };
@@ -90,6 +89,9 @@ namespace AstralOath.Client.Arena
 
             Image[] Clock(string key) => new[] { view.Picture(key + "Tens"), view.Picture(key + "Units"), view.Picture(key + "Single") };
             feature = new ArenaDraftPortrait(view.Surface("featured"));
+            var guideSize = new Vector2(420f, 640f) * 2.24f;
+            blueGuide = new ArenaDraftPortrait(view.Surface("blueGuide"), nativeEffectSize: guideSize, blendCardLight: true);
+            redGuide = new ArenaDraftPortrait(view.Surface("redGuide"), nativeEffectSize: guideSize, blendCardLight: true);
             var banSurface = view.Surface("banFeedback");
             banSurface.color = Color.white;
             banFeedback = new ArenaDraftPortrait(banSurface,
@@ -145,11 +147,8 @@ namespace AstralOath.Client.Arena
             var rosterScroll = view.Scroll("roster");
             rosterScroll.StopMovement();
             rosterScroll.content.anchoredPosition = Vector2.zero;
-            if (!rosterScroll.TryGetComponent(out rosterGesture))
-                rosterGesture = rosterScroll.gameObject.AddComponent<ArenaDraftRosterGesture>();
-            rosterGesture.ResetDrag();
+            rosterScrollController = FocusedRosterScroll.Bind(rosterScroll, owner, CanFocusRosterIndex, FocusRosterIndex);
             previewSequence = 0;
-            ResetRosterMotion(rosterScroll);
             WatchSearch("search");
             WatchSearch("preSearch");
             Listen(view.Button("action"), SubmitAsync);
@@ -188,10 +187,11 @@ namespace AstralOath.Client.Arena
             if (prebanReveal.Tick(seconds)) Render();
             UpdateTimer();
             LayoutRoster();
-            UpdateRosterSnap(seconds);
             FitGrid(prebanLayout, gridViewport.rect.width);
             FitGrid(recentLayout, recentGrid.rect.width);
             feature.Tick(seconds);
+            blueGuide.Tick(seconds);
+            redGuide.Tick(seconds);
             foreach (var model in modelSurfaces) model.Tick(seconds);
             foreach (var effect in blueFeedback) effect.Tick(seconds);
             foreach (var effect in redFeedback) effect.Tick(seconds);
@@ -276,6 +276,7 @@ namespace AstralOath.Client.Arena
                 await BattleOnlineLaunch.LoadAsync(assets, scenes, api.Endpoint, match.roomId, match.battleId, match.contentHash,
                     api.Bearer, match.IsHost, token, identities, prepared);
                 loadedBattle = match.battleId;
+                if (!token.IsCancellationRequested) view.Hide();
             }
             catch (OperationCanceledException) when (token.IsCancellationRequested) { prepared?.Dispose(); }
             catch (Exception error)
@@ -426,6 +427,16 @@ namespace AstralOath.Client.Arena
             RenderActions(canAct, pick, ban, arrange, finishingBan);
             view.Picture("blue").enabled = !pick || draft.OwnTurn;
             view.Picture("red").enabled = !pick || !draft.OwnTurn;
+            if (pick && !showingReveal)
+            {
+                blueGuide.Show(artwork.BlueGuide.MakeSource(), animation: "intro");
+                redGuide.Show(artwork.RedGuide.MakeSource(), animation: "intro");
+            }
+            else
+            {
+                blueGuide.Clear();
+                redGuide.Clear();
+            }
             view.Picture("banMark").enabled = ban && !banFeedback.IsVisible;
             view.Picture("banGlow").enabled = ban;
             // Keep the final-ban instruction below the stamp and its brightest sparks.
@@ -618,10 +629,7 @@ namespace AstralOath.Client.Arena
                 int selectedIndex = Array.FindIndex(visibleRoster, row => row.Id == id);
                 if (draft.phase == "pick" && selectedIndex >= 0)
                 {
-                    var scroll = view.Scroll("roster");
-                    scroll.StopMovement();
-                    scroll.content.anchoredPosition = new Vector2(0, selectedIndex * RosterStep);
-                    ResetRosterMotion(scroll);
+                    rosterScrollController.Focus(selectedIndex);
                     PublishPreview(id);
                 }
             }
@@ -774,7 +782,7 @@ namespace AstralOath.Client.Arena
             }
             view.Node("rosterEmpty").SetActive(visibleRoster.Length == 0);
             LayoutRoster();
-            if (changed) ResetRosterMotion(view.Scroll("roster"));
+            if (changed) rosterScrollController.ResetMotion();
             Filter(grid, view.Search("preSearch").text);
         }
 
@@ -799,105 +807,30 @@ namespace AstralOath.Client.Arena
             float width = scroll.viewport.rect.width, height = scroll.viewport.rect.height;
             if (width <= 8f || height <= 0f) return;
             float step = RosterStep;
-            // The first hero starts on the third position. Dragging down to later heroes
-            // reveals the two prior cards above the focus line.
-            float focusLine = Mathf.Min(height * .23f, 2.5f * step);
-            float maxOffset = Mathf.Max(0, visibleRoster.Length - 1) * step;
-            float extent = height + maxOffset;
-            if (!Mathf.Approximately(scroll.content.rect.height, extent))
-                scroll.content.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, extent);
-            float offset = Mathf.Clamp(scroll.content.anchoredPosition.y, 0, maxOffset);
-            if (!Mathf.Approximately(scroll.content.anchoredPosition.y, offset))
-                scroll.content.anchoredPosition = new Vector2(0, offset);
+            rosterScrollController.Layout(visibleRoster.Length, step);
+            float offset = scroll.content.anchoredPosition.y;
             if (Mathf.Abs(lastRosterOffset - offset) < .02f && lastRosterWidth == width && lastRosterHeight == height &&
                 lastRosterStep == step) return;
             lastRosterOffset = offset;
             lastRosterWidth = width;
             lastRosterHeight = height;
             lastRosterStep = step;
-            float focus = offset / step;
-            int nearest = Mathf.Clamp(Mathf.RoundToInt(focus), 0, Mathf.Max(0, visibleRoster.Length - 1));
-            float fullScale = (width - 10f) / RosterCardSize.x * (rosterFilter.Compact ? .86f : 1f);
+            int nearest = rosterScrollController.Nearest;
             for (int i = 0; i < visibleRoster.Length; i++)
-            {
-                var row = (RectTransform)visibleRoster[i].Button.transform;
-                float distance = Mathf.Abs(i - focus);
-                float scale = fullScale * Mathf.Lerp(.70f, 1f, Mathf.Exp(-distance * .58f));
-                row.anchorMin = row.anchorMax = new Vector2(1, 1);
-                row.pivot = new Vector2(1, .5f);
-                // The native plate has transparent pixels along its right edge.
-                row.anchoredPosition = new Vector2(10f, -(focusLine + i * step));
-                row.sizeDelta = RosterCardSize;
-                row.localScale = new Vector3(scale, scale, 1f);
-            }
-            // Far rows are raised first. The focused card draws on top of both neighbors.
+                rosterScrollController.PlaceCard((RectTransform)visibleRoster[i].Button.transform, RosterCardSize, i,
+                    rosterFilter.Compact ? .86f : 1f);
             if (visibleRoster.Length == 0 || nearest == lastRosterFocus) return;
             lastRosterFocus = nearest;
-            int maxDistance = Mathf.Max(nearest, visibleRoster.Length - 1 - nearest);
-            for (int distance = maxDistance; distance > 0; distance--)
-            {
-                if (nearest - distance >= 0) visibleRoster[nearest - distance].Button.transform.SetAsLastSibling();
-                if (nearest + distance < visibleRoster.Length) visibleRoster[nearest + distance].Button.transform.SetAsLastSibling();
-            }
-            visibleRoster[nearest].Button.transform.SetAsLastSibling();
+            FocusedRosterScroll.RaiseNearest(visibleRoster.Length, nearest, RaiseRosterCard);
         }
 
-        private void ResetRosterMotion(ScrollRect scroll)
+        private void RaiseRosterCard(int index) => visibleRoster[index].Button.transform.SetAsLastSibling();
+
+        private bool CanFocusRosterIndex(int index) => !CanPreviewRoster || CanSelect(visibleRoster[index].Id);
+
+        private void FocusRosterIndex(int index)
         {
-            observedRosterOffset = scroll.content.anchoredPosition.y;
-            rosterMoving = false;
-            snapIndex = -1;
-        }
-
-        private void UpdateRosterSnap(float seconds)
-        {
-            var scroll = view.Scroll("roster");
-            float offset = scroll.content.anchoredPosition.y;
-            bool moved = Mathf.Abs(offset - observedRosterOffset) > .1f;
-            observedRosterOffset = offset;
-            if (moved || rosterGesture.Dragging)
-            {
-                if (moved)
-                {
-                    rosterMoving = true;
-                    snapIndex = -1;
-                }
-                rosterMovedAt = Time.unscaledTime;
-                return;
-            }
-
-            if (snapIndex >= 0)
-            {
-                snapTime += seconds;
-                float progress = Mathf.Clamp01(snapTime / .12f);
-                scroll.content.anchoredPosition = new Vector2(0, Mathf.SmoothStep(snapFrom, snapIndex * RosterStep, progress));
-                observedRosterOffset = scroll.content.anchoredPosition.y;
-                if (progress < 1f) return;
-
-                string id = visibleRoster[snapIndex].Id;
-                ResetRosterMotion(scroll);
-                if (CanPreviewRoster && CanSelect(id)) Select(id);
-                return;
-            }
-
-            if (!rosterMoving || visibleRoster.Length == 0 || Time.unscaledTime - rosterMovedAt < .12f) return;
-            scroll.StopMovement();
-            snapIndex = Mathf.Clamp(Mathf.RoundToInt(offset / RosterStep), 0, visibleRoster.Length - 1);
-            if (CanPreviewRoster && !CanSelect(visibleRoster[snapIndex].Id))
-            {
-                // Keep the focus on a legal candidate after passing a picked or banned card.
-                int nearest = snapIndex;
-                for (int distance = 1; distance < visibleRoster.Length; distance++)
-                {
-                    int after = nearest + distance;
-                    int before = nearest - distance;
-                    if (after < visibleRoster.Length && CanSelect(visibleRoster[after].Id)) { snapIndex = after; break; }
-                    if (before >= 0 && CanSelect(visibleRoster[before].Id)) { snapIndex = before; break; }
-                }
-            }
-            snapFrom = offset;
-            snapTime = 0f;
-            rosterMoving = false;
+            if (CanPreviewRoster) Select(visibleRoster[index].Id);
         }
 
         private bool CanPreviewRoster => draft?.phase == "pick" && draft.OwnTurn && !sending && !prebanReveal.IsPlaying;
@@ -969,6 +902,8 @@ namespace AstralOath.Client.Arena
         public void Dispose()
         {
             feature.Dispose();
+            blueGuide.Dispose();
+            redGuide.Dispose();
             banFeedback.Dispose();
             prebanReveal.Dispose();
             foreach (var effect in blueFeedback) effect.Dispose();
@@ -984,6 +919,8 @@ namespace AstralOath.Client.Arena
             scope = null;
             visibleRoster = Array.Empty<Choice>();
             feature.Clear();
+            blueGuide.Clear();
+            redGuide.Clear();
             banFeedback.Clear();
             foreach (var effect in blueFeedback) effect.Clear();
             foreach (var effect in redFeedback) effect.Clear();

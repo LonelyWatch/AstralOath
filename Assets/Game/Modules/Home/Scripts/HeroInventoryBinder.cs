@@ -31,6 +31,8 @@ namespace AstralOath.Client.Home
         private HeroInventorySnapshot snapshot;
         private HeroInventoryItem[] visible = Array.Empty<HeroInventoryItem>();
         private HeroInventoryItem selected;
+        private FocusedRosterScroll focusedRoster;
+        private static readonly Vector2 RosterCardSize = new Vector2(361f, 112f);
         private bool roster, expanded, loading, failed;
         private Tab tab;
         private string classFilter;
@@ -55,7 +57,10 @@ namespace AstralOath.Client.Home
                     () => selected, ClassForTemplate, HeroNameForInstance, OnArtifactsChanged);
         }
 
-        public async Task OpenAsync(bool roster, BindingScope scope)
+        public Task OpenAsync(bool roster, BindingScope scope) => OpenAsync(roster, scope, null, null);
+
+        public async Task OpenAsync(bool roster, BindingScope scope, HeroInventorySnapshot initialHeroes,
+            ArtifactInventorySnapshot initialArtifacts)
         {
             screen = scope;
             this.roster = roster;
@@ -65,6 +70,7 @@ namespace AstralOath.Client.Home
             view.Show();
             if (roster)
             {
+                focusedRoster = FocusedRosterScroll.Bind(view.RosterScroll, scope, null, SelectFocusedInstance);
                 var currentPortrait = new HeroRosterPortrait(view.DetailPortrait);
                 portrait = currentPortrait;
                 Canvas.willRenderCanvases += currentPortrait.Tick;
@@ -134,17 +140,19 @@ namespace AstralOath.Client.Home
             if (artifacts != null)
             {
                 artifacts.Bind(scope);
-                await Task.WhenAll(ReloadAsync(scope.Token), artifacts.PreloadAsync(scope.Token));
+                await Task.WhenAll(ReloadAsync(scope.Token, initialHeroes), artifacts.PreloadAsync(scope.Token, initialArtifacts));
             }
-            else await ReloadAsync(scope.Token);
+            else await ReloadAsync(scope.Token, initialHeroes);
         }
 
         private ScrollRect Scroll => roster ? view.RosterScroll : view.BagScroll;
         private int Columns => roster && expanded ? 4 : 1;
         private float RowHeight => roster ? (expanded ? 142.5f : 86f) : 217.5f;
-        private float CompactInset => roster && !expanded ? 145f : 0f;
+        private float CompactInset => roster && !expanded ? focusedRoster.FocusLine : 0f;
 
-        private async Task ReloadAsync(CancellationToken token)
+        private Task ReloadAsync(CancellationToken token) => ReloadAsync(token, null);
+
+        private async Task ReloadAsync(CancellationToken token, HeroInventorySnapshot initial)
         {
             snapshot = null;
             selected = null;
@@ -153,7 +161,7 @@ namespace AstralOath.Client.Home
             Refresh(resetScroll: true);
             try
             {
-                snapshot = await fetch(token);
+                snapshot = initial ?? await fetch(token);
                 token.ThrowIfCancellationRequested();
                 failed = snapshot == null;
             }
@@ -211,6 +219,7 @@ namespace AstralOath.Client.Home
         private void SetExpanded(bool enabled)
         {
             expanded = enabled;
+            if (roster) focusedRoster.enabled = !enabled;
             view.RosterDetail.gameObject.SetActive(!expanded);
             view.RosterSidebar.anchorMin = expanded ? new Vector2(.012f, 0) : new Vector2(.780f, .129f);
             view.RosterSidebar.anchorMax = new Vector2(expanded ? .820f : 1f, .810f);
@@ -223,6 +232,10 @@ namespace AstralOath.Client.Home
 
         private void OnSearch(string _) => Refresh(resetScroll: true);
         private void OnScroll(Vector2 _) => ShowCards();
+        private void SelectFocusedInstance(int index)
+        {
+            if (selected != visible[index]) Select(visible[index]);
+        }
         private void Select(HeroInventoryItem hero)
         {
             selected = hero;
@@ -232,6 +245,7 @@ namespace AstralOath.Client.Home
                 Refresh(resetScroll: true, revealSelected: true);
                 return;
             }
+            focusedRoster.Focus(Array.IndexOf(visible, hero));
             SetDetail();
             ShowCards();
         }
@@ -271,9 +285,10 @@ namespace AstralOath.Client.Home
             view.Status.gameObject.SetActive(status != null);
             if (status != null) view.Status.text = locale.Resolve(TextPrefix + status);
             view.Retry.gameObject.SetActive(heroes && failed);
-            float overlapTail = roster && !expanded && visible.Length != 0 ? 48f : 0f;
-            Scroll.content.sizeDelta = new Vector2(0f, CompactInset +
-                Mathf.CeilToInt((float)visible.Length / Columns) * RowHeight + overlapTail);
+            if (roster && !expanded)
+                focusedRoster.Layout(visible.Length, RowHeight);
+            else
+                Scroll.content.sizeDelta = new Vector2(0f, Mathf.CeilToInt((float)visible.Length / Columns) * RowHeight);
             if (resetScroll)
             {
                 Scroll.StopMovement();
@@ -285,6 +300,7 @@ namespace AstralOath.Client.Home
                     offset = Mathf.Min(Array.IndexOf(visible, selected) * RowHeight, maxOffset);
                 }
                 Scroll.content.anchoredPosition = new Vector2(0, offset);
+                if (roster && !expanded) focusedRoster.ResetMotion();
             }
             SetDetail();
             ShowCards();
@@ -307,7 +323,6 @@ namespace AstralOath.Client.Home
                 cards.Add(card);
             }
             int selectedIndex = Array.IndexOf(visible, selected);
-            RectTransform selectedCard = null;
             for (int index = cards.Count - 1; index >= 0; --index)
             {
                 var card = cards[index];
@@ -320,24 +335,25 @@ namespace AstralOath.Client.Home
                 HeroInventoryItem item = visible[itemIndex];
                 artwork.TryGetValue(item.templateId, out var art);
                 int column = itemIndex % columns;
-                card.Root.anchorMin = new Vector2((float)column / columns, 1);
-                card.Root.anchorMax = new Vector2((float)(column + 1) / columns, 1);
-                card.Root.pivot = new Vector2(.5f, 1f);
                 bool active = compact && itemIndex == selectedIndex;
-                float visualHeight = compact ? (active ? 134f : 111f) : roster ? height - 22.5f : height;
-                float x = compact ? Mathf.Min(Mathf.Abs(itemIndex - selectedIndex), 3) * 27f : 0f;
-                card.Root.sizeDelta = new Vector2(roster ? -8f : 0f, visualHeight);
-                card.Root.anchoredPosition = new Vector2(x, -CompactInset - (itemIndex / columns) * height);
+                if (compact)
+                    focusedRoster.PlaceCard(card.Root, RosterCardSize, itemIndex);
+                else
+                {
+                    card.Root.anchorMin = new Vector2((float)column / columns, 1);
+                    card.Root.anchorMax = new Vector2((float)(column + 1) / columns, 1);
+                    card.Root.pivot = new Vector2(.5f, 1f);
+                    card.Root.sizeDelta = new Vector2(roster ? -8f : 0f, roster ? height - 22.5f : height);
+                    card.Root.anchoredPosition = new Vector2(0f, -(itemIndex / columns) * height);
+                    card.Root.localScale = Vector3.one;
+                }
                 card.Display(item, Name(item), Level(item), art, star, active);
                 if (!roster) card.DisplayArtifact(artifacts?.EquippedCard(item.instanceId) ?? (null, 0));
-                if (compact)
-                {
-                    card.Root.SetAsLastSibling();
-                    if (active) selectedCard = card.Root;
-                }
             }
-            if (selectedCard) selectedCard.SetAsLastSibling();
+            if (compact && count > 0) FocusedRosterScroll.RaiseNearest(count, focusedRoster.Nearest - first, RaiseCard);
         }
+
+        private void RaiseCard(int index) => cards[index].Root.SetAsLastSibling();
 
         private void SetDetail()
         {

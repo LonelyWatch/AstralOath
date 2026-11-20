@@ -52,7 +52,23 @@ namespace AstralOath.Client.Arena
             create = new ArenaCreateRoomBinder(createView, locale, CreateAsync, () => windows.CloseOverlay(CreateWindow), toast);
         }
 
-        public async Task OpenAsync(BindingScope owner)
+        public Task OpenAsync(BindingScope owner) => OpenAsync(owner, null);
+
+        public async Task OpenAfterBattleAsync(BindingScope owner)
+        {
+            var directoryConfirmed = new TaskCompletionSource<bool>();
+            var opening = OpenAsync(owner, directoryConfirmed);
+            if (await Task.WhenAny(opening, directoryConfirmed.Task) == opening) await opening;
+            else _ = FinishListingAsync(opening);
+        }
+
+        private static async Task FinishListingAsync(Task opening)
+        {
+            try { await opening; }
+            catch (Exception error) { Debug.LogException(error); }
+        }
+
+        private async Task OpenAsync(BindingScope owner, TaskCompletionSource<bool> directoryConfirmed)
         {
             screen = owner;
             view.Show();
@@ -75,7 +91,7 @@ namespace AstralOath.Client.Arena
             view.Search.Bind(owner, ToggleSearch);
             UpdateFilterLabel();
             UpdateSearchLabel();
-            await RefreshAsync(owner.Token, recoverRoom: true);
+            await RefreshAsync(owner.Token, recoverRoom: true, directoryConfirmed: directoryConfirmed);
         }
 
         private void ToggleFilter()
@@ -185,7 +201,8 @@ namespace AstralOath.Client.Arena
             return RefreshAsync(token, operation: "directory_search");
         }
 
-        private async Task RefreshAsync(CancellationToken token, bool recoverRoom = false, string operation = null)
+        private async Task RefreshAsync(CancellationToken token, bool recoverRoom = false, string operation = null,
+            TaskCompletionSource<bool> directoryConfirmed = null)
         {
             if (busy) return;
             busy = true;
@@ -200,12 +217,14 @@ namespace AstralOath.Client.Arena
                 {
                     var current = await api.CurrentAsync(token);
                     if (current != null) { await enter(current, token); return; }
+                    directoryConfirmed?.TrySetResult(true);
                 }
                 var result = await api.ListAsync(visibility, sort, ascending, query, token);
                 Render(result);
                 view.Status.text = result.Length == 0 ? locale.Resolve("arena.empty") : "";
             }
-            catch (ArenaRequestException error) { view.Status.text = ArenaError.Text(locale, error); }
+            catch (OperationCanceledException) when (token.IsCancellationRequested) { }
+            catch (ArenaRequestException error) { if (screen == owner) view.Status.text = ArenaError.Text(locale, error); }
             finally
             {
                 if (screen == owner)

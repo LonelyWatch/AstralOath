@@ -111,6 +111,7 @@ namespace AstralOath.Client.Summon
 
         public override void Validate()
         {
+            _ = Panel("noticeToast");
             foreach (string key in ButtonKeys) Button(key);
             foreach (string key in LabelKeys) Text(key);
             _ = Panel("mainPage");

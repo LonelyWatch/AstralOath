@@ -36,6 +36,7 @@ namespace AstralOath.Client.Summon
         private readonly HashSet<string> wishArtifacts = new HashSet<string>(StringComparer.Ordinal);
 
         private BindingScope screen;
+        private GameToastBinder notice;
         private HeroRosterPortrait featuredPortrait, revealPortrait;
         private SummonReward displayedReward;
         private SummonSkillLoop.Player featuredSkill;
@@ -66,9 +67,12 @@ namespace AstralOath.Client.Summon
             heroes = heroArt.heroes.ToDictionary(hero => hero.id, StringComparer.Ordinal);
         }
 
-        public async Task OpenAsync(BindingScope scope)
+        public Task OpenAsync(BindingScope scope) => OpenAsync(scope, null);
+
+        public async Task OpenAsync(BindingScope scope, SummonState initial)
         {
             screen = scope;
+            notice = new GameToastBinder(GameToast.ForInstance(view.Panel("noticeToast")));
             WatchBannerSchedule(scope);
             view.Show();
             view.BindCardLayout(scope);
@@ -161,18 +165,18 @@ namespace AstralOath.Client.Summon
             view.Text("skipLabel").text = L("reveal.skip");
             if (view.Music) player.PlayTheme(view.Music, ceremony: false);
             SetStatus("status.loading");
-            await ReadState(scope.Token);
+            await ReadState(scope.Token, initial);
             if (api.Pending != null && !scope.Token.IsCancellationRequested)
                 SetStatus("status.recover");
         }
 
         private SummonBanner Banner => state?.banners?.FirstOrDefault(item => item.id == bannerId);
 
-        private async Task ReadState(CancellationToken token)
+        private async Task ReadState(CancellationToken token, SummonState initial = null)
         {
             try
             {
-                state = await api.GetAsync(token);
+                state = initial ?? await api.GetAsync(token);
                 token.ThrowIfCancellationRequested();
                 if (Banner == null)
                     bannerId = state.banners?.FirstOrDefault()?.id ?? Covenant;
@@ -334,8 +338,7 @@ namespace AstralOath.Client.Summon
                 return Task.CompletedTask;
             }
             int cost = payment == Free ? 0 : banner.bookmarksPerDraw * count;
-            int balance = payment == EpicBookmarks ? state.epicBookmarks : payment == Free ? 1 : state.bookmarks;
-            view.Button("confirmYes").interactable = balance >= cost;
+            int balance = Balance(payment);
             quote = new SummonRequest
             {
                 requestId = Guid.NewGuid().ToString("N"), bannerId = banner.id, revision = banner.revision,
@@ -363,11 +366,18 @@ namespace AstralOath.Client.Summon
         {
             var request = quote;
             if (request == null) return;
+            if (request.payment != Free && Banner != null && Balance(request.payment) < Banner.bookmarksPerDraw * request.count)
+            {
+                notice.Show(L("status.insufficient"), screen);
+                return;
+            }
             quote = null;
             api.Pending = request;
             ReturnFromConfirmation();
             await DrawPending(request, token);
         }
+
+        private int Balance(string payment) => payment == EpicBookmarks ? state.epicBookmarks : payment == Free ? 1 : state.bookmarks;
 
         private async Task DrawPending(SummonRequest request, CancellationToken token)
         {
@@ -381,6 +391,12 @@ namespace AstralOath.Client.Summon
                 // The server returned a definitive rejection. A new quote must reflect the new state.
                 api.Pending = null;
                 await ReadState(token);
+                if (error.Code == "insufficient_bookmarks")
+                {
+                    await Quote(request.count, request.payment);
+                    notice.Show(L("status.insufficient"), screen);
+                    return;
+                }
                 SetStatus(error.Status == 409 ? "status.changed" : "status.rejected");
             }
             catch (IOException) when (!token.IsCancellationRequested)
@@ -865,6 +881,7 @@ namespace AstralOath.Client.Summon
 
         private void ShowPanel(string active)
         {
+            notice?.Hide();
             activePanel = active;
             UpdateFeaturedSkill();
             switch (active)

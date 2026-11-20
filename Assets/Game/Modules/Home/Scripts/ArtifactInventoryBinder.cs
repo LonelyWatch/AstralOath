@@ -14,8 +14,11 @@ namespace AstralOath.Client.Home
     internal sealed class ArtifactInventoryBinder
     {
         private const string Prefix = "home.artifacts.";
-        private const int Columns = 6;
-        private const float RowHeight = 145f;
+        private const int Columns = 2;
+        private float CellWidth => Mathf.Clamp(scroll.viewport.rect.width / Columns, 1, 400f * 1.5f);
+        private float CardWidth => Mathf.Min(358f * 1.5f, CellWidth * .96f);
+        private float RowHeight => CardWidth * (145f / 358f);
+        private Vector2 lastBrowserSize;
         private static readonly string[] FilterClasses =
             { null, "", "warrior", "knight", "thief", "ranger", "mage", "soul_weaver" };
         private static readonly string[] MaterialKeys = { "lesserCharm", "greaterCharm", "epicCharm", "bottle" };
@@ -29,6 +32,8 @@ namespace AstralOath.Client.Home
         private readonly Func<string, string> heroName;
         private readonly Action onChanged;
         private readonly ScrollRect scroll;
+        private readonly RectTransform browser;
+        private readonly Sprite[] classIcons = new Sprite[FilterClasses.Length];
         private readonly List<Card> cards = new List<Card>();
 
         private ArtifactInventorySnapshot snapshot;
@@ -53,6 +58,9 @@ namespace AstralOath.Client.Home
             this.heroName = heroName;
             this.onChanged = onChanged;
             scroll = ui.Get<ScrollRect>("Items");
+            browser = ui.Get<RectTransform>("Browser");
+            for (int i = 1; i < classIcons.Length; ++i)
+                classIcons[i] = ui.Get<Image>("ClassIcon" + i).sprite;
         }
 
         internal void Bind(BindingScope scope)
@@ -61,18 +69,18 @@ namespace AstralOath.Client.Home
                 ui.ActionLabel(action).Bind(locale, scope, Prefix + action);
             ui.Get<GameText>("PickerTitle").Bind(locale, scope, Prefix + "picker_title");
             ui.Get<GameText>("RetryLabel").Bind(locale, scope, "home.hero_inventory.retry");
-            ui.Get<GameButton>("Slot").Bind(scope, OpenPicker);
-            ui.Get<GameButton>("PickerClose").Bind(scope, _ => ClosePickerAsync());
-            ui.Get<GameButton>("PickerShade").Bind(scope, _ => ClosePickerAsync());
-            ui.Get<GameButton>("Retry").Bind(scope, LoadAsync);
-            ui.Get<GameButton>("ConfirmShade").Bind(scope, CancelAsync);
-            ui.Action("cancel").Bind(scope, CancelAsync);
-            ui.Action("confirm").Bind(scope, ConfirmAsync);
+            BindAction(scope, ui.Get<GameButton>("Slot"), OpenPicker);
+            BindAction(scope, ui.Get<GameButton>("PickerClose"), _ => ClosePickerAsync());
+            BindAction(scope, ui.Get<GameButton>("PickerShade"), _ => ClosePickerAsync());
+            BindAction(scope, ui.Get<GameButton>("Retry"), LoadAsync);
+            BindAction(scope, ui.Get<GameButton>("ConfirmShade"), CancelAsync);
+            BindAction(scope, ui.Action("cancel"), CancelAsync);
+            BindAction(scope, ui.Action("confirm"), ConfirmAsync);
             foreach (string action in new[] { "equip", "unequip", "lock", "enhance", "sell" })
-                ui.Action(action).Bind(scope, _ => PreviewAction(action));
+                BindAction(scope, ui.Action(action), _ => PreviewAction(action));
             foreach (string key in MaterialKeys)
-                ui.Action(key).Bind(scope, _ => SelectMaterial(key));
-            ui.Action("chooseCopy").Bind(scope, _ =>
+                BindAction(scope, ui.Action(key), _ => SelectMaterial(key));
+            BindAction(scope, ui.Action("chooseCopy"), _ =>
             {
                 if (pending?.Action == "enhance" && !busy && !pending.Submitted)
                 {
@@ -82,7 +90,7 @@ namespace AstralOath.Client.Home
                 return Task.CompletedTask;
             });
 
-            ui.Get<GameButton>("Sort").Bind(scope, _ =>
+            BindAction(scope, ui.Get<GameButton>("Sort"), _ =>
             {
                 sortByRarity = !sortByRarity;
                 Refresh(reset: true);
@@ -91,7 +99,7 @@ namespace AstralOath.Client.Home
             for (int i = 0; i < FilterClasses.Length; i++)
             {
                 int index = i;
-                ui.Get<GameButton>("Filter" + index).Bind(scope, _ =>
+                BindAction(scope, ui.Get<GameButton>("Filter" + index), _ =>
                 {
                     filter = index;
                     Refresh(reset: true);
@@ -99,13 +107,33 @@ namespace AstralOath.Client.Home
                 });
             }
             scroll.onValueChanged.AddListener(OnScroll);
+            Canvas.willRenderCanvases += ResizeBrowser;
             scope.Add(() =>
             {
+                Canvas.willRenderCanvases -= ResizeBrowser;
                 if (scroll) scroll.onValueChanged.RemoveListener(OnScroll);
                 foreach (var card in cards)
                     if (card.Root) UnityEngine.Object.Destroy(card.Root.gameObject);
                 cards.Clear();
             });
+        }
+
+        // The bag, material picker and confirmation panel share a window lifetime and can each reopen.
+        private static void BindAction(BindingScope scope, GameButton button, Func<CancellationToken, Task> handler)
+        {
+            var token = scope.Token;
+            bool running = false;
+            async void Click()
+            {
+                if (running || token.IsCancellationRequested || !button.isActiveAndEnabled || !button.IsInteractable()) return;
+                running = true;
+                try { await handler(token); }
+                catch (OperationCanceledException) when (token.IsCancellationRequested) { }
+                catch (Exception error) { Debug.LogException(error, button); }
+                finally { running = false; }
+            }
+            button.onClick.AddListener(Click);
+            scope.Add(() => { if (button) button.onClick.RemoveListener(Click); });
         }
 
         internal async Task ShowTabAsync(CancellationToken token)
@@ -125,12 +153,12 @@ namespace AstralOath.Client.Home
             Refresh(reset: false);
         }
 
-        internal Task PreloadAsync(CancellationToken token) => LoadAsync(token);
+        internal Task PreloadAsync(CancellationToken token, ArtifactInventorySnapshot initial) => LoadAsync(token, initial);
 
         internal (Sprite Art, int Level) EquippedCard(string hero)
         {
             var match = snapshot?.artifacts?.FirstOrDefault(item => item.heroInstanceId == hero);
-            return match == null ? (null, 0) : (art.Find(match.templateId)?.portrait, match.level);
+            return match == null ? (null, 0) : (art.Find(match.templateId)?.combatIcon, match.level);
         }
 
         internal (int Attack, int Health) EquippedStats(string hero)
@@ -196,14 +224,16 @@ namespace AstralOath.Client.Home
             return true;
         }
 
-        private async Task LoadAsync(CancellationToken token)
+        private Task LoadAsync(CancellationToken token) => LoadAsync(token, null);
+
+        private async Task LoadAsync(CancellationToken token, ArtifactInventorySnapshot initial)
         {
             if (loading) return;
             loading = true;
             failed = false;
             failure = null;
             Refresh(reset: false);
-            try { snapshot = await api.FetchAsync(token); }
+            try { snapshot = initial ?? await api.FetchAsync(token); }
             catch (OperationCanceledException) when (token.IsCancellationRequested) { return; }
             catch (Exception error)
             {
@@ -219,15 +249,15 @@ namespace AstralOath.Client.Home
         private void Refresh(bool reset)
         {
             bool picker = pickerHero != null || pickingMaterial;
-            var frame = ui.Get<RectTransform>("Browser");
+            var frame = browser;
             frame.gameObject.SetActive(active);
             ui.Get<GameObject>("Confirmation").SetActive(active && pending != null && !pickingMaterial);
             ui.Get<GameButton>("PickerShade").gameObject.SetActive(active && picker);
             if (!active) return;
 
-            frame.anchorMin = picker ? new Vector2(.10f, .099f) : new Vector2(.102f, .013f);
-            frame.anchorMax = picker ? new Vector2(.90f, .91f) : new Vector2(.980f, .803f);
-            scroll.GetComponent<RectTransform>().anchorMax = new Vector2(.664f, picker ? .875f : .995f);
+            frame.anchorMin = picker ? new Vector2(.075f, .055f) : Vector2.zero;
+            frame.anchorMax = picker ? new Vector2(.925f, .945f) : Vector2.one;
+            LayoutBrowser(frame.rect.size, picker);
             ui.Get<Image>("BrowserPlate").enabled = picker;
             ui.Get<GameButton>("PickerClose").gameObject.SetActive(picker);
             var heading = ui.Get<GameText>("PickerTitle");
@@ -272,6 +302,35 @@ namespace AstralOath.Client.Home
 
         private void OnScroll(Vector2 _) => DrawCards();
 
+        private void ResizeBrowser()
+        {
+            if (!active || !scroll) return;
+            var size = browser.rect.size;
+            if (size == lastBrowserSize) return;
+            LayoutBrowser(size, pickerHero != null || pickingMaterial);
+            scroll.content.sizeDelta = new Vector2(0, Mathf.CeilToInt((float)visible.Length / Columns) * RowHeight);
+            DrawCards();
+        }
+
+        private void LayoutBrowser(Vector2 size, bool picker)
+        {
+            lastBrowserSize = size;
+            // At the 720-line source height the bag detail is 399 wide, 29 from the right and 142 from the top.
+            float side = Mathf.Min(399f * 1.5f, size.x * (picker ? .36f : .34f));
+            float margin = picker ? 19 : 29 * 1.5f;
+            float top = picker ? size.y * .12f : 142f * 1.5f;
+            var detail = (RectTransform)ui.Get<GameObject>("Detail").transform;
+            detail.anchorMin = new Vector2(1, 0);
+            detail.anchorMax = Vector2.one;
+            detail.offsetMin = new Vector2(-margin - side, picker ? 15 : 0);
+            detail.offsetMax = new Vector2(-margin, -top);
+            var list = (RectTransform)scroll.transform;
+            list.anchorMin = Vector2.zero;
+            list.anchorMax = Vector2.one;
+            list.offsetMin = new Vector2(picker ? 21 : Mathf.Min(150f * 1.5f, size.x * .145f), picker ? 15 : 0);
+            list.offsetMax = new Vector2(-margin - side - 18, -top - 5);
+        }
+
         private void DrawCards()
         {
             if (!active) return;
@@ -311,12 +370,12 @@ namespace AstralOath.Client.Home
                 int col = index % Columns;
                 var item = visible[index];
                 var entry = art.Find(item.templateId);
-                card.Root.anchorMin = new Vector2((float)col / Columns, 1);
-                card.Root.anchorMax = new Vector2((float)(col + 1) / Columns, 1);
-                card.Root.pivot = new Vector2(.5f, 1);
-                card.Root.sizeDelta = new Vector2(-7, RowHeight - 10);
-                card.Root.anchoredPosition = new Vector2(0, -(index / Columns) * RowHeight);
-                card.Display(item, entry.portrait, entry.template.Stars, item == selected);
+                card.Root.anchorMin = card.Root.anchorMax = card.Root.pivot = new Vector2(0, 1);
+                card.Root.sizeDelta = new Vector2(CardWidth, CardWidth * (135f / 358f));
+                card.Root.anchoredPosition = new Vector2(col * CellWidth + 4, -(index / Columns) * RowHeight);
+                int role = Array.IndexOf(FilterClasses, entry.template.HeroClass);
+                var roleIcon = role > 0 ? classIcons[role] : null;
+                card.Display(item, entry, roleIcon, Format("level", item.level, 15 + item.limitBreaks * 3), item == selected);
             }
         }
 
@@ -324,15 +383,22 @@ namespace AstralOath.Client.Home
         {
             var entry = selected == null || pickingMaterial ? null : art.Find(selected.templateId);
             ui.Get<GameObject>("Detail").SetActive(entry != null);
+            ui.Get<Image>("EmptyPlate").enabled = entry == null;
             ui.Get<GameObject>("EmptyIcon").SetActive(entry == null && !failed && !loading);
             ui.Get<GameObject>("EmptyMessage").SetActive(entry == null && !failed && !loading);
             if (entry == null) return;
             var template = entry.template;
-            SetImage(ui.Get<Image>("Portrait"), entry.portrait);
+            SetImage(ui.Get<Image>("Portrait"), entry.card);
             ui.Get<GameText>("Title").text = template.Name;
             ui.Get<GameText>("Level").text = Format("level", selected.level, 15 + selected.limitBreaks * 3);
-            ui.Get<GameText>("Stats").text = Format("stats", template.AttackAt(selected.level), template.HealthAt(selected.level));
+            ui.Get<GameText>("Attack").text = template.AttackAt(selected.level).ToString(CultureInfo.InvariantCulture);
+            ui.Get<GameText>("Health").text = template.HealthAt(selected.level).ToString(CultureInfo.InvariantCulture);
             ui.Get<GameText>("Skill").text = template.DescriptionAt(selected.level);
+            for (int i = 0; i < 5; ++i)
+            {
+                ui.Get<Image>("Break" + i).enabled = i < selected.limitBreaks;
+                ui.Get<Image>("Rarity" + i).enabled = i < template.Stars;
+            }
             ui.Get<GameText>("Wearer").text = HasWearer(selected)
                 ? Format("wearing", heroName(selected.heroInstanceId)) : locale.Resolve(Prefix + "unassigned");
             ui.Action("equip").gameObject.SetActive(pickerHero != null);
@@ -509,8 +575,10 @@ namespace AstralOath.Client.Home
             internal readonly RectTransform Root;
             internal readonly GameButton Button;
             internal ArtifactInventoryItem Item { get; private set; }
-            private readonly Image portrait, locked, selection;
-            private readonly GameText level, stars;
+            private readonly Image portrait, banner, role, locked, selection;
+            private readonly Image[] stars = new Image[5];
+            private readonly Image[] breaks = new Image[5];
+            private readonly GameText level, limit, name;
 
             internal Card(GameObject instance)
             {
@@ -518,19 +586,35 @@ namespace AstralOath.Client.Home
                 var map = instance.GetComponent<BindingMap>();
                 Button = map.Require<GameButton>("artifactCardButton");
                 portrait = map.Require<Image>("artifactCardPortrait");
+                banner = map.Require<Image>("artifactCardBanner");
+                role = map.Require<Image>("artifactCardRole");
+                limit = map.Require<GameText>("artifactCardLimit");
+                name = map.Require<GameText>("artifactCardName");
                 locked = map.Require<Image>("artifactCardLock");
                 selection = map.Require<Image>("artifactCardSelection");
                 level = map.Require<GameText>("artifactCardLevel");
-                stars = map.Require<GameText>("artifactCardStars");
+                for (int i = 0; i < stars.Length; ++i)
+                {
+                    stars[i] = map.Require<Image>("star" + i);
+                    breaks[i] = map.Require<Image>("break" + i);
+                }
             }
 
-            internal void Display(ArtifactInventoryItem item, Sprite sprite, int rarity, bool selected)
+            internal void Display(ArtifactInventoryItem item, ArtifactArtCatalog.Entry entry, Sprite roleIcon, string levelText, bool selected)
             {
                 Item = item;
                 Root.name = item.instanceId;
-                SetImage(portrait, sprite);
+                SetImage(portrait, entry.combatIcon);
+                SetImage(banner, entry.portrait);
+                SetImage(role, roleIcon);
                 level.text = Plus(item.level);
-                stars.text = new string('★', rarity);
+                name.text = entry.template.Name;
+                limit.text = levelText;
+                for (int i = 0; i < stars.Length; ++i)
+                {
+                    stars[i].enabled = i < entry.template.Stars;
+                    breaks[i].enabled = i < item.limitBreaks;
+                }
                 locked.enabled = item.locked && locked.sprite;
                 selection.enabled = selected && selection.sprite;
                 Root.gameObject.SetActive(true);

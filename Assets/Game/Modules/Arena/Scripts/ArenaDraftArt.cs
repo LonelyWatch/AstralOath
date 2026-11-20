@@ -35,7 +35,7 @@ namespace AstralOath.Client.Arena
         }
 
         public NativeEffect[] BluePick = Array.Empty<NativeEffect>(), RedPick = Array.Empty<NativeEffect>();
-        public NativeEffect FinalBan;
+        public NativeEffect FinalBan, BlueGuide, RedGuide;
         public Texture2D[] ParticleTextures = Array.Empty<Texture2D>();
         public Hero[] Heroes = Array.Empty<Hero>();
         public Sprite[] ScoreDigits = Array.Empty<Sprite>();

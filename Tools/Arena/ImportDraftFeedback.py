@@ -1,4 +1,4 @@
-"""Import the original World Arena confirmation and final-ban effect closure."""
+"""Import the original World Arena pick guides, confirmations and final-ban effects."""
 
 import argparse
 import hashlib
@@ -14,7 +14,8 @@ from ImportHudEffects import collect, json_bytes
 
 
 OUTPUT = MODULES / "Arena/Res/Animations/DraftFeedback"
-ROOTS = ("effect/ui_livepvp_bann_eff.cfx",) + tuple(
+ROOTS = ("effect/ui_livepvp_bann_eff.cfx", "effect/ui_livepvp_arrow_blue.cfx",
+         "effect/ui_livepvp_arrow_red.cfx") + tuple(
     f"effect/ui_livepvp_slot_{side}{slot}_set.cfx"
     for slot in range(1, 6)
     for side in ("blue", "red")

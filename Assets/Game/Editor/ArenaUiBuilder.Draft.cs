@@ -49,6 +49,8 @@ namespace AstralOath.Editor
             rightRail.rectTransform.localScale = new Vector3(-1, 1, 1);
             Add("blue", DraftArc(stage, false, "Blue active arc"));
             Add("red", DraftArc(stage, true, "Red active arc"));
+            Add("blueGuide", DraftGuide(stage, "Ally pick light", 274f));
+            Add("redGuide", DraftGuide(stage, "Enemy pick light", 722f));
             for (int row = 0; row < 5; row++)
             {
                 float width = NativeSlotWidths[row];
@@ -338,6 +340,14 @@ namespace AstralOath.Editor
             return list;
         }
 
+        private static RawImage DraftGuide(RectTransform stage, string name, float x)
+        {
+            // pvplive_ready.csb places both effect origins at y=326 in bottom-left coordinates.
+            var light = Raw(stage, name, (x - 210f) / 998f, (720f - 326f - 320f) / 720f, 420f / 998f, 640f / 720f);
+            light.color = new Color32(255, 255, 255, 127);
+            return light;
+        }
+
         private static Image DraftArc(RectTransform stage, bool reverse, string name)
         {
             float x = reverse ? 709 : 287;
@@ -429,14 +439,16 @@ namespace AstralOath.Editor
             catalog.RedPick = Enumerable.Range(1, 5).Select(index => Effect(
                 "ui_livepvp_slot_eff_0" + index, "ui_livepvp_slot_red" + index + "_pati1")).ToArray();
             catalog.FinalBan = Effect("ui_livepvp_bann_eff", "ui_livepvp_bann_pati1");
+            catalog.BlueGuide = Effect("ui_livepvp_arrow_blue");
+            catalog.RedGuide = Effect("ui_livepvp_arrow_red");
             catalog.ParticleTextures = new[] { Load<Texture2D>(feedback + "Particles/pati_03.png"),
                 Load<Texture2D>(feedback + "Particles/ticle_02.png") };
-            ArenaDraftArt.NativeEffect Effect(string rig, string particle) => new ArenaDraftArt.NativeEffect
+            ArenaDraftArt.NativeEffect Effect(string rig, string particle = null) => new ArenaDraftArt.NativeEffect
             {
                 Skeleton = Load<TextAsset>(feedback + rig + ".spine.json"),
                 Atlas = Load<TextAsset>(feedback + rig + ".atlas.txt"),
                 Page = Load<Texture2D>(feedback + rig + ".png"),
-                Particles = Load<TextAsset>(feedback + "Particles/" + particle + ".particle.json")
+                Particles = particle == null ? null : Load<TextAsset>(feedback + "Particles/" + particle + ".particle.json")
             };
             catalog.ScoreDigits = Enumerable.Range(0, 10).Select(digit => DraftSprite("Digits/score_" + digit)).ToArray();
             catalog.Heroes = source.heroes.OrderBy(hero => hero.id, StringComparer.Ordinal).Select(hero =>

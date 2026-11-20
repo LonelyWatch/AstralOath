@@ -20,6 +20,7 @@ namespace AstralOath.Client.Home
         private readonly bool animated;
         private readonly float framing, headFocus;
         private GameObject stage;
+        private Camera camera;
         private RenderTexture target;
         private Material material;
         private ISkeletonPlayer player;
@@ -65,7 +66,7 @@ namespace AstralOath.Client.Home
                 var mesh = player.Root.GetComponent<MeshFilter>().sharedMesh;
                 if (!mesh || mesh.vertexCount == 0) { Clear(); return false; }
 
-                var camera = new GameObject("Portrait camera", typeof(Camera)).GetComponent<Camera>();
+                camera = new GameObject("Portrait camera", typeof(Camera)).GetComponent<Camera>();
                 camera.transform.SetParent(stage.transform, false);
                 camera.clearFlags = CameraClearFlags.SolidColor;
                 camera.backgroundColor = Color.clear;
@@ -88,15 +89,13 @@ namespace AstralOath.Client.Home
                     center.y = face.y - camera.orthographicSize * (1f - 2f * headFocus);
                 }
                 camera.transform.localPosition = new Vector3(center.x, center.y, -10f);
-                target = new RenderTexture(renderSize, renderSize, 16, RenderTextureFormat.ARGB32) { name = "Owned hero portrait" };
-                camera.targetTexture = target;
+                EnsureTarget();
                 if (!animated)
                 {
                     camera.enabled = false;
                     camera.Render();
                 }
                 if (!authoredMaterial) material = new Material(shader) { hideFlags = HideFlags.HideAndDontSave };
-                output.texture = target;
                 output.material = authoredMaterial ? authoredMaterial : material;
                 source = next;
                 return SetVisible(true);
@@ -121,7 +120,32 @@ namespace AstralOath.Client.Home
         {
             if (!visible || lastFrame == Time.frameCount) return;
             lastFrame = Time.frameCount;
+            if (animated) EnsureTarget();
             player?.Tick(Time.unscaledDeltaTime);
+        }
+
+        private void EnsureTarget()
+        {
+            int size = renderSize;
+            if (animated)
+            {
+                var display = UiRenderSurface.ScreenPixels(output);
+                size = Mathf.Max(size, Mathf.Max(display.x, display.y));
+            }
+            size = Mathf.Clamp(size, 1, UiRenderSurface.MaxDimension);
+            if (target && target.width == size) return;
+            var previous = target;
+            target = new RenderTexture(size, size, 16, RenderTextureFormat.ARGB32) { name = "Owned hero portrait" };
+            if (previous && previous.IsCreated())
+            {
+                var priorActive = RenderTexture.active;
+                try { Graphics.Blit(previous, target); }
+                finally { RenderTexture.active = priorActive; }
+            }
+            camera.targetTexture = target;
+            output.texture = target;
+            output.canvasRenderer.SetTexture(target);
+            if (previous) Object.Destroy(previous);
         }
 
         private void Clear()
@@ -135,6 +159,7 @@ namespace AstralOath.Client.Home
                 output.material = authoredMaterial;
                 output.texture = null;
             }
+            if (camera) { camera.targetTexture = null; camera = null; }
             if (stage) { Object.Destroy(stage); stage = null; }
             if (target) { target.Release(); Object.Destroy(target); target = null; }
             if (material) { Object.Destroy(material); material = null; }

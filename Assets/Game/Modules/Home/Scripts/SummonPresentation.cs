@@ -484,12 +484,14 @@ namespace AstralOath.Client.Summon
 
             private void EnsureTarget()
             {
-                Rect rect = output.rectTransform.rect;
-                float ratio = rect.width > 0 && rect.height > 0 ? Mathf.Clamp(rect.width / rect.height, 1, 3) : 16f / 9f;
-                int width = Mathf.RoundToInt(720 * ratio);
-                if (target && target.width == width) return;
+                var pixels = UiRenderSurface.ScreenPixels(output);
+                float ratio = pixels.x > 0 && pixels.y > 0 ? Mathf.Clamp((float)pixels.x / pixels.y, 1f, 3f) : 16f / 9f;
+                float desiredHeight = Mathf.Min(Mathf.Max(720, pixels.y), UiRenderSurface.MaxDimension / ratio);
+                int height = Mathf.Max(1, Mathf.RoundToInt(desiredHeight));
+                int width = Mathf.Max(1, Mathf.RoundToInt(desiredHeight * ratio));
+                if (target && target.width == width && target.height == height) return;
                 var previous = target;
-                var replacement = new RenderTexture(width, 720, 16, RenderTextureFormat.ARGB32) { name = "Original summon canvas" };
+                var replacement = new RenderTexture(width, height, 16, RenderTextureFormat.ARGB32) { name = "Original summon canvas" };
                 // Canvas can resize after the scene camera has rendered this frame. Seed the replacement
                 // before publishing it so the UI always samples a completed frame while dragging.
                 var priorActive = RenderTexture.active;

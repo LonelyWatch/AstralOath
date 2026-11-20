@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -16,6 +17,7 @@ using TMPro;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
 
@@ -33,6 +35,8 @@ namespace AstralOath.Client.Tests
         {
             public Task<T> LoadAsync<T>(string address, BindingScope scope) where T : UnityEngine.Object
             {
+                if (address == AstralOath.Client.Arena.ArenaLabels.Address)
+                    return Task.FromResult(AssetDatabase.LoadAssetAtPath<T>("Assets/Game/Modules/Arena/Configs/arena-zh-hans.json"));
                 Assert.That(address, Is.EqualTo(HeroInventory.Address));
                 return Task.FromResult(AssetDatabase.LoadAssetAtPath<T>("Assets/Game/Modules/Home/Res/Prefab/HeroInventory.prefab"));
             }
@@ -46,6 +50,100 @@ namespace AstralOath.Client.Tests
             public void SelectText(string locale) { }
             public void SelectVoice(string locale) { }
             public string Resolve(string key) => key;
+        }
+
+        [UnityTest]
+        public IEnumerator FocusedRosterSkipsUnavailableRowsAndHandlesEmptyLayout()
+        {
+            var panel = new GameObject("Focused roster", typeof(RectTransform), typeof(ScrollRect));
+            try
+            {
+                using var scope = new BindingScope(CancellationToken.None);
+                var scroll = panel.GetComponent<ScrollRect>();
+                scroll.viewport = (RectTransform)panel.transform;
+                scroll.content = (RectTransform)new GameObject("Content", typeof(RectTransform)).transform;
+                scroll.content.SetParent(scroll.viewport, false);
+                scroll.content.anchorMin = scroll.content.anchorMax = scroll.content.pivot = Vector2.up;
+                scroll.horizontal = false;
+                scroll.movementType = ScrollRect.MovementType.Clamped;
+                int choice = -1;
+                bool allowLast = true;
+                var list = FocusedRosterScroll.Bind(scroll, scope, index => allowLast && index == 2, index => choice = index);
+                Assert.That(list.Nearest, Is.EqualTo(-1));
+                list.Layout(3, 0f);
+                Assert.That(list.Nearest, Is.EqualTo(-1));
+                list.Layout(3, 80f);
+                scroll.content.anchoredPosition = new Vector2(0f, 80f);
+                yield return Wait(() => choice == 2, "The focused list did not skip the unavailable row.");
+                Assert.That(scroll.content.anchoredPosition.y, Is.EqualTo(160f).Within(1f));
+                allowLast = false;
+                choice = -1;
+                scroll.content.anchoredPosition = new Vector2(0f, 80f);
+                yield return new WaitForSecondsRealtime(.5f);
+                Assert.That(choice, Is.EqualTo(-1), "Unavailable items must never become the selection.");
+                list.Layout(0, 80f);
+                Assert.That(list.Nearest, Is.EqualTo(-1));
+            }
+            finally { UnityEngine.Object.Destroy(panel); }
+        }
+
+        [UnityTest]
+        public IEnumerator OwnedRosterScrollsShortListsAndSelectsEachInstanceOnRelease()
+        {
+            var art = AssetDatabase.LoadAssetAtPath<HomeHeroArt>("Assets/Game/Modules/Home/Configs/HomeHeroArt.asset");
+            var snapshot = new HeroInventorySnapshot { capacity = 1000, used = 3,
+                heroes = Enumerable.Range(0,3).Select(i => new HeroInventoryItem { instanceId = "copy-" + i,
+                    templateId = "c1001", level = 3 - i, stars = 3 + i }).ToArray() };
+            var canvas = new GameObject("Owned roster pointer canvas",typeof(RectTransform),typeof(Canvas),typeof(GraphicRaycaster));
+            canvas.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+            var events = EventSystem.current;
+            var eventObject = events ? null : new GameObject("Roster input",typeof(EventSystem));
+            if (!events) events = eventObject.GetComponent<EventSystem>();
+            try
+            {
+                using var scope = new BindingScope(CancellationToken.None);
+                var registry = new UIViewRegistry();
+                registry.Register<HeroInventory>();
+                var load = registry.CreateAsync<HeroInventory>(new InventoryPrefab(),canvas.transform,scope);
+                yield return new WaitUntil(() => load.IsCompleted);
+                var view = load.GetAwaiter().GetResult();
+                var binder = new HeroInventoryBinder(view,art,new InventoryText(),_ => Task.FromResult(snapshot),() => Task.CompletedTask);
+                var open = binder.OpenAsync(true,scope);
+                yield return new WaitUntil(() => open.IsCompleted);
+                open.GetAwaiter().GetResult();
+                Canvas.ForceUpdateCanvases();
+                var map = view.Root.GetComponent<BindingMap>();
+                var scroll = map.Require<ScrollRect>("rosterScroll");
+                var stars = map.Require<GameText>("detailStars");
+                var row = (RectTransform)scroll.content.Find("copy-0");
+                var pointer = new PointerEventData(events) {
+                    position = RectTransformUtility.WorldToScreenPoint(null,row.TransformPoint(row.rect.center)),
+                    button = PointerEventData.InputButton.Left, scrollDelta = Vector2.down };
+                var hits = new List<RaycastResult>();
+                events.RaycastAll(pointer,hits);
+                var target = hits.First().gameObject;
+                Assert.That(ExecuteEvents.GetEventHandler<IScrollHandler>(target),
+                    Is.EqualTo(scroll.gameObject), "The visible hero card must deliver wheel input to its roster.");
+                ExecuteEvents.ExecuteHierarchy(target,pointer,ExecuteEvents.scrollHandler);
+                yield return null;
+                Assert.That(scroll.content.anchoredPosition.y, Is.GreaterThan(0f), "Even three owned heroes must be scrollable.");
+                yield return Wait(() => stars.text == "★★★★","Wheel input did not focus the second instance.");
+                var drag = ExecuteEvents.GetEventHandler<IDragHandler>(target);
+                ExecuteEvents.Execute(drag,pointer,ExecuteEvents.initializePotentialDrag);
+                ExecuteEvents.Execute(drag,pointer,ExecuteEvents.beginDragHandler);
+                pointer.position += Vector2.up * 300f;
+                ExecuteEvents.Execute(drag,pointer,ExecuteEvents.dragHandler);
+                yield return new WaitForSecondsRealtime(.3f);
+                Assert.That(stars.text,Is.EqualTo("★★★★"),"A held drag cannot commit the next instance.");
+                ExecuteEvents.Execute(drag,pointer,ExecuteEvents.endDragHandler);
+                yield return Wait(() => stars.text == "★★★★★","Release did not select the last owned instance.");
+                Assert.That(scroll.content.anchoredPosition.y,Is.EqualTo(scroll.content.rect.height - scroll.viewport.rect.height).Within(1f));
+            }
+            finally
+            {
+                if (eventObject) UnityEngine.Object.Destroy(eventObject);
+                UnityEngine.Object.Destroy(canvas);
+            }
         }
 
         [UnityTest]
@@ -249,6 +347,175 @@ namespace AstralOath.Client.Tests
             yield return Wait(() => !BattleOnlineLaunch.IsActive, "The trial did not exit.");
             Assert.That(FindWindow("HeroInventory"), Is.SameAs(roster));
             Assert.That(roster.Require<GameText>("detailName").text, Is.EqualTo(selected));
+        }
+
+        [UnityTest, Timeout(100000)]
+        public IEnumerator OwnedArtifactsUseTwoBannersAndTheSelectedFullCard()
+        {
+            string bearer = Environment.GetEnvironmentVariable("ASTRAL_ARTIFACT_LAYOUT_FIXTURE");
+            string url = Environment.GetEnvironmentVariable("ASTRAL_INVENTORY_TEST_URL");
+            if (string.IsNullOrEmpty(bearer) || !Uri.TryCreate(url, UriKind.Absolute, out var endpoint) || !endpoint.IsLoopback)
+                Assert.Ignore("Requires a disposable loopback inventory with at least three unequipped artifacts.");
+            using var scope = new BindingScope(CancellationToken.None);
+            Task<string> Token(CancellationToken _) => Task.FromResult(bearer);
+            using var heroes = new HeroInventoryApi(new Uri(url), Token, scope.Token);
+            using var api = new ArtifactInventoryApi(new Uri(url), Token, scope.Token);
+            var art = AssetDatabase.LoadAssetAtPath<ArtifactArtCatalog>("Assets/Game/Modules/Home/Configs/ArtifactArtCatalog.asset");
+            var open = OpenArtifactWindow(false, scope, heroes, api, art);
+            yield return Wait(() => open.IsCompleted, "Inventory did not open.");
+            var map = open.GetAwaiter().GetResult();
+            Click(map, "tabArtifacts");
+            BindingMap[] Cards() => VisibleRows(map, "artifactItems");
+            yield return Wait(() => Cards().Length >= 3, "The populated artifact tab did not open.");
+            var get = api.FetchAsync(scope.Token);
+            yield return Wait(() => get.IsCompleted, "The server did not return the owned inventory.");
+            var items = get.Result.artifacts.ToDictionary(item => item.instanceId);
+            var cards = Cards();
+            var first = (RectTransform)cards[0].transform;
+            var second = (RectTransform)cards[1].transform;
+            var third = (RectTransform)cards[2].transform;
+            Assert.That(first.anchoredPosition.y, Is.EqualTo(second.anchoredPosition.y));
+            Assert.That(third.anchoredPosition.y, Is.LessThan(first.anchoredPosition.y));
+            foreach (var row in cards.Take(3))
+            {
+                Click(row, "artifactCardButton");
+                var entry = art.Find(items[row.name].templateId);
+                Assert.That(row.Require<Image>("artifactCardPortrait").sprite, Is.SameAs(entry.combatIcon));
+                Assert.That(row.Require<Image>("artifactCardBanner").sprite, Is.SameAs(entry.portrait));
+                Assert.That(row.Require<GameText>("artifactCardName").text, Is.EqualTo(entry.template.Name));
+                Assert.That(map.Require<Image>("artifactPortrait").sprite, Is.SameAs(entry.card));
+                Assert.That(map.Require<GameText>("artifactAttack").text, Does.Contain(entry.template.AttackAt(items[row.name].level).ToString()));
+                Assert.That(map.Require<GameText>("artifactHealth").text, Does.Contain(entry.template.HealthAt(items[row.name].level).ToString()));
+                Assert.That(map.Require<GameText>("artifactSkill").text, Is.EqualTo(entry.template.DescriptionAt(items[row.name].level)));
+            }
+            yield return Capture("owned-artifact-bag", 1478, 720);
+            yield return Capture("owned-artifact-bag-16x10", 1536, 960);
+            Click(map, "artifactAction_lock");
+            Click(map, "artifactAction_confirm");
+            yield return Wait(() => !map.Require<GameObject>("artifactConfirmation").activeSelf, "Lock did not complete.");
+            Assert.That(map.Require<GameButton>("artifactAction_sell").interactable, Is.False);
+            Click(map, "artifactAction_lock");
+            Click(map, "artifactAction_confirm");
+            yield return Wait(() => !map.Require<GameObject>("artifactConfirmation").activeSelf, "Unlock did not complete.");
+            Click(map, "artifactAction_enhance");
+            Click(map, "artifactAction_chooseCopy");
+            yield return Wait(() => Cards().Length > 0 && map.Require<GameButton>("artifactPickerClose").gameObject.activeSelf, "Material picker did not open.");
+            yield return Capture("artifact-material-picker", 1478, 720);
+            Click(Cards()[0], "artifactCardButton");
+            Assert.That(map.Require<GameButton>("artifactAction_confirm").interactable, Is.True);
+            Click(map, "artifactAction_cancel");
+            int beforeSale = Cards().Length;
+            Click(map, "artifactAction_sell");
+            Click(map, "artifactAction_confirm");
+            yield return Wait(() => Cards().Length < beforeSale, "Sale did not refresh the owned cards.");
+            var balance = api.FetchAsync(scope.Token);
+            yield return Wait(() => balance.IsCompleted, "Could not read the sale proceeds.");
+            while (balance.Result.materials.gold < art.Catalog.EnhancementCost(
+                balance.Result.artifacts.Max(item => art.Catalog.MaterialExperience(art.Find(item.templateId).template.Stars, item.experience))))
+            {
+                int remaining = Cards().Length;
+                Assert.That(remaining, Is.GreaterThan(2), "The disposable fixture needs enough sale proceeds for one enhancement.");
+                Click(map, "artifactAction_sell");
+                Click(map, "artifactAction_confirm");
+                yield return Wait(() => Cards().Length < remaining, "The second sale did not refresh inventory.");
+                balance = api.FetchAsync(scope.Token);
+                yield return Wait(() => balance.IsCompleted, "Could not read the sale proceeds.");
+            }
+            int beforeUpgrade = Cards().Length;
+            Click(map, "artifactAction_enhance");
+            Click(map, "artifactAction_chooseCopy");
+            yield return Wait(() => Cards().Length > 0 && map.Require<GameButton>("artifactPickerClose").gameObject.activeSelf, "The picker must reopen.");
+            string fodder = Cards()[0].name;
+            Click(Cards()[0], "artifactCardButton");
+            Click(map, "artifactAction_confirm");
+            yield return Wait(() => !map.Require<GameObject>("artifactConfirmation").activeSelf && Cards().Length == beforeUpgrade - 1, "Enhancement did not consume one material.");
+            var upgraded = api.FetchAsync(scope.Token);
+            yield return Wait(() => upgraded.IsCompleted, "Could not verify the enhanced artifact.");
+            Assert.That(upgraded.Result.artifacts.Any(item => item.instanceId == fodder), Is.False);
+            Assert.That(upgraded.Result.artifacts.Any(item => item.experience > 0 || item.limitBreaks > 0), Is.True);
+        }
+
+        [UnityTest, Timeout(60000)]
+        public IEnumerator ArtifactPickerEquipsAndUnequipsAServerOwnedInstance()
+        {
+            string bearer = Environment.GetEnvironmentVariable("ASTRAL_ARTIFACT_LAYOUT_FIXTURE");
+            string url = Environment.GetEnvironmentVariable("ASTRAL_INVENTORY_TEST_URL");
+            if (string.IsNullOrEmpty(bearer) || !Uri.TryCreate(url, UriKind.Absolute, out var endpoint) || !endpoint.IsLoopback)
+                Assert.Ignore("Requires a disposable loopback inventory with an artifact usable by its starter hero.");
+            using var scope = new BindingScope(CancellationToken.None);
+            Task<string> Token(CancellationToken _) => Task.FromResult(bearer);
+            using var heroes = new HeroInventoryApi(new Uri(url), Token, scope.Token);
+            using var api = new ArtifactInventoryApi(new Uri(url), Token, scope.Token);
+            var art = AssetDatabase.LoadAssetAtPath<ArtifactArtCatalog>("Assets/Game/Modules/Home/Configs/ArtifactArtCatalog.asset");
+            var open = OpenArtifactWindow(true, scope, heroes, api, art);
+            yield return Wait(() => open.IsCompleted, "Hero inventory did not open.");
+            var map = open.GetAwaiter().GetResult();
+            Click(map, "artifactSlot");
+            yield return Wait(() => VisibleRows(map, "artifactItems").Length > 0, "No compatible artifacts in the equipment picker.");
+            var row = VisibleRows(map, "artifactItems")[0];
+            Click(row, "artifactCardButton");
+            var emblem = row.Require<Image>("artifactCardPortrait").sprite;
+            yield return Capture("artifact-equip-picker", 1478, 720);
+            Click(map, "artifactAction_equip");
+            Click(map, "artifactAction_confirm");
+            yield return Wait(() => map.Require<Image>("artifactSlotImage").sprite == emblem, "Equipped slot must show the newly equipped emblem.");
+            Click(map, "artifactAction_unequip");
+            Click(map, "artifactAction_confirm");
+            yield return Wait(() => !map.Require<Image>("artifactSlotImage").enabled, "Unequipped artifact still occupies the hero slot.");
+            var persisted = api.FetchAsync(scope.Token);
+            yield return Wait(() => persisted.IsCompleted, "Could not read the updated inventory.");
+            Assert.That(string.IsNullOrEmpty(persisted.Result.artifacts.Single(item => item.instanceId == row.name).heroInstanceId), Is.True);
+        }
+
+        [UnityTest, Timeout(60000)]
+        public IEnumerator ArtifactBagWithNoOwnedItemsShowsOnlyTheEmptyDetail()
+        {
+            string url = Environment.GetEnvironmentVariable("ASTRAL_INVENTORY_TEST_URL");
+            if (!Uri.TryCreate(url, UriKind.Absolute, out var endpoint) || !endpoint.IsLoopback)
+                Assert.Ignore("Requires a loopback service with fresh, empty guest inventories.");
+            using var scope = new BindingScope(CancellationToken.None);
+            using var arena = new AstralOath.Client.Arena.ArenaApi(new Uri(url), scope.Token);
+            var login = arena.GetSessionTokenAsync("Artifact empty layout", scope.Token);
+            yield return Wait(() => login.IsCompleted, "A fresh guest session is required.");
+            string bearer = login.GetAwaiter().GetResult();
+            Task<string> Token(CancellationToken _) => Task.FromResult(bearer);
+            using var heroes = new HeroInventoryApi(new Uri(url), Token, scope.Token);
+            using var api = new ArtifactInventoryApi(new Uri(url), Token, scope.Token);
+            var art = AssetDatabase.LoadAssetAtPath<ArtifactArtCatalog>("Assets/Game/Modules/Home/Configs/ArtifactArtCatalog.asset");
+            var open = OpenArtifactWindow(false, scope, heroes, api, art);
+            yield return Wait(() => open.IsCompleted, "The empty inventory did not open.");
+            var map = open.GetAwaiter().GetResult();
+            Click(map, "tabArtifacts");
+            yield return Wait(() => map.Require<GameObject>("artifactEmptyMessage").activeInHierarchy &&
+                !map.Require<GameText>("artifactStatus").gameObject.activeInHierarchy, "The empty tab must finish loading.");
+            Assert.That(VisibleRows(map, "artifactItems"), Is.Empty);
+            Assert.That(map.Require<Image>("artifactEmptyPlate").isActiveAndEnabled, Is.True);
+            Assert.That(map.Require<GameObject>("artifactDetail").activeSelf, Is.False);
+            yield return Capture("artifact-bag-empty", 1478, 720);
+        }
+
+        private async Task<BindingMap> OpenArtifactWindow(bool roster, BindingScope scope, HeroInventoryApi heroes,
+            ArtifactInventoryApi api, ArtifactArtCatalog art)
+        {
+            priorScene = SceneManager.GetActiveScene();
+            home = SceneManager.CreateScene("Artifact inventory test");
+            SceneManager.SetActiveScene(home);
+            new GameObject("Inventory camera", typeof(Camera));
+            var canvas = new GameObject("Inventory canvas", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler));
+            canvas.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+            var scaler = canvas.GetComponent<CanvasScaler>();
+            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            scaler.referenceResolution = new Vector2(1920, 1080);
+            scaler.matchWidthOrHeight = 1;
+            var assets = new InventoryPrefab();
+            var registry = new UIViewRegistry();
+            registry.Register<HeroInventory>();
+            var view = await registry.CreateAsync<HeroInventory>(assets, canvas.transform, scope);
+            var locale = await AstralOath.Client.Arena.ArenaLabels.LoadAsync(assets, scope, "zh-Hans", "ja");
+            var heroArt = AssetDatabase.LoadAssetAtPath<HomeHeroArt>("Assets/Game/Modules/Home/Configs/HomeHeroArt.asset");
+            var binder = new HeroInventoryBinder(view, heroArt, locale, heroes.FetchAsync, () => Task.CompletedTask, art, api);
+            await binder.OpenAsync(roster, scope);
+            return view.Root.GetComponent<BindingMap>();
         }
 
         private static bool ShowsEmptyTab(BindingMap bag, string chrome)

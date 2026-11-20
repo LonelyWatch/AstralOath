@@ -2,6 +2,8 @@
 
 ## 本机试玩与多开
 
+0.1.22 / R21 界面修订客户端位于 `.artifacts/ui-nov20/delivery`。游戏端口为 7728，内容端口为 5294，两种客户端共用同一本机游戏服务与数据库。游戏服务和 R21 内容服务就绪时，重复双击该目录下的 `AstralOath-Play.exe` 即可多开。重启电脑后，先使用下文 R18 的 `启动试玩.cmd start` 恢复游戏服务，再运行 R21 目录的 `启动试玩.cmd`。[本次界面交付](../delivery/2026-11-20-home-and-arena-ui.md)
+
 Windows 0.1.21 / R18 的试玩目录为 `.artifacts/win-roster70/delivery`。服务运行时，双击目录根部的 `AstralOath-Play.exe` 每次打开一个游戏窗口。启动器把 `http://localhost:7728` 传给本次启动的游戏，旧母包也能使用当前端口。在本机 Windows 代理配置下，UnityWebRequest 用数字回环地址发送开发 Echo 得到 502，改用 `localhost` 后实际收到了游戏服的回包。
 
 重启电脑后可双击 `启动试玩.cmd` 启动服务并打开游戏。只启动服务可运行 `启动试玩.cmd start`。重复启动复用当前用户的后台服务和已有数据库。退出客户端后，服务继续运行，需要关闭时双击 `停止试玩服务.cmd`。本包的签名内容使用 5293，MySQL 使用 5327。

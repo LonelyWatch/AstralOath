@@ -27,14 +27,22 @@ namespace AstralOath.Editor
             var arrow = Picture(back, "Native back arrow", Art("cm_icon_etcback"), .07f, .26f, .13f, .48f, true);
             arrow.color = new Color32(211, 178, 119, 255);
             var again = SummonFooterButton(result, bindings, "resultAgain", "_btn_green", true, -361, 20, 340, 71);
-            ApplySummonTextOutline(Text(again, "Summon again", "summon.button.again", 32.25f, .46f, 0, .51f, 1, alignment: TextAlignmentOptions.Center), light: true);
-            SummonPricePlate(again, "Native repeat price plate", "_btn_small_black", 41f / 340, 11f / 71, 106f / 340, 45f / 71);
+            // gacha_summary/btn_summon_r1. n_counter is one source pixel below its parent.
+            var label = Text(again, "Summon again", "summon.button.again", 32.25f,
+                (238f - 321f * .43f / 2) / 340, (71f - 39f - 52f * .43f / 2) / 71,
+                321f * .43f / 340, 52f * .43f / 71, alignment: TextAlignmentOptions.Center);
+            label.overflowMode = TextOverflowModes.Overflow;
+            ApplySummonTextOutline(label, light: true);
+            SummonPricePlate(again, "Native repeat price plate", "_btn_small_black",
+                41f / 340, 12f / 71, 106f / 340, 45f / 71).color = Color.black;
             bindings.Add(("resultAgainCurrency", Picture(again, "Repeat summon currency", SummonArt("token_ticket_rare"),
-                .039f, .16f, .14f, .67f, true)));
+                6.8f / 340, 8.8f / 71, 50.4f / 340, 50.4f / 71, true)));
             bindings.Add(("resultAgainEpicCurrency", Picture(again, "Repeat summon epic currency", SummonArt("token_rarecoin"),
-                .039f, .16f, .14f, .67f, true)));
-            var cost = Text(again, "Repeat summon cost", null, 28.8f, .18f, 0, .21f, 1,
+                6.8f / 340, 8.8f / 71, 50.4f / 340, 50.4f / 71, true)));
+            var cost = Text(again, "Repeat summon cost", null, 28.8f,
+                (93f - 32f * .8f / 2) / 340, (71f - 39f - 26f * .8f / 2) / 71, 32f * .8f / 340, 26f * .8f / 71,
                 new Color32(255, 220, 78, 255), TextAlignmentOptions.Center);
+            cost.overflowMode = TextOverflowModes.Overflow;
             ApplySummonTextOutline(cost);
             bindings.Add(("resultAgainPrice", cost));
             result.gameObject.SetActive(false);
@@ -50,16 +58,23 @@ namespace AstralOath.Editor
                 card.Add(("background_" + element, Picture(row, "Native background " + element,
                     SummonArt("gacha_10bg_" + element), 0, 0, 1, 1)));
 
-            var heroMask = Area(row, "Native hero artwork clipping", 0, 0, 1, 1);
+            // The row starts at color_bg (15, 2) in gacha_unit_bar.csb. Panel_1 starts at (14, 0).
+            var heroMask = Area(row, "Native hero artwork clipping", 0, 1, 0, 0);
+            heroMask.pivot = Vector2.zero;
+            heroMask.anchoredPosition = new Vector2(-1, -2) * SummonCanvasScale;
+            heroMask.sizeDelta = new Vector2(339, 99) * SummonCanvasScale;
             heroMask.gameObject.AddComponent<RectMask2D>();
-            card.Add(("icon", Picture(heroMask, "Original hero face artwork", null, .294f, 0, .728f, 1)));
+            var face = Picture(heroMask, "Original hero face artwork", null, 0, 1, 0, 0, true);
+            face.rectTransform.pivot = new Vector2(1, 0);
+            face.rectTransform.anchoredPosition = new Vector2(352, 1) * SummonCanvasScale;
+            card.Add(("icon", face));
             foreach (string element in elements)
                 card.Add(("frame_" + element, Picture(row, "Native frame " + element,
                     SummonArt("gacha_10frame_" + element), -.027f, -.128f, 1.05f, 1.225f)));
 
             var artifact = Area(row, "Native artifact layout", 0, 0, 1, 1);
             card.Add(("artifact", artifact.gameObject));
-            card.Add(("artifactArtwork", Picture(artifact, "Original artifact strip", null, .207f, .007f, .783f, .978f)));
+            card.Add(("artifactArtwork", Picture(artifact, "Original artifact strip", null, .207f, .007f, .783f, .978f, true)));
             Picture(artifact, "Original artifact rim", SummonArt("arti_frame_small"), .206f, -.092f, .81f, 1.17f);
             card.Add(("artifactBadge", Picture(artifact, "Original artifact hex emblem", null, -.006f, -.165f, .327f, 1.235f, true)));
             for (int i = 0; i < 5; i++)

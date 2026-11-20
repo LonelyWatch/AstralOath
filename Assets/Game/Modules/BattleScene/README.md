@@ -215,3 +215,13 @@ Luban 快照 `Configs/battle-catalog.json` 含四十名英雄、成长模板、�
 ### 冻伤的施加特效
 
 状态 239 的新施加事件按战斗命中时间播放一次 `deb_freezing.cfx`。冰晶绑定受击者的 `target` 骨，使用源偏移 -10/+30、排序 +30 和 1.8333 秒的 Spine 动画；动画结束、角色退场或表现销毁时释放。重连只从快照恢复冻伤图标。原件的只读导入由 `Tools/BattleScene/ImportBattleStunEffect.py --effect frostbite` 复现。状态 153、244 的原始记录分别指向 `stse_penres_up.cfx`、`stse_rupture.cfx`，r4262 固定文件清单未收录这两份特效，当前展示已验证的 HUD 图标和状态反馈。 [资源和验证记录](../../../../docs/delivery/2026-11-20-roster61-70-assets.md)
+
+### 在线结算返回
+
+完成战斗入场后选禁界面即隐藏。发起结算返回时，战斗场景保留到竞技场导航完成离房并查回当前房间。服务端仍返回房间时恢复房间页，已经离房则显示竞技场大厅。目的页选定后才恢复起始场景的 Canvas、摄像机和输入；角色试用按其原入口恢复。用户退出大厅时，随页面取消的房间查询正常结束。
+
+`BattleReturnNavigationTests` 通过两个真实 additive 场景延迟房间响应，逐帧检查主客双方返回时旧选禁不可见，并检查最后激活的场景。`ArenaDraftOnlineTests.HomeAndAuthenticatedOpponentDraftAndLoadBattle` 在真实双人对局的退出通知和画布渲染时采样。`HomeStartupPreparationTests.ClosingTheReturnedDirectoryWhileItsRoomReadIsPendingIsANormalExit` 覆盖在实际 HTTP 请求期间关闭大厅。
+
+离房请求超时后，客户端重新读取当前房间。如果服务端仍返回原房，房间的定时选禁查询会继续运行；同一房间、同一选禁 ID 且已到 battle 阶段的响应不会再次启动已退出的战斗。该记录属于本次登录，新一局的选禁 ID 可正常进入。若当前房间返回 204，大厅立即接管画面并显示加载状态，房间列表查询随大厅页面运行，用户可以在列表返回前退出大厅。
+
+`BattleReturnReopensTheRoomWhenLeaveFailsAndCurrentStillContainsTheGuest` 通过正常主页入口、真实房间 Binder 和 HTTP 轮询依次返回旧局、新局；`ReturnedDirectoryCanCloseWhileTheRoomListIsStillLoading` 将列表响应扣住，验证返回已完成且大厅可退。两项通过独立回环服务控制响应时序。

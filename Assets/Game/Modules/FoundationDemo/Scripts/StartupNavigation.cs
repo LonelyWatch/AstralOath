@@ -8,6 +8,7 @@ using AstralOath.Client.Core;
 using AstralOath.Client.Home;
 using AstralOath.Client.Summon;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace AstralOath.Client.FoundationDemo
 {
@@ -23,6 +24,8 @@ namespace AstralOath.Client.FoundationDemo
         private readonly Transform parent;
         private readonly BindingScope lifetime;
         private readonly ILocaleService locale;
+        private readonly HomePagePreparation pages;
+        private readonly HomeFirstReads firstReads = new HomeFirstReads();
         private const string MoreOverlay = "home-more";
         private readonly ArenaApi api;
         private readonly HeroInventoryApi inventory;
@@ -30,7 +33,8 @@ namespace AstralOath.Client.FoundationDemo
         private readonly SummonApi summon;
         private readonly Uri endpoint;
         private readonly CancellationToken token;
-        private string roomId;
+        private string roomId, activeDraftId;
+        private string returnedRoomId, returnedDraftId;
 
         private StartupNavigation(BindingScope lifetime, HomeWindow homeView, ArenaDirectory directoryView,
             ArenaCreateRoom createView, ArenaRoom roomView, UIViewRegistry views, IAssetService assets, ISceneAssetService scenes, Transform parent,
@@ -48,6 +52,14 @@ namespace AstralOath.Client.FoundationDemo
             this.parent = parent;
             this.lifetime = lifetime;
             this.locale = locale;
+            pages = new HomePagePreparation(views, assets, parent, lifetime);
+            summon.InventoryMayChange += firstReads.Invalidate;
+            artifacts.InventoryMayChange += firstReads.Invalidate;
+            lifetime.Add(() =>
+            {
+                summon.InventoryMayChange -= firstReads.Invalidate;
+                artifacts.InventoryMayChange -= firstReads.Invalidate;
+            });
             token = lifetime.Token;
             windows = new WindowCoordinator(token);
             lifetime.Add(windows.Dispose);
@@ -55,11 +67,34 @@ namespace AstralOath.Client.FoundationDemo
                 ct => OpenInventory(false, ct), display);
             directory = new ArenaDirectoryBinder(directoryView, createView, locale, api, windows, OpenRoom, ShowHome, playerName);
             room = new ArenaRoomBinder(roomView, locale, api, windows, ReturnToDirectory, OpenDraft);
-            BattleOnlineLaunch.Exited += OnBattleExited;
-            lifetime.Add(() => BattleOnlineLaunch.Exited -= OnBattleExited);
+            BattleOnlineLaunch.Returning += ReturnFromBattleAsync;
+            lifetime.Add(() => BattleOnlineLaunch.Returning -= ReturnFromBattleAsync);
         }
 
         internal static async Task<StartupNavigation> StartAsync(GameLaunchContext context, BindingScope owner)
+        {
+            var curtain = new GameObject("Home loading curtain", typeof(RectTransform), typeof(Canvas), typeof(GraphicRaycaster), typeof(Image));
+            var overlay = curtain.GetComponent<Canvas>();
+            overlay.renderMode = RenderMode.ScreenSpaceOverlay;
+            overlay.sortingOrder = short.MaxValue;
+            curtain.GetComponent<Image>().color = Color.black;
+            void CloseCurtain()
+            {
+                if (!curtain) return;
+                curtain.SetActive(false);
+                UnityEngine.Object.Destroy(curtain);
+            }
+            var detach = owner.Add(CloseCurtain);
+            try
+            {
+                await Task.Yield();
+                owner.Token.ThrowIfCancellationRequested();
+                return await LoadHomeAsync(context, owner);
+            }
+            finally { detach(); CloseCurtain(); }
+        }
+
+        private static async Task<StartupNavigation> LoadHomeAsync(GameLaunchContext context, BindingScope owner)
         {
             var views = new UIViewRegistry();
             views.Register<HomeWindow>();
@@ -104,6 +139,9 @@ namespace AstralOath.Client.FoundationDemo
             owner.Add(summon.Dispose);
             var navigation = new StartupNavigation(owner, home, directory, create, room, views, assets, scenes,
                 context.ViewRoot, locale, api, inventory, artifacts, summon, endpoint, name, display);
+            await Task.WhenAll(navigation.pages.PrepareAsync(owner.Token),
+                navigation.firstReads.PrepareAsync(Bearer, inventory, artifacts, summon, owner.Token));
+            owner.Token.ThrowIfCancellationRequested();
             await navigation.ShowHome();
             context.Services.Add<ILocaleService>(locale);
             context.OpenButton.gameObject.SetActive(false);
@@ -114,28 +152,15 @@ namespace AstralOath.Client.FoundationDemo
         private async Task OpenMore(CancellationToken cancellation)
         {
             if (windows.IsOverlayOpen(MoreOverlay)) { windows.CloseOverlay(MoreOverlay); return; }
-            var loading = new BindingScope(token);
-            var detach = lifetime.Add(loading.Dispose);
-            try
+            var view = await pages.More.Get();
+            cancellation.ThrowIfCancellationRequested();
+            windows.ShowOverlay(MoreOverlay, scope =>
             {
-                var view = await views.CreateAsync<HomeMoreMenu>(assets, parent, loading);
-                cancellation.ThrowIfCancellationRequested();
-                windows.ShowOverlay(MoreOverlay, scope =>
-                {
-                    home.HideArenaWhile(scope);
-                    scope.Add(detach);
-                    scope.Add(loading.Dispose);
-                    var binder = new HomeMoreMenuBinder(view, locale, ct => OpenInventory(true, ct), OpenSummon,
-                        () => windows.CloseOverlay(MoreOverlay));
-                    binder.Open(scope);
-                });
-            }
-            catch
-            {
-                detach();
-                loading.Dispose();
-                throw;
-            }
+                home.HideArenaWhile(scope);
+                var binder = new HomeMoreMenuBinder(view, locale, ct => OpenInventory(true, ct), OpenSummon,
+                    () => windows.CloseOverlay(MoreOverlay));
+                binder.Open(scope);
+            });
         }
 
         internal async Task VerifySummonAsync(CancellationToken cancellation, SummonApi isolatedGuest = null)
@@ -173,61 +198,34 @@ namespace AstralOath.Client.FoundationDemo
 
         private async Task<SummonWindow> ShowSummonPageAsync(CancellationToken cancellation, SummonApi isolatedGuest = null)
         {
-            var loading = new BindingScope(token);
-            var detach = lifetime.Add(loading.Dispose);
-            bool opened = false;
-            try
+            var view = await pages.Summon.Get();
+            var art = await pages.Heroes.Get();
+            var artifactArt = await pages.Artifacts.Get();
+            var presentation = await pages.Presentation.Get();
+            var featuredLoop = await pages.SkillLoop.Get();
+            cancellation.ThrowIfCancellationRequested();
+            await windows.ShowPageAsync(scope =>
             {
-                var view = await views.CreateAsync<SummonWindow>(assets, parent, loading);
-                var art = await assets.LoadAsync<HomeHeroArt>(HomeHeroArt.Address, loading);
-                var artifacts = await assets.LoadAsync<ArtifactArtCatalog>(ArtifactArtCatalog.Address, loading);
-                var presentation = await assets.LoadAsync<SummonPresentation>(SummonPresentation.Address, loading);
-                var featuredLoop = await assets.LoadAsync<SummonSkillLoop>(SummonSkillLoop.Address, loading);
-                cancellation.ThrowIfCancellationRequested();
-                await windows.ShowPageAsync(scope =>
-                {
-                    scope.Add(detach);
-                    scope.Add(loading.Dispose);
-                    var binder = new SummonWindowBinder(view, isolatedGuest ?? summon, art, artifacts, presentation, featuredLoop, locale, ShowHome);
-                    opened = true;
-                    return binder.OpenAsync(scope);
-                });
-                return view;
-            }
-            finally
-            {
-                if (!opened) { detach(); loading.Dispose(); }
-            }
+                var binder = new SummonWindowBinder(view, isolatedGuest ?? summon, art, artifactArt, presentation, featuredLoop, locale, ShowHome);
+                return binder.OpenAsync(scope, isolatedGuest == null ? firstReads.TakeSummon() : null);
+            });
+            return view;
         }
 
         private async Task OpenInventory(bool roster, CancellationToken cancellation)
         {
-            var loading = new BindingScope(token);
-            var detach = lifetime.Add(loading.Dispose);
-            bool opened = false;
-            try
+            var view = await pages.Inventory.Get();
+            var art = await pages.Heroes.Get();
+            var artifactArt = await pages.Artifacts.Get();
+            cancellation.ThrowIfCancellationRequested();
+            await windows.ShowPageAsync(scope =>
             {
-                var view = await views.CreateAsync<HeroInventory>(assets, parent, loading);
-                var art = await assets.LoadAsync<HomeHeroArt>(HomeHeroArt.Address, loading);
-                var artifactArt = await assets.LoadAsync<ArtifactArtCatalog>(ArtifactArtCatalog.Address, loading);
-                cancellation.ThrowIfCancellationRequested();
-                await windows.ShowPageAsync(scope =>
-                {
-                    scope.Add(detach);
-                    scope.Add(loading.Dispose);
-                    Func<string, CancellationToken, Task> startTrial = null;
-                    if (Debug.isDebugBuild && endpoint.IsLoopback)
-                        startTrial = (hero, ct) => StartArtifactTrialAsync(hero, artifactArt, ct);
-                    var binder = new HeroInventoryBinder(view, art, locale, inventory.FetchAsync, ShowHome,
-                        artifactArt, artifacts, startTrial);
-                    opened = true;
-                    return binder.OpenAsync(roster, scope);
-                });
-            }
-            finally
-            {
-                if (!opened) { detach(); loading.Dispose(); }
-            }
+                Func<string, CancellationToken, Task> startTrial = null;
+                if (Debug.isDebugBuild && endpoint.IsLoopback)
+                    startTrial = (hero, ct) => StartArtifactTrialAsync(hero, artifactArt, ct);
+                var binder = new HeroInventoryBinder(view, art, locale, inventory.FetchAsync, ShowHome, artifactArt, artifacts, startTrial);
+                return binder.OpenAsync(roster, scope, firstReads.Heroes, firstReads.Artifacts);
+            });
         }
 
         private async Task StartArtifactTrialAsync(string heroInstanceId, ArtifactArtCatalog art, CancellationToken cancellation)
@@ -254,11 +252,14 @@ namespace AstralOath.Client.FoundationDemo
             token.ThrowIfCancellationRequested();
             if (state?.room == null) throw new InvalidOperationException("Arena room response is missing.");
             roomId = state.room.id;
+            activeDraftId = null;
             return windows.ShowPageAsync(scope => room.OpenAsync(state, scope));
         }
 
         private async Task OpenDraft(ArenaDraftState state)
         {
+            if (state.roomId != roomId || state.phase == "battle" && returnedDraftId != null &&
+                state.roomId == returnedRoomId && state.id == returnedDraftId) return;
             var loading = new BindingScope(token);
             var release = lifetime.Add(loading.Dispose);
             try
@@ -270,6 +271,7 @@ namespace AstralOath.Client.FoundationDemo
                 if (roomId != state.roomId) return;
                 await windows.ShowPageAsync(scope =>
                 {
+                    activeDraftId = state.id;
                     scope.Add(loading.Dispose);
                     scope.Add(release);
                     var draft = new ArenaDraftBinder(draftView, api, locale, draftArt, windows, assets, scenes, ReopenRoomAsync);
@@ -290,24 +292,31 @@ namespace AstralOath.Client.FoundationDemo
             catch (ArenaRequestException) { await ReturnToDirectory(); }
         }
 
-        private async Task LeaveDraftRoomAsync(CancellationToken cancellation)
-        {
-            await api.LeaveAsync(roomId, cancellation);
-            await ReturnToDirectory();
-        }
-
-        private async void OnBattleExited()
+        private async Task ReturnFromBattleAsync()
         {
             if (token.IsCancellationRequested || string.IsNullOrEmpty(roomId)) return;
-            try { await LeaveDraftRoomAsync(token); }
+            if (!string.IsNullOrEmpty(activeDraftId))
+            {
+                returnedRoomId = roomId;
+                returnedDraftId = activeDraftId;
+            }
+            try
+            {
+                try { await api.LeaveAsync(roomId, token); }
+                catch (ArenaRequestException) { /* The directory checks the current room again. */ }
+                token.ThrowIfCancellationRequested();
+                await ShowDirectory(directory.OpenAfterBattleAsync);
+            }
             catch (OperationCanceledException) when (token.IsCancellationRequested) { }
-            catch (ArenaRequestException) { await ReturnToDirectory(); }
         }
 
-        private Task ReturnToDirectory()
+        private Task ReturnToDirectory() => ShowDirectory(directory.OpenAsync);
+
+        private Task ShowDirectory(Func<BindingScope, Task> open)
         {
             roomId = null;
-            return windows.ShowPageAsync(directory.OpenAsync);
+            activeDraftId = null;
+            return windows.ShowPageAsync(open);
         }
 
         private Task ShowHome() => windows.ShowPageAsync(home.OpenAsync);

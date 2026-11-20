@@ -83,6 +83,7 @@ namespace AstralOath.Client.Home
         private readonly Uri endpoint;
         private readonly Func<CancellationToken, Task<string>> getBearer;
         private readonly CancellationToken lifetime;
+        public event Action InventoryMayChange;
 
         public ArtifactInventoryApi(Uri endpoint, Func<CancellationToken, Task<string>> getBearer, CancellationToken lifetime)
         {
@@ -142,6 +143,7 @@ namespace AstralOath.Client.Home
         private async Task<string> RequestAsync(HttpMethod method, string path, string payload, CancellationToken token)
         {
             using var deadline = CancellationTokenSource.CreateLinkedTokenSource(lifetime, token);
+            if (method != HttpMethod.Get && path.StartsWith(Path, StringComparison.Ordinal)) InventoryMayChange?.Invoke();
             deadline.CancelAfter(TimeSpan.FromSeconds(12));
             try
             {

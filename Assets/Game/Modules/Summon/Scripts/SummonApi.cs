@@ -96,6 +96,7 @@ namespace AstralOath.Client.Summon
         }
 
         public SummonRequest Pending { get; set; }
+        public event Action InventoryMayChange;
         public Task<SummonReceipt> LatestAsync(CancellationToken token) =>
             Send<SummonReceipt>(HttpMethod.Get, "/draw/latest", null, token, missingAllowed: true);
 
@@ -115,6 +116,7 @@ namespace AstralOath.Client.Summon
             bool missingAllowed = false) where T : class
         {
             using var deadline = CancellationTokenSource.CreateLinkedTokenSource(lifetime, cancellation);
+            if (method == HttpMethod.Post) InventoryMayChange?.Invoke();
             deadline.CancelAfter(TimeSpan.FromSeconds(16));
             try
             {
@@ -125,7 +127,16 @@ namespace AstralOath.Client.Summon
                 using var response = await http.SendAsync(request, HttpCompletionOption.ResponseContentRead, deadline.Token);
                 if (missingAllowed && response.StatusCode == HttpStatusCode.NotFound) return null;
                 if (!response.IsSuccessStatusCode)
-                    throw new SummonRequestException((int)response.StatusCode);
+                {
+                    string code = null;
+                    if (response.StatusCode == HttpStatusCode.Conflict)
+                    {
+                        string problem = await response.Content.ReadAsStringAsync();
+                        try { code = Newtonsoft.Json.Linq.JObject.Parse(problem).Value<string>("code"); }
+                        catch (JsonException) { /* An empty or invalid error body still represents a rejection. */ }
+                    }
+                    throw new SummonRequestException((int)response.StatusCode, code);
+                }
                 string json = await response.Content.ReadAsStringAsync();
                 deadline.Token.ThrowIfCancellationRequested();
                 try
@@ -148,7 +159,12 @@ namespace AstralOath.Client.Summon
 
     public sealed class SummonRequestException : IOException
     {
-        public SummonRequestException(int status) : base("Summon service status " + status.ToString(CultureInfo.InvariantCulture)) => Status = status;
+        public SummonRequestException(int status, string code = null) : base("Summon service status " + status.ToString(CultureInfo.InvariantCulture))
+        {
+            Status = status;
+            Code = code;
+        }
         public int Status { get; }
+        public string Code { get; }
     }
 }

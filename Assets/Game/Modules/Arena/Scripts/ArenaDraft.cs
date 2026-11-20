@@ -44,6 +44,8 @@ namespace AstralOath.Client.Arena
                     _ = Picture(clock + digit);
             _ = Surface("featured");
             _ = Surface("banFeedback");
+            _ = Surface("blueGuide");
+            _ = Surface("redGuide");
             _ = Picture("actionArrow");
             _ = Bindings.Require<RectTransform>("layout");
             _ = Picture("banGlow");

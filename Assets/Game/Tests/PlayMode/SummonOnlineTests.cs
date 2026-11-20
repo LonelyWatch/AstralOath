@@ -1,12 +1,14 @@
 #if UNITY_EDITOR
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using AstralOath.Client.Common;
 using NUnit.Framework;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
@@ -197,10 +199,21 @@ namespace AstralOath.Client.Tests
             var tenButton = summon.Require<GameButton>("ten").gameObject;
             Assert.That(tenButton.transform.IsChildOf(bannerPage.transform), Is.True);
             Assert.That(tenButton.activeInHierarchy, Is.False, "The banner must not draw behind the result page.");
-            Click(summon, "resultAgain");
+            Assert.That(summon.Require<GameText>("resultAgainPrice").text, Is.EqualTo("50"));
+            PressRepeatPrice(summon);
+            Assert.That(summon.Require<GameText>("confirmCost").text, Is.EqualTo("50"));
+            Assert.That(summon.Require<GameText>("confirmTitle").text, Is.EqualTo("10次召唤"));
             Assert.That(Panel(summon, "confirmPanel") && Panel(summon, "resultPanel"), Is.True);
             Assert.That(bannerPage.activeInHierarchy, Is.False, "A repeat quote belongs to the results.");
+            Assert.That(summon.Require<GameText>("confirmBody").text, Is.EqualTo("材料不足"));
+            Click(summon, "confirmYes");
+            var notice = summon.Require<GameObject>("noticeToast");
+            Assert.That(notice.activeInHierarchy, Is.True);
+            Assert.That(notice.GetComponent<BindingMap>().Require<GameText>("message").text, Is.EqualTo("材料不足"));
+            Assert.That(Panel(summon, "confirmPanel") && Panel(summon, "resultPanel"), Is.True);
+            Assert.That(summon.Require<GameText>("balance").text, Does.Contain("10"));
             Click(summon, "confirmNo");
+            Assert.That(notice.activeSelf, Is.False);
             Assert.That(Panel(summon, "resultPanel"), Is.True);
             Assert.That(tenButton.activeInHierarchy, Is.False);
             yield return VerifyResultResize(summon);
@@ -246,8 +259,44 @@ namespace AstralOath.Client.Tests
             Assert.That(Rows(summon, "resultItems").Select(row => row.Require<GameText>("name").text), Is.EqualTo(labels));
             Assert.That(summon.Require<GameText>("balance").text, Does.Contain("10"));
             Click(summon, "resultClose");
+            Click(summon, "single");
+            Click(summon, "confirmYes");
+            yield return Until(() => Panel(summon, "revealPanel"), "Single summon did not reveal.");
+            Click(summon, "skip");
+            yield return Until(() => Panel(summon, "resultPanel"), "Single receipt did not render.");
+            Assert.That(Rows(summon, "resultItems").Length, Is.EqualTo(1));
+            Assert.That(summon.Require<GameText>("resultAgainPrice").text, Is.EqualTo("5"));
+            PressRepeatPrice(summon);
+            Assert.That(summon.Require<GameText>("confirmCost").text, Is.EqualTo("5"));
+            Assert.That(summon.Require<GameText>("confirmTitle").text, Is.EqualTo("召唤"));
+            Click(summon, "confirmYes");
+            yield return Until(() => Panel(summon, "revealPanel"), "Repeat single did not reveal.");
+            Click(summon, "skip");
+            yield return Until(() => Panel(summon, "resultPanel"), "Repeat single receipt did not render.");
+            Assert.That(Rows(summon, "resultItems").Length, Is.EqualTo(1));
+            Assert.That(summon.Require<GameText>("balance").text.Trim(), Is.EqualTo("0"));
+            Click(summon, "resultClose");
             Click(summon, "back");
             yield return Until(() => FindWindow("HomeWindow") && !FindWindow("SummonWindow"), "Back did not restore Home.");
+        }
+
+        private static void PressRepeatPrice(BindingMap summon)
+        {
+            Canvas.ForceUpdateCanvases();
+            var button = summon.Require<GameButton>("resultAgain");
+            var price = summon.Require<GameText>("resultAgainPrice").rectTransform;
+            var canvas = button.GetComponentInParent<Canvas>().rootCanvas;
+            var screenPoint = RectTransformUtility.WorldToScreenPoint(canvas.renderMode == RenderMode.ScreenSpaceOverlay
+                ? null : canvas.worldCamera, price.TransformPoint(price.rect.center));
+            var pointer = new PointerEventData(EventSystem.current) { position = screenPoint, button = PointerEventData.InputButton.Left };
+            var hits = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(pointer, hits);
+            Assert.That(hits.First().gameObject, Is.EqualTo(button.gameObject), "The price shares the button's input surface.");
+            ExecuteEvents.Execute(button.gameObject, pointer, ExecuteEvents.pointerDownHandler);
+            Assert.That(button.image.overrideSprite.name, Is.EqualTo("_btn_green_p"));
+            ExecuteEvents.Execute(button.gameObject, pointer, ExecuteEvents.pointerUpHandler);
+            Assert.That(button.image.overrideSprite.name, Is.EqualTo("_btn_green"));
+            ExecuteEvents.Execute(button.gameObject, pointer, ExecuteEvents.pointerClickHandler);
         }
 
         private static IEnumerator VerifyResultResize(BindingMap summon)

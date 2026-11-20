@@ -1,0 +1,27 @@
+
+ui_livepvp_arrow_blue.sct
+size: 237,555
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+arrow
+  rotate: false
+  xy: 2, 173
+  size: 123, 380
+  orig: 123, 380
+  offset: 0, 0
+  index: -1
+arrow_glow
+  rotate: false
+  xy: 127, 173
+  size: 108, 364
+  orig: 108, 364
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1

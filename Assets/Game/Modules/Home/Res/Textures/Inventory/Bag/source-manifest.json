@@ -11,6 +11,18 @@
     {
       "source": "wnd/sorting_renewal.csb",
       "sha256": "6769fbe932cc207f0b1425d6978ced4bc03143e02b66f1b70d046bc97710e35a"
+    },
+    {
+      "source": "wnd/artifact_bar.csb",
+      "sha256": "60522db7e643172bd94314037deb53c8eb3be360d2aec1bff5853ffe3a09bceb"
+    },
+    {
+      "source": "wnd/artifact_detail_sub.csb",
+      "sha256": "32fa01c9f64258e32c31951fa330919c9eaa571d1a5b8bd05bf5d056cc52fa5a"
+    },
+    {
+      "source": "wnd/inventory_artifact_popup.csb",
+      "sha256": "2ab90634b6828b82f730781e0a7b701d0b4966d2ec9dab01408142b256f08f70"
     }
   ],
   "assets": [
@@ -157,6 +169,22 @@
       "outputSha256": "7b2cd844bddb3f7be677e289f474050b6c62822519dd3d08b911d0c5207863ca",
       "width": 61,
       "height": 30
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Bag/_box_equip_0.png",
+      "source": "img/_box_equip_0.png",
+      "sourceSha256": "ff9522fc341bd43fb08960cead5c15b32bc93d7857ab2187449e9a806de7239f",
+      "outputSha256": "ff9522fc341bd43fb08960cead5c15b32bc93d7857ab2187449e9a806de7239f",
+      "width": 440,
+      "height": 386
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Bag/arti_gauge_bar.png",
+      "source": "img/arti_gauge_bar.png",
+      "sourceSha256": "eb1d9b97322f473f745dfa764a4168e4b537012b93b1a320d1082aa07ddf0ea6",
+      "outputSha256": "eb1d9b97322f473f745dfa764a4168e4b537012b93b1a320d1082aa07ddf0ea6",
+      "width": 34,
+      "height": 11
     }
   ]
 }

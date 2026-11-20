@@ -59,6 +59,16 @@ MonoBehaviour:
     Atlas: {fileID: 4900000, guid: 45cdfb6ec0ff56afa2e1b8ed0deddb04, type: 3}
     Particles: {fileID: 4900000, guid: 7512f2e7bd9a5466a4d096e3a8337faf, type: 3}
     Page: {fileID: 2800000, guid: 1c7cc4cb4ec6507ba2fb7a2b34423dc1, type: 3}
+  BlueGuide:
+    Skeleton: {fileID: 4900000, guid: 56055e4699065e029b8fdba8d673c394, type: 3}
+    Atlas: {fileID: 4900000, guid: 0cbe1022854555e290e5f7ed74166c65, type: 3}
+    Particles: {fileID: 0}
+    Page: {fileID: 2800000, guid: df0fa6614cf75787bfa1191cfdbcd782, type: 3}
+  RedGuide:
+    Skeleton: {fileID: 4900000, guid: fca899b6e40f5933bd9dd63ca58419e0, type: 3}
+    Atlas: {fileID: 4900000, guid: 38a89270facc52c0842ecaec3c0d563f, type: 3}
+    Particles: {fileID: 0}
+    Page: {fileID: 2800000, guid: 2fa6d66de05d5b428af832ef9e80a253, type: 3}
   ParticleTextures:
   - {fileID: 2800000, guid: 78d168fc867d5e2288fb3671aa940a1b, type: 3}
   - {fileID: 2800000, guid: af6b0801568d58958ff86f9feea7da33, type: 3}

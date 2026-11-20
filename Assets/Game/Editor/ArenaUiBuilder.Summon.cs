@@ -170,6 +170,7 @@ namespace AstralOath.Editor
 
             BuildSummonModalPanels(root, binding);
             BuildSummonReveal(root, binding);
+            binding.Add(("noticeToast", CreateDirectoryToast(root)));
             Bind(root, binding.ToArray());
             return root.gameObject;
         }
@@ -309,12 +310,13 @@ namespace AstralOath.Editor
             return rect;
         }
 
-        private static void SummonPricePlate(RectTransform rect, string name, string sprite,
+        private static Image SummonPricePlate(RectTransform rect, string name, string sprite,
             float left, float top, float width, float height)
         {
             var plate = Picture(rect, name, SummonArt(sprite + "_linear"), left, top, width, height);
             plate.type = Image.Type.Sliced;
             plate.pixelsPerUnitMultiplier = 1f / SummonCanvasScale;
+            return plate;
         }
 
         private static void SummonDrawButton(RectTransform root, List<(string Key, Object Target)> bindings,

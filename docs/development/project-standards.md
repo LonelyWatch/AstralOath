@@ -21,6 +21,8 @@
 
 ## UI 与交互
 
+- 动态立绘和角色演出使用 RenderTexture 时，以 Canvas 最终投影到屏幕上的像素宽高核对采样密度，并验证窗口尺寸变化。排查模糊时分别记录源图集附件像素、离屏尺寸与上屏尺寸。头像横卡按源图比例、源锚点和裁切区布局，用不同宽度的头像复核。
+
 - Foo.prefab 对应普通 Foo.cs / Foo : UIBaseView 与 FooBinder.cs，大小写一致，不额外加 View 后缀。View 重写 PrefabPath；稳定资源地址不随文件重命名自动变化。
 - 预制体用通用 BindingMap 保存引用；业务 View/Binder 不作为组件。View只维护显示，C# Binder负责界面业务/订阅，领域规则放业务服务。
 - 项目文本用 GameText : TextMeshProUGUI，按钮用 GameButton : Button；不可再叠加原版同类组件。右键 UI 创建完整控件，Add Component只添加组件。官方Inspector排版/导航继续使用。

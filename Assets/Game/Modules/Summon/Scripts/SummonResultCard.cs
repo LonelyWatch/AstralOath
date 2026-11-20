@@ -45,8 +45,10 @@ namespace AstralOath.Client.Summon
             row.Require<GameObject>("artifact").SetActive(isArtifact);
             var heroArtwork = row.Require<Image>("icon");
             var artifactArtwork = row.Require<Image>("artifactArtwork");
-            SetImage(heroArtwork, isArtifact ? artifact?.portrait : hero != null && hero.cardPortrait ? hero.cardPortrait : hero?.portrait);
-            heroArtwork.enabled &= !isArtifact;
+            SetImage(heroArtwork, isArtifact ? null : hero != null && hero.cardPortrait ? hero.cardPortrait : hero?.portrait);
+            // gacha_unit_bar.csb scales each face_l sprite by 1.1 on the 720-high design canvas.
+            if (heroArtwork.sprite)
+                heroArtwork.rectTransform.sizeDelta = heroArtwork.sprite.rect.size * (1.1f * 1080f / 720f);
             SetImage(artifactArtwork, artifact?.portrait);
             SetImage(row.Require<Image>("artifactBadge"), artifact?.combatIcon);
             SetImage(row.Require<Image>("element"), hero != null && hero.cardElement ? hero.cardElement : hero?.element);

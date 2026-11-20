@@ -1,8 +1,10 @@
 {
   "schemaVersion": 1,
-  "converterSha256": "6dacb9c4857aca8051a20a24f17cdd64ce72d058a0cbbe1cf8ad06f78025a707",
+  "converterSha256": "a3328010183864f67e4b6d3ea94bf97e079d67693610b6ff537442fb13d1cfe9",
   "roots": [
     "effect/ui_livepvp_bann_eff.cfx",
+    "effect/ui_livepvp_arrow_blue.cfx",
+    "effect/ui_livepvp_arrow_red.cfx",
     "effect/ui_livepvp_slot_blue1_set.cfx",
     "effect/ui_livepvp_slot_red1_set.cfx",
     "effect/ui_livepvp_slot_blue2_set.cfx",
@@ -15,6 +17,122 @@
     "effect/ui_livepvp_slot_red5_set.cfx"
   ],
   "files": [
+    {
+      "source": "原始资源/effect/ui_livepvp_arrow_blue.atlas",
+      "sourceSha256": "863b315dbab3a1f12c9f232252ec13a6fb7edab968a449c33ba4ff3175e98a16",
+      "asset": "ui_livepvp_arrow_blue.atlas.txt",
+      "dependencies": [
+        "ui_livepvp_arrow_blue.png"
+      ],
+      "assetSha256": "863b315dbab3a1f12c9f232252ec13a6fb7edab968a449c33ba4ff3175e98a16"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_arrow_blue.cfx",
+      "sourceSha256": "caf47bbaf6deb1659a2196e689d6a2d5b2a019f8dd6f40c0a97bf9c52328b658",
+      "asset": "ui_livepvp_arrow_blue.cfx.json",
+      "dependencies": [
+        "ui_livepvp_arrow_blue.spine.json"
+      ],
+      "assetSha256": "d6398d0706ccc949e32e8e1a8c1929be36edd2b62ecc7bfbb14c00b2bf76428b"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_arrow_blue.scsp",
+      "sourceSha256": "285a6d452a586f625a3a554ad09da8a9652bde36b9c4232a9f4e28a7a316f33c",
+      "asset": "ui_livepvp_arrow_blue.spine.json",
+      "dependencies": [
+        "ui_livepvp_arrow_blue.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "intro",
+          "duration": 1.333299994468689
+        },
+        {
+          "name": "loop",
+          "duration": 0.16660000383853912
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "ui_livepvp_arrow_blue.sct",
+          "asset": "ui_livepvp_arrow_blue.png"
+        }
+      ],
+      "assetSha256": "d1a3d7b2ef2a5c1e371f7978aa2fbefdd1832cec390653f7487b5ac5f36c4867"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_arrow_blue.sct",
+      "sourceSha256": "05384de8f9d9c0d597d5e996ad332ef8f5fb3c2c50e30b18d4d56d49ae9fffdd",
+      "asset": "ui_livepvp_arrow_blue.png",
+      "dependencies": [],
+      "texture": {
+        "width": 237,
+        "height": 555,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "premultipliedAlpha": true
+      },
+      "assetSha256": "6861281158ebb027aa787d52ecc94fda44b6eba99a12090ac8d7ca6905ae08f5"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_arrow_red.atlas",
+      "sourceSha256": "2f6b4a1150984e7af34cfdf6eebc1152e92eb7ebabc2f07ced4610f1405c9bc0",
+      "asset": "ui_livepvp_arrow_red.atlas.txt",
+      "dependencies": [
+        "ui_livepvp_arrow_red.png"
+      ],
+      "assetSha256": "2f6b4a1150984e7af34cfdf6eebc1152e92eb7ebabc2f07ced4610f1405c9bc0"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_arrow_red.cfx",
+      "sourceSha256": "d889101f14d052aedd3e2a63cc6457452984d9749d15e7ce4a49982cbe4a6728",
+      "asset": "ui_livepvp_arrow_red.cfx.json",
+      "dependencies": [
+        "ui_livepvp_arrow_red.spine.json"
+      ],
+      "assetSha256": "46711ec6e2a905ef956dc29526fe4ba5edff868b56b6b45371bb99b549be5f70"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_arrow_red.scsp",
+      "sourceSha256": "253effdbe4c71d50ef913437f08def2569c09304fcb44cae36944f7e85546458",
+      "asset": "ui_livepvp_arrow_red.spine.json",
+      "dependencies": [
+        "ui_livepvp_arrow_red.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "intro",
+          "duration": 1.333299994468689
+        },
+        {
+          "name": "loop",
+          "duration": 0.16660000383853912
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "ui_livepvp_arrow_red.sct",
+          "asset": "ui_livepvp_arrow_red.png"
+        }
+      ],
+      "assetSha256": "40498134a794dc89a6aee85f7316899691fad04b2ae288d1039d041d3ca304aa"
+    },
+    {
+      "source": "原始资源/effect/ui_livepvp_arrow_red.sct",
+      "sourceSha256": "05384de8f9d9c0d597d5e996ad332ef8f5fb3c2c50e30b18d4d56d49ae9fffdd",
+      "asset": "ui_livepvp_arrow_red.png",
+      "dependencies": [],
+      "texture": {
+        "width": 237,
+        "height": 555,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "premultipliedAlpha": true
+      },
+      "assetSha256": "6861281158ebb027aa787d52ecc94fda44b6eba99a12090ac8d7ca6905ae08f5"
+    },
     {
       "source": "原始资源/effect/ui_livepvp_bann_eff.atlas",
       "sourceSha256": "43c130d3f8fde5c0f3edda6d252be252e5980a5eee5ebd2795cd12d37d7c0403",

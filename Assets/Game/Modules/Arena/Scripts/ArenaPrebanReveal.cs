@@ -73,6 +73,8 @@ namespace AstralOath.Client.Arena
                 Clear();
                 return false;
             }
+            // Loading the battle scene can stall a frame long enough to skip an entire pair.
+            seconds = Mathf.Min(seconds, .10f);
             elapsed += seconds;
             float sequenceEnd = pairCount * PairSeconds;
             if (elapsed >= sequenceEnd + DismissSeconds)

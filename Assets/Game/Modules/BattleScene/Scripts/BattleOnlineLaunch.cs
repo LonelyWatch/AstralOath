@@ -20,6 +20,7 @@ namespace AstralOath.Client.BattleScene
         private static ILoadedScene sceneHandle;
         private static Preparation pendingPreparation, activePreparation;
 
+        public static event Func<Task> Returning;
         public static event Action Exited;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -31,6 +32,7 @@ namespace AstralOath.Client.BattleScene
             sceneHandle = null;
             pendingPreparation = activePreparation = null;
             SuspendedHome.Clear();
+            Returning = null;
             Exited = null;
         }
 
@@ -286,8 +288,18 @@ namespace AstralOath.Client.BattleScene
         {
             if (loading) throw new InvalidOperationException("The battle is still loading.");
             loading = true;
-            try { await UnloadAsync(); }
-            finally { loading = false; }
+            try
+            {
+                var returning = Returning;
+                if (returning != null)
+                    foreach (Func<Task> selectDestination in returning.GetInvocationList())
+                        await selectDestination();
+            }
+            finally
+            {
+                try { await UnloadAsync(); }
+                finally { loading = false; }
+            }
             Exited?.Invoke();
         }
 

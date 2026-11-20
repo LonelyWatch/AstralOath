@@ -28,15 +28,22 @@ namespace AstralOath.Client.Tests
         private const string HomePath = "Assets/Game/Modules/Home/Scenes/GameHome.unity";
         private Scene home;
         private Scene previous;
-        private string endpoint, priorEndpoint, peerToken, roomPath;
+        private string endpoint, priorEndpoint, priorSkipEntry, peerToken, roomPath;
 
         [UnityTest, Timeout(140000)]
-        public IEnumerator HomeAndAuthenticatedOpponentDraftAndLoadBattle()
+        public IEnumerator HomeAndAuthenticatedOpponentDraftAndLoadBattle() => DraftFromHome(checkRosterOnly: false);
+
+        [UnityTest, Timeout(90000)]
+        public IEnumerator DraftRosterScrollPreviewsOnlyAvailableHeroes() => DraftFromHome(checkRosterOnly: true);
+
+        private IEnumerator DraftFromHome(bool checkRosterOnly)
         {
             endpoint = Environment.GetEnvironmentVariable("ASTRAL_ARENA_TEST_URL");
             if (string.IsNullOrWhiteSpace(endpoint)) Assert.Ignore("Set ASTRAL_ARENA_TEST_URL to the local arena server.");
             priorEndpoint = Environment.GetEnvironmentVariable("ASTRAL_FOUNDATION_URL");
+            priorSkipEntry = Environment.GetEnvironmentVariable("ASTRAL_TEST_SKIP_ENTRY");
             Environment.SetEnvironmentVariable("ASTRAL_FOUNDATION_URL", endpoint);
+            Environment.SetEnvironmentVariable("ASTRAL_TEST_SKIP_ENTRY", "1");
             previous = SceneManager.GetActiveScene();
             home = EditorSceneManager.LoadSceneInPlayMode(HomePath, new LoadSceneParameters(LoadSceneMode.Additive));
             yield return Wait(() => home.IsValid() && home.isLoaded, "Home scene did not finish loading.");
@@ -102,6 +109,29 @@ namespace AstralOath.Client.Tests
             Assert.That(draft.Require<GameButton>("preAction").targetGraphic.color.r, Is.LessThan(.5f));
             yield return Capture("bp-preban-waiting");
             yield return PeerAction(route, state, "preban", pool.Skip(2).Take(2).ToArray(), next => state = next);
+            if (checkRosterOnly)
+            {
+                yield return Wait(() => draft.Require<GameButton>("openRosterFilters").interactable &&
+                    Hero(draft, "roster", pool[4])?.interactable == true, "Pick roster did not open.");
+                var list = draft.Require<ScrollRect>("roster");
+                float Position(int index) => ((RectTransform)Hero(draft, "roster", pool[index]).transform).anchoredPosition.y;
+                float step = Position(0) - Position(1);
+                Assert.That(step, Is.GreaterThan(0f));
+                int version = (int)state["version"];
+                list.content.anchoredPosition = new Vector2(0, Position(0) - Position(5) + .27f * step);
+                yield return ReadUntil(route, next => (string)next["previewHeroId"] == pool[5], next => state = next);
+                // Both guests prebanned the first four rows. The closest legal index to row one is four.
+                list.content.anchoredPosition = new Vector2(0, step);
+                yield return ReadUntil(route, next => (string)next["previewHeroId"] == pool[4], next => state = next);
+                Assert.That(list.content.anchoredPosition.y, Is.EqualTo(Position(0) - Position(4)).Within(1f));
+                Assert.That((int)state["version"], Is.EqualTo(version));
+                Assert.That(state["host"]["picks"].Count(), Is.Zero);
+                yield return Peer(roomPath + "/leave", new { });
+                yield return Wait(() => Screen("ArenaRoom"), "The host did not return after its opponent left the draft.");
+                yield return Wait(() => !SceneManager.GetSceneByPath(BattleOnlineLaunch.ScenePath).isLoaded,
+                    "The cancelled draft did not release its staged scene.", 40f);
+                yield break;
+            }
             var prebanReveal = draft.Require<GameObject>("reveal");
             var revealedHeader = draft.Require<GameObject>("preHeader");
             yield return Wait(() => prebanReveal.activeInHierarchy, "Preban reveal did not show.");
@@ -127,6 +157,10 @@ namespace AstralOath.Client.Tests
                 "Revealed footer did not replace the overlay.");
 
             yield return Wait(() => draft.Require<GameText>("title").text == "你的回合", "The draft did not enter the host turn.");
+            var allyGuide = draft.Require<RawImage>("blueGuide");
+            var enemyGuide = draft.Require<RawImage>("redGuide");
+            Assert.That(allyGuide.enabled && enemyGuide.enabled && allyGuide.texture && enemyGuide.texture, Is.True);
+            Assert.That(allyGuide.raycastTarget || enemyGuide.raycastTarget, Is.False);
             Assert.That(draft.transform.Find("Native reference layout/Draft stage/Exit draft"), Is.Null);
             Assert.That(draft.Require<GameObject>("revealedOwn").transform.childCount, Is.EqualTo(2));
             Assert.That(draft.Require<GameObject>("revealedEnemy").transform.childCount, Is.EqualTo(2));
@@ -227,6 +261,7 @@ namespace AstralOath.Client.Tests
             Assert.That(draft.Require<GameButton>("action").interactable, Is.True);
             yield return Capture("arena-draft-scroll-preview");
 
+
             bool[] hostPicks = { true, false, false, true, true, false, false, true, true, false };
             for (int i = 0; i < hostPicks.Length; i++)
             {
@@ -261,8 +296,13 @@ namespace AstralOath.Client.Tests
                         Assert.That(opponentOutline.sprite.name, Does.EndWith("_glow_red"));
                         Assert.That(opponentOutline.color.r, Is.GreaterThan(.9f));
                         Assert.That(opponentOutline.color.g, Is.LessThan(.5f));
-                        float portraitAlpha = portrait.color.a;
-                        yield return Wait(() => Mathf.Abs(portrait.color.a - portraitAlpha) > .14f,
+                        float minAlpha = portrait.color.a, maxAlpha = portrait.color.a;
+                        yield return Wait(() =>
+                        {
+                            minAlpha = Mathf.Min(minAlpha, portrait.color.a);
+                            maxAlpha = Mathf.Max(maxAlpha, portrait.color.a);
+                            return maxAlpha - minAlpha > .14f;
+                        },
                             "The opponent candidate did not flash.", 2f);
                         yield return Wait(() => opponentOutline.color.a > .88f, "The red pending outline did not brighten.", 2f);
                         yield return Capture("arena-draft-opponent-preview");
@@ -300,6 +340,7 @@ namespace AstralOath.Client.Tests
                     yield return Wait(() => !effect.enabled, "The confirmed pick effect did not release.");
                     Assert.That(pickPortrait.material.GetFloat("_WhiteFlash"), Is.Zero);
                     Assert.That(draft.Require<GameText>("actionLabel").text, Does.StartWith("等待中"));
+                    Assert.That(allyGuide.enabled && enemyGuide.enabled, Is.True);
                     Assert.That(draft.Require<GameButton>("action").interactable, Is.False);
                     Assert.That(draft.Require<Image>("actionArrow").enabled, Is.True);
                     Assert.That(draft.Require<GameButton>("action").targetGraphic.color.a, Is.LessThan(.4f));
@@ -315,6 +356,7 @@ namespace AstralOath.Client.Tests
             var featured = draft.Require<RawImage>("featured");
             yield return Wait(() => !featured.enabled, "Final ban must start with an empty center.");
             yield return Capture("bp-final-ban-empty");
+            Assert.That(allyGuide.enabled || enemyGuide.enabled, Is.False);
             target.onClick.Invoke();
             Assert.That(featured.enabled, Is.True);
             Assert.That(featured.color.r, Is.EqualTo(featured.color.g));
@@ -506,6 +548,29 @@ namespace AstralOath.Client.Tests
                 Present("TickVisual", .26f);
                 yield return CaptureBattle(battleScene, hostHud, "arena-death-red-burst", 1920, 1080);
             }
+            bool exposedDraft = false;
+            void CheckRestoredFrame()
+            {
+                if (draft && draft.gameObject.activeInHierarchy &&
+                    draft.GetComponentsInParent<Canvas>().Any(canvas => canvas.isRootCanvas && canvas.enabled))
+                    exposedDraft = true;
+            }
+            Canvas.willRenderCanvases += CheckRestoredFrame;
+            BattleOnlineLaunch.Exited += CheckRestoredFrame;
+            try
+            {
+                var leave = BattleOnlineLaunch.ExitAsync();
+                yield return Wait(() => leave.IsCompleted, "The battle exit did not complete.");
+                leave.GetAwaiter().GetResult();
+                yield return Wait(() => Screen("ArenaDirectory") || Screen("ArenaRoom"), "No arena destination was restored.");
+                Assert.That(exposedDraft, Is.False, "The previous draft was displayed while the battle return was waiting for the room service.");
+                Assert.That(SceneManager.GetActiveScene(), Is.EqualTo(home));
+            }
+            finally
+            {
+                Canvas.willRenderCanvases -= CheckRestoredFrame;
+                BattleOnlineLaunch.Exited -= CheckRestoredFrame;
+            }
         }
 
         [UnityTest]
@@ -560,7 +625,11 @@ namespace AstralOath.Client.Tests
             if (previous.IsValid() && previous.isLoaded) SceneManager.SetActiveScene(previous);
             if (home.IsValid() && home.isLoaded) yield return SceneManager.UnloadSceneAsync(home);
             if (roomPath != null && peerToken != null) yield return Peer(roomPath + "/leave", new { });
-            if (endpoint != null) Environment.SetEnvironmentVariable("ASTRAL_FOUNDATION_URL", priorEndpoint);
+            if (endpoint != null)
+            {
+                Environment.SetEnvironmentVariable("ASTRAL_FOUNDATION_URL", priorEndpoint);
+                Environment.SetEnvironmentVariable("ASTRAL_TEST_SKIP_ENTRY", priorSkipEntry);
+            }
         }
 
         private BindingMap Screen(string name) => !home.IsValid() || !home.isLoaded ? null : home.GetRootGameObjects()

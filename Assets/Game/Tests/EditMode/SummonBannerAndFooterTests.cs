@@ -11,6 +11,41 @@ namespace AstralOath.Client.Tests
         private const string Prefab = "Assets/Game/Modules/Summon/Res/Prefab/SummonWindow.prefab";
 
         [Test]
+        public void RepeatDrawUsesTheSourcePricePlateAndOneHitArea()
+        {
+            var map = AssetDatabase.LoadAssetAtPath<GameObject>(Prefab).GetComponent<BindingMap>();
+            var button = map.Require<GameButton>("resultAgain");
+            var rect = (RectTransform)button.transform;
+            var size = new Vector2(340, 71);
+            Assert.That(rect.sizeDelta, Is.EqualTo(size * 1.5f));
+            Assert.That(rect.anchoredPosition, Is.EqualTo(new Vector2(-361, 20) * 1.5f));
+            Assert.That(button.targetGraphic.raycastTarget, Is.True);
+            foreach (var graphic in button.GetComponentsInChildren<Graphic>(true))
+                if (graphic != button.targetGraphic)
+                    Assert.That(graphic.raycastTarget, Is.False, graphic.name);
+            Assert.That(button.transition, Is.EqualTo(Selectable.Transition.SpriteSwap));
+            Assert.That(button.image.sprite.name, Is.EqualTo("_btn_green"));
+            Assert.That(button.spriteState.pressedSprite.name, Is.EqualTo("_btn_green_p"));
+            var plate = rect.Find("Native repeat price plate").GetComponent<Image>();
+            Assert.That(plate.color, Is.EqualTo(Color.black), "Source n_counter/bg tints the nine-slice black.");
+            void Center(RectTransform child, float x, float y)
+            {
+                var center = Vector2.Scale((child.anchorMin + child.anchorMax) * .5f, size);
+                Assert.That(Vector2.Distance(center, new Vector2(x, y)), Is.LessThan(.001f), child.name);
+            }
+            Center(plate.rectTransform, 94, 36.5f);
+            foreach (var key in new[] { "resultAgainCurrency", "resultAgainEpicCurrency" })
+            {
+                var icon = map.Require<Image>(key).rectTransform;
+                Center(icon, 32, 37);
+                Assert.That(Vector2.Distance(Vector2.Scale(icon.anchorMax - icon.anchorMin, size),
+                    new Vector2(50.4f, 50.4f)), Is.LessThan(.001f), key);
+            }
+            Center(map.Require<GameText>("resultAgainPrice").rectTransform, 93, 39);
+            Center((RectTransform)rect.Find("Summon again"), 238, 39);
+        }
+
+        [Test]
         public void SummonHeaderUsesSharedControlsAndWhiteLabelsHaveARealOutline()
         {
             var map = AssetDatabase.LoadAssetAtPath<GameObject>(Prefab).GetComponent<BindingMap>();

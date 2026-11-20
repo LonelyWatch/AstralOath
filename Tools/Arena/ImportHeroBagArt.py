@@ -16,9 +16,10 @@ SPRITES = (
     "_btn_small_black", "_box_equip_none", "_sorting2", "cm_icon_all",
     "cm_item_slot", "cm_item_slot_arti", "cm_item_slot_private", "cm_icon_parprivate",
     "icon_menu_private", "icon_menu_stuff", "icon_menu_reward_box", "icon_menu_equipstorage",
-    "cm_icon_arti_public", "hero_lv_max",
+    "cm_icon_arti_public", "hero_lv_max", "_box_equip_0", "arti_gauge_bar",
 )
-LAYOUTS = ("inventory_renewal", "inventory_wearing", "sorting_renewal")
+LAYOUTS = ("inventory_renewal", "inventory_wearing", "sorting_renewal",
+           "artifact_bar", "artifact_detail_sub", "inventory_artifact_popup")
 # Cap insets from the original ImageView / Button widgets, in Unity left/bottom/right/top order.
 BORDERS = {
     "_tap_select_blue": (9, 10, 29, 8),
@@ -27,6 +28,7 @@ BORDERS = {
     "_bar_2": (32, 4, 32, 5),
     "_btn_small_black": (14, 16, 14, 12),
     "_box_equip_none": (40, 23, 40, 21),
+    "_box_equip_0": (100, 100, 100, 100),
     "cm_item_slot": (30, 30, 30, 30),
 }
 
