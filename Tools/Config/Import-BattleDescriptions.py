@@ -51,6 +51,19 @@ def records(export, name):
     }
 
 
+def followup_graphs():
+    skills = read_csv(TABLES / "battle_skills.csv")
+    by_id = {row["id"]: row for row in skills}
+    slots = {(row["heroId"], row["slot"]): row for row in skills}
+    for effect in read_csv(TABLES / "battle_skill_effects.csv"):
+        if effect["operation"] == "trigger_readiness":
+            parent = by_id[effect["skillId"]]
+            hero = parent["heroId"]
+            graph_slot = slots[hero, effect["turns"]]
+            key = f"battle.skill.{parent['id']}.followup.{graph_slot['presentationId']}.name"
+            yield key, hero, parent["slot"], graph_slot["slot"]
+
+
 def build_source(export, release, manifest_sha256):
     text = read_json(export / "text.zhs.json")
     skills = records(export, "skill_player")
@@ -110,6 +123,21 @@ def build_source(export, release, manifest_sha256):
                 add(skill["speedUpDescriptionKey"], selected["sk_description"], selected["id"], selected,
                     section_prefix=variant_title + "：")
 
+    for key, hero, parent_slot, graph_slot in followup_graphs():
+        parent = skills[f"sk_{hero}_{parent_slot}"]
+        matches = []
+        for field, operation in parent.items():
+            if not field.startswith("sk_add_eff") or operation != "SKILLUSE":
+                continue
+            index = field.removeprefix("sk_add_eff")
+            hidden_slot = parent[f"sk_eff_value{index}"]
+            triggered = skills[f"sk_{hero}_{hidden_slot}"]
+            if triggered["skillact"] == f"sk_{hero}_{graph_slot}":
+                matches.append(triggered)
+        require(len(matches) == 1, f"Expected one original triggered skill matching {key}")
+        variant = matches[0]
+        add(key, variant["name"], variant["id"])
+
     for status in read_json(STATUS_ASSETS)["statuses"]:
         texture_id = Path(status["asset"]).stem
         text_id = STATUS_TEXT_IDS.get(texture_id, texture_id)
@@ -151,6 +179,7 @@ def render(entry):
 
 def validate_coverage(entries):
     expected = {"battle.inspect.dual_attack.name", "battle.inspect.dual_attack.description"}
+    expected.update(key for key, *_ in followup_graphs())
     for skill in read_csv(TABLES / "battle_skills.csv"):
         expected.update((skill["nameKey"], skill["descriptionKey"]))
         if int(skill["soulBurnCost"]):

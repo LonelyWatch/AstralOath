@@ -222,7 +222,7 @@ function Export-BattleCatalog {
             on_attacked = @('cleanse','readiness','readiness_bonus','counterattack','cleanse_once_on_critical')
             damage_guard = @('damage_reduction','attack_damage_limit','immobilize_immunity')
             after_ally_attack = @('trigger','damage','apply_status','readiness','target_missing_health_damage_bonus')
-            after_ally_damaged = @('trigger','awakened_cooldown_reduction','target_health_barrier','apply_status','cleanse_all','readiness')
+            after_ally_damaged = @('trigger','awakened_cooldown_reduction','target_health_barrier','apply_status','cleanse','cleanse_all','readiness')
             counter_basic = @('damage','apply_status','reduce_readiness','grant_soul')
             after_caster_critical = @('apply_status','random_buff','random_buff_option','readiness')
             after_caster_kill = @('trigger','apply_status','damage','grant_soul')
@@ -270,9 +270,14 @@ function Export-BattleCatalog {
                     $effect.recipient -cne 'targets' -or $effect.value -le 0 -or -not $hasDamage))) {
                 throw "Battle conditional effect arguments are invalid for $($effect.id)."
             }
+            if ($operation -ceq 'trigger_readiness') {
+                $followupGraph = ($skills | Where-Object { $_.heroId -ceq $skill.heroId -and $_.slot -eq $effect.turns }).presentationId
+                if (!$followupGraph -or "battle.skill.$($skill.id).followup.$followupGraph.name" -cnotin $messages.key) {
+                    throw "Missing original follow-up skill name or graph for $($effect.id)."
+                }
+            }
             if (($operation -ceq 'trigger_readiness' -and ($effect.phase -cne 'after_attack' -or $effect.recipient -cne 'self' -or
-                    ($effect.value -lt 1 -or $effect.value -gt 10000) -or $effect.turns -notin (1..3) -or
-                    -not @($skills | Where-Object { $_.heroId -ceq $skill.heroId -and $_.slot -eq $effect.turns -and $_.presentationId }).Count)) -or
+                    ($effect.value -lt 1 -or $effect.value -gt 10000) -or $effect.turns -notin (1..3))) -or
                 ($operation -ceq 'stack_attack' -and ($effect.phase -cne 'after_attack' -or $effect.recipient -cne 'self' -or $effect.value -le 0 -or $effect.turns -le 0)) -or
                 ($operation -ceq 'caster_attack_barrier' -and ($effect.phase -cne 'impact' -or $effect.value -le 0 -or $effect.turns -le 0))) {
                 throw "Invalid skill follow-up, stat increase or barrier arguments for $($effect.id)."

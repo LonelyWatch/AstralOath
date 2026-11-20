@@ -55,7 +55,7 @@ namespace AstralOath.Shared.Battle
             {
                 var target = Get(actorId);
                 CleanseAtTurnStart(target);
-                foreach (var status in target.Statuses.Where(item => BattleStatusSnapshot.IsStackable(item.Kind)).ToArray())
+                foreach (var status in target.Statuses.Where(item => item.DecreasesAtTurnStart).ToArray())
                 {
                     if (!target.Statuses.Contains(status)) break; // A preceding lethal tick may have triggered self-revival.
                     var source = Get(status.SourceId);
@@ -76,7 +76,7 @@ namespace AstralOath.Shared.Battle
                     }
                     int damage = status.Kind == BattleStatusKind.Poison || status.Kind == BattleStatusKind.Venom
                         ? ScaleHealth(target.MaximumHealth, status.Strength)
-                        : PeriodicDamage(status.Strength, target.Defense);
+                        : DamageFromStatus(target, status.Strength);
                     var loss = ProjectDamage(source, target, damage, BattleHitKind.None, periodic: status);
                     if (status.Kind == BattleStatusKind.Venom && source != null)
                         ApplyInjury(source, target, loss.HealthLost, status.Strength);

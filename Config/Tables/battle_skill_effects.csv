@@ -699,7 +699,7 @@
 ,c1083.s2.3,c1083.s2,3,turn_start,apply_status,self,DefenseUp,10000,2,6000,enemy_has_frostbite,none,0
 ,c1083.s3.1,c1083.s3,1,impact,damage,targets,none,10000,0,0,none,none,0
 ,c1083.s3.2,c1083.s3,2,impact,ignore_resistance,self,none,10000,0,1,caster_enraged,none,0
-,c1083.s3.3,c1083.s3,3,after_attack,dispel,targets,none,10000,0,2,none,none,0
+,c1083.s3.3,c1083.s3,3,after_attack,dispel_all,targets,none,10000,0,2,none,none,0
 ,c1083.s3.4,c1083.s3,4,after_attack,apply_status,targets,Rupture,10000,2,1200,none,none,0
 ,c1083.s3.5,c1083.s3,5,after_attack,apply_status,targets,Unbuffable,10000,2,0,caster_skill_awakened,none,0
 ,c1085.s1.1,c1085.s1,1,impact,damage,targets,none,10000,0,0,none,none,0
@@ -707,7 +707,7 @@
 ,c1085.s1.3,c1085.s1,3,after_hit,apply_status,targets,DefenseDown,2500,2,7000,none,none,0
 ,c1085.s1.4,c1085.s1,4,after_attack,trigger_readiness,self,none,3500,2,2000,none,none,0
 ,c1085.s2.1,c1085.s2,1,after_ally_damaged,trigger,self,none,10000,0,0,self_attacked_debuffed,none,0
-,c1085.s2.2,c1085.s2,2,after_ally_damaged,cleanse_all,self,none,10000,0,0,none,none,0
+,c1085.s2.2,c1085.s2,2,after_ally_damaged,cleanse,self,none,10000,0,99,none,none,0
 ,c1085.s2.3,c1085.s2,3,after_ally_damaged,apply_status,self,AttackUp,10000,2,5000,none,none,0
 ,c1085.s3.1,c1085.s3,1,impact,damage,targets,none,10000,0,0,none,none,0
 ,c1085.s3.2,c1085.s3,2,after_hit,apply_status,targets,Unhealable,10000,1,0,caster_skill_not_awakened,none,0
@@ -722,7 +722,7 @@
 ,c1086.s2.2,c1086.s2,2,after_attack,apply_status,allies,AttackUp,10000,2,5000,none,none,0
 ,c1086.s2.3,c1086.s2,3,after_attack,apply_status,allies,SkillNullifier,10000,1,1,recipient_fire,none,0
 ,c1086.s3.1,c1086.s3,1,impact,damage,targets,none,10000,0,0,none,none,0
-,c1086.s3.2,c1086.s3,2,after_hit,dispel,targets,none,10000,0,2,none,none,0
+,c1086.s3.2,c1086.s3,2,after_hit,dispel_all,targets,none,10000,0,2,none,none,0
 ,c1086.s3.3,c1086.s3,3,after_hit,apply_status,targets,Stun,10000,1,0,none,none,0
 ,c1086.s3.4,c1086.s3,4,after_attack,readiness_fixed,allies,none,10000,0,2000,recipient_fire,none,0
 ,c1087.s1.1,c1087.s1,1,impact,damage,targets,none,10000,0,0,none,none,0

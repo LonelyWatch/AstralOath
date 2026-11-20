@@ -54,8 +54,8 @@ namespace AstralOath.Shared.Battle
             return (int)Math.Clamp(Math.Round(result, MidpointRounding.AwayFromZero), 1m, int.MaxValue);
         }
 
-        internal static int PeriodicDamage(int baseDamage, decimal defense) =>
-            (int)Math.Clamp(Math.Round(baseDamage * 1.871m / (1m + Math.Max(0m, defense) * .3m / 300m),
+        internal static int AttackProportionalDamage(int baseDamage, decimal defenseAfterPenetration) =>
+            (int)Math.Clamp(Math.Round(baseDamage * 1.871m / (1m + Math.Max(0m, defenseAfterPenetration) / 300m),
                 MidpointRounding.AwayFromZero), 1m, int.MaxValue);
 
         internal static int ScaleHealth(decimal health, int rateBp, int enhancementBp = 0) =>

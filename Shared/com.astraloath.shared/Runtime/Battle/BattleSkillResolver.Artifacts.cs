@@ -266,7 +266,8 @@ namespace AstralOath.Shared.Battle
                 if (!holder.Alive) ResolveEnemyDefeats(attacker, 1);
             }
 
-            private int DefenseAura(Unit target) => Allies(target).Any(ally => ally.ArtifactEffect == "aurius") ? 1000 : 0;
+            private decimal EffectiveDefense(Unit target) => target.DefenseWithAura(
+                units.Any(ally => ally.Alive && ally.Side == target.Side && ally.ArtifactEffect == "aurius") ? 1000 : 0);
             private int ResistanceAura(Unit target) => Allies(target).Where(ally => ally.ArtifactEffect == "start_resistance_stack")
                 .Sum(ally => ally.ArtifactValue * ally.Counter(ArtifactCounter.Stack));
             private int BasketAttackDuringDual(Unit actor) => units.Any(unit => unit.Alive && unit.Side == actor.Side &&

@@ -9,7 +9,8 @@ public sealed class BattleBaalTests
     {
         var battle = Fixture("poison");
         var opening = Cast(battle, "baal", "c1015.s1", "target");
-        var stacks = opening.Snapshot.GetUnit("target").Statuses.Where(item => item.Kind == BattleStatusKind.Poison).ToArray();
+        var stacks = opening.Events.Where(e => e.Kind == BattleFlowEventKind.StatusApplied &&
+            e.StatusKind == BattleStatusKind.Poison).Select(e => e.Status).ToArray();
         Assert.Equal(2, stacks.Length);
         Assert.All(stacks, stack => Assert.Equal("baal", stack.SourceId));
         Assert.Equal(2, stacks.Select(stack => stack.InstanceId).Distinct().Count());
@@ -17,17 +18,21 @@ public sealed class BattleBaalTests
         var ticks = opening.Events.Where(item => item.Kind == BattleFlowEventKind.Damage && item.StatusKind == BattleStatusKind.Poison).ToArray();
         Assert.Equal(new[] { 500, 500 }, ticks.Select(item => item.Amount));
         Assert.Equal(stacks.Select(item => item.InstanceId), ticks.Select(item => item.Status.InstanceId));
-        var turn = Cast(battle, "target", "setup.pass", null);
-        var expired = Assert.Single(turn.Events, item => item.Kind == BattleFlowEventKind.StatusRemoved &&
+        var expired = Assert.Single(opening.Events, item => item.Kind == BattleFlowEventKind.StatusRemoved &&
             item.StatusKind == BattleStatusKind.Poison && item.TargetId == "target");
         Assert.Equal(stacks[0].InstanceId, expired.Status.InstanceId);
-        Assert.Equal(stacks[1].InstanceId, Assert.Single(turn.Snapshot.GetUnit("target").Statuses).InstanceId);
+        var survivor = Assert.Single(opening.Snapshot.GetUnit("target").Statuses);
+        Assert.Equal(stacks[1].InstanceId, survivor.InstanceId);
+        Assert.Equal(1, survivor.RemainingTurns);
+        var turn = Cast(battle, "target", "setup.pass", null);
+        Assert.DoesNotContain(turn.Events, e => e.Kind == BattleFlowEventKind.StatusRemoved);
+        Assert.Equal(survivor.InstanceId, Assert.Single(turn.Snapshot.GetUnit("target").Statuses).InstanceId);
     }
 
     [Fact]
     public void CleanseRemovesExactlyOnePoisonInstance()
     {
-        var battle = Fixture("poison");
+        var battle = Fixture("poison", firstPoisonTurns: 2);
         var opening = Cast(battle, "baal", "c1015.s1", "target");
         var stacks = opening.Snapshot.GetUnit("target").Statuses.ToArray();
         var cleansed = Cast(battle, "target", "setup.cleanse", null);
@@ -178,7 +183,7 @@ public sealed class BattleBaalTests
         }), new BattleSkillResolver(catalog, randomDualChanceBp: 0), new BattleFlowRules(initialAllySoul: 20));
     }
 
-    private static BattleMatch Fixture(string fixture, int health = 10000)
+    private static BattleMatch Fixture(string fixture, int health = 10000, int firstPoisonTurns = 1)
     {
         var skills = new[]
         {
@@ -191,7 +196,7 @@ public sealed class BattleBaalTests
         var effects = new List<BattleCatalogData.EffectRow>
         {
             Effect("c1015.s1", 1, "impact", "damage"),
-            Effect("c1015.s1", 2, "after_hit", "apply_status", "targets", "Poison", 1, 500),
+            Effect("c1015.s1", 2, "after_hit", "apply_status", "targets", "Poison", firstPoisonTurns, 500),
             Effect("c1015.s1", 3, "after_hit", "apply_status", "targets", "Poison", 2, 500),
             Effect("c1015.s2", 1, "impact", "damage_bonus_per_debuff", "self", value: 1500),
             Effect("c1015.s2", 2, "impact", "damage"),

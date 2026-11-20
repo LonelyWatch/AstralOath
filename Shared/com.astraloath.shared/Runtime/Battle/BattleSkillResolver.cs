@@ -257,8 +257,8 @@ namespace AstralOath.Shared.Battle
             public int CriticalChance => Source.Stats.CritChanceBp + PassiveCriticalChance + Strength(BattleStatusKind.CriticalChanceUp) + Strength(BattleStatusKind.Perception) +
                 (ArtifactEffect == "critical_chance" ? ArtifactValue :
                     ArtifactEffect == "turn_start_attack_crit_stack" ? ArtifactValue * Counter(ArtifactCounter.Stack) : 0);
-            public decimal Defense => ScaleStat(Source.Stats.Defense, BattleStatusKind.DefenseUp, BattleStatusKind.DefenseDown,
-                Strength(BattleStatusKind.Indomitable) + Strength(BattleStatusKind.Vigor) + (2L * Health < MaximumHealth ? LowHealthDefense : 0) +
+            public decimal DefenseWithAura(int auraBp) => ScaleStat(Source.Stats.Defense, BattleStatusKind.DefenseUp, BattleStatusKind.DefenseDown,
+                auraBp + Strength(BattleStatusKind.Indomitable) + Strength(BattleStatusKind.Vigor) + (2L * Health < MaximumHealth ? LowHealthDefense : 0) +
                 (ArtifactEffect == "high_health_defense" && 2L * Health >= MaximumHealth ? ArtifactValue : 0));
             public int EffectResistance => Source.Stats.EffectResistanceBp + Strength(BattleStatusKind.Indomitable);
             public int Effectiveness => Source.Stats.EffectivenessBp + Strength(BattleStatusKind.EffectivenessUp);
@@ -347,7 +347,7 @@ namespace AstralOath.Shared.Battle
                 var attacked = new HashSet<string>(StringComparer.Ordinal);
                 HashSet<string> readinessDrained = null;
                 var highestDefense = skill.highestDefensePenetrationBp.HasValue
-                    ? targets.OrderByDescending(target => target.Defense).FirstOrDefault()
+                    ? targets.OrderByDescending(EffectiveDefense).FirstOrDefault()
                     : null;
                 var healthPenetration = SkillModifier(program, "highest_health_penetration", actor, actor, multiTargetAttack);
                 var highestHealth = healthPenetration > 0 ? targets.OrderByDescending(target => target.MaximumHealth).FirstOrDefault() : null;
@@ -511,8 +511,7 @@ namespace AstralOath.Shared.Battle
                                 selected != null && hit.TryGetValue(selected.Id, out var primaryHit) && primaryHit != BattleHitKind.Miss)
                                 foreach (var other in units.Where(unit => unit.Alive && unit.Side != actor.Side && unit != selected))
                                 {
-                                    ProjectDamage(actor, other, PeriodicDamage(ScaleHealth(actor.Attack, effect.value),
-                                        other.Defense), BattleHitKind.None);
+                                    ProjectDamage(actor, other, AdditionalAttackDamage(actor, other, effect.value), BattleHitKind.None);
                                     if (!other.Alive) defeated.Add(other.Id);
                                 }
                             continue;
@@ -574,7 +573,8 @@ namespace AstralOath.Shared.Battle
                             pendingRuptures[target] = rupture.Strength;
                         }
                         // A post-attack status or dispel uses its own condition and resistance roll.
-                        var effectHit = effect.phase == "after_attack" && (effect.operation == "apply_status" || effect.operation == "dispel")
+                        var effectHit = effect.phase == "after_attack" &&
+                            (effect.operation == "apply_status" || effect.operation == "dispel" || effect.operation == "dispel_all")
                             ? BattleHitKind.None : lastHit;
                         int healthLost = ApplyEffect(actor, target, skill, effect, effectModifiers, soulBurn, effectHit, hit, target == highestDefense,
                             allTargetAttack, program, multiTargetAttack, speedVariant, speedBuffed,
@@ -749,10 +749,7 @@ namespace AstralOath.Shared.Battle
                             (actor.Has(BattleStatusKind.Stealth) ? skill.stealthPenetrationBp ?? 0 : 0) +
                             (highestDefense ? skill.highestDefensePenetrationBp ?? 0 : 0) +
                             SkillModifier(program, "defense_penetration", actor, target, multiTargetAttack);
-                        decimal effectivePenetration = Math.Min(Basis, penetration) *
-                            (1m - target.Strength(BattleStatusKind.PenetrationResistanceUp) / (decimal)Basis);
-                        decimal defense = target.Defense * (1m + DefenseAura(target) / (decimal)Basis) *
-                            (1m - effectivePenetration / Basis);
+                        decimal defense = DefenseAfterPenetration(target, penetration);
                         int speedScale = (soulBurn ? skill.burnSpeedDamagePpm : null) ?? skill.casterSpeedDamagePpm ?? 0;
                         int perDebuff = SkillModifier(program, "damage_bonus_per_debuff", actor, target, multiTargetAttack);
                         int debuffBonus = perDebuff == 0 ? 0 : perDebuff * target.Statuses.Count(status => IsHarmful(status.Kind));
@@ -783,7 +780,8 @@ namespace AstralOath.Shared.Battle
                             healthRate, modifiers.DamageBp, relation, result, criticalDamage,
                             additionalBaseDamage: healthLostBeforeCast *
                                 (decimal)SkillModifier(program, "missing_health_base_per_100000", actor, target, multiTargetAttack, soulBurn: soulBurn) / 100000 +
-                                (actor.Defense * defenseRate + target.MaximumHealth * (decimal)targetHealthDamage) / Basis,
+                                ((defenseRate == 0 ? 0m : EffectiveDefense(actor) * defenseRate) +
+                                    target.MaximumHealth * (decimal)targetHealthDamage) / Basis,
                             damageMultiplier: (1m + damageBonus) * (1m - reduction / (decimal)Basis) *
                                 (allTargetAttack && !frozen && target.Has(BattleStatusKind.Stealth) ? .5m : 1m));
                         hit[target.Id] = result;
@@ -824,7 +822,7 @@ namespace AstralOath.Shared.Battle
                             if (!actor.Alive) ResolveEnemyDefeats(target, 1);
                         }
                         if (nail > 0 && target.Alive)
-                            ProjectDamage(actor, target, PeriodicDamage(ScaleHealth(actor.Attack, nail), target.Defense), BattleHitKind.None);
+                            ProjectDamage(actor, target, AdditionalAttackDamage(actor, target, nail), BattleHitKind.None);
                         return received.HealthLost;
                     case "heal":
                     case "heal_target_health":
@@ -843,7 +841,7 @@ namespace AstralOath.Shared.Battle
                         break;
                     case "attacker_scaled_damage":
                         if (!(nullifiedTargets?.Contains(target.Id) ?? false))
-                            ProjectDamage(actor, target, PeriodicDamage(ScaleHealth(actor.Attack, effect.value), target.Defense),
+                            ProjectDamage(actor, target, AdditionalAttackDamage(actor, target, effect.value),
                                 BattleHitKind.None, limitedDamage);
                         break;
                     case "stack_attack":
@@ -1073,9 +1071,23 @@ namespace AstralOath.Shared.Battle
                 !IsHarmful(kind) && kind != BattleStatusKind.Perception && kind != BattleStatusKind.MagicBarrier && kind != BattleStatusKind.Indomitable &&
                 kind != BattleStatusKind.Rage && kind != BattleStatusKind.Idol && kind != BattleStatusKind.AttackGrowth && kind != BattleStatusKind.Vigor && kind != BattleStatusKind.SpiritlordProtection;
 
-            private static int BarrierStrength(Unit actor, BattleCatalogData.SkillRow skill, int enhancementBp)
+            private decimal DefenseAfterPenetration(Unit target, int penetrationBp)
             {
-                if (skill.casterDefenseBarrierBp.HasValue) return ScaleHealth(actor.Defense, skill.casterDefenseBarrierBp.Value + enhancementBp);
+                decimal penetration = Math.Min(Basis, penetrationBp) / (decimal)Basis *
+                    (1m - target.Strength(BattleStatusKind.PenetrationResistanceUp) / (decimal)Basis);
+                return EffectiveDefense(target) * (1m - penetration);
+            }
+
+            private int DamageFromStatus(Unit target, int strength) =>
+                AttackProportionalDamage(strength, DefenseAfterPenetration(target, 7000));
+
+            // HPDOWN_CASTER_ATT after an attack uses fixed 70% penetration.
+            private int AdditionalAttackDamage(Unit actor, Unit target, int rateBp) =>
+                AttackProportionalDamage(ScaleHealth(actor.Attack, rateBp), EffectiveDefense(target) * .3m);
+
+            private int BarrierStrength(Unit actor, BattleCatalogData.SkillRow skill, int enhancementBp)
+            {
+                if (skill.casterDefenseBarrierBp.HasValue) return ScaleHealth(EffectiveDefense(actor), skill.casterDefenseBarrierBp.Value + enhancementBp);
                 if (skill.casterAttackBarrierBp.HasValue) return ScaleHealth(actor.Attack, skill.casterAttackBarrierBp.Value + enhancementBp);
                 return ScaleHealth(actor.MaximumHealth, skill.casterHealthBarrierBp.Value + enhancementBp);
             }

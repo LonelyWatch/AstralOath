@@ -61,7 +61,7 @@ namespace AstralOath.Shared.Battle
             private void ExplodeStatus(Unit actor, Unit target, BattleStatusSnapshot status, int bonus)
             {
                 int ticks = status.Kind == BattleStatusKind.Bomb ? 1 : status.RemainingTurns;
-                int damage = PeriodicDamage(status.Strength, target.Defense);
+                int damage = DamageFromStatus(target, status.Strength);
                 ProjectDamage(actor, target, ScaleHealth((decimal)damage * ticks, Basis + bonus), BattleHitKind.None,
                     periodic: status);
                 if (!target.Alive)

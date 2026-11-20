@@ -26396,7 +26396,7 @@
       "skillId": "c1083.s3",
       "order": 3,
       "phase": "after_attack",
-      "operation": "dispel",
+      "operation": "dispel_all",
       "recipient": "targets",
       "status": "none",
       "chanceBp": 10000,
@@ -26516,12 +26516,12 @@
       "skillId": "c1085.s2",
       "order": 2,
       "phase": "after_ally_damaged",
-      "operation": "cleanse_all",
+      "operation": "cleanse",
       "recipient": "self",
       "status": "none",
       "chanceBp": 10000,
       "turns": 0,
-      "value": 0,
+      "value": 99,
       "condition": "none",
       "chanceBonusStatus": "none",
       "chanceBonusBp": 0
@@ -26741,7 +26741,7 @@
       "skillId": "c1086.s3",
       "order": 2,
       "phase": "after_hit",
-      "operation": "dispel",
+      "operation": "dispel_all",
       "recipient": "targets",
       "status": "none",
       "chanceBp": 10000,
@@ -37175,6 +37175,10 @@
     {
       "key": "battle.status.rupture.name",
       "zhCn": "破裂"
+    },
+    {
+      "key": "battle.skill.c1085.s1.followup.c_kawazu_skill_02.name",
+      "zhCn": "火焰之息"
     },
     {
       "key": "character.ras.name",

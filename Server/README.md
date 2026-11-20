@@ -89,4 +89,4 @@ pwsh -File Server/Ops/Start-LocalTestStack.ps1 -ServerDll ".artifacts/local-game
 
 ## 第 61–70 名战斗规则
 
-共享战斗规则版本 16 接入迪埃妮至薇薇安，客户端与房间服务使用同版战斗目录。杰诺的冻伤、破裂及薇薇安击杀后的连续攻击由共享规则结算。 [批次记录](../docs/delivery/2026-11-20-roster61-70.md)
+客户端和房间服务使用同一份战斗目录和规则版本 17。迪埃妮至薇薇安的回归通过正式命令核对技能触发顺序、燃魂、强化及神器对实际血量的影响。 [批次记录](../docs/delivery/2026-11-20-roster61-70.md) · [技能效果复核](../docs/delivery/2026-11-20-roster61-70-effect-audit.md)

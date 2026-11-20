@@ -294,6 +294,7 @@ namespace AstralOath.Shared.Battle
 
         private void ApplyStartOfTurnEffects(State unit, List<BattleFlowEvent> events)
         {
+            var ticking = unit.Statuses.Where(status => status.DecreasesAtTurnStart).ToArray();
             if (resolver is IBattleLifecycleResolver lifecycle)
             {
                 var changes = lifecycle.StartOfTurn(Capture(), unit.Id, ArtifactRandom(1));
@@ -301,14 +302,18 @@ namespace AstralOath.Shared.Battle
                     change.Kind == BattleFlowEventKind.Action || change.Kind == BattleFlowEventKind.ExtraTurnGranted))
                     throw new InvalidOperationException("Battle periodic program returned invalid changes.");
                 foreach (var change in changes) Apply(change, events);
-                return;
             }
-            foreach (var status in unit.Statuses.Where(item => item.Kind == BattleStatusKind.Poison).ToArray())
+            else
             {
-                int damage = EpicSevenCombatMath.ScaleHealth(unit.MaximumHealth, status.Strength);
-                ApplyDamage(unit, status.SourceId, damage, BattleHitKind.None, events, status);
-                if (unit.Health == 0) return;
+                foreach (var status in ticking.Where(item => item.Kind == BattleStatusKind.Poison))
+                {
+                    int damage = EpicSevenCombatMath.ScaleHealth(unit.MaximumHealth, status.Strength);
+                    ApplyDamage(unit, status.SourceId, damage, BattleHitKind.None, events, status);
+                    if (unit.Health == 0) return;
+                }
             }
+            if (unit.Health > 0)
+                foreach (var status in ticking) DecreaseStatusDuration(unit, status, events);
         }
 
         private int Absorb(State unit, int amount, string source, List<BattleFlowEvent> events)
@@ -365,25 +370,30 @@ namespace AstralOath.Shared.Battle
                     ChangeCooldown(unit, unit.Id, skill, cooldown - 1, events);
             foreach (var status in previous)
             {
-                if (refreshed?.Contains(status.Kind) == true || status.Kind == BattleStatusKind.SpiritlordProtection ||
+                if (status.DecreasesAtTurnStart || refreshed?.Contains(status.Kind) == true || status.Kind == BattleStatusKind.SpiritlordProtection ||
                     status.Kind == BattleStatusKind.SkillNullifier || status.Kind == BattleStatusKind.MagicBarrier ||
                     status.Kind == BattleStatusKind.AttackGrowth) continue;
-                int index = unit.Statuses.FindIndex(item => item.Kind == status.Kind && item.InstanceId == status.InstanceId);
-                if (index < 0) continue;
-                var remaining = unit.Statuses[index];
-                if (remaining.RemainingTurns == 1) RemoveStatus(unit, unit.Id, remaining.Kind, events, remaining.InstanceId);
-                else
-                {
-                    var updated = new BattleStatusSnapshot(remaining.Kind, remaining.RemainingTurns - 1,
-                        remaining.Strength, remaining.SourceId, remaining.InstanceId);
-                    unit.Statuses[index] = updated;
-                    Emit(events, BattleFlowEventKind.StatusDurationChanged, unit.Id, unit.Id,
-                        statusKind: updated.Kind, status: updated);
-                }
+                DecreaseStatusDuration(unit, status, events);
             }
             if (unit.Health > 0 && resolver is IBattleLifecycleResolver lifecycle)
                 ApplyLifecycle(lifecycle.TurnEnd(Capture(), unit.Id, ArtifactRandom(2)), events);
             Emit(events, BattleFlowEventKind.TurnEnded, unit.Id);
+        }
+
+        private void DecreaseStatusDuration(State unit, BattleStatusSnapshot status, List<BattleFlowEvent> events)
+        {
+            int index = unit.Statuses.FindIndex(item => item.Kind == status.Kind && item.InstanceId == status.InstanceId);
+            if (index < 0) return;
+            var remaining = unit.Statuses[index];
+            if (remaining.RemainingTurns == 1)
+                RemoveStatus(unit, unit.Id, remaining.Kind, events, remaining.InstanceId);
+            else
+            {
+                var updated = new BattleStatusSnapshot(remaining.Kind, remaining.RemainingTurns - 1,
+                    remaining.Strength, remaining.SourceId, remaining.InstanceId);
+                unit.Statuses[index] = updated;
+                Emit(events, BattleFlowEventKind.StatusDurationChanged, unit.Id, unit.Id, statusKind: updated.Kind, status: updated);
+            }
         }
 
         private void ApplyLifecycle(IReadOnlyList<BattleChange> changes, List<BattleFlowEvent> events)

@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "sourceMapping": {
+    "table": "db/cs_player.db",
+    "tableSha256": "c031c39f2a96af49d1b4240be6c60c37091289e5794300f7b6229369b06b026f",
+    "records": {
+      "239": "stic_freezing"
+    },
+    "cs_effect": "deb_freezing.cfx",
+    "cs_eff_bone": "target"
+  },
+  "spineVersion": "2.1.27",
+  "animations": [
+    {
+      "name": "animation",
+      "duration": 1.833299994468689
+    }
+  ],
+  "premultipliedAlpha": true,
+  "texture": {
+    "width": 511,
+    "height": 663,
+    "encoding": "SCT1:RGB565+A8",
+    "alpha": "source-preserved"
+  },
+  "converterSha256": "bf0c538105108ae0f60c6916a30288421884591ecd249026c6d8610444161505",
+  "assets": [
+    {
+      "source": "effect/deb_freezing.cfx",
+      "sourceSha256": "f14eab1306c0b82d96746dc2c1f13e4e54795a4d357c8fcb30bfe13aea48fa41",
+      "asset": "deb_freezing.cfx.json",
+      "assetSha256": "560205c1ab6bee0f98279e55f55e0b134542f802cb349ba9180ef4f864f7f927"
+    },
+    {
+      "source": "effect/freezing.scsp",
+      "sourceSha256": "2ebc0538c92cac9559d57deab54aba0cf3a1f58148504c0e7924d4f17ffc41b0",
+      "asset": "freezing.json",
+      "assetSha256": "f70014a272847afae21f285998493c135e9bb53d2a7c2362c6175d4c7797ea3c"
+    },
+    {
+      "source": "effect/freezing.atlas",
+      "sourceSha256": "4b58a011877399a8186273e05d7f573f03be7212d58a392cec9eb3f345fa1b66",
+      "asset": "freezing.atlas.txt",
+      "assetSha256": "5b53af992579f09ef19ddcf6b91cbaf531b80899fd0799c710d1cd106f200242"
+    },
+    {
+      "source": "effect/freezing.sct",
+      "sourceSha256": "c74c9909585dbdab1e18591d63672956337c4ecf4edf12e344d4f9a17a6cd881",
+      "asset": "freezing.png",
+      "assetSha256": "e8e5b653fae11be7b7d48bc0d42bba2ed1ae915248338ed4fe7f683bfc262941"
+    }
+  ]
+}

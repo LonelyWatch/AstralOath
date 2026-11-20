@@ -131,6 +131,7 @@ namespace AstralOath.Client.BattleScene
                 ? BattleStatusSkeletonEffect.Prepare(unitPresentation.StunStars, unitPresentation.StunStarsEffect, defaultSortingOffset: 1)
                 : null;
             var sleepSymbols = BattleStatusSkeletonEffect.Prepare(unitPresentation.SleepSymbols, unitPresentation.SleepSymbolsEffect);
+            var frostbite = BattleStatusSkeletonEffect.PrepareOneShot(unitPresentation.FrostbiteApplication, unitPresentation.FrostbiteApplicationEffect);
             var text = hud.Require<GameText>("activeName");
             try
             {
@@ -145,7 +146,7 @@ namespace AstralOath.Client.BattleScene
                     {
                         sprites.TryGetValue("game_hud_bar_" + state.Element.ToString().ToLowerInvariant(), out var element);
                         views.Add(state.InstanceId, new View(slot, actor, marker, camera, unitPresentation, deathParticles, deathTextures,
-                            statusArt, shieldAura, invincibleAura, stunStars, sleepSymbols, element, state.Resource, text, inspection == null ? null : InspectStatus,
+                            statusArt, shieldAura, invincibleAura, stunStars, sleepSymbols, frostbite, element, state.Resource, text, inspection == null ? null : InspectStatus,
                             () => ChooseTarget(state.InstanceId)));
                     }
                     catch
@@ -673,7 +674,7 @@ namespace AstralOath.Client.BattleScene
                 actionFeedback.Clear(Snapshot.LastEventSequence);
                 onlineHud?.ClearFeedback();
                 opponentSouls.Restore(Snapshot.EnemySoul);
-                foreach (var view in views.Values) view.ClearEffectWords();
+                foreach (var view in views.Values) view.ClearTransientFeedback();
                 Refresh();
                 return;
             }
@@ -765,6 +766,9 @@ namespace AstralOath.Client.BattleScene
                     var variant = SkillVariantForGraph(skill, item.PresentationId);
                     string name = skill != null ? Label(SkillNameKey(skill, variant)) :
                         item.SkillId == BattlePreviewFactory.SlimeSkillId ? "史莱姆攻击" : item.SkillId;
+                    if (item.Origin == BattleActionOrigin.ExtraAttack && skill != null &&
+                        messages.TryGetValue($"battle.skill.{skill.id}.followup.{item.PresentationId}.name", out var followUpName))
+                        name = followUpName;
                     var caster = Snapshot.GetUnit(item.SourceId);
                     var casterView = views[item.SourceId];
                     if (actionFeedback.PresentAction(item, casterView.Actor))
@@ -1430,7 +1434,7 @@ namespace AstralOath.Client.BattleScene
             private int maximumHealth;
             private readonly BattleStatusIcons statusIcons;
             private readonly BattleEffectWords effectWords;
-            private readonly BattleStatusSkeletonEffect shieldAura, invincibleAura, stunStars, sleepSymbols;
+            private readonly BattleStatusSkeletonEffect shieldAura, invincibleAura, stunStars, sleepSymbols, frostbite;
             private bool stunned, sleeping;
             private bool invincible;
             private readonly BattleUnitLevelBadge levelBadge;
@@ -1453,6 +1457,7 @@ namespace AstralOath.Client.BattleScene
                 TextAsset deathParticles, IReadOnlyDictionary<string, Texture2D> deathTextures, BattleStatusArt statusArt,
                 BattleStatusSkeletonEffect.Definition auraDefinition, BattleStatusSkeletonEffect.Definition invincibleDefinition,
                 BattleStatusSkeletonEffect.Definition stunDefinition, BattleStatusSkeletonEffect.Definition sleepDefinition,
+                BattleStatusSkeletonEffect.Definition frostbiteDefinition,
                 Sprite element, BattleResourceSnapshot resource, GameText fontSource,
                 Action<BattleStatusSnapshot, Image> inspectStatus, UnityEngine.Events.UnityAction targetClick)
             {
@@ -1486,6 +1491,7 @@ namespace AstralOath.Client.BattleScene
                     Actor.PresentationRenderer, "Battle invincibility aura");
                 stunStars = new BattleStatusSkeletonEffect(stunDefinition, null, Actor.PresentationRenderer, "Battle stun stars");
                 sleepSymbols = new BattleStatusSkeletonEffect(sleepDefinition, null, Actor.PresentationRenderer, "Battle sleep symbols");
+                frostbite = new BattleStatusSkeletonEffect(frostbiteDefinition, null, Actor.PresentationRenderer, "Battle frostbite application");
                 if (element) elementBadge.sprite = element;
                 if (profile)
                 {
@@ -1509,7 +1515,7 @@ namespace AstralOath.Client.BattleScene
                 catch
                 {
                     effectWords.Dispose();
-                    shieldAura.Dispose(); invincibleAura.Dispose(); stunStars.Dispose(); sleepSymbols.Dispose(); statusIcons.Dispose(); status.Dispose(); levelBadge.Dispose();
+                    shieldAura.Dispose(); invincibleAura.Dispose(); stunStars.Dispose(); sleepSymbols.Dispose(); frostbite.Dispose(); statusIcons.Dispose(); status.Dispose(); levelBadge.Dispose();
                     throw;
                 }
             }
@@ -1665,7 +1671,11 @@ namespace AstralOath.Client.BattleScene
             }
 
             public void TickEffectWords(float delta) => effectWords.Tick(delta);
-            public void ClearEffectWords() => effectWords.Clear();
+            public void ClearTransientFeedback()
+            {
+                effectWords.Clear();
+                frostbite.StopOneShot();
+            }
 
             public void BeginDamageTurn() => status.BeginDamageTurn(presentedHealth);
 
@@ -1722,6 +1732,9 @@ namespace AstralOath.Client.BattleScene
                         return;
                     }
                 }
+                if (effect.Kind == BattleStatusKind.Frostbite && shown && !deathStarted &&
+                    Actor.TryGetSkeletonAnchor("target", out var applicationAnchor))
+                    frostbite.StartOneShot(Actor.PresentationRenderer, applicationAnchor);
                 statusIcons.Apply(effect);
                 UpdateControlStatus(effect.Kind, true);
                 if (effect.Kind == BattleStatusKind.Stealth) SetStealth(true);
@@ -1814,6 +1827,12 @@ namespace AstralOath.Client.BattleScene
                     ? top : (Vector2?)null;
                 stunStars.Sync(body, stunned && head.HasValue, delta, head);
                 sleepSymbols.Sync(body, sleeping && head.HasValue, delta, head);
+                if (frostbite.IsPlaying)
+                {
+                    bool present = shown && !deathStarted;
+                    Vector2? target = present && Actor.TryGetSkeletonAnchor("target", out var bone) ? bone : (Vector2?)null;
+                    frostbite.TickOneShot(body, present, delta, target);
+                }
             }
 
             public void Restore()
@@ -1833,7 +1852,7 @@ namespace AstralOath.Client.BattleScene
                 shieldAura.Dispose();
                 invincibleAura.Dispose();
                 stunStars.Dispose();
-                sleepSymbols.Dispose();
+                sleepSymbols.Dispose(); frostbite.Dispose();
                 statusIcons.Dispose();
                 effectWords.Dispose();
                 UpdateTargetSelection(null, null, false);

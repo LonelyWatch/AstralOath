@@ -4,6 +4,30 @@ using Xunit;
 public sealed class BattleMatchTests
 {
     [Fact]
+    public void PoisonCountsDownAfterEachTickBeforeTheVictimCanAct()
+    {
+        var resolver = new Resolver((_, command, _) => new(command.Sequence == 1
+            ? new[] { BattleChange.ApplyStatus("ally", "enemy", BattleStatusKind.Poison, 2, 500) }
+            : Array.Empty<BattleChange>()));
+        var match = Match(resolver);
+        var first = match.Submit(Command(1, "ally", "enemy"));
+        Assert.Equal("enemy", first.Snapshot.CurrentActorId);
+        var firstTick = Assert.Single(first.Events, e => e.Kind == BattleFlowEventKind.Damage);
+        Assert.Equal(2, firstTick.Status.RemainingTurns);
+        var poison = first.Snapshot.GetUnit("enemy").GetStatus(BattleStatusKind.Poison);
+        Assert.Equal(1, poison.RemainingTurns);
+        var enemyTurn = match.Submit(Command(2, "enemy", "ally"));
+        Assert.DoesNotContain(enemyTurn.Events, e => e.Kind == BattleFlowEventKind.StatusRemoved);
+        var last = match.Submit(Command(3, "ally", "enemy"));
+        Assert.Equal("enemy", last.Snapshot.CurrentActorId);
+        var lastTick = Assert.Single(last.Events, e => e.Kind == BattleFlowEventKind.Damage);
+        var expired = Assert.Single(last.Events, e => e.Kind == BattleFlowEventKind.StatusRemoved);
+        Assert.Equal(poison.InstanceId, expired.Status.InstanceId);
+        Assert.True(lastTick.Sequence < expired.Sequence);
+        Assert.Null(last.Snapshot.GetUnit("enemy").GetStatus(BattleStatusKind.Poison));
+    }
+
+    [Fact]
     public void SpeedAdvancesReadinessAndOrdersTurns()
     {
         var resolver = new Resolver((_, command, _) => new(new[] { BattleChange.Damage(command.ActorId, command.TargetId, 30) }));

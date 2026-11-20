@@ -18,6 +18,7 @@ namespace AstralOath.Client.BattleScene
             public readonly Quaternion Rotation;
             public readonly Vector3 Scale;
             public Action ReleaseReaction;
+            public Action<float> AdvanceReaction;
 
             public NodeActorBinding(Transform body, NodeActorBinding previous)
             {
@@ -153,12 +154,15 @@ namespace AstralOath.Client.BattleScene
                 foreach (string entry in frames.Values<string>())
                 {
                     string[] fields = entry?.Split(',');
-                    // A zero-duration source clip has one visible pose regardless of looping.
-                    // Keep the unresolved flag diagnostic on moving clips.
-                    bool singlePose = fields?.Length == 3 && fields[2] == "0" &&
-                        actor.GetBattleAnimationDuration(fields[1]) == 0f;
-                    if (fields?.Length != 3 || !TryScalar(fields[0], out float delay) || delay < 0f ||
-                        (fields[2] != "1" && !singlePose))
+                    if (fields?.Length != 3 || !TryScalar(fields[0], out float delay) || delay < 0f)
+                    {
+                        WarnSource($"Unmapped NODE_ANI timeline entry '{entry}'.");
+                        continue;
+                    }
+                    string clip = fields[1];
+                    float duration = actor.GetBattleAnimationDuration(clip);
+                    bool firstFlyingPass = fields[2] == "0" && clip == "flying" && duration > 0f;
+                    if (fields[2] != "1" && !(fields[2] == "0" && duration == 0f) && !firstFlyingPass)
                     {
                         WarnSource($"Unmapped NODE_ANI timeline entry '{entry}'.");
                         continue;
@@ -167,10 +171,31 @@ namespace AstralOath.Client.BattleScene
                     {
                         if (!Owns(binding) || actor.IsDefeatPoseActive) return;
                         var previous = binding.ReleaseReaction;
-                        binding.ReleaseReaction = actor.HoldSourceReaction(fields[1]);
+                        binding.ReleaseReaction = actor.HoldSourceReaction(clip);
+                        binding.AdvanceReaction = null;
                         previous?.Invoke();
                         if (binding.ReleaseReaction == null)
-                            WarnSource($"NODE_ANI reaction '{fields[1]}' is absent on '{actor.name}'.");
+                            WarnSource($"NODE_ANI reaction '{clip}' is absent on '{actor.name}'.");
+                        else if (firstFlyingPass)
+                        {
+                            // The cue names a moving pose. Only its first pass is established for flag 0.
+                            var releasePose = binding.ReleaseReaction;
+                            actor.BeginPresentationControl();
+                            binding.AdvanceReaction = actor.AdvancePresentation;
+                            Action release = () =>
+                            {
+                                actor.EndPresentationControl();
+                                releasePose();
+                            };
+                            binding.ReleaseReaction = release;
+                            Schedule(time + duration, () =>
+                            {
+                                if (!Owns(binding) || binding.ReleaseReaction != release) return;
+                                binding.AdvanceReaction = null;
+                                binding.ReleaseReaction = null;
+                                release();
+                            });
+                        }
                     });
                 }
             }
@@ -186,6 +211,7 @@ namespace AstralOath.Client.BattleScene
                 {
                     var binding = bindings[index];
                     if (!Owns(binding)) continue;
+                    binding.AdvanceReaction?.Invoke(delta);
                     var parent = binding.Body.parent;
                     Vector3 origin = parent.TransformPoint(binding.Position);
                     Vector3 relative = formation[index];

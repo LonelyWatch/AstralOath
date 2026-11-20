@@ -405,6 +405,100 @@ namespace AstralOath.Client.Tests
             }
         }
 
+        [TestCase("complete")]
+        [TestCase("interrupt")]
+        [TestCase("replacement")]
+        [TestCase("unmapped")]
+        public void ZenoStartsTheAuthoredFlyingReactionAndReturnsControlToTheTarget(string mode)
+        {
+            const string directory = "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1083/";
+            var graph = JObject.Parse(File.ReadAllText(directory + "Configs/stagept/c_zeno_skill_03.graph.json"));
+            var node = graph["source"]["entities"].OfType<JObject>().Single(row => (int)row["guid"] == 25);
+            Assert.That((int)node["target_node"], Is.EqualTo(76));
+            Assert.That(node["timeline"].Values<string>(), Is.EqualTo(new[] { "0,flying,0" }));
+            var armin = ReadModel("arming");
+            var target = Create(armin.json, armin.atlas, armin.page);
+            var player = Player(target);
+            EnterBattleIdle(target, player);
+            var start = player.Root.transform.localPosition;
+            var reference = Player(Create(armin.json, armin.atlas, armin.page));
+            reference.Play("flying", false);
+            Assert.That(reference.Duration, Is.EqualTo(.3333f).Within(.001f));
+
+            var assetType = ActorType.Assembly.GetType("AstralOath.Client.BattleScene.BattleSkillPresentationAsset", true);
+            var asset = Activator.CreateInstance(assetType);
+            var rig = new TextAsset(File.ReadAllText(directory + "Animations/spani/zeno_sk3_node.spine.json"));
+            assets.Add(rig);
+            assetType.GetField("document").SetValue(asset, rig);
+            assetType.GetField("source").SetValue(asset, "spani/" + (string)node["source"]);
+            assetType.GetField("scale").SetValue(asset, .01f);
+            var sources = Array.CreateInstance(assetType, 1);
+            sources.SetValue(asset, 0);
+            var type = ActorType.Assembly.GetType("AstralOath.Client.BattleScene.BattleSkillPresentation", true);
+            using var playback = (IDisposable)Activator.CreateInstance(type, root.transform,
+                Array.Empty<TextAsset>(), sources, null, null, null);
+            var targets = Array.CreateInstance(ActorType, 1);
+            targets.SetValue(target, 0);
+            if (mode == "replacement") ((JArray)node["timeline"]).Add("220,attacked_damage,1");
+            if (mode == "unmapped")
+            {
+                node["timeline"] = new JArray("0,attacked,0");
+                type.GetField("currentPresentationId", Private).SetValue(playback, (string)graph["id"]);
+                UnityEngine.TestTools.LogAssert.Expect(LogType.Warning,
+                    "c_zeno_skill_03: Unmapped NODE_ANI timeline entry '0,attacked,0'.");
+            }
+            type.GetMethod("PlayNodeAnimation", Private).Invoke(playback, new object[] { node, 0f, targets });
+            void Tick(float delta) => type.GetMethod("Tick").Invoke(playback, new object[] { delta });
+            bool Owns() => (bool)type.GetMethod("OwnsNodeAnimationPose", Private).Invoke(playback, new object[] { target });
+            if (mode == "unmapped")
+            {
+                Tick(.1f);
+                Assert.That(Owns(), Is.False);
+                Assert.That(player.CurrentAnimation, Is.EqualTo("b_idle"));
+                return;
+            }
+            float Sample(float delta)
+            {
+                Tick(delta);
+                Invoke(target, "AdvanceAmbient", delta, delta);
+                reference.Tick(delta);
+                Assert.That(player.CurrentAnimation, Is.EqualTo("flying"));
+                Assert.That(player.Time, Is.EqualTo(reference.Time).Within(.001f));
+                Assert.That(player.TryGetBonePose("armor_skirtlow_r", out var actual), Is.True);
+                Assert.That(reference.TryGetBonePose("armor_skirtlow_r", out var expected), Is.True);
+                Assert.That(actual.LocalRotation, Is.EqualTo(expected.LocalRotation).Within(.002f));
+                return actual.LocalRotation;
+            }
+            var opening = Sample(0f);
+            var second = Sample(.1f);
+            var third = Sample(.0666f);
+            Assert.That(Mathf.Abs(opening - second), Is.GreaterThan(3f));
+            Assert.That(Mathf.Abs(second - third), Is.GreaterThan(3f));
+            Assert.That(Owns(), Is.True);
+            if (mode == "complete")
+            {
+                Tick(.168f);
+                Assert.That(Owns(), Is.False, "The actor can play the next ordinary hit after the verified first pass.");
+                Assert.That(player.CurrentAnimation, Is.EqualTo("b_idle"));
+                var tracks = (System.Collections.IDictionary)type.GetField("nodeActorBindings", Private).GetValue(playback);
+                Assert.That(tracks.Count, Is.EqualTo(1), "The 2.5-second formation track remains active at its source position.");
+                Tick(2.2f);
+                Assert.That(tracks.Count, Is.Zero);
+            }
+            else if (mode == "replacement")
+            {
+                Tick(.06f);
+                Tick(.2f);
+                Assert.That(Owns(), Is.True);
+                Assert.That(player.CurrentAnimation, Is.EqualTo("attacked_damage"), "A previous clip must not release the newer reaction.");
+                playback.Dispose();
+            }
+            else playback.Dispose();
+            Assert.That(Owns(), Is.False);
+            Assert.That(player.CurrentAnimation, Is.EqualTo("b_idle"));
+            Assert.That(player.Root.transform.localPosition, Is.EqualTo(start));
+        }
+
         [TestCase(false)]
         [TestCase(true)]
         public void SezS3MovesTheTargetThroughItsFourReactionTracksAndRestoresTheBody(bool interrupt)

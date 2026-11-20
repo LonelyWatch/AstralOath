@@ -49,6 +49,61 @@ namespace AstralOath.Tests
             Call("Play", JObject.Parse("{'etty':'ZOOM','scale':1.3,'time':200}")); Call("Tick",.2f);
             Assert.That(camera.WorldToViewportPoint(target.position).y, Is.EqualTo(y).Within(.005f), "A foot anchor must not become the middle of the screen.");
         }
+
+        [TestCase("c1079", "c_chermia_skill_03", 17)]
+        [TestCase("c1081", "c_ceris_skill_02", 15)]
+        [TestCase("c1086", "c_kawana_skill_03", 18)]
+        [TestCase("c1087", "c_furious_skill_03", 31)]
+        public void SingleRecipientCameraTwoFollowsTheTargetInBothDirections(string owner, string graph, int guid)
+        {
+            var target = Create(false);
+            var caster = new GameObject("Caster").transform;
+            caster.SetParent(root.transform);
+            var actorType = Type.GetType("AstralOath.Client.BattleScene.BattlePreviewActor, AstralOath.Client.BattleScene", true);
+            var actor = caster.gameObject.AddComponent(actorType);
+            var path = System.IO.Path.Combine(Application.dataPath, "Game/Modules/CharacterPresentation/Res/Characters",
+                owner, "Configs/stagept", graph + ".graph.json");
+            var nodes = (JArray)JObject.Parse(System.IO.File.ReadAllText(path))["source"]["entities"];
+            var node = (JObject)nodes.Single(item => (int)item["guid"] == guid);
+            Assert.That((int)node["location"], Is.EqualTo(2));
+            foreach (int facing in new[] { 1, -1 })
+            {
+                Call("Reset");
+                caster.position = new Vector3(-5 * facing, -2, 0);
+                target.position = new Vector3(4 * facing, -3, 0);
+                actorType.GetField("faceLeft", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(actor, facing < 0);
+                var baseline = camera.transform.position;
+                Call("Begin", caster, new[] { target }, false);
+                Call("Play", node);
+                Call("Tick", 2f);
+                Vector3 expected = new Vector3(target.position.x + ((float?)node["x"] ?? 0f) * .01f * facing,
+                    baseline.y + ((float?)node["y"] ?? 0f) * .01f, baseline.z);
+                Assert.That(Vector3.Distance(camera.transform.position, expected), Is.LessThan(.001f), graph);
+                var motion = new Vector3(facing * .75f, -.5f, 0);
+                target.position += motion;
+                Call("Tick", .1f);
+                Assert.That(Vector3.Distance(camera.transform.position, expected + motion), Is.LessThan(.001f), graph);
+                Call("Reset");
+                Assert.That(camera.transform.position, Is.EqualTo(baseline));
+            }
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void CameraTwoKeepsAnUnverifiedGroupDistinctFromASingleRecipient(bool removeSecond)
+        {
+            var first = Create(false);
+            var second = new GameObject("Second target").transform;
+            second.SetParent(root.transform);
+            second.position = new Vector3(-2, 1, 0);
+            Call("Reset");
+            Call("Begin", root.transform, new[] { first, second }, false);
+            if (removeSecond) Object.DestroyImmediate(second.gameObject);
+            UnityEngine.TestTools.LogAssert.Expect(LogType.Warning, "Unmapped cinematic CAM location 2");
+            var anchor = (Vector3)stage.GetType().GetMethod("Anchor", BindingFlags.Instance | BindingFlags.NonPublic)
+                .Invoke(stage, new object[] { 2 });
+            Assert.That(anchor, Is.EqualTo(camera.transform.position));
+        }
         [Test] public void VisibleMapConstrainsRequestedCameraAndHiddenStageDoesNot()
         {
             Create(true);

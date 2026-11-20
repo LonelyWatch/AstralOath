@@ -26,6 +26,72 @@ namespace AstralOath.Client.Tests
             map = scene.GetRootGameObjects().SelectMany(x => x.GetComponentsInChildren<BindingMap>()).Single();
         }
         [UnityTearDown] public IEnumerator Unload() { if (scene.IsValid() && scene.isLoaded) yield return SceneManager.UnloadSceneAsync(scene); }
+        [UnityTest]
+        public IEnumerator FrostbitePlaysOnlyOnApplicationAtTheSourceTargetBone()
+        {
+            var simulation = typeof(BattleHudPreview).GetField("simulation", Private).GetValue(host);
+            simulation.GetType().GetMethod("SetPaused").Invoke(simulation, new object[] { true });
+            var match = (BattleMatch)simulation.GetType().GetField("match", Private).GetValue(simulation);
+            var state = match.Snapshot.GetUnit(match.Snapshot.CurrentActorId);
+            var views = (IDictionary)simulation.GetType().GetField("views", Private).GetValue(simulation);
+            var view = views[state.InstanceId];
+            var actor = (BattlePreviewActor)view.GetType().GetProperty("Actor").GetValue(view);
+            var body = (Renderer)typeof(BattlePreviewActor).GetProperty("PresentationRenderer", Private).GetValue(actor);
+            var effect = (BattleStatusSnapshot)Activator.CreateInstance(typeof(BattleStatusSnapshot), Private, null,
+                new object[] { BattleStatusKind.Frostbite, 1, 0 }, null);
+            void Call(string method, params object[] args) => view.GetType().GetMethod(method).Invoke(view, args);
+            Transform Burst() => body.transform.Find("Battle frostbite application");
+
+            var mutableActor = match.GetType().GetField("actor", Private).GetValue(match);
+            var statuses = (IList)mutableActor.GetType().GetProperty("Statuses").GetValue(mutableActor);
+            statuses.Add(effect);
+            var snapshot = (BattleSnapshot)match.GetType().GetMethod("Capture", Private).Invoke(match, null);
+            Call("RefreshStatuses", snapshot.GetUnit(state.InstanceId));
+            Assert.That(Burst(), Is.Null, "A restored active status must not replay its application.");
+
+            var flowEvent = BattleDualAttackTimingTests.Event(BattleFlowEventKind.StatusApplied, "enemy-1", null, null,
+                BattleActionOrigin.Primary, BattleStatusKind.Frostbite, 0, state.InstanceId, statusTurns: 1, statusStrength: 0,
+                remainingHealth: null, hitKind: BattleHitKind.None);
+            simulation.GetType().GetField("impactSeconds", Private).SetValue(simulation, .5f);
+            simulation.GetType().GetMethod("Present", Private).Invoke(simulation, new[] { flowEvent });
+            void AdvanceFeedback(float seconds)
+            {
+                simulation.GetType().GetField("actionElapsed", Private).SetValue(simulation, seconds);
+                simulation.GetType().GetMethod("ShowDueFeedback", Private).Invoke(simulation, null);
+            }
+            AdvanceFeedback(.49f);
+            Assert.That(Burst(), Is.Null, "The debuff effect starts at the scheduled impact.");
+            AdvanceFeedback(.5f);
+            var burst = Burst();
+            Assert.That(burst, Is.Not.Null, "A fresh Frostbite event must play its original finite CFX.");
+            Call("TickVisual", .18f);
+            var renderer = burst.GetComponent<MeshRenderer>();
+            Assert.That(renderer.enabled && burst.gameObject.activeInHierarchy, Is.True);
+            Assert.That(burst.GetComponent<MeshFilter>().sharedMesh.vertexCount, Is.Positive);
+            object[] point = { "target", Vector2.zero };
+            Assert.That(typeof(BattlePreviewActor).GetMethod("TryGetSkeletonAnchor", Private).Invoke(actor, point), Is.True);
+            Assert.That(Vector3.Distance(burst.localPosition, (Vector3)(Vector2)point[1] + new Vector3(-.1f,.3f,0)), Is.LessThan(.001f));
+            Assert.That(renderer.sortingOrder, Is.EqualTo(body.sortingOrder+30));
+            Capture("frostbite-application", new Vector2Int(1920, 1080));
+            Call("TickVisual", 1.64f);
+            Assert.That(Burst(), Is.Not.Null, "The source animation lasts 1.8333 seconds.");
+            Call("TickVisual", .03f);
+            Assert.That(Burst(), Is.Null);
+            Call("RefreshStatuses", snapshot.GetUnit(state.InstanceId));
+            Assert.That(Burst(), Is.Null);
+
+            Call("ApplyStatus", effect);
+            Call("ClearTransientFeedback");
+            Call("RefreshStatuses", snapshot.GetUnit(state.InstanceId));
+            Assert.That(Burst(), Is.Null, "An online reset discards an in-flight application burst.");
+            Call("ApplyStatus", effect);
+            Assert.That(Burst(), Is.Not.Null);
+            Call("BeginDeath");
+            Call("TickVisual", 0f);
+            Assert.That(Burst(), Is.Null, "Leaving battle releases an outstanding application effect.");
+            yield return null;
+        }
+
         [UnityTest] public IEnumerator RealAnimatedTopDrivesMarkerPositionAndCameraScale()
         {
             var actor = scene.GetRootGameObjects().SelectMany(x => x.GetComponentsInChildren<BattlePreviewActor>()).Single(x => x.name == "Ras [c1001]");
@@ -63,20 +129,24 @@ namespace AstralOath.Client.Tests
             simulation.GetType().GetMethod("Present", Private).Invoke(simulation, new object[] { defeat });
             simulation.GetType().GetMethod("ShowDueFeedback", Private).Invoke(simulation, null);
             Assert.That(actor.gameObject.activeInHierarchy, Is.True, "Accepted defeat starts a visual lifecycle; it cannot immediately deactivate the actor.");
-            yield return new WaitForSecondsRealtime(.12f);
-            var renderer = actor.GetComponentInChildren<MeshRenderer>();
+            var tick = simulation.GetType().GetMethod("Tick");
+            var profile = actor.GetComponent<BattleActorStatusTemplate>().Profile;
+            tick.Invoke(simulation, new object[] { profile.DeathDarkenSeconds / 2f });
+            var body = typeof(BattlePreviewActor).GetProperty("PresentationRenderer", Private);
+            var renderer = (Renderer)body.GetValue(actor);
             var block = new MaterialPropertyBlock(); renderer.GetPropertyBlock(block);
             float shade = block.GetFloat("_PresentationBrightness");
             Assert.That(shade, Is.InRange(.001f, .999f));
-            host.PauseBattle(); yield return new WaitForSecondsRealtime(.15f);
+            host.PauseBattle();
+            tick.Invoke(simulation, new object[] { .15f });
             renderer.GetPropertyBlock(block); Assert.That(block.GetFloat("_PresentationBrightness"), Is.EqualTo(shade).Within(.01f));
             host.ResumeBattle();
-            yield return new WaitForSecondsRealtime(.25f);
+            tick.Invoke(simulation, new object[] { profile.DeathDarkenSeconds / 2f + profile.DeathHoldSeconds + profile.DeathFadeSeconds / 2f });
             renderer.GetPropertyBlock(block);
             Assert.That(block.GetFloat("_PresentationOpacity"), Is.LessThan(1f), "The body fades after blackening.");
             host.RestartBattle(); yield return null;
             Assert.That(actor.gameObject.activeInHierarchy, Is.True);
-            renderer = actor.GetComponentInChildren<MeshRenderer>(); renderer.GetPropertyBlock(block);
+            renderer = (Renderer)body.GetValue(actor); renderer.GetPropertyBlock(block);
             Assert.That(!block.HasFloat(Shader.PropertyToID("_PresentationOpacity")) || block.GetFloat("_PresentationOpacity") == 1f, Is.True);
         }
         [UnityTest] public IEnumerator RealSceneDamageTailDeathRemovalAndSameFrameRevival()
@@ -228,11 +298,8 @@ namespace AstralOath.Client.Tests
             void Present(BattleFlowEventKind kind, int amount = 0, BattleStatusKind? statusKind = null, int turns = 0,
                 string source = "ally-1", string target = "enemy-1")
             {
-                var status = turns == 0 ? null : (BattleStatusSnapshot)Activator.CreateInstance(typeof(BattleStatusSnapshot),
-                    Private, null, new object[] { statusKind.Value, turns, amount }, null);
-                var ctor = typeof(BattleFlowEvent).GetConstructors(Private).Single();
-                Call("Present", ctor.Invoke(new object[] { 1UL, 1, kind, source, target, amount, null, null,
-                    BattleActionOrigin.Primary, statusKind, status, null, null, BattleHitKind.Normal, null, false, 2000, null }));
+                Call("Present", BattleDualAttackTimingTests.Event(kind, source, null, null, BattleActionOrigin.Primary,
+                    statusKind, amount, target, statusTurns: turns, statusStrength: amount, remainingHealth: 2000));
             }
 
             Present(BattleFlowEventKind.StatusApplied, 5000, BattleStatusKind.AttackUp, 1);
@@ -442,16 +509,11 @@ Assert.That(RedWidth(), Is.Zero, "The red segment is cleared after the transitio
             var icons = map.transform.Find("Unit Status/Enemies/01 Front/Frame/Status Icons");
             var kind = (BattleStatusKind)Enum.Parse(typeof(BattleStatusKind), "Provoke");
             var durationChanged = (BattleFlowEventKind)Enum.Parse(typeof(BattleFlowEventKind), "StatusDurationChanged");
-            var makeStatus = typeof(BattleStatusSnapshot).GetConstructor(Private, null,
-                new[] { typeof(BattleStatusKind), typeof(int), typeof(int) }, null);
-            var makeEvent = typeof(BattleFlowEvent).GetConstructors(Private).Single();
-
             void Deliver(BattleFlowEventKind eventKind, int turns)
             {
-                var status = makeStatus.Invoke(new object[] { kind, turns, 0 });
-                present.Invoke(simulation, new[] { makeEvent.Invoke(new object[] { 1UL, 1, eventKind, "ally-1",
-                    "enemy-1", 0, null, null, BattleActionOrigin.Primary, kind, status, null, null,
-                    BattleHitKind.None, null, false, null, null }) });
+                var item = BattleDualAttackTimingTests.Event(eventKind, "ally-1", null, null, BattleActionOrigin.Primary,
+                    kind, 0, "enemy-1", statusTurns: turns, statusStrength: 0, remainingHealth: null, hitKind: BattleHitKind.None);
+                present.Invoke(simulation, new object[] { item });
             }
 
             Deliver(BattleFlowEventKind.StatusApplied, 2);

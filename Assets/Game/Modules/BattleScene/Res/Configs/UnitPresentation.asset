@@ -146,6 +146,18 @@ MonoBehaviour:
     premultipliedAlpha: 1
     scale: 0.01
   SleepSymbolsEffect: {fileID: 4900000, guid: 4ca6ae4b72485db482d03e6d86018df4, type: 3}
+  FrostbiteApplication:
+    source: effect/freezing.scsp
+    document: {fileID: 4900000, guid: fcd4cbe10be75474b89948dbb0d3e0cd, type: 3}
+    atlas: {fileID: 4900000, guid: 5bc16a1560ee55d9b5e2218e1e7aa507, type: 3}
+    pageNames:
+    - freezing.sct
+    pages:
+    - {fileID: 2800000, guid: 91e0929a9d0c59b3bbe0a4a2a295f15d, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  FrostbiteApplicationEffect: {fileID: 4900000, guid: f200737634b058a89aa3f5a042f92163, type: 3}
   DamageSeconds: 0.16
   HealSeconds: 0.18
   TrailSeconds: 0.5

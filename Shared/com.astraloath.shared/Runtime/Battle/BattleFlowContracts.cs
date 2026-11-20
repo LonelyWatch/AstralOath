@@ -110,6 +110,10 @@ namespace AstralOath.Shared.Battle
         public int Strength { get; }
         public string SourceId { get; }
 
+        // cs_player 114, 210, 224, 225, 227 and 236 decrease after their turn-start effect.
+        internal bool DecreasesAtTurnStart => Kind == BattleStatusKind.ContinuousHealing || Kind == BattleStatusKind.Poison ||
+            Kind == BattleStatusKind.Burn || Kind == BattleStatusKind.Bleed || Kind == BattleStatusKind.Bomb || Kind == BattleStatusKind.Venom;
+
         internal static bool IsStackable(BattleStatusKind kind) => kind == BattleStatusKind.Poison || kind == BattleStatusKind.Venom ||
             kind == BattleStatusKind.Burn || kind == BattleStatusKind.Bleed || kind == BattleStatusKind.ContinuousHealing || kind == BattleStatusKind.Bomb;
     }

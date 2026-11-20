@@ -1,4 +1,4 @@
-"""Import or verify the native looping Stun or Sleep head effect."""
+"""Import or verify authored Stun, Sleep, and Frostbite status effects."""
 
 import argparse
 from hashlib import sha256
@@ -101,6 +101,43 @@ def make_payloads(source, status):
     return payloads
 
 
+def make_frostbite_payloads(source):
+    if sha256((source / SOURCE_TABLE).read_bytes()).hexdigest() != SOURCE_TABLE_SHA256:
+        raise ValueError("Review cs_player row 239 before importing Frostbite.")
+    names = {
+        "deb_freezing.cfx": "deb_freezing.cfx.json",
+        "freezing.scsp": "freezing.json",
+        "freezing.atlas": "freezing.atlas.txt",
+        "freezing.sct": "freezing.png",
+    }
+    raw = {name: (source / "effect" / name).read_bytes() for name in names}
+    cfx = plistlib.loads(raw["deb_freezing.cfx"])
+    if cfx["primitive"] != [{"format": "spine", "source": "freezing", "x": "-10", "y": "30", "z": "30"}]:
+        raise ValueError("Review the Frostbite application layer and its anchor.")
+    skeleton, report = decode_scsp(raw["freezing.scsp"])
+    atlas = raw["freezing.atlas"].decode("utf-8-sig").replace("\r\n", "\n")
+    image, texture = decode_sct(raw["freezing.sct"])
+    if (report["spineVersion"] != "2.1.27" or tuple(skeleton["animations"]) != ("animation",)
+            or atlas.lstrip().splitlines()[0] != "freezing.sct" or image.size != (511, 663)):
+        raise ValueError("Review the original Frostbite skeleton, atlas and texture.")
+    if any(max(red, green, blue) > alpha + 7 for red, green, blue, alpha in image.getdata()):
+        raise ValueError("Review the Frostbite texture's premultiplied alpha.")
+    png = BytesIO()
+    image.save(png, format="PNG")
+    payloads = {names["deb_freezing.cfx"]: json_bytes(cfx), names["freezing.scsp"]: json_bytes(skeleton),
+                names["freezing.atlas"]: atlas.encode("utf-8"), names["freezing.sct"]: png.getvalue()}
+    payloads["source.json"] = json_bytes({
+        "schemaVersion": 1, "sourceMapping": {"table": SOURCE_TABLE, "tableSha256": SOURCE_TABLE_SHA256,
+            "records": {"239": "stic_freezing"}, "cs_effect": "deb_freezing.cfx", "cs_eff_bone": "target"},
+        "spineVersion": report["spineVersion"], "animations": report["animations"],
+        "premultipliedAlpha": True, "texture": texture,
+        "converterSha256": sha256((REPO / "Tools/CharacterAssets/convert.py").read_bytes().replace(b"\r\n", b"\n")).hexdigest(),
+        "assets": [{"source": "effect/" + name, "sourceSha256": sha256(raw[name]).hexdigest(),
+                    "asset": output, "assetSha256": sha256(payloads[output]).hexdigest()} for name, output in names.items()],
+    })
+    return payloads
+
+
 def meta_content(path, output):
     header = "fileFormatVersion: 2\nguid: " + guid(path) + "\n"
     if path == output:
@@ -113,7 +150,7 @@ def meta_content(path, output):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--effect", choices=("stun", "sleep"), default="stun")
+    parser.add_argument("--effect", choices=("stun", "sleep", "frostbite"), default="stun")
     parser.add_argument("--source", type=Path, default=Path("D:/sevenepic"))
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
@@ -121,7 +158,8 @@ def main():
     output = EFFECTS / args.effect.capitalize()
     if output.resolve().is_relative_to(source):
         raise ValueError("Read-only sources cannot be overwritten.")
-    assets = {output / name: data for name, data in make_payloads(source, args.effect).items()}
+    payloads = make_frostbite_payloads(source) if args.effect == "frostbite" else make_payloads(source, args.effect)
+    assets = {output / name: data for name, data in payloads.items()}
     metadata = {Path(str(path) + ".meta"): meta_content(path, output) for path in [output, *assets]}
     if args.check:
         changed = [path.name for path, data in assets.items() if not path.is_file() or path.read_bytes() != data]

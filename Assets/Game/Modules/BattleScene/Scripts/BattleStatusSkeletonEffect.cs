@@ -38,6 +38,12 @@ namespace AstralOath.Client.BattleScene
 
         // Parse and prepare the source once for all units in this battle.
         public static Definition Prepare(BattleSkillPresentationAsset asset, TextAsset cfx, int defaultSortingOffset = 0)
+            => PrepareAsset(asset, cfx, defaultSortingOffset, true);
+
+        public static Definition PrepareOneShot(BattleSkillPresentationAsset asset, TextAsset cfx)
+            => PrepareAsset(asset, cfx, 0, false);
+
+        private static Definition PrepareAsset(BattleSkillPresentationAsset asset, TextAsset cfx, int defaultSortingOffset, bool loop)
         {
             if (asset == null && !cfx) return null;
             if (asset == null || !asset.document || !asset.atlas || !cfx ||
@@ -47,9 +53,9 @@ namespace AstralOath.Client.BattleScene
 
             var primitives = JObject.Parse(cfx.text)["primitive"] as JArray;
             if (primitives?.Count != 1 || !(primitives[0] is JObject primitive) ||
-                (string)primitive["format"] != "spine" || (bool?)primitive["loop"] != true ||
+                (string)primitive["format"] != "spine" || ((bool?)primitive["loop"] ?? false) != loop ||
                 asset.source != "effect/" + (string)primitive["source"] + ".scsp")
-                throw new FormatException("A status effect CFX must contain one looping Spine primitive matching the selected asset.");
+                throw new FormatException("A status effect CFX must contain one Spine primitive matching the selected asset and playback mode.");
 
             float x = (float?)primitive["x"] ?? 0f;
             float y = (float?)primitive["y"] ?? 0f;
@@ -105,6 +111,47 @@ namespace AstralOath.Client.BattleScene
             // LAYOUT owns Renderer.enabled. Use the effect object's visibility so a stage can restore
             // the renderer independently, including effects first applied while the actor was hidden.
             if (!player.Root.activeSelf) player.Root.SetActive(true);
+            FollowAnchor(skeletonAnchor);
+            if (!wasActive)
+            {
+                player.Play(definition.Animation, true);
+                wasActive = true;
+            }
+            player.Tick(visualDelta);
+        }
+
+        public bool IsPlaying => player != null;
+
+        public void StopOneShot() => ReleasePlayer();
+
+        public void StartOneShot(Renderer currentBody, Vector2 anchor)
+        {
+            if (disposed || definition == null || !currentBody) return;
+            ReleasePlayer();
+            body = currentBody;
+            CreatePlayer();
+            FollowAnchor(anchor);
+            player.Play(definition.Animation, false);
+            player.Tick(0f);
+            player.Root.SetActive(BattlePreviewActor.IsBodyVisible(body));
+        }
+
+        public void TickOneShot(Renderer currentBody, bool present, float visualDelta, Vector2? anchor)
+        {
+            if (player == null) return;
+            if (!present || !anchor.HasValue || !currentBody || body != currentBody || !player.Root ||
+                player.Time + visualDelta >= player.Duration)
+            {
+                ReleasePlayer();
+                return;
+            }
+            FollowAnchor(anchor);
+            player.Root.SetActive(BattlePreviewActor.IsBodyVisible(body));
+            player.Tick(visualDelta);
+        }
+
+        private void FollowAnchor(Vector2? skeletonAnchor)
+        {
             Vector3 anchor = skeletonAnchor.HasValue ? (Vector3)skeletonAnchor.Value : fallbackAnchor;
             Vector3 position = anchor + definition.Position;
             if (player.Root.transform.localPosition != position) player.Root.transform.localPosition = position;
@@ -112,12 +159,6 @@ namespace AstralOath.Client.BattleScene
             int order = body.sortingOrder + definition.SortingOffset;
             if (aura.sortingLayerID != layer) aura.sortingLayerID = layer;
             if (aura.sortingOrder != order) aura.sortingOrder = order;
-            if (!wasActive)
-            {
-                player.Play(definition.Animation, true);
-                wasActive = true;
-            }
-            player.Tick(visualDelta);
         }
 
         private void CreatePlayer()

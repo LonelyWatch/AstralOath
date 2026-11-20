@@ -81,14 +81,17 @@ namespace AstralOath.Client.BattleScene.Editor
                 out profile.StunStarsEffect);
             profile.SleepSymbols = LoadAura(Root + "Res/Effects/Sleep/stse_sleep", "stse_sleep",
                 out profile.SleepSymbolsEffect);
+            profile.FrostbiteApplication = LoadAura(Root + "Res/Effects/Frostbite/freezing", "freezing",
+                out profile.FrostbiteApplicationEffect, "deb_freezing");
             if (!profile.Shield || !profile.StatusManifest || profile.StatusGlyphs.Any(sprite => !sprite) ||
                 profile.StatusDigits.Any(sprite => !sprite) || profile.LevelDigits.Any(sprite => !sprite))
                 throw new InvalidOperationException("Run ImportStatusHud.py before updating the unit profile.");
             profile.ValidateStatusArt();
         }
-        private static BattleSkillPresentationAsset LoadAura(string path, string stem, out TextAsset effect)
+        private static BattleSkillPresentationAsset LoadAura(string path, string stem, out TextAsset effect, string cfxStem = null)
         {
-            effect = AssetDatabase.LoadAssetAtPath<TextAsset>(path + ".cfx.json");
+            string cfxPath = cfxStem == null ? path : path.Substring(0, path.LastIndexOf('/') + 1) + cfxStem;
+            effect = AssetDatabase.LoadAssetAtPath<TextAsset>(cfxPath + ".cfx.json");
             var asset = new BattleSkillPresentationAsset
             {
                 source = "effect/" + stem + ".scsp",

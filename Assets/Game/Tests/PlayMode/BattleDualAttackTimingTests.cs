@@ -194,14 +194,15 @@ namespace AstralOath.Client.Tests
         }
 
         internal static BattleFlowEvent Event(BattleFlowEventKind kind, string source, string skill, string presentation, BattleActionOrigin origin,
-            BattleStatusKind? statusKind = null, int amount = 30, string target = "enemy-1")
+            BattleStatusKind? statusKind = null, int amount = 30, string target = "enemy-1",
+            int statusTurns = 2, int statusStrength = 5000, int? remainingHealth = 3000, BattleHitKind hitKind = BattleHitKind.Normal)
         {
             var ctor = typeof(BattleFlowEvent).GetConstructors(Instance).Single();
             var values = ctor.GetParameters().Select(p => p.HasDefaultValue ? p.DefaultValue : p.ParameterType == typeof(ulong) ? (object)1UL : p.ParameterType == typeof(int) ? 1 : (object)kind).ToArray();
-            var status = statusKind.HasValue ? typeof(BattleStatusSnapshot).GetConstructor(Instance, null,
+            var status = statusKind.HasValue && statusTurns > 0 ? typeof(BattleStatusSnapshot).GetConstructor(Instance, null,
                 new[] { typeof(BattleStatusKind), typeof(int), typeof(int) }, null)
-                .Invoke(new object[] { statusKind.Value, 2, 5000 }) : null;
-            var named = new Dictionary<string, object> { ["kind"] = kind, ["sourceId"] = source, ["targetId"] = target, ["skillId"] = skill, ["presentationId"] = presentation, ["origin"] = origin, ["amount"] = amount, ["statusKind"] = statusKind, ["status"] = status, ["hitKind"] = BattleHitKind.Normal, ["remainingHealth"] = 3000 };
+                .Invoke(new object[] { statusKind.Value, statusTurns, statusStrength }) : null;
+            var named = new Dictionary<string, object> { ["kind"] = kind, ["sourceId"] = source, ["targetId"] = target, ["skillId"] = skill, ["presentationId"] = presentation, ["origin"] = origin, ["amount"] = amount, ["statusKind"] = statusKind, ["status"] = status, ["hitKind"] = hitKind, ["remainingHealth"] = remainingHealth };
             foreach (var p in ctor.GetParameters()) if (named.TryGetValue(p.Name, out var value)) values[p.Position] = value;
             return (BattleFlowEvent)ctor.Invoke(values);
         }

@@ -329,6 +329,7 @@ namespace AstralOath.Client.BattleScene
             if ((location == 1 || location == 11) && caster) return casterAnchor;
             var live = targets.Where(item => item).ToArray();
             if (live.Length == 0) return casterAnchor;
+            if (location == 2 && targets.Length == 1) return live[0].position;
             if (location == 31 && caster) return (casterAnchor + live[0].position) * .5f;
             if (location == 32 || location == 41 || location == 42)
                 return live.Aggregate(Vector3.zero, (sum, item) => sum + item.position) / live.Length;

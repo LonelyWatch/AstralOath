@@ -1,0 +1,97 @@
+
+freezing.sct
+size: 511,663
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dust&smoke/smoke_02
+  rotate: false
+  xy: 2, 489
+  size: 182, 158
+  orig: 182, 158
+  offset: 0, 0
+  index: -1
+dust_soft_2
+  rotate: false
+  xy: 2, 177
+  size: 271, 150
+  orig: 271, 150
+  offset: 0, 0
+  index: -1
+ice/freeze_rot_01
+  rotate: false
+  xy: 442, 2
+  size: 66, 73
+  orig: 66, 73
+  offset: 0, 0
+  index: -1
+ice/freeze_rot_02
+  rotate: false
+  xy: 257, 590
+  size: 74, 71
+  orig: 74, 71
+  offset: 0, 0
+  index: -1
+ice/freeze_rot_03
+  rotate: false
+  xy: 373, 564
+  size: 88, 87
+  orig: 88, 87
+  offset: 0, 0
+  index: -1
+ice/freeze_rot_04
+  rotate: false
+  xy: 373, 467
+  size: 94, 95
+  orig: 94, 95
+  offset: 0, 0
+  index: -1
+ice/ice_ground_01
+  rotate: false
+  xy: 2, 2
+  size: 438, 173
+  orig: 438, 173
+  offset: 0, 0
+  index: -1
+ice/ice_impact_01
+  rotate: true
+  xy: 186, 489
+  size: 159, 69
+  orig: 159, 69
+  offset: 0, 0
+  index: -1
+ice/ice_part_small_01
+  rotate: false
+  xy: 257, 474
+  size: 114, 114
+  orig: 114, 114
+  offset: 0, 0
+  index: -1
+ice/ice_part_small_02
+  rotate: false
+  xy: 339, 334
+  size: 117, 131
+  orig: 117, 131
+  offset: 0, 0
+  index: -1
+ice/ice_part_small_03
+  rotate: false
+  xy: 207, 334
+  size: 130, 138
+  orig: 130, 138
+  offset: 0, 0
+  index: -1
+ice/ice_smoke_01
+  rotate: false
+  xy: 2, 329
+  size: 203, 158
+  orig: 203, 158
+  offset: 0, 0
+  index: -1
+ice/ice_smoke_02
+  rotate: false
+  xy: 275, 177
+  size: 234, 155
+  orig: 234, 155
+  offset: 0, 0
+  index: -1

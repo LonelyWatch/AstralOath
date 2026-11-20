@@ -206,4 +206,12 @@ Luban 快照 `Configs/battle-catalog.json` 含四十名英雄、成长模板、�
 
 ## 第 61–70 名英雄
 
+实战横幅通过权威追加事件选择隐藏技能的原名。卡瓦朱 S1 触发「火焰之息」时保留火焰强击图标；S2 被动「咬牙切齿」保留自己的技能名与图标。两者使用同一演出图，可在 PlayMode 的 `CeriseKhawazuAndVivianDispatchTheirAcceptedFollowUpGraphs` 分别复现。 [效果复核](../../../../docs/delivery/2026-11-20-roster61-70-effect-audit.md)
+
+洁若米亚、赛瑞丝、卡瓦娜和尤贝乌斯的单受术者 CAM 2 跟随实际受术者。杰诺 S3 从目标自身骨架播放腾空动作首遍；受术者的姿势、队形节点和镜头分别推进。 [实录对照与回归](../../../../docs/delivery/2026-11-20-roster61-70-presentation.md)
+
 迪埃妮至薇薇安进入同一布阵和演出入口。十人共 29 张源图，杰诺 S2 为无图被动。赛瑞丝的蓝束使用受术队形的位移轨，卡瓦朱的净化与追加通过各自权威动作调用同一张 S2 图。迪埃妮和杰诺的三种新状态在血条及详情共用原图，璐璐卡的隐藏攻击成长保留在权威快照。普通形态视频、实战帧及回归结果见[本批镜头记录](../../../../docs/delivery/2026-11-20-roster61-70-presentation.md)。
+
+### 冻伤的施加特效
+
+状态 239 的新施加事件按战斗命中时间播放一次 `deb_freezing.cfx`。冰晶绑定受击者的 `target` 骨，使用源偏移 -10/+30、排序 +30 和 1.8333 秒的 Spine 动画；动画结束、角色退场或表现销毁时释放。重连只从快照恢复冻伤图标。原件的只读导入由 `Tools/BattleScene/ImportBattleStunEffect.py --effect frostbite` 复现。状态 153、244 的原始记录分别指向 `stse_penres_up.cfx`、`stse_rupture.cfx`，r4262 固定文件清单未收录这两份特效，当前展示已验证的 HUD 图标和状态反馈。 [资源和验证记录](../../../../docs/delivery/2026-11-20-roster61-70-assets.md)

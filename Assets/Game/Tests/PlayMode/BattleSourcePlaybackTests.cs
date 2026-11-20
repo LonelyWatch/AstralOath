@@ -450,6 +450,15 @@ namespace AstralOath.Client.Tests
                         Assert.That(PresentationType.GetField("currentPresentationId", PrivateInstance).GetValue(stage), Is.EqualTo(graph));
                         if ((float)PresentationType.GetProperty("StageTime").GetValue(stage) >= .3f)
                         {
+                            if (graph == "c_kawazu_skill_02")
+                            {
+                                var banner = map.transform.Find("Top Bar/Skill Use Banner");
+                                bool followUp = origin == BattleActionOrigin.ExtraAttack;
+                                Assert.That(banner.Find("Skill Name").GetComponent<GameText>().text,
+                                    Is.EqualTo(followUp ? "火焰之息" : "咬牙切齿"));
+                                Assert.That(banner.Find("Skill Icon").GetComponent<Image>().sprite.name,
+                                    Is.EqualTo(followUp ? "sk_c1085_1" : "sk_c1085_2"));
+                            }
                             if (captureTarget) File.WriteAllBytes(Path.Combine(captureDirectory, sample + ".png"), RenderFrame(null, null, null).Composite);
                             TestContext.WriteLine(accepted.Origin + " " + accepted.SkillId + " " + accepted.PresentationId);
                             rendered = true;
