@@ -256,12 +256,12 @@ namespace AstralOath.Shared.Battle
             }
 
             private Unit DamageShareHolder(Unit target) => Allies(target)
-                .Where(unit => unit != target && unit.ArtifactEffect == "aurius")
-                .OrderByDescending(unit => unit.ArtifactValue).FirstOrDefault();
+                .Where(unit => unit != target && ShareStrength(unit) > 0)
+                .OrderByDescending(ShareStrength).FirstOrDefault();
 
             private void ApplyArtifactDamageShare(Unit attacker, Unit holder, int shared)
             {
-                ShowArtifact(holder);
+                if (holder.ArtifactEffect == "aurius" && holder.ArtifactValue == ShareStrength(holder)) ShowArtifact(holder);
                 ProjectDamage(attacker, holder, shared, BattleHitKind.None);
                 if (!holder.Alive) ResolveEnemyDefeats(attacker, 1);
             }

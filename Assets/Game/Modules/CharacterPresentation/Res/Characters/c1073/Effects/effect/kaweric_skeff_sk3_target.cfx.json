@@ -1,0 +1,37 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "kaweric_skeff_sk3_bg2_down",
+      "format": "spine",
+      "globalZ": -0.5
+    },
+    {
+      "source": "kaweric_skeff_sk3_bg2_up",
+      "format": "spine",
+      "globalZ": -0.4
+    },
+    {
+      "source": "kaweric_skeff_sk3_bg",
+      "format": "spine",
+      "globalZ": -0.8
+    },
+    {
+      "source": "kaweric_skeff_sk3_target_1s",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "kaweric_skeff_sk3_target_b",
+      "format": "spine",
+      "globalZ": -0.2
+    },
+    {
+      "source": "kaweric_sk3_pat",
+      "scale": "1",
+      "delay": "4000",
+      "format": "particle",
+      "globalZ": 0.5
+    }
+  ]
+}

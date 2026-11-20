@@ -1,0 +1,405 @@
+
+violetto_eff_skill_3_2.sct
+size: 495,1252
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bf_1_1
+  rotate: false
+  xy: 114, 518
+  size: 27, 19
+  orig: 27, 19
+  offset: 0, 0
+  index: -1
+bf_1_2
+  rotate: false
+  xy: 218, 1103
+  size: 24, 21
+  orig: 24, 21
+  offset: 0, 0
+  index: -1
+bf_1_3
+  rotate: false
+  xy: 457, 937
+  size: 19, 24
+  orig: 19, 24
+  offset: 0, 0
+  index: -1
+bf_1_4
+  rotate: false
+  xy: 476, 2
+  size: 14, 25
+  orig: 14, 25
+  offset: 0, 0
+  index: -1
+bf_2_1
+  rotate: false
+  xy: 294, 892
+  size: 22, 23
+  orig: 22, 23
+  offset: 0, 0
+  index: -1
+bf_2_2
+  rotate: true
+  xy: 387, 1228
+  size: 22, 23
+  orig: 22, 23
+  offset: 0, 0
+  index: -1
+bf_2_3
+  rotate: false
+  xy: 269, 892
+  size: 23, 23
+  orig: 23, 23
+  offset: 0, 0
+  index: -1
+bf_2_4
+  rotate: true
+  xy: 412, 1228
+  size: 22, 21
+  orig: 22, 21
+  offset: 0, 0
+  index: -1
+bf_3_1
+  rotate: false
+  xy: 250, 1224
+  size: 24, 21
+  orig: 24, 21
+  offset: 0, 0
+  index: -1
+bf_3_2
+  rotate: false
+  xy: 388, 917
+  size: 26, 18
+  orig: 26, 18
+  offset: 0, 0
+  index: -1
+bf_3_3
+  rotate: false
+  xy: 239, 786
+  size: 28, 14
+  orig: 28, 14
+  offset: 0, 0
+  index: -1
+bf_3_4
+  rotate: true
+  xy: 484, 571
+  size: 27, 9
+  orig: 27, 9
+  offset: 0, 0
+  index: -1
+dust_c
+  rotate: false
+  xy: 314, 968
+  size: 72, 69
+  orig: 72, 69
+  offset: 0, 0
+  index: -1
+dust_soft_1
+  rotate: false
+  xy: 2, 2
+  size: 279, 144
+  orig: 279, 144
+  offset: 0, 0
+  index: -1
+dust_soft_2
+  rotate: false
+  xy: 2, 148
+  size: 271, 150
+  orig: 271, 150
+  offset: 0, 0
+  index: -1
+dust_soft_3
+  rotate: true
+  xy: 2, 300
+  size: 293, 110
+  orig: 293, 110
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 809
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+skill3_10_1
+  rotate: true
+  xy: 425, 858
+  size: 77, 65
+  orig: 77, 65
+  offset: 0, 0
+  index: -1
+skill3_10_2
+  rotate: true
+  xy: 321, 868
+  size: 47, 102
+  orig: 47, 102
+  offset: 0, 0
+  index: -1
+skill3_10_3
+  rotate: true
+  xy: 388, 994
+  size: 52, 65
+  orig: 52, 65
+  offset: 0, 0
+  index: -1
+skill3_10_4
+  rotate: false
+  xy: 329, 1166
+  size: 56, 65
+  orig: 56, 65
+  offset: 0, 0
+  index: -1
+skill3_10_5
+  rotate: false
+  xy: 385, 1098
+  size: 52, 63
+  orig: 52, 63
+  offset: 0, 0
+  index: -1
+skill3_10_6
+  rotate: false
+  xy: 387, 1163
+  size: 51, 63
+  orig: 51, 63
+  offset: 0, 0
+  index: -1
+skill3_9_1
+  rotate: false
+  xy: 173, 926
+  size: 109, 52
+  orig: 109, 52
+  offset: 0, 0
+  index: -1
+skill3_9_2
+  rotate: true
+  xy: 239, 676
+  size: 108, 49
+  orig: 108, 49
+  offset: 0, 0
+  index: -1
+skill3_9_3
+  rotate: false
+  xy: 359, 678
+  size: 103, 66
+  orig: 103, 66
+  offset: 0, 0
+  index: -1
+skill3_9_4
+  rotate: true
+  xy: 290, 675
+  size: 107, 67
+  orig: 107, 67
+  offset: 0, 0
+  index: -1
+skill3_9_5
+  rotate: false
+  xy: 321, 801
+  size: 102, 65
+  orig: 102, 65
+  offset: 0, 0
+  index: -1
+skill3_9_6
+  rotate: false
+  xy: 359, 746
+  size: 105, 53
+  orig: 105, 53
+  offset: 0, 0
+  index: -1
+skill3_9_7
+  rotate: true
+  xy: 269, 786
+  size: 104, 50
+  orig: 104, 50
+  offset: 0, 0
+  index: -1
+skill3_9_8
+  rotate: false
+  xy: 284, 917
+  size: 102, 49
+  orig: 102, 49
+  offset: 0, 0
+  index: -1
+skill3_dust_1_1
+  rotate: false
+  xy: 2, 980
+  size: 107, 158
+  orig: 107, 158
+  offset: 0, 0
+  index: -1
+skill3_dust_1_2
+  rotate: true
+  xy: 257, 444
+  size: 108, 157
+  orig: 108, 157
+  offset: 0, 0
+  index: -1
+skill3_dust_1_3
+  rotate: false
+  xy: 143, 518
+  size: 106, 156
+  orig: 106, 156
+  offset: 0, 0
+  index: -1
+skill3_dust_1_4
+  rotate: false
+  xy: 111, 980
+  size: 105, 157
+  orig: 105, 157
+  offset: 0, 0
+  index: -1
+skill3_dust_2_1
+  rotate: false
+  xy: 114, 300
+  size: 141, 216
+  orig: 141, 216
+  offset: 0, 0
+  index: -1
+skill3_dust_2_2
+  rotate: true
+  xy: 275, 158
+  size: 141, 216
+  orig: 141, 216
+  offset: 0, 0
+  index: -1
+skill3_dust_2_3
+  rotate: true
+  xy: 257, 301
+  size: 141, 216
+  orig: 141, 216
+  offset: 0, 0
+  index: -1
+skill3_dust_2_4
+  rotate: false
+  xy: 2, 595
+  size: 139, 212
+  orig: 139, 212
+  offset: 0, 0
+  index: -1
+skill3_dust_3_1_1
+  rotate: true
+  xy: 455, 994
+  size: 66, 38
+  orig: 66, 38
+  offset: 0, 0
+  index: -1
+skill3_dust_3_1_2
+  rotate: true
+  xy: 416, 444
+  size: 125, 77
+  orig: 125, 77
+  offset: 0, 0
+  index: -1
+skill3_dust_3_1_3
+  rotate: false
+  xy: 440, 1160
+  size: 53, 59
+  orig: 53, 59
+  offset: 0, 0
+  index: -1
+skill3_dust_3_2_1
+  rotate: false
+  xy: 386, 1048
+  size: 65, 48
+  orig: 65, 48
+  offset: 0, 0
+  index: -1
+skill3_dust_3_2_2
+  rotate: true
+  xy: 143, 676
+  size: 124, 94
+  orig: 124, 94
+  offset: 0, 0
+  index: -1
+skill3_dust_3_2_3
+  rotate: false
+  xy: 439, 1098
+  size: 51, 60
+  orig: 51, 60
+  offset: 0, 0
+  index: -1
+skill3_dust_3_3_1
+  rotate: false
+  xy: 388, 937
+  size: 67, 55
+  orig: 67, 55
+  offset: 0, 0
+  index: -1
+skill3_dust_3_3_2
+  rotate: true
+  xy: 218, 980
+  size: 121, 94
+  orig: 121, 94
+  offset: 0, 0
+  index: -1
+skill3_dust_3_3_3
+  rotate: true
+  xy: 314, 1039
+  size: 54, 70
+  orig: 54, 70
+  offset: 0, 0
+  index: -1
+skill3_dust_3_4_1
+  rotate: false
+  xy: 425, 801
+  size: 68, 55
+  orig: 68, 55
+  offset: 0, 0
+  index: -1
+skill3_dust_3_4_2
+  rotate: true
+  xy: 173, 802
+  size: 122, 94
+  orig: 122, 94
+  offset: 0, 0
+  index: -1
+skill3_dust_3_4_3
+  rotate: false
+  xy: 329, 1095
+  size: 54, 69
+  orig: 54, 69
+  offset: 0, 0
+  index: -1
+smoke1
+  rotate: false
+  xy: 283, 2
+  size: 191, 154
+  orig: 191, 154
+  offset: 0, 0
+  index: -1
+smoke_1
+  rotate: false
+  xy: 251, 554
+  size: 120, 119
+  orig: 120, 119
+  offset: 0, 0
+  index: -1
+smoke_2
+  rotate: false
+  xy: 2, 1140
+  size: 126, 110
+  orig: 126, 110
+  offset: 0, 0
+  index: -1
+smoke_3
+  rotate: false
+  xy: 373, 571
+  size: 109, 105
+  orig: 109, 105
+  offset: 0, 0
+  index: -1
+smoke_4
+  rotate: true
+  xy: 250, 1103
+  size: 119, 77
+  orig: 119, 77
+  offset: 0, 0
+  index: -1
+smoke_5
+  rotate: false
+  xy: 130, 1139
+  size: 118, 110
+  orig: 118, 110
+  offset: 0, 0
+  index: -1

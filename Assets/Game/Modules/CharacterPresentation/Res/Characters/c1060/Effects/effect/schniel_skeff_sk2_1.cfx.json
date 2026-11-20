@@ -1,0 +1,35 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "schniel_skeff_sk2_1",
+      "format": "spine",
+      "globalZ": 3.0
+    },
+    {
+      "source": "schniel_skeff_sk2_0",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "schniel_skeff_sk2_jw",
+      "z": "20",
+      "format": "spine"
+    },
+    {
+      "source": "schniel_skeff_sk2_1_rotate1",
+      "z": "10",
+      "format": "spine"
+    },
+    {
+      "source": "schniel_skeff_sk2_1_rotate2",
+      "z": "10",
+      "format": "spine"
+    },
+    {
+      "source": "schniel_skeff_sk2_1_rotate_back",
+      "z": "-10",
+      "format": "spine"
+    }
+  ]
+}

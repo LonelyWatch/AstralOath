@@ -52,7 +52,8 @@ namespace AstralOath.Client.Tests
         public IEnumerator NewOwnedHeroesOpenInTheInventoryDetail()
         {
             var art = AssetDatabase.LoadAssetAtPath<HomeHeroArt>("Assets/Game/Modules/Home/Configs/HomeHeroArt.asset");
-            string[] ids = {"c1043","c1044","c1046","c1047","c1048","c1049","c1050","c1053","c1054","c1055"};
+            string[] ids = {"c1043","c1044","c1046","c1047","c1048","c1049","c1050","c1053","c1054","c1055",
+                "c1060","c1065","c1066","c1067","c1069","c1070","c1071","c1072","c1073","c1074"};
             var snapshot = new HeroInventorySnapshot { capacity = 50, used = ids.Length,
                 heroes = ids.Select(id => new HeroInventoryItem { instanceId = "owned-" + id, templateId = id, level = 1, stars = 4 }).ToArray() };
             var registry = new UIViewRegistry();

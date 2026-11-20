@@ -1,0 +1,91 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "tamarinne_t_skill_02_topeff",
+      "format": "spine",
+      "globalZ": 995.0
+    },
+    {
+      "source": "tamarinne_t_skill_02_bg2_front",
+      "format": "spine",
+      "globalZ": 10.0
+    },
+    {
+      "source": "tamarinne_t_skill_02_bg2_burst_node",
+      "format": "spine",
+      "globalZ": 2.0
+    },
+    {
+      "source": "tamarinne_t_skill_02_introbot",
+      "format": "spine",
+      "globalZ": -5.0
+    },
+    {
+      "source": "tamarinne_t_skill_02_bg1",
+      "format": "spine",
+      "globalZ": -10.0
+    },
+    {
+      "source": "tamarinne_t_skill_02_bg2_back",
+      "format": "spine",
+      "globalZ": -15.0
+    },
+    {
+      "source": "tamarinne_t_skill_02_btfly_pati1",
+      "scale": "1.0,0.5",
+      "format": "particle",
+      "globalZ": -3.0,
+      "attach": "tamarinne_t_skill_02_introbot/bt_fly_mover",
+      "lifeTime": "1100"
+    },
+    {
+      "source": "tamarinne_t_skill_02_btfly_pati2",
+      "y": "-100",
+      "scale": "1.0,0.65",
+      "format": "particle",
+      "globalZ": -2.0,
+      "attach": "tamarinne_t_skill_02_introbot/bt_fly_mover",
+      "lifeTime": "1100"
+    },
+    {
+      "source": "tamarinne_t_skill_02_intro_pati1",
+      "delay": "666",
+      "format": "particle",
+      "globalZ": 5.0,
+      "attach": "tamarinne_t_skill_02_bg1/bg_mover"
+    },
+    {
+      "source": "tamarinne_t_skill_02_burst_pati1",
+      "scale": "1.4",
+      "delay": "3450",
+      "format": "particle",
+      "globalZ": 8.0,
+      "attach": "tamarinne_t_skill_02_bg2_burst_node/burst_node1"
+    },
+    {
+      "source": "tamarinne_t_skill_02_burst_pati1",
+      "scale": "1.4",
+      "delay": "3450",
+      "format": "particle",
+      "globalZ": 7.0,
+      "attach": "tamarinne_t_skill_02_bg2_burst_node/burst_node2"
+    },
+    {
+      "source": "tamarinne_t_skill_02_burst_pati1",
+      "scale": "1.4",
+      "delay": "3450",
+      "format": "particle",
+      "globalZ": 6.0,
+      "attach": "tamarinne_t_skill_02_bg2_burst_node/burst_node3"
+    },
+    {
+      "source": "tamarinne_t_skill_02_burst_pati1",
+      "scale": "1.4",
+      "delay": "3450",
+      "format": "particle",
+      "globalZ": 5.0,
+      "attach": "tamarinne_t_skill_02_bg2_burst_node/burst_node4"
+    }
+  ]
+}

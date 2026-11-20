@@ -762,15 +762,14 @@ namespace AstralOath.Client.BattleScene
                     float lastHit = hitTimes.Length == 0 ? impactSeconds : hitTimes[hitTimes.Length - 1];
                     actionDuration = Mathf.Max(timing.Duration, lastHit + 0.15f);
                     skills.TryGetValue(item.SkillId, out var skill);
-                    bool alternate = skill != null && !string.IsNullOrEmpty(skill.speedUpPresentationId) &&
-                        string.Equals(item.PresentationId, skill.speedUpPresentationId, StringComparison.Ordinal);
-                    string name = skill != null ? Label(SkillNameKey(skill, alternate)) :
+                    var variant = SkillVariantForGraph(skill, item.PresentationId);
+                    string name = skill != null ? Label(SkillNameKey(skill, variant)) :
                         item.SkillId == BattlePreviewFactory.SlimeSkillId ? "史莱姆攻击" : item.SkillId;
                     var caster = Snapshot.GetUnit(item.SourceId);
                     var casterView = views[item.SourceId];
                     if (actionFeedback.PresentAction(item, casterView.Actor))
                         onlineHud?.PlaySoulBurn(caster.Slot.Side);
-                    var icon = skill == null ? null : SkillIcon(skill, alternate);
+                    var icon = skill == null ? null : SkillIcon(skill, variant);
                     banner.text = "";
                     skillBanner.Show(Label(caster.NameKey), name, icon);
                     switch (item.Origin)
@@ -1146,7 +1145,7 @@ namespace AstralOath.Client.BattleScene
             foreach (var button in SkillButtons())
             {
                 var image = (Image)button.targetGraphic;
-                if (TrySkill(index, out var skill) && SkillIcon(skill, UsesSpeedVariant(skill, actor)) is Sprite icon)
+                if (TrySkill(index, out var skill) && SkillIcon(skill, SkillVariantForUnit(skill, actor)) is Sprite icon)
                     image.sprite = icon;
                 int turns = TrySkill(index, out skill) ? actor.GetCooldown(skill.id) : 0;
                 button.interactable = CanAct && skill != null && IsSkillAvailable(skill);
@@ -1242,17 +1241,40 @@ namespace AstralOath.Client.BattleScene
                 skills.TryGetValue(Actor.Form.SkillIds[index], out skill);
         }
 
-        private static bool UsesSpeedVariant(BattleCatalogData.SkillRow skill, BattleUnitSnapshot unit) =>
-            unit?.HasSpeedBuff == true && !string.IsNullOrEmpty(skill.speedUpPresentationId);
+        private enum SkillVariant { Base, Speed, Alternate }
 
-        private static string SkillNameKey(BattleCatalogData.SkillRow skill, bool alternate) =>
-            alternate && !string.IsNullOrEmpty(skill.speedUpNameKey) ? skill.speedUpNameKey : skill.nameKey;
+        private static SkillVariant SkillVariantForGraph(BattleCatalogData.SkillRow skill, string graph)
+        {
+            if (skill == null || string.IsNullOrEmpty(graph)) return SkillVariant.Base;
+            if (graph == skill.alternatePresentationId) return SkillVariant.Alternate;
+            return graph == skill.speedUpPresentationId ? SkillVariant.Speed : SkillVariant.Base;
+        }
 
-        private Sprite SkillIcon(BattleCatalogData.SkillRow skill, bool alternate)
+        private static SkillVariant SkillVariantForUnit(BattleCatalogData.SkillRow skill, BattleUnitSnapshot unit)
+        {
+            if (unit != null && !string.IsNullOrEmpty(skill.alternatePresentationId) &&
+                Enum.TryParse<BattleStatusKind>(skill.alternatePresentationStatus, out var status) && unit.GetStatus(status) != null)
+                return SkillVariant.Alternate;
+            return unit?.HasSpeedBuff == true && !string.IsNullOrEmpty(skill.speedUpPresentationId) ? SkillVariant.Speed : SkillVariant.Base;
+        }
+
+        private static string SkillNameKey(BattleCatalogData.SkillRow skill, SkillVariant variant) => variant switch
+        {
+            SkillVariant.Speed when !string.IsNullOrEmpty(skill.speedUpNameKey) => skill.speedUpNameKey,
+            SkillVariant.Alternate when !string.IsNullOrEmpty(skill.alternateNameKey) => skill.alternateNameKey,
+            _ => skill.nameKey
+        };
+
+        private Sprite SkillIcon(BattleCatalogData.SkillRow skill, SkillVariant variant)
         {
             if (skill.target == "passive" && sprites.TryGetValue($"pa_{skill.heroId}_{skill.slot}", out var passive))
                 return passive;
-            string path = alternate && !string.IsNullOrEmpty(skill.speedUpIconAsset) ? skill.speedUpIconAsset : skill.iconAsset;
+            string path = variant switch
+            {
+                SkillVariant.Speed when !string.IsNullOrEmpty(skill.speedUpIconAsset) => skill.speedUpIconAsset,
+                SkillVariant.Alternate when !string.IsNullOrEmpty(skill.alternateIconAsset) => skill.alternateIconAsset,
+                _ => skill.iconAsset
+            };
             return sprites.GetValueOrDefault(Path.GetFileNameWithoutExtension(path));
         }
 
@@ -1269,11 +1291,16 @@ namespace AstralOath.Client.BattleScene
             string soul = skill.soulGain > 0 ? string.Format(Label("battle.inspect.soul_gain"), skill.soulGain) : null;
             bool burn = skill.soulBurnCost > 0;
             string upgrades = detailRow ? null : inspectionContent.SkillEnhancements(skill);
-            bool alternate = UsesSpeedVariant(skill, unit);
-            var icon = SkillIcon(skill, alternate);
-            var primary = new InfoPanelBinder.Card(icon ? icon : image.sprite, Label(SkillNameKey(skill, alternate)),
-                alternate && !string.IsNullOrEmpty(skill.speedUpDescriptionKey) ? Label(skill.speedUpDescriptionKey) :
-                    inspectionContent.SkillDescription(skill), soul: soul, cooldown: cooldown,
+            var variant = SkillVariantForUnit(skill, unit);
+            var icon = SkillIcon(skill, variant);
+            string skillDescription = variant switch
+            {
+                SkillVariant.Speed when !string.IsNullOrEmpty(skill.speedUpDescriptionKey) => Label(skill.speedUpDescriptionKey),
+                SkillVariant.Alternate when !string.IsNullOrEmpty(skill.alternateDescriptionKey) => Label(skill.alternateDescriptionKey),
+                _ => inspectionContent.SkillDescription(skill)
+            };
+            var primary = new InfoPanelBinder.Card(icon ? icon : image.sprite, Label(SkillNameKey(skill, variant)),
+                skillDescription, soul: soul, cooldown: cooldown,
                 burnTitle: burn ? Label("battle.inspect.burn_header") : null,
                 burnCost: burn ? string.Format(Label("battle.inspect.soul_burn"), skill.soulBurnCost) : null,
                 burnDescription: burn ? inspectionContent.SkillBurnDescription(skill) : null,
@@ -1670,6 +1697,7 @@ namespace AstralOath.Client.BattleScene
 
             public void RefreshStatuses(BattleUnitSnapshot state)
             {
+                Actor.ReconcileForm(state);
                 levelBadge.Show(state.Level);
                 statusIcons.Reconcile(state.IsAlive ? state.Statuses : Array.Empty<BattleStatusSnapshot>());
                 SetControlStates(state.IsAlive && state.GetStatus(BattleStatusKind.Stun) != null,

@@ -1,0 +1,26 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "lunabianca_skill_03_cloudscroll_f",
+      "scale": "1.03",
+      "format": "spine",
+      "globalZ": 2.0,
+      "actions": [
+        {
+          "action": "Opacity",
+          "delay": "1800",
+          "interval": "100",
+          "from": "1.0",
+          "to": "0"
+        }
+      ]
+    },
+    {
+      "source": "lunabianca_skill_03_cloudscroll_b",
+      "scale": "1.03",
+      "format": "spine",
+      "globalZ": -2.0
+    }
+  ]
+}

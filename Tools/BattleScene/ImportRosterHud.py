@@ -36,7 +36,7 @@ def roster_art(heroes, skills, source):
         for name in (f"cm_icon_prom{hero['element']}.png", f"cm_icon_role_{role}.png"):
             files[name] = f"img/{name}"
     for skill in skills:
-        for field in ("iconAsset", "speedUpIconAsset"):
+        for field in ("iconAsset", "speedUpIconAsset", "alternateIconAsset"):
             if not skill.get(field):
                 continue
             path = Path(skill[field]).relative_to(HUD.relative_to(REPO))

@@ -1,0 +1,139 @@
+
+tamarinne_t_skill_02_bg2_back.sct
+size: 960,971
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+mist
+  rotate: true
+  xy: 380, 403
+  size: 330, 87
+  orig: 330, 87
+  offset: 0, 0
+  index: -1
+screen1
+  rotate: false
+  xy: 449, 2
+  size: 385, 247
+  orig: 385, 247
+  offset: 0, 0
+  index: -1
+screen2
+  rotate: false
+  xy: 2, 2
+  size: 445, 399
+  orig: 445, 399
+  offset: 0, 0
+  index: -1
+screen3
+  rotate: false
+  xy: 836, 2
+  size: 114, 239
+  orig: 114, 239
+  offset: 0, 0
+  index: -1
+screen_dis_glow
+  rotate: true
+  xy: 883, 243
+  size: 132, 75
+  orig: 132, 75
+  offset: 0, 0
+  index: -1
+screen_display
+  rotate: true
+  xy: 883, 377
+  size: 131, 69
+  orig: 131, 69
+  offset: 0, 0
+  index: -1
+screen_line
+  rotate: false
+  xy: 380, 949
+  size: 115, 20
+  orig: 115, 20
+  offset: 0, 0
+  index: -1
+stage
+  rotate: false
+  xy: 2, 933
+  size: 197, 25
+  orig: 197, 25
+  offset: 0, 0
+  index: -1
+tama_s1
+  rotate: true
+  xy: 753, 535
+  size: 282, 136
+  orig: 282, 136
+  offset: 0, 0
+  index: -1
+tama_s10
+  rotate: false
+  xy: 664, 819
+  size: 282, 136
+  orig: 282, 136
+  offset: 0, 0
+  index: -1
+tama_s2
+  rotate: true
+  xy: 242, 403
+  size: 282, 136
+  orig: 282, 136
+  offset: 0, 0
+  index: -1
+tama_s3
+  rotate: true
+  xy: 242, 687
+  size: 282, 136
+  orig: 282, 136
+  offset: 0, 0
+  index: -1
+tama_s4
+  rotate: false
+  xy: 449, 251
+  size: 282, 136
+  orig: 282, 136
+  offset: 0, 0
+  index: -1
+tama_s5
+  rotate: true
+  xy: 469, 389
+  size: 282, 136
+  orig: 282, 136
+  offset: 0, 0
+  index: -1
+tama_s6
+  rotate: true
+  xy: 607, 389
+  size: 282, 136
+  orig: 282, 136
+  offset: 0, 0
+  index: -1
+tama_s7
+  rotate: false
+  xy: 469, 673
+  size: 282, 136
+  orig: 282, 136
+  offset: 0, 0
+  index: -1
+tama_s8
+  rotate: false
+  xy: 380, 811
+  size: 282, 136
+  orig: 282, 136
+  offset: 0, 0
+  index: -1
+tama_s9
+  rotate: true
+  xy: 745, 251
+  size: 282, 136
+  orig: 282, 136
+  offset: 0, 0
+  index: -1
+tama_skill_02_bg_02
+  rotate: true
+  xy: 2, 403
+  size: 528, 238
+  orig: 528, 238
+  offset: 0, 0
+  index: -1

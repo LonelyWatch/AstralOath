@@ -1,0 +1,55 @@
+
+kaweric_skeff_bi_loop.sct
+size: 597,246
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+add_sk4_2_1
+  rotate: false
+  xy: 465, 152
+  size: 124, 84
+  orig: 124, 84
+  offset: 0, 0
+  index: -1
+add_sk4_3_1
+  rotate: true
+  xy: 294, 173
+  size: 71, 95
+  orig: 71, 95
+  offset: 0, 0
+  index: -1
+add_sk4_3_2
+  rotate: false
+  xy: 163, 196
+  size: 58, 34
+  orig: 58, 34
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 294, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+kaweric/kaweric_smoke_big_05
+  rotate: true
+  xy: 163, 2
+  size: 192, 129
+  orig: 192, 129
+  offset: 0, 0
+  index: -1
+kaweric/kaweric_smoke_big_07
+  rotate: false
+  xy: 465, 2
+  size: 130, 148
+  orig: 130, 148
+  offset: 0, 0
+  index: -1
+kaweric/kaweric_smoke_big_08
+  rotate: false
+  xy: 2, 2
+  size: 159, 222
+  orig: 159, 222
+  offset: 0, 0
+  index: -1

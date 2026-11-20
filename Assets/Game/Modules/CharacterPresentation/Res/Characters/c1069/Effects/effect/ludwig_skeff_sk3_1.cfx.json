@@ -1,0 +1,20 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "ludwig_skeff_sk3_1_b",
+      "z": "-30",
+      "format": "spine"
+    },
+    {
+      "source": "ludwig_skeff_sk3_1_bg",
+      "format": "spine",
+      "globalZ": -0.5
+    },
+    {
+      "source": "ludwig_skeff_sk3_1_f",
+      "z": "30",
+      "format": "spine"
+    }
+  ]
+}

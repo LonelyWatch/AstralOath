@@ -1,0 +1,62 @@
+
+lunabianca_skill_03_finalbg.sct
+size: 1496,511
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 664, 335
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+shine_ray
+  rotate: false
+  xy: 710, 2
+  size: 50, 198
+  orig: 50, 198
+  offset: 0, 0
+  index: -1
+sk3_bg1
+  rotate: false
+  xy: 2, 2
+  size: 659, 364
+  orig: 659, 364
+  offset: 0, 0
+  index: -1
+sk3_bg2
+  rotate: false
+  xy: 762, 2
+  size: 660, 149
+  orig: 660, 149
+  offset: 0, 0
+  index: -1
+sk3_bg3
+  rotate: false
+  xy: 762, 153
+  size: 659, 147
+  orig: 659, 147
+  offset: 0, 0
+  index: -1
+sk3_bg4
+  rotate: false
+  xy: 835, 302
+  size: 659, 143
+  orig: 659, 143
+  offset: 0, 0
+  index: -1
+sk3_bg5
+  rotate: false
+  xy: 2, 368
+  size: 660, 141
+  orig: 660, 141
+  offset: 0, 0
+  index: -1
+sk3_bg_grid_glow
+  rotate: true
+  xy: 663, 2
+  size: 331, 45
+  orig: 331, 45
+  offset: 0, 0
+  index: -1

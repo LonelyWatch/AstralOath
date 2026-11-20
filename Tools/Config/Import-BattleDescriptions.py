@@ -22,6 +22,9 @@ STATUS_TEXT_IDS = {
     "stic_endure_1": "stic_endure",
     "stic_debuf_impossible": "stic_res_up",
     "stic_spiritlord_keep": "stic_spiritlord",
+    "stic_showtime_aura": "stic_showtime",
+    "stic_manafield_keep": "stic_manafield",
+    "stic_detection_keep": "stic_detection",
     "stic_target": "stic_sign",
 }
 
@@ -87,6 +90,13 @@ def build_source(export, release, manifest_sha256):
         if burn_id:
             burn = skills[burn_id]
             add(prefix + ".burn.description", burn["sk_description"], burn_id, burn)
+        if skill.get("alternateDescriptionKey"):
+            variants = selected["skillset"].split(",")
+            require(len(variants) == 2, f"Expected two form-dependent variants for {base_id}")
+            variant = skills[records(export, "skillset_player")[variants[1]]["id"]]
+            add(skill["alternateNameKey"], variant["name"], variant["id"])
+            add(skill["alternateDescriptionKey"], variant["sk_description"], variant["id"], variant,
+                section_prefix="（歌姬）")
         if skill["speedUpDescriptionKey"]:
             options = selected["skillset"].split(",")
             require(len(options) == 2, f"Review original speed-up variant selection for {base_id}")
@@ -145,6 +155,8 @@ def validate_coverage(entries):
         expected.update((skill["nameKey"], skill["descriptionKey"]))
         if int(skill["soulBurnCost"]):
             expected.add(f"battle.skill.{skill['id']}.burn.description")
+        if skill.get("alternateNameKey"):
+            expected.update((skill["alternateNameKey"], skill["alternateDescriptionKey"]))
         if skill["speedUpNameKey"]:
             expected.update((skill["speedUpNameKey"], skill["speedUpDescriptionKey"]))
     for status in read_json(STATUS_ASSETS)["statuses"]:

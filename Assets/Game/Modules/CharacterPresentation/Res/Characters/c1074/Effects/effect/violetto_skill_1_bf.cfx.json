@@ -1,0 +1,30 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "violeto_b_idle_ready_pati",
+      "x": "60",
+      "y": "620",
+      "z": "5",
+      "scale": "-0.6,1",
+      "rotate": "150",
+      "delay": "750",
+      "format": "particle"
+    },
+    {
+      "source": "violeto_b_idle_ready_pati",
+      "x": "300",
+      "y": "300",
+      "z": "5",
+      "scale": "1.4,0.7",
+      "rotate": "-15",
+      "delay": "300",
+      "format": "particle"
+    },
+    {
+      "source": "violetto_eff_skill_1_bf",
+      "z": "4",
+      "format": "spine"
+    }
+  ]
+}

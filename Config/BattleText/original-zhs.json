@@ -2895,6 +2895,60 @@
       "text": "用剑攻击敌人，根据自身攻击力对除目标外的全体敌人造成等比的额外伤害。消灭时，造成<#FFFFFF>灭亡</>效果。对目标造成防御力<#FFFFFF>穿透</>。",
       "displaySha256": "29c16aba4aa8db87fad99cabbaf90bc9026d385c7c7bfdf205298482ad7b7046"
     },
+    "battle.skill.c1060.s1.description": {
+      "sourceId": "sk_c1060_1",
+      "textId": "sk_c1060_1_de",
+      "text": "攻击敌人，使自身和除自身外攻击力最高的我军人员速攻值提升<#FF9900>{per(sk_eff_value1)}%</>。",
+      "parameters": {
+        "sk_eff_value1": {
+          "sourceField": "sk_c1060_1.sk_eff_value1",
+          "value": "0.1"
+        }
+      },
+      "displaySha256": "1dd36f00d889c608703feaf891a981e091a79503db4259fdc4be9a92aaf76ab0"
+    },
+    "battle.skill.c1060.s1.name": {
+      "sourceId": "sk_c1060_1",
+      "textId": "sk_c1060_1_sknm",
+      "text": "学以致用",
+      "displaySha256": "627a7330ad8c6f642ab8b06943aae28b911e31c86214b609e5dc6ae3b2dd4d9a"
+    },
+    "battle.skill.c1060.s2.description": {
+      "sourceId": "sk_c1060_2",
+      "textId": "sk_c1060_2_de",
+      "text": "回合开始时，各解除2名我军人员的1个弱化效果。\\n敌人使用技能后，若我军人员处于<#FFFFFF>中毒</>、<#FFFFFF>剧毒</>状态，则解除自身的所有弱化效果，使用解毒。\\n解毒：解除全体我军人员的所有弱化效果，使其在1回合内获得<#FFFFFF>免疫</>、<#FFFFFF>不屈</>效果后，使自身技能冷却时间重置。",
+      "displaySha256": "a4eb023bc4274ab5b8f70343e3b532839e22766c2c9e7dc3b811e4f3ace0e763"
+    },
+    "battle.skill.c1060.s2.name": {
+      "sourceId": "sk_c1060_2",
+      "textId": "sk_c1060_2_sknm",
+      "text": "毒术精通",
+      "displaySha256": "fb44e2ad27520e2f2a7bb3ea3d53cb5396fbf411c64ca624129de8fc9ef5c5c7"
+    },
+    "battle.skill.c1060.s3.burn.description": {
+      "sourceId": "sk_c1060_3us",
+      "textId": "sk_c1060_3s_de",
+      "text": "防护罩强度提升。",
+      "displaySha256": "3239758a268748feed947f6bce140a3b284b6699b57145e77337c7ae55ee5098"
+    },
+    "battle.skill.c1060.s3.description": {
+      "sourceId": "sk_c1060_3u",
+      "textId": "sk_c1060_3u_de",
+      "text": "攻击全体敌人后，使全体我军人员在2回合内获得<#FFFFFF>防御力提升</>效果、根据自身最大生命值使其获得等比强度的<#FFFFFF>防护罩</>。无论是否命中，都会造成5000点额外伤害。若自身处于<#FFFFFF>不屈</>状态，则额外伤害大幅提升。",
+      "displaySha256": "837113812fa78e932b67e2503bc929335234fca9e538fbbd23dd56e6fbfe4eb9"
+    },
+    "battle.skill.c1060.s3.name": {
+      "sourceId": "sk_c1060_3u",
+      "textId": "sk_c1060_3_sknm",
+      "text": "慢走不送",
+      "displaySha256": "6b378967da051c00495cd8141bd3c8c25b0581c0e9ce8c8b8701efeb1f6f3ec9"
+    },
+    "battle.skill.c1060.s3.unawakened.description": {
+      "sourceId": "sk_c1060_3",
+      "textId": "sk_c1060_3_de",
+      "text": "攻击全体敌人后，根据自身最大生命值使全体我军人员在2回合内获得等比强度的<#FFFFFF>防护罩</>。无论是否命中，都会造成5000点额外伤害。若自身处于<#FFFFFF>不屈</>状态，则额外伤害大幅提升。",
+      "displaySha256": "243520c9122226b48863588fa6900d70c6d6f9e6e919ab92f310a9a478c74927"
+    },
     "battle.skill.c1062.s1.description": {
       "sourceId": "sk_c1062_1",
       "textId": "sk_c1062_1_de",
@@ -2948,6 +3002,560 @@
       "textId": "sk_c1062_3_sknm",
       "text": "女神的指引",
       "displaySha256": "5757930ea224196bdf1f769938f9ce2d982d888d3f4418c6cf663b5075a9da26"
+    },
+    "battle.skill.c1065.s1.description": {
+      "sourceId": "sk_c1065_1",
+      "textId": "sk_c1065_1_de",
+      "text": "用锁链手里剑攻击敌人。若敌人处于出血状态，则在2回合内造成2个<#FFFFFF>出血</>效果。",
+      "displaySha256": "fcb9c0e5944f2db2259980b829a8b1402b0d38786c223e2f197935ebe7892164"
+    },
+    "battle.skill.c1065.s1.name": {
+      "sourceId": "sk_c1065_1",
+      "textId": "sk_c1065_1_sknm",
+      "text": "锁链手里剑",
+      "displaySha256": "a0797bef8ba3a7502d600f88b430cac1bcb00b0a8b2f2406f97535a7818d68f7"
+    },
+    "battle.skill.c1065.s2.burn.description": {
+      "sourceId": "sk_c1065_2us",
+      "textId": "sk_c1065_2us_de",
+      "text": "获得额外回合。",
+      "displaySha256": "65c9b7cc071587bb844b8f96a8fd88a62f9bf6814159429aa054a34b8c4723fa"
+    },
+    "battle.skill.c1065.s2.description": {
+      "sourceId": "sk_c1065_2u",
+      "textId": "sk_c1065_2u_de",
+      "text": "用锁链手里剑连续攻击敌人，在2回合内造成2~4个<#FFFFFF>出血</>、在1回合内造成<#FFFFFF>攻击力降低</>效果。",
+      "displaySha256": "fd97b5fd1c7b277d96aa8485bf17889db3f3d08803834f13504d95f5478b883e"
+    },
+    "battle.skill.c1065.s2.name": {
+      "sourceId": "sk_c1065_2u",
+      "textId": "sk_c1065_2u_sknm",
+      "text": "刀刃粉碎",
+      "displaySha256": "3409d9a293d734484a05718583f7daca4952bd4d2e7dbbf44b723d444d753a5f"
+    },
+    "battle.skill.c1065.s2.unawakened.description": {
+      "sourceId": "sk_c1065_2",
+      "textId": "sk_c1065_2_de",
+      "text": "用锁链手里剑连续攻击敌人，在2回合内造成2个<#FFFFFF>出血</>、在1回合内造成<#FFFFFF>攻击力降低</>效果。",
+      "displaySha256": "6fba032df68bfea5d05c122f89cac940467b24b76cbec9bf99fd956d3477f298"
+    },
+    "battle.skill.c1065.s3.description": {
+      "sourceId": "sk_c1065_3",
+      "textId": "sk_c1065_3_de",
+      "text": "用锁链手里剑攻击敌人内部。根据目标附带的<#FFFFFF>出血</>效果数等比提升伤害量，使弱化效果延长1回合。目标每附带1个<#FFFFFF>出血</>效果，使自身速攻值提升15%，最多可提升75%。",
+      "displaySha256": "1259f0518cbe1d35b44d9311b5e70a703c8797b7631bc03e24312b82d86a4c28"
+    },
+    "battle.skill.c1065.s3.name": {
+      "sourceId": "sk_c1065_3",
+      "textId": "sk_c1065_3_sknm",
+      "text": "内爆",
+      "displaySha256": "5993c28fae1bd71fe461c8b5feaf2328f182ec5ac5e692679a1afc46e75fb3a5"
+    },
+    "battle.skill.c1066.s1.burn.description": {
+      "sourceId": "sk_c1066_1s",
+      "textId": "sk_c1066_1s_de",
+      "text": "攻击次数增加到最多。",
+      "displaySha256": "13eaac3450ce0e7298fae98060904620324a8b35a20eeea0e1a18705e81d4a7b"
+    },
+    "battle.skill.c1066.s1.description": {
+      "sourceId": "sk_c1066_1",
+      "textId": "sk_c1066_1_de",
+      "text": "用长矛随机刺击敌人目标，根据攻击次数提升伤害量，技能冷却时间减少1到3回合。",
+      "displaySha256": "2c9b3544f632da3830a5a11d3d1921c32b18b14cba3a4d5043a96abf5aa9dc25"
+    },
+    "battle.skill.c1066.s1.name": {
+      "sourceId": "sk_c1066_1",
+      "textId": "sk_c1066_1_sknm",
+      "text": "无限斩杀",
+      "displaySha256": "5f5635fa71633fc04278a0380f465b814024fcca1abec79414dc0975869d2d7f"
+    },
+    "battle.skill.c1066.s2.description": {
+      "sourceId": "sk_c1066_2",
+      "textId": "sk_c1066_2_de",
+      "text": "暴击率和暴击抗性提升<#FF9900>{per(ps_refer)}%</>。\\n若自身生命值在50%以上，则攻击力提升<#FF9900>{per(ps_refer)}%</>；若在50%以下，则防御力提升<#FF9900>{per(ps_refer)}%</>。",
+      "parameters": {
+        "ps_refer": {
+          "sourceField": "pa_c1066_2.cs_refer",
+          "value": "0.2"
+        }
+      },
+      "displaySha256": "e1e4db302535f916093f37901b360e021dcc0d74cf13bb28f45bb91b96ee56d1"
+    },
+    "battle.skill.c1066.s2.name": {
+      "sourceId": "sk_c1066_2",
+      "textId": "sk_c1066_2_sknm",
+      "text": "龙骑士的意志",
+      "displaySha256": "f3b04c8b8de9784f4d57c435a93f1cea0f759abb8fd939645ee586d29b1956b0"
+    },
+    "battle.skill.c1066.s3.description": {
+      "sourceId": "sk_c1066_3u",
+      "textId": "sk_c1066_3u_de",
+      "text": "腾空后用长矛下插攻击目标，有<#FF9900>{per(sk_add_rate1)}%</>的几率在2回合内造成<#FFFFFF>防御力降低</>效果。对目标造成50%的防御力<#FFFFFF>穿透</>，用有利属性发动攻击。消灭时，额外获得灵魂5点。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1066_3u.sk_add_rate1",
+          "value": "0.8"
+        }
+      },
+      "displaySha256": "5abdb7166b925da79e3e8baf00d4b55ad4115752efca083ef23a5eeda33a0ddc"
+    },
+    "battle.skill.c1066.s3.name": {
+      "sourceId": "sk_c1066_3u",
+      "textId": "sk_c1066_3u_sknm",
+      "text": "拉格纳之矛",
+      "displaySha256": "91bb97c2be3c6a18bb7732b4d8336c9108fa8e4dce05def82e5565eb3df920b2"
+    },
+    "battle.skill.c1066.s3.unawakened.description": {
+      "sourceId": "sk_c1066_3",
+      "textId": "sk_c1066_3_de",
+      "text": "腾空后用长矛下插攻击目标，有<#FF9900>{per(sk_add_rate1)}%</>的几率在2回合内造成<#FFFFFF>防御力降低</>效果。对目标造成50%的防御力<#FFFFFF>穿透</>。消灭时，额外获得灵魂5点。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1066_3.sk_add_rate1",
+          "value": "0.8"
+        }
+      },
+      "displaySha256": "3ddf5f74e1bcd80fed7f3b39ca3b4207cfbebc560e7152a08de2eb8efca4a69e"
+    },
+    "battle.skill.c1067.s1.burn.description": {
+      "sourceId": "sk_c1067_1s",
+      "textId": "sk_c1067_1s_de",
+      "text": "攻击后，使所有我军人员生命值大幅恢复。",
+      "displaySha256": "7a65a6f63fcb0b0a93266f3dea060d0efc1865ff9e0b103ee970ebf2fbf288aa"
+    },
+    "battle.skill.c1067.s1.description": {
+      "sourceId": "sk_c1067_1",
+      "textId": "sk_c1067_1_de",
+      "text": "（塔玛林尔）用寂静旋律攻击敌人后，根据目标最大生命值使生命值比例最低的我军人员等比恢复生命值。闪亮之星☆冷却时间减少1回合。\\n（歌姬）用迷人音色攻击全体敌人，解除所有强化效果。使攻击力最高的我军人员发动<#FFFFFF>夹攻</>。",
+      "displaySha256": "dcdb4e638013278ad167ad83cd8b964bb0e6445ca7935eff424952d3c745cc78"
+    },
+    "battle.skill.c1067.s1.idol.description": {
+      "sourceId": "sk_c1067_1_ss_2",
+      "textId": "sk_c1067_1_de",
+      "text": "（塔玛林尔）用寂静旋律攻击敌人后，根据目标最大生命值使生命值比例最低的我军人员等比恢复生命值。闪亮之星☆冷却时间减少1回合。\\n（歌姬）用迷人音色攻击全体敌人，解除所有强化效果。使攻击力最高的我军人员发动<#FFFFFF>夹攻</>。",
+      "sectionPrefix": "（歌姬）",
+      "displaySha256": "b9c0584a9e992388320fb15f4f13e4f038840553cd351fc9af492ac9367a5c4d"
+    },
+    "battle.skill.c1067.s1.idol.name": {
+      "sourceId": "sk_c1067_1_ss_2",
+      "textId": "sk_c1067_1_ss_2_sknm",
+      "text": "大家一起唱～",
+      "displaySha256": "0700fb48844d5d49288354aa748e38b693ba5fb9dc58b6ce4e0badbb7a178f1d"
+    },
+    "battle.skill.c1067.s1.name": {
+      "sourceId": "sk_c1067_1",
+      "textId": "sk_c1067_1_sknm",
+      "text": "寂静的旋律",
+      "displaySha256": "09bdbed20e28348a9caed6ff03015beb93bd6754c6b6f3f43cd0212c9ff93768"
+    },
+    "battle.skill.c1067.s2.description": {
+      "sourceId": "sk_c1067_2",
+      "textId": "sk_c1067_2_de",
+      "text": "（塔玛林尔）使用平静旋律，根据自身最大生命值使全体我军人员等比恢复生命值。闪亮之星☆冷却时间减少1回合。\\n（歌姬）用劲歌热舞使全体我军人员在2回合内获得<#FFFFFF>攻击力提升</>效果，使速攻值提升<#FF9900>{per(sk_eff_value2)}%</>，根据自身最大生命值等比恢复生命值。",
+      "parameters": {
+        "sk_eff_value2": {
+          "sourceField": "sk_c1067_2.sk_eff_value2",
+          "value": "0.3"
+        }
+      },
+      "displaySha256": "2fbad636f59fa35a48dd2bdabd84a4eddc701ffc46af4fb4975855a121cdb0c5"
+    },
+    "battle.skill.c1067.s2.idol.description": {
+      "sourceId": "sk_c1067_2_ss_2",
+      "textId": "sk_c1067_2_de",
+      "text": "（塔玛林尔）使用平静旋律，根据自身最大生命值使全体我军人员等比恢复生命值。闪亮之星☆冷却时间减少1回合。\\n（歌姬）用劲歌热舞使全体我军人员在2回合内获得<#FFFFFF>攻击力提升</>效果，使速攻值提升<#FF9900>{per(sk_eff_value2)}%</>，根据自身最大生命值等比恢复生命值。",
+      "sectionPrefix": "（歌姬）",
+      "parameters": {
+        "sk_eff_value2": {
+          "sourceField": "sk_c1067_2_ss_2.sk_eff_value2",
+          "value": "0.3"
+        }
+      },
+      "displaySha256": "24ab20d8b798a98e92e8537fb475b4c17bf5bf367760513758c2ebde8ff5f663"
+    },
+    "battle.skill.c1067.s2.idol.name": {
+      "sourceId": "sk_c1067_2_ss_2",
+      "textId": "sk_c1067_2_ss_2_sknm",
+      "text": "高潮迭起",
+      "displaySha256": "049aa7e7e0eec78a6087352afdd463c80fb15e89abcd50281122eadea2a97752"
+    },
+    "battle.skill.c1067.s2.name": {
+      "sourceId": "sk_c1067_2",
+      "textId": "sk_c1067_2_sknm",
+      "text": "森林之歌",
+      "displaySha256": "16e557ace94e01e9e73f1ab4dd81569fafee10ecb68580dfb90e68f4f84a3fc5"
+    },
+    "battle.skill.c1067.s3.description": {
+      "sourceId": "sk_c1067_3u",
+      "textId": "sk_c1067_3u_de",
+      "text": "正式开始公演之前解除全体我军人员的所有弱化效果。自身恢复所有生命值，获得<#FFFFFF>额外回合</>，并在3回合内成为<#FFFFFF>歌姬</>，进行现场表演。首次战斗开始时，技能冷却时间增加到最多。",
+      "displaySha256": "a24b2b9a2370567640852fcbb7b703ab355d8ef7bfe0babbc5c7285f6ac0c4ed"
+    },
+    "battle.skill.c1067.s3.name": {
+      "sourceId": "sk_c1067_3u",
+      "textId": "sk_c1067_3u_sknm",
+      "text": "闪亮之星☆",
+      "displaySha256": "76c8dfe8d7a500f0f9f2b7cd34df1acb33327ac54c5737b0b5362ab9b1724169"
+    },
+    "battle.skill.c1067.s3.unawakened.description": {
+      "sourceId": "sk_c1067_3",
+      "textId": "sk_c1067_3_de",
+      "text": "正式开始公演之前解除全体我军人员的所有弱化效果。恢复自身所有生命值，并在3回合内成为<#FFFFFF>歌姬</>，进行现场表演。首次战斗开始时，技能冷却时间增加到最多。",
+      "displaySha256": "22a69aeeaf1842e2a39bbecb3a5f7ba8848ea540cc364b8f873072e3b71f3326"
+    },
+    "battle.skill.c1069.s1.description": {
+      "sourceId": "sk_c1069_1",
+      "textId": "sk_c1069_1_de",
+      "text": "用魔法攻击敌人后，有<#FF9900>{per(sk_add_rate1)}%</>的几率窃取目标的1个强化效果。攻击后，若自身处于强化效果状态，则速攻值提升15%。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1069_1.sk_add_rate1",
+          "value": "0.6"
+        }
+      },
+      "displaySha256": "53fe6012fc0ceaf9a966c94d5303903823bdac618dfc4551f8e061fdedbdf2be"
+    },
+    "battle.skill.c1069.s1.name": {
+      "sourceId": "sk_c1069_1",
+      "textId": "sk_c1069_1_sknm",
+      "text": "星光",
+      "displaySha256": "b1a23d9586da2fa738307028f43c02a150d4f42a9b7da36c22197d402a359f55"
+    },
+    "battle.skill.c1069.s2.burn.description": {
+      "sourceId": "sk_c1069_2s",
+      "textId": "sk_c1069_2s_de",
+      "text": "无视效果抗性。",
+      "displaySha256": "42b9bdee5ec503b4f8013643c51ce3517ef71da61e797dd87e3346711769023e"
+    },
+    "battle.skill.c1069.s2.description": {
+      "sourceId": "sk_c1069_2",
+      "textId": "sk_c1069_2_de",
+      "text": "用光芒强击敌人，使强化效果减少1回合后，有<#FF9900>{per(sk_add_rate2)}%</>的几率在1回合内造成<#FFFFFF>晕眩</>效果。使自身在1回合内获得<#FFFFFF>无敌</>效果，使速攻值提升50%。",
+      "parameters": {
+        "sk_add_rate2": {
+          "sourceField": "sk_c1069_2.sk_add_rate2",
+          "value": "0.85"
+        }
+      },
+      "displaySha256": "53e596222bbec69eb23e6a8e1511ab2ef6af25219f21a5fdba284bf49ae519a4"
+    },
+    "battle.skill.c1069.s2.name": {
+      "sourceId": "sk_c1069_2",
+      "textId": "sk_c1069_2_sknm",
+      "text": "月光强击",
+      "displaySha256": "80b98d6c52887af8baa590e53f6c1d2b6fd553d2003ea7b05c3ee5a0b6ceb77d"
+    },
+    "battle.skill.c1069.s3.description": {
+      "sourceId": "sk_c1069_3u",
+      "textId": "sk_c1069_3u_de",
+      "text": "用夜之一族的魔法攻击全体敌人，消灭时，使自身强化效果延长1回合。对目标造成30%的防御力<#FFFFFF>穿透</>。若自身处于<#FFFFFF>无敌</>状态，则额外造成30%的防御力<#FFFFFF>穿透</>。",
+      "displaySha256": "a11f1020d4e2c16d375b73e387acfc11813a3961124b1567f07557e4bef7f989"
+    },
+    "battle.skill.c1069.s3.name": {
+      "sourceId": "sk_c1069_3u",
+      "textId": "sk_c1069_3_sknm",
+      "text": "满月的呼唤",
+      "displaySha256": "41a02bebd3e449e189888244f54b13d69d70ec531bfc828d670d781c75a9c2e1"
+    },
+    "battle.skill.c1069.s3.unawakened.description": {
+      "sourceId": "sk_c1069_3",
+      "textId": "sk_c1069_3_de",
+      "text": "用夜之一族的魔法攻击全体敌人，消灭时，使自身强化效果延长1回合。对目标造成30%的防御力<#FFFFFF>穿透</>。若自身处于<#FFFFFF>无敌</>状态，则额外造成15%的防御力<#FFFFFF>穿透</>。",
+      "displaySha256": "e2e40aa8abc8bf6ebe287637868ccaea6c0b796a1be6a5c16d53481e9790ca74"
+    },
+    "battle.skill.c1070.s1.description": {
+      "sourceId": "sk_c1070_1",
+      "textId": "sk_c1070_1_de",
+      "text": "用剑气攻击敌人，有<#FF9900>{per(sk_add_rate1)}%</>的几率在1回合内<#FFFFFF>挑衅</>对方。根据自身最大生命值等比提升伤害量。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1070_1.sk_add_rate1",
+          "value": "0.5"
+        }
+      },
+      "displaySha256": "5feae53f6adf49ae57ae83c477c032f35410b2bd66f5aa89bb0471acfbcb1356"
+    },
+    "battle.skill.c1070.s1.name": {
+      "sourceId": "sk_c1070_1",
+      "textId": "sk_c1070_1_sknm",
+      "text": "剑气",
+      "displaySha256": "9ca902e7847915d8ee0191c55d2fa8e5d518fbfe98cd556f850c0ceb6a488862"
+    },
+    "battle.skill.c1070.s2.description": {
+      "sourceId": "sk_c1070_2",
+      "textId": "sk_c1070_2_de",
+      "text": "用盾牌推开敌人，使速攻值降低<#FF9900>{per(sk_eff_value1)}%</>后，使全体我军人员在2回合内<#FFFFFF>防御力提升</>。根据自身最大生命值等比提升伤害量。",
+      "parameters": {
+        "sk_eff_value1": {
+          "sourceField": "sk_c1070_2.sk_eff_value1",
+          "value": "0.35"
+        }
+      },
+      "displaySha256": "a677d2be35df80651c5ff817e75ee0e62807b68c2632b6e2ed5a07863368d841"
+    },
+    "battle.skill.c1070.s2.name": {
+      "sourceId": "sk_c1070_2",
+      "textId": "sk_c1070_2_sknm",
+      "text": "突击",
+      "displaySha256": "9da9437f29586d203b7eaa9c42017e44973059e96dcc014a06719ced66183106"
+    },
+    "battle.skill.c1070.s3.burn.description": {
+      "sourceId": "sk_c1070_3us",
+      "textId": "sk_c1070_3us_de",
+      "text": "伤害量降低，并攻击全体敌人。",
+      "displaySha256": "9d6462e99a63e9e071985e2eda4017c1631973d7983a8fda4122b0f43eb2c407"
+    },
+    "battle.skill.c1070.s3.description": {
+      "sourceId": "sk_c1070_3u",
+      "textId": "sk_c1070_3u_de",
+      "text": "召唤神兽吉柯佛里德攻击敌人，将部分伤害量作为生命值恢复。造成防御力<#FFFFFF>穿透</>，不会触发暴击、强击。根据自身损失的生命值等比提升伤害量。若此技能未处于冷却状态，则对我军人员所受伤害的25%进行<#FFFFFF>伤害分配</>。",
+      "displaySha256": "44eeaed0d74e631fa71b40e5f99a85cc5791a99fced26f029056dba950d04aa0"
+    },
+    "battle.skill.c1070.s3.name": {
+      "sourceId": "sk_c1070_3u",
+      "textId": "sk_c1070_3u_sknm",
+      "text": "召唤吉柯佛里德",
+      "displaySha256": "f9914eb7a811a1b0890e739cd792a988606766e0c60b27b23e81957e9e17d918"
+    },
+    "battle.skill.c1070.s3.unawakened.description": {
+      "sourceId": "sk_c1070_3",
+      "textId": "sk_c1070_3_de",
+      "text": "召唤神兽吉柯佛里德攻击敌人。造成防御力<#FFFFFF>穿透</>，不会触发暴击、强击。根据自身损失的生命值等比提升伤害量。若此技能未处于冷却状态，则对我军人员所受伤害的25%进行<#FFFFFF>伤害分配</>。",
+      "displaySha256": "b826242fb78f5c82875e24dfeed57331e74157bc724f960076a497e187cbdb24"
+    },
+    "battle.skill.c1071.s1.burn.description": {
+      "sourceId": "sk_c1071_1s",
+      "textId": "sk_c1071_1s_de",
+      "text": "获得额外回合。",
+      "displaySha256": "65c9b7cc071587bb844b8f96a8fd88a62f9bf6814159429aa054a34b8c4723fa"
+    },
+    "battle.skill.c1071.s1.description": {
+      "sourceId": "sk_c1071_1",
+      "textId": "sk_c1071_1_de",
+      "text": "挥扇攻击敌人。根据目标最大生命值等比提升伤害量。若专注力在5点以上，则使用风裂扇，消耗全部专注力。",
+      "displaySha256": "0e7807aad6ce4da8ea2566700ee2bcc647f9c60fe714001827cb27cfbe32915c"
+    },
+    "battle.skill.c1071.s1.name": {
+      "sourceId": "sk_c1071_1",
+      "textId": "sk_c1071_1_sknm",
+      "text": "摇扇",
+      "displaySha256": "cfec6ece8531b6c23754119f048e19a95ea8ae09c9b90547452374cab687bab5"
+    },
+    "battle.skill.c1071.s2.description": {
+      "sourceId": "sk_c1071_2u",
+      "textId": "sk_c1071_2u_de",
+      "text": "如蝴蝶振翅般挥扇，攻击全体敌人后，使自身在1回合内获得<#FFFFFF>免疫</>效果。",
+      "displaySha256": "331bb645d560febc8553971ea91cc961869c20a964c685f8c854f0e7b3806e30"
+    },
+    "battle.skill.c1071.s2.name": {
+      "sourceId": "sk_c1071_2u",
+      "textId": "sk_c1071_2u_sknm",
+      "text": "蝶风扇",
+      "displaySha256": "54374f4b91bdf2b0abb2ba444080a9a48aea206fac9ea8f6d52960c4eeafcbdc"
+    },
+    "battle.skill.c1071.s2.unawakened.description": {
+      "sourceId": "sk_c1071_2",
+      "textId": "sk_c1071_2_de",
+      "text": "如蝴蝶振翅般挥扇，攻击全体敌人。",
+      "displaySha256": "d6bc98d4350e2670ee8e308f745d4dbb44e6476e02c2aee01d7236354b5da50b"
+    },
+    "battle.skill.c1071.s3.description": {
+      "sourceId": "sk_c1071_3",
+      "textId": "sk_c1071_3_de",
+      "text": "刮起强风，攻击全体敌人，并有<#FF9900>{per(sk_add_rate1)}%</>的几率在2回合内造成<#FFFFFF>防御力降低</>。利用摇扇发动风裂扇时，伤害量提升。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1071_3.sk_add_rate1",
+          "value": "0.85"
+        }
+      },
+      "displaySha256": "b540c6625c6ca04a0dbf98bc626aa6c0cad0e4ba4d78374af1069eadb22f97df"
+    },
+    "battle.skill.c1071.s3.name": {
+      "sourceId": "sk_c1071_3",
+      "textId": "sk_c1071_3_sknm",
+      "text": "风裂扇",
+      "displaySha256": "b5e533b89d6543da2db5873e3fad36793326c49ac813ac0aa698cd1252bea326"
+    },
+    "battle.skill.c1072.s1.description": {
+      "sourceId": "sk_c1072_1",
+      "textId": "sk_c1072_1_de",
+      "text": "用镰刀攻击敌人，各有<#FF9900>{per(sk_add_rate1)}%</>的几率在2回合内造成2个<#FFFFFF>出血</>效果。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1072_1.sk_add_rate1",
+          "value": "0.4"
+        }
+      },
+      "displaySha256": "6cb0257c965eb1c309553cd6e4e05ba4471609cdaed9649d9d195641425cc8b8"
+    },
+    "battle.skill.c1072.s1.name": {
+      "sourceId": "sk_c1072_1",
+      "textId": "sk_c1072_1_sknm",
+      "text": "截断",
+      "displaySha256": "dc26ee3912b9ce51c9ceb54c846a652bdd9a04b449f9d9085479e4f75ef3b1b7"
+    },
+    "battle.skill.c1072.s2.burn.description": {
+      "sourceId": "sk_c1072_2s",
+      "textId": "sk_c1072_2s_de",
+      "text": "获得额外回合。",
+      "displaySha256": "65c9b7cc071587bb844b8f96a8fd88a62f9bf6814159429aa054a34b8c4723fa"
+    },
+    "battle.skill.c1072.s2.description": {
+      "sourceId": "sk_c1072_2",
+      "textId": "sk_c1072_2_de",
+      "text": "连续挥舞镰刀攻击敌人，各有<#FF9900>{per(sk_add_rate1)}%</>的几率在2回合内造成<#FFFFFF>无法恢复</>、<#FFFFFF>出血</>效果。攻击后，若目标生命值在50%以下，则额外使用截断。额外攻击时，截断有100%的几率造成出血效果。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1072_2.sk_add_rate1",
+          "value": "0.85"
+        }
+      },
+      "displaySha256": "bd1d3d23a066c59362f6e84200b70fdf0c276e1324d04a999b1635113a5294d0"
+    },
+    "battle.skill.c1072.s2.name": {
+      "sourceId": "sk_c1072_2",
+      "textId": "sk_c1072_2_sknm",
+      "text": "粉碎",
+      "displaySha256": "5177e25e0b4a9fdff3fef6d30c9529e88177c4ec2a7101a8c0916b4528de2d29"
+    },
+    "battle.skill.c1072.s3.description": {
+      "sourceId": "sk_c1072_3u",
+      "textId": "sk_c1072_3u_de",
+      "text": "施展利用敌人弱点的致命攻击，消灭时造成<#FFFFFF>灭亡</>效果。对目标造成30%的防御力<#FFFFFF>穿透</>，目标每附带一个弱化效果，穿透效果提升10%。",
+      "displaySha256": "5a49655686ed5d6f8db48fb7c76ca92315bd91e1f1762fdf695e309dab701a4c"
+    },
+    "battle.skill.c1072.s3.name": {
+      "sourceId": "sk_c1072_3u",
+      "textId": "sk_c1072_3u_sknm",
+      "text": "斩断",
+      "displaySha256": "a5e3f26e970db8fd8755e92f880fcf0391d3a99183a3b48afc434fb704f828dc"
+    },
+    "battle.skill.c1072.s3.unawakened.description": {
+      "sourceId": "sk_c1072_3",
+      "textId": "sk_c1072_3_de",
+      "text": "施展利用敌人弱点的致命攻击，消灭时造成<#FFFFFF>灭亡</>效果。对目标造成30%的防御力<#FFFFFF>穿透</>，目标每附带一个弱化效果，穿透效果提升5%。",
+      "displaySha256": "552c6b5c71b54141733554fa36a0e337ae53242bad487d864b6507adb3f01ed7"
+    },
+    "battle.skill.c1073.s1.description": {
+      "sourceId": "sk_c1073_1",
+      "textId": "sk_c1073_1_de",
+      "text": "通过亚空间接近敌人，发动攻击，使自身速攻值提升<#FF9900>{per(sk_eff_value1)}%</>。若自身处于<#FFFFFF>魔力力场</>状态，则消耗斗志10点，对随机敌人使用相同的额外攻击。",
+      "parameters": {
+        "sk_eff_value1": {
+          "sourceField": "sk_c1073_1.sk_eff_value1",
+          "value": "0.1"
+        }
+      },
+      "displaySha256": "c821507f88afdb1e266ac4e53a1f14f58389f35eb3dff11c9b95c0e9c54b81a2"
+    },
+    "battle.skill.c1073.s1.name": {
+      "sourceId": "sk_c1073_1",
+      "textId": "sk_c1073_1_sknm",
+      "text": "瞬间移动",
+      "displaySha256": "332cfc1774fb8e780a83a06abec36c2f39f73461478f8d1127d9ef580782b30e"
+    },
+    "battle.skill.c1073.s2.burn.description": {
+      "sourceId": "sk_c1073_2us",
+      "textId": "sk_c1073_2us_de",
+      "text": "无视效果抗性。",
+      "displaySha256": "42b9bdee5ec503b4f8013643c51ce3517ef71da61e797dd87e3346711769023e"
+    },
+    "battle.skill.c1073.s2.description": {
+      "sourceId": "sk_c1073_2u",
+      "textId": "sk_c1073_2u_de",
+      "text": "攻击回廊内的敌人，各有<#FF9900>{per(sk_add_rate1)}%</>的几率解除2个强化效果后，使技能冷却时间增加到最多。暴击时，获得<#FFFFFF>额外回合</>。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1073_2u.sk_add_rate1",
+          "value": "0.75"
+        }
+      },
+      "displaySha256": "0e07ed2f58035090345483e1f576fa1176c3a151502471657efdb9e633a47226"
+    },
+    "battle.skill.c1073.s2.name": {
+      "sourceId": "sk_c1073_2u",
+      "textId": "sk_c1073_2u_sknm",
+      "text": "次元回廊",
+      "displaySha256": "6ffdcf534440ab46bb56a68fae695d20d88824ec04a67090f219d1c4cf91d235"
+    },
+    "battle.skill.c1073.s2.unawakened.description": {
+      "sourceId": "sk_c1073_2",
+      "textId": "sk_c1073_2_de",
+      "text": "攻击回廊内的敌人，各有<#FF9900>{per(sk_add_rate1)}%</>的几率解除2个强化效果后，使技能冷却时间增加到最多。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1073_2.sk_add_rate1",
+          "value": "0.75"
+        }
+      },
+      "displaySha256": "73e4cb5ce526496684dfacc8437212608e81b763807c444eecd1aa90ff0d2f4a"
+    },
+    "battle.skill.c1073.s3.description": {
+      "sourceId": "sk_c1073_3",
+      "textId": "sk_c1073_3_de",
+      "text": "用爆炸攻击全体敌人，使自身在2回合内获得<#FFFFFF>速度提升</>效果。对目标造成50%的防御力<#FFFFFF>穿透</>。\\n首次战斗开始时，获得最大值的斗志；战斗中，若斗志在10点以上，则获得<#FFFFFF>魔力力场</>效果。",
+      "displaySha256": "037a7fa4b8b8f6363f2ab48301430a372f3fdd9c0b8d05b8116399c085db4e43"
+    },
+    "battle.skill.c1073.s3.name": {
+      "sourceId": "sk_c1073_3",
+      "textId": "sk_c1073_3_sknm",
+      "text": "次元爆炸",
+      "displaySha256": "1c0b3f13448b08774f2806d6ea830d695c61f2c9e21bce4b362d6158d1a1058c"
+    },
+    "battle.skill.c1074.s1.burn.description": {
+      "sourceId": "sk_c1074_1s",
+      "textId": "sk_c1074_1s_de",
+      "text": "效果发生率提升至100%，在2回合内造成攻击力降低。",
+      "displaySha256": "8324261cb5cceb2eadac461fdc7a9a6f3c80dd477548ba34f7af79a53bf2e1d2"
+    },
+    "battle.skill.c1074.s1.description": {
+      "sourceId": "sk_c1074_1",
+      "textId": "sk_c1074_1_de",
+      "text": "挥剑攻击，有<#FF9900>{per(sk_add_rate1)}%</>的几率在1回合内造成<#FFFFFF>攻击力降低</>。若非自身回合，则速攻值提升15%，且专注获得量加倍。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1074_1.sk_add_rate1",
+          "value": "0.65"
+        }
+      },
+      "displaySha256": "6d0e0ca7dfb7cb38ce309d686867aafdcd2909f0579ffb2c8c2e377f106c9b04"
+    },
+    "battle.skill.c1074.s1.name": {
+      "sourceId": "sk_c1074_1",
+      "textId": "sk_c1074_1_sknm",
+      "text": "优雅的砍击",
+      "displaySha256": "cbe1d1bbaf92b4ad31282c26f74c33a25679dc14ededd8d90bcac784f9d5a71e"
+    },
+    "battle.skill.c1074.s2.description": {
+      "sourceId": "sk_c1074_2",
+      "textId": "sk_c1074_2_de",
+      "text": "调整心态面对决斗，解除自身的2个弱化效果，在3回合内获得<#FFFFFF>识破</>效果后，生命值恢复15%。获得<#FFFFFF>额外回合</>。",
+      "displaySha256": "158ada6018d672059629ef86a404a79059bb47e8b4caaadec174eeac2d61fb95"
+    },
+    "battle.skill.c1074.s2.name": {
+      "sourceId": "sk_c1074_2",
+      "textId": "sk_c1074_2_sknm",
+      "text": "准备决斗",
+      "displaySha256": "5fab48cd1d1eba0fff927361c16103e416e5ec4e3d5ecc697654786b2403913f"
+    },
+    "battle.skill.c1074.s3.description": {
+      "sourceId": "sk_c1074_3u",
+      "textId": "sk_c1074_3u_de",
+      "text": "用剑锐利刺击后，消耗全部专注力。根据消耗的专注力点数等比提升伤害量，若消耗的专注力达到5点，则蝴蝶斩击冷却时间重置。\\n若蝴蝶斩击未处于冷却状态，则回避提升35%，回避时，用优雅的砍击发动反击。",
+      "displaySha256": "708a2952b02d907b5cace69dc289f19976c4a4cd50088d8658e8fe17fde89ca2"
+    },
+    "battle.skill.c1074.s3.name": {
+      "sourceId": "sk_c1074_3u",
+      "textId": "sk_c1074_3u_sknm",
+      "text": "蝴蝶斩击",
+      "displaySha256": "d96bc37fe8b74153ecce2172518b062f4ecd554353da7ad2473610c566876628"
+    },
+    "battle.skill.c1074.s3.unawakened.description": {
+      "sourceId": "sk_c1074_3",
+      "textId": "sk_c1074_3_de",
+      "text": "用剑锐利刺击后，消耗全部专注力。根据消耗的专注力点数等比提升伤害量。\\n若蝴蝶斩击未处于冷却状态，则回避提升35%，回避时，用优雅的砍击发动反击。",
+      "displaySha256": "f5ae631260d66845b8d1a620dc394692d67956d8e3ebc6a87b45657165f8dc51"
     },
     "battle.status.attackdown.description": {
       "sourceId": "stic_att_dn",
@@ -3189,6 +3797,18 @@
       "text": "命中降低",
       "displaySha256": "145b71eedb06c4eaa9db0349d00aa347acd69749a31d3100b05a74a638bb2ce7"
     },
+    "battle.status.idol.description": {
+      "sourceId": "stic_showtime_aura",
+      "textId": "stic_showtime_de",
+      "text": "我的现场表演在回合结束之前是不会停止的！",
+      "displaySha256": "658b0221664c8b3f3be2cf32e696390c89c0797aafc848e5ef7f620421ca7aaa"
+    },
+    "battle.status.idol.name": {
+      "sourceId": "stic_showtime_aura",
+      "textId": "stic_showtime_skeffnm",
+      "text": "歌姬（固有效果）",
+      "displaySha256": "713fdf7794c4b9b908a4bbabef11188542272c31d062fe578db80fe27f2ebbb0"
+    },
     "battle.status.immortality.description": {
       "sourceId": "stic_immortality",
       "textId": "stic_immortality_de",
@@ -3237,6 +3857,18 @@
       "text": "无敌",
       "displaySha256": "78af2f47802afb86a6b9cbdadd483bf2bf89a76d42f881c333b816c58354ea9c"
     },
+    "battle.status.magicbarrier.description": {
+      "sourceId": "stic_manafield_keep",
+      "textId": "stic_manafield_de",
+      "text": "受到攻击时，消耗斗志10点，使技能造成的伤害无效化。",
+      "displaySha256": "b04014a471608b9d1fa7c838a925c3f0a8990acc91db8368cd22ab48f7818094"
+    },
+    "battle.status.magicbarrier.name": {
+      "sourceId": "stic_manafield_keep",
+      "textId": "stic_manafield_skeffnm",
+      "text": "魔力力场（无法解除）",
+      "displaySha256": "49cfa67ed86b446578c9dd8992cbb87318efcde2a7edb22a6ffd0bb6214b1e61"
+    },
     "battle.status.magicnail.description": {
       "sourceId": "stic_nail",
       "textId": "stic_nail_de",
@@ -3248,6 +3880,18 @@
       "textId": "stic_nail_skeffnm",
       "text": "魔法钉",
       "displaySha256": "0e777b384caa47c519cc3ad8688f40a49dce159953d9dda412f0f974a80822f1"
+    },
+    "battle.status.perception.description": {
+      "sourceId": "stic_detection_keep",
+      "textId": "stic_detection_de",
+      "text": "暴击率、暴击伤害提升15%。",
+      "displaySha256": "2324b1babc3cc741a7175dd74b6335e307e8a3c151713cc0bd44a9a88385caeb"
+    },
+    "battle.status.perception.name": {
+      "sourceId": "stic_detection_keep",
+      "textId": "stic_detection_skeffnm",
+      "text": "识破（无法解除）",
+      "displaySha256": "654f2324f51196f7595183c43ee2d74bb647ed683b3b9b8aa1a6f33329ce5208"
     },
     "battle.status.poison.description": {
       "sourceId": "stic_dot",
@@ -3452,6 +4096,18 @@
       "textId": "stic_vampire_skeffnm",
       "text": "吸血之手",
       "displaySha256": "89975517509f9126a44d1cd6e3a2cec2e25e31035284ac8b999cbb09660764b1"
+    },
+    "battle.status.venom.description": {
+      "sourceId": "stic_venom",
+      "textId": "stic_venom_de",
+      "text": "回合开始时，受到最大生命值10%的伤害和伤口效果。剧毒效果只适用于英雄。",
+      "displaySha256": "7e8b7c2b76a92a6f6fbed33150767c85f591d96ad104e23bcdddcd7e8e9354ba"
+    },
+    "battle.status.venom.name": {
+      "sourceId": "stic_venom",
+      "textId": "stic_venom_skeffnm",
+      "text": "剧毒",
+      "displaySha256": "e198edea34566b57893524b8b252d0aaa45bf3c7f936b1bdf86be8eedfe5cd07"
     },
     "battle.status.vigor.description": {
       "sourceId": "stic_haki",

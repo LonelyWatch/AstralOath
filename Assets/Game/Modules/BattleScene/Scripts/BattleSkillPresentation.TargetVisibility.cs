@@ -10,7 +10,7 @@ namespace AstralOath.Client.BattleScene
         private sealed class TargetLayer
         {
             internal Renderer[] Bodies;
-            internal float Start, FadeSeconds, Opacity;
+            internal float Start, FadeSeconds, HoldSeconds, FadeOutSeconds, Opacity;
         }
 
         private sealed class TargetBody
@@ -28,19 +28,23 @@ namespace AstralOath.Client.BattleScene
 
         private static bool IsTargetHide(JObject node) =>
             (int?)node["blend_target"] == 66 && Number(node, "alpha_channel", 1f) == 0f &&
-            Number(node, "duration") == -1f && Number(node, "fadeIn") >= 0f && Number(node, "fadeOut") == 0f &&
-            !string.IsNullOrEmpty((string)node["id"]);
+            Number(node, "fadeIn") >= 0f && Number(node, "fadeOut") >= 0f &&
+            ((Number(node, "duration") == -1f && Number(node, "fadeOut") == 0f && !string.IsNullOrEmpty((string)node["id"])) ||
+             (Number(node, "duration") > 0f && string.IsNullOrEmpty((string)node["id"])));
 
         private void HoldTargetLayer(JObject node, BattlePreviewActor[] recipients)
         {
             string id = (string)node["id"];
+            if (string.IsNullOrEmpty(id)) id = "\0" + (int)node["guid"];
             if (targetLayers.ContainsKey(id)) return;
             var layer = new TargetLayer
             {
                 Bodies = recipients.Where(actor => actor && actor.PresentationRenderer)
                     .Select(actor => actor.PresentationRenderer).Distinct().ToArray(),
                 Start = time,
-                FadeSeconds = Seconds(node, "fadeIn")
+                FadeSeconds = Seconds(node, "fadeIn"),
+                HoldSeconds = Number(node, "duration") / 1000f,
+                FadeOutSeconds = Seconds(node, "fadeOut")
             };
             layer.Opacity = layer.FadeSeconds > 0f ? 1f : 0f;
             targetLayers.Add(id, layer);
@@ -59,14 +63,20 @@ namespace AstralOath.Client.BattleScene
                 body.Layers.Add(layer);
                 ApplyTargetLayers(renderer, body);
             }
+            if (layer.HoldSeconds > 0f)
+                Schedule(time + layer.HoldSeconds + layer.FadeOutSeconds, () => ReleaseTargetLayer(id));
         }
 
         private void AdvanceTargetLayers()
         {
             foreach (var layer in targetLayers.Values)
             {
-                if (layer.Opacity <= 0f) continue;
-                layer.Opacity = 1f - Mathf.Clamp01((time - layer.Start) / layer.FadeSeconds);
+                float elapsed = time - layer.Start;
+                float opacity = layer.FadeSeconds > 0f ? 1f - Mathf.Clamp01(elapsed / layer.FadeSeconds) : 0f;
+                if (layer.HoldSeconds > 0f && elapsed >= layer.HoldSeconds)
+                    opacity = layer.FadeOutSeconds > 0f ? Mathf.Clamp01((elapsed - layer.HoldSeconds) / layer.FadeOutSeconds) : 1f;
+                if (opacity == layer.Opacity) continue;
+                layer.Opacity = opacity;
                 foreach (var renderer in layer.Bodies)
                     if (renderer) ApplyTargetLayers(renderer, targetBodyHolds[renderer]);
             }

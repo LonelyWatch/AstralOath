@@ -1,0 +1,27 @@
+
+ludwig_skeff_bi_loop.sct
+size: 573,224
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flare/prismlight_01
+  rotate: false
+  xy: 2, 2
+  size: 220, 220
+  orig: 220, 220
+  offset: 0, 0
+  index: -1
+flare/prismlight_13
+  rotate: false
+  xy: 224, 2
+  size: 176, 176
+  orig: 176, 176
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 402, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1

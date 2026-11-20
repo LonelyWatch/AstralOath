@@ -1,0 +1,941 @@
+{
+  "id": "c_bellona_skill_02",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [
+      10
+    ],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "location": 1,
+        "x": 50.0,
+        "y": -20.0,
+        "curve": "0,0.3645833,1,1",
+        "time": 200,
+        "guid": 2,
+        "etty": "CAM"
+      },
+      {
+        "ani": "skill2",
+        "guid": 3,
+        "etty": "ANI"
+      },
+      {
+        "scale": "1.3",
+        "curve": "0,0.3645833,1,1",
+        "time": 200,
+        "guid": 4,
+        "etty": "ZOOM"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "bellona_sk2eff_cm",
+        "guid": 5,
+        "etty": "SHAKE"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 6,
+        "etty": "HIT"
+      },
+      {
+        "time": 200,
+        "guid": 7,
+        "etty": "CAM"
+      },
+      {
+        "guid": 8,
+        "etty": "IDLE"
+      },
+      {
+        "scale": "1.0",
+        "time": 200,
+        "guid": 9,
+        "etty": "ZOOM"
+      },
+      {
+        "ani": "skill2",
+        "name": "hit",
+        "handled": true,
+        "guid": 10,
+        "etty": "ONEVENT"
+      },
+      {
+        "source": "bellona_skill_02_target.cfx",
+        "scale": 1.0,
+        "location": 42,
+        "guid": 11,
+        "etty": "EFFECT"
+      },
+      {
+        "time": 200,
+        "away_x": 500.0,
+        "guid": 12,
+        "etty": "LAYOUT"
+      },
+      {
+        "time": 200,
+        "guid": 13,
+        "etty": "BGSHOW"
+      },
+      {
+        "show": true,
+        "time": 200,
+        "guid": 14,
+        "etty": "BGSHOW"
+      },
+      {
+        "mode": 1,
+        "time": 200,
+        "guid": 15,
+        "etty": "LAYOUT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 16,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 17,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 18,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 19,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 20,
+        "etty": "HIT"
+      },
+      {
+        "location": 42,
+        "y": -20.0,
+        "curve": "0,0.3645833,1,1",
+        "time": 200,
+        "guid": 21,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.4",
+        "curve": "0,0.3645833,1,1",
+        "time": 200,
+        "guid": 22,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "x": 50.0,
+        "curve": "0,0.9548611,1,1",
+        "time": 200,
+        "guid": 23,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.6",
+        "curve": "0,0.9548611,1,1",
+        "time": 200,
+        "guid": 24,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "y": -20.0,
+        "curve": "0,0.8368055,1,1",
+        "time": 450,
+        "guid": 25,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.5",
+        "curve": "0,0.8368055,1,1",
+        "time": 450,
+        "guid": 26,
+        "etty": "ZOOM"
+      },
+      {
+        "time": 1200,
+        "x": 0.0,
+        "y": 0.0,
+        "localZ": 0.0,
+        "fadeIn": 200.0,
+        "fadeOut": 500.0,
+        "speed0": 2.0,
+        "speed1": 9.8,
+        "speed2": -1.3,
+        "color0": "92,192,255,162",
+        "color1": "102,232,255,160",
+        "color2": "31,75,224,181",
+        "guid": 27,
+        "etty": "BGHATCH"
+      },
+      {
+        "time": 1200,
+        "x": 0.0,
+        "y": 0.0,
+        "localZ": 0.0,
+        "fadeIn": 200.0,
+        "fadeOut": 500.0,
+        "speed0": 2.0,
+        "speed1": 9.8,
+        "speed2": -1.3,
+        "color0": "36,80,255,247",
+        "color1": "61,210,255,255",
+        "color2": "31,108,224,203",
+        "guid": 28,
+        "etty": "BGHATCH"
+      },
+      {
+        "duration": 200,
+        "program": "sprite_blur",
+        "direction_x": 1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 29,
+        "etty": "PPEFFECT"
+      },
+      {
+        "name": "u_range",
+        "duration": 200,
+        "power": 30.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 30,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "duration": 300,
+        "program": "sprite_blur",
+        "direction_x": 1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 31,
+        "etty": "PPEFFECT"
+      },
+      {
+        "name": "u_range",
+        "duration": 300,
+        "power": 30.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 32,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "duration": 500,
+        "program": "sprite_blur",
+        "direction_x": 1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 33,
+        "etty": "PPEFFECT"
+      },
+      {
+        "name": "u_range",
+        "duration": 500,
+        "power": 30.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 34,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "scale": "1.7",
+        "curve": "0,0.9548611,1,1",
+        "time": 770,
+        "guid": 35,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "x": -20.0,
+        "y": 20.0,
+        "curve": "0,0.9548611,1,1",
+        "time": 770,
+        "guid": 36,
+        "etty": "CAM"
+      },
+      {
+        "location": 1,
+        "x": 50.0,
+        "curve": "0,0.9548611,1,1",
+        "time": 330,
+        "guid": 37,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.7",
+        "curve": "0,0.9548611,1,1",
+        "time": 330,
+        "guid": 38,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "y": 10.0,
+        "curve": "0,0.9548611,1,1",
+        "time": 300,
+        "guid": 39,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.5",
+        "curve": "0,0.9548611,1,1",
+        "time": 300,
+        "guid": 40,
+        "etty": "ZOOM"
+      },
+      {
+        "name": "u_range",
+        "duration": 200,
+        "power": 30.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 41,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "name": "u_range",
+        "duration": 200,
+        "power": 30.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 42,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "name": "u_range",
+        "duration": 200,
+        "power": 30.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 43,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "duration": 200,
+        "program": "sprite_blur",
+        "direction_x": 1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 44,
+        "etty": "PPEFFECT"
+      },
+      {
+        "duration": 600,
+        "program": "sprite_blur",
+        "direction_x": 1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 45,
+        "etty": "PPEFFECT"
+      },
+      {
+        "duration": 400,
+        "program": "sprite_blur",
+        "direction_x": 1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 46,
+        "etty": "PPEFFECT"
+      },
+      {
+        "duration": 200,
+        "program": "sprite_blur",
+        "direction_x": 1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 47,
+        "etty": "PPEFFECT"
+      },
+      {
+        "name": "u_range",
+        "duration": 200,
+        "power": 30.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 48,
+        "etty": "SINE_VALUE"
+      }
+    ],
+    "connections": [
+      {
+        "from": 1,
+        "to": 3,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 2,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 4,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 8,
+        "delay": 600,
+        "Desc": "600",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 9,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 11,
+        "delay": 2467,
+        "when": 1,
+        "Desc": "2467",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 12,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 12,
+        "to": 13,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 15,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 15,
+        "to": 14,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 6,
+        "delay": 134,
+        "when": 1,
+        "Desc": "134",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 16,
+        "delay": 567,
+        "when": 1,
+        "Desc": "567",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 17,
+        "delay": 667,
+        "when": 1,
+        "Desc": "667",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 18,
+        "delay": 1134,
+        "when": 1,
+        "Desc": "1134",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 19,
+        "delay": 1267,
+        "when": 1,
+        "Desc": "1267",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 20,
+        "delay": 1400,
+        "when": 1,
+        "Desc": "1400",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 5,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 7,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 21,
+        "to": 22,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 23,
+        "to": 24,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 23,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 25,
+        "to": 26,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 25,
+        "to": 21,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 27,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 22,
+        "to": 28,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 29,
+        "to": 30,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 31,
+        "to": 32,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 33,
+        "to": 34,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 18,
+        "to": 33,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 16,
+        "to": 31,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 29,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 29,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 36,
+        "to": 35,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 36,
+        "to": 25,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 37,
+        "to": 38,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 23,
+        "to": 37,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 39,
+        "to": 40,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 37,
+        "to": 39,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 39,
+        "to": 36,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 44,
+        "to": 41,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 46,
+        "to": 42,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 45,
+        "to": 43,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 38,
+        "to": 46,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 40,
+        "to": 44,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 47,
+        "to": 48,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 26,
+        "to": 47,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 35,
+        "to": 45,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/bellona_sk2eff_cm.scsp",
+      "address": "characterlab/source/camera/bellona_sk2eff_cm.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/bellona_b_idle_ready.cfx",
+      "address": "characterlab/source/effect/bellona_b_idle_ready.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/bellona_bidle_ready_eff.atlas",
+      "address": "characterlab/source/effect/bellona_bidle_ready_eff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/bellona_bidle_ready_eff.scsp",
+      "address": "characterlab/source/effect/bellona_bidle_ready_eff.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/bellona_sk1eff_b.atlas",
+      "address": "characterlab/source/effect/bellona_sk1eff_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/bellona_sk1eff_b.scsp",
+      "address": "characterlab/source/effect/bellona_sk1eff_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/bellona_sk1eff_f.atlas",
+      "address": "characterlab/source/effect/bellona_sk1eff_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/bellona_sk1eff_f.scsp",
+      "address": "characterlab/source/effect/bellona_sk1eff_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/bellona_sk2eff_self_b.atlas",
+      "address": "characterlab/source/effect/bellona_sk2eff_self_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/bellona_sk2eff_self_b.scsp",
+      "address": "characterlab/source/effect/bellona_sk2eff_self_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/bellona_sk2eff_self_f.atlas",
+      "address": "characterlab/source/effect/bellona_sk2eff_self_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/bellona_sk2eff_self_f.scsp",
+      "address": "characterlab/source/effect/bellona_sk2eff_self_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/bellona_sk2eff_target_b.atlas",
+      "address": "characterlab/source/effect/bellona_sk2eff_target_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/bellona_sk2eff_target_b.scsp",
+      "address": "characterlab/source/effect/bellona_sk2eff_target_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/bellona_sk2eff_target_f.atlas",
+      "address": "characterlab/source/effect/bellona_sk2eff_target_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/bellona_sk2eff_target_f.scsp",
+      "address": "characterlab/source/effect/bellona_sk2eff_target_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/bellona_sk3eff_self_b.atlas",
+      "address": "characterlab/source/effect/bellona_sk3eff_self_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/bellona_sk3eff_self_b.scsp",
+      "address": "characterlab/source/effect/bellona_sk3eff_self_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/bellona_sk3eff_self_f.atlas",
+      "address": "characterlab/source/effect/bellona_sk3eff_self_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/bellona_sk3eff_self_f.scsp",
+      "address": "characterlab/source/effect/bellona_sk3eff_self_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/bellona_skill_0102.atlas",
+      "address": "characterlab/source/effect/bellona_skill_0102.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/bellona_skill_0102.sct",
+      "address": "characterlab/source/effect/bellona_skill_0102.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/bellona_skill_01_self.cfx",
+      "address": "characterlab/source/effect/bellona_skill_01_self.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/bellona_skill_02_self.cfx",
+      "address": "characterlab/source/effect/bellona_skill_02_self.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/bellona_skill_02_target.cfx",
+      "address": "characterlab/source/effect/bellona_skill_02_target.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/bellona_skill_03_self.cfx",
+      "address": "characterlab/source/effect/bellona_skill_03_self.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_slash_01.atlas",
+      "address": "characterlab/source/effect/hit_new_slash_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_slash_01.scsp",
+      "address": "characterlab/source/effect/hit_new_slash_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_slash_01.sct",
+      "address": "characterlab/source/effect/hit_new_slash_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_slash_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_slash_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_slash_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_slash_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "model/bellona.timeline",
+      "address": "characterlab/source/model/bellona.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

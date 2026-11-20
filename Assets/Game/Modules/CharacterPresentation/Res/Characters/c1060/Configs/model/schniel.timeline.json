@@ -1,0 +1,156 @@
+{
+  "timeline": {
+    "default": {
+      "idle": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "b_idle": {
+        "duration": 0,
+        "frames": [
+          {
+            "param": {}
+          }
+        ]
+      },
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "id": "br",
+              "source": "schniel_skeff_b_ready",
+              "location": 1,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "schniel_skeff_sk1",
+              "location": 5,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "schniel_skeff_sk1_jw",
+              "location": 5,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "flying": {
+        "duration": 0,
+        "frames": []
+      },
+      "down": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill3_1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "schniel_skeff_sk3_start",
+              "location": 1,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "groggy": {
+        "duration": 0,
+        "frames": []
+      },
+      "attacked": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "bi"
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "run": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill3": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "schniel_skeff_sk3_start",
+              "location": 1,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "camping": {
+        "duration": 0,
+        "frames": [
+          {
+            "param": {}
+          }
+        ]
+      }
+    }
+  }
+}

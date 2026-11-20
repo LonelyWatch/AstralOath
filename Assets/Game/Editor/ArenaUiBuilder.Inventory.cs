@@ -103,6 +103,7 @@ namespace AstralOath.Editor
         {
             const string battleCatalog = "Assets/Game/Modules/BattleScene/Configs/battle-catalog.json";
             var source = JsonUtility.FromJson<BattleCatalogData>(File.ReadAllText(battleCatalog));
+            var baseModels=ReadRosterBaseModels();
             var growth = source.growthPresets.ToDictionary(preset => preset.id, StringComparer.Ordinal);
             var names = source.messages.ToDictionary(row => row.key, row => row.zhCn);
             var catalog = AssetDatabase.LoadAssetAtPath<HomeHeroArt>(HomeHeroArtPath);
@@ -116,9 +117,7 @@ namespace AstralOath.Editor
             {
                 string role = hero.heroClass == "soul_weaver" ? "manauser" : hero.heroClass == "thief" ? "assassin" : hero.heroClass;
                 string portrait = "Assets/Game/Modules/CharacterPresentation/Res/Characters/" + hero.id + "/";
-                var modelFiles = Directory.GetFiles(portrait + "Animations/model", "*.spine.json");
-                if (modelFiles.Length != 1) throw new InvalidDataException("Expected one battle model for " + hero.id);
-                string model = Path.GetFileName(modelFiles[0]).Replace(".spine.json", "");
+                string model=baseModels[hero.id];
                 return new HomeHeroArt.Hero
                 {
                     id = hero.id,

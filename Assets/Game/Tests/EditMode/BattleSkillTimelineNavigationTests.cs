@@ -33,6 +33,10 @@ namespace AstralOath.Tests
                 Assert.That((int)vigor.GetType().GetField("Slot", Instance).GetValue(vigor), Is.EqualTo(1),
                     "The chooser sorts the Vigor variant next to its ordinary S1.");
                 Assert.That(Read(byId["c_ken_skill_01_01"], "Target"), Is.EqualTo(Read(byId["c_ken_skill_01_02"], "Target")));
+                Assert.That(Read(byId["c_lunabianca_skill_01_1"], "SlotLabel"), Is.EqualTo("S1 · 短段"));
+                Assert.That(Read(byId["c_lunabianca_skill_01_2"], "SlotLabel"), Is.EqualTo("S1 · 中段"));
+                Assert.That(Read(byId["c_lunabianca_skill_01_3"], "SlotLabel"), Is.EqualTo("S1 · 长段／燃魂"));
+                Assert.That(Read(byId["c_tamarinne_skill_02_2"], "SlotLabel"), Does.StartWith("S2 · "));
             }
             finally { Object.DestroyImmediate(window); }
         }

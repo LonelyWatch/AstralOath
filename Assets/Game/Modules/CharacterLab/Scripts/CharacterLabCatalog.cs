@@ -9,9 +9,11 @@ namespace AstralOath.Client.CharacterLab
         public string battleSkin, portraitSkin;
         public CharacterVoiceRecord[] voices;
         public CharacterSkillRecord[] skills;
+        public CharacterStatusForm[] statusForms;
     }
     [Serializable, Preserve] public sealed class CharacterVoiceRecord { public string id, eventPath, audioTableKey, displayNameKey; }
-    [Serializable, Preserve] public sealed class CharacterSkillRecord { public string id, displayNameKey, graphAddress, eventPath, voiceEventPath; }
+    [Serializable, Preserve] public sealed class CharacterSkillRecord { public string id, displayNameKey, graphAddress, eventPath, voiceEventPath, modelAddress; }
+    [Serializable, Preserve] public sealed class CharacterStatusForm { public string status,modelAddress,timelineAddress,skin; }
     [Serializable, Preserve] public sealed class SkeletonDescriptor
     {
         public string version, jsonAddress, atlasAddress;

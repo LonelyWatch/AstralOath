@@ -1,0 +1,52 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "schniel_skeff_sk1_rotate1",
+      "z": "10",
+      "format": "spine"
+    },
+    {
+      "source": "schniel_skeff_sk1_rotate2",
+      "z": "10",
+      "format": "spine"
+    },
+    {
+      "source": "schniel_skeff_sk1",
+      "z": "50",
+      "format": "spine"
+    },
+    {
+      "source": "schniel_skeff_sk1_1",
+      "x": "-113",
+      "y": "520",
+      "scale": "1.5",
+      "delay": "33",
+      "format": "particle"
+    },
+    {
+      "source": "schniel_skeff_sk1_2",
+      "x": "-113",
+      "y": "520",
+      "scale": "1.5",
+      "delay": "100",
+      "format": "particle"
+    },
+    {
+      "source": "schniel_skeff_sk1_ground",
+      "z": "20",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "schniel_skeff_sk1_rotate_front_glow",
+      "z": "50",
+      "format": "spine"
+    },
+    {
+      "source": "schniel_skeff_sk1_rotate_b_glow",
+      "z": "-50",
+      "format": "spine"
+    }
+  ]
+}

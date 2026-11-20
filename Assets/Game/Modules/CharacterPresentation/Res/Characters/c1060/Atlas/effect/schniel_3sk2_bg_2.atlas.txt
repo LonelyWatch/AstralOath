@@ -1,0 +1,48 @@
+
+schniel_3sk2_bg_2.sct
+size: 853,962
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+1flash
+  rotate: false
+  xy: 661, 791
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+bg_back
+  rotate: false
+  xy: 2, 480
+  size: 657, 451
+  orig: 657, 451
+  offset: 0, 0
+  index: -1
+bg_back_t_window
+  rotate: true
+  xy: 723, 480
+  size: 29, 51
+  orig: 29, 51
+  offset: 0, 0
+  index: -1
+bg_back_window
+  rotate: true
+  xy: 661, 480
+  size: 25, 60
+  orig: 25, 60
+  offset: 0, 0
+  index: -1
+bg_doom
+  rotate: false
+  xy: 2, 2
+  size: 772, 476
+  orig: 772, 476
+  offset: 0, 0
+  index: -1
+bg_gr_dan
+  rotate: true
+  xy: 776, 2
+  size: 787, 75
+  orig: 787, 75
+  offset: 0, 0
+  index: -1

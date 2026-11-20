@@ -58,6 +58,10 @@ STATUSES = (
     ("Bind", "Debuff", "stic_restrict"),
     ("SkillNullifier", "Buff", "stic_endure_1"),
     ("Vigor", "Buff", "stic_haki"),
+    ("Idol", "Buff", "stic_showtime_aura"),
+    ("Venom", "Debuff", "stic_venom"),
+    ("Perception", "Buff", "stic_detection_keep"),
+    ("MagicBarrier", "Buff", "stic_manafield_keep"),
 )
 
 

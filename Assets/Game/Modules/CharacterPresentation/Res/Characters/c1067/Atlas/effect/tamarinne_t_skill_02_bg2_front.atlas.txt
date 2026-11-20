@@ -1,0 +1,90 @@
+
+tamarinne_t_skill_02_bg2_front.sct
+size: 1385,254
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bong
+  rotate: false
+  xy: 235, 2
+  size: 73, 197
+  orig: 73, 197
+  offset: 0, 0
+  index: -1
+cross_light1
+  rotate: false
+  xy: 36, 2
+  size: 197, 197
+  orig: 197, 197
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 948, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+laser1
+  rotate: false
+  xy: 2, 2
+  size: 32, 198
+  orig: 32, 198
+  offset: 0, 0
+  index: -1
+lense_flare1
+  rotate: true
+  xy: 310, 2
+  size: 179, 317
+  orig: 179, 317
+  offset: 0, 0
+  index: -1
+lense_flare1_weak
+  rotate: true
+  xy: 629, 2
+  size: 179, 317
+  orig: 179, 317
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: false
+  xy: 672, 223
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1
+man3
+  rotate: false
+  xy: 672, 183
+  size: 328, 38
+  orig: 328, 38
+  offset: 0, 0
+  index: -1
+mans1
+  rotate: false
+  xy: 2, 202
+  size: 336, 42
+  orig: 336, 42
+  offset: 0, 0
+  index: -1
+mans2
+  rotate: false
+  xy: 340, 183
+  size: 330, 41
+  orig: 330, 41
+  offset: 0, 0
+  index: -1
+spot_light_ball
+  rotate: false
+  xy: 1119, 116
+  size: 105, 105
+  orig: 105, 105
+  offset: 0, 0
+  index: -1
+spot_ray1
+  rotate: true
+  xy: 1119, 2
+  size: 112, 264
+  orig: 112, 264
+  offset: 0, 0
+  index: -1

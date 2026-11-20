@@ -48,6 +48,20 @@ namespace AstralOath.Editor
                 RequireResource(portraitSkeleton, "skeleton", resources);
                 RequireSkin(Text(character, "battleSkin", id), battleSkeleton, id + ".battleSkin", resources, readResourceJson);
                 RequireSkin(Text(character, "portraitSkin", id), portraitSkeleton, id + ".portraitSkin", resources, readResourceJson);
+                var models=new HashSet<string>(StringComparer.Ordinal){battleSkeleton};
+                var statuses=new HashSet<string>(StringComparer.Ordinal);
+                if(character["statusForms"]!=null)
+                foreach(var formToken in Rows(character,"statusForms",id,false))
+                {
+                    var form=Object(formToken,id+".statusForms");
+                    string status=Text(form,"status",id);
+                    string model=Text(form,"modelAddress",id);
+                    if(!statuses.Add(status)||!models.Add(model))Fail("Duplicate status or form model: "+id+"/"+status);
+                    RequireResource(model,"skeleton",resources);
+                    RequireSkin(Text(form,"skin",id),model,id+"."+status,resources,readResourceJson);
+                    string formTimeline=Text(form,"timelineAddress",id,false);
+                    if(!string.IsNullOrEmpty(formTimeline))RequireResource(formTimeline,"timeline",resources);
+                }
                 string voiceBank = Text(character, "voiceBankAddress", id);
                 RequireResource(voiceBank, "bank", resources);
                 if (!sharedBanks.Contains(voiceBank)) Fail("Voice bank is not loaded by sharedBanks: " + voiceBank);
@@ -73,6 +87,8 @@ namespace AstralOath.Editor
                     if (!skillIds.Add(skillId)) Fail("Duplicate skill id in " + id + ": " + skillId);
                     RequireLocale(Text(skill, "displayNameKey", skillId), localeKeys);
                     RequireResource(Text(skill, "graphAddress", skillId), "graph", resources);
+                    if(skill["modelAddress"]!=null&&!models.Contains(Text(skill,"modelAddress",skillId)))
+                        Fail("Unregistered skill model: "+skillId);
                     Text(skill, "eventPath", skillId, false);
                     Text(skill, "voiceEventPath", skillId, false);
                 }

@@ -1,0 +1,27 @@
+
+violetto_skill3_bg.sct
+size: 206,70
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bg_1
+  rotate: false
+  xy: 2, 2
+  size: 66, 66
+  orig: 66, 66
+  offset: 0, 0
+  index: -1
+bg_2
+  rotate: false
+  xy: 70, 2
+  size: 66, 66
+  orig: 66, 66
+  offset: 0, 0
+  index: -1
+bg_3
+  rotate: false
+  xy: 138, 2
+  size: 66, 66
+  orig: 66, 66
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,56 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "schniel_3sk2_bg_1",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "schniel_3sk2_bg_2",
+      "format": "spine",
+      "globalZ": 2.0
+    },
+    {
+      "source": "schniel_3sk2_bg_3",
+      "format": "spine",
+      "globalZ": 3.0
+    },
+    {
+      "source": "schniel_3sk1_eff",
+      "z": "20",
+      "format": "spine"
+    },
+    {
+      "source": "schniel_3sk1_bg",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "schniel_3sk2_1_2_3",
+      "format": "spine",
+      "globalZ": 3.0
+    },
+    {
+      "source": "schniel_3sk2_4_5_6",
+      "format": "spine",
+      "globalZ": 3.0
+    },
+    {
+      "source": "schniel_3sk2_7_8",
+      "format": "spine",
+      "globalZ": 3.0
+    },
+    {
+      "source": "schniel_3sk2_9_10",
+      "format": "spine",
+      "globalZ": 3.0
+    },
+    {
+      "source": "schniel_3sk2_ani",
+      "ani": "skill3_2",
+      "format": "spine",
+      "globalZ": 2.0
+    }
+  ]
+}

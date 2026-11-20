@@ -249,13 +249,14 @@ namespace AstralOath.Editor
 
         private static string EffectGroup(RosterFilterEffect effect)
         {
+            if(effect.operation=="resource_nullifier")return "enhance";
             if (effect.operation is "apply_status" or "random_buff" or "random_buff_option" or "random_status_option")
             {
                 return effect.status switch
                 {
                     "AttackDown" or "DefenseDown" or "SpeedDown" or "Stun" or "Silence" or "Provoke" or "Burn" or "Bleed" or
                     "Poison" or "Unhealable" or "Unbuffable" or "HitChanceDown" or "Bomb" or "VampiricTouch" or
-                    "MagicNail" or "Sleep" or "Restrict" or "Bind" => "weaken",
+                    "MagicNail" or "Sleep" or "Restrict" or "Bind" or "Venom" => "weaken",
                     "Indomitable" or "Rage" or "SpiritlordProtection" or "DamageLimit" => "general",
                     _ => "enhance"
                 };
@@ -266,16 +267,18 @@ namespace AstralOath.Editor
         private static string EffectFilterKey(RosterFilterEffect effect) => effect.operation switch
         {
             "apply_status" or "random_buff" or "random_buff_option" or "random_status_option" when !string.IsNullOrWhiteSpace(effect.status) && effect.status != "none" => "status_" + effect.status,
+            "resource_nullifier" => "status_MagicBarrier",
             "heal" or "heal_target_health" or "lifesteal" => "effect_heal",
             "cleanse" or "cleanse_all" or "cleanse_once_on_critical" or "transfer_debuff" => "effect_cleanse",
             "dispel" or "dispel_all" => "effect_dispel",
-            "readiness" or "readiness_bonus" or "readiness_per_critical" or "readiness_per_target" or "readiness_per_status_applied" => "effect_raise",
+            "readiness" or "readiness_bonus" or "readiness_per_critical" or "readiness_per_target" or "readiness_per_status_applied"
+                or "readiness_per_target_status" or "readiness_fixed" or "off_turn_readiness" => "effect_raise",
             "reduce_readiness" or "reduce_readiness_double" => "effect_reduce",
             "grant_extra_turn" => "effect_extra_turn",
             "revive" => "effect_revive",
-            "target_health_barrier" => "effect_barrier",
-            "reduce_cooldown" or "reduce_own_cooldown" or "reset_cooldown" => "effect_reduce_cd",
-            "extend_cooldown" => "effect_extend_cd",
+            "target_health_barrier" or "caster_health_barrier" => "effect_barrier",
+            "reduce_cooldown" or "reduce_own_cooldown" or "reduce_third_cooldown" or "reset_cooldown" => "effect_reduce_cd",
+            "extend_cooldown" or "max_cooldowns" => "effect_extend_cd",
             "injury" => "effect_injury",
             "grant_soul" => "effect_soul",
             _ => null

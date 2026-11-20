@@ -1,0 +1,1154 @@
+
+krau.sct
+size: 512,1556
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+arm_01
+  rotate: true
+  xy: 231, 1284
+  size: 28, 58
+  orig: 28, 58
+  offset: 0, 0
+  index: -1
+arm_02
+  rotate: true
+  xy: 286, 1256
+  size: 26, 55
+  orig: 26, 55
+  offset: 0, 0
+  index: -1
+belt_base
+  rotate: false
+  xy: 291, 1284
+  size: 59, 33
+  orig: 59, 33
+  offset: 0, 0
+  index: -1
+belt_buckle_01
+  rotate: true
+  xy: 378, 1466
+  size: 15, 22
+  orig: 15, 22
+  offset: 0, 0
+  index: -1
+belt_buckle_02
+  rotate: false
+  xy: 112, 1419
+  size: 11, 16
+  orig: 11, 16
+  offset: 0, 0
+  index: -1
+belt_buckle_03
+  rotate: false
+  xy: 347, 401
+  size: 11, 17
+  orig: 11, 17
+  offset: 0, 0
+  index: -1
+body_01
+  rotate: false
+  xy: 318, 782
+  size: 59, 60
+  orig: 59, 60
+  offset: 0, 0
+  index: -1
+cape_b
+  rotate: false
+  xy: 2, 1245
+  size: 123, 172
+  orig: 123, 172
+  offset: 0, 0
+  index: -1
+cape_f
+  rotate: true
+  xy: 298, 136
+  size: 123, 172
+  orig: 123, 172
+  offset: 0, 0
+  index: -1
+cape_spine_01
+  rotate: false
+  xy: 474, 1014
+  size: 36, 42
+  orig: 36, 42
+  offset: 0, 0
+  index: -1
+cape_spine_02
+  rotate: true
+  xy: 201, 1310
+  size: 25, 28
+  orig: 25, 28
+  offset: 0, 0
+  index: -1
+cape_spine_03
+  rotate: false
+  xy: 458, 1514
+  size: 20, 23
+  orig: 20, 23
+  offset: 0, 0
+  index: -1
+cape_spine_base
+  rotate: true
+  xy: 352, 1318
+  size: 21, 47
+  orig: 21, 47
+  offset: 0, 0
+  index: -1
+chest_buckle_01
+  rotate: false
+  xy: 430, 374
+  size: 16, 19
+  orig: 16, 19
+  offset: 0, 0
+  index: -1
+chest_buckle_02
+  rotate: true
+  xy: 424, 1465
+  size: 16, 28
+  orig: 16, 28
+  offset: 0, 0
+  index: -1
+chest_guard_b
+  rotate: false
+  xy: 249, 782
+  size: 67, 60
+  orig: 67, 60
+  offset: 0, 0
+  index: -1
+chest_guard_f
+  rotate: false
+  xy: 231, 1221
+  size: 53, 61
+  orig: 53, 61
+  offset: 0, 0
+  index: -1
+chest_guard_f copy
+  rotate: false
+  xy: 436, 1542
+  size: 12, 12
+  orig: 12, 12
+  offset: 0, 0
+  index: -1
+earring
+  rotate: false
+  xy: 477, 1498
+  size: 11, 14
+  orig: 11, 14
+  offset: 0, 0
+  index: -1
+elbow_guard_01_n
+  rotate: true
+  xy: 236, 1485
+  size: 34, 32
+  orig: 34, 32
+  offset: 0, 0
+  index: -1
+elbow_guard_01_s
+  rotate: false
+  xy: 335, 1483
+  size: 26, 32
+  orig: 26, 32
+  offset: 0, 0
+  index: -1
+elbow_guard_02_n
+  rotate: true
+  xy: 478, 121
+  size: 11, 20
+  orig: 11, 20
+  offset: 0, 0
+  index: -1
+elbow_guard_02_s
+  rotate: true
+  xy: 483, 1479
+  size: 17, 20
+  orig: 17, 20
+  offset: 0, 0
+  index: -1
+elbow_guard_base
+  rotate: false
+  xy: 401, 1321
+  size: 30, 16
+  orig: 30, 16
+  offset: 0, 0
+  index: -1
+eye_n_c
+  rotate: true
+  xy: 409, 1267
+  size: 52, 27
+  orig: 52, 27
+  offset: 0, 0
+  index: -1
+eye_n_m
+  rotate: false
+  xy: 290, 1319
+  size: 52, 27
+  orig: 52, 27
+  offset: 0, 0
+  index: -1
+eye_n_o
+  rotate: true
+  xy: 291, 1384
+  size: 52, 27
+  orig: 52, 27
+  offset: 0, 0
+  index: -1
+eye_ns_c
+  rotate: true
+  xy: 291, 1438
+  size: 45, 27
+  orig: 45, 27
+  offset: 0, 0
+  index: -1
+eye_ns_m
+  rotate: false
+  xy: 380, 1404
+  size: 45, 27
+  orig: 45, 27
+  offset: 0, 0
+  index: -1
+eye_ns_o
+  rotate: false
+  xy: 344, 1341
+  size: 46, 27
+  orig: 46, 27
+  offset: 0, 0
+  index: -1
+eye_ns_pain
+  rotate: true
+  xy: 350, 1418
+  size: 45, 27
+  orig: 45, 27
+  offset: 0, 0
+  index: -1
+face_dns
+  rotate: true
+  xy: 458, 641
+  size: 50, 52
+  orig: 50, 52
+  offset: 0, 0
+  index: -1
+face_dns_camping
+  rotate: false
+  xy: 438, 1265
+  size: 48, 50
+  orig: 48, 50
+  offset: 0, 0
+  index: -1
+face_dns_camping_02
+  rotate: false
+  xy: 438, 1317
+  size: 48, 50
+  orig: 48, 50
+  offset: 0, 0
+  index: -1
+face_n
+  rotate: false
+  xy: 458, 585
+  size: 52, 54
+  orig: 52, 54
+  offset: 0, 0
+  index: -1
+face_ns
+  rotate: true
+  xy: 368, 1219
+  size: 46, 53
+  orig: 46, 53
+  offset: 0, 0
+  index: -1
+face_ns_pain
+  rotate: false
+  xy: 423, 1210
+  size: 46, 53
+  orig: 46, 53
+  offset: 0, 0
+  index: -1
+face_s
+  rotate: false
+  xy: 251, 1348
+  size: 37, 50
+  orig: 37, 50
+  offset: 0, 0
+  index: -1
+face_uns
+  rotate: true
+  xy: 352, 1267
+  size: 49, 55
+  orig: 49, 55
+  offset: 0, 0
+  index: -1
+face_uns_pain
+  rotate: false
+  xy: 204, 1348
+  size: 45, 51
+  orig: 45, 51
+  offset: 0, 0
+  index: -1
+foot_n
+  rotate: true
+  xy: 290, 1348
+  size: 34, 51
+  orig: 34, 51
+  offset: 0, 0
+  index: -1
+foot_ns
+  rotate: false
+  xy: 204, 1401
+  size: 45, 43
+  orig: 45, 43
+  offset: 0, 0
+  index: -1
+foot_s
+  rotate: true
+  xy: 472, 1066
+  size: 55, 38
+  orig: 55, 38
+  offset: 0, 0
+  index: -1
+foot_u
+  rotate: false
+  xy: 203, 1446
+  size: 31, 73
+  orig: 31, 73
+  offset: 0, 0
+  index: -1
+foot_uns
+  rotate: false
+  xy: 365, 1187
+  size: 56, 30
+  orig: 56, 30
+  offset: 0, 0
+  index: -1
+global_base_shadow
+  rotate: false
+  xy: 413, 954
+  size: 21, 11
+  orig: 21, 11
+  offset: 0, 0
+  index: -1
+hair_back
+  rotate: false
+  xy: 311, 1112
+  size: 53, 65
+  orig: 53, 65
+  offset: 0, 0
+  index: -1
+hair_f_01
+  rotate: false
+  xy: 350, 1465
+  size: 26, 16
+  orig: 26, 16
+  offset: 0, 0
+  index: -1
+hair_f_02
+  rotate: false
+  xy: 454, 1464
+  size: 27, 23
+  orig: 27, 23
+  offset: 0, 0
+  index: -1
+hair_f_03
+  rotate: true
+  xy: 447, 1489
+  size: 23, 28
+  orig: 23, 28
+  offset: 0, 0
+  index: -1
+hand_01
+  rotate: false
+  xy: 391, 1483
+  size: 25, 31
+  orig: 25, 31
+  offset: 0, 0
+  index: -1
+hand_02
+  rotate: false
+  xy: 488, 1307
+  size: 22, 30
+  orig: 22, 30
+  offset: 0, 0
+  index: -1
+hand_03
+  rotate: true
+  xy: 450, 1441
+  size: 21, 28
+  orig: 21, 28
+  offset: 0, 0
+  index: -1
+hand_04
+  rotate: false
+  xy: 483, 1453
+  size: 27, 24
+  orig: 27, 24
+  offset: 0, 0
+  index: -1
+hand_05
+  rotate: true
+  xy: 419, 1438
+  size: 25, 29
+  orig: 25, 29
+  offset: 0, 0
+  index: -1
+hand_06
+  rotate: true
+  xy: 363, 1483
+  size: 32, 26
+  orig: 32, 26
+  offset: 0, 0
+  index: -1
+hand_07
+  rotate: true
+  xy: 436, 1515
+  size: 25, 20
+  orig: 25, 20
+  offset: 0, 0
+  index: -1
+hand_08
+  rotate: true
+  xy: 344, 1517
+  size: 36, 30
+  orig: 36, 30
+  offset: 0, 0
+  index: -1
+hip_guard_c_d
+  rotate: true
+  xy: 294, 1220
+  size: 34, 72
+  orig: 34, 72
+  offset: 0, 0
+  index: -1
+hip_guard_c_l
+  rotate: true
+  xy: 366, 1163
+  size: 22, 58
+  orig: 22, 58
+  offset: 0, 0
+  index: -1
+hip_guard_c_r
+  rotate: true
+  xy: 406, 1066
+  size: 44, 64
+  orig: 44, 64
+  offset: 0, 0
+  index: -1
+hip_guard_c_u
+  rotate: false
+  xy: 236, 1448
+  size: 50, 35
+  orig: 50, 35
+  offset: 0, 0
+  index: -1
+hip_guard_l
+  rotate: false
+  xy: 201, 1233
+  size: 28, 75
+  orig: 28, 75
+  offset: 0, 0
+  index: -1
+hip_guard_r
+  rotate: true
+  xy: 81, 1181
+  size: 50, 80
+  orig: 50, 80
+  offset: 0, 0
+  index: -1
+knee_guard_n
+  rotate: false
+  xy: 426, 1112
+  size: 42, 48
+  orig: 42, 48
+  offset: 0, 0
+  index: -1
+knee_guard_s
+  rotate: false
+  xy: 426, 1162
+  size: 42, 46
+  orig: 42, 46
+  offset: 0, 0
+  index: -1
+leg_n_01
+  rotate: true
+  xy: 470, 1123
+  size: 36, 40
+  orig: 36, 40
+  offset: 0, 0
+  index: -1
+leg_n_01_guard
+  rotate: true
+  xy: 294, 1179
+  size: 39, 69
+  orig: 39, 69
+  offset: 0, 0
+  index: -1
+leg_n_02
+  rotate: true
+  xy: 191, 1013
+  size: 42, 89
+  orig: 42, 89
+  offset: 0, 0
+  index: -1
+leg_s_01
+  rotate: true
+  xy: 471, 1229
+  size: 34, 39
+  orig: 34, 39
+  offset: 0, 0
+  index: -1
+leg_s_01_guard
+  rotate: true
+  xy: 203, 1521
+  size: 33, 68
+  orig: 33, 68
+  offset: 0, 0
+  index: -1
+leg_s_02
+  rotate: true
+  xy: 107, 977
+  size: 33, 85
+  orig: 33, 85
+  offset: 0, 0
+  index: -1
+neck
+  rotate: false
+  xy: 478, 1396
+  size: 24, 28
+  orig: 24, 28
+  offset: 0, 0
+  index: -1
+neck_deco
+  rotate: false
+  xy: 249, 766
+  size: 10, 11
+  orig: 10, 11
+  offset: 0, 0
+  index: -1
+neck_fur_pad_b
+  rotate: true
+  xy: 478, 62
+  size: 57, 32
+  orig: 57, 32
+  offset: 0, 0
+  index: -1
+neck_fur_pad_b_f
+  rotate: false
+  xy: 231, 1314
+  size: 57, 32
+  orig: 57, 32
+  offset: 0, 0
+  index: -1
+neck_fur_pad_l_01
+  rotate: true
+  xy: 488, 1339
+  size: 27, 22
+  orig: 27, 22
+  offset: 0, 0
+  index: -1
+neck_fur_pad_l_02
+  rotate: false
+  xy: 418, 1483
+  size: 27, 30
+  orig: 27, 30
+  offset: 0, 0
+  index: -1
+neck_fur_pad_r_01
+  rotate: false
+  xy: 483, 1426
+  size: 27, 25
+  orig: 27, 25
+  offset: 0, 0
+  index: -1
+neck_fur_pad_r_02
+  rotate: true
+  xy: 404, 1516
+  size: 31, 30
+  orig: 31, 30
+  offset: 0, 0
+  index: -1
+neck_fur_pad_r_03
+  rotate: true
+  xy: 301, 1485
+  size: 33, 32
+  orig: 33, 32
+  offset: 0, 0
+  index: -1
+pants
+  rotate: false
+  xy: 366, 1112
+  size: 58, 49
+  orig: 58, 49
+  offset: 0, 0
+  index: -1
+sheild_b
+  rotate: true
+  xy: 108, 766
+  size: 76, 139
+  orig: 76, 139
+  offset: 0, 0
+  index: -1
+sheild_f
+  rotate: false
+  xy: 200, 844
+  size: 76, 139
+  orig: 76, 139
+  offset: 0, 0
+  index: -1
+shoulder_guard_n_01_b
+  rotate: true
+  xy: 402, 1466
+  size: 15, 20
+  orig: 15, 20
+  offset: 0, 0
+  index: -1
+shoulder_guard_n_01_f
+  rotate: true
+  xy: 348, 1370
+  size: 46, 30
+  orig: 46, 30
+  offset: 0, 0
+  index: -1
+shoulder_guard_n_02_b
+  rotate: false
+  xy: 329, 401
+  size: 16, 18
+  orig: 16, 18
+  offset: 0, 0
+  index: -1
+shoulder_guard_n_02_f
+  rotate: true
+  xy: 427, 1372
+  size: 43, 24
+  orig: 43, 24
+  offset: 0, 0
+  index: -1
+shoulder_guard_n_03
+  rotate: false
+  xy: 380, 1372
+  size: 45, 30
+  orig: 45, 30
+  offset: 0, 0
+  index: -1
+shoulder_guard_n_04
+  rotate: false
+  xy: 474, 967
+  size: 36, 45
+  orig: 36, 45
+  offset: 0, 0
+  index: -1
+shoulder_guard_n_lace
+  rotate: false
+  xy: 472, 214
+  size: 38, 41
+  orig: 38, 41
+  offset: 0, 0
+  index: -1
+shoulder_guard_ns_01
+  rotate: false
+  xy: 392, 1341
+  size: 44, 29
+  orig: 44, 29
+  offset: 0, 0
+  index: -1
+shoulder_guard_ns_02
+  rotate: true
+  xy: 320, 1384
+  size: 48, 26
+  orig: 48, 26
+  offset: 0, 0
+  index: -1
+shoulder_guard_ns_03
+  rotate: true
+  xy: 320, 1434
+  size: 47, 28
+  orig: 47, 28
+  offset: 0, 0
+  index: -1
+shoulder_guard_ns_04
+  rotate: false
+  xy: 471, 1189
+  size: 39, 38
+  orig: 39, 38
+  offset: 0, 0
+  index: -1
+shoulder_guard_ns_lace
+  rotate: false
+  xy: 273, 1521
+  size: 36, 33
+  orig: 36, 33
+  offset: 0, 0
+  index: -1
+shoulder_guard_thin_b_01
+  rotate: false
+  xy: 470, 1161
+  size: 40, 26
+  orig: 40, 26
+  offset: 0, 0
+  index: -1
+shoulder_guard_thin_b_02
+  rotate: true
+  xy: 488, 1265
+  size: 40, 22
+  orig: 40, 22
+  offset: 0, 0
+  index: -1
+shoulder_guard_thin_b_03
+  rotate: false
+  xy: 379, 1433
+  size: 38, 31
+  orig: 38, 31
+  offset: 0, 0
+  index: -1
+shoulder_guard_thin_f_01
+  rotate: true
+  xy: 376, 1517
+  size: 36, 26
+  orig: 36, 26
+  offset: 0, 0
+  index: -1
+shoulder_guard_thin_f_02
+  rotate: false
+  xy: 427, 1417
+  size: 30, 19
+  orig: 30, 19
+  offset: 0, 0
+  index: -1
+shoulder_guard_thin_f_03
+  rotate: true
+  xy: 311, 1520
+  size: 32, 31
+  orig: 32, 31
+  offset: 0, 0
+  index: -1
+siegfried/horse_arm_01
+  rotate: false
+  xy: 360, 401
+  size: 86, 143
+  orig: 86, 143
+  offset: 0, 0
+  index: -1
+siegfried/horse_arm_02
+  rotate: false
+  xy: 472, 136
+  size: 38, 76
+  orig: 38, 76
+  offset: 0, 0
+  index: -1
+siegfried/horse_body_01
+  rotate: false
+  xy: 298, 2
+  size: 178, 132
+  orig: 178, 132
+  offset: 0, 0
+  index: -1
+siegfried/horse_body_02
+  rotate: false
+  xy: 147, 177
+  size: 144, 127
+  orig: 144, 127
+  offset: 0, 0
+  index: -1
+siegfried/horse_chest_armor_belt_d_01
+  rotate: true
+  xy: 478, 2
+  size: 58, 32
+  orig: 58, 32
+  offset: 0, 0
+  index: -1
+siegfried/horse_chest_armor_belt_d_02
+  rotate: true
+  xy: 278, 958
+  size: 18, 80
+  orig: 18, 80
+  offset: 0, 0
+  index: -1
+siegfried/horse_chest_armor_belt_u
+  rotate: true
+  xy: 251, 1400
+  size: 46, 38
+  orig: 46, 38
+  offset: 0, 0
+  index: -1
+siegfried/horse_chest_armor_guard
+  rotate: false
+  xy: 127, 1341
+  size: 75, 103
+  orig: 75, 103
+  offset: 0, 0
+  index: -1
+siegfried/horse_chest_f
+  rotate: true
+  xy: 360, 546
+  size: 45, 88
+  orig: 45, 88
+  offset: 0, 0
+  index: -1
+siegfried/horse_ear
+  rotate: false
+  xy: 453, 1369
+  size: 23, 40
+  orig: 23, 40
+  offset: 0, 0
+  index: -1
+siegfried/horse_finger
+  rotate: false
+  xy: 458, 522
+  size: 52, 61
+  orig: 52, 61
+  offset: 0, 0
+  index: -1
+siegfried/horse_hair_01
+  rotate: false
+  xy: 439, 881
+  size: 69, 84
+  orig: 69, 84
+  offset: 0, 0
+  index: -1
+siegfried/horse_hair_02
+  rotate: false
+  xy: 246, 582
+  size: 108, 97
+  orig: 108, 97
+  offset: 0, 0
+  index: -1
+siegfried/horse_hair_03
+  rotate: true
+  xy: 439, 777
+  size: 102, 71
+  orig: 102, 71
+  offset: 0, 0
+  index: -1
+siegfried/horse_hair_04
+  rotate: false
+  xy: 236, 1136
+  size: 73, 41
+  orig: 73, 41
+  offset: 0, 0
+  index: -1
+siegfried/horse_head_armor_d
+  rotate: true
+  xy: 163, 1181
+  size: 50, 51
+  orig: 50, 51
+  offset: 0, 0
+  index: -1
+siegfried/horse_head_armor_u
+  rotate: false
+  xy: 261, 681
+  size: 104, 99
+  orig: 104, 99
+  offset: 0, 0
+  index: -1
+siegfried/horse_head_d
+  rotate: true
+  xy: 290, 978
+  size: 66, 73
+  orig: 66, 73
+  offset: 0, 0
+  index: -1
+siegfried/horse_head_horn
+  rotate: false
+  xy: 303, 261
+  size: 125, 138
+  orig: 125, 138
+  offset: 0, 0
+  index: -1
+siegfried/horse_head_u
+  rotate: true
+  xy: 367, 676
+  size: 99, 89
+  orig: 99, 89
+  offset: 0, 0
+  index: -1
+siegfried/horse_hip
+  rotate: false
+  xy: 130, 581
+  size: 114, 113
+  orig: 114, 113
+  offset: 0, 0
+  index: -1
+siegfried/horse_hip_armor_01
+  rotate: true
+  xy: 458, 693
+  size: 70, 50
+  orig: 70, 50
+  offset: 0, 0
+  index: -1
+siegfried/horse_hip_armor_02
+  rotate: true
+  xy: 365, 954
+  size: 74, 46
+  orig: 74, 46
+  offset: 0, 0
+  index: -1
+siegfried/horse_hip_armor_03
+  rotate: false
+  xy: 413, 1025
+  size: 59, 39
+  orig: 59, 39
+  offset: 0, 0
+  index: -1
+siegfried/horse_leg_01
+  rotate: false
+  xy: 2, 1419
+  size: 108, 135
+  orig: 108, 135
+  offset: 0, 0
+  index: -1
+siegfried/horse_leg_02
+  rotate: false
+  xy: 112, 1446
+  size: 89, 100
+  orig: 89, 100
+  offset: 0, 0
+  index: -1
+siegfried/horse_mouse_belt
+  rotate: false
+  xy: 270, 1485
+  size: 29, 34
+  orig: 29, 34
+  offset: 0, 0
+  index: -1
+siegfried/horse_neck_armor_01
+  rotate: true
+  xy: 50, 1012
+  size: 55, 76
+  orig: 55, 76
+  offset: 0, 0
+  index: -1
+siegfried/horse_neck_armor_02
+  rotate: false
+  xy: 448, 374
+  size: 62, 61
+  orig: 62, 61
+  offset: 0, 0
+  index: -1
+siegfried/horse_neck_armor_03
+  rotate: false
+  xy: 413, 967
+  size: 59, 56
+  orig: 59, 56
+  offset: 0, 0
+  index: -1
+siegfried/horse_neck_armor_04
+  rotate: false
+  xy: 379, 777
+  size: 57, 65
+  orig: 57, 65
+  offset: 0, 0
+  index: -1
+siegfried/horse_neck_armor_05
+  rotate: false
+  xy: 304, 1046
+  size: 61, 64
+  orig: 61, 64
+  offset: 0, 0
+  index: -1
+siegfried/horse_neck_b
+  rotate: false
+  xy: 2, 1069
+  size: 77, 174
+  orig: 77, 174
+  offset: 0, 0
+  index: -1
+siegfried/horse_neck_f
+  rotate: false
+  xy: 147, 2
+  size: 149, 173
+  orig: 149, 173
+  offset: 0, 0
+  index: -1
+siegfried/horse_palm
+  rotate: false
+  xy: 367, 1030
+  size: 37, 79
+  orig: 37, 79
+  offset: 0, 0
+  index: -1
+siegfried/horse_palm_fur
+  rotate: false
+  xy: 448, 437
+  size: 61, 83
+  orig: 61, 83
+  offset: 0, 0
+  index: -1
+siegfried/horse_reins_f
+  rotate: true
+  xy: 256, 421
+  size: 159, 102
+  orig: 159, 102
+  offset: 0, 0
+  index: -1
+siegfried/horse_saddle
+  rotate: false
+  xy: 139, 306
+  size: 162, 113
+  orig: 162, 113
+  offset: 0, 0
+  index: -1
+siegfried/horse_saddle_cape_01_b
+  rotate: false
+  xy: 2, 2
+  size: 143, 216
+  orig: 143, 216
+  offset: 0, 0
+  index: -1
+siegfried/horse_saddle_cape_01_f_01
+  rotate: false
+  xy: 50, 823
+  size: 55, 187
+  orig: 55, 187
+  offset: 0, 0
+  index: -1
+siegfried/horse_saddle_cape_01_f_02
+  rotate: false
+  xy: 108, 615
+  size: 20, 139
+  orig: 20, 139
+  offset: 0, 0
+  index: -1
+siegfried/horse_saddle_cape_01_f_03
+  rotate: false
+  xy: 2, 615
+  size: 104, 206
+  orig: 104, 206
+  offset: 0, 0
+  index: -1
+siegfried/horse_saddle_cape_02_b
+  rotate: false
+  xy: 2, 220
+  size: 135, 197
+  orig: 135, 197
+  offset: 0, 0
+  index: -1
+siegfried/horse_saddle_cape_02_f
+  rotate: false
+  xy: 2, 419
+  size: 124, 194
+  orig: 124, 194
+  offset: 0, 0
+  index: -1
+siegfried/horse_saddle_cape_03_f_01
+  rotate: true
+  xy: 356, 593
+  size: 81, 100
+  orig: 81, 100
+  offset: 0, 0
+  index: -1
+siegfried/horse_saddle_cape_03_f_03
+  rotate: true
+  xy: 194, 985
+  size: 26, 94
+  orig: 26, 94
+  offset: 0, 0
+  index: -1
+siegfried/horse_saddle_cape_03_f_04
+  rotate: true
+  xy: 130, 696
+  size: 68, 129
+  orig: 68, 129
+  offset: 0, 0
+  index: -1
+siegfried/horse_sole
+  rotate: true
+  xy: 216, 1179
+  size: 40, 76
+  orig: 40, 76
+  offset: 0, 0
+  index: -1
+siegfried/horse_sole_fur
+  rotate: false
+  xy: 236, 1057
+  size: 66, 77
+  orig: 66, 77
+  offset: 0, 0
+  index: -1
+siegfried/horse_tail_01
+  rotate: false
+  xy: 128, 421
+  size: 126, 158
+  orig: 126, 158
+  offset: 0, 0
+  index: -1
+siegfried/horse_tail_02_b
+  rotate: false
+  xy: 352, 844
+  size: 85, 108
+  orig: 85, 108
+  offset: 0, 0
+  index: -1
+siegfried/horse_tail_02_c
+  rotate: false
+  xy: 107, 844
+  size: 91, 131
+  orig: 91, 131
+  offset: 0, 0
+  index: -1
+siegfried/horse_tail_02_f
+  rotate: false
+  xy: 278, 844
+  size: 72, 112
+  orig: 72, 112
+  offset: 0, 0
+  index: -1
+siegfried/horse_toes
+  rotate: true
+  xy: 128, 1012
+  size: 55, 61
+  orig: 55, 61
+  offset: 0, 0
+  index: -1
+siegfried/mane3_1
+  rotate: false
+  xy: 167, 1069
+  size: 67, 108
+  orig: 67, 108
+  offset: 0, 0
+  index: -1
+siegfried/mane3_2
+  rotate: false
+  xy: 127, 1233
+  size: 72, 106
+  orig: 72, 106
+  offset: 0, 0
+  index: -1
+siegfried/mane3_3
+  rotate: false
+  xy: 430, 261
+  size: 80, 111
+  orig: 80, 111
+  offset: 0, 0
+  index: -1
+siegfried/mane3_4
+  rotate: false
+  xy: 81, 1069
+  size: 84, 110
+  orig: 84, 110
+  offset: 0, 0
+  index: -1
+weapon
+  rotate: false
+  xy: 2, 823
+  size: 46, 244
+  orig: 46, 244
+  offset: 0, 0
+  index: -1
+wrist_guard_base
+  rotate: true
+  xy: 459, 1411
+  size: 28, 17
+  orig: 28, 17
+  offset: 0, 0
+  index: -1
+wrist_guard_n
+  rotate: false
+  xy: 488, 1368
+  size: 22, 26
+  orig: 22, 26
+  offset: 0, 0
+  index: -1
+wrist_guard_s
+  rotate: true
+  xy: 303, 401
+  size: 18, 24
+  orig: 18, 24
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,62 @@
+
+schniel_skeff_sk3_start_jw.sct
+size: 250,341
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 2, 170
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+frag2
+  rotate: true
+  xy: 175, 45
+  size: 27, 40
+  orig: 27, 40
+  offset: 0, 0
+  index: -1
+frag3
+  rotate: false
+  xy: 217, 279
+  size: 30, 40
+  orig: 30, 40
+  offset: 0, 0
+  index: -1
+part_2
+  rotate: false
+  xy: 2, 2
+  size: 171, 166
+  orig: 171, 166
+  offset: 0, 0
+  index: -1
+part_3
+  rotate: false
+  xy: 173, 170
+  size: 75, 107
+  orig: 75, 107
+  offset: 0, 0
+  index: -1
+sk1_jewel_1-1
+  rotate: false
+  xy: 173, 279
+  size: 42, 56
+  orig: 42, 56
+  offset: 0, 0
+  index: -1
+sk1_jewel_1-2
+  rotate: true
+  xy: 175, 2
+  size: 41, 50
+  orig: 41, 50
+  offset: 0, 0
+  index: -1
+sk1_jewel_1-3
+  rotate: false
+  xy: 175, 74
+  size: 33, 32
+  orig: 33, 32
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,54 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "violeto_b_idle_ready_pati",
+      "x": "20",
+      "y": "160",
+      "z": "6",
+      "opacity": "0.4",
+      "scale": "-0.7,0.6",
+      "rotate": "10",
+      "delay": "1200",
+      "format": "particle"
+    },
+    {
+      "source": "violeto_b_idle_ready_pati",
+      "x": "-100",
+      "y": "450",
+      "z": "6",
+      "opacity": "0.6",
+      "scale": "-1,0.6",
+      "rotate": "140",
+      "delay": "800",
+      "format": "particle"
+    },
+    {
+      "source": "violeto_b_idle_ready_pati",
+      "x": "150",
+      "y": "200",
+      "z": "6",
+      "opacity": "0.8",
+      "scale": "0.8,0.9",
+      "rotate": "-15",
+      "delay": "500",
+      "format": "particle"
+    },
+    {
+      "source": "violeto_b_idle_ready_pati",
+      "x": "-120",
+      "y": "300",
+      "z": "6",
+      "opacity": "0.9",
+      "scale": "0.6,0.5",
+      "rotate": "100",
+      "delay": "300",
+      "format": "particle"
+    },
+    {
+      "source": "violetto_eff_skill_2",
+      "z": "5",
+      "format": "spine"
+    }
+  ]
+}

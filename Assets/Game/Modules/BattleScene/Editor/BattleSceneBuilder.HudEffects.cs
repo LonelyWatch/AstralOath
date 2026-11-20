@@ -189,6 +189,24 @@ namespace AstralOath.Client.BattleScene.Editor
                 row.FindPropertyRelative("label").stringValue = label;
                 row.FindPropertyRelative("skin").stringValue = (string)character["battleSkin"];
                 BattleSkillPresentationAssets.SetSkeleton(row.FindPropertyRelative("skeleton"), (string)character["battleSkeletonAddress"], paths);
+                var formRows = (character["statusForms"] as JArray ?? new JArray()).ToArray();
+                var forms = row.FindPropertyRelative("forms");
+                forms.arraySize = formRows.Length;
+                for (int index = 0; index < formRows.Length; index++)
+                {
+                    var definition = formRows[index];
+                    var form = forms.GetArrayElementAtIndex(index);
+                    string modelAddress = (string)definition["modelAddress"];
+                    form.FindPropertyRelative("status").stringValue = (string)definition["status"];
+                    form.FindPropertyRelative("skin").stringValue = (string)definition["skin"];
+                    BattleSkillPresentationAssets.SetSkeleton(form.FindPropertyRelative("skeleton"), modelAddress, paths);
+                    var graphIdsForForm = character["skills"].Where(skill => (string)skill["modelAddress"] == modelAddress)
+                        .Select(skill => (string)skill["id"]).ToArray();
+                    var formGraphs = form.FindPropertyRelative("graphs");
+                    formGraphs.arraySize = graphIdsForForm.Length;
+                    for (int graphIndex = 0; graphIndex < graphIdsForForm.Length; graphIndex++)
+                        formGraphs.GetArrayElementAtIndex(graphIndex).stringValue = graphIdsForForm[graphIndex];
+                }
                 models.Add(id, row);
             }
             if (!rosterOnly) ConfigureAuthoredTeams(hud, properties, GetBattleActorPrefab(), models);
@@ -222,7 +240,7 @@ namespace AstralOath.Client.BattleScene.Editor
             var elementIcons = heroes.Select(row => "cm_icon_prom" + (string)row["element"]).Distinct(StringComparer.Ordinal);
             var markerElements = new[] { "fire", "ice", "wind", "light", "dark" }
                 .Select(element => "game_hud_bar_" + element);
-            SetArray("battleSprites", skills.SelectMany(row => new[] { (string)row["iconAsset"], (string)row["speedUpIconAsset"] })
+            SetArray("battleSprites", skills.SelectMany(row => new[] { (string)row["iconAsset"], (string)row["speedUpIconAsset"], (string)row["alternateIconAsset"] })
                 .Where(path => !string.IsNullOrEmpty(path)).Distinct(StringComparer.Ordinal)
                 .Select(path => Asset<Sprite>(HudTextures + "Skills/" + Path.GetFileName(path)))
                 .Concat(heroes.SelectMany(row => new[] { Asset<Sprite>(HudTextures + $"Faces/{row["id"]}_su.png"),

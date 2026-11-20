@@ -1,0 +1,909 @@
+{
+  "id": "c_lunabianca_skill_01_3",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "ani": "jump_foward",
+        "guid": 2,
+        "etty": "ANI"
+      },
+      {
+        "ani": "skill1_3",
+        "guid": 3,
+        "etty": "ANI"
+      },
+      {
+        "color": "0,0,0,255",
+        "accel": 1.0,
+        "opacity": 0.8,
+        "duration": -1,
+        "localZ": -1,
+        "globalZ": -1,
+        "fadeIn": 200,
+        "fadeOut": 300,
+        "id": "dk",
+        "guid": 4,
+        "etty": "DARK"
+      },
+      {
+        "location": 12,
+        "x": 150.0,
+        "curve": "0.183908,0.05555553,0,0.9756944",
+        "time": 100,
+        "guid": 5,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1",
+        "curve": "0.183908,0.05555553,0,0.9756944",
+        "time": 100,
+        "guid": 6,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 12,
+        "x": 150.0,
+        "y": -10.0,
+        "curve": "0.08429119,0.5069444,0.09578544,0.8888888",
+        "time": 350,
+        "guid": 7,
+        "etty": "CAM"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "lunabianca_skill_01_cm3",
+        "guid": 8,
+        "etty": "SHAKE"
+      },
+      {
+        "scale": "1.2",
+        "curve": "0.256705,0.06597219,0,0.9652778",
+        "time": 1430,
+        "guid": 9,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 12,
+        "x": 50.0,
+        "y": -20.0,
+        "curve": "0.256705,0.06597219,0,0.9652778",
+        "time": 1430,
+        "guid": 10,
+        "etty": "CAM"
+      },
+      {
+        "from": "jump",
+        "to": "landing",
+        "guid": 11,
+        "etty": "ANI_SCOPE"
+      },
+      {
+        "scale": "1.1",
+        "curve": "0.08429119,0.5069444,0.09578544,0.8888888",
+        "time": 350,
+        "guid": 12,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.6",
+        "curve": "0.2911877,0.9548611,1,1",
+        "guid": 13,
+        "etty": "ZOOM"
+      },
+      {
+        "ver": 2,
+        "power": 50,
+        "location": 16,
+        "style": 2,
+        "x": -70.0,
+        "guid": 14,
+        "etty": "MOVE"
+      },
+      {
+        "location": 12,
+        "x": -100.0,
+        "y": -10.0,
+        "guid": 15,
+        "etty": "CAM"
+      },
+      {
+        "guid": 16,
+        "etty": "CAM"
+      },
+      {
+        "from": "jump",
+        "to": "landing",
+        "guid": 17,
+        "etty": "ANI_SCOPE"
+      },
+      {
+        "ani": "jump_back",
+        "guid": 18,
+        "etty": "ANI"
+      },
+      {
+        "ver": 2,
+        "power": 50,
+        "location": 11,
+        "style": 2,
+        "guid": 19,
+        "etty": "MOVE"
+      },
+      {
+        "scale": "1",
+        "guid": 20,
+        "etty": "ZOOM"
+      },
+      {
+        "targetId": "dk",
+        "guid": 21,
+        "etty": "STOP"
+      },
+      {
+        "guid": 22,
+        "etty": "IDLE"
+      },
+      {
+        "effect": "hit_new_slash_blue_critical.cfx",
+        "rand_x": 70,
+        "rand_y": 100,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "rand_scale": 0.3,
+        "guid": 23,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_blue_critical.cfx",
+        "rand_x": 70,
+        "rand_y": 100,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "rand_scale": 0.3,
+        "guid": 24,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_blue_critical.cfx",
+        "rand_x": 70,
+        "rand_y": 100,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "rand_scale": 0.3,
+        "guid": 25,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_blue_critical.cfx",
+        "rand_x": 70,
+        "rand_y": 100,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "rand_scale": 0.3,
+        "guid": 26,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_blue_critical.cfx",
+        "rand_x": 70,
+        "rand_y": 100,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "rand_scale": 0.3,
+        "guid": 27,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_blue_critical.cfx",
+        "rand_x": 70,
+        "rand_y": 100,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "rand_scale": 0.3,
+        "guid": 28,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_blue_critical.cfx",
+        "rand_x": 70,
+        "rand_y": 100,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "rand_scale": 0.3,
+        "guid": 29,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_blue_critical.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.8,
+        "rand_scale": 0.4,
+        "guid": 30,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_blue_critical.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 35.0,
+        "offset_y": 0.0,
+        "scale": 0.8,
+        "rand_scale": 0.4,
+        "guid": 31,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_blue_critical.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 70.0,
+        "offset_y": 0.0,
+        "scale": 0.8,
+        "rand_scale": 0.4,
+        "guid": 32,
+        "etty": "HIT"
+      },
+      {
+        "name": "u_range",
+        "duration": 400,
+        "power": 20.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 33,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "duration": 400,
+        "program": "sprite_blur",
+        "direction_x": 1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 34,
+        "etty": "PPEFFECT"
+      },
+      {
+        "name": "u_range",
+        "duration": 300,
+        "power": 20.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 35,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "duration": 300,
+        "program": "sprite_blur",
+        "direction_x": 1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 36,
+        "etty": "PPEFFECT"
+      },
+      {
+        "location": 12,
+        "x": -150.0,
+        "curve": "0.183908,0.05555553,0,0.9756944",
+        "time": 100,
+        "guid": 37,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.7",
+        "curve": "0.183908,0.05555553,0,0.9756944",
+        "time": 100,
+        "guid": 38,
+        "etty": "ZOOM"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "boom_cm_weak_lf",
+        "guid": 39,
+        "etty": "SHAKE"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "boom_cm_weak_lf",
+        "guid": 40,
+        "etty": "SHAKE"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "boom_cm_weak_lf",
+        "guid": 41,
+        "etty": "SHAKE"
+      }
+    ],
+    "connections": [
+      {
+        "from": 1,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 3,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 4,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 11,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 5,
+        "delay": 366,
+        "when": 1,
+        "Desc": "366",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 6,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 18,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 8,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 7,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 12,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 9,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 13,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 14,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 15,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 17,
+        "to": 16,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 18,
+        "to": 17,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 17,
+        "to": 19,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 18,
+        "to": 21,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 18,
+        "to": 22,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 17,
+        "to": 20,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 23,
+        "delay": 367,
+        "when": 1,
+        "Desc": "367",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 24,
+        "delay": 1200,
+        "when": 1,
+        "Desc": "1200",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 25,
+        "delay": 1333,
+        "when": 1,
+        "Desc": "1333",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 26,
+        "delay": 1633,
+        "when": 1,
+        "Desc": "1633",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 27,
+        "delay": 833,
+        "when": 1,
+        "Desc": "833",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 28,
+        "delay": 733,
+        "when": 1,
+        "Desc": "733",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 29,
+        "delay": 1033,
+        "when": 1,
+        "Desc": "1033",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 30,
+        "delay": 2000,
+        "when": 1,
+        "Desc": "2000",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 30,
+        "to": 31,
+        "delay": 70,
+        "Desc": "70",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 31,
+        "to": 32,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 34,
+        "to": 33,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 30,
+        "to": 34,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 36,
+        "to": 35,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 23,
+        "to": 36,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 37,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 37,
+        "to": 10,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 37,
+        "to": 38,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 30,
+        "to": 39,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 31,
+        "to": 40,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 32,
+        "to": 41,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/boom_cm_weak_lf.scsp",
+      "address": "characterlab/source/camera/boom_cm_weak_lf.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "camera/lunabianca_skill_01_cm3.scsp",
+      "address": "characterlab/source/camera/lunabianca_skill_01_cm3.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_slash_01.atlas",
+      "address": "characterlab/source/effect/hit_new_slash_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_slash_01.scsp",
+      "address": "characterlab/source/effect/hit_new_slash_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_slash_01.sct",
+      "address": "characterlab/source/effect/hit_new_slash_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_slash_blue_cr_pati.particle",
+      "address": "characterlab/source/effect/hit_new_slash_blue_cr_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/hit_new_slash_blue_critical.cfx",
+      "address": "characterlab/source/effect/hit_new_slash_blue_critical.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/lunabianca_skill_01_1.cfx",
+      "address": "characterlab/source/effect/lunabianca_skill_01_1.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/lunabianca_skill_01_1b.atlas",
+      "address": "characterlab/source/effect/lunabianca_skill_01_1b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/lunabianca_skill_01_1b.scsp",
+      "address": "characterlab/source/effect/lunabianca_skill_01_1b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/lunabianca_skill_01_1b.sct",
+      "address": "characterlab/source/effect/lunabianca_skill_01_1b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/lunabianca_skill_01_1f.atlas",
+      "address": "characterlab/source/effect/lunabianca_skill_01_1f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/lunabianca_skill_01_1f.scsp",
+      "address": "characterlab/source/effect/lunabianca_skill_01_1f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/lunabianca_skill_01_1f.sct",
+      "address": "characterlab/source/effect/lunabianca_skill_01_1f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/lunabianca_skill_01_2.cfx",
+      "address": "characterlab/source/effect/lunabianca_skill_01_2.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/lunabianca_skill_01_2b.atlas",
+      "address": "characterlab/source/effect/lunabianca_skill_01_2b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/lunabianca_skill_01_2b.scsp",
+      "address": "characterlab/source/effect/lunabianca_skill_01_2b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/lunabianca_skill_01_2b.sct",
+      "address": "characterlab/source/effect/lunabianca_skill_01_2b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/lunabianca_skill_01_2f.atlas",
+      "address": "characterlab/source/effect/lunabianca_skill_01_2f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/lunabianca_skill_01_2f.scsp",
+      "address": "characterlab/source/effect/lunabianca_skill_01_2f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/lunabianca_skill_01_2f.sct",
+      "address": "characterlab/source/effect/lunabianca_skill_01_2f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/lunabianca_skill_01_3.cfx",
+      "address": "characterlab/source/effect/lunabianca_skill_01_3.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/lunabianca_skill_01_3_pati1.particle",
+      "address": "characterlab/source/effect/lunabianca_skill_01_3_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/lunabianca_skill_01_3b.atlas",
+      "address": "characterlab/source/effect/lunabianca_skill_01_3b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/lunabianca_skill_01_3b.scsp",
+      "address": "characterlab/source/effect/lunabianca_skill_01_3b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/lunabianca_skill_01_3b.sct",
+      "address": "characterlab/source/effect/lunabianca_skill_01_3b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/lunabianca_skill_01_3f.atlas",
+      "address": "characterlab/source/effect/lunabianca_skill_01_3f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/lunabianca_skill_01_3f.scsp",
+      "address": "characterlab/source/effect/lunabianca_skill_01_3f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/lunabianca_skill_01_3f.sct",
+      "address": "characterlab/source/effect/lunabianca_skill_01_3f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/lunabianca_skill_01_ray_pati1.particle",
+      "address": "characterlab/source/effect/lunabianca_skill_01_ray_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/lunabianca_skill_01_ray_pati2.particle",
+      "address": "characterlab/source/effect/lunabianca_skill_01_ray_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/lunabianca_skill_01_ray_pati3.particle",
+      "address": "characterlab/source/effect/lunabianca_skill_01_ray_pati3.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/lunabianca_skill_03_jumpskid.atlas",
+      "address": "characterlab/source/effect/lunabianca_skill_03_jumpskid.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/lunabianca_skill_03_jumpskid.cfx",
+      "address": "characterlab/source/effect/lunabianca_skill_03_jumpskid.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/lunabianca_skill_03_jumpskid.scsp",
+      "address": "characterlab/source/effect/lunabianca_skill_03_jumpskid.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/lunabianca_skill_03_jumpskid.sct",
+      "address": "characterlab/source/effect/lunabianca_skill_03_jumpskid.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/lunabianca_skill_03_spearthrow.atlas",
+      "address": "characterlab/source/effect/lunabianca_skill_03_spearthrow.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/lunabianca_skill_03_spearthrow.cfx",
+      "address": "characterlab/source/effect/lunabianca_skill_03_spearthrow.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/lunabianca_skill_03_spearthrow.scsp",
+      "address": "characterlab/source/effect/lunabianca_skill_03_spearthrow.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/lunabianca_skill_03_spearthrow.sct",
+      "address": "characterlab/source/effect/lunabianca_skill_03_spearthrow.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/lunabianca_skill_03_spearthrow_bg.atlas",
+      "address": "characterlab/source/effect/lunabianca_skill_03_spearthrow_bg.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/lunabianca_skill_03_spearthrow_bg.scsp",
+      "address": "characterlab/source/effect/lunabianca_skill_03_spearthrow_bg.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/lunabianca_skill_03_spearthrow_bg.sct",
+      "address": "characterlab/source/effect/lunabianca_skill_03_spearthrow_bg.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/lunabianca_skill_03_sunlight.atlas",
+      "address": "characterlab/source/effect/lunabianca_skill_03_sunlight.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/lunabianca_skill_03_sunlight.scsp",
+      "address": "characterlab/source/effect/lunabianca_skill_03_sunlight.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/lunabianca_skill_03_sunlight.sct",
+      "address": "characterlab/source/effect/lunabianca_skill_03_sunlight.sct",
+      "type": "texture"
+    },
+    {
+      "source": "model/lunabianca.timeline",
+      "address": "characterlab/source/model/lunabianca.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/pati_03.sct",
+      "address": "characterlab/source/particle/pati_03.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_01.sct",
+      "address": "characterlab/source/particle/ticle_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

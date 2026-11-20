@@ -1,0 +1,23 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "lunabianca_skill_03_spearthrow",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "lunabianca_skill_03_spearthrow_bg",
+      "x": "-200",
+      "y": "800",
+      "scale": "1.5",
+      "format": "spine",
+      "globalZ": -0.5
+    },
+    {
+      "source": "lunabianca_skill_03_sunlight",
+      "format": "spine",
+      "globalZ": -0.8
+    }
+  ]
+}

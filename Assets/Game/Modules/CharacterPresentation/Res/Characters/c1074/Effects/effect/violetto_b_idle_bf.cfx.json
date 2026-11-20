@@ -1,0 +1,20 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "violetto_eff_b_idle_bf",
+      "z": "1",
+      "format": "spine"
+    },
+    {
+      "source": "violeto_b_idle_ready_pati",
+      "x": "-20",
+      "y": "100",
+      "z": "1",
+      "scale": "1,0.9",
+      "rotate": "0",
+      "delay": "500",
+      "format": "particle"
+    }
+  ]
+}

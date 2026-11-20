@@ -1,0 +1,55 @@
+
+lunabianca_skill_03_final_sceff.sct
+size: 356,241
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+color_back
+  rotate: false
+  xy: 2, 173
+  size: 66, 66
+  orig: 66, 66
+  offset: 0, 0
+  index: -1
+final_ticle1
+  rotate: false
+  xy: 173, 2
+  size: 132, 101
+  orig: 132, 101
+  offset: 0, 0
+  index: -1
+final_ticle2
+  rotate: true
+  xy: 111, 173
+  size: 46, 37
+  orig: 46, 37
+  offset: 0, 0
+  index: -1
+final_ticle3
+  rotate: false
+  xy: 173, 105
+  size: 89, 132
+  orig: 89, 132
+  offset: 0, 0
+  index: -1
+final_ticle4
+  rotate: false
+  xy: 70, 173
+  size: 39, 46
+  orig: 39, 46
+  offset: 0, 0
+  index: -1
+final_ticle5
+  rotate: true
+  xy: 264, 105
+  size: 131, 90
+  orig: 131, 90
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1

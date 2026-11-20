@@ -1,0 +1,69 @@
+
+lunabianca_skill_03_cloudscroll_f.sct
+size: 601,498
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cloud_obake1
+  rotate: false
+  xy: 105, 324
+  size: 114, 171
+  orig: 114, 171
+  offset: 0, 0
+  index: -1
+cloud_obake2
+  rotate: false
+  xy: 2, 324
+  size: 101, 172
+  orig: 101, 172
+  offset: 0, 0
+  index: -1
+color_back
+  rotate: false
+  xy: 243, 249
+  size: 66, 66
+  orig: 66, 66
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 221, 324
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+lense_flare1
+  rotate: true
+  xy: 2, 2
+  size: 320, 239
+  orig: 320, 239
+  offset: 0, 0
+  index: -1
+lense_flare2
+  rotate: false
+  xy: 386, 2
+  size: 213, 213
+  orig: 213, 213
+  offset: 0, 0
+  index: -1
+shine_ray
+  rotate: true
+  xy: 311, 249
+  size: 50, 198
+  orig: 50, 198
+  offset: 0, 0
+  index: -1
+sky_crack_1
+  rotate: false
+  xy: 392, 301
+  size: 145, 187
+  orig: 145, 187
+  offset: 0, 0
+  index: -1
+sky_crack_2
+  rotate: true
+  xy: 243, 2
+  size: 245, 141
+  orig: 245, 141
+  offset: 0, 0
+  index: -1

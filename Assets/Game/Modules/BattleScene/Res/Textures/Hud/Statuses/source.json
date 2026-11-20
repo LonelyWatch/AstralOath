@@ -222,6 +222,26 @@
       "kind": "Vigor",
       "group": "Buff",
       "asset": "stic_haki.png"
+    },
+    {
+      "kind": "Idol",
+      "group": "Buff",
+      "asset": "stic_showtime_aura.png"
+    },
+    {
+      "kind": "Venom",
+      "group": "Debuff",
+      "asset": "stic_venom.png"
+    },
+    {
+      "kind": "Perception",
+      "group": "Buff",
+      "asset": "stic_detection_keep.png"
+    },
+    {
+      "kind": "MagicBarrier",
+      "group": "Buff",
+      "asset": "stic_manafield_keep.png"
     }
   ],
   "files": [
@@ -482,6 +502,30 @@
       "asset": "stic_haki.png",
       "sourceSha256": "6cddc57c5b546d7c492e4b44e9e29bc5dc86d13105b73910cac8ee419d8d4a05",
       "assetSha256": "cb79b71447c8ef284093ac5c620046b4652fc3242a73ecb0bdcb466d122ad7e8"
+    },
+    {
+      "source": "原始资源/buff/stic_showtime_aura.png",
+      "asset": "stic_showtime_aura.png",
+      "sourceSha256": "ac973568f4fa5afe042e9b38447c707c159b5766a4bc68d73a74e6ed9421cb4a",
+      "assetSha256": "57035d6d062733ee2d13a7cd684c3e7750ceae0a904eeb3068ae66f234e31257"
+    },
+    {
+      "source": "原始资源/buff/stic_venom.png",
+      "asset": "stic_venom.png",
+      "sourceSha256": "5466b80e3c86d3488bd1a6f8bd316cceab9511a67c7b4743bbffb7bdc8337fff",
+      "assetSha256": "f8b821a413ad9c92f861073c8b8d71f5111692024dcb90cc72752f322941cd42"
+    },
+    {
+      "source": "原始资源/buff/stic_detection_keep.png",
+      "asset": "stic_detection_keep.png",
+      "sourceSha256": "5c83748d4be4d0164d54bfd8bbb0bba7f2fda9d0f5f6117caab71afc742909e8",
+      "assetSha256": "2d4ad4ae511515472d651e40f9a4944d587b6e0448079e3a2ac00f36655761ad"
+    },
+    {
+      "source": "原始资源/buff/stic_manafield_keep.png",
+      "asset": "stic_manafield_keep.png",
+      "sourceSha256": "6a3e84c7e4349b4acd5ef796ba7e9e418addec0cb4e9f4cc75a220dcf1d0bafb",
+      "assetSha256": "e57df56f22f027c1a915268dad1268d0e5af7184db802ef36139ee9661a33077"
     },
     {
       "source": "原始资源/img/itxt_num0.png",

@@ -1,0 +1,13 @@
+{
+  "version": "2.1.27",
+  "jsonAddress": "characterlab/source/model/bellona.scsp/json",
+  "atlasAddress": "characterlab/source/model/bellona.atlas",
+  "pages": [
+    {
+      "name": "bellona.sct",
+      "address": "characterlab/source/model/bellona.sct"
+    }
+  ],
+  "premultipliedAlpha": true,
+  "scale": 0.01
+}

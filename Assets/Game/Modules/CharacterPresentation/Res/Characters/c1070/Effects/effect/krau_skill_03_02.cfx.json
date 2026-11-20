@@ -1,0 +1,31 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "krau_sk3_2eff_b",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "krau_sk3_2eff_f",
+      "format": "spine",
+      "globalZ": 2.0
+    },
+    {
+      "source": "kartua_m_skill_03_pati1",
+      "x": "200",
+      "scale": "2",
+      "rotate": "-40",
+      "delay": "0",
+      "format": "particle"
+    },
+    {
+      "source": "krau_skill_03_02_pati",
+      "x": "100",
+      "y": "700",
+      "rotate": "-45",
+      "delay": "233",
+      "format": "particle"
+    }
+  ]
+}

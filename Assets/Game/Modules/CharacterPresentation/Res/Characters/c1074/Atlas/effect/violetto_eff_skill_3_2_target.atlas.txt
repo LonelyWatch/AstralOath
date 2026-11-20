@@ -1,0 +1,83 @@
+
+violetto_eff_skill_3_2_target.sct
+size: 127,400
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+skill3_blood_1_1
+  rotate: false
+  xy: 84, 140
+  size: 35, 65
+  orig: 35, 65
+  offset: 0, 0
+  index: -1
+skill3_blood_1_2
+  rotate: true
+  xy: 59, 254
+  size: 46, 59
+  orig: 46, 59
+  offset: 0, 0
+  index: -1
+skill3_blood_1_3
+  rotate: true
+  xy: 101, 2
+  size: 136, 24
+  orig: 136, 24
+  offset: 0, 0
+  index: -1
+skill3_blood_1_4
+  rotate: false
+  xy: 2, 2
+  size: 97, 71
+  orig: 97, 71
+  offset: 0, 0
+  index: -1
+skill3_blood_1_5
+  rotate: false
+  xy: 59, 302
+  size: 58, 22
+  orig: 58, 22
+  offset: 0, 0
+  index: -1
+skill3_blood_1_6
+  rotate: false
+  xy: 2, 75
+  size: 81, 61
+  orig: 81, 61
+  offset: 0, 0
+  index: -1
+skill3_blood_1_7
+  rotate: false
+  xy: 2, 197
+  size: 76, 52
+  orig: 76, 52
+  offset: 0, 0
+  index: -1
+skill3_blood_1_8
+  rotate: false
+  xy: 2, 138
+  size: 80, 57
+  orig: 80, 57
+  offset: 0, 0
+  index: -1
+skill3_blood_1_9
+  rotate: true
+  xy: 2, 251
+  size: 147, 55
+  orig: 147, 55
+  offset: 0, 0
+  index: -1
+skill3_blood_2_1
+  rotate: false
+  xy: 80, 207
+  size: 45, 45
+  orig: 45, 45
+  offset: 0, 0
+  index: -1
+skill3_blood_2_2
+  rotate: false
+  xy: 59, 326
+  size: 45, 33
+  orig: 45, 33
+  offset: 0, 0
+  index: -1

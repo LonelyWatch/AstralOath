@@ -27,6 +27,7 @@ namespace AstralOath.Shared.Battle
                 foreach (var actor in units)
                 {
                     if (!actor.Alive || (actorId != null && actorId != actor.Id)) continue;
+                    if (phase == "battle_start") UpdateResourceNullifier(actor);
                     foreach (var passive in actor.Source.Form.SkillIds.Select(id => owner.skills.GetValueOrDefault(id)).Where(program => program != null))
                     foreach (var effect in passive.Effects)
                     {
@@ -34,7 +35,12 @@ namespace AstralOath.Shared.Battle
                         if (effect.recipient != "self" || effect.chanceBp != Basis)
                             throw new InvalidOperationException($"Unsupported lifecycle effect {effect.id}.");
                         if (!ConditionMet(effect, actor, actor, false)) continue;
-                        if (phase == "battle_start" && effect.operation == "opening_attack_from_health")
+                        if (phase == "battle_start" && effect.operation == "opening_max_cooldown")
+                        {
+                            int remaining = Math.Max(0, passive.Row.cooldownTurns - owner.ModifiersFor(actor, passive).CooldownTurns);
+                            if (remaining > 0) ChangeCooldown(actor, actor, passive.Row.id, remaining);
+                        }
+                        else if (phase == "battle_start" && effect.operation == "opening_attack_from_health")
                             Changes.Add(BattleChange.OpeningAttackBonus(actor.Id, ScaleHealth(actor.MaximumHealth, effect.value)));
                         else if (effect.operation == "apply_status")
                             ApplyEffect(actor, actor, passive.Row, effect, owner.ModifiersFor(actor, passive), false,
@@ -48,6 +54,7 @@ namespace AstralOath.Shared.Battle
             public IReadOnlyList<BattleChange> ApplyPeriodicEffects(string actorId)
             {
                 var target = Get(actorId);
+                CleanseAtTurnStart(target);
                 foreach (var status in target.Statuses.Where(item => BattleStatusSnapshot.IsStackable(item.Kind)).ToArray())
                 {
                     if (!target.Statuses.Contains(status)) break; // A preceding lethal tick may have triggered self-revival.
@@ -67,10 +74,12 @@ namespace AstralOath.Shared.Battle
                         if (!target.Alive) break;
                         continue;
                     }
-                    int damage = status.Kind == BattleStatusKind.Poison
+                    int damage = status.Kind == BattleStatusKind.Poison || status.Kind == BattleStatusKind.Venom
                         ? ScaleHealth(target.MaximumHealth, status.Strength)
                         : PeriodicDamage(status.Strength, target.Defense);
-                    ProjectDamage(source, target, damage, BattleHitKind.None, periodic: status);
+                    var loss = ProjectDamage(source, target, damage, BattleHitKind.None, periodic: status);
+                    if (status.Kind == BattleStatusKind.Venom && source != null)
+                        ApplyInjury(source, target, loss.HealthLost, status.Strength);
                     if (!target.Alive)
                     {
                         ResolveEnemyDefeats(source, 1);
@@ -358,6 +367,11 @@ namespace AstralOath.Shared.Battle
                     "recipient_bound" => recipient.Has(BattleStatusKind.Bind),
                     "caster_has_vigor" => caster.Has(BattleStatusKind.Vigor),
                     "caster_enraged" => caster.Has(BattleStatusKind.Rage),
+                    "caster_idol" => caster.Has(BattleStatusKind.Idol),
+                    "caster_not_idol" => !caster.Has(BattleStatusKind.Idol),
+                    "caster_invincible" => caster.Has(BattleStatusKind.Invincible),
+                    "caster_invincible_awakened" => caster.Has(BattleStatusKind.Invincible) && caster.Source.Awakenings >= 3,
+                    "awakened_kill" => defeatedTarget && caster.Source.Awakenings >= 3,
                     "soul_burn" => soulBurn,
                     "no_soul_burn" => !soulBurn,
                     "caster_speed_buffed" => speedBuffed,

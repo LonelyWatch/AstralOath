@@ -1,0 +1,1201 @@
+{
+  "id": "c_violetto_skill_03",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "ani": "skill3_1",
+        "guid": 2,
+        "etty": "ANI"
+      },
+      {
+        "ani": "skill3_2",
+        "guid": 3,
+        "etty": "ANI"
+      },
+      {
+        "args": "sk_c1074_3",
+        "curtain_color": "0,0,0,255",
+        "guid": 4,
+        "etty": "CUTIN"
+      },
+      {
+        "alone": true,
+        "time": 200,
+        "self_x": 50.0,
+        "away_x": -50.0,
+        "guid": 5,
+        "etty": "LAYOUT"
+      },
+      {
+        "mode": 1,
+        "guid": 6,
+        "etty": "LAYOUT"
+      },
+      {
+        "location": 1,
+        "curve": "0.08812261,0.6631944,0.03065134,0.9479166",
+        "time": 500,
+        "guid": 7,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.3",
+        "curve": "0.08812261,0.6631944,0.03065134,0.9479166",
+        "time": 300,
+        "guid": 8,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 2,
+        "time": 800,
+        "guid": 9,
+        "etty": "CAM"
+      },
+      {
+        "curve": "0.1954023,0.06249997,0,0.9791666",
+        "time": 200,
+        "guid": 10,
+        "etty": "CAM"
+      },
+      {
+        "guid": 11,
+        "etty": "CAM"
+      },
+      {
+        "location": 2,
+        "y": 200.0,
+        "time": 500,
+        "guid": 12,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1",
+        "guid": 13,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 2,
+        "x": 100.0,
+        "time": 300,
+        "guid": 14,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.5",
+        "curve": "0.1954023,0.06249997,0,0.9791666",
+        "time": 300,
+        "guid": 15,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.4",
+        "curve": "0.1954023,0.06249997,0,0.9791666",
+        "time": 300,
+        "guid": 16,
+        "etty": "ZOOM"
+      },
+      {
+        "bone": "node",
+        "source": "violetto_eff_skill_3_3_target_node.scsp",
+        "timeline": [
+          "400,attacked_damage,1"
+        ],
+        "guid": 17,
+        "etty": "NODE_ANI"
+      },
+      {
+        "source": "violetto_skill_03_bg.cfx",
+        "scale": 1.0,
+        "guid": 18,
+        "etty": "EFFECT"
+      },
+      {
+        "time": 200,
+        "guid": 19,
+        "etty": "BGSHOW"
+      },
+      {
+        "location": 2,
+        "x": 40.0,
+        "curve": "0.1149425,0.7187499,0,0.9444444",
+        "time": 150,
+        "guid": 20,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.3",
+        "curve": "0.1149425,0.7187499,0,0.9444444",
+        "time": 150,
+        "guid": 21,
+        "etty": "ZOOM"
+      },
+      {
+        "blend_target": 6,
+        "color": "0,0,0,255",
+        "duration": -1,
+        "category": "target",
+        "id": "cb",
+        "guid": 22,
+        "etty": "COLOR_BLEND"
+      },
+      {
+        "color": "0,0,0,255",
+        "accel": 1.0,
+        "opacity": 1.0,
+        "duration": -1,
+        "localZ": -1,
+        "globalZ": 999,
+        "fadeIn": 100,
+        "fadeOut": 200,
+        "id": "dk",
+        "guid": 23,
+        "etty": "DARK"
+      },
+      {
+        "show": true,
+        "guid": 24,
+        "etty": "BGSHOW"
+      },
+      {
+        "guid": 25,
+        "etty": "IDLE"
+      },
+      {
+        "targetId": "dk",
+        "guid": 26,
+        "etty": "STOP"
+      },
+      {
+        "targetId": "cb",
+        "guid": 27,
+        "etty": "STOP"
+      },
+      {
+        "color": "0,0,0,255",
+        "duration": -1,
+        "category": "self",
+        "id": "cs",
+        "guid": 28,
+        "etty": "COLOR_BLEND"
+      },
+      {
+        "source": "violetto_skill_03_target.cfx",
+        "scale": 1.0,
+        "location": 2,
+        "locationParam": "target",
+        "guid": 29,
+        "etty": "EFFECT"
+      },
+      {
+        "targetId": "cs",
+        "guid": 30,
+        "etty": "STOP"
+      },
+      {
+        "ver": 2,
+        "location": 11,
+        "style": 3,
+        "x": -5000.0,
+        "guid": 31,
+        "etty": "MOVE"
+      },
+      {
+        "ver": 2,
+        "location": 11,
+        "style": 3,
+        "guid": 32,
+        "etty": "MOVE"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "violetto_skill3_cm2",
+        "guid": 33,
+        "etty": "SHAKE"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 80,
+        "rand_y": 80,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "rand_scale": 0.8,
+        "guid": 34,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 80,
+        "rand_y": 80,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "rand_scale": 0.8,
+        "guid": 35,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 80,
+        "rand_y": 80,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "rand_scale": 0.8,
+        "guid": 36,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 80,
+        "rand_y": 80,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "rand_scale": 0.8,
+        "guid": 37,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 80,
+        "rand_y": 80,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "rand_scale": 0.8,
+        "guid": 38,
+        "etty": "HIT"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "violetto_eff_skill_3_1_camera",
+        "guid": 39,
+        "etty": "SHAKE"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "boom_cm_power_dn",
+        "guid": 40,
+        "etty": "SHAKE"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "boom_cm_power_dn",
+        "guid": 41,
+        "etty": "SHAKE"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "boom_cm_power_dn",
+        "guid": 42,
+        "etty": "SHAKE"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 80,
+        "rand_y": 80,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "rand_scale": 0.8,
+        "guid": 43,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 80,
+        "rand_y": 80,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "rand_scale": 0.8,
+        "guid": 44,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 80,
+        "rand_y": 80,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "rand_scale": 0.8,
+        "guid": 45,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 80,
+        "rand_y": 80,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "rand_scale": 0.8,
+        "guid": 46,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 80,
+        "rand_y": 80,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "rand_scale": 0.8,
+        "guid": 47,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 80,
+        "rand_y": 80,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "rand_scale": 0.8,
+        "guid": 48,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 80,
+        "rand_y": 80,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "rand_scale": 0.8,
+        "guid": 49,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 80,
+        "rand_y": 80,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "rand_scale": 0.8,
+        "guid": 50,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 80,
+        "rand_y": 80,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "rand_scale": 0.8,
+        "guid": 51,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 80,
+        "rand_y": 80,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "rand_scale": 0.8,
+        "guid": 52,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 80,
+        "rand_y": 80,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "rand_scale": 0.8,
+        "guid": 53,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 80,
+        "rand_y": 80,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.5,
+        "rand_scale": 0.8,
+        "guid": 54,
+        "etty": "HIT"
+      }
+    ],
+    "connections": [
+      {
+        "from": 2,
+        "to": 4,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 3,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 5,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 8,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 10,
+        "delay": 200,
+        "when": 1,
+        "Desc": "200",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 12,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 12,
+        "to": 9,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 14,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 15,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 15,
+        "to": 16,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 17,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 18,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 19,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 20,
+        "delay": 1434,
+        "when": 1,
+        "Desc": "1434",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 20,
+        "to": 21,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 22,
+        "delay": 1434,
+        "when": 1,
+        "Desc": "1434",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 23,
+        "delay": 200,
+        "Desc": "200",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 23,
+        "to": 6,
+        "delay": 50,
+        "Desc": "50",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 24,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 23,
+        "to": 25,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 11,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 13,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 26,
+        "delay": 50,
+        "Desc": "50",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 23,
+        "to": 27,
+        "delay": 25,
+        "Desc": "25",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 28,
+        "delay": 1434,
+        "when": 1,
+        "Desc": "1434",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 29,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 23,
+        "to": 30,
+        "delay": 25,
+        "when": 1,
+        "Desc": "25",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 31,
+        "delay": 1500,
+        "when": 1,
+        "Desc": "1500",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 23,
+        "to": 32,
+        "delay": 25,
+        "Desc": "25",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 33,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 34,
+        "delay": 1434,
+        "when": 1,
+        "Desc": "1434",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 34,
+        "to": 35,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 35,
+        "to": 36,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 36,
+        "to": 37,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 37,
+        "to": 38,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 39,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 40,
+        "delay": 1500,
+        "when": 1,
+        "Desc": "1500",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 40,
+        "to": 41,
+        "delay": 150,
+        "when": 1,
+        "Desc": "150",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 41,
+        "to": 42,
+        "delay": 150,
+        "when": 1,
+        "Desc": "150",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 43,
+        "delay": 400,
+        "when": 1,
+        "Desc": "400",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 44,
+        "delay": 667,
+        "when": 1,
+        "Desc": "667",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 45,
+        "delay": 934,
+        "when": 1,
+        "Desc": "934",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 46,
+        "delay": 1067,
+        "when": 1,
+        "Desc": "1067",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 47,
+        "delay": 1400,
+        "when": 1,
+        "Desc": "1400",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 48,
+        "delay": 1634,
+        "when": 1,
+        "Desc": "1634",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 49,
+        "delay": 1200,
+        "when": 1,
+        "Desc": "1200",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 50,
+        "delay": 1934,
+        "when": 1,
+        "Desc": "1934",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 52,
+        "to": 51,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 53,
+        "to": 52,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 54,
+        "to": 53,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 54,
+        "delay": 400,
+        "when": 1,
+        "Desc": "400",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/boom_cm_power_dn.scsp",
+      "address": "characterlab/source/camera/boom_cm_power_dn.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "camera/violetto_eff_skill_3_1_camera.scsp",
+      "address": "characterlab/source/camera/violetto_eff_skill_3_1_camera.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "camera/violetto_skill3_cm2.scsp",
+      "address": "characterlab/source/camera/violetto_skill3_cm2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "cut/fhd/sk_c1074_3.webp",
+      "address": "characterlab/source/cut/fhd/sk_c1074_3.webp",
+      "type": "cutin"
+    },
+    {
+      "source": "effect/hit_new_slash_01.atlas",
+      "address": "characterlab/source/effect/hit_new_slash_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_slash_01.scsp",
+      "address": "characterlab/source/effect/hit_new_slash_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_slash_01.sct",
+      "address": "characterlab/source/effect/hit_new_slash_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_slash_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_slash_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_slash_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_slash_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/violeto_b_idle_ready_pati.particle",
+      "address": "characterlab/source/effect/violeto_b_idle_ready_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/violeto_skill3_2_pati.particle",
+      "address": "characterlab/source/effect/violeto_skill3_2_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/violetto_b_idle.cfx",
+      "address": "characterlab/source/effect/violetto_b_idle.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/violetto_b_idle_bf.cfx",
+      "address": "characterlab/source/effect/violetto_b_idle_bf.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/violetto_eff_b_idle.atlas",
+      "address": "characterlab/source/effect/violetto_eff_b_idle.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/violetto_eff_b_idle.scsp",
+      "address": "characterlab/source/effect/violetto_eff_b_idle.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/violetto_eff_b_idle.sct",
+      "address": "characterlab/source/effect/violetto_eff_b_idle.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/violetto_eff_b_idle_bf.atlas",
+      "address": "characterlab/source/effect/violetto_eff_b_idle_bf.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/violetto_eff_b_idle_bf.scsp",
+      "address": "characterlab/source/effect/violetto_eff_b_idle_bf.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/violetto_eff_b_idle_bf.sct",
+      "address": "characterlab/source/effect/violetto_eff_b_idle_bf.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/violetto_eff_skill_1.atlas",
+      "address": "characterlab/source/effect/violetto_eff_skill_1.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/violetto_eff_skill_1.scsp",
+      "address": "characterlab/source/effect/violetto_eff_skill_1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/violetto_eff_skill_1.sct",
+      "address": "characterlab/source/effect/violetto_eff_skill_1.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/violetto_eff_skill_1_bf.atlas",
+      "address": "characterlab/source/effect/violetto_eff_skill_1_bf.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/violetto_eff_skill_1_bf.scsp",
+      "address": "characterlab/source/effect/violetto_eff_skill_1_bf.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/violetto_eff_skill_1_bf.sct",
+      "address": "characterlab/source/effect/violetto_eff_skill_1_bf.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/violetto_eff_skill_2.atlas",
+      "address": "characterlab/source/effect/violetto_eff_skill_2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/violetto_eff_skill_2.scsp",
+      "address": "characterlab/source/effect/violetto_eff_skill_2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/violetto_eff_skill_2.sct",
+      "address": "characterlab/source/effect/violetto_eff_skill_2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/violetto_eff_skill_3_1.atlas",
+      "address": "characterlab/source/effect/violetto_eff_skill_3_1.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/violetto_eff_skill_3_1.scsp",
+      "address": "characterlab/source/effect/violetto_eff_skill_3_1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/violetto_eff_skill_3_1.sct",
+      "address": "characterlab/source/effect/violetto_eff_skill_3_1.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/violetto_eff_skill_3_1_shadow.atlas",
+      "address": "characterlab/source/effect/violetto_eff_skill_3_1_shadow.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/violetto_eff_skill_3_1_shadow.scsp",
+      "address": "characterlab/source/effect/violetto_eff_skill_3_1_shadow.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/violetto_eff_skill_3_1_shadow.sct",
+      "address": "characterlab/source/effect/violetto_eff_skill_3_1_shadow.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/violetto_eff_skill_3_2.atlas",
+      "address": "characterlab/source/effect/violetto_eff_skill_3_2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/violetto_eff_skill_3_2.scsp",
+      "address": "characterlab/source/effect/violetto_eff_skill_3_2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/violetto_eff_skill_3_2.sct",
+      "address": "characterlab/source/effect/violetto_eff_skill_3_2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/violetto_eff_skill_3_2_back.atlas",
+      "address": "characterlab/source/effect/violetto_eff_skill_3_2_back.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/violetto_eff_skill_3_2_back.scsp",
+      "address": "characterlab/source/effect/violetto_eff_skill_3_2_back.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/violetto_eff_skill_3_2_back.sct",
+      "address": "characterlab/source/effect/violetto_eff_skill_3_2_back.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/violetto_eff_skill_3_2_target.atlas",
+      "address": "characterlab/source/effect/violetto_eff_skill_3_2_target.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/violetto_eff_skill_3_2_target.scsp",
+      "address": "characterlab/source/effect/violetto_eff_skill_3_2_target.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/violetto_eff_skill_3_2_target.sct",
+      "address": "characterlab/source/effect/violetto_eff_skill_3_2_target.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/violetto_eff_skill_3_bf.atlas",
+      "address": "characterlab/source/effect/violetto_eff_skill_3_bf.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/violetto_eff_skill_3_bf.scsp",
+      "address": "characterlab/source/effect/violetto_eff_skill_3_bf.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/violetto_eff_skill_3_bf.sct",
+      "address": "characterlab/source/effect/violetto_eff_skill_3_bf.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/violetto_skill3_bg.atlas",
+      "address": "characterlab/source/effect/violetto_skill3_bg.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/violetto_skill3_bg.scsp",
+      "address": "characterlab/source/effect/violetto_skill3_bg.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/violetto_skill3_bg.sct",
+      "address": "characterlab/source/effect/violetto_skill3_bg.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/violetto_skill_03_bg.cfx",
+      "address": "characterlab/source/effect/violetto_skill_03_bg.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/violetto_skill_03_target.cfx",
+      "address": "characterlab/source/effect/violetto_skill_03_target.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/violetto_skill_03_target_pati1.particle",
+      "address": "characterlab/source/effect/violetto_skill_03_target_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/violetto_skill_1.cfx",
+      "address": "characterlab/source/effect/violetto_skill_1.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/violetto_skill_1_bf.cfx",
+      "address": "characterlab/source/effect/violetto_skill_1_bf.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/violetto_skill_2.cfx",
+      "address": "characterlab/source/effect/violetto_skill_2.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/violetto_skill_3_1.cfx",
+      "address": "characterlab/source/effect/violetto_skill_3_1.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/violetto_skill_3_2.cfx",
+      "address": "characterlab/source/effect/violetto_skill_3_2.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "model/violetto.timeline",
+      "address": "characterlab/source/model/violetto.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/bf_1_2.sct",
+      "address": "characterlab/source/particle/bf_1_2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/dunkel_eff_aura_03.sct",
+      "address": "characterlab/source/particle/dunkel_eff_aura_03.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/dunkel_eff_aura_10.sct",
+      "address": "characterlab/source/particle/dunkel_eff_aura_10.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/flash.sct",
+      "address": "characterlab/source/particle/flash.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/pati_01.sct",
+      "address": "characterlab/source/particle/pati_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "spani/violetto_eff_skill_3_3_target_node.scsp",
+      "address": "characterlab/source/spani/violetto_eff_skill_3_3_target_node.scsp",
+      "type": "skeleton"
+    }
+  ],
+  "diagnostics": []
+}

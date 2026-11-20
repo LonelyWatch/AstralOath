@@ -1,0 +1,55 @@
+
+tamarinne_t_skill_02_introbot.sct
+size: 1604,333
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bot_glow
+  rotate: false
+  xy: 1326, 2
+  size: 264, 106
+  orig: 264, 106
+  offset: 0, 0
+  index: -1
+btfly
+  rotate: false
+  xy: 2, 2
+  size: 329, 329
+  orig: 329, 329
+  offset: 0, 0
+  index: -1
+btfly_glow
+  rotate: false
+  xy: 333, 2
+  size: 329, 329
+  orig: 329, 329
+  offset: 0, 0
+  index: -1
+btfly_glow2
+  rotate: false
+  xy: 664, 2
+  size: 329, 329
+  orig: 329, 329
+  offset: 0, 0
+  index: -1
+btfly_glow3
+  rotate: false
+  xy: 995, 2
+  size: 329, 329
+  orig: 329, 329
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 1326, 110
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+spot_light_ball
+  rotate: false
+  xy: 1497, 110
+  size: 105, 105
+  orig: 105, 105
+  offset: 0, 0
+  index: -1

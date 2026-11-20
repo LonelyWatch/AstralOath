@@ -91,7 +91,12 @@ namespace AstralOath.Client.Tests
                 yield return CaptureKenPostEffects();
                 yield break;
             }
-            if (group == "roster31-40" || group == "roster41-50")
+            if(group=="tamarinne-forms")
+            {
+                yield return CaptureTamarinneForms();
+                yield break;
+            }
+            if (group == "roster31-40" || group == "roster41-50" || group=="roster51-60")
             {
                 yield return CaptureRosterSkillBoundaries(group);
                 yield break;
@@ -175,16 +180,20 @@ namespace AstralOath.Client.Tests
         private IEnumerator CaptureRosterSkillBoundaries(string group)
         {
             if ((bool)Read(binder, "loop")) Click("loop");
-            string[] ids = group == "roster41-50"
-                ? new[] {"c1043", "c1044", "c1046", "c1047", "c1048", "c1049", "c1050", "c1053", "c1054", "c1055"}
-                : new[] {"c1032", "c1033", "c1034", "c1035", "c1036", "c1037", "c1038", "c1039", "c1040", "c1042"};
+            string[] ids=group switch
+            {
+                "roster51-60"=>new[]{"c1060","c1065","c1066","c1067","c1069","c1070","c1071","c1072","c1073","c1074"},
+                "roster41-50"=>new[]{"c1043","c1044","c1046","c1047","c1048","c1049","c1050","c1053","c1054","c1055"},
+                _=>new[]{"c1032","c1033","c1034","c1035","c1036","c1037","c1038","c1039","c1040","c1042"}
+            };
             foreach (string id in ids)
             {
                 yield return SelectCharacter(id);
-                string attack = id == "c1047" ? "skill1_2" : "skill1";
+                string attack = id=="c1047"?"skill1_2":Player.Animations.Any(a=>a.Name=="skill1")?"skill1":"skill1_1";
                 yield return SelectAnimation(attack, true);
                 string directory = $"Assets/Game/Modules/CharacterPresentation/Res/Characters/{id}/Animations/model";
-                string model = Directory.GetFiles(directory, "*.spine.json").Single();
+                string address=(string)Read(Read(binder,"selected"),"battleSkeletonAddress");
+                string model=Path.Combine(directory,Path.GetFileNameWithoutExtension(address)+".spine.json");
                 var modelData = JObject.Parse(File.ReadAllText(model));
                 var clip = (JObject)modelData["animations"][attack];
                 var hit = clip["events"]?.FirstOrDefault(e => (string)e["name"] == "hit");
@@ -240,19 +249,51 @@ namespace AstralOath.Client.Tests
                 bool expected=time==5f;
                 Assert.That(image.material.GetFloat("_SpriteInvert"),Is.EqualTo(expected?1f:0f),"Ken S3 at "+time);
                 string stem="ken-s3-"+time.ToString("0.0",CultureInfo.InvariantCulture);
-                SaveKenFrame(image.texture,image.material,stem+"-display");
+                SavePreviewFrame(image.texture,image.material,stem+"-display");
                 var control=new Material(image.material);
                 try
                 {
                     control.SetFloat("_SpriteInvert",0);
-                    SaveKenFrame(image.texture,control,stem+"-control");
+                    SavePreviewFrame(image.texture,control,stem+"-control");
                 }
                 finally {UnityEngine.Object.DestroyImmediate(control);}
             }
             Click("stop");
             Assert.That(image.material.GetFloat("_SpriteInvert"),Is.Zero);
         }
-        private void SaveKenFrame(Texture frame,Material post,string name)
+        private IEnumerator CaptureTamarinneForms()
+        {
+            yield return SelectCharacter("c1067");
+            if(!(bool)Read(binder,"experimental"))Click("experimental");
+            const string normal="characterlab/source/model/tamarinne.scsp";
+            const string idol="characterlab/source/model/tamarinne_t.scsp";
+            var image=map.Require<RawImage>("preview");
+            foreach(string action in new[]{"03","01_1","02_2","01"})
+            {
+                var button=Rows("skills").Single(row=>row.GetComponentInChildren<GameText>().text.EndsWith("c_tamarinne_skill_"+action,StringComparison.Ordinal));
+                button.onClick.Invoke();
+                yield return Until(()=>Read(binder,"performance")!=null&&button.interactable,"Tamarinne "+action);
+                var bodies=Read(binder,"skillBodies");
+                foreach(float time in action=="03"?new[]{2.1f,2.24f,6.5f}:new[]{.4f})
+                {
+                    yield return AdvanceUiTo(time);
+                    yield return null;yield return null;
+                    bool transformed=action=="01_1"||action=="02_2"||(action=="03"&&time>2.1666f);
+                    var visible=(ISkeletonPlayer)Read(bodies,"Visible");
+                    Assert.That((string)Read(bodies,"VisibleAddress"),Is.EqualTo(transformed?idol:normal),"model at "+time);
+                    Assert.That(visible.Root.activeInHierarchy,Is.True);
+                    if(action=="01_1"||action=="02_2")
+                    {
+                        Assert.That(visible.CurrentAnimation,Is.EqualTo(action=="01_1"?"skill1":"skill2"));
+                        Assert.That(Player.Root.activeSelf,Is.False);
+                    }
+                    SavePreviewFrame(camera.targetTexture,image.material,"tamarinne-"+action+"-"+time.ToString("0.00",CultureInfo.InvariantCulture));
+                }
+                Click("stop");
+                Assert.That(Player.Root.activeSelf,Is.True,"Stop restores the original body.");
+            }
+        }
+        private void SavePreviewFrame(Texture frame,Material post,string name)
         {
             var destination=RenderTexture.GetTemporary(frame.width,frame.height,0,RenderTextureFormat.ARGB32,RenderTextureReadWrite.sRGB);
             var pixels=new Texture2D(frame.width,frame.height,TextureFormat.RGBA32,false);

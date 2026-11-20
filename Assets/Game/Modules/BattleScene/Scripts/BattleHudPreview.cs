@@ -71,12 +71,24 @@ namespace AstralOath.Client.BattleScene
         [SerializeField] private TextAsset impactBank;
         [SerializeField] private GameObject stageBackground;
         [Serializable]
+        internal sealed class ModelForm
+        {
+            public string status;
+            public string skin;
+            public string[] graphs;
+            public BattleSkillPresentationAsset skeleton;
+            [NonSerialized] internal BattlePreviewActor.SharedSource prepared;
+            [NonSerialized] internal BattleSkeletonMetadata metadata;
+        }
+
+        [Serializable]
         private sealed class HeroModel
         {
             public string id;
             public string label;
             public string skin;
             public BattleSkillPresentationAsset skeleton;
+            public ModelForm[] forms;
         }
 
         public const int StandardSoulCapacity = BattleFlowRules.StandardMaximumSoul;
@@ -157,6 +169,16 @@ namespace AstralOath.Client.BattleScene
                     preparedModels.Add(id, preparation);
                 }
                 requested.Add(id, preparation);
+                foreach (var form in model.forms ?? Array.Empty<ModelForm>())
+                {
+                    string key = form.skeleton.source;
+                    if (!preparedModels.TryGetValue(key, out var alternate))
+                    {
+                        alternate = BattlePreviewActor.WarmModelAsync(gameObject.scene, form.skeleton, form.skin, model.label, modelWorkers, token);
+                        preparedModels.Add(key, alternate);
+                    }
+                    requested[key] = alternate;
+                }
             }
             return requested;
         }
@@ -353,9 +375,15 @@ namespace AstralOath.Client.BattleScene
             {
                 BattlePreviewActor.SharedSource source = null;
                 prepared?.TryGetValue(model.id, out source);
+                foreach (var form in model.forms ?? Array.Empty<ModelForm>())
+                    if (prepared != null) prepared.TryGetValue(form.skeleton.source, out form.prepared);
                 actor.UseBattleModel(model.skeleton, model.skin, $"{model.label} [{model.id}]", model.id, source);
+                actor.ConfigureForms(model.skeleton, model.skin, model.forms);
             }
         }
+
+        internal void ConfigureActorModel(BattlePreviewActor actor, string id) =>
+            ApplyTeam(new[] { (actor, ReadHeroModels()[id]) });
 
         public bool TrySelectBattleTarget(string instanceId) => simulation?.ChooseTarget(instanceId) == true;
 

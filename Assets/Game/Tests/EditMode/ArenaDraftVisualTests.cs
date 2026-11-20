@@ -24,7 +24,12 @@ namespace AstralOath.Client.Tests
                 var row = heroes.GetArrayElementAtIndex(index);
                 string id = row.FindPropertyRelative(idField).stringValue;
                 foreach (string field in artFields)
+                {
                     Assert.That(row.FindPropertyRelative(field).objectReferenceValue, Is.Not.Null, id + "/" + field);
+                    if(id=="c1067"&&field.Equals("modelSkeleton",System.StringComparison.OrdinalIgnoreCase))
+                        Assert.That(AssetDatabase.GetAssetPath(row.FindPropertyRelative(field).objectReferenceValue),
+                            Does.EndWith("/model/tamarinne.spine.json"),"Inventory and draft must start in the ordinary form.");
+                }
                 return id;
             }).ToArray();
             Assert.That(ids, Is.EquivalentTo(expected));
@@ -36,6 +41,12 @@ namespace AstralOath.Client.Tests
         [TestCase("c1046", "effect_raise")]
         [TestCase("c1048", "effect_raise")]
         [TestCase("c1050", "effect_raise")]
+        [TestCase("c1060", "effect_barrier", "effect_cleanse")]
+        [TestCase("c1065", "effect_raise")]
+        [TestCase("c1067", "status_Idol", "effect_reduce_cd")]
+        [TestCase("c1069", "effect_raise")]
+        [TestCase("c1073", "status_MagicBarrier", "effect_extend_cd")]
+        [TestCase("c1074", "status_Perception", "effect_raise")]
         public void GeneratedHeroEffectsIncludeActualSkillOutcomes(string id, params string[] keys)
         {
             var rows = new SerializedObject(AssetDatabase.LoadAssetAtPath<ScriptableObject>(
@@ -45,6 +56,7 @@ namespace AstralOath.Client.Tests
             var effects = row.FindPropertyRelative("FilterEffects");
             var actual = Enumerable.Range(0, effects.arraySize).Select(i => effects.GetArrayElementAtIndex(i).stringValue);
             Assert.That(actual, Is.SupersetOf(keys), id);
+            if(id=="c1060")Assert.That(actual,Does.Not.Contain("status_Venom"),"Reacting to venom does not apply it.");
         }
 
         [TestCase("weaken", "MagicNail")]
@@ -53,6 +65,9 @@ namespace AstralOath.Client.Tests
         [TestCase("weaken", "Bind")]
         [TestCase("enhance", "SkillNullifier")]
         [TestCase("enhance", "Vigor")]
+        [TestCase("enhance", "Idol")]
+        [TestCase("enhance", "MagicBarrier")]
+        [TestCase("enhance", "Perception")]
         [TestCase("enhance", "Reflect")]
         [TestCase("weaken", "Bomb")]
         [TestCase("weaken", "VampiricTouch")]

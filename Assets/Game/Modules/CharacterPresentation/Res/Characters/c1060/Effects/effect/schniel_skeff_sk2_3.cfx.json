@@ -1,0 +1,74 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "schniel_skeff_sk2_3_ground_glow",
+      "y": "-40",
+      "z": "50",
+      "scale": "0.9,1",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "schniel_skeff_sk2_3_1",
+      "z": "10",
+      "scale": "0.7",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "schniel_skeff_sk2_3_p",
+      "y": "790",
+      "z": "10",
+      "scale": "0.7",
+      "delay": "699",
+      "format": "particle",
+      "globalZ": -1.0
+    },
+    {
+      "source": "schniel_skeff_sk2_3_p2",
+      "y": "790",
+      "z": "10",
+      "scale": "0.7",
+      "delay": "699",
+      "format": "particle",
+      "globalZ": -1.0
+    },
+    {
+      "source": "schniel_skeff_sk2_3_2",
+      "scale": "0.7",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "schniel_skeff_sk2_3_ground_front2",
+      "y": "-60",
+      "z": "20",
+      "scale": "0.9,1",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "schniel_skeff_sk2_3_ground_front",
+      "y": "-60",
+      "z": "10",
+      "scale": "0.9,1",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "schniel_skeff_sk2_3_ground_back",
+      "y": "-60",
+      "scale": "0.9,1",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "schniel_skeff_sk2_3_p3",
+      "y": "790",
+      "delay": "0",
+      "format": "particle",
+      "globalZ": 1.0
+    }
+  ]
+}

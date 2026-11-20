@@ -1,0 +1,30 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "krau_b_idle_eff",
+      "ani": "b_idle_ready",
+      "z": "10",
+      "format": "spine"
+    },
+    {
+      "source": "krau_b_idle_eff",
+      "ani": "b_idle",
+      "z": "9",
+      "delay": "500",
+      "format": "spine",
+      "timeScale": 2.2,
+      "disable": true
+    },
+    {
+      "source": "krau_b_idle_ready_pati1",
+      "y": "200",
+      "z": "8",
+      "scale": "1",
+      "delay": "500",
+      "format": "particle",
+      "disable": true,
+      "lifeTime": "150"
+    }
+  ]
+}

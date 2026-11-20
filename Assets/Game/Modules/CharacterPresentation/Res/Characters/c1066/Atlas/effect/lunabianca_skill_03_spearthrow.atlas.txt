@@ -1,0 +1,160 @@
+
+lunabianca_skill_03_spearthrow.sct
+size: 1201,504
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+fire_ring_R1
+  rotate: true
+  xy: 173, 324
+  size: 164, 231
+  orig: 164, 231
+  offset: 0, 0
+  index: -1
+fire_ring_R2
+  rotate: false
+  xy: 889, 2
+  size: 164, 231
+  orig: 164, 231
+  offset: 0, 0
+  index: -1
+fire_ring_R3
+  rotate: false
+  xy: 917, 235
+  size: 164, 231
+  orig: 164, 231
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 324
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+hook_up_swing1
+  rotate: true
+  xy: 485, 2
+  size: 264, 161
+  orig: 264, 161
+  offset: 0, 0
+  index: -1
+lance_shot_f1
+  rotate: false
+  xy: 511, 268
+  size: 201, 231
+  orig: 201, 231
+  offset: 0, 0
+  index: -1
+lance_shot_f2
+  rotate: false
+  xy: 686, 2
+  size: 201, 231
+  orig: 201, 231
+  offset: 0, 0
+  index: -1
+lance_shot_f3
+  rotate: false
+  xy: 714, 235
+  size: 201, 231
+  orig: 201, 231
+  offset: 0, 0
+  index: -1
+lense_flare1
+  rotate: true
+  xy: 2, 2
+  size: 320, 239
+  orig: 320, 239
+  offset: 0, 0
+  index: -1
+sk1_p_circle1_1
+  rotate: false
+  xy: 1110, 362
+  size: 50, 132
+  orig: 50, 132
+  offset: 0, 0
+  index: -1
+sk1_p_circle1_2
+  rotate: true
+  xy: 243, 268
+  size: 50, 132
+  orig: 50, 132
+  offset: 0, 0
+  index: -1
+sk1_p_circle1_3
+  rotate: true
+  xy: 377, 268
+  size: 50, 132
+  orig: 50, 132
+  offset: 0, 0
+  index: -1
+sk1_p_circle1_4
+  rotate: false
+  xy: 1083, 228
+  size: 50, 132
+  orig: 50, 132
+  offset: 0, 0
+  index: -1
+spear_aura1
+  rotate: false
+  xy: 406, 320
+  size: 99, 78
+  orig: 99, 78
+  offset: 0, 0
+  index: -1
+spear_aura2
+  rotate: false
+  xy: 406, 400
+  size: 99, 78
+  orig: 99, 78
+  offset: 0, 0
+  index: -1
+spear_aura3
+  rotate: false
+  xy: 1055, 148
+  size: 99, 78
+  orig: 99, 78
+  offset: 0, 0
+  index: -1
+spear_glow_aura1
+  rotate: false
+  xy: 1055, 2
+  size: 132, 144
+  orig: 132, 144
+  offset: 0, 0
+  index: -1
+spear_glow_aura2
+  rotate: true
+  xy: 1135, 228
+  size: 66, 64
+  orig: 66, 64
+  offset: 0, 0
+  index: -1
+spear_throw_beam1
+  rotate: false
+  xy: 648, 2
+  size: 36, 262
+  orig: 36, 262
+  offset: 0, 0
+  index: -1
+spear_throw_beam2
+  rotate: true
+  xy: 714, 468
+  size: 34, 196
+  orig: 34, 196
+  offset: 0, 0
+  index: -1
+spear_throw_beam3
+  rotate: true
+  xy: 912, 468
+  size: 34, 196
+  orig: 34, 196
+  offset: 0, 0
+  index: -1
+spear_throw_line1
+  rotate: false
+  xy: 243, 2
+  size: 240, 264
+  orig: 240, 264
+  offset: 0, 0
+  index: -1

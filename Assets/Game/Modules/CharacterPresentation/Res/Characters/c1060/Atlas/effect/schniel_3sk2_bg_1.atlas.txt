@@ -1,0 +1,83 @@
+
+schniel_3sk2_bg_1.sct
+size: 1428,498
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+1flash
+  rotate: false
+  xy: 598, 79
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+1sdw
+  rotate: false
+  xy: 361, 195
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+beam_box
+  rotate: false
+  xy: 532, 195
+  size: 42, 42
+  orig: 42, 42
+  offset: 0, 0
+  index: -1
+bg_ch
+  rotate: true
+  xy: 2, 195
+  size: 301, 357
+  orig: 301, 357
+  offset: 0, 0
+  index: -1
+bg_desk
+  rotate: true
+  xy: 1255, 2
+  size: 467, 171
+  orig: 467, 171
+  offset: 0, 0
+  index: -1
+bg_gr_dan
+  rotate: false
+  xy: 2, 2
+  size: 787, 75
+  orig: 787, 75
+  offset: 0, 0
+  index: -1
+bg_gr_glow
+  rotate: false
+  xy: 361, 366
+  size: 138, 80
+  orig: 138, 80
+  offset: 0, 0
+  index: -1
+bg_gr_red_c
+  rotate: false
+  xy: 2, 79
+  size: 594, 114
+  orig: 594, 114
+  offset: 0, 0
+  index: -1
+bg_gr_red_line
+  rotate: true
+  xy: 576, 195
+  size: 26, 5
+  orig: 26, 5
+  offset: 0, 0
+  index: -1
+bg_gr_tail
+  rotate: false
+  xy: 791, 2
+  size: 462, 462
+  orig: 462, 462
+  offset: 0, 0
+  index: -1
+bg_gr_tail_dim
+  rotate: false
+  xy: 532, 250
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1

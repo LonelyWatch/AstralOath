@@ -1,0 +1,24 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "tamarinne_sk1eff_target_f",
+      "z": "30",
+      "format": "spine"
+    },
+    {
+      "source": "tamarinne_sk1eff_target_b",
+      "z": "-30",
+      "format": "spine"
+    },
+    {
+      "source": "tamarinne_skill_01_pati1",
+      "x": "0",
+      "y": "68",
+      "z": "20",
+      "scale": "1.3",
+      "delay": "1266",
+      "format": "particle"
+    }
+  ]
+}

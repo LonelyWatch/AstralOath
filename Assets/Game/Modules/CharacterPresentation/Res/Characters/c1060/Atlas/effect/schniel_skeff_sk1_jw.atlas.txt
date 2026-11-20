@@ -1,0 +1,104 @@
+
+schniel_skeff_sk1_jw.sct
+size: 341,255
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 2, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+frag2
+  rotate: true
+  xy: 253, 225
+  size: 27, 40
+  orig: 27, 40
+  offset: 0, 0
+  index: -1
+frag3
+  rotate: true
+  xy: 243, 193
+  size: 30, 40
+  orig: 30, 40
+  offset: 0, 0
+  index: -1
+jewel_mini
+  rotate: false
+  xy: 111, 173
+  size: 43, 74
+  orig: 43, 74
+  offset: 0, 0
+  index: -1
+part_2
+  rotate: true
+  xy: 173, 2
+  size: 171, 166
+  orig: 171, 166
+  offset: 0, 0
+  index: -1
+part_3
+  rotate: true
+  xy: 2, 173
+  size: 75, 107
+  orig: 75, 107
+  offset: 0, 0
+  index: -1
+sk1_jewel_1-1
+  rotate: false
+  xy: 156, 175
+  size: 42, 56
+  orig: 42, 56
+  offset: 0, 0
+  index: -1
+sk1_jewel_2-5
+  rotate: false
+  xy: 156, 175
+  size: 42, 56
+  orig: 42, 56
+  offset: 0, 0
+  index: -1
+sk1_jewel_1-2
+  rotate: false
+  xy: 200, 175
+  size: 41, 50
+  orig: 41, 50
+  offset: 0, 0
+  index: -1
+sk1_jewel_1-3
+  rotate: false
+  xy: 306, 175
+  size: 33, 32
+  orig: 33, 32
+  offset: 0, 0
+  index: -1
+sk1_jewel_2-1
+  rotate: true
+  xy: 206, 227
+  size: 26, 45
+  orig: 26, 45
+  offset: 0, 0
+  index: -1
+sk1_jewel_2-2
+  rotate: true
+  xy: 243, 175
+  size: 16, 61
+  orig: 16, 61
+  offset: 0, 0
+  index: -1
+sk1_jewel_2-3
+  rotate: true
+  xy: 156, 233
+  size: 20, 48
+  orig: 20, 48
+  offset: 0, 0
+  index: -1
+sk1_jewel_2-4
+  rotate: false
+  xy: 295, 209
+  size: 34, 40
+  orig: 34, 40
+  offset: 0, 0
+  index: -1

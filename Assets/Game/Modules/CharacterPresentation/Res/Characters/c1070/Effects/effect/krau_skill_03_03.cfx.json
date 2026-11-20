@@ -1,0 +1,23 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "krau_sk3_3eff_f",
+      "format": "spine",
+      "globalZ": 1.0,
+      "timeScale": 2.0
+    },
+    {
+      "source": "krau_sk3_3eff_b",
+      "format": "spine",
+      "globalZ": -1.0,
+      "timeScale": 2.0
+    },
+    {
+      "source": "krau_ex_01_pati1",
+      "y": "500",
+      "format": "particle",
+      "globalZ": 1.0
+    }
+  ]
+}

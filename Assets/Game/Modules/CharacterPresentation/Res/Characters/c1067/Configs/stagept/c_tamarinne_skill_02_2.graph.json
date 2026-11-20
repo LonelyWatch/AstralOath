@@ -1,0 +1,516 @@
+{
+  "id": "c_tamarinne_skill_02_2",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "location": 11,
+        "curve": "0.1877395,0.03472219,0,0.9652778",
+        "time": 200,
+        "guid": 2,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.2",
+        "curve": "0.1877395,0.03472219,0,0.9652778",
+        "time": 200,
+        "guid": 3,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 11,
+        "curve": "0.1302682,0.1666666,0.4674329,0.8229166",
+        "time": 1000,
+        "guid": 4,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1",
+        "curve": "0.1302682,0.1666666,0.4674329,0.8229166",
+        "time": 1000,
+        "guid": 5,
+        "etty": "ZOOM"
+      },
+      {
+        "blend_target": 55,
+        "duration": -1,
+        "fadeIn": 200,
+        "alpha_channel": 0.0,
+        "category": "alpha",
+        "id": "alpha_all",
+        "guid": 6,
+        "etty": "COLOR_BLEND"
+      },
+      {
+        "time": 200,
+        "guid": 7,
+        "etty": "BGSHOW"
+      },
+      {
+        "ani": "skill2",
+        "guid": 8,
+        "etty": "ANI"
+      },
+      {
+        "source": "tamarinne_t_skill_02.cfx",
+        "scale": 1.0,
+        "location": 11,
+        "guid": 9,
+        "etty": "EFFECT"
+      },
+      {
+        "target_node": 5,
+        "bone": "node",
+        "source": "tamarinne_t_skill_02_node.scsp",
+        "guid": 10,
+        "etty": "NODE_ANI"
+      },
+      {
+        "color": "255,249,242,255",
+        "accel": 1.0,
+        "opacity": 1.0,
+        "duration": -1,
+        "localZ": -1,
+        "globalZ": 999,
+        "fadeOut": 500,
+        "id": "dk",
+        "guid": 11,
+        "etty": "DARK"
+      },
+      {
+        "scale": "2.2",
+        "curve": "0.2528736,0.03124997,0,0.9861111",
+        "time": 466,
+        "guid": 12,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 11,
+        "y": 100.0,
+        "curve": "0.2528736,0.03124997,0,0.9861111",
+        "time": 466,
+        "guid": 13,
+        "etty": "CAM"
+      },
+      {
+        "location": 11,
+        "curve": "0.02298851,0.8645833,0,0.9375",
+        "time": 200,
+        "guid": 14,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1",
+        "curve": "0.02298851,0.8645833,0,0.9375",
+        "time": 200,
+        "guid": 15,
+        "etty": "ZOOM"
+      },
+      {
+        "targetId": "alpha_all",
+        "guid": 16,
+        "etty": "STOP"
+      },
+      {
+        "show": true,
+        "guid": 17,
+        "etty": "BGSHOW"
+      },
+      {
+        "curve": "0.02298851,0.8645833,0,0.9375",
+        "guid": 18,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.5",
+        "curve": "0.02298851,0.8645833,0,0.9375",
+        "guid": 19,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1",
+        "curve": "0.1954023,0.07638886,0,0.9756944",
+        "time": 500,
+        "guid": 20,
+        "etty": "ZOOM"
+      },
+      {
+        "targetId": "dk",
+        "guid": 21,
+        "etty": "STOP"
+      },
+      {
+        "guid": 22,
+        "etty": "IDLE"
+      },
+      {
+        "source": "tamarinne_t_skill_02_hookup.cfx",
+        "y": 216.0,
+        "scale": 1.0,
+        "guid": 23,
+        "etty": "EFFECT"
+      },
+      {
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 24,
+        "etty": "HIT"
+      }
+    ],
+    "connections": [
+      {
+        "from": 2,
+        "to": 3,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 5,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 6,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 7,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 8,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 9,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 10,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 4,
+        "delay": 1000,
+        "when": 1,
+        "Desc": "1000",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 12,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 13,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 14,
+        "to": 15,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 14,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 11,
+        "delay": 3835,
+        "when": 1,
+        "Desc": "3835",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 16,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 17,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 18,
+        "to": 19,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 18,
+        "delay": 250,
+        "Desc": "250",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 20,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 21,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 22,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 23,
+        "delay": 100,
+        "Desc": "100",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 20,
+        "to": 24,
+        "delay": 250,
+        "when": 1,
+        "Desc": "250",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "effect/tamarinne_t_sk1eff_self_b.atlas",
+      "address": "characterlab/source/effect/tamarinne_t_sk1eff_self_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/tamarinne_t_sk1eff_self_b.scsp",
+      "address": "characterlab/source/effect/tamarinne_t_sk1eff_self_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/tamarinne_t_sk1eff_self_b.sct",
+      "address": "characterlab/source/effect/tamarinne_t_sk1eff_self_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/tamarinne_t_skill_01_self.cfx",
+      "address": "characterlab/source/effect/tamarinne_t_skill_01_self.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/tamarinne_t_skill_02.cfx",
+      "address": "characterlab/source/effect/tamarinne_t_skill_02.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/tamarinne_t_skill_02_bg1.atlas",
+      "address": "characterlab/source/effect/tamarinne_t_skill_02_bg1.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/tamarinne_t_skill_02_bg1.scsp",
+      "address": "characterlab/source/effect/tamarinne_t_skill_02_bg1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/tamarinne_t_skill_02_bg1.sct",
+      "address": "characterlab/source/effect/tamarinne_t_skill_02_bg1.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/tamarinne_t_skill_02_bg2_back.atlas",
+      "address": "characterlab/source/effect/tamarinne_t_skill_02_bg2_back.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/tamarinne_t_skill_02_bg2_back.scsp",
+      "address": "characterlab/source/effect/tamarinne_t_skill_02_bg2_back.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/tamarinne_t_skill_02_bg2_back.sct",
+      "address": "characterlab/source/effect/tamarinne_t_skill_02_bg2_back.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/tamarinne_t_skill_02_bg2_burst_node.atlas",
+      "address": "characterlab/source/effect/tamarinne_t_skill_02_bg2_burst_node.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/tamarinne_t_skill_02_bg2_burst_node.scsp",
+      "address": "characterlab/source/effect/tamarinne_t_skill_02_bg2_burst_node.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/tamarinne_t_skill_02_bg2_burst_node.sct",
+      "address": "characterlab/source/effect/tamarinne_t_skill_02_bg2_burst_node.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/tamarinne_t_skill_02_bg2_front.atlas",
+      "address": "characterlab/source/effect/tamarinne_t_skill_02_bg2_front.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/tamarinne_t_skill_02_bg2_front.scsp",
+      "address": "characterlab/source/effect/tamarinne_t_skill_02_bg2_front.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/tamarinne_t_skill_02_bg2_front.sct",
+      "address": "characterlab/source/effect/tamarinne_t_skill_02_bg2_front.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/tamarinne_t_skill_02_btfly_pati1.particle",
+      "address": "characterlab/source/effect/tamarinne_t_skill_02_btfly_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/tamarinne_t_skill_02_btfly_pati2.particle",
+      "address": "characterlab/source/effect/tamarinne_t_skill_02_btfly_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/tamarinne_t_skill_02_burst_pati1.particle",
+      "address": "characterlab/source/effect/tamarinne_t_skill_02_burst_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/tamarinne_t_skill_02_hookup.cfx",
+      "address": "characterlab/source/effect/tamarinne_t_skill_02_hookup.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/tamarinne_t_skill_02_hookup_pati1.particle",
+      "address": "characterlab/source/effect/tamarinne_t_skill_02_hookup_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/tamarinne_t_skill_02_intro_pati1.particle",
+      "address": "characterlab/source/effect/tamarinne_t_skill_02_intro_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/tamarinne_t_skill_02_introbot.atlas",
+      "address": "characterlab/source/effect/tamarinne_t_skill_02_introbot.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/tamarinne_t_skill_02_introbot.scsp",
+      "address": "characterlab/source/effect/tamarinne_t_skill_02_introbot.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/tamarinne_t_skill_02_introbot.sct",
+      "address": "characterlab/source/effect/tamarinne_t_skill_02_introbot.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/tamarinne_t_skill_02_topeff.atlas",
+      "address": "characterlab/source/effect/tamarinne_t_skill_02_topeff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/tamarinne_t_skill_02_topeff.scsp",
+      "address": "characterlab/source/effect/tamarinne_t_skill_02_topeff.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/tamarinne_t_skill_02_topeff.sct",
+      "address": "characterlab/source/effect/tamarinne_t_skill_02_topeff.sct",
+      "type": "texture"
+    },
+    {
+      "source": "model/tamarinne_t.timeline",
+      "address": "characterlab/source/model/tamarinne_t.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/aura_04.sct",
+      "address": "characterlab/source/particle/aura_04.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/pati_03.sct",
+      "address": "characterlab/source/particle/pati_03.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/zodiac_star1.sct",
+      "address": "characterlab/source/particle/zodiac_star1.sct",
+      "type": "texture"
+    },
+    {
+      "source": "spani/tamarinne_t_skill_02_node.scsp",
+      "address": "characterlab/source/spani/tamarinne_t_skill_02_node.scsp",
+      "type": "skeleton"
+    }
+  ],
+  "diagnostics": []
+}

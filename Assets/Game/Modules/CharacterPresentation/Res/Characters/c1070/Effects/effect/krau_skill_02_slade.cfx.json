@@ -1,0 +1,31 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "krau_sk2eff_slide_f",
+      "z": "10",
+      "format": "spine"
+    },
+    {
+      "source": "krau_sk2eff_slide_b",
+      "z": "-10",
+      "format": "spine"
+    },
+    {
+      "source": "krau_sk2eff_slide_f",
+      "ani": "animation2",
+      "x": "300",
+      "z": "10",
+      "delay": "200",
+      "format": "spine"
+    },
+    {
+      "source": "krau_sk2eff_slide_b",
+      "ani": "animation2",
+      "x": "300",
+      "z": "-10",
+      "delay": "200",
+      "format": "spine"
+    }
+  ]
+}

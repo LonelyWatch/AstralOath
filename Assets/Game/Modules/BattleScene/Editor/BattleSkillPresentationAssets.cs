@@ -115,7 +115,7 @@ namespace AstralOath.Client.BattleScene.Editor
             string source = (string)item["source"];
             string type = (string)item["type"];
             return type == "effect" || type == "particle" || type == "timeline" || type == "cutin" ||
-                (type == "skeleton" && (source.StartsWith("effect/", StringComparison.Ordinal) || source.StartsWith("camera/", StringComparison.Ordinal) || source.StartsWith("spani/", StringComparison.Ordinal))) ||
+                (type == "skeleton" && (source.StartsWith("model/", StringComparison.Ordinal) || source.StartsWith("effect/", StringComparison.Ordinal) || source.StartsWith("camera/", StringComparison.Ordinal) || source.StartsWith("spani/", StringComparison.Ordinal))) ||
                 (type == "texture" && source.StartsWith("particle/", StringComparison.Ordinal));
         }
     }

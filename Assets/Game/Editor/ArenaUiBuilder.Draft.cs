@@ -397,11 +397,20 @@ namespace AstralOath.Editor
         [Serializable] private sealed class DraftHero { public string id, nameKey, element, heroClass; public int level, stars; }
         [Serializable] private sealed class DraftMessage { public string key, zhCn; }
 
+        private static Dictionary<string,string> ReadRosterBaseModels()
+        {
+            const string path="Assets/Game/Modules/CharacterLab/Configs/catalog.json";
+            var roster=JsonUtility.FromJson<AstralOath.Client.CharacterLab.CharacterLabCatalog>(File.ReadAllText(path));
+            return roster.characters.ToDictionary(hero=>hero.id,
+                hero=>Path.GetFileNameWithoutExtension(hero.battleSkeletonAddress),StringComparer.Ordinal);
+        }
+
         private static void BuildDraftArt()
         {
             const string battleCatalog = "Assets/Game/Modules/BattleScene/Configs/battle-catalog.json";
             const string chars = "Assets/Game/Modules/CharacterPresentation/Res/Characters/";
             var source = JsonUtility.FromJson<DraftCatalog>(File.ReadAllText(battleCatalog));
+            var baseModels=ReadRosterBaseModels();
             var names = source.messages.ToDictionary(row => row.key, row => row.zhCn);
             var catalog = AssetDatabase.LoadAssetAtPath<ArenaDraftArt>(DraftArtPath);
             if (!catalog)
@@ -433,8 +442,7 @@ namespace AstralOath.Editor
             catalog.Heroes = source.heroes.OrderBy(hero => hero.id, StringComparer.Ordinal).Select(hero =>
             {
                 string directory = chars + hero.id + "/";
-                string model = Path.GetFileName(Directory.GetFiles(directory + "Animations/model", "*.spine.json").Single())
-                    .Replace(".spine.json", "");
+                string model=baseModels[hero.id];
                 string role = hero.heroClass == "soul_weaver" ? "manauser" : hero.heroClass == "thief" ? "assassin" : hero.heroClass;
                 return new ArenaDraftArt.Hero
                 {

@@ -1,0 +1,19 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "hit_new_slash_01",
+      "ani": "blue_critical",
+      "scale": "0.7~0.9",
+      "rotate": "-5~30",
+      "format": "spine",
+      "globalZ": 995.0
+    },
+    {
+      "source": "hit_new_slash_blue_cr_pati",
+      "rotate": "-35~10",
+      "format": "particle",
+      "globalZ": 999.0
+    }
+  ]
+}

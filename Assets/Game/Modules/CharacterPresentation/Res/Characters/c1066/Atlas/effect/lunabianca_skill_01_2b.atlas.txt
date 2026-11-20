@@ -1,0 +1,55 @@
+
+lunabianca_skill_01_2b.sct
+size: 545,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cloud_08
+  rotate: true
+  xy: 491, 135
+  size: 55, 44
+  orig: 55, 44
+  offset: 0, 0
+  index: -1
+cloud_14
+  rotate: false
+  xy: 197, 174
+  size: 83, 54
+  orig: 83, 54
+  offset: 0, 0
+  index: -1
+cloud_crack_06
+  rotate: false
+  xy: 491, 192
+  size: 47, 43
+  orig: 47, 43
+  offset: 0, 0
+  index: -1
+rock_dust1
+  rotate: false
+  xy: 197, 2
+  size: 170, 170
+  orig: 170, 170
+  offset: 0, 0
+  index: -1
+sk1_p_s1
+  rotate: true
+  xy: 2, 2
+  size: 211, 193
+  orig: 211, 193
+  offset: 0, 0
+  index: -1
+smoke_1
+  rotate: false
+  xy: 369, 135
+  size: 120, 119
+  orig: 120, 119
+  offset: 0, 0
+  index: -1
+smoke_big_02
+  rotate: false
+  xy: 369, 2
+  size: 174, 131
+  orig: 174, 131
+  offset: 0, 0
+  index: -1

@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AstralOath.Client.Skeletons;
+using AstralOath.Shared.Battle;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -44,6 +46,8 @@ namespace AstralOath.Client.BattleScene
         private int presentationPauseCount;
         private int presentationControlCount;
         private SharedSource sourceLease, warmedSource;
+        private BattleHudPreview.ModelForm baseForm;
+        private BattleHudPreview.ModelForm[] forms = Array.Empty<BattleHudPreview.ModelForm>();
 
         // Only live actors retain entries. Scene identity prevents independent battles from
         // sharing a lifetime; each player still owns its pose, tracks, mesh and materials.
@@ -170,6 +174,8 @@ namespace AstralOath.Client.BattleScene
             SharedSource prepared = null)
         {
             ValidateModel(model, skinName, label);
+            baseForm = null;
+            forms = Array.Empty<BattleHudPreview.ModelForm>();
             resolvedHeroId = definitionId;
             warmedSource = prepared;
             if (skeleton == model.document && atlas == model.atlas && page == model.pages[0] &&
@@ -178,6 +184,13 @@ namespace AstralOath.Client.BattleScene
 
             bool wasEnabled = enabled;
             enabled = false;
+            AssignModel(model, skinName);
+            name = label;
+            enabled = wasEnabled;
+        }
+
+        private void AssignModel(BattleSkillPresentationAsset model, string skinName)
+        {
             skeleton = model.document;
             atlas = model.atlas;
             page = model.pages[0];
@@ -185,8 +198,68 @@ namespace AstralOath.Client.BattleScene
             skin = skinName;
             sourceScale = model.scale;
             premultipliedAlpha = model.premultipliedAlpha;
-            name = label;
-            enabled = wasEnabled;
+        }
+
+        internal void ConfigureForms(BattleSkillPresentationAsset ordinary, string normalSkin, BattleHudPreview.ModelForm[] variants)
+        {
+            if (variants == null || variants.Length == 0) return;
+            forms = variants;
+            baseForm = new BattleHudPreview.ModelForm { skeleton = ordinary, skin = normalSkin, prepared = sourceLease };
+            foreach (var form in forms)
+            {
+                if (form.prepared != null) continue;
+                var model = form.skeleton;
+                ValidateModel(model, form.skin, name);
+                var key = new SourceKey(gameObject.scene, model.document, model.atlas, model.pages[0],
+                    model.pageNames[0], model.premultipliedAlpha, model.scale);
+                var source = CreateModelSource(model.document, model.atlas, model.pages[0], model.pageNames[0],
+                    model.premultipliedAlpha, model.scale);
+                new SkeletonPlayerFactory().Prepare(source);
+                form.prepared = new SharedSource(key, source);
+            }
+        }
+
+        private BattleHudPreview.ModelForm GraphForm(string id) =>
+            forms.FirstOrDefault(form => Array.IndexOf(form.graphs, id) >= 0) ?? baseForm;
+
+        internal BattleSkeletonMetadata GraphMetadata(string id)
+        {
+            var form = GraphForm(id);
+            if (form == null) return null;
+            return form.metadata ??= BattleSkeletonMetadata.Read(form.skeleton.document.text);
+        }
+
+        internal void UseGraphForm(string id)
+        {
+            var form = GraphForm(id);
+            if (form != null) SwapBody(form.skeleton, form.skin, form.prepared);
+        }
+
+        internal void ReconcileForm(BattleUnitSnapshot state)
+        {
+            if (baseForm == null) return;
+            var form = forms.FirstOrDefault(item => Enum.TryParse<BattleStatusKind>(item.status, out var kind) &&
+                state.GetStatus(kind) != null) ?? baseForm;
+            SwapBody(form.skeleton, form.skin, form.prepared);
+        }
+
+        internal void UseSourceBody(BattleSkillPresentationAsset model)
+        {
+            var form = forms.FirstOrDefault(candidate => candidate.skeleton.document == model.document);
+            SwapBody(model, form?.skin ?? skin, form?.prepared);
+        }
+
+        private void SwapBody(BattleSkillPresentationAsset model, string skinName, SharedSource prepared)
+        {
+            if (skeleton == model.document && skin == skinName) return;
+            ValidateModel(model, skinName, name);
+            bool loaded = player != null;
+            if (loaded) ReleasePlayer();
+            AssignModel(model, skinName);
+            warmedSource = prepared;
+            if (!loaded) return;
+            InitializePlayer();
+            ApplyTurnIdleIfFree();
         }
 
         internal void BeginArrivalRun()
@@ -461,6 +534,11 @@ namespace AstralOath.Client.BattleScene
         private void OnEnable()
         {
             OnDisable(); // Also makes a repeated activation safe when editor reload options change.
+            InitializePlayer();
+        }
+
+        private void InitializePlayer()
+        {
             // The additive scene briefly enables the authored roots before the staging
             // callback parks them. Only the verified online roster may initialize rigs.
             if (BattleOnlineLaunch.IsStaging(gameObject.scene)) return;
@@ -534,11 +612,27 @@ namespace AstralOath.Client.BattleScene
 
         private void OnDisable()
         {
+            try { ReleasePlayer(); }
+            finally
+            {
+                actionBlocked = false;
+                turnReady = false;
+                turnEntryPending = false;
+                paused = false;
+                defeatPose = false;
+                presentationPauseCount = 0;
+                presentationControlCount = 0;
+            }
+        }
+
+        private void ReleasePlayer()
+        {
             try
             {
                 if (player != null)
                 {
                     player.Event -= OnPlaybackEvent;
+                    if (player.Root) player.Root.SetActive(false);
                     player.Dispose();
                 }
             }
@@ -551,14 +645,7 @@ namespace AstralOath.Client.BattleScene
                 turnIdleAnimation = null;
                 turnEntryAnimation = null;
                 incapacitatedAnimation = null;
-                actionBlocked = false;
-                turnReady = false;
-                turnEntryPending = false;
                 playingBattleAnimation = false;
-                paused = false;
-                defeatPose = false;
-                presentationPauseCount = 0;
-                presentationControlCount = 0;
                 sourceReaction = null;
             }
         }

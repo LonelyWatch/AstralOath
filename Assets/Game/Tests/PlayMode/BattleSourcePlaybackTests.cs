@@ -169,6 +169,11 @@ namespace AstralOath.Client.Tests
                 var skill = catalog.skills.Single(row => row.heroId == id && row.slot == 2);
                 Assert.That(map.Require<GameButton>("skill2").interactable, Is.EqualTo(skill.target != "passive"));
                 var basic = catalog.skills.Single(row => row.heroId == id && row.slot == 1);
+                if (id == "c1067")
+                {
+                    Assert.That(actor.GetCooldown("c1067.s3"), Is.GreaterThan(0));
+                    Assert.That(map.Require<GameButton>("skill3").interactable, Is.False);
+                }
                 if (!string.IsNullOrEmpty(basic.speedUpPresentationId))
                 {
                     var sprites = HostField<Sprite[]>(host, "battleSprites");
@@ -205,20 +210,19 @@ namespace AstralOath.Client.Tests
             var allies = units.Find("Allies").GetComponentsInChildren<BattlePreviewActor>();
             var enemies = units.Find("Enemies").GetComponentsInChildren<BattlePreviewActor>();
             var front = allies[0];
-            var models = (Array)typeof(BattleHudPreview).GetField("heroModels", PrivateInstance).GetValue(host);
             foreach (string id in added)
             {
-                var model = models.Cast<object>().Single(value => (string)value.GetType().GetField("id").GetValue(value) == id);
-                var type = model.GetType();
-                typeof(BattlePreviewActor).GetMethod("UseModel", PrivateInstance).Invoke(front, new[]
-                {
-                    type.GetField("skeleton").GetValue(model), type.GetField("skin").GetValue(model), id
-                });
+                typeof(BattleHudPreview).GetMethod("ConfigureActorModel", PrivateInstance).Invoke(host, new object[] { front, id });
                 yield return null; // Finish deferred disposal of the prior skeleton before taking a renderer baseline.
                 var renderer = front.GetComponentInChildren<MeshRenderer>();
                 Assert.That(renderer && renderer.enabled && renderer.GetComponent<MeshFilter>().sharedMesh.vertexCount > 0, Is.True, id);
                 foreach (var skill in catalog.skills.Where(row => row.heroId == id))
                 {
+                    if (string.IsNullOrEmpty(skill.presentationId))
+                    {
+                        Assert.That(skill.target, Is.EqualTo("passive"), skill.id + " must have an active source graph");
+                        continue;
+                    }
                     var protection = catalog.effects.Where(effect => effect.skillId == skill.id && effect.phase == "after_ally_damaged").ToArray();
                     var recipients = skill.target switch
                     {
@@ -245,14 +249,16 @@ namespace AstralOath.Client.Tests
                     if (!string.IsNullOrEmpty(skill.alternatePresentationId))
                     {
                         string sample = id + "-s" + skill.slot + "-" + skill.alternatePresentationStatus;
-                        yield return Play(skill.alternatePresentationId, sample, front, recipients[0], recipients,
+                        var alternateTargets = catalog.effects.Any(effect => effect.skillId == skill.id &&
+                            effect.operation == "aoe_if_status" && effect.status == skill.alternatePresentationStatus) ? enemies : recipients;
+                        yield return Play(skill.alternatePresentationId, sample, front, alternateTargets[0], alternateTargets,
                             Phase.Impact, Phase.None, cutinsByGraph[skill.alternatePresentationId]);
                         TestContext.WriteLine($"{sample}: {skill.alternatePresentationId} passed source playback and reset.");
                     }
                     if (!string.IsNullOrEmpty(skill.burnPresentationId))
                     {
                         yield return Play(skill.burnPresentationId, id + "-s" + skill.slot + "-burn",
-                            front, recipients[0], recipients, Phase.None, Phase.None);
+                            front, recipients[0], recipients, Phase.Impact, Phase.None, cutinsByGraph[skill.burnPresentationId]);
                         TestContext.WriteLine($"{id} S{skill.slot} Burn: {skill.burnPresentationId} passed source playback and reset.");
                     }
                     if (!string.IsNullOrEmpty(skill.speedUpPresentationId) &&
@@ -260,6 +266,184 @@ namespace AstralOath.Client.Tests
                         yield return Play(skill.speedUpPresentationId, id + "-s" + skill.slot + "-speed",
                             front, recipients[0], recipients, Phase.None, Phase.None);
                 }
+            }
+        }
+
+        [UnityTest]
+        [Timeout(180000)]
+        public IEnumerator IdolTransformationReachesTheRealTurnHudAndRestoresAnOrdinarySnapshot()
+        {
+            var roots = default(GameObject[]);
+            yield return LoadBattle(value => roots = value);
+            var host = roots.Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            typeof(BattleHudPreview).GetField("allyHeroIds", PrivateInstance).SetValue(host, Enumerable.Repeat("c1067", 4).ToArray());
+            typeof(BattleHudPreview).GetField("enemyHeroIds", PrivateInstance).SetValue(host, BattleScenePreviewTests.SlowEnemyIds());
+            host.enabled = true;
+            host.StartBattle();
+            var opening = host.SimulationSnapshot;
+            var simulation = typeof(BattleHudPreview).GetField("simulation", PrivateInstance).GetValue(host);
+            var type = simulation.GetType();
+            var tick = type.GetMethod("Tick");
+            var canAct = type.GetProperty("CanAct", PrivateInstance);
+            var map = HostField<BindingMap>(host, "hud");
+            string transformed = null;
+            for (int step = 0; step < 5000; step++)
+            {
+                var snapshot = host.SimulationSnapshot;
+                Assert.That(snapshot.Outcome, Is.EqualTo(BattleOutcome.InProgress));
+                if ((bool)canAct.GetValue(simulation))
+                {
+                    var current = snapshot.GetUnit(snapshot.CurrentActorId);
+                    if (current.GetStatus(BattleStatusKind.Idol) != null)
+                    {
+                        Assert.That(current.InstanceId, Is.EqualTo(transformed));
+                        string Icon(int slot) => ((Image)map.Require<GameButton>("skill" + slot).targetGraphic).sprite.name;
+                        Assert.That(Icon(1), Is.EqualTo("sk_c1067_4"));
+                        Assert.That(Icon(2), Is.EqualTo("sk_c1067_5"));
+                        var views = (IDictionary)type.GetField("views", PrivateInstance).GetValue(simulation);
+                        var unit = views[current.InstanceId];
+                        var actor = (BattlePreviewActor)unit.GetType().GetProperty("Actor").GetValue(unit);
+                        var body = typeof(BattlePreviewActor).GetField("skeleton", PrivateInstance);
+                        Assert.That(((TextAsset)body.GetValue(actor)).name, Is.EqualTo("tamarinne_t.spine"));
+                        if (captureTarget)
+                            File.WriteAllBytes(Path.Combine(captureDirectory, "c1067-idol-turn.png"), RenderFrame(null, null, null).Composite);
+                        // Reconciliation also runs on a restored or resynchronized authoritative snapshot.
+                        unit.GetType().GetMethod("RefreshStatuses").Invoke(unit, new object[] { opening.GetUnit(current.InstanceId) });
+                        Assert.That(((TextAsset)body.GetValue(actor)).name, Is.EqualTo("tamarinne.spine"));
+                        yield break;
+                    }
+
+                    int slot = current.GetCooldown("c1067.s3") == 0 && transformed == null ? 3 :
+                        current.GetCooldown("c1067.s2") == 0 ? 2 : 1;
+                    map.Require<GameButton>("skill" + slot).onClick.Invoke();
+                    string target = slot == 1 ? snapshot.Units.First(unit => unit.IsAlive && unit.Slot.Side == BattleSide.Enemy).InstanceId : current.InstanceId;
+                    Assert.That(host.TrySelectBattleTarget(target), Is.True, $"Real S{slot} command on turn {snapshot.TurnNumber}");
+                    if (slot == 3)
+                    {
+                        transformed = current.InstanceId;
+                        Assert.That(host.SimulationSnapshot.GetUnit(transformed).GetStatus(BattleStatusKind.Idol), Is.Not.Null);
+                    }
+                }
+                tick.Invoke(simulation, new object[] { .2f });
+                if (step % 12 == 0) yield return null;
+            }
+            Assert.Fail("A normal S1/S2 rotation must unlock the opening S3 and yield an idol turn.");
+        }
+
+        [UnityTest]
+        [Timeout(180000)]
+        public IEnumerator BellonaExtraAttackAndVioletCounterPlayTheirAcceptedGraphs()
+        {
+            var roots = default(GameObject[]);
+            yield return LoadBattle(value => roots = value);
+            var host = roots.Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            typeof(BattleHudPreview).GetField("allyHeroIds", PrivateInstance).SetValue(host, new[] { "c1071", "c1067", "c1067", "c1067" });
+            host.enabled = true;
+            var map = HostField<BindingMap>(host, "hud");
+            foreach (var (origin, graph, enemies, file) in new[]
+            {
+                (BattleActionOrigin.Counter, "c_violetto_skill_01", Enumerable.Repeat("c1074", 4).ToArray(), "c1074-real-counter.png"),
+                (BattleActionOrigin.ExtraAttack, "c_bellona_skill_03", BattleScenePreviewTests.SlowEnemyIds(), "c1071-real-extra.png")
+            })
+            {
+                typeof(BattleHudPreview).GetField("enemyHeroIds", PrivateInstance).SetValue(host, enemies);
+                host.StartBattle();
+                var simulation = typeof(BattleHudPreview).GetField("simulation", PrivateInstance).GetValue(host);
+                var type = simulation.GetType();
+                var tick = type.GetMethod("Tick");
+                var queue = (Queue<BattleFlowEvent>)type.GetField("playback", PrivateInstance).GetValue(simulation);
+                var canAct = type.GetProperty("CanAct", PrivateInstance);
+                BattleFlowEvent accepted = null;
+                int fanTurns = 0;
+                bool rendered = false;
+                for (int step = 0; step < 5000 && !rendered; step++)
+                {
+                    var snapshot = host.SimulationSnapshot;
+                    if (snapshot.Outcome != BattleOutcome.InProgress && queue.Count == 0 && accepted == null) break;
+                    if ((bool)canAct.GetValue(simulation))
+                    {
+                        var current = snapshot.GetUnit(snapshot.CurrentActorId);
+                        int slot = 1;
+                        if (current.DefinitionId == "c1071")
+                        {
+                            slot = fanTurns == 0 ? 3 : fanTurns == 1 ? 2 : 1;
+                            TestContext.WriteLine($"{origin} S{slot} Bellona turn {fanTurns + 1}, focus {current.Resource.Amount}");
+                            fanTurns++;
+                        }
+                        else if (current.GetCooldown("c1067.s2") == 0) slot = 2;
+                        string target = current.DefinitionId == "c1067" && slot == 2 ? current.InstanceId :
+                            snapshot.Units.Where(unit => unit.IsAlive && unit.Slot.Side == BattleSide.Enemy)
+                                .OrderByDescending(unit => unit.CurrentHealth).First().InstanceId;
+                        map.Require<GameButton>("skill" + slot).onClick.Invoke();
+                        Assert.That(host.TrySelectBattleTarget(target), Is.True);
+                    }
+                    accepted ??= queue.FirstOrDefault(item => item.Kind == BattleFlowEventKind.Action && item.Origin == origin && item.PresentationId == graph);
+                    tick.Invoke(simulation, new object[] { .1f });
+                    if (accepted != null && !queue.Contains(accepted))
+                    {
+                        var stage = type.GetField("skillPresentation", PrivateInstance).GetValue(simulation);
+                        Assert.That(PresentationType.GetField("currentPresentationId", PrivateInstance).GetValue(stage), Is.EqualTo(graph));
+                        if ((float)PresentationType.GetProperty("StageTime").GetValue(stage) >= .3f)
+                        {
+                            if (captureTarget) File.WriteAllBytes(Path.Combine(captureDirectory, file), RenderFrame(null, null, null).Composite);
+                            TestContext.WriteLine(accepted.Origin + " " + accepted.SkillId + " " + accepted.PresentationId);
+                            rendered = true;
+                        }
+                    }
+                    if (step % 12 == 0) yield return null;
+                }
+                Assert.That(rendered, Is.True, $"{origin} must reach the normal renderer, Bellona acted {fanTurns} times.");
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator LunaWideSkyReachesBothEdgesForEitherTeam()
+        {
+            var roots = default(GameObject[]);
+            yield return LoadBattle(value => roots = value);
+            var host = roots.Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            var previousTarget = camera.targetTexture;
+            var previousActive = RenderTexture.active;
+            float previousAspect = camera.aspect;
+            foreach (bool fromRight in new[] { false, true })
+            foreach (int width in new[] { 960, 1260 })
+            {
+                const int height = 540;
+                var target = RenderTexture.GetTemporary(width, height, 24);
+                var pixels = new Texture2D(width, height, TextureFormat.RGB24, false);
+                try
+                {
+                    camera.targetTexture = target;
+                    camera.aspect = (float)width / height;
+                    var caster = units.Find(fromRight ? "Enemies" : "Allies").GetComponentsInChildren<BattlePreviewActor>()[0];
+                    var recipients = units.Find(fromRight ? "Allies" : "Enemies").GetComponentsInChildren<BattlePreviewActor>();
+                    typeof(BattleHudPreview).GetMethod("ConfigureActorModel", PrivateInstance).Invoke(host, new object[] { caster, "c1066" });
+                    playback = (IDisposable)Activator.CreateInstance(PresentationType,
+                        new object[] { units, graphs, assets, camera, setCinematicVisible, background });
+                    Begin.Invoke(playback, new object[] { "c_lunabianca_skill_03", caster, recipients[0], new[] { recipients[0] } });
+                    for (int i = 0; i < 60; i++) Tick.Invoke(playback, new object[] { 1f / 30f });
+                    camera.Render();
+                    RenderTexture.active = target;
+                    pixels.ReadPixels(new Rect(0, 0, width, height), 0, 0);
+                    pixels.Apply();
+                    if (!string.IsNullOrEmpty(captureDirectory))
+                        File.WriteAllBytes(Path.Combine(captureDirectory, $"c1066-sky-{(fromRight ? "right" : "left")}-{width}.png"), pixels.EncodeToPNG());
+                    foreach (float x in new[] { .03f, .97f })
+                    foreach (float y in new[] { .35f, .55f, .72f })
+                    {
+                        Color color = pixels.GetPixelBilinear(x, y);
+                        Assert.That(color.b, Is.GreaterThan(.24f), $"The cloud artwork must reach ({x},{y}) at {width} × {height}, caster right={fromRight}.");
+                    }
+                }
+                finally
+                {
+                    playback?.Dispose(); playback = null;
+                    camera.targetTexture = previousTarget; camera.aspect = previousAspect;
+                    RenderTexture.active = previousActive;
+                    UnityEngine.Object.Destroy(pixels);
+                    RenderTexture.ReleaseTemporary(target);
+                }
+                yield return null;
             }
         }
 
@@ -470,6 +654,7 @@ namespace AstralOath.Client.Tests
         private IEnumerator Play(string id, string sample, BattlePreviewActor actor, BattlePreviewActor target,
             BattlePreviewActor[] recipients, Phase capturePhases, Phase interruptAt, string[] expectedCutins = null)
         {
+            if (expectedCutins?.Length > 0) capturePhases |= Phase.Cutin;
             playback ??= (IDisposable)Activator.CreateInstance(PresentationType,
                 new object[] { units, graphs, assets, camera, setCinematicVisible, background });
             var effects = units.Find("Battle Skill Effects");
@@ -483,6 +668,13 @@ namespace AstralOath.Client.Tests
             var frameCaptures = new List<string>();
             var bodyCaptures = new List<string>();
             var timing = ((float Impact, float Duration))Begin.Invoke(playback, new object[] { id, actor, target, recipients });
+            var bodyDocument = typeof(BattlePreviewActor).GetField("skeleton", PrivateInstance);
+            if (id.StartsWith("c_tamarinne_", StringComparison.Ordinal))
+            {
+                bool idol = id is "c_tamarinne_skill_01_1" or "c_tamarinne_skill_02_2";
+                Assert.That(((TextAsset)bodyDocument.GetValue(actor)).name, Is.EqualTo(idol ? "tamarinne_t.spine" : "tamarinne.spine"),
+                    id + " must start with the model that owns its skill animation.");
+            }
             float fullDuration = (float)PresentationType.GetProperty("FullDuration", PrivateInstance).GetValue(playback);
             Assert.That(float.IsFinite(timing.Duration) && timing.Duration > 0f && timing.Duration < ActionTimeout, Is.True, sample);
             Assert.That(timing.Impact, Is.InRange(0f, timing.Duration), sample);
@@ -713,6 +905,9 @@ namespace AstralOath.Client.Tests
             yield return null;
             yield return null;
             baseline.AssertRestored(sample);
+            if (id == "c_tamarinne_skill_03")
+                Assert.That(((TextAsset)bodyDocument.GetValue(actor)).name, Is.EqualTo("tamarinne_t.spine"),
+                    "The source MODEL_BODY must leave the transformed body visible after the portrait.");
             if (captureTarget && interruptAt == Phase.None && (sample.EndsWith("-s3", StringComparison.Ordinal) || expectedCutins?.Length > 0))
                 File.WriteAllBytes(Path.Combine(captureDirectory, sample + "-restored.png"), RenderFrame(stage, null, visualTargets).Composite);
             Assert.That(cinematicVisible, Is.False, sample + " left the gameplay HUD hidden");
@@ -827,7 +1022,7 @@ namespace AstralOath.Client.Tests
             private readonly int cameraChildren;
             private readonly bool backgroundActive;
             private readonly Vector3 shadowHome;
-            private readonly (Renderer Renderer, bool Enabled, Vector3 Position, Quaternion Rotation, Vector3 Scale)[] visibility;
+            private readonly (Renderer Renderer, BattlePreviewActor Owner, bool Enabled, Vector3 Position, Quaternion Rotation, Vector3 Scale)[] visibility;
             private readonly (Transform Transform, Vector3 Position, Vector3 Scale)[] backdrop;
 
             internal SceneBaseline(Camera camera, GameObject background, Transform units, Transform actor, Transform shadow)
@@ -847,8 +1042,12 @@ namespace AstralOath.Client.Tests
                 ActorHome = actor.localPosition;
                 ActorWorldX = actor.position.x;
                 shadowHome = shadow.localPosition;
+                var bodyProperty = typeof(BattlePreviewActor).GetProperty("PresentationRenderer", PrivateInstance);
+                var owners = units.GetComponentsInChildren<BattlePreviewActor>(true)
+                    .Where(view => (Renderer)bodyProperty.GetValue(view)).ToDictionary(view => (Renderer)bodyProperty.GetValue(view));
                 visibility = units.GetComponentsInChildren<Renderer>(true).Select(renderer =>
-                    (renderer, renderer.enabled, renderer.transform.localPosition, renderer.transform.localRotation, renderer.transform.localScale)).ToArray();
+                    (renderer, owners.GetValueOrDefault(renderer), renderer.enabled, renderer.transform.localPosition,
+                        renderer.transform.localRotation, renderer.transform.localScale)).ToArray();
                 backdrop = background.GetComponentsInChildren<SpriteRenderer>(true).Select(item =>
                     (item.transform, item.transform.localPosition, item.transform.localScale)).ToArray();
             }
@@ -871,8 +1070,9 @@ namespace AstralOath.Client.Tests
                 Assert.That(Vector3.Distance(shadow.localPosition, shadowHome), Is.LessThan(0.001f), sample);
                 foreach (var item in visibility)
                 {
-                    Assert.That(item.Renderer.enabled, Is.EqualTo(item.Enabled), sample + " changed slot renderer visibility");
-                    var body = item.Renderer.transform;
+                    var current = item.Owner ? (Renderer)typeof(BattlePreviewActor).GetProperty("PresentationRenderer", PrivateInstance).GetValue(item.Owner) : item.Renderer;
+                    Assert.That(current && current.enabled == item.Enabled, Is.True, sample + " changed slot renderer visibility");
+                    var body = current.transform;
                     Assert.That(Vector3.Distance(body.localPosition, item.Position), Is.LessThan(.001f), sample);
                     Assert.That(Vector3.Distance(body.localScale, item.Scale), Is.LessThan(.001f), sample);
                     Assert.That(Quaternion.Angle(body.localRotation, item.Rotation), Is.LessThan(.01f), sample);

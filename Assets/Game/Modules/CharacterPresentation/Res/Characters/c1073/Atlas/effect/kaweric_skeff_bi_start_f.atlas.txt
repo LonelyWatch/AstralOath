@@ -1,0 +1,55 @@
+
+kaweric_skeff_bi_start_f.sct
+size: 484,244
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+fire/3_ff_1_1
+  rotate: false
+  xy: 163, 173
+  size: 63, 64
+  orig: 63, 64
+  offset: 0, 0
+  index: -1
+fire/3_fs_5_2
+  rotate: true
+  xy: 228, 173
+  size: 51, 41
+  orig: 51, 41
+  offset: 0, 0
+  index: -1
+fire/idl_f_3_2
+  rotate: false
+  xy: 271, 173
+  size: 36, 46
+  orig: 36, 46
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 163, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+kaweric/kaweric_smoke_big_06
+  rotate: false
+  xy: 334, 134
+  size: 132, 108
+  orig: 132, 108
+  offset: 0, 0
+  index: -1
+kaweric/kaweric_smoke_big_07
+  rotate: true
+  xy: 334, 2
+  size: 130, 148
+  orig: 130, 148
+  offset: 0, 0
+  index: -1
+kaweric/kaweric_smoke_big_08
+  rotate: false
+  xy: 2, 2
+  size: 159, 222
+  orig: 159, 222
+  offset: 0, 0
+  index: -1

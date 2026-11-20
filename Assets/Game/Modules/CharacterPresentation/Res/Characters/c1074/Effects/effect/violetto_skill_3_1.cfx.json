@@ -1,0 +1,71 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "violetto_eff_skill_3_1_shadow",
+      "z": "3",
+      "format": "spine"
+    },
+    {
+      "source": "violetto_eff_skill_3_1",
+      "z": "5",
+      "format": "spine"
+    },
+    {
+      "source": "violeto_b_idle_ready_pati",
+      "x": "450",
+      "y": "740",
+      "z": "6",
+      "scale": "-1.5,1",
+      "rotate": "190",
+      "delay": "300",
+      "format": "particle"
+    },
+    {
+      "source": "violeto_b_idle_ready_pati",
+      "x": "600",
+      "y": "800",
+      "z": "6",
+      "scale": "-1.5,-0.8",
+      "delay": "600",
+      "format": "particle"
+    },
+    {
+      "source": "violeto_b_idle_ready_pati",
+      "x": "1350",
+      "y": "1300",
+      "z": "6",
+      "scale": "-1.2,1.2",
+      "rotate": "190",
+      "delay": "900",
+      "format": "particle"
+    },
+    {
+      "source": "violeto_b_idle_ready_pati",
+      "x": "1500",
+      "y": "1000",
+      "z": "6",
+      "scale": "1.6,-1.4",
+      "rotate": "-20",
+      "delay": "1300",
+      "format": "particle"
+    },
+    {
+      "source": "violeto_b_idle_ready_pati",
+      "x": "1650",
+      "z": "6",
+      "scale": "-1.4,0.6",
+      "delay": "1700",
+      "format": "particle"
+    },
+    {
+      "source": "violeto_b_idle_ready_pati",
+      "x": "1600",
+      "y": "500",
+      "z": "6",
+      "rotate": "120",
+      "delay": "2000",
+      "format": "particle"
+    }
+  ]
+}

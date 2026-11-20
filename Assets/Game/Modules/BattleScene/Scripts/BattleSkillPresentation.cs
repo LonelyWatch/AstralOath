@@ -224,6 +224,7 @@ namespace AstralOath.Client.BattleScene
             EndAction(incomingHandoff);
             incomingHandoff = false;
             caster = actor;
+            actor.UseGraphForm(presentationId);
             actor.BeginPresentationControl();
             currentPresentationId = string.IsNullOrEmpty(presentationId) ? actor.name : presentationId;
             home = actor.transform.localPosition;
@@ -281,6 +282,12 @@ namespace AstralOath.Client.BattleScene
                         break;
                     case "IDLE":
                         Schedule(at, actor.PlayBattleIdle);
+                        break;
+                    case "MODEL_BODY":
+                        string bodyKey = "model/" + (string)node["model_id"] + ".scsp";
+                        if (assets.TryGetValue(bodyKey, out var body))
+                            Schedule(at, () => actor.UseSourceBody(body));
+                        else WarnSource("Missing MODEL_BODY skeleton " + bodyKey);
                         break;
                     case "HIT":
                         string hit = (string)node["effect"];
@@ -392,13 +399,15 @@ namespace AstralOath.Client.BattleScene
             var edges = source["connections"].OfType<JObject>()
                 .Concat(additions?["connections"]?.OfType<JObject>() ?? Enumerable.Empty<JObject>()).ToLookup(edge => (int)edge["from"]);
             var earliest = new Dictionary<int, (float At, int Order, float Duration)>();
+            var model = caster.GraphMetadata((string)graph["id"]);
             var timelineEvents = (graph["assets"] ?? new JArray()).Where(item => (string)item["type"] == "timeline")
                 .Select(item => Document((string)item["source"])?["timeline"]?["default"])
                 .OfType<JObject>().ToArray();
             float EventTime(string animation, string name)
             {
                 if (string.IsNullOrEmpty(animation) || string.IsNullOrEmpty(name)) return -1f;
-                float spineTime = caster.GetBattleAnimationEventTime(animation, name);
+                float spineTime = model == null ? caster.GetBattleAnimationEventTime(animation, name) :
+                    model.Events.TryGetValue(animation, out var events) && events.TryGetValue(name, out var time) ? time : -1f;
                 if (spineTime >= 0f) return spineTime;
                 return timelineEvents.SelectMany(timeline => timeline[animation]?["frames"]?.OfType<JObject>() ?? Enumerable.Empty<JObject>())
                     .Where(frame => (string)frame["func"] == "event" && (string)frame["param"]?["name"] == name)
@@ -412,7 +421,7 @@ namespace AstralOath.Client.BattleScene
                 if (node[SkillTimelineOverrides.AbsoluteTimeField] != null)
                     at = Seconds(node, SkillTimelineOverrides.AbsoluteTimeField);
                 if (path.Contains(id) || (earliest.TryGetValue(id, out var old) && old.At <= at)) return;
-                float duration = durationOverride ?? Completion(node);
+                float duration = durationOverride ?? Completion(node, model);
                 float finish = at + duration;
                 float? jumpStart = null;
                 if (Kind(node) == "ANI") { animation = (string)node["ani"]; animationStart = at; }
@@ -423,7 +432,7 @@ namespace AstralOath.Client.BattleScene
                     float end = EventTime(animation, (string)node["to"]);
                     if (start >= 0f && end < 0f)
                     {
-                        end = caster.GetBattleAnimationDuration(animation);
+                        end = model?.Duration(animation) ?? caster.GetBattleAnimationDuration(animation);
                         WarnSource($"Missing {animation}/{node["to"]}; the scope ends with the original clip.");
                     }
                     if (end >= 0f) finish = Mathf.Max(at, animationStart + end);
@@ -496,13 +505,15 @@ namespace AstralOath.Client.BattleScene
             });
         }
 
-        private float Completion(JObject node)
+        private float Completion(JObject node, BattleSkeletonMetadata model)
         {
             switch (Kind(node))
             {
-                case "ANI": return caster.GetBattleAnimationDuration((string)node["ani"]);
+                case "ANI": return model?.Duration((string)node["ani"]) ?? caster.GetBattleAnimationDuration((string)node["ani"]);
                 case "CUTIN": return 0f; // Wall-clock suspension; source successors remain at the same stage time.
                 case "DARK": return Number(node, "duration", -1f) < 0f ? 0f : Seconds(node, "duration") + Seconds(node, "fadeOut");
+                case "COLOR_BLEND" when IsTargetHide(node) && Number(node, "duration") > 0f:
+                    return Seconds(node, "duration") + Seconds(node, "fadeOut");
                 case "EFFECT": return EffectDuration((string)node["source"]);
                 case "SHAKE": return ShakeDuration(node);
                 case "NODE_ANI": return NodeAnimationDuration(node);
@@ -561,7 +572,9 @@ namespace AstralOath.Client.BattleScene
                 float duration = skeleton.Duration(animation) / speed;
                 if (UsesIntroLoop(part, skeleton)) duration += skeleton.Duration("loop") / speed;
                 foreach (var action in (part["actions"] as JArray ?? new JArray()).OfType<JObject>())
-                    if (HasSpineAction(key, skeleton, (string)action["action"]))
+                    if ((string)action["action"] == "Opacity")
+                        duration = Mathf.Max(duration, Seconds(action, "delay") + Seconds(action, "interval"));
+                    else if (HasSpineAction(key, skeleton, (string)action["action"]))
                         duration = Mathf.Max(duration, Seconds(action, "delay") + skeleton.Duration((string)action["action"]) / speed);
                 return duration;
             }
@@ -914,13 +927,18 @@ namespace AstralOath.Client.BattleScene
             // The ken_nbg_tx lettering stays at the same pixels through the source's 0.60 → 0.65 → 0.60 zoom.
             bool fixedArtwork = !location.HasValue && string.IsNullOrEmpty(anchorName) && disableAutoFlipX &&
                 source == "ken_skill_03_tx.cfx";
+            // The sky spans the recording frame through the wide pre-portrait shot. Its graph
+            // gives a 20-pixel vertical offset and no actor anchor for either cloud primitive.
+            bool fullSky = !location.HasValue && string.IsNullOrEmpty(anchorName) && source == "lunabianca_skill_03_sky.cfx";
             // Confirmed screen cues use the authored 216-unit vertical offset without an actor location.
-            if (!location.HasValue && (offset.y != 216f || !string.IsNullOrEmpty(anchorName)))
+            if (!location.HasValue && !fullSky && (offset.y != 216f || !string.IsNullOrEmpty(anchorName)))
             {
                 WarnSource($"EFFECT {node["guid"]} has no confirmed default location. Using the primary target.");
                 location = 5;
             }
-            Cfx(source, primary, targets, location, Number(node, "scale", 1f), offset, false,
+            float scale = Number(node, "scale", 1f);
+            if (fullSky && camera) scale *= Mathf.Max(1f, camera.aspect / (16f / 9f));
+            Cfx(source, primary, targets, location, scale, offset, false,
                 anchorName: anchorName, disableAutoFlipX: disableAutoFlipX, fixedArtwork: fixedArtwork);
         }
 
@@ -952,6 +970,12 @@ namespace AstralOath.Client.BattleScene
                     Schedule(time + Seconds(part, "delay"), () =>
                         Spawn(key, part, null, null, scale, offset, side, true, order, disableAutoFlipX: disableAutoFlipX));
                 }
+                return;
+            }
+            if (location == 32 && key == EffectPath + "schniel_skeff_sk2_3.cfx")
+            {
+                if (TryGetCasterFormationCenter(Position, out Vector3 center))
+                    SpawnAt(() => center, caster, false);
                 return;
             }
             if (location == 31)
@@ -1145,7 +1169,16 @@ namespace AstralOath.Client.BattleScene
             {
                 player.Root.name = source;
                 player.Root.transform.localScale = new Vector3(side * size, size, size);
-                player.Root.GetComponent<MeshRenderer>().sortingOrder = order;
+                var renderer = player.Root.GetComponent<MeshRenderer>();
+                renderer.sortingOrder = order;
+                MaterialPropertyBlock opacityBlock = null;
+                var updateOpacity = PrimitiveOpacity(part, value =>
+                {
+                    opacityBlock ??= new MaterialPropertyBlock();
+                    renderer.GetPropertyBlock(opacityBlock);
+                    opacityBlock.SetFloat("_PresentationOpacity", value);
+                    renderer.SetPropertyBlock(opacityBlock);
+                });
                 player.Play(animation, false);
                 float lifetime = PrimitiveDuration(part);
                 if (UsesIntroLoop(part, metadata) && metadata.Duration("intro") / speed < lifetime)
@@ -1156,7 +1189,7 @@ namespace AstralOath.Client.BattleScene
                 foreach (var action in (part["actions"] as JArray ?? new JArray()).OfType<JObject>())
                 {
                     string name = (string)action["action"];
-                    if (!HasSpineAction(key, metadata, name)) continue;
+                    if (name == "Opacity" || !HasSpineAction(key, metadata, name)) continue;
                     Schedule(time + Seconds(action, "delay"), () =>
                     {
                         if (player.Root) player.Play(name, false);
@@ -1166,6 +1199,7 @@ namespace AstralOath.Client.BattleScene
                 {
                     follow();
                     player.Tick(delta * speed);
+                    updateOpacity?.Invoke();
                 }, () =>
                 {
                     player.Dispose();
@@ -1179,6 +1213,37 @@ namespace AstralOath.Client.BattleScene
             }
         }
 
+        // Primitive actions use the stage clock in milliseconds, independently of Spine animation speed.
+        private Action PrimitiveOpacity(JObject part, Action<float> set)
+        {
+            var fades = (part["actions"] as JArray)?.OfType<JObject>()
+                .Where(action => (string)action["action"] == "Opacity")
+                .Select(action => (Start: Seconds(action, "delay"), Duration: Seconds(action, "interval"),
+                    From: Number(action, "from", 1f), To: Number(action, "to", 0f)))
+                .OrderBy(fade => fade.Start).ToArray();
+            float initial = Mathf.Clamp01(Number(part, "opacity", 1f));
+            if (fades == null || fades.Length == 0)
+            {
+                if (!Mathf.Approximately(initial, 1f)) set(initial);
+                return null;
+            }
+            float start = time;
+            void Apply()
+            {
+                float elapsed = time - start;
+                float value = initial;
+                foreach (var fade in fades)
+                {
+                    if (elapsed < fade.Start) break;
+                    float progress = fade.Duration > 0f ? (elapsed - fade.Start) / fade.Duration : 1f;
+                    value = Mathf.Lerp(fade.From, fade.To, progress);
+                }
+                set(Mathf.Clamp01(value));
+            }
+            Apply();
+            return Apply;
+        }
+
         private void SpawnParticles(string source, JObject part, Transform group, float size, int order, Action follow,
             bool allowAfterglow)
         {
@@ -1187,10 +1252,12 @@ namespace AstralOath.Client.BattleScene
             if (speed <= 0f) throw new FormatException("Unplayable CFX speed in " + key);
             var particles = new BattleHudParticles(assets[key].document, textures, group, Vector2.zero, size * SourcePixel, order);
             particles.Play();
+            var updateOpacity = PrimitiveOpacity(part, particles.SetOpacity);
             active.Add((time + PrimitiveDuration(part), delta =>
             {
                 follow();
                 particles.Tick(delta * speed);
+                updateOpacity?.Invoke();
             }, () =>
             {
                 particles.Dispose();

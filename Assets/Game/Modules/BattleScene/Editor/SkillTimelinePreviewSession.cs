@@ -117,7 +117,6 @@ namespace AstralOath.Client.BattleScene.Editor
                 EnsureScene();
                 using var scope = new PreviewAllocationScope(scene);
                 var serializedHost = new SerializedObject(host);
-                var modelRows = serializedHost.FindProperty("heroModels");
                 var castingSide = world.Find(casterOnRight ? "Enemies" : "Allies");
                 var opposingSide = world.Find(casterOnRight ? "Allies" : "Enemies");
                 caster = ActorAt(castingSide, 0);
@@ -131,7 +130,7 @@ namespace AstralOath.Client.BattleScene.Editor
                 foreach (var actor in world.GetComponentsInChildren<BattlePreviewActor>(true))
                 {
                     actor.transform.parent.gameObject.SetActive(active.Contains(actor));
-                    if (active.Contains(actor)) BindActor(actor, modelRows, actor == caster ? heroId : targetHeroId ?? "c1001");
+                    if (active.Contains(actor)) BindActor(actor, actor == caster ? heroId : targetHeroId ?? "c1001");
                 }
                 this.graphId = graphId;
                 casterId = heroId;
@@ -332,7 +331,7 @@ namespace AstralOath.Client.BattleScene.Editor
             }
         }
 
-        private void BindActor(BattlePreviewActor actor, SerializedProperty modelRows, string heroId)
+        private void BindActor(BattlePreviewActor actor, string heroId)
         {
             if (heroId == SlimeTarget)
             {
@@ -350,18 +349,9 @@ namespace AstralOath.Client.BattleScene.Editor
                 initializedActors.Add(actor);
                 return;
             }
-            for (int index = 0; index < modelRows.arraySize; index++)
-            {
-                var model = modelRows.GetArrayElementAtIndex(index);
-                if (model.FindPropertyRelative("id").stringValue != heroId) continue;
-                var asset = ReadAsset(model.FindPropertyRelative("skeleton"));
-                actor.UseModel(asset, model.FindPropertyRelative("skin").stringValue,
-                    $"{model.FindPropertyRelative("label").stringValue} [{heroId}]");
-                actor.EnableEditorPreview();
-                initializedActors.Add(actor);
-                return;
-            }
-            throw new InvalidOperationException("当前战斗场景未安装角色模型 " + heroId);
+            host.ConfigureActorModel(actor, heroId);
+            actor.EnableEditorPreview();
+            initializedActors.Add(actor);
         }
 
         private static BattlePreviewActor ActorAt(Transform team, int index) =>

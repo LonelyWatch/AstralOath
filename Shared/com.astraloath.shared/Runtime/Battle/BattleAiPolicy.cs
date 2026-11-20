@@ -63,7 +63,7 @@ namespace AstralOath.Shared.Battle
         {
             if (!IsSkillAvailable(snapshot, skillId, useSoulBurn)) return false;
             var actor = CurrentActor(snapshot);
-            return BattleTargeting.CanSelect(snapshot, actor, BattleTargeting.PrimaryRule(skills[skillId], actor), targetId);
+            return BattleTargeting.CanSelect(snapshot, actor, BattleTargeting.PrimaryRule(skills[skillId], actor, useSoulBurn), targetId);
         }
 
         public bool IsForcedAction(BattleSnapshot snapshot)
@@ -113,7 +113,7 @@ namespace AstralOath.Shared.Battle
         private BattleAiChoice ChooseTarget(BattleSnapshot snapshot, BattleUnitSnapshot actor,
             BattleCatalogData.SkillRow skill, bool useSoulBurn)
         {
-            string targetRule = BattleTargeting.PrimaryRule(skill, actor);
+            string targetRule = BattleTargeting.PrimaryRule(skill, actor, useSoulBurn);
             var provoker = BattleTargeting.ActiveProvoker(snapshot, actor);
             if (provoker != null)
                 return BattleTargeting.CanSelectUnit(snapshot, actor, targetRule, provoker)

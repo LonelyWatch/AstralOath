@@ -1,0 +1,279 @@
+
+ludwig_skeff_bi_start.sct
+size: 487,1098
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+add_sk5_2
+  rotate: false
+  xy: 2, 23
+  size: 346, 108
+  orig: 346, 108
+  offset: 0, 0
+  index: -1
+add_sk5_3
+  rotate: false
+  xy: 2, 227
+  size: 344, 94
+  orig: 344, 94
+  offset: 0, 0
+  index: -1
+add_sk5_4
+  rotate: false
+  xy: 2, 133
+  size: 346, 92
+  orig: 346, 92
+  offset: 0, 0
+  index: -1
+burst_sphear_g
+  rotate: false
+  xy: 350, 149
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+flamedust_2
+  rotate: false
+  xy: 310, 792
+  size: 166, 201
+  orig: 166, 201
+  offset: 0, 0
+  index: -1
+flamedust_3
+  rotate: true
+  xy: 2, 751
+  size: 167, 214
+  orig: 167, 214
+  offset: 0, 0
+  index: -1
+flare/lud_shadow_01
+  rotate: false
+  xy: 337, 407
+  size: 148, 193
+  orig: 148, 193
+  offset: 0, 0
+  index: -1
+flare/lud_shadow_02
+  rotate: false
+  xy: 364, 2
+  size: 109, 145
+  orig: 109, 145
+  offset: 0, 0
+  index: -1
+flare/lud_shadow_03
+  rotate: true
+  xy: 237, 323
+  size: 65, 108
+  orig: 65, 108
+  offset: 0, 0
+  index: -1
+flare/lud_shadow_04
+  rotate: false
+  xy: 224, 585
+  size: 86, 163
+  orig: 86, 163
+  offset: 0, 0
+  index: -1
+flare/lud_shadow_05
+  rotate: false
+  xy: 237, 426
+  size: 95, 157
+  orig: 95, 157
+  offset: 0, 0
+  index: -1
+flare/lud_shadow_06
+  rotate: true
+  xy: 223, 1012
+  size: 79, 57
+  orig: 79, 57
+  offset: 0, 0
+  index: -1
+flare/lud_shadow_07
+  rotate: false
+  xy: 224, 951
+  size: 82, 59
+  orig: 82, 59
+  offset: 0, 0
+  index: -1
+flare/lud_shadow_08
+  rotate: false
+  xy: 374, 1060
+  size: 44, 33
+  orig: 44, 33
+  offset: 0, 0
+  index: -1
+flare/prismlight_01
+  rotate: false
+  xy: 2, 529
+  size: 220, 220
+  orig: 220, 220
+  offset: 0, 0
+  index: -1
+flare/prismlight_02
+  rotate: false
+  xy: 2, 323
+  size: 233, 204
+  orig: 233, 204
+  offset: 0, 0
+  index: -1
+flare/prismlight_03
+  rotate: false
+  xy: 450, 602
+  size: 18, 14
+  orig: 18, 14
+  offset: 0, 0
+  index: -1
+flare/prismlight_04
+  rotate: false
+  xy: 180, 1071
+  size: 27, 24
+  orig: 27, 24
+  offset: 0, 0
+  index: -1
+flare/prismlight_05
+  rotate: true
+  xy: 423, 602
+  size: 14, 25
+  orig: 14, 25
+  offset: 0, 0
+  index: -1
+flare/prismlight_06
+  rotate: true
+  xy: 465, 995
+  size: 24, 19
+  orig: 24, 19
+  offset: 0, 0
+  index: -1
+flare/prismlight_07
+  rotate: true
+  xy: 465, 1021
+  size: 21, 19
+  orig: 21, 19
+  offset: 0, 0
+  index: -1
+flare/prismlight_08
+  rotate: false
+  xy: 370, 602
+  size: 21, 16
+  orig: 21, 16
+  offset: 0, 0
+  index: -1
+flare/prismlight_09
+  rotate: true
+  xy: 180, 920
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+flare/prismlight_12
+  rotate: false
+  xy: 348, 283
+  size: 122, 122
+  orig: 122, 122
+  offset: 0, 0
+  index: -1
+flare/prismlight_13
+  rotate: false
+  xy: 2, 920
+  size: 176, 176
+  orig: 176, 176
+  offset: 0, 0
+  index: -1
+flare/prismlight_14
+  rotate: false
+  xy: 346, 1060
+  size: 26, 36
+  orig: 26, 36
+  offset: 0, 0
+  index: -1
+flare/prismlight_15
+  rotate: false
+  xy: 312, 585
+  size: 23, 34
+  orig: 23, 34
+  offset: 0, 0
+  index: -1
+flare/prismlight_16
+  rotate: true
+  xy: 393, 602
+  size: 14, 28
+  orig: 14, 28
+  offset: 0, 0
+  index: -1
+flare/prismlight_17
+  rotate: true
+  xy: 337, 602
+  size: 17, 31
+  orig: 17, 31
+  offset: 0, 0
+  index: -1
+flare/prismlight_18
+  rotate: false
+  xy: 282, 1012
+  size: 62, 73
+  orig: 62, 73
+  offset: 0, 0
+  index: -1
+flare/prismlight_19
+  rotate: false
+  xy: 180, 962
+  size: 41, 62
+  orig: 41, 62
+  offset: 0, 0
+  index: -1
+flare/prismlight_20
+  rotate: false
+  xy: 180, 1026
+  size: 40, 43
+  orig: 40, 43
+  offset: 0, 0
+  index: -1
+flare/prismlight_21
+  rotate: false
+  xy: 420, 1053
+  size: 28, 29
+  orig: 28, 29
+  offset: 0, 0
+  index: -1
+flare/prismlight_22
+  rotate: false
+  xy: 411, 995
+  size: 52, 56
+  orig: 52, 56
+  offset: 0, 0
+  index: -1
+flare/prismlight_23
+  rotate: true
+  xy: 237, 390
+  size: 34, 98
+  orig: 34, 98
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 312, 621
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+shape_glow
+  rotate: false
+  xy: 346, 995
+  size: 63, 63
+  orig: 63, 63
+  offset: 0, 0
+  index: -1
+star
+  rotate: false
+  xy: 224, 750
+  size: 84, 199
+  orig: 84, 199
+  offset: 0, 0
+  index: -1
+thrust_01
+  rotate: false
+  xy: 2, 2
+  size: 360, 19
+  orig: 360, 19
+  offset: 0, 0
+  index: -1

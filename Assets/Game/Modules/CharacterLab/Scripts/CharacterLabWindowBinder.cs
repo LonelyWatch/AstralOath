@@ -32,6 +32,7 @@ namespace AstralOath.Client.CharacterLab
         private CharacterRecord selected;
         private CharacterSkillRecord selectedSkill;
         private StgPlaybackSession performance;
+        private CharacterSkillBodies skillBodies;
         private CharacterEffectStage effects;
         private CharacterBlurPreview blurPreview;
         private bool portrait, loop = true, flipped, experimental, disposed;
@@ -63,7 +64,7 @@ namespace AstralOath.Client.CharacterLab
             Bind("loop", () => { loop=!loop; UpdateLoop(); if (player!=null && performance==null) RestartAnimation(false); });
             Bind("zoomIn", () => ZoomPreview(.8f));
             Bind("zoomOut", () => ZoomPreview(1.25f));
-            Bind("flip", () => { flipped=!flipped; player?.SetFlip(flipped,false); });
+            Bind("flip", () => { flipped=!flipped; if(skillBodies!=null)skillBodies.Flip(flipped);else player?.SetFlip(flipped,false); });
             Bind("background", () => {
                 var colors = new[]{new Color32(18,25,38,255),new Color32(92,96,105,255),new Color32(235,232,220,255),new Color32(35,96,79,255)};
                 context.PreviewCamera.backgroundColor=colors[++backgroundIndex%colors.Length];
@@ -232,9 +233,11 @@ namespace AstralOath.Client.CharacterLab
         {
             if(player==null) {Show("status","lab.choose_animation");return;}
             if(string.IsNullOrEmpty(player.CurrentAnimation) && animation!=null) player.Play(animation,loop);
-            player.Pause(false); foreach(var sound in sounds) sound.Pause(false); clock.Play();
+            PauseBody(false); foreach(var sound in sounds) sound.Pause(false); clock.Play();
         }
-        private void Pause() {clock.Pause();player?.Pause(true);foreach(var sound in sounds)sound.Pause(true);}
+        private void Pause() {clock.Pause();PauseBody(true);foreach(var sound in sounds)sound.Pause(true);}
+        private void PauseBody(bool value){if(skillBodies!=null)skillBodies.Pause(value);else player?.Pause(value);}
+        private void TickBody(float delta){if(skillBodies!=null)skillBodies.Tick(delta);else player?.Tick(delta);}
         private void Stop()
         {
             clock.ResetWithAudio(); StopSounds(); EndPerformance(); player?.Stop();
@@ -251,9 +254,10 @@ namespace AstralOath.Client.CharacterLab
         {
             if(player==null) return;
             Pause();StopSounds();
-            clock.Step(1d/30);
-            effects?.BeginFrame();performance?.Advance(1f/30); player.Pause(false);player.Tick(1f/30);player.Pause(true);
-            effects?.Tick(1f/30);effects?.BeginFrame();performance?.Advance(0);effects?.Tick(0);
+            float step=effects?.ConsumeCutin(1f/30)??1f/30;
+            clock.Step(step);
+            effects?.BeginFrame();performance?.Advance(step);PauseBody(false);TickBody(step);PauseBody(true);
+            effects?.Tick(step);effects?.BeginFrame();performance?.Advance(0);effects?.Tick(0);
         }
         private async Task Reset()
         {
@@ -288,16 +292,33 @@ namespace AstralOath.Client.CharacterLab
             if(performanceScope!=owner) return;
             clock.ResetWithAudio();
             var graph=JObject.Parse(text.text);
-            effects=new CharacterEffectStage(context,owner,player,(string)graph["id"]??skill.id,experimental,Diagnose,blurPreview);
+            if(selected.statusForms?.Length>0)
+            {
+                var bodies=new CharacterSkillBodies(selected,player,owner);
+                await bodies.Prepare(graph,skill,assets,context.Skeletons,owner,flipped);
+                owner.Token.ThrowIfCancellationRequested();
+                if(performanceScope!=owner)return;
+                skillBodies=bodies;
+            }
+            var caster=skillBodies?.Source??player;
+            effects=new CharacterEffectStage(context,owner,caster,(string)graph["id"]??skill.id,experimental,Diagnose,blurPreview);
             owner.Add(effects.Dispose);
-            await effects.PrepareAsync(graph,selected,catalog);
+            await effects.PrepareAsync(graph,selected,catalog,skillBodies?.VisibleForm?.timelineAddress);
             owner.Token.ThrowIfCancellationRequested();
             if(performanceScope!=owner)return;
-            performance=new StgPlaybackSession(graph,player,context.PreviewCamera,experimental,Diagnose);
+            performance=new StgPlaybackSession(graph,caster,context.PreviewCamera,experimental,Diagnose);
             performance.ResolveLocation=effects.ResolveLocation;
+            performance.EffectDuration=effects.EffectDuration;
+            performance.IsSuspended=()=>effects.HasCutin;
             performance.Timeline=effects.Timeline;
             performance.Effect+=effects.Effect;
             performance.Animation+=effects.Animation;
+            if(skillBodies!=null)performance.ModelBody+=model=>
+            {
+                skillBodies.ShowSourceModel(model);
+                string timeline=skillBodies.VisibleForm?.timelineAddress??selected.timelineAddress;
+                if(effects.SelectTimeline(graph,timeline))performance.Timeline=effects.Timeline;
+            };
             owner.Add(performance.Dispose);
             performance.Start();
             clock.Play();
@@ -309,7 +330,7 @@ namespace AstralOath.Client.CharacterLab
         {
             if(value.Kind==SkeletonPlaybackEventKind.Event) {effects?.Assist(value.Name); Diagnose("EVENT "+value.Name+" @ "+player.Time.ToString("F3")+"s");}
         }
-        private void EndPerformance() {performance=null;effects=null;var old=performanceScope;performanceScope=null;old?.Dispose();}
+        private void EndPerformance() {performance=null;effects=null;skillBodies=null;var old=performanceScope;performanceScope=null;old?.Dispose();}
         private void Diagnose(string message)
         {
             if(disposed) return;
@@ -321,8 +342,10 @@ namespace AstralOath.Client.CharacterLab
         {
             if(disposed || scope.Token.IsCancellationRequested) return;
             blurPreview?.Resize();
+            if(clock.IsPlaying&&effects?.HasCutin==true)
+                delta=(float)(effects.ConsumeCutin((float)(delta*clock.Speed))/clock.Speed);
             float step=(float)clock.Advance(delta);
-            if(step>0) {effects?.BeginFrame();performance?.Advance(step);player?.Tick(step);effects?.Tick(step);effects?.BeginFrame();performance?.Advance(0);effects?.Tick(0);}
+            if(step>0) {effects?.BeginFrame();performance?.Advance(step);TickBody(step);effects?.Tick(step);effects?.BeginFrame();performance?.Advance(0);effects?.Tick(0);}
             FrameAnimation();
             transportRefresh+=delta;
             if(transportRefresh>.1f) {transportRefresh=0;Show("transport","lab.transport",clock.Time,clock.Speed,locale.Resolve(clock.AudioAllowed?"lab.sound":"lab.silent"));}
@@ -334,7 +357,7 @@ namespace AstralOath.Client.CharacterLab
             if(disposed)return;disposed=true;
             // Destruction can arrive after the scene's renderers/canvas have already gone.
             // Stop() is a user operation that redraws setup pose, so disposal must not call it.
-            clock.Pause();player=null;performance=null;effects=null;
+            clock.Pause();player=null;performance=null;effects=null;skillBodies=null;
             var oldPerformance=performanceScope;performanceScope=null;
             var oldSelection=selectionScope;selectionScope=null;
             var oldSounds=sounds.ToArray();sounds.Clear();

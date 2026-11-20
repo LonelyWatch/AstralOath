@@ -1,0 +1,41 @@
+
+ludwig_skeff_sk3_1_b.sct
+size: 250,505
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+burst_sphear_g
+  rotate: false
+  xy: 116, 2
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+dark_metter
+  rotate: false
+  xy: 2, 442
+  size: 187, 61
+  orig: 187, 61
+  offset: 0, 0
+  index: -1
+dark_metter2
+  rotate: true
+  xy: 173, 136
+  size: 187, 61
+  orig: 187, 61
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 271
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+light_long
+  rotate: false
+  xy: 2, 2
+  size: 112, 267
+  orig: 112, 267
+  offset: 0, 0
+  index: -1

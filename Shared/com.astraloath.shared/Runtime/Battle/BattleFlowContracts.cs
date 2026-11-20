@@ -16,7 +16,7 @@ namespace AstralOath.Shared.Battle
         GreaterSpeedUp, CriticalDamageUp, EffectivenessUp, Poison, Invincible,
         CriticalChanceUp, ContinuousHealing, Burn, Bleed, Immortality, HitChanceDown,
         GreaterAttackUp, Unbuffable, DamageLimit, SpiritlordProtection, Rage, Targeted, Reflect, Bomb, VampiricTouch,
-        MagicNail, Sleep, Restrict, Bind, SkillNullifier, Vigor
+        MagicNail, Sleep, Restrict, Bind, SkillNullifier, Vigor, Idol, Venom, Perception, MagicBarrier
     }
     public enum BattleFlowEventKind
     {
@@ -109,7 +109,7 @@ namespace AstralOath.Shared.Battle
         public int Strength { get; }
         public string SourceId { get; }
 
-        internal static bool IsStackable(BattleStatusKind kind) => kind == BattleStatusKind.Poison ||
+        internal static bool IsStackable(BattleStatusKind kind) => kind == BattleStatusKind.Poison || kind == BattleStatusKind.Venom ||
             kind == BattleStatusKind.Burn || kind == BattleStatusKind.Bleed || kind == BattleStatusKind.ContinuousHealing || kind == BattleStatusKind.Bomb;
     }
 

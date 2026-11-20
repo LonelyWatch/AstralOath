@@ -1,0 +1,55 @@
+
+tamarinne_t_sk1eff_target_f.sct
+size: 224,455
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 2, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+tama_atk_p_1
+  rotate: true
+  xy: 89, 331
+  size: 68, 129
+  orig: 68, 129
+  offset: 0, 0
+  index: -1
+tama_atk_p_2
+  rotate: true
+  xy: 2, 327
+  size: 126, 85
+  orig: 126, 85
+  offset: 0, 0
+  index: -1
+tama_atk_p_3
+  rotate: true
+  xy: 89, 401
+  size: 46, 77
+  orig: 46, 77
+  offset: 0, 0
+  index: -1
+tama_t_atk_1
+  rotate: false
+  xy: 2, 173
+  size: 123, 152
+  orig: 123, 152
+  offset: 0, 0
+  index: -1
+tama_t_atk_2
+  rotate: false
+  xy: 173, 2
+  size: 49, 150
+  orig: 49, 150
+  offset: 0, 0
+  index: -1
+tama_t_atk_3
+  rotate: false
+  xy: 127, 173
+  size: 84, 156
+  orig: 84, 156
+  offset: 0, 0
+  index: -1

@@ -9,7 +9,7 @@ class ImportBoundaryTests(unittest.TestCase):
         with self.assertRaises(ValueError): importer.select_characters(["c9999"])
         self.assertEqual(len(importer.select_characters(["c1001"])),1)
     def test_base_roster_uses_exact_graph_roots_in_id_order(self):
-        self.assertEqual(list(importer.CHARACTERS), [f"c{i}" for i in (*range(1001, 1025), *range(1027, 1041), 1042, 1043, 1044, *range(1046, 1051), 1053, 1054, 1055, 1062)])
+        self.assertEqual(list(importer.CHARACTERS), [f"c{i}" for i in (*range(1001, 1025), *range(1027, 1041), 1042, 1043, 1044, *range(1046, 1051), 1053, 1054, 1055, 1060, 1062, 1065, 1066, 1067, *range(1069, 1075))])
         self.assertEqual(importer.skill_ids("c1007"), [f"c_wilderd_skill_{i:02}" for i in range(1, 4)])
         self.assertEqual(importer.skill_ids("c1009")[-1], "c_charlotte_skill_03_05")
         self.assertEqual(importer.skill_ids("c1010"), [f"c_jerato_skill_{i:02}" for i in range(1, 4)])
@@ -36,6 +36,28 @@ class ImportBoundaryTests(unittest.TestCase):
             "c_ken_skill_01_02", "c_ken_skill_02", "c_ken_skill_03", "c_ken_skill_01_01"])
         self.assertEqual(importer.japanese_bank("c1044"), "sound/ja/voc3.audio_ja.bank")
         self.assertEqual(importer.japanese_bank("c1055"), "sound/ja/voc5.audio_ja.bank")
+
+    def test_roster_51_to_60_only_includes_playable_graphs_and_sourced_forms(self):
+        src=Path("D:/sevenepic/原始资源")
+        if not src.is_dir():
+            self.skipTest("Read-only asset source is unavailable.")
+        ids=["c1060","c1065","c1066","c1067","c1069","c1070","c1071","c1072","c1073","c1074"]
+        heroes=importer.select_characters(ids)
+        closure=importer.Closure(src).build(heroes)
+        records={row["id"]:row for row in importer.build_catalog(closure,heroes,True)["characters"]}
+        self.assertEqual(sum(len(row["skills"]) for row in records.values()),34)
+        luna=records["c1066"]["skills"]
+        self.assertEqual([r["id"] for r in luna],["c_lunabianca_skill_01_1","c_lunabianca_skill_03","c_lunabianca_skill_01_2","c_lunabianca_skill_01_3"])
+        self.assertEqual(luna[1]["displayNameKey"],"character.lunabianca.skill3")
+        self.assertEqual(records["c1070"]["skills"][-1]["id"],"c_krau_skill_03_2")
+        idol=records["c1067"]["statusForms"][0]
+        self.assertEqual(idol["status"],"Idol")
+        self.assertEqual(idol["modelAddress"],importer.address("model/tamarinne_t.scsp"))
+        self.assertEqual(idol["timelineAddress"],importer.address("model/tamarinne_t.timeline"))
+        self.assertEqual(idol["skin"],"default")
+        self.assertIn("model/tamarinne_t.scsp",closure.dependencies["stagept/c_tamarinne_skill_03.stg"])
+        self.assertIn("model/tamarinne_t.timeline",closure.dependencies["stagept/c_tamarinne_skill_03.stg"])
+        self.assertEqual([row["id"] for row in records["c1067"]["skills"] if row.get("modelAddress")==idol["modelAddress"]],["c_tamarinne_skill_01_1","c_tamarinne_skill_02_2"])
 
     def test_new_roster_keeps_native_graph_names_and_includes_burn_alternates(self):
         expected = {

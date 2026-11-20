@@ -1,0 +1,34 @@
+
+schniel_skeff_b_ready_bright2.sct
+size: 275,432
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 33, 251
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: true
+  xy: 2, 2
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1
+particle_klm_1_1
+  rotate: true
+  xy: 33, 2
+  size: 247, 240
+  orig: 247, 240
+  offset: 0, 0
+  index: -1
+rem_smoke_2-3-1
+  rotate: true
+  xy: 204, 251
+  size: 22, 36
+  orig: 22, 36
+  offset: 0, 0
+  index: -1

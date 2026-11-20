@@ -59,7 +59,9 @@ if (!battleHeroes.SequenceEqual(tables.BattleHeroes.DataList.Select(row => new B
         row.AlwaysCritical, row.AoeWhenBuffed, row.AoeOutsideTurn, row.CasterAttackBarrierBp,
         row.ResourceCost, row.ResourceGain, row.ResourceGainWhenBuffed,
         row.SpeedUpPresentationId, row.SpeedUpIconAsset, row.SpeedUpAttackRateBp, row.SpeedUpPowerBp,
-        row.SpeedUpNameKey, row.SpeedUpDescriptionKey))) ||
+        row.SpeedUpNameKey, row.SpeedUpDescriptionKey, row.BurnPresentationId, row.CounterPresentationId,
+        row.AlternatePresentationStatus, row.AlternatePresentationId, row.AlternateNameKey, row.AlternateDescriptionKey,
+        row.AlternateIconAsset))) ||
     !battleEffects.SequenceEqual(tables.BattleSkillEffects.DataList.Select(row => new BattleSkillEffectData(
         row.Id, row.SkillId, row.Order, row.Phase, row.Operation, row.Recipient, row.Status, row.ChanceBp, row.Turns, row.Value,
         row.Condition, row.ChanceBonusStatus, row.ChanceBonusBp))) ||
@@ -115,7 +117,9 @@ record BattleSkillData(string Id, string HeroId, int Slot, string NameKey, strin
     int? DamageAgainstBuffBp, int? DefensePenetrationBp, int? StealthPenetrationBp, int? HighestDefensePenetrationBp,
     bool AlwaysCritical, bool AoeWhenBuffed, bool AoeOutsideTurn, int? CasterAttackBarrierBp,
     int ResourceCost, int ResourceGain, int ResourceGainWhenBuffed, string SpeedUpPresentationId,
-    string SpeedUpIconAsset, int? SpeedUpAttackRateBp, int? SpeedUpPowerBp, string SpeedUpNameKey, string SpeedUpDescriptionKey);
+    string SpeedUpIconAsset, int? SpeedUpAttackRateBp, int? SpeedUpPowerBp, string SpeedUpNameKey, string SpeedUpDescriptionKey,
+    string BurnPresentationId, string CounterPresentationId, string AlternatePresentationStatus, string AlternatePresentationId,
+    string AlternateNameKey, string AlternateDescriptionKey, string AlternateIconAsset);
 record BattleSkillEffectData(string Id, string SkillId, int Order, string Phase, string Operation, string Recipient,
     string Status, int ChanceBp, int Turns, int Value, string Condition, string ChanceBonusStatus, int ChanceBonusBp);
 record BattleSkillEnhancementData(string Id, string SkillId, int Step, string Kind, int Value);

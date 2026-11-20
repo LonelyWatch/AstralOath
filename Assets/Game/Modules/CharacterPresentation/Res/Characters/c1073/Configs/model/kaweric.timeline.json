@@ -1,0 +1,97 @@
+{
+  "timeline": {
+    "default": {
+      "camping": {
+        "duration": 0,
+        "frames": []
+      },
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "id": "br",
+              "source": "kaweric_skeff_bi_start",
+              "location": 5,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "b_idle": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "id": "br2",
+              "source": "kaweric_skeff_bi_loop",
+              "location": 1,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill1_1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br2"
+            }
+          }
+        ]
+      },
+      "skill1_2": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill1_3": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill3_1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br2"
+            }
+          }
+        ]
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br2"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

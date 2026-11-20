@@ -123,6 +123,27 @@ namespace AstralOath.Tests
         }
 
         [Test]
+        public void OpacityActionFadesTheExistingSpineClipOnTheEffectClock()
+        {
+            CreateSynthetic("2.1.25");
+            const string path = "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1066/Effects/effect/lunabianca_skill_03_sky.cfx.json";
+            var source = JObject.Parse(AssetDatabase.LoadAssetAtPath<TextAsset>(path).text);
+            var primitive = ((JArray)source["primitive"]).OfType<JObject>()
+                .Single(row => (string)row["source"] == "lunabianca_skill_03_cloudscroll_f");
+            var part = new JObject { ["source"] = "fixture", ["format"] = "spine", ["actions"] = primitive["actions"].DeepClone() };
+            Assert.That(Duration(part), Is.EqualTo(1.9f).Within(.001f));
+            Spawn(part);
+            var renderer = group.GetComponentInChildren<MeshRenderer>();
+            var block = new MaterialPropertyBlock();
+            runtime.GetMethod("Tick").Invoke(playback, new object[] { 1.75f });
+            renderer.GetPropertyBlock(block);
+            Assert.That(block.GetFloat("_PresentationOpacity"), Is.EqualTo(1f).Within(.001f));
+            runtime.GetMethod("Tick").Invoke(playback, new object[] { .1f });
+            renderer.GetPropertyBlock(block);
+            Assert.That(block.GetFloat("_PresentationOpacity"), Is.EqualTo(.5f).Within(.001f));
+        }
+
+        [Test]
         public void UnmappedActionDoesNotInventAnAnimationOrExtendDuration()
         {
             CreateSynthetic("2.1.25");
@@ -258,6 +279,63 @@ namespace AstralOath.Tests
             actor = actorObject.AddComponent(actorType);
             actorType.GetField("faceLeft", Private).SetValue(actor, enemy);
             runtime.GetField("caster", Private).SetValue(playback, actor);
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void SchnielDetoxDrawsOneGroundRingAtHisFormation(bool enemy)
+        {
+            const string prefix = "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1060/";
+            const string source = "schniel_skeff_sk2_3_ground_glow";
+            var graph = JObject.Parse(AssetDatabase.LoadAssetAtPath<TextAsset>(prefix +
+                "Configs/stagept/c_schniel_skill_02.graph.json").text);
+            var node = graph["source"]["entities"].OfType<JObject>().Single(n => (int)n["guid"] == 9);
+            Assert.That((int)node["location"], Is.EqualTo(32));
+            var cfx = JObject.Parse(AssetDatabase.LoadAssetAtPath<TextAsset>(prefix +
+                "Effects/effect/schniel_skeff_sk2_3.cfx.json").text);
+            Assert.That(cfx["primitive"].Count(), Is.EqualTo(9));
+            var ground = cfx["primitive"].Single(n => (string)n["source"] == source);
+            cfx["primitive"] = new JArray(ground.DeepClone());
+            Create(source, AssetDatabase.LoadAssetAtPath<TextAsset>(prefix + "Animations/effect/" + source + ".spine.json"),
+                AssetDatabase.LoadAssetAtPath<TextAsset>(prefix + "Atlas/effect/" + source + ".atlas.txt"),
+                AssetDatabase.LoadAssetAtPath<Texture2D>(prefix + "Textures/effect/" + source + ".png"), source + ".sct",
+                importScale:.01f);
+            ((Dictionary<string, JObject>)runtime.GetProperty("documents", Private).GetValue(playback))
+                .Add("effect/schniel_skeff_sk2_3.cfx", cfx);
+            var actors = Type.GetType(Module + ".BattlePreviewActor, " + Module, true);
+            float facing = enemy ? -1f : 1f;
+            Component Actor(float x, float y, bool otherTeam)
+            {
+                var go = new GameObject("Actor");
+                go.transform.SetParent(root.transform,false);
+                go.transform.position = new Vector3(x*facing,y,0f);
+                var unit = go.AddComponent(actors);
+                actors.GetField("faceLeft",Private).SetValue(unit, otherTeam != enemy);
+                return unit;
+            }
+            var caster = Actor(-2,-3,false);
+            var groupMembers = new[] { caster, Actor(-4,-1,false), Actor(-6,1,false), Actor(-8,-1,false) };
+            var opponent = Actor(4,0,true);
+            var inactive = Actor(20,0,false);
+            inactive.gameObject.SetActive(false);
+            var defeated = Actor(30,0,false);
+            actors.GetField("defeatPose",Private).SetValue(defeated,true);
+            var formation = Array.CreateInstance(actors, 7);
+            for (int i = 0; i < groupMembers.Length; i++) formation.SetValue(groupMembers[i],i);
+            formation.SetValue(opponent,4);
+            formation.SetValue(inactive,5);
+            formation.SetValue(defeated,6);
+            runtime.GetField("participants",Private).SetValue(playback,formation);
+            runtime.GetField("caster",Private).SetValue(playback,caster);
+            var recipients = Array.CreateInstance(actors,1);
+            recipients.SetValue(caster,0);
+            runtime.GetMethod("Effect",Private).Invoke(playback,new object[]{node,caster,recipients});
+            runtime.GetMethod("Tick").Invoke(playback,new object[]{.666f});
+            var rings = root.GetComponentsInChildren<MeshFilter>().Where(m => m.name == source).ToArray();
+            Assert.That(rings.Length,Is.EqualTo(1));
+            Assert.That(rings[0].sharedMesh.colors32.Any(c => c.a>0),Is.True);
+            Assert.That(rings[0].transform.parent.position.x,Is.EqualTo(-5f*facing).Within(.001f));
+            Assert.That(rings[0].transform.parent.position.y,Is.EqualTo(-1.7f).Within(.001f));
         }
 
         [Test]

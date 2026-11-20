@@ -1,0 +1,153 @@
+
+lunabianca_skill_03_1b.sct
+size: 590,500
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bot_crack
+  rotate: true
+  xy: 2, 2
+  size: 328, 67
+  orig: 328, 67
+  offset: 0, 0
+  index: -1
+bot_crack_smoke2
+  rotate: true
+  xy: 435, 201
+  size: 133, 63
+  orig: 133, 63
+  offset: 0, 0
+  index: -1
+circle_smoke1
+  rotate: true
+  xy: 71, 2
+  size: 239, 74
+  orig: 239, 74
+  offset: 0, 0
+  index: -1
+circle_smoke2
+  rotate: true
+  xy: 147, 2
+  size: 239, 74
+  orig: 239, 74
+  offset: 0, 0
+  index: -1
+circle_smoke_p2
+  rotate: false
+  xy: 434, 2
+  size: 154, 197
+  orig: 154, 197
+  offset: 0, 0
+  index: -1
+circle_smoke_p4
+  rotate: false
+  xy: 302, 324
+  size: 131, 156
+  orig: 131, 156
+  offset: 0, 0
+  index: -1
+circle_smoke_p5
+  rotate: true
+  xy: 500, 201
+  size: 106, 64
+  orig: 106, 64
+  offset: 0, 0
+  index: -1
+circle_smoke_p8
+  rotate: false
+  xy: 386, 202
+  size: 47, 119
+  orig: 47, 119
+  offset: 0, 0
+  index: -1
+circle_smoke_p9
+  rotate: true
+  xy: 435, 336
+  size: 127, 88
+  orig: 127, 88
+  offset: 0, 0
+  index: -1
+circle_smoke_s1
+  rotate: false
+  xy: 223, 202
+  size: 96, 36
+  orig: 96, 36
+  offset: 0, 0
+  index: -1
+cloud_06
+  rotate: true
+  xy: 271, 240
+  size: 82, 65
+  orig: 82, 65
+  offset: 0, 0
+  index: -1
+cloud_12
+  rotate: true
+  xy: 525, 309
+  size: 96, 58
+  orig: 96, 58
+  offset: 0, 0
+  index: -1
+cloud_16
+  rotate: false
+  xy: 338, 238
+  size: 42, 55
+  orig: 42, 55
+  offset: 0, 0
+  index: -1
+cloud_crack_02
+  rotate: true
+  xy: 525, 407
+  size: 59, 52
+  orig: 59, 52
+  offset: 0, 0
+  index: -1
+cloud_crack_03
+  rotate: false
+  xy: 321, 202
+  size: 63, 34
+  orig: 63, 34
+  offset: 0, 0
+  index: -1
+pil_fire_01_2
+  rotate: false
+  xy: 2, 332
+  size: 148, 166
+  orig: 148, 166
+  offset: 0, 0
+  index: -1
+pil_fire_01_3
+  rotate: false
+  xy: 152, 327
+  size: 148, 166
+  orig: 148, 166
+  offset: 0, 0
+  index: -1
+ske_pil1_1
+  rotate: false
+  xy: 383, 2
+  size: 49, 198
+  orig: 49, 198
+  offset: 0, 0
+  index: -1
+ske_pil1_2
+  rotate: false
+  xy: 327, 2
+  size: 54, 198
+  orig: 54, 198
+  offset: 0, 0
+  index: -1
+ske_pil1_3
+  rotate: false
+  xy: 223, 2
+  size: 102, 198
+  orig: 102, 198
+  offset: 0, 0
+  index: -1
+ske_pil3_4
+  rotate: true
+  xy: 71, 243
+  size: 82, 198
+  orig: 82, 198
+  offset: 0, 0
+  index: -1

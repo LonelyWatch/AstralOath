@@ -1,0 +1,18 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "violetto_eff_skill_3_2_target",
+      "format": "spine",
+      "globalZ": 0.5
+    },
+    {
+      "source": "violetto_skill_03_target_pati1",
+      "scale": "1.3",
+      "delay": "1840",
+      "format": "particle",
+      "globalZ": 0.7,
+      "lifeTime": "400"
+    }
+  ]
+}

@@ -34,9 +34,12 @@ namespace AstralOath.Client.CharacterPresentation
         private sealed class PositionTween { public Transform target; public Vector3 from,to; public double start,duration; }
         private sealed class ZoomTween { public double start,duration; public float from,to; }
         public Func<int,Vector3?> ResolveLocation {get;set;}
+        public Func<JObject,double> EffectDuration {get;set;}
+        public Func<bool> IsSuspended {get;set;}
         public JObject Timeline {get;set;}
         public event Action<JObject> Effect;
         public event Action<string> Animation;
+        public event Action<string> ModelBody;
         public string Id => (string)graph["id"];
         public StgPlaybackSession(JObject graph,ISkeletonPlayer caster,Camera camera,bool experimental,Action<string> report)
         {
@@ -80,6 +83,7 @@ namespace AstralOath.Client.CharacterPresentation
         {
             if(disposed)return;
             if(float.IsNaN(delta)||float.IsInfinity(delta)||delta<0)throw new ArgumentOutOfRangeException(nameof(delta));
+            if(IsSuspended?.Invoke()==true)return;
             time+=delta;
             foreach(var tween in positions.ToArray())
             {
@@ -100,7 +104,7 @@ namespace AstralOath.Client.CharacterPresentation
             }
             foreach(var item in finishes.Where(f=>f.at<=time).ToArray()) {finishes.Remove(item);Complete(item.id);}
             int budget=2048;
-            while(true)
+            while(IsSuspended?.Invoke()!=true)
             {
                 int index=queue.FindIndex(item=>item.at<=time);
                 if(index<0)break;
@@ -116,6 +120,11 @@ namespace AstralOath.Client.CharacterPresentation
             switch(kind)
             {
                 case "ENTRY": Complete(id);break;
+                case "MODEL_BODY":
+                    string model=(string)node["model_id"];
+                    if(string.IsNullOrWhiteSpace(model)||ModelBody==null)Report("Unresolved MODEL_BODY "+node);
+                    else ModelBody(model);
+                    Complete(id);break;
                 case "ANI":
                     string animation=(string)node["ani"];
                     if(!caster.Animations.Any(a=>a.Name==animation)){Report("Missing ANI "+animation);Complete(id);break;}
@@ -153,7 +162,12 @@ namespace AstralOath.Client.CharacterPresentation
                     if(seconds<=0)transform.position=target;
                     else positions.Add(new PositionTween{target=transform,from=transform.position,to=target,start=time,duration=seconds});
                     FinishAfter(id,seconds);break;
-                case "EFFECT": case "HIT": case "CUTIN": case "DARK": case "STOP": case "SHAKE": case "PPEFFECT": Effect?.Invoke(node);Complete(id);break;
+                case "EFFECT":
+                    Effect?.Invoke(node);
+                    double lifetime=edges.Any(edge=>(int)edge["from"]==id&&((int?)edge["when"]??0)==0)
+                        ? EffectDuration?.Invoke(node)??0 : 0;
+                    FinishAfter(id,lifetime);break;
+                case "HIT": case "CUTIN": case "DARK": case "STOP": case "SHAKE": case "PPEFFECT": Effect?.Invoke(node);Complete(id);break;
                 case "DELAY":
                     FinishAfter(id, Number(node["time"], 0)/1000d);break;
                 case "SHOT":

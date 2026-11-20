@@ -1,0 +1,27 @@
+
+schniel_skeff_sk2_3_ground_back.sct
+size: 353,494
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bottom_rune_1b
+  rotate: false
+  xy: 2, 2
+  size: 318, 319
+  orig: 318, 319
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 323
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: true
+  xy: 322, 2
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1

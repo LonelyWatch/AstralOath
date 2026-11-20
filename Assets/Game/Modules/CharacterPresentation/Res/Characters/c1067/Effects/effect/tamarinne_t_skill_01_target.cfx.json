@@ -1,0 +1,42 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "tamarinne_t_sk1eff_target_b",
+      "scale": "1,0.35",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "tamarinne_t_sk1eff_target_b2",
+      "delay": "1033",
+      "format": "spine",
+      "globalZ": -2.0
+    },
+    {
+      "source": "tamarinne_t_sk1eff_target_b3",
+      "delay": "867",
+      "format": "spine",
+      "globalZ": -3.0
+    },
+    {
+      "source": "tamarinne_t_sk1eff_target_f",
+      "delay": "1033",
+      "format": "spine",
+      "globalZ": 2.0
+    },
+    {
+      "source": "tamarinne_t_sk1eff_target_f2",
+      "delay": "867",
+      "format": "spine",
+      "globalZ": 3.0
+    },
+    {
+      "source": "tamarinne_t_skill_01_pati1",
+      "y": "200",
+      "delay": "1250",
+      "format": "particle",
+      "globalZ": 1.0
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+
+kaweric_skeff_sk3_target_b.sct
+size: 1642,501
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+burst_sphear
+  rotate: false
+  xy: 1168, 2
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+burst_sphear_g
+  rotate: false
+  xy: 1168, 136
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+dark_ball
+  rotate: false
+  xy: 2, 2
+  size: 411, 411
+  orig: 411, 411
+  offset: 0, 0
+  index: -1
+dark_ball2
+  rotate: false
+  xy: 415, 2
+  size: 411, 411
+  orig: 411, 411
+  offset: 0, 0
+  index: -1
+flare/blight
+  rotate: false
+  xy: 1305, 2
+  size: 174, 142
+  orig: 174, 142
+  offset: 0, 0
+  index: -1
+flare/shockwave03_04
+  rotate: false
+  xy: 1305, 146
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 1305, 317
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+heal_1
+  rotate: false
+  xy: 1481, 2
+  size: 159, 172
+  orig: 159, 172
+  offset: 0, 0
+  index: -1
+kaweric/kaweric_won_01
+  rotate: false
+  xy: 1146, 342
+  size: 157, 157
+  orig: 157, 157
+  offset: 0, 0
+  index: -1
+kaweric/kaweric_won_02
+  rotate: false
+  xy: 1476, 176
+  size: 157, 157
+  orig: 157, 157
+  offset: 0, 0
+  index: -1
+kaweric/kaweric_won_03
+  rotate: false
+  xy: 828, 342
+  size: 157, 157
+  orig: 157, 157
+  offset: 0, 0
+  index: -1
+kaweric/kaweric_won_04
+  rotate: false
+  xy: 987, 342
+  size: 157, 157
+  orig: 157, 157
+  offset: 0, 0
+  index: -1
+ring1
+  rotate: false
+  xy: 2, 415
+  size: 73, 73
+  orig: 73, 73
+  offset: 0, 0
+  index: -1
+ring_wave
+  rotate: false
+  xy: 1476, 335
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+scan_glow
+  rotate: false
+  xy: 828, 2
+  size: 338, 338
+  orig: 338, 338
+  offset: 0, 0
+  index: -1

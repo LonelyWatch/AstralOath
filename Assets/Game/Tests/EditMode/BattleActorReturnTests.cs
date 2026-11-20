@@ -122,6 +122,46 @@ namespace AstralOath.Client.Tests
             Assert.That(player.CurrentAnimation, Is.EqualTo("idle"));
         }
 
+        [Test]
+        public void ModelBodyReplacesTheCasterAtItsSourceCueAndKeepsThePresentationClock()
+        {
+            var initial = ReadModel("ras");
+            var other = ReadModel("mercedes");
+            var caster = Create(initial.json, initial.atlas, initial.page);
+            var target = Create(initial.json, initial.atlas, initial.page);
+            var originalPlayer = Player(caster);
+            var graph = new TextAsset(@"{
+                'id':'form-test','assets':[{'type':'skeleton','source':'model/mercedes.scsp'}],
+                'source':{'entrypoint':{'start':1},'entities':[
+                    {'guid':1,'etty':'ANI','ani':'skill1'},
+                    {'guid':2,'etty':'MODEL_BODY','model_id':'mercedes'}],
+                    'connections':[{'from':1,'to':2,'when':1,'delay':200}]}}");
+            var model = new TextAsset(other.json);
+            var atlas = new TextAsset(other.atlas);
+            assets.AddRange(new UnityEngine.Object[] { graph, model, atlas });
+            var assetType = ActorType.Assembly.GetType("AstralOath.Client.BattleScene.BattleSkillPresentationAsset", true);
+            var asset = Activator.CreateInstance(assetType);
+            void Set(string key, object value) => assetType.GetField(key).SetValue(asset, value);
+            Set("source", "model/mercedes.scsp"); Set("document", model); Set("atlas", atlas);
+            Set("scale", .01f); Set("pageNames", new[] { other.page }); Set("pages", new[] { page });
+            var sources = Array.CreateInstance(assetType, 1); sources.SetValue(asset, 0);
+            var recipients = Array.CreateInstance(ActorType, 1); recipients.SetValue(target, 0);
+            var type = ActorType.Assembly.GetType("AstralOath.Client.BattleScene.BattleSkillPresentation", true);
+            using var playback = (IDisposable)Activator.CreateInstance(type, root.transform, new[] { graph }, sources, null, null, null);
+            type.GetMethod("Prepare").Invoke(playback, new object[] { caster, "form-test" });
+            type.GetMethod("Begin").Invoke(playback, new object[] { "form-test", caster, target, recipients });
+            type.GetMethod("Tick").Invoke(playback, new object[] { .19f });
+            Assert.That(Player(caster), Is.SameAs(originalPlayer), "Loading the graph and starting its skill must retain the base body.");
+            type.GetMethod("Tick").Invoke(playback, new object[] { .02f });
+            Assert.That(ReferenceEquals(ActorType.GetField("skeleton", Private).GetValue(caster), model), Is.True,
+                "The scheduled MODEL_BODY must install the named skeleton.");
+            Assert.That(Player(caster), Is.Not.SameAs(originalPlayer));
+            Assert.That((int)ActorType.GetField("presentationControlCount", Private).GetValue(caster), Is.EqualTo(1));
+            Assert.That(Player(target).CurrentAnimation, Does.Contain("idle"));
+            playback.Dispose();
+            Assert.That((int)ActorType.GetField("presentationControlCount", Private).GetValue(caster), Is.Zero);
+        }
+
 
         [Test]
         public void SourceZeroSecondReactionCanHoldAndReleaseWithoutStealingANewerTrack()
@@ -495,6 +535,47 @@ namespace AstralOath.Client.Tests
             Assert.That(Body(target).forceRenderingOff, Is.False);
             Assert.That(Body(alreadyHidden).forceRenderingOff, Is.True);
             Assert.That(target.transform.localPosition, Is.EqualTo(slot));
+        }
+
+        [TestCase("c1070", "krau", 34, 3.5f, .2f, 0f)]
+        [TestCase("c1073", "kaweric", 26, 2.166f, .16f, .16f)]
+        public void TimedAnonymousTargetHideFadesOnlyRecipientsThenReleasesBeforeTheActionEnds(
+            string hero, string modelName, int guid, float duration, float fadeIn, float fadeOut)
+        {
+            var graph = JObject.Parse(File.ReadAllText($"Assets/Game/Modules/CharacterPresentation/Res/Characters/{hero}/Configs/stagept/c_{modelName}_skill_03.graph.json"));
+            var source = graph["source"];
+            var hide = source["entities"].Single(node => (int)node["guid"] == guid);
+            Assert.That((int)hide["blend_target"], Is.EqualTo(66));
+            source["entrypoint"] = new JObject { ["start"] = 900 };
+            source["entities"] = new JArray(hide, new JObject { ["guid"] = 900, ["etty"] = "ANI", ["ani"] = "skill1" },
+                new JObject { ["guid"] = 901, ["etty"] = "IDLE" });
+            source["connections"] = new JArray(new JObject { ["from"] = 900, ["to"] = guid, ["when"] = 1 },
+                new JObject { ["from"] = 900, ["to"] = 901, ["when"] = 1, ["delay"] = 6000 });
+            graph["assets"] = new JArray();
+            var text = new TextAsset(graph.ToString()); assets.Add(text);
+            var model = ReadModel("ras");
+            var caster = Create(model.json, model.atlas, model.page);
+            var target = Create(model.json, model.atlas, model.page);
+            var recipients = Array.CreateInstance(ActorType, 1); recipients.SetValue(target, 0);
+            var type = ActorType.Assembly.GetType("AstralOath.Client.BattleScene.BattleSkillPresentation", true);
+            var assetType = ActorType.Assembly.GetType("AstralOath.Client.BattleScene.BattleSkillPresentationAsset", true);
+            using var playback = (IDisposable)Activator.CreateInstance(type, root.transform, new[] { text },
+                Array.CreateInstance(assetType, 0), null, null, null);
+            type.GetMethod("Begin").Invoke(playback, new object[] { (string)graph["id"], caster, target, recipients });
+            void Tick(float delta) => type.GetMethod("Tick").Invoke(playback, new object[] { delta });
+            var body = Player(target).Root.GetComponent<Renderer>();
+            var block = new MaterialPropertyBlock();
+            float Opacity() { body.GetPropertyBlock(block); return block.GetFloat("_SkillBodyOpacity"); }
+            Tick(fadeIn / 2f);
+            Assert.That(Opacity(), Is.EqualTo(.5f).Within(.001f));
+            Tick(duration - fadeIn / 2f - .01f);
+            Assert.That(body.forceRenderingOff, Is.True);
+            Assert.That(Player(caster).Root.GetComponent<Renderer>().forceRenderingOff, Is.False);
+            Tick(.01f + fadeOut / 2f + .00001f);
+            Assert.That(body.forceRenderingOff, Is.False);
+            Assert.That(Opacity(), Is.EqualTo(fadeOut == 0f ? 1f : .5f).Within(.002f));
+            Tick(fadeOut / 2f + .01f);
+            Assert.That(Opacity(), Is.EqualTo(1f).Within(.001f));
         }
 
         [TestCase(false)]

@@ -1,0 +1,150 @@
+{
+  "timeline": {
+    "default": {
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "id": "bidle1",
+              "source": "violetto_b_idle_bf",
+              "location": 5,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "id": "bidle2",
+              "source": "violetto_b_idle",
+              "location": 1,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "attacked_damage": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "violetto_skill_1_bf",
+              "location": 5,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "violetto_skill_1",
+              "location": 1,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "bidle1"
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "bidle2"
+            }
+          }
+        ]
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "violetto_skill_2",
+              "location": 5,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "bidle1"
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "bidle2"
+            }
+          }
+        ]
+      },
+      "skill3_1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "violetto_skill_3_1",
+              "location": 5,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "bidle1"
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "bidle2"
+            }
+          }
+        ]
+      },
+      "skill3_2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "violetto_skill_3_2",
+              "location": 5,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "jump_back": {
+        "duration": 0,
+        "frames": []
+      },
+      "jump_forward": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "bidle1"
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "bidle2"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

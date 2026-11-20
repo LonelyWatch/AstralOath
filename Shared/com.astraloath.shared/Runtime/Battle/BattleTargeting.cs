@@ -5,8 +5,11 @@ namespace AstralOath.Shared.Battle
     // Validates explicit targets. Recipients of area attacks and reactions are resolved by the skill executor.
     internal static class BattleTargeting
     {
-        internal static string PrimaryRule(BattleCatalogData.SkillRow skill, BattleUnitSnapshot actor) =>
-            skill.aoeWhenBuffed && actor.Statuses.Any(status => !BattleSkillResolver.IsHarmful(status.Kind))
+        internal static string PrimaryRule(BattleCatalogData.SkillRow skill, BattleUnitSnapshot actor, bool soulBurn) =>
+            soulBurn && skill.soulBurnKind == "all_enemies" ||
+            skill.alternatePresentationStatus == nameof(BattleStatusKind.Idol) && skill.target == "one_enemy" &&
+                actor.GetStatus(BattleStatusKind.Idol) != null ||
+            skill.aoeWhenBuffed && actor.Statuses.Any(status => status.Kind != BattleStatusKind.Idol && !BattleSkillResolver.IsHarmful(status.Kind))
                 ? "all_enemies" : skill.target;
 
         internal static BattleUnitSnapshot ActiveProvoker(BattleSnapshot snapshot, BattleUnitSnapshot actor)

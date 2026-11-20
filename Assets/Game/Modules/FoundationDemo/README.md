@@ -43,3 +43,5 @@ Windows 开发包同时传入 `-astral-startup-smoke -astral-summon-smoke` 可�
 Windows Development 客户端在回环测试服上可使用 `-astral-startup-smoke -astral-summon-resize-smoke`。使用专属访客十连并切换原生窗口尺寸，成功写入 ASTRAL_SUMMON_RESIZE_OK 和 ASTRAL_SUMMON_PLAYER_OK。
 
 第 31–40 名批次将实验室收集清单扩大到 3722 项。第 41–50 名新增 1114 项，合计 4836 项。角色实验室构建输入校验读取相同的收集器、地址及资源目录。[第 31–40 名角色与实测记录](../../../../docs/delivery/2026-11-20-roster31-40.md)
+
+第 51–60 名新增 1,253 个收集地址，清单现含 6,089 项。塔玛林尔的两种战斗模型与对应时间轴分别登记，旧地址继续解析到原资源。 [本批角色交付](../../../../docs/delivery/2026-11-20-roster51-60.md)

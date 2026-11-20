@@ -1,0 +1,51 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "schniel_skeff_b_ready_bright2",
+      "z": "80",
+      "format": "spine"
+    },
+    {
+      "source": "schniel_skeff_b_ready_front2",
+      "z": "70",
+      "format": "spine"
+    },
+    {
+      "source": "schniel_skeff_b_ready_glow2",
+      "z": "60",
+      "format": "spine"
+    },
+    {
+      "source": "schniel_skeff_b_ready_pen2",
+      "z": "50",
+      "format": "spine"
+    },
+    {
+      "source": "schniel_skeff_b_ready_back2",
+      "z": "-30",
+      "format": "spine"
+    },
+    {
+      "source": "schniel_skeff_b_idle_rotate1",
+      "z": "10",
+      "delay": "865",
+      "format": "spine",
+      "loop": 1
+    },
+    {
+      "source": "schniel_skeff_b_idle_rotate2",
+      "z": "5",
+      "delay": "865",
+      "format": "spine",
+      "loop": 1
+    },
+    {
+      "source": "schniel_skeff_b_idle_rotate_b_glow",
+      "z": "-40",
+      "delay": "865",
+      "format": "spine",
+      "loop": 1
+    }
+  ]
+}

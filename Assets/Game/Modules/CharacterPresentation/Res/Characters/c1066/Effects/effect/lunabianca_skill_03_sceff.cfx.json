@@ -1,0 +1,25 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "lunabianca_skill_03_final_sceff",
+      "y": "-300",
+      "format": "spine",
+      "globalZ": 999.0
+    },
+    {
+      "source": "lunabianca_skill_03_screenhookup",
+      "y": "160",
+      "delay": "2466",
+      "format": "spine",
+      "globalZ": 995.0
+    },
+    {
+      "source": "lunabianca_skill_03_pati1",
+      "x": "100",
+      "delay": "2466",
+      "format": "particle",
+      "globalZ": 990.0
+    }
+  ]
+}

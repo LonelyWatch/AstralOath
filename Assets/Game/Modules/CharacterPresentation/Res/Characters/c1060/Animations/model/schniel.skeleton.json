@@ -1,0 +1,13 @@
+{
+  "version": "3.8.99",
+  "jsonAddress": "characterlab/source/model/schniel.scsp/json",
+  "atlasAddress": "characterlab/source/model/schniel.atlas",
+  "pages": [
+    {
+      "name": "schniel.sct",
+      "address": "characterlab/source/model/schniel.sct"
+    }
+  ],
+  "premultipliedAlpha": true,
+  "scale": 0.01
+}

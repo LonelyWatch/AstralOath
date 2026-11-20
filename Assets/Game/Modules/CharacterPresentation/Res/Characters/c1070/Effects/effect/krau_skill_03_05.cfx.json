@@ -1,0 +1,30 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "krau_sk3_5eff_f",
+      "format": "spine",
+      "globalZ": 999.0
+    },
+    {
+      "source": "krau_sk3_5eff_b",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "krau_skill_03_pati",
+      "rotate": "-45",
+      "delay": "2600",
+      "format": "particle",
+      "globalZ": 1.0
+    },
+    {
+      "source": "krau_skill_03_pati",
+      "x": "1000",
+      "rotate": "-45",
+      "delay": "2500",
+      "format": "particle",
+      "globalZ": 1.0
+    }
+  ]
+}

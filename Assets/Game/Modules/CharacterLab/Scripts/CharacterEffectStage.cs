@@ -23,6 +23,7 @@ namespace AstralOath.Client.CharacterLab
         private readonly string skillId;
         private readonly Dictionary<string,JObject> documents=new Dictionary<string,JObject>(StringComparer.Ordinal);
         private readonly Dictionary<string,SkeletonPlayerSource> skeletons=new Dictionary<string,SkeletonPlayerSource>(StringComparer.Ordinal);
+        private readonly Dictionary<string,Dictionary<string,float>> clipDurations=new Dictionary<string,Dictionary<string,float>>(StringComparer.Ordinal);
         private readonly Dictionary<string,Texture2D> textures=new Dictionary<string,Texture2D>(StringComparer.Ordinal);
         private readonly List<(double at,Action action)> pending=new List<(double,Action)>();
         private readonly Dictionary<ISkeletonPlayer,float> active=new Dictionary<ISkeletonPlayer,float>();
@@ -34,6 +35,8 @@ namespace AstralOath.Client.CharacterLab
         private readonly float cameraSize;
         public JObject Timeline { get; private set; }
         private double time;
+        private double cutinTime,cutinEnd;
+        public bool HasCutin=>cutins.Count>0;
         private int timelineGeneration;
         private bool disposed;
         private readonly CharacterScreenEffects screen;
@@ -45,7 +48,7 @@ namespace AstralOath.Client.CharacterLab
             cameraPosition=context.PreviewCamera.transform.position;cameraSize=context.PreviewCamera.orthographicSize;
             screen=new CharacterScreenEffects(context,scope,skeletons,report,blur);scope.Add(screen.Dispose);
         }
-        public async Task PrepareAsync(JObject graph,CharacterRecord character,CharacterLabCatalog catalog)
+        public async Task PrepareAsync(JObject graph,CharacterRecord character,CharacterLabCatalog catalog,string modelTimeline=null)
         {
             foreach(var item in graph["assets"]??new JArray())
             {
@@ -69,8 +72,9 @@ namespace AstralOath.Client.CharacterLab
                     if(!string.IsNullOrEmpty(address)&&!textures.ContainsKey(address))
                         textures[address]=await assets.LoadAsync<Texture2D>(address,scope);
                 }
-            if(!string.IsNullOrEmpty(character.timelineAddress))
-                Timeline=JObject.Parse((await assets.LoadAsync<TextAsset>(character.timelineAddress,scope)).text);
+            string timeline=modelTimeline??character.timelineAddress;
+            if(!string.IsNullOrEmpty(timeline)&&!SelectTimeline(graph,timeline))
+                Timeline=JObject.Parse((await assets.LoadAsync<TextAsset>(timeline,scope)).text);
             if(experimental)
             {
                 report("EXPERIMENTAL locations: 1/11 caster, 5 test opponent, 6 selected allies; positions are lab anchors, not verified source coordinates.");
@@ -91,6 +95,61 @@ namespace AstralOath.Client.CharacterLab
                 if(skillId=="c_angelica_skill_02")report("Angelica S2: two selected allied test actors.");
                 if(skillId=="c_angelica_skill_03")report("Angelica S3: all four allied test actors.");
             }
+        }
+        public bool SelectTimeline(JObject graph,string address)
+        {
+            string source=(string)graph["assets"]?.FirstOrDefault(item=>(string)item["address"]==address)?["source"];
+            if(source==null||!documents.TryGetValue(source,out var timeline))return false;
+            Timeline=timeline;
+            return true;
+        }
+        public double EffectDuration(JObject node)
+        {
+            string source=(string)node["source"];
+            if(string.IsNullOrEmpty(source))return 0;
+            string path=source.StartsWith("effect/",StringComparison.Ordinal)?source:"effect/"+source;
+            if(!path.EndsWith(".cfx",StringComparison.Ordinal))path+=".cfx";
+            if(!documents.TryGetValue(path,out var document))return 0;
+            double end=0;
+            foreach(var part in document["primitive"]?.OfType<JObject>()??Enumerable.Empty<JObject>())
+            {
+                if(!TryValidatePrimitiveScalars(part,out _))continue;
+                double life=PrimitiveLifetime(part);
+                if(life<0){report("Unverified CFX completion for "+path+"/"+part["source"]);continue;}
+                end=Math.Max(end,Number(part["delay"],0)/1000d+life);
+            }
+            return end;
+        }
+        private double PrimitiveLifetime(JObject part)
+        {
+            float explicitLife=Number(part["lifeTime"],-1);
+            if(explicitLife>=0)return explicitLife/1000d;
+            string key="effect/"+(string)part["source"]+".scsp";
+            if((string)part["format"]!="spine"||!skeletons.TryGetValue(key,out var skeleton))return -1;
+            if(!clipDurations.TryGetValue(key,out var clips))
+            {
+                var animations=(JObject)JObject.Parse(skeleton.Json)["animations"];
+                clips=animations.Properties().ToDictionary(clip=>clip.Name,
+                    clip=>clip.Value.SelectTokens("$..time").Values<float>().DefaultIfEmpty().Max(),StringComparer.Ordinal);
+                clipDurations.Add(key,clips);
+            }
+            float speed=Number(part["timeScale"],1);
+            string initial=InitialSpineClip(part,clips.Keys);
+            if(initial==null)return -1;
+            double life=clips[initial]/speed;
+            if(initial=="intro"&&(string)part["ani"]=="intro,loop")life+=clips["loop"]/speed;
+            foreach(var action in part["actions"]?.OfType<JObject>()??Enumerable.Empty<JObject>())
+                if((string)action["action"] is string name&&clips.TryGetValue(name,out float duration))
+                    life=Math.Max(life,Number(action["delay"],0)/1000d+duration/speed);
+            return life;
+        }
+        private static string InitialSpineClip(JObject part,IEnumerable<string> names)
+        {
+            string requested=(string)part["ani"];
+            if(requested=="intro,loop"&&names.Contains("intro")&&names.Contains("loop"))return "intro";
+            if(!string.IsNullOrEmpty(requested))return names.Contains(requested)?requested:null;
+            if(names.Contains("animation"))return "animation";
+            return names.Contains("idle")?"idle":names.FirstOrDefault();
         }
         public Vector3? ResolveLocation(int location)
         {
@@ -221,17 +280,19 @@ namespace AstralOath.Client.CharacterLab
                 float speed=Number(part["timeScale"],1);
                 scope.Add(effect.Dispose);active.Add(effect,speed);
                 if(!string.IsNullOrEmpty(id)){if(!named.TryGetValue(id,out var list))named.Add(id,list=new List<ISkeletonPlayer>());list.Add(effect);}
-                string animation=effect.Animations.FirstOrDefault(a=>a.Name=="animation"||a.Name=="idle")?.Name??effect.Animations.FirstOrDefault()?.Name;
-                if(animation!=null)effect.Play(animation,false);
+                string animation=InitialSpineClip(part,effect.Animations.Select(a=>a.Name));
+                if(animation==null){report("Unresolved CFX animation "+part["ani"]+" in "+path);active.Remove(effect);effect.Root.SetActive(false);return;}
+                effect.Play(animation,false);
+                if(animation=="intro"&&(string)part["ani"]=="intro,loop")
+                    pending.Add((time+effect.Duration/speed,()=>effect.Play("loop",true)));
                 foreach(JObject action in part["actions"]??new JArray())
                 {
                     string name=(string)action["action"];
                     if(effect.Animations.Any(a=>a.Name==name))pending.Add((time+Number(action["delay"],0)/1000d,()=>effect.Play(name,false)));
                     else report("Unverified CFX action "+action.ToString(Newtonsoft.Json.Formatting.None));
                 }
-                double lifetime=Number(part["lifeTime"],0)/1000d;
-                if(lifetime<=0)lifetime=effect.Duration/speed;
-                if(lifetime>0)pending.Add((time+lifetime,()=>{active.Remove(effect);effect.Root.SetActive(false);}));
+                double lifetime=PrimitiveLifetime(part);
+                if(lifetime>=0)pending.Add((time+lifetime,()=>{active.Remove(effect);effect.Root.SetActive(false);}));
             }
             else if(format=="particle")
             {
@@ -261,7 +322,17 @@ namespace AstralOath.Client.CharacterLab
             float height=context.PreviewCamera.orthographicSize*2;
             root.transform.localScale=new Vector3(height*Number(descriptor["width"],1920)/Number(descriptor["height"],1080),height,1);
             scope.Add(()=>{UnityEngine.Object.Destroy(root);UnityEngine.Object.Destroy(mesh);UnityEngine.Object.Destroy(material);});
-            cutins.Add((root,descriptor,time));UpdateCutins();
+            cutins.Add((root,descriptor,cutinTime));
+            cutinEnd=Math.Max(cutinEnd,cutinTime+descriptor["frames"].Sum(frame=>(double)frame["durationSeconds"]));
+            UpdateCutins();
+        }
+        public float ConsumeCutin(float delta)
+        {
+            if(!HasCutin)return delta;
+            double used=Math.Min(delta,Math.Max(0,cutinEnd-cutinTime));
+            cutinTime+=used;
+            UpdateCutins();
+            return (float)(delta-used);
         }
         public void BeginFrame() => screen.BeginFrame();
         public void Tick(float delta)
@@ -278,9 +349,9 @@ namespace AstralOath.Client.CharacterLab
         {
             foreach(var item in cutins.ToArray())
             {
-                double elapsed=time-item.start;JObject current=null;
+                double elapsed=cutinTime-item.start;JObject current=null;
                 foreach(JObject frame in item.descriptor["frames"]??new JArray())
-                {double duration=Number(frame["durationSeconds"],0);if(elapsed<duration){current=frame;break;}elapsed-=duration;}
+                {double duration=(double)frame["durationSeconds"];if(elapsed+1e-9<duration){current=frame;break;}elapsed-=duration;}
                 if(current==null){item.root.SetActive(false);cutins.Remove(item);continue;}
                 string address=(string)current["address"];
                 if(textures.TryGetValue(address,out var texture))item.root.GetComponent<MeshRenderer>().sharedMaterial.mainTexture=texture;

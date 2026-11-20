@@ -1,0 +1,91 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "lunabianca_skill_01_3f",
+      "z": "5",
+      "format": "spine"
+    },
+    {
+      "source": "lunabianca_skill_01_3b",
+      "z": "-5",
+      "format": "spine"
+    },
+    {
+      "source": "lunabianca_skill_01_3_pati1",
+      "x": "550",
+      "y": "250",
+      "z": "10",
+      "delay": "1967",
+      "format": "particle"
+    },
+    {
+      "source": "lunabianca_skill_01_ray_pati2",
+      "x": "713.71",
+      "y": "225",
+      "z": "7",
+      "scale": "1.0,0.25",
+      "delay": "834",
+      "format": "particle"
+    },
+    {
+      "source": "lunabianca_skill_01_ray_pati2",
+      "x": "713.97",
+      "y": "50",
+      "z": "7",
+      "scale": "1.0,0.4",
+      "rotate": "-344.47",
+      "delay": "934",
+      "format": "particle"
+    },
+    {
+      "source": "lunabianca_skill_01_ray_pati2",
+      "x": "693.2",
+      "y": "348",
+      "z": "7",
+      "scale": "1.0,0.5",
+      "rotate": "-12.48",
+      "delay": "1100",
+      "format": "particle"
+    },
+    {
+      "source": "lunabianca_skill_01_ray_pati2",
+      "x": "752.32",
+      "y": "183",
+      "z": "7",
+      "scale": "1.0,0.5",
+      "rotate": "-358.30",
+      "delay": "1267",
+      "format": "particle"
+    },
+    {
+      "source": "lunabianca_skill_01_ray_pati2",
+      "x": "645.55",
+      "y": "97",
+      "z": "7",
+      "scale": "1.0,0.3",
+      "rotate": "-347.21",
+      "delay": "1400",
+      "format": "particle"
+    },
+    {
+      "source": "lunabianca_skill_01_ray_pati2",
+      "x": "718.49",
+      "y": "238",
+      "z": "7",
+      "scale": "1.2,0.4",
+      "rotate": "0",
+      "delay": "1700",
+      "format": "particle"
+    },
+    {
+      "source": "lunabianca_skill_01_ray_pati3",
+      "x": "200",
+      "y": "350",
+      "z": "8",
+      "delay": "767",
+      "format": "particle",
+      "lifeTime": "567"
+    }
+  ]
+}

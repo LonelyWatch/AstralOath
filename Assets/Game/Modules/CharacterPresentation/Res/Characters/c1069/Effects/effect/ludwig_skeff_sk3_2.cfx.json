@@ -1,0 +1,21 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "ludwig_skeff_sk3_2_f",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "ludwig_skeff_sk3_2_b",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "yupi_pat",
+      "delay": "3000",
+      "format": "particle",
+      "globalZ": 0.5
+    }
+  ]
+}

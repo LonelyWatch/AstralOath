@@ -60,21 +60,37 @@ CHARACTERS={
     "c1053":("basar","巴萨尔"),
     "c1054":("ring","铃儿"),
     "c1055":("jenua","济纽亚"),
+    "c1060":("schniel","修尼尔"),
     "c1062":("angelica","安洁莉卡"),
+    "c1065":("surin","苏琳"),
+    "c1066":("lunabianca","露娜"),
+    "c1067":("tamarinne","塔玛林尔"),
+    "c1069":("ludwig","鲁特比"),
+    "c1070":("krau","克劳乌"),
+    "c1071":("bellona","维尔萝娜"),
+    "c1072":("secrete","赛珂兰特"),
+    "c1073":("kaweric","卡威利"),
+    "c1074":("violetto","菲奥雷托"),
 }
 # Keep source identifiers verbatim even where the model and STG stems differ.
 SKILL_STEMS={"c1002":"c_cecilia_skill_new","c1007":"c_wilderd_skill","c1008":"c_aming_skill","c1010":"c_jerato_skill","c1013":"c_cartuja_skill","c1015":"c_baal_skill","c1017":"c_acha_skill","c1018":"c_iterre_skill"}
 SKILL_VARIANTS={("c1055",2):"c_jenua_skill_03", ("c1055",3):"c_jenua_skill_02",
+                ("c1066",1):"c_lunabianca_skill_01_1", ("c1066",2):None,
                 ("c1047",1):"c_ken_skill_01_02",
                 ("c1009",3):"c_charlotte_skill_03_05",
                 **{("c1014",index):f"c_cedars_skill_{index:02}_new" for index in range(1,4)}}
 # Retain the three primary slots first; each additional graph names its own action.
 EXTRA_SKILL_GRAPHS = {
+    "c1066": {"c_lunabianca_skill_01_2": "character.lunabianca.medium", "c_lunabianca_skill_01_3": "character.lunabianca.strong"},
+    "c1067": {"c_tamarinne_skill_01_1": "character.tamarinne.idol1", "c_tamarinne_skill_02_2": "character.tamarinne.idol2"},
+    "c1070": {"c_krau_skill_03_2": "battle.inspect.burn_header"},
     "c1047": {"c_ken_skill_01_01": "character.ken.vigor"},
     "c1022": {"c_ruell_skill_01_2": "battle.inspect.burn_header"},
     "c1024": {"c_iseria_skill_01_2": "battle.inspect.burn_header"},
     "c1035": {"c_fuzzies_skill_03_2": "character.fuzzies.counter"},
 }
+# Real MODEL_BODY state and the skills the original skill set selects in that state.
+STATUS_FORMS = {"c1067": {"Idol": ("tamarinne_t", ("c_tamarinne_skill_01_1","c_tamarinne_skill_02_2"))}}
 # Base S1 has an explicit skill1 listener and matching model timeline event.
 GRAPH_ANIMATION_INDEX = {"stagept/c_iterre_skill_01.stg": 1}
 # Base STG omits this cue; the base skeleton marker and skin STG corroborate its timing.
@@ -90,12 +106,21 @@ ANIMATION_CUTINS={
 }
 
 
-def skill_ids(cid):
+def primary_graphs(cid):
     stem=SKILL_STEMS.get(cid, f"c_{CHARACTERS[cid][0]}_skill")
-    return [SKILL_VARIANTS.get((cid,index), f"{stem}_{index:02}") for index in range(1,4)]
+    graphs={slot:SKILL_VARIANTS.get((cid,slot),f"{stem}_{slot:02}") for slot in range(1,4)}
+    return {slot:graph for slot,graph in graphs.items() if graph is not None}
+
+def skill_ids(cid):
+    return list(primary_graphs(cid).values())
 
 def presentation_ids(cid):
     return [*skill_ids(cid), *EXTRA_SKILL_GRAPHS.get(cid, ())]
+
+def graph_actor_model(cid, action):
+    for model,actions in STATUS_FORMS.get(cid,{}).values():
+        if action in actions:return model
+    return CHARACTERS[cid][0]
 
 
 BANKS = (
@@ -104,6 +129,8 @@ BANKS = (
 )
 DEFAULT_JAPANESE_BANK = "sound/ja/voc1.audio_ja.bank"
 JAPANESE_BANK_BY_CHARACTER = {
+    "c1060": "sound/ja/voc5.audio_ja.bank", "c1066": "sound/ja/voc3.audio_ja.bank",
+    "c1067": "sound/ja/voc3.audio_ja.bank", "c1073": "sound/ja/voc3.audio_ja.bank",
     "c1019": "sound/ja/voc3.audio_ja.bank", "c1044": "sound/ja/voc3.audio_ja.bank",
     "c1046": "sound/ja/voc3.audio_ja.bank", "c1055": "sound/ja/voc5.audio_ja.bank",
 }
@@ -297,6 +324,11 @@ class Closure:
                 for entity in document["entities"]:
                     kind=entity.get("etty");name=entity.get("source")
                     if kind=="CUTIN" and entity.get("args"):deps.add(self.resolve(entity["args"],"cut/fhd",".webp"))
+                    if kind=="MODEL_BODY" and entity.get("model_id"):
+                        model=entity["model_id"]
+                        deps.add(self.resolve(model,"model",".scsp"))
+                        timeline=self.resolve(model,"model",".timeline")
+                        if safe_source(self.root,timeline).is_file():deps.add(timeline)
                     if kind=="SHAKE" and name:deps.add(self.resolve(name,"camera",".scsp"))
                     elif kind=="NODE_ANI" and name:deps.add(self.resolve(name,"spani",".scsp"))
                     elif name:deps.add(self.resolve(name,"effect",".cfx"))
@@ -442,7 +474,8 @@ def import_assets(source_root,project,ids,include_banks=True):
             document=closure.structures[source]
             graph_sources=set(closure.descendants(source))
             for cid in closure.owners[source]:
-                timeline=f"model/{CHARACTERS[cid][0]}.timeline"
+                model=graph_actor_model(cid,PurePosixPath(source).stem)
+                timeline=f"model/{model}.timeline"
                 if timeline in closure.dependencies:
                     graph_sources.add(timeline);graph_sources.update(closure.descendants(timeline))
             deps=sorted(set(deps)|{address(p) for p in graph_sources})
@@ -513,6 +546,11 @@ def canonical_programmer_key(key):
 
 # Explicit source provenance. A spelling match cannot authorize substitution between events.
 JAPANESE_PROGRAMMER_ALIASES = {
+    "event:/voc/skill/c_schniel_skill_03": tuple(
+        (key, key+"(jp)") for key in (f"voc_c1060_skill3_{phase}_{take}" for phase in range(1,4) for take in (1,2))),
+    **{f"event:/voc/skill/c_schniel_skill_03_ex{phase}": tuple(
+        (key,key+"(jp)") for key in (f"voc_c1060_skill3_s_{phase}_{take}" for take in (1,2))) for phase in range(1,4)},
+    "event:/voc/skill/c_tamarinne_skill_02_2": (("voc_c1067_skill3_3_2","voc_c1067_skill3_3_2(J)"),),
     "event:/voc/skill/c_mui_skill_03": tuple(
         (f"voc_c1044_skill3_{phase}_2", f"voc_c1044_skill3_{phase}_1") for phase in range(1, 4)),
     "event:/voc/skill/c_ken_skill_03": tuple(
@@ -575,23 +613,37 @@ def build_catalog(closure,characters,include_banks):
         labels = voice_display_keys(keys)
         voices=[{"id":key,"audioTableKey":key,"eventPath":voice_events.get(key,""),"displayNameKey":label} for key,label in zip(keys,labels)]
         skills=[]
-        for i,skill in enumerate(presentation_ids(cid),1):
+        forms=[]
+        models_by_skill={}
+        for status,(model,actions) in STATUS_FORMS.get(cid,{}).items():
+            body=f"model/{model}.scsp"
+            if cid not in closure.owners[body]:
+                raise ValueError(f"Status form is not referenced by this character's graph: {cid}/{body}")
+            model_address=address(body)
+            form_timeline=f"model/{model}.timeline"
+            forms.append({"status":status,"modelAddress":model_address,
+                          "timelineAddress":address(form_timeline) if form_timeline in closure.dependencies else "", "skin":"default"})
+            models_by_skill.update({action:model_address for action in actions})
+        labels_by_skill={graph:f"character.{hero}.skill{slot}" for slot,graph in primary_graphs(cid).items()}
+        labels_by_skill.update(EXTRA_SKILL_GRAPHS.get(cid,{}))
+        for skill,display_key in labels_by_skill.items():
             effect=f"event:/skill/{skill}"
             voice=f"event:/voc/skill/{skill}"
             call=f"{voice}_c"
             answer=f"{voice}_a"
-            display_key = f"character.{hero}.skill{i}" if i <= 3 else EXTRA_SKILL_GRAPHS[cid][skill]
             skills.append({"id":skill,"displayNameKey":display_key,
                 "graphAddress":address(f"stagept/{skill}.stg"),"eventPath":effect if audio.get(effect) else "",
                 "voiceEventPath":voice if audio.get(voice) else "",
                 "dualCallVoiceEventPath":call if audio.get(call) else "",
                 "dualAnswerVoiceEventPath":answer if audio.get(answer) else ""})
+            if skill in models_by_skill:skills[-1]["modelAddress"]=models_by_skill[skill]
             used_events.update((effect,voice,call,answer))
         used_events.update(voice["eventPath"] for voice in voices)
         records.append({"id":cid,"name":name,"displayNameKey":f"character.{hero}.name",
             "battleSkeletonAddress":address(f"model/{hero}.scsp"),"portraitSkeletonAddress":address(f"portrait/{cid}.scsp"),
             "voiceBankAddress":address(bank) if include_banks else "",
             "timelineAddress":address(timeline) if timeline in closure.dependencies else "","voices":voices,"skills":skills})
+        if forms:records[-1]["statusForms"]=forms
     source_events = {}
     if include_banks and JAPANESE_PROGRAMMER_ALIASES.keys() & used_events:
         source_events = audio_events(safe_source(closure.root,"sound/@master.yml").read_text(encoding="utf-8-sig"))

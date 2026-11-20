@@ -1,0 +1,160 @@
+
+surin_sk3.sct
+size: 512,1112
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dust_soft_1
+  rotate: false
+  xy: 2, 524
+  size: 279, 144
+  orig: 279, 144
+  offset: 0, 0
+  index: -1
+dust_soft_2
+  rotate: false
+  xy: 2, 670
+  size: 271, 150
+  orig: 271, 150
+  offset: 0, 0
+  index: -1
+dust_soft_3
+  rotate: false
+  xy: 2, 412
+  size: 293, 110
+  orig: 293, 110
+  offset: 0, 0
+  index: -1
+flame_s_1
+  rotate: false
+  xy: 171, 822
+  size: 101, 108
+  orig: 101, 108
+  offset: 0, 0
+  index: -1
+flame_s_2
+  rotate: true
+  xy: 342, 1009
+  size: 100, 114
+  orig: 100, 114
+  offset: 0, 0
+  index: -1
+flamedust_1
+  rotate: true
+  xy: 302, 336
+  size: 139, 182
+  orig: 139, 182
+  offset: 0, 0
+  index: -1
+flamedust_2
+  rotate: true
+  xy: 302, 168
+  size: 166, 201
+  orig: 166, 201
+  offset: 0, 0
+  index: -1
+flamedust_3
+  rotate: false
+  xy: 2, 856
+  size: 167, 214
+  orig: 167, 214
+  offset: 0, 0
+  index: -1
+flamedust_4
+  rotate: true
+  xy: 275, 688
+  size: 166, 235
+  orig: 166, 235
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 171, 932
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+glow_bg_1
+  rotate: false
+  xy: 2, 2
+  size: 495, 60
+  orig: 495, 60
+  offset: 0, 0
+  index: -1
+glow_bg_2
+  rotate: false
+  xy: 2, 64
+  size: 495, 53
+  orig: 495, 53
+  offset: 0, 0
+  index: -1
+light_flare_line
+  rotate: true
+  xy: 297, 477
+  size: 209, 210
+  orig: 209, 210
+  offset: 0, 0
+  index: -1
+light_flare_rainbow
+  rotate: true
+  xy: 2, 150
+  size: 260, 298
+  orig: 260, 298
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: false
+  xy: 2, 119
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1
+sakura_01
+  rotate: false
+  xy: 2, 1072
+  size: 64, 38
+  orig: 64, 38
+  offset: 0, 0
+  index: -1
+sakura_02
+  rotate: false
+  xy: 432, 119
+  size: 67, 47
+  orig: 67, 47
+  offset: 0, 0
+  index: -1
+sakura_03
+  rotate: false
+  xy: 274, 856
+  size: 60, 53
+  orig: 60, 53
+  offset: 0, 0
+  index: -1
+sakura_04
+  rotate: true
+  xy: 458, 1009
+  size: 39, 48
+  orig: 39, 48
+  offset: 0, 0
+  index: -1
+sakura_05
+  rotate: false
+  xy: 2, 822
+  size: 65, 27
+  orig: 65, 27
+  offset: 0, 0
+  index: -1
+slash_electro_30
+  rotate: false
+  xy: 342, 856
+  size: 162, 151
+  orig: 162, 151
+  offset: 0, 0
+  index: -1
+white
+  rotate: true
+  xy: 486, 336
+  size: 32, 18
+  orig: 32, 18
+  offset: 0, 0
+  index: -1

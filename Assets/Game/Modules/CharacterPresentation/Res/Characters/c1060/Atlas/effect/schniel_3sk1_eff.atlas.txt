@@ -1,0 +1,251 @@
+
+schniel_3sk1_eff.sct
+size: 505,1255
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+1flash
+  rotate: false
+  xy: 2, 1066
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+beam_box
+  rotate: false
+  xy: 348, 1182
+  size: 42, 42
+  orig: 42, 42
+  offset: 0, 0
+  index: -1
+beam_tail
+  rotate: true
+  xy: 2, 2
+  size: 22, 417
+  orig: 22, 417
+  offset: 0, 0
+  index: -1
+beam_tail_blur
+  rotate: true
+  xy: 2, 26
+  size: 22, 417
+  orig: 22, 417
+  offset: 0, 0
+  index: -1
+beam_tail_cover
+  rotate: false
+  xy: 283, 544
+  size: 11, 204
+  orig: 11, 204
+  offset: 0, 0
+  index: -1
+beam_tail_cover3
+  rotate: true
+  xy: 2, 544
+  size: 69, 279
+  orig: 69, 279
+  offset: 0, 0
+  index: -1
+burst_sphear
+  rotate: false
+  xy: 371, 89
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+cloud_big_09
+  rotate: true
+  xy: 240, 829
+  size: 96, 53
+  orig: 96, 53
+  offset: 0, 0
+  index: -1
+cloud_big_11
+  rotate: true
+  xy: 407, 955
+  size: 142, 90
+  orig: 142, 90
+  offset: 0, 0
+  index: -1
+dot_01
+  rotate: false
+  xy: 394, 50
+  size: 21, 21
+  orig: 21, 21
+  offset: 0, 0
+  index: -1
+dot_03
+  rotate: true
+  xy: 2, 615
+  size: 220, 236
+  orig: 220, 236
+  offset: 0, 0
+  index: -1
+dot_04
+  rotate: true
+  xy: 2, 837
+  size: 220, 236
+  orig: 220, 236
+  offset: 0, 0
+  index: -1
+dot_n1
+  rotate: true
+  xy: 371, 223
+  size: 109, 125
+  orig: 109, 125
+  offset: 0, 0
+  index: -1
+dot_n2
+  rotate: true
+  xy: 290, 955
+  size: 117, 115
+  orig: 117, 115
+  offset: 0, 0
+  index: -1
+dot_n3
+  rotate: true
+  xy: 421, 2
+  size: 85, 80
+  orig: 85, 80
+  offset: 0, 0
+  index: -1
+dot_nn1
+  rotate: true
+  xy: 371, 334
+  size: 109, 125
+  orig: 109, 125
+  offset: 0, 0
+  index: -1
+dot_y_01
+  rotate: false
+  xy: 371, 50
+  size: 21, 21
+  orig: 21, 21
+  offset: 0, 0
+  index: -1
+light_flare_rainbow
+  rotate: true
+  xy: 2, 282
+  size: 260, 298
+  orig: 260, 298
+  offset: 0, 0
+  index: -1
+light_pillar_1
+  rotate: true
+  xy: 296, 725
+  size: 113, 206
+  orig: 113, 206
+  offset: 0, 0
+  index: -1
+light_pillar_1s
+  rotate: true
+  xy: 295, 840
+  size: 113, 206
+  orig: 113, 206
+  offset: 0, 0
+  index: -1
+maichel_light1
+  rotate: true
+  xy: 302, 282
+  size: 244, 67
+  orig: 244, 67
+  offset: 0, 0
+  index: -1
+pen
+  rotate: false
+  xy: 240, 927
+  size: 48, 137
+  orig: 48, 137
+  offset: 0, 0
+  index: -1
+pen_big
+  rotate: true
+  xy: 2, 50
+  size: 114, 367
+  orig: 114, 367
+  offset: 0, 0
+  index: -1
+pen_bigs
+  rotate: true
+  xy: 2, 166
+  size: 114, 367
+  orig: 114, 367
+  offset: 0, 0
+  index: -1
+pirz_star
+  rotate: true
+  xy: 302, 528
+  size: 195, 200
+  orig: 195, 200
+  offset: 0, 0
+  index: -1
+smoke_ky_1_1_1
+  rotate: false
+  xy: 320, 1074
+  size: 76, 106
+  orig: 76, 106
+  offset: 0, 0
+  index: -1
+smoke_ky_1_1_2
+  rotate: false
+  xy: 398, 1099
+  size: 76, 106
+  orig: 76, 106
+  offset: 0, 0
+  index: -1
+son_win_2
+  rotate: false
+  xy: 240, 615
+  size: 26, 64
+  orig: 26, 64
+  offset: 0, 0
+  index: -1
+ssonic_1
+  rotate: true
+  xy: 371, 445
+  size: 77, 54
+  orig: 77, 54
+  offset: 0, 0
+  index: -1
+ssonic_2
+  rotate: true
+  xy: 427, 445
+  size: 77, 54
+  orig: 77, 54
+  offset: 0, 0
+  index: -1
+ssonic_3
+  rotate: true
+  xy: 240, 750
+  size: 77, 54
+  orig: 77, 54
+  offset: 0, 0
+  index: -1
+sssonic_1
+  rotate: true
+  xy: 240, 681
+  size: 59, 26
+  orig: 59, 26
+  offset: 0, 0
+  index: -1
+sssonic_2
+  rotate: false
+  xy: 173, 1059
+  size: 59, 26
+  orig: 59, 26
+  offset: 0, 0
+  index: -1
+sssonic_3
+  rotate: true
+  xy: 320, 1182
+  size: 59, 26
+  orig: 59, 26
+  offset: 0, 0
+  index: -1
+wind_ch
+  rotate: true
+  xy: 173, 1087
+  size: 166, 145
+  orig: 166, 145
+  offset: 0, 0
+  index: -1

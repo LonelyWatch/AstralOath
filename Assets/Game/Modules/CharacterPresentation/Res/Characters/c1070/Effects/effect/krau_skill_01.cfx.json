@@ -1,0 +1,23 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "krau_sk1eff_f",
+      "z": "10",
+      "format": "spine"
+    },
+    {
+      "source": "krau_sk1eff_b",
+      "z": "-10",
+      "format": "spine"
+    },
+    {
+      "source": "krau_skill_01_pati1",
+      "x": "900",
+      "z": "9",
+      "scale": "-0.6,0.7",
+      "delay": "600",
+      "format": "particle"
+    }
+  ]
+}

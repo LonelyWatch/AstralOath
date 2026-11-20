@@ -1,0 +1,27 @@
+
+tamarinne_t_skill_02_topeff.sct
+size: 439,184
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+color_back
+  rotate: false
+  xy: 2, 116
+  size: 66, 66
+  orig: 66, 66
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 268, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+spot_ray1
+  rotate: true
+  xy: 2, 2
+  size: 112, 264
+  orig: 112, 264
+  offset: 0, 0
+  index: -1

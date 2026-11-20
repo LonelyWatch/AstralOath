@@ -1,0 +1,27 @@
+
+schniel_skeff_sk2_3_ground_glow.sct
+size: 603,185
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 432, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: false
+  xy: 2, 154
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1
+pil_glow
+  rotate: false
+  xy: 2, 2
+  size: 405, 150
+  orig: 405, 150
+  offset: 0, 0
+  index: -1

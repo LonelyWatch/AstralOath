@@ -100,6 +100,9 @@
     <var name="counterPresentationId" type="string"/>
     <var name="alternatePresentationStatus" type="string"/>
     <var name="alternatePresentationId" type="string"/>
+    <var name="alternateNameKey" type="string"/>
+    <var name="alternateDescriptionKey" type="string"/>
+    <var name="alternateIconAsset" type="string"/>
   </bean>
 
   <bean name="SkillEffectRow">

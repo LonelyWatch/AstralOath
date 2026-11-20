@@ -131,10 +131,12 @@ namespace AstralOath.Client.BattleScene.Editor
                     string status = (string)statusParent?["alternatePresentationStatus"];
                     string statusKey = status == null ? null : "battle.status." + status.ToLowerInvariant() + ".name";
                     string statusName = statusKey != null && labels.TryGetValue(statusKey, out var text) ? text : status;
+                    bool randomRoll = (string)(authority ?? burnParent ?? statusParent)?["alternatePresentationStatus"] == "RandomMiddleRoll";
                     return new Skill
                     {
                         Hero = id, Name = (string)hero["name"], Slot = slot, Id = graph,
-                        SlotLabel = counter ? $"S{parent["slot"]} · 反击" : burn ? $"S{parent["slot"]} · 燃魂" : speedUp ? $"S{parent["slot"]} · 提速" :
+                        SlotLabel = randomRoll ? $"S{slot} · {(burn ? "长段／燃魂" : hasStatus ? "中段" : "短段")}" :
+                            counter ? $"S{parent["slot"]} · 反击" : burn ? $"S{parent["slot"]} · 燃魂" : speedUp ? $"S{parent["slot"]} · 提速" :
                             hasStatus ? $"S{parent["slot"]} · {statusName}" : $"S{slot}",
                         Asset = AssetDatabase.GetAssetPath(sourceAsset), Target = (string)parent?["target"]
                     };

@@ -1,0 +1,32 @@
+{
+  "timeline": {
+    "default": {
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "tamarinne_skill_01_self",
+              "location": 1,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "tamarinne_skill_02",
+              "location": 1,
+              "scale": 1.0
+            }
+          }
+        ]
+      }
+    }
+  }
+}

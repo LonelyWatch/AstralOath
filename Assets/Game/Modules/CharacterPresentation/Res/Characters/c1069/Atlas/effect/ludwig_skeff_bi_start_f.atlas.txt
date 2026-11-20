@@ -1,0 +1,83 @@
+
+ludwig_skeff_bi_start_f.sct
+size: 341,473
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+burst_sphear_g
+  rotate: false
+  xy: 173, 302
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+flare/Layer 1
+  rotate: false
+  xy: 264, 156
+  size: 65, 65
+  orig: 65, 65
+  offset: 0, 0
+  index: -1
+flare/Layer 1 copy
+  rotate: false
+  xy: 264, 223
+  size: 41, 41
+  orig: 41, 41
+  offset: 0, 0
+  index: -1
+flare/Layer 1 copy 2
+  rotate: false
+  xy: 173, 436
+  size: 36, 35
+  orig: 36, 35
+  offset: 0, 0
+  index: -1
+flare/Layer 1 copy 3
+  rotate: false
+  xy: 211, 436
+  size: 28, 28
+  orig: 28, 28
+  offset: 0, 0
+  index: -1
+flare/Layer 3 copy 2
+  rotate: false
+  xy: 241, 436
+  size: 15, 15
+  orig: 15, 15
+  offset: 0, 0
+  index: -1
+flare/Layer 3 copy 3
+  rotate: false
+  xy: 258, 436
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+flare/prismlight_10
+  rotate: true
+  xy: 264, 79
+  size: 75, 74
+  orig: 75, 74
+  offset: 0, 0
+  index: -1
+flare/prismlight_11
+  rotate: false
+  xy: 264, 2
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 302
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+light_flare_rainbow
+  rotate: false
+  xy: 2, 2
+  size: 260, 298
+  orig: 260, 298
+  offset: 0, 0
+  index: -1
