@@ -1,0 +1,31 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "colie_sk3_boom_f",
+      "z": "30",
+      "delay": "1820",
+      "format": "spine",
+      "actions": [
+        {
+          "action": "Fire",
+          "delay": "330"
+        }
+      ]
+    },
+    {
+      "source": "colie_sk3_boom_b",
+      "delay": "1820",
+      "format": "spine",
+      "globalZ": -0.8
+    },
+    {
+      "source": "bomb_ani_01",
+      "x": "-50",
+      "y": "-30",
+      "z": "50",
+      "scale": "1.4",
+      "format": "spine"
+    }
+  ]
+}

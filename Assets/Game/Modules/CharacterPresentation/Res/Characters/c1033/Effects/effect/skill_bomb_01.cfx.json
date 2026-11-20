@@ -1,0 +1,48 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "eff_magic_fire",
+      "z": "2",
+      "scale": "1.6",
+      "delay": "1820",
+      "format": "spine",
+      "globalZ": 0.1,
+      "actions": [
+        {
+          "action": "Fire",
+          "delay": "165"
+        }
+      ]
+    },
+    {
+      "source": "eff_magic_fire_crack",
+      "scale": "1.9",
+      "delay": "1820",
+      "format": "spine",
+      "globalZ": -0.2
+    },
+    {
+      "source": "eff_magic_fire1_pati",
+      "z": "3",
+      "scale": "1.25",
+      "delay": "1820",
+      "format": "particle",
+      "globalZ": 0.2
+    },
+    {
+      "source": "eff_magic_fire1_pati2",
+      "scale": "1.2",
+      "delay": "1820",
+      "format": "particle",
+      "globalZ": -0.1
+    },
+    {
+      "source": "bomb_ani_01",
+      "y": "-20",
+      "z": "50",
+      "scale": "1.2",
+      "format": "spine"
+    }
+  ]
+}

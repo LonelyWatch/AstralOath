@@ -56,6 +56,22 @@ namespace AstralOath.Client.BattleScene
             return source == null ? 0f : Metadata(source).Duration("animation");
         }
 
+        private string NodeAnimationBone(JObject node, string source)
+        {
+            if (node["bone"] != null) return (string)node["bone"];
+            // The root→bone rigs used for target displacement also occur with an explicit "bone".
+            // An omitted name is unambiguous only when that child owns the motion.
+            var rig = Document(source);
+            var tracks = rig?["animations"]?["animation"]?["bones"];
+            if (!(rig?["bones"] is JArray bones) || bones.Count != 2 ||
+                (string)bones[0]["name"] != "root" || (string)bones[1]["parent"] != "root" ||
+                (string)bones[1]["name"] != "bone" || !(tracks?["bone"] is JObject child)) return null;
+
+            bool Moves(JObject track) => track != null && track.Properties().SelectMany(property =>
+                property.Value.Children<JObject>()).Any(key => (float?)key["time"] > 0f);
+            return Moves(child) && !Moves(tracks["root"] as JObject) ? "bone" : null;
+        }
+
         private void PlayNodeAnimation(JObject node, float at, BattlePreviewActor[] recipients)
         {
             bool affectedActors = node["target_node"] == null;
@@ -68,10 +84,15 @@ namespace AstralOath.Client.BattleScene
             if (affectedActors) cinematic.RevealLayoutTargets();
 
             string source = NodeAnimationSource(node);
-            string bone = (string)node["bone"];
-            if (source == null || string.IsNullOrEmpty(bone) || !assets.TryGetValue(source, out var asset) || !asset.document)
+            if (source == null || !assets.TryGetValue(source, out var asset) || !asset.document)
             {
                 WarnSource($"Missing NODE_ANI skeleton or bone for node {node["guid"]} ({source}).");
+                return;
+            }
+            string bone = NodeAnimationBone(node, source);
+            if (string.IsNullOrEmpty(bone))
+            {
+                WarnSource($"Unresolved NODE_ANI bone for node {node["guid"]} ({source}).");
                 return;
             }
 

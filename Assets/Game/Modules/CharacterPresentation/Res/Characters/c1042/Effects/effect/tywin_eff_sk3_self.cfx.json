@@ -1,0 +1,21 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "tywin_eff_sk3_self_f",
+      "format": "spine",
+      "globalZ": 1.0,
+      "actions": [
+        {
+          "action": "Fire",
+          "delay": "495"
+        }
+      ]
+    },
+    {
+      "source": "tywin_eff_sk3_self_b",
+      "format": "spine",
+      "globalZ": -0.5
+    }
+  ]
+}

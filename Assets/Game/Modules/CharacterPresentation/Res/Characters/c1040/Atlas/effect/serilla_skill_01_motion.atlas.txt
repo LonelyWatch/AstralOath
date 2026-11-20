@@ -1,0 +1,104 @@
+
+serilla_skill_01_motion.sct
+size: 465,658
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+b_circle1
+  rotate: false
+  xy: 2, 2
+  size: 198, 198
+  orig: 198, 198
+  offset: 0, 0
+  index: -1
+b_circle2
+  rotate: false
+  xy: 2, 202
+  size: 198, 198
+  orig: 198, 198
+  offset: 0, 0
+  index: -1
+b_circle3
+  rotate: false
+  xy: 2, 402
+  size: 198, 198
+  orig: 198, 198
+  offset: 0, 0
+  index: -1
+burst_sphear
+  rotate: false
+  xy: 202, 173
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+burst_sphear_g
+  rotate: false
+  xy: 202, 307
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 202, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+hand_circle1
+  rotate: false
+  xy: 202, 441
+  size: 127, 127
+  orig: 127, 127
+  offset: 0, 0
+  index: -1
+hand_circle2
+  rotate: false
+  xy: 331, 441
+  size: 127, 127
+  orig: 127, 127
+  offset: 0, 0
+  index: -1
+hand_circle3
+  rotate: false
+  xy: 336, 173
+  size: 127, 127
+  orig: 127, 127
+  offset: 0, 0
+  index: -1
+hand_circle4
+  rotate: false
+  xy: 336, 302
+  size: 127, 127
+  orig: 127, 127
+  offset: 0, 0
+  index: -1
+heart1_1
+  rotate: true
+  xy: 373, 2
+  size: 86, 82
+  orig: 86, 82
+  offset: 0, 0
+  index: -1
+heart1_2
+  rotate: false
+  xy: 202, 570
+  size: 86, 82
+  orig: 86, 82
+  offset: 0, 0
+  index: -1
+heart1_3
+  rotate: false
+  xy: 290, 570
+  size: 86, 82
+  orig: 86, 82
+  offset: 0, 0
+  index: -1
+heart1_4
+  rotate: true
+  xy: 378, 570
+  size: 86, 82
+  orig: 86, 82
+  offset: 0, 0
+  index: -1

@@ -22,6 +22,30 @@ namespace AstralOath.Client.Tests
         private Scene scene;
 
         [UnityTest]
+        public IEnumerator PassiveSupportPresentsAllAuthoritativeRecipients()
+        {
+            scene = EditorSceneManager.LoadSceneInPlayMode("Assets/Game/Modules/BattleScene/Scenes/BattleScene.unity",
+                new LoadSceneParameters(LoadSceneMode.Additive));
+            yield return null;
+            yield return null;
+            var host = scene.GetRootGameObjects().Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            host.StartBattle();
+            var simulation = Field(host, "simulation");
+            var queue = (Queue<BattleFlowEvent>)Field(simulation, "playback");
+            // A reaction selects the ally that took the critical hit. The resulting barriers go to four allies.
+            const string passive = "c1037.s2";
+            for (int slot = 1; slot <= 4; slot++)
+                queue.Enqueue(Event(BattleFlowEventKind.StatusApplied, "ally-1", passive, null,
+                    BattleActionOrigin.Passive, statusKind: BattleStatusKind.Barrier, target: "ally-" + slot));
+            Call(simulation, "Present", Event(BattleFlowEventKind.Action, "ally-1", passive, "c_ras_skill_02",
+                BattleActionOrigin.Passive, target: "ally-2"));
+            var stage = Field(Field(simulation, "skillPresentation"), "cinematic");
+            var recipients = (Transform[])Field(stage, "targets");
+            Assert.That(recipients.Distinct().Count(), Is.EqualTo(4),
+                "EFFECT location 6 must run on each ally granted the passive barrier.");
+        }
+
+        [UnityTest]
         public IEnumerator DualAttackBeginsAtLastHitWhileFirstActorRetainsRecovery()
         {
             scene = EditorSceneManager.LoadSceneInPlayMode("Assets/Game/Modules/BattleScene/Scenes/BattleScene.unity", new LoadSceneParameters(LoadSceneMode.Additive));

@@ -1,0 +1,34 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "sez_gaien_sk2eff_target",
+      "z": "0",
+      "format": "spine"
+    },
+    {
+      "source": "sez_gaien_sk2eff_target",
+      "x": "-300",
+      "y": "50",
+      "z": "20",
+      "scale": "0.75",
+      "format": "spine"
+    },
+    {
+      "source": "sez_gaien_sk2eff_target",
+      "x": "300",
+      "y": "-200",
+      "scale": "1.1",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "sez_gaien_sk2eff_target",
+      "x": "500",
+      "y": "200",
+      "z": "-100",
+      "scale": "0.8",
+      "format": "spine"
+    }
+  ]
+}

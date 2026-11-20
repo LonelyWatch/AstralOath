@@ -1,0 +1,42 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "haste_sk3eff_target",
+      "ani": "3_2_f",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "haste_sk3eff_target",
+      "ani": "3_2_b",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "haste_sk3pati",
+      "delay": "1567",
+      "format": "particle",
+      "globalZ": 2.0
+    },
+    {
+      "source": "haste_sk3pati",
+      "delay": "2300",
+      "format": "particle",
+      "globalZ": 2.0
+    },
+    {
+      "source": "haste_sk3pati",
+      "x": "-1000",
+      "delay": "2667",
+      "format": "particle",
+      "globalZ": 2.0
+    },
+    {
+      "source": "haste_sk3pati",
+      "delay": "1900",
+      "format": "particle",
+      "globalZ": 2.0
+    }
+  ]
+}

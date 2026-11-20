@@ -1,0 +1,61 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "sez_gaien_sk3eff_target",
+      "ani": "skill3_2",
+      "z": "1",
+      "format": "spine",
+      "actions": [
+        {
+          "action": "Fire",
+          "delay": "33"
+        },
+        {
+          "action": "Fire",
+          "delay": "1881"
+        }
+      ]
+    },
+    {
+      "source": "sez_gaien_sk3ptc",
+      "y": "-2000",
+      "z": "2",
+      "delay": "3300",
+      "format": "particle"
+    },
+    {
+      "source": "sez_gaien_sk3ptc",
+      "y": "-2000",
+      "z": "2",
+      "delay": "3500",
+      "format": "particle"
+    },
+    {
+      "source": "sez_gaien_sk3bustptc",
+      "z": "2",
+      "format": "particle"
+    },
+    {
+      "source": "sez_gaien_sk3bustptc",
+      "z": "2",
+      "scale": "2",
+      "delay": "1050",
+      "format": "particle"
+    },
+    {
+      "source": "sez_gaien_sk3bustptc",
+      "z": "2",
+      "scale": "4",
+      "delay": "1050",
+      "format": "particle",
+      "timeScale": 0.8
+    },
+    {
+      "source": "sez_gaien_sk3_final",
+      "z": "2",
+      "delay": "1200",
+      "format": "particle"
+    }
+  ]
+}

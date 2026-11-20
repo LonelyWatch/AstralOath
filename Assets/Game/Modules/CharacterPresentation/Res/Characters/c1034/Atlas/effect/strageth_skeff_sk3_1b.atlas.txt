@@ -1,0 +1,48 @@
+
+strageth_skeff_sk3_1b.sct
+size: 308,248
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dust&smoke/cloud_15
+  rotate: false
+  xy: 2, 173
+  size: 89, 73
+  orig: 89, 73
+  offset: 0, 0
+  index: -1
+dust&smoke/cloud_17
+  rotate: false
+  xy: 93, 173
+  size: 78, 44
+  orig: 78, 44
+  offset: 0, 0
+  index: -1
+dust&smoke/dust_fd_1
+  rotate: false
+  xy: 173, 101
+  size: 127, 99
+  orig: 127, 99
+  offset: 0, 0
+  index: -1
+dust&smoke/dust_fd_2
+  rotate: false
+  xy: 173, 2
+  size: 133, 97
+  orig: 133, 97
+  offset: 0, 0
+  index: -1
+dust&smoke/dust_fd_3
+  rotate: false
+  xy: 173, 202
+  size: 100, 41
+  orig: 100, 41
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1

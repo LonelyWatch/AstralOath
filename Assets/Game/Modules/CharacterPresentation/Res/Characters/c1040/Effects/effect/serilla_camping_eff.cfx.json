@@ -1,0 +1,16 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "serilla_camping_eff",
+      "z": "3",
+      "format": "spine",
+      "loop": 1
+    },
+    {
+      "source": "serilla_camping_pati1",
+      "format": "particle",
+      "attach": "serilla_camping_eff/glow"
+    }
+  ]
+}

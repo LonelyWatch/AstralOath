@@ -1,0 +1,27 @@
+{
+  "timeline": {
+    "default": {
+      "skill3": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 620,
+            "func": "effect",
+            "param": {
+              "source": "tanker_buff_01",
+              "location": 1,
+              "locationBone": "root",
+              "x": 80,
+              "y": 460,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": []
+      }
+    }
+  }
+}

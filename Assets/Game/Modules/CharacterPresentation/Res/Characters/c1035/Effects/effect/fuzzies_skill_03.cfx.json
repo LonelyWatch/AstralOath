@@ -1,0 +1,27 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "fuzzies_skill_03_center",
+      "z": "1",
+      "format": "spine"
+    },
+    {
+      "source": "fuzzies_skill_03_back",
+      "z": "-100",
+      "format": "spine"
+    },
+    {
+      "source": "fuzzies_skill_03_front",
+      "z": "100",
+      "format": "spine"
+    },
+    {
+      "source": "fuzzies_skill_03_pati1",
+      "x": "200",
+      "z": "-200",
+      "delay": "1900",
+      "format": "particle"
+    }
+  ]
+}

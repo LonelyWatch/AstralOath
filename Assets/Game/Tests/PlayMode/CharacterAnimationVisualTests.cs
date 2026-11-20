@@ -8,6 +8,7 @@ using System.Reflection;
 using AstralOath.Client.Bootstrap;
 using AstralOath.Client.Common;
 using AstralOath.Client.Skeletons;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -84,6 +85,11 @@ namespace AstralOath.Client.Tests
             Assert.That(audio.IsAvailable,Is.True,audio.Diagnostic);
             Assert.That(((FMOD.System)Read(audio,"core")).setOutput(FMOD.OUTPUTTYPE.NOSOUND),Is.EqualTo(FMOD.RESULT.OK));
             string group=Environment.GetEnvironmentVariable("ASTRAL_ANIMATION_CAPTURE_GROUP");
+            if (group == "roster31-40")
+            {
+                yield return CaptureRosterSkillBoundaries();
+                yield break;
+            }
             if(group=="mercedes-s3")
             {
                 yield return CaptureMercedesS3LoopAndStrictSkill();
@@ -160,6 +166,43 @@ namespace AstralOath.Client.Tests
             Debug.Log("ASTRAL_ANIMATION_CAPTURE_COMPLETE "+output+"; diagnostic frames only, not original-game validation.");
         }
         private double ClockTime=>Convert.ToDouble(Read(Read(binder,"clock"),"Time"),CultureInfo.InvariantCulture);
+        private IEnumerator CaptureRosterSkillBoundaries()
+        {
+            if ((bool)Read(binder, "loop")) Click("loop");
+            string[] ids = {"c1032", "c1033", "c1034", "c1035", "c1036", "c1037", "c1038", "c1039", "c1040", "c1042"};
+            foreach (string id in ids)
+            {
+                yield return SelectCharacter(id);
+                yield return SelectAnimation("skill1", true);
+                string directory = $"Assets/Game/Modules/CharacterPresentation/Res/Characters/{id}/Animations/model";
+                string model = Directory.GetFiles(directory, "*.spine.json").Single();
+                var clip = (JObject)JObject.Parse(File.ReadAllText(model))["animations"]["skill1"];
+                var hit = clip["events"]?.FirstOrDefault(e => (string)e["name"] == "hit");
+                // Source HIT when authored on the model, otherwise an interior keyed S1 pose.
+                float[] keyedTimes = clip["bones"].SelectTokens("$..time").Values<float>()
+                    .Where(t => t > 0 && t < Player.Duration).Distinct().OrderBy(t => t).ToArray();
+                float boundary = hit == null ? keyedTimes[keyedTimes.Length / 2] : (float)hit["time"];
+                foreach (float time in new[] { boundary - 1f / 60, boundary, boundary + 1f / 60 })
+                {
+                    yield return AdvanceUiTo(time);
+                    yield return Capture(id + "-skill1", time);
+                    foreach (var renderer in Player.Root.GetComponentsInChildren<Renderer>())
+                    {
+                        var min = camera.WorldToViewportPoint(renderer.bounds.min);
+                        var max = camera.WorldToViewportPoint(renderer.bounds.max);
+                        Assert.That(Mathf.Min(min.x, min.y), Is.GreaterThanOrEqualTo(0), id + " is clipped at " + time);
+                        Assert.That(Mathf.Max(max.x, max.y), Is.LessThanOrEqualTo(1), id + " is clipped at " + time);
+                    }
+                }
+                Click("zoomIn");
+                float manualZoom = camera.orthographicSize;
+                entry.Tick(1f / 60);
+                Assert.That(camera.orthographicSize, Is.EqualTo(manualZoom), "User zoom was overridden: " + id);
+                yield return SelectMode("portrait", id == "c1040" || id == "c1042" ? "3.8" : "2.1");
+                yield return SelectMode("battle", "2.1");
+            }
+            Assert.That(Directory.GetFiles(output, "*.png").Length, Is.EqualTo(ids.Length * 3));
+        }
         private IEnumerator CaptureMercedesS3LoopAndStrictSkill()
         {
             if(!(bool)Read(binder,"loop"))Click("loop");

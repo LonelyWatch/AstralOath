@@ -50,6 +50,7 @@ namespace AstralOath.Shared.Battle
                 var target = Get(actorId);
                 foreach (var status in target.Statuses.Where(item => BattleStatusSnapshot.IsStackable(item.Kind)).ToArray())
                 {
+                    if (!target.Statuses.Contains(status)) break; // A preceding lethal tick may have triggered self-revival.
                     var source = Get(status.SourceId);
                     if (status.Kind == BattleStatusKind.ContinuousHealing)
                     {
@@ -57,6 +58,13 @@ namespace AstralOath.Shared.Battle
                         int healing = Math.Min(target.MaximumHealth - target.Health, ScaleHealth(target.MaximumHealth, status.Strength));
                         target.Health += healing;
                         Changes.Add(BattleChange.PeriodicHealing(status, target.Id, healing));
+                        continue;
+                    }
+                    if (status.Kind == BattleStatusKind.Bomb)
+                    {
+                        if (status.RemainingTurns > 1) continue;
+                        ExplodeStatus(source, target, status, 0);
+                        if (!target.Alive) break;
                         continue;
                     }
                     int damage = status.Kind == BattleStatusKind.Poison
@@ -170,14 +178,55 @@ namespace AstralOath.Shared.Battle
                     {
                         var trigger = passive.AllyAttackTrigger;
                         if (trigger == null || ally.Cooldowns.GetValueOrDefault(passive.Row.id) > 0) continue;
-                        var target = targets.FirstOrDefault(candidate => candidate.Alive && attacked.Contains(candidate.Id) &&
-                            ConditionMet(trigger, ally, candidate, false));
+                        bool otherAllyOnly = trigger.condition == "other_ally_attacked_below_thirty_percent";
+                        if (otherAllyOnly && ally == attacker) continue;
+                        var target = targets.FirstOrDefault(candidate => attacked.Contains(candidate.Id) &&
+                            (otherAllyOnly ? 10L * candidate.Health <= 3L * candidate.MaximumHealth :
+                                candidate.Alive && ConditionMet(trigger, ally, candidate, false)));
+                        if (target != null && !target.Alive)
+                            target = units.FirstOrDefault(unit => unit.Alive && unit.Side != attacker.Side);
                         if (target == null || !ally.TriggeredPassives.Add(passive.Row.id)) continue;
                         if (passive.Row.cooldownTurns > 0)
                             ChangeCooldown(ally, ally, passive.Row.id, passive.Row.cooldownTurns);
                         Cast(ally, passive, target, false, BattleActionOrigin.Passive, phase);
                     }
                 }
+            }
+
+            private void ResolveAllyDamagedPassives(Unit attacker, Unit[] targets, HashSet<string> attacked, HashSet<string> criticallyHit)
+            {
+                if (attacked.Count == 0) return;
+                foreach (var guardian in units.Where(unit => unit.Side != attacker.Side && unit.Alive))
+                foreach (var passive in Passives(guardian))
+                {
+                    var trigger = passive.AllyDamagedTrigger;
+                    if (trigger == null || guardian.Cooldowns.GetValueOrDefault(passive.Row.id) > 0) continue;
+                    var ward = targets.FirstOrDefault(unit => unit.Side == guardian.Side && attacked.Contains(unit.Id) &&
+                        (unit.Alive || trigger.condition == "ally_suffered_critical") && MatchesTrigger(unit));
+                    if (ward == null || !Roll(random, trigger.chanceBp)) continue;
+                    int awakenedReduction = guardian.Source.Awakenings >= 3
+                        ? passive.Effects.Where(e => e.operation == "awakened_cooldown_reduction").Sum(e => e.value) : 0;
+                    int cooldown = Math.Max(0, passive.Row.cooldownTurns - owner.ModifiersFor(guardian, passive).CooldownTurns - awakenedReduction);
+                    if (cooldown > 0) ChangeCooldown(guardian, guardian, passive.Row.id, cooldown);
+                    Cast(guardian, passive, ward, false, BattleActionOrigin.Passive, trigger.phase);
+
+                    bool MatchesTrigger(Unit unit) => trigger.condition switch
+                    {
+                        "ally_suffered_critical" => criticallyHit?.Contains(unit.Id) == true && CanReact(guardian),
+                        "back_row_immobilized" => unit.Source.Slot.Position == 4 && unit.Has(BattleStatusKind.Stun) && CanReact(guardian),
+                        _ => ConditionMet(trigger, guardian, unit, false)
+                    };
+                }
+            }
+
+            private int AttackDamageLimit(Unit target)
+            {
+                int limit = target.Status(BattleStatusKind.DamageLimit)?.Strength ?? Basis;
+                foreach (var passive in Passives(target))
+                foreach (var effect in passive.Effects)
+                    if (effect.operation == "attack_damage_limit")
+                        limit = Math.Min(limit, effect.value - owner.ModifiersFor(target, passive).DamageLimitReductionBp);
+                return Math.Max(0, limit);
             }
 
             private void ResolveAllySkillEffects(Unit caster)
@@ -294,6 +343,7 @@ namespace AstralOath.Shared.Battle
                     "resource_full_after_awakening" => fullResource && caster.Source.Awakenings >= 3,
                     "caster_at_least_three_buffs" => caster.Statuses.Count(status => !IsHarmful(status.Kind)) >= 3,
                     "caster_fewer_than_three_buffs" => caster.Statuses.Count(status => !IsHarmful(status.Kind)) < 3,
+                    "recipient_fire" => recipient.Source.Element == BattleElement.Fire,
                     "recipient_bleeding" => recipient.Has(BattleStatusKind.Bleed),
                     "caster_enraged" => caster.Has(BattleStatusKind.Rage),
                     "soul_burn" => soulBurn,
@@ -306,6 +356,10 @@ namespace AstralOath.Shared.Battle
                     "caster_skill_awakened" => caster.Source.Awakenings >= 3,
                     "caster_skill_not_awakened" => caster.Source.Awakenings < 3,
                     "target_readiness_drained" => readinessDrained,
+                    "recipient_lower_attack" => recipient.Attack < caster.Attack,
+                    "recipient_above_thirty_percent" => 10L * recipient.Health > 3L * recipient.MaximumHealth,
+                    "recipient_low_thirty_awakened" => 10L * recipient.Health <= 3L * recipient.MaximumHealth && caster.Source.Awakenings >= 3,
+                    "recipient_low_thirty_unawakened" => 10L * recipient.Health <= 3L * recipient.MaximumHealth && caster.Source.Awakenings < 3,
                     "recipient_buffed" => HasBuff(recipient),
                     "recipient_debuffed_after_skill_awakening" => caster.Source.Awakenings >= 3 &&
                         recipient.Statuses.Any(status => IsHarmful(status.Kind)),

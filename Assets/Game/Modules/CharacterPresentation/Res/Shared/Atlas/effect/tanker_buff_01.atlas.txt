@@ -1,0 +1,41 @@
+
+tanker_buff_01.sct
+size: 515,253
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+beam_01
+  rotate: false
+  xy: 231, 148
+  size: 196, 103
+  orig: 196, 103
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 429, 140
+  size: 84, 84
+  orig: 84, 84
+  offset: 0, 0
+  index: -1
+ring_01
+  rotate: false
+  xy: 2, 2
+  size: 227, 227
+  orig: 227, 227
+  offset: 0, 0
+  index: -1
+ring_flash
+  rotate: false
+  xy: 231, 2
+  size: 144, 144
+  orig: 144, 144
+  offset: 0, 0
+  index: -1
+wind_shock2
+  rotate: false
+  xy: 377, 2
+  size: 136, 136
+  orig: 136, 136
+  offset: 0, 0
+  index: -1

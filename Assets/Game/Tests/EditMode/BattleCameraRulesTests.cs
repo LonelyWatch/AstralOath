@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using AstralOath.Client.Skeletons;
 using Newtonsoft.Json.Linq;
@@ -80,6 +81,57 @@ namespace AstralOath.Tests
             Call("Play",JObject.Parse("{'etty':'ZOOM','scale':0.25}"));
             Call("Play",JObject.Parse("{'etty':'BGSHOW','show':false}")); Call("Tick",0f);
             Assert.That(camera.orthographicSize,Is.EqualTo(20f).Within(.001f));
+        }
+        [TestCase("c1008", "boom_cm_power_lf", -1.5f, 0f)]
+        [TestCase("c1019", "boom_cm_power_rt", 1.5f, 0f)]
+        [TestCase("c1033", "coile_sk3_boom_cm", 0f, -.428f)]
+        public void SourceShakeIncludesAuthoredParentTransform(string sourceOwner, string clip, float expectedX, float expectedY)
+        {
+            Create(false);
+            var path = System.IO.Path.Combine(Application.dataPath, "Game/Modules/CharacterPresentation/Res/Characters",
+                sourceOwner, "Animations/camera", clip + ".spine.json");
+            var source = new SkeletonPlayerSource(System.IO.File.ReadAllText(path), "", new Dictionary<string,Texture2D>());
+            Call("PlayShake", new JObject { ["etty"] = "SHAKE", ["source"] = clip }, source);
+            Call("Tick", .0333f);
+            Assert.That(camera.transform.position.x, Is.EqualTo(expectedX).Within(.001f));
+            Assert.That(camera.transform.position.y, Is.EqualTo(expectedY).Within(.001f));
+            Call("Tick", 5f);
+            Assert.That(camera.transform.position, Is.EqualTo(new Vector3(0f, 0f, -10f)));
+        }
+        [Test] public void SezHatchUsesSourceDirectionAndScaleAcrossConsecutiveWideShots()
+        {
+            Create(false);
+            camera.aspect = 21f / 9f;
+            string path = System.IO.Path.Combine(Application.dataPath, "Game/Modules/CharacterPresentation/Res/Characters/c1038",
+                "Configs/stagept/c_sez_gaien_skill_03.graph.json");
+            var nodes = (JArray)JObject.Parse(System.IO.File.ReadAllText(path))["source"]["entities"];
+            texture = new Texture2D(1024, 1024);
+            Call("SetHatchTextures", (object)new[] { texture, texture, texture });
+
+            Check(17, new Vector2(0f, 1f), 2.4f);
+            Check(18, new Vector2(.7071068f, -.7071068f), 2f);
+            Call("Reset");
+            Assert.That(camera.transform.childCount, Is.Zero);
+
+            void Check(int guid, Vector2 expectedHorizontalUv, float scale)
+            {
+                Call("Play", nodes.First(entity => (int)entity["guid"] == guid));
+                var filter = camera.transform.GetChild(camera.transform.childCount - 1).GetComponent<MeshFilter>();
+                var uv = filter.sharedMesh.uv;
+                var right = uv[1] - uv[0];
+                Assert.That(right.normalized.x, Is.EqualTo(expectedHorizontalUv.x).Within(.001f));
+                Assert.That(right.normalized.y, Is.EqualTo(expectedHorizontalUv.y).Within(.001f));
+                Assert.That(right.magnitude, Is.EqualTo(720f * camera.aspect / (1024f * scale)).Within(.001f));
+                Assert.That((uv[3] - uv[0]).magnitude, Is.EqualTo(720f / (1024f * scale)).Within(.001f));
+                Assert.That(Vector2.Distance((uv[0] + uv[2]) / 2f, Vector2.one * .5f), Is.LessThan(.001f));
+                var vertices = filter.sharedMesh.vertices;
+                for (int corner = 0; corner < 4; corner++)
+                {
+                    Vector3 point = camera.WorldToViewportPoint(filter.transform.TransformPoint(vertices[corner]));
+                    Assert.That(point.x, Is.EqualTo(corner is 1 or 2 ? 1f : 0f).Within(.001f));
+                    Assert.That(point.y, Is.EqualTo(corner >= 2 ? 1f : 0f).Within(.001f));
+                }
+            }
         }
         [Test] public void SourceFocusFollowsTheMovingVisualActor()
         {

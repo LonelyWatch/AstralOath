@@ -75,7 +75,7 @@ namespace AstralOath.Client.CharacterLab
             string animation=player.Animations.FirstOrDefault(a=>a.Name=="animation")?.Name??player.Animations.FirstOrDefault()?.Name;
             if(animation==null){report("Camera skeleton has no animation: "+path);player.Dispose();return;}
             player.Play(animation,false);
-            if(!player.TryGetBonePose("camera",out _)){report("Camera skeleton has no camera bone: "+path);player.Dispose();return;}
+            if(!player.TryGetBoneSkeletonPosition("camera",out _)){report("Camera skeleton has no camera bone: "+path);player.Dispose();return;}
             double duration=N(node,"duration",-1);
             duration=duration<0?player.Duration/speed:duration/1000;
             shakes.Add(new Shake{id=(string)node["id"]??"shake:"+node["guid"],player=player,speed=speed,end=time+duration});
@@ -100,8 +100,8 @@ namespace AstralOath.Client.CharacterLab
             {
                 if(time>=shake.end){shake.player.Dispose();shakes.Remove(shake);continue;}
                 if(delta>0)shake.player.Tick(delta*shake.speed);
-                if(shake.player.TryGetBonePose("camera",out var pose))
-                    offset+=new Vector3(pose.LocalPosition.x,pose.LocalPosition.y,0);
+                if(shake.player.TryGetBoneSkeletonPosition("camera",out var position))
+                    offset+=new Vector3(position.x,position.y,0);
             }
             if(context.PreviewCamera){context.PreviewCamera.transform.position+=offset;appliedOffset+=offset;}
         }

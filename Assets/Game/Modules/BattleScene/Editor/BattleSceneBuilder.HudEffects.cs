@@ -202,7 +202,7 @@ namespace AstralOath.Client.BattleScene.Editor
             {
                 if ((string)skill["target"] != "passive" && !graphIds.Contains((string)skill["presentationId"]))
                     throw new InvalidOperationException("Missing original battle graph for " + skill["id"]);
-                foreach (string alternate in new[] { (string)skill["speedUpPresentationId"], (string)skill["burnPresentationId"] })
+                foreach (string alternate in new[] { (string)skill["speedUpPresentationId"], (string)skill["burnPresentationId"], (string)skill["counterPresentationId"] })
                     if (!string.IsNullOrWhiteSpace(alternate) && !graphIds.Contains(alternate))
                         throw new InvalidOperationException("Missing alternate battle graph for " + skill["id"]);
             }

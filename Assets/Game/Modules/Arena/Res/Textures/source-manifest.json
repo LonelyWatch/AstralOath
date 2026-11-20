@@ -2407,6 +2407,198 @@
       }
     },
     {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1032_l.png",
+      "sources": [
+        {
+          "source": "face/c1032_l.png",
+          "sha256": "28868cc5e22a2782c8cc15b225ad85c0409399ea34f97e8945f5f120ca8ccf0a"
+        }
+      ],
+      "outputSha256": "28868cc5e22a2782c8cc15b225ad85c0409399ea34f97e8945f5f120ca8ccf0a",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1033_l.png",
+      "sources": [
+        {
+          "source": "face/c1033_l.png",
+          "sha256": "d4c06f86cb30b4258d458ca85c247cc240f469590e49ff86329cf82879e6a53e"
+        }
+      ],
+      "outputSha256": "d4c06f86cb30b4258d458ca85c247cc240f469590e49ff86329cf82879e6a53e",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1034_l.png",
+      "sources": [
+        {
+          "source": "face/c1034_l.png",
+          "sha256": "ad297af72208568f88fdf58e00ce01e337bb7cf0d85290e03136127b585a99f4"
+        }
+      ],
+      "outputSha256": "ad297af72208568f88fdf58e00ce01e337bb7cf0d85290e03136127b585a99f4",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1034_fu.png",
+      "sources": [
+        {
+          "source": "face/c1034_fu.png",
+          "sha256": "4332f2b9af705f0d95da35a952a607cfafffb4ee0524f916fcabdc506cfa1984"
+        }
+      ],
+      "outputSha256": "4332f2b9af705f0d95da35a952a607cfafffb4ee0524f916fcabdc506cfa1984",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 900,
+        "height": 950
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1035_l.png",
+      "sources": [
+        {
+          "source": "face/c1035_l.png",
+          "sha256": "a29d4e1929d44add39c6148f017d2361c06a8f16c3387a222ca9d6920f0435e2"
+        }
+      ],
+      "outputSha256": "a29d4e1929d44add39c6148f017d2361c06a8f16c3387a222ca9d6920f0435e2",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 190,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1036_l.png",
+      "sources": [
+        {
+          "source": "face/c1036_l.png",
+          "sha256": "711a4d756311b181ca84c3ba077fb0a3a64a2e1dd6369d89ef50f14a43b836d4"
+        }
+      ],
+      "outputSha256": "711a4d756311b181ca84c3ba077fb0a3a64a2e1dd6369d89ef50f14a43b836d4",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1037_l.png",
+      "sources": [
+        {
+          "source": "face/c1037_l.png",
+          "sha256": "018d13211f2b4b71d515d74fd6e3836faaebf71d67d0c562f306b1a5df15fd82"
+        }
+      ],
+      "outputSha256": "018d13211f2b4b71d515d74fd6e3836faaebf71d67d0c562f306b1a5df15fd82",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1038_l.png",
+      "sources": [
+        {
+          "source": "face/c1038_l.png",
+          "sha256": "9c38df73cb1ba8b5f78c0c35eabb865fe82c077c373b31cacb0df3922b11a131"
+        }
+      ],
+      "outputSha256": "9c38df73cb1ba8b5f78c0c35eabb865fe82c077c373b31cacb0df3922b11a131",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1038_fu.png",
+      "sources": [
+        {
+          "source": "face/c1038_fu.png",
+          "sha256": "f482caee90183d02f452b290f4c05de864a82c9c55685693250f1da020c3fb59"
+        }
+      ],
+      "outputSha256": "f482caee90183d02f452b290f4c05de864a82c9c55685693250f1da020c3fb59",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 900,
+        "height": 950
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1039_l.png",
+      "sources": [
+        {
+          "source": "face/c1039_l.png",
+          "sha256": "28a4126f94d04e81d1b454723530b4c3d2b1b812d221b40082e1e94d98042bdc"
+        }
+      ],
+      "outputSha256": "28a4126f94d04e81d1b454723530b4c3d2b1b812d221b40082e1e94d98042bdc",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1040_l.png",
+      "sources": [
+        {
+          "source": "face/c1040_l.png",
+          "sha256": "ecb5c484da697983ae9e568c4e0c2d094e7c6cdd539cc1977f6c9c5e0399fe25"
+        }
+      ],
+      "outputSha256": "ecb5c484da697983ae9e568c4e0c2d094e7c6cdd539cc1977f6c9c5e0399fe25",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
+      "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/Heroes/c1042_l.png",
+      "sources": [
+        {
+          "source": "face/c1042_l.png",
+          "sha256": "23278903d8a8ef0c9af798c62b0104081ccd067c632b53f4c155b834238ccf9d"
+        }
+      ],
+      "outputSha256": "23278903d8a8ef0c9af798c62b0104081ccd067c632b53f4c155b834238ccf9d",
+      "conversion": {
+        "method": "original-asset",
+        "compression": "none",
+        "width": 222,
+        "height": 89
+      }
+    },
+    {
       "asset": "Assets/Game/Modules/Arena/Res/Textures/Draft/score.fnt.txt",
       "sources": [
         {

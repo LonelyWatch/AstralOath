@@ -46,8 +46,14 @@ static class Program
             int minimumTakes = parts.Length == 1 ? 2 : 0;
             if (parts.Length > 1 && (parts.Length != 2 || !int.TryParse(parts[1], out minimumTakes) || minimumTakes < 1))
                 throw new ArgumentException("Use skillId or skillId@minimumDistinctTakes: " + specification);
-            string path = rows[skill].GetProperty("voiceEventPath").GetString();
-            Check(studio.getEvent(path, out var description), "voice " + path);
+            var row = rows[skill];
+            string voicePath = row.GetProperty("voiceEventPath").GetString();
+            string effectPath = row.GetProperty("eventPath").GetString();
+            bool hasVoice = !string.IsNullOrEmpty(voicePath);
+            bool hasEffect = !string.IsNullOrEmpty(effectPath);
+            Require(hasEffect || hasVoice, "No native audio event to probe: " + skill);
+            string path = hasVoice ? voicePath : effectPath;
+            Check(studio.getEvent(path, out var description), "audio event " + path);
             Check(description.getLength(out int length), "duration " + path);
             Check(description.getParameterDescriptionCount(out int parameterCount), "parameter count " + path);
             var parameters = new List<string>();
@@ -63,8 +69,8 @@ static class Program
                 int voiceBefore = voice.StartedVoiceCount;
                 int effectBefore = voice.StartedEffectCount;
                 voice.Play(skill);
-                Require(voice.StartedVoiceCount == voiceBefore + 1, "Expected one native voice event: " + skill);
-                Require(voice.StartedEffectCount == effectBefore + 1, "Expected one native sound effect: " + skill);
+                Require(voice.StartedVoiceCount - voiceBefore == (hasVoice ? 1 : 0), "Native voice count mismatch: " + skill);
+                Require(voice.StartedEffectCount - effectBefore == (hasEffect ? 1 : 0), "Native effect count mismatch: " + skill);
                 // Some authored programmer events expose a 20 ms trigger while the clips continue.
                 float peak = Meter(voice, meter, length <= 20 ? 3500 : Math.Max(length + 100, 1000));
                 var drain = System.Diagnostics.Stopwatch.StartNew();
@@ -72,12 +78,13 @@ static class Program
                     peak = Math.Max(peak, Meter(voice, meter, 50));
                 Require(service.DiagnosticActivePlaybackCount == 0, "Native events did not finish: " + skill);
                 var keys = service.DiagnosticSoundKeys.Order().ToArray();
-                Require(peak > 0.00001f && keys.Length != 0, "Skill produced no Japanese samples: " + skill);
+                Require(peak > 0.00001f, "Skill produced no audible signal: " + skill);
+                if (hasVoice) Require(keys.Length != 0, "Skill produced no Japanese samples: " + skill);
                 takes.Add(string.Join(",", keys));
                 Console.WriteLine(JsonSerializer.Serialize(new { skill, cast, keys, length,
                     parameters, peak }));
             }
-            Require(takes.Count >= minimumTakes, "Repeated source skill event used too few distinct Japanese takes: " + skill);
+            if (hasVoice) Require(takes.Count >= minimumTakes, "Repeated source skill event used too few distinct Japanese takes: " + skill);
         }
 
         if (!includeContextual) return;
@@ -252,10 +259,12 @@ static class Program
             var skills = parsedCatalog.RootElement.GetProperty("characters").EnumerateArray()
                 .SelectMany(character => character.GetProperty("skills").EnumerateArray()).ToArray();
             foreach (var skill in skills) rosterVoice.Play(skill.GetProperty("id").GetString());
-            Require(rosterVoice.StartedEffectCount == skills.Length && rosterVoice.StartedVoiceCount == skills.Length,
-                "All catalog skill effects and voices must begin");
+            int effectCount = skills.Count(skill => !string.IsNullOrEmpty(skill.GetProperty("eventPath").GetString()));
+            int voiceCount = skills.Count(skill => !string.IsNullOrEmpty(skill.GetProperty("voiceEventPath").GetString()));
+            Require(rosterVoice.StartedEffectCount == effectCount && rosterVoice.StartedVoiceCount == voiceCount,
+                "All source-authored catalog skill effects and voices must begin");
             float rosterPeak = Meter(rosterVoice, rosterMeter, 7000);
-            Require(rosterPeak > 0.00001f && rosterAudio.ProgrammerCreateSoundCount >= skills.Length,
+            Require(rosterPeak > 0.00001f && rosterAudio.ProgrammerCreateSoundCount >= voiceCount,
                 "The roster must produce real samples while source-missing intervals are skipped");
             Console.WriteLine(JsonSerializer.Serialize(new { rosterSkills = skills.Length,
                 voiceCallbacks = rosterAudio.ProgrammerCreateSoundCount, rosterPeak, healthy = rosterVoice.IsAvailable }));

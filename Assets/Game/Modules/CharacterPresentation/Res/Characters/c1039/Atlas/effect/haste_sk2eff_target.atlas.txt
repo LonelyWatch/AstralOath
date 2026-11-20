@@ -1,0 +1,279 @@
+
+haste_sk2eff_target.sct
+size: 511,1327
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+add_sk5_1
+  rotate: true
+  xy: 2, 383
+  size: 346, 111
+  orig: 346, 111
+  offset: 0, 0
+  index: -1
+add_sk5_2
+  rotate: true
+  xy: 2, 731
+  size: 346, 108
+  orig: 346, 108
+  offset: 0, 0
+  index: -1
+add_sk5_3
+  rotate: true
+  xy: 115, 383
+  size: 344, 94
+  orig: 344, 94
+  offset: 0, 0
+  index: -1
+add_sk5_4
+  rotate: true
+  xy: 417, 2
+  size: 346, 92
+  orig: 346, 92
+  offset: 0, 0
+  index: -1
+b_wave_1_1
+  rotate: false
+  xy: 151, 1073
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+b_wave_1_2
+  rotate: false
+  xy: 283, 730
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+b_wave_1_3
+  rotate: false
+  xy: 283, 901
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+bld_bb
+  rotate: false
+  xy: 451, 1275
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+bld_bbad
+  rotate: false
+  xy: 454, 810
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+bld_bball
+  rotate: false
+  xy: 454, 862
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+bld_boom
+  rotate: false
+  xy: 415, 458
+  size: 67, 67
+  orig: 67, 67
+  offset: 0, 0
+  index: -1
+bld_hit_1_1
+  rotate: false
+  xy: 252, 1244
+  size: 67, 70
+  orig: 67, 70
+  offset: 0, 0
+  index: -1
+bld_hit_1_2
+  rotate: true
+  xy: 415, 527
+  size: 15, 57
+  orig: 15, 57
+  offset: 0, 0
+  index: -1
+bld_hit_1_3
+  rotate: true
+  xy: 320, 354
+  size: 12, 32
+  orig: 12, 32
+  offset: 0, 0
+  index: -1
+bld_hit_1_4
+  rotate: false
+  xy: 458, 665
+  size: 39, 69
+  orig: 39, 69
+  offset: 0, 0
+  index: -1
+bld_hit_1_5
+  rotate: false
+  xy: 454, 968
+  size: 40, 37
+  orig: 40, 37
+  offset: 0, 0
+  index: -1
+bld_hit_1_6
+  rotate: false
+  xy: 321, 1301
+  size: 30, 24
+  orig: 30, 24
+  offset: 0, 0
+  index: -1
+bld_t2_wind
+  rotate: false
+  xy: 371, 354
+  size: 42, 114
+  orig: 42, 114
+  offset: 0, 0
+  index: -1
+bld_t2_wind2
+  rotate: false
+  xy: 451, 1154
+  size: 52, 119
+  orig: 52, 119
+  offset: 0, 0
+  index: -1
+bld_t2_wind3
+  rotate: true
+  xy: 384, 665
+  size: 53, 72
+  orig: 53, 72
+  offset: 0, 0
+  index: -1
+bld_t2_wind3ad
+  rotate: false
+  xy: 454, 736
+  size: 53, 72
+  orig: 53, 72
+  offset: 0, 0
+  index: -1
+di_wind_2_1
+  rotate: false
+  xy: 2, 2
+  size: 413, 189
+  orig: 413, 189
+  offset: 0, 0
+  index: -1
+di_wind_2_2
+  rotate: false
+  xy: 2, 193
+  size: 316, 188
+  orig: 316, 188
+  offset: 0, 0
+  index: -1
+di_wind_2_3
+  rotate: false
+  xy: 211, 567
+  size: 171, 161
+  orig: 171, 161
+  offset: 0, 0
+  index: -1
+di_wind_2_4
+  rotate: true
+  xy: 322, 1193
+  size: 106, 127
+  orig: 106, 127
+  offset: 0, 0
+  index: -1
+di_wind_2_5
+  rotate: true
+  xy: 415, 350
+  size: 106, 82
+  orig: 106, 82
+  offset: 0, 0
+  index: -1
+di_wind_3_1
+  rotate: true
+  xy: 2, 1079
+  size: 242, 97
+  orig: 242, 97
+  offset: 0, 0
+  index: -1
+di_wind_3_2
+  rotate: true
+  xy: 101, 1079
+  size: 210, 48
+  orig: 210, 48
+  offset: 0, 0
+  index: -1
+di_wind_3_3
+  rotate: true
+  xy: 371, 470
+  size: 91, 42
+  orig: 91, 42
+  offset: 0, 0
+  index: -1
+di_wind_3_4
+  rotate: true
+  xy: 454, 914
+  size: 52, 40
+  orig: 52, 40
+  offset: 0, 0
+  index: -1
+di_wind_3_5
+  rotate: true
+  xy: 101, 1291
+  size: 29, 32
+  orig: 29, 32
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 112, 731
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+smoke_02
+  rotate: true
+  xy: 211, 383
+  size: 182, 158
+  orig: 182, 158
+  offset: 0, 0
+  index: -1
+smoke_1
+  rotate: false
+  xy: 322, 1072
+  size: 120, 119
+  orig: 120, 119
+  offset: 0, 0
+  index: -1
+smoke_s1
+  rotate: false
+  xy: 444, 1072
+  size: 65, 80
+  orig: 65, 80
+  offset: 0, 0
+  index: -1
+swind_b_1
+  rotate: true
+  xy: 320, 193
+  size: 159, 86
+  orig: 159, 86
+  offset: 0, 0
+  index: -1
+swind_b_1_1
+  rotate: false
+  xy: 151, 1244
+  size: 99, 81
+  orig: 99, 81
+  offset: 0, 0
+  index: -1
+weapon_s2_t
+  rotate: false
+  xy: 112, 902
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+weapon_s2_tcc
+  rotate: true
+  xy: 384, 563
+  size: 100, 99
+  orig: 100, 99
+  offset: 0, 0
+  index: -1

@@ -177,6 +177,21 @@
       "kind": "Targeted",
       "group": "Debuff",
       "asset": "stic_target.png"
+    },
+    {
+      "kind": "Reflect",
+      "group": "Buff",
+      "asset": "stic_reflect.png"
+    },
+    {
+      "kind": "Bomb",
+      "group": "Debuff",
+      "asset": "stic_bomb.png"
+    },
+    {
+      "kind": "VampiricTouch",
+      "group": "Debuff",
+      "asset": "stic_vampire.png"
     }
   ],
   "files": [
@@ -383,6 +398,24 @@
       "asset": "stic_target.png",
       "sourceSha256": "1a86a6e12594b91d18f2e4c5b7a5b429c7913b5ec1104cc34ccb9815833ee3b7",
       "assetSha256": "9b93702ab917cd29a73f6b928551a538e703300d23bfa6b6b7d9a1a50bde6ea8"
+    },
+    {
+      "source": "原始资源/buff/stic_reflect.png",
+      "asset": "stic_reflect.png",
+      "sourceSha256": "b2ee56a4c70aa4ee80ffa210f025650d36e285cf422950bb66c6044c3fbde08c",
+      "assetSha256": "0a49e81f76591f2f4b21ca21b3c4acaf761ee54a39946850ea0ade8afb4ef659"
+    },
+    {
+      "source": "原始资源/buff/stic_bomb.png",
+      "asset": "stic_bomb.png",
+      "sourceSha256": "eaae4e50698117e0aa871c2b7b88daf3e3b837aee194e07de65434229b6aeb3c",
+      "assetSha256": "123c13007382d3e83bdd6c8b2fbe8dd522dbdd74222cb010ac5486baf8fc96d6"
+    },
+    {
+      "source": "原始资源/buff/stic_vampire.png",
+      "asset": "stic_vampire.png",
+      "sourceSha256": "a78d2a4429a348f2f9e7d92e0487ac8dfc90e24e687bf75e5b5e62759b4a6c14",
+      "assetSha256": "e78c5bc0e286d9bf3035d94832471ec379d4356e3760ac10da3a69e8fba37c5a"
     },
     {
       "source": "原始资源/img/itxt_num0.png",

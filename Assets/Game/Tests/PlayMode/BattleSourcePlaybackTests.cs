@@ -8,6 +8,7 @@ using System.Reflection;
 using AstralOath.Client.BattleScene;
 using AstralOath.Client.Common;
 using AstralOath.Shared.Battle;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -35,6 +36,8 @@ namespace AstralOath.Client.Tests
         private Action<bool> setCinematicVisible;
         private bool cinematicVisible;
         private string captureDirectory;
+        private RenderTexture captureTarget;
+        private const int CaptureWidth = 1920, CaptureHeight = 1080;
 
         [Flags]
         private enum Phase { None = 0, Approach = 1, Impact = 2, Wide = 4, Blur = 8, Cutin = 16, Hatch = 32 }
@@ -130,7 +133,7 @@ namespace AstralOath.Client.Tests
             Assert.That(added, Does.Contain("c1010"));
             var loadedPresentations = graphs.Select(graph => JsonUtility.FromJson<GraphId>(graph.text).id).ToArray();
             Assert.That(loadedPresentations, Is.Unique);
-            var expectedPresentations = catalog.skills.SelectMany(skill => new[] { skill.presentationId, skill.speedUpPresentationId, skill.burnPresentationId })
+            var expectedPresentations = catalog.skills.SelectMany(skill => new[] { skill.presentationId, skill.speedUpPresentationId, skill.burnPresentationId, skill.counterPresentationId })
                 .Where(id => !string.IsNullOrEmpty(id)).Distinct(StringComparer.Ordinal);
             Assert.That(loadedPresentations, Is.EquivalentTo(expectedPresentations));
             string requested = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_HERO_ID");
@@ -165,6 +168,16 @@ namespace AstralOath.Client.Tests
                     Assert.That(image.sprite.name, Is.EqualTo(Path.GetFileNameWithoutExtension(basic.iconAsset)),
                         "A fresh turn without a speed buff must still show the ordinary attack.");
                 }
+                if (captureTarget)
+                {
+                    Assert.That(map.Require<Image>("activePortrait").sprite.name, Is.EqualTo(id + "_su"));
+                    foreach (var equipped in catalog.skills.Where(row => row.heroId == id))
+                    {
+                        var button = map.Require<GameButton>("skill" + equipped.slot);
+                        Assert.That(((Image)button.targetGraphic).sprite.name, Is.EqualTo(Path.GetFileNameWithoutExtension(equipped.iconAsset)));
+                    }
+                    File.WriteAllBytes(Path.Combine(captureDirectory, id + "-formation.png"), RenderFrame(null, null, null).Composite);
+                }
                 Assert.That(host.TrySelectBattleTarget("enemy-1"), Is.True, id + " S1 must submit through the real battle controller");
                 TestContext.WriteLine($"{id}: formation and authoritative S1 command passed.");
                 yield return null;
@@ -196,6 +209,7 @@ namespace AstralOath.Client.Tests
                 Assert.That(renderer && renderer.enabled && renderer.GetComponent<MeshFilter>().sharedMesh.vertexCount > 0, Is.True, id);
                 foreach (var skill in catalog.skills.Where(row => row.heroId == id))
                 {
+                    var protection = catalog.effects.Where(effect => effect.skillId == skill.id && effect.phase == "after_ally_damaged").ToArray();
                     var recipients = skill.target switch
                     {
                         "all_allies" => allies,
@@ -203,13 +217,20 @@ namespace AstralOath.Client.Tests
                         "self" => new[] { front },
                         "all_enemies" => enemies,
                         "two_enemies" => enemies.Take(2).ToArray(),
+                        "passive" when protection.Any(effect => effect.recipient == "allies") => allies,
+                        "passive" when protection.Length > 0 => new[] { allies[protection.Any(effect => effect.condition == "back_row_immobilized") ? 3 : 1] },
+                        "passive" when catalog.effects.Any(effect => effect.skillId == skill.id && effect.operation == "damage" &&
+                            (effect.phase == "after_ally_attack" || effect.phase == "counter_basic")) => enemies,
                         "passive" => id is "c1007" or "c1008" or "c1020" or "c1023" or "c1028" ? enemies : new[] { enemies[0] },
                         _ => new[] { enemies[0] }
                     };
                     Phase required = skill.slot == 3 && Array.IndexOf(new[] { "c1020", "c1021", "c1022", "c1023", "c1024",
-                        "c1027", "c1028", "c1029", "c1030", "c1031" }, id) >= 0 ? Phase.Cutin : Phase.None;
-                    yield return Play(skill.presentationId, id + "-s" + skill.slot, front, recipients[0], recipients, required, Phase.None);
+                        "c1027", "c1028", "c1029", "c1030", "c1031", "c1032", "c1033", "c1034", "c1035",
+                        "c1036", "c1037", "c1038", "c1039", "c1040", "c1042" }, id) >= 0 ? Phase.Cutin : Phase.None;
+                    yield return Play(skill.presentationId, id + "-s" + skill.slot, front, recipients[0], recipients, required | Phase.Impact, Phase.None);
                     TestContext.WriteLine($"{id} S{skill.slot}: {skill.presentationId} passed source playback and reset.");
+                    if (!string.IsNullOrEmpty(skill.counterPresentationId))
+                        yield return Play(skill.counterPresentationId, id + "-counter", front, enemies[0], enemies, Phase.None, Phase.None);
                     if (!string.IsNullOrEmpty(skill.burnPresentationId))
                     {
                         yield return Play(skill.burnPresentationId, id + "-s" + skill.slot + "-burn",
@@ -398,6 +419,31 @@ namespace AstralOath.Client.Tests
             {
                 captureDirectory = Path.Combine(output, "source-playback");
                 Directory.CreateDirectory(captureDirectory);
+                // Size the actual stage before playing any cue. Changing aspect only for readback
+                // captures 4:3 DARK, CUTIN and map coverage inside an unrelated 16:9 projection.
+                captureTarget = new RenderTexture(CaptureWidth, CaptureHeight, 24);
+                Assert.That(captureTarget.Create(), Is.True);
+                camera.targetTexture = captureTarget;
+                var canvas = host.GetComponent<Canvas>();
+                var scaler = host.GetComponent<CanvasScaler>();
+                Assert.That(scaler.referenceResolution, Is.EqualTo(new Vector2(CaptureWidth, CaptureHeight)));
+                // The Game view can be smaller than the offscreen target. At the HUD reference
+                // resolution one design unit is one pixel throughout layout and readback.
+                scaler.enabled = false;
+                canvas.scaleFactor = 1f;
+                Canvas.ForceUpdateCanvases();
+                var viewport = camera.GetComponent<BattlePreviewViewport>();
+                typeof(BattlePreviewViewport).GetMethod("ApplyScreen", PrivateInstance).Invoke(viewport,
+                    new object[] { new Vector2Int(CaptureWidth, CaptureHeight), new Rect(0, 0, CaptureWidth, CaptureHeight) });
+                yield return null;
+                Canvas.ForceUpdateCanvases();
+                camera.Render();
+                var active = (RectTransform)map.transform.Find("Active Unit");
+                var corners = new Vector3[4];
+                active.GetWorldCorners(corners);
+                float hudWidth = camera.WorldToScreenPoint(corners[2]).x - camera.WorldToScreenPoint(corners[0]).x;
+                Assert.That(hudWidth, Is.EqualTo(CaptureWidth).Within(2f),
+                    $"The HUD design width must fill one capture frame. Canvas {canvas.pixelRect}, group {active.rect} / {active.localScale}, camera {camera.pixelRect}.");
             }
 
             loaded(roots);
@@ -435,7 +481,7 @@ namespace AstralOath.Client.Tests
                 Assert.That(pillarHits[0], Is.EqualTo(2.021f).Within(.001f));
                 Assert.That(pillarHits[6], Is.EqualTo(3.143f).Within(.001f));
             }
-            float[] checkedHits = checkTargetsAtHits
+            float[] checkedHits = checkTargetsAtHits || !string.IsNullOrEmpty(captureDirectory)
                 ? ((IEnumerable<float>)PresentationType.GetProperty("HitTimes").GetValue(playback)).ToArray()
                 : Array.Empty<float>();
             if (id == "c_mercedes_skill_03")
@@ -446,10 +492,17 @@ namespace AstralOath.Client.Tests
             float mercedesCutinAt = -1f;
             int nextCheckedHit = 0;
             int sourceReactionHits = 0;
-            var cameraTrace = !string.IsNullOrEmpty(captureDirectory) && (id == "c_ras_skill_01" || id == "c_angelica_skill_01")
+            var referenceTimes = captureTarget && id == "c_strage_skill_03"
+                ? new[] { .8f, 1.8f, 4.8f, 5.8f } : Array.Empty<float>();
+            int referenceIndex = 0;
+            var hatchReferences = captureTarget && id == "c_sez_gaien_skill_03" ? new HashSet<int> { 17, 18, 52 } : null;
+            var layers = hatchReferences == null ? null : (IEnumerable)stage.GetType().GetField("layers", PrivateInstance).GetValue(stage);
+            var cameraTrace = !string.IsNullOrEmpty(captureDirectory)
                 ? new List<string> { "source_seconds,camera_x,camera_y,orthographic_size,actor_x,actor_y" } : null;
             double deadline = Time.realtimeSinceStartupAsDouble + ActionTimeout;
             float elapsed = 0f;
+            float firstCutinLength = 0f;
+            bool capturedMiddle = false;
             Phase observed = Phase.None;
             do
             {
@@ -486,11 +539,34 @@ namespace AstralOath.Client.Tests
                         Assert.That(elapsed, Is.EqualTo(mercedesCutinAt).Within(.001f), "Cut-in pauses the source animation clock.");
                     }
                     Observe(Phase.Cutin);
+                    if (captureTarget && !capturedMiddle && (capturePhases & Phase.Cutin) != 0)
+                    {
+                        float remaining = (float)cutinRemaining.GetValue(stage);
+                        if (firstCutinLength == 0f) firstCutinLength = remaining;
+                        if (remaining > 0f && remaining <= firstCutinLength * .5f)
+                        {
+                            frameCaptures.Add(Path.Combine(captureDirectory, sample + "-cutin-middle.png"));
+                            capturedMiddle = true;
+                        }
+                    }
                 }
                 var hatch = camera.transform.Find("BGHATCH");
                 if (hatch && hatch.gameObject.activeInHierarchy &&
                     hatch.GetComponent<MeshFilter>().sharedMesh.colors[0].a >= .9f)
                     Observe(Phase.Hatch);
+                if (!activeCutin && hatchReferences?.Count > 0)
+                    foreach (var layer in layers)
+                    {
+                        var type = layer.GetType();
+                        var node = (JObject)type.GetField("Node").GetValue(layer);
+                        int guid = (int?)node?["guid"] ?? 0;
+                        if ((string)node?["etty"] != "BGHATCH" || !hatchReferences.Contains(guid)) continue;
+                        float start = (float)type.GetField("Start").GetValue(layer);
+                        float duration = (float)type.GetField("Duration").GetValue(layer);
+                        if (elapsed < start + duration * .25f) continue;
+                        frameCaptures.Add(Path.Combine(captureDirectory, sample + "-hatch-" + guid + ".png"));
+                        hatchReferences.Remove(guid);
+                    }
                 if ((float)requestedSize.GetValue(stage) > baseline.CameraSize + 0.1f)
                     Observe(Phase.Wide);
                 if (elapsed < timing.Impact && Mathf.Abs(actor.transform.localPosition.x - baseline.ActorHome.x) > 0.25f &&
@@ -499,8 +575,16 @@ namespace AstralOath.Client.Tests
                 if (elapsed >= timing.Impact)
                     Observe(Phase.Impact);
 
+                if (referenceIndex < referenceTimes.Length && elapsed + .00001f >= referenceTimes[referenceIndex])
+                {
+                    string frameName = FormattableString.Invariant($"{sample}-source-{referenceTimes[referenceIndex]:0.0}.png");
+                    frameCaptures.Add(Path.Combine(captureDirectory, frameName));
+                    referenceIndex++;
+                }
+
                 while (nextCheckedHit < checkedHits.Length && elapsed + .00001f >= checkedHits[nextCheckedHit])
                 {
+                    if (checkTargetsAtHits)
                     foreach (var recipient in recipients)
                     {
                         var body = (Renderer)typeof(BattlePreviewActor).GetProperty("PresentationRenderer", PrivateInstance).GetValue(recipient);
@@ -572,6 +656,8 @@ namespace AstralOath.Client.Tests
                     delta = Mathf.Min(delta, mercedesSourceCutin - elapsed);
                 else if (nextCheckedHit < checkedHits.Length && elapsed < checkedHits[nextCheckedHit])
                     delta = Mathf.Min(delta, checkedHits[nextCheckedHit] - elapsed);
+                if (wallCutin <= 0f && referenceIndex < referenceTimes.Length && elapsed < referenceTimes[referenceIndex])
+                    delta = Mathf.Min(delta, referenceTimes[referenceIndex] - elapsed);
                 Tick.Invoke(playback, new object[] { delta });
                 elapsed = (float)PresentationType.GetProperty("StageTime").GetValue(playback);
             }
@@ -583,10 +669,13 @@ namespace AstralOath.Client.Tests
             if (interruptAt == Phase.None) Assert.That(nextCheckedHit, Is.EqualTo(checkedHits.Length), sample + " must inspect every source hit.");
             Assert.That((observed & capturePhases) == capturePhases, Is.True,
                 $"{sample} observed {observed}; expected {capturePhases}.");
+            if (hatchReferences != null) Assert.That(hatchReferences, Is.Empty);
             Assert.That(interruptAt == Phase.None || playback == null, Is.True, sample + " never reached the interruption phase");
             yield return null;
             yield return null;
             baseline.AssertRestored(sample);
+            if (captureTarget && interruptAt == Phase.None && sample.EndsWith("-s3", StringComparison.Ordinal))
+                File.WriteAllBytes(Path.Combine(captureDirectory, sample + "-restored.png"), RenderFrame(stage, null, visualTargets).Composite);
             Assert.That(cinematicVisible, Is.False, sample + " left the gameplay HUD hidden");
             Assert.That(!effects || effects.childCount == 0, Is.True, sample + " left effect objects in the scene");
             Assert.That(visualMeshes.All(mesh => !mesh), Is.True, sample + " leaked a transient mesh");
@@ -605,13 +694,9 @@ namespace AstralOath.Client.Tests
 
         private (byte[] Composite, byte[] World) RenderFrame(object stage, Camera postCamera, HashSet<RenderTexture> visualTargets)
         {
-            const int Width = 1920;
-            const int Height = 1080;
-            var target = RenderTexture.GetTemporary(Width, Height, 24);
-            var image = new Texture2D(Width, Height, TextureFormat.RGB24, false);
-            var previousTarget = camera.targetTexture;
-            var previousRect = camera.rect;
-            var previousAspect = camera.aspect;
+            Assert.That(camera.targetTexture, Is.SameAs(captureTarget));
+            Assert.That(camera.aspect, Is.EqualTo((float)CaptureWidth / CaptureHeight).Within(.0001f));
+            var image = new Texture2D(CaptureWidth, CaptureHeight, TextureFormat.RGB24, false);
             var previousActive = RenderTexture.active;
             object postEffect = null;
             MethodInfo refreshPostEffect = null;
@@ -623,9 +708,6 @@ namespace AstralOath.Client.Tests
 
             try
             {
-                camera.targetTexture = target;
-                camera.rect = new Rect(0f, 0f, 1f, 1f);
-                camera.aspect = (float)Width / Height;
                 Canvas.ForceUpdateCanvases();
                 byte[] world = null;
                 if (postCamera)
@@ -633,35 +715,19 @@ namespace AstralOath.Client.Tests
                     // Update the blur target and projection for this resolution before drawing either pass.
                     refreshPostEffect.Invoke(postEffect, new object[] { 0f });
                     var blurTarget = postCamera.targetTexture;
-                    Assert.That(blurTarget && blurTarget.IsCreated() && blurTarget.width == Width &&
-                        blurTarget.height == Height, Is.True, "The blur camera must draw the capture frame at the capture resolution.");
+                    Assert.That(blurTarget && blurTarget.IsCreated() && blurTarget.width == CaptureWidth &&
+                        blurTarget.height == CaptureHeight, Is.True, "The blur camera must draw the capture frame at the capture resolution.");
                     visualTargets.Add(blurTarget);
                     postCamera.Render();
                     world = ReadPng(blurTarget, image);
                 }
                 camera.Render();
-                return (ReadPng(target, image), world);
+                return (ReadPng(captureTarget, image), world);
             }
             finally
             {
-                camera.targetTexture = previousTarget;
-                camera.rect = previousRect;
-                camera.aspect = previousAspect;
-                try
-                {
-                    if (postCamera)
-                    {
-                        refreshPostEffect.Invoke(postEffect, new object[] { 0f });
-                        if (postCamera.targetTexture)
-                            visualTargets.Add(postCamera.targetTexture);
-                    }
-                }
-                finally
-                {
-                    RenderTexture.active = previousActive;
-                    RenderTexture.ReleaseTemporary(target);
-                    UnityEngine.Object.Destroy(image);
-                }
+                RenderTexture.active = previousActive;
+                UnityEngine.Object.Destroy(image);
             }
         }
 
@@ -785,6 +851,13 @@ namespace AstralOath.Client.Tests
         {
             playback?.Dispose();
             playback = null;
+            if (captureTarget)
+            {
+                if (camera && camera.targetTexture == captureTarget) camera.targetTexture = null;
+                captureTarget.Release();
+                UnityEngine.Object.Destroy(captureTarget);
+                captureTarget = null;
+            }
             if (scene.IsValid() && scene.isLoaded)
                 yield return SceneManager.UnloadSceneAsync(scene);
         }

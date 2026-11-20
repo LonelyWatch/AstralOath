@@ -1,0 +1,34 @@
+
+strageth_skeff_bi.sct
+size: 173,940
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+add_sk5_2
+  rotate: true
+  xy: 2, 2
+  size: 346, 108
+  orig: 346, 108
+  offset: 0, 0
+  index: -1
+flamedust_2
+  rotate: false
+  xy: 2, 566
+  size: 166, 201
+  orig: 166, 201
+  offset: 0, 0
+  index: -1
+flamedust_3
+  rotate: false
+  xy: 2, 350
+  size: 167, 214
+  orig: 167, 214
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 769
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1

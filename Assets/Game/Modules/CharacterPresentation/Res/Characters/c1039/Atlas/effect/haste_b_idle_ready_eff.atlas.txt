@@ -1,0 +1,153 @@
+
+haste_b_idle_ready_eff.sct
+size: 1095,252
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bld_bi_1_1
+  rotate: true
+  xy: 1034, 2
+  size: 100, 59
+  orig: 100, 59
+  offset: 0, 0
+  index: -1
+bld_bi_1_2
+  rotate: false
+  xy: 866, 137
+  size: 92, 58
+  orig: 92, 58
+  offset: 0, 0
+  index: -1
+bld_bi_1_3
+  rotate: true
+  xy: 103, 173
+  size: 69, 58
+  orig: 69, 58
+  offset: 0, 0
+  index: -1
+bld_bi_1_4
+  rotate: false
+  xy: 960, 137
+  size: 67, 58
+  orig: 67, 58
+  offset: 0, 0
+  index: -1
+bld_bi_2_1
+  rotate: true
+  xy: 1034, 104
+  size: 100, 59
+  orig: 100, 59
+  offset: 0, 0
+  index: -1
+bld_bi_2_2
+  rotate: false
+  xy: 279, 118
+  size: 100, 59
+  orig: 100, 59
+  offset: 0, 0
+  index: -1
+bld_bi_2_3
+  rotate: false
+  xy: 279, 179
+  size: 100, 59
+  orig: 100, 59
+  offset: 0, 0
+  index: -1
+bld_bi_2_4
+  rotate: false
+  xy: 652, 193
+  size: 55, 51
+  orig: 55, 51
+  offset: 0, 0
+  index: -1
+bld_bi_3_1
+  rotate: false
+  xy: 652, 113
+  size: 75, 78
+  orig: 75, 78
+  offset: 0, 0
+  index: -1
+bld_bi_3_2
+  rotate: true
+  xy: 2, 173
+  size: 77, 99
+  orig: 77, 99
+  offset: 0, 0
+  index: -1
+bld_bi_3_3
+  rotate: false
+  xy: 173, 2
+  size: 207, 114
+  orig: 207, 114
+  offset: 0, 0
+  index: -1
+bld_bi_3_4
+  rotate: false
+  xy: 382, 2
+  size: 187, 109
+  orig: 187, 109
+  offset: 0, 0
+  index: -1
+bld_bi_3_5
+  rotate: false
+  xy: 571, 2
+  size: 158, 109
+  orig: 158, 109
+  offset: 0, 0
+  index: -1
+bld_bi_3_6
+  rotate: false
+  xy: 173, 118
+  size: 104, 104
+  orig: 104, 104
+  offset: 0, 0
+  index: -1
+bld_bi_3_7
+  rotate: true
+  xy: 866, 197
+  size: 28, 66
+  orig: 28, 66
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+mgwave_2
+  rotate: false
+  xy: 899, 2
+  size: 133, 133
+  orig: 133, 133
+  offset: 0, 0
+  index: -1
+mgwave_3
+  rotate: false
+  xy: 731, 104
+  size: 133, 133
+  orig: 133, 133
+  offset: 0, 0
+  index: -1
+mgwave_4
+  rotate: false
+  xy: 382, 113
+  size: 133, 133
+  orig: 133, 133
+  offset: 0, 0
+  index: -1
+mgwave_5
+  rotate: false
+  xy: 517, 113
+  size: 133, 133
+  orig: 133, 133
+  offset: 0, 0
+  index: -1
+weapon_eff
+  rotate: true
+  xy: 731, 2
+  size: 100, 166
+  orig: 100, 166
+  offset: 0, 0
+  index: -1

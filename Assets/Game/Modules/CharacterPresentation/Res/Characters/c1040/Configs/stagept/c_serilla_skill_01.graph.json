@@ -1,0 +1,388 @@
+{
+  "id": "c_serilla_skill_01",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "location": 11,
+        "x": 50.0,
+        "y": -15.0,
+        "curve": "0.348659,0.09027775,0.02681992,0.9340278",
+        "time": 1200,
+        "guid": 2,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.6",
+        "curve": "0.348659,0.09027775,0.02681992,0.9340278",
+        "time": 1200,
+        "guid": 3,
+        "etty": "ZOOM"
+      },
+      {
+        "ani": "skill1",
+        "guid": 4,
+        "etty": "ANI"
+      },
+      {
+        "scale": "1.3",
+        "curve": "0.1494253,0.04861108,0,1",
+        "time": 1200,
+        "guid": 5,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 12,
+        "x": -200.0,
+        "y": -15.0,
+        "curve": "0.1494253,0.04861108,0,1",
+        "time": 1200,
+        "guid": 6,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1",
+        "curve": "0.2911877,0.09027775,0,0.9895833",
+        "time": 250,
+        "guid": 7,
+        "etty": "ZOOM"
+      },
+      {
+        "curve": "0.2911877,0.09027775,0,0.9895833",
+        "time": 250,
+        "guid": 8,
+        "etty": "CAM"
+      },
+      {
+        "source": "serilla_skill_01_target.cfx",
+        "scale": 1.0,
+        "location": 12,
+        "locationParam": "target",
+        "guid": 9,
+        "etty": "EFFECT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 10,
+        "etty": "HIT"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "serilla_skill_01_cm",
+        "guid": 11,
+        "etty": "SHAKE"
+      },
+      {
+        "guid": 12,
+        "etty": "IDLE"
+      }
+    ],
+    "connections": [
+      {
+        "from": 1,
+        "to": 4,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 3,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 2,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 5,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 6,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 9,
+        "delay": 200,
+        "when": 1,
+        "Desc": "200",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 10,
+        "delay": 533,
+        "when": 1,
+        "Desc": "533",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 11,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 8,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 12,
+        "Desc": "",
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/serilla_skill_01_cm.scsp",
+      "address": "characterlab/source/camera/serilla_skill_01_cm.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.atlas",
+      "address": "characterlab/source/effect/hit_new_blunt_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.scsp",
+      "address": "characterlab/source/effect/hit_new_blunt_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.sct",
+      "address": "characterlab/source/effect/hit_new_blunt_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_blunt_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_blunt_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_blunt_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/serilla_bidle_eff.atlas",
+      "address": "characterlab/source/effect/serilla_bidle_eff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/serilla_bidle_eff.cfx",
+      "address": "characterlab/source/effect/serilla_bidle_eff.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/serilla_bidle_eff.scsp",
+      "address": "characterlab/source/effect/serilla_bidle_eff.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/serilla_bidle_eff.sct",
+      "address": "characterlab/source/effect/serilla_bidle_eff.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/serilla_bidle_pati1.particle",
+      "address": "characterlab/source/effect/serilla_bidle_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/serilla_camping_eff.atlas",
+      "address": "characterlab/source/effect/serilla_camping_eff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/serilla_camping_eff.cfx",
+      "address": "characterlab/source/effect/serilla_camping_eff.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/serilla_camping_eff.scsp",
+      "address": "characterlab/source/effect/serilla_camping_eff.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/serilla_camping_eff.sct",
+      "address": "characterlab/source/effect/serilla_camping_eff.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/serilla_camping_pati1.particle",
+      "address": "characterlab/source/effect/serilla_camping_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/serilla_skill_01_motion.atlas",
+      "address": "characterlab/source/effect/serilla_skill_01_motion.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/serilla_skill_01_motion.cfx",
+      "address": "characterlab/source/effect/serilla_skill_01_motion.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/serilla_skill_01_motion.scsp",
+      "address": "characterlab/source/effect/serilla_skill_01_motion.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/serilla_skill_01_motion.sct",
+      "address": "characterlab/source/effect/serilla_skill_01_motion.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/serilla_skill_01_motion_pati1.particle",
+      "address": "characterlab/source/effect/serilla_skill_01_motion_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/serilla_skill_01_target.atlas",
+      "address": "characterlab/source/effect/serilla_skill_01_target.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/serilla_skill_01_target.cfx",
+      "address": "characterlab/source/effect/serilla_skill_01_target.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/serilla_skill_01_target.scsp",
+      "address": "characterlab/source/effect/serilla_skill_01_target.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/serilla_skill_01_target.sct",
+      "address": "characterlab/source/effect/serilla_skill_01_target.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/serilla_skill_01_target_pati1.particle",
+      "address": "characterlab/source/effect/serilla_skill_01_target_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/serilla_skill_02_motion.atlas",
+      "address": "characterlab/source/effect/serilla_skill_02_motion.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/serilla_skill_02_motion.cfx",
+      "address": "characterlab/source/effect/serilla_skill_02_motion.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/serilla_skill_02_motion.scsp",
+      "address": "characterlab/source/effect/serilla_skill_02_motion.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/serilla_skill_02_motion.sct",
+      "address": "characterlab/source/effect/serilla_skill_02_motion.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/serilla_skill_02_motion_pati1.particle",
+      "address": "characterlab/source/effect/serilla_skill_02_motion_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/serilla_skill_02_motion_pati2.particle",
+      "address": "characterlab/source/effect/serilla_skill_02_motion_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/serilla_skill_03_1.cfx",
+      "address": "characterlab/source/effect/serilla_skill_03_1.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/serilla_skill_03_motion.atlas",
+      "address": "characterlab/source/effect/serilla_skill_03_motion.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/serilla_skill_03_motion.scsp",
+      "address": "characterlab/source/effect/serilla_skill_03_motion.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/serilla_skill_03_motion.sct",
+      "address": "characterlab/source/effect/serilla_skill_03_motion.sct",
+      "type": "texture"
+    },
+    {
+      "source": "model/serilla.timeline",
+      "address": "characterlab/source/model/serilla.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/heart_01.sct",
+      "address": "characterlab/source/particle/heart_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/pati_01.sct",
+      "address": "characterlab/source/particle/pati_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/tri_pati_01.sct",
+      "address": "characterlab/source/particle/tri_pati_01.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

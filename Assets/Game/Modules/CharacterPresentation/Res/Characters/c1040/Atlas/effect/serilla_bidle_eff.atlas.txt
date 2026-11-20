@@ -1,0 +1,90 @@
+
+serilla_bidle_eff.sct
+size: 508,662
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 201, 155
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+lf1_0
+  rotate: false
+  xy: 401, 2
+  size: 105, 183
+  orig: 105, 183
+  offset: 0, 0
+  index: -1
+lf1_1
+  rotate: true
+  xy: 2, 229
+  size: 198, 151
+  orig: 198, 151
+  offset: 0, 0
+  index: -1
+lf1_2
+  rotate: false
+  xy: 201, 2
+  size: 198, 151
+  orig: 198, 151
+  offset: 0, 0
+  index: -1
+lf1_3
+  rotate: true
+  xy: 2, 429
+  size: 198, 151
+  orig: 198, 151
+  offset: 0, 0
+  index: -1
+lf_light
+  rotate: false
+  xy: 2, 2
+  size: 197, 225
+  orig: 197, 225
+  offset: 0, 0
+  index: -1
+skill3_fires/fire_s1_1
+  rotate: false
+  xy: 305, 494
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1
+skill3_fires/fire_s1_2
+  rotate: false
+  xy: 372, 187
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1
+skill3_fires/fire_s1_3
+  rotate: true
+  xy: 408, 494
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1
+skill3_fires/pil_fire_01_1
+  rotate: false
+  xy: 305, 326
+  size: 148, 166
+  orig: 148, 166
+  offset: 0, 0
+  index: -1
+skill3_fires/pil_fire_01_2
+  rotate: false
+  xy: 155, 326
+  size: 148, 166
+  orig: 148, 166
+  offset: 0, 0
+  index: -1
+skill3_fires/pil_fire_01_3
+  rotate: false
+  xy: 155, 494
+  size: 148, 166
+  orig: 148, 166
+  offset: 0, 0
+  index: -1

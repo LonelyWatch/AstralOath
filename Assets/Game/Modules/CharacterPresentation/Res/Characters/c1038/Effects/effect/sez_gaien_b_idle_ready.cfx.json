@@ -1,0 +1,25 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "sez_gaien_b_idle_readyeff_b",
+      "ani": "b_idle_ready",
+      "z": "-1",
+      "format": "spine"
+    },
+    {
+      "source": "sez_gaien_b_idle_readyeff_f",
+      "ani": "b_idle_ready",
+      "z": "1",
+      "format": "spine"
+    },
+    {
+      "source": "sez_gaien_idleeff_b",
+      "ani": "b_idle",
+      "z": "-1",
+      "delay": "866",
+      "format": "spine",
+      "loop": 1
+    }
+  ]
+}

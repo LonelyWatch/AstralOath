@@ -1,0 +1,18 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "serilla_skill_01_target",
+      "z": "3",
+      "format": "spine",
+      "globalZ": 900.0
+    },
+    {
+      "source": "serilla_skill_01_target_pati1",
+      "z": "7",
+      "delay": "567",
+      "format": "particle",
+      "globalZ": 905.0
+    }
+  ]
+}

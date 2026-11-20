@@ -1,0 +1,17 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "serilla_skill_01_motion",
+      "z": "3",
+      "format": "spine"
+    },
+    {
+      "source": "serilla_skill_01_motion_pati1",
+      "z": "10",
+      "delay": "1066",
+      "format": "particle",
+      "attach": "serilla_skill_01_motion/anker"
+    }
+  ]
+}

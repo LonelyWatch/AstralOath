@@ -1,0 +1,26 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "crozet_smoke_center",
+      "z": "50",
+      "format": "spine"
+    },
+    {
+      "source": "crozet_smoke_rear",
+      "z": "10",
+      "format": "spine"
+    },
+    {
+      "source": "crozet_skill_03_crack",
+      "format": "spine",
+      "globalZ": -0.1
+    },
+    {
+      "source": "crozet_skill_03_pati",
+      "z": "49",
+      "delay": "1090",
+      "format": "particle"
+    }
+  ]
+}

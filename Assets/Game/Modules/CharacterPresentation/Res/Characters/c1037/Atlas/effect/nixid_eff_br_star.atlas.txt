@@ -1,0 +1,62 @@
+
+nixid_eff_br_star.sct
+size: 320,476
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+crystall_1
+  rotate: true
+  xy: 204, 190
+  size: 46, 53
+  orig: 46, 53
+  offset: 0, 0
+  index: -1
+crystall_glow
+  rotate: true
+  xy: 204, 118
+  size: 70, 76
+  orig: 70, 76
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 33, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+ice_part_small_01
+  rotate: false
+  xy: 204, 2
+  size: 114, 114
+  orig: 114, 114
+  offset: 0, 0
+  index: -1
+ice_part_small_02
+  rotate: true
+  xy: 173, 344
+  size: 117, 131
+  orig: 117, 131
+  offset: 0, 0
+  index: -1
+ice_part_small_03
+  rotate: true
+  xy: 33, 344
+  size: 130, 138
+  orig: 130, 138
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: true
+  xy: 2, 2
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1
+wind_shock
+  rotate: false
+  xy: 33, 173
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1

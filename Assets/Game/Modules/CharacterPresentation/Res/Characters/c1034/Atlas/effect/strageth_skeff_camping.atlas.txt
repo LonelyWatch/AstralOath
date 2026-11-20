@@ -1,0 +1,55 @@
+
+strageth_skeff_camping.sct
+size: 220,436
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dust&smoke/smoke_ky_1_1
+  rotate: true
+  xy: 2, 162
+  size: 76, 106
+  orig: 76, 106
+  offset: 0, 0
+  index: -1
+flame_s_1
+  rotate: true
+  xy: 110, 162
+  size: 101, 108
+  orig: 101, 108
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 265
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+strage/lay_sword_part_01
+  rotate: true
+  xy: 2, 2
+  size: 38, 206
+  orig: 38, 206
+  offset: 0, 0
+  index: -1
+strage/lay_sword_part_02
+  rotate: true
+  xy: 2, 42
+  size: 38, 206
+  orig: 38, 206
+  offset: 0, 0
+  index: -1
+strage/lay_sword_part_03
+  rotate: true
+  xy: 2, 82
+  size: 38, 206
+  orig: 38, 206
+  offset: 0, 0
+  index: -1
+strage/lay_sword_part_04
+  rotate: true
+  xy: 2, 122
+  size: 38, 206
+  orig: 38, 206
+  offset: 0, 0
+  index: -1

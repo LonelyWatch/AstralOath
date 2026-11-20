@@ -40,6 +40,8 @@ namespace AstralOath.Client.CharacterLab
         private float transportRefresh;
         private float defaultZoom=5;
         private Vector3 defaultCameraPosition=new Vector3(0,1,-10);
+        private Renderer[] modelRenderers = Array.Empty<Renderer>();
+        private bool automaticFraming;
         public CharacterLabWindowBinder(CharacterLabWindow view, CharacterLabLaunchContext context, BindingScope owner, ILocaleService locale, Action close)
         {
             this.view = view; this.context = context; this.locale=locale; this.close=close;
@@ -59,8 +61,8 @@ namespace AstralOath.Client.CharacterLab
             Bind("step", Step); Bind("slower", () => Speed(-.25)); Bind("faster", () => Speed(.25));
             Bind("seekBack", () => Seek(-.5)); Bind("seekForward", () => Seek(.5));
             Bind("loop", () => { loop=!loop; UpdateLoop(); if (player!=null && performance==null) RestartAnimation(false); });
-            Bind("zoomIn", () => context.PreviewCamera.orthographicSize = Mathf.Max(.5f,context.PreviewCamera.orthographicSize*.8f));
-            Bind("zoomOut", () => context.PreviewCamera.orthographicSize = Mathf.Min(20,context.PreviewCamera.orthographicSize*1.25f));
+            Bind("zoomIn", () => ZoomPreview(.8f));
+            Bind("zoomOut", () => ZoomPreview(1.25f));
             Bind("flip", () => { flipped=!flipped; player?.SetFlip(flipped,false); });
             Bind("background", () => {
                 var colors = new[]{new Color32(18,25,38,255),new Color32(92,96,105,255),new Color32(235,232,220,255),new Color32(35,96,79,255)};
@@ -172,14 +174,43 @@ namespace AstralOath.Client.CharacterLab
         }
         private void FitPreview()
         {
-            var renderers=player.Root.GetComponentsInChildren<Renderer>();
-            if(renderers.Length==0)return;
-            var bounds=renderers[0].bounds;
-            for(int i=1;i<renderers.Length;i++)bounds.Encapsulate(renderers[i].bounds);
+            modelRenderers = player.Root.GetComponentsInChildren<Renderer>();
+            automaticFraming = true;
+            if(modelRenderers.Length==0)return;
+            var bounds=ModelBounds();
             if(bounds.size.sqrMagnitude<.001f)return;
             defaultZoom=Mathf.Clamp(Mathf.Max(bounds.extents.y/.58f,bounds.extents.x/(Mathf.Max(.1f,context.PreviewCamera.aspect)*.45f))*1.1f,1,20);
             defaultCameraPosition=new Vector3(bounds.center.x,bounds.center.y-defaultZoom*.16f,-10);
             context.PreviewCamera.orthographicSize=defaultZoom;context.PreviewCamera.transform.position=defaultCameraPosition;
+        }
+        private Bounds ModelBounds()
+        {
+            var bounds = modelRenderers[0].bounds;
+            for (int i = 1; i < modelRenderers.Length; i++) bounds.Encapsulate(modelRenderers[i].bounds);
+            return bounds;
+        }
+        private void ZoomPreview(float factor)
+        {
+            automaticFraming = false;
+            var camera = context.PreviewCamera;
+            camera.orthographicSize = Mathf.Clamp(camera.orthographicSize * factor, .5f, 20f);
+        }
+        private void FrameAnimation()
+        {
+            if (!automaticFraming || player == null || performanceScope != null || modelRenderers.Length == 0) return;
+            var bounds = ModelBounds();
+            if (bounds.size.sqrMagnitude < .001f) return;
+            var camera = context.PreviewCamera;
+            float aspect = Mathf.Max(.1f, camera.aspect);
+            // Keep the setup composition until the current posed mesh approaches an edge.
+            const float visibleFraction = .96f;
+            float halfHeight = Mathf.Max(defaultZoom, Mathf.Max(bounds.extents.y, bounds.extents.x / aspect) / visibleFraction);
+            float yRoom = halfHeight * visibleFraction;
+            float xRoom = yRoom * aspect;
+            camera.orthographicSize = halfHeight;
+            camera.transform.position = new Vector3(
+                Mathf.Clamp(defaultCameraPosition.x, bounds.max.x - xRoom, bounds.min.x + xRoom),
+                Mathf.Clamp(defaultCameraPosition.y, bounds.max.y - yRoom, bounds.min.y + yRoom), defaultCameraPosition.z);
         }
         private void SelectAnimation(string name)
         {
@@ -226,6 +257,7 @@ namespace AstralOath.Client.CharacterLab
         }
         private async Task Reset()
         {
+            automaticFraming = true;
             context.PreviewCamera.orthographicSize=defaultZoom;
             context.PreviewCamera.transform.position=defaultCameraPosition;
             flipped=false;player?.SetFlip(false,false);
@@ -245,6 +277,11 @@ namespace AstralOath.Client.CharacterLab
         {
             if(player==null || portrait) {Diagnose(locale.Resolve("lab.not_supported").Replace("{0}","skill requires battle skeleton"));return;}
             EndPerformance();StopSounds();selectedSkill=skill;
+            if (automaticFraming)
+            {
+                context.PreviewCamera.orthographicSize = defaultZoom;
+                context.PreviewCamera.transform.position = defaultCameraPosition;
+            }
             var owner=new BindingScope(selectionScope.Token);performanceScope=owner;
             var text=await assets.LoadAsync<TextAsset>(skill.graphAddress,owner);
             owner.Token.ThrowIfCancellationRequested();
@@ -286,6 +323,7 @@ namespace AstralOath.Client.CharacterLab
             blurPreview?.Resize();
             float step=(float)clock.Advance(delta);
             if(step>0) {effects?.BeginFrame();performance?.Advance(step);player?.Tick(step);effects?.Tick(step);effects?.BeginFrame();performance?.Advance(0);effects?.Tick(0);}
+            FrameAnimation();
             transportRefresh+=delta;
             if(transportRefresh>.1f) {transportRefresh=0;Show("transport","lab.transport",clock.Time,clock.Speed,locale.Resolve(clock.AudioAllowed?"lab.sound":"lab.silent"));}
         }

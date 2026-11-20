@@ -1,0 +1,106 @@
+{
+  "timeline": {
+    "default": {
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "serilla_skill_01_motion",
+              "location": 5,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "idle": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "id": "br",
+              "source": "serilla_bidle_eff",
+              "location": 5,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "serilla_skill_02_motion",
+              "location": 1,
+              "locationBone": "",
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "run": {
+        "duration": 0,
+        "frames": []
+      },
+      "camping": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "serilla_camping_eff",
+              "location": 1,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill3_1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "serilla_skill_03_1",
+              "location": 1,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

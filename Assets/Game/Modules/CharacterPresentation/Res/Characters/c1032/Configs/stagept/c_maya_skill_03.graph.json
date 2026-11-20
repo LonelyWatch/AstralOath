@@ -1,0 +1,404 @@
+{
+  "id": "c_maya_skill_03",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "ani": "skill3",
+        "guid": 2,
+        "etty": "ANI"
+      },
+      {
+        "time": 200,
+        "guid": 3,
+        "etty": "BGSHOW"
+      },
+      {
+        "location": 1,
+        "x": 25.0,
+        "y": 70.0,
+        "curve": "0.06130268,0.6944444,0.2222222,0.9236111",
+        "time": 200,
+        "guid": 4,
+        "etty": "CAM"
+      },
+      {
+        "scale": "2.5",
+        "curve": "0.07662835,0.8506944,0.1417625,0.9375",
+        "time": 200,
+        "guid": 5,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "x": 25.0,
+        "y": 110.0,
+        "curve": "0.1685824,0.05555553,0,0.9791666",
+        "time": 400,
+        "guid": 6,
+        "etty": "CAM"
+      },
+      {
+        "scale": "4.5",
+        "curve": "0.164751,0.03124997,0,0.9826389",
+        "time": 400,
+        "guid": 7,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.2",
+        "curve": "0.04214559,0.8541666,0.09195402,0.96875",
+        "time": 800,
+        "guid": 8,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "x": 25.0,
+        "y": 15.0,
+        "curve": "0.04214559,0.8541666,0.09195402,0.96875",
+        "time": 800,
+        "guid": 9,
+        "etty": "CAM"
+      },
+      {
+        "guid": 10,
+        "etty": "IDLE"
+      },
+      {
+        "curve": "0.2681992,0.07638886,0.1149425,0.9027778",
+        "time": 400,
+        "guid": 11,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1",
+        "curve": "0.3065134,0.05902775,0.183908,0.9270833",
+        "time": 400,
+        "guid": 12,
+        "etty": "ZOOM"
+      },
+      {
+        "show": true,
+        "time": 400,
+        "guid": 13,
+        "etty": "BGSHOW"
+      },
+      {
+        "without_self": true,
+        "color": "0,0,0,255",
+        "duration": -1,
+        "fadeIn": 200,
+        "fadeOut": 200,
+        "id": "cf",
+        "guid": 14,
+        "etty": "COLOR_FADE"
+      },
+      {
+        "targetId": "cf",
+        "guid": 15,
+        "etty": "STOP"
+      },
+      {
+        "time": 600,
+        "x": 0.0,
+        "y": 0.0,
+        "localZ": 0.0,
+        "scale": 2.2,
+        "rotate": 90.0,
+        "fadeIn": 150.0,
+        "fadeOut": 400.0,
+        "speed0": 10.0,
+        "speed1": 20.0,
+        "speed2": -8.0,
+        "color0": "0,242,255,255",
+        "color1": "46,189,255,255",
+        "color2": "44,55,125,255",
+        "guid": 16,
+        "etty": "BGHATCH"
+      },
+      {
+        "args": "sk_c1032_3",
+        "guid": 17,
+        "etty": "CUTIN"
+      },
+      {
+        "source": "maya_sk3_eff.cfx",
+        "scale": 1.0,
+        "location": 1,
+        "guid": 18,
+        "etty": "EFFECT"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "demon_melee_camera_03",
+        "guid": 19,
+        "etty": "SHAKE"
+      },
+      {
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 20,
+        "etty": "HIT"
+      },
+      {
+        "name": "u_range",
+        "duration": 400,
+        "power": 25.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 21,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "duration": 400,
+        "program": "sprite_blur",
+        "direction_y": 1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 22,
+        "etty": "PPEFFECT"
+      }
+    ],
+    "connections": [
+      {
+        "from": 1,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 3,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 4,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 5,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 6,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 8,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 10,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 12,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 11,
+        "delay": 500,
+        "Desc": "500",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 13,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 14,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 15,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 17,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 9,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 16,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 18,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 19,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 20,
+        "delay": 1100,
+        "when": 1,
+        "Desc": "1100",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 22,
+        "to": 21,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 22,
+        "delay": 800,
+        "when": 1,
+        "Desc": "800",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/demon_melee_camera_03.scsp",
+      "address": "characterlab/source/camera/demon_melee_camera_03.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "cut/fhd/sk_c1032_3.webp",
+      "address": "characterlab/source/cut/fhd/sk_c1032_3.webp",
+      "type": "cutin"
+    },
+    {
+      "source": "effect/maya_sk3_eff.atlas",
+      "address": "characterlab/source/effect/maya_sk3_eff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/maya_sk3_eff.cfx",
+      "address": "characterlab/source/effect/maya_sk3_eff.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/maya_sk3_eff.scsp",
+      "address": "characterlab/source/effect/maya_sk3_eff.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/maya_sk3_eff.sct",
+      "address": "characterlab/source/effect/maya_sk3_eff.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/tanker_buff_01.atlas",
+      "address": "characterlab/source/effect/tanker_buff_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/tanker_buff_01.cfx",
+      "address": "characterlab/source/effect/tanker_buff_01.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/tanker_buff_01.scsp",
+      "address": "characterlab/source/effect/tanker_buff_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/tanker_buff_01.sct",
+      "address": "characterlab/source/effect/tanker_buff_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/tanker_buff_pati.particle",
+      "address": "characterlab/source/effect/tanker_buff_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "model/maya.timeline",
+      "address": "characterlab/source/model/maya.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/pati_01.sct",
+      "address": "characterlab/source/particle/pati_01.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

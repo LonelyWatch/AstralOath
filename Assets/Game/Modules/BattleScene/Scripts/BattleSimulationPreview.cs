@@ -238,6 +238,8 @@ namespace AstralOath.Client.BattleScene
                     skillPresentation.Prepare(actorView, row?.presentationId ?? skillId);
                     if (!string.IsNullOrEmpty(row?.speedUpPresentationId))
                         skillPresentation.Prepare(actorView, row.speedUpPresentationId);
+                    if (!string.IsNullOrEmpty(row?.counterPresentationId))
+                        skillPresentation.Prepare(actorView, row.counterPresentationId);
                     if (!string.IsNullOrEmpty(row?.burnPresentationId))
                         skillPresentation.Prepare(actorView, row.burnPresentationId);
                 }
@@ -726,13 +728,16 @@ namespace AstralOath.Client.BattleScene
                         (offensive ? next.Kind == BattleFlowEventKind.Damage && !IsPeriodicDamage(next)
                             : next.Kind is BattleFlowEventKind.Healing or BattleFlowEventKind.UnitRevived) &&
                         (Snapshot.GetUnit(next.TargetId).Slot.Side != sourceSide) == offensive).ToArray();
-                    if (targetEvents.Length == 0 && skills.TryGetValue(item.SkillId, out var support) &&
-                        (support.target == "all_allies" || support.target == "all_enemies" || support.target == "self"))
+                    bool supportPassive = actionSkill?.target == "passive" && primary &&
+                        Snapshot.GetUnit(item.TargetId).Slot.Side == sourceSide;
+                    if ((targetEvents.Length == 0 || supportPassive) && actionSkill != null &&
+                        (supportPassive || actionSkill.target is "all_allies" or "all_enemies" or "self"))
                     {
-                        bool allies = support.target == "all_allies" || support.target == "self";
-                        if (support.target == "self") primary = views[item.SourceId].Actor;
+                        bool allies = supportPassive || actionSkill.target is "all_allies" or "self";
+                        if (actionSkill.target == "self") primary = views[item.SourceId].Actor;
                         targetEvents = actionEvents.Where(next => next.SourceId == item.SourceId && next.TargetId != null &&
                             (next.Kind == BattleFlowEventKind.StatusApplied || next.Kind == BattleFlowEventKind.ReadinessChanged ||
+                                (supportPassive && next.Kind is BattleFlowEventKind.Healing or BattleFlowEventKind.UnitRevived) ||
                                 (next.Kind == BattleFlowEventKind.StatusRemoved && next.TargetId != item.SourceId)) &&
                             (Snapshot.GetUnit(next.TargetId).Slot.Side == sourceSide) == allies).ToArray();
                     }
@@ -945,7 +950,8 @@ namespace AstralOath.Client.BattleScene
 
         private static bool IsPeriodicDamage(BattleFlowEvent item) =>
             item.Kind == BattleFlowEventKind.Damage && (item.StatusKind == BattleStatusKind.Poison ||
-                item.StatusKind == BattleStatusKind.Burn || item.StatusKind == BattleStatusKind.Bleed);
+                item.StatusKind == BattleStatusKind.Burn || item.StatusKind == BattleStatusKind.Bleed ||
+                item.StatusKind == BattleStatusKind.Bomb);
 
         private void ShowPeriodicDamage(BattleFlowEvent item, int absorbed)
         {

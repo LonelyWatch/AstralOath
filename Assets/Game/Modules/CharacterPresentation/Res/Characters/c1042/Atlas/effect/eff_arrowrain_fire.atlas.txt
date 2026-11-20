@@ -1,0 +1,27 @@
+
+eff_arrowrain_fire.sct
+size: 199,396
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+boom_fusion
+  rotate: false
+  xy: 28, 2
+  size: 119, 221
+  orig: 119, 221
+  offset: 0, 0
+  index: -1
+energy_blast_beam_01
+  rotate: true
+  xy: 2, 2
+  size: 327, 24
+  orig: 327, 24
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 28, 225
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1

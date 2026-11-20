@@ -1,0 +1,34 @@
+
+colie_sk3_boom_b.sct
+size: 338,241
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+ring_wave_g
+  rotate: false
+  xy: 204, 2
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+rush_wave1
+  rotate: true
+  xy: 109, 148
+  size: 91, 144
+  orig: 91, 144
+  offset: 0, 0
+  index: -1
+rush_wave2
+  rotate: false
+  xy: 109, 2
+  size: 93, 144
+  orig: 93, 144
+  offset: 0, 0
+  index: -1
+rush_wave_blur
+  rotate: false
+  xy: 2, 2
+  size: 105, 222
+  orig: 105, 222
+  offset: 0, 0
+  index: -1

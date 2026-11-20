@@ -49,6 +49,9 @@ STATUSES = (
     ("SpiritlordProtection", "Buff", "stic_spiritlord_keep"),
     ("Rage", "Buff", "stic_madness"),
     ("Targeted", "Debuff", "stic_target"),
+    ("Reflect", "Buff", "stic_reflect"),
+    ("Bomb", "Debuff", "stic_bomb"),
+    ("VampiricTouch", "Debuff", "stic_vampire"),
 )
 
 

@@ -254,7 +254,7 @@ namespace AstralOath.Editor
                 return effect.status switch
                 {
                     "AttackDown" or "DefenseDown" or "SpeedDown" or "Stun" or "Silence" or "Provoke" or "Burn" or "Bleed" or
-                    "Poison" or "Unhealable" or "Unbuffable" or "HitChanceDown" => "weaken",
+                    "Poison" or "Unhealable" or "Unbuffable" or "HitChanceDown" or "Bomb" or "VampiricTouch" => "weaken",
                     "Indomitable" or "Rage" or "SpiritlordProtection" or "DamageLimit" => "general",
                     _ => "enhance"
                 };

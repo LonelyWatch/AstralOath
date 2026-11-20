@@ -1,0 +1,28 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "nixid_eff_sk2",
+      "y": "0",
+      "z": "10",
+      "delay": "0",
+      "format": "spine"
+    },
+    {
+      "source": "nixid_skill_02_pati1",
+      "y": "530",
+      "z": "11",
+      "delay": "1800",
+      "format": "particle"
+    },
+    {
+      "source": "nixid_skill_02_pati2",
+      "y": "530",
+      "z": "12",
+      "scale": "1.0,0.5",
+      "rotate": "-20~20",
+      "delay": "1800",
+      "format": "particle"
+    }
+  ]
+}

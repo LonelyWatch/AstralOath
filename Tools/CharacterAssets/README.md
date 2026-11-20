@@ -1,6 +1,8 @@
 # 角色资源白名单导入
 
-本工具接受显式白名单 c1001–c1011 与 c1062，按 E7 ID 排序。新增角色按[逐人接入规范](../../docs/development/battle-roster-expansion.md)验收。`D:/sevenepic/原始资源` 仅以只读方式访问；不得把整个外部目录复制进仓库。十二套骨骼和立绘、三十六份技能 STG 为根，递归引入其真实 atlas/纹理、CFX、particle、camera、cutin，以及实际存在的 timeline。六份指定 FMOD bank 公共保存一次。Ras 没有 timeline 是源布局信息，不伪造空文件。
+本工具接受显式白名单内的 40 名英雄，以各自的模型、立绘、基础技能及已确认的独立分支 STG 为根。递归收集实际引用的 atlas、纹理、CFX、particle、camera、cutin 及原有 timeline，FMOD bank 共用。外部目录 `D:/sevenepic/原始资源` 保持只读。角色顺序与纳入标准见[逐人接入规范](../../docs/development/battle-roster-expansion.md)。
+
+额外技能图按源行动配置本地化键。法济斯的 `c_fuzzies_skill_03_2` 来自被动反击；光之瑞儿与伊赛丽亚的额外图来自燃魂。日语原始取样名可能含连字符或语言后缀，例如 `voc_c1034_skill1_1(J)`。保留取样 ID 与 FMOD 路径的大小写和标点，仅对界面文案键转小写并规范分隔符；同一角色的两个取样若生成相同文案键，导入失败。[第 31–40 名资源核验](../../docs/delivery/2026-11-20-roster31-40-assets.md)
 
 ## 固定环境与命令
 

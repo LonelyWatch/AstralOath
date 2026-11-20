@@ -21,11 +21,13 @@ namespace AstralOath.Client.CharacterLab
         private readonly List<Emitter> emitters=new List<Emitter>();
         private readonly System.Random random=new System.Random(1);
         private readonly float lifetime;
+        private readonly float speed;
         private float age;
         private bool disposed;
         public CharacterParticlePreview(JObject document,JObject primitive,Vector3 position,IReadOnlyDictionary<string,Texture2D> textures,Transform parent,Action<string> report)
         {
             lifetime=N(primitive,"lifeTime",-1)/1000;
+            speed=N(primitive,"timeScale",1);
             var shader=Resources.Load<Shader>("CharacterLabUnlit");
             if(!shader){report("Missing particle shader CharacterLabUnlit");return;}
             foreach(JObject data in document["emitters"]??new JArray())
@@ -58,6 +60,7 @@ namespace AstralOath.Client.CharacterLab
         {
             if(disposed)return;
             age+=delta;
+            delta*=speed;
             foreach(var emitter in emitters)
             {
                 var d=emitter.data;emitter.age+=delta;

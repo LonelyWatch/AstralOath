@@ -1,0 +1,47 @@
+{
+  "timeline": {
+    "default": {
+      "skill1": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "fuzzies_skill_02",
+              "scale": 1.0,
+              "location": 5,
+              "locationBone": "root"
+            }
+          },
+          {
+            "func": "shake",
+            "param": {
+              "type": 1,
+              "source": "fuzzies_skill_02_cm",
+              "powerX": 10,
+              "powerY": 10,
+              "timeScale": 1.0,
+              "duration": -1
+            }
+          }
+        ]
+      },
+      "skill3": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "event",
+            "param": {
+              "name": "eff",
+              "param": "eff"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

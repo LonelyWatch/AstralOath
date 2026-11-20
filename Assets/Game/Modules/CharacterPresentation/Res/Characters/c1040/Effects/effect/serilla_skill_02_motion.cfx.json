@@ -1,0 +1,25 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "serilla_skill_02_motion",
+      "z": "5",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "serilla_skill_02_motion_pati1",
+      "z": "10",
+      "delay": "733",
+      "format": "particle",
+      "globalZ": 2.0
+    },
+    {
+      "source": "serilla_skill_02_motion_pati2",
+      "delay": "1533",
+      "format": "particle",
+      "globalZ": 3.0,
+      "attach": "serilla_skill_02_motion/cross_light"
+    }
+  ]
+}

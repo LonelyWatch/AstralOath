@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using AstralOath.Client.Skeletons;
 using AstralOath.Client.Tests;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
@@ -129,6 +131,35 @@ namespace AstralOath.Tests
             Assert.That(Duration(part), Is.EqualTo(1f).Within(.001f));
         }
 
+        [TestCase(1.6f)]
+        [TestCase(.8f)]
+        [TestCase(.5f)]
+        public void ClarissaS2RepeatedLayersSampleTheirAuthoredLocalFrame(float speed)
+        {
+            const string prefix = "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1028/";
+            var cfx = JObject.Parse(AssetDatabase.LoadAssetAtPath<TextAsset>(prefix +
+                "Effects/effect/clarisa_skill_02.cfx.json").text);
+            var part = cfx["primitive"].OfType<JObject>().Single(row =>
+                (string)row["source"] == "clarisa_sk2_eff_b" && (float?)row["timeScale"] == speed);
+            var json = AssetDatabase.LoadAssetAtPath<TextAsset>(prefix + "Animations/effect/clarisa_sk2_eff_b.spine.json");
+            var atlas = AssetDatabase.LoadAssetAtPath<TextAsset>(prefix + "Atlas/effect/clarisa_sk2_eff_b.atlas.txt");
+            var texture = AssetDatabase.LoadAssetAtPath<Texture2D>(prefix + "Textures/effect/clarisa_sk2eff.png");
+            const string pageName = "clarisa_sk2eff.sct";
+            Create((string)part["source"], json, atlas, texture, pageName);
+            using var reference = new SkeletonPlayerFactory().Create(new SkeletonPlayerSource(json.text, atlas.text,
+                new Dictionary<string, Texture2D> { [pageName] = texture }, true, 1f), root.transform);
+            reference.Play("animation", false);
+            Spawn(part);
+            const float elapsed = .2f;
+            reference.Tick(elapsed * speed);
+            runtime.GetMethod("Tick").Invoke(playback, new object[] { elapsed });
+            var expected = reference.Root.GetComponent<MeshFilter>().sharedMesh.vertices;
+            Assert.That(expected, Is.Not.Empty);
+            Assert.That(group.GetComponentInChildren<MeshFilter>().sharedMesh.vertices, Is.EqualTo(expected),
+                "At one stage instant, the visible geometry must match the source rig at its local clip time.");
+            Assert.That(Duration(part), Is.EqualTo(reference.Duration / speed).Within(.0001f));
+        }
+
         private void CreateSynthetic(string version)
         {
             var json = JObject.Parse(SkeletonPlayerTests.Json(version));
@@ -140,19 +171,67 @@ namespace AstralOath.Tests
             Create("fixture", document);
         }
 
-        private void Create(string source, TextAsset document)
+        [Test]
+        public void SezS3BurstAdvancesTenLocalFramesPerStageFrame()
+        {
+            const string prefix = "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1038/Effects/effect/";
+            var cfx = JObject.Parse(AssetDatabase.LoadAssetAtPath<TextAsset>(prefix + "sez_gaien_skill_03_target.cfx.json").text);
+            var parts = cfx["primitive"].OfType<JObject>().Where(part => (string)part["format"] == "particle").ToArray();
+            Assert.That(parts.Length, Is.EqualTo(5));
+            Assert.That(parts.All(part => (float)part["timeScale"] == 10f), Is.True);
+            string source = (string)parts[0]["source"];
+            var definition = AssetDatabase.LoadAssetAtPath<TextAsset>(prefix + source + ".particle.json");
+            Create(source, definition, particle: true);
+            var texture = new Texture2D(2, 2); owned.Add(texture);
+            var textures = (Dictionary<string, Texture2D>)runtime.GetProperty("textures", Private).GetValue(playback);
+            textures.Add("particle/pati_01.sct", texture);
+            var particleRuntime = runtime.Assembly.GetType(Module + ".BattleHudParticles", true);
+            var referenceRoot = new GameObject("Source burst"); referenceRoot.transform.SetParent(root.transform);
+            using var reference = (IDisposable)Activator.CreateInstance(particleRuntime, definition, textures,
+                referenceRoot.transform, Vector2.zero, .01f, 55);
+            particleRuntime.GetMethod("Play").Invoke(reference, null);
+            runtime.GetMethod("SpawnParticles", Private).Invoke(playback,
+                new object[] { source, parts[0], group.transform, 1f, 55, (Action)(() => { }), false });
+            particleRuntime.GetMethod("Tick").Invoke(reference, new object[] { .01f * 10f });
+            runtime.GetMethod("Tick").Invoke(playback, new object[] { .01f });
+            var expected = referenceRoot.GetComponentInChildren<MeshFilter>().sharedMesh.vertices;
+            Assert.That(expected, Is.Not.Empty);
+            Assert.That(group.GetComponentInChildren<MeshFilter>().sharedMesh.vertices, Is.EqualTo(expected));
+            Assert.That(Duration(parts[0]), Is.EqualTo(.04f).Within(.0001f),
+                "The burst's 0.2 ± 0.2s local lifespan occupies at most 40ms of stage time.");
+            parts[0]["lifeTime"] = 150;
+            Assert.That(Duration(parts[0]), Is.EqualTo(.15f).Within(.0001f));
+        }
+
+        [Test]
+        public void HasteHitUsesOneAndAHalfTimesLocalSpineTime()
+        {
+            const string prefix = "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1039/";
+            var cfx = JObject.Parse(AssetDatabase.LoadAssetAtPath<TextAsset>(prefix + "Effects/effect/haste_hit.cfx.json").text);
+            var part = (JObject)cfx["primitive"][0];
+            Assert.That((float)part["timeScale"], Is.EqualTo(1.5f));
+            var json = AssetDatabase.LoadAssetAtPath<TextAsset>(prefix + "Animations/effect/hiteff_dark.spine.json");
+            Create((string)part["source"], json);
+            var unscaled = (JObject)part.DeepClone();
+            unscaled.Remove("timeScale");
+            Assert.That(Duration(unscaled), Is.GreaterThan(0f));
+            Assert.That(Duration(part), Is.EqualTo(Duration(unscaled) / 1.5f).Within(.0001f));
+        }
+
+        private void Create(string source, TextAsset document, TextAsset atlas = null, Texture2D texture = null,
+            string pageName = "page.png", bool particle = false)
         {
             runtime = Type.GetType(Module + ".BattleSkillPresentation, " + Module, true);
             var assetType = Type.GetType(Module + ".BattleSkillPresentationAsset, " + Module, true);
             root = new GameObject("CFX selection fixture");
             group = new GameObject("CFX group"); group.transform.SetParent(root.transform, false);
-            var atlas = new TextAsset(SkeletonPlayerTests.Atlas); owned.Add(atlas);
-            var texture = new Texture2D(16, 16); owned.Add(texture);
+            if (!atlas) { atlas = new TextAsset(SkeletonPlayerTests.Atlas); owned.Add(atlas); }
+            if (!texture) { texture = new Texture2D(16, 16); owned.Add(texture); }
             var asset = Activator.CreateInstance(assetType);
-            assetType.GetField("source").SetValue(asset, "effect/" + source + ".scsp");
+            assetType.GetField("source").SetValue(asset, "effect/" + source + (particle ? ".particle" : ".scsp"));
             assetType.GetField("document").SetValue(asset, document);
             assetType.GetField("atlas").SetValue(asset, atlas);
-            assetType.GetField("pageNames").SetValue(asset, new[] { "page.png" });
+            assetType.GetField("pageNames").SetValue(asset, new[] { pageName });
             assetType.GetField("pages").SetValue(asset, new[] { texture });
             assetType.GetField("scale").SetValue(asset, 1f);
             var assets = Array.CreateInstance(assetType, 1); assets.SetValue(asset, 0);

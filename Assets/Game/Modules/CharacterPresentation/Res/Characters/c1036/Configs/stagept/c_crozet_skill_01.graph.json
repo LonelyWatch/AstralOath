@@ -1,0 +1,363 @@
+{
+  "id": "c_crozet_skill_01",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 12
+    },
+    "eventlisteners": [
+      16
+    ],
+    "entities": [
+      {
+        "scale": "1",
+        "guid": 1,
+        "etty": "ZOOM"
+      },
+      {
+        "ver": 2,
+        "power": 50,
+        "location": 11,
+        "style": 2,
+        "guid": 2,
+        "etty": "MOVE"
+      },
+      {
+        "guid": 3,
+        "etty": "IDLE"
+      },
+      {
+        "ani": "jump_back",
+        "guid": 4,
+        "etty": "ANI"
+      },
+      {
+        "from": "jump",
+        "to": "landing",
+        "guid": 5,
+        "etty": "ANI_SCOPE"
+      },
+      {
+        "guid": 6,
+        "etty": "CAM"
+      },
+      {
+        "ani": "skill1",
+        "guid": 7,
+        "etty": "ANI"
+      },
+      {
+        "scale": "1.3",
+        "curve": "0.2911877,0.9548611,1,1",
+        "guid": 8,
+        "etty": "ZOOM"
+      },
+      {
+        "ver": 2,
+        "power": 50,
+        "location": 16,
+        "style": 2,
+        "guid": 9,
+        "etty": "MOVE"
+      },
+      {
+        "from": "jump",
+        "to": "landing",
+        "guid": 10,
+        "etty": "ANI_SCOPE"
+      },
+      {
+        "ani": "jump_forward",
+        "guid": 11,
+        "etty": "ANI"
+      },
+      {
+        "state": "start",
+        "guid": 12,
+        "etty": "ENTRY"
+      },
+      {
+        "location": 12,
+        "x": -60.0,
+        "y": -30.0,
+        "guid": 13,
+        "etty": "CAM"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "crozet_skill_01_cm",
+        "guid": 14,
+        "etty": "SHAKE"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 15,
+        "etty": "HIT"
+      },
+      {
+        "ani": "skill1",
+        "name": "hit",
+        "handled": true,
+        "guid": 16,
+        "etty": "ONEVENT"
+      }
+    ],
+    "connections": [
+      {
+        "from": 5,
+        "to": 1,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 3,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 5,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 6,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 4,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 7,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 8,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 9,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 10,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 12,
+        "to": 11,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 13,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 15,
+        "delay": 380,
+        "when": 1,
+        "Desc": "380",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 14,
+        "delay": 640,
+        "when": 1,
+        "Desc": "640",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/crozet_skill_01_cm.scsp",
+      "address": "characterlab/source/camera/crozet_skill_01_cm.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "camera/crozet_skill_03_cm.scsp",
+      "address": "characterlab/source/camera/crozet_skill_03_cm.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/crozet_skill_03.atlas",
+      "address": "characterlab/source/effect/crozet_skill_03.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/crozet_skill_03.cfx",
+      "address": "characterlab/source/effect/crozet_skill_03.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/crozet_skill_03.scsp",
+      "address": "characterlab/source/effect/crozet_skill_03.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/crozet_skill_03.sct",
+      "address": "characterlab/source/effect/crozet_skill_03.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/crozet_skill_03_crack.atlas",
+      "address": "characterlab/source/effect/crozet_skill_03_crack.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/crozet_skill_03_crack.scsp",
+      "address": "characterlab/source/effect/crozet_skill_03_crack.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/crozet_skill_03_pati.particle",
+      "address": "characterlab/source/effect/crozet_skill_03_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/crozet_skill_03_swordaura.cfx",
+      "address": "characterlab/source/effect/crozet_skill_03_swordaura.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/crozet_smoke_center.atlas",
+      "address": "characterlab/source/effect/crozet_smoke_center.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/crozet_smoke_center.scsp",
+      "address": "characterlab/source/effect/crozet_smoke_center.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/crozet_smoke_rear.atlas",
+      "address": "characterlab/source/effect/crozet_smoke_rear.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/crozet_smoke_rear.scsp",
+      "address": "characterlab/source/effect/crozet_smoke_rear.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_slash_01.atlas",
+      "address": "characterlab/source/effect/hit_new_slash_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_slash_01.scsp",
+      "address": "characterlab/source/effect/hit_new_slash_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_slash_01.sct",
+      "address": "characterlab/source/effect/hit_new_slash_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_slash_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_slash_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_slash_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_slash_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/tanker_buff_01.atlas",
+      "address": "characterlab/source/effect/tanker_buff_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/tanker_buff_01.cfx",
+      "address": "characterlab/source/effect/tanker_buff_01.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/tanker_buff_01.scsp",
+      "address": "characterlab/source/effect/tanker_buff_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/tanker_buff_01.sct",
+      "address": "characterlab/source/effect/tanker_buff_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/tanker_buff_pati.particle",
+      "address": "characterlab/source/effect/tanker_buff_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "model/crozet.timeline",
+      "address": "characterlab/source/model/crozet.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/dust_01.sct",
+      "address": "characterlab/source/particle/dust_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/pati_01.sct",
+      "address": "characterlab/source/particle/pati_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/stone_01.sct",
+      "address": "characterlab/source/particle/stone_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/stone_02.sct",
+      "address": "characterlab/source/particle/stone_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

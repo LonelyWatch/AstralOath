@@ -1,0 +1,230 @@
+
+serilla_skill_02_motion.sct
+size: 1479,493
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+air_burst
+  rotate: true
+  xy: 2, 193
+  size: 199, 329
+  orig: 199, 329
+  offset: 0, 0
+  index: -1
+burst_sphear
+  rotate: false
+  xy: 590, 192
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+burst_sphear_g
+  rotate: false
+  xy: 590, 326
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+di_wind_2_1
+  rotate: false
+  xy: 2, 2
+  size: 413, 189
+  orig: 413, 189
+  offset: 0, 0
+  index: -1
+di_wind_2_2
+  rotate: false
+  xy: 417, 2
+  size: 316, 188
+  orig: 316, 188
+  offset: 0, 0
+  index: -1
+di_wind_2_3
+  rotate: false
+  xy: 724, 215
+  size: 171, 161
+  orig: 171, 161
+  offset: 0, 0
+  index: -1
+di_wind_2_4
+  rotate: true
+  xy: 349, 377
+  size: 106, 127
+  orig: 106, 127
+  offset: 0, 0
+  index: -1
+di_wind_2_5
+  rotate: true
+  xy: 1090, 217
+  size: 106, 82
+  orig: 106, 82
+  offset: 0, 0
+  index: -1
+di_wind_3_1
+  rotate: false
+  xy: 2, 394
+  size: 242, 97
+  orig: 242, 97
+  offset: 0, 0
+  index: -1
+di_wind_3_2
+  rotate: false
+  xy: 1179, 170
+  size: 210, 48
+  orig: 210, 48
+  offset: 0, 0
+  index: -1
+di_wind_3_3
+  rotate: true
+  xy: 1432, 212
+  size: 91, 42
+  orig: 91, 42
+  offset: 0, 0
+  index: -1
+di_wind_3_4
+  rotate: false
+  xy: 1391, 170
+  size: 52, 40
+  orig: 52, 40
+  offset: 0, 0
+  index: -1
+di_wind_3_5
+  rotate: true
+  xy: 1445, 170
+  size: 29, 32
+  orig: 29, 32
+  offset: 0, 0
+  index: -1
+fire_ring2
+  rotate: true
+  xy: 908, 354
+  size: 67, 177
+  orig: 67, 177
+  offset: 0, 0
+  index: -1
+fire_ring3
+  rotate: true
+  xy: 908, 423
+  size: 67, 177
+  orig: 67, 177
+  offset: 0, 0
+  index: -1
+fire_s1_1
+  rotate: false
+  xy: 246, 394
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1
+fire_s1_2
+  rotate: false
+  xy: 478, 363
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1
+fire_s1_3
+  rotate: true
+  xy: 1345, 349
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 922, 33
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+hand_circle1
+  rotate: false
+  xy: 1174, 220
+  size: 127, 127
+  orig: 127, 127
+  offset: 0, 0
+  index: -1
+hand_circle2
+  rotate: false
+  xy: 1303, 220
+  size: 127, 127
+  orig: 127, 127
+  offset: 0, 0
+  index: -1
+hand_circle3
+  rotate: false
+  xy: 1087, 354
+  size: 127, 127
+  orig: 127, 127
+  offset: 0, 0
+  index: -1
+hand_circle4
+  rotate: false
+  xy: 1216, 349
+  size: 127, 127
+  orig: 127, 127
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: false
+  xy: 735, 2
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1
+pil_fire_01_1
+  rotate: false
+  xy: 1179, 2
+  size: 148, 166
+  orig: 148, 166
+  offset: 0, 0
+  index: -1
+pil_fire_01_2
+  rotate: false
+  xy: 1329, 2
+  size: 148, 166
+  orig: 148, 166
+  offset: 0, 0
+  index: -1
+pil_fire_01_3
+  rotate: true
+  xy: 922, 204
+  size: 148, 166
+  orig: 148, 166
+  offset: 0, 0
+  index: -1
+pil_fire_02_1
+  rotate: true
+  xy: 333, 193
+  size: 182, 84
+  orig: 182, 84
+  offset: 0, 0
+  index: -1
+pil_fire_02_2
+  rotate: true
+  xy: 1093, 33
+  size: 182, 84
+  orig: 182, 84
+  offset: 0, 0
+  index: -1
+pil_fire_02_3
+  rotate: false
+  xy: 724, 378
+  size: 182, 84
+  orig: 182, 84
+  offset: 0, 0
+  index: -1
+shot_impact
+  rotate: true
+  xy: 735, 33
+  size: 180, 185
+  orig: 180, 185
+  offset: 0, 0
+  index: -1
+wind_shock
+  rotate: false
+  xy: 419, 192
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1

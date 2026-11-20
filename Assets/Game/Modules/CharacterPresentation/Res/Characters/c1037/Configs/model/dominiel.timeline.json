@@ -1,0 +1,106 @@
+{
+  "timeline": {
+    "default": {
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "id": "nixid_eff_br_star1",
+              "source": "nixid_eff_br",
+              "location": 1,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 1,
+            "func": "effect",
+            "param": {
+              "id": "nixid_eff_br_star2",
+              "source": "nixid_eff_br_star",
+              "location": 1,
+              "locationBone": "eff_pos",
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "nixid_eff_br_star"
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "nixid_eff_br_star2"
+            }
+          }
+        ]
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "nixid_eff_br_star1"
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "nixid_eff_br_star2"
+            }
+          }
+        ]
+      },
+      "skill3": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "nixid_eff_br_star1"
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "nixid_eff_br_star2"
+            }
+          }
+        ]
+      },
+      "groggy": {
+        "duration": 0,
+        "frames": []
+      },
+      "idle": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "nixid_eff_br_star"
+            }
+          }
+        ]
+      },
+      "b_idle": {
+        "duration": 0,
+        "frames": []
+      },
+      "jump_forward": {
+        "duration": 0,
+        "frames": []
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "tanker_buff_01",
+      "z": "1",
+      "scale": "0.7",
+      "delay": "50",
+      "format": "spine"
+    },
+    {
+      "source": "tanker_buff_pati",
+      "z": "2",
+      "delay": "0",
+      "format": "particle"
+    }
+  ]
+}

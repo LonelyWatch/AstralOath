@@ -1,0 +1,34 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "eff_magiccircle5",
+      "x": "0",
+      "y": "200",
+      "z": "1",
+      "scale": "1.4",
+      "format": "spine"
+    },
+    {
+      "source": "eff_dust_bigar_f",
+      "z": "2",
+      "scale": "1.4",
+      "format": "spine"
+    },
+    {
+      "source": "eff_dust_bigar_b",
+      "z": "-1",
+      "scale": "1.4",
+      "format": "spine"
+    },
+    {
+      "source": "tywin_sk2_pati",
+      "format": "particle"
+    },
+    {
+      "source": "tywin_pati_sk2",
+      "y": "500",
+      "format": "particle"
+    }
+  ]
+}

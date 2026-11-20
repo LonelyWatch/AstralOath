@@ -1,0 +1,181 @@
+
+serilla_skill_02_target.sct
+size: 503,965
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+fire2/burn_imp
+  rotate: false
+  xy: 261, 2
+  size: 198, 199
+  orig: 198, 199
+  offset: 0, 0
+  index: -1
+fire2/fire_ring1
+  rotate: false
+  xy: 173, 412
+  size: 67, 177
+  orig: 67, 177
+  offset: 0, 0
+  index: -1
+fire2/fire_ring2
+  rotate: false
+  xy: 242, 394
+  size: 67, 177
+  orig: 67, 177
+  offset: 0, 0
+  index: -1
+fire2/fire_ring3
+  rotate: false
+  xy: 311, 394
+  size: 67, 177
+  orig: 67, 177
+  offset: 0, 0
+  index: -1
+fire2/fire_s1_1
+  rotate: true
+  xy: 341, 764
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1
+fire2/fire_s1_2
+  rotate: false
+  xy: 363, 620
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1
+fire2/fire_s1_3
+  rotate: false
+  xy: 341, 867
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1
+fire2/pil_fire_01_1
+  rotate: false
+  xy: 2, 583
+  size: 148, 166
+  orig: 148, 166
+  offset: 0, 0
+  index: -1
+fire2/pil_fire_01_2
+  rotate: false
+  xy: 2, 751
+  size: 148, 166
+  orig: 148, 166
+  offset: 0, 0
+  index: -1
+fire2/pil_fire_01_3
+  rotate: false
+  xy: 322, 203
+  size: 148, 166
+  orig: 148, 166
+  offset: 0, 0
+  index: -1
+fire2/pil_fire_02_1
+  rotate: true
+  xy: 152, 591
+  size: 182, 84
+  orig: 182, 84
+  offset: 0, 0
+  index: -1
+fire2/pil_fire_02_2
+  rotate: true
+  xy: 152, 775
+  size: 182, 84
+  orig: 182, 84
+  offset: 0, 0
+  index: -1
+fire2/pil_fire_02_3
+  rotate: true
+  xy: 236, 210
+  size: 182, 84
+  orig: 182, 84
+  offset: 0, 0
+  index: -1
+fire_blast1_01
+  rotate: true
+  xy: 461, 2
+  size: 48, 40
+  orig: 48, 40
+  offset: 0, 0
+  index: -1
+fire_blast1_02
+  rotate: false
+  xy: 358, 718
+  size: 46, 44
+  orig: 46, 44
+  offset: 0, 0
+  index: -1
+fire_blast1_03
+  rotate: false
+  xy: 2, 919
+  size: 129, 35
+  orig: 129, 35
+  offset: 0, 0
+  index: -1
+fire_blast1_04
+  rotate: false
+  xy: 238, 874
+  size: 88, 87
+  orig: 88, 87
+  offset: 0, 0
+  index: -1
+fire_ex2_2
+  rotate: false
+  xy: 2, 210
+  size: 232, 200
+  orig: 232, 200
+  offset: 0, 0
+  index: -1
+fire_ex2_3
+  rotate: false
+  xy: 2, 2
+  size: 257, 206
+  orig: 257, 206
+  offset: 0, 0
+  index: -1
+flame_s_1
+  rotate: false
+  xy: 238, 764
+  size: 101, 108
+  orig: 101, 108
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 412
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+smoke_1
+  rotate: false
+  xy: 380, 499
+  size: 120, 119
+  orig: 120, 119
+  offset: 0, 0
+  index: -1
+smoke_2
+  rotate: true
+  xy: 380, 371
+  size: 126, 110
+  orig: 126, 110
+  offset: 0, 0
+  index: -1
+smoke_4
+  rotate: false
+  xy: 242, 573
+  size: 119, 77
+  orig: 119, 77
+  offset: 0, 0
+  index: -1
+smoke_5
+  rotate: false
+  xy: 238, 652
+  size: 118, 110
+  orig: 118, 110
+  offset: 0, 0
+  index: -1

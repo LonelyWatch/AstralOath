@@ -1,0 +1,230 @@
+
+eff_explosion_fire_small2.sct
+size: 511,1270
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+axe_fire2
+  rotate: false
+  xy: 2, 601
+  size: 274, 273
+  orig: 274, 273
+  offset: 0, 0
+  index: -1
+axe_fire3
+  rotate: false
+  xy: 2, 28
+  size: 316, 313
+  orig: 316, 313
+  offset: 0, 0
+  index: -1
+boom_fusion
+  rotate: true
+  xy: 283, 583
+  size: 119, 221
+  orig: 119, 221
+  offset: 0, 0
+  index: -1
+cloud_08
+  rotate: true
+  xy: 161, 1121
+  size: 55, 44
+  orig: 55, 44
+  offset: 0, 0
+  index: -1
+cloud_09
+  rotate: false
+  xy: 2, 1005
+  size: 89, 50
+  orig: 89, 50
+  offset: 0, 0
+  index: -1
+cloud_18
+  rotate: true
+  xy: 207, 1099
+  size: 75, 53
+  orig: 75, 53
+  offset: 0, 0
+  index: -1
+cloud_crack_02
+  rotate: true
+  xy: 107, 1121
+  size: 59, 52
+  orig: 59, 52
+  offset: 0, 0
+  index: -1
+cloud_crack_06
+  rotate: true
+  xy: 404, 1219
+  size: 47, 43
+  orig: 47, 43
+  offset: 0, 0
+  index: -1
+dust_soft_1
+  rotate: false
+  xy: 2, 455
+  size: 279, 144
+  orig: 279, 144
+  offset: 0, 0
+  index: -1
+dust_soft_2
+  rotate: true
+  xy: 320, 310
+  size: 271, 150
+  orig: 271, 150
+  offset: 0, 0
+  index: -1
+dust_soft_3
+  rotate: false
+  xy: 2, 343
+  size: 293, 110
+  orig: 293, 110
+  offset: 0, 0
+  index: -1
+energy_blast_beam_01
+  rotate: false
+  xy: 2, 2
+  size: 327, 24
+  orig: 327, 24
+  offset: 0, 0
+  index: -1
+energybolt_02
+  rotate: false
+  xy: 260, 930
+  size: 133, 96
+  orig: 133, 96
+  offset: 0, 0
+  index: -1
+energybolt_04
+  rotate: true
+  xy: 2, 1185
+  size: 80, 69
+  orig: 80, 69
+  offset: 0, 0
+  index: -1
+energybolt_05
+  rotate: true
+  xy: 2, 1058
+  size: 125, 103
+  orig: 125, 103
+  offset: 0, 0
+  index: -1
+energybolt_07
+  rotate: false
+  xy: 163, 1005
+  size: 95, 92
+  orig: 95, 92
+  offset: 0, 0
+  index: -1
+energybolt_08
+  rotate: true
+  xy: 107, 1057
+  size: 62, 54
+  orig: 62, 54
+  offset: 0, 0
+  index: -1
+energybolt_09
+  rotate: false
+  xy: 93, 1005
+  size: 68, 50
+  orig: 68, 50
+  offset: 0, 0
+  index: -1
+fire_blast1_01
+  rotate: true
+  xy: 404, 1169
+  size: 48, 40
+  orig: 48, 40
+  offset: 0, 0
+  index: -1
+fire_blast1_02
+  rotate: true
+  xy: 446, 1169
+  size: 46, 44
+  orig: 46, 44
+  offset: 0, 0
+  index: -1
+fire_blast1_03
+  rotate: true
+  xy: 472, 310
+  size: 129, 35
+  orig: 129, 35
+  offset: 0, 0
+  index: -1
+fire_blast1_04
+  rotate: true
+  xy: 194, 1178
+  size: 88, 87
+  orig: 88, 87
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 331, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+impact_shock
+  rotate: false
+  xy: 320, 173
+  size: 185, 135
+  orig: 185, 135
+  offset: 0, 0
+  index: -1
+light_halfcicle_01
+  rotate: false
+  xy: 278, 704
+  size: 211, 136
+  orig: 211, 136
+  offset: 0, 0
+  index: -1
+smoke_1
+  rotate: true
+  xy: 283, 1148
+  size: 120, 119
+  orig: 120, 119
+  offset: 0, 0
+  index: -1
+smoke_2
+  rotate: true
+  xy: 395, 930
+  size: 126, 110
+  orig: 126, 110
+  offset: 0, 0
+  index: -1
+smoke_3
+  rotate: true
+  xy: 404, 1058
+  size: 109, 105
+  orig: 109, 105
+  offset: 0, 0
+  index: -1
+smoke_4
+  rotate: false
+  xy: 73, 1185
+  size: 119, 77
+  orig: 119, 77
+  offset: 0, 0
+  index: -1
+smoke_5
+  rotate: true
+  xy: 283, 1028
+  size: 118, 110
+  orig: 118, 110
+  offset: 0, 0
+  index: -1
+tornado_wave_01
+  rotate: false
+  xy: 278, 842
+  size: 207, 86
+  orig: 207, 86
+  offset: 0, 0
+  index: -1
+wave_4
+  rotate: false
+  xy: 2, 876
+  size: 256, 127
+  orig: 256, 127
+  offset: 0, 0
+  index: -1

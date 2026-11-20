@@ -1,0 +1,272 @@
+
+strageth_skeff_sk3_3b.sct
+size: 945,1518
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dust_soft_1
+  rotate: false
+  xy: 664, 208
+  size: 279, 144
+  orig: 279, 144
+  offset: 0, 0
+  index: -1
+dust_soft_2
+  rotate: true
+  xy: 531, 667
+  size: 271, 150
+  orig: 271, 150
+  offset: 0, 0
+  index: -1
+flare/prismlight_10
+  rotate: false
+  xy: 862, 1289
+  size: 75, 74
+  orig: 75, 74
+  offset: 0, 0
+  index: -1
+flare/prismlight_11
+  rotate: false
+  xy: 844, 1365
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 653, 964
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+strage/crack_01
+  rotate: false
+  xy: 531, 208
+  size: 131, 457
+  orig: 131, 457
+  offset: 0, 0
+  index: -1
+strage/sk3_3_bg_cloud_1
+  rotate: false
+  xy: 531, 2
+  size: 411, 204
+  orig: 411, 204
+  offset: 0, 0
+  index: -1
+strage/sk3_3_bg_cloud_2
+  rotate: false
+  xy: 2, 1227
+  size: 418, 171
+  orig: 418, 171
+  offset: 0, 0
+  index: -1
+strage/sk3_3_bg_glow_01
+  rotate: false
+  xy: 570, 1398
+  size: 118, 118
+  orig: 118, 118
+  offset: 0, 0
+  index: -1
+strage/sk3_3_bg_glow_02
+  rotate: true
+  xy: 779, 1147
+  size: 80, 144
+  orig: 80, 144
+  offset: 0, 0
+  index: -1
+strage/sk3_3_bg_layer1_c
+  rotate: false
+  xy: 2, 1047
+  size: 521, 178
+  orig: 521, 178
+  offset: 0, 0
+  index: -1
+strage/sk3_3_bg_layer1_l
+  rotate: false
+  xy: 664, 354
+  size: 267, 195
+  orig: 267, 195
+  offset: 0, 0
+  index: -1
+strage/sk3_3_bg_layer1_r
+  rotate: false
+  xy: 2, 1400
+  size: 396, 95
+  orig: 396, 95
+  offset: 0, 0
+  index: -1
+strage/sk3_3_bg_layer2_c
+  rotate: false
+  xy: 683, 642
+  size: 180, 189
+  orig: 180, 189
+  offset: 0, 0
+  index: -1
+strage/sk3_3_bg_layer2_crack
+  rotate: false
+  xy: 865, 642
+  size: 75, 188
+  orig: 75, 188
+  offset: 0, 0
+  index: -1
+strage/sk3_3_bg_layer2_i
+  rotate: false
+  xy: 824, 964
+  size: 68, 181
+  orig: 68, 181
+  offset: 0, 0
+  index: -1
+strage/sk3_3_bg_layer2_l
+  rotate: true
+  xy: 683, 833
+  size: 129, 186
+  orig: 129, 186
+  offset: 0, 0
+  index: -1
+strage/sk3_3_bg_layer2_r
+  rotate: false
+  xy: 531, 940
+  size: 120, 181
+  orig: 120, 181
+  offset: 0, 0
+  index: -1
+strage/sk3_3_bg_layer3_c
+  rotate: false
+  xy: 422, 1227
+  size: 164, 169
+  orig: 164, 169
+  offset: 0, 0
+  index: -1
+strage/sk3_3_bg_layer3_crack
+  rotate: true
+  xy: 588, 1335
+  size: 59, 156
+  orig: 59, 156
+  offset: 0, 0
+  index: -1
+strage/sk3_3_bg_layer3_i
+  rotate: true
+  xy: 779, 1229
+  size: 58, 154
+  orig: 58, 154
+  offset: 0, 0
+  index: -1
+strage/sk3_3_bg_layer3_l
+  rotate: true
+  xy: 400, 1400
+  size: 116, 168
+  orig: 116, 168
+  offset: 0, 0
+  index: -1
+strage/sk3_3_bg_layer3_r
+  rotate: true
+  xy: 614, 1135
+  size: 107, 163
+  orig: 107, 163
+  offset: 0, 0
+  index: -1
+strage/sk3_3_bg_layer4_c
+  rotate: false
+  xy: 844, 1442
+  size: 69, 69
+  orig: 69, 69
+  offset: 0, 0
+  index: -1
+strage/sk3_3_bg_layer4_crack
+  rotate: false
+  xy: 898, 551
+  size: 29, 69
+  orig: 29, 69
+  offset: 0, 0
+  index: -1
+strage/sk3_3_bg_layer4_i
+  rotate: true
+  xy: 690, 1482
+  size: 23, 62
+  orig: 23, 62
+  offset: 0, 0
+  index: -1
+strage/sk3_3_bg_layer4_l
+  rotate: true
+  xy: 746, 1348
+  size: 46, 69
+  orig: 46, 69
+  offset: 0, 0
+  index: -1
+strage/sk3_3_bg_layer4_r
+  rotate: false
+  xy: 894, 1038
+  size: 48, 65
+  orig: 48, 65
+  offset: 0, 0
+  index: -1
+strage/sk3_3_bg_layer5
+  rotate: false
+  xy: 664, 551
+  size: 232, 89
+  orig: 232, 89
+  offset: 0, 0
+  index: -1
+strage/sk3_3_bg_uni1
+  rotate: true
+  xy: 2, 2
+  size: 1043, 527
+  orig: 1043, 527
+  offset: 0, 0
+  index: -1
+strage/sk3_3_rock_1_1
+  rotate: false
+  xy: 772, 1396
+  size: 70, 79
+  orig: 70, 79
+  offset: 0, 0
+  index: -1
+strage/sk3_3_rock_1_2
+  rotate: false
+  xy: 690, 1396
+  size: 80, 84
+  orig: 80, 84
+  offset: 0, 0
+  index: -1
+strage/sk3_3_rock_2_1
+  rotate: true
+  xy: 726, 1244
+  size: 81, 50
+  orig: 81, 50
+  offset: 0, 0
+  index: -1
+strage/sk3_3_rock_2_2
+  rotate: false
+  xy: 525, 1123
+  size: 87, 82
+  orig: 87, 82
+  offset: 0, 0
+  index: -1
+strage/sk3_3_rock_3_1
+  rotate: false
+  xy: 778, 1289
+  size: 82, 57
+  orig: 82, 57
+  offset: 0, 0
+  index: -1
+strage/sk3_3_rock_3_2
+  rotate: true
+  xy: 894, 958
+  size: 78, 48
+  orig: 78, 48
+  offset: 0, 0
+  index: -1
+strage/sk3_3_rock_4_1
+  rotate: false
+  xy: 588, 1244
+  size: 136, 89
+  orig: 136, 89
+  offset: 0, 0
+  index: -1
+strage/sk3_3_rock_4_2
+  rotate: true
+  xy: 871, 832
+  size: 124, 60
+  orig: 124, 60
+  offset: 0, 0
+  index: -1

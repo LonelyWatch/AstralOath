@@ -127,9 +127,9 @@ namespace AstralOath.Tests
             Vector3 before=camera.transform.position;
             screen.Play(JObject.Parse("{'etty':'SHAKE','guid':1,'source':'test','duration':-1,'timeScale':1}"));
             screen.BeginFrame();screen.Tick(.1f);
-            Assert.That(camera.transform.position,Is.EqualTo(before+new Vector3(.4f,-.2f,0)));
+            Assert.That(camera.transform.position,Is.EqualTo(before+new Vector3(.2f,.4f,0)));
             screen.BeginFrame();screen.Tick(.1f);
-            Assert.That(camera.transform.position,Is.EqualTo(before+new Vector3(.4f,-.2f,0)));
+            Assert.That(camera.transform.position,Is.EqualTo(before+new Vector3(.2f,.4f,0)));
             screen.Dispose();Assert.That(camera.transform.position,Is.EqualTo(before));
         }
         [Test] public void StopTargetsOnlyTheNamedDarkOverlay()
@@ -171,7 +171,8 @@ namespace AstralOath.Tests
             public void Emit(SkeletonPlaybackEvent value)=>listeners?.Invoke(value);
             public void Play(string animation,bool loop,float mixSeconds=0)=>CurrentAnimation=animation;
             public bool TryGetBonePose(string bone,out SkeletonBonePose pose){pose=new SkeletonBonePose(BonePosition,0,Vector2.one);return bone=="camera";}
-            public bool TryGetBoneSkeletonPosition(string bone,out Vector2 position){position=default;return false;}
+            // A parent rotated by 90 degrees changes the shake axis in skeleton space.
+            public bool TryGetBoneSkeletonPosition(string bone,out Vector2 position){position=new Vector2(-BonePosition.y,BonePosition.x);return bone=="camera";}
             public void SetSkin(string skin){}public void Pause(bool value){}public void Stop()=>CurrentAnimation=null;public void Tick(float delta){}public void Seek(float value){}public void SetFlip(bool x,bool y){}public void Dispose(){}
         }
     }

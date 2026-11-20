@@ -1,4 +1,6 @@
 using AstralOath.Client.Common;
+using System.Linq;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
@@ -9,6 +11,35 @@ namespace AstralOath.Client.Tests
     public sealed class ArenaDraftVisualTests
     {
         private const string Path = "Assets/Game/Modules/Arena/Res/Prefab/ArenaDraft.prefab";
+
+        [TestCase("Assets/Game/Modules/Arena/Configs/ArenaDraftArt.asset", "Heroes", "Id", "Face", "Card", "PortraitSkeleton", "ModelSkeleton")]
+        [TestCase("Assets/Game/Modules/Home/Configs/HomeHeroArt.asset", "heroes", "id", "portrait", "cardPortrait", "skeleton", "modelSkeleton")]
+        public void RosterArtworkCoversEveryBattleHero(string asset, string rows, string idField, params string[] artFields)
+        {
+            var source = JObject.Parse(System.IO.File.ReadAllText("Assets/Game/Modules/BattleScene/Configs/battle-catalog.json"));
+            var expected = source["heroes"].Select(row => (string)row["id"]).ToArray();
+            var heroes = new SerializedObject(AssetDatabase.LoadAssetAtPath<ScriptableObject>(asset)).FindProperty(rows);
+            var ids = Enumerable.Range(0, heroes.arraySize).Select(index =>
+            {
+                var row = heroes.GetArrayElementAtIndex(index);
+                string id = row.FindPropertyRelative(idField).stringValue;
+                foreach (string field in artFields)
+                    Assert.That(row.FindPropertyRelative(field).objectReferenceValue, Is.Not.Null, id + "/" + field);
+                return id;
+            }).ToArray();
+            Assert.That(ids, Is.EquivalentTo(expected));
+        }
+
+        [TestCase("enhance", "Reflect")]
+        [TestCase("weaken", "Bomb")]
+        [TestCase("weaken", "VampiricTouch")]
+        public void NewStatusFiltersAppearInTheirSourceGroup(string group, string status)
+        {
+            var view = AssetDatabase.LoadAssetAtPath<GameObject>(Path).GetComponent<BindingMap>();
+            var filters = view.Require<GameObject>("rosterFilters").GetComponent<BindingMap>();
+            var options = filters.Require<BindingMap>(group).Require<RectTransform>("options");
+            Assert.That(options.Find("status_" + status), Is.Not.Null);
+        }
 
         [Test]
         public void TeamPortraitsKeepNativeAspectAndOpposingOrientation()

@@ -1,0 +1,61 @@
+{
+  "timeline": {
+    "default": {
+      "skill3": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 70,
+            "func": "effect",
+            "param": {
+              "source": "crozet_skill_03",
+              "location": 5,
+              "locationBone": "",
+              "x": -143,
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 70,
+            "func": "shake",
+            "param": {
+              "duration": -1,
+              "powerX": 10,
+              "powerY": 10,
+              "timeScale": 1.0,
+              "type": 1,
+              "source": "crozet_skill_03_cm"
+            }
+          },
+          {
+            "time": 70,
+            "func": "effect",
+            "param": {
+              "source": "crozet_skill_03_swordaura",
+              "location": 1,
+              "x": -143,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 900,
+            "func": "effect",
+            "param": {
+              "source": "tanker_buff_01",
+              "location": 5,
+              "locationBone": "eff_pos",
+              "x": 30,
+              "y": 20,
+              "scale": 1.0
+            }
+          }
+        ]
+      }
+    }
+  }
+}

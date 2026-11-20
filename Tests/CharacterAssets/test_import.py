@@ -9,7 +9,7 @@ class ImportBoundaryTests(unittest.TestCase):
         with self.assertRaises(ValueError): importer.select_characters(["c9999"])
         self.assertEqual(len(importer.select_characters(["c1001"])),1)
     def test_base_roster_uses_exact_graph_roots_in_id_order(self):
-        self.assertEqual(list(importer.CHARACTERS), [f"c100{i}" for i in range(1, 10)] + [f"c{i}" for i in (*range(1010, 1025), *range(1027, 1032), 1062)])
+        self.assertEqual(list(importer.CHARACTERS), [f"c{i}" for i in (*range(1001, 1025), *range(1027, 1041), 1042, 1062)])
         self.assertEqual(importer.skill_ids("c1007"), [f"c_wilderd_skill_{i:02}" for i in range(1, 4)])
         self.assertEqual(importer.skill_ids("c1009")[-1], "c_charlotte_skill_03_05")
         self.assertEqual(importer.skill_ids("c1010"), [f"c_jerato_skill_{i:02}" for i in range(1, 4)])
@@ -42,10 +42,23 @@ class ImportBoundaryTests(unittest.TestCase):
                 expected_alternate = [f"c_{model}_skill_01_2"] if character in ("c1022", "c1024") else []
                 self.assertEqual(importer.presentation_ids(character), importer.skill_ids(character) + expected_alternate)
 
+    def test_roster_31_to_40_graphs_follow_the_source_identity(self):
+        ids = ["c1032", "c1033", "c1034", "c1035", "c1036", "c1037", "c1038", "c1039", "c1040", "c1042"]
+        models = ["maya", "collie", "strage", "fuzzies", "crozet", "dominiel", "sez_gaien", "haste", "serilla", "tywin"]
+        for cid, model in zip(ids, models):
+            expected = [f"c_{model}_skill_{slot:02}" for slot in (1, 2, 3)]
+            if cid == "c1035":
+                expected.append("c_fuzzies_skill_03_2")
+            with self.subTest(cid=cid):
+                self.assertEqual(importer.presentation_ids(cid), expected)
+
     def test_voice_display_key_normalizes_hyphen_without_touching_sample_identity(self):
         sample = "voc_c1022_sk3_1-1"
         self.assertEqual(importer.voice_display_key(sample), "character.voice.voc_c1022_sk3_1_1")
         self.assertEqual(importer.voice_display_key("voc_c1022_idle"), "character.voice.voc_c1022_idle")
+        self.assertEqual(importer.voice_display_key("voc_c1034_skill1_1(J)"), "character.voice.voc_c1034_skill1_1_j")
+        with self.assertRaisesRegex(ValueError, "collide"):
+            importer.voice_display_keys(["voc_c1034_skill1_1(J)", "voc_c1034_skill1_1_j"])
 
     def test_animation_index_is_derived_only_for_the_evidenced_graph_and_keeps_raw_fields(self):
         raw = {"entities": [{"etty": "ANI", "ani": "skill{idx}"}]}

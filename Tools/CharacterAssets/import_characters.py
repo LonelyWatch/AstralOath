@@ -40,16 +40,27 @@ CHARACTERS={
     "c1029":("leo","雷欧"),
     "c1030":("yuna","尤娜"),
     "c1031":("lots","拉兹"),
+    "c1032":("maya","玛雅"),
+    "c1033":("collie","可丽"),
+    "c1034":("strage","史瑞杰思"),
+    "c1035":("fuzzies","法济斯"),
+    "c1036":("crozet","克罗泽"),
+    "c1037":("dominiel","多米妮尔"),
+    "c1038":("sez_gaien","赛兹"),
+    "c1039":("haste","海斯特"),
+    "c1040":("serilla","塞丽拉"),
+    "c1042":("tywin","泰温"),
     "c1062":("angelica","安洁莉卡"),
 }
 # Keep source identifiers verbatim even where the model and STG stems differ.
 SKILL_STEMS={"c1002":"c_cecilia_skill_new","c1007":"c_wilderd_skill","c1008":"c_aming_skill","c1010":"c_jerato_skill","c1013":"c_cartuja_skill","c1015":"c_baal_skill","c1017":"c_acha_skill","c1018":"c_iterre_skill"}
 SKILL_VARIANTS={("c1009",3):"c_charlotte_skill_03_05",
                 **{("c1014",index):f"c_cedars_skill_{index:02}_new" for index in range(1,4)}}
-# Source S1 Soulburn graphs are distinct; retain the three primary slots first.
+# Retain the three primary slots first; each additional graph names its own action.
 EXTRA_SKILL_GRAPHS = {
-    "c1022": ("c_ruell_skill_01_2",),
-    "c1024": ("c_iseria_skill_01_2",),
+    "c1022": {"c_ruell_skill_01_2": "battle.inspect.burn_header"},
+    "c1024": {"c_iseria_skill_01_2": "battle.inspect.burn_header"},
+    "c1035": {"c_fuzzies_skill_03_2": "character.fuzzies.counter"},
 }
 # Base S1 has an explicit skill1 listener and matching model timeline event.
 GRAPH_ANIMATION_INDEX = {"stagept/c_iterre_skill_01.stg": 1}
@@ -507,7 +518,17 @@ def verified_japanese_aliases(used_events, audio, loaded_keys, source_events):
 
 
 def voice_display_key(sample):
-    return "character.voice." + sample.replace("-", "_")
+    key = re.sub(r"\(([a-z0-9]+)\)$", r"_\1", sample.lower().replace("-", "_"))
+    if not re.fullmatch(r"[a-z][a-z0-9_]*", key):
+        raise ValueError(f"Unsupported voice localization key spelling: {sample}")
+    return "character.voice." + key
+
+
+def voice_display_keys(samples):
+    labels = [voice_display_key(sample) for sample in samples]
+    if len(set(labels)) != len(labels):
+        raise ValueError(f"Japanese voice localization keys collide: {samples}")
+    return labels
 
 
 def build_catalog(closure,characters,include_banks):
@@ -531,9 +552,7 @@ def build_catalog(closure,characters,include_banks):
         bank = japanese_bank(cid)
         keys=sorted(key for key in voice_tables[bank][1] if key.startswith(f"voc_{cid}_"))
         timeline=f"model/{hero}.timeline"
-        labels = [voice_display_key(key) for key in keys]
-        if len(set(labels)) != len(labels):
-            raise ValueError(f"Japanese voice localization keys collide for {cid}")
+        labels = voice_display_keys(keys)
         voices=[{"id":key,"audioTableKey":key,"eventPath":voice_events.get(key,""),"displayNameKey":label} for key,label in zip(keys,labels)]
         skills=[]
         for i,skill in enumerate(presentation_ids(cid),1):
@@ -541,7 +560,7 @@ def build_catalog(closure,characters,include_banks):
             voice=f"event:/voc/skill/{skill}"
             call=f"{voice}_c"
             answer=f"{voice}_a"
-            display_key = f"character.{hero}.skill{i}" if i <= 3 else "battle.inspect.burn_header"
+            display_key = f"character.{hero}.skill{i}" if i <= 3 else EXTRA_SKILL_GRAPHS[cid][skill]
             skills.append({"id":skill,"displayNameKey":display_key,
                 "graphAddress":address(f"stagept/{skill}.stg"),"eventPath":effect if audio.get(effect) else "",
                 "voiceEventPath":voice if audio.get(voice) else "",

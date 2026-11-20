@@ -161,9 +161,18 @@ namespace AstralOath.Shared.Battle
             }
 
             var unit = byId[target];
+            if (change.Kind == BattleFlowEventKind.UnitExtinct)
+            {
+                if (unit.Health == 0 && !unit.IsExtinct)
+                {
+                    unit.IsExtinct = true;
+                    Emit(events, change.Kind, source, target);
+                }
+                return;
+            }
             if (change.Kind == BattleFlowEventKind.UnitRevived)
             {
-                if (unit.Health != 0) return;
+                if (unit.Health != 0 || unit.IsExtinct) return;
                 unit.Health = Math.Min(unit.MaximumHealth, change.Amount);
                 unit.Readiness = 0;
                 var priorStatuses = unit.Statuses.ToArray();
@@ -465,6 +474,7 @@ namespace AstralOath.Shared.Battle
             public string Id => Unit.InstanceId;
             public int Health { get; set; }
             public int InjuryAmount { get; set; }
+            public bool IsExtinct { get; set; }
             public int MaximumHealth => Unit.Stats.MaxHealth - InjuryAmount;
             public int OpeningAttackBonus { get; set; }
             public HashSet<string> TriggeredTurnEffects { get; } = new HashSet<string>(StringComparer.Ordinal);
@@ -485,7 +495,7 @@ namespace AstralOath.Shared.Battle
                 new ReadOnlyDictionary<string, int>(new Dictionary<string, int>(Cooldowns, StringComparer.Ordinal)),
                 Array.AsReadOnly(Statuses.ToArray()), ResourceAmount, InjuryAmount, OpeningAttackBonus,
                 Array.AsReadOnly(TriggeredTurnEffects.ToArray()), ArtifactCounters == null ? null :
-                    new ReadOnlyDictionary<ArtifactCounter, int>(new Dictionary<ArtifactCounter, int>(ArtifactCounters)));
+                    new ReadOnlyDictionary<ArtifactCounter, int>(new Dictionary<ArtifactCounter, int>(ArtifactCounters)), IsExtinct);
         }
     }
 }

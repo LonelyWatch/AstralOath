@@ -1,0 +1,225 @@
+{
+  "timeline": {
+    "default": {
+      "idle": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "id": "stra_i",
+              "source": "strageth_skeff_idle",
+              "location": 1,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "stra_i"
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "id": "stra_bi",
+              "source": "strageth_skeff_br",
+              "location": 5,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "attacked": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "stra_i"
+            }
+          }
+        ]
+      },
+      "appear": {
+        "duration": 0,
+        "frames": []
+      },
+      "attacked_damage": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "stra_i"
+            }
+          }
+        ]
+      },
+      "b_idle": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "stra_i"
+            }
+          }
+        ]
+      },
+      "camping": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "stra_i"
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "strageth_skeff_camping",
+              "location": 5,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "down": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "stra_i"
+            }
+          }
+        ]
+      },
+      "flying": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "stra_i"
+            }
+          }
+        ]
+      },
+      "flying_damage": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "stra_i"
+            }
+          }
+        ]
+      },
+      "groggy": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "stra_i"
+            }
+          }
+        ]
+      },
+      "jump_back": {
+        "duration": 0,
+        "frames": []
+      },
+      "jump_foward": {
+        "duration": 0,
+        "frames": []
+      },
+      "knock_down": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "stra_i"
+            }
+          }
+        ]
+      },
+      "rise": {
+        "duration": 0,
+        "frames": []
+      },
+      "run": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "stra_i"
+            }
+          }
+        ]
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "stra_i"
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "stra_bi"
+            }
+          }
+        ]
+      },
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "stra_i"
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "stra_bi"
+            }
+          }
+        ]
+      },
+      "skill3": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "stra_i"
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "stra_bi"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

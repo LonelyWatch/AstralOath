@@ -1,0 +1,16 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "strageth_skeff_br_f",
+      "z": "30",
+      "format": "spine"
+    },
+    {
+      "source": "strageth_skeff_br_b",
+      "z": "-30",
+      "format": "spine",
+      "globalZ": -0.5
+    }
+  ]
+}

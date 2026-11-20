@@ -1,0 +1,17 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "nixid_eff_br_star",
+      "z": "10",
+      "format": "spine"
+    },
+    {
+      "source": "nixid_eff_br_roop",
+      "z": "10",
+      "delay": "1155",
+      "format": "spine",
+      "loop": 1
+    }
+  ]
+}

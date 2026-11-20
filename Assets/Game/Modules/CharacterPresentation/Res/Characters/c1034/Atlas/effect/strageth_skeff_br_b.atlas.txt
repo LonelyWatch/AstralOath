@@ -1,0 +1,55 @@
+
+strageth_skeff_br_b.sct
+size: 478,244
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 2, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+ring&circle/burst_sphear
+  rotate: false
+  xy: 173, 90
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+ring&circle/selfling_1
+  rotate: false
+  xy: 382, 2
+  size: 85, 85
+  orig: 85, 85
+  offset: 0, 0
+  index: -1
+ring&circle/selfling_2
+  rotate: false
+  xy: 307, 90
+  size: 85, 85
+  orig: 85, 85
+  offset: 0, 0
+  index: -1
+ring&circle/selfling_3
+  rotate: false
+  xy: 394, 89
+  size: 82, 83
+  orig: 82, 83
+  offset: 0, 0
+  index: -1
+ring&circle/selfling_4
+  rotate: true
+  xy: 2, 173
+  size: 69, 81
+  orig: 69, 81
+  offset: 0, 0
+  index: -1
+tornado_wave_01
+  rotate: false
+  xy: 173, 2
+  size: 207, 86
+  orig: 207, 86
+  offset: 0, 0
+  index: -1

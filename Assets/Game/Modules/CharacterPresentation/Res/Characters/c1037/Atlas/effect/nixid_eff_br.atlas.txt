@@ -1,0 +1,83 @@
+
+nixid_eff_br.sct
+size: 255,555
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+ice_smoke_01
+  rotate: false
+  xy: 2, 2
+  size: 203, 158
+  orig: 203, 158
+  offset: 0, 0
+  index: -1
+ice_smoke_06
+  rotate: false
+  xy: 2, 162
+  size: 194, 126
+  orig: 194, 126
+  offset: 0, 0
+  index: -1
+snow_pati_01
+  rotate: true
+  xy: 198, 162
+  size: 52, 53
+  orig: 52, 53
+  offset: 0, 0
+  index: -1
+snow_pati_02
+  rotate: false
+  xy: 188, 492
+  size: 65, 61
+  orig: 65, 61
+  offset: 0, 0
+  index: -1
+snow_pati_03
+  rotate: false
+  xy: 100, 492
+  size: 86, 61
+  orig: 86, 61
+  offset: 0, 0
+  index: -1
+snow_pati_04
+  rotate: true
+  xy: 172, 290
+  size: 108, 67
+  orig: 108, 67
+  offset: 0, 0
+  index: -1
+snow_pati_05
+  rotate: false
+  xy: 2, 475
+  size: 96, 68
+  orig: 96, 68
+  offset: 0, 0
+  index: -1
+snow_pati_06
+  rotate: true
+  xy: 207, 2
+  size: 94, 40
+  orig: 94, 40
+  offset: 0, 0
+  index: -1
+snow_pati_07
+  rotate: false
+  xy: 139, 400
+  size: 114, 90
+  orig: 114, 90
+  offset: 0, 0
+  index: -1
+snow_pati_08
+  rotate: false
+  xy: 2, 380
+  size: 135, 93
+  orig: 135, 93
+  offset: 0, 0
+  index: -1
+snow_pati_09
+  rotate: false
+  xy: 2, 290
+  size: 168, 88
+  orig: 168, 88
+  offset: 0, 0
+  index: -1

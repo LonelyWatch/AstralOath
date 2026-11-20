@@ -1,0 +1,1053 @@
+{
+  "id": "c_strage_skill_03",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 6
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "source": "strageth_skeff_sk3_1.cfx",
+        "scale": 1.0,
+        "location": 1,
+        "guid": 1,
+        "etty": "EFFECT"
+      },
+      {
+        "ani": "skill3",
+        "guid": 2,
+        "etty": "ANI"
+      },
+      {
+        "scale": "1",
+        "time": 200,
+        "guid": 3,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "x": -50.0,
+        "time": 200,
+        "guid": 4,
+        "etty": "CAM"
+      },
+      {
+        "time": 100,
+        "guid": 5,
+        "etty": "BGSHOW"
+      },
+      {
+        "state": "start",
+        "guid": 6,
+        "etty": "ENTRY"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "strageth_cm_sk3",
+        "guid": 7,
+        "etty": "SHAKE"
+      },
+      {
+        "duration": -1,
+        "alpha_channel": 0.0,
+        "id": "cb",
+        "guid": 8,
+        "etty": "COLOR_BLEND"
+      },
+      {
+        "guid": 9,
+        "etty": "IDLE"
+      },
+      {
+        "blend_target": 66,
+        "duration": -1,
+        "alpha_channel": 0.0,
+        "id": "t1",
+        "guid": 10,
+        "etty": "COLOR_BLEND"
+      },
+      {
+        "scale": "1",
+        "curve": "0,1,1,1",
+        "guid": 11,
+        "etty": "ZOOM"
+      },
+      {
+        "curve": "0,1,1,1",
+        "guid": 12,
+        "etty": "CAM"
+      },
+      {
+        "show": true,
+        "guid": 13,
+        "etty": "BGSHOW"
+      },
+      {
+        "fade": 100,
+        "time": 100,
+        "log": 15.0,
+        "away_x": 800.0,
+        "away_y": 20.0,
+        "guid": 14,
+        "etty": "LAYOUT"
+      },
+      {
+        "mode": 1,
+        "fade": 200,
+        "log": 15.0,
+        "guid": 15,
+        "etty": "LAYOUT"
+      },
+      {
+        "scale": "1",
+        "curve": "1,0,1,1",
+        "time": 133,
+        "guid": 16,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "x": -50.0,
+        "y": 50.0,
+        "curve": "1,0,1,1",
+        "time": 133,
+        "guid": 17,
+        "etty": "CAM"
+      },
+      {
+        "scale": "0.8",
+        "time": 233,
+        "guid": 18,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "x": -50.0,
+        "y": 80.0,
+        "time": 233,
+        "guid": 19,
+        "etty": "CAM"
+      },
+      {
+        "color": "0,0,0,255",
+        "duration": 67,
+        "fadeIn": 300,
+        "id": "t1",
+        "guid": 20,
+        "etty": "COLOR_BLEND"
+      },
+      {
+        "scale": "0.3",
+        "curve": "0.07662835,0.6249999,0,1",
+        "time": 433,
+        "guid": 21,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "x": -50.0,
+        "y": 150.0,
+        "curve": "0.07662835,0.6249999,0,1",
+        "time": 433,
+        "guid": 22,
+        "etty": "CAM"
+      },
+      {
+        "args": "sk_c1034_3",
+        "curtain_color": "0,0,0,255",
+        "guid": 23,
+        "etty": "CUTIN"
+      },
+      {
+        "scale": "1",
+        "curve": "0.07662835,0.6249999,0,1",
+        "guid": 24,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 42,
+        "x": 50.0,
+        "y": -50.0,
+        "curve": "0.07662835,0.6249999,0,1",
+        "guid": 25,
+        "etty": "CAM"
+      },
+      {
+        "targetId": "t1",
+        "guid": 26,
+        "etty": "STOP"
+      },
+      {
+        "source": "strageth_skeff_sk3_2.cfx",
+        "scale": 1.0,
+        "location": 42,
+        "guid": 27,
+        "etty": "EFFECT"
+      },
+      {
+        "scale": "0.8",
+        "curve": "0.07662835,0.6249999,0,1",
+        "time": 80,
+        "guid": 28,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 42,
+        "x": 50.0,
+        "curve": "0.07662835,0.6249999,0,1",
+        "time": 80,
+        "guid": 29,
+        "etty": "CAM"
+      },
+      {
+        "location": 42,
+        "x": 80.0,
+        "y": 100.0,
+        "curve": "0.07662835,0.6249999,0,1",
+        "guid": 30,
+        "etty": "CAM"
+      },
+      {
+        "scale": "0.5",
+        "curve": "0.07662835,0.6249999,0,1",
+        "guid": 31,
+        "etty": "ZOOM"
+      },
+      {
+        "target_node": 76,
+        "source": "strageth_nodani_sk3.scsp",
+        "timeline": [
+          "0,attacked_damage,1"
+        ],
+        "guid": 32,
+        "etty": "NODE_ANI"
+      },
+      {
+        "location": 42,
+        "x": 180.0,
+        "y": 70.0,
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 33,
+        "etty": "CAM"
+      },
+      {
+        "scale": "0.28",
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 34,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "0.27",
+        "curve": "0,1,1,1",
+        "time": 33,
+        "guid": 35,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 42,
+        "x": 100.0,
+        "y": 65.0,
+        "curve": "0,1,1,1",
+        "time": 33,
+        "guid": 36,
+        "etty": "CAM"
+      },
+      {
+        "location": 42,
+        "y": -800.0,
+        "curve": "0,1,1,1",
+        "time": 166,
+        "guid": 37,
+        "etty": "CAM"
+      },
+      {
+        "scale": "0.26",
+        "curve": "0,1,1,1",
+        "time": 166,
+        "guid": 38,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "0.25",
+        "curve": "0,1,1,1",
+        "time": 366,
+        "guid": 39,
+        "etty": "ZOOM"
+      },
+      {
+        "color": "255,255,255,255",
+        "accel": 1.0,
+        "opacity": 1.0,
+        "duration": 300,
+        "localZ": -1,
+        "globalZ": 2,
+        "fadeIn": 133,
+        "fadeOut": 333,
+        "guid": 40,
+        "etty": "DARK"
+      },
+      {
+        "targetId": "cb",
+        "guid": 41,
+        "etty": "STOP"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 42,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 43,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 44,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 45,
+        "etty": "HIT"
+      },
+      {
+        "source": "strageth_skeff_sk3_pat.cfx",
+        "scale": 1.0,
+        "guid": 46,
+        "etty": "EFFECT"
+      }
+    ],
+    "connections": [
+      {
+        "from": 2,
+        "to": 1,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 4,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 5,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 2,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 3,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 8,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 10,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 12,
+        "to": 11,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 12,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 15,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 17,
+        "to": 16,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 17,
+        "delay": 1200,
+        "when": 1,
+        "Desc": "1200",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 18,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 17,
+        "to": 19,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 20,
+        "delay": 233,
+        "when": 1,
+        "Desc": "233",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 14,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 22,
+        "to": 21,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 22,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 23,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 25,
+        "to": 24,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 23,
+        "to": 27,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 27,
+        "to": 25,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 27,
+        "to": 26,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 29,
+        "to": 28,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 25,
+        "to": 29,
+        "delay": 500,
+        "when": 1,
+        "Desc": "500",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 29,
+        "to": 30,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 30,
+        "to": 31,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 30,
+        "to": 33,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 33,
+        "to": 34,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 36,
+        "to": 35,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 27,
+        "to": 36,
+        "delay": 2300,
+        "when": 1,
+        "Desc": "2300",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 37,
+        "to": 38,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 36,
+        "to": 37,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 38,
+        "to": 39,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 27,
+        "to": 32,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 27,
+        "to": 13,
+        "delay": 3200,
+        "when": 1,
+        "Desc": "3200",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 27,
+        "to": 40,
+        "delay": 3066,
+        "when": 1,
+        "Desc": "3066",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 40,
+        "to": 9,
+        "delay": 300,
+        "when": 1,
+        "Desc": "300",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 27,
+        "to": 41,
+        "delay": 3200,
+        "when": 1,
+        "Desc": "3200",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 26,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 15,
+        "to": 42,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 42,
+        "to": 43,
+        "delay": 150,
+        "Desc": "150",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 43,
+        "to": 45,
+        "delay": 150,
+        "Desc": "150",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 45,
+        "to": 44,
+        "delay": 150,
+        "Desc": "150",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 15,
+        "to": 46,
+        "delay": 200,
+        "when": 1,
+        "Desc": "200",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/strageth_cm_sk3.scsp",
+      "address": "characterlab/source/camera/strageth_cm_sk3.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "cut/fhd/sk_c1034_3.webp",
+      "address": "characterlab/source/cut/fhd/sk_c1034_3.webp",
+      "type": "cutin"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.atlas",
+      "address": "characterlab/source/effect/hit_new_blunt_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.scsp",
+      "address": "characterlab/source/effect/hit_new_blunt_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.sct",
+      "address": "characterlab/source/effect/hit_new_blunt_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_blunt_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_blunt_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_blunt_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/strageth_pat.particle",
+      "address": "characterlab/source/effect/strageth_pat.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/strageth_skeff_bi.atlas",
+      "address": "characterlab/source/effect/strageth_skeff_bi.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/strageth_skeff_bi.scsp",
+      "address": "characterlab/source/effect/strageth_skeff_bi.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/strageth_skeff_bi.sct",
+      "address": "characterlab/source/effect/strageth_skeff_bi.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/strageth_skeff_br.cfx",
+      "address": "characterlab/source/effect/strageth_skeff_br.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/strageth_skeff_br_b.atlas",
+      "address": "characterlab/source/effect/strageth_skeff_br_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/strageth_skeff_br_b.scsp",
+      "address": "characterlab/source/effect/strageth_skeff_br_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/strageth_skeff_br_b.sct",
+      "address": "characterlab/source/effect/strageth_skeff_br_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/strageth_skeff_br_f.atlas",
+      "address": "characterlab/source/effect/strageth_skeff_br_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/strageth_skeff_br_f.scsp",
+      "address": "characterlab/source/effect/strageth_skeff_br_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/strageth_skeff_br_f.sct",
+      "address": "characterlab/source/effect/strageth_skeff_br_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/strageth_skeff_camping.atlas",
+      "address": "characterlab/source/effect/strageth_skeff_camping.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/strageth_skeff_camping.cfx",
+      "address": "characterlab/source/effect/strageth_skeff_camping.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/strageth_skeff_camping.scsp",
+      "address": "characterlab/source/effect/strageth_skeff_camping.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/strageth_skeff_camping.sct",
+      "address": "characterlab/source/effect/strageth_skeff_camping.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/strageth_skeff_idle.cfx",
+      "address": "characterlab/source/effect/strageth_skeff_idle.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_1.cfx",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_1.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_1b.atlas",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_1b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_1b.scsp",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_1b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_1b.sct",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_1b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_1f_1.atlas",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_1f_1.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_1f_1.scsp",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_1f_1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_1f_1.sct",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_1f_1.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_1f_2.atlas",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_1f_2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_1f_2.scsp",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_1f_2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_1f_2.sct",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_1f_2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_1f_3.atlas",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_1f_3.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_1f_3.scsp",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_1f_3.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_1f_3.sct",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_1f_3.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_1f_4.atlas",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_1f_4.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_1f_4.scsp",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_1f_4.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_1f_4.sct",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_1f_4.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_2.cfx",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_2.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_2b.atlas",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_2b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_2b.scsp",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_2b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_2b.sct",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_2b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_2f2.atlas",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_2f2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_2f2.scsp",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_2f2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_2f2.sct",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_2f2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_2ff_1.atlas",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_2ff_1.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_2ff_1.scsp",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_2ff_1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_2ff_1.sct",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_2ff_1.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_2ff_2.atlas",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_2ff_2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_2ff_2.scsp",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_2ff_2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_2ff_2.sct",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_2ff_2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_2ff_3.atlas",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_2ff_3.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_2ff_3.scsp",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_2ff_3.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_2ff_3.sct",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_2ff_3.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_2ff_4.atlas",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_2ff_4.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_2ff_4.scsp",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_2ff_4.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_2ff_4.sct",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_2ff_4.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_3b.atlas",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_3b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_3b.scsp",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_3b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_3b.sct",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_3b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_bg.atlas",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_bg.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_bg.scsp",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_bg.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_bg.sct",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_bg.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/strageth_skeff_sk3_pat.cfx",
+      "address": "characterlab/source/effect/strageth_skeff_sk3_pat.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "model/strage.timeline",
+      "address": "characterlab/source/model/strage.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/blur_ticle_01.sct",
+      "address": "characterlab/source/particle/blur_ticle_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/blur_ticle_03.sct",
+      "address": "characterlab/source/particle/blur_ticle_03.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_01.sct",
+      "address": "characterlab/source/particle/ticle_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "spani/strageth_nodani_sk3.scsp",
+      "address": "characterlab/source/spani/strageth_nodani_sk3.scsp",
+      "type": "skeleton"
+    }
+  ],
+  "diagnostics": []
+}

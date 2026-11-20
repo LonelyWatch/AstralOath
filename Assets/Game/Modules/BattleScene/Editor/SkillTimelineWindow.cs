@@ -105,6 +105,8 @@ namespace AstralOath.Client.BattleScene.Editor
                 .ToDictionary(row => ((string)row["heroId"], (string)row["speedUpPresentationId"]));
             var burnVariants = battle["skills"].Where(row => !string.IsNullOrEmpty((string)row["burnPresentationId"]))
                 .ToDictionary(row => ((string)row["heroId"], (string)row["burnPresentationId"]));
+            var counters = battle["skills"].Where(row => !string.IsNullOrEmpty((string)row["counterPresentationId"]))
+                .ToDictionary(row => ((string)row["heroId"], (string)row["counterPresentationId"]));
             var targets = lab["characters"].OrderBy(hero => (string)hero["id"], StringComparer.Ordinal).ToArray();
             targetIds = targets.Select(hero => (string)hero["id"]).ToArray();
             targetLabels = targets.Select(hero => $"{hero["name"]} ({hero["id"]})").ToArray();
@@ -119,11 +121,12 @@ namespace AstralOath.Client.BattleScene.Editor
                     var authority = active[id].FirstOrDefault(item => (int)item["slot"] == index + 1);
                     bool speedUp = variant.TryGetValue((id, graph), out var speedParent);
                     bool burn = burnVariants.TryGetValue((id, graph), out var burnParent);
-                    var parent = speedParent ?? burnParent ?? authority;
+                    bool counter = counters.TryGetValue((id, graph), out var counterParent);
+                    var parent = speedParent ?? burnParent ?? counterParent ?? authority;
                     return new Skill
                     {
                         Hero = id, Name = (string)hero["name"], Slot = index + 1, Id = graph,
-                        SlotLabel = burn ? $"S{parent["slot"]} · 燃魂" : speedUp ? $"S{parent["slot"]} · 提速" : $"S{index + 1}",
+                        SlotLabel = counter ? $"S{parent["slot"]} · 反击" : burn ? $"S{parent["slot"]} · 燃魂" : speedUp ? $"S{parent["slot"]} · 提速" : $"S{index + 1}",
                         Asset = AssetDatabase.GetAssetPath(sourceAsset), Target = (string)parent?["target"]
                     };
                 });

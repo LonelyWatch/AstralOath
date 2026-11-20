@@ -24,6 +24,7 @@ namespace AstralOath.Client.BattleScene
             public float Stop = -1f;
             public BattleSkillPresentationAsset Cutin;
             public bool IsCutinCurtain;
+            public float HatchAspect;
         }
 
         private readonly Camera camera;
@@ -425,6 +426,22 @@ namespace AstralOath.Client.BattleScene
                 layer.Mesh.colors = new[] { color, color, color, color };
                 if ((string)layer.Node?["etty"] == "BGHATCH")
                 {
+                    if (layer.HatchAspect != aspect)
+                    {
+                        layer.HatchAspect = aspect;
+                        // Inverse of the source sprite's clockwise rotation and uniform scale.
+                        // Rotate UVs in the 720-high stage pixel space; the quad still covers all four corners.
+                        float radians = Mathf.Deg2Rad * Number(layer.Node, "rotate");
+                        float cosine = Mathf.Cos(radians), sine = Mathf.Sin(radians);
+                        float halfHeight = 360f / Mathf.Max(.001f, Number(layer.Node, "scale", 1f));
+                        var sourceTexture = layer.Material.mainTexture;
+                        var texelSize = new Vector2(1f / sourceTexture.width, 1f / sourceTexture.height);
+                        var halfRight = Vector2.Scale(new Vector2(cosine, sine), texelSize) * (halfHeight * aspect);
+                        var halfUp = Vector2.Scale(new Vector2(-sine, cosine), texelSize) * halfHeight;
+                        var center = Vector2.one * .5f;
+                        layer.Mesh.uv = new[] { center - halfRight - halfUp, center + halfRight - halfUp,
+                            center + halfRight + halfUp, center - halfRight + halfUp };
+                    }
                     layer.Material.SetVector("_Option", new Vector4(
                         elapsed * Number(layer.Node, "speed0"),
                         elapsed * Number(layer.Node, "speed1"),

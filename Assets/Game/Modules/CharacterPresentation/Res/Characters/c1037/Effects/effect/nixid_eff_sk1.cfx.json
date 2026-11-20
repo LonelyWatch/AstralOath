@@ -1,0 +1,54 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "nixid_eff_sk1",
+      "y": "0",
+      "z": "3",
+      "format": "spine"
+    },
+    {
+      "source": "nixid_eff_sk1_circle",
+      "x": "200",
+      "y": "280",
+      "z": "5",
+      "scale": "0.5,1",
+      "format": "spine"
+    },
+    {
+      "source": "nixid_skill_01_pati1",
+      "x": "245",
+      "y": "283",
+      "z": "1",
+      "scale": "0.75,1.2",
+      "delay": "700",
+      "format": "particle",
+      "actions": [
+        {
+          "action": "Move",
+          "delay": "150",
+          "interval": "3000",
+          "from": "0,0",
+          "to": "400,0"
+        }
+      ]
+    },
+    {
+      "source": "nixid_skill_01_pati2",
+      "x": "355",
+      "y": "283",
+      "z": "2",
+      "delay": "1380",
+      "format": "particle"
+    },
+    {
+      "source": "nixid_skill_01_pati3",
+      "x": "313",
+      "y": "283",
+      "z": "15",
+      "scale": "0.6,1.2",
+      "delay": "1350",
+      "format": "particle"
+    }
+  ]
+}

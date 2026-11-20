@@ -1,0 +1,93 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "sez_gaien_sk3eff_target",
+      "scale": "0.5",
+      "rotate": "-45",
+      "format": "spine",
+      "actions": [
+        {
+          "action": "Fire"
+        }
+      ]
+    },
+    {
+      "source": "sez_gaien_sk3eff_target",
+      "scale": "1",
+      "rotate": "230",
+      "delay": "400",
+      "format": "spine",
+      "actions": [
+        {
+          "action": "Fire"
+        }
+      ]
+    },
+    {
+      "source": "sez_gaien_sk3eff_target",
+      "scale": "0.5",
+      "rotate": "340",
+      "delay": "700",
+      "format": "spine",
+      "actions": [
+        {
+          "action": "Fire"
+        }
+      ]
+    },
+    {
+      "source": "sez_gaien_sk3eff_target",
+      "scale": "0.5",
+      "rotate": "190",
+      "delay": "1000",
+      "format": "spine",
+      "actions": [
+        {
+          "action": "Fire"
+        }
+      ]
+    },
+    {
+      "source": "sez_gaien_sk3eff_target",
+      "scale": "0.5",
+      "rotate": "310",
+      "delay": "1200",
+      "format": "spine",
+      "actions": [
+        {
+          "action": "Fire"
+        }
+      ]
+    },
+    {
+      "source": "sez_gaien_sk3bustptc",
+      "format": "particle",
+      "timeScale": 10.0
+    },
+    {
+      "source": "sez_gaien_sk3bustptc",
+      "delay": "400",
+      "format": "particle",
+      "timeScale": 10.0
+    },
+    {
+      "source": "sez_gaien_sk3bustptc",
+      "delay": "700",
+      "format": "particle",
+      "timeScale": 10.0
+    },
+    {
+      "source": "sez_gaien_sk3bustptc",
+      "delay": "1000",
+      "format": "particle",
+      "timeScale": 10.0
+    },
+    {
+      "source": "sez_gaien_sk3bustptc",
+      "delay": "1200",
+      "format": "particle",
+      "timeScale": 10.0
+    }
+  ]
+}

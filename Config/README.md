@@ -29,7 +29,7 @@ Battle 的七张表由 `Schema/battle.xml` 定义。英雄通过 `battle_heroes.
 
 ## 战斗官方简中文案
 
-当前原文取自本地官方 PC 客户端的 `pack-15-r4262`，版本清单与只读解包记录一致。来源是 `text/zhs/text.db`，觉醒与燃魂关系来自 `db/skill_player.db`，被动数值引用来自 `db/cs_player.db`。`Config/BattleText/original-zhs.json` 只保留项目实际使用的原文字段、来源 ID、数值引用和校验值。当前覆盖 30 名角色的 90 个技能、33 种状态及相关觉醒、燃魂和其他显示变体，共 310 条文本记录。
+当前原文取自本地官方 PC 客户端的 `pack-15-r4262`，版本清单与只读解包记录一致。来源是 `text/zhs/text.db`，觉醒与燃魂关系来自 `db/skill_player.db`，被动数值引用来自 `db/cs_player.db`。`Config/BattleText/original-zhs.json` 只保留项目实际使用的原文字段、来源 ID、数值引用和校验值。当前覆盖 40 名角色的 120 个技能、37 种状态及相关觉醒、燃魂和其他显示变体，共 398 条文本记录。
 
 同一原文键有多种形态时，用已验证的 `base_skill` 和 `parent_skill` 关系定位觉醒记录，默认详情取六觉对应文本。原作百分比占位符取该觉醒形态的原始技能等级数值，技能强化继续单列。转换仅应用 TMP 颜色标签、换行和原作占位符的显示格式。追加项目说明时用独立的 `battle.skill.<id>.note`、`battle.skill.<id>.burn.note` 或 `battle.status.<kind>.note`，保持原文条目可校验。
 
@@ -69,3 +69,5 @@ Luban 严格校验范围、引用和主键；脚本继续检查文案 key、非�
 `Config/HotUpdate/assemblies.json` 与 `Config/HotUpdate/characterlab-assemblies.json` 是两套构建配置的代码清单，不参与 Luban 生成。前者用于 Foundation 签名更新，后者用于独立 CharacterLab 离线 Windows 测试包；不能互换入口、包名或母包归档。登记和发布边界见[热更与强更构建](../docs/development/hot-update.md)。
 
 主动技能可用 `burnPresentationId` 引用独立的原始演出图。共享效果行可指定满专注分支、额外技能、复活目标、持续伤害与恢复、生命保护和冷却免疫。角色实验室的音频 ID 与界面文案 key 独立校验。 [角色批次](../docs/delivery/2026-11-14-roster21-30.md)
+
+法济斯的反击动作使用 battle_skills.csv 的可选字段 `counterPresentationId`。留空时沿用原有反击演出选择。修改技能行为后同步生成战斗目录，并用两端共用的权威配表执行实际技能命令。[第 31–40 名角色与实测记录](../docs/delivery/2026-11-20-roster31-40.md)

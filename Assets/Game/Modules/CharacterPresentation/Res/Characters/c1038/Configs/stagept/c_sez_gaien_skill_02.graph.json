@@ -1,0 +1,842 @@
+{
+  "id": "c_sez_gaien_skill_02",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [
+      23
+    ],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "scale": "1.3",
+        "curve": "0.4904214,0.9270833,1,1",
+        "time": 200,
+        "guid": 2,
+        "etty": "ZOOM"
+      },
+      {
+        "ani": "skill2",
+        "guid": 3,
+        "etty": "ANI"
+      },
+      {
+        "location": 1,
+        "x": 50.0,
+        "curve": "0.4099617,0.9236111,0.8467433,0.9652778",
+        "time": 200,
+        "guid": 4,
+        "etty": "CAM"
+      },
+      {
+        "guid": 5,
+        "etty": "IDLE"
+      },
+      {
+        "time": 200,
+        "guid": 6,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.0",
+        "time": 200,
+        "guid": 7,
+        "etty": "ZOOM"
+      },
+      {
+        "source": "sez_gaien_skill_02_target.cfx",
+        "x": -200.0,
+        "scale": 1.0,
+        "location": 41,
+        "guid": 8,
+        "etty": "EFFECT"
+      },
+      {
+        "time": 200,
+        "guid": 9,
+        "etty": "LAYOUT"
+      },
+      {
+        "time": 200,
+        "x": 0.0,
+        "y": 0.0,
+        "localZ": 0.0,
+        "fadeIn": 50.0,
+        "fadeOut": 100.0,
+        "speed0": -2.0,
+        "speed1": -9.8,
+        "speed2": -1.3,
+        "color0": "157,92,255,255",
+        "color1": "107,31,255,255",
+        "color2": "87,34,185,127",
+        "guid": 10,
+        "etty": "BGHATCH"
+      },
+      {
+        "mode": 1,
+        "time": 200,
+        "guid": 11,
+        "etty": "LAYOUT"
+      },
+      {
+        "time": 200,
+        "guid": 12,
+        "etty": "BGSHOW"
+      },
+      {
+        "time": 100,
+        "x": 0.0,
+        "y": 0.0,
+        "localZ": 0.0,
+        "scale": 2.1,
+        "rotate": 90.0,
+        "fadeIn": 5.0,
+        "fadeOut": 50.0,
+        "speed0": -2.0,
+        "speed1": -9.8,
+        "speed2": -1.3,
+        "color0": "157,92,255,255",
+        "color1": "107,79,255,255",
+        "color2": "87,34,185,127",
+        "guid": 13,
+        "etty": "BGHATCH"
+      },
+      {
+        "time": 600,
+        "x": 0.0,
+        "y": 0.0,
+        "localZ": 0.0,
+        "scale": 2.1,
+        "rotate": 270.0,
+        "fadeIn": 50.0,
+        "fadeOut": 300.0,
+        "speed0": -2.0,
+        "speed1": -9.8,
+        "speed2": -1.3,
+        "color0": "92,154,255,255",
+        "color1": "102,75,255,255",
+        "color2": "104,34,201,221",
+        "guid": 14,
+        "etty": "BGHATCH"
+      },
+      {
+        "location": 1,
+        "x": -20.0,
+        "curve": "0,0.3298611,0.8467433,0.9652778",
+        "time": 100,
+        "guid": 15,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.4",
+        "curve": "0,0.40625,1,1",
+        "time": 200,
+        "guid": 16,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.3",
+        "curve": "0,0.8993055,1,1",
+        "time": 200,
+        "guid": 17,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 41,
+        "x": 50.0,
+        "curve": "0,0.8437499,0.8467433,0.9652778",
+        "time": 200,
+        "guid": 18,
+        "etty": "CAM"
+      },
+      {
+        "location": 41,
+        "x": 50.0,
+        "curve": "0,0.8437499,0.8467433,0.9652778",
+        "time": 500,
+        "guid": 19,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1",
+        "curve": "0,0.8993055,1,1",
+        "time": 500,
+        "guid": 20,
+        "etty": "ZOOM"
+      },
+      {
+        "source": "sez_gaien_skill_02_dust.cfx",
+        "x": 160.0,
+        "scale": 0.7,
+        "location": 41,
+        "guid": 21,
+        "etty": "EFFECT"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "Sez_Gaien_sk2eff_cm",
+        "guid": 22,
+        "etty": "SHAKE"
+      },
+      {
+        "ani": "skill2",
+        "name": "hit",
+        "handled": true,
+        "guid": 23,
+        "etty": "ONEVENT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 70,
+        "rand_y": 70,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 24,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 70,
+        "rand_y": 70,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 25,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 70,
+        "rand_y": 70,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 26,
+        "etty": "HIT"
+      },
+      {
+        "duration": 200,
+        "program": "sprite_blur",
+        "direction_x": 1.0,
+        "direction_y": 0.3,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 27,
+        "etty": "PPEFFECT"
+      },
+      {
+        "name": "u_range",
+        "duration": 200,
+        "power": 25.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 28,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "duration": 200,
+        "program": "sprite_blur",
+        "direction_x": 1.0,
+        "direction_y": 0.3,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 29,
+        "etty": "PPEFFECT"
+      },
+      {
+        "name": "u_range",
+        "duration": 200,
+        "power": 40.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 30,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 70,
+        "rand_y": 70,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 31,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 70,
+        "rand_y": 70,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 32,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 70,
+        "rand_y": 70,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 33,
+        "etty": "HIT"
+      },
+      {
+        "duration": 400,
+        "program": "sprite_blur",
+        "direction_x": 1.0,
+        "direction_y": 0.3,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 34,
+        "etty": "PPEFFECT"
+      },
+      {
+        "name": "u_range",
+        "duration": 400,
+        "power": 15.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 35,
+        "etty": "SINE_VALUE"
+      }
+    ],
+    "connections": [
+      {
+        "from": 6,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 5,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 3,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 4,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 2,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 8,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 6,
+        "delay": 500,
+        "Desc": "500",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 10,
+        "delay": 1023,
+        "when": 1,
+        "Desc": "1023",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 9,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 11,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 12,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 13,
+        "delay": 1551,
+        "when": 1,
+        "Desc": "1551",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 14,
+        "delay": 2180,
+        "when": 1,
+        "Desc": "2180",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 15,
+        "delay": 600,
+        "Desc": "600",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 15,
+        "to": 16,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 15,
+        "to": 18,
+        "delay": 200,
+        "Desc": "200",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 18,
+        "to": 17,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 18,
+        "to": 19,
+        "delay": 1000,
+        "Desc": "1000",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 20,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 21,
+        "delay": 1056,
+        "when": 1,
+        "Desc": "1056",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 22,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 24,
+        "delay": 1033,
+        "when": 1,
+        "Desc": "1033",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 25,
+        "delay": 1566,
+        "when": 1,
+        "Desc": "1566",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 26,
+        "delay": 2200,
+        "when": 1,
+        "Desc": "2200",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 27,
+        "to": 28,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 24,
+        "to": 27,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 29,
+        "to": 30,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 26,
+        "to": 31,
+        "delay": 150,
+        "Desc": "150",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 31,
+        "to": 32,
+        "delay": 150,
+        "Desc": "150",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 32,
+        "to": 33,
+        "delay": 200,
+        "Desc": "200",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 25,
+        "to": 29,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 34,
+        "to": 35,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 26,
+        "to": 34,
+        "Desc": "",
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/Sez_Gaien_sk2eff_cm.scsp",
+      "address": "characterlab/source/camera/Sez_Gaien_sk2eff_cm.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/chimaera.atlas",
+      "address": "characterlab/source/effect/chimaera.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/chimaera.sct",
+      "address": "characterlab/source/effect/chimaera.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_slash_01.atlas",
+      "address": "characterlab/source/effect/hit_new_slash_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_slash_01.scsp",
+      "address": "characterlab/source/effect/hit_new_slash_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_slash_01.sct",
+      "address": "characterlab/source/effect/hit_new_slash_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_slash_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_slash_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_slash_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_slash_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/sez_gaien_b_idle_ready.cfx",
+      "address": "characterlab/source/effect/sez_gaien_b_idle_ready.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/sez_gaien_b_idle_readyeff_b.atlas",
+      "address": "characterlab/source/effect/sez_gaien_b_idle_readyeff_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/sez_gaien_b_idle_readyeff_b.scsp",
+      "address": "characterlab/source/effect/sez_gaien_b_idle_readyeff_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/sez_gaien_b_idle_readyeff_f.atlas",
+      "address": "characterlab/source/effect/sez_gaien_b_idle_readyeff_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/sez_gaien_b_idle_readyeff_f.scsp",
+      "address": "characterlab/source/effect/sez_gaien_b_idle_readyeff_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/sez_gaien_idle.atlas",
+      "address": "characterlab/source/effect/sez_gaien_idle.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/sez_gaien_idle.cfx",
+      "address": "characterlab/source/effect/sez_gaien_idle.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/sez_gaien_idle.sct",
+      "address": "characterlab/source/effect/sez_gaien_idle.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/sez_gaien_idleeff_b.atlas",
+      "address": "characterlab/source/effect/sez_gaien_idleeff_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/sez_gaien_idleeff_b.scsp",
+      "address": "characterlab/source/effect/sez_gaien_idleeff_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/sez_gaien_idleeff_f.atlas",
+      "address": "characterlab/source/effect/sez_gaien_idleeff_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/sez_gaien_idleeff_f.scsp",
+      "address": "characterlab/source/effect/sez_gaien_idleeff_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/sez_gaien_sk1eff.atlas",
+      "address": "characterlab/source/effect/sez_gaien_sk1eff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/sez_gaien_sk1eff.scsp",
+      "address": "characterlab/source/effect/sez_gaien_sk1eff.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/sez_gaien_sk1eff_b.atlas",
+      "address": "characterlab/source/effect/sez_gaien_sk1eff_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/sez_gaien_sk1eff_b.scsp",
+      "address": "characterlab/source/effect/sez_gaien_sk1eff_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/sez_gaien_sk2eff.atlas",
+      "address": "characterlab/source/effect/sez_gaien_sk2eff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/sez_gaien_sk2eff.scsp",
+      "address": "characterlab/source/effect/sez_gaien_sk2eff.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/sez_gaien_sk2eff_dust_b.atlas",
+      "address": "characterlab/source/effect/sez_gaien_sk2eff_dust_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/sez_gaien_sk2eff_dust_b.scsp",
+      "address": "characterlab/source/effect/sez_gaien_sk2eff_dust_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/sez_gaien_sk2eff_dust_f.atlas",
+      "address": "characterlab/source/effect/sez_gaien_sk2eff_dust_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/sez_gaien_sk2eff_dust_f.scsp",
+      "address": "characterlab/source/effect/sez_gaien_sk2eff_dust_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/sez_gaien_sk2eff_target.atlas",
+      "address": "characterlab/source/effect/sez_gaien_sk2eff_target.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/sez_gaien_sk2eff_target.scsp",
+      "address": "characterlab/source/effect/sez_gaien_sk2eff_target.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/sez_gaien_sk3eff_b.atlas",
+      "address": "characterlab/source/effect/sez_gaien_sk3eff_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/sez_gaien_sk3eff_b.scsp",
+      "address": "characterlab/source/effect/sez_gaien_sk3eff_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/sez_gaien_sk3eff_f.atlas",
+      "address": "characterlab/source/effect/sez_gaien_sk3eff_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/sez_gaien_sk3eff_f.scsp",
+      "address": "characterlab/source/effect/sez_gaien_sk3eff_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/sez_gaien_skill1_bidle_b.cfx",
+      "address": "characterlab/source/effect/sez_gaien_skill1_bidle_b.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/sez_gaien_skill_01.atlas",
+      "address": "characterlab/source/effect/sez_gaien_skill_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/sez_gaien_skill_01.cfx",
+      "address": "characterlab/source/effect/sez_gaien_skill_01.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/sez_gaien_skill_01.sct",
+      "address": "characterlab/source/effect/sez_gaien_skill_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/sez_gaien_skill_01_b.cfx",
+      "address": "characterlab/source/effect/sez_gaien_skill_01_b.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/sez_gaien_skill_02_dust.cfx",
+      "address": "characterlab/source/effect/sez_gaien_skill_02_dust.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/sez_gaien_skill_02_self.atlas",
+      "address": "characterlab/source/effect/sez_gaien_skill_02_self.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/sez_gaien_skill_02_self.cfx",
+      "address": "characterlab/source/effect/sez_gaien_skill_02_self.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/sez_gaien_skill_02_self.sct",
+      "address": "characterlab/source/effect/sez_gaien_skill_02_self.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/sez_gaien_skill_02_target.atlas",
+      "address": "characterlab/source/effect/sez_gaien_skill_02_target.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/sez_gaien_skill_02_target.cfx",
+      "address": "characterlab/source/effect/sez_gaien_skill_02_target.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/sez_gaien_skill_02_target.sct",
+      "address": "characterlab/source/effect/sez_gaien_skill_02_target.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/sez_gaien_skill_03_02_self.cfx",
+      "address": "characterlab/source/effect/sez_gaien_skill_03_02_self.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/sez_gaien_skill_03_self.atlas",
+      "address": "characterlab/source/effect/sez_gaien_skill_03_self.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/sez_gaien_skill_03_self.cfx",
+      "address": "characterlab/source/effect/sez_gaien_skill_03_self.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/sez_gaien_skill_03_self.sct",
+      "address": "characterlab/source/effect/sez_gaien_skill_03_self.sct",
+      "type": "texture"
+    },
+    {
+      "source": "model/sez_gaien.timeline",
+      "address": "characterlab/source/model/sez_gaien.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

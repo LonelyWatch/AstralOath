@@ -25,7 +25,7 @@ namespace AstralOath.Client.CharacterLab
         private readonly Dictionary<string,SkeletonPlayerSource> skeletons=new Dictionary<string,SkeletonPlayerSource>(StringComparer.Ordinal);
         private readonly Dictionary<string,Texture2D> textures=new Dictionary<string,Texture2D>(StringComparer.Ordinal);
         private readonly List<(double at,Action action)> pending=new List<(double,Action)>();
-        private readonly List<ISkeletonPlayer> active=new List<ISkeletonPlayer>();
+        private readonly Dictionary<ISkeletonPlayer,float> active=new Dictionary<ISkeletonPlayer,float>();
         private readonly List<ISkeletonPlayer> allies=new List<ISkeletonPlayer>();
         private readonly List<CharacterParticlePreview> particles=new List<CharacterParticlePreview>();
         private readonly Dictionary<string,List<ISkeletonPlayer>> named=new Dictionary<string,List<ISkeletonPlayer>>(StringComparer.Ordinal);
@@ -85,7 +85,7 @@ namespace AstralOath.Client.CharacterLab
                     ally.Root.transform.localPosition=new Vector3(-.9f+i*1.8f,-2,0);ally.Root.transform.localScale*=.65f;
                     string idle=ally.Animations.FirstOrDefault(a=>a.Name=="b_idle"||a.Name=="idle")?.Name;
                     if(idle!=null)ally.Play(idle,true);
-                    allies.Add(ally);active.Add(ally);
+                    allies.Add(ally);active.Add(ally,1f);
                 }
                 if(skillId=="c_ras_skill_02")report("Ras S2: explicit test partner is Mercedes. Assist is presentation only.");
                 if(skillId=="c_angelica_skill_02")report("Angelica S2: two selected allied test actors.");
@@ -178,6 +178,12 @@ namespace AstralOath.Client.CharacterLab
         }
         public static bool TryValidatePrimitiveScalars(JObject primitive,out string diagnostic)
         {
+            if (primitive["timeScale"] != null &&
+                (!PresentationScalar.TryRead(primitive["timeScale"].ToString(), out float speed) || speed <= 0f))
+            {
+                diagnostic = $"Unsupported CFX timeScale={primitive["timeScale"]} for '{primitive["source"]}'.";
+                return false;
+            }
             foreach(string key in new[]{"x","y","z","globalZ","scale","rotate","delay","lifeTime"})
             {
                 var value=primitive[key];
@@ -211,7 +217,8 @@ namespace AstralOath.Client.CharacterLab
                 effect.Root.transform.position=anchor.position+new Vector3(Number(part["x"],0)*.01f,Number(part["y"],0)*.01f,-Number(part["z"]??part["globalZ"],0)*.001f);
                 effect.Root.transform.localScale=Vector3.one*Number(part["scale"],1)*scale*anchor.localScale.x;
                 effect.Root.transform.localRotation=Quaternion.Euler(0,0,-Number(part["rotate"],0));
-                scope.Add(effect.Dispose);active.Add(effect);
+                float speed=Number(part["timeScale"],1);
+                scope.Add(effect.Dispose);active.Add(effect,speed);
                 if(!string.IsNullOrEmpty(id)){if(!named.TryGetValue(id,out var list))named.Add(id,list=new List<ISkeletonPlayer>());list.Add(effect);}
                 string animation=effect.Animations.FirstOrDefault(a=>a.Name=="animation"||a.Name=="idle")?.Name??effect.Animations.FirstOrDefault()?.Name;
                 if(animation!=null)effect.Play(animation,false);
@@ -222,7 +229,7 @@ namespace AstralOath.Client.CharacterLab
                     else report("Unverified CFX action "+action.ToString(Newtonsoft.Json.Formatting.None));
                 }
                 double lifetime=Number(part["lifeTime"],0)/1000d;
-                if(lifetime<=0)lifetime=effect.Duration;
+                if(lifetime<=0)lifetime=effect.Duration/speed;
                 if(lifetime>0)pending.Add((time+lifetime,()=>{active.Remove(effect);effect.Root.SetActive(false);}));
             }
             else if(format=="particle")
@@ -261,7 +268,7 @@ namespace AstralOath.Client.CharacterLab
             if(disposed)return;time+=delta;
             foreach(var item in pending.Where(p=>p.at<=time).ToArray()){pending.Remove(item);item.action();}
             if(delta>0) {
-                foreach(var item in active.ToArray())if(item.Root.activeSelf)item.Tick(delta);
+                foreach(var item in active.ToArray())if(item.Key.Root.activeSelf)item.Key.Tick(delta*item.Value);
                 foreach(var item in particles)item.Tick(delta);
             }
             UpdateCutins();screen.Tick(delta);

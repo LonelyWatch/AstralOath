@@ -1,0 +1,228 @@
+{
+  "timeline": {
+    "default": {
+      "idle": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "id": "idle",
+              "source": "sez_gaien_idle",
+              "location": 1,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "ready"
+            }
+          }
+        ]
+      },
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "idle"
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "id": "ready",
+              "source": "sez_gaien_b_idle_ready",
+              "location": 1,
+              "locationBone": "",
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "b_idle": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "ready"
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "sez_gaien_skill_01",
+              "location": 1,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "sez_gaien_skill1_bidle_b",
+              "location": 1,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "sez_gaien_skill_01_b",
+              "location": 1,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "ready"
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "sez_gaien_skill_02_self",
+              "location": 1,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill3_1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "ready"
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "sez_gaien_skill_03_self",
+              "location": 1,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill3_2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "sez_gaien_skill_03_02_self",
+              "location": 1,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "down": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "idle"
+            }
+          }
+        ]
+      },
+      "camping": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "idle"
+            }
+          }
+        ]
+      },
+      "attacked": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "idle"
+            }
+          }
+        ]
+      },
+      "groggy": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "idle"
+            }
+          }
+        ]
+      },
+      "flying": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "idle"
+            }
+          }
+        ]
+      },
+      "rise": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "idle"
+            }
+          }
+        ]
+      },
+      "run": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "idle"
+            }
+          }
+        ]
+      },
+      "run_start": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "idle"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

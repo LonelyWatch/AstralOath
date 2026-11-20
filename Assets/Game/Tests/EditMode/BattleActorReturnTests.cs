@@ -365,6 +365,138 @@ namespace AstralOath.Client.Tests
             }
         }
 
+        [TestCase(false)]
+        [TestCase(true)]
+        public void SezS3MovesTheTargetThroughItsFourReactionTracksAndRestoresTheBody(bool interrupt)
+        {
+            const string directory = "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1038/";
+            var graph = JObject.Parse(File.ReadAllText(directory + "Configs/stagept/c_sez_gaien_skill_03.graph.json"));
+            var node = graph["source"]["entities"].OfType<JObject>().Single(row => (int)row["guid"] == 48);
+            Assert.That(node["bone"], Is.Null);
+            var targetSource = ReadModel("ras");
+            var actor = Create(targetSource.json, targetSource.atlas, targetSource.page);
+            var player = Player(actor);
+            EnterBattleIdle(actor, player);
+            player.Play("attacked", false);
+            actor.transform.position = new Vector3(3f, -2f, 0f);
+            var slot = actor.transform.position;
+            var body = player.Root.transform;
+            var start = body.position;
+            var rotation = body.localRotation;
+            var scale = body.localScale;
+
+            var assetType = ActorType.Assembly.GetType("AstralOath.Client.BattleScene.BattleSkillPresentationAsset", true);
+            var asset = Activator.CreateInstance(assetType);
+            var rig = new TextAsset(File.ReadAllText(directory + "Animations/spani/sez_gaien_sk3eff_node.spine.json"));
+            assets.Add(rig);
+            assetType.GetField("document").SetValue(asset, rig);
+            assetType.GetField("source").SetValue(asset, "spani/" + (string)node["source"]);
+            assetType.GetField("scale").SetValue(asset, .01f);
+            var sources = Array.CreateInstance(assetType, 1);
+            sources.SetValue(asset, 0);
+            var type = ActorType.Assembly.GetType("AstralOath.Client.BattleScene.BattleSkillPresentation", true);
+            using var playback = (IDisposable)Activator.CreateInstance(type, root.transform,
+                Array.Empty<TextAsset>(), sources, null, null, null);
+            var targets = Array.CreateInstance(ActorType, 1);
+            targets.SetValue(actor, 0);
+            type.GetMethod("PlayNodeAnimation", Private).Invoke(playback, new object[] { node, 0f, targets });
+
+            float previous = 0f;
+            void At(float seconds, string reaction)
+            {
+                type.GetMethod("Tick").Invoke(playback, new object[] { seconds - previous });
+                previous = seconds;
+                Assert.That(player.CurrentAnimation, Is.EqualTo(reaction), "Source target reaction at " + seconds);
+                Assert.That(actor.transform.position, Is.EqualTo(slot), "Target displacement belongs to its visible body.");
+            }
+            At(0f, "b_idle");
+            At(.428f, "b_idle");
+            At(.430f, "attacked_damage");
+            At(1.187f, "attacked_damage");
+            At(1.189f, "flying");
+            At(1.4f, "flying");
+            var displacement = body.position - start;
+            Assert.That(displacement.x, Is.EqualTo(-8.386f).Within(.001f));
+            Assert.That(displacement.y, Is.EqualTo(12.0597f).Within(.001f));
+            At(2.099f, "flying");
+            At(2.101f, "attacked_damage");
+            if (interrupt) playback.Dispose();
+            else At(8.14f, "b_idle");
+            Assert.That(type.GetMethod("OwnsNodeAnimationPose", Private).Invoke(playback, new object[] { actor }), Is.False);
+            Assert.That(player.CurrentAnimation, Is.EqualTo("b_idle"));
+            Assert.That(body.position, Is.EqualTo(start));
+            Assert.That(body.localRotation, Is.EqualTo(rotation));
+            Assert.That(body.localScale, Is.EqualTo(scale));
+        }
+
+        [TestCase("stop", true)]
+        [TestCase("interrupt", true)]
+        [TestCase("end", true)]
+        [TestCase("handoff", true)]
+        [TestCase("nonzero", false)]
+        [TestCase("unspecified", false)]
+        [TestCase("timed-stop", false)]
+        public void StrazeTransparentTargetLayerOwnsOnlyItsRecipientsUntilRelease(string variant, bool hides)
+        {
+            const string directory = "Assets/Game/Modules/CharacterPresentation/Res/Characters/";
+            var graph = JObject.Parse(File.ReadAllText(directory + "c1034/Configs/stagept/c_strage_skill_03.graph.json"));
+            var original = graph["source"]["entities"].OfType<JObject>().ToDictionary(row => (int)row["guid"]);
+            var blend = (JObject)original[10].DeepClone();
+            if (variant == "nonzero") blend["alpha_channel"] = .5f;
+            if (variant == "unspecified") blend.Remove("alpha_channel");
+            // Isolate the actual #10, the same-ID finite tint #20, and STOP #26.
+            // The six Spine layers in the first CFX all end at 2.9333 s before the cut-in.
+            var stop = (JObject)original[26].DeepClone();
+            if (variant == "end") stop["targetId"] = "other-layer";
+            if (variant == "timed-stop") stop["time"] = 200;
+            JObject Edge(int to, float delay) => new JObject { ["from"] = 2, ["to"] = to, ["when"] = 1, ["delay"] = delay };
+            graph["assets"] = new JArray();
+            graph["source"]["entrypoint"]["start"] = 2;
+            graph["source"]["entities"] = new JArray(original[2], blend, original[20], stop, original[9]);
+            graph["source"]["connections"] = new JArray(Edge(10, 0), Edge(20, 233), Edge(26, 2933.3f), Edge(9, 3400));
+            var text = new TextAsset(graph.ToString());
+            assets.Add(text);
+            var model = ReadModel("ras");
+            Component Unit() => Create(model.json, model.atlas, model.page);
+            var caster = Unit(); var target = Unit(); var alreadyHidden = Unit(); var spectator = Unit();
+            Renderer Body(Component actor) => Player(actor).Root.GetComponent<Renderer>();
+            Body(alreadyHidden).forceRenderingOff = true;
+            target.transform.localPosition = new Vector3(4f, -2f, 0f);
+            var slot = target.transform.localPosition;
+            var roster = Array.CreateInstance(ActorType, 2);
+            roster.SetValue(target, 0); roster.SetValue(alreadyHidden, 1);
+            var type = ActorType.Assembly.GetType("AstralOath.Client.BattleScene.BattleSkillPresentation", true);
+            var assetType = ActorType.Assembly.GetType("AstralOath.Client.BattleScene.BattleSkillPresentationAsset", true);
+            using var playback = (IDisposable)Activator.CreateInstance(type, root.transform, new[] { text },
+                Array.CreateInstance(assetType, 0), null, null, null);
+            Assert.That(Body(target).forceRenderingOff, Is.False);
+            type.GetMethod("Begin").Invoke(playback, new object[] { (string)graph["id"], caster, target, roster });
+            void Tick(float delta) => type.GetMethod("Tick").Invoke(playback, new object[] { delta });
+            Tick(.8f);
+            Assert.That(Body(target).forceRenderingOff, Is.EqualTo(hides), "Target draw at 0.8 stage seconds");
+            Tick(1f);
+            Assert.That(Body(target).forceRenderingOff, Is.EqualTo(hides), "Target draw at 1.8 stage seconds");
+            Assert.That(Body(caster).forceRenderingOff || Body(spectator).forceRenderingOff, Is.False);
+            Assert.That(target.transform.localPosition, Is.EqualTo(slot));
+            if (variant == "interrupt") playback.Dispose();
+            else if (variant == "handoff")
+            {
+                using var successor = (IDisposable)type.GetMethod("CreateSuccessor").Invoke(playback, null);
+                type.GetMethod("Begin").Invoke(successor, new object[] { (string)graph["id"], caster, target, roster });
+                playback.Dispose();
+                Assert.That(Body(target).forceRenderingOff, Is.True, "The previous action cannot release the successor's hold.");
+            }
+            else
+            {
+                Tick(1.14f);
+                Assert.That(Body(target).forceRenderingOff, Is.EqualTo(variant == "end"), "Only the matching STOP releases the hold.");
+                Tick(10f);
+            }
+            Assert.That(Body(target).forceRenderingOff, Is.False);
+            Assert.That(Body(alreadyHidden).forceRenderingOff, Is.True);
+            Assert.That(target.transform.localPosition, Is.EqualTo(slot));
+        }
+
         private Component Create(string json, string atlasText, string pageName)
         {
             var go = new GameObject("Actor"); go.transform.SetParent(root.transform, false);

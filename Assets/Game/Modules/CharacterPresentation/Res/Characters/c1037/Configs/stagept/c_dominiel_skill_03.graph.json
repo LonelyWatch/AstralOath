@@ -1,0 +1,602 @@
+{
+  "id": "c_dominiel_skill_03",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [
+      21
+    ],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "ani": "skill3",
+        "guid": 2,
+        "etty": "ANI"
+      },
+      {
+        "source": "nixid_eff_sk3_self.cfx",
+        "scale": 1.0,
+        "location": 1,
+        "guid": 3,
+        "etty": "EFFECT"
+      },
+      {
+        "location": 1,
+        "x": 50.0,
+        "y": -50.0,
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 4,
+        "etty": "CAM"
+      },
+      {
+        "guid": 5,
+        "etty": "IDLE"
+      },
+      {
+        "scale": "1.4",
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 6,
+        "etty": "ZOOM"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "nixid_cm_sk3",
+        "guid": 7,
+        "etty": "SHAKE"
+      },
+      {
+        "source": "nixid_eff_sk3.cfx",
+        "scale": 1.0,
+        "location": 42,
+        "guid": 8,
+        "etty": "EFFECT"
+      },
+      {
+        "scale": "0.7",
+        "curve": "0.210728,-2.980232E-08,0.137931,0.9965278",
+        "time": 800,
+        "guid": 9,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 42,
+        "x": -250.0,
+        "y": 150.0,
+        "curve": "0.2643678,0.01388886,0.08045977,1",
+        "time": 800,
+        "guid": 10,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.6",
+        "curve": "0.3103448,0.003472192,0.5517241,0.9791666",
+        "time": 600,
+        "guid": 11,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "x": 150.0,
+        "y": 50.0,
+        "curve": "0.3563218,-0.003472252,0.6283525,0.9965278",
+        "time": 600,
+        "guid": 12,
+        "etty": "CAM"
+      },
+      {
+        "time": 200,
+        "guid": 13,
+        "etty": "BGSHOW"
+      },
+      {
+        "fade": 100,
+        "time": 100,
+        "log": 15.0,
+        "away_x": 150.0,
+        "guid": 14,
+        "etty": "LAYOUT"
+      },
+      {
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 15,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.3",
+        "curve": "0.210728,-2.980232E-08,0.137931,0.9965278",
+        "time": 800,
+        "guid": 16,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 42,
+        "x": -50.0,
+        "curve": "0.2643678,0.01388886,0.08045977,1",
+        "time": 800,
+        "guid": 17,
+        "etty": "CAM"
+      },
+      {
+        "mode": 1,
+        "fade": 100,
+        "time": 100,
+        "log": 15.0,
+        "guid": 18,
+        "etty": "LAYOUT"
+      },
+      {
+        "show": true,
+        "time": 200,
+        "guid": 19,
+        "etty": "BGSHOW"
+      },
+      {
+        "scale": "1",
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 20,
+        "etty": "ZOOM"
+      },
+      {
+        "ani": "skill3",
+        "name": "c_fgt_utin",
+        "handled": true,
+        "guid": 21,
+        "etty": "ONEVENT"
+      },
+      {
+        "args": "sk_c1037_3",
+        "guid": 22,
+        "etty": "CUTIN"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 23,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 24,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 25,
+        "etty": "HIT"
+      },
+      {
+        "name": "u_range",
+        "duration": 350,
+        "power": 25.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 26,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "duration": 350,
+        "program": "sprite_blur",
+        "direction_x": 1.0,
+        "direction_y": -1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 27,
+        "etty": "PPEFFECT"
+      }
+    ],
+    "connections": [
+      {
+        "from": 1,
+        "to": 4,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 3,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 5,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 6,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 8,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 9,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 10,
+        "delay": 1100,
+        "when": 1,
+        "Desc": "1100",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 12,
+        "to": 11,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 12,
+        "delay": 200,
+        "when": 1,
+        "Desc": "200",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 14,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 13,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 14,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 17,
+        "to": 16,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 17,
+        "delay": 2200,
+        "when": 1,
+        "Desc": "2200",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 18,
+        "to": 19,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 18,
+        "delay": 3800,
+        "when": 1,
+        "Desc": "3800",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 17,
+        "to": 15,
+        "delay": 800,
+        "Desc": "800",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 15,
+        "to": 20,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 22,
+        "delay": 1966,
+        "when": 1,
+        "Desc": "1966",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 23,
+        "delay": 2541,
+        "when": 1,
+        "Desc": "2541",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 25,
+        "delay": 2641,
+        "when": 1,
+        "Desc": "2641",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 24,
+        "delay": 2741,
+        "when": 1,
+        "Desc": "2741",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 27,
+        "to": 26,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 23,
+        "to": 27,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/nixid_cm_sk3.scsp",
+      "address": "characterlab/source/camera/nixid_cm_sk3.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "cut/fhd/sk_c1037_3.webp",
+      "address": "characterlab/source/cut/fhd/sk_c1037_3.webp",
+      "type": "cutin"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.atlas",
+      "address": "characterlab/source/effect/hit_new_blunt_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.scsp",
+      "address": "characterlab/source/effect/hit_new_blunt_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.sct",
+      "address": "characterlab/source/effect/hit_new_blunt_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_blunt_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_blunt_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_blunt_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/nixid_eff_br.atlas",
+      "address": "characterlab/source/effect/nixid_eff_br.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/nixid_eff_br.cfx",
+      "address": "characterlab/source/effect/nixid_eff_br.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/nixid_eff_br.scsp",
+      "address": "characterlab/source/effect/nixid_eff_br.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/nixid_eff_br.sct",
+      "address": "characterlab/source/effect/nixid_eff_br.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/nixid_eff_br_roop.atlas",
+      "address": "characterlab/source/effect/nixid_eff_br_roop.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/nixid_eff_br_roop.scsp",
+      "address": "characterlab/source/effect/nixid_eff_br_roop.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/nixid_eff_br_roop.sct",
+      "address": "characterlab/source/effect/nixid_eff_br_roop.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/nixid_eff_br_star.atlas",
+      "address": "characterlab/source/effect/nixid_eff_br_star.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/nixid_eff_br_star.cfx",
+      "address": "characterlab/source/effect/nixid_eff_br_star.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/nixid_eff_br_star.scsp",
+      "address": "characterlab/source/effect/nixid_eff_br_star.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/nixid_eff_br_star.sct",
+      "address": "characterlab/source/effect/nixid_eff_br_star.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/nixid_eff_sk3.atlas",
+      "address": "characterlab/source/effect/nixid_eff_sk3.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/nixid_eff_sk3.cfx",
+      "address": "characterlab/source/effect/nixid_eff_sk3.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/nixid_eff_sk3.scsp",
+      "address": "characterlab/source/effect/nixid_eff_sk3.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/nixid_eff_sk3.sct",
+      "address": "characterlab/source/effect/nixid_eff_sk3.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/nixid_eff_sk3_ground.atlas",
+      "address": "characterlab/source/effect/nixid_eff_sk3_ground.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/nixid_eff_sk3_ground.scsp",
+      "address": "characterlab/source/effect/nixid_eff_sk3_ground.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/nixid_eff_sk3_ground.sct",
+      "address": "characterlab/source/effect/nixid_eff_sk3_ground.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/nixid_eff_sk3_self.atlas",
+      "address": "characterlab/source/effect/nixid_eff_sk3_self.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/nixid_eff_sk3_self.cfx",
+      "address": "characterlab/source/effect/nixid_eff_sk3_self.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/nixid_eff_sk3_self.scsp",
+      "address": "characterlab/source/effect/nixid_eff_sk3_self.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/nixid_eff_sk3_self.sct",
+      "address": "characterlab/source/effect/nixid_eff_sk3_self.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/nixid_skill_03_pati1.particle",
+      "address": "characterlab/source/effect/nixid_skill_03_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/nixid_skill_03_pati2.particle",
+      "address": "characterlab/source/effect/nixid_skill_03_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/nixid_skill_03_pati3.particle",
+      "address": "characterlab/source/effect/nixid_skill_03_pati3.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/nixid_skill_03_pati4.particle",
+      "address": "characterlab/source/effect/nixid_skill_03_pati4.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/nixid_skill_03_pati5.particle",
+      "address": "characterlab/source/effect/nixid_skill_03_pati5.particle",
+      "type": "particle"
+    },
+    {
+      "source": "model/dominiel.timeline",
+      "address": "characterlab/source/model/dominiel.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/cross_02.sct",
+      "address": "characterlab/source/particle/cross_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/dust_02.sct",
+      "address": "characterlab/source/particle/dust_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ice_pati_01.sct",
+      "address": "characterlab/source/particle/ice_pati_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

@@ -143,9 +143,11 @@ namespace AstralOath.Client.BattleScene
 
         private BattleSkillPresentation(Transform worldRoot, Dictionary<string, JObject> graphs,
             Dictionary<string, BattleSkillPresentationAsset> assets, SessionCache cache,
-            Camera camera, Action<bool> cinematicChanged, GameObject background)
+            Camera camera, Action<bool> cinematicChanged, GameObject background,
+            Dictionary<Renderer, (int Count, bool WasHidden)> targetBodyHolds = null)
         {
             this.worldRoot = worldRoot; this.graphs = graphs; this.assets = assets; this.cache = cache;
+            this.targetBodyHolds = targetBodyHolds ?? new Dictionary<Renderer, (int, bool)>();
             this.camera = camera; this.cinematicChanged = cinematicChanged; this.background = background;
             root = new GameObject("Battle Skill Effects").transform;
             root.SetParent(worldRoot, false);
@@ -159,7 +161,8 @@ namespace AstralOath.Client.BattleScene
 
         public BattleSkillPresentation CreateSuccessor()
         {
-            var next = new BattleSkillPresentation(worldRoot, graphs, assets, cache, camera, cinematicChanged, background);
+            var next = new BattleSkillPresentation(worldRoot, graphs, assets, cache, camera, cinematicChanged, background,
+                targetBodyHolds);
             cinematic.HandoffTo(next.cinematic);
             next.incomingHandoff = true;
             return next;
@@ -297,8 +300,11 @@ namespace AstralOath.Client.BattleScene
                         if (assets.TryGetValue(key, out var cutin)) Schedule(at, () => cinematic.PlayCutinWithNode(cutin, node));
                         else Warn("Missing original CUTIN " + key);
                         break;
-                    case "CAM": case "ZOOM": case "DARK": case "STOP": case "BGSHOW": case "BGHATCH": case "LAYOUT":
+                    case "CAM": case "ZOOM": case "DARK": case "BGSHOW": case "BGHATCH": case "LAYOUT":
                         Schedule(at, () => cinematic.Play(node));
+                        break;
+                    case "STOP":
+                        Schedule(at, () => { ReleaseTargetLayer((string)node["targetId"]); cinematic.Play(node); });
                         break;
                     case "MOVE":
                         Schedule(at, () => PlayMove(node, primary, recipients, cue.Duration));
@@ -307,7 +313,10 @@ namespace AstralOath.Client.BattleScene
                         Schedule(at, () => PlayNodeAnimation(node, at, recipients));
                         break;
                     case "COLOR_BLEND":
-                        WarnSource($"COLOR_BLEND {node["guid"]} tint layering is pending source verification.");
+                        if (IsImmediateTargetHide(node) && !nodes.Any(other => Kind(other) == "STOP" &&
+                            (string)other["targetId"] == (string)node["id"] && Number(other, "time") != 0f))
+                            Schedule(at, () => HoldTargetLayer((string)node["id"], recipients));
+                        else WarnSource($"COLOR_BLEND {node["guid"]} tint layering is pending source verification.");
                         break;
                     case "SHAKE":
                         Schedule(at, () => PlayShake(node));
@@ -518,6 +527,8 @@ namespace AstralOath.Client.BattleScene
         {
             if ((string)part["format"] != "particle" || UpperNumber(part, "lifeTime", -1f) >= 0f)
                 return PrimitiveDuration(part);
+            float speed = PrimitiveSpeed(part);
+            if (speed <= 0f) return 0f;
             var emitters = Document(EffectPath + (string)part["source"] + ".particle")?["emitters"] as JArray;
             if (emitters == null) return PrimitiveDuration(part);
             float end = 0f;
@@ -531,13 +542,15 @@ namespace AstralOath.Client.BattleScene
                 float repetitions = Mathf.Max(0f, Number(emitter, "repeat") - 1f) * Number(emitter, "interval");
                 end = Mathf.Max(end, start + repetitions + (burst ? 0f : duration));
             }
-            return end;
+            return end / speed;
         }
 
         private float PrimitiveDuration(JObject part)
         {
             float lifetime = UpperNumber(part, "lifeTime", -1f);
             string source = EffectPath + (string)part["source"];
+            float speed = PrimitiveSpeed(part);
+            if (speed <= 0f) return 0f;
             if ((string)part["format"] == "spine")
             {
                 string key = source + ".scsp";
@@ -545,11 +558,11 @@ namespace AstralOath.Client.BattleScene
                 string animation = InitialSpineAnimation(part, key, skeleton);
                 if (animation == null) return 0f;
                 if (lifetime >= 0f) return lifetime / 1000f;
-                float duration = skeleton.Duration(animation);
-                if (UsesIntroLoop(part, skeleton)) duration += skeleton.Duration("loop");
+                float duration = skeleton.Duration(animation) / speed;
+                if (UsesIntroLoop(part, skeleton)) duration += skeleton.Duration("loop") / speed;
                 foreach (var action in (part["actions"] as JArray ?? new JArray()).OfType<JObject>())
                     if (HasSpineAction(key, skeleton, (string)action["action"]))
-                        duration = Mathf.Max(duration, Seconds(action, "delay") + skeleton.Duration((string)action["action"]));
+                        duration = Mathf.Max(duration, Seconds(action, "delay") + skeleton.Duration((string)action["action"]) / speed);
                 return duration;
             }
             if (lifetime >= 0f) return lifetime / 1000f;
@@ -570,7 +583,7 @@ namespace AstralOath.Client.BattleScene
                 float start = Mathf.Max(0f, Number(emitter, "startDelay") + Mathf.Abs(Number(emitter, "startDelayVar")));
                 float repetitions = Mathf.Max(0f, Number(emitter, "repeat") - 1f) * Number(emitter, "interval");
                 float life = Mathf.Max(.01f, Number(emitter, "particleLifespan") + Mathf.Abs(Number(emitter, "particleLifespanVariance")));
-                end = Mathf.Max(end, start + repetitions + (burst ? 0f : duration) + life);
+                end = Mathf.Max(end, (start + repetitions + (burst ? 0f : duration) + life) / speed);
             }
             return end;
         }
@@ -1095,9 +1108,19 @@ namespace AstralOath.Client.BattleScene
             }
         }
 
+        private float PrimitiveSpeed(JObject part)
+        {
+            if (part["timeScale"] == null) return 1f;
+            if (TryScalar(part["timeScale"].ToString(), out float speed) && speed > 0f) return speed;
+            WarnSource($"Unsupported CFX timeScale={part["timeScale"]} for '{part["source"]}'.");
+            return 0f;
+        }
+
         private void SpawnSpine(string source, JObject part, Transform group, float size, int order, float side, Action follow)
         {
             string key = EffectPath + source + ".scsp";
+            float speed = PrimitiveSpeed(part);
+            if (speed <= 0f) throw new FormatException("Unplayable CFX speed in " + key);
             var metadata = Metadata(key);
             string animation = InitialSpineAnimation(part, key, metadata);
             if (animation == null) throw new FormatException($"Unplayable CFX animation '{(string)part["ani"] ?? "(default)"}' in '{key}'.");
@@ -1109,8 +1132,8 @@ namespace AstralOath.Client.BattleScene
                 player.Root.GetComponent<MeshRenderer>().sortingOrder = order;
                 player.Play(animation, false);
                 float lifetime = PrimitiveDuration(part);
-                if (UsesIntroLoop(part, metadata) && metadata.Duration("intro") < lifetime)
-                    Schedule(time + metadata.Duration("intro"), () =>
+                if (UsesIntroLoop(part, metadata) && metadata.Duration("intro") / speed < lifetime)
+                    Schedule(time + metadata.Duration("intro") / speed, () =>
                     {
                         if (player.Root) player.Play("loop", true);
                     });
@@ -1126,7 +1149,7 @@ namespace AstralOath.Client.BattleScene
                 active.Add((time + lifetime, delta =>
                 {
                     follow();
-                    player.Tick(delta);
+                    player.Tick(delta * speed);
                 }, () =>
                 {
                     player.Dispose();
@@ -1144,12 +1167,14 @@ namespace AstralOath.Client.BattleScene
             bool allowAfterglow)
         {
             string key = EffectPath + source + ".particle";
+            float speed = PrimitiveSpeed(part);
+            if (speed <= 0f) throw new FormatException("Unplayable CFX speed in " + key);
             var particles = new BattleHudParticles(assets[key].document, textures, group, Vector2.zero, size * SourcePixel, order);
             particles.Play();
             active.Add((time + PrimitiveDuration(part), delta =>
             {
                 follow();
-                particles.Tick(delta);
+                particles.Tick(delta * speed);
             }, () =>
             {
                 particles.Dispose();
@@ -1194,6 +1219,8 @@ namespace AstralOath.Client.BattleScene
 
         private void EndAction(bool preserveHandoff, bool preserveAfterglow = false)
         {
+            if (targetLayers.Count > 0)
+                foreach (string id in targetLayers.Keys.ToArray()) ReleaseTargetLayer(id);
             SetCutinPaused(false);
             if (!preserveHandoff) cinematic.Reset();
             if (caster)

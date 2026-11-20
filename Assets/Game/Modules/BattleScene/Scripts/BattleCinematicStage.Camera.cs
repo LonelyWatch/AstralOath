@@ -217,7 +217,7 @@ namespace AstralOath.Client.BattleScene
                 string animation = player.Animations.FirstOrDefault(item => item.Name == "animation")?.Name ?? player.Animations.FirstOrDefault()?.Name;
                 if (animation == null) throw new InvalidOperationException("Camera skeleton has no animation.");
                 player.Play(animation, false);
-                if (!player.TryGetBonePose("camera", out _)) throw new InvalidOperationException("Camera skeleton has no camera bone.");
+                if (!player.TryGetBoneSkeletonPosition("camera", out _)) throw new InvalidOperationException("Camera skeleton has no camera bone.");
                 float duration = Number(node, "duration", -1f);
                 float facing = caster && caster.TryGetComponent<BattlePreviewActor>(out var actor) ? actor.FacingDirection : 1f;
                 cameraShakes.Add(new CameraShake { Player = player, Speed = speed, Facing = facing,
@@ -233,8 +233,8 @@ namespace AstralOath.Client.BattleScene
             {
                 if (time >= shake.Until) { shake.Player.Dispose(); cameraShakes.Remove(shake); continue; }
                 shake.Player.Tick(Mathf.Max(0f, delta) * shake.Speed);
-                if (shake.Player.TryGetBonePose("camera", out var pose))
-                    shakeOffset += new Vector3(pose.LocalPosition.x * shake.Facing, pose.LocalPosition.y, 0f);
+                if (shake.Player.TryGetBoneSkeletonPosition("camera", out var position))
+                    shakeOffset += new Vector3(position.x * shake.Facing, position.y, 0f);
             }
         }
 

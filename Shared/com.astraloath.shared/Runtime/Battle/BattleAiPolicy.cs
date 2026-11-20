@@ -83,7 +83,7 @@ namespace AstralOath.Shared.Battle
 
             var allies = AliveOnSide(snapshot, actor.Slot.Side).ToArray();
             var resurrection = available.FirstOrDefault(skill => skill.target == "one_ally_including_dead" &&
-                snapshot.Units.Any(unit => unit.Slot.Side == actor.Slot.Side && !unit.IsAlive));
+                snapshot.Units.Any(unit => unit.Slot.Side == actor.Slot.Side && !unit.IsAlive && !unit.IsExtinct));
             if (resurrection != null) return ChooseTarget(snapshot, actor, resurrection, false);
             var support = available.Where(skill => TargetsAllies(skill.target)).ToArray();
             foreach (var skill in support)

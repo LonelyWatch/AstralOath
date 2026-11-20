@@ -1,0 +1,650 @@
+
+strageth_skeff_sk2_2.sct
+size: 511,1319
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+burst_sphear
+  rotate: false
+  xy: 66, 1004
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+energy_blast_beam_05
+  rotate: false
+  xy: 2, 2
+  size: 448, 198
+  orig: 448, 198
+  offset: 0, 0
+  index: -1
+flame_s_1
+  rotate: false
+  xy: 233, 821
+  size: 101, 108
+  orig: 101, 108
+  offset: 0, 0
+  index: -1
+flame_s_2
+  rotate: false
+  xy: 233, 705
+  size: 100, 114
+  orig: 100, 114
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 235, 233
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+global_glow
+  rotate: false
+  xy: 218, 1194
+  size: 84, 84
+  orig: 84, 84
+  offset: 0, 0
+  index: -1
+light_star2
+  rotate: false
+  xy: 2, 233
+  size: 231, 197
+  orig: 231, 197
+  offset: 0, 0
+  index: -1
+lilias/lilias_sk1_star
+  rotate: true
+  xy: 486, 1270
+  size: 28, 22
+  orig: 28, 22
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: false
+  xy: 2, 202
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1
+part_1
+  rotate: true
+  xy: 233, 573
+  size: 130, 101
+  orig: 130, 101
+  offset: 0, 0
+  index: -1
+part_2
+  rotate: false
+  xy: 207, 444
+  size: 134, 127
+  orig: 134, 127
+  offset: 0, 0
+  index: -1
+part_3
+  rotate: false
+  xy: 343, 444
+  size: 75, 107
+  orig: 75, 107
+  offset: 0, 0
+  index: -1
+ring&circle/ring_flash
+  rotate: false
+  xy: 66, 857
+  size: 145, 145
+  orig: 145, 145
+  offset: 0, 0
+  index: -1
+ring&circle/se_light_2
+  rotate: false
+  xy: 2, 432
+  size: 203, 203
+  orig: 203, 203
+  offset: 0, 0
+  index: -1
+ring&circle/selfling_1
+  rotate: false
+  xy: 200, 1014
+  size: 85, 85
+  orig: 85, 85
+  offset: 0, 0
+  index: -1
+strage/lay_sword
+  rotate: true
+  xy: 235, 404
+  size: 38, 206
+  orig: 38, 206
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_10_1
+  rotate: true
+  xy: 489, 1178
+  size: 17, 20
+  orig: 17, 20
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_10_2
+  rotate: false
+  xy: 486, 1148
+  size: 22, 28
+  orig: 22, 28
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_10_3
+  rotate: true
+  xy: 207, 573
+  size: 37, 24
+  orig: 37, 24
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_10_4
+  rotate: false
+  xy: 429, 968
+  size: 41, 25
+  orig: 41, 25
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_11_1
+  rotate: true
+  xy: 433, 1232
+  size: 41, 22
+  orig: 41, 22
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_11_2
+  rotate: true
+  xy: 423, 1146
+  size: 47, 21
+  orig: 47, 21
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_11_3
+  rotate: true
+  xy: 388, 996
+  size: 58, 28
+  orig: 58, 28
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_11_4
+  rotate: true
+  xy: 476, 545
+  size: 63, 30
+  orig: 63, 30
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_12_1
+  rotate: false
+  xy: 388, 1277
+  size: 35, 40
+  orig: 35, 40
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_12_2
+  rotate: false
+  xy: 406, 325
+  size: 35, 42
+  orig: 35, 42
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_12_3
+  rotate: true
+  xy: 388, 1056
+  size: 30, 32
+  orig: 30, 32
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_12_4
+  rotate: false
+  xy: 459, 1270
+  size: 25, 28
+  orig: 25, 28
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_13_1
+  rotate: false
+  xy: 406, 233
+  size: 35, 44
+  orig: 35, 44
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_13_2
+  rotate: true
+  xy: 414, 751
+  size: 38, 43
+  orig: 38, 43
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_13_3
+  rotate: true
+  xy: 429, 910
+  size: 56, 38
+  orig: 56, 38
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_13_4
+  rotate: true
+  xy: 360, 931
+  size: 63, 28
+  orig: 63, 28
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_13_5
+  rotate: true
+  xy: 466, 997
+  size: 44, 42
+  orig: 44, 42
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_14_1
+  rotate: true
+  xy: 459, 744
+  size: 34, 50
+  orig: 34, 50
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_14_2
+  rotate: false
+  xy: 472, 947
+  size: 37, 48
+  orig: 37, 48
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_14_3
+  rotate: true
+  xy: 422, 1043
+  size: 44, 46
+  orig: 44, 46
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_14_4
+  rotate: false
+  xy: 451, 1118
+  size: 48, 28
+  orig: 48, 28
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_1_1
+  rotate: false
+  xy: 218, 1101
+  size: 73, 91
+  orig: 73, 91
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_1_2
+  rotate: false
+  xy: 304, 1191
+  size: 68, 84
+  orig: 68, 84
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_1_3
+  rotate: true
+  xy: 213, 931
+  size: 81, 96
+  orig: 81, 96
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_1_4
+  rotate: false
+  xy: 420, 446
+  size: 82, 97
+  orig: 82, 97
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_1_5
+  rotate: false
+  xy: 336, 876
+  size: 48, 53
+  orig: 48, 53
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_2_1
+  rotate: false
+  xy: 336, 621
+  size: 54, 73
+  orig: 54, 73
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_2_2
+  rotate: false
+  xy: 420, 545
+  size: 54, 74
+  orig: 54, 74
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_2_3
+  rotate: false
+  xy: 354, 1088
+  size: 64, 75
+  orig: 64, 75
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_2_4
+  rotate: true
+  xy: 343, 553
+  size: 66, 75
+  orig: 66, 75
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_3_1
+  rotate: true
+  xy: 451, 1091
+  size: 25, 58
+  orig: 25, 58
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_3_2
+  rotate: false
+  xy: 384, 756
+  size: 28, 59
+  orig: 28, 59
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_3_3
+  rotate: false
+  xy: 386, 817
+  size: 36, 60
+  orig: 36, 60
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_3_4
+  rotate: true
+  xy: 392, 703
+  size: 46, 61
+  orig: 46, 61
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_3_5
+  rotate: false
+  xy: 336, 696
+  size: 54, 58
+  orig: 54, 58
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_4_1
+  rotate: false
+  xy: 337, 1277
+  size: 49, 40
+  orig: 49, 40
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_4_2
+  rotate: true
+  xy: 464, 833
+  size: 54, 45
+  orig: 54, 45
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_4_3
+  rotate: true
+  xy: 331, 1010
+  size: 76, 55
+  orig: 76, 55
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_4_4
+  rotate: true
+  xy: 293, 1101
+  size: 88, 59
+  orig: 88, 59
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_5_1
+  rotate: true
+  xy: 424, 791
+  size: 58, 36
+  orig: 58, 36
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_5_2
+  rotate: true
+  xy: 469, 889
+  size: 56, 38
+  orig: 56, 38
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_5_3
+  rotate: true
+  xy: 467, 621
+  size: 58, 42
+  orig: 58, 42
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_5_4
+  rotate: true
+  xy: 470, 1043
+  size: 46, 36
+  orig: 46, 36
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_6_1
+  rotate: false
+  xy: 418, 995
+  size: 46, 46
+  orig: 46, 46
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_6_2
+  rotate: true
+  xy: 462, 780
+  size: 51, 47
+  orig: 51, 47
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_6_3
+  rotate: true
+  xy: 461, 681
+  size: 61, 48
+  orig: 61, 48
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_6_4
+  rotate: false
+  xy: 268, 1280
+  size: 67, 37
+  orig: 67, 37
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_6_5
+  rotate: true
+  xy: 335, 756
+  size: 59, 47
+  orig: 59, 47
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_6_6
+  rotate: true
+  xy: 374, 1165
+  size: 65, 47
+  orig: 65, 47
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_6_7
+  rotate: true
+  xy: 311, 931
+  size: 77, 47
+  orig: 77, 47
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_6_8
+  rotate: true
+  xy: 287, 1014
+  size: 85, 42
+  orig: 85, 42
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_7_1
+  rotate: true
+  xy: 423, 1195
+  size: 35, 34
+  orig: 35, 34
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_7_2
+  rotate: false
+  xy: 446, 1148
+  size: 38, 35
+  orig: 38, 35
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_7_3
+  rotate: true
+  xy: 406, 279
+  size: 44, 35
+  orig: 44, 35
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_7_4
+  rotate: true
+  xy: 386, 879
+  size: 49, 36
+  orig: 49, 36
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_7_5
+  rotate: true
+  xy: 420, 1089
+  size: 55, 29
+  orig: 55, 29
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_8_1
+  rotate: true
+  xy: 424, 851
+  size: 57, 38
+  orig: 57, 38
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_8_2
+  rotate: true
+  xy: 390, 930
+  size: 59, 37
+  orig: 59, 37
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_8_3
+  rotate: false
+  xy: 392, 664
+  size: 67, 37
+  orig: 67, 37
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_8_4
+  rotate: false
+  xy: 392, 621
+  size: 73, 41
+  orig: 73, 41
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_8_5
+  rotate: true
+  xy: 336, 817
+  size: 57, 48
+  orig: 57, 48
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_8_6
+  rotate: false
+  xy: 374, 1232
+  size: 57, 43
+  orig: 57, 43
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_9_1
+  rotate: false
+  xy: 459, 1185
+  size: 28, 38
+  orig: 28, 38
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_9_2
+  rotate: false
+  xy: 425, 1277
+  size: 32, 40
+  orig: 32, 40
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_9_3
+  rotate: true
+  xy: 457, 1232
+  size: 36, 35
+  orig: 36, 35
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_9_4
+  rotate: false
+  xy: 406, 369
+  size: 32, 31
+  orig: 32, 31
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_sw
+  rotate: false
+  xy: 178, 1280
+  size: 88, 37
+  orig: 88, 37
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_sw_b
+  rotate: true
+  xy: 452, 2
+  size: 232, 54
+  orig: 232, 54
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_sw_c
+  rotate: true
+  xy: 443, 236
+  size: 208, 66
+  orig: 208, 66
+  offset: 0, 0
+  index: -1
+strage/strage_sk2_chargelight_sw_t
+  rotate: true
+  xy: 2, 906
+  size: 232, 62
+  orig: 232, 62
+  offset: 0, 0
+  index: -1
+tene_m/sm_01
+  rotate: false
+  xy: 2, 1140
+  size: 97, 175
+  orig: 97, 175
+  offset: 0, 0
+  index: -1
+tene_m/sm_04
+  rotate: false
+  xy: 101, 1138
+  size: 75, 159
+  orig: 75, 159
+  offset: 0, 0
+  index: -1
+water_pillar_03
+  rotate: false
+  xy: 178, 1138
+  size: 38, 125
+  orig: 38, 125
+  offset: 0, 0
+  index: -1
+water_pillar_bg
+  rotate: false
+  xy: 2, 637
+  size: 59, 267
+  orig: 59, 267
+  offset: 0, 0
+  index: -1
+wave_w7
+  rotate: false
+  xy: 63, 637
+  size: 83, 218
+  orig: 83, 218
+  offset: 0, 0
+  index: -1
+wave_w8
+  rotate: false
+  xy: 148, 637
+  size: 83, 218
+  orig: 83, 218
+  offset: 0, 0
+  index: -1

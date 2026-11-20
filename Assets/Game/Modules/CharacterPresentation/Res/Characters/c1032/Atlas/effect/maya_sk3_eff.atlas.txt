@@ -1,0 +1,97 @@
+
+maya_sk3_eff.sct
+size: 252,1039
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 2, 197
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+global_glow
+  rotate: false
+  xy: 116, 881
+  size: 84, 84
+  orig: 84, 84
+  offset: 0, 0
+  index: -1
+light_long
+  rotate: false
+  xy: 2, 770
+  size: 112, 267
+  orig: 112, 267
+  offset: 0, 0
+  index: -1
+lightning_core_05
+  rotate: false
+  xy: 116, 772
+  size: 107, 107
+  orig: 107, 107
+  offset: 0, 0
+  index: -1
+ring_flash
+  rotate: false
+  xy: 2, 368
+  size: 145, 145
+  orig: 145, 145
+  offset: 0, 0
+  index: -1
+ring_wave_g
+  rotate: false
+  xy: 2, 515
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+rush_wave1
+  rotate: false
+  xy: 149, 514
+  size: 91, 144
+  orig: 91, 144
+  offset: 0, 0
+  index: -1
+rush_wave2
+  rotate: false
+  xy: 149, 368
+  size: 93, 144
+  orig: 93, 144
+  offset: 0, 0
+  index: -1
+rush_wave_blur
+  rotate: true
+  xy: 2, 2
+  size: 105, 222
+  orig: 105, 222
+  offset: 0, 0
+  index: -1
+smoke_1
+  rotate: false
+  xy: 2, 649
+  size: 120, 119
+  orig: 120, 119
+  offset: 0, 0
+  index: -1
+smoke_4
+  rotate: true
+  xy: 173, 197
+  size: 119, 77
+  orig: 119, 77
+  offset: 0, 0
+  index: -1
+smoke_5
+  rotate: false
+  xy: 124, 660
+  size: 118, 110
+  orig: 118, 110
+  offset: 0, 0
+  index: -1
+tornado_wave_01
+  rotate: false
+  xy: 2, 109
+  size: 207, 86
+  orig: 207, 86
+  offset: 0, 0
+  index: -1

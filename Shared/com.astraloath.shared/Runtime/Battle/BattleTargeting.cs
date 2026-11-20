@@ -35,7 +35,7 @@ namespace AstralOath.Shared.Battle
                 targetRule == "one_other_ally" || targetRule == "one_ally_including_dead";
             bool area = targetRule == "all_enemies" || targetRule == "all_allies";
             if (selected == null) return area;
-            if ((!selected.IsAlive && targetRule != "one_ally_including_dead") ||
+            if ((!selected.IsAlive && (targetRule != "one_ally_including_dead" || selected.IsExtinct)) ||
                 (selected.Slot.Side == actor.Slot.Side) != allies ||
                 (targetRule == "one_other_ally" && selected == actor)) return false;
             if (area || allies || provoker != null) return true;

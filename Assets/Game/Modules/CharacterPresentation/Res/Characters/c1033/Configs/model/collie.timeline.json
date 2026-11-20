@@ -1,0 +1,84 @@
+{
+  "timeline": {
+    "default": {
+      "skill1": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 300,
+            "func": "effect",
+            "param": {
+              "source": "cross_slash_01",
+              "location": 5,
+              "locationBone": "shadow",
+              "x": -150,
+              "y": 250,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill3": {
+        "duration": 0,
+        "frames": [
+          {
+            "time": 767,
+            "func": "effect",
+            "param": {
+              "source": "cross_slash_01",
+              "location": 5,
+              "locationBone": "shadow",
+              "x": -150,
+              "y": 250,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "jump_back": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "event",
+            "param": {
+              "name": "b1",
+              "param": "b1"
+            }
+          },
+          {
+            "time": 100,
+            "func": "event",
+            "param": {
+              "name": "b2",
+              "param": "b2"
+            }
+          }
+        ]
+      },
+      "groggy": {
+        "duration": 0,
+        "frames": []
+      },
+      "idle": {
+        "duration": 0,
+        "frames": [
+          {
+            "param": {}
+          }
+        ]
+      },
+      "b_idle": {
+        "duration": 0,
+        "frames": []
+      },
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": []
+      }
+    }
+  }
+}

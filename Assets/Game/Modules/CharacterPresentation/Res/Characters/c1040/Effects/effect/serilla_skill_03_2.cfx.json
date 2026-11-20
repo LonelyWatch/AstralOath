@@ -1,0 +1,39 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "serilla_skill_03_firegrinder_up",
+      "y": "-50",
+      "delay": "500",
+      "format": "spine",
+      "globalZ": 10.0
+    },
+    {
+      "source": "serilla_skill_03_firegrinder_dn",
+      "y": "-50",
+      "delay": "500",
+      "format": "spine",
+      "globalZ": 9.0
+    },
+    {
+      "source": "serilla_skill_03_bg",
+      "format": "spine",
+      "globalZ": -10.0
+    },
+    {
+      "source": "serilla_skill_03_2_pati",
+      "y": "-1000",
+      "delay": "900",
+      "format": "particle",
+      "globalZ": 12.0
+    },
+    {
+      "source": "serilla_skill_03_2_pati",
+      "y": "1000",
+      "scale": "1.0,-1.0",
+      "delay": "900",
+      "format": "particle",
+      "globalZ": 12.0
+    }
+  ]
+}
