@@ -1,0 +1,342 @@
+
+lidica_skeff_sk3_1_f_1_2.sct
+size: 1269,985
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+circle_ecle
+  rotate: false
+  xy: 355, 2
+  size: 231, 231
+  orig: 231, 231
+  offset: 0, 0
+  index: -1
+circle_light2
+  rotate: false
+  xy: 2, 2
+  size: 351, 351
+  orig: 351, 351
+  offset: 0, 0
+  index: -1
+energy_blast_beam_04
+  rotate: true
+  xy: 283, 355
+  size: 356, 49
+  orig: 356, 49
+  offset: 0, 0
+  index: -1
+flare/prismlight_01
+  rotate: false
+  xy: 823, 33
+  size: 220, 220
+  orig: 220, 220
+  offset: 0, 0
+  index: -1
+flare/prismlight_02
+  rotate: false
+  xy: 588, 33
+  size: 233, 204
+  orig: 233, 204
+  offset: 0, 0
+  index: -1
+flare/prismlight_10
+  rotate: false
+  xy: 996, 885
+  size: 75, 74
+  orig: 75, 74
+  offset: 0, 0
+  index: -1
+flare/prismlight_11
+  rotate: false
+  xy: 919, 885
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+flare/prismlight_26
+  rotate: false
+  xy: 1045, 2
+  size: 219, 219
+  orig: 219, 219
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 334, 391
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+lidica/glow_sk3_01
+  rotate: false
+  xy: 505, 393
+  size: 157, 160
+  orig: 157, 160
+  offset: 0, 0
+  index: -1
+lidica/glow_sk3_02
+  rotate: true
+  xy: 975, 255
+  size: 154, 145
+  orig: 154, 145
+  offset: 0, 0
+  index: -1
+lidica/glow_sk3_03
+  rotate: true
+  xy: 1122, 223
+  size: 152, 145
+  orig: 152, 145
+  offset: 0, 0
+  index: -1
+lidica/glow_sk3_04
+  rotate: true
+  xy: 1120, 670
+  size: 122, 146
+  orig: 122, 146
+  offset: 0, 0
+  index: -1
+lidica/glow_sk3_05
+  rotate: false
+  xy: 664, 449
+  size: 152, 149
+  orig: 152, 149
+  offset: 0, 0
+  index: -1
+lidica/glow_sk3_06
+  rotate: true
+  xy: 646, 600
+  size: 120, 138
+  orig: 120, 138
+  offset: 0, 0
+  index: -1
+lidica/glow_sk3_07
+  rotate: false
+  xy: 818, 409
+  size: 149, 158
+  orig: 149, 158
+  offset: 0, 0
+  index: -1
+lidica/glow_sk3_08
+  rotate: true
+  xy: 500, 673
+  size: 116, 138
+  orig: 116, 138
+  offset: 0, 0
+  index: -1
+lidica/glow_sk3_09
+  rotate: false
+  xy: 816, 255
+  size: 157, 152
+  orig: 157, 152
+  offset: 0, 0
+  index: -1
+lidica/glow_sk3_10
+  rotate: true
+  xy: 505, 555
+  size: 116, 139
+  orig: 116, 139
+  offset: 0, 0
+  index: -1
+lidica/glow_sk3_11
+  rotate: true
+  xy: 556, 239
+  size: 152, 162
+  orig: 152, 162
+  offset: 0, 0
+  index: -1
+lidica/glow_sk3_12
+  rotate: true
+  xy: 780, 862
+  size: 121, 137
+  orig: 121, 137
+  offset: 0, 0
+  index: -1
+lidica/glow_sk3_13
+  rotate: true
+  xy: 259, 836
+  size: 147, 144
+  orig: 147, 144
+  offset: 0, 0
+  index: -1
+lidica/glow_sk3_14
+  rotate: true
+  xy: 640, 722
+  size: 118, 138
+  orig: 118, 138
+  offset: 0, 0
+  index: -1
+lidica/glow_sk3_15
+  rotate: false
+  xy: 972, 555
+  size: 146, 144
+  orig: 146, 144
+  offset: 0, 0
+  index: -1
+lidica/glow_sk3_16
+  rotate: false
+  xy: 405, 842
+  size: 115, 138
+  orig: 115, 138
+  offset: 0, 0
+  index: -1
+lidica/glow_sk3_17
+  rotate: false
+  xy: 1122, 377
+  size: 145, 143
+  orig: 145, 143
+  offset: 0, 0
+  index: -1
+lidica/glow_sk3_18
+  rotate: true
+  xy: 640, 842
+  size: 115, 138
+  orig: 115, 138
+  offset: 0, 0
+  index: -1
+lidica/glow_sk3_19
+  rotate: true
+  xy: 1122, 522
+  size: 146, 143
+  orig: 146, 143
+  offset: 0, 0
+  index: -1
+lidica/glow_sk3_20
+  rotate: false
+  xy: 522, 791
+  size: 116, 138
+  orig: 116, 138
+  offset: 0, 0
+  index: -1
+lidica/glow_sk3_21
+  rotate: false
+  xy: 818, 569
+  size: 152, 143
+  orig: 152, 143
+  offset: 0, 0
+  index: -1
+lidica/glow_sk3_22
+  rotate: false
+  xy: 780, 722
+  size: 122, 138
+  orig: 122, 138
+  offset: 0, 0
+  index: -1
+lidica/glow_sk3_23
+  rotate: false
+  xy: 969, 411
+  size: 151, 142
+  orig: 151, 142
+  offset: 0, 0
+  index: -1
+lidica/glow_sk3_24
+  rotate: true
+  xy: 969, 761
+  size: 122, 138
+  orig: 122, 138
+  offset: 0, 0
+  index: -1
+lidica/lidi_obk_sk3_01
+  rotate: true
+  xy: 904, 714
+  size: 102, 63
+  orig: 102, 63
+  offset: 0, 0
+  index: -1
+lidica/lidi_obk_sk3_02
+  rotate: true
+  xy: 1198, 794
+  size: 100, 61
+  orig: 100, 61
+  offset: 0, 0
+  index: -1
+lidica/lidi_obk_sk3_03
+  rotate: false
+  xy: 275, 722
+  size: 186, 58
+  orig: 186, 58
+  offset: 0, 0
+  index: -1
+lidica/lidi_obk_sk3_04
+  rotate: false
+  xy: 972, 701
+  size: 142, 58
+  orig: 142, 58
+  offset: 0, 0
+  index: -1
+lidica/lidi_sk3_obk_01
+  rotate: true
+  xy: 720, 239
+  size: 208, 94
+  orig: 208, 94
+  offset: 0, 0
+  index: -1
+lidica/lidi_sk3_obk_02
+  rotate: false
+  xy: 2, 827
+  size: 255, 152
+  orig: 255, 152
+  offset: 0, 0
+  index: -1
+lidica/lidi_sk3_obk_03
+  rotate: false
+  xy: 334, 562
+  size: 164, 158
+  orig: 164, 158
+  offset: 0, 0
+  index: -1
+lidica/lidi_sk3_obk_04
+  rotate: false
+  xy: 355, 235
+  size: 199, 154
+  orig: 199, 154
+  offset: 0, 0
+  index: -1
+lidica/lidi_sk3_obk_05
+  rotate: false
+  xy: 2, 633
+  size: 257, 192
+  orig: 257, 192
+  offset: 0, 0
+  index: -1
+lidica/lidi_sk3_obk_06
+  rotate: false
+  xy: 2, 355
+  size: 279, 276
+  orig: 279, 276
+  offset: 0, 0
+  index: -1
+lidica/lidi_sk3_obk_07
+  rotate: false
+  xy: 1109, 794
+  size: 87, 80
+  orig: 87, 80
+  offset: 0, 0
+  index: -1
+lidica/lidi_sk3_obk_08
+  rotate: true
+  xy: 1073, 885
+  size: 83, 54
+  orig: 83, 54
+  offset: 0, 0
+  index: -1
+lidica/lidi_sk3_obk_09
+  rotate: false
+  xy: 463, 722
+  size: 35, 54
+  orig: 35, 54
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: false
+  xy: 588, 2
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1
+screen_ray
+  rotate: false
+  xy: 261, 633
+  size: 12, 201
+  orig: 12, 201
+  offset: 0, 0
+  index: -1

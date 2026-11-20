@@ -1085,6 +1085,56 @@ namespace AstralOath.Client.Tests
         }
 
         [UnityTest]
+        public IEnumerator SleepShowsItsOwnHeadEffectAndSharesOnlyTheBlockedPoseWithStun()
+        {
+            scene = LoadPlayerOpeningScene();
+            yield return null;
+            yield return null;
+            var host = scene.GetRootGameObjects().Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            var simulation = typeof(BattleHudPreview).GetField("simulation", PrivateInstance).GetValue(host);
+            var views = (IDictionary)simulation.GetType().GetField("views", PrivateInstance).GetValue(simulation);
+            var view = views["ally-1"];
+            var type = view.GetType();
+            var actor = (BattlePreviewActor)type.GetProperty("Actor").GetValue(view);
+            var renderer = (Renderer)typeof(BattlePreviewActor).GetProperty("PresentationRenderer", PrivateInstance).GetValue(actor);
+            var sleep = Status(BattleStatusKind.Sleep, 8);
+            var stun = Status(BattleStatusKind.Stun, 9);
+            type.GetMethod("ApplyStatus").Invoke(view, new object[] { sleep });
+            yield return null;
+            Transform body = renderer.transform;
+            Assert.That(EffectVisible(body, "Battle sleep symbols"), Is.True, "Row 206 must use the native sleep Z mesh.");
+            Assert.That(EffectVisible(body, "Battle stun stars"), Is.False);
+            Assert.That(IsBlocked(), Is.True);
+            var symbols = body.Find("Battle sleep symbols");
+            var anchor = new object[] { "top", Vector2.zero };
+            Assert.That(typeof(BattlePreviewActor).GetMethod("TryGetSkeletonAnchor", PrivateInstance).Invoke(actor, anchor), Is.True);
+            Assert.That(Vector2.Distance(symbols.localPosition, (Vector2)anchor[1] + Vector2.down * .5f), Is.LessThan(.005f));
+            Assert.That(symbols.localScale.x, Is.EqualTo(.4f).Within(.001f));
+            Assert.That(symbols.GetComponent<MeshRenderer>().sortingOrder, Is.EqualTo(renderer.sortingOrder + 1));
+            Assert.That(scene.GetRootGameObjects().SelectMany(root => root.GetComponentsInChildren<Image>()).Any(image =>
+                image.enabled && image.sprite && image.sprite.name == "stic_sleep"), Is.True);
+            string capture = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_CAPTURE_DIR");
+            if (!string.IsNullOrEmpty(capture))
+            {
+                yield return new WaitForSecondsRealtime(.25f);
+                Capture(host.GetComponent<Canvas>().worldCamera, capture, "battle-sleep-symbols.png");
+            }
+            type.GetMethod("ApplyStatus").Invoke(view, new object[] { stun });
+            type.GetMethod("RemoveStatusInstance").Invoke(view, new object[] { sleep });
+            yield return null;
+            Assert.That(EffectVisible(body, "Battle sleep symbols"), Is.False);
+            Assert.That(EffectVisible(body, "Battle stun stars"), Is.True);
+            Assert.That(IsBlocked(), Is.True, "Clearing sleep while stunned must retain the blocked pose.");
+            type.GetMethod("RemoveStatusInstance").Invoke(view, new object[] { stun });
+            Assert.That(IsBlocked(), Is.False);
+
+            bool IsBlocked() => (bool)typeof(BattlePreviewActor).GetField("actionBlocked", PrivateInstance).GetValue(actor);
+            BattleStatusSnapshot Status(BattleStatusKind kind, ulong instance) => (BattleStatusSnapshot)typeof(BattleStatusSnapshot)
+                .GetConstructor(PrivateInstance, null, new[] { typeof(BattleStatusKind), typeof(int), typeof(int), typeof(string), typeof(ulong) }, null)
+                .Invoke(new object[] { kind, 2, 0, "enemy-1", instance });
+        }
+
+        [UnityTest]
         public IEnumerator StunStarsFollowTheCharacterAndStopWhenTheStatusClears()
         {
             scene = LoadPlayerOpeningScene();

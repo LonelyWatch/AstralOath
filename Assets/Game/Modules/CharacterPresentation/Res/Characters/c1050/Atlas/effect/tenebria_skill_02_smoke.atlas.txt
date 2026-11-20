@@ -1,0 +1,55 @@
+
+tenebria_skill_02_smoke.sct
+size: 240,247
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dust_si_1
+  rotate: false
+  xy: 97, 2
+  size: 102, 72
+  orig: 102, 72
+  offset: 0, 0
+  index: -1
+dust_si_2
+  rotate: true
+  xy: 2, 2
+  size: 81, 93
+  orig: 81, 93
+  offset: 0, 0
+  index: -1
+eff_adslash_1
+  rotate: true
+  xy: 97, 76
+  size: 77, 90
+  orig: 77, 90
+  offset: 0, 0
+  index: -1
+eff_adslash_2
+  rotate: true
+  xy: 2, 85
+  size: 77, 90
+  orig: 77, 90
+  offset: 0, 0
+  index: -1
+eff_adslash_3
+  rotate: false
+  xy: 94, 155
+  size: 77, 90
+  orig: 77, 90
+  offset: 0, 0
+  index: -1
+eff_adslash_4
+  rotate: true
+  xy: 2, 164
+  size: 77, 90
+  orig: 77, 90
+  offset: 0, 0
+  index: -1
+smoke_s1
+  rotate: false
+  xy: 173, 155
+  size: 65, 80
+  orig: 65, 80
+  offset: 0, 0
+  index: -1

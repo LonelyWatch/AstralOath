@@ -3,6 +3,11 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using AstralOath.Client.Core;
+using AstralOath.Client.Home;
+using UnityEditor;
 using AstralOath.Client.BattleScene;
 using AstralOath.Client.Common;
 using AstralOath.Shared.Battle;
@@ -23,6 +28,61 @@ namespace AstralOath.Client.Tests
         private Scene home, priorScene;
         private string priorEndpoint, priorSkipEntry;
         private bool settingsChanged;
+
+        private sealed class InventoryPrefab : IAssetService
+        {
+            public Task<T> LoadAsync<T>(string address, BindingScope scope) where T : UnityEngine.Object
+            {
+                Assert.That(address, Is.EqualTo(HeroInventory.Address));
+                return Task.FromResult(AssetDatabase.LoadAssetAtPath<T>("Assets/Game/Modules/Home/Res/Prefab/HeroInventory.prefab"));
+            }
+        }
+
+        private sealed class InventoryText : ILocaleService
+        {
+            public string TextLocale => "zh-Hans";
+            public string VoiceLocale => "ja";
+            public event Action TextChanged { add {} remove {} }
+            public void SelectText(string locale) { }
+            public void SelectVoice(string locale) { }
+            public string Resolve(string key) => key;
+        }
+
+        [UnityTest]
+        public IEnumerator NewOwnedHeroesOpenInTheInventoryDetail()
+        {
+            var art = AssetDatabase.LoadAssetAtPath<HomeHeroArt>("Assets/Game/Modules/Home/Configs/HomeHeroArt.asset");
+            string[] ids = {"c1043","c1044","c1046","c1047","c1048","c1049","c1050","c1053","c1054","c1055"};
+            var snapshot = new HeroInventorySnapshot { capacity = 50, used = ids.Length,
+                heroes = ids.Select(id => new HeroInventoryItem { instanceId = "owned-" + id, templateId = id, level = 1, stars = 4 }).ToArray() };
+            var registry = new UIViewRegistry();
+            registry.Register<HeroInventory>();
+            var canvas = new GameObject("Inventory catalog test", typeof(RectTransform), typeof(Canvas));
+            canvas.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+            try
+            {
+                using var scope = new BindingScope(CancellationToken.None);
+                var load = registry.CreateAsync<HeroInventory>(new InventoryPrefab(), canvas.transform, scope);
+                yield return new WaitUntil(() => load.IsCompleted);
+                var view = load.GetAwaiter().GetResult();
+                var binder = new HeroInventoryBinder(view, art, new InventoryText(), _ => Task.FromResult(snapshot), () => Task.CompletedTask);
+                var open = binder.OpenAsync(true, scope);
+                yield return new WaitUntil(() => open.IsCompleted);
+                open.GetAwaiter().GetResult();
+                var screen = view.Root.GetComponent<BindingMap>();
+                foreach (var id in ids)
+                {
+                    var expected = art.heroes.Single(hero => hero.id == id);
+                    screen.Require<TMP_InputField>("search").text = expected.name;
+                    yield return null;
+                    Assert.That(VisibleRows(screen, "rosterScroll").Length, Is.EqualTo(1), id);
+                    Assert.That(screen.Require<GameText>("detailName").text, Is.EqualTo(expected.name), id);
+                    var portrait = screen.Require<RawImage>("detailPortrait");
+                    Assert.That(portrait.gameObject.activeInHierarchy && portrait.texture is RenderTexture, Is.True, id);
+                }
+            }
+            finally { UnityEngine.Object.Destroy(canvas); }
+        }
 
         [UnityTest, Timeout(165000)]
         public IEnumerator HomeRoutesToOwnedHeroesAndDistinctEmptyBagPages()

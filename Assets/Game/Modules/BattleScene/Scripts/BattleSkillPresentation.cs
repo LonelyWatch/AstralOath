@@ -144,10 +144,10 @@ namespace AstralOath.Client.BattleScene
         private BattleSkillPresentation(Transform worldRoot, Dictionary<string, JObject> graphs,
             Dictionary<string, BattleSkillPresentationAsset> assets, SessionCache cache,
             Camera camera, Action<bool> cinematicChanged, GameObject background,
-            Dictionary<Renderer, (int Count, bool WasHidden)> targetBodyHolds = null)
+            Dictionary<Renderer, TargetBody> targetBodyHolds = null)
         {
             this.worldRoot = worldRoot; this.graphs = graphs; this.assets = assets; this.cache = cache;
-            this.targetBodyHolds = targetBodyHolds ?? new Dictionary<Renderer, (int, bool)>();
+            this.targetBodyHolds = targetBodyHolds ?? new Dictionary<Renderer, TargetBody>();
             this.camera = camera; this.cinematicChanged = cinematicChanged; this.background = background;
             root = new GameObject("Battle Skill Effects").transform;
             root.SetParent(worldRoot, false);
@@ -313,9 +313,9 @@ namespace AstralOath.Client.BattleScene
                         Schedule(at, () => PlayNodeAnimation(node, at, recipients));
                         break;
                     case "COLOR_BLEND":
-                        if (IsImmediateTargetHide(node) && !nodes.Any(other => Kind(other) == "STOP" &&
+                        if (IsTargetHide(node) && !nodes.Any(other => Kind(other) == "STOP" &&
                             (string)other["targetId"] == (string)node["id"] && Number(other, "time") != 0f))
-                            Schedule(at, () => HoldTargetLayer((string)node["id"], recipients));
+                            Schedule(at, () => HoldTargetLayer(node, recipients));
                         else WarnSource($"COLOR_BLEND {node["guid"]} tint layering is pending source verification.");
                         break;
                     case "SHAKE":
@@ -727,6 +727,7 @@ namespace AstralOath.Client.BattleScene
         private void Advance(float delta)
         {
             time += delta;
+            AdvanceTargetLayers();
             if (caster) caster.AdvancePresentation(delta);
             if (motion is { } movement && caster)
             {
@@ -909,18 +910,23 @@ namespace AstralOath.Client.BattleScene
             int? location = (int?)node["location"];
             string anchorName = (string)node["locationParam"];
             var offset = new Vector2(Number(node, "x"), Number(node, "y"));
+            bool disableAutoFlipX = (bool?)node["disableAutoFlipX"] == true;
+            // The ken_nbg_tx lettering stays at the same pixels through the source's 0.60 → 0.65 → 0.60 zoom.
+            bool fixedArtwork = !location.HasValue && string.IsNullOrEmpty(anchorName) && disableAutoFlipX &&
+                source == "ken_skill_03_tx.cfx";
             // Confirmed screen cues use the authored 216-unit vertical offset without an actor location.
             if (!location.HasValue && (offset.y != 216f || !string.IsNullOrEmpty(anchorName)))
             {
                 WarnSource($"EFFECT {node["guid"]} has no confirmed default location. Using the primary target.");
                 location = 5;
             }
-            Cfx(source, primary, targets, location, Number(node, "scale", 1f), offset, false, anchorName: anchorName);
+            Cfx(source, primary, targets, location, Number(node, "scale", 1f), offset, false,
+                anchorName: anchorName, disableAutoFlipX: disableAutoFlipX, fixedArtwork: fixedArtwork);
         }
 
         private void Cfx(string source, BattlePreviewActor primary, BattlePreviewActor[] targets, int? location,
             float scale, Vector2 offset, bool hit, Vector2 spread = default, string anchorName = null,
-            bool allowAfterglow = false)
+            bool allowAfterglow = false, bool disableAutoFlipX = false, bool fixedArtwork = false)
         {
             string key = source.StartsWith(EffectPath, StringComparison.Ordinal) ? source : EffectPath + source;
             if (!key.EndsWith(".cfx", StringComparison.Ordinal)) key += ".cfx";
@@ -944,7 +950,7 @@ namespace AstralOath.Client.BattleScene
                     // Keep source layers ordered around the actors, below the full-screen flash and HUD.
                     int order = depth < 0f ? -10 + Array.IndexOf(behind, depth) : 65 + Array.IndexOf(inFront, depth);
                     Schedule(time + Seconds(part, "delay"), () =>
-                        Spawn(key, part, null, null, scale, offset, side, true, order));
+                        Spawn(key, part, null, null, scale, offset, side, true, order, disableAutoFlipX: disableAutoFlipX));
                 }
                 return;
             }
@@ -1004,7 +1010,7 @@ namespace AstralOath.Client.BattleScene
                     float side = caster.FacingDirection;
                     Schedule(time + Seconds(part, "delay"),
                         () => Spawn(key, part, position, anchor, scale, offset + variation, side, follow,
-                            allowAfterglow: allowAfterglow));
+                            allowAfterglow: allowAfterglow, disableAutoFlipX: disableAutoFlipX, fixedArtwork: fixedArtwork));
                 }
             }
         }
@@ -1032,7 +1038,7 @@ namespace AstralOath.Client.BattleScene
                 string[] axes = text.Split(',');
                 if (field == "scale" && axes.Length == 2 &&
                     TryScalar(axes[0], out float width) && TryScalar(axes[1], out float height) &&
-                    width > 0f && height > 0f)
+                    width != 0f && height != 0f)
                 {
                     part["scale"] = 1f;
                     part["scaleX"] = width;
@@ -1053,7 +1059,8 @@ namespace AstralOath.Client.BattleScene
             float.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out value) && float.IsFinite(value);
 
         private void Spawn(string key, JObject part, Func<Vector3> position, BattlePreviewActor anchor, float scale,
-            Vector2 offset, float side, bool follow, int? screenOrder = null, bool allowAfterglow = false)
+            Vector2 offset, float side, bool follow, int? screenOrder = null, bool allowAfterglow = false,
+            bool disableAutoFlipX = false, bool fixedArtwork = false)
         {
             string source = (string)part["source"];
             if (string.IsNullOrWhiteSpace(source)) return;
@@ -1065,17 +1072,20 @@ namespace AstralOath.Client.BattleScene
                 ((renderer ? renderer.sortingOrder : 55) + (int)Mathf.Sign(Number(part, "globalZ", 1f)) * 2);
             var group = new GameObject("Skill CFX " + key.Substring(EffectPath.Length)).transform;
             group.SetParent(root, false);
-            Vector3 translation = new Vector3((offset.x + Number(part, "x")) * side,
+            // STG offsets locate the effect on the formation. Its primitives can retain their authored orientation.
+            float visualFacing = disableAutoFlipX ? 1f : side;
+            Vector3 translation = new Vector3(offset.x * side + Number(part, "x") * visualFacing,
                 offset.y + Number(part, "y"), 0f) * SourcePixel;
-            group.localRotation = Quaternion.Euler(0f, 0f, -Number(part, "rotate") * side);
+            group.localRotation = Quaternion.Euler(0f, 0f, -Number(part, "rotate") * visualFacing);
             var partScale = new Vector3(Number(part, "scaleX", 1f), Number(part, "scaleY", 1f), 1f);
+            Vector3 viewportAnchor = default;
             UpdatePosition(true);
             try
             {
                 switch (format)
                 {
                     case "spine":
-                        SpawnSpine(source, part, group, size, order, side, () => UpdatePosition(false));
+                        SpawnSpine(source, part, group, size, order, visualFacing, () => UpdatePosition(false));
                         break;
                     case "particle":
                         SpawnParticles(source, part, group, size, order, () =>
@@ -1098,6 +1108,12 @@ namespace AstralOath.Client.BattleScene
                 if (screenOrder.HasValue)
                 {
                     group.position = cinematic.SourceScreenPoint(root.position, translation);
+                    group.localScale = partScale * cinematic.SourceScreenScale;
+                }
+                else if (fixedArtwork && camera)
+                {
+                    if (initial) viewportAnchor = camera.WorldToViewportPoint(position() + translation);
+                    group.position = camera.ViewportToWorldPoint(viewportAnchor);
                     group.localScale = partScale * cinematic.SourceScreenScale;
                 }
                 else if (initial || follow)

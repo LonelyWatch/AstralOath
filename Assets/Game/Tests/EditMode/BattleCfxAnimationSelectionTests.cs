@@ -171,6 +171,191 @@ namespace AstralOath.Tests
             Create("fixture", document);
         }
 
+        [TestCase(false, true, 1)]
+        [TestCase(true, true, 1)]
+        [TestCase(true, false, -1)]
+        public void KenLetteringKeepsItsSourceOrientationOnEitherTeam(bool enemy, bool sourceFlag, int expectedSign)
+        {
+            PrepareKenLettering(enemy, sourceFlag, out var node, out var actor);
+            runtime.GetMethod("Effect", Private).Invoke(playback, new object[] { node, actor, Array.CreateInstance(actor.GetType(), 0) });
+            runtime.GetMethod("Tick").Invoke(playback, new object[] { 1.2f });
+            var mesh = root.GetComponentsInChildren<MeshFilter>().Single(item => item.name == "ken_nbg_tx");
+            Assert.That(mesh.sharedMesh.vertexCount, Is.GreaterThan(0));
+            Assert.That(Math.Sign(mesh.transform.TransformVector(Vector3.right).x), Is.EqualTo(expectedSign),
+                "Ken's authored lettering must keep the same reading direction when the caster is on the right.");
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void KenLetteringProjectionDuringSourceZoomPulse(bool confirmedLayer)
+        {
+            var cameraObject = new GameObject("Ken pulse camera");
+            owned.Add(cameraObject);
+            var camera = cameraObject.AddComponent<Camera>();
+            camera.orthographic = true;
+            camera.orthographicSize = 5.4f;
+            camera.aspect = 16f / 9f;
+            camera.transform.position = Vector3.back * 10f;
+            PrepareKenLettering(false, true, out var node, out var actor, camera);
+            if (!confirmedLayer) node["location"] = 1;
+            actor.transform.position = new Vector3(2.8f, -2f);
+            actor.transform.localScale = Vector3.one * .6f;
+            var cinematic = runtime.GetField("cinematic", Private).GetValue(playback);
+            var stage = cinematic.GetType();
+            stage.GetMethod("Begin").Invoke(cinematic, new object[] { actor.transform, new[] { actor.transform }, false });
+            var graph = JObject.Parse(AssetDatabase.LoadAssetAtPath<TextAsset>(
+                "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1047/Configs/stagept/c_ken_skill_03.graph.json").text);
+            var nodes = graph["source"]["entities"].OfType<JObject>().ToDictionary(n => (int)n["guid"]);
+            stage.GetMethod("Play").Invoke(cinematic, new object[] { nodes[19] });
+            stage.GetMethod("Play").Invoke(cinematic, new object[] { nodes[20] });
+            runtime.GetMethod("Tick").Invoke(playback, new object[] { .2f });
+            runtime.GetMethod("Effect", Private).Invoke(playback, new object[] { node, actor, Array.CreateInstance(actor.GetType(), 0) });
+            runtime.GetMethod("Tick").Invoke(playback, new object[] { 1.2f });
+            var mesh = root.GetComponentsInChildren<MeshFilter>().Single(item => item.name == "ken_nbg_tx");
+            var vertex = Array.FindIndex(mesh.sharedMesh.colors32, c => c.a > 200);
+            Assert.That(vertex, Is.GreaterThanOrEqualTo(0));
+            Vector2 Project() => camera.WorldToViewportPoint(mesh.transform.TransformPoint(mesh.sharedMesh.vertices[vertex]));
+            float Width() => Mathf.Abs(camera.WorldToViewportPoint(mesh.transform.TransformPoint(Vector3.right * 100f)).x -
+                camera.WorldToViewportPoint(mesh.transform.position).x);
+            float originalWidth = Width();
+            var originalVertex = Project();
+            Assert.That(camera.orthographicSize, Is.EqualTo(9f).Within(.001f));
+            float referenceSize = confirmedLayer ? 5.4f : camera.orthographicSize;
+            Assert.That(originalWidth, Is.EqualTo(100f * (float)node["scale"] * .6f /
+                (2f * referenceSize * camera.aspect)).Within(.0001f));
+            foreach (int id in new[] { 22, 23 })
+            {
+                stage.GetMethod("Play").Invoke(cinematic, new object[] { nodes[id] });
+                runtime.GetMethod("Tick").Invoke(playback, new object[] { .05f });
+                Assert.That(camera.orthographicSize, Is.EqualTo(5.4f / (id == 22 ? .65f : .6f)).Within(.001f));
+                float expectedRatio = !confirmedLayer && id == 22 ? .65f / .6f : 1f;
+                Assert.That(Width() / originalWidth, Is.EqualTo(expectedRatio).Within(.0001f));
+                if (confirmedLayer)
+                    Assert.That(Vector2.Distance(Project(), originalVertex), Is.LessThan(.0002f));
+            }
+        }
+
+        private void PrepareKenLettering(bool enemy, bool sourceFlag, out JObject node, out Component actor,
+            Camera camera = null)
+        {
+            const string prefix = "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1047/";
+            const string source = "ken_nbg_tx";
+            var graph = JObject.Parse(AssetDatabase.LoadAssetAtPath<TextAsset>(prefix +
+                "Configs/stagept/c_ken_skill_03.graph.json").text);
+            node = graph["source"]["entities"].OfType<JObject>().Single(n => (int)n["guid"] == 18);
+            Assert.That((bool)node["disableAutoFlipX"], Is.True);
+            if (!sourceFlag) node.Remove("disableAutoFlipX");
+            Create(source, AssetDatabase.LoadAssetAtPath<TextAsset>(prefix + "Animations/effect/" + source + ".spine.json"),
+                AssetDatabase.LoadAssetAtPath<TextAsset>(prefix + "Atlas/effect/" + source + ".atlas.txt"),
+                AssetDatabase.LoadAssetAtPath<Texture2D>(prefix + "Textures/effect/ken_nbgeff.png"), "ken_nbgeff.sct",
+                camera: camera, importScale: .01f);
+            var documents = (Dictionary<string, JObject>)runtime.GetProperty("documents", Private).GetValue(playback);
+            documents.Add("effect/ken_skill_03_tx.cfx", JObject.Parse(AssetDatabase.LoadAssetAtPath<TextAsset>(prefix +
+                "Effects/effect/ken_skill_03_tx.cfx.json").text));
+            var actorType = Type.GetType(Module + ".BattlePreviewActor, " + Module, true);
+            var actorObject = new GameObject("Actor");
+            actorObject.transform.SetParent(root.transform, false);
+            actor = actorObject.AddComponent(actorType);
+            actorType.GetField("faceLeft", Private).SetValue(actor, enemy);
+            runtime.GetField("caster", Private).SetValue(playback, actor);
+        }
+
+        [Test]
+        public void TenebriaDomeDrawsTheSameVisibleSourceVerticesInFourQuadrants()
+        {
+            const string prefix = "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1050/";
+            const string source = "tenebria_skill_03_up_doom_L";
+            var cfx = JObject.Parse(AssetDatabase.LoadAssetAtPath<TextAsset>(prefix + "Effects/effect/tenebria_skill_03.cfx.json").text);
+            var parts = cfx["primitive"].OfType<JObject>().Where(part => (string)part["source"] == source).ToArray();
+            Assert.That(parts.Length, Is.EqualTo(4));
+            Create(source, AssetDatabase.LoadAssetAtPath<TextAsset>(prefix + "Animations/effect/" + source + ".spine.json"),
+                AssetDatabase.LoadAssetAtPath<TextAsset>(prefix + "Atlas/effect/" + source + ".atlas.txt"),
+                AssetDatabase.LoadAssetAtPath<Texture2D>(prefix + "Textures/effect/" + source + ".png"), source + ".sct");
+            var meshes = new List<MeshFilter>();
+            for (int index = 0; index < parts.Length; index++)
+            {
+                var parsed = (JObject)runtime.GetMethod("ReadPrimitive", Private).Invoke(playback, new object[] { parts[index] });
+                Assert.That(parsed, Is.Not.Null, "Missing source layer " + index);
+                string label = "dome" + index;
+                runtime.GetMethod("Spawn", Private).Invoke(playback, new object[] { "effect/" + label, parsed,
+                    (Func<Vector3>)(() => Vector3.zero), null, 1f, Vector2.zero, 1f, false, null, false, false, false });
+                meshes.Add(root.GetComponentsInChildren<Transform>().Single(item => item.name == "Skill CFX " + label).GetComponentInChildren<MeshFilter>());
+            }
+            runtime.GetMethod("Tick").Invoke(playback, new object[] { 2.55f });
+            var mesh = meshes[0].sharedMesh;
+            var colors = mesh.colors32;
+            var vertices = mesh.vertices;
+            int vertex = Array.FindIndex(colors, color => color.a > 0);
+            Assert.That(vertex, Is.GreaterThanOrEqualTo(0), "The test frame must contain a visible, off-axis source vertex.");
+            Vector3 p = meshes[0].transform.TransformPoint(vertices[vertex]);
+            Assert.That(Mathf.Min(Mathf.Abs(p.x), Mathf.Abs(p.y)), Is.GreaterThan(1f));
+            var signs = new[] { Vector2.one, new Vector2(-1, 1), -Vector2.one, new Vector2(1, -1) };
+            for (int i = 0; i < meshes.Count; i++)
+            {
+                Vector3 world = meshes[i].transform.TransformPoint(meshes[i].sharedMesh.vertices[vertex]);
+                Assert.That(world.x, Is.EqualTo(signs[i].x * p.x).Within(.001f));
+                Assert.That(world.y, Is.EqualTo(signs[i].y * p.y).Within(.001f));
+            }
+            var projected = RenderLayerCenters(meshes);
+            Assert.That(Mathf.Min(Mathf.Abs(projected[0].x), Mathf.Abs(projected[0].y)), Is.GreaterThan(2f));
+            for (int i = 1; i < projected.Length; i++)
+            {
+                Vector2 expected = Vector2.Scale(projected[0], signs[i]);
+                Assert.That(Vector2.Distance(projected[i], expected), Is.LessThan(2f),
+                    "Each source layer must produce mirrored visible pixels, including the single-axis windings.");
+            }
+        }
+
+        private Vector2[] RenderLayerCenters(List<MeshFilter> meshes)
+        {
+            const int pixels = 256, layer = 29;
+            var renders = meshes.Select(mesh => mesh.GetComponent<MeshRenderer>()).ToArray();
+            float extent = 1f;
+            foreach (var item in renders)
+            {
+                item.gameObject.layer = layer;
+                extent = Mathf.Max(extent, Mathf.Abs(item.bounds.min.x), Mathf.Abs(item.bounds.max.x),
+                    Mathf.Abs(item.bounds.min.y), Mathf.Abs(item.bounds.max.y));
+                item.enabled = false;
+            }
+            var cameraObject = new GameObject("CFX frame"); cameraObject.transform.SetParent(root.transform, false);
+            var camera = cameraObject.AddComponent<Camera>();
+            camera.transform.position = new Vector3(0, 0, -20);
+            camera.orthographic = true; camera.orthographicSize = 1.05f * extent; camera.aspect = 1f;
+            camera.cullingMask = 1 << layer; camera.clearFlags = CameraClearFlags.SolidColor; camera.backgroundColor = Color.black;
+            var target = new RenderTexture(pixels, pixels, 24);
+            var image = new Texture2D(pixels, pixels, TextureFormat.RGB24, false);
+            var previous = RenderTexture.active;
+            var centers = new Vector2[renders.Length];
+            try
+            {
+                camera.targetTexture = target;
+                for (int i = 0; i < renders.Length; i++)
+                {
+                    renders[i].enabled = true;
+                    camera.Render(); RenderTexture.active = target;
+                    image.ReadPixels(new Rect(0, 0, pixels, pixels), 0, 0);
+                    var colors = image.GetPixels32();
+                    Vector2 sum = Vector2.zero;
+                    int count = 0;
+                    for (int j = 0; j < colors.Length; j++)
+                    {
+                        if (colors[j].r + colors[j].g + colors[j].b < 30) continue;
+                        sum += new Vector2(j % pixels, j / pixels); count++;
+                    }
+                    Assert.That(count, Is.GreaterThan(15), "Source layer " + i + " must contribute visible pixels.");
+                    centers[i] = sum / count - Vector2.one * ((pixels - 1f) / 2f);
+                    renders[i].enabled = false;
+                }
+            }
+            finally
+            {
+                camera.targetTexture = null; RenderTexture.active = previous;
+                UnityEngine.Object.DestroyImmediate(image); UnityEngine.Object.DestroyImmediate(target);
+            }
+            return centers;
+        }
+
         [Test]
         public void SezS3BurstAdvancesTenLocalFramesPerStageFrame()
         {
@@ -219,7 +404,7 @@ namespace AstralOath.Tests
         }
 
         private void Create(string source, TextAsset document, TextAsset atlas = null, Texture2D texture = null,
-            string pageName = "page.png", bool particle = false)
+            string pageName = "page.png", bool particle = false, Camera camera = null, float importScale = 1f)
         {
             runtime = Type.GetType(Module + ".BattleSkillPresentation, " + Module, true);
             var assetType = Type.GetType(Module + ".BattleSkillPresentationAsset, " + Module, true);
@@ -233,10 +418,10 @@ namespace AstralOath.Tests
             assetType.GetField("atlas").SetValue(asset, atlas);
             assetType.GetField("pageNames").SetValue(asset, new[] { pageName });
             assetType.GetField("pages").SetValue(asset, new[] { texture });
-            assetType.GetField("scale").SetValue(asset, 1f);
+            assetType.GetField("scale").SetValue(asset, importScale);
             var assets = Array.CreateInstance(assetType, 1); assets.SetValue(asset, 0);
             playback = (IDisposable)Activator.CreateInstance(runtime,
-                new object[] { root.transform, Array.Empty<TextAsset>(), assets, null, null, null });
+                new object[] { root.transform, Array.Empty<TextAsset>(), assets, camera, null, null });
             runtime.GetField("currentPresentationId", Private).SetValue(playback, "fixture_skill");
         }
 

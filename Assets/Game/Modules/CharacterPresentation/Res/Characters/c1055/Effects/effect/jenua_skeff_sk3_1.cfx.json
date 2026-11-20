@@ -1,0 +1,43 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "jenua_skeff_sk3_p1_f",
+      "format": "spine",
+      "globalZ": 5.0
+    },
+    {
+      "source": "jenua_skeff_sk3_p2_f",
+      "format": "spine",
+      "globalZ": 4.0
+    },
+    {
+      "source": "jenua_skeff_sk3_p2_f_2_02",
+      "z": "26",
+      "format": "spine",
+      "globalZ": 3.0
+    },
+    {
+      "source": "jenua_skeff_sk3_p2_f_2_01",
+      "z": "25",
+      "format": "spine",
+      "globalZ": 3.0
+    },
+    {
+      "source": "jenua_skeff_sk3_p2_illu",
+      "ani": "skill3_illu",
+      "format": "spine",
+      "globalZ": 2.0
+    },
+    {
+      "source": "jenua_skeff_sk3_p1_b",
+      "format": "spine",
+      "globalZ": -4.0
+    },
+    {
+      "source": "jenua_skeff_sk3_p2_b",
+      "format": "spine",
+      "globalZ": -5.0
+    }
+  ]
+}

@@ -23,6 +23,8 @@ namespace AstralOath.Client.BattleScene
         public TextAsset InvincibleAuraEffect;
         public BattleSkillPresentationAsset StunStars;
         public TextAsset StunStarsEffect;
+        public BattleSkillPresentationAsset SleepSymbols;
+        public TextAsset SleepSymbolsEffect;
         [Min(.001f)] public float DamageSeconds = .16f, HealSeconds = .18f, TrailSeconds = .50f;
         [Min(0)] public float TrailDelaySeconds = .15f;
         public TextAsset DeathParticles, OnlineDeathParticles;

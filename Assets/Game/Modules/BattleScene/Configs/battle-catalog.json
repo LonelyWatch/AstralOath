@@ -1080,6 +1080,276 @@
       "resourceAttackedSpend": 0,
       "resourceOpeningGain": 0,
       "resourceAttackedGain": 0
+    },
+    {
+      "id": "c1043",
+      "nameKey": "character.roman.name",
+      "element": "ice",
+      "heroClass": "mage",
+      "zodiac": "gemini",
+      "growthPresetId": "mage_gemini_4",
+      "baseStars": 4,
+      "level": 60,
+      "stars": 6,
+      "awakenings": 6,
+      "variant": "standard",
+      "attack": 1109,
+      "health": 4329,
+      "defense": 655,
+      "speed": 105,
+      "critChanceBp": 1500,
+      "critDamageBp": 15000,
+      "effectivenessBp": 3000,
+      "effectResistanceBp": 0,
+      "resourceKind": "none",
+      "resourceMaximum": 0,
+      "resourceTurnGain": 0,
+      "resourceAttackedSpend": 0,
+      "resourceOpeningGain": 0,
+      "resourceAttackedGain": 0
+    },
+    {
+      "id": "c1044",
+      "nameKey": "character.mui.name",
+      "element": "wind",
+      "heroClass": "warrior",
+      "zodiac": "virgo",
+      "growthPresetId": "warrior_virgo_5",
+      "baseStars": 5,
+      "level": 60,
+      "stars": 6,
+      "awakenings": 6,
+      "variant": "standard",
+      "attack": 1039,
+      "health": 5340,
+      "defense": 617,
+      "speed": 115,
+      "critChanceBp": 2700,
+      "critDamageBp": 15000,
+      "effectivenessBp": 1800,
+      "effectResistanceBp": 0,
+      "resourceKind": "none",
+      "resourceMaximum": 0,
+      "resourceTurnGain": 0,
+      "resourceAttackedSpend": 0,
+      "resourceOpeningGain": 0,
+      "resourceAttackedGain": 0
+    },
+    {
+      "id": "c1046",
+      "nameKey": "character.lidica.name",
+      "element": "fire",
+      "heroClass": "ranger",
+      "zodiac": "virgo",
+      "growthPresetId": "ranger_virgo_5",
+      "baseStars": 5,
+      "level": 60,
+      "stars": 6,
+      "awakenings": 6,
+      "variant": "standard",
+      "attack": 1283,
+      "health": 4976,
+      "defense": 536,
+      "speed": 124,
+      "critChanceBp": 1500,
+      "critDamageBp": 15000,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0,
+      "resourceKind": "none",
+      "resourceMaximum": 0,
+      "resourceTurnGain": 0,
+      "resourceAttackedSpend": 0,
+      "resourceOpeningGain": 0,
+      "resourceAttackedGain": 0
+    },
+    {
+      "id": "c1047",
+      "nameKey": "character.ken.name",
+      "element": "fire",
+      "heroClass": "warrior",
+      "zodiac": "capricorn",
+      "growthPresetId": "warrior_capricorn_5",
+      "baseStars": 5,
+      "level": 60,
+      "stars": 6,
+      "awakenings": 6,
+      "variant": "standard",
+      "attack": 966,
+      "health": 7323,
+      "defense": 657,
+      "speed": 102,
+      "critChanceBp": 1500,
+      "critDamageBp": 15000,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0,
+      "resourceKind": "fighting_spirit",
+      "resourceMaximum": 100,
+      "resourceTurnGain": 0,
+      "resourceAttackedSpend": 0,
+      "resourceOpeningGain": 40,
+      "resourceAttackedGain": 0
+    },
+    {
+      "id": "c1048",
+      "nameKey": "character.araminta.name",
+      "element": "fire",
+      "heroClass": "mage",
+      "zodiac": "gemini",
+      "growthPresetId": "mage_gemini_5",
+      "baseStars": 5,
+      "level": 60,
+      "stars": 6,
+      "awakenings": 6,
+      "variant": "standard",
+      "attack": 1197,
+      "health": 4572,
+      "defense": 683,
+      "speed": 106,
+      "critChanceBp": 1500,
+      "critDamageBp": 15000,
+      "effectivenessBp": 3000,
+      "effectResistanceBp": 0,
+      "resourceKind": "none",
+      "resourceMaximum": 0,
+      "resourceTurnGain": 0,
+      "resourceAttackedSpend": 0,
+      "resourceOpeningGain": 0,
+      "resourceAttackedGain": 0
+    },
+    {
+      "id": "c1049",
+      "nameKey": "character.chloe.name",
+      "element": "ice",
+      "heroClass": "warrior",
+      "zodiac": "sagittarius",
+      "growthPresetId": "warrior_sagittarius_5",
+      "baseStars": 5,
+      "level": 60,
+      "stars": 6,
+      "awakenings": 6,
+      "variant": "standard",
+      "attack": 1177,
+      "health": 5542,
+      "defense": 553,
+      "speed": 119,
+      "critChanceBp": 2700,
+      "critDamageBp": 15000,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0,
+      "resourceKind": "none",
+      "resourceMaximum": 0,
+      "resourceTurnGain": 0,
+      "resourceAttackedSpend": 0,
+      "resourceOpeningGain": 0,
+      "resourceAttackedGain": 0
+    },
+    {
+      "id": "c1050",
+      "nameKey": "character.tenebria.name",
+      "element": "fire",
+      "heroClass": "mage",
+      "zodiac": "cancer",
+      "growthPresetId": "mage_cancer_5",
+      "baseStars": 5,
+      "level": 60,
+      "stars": 6,
+      "awakenings": 6,
+      "variant": "standard",
+      "attack": 1359,
+      "health": 4895,
+      "defense": 652,
+      "speed": 110,
+      "critChanceBp": 2300,
+      "critDamageBp": 15000,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0,
+      "resourceKind": "none",
+      "resourceMaximum": 0,
+      "resourceTurnGain": 0,
+      "resourceAttackedSpend": 0,
+      "resourceOpeningGain": 0,
+      "resourceAttackedGain": 0
+    },
+    {
+      "id": "c1053",
+      "nameKey": "character.basar.name",
+      "element": "wind",
+      "heroClass": "mage",
+      "zodiac": "aquarius",
+      "growthPresetId": "mage_aquarius_5",
+      "baseStars": 5,
+      "level": 60,
+      "stars": 6,
+      "awakenings": 6,
+      "variant": "standard",
+      "attack": 1316,
+      "health": 4777,
+      "defense": 715,
+      "speed": 108,
+      "critChanceBp": 1500,
+      "critDamageBp": 15000,
+      "effectivenessBp": 1800,
+      "effectResistanceBp": 0,
+      "resourceKind": "none",
+      "resourceMaximum": 0,
+      "resourceTurnGain": 0,
+      "resourceAttackedSpend": 0,
+      "resourceOpeningGain": 0,
+      "resourceAttackedGain": 0
+    },
+    {
+      "id": "c1054",
+      "nameKey": "character.ring.name",
+      "element": "wind",
+      "heroClass": "soul_weaver",
+      "zodiac": "virgo",
+      "growthPresetId": "soul_weaver_virgo_4",
+      "baseStars": 4,
+      "level": 60,
+      "stars": 6,
+      "awakenings": 6,
+      "variant": "standard",
+      "attack": 594,
+      "health": 5057,
+      "defense": 691,
+      "speed": 104,
+      "critChanceBp": 1500,
+      "critDamageBp": 15000,
+      "effectivenessBp": 1800,
+      "effectResistanceBp": 0,
+      "resourceKind": "none",
+      "resourceMaximum": 0,
+      "resourceTurnGain": 0,
+      "resourceAttackedSpend": 0,
+      "resourceOpeningGain": 0,
+      "resourceAttackedGain": 0
+    },
+    {
+      "id": "c1055",
+      "nameKey": "character.jenua.name",
+      "element": "fire",
+      "heroClass": "thief",
+      "zodiac": "scorpio",
+      "growthPresetId": "thief_scorpio_5",
+      "baseStars": 5,
+      "level": 60,
+      "stars": 6,
+      "awakenings": 6,
+      "variant": "standard",
+      "attack": 1228,
+      "health": 6266,
+      "defense": 473,
+      "speed": 113,
+      "critChanceBp": 2300,
+      "critDamageBp": 15000,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0,
+      "resourceKind": "none",
+      "resourceMaximum": 0,
+      "resourceTurnGain": 0,
+      "resourceAttackedSpend": 0,
+      "resourceOpeningGain": 0,
+      "resourceAttackedGain": 0
     }
   ],
   "growthPresets": [
@@ -1422,6 +1692,76 @@
       "healthCoefficientMilli": 134000,
       "defenseCoefficientMilli": 58500,
       "speedMilli": 106250
+    },
+    {
+      "id": "mage_gemini_4",
+      "nativeStars": 4,
+      "heroClass": "mage",
+      "zodiac": "gemini",
+      "attackCoefficientMilli": 58200,
+      "healthCoefficientMilli": 135400,
+      "defenseCoefficientMilli": 56100,
+      "speedMilli": 105000
+    },
+    {
+      "id": "warrior_virgo_5",
+      "nativeStars": 5,
+      "heroClass": "warrior",
+      "zodiac": "virgo",
+      "attackCoefficientMilli": 58800,
+      "healthCoefficientMilli": 170400,
+      "defenseCoefficientMilli": 52800,
+      "speedMilli": 111250
+    },
+    {
+      "id": "ranger_virgo_5",
+      "nativeStars": 5,
+      "heroClass": "ranger",
+      "zodiac": "virgo",
+      "attackCoefficientMilli": 63600,
+      "healthCoefficientMilli": 157800,
+      "defenseCoefficientMilli": 45900,
+      "speedMilli": 120625
+    },
+    {
+      "id": "warrior_sagittarius_5",
+      "nativeStars": 5,
+      "heroClass": "warrior",
+      "zodiac": "sagittarius",
+      "attackCoefficientMilli": 62400,
+      "healthCoefficientMilli": 177400,
+      "defenseCoefficientMilli": 47400,
+      "speedMilli": 115625
+    },
+    {
+      "id": "mage_cancer_5",
+      "nativeStars": 5,
+      "heroClass": "mage",
+      "zodiac": "cancer",
+      "attackCoefficientMilli": 67800,
+      "healthCoefficientMilli": 155000,
+      "defenseCoefficientMilli": 55800,
+      "speedMilli": 110000
+    },
+    {
+      "id": "mage_aquarius_5",
+      "nativeStars": 5,
+      "heroClass": "mage",
+      "zodiac": "aquarius",
+      "attackCoefficientMilli": 70800,
+      "healthCoefficientMilli": 142400,
+      "defenseCoefficientMilli": 61200,
+      "speedMilli": 108750
+    },
+    {
+      "id": "soul_weaver_virgo_4",
+      "nativeStars": 4,
+      "heroClass": "soul_weaver",
+      "zodiac": "virgo",
+      "attackCoefficientMilli": 29400,
+      "healthCoefficientMilli": 160600,
+      "defenseCoefficientMilli": 55800,
+      "speedMilli": 98750
     }
   ],
   "awakeningSteps": [
@@ -5024,6 +5364,906 @@
       "critDamageBp": 0,
       "effectivenessBp": 1200,
       "effectResistanceBp": 0
+    },
+    {
+      "id": "c1043.r1",
+      "heroId": "c1043",
+      "rank": 1,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 300,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1043.r2",
+      "heroId": "c1043",
+      "rank": 2,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 600,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1043.r3",
+      "heroId": "c1043",
+      "rank": 3,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1043.r4",
+      "heroId": "c1043",
+      "rank": 4,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 1200,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1043.r5",
+      "heroId": "c1043",
+      "rank": 5,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 600,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1043.r6",
+      "heroId": "c1043",
+      "rank": 6,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 1200,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1044.r1",
+      "heroId": "c1044",
+      "rank": 1,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 600,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1044.r2",
+      "heroId": "c1044",
+      "rank": 2,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 400,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1044.r3",
+      "heroId": "c1044",
+      "rank": 3,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1044.r4",
+      "heroId": "c1044",
+      "rank": 4,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 4,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1044.r5",
+      "heroId": "c1044",
+      "rank": 5,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 1200,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1044.r6",
+      "heroId": "c1044",
+      "rank": 6,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 800,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1046.r1",
+      "heroId": "c1046",
+      "rank": 1,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 300,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1046.r2",
+      "heroId": "c1046",
+      "rank": 2,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 300,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1046.r3",
+      "heroId": "c1046",
+      "rank": 3,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1046.r4",
+      "heroId": "c1046",
+      "rank": 4,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 4,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1046.r5",
+      "heroId": "c1046",
+      "rank": 5,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 600,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1046.r6",
+      "heroId": "c1046",
+      "rank": 6,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 600,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1047.r1",
+      "heroId": "c1047",
+      "rank": 1,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 300,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1047.r2",
+      "heroId": "c1047",
+      "rank": 2,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 300,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1047.r3",
+      "heroId": "c1047",
+      "rank": 3,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1047.r4",
+      "heroId": "c1047",
+      "rank": 4,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 600,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1047.r5",
+      "heroId": "c1047",
+      "rank": 5,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 600,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1047.r6",
+      "heroId": "c1047",
+      "rank": 6,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 600,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1048.r1",
+      "heroId": "c1048",
+      "rank": 1,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 300,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1048.r2",
+      "heroId": "c1048",
+      "rank": 2,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 600,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1048.r3",
+      "heroId": "c1048",
+      "rank": 3,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1048.r4",
+      "heroId": "c1048",
+      "rank": 4,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 1200,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1048.r5",
+      "heroId": "c1048",
+      "rank": 5,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 600,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1048.r6",
+      "heroId": "c1048",
+      "rank": 6,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 1200,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1049.r1",
+      "heroId": "c1049",
+      "rank": 1,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 300,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1049.r2",
+      "heroId": "c1049",
+      "rank": 2,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 400,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1049.r3",
+      "heroId": "c1049",
+      "rank": 3,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1049.r4",
+      "heroId": "c1049",
+      "rank": 4,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 4,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1049.r5",
+      "heroId": "c1049",
+      "rank": 5,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 600,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1049.r6",
+      "heroId": "c1049",
+      "rank": 6,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 800,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1050.r1",
+      "heroId": "c1050",
+      "rank": 1,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 300,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1050.r2",
+      "heroId": "c1050",
+      "rank": 2,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 300,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1050.r3",
+      "heroId": "c1050",
+      "rank": 3,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1050.r4",
+      "heroId": "c1050",
+      "rank": 4,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 800,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1050.r5",
+      "heroId": "c1050",
+      "rank": 5,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 600,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1050.r6",
+      "heroId": "c1050",
+      "rank": 6,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 600,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1053.r1",
+      "heroId": "c1053",
+      "rank": 1,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 300,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1053.r2",
+      "heroId": "c1053",
+      "rank": 2,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 600,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1053.r3",
+      "heroId": "c1053",
+      "rank": 3,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1053.r4",
+      "heroId": "c1053",
+      "rank": 4,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 600,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1053.r5",
+      "heroId": "c1053",
+      "rank": 5,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 600,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1053.r6",
+      "heroId": "c1053",
+      "rank": 6,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 1200,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1054.r1",
+      "heroId": "c1054",
+      "rank": 1,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 2,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1054.r2",
+      "heroId": "c1054",
+      "rank": 2,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 600,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1054.r3",
+      "heroId": "c1054",
+      "rank": 3,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1054.r4",
+      "heroId": "c1054",
+      "rank": 4,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 600,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1054.r5",
+      "heroId": "c1054",
+      "rank": 5,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 4,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1054.r6",
+      "heroId": "c1054",
+      "rank": 6,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 1200,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1055.r1",
+      "heroId": "c1055",
+      "rank": 1,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 300,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1055.r2",
+      "heroId": "c1055",
+      "rank": 2,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 300,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1055.r3",
+      "heroId": "c1055",
+      "rank": 3,
+      "attackFlat": 20,
+      "healthFlat": 60,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1055.r4",
+      "heroId": "c1055",
+      "rank": 4,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 800,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1055.r5",
+      "heroId": "c1055",
+      "rank": 5,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 600,
+      "healthPercentBp": 0,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
+    },
+    {
+      "id": "c1055.r6",
+      "heroId": "c1055",
+      "rank": 6,
+      "attackFlat": 30,
+      "healthFlat": 80,
+      "attackPercentBp": 0,
+      "healthPercentBp": 600,
+      "defensePercentBp": 0,
+      "speedFlat": 0,
+      "critChanceBp": 0,
+      "critDamageBp": 0,
+      "effectivenessBp": 0,
+      "effectResistanceBp": 0
     }
   ],
   "skills": [
@@ -5055,7 +6295,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1001.s2",
@@ -5084,7 +6326,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1001.s3",
@@ -5114,7 +6358,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1002.s1",
@@ -5144,7 +6390,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1002.s2",
@@ -5174,7 +6422,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1002.s3",
@@ -5205,7 +6455,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1003.s1",
@@ -5235,7 +6487,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1003.s2",
@@ -5263,7 +6517,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1003.s3",
@@ -5290,7 +6546,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1004.s1",
@@ -5320,7 +6578,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1004.s2",
@@ -5347,7 +6607,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1004.s3",
@@ -5376,7 +6638,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1005.s1",
@@ -5405,7 +6669,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1005.s2",
@@ -5434,7 +6700,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1005.s3",
@@ -5463,7 +6731,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1006.s1",
@@ -5493,7 +6763,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1006.s2",
@@ -5525,7 +6797,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1006.s3",
@@ -5556,7 +6830,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1007.s1",
@@ -5586,7 +6862,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1007.s2",
@@ -5616,7 +6894,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1007.s3",
@@ -5648,7 +6928,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1008.s1",
@@ -5678,7 +6960,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1008.s2",
@@ -5705,7 +6989,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1008.s3",
@@ -5733,7 +7019,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1009.s1",
@@ -5762,7 +7050,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1009.s2",
@@ -5790,7 +7080,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1009.s3",
@@ -5820,7 +7112,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1010.s1",
@@ -5849,7 +7143,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1010.s2",
@@ -5879,7 +7175,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1010.s3",
@@ -5908,7 +7206,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1011.s1",
@@ -5937,7 +7237,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1011.s2",
@@ -5966,7 +7268,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1011.s3",
@@ -5996,7 +7300,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1012.s1",
@@ -6026,7 +7332,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1012.s2",
@@ -6056,7 +7364,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1012.s3",
@@ -6084,7 +7394,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1062.s1",
@@ -6113,7 +7425,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1062.s2",
@@ -6141,7 +7455,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1062.s3",
@@ -6170,7 +7486,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1013.s1",
@@ -6200,7 +7518,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1013.s2",
@@ -6227,7 +7547,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1013.s3",
@@ -6259,7 +7581,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1014.s1",
@@ -6291,7 +7615,9 @@
       "speedUpNameKey": "battle.skill.c1014.whirlwind.name",
       "speedUpDescriptionKey": "battle.skill.c1014.whirlwind.description",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1014.s2",
@@ -6318,7 +7644,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1014.s3",
@@ -6349,7 +7677,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1015.s1",
@@ -6378,7 +7708,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1015.s2",
@@ -6408,7 +7740,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1015.s3",
@@ -6437,7 +7771,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1016.s1",
@@ -6466,7 +7802,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1016.s2",
@@ -6495,7 +7833,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1016.s3",
@@ -6524,7 +7864,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1017.s1",
@@ -6553,7 +7895,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1017.s2",
@@ -6582,7 +7926,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1017.s3",
@@ -6610,7 +7956,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1018.s1",
@@ -6639,7 +7987,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1018.s2",
@@ -6666,7 +8016,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1018.s3",
@@ -6693,7 +8045,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1019.s1",
@@ -6723,7 +8077,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1019.s2",
@@ -6750,7 +8106,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1019.s3",
@@ -6779,7 +8137,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1020.s1",
@@ -6808,7 +8168,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1020.s2",
@@ -6835,7 +8197,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1020.s3",
@@ -6864,7 +8228,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1021.s1",
@@ -6893,7 +8259,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1021.s2",
@@ -6922,7 +8290,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1021.s3",
@@ -6949,7 +8319,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1022.s1",
@@ -6980,7 +8352,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "c_ruell_skill_01_2",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1022.s2",
@@ -7009,7 +8383,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1022.s3",
@@ -7036,7 +8412,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1023.s1",
@@ -7066,7 +8444,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1023.s2",
@@ -7093,7 +8473,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1023.s3",
@@ -7122,7 +8504,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1024.s1",
@@ -7152,7 +8536,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "c_iseria_skill_01_2",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1024.s2",
@@ -7179,7 +8565,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1024.s3",
@@ -7208,7 +8596,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1027.s1",
@@ -7237,7 +8627,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1027.s2",
@@ -7266,7 +8658,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1027.s3",
@@ -7295,7 +8689,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1028.s1",
@@ -7324,7 +8720,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1028.s2",
@@ -7353,7 +8751,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1028.s3",
@@ -7383,7 +8783,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1029.s1",
@@ -7412,7 +8814,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1029.s2",
@@ -7441,7 +8845,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1029.s3",
@@ -7470,7 +8876,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1030.s1",
@@ -7500,7 +8908,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1030.s2",
@@ -7527,7 +8937,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1030.s3",
@@ -7556,7 +8968,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1031.s1",
@@ -7585,7 +8999,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1031.s2",
@@ -7612,7 +9028,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1031.s3",
@@ -7639,7 +9057,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1032.s1",
@@ -7669,7 +9089,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1032.s2",
@@ -7699,7 +9121,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1032.s3",
@@ -7726,7 +9150,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1033.s1",
@@ -7755,7 +9181,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1033.s2",
@@ -7784,7 +9212,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1033.s3",
@@ -7813,7 +9243,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1034.s1",
@@ -7842,7 +9274,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1034.s2",
@@ -7871,7 +9305,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1034.s3",
@@ -7900,7 +9336,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1035.s1",
@@ -7930,7 +9368,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1035.s2",
@@ -7960,7 +9400,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": "c_fuzzies_skill_03_2"
+      "counterPresentationId": "c_fuzzies_skill_03_2",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1035.s3",
@@ -7991,7 +9433,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1036.s1",
@@ -8021,7 +9465,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1036.s2",
@@ -8048,7 +9494,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1036.s3",
@@ -8079,7 +9527,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1037.s1",
@@ -8108,7 +9558,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1037.s2",
@@ -8135,7 +9587,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1037.s3",
@@ -8164,7 +9618,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1038.s1",
@@ -8193,7 +9649,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1038.s2",
@@ -8222,7 +9680,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1038.s3",
@@ -8252,7 +9712,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1039.s1",
@@ -8281,7 +9743,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1039.s2",
@@ -8311,7 +9775,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1039.s3",
@@ -8340,7 +9806,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1040.s1",
@@ -8369,7 +9837,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1040.s2",
@@ -8399,7 +9869,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1040.s3",
@@ -8428,7 +9900,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1042.s1",
@@ -8458,7 +9932,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1042.s2",
@@ -8486,7 +9962,9 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     },
     {
       "id": "c1042.s3",
@@ -8516,7 +9994,944 @@
       "speedUpNameKey": "",
       "speedUpDescriptionKey": "",
       "burnPresentationId": "",
-      "counterPresentationId": ""
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1043.s1",
+      "heroId": "c1043",
+      "slot": 1,
+      "nameKey": "battle.skill.c1043.s1.name",
+      "descriptionKey": "battle.skill.c1043.s1.description",
+      "presentationId": "c_roman_skill_01",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1043_1.png",
+      "target": "one_enemy",
+      "cooldownTurns": 0,
+      "soulGain": 1,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 10000,
+      "powerBp": 10000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1043.s2",
+      "heroId": "c1043",
+      "slot": 2,
+      "nameKey": "battle.skill.c1043.s2.name",
+      "descriptionKey": "battle.skill.c1043.s2.description",
+      "presentationId": "c_roman_skill_02",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1043_2.png",
+      "target": "all_enemies",
+      "cooldownTurns": 3,
+      "soulGain": 2,
+      "soulBurnCost": 10,
+      "soulBurnKind": "reduce_cooldown",
+      "soulBurnTurns": 2,
+      "attackRateBp": 8000,
+      "powerBp": 10000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1043.s3",
+      "heroId": "c1043",
+      "slot": 3,
+      "nameKey": "battle.skill.c1043.s3.name",
+      "descriptionKey": "battle.skill.c1043.s3.description",
+      "presentationId": "c_roman_skill_03",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1043_3.png",
+      "target": "all_enemies",
+      "cooldownTurns": 5,
+      "soulGain": 2,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 9000,
+      "powerBp": 8500,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1044.s1",
+      "heroId": "c1044",
+      "slot": 1,
+      "nameKey": "battle.skill.c1044.s1.name",
+      "descriptionKey": "battle.skill.c1044.s1.description",
+      "presentationId": "c_mui_skill_01",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1044_1.png",
+      "target": "one_enemy",
+      "cooldownTurns": 0,
+      "soulGain": 1,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 10000,
+      "powerBp": 10000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1044.s2",
+      "heroId": "c1044",
+      "slot": 2,
+      "nameKey": "battle.skill.c1044.s2.name",
+      "descriptionKey": "battle.skill.c1044.s2.description",
+      "presentationId": "c_mui_skill_02",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1044_2.png",
+      "target": "all_enemies",
+      "cooldownTurns": 4,
+      "soulGain": 2,
+      "soulBurnCost": 20,
+      "soulBurnKind": "enhance_effect",
+      "soulBurnTurns": 0,
+      "attackRateBp": 8000,
+      "powerBp": 10000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1044.s3",
+      "heroId": "c1044",
+      "slot": 3,
+      "nameKey": "battle.skill.c1044.s3.name",
+      "descriptionKey": "battle.skill.c1044.s3.description",
+      "presentationId": "c_mui_skill_03",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1044_3.png",
+      "target": "all_enemies",
+      "cooldownTurns": 6,
+      "soulGain": 2,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 10000,
+      "powerBp": 9500,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1046.s1",
+      "heroId": "c1046",
+      "slot": 1,
+      "nameKey": "battle.skill.c1046.s1.name",
+      "descriptionKey": "battle.skill.c1046.s1.description",
+      "presentationId": "c_lidica_skill_01",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1046_1.png",
+      "target": "one_enemy",
+      "cooldownTurns": 0,
+      "soulGain": 1,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 7000,
+      "powerBp": 10000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1046.s2",
+      "heroId": "c1046",
+      "slot": 2,
+      "nameKey": "battle.skill.c1046.s2.name",
+      "descriptionKey": "battle.skill.c1046.s2.description",
+      "presentationId": "c_lidica_skill_02",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1046_2.png",
+      "target": "all_enemies",
+      "cooldownTurns": 4,
+      "soulGain": 2,
+      "soulBurnCost": 20,
+      "soulBurnKind": "ignore_resistance",
+      "soulBurnTurns": 0,
+      "attackRateBp": 7000,
+      "powerBp": 10000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1046.s3",
+      "heroId": "c1046",
+      "slot": 3,
+      "nameKey": "battle.skill.c1046.s3.name",
+      "descriptionKey": "battle.skill.c1046.s3.description",
+      "presentationId": "c_lidica_skill_03",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1046_3.png",
+      "target": "one_enemy",
+      "cooldownTurns": 5,
+      "soulGain": 2,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 16000,
+      "powerBp": 10000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1047.s1",
+      "heroId": "c1047",
+      "slot": 1,
+      "nameKey": "battle.skill.c1047.s1.name",
+      "descriptionKey": "battle.skill.c1047.s1.description",
+      "presentationId": "c_ken_skill_01_02",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1047_1.png",
+      "target": "one_enemy",
+      "cooldownTurns": 0,
+      "soulGain": 1,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 10000,
+      "powerBp": 10000,
+      "casterHealthDamageBp": 1000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 15,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "Vigor",
+      "alternatePresentationId": "c_ken_skill_01_01"
+    },
+    {
+      "id": "c1047.s2",
+      "heroId": "c1047",
+      "slot": 2,
+      "nameKey": "battle.skill.c1047.s2.name",
+      "descriptionKey": "battle.skill.c1047.s2.description",
+      "presentationId": "c_ken_skill_02",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1047_2.png",
+      "target": "one_enemy",
+      "cooldownTurns": 3,
+      "soulGain": 2,
+      "soulBurnCost": 20,
+      "soulBurnKind": "extra_turn",
+      "soulBurnTurns": 0,
+      "attackRateBp": 12000,
+      "powerBp": 10000,
+      "casterHealthDamageBp": 1000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 40,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1047.s3",
+      "heroId": "c1047",
+      "slot": 3,
+      "nameKey": "battle.skill.c1047.s3.name",
+      "descriptionKey": "battle.skill.c1047.s3.description",
+      "presentationId": "c_ken_skill_03",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1047_3.png",
+      "target": "one_enemy",
+      "cooldownTurns": 5,
+      "soulGain": 3,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 15000,
+      "powerBp": 9000,
+      "casterHealthDamageBp": 3000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 80,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1048.s1",
+      "heroId": "c1048",
+      "slot": 1,
+      "nameKey": "battle.skill.c1048.s1.name",
+      "descriptionKey": "battle.skill.c1048.s1.description",
+      "presentationId": "c_araminta_skill_01",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1048_1.png",
+      "target": "one_enemy",
+      "cooldownTurns": 0,
+      "soulGain": 1,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 10000,
+      "powerBp": 10500,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1048.s2",
+      "heroId": "c1048",
+      "slot": 2,
+      "nameKey": "battle.skill.c1048.s2.name",
+      "descriptionKey": "battle.skill.c1048.s2.description",
+      "presentationId": "c_araminta_skill_02",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1048_2.png",
+      "target": "all_enemies",
+      "cooldownTurns": 5,
+      "soulGain": 2,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 9000,
+      "powerBp": 10000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1048.s3",
+      "heroId": "c1048",
+      "slot": 3,
+      "nameKey": "battle.skill.c1048.s3.name",
+      "descriptionKey": "battle.skill.c1048.s3.description",
+      "presentationId": "c_araminta_skill_03",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1048_3.png",
+      "target": "all_enemies",
+      "cooldownTurns": 5,
+      "soulGain": 2,
+      "soulBurnCost": 20,
+      "soulBurnKind": "ignore_resistance",
+      "soulBurnTurns": 0,
+      "attackRateBp": 10000,
+      "powerBp": 10000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "casterAttackBarrierBp": 10000,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1049.s1",
+      "heroId": "c1049",
+      "slot": 1,
+      "nameKey": "battle.skill.c1049.s1.name",
+      "descriptionKey": "battle.skill.c1049.s1.description",
+      "presentationId": "c_chloe_skill_01",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1049_1.png",
+      "target": "one_enemy",
+      "cooldownTurns": 0,
+      "soulGain": 1,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 10000,
+      "powerBp": 9000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1049.s2",
+      "heroId": "c1049",
+      "slot": 2,
+      "nameKey": "battle.skill.c1049.s2.name",
+      "descriptionKey": "battle.skill.c1049.s2.description",
+      "presentationId": "c_chloe_skill_02",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1049_2.png",
+      "target": "one_enemy",
+      "cooldownTurns": 3,
+      "soulGain": 1,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 12000,
+      "powerBp": 9000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1049.s3",
+      "heroId": "c1049",
+      "slot": 3,
+      "nameKey": "battle.skill.c1049.s3.name",
+      "descriptionKey": "battle.skill.c1049.s3.description",
+      "presentationId": "c_chloe_skill_03",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1049_3.png",
+      "target": "one_enemy",
+      "cooldownTurns": 4,
+      "soulGain": 2,
+      "soulBurnCost": 20,
+      "soulBurnKind": "increase_damage",
+      "soulBurnTurns": 0,
+      "attackRateBp": 18000,
+      "powerBp": 8000,
+      "burnAttackRateBp": 33000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1050.s1",
+      "heroId": "c1050",
+      "slot": 1,
+      "nameKey": "battle.skill.c1050.s1.name",
+      "descriptionKey": "battle.skill.c1050.s1.description",
+      "presentationId": "c_tenebria_skill_01",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1050_1.png",
+      "target": "two_enemies",
+      "cooldownTurns": 0,
+      "soulGain": 1,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 12000,
+      "powerBp": 10000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1050.s2",
+      "heroId": "c1050",
+      "slot": 2,
+      "nameKey": "battle.skill.c1050.s2.name",
+      "descriptionKey": "battle.skill.c1050.s2.description",
+      "presentationId": "c_tenebria_skill_02",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1050_2.png",
+      "target": "all_enemies",
+      "cooldownTurns": 3,
+      "soulGain": 2,
+      "soulBurnCost": 10,
+      "soulBurnKind": "increase_damage",
+      "soulBurnTurns": 0,
+      "attackRateBp": 10000,
+      "powerBp": 10000,
+      "burnAttackRateBp": 12500,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1050.s3",
+      "heroId": "c1050",
+      "slot": 3,
+      "nameKey": "battle.skill.c1050.s3.name",
+      "descriptionKey": "battle.skill.c1050.s3.description",
+      "presentationId": "c_tenebria_skill_03",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1050_3.png",
+      "target": "all_enemies",
+      "cooldownTurns": 4,
+      "soulGain": 3,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 11000,
+      "powerBp": 10500,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1053.s1",
+      "heroId": "c1053",
+      "slot": 1,
+      "nameKey": "battle.skill.c1053.s1.name",
+      "descriptionKey": "battle.skill.c1053.s1.description",
+      "presentationId": "c_basar_skill_01",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1053_1.png",
+      "target": "one_enemy",
+      "cooldownTurns": 0,
+      "soulGain": 1,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 10000,
+      "powerBp": 10000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1053.s2",
+      "heroId": "c1053",
+      "slot": 2,
+      "nameKey": "battle.skill.c1053.s2.name",
+      "descriptionKey": "battle.skill.c1053.s2.description",
+      "presentationId": "c_basar_skill_02",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1053_2.png",
+      "target": "all_enemies",
+      "cooldownTurns": 3,
+      "soulGain": 2,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 9000,
+      "powerBp": 10000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1053.s3",
+      "heroId": "c1053",
+      "slot": 3,
+      "nameKey": "battle.skill.c1053.s3.name",
+      "descriptionKey": "battle.skill.c1053.s3.description",
+      "presentationId": "c_basar_skill_03",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1053_3.png",
+      "target": "all_enemies",
+      "cooldownTurns": 5,
+      "soulGain": 3,
+      "soulBurnCost": 20,
+      "soulBurnKind": "ignore_resistance",
+      "soulBurnTurns": 0,
+      "attackRateBp": 9000,
+      "powerBp": 9000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1054.s1",
+      "heroId": "c1054",
+      "slot": 1,
+      "nameKey": "battle.skill.c1054.s1.name",
+      "descriptionKey": "battle.skill.c1054.s1.description",
+      "presentationId": "c_ring_skill_01",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1054_1.png",
+      "target": "one_enemy",
+      "cooldownTurns": 0,
+      "soulGain": 1,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 7000,
+      "powerBp": 9000,
+      "casterHealthDamageBp": 500,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1054.s2",
+      "heroId": "c1054",
+      "slot": 2,
+      "nameKey": "battle.skill.c1054.s2.name",
+      "descriptionKey": "battle.skill.c1054.s2.description",
+      "presentationId": "c_ring_skill_02",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1054_2.png",
+      "target": "one_enemy",
+      "cooldownTurns": 2,
+      "soulGain": 2,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 7000,
+      "powerBp": 10000,
+      "casterHealthDamageBp": 700,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1054.s3",
+      "heroId": "c1054",
+      "slot": 3,
+      "nameKey": "battle.skill.c1054.s3.name",
+      "descriptionKey": "battle.skill.c1054.s3.description",
+      "presentationId": "c_ring_skill_03",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1054_3.png",
+      "target": "all_allies",
+      "cooldownTurns": 5,
+      "soulGain": 2,
+      "soulBurnCost": 10,
+      "soulBurnKind": "extend_granted_buffs",
+      "soulBurnTurns": 1,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1055.s1",
+      "heroId": "c1055",
+      "slot": 1,
+      "nameKey": "battle.skill.c1055.s1.name",
+      "descriptionKey": "battle.skill.c1055.s1.description",
+      "presentationId": "c_jenua_skill_01",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1055_1.png",
+      "target": "one_enemy",
+      "cooldownTurns": 0,
+      "soulGain": 1,
+      "soulBurnCost": 10,
+      "soulBurnKind": "enhance_effect",
+      "soulBurnTurns": 0,
+      "attackRateBp": 10000,
+      "powerBp": 9000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1055.s2",
+      "heroId": "c1055",
+      "slot": 2,
+      "nameKey": "battle.skill.c1055.s2.name",
+      "descriptionKey": "battle.skill.c1055.s2.description",
+      "presentationId": "c_jenua_skill_03",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1055_3.png",
+      "target": "passive",
+      "cooldownTurns": 5,
+      "soulGain": 0,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
+    },
+    {
+      "id": "c1055.s3",
+      "heroId": "c1055",
+      "slot": 3,
+      "nameKey": "battle.skill.c1055.s3.name",
+      "descriptionKey": "battle.skill.c1055.s3.description",
+      "presentationId": "c_jenua_skill_02",
+      "iconAsset": "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills/sk_c1055_2.png",
+      "target": "one_enemy",
+      "cooldownTurns": 5,
+      "soulGain": 2,
+      "soulBurnCost": 0,
+      "soulBurnKind": "none",
+      "soulBurnTurns": 0,
+      "attackRateBp": 3200,
+      "powerBp": 9500,
+      "defensePenetrationBp": 10000,
+      "alwaysCritical": false,
+      "aoeWhenBuffed": false,
+      "aoeOutsideTurn": false,
+      "resourceCost": 0,
+      "resourceGain": 0,
+      "resourceGainWhenBuffed": 0,
+      "speedUpPresentationId": "",
+      "speedUpIconAsset": "",
+      "speedUpNameKey": "",
+      "speedUpDescriptionKey": "",
+      "burnPresentationId": "",
+      "counterPresentationId": "",
+      "alternatePresentationStatus": "",
+      "alternatePresentationId": ""
     }
   ],
   "effects": [
@@ -14399,6 +16814,1971 @@
       "condition": "none",
       "chanceBonusStatus": "none",
       "chanceBonusBp": 0
+    },
+    {
+      "id": "c1043.s1.1",
+      "skillId": "c1043.s1",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1043.s1.2",
+      "skillId": "c1043.s1",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "reduce_readiness",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 800,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1043.s1.3",
+      "skillId": "c1043.s1",
+      "order": 3,
+      "phase": "after_attack",
+      "operation": "readiness",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 800,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1043.s2.1",
+      "skillId": "c1043.s2",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1043.s2.2",
+      "skillId": "c1043.s2",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "reduce_readiness",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 5000,
+      "turns": 0,
+      "value": 1500,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1043.s2.3",
+      "skillId": "c1043.s2",
+      "order": 3,
+      "phase": "after_hit",
+      "operation": "reduce_readiness",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 5000,
+      "turns": 0,
+      "value": 1500,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1043.s2.4",
+      "skillId": "c1043.s2",
+      "order": 4,
+      "phase": "after_hit",
+      "operation": "reduce_readiness",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 5000,
+      "turns": 0,
+      "value": 1500,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1043.s2.5",
+      "skillId": "c1043.s2",
+      "order": 5,
+      "phase": "after_hit",
+      "operation": "reduce_readiness",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 5000,
+      "turns": 0,
+      "value": 1500,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1043.s3.1",
+      "skillId": "c1043.s3",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1043.s3.2",
+      "skillId": "c1043.s3",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "dispel_all",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 20,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1043.s3.3",
+      "skillId": "c1043.s3",
+      "order": 3,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Restrict",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1043.s3.4",
+      "skillId": "c1043.s3",
+      "order": 4,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Poison",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 500,
+      "condition": "caster_skill_awakened",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1043.s3.5",
+      "skillId": "c1043.s3",
+      "order": 5,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Poison",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 500,
+      "condition": "caster_skill_awakened",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1043.s3.6",
+      "skillId": "c1043.s3",
+      "order": 6,
+      "phase": "after_attack",
+      "operation": "readiness",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 5000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1044.s1.1",
+      "skillId": "c1044.s1",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1044.s1.2",
+      "skillId": "c1044.s1",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Targeted",
+      "chanceBp": 8500,
+      "turns": 1,
+      "value": 1500,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1044.s2.1",
+      "skillId": "c1044.s2",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1044.s2.2",
+      "skillId": "c1044.s2",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Bleed",
+      "chanceBp": 3500,
+      "turns": 2,
+      "value": 4000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1044.s2.3",
+      "skillId": "c1044.s2",
+      "order": 3,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Bleed",
+      "chanceBp": 3500,
+      "turns": 2,
+      "value": 4000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1044.s2.4",
+      "skillId": "c1044.s2",
+      "order": 4,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Stun",
+      "chanceBp": 6500,
+      "turns": 1,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1044.s2.5",
+      "skillId": "c1044.s2",
+      "order": 5,
+      "phase": "after_attack",
+      "operation": "reduce_cooldown",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 2,
+      "condition": "soul_burn",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1044.s3.1",
+      "skillId": "c1044.s3",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1044.s3.2",
+      "skillId": "c1044.s3",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "dispel_all",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 2,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1044.s3.3",
+      "skillId": "c1044.s3",
+      "order": 3,
+      "phase": "after_attack",
+      "operation": "readiness_per_critical",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 3000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1044.s3.4",
+      "skillId": "c1044.s3",
+      "order": 4,
+      "phase": "after_attack",
+      "operation": "apply_status",
+      "recipient": "allies",
+      "status": "AttackUp",
+      "chanceBp": 10000,
+      "turns": 3,
+      "value": 5000,
+      "condition": "caster_skill_awakened",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1046.s1.1",
+      "skillId": "c1046.s1",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1046.s1.2",
+      "skillId": "c1046.s1",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Bleed",
+      "chanceBp": 6500,
+      "turns": 1,
+      "value": 4000,
+      "condition": "caster_skill_not_awakened",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1046.s1.3",
+      "skillId": "c1046.s1",
+      "order": 3,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Bleed",
+      "chanceBp": 6500,
+      "turns": 1,
+      "value": 4000,
+      "condition": "caster_skill_not_awakened",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1046.s1.4",
+      "skillId": "c1046.s1",
+      "order": 4,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Bleed",
+      "chanceBp": 6500,
+      "turns": 2,
+      "value": 4000,
+      "condition": "caster_skill_awakened",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1046.s1.5",
+      "skillId": "c1046.s1",
+      "order": 5,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Bleed",
+      "chanceBp": 6500,
+      "turns": 2,
+      "value": 4000,
+      "condition": "caster_skill_awakened",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1046.s1.6",
+      "skillId": "c1046.s1",
+      "order": 6,
+      "phase": "after_attack",
+      "operation": "detonate",
+      "recipient": "targets",
+      "status": "Bleed",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 3000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1046.s2.1",
+      "skillId": "c1046.s2",
+      "order": 1,
+      "phase": "before_attack",
+      "operation": "reduce_resource",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 6000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1046.s2.2",
+      "skillId": "c1046.s2",
+      "order": 2,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1046.s2.3",
+      "skillId": "c1046.s2",
+      "order": 3,
+      "phase": "after_hit",
+      "operation": "dispel_all",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 20,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1046.s2.4",
+      "skillId": "c1046.s2",
+      "order": 4,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Bind",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1046.s2.5",
+      "skillId": "c1046.s2",
+      "order": 5,
+      "phase": "after_attack",
+      "operation": "readiness_per_target",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 2500,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1046.s3.1",
+      "skillId": "c1046.s3",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1046.s3.2",
+      "skillId": "c1046.s3",
+      "order": 2,
+      "phase": "impact",
+      "operation": "ignore_resistance",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 1,
+      "condition": "recipient_bound",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1046.s3.3",
+      "skillId": "c1046.s3",
+      "order": 3,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "DefenseDown",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 7000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1046.s3.4",
+      "skillId": "c1046.s3",
+      "order": 4,
+      "phase": "after_hit",
+      "operation": "reduce_readiness",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 10000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1046.s3.5",
+      "skillId": "c1046.s3",
+      "order": 5,
+      "phase": "after_attack",
+      "operation": "apply_status",
+      "recipient": "allies",
+      "status": "SkillNullifier",
+      "chanceBp": 10000,
+      "turns": 1,
+      "value": 1,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1047.s1.1",
+      "skillId": "c1047.s1",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1047.s1.2",
+      "skillId": "c1047.s1",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "DefenseDown",
+      "chanceBp": 5000,
+      "turns": 2,
+      "value": 7000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1047.s1.3",
+      "skillId": "c1047.s1",
+      "order": 3,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Burn",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 7000,
+      "condition": "caster_has_vigor",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1047.s2.1",
+      "skillId": "c1047.s2",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1047.s2.2",
+      "skillId": "c1047.s2",
+      "order": 2,
+      "phase": "impact",
+      "operation": "ignore_resistance",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 1,
+      "condition": "caster_has_vigor",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1047.s2.3",
+      "skillId": "c1047.s2",
+      "order": 3,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "DefenseDown",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 7000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1047.s2.4",
+      "skillId": "c1047.s2",
+      "order": 4,
+      "phase": "after_attack",
+      "operation": "apply_status",
+      "recipient": "self",
+      "status": "SpeedUp",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 3000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1047.s3.1",
+      "skillId": "c1047.s3",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1047.s3.2",
+      "skillId": "c1047.s3",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "AttackDown",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 5000,
+      "condition": "caster_skill_awakened",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1047.s3.3",
+      "skillId": "c1047.s3",
+      "order": 3,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Stun",
+      "chanceBp": 10000,
+      "turns": 1,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1047.s3.4",
+      "skillId": "c1047.s3",
+      "order": 4,
+      "phase": "after_attack",
+      "operation": "apply_status",
+      "recipient": "self",
+      "status": "Vigor",
+      "chanceBp": 10000,
+      "turns": 3,
+      "value": 3000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1048.s1.1",
+      "skillId": "c1048.s1",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1048.s1.2",
+      "skillId": "c1048.s1",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Burn",
+      "chanceBp": 3500,
+      "turns": 1,
+      "value": 7000,
+      "condition": "caster_skill_not_awakened",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1048.s1.3",
+      "skillId": "c1048.s1",
+      "order": 3,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Burn",
+      "chanceBp": 3500,
+      "turns": 2,
+      "value": 7000,
+      "condition": "caster_skill_awakened",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1048.s2.1",
+      "skillId": "c1048.s2",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1048.s2.2",
+      "skillId": "c1048.s2",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "dispel_all",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 2,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1048.s2.3",
+      "skillId": "c1048.s2",
+      "order": 3,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Unhealable",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1048.s2.4",
+      "skillId": "c1048.s2",
+      "order": 4,
+      "phase": "after_attack",
+      "operation": "apply_status",
+      "recipient": "allies",
+      "status": "AttackUp",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 5000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1048.s2.5",
+      "skillId": "c1048.s2",
+      "order": 5,
+      "phase": "after_attack",
+      "operation": "readiness_per_status_applied",
+      "recipient": "self",
+      "status": "Unhealable",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 3000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1048.s3.1",
+      "skillId": "c1048.s3",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1048.s3.2",
+      "skillId": "c1048.s3",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Burn",
+      "chanceBp": 8000,
+      "turns": 2,
+      "value": 7000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1048.s3.3",
+      "skillId": "c1048.s3",
+      "order": 3,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Burn",
+      "chanceBp": 8000,
+      "turns": 2,
+      "value": 7000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1048.s3.4",
+      "skillId": "c1048.s3",
+      "order": 4,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Stun",
+      "chanceBp": 5000,
+      "turns": 1,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1048.s3.5",
+      "skillId": "c1048.s3",
+      "order": 5,
+      "phase": "after_attack",
+      "operation": "apply_status",
+      "recipient": "self",
+      "status": "Barrier",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1049.s1.1",
+      "skillId": "c1049.s1",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1049.s1.2",
+      "skillId": "c1049.s1",
+      "order": 2,
+      "phase": "impact",
+      "operation": "damage_bonus",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 3000,
+      "condition": "recipient_magic_nail",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1049.s2.1",
+      "skillId": "c1049.s2",
+      "order": 1,
+      "phase": "before_attack",
+      "operation": "apply_status",
+      "recipient": "self",
+      "status": "AttackUp",
+      "chanceBp": 10000,
+      "turns": 3,
+      "value": 5000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1049.s2.2",
+      "skillId": "c1049.s2",
+      "order": 2,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1049.s2.3",
+      "skillId": "c1049.s2",
+      "order": 3,
+      "phase": "impact",
+      "operation": "ignore_resistance",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 1,
+      "condition": "caster_skill_awakened",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1049.s2.4",
+      "skillId": "c1049.s2",
+      "order": 4,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "MagicNail",
+      "chanceBp": 10000,
+      "turns": 3,
+      "value": 8000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1049.s2.5",
+      "skillId": "c1049.s2",
+      "order": 5,
+      "phase": "after_attack",
+      "operation": "readiness",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 5000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1049.s3.1",
+      "skillId": "c1049.s3",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1049.s3.2",
+      "skillId": "c1049.s3",
+      "order": 2,
+      "phase": "impact",
+      "operation": "ignore_resistance",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 1,
+      "condition": "recipient_magic_nail",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1049.s3.3",
+      "skillId": "c1049.s3",
+      "order": 3,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Stun",
+      "chanceBp": 10000,
+      "turns": 1,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1050.s1.1",
+      "skillId": "c1050.s1",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1050.s1.2",
+      "skillId": "c1050.s1",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Sleep",
+      "chanceBp": 6000,
+      "turns": 1,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1050.s1.3",
+      "skillId": "c1050.s1",
+      "order": 3,
+      "phase": "after_attack",
+      "operation": "readiness_per_status_applied",
+      "recipient": "self",
+      "status": "Sleep",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 2500,
+      "condition": "caster_skill_awakened",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1050.s2.1",
+      "skillId": "c1050.s2",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1050.s2.2",
+      "skillId": "c1050.s2",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "dispel",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 1,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1050.s2.3",
+      "skillId": "c1050.s2",
+      "order": 3,
+      "phase": "after_hit",
+      "operation": "reduce_readiness",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 2000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1050.s2.4",
+      "skillId": "c1050.s2",
+      "order": 4,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "SpeedDown",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 3000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1050.s2.5",
+      "skillId": "c1050.s2",
+      "order": 5,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Unbuffable",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1050.s3.1",
+      "skillId": "c1050.s3",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1050.s3.2",
+      "skillId": "c1050.s3",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "DefenseDown",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 7000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1050.s3.3",
+      "skillId": "c1050.s3",
+      "order": 3,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Sleep",
+      "chanceBp": 7000,
+      "turns": 1,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1050.s3.4",
+      "skillId": "c1050.s3",
+      "order": 4,
+      "phase": "after_attack",
+      "operation": "apply_status",
+      "recipient": "self",
+      "status": "AttackUp",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 5000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1053.s1.1",
+      "skillId": "c1053.s1",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1053.s1.2",
+      "skillId": "c1053.s1",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "transfer_debuff",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 5000,
+      "turns": 0,
+      "value": 1,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1053.s1.3",
+      "skillId": "c1053.s1",
+      "order": 3,
+      "phase": "after_hit",
+      "operation": "random_status_after_transfer",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 1,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1053.s1.4",
+      "skillId": "c1053.s1",
+      "order": 4,
+      "phase": "after_hit",
+      "operation": "random_status_option",
+      "recipient": "targets",
+      "status": "AttackDown",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 5000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1053.s1.5",
+      "skillId": "c1053.s1",
+      "order": 5,
+      "phase": "after_hit",
+      "operation": "random_status_option",
+      "recipient": "targets",
+      "status": "DefenseDown",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 7000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1053.s1.6",
+      "skillId": "c1053.s1",
+      "order": 6,
+      "phase": "after_hit",
+      "operation": "random_status_option",
+      "recipient": "targets",
+      "status": "Unhealable",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1053.s1.7",
+      "skillId": "c1053.s1",
+      "order": 7,
+      "phase": "after_hit",
+      "operation": "random_status_option",
+      "recipient": "targets",
+      "status": "Silence",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1053.s2.1",
+      "skillId": "c1053.s2",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1053.s2.2",
+      "skillId": "c1053.s2",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "HitChanceDown",
+      "chanceBp": 6000,
+      "turns": 2,
+      "value": 5000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1053.s2.3",
+      "skillId": "c1053.s2",
+      "order": 3,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "AttackDown",
+      "chanceBp": 6000,
+      "turns": 2,
+      "value": 5000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1053.s3.1",
+      "skillId": "c1053.s3",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1053.s3.2",
+      "skillId": "c1053.s3",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "dispel_all",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 20,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1053.s3.3",
+      "skillId": "c1053.s3",
+      "order": 3,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "Unbuffable",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 0,
+      "condition": "caster_skill_awakened",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1053.s3.4",
+      "skillId": "c1053.s3",
+      "order": 4,
+      "phase": "after_hit",
+      "operation": "reduce_readiness",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 3000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1054.s1.1",
+      "skillId": "c1054.s1",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1054.s1.2",
+      "skillId": "c1054.s1",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "dispel",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 7500,
+      "turns": 0,
+      "value": 1,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1054.s1.3",
+      "skillId": "c1054.s1",
+      "order": 3,
+      "phase": "after_attack",
+      "operation": "readiness",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 1500,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1054.s2.1",
+      "skillId": "c1054.s2",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1054.s2.2",
+      "skillId": "c1054.s2",
+      "order": 2,
+      "phase": "after_hit",
+      "operation": "apply_status",
+      "recipient": "targets",
+      "status": "DefenseDown",
+      "chanceBp": 5000,
+      "turns": 2,
+      "value": 7000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1054.s2.3",
+      "skillId": "c1054.s2",
+      "order": 3,
+      "phase": "after_attack",
+      "operation": "trigger_skill",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 5000,
+      "turns": 0,
+      "value": 1,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1054.s3.1",
+      "skillId": "c1054.s3",
+      "order": 1,
+      "phase": "impact",
+      "operation": "heal_target_health",
+      "recipient": "allies",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 2000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1054.s3.2",
+      "skillId": "c1054.s3",
+      "order": 2,
+      "phase": "after_attack",
+      "operation": "random_statuses",
+      "recipient": "allies",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 1,
+      "condition": "caster_skill_not_awakened",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1054.s3.3",
+      "skillId": "c1054.s3",
+      "order": 3,
+      "phase": "after_attack",
+      "operation": "random_statuses",
+      "recipient": "allies",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 2,
+      "condition": "caster_skill_awakened",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1054.s3.4",
+      "skillId": "c1054.s3",
+      "order": 4,
+      "phase": "after_attack",
+      "operation": "random_status_option",
+      "recipient": "allies",
+      "status": "GreaterAttackUp",
+      "chanceBp": 10000,
+      "turns": 3,
+      "value": 7500,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1054.s3.5",
+      "skillId": "c1054.s3",
+      "order": 5,
+      "phase": "after_attack",
+      "operation": "random_status_option",
+      "recipient": "allies",
+      "status": "CriticalChanceUp",
+      "chanceBp": 10000,
+      "turns": 3,
+      "value": 5000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1054.s3.6",
+      "skillId": "c1054.s3",
+      "order": 6,
+      "phase": "after_attack",
+      "operation": "random_status_option",
+      "recipient": "allies",
+      "status": "CriticalDamageUp",
+      "chanceBp": 10000,
+      "turns": 3,
+      "value": 7000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1054.s3.7",
+      "skillId": "c1054.s3",
+      "order": 7,
+      "phase": "after_attack",
+      "operation": "random_status_option",
+      "recipient": "allies",
+      "status": "DefenseUp",
+      "chanceBp": 10000,
+      "turns": 3,
+      "value": 6000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1054.s3.8",
+      "skillId": "c1054.s3",
+      "order": 8,
+      "phase": "after_attack",
+      "operation": "random_status_option",
+      "recipient": "allies",
+      "status": "ContinuousHealing",
+      "chanceBp": 10000,
+      "turns": 3,
+      "value": 1500,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1054.s3.9",
+      "skillId": "c1054.s3",
+      "order": 9,
+      "phase": "after_attack",
+      "operation": "random_status_option",
+      "recipient": "allies",
+      "status": "EvasionUp",
+      "chanceBp": 10000,
+      "turns": 3,
+      "value": 5000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1054.s3.10",
+      "skillId": "c1054.s3",
+      "order": 10,
+      "phase": "after_attack",
+      "operation": "random_status_option",
+      "recipient": "allies",
+      "status": "Immunity",
+      "chanceBp": 10000,
+      "turns": 3,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1055.s1.1",
+      "skillId": "c1055.s1",
+      "order": 1,
+      "phase": "before_attack",
+      "operation": "apply_status",
+      "recipient": "self",
+      "status": "AttackUp",
+      "chanceBp": 10000,
+      "turns": 1,
+      "value": 5000,
+      "condition": "no_soul_burn",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1055.s1.2",
+      "skillId": "c1055.s1",
+      "order": 2,
+      "phase": "before_attack",
+      "operation": "apply_status",
+      "recipient": "self",
+      "status": "GreaterAttackUp",
+      "chanceBp": 10000,
+      "turns": 1,
+      "value": 7500,
+      "condition": "soul_burn",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1055.s1.3",
+      "skillId": "c1055.s1",
+      "order": 3,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1055.s1.4",
+      "skillId": "c1055.s1",
+      "order": 4,
+      "phase": "after_attack",
+      "operation": "trigger_skill_own_turn",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 3,
+      "condition": "caster_enraged",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1055.s2.1",
+      "skillId": "c1055.s2",
+      "order": 1,
+      "phase": "on_lethal_damage",
+      "operation": "life_floor_once",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 100,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1055.s2.2",
+      "skillId": "c1055.s2",
+      "order": 2,
+      "phase": "on_lethal_damage",
+      "operation": "apply_status",
+      "recipient": "self",
+      "status": "Immortality",
+      "chanceBp": 10000,
+      "turns": 1,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1055.s2.3",
+      "skillId": "c1055.s2",
+      "order": 3,
+      "phase": "after_ally_damaged",
+      "operation": "trigger",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "self_attacked_at_half",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1055.s2.4",
+      "skillId": "c1055.s2",
+      "order": 4,
+      "phase": "after_ally_damaged",
+      "operation": "cleanse_all",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1055.s2.5",
+      "skillId": "c1055.s2",
+      "order": 5,
+      "phase": "after_ally_damaged",
+      "operation": "apply_status",
+      "recipient": "self",
+      "status": "Rage",
+      "chanceBp": 10000,
+      "turns": 2,
+      "value": 2000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1055.s2.6",
+      "skillId": "c1055.s2",
+      "order": 6,
+      "phase": "after_ally_damaged",
+      "operation": "readiness",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 5000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1055.s3.1",
+      "skillId": "c1055.s3",
+      "order": 1,
+      "phase": "impact",
+      "operation": "damage",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 0,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1055.s3.2",
+      "skillId": "c1055.s3",
+      "order": 2,
+      "phase": "impact",
+      "operation": "extinction",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 1,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1055.s3.3",
+      "skillId": "c1055.s3",
+      "order": 3,
+      "phase": "after_attack",
+      "operation": "lifesteal",
+      "recipient": "self",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 2500,
+      "condition": "caster_skill_awakened",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
+    },
+    {
+      "id": "c1055.s3.4",
+      "skillId": "c1055.s3",
+      "order": 4,
+      "phase": "after_attack",
+      "operation": "attack_splash",
+      "recipient": "targets",
+      "status": "none",
+      "chanceBp": 10000,
+      "turns": 0,
+      "value": 6000,
+      "condition": "none",
+      "chanceBonusStatus": "none",
+      "chanceBonusBp": 0
     }
   ],
   "enhancements": [
@@ -18573,6 +22953,1056 @@
       "step": 2,
       "kind": "cooldown_turns",
       "value": 1
+    },
+    {
+      "id": "c1043.s1.e1",
+      "skillId": "c1043.s1",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1043.s1.e2",
+      "skillId": "c1043.s1",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1043.s1.e3",
+      "skillId": "c1043.s1",
+      "step": 3,
+      "kind": "readiness_bp",
+      "value": 200
+    },
+    {
+      "id": "c1043.s1.e4",
+      "skillId": "c1043.s1",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1043.s1.e5",
+      "skillId": "c1043.s1",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1043.s2.e1",
+      "skillId": "c1043.s2",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1043.s2.e2",
+      "skillId": "c1043.s2",
+      "step": 2,
+      "kind": "readiness_bp",
+      "value": 200
+    },
+    {
+      "id": "c1043.s2.e3",
+      "skillId": "c1043.s2",
+      "step": 3,
+      "kind": "readiness_bp",
+      "value": 300
+    },
+    {
+      "id": "c1043.s2.e4",
+      "skillId": "c1043.s2",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1043.s2.e5",
+      "skillId": "c1043.s2",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1043.s3.e1",
+      "skillId": "c1043.s3",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1043.s3.e2",
+      "skillId": "c1043.s3",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1043.s3.e3",
+      "skillId": "c1043.s3",
+      "step": 3,
+      "kind": "cooldown_turns",
+      "value": 1
+    },
+    {
+      "id": "c1043.s3.e4",
+      "skillId": "c1043.s3",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1043.s3.e5",
+      "skillId": "c1043.s3",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1044.s1.e1",
+      "skillId": "c1044.s1",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1044.s1.e2",
+      "skillId": "c1044.s1",
+      "step": 2,
+      "kind": "effect_chance_bp",
+      "value": 500
+    },
+    {
+      "id": "c1044.s1.e3",
+      "skillId": "c1044.s1",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1044.s1.e4",
+      "skillId": "c1044.s1",
+      "step": 4,
+      "kind": "effect_chance_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1044.s1.e5",
+      "skillId": "c1044.s1",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1044.s2.e1",
+      "skillId": "c1044.s2",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1044.s2.e2",
+      "skillId": "c1044.s2",
+      "step": 2,
+      "kind": "effect_chance_bp",
+      "value": 500
+    },
+    {
+      "id": "c1044.s2.e3",
+      "skillId": "c1044.s2",
+      "step": 3,
+      "kind": "effect_chance_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1044.s2.e4",
+      "skillId": "c1044.s2",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1044.s2.e5",
+      "skillId": "c1044.s2",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1044.s3.e1",
+      "skillId": "c1044.s3",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1044.s3.e2",
+      "skillId": "c1044.s3",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1044.s3.e3",
+      "skillId": "c1044.s3",
+      "step": 3,
+      "kind": "cooldown_turns",
+      "value": 1
+    },
+    {
+      "id": "c1044.s3.e4",
+      "skillId": "c1044.s3",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1044.s3.e5",
+      "skillId": "c1044.s3",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1046.s1.e1",
+      "skillId": "c1046.s1",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1046.s1.e2",
+      "skillId": "c1046.s1",
+      "step": 2,
+      "kind": "effect_chance_bp",
+      "value": 500
+    },
+    {
+      "id": "c1046.s1.e3",
+      "skillId": "c1046.s1",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1046.s1.e4",
+      "skillId": "c1046.s1",
+      "step": 4,
+      "kind": "effect_chance_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1046.s1.e5",
+      "skillId": "c1046.s1",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1046.s2.e1",
+      "skillId": "c1046.s2",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1046.s2.e2",
+      "skillId": "c1046.s2",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1046.s2.e3",
+      "skillId": "c1046.s2",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1046.s2.e4",
+      "skillId": "c1046.s2",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1046.s2.e5",
+      "skillId": "c1046.s2",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1046.s3.e1",
+      "skillId": "c1046.s3",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1046.s3.e2",
+      "skillId": "c1046.s3",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1046.s3.e3",
+      "skillId": "c1046.s3",
+      "step": 3,
+      "kind": "cooldown_turns",
+      "value": 1
+    },
+    {
+      "id": "c1046.s3.e4",
+      "skillId": "c1046.s3",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1046.s3.e5",
+      "skillId": "c1046.s3",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1047.s1.e1",
+      "skillId": "c1047.s1",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1047.s1.e2",
+      "skillId": "c1047.s1",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1047.s1.e3",
+      "skillId": "c1047.s1",
+      "step": 3,
+      "kind": "resource_gain",
+      "value": 5
+    },
+    {
+      "id": "c1047.s1.e4",
+      "skillId": "c1047.s1",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1047.s1.e5",
+      "skillId": "c1047.s1",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1047.s1.e6",
+      "skillId": "c1047.s1",
+      "step": 6,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1047.s2.e1",
+      "skillId": "c1047.s2",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1047.s2.e2",
+      "skillId": "c1047.s2",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1047.s2.e3",
+      "skillId": "c1047.s2",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1047.s3.e1",
+      "skillId": "c1047.s3",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1047.s3.e2",
+      "skillId": "c1047.s3",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1047.s3.e3",
+      "skillId": "c1047.s3",
+      "step": 3,
+      "kind": "cooldown_turns",
+      "value": 1
+    },
+    {
+      "id": "c1047.s3.e4",
+      "skillId": "c1047.s3",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1047.s3.e5",
+      "skillId": "c1047.s3",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1047.s3.e6",
+      "skillId": "c1047.s3",
+      "step": 6,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1048.s1.e1",
+      "skillId": "c1048.s1",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1048.s1.e2",
+      "skillId": "c1048.s1",
+      "step": 2,
+      "kind": "effect_chance_bp",
+      "value": 500
+    },
+    {
+      "id": "c1048.s1.e3",
+      "skillId": "c1048.s1",
+      "step": 3,
+      "kind": "effect_chance_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1048.s1.e4",
+      "skillId": "c1048.s1",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1048.s2.e1",
+      "skillId": "c1048.s2",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1048.s2.e2",
+      "skillId": "c1048.s2",
+      "step": 2,
+      "kind": "cooldown_turns",
+      "value": 1
+    },
+    {
+      "id": "c1048.s2.e3",
+      "skillId": "c1048.s2",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1048.s2.e4",
+      "skillId": "c1048.s2",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1048.s3.e1",
+      "skillId": "c1048.s3",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1048.s3.e2",
+      "skillId": "c1048.s3",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1048.s3.e3",
+      "skillId": "c1048.s3",
+      "step": 3,
+      "kind": "effect_chance_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1048.s3.e4",
+      "skillId": "c1048.s3",
+      "step": 4,
+      "kind": "cooldown_turns",
+      "value": 1
+    },
+    {
+      "id": "c1048.s3.e5",
+      "skillId": "c1048.s3",
+      "step": 5,
+      "kind": "effect_chance_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1048.s3.e6",
+      "skillId": "c1048.s3",
+      "step": 6,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1048.s3.e7",
+      "skillId": "c1048.s3",
+      "step": 7,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1049.s1.e1",
+      "skillId": "c1049.s1",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1049.s1.e2",
+      "skillId": "c1049.s1",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1049.s1.e3",
+      "skillId": "c1049.s1",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1049.s1.e4",
+      "skillId": "c1049.s1",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1049.s1.e5",
+      "skillId": "c1049.s1",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1049.s2.e1",
+      "skillId": "c1049.s2",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1049.s2.e2",
+      "skillId": "c1049.s2",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1049.s2.e3",
+      "skillId": "c1049.s2",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1049.s2.e4",
+      "skillId": "c1049.s2",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1049.s2.e5",
+      "skillId": "c1049.s2",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1049.s3.e1",
+      "skillId": "c1049.s3",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1049.s3.e2",
+      "skillId": "c1049.s3",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1049.s3.e3",
+      "skillId": "c1049.s3",
+      "step": 3,
+      "kind": "cooldown_turns",
+      "value": 1
+    },
+    {
+      "id": "c1049.s3.e4",
+      "skillId": "c1049.s3",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1049.s3.e5",
+      "skillId": "c1049.s3",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1050.s1.e1",
+      "skillId": "c1050.s1",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1050.s1.e2",
+      "skillId": "c1050.s1",
+      "step": 2,
+      "kind": "effect_chance_bp",
+      "value": 500
+    },
+    {
+      "id": "c1050.s1.e3",
+      "skillId": "c1050.s1",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1050.s1.e4",
+      "skillId": "c1050.s1",
+      "step": 4,
+      "kind": "effect_chance_bp",
+      "value": 500
+    },
+    {
+      "id": "c1050.s1.e5",
+      "skillId": "c1050.s1",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1050.s2.e1",
+      "skillId": "c1050.s2",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1050.s2.e2",
+      "skillId": "c1050.s2",
+      "step": 2,
+      "kind": "readiness_bp",
+      "value": 500
+    },
+    {
+      "id": "c1050.s2.e3",
+      "skillId": "c1050.s2",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1050.s2.e4",
+      "skillId": "c1050.s2",
+      "step": 4,
+      "kind": "readiness_bp",
+      "value": 500
+    },
+    {
+      "id": "c1050.s2.e5",
+      "skillId": "c1050.s2",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1050.s3.e1",
+      "skillId": "c1050.s3",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1050.s3.e2",
+      "skillId": "c1050.s3",
+      "step": 2,
+      "kind": "effect_chance_bp",
+      "value": 500
+    },
+    {
+      "id": "c1050.s3.e3",
+      "skillId": "c1050.s3",
+      "step": 3,
+      "kind": "cooldown_turns",
+      "value": 1
+    },
+    {
+      "id": "c1050.s3.e4",
+      "skillId": "c1050.s3",
+      "step": 4,
+      "kind": "effect_chance_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1050.s3.e5",
+      "skillId": "c1050.s3",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1053.s1.e1",
+      "skillId": "c1053.s1",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1053.s1.e2",
+      "skillId": "c1053.s1",
+      "step": 2,
+      "kind": "effect_chance_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1053.s1.e3",
+      "skillId": "c1053.s1",
+      "step": 3,
+      "kind": "effect_chance_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1053.s1.e4",
+      "skillId": "c1053.s1",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1053.s1.e5",
+      "skillId": "c1053.s1",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1053.s2.e1",
+      "skillId": "c1053.s2",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1053.s2.e2",
+      "skillId": "c1053.s2",
+      "step": 2,
+      "kind": "effect_chance_bp",
+      "value": 500
+    },
+    {
+      "id": "c1053.s2.e3",
+      "skillId": "c1053.s2",
+      "step": 3,
+      "kind": "effect_chance_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1053.s2.e4",
+      "skillId": "c1053.s2",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1053.s2.e5",
+      "skillId": "c1053.s2",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1053.s3.e1",
+      "skillId": "c1053.s3",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1053.s3.e2",
+      "skillId": "c1053.s3",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1053.s3.e3",
+      "skillId": "c1053.s3",
+      "step": 3,
+      "kind": "cooldown_turns",
+      "value": 1
+    },
+    {
+      "id": "c1053.s3.e4",
+      "skillId": "c1053.s3",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1053.s3.e5",
+      "skillId": "c1053.s3",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1054.s1.e1",
+      "skillId": "c1054.s1",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1054.s1.e2",
+      "skillId": "c1054.s1",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1054.s1.e3",
+      "skillId": "c1054.s1",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1054.s1.e4",
+      "skillId": "c1054.s1",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1054.s1.e5",
+      "skillId": "c1054.s1",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1054.s1.e6",
+      "skillId": "c1054.s1",
+      "step": 6,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1054.s2.e1",
+      "skillId": "c1054.s2",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1054.s2.e2",
+      "skillId": "c1054.s2",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1054.s2.e3",
+      "skillId": "c1054.s2",
+      "step": 3,
+      "kind": "effect_chance_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1054.s2.e4",
+      "skillId": "c1054.s2",
+      "step": 4,
+      "kind": "effect_chance_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1054.s2.e5",
+      "skillId": "c1054.s2",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1054.s2.e6",
+      "skillId": "c1054.s2",
+      "step": 6,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1054.s3.e1",
+      "skillId": "c1054.s3",
+      "step": 1,
+      "kind": "healing_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1054.s3.e2",
+      "skillId": "c1054.s3",
+      "step": 2,
+      "kind": "cooldown_turns",
+      "value": 1
+    },
+    {
+      "id": "c1054.s3.e3",
+      "skillId": "c1054.s3",
+      "step": 3,
+      "kind": "healing_bp",
+      "value": 1500
+    },
+    {
+      "id": "c1055.s1.e1",
+      "skillId": "c1055.s1",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1055.s1.e2",
+      "skillId": "c1055.s1",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1055.s1.e3",
+      "skillId": "c1055.s1",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1055.s1.e4",
+      "skillId": "c1055.s1",
+      "step": 4,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1055.s1.e5",
+      "skillId": "c1055.s1",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1055.s1.e6",
+      "skillId": "c1055.s1",
+      "step": 6,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1055.s1.e7",
+      "skillId": "c1055.s1",
+      "step": 7,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1055.s3.e1",
+      "skillId": "c1055.s3",
+      "step": 1,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1055.s3.e2",
+      "skillId": "c1055.s3",
+      "step": 2,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1055.s3.e3",
+      "skillId": "c1055.s3",
+      "step": 3,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1055.s3.e4",
+      "skillId": "c1055.s3",
+      "step": 4,
+      "kind": "cooldown_turns",
+      "value": 1
+    },
+    {
+      "id": "c1055.s3.e5",
+      "skillId": "c1055.s3",
+      "step": 5,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1055.s3.e6",
+      "skillId": "c1055.s3",
+      "step": 6,
+      "kind": "damage_bp",
+      "value": 500
+    },
+    {
+      "id": "c1055.s3.e7",
+      "skillId": "c1055.s3",
+      "step": 7,
+      "kind": "damage_bp",
+      "value": 1000
+    },
+    {
+      "id": "c1055.s2.e1",
+      "skillId": "c1055.s2",
+      "step": 1,
+      "kind": "cooldown_turns",
+      "value": 1
     }
   ],
   "messages": [
@@ -20341,6 +25771,374 @@
       "zhCn": "吸血之手"
     },
     {
+      "key": "battle.skill.c1043.s1.description",
+      "zhCn": "用重力箭攻击敌人，造成速攻值降低<color=#FF9900>8%</color>后，使自身速攻值提升<color=#FF9900>8%</color>。"
+    },
+    {
+      "key": "battle.skill.c1043.s1.name",
+      "zhCn": "重力箭"
+    },
+    {
+      "key": "battle.skill.c1043.s2.burn.description",
+      "zhCn": "该技能冷却时间减少2回合。"
+    },
+    {
+      "key": "battle.skill.c1043.s2.description",
+      "zhCn": "用重力魔法阵攻击全体敌人4次，每次各有50%的几率降低速攻值<color=#FF9900>15%</color>。"
+    },
+    {
+      "key": "battle.skill.c1043.s2.name",
+      "zhCn": "重力波"
+    },
+    {
+      "key": "battle.skill.c1043.s3.description",
+      "zhCn": "发射强力的重力球攻击全体敌人，解除所有强化效果后，在2回合内造成<color=#FFFFFF>束缚</color>效果、造成2个<color=#FFFFFF>中毒</color>效果。使自身速攻值提升50%。"
+    },
+    {
+      "key": "battle.skill.c1043.s3.name",
+      "zhCn": "黑洞猛击"
+    },
+    {
+      "key": "battle.skill.c1043.s3.unawakened.description",
+      "zhCn": "发射强力的重力球攻击全体敌人，解除所有强化效果后，在2回合内造成<color=#FFFFFF>束缚</color>效果。使自身速攻值提升50%。"
+    },
+    {
+      "key": "battle.skill.c1044.s1.description",
+      "zhCn": "用鞭子攻击敌人，有<color=#FF9900>85%</color>的几率在1回合内造成<color=#FFFFFF>标靶</color>效果。"
+    },
+    {
+      "key": "battle.skill.c1044.s1.name",
+      "zhCn": "鞭打"
+    },
+    {
+      "key": "battle.skill.c1044.s2.burn.description",
+      "zhCn": "所有技能冷却时间减少2回合。"
+    },
+    {
+      "key": "battle.skill.c1044.s2.description",
+      "zhCn": "召唤驯化魔物攻击全体敌人，各有<color=#FF9900>35%</color>的几率在2回合内造成2个<color=#FFFFFF>出血</color>、有<color=#FF9900>65%</color>的几率在1回合内造成<color=#FFFFFF>晕眩</color>效果。"
+    },
+    {
+      "key": "battle.skill.c1044.s2.name",
+      "zhCn": "处罚"
+    },
+    {
+      "key": "battle.skill.c1044.s3.description",
+      "zhCn": "挥鞭驱使魔物攻击全体敌人，解除2个强化效果。使全体我军人员在3回合内获得<color=#FFFFFF>攻击力提升</color>效果，每触发一次暴击，使自身速攻值提升30%。"
+    },
+    {
+      "key": "battle.skill.c1044.s3.name",
+      "zhCn": "终曲"
+    },
+    {
+      "key": "battle.skill.c1044.s3.unawakened.description",
+      "zhCn": "挥鞭驱使魔物攻击全体敌人，解除2个强化效果。每触发一次暴击，使自身速攻值提升30%。"
+    },
+    {
+      "key": "battle.skill.c1046.s1.description",
+      "zhCn": "用剑攻击敌人，并各有<color=#FF9900>65%</color>的几率在2回合内造成2个<color=#FFFFFF>出血</color>效果。回合结束时，使目标附带的<color=#FFFFFF>出血</color>效果发生<color=#FFFFFF>激爆</color>。"
+    },
+    {
+      "key": "battle.skill.c1046.s1.name",
+      "zhCn": "狂暴玫瑰"
+    },
+    {
+      "key": "battle.skill.c1046.s1.unawakened.description",
+      "zhCn": "用剑攻击敌人，并各有<color=#FF9900>65%</color>的几率在1回合内造成2个<color=#FFFFFF>出血</color>效果。回合结束时，使目标附带的<color=#FFFFFF>出血</color>效果发生<color=#FFFFFF>激爆</color>。"
+    },
+    {
+      "key": "battle.skill.c1046.s2.burn.description",
+      "zhCn": "无视效果抗性。"
+    },
+    {
+      "key": "battle.skill.c1046.s2.description",
+      "zhCn": "对全体敌人造成60%的<color=#FFFFFF>资源减少</color>后攻击，解除所有强化效果，在2回合内造成<color=#FFFFFF>拘禁</color>效果。每有一个目标，使自身速攻值提升25%。"
+    },
+    {
+      "key": "battle.skill.c1046.s2.name",
+      "zhCn": "荆棘"
+    },
+    {
+      "key": "battle.skill.c1046.s3.description",
+      "zhCn": "用鞭形剑攻击敌人，在2回合内造成<color=#FFFFFF>防御力降低</color>后，使速攻值降低100%。使全体我军人员获得1次<color=#FFFFFF>技能伤害无效</color>。若目标处于<color=#FFFFFF>拘禁</color>状态，则无视效果抗性。"
+    },
+    {
+      "key": "battle.skill.c1046.s3.name",
+      "zhCn": "公开处决"
+    },
+    {
+      "key": "battle.skill.c1047.s1.description",
+      "zhCn": "连续打击敌人，有50%的几率在2回合内造成<color=#FFFFFF>防御力降低</color>效果。若处于<color=#FFFFFF>魄力</color>状态，则对目标在2回合内额外造成<color=#FFFFFF>烧伤</color>效果。根据自身最大生命值等比提升伤害量。"
+    },
+    {
+      "key": "battle.skill.c1047.s1.name",
+      "zhCn": "天极拳"
+    },
+    {
+      "key": "battle.skill.c1047.s2.burn.description",
+      "zhCn": "获得额外回合。"
+    },
+    {
+      "key": "battle.skill.c1047.s2.description",
+      "zhCn": "踢击敌人，在2回合内造成<color=#FFFFFF>防御力降低</color>后，使自身在2回合内<color=#FFFFFF>速度提升</color>。若自身处于<color=#FFFFFF>魄力</color>状态，则无视效果抗性。根据自身最大生命值等比提升伤害量。"
+    },
+    {
+      "key": "battle.skill.c1047.s2.name",
+      "zhCn": "天舞脚"
+    },
+    {
+      "key": "battle.skill.c1047.s3.description",
+      "zhCn": "连续攻击后施展强力一击，在2回合内造成<color=#FFFFFF>攻击力降低</color>，在1回合内造成<color=#FFFFFF>晕眩</color>效果。使自身在3回合内获得<color=#FFFFFF>魄力</color>效果。根据自身最大生命值等比提升伤害量。\n首次战斗开始时，获得40点斗志。"
+    },
+    {
+      "key": "battle.skill.c1047.s3.name",
+      "zhCn": "阎罗霸皇拳"
+    },
+    {
+      "key": "battle.skill.c1047.s3.unawakened.description",
+      "zhCn": "连续攻击后施展强力一击，在1回合内造成<color=#FFFFFF>晕眩</color>效果。使自身在3回合内获得<color=#FFFFFF>魄力</color>效果。根据自身最大生命值等比提升伤害量。\n首次战斗开始时，获得40点斗志。"
+    },
+    {
+      "key": "battle.skill.c1048.s1.description",
+      "zhCn": "炸开火花，攻击敌人，有<color=#FF9900>35%</color>的几率在2回合内造成<color=#FFFFFF>烧伤</color>效果。"
+    },
+    {
+      "key": "battle.skill.c1048.s1.name",
+      "zhCn": "发火"
+    },
+    {
+      "key": "battle.skill.c1048.s1.unawakened.description",
+      "zhCn": "炸开火花，攻击敌人，有<color=#FF9900>35%</color>的几率在1回合内造成<color=#FFFFFF>烧伤</color>效果。"
+    },
+    {
+      "key": "battle.skill.c1048.s2.description",
+      "zhCn": "用催化爆发攻击全体敌人，解除2个强化效果，并在2回合内造成<color=#FFFFFF>无法恢复</color>效果后，使全体我军人员在2回合内<color=#FFFFFF>攻击力提升</color>。每造成一次<color=#FFFFFF>无法恢复</color>效果，使自身速攻值提升30%。"
+    },
+    {
+      "key": "battle.skill.c1048.s2.name",
+      "zhCn": "强力催化剂"
+    },
+    {
+      "key": "battle.skill.c1048.s3.burn.description",
+      "zhCn": "无视效果抗性。"
+    },
+    {
+      "key": "battle.skill.c1048.s3.description",
+      "zhCn": "用巨大火柱攻击全体敌人，各有<color=#FF9900>80%</color>的几率在2回合内造成2个<color=#FFFFFF>烧伤</color>、有<color=#FF9900>50%</color>的几率在1回合内造成<color=#FFFFFF>晕眩</color>效果。根据攻击力使自身在2回合内获得等比强度的<color=#FFFFFF>防护罩</color>。"
+    },
+    {
+      "key": "battle.skill.c1048.s3.name",
+      "zhCn": "火柱"
+    },
+    {
+      "key": "battle.skill.c1049.s1.description",
+      "zhCn": "用锤子攻击敌人。若目标处于<color=#FFFFFF>魔法钉</color>状态，则伤害量提升。"
+    },
+    {
+      "key": "battle.skill.c1049.s1.name",
+      "zhCn": "强击"
+    },
+    {
+      "key": "battle.skill.c1049.s2.description",
+      "zhCn": "使自身在3回合内<color=#FFFFFF>攻击力提升</color>后，攻击敌人，在3回合内造成<color=#FFFFFF>魔法钉</color>效果，并使自身速攻值提升50%。无视效果抗性。"
+    },
+    {
+      "key": "battle.skill.c1049.s2.name",
+      "zhCn": "魔法钉射击"
+    },
+    {
+      "key": "battle.skill.c1049.s2.unawakened.description",
+      "zhCn": "使自身在3回合内<color=#FFFFFF>攻击力提升</color>后，攻击敌人，在3回合内造成<color=#FFFFFF>魔法钉</color>效果，并使自身速攻值提升50%。"
+    },
+    {
+      "key": "battle.skill.c1049.s3.burn.description",
+      "zhCn": "伤害量提升。"
+    },
+    {
+      "key": "battle.skill.c1049.s3.description",
+      "zhCn": "飞向高空攻击目标，在1回合内造成<color=#FFFFFF>晕眩</color>效果。若目标处于<color=#FFFFFF>魔法钉</color>状态，则无视效果抗性。"
+    },
+    {
+      "key": "battle.skill.c1049.s3.name",
+      "zhCn": "超强击"
+    },
+    {
+      "key": "battle.skill.c1050.s1.description",
+      "zhCn": "引爆暗黑之息攻击包含目标在内的2人，有<color=#FF9900>60%</color>的几率在1回合内造成<color=#FFFFFF>睡眠</color>效果。每触发一次<color=#FFFFFF>睡眠</color>效果，使自身速攻值提升25%。此技能不会触发夹攻。"
+    },
+    {
+      "key": "battle.skill.c1050.s1.name",
+      "zhCn": "暗黑爆发"
+    },
+    {
+      "key": "battle.skill.c1050.s1.unawakened.description",
+      "zhCn": "引爆暗黑之息攻击包含目标在内的2人，有<color=#FF9900>60%</color>的几率在1回合内造成<color=#FFFFFF>睡眠</color>效果。此技能不会触发夹攻。"
+    },
+    {
+      "key": "battle.skill.c1050.s2.burn.description",
+      "zhCn": "伤害量提升。"
+    },
+    {
+      "key": "battle.skill.c1050.s2.description",
+      "zhCn": "召唤不祥闪电攻击全体敌人，解除1个强化效果后，使速攻值降低<color=#FF9900>20%</color>，在2回合内造成<color=#FFFFFF>速度降低</color>、<color=#FFFFFF>无法强化</color>效果。"
+    },
+    {
+      "key": "battle.skill.c1050.s2.name",
+      "zhCn": "不祥闪电"
+    },
+    {
+      "key": "battle.skill.c1050.s3.description",
+      "zhCn": "坠下噩梦之月攻击全体敌人，在2回合内造成<color=#FFFFFF>防御力降低</color>、有<color=#FF9900>70%</color>的几率在1回合内造成<color=#FFFFFF>睡眠</color>效果后，使自身在2回合内获得<color=#FFFFFF>攻击力提升</color>效果。"
+    },
+    {
+      "key": "battle.skill.c1050.s3.name",
+      "zhCn": "梦魇"
+    },
+    {
+      "key": "battle.skill.c1053.s1.description",
+      "zhCn": "用风之魔法攻击敌人，有<color=#FF9900>50%</color>的几率<color=#FFFFFF>转移</color>自身附带的1个弱化效果，在2回合内造成<color=#FFFFFF>随机弱化效果</color>。"
+    },
+    {
+      "key": "battle.skill.c1053.s1.name",
+      "zhCn": "沙尘暴"
+    },
+    {
+      "key": "battle.skill.c1053.s2.description",
+      "zhCn": "用热沙尘暴攻击全体敌人，各有<color=#FF9900>60%</color>的几率在2回合内造成<color=#FFFFFF>命中降低</color>、<color=#FFFFFF>攻击力降低</color>效果。"
+    },
+    {
+      "key": "battle.skill.c1053.s2.name",
+      "zhCn": "飓风"
+    },
+    {
+      "key": "battle.skill.c1053.s3.burn.description",
+      "zhCn": "无视效果抗性。"
+    },
+    {
+      "key": "battle.skill.c1053.s3.description",
+      "zhCn": "用沙之魔法攻击所有敌人，解除所有强化效果，在2回合内造成<color=#FFFFFF>无法强化</color>效果，之后使其速攻值降低30%。"
+    },
+    {
+      "key": "battle.skill.c1053.s3.name",
+      "zhCn": "沙尘暴风"
+    },
+    {
+      "key": "battle.skill.c1053.s3.unawakened.description",
+      "zhCn": "用沙之魔法攻击所有敌人，解除所有强化效果，使其速攻值降低30%。"
+    },
+    {
+      "key": "battle.skill.c1054.s1.description",
+      "zhCn": "掷环攻击敌人，有75%的几率解除1个强化效果，并使自身速攻值提升15%。根据自身最大生命值等比提升伤害量。"
+    },
+    {
+      "key": "battle.skill.c1054.s1.name",
+      "zhCn": "掷环"
+    },
+    {
+      "key": "battle.skill.c1054.s2.description",
+      "zhCn": "用华丽的动作攻击敌人，有<color=#FF9900>50%</color>的几率在2回合内造成<color=#FFFFFF>防御力降低</color>后，有50%的几率使用掷环。根据自身最大生命值等比提升伤害量。"
+    },
+    {
+      "key": "battle.skill.c1054.s2.name",
+      "zhCn": "迷惑之舞"
+    },
+    {
+      "key": "battle.skill.c1054.s3.burn.description",
+      "zhCn": "此技能赋予的强化效果持续回合数\n增加1回合。"
+    },
+    {
+      "key": "battle.skill.c1054.s3.description",
+      "zhCn": "跳起华丽舞蹈，根据目标最大生命值使全体我军人员等比恢复生命值后，在3回合内获得2个<color=#FFFFFF>随机强化效果</color>。"
+    },
+    {
+      "key": "battle.skill.c1054.s3.name",
+      "zhCn": "展现时刻"
+    },
+    {
+      "key": "battle.skill.c1054.s3.unawakened.description",
+      "zhCn": "跳起华丽舞蹈，根据目标最大生命值使全体我军人员等比恢复生命值后，在3回合内获得<color=#FFFFFF>随机强化效果</color>。"
+    },
+    {
+      "key": "battle.skill.c1055.s1.burn.description",
+      "zhCn": "在1回合内攻击力大幅提升。"
+    },
+    {
+      "key": "battle.skill.c1055.s1.description",
+      "zhCn": "使自身在1回合内获得<color=#FFFFFF>攻击力提升</color>效果后，攻击敌人。若自身处于<color=#FFFFFF>狂气</color>状态，则额外使用狠咬不放。狠咬不放仅能在自身回合发动1次。"
+    },
+    {
+      "key": "battle.skill.c1055.s1.name",
+      "zhCn": "尝味道"
+    },
+    {
+      "key": "battle.skill.c1055.s2.description",
+      "zhCn": "若受到致命伤害，则在1回合内获得<color=#FFFFFF>不死</color>效果。<color=#FFFFFF>不死</color>效果在战斗中仅能发动1次。\n受到攻击后，若生命值在50%以下，则使用A计划。\nA计划：解除自身的所有弱化效果，在2回合内获得<color=#FFFFFF>狂气</color>效果后，使速攻值提升50%。"
+    },
+    {
+      "key": "battle.skill.c1055.s2.name",
+      "zhCn": "野狗团团长"
+    },
+    {
+      "key": "battle.skill.c1055.s3.description",
+      "zhCn": "用剑攻击敌人，将部分伤害量作为生命值恢复，根据自身攻击力对除目标外的全体敌人造成等比的额外伤害。消灭时，造成<color=#FFFFFF>灭亡</color>效果。对目标造成防御力<color=#FFFFFF>穿透</color>。"
+    },
+    {
+      "key": "battle.skill.c1055.s3.name",
+      "zhCn": "狠咬不放"
+    },
+    {
+      "key": "battle.skill.c1055.s3.unawakened.description",
+      "zhCn": "用剑攻击敌人，根据自身攻击力对除目标外的全体敌人造成等比的额外伤害。消灭时，造成<color=#FFFFFF>灭亡</color>效果。对目标造成防御力<color=#FFFFFF>穿透</color>。"
+    },
+    {
+      "key": "battle.status.bind.description",
+      "zhCn": "若非自身回合，则无法发动额外技能、反击、夹攻。只适用于英雄。"
+    },
+    {
+      "key": "battle.status.bind.name",
+      "zhCn": "拘禁"
+    },
+    {
+      "key": "battle.status.magicnail.description",
+      "zhCn": "受到攻击时，根据攻击者的攻击力造成等比的额外伤害。"
+    },
+    {
+      "key": "battle.status.magicnail.name",
+      "zhCn": "魔法钉"
+    },
+    {
+      "key": "battle.status.restrict.description",
+      "zhCn": "除了根据速度提升的速攻值提升效果外，无法获得速攻值提升效果。"
+    },
+    {
+      "key": "battle.status.restrict.name",
+      "zhCn": "束缚"
+    },
+    {
+      "key": "battle.status.skillnullifier.description",
+      "zhCn": "使技能造成的伤害无效化。"
+    },
+    {
+      "key": "battle.status.skillnullifier.name",
+      "zhCn": "技能伤害无效"
+    },
+    {
+      "key": "battle.status.sleep.description",
+      "zhCn": "在持续回合内无法行动。暴击抗性、回避降低100%，受到攻击造成的伤害时解除。"
+    },
+    {
+      "key": "battle.status.sleep.name",
+      "zhCn": "睡眠"
+    },
+    {
+      "key": "battle.status.vigor.description",
+      "zhCn": "攻击力、防御力提升30%。"
+    },
+    {
+      "key": "battle.status.vigor.name",
+      "zhCn": "魄力（无法解除）"
+    },
+    {
       "key": "character.ras.name",
       "zhCn": "拉斯"
     },
@@ -20499,6 +26297,46 @@
     {
       "key": "character.tywin.name",
       "zhCn": "泰温"
+    },
+    {
+      "key": "character.roman.name",
+      "zhCn": "洛曼"
+    },
+    {
+      "key": "character.mui.name",
+      "zhCn": "缪伊"
+    },
+    {
+      "key": "character.lidica.name",
+      "zhCn": "丽迪卡"
+    },
+    {
+      "key": "character.ken.name",
+      "zhCn": "肯恩"
+    },
+    {
+      "key": "character.araminta.name",
+      "zhCn": "雅拉敏塔"
+    },
+    {
+      "key": "character.chloe.name",
+      "zhCn": "克萝爱"
+    },
+    {
+      "key": "character.tenebria.name",
+      "zhCn": "泰妮布里雅"
+    },
+    {
+      "key": "character.basar.name",
+      "zhCn": "巴萨尔"
+    },
+    {
+      "key": "character.ring.name",
+      "zhCn": "铃儿"
+    },
+    {
+      "key": "character.jenua.name",
+      "zhCn": "济纽亚"
     }
   ]
 }

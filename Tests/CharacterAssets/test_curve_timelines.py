@@ -12,6 +12,22 @@ def bezier(index, controls=(.125,.25,.75,.875)):
     return struct.pack('<B5f',2,index,*controls)
 
 class NativeCurveTests(unittest.TestCase):
+    def test_repeated_slot_colors_and_scales_preserve_every_curve_and_key_in_source_order(self):
+        def record(kind, frames):
+            width = len(frames[0])
+            values = [value for frame in frames for value in frame]
+            return struct.pack("<3I", kind, 0, len(frames) * width) + struct.pack("<" + "f" * len(values), *values) + struct.pack("<H", 65535)
+        primary = record(3, [(0,1,1,1,0), (.75,1,1,1,1)])
+        overlay = record(3, [(0,1,1,1,0)])
+        scale = record(0, [(0,2,2), (.7,3,2)])
+        doc, report = convert.decode_scsp(fixture_v2(primary + scale + overlay + scale, 4, with_slot=True))
+        clip = doc["animations"]["idle"]
+        self.assertEqual([frame["color"] for frame in clip["slots"]["root"]["color"]], ["FFFFFF00","FFFFFFFF"])
+        self.assertEqual(clip[convert.ORDERED_SLOT_COLOR_FIELD]["root"], [[{"time":0,"color":"FFFFFF00"}]])
+        self.assertEqual(clip[convert.ORDERED_SCALE_FIELD]["root"], [clip["bones"]["root"]["scale"]])
+        self.assertEqual(report["curveTimelines"]["idle"]["tracks"], 4)
+        self.assertEqual(report["converterVersion"], "astraloath-scsp/5")
+
     def test_ffff_is_linear_and_fffe_is_stepped(self):
         for marker,value in ((65535,{}),(65534,{'curve':'stepped'})):
             with self.subTest(marker=marker):

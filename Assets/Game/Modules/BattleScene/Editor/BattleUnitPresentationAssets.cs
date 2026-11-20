@@ -79,6 +79,8 @@ namespace AstralOath.Client.BattleScene.Editor
                 out profile.InvincibleAuraEffect);
             profile.StunStars = LoadAura(Root + "Res/Effects/Stun/stse_stun", "stse_stun",
                 out profile.StunStarsEffect);
+            profile.SleepSymbols = LoadAura(Root + "Res/Effects/Sleep/stse_sleep", "stse_sleep",
+                out profile.SleepSymbolsEffect);
             if (!profile.Shield || !profile.StatusManifest || profile.StatusGlyphs.Any(sprite => !sprite) ||
                 profile.StatusDigits.Any(sprite => !sprite) || profile.LevelDigits.Any(sprite => !sprite))
                 throw new InvalidOperationException("Run ImportStatusHud.py before updating the unit profile.");

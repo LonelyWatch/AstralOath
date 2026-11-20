@@ -1,0 +1,97 @@
+
+mui_skill_3-2_bg.sct
+size: 1157,1010
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash_pillar3
+  rotate: false
+  xy: 262, 921
+  size: 281, 53
+  orig: 281, 53
+  offset: 0, 0
+  index: -1
+mui_tent_back_left
+  rotate: false
+  xy: 2, 2
+  size: 394, 592
+  orig: 394, 592
+  offset: 0, 0
+  index: -1
+mui_tent_back_left_light1
+  rotate: true
+  xy: 804, 2
+  size: 197, 296
+  orig: 197, 296
+  offset: 0, 0
+  index: -1
+mui_tent_back_left_light2
+  rotate: true
+  xy: 804, 201
+  size: 197, 296
+  orig: 197, 296
+  offset: 0, 0
+  index: -1
+mui_tent_back_right
+  rotate: false
+  xy: 398, 2
+  size: 314, 574
+  orig: 314, 574
+  offset: 0, 0
+  index: -1
+mui_tent_back_right_light1
+  rotate: false
+  xy: 998, 400
+  size: 157, 287
+  orig: 157, 287
+  offset: 0, 0
+  index: -1
+mui_tent_back_right_light2
+  rotate: false
+  xy: 985, 689
+  size: 157, 287
+  orig: 157, 287
+  offset: 0, 0
+  index: -1
+mui_tent_background
+  rotate: true
+  xy: 2, 596
+  size: 412, 258
+  orig: 412, 258
+  offset: 0, 0
+  index: -1
+mui_tent_balloon_blue
+  rotate: false
+  xy: 714, 400
+  size: 282, 179
+  orig: 282, 179
+  offset: 0, 0
+  index: -1
+mui_tent_balloon_red
+  rotate: true
+  xy: 804, 581
+  size: 282, 179
+  orig: 282, 179
+  offset: 0, 0
+  index: -1
+mui_tent_front
+  rotate: false
+  xy: 262, 596
+  size: 515, 323
+  orig: 515, 323
+  offset: 0, 0
+  index: -1
+mui_tent_front_light1
+  rotate: false
+  xy: 545, 921
+  size: 257, 53
+  orig: 257, 53
+  offset: 0, 0
+  index: -1
+mui_tent_front_light2
+  rotate: true
+  xy: 1102, 2
+  size: 257, 53
+  orig: 257, 53
+  offset: 0, 0
+  index: -1

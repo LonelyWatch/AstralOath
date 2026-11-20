@@ -8,6 +8,7 @@ Shader "AstralOath/BattleSourcePostEffect"
         u_range ("Range", Float) = 0
         u_sample ("Sample", Float) = 3
         u_ratio ("Original image ratio", Float) = 0
+        _Invert ("Invert source RGB", Float) = 0
     }
     SubShader
     {
@@ -22,13 +23,14 @@ Shader "AstralOath/BattleSourcePostEffect"
             #pragma vertex vert
             #pragma fragment frag
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 
             struct Attributes { float4 positionOS : POSITION; float2 uv : TEXCOORD0; };
             struct Varyings { float4 positionCS : SV_POSITION; float2 uv : TEXCOORD0; };
             TEXTURE2D(_MainTex);
             SAMPLER(sampler_MainTex);
             float2 u_resolution, u_direction;
-            float u_range, u_sample, u_ratio;
+            float u_range, u_sample, u_ratio, _Invert;
 
             Varyings vert(Attributes input)
             {
@@ -38,7 +40,7 @@ Shader "AstralOath/BattleSourcePostEffect"
                 return output;
             }
 
-            float4 frag(Varyings input) : SV_Target
+            float4 SampleWorld(Varyings input)
             {
                 float4 original = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, input.uv);
                 if (u_range <= 0 || dot(u_direction, u_direction) == 0 || u_sample <= .5)
@@ -58,6 +60,20 @@ Shader "AstralOath/BattleSourcePostEffect"
                     total += weight;
                 }
                 return total > 0 ? lerp(color / total, original, saturate(u_ratio)) : original;
+            }
+
+            float4 frag(Varyings input) : SV_Target
+            {
+                float4 color = SampleWorld(input);
+                if (_Invert > 0.5)
+                {
+                    #ifdef UNITY_COLORSPACE_GAMMA
+                    color.rgb = 1.0 - saturate(color.rgb);
+                    #else
+                    color.rgb = SRGBToLinear(1.0 - saturate(LinearToSRGB(color.rgb)));
+                    #endif
+                }
+                return color;
             }
             ENDHLSL
         }

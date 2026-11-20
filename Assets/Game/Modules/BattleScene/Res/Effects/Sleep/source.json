@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "source": "原始资源/effect/stse_sleep",
+  "sourceMapping": {
+    "table": "原始资源/db/cs_player.db",
+    "tableSha256": "c031c39f2a96af49d1b4240be6c60c37091289e5794300f7b6229369b06b026f",
+    "records": {
+      "206": "stic_sleep",
+      "206k": "stic_sleep_keep"
+    },
+    "cs_effect": "stse_sleep.cfx",
+    "cs_eff_bone": "top"
+  },
+  "premultipliedAlpha": true,
+  "partialAlphaPixels": 455,
+  "spineVersion": "2.1.27",
+  "animations": [
+    {
+      "name": "animation",
+      "duration": 2.5332999229431152
+    }
+  ],
+  "texture": {
+    "width": 90,
+    "height": 85,
+    "encoding": "SCT1:RGB565+A8",
+    "alpha": "source-preserved"
+  },
+  "converterSha256": "bf0c538105108ae0f60c6916a30288421884591ecd249026c6d8610444161505",
+  "files": [
+    {
+      "source": "原始资源/effect/stse_sleep.cfx",
+      "sourceSha256": "ab18407f0b2f5251f5efe5e154f8a9d2476a2dff15384c4e6b5c882db49fc7f2",
+      "asset": "stse_sleep.cfx.json",
+      "assetSha256": "27450e340d911ae2523fe7aaf7b4fd328a43d8d3272e7f51c2044f874c7a1ae9"
+    },
+    {
+      "source": "原始资源/effect/stse_sleep.scsp",
+      "sourceSha256": "ff600fab4913f8e33830315405150dc85619f76ffed2c4430f13b4006fed462e",
+      "asset": "stse_sleep.json",
+      "assetSha256": "c7f1cdecac562bf336c4831887346090005a19b25614083680c5c07305cfccab"
+    },
+    {
+      "source": "原始资源/effect/stse_sleep.atlas",
+      "sourceSha256": "bd85cbba36d9511b6eef05b446e51cc0b4e61d8cadf1729f67c6000ffdc82273",
+      "asset": "stse_sleep.atlas.txt",
+      "assetSha256": "8b3fdec08e42223b8414a0d88b421024e831aa2c257b3a0adfd2fdbdea14722d"
+    },
+    {
+      "source": "原始资源/effect/stse_sleep.sct",
+      "sourceSha256": "3a358e3ecfd66da7c8014dfff8a22175ce09876a99ed4c0d8ed5fcebacc702e8",
+      "asset": "stse_sleep.png",
+      "assetSha256": "749aa5074258e787bfdee0595d5473ba344cb879393dd5e2aa9e8346d6d6ab0a"
+    }
+  ]
+}

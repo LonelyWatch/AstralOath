@@ -1,0 +1,41 @@
+
+chloe_eff_sk3_2.sct
+size: 235,481
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+energy_blast_beam_02
+  rotate: true
+  xy: 207, 201
+  size: 150, 24
+  orig: 150, 24
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 201
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+light_star1
+  rotate: true
+  xy: 2, 372
+  size: 107, 118
+  orig: 107, 118
+  offset: 0, 0
+  index: -1
+light_star2
+  rotate: false
+  xy: 2, 2
+  size: 231, 197
+  orig: 231, 197
+  offset: 0, 0
+  index: -1
+white
+  rotate: false
+  xy: 173, 201
+  size: 32, 18
+  orig: 32, 18
+  offset: 0, 0
+  index: -1

@@ -497,6 +497,51 @@ namespace AstralOath.Client.Tests
             Assert.That(target.transform.localPosition, Is.EqualTo(slot));
         }
 
+        [TestCase(false)]
+        [TestCase(true)]
+        public void MuiSourceFadesOnlyAcceptedTargetBodiesAndRestoresOtherOpacity(bool interrupt)
+        {
+            const string file = "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1044/Configs/stagept/c_mui_skill_03.graph.json";
+            var graph = JObject.Parse(File.ReadAllText(file));
+            var source = graph["source"];
+            var nodes = source["entities"].ToDictionary(node => (int)node["guid"]);
+            Assert.That((int)nodes[7]["fadeIn"], Is.EqualTo(200));
+            source["entities"] = new JArray(nodes[1], nodes[2], nodes[7], nodes[21], nodes[28]);
+            source["connections"] = new JArray(((JArray)source["connections"]).Single(edge => (int)edge["from"] == 1 && (int)edge["to"] == 7),
+                new JObject { ["from"] = 1, ["to"] = 2 },
+                new JObject { ["from"] = 1, ["to"] = 21, ["when"] = 1, ["delay"] = 500 },
+                new JObject { ["from"] = 1, ["to"] = 28, ["when"] = 1, ["delay"] = 800 });
+            graph["assets"] = new JArray();
+            var text = new TextAsset(graph.ToString()); assets.Add(text);
+            var model = ReadModel("mui");
+            Component Unit() => Create(model.json, model.atlas, model.page);
+            var caster = Unit(); var target = Unit();
+            var recipients = Array.CreateInstance(ActorType, 1); recipients.SetValue(target, 0);
+            var body = Player(target).Root.GetComponent<Renderer>();
+            var block = new MaterialPropertyBlock();
+            block.SetFloat("_PresentationOpacity", .4f);
+            body.SetPropertyBlock(block);
+            var type = ActorType.Assembly.GetType("AstralOath.Client.BattleScene.BattleSkillPresentation", true);
+            var assetType = ActorType.Assembly.GetType("AstralOath.Client.BattleScene.BattleSkillPresentationAsset", true);
+            using var playback = (IDisposable)Activator.CreateInstance(type, root.transform, new[] { text },
+                Array.CreateInstance(assetType, 0), null, null, null);
+            type.GetMethod("Begin").Invoke(playback, new object[] { (string)graph["id"], caster, target, recipients });
+            void Tick(float delta) => type.GetMethod("Tick").Invoke(playback, new object[] { delta });
+            Tick(.1f);
+            body.GetPropertyBlock(block);
+            Assert.That(block.GetFloat("_SkillBodyOpacity"), Is.EqualTo(.5f).Within(.001f), "Halfway through the source fade.");
+            Assert.That(block.GetFloat("_PresentationOpacity"), Is.EqualTo(.4f));
+            Assert.That(body.forceRenderingOff, Is.False);
+            Tick(.11f);
+            Assert.That(body.forceRenderingOff, Is.True);
+            Assert.That(Player(caster).Root.GetComponent<Renderer>().forceRenderingOff, Is.False);
+            if (interrupt) playback.Dispose(); else Tick(.3f);
+            body.GetPropertyBlock(block);
+            Assert.That(body.forceRenderingOff, Is.False);
+            Assert.That(block.GetFloat("_SkillBodyOpacity"), Is.EqualTo(1f));
+            Assert.That(block.GetFloat("_PresentationOpacity"), Is.EqualTo(.4f));
+        }
+
         private Component Create(string json, string atlasText, string pageName)
         {
             var go = new GameObject("Actor"); go.transform.SetParent(root.transform, false);

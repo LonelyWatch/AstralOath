@@ -1,0 +1,309 @@
+{
+  "id": "c_mui_skill_01",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "ani": "skill1",
+        "guid": 2,
+        "etty": "ANI"
+      },
+      {
+        "guid": 3,
+        "etty": "IDLE"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 4,
+        "etty": "HIT"
+      },
+      {
+        "scale": "1.3",
+        "curve": "0.1954023,0.1909722,0.01149425,0.96875",
+        "time": 400,
+        "guid": 5,
+        "etty": "ZOOM"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "mui_skill_1_cm",
+        "guid": 6,
+        "etty": "SHAKE"
+      },
+      {
+        "location": 41,
+        "x": 80.0,
+        "y": -70.0,
+        "curve": "0.1954023,0.1909722,0.01149425,0.96875",
+        "time": 400,
+        "guid": 7,
+        "etty": "CAM"
+      },
+      {
+        "curve": "0.1954023,0.1909722,0.01149425,0.96875",
+        "time": 400,
+        "guid": 8,
+        "etty": "CAM"
+      },
+      {
+        "curve": "0.1954023,0.1909722,0.01149425,0.96875",
+        "time": 400,
+        "guid": 9,
+        "etty": "ZOOM"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 10,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 11,
+        "etty": "HIT"
+      }
+    ],
+    "connections": [
+      {
+        "from": 1,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 3,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 5,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 9,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 8,
+        "delay": 1200,
+        "Desc": "1200",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 6,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 4,
+        "delay": 632,
+        "when": 1,
+        "Desc": "632",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 10,
+        "delay": 932,
+        "when": 1,
+        "Desc": "932",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 11,
+        "delay": 1298,
+        "when": 1,
+        "Desc": "1298",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/mui_skill_1_cm.scsp",
+      "address": "characterlab/source/camera/mui_skill_1_cm.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.atlas",
+      "address": "characterlab/source/effect/hit_new_blunt_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.scsp",
+      "address": "characterlab/source/effect/hit_new_blunt_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.sct",
+      "address": "characterlab/source/effect/hit_new_blunt_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_blunt_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_blunt_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_blunt_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/mui_b_idle.cfx",
+      "address": "characterlab/source/effect/mui_b_idle.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/mui_b_idle.particle",
+      "address": "characterlab/source/effect/mui_b_idle.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/mui_b_idle_whip.atlas",
+      "address": "characterlab/source/effect/mui_b_idle_whip.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/mui_b_idle_whip.scsp",
+      "address": "characterlab/source/effect/mui_b_idle_whip.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/mui_b_idle_whip.sct",
+      "address": "characterlab/source/effect/mui_b_idle_whip.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/mui_skill_01.atlas",
+      "address": "characterlab/source/effect/mui_skill_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/mui_skill_01.cfx",
+      "address": "characterlab/source/effect/mui_skill_01.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/mui_skill_01.scsp",
+      "address": "characterlab/source/effect/mui_skill_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/mui_skill_01.sct",
+      "address": "characterlab/source/effect/mui_skill_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/mui_skill_02_self.cfx",
+      "address": "characterlab/source/effect/mui_skill_02_self.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/mui_skill_02_whip.atlas",
+      "address": "characterlab/source/effect/mui_skill_02_whip.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/mui_skill_02_whip.scsp",
+      "address": "characterlab/source/effect/mui_skill_02_whip.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/mui_skill_02_whip.sct",
+      "address": "characterlab/source/effect/mui_skill_02_whip.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/mui_skill_blow.atlas",
+      "address": "characterlab/source/effect/mui_skill_blow.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/mui_skill_blow.scsp",
+      "address": "characterlab/source/effect/mui_skill_blow.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/mui_skill_blow.sct",
+      "address": "characterlab/source/effect/mui_skill_blow.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/mui_skill_blow_p.particle",
+      "address": "characterlab/source/effect/mui_skill_blow_p.particle",
+      "type": "particle"
+    },
+    {
+      "source": "model/mui.timeline",
+      "address": "characterlab/source/model/mui.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/pati_03.sct",
+      "address": "characterlab/source/particle/pati_03.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_01.sct",
+      "address": "characterlab/source/particle/ticle_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

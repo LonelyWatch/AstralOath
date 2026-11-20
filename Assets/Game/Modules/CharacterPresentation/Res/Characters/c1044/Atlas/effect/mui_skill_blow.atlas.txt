@@ -1,0 +1,62 @@
+
+mui_skill_blow.sct
+size: 254,320
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+mui_smoke_1
+  rotate: false
+  xy: 145, 229
+  size: 94, 70
+  orig: 94, 70
+  offset: 0, 0
+  index: -1
+mui_smoke_2
+  rotate: false
+  xy: 2, 168
+  size: 133, 71
+  orig: 133, 71
+  offset: 0, 0
+  index: -1
+smoke_3
+  rotate: false
+  xy: 142, 122
+  size: 109, 105
+  orig: 109, 105
+  offset: 0, 0
+  index: -1
+smoke_4
+  rotate: false
+  xy: 2, 241
+  size: 119, 77
+  orig: 119, 77
+  offset: 0, 0
+  index: -1
+smoke_5
+  rotate: true
+  xy: 142, 2
+  size: 118, 110
+  orig: 118, 110
+  offset: 0, 0
+  index: -1
+spark_1
+  rotate: true
+  xy: 123, 241
+  size: 76, 20
+  orig: 76, 20
+  offset: 0, 0
+  index: -1
+spark_2-1
+  rotate: false
+  xy: 2, 2
+  size: 138, 81
+  orig: 138, 81
+  offset: 0, 0
+  index: -1
+spark_2-2
+  rotate: false
+  xy: 2, 85
+  size: 138, 81
+  orig: 138, 81
+  offset: 0, 0
+  index: -1

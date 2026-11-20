@@ -107,6 +107,9 @@ namespace AstralOath.Client.BattleScene.Editor
                 .ToDictionary(row => ((string)row["heroId"], (string)row["burnPresentationId"]));
             var counters = battle["skills"].Where(row => !string.IsNullOrEmpty((string)row["counterPresentationId"]))
                 .ToDictionary(row => ((string)row["heroId"], (string)row["counterPresentationId"]));
+            var statusVariants = battle["skills"].Where(row => !string.IsNullOrEmpty((string)row["alternatePresentationId"]))
+                .ToDictionary(row => ((string)row["heroId"], (string)row["alternatePresentationId"]));
+            var labels = battle["messages"].ToDictionary(row => (string)row["key"], row => (string)row["zhCn"]);
             var targets = lab["characters"].OrderBy(hero => (string)hero["id"], StringComparer.Ordinal).ToArray();
             targetIds = targets.Select(hero => (string)hero["id"]).ToArray();
             targetLabels = targets.Select(hero => $"{hero["name"]} ({hero["id"]})").ToArray();
@@ -118,15 +121,21 @@ namespace AstralOath.Client.BattleScene.Editor
                     string address = (string)row["graphAddress"];
                     var sourceAsset = BattleSkillPresentationAssets.Load<TextAsset>(address, paths);
                     string graph = (string)JObject.Parse(sourceAsset.text)["id"];
-                    var authority = active[id].FirstOrDefault(item => (int)item["slot"] == index + 1);
+                    var authority = active[id].FirstOrDefault(item => (string)item["presentationId"] == graph);
                     bool speedUp = variant.TryGetValue((id, graph), out var speedParent);
                     bool burn = burnVariants.TryGetValue((id, graph), out var burnParent);
                     bool counter = counters.TryGetValue((id, graph), out var counterParent);
-                    var parent = speedParent ?? burnParent ?? counterParent ?? authority;
+                    bool hasStatus = statusVariants.TryGetValue((id, graph), out var statusParent);
+                    var parent = speedParent ?? burnParent ?? counterParent ?? statusParent ?? authority;
+                    int slot = (int?)parent?["slot"] ?? index + 1;
+                    string status = (string)statusParent?["alternatePresentationStatus"];
+                    string statusKey = status == null ? null : "battle.status." + status.ToLowerInvariant() + ".name";
+                    string statusName = statusKey != null && labels.TryGetValue(statusKey, out var text) ? text : status;
                     return new Skill
                     {
-                        Hero = id, Name = (string)hero["name"], Slot = index + 1, Id = graph,
-                        SlotLabel = counter ? $"S{parent["slot"]} · 反击" : burn ? $"S{parent["slot"]} · 燃魂" : speedUp ? $"S{parent["slot"]} · 提速" : $"S{index + 1}",
+                        Hero = id, Name = (string)hero["name"], Slot = slot, Id = graph,
+                        SlotLabel = counter ? $"S{parent["slot"]} · 反击" : burn ? $"S{parent["slot"]} · 燃魂" : speedUp ? $"S{parent["slot"]} · 提速" :
+                            hasStatus ? $"S{parent["slot"]} · {statusName}" : $"S{slot}",
                         Asset = AssetDatabase.GetAssetPath(sourceAsset), Target = (string)parent?["target"]
                     };
                 });

@@ -1,0 +1,580 @@
+
+lidica_skeff_sk3_2.sct
+size: 1013,1179
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+beam_01
+  rotate: true
+  xy: 898, 359
+  size: 197, 104
+  orig: 197, 104
+  offset: 0, 0
+  index: -1
+bg&filter/bg
+  rotate: true
+  xy: 406, 609
+  size: 244, 119
+  orig: 244, 119
+  offset: 0, 0
+  index: -1
+circle_light1
+  rotate: false
+  xy: 2, 355
+  size: 314, 314
+  orig: 314, 314
+  offset: 0, 0
+  index: -1
+circle_light2
+  rotate: false
+  xy: 2, 2
+  size: 351, 351
+  orig: 351, 351
+  offset: 0, 0
+  index: -1
+flare/Layer 1 copy
+  rotate: false
+  xy: 968, 310
+  size: 41, 41
+  orig: 41, 41
+  offset: 0, 0
+  index: -1
+flare/Layer 1 copy 2
+  rotate: false
+  xy: 859, 1132
+  size: 36, 35
+  orig: 36, 35
+  offset: 0, 0
+  index: -1
+flare/Layer 1 copy 3
+  rotate: false
+  xy: 302, 975
+  size: 28, 28
+  orig: 28, 28
+  offset: 0, 0
+  index: -1
+flare/Layer 3 copy 2
+  rotate: false
+  xy: 698, 581
+  size: 15, 15
+  orig: 15, 15
+  offset: 0, 0
+  index: -1
+flare/Layer 3 copy 3
+  rotate: false
+  xy: 355, 340
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+flare/flare_line
+  rotate: true
+  xy: 493, 991
+  size: 28, 177
+  orig: 28, 177
+  offset: 0, 0
+  index: -1
+flare/prismlight_02
+  rotate: false
+  xy: 480, 375
+  size: 233, 204
+  orig: 233, 204
+  offset: 0, 0
+  index: -1
+flare/prismlight_10
+  rotate: true
+  xy: 834, 973
+  size: 75, 74
+  orig: 75, 74
+  offset: 0, 0
+  index: -1
+flare/prismlight_11
+  rotate: false
+  xy: 910, 953
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+flare/prismlight_24
+  rotate: false
+  xy: 526, 33
+  size: 219, 219
+  orig: 219, 219
+  offset: 0, 0
+  index: -1
+flare/prismlight_26
+  rotate: false
+  xy: 747, 33
+  size: 219, 219
+  orig: 219, 219
+  offset: 0, 0
+  index: -1
+flare/shockwave03_01
+  rotate: false
+  xy: 176, 1008
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+flare/shockwave03_04
+  rotate: false
+  xy: 527, 581
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 698, 602
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+heal_1
+  rotate: true
+  xy: 2, 1014
+  size: 159, 172
+  orig: 159, 172
+  offset: 0, 0
+  index: -1
+lay/laydrop_02
+  rotate: false
+  xy: 860, 375
+  size: 36, 204
+  orig: 36, 204
+  offset: 0, 0
+  index: -1
+lay/laydrop_03
+  rotate: false
+  xy: 869, 581
+  size: 32, 204
+  orig: 32, 204
+  offset: 0, 0
+  index: -1
+lay/laydrop_05
+  rotate: false
+  xy: 806, 845
+  size: 26, 203
+  orig: 26, 203
+  offset: 0, 0
+  index: -1
+lidica/leaf_01
+  rotate: false
+  xy: 888, 905
+  size: 73, 46
+  orig: 73, 46
+  offset: 0, 0
+  index: -1
+lidica/leaf_02
+  rotate: false
+  xy: 616, 1021
+  size: 54, 61
+  orig: 54, 61
+  offset: 0, 0
+  index: -1
+lidica/leaf_03
+  rotate: false
+  xy: 599, 1089
+  size: 71, 66
+  orig: 71, 66
+  offset: 0, 0
+  index: -1
+lidica/leaf_04
+  rotate: true
+  xy: 427, 1084
+  size: 76, 61
+  orig: 76, 61
+  offset: 0, 0
+  index: -1
+lidica/leaf_05
+  rotate: true
+  xy: 834, 899
+  size: 72, 52
+  orig: 72, 52
+  offset: 0, 0
+  index: -1
+lidica/shard_01
+  rotate: false
+  xy: 972, 1030
+  size: 17, 26
+  orig: 17, 26
+  offset: 0, 0
+  index: -1
+lidica/shard_02
+  rotate: false
+  xy: 956, 2
+  size: 10, 13
+  orig: 10, 13
+  offset: 0, 0
+  index: -1
+lidica/shard_03
+  rotate: false
+  xy: 332, 975
+  size: 13, 14
+  orig: 13, 14
+  offset: 0, 0
+  index: -1
+lidica/shard_04
+  rotate: false
+  xy: 681, 752
+  size: 15, 13
+  orig: 15, 13
+  offset: 0, 0
+  index: -1
+lidica/shard_05
+  rotate: false
+  xy: 859, 838
+  size: 42, 59
+  orig: 42, 59
+  offset: 0, 0
+  index: -1
+lidica/shard_06
+  rotate: false
+  xy: 852, 787
+  size: 49, 49
+  orig: 49, 49
+  offset: 0, 0
+  index: -1
+lidica/shard_07
+  rotate: false
+  xy: 366, 609
+  size: 36, 67
+  orig: 36, 67
+  offset: 0, 0
+  index: -1
+lidica/shard_08
+  rotate: false
+  xy: 784, 1029
+  size: 20, 13
+  orig: 20, 13
+  offset: 0, 0
+  index: -1
+lidica/shard_09
+  rotate: false
+  xy: 832, 773
+  size: 18, 68
+  orig: 18, 68
+  offset: 0, 0
+  index: -1
+lidica/shard_10
+  rotate: false
+  xy: 480, 581
+  size: 41, 22
+  orig: 41, 22
+  offset: 0, 0
+  index: -1
+lidica/shard_11
+  rotate: true
+  xy: 427, 1162
+  size: 14, 32
+  orig: 14, 32
+  offset: 0, 0
+  index: -1
+lidica/shard_12
+  rotate: true
+  xy: 870, 254
+  size: 103, 96
+  orig: 103, 96
+  offset: 0, 0
+  index: -1
+lidica/shard_13
+  rotate: false
+  xy: 784, 979
+  size: 20, 48
+  orig: 20, 48
+  offset: 0, 0
+  index: -1
+lidica/shard_14
+  rotate: true
+  xy: 897, 1091
+  size: 50, 59
+  orig: 50, 59
+  offset: 0, 0
+  index: -1
+lidica/shard_15
+  rotate: false
+  xy: 859, 1050
+  size: 36, 80
+  orig: 36, 80
+  offset: 0, 0
+  index: -1
+lidica/shard_16
+  rotate: false
+  xy: 958, 1091
+  size: 50, 51
+  orig: 50, 51
+  offset: 0, 0
+  index: -1
+lidica/shard_17
+  rotate: true
+  xy: 903, 766
+  size: 52, 107
+  orig: 52, 107
+  offset: 0, 0
+  index: -1
+lidica/shard_18
+  rotate: false
+  xy: 406, 855
+  size: 135, 130
+  orig: 135, 130
+  offset: 0, 0
+  index: -1
+lidica/shard_19
+  rotate: true
+  xy: 480, 340
+  size: 29, 38
+  orig: 29, 38
+  offset: 0, 0
+  index: -1
+lidica/shard_20
+  rotate: false
+  xy: 995, 851
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+lidica/shard_21
+  rotate: false
+  xy: 347, 1084
+  size: 78, 93
+  orig: 78, 93
+  offset: 0, 0
+  index: -1
+lidica/shard_22
+  rotate: true
+  xy: 659, 773
+  size: 70, 171
+  orig: 70, 171
+  offset: 0, 0
+  index: -1
+lidica/shard_23
+  rotate: false
+  xy: 672, 979
+  size: 110, 90
+  orig: 110, 90
+  offset: 0, 0
+  index: -1
+lidica/shard_24
+  rotate: false
+  xy: 910, 1030
+  size: 60, 59
+  orig: 60, 59
+  offset: 0, 0
+  index: -1
+lidica/shard_25
+  rotate: true
+  xy: 897, 1143
+  size: 30, 50
+  orig: 30, 50
+  offset: 0, 0
+  index: -1
+lidica/shard_26
+  rotate: false
+  xy: 903, 558
+  size: 108, 126
+  orig: 108, 126
+  offset: 0, 0
+  index: -1
+lidica/shard_27
+  rotate: false
+  xy: 834, 843
+  size: 18, 30
+  orig: 18, 30
+  offset: 0, 0
+  index: -1
+lidica/shard_28
+  rotate: false
+  xy: 869, 359
+  size: 17, 14
+  orig: 17, 14
+  offset: 0, 0
+  index: -1
+lidica/shard_29
+  rotate: true
+  xy: 903, 820
+  size: 83, 90
+  orig: 83, 90
+  offset: 0, 0
+  index: -1
+lidica/shard_30
+  rotate: true
+  xy: 784, 1044
+  size: 21, 18
+  orig: 21, 18
+  offset: 0, 0
+  index: -1
+lidica/shard_31
+  rotate: false
+  xy: 903, 686
+  size: 108, 78
+  orig: 108, 78
+  offset: 0, 0
+  index: -1
+lidica/shard_32
+  rotate: true
+  xy: 995, 820
+  size: 29, 16
+  orig: 29, 16
+  offset: 0, 0
+  index: -1
+lidica/shard_33
+  rotate: true
+  xy: 659, 752
+  size: 19, 20
+  orig: 19, 20
+  offset: 0, 0
+  index: -1
+lidica/shard_34
+  rotate: false
+  xy: 963, 905
+  size: 27, 28
+  orig: 27, 28
+  offset: 0, 0
+  index: -1
+lidica/shard_35
+  rotate: true
+  xy: 774, 1071
+  size: 94, 83
+  orig: 94, 83
+  offset: 0, 0
+  index: -1
+lidica/shard_blur
+  rotate: true
+  xy: 715, 375
+  size: 225, 143
+  orig: 225, 143
+  offset: 0, 0
+  index: -1
+light_long
+  rotate: false
+  xy: 366, 340
+  size: 112, 267
+  orig: 112, 267
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: false
+  xy: 526, 2
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1
+magiccircle_01
+  rotate: false
+  xy: 672, 1071
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+part_1
+  rotate: false
+  xy: 527, 752
+  size: 130, 101
+  orig: 130, 101
+  offset: 0, 0
+  index: -1
+part_2
+  rotate: true
+  xy: 543, 855
+  size: 134, 127
+  orig: 134, 127
+  offset: 0, 0
+  index: -1
+part_3
+  rotate: true
+  xy: 490, 1089
+  size: 75, 107
+  orig: 75, 107
+  offset: 0, 0
+  index: -1
+ring_wave
+  rotate: false
+  xy: 672, 845
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+snow_long_13
+  rotate: false
+  xy: 493, 1021
+  size: 121, 66
+  orig: 121, 66
+  offset: 0, 0
+  index: -1
+snow_long_14
+  rotate: false
+  xy: 347, 987
+  size: 144, 95
+  orig: 144, 95
+  offset: 0, 0
+  index: -1
+zeno/speed_01
+  rotate: false
+  xy: 149, 671
+  size: 88, 322
+  orig: 88, 322
+  offset: 0, 0
+  index: -1
+zeno/speed_02
+  rotate: true
+  xy: 526, 254
+  size: 61, 342
+  orig: 61, 342
+  offset: 0, 0
+  index: -1
+zeno/speed_03
+  rotate: false
+  xy: 365, 684
+  size: 39, 293
+  orig: 39, 293
+  offset: 0, 0
+  index: -1
+zeno/speed_04
+  rotate: false
+  xy: 239, 671
+  size: 61, 335
+  orig: 61, 335
+  offset: 0, 0
+  index: -1
+zeno/speed_05
+  rotate: false
+  xy: 318, 355
+  size: 46, 327
+  orig: 46, 327
+  offset: 0, 0
+  index: -1
+zeno/speed_06
+  rotate: false
+  xy: 302, 684
+  size: 61, 289
+  orig: 61, 289
+  offset: 0, 0
+  index: -1
+zeno/speed_07
+  rotate: false
+  xy: 355, 2
+  size: 169, 336
+  orig: 169, 336
+  offset: 0, 0
+  index: -1
+zeno/speed_08
+  rotate: false
+  xy: 2, 671
+  size: 145, 341
+  orig: 145, 341
+  offset: 0, 0
+  index: -1
+zeno/speed_09
+  rotate: false
+  xy: 968, 2
+  size: 43, 306
+  orig: 43, 306
+  offset: 0, 0
+  index: -1
+zeno/speed_10
+  rotate: true
+  xy: 526, 317
+  size: 56, 341
+  orig: 56, 341
+  offset: 0, 0
+  index: -1

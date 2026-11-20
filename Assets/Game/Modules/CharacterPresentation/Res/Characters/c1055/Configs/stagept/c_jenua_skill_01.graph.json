@@ -1,0 +1,316 @@
+{
+  "id": "c_jenua_skill_01",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 8
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "scale": "1",
+        "time": 333,
+        "guid": 1,
+        "etty": "ZOOM"
+      },
+      {
+        "targetId": "dk",
+        "guid": 2,
+        "etty": "STOP"
+      },
+      {
+        "guid": 3,
+        "etty": "IDLE"
+      },
+      {
+        "time": 333,
+        "guid": 4,
+        "etty": "CAM"
+      },
+      {
+        "ani": "skill1",
+        "guid": 5,
+        "etty": "ANI"
+      },
+      {
+        "scale": "1.3",
+        "curve": "0.1034483,0.375,0.6206896,0.7777777",
+        "time": 333,
+        "guid": 6,
+        "etty": "ZOOM"
+      },
+      {
+        "source": "jenua_skeff_sk1_self_attact.cfx",
+        "scale": 1.0,
+        "location": 1,
+        "guid": 7,
+        "etty": "EFFECT"
+      },
+      {
+        "state": "start",
+        "guid": 8,
+        "etty": "ENTRY"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "scale": 0.8,
+        "guid": 9,
+        "etty": "HIT"
+      },
+      {
+        "color": "0,0,0,255",
+        "accel": 1.0,
+        "opacity": 0.7,
+        "duration": -1,
+        "globalZ": -1,
+        "fadeIn": 200,
+        "fadeOut": 200,
+        "id": "dk",
+        "guid": 10,
+        "etty": "DARK"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 11,
+        "etty": "HIT"
+      },
+      {
+        "location": 12,
+        "y": -30.0,
+        "curve": "0.1034483,0.375,0.6206896,0.7777777",
+        "time": 333,
+        "guid": 12,
+        "etty": "CAM"
+      },
+      {
+        "duration": -1,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "jenua_cm_sk1",
+        "guid": 13,
+        "etty": "SHAKE"
+      },
+      {
+        "ver": 2,
+        "time": 333,
+        "power": 70,
+        "location": 16,
+        "style": 2,
+        "x": -200.0,
+        "guid": 14,
+        "etty": "MOVE"
+      },
+      {
+        "ver": 2,
+        "time": 333,
+        "power": 70,
+        "location": 11,
+        "style": 2,
+        "guid": 15,
+        "etty": "MOVE"
+      }
+    ],
+    "connections": [
+      {
+        "from": 5,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 3,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 9,
+        "delay": 1267,
+        "when": 1,
+        "Desc": "1267",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 10,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 5,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 11,
+        "delay": 267,
+        "Desc": "267",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 13,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 12,
+        "to": 6,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 1,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 14,
+        "delay": 733,
+        "when": 1,
+        "Desc": "733",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 14,
+        "to": 12,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 15,
+        "delay": 1966,
+        "when": 1,
+        "Desc": "1966",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 15,
+        "to": 4,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/jenua_cm_sk1.scsp",
+      "address": "characterlab/source/camera/jenua_cm_sk1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_slash_01.atlas",
+      "address": "characterlab/source/effect/hit_new_slash_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_slash_01.scsp",
+      "address": "characterlab/source/effect/hit_new_slash_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_slash_01.sct",
+      "address": "characterlab/source/effect/hit_new_slash_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_slash_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_slash_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_slash_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_slash_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/jenua_skeff_b_idle_ready.atlas",
+      "address": "characterlab/source/effect/jenua_skeff_b_idle_ready.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/jenua_skeff_b_idle_ready.cfx",
+      "address": "characterlab/source/effect/jenua_skeff_b_idle_ready.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/jenua_skeff_b_idle_ready.scsp",
+      "address": "characterlab/source/effect/jenua_skeff_b_idle_ready.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/jenua_skeff_b_idle_ready.sct",
+      "address": "characterlab/source/effect/jenua_skeff_b_idle_ready.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/jenua_skeff_sk1.atlas",
+      "address": "characterlab/source/effect/jenua_skeff_sk1.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/jenua_skeff_sk1.scsp",
+      "address": "characterlab/source/effect/jenua_skeff_sk1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/jenua_skeff_sk1.sct",
+      "address": "characterlab/source/effect/jenua_skeff_sk1.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/jenua_skeff_sk1_self_attact.cfx",
+      "address": "characterlab/source/effect/jenua_skeff_sk1_self_attact.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/jenua_skeff_sk1_self_unit.cfx",
+      "address": "characterlab/source/effect/jenua_skeff_sk1_self_unit.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "model/jenua.timeline",
+      "address": "characterlab/source/model/jenua.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

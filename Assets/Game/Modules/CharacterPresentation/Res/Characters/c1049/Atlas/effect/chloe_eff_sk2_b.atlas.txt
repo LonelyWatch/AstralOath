@@ -1,0 +1,90 @@
+
+chloe_eff_sk2_b.sct
+size: 245,685
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cloud_01
+  rotate: true
+  xy: 154, 2
+  size: 142, 89
+  orig: 142, 89
+  offset: 0, 0
+  index: -1
+cloud_02
+  rotate: true
+  xy: 154, 146
+  size: 124, 82
+  orig: 124, 82
+  offset: 0, 0
+  index: -1
+cloud_03
+  rotate: false
+  xy: 123, 575
+  size: 114, 108
+  orig: 114, 108
+  offset: 0, 0
+  index: -1
+cloud_05
+  rotate: true
+  xy: 130, 446
+  size: 127, 61
+  orig: 127, 61
+  offset: 0, 0
+  index: -1
+cloud_13
+  rotate: true
+  xy: 173, 272
+  size: 95, 68
+  orig: 95, 68
+  offset: 0, 0
+  index: -1
+cloud_16
+  rotate: true
+  xy: 173, 369
+  size: 42, 55
+  orig: 42, 55
+  offset: 0, 0
+  index: -1
+cloud_crack_03
+  rotate: true
+  xy: 193, 508
+  size: 63, 34
+  orig: 63, 34
+  offset: 0, 0
+  index: -1
+cloud_crack_04
+  rotate: true
+  xy: 193, 413
+  size: 93, 49
+  orig: 93, 49
+  offset: 0, 0
+  index: -1
+dust_soft_2
+  rotate: true
+  xy: 2, 2
+  size: 271, 150
+  orig: 271, 150
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 275
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+smoke_1
+  rotate: true
+  xy: 2, 558
+  size: 120, 119
+  orig: 120, 119
+  offset: 0, 0
+  index: -1
+smoke_2
+  rotate: false
+  xy: 2, 446
+  size: 126, 110
+  orig: 126, 110
+  offset: 0, 0
+  index: -1

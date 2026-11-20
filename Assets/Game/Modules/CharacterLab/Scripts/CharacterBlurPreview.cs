@@ -15,8 +15,8 @@ namespace AstralOath.Client.CharacterLab
         private readonly float previousAspect;
         private readonly Vector3[] corners=new Vector3[4];
         private RenderTexture target;
-        private string activeId;
-        private double time,end;
+        private string blurId,invertId;
+        private double time,blurEnd,invertEnd;
         private bool disposed;
         public CharacterBlurPreview(Camera camera,RawImage image,Material source)
         {
@@ -24,7 +24,7 @@ namespace AstralOath.Client.CharacterLab
             previous=camera.targetTexture;previousAspect=camera.aspect;
             material=new Material(source){name="CharacterLab Blur Instance"};
             image.material=material;
-            material.SetFloat("u_range",0);
+            Reset();
             try {Resize();image.gameObject.SetActive(true);} catch {Dispose();throw;}
         }
         public void Resize()
@@ -49,6 +49,16 @@ namespace AstralOath.Client.CharacterLab
         }
         public void Play(JObject node,Action<string> report)
         {
+            string id=(string)node["id"]??"pp:"+node["guid"];
+            if((string)node["program"]=="sprite_invert")
+            {
+                float milliseconds=CharacterEffectStage.Number(node["duration"],0);
+                if(!(milliseconds>0)||float.IsInfinity(milliseconds))
+                {report("PPEFFECT sprite_invert requires a positive finite duration.");return;}
+                invertId=id;invertEnd=time+milliseconds/1000d;
+                material.SetFloat("_SpriteInvert",1f);
+                return;
+            }
             if((string)node["program"]!="sprite_blur"){report("Unsupported PPEFFECT program: "+node["program"]);return;}
             if(node["u_range"]==null||node["u_sample"]==null||node["duration"]==null)
             {report("PPEFFECT sprite_blur is missing required explicit u_range/u_sample/duration; no defaults invented.");return;}
@@ -59,21 +69,28 @@ namespace AstralOath.Client.CharacterLab
                 CharacterEffectStage.Number(node["duration"],0)/1000f);
             material.SetVector("u_direction",new Vector4(settings.DirectionX,settings.DirectionY,0,0));
             material.SetFloat("u_range",settings.Range);material.SetFloat("u_sample",settings.Samples);material.SetFloat("u_ratio",settings.Ratio);
-            activeId=(string)node["id"]??"pp:"+node["guid"];end=time+settings.Duration;
+            blurId=id;blurEnd=time+settings.Duration;
             report("PPEFFECT sprite_blur uses the source shader's weighted kernel and explicit uniforms. Entire lab camera image is processed; original sprite scope and SINE_VALUE modulation remain unverified.");
         }
         public void Tick(float delta)
         {
             if(disposed)return;
             time+=delta;
-            if(activeId!=null&&time>=end)Reset();
+            if(blurId!=null&&time>=blurEnd)ClearBlur();
+            if(invertId!=null&&time>=invertEnd)ClearInvert();
         }
-        public void Stop(string id){if(activeId==id)Reset();}
+        public void Stop(string id)
+        {
+            if(id==null)return;
+            if(blurId==id)ClearBlur();
+            if(invertId==id)ClearInvert();
+        }
         public void Reset()
         {
-            activeId=null;
-            if(material)material.SetFloat("u_range",0);
+            ClearBlur();ClearInvert();
         }
+        private void ClearBlur(){blurId=null;if(material)material.SetFloat("u_range",0);}
+        private void ClearInvert(){invertId=null;if(material)material.SetFloat("_SpriteInvert",0);}
         public void Dispose()
         {
             if(disposed)return;disposed=true;

@@ -1,6 +1,6 @@
 # 角色资源白名单导入
 
-本工具接受显式白名单内的 40 名英雄，以各自的模型、立绘、基础技能及已确认的独立分支 STG 为根。递归收集实际引用的 atlas、纹理、CFX、particle、camera、cutin 及原有 timeline，FMOD bank 共用。外部目录 `D:/sevenepic/原始资源` 保持只读。角色顺序与纳入标准见[逐人接入规范](../../docs/development/battle-roster-expansion.md)。
+本工具接受显式白名单内的 50 名英雄，以各自的模型、立绘、基础技能及已确认的独立分支 STG 为根。递归收集实际引用的 atlas、纹理、CFX、particle、camera、cutin 及原有 timeline，FMOD bank 共用。外部目录 `D:/sevenepic/原始资源` 保持只读。角色顺序与纳入标准见[逐人接入规范](../../docs/development/battle-roster-expansion.md)。
 
 额外技能图按源行动配置本地化键。法济斯的 `c_fuzzies_skill_03_2` 来自被动反击；光之瑞儿与伊赛丽亚的额外图来自燃魂。日语原始取样名可能含连字符或语言后缀，例如 `voc_c1034_skill1_1(J)`。保留取样 ID 与 FMOD 路径的大小写和标点，仅对界面文案键转小写并规范分隔符；同一角色的两个取样若生成相同文案键，导入失败。[第 31–40 名资源核验](../../docs/delivery/2026-11-20-roster31-40-assets.md)
 
@@ -50,3 +50,5 @@ SCSP 2.1 的多条同骨骼 type2 位移轨按源记录顺序保留。标准 `bo
 已证实的角色资源别名及未提供的旧 timeline 依赖、日语音频边界见[角色资源进入 Unity](../../docs/development/character-asset-import.md)。逐项通过 `--verify` 核对输入输出哈希，转换和资源校验以 Unity 实际加载验收补充。
 
 技能语音事件和夹攻呼叫/应答字段只在源 `sound/voc.event.yml` 确有对应事件时导出。语音样本语言及缺失键通过音频表核对，使用技能时只启动一个原生语音事件，FMOD 保留抽样与关联对白时序。单独的样本试听留在角色实验室。
+
+第 41–50 位新增 31 张动作图。肯恩有基础和魄力 S1，济纽亚技能槽与动作编号交叉。2.1 原骨骼的重复插槽颜色、骨骼缩放轨按序保存，保留相同键在混合权重下再次生效的行为；日语银行按角色来源选择。[第 41–50 名角色验收](../../docs/delivery/2026-11-20-roster41-50-assets.md)

@@ -25,6 +25,7 @@ MonoBehaviour:
   EffectWordFont: {fileID: 11400000, guid: f88001289c690f945b4d49e8b3f4f9c6, type: 2}
   EffectWordOutline: {fileID: 2100000, guid: ff93be1716644241af5ecf1f6189cf6f, type: 2}
   StatusGlyphs:
+  - {fileID: 21300000, guid: 52f2ab71e0845ea8a43a96ee5fbc3b47, type: 3}
   - {fileID: 21300000, guid: 845b4da2dd9b59099f8c45f7531c5c74, type: 3}
   - {fileID: 21300000, guid: d0b03ad9cbd658acbfced56a5e3271f8, type: 3}
   - {fileID: 21300000, guid: f8df8980be905a18b77b2ea06cca2c39, type: 3}
@@ -44,6 +45,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3925736064af552b9c3bce90e9573d57, type: 3}
   - {fileID: 21300000, guid: f573a99e3f5f54d5a97cde6c0b8fe72a, type: 3}
   - {fileID: 21300000, guid: a245c29f150d591f8d361d7d45c519eb, type: 3}
+  - {fileID: 21300000, guid: 4ffbc650280c55c89adfe4c1399daec5, type: 3}
+  - {fileID: 21300000, guid: 79cc526279a25d068ec15600a5278fbc, type: 3}
   - {fileID: 21300000, guid: fb1259ca991f5d048b290f8173c6d21e, type: 3}
   - {fileID: 21300000, guid: 828077ed8bdf5bb5a0bb829bb098bb6f, type: 3}
   - {fileID: 21300000, guid: 63e0b267c3355f54bd596364d49974d4, type: 3}
@@ -51,10 +54,13 @@ MonoBehaviour:
   - {fileID: 21300000, guid: e1a7c67ad8ff5a3ba127a1d8a83edf54, type: 3}
   - {fileID: 21300000, guid: ce5e71d7527f5ca59edd98138fee35f9, type: 3}
   - {fileID: 21300000, guid: 075a7957f36b5e9d89ed20de6b66040e, type: 3}
+  - {fileID: 21300000, guid: 392c99059619575189fe461f10476ac8, type: 3}
   - {fileID: 21300000, guid: dacecaa66a8f5e75a622d18869fb0bed, type: 3}
   - {fileID: 21300000, guid: cbfe21cf9d7f5f11bcbd6b931b74a2a3, type: 3}
   - {fileID: 21300000, guid: fa7ee4ada6d2575db0abd70f16362fd4, type: 3}
+  - {fileID: 21300000, guid: 773f75f359a853eb8e43e63002c4ae3d, type: 3}
   - {fileID: 21300000, guid: 0df29a7a70c7592ba8b41593c9cedacb, type: 3}
+  - {fileID: 21300000, guid: 6c4eeb33d1225097862557d2584a55fb, type: 3}
   - {fileID: 21300000, guid: fb434b0b1c455b968415a93581656c93, type: 3}
   - {fileID: 21300000, guid: c868eb68fecf506dbad49ebb1b2a65c1, type: 3}
   - {fileID: 21300000, guid: d8a131740cab50eb8ff9f2015a881ff7, type: 3}
@@ -121,6 +127,18 @@ MonoBehaviour:
     premultipliedAlpha: 1
     scale: 0.01
   StunStarsEffect: {fileID: 4900000, guid: 45be6f9c3791562688a9124d7414ea0f, type: 3}
+  SleepSymbols:
+    source: effect/stse_sleep.scsp
+    document: {fileID: 4900000, guid: 4652e62c10c0580b80ced6de721e688d, type: 3}
+    atlas: {fileID: 4900000, guid: 647adab16477573eb7e67fa3259bcc13, type: 3}
+    pageNames:
+    - stse_sleep.sct
+    pages:
+    - {fileID: 2800000, guid: df0a921cc6a456ae806fcd966f8b8ca9, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  SleepSymbolsEffect: {fileID: 4900000, guid: 4ca6ae4b72485db482d03e6d86018df4, type: 3}
   DamageSeconds: 0.16
   HealSeconds: 0.18
   TrailSeconds: 0.5

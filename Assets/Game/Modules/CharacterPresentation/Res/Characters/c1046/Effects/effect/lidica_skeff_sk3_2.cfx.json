@@ -1,0 +1,29 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "lidica_skeff_sk3_2",
+      "format": "spine",
+      "globalZ": 0.8
+    },
+    {
+      "source": "lidica_bg_sk3_2",
+      "format": "spine",
+      "globalZ": -0.5
+    },
+    {
+      "source": "lidica_pat_sk3_2",
+      "delay": "1466",
+      "format": "particle",
+      "globalZ": 1.0
+    },
+    {
+      "source": "lidica_pat_sk3_last",
+      "x": "-200",
+      "y": "-100",
+      "delay": "2000",
+      "format": "particle",
+      "globalZ": 1.0
+    }
+  ]
+}

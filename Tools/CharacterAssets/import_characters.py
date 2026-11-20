@@ -50,14 +50,27 @@ CHARACTERS={
     "c1039":("haste","海斯特"),
     "c1040":("serilla","塞丽拉"),
     "c1042":("tywin","泰温"),
+    "c1043":("roman","洛曼"),
+    "c1044":("mui","缪伊"),
+    "c1046":("lidica","丽迪卡"),
+    "c1047":("ken","肯恩"),
+    "c1048":("araminta","雅拉敏塔"),
+    "c1049":("chloe","克萝爱"),
+    "c1050":("tenebria","泰妮布里雅"),
+    "c1053":("basar","巴萨尔"),
+    "c1054":("ring","铃儿"),
+    "c1055":("jenua","济纽亚"),
     "c1062":("angelica","安洁莉卡"),
 }
 # Keep source identifiers verbatim even where the model and STG stems differ.
 SKILL_STEMS={"c1002":"c_cecilia_skill_new","c1007":"c_wilderd_skill","c1008":"c_aming_skill","c1010":"c_jerato_skill","c1013":"c_cartuja_skill","c1015":"c_baal_skill","c1017":"c_acha_skill","c1018":"c_iterre_skill"}
-SKILL_VARIANTS={("c1009",3):"c_charlotte_skill_03_05",
+SKILL_VARIANTS={("c1055",2):"c_jenua_skill_03", ("c1055",3):"c_jenua_skill_02",
+                ("c1047",1):"c_ken_skill_01_02",
+                ("c1009",3):"c_charlotte_skill_03_05",
                 **{("c1014",index):f"c_cedars_skill_{index:02}_new" for index in range(1,4)}}
 # Retain the three primary slots first; each additional graph names its own action.
 EXTRA_SKILL_GRAPHS = {
+    "c1047": {"c_ken_skill_01_01": "character.ken.vigor"},
     "c1022": {"c_ruell_skill_01_2": "battle.inspect.burn_header"},
     "c1024": {"c_iseria_skill_01_2": "battle.inspect.burn_header"},
     "c1035": {"c_fuzzies_skill_03_2": "character.fuzzies.counter"},
@@ -90,7 +103,10 @@ BANKS = (
     "sound/gerneal.bank",
 )
 DEFAULT_JAPANESE_BANK = "sound/ja/voc1.audio_ja.bank"
-JAPANESE_BANK_BY_CHARACTER = {"c1019": "sound/ja/voc3.audio_ja.bank"}
+JAPANESE_BANK_BY_CHARACTER = {
+    "c1019": "sound/ja/voc3.audio_ja.bank", "c1044": "sound/ja/voc3.audio_ja.bank",
+    "c1046": "sound/ja/voc3.audio_ja.bank", "c1055": "sound/ja/voc5.audio_ja.bank",
+}
 
 
 def japanese_bank(character_id):
@@ -497,6 +513,10 @@ def canonical_programmer_key(key):
 
 # Explicit source provenance. A spelling match cannot authorize substitution between events.
 JAPANESE_PROGRAMMER_ALIASES = {
+    "event:/voc/skill/c_mui_skill_03": tuple(
+        (f"voc_c1044_skill3_{phase}_2", f"voc_c1044_skill3_{phase}_1") for phase in range(1, 4)),
+    "event:/voc/skill/c_ken_skill_03": tuple(
+        (f"voc_c1047_skill3_1_{take}", "voc_c1047_skill3_1") for take in range(1, 4)),
     "event:/voc/skill/c_yupine_skill_02": tuple(
         (f"voc_c1016_skill2_{take}", f"voc_c1016_skill2_{take}_j") for take in range(1, 4)),
 }

@@ -8,6 +8,7 @@ Shader "AstralOath/CharacterSpriteBlur"
         u_range ("Range", Float) = 0
         u_sample ("Sample", Float) = 3
         u_ratio ("Original image ratio", Float) = 0
+        _SpriteInvert ("Invert display RGB", Float) = 0
     }
     SubShader
     {
@@ -29,6 +30,7 @@ Shader "AstralOath/CharacterSpriteBlur"
             float u_range;
             float u_sample;
             float u_ratio;
+            float _SpriteInvert;
             Varyings vert(Attributes input)
             {
                 Varyings output;
@@ -63,10 +65,21 @@ Shader "AstralOath/CharacterSpriteBlur"
                 }
                 return result;
             }
+            float invertDisplayChannel(float value)
+            {
+                #ifdef UNITY_COLORSPACE_GAMMA
+                    return 1.0-value;
+                #else
+                    return GammaToLinearSpaceExact(1.0-LinearToGammaSpaceExact(saturate(value)));
+                #endif
+            }
             float4 frag(Varyings input):SV_Target
             {
                 float ratio=saturate(u_ratio);
-                return blur(input.uv)*(1-ratio)+ratio*tex2D(_MainTex,input.uv);
+                float4 result=blur(input.uv)*(1-ratio)+ratio*tex2D(_MainTex,input.uv);
+                if(_SpriteInvert>.5)
+                    result.rgb=float3(invertDisplayChannel(result.r),invertDisplayChannel(result.g),invertDisplayChannel(result.b));
+                return result;
             }
             ENDHLSL
         }

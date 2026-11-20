@@ -1,0 +1,32 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "tenebria_skill_03_orb",
+      "z": "3",
+      "format": "spine"
+    },
+    {
+      "source": "tenebria_skill1_orb_pati1",
+      "z": "4",
+      "delay": "500",
+      "format": "particle",
+      "attach": "tenebria_skill_03_orb/orb_anker",
+      "lifeTime": "500"
+    },
+    {
+      "source": "tenebria_skill_03_orb_pati1",
+      "x": "230",
+      "y": "498",
+      "z": "5",
+      "delay": "500",
+      "format": "particle"
+    },
+    {
+      "source": "tenebria_skill1_orb_pati1",
+      "format": "particle",
+      "attach": "tenebria_skill_03_orb/orb_anker",
+      "lifeTime": "500"
+    }
+  ]
+}

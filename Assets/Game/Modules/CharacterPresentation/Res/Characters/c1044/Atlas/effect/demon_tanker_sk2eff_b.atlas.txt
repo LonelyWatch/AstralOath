@@ -1,0 +1,132 @@
+
+demon_tanker_sk2eff_b.sct
+size: 251,1207
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cloud_crack_02
+  rotate: false
+  xy: 186, 398
+  size: 59, 52
+  orig: 59, 52
+  offset: 0, 0
+  index: -1
+cloud_crack_03
+  rotate: false
+  xy: 186, 261
+  size: 63, 34
+  orig: 63, 34
+  offset: 0, 0
+  index: -1
+cloud_crack_06
+  rotate: false
+  xy: 88, 1003
+  size: 47, 43
+  orig: 47, 43
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 592
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+global_glow
+  rotate: false
+  xy: 2, 1003
+  size: 84, 84
+  orig: 84, 84
+  offset: 0, 0
+  index: -1
+k_dust_1
+  rotate: false
+  xy: 2, 763
+  size: 141, 117
+  orig: 141, 117
+  offset: 0, 0
+  index: -1
+k_dust_2
+  rotate: true
+  xy: 2, 2
+  size: 257, 223
+  orig: 257, 223
+  offset: 0, 0
+  index: -1
+k_m_g
+  rotate: true
+  xy: 145, 821
+  size: 272, 88
+  orig: 272, 88
+  offset: 0, 0
+  index: -1
+rock_1_1
+  rotate: false
+  xy: 186, 297
+  size: 62, 99
+  orig: 62, 99
+  offset: 0, 0
+  index: -1
+rock_1_2
+  rotate: false
+  xy: 173, 452
+  size: 75, 69
+  orig: 75, 69
+  offset: 0, 0
+  index: -1
+rock_1_3
+  rotate: false
+  xy: 173, 742
+  size: 47, 77
+  orig: 47, 77
+  offset: 0, 0
+  index: -1
+smoke_02
+  rotate: false
+  xy: 2, 261
+  size: 182, 158
+  orig: 182, 158
+  offset: 0, 0
+  index: -1
+smoke_1
+  rotate: false
+  xy: 2, 882
+  size: 120, 119
+  orig: 120, 119
+  offset: 0, 0
+  index: -1
+smoke_2
+  rotate: false
+  xy: 2, 1095
+  size: 126, 110
+  orig: 126, 110
+  offset: 0, 0
+  index: -1
+smoke_5
+  rotate: false
+  xy: 130, 1095
+  size: 118, 110
+  orig: 118, 110
+  offset: 0, 0
+  index: -1
+smoke_s1
+  rotate: false
+  xy: 173, 660
+  size: 65, 80
+  orig: 65, 80
+  offset: 0, 0
+  index: -1
+wave_1
+  rotate: false
+  xy: 173, 523
+  size: 70, 135
+  orig: 70, 135
+  offset: 0, 0
+  index: -1
+wind_shock
+  rotate: false
+  xy: 2, 421
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1

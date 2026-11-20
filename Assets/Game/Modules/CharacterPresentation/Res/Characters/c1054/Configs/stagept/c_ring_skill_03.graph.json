@@ -1,0 +1,403 @@
+{
+  "id": "c_ring_skill_03",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [
+      25
+    ],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "ani": "skill3",
+        "guid": 2,
+        "etty": "ANI"
+      },
+      {
+        "time": 200,
+        "away_x": 1500.0,
+        "guid": 3,
+        "etty": "LAYOUT"
+      },
+      {
+        "time": 200,
+        "guid": 4,
+        "etty": "BGSHOW"
+      },
+      {
+        "mode": 1,
+        "time": 200,
+        "guid": 5,
+        "etty": "LAYOUT"
+      },
+      {
+        "time": 200,
+        "guid": 6,
+        "etty": "BGSHOW"
+      },
+      {
+        "guid": 7,
+        "etty": "IDLE"
+      },
+      {
+        "time": 200,
+        "guid": 8,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.0",
+        "time": 200,
+        "guid": 9,
+        "etty": "ZOOM"
+      },
+      {
+        "source": "ring_skill_03.cfx",
+        "scale": 1.0,
+        "location": 1,
+        "guid": 10,
+        "etty": "EFFECT"
+      },
+      {
+        "location": 1,
+        "x": 180.0,
+        "y": 30.0,
+        "curve": "0,0.4826388,1,1",
+        "time": 500,
+        "guid": 11,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.7",
+        "curve": "0,0.4826388,1,1",
+        "time": 200,
+        "guid": 12,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "x": 130.0,
+        "y": 400.0,
+        "curve": "0,0.4826388,1,1",
+        "guid": 13,
+        "etty": "CAM"
+      },
+      {
+        "scale": "2.3",
+        "curve": "0,0.4826388,1,1",
+        "guid": 14,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "0.85",
+        "curve": "0,1,0,1",
+        "time": 1500,
+        "guid": 15,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "x": 180.0,
+        "y": 70.0,
+        "curve": "0,0.9027778,1,1",
+        "time": 200,
+        "guid": 16,
+        "etty": "CAM"
+      },
+      {
+        "location": 1,
+        "x": 180.0,
+        "y": 40.0,
+        "curve": "0,0.4826388,1,1",
+        "time": 200,
+        "guid": 17,
+        "etty": "CAM"
+      },
+      {
+        "args": "sk_c1054_3",
+        "guid": 18,
+        "etty": "CUTIN"
+      },
+      {
+        "scale": "1.4",
+        "curve": "0,0.4826388,1,1",
+        "time": 200,
+        "guid": 19,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "x": 180.0,
+        "y": 60.0,
+        "curve": "0,0.6388888,1,1",
+        "time": 500,
+        "guid": 20,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.5",
+        "curve": "0,0.6388888,1,1",
+        "time": 200,
+        "guid": 21,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.6",
+        "curve": "0.04597701,0.2291666,0.7509578,1",
+        "time": 700,
+        "guid": 22,
+        "etty": "ZOOM"
+      },
+      {
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 23,
+        "etty": "HIT"
+      },
+      {
+        "location": 1,
+        "x": 130.0,
+        "y": 30.0,
+        "curve": "0,1,0,1",
+        "time": 1500,
+        "guid": 24,
+        "etty": "CAM"
+      },
+      {
+        "ani": "skill3",
+        "name": "hit",
+        "handled": true,
+        "guid": 25,
+        "etty": "ONEVENT"
+      }
+    ],
+    "connections": [
+      {
+        "from": 1,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 3,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 7,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 4,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 6,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 5,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 8,
+        "delay": 200,
+        "when": 1,
+        "Desc": "200",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 9,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 10,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 12,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 11,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 14,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 16,
+        "delay": 392,
+        "Desc": "392",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 16,
+        "to": 17,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 18,
+        "delay": 2200,
+        "when": 1,
+        "Desc": "2200",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 12,
+        "to": 19,
+        "delay": 592,
+        "Desc": "592",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 18,
+        "to": 13,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 17,
+        "to": 20,
+        "delay": 200,
+        "Desc": "200",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 20,
+        "to": 21,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 23,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 24,
+        "to": 15,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 24,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 15,
+        "to": 22,
+        "delay": 330,
+        "Desc": "330",
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "cut/fhd/sk_c1054_3.webp",
+      "address": "characterlab/source/cut/fhd/sk_c1054_3.webp",
+      "type": "cutin"
+    },
+    {
+      "source": "effect/ring_sk3eff.atlas",
+      "address": "characterlab/source/effect/ring_sk3eff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/ring_sk3eff.scsp",
+      "address": "characterlab/source/effect/ring_sk3eff.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/ring_sk3eff.sct",
+      "address": "characterlab/source/effect/ring_sk3eff.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/ring_skill_03.cfx",
+      "address": "characterlab/source/effect/ring_skill_03.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/ring_skill_03_pati.particle",
+      "address": "characterlab/source/effect/ring_skill_03_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/ring_skill_03_pati2.particle",
+      "address": "characterlab/source/effect/ring_skill_03_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "particle/orb_02.sct",
+      "address": "characterlab/source/particle/orb_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/pati_01.sct",
+      "address": "characterlab/source/particle/pati_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/zodiac_star1.sct",
+      "address": "characterlab/source/particle/zodiac_star1.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

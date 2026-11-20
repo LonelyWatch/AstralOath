@@ -1,0 +1,139 @@
+
+basar_selfeff_bi_start.sct
+size: 1162,253
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+eff_wind_twist_01
+  rotate: false
+  xy: 1076, 88
+  size: 50, 44
+  orig: 50, 44
+  offset: 0, 0
+  index: -1
+global_glow
+  rotate: false
+  xy: 1076, 2
+  size: 84, 84
+  orig: 84, 84
+  offset: 0, 0
+  index: -1
+lightning_core_05
+  rotate: false
+  xy: 913, 140
+  size: 107, 107
+  orig: 107, 107
+  offset: 0, 0
+  index: -1
+rush_wave1
+  rotate: false
+  xy: 809, 2
+  size: 91, 144
+  orig: 91, 144
+  offset: 0, 0
+  index: -1
+rush_wave2
+  rotate: true
+  xy: 767, 153
+  size: 93, 144
+  orig: 93, 144
+  offset: 0, 0
+  index: -1
+rush_wave_blur
+  rotate: false
+  xy: 2, 2
+  size: 105, 222
+  orig: 105, 222
+  offset: 0, 0
+  index: -1
+sand_04
+  rotate: false
+  xy: 1022, 135
+  size: 125, 112
+  orig: 125, 112
+  offset: 0, 0
+  index: -1
+sand_09
+  rotate: false
+  xy: 556, 170
+  size: 64, 74
+  orig: 64, 74
+  offset: 0, 0
+  index: -1
+sand_12
+  rotate: false
+  xy: 215, 212
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+sand_14
+  rotate: true
+  xy: 109, 2
+  size: 218, 104
+  orig: 218, 104
+  offset: 0, 0
+  index: -1
+sand_dust_2
+  rotate: false
+  xy: 672, 2
+  size: 135, 149
+  orig: 135, 149
+  offset: 0, 0
+  index: -1
+sand_dust_3
+  rotate: false
+  xy: 215, 2
+  size: 170, 208
+  orig: 170, 208
+  offset: 0, 0
+  index: -1
+sand_hc_s1
+  rotate: true
+  xy: 902, 2
+  size: 136, 101
+  orig: 136, 101
+  offset: 0, 0
+  index: -1
+sand_hc_s2
+  rotate: false
+  xy: 622, 170
+  size: 143, 70
+  orig: 143, 70
+  offset: 0, 0
+  index: -1
+sand_hc_s3
+  rotate: false
+  xy: 387, 170
+  size: 105, 76
+  orig: 105, 76
+  offset: 0, 0
+  index: -1
+sand_hc_s4
+  rotate: true
+  xy: 494, 170
+  size: 75, 60
+  orig: 75, 60
+  offset: 0, 0
+  index: -1
+sand_hc_s5
+  rotate: true
+  xy: 1005, 2
+  size: 131, 69
+  orig: 131, 69
+  offset: 0, 0
+  index: -1
+tornado_center_01
+  rotate: false
+  xy: 387, 2
+  size: 148, 166
+  orig: 148, 166
+  offset: 0, 0
+  index: -1
+tornado_center_02
+  rotate: false
+  xy: 537, 2
+  size: 133, 166
+  orig: 133, 166
+  offset: 0, 0
+  index: -1

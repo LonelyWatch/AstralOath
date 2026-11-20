@@ -1,0 +1,19 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "mui_b_idle_whip",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "mui_b_idle",
+      "x": "45",
+      "y": "282",
+      "rotate": "28",
+      "delay": "599",
+      "format": "particle",
+      "globalZ": 2.0
+    }
+  ]
+}

@@ -215,6 +215,10 @@ namespace AstralOath.Shared.Battle
                 case BattleFlowEventKind.TurnEffectTriggered:
                     unit.TriggeredTurnEffects.Add(change.SkillId);
                     break;
+                case BattleFlowEventKind.LethalProtectionConsumed:
+                    unit.LethalProtectionConsumed = true;
+                    Emit(events, change.Kind, source, target);
+                    break;
                 case BattleFlowEventKind.ArtifactStateChanged:
                     unit.ArtifactCounters[change.Counter] = change.Amount;
                     break;
@@ -361,7 +365,8 @@ namespace AstralOath.Shared.Battle
                     ChangeCooldown(unit, unit.Id, skill, cooldown - 1, events);
             foreach (var status in previous)
             {
-                if (refreshed?.Contains(status.Kind) == true || status.Kind == BattleStatusKind.SpiritlordProtection) continue;
+                if (refreshed?.Contains(status.Kind) == true || status.Kind == BattleStatusKind.SpiritlordProtection ||
+                    status.Kind == BattleStatusKind.SkillNullifier) continue;
                 int index = unit.Statuses.FindIndex(item => item.Kind == status.Kind && item.InstanceId == status.InstanceId);
                 if (index < 0) continue;
                 var remaining = unit.Statuses[index];
@@ -435,9 +440,10 @@ namespace AstralOath.Shared.Battle
                     item.Kind == BattleFlowEventKind.UnitRevived && item.TargetId == actor.Id))
                     continue;
                 ChangeResource(actor, actor.Id, actor.Resource?.TurnGain ?? 0, events);
-                if (!actor.Statuses.Any(status => status.Kind == BattleStatusKind.Stun)) return;
+                var control = actor.Statuses.FirstOrDefault(status => BattleSkillResolver.IsImmobilizing(status.Kind));
+                if (control == null) return;
                 actor.Readiness = 0;
-                Emit(events, BattleFlowEventKind.TurnSkipped, actor.Id, statusKind: BattleStatusKind.Stun);
+                Emit(events, BattleFlowEventKind.TurnSkipped, actor.Id, statusKind: control.Kind);
                 FinishTurn(actor, actor.Statuses.ToArray(), events);
             }
         }
@@ -475,6 +481,7 @@ namespace AstralOath.Shared.Battle
             public int Health { get; set; }
             public int InjuryAmount { get; set; }
             public bool IsExtinct { get; set; }
+            public bool LethalProtectionConsumed { get; set; }
             public int MaximumHealth => Unit.Stats.MaxHealth - InjuryAmount;
             public int OpeningAttackBonus { get; set; }
             public HashSet<string> TriggeredTurnEffects { get; } = new HashSet<string>(StringComparer.Ordinal);
@@ -495,7 +502,7 @@ namespace AstralOath.Shared.Battle
                 new ReadOnlyDictionary<string, int>(new Dictionary<string, int>(Cooldowns, StringComparer.Ordinal)),
                 Array.AsReadOnly(Statuses.ToArray()), ResourceAmount, InjuryAmount, OpeningAttackBonus,
                 Array.AsReadOnly(TriggeredTurnEffects.ToArray()), ArtifactCounters == null ? null :
-                    new ReadOnlyDictionary<ArtifactCounter, int>(new Dictionary<ArtifactCounter, int>(ArtifactCounters)), IsExtinct);
+                    new ReadOnlyDictionary<ArtifactCounter, int>(new Dictionary<ArtifactCounter, int>(ArtifactCounters)), IsExtinct, LethalProtectionConsumed);
         }
     }
 }

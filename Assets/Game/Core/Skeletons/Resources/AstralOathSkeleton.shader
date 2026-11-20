@@ -7,6 +7,7 @@ Shader "AstralOath/Skeleton"
         [HideInInspector] _PmaSrgb("PMA authored in sRGB", Float) = 0
         [HideInInspector] _PresentationBrightness("Presentation brightness", Float) = 1
         [HideInInspector] _PresentationOpacity("Presentation opacity", Float) = 1
+        [HideInInspector] _SkillBodyOpacity("Skill body opacity", Float) = 1
         [HideInInspector] _SrcBlend("Source", Float) = 1
         [HideInInspector] _DstBlend("Destination", Float) = 10
         [HideInInspector] _SrcAlphaBlend("Source alpha", Float) = 1
@@ -34,6 +35,7 @@ Shader "AstralOath/Skeleton"
                 float _PmaSrgb;
                 float _PresentationBrightness;
                 float _PresentationOpacity;
+                float _SkillBodyOpacity;
                 float _SrgbVertexTint;
                 float _SoftEmissionFalloff;
             CBUFFER_END
@@ -62,8 +64,8 @@ Shader "AstralOath/Skeleton"
                 half3 rgb = (tex.rgb * lightTint + (tex.a - tex.rgb) * input.dark) * input.light.a;
                 if (_SoftEmissionFalloff > 0.5)
                     rgb *= sqrt(saturate(tex.a));
-                return half4(rgb * saturate(_PresentationBrightness) * saturate(_PresentationOpacity),
-                    tex.a * input.light.a * saturate(_PresentationOpacity));
+                half opacity = saturate(_PresentationOpacity) * saturate(_SkillBodyOpacity);
+                return half4(rgb * saturate(_PresentationBrightness) * opacity, tex.a * input.light.a * opacity);
             }
             ENDHLSL
         }

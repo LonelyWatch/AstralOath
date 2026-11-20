@@ -1,0 +1,663 @@
+{
+  "id": "c_jenua_skill_03",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "location": 11,
+        "time": 200,
+        "guid": 2,
+        "etty": "CAM"
+      },
+      {
+        "time": 200,
+        "guid": 3,
+        "etty": "BGSHOW"
+      },
+      {
+        "alone": true,
+        "time": 200,
+        "guid": 4,
+        "etty": "LAYOUT"
+      },
+      {
+        "hpbar_target": 67,
+        "duration": -1,
+        "fadeIn": 200,
+        "fadeOut": 200,
+        "alpha_channel": 0.0,
+        "id": "hp_bar",
+        "guid": 5,
+        "etty": "HP_BAR"
+      },
+      {
+        "scale": "1",
+        "time": 200,
+        "guid": 6,
+        "etty": "ZOOM"
+      },
+      {
+        "ani": "skill3_1",
+        "guid": 7,
+        "etty": "ANI"
+      },
+      {
+        "source": "jenua_skeff_sk3_1.cfx",
+        "scale": 1.0,
+        "location": 11,
+        "guid": 8,
+        "etty": "EFFECT"
+      },
+      {
+        "args": "sk_c1055_3",
+        "curtain_color": "255,255,255,255",
+        "curtain_opacity": 0.0,
+        "guid": 9,
+        "etty": "CUTIN"
+      },
+      {
+        "source": "jenua_skeff_sk3_2.cfx",
+        "scale": 1.0,
+        "location": 11,
+        "guid": 10,
+        "etty": "EFFECT"
+      },
+      {
+        "target_node": 5,
+        "pivot": "root",
+        "source": "jenua_node_sk3_self_3_1.scsp",
+        "timeline": [],
+        "guid": 11,
+        "etty": "NODE_ANI"
+      },
+      {
+        "blend_target": 55,
+        "duration": -1,
+        "fadeIn": 200,
+        "alpha_channel": 0.0,
+        "category": "1",
+        "id": "cb_target",
+        "guid": 12,
+        "etty": "COLOR_BLEND"
+      },
+      {
+        "ani": "skill3_2",
+        "guid": 13,
+        "etty": "ANI"
+      },
+      {
+        "target_node": 5,
+        "pivot": "root",
+        "source": "jenua_node_sk3_self_3_2.scsp",
+        "timeline": [],
+        "guid": 14,
+        "etty": "NODE_ANI"
+      },
+      {
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 15,
+        "etty": "HIT"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "landy_m_cm_sk3_final",
+        "guid": 16,
+        "etty": "SHAKE"
+      },
+      {
+        "source": "jenua_skeff_sk3_final.cfx",
+        "scale": 1.0,
+        "guid": 17,
+        "etty": "EFFECT"
+      },
+      {
+        "show": true,
+        "time": 400,
+        "guid": 18,
+        "etty": "BGSHOW"
+      },
+      {
+        "mode": 1,
+        "guid": 19,
+        "etty": "LAYOUT"
+      },
+      {
+        "scale": "1",
+        "curve": "0,0.1666666,0.5172414,0.9895833",
+        "guid": 20,
+        "etty": "ZOOM"
+      },
+      {
+        "curve": "0,0.1666666,0.5172414,0.9895833",
+        "guid": 21,
+        "etty": "CAM"
+      },
+      {
+        "targetId": "cb_target",
+        "guid": 22,
+        "etty": "STOP"
+      },
+      {
+        "targetId": "hp_bar",
+        "time": 400,
+        "guid": 23,
+        "etty": "STOP"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "jenua_cm_sk3_p3",
+        "guid": 24,
+        "etty": "SHAKE"
+      },
+      {
+        "duration": -1,
+        "alpha_channel": 0.0,
+        "category": "2",
+        "id": "cb_self",
+        "guid": 25,
+        "etty": "COLOR_BLEND"
+      },
+      {
+        "targetId": "cb_self",
+        "guid": 26,
+        "etty": "STOP"
+      },
+      {
+        "color": "255,255,255,255",
+        "accel": 1.0,
+        "opacity": 1.0,
+        "duration": 400,
+        "localZ": 30,
+        "globalZ": 999,
+        "fadeOut": 300,
+        "id": "dk_white",
+        "guid": 27,
+        "etty": "DARK"
+      }
+    ],
+    "connections": [
+      {
+        "from": 1,
+        "to": 4,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 2,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 3,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 5,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 6,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 7,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 8,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 9,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 11,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 12,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 13,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 10,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 14,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 17,
+        "to": 15,
+        "delay": 400,
+        "when": 1,
+        "Desc": "400",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 17,
+        "to": 16,
+        "delay": 100,
+        "when": 1,
+        "Desc": "100",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 17,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 18,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 21,
+        "to": 20,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 21,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 22,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 22,
+        "to": 23,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 24,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 25,
+        "delay": 1933,
+        "when": 1,
+        "Desc": "1933",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 26,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 19,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 27,
+        "delay": 866,
+        "when": 1,
+        "Desc": "866",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/jenua_cm_sk3_p3.scsp",
+      "address": "characterlab/source/camera/jenua_cm_sk3_p3.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "camera/landy_m_cm_sk3_final.scsp",
+      "address": "characterlab/source/camera/landy_m_cm_sk3_final.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "cut/fhd/sk_c1055_3.webp",
+      "address": "characterlab/source/cut/fhd/sk_c1055_3.webp",
+      "type": "cutin"
+    },
+    {
+      "source": "effect/jenua_skeff_b_idle_ready.atlas",
+      "address": "characterlab/source/effect/jenua_skeff_b_idle_ready.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/jenua_skeff_b_idle_ready.cfx",
+      "address": "characterlab/source/effect/jenua_skeff_b_idle_ready.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/jenua_skeff_b_idle_ready.scsp",
+      "address": "characterlab/source/effect/jenua_skeff_b_idle_ready.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/jenua_skeff_b_idle_ready.sct",
+      "address": "characterlab/source/effect/jenua_skeff_b_idle_ready.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/jenua_skeff_sk1.atlas",
+      "address": "characterlab/source/effect/jenua_skeff_sk1.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/jenua_skeff_sk1.scsp",
+      "address": "characterlab/source/effect/jenua_skeff_sk1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/jenua_skeff_sk1.sct",
+      "address": "characterlab/source/effect/jenua_skeff_sk1.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/jenua_skeff_sk1_self_unit.cfx",
+      "address": "characterlab/source/effect/jenua_skeff_sk1_self_unit.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_1.cfx",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_1.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_2.cfx",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_2.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_final.atlas",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_final.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_final.cfx",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_final.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_final.scsp",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_final.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_final.sct",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_final.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_final_particle.particle",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_final_particle.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p1_b.atlas",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p1_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p1_b.scsp",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p1_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p1_b.sct",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p1_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p1_f.atlas",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p1_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p1_f.scsp",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p1_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p1_f.sct",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p1_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p2_b.atlas",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p2_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p2_b.scsp",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p2_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p2_b.sct",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p2_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p2_f.atlas",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p2_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p2_f.scsp",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p2_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p2_f.sct",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p2_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p2_f_2_01.atlas",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p2_f_2_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p2_f_2_01.scsp",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p2_f_2_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p2_f_2_01.sct",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p2_f_2_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p2_f_2_02.atlas",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p2_f_2_02.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p2_f_2_02.scsp",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p2_f_2_02.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p2_f_2_02.sct",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p2_f_2_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p2_illu.atlas",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p2_illu.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p2_illu.scsp",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p2_illu.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p2_illu.sct",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p2_illu.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p3_b.atlas",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p3_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p3_b.scsp",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p3_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p3_b.sct",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p3_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p3_f.atlas",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p3_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p3_f.scsp",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p3_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/jenua_skeff_sk3_p3_f.sct",
+      "address": "characterlab/source/effect/jenua_skeff_sk3_p3_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "model/jenua.timeline",
+      "address": "characterlab/source/model/jenua.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/fire_03.sct",
+      "address": "characterlab/source/particle/fire_03.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/pati_03.sct",
+      "address": "characterlab/source/particle/pati_03.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/soft_smoke.sct",
+      "address": "characterlab/source/particle/soft_smoke.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_01.sct",
+      "address": "characterlab/source/particle/ticle_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "spani/jenua_node_sk3_self_3_1.scsp",
+      "address": "characterlab/source/spani/jenua_node_sk3_self_3_1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "spani/jenua_node_sk3_self_3_2.scsp",
+      "address": "characterlab/source/spani/jenua_node_sk3_self_3_2.scsp",
+      "type": "skeleton"
+    }
+  ],
+  "diagnostics": []
+}

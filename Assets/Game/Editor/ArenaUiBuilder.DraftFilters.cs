@@ -249,12 +249,13 @@ namespace AstralOath.Editor
 
         private static string EffectGroup(RosterFilterEffect effect)
         {
-            if (effect.operation is "apply_status" or "random_buff" or "random_buff_option")
+            if (effect.operation is "apply_status" or "random_buff" or "random_buff_option" or "random_status_option")
             {
                 return effect.status switch
                 {
                     "AttackDown" or "DefenseDown" or "SpeedDown" or "Stun" or "Silence" or "Provoke" or "Burn" or "Bleed" or
-                    "Poison" or "Unhealable" or "Unbuffable" or "HitChanceDown" or "Bomb" or "VampiricTouch" => "weaken",
+                    "Poison" or "Unhealable" or "Unbuffable" or "HitChanceDown" or "Bomb" or "VampiricTouch" or
+                    "MagicNail" or "Sleep" or "Restrict" or "Bind" => "weaken",
                     "Indomitable" or "Rage" or "SpiritlordProtection" or "DamageLimit" => "general",
                     _ => "enhance"
                 };
@@ -264,11 +265,11 @@ namespace AstralOath.Editor
 
         private static string EffectFilterKey(RosterFilterEffect effect) => effect.operation switch
         {
-            "apply_status" or "random_buff" or "random_buff_option" when !string.IsNullOrWhiteSpace(effect.status) && effect.status != "none" => "status_" + effect.status,
+            "apply_status" or "random_buff" or "random_buff_option" or "random_status_option" when !string.IsNullOrWhiteSpace(effect.status) && effect.status != "none" => "status_" + effect.status,
             "heal" or "heal_target_health" or "lifesteal" => "effect_heal",
-            "cleanse" or "cleanse_all" or "cleanse_once_on_critical" => "effect_cleanse",
+            "cleanse" or "cleanse_all" or "cleanse_once_on_critical" or "transfer_debuff" => "effect_cleanse",
             "dispel" or "dispel_all" => "effect_dispel",
-            "readiness" or "readiness_bonus" => "effect_raise",
+            "readiness" or "readiness_bonus" or "readiness_per_critical" or "readiness_per_target" or "readiness_per_status_applied" => "effect_raise",
             "reduce_readiness" or "reduce_readiness_double" => "effect_reduce",
             "grant_extra_turn" => "effect_extra_turn",
             "revive" => "effect_revive",

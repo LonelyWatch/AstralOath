@@ -54,6 +54,13 @@ function Export-BattleCatalog {
         }
     }
 
+    $beneficialStatuses = @('AttackUp','DefenseUp','Immunity','Barrier','Counter','SpeedUp','EvasionUp','CriticalResistanceUp','Stealth','Indomitable',
+        'GreaterSpeedUp','CriticalDamageUp','EffectivenessUp','Invincible','CriticalChanceUp','ContinuousHealing',
+        'Immortality','GreaterAttackUp','DamageLimit','SpiritlordProtection','Rage','Reflect','SkillNullifier','Vigor')
+    $harmfulStatuses = @('Stun','SpeedDown','AttackDown','DefenseDown','Unhealable','Silence','Provoke','Poison','Burn','Bleed',
+        'HitChanceDown','Unbuffable','Targeted','Bomb','VampiricTouch','MagicNail','Sleep','Restrict','Bind')
+    $validStatuses = @('none') + $beneficialStatuses + $harmfulStatuses
+
     $heroClasses = @('knight','warrior','thief','ranger','mage','soul_weaver')
     $zodiacs = @('aries','taurus','gemini','cancer','leo','virgo','libra','scorpio','sagittarius','capricorn','aquarius','pisces')
     foreach ($preset in $growthPresets) {
@@ -102,11 +109,22 @@ function Export-BattleCatalog {
                 throw "Battle skill presentation does not match the imported graph for $key."
             }
             $iconDir = 'Assets/Game/Modules/BattleScene/Res/Textures/Hud/Skills'
-            $iconNames = @("sk_${id}_$slot.png")
+            $iconNumber = $slot
+            if ($skill.presentationId -cmatch '_skill_0([1-3])$') {
+                $iconNumber = [int]$Matches[1]
+            }
+            $iconNames = @("sk_${id}_$iconNumber.png")
             if ($skill.target -ceq 'passive') { $iconNames += "pa_${id}_$slot.png" }
             if ($skill.iconAsset -cnotin @($iconNames | ForEach-Object { "$iconDir/$_" }) -or
                 -not (Test-Path -LiteralPath (Join-Path $Repo $skill.iconAsset) -PathType Leaf)) {
                 throw "Battle skill icon does not match the imported asset for $key."
+            }
+            if ($skill.alternatePresentationStatus -or $skill.alternatePresentationId) {
+                if ($skill.alternatePresentationStatus -cnotin ($beneficialStatuses + $harmfulStatuses) -or $skill.target -ceq 'passive' -or
+                    $skill.alternatePresentationId -ceq $skill.presentationId -or
+                    $skill.alternatePresentationId -cnotin $imported[0].skills.id) {
+                    throw "Invalid status-dependent skill presentation for $key."
+                }
             }
             $hasVariant = -not [string]::IsNullOrWhiteSpace($skill.speedUpPresentationId)
             if ($hasVariant) {
@@ -173,12 +191,6 @@ function Export-BattleCatalog {
         $CharacterMessages | Where-Object key -CEQ $hero.nameKey
     }
 
-    $beneficialStatuses = @('AttackUp','DefenseUp','Immunity','Barrier','Counter','SpeedUp','EvasionUp','CriticalResistanceUp','Stealth','Indomitable',
-        'GreaterSpeedUp','CriticalDamageUp','EffectivenessUp','Invincible','CriticalChanceUp','ContinuousHealing',
-        'Immortality','GreaterAttackUp','DamageLimit','SpiritlordProtection','Rage','Reflect')
-    $harmfulStatuses = @('Stun','SpeedDown','AttackDown','DefenseDown','Unhealable','Silence','Provoke','Poison','Burn','Bleed',
-        'HitChanceDown','Unbuffable','Targeted','Bomb','VampiricTouch')
-    $validStatuses = @('none') + $beneficialStatuses + $harmfulStatuses
     Confirm-BattleOriginalText -Repo $Repo -Messages $messages -Skills $skills -Statuses ($beneficialStatuses + $harmfulStatuses)
     foreach ($skill in $skills) {
         $program = @($effects | Where-Object skillId -CEQ $skill.id | Sort-Object order)
@@ -195,11 +207,11 @@ function Export-BattleCatalog {
             on_attacked = @('cleanse','readiness','readiness_bonus','counterattack','cleanse_once_on_critical')
             damage_guard = @('damage_reduction','attack_damage_limit','immobilize_immunity')
             after_ally_attack = @('trigger','damage','apply_status','readiness','target_missing_health_damage_bonus')
-            after_ally_damaged = @('trigger','awakened_cooldown_reduction','target_health_barrier','apply_status','cleanse_all')
+            after_ally_damaged = @('trigger','awakened_cooldown_reduction','target_health_barrier','apply_status','cleanse_all','readiness')
             counter_basic = @('damage','apply_status','reduce_readiness','grant_soul')
             after_caster_critical = @('apply_status','random_buff','random_buff_option','readiness')
             after_caster_kill = @('trigger','apply_status','damage','grant_soul')
-            on_lethal_damage = @('life_floor','apply_status','reset_cooldown','heal_target_health')
+            on_lethal_damage = @('life_floor','life_floor_once','apply_status','reset_cooldown','heal_target_health')
             battle_start = @('apply_status','opening_attack_from_health')
             turn_end = @('apply_status')
         }
@@ -209,7 +221,9 @@ function Export-BattleCatalog {
             'trigger_skill_no_soul','triggered_attack_rate_override','reduce_own_cooldown','revive','extend_buffs','cooldown_immune',
             'dispel_all','burn_effect_chance_bonus','attack_rate_override','caster_missing_health_damage_bonus',
             'damage_bonus_per_missing_target','readiness_fixed','highest_health_penetration','suppress_counter',
-            'steal_buff','shorten_buffs','detonate','readiness_against_fire','target_missing_health_damage_bonus','extinction','kill_splash','team_lifesteal')
+            'steal_buff','shorten_buffs','detonate','readiness_against_fire','target_missing_health_damage_bonus','extinction','kill_splash','team_lifesteal',
+            'readiness_per_critical','readiness_per_target','readiness_per_status_applied','reduce_resource','random_status_after_transfer',
+            'random_status_option','random_statuses','trigger_skill_own_turn','attack_splash')
         $lastPhase = 0
         $hasDamage = $false
         for ($index = 0; $index -lt $program.Count; $index++) {
@@ -217,9 +231,23 @@ function Export-BattleCatalog {
             $order = $index + 1
             $phase = [array]::IndexOf($activeStages, $effect.phase)
             $operation = $effect.operation
-            $usesStatus = $operation -cin @('apply_status','repeat_if_status','random_buff_option','detonate')
+            $usesStatus = $operation -cin @('apply_status','repeat_if_status','random_buff_option','detonate','readiness_per_status_applied','random_status_option')
             $isModifier = $operation -cin @('damage_bonus','damage_bonus_per_debuff','critical_damage_bonus','defense_penetration','attack_rate_bonus','defense_rate_bonus','health_rate_bonus','burn_health_rate_bonus','burn_healing_rate_bonus','elemental_advantage')
             $usesResourceThreshold = $isModifier -and $effect.condition -ceq 'caster_has_resource'
+            if (($operation -cin @('readiness_per_critical','readiness_per_target','readiness_per_status_applied') -and
+                    ($effect.phase -cne 'after_attack' -or $effect.recipient -cne 'self' -or
+                    $effect.chanceBp -ne 10000 -or $effect.value -lt 1 -or $effect.value -gt 10000)) -or
+                ($operation -ceq 'reduce_resource' -and ($effect.phase -cne 'before_attack' -or
+                    $effect.recipient -cne 'targets' -or $effect.value -lt 1 -or $effect.value -gt 10000)) -or
+                ($operation -ceq 'trigger_skill_own_turn' -and ($effect.phase -cne 'after_attack' -or
+                    $effect.recipient -cne 'self' -or $effect.value -eq $skill.slot -or
+                    @($skills | Where-Object { $_.heroId -ceq $skill.heroId -and $_.slot -eq $effect.value -and $_.target -cne 'passive' }).Count -ne 1)) -or
+                ($operation -ceq 'life_floor_once' -and ($effect.recipient -cne 'self' -or
+                    $effect.value -lt 1 -or $effect.value -gt 10000 -or $effect.chanceBp -ne 10000)) -or
+                ($operation -ceq 'attack_splash' -and ($effect.phase -cne 'after_attack' -or
+                    $effect.recipient -cne 'targets' -or $effect.value -le 0 -or -not $hasDamage))) {
+                throw "Battle conditional effect arguments are invalid for $($effect.id)."
+            }
             $validPhase = if ($passive) {
                 $effect.phase -cin $passiveOperations.Keys -and $operation -cin $passiveOperations[$effect.phase]
             } else {
@@ -236,7 +264,7 @@ function Export-BattleCatalog {
                     'caster_not_indomitable','caster_skill_awakened','caster_skill_not_awakened','target_readiness_drained','caster_health_below_three_quarters',
                     'caster_speed_buffed','caster_speed_buffed_after_skill_awakening','defeated_target','enemy_debuffed','resource_full','resource_not_full','resource_full_after_awakening',
                     'caster_buffed_non_dual','caster_buffed_non_dual_burn','caster_at_least_three_buffs','caster_fewer_than_three_buffs',
-                    'recipient_bleeding','caster_enraged','soul_burn','no_soul_burn','basic_or_ultimate_kill') -or
+                    'recipient_bleeding','caster_enraged','recipient_magic_nail','caster_has_vigor','recipient_bound','self_attacked_at_half','soul_burn','no_soul_burn','basic_or_ultimate_kill') -or
                 $effect.chanceBonusStatus -cnotin @('none','AttackDown') -or
                 (($effect.chanceBonusStatus -ceq 'none') -ne ($effect.chanceBonusBp -eq 0)) -or
                 ($operation -cin @('cleanse','dispel','reduce_readiness','reduce_readiness_double','transfer_debuff','extend_cooldown') -and $effect.value -le 0) -or
@@ -245,7 +273,7 @@ function Export-BattleCatalog {
                     ($effect.phase -cne 'after_hit' -or $effect.recipient -cne 'targets')) -or
                 ($effect.condition -ceq 'target_readiness_drained' -and
                     ($effect.phase -cne 'after_hit' -or $effect.recipient -cne 'targets')) -or
-                (($effect.turns -gt 0) -ne ($operation -cin @('apply_status','target_health_barrier','random_buff_option') -or $usesResourceThreshold)) -or
+                (($effect.turns -gt 0) -ne ($operation -cin @('apply_status','target_health_barrier','random_buff_option','random_status_option') -or $usesResourceThreshold)) -or
                 ($effect.phase -ceq 'after_hit' -and -not $hasDamage) -or
                 ($operation -ceq 'damage' -and ($null -eq $skill.attackRateBp -or $null -eq $skill.powerBp)) -or
                 ($operation -ceq 'heal' -and $null -eq $skill.casterHealthHealBp) -or
@@ -260,7 +288,7 @@ function Export-BattleCatalog {
             if (($isModifier -and ($effect.recipient -cne 'self' -or $effect.chanceBp -ne 10000 -or
                     $effect.value -lt 1 -or $effect.value -gt 10000 -or
                     ($effect.condition -cnotin @('caster_buffed','caster_has_resource') -and
-                        -not ($operation -ceq 'damage_bonus' -and $effect.condition -cin @('recipient_debuffed_after_skill_awakening','caster_enraged')) -and
+                        -not ($operation -ceq 'damage_bonus' -and $effect.condition -cin @('recipient_debuffed_after_skill_awakening','caster_enraged','recipient_magic_nail')) -and
                         -not ($operation -cin @('critical_damage_bonus','damage_bonus_per_debuff','burn_healing_rate_bonus') -and $effect.condition -ceq 'none') -and
                         -not ($operation -ceq 'elemental_advantage' -and $effect.condition -ceq 'caster_speed_buffed_after_skill_awakening') -and
                         -not ($operation -cin @('attack_rate_bonus','defense_rate_bonus') -and
@@ -311,8 +339,10 @@ function Export-BattleCatalog {
                     $effect.chanceBp -ne 10000 -or $effect.value -ne 0 -or $effect.chanceBonusBp -ne 0 -or
                     $effect.condition -cnotin @('none','recipient_health_at_most_half','other_ally_attacked_below_thirty_percent'))) -or
                 ($operation -ceq 'trigger' -and $effect.phase -ceq 'after_ally_damaged' -and
-                    ($order -ne 1 -or $effect.recipient -cne 'targets' -or
-                    $effect.condition -cnotin @('recipient_health_at_most_half','ally_suffered_critical','back_row_immobilized'))) -or
+                    ($effect -ne @($program | Where-Object phase -CEQ 'after_ally_damaged')[0] -or
+                    ($effect.recipient -ceq 'self') -ne ($effect.condition -ceq 'self_attacked_at_half') -or
+                    $effect.recipient -cnotin @('self','targets') -or
+                    $effect.condition -cnotin @('recipient_health_at_most_half','ally_suffered_critical','back_row_immobilized','self_attacked_at_half'))) -or
                 ($operation -ceq 'attack_damage_limit' -and ($effect.value -lt 1 -or $effect.value -gt 10000 -or $effect.recipient -cne 'self')) -or
                 ($lifecycle -and ($effect.chanceBp -ne 10000 -or ($operation -ceq 'apply_status' -and $effect.status -cnotin $beneficialStatuses) -or
                     $effect.chanceBonusBp -ne 0)) -or
@@ -340,6 +370,20 @@ function Export-BattleCatalog {
             throw "Battle critical passive has an invalid random buff pool for $($skill.id)."
         }
         $steps = @($enhancements | Where-Object skillId -CEQ $skill.id | Sort-Object step)
+        $pools = @($program | Where-Object { $_.operation -cin @('random_statuses','random_status_after_transfer') })
+        $options = @($program | Where-Object operation -CEQ 'random_status_option')
+        if (($pools.Count -gt 0) -ne ($options.Count -gt 0) -or
+            @($options.status | Sort-Object -Unique).Count -ne $options.Count) {
+            throw "Battle random status pool requires distinct options for $($skill.id)."
+        }
+        foreach ($pool in $pools) {
+            if ($pool.value -lt 1 -or $pool.value -gt $options.Count -or
+                @($options | Where-Object { $_.recipient -cne $pool.recipient -or $_.phase -cne $pool.phase }).Count -or
+                ($pool.operation -ceq 'random_status_after_transfer' -and
+                    @($program | Where-Object { $_.operation -ceq 'transfer_debuff' -and $_.order -lt $pool.order }).Count -ne 1)) {
+                throw "Battle random status selection is invalid for $($pool.id)."
+            }
+        }
         if (-not $passive -and $steps.Count -eq 0) { throw "Battle skill enhancement steps missing for $($skill.id)." }
         $cooldown = [int]$skill.cooldownTurns
         $resourceCost = [int]$skill.resourceCost
@@ -347,10 +391,11 @@ function Export-BattleCatalog {
             $row = $steps[$index]
             $step = $index + 1
             if ($row.step -ne $step -or $row.id -cne "$($skill.id).e$step" -or
-                $row.kind -cnotin @('damage_bp','healing_bp','effect_chance_bp','cooldown_turns','readiness_bp','soul_gain','counter_chance_bp','barrier_bp','barrier_multiplier_bp','damage_limit_reduction_bp','resource_cost')) {
+                $row.kind -cnotin @('damage_bp','healing_bp','effect_chance_bp','cooldown_turns','readiness_bp','soul_gain','counter_chance_bp','barrier_bp','barrier_multiplier_bp','damage_limit_reduction_bp','resource_cost','resource_gain')) {
                 throw "Battle skill enhancement sequence is invalid for $($skill.id)."
             }
-            if (($row.kind -ceq 'counter_chance_bp' -and -not @($program | Where-Object operation -CEQ 'counterattack').Count) -or
+            if (($row.kind -ceq 'resource_gain' -and ($skill.resourceGain -le 0 -or $row.value -le 0)) -or
+                ($row.kind -ceq 'counter_chance_bp' -and -not @($program | Where-Object operation -CEQ 'counterattack').Count) -or
                 ($row.kind -ceq 'damage_limit_reduction_bp' -and -not @($program | Where-Object operation -CEQ 'attack_damage_limit').Count) -or
                 ($row.kind -cin @('barrier_bp','barrier_multiplier_bp') -and -not @($program | Where-Object { $_.status -ceq 'Barrier' -or $_.operation -ceq 'target_health_barrier' }).Count)) {
                 throw "Battle enhancement has no matching effect for $($row.id)."

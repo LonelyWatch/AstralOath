@@ -1,0 +1,68 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "lidica_skeff_sk2_1_1",
+      "format": "spine",
+      "globalZ": 0.5
+    },
+    {
+      "source": "lidica_skeff_sk2_1_2",
+      "format": "spine",
+      "globalZ": 0.6
+    },
+    {
+      "source": "lidica_skeff_sk2_1_3",
+      "format": "spine",
+      "globalZ": 0.7
+    },
+    {
+      "source": "lidica_skeff_sk2_1_4",
+      "format": "spine",
+      "globalZ": 0.8
+    },
+    {
+      "source": "lidica_skeff_sk2_1_5",
+      "format": "spine",
+      "globalZ": 0.9
+    },
+    {
+      "source": "lidica_skeff_sk2_2",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "lidica_skeff_sk2_b",
+      "format": "spine",
+      "globalZ": -0.5
+    },
+    {
+      "source": "lidica_pat_01",
+      "y": "100",
+      "rotate": "55",
+      "delay": "2466",
+      "format": "particle"
+    },
+    {
+      "source": "lidica_pat_02",
+      "x": "200",
+      "y": "-50",
+      "rotate": "10",
+      "delay": "2466",
+      "format": "particle"
+    },
+    {
+      "source": "lidica_skeff_sk2_f",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "lidica_pat_spark",
+      "y": "100",
+      "scale": "2",
+      "delay": "1665",
+      "format": "particle",
+      "globalZ": 1.0
+    }
+  ]
+}

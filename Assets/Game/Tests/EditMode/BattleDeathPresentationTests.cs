@@ -11,11 +11,12 @@ namespace AstralOath.Client.Tests
 {
     public sealed class BattleDeathPresentationTests
     {
-        [TestCase(0f, 1f, 0f)]
-        [TestCase(.5f, 1f, .5f)]
-        [TestCase(0f, .5f, .1f)]
-        [TestCase(0f, 0f, .2f)]
-        public void SkeletonMaterialCanDarkenThenFadeWithoutReplacingSourceTextures(float brightness, float opacity, float expected)
+        [TestCase(0f, 1f, 1f, 0f)]
+        [TestCase(.5f, 1f, 1f, .5f)]
+        [TestCase(0f, .5f, 1f, .1f)]
+        [TestCase(0f, 0f, 1f, .2f)]
+        [TestCase(1f, .4f, .5f, .36f)]
+        public void SkeletonMaterialCanDarkenThenFadeWithoutReplacingSourceTextures(float brightness, float opacity, float skillOpacity, float expected)
         {
             if (SystemInfo.graphicsDeviceType == GraphicsDeviceType.Null) Assert.Ignore("A real GPU is required.");
             var material = new Material(Resources.Load<Shader>("AstralOathSkeleton"));
@@ -29,6 +30,7 @@ namespace AstralOath.Client.Tests
                 material.mainTexture = Texture2D.whiteTexture;
                 material.SetFloat("_PresentationBrightness",brightness);
                 material.SetFloat("_PresentationOpacity",opacity);
+                material.SetFloat("_SkillBodyOpacity",skillOpacity);
                 mesh.vertices = new[] { new Vector3(-1,-1),new Vector3(1,-1),new Vector3(1,1),new Vector3(-1,1) };
                 mesh.uv = new[] { Vector2.zero,Vector2.right,Vector2.one,Vector2.up };
                 mesh.SetUVs(1,new List<Vector4>{Vector4.zero,Vector4.zero,Vector4.zero,Vector4.zero});

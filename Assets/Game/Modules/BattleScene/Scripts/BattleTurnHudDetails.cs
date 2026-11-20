@@ -105,6 +105,7 @@ namespace AstralOath.Client.BattleScene
             BattleStatusKind.Immunity => "stic_debuf_impossible",
             BattleStatusKind.Barrier => "stic_protect",
             BattleStatusKind.Stun => "stic_stun",
+            BattleStatusKind.Sleep => "stic_sleep",
             _ => null
         };
 

@@ -20,6 +20,8 @@
 
 SpriteBlurSettings 校验原始 PPEFFECT uniform 并保留 shader 的样本上限与 ratio clamp；PresentationScalar 在入队前识别未知范围语法与非有限值。新增真实 CFX 范围回归和 PPEFFECT 仅按源连接触发的回归。后处理 shader 数学移植有源码证据，整体 sprite 作用范围和 SINE_VALUE 参数驱动仍保留差异。
 
+肯恩 S3 的 PPEFFECT #26 使用 `system/program/sprite_invert.frag` 与 `system/program_v4/sprite_invert.frag` 的相同反色公式。实验室的 `CharacterSpriteBlur.shader` 在显示色域反转三色通道，保留 alpha，在已触发的方向模糊处理后再反色。原片与节点时间、关闭恢复及 GPU 读回证据见[角色资源记录](../../../../docs/delivery/2026-11-20-roster41-50-assets.md)。
+
 SCT1 的中性白光遮罩按源 atlas 区域审计和登记，RGB 由未量化的 alpha 恢复，其他区块按原解码输出。新增角色及转换器修改必须执行 `docs/development/character-asset-import.md`；SCSP 曲线类型、局部翻转和继承语义在转换层保留，不由演出层添加逐角色偏移补偿。
 
 2026-11-13 已将十名角色及三十个技能槽演出导入资源清单，按 E7 ID 顺序供实验室和战斗使用。原资源名和技能图名不一致时按源数据记录映射。`NODE_ANI` 读取 `spani/` 原骨骼轨道，无渲染附件时可使用空图集。命名 timeline 事件、DELAY、空 SHOT 与完成连接按源时刻调度。十名角色的模型、立绘、资源地址、音频表及源闭包边界见[角色资源进入 Unity](../../../../docs/development/character-asset-import.md)。
@@ -33,3 +35,5 @@ SCT1 的中性白光遮罩按源 atlas 区域审计和登记，RGB 由未量化�
 新增 32 张源演出图。导入闭包保留 10 个模型、立绘与依赖的源版本；克莱莉莎补入骨骼事件驱动的原版立绘。 [第 21–30 名角色验收](../../../../docs/delivery/2026-11-14-roster21-30.md)
 
 本批十名英雄增加 31 张技能图。CFX 原语的局部时钟读取源倍速，镜头采样保留父骨旋转及缩放。检查同一原语在不同倍速下的实际网格，镜头检查带符号的峰值与归位。[第 31–40 名角色与实测记录](../../../../docs/delivery/2026-11-20-roster31-40.md)
+
+第 41–50 名新增 31 张 STG。丽迪卡立绘和洛曼特效包含 Spine 2.1 重复颜色或缩放轨，转换与 AOT 读取按源顺序保留多轨，避免网格或特效采样失真。肯恩的两个 S1 动作与济纽亚的被动和主动图按技能关系选取。[角色规则与实测](../../../../docs/delivery/2026-11-20-roster41-50.md)

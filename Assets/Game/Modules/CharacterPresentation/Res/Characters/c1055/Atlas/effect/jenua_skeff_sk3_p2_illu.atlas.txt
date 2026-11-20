@@ -1,0 +1,153 @@
+
+jenua_skeff_sk3_p2_illu.sct
+size: 1007,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+arm1
+  rotate: false
+  xy: 876, 320
+  size: 100, 261
+  orig: 100, 261
+  offset: 0, 0
+  index: -1
+arm2
+  rotate: false
+  xy: 581, 672
+  size: 225, 110
+  orig: 225, 110
+  offset: 0, 0
+  index: -1
+arm3
+  rotate: true
+  xy: 548, 784
+  size: 52, 65
+  orig: 52, 65
+  offset: 0, 0
+  index: -1
+belt
+  rotate: true
+  xy: 917, 583
+  size: 241, 88
+  orig: 241, 88
+  offset: 0, 0
+  index: -1
+body
+  rotate: false
+  xy: 94, 328
+  size: 265, 511
+  orig: 265, 511
+  offset: 0, 0
+  index: -1
+coat1
+  rotate: true
+  xy: 811, 178
+  size: 140, 152
+  orig: 140, 152
+  offset: 0, 0
+  index: -1
+coat2
+  rotate: false
+  xy: 94, 178
+  size: 715, 148
+  orig: 715, 148
+  offset: 0, 0
+  index: -1
+coat3
+  rotate: false
+  xy: 2, 2
+  size: 933, 174
+  orig: 933, 174
+  offset: 0, 0
+  index: -1
+coat6
+  rotate: false
+  xy: 654, 784
+  size: 133, 188
+  orig: 133, 188
+  offset: 0, 0
+  index: -1
+face
+  rotate: true
+  xy: 453, 838
+  size: 184, 199
+  orig: 184, 199
+  offset: 0, 0
+  index: -1
+hair12
+  rotate: true
+  xy: 774, 594
+  size: 75, 138
+  orig: 75, 138
+  offset: 0, 0
+  index: -1
+hair3
+  rotate: false
+  xy: 774, 328
+  size: 100, 264
+  orig: 100, 264
+  offset: 0, 0
+  index: -1
+hair6
+  rotate: false
+  xy: 937, 2
+  size: 68, 169
+  orig: 68, 169
+  offset: 0, 0
+  index: -1
+hair8
+  rotate: true
+  xy: 361, 685
+  size: 151, 185
+  orig: 151, 185
+  offset: 0, 0
+  index: -1
+hand1
+  rotate: true
+  xy: 789, 784
+  size: 167, 126
+  orig: 167, 126
+  offset: 0, 0
+  index: -1
+hand2
+  rotate: false
+  xy: 808, 671
+  size: 94, 93
+  orig: 94, 93
+  offset: 0, 0
+  index: -1
+hh1
+  rotate: false
+  xy: 581, 328
+  size: 191, 342
+  orig: 191, 342
+  offset: 0, 0
+  index: -1
+hh2
+  rotate: false
+  xy: 978, 173
+  size: 18, 281
+  orig: 18, 281
+  offset: 0, 0
+  index: -1
+leg1
+  rotate: true
+  xy: 94, 841
+  size: 177, 357
+  orig: 177, 357
+  offset: 0, 0
+  index: -1
+leg2
+  rotate: false
+  xy: 361, 328
+  size: 218, 355
+  orig: 218, 355
+  offset: 0, 0
+  index: -1
+weapon
+  rotate: false
+  xy: 2, 178
+  size: 90, 792
+  orig: 90, 792
+  offset: 0, 0
+  index: -1

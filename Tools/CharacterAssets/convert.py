@@ -22,6 +22,8 @@ MAX_DECODED = 256 * 1024 * 1024
 SCSP_CONVERTER_VERSION = "astraloath-scsp/3"
 ORDERED_TRANSLATE_VERSION = "astraloath-scsp/4"
 ORDERED_TRANSLATE_FIELD = "astralOathTranslateTracks"
+ORDERED_SCALE_FIELD = "astralOathScaleTracks"
+ORDERED_SLOT_COLOR_FIELD = "astralOathSlotColorTracks"
 
 
 def _unpack_block(data: bytes) -> bytes:
@@ -137,6 +139,36 @@ def _record_curve_source(reader, skeleton, animation, kind, start, previous_bloc
     skeleton.curveSource[path] = block
 
 
+def _read_ordered_pose_v2(reader, skeleton, animation, kind, start):
+    index = struct.unpack_from("<I", reader.data, start + 4)[0]
+    is_color = kind == 3
+    items = skeleton.slots if is_color else skeleton.bones
+    if index >= len(items):
+        raise ValueError("Invalid 2.1 pose target")
+    name = items[index].name
+    channel = "color" if is_color else "scale"
+    timelines = (animation.slots if is_color else animation.bones).setdefault(name, {})
+    base = timelines.get(channel)
+    previous_blocks = len(reader.curveBlocks)
+    if not v2._parse_v2_timeline_entry(reader, skeleton, animation, kind):
+        raise ValueError("Invalid 2.1 pose timeline")
+    if base is None:
+        _record_curve_source(reader, skeleton, animation, kind, start, previous_blocks)
+        return
+    if len(reader.curveBlocks) != previous_blocks + 1:
+        raise ValueError("Missing 2.1 pose curve block")
+    frames = timelines[channel]
+    timelines[channel] = base
+    extension = ORDERED_SLOT_COLOR_FIELD if is_color else ORDERED_SCALE_FIELD
+    groups = skeleton.orderedPose.setdefault(animation.name, {}).setdefault(extension, {})
+    tracks = groups.setdefault(name, [])
+    path = (animation.name, extension, name, len(tracks))
+    tracks.append(frames)
+    fields = ("time", "color") if is_color else ("time", "x", "y")
+    skeleton.curveSource[path] = {**reader.curveBlocks[-1], "poseFields": fields,
+                                  "poseKeys": tuple(tuple(frame[field] for field in fields) for frame in frames)}
+
+
 def _read_translate_v2(reader, skeleton, animation):
     bone_index, raw_count = reader.read_u32(), reader.read_u32()
     if bone_index >= len(skeleton.bones):
@@ -186,6 +218,10 @@ def _validate_curves_v2(document, skeleton):
             raise ValueError(f"Curve mapping mismatch between source and JSON: {path}")
         if "curve" in frames[-1]:
             raise ValueError(f"Unexpected terminal curve in JSON: {path}")
+        if "poseFields" in block:
+            keys = tuple(tuple(f[k] for k in block["poseFields"]) for f in frames)
+            if keys != block["poseKeys"]:
+                raise ValueError(f"Pose key mapping mismatch between source and JSON: {path}")
         if "keys" in block:
             keys = tuple((f.get("time", 0), f.get("x", 0), f.get("y", 0)) for f in frames)
             if keys != block["keys"]:
@@ -276,6 +312,7 @@ def _animations_v2(reader, skeleton):
     skeleton.flipSource = {}
     skeleton.curveSource = {}
     skeleton.orderedTranslate = {}
+    skeleton.orderedPose = {}
     for ai in range(skeleton.v2_anim_count):
         animation = common.AnimationData()
         animation.name = _string(reader.read_u32(), skeleton)
@@ -318,13 +355,16 @@ def _animations_v2(reader, skeleton):
                     elif flag != 0: raise ValueError(f"Unknown draw-order flag {flag}")
                     animation.drawOrder.append(frame)
                 continue
+            if kind in (0, 3):
+                _read_ordered_pose_v2(reader, skeleton, animation, kind, start)
+                continue
             if kind == 2:
                 _read_translate_v2(reader, skeleton, animation)
                 continue
             # The vendored reference mislabels native 5/6/9/10. Never delegate these
             # or unknown IDs to its permissive fallback branches.
             previous_blocks = len(reader.curveBlocks)
-            if kind not in (0, 1, 3, 4, 7, 8) or not v2._parse_v2_timeline_entry(reader,skeleton,animation,kind):
+            if kind not in (1, 4, 7, 8) or not v2._parse_v2_timeline_entry(reader,skeleton,animation,kind):
                 raise ValueError(f"Unsupported/incomplete timeline {kind} in {animation.name} at {start}")
             _record_curve_source(reader, skeleton, animation, kind, start, previous_blocks)
         result.append(animation)
@@ -420,6 +460,8 @@ def decode_scsp(data: bytes):
         document=writer.write_json_data(sk)
         ordered_translate = getattr(sk, "orderedTranslate", {})
         if version != 30001:
+            for name, extensions in sk.orderedPose.items():
+                document["animations"][name].update(extensions)
             for name, tracks in ordered_translate.items():
                 document["animations"][name][ORDERED_TRANSLATE_FIELD] = tracks
             _validate_flips_v2(document, sk)
@@ -429,6 +471,8 @@ def decode_scsp(data: bytes):
     except (struct.error,IndexError,KeyError,OverflowError,UnicodeError) as exc:
         raise ValueError(f"Invalid SCSP record at byte {reader.pos}: {exc}") from exc
     converter_version = ORDERED_TRANSLATE_VERSION if ordered_translate else SCSP_CONVERTER_VERSION
+    if getattr(sk, "orderedPose", None):
+        converter_version = "astraloath-scsp/5"
     report={"converterVersion":converter_version,"spineVersion":sk.version,"bones":len(sk.bones),"slots":len(sk.slots),
             "renderAttachments":sum(isinstance(a,(common.RegionAttachment,common.MeshAttachment,common.SkinnedMeshAttachment,common.LinkedMeshAttachment)) for skin in sk.skins for slots in skin.attachments.values() for a in slots.values()),
             "animationCount":len(sk.animations),"animations":[{"name":a.name,"duration":a.duration} for a in sk.animations],

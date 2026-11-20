@@ -1,0 +1,326 @@
+{
+  "id": "c_ring_skill_01",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [
+      13
+    ],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "ani": "skill1",
+        "guid": 2,
+        "etty": "ANI"
+      },
+      {
+        "time": 200,
+        "guid": 3,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.0",
+        "time": 200,
+        "guid": 4,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 41,
+        "x": 50.0,
+        "y": -20.0,
+        "curve": "0.4099617,0.9236111,0.8467433,0.9652778",
+        "time": 200,
+        "guid": 5,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.2",
+        "curve": "0,0.6215277,1,1",
+        "time": 200,
+        "guid": 6,
+        "etty": "ZOOM"
+      },
+      {
+        "guid": 7,
+        "etty": "IDLE"
+      },
+      {
+        "source": "ring_skill_01.cfx",
+        "scale": 1.0,
+        "location": 5,
+        "guid": 8,
+        "etty": "EFFECT"
+      },
+      {
+        "location": 1,
+        "x": 100.0,
+        "y": -20.0,
+        "curve": "0,0.6215277,1,1",
+        "time": 200,
+        "guid": 9,
+        "etty": "CAM"
+      },
+      {
+        "source": "ring_hit.cfx",
+        "x": -20.0,
+        "y": 80.0,
+        "scale": 1.0,
+        "location": 6,
+        "guid": 10,
+        "etty": "EFFECT"
+      },
+      {
+        "source": "ring_hit.cfx",
+        "y": 70.0,
+        "scale": 1.1,
+        "location": 6,
+        "guid": 11,
+        "etty": "EFFECT"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "ring_sk1eff_cm",
+        "guid": 12,
+        "etty": "SHAKE"
+      },
+      {
+        "ani": "skill1",
+        "name": "hit",
+        "handled": true,
+        "guid": 13,
+        "etty": "ONEVENT"
+      },
+      {
+        "effect": "hit_new_pierce_normal.cfx",
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 14,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_pierce_normal.cfx",
+        "rand_x": 30,
+        "rand_y": 30,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 15,
+        "etty": "HIT"
+      }
+    ],
+    "connections": [
+      {
+        "from": 2,
+        "to": 8,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 6,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 9,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 5,
+        "delay": 858,
+        "when": 1,
+        "Desc": "858",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 10,
+        "delay": 957,
+        "when": 1,
+        "Desc": "957",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 11,
+        "delay": 1386,
+        "when": 1,
+        "Desc": "1386",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 7,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 3,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 4,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 12,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 14,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 15,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/ring_sk1eff_cm.scsp",
+      "address": "characterlab/source/camera/ring_sk1eff_cm.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_pierce_normal.atlas",
+      "address": "characterlab/source/effect/hit_new_pierce_normal.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_pierce_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_pierce_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_pierce_normal.scsp",
+      "address": "characterlab/source/effect/hit_new_pierce_normal.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_pierce_normal.sct",
+      "address": "characterlab/source/effect/hit_new_pierce_normal.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_pierce_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_pierce_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/ring_eff_hit_b.atlas",
+      "address": "characterlab/source/effect/ring_eff_hit_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/ring_eff_hit_b.scsp",
+      "address": "characterlab/source/effect/ring_eff_hit_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/ring_eff_hit_f.atlas",
+      "address": "characterlab/source/effect/ring_eff_hit_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/ring_eff_hit_f.scsp",
+      "address": "characterlab/source/effect/ring_eff_hit_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/ring_hit.atlas",
+      "address": "characterlab/source/effect/ring_hit.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/ring_hit.cfx",
+      "address": "characterlab/source/effect/ring_hit.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/ring_hit.sct",
+      "address": "characterlab/source/effect/ring_hit.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/ring_sk1eff.atlas",
+      "address": "characterlab/source/effect/ring_sk1eff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/ring_sk1eff.scsp",
+      "address": "characterlab/source/effect/ring_sk1eff.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/ring_skill_01.cfx",
+      "address": "characterlab/source/effect/ring_skill_01.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/ring_skill_0102.atlas",
+      "address": "characterlab/source/effect/ring_skill_0102.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/ring_skill_0102.sct",
+      "address": "characterlab/source/effect/ring_skill_0102.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

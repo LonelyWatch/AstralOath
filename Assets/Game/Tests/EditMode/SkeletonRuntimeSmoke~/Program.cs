@@ -119,7 +119,36 @@ class Program {
   atlas.Dispose();
   Console.WriteLine("Ordered translate full-weight and mixed poses passed.");
  }
+
+ static void CheckOrderedColor() {
+  const string json = """
+  {"skeleton":{"spine":"2.1.27","hash":"","width":0,"height":0},"bones":[{"name":"root"}],
+   "slots":[{"name":"light","bone":"root"}],"skins":{"default":{}},
+   "animations":{"clip":{"slots":{"light":{"color":[{"time":0,"color":"FFFFFF00"},
+   {"time":0.73,"color":"FFFFFFFF","curve":"stepped"},{"time":4.5,"color":"FFFFFFFF"},{"time":5.33,"color":"FFFFFF00"}]}},
+   "astralOathSlotColorTracks":{"light":[[{"time":0,"color":"FFFFFF00"}]]},
+   "bones":{"root":{"scale":[{"time":0,"x":2,"y":2}]}},
+   "astralOathScaleTracks":{"root":[[{"time":0,"x":2,"y":2}]]}}}}
+  """;
+  var atlas = new A.Atlas(new StringReader(""), "", new Loader());
+  var data = Spine21Json.Read(json, atlas, 1);
+  var skeleton = new A.Skeleton(data);
+  var clip = data.FindAnimation("clip");
+  if (clip.Timelines.OfType<A.ScaleTimeline>().Count()!=2) throw new Exception("Missing repeated scale track");
+  if (clip.Timelines.OfType<A.ColorTimeline>().Count()!=2) throw new Exception("Missing native color track");
+  foreach (var (weight, expected) in new[] {(1f, 0f), (.5f, .5f)}) {
+   skeleton.SetToSetupPose();
+   clip.Mix(skeleton, -1, 1f, false, null, weight);
+   float expectedScale = weight == 1f ? 2f : 1.75f;
+   if (Math.Abs(skeleton.RootBone.ScaleX-expectedScale)>.00001f) throw new Exception("Repeated scale was lost");
+   if (Math.Abs(skeleton.Slots[0].A-expected)>.00001f) throw new Exception("Native slot color application order changed");
+  }
+  atlas.Dispose();
+  Console.WriteLine("Repeated slot color full-weight and mixed samples passed.");
+ }
+
  static void Main(string[] args) {
+  if (args.Length == 1 && args[0] == "--ordered-color") { CheckOrderedColor(); return; }
   if (args.Length == 1 && args[0] == "--ordered-translate") { CheckOrderedTranslate(); return; }
   var inputs=new System.Collections.Generic.List<(string json,string atlas)>();
   bool checkBaal = args.Length == 3 && args[0] == "--baal-ordered-translate";

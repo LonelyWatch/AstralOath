@@ -19,6 +19,7 @@ PERCENT = re.compile(r"\{per(?:_s)?\((\w+)\)\}")
 COLOR = re.compile(r"<#([\da-fA-F]{6})>")
 TEXT_PATH = "text/zhs/text.db"
 STATUS_TEXT_IDS = {
+    "stic_endure_1": "stic_endure",
     "stic_debuf_impossible": "stic_res_up",
     "stic_spiritlord_keep": "stic_spiritlord",
     "stic_target": "stic_sign",

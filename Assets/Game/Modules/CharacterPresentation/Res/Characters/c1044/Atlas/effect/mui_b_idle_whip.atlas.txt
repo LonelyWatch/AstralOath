@@ -1,0 +1,83 @@
+
+mui_b_idle_whip.sct
+size: 468,222
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+b_idle_whip_1
+  rotate: false
+  xy: 106, 173
+  size: 96, 45
+  orig: 96, 45
+  offset: 0, 0
+  index: -1
+b_idle_whip_10
+  rotate: false
+  xy: 378, 2
+  size: 88, 53
+  orig: 88, 53
+  offset: 0, 0
+  index: -1
+b_idle_whip_2
+  rotate: true
+  xy: 287, 123
+  size: 96, 99
+  orig: 96, 99
+  offset: 0, 0
+  index: -1
+b_idle_whip_3
+  rotate: false
+  xy: 315, 2
+  size: 61, 103
+  orig: 61, 103
+  offset: 0, 0
+  index: -1
+b_idle_whip_4
+  rotate: false
+  xy: 251, 2
+  size: 62, 119
+  orig: 62, 119
+  offset: 0, 0
+  index: -1
+b_idle_whip_5
+  rotate: false
+  xy: 173, 2
+  size: 76, 137
+  orig: 76, 137
+  offset: 0, 0
+  index: -1
+b_idle_whip_6
+  rotate: true
+  xy: 204, 141
+  size: 63, 81
+  orig: 63, 81
+  offset: 0, 0
+  index: -1
+b_idle_whip_7
+  rotate: true
+  xy: 388, 112
+  size: 93, 53
+  orig: 93, 53
+  offset: 0, 0
+  index: -1
+b_idle_whip_8
+  rotate: false
+  xy: 2, 173
+  size: 102, 47
+  orig: 102, 47
+  offset: 0, 0
+  index: -1
+b_idle_whip_9
+  rotate: false
+  xy: 378, 57
+  size: 88, 53
+  orig: 88, 53
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1

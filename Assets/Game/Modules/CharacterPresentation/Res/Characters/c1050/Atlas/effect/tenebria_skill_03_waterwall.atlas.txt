@@ -1,0 +1,55 @@
+
+tenebria_skill_03_waterwall.sct
+size: 737,248
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 2, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+near_water_wall
+  rotate: false
+  xy: 2, 173
+  size: 263, 73
+  orig: 263, 73
+  offset: 0, 0
+  index: -1
+spl_water1
+  rotate: false
+  xy: 173, 2
+  size: 186, 121
+  orig: 186, 121
+  offset: 0, 0
+  index: -1
+spl_water2
+  rotate: false
+  xy: 267, 125
+  size: 186, 121
+  orig: 186, 121
+  offset: 0, 0
+  index: -1
+spl_water3
+  rotate: false
+  xy: 361, 2
+  size: 186, 121
+  orig: 186, 121
+  offset: 0, 0
+  index: -1
+spl_water4
+  rotate: false
+  xy: 455, 125
+  size: 186, 121
+  orig: 186, 121
+  offset: 0, 0
+  index: -1
+spl_water5
+  rotate: false
+  xy: 549, 2
+  size: 186, 121
+  orig: 186, 121
+  offset: 0, 0
+  index: -1

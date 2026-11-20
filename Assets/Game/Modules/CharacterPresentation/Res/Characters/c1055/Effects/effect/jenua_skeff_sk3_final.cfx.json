@@ -1,0 +1,20 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "jenua_skeff_sk3_final",
+      "z": "30",
+      "format": "spine",
+      "globalZ": 999.0
+    },
+    {
+      "source": "jenua_skeff_sk3_final_particle",
+      "x": "100",
+      "y": "-700",
+      "rotate": "-5",
+      "delay": "300",
+      "format": "particle",
+      "globalZ": 998.0
+    }
+  ]
+}

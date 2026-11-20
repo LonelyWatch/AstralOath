@@ -1,0 +1,60 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "roman_sk3eff_target_f",
+      "format": "spine",
+      "globalZ": 1.0,
+      "actions": [
+        {
+          "action": "Fire",
+          "delay": "930"
+        },
+        {
+          "action": "Fire",
+          "delay": "1320"
+        },
+        {
+          "action": "Fire",
+          "delay": "1710"
+        },
+        {
+          "action": "Fire",
+          "delay": "2100"
+        },
+        {
+          "action": "Fire",
+          "delay": "2490"
+        }
+      ]
+    },
+    {
+      "source": "roman_sk3eff_target_b",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "eff_magic_dark_01_pati4",
+      "delay": "1000",
+      "format": "particle"
+    },
+    {
+      "source": "eff_magic_dark_01_pati4",
+      "scale": "1.1",
+      "delay": "1500",
+      "format": "particle"
+    },
+    {
+      "source": "eff_magic_dark_01_pati4",
+      "scale": "1.2",
+      "delay": "2000",
+      "format": "particle"
+    },
+    {
+      "source": "eff_magic_dark_01_pati4",
+      "scale": "1.3",
+      "delay": "2500",
+      "format": "particle"
+    }
+  ]
+}

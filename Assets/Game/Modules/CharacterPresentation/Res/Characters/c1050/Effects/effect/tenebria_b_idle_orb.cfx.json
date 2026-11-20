@@ -1,0 +1,18 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "tenebria_idle_eff",
+      "ani": "b_idle_ready,idle",
+      "z": "2",
+      "format": "spine",
+      "loop": 1
+    },
+    {
+      "source": "tenebria_idle_orb_pati1",
+      "format": "particle",
+      "loop": 1,
+      "attach": "tenebria_idle_eff/orb_anker"
+    }
+  ]
+}

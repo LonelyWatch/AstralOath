@@ -1,0 +1,55 @@
+
+tenebria_skill_01_target_back.sct
+size: 606,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+burst_sphear
+  rotate: false
+  xy: 342, 172
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+burst_sphear_g
+  rotate: false
+  xy: 392, 306
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+pillar_mid
+  rotate: false
+  xy: 476, 172
+  size: 128, 129
+  orig: 128, 129
+  offset: 0, 0
+  index: -1
+scan_glow
+  rotate: false
+  xy: 2, 2
+  size: 338, 338
+  orig: 338, 338
+  offset: 0, 0
+  index: -1
+sk1_bot_fire2_1
+  rotate: false
+  xy: 2, 342
+  size: 193, 168
+  orig: 193, 168
+  offset: 0, 0
+  index: -1
+sk1_bot_fire2_2
+  rotate: false
+  xy: 197, 342
+  size: 193, 168
+  orig: 193, 168
+  offset: 0, 0
+  index: -1
+sk1_bot_fire2_3
+  rotate: false
+  xy: 392, 2
+  size: 193, 168
+  orig: 193, 168
+  offset: 0, 0
+  index: -1

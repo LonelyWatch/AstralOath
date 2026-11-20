@@ -1,0 +1,132 @@
+
+ring_sk3eff.sct
+size: 249,1310
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+eff_adlight
+  rotate: false
+  xy: 2, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+heart_1
+  rotate: false
+  xy: 137, 1038
+  size: 108, 96
+  orig: 108, 96
+  offset: 0, 0
+  index: -1
+heart_2
+  rotate: true
+  xy: 137, 918
+  size: 118, 109
+  orig: 118, 109
+  offset: 0, 0
+  index: -1
+heart_3
+  rotate: false
+  xy: 2, 173
+  size: 166, 172
+  orig: 166, 172
+  offset: 0, 0
+  index: -1
+mgwave_2
+  rotate: false
+  xy: 2, 526
+  size: 133, 133
+  orig: 133, 133
+  offset: 0, 0
+  index: -1
+mgwave_3
+  rotate: false
+  xy: 2, 661
+  size: 133, 133
+  orig: 133, 133
+  offset: 0, 0
+  index: -1
+mgwave_4
+  rotate: false
+  xy: 2, 796
+  size: 133, 133
+  orig: 133, 133
+  offset: 0, 0
+  index: -1
+mgwave_5
+  rotate: false
+  xy: 2, 931
+  size: 133, 133
+  orig: 133, 133
+  offset: 0, 0
+  index: -1
+obake_sk4_ad_1
+  rotate: true
+  xy: 2, 1187
+  size: 66, 117
+  orig: 66, 117
+  offset: 0, 0
+  index: -1
+pin
+  rotate: false
+  xy: 2, 347
+  size: 154, 177
+  orig: 154, 177
+  offset: 0, 0
+  index: -1
+pinlight
+  rotate: false
+  xy: 173, 2
+  size: 69, 249
+  orig: 69, 249
+  offset: 0, 0
+  index: -1
+pinlight_f
+  rotate: true
+  xy: 2, 1255
+  size: 53, 185
+  orig: 53, 185
+  offset: 0, 0
+  index: -1
+r_ptc_1
+  rotate: true
+  xy: 158, 468
+  size: 200, 65
+  orig: 200, 65
+  offset: 0, 0
+  index: -1
+r_ptc_2
+  rotate: true
+  xy: 170, 253
+  size: 213, 75
+  orig: 213, 75
+  offset: 0, 0
+  index: -1
+smoke_1
+  rotate: false
+  xy: 2, 1066
+  size: 120, 119
+  orig: 120, 119
+  offset: 0, 0
+  index: -1
+smoke_2
+  rotate: true
+  xy: 137, 670
+  size: 126, 110
+  orig: 126, 110
+  offset: 0, 0
+  index: -1
+smoke_4
+  rotate: false
+  xy: 124, 1136
+  size: 119, 77
+  orig: 119, 77
+  offset: 0, 0
+  index: -1
+smoke_5
+  rotate: true
+  xy: 137, 798
+  size: 118, 110
+  orig: 118, 110
+  offset: 0, 0
+  index: -1

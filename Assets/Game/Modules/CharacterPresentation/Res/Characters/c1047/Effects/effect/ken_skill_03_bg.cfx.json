@@ -1,0 +1,46 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "ken_nbg_b",
+      "scale": "1",
+      "format": "spine",
+      "globalZ": -2.0
+    },
+    {
+      "source": "ken_nbg_f",
+      "scale": "1",
+      "format": "spine",
+      "globalZ": 2.0
+    },
+    {
+      "source": "ken_sk3nbg",
+      "x": "200",
+      "scale": "1.5",
+      "delay": "3300",
+      "repeat": "5",
+      "format": "particle",
+      "globalZ": 1.0,
+      "timeScale": 10.0
+    },
+    {
+      "source": "ken_sk3nbg",
+      "x": "200",
+      "scale": "1.5",
+      "delay": "2500",
+      "format": "particle",
+      "globalZ": 1.0,
+      "timeScale": 0.5
+    },
+    {
+      "source": "ken_sk3nbg",
+      "x": "200",
+      "scale": "1.5",
+      "delay": "6200",
+      "repeat": "2",
+      "format": "particle",
+      "globalZ": 1.0,
+      "timeScale": 0.5
+    }
+  ]
+}

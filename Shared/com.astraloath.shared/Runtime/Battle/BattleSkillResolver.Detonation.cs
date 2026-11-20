@@ -30,7 +30,7 @@ namespace AstralOath.Shared.Battle
 
             private void ShortenBuffs(Unit actor, Unit target, int turns, int chance, BattleHitKind hit, bool ignoresResistance)
             {
-                var buffs = target.Statuses.Where(item => IsDispellableBuff(item.Kind)).ToArray();
+                var buffs = target.Statuses.Where(item => IsDispellableBuff(item.Kind) && item.Kind != BattleStatusKind.SkillNullifier).ToArray();
                 if (buffs.Length == 0 || !CheckEffect(actor, target, null, chance, hit, true, false, ignoresResistance)) return;
                 foreach (var buff in buffs)
                 {

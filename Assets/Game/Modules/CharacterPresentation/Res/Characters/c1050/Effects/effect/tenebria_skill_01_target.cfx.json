@@ -1,0 +1,38 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "tenebria_skill_01_target_back",
+      "z": "-2",
+      "format": "spine"
+    },
+    {
+      "source": "tenebria_skill_01_target_pati1",
+      "y": "25",
+      "z": "5",
+      "delay": "567",
+      "format": "particle"
+    },
+    {
+      "source": "tenebria_skill_01_target_pati2",
+      "y": "25",
+      "z": "4",
+      "scale": "0.3,1.0",
+      "delay": "733",
+      "format": "particle"
+    },
+    {
+      "source": "tenebria_skill_01_target_pati3",
+      "y": "45",
+      "z": "2.5",
+      "scale": "1.2",
+      "delay": "30",
+      "format": "particle"
+    },
+    {
+      "source": "tenebria_skill_01_target_front",
+      "z": "2",
+      "format": "spine"
+    }
+  ]
+}

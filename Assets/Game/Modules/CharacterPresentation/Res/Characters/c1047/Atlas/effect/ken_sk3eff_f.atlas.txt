@@ -1,0 +1,216 @@
+
+ken_sk3eff_f.sct
+size: 508,469
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+eff_adlight
+  rotate: false
+  xy: 2, 180
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+eff_atkline
+  rotate: true
+  xy: 467, 2
+  size: 86, 27
+  orig: 86, 27
+  offset: 0, 0
+  index: -1
+eff_fire1_1
+  rotate: false
+  xy: 181, 346
+  size: 182, 105
+  orig: 182, 105
+  offset: 0, 0
+  index: -1
+eff_fire1_2
+  rotate: true
+  xy: 180, 2
+  size: 172, 109
+  orig: 172, 109
+  offset: 0, 0
+  index: -1
+eff_fire1_3
+  rotate: false
+  xy: 2, 351
+  size: 177, 116
+  orig: 177, 116
+  offset: 0, 0
+  index: -1
+fire_p_1
+  rotate: true
+  xy: 435, 224
+  size: 32, 24
+  orig: 32, 24
+  offset: 0, 0
+  index: -1
+fire_p_2
+  rotate: true
+  xy: 484, 354
+  size: 39, 22
+  orig: 39, 22
+  offset: 0, 0
+  index: -1
+fire_p_3
+  rotate: true
+  xy: 484, 395
+  size: 34, 21
+  orig: 34, 21
+  offset: 0, 0
+  index: -1
+kenfire_1_1
+  rotate: true
+  xy: 432, 354
+  size: 34, 50
+  orig: 34, 50
+  offset: 0, 0
+  index: -1
+kenfire_1_2
+  rotate: true
+  xy: 432, 390
+  size: 34, 50
+  orig: 34, 50
+  offset: 0, 0
+  index: -1
+kenfire_1_3
+  rotate: false
+  xy: 467, 90
+  size: 34, 50
+  orig: 34, 50
+  offset: 0, 0
+  index: -1
+kenfire_1_4
+  rotate: false
+  xy: 466, 142
+  size: 34, 50
+  orig: 34, 50
+  offset: 0, 0
+  index: -1
+kenfire_1_5
+  rotate: false
+  xy: 463, 194
+  size: 34, 50
+  orig: 34, 50
+  offset: 0, 0
+  index: -1
+kenfire_2_1
+  rotate: true
+  xy: 365, 395
+  size: 28, 41
+  orig: 28, 41
+  offset: 0, 0
+  index: -1
+kenfire_2_2
+  rotate: false
+  xy: 365, 425
+  size: 28, 41
+  orig: 28, 41
+  offset: 0, 0
+  index: -1
+kenfire_2_3
+  rotate: false
+  xy: 395, 425
+  size: 28, 41
+  orig: 28, 41
+  offset: 0, 0
+  index: -1
+kenfire_2_4
+  rotate: false
+  xy: 425, 426
+  size: 28, 41
+  orig: 28, 41
+  offset: 0, 0
+  index: -1
+kenfire_2_5
+  rotate: true
+  xy: 455, 431
+  size: 28, 41
+  orig: 28, 41
+  offset: 0, 0
+  index: -1
+kenfire_b_1_1
+  rotate: false
+  xy: 327, 259
+  size: 104, 64
+  orig: 104, 64
+  offset: 0, 0
+  index: -1
+kenfire_b_1_2
+  rotate: true
+  xy: 433, 259
+  size: 93, 65
+  orig: 93, 65
+  offset: 0, 0
+  index: -1
+kenfire_b_1_3
+  rotate: true
+  xy: 365, 325
+  size: 68, 65
+  orig: 68, 65
+  offset: 0, 0
+  index: -1
+kenfire_b_2_1
+  rotate: false
+  xy: 410, 110
+  size: 54, 51
+  orig: 54, 51
+  offset: 0, 0
+  index: -1
+kenfire_b_2_2
+  rotate: true
+  xy: 435, 163
+  size: 59, 26
+  orig: 59, 26
+  offset: 0, 0
+  index: -1
+kenfire_b_2_3
+  rotate: false
+  xy: 181, 453
+  size: 48, 12
+  orig: 48, 12
+  offset: 0, 0
+  index: -1
+kenfire_s_1_1
+  rotate: false
+  xy: 291, 2
+  size: 91, 108
+  orig: 91, 108
+  offset: 0, 0
+  index: -1
+kenfire_s_1_2
+  rotate: true
+  xy: 327, 180
+  size: 77, 106
+  orig: 77, 106
+  offset: 0, 0
+  index: -1
+kenfire_s_1_3
+  rotate: false
+  xy: 384, 2
+  size: 81, 106
+  orig: 81, 106
+  offset: 0, 0
+  index: -1
+obake_sk4_ad_1
+  rotate: true
+  xy: 291, 112
+  size: 66, 117
+  orig: 66, 117
+  offset: 0, 0
+  index: -1
+r_wave_1
+  rotate: false
+  xy: 2, 2
+  size: 176, 176
+  orig: 176, 176
+  offset: 0, 0
+  index: -1
+r_wave_3
+  rotate: false
+  xy: 173, 180
+  size: 152, 164
+  orig: 152, 164
+  offset: 0, 0
+  index: -1

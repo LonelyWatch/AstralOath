@@ -131,11 +131,13 @@ namespace AstralOath.Client.Tests
             string[] added = catalog.heroes.Select(hero => hero.id)
                 .Where(id => !separateLegacyFixture.Contains(id)).ToArray();
             Assert.That(added, Does.Contain("c1010"));
-            var loadedPresentations = graphs.Select(graph => JsonUtility.FromJson<GraphId>(graph.text).id).ToArray();
-            Assert.That(loadedPresentations, Is.Unique);
-            var expectedPresentations = catalog.skills.SelectMany(skill => new[] { skill.presentationId, skill.speedUpPresentationId, skill.burnPresentationId, skill.counterPresentationId })
+            var cutinsByGraph = graphs.Select(graph => JObject.Parse(graph.text))
+                .ToDictionary(graph => (string)graph["id"], graph => graph["assets"]
+                    .Where(asset => (string)asset["type"] == "cutin").Select(asset => (string)asset["source"]).ToArray());
+            var expectedPresentations = catalog.skills.SelectMany(skill => new[] { skill.presentationId, skill.speedUpPresentationId,
+                skill.burnPresentationId, skill.counterPresentationId, skill.alternatePresentationId })
                 .Where(id => !string.IsNullOrEmpty(id)).Distinct(StringComparer.Ordinal);
-            Assert.That(loadedPresentations, Is.EquivalentTo(expectedPresentations));
+            Assert.That(cutinsByGraph.Keys, Is.EquivalentTo(expectedPresentations));
             string requested = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_HERO_ID");
             if (!string.IsNullOrWhiteSpace(requested))
             {
@@ -156,6 +158,14 @@ namespace AstralOath.Client.Tests
                     .Select(unit => unit.DefinitionId), Is.All.EqualTo(id));
                 var actor = host.SimulationSnapshot.GetUnit(host.SimulationSnapshot.CurrentActorId);
                 Assert.That(actor.DefinitionId, Is.EqualTo(id));
+                if (id == "c1047")
+                {
+                    var ultimate = catalog.skills.Single(row => row.heroId == id && row.slot == 3);
+                    Assert.That(actor.Resource.Kind, Is.EqualTo(BattleResourceKind.FightingSpirit));
+                    Assert.That(actor.Resource.Amount, Is.EqualTo(40));
+                    Assert.That(ultimate.resourceCost, Is.EqualTo(80));
+                    Assert.That(map.Require<GameButton>("skill3").interactable, Is.False);
+                }
                 var skill = catalog.skills.Single(row => row.heroId == id && row.slot == 2);
                 Assert.That(map.Require<GameButton>("skill2").interactable, Is.EqualTo(skill.target != "passive"));
                 var basic = catalog.skills.Single(row => row.heroId == id && row.slot == 1);
@@ -218,19 +228,27 @@ namespace AstralOath.Client.Tests
                         "all_enemies" => enemies,
                         "two_enemies" => enemies.Take(2).ToArray(),
                         "passive" when protection.Any(effect => effect.recipient == "allies") => allies,
+                        "passive" when protection.Length > 0 && protection.All(effect => effect.recipient == "self") => new[] { front },
                         "passive" when protection.Length > 0 => new[] { allies[protection.Any(effect => effect.condition == "back_row_immobilized") ? 3 : 1] },
                         "passive" when catalog.effects.Any(effect => effect.skillId == skill.id && effect.operation == "damage" &&
                             (effect.phase == "after_ally_attack" || effect.phase == "counter_basic")) => enemies,
                         "passive" => id is "c1007" or "c1008" or "c1020" or "c1023" or "c1028" ? enemies : new[] { enemies[0] },
                         _ => new[] { enemies[0] }
                     };
-                    Phase required = skill.slot == 3 && Array.IndexOf(new[] { "c1020", "c1021", "c1022", "c1023", "c1024",
-                        "c1027", "c1028", "c1029", "c1030", "c1031", "c1032", "c1033", "c1034", "c1035",
-                        "c1036", "c1037", "c1038", "c1039", "c1040", "c1042" }, id) >= 0 ? Phase.Cutin : Phase.None;
-                    yield return Play(skill.presentationId, id + "-s" + skill.slot, front, recipients[0], recipients, required | Phase.Impact, Phase.None);
+                    var sourceCutins = cutinsByGraph[skill.presentationId];
+                    Phase required = sourceCutins.Length > 0 ? Phase.Cutin : Phase.None;
+                    yield return Play(skill.presentationId, id + "-s" + skill.slot, front, recipients[0], recipients,
+                        required | Phase.Impact, Phase.None, sourceCutins);
                     TestContext.WriteLine($"{id} S{skill.slot}: {skill.presentationId} passed source playback and reset.");
                     if (!string.IsNullOrEmpty(skill.counterPresentationId))
                         yield return Play(skill.counterPresentationId, id + "-counter", front, enemies[0], enemies, Phase.None, Phase.None);
+                    if (!string.IsNullOrEmpty(skill.alternatePresentationId))
+                    {
+                        string sample = id + "-s" + skill.slot + "-" + skill.alternatePresentationStatus;
+                        yield return Play(skill.alternatePresentationId, sample, front, recipients[0], recipients,
+                            Phase.Impact, Phase.None, cutinsByGraph[skill.alternatePresentationId]);
+                        TestContext.WriteLine($"{sample}: {skill.alternatePresentationId} passed source playback and reset.");
+                    }
                     if (!string.IsNullOrEmpty(skill.burnPresentationId))
                     {
                         yield return Play(skill.burnPresentationId, id + "-s" + skill.slot + "-burn",
@@ -450,7 +468,7 @@ namespace AstralOath.Client.Tests
         }
 
         private IEnumerator Play(string id, string sample, BattlePreviewActor actor, BattlePreviewActor target,
-            BattlePreviewActor[] recipients, Phase capturePhases, Phase interruptAt)
+            BattlePreviewActor[] recipients, Phase capturePhases, Phase interruptAt, string[] expectedCutins = null)
         {
             playback ??= (IDisposable)Activator.CreateInstance(PresentationType,
                 new object[] { units, graphs, assets, camera, setCinematicVisible, background });
@@ -494,6 +512,12 @@ namespace AstralOath.Client.Tests
             int sourceReactionHits = 0;
             var referenceTimes = captureTarget && id == "c_strage_skill_03"
                 ? new[] { .8f, 1.8f, 4.8f, 5.8f } : Array.Empty<float>();
+            if (captureTarget && expectedCutins?.Length > 0)
+            {
+                // Non-damaging scenery, target lifts and the setup for a portrait can fall between all HITs.
+                var phaseTimes = Enumerable.Range(1, Mathf.FloorToInt(timing.Duration * 2f)).Select(index => index * .5f);
+                referenceTimes = referenceTimes.Concat(phaseTimes).Distinct().OrderBy(value => value).ToArray();
+            }
             int referenceIndex = 0;
             var hatchReferences = captureTarget && id == "c_sez_gaien_skill_03" ? new HashSet<int> { 17, 18, 52 } : null;
             var layers = hatchReferences == null ? null : (IEnumerable)stage.GetType().GetField("layers", PrivateInstance).GetValue(stage);
@@ -501,8 +525,10 @@ namespace AstralOath.Client.Tests
                 ? new List<string> { "source_seconds,camera_x,camera_y,orthographic_size,actor_x,actor_y" } : null;
             double deadline = Time.realtimeSinceStartupAsDouble + ActionTimeout;
             float elapsed = 0f;
-            float firstCutinLength = 0f;
-            bool capturedMiddle = false;
+            float currentCutinLength = 0f;
+            Transform currentCutin = null;
+            var seenCutins = new List<string>();
+            var capturedCutins = new HashSet<Transform>();
             Phase observed = Phase.None;
             do
             {
@@ -524,6 +550,12 @@ namespace AstralOath.Client.Tests
                     child.name.StartsWith("CUTIN ", StringComparison.Ordinal));
                 if (activeCutin)
                 {
+                    if (activeCutin != currentCutin)
+                    {
+                        currentCutin = activeCutin;
+                        currentCutinLength = (float)cutinRemaining.GetValue(stage);
+                        seenCutins.Add(activeCutin.name.Substring("CUTIN ".Length));
+                    }
                     if (checkMercedesCutin)
                     {
                         if (mercedesCutinAt < 0f)
@@ -539,14 +571,14 @@ namespace AstralOath.Client.Tests
                         Assert.That(elapsed, Is.EqualTo(mercedesCutinAt).Within(.001f), "Cut-in pauses the source animation clock.");
                     }
                     Observe(Phase.Cutin);
-                    if (captureTarget && !capturedMiddle && (capturePhases & Phase.Cutin) != 0)
+                    if (captureTarget && !capturedCutins.Contains(activeCutin) && (capturePhases & Phase.Cutin) != 0)
                     {
                         float remaining = (float)cutinRemaining.GetValue(stage);
-                        if (firstCutinLength == 0f) firstCutinLength = remaining;
-                        if (remaining > 0f && remaining <= firstCutinLength * .5f)
+                        if (remaining > 0f && remaining <= currentCutinLength * .5f)
                         {
-                            frameCaptures.Add(Path.Combine(captureDirectory, sample + "-cutin-middle.png"));
-                            capturedMiddle = true;
+                            string suffix = seenCutins.Count == 1 ? "-cutin-middle.png" : $"-cutin-{seenCutins.Count}-middle.png";
+                            frameCaptures.Add(Path.Combine(captureDirectory, sample + suffix));
+                            capturedCutins.Add(activeCutin);
                         }
                     }
                 }
@@ -649,7 +681,9 @@ namespace AstralOath.Client.Tests
                 }
 
                 yield return null;
-                float delta = Time.unscaledDeltaTime;
+                // PNG readback can stall a test frame long enough to skip a short portrait.
+                // Advance capture runs on a 30 fps sample clock independent of disk/GPU latency.
+                float delta = captureTarget ? 1f / 30f : Time.unscaledDeltaTime;
                 float wallCutin = (float)cutinRemaining.GetValue(stage);
                 if (wallCutin > 0f) delta = Mathf.Min(delta, wallCutin);
                 else if (checkMercedesCutin && elapsed < mercedesSourceCutin)
@@ -670,11 +704,16 @@ namespace AstralOath.Client.Tests
             Assert.That((observed & capturePhases) == capturePhases, Is.True,
                 $"{sample} observed {observed}; expected {capturePhases}.");
             if (hatchReferences != null) Assert.That(hatchReferences, Is.Empty);
+            if (expectedCutins != null)
+            {
+                Assert.That(seenCutins, Is.EquivalentTo(expectedCutins), sample + " must play every source portrait.");
+                if (captureTarget) Assert.That(capturedCutins.Count, Is.EqualTo(seenCutins.Count), sample + " must capture each portrait midpoint.");
+            }
             Assert.That(interruptAt == Phase.None || playback == null, Is.True, sample + " never reached the interruption phase");
             yield return null;
             yield return null;
             baseline.AssertRestored(sample);
-            if (captureTarget && interruptAt == Phase.None && sample.EndsWith("-s3", StringComparison.Ordinal))
+            if (captureTarget && interruptAt == Phase.None && (sample.EndsWith("-s3", StringComparison.Ordinal) || expectedCutins?.Length > 0))
                 File.WriteAllBytes(Path.Combine(captureDirectory, sample + "-restored.png"), RenderFrame(stage, null, visualTargets).Composite);
             Assert.That(cinematicVisible, Is.False, sample + " left the gameplay HUD hidden");
             Assert.That(!effects || effects.childCount == 0, Is.True, sample + " left effect objects in the scene");

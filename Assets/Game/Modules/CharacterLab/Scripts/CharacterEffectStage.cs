@@ -187,7 +187,8 @@ namespace AstralOath.Client.CharacterLab
             foreach(string key in new[]{"x","y","z","globalZ","scale","rotate","delay","lifeTime"})
             {
                 var value=primitive[key];
-                if(value!=null&&!PresentationScalar.TryRead(value.ToString(),out _))
+                if(value!=null&&!PresentationScalar.TryRead(value.ToString(),out _) &&
+                    !(key == "scale" && PresentationScalar.TryReadScaleAxes(value.ToString(), out _, out _)))
                 {
                     diagnostic="Unsupported CFX scalar/range "+primitive["source"]+"."+key+"="+value+"; primitive skipped, range semantics remain unverified.";
                     return false;
@@ -215,7 +216,7 @@ namespace AstralOath.Client.CharacterLab
                 if(!skeletons.TryGetValue(path,out var data)){report("Missing spineFX "+path);return;}
                 var effect=context.Skeletons.Create(data,context.WorldRoot);
                 effect.Root.transform.position=anchor.position+new Vector3(Number(part["x"],0)*.01f,Number(part["y"],0)*.01f,-Number(part["z"]??part["globalZ"],0)*.001f);
-                effect.Root.transform.localScale=Vector3.one*Number(part["scale"],1)*scale*anchor.localScale.x;
+                effect.Root.transform.localScale=PrimitiveScale(part["scale"])*scale*anchor.localScale.x;
                 effect.Root.transform.localRotation=Quaternion.Euler(0,0,-Number(part["rotate"],0));
                 float speed=Number(part["timeScale"],1);
                 scope.Add(effect.Dispose);active.Add(effect,speed);
@@ -292,6 +293,9 @@ namespace AstralOath.Client.CharacterLab
             mesh.triangles=new[]{0,2,1,0,3,2};return mesh;
         }
         internal static float Number(JToken value,float fallback)=>value==null?fallback:float.Parse(value.ToString(),CultureInfo.InvariantCulture);
+        internal static Vector3 PrimitiveScale(JToken value) =>
+            PresentationScalar.TryReadScaleAxes(value?.ToString(), out float x, out float y)
+                ? new Vector3(x, y, 1f) : Vector3.one * Number(value, 1f);
         public void Dispose()
         {
             if(disposed)return;disposed=true;screen.Dispose();pending.Clear();active.Clear();cutins.Clear();

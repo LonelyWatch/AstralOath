@@ -323,7 +323,8 @@ namespace AstralOath.Client.BattleScene
                 (int)row["currentHealth"], (int)row["readinessBp"],
                 ((JObject)row["cooldowns"]).Properties().ToDictionary(item => item.Name, item => (int)item.Value, StringComparer.Ordinal),
                 ((JArray)row["statuses"]).OfType<JObject>().Select(ReadStatus).ToArray(), (int?)(row["resource"] as JObject)?["amount"] ?? 0,
-                (int)row["injuryAmount"], (int)row["openingAttackBonus"], (bool?)row["isExtinct"] ?? false);
+                (int)row["injuryAmount"], (int)row["openingAttackBonus"], (bool?)row["isExtinct"] ?? false,
+                (bool?)row["lethalProtectionConsumed"] ?? false);
         }
 
         private static BattleStatusSnapshot ReadStatus(JObject row) => row == null ? null : BattlePresentationWire.Status(

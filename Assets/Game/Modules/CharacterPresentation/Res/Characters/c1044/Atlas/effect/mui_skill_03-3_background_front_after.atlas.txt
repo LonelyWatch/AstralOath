@@ -1,0 +1,27 @@
+
+mui_skill_03-3_background_front_after.sct
+size: 125,414
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+mui_tent_inner_balloon_left
+  rotate: false
+  xy: 2, 235
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1
+mui_tent_inner_balloon_right
+  rotate: false
+  xy: 2, 333
+  size: 84, 79
+  orig: 84, 79
+  offset: 0, 0
+  index: -1
+mui_tent_inner_light
+  rotate: true
+  xy: 2, 2
+  size: 231, 121
+  orig: 231, 121
+  offset: 0, 0
+  index: -1

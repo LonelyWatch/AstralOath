@@ -1,0 +1,27 @@
+
+tenebria_idle_eff.sct
+size: 441,173
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+burst_sphear
+  rotate: false
+  xy: 173, 2
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+burst_sphear_g
+  rotate: false
+  xy: 307, 2
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1

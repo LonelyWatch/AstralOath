@@ -1,0 +1,62 @@
+
+lidica_bg_sk3_2.sct
+size: 416,1605
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+burst_sphear
+  rotate: false
+  xy: 210, 1471
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 1310
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+global_glow
+  rotate: false
+  xy: 328, 796
+  size: 84, 84
+  orig: 84, 84
+  offset: 0, 0
+  index: -1
+heal_3
+  rotate: true
+  xy: 173, 1310
+  size: 159, 172
+  orig: 159, 172
+  offset: 0, 0
+  index: -1
+lidica/bg_lidi_glow
+  rotate: true
+  xy: 2, 796
+  size: 304, 324
+  orig: 304, 324
+  offset: 0, 0
+  index: -1
+lidica/bg_lidi_sk3
+  rotate: true
+  xy: 2, 2
+  size: 792, 412
+  orig: 792, 412
+  offset: 0, 0
+  index: -1
+lidica/bg_lidi_sk3_blur
+  rotate: false
+  xy: 2, 1102
+  size: 396, 206
+  orig: 396, 206
+  offset: 0, 0
+  index: -1
+light_pillar_2
+  rotate: true
+  xy: 2, 1481
+  size: 113, 206
+  orig: 113, 206
+  offset: 0, 0
+  index: -1

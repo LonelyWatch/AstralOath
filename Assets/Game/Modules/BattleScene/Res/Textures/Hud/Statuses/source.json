@@ -192,6 +192,36 @@
       "kind": "VampiricTouch",
       "group": "Debuff",
       "asset": "stic_vampire.png"
+    },
+    {
+      "kind": "MagicNail",
+      "group": "Debuff",
+      "asset": "stic_nail.png"
+    },
+    {
+      "kind": "Sleep",
+      "group": "Debuff",
+      "asset": "stic_sleep.png"
+    },
+    {
+      "kind": "Restrict",
+      "group": "Debuff",
+      "asset": "stic_ab_up_block.png"
+    },
+    {
+      "kind": "Bind",
+      "group": "Debuff",
+      "asset": "stic_restrict.png"
+    },
+    {
+      "kind": "SkillNullifier",
+      "group": "Buff",
+      "asset": "stic_endure_1.png"
+    },
+    {
+      "kind": "Vigor",
+      "group": "Buff",
+      "asset": "stic_haki.png"
     }
   ],
   "files": [
@@ -416,6 +446,42 @@
       "asset": "stic_vampire.png",
       "sourceSha256": "a78d2a4429a348f2f9e7d92e0487ac8dfc90e24e687bf75e5b5e62759b4a6c14",
       "assetSha256": "e78c5bc0e286d9bf3035d94832471ec379d4356e3760ac10da3a69e8fba37c5a"
+    },
+    {
+      "source": "原始资源/buff/stic_nail.png",
+      "asset": "stic_nail.png",
+      "sourceSha256": "c1fbbd1e95bbb3119f05184371252e4cd30ce084d104a6665c24db10e4b412d5",
+      "assetSha256": "d3f07974a592b071fba68cee7414dea128acf8bbb173579da7e8cac20d5e582c"
+    },
+    {
+      "source": "原始资源/buff/stic_sleep.png",
+      "asset": "stic_sleep.png",
+      "sourceSha256": "9a54f151f48524f19e252fcd06e2cae3787571cfc95f6fcd8db6f4a15448ee7f",
+      "assetSha256": "e62b545987afd41b3deb860c9bba4765b1eb95326d89cb42825f6889fdbc501e"
+    },
+    {
+      "source": "原始资源/buff/stic_ab_up_block.png",
+      "asset": "stic_ab_up_block.png",
+      "sourceSha256": "fba06e7618c40701e8a7923fe0c886db53f825014b026ab7b0ce5ea997054ea9",
+      "assetSha256": "1c4ef905dae0799d7c514c41771d51a7bcd0a3e1663fc23d943199676683f4d5"
+    },
+    {
+      "source": "原始资源/buff/stic_restrict.png",
+      "asset": "stic_restrict.png",
+      "sourceSha256": "5dd9fb0340f5a0c0ee4f3ba1398d5248436137547a11fc1b76146df5141cb74f",
+      "assetSha256": "3e626883e161b3afc73709884f8aab7dfc5cab96950eacd790f69514a13d5fb3"
+    },
+    {
+      "source": "原始资源/buff/stic_endure_1.png",
+      "asset": "stic_endure_1.png",
+      "sourceSha256": "f5da3bea1b1ac06e654f16dc30431cc13b622f987be01852d2dfe1d43db2d683",
+      "assetSha256": "5ddd2c8f79ae3b9742e88996597193a702b37a3c675028535c20b053448276a6"
+    },
+    {
+      "source": "原始资源/buff/stic_haki.png",
+      "asset": "stic_haki.png",
+      "sourceSha256": "6cddc57c5b546d7c492e4b44e9e29bc5dc86d13105b73910cac8ee419d8d4a05",
+      "assetSha256": "cb79b71447c8ef284093ac5c620046b4652fc3242a73ecb0bdcb466d122ad7e8"
     },
     {
       "source": "原始资源/img/itxt_num0.png",

@@ -1,0 +1,125 @@
+
+mui_sk3_imp3.sct
+size: 319,250
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dark_front_wing_1a
+  rotate: true
+  xy: 271, 35
+  size: 64, 42
+  orig: 64, 42
+  offset: 0, 0
+  index: -1
+dark_rear_wing_1a
+  rotate: false
+  xy: 250, 166
+  size: 34, 45
+  orig: 34, 45
+  offset: 0, 0
+  index: -1
+dark_tail_2a
+  rotate: false
+  xy: 85, 223
+  size: 24, 18
+  orig: 24, 18
+  offset: 0, 0
+  index: -1
+wind_body_1a
+  rotate: false
+  xy: 2, 2
+  size: 142, 131
+  orig: 142, 131
+  offset: 0, 0
+  index: -1
+wind_front_arm_1a
+  rotate: true
+  xy: 2, 223
+  size: 22, 38
+  orig: 22, 38
+  offset: 0, 0
+  index: -1
+wind_front_arm_2a
+  rotate: true
+  xy: 250, 213
+  size: 35, 37
+  orig: 35, 37
+  offset: 0, 0
+  index: -1
+wind_front_arm_3a
+  rotate: true
+  xy: 286, 166
+  size: 29, 28
+  orig: 29, 28
+  offset: 0, 0
+  index: -1
+wind_head_1a
+  rotate: false
+  xy: 2, 135
+  size: 123, 86
+  orig: 123, 86
+  offset: 0, 0
+  index: -1
+wind_head_1b
+  rotate: false
+  xy: 146, 2
+  size: 123, 86
+  orig: 123, 86
+  offset: 0, 0
+  index: -1
+wind_head_2a
+  rotate: false
+  xy: 146, 90
+  size: 101, 90
+  orig: 101, 90
+  offset: 0, 0
+  index: -1
+wind_head_2b
+  rotate: false
+  xy: 211, 182
+  size: 37, 58
+  orig: 37, 58
+  offset: 0, 0
+  index: -1
+wind_head_3a
+  rotate: false
+  xy: 127, 182
+  size: 82, 55
+  orig: 82, 55
+  offset: 0, 0
+  index: -1
+wind_rear_arm_1a
+  rotate: false
+  xy: 42, 223
+  size: 15, 25
+  orig: 15, 25
+  offset: 0, 0
+  index: -1
+wind_rear_arm_2a
+  rotate: false
+  xy: 127, 135
+  size: 15, 34
+  orig: 15, 34
+  offset: 0, 0
+  index: -1
+wind_rear_arm_3a
+  rotate: false
+  xy: 59, 223
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+wind_tail_1a
+  rotate: true
+  xy: 271, 2
+  size: 31, 46
+  orig: 31, 46
+  offset: 0, 0
+  index: -1
+wind_tongue_1a
+  rotate: false
+  xy: 249, 101
+  size: 61, 63
+  orig: 61, 63
+  offset: 0, 0
+  index: -1

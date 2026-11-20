@@ -1,0 +1,132 @@
+
+tenebria_b_idle_ready_eff.sct
+size: 1562,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+fire_ring_R1
+  rotate: false
+  xy: 2, 2
+  size: 164, 231
+  orig: 164, 231
+  offset: 0, 0
+  index: -1
+fire_ring_R2
+  rotate: false
+  xy: 168, 2
+  size: 164, 231
+  orig: 164, 231
+  offset: 0, 0
+  index: -1
+fire_ring_R3
+  rotate: false
+  xy: 334, 2
+  size: 164, 231
+  orig: 164, 231
+  offset: 0, 0
+  index: -1
+fire_s1_1
+  rotate: false
+  xy: 1241, 136
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1
+fire_s1_2
+  rotate: false
+  xy: 1344, 136
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1
+fire_s1_3
+  rotate: true
+  xy: 1447, 129
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 500, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+kenfire_s_1_1
+  rotate: false
+  xy: 1362, 2
+  size: 112, 125
+  orig: 112, 125
+  offset: 0, 0
+  index: -1
+kenfire_s_1_2
+  rotate: false
+  xy: 1476, 2
+  size: 84, 111
+  orig: 84, 111
+  offset: 0, 0
+  index: -1
+kenfire_s_1_3
+  rotate: false
+  xy: 1241, 2
+  size: 119, 132
+  orig: 119, 132
+  offset: 0, 0
+  index: -1
+orb_tail
+  rotate: true
+  xy: 1121, 2
+  size: 166, 58
+  orig: 166, 58
+  offset: 0, 0
+  index: -1
+orb_tail_g
+  rotate: true
+  xy: 1181, 2
+  size: 166, 58
+  orig: 166, 58
+  offset: 0, 0
+  index: -1
+pil_fire_01_1
+  rotate: false
+  xy: 671, 2
+  size: 148, 166
+  orig: 148, 166
+  offset: 0, 0
+  index: -1
+pil_fire_01_2
+  rotate: false
+  xy: 821, 2
+  size: 148, 166
+  orig: 148, 166
+  offset: 0, 0
+  index: -1
+pil_fire_01_3
+  rotate: false
+  xy: 971, 2
+  size: 148, 166
+  orig: 148, 166
+  offset: 0, 0
+  index: -1
+pil_fire_02_1
+  rotate: false
+  xy: 671, 170
+  size: 182, 84
+  orig: 182, 84
+  offset: 0, 0
+  index: -1
+pil_fire_02_2
+  rotate: false
+  xy: 855, 170
+  size: 182, 84
+  orig: 182, 84
+  offset: 0, 0
+  index: -1
+pil_fire_02_3
+  rotate: false
+  xy: 1039, 170
+  size: 182, 84
+  orig: 182, 84
+  offset: 0, 0
+  index: -1

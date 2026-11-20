@@ -1,0 +1,62 @@
+
+basar_sk2_b.sct
+size: 242,996
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+rush_wave1
+  rotate: false
+  xy: 148, 197
+  size: 91, 144
+  orig: 91, 144
+  offset: 0, 0
+  index: -1
+rush_wave2
+  rotate: true
+  xy: 2, 197
+  size: 93, 144
+  orig: 93, 144
+  offset: 0, 0
+  index: -1
+rush_wave_blur
+  rotate: true
+  xy: 2, 2
+  size: 105, 222
+  orig: 105, 222
+  offset: 0, 0
+  index: -1
+sand_bottom_1
+  rotate: true
+  xy: 2, 292
+  size: 350, 120
+  orig: 350, 120
+  offset: 0, 0
+  index: -1
+sand_bottom_2
+  rotate: true
+  xy: 2, 644
+  size: 350, 120
+  orig: 350, 120
+  offset: 0, 0
+  index: -1
+sand_bottom_3
+  rotate: true
+  xy: 124, 343
+  size: 346, 116
+  orig: 346, 116
+  offset: 0, 0
+  index: -1
+sand_bottom_4
+  rotate: true
+  xy: 124, 691
+  size: 280, 99
+  orig: 280, 99
+  offset: 0, 0
+  index: -1
+tornado_wave_01
+  rotate: false
+  xy: 2, 109
+  size: 207, 86
+  orig: 207, 86
+  offset: 0, 0
+  index: -1

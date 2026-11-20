@@ -1,0 +1,216 @@
+
+tenebria_skill_01_orb.sct
+size: 499,1111
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+burst_sphear
+  rotate: false
+  xy: 233, 306
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+burst_sphear_g
+  rotate: false
+  xy: 240, 624
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+eff_fire1_1
+  rotate: false
+  xy: 2, 2
+  size: 198, 152
+  orig: 198, 152
+  offset: 0, 0
+  index: -1
+eff_fire1_2
+  rotate: false
+  xy: 2, 156
+  size: 198, 152
+  orig: 198, 152
+  offset: 0, 0
+  index: -1
+eff_fire1_3
+  rotate: false
+  xy: 202, 2
+  size: 198, 152
+  orig: 198, 152
+  offset: 0, 0
+  index: -1
+fire_bl_1_1
+  rotate: true
+  xy: 152, 665
+  size: 133, 86
+  orig: 133, 86
+  offset: 0, 0
+  index: -1
+fire_bl_1_2
+  rotate: false
+  xy: 374, 624
+  size: 119, 105
+  orig: 119, 105
+  offset: 0, 0
+  index: -1
+fire_bl_1_3
+  rotate: false
+  xy: 381, 731
+  size: 108, 109
+  orig: 108, 109
+  offset: 0, 0
+  index: -1
+fire_bl_1_4
+  rotate: false
+  xy: 402, 2
+  size: 95, 104
+  orig: 95, 104
+  offset: 0, 0
+  index: -1
+fire_s1_1
+  rotate: false
+  xy: 201, 1013
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1
+fire_s1_2
+  rotate: true
+  xy: 394, 842
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1
+fire_s1_3
+  rotate: false
+  xy: 394, 945
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1
+fire_s2_1
+  rotate: false
+  xy: 260, 892
+  size: 132, 119
+  orig: 132, 119
+  offset: 0, 0
+  index: -1
+fire_s2_2
+  rotate: true
+  xy: 370, 156
+  size: 132, 119
+  orig: 132, 119
+  offset: 0, 0
+  index: -1
+fire_s2_3
+  rotate: true
+  xy: 394, 290
+  size: 119, 103
+  orig: 119, 103
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 310
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+kenfire_s_1_1
+  rotate: false
+  xy: 384, 411
+  size: 112, 125
+  orig: 112, 125
+  offset: 0, 0
+  index: -1
+kenfire_s_1_2
+  rotate: true
+  xy: 384, 538
+  size: 84, 111
+  orig: 84, 111
+  offset: 0, 0
+  index: -1
+kenfire_s_1_3
+  rotate: false
+  xy: 260, 758
+  size: 119, 132
+  orig: 119, 132
+  offset: 0, 0
+  index: -1
+orb_fire1_1
+  rotate: true
+  xy: 2, 817
+  size: 197, 84
+  orig: 197, 84
+  offset: 0, 0
+  index: -1
+orb_fire1_2
+  rotate: true
+  xy: 88, 817
+  size: 197, 84
+  orig: 197, 84
+  offset: 0, 0
+  index: -1
+orb_fire1_3
+  rotate: false
+  xy: 2, 1016
+  size: 197, 84
+  orig: 197, 84
+  offset: 0, 0
+  index: -1
+orb_tail
+  rotate: true
+  xy: 173, 310
+  size: 166, 58
+  orig: 166, 58
+  offset: 0, 0
+  index: -1
+orb_tail_g
+  rotate: true
+  xy: 324, 440
+  size: 166, 58
+  orig: 166, 58
+  offset: 0, 0
+  index: -1
+pil_fire_01_1
+  rotate: true
+  xy: 202, 156
+  size: 148, 166
+  orig: 148, 166
+  offset: 0, 0
+  index: -1
+pil_fire_01_2
+  rotate: false
+  xy: 2, 481
+  size: 148, 166
+  orig: 148, 166
+  offset: 0, 0
+  index: -1
+pil_fire_01_3
+  rotate: false
+  xy: 2, 649
+  size: 148, 166
+  orig: 148, 166
+  offset: 0, 0
+  index: -1
+pil_fire_02_1
+  rotate: true
+  xy: 152, 481
+  size: 182, 84
+  orig: 182, 84
+  offset: 0, 0
+  index: -1
+pil_fire_02_2
+  rotate: true
+  xy: 174, 800
+  size: 182, 84
+  orig: 182, 84
+  offset: 0, 0
+  index: -1
+pil_fire_02_3
+  rotate: true
+  xy: 238, 440
+  size: 182, 84
+  orig: 182, 84
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,45 @@
+{
+  "timeline": {
+    "default": {
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "arameenta_selfeff_sk1",
+              "scale": 1.0,
+              "locationBone": "root"
+            }
+          }
+        ]
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "arameenta_selfeff_sk2",
+              "scale": 1.0,
+              "locationBone": "root"
+            }
+          }
+        ]
+      },
+      "skill3": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "arameenta_selfeff_sk3",
+              "scale": 1.0,
+              "locationBone": "root"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

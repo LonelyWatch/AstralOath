@@ -1,0 +1,62 @@
+
+tenebria_skill_03_water_mirror.sct
+size: 504,400
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 333, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+hori_mirror
+  rotate: false
+  xy: 2, 348
+  size: 330, 14
+  orig: 330, 14
+  offset: 0, 0
+  index: -1
+water_boom1
+  rotate: false
+  xy: 2, 2
+  size: 329, 123
+  orig: 329, 123
+  offset: 0, 0
+  index: -1
+water_boom2
+  rotate: false
+  xy: 2, 127
+  size: 329, 123
+  orig: 329, 123
+  offset: 0, 0
+  index: -1
+water_light_mini
+  rotate: false
+  xy: 2, 364
+  size: 264, 34
+  orig: 264, 34
+  offset: 0, 0
+  index: -1
+water_light_mini2
+  rotate: false
+  xy: 333, 201
+  size: 66, 16
+  orig: 66, 16
+  offset: 0, 0
+  index: -1
+water_light_mini3
+  rotate: false
+  xy: 333, 173
+  size: 130, 26
+  orig: 130, 26
+  offset: 0, 0
+  index: -1
+water_mirror
+  rotate: false
+  xy: 2, 252
+  size: 329, 94
+  orig: 329, 94
+  offset: 0, 0
+  index: -1

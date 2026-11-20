@@ -1,0 +1,265 @@
+
+tenebria_skill_03_orb.sct
+size: 1395,497
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+burst_sphear
+  rotate: false
+  xy: 879, 357
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+burst_sphear_g
+  rotate: false
+  xy: 1013, 338
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+eff_fire1_1
+  rotate: true
+  xy: 168, 235
+  size: 198, 152
+  orig: 198, 152
+  offset: 0, 0
+  index: -1
+eff_fire1_2
+  rotate: true
+  xy: 322, 235
+  size: 198, 152
+  orig: 198, 152
+  offset: 0, 0
+  index: -1
+eff_fire1_3
+  rotate: true
+  xy: 334, 2
+  size: 198, 152
+  orig: 198, 152
+  offset: 0, 0
+  index: -1
+fire_bl_1_1
+  rotate: true
+  xy: 791, 357
+  size: 133, 86
+  orig: 133, 86
+  offset: 0, 0
+  index: -1
+fire_bl_1_2
+  rotate: true
+  xy: 1288, 2
+  size: 119, 105
+  orig: 119, 105
+  offset: 0, 0
+  index: -1
+fire_bl_1_3
+  rotate: true
+  xy: 1176, 136
+  size: 108, 109
+  orig: 108, 109
+  offset: 0, 0
+  index: -1
+fire_bl_1_4
+  rotate: true
+  xy: 571, 400
+  size: 95, 104
+  orig: 95, 104
+  offset: 0, 0
+  index: -1
+fire_ring_R1
+  rotate: false
+  xy: 168, 2
+  size: 164, 231
+  orig: 164, 231
+  offset: 0, 0
+  index: -1
+fire_ring_R2
+  rotate: false
+  xy: 2, 2
+  size: 164, 231
+  orig: 164, 231
+  offset: 0, 0
+  index: -1
+fire_ring_R3
+  rotate: false
+  xy: 2, 235
+  size: 164, 231
+  orig: 164, 231
+  offset: 0, 0
+  index: -1
+fire_s1_1
+  rotate: false
+  xy: 1176, 246
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1
+fire_s1_2
+  rotate: false
+  xy: 1147, 396
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1
+fire_s1_3
+  rotate: false
+  xy: 1250, 396
+  size: 101, 96
+  orig: 101, 96
+  offset: 0, 0
+  index: -1
+fire_s2_1
+  rotate: true
+  xy: 1055, 136
+  size: 132, 119
+  orig: 132, 119
+  offset: 0, 0
+  index: -1
+fire_s2_2
+  rotate: true
+  xy: 1167, 2
+  size: 132, 119
+  orig: 132, 119
+  offset: 0, 0
+  index: -1
+fire_s2_3
+  rotate: true
+  xy: 1287, 189
+  size: 119, 103
+  orig: 119, 103
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 734, 186
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+hole_light
+  rotate: false
+  xy: 1353, 396
+  size: 34, 86
+  orig: 34, 86
+  offset: 0, 0
+  index: -1
+kenfire_b_1_1
+  rotate: false
+  xy: 1288, 123
+  size: 104, 64
+  orig: 104, 64
+  offset: 0, 0
+  index: -1
+kenfire_b_1_2
+  rotate: true
+  xy: 504, 401
+  size: 93, 65
+  orig: 93, 65
+  offset: 0, 0
+  index: -1
+kenfire_b_1_3
+  rotate: false
+  xy: 1055, 270
+  size: 68, 65
+  orig: 68, 65
+  offset: 0, 0
+  index: -1
+kenfire_s_1_1
+  rotate: false
+  xy: 677, 370
+  size: 112, 125
+  orig: 112, 125
+  offset: 0, 0
+  index: -1
+kenfire_s_1_2
+  rotate: true
+  xy: 1279, 310
+  size: 84, 111
+  orig: 84, 111
+  offset: 0, 0
+  index: -1
+kenfire_s_1_3
+  rotate: false
+  xy: 1046, 2
+  size: 119, 132
+  orig: 119, 132
+  offset: 0, 0
+  index: -1
+orb_fire1_1
+  rotate: true
+  xy: 476, 202
+  size: 197, 84
+  orig: 197, 84
+  offset: 0, 0
+  index: -1
+orb_fire1_2
+  rotate: true
+  xy: 488, 2
+  size: 197, 84
+  orig: 197, 84
+  offset: 0, 0
+  index: -1
+orb_fire1_3
+  rotate: true
+  xy: 562, 201
+  size: 197, 84
+  orig: 197, 84
+  offset: 0, 0
+  index: -1
+orb_tail
+  rotate: false
+  xy: 168, 435
+  size: 166, 58
+  orig: 166, 58
+  offset: 0, 0
+  index: -1
+orb_tail_g
+  rotate: false
+  xy: 336, 435
+  size: 166, 58
+  orig: 166, 58
+  offset: 0, 0
+  index: -1
+pil_fire_01_1
+  rotate: false
+  xy: 746, 2
+  size: 148, 166
+  orig: 148, 166
+  offset: 0, 0
+  index: -1
+pil_fire_01_2
+  rotate: false
+  xy: 896, 2
+  size: 148, 166
+  orig: 148, 166
+  offset: 0, 0
+  index: -1
+pil_fire_01_3
+  rotate: false
+  xy: 905, 170
+  size: 148, 166
+  orig: 148, 166
+  offset: 0, 0
+  index: -1
+pil_fire_02_1
+  rotate: true
+  xy: 574, 2
+  size: 182, 84
+  orig: 182, 84
+  offset: 0, 0
+  index: -1
+pil_fire_02_2
+  rotate: true
+  xy: 648, 186
+  size: 182, 84
+  orig: 182, 84
+  offset: 0, 0
+  index: -1
+pil_fire_02_3
+  rotate: true
+  xy: 660, 2
+  size: 182, 84
+  orig: 182, 84
+  offset: 0, 0
+  index: -1

@@ -15,13 +15,14 @@ namespace AstralOath.Shared.Battle
         SpeedUp, SpeedDown, AttackDown, DefenseDown, Unhealable, Silence, EvasionUp, CriticalResistanceUp, Stealth, Provoke, Indomitable,
         GreaterSpeedUp, CriticalDamageUp, EffectivenessUp, Poison, Invincible,
         CriticalChanceUp, ContinuousHealing, Burn, Bleed, Immortality, HitChanceDown,
-        GreaterAttackUp, Unbuffable, DamageLimit, SpiritlordProtection, Rage, Targeted, Reflect, Bomb, VampiricTouch
+        GreaterAttackUp, Unbuffable, DamageLimit, SpiritlordProtection, Rage, Targeted, Reflect, Bomb, VampiricTouch,
+        MagicNail, Sleep, Restrict, Bind, SkillNullifier, Vigor
     }
     public enum BattleFlowEventKind
     {
         BattleStarted, TurnStarted, Action, Damage, Healing, ReadinessChanged,
         StatusApplied, StatusRemoved, CooldownChanged, SoulChanged, BarrierAbsorbed,
-        UnitDefeated, TurnSkipped, TurnEnded, BattleEnded, EffectRejected, ResourceChanged, StatusDurationChanged, ExtraTurnGranted, InjuryApplied, OpeningAttackBonusApplied, TurnEffectTriggered, UnitRevived, ArtifactStateChanged, ArtifactTriggered, UnitExtinct
+        UnitDefeated, TurnSkipped, TurnEnded, BattleEnded, EffectRejected, ResourceChanged, StatusDurationChanged, ExtraTurnGranted, InjuryApplied, OpeningAttackBonusApplied, TurnEffectTriggered, UnitRevived, ArtifactStateChanged, ArtifactTriggered, UnitExtinct, LethalProtectionConsumed
     }
     internal enum ArtifactCounter { Stack, Cooldown, DelayedTurn }
 
@@ -130,11 +131,11 @@ namespace AstralOath.Shared.Battle
         internal BattleUnitSnapshot(BattleUnit unit, int health, int readinessBp,
             IReadOnlyDictionary<string, int> cooldowns, IReadOnlyList<BattleStatusSnapshot> statuses,
             int resourceAmount, int injuryAmount, int openingAttackBonus, IReadOnlyCollection<string> triggeredTurnEffects,
-            IReadOnlyDictionary<ArtifactCounter, int> artifactCounters, bool isExtinct = false)
+            IReadOnlyDictionary<ArtifactCounter, int> artifactCounters, bool isExtinct = false, bool lethalProtectionConsumed = false)
             : this(unit.InstanceId, unit.Definition.Id, unit.Definition.NameKey, unit.Level, unit.Definition.Element,
                 unit.Slot, unit.Form, unit.Stats, health, readinessBp, cooldowns, statuses,
                 (unit.Definition as HeroDefinition)?.Resource, resourceAmount, injuryAmount, openingAttackBonus,
-                unit.Awakenings ?? 0, unit.Definition is HeroDefinition, triggeredTurnEffects, unit.Artifact, unit.ArtifactLevel, artifactCounters, isExtinct)
+                unit.Awakenings ?? 0, unit.Definition is HeroDefinition, triggeredTurnEffects, unit.Artifact, unit.ArtifactLevel, artifactCounters, isExtinct, lethalProtectionConsumed)
         { }
 
         internal BattleUnitSnapshot(string instanceId, string definitionId, string nameKey, int level, BattleElement element,
@@ -142,9 +143,11 @@ namespace AstralOath.Shared.Battle
             IReadOnlyDictionary<string, int> cooldowns, IReadOnlyList<BattleStatusSnapshot> statuses,
             BattleResourceDefinition resourceRules, int resourceAmount, int injuryAmount, int openingAttackBonus,
             int awakenings, bool isHero, IReadOnlyCollection<string> triggeredTurnEffects, ArtifactTemplate artifact = null,
-            int artifactLevel = 0, IReadOnlyDictionary<ArtifactCounter, int> artifactCounters = null, bool isExtinct = false)
+            int artifactLevel = 0, IReadOnlyDictionary<ArtifactCounter, int> artifactCounters = null, bool isExtinct = false,
+            bool lethalProtectionConsumed = false)
         {
             IsExtinct = isExtinct;
+            LethalProtectionConsumed = lethalProtectionConsumed;
             InstanceId = instanceId;
             DefinitionId = definitionId;
             NameKey = nameKey;
@@ -187,6 +190,7 @@ namespace AstralOath.Shared.Battle
         internal IReadOnlyDictionary<ArtifactCounter, int> ArtifactCounters { get; }
         public bool IsAlive => CurrentHealth > 0;
         public bool IsExtinct { get; }
+        public bool LethalProtectionConsumed { get; }
         public int ReadinessBp { get; }
         public BattleResourceSnapshot Resource { get; }
         internal BattleResourceDefinition ResourceRules { get; }
@@ -392,6 +396,8 @@ namespace AstralOath.Shared.Battle
             new BattleChange(BattleFlowEventKind.OpeningAttackBonusApplied, actor, actor, amount);
         internal static BattleChange MarkTurnEffect(string actor, string effectId) =>
             new BattleChange(BattleFlowEventKind.TurnEffectTriggered, actor, actor, skillId: effectId);
+        internal static BattleChange ConsumeLethalProtection(string actor) =>
+            new BattleChange(BattleFlowEventKind.LethalProtectionConsumed, actor, actor);
         public static BattleChange ExtraTurn(string actor) =>
             new BattleChange(BattleFlowEventKind.ExtraTurnGranted, actor, actor);
         public static BattleChange Action(string source, string target, string skillId, BattleActionOrigin origin, string presentationId = null) =>
@@ -413,10 +419,17 @@ namespace AstralOath.Shared.Battle
             BattleElement element, BattleSlot slot, BattleUnitForm form, BattleStats stats, int health, int readiness,
             Dictionary<string, int> cooldowns, BattleStatusSnapshot[] statuses,
             int resourceAmount, int injury, int openingAttackBonus, bool isExtinct) =>
+            Unit(instanceId, hero, level, element, slot, form, stats, health, readiness, cooldowns, statuses,
+                resourceAmount, injury, openingAttackBonus, isExtinct, false);
+
+        public static BattleUnitSnapshot Unit(string instanceId, BattleCatalogData.HeroRow hero, int level,
+            BattleElement element, BattleSlot slot, BattleUnitForm form, BattleStats stats, int health, int readiness,
+            Dictionary<string, int> cooldowns, BattleStatusSnapshot[] statuses,
+            int resourceAmount, int injury, int openingAttackBonus, bool isExtinct, bool lethalProtectionConsumed) =>
             new BattleUnitSnapshot(instanceId, hero.id, hero.nameKey, level, element, slot, form, stats, health,
                 readiness, new ReadOnlyDictionary<string, int>(cooldowns), Array.AsReadOnly(statuses),
                 hero.GetResourceDefinition(), resourceAmount, injury, openingAttackBonus, hero.awakenings, true,
-                Array.Empty<string>(), isExtinct: isExtinct);
+                Array.Empty<string>(), isExtinct: isExtinct, lethalProtectionConsumed: lethalProtectionConsumed);
 
         public static BattleSnapshot Snapshot(string battleId, uint rulesVersion, ulong commandSequence, ulong eventSequence,
             int turn, string currentActorId, BattleOutcome outcome, int localSoul, int opponentSoul, BattleUnitSnapshot[] units) =>

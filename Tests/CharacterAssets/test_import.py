@@ -9,7 +9,7 @@ class ImportBoundaryTests(unittest.TestCase):
         with self.assertRaises(ValueError): importer.select_characters(["c9999"])
         self.assertEqual(len(importer.select_characters(["c1001"])),1)
     def test_base_roster_uses_exact_graph_roots_in_id_order(self):
-        self.assertEqual(list(importer.CHARACTERS), [f"c{i}" for i in (*range(1001, 1025), *range(1027, 1041), 1042, 1062)])
+        self.assertEqual(list(importer.CHARACTERS), [f"c{i}" for i in (*range(1001, 1025), *range(1027, 1041), 1042, 1043, 1044, *range(1046, 1051), 1053, 1054, 1055, 1062)])
         self.assertEqual(importer.skill_ids("c1007"), [f"c_wilderd_skill_{i:02}" for i in range(1, 4)])
         self.assertEqual(importer.skill_ids("c1009")[-1], "c_charlotte_skill_03_05")
         self.assertEqual(importer.skill_ids("c1010"), [f"c_jerato_skill_{i:02}" for i in range(1, 4)])
@@ -28,6 +28,14 @@ class ImportBoundaryTests(unittest.TestCase):
                          ("model/kartua.scsp", "skill3", "cutin", "sk_c1013_3"))
         self.assertEqual(importer.ANIMATION_CUTINS["stagept/c_jerato_skill_03.stg"],
                          ("model/zerato.scsp", "skill3", "cutin", "sk_c1010_3"))
+
+    def test_roster_41_to_50_preserves_ken_skill_variants_and_japanese_banks(self):
+        ids = ("c1043", "c1044", "c1046", "c1047", "c1048", "c1049", "c1050", "c1053", "c1054", "c1055")
+        self.assertEqual(len(importer.select_characters(ids)), 10)
+        self.assertEqual(importer.presentation_ids("c1047"), [
+            "c_ken_skill_01_02", "c_ken_skill_02", "c_ken_skill_03", "c_ken_skill_01_01"])
+        self.assertEqual(importer.japanese_bank("c1044"), "sound/ja/voc3.audio_ja.bank")
+        self.assertEqual(importer.japanese_bank("c1055"), "sound/ja/voc5.audio_ja.bank")
 
     def test_new_roster_keeps_native_graph_names_and_includes_burn_alternates(self):
         expected = {

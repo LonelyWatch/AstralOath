@@ -44,6 +44,8 @@ Unity 回归位于 `Assets/Game/Tests/EditMode/CharacterPresentationGraphTests.c
 
 
 PPEFFECT 材质由场景生成器创建或更新并保留现有 GUID：Assets/Game/Modules/CharacterPresentation/Res/Materials/CharacterSpriteBlur.mat，地址 characterlab/sprite-blur-material；Shader 为同目录 CharacterSpriteBlur.shader。相机 RenderTexture 与实例材质随窗口释放，UI 面板不参与模糊。
+
+实验表现模式按 STG 实际连线处理 `PPEFFECT.program=sprite_invert`。肯恩 S3 #26 在源时间 4.557–5.557 秒反转角色相机图像的显示 RGB 并保留 alpha。Linear 工程先转换为 sRGB，再执行原作的 `1-rgb` 并转回线性。反色和方向模糊各自按节点的 duration 和 STOP id 结束，停止整段演出会一并清除。严格模式仍保留对原作 sprite 作用范围的诊断。D3D11 像素、实际按钮的三处采样见[资源验收](../../../../docs/delivery/2026-11-20-roster41-50-assets.md)。
 CFX 的 scale/rotate 等字段包含 "~" 范围时，当前不会推测抽样分布；在调度前诊断并跳过该原语，继续处理合法兄弟原语。真实 hit_new_blunt_normal.cfx.json 已用于回归，避免 FormatException 终止实验室。
 
 十角色接入时，命名 timeline 事件沿源动画及毫秒时刻进入 ONEVENT；亚敏 `skill2/eff_on` 为 1130ms。EFFECT 的 41/42 在实验模式只生成一次群体效果，位置取试验目标中心。DELAY 与空 source 的 SHOT 按节点 time 推进。绮世 `NODE_ANI` 骨骼及裁剪资源已收齐，其节点约束、原版精确全屏层级、条件位置与镜头在实验室仍属诊断范围。BattleScene 另有自身演出验收。
@@ -59,3 +61,5 @@ CFX 的 scale/rotate 等字段包含 "~" 范围时，当前不会推测抽样分
 萝菲 c1019 已接入三张演出图及原版日语。新增原版 voc3 银行，战斗按阵容选择；裂伤有效生命独立于基础面板。规则、表现诊断与音频来源见[角色扩充手册](../../../../docs/development/battle-roster-expansion.md)。
 
 光之瑞儿、伊赛丽亚额外显示 S1 燃魂演出，法济斯额外显示 S2 被动反击图。技能列表通过每张图的显示键区分这些入口。FMOD 取样键保留原值，界面文案键单独规范化。 [第 21–30 名角色验收](../../../../docs/delivery/2026-11-14-roster21-30.md) · [第 31–40 名角色资源与验证](../../../../docs/delivery/2026-11-20-roster31-40-assets.md)
+
+角色实验室已覆盖 50 名普通英雄、154 个动作图、4836 个资源地址。第 41–50 位含肯恩两张天极拳图及济纽亚的主动／被动交叉编号，实验室按实际动作和槽位加载。[第 41–50 名角色验收](../../../../docs/delivery/2026-11-20-roster41-50-assets.md)

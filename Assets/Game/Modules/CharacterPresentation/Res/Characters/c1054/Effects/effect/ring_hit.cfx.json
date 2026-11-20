@@ -1,0 +1,16 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "ring_eff_hit_b",
+      "z": "-1",
+      "format": "spine"
+    },
+    {
+      "source": "ring_eff_hit_f",
+      "z": "1",
+      "rotate": "0~360",
+      "format": "spine"
+    }
+  ]
+}

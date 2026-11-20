@@ -36,3 +36,7 @@ TryGetBonePose 返回官方内核计算后的只读局部位置（已按 source.
 正混合期间，2.1 前轨末帧可反复施加旧附件。桥接按目标当前有效 key 保持附件/翻转，只在附件身份不同时赋值，避免同对象重复赋值清空 FFD；原 key 跨越和事件仍使用真实 lastTime。必须以多帧推进检查收敛，不允许用一次大 Tick 或最终 Seek 作为唯一验收。
 
 2026-11-13：shader增加默认1的 `_PresentationBrightness/_PresentationOpacity`，只由实例PropertyBlock控制，不改共享材质。normal/additive/multiply/screen需要实际GPU像素回归，GPU夹具必须提供真实骨骼所需UV1暗色顶点流。死亡精确绑定当前Renderer，复活不扫描延迟销毁对象。原挂点局部pose继续供镜头解释；骨架空间挂点应包含父骨平移/旋转/缩放并再由Root变换到Unity世界，不能用局部X/Y替代。此类契约与shader改变需要新母包，详见[血条与死亡交付](../../../../docs/delivery/2026-11-13-health-death-presentation.md)。
+
+Spine 2.1 的重复插槽颜色轨及骨骼缩放轨分别用 astralOathSlotColorTracks、astralOathScaleTracks 保留源顺序。标准轨先应用，额外轨按相同权重逐条生效。母包中 AstralOath.Client.Skeletons 须具备相应读取能力。[第 41–50 名角色验收](../../../../docs/delivery/2026-11-20-roster41-50-assets.md)
+
+战斗技能的角色淡入淡出使用实例属性 `_SkillBodyOpacity`，默认 1，与 `_PresentationOpacity` 相乘，同时作用于预乘 RGB 与 alpha。这样原有隐身、死亡渐变能与技能源图的角色可见性同时生效。缪伊所用的 200 毫秒目标淡出见[源图与实战验收](../../../../docs/delivery/2026-11-20-roster41-50-presentation.md)。

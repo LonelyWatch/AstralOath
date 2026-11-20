@@ -30,6 +30,29 @@ namespace AstralOath.Client.Tests
             Assert.That(ids, Is.EquivalentTo(expected));
         }
 
+        [TestCase("c1054", "status_GreaterAttackUp", "status_CriticalChanceUp", "status_CriticalDamageUp", "status_DefenseUp", "status_ContinuousHealing", "status_EvasionUp", "status_Immunity")]
+        [TestCase("c1053", "status_AttackDown", "status_DefenseDown", "status_Unhealable", "status_Silence", "effect_cleanse")]
+        [TestCase("c1044", "effect_raise")]
+        [TestCase("c1046", "effect_raise")]
+        [TestCase("c1048", "effect_raise")]
+        [TestCase("c1050", "effect_raise")]
+        public void GeneratedHeroEffectsIncludeActualSkillOutcomes(string id, params string[] keys)
+        {
+            var rows = new SerializedObject(AssetDatabase.LoadAssetAtPath<ScriptableObject>(
+                "Assets/Game/Modules/Arena/Configs/ArenaDraftArt.asset")).FindProperty("Heroes");
+            var row = Enumerable.Range(0, rows.arraySize).Select(i => rows.GetArrayElementAtIndex(i))
+                .Single(hero => hero.FindPropertyRelative("Id").stringValue == id);
+            var effects = row.FindPropertyRelative("FilterEffects");
+            var actual = Enumerable.Range(0, effects.arraySize).Select(i => effects.GetArrayElementAtIndex(i).stringValue);
+            Assert.That(actual, Is.SupersetOf(keys), id);
+        }
+
+        [TestCase("weaken", "MagicNail")]
+        [TestCase("weaken", "Sleep")]
+        [TestCase("weaken", "Restrict")]
+        [TestCase("weaken", "Bind")]
+        [TestCase("enhance", "SkillNullifier")]
+        [TestCase("enhance", "Vigor")]
         [TestCase("enhance", "Reflect")]
         [TestCase("weaken", "Bomb")]
         [TestCase("weaken", "VampiricTouch")]

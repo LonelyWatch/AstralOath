@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AstralOath.Client.CharacterPresentation;
 using AstralOath.Client.CharacterLab;
 using AstralOath.Client.Common;
@@ -115,6 +116,63 @@ namespace AstralOath.Tests
             Assert.That(CharacterEffectStage.TryValidatePrimitiveScalars((JObject)primitives[0],out string diagnostic),Is.False);
             StringAssert.Contains("scale=0.45~0.7",diagnostic);
             Assert.That(CharacterEffectStage.TryValidatePrimitiveScalars((JObject)primitives[1],out _),Is.True);
+        }
+        [TestCase("02", 1)]
+        [TestCase("03", 5)]
+        public void TenebriaLabAcceptsEveryFixedMirroredSourceLayer(string skill, int expectedCount)
+        {
+            string path = System.IO.Path.Combine(Application.dataPath,
+                "Game/Modules/CharacterPresentation/Res/Characters/c1050/Effects/effect/tenebria_skill_" + skill + ".cfx.json");
+            var parts = JObject.Parse(System.IO.File.ReadAllText(path))["primitive"].OfType<JObject>()
+                .Where(part => part["scale"]?.ToString().Contains(",") == true).ToArray();
+            Assert.That(parts.Length, Is.EqualTo(expectedCount));
+            foreach (var part in parts)
+                Assert.That(CharacterEffectStage.TryValidatePrimitiveScalars(part, out string diagnostic), Is.True, diagnostic);
+            var invalid = JObject.Parse("{ 'source':'invalid', 'scale':'-1,x' }");
+            Assert.That(CharacterEffectStage.TryValidatePrimitiveScalars(invalid, out _), Is.False);
+        }
+        [Test]
+        public void TenebriaLabParticlePairHasOppositeWorldXAndMatchingWorldY()
+        {
+            string dir = System.IO.Path.Combine(Application.dataPath,
+                "Game/Modules/CharacterPresentation/Res/Characters/c1050/Effects/effect");
+            const string name = "tenebria_skill_02_pati4";
+            var doc = JObject.Parse(System.IO.File.ReadAllText(System.IO.Path.Combine(dir, name + ".particle.json")));
+            var parts = JObject.Parse(System.IO.File.ReadAllText(System.IO.Path.Combine(dir, "tenebria_skill_02.cfx.json")))
+                ["primitive"].OfType<JObject>().Where(part => (string)part["source"] == name).ToArray();
+            var textures = doc["emitters"].OfType<JObject>().Select(emitter => (string)emitter["textureFileName"])
+                .Distinct().ToDictionary(key => key, key => Texture2D.whiteTexture);
+            Assert.That(parts.Length, Is.EqualTo(2));
+            var mirrors = new List<Vector3[]>();
+            foreach (var part in parts)
+            {
+                Assert.That(CharacterEffectStage.TryValidatePrimitiveScalars(part, out string diagnostic), Is.True, diagnostic);
+                var host = new GameObject("Particle layer");
+                host.transform.SetParent(root.transform, false);
+                var particles = new CharacterParticlePreview(doc, part, Vector3.zero, textures, host.transform, _ => {});
+                try
+                {
+                    particles.Tick(.13f);
+                    var emitter = host.GetComponentInChildren<MeshFilter>();
+                    mirrors.Add(emitter.sharedMesh.vertices.Select(emitter.transform.TransformPoint).ToArray());
+                }
+                finally
+                {
+                    // This preview's runtime Dispose schedules deferred destruction. EditMode owns these objects directly.
+                    foreach (var renderer in host.GetComponentsInChildren<MeshRenderer>())
+                        UnityEngine.Object.DestroyImmediate(renderer.sharedMaterial);
+                    foreach (var filter in host.GetComponentsInChildren<MeshFilter>())
+                        UnityEngine.Object.DestroyImmediate(filter.sharedMesh);
+                    UnityEngine.Object.DestroyImmediate(host);
+                }
+            }
+            Assert.That(mirrors[0].Length, Is.GreaterThan(0));
+            Assert.That(mirrors[1].Length, Is.EqualTo(mirrors[0].Length));
+            for (int i = 0; i < mirrors[0].Length; i++)
+            {
+                Assert.That(mirrors[1][i].x, Is.EqualTo(-mirrors[0][i].x).Within(.0001f));
+                Assert.That(mirrors[1][i].y, Is.EqualTo(mirrors[0][i].y).Within(.0001f));
+            }
         }
         [Test] public void ShakeUsesScaledSourcePoseWithoutAccumulatingCameraDrift()
         {

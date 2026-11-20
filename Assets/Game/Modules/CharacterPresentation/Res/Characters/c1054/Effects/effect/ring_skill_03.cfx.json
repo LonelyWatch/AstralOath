@@ -1,0 +1,28 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "ring_sk3eff",
+      "z": "1",
+      "format": "spine"
+    },
+    {
+      "source": "ring_skill_03_pati",
+      "x": "380",
+      "delay": "2200",
+      "format": "particle"
+    },
+    {
+      "source": "ring_sk3eff",
+      "ani": "animation2",
+      "z": "-1",
+      "format": "spine"
+    },
+    {
+      "source": "ring_skill_03_pati2",
+      "x": "350",
+      "delay": "2200",
+      "format": "particle"
+    }
+  ]
+}

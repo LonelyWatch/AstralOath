@@ -17,6 +17,27 @@ namespace AstralOath.Tests
             "AstralOath.Client.BattleScene.Editor.SkillTimelineWindow, AstralOath.Client.BattleScene.Editor", true);
 
         [Test]
+        public void EditorUsesBattleSlotsAndNamesTheRequiredStatusOnAlternateGraphs()
+        {
+            var window = ScriptableObject.CreateInstance(WindowType);
+            try
+            {
+                var skills = ((Array)WindowType.GetField("skills", Instance).GetValue(window)).Cast<object>();
+                string Read(object skill, string field) => (string)skill.GetType().GetField(field, Instance).GetValue(skill);
+                var byId = skills.ToDictionary(skill => Read(skill, "Id"));
+                Assert.That(Read(byId["c_jenua_skill_03"], "SlotLabel"), Is.EqualTo("S2"));
+                Assert.That(Read(byId["c_jenua_skill_03"], "Target"), Is.EqualTo("passive"));
+                Assert.That(Read(byId["c_jenua_skill_02"], "SlotLabel"), Is.EqualTo("S3"));
+                Assert.That(Read(byId["c_ken_skill_01_01"], "SlotLabel"), Does.StartWith("S1 · 魄力"));
+                var vigor = byId["c_ken_skill_01_01"];
+                Assert.That((int)vigor.GetType().GetField("Slot", Instance).GetValue(vigor), Is.EqualTo(1),
+                    "The chooser sorts the Vigor variant next to its ordinary S1.");
+                Assert.That(Read(byId["c_ken_skill_01_01"], "Target"), Is.EqualTo(Read(byId["c_ken_skill_01_02"], "Target")));
+            }
+            finally { Object.DestroyImmediate(window); }
+        }
+
+        [Test]
         public void PointerAnchoredZoomKeepsTheTimeUnderTheMouse()
         {
             var method = WindowType.GetMethod("AnchoredScroll", BindingFlags.Static | BindingFlags.NonPublic);

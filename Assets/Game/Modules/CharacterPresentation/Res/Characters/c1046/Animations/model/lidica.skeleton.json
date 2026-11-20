@@ -1,0 +1,13 @@
+{
+  "version": "2.1.27",
+  "jsonAddress": "characterlab/source/model/lidica.scsp/json",
+  "atlasAddress": "characterlab/source/model/lidica.atlas",
+  "pages": [
+    {
+      "name": "lidica.sct",
+      "address": "characterlab/source/model/lidica.sct"
+    }
+  ],
+  "premultipliedAlpha": true,
+  "scale": 0.01
+}

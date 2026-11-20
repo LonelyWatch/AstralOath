@@ -1,0 +1,34 @@
+
+mui_skill_03-3_background_back.sct
+size: 793,370
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 622, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+mui_tent_inner
+  rotate: false
+  xy: 2, 2
+  size: 618, 282
+  orig: 618, 282
+  offset: 0, 0
+  index: -1
+mui_tent_inner_light1
+  rotate: false
+  xy: 2, 286
+  size: 309, 82
+  orig: 309, 82
+  offset: 0, 0
+  index: -1
+mui_tent_inner_light2
+  rotate: false
+  xy: 313, 286
+  size: 294, 82
+  orig: 294, 82
+  offset: 0, 0
+  index: -1

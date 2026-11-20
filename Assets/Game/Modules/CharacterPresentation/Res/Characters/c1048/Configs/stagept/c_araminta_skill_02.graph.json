@@ -1,0 +1,301 @@
+{
+  "id": "c_araminta_skill_02",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 3
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "source": "arameenta_sk2.cfx",
+        "scale": 1.4,
+        "guid": 1,
+        "etty": "EFFECT"
+      },
+      {
+        "ani": "skill2",
+        "guid": 2,
+        "etty": "ANI"
+      },
+      {
+        "state": "start",
+        "guid": 3,
+        "etty": "ENTRY"
+      },
+      {
+        "guid": 4,
+        "etty": "IDLE"
+      },
+      {
+        "color": "0,0,0,255",
+        "accel": 1.0,
+        "opacity": 0.7,
+        "duration": 2500,
+        "localZ": -1,
+        "globalZ": -1,
+        "fadeIn": 300,
+        "fadeOut": 300,
+        "guid": 5,
+        "etty": "DARK"
+      },
+      {
+        "location": 1,
+        "x": 50.0,
+        "y": 60.0,
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 6,
+        "etty": "CAM"
+      },
+      {
+        "scale": "2.5",
+        "curve": "0,1,1,1",
+        "time": 200,
+        "guid": 7,
+        "etty": "ZOOM"
+      },
+      {
+        "scale": "1.2",
+        "curve": "0,1,1,1",
+        "time": 260,
+        "guid": 8,
+        "etty": "ZOOM"
+      },
+      {
+        "curve": "0,1,1,1",
+        "time": 260,
+        "guid": 9,
+        "etty": "CAM"
+      },
+      {
+        "curve": "0,1,1,1",
+        "time": 1500,
+        "guid": 10,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1",
+        "curve": "0,1,1,1",
+        "time": 1500,
+        "guid": 11,
+        "etty": "ZOOM"
+      },
+      {
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 12,
+        "etty": "HIT"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "arameenta_cm_sk2",
+        "guid": 13,
+        "etty": "SHAKE"
+      }
+    ],
+    "connections": [
+      {
+        "from": 2,
+        "to": 1,
+        "delay": 990,
+        "when": 1,
+        "Desc": "990",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 4,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 5,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 6,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 8,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 9,
+        "delay": 493,
+        "Desc": "493",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 11,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 10,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 12,
+        "delay": 1000,
+        "when": 1,
+        "Desc": "1000",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 1,
+        "to": 13,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/arameenta_cm_sk2.scsp",
+      "address": "characterlab/source/camera/arameenta_cm_sk2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/arameenta_selfeff_sk1.cfx",
+      "address": "characterlab/source/effect/arameenta_selfeff_sk1.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/arameenta_selfeff_sk2.cfx",
+      "address": "characterlab/source/effect/arameenta_selfeff_sk2.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/arameenta_selfeff_sk3.cfx",
+      "address": "characterlab/source/effect/arameenta_selfeff_sk3.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/arameenta_sk2.cfx",
+      "address": "characterlab/source/effect/arameenta_sk2.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/arameenta_sk2_b.atlas",
+      "address": "characterlab/source/effect/arameenta_sk2_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/arameenta_sk2_b.scsp",
+      "address": "characterlab/source/effect/arameenta_sk2_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/arameenta_sk2_b.sct",
+      "address": "characterlab/source/effect/arameenta_sk2_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/arameenta_sk2_f.atlas",
+      "address": "characterlab/source/effect/arameenta_sk2_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/arameenta_sk2_f.scsp",
+      "address": "characterlab/source/effect/arameenta_sk2_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/arameenta_sk2_f.sct",
+      "address": "characterlab/source/effect/arameenta_sk2_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/arameenta_skself_sk1.atlas",
+      "address": "characterlab/source/effect/arameenta_skself_sk1.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/arameenta_skself_sk1.scsp",
+      "address": "characterlab/source/effect/arameenta_skself_sk1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/arameenta_skself_sk1.sct",
+      "address": "characterlab/source/effect/arameenta_skself_sk1.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/arameenta_skself_sk2.atlas",
+      "address": "characterlab/source/effect/arameenta_skself_sk2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/arameenta_skself_sk2.scsp",
+      "address": "characterlab/source/effect/arameenta_skself_sk2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/arameenta_skself_sk2.sct",
+      "address": "characterlab/source/effect/arameenta_skself_sk2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/arameenta_skself_sk3.atlas",
+      "address": "characterlab/source/effect/arameenta_skself_sk3.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/arameenta_skself_sk3.scsp",
+      "address": "characterlab/source/effect/arameenta_skself_sk3.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/arameenta_skself_sk3.sct",
+      "address": "characterlab/source/effect/arameenta_skself_sk3.sct",
+      "type": "texture"
+    },
+    {
+      "source": "model/araminta.timeline",
+      "address": "characterlab/source/model/araminta.timeline",
+      "type": "timeline"
+    }
+  ],
+  "diagnostics": []
+}

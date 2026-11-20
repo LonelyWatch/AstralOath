@@ -193,7 +193,14 @@ try {
             foreach ($name in $clientFiles.Keys) {
                 $target = Join-Path $client $clientFiles[$name]
                 [void][IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($target))
-                [IO.File]::Copy((Join-Path $output "json/$name"), $target, $true)
+                # Unity and the server compiler can still have the previous snapshot memory-mapped.
+                $incoming = Join-Path $work $name
+                [IO.File]::Copy((Join-Path $output "json/$name"), $incoming)
+                if ([IO.File]::Exists($target)) {
+                    [IO.File]::Replace($incoming, $target, (Join-Path $work "$name.previous"))
+                } else {
+                    [IO.File]::Move($incoming, $target)
+                }
             }
         }
     } finally {

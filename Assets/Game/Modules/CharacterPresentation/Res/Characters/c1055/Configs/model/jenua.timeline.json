@@ -1,0 +1,178 @@
+{
+  "timeline": {
+    "default": {
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "id": "sk1_unit",
+              "source": "jenua_skeff_sk1_self_unit",
+              "location": 5,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "b_r"
+            }
+          },
+          {
+            "time": 733,
+            "func": "event",
+            "param": {
+              "name": "jump1",
+              "param": "jump"
+            }
+          },
+          {
+            "time": 733,
+            "func": "event",
+            "param": {
+              "name": "dust1",
+              "param": "dust"
+            }
+          },
+          {
+            "time": 1033,
+            "func": "event",
+            "param": {
+              "name": "landing1",
+              "param": "landing"
+            }
+          },
+          {
+            "time": 1966,
+            "func": "event",
+            "param": {
+              "name": "jump2",
+              "param": "jump2"
+            }
+          },
+          {
+            "time": 2300,
+            "func": "event",
+            "param": {
+              "name": "landing2",
+              "param": "landing2"
+            }
+          },
+          {
+            "time": 2300,
+            "func": "event",
+            "param": {
+              "name": "dust2",
+              "param": "dust"
+            }
+          }
+        ]
+      },
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "id": "b_r",
+              "source": "jenua_skeff_b_idle_ready",
+              "location": 1,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "b_idle": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "b_r"
+            }
+          }
+        ]
+      },
+      "skill3_1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "b_r"
+            }
+          }
+        ]
+      },
+      "skill2_1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "b_r"
+            }
+          }
+        ]
+      },
+      "skill3_2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "b_r"
+            }
+          }
+        ]
+      },
+      "run": {
+        "duration": 0,
+        "frames": []
+      },
+      "rise": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "b_r"
+            }
+          }
+        ]
+      },
+      "knock_down": {
+        "duration": 0,
+        "frames": []
+      },
+      "idle": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "b_r"
+            }
+          }
+        ]
+      },
+      "flying_damage": {
+        "duration": 0,
+        "frames": []
+      },
+      "attacked_damage": {
+        "duration": 0,
+        "frames": []
+      },
+      "attacked": {
+        "duration": 0,
+        "frames": []
+      },
+      "appear": {
+        "duration": 0,
+        "frames": []
+      }
+    }
+  }
+}

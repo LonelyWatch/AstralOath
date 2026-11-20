@@ -83,14 +83,22 @@ namespace AstralOath.Shared.Battle
             }
 
             private Program LethalProtection(Unit target) =>
-                Passives(target).FirstOrDefault(passive => target.Cooldowns.GetValueOrDefault(passive.Row.id) == 0 &&
-                    passive.Effects.Any(effect => effect.phase == "on_lethal_damage" && effect.operation == "life_floor"));
+                Passives(target).FirstOrDefault(passive => passive.Effects.Any(effect =>
+                    effect.phase == "on_lethal_damage" &&
+                    ((effect.operation == "life_floor" && target.Cooldowns.GetValueOrDefault(passive.Row.id) == 0) ||
+                     (effect.operation == "life_floor_once" && !target.LethalProtectionConsumed))));
 
             private void ResolveLethalProtection(Unit target, Program program)
             {
                 var modifiers = owner.ModifiersFor(target, program);
-                ChangeCooldown(target, target, program.Row.id, Math.Max(0, program.Row.cooldownTurns - modifiers.CooldownTurns));
-                foreach (var effect in program.Effects.Where(effect => effect.phase == "on_lethal_damage" && effect.operation != "life_floor"))
+                if (program.Effects.Any(effect => effect.operation == "life_floor_once"))
+                {
+                    target.LethalProtectionConsumed = true;
+                    Changes.Add(BattleChange.ConsumeLethalProtection(target.Id));
+                }
+                else ChangeCooldown(target, target, program.Row.id, Math.Max(0, program.Row.cooldownTurns - modifiers.CooldownTurns));
+                foreach (var effect in program.Effects.Where(effect => effect.phase == "on_lethal_damage" &&
+                    effect.operation != "life_floor" && effect.operation != "life_floor_once"))
                     ApplyEffect(target, target, program.Row, effect, modifiers, false, BattleHitKind.None, null, false);
             }
 
@@ -119,7 +127,7 @@ namespace AstralOath.Shared.Battle
 
             private void ResolveKillPassives(Unit actor, int slot)
             {
-                if (!CanReact(actor) || (slot != 1 && slot != 3)) return;
+                if (!CanReact(actor) || !CanActivateOffTurn(actor) || (slot != 1 && slot != 3)) return;
                 var target = units.FirstOrDefault(unit => unit.Alive && unit.Side != actor.Side);
                 foreach (var passive in Passives(actor))
                 {
@@ -173,7 +181,7 @@ namespace AstralOath.Shared.Battle
                 const string phase = "after_ally_attack";
                 foreach (var ally in Allies(attacker))
                 {
-                    if (!CanReact(ally)) continue;
+                    if (!CanReact(ally) || !CanActivateOffTurn(ally)) continue;
                     foreach (var passive in Passives(ally))
                     {
                         var trigger = passive.AllyAttackTrigger;
@@ -200,7 +208,7 @@ namespace AstralOath.Shared.Battle
                 foreach (var passive in Passives(guardian))
                 {
                     var trigger = passive.AllyDamagedTrigger;
-                    if (trigger == null || guardian.Cooldowns.GetValueOrDefault(passive.Row.id) > 0) continue;
+                    if (trigger == null || !CanActivateOffTurn(guardian) || guardian.Cooldowns.GetValueOrDefault(passive.Row.id) > 0) continue;
                     var ward = targets.FirstOrDefault(unit => unit.Side == guardian.Side && attacked.Contains(unit.Id) &&
                         (unit.Alive || trigger.condition == "ally_suffered_critical") && MatchesTrigger(unit));
                     if (ward == null || !Roll(random, trigger.chanceBp)) continue;
@@ -213,7 +221,8 @@ namespace AstralOath.Shared.Battle
                     bool MatchesTrigger(Unit unit) => trigger.condition switch
                     {
                         "ally_suffered_critical" => criticallyHit?.Contains(unit.Id) == true && CanReact(guardian),
-                        "back_row_immobilized" => unit.Source.Slot.Position == 4 && unit.Has(BattleStatusKind.Stun) && CanReact(guardian),
+                        "back_row_immobilized" => unit.Source.Slot.Position == 4 && unit.Statuses.Any(status => IsImmobilizing(status.Kind)) && CanReact(guardian),
+                        "self_attacked_at_half" => unit == guardian && 2L * unit.Health <= unit.MaximumHealth && CanReact(guardian),
                         _ => ConditionMet(trigger, guardian, unit, false)
                     };
                 }
@@ -344,7 +353,10 @@ namespace AstralOath.Shared.Battle
                     "caster_at_least_three_buffs" => caster.Statuses.Count(status => !IsHarmful(status.Kind)) >= 3,
                     "caster_fewer_than_three_buffs" => caster.Statuses.Count(status => !IsHarmful(status.Kind)) < 3,
                     "recipient_fire" => recipient.Source.Element == BattleElement.Fire,
+                    "recipient_magic_nail" => recipient.Has(BattleStatusKind.MagicNail),
                     "recipient_bleeding" => recipient.Has(BattleStatusKind.Bleed),
+                    "recipient_bound" => recipient.Has(BattleStatusKind.Bind),
+                    "caster_has_vigor" => caster.Has(BattleStatusKind.Vigor),
                     "caster_enraged" => caster.Has(BattleStatusKind.Rage),
                     "soul_burn" => soulBurn,
                     "no_soul_burn" => !soulBurn,

@@ -1,0 +1,20 @@
+
+mui_skill_02_target_front.sct
+size: 537,173
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 2, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+flash_pillar2
+  rotate: false
+  xy: 173, 2
+  size: 362, 123
+  orig: 362, 123
+  offset: 0, 0
+  index: -1

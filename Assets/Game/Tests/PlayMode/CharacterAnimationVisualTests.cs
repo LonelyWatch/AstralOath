@@ -85,9 +85,15 @@ namespace AstralOath.Client.Tests
             Assert.That(audio.IsAvailable,Is.True,audio.Diagnostic);
             Assert.That(((FMOD.System)Read(audio,"core")).setOutput(FMOD.OUTPUTTYPE.NOSOUND),Is.EqualTo(FMOD.RESULT.OK));
             string group=Environment.GetEnvironmentVariable("ASTRAL_ANIMATION_CAPTURE_GROUP");
-            if (group == "roster31-40")
+            if(group=="ken-s3-effects")
             {
-                yield return CaptureRosterSkillBoundaries();
+                camera.targetTexture=previousTarget;camera.aspect=previousAspect;
+                yield return CaptureKenPostEffects();
+                yield break;
+            }
+            if (group == "roster31-40" || group == "roster41-50")
+            {
+                yield return CaptureRosterSkillBoundaries(group);
                 yield break;
             }
             if(group=="mercedes-s3")
@@ -166,17 +172,21 @@ namespace AstralOath.Client.Tests
             Debug.Log("ASTRAL_ANIMATION_CAPTURE_COMPLETE "+output+"; diagnostic frames only, not original-game validation.");
         }
         private double ClockTime=>Convert.ToDouble(Read(Read(binder,"clock"),"Time"),CultureInfo.InvariantCulture);
-        private IEnumerator CaptureRosterSkillBoundaries()
+        private IEnumerator CaptureRosterSkillBoundaries(string group)
         {
             if ((bool)Read(binder, "loop")) Click("loop");
-            string[] ids = {"c1032", "c1033", "c1034", "c1035", "c1036", "c1037", "c1038", "c1039", "c1040", "c1042"};
+            string[] ids = group == "roster41-50"
+                ? new[] {"c1043", "c1044", "c1046", "c1047", "c1048", "c1049", "c1050", "c1053", "c1054", "c1055"}
+                : new[] {"c1032", "c1033", "c1034", "c1035", "c1036", "c1037", "c1038", "c1039", "c1040", "c1042"};
             foreach (string id in ids)
             {
                 yield return SelectCharacter(id);
-                yield return SelectAnimation("skill1", true);
+                string attack = id == "c1047" ? "skill1_2" : "skill1";
+                yield return SelectAnimation(attack, true);
                 string directory = $"Assets/Game/Modules/CharacterPresentation/Res/Characters/{id}/Animations/model";
                 string model = Directory.GetFiles(directory, "*.spine.json").Single();
-                var clip = (JObject)JObject.Parse(File.ReadAllText(model))["animations"]["skill1"];
+                var modelData = JObject.Parse(File.ReadAllText(model));
+                var clip = (JObject)modelData["animations"][attack];
                 var hit = clip["events"]?.FirstOrDefault(e => (string)e["name"] == "hit");
                 // Source HIT when authored on the model, otherwise an interior keyed S1 pose.
                 float[] keyedTimes = clip["bones"].SelectTokens("$..time").Values<float>()
@@ -198,10 +208,72 @@ namespace AstralOath.Client.Tests
                 float manualZoom = camera.orthographicSize;
                 entry.Tick(1f / 60);
                 Assert.That(camera.orthographicSize, Is.EqualTo(manualZoom), "User zoom was overridden: " + id);
-                yield return SelectMode("portrait", id == "c1040" || id == "c1042" ? "3.8" : "2.1");
-                yield return SelectMode("battle", "2.1");
+                string portraitPath = Directory.GetFiles(Path.Combine(Path.GetDirectoryName(directory), "portrait"), "*.spine.json").Single();
+                var portraitData = JObject.Parse(File.ReadAllText(portraitPath));
+                yield return SelectMode("portrait", ((string)portraitData["skeleton"]["spine"]).Substring(0, 3));
+                yield return SelectMode("battle", ((string)modelData["skeleton"]["spine"]).Substring(0, 3));
             }
             Assert.That(Directory.GetFiles(output, "*.png").Length, Is.EqualTo(ids.Length * 3));
+        }
+        private IEnumerator CaptureKenPostEffects()
+        {
+            yield return SelectCharacter("c1047");
+            if(!(bool)Read(binder,"experimental"))Click("experimental");
+            var skill=Rows("skills").Single(row=>row.GetComponentInChildren<GameText>().text.EndsWith("c_ken_skill_03",StringComparison.Ordinal));
+            skill.onClick.Invoke();
+            yield return Until(()=>Read(binder,"performance")!=null&&skill.interactable,"Ken S3 did not start.");
+            var image=map.Require<RawImage>("preview");
+            Assert.That(image.texture,Is.SameAs(camera.targetTexture));
+            bool observedBlur=false;
+            const float step=1f/60;
+            for(int frame=0;frame<180;frame++)
+            {
+                entry.Tick(step);
+                observedBlur|=image.material.GetFloat("u_range")>0;
+                Assert.That(image.material.GetFloat("_SpriteInvert"),Is.Zero);
+            }
+            Assert.That(observedBlur,Is.True,"Ken's source blur did not activate during the first three seconds.");
+            foreach(float time in new[]{4.5f,5f,5.6f})
+            {
+                yield return AdvanceUiTo(time);
+                yield return null;yield return null;
+                bool expected=time==5f;
+                Assert.That(image.material.GetFloat("_SpriteInvert"),Is.EqualTo(expected?1f:0f),"Ken S3 at "+time);
+                string stem="ken-s3-"+time.ToString("0.0",CultureInfo.InvariantCulture);
+                SaveKenFrame(image.texture,image.material,stem+"-display");
+                var control=new Material(image.material);
+                try
+                {
+                    control.SetFloat("_SpriteInvert",0);
+                    SaveKenFrame(image.texture,control,stem+"-control");
+                }
+                finally {UnityEngine.Object.DestroyImmediate(control);}
+            }
+            Click("stop");
+            Assert.That(image.material.GetFloat("_SpriteInvert"),Is.Zero);
+        }
+        private void SaveKenFrame(Texture frame,Material post,string name)
+        {
+            var destination=RenderTexture.GetTemporary(frame.width,frame.height,0,RenderTextureFormat.ARGB32,RenderTextureReadWrite.sRGB);
+            var pixels=new Texture2D(frame.width,frame.height,TextureFormat.RGBA32,false);
+            var previous=RenderTexture.active;
+            bool previousWrite=GL.sRGBWrite;
+            try
+            {
+                GL.sRGBWrite=QualitySettings.activeColorSpace==ColorSpace.Linear;
+                Graphics.Blit(frame,destination,post);
+                RenderTexture.active=destination;
+                pixels.ReadPixels(new Rect(0,0,frame.width,frame.height),0,0,false);
+                pixels.Apply(false,false);
+                File.WriteAllBytes(Path.Combine(output,name+".png"),pixels.EncodeToPNG());
+            }
+            finally
+            {
+                GL.sRGBWrite=previousWrite;
+                RenderTexture.active=previous;
+                RenderTexture.ReleaseTemporary(destination);
+                UnityEngine.Object.DestroyImmediate(pixels);
+            }
         }
         private IEnumerator CaptureMercedesS3LoopAndStrictSkill()
         {

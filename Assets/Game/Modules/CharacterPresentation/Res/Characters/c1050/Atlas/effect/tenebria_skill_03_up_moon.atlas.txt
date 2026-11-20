@@ -1,0 +1,83 @@
+
+tenebria_skill_03_up_moon.sct
+size: 698,969
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+big_moon_ring
+  rotate: false
+  xy: 432, 668
+  size: 264, 31
+  orig: 264, 31
+  offset: 0, 0
+  index: -1
+burst_sphear
+  rotate: false
+  xy: 556, 701
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 214, 699
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+glow_ring
+  rotate: false
+  xy: 556, 835
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: false
+  xy: 2, 668
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1
+moon_1
+  rotate: false
+  xy: 2, 2
+  size: 634, 664
+  orig: 634, 664
+  offset: 0, 0
+  index: -1
+moon_2
+  rotate: false
+  xy: 2, 699
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+scan_glow2
+  rotate: false
+  xy: 385, 701
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+sky_circle1
+  rotate: true
+  xy: 638, 334
+  size: 330, 39
+  orig: 330, 39
+  offset: 0, 0
+  index: -1
+sky_circle2
+  rotate: false
+  xy: 2, 911
+  size: 330, 39
+  orig: 330, 39
+  offset: 0, 0
+  index: -1
+sky_circle3
+  rotate: true
+  xy: 638, 2
+  size: 330, 39
+  orig: 330, 39
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,154 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "mui_skill_3-3_monster",
+      "z": "50",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "mui_sk3_imp4",
+      "ani": "skill3_2_imp1",
+      "z": "45",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "mui_sk3_imp1",
+      "ani": "skill3_2_imp1",
+      "z": "35",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "mui_sk3_demon_tanker1",
+      "ani": "skill3_2_demon_tanker1",
+      "z": "25",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "mui_sk3_demon_melee4",
+      "ani": "skill3_2_demon_melee2",
+      "z": "20",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "mui_sk3_demon_melee3",
+      "ani": "skill3_2_demon_melee1",
+      "z": "15",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "mui_sk3_demon_melee2",
+      "ani": "skill3_2_demon_melee2",
+      "z": "10",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "mui_skill_3-3_explosion",
+      "z": "2",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "mui_skill_03-3_background_front",
+      "z": "9",
+      "opacity": "0.35",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "mui_skill_03-3_background_front",
+      "z": "9",
+      "opacity": "1",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "mui_sk3_demon_tanker3",
+      "ani": "skill3_2_demon_tanker3",
+      "z": "8",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "mui_sk3_demon_tanker4",
+      "ani": "skill3_2_demon_tanker2",
+      "z": "7",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "mui_sk3_demon_tanker2",
+      "ani": "skill3_2_demon_tanker2",
+      "z": "6",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "mui_sk3_demon_melee1",
+      "ani": "skill3_2_demon_melee1",
+      "z": "5",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "mui_sk3_imp2",
+      "ani": "skill3_2_imp2",
+      "z": "22",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "mui_sk3_imp6",
+      "ani": "skill3_2_imp3",
+      "z": "5",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "mui_sk3_imp3",
+      "ani": "skill3_2_imp3",
+      "z": "4",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "mui_sk3_imp5",
+      "ani": "skill3_2_imp2",
+      "z": "3",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "mui_skill_03-3_background_front_after",
+      "z": "10",
+      "format": "spine",
+      "globalZ": -2.0
+    },
+    {
+      "source": "mui_skill_03-3_background_back",
+      "z": "5",
+      "format": "spine",
+      "globalZ": -2.0
+    },
+    {
+      "source": "mui_skill_03_explosion_p",
+      "delay": "865",
+      "format": "particle",
+      "globalZ": 3.0
+    },
+    {
+      "source": "mui_skill_03_explosion_p2",
+      "scale": "1.5",
+      "delay": "1498",
+      "format": "particle",
+      "globalZ": 2.0
+    }
+  ]
+}

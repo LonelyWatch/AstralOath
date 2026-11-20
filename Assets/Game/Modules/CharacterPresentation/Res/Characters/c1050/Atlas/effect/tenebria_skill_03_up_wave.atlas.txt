@@ -1,0 +1,83 @@
+
+tenebria_skill_03_up_wave.sct
+size: 1361,248
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+w_wave1_1
+  rotate: false
+  xy: 374, 193
+  size: 444, 53
+  orig: 444, 53
+  offset: 0, 0
+  index: -1
+w_wave1_2
+  rotate: false
+  xy: 495, 100
+  size: 316, 15
+  orig: 316, 15
+  offset: 0, 0
+  index: -1
+w_wave2_1
+  rotate: false
+  xy: 503, 117
+  size: 434, 66
+  orig: 434, 66
+  offset: 0, 0
+  index: -1
+w_wave2_2
+  rotate: false
+  xy: 2, 202
+  size: 370, 39
+  orig: 370, 39
+  offset: 0, 0
+  index: -1
+w_wave2_3
+  rotate: false
+  xy: 939, 99
+  size: 398, 63
+  orig: 398, 63
+  offset: 0, 0
+  index: -1
+w_wave3_1
+  rotate: false
+  xy: 495, 2
+  size: 431, 96
+  orig: 431, 96
+  offset: 0, 0
+  index: -1
+w_wave3_2
+  rotate: false
+  xy: 140, 124
+  size: 361, 67
+  orig: 361, 67
+  offset: 0, 0
+  index: -1
+w_wave4_1
+  rotate: false
+  xy: 928, 2
+  size: 431, 95
+  orig: 431, 95
+  offset: 0, 0
+  index: -1
+w_wave4_2
+  rotate: false
+  xy: 939, 164
+  size: 360, 63
+  orig: 360, 63
+  offset: 0, 0
+  index: -1
+w_wave_b
+  rotate: true
+  xy: 2, 2
+  size: 198, 136
+  orig: 198, 136
+  offset: 0, 0
+  index: -1
+w_wave_glow1
+  rotate: false
+  xy: 140, 2
+  size: 353, 120
+  orig: 353, 120
+  offset: 0, 0
+  index: -1

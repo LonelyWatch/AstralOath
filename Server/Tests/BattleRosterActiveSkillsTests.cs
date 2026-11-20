@@ -9,6 +9,77 @@ public sealed class BattleRosterActiveSkillsTests
     private static readonly string[] OpeningBuffs = { "DefenseUp", "Immunity", "SpeedUp", "CriticalResistanceUp",
         "CriticalDamageUp", "EffectivenessUp", "Invincible", "CriticalChanceUp", "ContinuousHealing", "Immortality", "Counter" };
 
+    [Fact]
+    public void LidicasNullifierPersistsAcrossTurnsAndStopsOneCounter()
+    {
+        var match = Match("c1046", 3, _ => new[] { Enemy(1, 100), Enemy(2, 100, passive: Counter) });
+        var granted = Cast(match, "c1046.s3", "enemy1");
+        Assert.NotNull(granted.Snapshot.GetUnit("hero").GetStatus(BattleStatusKind.SkillNullifier));
+        BattleCommandResult Basic(string target)
+        {
+            var state = match.Snapshot;
+            var sequence = state.LastCommandSequence + 1;
+            Assert.Equal("hero", state.CurrentActorId);
+            var result = match.Submit(new BattleSkillCommand(state.BattleId, state.RulesVersion, sequence,
+                "basic-" + sequence, "hero", "c1046.s1", target));
+            Assert.Equal(BattleCommandStatus.Accepted, result.Status);
+            return result;
+        }
+        Assert.NotNull(Basic("enemy1").Snapshot.GetUnit("hero").GetStatus(BattleStatusKind.SkillNullifier));
+        var blocked = Basic("enemy2");
+        Assert.Contains(blocked.Events, e => e.Kind == BattleFlowEventKind.StatusRemoved &&
+            e.TargetId == "hero" && e.StatusKind == BattleStatusKind.SkillNullifier);
+        Assert.Equal(0, Assert.Single(blocked.Events, e => e.Kind == BattleFlowEventKind.Damage && e.TargetId == "hero").Amount);
+        Assert.True(Assert.Single(Basic("enemy2").Events,
+            e => e.Kind == BattleFlowEventKind.Damage && e.TargetId == "hero").Amount > 0);
+    }
+
+    [Theory]
+    [InlineData("c1044", 2)]
+    [InlineData("c1043", 0)]
+    public void SoulBurnReducesOnlyTheCooldownsNamedInTheOriginalSkill(string hero, int extraReduction)
+    {
+        int Remaining(bool burn)
+        {
+            var match = Match(hero, 3, _ => new[] { Enemy(1, 10) });
+            Cast(match, hero + ".s3");
+            var state = match.Snapshot;
+            Assert.Equal("hero", state.CurrentActorId);
+            var cast = match.Submit(new BattleSkillCommand(state.BattleId, state.RulesVersion, 2, "second",
+                "hero", hero + ".s2", null, burn));
+            Assert.Equal(BattleCommandStatus.Accepted, cast.Status);
+            return cast.Snapshot.GetUnit("hero").GetCooldown(hero + ".s3");
+        }
+        Assert.Equal(extraReduction, Remaining(false) - Remaining(true));
+    }
+
+    [Theory]
+    [InlineData("c1044", "s3", 3000)]
+    [InlineData("c1046", "s2", 2500)]
+    [InlineData("c1048", "s2", 3000)]
+    public void ReadinessUsesTheActualCriticalsTargetsOrSuccessfulDebuffs(string hero, string slot, int amount)
+    {
+        var seen = new HashSet<int>();
+        for (ulong seed = 1; seed <= 24; seed++)
+        {
+            var match = Match(hero, 3, _ => Enumerable.Range(1, 4)
+                .Select(i => Enemy(i, 10, resistance: i == 4 ? 20000 : 0)).ToArray(), seed);
+            var cast = Cast(match, hero + "." + slot);
+            int count = cast.Events.Count(e => hero switch
+            {
+                "c1044" => e.Kind == BattleFlowEventKind.Damage && e.HitKind == BattleHitKind.Critical,
+                "c1046" => e.Kind == BattleFlowEventKind.Damage,
+                _ => e.Kind == BattleFlowEventKind.StatusApplied && e.StatusKind == BattleStatusKind.Unhealable
+            });
+            seen.Add(count);
+            var boosts = cast.Events.Where(e => e.Kind == BattleFlowEventKind.ReadinessChanged && e.TargetId == "hero");
+            if (count == 0) Assert.Empty(boosts);
+            Assert.Equal(count * amount, boosts.LastOrDefault()?.Amount ?? 0);
+        }
+        if (hero == "c1046") Assert.Equal(4, Assert.Single(seen));
+        else Assert.True(seen.Count > 1);
+    }
+
     [Theory]
     [InlineData("c1034")]
     [InlineData("c1039")]

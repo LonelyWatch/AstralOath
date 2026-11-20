@@ -1,0 +1,24 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "basar_sk3_2_b",
+      "z": "0",
+      "format": "spine",
+      "globalZ": -0.5
+    },
+    {
+      "source": "basar_sk3_2_f",
+      "x": "0",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "sandstorm",
+      "scale": "1.5",
+      "delay": "3000",
+      "format": "particle",
+      "globalZ": 1.5
+    }
+  ]
+}

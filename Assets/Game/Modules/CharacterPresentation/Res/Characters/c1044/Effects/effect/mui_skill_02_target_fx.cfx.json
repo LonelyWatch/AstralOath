@@ -1,0 +1,38 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "demon_tanker_sk2eff_f",
+      "ani": "2_2_wind",
+      "delay": "600",
+      "format": "spine",
+      "globalZ": 2.0
+    },
+    {
+      "source": "mui_skill_02_target_front",
+      "x": "-50",
+      "z": "20",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "demon_tanker_sk2eff_b",
+      "ani": "2_2_wind",
+      "delay": "600",
+      "format": "spine",
+      "globalZ": -2.0
+    },
+    {
+      "source": "mui_skill_02_target_back",
+      "x": "-50",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "mui_skill_02_demon",
+      "scale": "0.85",
+      "delay": "0",
+      "format": "spine"
+    }
+  ]
+}

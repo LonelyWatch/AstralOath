@@ -50,13 +50,15 @@ class ConversionTests(unittest.TestCase):
         with self.assertRaises(ValueError): convert.decode_scsp(data+b"extra")
 
 
-def fixture_v2(timeline=None, timeline_count=1):
+def fixture_v2(timeline=None, timeline_count=1, with_slot=False):
     import lz4.block
     strings=["hash","2.1.27.scsp","root","ping","idle"]
     pool=b""; offsets={}
     for value in strings: offsets[value]=len(pool);pool+=value.encode()+b"\0"
-    binary=struct.pack("<6I",1,0,0,0,1,1)+bytes(40)+struct.pack("<ffII",10,20,offsets["hash"],offsets["2.1.27.scsp"])
+    binary=struct.pack("<6I",1,0,int(with_slot),0,1,1)+bytes(40)+struct.pack("<ffII",10,20,offsets["hash"],offsets["2.1.27.scsp"])
     binary+=struct.pack("<6f5IH",0,0,0,0,1,1,0,0,1,1,offsets["root"],65535)
+    if with_slot:
+        binary+=struct.pack("<IHI4fI", offsets["root"],0,0xffffffff,1,1,1,1,0)
     binary+=struct.pack("<IIifI",0xffffffff,offsets["ping"],7,2.5,0xffffffff)
     if timeline is None:
         timeline=struct.pack("<IIfifIH",5,1,0.25,42,3.75,0xffffffff,0)

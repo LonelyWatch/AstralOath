@@ -1,0 +1,72 @@
+{
+  "timeline": {
+    "default": {
+      "skill3": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "roman_skill_03_self",
+              "location": 1,
+              "locationBone": "root",
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 724,
+            "func": "effect",
+            "param": {
+              "source": "roman_skill_03_mc_1",
+              "location": 1,
+              "locationBone": "root",
+              "x": 400,
+              "y": 375,
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 1984,
+            "func": "effect",
+            "param": {
+              "source": "roman_skill_03_mc_2",
+              "location": 1,
+              "locationBone": "root",
+              "x": 280,
+              "y": 540,
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 2044,
+            "func": "effect",
+            "param": {
+              "source": "roman_skill_03_mc_3",
+              "location": 1,
+              "locationBone": "root",
+              "x": 144,
+              "y": 650,
+              "scale": 1.0
+            }
+          },
+          {
+            "time": 2114,
+            "func": "effect",
+            "param": {
+              "source": "roman_skill_03_mc_4",
+              "location": 1,
+              "locationBone": "root",
+              "x": -10,
+              "y": 682,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": []
+      }
+    }
+  }
+}

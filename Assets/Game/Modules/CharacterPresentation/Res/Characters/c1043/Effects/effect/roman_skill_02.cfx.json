@@ -1,0 +1,25 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "roman_sk2eff_b",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "roman_sk2eff_f",
+      "format": "spine",
+      "globalZ": 1.0,
+      "actions": [
+        {
+          "action": "Fire",
+          "delay": "830"
+        },
+        {
+          "action": "Fire",
+          "delay": "1880"
+        }
+      ]
+    }
+  ]
+}

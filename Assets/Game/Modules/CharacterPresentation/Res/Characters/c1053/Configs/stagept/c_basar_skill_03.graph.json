@@ -1,0 +1,984 @@
+{
+  "id": "c_basar_skill_03",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 3
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "scale": "1.4",
+        "curve": "0,1,1,1",
+        "time": 300,
+        "guid": 1,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 11,
+        "x": 50.0,
+        "curve": "0,1,1,1",
+        "time": 300,
+        "guid": 2,
+        "etty": "CAM"
+      },
+      {
+        "state": "start",
+        "guid": 3,
+        "etty": "ENTRY"
+      },
+      {
+        "time": 300,
+        "guid": 4,
+        "etty": "BGSHOW"
+      },
+      {
+        "fade": 200,
+        "time": 200,
+        "log": 10.0,
+        "self_x": 0.1,
+        "away_x": 2000.0,
+        "guid": 5,
+        "etty": "LAYOUT"
+      },
+      {
+        "ani": "skill3",
+        "guid": 6,
+        "etty": "ANI"
+      },
+      {
+        "mode": 1,
+        "guid": 7,
+        "etty": "LAYOUT"
+      },
+      {
+        "guid": 8,
+        "etty": "CAM"
+      },
+      {
+        "show": true,
+        "guid": 9,
+        "etty": "BGSHOW"
+      },
+      {
+        "time": 400,
+        "x": 0.1,
+        "y": 0.0,
+        "localZ": 0.0,
+        "fadeIn": 1000.0,
+        "fadeOut": 300.0,
+        "speed0": 4.0,
+        "speed1": 8.0,
+        "speed2": 5.0,
+        "color0": "219,131,36,179",
+        "color1": "238,225,17,69",
+        "color2": "122,57,0,124",
+        "guid": 10,
+        "etty": "BGHATCH"
+      },
+      {
+        "ver": 2,
+        "time": 1000,
+        "log": -50,
+        "location": 11,
+        "style": 1,
+        "x": -2000.0,
+        "guid": 11,
+        "etty": "MOVE"
+      },
+      {
+        "source": "basar_skeff_sk3_1.cfx",
+        "scale": 1.0,
+        "location": 11,
+        "locationParam": "root",
+        "guid": 12,
+        "etty": "EFFECT"
+      },
+      {
+        "guid": 13,
+        "etty": "IDLE"
+      },
+      {
+        "scale": "1",
+        "curve": "0,1,1,1",
+        "guid": 14,
+        "etty": "ZOOM"
+      },
+      {
+        "duration": -1,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "basar_cm_sk3",
+        "guid": 15,
+        "etty": "SHAKE"
+      },
+      {
+        "location": 11,
+        "x": -500.0,
+        "curve": "1,0,1,1",
+        "time": 165,
+        "guid": 16,
+        "etty": "CAM"
+      },
+      {
+        "location": 42,
+        "y": -100.0,
+        "curve": "1,0,1,1",
+        "guid": 17,
+        "etty": "CAM"
+      },
+      {
+        "scale": "0.8",
+        "curve": "0,1,1,1",
+        "guid": 18,
+        "etty": "ZOOM"
+      },
+      {
+        "source": "basar_skeff_sk3_2.cfx",
+        "scale": 1.0,
+        "location": 42,
+        "locationParam": "root",
+        "guid": 19,
+        "etty": "EFFECT"
+      },
+      {
+        "scale": "0.4",
+        "curve": "0.5210728,-2.980232E-08,0.5747126,0.9965278",
+        "time": 450,
+        "guid": 20,
+        "etty": "ZOOM"
+      },
+      {
+        "color": "255,255,255,255",
+        "accel": 1.0,
+        "opacity": 1.0,
+        "duration": 600,
+        "globalZ": 2,
+        "fadeIn": 165,
+        "fadeOut": 400,
+        "id": "d1",
+        "guid": 21,
+        "etty": "DARK"
+      },
+      {
+        "args": "sk_c1053_3",
+        "curtain_color": "0,0,0,255",
+        "guid": 22,
+        "etty": "CUTIN"
+      },
+      {
+        "effect": "hit_new_pierce_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 23,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 24,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 25,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 26,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 27,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 28,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 29,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 30,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 31,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 32,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 33,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_slash_normal.cfx",
+        "rand_x": 50,
+        "rand_y": 50,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 34,
+        "etty": "HIT"
+      },
+      {
+        "duration": 500,
+        "program": "sprite_blur",
+        "direction_x": 1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "u_ratio": 0.5,
+        "guid": 35,
+        "etty": "PPEFFECT"
+      },
+      {
+        "name": "u_range",
+        "duration": 500,
+        "power": 25.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 36,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "duration": 250,
+        "program": "sprite_blur",
+        "direction_x": 1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "u_ratio": 0.5,
+        "guid": 37,
+        "etty": "PPEFFECT"
+      },
+      {
+        "name": "u_range",
+        "duration": 250,
+        "power": 30.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 38,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "name": "u_range",
+        "duration": 500,
+        "power": 30.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 39,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "duration": 500,
+        "program": "sprite_blur",
+        "direction_y": 1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "u_ratio": 0.5,
+        "guid": 40,
+        "etty": "PPEFFECT"
+      },
+      {
+        "duration": 400,
+        "program": "sprite_blur",
+        "direction_y": 1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "u_ratio": 0.5,
+        "guid": 41,
+        "etty": "PPEFFECT"
+      },
+      {
+        "name": "u_range",
+        "duration": 400,
+        "power": 50.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 42,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "duration": 800,
+        "program": "sprite_blur",
+        "direction_y": 1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "u_ratio": 0.5,
+        "guid": 43,
+        "etty": "PPEFFECT"
+      },
+      {
+        "name": "u_range",
+        "duration": 800,
+        "power": 20.0,
+        "start_rad": 0.1,
+        "finish_rad": 1.0,
+        "guid": 44,
+        "etty": "SINE_VALUE"
+      }
+    ],
+    "connections": [
+      {
+        "from": 2,
+        "to": 1,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 4,
+        "to": 5,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 5,
+        "to": 6,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 11,
+        "delay": 594,
+        "when": 1,
+        "Desc": "594",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 12,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 9,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 7,
+        "to": 8,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 14,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 16,
+        "delay": 1815,
+        "when": 1,
+        "Desc": "1815",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 16,
+        "to": 17,
+        "delay": 300,
+        "Desc": "300",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 17,
+        "to": 18,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 17,
+        "to": 19,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 15,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 20,
+        "delay": 2508,
+        "when": 1,
+        "Desc": "2508",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 4,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 9,
+        "to": 13,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 21,
+        "delay": 4950,
+        "when": 1,
+        "Desc": "4950",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 7,
+        "delay": 5300,
+        "when": 1,
+        "Desc": "5300",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 10,
+        "delay": 594,
+        "when": 1,
+        "Desc": "594",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 22,
+        "delay": 2508,
+        "when": 1,
+        "Desc": "2508",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 23,
+        "delay": 363,
+        "when": 1,
+        "Desc": "363",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 34,
+        "delay": 3102,
+        "when": 1,
+        "Desc": "3102",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 33,
+        "delay": 3333,
+        "when": 1,
+        "Desc": "3333",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 32,
+        "delay": 3828,
+        "when": 1,
+        "Desc": "3828",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 31,
+        "delay": 3960,
+        "when": 1,
+        "Desc": "3960",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 30,
+        "delay": 4092,
+        "when": 1,
+        "Desc": "4092",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 29,
+        "delay": 4224,
+        "when": 1,
+        "Desc": "4224",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 28,
+        "delay": 4389,
+        "when": 1,
+        "Desc": "4389",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 27,
+        "delay": 4521,
+        "when": 1,
+        "Desc": "4521",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 26,
+        "delay": 4653,
+        "when": 1,
+        "Desc": "4653",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 25,
+        "delay": 4785,
+        "when": 1,
+        "Desc": "4785",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 19,
+        "to": 24,
+        "delay": 4917,
+        "when": 1,
+        "Desc": "4917",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 35,
+        "to": 36,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 35,
+        "delay": 1600,
+        "when": 1,
+        "Desc": "1600",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 37,
+        "to": 38,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 23,
+        "to": 37,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 40,
+        "to": 39,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 37,
+        "to": 40,
+        "delay": 1200,
+        "when": 1,
+        "Desc": "1200",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 41,
+        "to": 42,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 34,
+        "to": 41,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 43,
+        "to": 44,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 30,
+        "to": 43,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/basar_cm_sk3.scsp",
+      "address": "characterlab/source/camera/basar_cm_sk3.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "cut/fhd/sk_c1053_3.webp",
+      "address": "characterlab/source/cut/fhd/sk_c1053_3.webp",
+      "type": "cutin"
+    },
+    {
+      "source": "effect/basar_selfeff_bi_loop.atlas",
+      "address": "characterlab/source/effect/basar_selfeff_bi_loop.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/basar_selfeff_bi_loop.scsp",
+      "address": "characterlab/source/effect/basar_selfeff_bi_loop.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/basar_selfeff_bi_loop.sct",
+      "address": "characterlab/source/effect/basar_selfeff_bi_loop.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/basar_selfeff_bi_start.atlas",
+      "address": "characterlab/source/effect/basar_selfeff_bi_start.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/basar_selfeff_bi_start.scsp",
+      "address": "characterlab/source/effect/basar_selfeff_bi_start.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/basar_selfeff_bi_start.sct",
+      "address": "characterlab/source/effect/basar_selfeff_bi_start.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/basar_selfeff_br.cfx",
+      "address": "characterlab/source/effect/basar_selfeff_br.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/basar_selfeff_sk1.atlas",
+      "address": "characterlab/source/effect/basar_selfeff_sk1.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/basar_selfeff_sk1.cfx",
+      "address": "characterlab/source/effect/basar_selfeff_sk1.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/basar_selfeff_sk1.scsp",
+      "address": "characterlab/source/effect/basar_selfeff_sk1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/basar_selfeff_sk1.sct",
+      "address": "characterlab/source/effect/basar_selfeff_sk1.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/basar_selfeff_sk2.atlas",
+      "address": "characterlab/source/effect/basar_selfeff_sk2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/basar_selfeff_sk2.cfx",
+      "address": "characterlab/source/effect/basar_selfeff_sk2.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/basar_selfeff_sk2.scsp",
+      "address": "characterlab/source/effect/basar_selfeff_sk2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/basar_selfeff_sk2.sct",
+      "address": "characterlab/source/effect/basar_selfeff_sk2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/basar_selfeff_sk3.cfx",
+      "address": "characterlab/source/effect/basar_selfeff_sk3.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/basar_selfeff_sk3_b.atlas",
+      "address": "characterlab/source/effect/basar_selfeff_sk3_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/basar_selfeff_sk3_b.scsp",
+      "address": "characterlab/source/effect/basar_selfeff_sk3_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/basar_selfeff_sk3_b.sct",
+      "address": "characterlab/source/effect/basar_selfeff_sk3_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/basar_selfeff_sk3_f.atlas",
+      "address": "characterlab/source/effect/basar_selfeff_sk3_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/basar_selfeff_sk3_f.scsp",
+      "address": "characterlab/source/effect/basar_selfeff_sk3_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/basar_selfeff_sk3_f.sct",
+      "address": "characterlab/source/effect/basar_selfeff_sk3_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/basar_sk3_1.atlas",
+      "address": "characterlab/source/effect/basar_sk3_1.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/basar_sk3_1.scsp",
+      "address": "characterlab/source/effect/basar_sk3_1.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/basar_sk3_1.sct",
+      "address": "characterlab/source/effect/basar_sk3_1.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/basar_sk3_2_b.atlas",
+      "address": "characterlab/source/effect/basar_sk3_2_b.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/basar_sk3_2_b.scsp",
+      "address": "characterlab/source/effect/basar_sk3_2_b.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/basar_sk3_2_b.sct",
+      "address": "characterlab/source/effect/basar_sk3_2_b.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/basar_sk3_2_f.atlas",
+      "address": "characterlab/source/effect/basar_sk3_2_f.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/basar_sk3_2_f.scsp",
+      "address": "characterlab/source/effect/basar_sk3_2_f.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/basar_sk3_2_f.sct",
+      "address": "characterlab/source/effect/basar_sk3_2_f.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/basar_skeff_sk3_1.cfx",
+      "address": "characterlab/source/effect/basar_skeff_sk3_1.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/basar_skeff_sk3_2.cfx",
+      "address": "characterlab/source/effect/basar_skeff_sk3_2.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_pierce_normal.atlas",
+      "address": "characterlab/source/effect/hit_new_pierce_normal.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_pierce_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_pierce_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_pierce_normal.scsp",
+      "address": "characterlab/source/effect/hit_new_pierce_normal.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_pierce_normal.sct",
+      "address": "characterlab/source/effect/hit_new_pierce_normal.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_pierce_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_pierce_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/hit_new_slash_01.atlas",
+      "address": "characterlab/source/effect/hit_new_slash_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_slash_01.scsp",
+      "address": "characterlab/source/effect/hit_new_slash_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_slash_01.sct",
+      "address": "characterlab/source/effect/hit_new_slash_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_slash_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_slash_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_slash_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_slash_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/sandstorm.particle",
+      "address": "characterlab/source/effect/sandstorm.particle",
+      "type": "particle"
+    },
+    {
+      "source": "model/basar.timeline",
+      "address": "characterlab/source/model/basar.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/pati_01.sct",
+      "address": "characterlab/source/particle/pati_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/soft_smoke.sct",
+      "address": "characterlab/source/particle/soft_smoke.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/wind_02.sct",
+      "address": "characterlab/source/particle/wind_02.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

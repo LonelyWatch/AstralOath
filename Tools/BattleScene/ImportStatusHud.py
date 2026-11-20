@@ -52,6 +52,12 @@ STATUSES = (
     ("Reflect", "Buff", "stic_reflect"),
     ("Bomb", "Debuff", "stic_bomb"),
     ("VampiricTouch", "Debuff", "stic_vampire"),
+    ("MagicNail", "Debuff", "stic_nail"),
+    ("Sleep", "Debuff", "stic_sleep"),
+    ("Restrict", "Debuff", "stic_ab_up_block"),
+    ("Bind", "Debuff", "stic_restrict"),
+    ("SkillNullifier", "Buff", "stic_endure_1"),
+    ("Vigor", "Buff", "stic_haki"),
 )
 
 

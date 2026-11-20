@@ -39,7 +39,7 @@ namespace AstralOath.Client.CharacterLab
                 var root=new GameObject("Particle "+data["name"],typeof(MeshFilter),typeof(MeshRenderer));
                 root.transform.SetParent(parent,false);
                 root.transform.position=position+new Vector3(N(primitive,"x",0)*.01f,N(primitive,"y",0)*.01f,-.1f);
-                root.transform.localScale=Vector3.one*N(primitive,"scale",1);
+                root.transform.localScale=CharacterEffectStage.PrimitiveScale(primitive["scale"]);
                 root.transform.localRotation=Quaternion.Euler(0,0,-N(primitive,"rotate",0));
                 var mesh=new Mesh();mesh.MarkDynamic();root.GetComponent<MeshFilter>().sharedMesh=mesh;
                 var material=new Material(shader){mainTexture=texture};

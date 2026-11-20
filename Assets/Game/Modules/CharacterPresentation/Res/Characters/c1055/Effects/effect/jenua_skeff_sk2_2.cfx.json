@@ -1,0 +1,38 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "jenua_skeff_sk2_2_f2",
+      "z": "21",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "jenua_skeff_sk2_2_f",
+      "z": "20",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "jenua_skeff_sk2_2_self",
+      "ani": "skill2_2_ch2",
+      "z": "20",
+      "format": "spine"
+    },
+    {
+      "source": "jenua_skeff_sk2_2_shadow2",
+      "z": "2",
+      "format": "spine"
+    },
+    {
+      "source": "jenua_skeff_sk2_2_shadow_self",
+      "z": "1",
+      "format": "spine"
+    },
+    {
+      "source": "jenua_skeff_sk2_2_floor",
+      "z": "0",
+      "format": "spine"
+    }
+  ]
+}

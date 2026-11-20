@@ -1,0 +1,24 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "mui_skill_02_whip",
+      "z": "10",
+      "format": "spine"
+    },
+    {
+      "source": "mui_skill_blow",
+      "z": "10",
+      "scale": "1.2",
+      "delay": "399",
+      "format": "spine"
+    },
+    {
+      "source": "mui_skill_blow_p",
+      "x": "550",
+      "z": "10",
+      "delay": "399",
+      "format": "particle"
+    }
+  ]
+}

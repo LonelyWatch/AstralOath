@@ -33,7 +33,7 @@
 - 战斗表现修复：[信息条、速度线与待机衔接](delivery/2026-11-13-battle-presentation-fixes.md)、[BGHATCH 纹理编码审计](delivery/2026-11-13-hatch-alpha-audit.md)。
 - 战斗性能：[测量与操作](delivery/2026-11-13-battle-performance.md)、[缓存和诊断边界](architecture/adr/013-battle-performance.md)。
 - 本机磁盘与缓存：[D盘资料与启动规则](development/local-storage.md)。
-- 战斗演出通用规则：[源数据、镜头与飘字](development/battle-source-presentation.md)、[逐角色的帧与镜头验收](development/battle-source-presentation.md#逐角色的帧与镜头验收)、[第 31–40 名角色实测](delivery/2026-11-20-roster31-40.md)、[时钟与缓存决策](architecture/adr/012-battle-presentation-clock.md)、[安洁莉卡录像复核](delivery/2026-11-13-angelica-timing-reference.md)、[时序与试玩验收](delivery/2026-11-13-battle-timing.md)。
+- 战斗演出通用规则：[源数据、镜头与飘字](development/battle-source-presentation.md)、[逐角色的帧与镜头验收](development/battle-source-presentation.md#逐角色的帧与镜头验收)、[第 41–50 名角色实测](delivery/2026-11-20-roster41-50.md)、[第 31–40 名角色实测](delivery/2026-11-20-roster31-40.md)、[时钟与缓存决策](architecture/adr/012-battle-presentation-clock.md)、[安洁莉卡录像复核](delivery/2026-11-13-angelica-timing-reference.md)、[时序与试玩验收](delivery/2026-11-13-battle-timing.md)。
 - 战斗：[场景模块](../Assets/Game/Modules/BattleScene/README.md)、[原作研究和截图](development/epic-seven-battle-reference.md)、[角色配表](development/battle-character-data.md)、[等级面板与战斗单位](development/battle-growth.md)、[战斗第三步与双人验证](development/battle-execution.md)、[场景验收](delivery/2026-11-12-battle-scene.md)。
 - 最近发生了什么：[变更与交接日志](development/change-log.md)、[当前状态](project-status.md)。
 - 版本固定来源：`Tools/dependencies.lock.json`、`Packages/manifest.json`/`packages-lock.json`、各 .NET `packages.lock.json`。

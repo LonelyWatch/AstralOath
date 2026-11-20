@@ -1,0 +1,18 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "tenebria_b_idle_ready_eff",
+      "z": "4",
+      "format": "spine"
+    },
+    {
+      "source": "tenebria_b_idle_ready_pati1",
+      "x": "50",
+      "y": "330",
+      "z": "5",
+      "delay": "370",
+      "format": "particle"
+    }
+  ]
+}

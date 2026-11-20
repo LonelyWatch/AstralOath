@@ -1,0 +1,197 @@
+{
+  "timeline": {
+    "default": {
+      "idle": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "run_orb"
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "id": "idle_orb",
+              "source": "tenebria_idle_orb",
+              "location": 1,
+              "locationBone": "eff_pos",
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "b_idle_orb"
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "skill1_orb"
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "b_idle_orb"
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "run": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "idle_orb"
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "id": "run_orb",
+              "source": "tenebria_idle_orb",
+              "location": 1,
+              "locationBone": "eff_pos",
+              "scale": 0.7
+            }
+          }
+        ]
+      },
+      "groggy": {
+        "duration": 0,
+        "frames": []
+      },
+      "run_start": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "b_idle_orb"
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "id": "skill1_orb",
+              "source": "tenebria_skill_01_orb",
+              "location": 5,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          },
+          {
+            "param": {}
+          }
+        ]
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "b_idle_orb"
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "tenebria_skill_02_orb",
+              "location": 1,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "rise": {
+        "duration": 0,
+        "frames": []
+      },
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "idle_orb"
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "id": "b_idle_orb",
+              "source": "tenebria_b_idle_orb",
+              "location": 1,
+              "locationBone": "eff_pos",
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "id": "br",
+              "source": "tenebria_b_idle_ready",
+              "location": 5,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "b_idle": {
+        "duration": 0,
+        "frames": []
+      },
+      "skill3_1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "b_idle_orb"
+            }
+          },
+          {
+            "func": "effect",
+            "param": {
+              "source": "tenebria_skill_03_orb",
+              "location": 5,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

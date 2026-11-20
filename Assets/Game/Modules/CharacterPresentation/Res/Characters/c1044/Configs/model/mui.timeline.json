@@ -1,0 +1,218 @@
+{
+  "timeline": {
+    "default": {
+      "skill1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "mui_skill_01",
+              "location": 1,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "skill3_1": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "skill3_2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "skill2": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "source": "mui_skill_02_self",
+              "location": 1,
+              "scale": 1.0
+            }
+          },
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "camping": {
+        "duration": 0,
+        "frames": []
+      },
+      "b_idle_ready": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "effect",
+            "param": {
+              "id": "br",
+              "source": "mui_b_idle",
+              "location": 1,
+              "scale": 1.0
+            }
+          }
+        ]
+      },
+      "b_idle": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "run": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "groggy_": {
+        "duration": 0,
+        "frames": []
+      },
+      "groggy2": {
+        "duration": 0,
+        "frames": []
+      },
+      "groggy": {
+        "duration": 0,
+        "frames": []
+      },
+      "flying_damage": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "idle": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "knock_down": {
+        "duration": 0,
+        "frames": []
+      },
+      "rise": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "attacked_damage": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "attacked": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "appear": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "camping_ch": {
+        "duration": 0,
+        "frames": []
+      },
+      "camping_roof": {
+        "duration": 0,
+        "frames": []
+      },
+      "down": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      },
+      "fkying": {
+        "duration": 0,
+        "frames": [
+          {
+            "func": "remove",
+            "param": {
+              "targetId": "br"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

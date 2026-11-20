@@ -1,0 +1,99 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "tenebria_skill_03_bg",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "tenebria_skill_03_waterwall",
+      "format": "spine",
+      "globalZ": 10.0
+    },
+    {
+      "source": "tenebria_skill_03_hori_light",
+      "format": "spine",
+      "globalZ": 9.5
+    },
+    {
+      "source": "tenebria_skill_03_water_mirror",
+      "format": "spine",
+      "globalZ": 9.0
+    },
+    {
+      "source": "tenebria_skill_03_up_wave",
+      "format": "spine",
+      "globalZ": 5.0
+    },
+    {
+      "source": "tenebria_skill_03_up_wave",
+      "scale": "1.0,-1.0",
+      "format": "spine",
+      "globalZ": 4.5
+    },
+    {
+      "source": "tenebria_skill_03_up_doom_L",
+      "format": "spine",
+      "globalZ": 3.0
+    },
+    {
+      "source": "tenebria_skill_03_up_doom_L",
+      "scale": "-1.0,1.0",
+      "format": "spine",
+      "globalZ": 3.1
+    },
+    {
+      "source": "tenebria_skill_03_up_doom_L",
+      "scale": "-1.0,-1.0",
+      "format": "spine",
+      "globalZ": 3.2
+    },
+    {
+      "source": "tenebria_skill_03_up_doom_L",
+      "scale": "1.0,-1.0",
+      "format": "spine",
+      "globalZ": 3.3
+    },
+    {
+      "source": "tenebria_skill_03_up_moon",
+      "format": "spine",
+      "globalZ": 2.5
+    },
+    {
+      "source": "tenebria_skill_03_up_moon",
+      "scale": "1.0,-1.0",
+      "format": "spine",
+      "globalZ": 2.0
+    },
+    {
+      "source": "tenebria_color_mask",
+      "ani": "main",
+      "format": "spine",
+      "globalZ": 11.0
+    },
+    {
+      "source": "tenebria_skill_03_horizon_pati1",
+      "opacity": "0.5",
+      "scale": "1",
+      "format": "particle",
+      "globalZ": 9.5,
+      "lifeTime": "2666",
+      "actions": [
+        {
+          "action": "Opacity",
+          "delay": "2400",
+          "interval": "400",
+          "from": "0.5",
+          "to": "0.0"
+        }
+      ]
+    },
+    {
+      "source": "tenebria_skill_03_pati1",
+      "delay": "4700",
+      "format": "particle",
+      "globalZ": 5.0
+    }
+  ]
+}

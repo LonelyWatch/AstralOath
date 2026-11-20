@@ -105,3 +105,5 @@ Windows IL2CPP 和 Android ARM64 需分别演练。先用新母包验证内置�
 Windows 完整包入口临时关闭构建设置中的 `Create Visual Studio Solution`，确保产生可运行的 `.exe`，并在结束时恢复原设置。若本机编译峰值触发 Windows 页面文件不足，可在同一终端仅为该次构建设置 `BEE_BUILD_THREADS=2`。
 
 正式启动场景为 Home/Scenes/GameHome.unity，Foundation 仍使用原 FoundationEntry 及签名流程。清单增加 AstralOath.Client.Home 和 AstralOath.Client.Arena，HomeArena 组随同发布。启动契约、内置启动场景或立绘桥变更按新母包构建。含热更新脚本的联机 BattleScene 及转场配置在 Foundation YooAsset 中交付，0.1.9 升级该入场路径需要带新场景加载器的母包。 [主界面与模拟战](arena-lobby.md)
+
+第 41–50 名角色使用更新的 Spine 2.1 AOT 读取器处理同一槽的多条颜色轨和同一骨骼的多条缩放轨。对仍内置旧读取器的平台，交付这批内容需要重建相应 IL2CPP 母包，并与规则 14 服务端、配置和表现资源配套发布。本次角色制作未发布安装包。[角色交付记录](../delivery/2026-11-20-roster41-50.md)

@@ -1,0 +1,58 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "mui_skill_01",
+      "z": "50",
+      "format": "spine"
+    },
+    {
+      "source": "mui_skill_blow",
+      "x": "-270",
+      "y": "-120",
+      "z": "10",
+      "delay": "632",
+      "format": "spine"
+    },
+    {
+      "source": "mui_skill_blow",
+      "x": "0",
+      "y": "-90",
+      "z": "10",
+      "delay": "932",
+      "format": "spine"
+    },
+    {
+      "source": "mui_skill_blow",
+      "x": "-100",
+      "y": "-100",
+      "z": "10",
+      "delay": "1298",
+      "format": "spine"
+    },
+    {
+      "source": "mui_skill_blow_p",
+      "x": "300",
+      "y": "-80",
+      "z": "10",
+      "delay": "632",
+      "format": "particle"
+    },
+    {
+      "source": "mui_skill_blow_p",
+      "x": "550",
+      "y": "-80",
+      "z": "10",
+      "delay": "932",
+      "format": "particle"
+    },
+    {
+      "source": "mui_skill_blow_p",
+      "x": "450",
+      "y": "-100",
+      "z": "10",
+      "delay": "1298",
+      "format": "particle"
+    }
+  ]
+}

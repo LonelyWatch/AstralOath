@@ -1,0 +1,96 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "tenebria_skill_02",
+      "format": "spine",
+      "globalZ": 1.0
+    },
+    {
+      "source": "tenebria_skill_02_smoke",
+      "x": "-570~-630",
+      "y": "-280~-360",
+      "scale": "0.8~1.2",
+      "delay": "467",
+      "repeat": "11;125",
+      "format": "spine",
+      "globalZ": 1.1
+    },
+    {
+      "source": "tenebria_skill_02_smoke",
+      "x": "-500~-600",
+      "y": "50~-150",
+      "scale": "0.7~1",
+      "delay": "467",
+      "repeat": "11;100~125",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "tenebria_skill_02_smoke2",
+      "x": "570~630",
+      "y": "-280~-360",
+      "scale": "0.8~1.2",
+      "delay": "467",
+      "repeat": "11;125",
+      "format": "spine",
+      "globalZ": 1.1
+    },
+    {
+      "source": "tenebria_skill_02_smoke2",
+      "x": "500~600",
+      "y": "50~-150",
+      "scale": "0.7~1",
+      "delay": "467",
+      "repeat": "11;100~125",
+      "format": "spine",
+      "globalZ": -1.0
+    },
+    {
+      "source": "tenebria_skill_02_pati1",
+      "y": "139",
+      "delay": "500",
+      "format": "particle",
+      "globalZ": 1.3,
+      "lifeTime": "1466"
+    },
+    {
+      "source": "tenebria_skill_02_pati2",
+      "y": "139",
+      "delay": "2033",
+      "format": "particle",
+      "globalZ": 1.5
+    },
+    {
+      "source": "tenebria_skill_02_pati3",
+      "y": "139",
+      "delay": "2267",
+      "format": "particle",
+      "globalZ": 1.3
+    },
+    {
+      "source": "tenebria_skill_02_pati4",
+      "x": "600",
+      "y": "142",
+      "delay": "2333",
+      "format": "particle",
+      "globalZ": 1.4
+    },
+    {
+      "source": "tenebria_skill_02_pati4",
+      "x": "-600",
+      "y": "142",
+      "scale": "-1.0,1.0",
+      "delay": "2333",
+      "format": "particle",
+      "globalZ": 1.4
+    },
+    {
+      "source": "tenebria_skill_02_pati5",
+      "delay": "567",
+      "format": "particle",
+      "globalZ": 1.2,
+      "lifeTime": "1366"
+    }
+  ]
+}

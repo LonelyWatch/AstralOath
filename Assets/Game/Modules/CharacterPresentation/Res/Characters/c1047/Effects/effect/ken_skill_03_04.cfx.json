@@ -1,0 +1,23 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "ken_sk3_2eff_b",
+      "ani": "animation3",
+      "z": "-1",
+      "format": "spine"
+    },
+    {
+      "source": "ken_sk3_2eff_f",
+      "ani": "animation3",
+      "z": "1",
+      "format": "spine",
+      "actions": [
+        {
+          "action": "Fire",
+          "delay": "3380"
+        }
+      ]
+    }
+  ]
+}

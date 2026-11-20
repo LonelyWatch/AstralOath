@@ -1,0 +1,41 @@
+
+chloe_eff_sk3_1_b.sct
+size: 504,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cloud_03
+  rotate: true
+  xy: 324, 2
+  size: 114, 108
+  orig: 114, 108
+  offset: 0, 0
+  index: -1
+cloud_04
+  rotate: false
+  xy: 211, 2
+  size: 111, 81
+  orig: 111, 81
+  offset: 0, 0
+  index: -1
+cloud_13
+  rotate: true
+  xy: 434, 2
+  size: 95, 68
+  orig: 95, 68
+  offset: 0, 0
+  index: -1
+ground_smoke4
+  rotate: false
+  xy: 2, 90
+  size: 240, 36
+  orig: 240, 36
+  offset: 0, 0
+  index: -1
+tornado_wave_01
+  rotate: false
+  xy: 2, 2
+  size: 207, 86
+  orig: 207, 86
+  offset: 0, 0
+  index: -1

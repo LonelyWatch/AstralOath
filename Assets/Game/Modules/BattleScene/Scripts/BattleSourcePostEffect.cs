@@ -33,16 +33,17 @@ namespace AstralOath.Client.BattleScene
                 Power * Mathf.Sin(Mathf.PI * Mathf.Lerp(Start, End, Mathf.Clamp01(elapsed / Duration)));
         }
 
-        private sealed class Blur
+        private sealed class EffectWindow
         {
             public string Id;
+            public bool Invert;
             public float Start, Duration, Range, Samples, Ratio;
             public Vector2 Direction;
             public SineRange[] Modulation;
         }
 
         private readonly Camera camera;
-        private readonly List<Blur> active = new List<Blur>();
+        private readonly List<EffectWindow> active = new List<EffectWindow>();
         private Camera capture;
         private GameObject composite;
         private Mesh mesh;
@@ -52,12 +53,15 @@ namespace AstralOath.Client.BattleScene
 
         public BattleSourcePostEffect(Camera camera) => this.camera = camera;
 
+        internal bool IsInverted => active.Exists(effect => effect.Invert);
+        private EffectWindow CurrentBlur => active.FindLast(effect => !effect.Invert);
+
         internal float? ActiveRange
         {
             get
             {
-                if (active.Count == 0) return null;
-                var blur = active[active.Count - 1];
+                var blur = CurrentBlur;
+                if (blur == null) return null;
                 float range = blur.Range;
                 foreach (var sine in blur.Modulation)
                     range += sine.Evaluate(time - blur.Start);
@@ -67,10 +71,22 @@ namespace AstralOath.Client.BattleScene
 
         public bool Play(JObject node, JObject[] modulators)
         {
+            if (!TryNumber(node, "duration", out float duration) || duration <= 0f) return false;
+            var effect = new EffectWindow
+            {
+                Id = (string)node["id"] ?? "pp:" + node["guid"],
+                Start = time,
+                Duration = duration / 1000f
+            };
+            if ((string)node["program"] == "sprite_invert")
+            {
+                if (modulators.Length != 0) return false;
+                effect.Invert = true;
+                return StartWindow(effect);
+            }
             if ((string)node["program"] != "sprite_blur" ||
                 !TryNumber(node, "u_range", out float range) ||
-                !TryNumber(node, "u_sample", out float samples) || samples <= .5f ||
-                !TryNumber(node, "duration", out float duration) || duration <= 0f)
+                !TryNumber(node, "u_sample", out float samples) || samples <= .5f)
                 return false;
 
             var random = modulators.FirstOrDefault(item => (string)item["etty"] == "RANDOM_VALUE" &&
@@ -89,17 +105,16 @@ namespace AstralOath.Client.BattleScene
                     Number(item, "start_rad"), Number(item, "finish_rad", 1f));
             }
 
-            var effect = new Blur
-            {
-                Id = (string)node["id"] ?? "pp:" + node["guid"],
-                Start = time,
-                Duration = duration / 1000f,
-                Range = range,
-                Samples = Mathf.Min(5f, samples),
-                Ratio = Mathf.Clamp01(Number(node, "u_ratio")),
-                Direction = new Vector2(Number(node, "direction_x"), Number(node, "direction_y")),
-                Modulation = modulation
-            };
+            effect.Range = range;
+            effect.Samples = Mathf.Min(5f, samples);
+            effect.Ratio = Mathf.Clamp01(Number(node, "u_ratio"));
+            effect.Direction = new Vector2(Number(node, "direction_x"), Number(node, "direction_y"));
+            effect.Modulation = modulation;
+            return StartWindow(effect);
+        }
+
+        private bool StartWindow(EffectWindow effect)
+        {
             active.Add(effect);
             if (UpdateDisplay()) return true;
             active.Remove(effect);
@@ -113,7 +128,7 @@ namespace AstralOath.Client.BattleScene
             active.RemoveAll(effect => time >= effect.Start + effect.Duration);
             if (!UpdateDisplay())
             {
-                Debug.LogWarning("Could not update the battle sprite_blur render target.");
+                Debug.LogWarning("Could not update the battle post-effect render target.");
                 Reset();
             }
         }
@@ -136,8 +151,7 @@ namespace AstralOath.Client.BattleScene
 
         private bool UpdateDisplay()
         {
-            float? range = ActiveRange;
-            if (!range.HasValue)
+            if (active.Count == 0)
             {
                 ReleaseDisplay();
                 return true;
@@ -183,12 +197,14 @@ namespace AstralOath.Client.BattleScene
             float viewHeight = camera.orthographicSize * 2f;
             composite.transform.localScale = new Vector3(viewHeight * camera.aspect, viewHeight, 1f);
             composite.transform.localPosition = Vector3.forward * (camera.nearClipPlane + .5f);
-            var current = active[active.Count - 1];
+            var current = CurrentBlur;
+            var direction = current?.Direction ?? Vector2.zero;
             material.SetVector("u_resolution", new Vector4(width, height, 0f, 0f));
-            material.SetVector("u_direction", new Vector4(current.Direction.x, current.Direction.y, 0f, 0f));
-            material.SetFloat("u_range", range.Value);
-            material.SetFloat("u_sample", current.Samples);
-            material.SetFloat("u_ratio", current.Ratio);
+            material.SetVector("u_direction", new Vector4(direction.x, direction.y, 0f, 0f));
+            material.SetFloat("u_range", ActiveRange ?? 0f);
+            material.SetFloat("u_sample", current?.Samples ?? 0f);
+            material.SetFloat("u_ratio", current?.Ratio ?? 0f);
+            material.SetFloat("_Invert", IsInverted ? 1f : 0f);
             return true;
         }
 
@@ -216,7 +232,7 @@ namespace AstralOath.Client.BattleScene
                 triangles = new[] { 0, 2, 1, 0, 3, 2 }
             };
             composite.GetComponent<MeshFilter>().sharedMesh = mesh;
-            material = new Material(shader) { name = "Battle sprite blur" };
+            material = new Material(shader) { name = "Battle world post-effect" };
             var renderer = composite.GetComponent<MeshRenderer>();
             renderer.sharedMaterial = material;
             renderer.sortingOrder = CompositeSortingOrder;

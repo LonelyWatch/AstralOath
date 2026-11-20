@@ -2307,6 +2307,594 @@
       "text": "总攻击",
       "displaySha256": "99d2fcb92b8c2289229ebec0100bfba412257da2e7ecf2c13841dd556fa41225"
     },
+    "battle.skill.c1043.s1.description": {
+      "sourceId": "sk_c1043_1",
+      "textId": "sk_c1043_1_de",
+      "text": "用重力箭攻击敌人，造成速攻值降低<#FF9900>{per(sk_eff_value1)}%</>后，使自身速攻值提升<#FF9900>{per(sk_eff_value2)}%</>。",
+      "parameters": {
+        "sk_eff_value1": {
+          "sourceField": "sk_c1043_1.sk_eff_value1",
+          "value": "0.08"
+        },
+        "sk_eff_value2": {
+          "sourceField": "sk_c1043_1.sk_eff_value2",
+          "value": "0.08"
+        }
+      },
+      "displaySha256": "369760a1073c9681376fe7d45b34b7f3ef9093470d742914310e5197437272ca"
+    },
+    "battle.skill.c1043.s1.name": {
+      "sourceId": "sk_c1043_1",
+      "textId": "sk_c1043_1_sknm",
+      "text": "重力箭",
+      "displaySha256": "d9117129edb3549ffe187320db12892bb9917e3589ba9a3eccdf5fa14c6f556d"
+    },
+    "battle.skill.c1043.s2.burn.description": {
+      "sourceId": "sk_c1043_2s",
+      "textId": "sk_c1043_2s_de",
+      "text": "该技能冷却时间减少2回合。",
+      "displaySha256": "18d8abc4c1a5b963d29e3b6fbffe3846c70273cc25922d663cccf50058d6d73c"
+    },
+    "battle.skill.c1043.s2.description": {
+      "sourceId": "sk_c1043_2",
+      "textId": "sk_c1043_2_de",
+      "text": "用重力魔法阵攻击全体敌人4次，每次各有50%的几率降低速攻值<#FF9900>{per(sk_eff_value1)}%</>。",
+      "parameters": {
+        "sk_eff_value1": {
+          "sourceField": "sk_c1043_2.sk_eff_value1",
+          "value": "0.15"
+        }
+      },
+      "displaySha256": "beaff176e147375e1cf9614fb91974c1404402e165c4715780ab668abd542c41"
+    },
+    "battle.skill.c1043.s2.name": {
+      "sourceId": "sk_c1043_2",
+      "textId": "sk_c1043_2_sknm",
+      "text": "重力波",
+      "displaySha256": "213c1202e3debe65ea8efdc3c5a6bb5ccff8634251c21add92be0985f7b7edd8"
+    },
+    "battle.skill.c1043.s3.description": {
+      "sourceId": "sk_c1043_3u",
+      "textId": "sk_c1043_3u_de",
+      "text": "发射强力的重力球攻击全体敌人，解除所有强化效果后，在2回合内造成<#FFFFFF>束缚</>效果、造成2个<#FFFFFF>中毒</>效果。使自身速攻值提升50%。",
+      "displaySha256": "4a345b0c9ffc35496a885e74814d6402eb2d352fca968d149d11d56fd12745e8"
+    },
+    "battle.skill.c1043.s3.name": {
+      "sourceId": "sk_c1043_3u",
+      "textId": "sk_c1043_3u_sknm",
+      "text": "黑洞猛击",
+      "displaySha256": "b7db7cffaf7a8cd059d6e66aa8e1c5e0fdad34c4cd7ea38ac8a8130640b2c62d"
+    },
+    "battle.skill.c1043.s3.unawakened.description": {
+      "sourceId": "sk_c1043_3",
+      "textId": "sk_c1043_3_de",
+      "text": "发射强力的重力球攻击全体敌人，解除所有强化效果后，在2回合内造成<#FFFFFF>束缚</>效果。使自身速攻值提升50%。",
+      "displaySha256": "5556fed880f4f3bd9d19b213f51ec4776ff0aab4c58fba1ddf6d72bdf5056a5a"
+    },
+    "battle.skill.c1044.s1.description": {
+      "sourceId": "sk_c1044_1",
+      "textId": "sk_c1044_1_de",
+      "text": "用鞭子攻击敌人，有<#FF9900>{per(sk_add_rate1)}%</>的几率在1回合内造成<#FFFFFF>标靶</>效果。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1044_1.sk_add_rate1",
+          "value": "0.85"
+        }
+      },
+      "displaySha256": "aaf64cfd4a822599d4a084d60fd4e0ff456c3551b97b45d7297dbf327adb3b62"
+    },
+    "battle.skill.c1044.s1.name": {
+      "sourceId": "sk_c1044_1",
+      "textId": "sk_c1044_1_sknm",
+      "text": "鞭打",
+      "displaySha256": "031c0bfd64a6b39131eca5a4d62de4c3960f09953c0002040bb79c8150a48dc7"
+    },
+    "battle.skill.c1044.s2.burn.description": {
+      "sourceId": "sk_c1044_2s",
+      "textId": "sk_c1044_2s_de",
+      "text": "所有技能冷却时间减少2回合。",
+      "displaySha256": "e5fc3a2ee96d3ce6c60fb7bb0ad60ef37d36d6d16c12102345bda95e7f98dbc6"
+    },
+    "battle.skill.c1044.s2.description": {
+      "sourceId": "sk_c1044_2",
+      "textId": "sk_c1044_2_de",
+      "text": "召唤驯化魔物攻击全体敌人，各有<#FF9900>{per(sk_add_rate1)}%</>的几率在2回合内造成2个<#FFFFFF>出血</>、有<#FF9900>{per(sk_add_rate3)}%</>的几率在1回合内造成<#FFFFFF>晕眩</>效果。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1044_2.sk_add_rate1",
+          "value": "0.35"
+        },
+        "sk_add_rate3": {
+          "sourceField": "sk_c1044_2.sk_add_rate3",
+          "value": "0.65"
+        }
+      },
+      "displaySha256": "36530afede161abf86ebfc811d13c934f9d8a911f9a5b75cf68d14ea3c5e84b6"
+    },
+    "battle.skill.c1044.s2.name": {
+      "sourceId": "sk_c1044_2",
+      "textId": "sk_c1044_2_sknm",
+      "text": "处罚",
+      "displaySha256": "48c488d2292f026dd4a41965fe473e94a20600b6f72bb44d24cf77aa27255bf9"
+    },
+    "battle.skill.c1044.s3.description": {
+      "sourceId": "sk_c1044_3u",
+      "textId": "sk_c1044_3u_de",
+      "text": "挥鞭驱使魔物攻击全体敌人，解除2个强化效果。使全体我军人员在3回合内获得<#FFFFFF>攻击力提升</>效果，每触发一次暴击，使自身速攻值提升30%。",
+      "displaySha256": "61873e53f25808c4cf768558d45662d30358c7d68e95193703b9674b63a7e03c"
+    },
+    "battle.skill.c1044.s3.name": {
+      "sourceId": "sk_c1044_3u",
+      "textId": "sk_c1044_3u_sknm",
+      "text": "终曲",
+      "displaySha256": "37239e266eb6af01257a9b565e023a77cd58a0bd7794427ef41ea1e6af6fc8f6"
+    },
+    "battle.skill.c1044.s3.unawakened.description": {
+      "sourceId": "sk_c1044_3",
+      "textId": "sk_c1044_3_de",
+      "text": "挥鞭驱使魔物攻击全体敌人，解除2个强化效果。每触发一次暴击，使自身速攻值提升30%。",
+      "displaySha256": "ce4082d809f674fd31d571e261a6ac92bc03cf61f08776ac3a1b3ab9fd9f79ba"
+    },
+    "battle.skill.c1046.s1.description": {
+      "sourceId": "sk_c1046_1u",
+      "textId": "sk_c1046_1u_de",
+      "text": "用剑攻击敌人，并各有<#FF9900>{per(sk_add_rate1)}%</>的几率在2回合内造成2个<#FFFFFF>出血</>效果。回合结束时，使目标附带的<#FFFFFF>出血</>效果发生<#FFFFFF>激爆</>。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1046_1u.sk_add_rate1",
+          "value": "0.65"
+        }
+      },
+      "displaySha256": "b6eba53e6fb35663dc8023ade290ec6f4a5a5ab233288c4775f8a037a59fd207"
+    },
+    "battle.skill.c1046.s1.name": {
+      "sourceId": "sk_c1046_1u",
+      "textId": "sk_c1046_1u_sknm",
+      "text": "狂暴玫瑰",
+      "displaySha256": "ce4f37b254391a7c6ad34fccc3b4b185700c7a5d04f426d563fc8089545bc2d6"
+    },
+    "battle.skill.c1046.s1.unawakened.description": {
+      "sourceId": "sk_c1046_1",
+      "textId": "sk_c1046_1_de",
+      "text": "用剑攻击敌人，并各有<#FF9900>{per(sk_add_rate1)}%</>的几率在1回合内造成2个<#FFFFFF>出血</>效果。回合结束时，使目标附带的<#FFFFFF>出血</>效果发生<#FFFFFF>激爆</>。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1046_1.sk_add_rate1",
+          "value": "0.65"
+        }
+      },
+      "displaySha256": "7ad473996bbb4dcb46d225969bfc13cb64d85fe7648ab383200d9d4a3e1643e7"
+    },
+    "battle.skill.c1046.s2.burn.description": {
+      "sourceId": "sk_c1046_2s",
+      "textId": "sk_c1046_2s_de",
+      "text": "无视效果抗性。",
+      "displaySha256": "42b9bdee5ec503b4f8013643c51ce3517ef71da61e797dd87e3346711769023e"
+    },
+    "battle.skill.c1046.s2.description": {
+      "sourceId": "sk_c1046_2",
+      "textId": "sk_c1046_2_de",
+      "text": "对全体敌人造成60%的<#FFFFFF>资源减少</>后攻击，解除所有强化效果，在2回合内造成<#FFFFFF>拘禁</>效果。每有一个目标，使自身速攻值提升25%。",
+      "displaySha256": "09ee03af933ac3a529e98f46d138cf087710dfa23cc24d6ccade55f636106f92"
+    },
+    "battle.skill.c1046.s2.name": {
+      "sourceId": "sk_c1046_2",
+      "textId": "sk_c1046_2_sknm",
+      "text": "荆棘",
+      "displaySha256": "f1aeedccde434a1885a879b556ae2dcdc1db4612f64303a857ad8f61d20f8b8d"
+    },
+    "battle.skill.c1046.s3.description": {
+      "sourceId": "sk_c1046_3",
+      "textId": "sk_c1046_3_de",
+      "text": "用鞭形剑攻击敌人，在2回合内造成<#FFFFFF>防御力降低</>后，使速攻值降低100%。使全体我军人员获得1次<#FFFFFF>技能伤害无效</>。若目标处于<#FFFFFF>拘禁</>状态，则无视效果抗性。",
+      "displaySha256": "7a6db1d7ed95183351b5417e4fa09f0d2ae04f9c9a53fba48b57d5e75583a187"
+    },
+    "battle.skill.c1046.s3.name": {
+      "sourceId": "sk_c1046_3",
+      "textId": "sk_c1046_3_sknm",
+      "text": "公开处决",
+      "displaySha256": "a926d4414dc7fba62d5978eeb3810c42cee89820943414a1670b3e590ac01e86"
+    },
+    "battle.skill.c1047.s1.description": {
+      "sourceId": "sk_c1047_1",
+      "textId": "sk_c1047_1_new_de",
+      "text": "连续打击敌人，有50%的几率在2回合内造成<#FFFFFF>防御力降低</>效果。若处于<#FFFFFF>魄力</>状态，则对目标在2回合内额外造成<#FFFFFF>烧伤</>效果。根据自身最大生命值等比提升伤害量。",
+      "displaySha256": "1b129747fccbe816ca2c1850ff10365de4177a484a188622cfb3abbea50fcf4b"
+    },
+    "battle.skill.c1047.s1.name": {
+      "sourceId": "sk_c1047_1",
+      "textId": "sk_c1047_1_sknm",
+      "text": "天极拳",
+      "displaySha256": "c99e2ddcbfcd7841b70f8411547566ea9fb78ef3c369673fca962446ceaf303f"
+    },
+    "battle.skill.c1047.s2.burn.description": {
+      "sourceId": "sk_c1047_2s",
+      "textId": "sk_c1047_2s_de",
+      "text": "获得额外回合。",
+      "displaySha256": "65c9b7cc071587bb844b8f96a8fd88a62f9bf6814159429aa054a34b8c4723fa"
+    },
+    "battle.skill.c1047.s2.description": {
+      "sourceId": "sk_c1047_2",
+      "textId": "sk_c1047_2_de",
+      "text": "踢击敌人，在2回合内造成<#FFFFFF>防御力降低</>后，使自身在2回合内<#FFFFFF>速度提升</>。若自身处于<#FFFFFF>魄力</>状态，则无视效果抗性。根据自身最大生命值等比提升伤害量。",
+      "displaySha256": "a49c51cbea5a27062709170007b657515f2538190f41abfb5d5ced9be0d54546"
+    },
+    "battle.skill.c1047.s2.name": {
+      "sourceId": "sk_c1047_2",
+      "textId": "sk_c1047_2_sknm",
+      "text": "天舞脚",
+      "displaySha256": "d032707fe429767490532d41d686c38751bdbd999da8b1b29ae0ae164cca6c2d"
+    },
+    "battle.skill.c1047.s3.description": {
+      "sourceId": "sk_c1047_3u",
+      "textId": "sk_c1047_3u_de",
+      "text": "连续攻击后施展强力一击，在2回合内造成<#FFFFFF>攻击力降低</>，在1回合内造成<#FFFFFF>晕眩</>效果。使自身在3回合内获得<#FFFFFF>魄力</>效果。根据自身最大生命值等比提升伤害量。\\n首次战斗开始时，获得40点斗志。",
+      "displaySha256": "9f9cf59e8880b60605c0468c7d8aeec77f4120b46e9fddf747474283c6d7fb53"
+    },
+    "battle.skill.c1047.s3.name": {
+      "sourceId": "sk_c1047_3u",
+      "textId": "sk_c1047_3u_sknm",
+      "text": "阎罗霸皇拳",
+      "displaySha256": "069ee1d43731da5748c5306d8229e0ea6c35c7a2f888aba056da6628cc4fe043"
+    },
+    "battle.skill.c1047.s3.unawakened.description": {
+      "sourceId": "sk_c1047_3",
+      "textId": "sk_c1047_3_de",
+      "text": "连续攻击后施展强力一击，在1回合内造成<#FFFFFF>晕眩</>效果。使自身在3回合内获得<#FFFFFF>魄力</>效果。根据自身最大生命值等比提升伤害量。\\n首次战斗开始时，获得40点斗志。",
+      "displaySha256": "47eecce5e9e7fbe5750e1bf5645bb54e98c7e8ac3ba3aaa18a4218f42473f9dc"
+    },
+    "battle.skill.c1048.s1.description": {
+      "sourceId": "sk_c1048_1u",
+      "textId": "sk_c1048_1u_de",
+      "text": "炸开火花，攻击敌人，有<#FF9900>{per(sk_add_rate1)}%</>的几率在2回合内造成<#FFFFFF>烧伤</>效果。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1048_1u.sk_add_rate1",
+          "value": "0.35"
+        }
+      },
+      "displaySha256": "363e82d0ea512da2966a24f8991dbaf1287c55039d085040e94fbd727f2793bb"
+    },
+    "battle.skill.c1048.s1.name": {
+      "sourceId": "sk_c1048_1u",
+      "textId": "sk_c1048_1u_sknm",
+      "text": "发火",
+      "displaySha256": "eb0635e00f7bb30968f7bcfdd91cb5d2ffa4597d0c642cd8c9918f4dbc408f28"
+    },
+    "battle.skill.c1048.s1.unawakened.description": {
+      "sourceId": "sk_c1048_1",
+      "textId": "sk_c1048_1_de",
+      "text": "炸开火花，攻击敌人，有<#FF9900>{per(sk_add_rate1)}%</>的几率在1回合内造成<#FFFFFF>烧伤</>效果。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1048_1.sk_add_rate1",
+          "value": "0.35"
+        }
+      },
+      "displaySha256": "3d7b46c95689966ec674d1311ac2c13078043ef919132e0557e0b7bcd18ea498"
+    },
+    "battle.skill.c1048.s2.description": {
+      "sourceId": "sk_c1048_2",
+      "textId": "sk_c1048_2_de",
+      "text": "用催化爆发攻击全体敌人，解除2个强化效果，并在2回合内造成<#FFFFFF>无法恢复</>效果后，使全体我军人员在2回合内<#FFFFFF>攻击力提升</>。每造成一次<#FFFFFF>无法恢复</>效果，使自身速攻值提升30%。",
+      "displaySha256": "0c090d8e2c07e3883ac4f6d9b987abfc2708c5ec9a4701d8ee87e3f61cad66f0"
+    },
+    "battle.skill.c1048.s2.name": {
+      "sourceId": "sk_c1048_2",
+      "textId": "sk_c1048_2_sknm",
+      "text": "强力催化剂",
+      "displaySha256": "e5607d9fb8f9fcd27f1a97da58e6dee0071efc6b520c42ee5460bf7234158755"
+    },
+    "battle.skill.c1048.s3.burn.description": {
+      "sourceId": "sk_c1048_3s",
+      "textId": "sk_c1048_3s_de",
+      "text": "无视效果抗性。",
+      "displaySha256": "42b9bdee5ec503b4f8013643c51ce3517ef71da61e797dd87e3346711769023e"
+    },
+    "battle.skill.c1048.s3.description": {
+      "sourceId": "sk_c1048_3",
+      "textId": "sk_c1048_3_de",
+      "text": "用巨大火柱攻击全体敌人，各有<#FF9900>{per(sk_add_rate1)}%</>的几率在2回合内造成2个<#FFFFFF>烧伤</>、有<#FF9900>{per(sk_add_rate3)}%</>的几率在1回合内造成<#FFFFFF>晕眩</>效果。根据攻击力使自身在2回合内获得等比强度的<#FFFFFF>防护罩</>。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1048_3.sk_add_rate1",
+          "value": "0.8"
+        },
+        "sk_add_rate3": {
+          "sourceField": "sk_c1048_3.sk_add_rate3",
+          "value": "0.5"
+        }
+      },
+      "displaySha256": "2c9d970eda40baf8a551abd32b716fcc63165ad78f8b592fd1f64e2152f7e744"
+    },
+    "battle.skill.c1048.s3.name": {
+      "sourceId": "sk_c1048_3",
+      "textId": "sk_c1048_3_sknm",
+      "text": "火柱",
+      "displaySha256": "53f406aca7f56bbcbb421618a5b02bbbc365130edbc1e086c8dd5ad425f1e5b2"
+    },
+    "battle.skill.c1049.s1.description": {
+      "sourceId": "sk_c1049_1",
+      "textId": "sk_c1049_1_de",
+      "text": "用锤子攻击敌人。若目标处于<#FFFFFF>魔法钉</>状态，则伤害量提升。",
+      "displaySha256": "241ff67e35e9243f0daf7b573efb54bc165191811057929cd5c65e0deab45a6d"
+    },
+    "battle.skill.c1049.s1.name": {
+      "sourceId": "sk_c1049_1",
+      "textId": "sk_c1049_1_sknm",
+      "text": "强击",
+      "displaySha256": "9a2c48a4ced9f2a0fda0030a7a3bccdfad03bc2a108d9cbb63ab216664431496"
+    },
+    "battle.skill.c1049.s2.description": {
+      "sourceId": "sk_c1049_2u",
+      "textId": "sk_c1049_2u_de",
+      "text": "使自身在3回合内<#FFFFFF>攻击力提升</>后，攻击敌人，在3回合内造成<#FFFFFF>魔法钉</>效果，并使自身速攻值提升50%。无视效果抗性。",
+      "displaySha256": "c3c4f1a6169120e56b10284d83edcd3d69ff4a4d7ae2ff407be3bdd4f8ebccd7"
+    },
+    "battle.skill.c1049.s2.name": {
+      "sourceId": "sk_c1049_2u",
+      "textId": "sk_c1049_2u_sknm",
+      "text": "魔法钉射击",
+      "displaySha256": "077d237e97e2138fe3f99e708c9852fe2a0627df100b2ed4ccb8b06532ce93c6"
+    },
+    "battle.skill.c1049.s2.unawakened.description": {
+      "sourceId": "sk_c1049_2",
+      "textId": "sk_c1049_2_de",
+      "text": "使自身在3回合内<#FFFFFF>攻击力提升</>后，攻击敌人，在3回合内造成<#FFFFFF>魔法钉</>效果，并使自身速攻值提升50%。",
+      "displaySha256": "51b484b395e04b6cf7132075c634ec7e4622ab1e617d25d5ac630438bde96b24"
+    },
+    "battle.skill.c1049.s3.burn.description": {
+      "sourceId": "sk_c1049_3s",
+      "textId": "sk_c1049_3s_de",
+      "text": "伤害量提升。",
+      "displaySha256": "1b0f73ab02905b5b03d9a061d077a080aa48a0fe29cc2e5ca260bcfb450e6611"
+    },
+    "battle.skill.c1049.s3.description": {
+      "sourceId": "sk_c1049_3",
+      "textId": "sk_c1049_3_de",
+      "text": "飞向高空攻击目标，在1回合内造成<#FFFFFF>晕眩</>效果。若目标处于<#FFFFFF>魔法钉</>状态，则无视效果抗性。",
+      "displaySha256": "0873aad6d6684fddf11bf0debc370176dfbb1767e1efce4b988d4de87d23d0d3"
+    },
+    "battle.skill.c1049.s3.name": {
+      "sourceId": "sk_c1049_3",
+      "textId": "sk_c1049_3_sknm",
+      "text": "超强击",
+      "displaySha256": "035ea699217e057fefcdb80f65c895bda87dfc110dee8d7768acf96775c4fa21"
+    },
+    "battle.skill.c1050.s1.description": {
+      "sourceId": "sk_c1050_1u",
+      "textId": "sk_c1050_1u_de",
+      "text": "引爆暗黑之息攻击包含目标在内的2人，有<#FF9900>{per(sk_add_rate2)}%</>的几率在1回合内造成<#FFFFFF>睡眠</>效果。每触发一次<#FFFFFF>睡眠</>效果，使自身速攻值提升25%。此技能不会触发夹攻。",
+      "parameters": {
+        "sk_add_rate2": {
+          "sourceField": "sk_c1050_1u.sk_add_rate2",
+          "value": "0.6"
+        }
+      },
+      "displaySha256": "ca6bfab1168389b2e27de1ef2a675f17f3cc4a3b435ee27bce4e824c95b42603"
+    },
+    "battle.skill.c1050.s1.name": {
+      "sourceId": "sk_c1050_1u",
+      "textId": "sk_c1050_1u_sknm",
+      "text": "暗黑爆发",
+      "displaySha256": "4a68b831ab9f7fefb3ed5bd0b0c4eec3a93c9709fde48ef1c0e2cd51738bb52a"
+    },
+    "battle.skill.c1050.s1.unawakened.description": {
+      "sourceId": "sk_c1050_1",
+      "textId": "sk_c1050_1_de",
+      "text": "引爆暗黑之息攻击包含目标在内的2人，有<#FF9900>{per(sk_add_rate1)}%</>的几率在1回合内造成<#FFFFFF>睡眠</>效果。此技能不会触发夹攻。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1050_1.sk_add_rate1",
+          "value": "0.6"
+        }
+      },
+      "displaySha256": "8f30fef04e8e14736346113861b9d479e17db76e7bd7636200b92b94ffe02beb"
+    },
+    "battle.skill.c1050.s2.burn.description": {
+      "sourceId": "sk_c1050_2s",
+      "textId": "sk_c1050_2s_de",
+      "text": "伤害量提升。",
+      "displaySha256": "1b0f73ab02905b5b03d9a061d077a080aa48a0fe29cc2e5ca260bcfb450e6611"
+    },
+    "battle.skill.c1050.s2.description": {
+      "sourceId": "sk_c1050_2",
+      "textId": "sk_c1050_2_de",
+      "text": "召唤不祥闪电攻击全体敌人，解除1个强化效果后，使速攻值降低<#FF9900>{per(sk_eff_value2)}%</>，在2回合内造成<#FFFFFF>速度降低</>、<#FFFFFF>无法强化</>效果。",
+      "parameters": {
+        "sk_eff_value2": {
+          "sourceField": "sk_c1050_2.sk_eff_value2",
+          "value": "0.2"
+        }
+      },
+      "displaySha256": "e47bfcd5ed6f2f087ba8d979a825baeee13a214f319febf0a85c7322d9e10a39"
+    },
+    "battle.skill.c1050.s2.name": {
+      "sourceId": "sk_c1050_2",
+      "textId": "sk_c1050_2_sknm",
+      "text": "不祥闪电",
+      "displaySha256": "528e970d5e346b88e3c69a48718de80befb71fc00af0734e5eea77f412381a1f"
+    },
+    "battle.skill.c1050.s3.description": {
+      "sourceId": "sk_c1050_3",
+      "textId": "sk_c1050_3_de",
+      "text": "坠下噩梦之月攻击全体敌人，在2回合内造成<#FFFFFF>防御力降低</>、有<#FF9900>{per(sk_add_rate2)}%</>的几率在1回合内造成<#FFFFFF>睡眠</>效果后，使自身在2回合内获得<#FFFFFF>攻击力提升</>效果。",
+      "parameters": {
+        "sk_add_rate2": {
+          "sourceField": "sk_c1050_3.sk_add_rate2",
+          "value": "0.7"
+        }
+      },
+      "displaySha256": "fecc5640d3333540d92d0d08bdf320118891e18e5c5de183998ca861516224c8"
+    },
+    "battle.skill.c1050.s3.name": {
+      "sourceId": "sk_c1050_3",
+      "textId": "sk_c1050_3_sknm",
+      "text": "梦魇",
+      "displaySha256": "c8e38a160b6f1af2bc16a8926715dc52ad20bda9948161bf39bfd6e205b6e4e2"
+    },
+    "battle.skill.c1053.s1.description": {
+      "sourceId": "sk_c1053_1",
+      "textId": "sk_c1053_1_de",
+      "text": "用风之魔法攻击敌人，有<#FF9900>{per(sk_add_rate1)}%</>的几率<#FFFFFF>转移</>自身附带的1个弱化效果，在2回合内造成<#FFFFFF>随机弱化效果</>。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1053_1.sk_add_rate1",
+          "value": "0.5"
+        }
+      },
+      "displaySha256": "2903cf49ee0549d772469750de2b0562f753c4b388cf0a501db5dafe068ca464"
+    },
+    "battle.skill.c1053.s1.name": {
+      "sourceId": "sk_c1053_1",
+      "textId": "sk_c1053_1_sknm",
+      "text": "沙尘暴",
+      "displaySha256": "adab3e189ec57f978930e9732ecffc4b16b26af869579f26d9cc616fee06d6a4"
+    },
+    "battle.skill.c1053.s2.description": {
+      "sourceId": "sk_c1053_2",
+      "textId": "sk_c1053_2_de",
+      "text": "用热沙尘暴攻击全体敌人，各有<#FF9900>{per(sk_add_rate1)}%</>的几率在2回合内造成<#FFFFFF>命中降低</>、<#FFFFFF>攻击力降低</>效果。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1053_2.sk_add_rate1",
+          "value": "0.6"
+        }
+      },
+      "displaySha256": "3f72b42a00e7a509f94e82b3c33984b504eff7d11b1e9fd2b1aca89b75afdaad"
+    },
+    "battle.skill.c1053.s2.name": {
+      "sourceId": "sk_c1053_2",
+      "textId": "sk_c1053_2_sknm",
+      "text": "飓风",
+      "displaySha256": "d58f8b29e188a2384af1f9e78bd4de8bcaa1b153ee29f41ad5131abe406146af"
+    },
+    "battle.skill.c1053.s3.burn.description": {
+      "sourceId": "sk_c1053_3us",
+      "textId": "sk_c1053_3us_de",
+      "text": "无视效果抗性。",
+      "displaySha256": "42b9bdee5ec503b4f8013643c51ce3517ef71da61e797dd87e3346711769023e"
+    },
+    "battle.skill.c1053.s3.description": {
+      "sourceId": "sk_c1053_3u",
+      "textId": "sk_c1053_3u_de",
+      "text": "用沙之魔法攻击所有敌人，解除所有强化效果，在2回合内造成<#FFFFFF>无法强化</>效果，之后使其速攻值降低30%。",
+      "displaySha256": "728cee728a45904f72073ec58c9def425d2372caa1cf37cc2db5cf2ccaefe497"
+    },
+    "battle.skill.c1053.s3.name": {
+      "sourceId": "sk_c1053_3u",
+      "textId": "sk_c1053_3u_sknm",
+      "text": "沙尘暴风",
+      "displaySha256": "aaf0331b53ba53feb82f82075a825a6d17f5eecca3d1e75e90f580573fe88469"
+    },
+    "battle.skill.c1053.s3.unawakened.description": {
+      "sourceId": "sk_c1053_3",
+      "textId": "sk_c1053_3_de",
+      "text": "用沙之魔法攻击所有敌人，解除所有强化效果，使其速攻值降低30%。",
+      "displaySha256": "10626074f882cf96c654e05d0c63603f335394a87b8a3998c3a070758caea8d6"
+    },
+    "battle.skill.c1054.s1.description": {
+      "sourceId": "sk_c1054_1",
+      "textId": "sk_c1054_1_de",
+      "text": "掷环攻击敌人，有75%的几率解除1个强化效果，并使自身速攻值提升15%。根据自身最大生命值等比提升伤害量。",
+      "displaySha256": "10d3183c7ffc92325b0a7430d8e76acce55c7c73209a00ecf8799328debcd738"
+    },
+    "battle.skill.c1054.s1.name": {
+      "sourceId": "sk_c1054_1",
+      "textId": "sk_c1054_1_sknm",
+      "text": "掷环",
+      "displaySha256": "7ced14bd297e06706007ce2855e194cd3817a2744c5c13b1043012b65ca9804c"
+    },
+    "battle.skill.c1054.s2.description": {
+      "sourceId": "sk_c1054_2",
+      "textId": "sk_c1054_2_de",
+      "text": "用华丽的动作攻击敌人，有<#FF9900>{per(sk_add_rate1)}%</>的几率在2回合内造成<#FFFFFF>防御力降低</>后，有50%的几率使用掷环。根据自身最大生命值等比提升伤害量。",
+      "parameters": {
+        "sk_add_rate1": {
+          "sourceField": "sk_c1054_2.sk_add_rate1",
+          "value": "0.5"
+        }
+      },
+      "displaySha256": "b62acf25a7e7ca78ffc4dd552bea7422dc8f4782929a932b8dd28d7271b0b3de"
+    },
+    "battle.skill.c1054.s2.name": {
+      "sourceId": "sk_c1054_2",
+      "textId": "sk_c1054_2_sknm",
+      "text": "迷惑之舞",
+      "displaySha256": "b39c65c56f791e9a48ceb342d5119484db82425ddabd30040a55ec9cd7abfa01"
+    },
+    "battle.skill.c1054.s3.burn.description": {
+      "sourceId": "sk_c1054_3us",
+      "textId": "sk_c1054_3us_de",
+      "text": "此技能赋予的强化效果持续回合数\\n增加1回合。",
+      "displaySha256": "491d0e7973ebaa9a07bc3c44f3839d27068521af69b55d855ddd44c86d7509b0"
+    },
+    "battle.skill.c1054.s3.description": {
+      "sourceId": "sk_c1054_3u",
+      "textId": "sk_c1054_3u_de",
+      "text": "跳起华丽舞蹈，根据目标最大生命值使全体我军人员等比恢复生命值后，在3回合内获得2个<#FFFFFF>随机强化效果</>。",
+      "displaySha256": "76e5b869c3cf3eeb3c44a42bb7c9c7ca7e59db6f5d411748e7013b5a79f598b2"
+    },
+    "battle.skill.c1054.s3.name": {
+      "sourceId": "sk_c1054_3u",
+      "textId": "sk_c1054_3u_sknm",
+      "text": "展现时刻",
+      "displaySha256": "b2036af289f0ca2045854b47ef34bbdc760839c7e04988268b19d605c25ed180"
+    },
+    "battle.skill.c1054.s3.unawakened.description": {
+      "sourceId": "sk_c1054_3",
+      "textId": "sk_c1054_3_de",
+      "text": "跳起华丽舞蹈，根据目标最大生命值使全体我军人员等比恢复生命值后，在3回合内获得<#FFFFFF>随机强化效果</>。",
+      "displaySha256": "9bd8575e540f9b80bdb49f59b0092f058d69d97a04bebde8f226a6d75465a3a7"
+    },
+    "battle.skill.c1055.s1.burn.description": {
+      "sourceId": "sk_c1055_1s",
+      "textId": "sk_c1055_1s_de",
+      "text": "在1回合内攻击力大幅提升。",
+      "displaySha256": "92eaeee2f716f16a30dfa9eb03e7259f9b9bc317b12c7329ead16c8103db56d2"
+    },
+    "battle.skill.c1055.s1.description": {
+      "sourceId": "sk_c1055_1",
+      "textId": "sk_c1055_1_de",
+      "text": "使自身在1回合内获得<#FFFFFF>攻击力提升</>效果后，攻击敌人。若自身处于<#FFFFFF>狂气</>状态，则额外使用狠咬不放。狠咬不放仅能在自身回合发动1次。",
+      "displaySha256": "7bf95e3fde9b56101ad37caab299fe7c82700af91974ad23b7681640ca3b1c66"
+    },
+    "battle.skill.c1055.s1.name": {
+      "sourceId": "sk_c1055_1",
+      "textId": "sk_c1055_1_sknm",
+      "text": "尝味道",
+      "displaySha256": "2f68a5461f4076843e5e1b01812ea60f3543971ecd2dac8e11ca05f73204d70c"
+    },
+    "battle.skill.c1055.s2.description": {
+      "sourceId": "sk_c1055_2",
+      "textId": "sk_c1055_2_de",
+      "text": "若受到致命伤害，则在1回合内获得<#FFFFFF>不死</>效果。<#FFFFFF>不死</>效果在战斗中仅能发动1次。\\n受到攻击后，若生命值在50%以下，则使用A计划。\\nA计划：解除自身的所有弱化效果，在2回合内获得<#FFFFFF>狂气</>效果后，使速攻值提升50%。",
+      "displaySha256": "8a1fa7c1f9d67ac1aa4ecae7ebf5822ae4cfff591113d3c3e165b31554e20912"
+    },
+    "battle.skill.c1055.s2.name": {
+      "sourceId": "sk_c1055_2",
+      "textId": "sk_c1055_2_sknm",
+      "text": "野狗团团长",
+      "displaySha256": "32d2a665cc9fb0816ffee7a6889a6985e049d0c9e964f9a937e5e961608305a6"
+    },
+    "battle.skill.c1055.s3.description": {
+      "sourceId": "sk_c1055_3u",
+      "textId": "sk_c1055_3u_de",
+      "text": "用剑攻击敌人，将部分伤害量作为生命值恢复，根据自身攻击力对除目标外的全体敌人造成等比的额外伤害。消灭时，造成<#FFFFFF>灭亡</>效果。对目标造成防御力<#FFFFFF>穿透</>。",
+      "displaySha256": "f46642fe09e29ff34827b1bf2aea1a1668d6a0e683a2958084be247a1c80ad96"
+    },
+    "battle.skill.c1055.s3.name": {
+      "sourceId": "sk_c1055_3u",
+      "textId": "sk_c1055_3_sknm",
+      "text": "狠咬不放",
+      "displaySha256": "158e06404d784b689ab8cd047fde3a00774426afe6e6a806071828f5d0b477b5"
+    },
+    "battle.skill.c1055.s3.unawakened.description": {
+      "sourceId": "sk_c1055_3",
+      "textId": "sk_c1055_3_de",
+      "text": "用剑攻击敌人，根据自身攻击力对除目标外的全体敌人造成等比的额外伤害。消灭时，造成<#FFFFFF>灭亡</>效果。对目标造成防御力<#FFFFFF>穿透</>。",
+      "displaySha256": "29c16aba4aa8db87fad99cabbaf90bc9026d385c7c7bfdf205298482ad7b7046"
+    },
     "battle.skill.c1062.s1.description": {
       "sourceId": "sk_c1062_1",
       "textId": "sk_c1062_1_de",
@@ -2396,6 +2984,18 @@
       "textId": "stic_protect_skeffnm",
       "text": "防护罩",
       "displaySha256": "7f9683570a6443a74b79dcdd77bbf860773f1ceb80cc9713a16c16e100763b62"
+    },
+    "battle.status.bind.description": {
+      "sourceId": "stic_restrict",
+      "textId": "stic_restrict_de",
+      "text": "若非自身回合，则无法发动额外技能、反击、夹攻。只适用于英雄。",
+      "displaySha256": "81e08a0699dd29321d074f398b98e17e41d41f455cbe4b74fe98883e403256a6"
+    },
+    "battle.status.bind.name": {
+      "sourceId": "stic_restrict",
+      "textId": "stic_restrict_skeffnm",
+      "text": "拘禁",
+      "displaySha256": "3ae43dd463d67b219aacadc3c244a5573e937bd12a4a6e92c3fd1ded52b30cd0"
     },
     "battle.status.bleed.description": {
       "sourceId": "stic_blood",
@@ -2637,6 +3237,18 @@
       "text": "无敌",
       "displaySha256": "78af2f47802afb86a6b9cbdadd483bf2bf89a76d42f881c333b816c58354ea9c"
     },
+    "battle.status.magicnail.description": {
+      "sourceId": "stic_nail",
+      "textId": "stic_nail_de",
+      "text": "受到攻击时，根据攻击者的攻击力造成等比的额外伤害。",
+      "displaySha256": "d457186f6c255c68c08d18bd66510270b783d0ad6f441974c06a6500d5c04796"
+    },
+    "battle.status.magicnail.name": {
+      "sourceId": "stic_nail",
+      "textId": "stic_nail_skeffnm",
+      "text": "魔法钉",
+      "displaySha256": "0e777b384caa47c519cc3ad8688f40a49dce159953d9dda412f0f974a80822f1"
+    },
     "battle.status.poison.description": {
       "sourceId": "stic_dot",
       "textId": "stic_dot_de",
@@ -2685,6 +3297,18 @@
       "text": "反射",
       "displaySha256": "8a8f1a0cf7cf089aaaafd5f46f5c2f0d9d39f07da6970d0570607ad59b9bcdae"
     },
+    "battle.status.restrict.description": {
+      "sourceId": "stic_ab_up_block",
+      "textId": "stic_ab_up_block_de",
+      "text": "除了根据速度提升的速攻值提升效果外，无法获得速攻值提升效果。",
+      "displaySha256": "2b7677bf592e5a2b90fb6f49471eb83bff33c859eb246744f5cbf658fa1eefff"
+    },
+    "battle.status.restrict.name": {
+      "sourceId": "stic_ab_up_block",
+      "textId": "stic_ab_up_block_skeffnm",
+      "text": "束缚",
+      "displaySha256": "8b17d81cf52ef1dde10326bb3aad4186c10dde0833a702eb3077e017fe5195db"
+    },
     "battle.status.silence.description": {
       "sourceId": "stic_silence",
       "textId": "stic_silence_de",
@@ -2696,6 +3320,30 @@
       "textId": "stic_silence_skeffnm",
       "text": "沉默",
       "displaySha256": "efba8481eaf9ae3e9515f6f6284301ae18a66821a36dda15992f75d7677a71fd"
+    },
+    "battle.status.skillnullifier.description": {
+      "sourceId": "stic_endure_1",
+      "textId": "stic_endure_de",
+      "text": "使技能造成的伤害无效化。",
+      "displaySha256": "8805dab45bc06ac713869ed4b37641192decb3da3acc8619dd2470da06cac4f3"
+    },
+    "battle.status.skillnullifier.name": {
+      "sourceId": "stic_endure_1",
+      "textId": "stic_endure_skeffnm",
+      "text": "技能伤害无效",
+      "displaySha256": "eb5740e780a492bcd23f267a97b7c7690677bbabd1b0a193b670a527e7e25144"
+    },
+    "battle.status.sleep.description": {
+      "sourceId": "stic_sleep",
+      "textId": "stic_sleep_de",
+      "text": "在持续回合内无法行动。暴击抗性、回避降低100%，受到攻击造成的伤害时解除。",
+      "displaySha256": "033b4ae9b9e8e1b373f7fc355e10bba5cdc5d93d9b9c72313b128721bd1f2927"
+    },
+    "battle.status.sleep.name": {
+      "sourceId": "stic_sleep",
+      "textId": "stic_sleep_skeffnm",
+      "text": "睡眠",
+      "displaySha256": "01324e540d059cfc7acd971b6e2def26391371114fae2ab5a4b3c52c85684725"
     },
     "battle.status.speeddown.description": {
       "sourceId": "stic_speed_dn",
@@ -2804,6 +3452,18 @@
       "textId": "stic_vampire_skeffnm",
       "text": "吸血之手",
       "displaySha256": "89975517509f9126a44d1cd6e3a2cec2e25e31035284ac8b999cbb09660764b1"
+    },
+    "battle.status.vigor.description": {
+      "sourceId": "stic_haki",
+      "textId": "stic_haki_de",
+      "text": "攻击力、防御力提升30%。",
+      "displaySha256": "bb41c87ecce0bcb7e4b55467378c59dde65ce3fd889716186d1ee8e3c5718ab0"
+    },
+    "battle.status.vigor.name": {
+      "sourceId": "stic_haki",
+      "textId": "stic_haki_skeffnm",
+      "text": "魄力（无法解除）",
+      "displaySha256": "0247a759db677e47e0daf166d1d5198332347ea4a9bb573a5a6befc66711bf8f"
     }
   }
 }

@@ -98,6 +98,8 @@
     <var name="speedUpDescriptionKey" type="string"/>
     <var name="burnPresentationId" type="string"/>
     <var name="counterPresentationId" type="string"/>
+    <var name="alternatePresentationStatus" type="string"/>
+    <var name="alternatePresentationId" type="string"/>
   </bean>
 
   <bean name="SkillEffectRow">

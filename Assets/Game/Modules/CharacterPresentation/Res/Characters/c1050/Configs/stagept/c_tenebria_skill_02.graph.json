@@ -1,0 +1,836 @@
+{
+  "id": "c_tenebria_skill_02",
+  "sourceFormat": "e7-stg",
+  "source": {
+    "entrypoint": {
+      "start": 1
+    },
+    "eventlisteners": [],
+    "entities": [
+      {
+        "state": "start",
+        "guid": 1,
+        "etty": "ENTRY"
+      },
+      {
+        "fade": 200,
+        "time": 200,
+        "away_x": -150.0,
+        "away_y": 40.0,
+        "guid": 2,
+        "etty": "LAYOUT"
+      },
+      {
+        "location": 1,
+        "x": 70.0,
+        "y": -10.0,
+        "curve": "0.06896552,0.4999999,0.348659,0.9305555",
+        "time": 200,
+        "guid": 3,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.3",
+        "curve": "0.06896552,0.4999999,0.348659,0.9305555",
+        "time": 200,
+        "guid": 4,
+        "etty": "ZOOM"
+      },
+      {
+        "time": 200,
+        "guid": 5,
+        "etty": "BGSHOW"
+      },
+      {
+        "ani": "skill2",
+        "guid": 6,
+        "etty": "ANI"
+      },
+      {
+        "scale": "1.6",
+        "curve": "0.06896552,0.4999999,0.348659,0.9305555",
+        "time": 400,
+        "guid": 7,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "x": 70.0,
+        "y": -10.0,
+        "curve": "0.06896552,0.4999999,0.348659,0.9305555",
+        "time": 400,
+        "guid": 8,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1.4",
+        "curve": "0.06896552,0.4999999,0.348659,0.9305555",
+        "time": 200,
+        "guid": 9,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "x": 330.0,
+        "y": -40.0,
+        "curve": "0.06896552,0.4999999,0.348659,0.9305555",
+        "time": 200,
+        "guid": 10,
+        "etty": "CAM"
+      },
+      {
+        "source": "tenebria_skill_02.cfx",
+        "scale": 1.0,
+        "location": 42,
+        "guid": 11,
+        "etty": "EFFECT"
+      },
+      {
+        "scale": "1.2",
+        "curve": "0.06896552,0.4999999,0.348659,0.9305555",
+        "time": 3200,
+        "guid": 12,
+        "etty": "ZOOM"
+      },
+      {
+        "location": 1,
+        "x": 330.0,
+        "y": -50.0,
+        "curve": "0.06896552,0.4999999,0.348659,0.9305555",
+        "time": 3200,
+        "guid": 13,
+        "etty": "CAM"
+      },
+      {
+        "scale": "1",
+        "curve": "0.1532567,0.1388889,0,0.9826389",
+        "time": 200,
+        "guid": 14,
+        "etty": "ZOOM"
+      },
+      {
+        "curve": "0.1532567,0.1388889,0,0.9826389",
+        "time": 200,
+        "guid": 15,
+        "etty": "CAM"
+      },
+      {
+        "mode": 1,
+        "fade": 200,
+        "time": 200,
+        "guid": 16,
+        "etty": "LAYOUT"
+      },
+      {
+        "time": 200,
+        "guid": 17,
+        "etty": "BGSHOW"
+      },
+      {
+        "guid": 18,
+        "etty": "IDLE"
+      },
+      {
+        "duration": -1,
+        "powerX": 10,
+        "powerY": 10,
+        "timeScale": 1.0,
+        "type": 1,
+        "source": "tenebria_skill_02_cm",
+        "guid": 19,
+        "etty": "SHAKE"
+      },
+      {
+        "effect": "hit_new_blunt_mult_normal.cfx",
+        "rand_x": 70,
+        "rand_y": 70,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 20,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_mult_normal.cfx",
+        "rand_x": 70,
+        "rand_y": 70,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 21,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_mult_normal.cfx",
+        "rand_x": 70,
+        "rand_y": 70,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 22,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_mult_normal.cfx",
+        "rand_x": 70,
+        "rand_y": 70,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 23,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_mult_normal.cfx",
+        "rand_x": 70,
+        "rand_y": 70,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 24,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_mult_normal.cfx",
+        "rand_x": 70,
+        "rand_y": 70,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 25,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_mult_normal.cfx",
+        "rand_x": 70,
+        "rand_y": 70,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 26,
+        "etty": "HIT"
+      },
+      {
+        "effect": "hit_new_blunt_mult_normal.cfx",
+        "rand_x": 70,
+        "rand_y": 70,
+        "offset_x": 0.0,
+        "offset_y": 0.0,
+        "guid": 27,
+        "etty": "HIT"
+      },
+      {
+        "name": "u_range",
+        "duration": 300,
+        "power": 40.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 28,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "duration": 300,
+        "program": "sprite_blur",
+        "direction_y": 1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 29,
+        "etty": "PPEFFECT"
+      },
+      {
+        "name": "u_range",
+        "duration": 400,
+        "power": 20.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 30,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "duration": 400,
+        "program": "sprite_blur",
+        "direction_y": 1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 31,
+        "etty": "PPEFFECT"
+      },
+      {
+        "duration": 250,
+        "program": "sprite_blur",
+        "direction_y": 1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 32,
+        "etty": "PPEFFECT"
+      },
+      {
+        "name": "u_range",
+        "duration": 250,
+        "power": 20.0,
+        "start_rad": 0.5,
+        "finish_rad": 1.0,
+        "guid": 33,
+        "etty": "SINE_VALUE"
+      },
+      {
+        "duration": 1000,
+        "program": "sprite_blur",
+        "direction_y": 1.0,
+        "u_sample": 3.0,
+        "u_range": 20.0,
+        "guid": 34,
+        "etty": "PPEFFECT"
+      },
+      {
+        "name": "u_range",
+        "duration": 1000,
+        "power": 15.0,
+        "start_rad": 0.2,
+        "finish_rad": 1.0,
+        "guid": 35,
+        "etty": "SINE_VALUE"
+      }
+    ],
+    "connections": [
+      {
+        "from": 1,
+        "to": 2,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 3,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 4,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 2,
+        "to": 5,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 3,
+        "to": 6,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 7,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 8,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 9,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 8,
+        "to": 11,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 10,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 12,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 10,
+        "to": 13,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 15,
+        "to": 14,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 16,
+        "to": 15,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 16,
+        "to": 17,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 13,
+        "to": 16,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 6,
+        "to": 18,
+        "Desc": "",
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 19,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 20,
+        "delay": 867,
+        "when": 1,
+        "Desc": "867",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 20,
+        "to": 21,
+        "delay": 150,
+        "when": 1,
+        "Desc": "150",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 21,
+        "to": 22,
+        "delay": 150,
+        "when": 1,
+        "Desc": "150",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 22,
+        "to": 23,
+        "delay": 150,
+        "when": 1,
+        "Desc": "150",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 23,
+        "to": 24,
+        "delay": 150,
+        "when": 1,
+        "Desc": "150",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 24,
+        "to": 25,
+        "delay": 150,
+        "when": 1,
+        "Desc": "150",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 25,
+        "to": 26,
+        "delay": 150,
+        "when": 1,
+        "Desc": "150",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 26,
+        "to": 27,
+        "delay": 150,
+        "when": 1,
+        "Desc": "150",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 29,
+        "to": 28,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 11,
+        "to": 29,
+        "delay": 450,
+        "when": 1,
+        "Desc": "450",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 31,
+        "to": 30,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 20,
+        "to": 31,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 32,
+        "to": 33,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 25,
+        "to": 32,
+        "when": 1,
+        "Desc": "",
+        "Style": 1,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 34,
+        "to": 35,
+        "when": 2,
+        "Desc": "",
+        "Style": 2,
+        "etty": "CONNECTION"
+      },
+      {
+        "from": 27,
+        "to": 34,
+        "Desc": "",
+        "etty": "CONNECTION"
+      }
+    ]
+  },
+  "assets": [
+    {
+      "source": "camera/tenebria_skill_02_cm.scsp",
+      "address": "characterlab/source/camera/tenebria_skill_02_cm.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.atlas",
+      "address": "characterlab/source/effect/hit_new_blunt_01.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.scsp",
+      "address": "characterlab/source/effect/hit_new_blunt_01.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/hit_new_blunt_01.sct",
+      "address": "characterlab/source/effect/hit_new_blunt_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/hit_new_blunt_mult_normal.cfx",
+      "address": "characterlab/source/effect/hit_new_blunt_mult_normal.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/hit_new_blunt_yellow_nm_pati.particle",
+      "address": "characterlab/source/effect/hit_new_blunt_yellow_nm_pati.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/tenebria_b_idle_orb.cfx",
+      "address": "characterlab/source/effect/tenebria_b_idle_orb.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/tenebria_b_idle_ready.cfx",
+      "address": "characterlab/source/effect/tenebria_b_idle_ready.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/tenebria_b_idle_ready_eff.atlas",
+      "address": "characterlab/source/effect/tenebria_b_idle_ready_eff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/tenebria_b_idle_ready_eff.scsp",
+      "address": "characterlab/source/effect/tenebria_b_idle_ready_eff.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/tenebria_b_idle_ready_eff.sct",
+      "address": "characterlab/source/effect/tenebria_b_idle_ready_eff.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/tenebria_b_idle_ready_pati1.particle",
+      "address": "characterlab/source/effect/tenebria_b_idle_ready_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/tenebria_idle_eff.atlas",
+      "address": "characterlab/source/effect/tenebria_idle_eff.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/tenebria_idle_eff.scsp",
+      "address": "characterlab/source/effect/tenebria_idle_eff.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/tenebria_idle_eff.sct",
+      "address": "characterlab/source/effect/tenebria_idle_eff.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/tenebria_idle_orb.cfx",
+      "address": "characterlab/source/effect/tenebria_idle_orb.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/tenebria_idle_orb_pati1.particle",
+      "address": "characterlab/source/effect/tenebria_idle_orb_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/tenebria_skill1_orb_pati1.particle",
+      "address": "characterlab/source/effect/tenebria_skill1_orb_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/tenebria_skill_01_orb.atlas",
+      "address": "characterlab/source/effect/tenebria_skill_01_orb.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/tenebria_skill_01_orb.cfx",
+      "address": "characterlab/source/effect/tenebria_skill_01_orb.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/tenebria_skill_01_orb.scsp",
+      "address": "characterlab/source/effect/tenebria_skill_01_orb.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/tenebria_skill_01_orb.sct",
+      "address": "characterlab/source/effect/tenebria_skill_01_orb.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/tenebria_skill_02.atlas",
+      "address": "characterlab/source/effect/tenebria_skill_02.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/tenebria_skill_02.cfx",
+      "address": "characterlab/source/effect/tenebria_skill_02.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/tenebria_skill_02.scsp",
+      "address": "characterlab/source/effect/tenebria_skill_02.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/tenebria_skill_02.sct",
+      "address": "characterlab/source/effect/tenebria_skill_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/tenebria_skill_02_orb.atlas",
+      "address": "characterlab/source/effect/tenebria_skill_02_orb.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/tenebria_skill_02_orb.cfx",
+      "address": "characterlab/source/effect/tenebria_skill_02_orb.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/tenebria_skill_02_orb.scsp",
+      "address": "characterlab/source/effect/tenebria_skill_02_orb.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/tenebria_skill_02_orb.sct",
+      "address": "characterlab/source/effect/tenebria_skill_02_orb.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/tenebria_skill_02_orb_pati1.particle",
+      "address": "characterlab/source/effect/tenebria_skill_02_orb_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/tenebria_skill_02_pati1.particle",
+      "address": "characterlab/source/effect/tenebria_skill_02_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/tenebria_skill_02_pati2.particle",
+      "address": "characterlab/source/effect/tenebria_skill_02_pati2.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/tenebria_skill_02_pati3.particle",
+      "address": "characterlab/source/effect/tenebria_skill_02_pati3.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/tenebria_skill_02_pati4.particle",
+      "address": "characterlab/source/effect/tenebria_skill_02_pati4.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/tenebria_skill_02_pati5.particle",
+      "address": "characterlab/source/effect/tenebria_skill_02_pati5.particle",
+      "type": "particle"
+    },
+    {
+      "source": "effect/tenebria_skill_02_smoke.atlas",
+      "address": "characterlab/source/effect/tenebria_skill_02_smoke.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/tenebria_skill_02_smoke.scsp",
+      "address": "characterlab/source/effect/tenebria_skill_02_smoke.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/tenebria_skill_02_smoke.sct",
+      "address": "characterlab/source/effect/tenebria_skill_02_smoke.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/tenebria_skill_02_smoke2.atlas",
+      "address": "characterlab/source/effect/tenebria_skill_02_smoke2.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/tenebria_skill_02_smoke2.scsp",
+      "address": "characterlab/source/effect/tenebria_skill_02_smoke2.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/tenebria_skill_02_smoke2.sct",
+      "address": "characterlab/source/effect/tenebria_skill_02_smoke2.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/tenebria_skill_03_orb.atlas",
+      "address": "characterlab/source/effect/tenebria_skill_03_orb.atlas",
+      "type": "atlas"
+    },
+    {
+      "source": "effect/tenebria_skill_03_orb.cfx",
+      "address": "characterlab/source/effect/tenebria_skill_03_orb.cfx",
+      "type": "effect"
+    },
+    {
+      "source": "effect/tenebria_skill_03_orb.scsp",
+      "address": "characterlab/source/effect/tenebria_skill_03_orb.scsp",
+      "type": "skeleton"
+    },
+    {
+      "source": "effect/tenebria_skill_03_orb.sct",
+      "address": "characterlab/source/effect/tenebria_skill_03_orb.sct",
+      "type": "texture"
+    },
+    {
+      "source": "effect/tenebria_skill_03_orb_pati1.particle",
+      "address": "characterlab/source/effect/tenebria_skill_03_orb_pati1.particle",
+      "type": "particle"
+    },
+    {
+      "source": "model/tenebria.timeline",
+      "address": "characterlab/source/model/tenebria.timeline",
+      "type": "timeline"
+    },
+    {
+      "source": "particle/aura_02.sct",
+      "address": "characterlab/source/particle/aura_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/orb_01.sct",
+      "address": "characterlab/source/particle/orb_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/pati_01.sct",
+      "address": "characterlab/source/particle/pati_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_01.sct",
+      "address": "characterlab/source/particle/ticle_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/ticle_02.sct",
+      "address": "characterlab/source/particle/ticle_02.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/tri_pati_01.sct",
+      "address": "characterlab/source/particle/tri_pati_01.sct",
+      "type": "texture"
+    },
+    {
+      "source": "particle/zodiac_star1.sct",
+      "address": "characterlab/source/particle/zodiac_star1.sct",
+      "type": "texture"
+    }
+  ],
+  "diagnostics": []
+}

@@ -1,0 +1,48 @@
+
+mui_skill_3-3_monster.sct
+size: 1855,320
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bg&filter/white
+  rotate: true
+  xy: 1254, 255
+  size: 32, 18
+  orig: 32, 18
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 1684, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+monster/skill3_demon_jump1
+  rotate: true
+  xy: 438, 2
+  size: 300, 420
+  orig: 300, 420
+  offset: 0, 0
+  index: -1
+monster/skill3_demon_jump1_2
+  rotate: true
+  xy: 1254, 2
+  size: 251, 428
+  orig: 251, 428
+  offset: 0, 0
+  index: -1
+monster/skill3_demon_jump2
+  rotate: true
+  xy: 2, 2
+  size: 316, 434
+  orig: 316, 434
+  offset: 0, 0
+  index: -1
+monster/skill3_demon_jump2_2
+  rotate: true
+  xy: 860, 2
+  size: 298, 392
+  orig: 298, 392
+  offset: 0, 0
+  index: -1
