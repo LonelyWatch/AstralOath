@@ -31,7 +31,7 @@ $env:DOTNET_ROOT = "$PWD/.tools/dotnet"
 & ./.tools/dotnet/dotnet.exe run --project Server/Host --no-restore
 ```
 
-迁移成功后再启动服务。默认监听 `127.0.0.1:5080`，演示按钮发送实际 Protobuf 请求。HTTP 仅用于开发 loopback，生产使用有效 HTTPS 证书。数据库口令、更新私钥与证书不要写入仓库。
+迁移成功后再启动服务。默认监听 `127.0.0.1:7728`，演示按钮发送实际 Protobuf 请求。HTTP 仅用于开发 loopback，生产使用有效 HTTPS 证书。数据库口令、更新私钥与证书不要写入仓库。
 
 ## 检查与构建
 

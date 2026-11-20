@@ -16,7 +16,7 @@
 
 房间选禁设置和当前回合候选的写入、读取及迁移见[联机选禁与入场](../docs/development/arena-draft.md)。
 
-启动前用原有迁移入口应用 `002_arena_rooms.sql`、`003_game_operation_audit.sql`、`004_arena_chat_stickers.sql`、`005_arena_room_member_lease.sql`。服务运行账户需要 `arena_player` 的 SELECT/INSERT/UPDATE（`FOR UPDATE` 行锁需要 UPDATE 权限），`arena_room` 的 SELECT/INSERT/UPDATE/DELETE，`arena_room_member` 的 SELECT/INSERT/DELETE，`arena_room_member_lease` 的 SELECT/INSERT/UPDATE，`arena_room_message` 和 `arena_room_message_sticker` 的 SELECT/INSERT，以及 `game_operation_audit` 的 INSERT。服务启动沿用 `Server` 的现有监听和 TLS 约束。本机明文开发入口为 `http://127.0.0.1:5080`。其他地址使用 HTTPS。
+启动前用原有迁移入口应用 `002_arena_rooms.sql`、`003_game_operation_audit.sql`、`004_arena_chat_stickers.sql`、`005_arena_room_member_lease.sql`。服务运行账户需要 `arena_player` 的 SELECT/INSERT/UPDATE（`FOR UPDATE` 行锁需要 UPDATE 权限），`arena_room` 的 SELECT/INSERT/UPDATE/DELETE，`arena_room_member` 的 SELECT/INSERT/DELETE，`arena_room_member_lease` 的 SELECT/INSERT/UPDATE，`arena_room_message` 和 `arena_room_message_sticker` 的 SELECT/INSERT，以及 `game_operation_audit` 的 INSERT。服务启动沿用 `Server` 的现有监听和 TLS 约束。本机明文开发入口默认为 `http://127.0.0.1:7728`，可通过 `Server__Port` 覆盖端口。其他地址使用 HTTPS。
 
 - `POST /api/arena/sessions` 用 `{displayName, avatarId}` 创建独立访客会话。返回 `{token, player}`，后续请求使用 Bearer。服务端持久化随机令牌的 SHA-256，返回给客户端的明文令牌需要由客户端保存以便重连。
 - `GET /api/arena/rooms` 支持 `visibility=all|public|private`、`sort=recent|players`、`direction=asc|desc` 和 `query` 名称搜索，返回排序后的前 100 个房间。默认 `sort=recent&direction=desc`。按人数排序的同人数房间优先返回较新的房间。私密房只返回密码标志。创建房间用 `POST /api/arena/rooms` 提交 `{name, password, allowChat, rule}`。名称最多 28 个 Unicode 字符，设密须四位 ASCII 数字，服务器只保存带随机盐的 PBKDF2 摘要。
@@ -77,7 +77,7 @@ SMTP 使用 `Entry__Smtp__Host`、`Entry__Smtp__Port`、`Entry__Smtp__From` 以�
 pwsh -File Server/Ops/Start-LocalTestStack.ps1 -ServerDll ".artifacts/local-game-server/r17-summon/server/AstralOath.Server.dll" -FeedDirectory ".artifacts/update-and-battle-2026-11-17/local-release" -MinimumAppVersion "0.1.20"
 ```
 
-脚本复用开发环境已安装的 MySQL、.NET、Python，按需启动本机回环 3307、5080、5093。它检查 /health/ready、/api/entry/version 与签名目录对应的清单版本。最低客户端版本与内容发布必须配套，0.1.20 门槛只在对应母包已分发后启用。现有 0.1.19/R16 环境使用空门槛。此命令不注册开机计划或系统服务。
+脚本复用开发环境已安装的 MySQL、.NET、Python，在本机回环按需启动 MySQL（3307）、游戏 API（7728）和内容服务（5093）。本地栈可通过 `-ApiPort` 指定游戏端口，Windows 验收脚本通过 `-BaseUrl` 指向同一地址。它检查 /health/ready、/api/entry/version 与签名目录对应的清单版本。最低客户端版本与内容发布必须配套，0.1.20 门槛只在对应母包已分发后启用。现有 0.1.19/R16 环境使用空门槛。此命令不注册开机计划或系统服务。
 
 灭亡事件及快照保存复活资格。反击可携带专用演出 ID，护盾、反射、吸血之手和炸弹由共享内核结算。[第 31–40 名角色与实测记录](../docs/delivery/2026-11-20-roster31-40.md)
 

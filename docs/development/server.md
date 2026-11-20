@@ -1,6 +1,14 @@
 # 服务端开发与运维
 
-在仓库根目录使用 .NET 10 SDK 和 PowerShell。默认开发监听 `127.0.0.1:5080`。在 MySQL 8.4 创建独立的 UTF-8 数据库，并从本地私密配置加载 `ConnectionStrings__MySql`。迁移账户需要在目标库创建表和读取、写入迁移记录的权限。运行账户需要 `foundation_echo` 的 SELECT、INSERT、UPDATE 权限。启用竞技场后，增加[房间、成员和聊天表权限](../../Server/README.md#模拟战目录房间与竞技场聊天)。远程数据库连接使用验证主机名的 TLS，例如 MySqlConnector 的 `SslMode=VerifyFull` 并配置信任链。
+## 本机试玩与多开
+
+Windows 0.1.21 / R18 的试玩目录为 `.artifacts/win-roster70/delivery`。服务运行时，双击目录根部的 `AstralOath-Play.exe` 每次打开一个游戏窗口。启动器把 `http://localhost:7728` 传给本次启动的游戏，旧母包也能使用当前端口。在本机 Windows 代理配置下，UnityWebRequest 用数字回环地址发送开发 Echo 得到 502，改用 `localhost` 后实际收到了游戏服的回包。
+
+重启电脑后可双击 `启动试玩.cmd` 启动服务并打开游戏。只启动服务可运行 `启动试玩.cmd start`。重复启动复用当前用户的后台服务和已有数据库。退出客户端后，服务继续运行，需要关闭时双击 `停止试玩服务.cmd`。本包的签名内容使用 5293，MySQL 使用 5327。
+
+## 从源码启动
+
+在仓库根目录使用 .NET 10 SDK 和 PowerShell。默认开发监听 `127.0.0.1:7728`。在 MySQL 8.4 创建独立的 UTF-8 数据库，并从本地私密配置加载 `ConnectionStrings__MySql`。迁移账户需要在目标库创建表和读取、写入迁移记录的权限。运行账户需要 `foundation_echo` 的 SELECT、INSERT、UPDATE 权限。启用竞技场后，增加[房间、成员和聊天表权限](../../Server/README.md#模拟战目录房间与竞技场聊天)。远程数据库连接使用验证主机名的 TLS，例如 MySqlConnector 的 `SslMode=VerifyFull` 并配置信任链。
 
 ```powershell
 $env:ASPNETCORE_ENVIRONMENT = 'Development'
@@ -43,7 +51,7 @@ Server/Ops/Database.ps1 -Action Restore -MySqlBin <MySQL的bin目录> -DefaultsF
 共享包提供 `AstralOath.Shared.Networking.ProtobufEchoSocket`。每次 `EchoAsync` 仅发送一个请求，并校验响应的版本、请求 ID、消息与开发流水号 0。一个实例同时处理一项操作，默认请求期限 10 秒。失败后该连接会释放，下次显式调用建立新连接。退出时先取消并等待进行中的操作，再调用 `CloseAsync`；`Dispose` 可立即释放套接字。
 
 ```csharp
-using var socket = new ProtobufEchoSocket(new Uri("wss://localhost:5080/ws/foundation"));
+using var socket = new ProtobufEchoSocket(new Uri("wss://localhost:7728/ws/foundation"));
 var reply = await socket.EchoAsync(new EchoRequest
 {
     RequestId = Guid.NewGuid().ToString("N"),

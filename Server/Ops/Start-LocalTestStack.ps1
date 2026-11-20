@@ -4,7 +4,7 @@ param(
     [Parameter(Mandatory)][string]$ServerDll,
     [Parameter(Mandatory)][string]$FeedDirectory,
     [AllowEmptyString()][string]$MinimumAppVersion = '',
-    [int]$ApiPort = 5080,
+    [int]$ApiPort = 7728,
     [int]$FeedPort = 5093
 )
 $ErrorActionPreference = 'Stop'

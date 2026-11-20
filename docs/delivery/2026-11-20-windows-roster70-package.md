@@ -2,7 +2,17 @@
 
 游戏与服务端从 `96944bcec867d9203d34802332a31f6b11a7b99a` 构建。上次分发的 0.1.20 / R17 早于 `5be848e8` 对 Spine 2.1 读取器与着色器的修改，因此本次重新构建了最小 IL2CPP 母包。基线为 `9ff5a88da1fb4a1b97b874dd02a0d2e2`，平台为 `StandaloneWindows64`，内置内容版本为 0。签名资源 R18 和规则 17 服务端配套使用。
 
-## 本机启动
+## 7728 端口版
+
+当前试玩目录为 `.artifacts/win-roster70/delivery`，便携包为同级的 `AstralOath-Windows-x64-0.1.21-R18-7728.zip`。规则 17 游戏服监听 `127.0.0.1:7728`，复用当前用户的试玩数据库。服务已启动时双击 `AstralOath-Play.exe`，每次打开一个游戏窗口。首次运行或重启电脑后先双击 `启动试玩.cmd`。维护命令见[本机试玩与多开](../development/server.md#本机试玩与多开)。
+
+原生启动器从自身所在目录定位 `client/AstralOath.exe`，仅为启动的游戏设置 `ASTRAL_FOUNDATION_URL=http://localhost:7728`。实测同时打开的两个正常游戏窗口具有不同进程和窗口句柄，均可响应。证据为 `qa/two-windows-7728.json`。单份服务的并发启动、重复停止、保留原库重启和端口占用处理记录在 `qa/persistent-control.json`。
+
+两个 R18 Player 并发向 7728 发送 Echo，分别收到序号 3 与 2，均以 0 退出。证据为 `qa/play-exe/real-two-echo.json`。新版 ZIP 共 1,170 个文件、2,019,821,753 字节，完整解压后逐文件对比 SHA-256 通过。ZIP 的 SHA-256 为 `a956d7e31ff851ba95935298f3015c63ffdb82ecf5361fb6c5929a21b114f392`。
+
+通过最终 EXE 在 `localhost:7728` 完成八人模拟战入场、双方时钟同步与首招回执。服务端接受卡瓦娜 `c1086.s1`，图形客户端消费指令序号 1 后正常退出。启动器哈希及日志位置见 `.artifacts/port-7728/arena-player-localhost-final-result.txt`。
+
+## 首发归档的本机启动
 
 交付目录为 `.artifacts/win-roster70`。完整解压 `AstralOath-Windows-x64-0.1.21-R18.zip`，双击 `启动试玩.cmd`。首次点击登录后，按提示安装资源并退出。在试玩命令窗口按回车重新打开游戏。该窗口也可启动第二个客户端，支持两个访客在本机模拟战。
 

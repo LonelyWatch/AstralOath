@@ -1,5 +1,7 @@
 # FoundationDemo
 
+演示场景的 Echo 和游戏主页共用本机游戏服务 `http://localhost:7728`。进程环境变量 `ASTRAL_FOUNDATION_URL` 可覆盖场景中保存的地址。
+
 正式 GameHome 先由母包完成登录、选服与更新，再调用 FoundationEntry。YooAsset 的 `entry/theme` 和活动背景由 Luban 源表及收集器登记，随签名资源发布。 [启动和更新边界](../../../../docs/development/game-entry.md)
 
 `Scripts` 定义 `FoundationEntry`、普通 C# `FoundationWindow` 与 `FoundationWindowBinder`，`Configs` 保存 Luban 演示生成物，`Res` 保存字体、窗口预制体与示例资源。场景位于 `Scenes/FoundationDemo.unity`。

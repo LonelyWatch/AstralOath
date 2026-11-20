@@ -38,7 +38,7 @@ if (args is ["migrate"])
 var settings = builder.Configuration.GetSection("Server");
 var isDevelopment = builder.Environment.IsDevelopment();
 var bindAddress = IPAddress.Parse(settings["BindAddress"] ?? "127.0.0.1");
-var port = settings.GetValue("Port", 5080);
+var port = settings.GetValue("Port", 7728);
 var certificatePath = settings["CertificatePath"];
 var useHttps = !isDevelopment || settings.GetValue<bool>("UseHttps") || !string.IsNullOrWhiteSpace(certificatePath);
 if (!isDevelopment && string.IsNullOrWhiteSpace(certificatePath))

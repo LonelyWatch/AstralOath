@@ -11,7 +11,7 @@ FoundationWindow 继承普通 C# UIBaseView，不作为 MonoBehaviour 挂在预�
 1. TMP 必需资源已入库。需要恢复时先用 Unity 解析 UPM 包，再执行 `Tools/Import-Tmp.ps1`，它从锁定 TMP 3.0.7 的官方 unitypackage 提取资产并保留 GUID。不要在带 `-quit` 的批处理中依赖异步导入完成。
 2. 运行 `Tools/Config/Generate.ps1 -VerifyAccessors -SyncClient` 生成并同步 UI 和本地化 JSON。编辑器入口 `AstralOath.Editor.FoundationBuilder.ImportGeneratedDemoConfig` 也可从本地 `.artifacts/config/json` 同步两份快照。隔离编辑器可附加 `-astral-generated-config <JSON 输出目录的绝对路径>`。
 3. 打开 `Assets/Game/Modules/FoundationDemo/Scenes/FoundationDemo.unity`。`AstralOath.Editor.FoundationBuilder.CreateDemo` 可重建场景和窗口预制体，`ValidateDemo` 检查其绑定。
-4. 播放场景后验证中文、安全区、资源加载、关闭重开及按钮状态。启动服务端后点击发送回显，窗口显示实际返回的序号。可通过启动环境变量 `ASTRAL_FOUNDATION_URL` 或场景 Bootstrap 的 `baseUrl` 改变服务器地址，默认开发地址为 `http://127.0.0.1:5080`。传输仅接受 HTTPS 或开发用 loopback HTTP，且禁止重定向。
+4. 播放场景后验证中文、安全区、资源加载、关闭重开及按钮状态。启动服务端后点击发送回显，窗口显示实际返回的序号。可通过启动环境变量 `ASTRAL_FOUNDATION_URL` 或场景 Bootstrap 的 `baseUrl` 改变服务器地址，默认开发地址为 `http://localhost:7728`。传输仅接受 HTTPS 或开发用 loopback HTTP，且禁止重定向。
 5. Windows x64 与 Android ARM64 的完整安装包及独立热更包由[热更与强更构建](../development/hot-update.md)提供菜单和批处理入口。
 6. 进行 loopback HTTP 联调时向 `Invoke-Unity.ps1` 强更构建附加 `-Development -DevelopmentHttp` 生成开发版本。运行 Windows Player 时附加 `-astral-demo-echo -logFile <绝对路径>`，程序在资源及 C# Binder 就绪后发起实际请求，输出 `ASTRAL_ECHO_OK sequence=...` 或 `ASTRAL_ECHO_FAILED ...` 并退出。正式连接需要部署端提供可验证的 HTTPS 证书。
 

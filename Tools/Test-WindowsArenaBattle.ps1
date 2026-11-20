@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory)][string]$Player,
-    [uri]$BaseUrl = 'http://127.0.0.1:5080',
+    [uri]$BaseUrl = 'http://127.0.0.1:7728',
     [ValidatePattern('^[a-z0-9-]+$')][string]$Name = 'windows-arena-battle',
     [switch]$Preload
 )

@@ -232,7 +232,7 @@ MonoBehaviour:
   openLabel: {fileID: 658823746}
   startupStatus: {fileID: 1527701560}
   audioOutput: {fileID: 355149536}
-  baseUrl: http://127.0.0.1:5080
+  baseUrl: http://localhost:7728
   textLocale: zh-Hans
   voiceLocale: ja
   showGameHome: 1

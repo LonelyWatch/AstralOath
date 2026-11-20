@@ -20,7 +20,7 @@ namespace AstralOath.Client.Bootstrap
         [SerializeField] private GameText openLabel;
         [SerializeField] private GameText startupStatus;
         [SerializeField] private AudioSource audioOutput;
-        [SerializeField] private string baseUrl = "http://127.0.0.1:5080";
+        [SerializeField] private string baseUrl = "http://localhost:7728";
         [SerializeField] private string textLocale = "zh-Hans";
         [SerializeField] private string voiceLocale = "ja";
         [SerializeField] private bool showGameHome;

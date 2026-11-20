@@ -2,7 +2,7 @@
 param(
     [string]$Player,
     [ValidatePattern('^[a-z0-9-]+$')][string]$Name = 'windows-smoke',
-    [string]$BaseUrl = 'http://localhost:5080',
+    [string]$BaseUrl = 'http://localhost:7728',
     [int]$Width = 1600,
     [int]$Height = 900,
     [switch]$Screenshot,

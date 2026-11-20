@@ -36,7 +36,7 @@ MySQL 集成 244 项通过，Unity 图形 PlayMode 覆盖房间、选禁、双�
 ## 本机复现
 
 ```powershell
-$env:ASTRAL_ARENA_TEST_URL = 'http://127.0.0.1:5080'
+$env:ASTRAL_ARENA_TEST_URL = 'http://127.0.0.1:7728'
 pwsh -NoProfile -File Tools/Invoke-Unity.ps1 -Mode PlayMode -Graphics -TestFilter 'AstralOath.Client.Tests.ArenaDraftOnlineTests|AstralOath.Client.Tests.ArenaBattlePlaybackTests|AstralOath.Client.Tests.GameHomeArenaTests'
 ```
 
