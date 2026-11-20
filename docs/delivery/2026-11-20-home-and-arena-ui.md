@@ -48,4 +48,4 @@ Windows x64 0.1.22 使用新 Common AOT，最小母包的基线为 `7b9d6ea99e4b
 
 R21 已用公钥独立验签，协议 1、schema 3，清单共 98 项，内容总量 2,146,831,316 字节。对比两份签名清单，R20 到 R21 有 10 项新增或变化，总计 107,783,168 字节。已用同一母包从空缓存执行下载、校验、退出并重新打开，进入了 R20 主页；实际 R21 更新界面显示增量为 102.8 MB，验证完成后提示退出。记录在 `.artifacts/ui-nov20/qa`。
 
-退出后从交付目录的原生 EXE 重新启动，普通游戏进程记录了 `ASTRAL_CODE_BOOT_OK release=21 recovered=False` 和 `ASTRAL_CONTENT_ACTIVE version=21 recovered=False`，见 `.artifacts/ui-nov20/qa/R21-normal-second.log`。
+退出后分别从试玩脚本和原生 EXE 打开两个普通客户端，两个窗口均进入可操作的主页，先关闭一个窗口后另一个继续运行。两份日志分别记录了 `ASTRAL_CODE_BOOT_OK release=21 recovered=False` 和 `ASTRAL_CONTENT_ACTIVE version=21 recovered=False`，见 `.artifacts/ui-nov20/qa/R21-normal-{first,second}.log`。另开两个独立进程访问 7728，服务端响应序号分别为 4、5，详见同目录的 `two-echo.json`。
