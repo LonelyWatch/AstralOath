@@ -406,8 +406,10 @@ namespace AstralOath.Shared.Battle
             new BattleChange(BattleFlowEventKind.LethalProtectionConsumed, actor, actor);
         public static BattleChange ExtraTurn(string actor) =>
             new BattleChange(BattleFlowEventKind.ExtraTurnGranted, actor, actor);
-        public static BattleChange Action(string source, string target, string skillId, BattleActionOrigin origin, string presentationId = null) =>
-            new BattleChange(BattleFlowEventKind.Action, source, target, skillId: skillId, origin: origin, presentationId: presentationId);
+        public static BattleChange Action(string source, string target, string skillId, BattleActionOrigin origin,
+            string presentationId = null, BattleStatusKind? triggeringStatus = null) =>
+            new BattleChange(BattleFlowEventKind.Action, source, target, skillId: skillId, origin: origin,
+                presentationId: presentationId, status: triggeringStatus);
     }
 
     // Hydrate presentation data received from the authoritative battle service.

@@ -105,6 +105,7 @@ namespace AstralOath.Client.Home
             Listen(Get<GameButton>("manageConfirm"), () => { if (!busy && targetId != null) _ = SubmitAsync(scope.Token); });
             Listen(page.Require<GameButton>("gearManage"), () => Show(true,null));
             Listen(bagPane.Require<GameButton>("sort"), () => { orderByLevelAscending = !orderByLevelAscending; Refresh(); });
+            Get<GameButton>("close").FeedbackSound = GameUiFeedback.Sound.PageBack;
             Listen(Get<GameButton>("close"), () => Back());
             Listen(Get<GameButton>("shade"), () => Back());
             Listen(Get<GameButton>("cancel"), CloseDialog);
@@ -470,6 +471,7 @@ namespace AstralOath.Client.Home
 
         private async Task SubmitAsync(CancellationToken token)
         {
+            var cue = action == "unequip" ? GameUiFeedback.Sound.EquipRemove : EquipCue(selected.slot);
             busy = true;
             Get<GameButton>("confirm").interactable = false;
             Get<GameButton>("manageConfirm").interactable = false;
@@ -479,6 +481,7 @@ namespace AstralOath.Client.Home
                 var fresh = cachedRead == null ? response : await cachedRead(token);
                 token.ThrowIfCancellationRequested();
                 AcceptSnapshot(fresh);
+                GameUiFeedback.Play(ui, cue);
                 busy = false;
                 CloseDialog();
                 if (Managing) selected = null;
@@ -511,5 +514,16 @@ namespace AstralOath.Client.Home
             }
             finally { if (!token.IsCancellationRequested) busy = false; }
         }
+
+        private static GameUiFeedback.Sound EquipCue(string slot) => slot switch
+        {
+            "weapon" => GameUiFeedback.Sound.EquipWeapon,
+            "helmet" => GameUiFeedback.Sound.EquipHelmet,
+            "armor" => GameUiFeedback.Sound.EquipArmor,
+            "necklace" => GameUiFeedback.Sound.EquipNecklace,
+            "ring" => GameUiFeedback.Sound.EquipRing,
+            "boots" => GameUiFeedback.Sound.EquipBoots,
+            _ => GameUiFeedback.Sound.Silent
+        };
     }
 }

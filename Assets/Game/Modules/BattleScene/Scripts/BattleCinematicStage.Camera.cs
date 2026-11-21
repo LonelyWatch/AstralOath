@@ -98,12 +98,25 @@ namespace AstralOath.Client.BattleScene
         private int viewportRevision;
         private float viewportBaseline;
         private float objectShotCrop = 1f;
+        internal Func<Vector2> OpeningPlateRange { get; set; }
+        private BattlePreviewActor[] horizonFormation;
+
+        internal void FrameFormationHorizon(BattlePreviewActor[] actors)
+        {
+            horizonFormation = actors;
+            HideCasterOutsideTargetFormation();
+        }
 
         // World-space CFX objects are composed against a 720-high source frame.
         // The project camera frames its normal combat layout at 1080 design pixels.
         internal void FrameSourceObject()
         {
             objectShotCrop = 720f / 1080f;
+            HideCasterOutsideTargetFormation();
+        }
+
+        private void HideCasterOutsideTargetFormation()
+        {
             if (!caster || targets.Contains(caster)) return;
             var casterSlot = participants?.FirstOrDefault(slot => slot && ContainsActor(slot, caster));
             HideLayoutParticipant(casterSlot ? casterSlot : caster);
@@ -199,6 +212,18 @@ namespace AstralOath.Client.BattleScene
             if (hasFocus && !pan.HasValue)
                 basePosition = Framed(FocusPoint(activeFocusLocation, activeFocusOffset), activeGroundOffset);
             Vector3 requested = basePosition + shakeOffset;
+            if (activeFocusLocation == 42 && hasFocus && horizonFormation?.Length > 0)
+            {
+                Vector3 center = Vector3.zero;
+                int count = 0;
+                foreach (var actor in horizonFormation)
+                {
+                    if (!actor) continue;
+                    center += actor.Bounds.center;
+                    count++;
+                }
+                if (count > 0) requested.y = center.y / count + shakeOffset.y;
+            }
             if (background && background.activeSelf && hasMapBounds)
             {
                 float x = camera.orthographicSize * camera.aspect;
@@ -216,8 +241,19 @@ namespace AstralOath.Client.BattleScene
                     farBackdrop.transform.position = backdropPosition + shift;
                 }
             }
-            camera.transform.position = requested;
             camera.orthographicSize *= objectShotCrop;
+            if (OpeningPlateRange != null)
+            {
+                var limits = OpeningPlateRange();
+                if (limits.x < limits.y)
+                {
+                    float halfWidth = Mathf.Min(camera.orthographicSize * (720f / 1080f) * camera.aspect,
+                        (limits.y - limits.x) * .499f);
+                    camera.orthographicSize = halfWidth / camera.aspect;
+                    requested.x = Mathf.Clamp(requested.x, limits.x + halfWidth, limits.y - halfWidth);
+                }
+            }
+            camera.transform.position = requested;
         }
 
         public void PlayShake(JObject node, SkeletonPlayerSource source)
@@ -257,6 +293,8 @@ namespace AstralOath.Client.BattleScene
             foreach (var shake in cameraShakes) shake.Player.Dispose();
             cameraShakes.Clear(); shakeOffset = Vector3.zero; hasFocus = false;
             objectShotCrop = 1f;
+            OpeningPlateRange = null;
+            horizonFormation = null;
             if (farBackdrop)
             {
                 farBackdrop.transform.position = backdropPosition;

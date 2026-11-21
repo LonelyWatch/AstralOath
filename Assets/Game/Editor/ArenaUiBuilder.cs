@@ -168,9 +168,17 @@ namespace AstralOath.Editor
             var feedback = canvas.AddComponent<GameUiFeedback>();
             feedback.Configure(Load<Sprite>(Common + "Textures/UiTouchRing.png"), Load<Sprite>(Common + "Textures/UiTouchGlow.png"),
                 Load<AudioClip>(Common + "Sounds/UiConfirm.wav"), Load<AudioClip>(Common + "Sounds/UiConfirm.wav"),
-                Load<AudioClip>(Common + "Sounds/UiCancel.wav"), Load<AudioClip>(Common + "Sounds/UiCancel.wav"),
+                Load<AudioClip>(Common + "Sounds/UiCancel.wav"), Load<AudioClip>(Common + "Sounds/UiBack.wav"),
                 Load<Sprite>(Common + "Textures/UiTouchSpark.png"), Load<Texture2D>(Common + "Textures/UiTouchPulse.png"),
-                Load<Material>(Common + "Materials/UiTouchPulse.mat"), Load<AudioClip>(Common + "Sounds/UiBlocked.wav"));
+                Load<Material>(Common + "Materials/UiTouchPulse.mat"), Load<AudioClip>(Common + "Sounds/UiBlocked.wav"),
+                Load<AudioClip>(Common + "Sounds/UiRosterScroll.wav"));
+            var cueRoles = new[] { GameUiFeedback.Sound.InventoryOpen, GameUiFeedback.Sound.QuickMenuOpen,
+                GameUiFeedback.Sound.QuickMenuClose, GameUiFeedback.Sound.EquipWeapon, GameUiFeedback.Sound.EquipHelmet,
+                GameUiFeedback.Sound.EquipArmor, GameUiFeedback.Sound.EquipNecklace, GameUiFeedback.Sound.EquipRing,
+                GameUiFeedback.Sound.EquipBoots, GameUiFeedback.Sound.EquipArtifact, GameUiFeedback.Sound.EquipRemove,
+                GameUiFeedback.Sound.ItemLock, GameUiFeedback.Sound.HeroPageOpen };
+            feedback.ConfigureAdditionalCues(cueRoles.Select(role => new GameUiFeedback.SoundCue(role,
+                Load<AudioClip>(Common + "Sounds/Ui" + role + ".wav"))).ToArray());
             EditorUtility.SetDirty(feedback);
             canvas.GetComponent<CanvasScaler>().screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
             canvas.GetComponent<CanvasScaler>().matchWidthOrHeight = 1f;

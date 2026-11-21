@@ -30,6 +30,7 @@ namespace AstralOath.Client.Home
                 button.onClick.AddListener(handler);
                 scope.Add(() => { if (button) button.onClick.RemoveListener(handler); });
             }
+            singleView.Map.Require<GameButton>("back").FeedbackSound = GameUiFeedback.Sound.PageBack;
             Hook("back", () => Back());
             Hook("dismiss", () => Back());
             Hook("change", () =>

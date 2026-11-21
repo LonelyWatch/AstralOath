@@ -57,6 +57,25 @@ namespace AstralOath.Tests
             if (transparentFrame) Object.DestroyImmediate(transparentFrame);
         }
 
+        [TestCase("Allies", 0f, 1f)]
+        [TestCase("Enemies", 1f, 0f)]
+        public void CutinFrameFacesFromTheLocalCastersSide(string side, float left, float right)
+        {
+            var units = new GameObject("Units").transform;
+            units.SetParent(root.transform);
+            var team = new GameObject(side).transform;
+            team.SetParent(units);
+            var slot = new GameObject("Slot").transform;
+            slot.SetParent(team);
+            actor.transform.SetParent(slot);
+            actor.gameObject.AddComponent(Type.GetType("AstralOath.Client.BattleScene.BattlePreviewActor, AstralOath.Client.BattleScene", true));
+            Call("PlayCutin", asset);
+            var mesh = camera.GetComponentsInChildren<MeshRenderer>().Single(item => item.name.StartsWith("CUTIN "))
+                .GetComponent<MeshFilter>().sharedMesh;
+            CollectionAssert.AreEqual(new[] { new Vector2(left, 0f), new Vector2(right, 0f),
+                new Vector2(right, 1f), new Vector2(left, 1f) }, mesh.uv);
+        }
+
         [Test] public void DefaultCutinPlacesAnOpaqueBlackCurtainBetweenHudAndFrames()
         {
             Call("PlayCutin", asset);

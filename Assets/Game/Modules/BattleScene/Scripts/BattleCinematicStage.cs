@@ -268,6 +268,8 @@ namespace AstralOath.Client.BattleScene
             // CUTIN remains a single overlay above the captured world and is excluded from sprite blur.
             layer.Root.layer = 5;
             layer.Cutin = asset;
+            if (caster && caster.TryGetComponent<BattlePreviewActor>(out var actor) && actor.FacingDirection < 0f)
+                layer.Mesh.uv = new[] { Vector2.right, Vector2.zero, Vector2.up, Vector2.one };
             layer.Start = cutinTime;
             layer.Node = descriptor;
             layer.Duration = duration;

@@ -34,6 +34,7 @@ namespace AstralOath.Client.Common
 
         public GameUiFeedback.Sound FeedbackSound { get => feedbackSound; set => feedbackSound = value; }
         public bool BlockedFeedback { get => blockedFeedback; set => blockedFeedback = value; }
+        public bool KeepBrightnessOnPress { get; set; }
 
         public override void OnPointerClick(PointerEventData eventData)
         {
@@ -64,9 +65,10 @@ namespace AstralOath.Client.Common
 
         protected override void DoStateTransition(SelectionState state, bool instant)
         {
-            base.DoStateTransition(state, instant);
             bool pressed = state == SelectionState.Pressed;
-            if (pressed && transition == Transition.ColorTint && targetGraphic)
+            base.DoStateTransition(pressed && KeepBrightnessOnPress && transition == Transition.ColorTint
+                ? SelectionState.Normal : state, instant);
+            if (pressed && !KeepBrightnessOnPress && transition == Transition.ColorTint && targetGraphic)
                 targetGraphic.CrossFadeColor(colors.pressedColor * colors.colorMultiplier * PressTint, 0f, true, true);
             SetPressFeedback(pressed);
         }
@@ -88,7 +90,7 @@ namespace AstralOath.Client.Common
             }
             foreach (var decoration in pressDecorations)
                 if (decoration.image) decoration.image.overrideSprite = pressed ? decoration.pressed : null;
-            if (pressed)
+            if (pressed && !KeepBrightnessOnPress)
             {
                 pressedGraphics ??= new List<(Graphic, Color)>();
                 TintOwnedGraphics(transform);

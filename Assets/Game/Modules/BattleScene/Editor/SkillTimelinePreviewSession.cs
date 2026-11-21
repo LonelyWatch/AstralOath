@@ -141,6 +141,9 @@ namespace AstralOath.Client.BattleScene.Editor
                         .FirstOrDefault(item => (string)JObject.Parse(item.text)["id"] == graphId);
                     if (!original) throw new InvalidOperationException("场景未引用演出图 " + graphId);
                     json = original.text;
+                    var catalog = serializedHost.FindProperty("skillTimelineOverrides").objectReferenceValue as TextAsset;
+                    if (catalog && SkillTimelineOverrides.ReadCatalog(catalog.text)[graphId] is JObject saved)
+                        json = SkillTimelineOverrides.Apply(JObject.Parse(json), saved).ToString();
                 }
                 if ((string)JObject.Parse(json)["id"] != graphId)
                     throw new ArgumentException("预览图 ID 与当前技能不一致。", nameof(graphJson));

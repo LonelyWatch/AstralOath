@@ -132,6 +132,10 @@ namespace AstralOath.Client.BattleScene
             bool holdPose = (bool?)node["disable_restore"] ?? false;
             Vector2 offset = new Vector2(Number(node, "offset_x"), Number(node, "offset_y")) * SourcePixel;
             var bindings = new NodeActorBinding[actors.Length];
+            var contactTrack = source == "spani/kylon_sk3eff_node.scsp"
+                ? Document(source)?["animations"]?["animation"]?["bones"]?[bone]?["translate"]?.Last as JObject : null;
+            var contactEnd = contactTrack == null ? Vector2.zero :
+                new Vector2(Number(contactTrack, "x"), Number(contactTrack, "y")) * asset.scale;
             var formation = new Vector3[actors.Length];
             Vector3 center = actors.Aggregate(Vector3.zero, (sum, actor) => sum + actor.transform.position) / actors.Length;
             for (int index = 0; index < actors.Length; index++)
@@ -222,6 +226,13 @@ namespace AstralOath.Client.BattleScene
                     binding.Body.localRotation = binding.Rotation * rotation;
                     binding.Body.localScale = Vector3.Scale(binding.Scale, scale) *
                         (screenPivot ? cinematic.SourceScreenScale : 1f);
+                    if (contactTrack != null && graspStage && sampler.Time >= graspCut &&
+                        actors[index].TryGetPresentationAnchor("target", out var torso))
+                    {
+                        Vector2 localContact = graspPoint + position - contactEnd;
+                        Vector3 deltaToContact = graspStage.TransformPoint(localContact) - torso;
+                        binding.Body.position += new Vector3(deltaToContact.x, deltaToContact.y, 0f);
+                    }
                 }
             }
 

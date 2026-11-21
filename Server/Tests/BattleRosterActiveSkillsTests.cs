@@ -87,7 +87,8 @@ public sealed class BattleRosterActiveSkillsTests
     {
         BattleMatch Encounter() => Match(hero, 3, _ => new[] { Enemy(1, 50, passive: Counter) });
         var basic = Cast(Encounter(), hero + ".s1", "enemy1");
-        Assert.Contains(basic.Events, e => e.Origin == BattleActionOrigin.Counter && e.Kind == BattleFlowEventKind.Action);
+        var counter = Assert.Single(basic.Events, e => e.Origin == BattleActionOrigin.Counter && e.Kind == BattleFlowEventKind.Action);
+        Assert.Null(counter.StatusKind);
         var ultimate = Cast(Encounter(), hero + ".s3");
         Assert.Contains(ultimate.Events, e => e.Kind == BattleFlowEventKind.Damage && e.TargetId == "enemy1");
         Assert.DoesNotContain(ultimate.Events, e => e.Origin == BattleActionOrigin.Counter && e.Kind == BattleFlowEventKind.Action);

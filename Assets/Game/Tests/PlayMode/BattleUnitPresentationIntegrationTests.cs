@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Reflection;
@@ -413,6 +414,7 @@ namespace AstralOath.Client.Tests
             Capture("damage-trail-first-hit", new Vector2Int(1920, 1080));
             view.GetType().GetMethod("TickVisual").Invoke(view, new object[] { .5f });
             Assert.That(RedWidth(), Is.EqualTo(redAtFirstHpHit).Within(.001f), "The red range holds until the last hit.");
+            Capture("damage-trail-first-hit-settled", new Vector2Int(1920, 1080));
 
             Assert.That(friendlyIcons.childCount, Is.Zero);
             CollectionAssert.Contains(VisibleIcons(), "stic_att_up");
@@ -421,7 +423,7 @@ namespace AstralOath.Client.Tests
             float redAtLastHpHit = RedWidth();
             Assert.That(redAtLastHpHit, Is.GreaterThan(redAtFirstHpHit), "The last hit extends the red range.");
             Capture("damage-trail-last-hit", new Vector2Int(1920, 1080));
-            view.GetType().GetMethod("TickVisual").Invoke(view, new object[] { .3f });
+            view.GetType().GetMethod("TickVisual").Invoke(view, new object[] { .7f });
             Assert.That(RedWidth(), Is.InRange(.001f, redAtLastHpHit - .001f), "Red retracts after the last hit.");
             Capture("damage-trail-retracting", new Vector2Int(1920, 1080));
             view.GetType().GetMethod("TickVisual").Invoke(view, new object[] { 1.05f });
@@ -666,8 +668,17 @@ namespace AstralOath.Client.Tests
             var damage = BattleDualAttackTimingTests.Event(BattleFlowEventKind.Damage, "ally-1", null, null,
                 BattleActionOrigin.Primary, BattleStatusKind.Poison, amount: 80);
             int hitSounds = host.StartedHitSounds;
+            var queue = (Queue<BattleFlowEvent>)simulation.GetType().GetField("playback", Private).GetValue(simulation);
+            queue.Enqueue(BattleDualAttackTimingTests.Event(BattleFlowEventKind.Damage, "ally-1", null, null,
+                BattleActionOrigin.Primary, BattleStatusKind.Bleed, amount: 10, target: "enemy-2"));
 
             simulation.GetType().GetMethod("Present", Private).Invoke(simulation, new object[] { damage });
+            var trail = map.transform.Find("Unit Status/Enemies/01 Front/HP/Damage Trail").GetComponent<Image>();
+            float start = trail.rectTransform.anchorMax.x;
+            view.GetType().GetMethod("TickVisual").Invoke(view, new object[] { .5f });
+            Assert.That(trail.rectTransform.anchorMax.x, Is.LessThan(start - .0001f),
+                "Another target's pending bleed cannot hold this target's poison trail.");
+            queue.Clear();
             Assert.That(health.GetValue(view), Is.EqualTo(920L));
             Assert.That(host.StartedHitSounds, Is.EqualTo(hitSounds));
             var feedback = (IList)simulation.GetType().GetField("pendingFeedback", Private).GetValue(simulation);

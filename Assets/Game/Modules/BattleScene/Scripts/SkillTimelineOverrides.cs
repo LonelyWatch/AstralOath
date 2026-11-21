@@ -28,7 +28,7 @@ namespace AstralOath.Client.BattleScene
         {
             "x", "y", "offset_x", "offset_y", "time", "duration", "fade", "fadeIn", "fadeOut",
             "scale", "opacity", "curve", "color", "localZ", "globalZ", "timeScale", "power",
-            "powerX", "powerY", "location", "style", "mode", "self_x", "away_x", "rand_x", "rand_y", "accel"
+            "powerX", "powerY", "location", "style", "mode", "self_x", "away_x", "rand_x", "rand_y", "accel", "targetId"
         };
 
         internal static IEnumerable<JObject> Nodes(JObject graph) =>
@@ -72,6 +72,10 @@ namespace AstralOath.Client.BattleScene
                 foreach (var field in fields.Properties())
                 {
                     if (!EditableFields.Contains(field.Name) || !ValidField(field.Value))
+                        throw InvalidNode(id, entry.Name);
+                    if (field.Name == "targetId" && ((string)node["etty"] != "STOP" ||
+                        field.Value.Type != JTokenType.String ||
+                        !nodes.Values.Any(candidate => (string)candidate["id"] == (string)field.Value)))
                         throw InvalidNode(id, entry.Name);
                     node[field.Name] = field.Value.DeepClone();
                 }

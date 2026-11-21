@@ -26,6 +26,10 @@ namespace AstralOath.Client.BattleScene
             waveLabel = topBar.Find("Wave")?.gameObject;
             wavePlate = topBar.Find("Wave Plate")?.gameObject;
             root = Rect(topBar, "Skill Use Banner", Home, new Vector2(360f, 80f));
+            var canvas = root.gameObject.AddComponent<Canvas>();
+            canvas.overrideSorting = true;
+            canvas.sortingLayerID = topBar.GetComponentInParent<Canvas>().sortingLayerID;
+            canvas.sortingOrder = BattleHud.SkillBannerOrder;
             visibility = root.gameObject.AddComponent<CanvasGroup>();
             visibility.blocksRaycasts = false;
             visibility.interactable = false;

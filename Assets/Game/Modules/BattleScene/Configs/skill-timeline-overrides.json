@@ -1,4 +1,13 @@
 {
   "version": 1,
-  "graphs": {}
+  "graphs": {
+    "c_diene_skill_02": {
+      "version": 1,
+      "graph": "c_diene_skill_02",
+      "sourceHash": "E0D2B945262AB247FAF6CF2745A6D8B01469A7BF4111A41B0C0747A017808618",
+      "nodes": {
+        "16": { "fields": { "targetId": "wh" } }
+      }
+    }
+  }
 }

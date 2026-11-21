@@ -85,6 +85,7 @@ namespace AstralOath.Client.Home
             ui.Get<GameText>("PickerTitle").Bind(locale, scope, Prefix + "picker_title");
             ui.Get<GameText>("RetryLabel").Bind(locale, scope, "home.hero_inventory.retry");
             BindAction(scope, ui.Get<GameButton>("Slot"), OpenPicker);
+            ui.Get<GameButton>("PickerClose").FeedbackSound = GameUiFeedback.Sound.PageBack;
             BindAction(scope, ui.Get<GameButton>("PickerClose"), _ => ClosePickerAsync());
             BindAction(scope, ui.Get<GameButton>("PickerShade"), _ => ClosePickerAsync());
             BindAction(scope, ui.Get<GameButton>("Retry"), LoadAsync);
@@ -561,6 +562,14 @@ namespace AstralOath.Client.Home
                     "lock" => api.LockAsync(id, request.Id, !request.Item.locked, token),
                     "sell" => api.SellAsync(id, request.Id, token),
                     _ => api.EnhanceAsync(id, request.Id, new[] { request.Material }, token)
+                });
+                token.ThrowIfCancellationRequested();
+                GameUiFeedback.Play(ui.Action("confirm"), request.Action switch
+                {
+                    "equip" => GameUiFeedback.Sound.EquipArtifact,
+                    "unequip" => GameUiFeedback.Sound.EquipRemove,
+                    "lock" => GameUiFeedback.Sound.ItemLock,
+                    _ => GameUiFeedback.Sound.Silent
                 });
                 pending = null;
             }

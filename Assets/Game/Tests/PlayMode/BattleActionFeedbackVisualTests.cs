@@ -55,14 +55,20 @@ namespace AstralOath.Client.Tests
                 var item = Event(sequence++, BattleFlowEventKind.Action, BattleActionOrigin.Primary, true);
                 Assert.That(Call(feedback, "PresentAction", item, actor), Is.True);
                 Call(onlineHud, "PlaySoulBurn", side);
-                Call(onlineHud, "Tick", .25f);
                 string sideName = side == BattleSide.Ally ? "Local" : "Opponent";
                 var anchor = map.transform.parent.Find("Online PvP HUD/" + sideName + " Soul Burn Anchor");
+                Call(onlineHud, "Tick", 1f / 30f);
+                yield return Capture("fixture-soul-burn-" + sideName.ToLowerInvariant() + "-onset");
+                Call(onlineHud, "Tick", .25f - 1f / 30f);
                 Assert.That(anchor.GetComponentsInChildren<MeshRenderer>().Any(r => r.enabled && r.GetComponent<MeshFilter>().sharedMesh.vertexCount > 0), Is.True);
                 yield return Capture("fixture-soul-burn-" + sideName.ToLowerInvariant());
+                // P2 13:41.2, 1920x1080. The white ring provides an independent scale
+                // reference even when a beam endpoint already extends outside the camera.
+                var ringRadius = SoulBurnAtlasRadius(anchor, new Rect(355, 2, 314, 314)) * .943f;
+                Assert.That(ringRadius, Is.InRange(815f, 1100f), "Visible intro ring radius in 1080-high HUD units.");
                 Call(onlineHud, "Tick", 2f);
-                Assert.That(anchor.localScale.x, Is.GreaterThan(1.3f),
-                    "The sustained fire is wider than the original-sized intro rays at their common origin.");
+                Assert.That(SoulBurnAtlasRadius(anchor, new Rect(842, 227, 100, 100)), Is.InRange(75f, 120f),
+                    "The sustained avatar glow has its own scale after the opening flash.");
                 Assert.That(anchor.GetComponentsInChildren<MeshRenderer>(), Is.Not.Empty,
                     "The authored avatar loop lasts until the action chain settles.");
                 yield return Capture("fixture-soul-burn-" + sideName.ToLowerInvariant() + "-loop");
@@ -74,7 +80,7 @@ namespace AstralOath.Client.Tests
                 Call(onlineHud, "Tick", 2f);
                 Assert.That(anchor.GetComponentsInChildren<MeshRenderer>(), Is.Empty);
             }
-            foreach (var kind in new[] { BattleActionOrigin.Counter, BattleActionOrigin.DualAttack, BattleActionOrigin.ExtraAttack })
+            foreach (var kind in new[] { BattleActionOrigin.Counter, BattleActionOrigin.DualAttack, BattleActionOrigin.ExtraAttack, BattleActionOrigin.Passive })
             {
                 var item = Event(sequence++, BattleFlowEventKind.Action, kind, false);
                 Assert.That(Call(feedback, "PresentAction", item, actor), Is.False);
@@ -163,6 +169,25 @@ namespace AstralOath.Client.Tests
                 Assert.That(Call(recipient, "TryGetPresentationAnchor", args), Is.True);
                 Assert.That(Vector3.Distance(effect.position, (Vector3)args[1]), Is.LessThan(.001f));
             }
+        }
+
+        private static float SoulBurnAtlasRadius(Transform anchor, Rect region)
+        {
+            var mesh = anchor.GetComponentsInChildren<MeshFilter>().Single(filter =>
+                filter.GetComponent<MeshRenderer>().sharedMaterials.Any(material => material.mainTexture &&
+                    material.mainTexture.name == "ui_livepvp_soulburn_eff"));
+            var points = mesh.sharedMesh.vertices;
+            var uvs = mesh.sharedMesh.uv;
+            float cornerDistance = 0;
+            for (int i = 0; i < uvs.Length; i++)
+            {
+                var texel = new Vector2(uvs[i].x * 944, (1f - uvs[i].y) * 398);
+                if (texel.x < region.xMin - .1f || texel.x > region.xMax + .1f ||
+                    texel.y < region.yMin - .1f || texel.y > region.yMax + .1f) continue;
+                var offset = anchor.parent.InverseTransformVector(mesh.transform.TransformPoint(points[i]) - anchor.position);
+                cornerDistance = Mathf.Max(cornerDistance, ((Vector2)offset).magnitude);
+            }
+            return cornerDistance / Mathf.Sqrt(2);
         }
 
         private IEnumerator Capture(string name) => CaptureScene(scene, name, Environment.GetEnvironmentVariable("ASTRAL_ACTION_FEEDBACK_CAPTURE_DIR"));

@@ -306,9 +306,10 @@ namespace AstralOath.Shared.Battle
                 }
             }
 
-            private bool RollsCounter(Unit actor)
+            private bool RollsCounter(Unit actor, out bool counterBuff)
             {
-                if (Roll(random, actor.Strength(BattleStatusKind.Counter))) return true;
+                counterBuff = Roll(random, actor.Strength(BattleStatusKind.Counter));
+                if (counterBuff) return true;
                 foreach (var passive in Passives(actor))
                 foreach (var effect in passive.Effects)
                     if (effect.phase == "on_attacked" && effect.operation == "counterattack" &&

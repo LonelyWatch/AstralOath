@@ -60,6 +60,7 @@ namespace AstralOath.Client.BattleScene
             auto = map.Require<GameButton>("auto");
             burn = map.Require<GameButton>("soulBurn");
             skills = new[] { map.Require<GameButton>("skill1"), map.Require<GameButton>("skill2"), map.Require<GameButton>("skill3") };
+            foreach (var skill in skills) skill.KeepBrightnessOnPress = true;
             selectedArtwork = new[] { map.Require<Image>("skillSelected1"), map.Require<Image>("skillSelected2"),
                 map.Require<Image>("skillSelected3") };
             burnImage = (Image)burn.targetGraphic;

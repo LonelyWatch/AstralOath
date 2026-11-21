@@ -20,6 +20,7 @@ public sealed class BattleRoster26To30Tests
         var retaliation = Cast(match, "enemy", EnemySkill, "hero");
         var counter = Assert.Single(retaliation.Events, evt => evt.Kind == BattleFlowEventKind.Action &&
             evt.SkillId == "c1027.s1" && evt.Origin == BattleActionOrigin.Counter);
+        Assert.Equal(BattleStatusKind.Counter, counter.StatusKind);
         var smash = Assert.Single(retaliation.Events, evt => evt.Kind == BattleFlowEventKind.Action &&
             evt.SkillId == "c1027.s2" && evt.Origin == BattleActionOrigin.ExtraAttack);
         Assert.True(counter.Sequence < smash.Sequence);

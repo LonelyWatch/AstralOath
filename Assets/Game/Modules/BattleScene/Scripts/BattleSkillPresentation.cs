@@ -268,6 +268,18 @@ namespace AstralOath.Client.BattleScene
             float impactTime = hits.Length == 0 ? lead + Mathf.Min(.65f, clipDuration * .8f) : hits[0];
             HitTimes = hits.Length == 0 ? new[] { impactTime } : hits;
             float actionEnd = Mathf.Max(lead + clipDuration, hits.Length == 0 ? impactTime + .15f : hits[hits.Length - 1] + .15f);
+            float fullEnd = actionEnd;
+            float lastBodyEnd = cues.Where(cue => Kind(cue.Node) == "ANI").Max(cue => cue.At + cue.Duration);
+            float idleAt = cues.Where(cue => Kind(cue.Node) == "IDLE" && cue.At >= lastBodyEnd - .001f)
+                .Select(cue => cue.At).DefaultIfEmpty(float.PositiveInfinity).Min();
+            // Some stages restore the battlefield without an IDLE node. Their last body frame
+            // can be a silhouette used only by the cinematic (Jenua's passive).
+            if (float.IsPositiveInfinity(idleAt))
+            {
+                var reveal = cues.FirstOrDefault(cue => Kind(cue.Node) == "BGSHOW" &&
+                    (bool?)cue.Node["show"] == true && cue.At >= lastBodyEnd - .001f);
+                if (reveal.Node != null) Schedule(reveal.At, actor.PlayBattleIdle);
+            }
             cinematic.Begin(actor.transform, recipients.Select(target => target.transform).ToArray(),
                 cues.Any(cue => Kind(cue.Node) == "CAM" || Kind(cue.Node) == "CUTIN" || Kind(cue.Node) == "BGHATCH"));
             if (!cues.Any(cue => Kind(cue.Node) == "CAM" || Kind(cue.Node) == "ZOOM")) cinematic.ReturnToBaseline(.2f);
@@ -275,7 +287,18 @@ namespace AstralOath.Client.BattleScene
             {
                 var node = cue.Node;
                 float at = cue.At;
-                actionEnd = Mathf.Max(actionEnd, at + cue.Duration);
+                fullEnd = Mathf.Max(fullEnd, at + cue.Duration);
+                float blockingEnd = at + cue.Duration;
+                if (Kind(node) == "EFFECT")
+                {
+                    // Successors retain the full source completion edge in ReadCues. A free-running
+                    // emitter's last particles can finish after control returns to the battlefield.
+                    blockingEnd = at + EffectDuration((string)node["source"], includeAfterglow: false);
+                    if ((int?)node["location"] == 2 && node["locationParam"] == null && at <= idleAt &&
+                        idleAt >= HitTimes[HitTimes.Count - 1] && primary != actor)
+                        blockingEnd = Mathf.Min(blockingEnd, idleAt);
+                }
+                actionEnd = Mathf.Max(actionEnd, blockingEnd);
                 switch (Kind(node))
                 {
                     case "ANI":
@@ -312,6 +335,12 @@ namespace AstralOath.Client.BattleScene
                         Schedule(at, () => cinematic.Play(node));
                         break;
                     case "STOP":
+                        // A foreground screen cover still occupies the camera during its release.
+                        // Let that visible reveal finish before the action resets the cinematic.
+                        foreach (var cover in cues.Where(previous => previous.At <= at && Kind(previous.Node) == "DARK" &&
+                                     Number(previous.Node, "globalZ", -1f) > 0f && Number(previous.Node, "duration", -1f) < 0f &&
+                                     previous.Node["id"] != null && (string)previous.Node["id"] == (string)node["targetId"]))
+                            actionEnd = Mathf.Max(actionEnd, at + Seconds(cover.Node, "fadeOut"));
                         Schedule(at, () => { StopTargetLayer(node); cinematic.Play(node); });
                         break;
                     case "MOVE":
@@ -341,7 +370,6 @@ namespace AstralOath.Client.BattleScene
             }
             // STG completion, camera cues, and hits remain authoritative for the visual action.
             // Model-timeline effects can leave particles after their authored emission windows.
-            float fullEnd = actionEnd;
             foreach (var frame in ModelTimelineFrames(graph, cues))
             {
                 var node = frame.Parameters;
@@ -927,6 +955,14 @@ namespace AstralOath.Client.BattleScene
             string anchorName = (string)node["locationParam"];
             var offset = new Vector2(Number(node, "x"), Number(node, "y"));
             bool disableAutoFlipX = (bool?)node["disableAutoFlipX"] == true;
+            if (!location.HasValue && source is "tenebria_skill_03.cfx" or "tenebria_skill_03_cloud.cfx")
+            {
+                // The mirrored upper and lower moons share a horizon at the center of the target shot.
+                cinematic.FrameFormationHorizon(targets);
+                Cfx(source, primary, targets, null, Number(node, "scale", 1f), Vector2.zero, false,
+                    disableAutoFlipX: disableAutoFlipX);
+                return;
+            }
             if (!location.HasValue && TryPlayEffectObject(node, primary, targets, offset))
                 return;
             if (!location.HasValue && string.IsNullOrEmpty(anchorName) && source == "iseria_skill_03_gate.cfx")
@@ -1103,7 +1139,9 @@ namespace AstralOath.Client.BattleScene
             }
             foreach (var anchor in anchors.Where(item => item))
             {
-                bool follow = location == 1 || location == 11;
+                bool follow = location == 1 || location == 11 ||
+                    (location == 2 && !string.IsNullOrEmpty(anchorName) && anchor.PresentationRenderer &&
+                     nodeActorBindings.ContainsKey(anchor.PresentationRenderer.transform));
                 Vector3 initial = Position(anchor);
                 SpawnAt(() => follow && anchor ? Position(anchor) : initial, anchor, follow);
             }
@@ -1186,6 +1224,11 @@ namespace AstralOath.Client.BattleScene
             float anchorScale = anchor ? Mathf.Abs(anchor.transform.lossyScale.x) : 1f;
             float bodyScale = modelTimeline && renderer ? Mathf.Abs(renderer.transform.lossyScale.x) : anchorScale;
             float size = Mathf.Max(0.01f, Number(part, "scale", 1f) * scale * bodyScale);
+            // The upper and lower moon rigs share the 720-high source composition. The surrounding
+            // sky, water and horizontal light still cover the whole camera at wide aspect ratios.
+            if (key == "effect/tenebria_skill_03.cfx" &&
+                source is "tenebria_skill_03_up_moon" or "tenebria_skill_03_up_wave" or "tenebria_skill_03_up_doom_L")
+                size *= 720f / 1080f;
             int order = screenOrder ??
                 ((renderer ? renderer.sortingOrder : 55) + (int)Mathf.Sign(Number(part, "globalZ", 1f)) * 2);
             var group = new GameObject("Skill CFX " + key.Substring(EffectPath.Length)).transform;
@@ -1203,13 +1246,14 @@ namespace AstralOath.Client.BattleScene
                 switch (format)
                 {
                     case "spine":
-                        SpawnSpine(source, part, group, size, order, visualFacing, () => UpdatePosition(false));
+                        SpawnSpine(source, part, group, size, order, visualFacing, () => UpdatePosition(false),
+                            !follow && anchor && anchor != caster);
                         break;
                     case "particle":
                         SpawnParticles(source, part, group, size, order, () =>
                         {
-                            if (!modelTimeline || caster) UpdatePosition(false);
-                        }, modelTimeline);
+                            if (caster) UpdatePosition(false);
+                        }, !effectObject);
                         break;
                     default:
                         throw new FormatException("Unsupported primitive format " + format);
@@ -1255,7 +1299,8 @@ namespace AstralOath.Client.BattleScene
             return 0f;
         }
 
-        private void SpawnSpine(string source, JObject part, Transform group, float size, int order, float side, Action follow)
+        private void SpawnSpine(string source, JObject part, Transform group, float size, int order, float side, Action follow,
+            bool allowAfterglow)
         {
             string key = EffectPath + source + ".scsp";
             float speed = PrimitiveSpeed(part);
@@ -1291,6 +1336,7 @@ namespace AstralOath.Client.BattleScene
                     renderer.SetPropertyBlock(opacityBlock);
                 });
                 player.Play(animation, false);
+                Action releaseContact = BindShotArtwork(key, source, player);
                 float lifetime = PrimitiveDuration(part);
                 if (UsesIntroLoop(part, metadata) && metadata.Duration("intro") / speed < lifetime)
                     Schedule(time + metadata.Duration("intro") / speed, () =>
@@ -1313,9 +1359,10 @@ namespace AstralOath.Client.BattleScene
                     updateOpacity?.Invoke();
                 }, () =>
                 {
+                    releaseContact?.Invoke();
                     player.Dispose();
                     if (group) DestroyVisual(group.gameObject);
-                }, false));
+                }, allowAfterglow));
             }
             catch
             {

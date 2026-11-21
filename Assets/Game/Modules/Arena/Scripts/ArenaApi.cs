@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,7 +37,7 @@ namespace AstralOath.Client.Arena
     public sealed class ArenaRequestException : IOException
     {
         internal string Code { get; }
-        internal ArenaRequestException(string code) : base(code) { Code = code; }
+        internal ArenaRequestException(string code, Exception cause = null) : base(code, cause) { Code = code; }
     }
 
     public sealed class ArenaApi : IDisposable
@@ -183,11 +184,12 @@ namespace AstralOath.Client.Arena
                 }
             }
             catch (ArenaRequestException) { throw; }
-            catch (Exception error) when (error is OperationCanceledException or IOException or HttpRequestException or ObjectDisposedException)
+            catch (Exception error) when (error is OperationCanceledException or IOException or HttpRequestException
+                or ObjectDisposedException or SocketException)
             {
                 token.ThrowIfCancellationRequested();
                 lifetime.ThrowIfCancellationRequested();
-                throw new ArenaRequestException("unavailable");
+                throw new ArenaRequestException("unavailable", error);
             }
         }
         public Task LeaveAsync(string id, CancellationToken token) => Send<Error>(Room(id) + "/leave", new object(), token);
@@ -262,11 +264,11 @@ namespace AstralOath.Client.Arena
             {
                 throw new ArenaRequestException("unavailable");
             }
-            catch (HttpRequestException)
+            catch (Exception error) when (error is HttpRequestException or SocketException)
             {
                 token.ThrowIfCancellationRequested();
                 lifetime.ThrowIfCancellationRequested();
-                throw new ArenaRequestException("unavailable");
+                throw new ArenaRequestException("unavailable", error);
             }
         }
 

@@ -118,14 +118,14 @@ namespace AstralOath.Client.Tests
         }
 
         [UnityTest]
-        public IEnumerator DamageTrailWaitsForTheLastImpactAcrossAnExtraAttack() =>
-            AssertDamageTrailHolds(BattleActionOrigin.ExtraAttack, "ally-1", "c1001.s2", "c_ras_skill_02");
+        public IEnumerator DamageTrailReleasesBeforeTheExtraAttackHits() =>
+            AssertDamageTrailReleases(BattleActionOrigin.ExtraAttack, "ally-1", "c1001.s2", "c_ras_skill_02");
 
         [UnityTest]
-        public IEnumerator DamageTrailWaitsForTheLastImpactAcrossADualAttack() =>
-            AssertDamageTrailHolds(BattleActionOrigin.DualAttack, "ally-3", "c1005.s1", "c_mercedes_skill_01");
+        public IEnumerator DamageTrailReleasesBeforeTheDualAttackHits() =>
+            AssertDamageTrailReleases(BattleActionOrigin.DualAttack, "ally-3", "c1005.s1", "c_mercedes_skill_01");
 
-        private IEnumerator AssertDamageTrailHolds(BattleActionOrigin followUp, string source, string skill, string presentation)
+        private IEnumerator AssertDamageTrailReleases(BattleActionOrigin followUp, string source, string skill, string presentation)
         {
             scene = BattleScenePreviewTests.LoadPlayerOpeningScene();
             yield return null;
@@ -149,18 +149,20 @@ namespace AstralOath.Client.Tests
             float transition = followUp == BattleActionOrigin.DualAttack ? firstLastImpact : firstDuration;
             Call(simulation, "Tick", transition + .01f);
             Assert.That(health.fillAmount, Is.LessThan(healthBefore), "The first action already dealt damage.");
-            Assert.That(trail.enabled, Is.True);
-            Assert.That(RedEnd(), Is.EqualTo(healthBefore).Within(.001f),
-                "The red edge stays at the starting HP through recovery and the next attack's windup.");
-
             float healthAfterFirst = health.fillAmount;
+            float windup = (float)Field(simulation, "impactSeconds") - (float)Field(simulation, "actionElapsed");
+            Assert.That(windup, Is.GreaterThan(.01f));
+            Call(simulation, "Tick", windup * .8f);
+            Assert.That(health.fillAmount, Is.EqualTo(healthAfterFirst));
+            Assert.That(RedEnd(), Is.LessThan(healthBefore - .0001f),
+                "The first skill's tail must already move during the follow-up windup.");
             float lastImpact = ((float[])Field(simulation, "hitTimes")).DefaultIfEmpty((float)Field(simulation, "impactSeconds")).Last();
             Call(simulation, "Tick", lastImpact - (float)Field(simulation, "actionElapsed"));
             Assert.That(health.fillAmount, Is.LessThan(healthAfterFirst));
-            Assert.That(RedEnd(), Is.EqualTo(healthBefore).Within(.001f));
+            Assert.That(RedEnd(), Is.EqualTo(healthAfterFirst).Within(.001f));
             Call(simulation, "Tick", .4f);
-            Assert.That(RedEnd(), Is.InRange(health.fillAmount + .001f, healthBefore - .001f),
-                "Only the final impact starts the red trail's retraction.");
+            Assert.That(RedEnd(), Is.InRange(health.fillAmount + .001f, healthAfterFirst - .001f),
+                "The follow-up has its own damage interval and retraction.");
         }
 
         [UnityTest]

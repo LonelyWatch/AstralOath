@@ -1,5 +1,7 @@
 # AstralOath.Server
 
+共享战斗规则会随反击动作回传实际触发来源；查尔斯反击状态和技能被动反击分别回归。[动作事件与客户端表现](../docs/delivery/2026-11-22-battle-action-recovery.md)
+
 装备分数从当前主副属性计算。服务端测试直接调用与客户端同源的共享方法，用六组国服实录数值校验。现有库存协议已包含计算所需字段。[装备评分与取整](../Shared/com.astraloath.shared/README.md)
 
 .NET 10 模块单体入口位于 `Host`。Foundation 模块持久化 Echo 请求并提供健康检查，`Tests` 覆盖协议和真实 MySQL 集成。开发、迁移和运维命令见 [服务端开发手册](../docs/development/server.md)，模块边界和数据访问决定见 [服务端架构](../docs/architecture/server.md)。

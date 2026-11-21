@@ -37,7 +37,9 @@ namespace AstralOath.Client.Tests
             var ai = new BattleAiPolicy(catalog);
             bool hostSeat = actor.Slot.Side == BattleSide.Ally;
             var skill = actor.Form.SkillIds[0];
-            var target = ai.ChooseTarget(opening, skill).TargetId;
+            var automaticTarget = ai.ChooseTarget(opening, skill).TargetId;
+            var target = opening.Units.First(unit => unit.InstanceId != automaticTarget &&
+                ai.IsTargetForSkill(opening, skill, unit.InstanceId, false)).InstanceId;
             var transport = new Replies();
             var sessionType = typeof(BattleHudPreview).Assembly.GetType("AstralOath.Client.BattleScene.BattleOnlineSession", true);
             using var session = (IDisposable)Activator.CreateInstance(sessionType, Members, null,
@@ -46,7 +48,11 @@ namespace AstralOath.Client.Tests
             ((IDisposable)http.GetValue(session)).Dispose();
             http.SetValue(session, new HttpClient(transport));
             sessionType.GetField("heroes", Members).SetValue(session, catalog.heroes.ToDictionary(row => row.id));
-            var update = Call(session, "Read", Wire(opening, match.OpeningEvents, null), true, 0UL);
+            var wire = Wire(opening, match.OpeningEvents, null);
+            var actingUnit = wire["snapshot"]["units"].Single(unit => (string)unit["instanceId"] == actor.InstanceId);
+            var coolingSkill = actor.Form.SkillIds[2];
+            actingUnit["cooldowns"][coolingSkill] = 2;
+            var update = Call(session, "Read", wire, true, 0UL);
             sessionType.GetProperty("Snapshot", Members).SetValue(session, Field(update, "Snapshot"));
             Call(session, "ApplyClock", update);
             // This test drives the command response precisely. The independent time-based
@@ -67,6 +73,16 @@ namespace AstralOath.Client.Tests
                 var soul = hud.Require<GameButton>("soulBurn");
                 var first = hud.Require<GameButton>("skill1");
                 Assert.That(first.interactable && skills.activeInHierarchy && soul.gameObject.activeInHierarchy);
+                var cooling = hud.Require<GameButton>("skill3");
+                Assert.That(cooling.interactable, Is.False);
+                var selected = simulation.GetType().GetField("selected", Members);
+                var before = selected.GetValue(simulation);
+                Call(simulation, "ChooseSkill", 2);
+                Assert.That(selected.GetValue(simulation), Is.EqualTo(before));
+                // A target click can arrive after the previously selected skill enters cooldown.
+                selected.SetValue(simulation, 2);
+                Assert.That(Call(simulation, "ChooseTarget", target), Is.EqualTo(false));
+                Assert.That(transport.Command, Is.Null);
                 first.onClick.Invoke();
                 Assert.That(Call(simulation, "ChooseTarget", target), Is.EqualTo(true));
                 Assert.That(transport.Command["skillId"].Value<string>(), Is.EqualTo(skill));

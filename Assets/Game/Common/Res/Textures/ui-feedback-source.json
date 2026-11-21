@@ -89,6 +89,163 @@
       "event": "event:/ui/popup/down_neg",
       "durationSeconds": 0.92146,
       "sha256": "32e0836ea830ddaf44502b94c2468afcb09823a1c6b0a568b09cbaa35de3fbee"
+    },
+    {
+      "path": "UiRosterScroll.wav",
+      "event": "event:/ui/list_scroll",
+      "eventId": "003d1faa-1642-4b85-9712-3e100a68cfbc",
+      "bank": "sound/ui1.bank",
+      "sourceSamples": [
+        "se_ui_list_scroll_2_01.wav",
+        "se_ui_list_scroll_2_02.wav"
+      ],
+      "pcmFrames": 8000,
+      "durationSeconds": 0.166667,
+      "sha256": "f68078d4317e0c508ef368a0a4b7f4a3e0131c7804c93d6d675d1f480c1ec988"
+    },
+    {
+      "path": "UiInventoryOpen.wav",
+      "event": "event:/ui/top_bar/inventory",
+      "eventId": "7ac84c2f-e3d2-40fa-ac6f-072958035439",
+      "bank": "sound/ui1.bank",
+      "sourceSamples": [
+        "se_ui_inventory_open_01.wav",
+        "se_ui_inventory_open_02.wav"
+      ],
+      "pcmFrames": 25142,
+      "sha256": "070ff8ca59e7d6243929c36ec0bb3707d0889b076ed7e3f5a32cbebddec91d22"
+    },
+    {
+      "path": "UiQuickMenuOpen.wav",
+      "event": "event:/ui/top_bar/quick_menu_on",
+      "eventId": "ac593c8a-6f66-4875-af03-e8c98054d690",
+      "bank": "sound/ui1.bank",
+      "sourceSamples": [
+        "se_ui_quick_launch_menu_act.wav"
+      ],
+      "pcmFrames": 15587,
+      "sha256": "0f6388bd1c136d9fbf45c4ee705397d80e47cd8a60a3a53192eadda1fdc73b1f"
+    },
+    {
+      "path": "UiQuickMenuClose.wav",
+      "event": "event:/ui/top_bar/quick_menu_off",
+      "eventId": "9a459f01-3525-4d6c-8f25-8f43362958d8",
+      "bank": "sound/ui1.bank",
+      "sourceSamples": [
+        "se_ui_quick_launch_menu_inact.wav"
+      ],
+      "pcmFrames": 11320,
+      "sha256": "1de74cd69da1fff291a765d3d7a8ea272627775adce553cdd430c124599b5b04"
+    },
+    {
+      "path": "UiEquipWeapon.wav",
+      "event": "event:/ui/equip/equip_weapon",
+      "eventId": "45daa0a7-27e3-4bdf-8934-a31800bb3a68",
+      "bank": "sound/ui1.bank",
+      "sourceSamples": [
+        "SE_UI2_LOBBY_HERO_EQUIP_WEAPON.wav"
+      ],
+      "pcmFrames": 40660,
+      "sha256": "12f11c3f9e2a907a6dd3eb2549ba712b5c6736c9d1f4162d85fa00389f716268"
+    },
+    {
+      "path": "UiEquipHelmet.wav",
+      "event": "event:/ui/equip/equip_helm",
+      "eventId": "4689f1d8-3d24-4d15-a7ee-d01cce631b23",
+      "bank": "sound/ui1.bank",
+      "sourceSamples": [
+        "SE_UI2_LOBBY_HERO_EQUIP_HEAD.wav"
+      ],
+      "pcmFrames": 22705,
+      "sha256": "0a51f9fad198ea7048b85e39706a29c2317b98c00b89ecf9692113d194bb28d2"
+    },
+    {
+      "path": "UiEquipArmor.wav",
+      "event": "event:/ui/equip/equip_armor",
+      "eventId": "b527fc7e-ff30-4b6a-b525-53951013c8dd",
+      "bank": "sound/ui1.bank",
+      "sourceSamples": [
+        "SE_UI2_LOBBY_HERO_EQUIP_ARMOUR.wav"
+      ],
+      "pcmFrames": 31550,
+      "sha256": "8f20f1c616f8eb0a87ba1e9df52ffa2c40fc98af8c35b3b05e666129d1bd3bbd"
+    },
+    {
+      "path": "UiEquipNecklace.wav",
+      "event": "event:/ui/equip/equip_neck",
+      "eventId": "112767ca-acea-4c35-a89c-a94c68fa9618",
+      "bank": "sound/ui1.bank",
+      "sourceSamples": [
+        "SE_UI2_LOBBY_HERO_EQUIP_AMULET.wav"
+      ],
+      "pcmFrames": 16201,
+      "sha256": "211e2fc7005b5e08065593576b17a94ebd792bfe7e9273097ce16c646a30d7d5"
+    },
+    {
+      "path": "UiEquipRing.wav",
+      "event": "event:/ui/equip/equip_ring",
+      "eventId": "7e8b18fa-0dcc-4a8f-9f46-42ace99d09a6",
+      "bank": "sound/ui1.bank",
+      "sourceSamples": [
+        "SE_UI2_LOBBY_HERO_EQUIP_RING.wav"
+      ],
+      "pcmFrames": 25428,
+      "sha256": "73850338ae889dae62655dc4a3a41a47c646f1ffa0b5b6b8d6db5ca05c604555"
+    },
+    {
+      "path": "UiEquipBoots.wav",
+      "event": "event:/ui/equip/equip_boot",
+      "eventId": "5f0e5653-d579-42bf-85f9-a35fad006182",
+      "bank": "sound/ui1.bank",
+      "sourceSamples": [
+        "SE_UI2_LOBBY_HERO_EQUIP_SHOE.wav"
+      ],
+      "pcmFrames": 28567,
+      "sha256": "c4338f315724777d74badd6147b6f1f0a1b490606a3286e26eb7a0b101fd060b"
+    },
+    {
+      "path": "UiEquipArtifact.wav",
+      "event": "event:/ui/equip/equip_artifact",
+      "eventId": "a2545b7f-0291-4771-ab5b-d4c9d41f2efb",
+      "bank": "sound/ui1.bank",
+      "sourceSamples": [
+        "se_ui_equip_armoron.wav"
+      ],
+      "pcmFrames": 28675,
+      "sha256": "a0e4c5b9b13c17fb10afeb77d670c3a3e1d6caf573ec8a773be1ac7790e74642"
+    },
+    {
+      "path": "UiEquipRemove.wav",
+      "event": "event:/ui/equip_off",
+      "eventId": "84987f0a-6cf8-494d-b672-b6fe113dae39",
+      "bank": "sound/ui1.bank",
+      "sourceSamples": [
+        "se_ui_equip_armoroff.wav"
+      ],
+      "pcmFrames": 29410,
+      "sha256": "6a7bcd0afa1cd549a3f298ff83d13c373a623d79278e4884ccbb015be116eb3e"
+    },
+    {
+      "path": "UiItemLock.wav",
+      "event": "event:/ui/unit_detail/btn_lock",
+      "eventId": "c023465f-a788-44ee-80c9-3a0e37ab5618",
+      "bank": "sound/ui1.bank",
+      "sourceSamples": [
+        "SE_UI2_LOBBY_HERO_LOCK.wav"
+      ],
+      "pcmFrames": 54238,
+      "sha256": "87046346bb34eb30761ba376ced3271d972f246fcb23b825dbe7d96f6f8787d8"
+    },
+    {
+      "path": "UiHeroPageOpen.wav",
+      "event": "event:/ui/menu/menu_1",
+      "eventId": "11c7508d-cbb3-4f57-a774-43a41a731594",
+      "bank": "sound/ui1.bank",
+      "sourceSamples": [
+        "SE_UI2_LOBBY_BASIC_SMALL_MENU_1.wav"
+      ],
+      "pcmFrames": 38254,
+      "sha256": "a7450e736c13ce305c7850d5dcfdf1f41b9959144ee79f5836c28b3a9664cb18"
     }
   ],
   "pulseFrameAtlas": {

@@ -17,6 +17,10 @@ namespace AstralOath.Tests
 
         [TestCase("c1017", "c_acha_skill_02", 3.733f)]
         [TestCase("c1008", "c_aming_skill_03", 6.0666f)]
+        [TestCase("c1023", "c_kylon_skill_01", 2.7f)]
+        [TestCase("c1023", "c_kylon_skill_03", 8.5f)]
+        [TestCase("c1024", "c_iseria_skill_03", 10.1006f)]
+        [TestCase("c1055", "c_jenua_skill_03", 6.0667f)]
         public void ActionBoundaryUsesSourceChoreographyInsteadOfWorstCaseAmbientParticleLifetime(
             string heroId, string graphId, float expectedActionEnd)
         {
@@ -44,12 +48,12 @@ namespace AstralOath.Tests
             using var session = (IDisposable)Activator.CreateInstance(type, nonPublic: true);
             type.GetMethod("Load", Instance).Invoke(session,
                 new object[] { "c1008", "c_aming_skill_03", null, null, false, true, true });
-            float main = (float)type.GetProperty("MainDuration", Instance).GetValue(session);
-            float full = (float)type.GetProperty("Duration", Instance).GetValue(session);
+            float main = (float)type.GetProperty("MainStageDuration", Instance).GetValue(session);
+            float full = (float)type.GetProperty("StageDuration", Instance).GetValue(session);
             Assert.That(main, Is.EqualTo(6.0666f).Within(.015f));
             Assert.That(full, Is.EqualTo(11.552f).Within(.015f), "Preserve the original full CFX simulation lifetime.");
             var world = (Transform)type.GetField("world", Instance).GetValue(session);
-            var seek = type.GetMethod("Seek", Instance);
+            var seek = type.GetMethod("SeekStage", Instance);
             int TailVertices()
             {
                 var meshes = world.GetComponentsInChildren<MeshFilter>(true)
@@ -69,6 +73,21 @@ namespace AstralOath.Tests
                 .Any(mesh => mesh.gameObject.name == "HUD particle bubble"), Is.False, "Full playback releases the expired CFX.");
             seek.Invoke(session, new object[] { 7f });
             Assert.That(TailVertices(), Is.EqualTo(vertices), "Scrubbing back into the tail rebuilds the same particle state.");
+        }
+
+        [TestCase("c1076", "c_diene_skill_02", "wh", 3.92f)]
+        [TestCase("c1030", "c_yuna_skill_03", "final", 13.90f)]
+        public void BattlefieldReappearsThroughAuthoredWhiteFade(string hero, string graph, string layer, float midpoint)
+        {
+            var type = Type.GetType(PreviewTypeName, throwOnError: true);
+            using var session = (IDisposable)Activator.CreateInstance(type, nonPublic: true);
+            type.GetMethod("Load", Instance).Invoke(session, new object[] { hero, graph, null, null, false, false, false });
+            type.GetMethod("SeekStage", Instance).Invoke(session, new object[] { midpoint });
+            var camera = (Camera)type.GetField("camera", Instance).GetValue(session);
+            var overlay = camera.transform.Find("DARK " + layer);
+            Assert.That(overlay, Is.Not.Null, "The fade must still be rendering half way through its source interval.");
+            Assert.That(overlay.GetComponent<MeshFilter>().sharedMesh.colors[0].a, Is.InRange(.38f, .62f),
+                "The white layer should already be revealing the battlefield.");
         }
 
         [Test]

@@ -33,7 +33,9 @@ namespace AstralOath.Client.Home
             view.ArenaLabel.Bind(locale, screen, "home.arena");
             view.Profile.Bind(locale, screen, "home.profile");
             view.Arena.Bind(screen, openArena);
+            view.More.FeedbackSound = GameUiFeedback.Sound.Silent;
             view.More.Bind(screen, openMore);
+            view.Bag.FeedbackSound = GameUiFeedback.Sound.InventoryOpen;
             view.Bag.Bind(screen, openBag);
             var button = view.DisplayMode;
             button.gameObject.SetActive(display && display.Available);

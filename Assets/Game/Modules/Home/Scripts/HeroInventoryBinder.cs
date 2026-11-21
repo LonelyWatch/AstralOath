@@ -82,6 +82,7 @@ namespace AstralOath.Client.Home
             tab = Tab.Heroes;
             classFilter = "all";
             view.Show();
+            if (roster) GameUiFeedback.Play(view.Back, GameUiFeedback.Sound.HeroPageOpen);
             view.FitInventoryLayout(roster);
             Scroll = roster ? view.RosterScroll : view.BagScroll;
             if (roster) BindRosterPresentation(scope);
@@ -133,6 +134,7 @@ namespace AstralOath.Client.Home
                 trialButton.onClick.AddListener(StartTrial);
                 scope.Add(() => { if (trialButton) trialButton.onClick.RemoveListener(StartTrial); });
             }
+            view.Back.FeedbackSound = GameUiFeedback.Sound.PageBack;
             view.Back.BindBack(scope, NavigateBack);
             view.Expand.BindBack(scope, ToggleExpanded);
             view.Retry.Bind(scope, ReloadAsync);

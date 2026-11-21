@@ -310,7 +310,7 @@ namespace AstralOath.Shared.Battle
             }
 
             public string Cast(Unit actor, Program program, Unit selected, bool soulBurn, BattleActionOrigin origin,
-                string triggerPhase = null, int repeatStage = 0)
+                string triggerPhase = null, int repeatStage = 0, BattleStatusKind? triggeringStatus = null)
             {
                 var skill = program.Row;
                 var modifiers = owner.ModifiersFor(actor, program);
@@ -356,7 +356,7 @@ namespace AstralOath.Shared.Battle
                 var limitedDamage = new Dictionary<string, int>(StringComparer.Ordinal);
                 var nullifiedTargets = new HashSet<string>(StringComparer.Ordinal);
                 if (origin != BattleActionOrigin.Primary)
-                    Changes.Add(BattleChange.Action(actor.Id, selected?.Id, skill.id, origin, presentationId));
+                    Changes.Add(BattleChange.Action(actor.Id, selected?.Id, skill.id, origin, presentationId, triggeringStatus));
                 ChangeResource(actor, actor, -resourceCost);
 
                 HashSet<string> criticallyHit = null;
@@ -653,9 +653,11 @@ namespace AstralOath.Shared.Battle
                 foreach (var target in targets)
                 {
                     if (!actor.Alive) break;
+                    bool counterBuff = false;
                     if (hit.ContainsKey(target.Id) && CanReact(target) && CanActivateOffTurn(target) &&
-                        ((hit[target.Id] == BattleHitKind.Miss && ReadySkillEffect(target, "ready_evasion_counter") > 0) || RollsCounter(target)))
-                        CastBasic(target, actor, BattleActionOrigin.Counter);
+                        ((hit[target.Id] == BattleHitKind.Miss && ReadySkillEffect(target, "ready_evasion_counter") > 0) ||
+                         RollsCounter(target, out counterBuff)))
+                        CastBasic(target, actor, BattleActionOrigin.Counter, counterBuff ? BattleStatusKind.Counter : (BattleStatusKind?)null);
                 }
                 if (actor.Alive)
                 {
@@ -1278,21 +1280,21 @@ namespace AstralOath.Shared.Battle
                 if (ally != null) CastBasic(ally, target, BattleActionOrigin.DualAttack);
             }
 
-            private void CastBasic(Unit actor, Unit target, BattleActionOrigin origin)
+            private void CastBasic(Unit actor, Unit target, BattleActionOrigin origin, BattleStatusKind? triggeringStatus = null)
             {
                 if (origin == BattleActionOrigin.Counter)
                 {
                     var replacement = Passives(actor).FirstOrDefault(passive => passive.ReplacesBasicCounter);
                     if (replacement != null)
                     {
-                        Cast(actor, replacement, target, false, origin, "counter_basic");
+                        Cast(actor, replacement, target, false, origin, "counter_basic", triggeringStatus: triggeringStatus);
                         return;
                     }
                 }
                 var skillId = actor.Source.Form.SkillIds.FirstOrDefault();
                 if (skillId != null && owner.skills.TryGetValue(skillId, out var program) &&
                     (program.Row.target == "one_enemy" || program.Row.target == "two_enemies" || program.Row.target == "all_enemies"))
-                    Cast(actor, program, target, false, origin);
+                    Cast(actor, program, target, false, origin, triggeringStatus: triggeringStatus);
             }
 
             private Unit Choose(Unit[] candidates) => candidates.Length == 1 ? candidates[0]

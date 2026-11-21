@@ -68,6 +68,8 @@ namespace AstralOath.Client.Home
                 return Task.CompletedTask;
             });
             Click("outside", () => ClosePicker());
+            HeroControl<GameButton>("back").FeedbackSound = GameUiFeedback.Sound.PageBack;
+            HeroControl<GameButton>("paintBack").FeedbackSound = GameUiFeedback.Sound.PageBack;
             Click("back", () => ClosePicker());
             Click("change", () => { inspectingWorn = false; Refresh(true); });
             Click("skillTab", () => { storyTab = false; DrawHeroItem(); });
@@ -79,6 +81,7 @@ namespace AstralOath.Client.Home
             BindAction(scope, HeroControl<GameButton>("training"), OpenEnhancementAsync);
             BindAction(scope, HeroControl<GameButton>("enhance"), OpenEnhancementAsync);
             BindAction(scope, HeroControl<GameButton>("retry"), LoadAsync);
+            HeroControl<GameButton>("lock").FeedbackSound = GameUiFeedback.Sound.Silent;
             BindAction(scope, HeroControl<GameButton>("lock"), token => SubmitHeroAction("lock",token));
             BindAction(scope, HeroControl<GameButton>("equip"), token => SubmitHeroAction("equip",token));
             BindAction(scope, HeroControl<GameButton>("remove"), token => SubmitHeroAction("unequip",token));

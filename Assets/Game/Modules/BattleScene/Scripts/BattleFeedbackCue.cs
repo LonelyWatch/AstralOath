@@ -3,7 +3,7 @@ using AstralOath.Shared.Battle;
 
 namespace AstralOath.Client.BattleScene
 {
-    internal enum BattleFeedbackCue { None, Counter, DualAttack, ExtraAttack, ExtraTurn }
+    internal enum BattleFeedbackCue { None, Counter, DualAttack, ExtraAttack, ExtraTurn, Passive }
 
     // Presentation deduplication only. Delayed extra-turn callbacks can arrive after a later action.
     internal sealed class BattleFeedbackCueTracker
@@ -27,6 +27,7 @@ namespace AstralOath.Client.BattleScene
                     BattleActionOrigin.Counter => BattleFeedbackCue.Counter,
                     BattleActionOrigin.DualAttack => BattleFeedbackCue.DualAttack,
                     BattleActionOrigin.ExtraAttack => BattleFeedbackCue.ExtraAttack,
+                    BattleActionOrigin.Passive => BattleFeedbackCue.Passive,
                     _ => BattleFeedbackCue.None
                 };
                 burn = origin == BattleActionOrigin.Primary && soulBurn;
@@ -41,6 +42,7 @@ namespace AstralOath.Client.BattleScene
             BattleFeedbackCue.Counter => "stse_chain",
             BattleFeedbackCue.DualAttack => "stse_chain",
             BattleFeedbackCue.ExtraAttack => "stse_chain",
+            BattleFeedbackCue.Passive => "stse_chain",
             BattleFeedbackCue.ExtraTurn => "stse_addturn",
             _ => null
         };

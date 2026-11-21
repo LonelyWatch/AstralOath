@@ -181,8 +181,24 @@ namespace AstralOath.Client.Tests
             while (!actionBanner.gameObject.activeInHierarchy && Time.realtimeSinceStartupAsDouble < deadline)
                 yield return null;
             Assert.That(actionBanner.gameObject.activeInHierarchy, Is.True);
+            Assert.That(actionBanner.GetComponent<Canvas>().sortingOrder,
+                Is.GreaterThan(map.Require<GameButton>("pause").GetComponent<Canvas>().sortingOrder));
+            Assert.That(actionBanner.Find("Caster Name").GetComponent<GameText>().text, Is.Not.Empty);
             Assert.That(actionBanner.Find("Skill Name").GetComponent<GameText>().text, Is.Not.Empty,
                 "The actual cast should still show its skill title.");
+        }
+
+        [UnityTest]
+        public IEnumerator HoldingASkillKeepsItsArtworkAtFullBrightness()
+        {
+            var button = map.Require<GameButton>("skill1");
+            var graphic = button.targetGraphic;
+            Color rest = graphic.canvasRenderer.GetColor();
+            var pointer = new PointerEventData(EventSystem.current);
+            button.OnPointerDown(pointer);
+            yield return null;
+            Assert.That(graphic.canvasRenderer.GetColor().r, Is.EqualTo(rest.r).Within(.01f));
+            button.OnPointerUp(pointer);
         }
 
         [UnityTest]

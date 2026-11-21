@@ -397,7 +397,7 @@ namespace AstralOath.Tests
                 Assert.That(parsed, Is.Not.Null, "Missing source layer " + index);
                 string label = "dome" + index;
                 runtime.GetMethod("Spawn", Private).Invoke(playback, new object[] { "effect/" + label, parsed,
-                    (Func<Vector3>)(() => Vector3.zero), null, 1f, Vector2.zero, 1f, false, null, false, false, false });
+                    (Func<Vector3>)(() => Vector3.zero), null, 1f, Vector2.zero, 1f, false, null, false, false, false, null });
                 meshes.Add(root.GetComponentsInChildren<Transform>().Single(item => item.name == "Skill CFX " + label).GetComponentInChildren<MeshFilter>());
             }
             runtime.GetMethod("Tick").Invoke(playback, new object[] { 2.55f });
@@ -546,6 +546,6 @@ namespace AstralOath.Tests
 
         private float Duration(JObject part) => (float)runtime.GetMethod("PrimitiveDuration", Private).Invoke(playback, new object[] { part });
         private void Spawn(JObject part) => runtime.GetMethod("SpawnSpine", Private).Invoke(playback,
-            new object[] { (string)part["source"], part, group.transform, 1f, 55, 1f, (Action)(() => { }) });
+            new object[] { (string)part["source"], part, group.transform, 1f, 55, 1f, (Action)(() => { }), false });
     }
 }

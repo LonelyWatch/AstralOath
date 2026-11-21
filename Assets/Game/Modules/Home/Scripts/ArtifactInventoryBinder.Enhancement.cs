@@ -43,6 +43,7 @@ namespace AstralOath.Client.Home
                 .Select(EnhancementControl<RectTransform>).ToArray();
             runeGlow = EnhancementControl<Image>("glow");
             successFlash = EnhancementControl<Image>("success");
+            EnhancementControl<GameButton>("back").FeedbackSound = GameUiFeedback.Sound.PageBack;
             BindAction(scope, EnhancementControl<GameButton>("back"), _ => { BackEnhancement(); return Task.CompletedTask; });
             BindAction(scope, EnhancementControl<GameButton>("submit"), SubmitEnhancementAsync);
             BindAction(scope, EnhancementControl<GameButton>("sort"), _ =>

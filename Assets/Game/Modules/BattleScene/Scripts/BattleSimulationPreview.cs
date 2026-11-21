@@ -79,7 +79,6 @@ namespace AstralOath.Client.BattleScene
         private string forcedActorId;
         private bool cinematicVisible;
         private bool presentingNextTurn;
-        private int damageTurn = -1;
         private readonly Dictionary<GameObject, bool> cinematicHudStates = new Dictionary<GameObject, bool>();
 
         public BattleSimulationPreview(Scene scene, BindingMap hud, BattleHudBinder binder, BattleCatalogData catalog,
@@ -610,12 +609,14 @@ namespace AstralOath.Client.BattleScene
         public bool ChooseTarget(string id)
         {
             if (inspection?.IsOpen == true || !CanAct || !TrySkill(selected, out var skill)) return false;
-            if (!IsTargetCandidate(skill.id, id)) return false;
+            if (!CanPreviewSkill(skill) || !IsTargetCandidate(skill.id, id)) return false;
             return Submit(skill.id, id, useSoulBurn);
         }
 
         private bool CanPreviewSkill(BattleCatalogData.SkillRow skill) =>
-            skill.target != "passive" && (online != null || IsSkillAvailable(skill, useSoulBurn));
+            skill.target != "passive" && (online != null
+                ? Snapshot.GetUnit(Snapshot.CurrentActorId).GetCooldown(skill.id) == 0
+                : IsSkillAvailable(skill, useSoulBurn));
 
         private bool IsTargetCandidate(string skill, string target) => online != null
             ? ai.IsTargetForSkill(Snapshot, skill, target, useSoulBurn)
@@ -829,7 +830,8 @@ namespace AstralOath.Client.BattleScene
                             casterView.ShowEffectWord(name, icon, passive: true);
                             break;
                         case BattleActionOrigin.Counter:
-                            ShowStatusWord(casterView, BattleStatusKind.Counter);
+                            if (item.StatusKind == BattleStatusKind.Counter) ShowStatusWord(casterView, BattleStatusKind.Counter);
+                            else casterView.ShowEffectWord(inspectionContent.StatusName(BattleStatusKind.Counter));
                             break;
                         case BattleActionOrigin.DualAttack:
                             casterView.ShowEffectWord(EffectWordLabel("battle.feedback.dual_attack"));
@@ -912,10 +914,6 @@ namespace AstralOath.Client.BattleScene
                     break;
                 case BattleFlowEventKind.TurnStarted:
                     presentingNextTurn = true;
-                    // The event can be read before the preceding skill's queued visual hits.
-                    if (pendingFeedback.Count == 0) BeginDamageTurn(item.TurnNumber);
-                    else ScheduleFeedback(pendingFeedback[pendingFeedback.Count - 1].At, null,
-                        () => BeginDamageTurn(item.TurnNumber));
                     break;
                 case BattleFlowEventKind.ResourceChanged:
                     // The final snapshot applies next-turn gains after the current skill's tail.
@@ -1017,13 +1015,12 @@ namespace AstralOath.Client.BattleScene
         {
             var view = views[item.TargetId];
             if (absorbed > 0) view.AbsorbShield(absorbed);
-            view.ApplyDamageHit(item.Amount, item.MaximumHealth ?? Snapshot.GetUnit(item.TargetId).MaximumHealth, false);
+            view.ApplyDamageHit(item.Amount, item.MaximumHealth ?? Snapshot.GetUnit(item.TargetId).MaximumHealth, true);
             if (item.Amount > 0 || absorbed > 0) turnHud.PlayReadinessHit(item.TargetId);
             turnHud.ShowPeriodicDamage(item, view.FeedbackAnchor, view.Actor.Bounds.center, camera);
             if (item.StatusKind.HasValue && (item.Amount > 0 || absorbed > 0))
                 ShowStatusWord(view, item.StatusKind.Value);
             ShowImmortalitySave(item, view);
-            if (!HasLaterTurnDamage(item.TurnNumber)) FinishDamageSequence();
         }
 
         private void ScheduleDamage(BattleFlowEvent item, int absorbed)
@@ -1033,7 +1030,7 @@ namespace AstralOath.Client.BattleScene
             // The hit clock drives individual reactions, shield consumption and damage numbers.
             // Present the accepted HP loss across the same authored hit sequence.
             var hits = BattleDamageSequence.Build(item.Amount + absorbed, hitTimes, impactSeconds);
-            bool closesTrail = !HasLaterTurnDamage(item.TurnNumber);
+            bool closesTrail = !HasLaterSkillDamage(item);
             for (int index = 0; index < hits.Length; index++)
             {
                 var hit = hits[index];
@@ -1056,12 +1053,9 @@ namespace AstralOath.Client.BattleScene
                     if (!skillPresentation.OwnsNodeAnimationPose(view.Actor))
                         view.Actor.PlayBattleAnimation("attacked");
                     if (shieldLoss > 0) view.AbsorbShield(shieldLoss);
+                    view.ApplyDamageHit(healthLoss, item.MaximumHealth ?? unit.MaximumHealth, releaseTrail);
                     if (item.HitKind != BattleHitKind.Miss || healthLoss > 0 || shieldLoss > 0)
-                    {
-                        view.ApplyDamageHit(healthLoss, item.MaximumHealth ?? unit.MaximumHealth, false);
                         turnHud.PlayReadinessHit(item.TargetId);
-                    }
-                    if (releaseTrail) FinishDamageSequence();
                     var bounds = view.Actor.Bounds;
                     var world = bounds.center;
                     world.y = bounds.min.y + 0.27f * bounds.size.y;
@@ -1077,26 +1071,16 @@ namespace AstralOath.Client.BattleScene
                 view.ShowEffectWord(inspectionContent.StatusName(BattleStatusKind.Immortality));
         }
 
-        private bool HasLaterTurnDamage(int turn)
+        private bool HasLaterSkillDamage(BattleFlowEvent current)
         {
             foreach (var next in playback)
             {
-                if (next.TurnNumber != turn) break;
-                if (next.Kind == BattleFlowEventKind.Damage) return true;
+                if (next.TurnNumber != current.TurnNumber || IsPeriodicDamage(next) ||
+                    next.Kind is BattleFlowEventKind.Action or BattleFlowEventKind.TurnEnded or BattleFlowEventKind.TurnStarted)
+                    break;
+                if (next.Kind == BattleFlowEventKind.Damage && next.TargetId == current.TargetId) return true;
             }
             return false;
-        }
-
-        private void BeginDamageTurn(int turn)
-        {
-            if (turn <= damageTurn) return;
-            damageTurn = turn;
-            foreach (var view in views.Values) view.BeginDamageTurn();
-        }
-
-        private void FinishDamageSequence()
-        {
-            foreach (var view in views.Values) view.FinishDamageSequence();
         }
 
         private void ShowHealing(BattleFlowEvent item)
@@ -1154,7 +1138,6 @@ namespace AstralOath.Client.BattleScene
                 view.RefreshStatuses(state);
                 view.Actor.SetTurnReady(!entering && state.IsAlive && state.InstanceId == Snapshot.CurrentActorId);
             }
-            BeginDamageTurn(Snapshot.TurnNumber);
             soulGauge.Show(Snapshot.GetSoul(BattleSide.Ally));
             turnHud.Refresh(Snapshot);
             var actor = Actor;
@@ -1742,10 +1725,6 @@ namespace AstralOath.Client.BattleScene
                 effectWords.Clear();
                 frostbite.StopOneShot();
             }
-
-            public void BeginDamageTurn() => status.BeginDamageTurn(presentedHealth);
-
-            public void FinishDamageSequence() => status.FinishDamageSequence();
 
             public void ApplyDamageHit(int loss, int maximum, bool lastHit)
             {

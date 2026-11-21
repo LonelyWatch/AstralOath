@@ -246,13 +246,14 @@ namespace AstralOath.Client.Tests
             var rect = Trail().rectTransform;
             Assert.That(rect.anchorMin.x, Is.EqualTo(.8f));
             Assert.That(rect.anchorMax.x, Is.EqualTo(1f));
-            Assert.That(Trail().color.g, Is.LessThan(.10f), "The impact stays red through the hit.");
+            var flash = Trail().color;
+            Assert.That(flash.g, Is.GreaterThan(.65f), "Only the lost interval flashes yellow-green on impact.");
+            Assert.That(flash.g, Is.GreaterThan(flash.b + .2f));
             Call("Tick", 1f);
             Assert.That((Color32)Trail().color, Is.EqualTo(new Color32(218, 3, 7, 255)));
             Assert.That(rect.anchorMax.x, Is.EqualTo(1f));
             Call("ApplyDamageHit", 500L, 1000, true);
             Call("UpdateHealth", 500L, 1000, false);
-            Call("Tick", .25f);
             Assert.That(rect.anchorMin.x, Is.EqualTo(.5f));
             Assert.That(rect.anchorMax.x, Is.EqualTo(1f));
             Call("Tick", 1.05f / Mathf.Sqrt(2f));
@@ -261,10 +262,9 @@ namespace AstralOath.Client.Tests
             Assert.That(TrailWidth(), Is.Zero);
         }
 
-        [Test] public void TurnTrailKeepsOpeningHealthThroughHealingAndRepeatedHits()
+        [Test] public void EachSkillStartsAtItsOwnOpeningHealthAndReflashesOnlyWhenHitPointsFall()
         {
             Call("UpdateHealth", 800L, 1000, true);
-            Call("BeginDamageTurn", 800L);
             Call("UpdateHealth", 1000L, 1000, false);
             Call("Tick", .3f);
             Assert.That(hp.fillAmount, Is.EqualTo(1f));
@@ -272,32 +272,34 @@ namespace AstralOath.Client.Tests
             Call("ApplyDamageHit", 700L, 1000, false);
             var red = Trail();
             var firstFlash = red.color;
-            Assert.That(red.rectTransform.anchorMax.x, Is.EqualTo(.8f).Within(.001f));
+            Assert.That(red.rectTransform.anchorMax.x, Is.EqualTo(1f).Within(.001f));
             Call("Tick", .8f);
-            Assert.That(red.rectTransform.anchorMax.x, Is.EqualTo(.8f).Within(.001f));
+            Assert.That(red.rectTransform.anchorMax.x, Is.EqualTo(1f).Within(.001f));
             Assert.That(red.color.g, Is.LessThan(firstFlash.g));
+            var restingColor = red.color;
+            Call("ApplyDamageHit", 700L, 1000, false);
+            Assert.That(red.color, Is.EqualTo(restingColor), "Absorbed or rounded-to-zero cues cannot reflash HP.");
 
             Call("UpdateHealth", 750L, 1000, false);
             Call("Tick", .25f);
-            Assert.That(red.rectTransform.anchorMax.x, Is.EqualTo(.8f).Within(.001f));
+            Assert.That(red.rectTransform.anchorMax.x, Is.EqualTo(1f).Within(.001f));
             Assert.That(hp.fillAmount, Is.EqualTo(.75f).Within(.001f));
 
             Call("ApplyDamageHit", 500L, 1000, false);
             Assert.That(red.color, Is.EqualTo(firstFlash));
             Assert.That(red.rectTransform.anchorMin.x, Is.EqualTo(.5f).Within(.001f));
-            Assert.That(red.rectTransform.anchorMax.x, Is.EqualTo(.8f).Within(.001f));
+            Assert.That(red.rectTransform.anchorMax.x, Is.EqualTo(1f).Within(.001f));
             Call("Tick", .8f);
-            Assert.That(red.rectTransform.anchorMax.x, Is.EqualTo(.8f).Within(.001f));
+            Assert.That(red.rectTransform.anchorMax.x, Is.EqualTo(1f).Within(.001f));
 
             Call("FinishDamageSequence");
-            Call("Tick", .25f + 1.05f / Mathf.Sqrt(2f));
-            Assert.That(red.rectTransform.anchorMax.x, Is.EqualTo(.65f).Within(.001f));
+            Call("Tick", 1.05f / Mathf.Sqrt(2f));
+            Assert.That(red.rectTransform.anchorMax.x, Is.EqualTo(.75f).Within(.001f));
             Call("FinishDamageSequence");
             Call("Tick", .1f);
-            Assert.That(red.rectTransform.anchorMax.x, Is.LessThan(.65f));
+            Assert.That(red.rectTransform.anchorMax.x, Is.LessThan(.75f));
 
-            // The old tail can still be retracting when the next turn takes damage.
-            Call("BeginDamageTurn", 500L);
+            // A follow-up can hit while the last skill's tail is still retracting.
             Call("ApplyDamageHit", 450L, 1000, false);
             Assert.That(red.rectTransform.anchorMax.x, Is.EqualTo(.5f).Within(.001f));
             Assert.That(red.color, Is.EqualTo(firstFlash));
@@ -314,7 +316,7 @@ namespace AstralOath.Client.Tests
             Assert.That(Trail().rectTransform.anchorMin.x, Is.Zero);
             Assert.That(Trail().rectTransform.anchorMax.x, Is.EqualTo(.25f));
             Call("ApplyDamageHit", 750L, 1000, true);
-            Call("Tick", .25f + 1.05f / Mathf.Sqrt(2f));
+            Call("Tick", 1.05f / Mathf.Sqrt(2f));
             Assert.That(Trail().rectTransform.anchorMin.x, Is.EqualTo(.125f).Within(.001f));
             Assert.That(Trail().rectTransform.anchorMax.x, Is.EqualTo(.25f));
             Call("UpdateHealth", 900L, 1000, false);

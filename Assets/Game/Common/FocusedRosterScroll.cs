@@ -8,7 +8,7 @@ namespace AstralOath.Client.Common
 {
     // The binder supplies the visible rows and decides which focused item is selectable.
     [DisallowMultipleComponent]
-    public sealed class FocusedRosterScroll : MonoBehaviour, IBeginDragHandler, IEndDragHandler
+    public sealed class FocusedRosterScroll : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IScrollHandler
     {
         private const float RightOverhang = 37f;
         public static readonly Vector2 CardSize = new Vector2(361f, 112f);
@@ -16,7 +16,7 @@ namespace AstralOath.Client.Common
         private BindingScope owner;
         private Predicate<int> selectable;
         private Action<int> select;
-        private bool dragging, moving;
+        private bool dragging, moving, userScrolling;
         private float observed, movedAt, snapFrom, snapTime, step;
         private int count, snapIndex = -1;
         private Vector2 measuredViewport;
@@ -51,7 +51,8 @@ namespace AstralOath.Client.Common
 
         // Keep the top of the second preceding card inside the mask, including its portrait.
         public float FocusLine => 2f * step + .5f * CardSize.y * cardScale * ScaleAt(2f);
-        public int Nearest => count > 0 && step > 0f ? Mathf.Clamp(Mathf.RoundToInt(Offset / step), 0, count - 1) : -1;
+        public int Nearest => count > 0 && step > 0f ? NearestAt(Offset) : -1;
+        private int NearestAt(float offset) => Mathf.Clamp(Mathf.RoundToInt(offset / step), 0, count - 1);
         private float Offset => scroll.content.anchoredPosition.y;
 
         public void Layout(int itemCount, float rowStep)
@@ -139,6 +140,7 @@ namespace AstralOath.Client.Common
         {
             observed = scroll ? Offset : 0f;
             moving = false;
+            userScrolling = false;
             snapIndex = -1;
         }
 
@@ -151,11 +153,15 @@ namespace AstralOath.Client.Common
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            if (eventData.button == PointerEventData.InputButton.Left) dragging = true;
+            if (eventData.button == PointerEventData.InputButton.Left) dragging = userScrolling = true;
         }
         public void OnEndDrag(PointerEventData eventData)
         {
             if (eventData.button == PointerEventData.InputButton.Left) dragging = false;
+        }
+        public void OnScroll(PointerEventData eventData)
+        {
+            if (eventData.scrollDelta.sqrMagnitude > 0f) userScrolling = true;
         }
         private void OnEnable()
         {
@@ -174,6 +180,8 @@ namespace AstralOath.Client.Common
             Layout(count, step);
             float offset = Offset;
             bool changed = Mathf.Abs(offset - observed) > .1f;
+            if (userScrolling && changed && NearestAt(observed) != NearestAt(offset))
+                GameUiFeedback.Play(this, GameUiFeedback.Sound.RosterScroll);
             observed = offset;
             if (changed || dragging)
             {
@@ -193,8 +201,10 @@ namespace AstralOath.Client.Common
                 if (selectable == null || selectable(index)) select(index);
                 return;
             }
-            if (!moving || Time.unscaledTime - movedAt < .12f) return;
+            if (!moving) { userScrolling = false; return; }
+            if (Time.unscaledTime - movedAt < .12f) return;
             scroll.StopMovement();
+            userScrolling = false;
             int nearest = Nearest;
             snapIndex = nearest;
             if (selectable != null && !selectable(nearest))

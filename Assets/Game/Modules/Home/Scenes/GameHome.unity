@@ -850,8 +850,36 @@ MonoBehaviour:
   normal: {fileID: 8300000, guid: ffe7d70423275e6bbbf837c5da6e494e, type: 3}
   confirm: {fileID: 8300000, guid: ffe7d70423275e6bbbf837c5da6e494e, type: 3}
   cancel: {fileID: 8300000, guid: 03fb300bf820568482f750de6cf43f22, type: 3}
-  back: {fileID: 8300000, guid: 03fb300bf820568482f750de6cf43f22, type: 3}
+  back: {fileID: 8300000, guid: e51964293381550d9ca74cf10ad045c3, type: 3}
   blocked: {fileID: 8300000, guid: 865153796f2f5ddaa7ff411f856af62f, type: 3}
+  rosterScroll: {fileID: 8300000, guid: 68bf4d9ac6244447a77a0839665c12bf, type: 3}
+  additionalCues:
+  - sound: 8
+    clip: {fileID: 8300000, guid: 19908ba36c865231ab658df8f5c12219, type: 3}
+  - sound: 9
+    clip: {fileID: 8300000, guid: 296d1b9aa5645fbfbafd5c3c26d8d9c9, type: 3}
+  - sound: 10
+    clip: {fileID: 8300000, guid: 1978b1efd77b5793816efb941f01f4c0, type: 3}
+  - sound: 11
+    clip: {fileID: 8300000, guid: d8491b7a484a5f7d927b3ddc6e6103a2, type: 3}
+  - sound: 12
+    clip: {fileID: 8300000, guid: a8d94fdd0e8e5309862a3bbe552feb88, type: 3}
+  - sound: 13
+    clip: {fileID: 8300000, guid: 315b42142a5d53169994a0797fe6e1df, type: 3}
+  - sound: 14
+    clip: {fileID: 8300000, guid: 1923c1cd35c6550889762650e509d4a8, type: 3}
+  - sound: 15
+    clip: {fileID: 8300000, guid: 7f7208c00bd55d20a9d0f420c4a6f259, type: 3}
+  - sound: 16
+    clip: {fileID: 8300000, guid: ec831f572f305409aa1cd5573c953371, type: 3}
+  - sound: 17
+    clip: {fileID: 8300000, guid: 3ff4eac1f0765023ab692df07cb51b83, type: 3}
+  - sound: 18
+    clip: {fileID: 8300000, guid: 6d1ff07648be52129f8d1537ea0bb36a, type: 3}
+  - sound: 19
+    clip: {fileID: 8300000, guid: 2ed30c8309fe54a4a5798052bacf9010, type: 3}
+  - sound: 20
+    clip: {fileID: 8300000, guid: 53f4dc6ded4157d0a3517cbeebf3e6bc, type: 3}
   pulseFrames: {fileID: 2800000, guid: f699e33b543958afa2a915b075f406d4, type: 3}
   pulseBlend: {fileID: 2100000, guid: 488717896086533ba0aac6bcb6013c60, type: 2}
 --- !u!114 &1384843500

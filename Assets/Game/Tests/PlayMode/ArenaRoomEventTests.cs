@@ -23,6 +23,56 @@ namespace AstralOath.Client.Tests
 {
     public sealed class ArenaRoomEventTests
     {
+        private sealed class PendingSocket : MemoryStream
+        {
+            internal readonly TaskCompletionSource<int> PendingRead = new TaskCompletionSource<int>();
+            public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken token) => PendingRead.Task;
+        }
+
+        private sealed class SocketTransport : HttpMessageHandler
+        {
+            internal readonly PendingSocket Stream = new PendingSocket();
+            internal readonly TaskCompletionSource<HttpResponseMessage> Response = new TaskCompletionSource<HttpResponseMessage>();
+
+            protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken token) =>
+                request.RequestUri.AbsolutePath.EndsWith("/events", StringComparison.Ordinal)
+                    ? Task.FromResult(new HttpResponseMessage { Content = new StreamContent(Stream) })
+                    : Response.Task;
+        }
+
+        public enum SocketScenario { ClosingRoom, LiveRoom, ClosingDraft, LiveDraft }
+        private static readonly SocketScenario[] SocketScenarios = (SocketScenario[])Enum.GetValues(typeof(SocketScenario));
+
+        [UnityTest, Timeout(5000)]
+        public IEnumerator WindowsSocketAbortRespectsRoomAndDraftLifetimes([ValueSource(nameof(SocketScenarios))] SocketScenario scenario)
+        {
+            bool feed = scenario == SocketScenario.ClosingRoom || scenario == SocketScenario.LiveRoom;
+            bool leaving = scenario == SocketScenario.ClosingRoom || scenario == SocketScenario.ClosingDraft;
+            using var scope = new CancellationTokenSource();
+            var transport = new SocketTransport();
+            using var api = new ArenaApi(new Uri("http://localhost/"), default,
+                new GameAccountSession("room-test", "local", "Local", "c1001"), transport);
+            var subscribe = typeof(ArenaApi).GetMethod("WatchRoomEventsAsync",
+                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            Func<string, Task> receive = _ => Task.CompletedTask;
+            Task request = feed ? (Task)subscribe.Invoke(api, new object[] { "r", receive, scope.Token }) :
+                api.DraftAsync("r", scope.Token);
+            Assert.That(request.IsCompleted, Is.False);
+            if (leaving) scope.Cancel();
+            var socket = new SocketException((int)(leaving ? SocketError.OperationAborted : SocketError.ConnectionReset));
+            if (feed) transport.Stream.PendingRead.SetException(socket);
+            else transport.Response.SetException(socket);
+            yield return new WaitUntil(() => request.IsCompleted);
+            if (leaving)
+                Assert.That(() => request.GetAwaiter().GetResult(), Throws.InstanceOf<OperationCanceledException>());
+            else
+            {
+                var error = Assert.Throws<ArenaRequestException>(() => request.GetAwaiter().GetResult());
+                Assert.That(error.Message, Is.EqualTo("unavailable"));
+                Assert.That(error.InnerException, Is.SameAs(socket));
+            }
+        }
+
         private sealed class Assets : IAssetService
         {
             public Task<T> LoadAsync<T>(string address, BindingScope scope) where T : Object =>

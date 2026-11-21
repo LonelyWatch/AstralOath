@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AstralOath.Client.Common;
 using AstralOath.Client.Core;
 
 namespace AstralOath.Client.Home
@@ -25,8 +26,15 @@ namespace AstralOath.Client.Home
         public void Open(BindingScope scope)
         {
             view.Show();
-            scope.Add(() => { if (view.Root) view.Hide(); });
+            GameUiFeedback.Play(view.Close, GameUiFeedback.Sound.QuickMenuOpen);
+            scope.Add(() =>
+            {
+                if (!view.Root) return;
+                GameUiFeedback.Play(view.Close, GameUiFeedback.Sound.QuickMenuClose);
+                view.Hide();
+            });
             view.HeroesLabel.Bind(locale, scope, "home.hero_inventory.heroes");
+            view.Close.FeedbackSound = view.Outside.FeedbackSound = GameUiFeedback.Sound.Silent;
             view.Heroes.Bind(scope, openHeroes);
             view.Summon.Bind(scope, openSummon);
             view.Close.Bind(scope, CloseAsync);

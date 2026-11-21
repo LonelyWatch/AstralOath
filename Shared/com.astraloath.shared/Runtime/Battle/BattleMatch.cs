@@ -156,7 +156,7 @@ namespace AstralOath.Shared.Battle
             if (change.Kind == BattleFlowEventKind.Action)
             {
                 Emit(events, change.Kind, source, target, skillId: change.SkillId,
-                    presentationId: change.PresentationId, origin: change.Origin);
+                    presentationId: change.PresentationId, origin: change.Origin, statusKind: change.Status);
                 return;
             }
 

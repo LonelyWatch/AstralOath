@@ -9,7 +9,21 @@ namespace AstralOath.Client.Common
     [DisallowMultipleComponent, RequireComponent(typeof(Canvas))]
     public sealed class GameUiFeedback : MonoBehaviour
     {
-        public enum Sound { Normal, Confirm, Cancel, Back, Silent, Blocked }
+        public enum Sound
+        {
+            Normal, Confirm, Cancel, Back, Silent, Blocked, RosterScroll,
+            PageBack, InventoryOpen, QuickMenuOpen, QuickMenuClose,
+            EquipWeapon, EquipHelmet, EquipArmor, EquipNecklace, EquipRing, EquipBoots, EquipArtifact, EquipRemove, ItemLock,
+            HeroPageOpen
+        }
+
+        [System.Serializable]
+        public struct SoundCue
+        {
+            public Sound sound;
+            public AudioClip clip;
+            public SoundCue(Sound sound, AudioClip clip) { this.sound = sound; this.clip = clip; }
+        }
 
         private const int PoolSize = 10;
         private const float SourceSpeed = 1.3f;
@@ -19,7 +33,8 @@ namespace AstralOath.Client.Common
         private const float PulseFrameSize = 135;
         private const string OverlayName = "Click feedback";
         [SerializeField] private Sprite ring, glow, spark;
-        [SerializeField] private AudioClip normal, confirm, cancel, back, blocked;
+        [SerializeField] private AudioClip normal, confirm, cancel, back, blocked, rosterScroll;
+        [SerializeField] private SoundCue[] additionalCues;
         [SerializeField] private Texture2D pulseFrames;
         [SerializeField] private Material pulseBlend;
         private readonly Pulse[] pulses = new Pulse[PoolSize];
@@ -33,7 +48,8 @@ namespace AstralOath.Client.Common
         private float sparkAngle;
 
         public void Configure(Sprite ring, Sprite glow, AudioClip normal, AudioClip confirm, AudioClip cancel, AudioClip back = null,
-            Sprite spark = null, Texture2D pulseFrames = null, Material pulseBlend = null, AudioClip blocked = null)
+            Sprite spark = null, Texture2D pulseFrames = null, Material pulseBlend = null, AudioClip blocked = null,
+            AudioClip rosterScroll = null)
         {
             this.ring = ring;
             this.glow = glow;
@@ -45,9 +61,12 @@ namespace AstralOath.Client.Common
             this.pulseFrames = pulseFrames;
             this.pulseBlend = pulseBlend;
             this.blocked = blocked;
+            this.rosterScroll = rosterScroll;
         }
 
         public static void Play(Component source, Sound sound = Sound.Normal) => Play(source, sound, null);
+
+        public void ConfigureAdditionalCues(params SoundCue[] cues) => additionalCues = cues;
 
         internal static void Play(Component source, Sound sound, AudioSource custom)
         {
@@ -72,10 +91,21 @@ namespace AstralOath.Client.Common
             return sound switch
             {
                 Sound.Blocked => blocked,
+                Sound.RosterScroll => rosterScroll,
                 Sound.Cancel or Sound.Back => cancel ? cancel : back,
                 Sound.Confirm => normal ? normal : confirm,
-                _ => normal
+                Sound.Normal => normal,
+                Sound.PageBack => back,
+                _ => FindCue(sound)
             };
+        }
+
+        private AudioClip FindCue(Sound sound)
+        {
+            if (additionalCues != null)
+                foreach (var cue in additionalCues)
+                    if (cue.sound == sound) return cue.clip;
+            return null;
         }
 
         private void Awake() => canvas = GetComponent<Canvas>();

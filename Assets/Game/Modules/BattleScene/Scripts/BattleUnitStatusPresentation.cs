@@ -8,8 +8,9 @@ namespace AstralOath.Client.BattleScene
     internal sealed class BattleUnitStatusPresentation : IDisposable
     {
         private static readonly Color32 TrailColor = new Color32(218, 3, 7, 255);
-        private static readonly Color32 TrailFlashColor = new Color32(248, 18, 19, 255);
-        private const float TrailFlashSeconds = .07f;
+        private static readonly Color32 TrailFlashColor = new Color32(202, 219, 117, 255);
+        private const float TrailFlashSeconds = .05f;
+        private const float TrailFlashFadeSeconds = .014f;
         private readonly RectTransform marker, frame;
         private readonly Image health, trail, shield, injury, frameImage;
         private readonly Sprite normalFrame;
@@ -23,7 +24,6 @@ namespace AstralOath.Client.BattleScene
         private readonly float originalFill, referenceProjection;
         private float target, frontStart, trailStart, frontTime, trailTime;
         private float visibleHealth, visibleTrail, trailFlashRemaining;
-        private long? turnOpeningHealth;
         private double shieldTarget, shieldStart, visibleShield;
         private float shieldTime;
         private int maximum, uninjuredMaximum;
@@ -189,13 +189,6 @@ namespace AstralOath.Client.BattleScene
             RefreshBars();
         }
 
-        public void BeginDamageTurn(long health)
-        {
-            if (disposed) return;
-            FinishDamageSequence();
-            turnOpeningHealth = Math.Max(0L, health);
-        }
-
         public void FinishDamageSequence()
         {
             if (disposed || !holdingDamageTrail) return;
@@ -218,16 +211,14 @@ namespace AstralOath.Client.BattleScene
             if (next < target)
             {
                 if (!holdingDamageTrail)
-                    visibleTrail = turnOpeningHealth.HasValue
-                        ? (float)(turnOpeningHealth.Value / (double)maximum) : Mathf.Max(visibleHealth, target);
+                    visibleTrail = target;
                 visibleHealth = target = frontStart = next;
                 frontTime = trailTime = 0f;
                 losingHealth = holdingDamageTrail = true;
                 retractingDamageTrail = false;
+                trailFlashRemaining = TrailFlashSeconds;
                 if (next <= 0f) shieldTarget = shieldStart = visibleShield = 0;
             }
-            if (holdingDamageTrail && visibleTrail > visibleHealth)
-                trailFlashRemaining = TrailFlashSeconds;
             if (lastHit) FinishDamageSequence();
             RefreshBars();
         }
@@ -260,10 +251,11 @@ namespace AstralOath.Client.BattleScene
                 if (losingHealth || retractingDamageTrail)
                 {
                     trailTime += delta;
-                    float tailProgress = TrailSeconds <= 0 ? (trailTime >= TrailDelaySeconds ? 1 : 0) :
-                        Mathf.Clamp01((trailTime - Mathf.Max(0, TrailDelaySeconds)) / TrailSeconds);
+                    float delay = retractingDamageTrail ? 0f : Mathf.Max(0f, TrailDelaySeconds);
+                    float tailProgress = TrailSeconds <= 0 ? (trailTime >= delay ? 1 : 0) :
+                        Mathf.Clamp01((trailTime - delay) / TrailSeconds);
                     visibleTrail = Mathf.Max(visibleHealth, Mathf.Lerp(trailStart, target, tailProgress * tailProgress));
-                    if (tailProgress >= 1f) retractingDamageTrail = false;
+                    if (tailProgress >= 1f) losingHealth = retractingDamageTrail = false;
                 }
                 else visibleTrail = visibleHealth;
             }
@@ -290,16 +282,16 @@ namespace AstralOath.Client.BattleScene
             float healthEnd = visibleHealth * healthTrack;
             float shieldEnd = combined * healthTrack;
             health.fillAmount = healthEnd;
-            bool turnTrail = holdingDamageTrail || retractingDamageTrail;
-            float trailEnd = Mathf.Clamp01(visibleTrail * (turnTrail ? effectiveTrack : healthTrack));
+            bool skillTrail = holdingDamageTrail || retractingDamageTrail;
+            float trailEnd = Mathf.Clamp01(visibleTrail * (skillTrail ? effectiveTrack : healthTrack));
             bool fromRight = health.fillOrigin == (int)Image.OriginHorizontal.Right;
             injury.enabled = effectiveTrack < 1f;
             if (injury.enabled) SetHorizontalRange(injury.rectTransform, effectiveTrack, 1f, fromRight);
             // An overflowing barrier can compress the green bar without lowering actual HP.
-            float trailStartPosition = turnTrail ? visibleHealth * effectiveTrack : healthEnd;
+            float trailStartPosition = skillTrail ? visibleHealth * effectiveTrack : healthEnd;
             trail.enabled = trailEnd > trailStartPosition;
             if (trail.enabled)
-                trail.color = Color.Lerp(TrailColor, TrailFlashColor, trailFlashRemaining / TrailFlashSeconds);
+                trail.color = Color.Lerp(TrailColor, TrailFlashColor, trailFlashRemaining / TrailFlashFadeSeconds);
             SetHorizontalRange(trail.rectTransform, trailStartPosition, Mathf.Max(trailStartPosition, trailEnd), fromRight);
             SetHorizontalRange(segments.rectTransform, 0f, healthTrack, fromRight);
             bool showShield = target > 0 && shieldEnd > healthEnd;

@@ -29,6 +29,8 @@ namespace AstralOath.Client.BattleScene
         internal static PauseControls CreatePauseControls(BindingMap map, Func<string, string> label, GameObject confirmPrefab) =>
             new PauseControls(map, label, confirmPrefab);
 
+        internal const int SkillBannerOrder = 31001;
+
         internal sealed class PauseControls : IDisposable
         {
             // Original CUTIN renders at 30000. Pause remains accessible during full-screen skills.
@@ -50,7 +52,7 @@ namespace AstralOath.Client.BattleScene
                 panel.anchorMin = Vector2.zero;
                 panel.anchorMax = Vector2.one;
                 panel.offsetMin = panel.offsetMax = Vector2.zero;
-                RaiseCanvas(root, ownerCanvas, PauseOrder + 1);
+                RaiseCanvas(root, ownerCanvas, SkillBannerOrder + 1);
                 var shield = root.AddComponent<Image>();
                 shield.color = new Color(0f, 0f, 0f, 0.68f);
                 shield.raycastTarget = true;

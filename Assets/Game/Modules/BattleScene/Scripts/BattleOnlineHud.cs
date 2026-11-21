@@ -14,7 +14,7 @@ namespace AstralOath.Client.BattleScene
     {
         private readonly RectTransform root;
         private readonly BattleNativeFeedbackEffect.Library feedbackLibrary;
-        private const float SoulBurnIntroPixelScale = .36f;
+        private const float SoulBurnIntroPixelScale = .69f;
         private const float SoulBurnLoopPixelScale = .50f;
         private readonly BattleNativeFeedbackEffect[] soulBurnEffects = new BattleNativeFeedbackEffect[2];
         private readonly AudioSource soulBurnAudio;
@@ -220,8 +220,8 @@ namespace AstralOath.Client.BattleScene
                 var effect = soulBurnEffects[index];
                 if (effect?.Active != true) continue;
                 effect.Tick(delta);
-                // Retain the original-sized opening rays. Expand as they fade into the fire
-                // ring, which spans about 260px around the 130px portrait in P2 at 13:44.5.
+                // P2 13:41 shows the opening rays crossing the field. The sustained fire
+                // at 13:44.5 spans about 260px around the 130px portrait.
                 float progress = Mathf.InverseLerp(.65f, 1f, effect.Elapsed);
                 float scale = Mathf.SmoothStep(1f, SoulBurnLoopPixelScale / SoulBurnIntroPixelScale, progress);
                 soulBurnAnchors[index].localScale = Vector3.one * scale;
