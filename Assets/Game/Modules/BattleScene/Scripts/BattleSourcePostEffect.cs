@@ -85,13 +85,19 @@ namespace AstralOath.Client.BattleScene
                 return StartWindow(effect);
             }
             if ((string)node["program"] != "sprite_blur" ||
-                !TryNumber(node, "u_range", out float range) ||
                 !TryNumber(node, "u_sample", out float samples) || samples <= .5f)
                 return false;
 
+            float range = 0f;
+            if (node["u_range"] != null)
+            {
+                if (!TryNumber(node, "u_range", out range)) return false;
+            }
+            else if (modulators.Length == 0) return false;
+
             var random = modulators.FirstOrDefault(item => (string)item["etty"] == "RANDOM_VALUE" &&
                 (string)item["name"] == "u_range" && item["value"] != null);
-            if (random != null) range = Number(random, "value", range);
+            if (random != null && !TryNumber(random, "value", out range)) return false;
             var sineNodes = modulators.Where(item => item != random).ToArray();
             var modulation = new SineRange[sineNodes.Length];
             for (int index = 0; index < sineNodes.Length; index++)

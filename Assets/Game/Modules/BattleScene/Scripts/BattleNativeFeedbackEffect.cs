@@ -70,7 +70,7 @@ namespace AstralOath.Client.BattleScene
         private float time, finishAt;
         private bool disposed, heldForOwner, finishRequested;
         internal readonly GameObject Root;
-        private readonly SortingGroup healingGroup;
+        private readonly Renderer healingCross;
         internal bool Active { get; private set; }
         internal float Duration => (heldForOwner ? finishAt : duration) + fadeSeconds;
         internal float Elapsed => time;
@@ -138,12 +138,8 @@ namespace AstralOath.Client.BattleScene
                 foreach (var part in parts) if (part.Duration <= 0) part.Duration = duration - part.Delay;
                 if (source == HealingSource)
                 {
-                    // heal_hp_01 has one particle primitive. Keep its soft additive light under the
-                    // filled cross, which uses PMA coverage to retain its green silhouette.
-                    var part = parts.Single();
-                    healingGroup = part.Root.AddComponent<SortingGroup>();
-                    foreach (var renderer in part.Renderers)
-                        renderer.sortingOrder = renderer.sharedMaterial.GetInt("_DstBlend") == (int)BlendMode.OneMinusSrcAlpha ? 1 : 0;
+                    healingCross = parts.Single().Renderers.Single(renderer =>
+                        renderer.sharedMaterial.GetInt("_DstBlend") == (int)BlendMode.OneMinusSrcAlpha);
                 }
             }
             catch { Dispose(); throw; }
@@ -248,15 +244,19 @@ namespace AstralOath.Client.BattleScene
 
         internal void SetActorSorting(Renderer body)
         {
-            if (healingGroup)
+            if (healingCross)
             {
-                // Adjacent formation orders may differ by only one. Use the back of the next order
-                // so the owner's body is lit and an opaque nearer hero still covers the particles.
-                healingGroup.sortingLayerID = body.sortingLayerID;
-                healingGroup.sortingOrder = body.sortingOrder + 1;
-                var anchor = healingGroup.transform.position;
-                anchor.z = body.bounds.center.z + .02f;
-                healingGroup.transform.position = anchor;
+                // The battle camera looks along +Z. Stay in the recipient's order so an adjacent
+                // foreground hero covers every track. Soft light sits between body and filled cross.
+                float bodyDepth = body.bounds.center.z;
+                foreach (var renderer in parts[0].Renderers)
+                {
+                    renderer.sortingLayerID = body.sortingLayerID;
+                    renderer.sortingOrder = body.sortingOrder;
+                    var position = renderer.transform.position;
+                    position.z = bodyDepth - (renderer == healingCross ? .04f : .02f);
+                    renderer.transform.position = position;
+                }
                 return;
             }
             SetSorting(body.sortingLayerID, body.sortingOrder + 5);

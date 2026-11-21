@@ -85,6 +85,7 @@ namespace AstralOath.Editor
             var root=Rect("CharacterLabWindow",parent);Stretch(root);
             var map=root.gameObject.AddComponent<BindingMap>();
             var items=new List<(string,Component)>();
+            items.Add(("cutinTemplate",CreateCutinTemplate(root)));
             var preview=Rect("Camera Preview",root);Size(preview,Vector2.zero,new Vector2(1920,1080));
             var raw=preview.gameObject.AddComponent<RawImage>();raw.raycastTarget=false;
             items.Add(("preview",raw));preview.gameObject.SetActive(false);
@@ -142,6 +143,25 @@ namespace AstralOath.Editor
             UIViewRegistry.ValidatePrefab<CharacterLabWindow>(root.gameObject);
             root.gameObject.SetActive(false);return root.gameObject;
         }
+        private static MeshRenderer CreateCutinTemplate(Transform parent)
+        {
+            const string path = "Assets/Game/Modules/CharacterPresentation/Res/Materials/CharacterCutinBlack.mat";
+            var material = AssetDatabase.LoadAssetAtPath<Material>(path);
+            if (!material)
+            {
+                var shader = AssetDatabase.LoadAssetAtPath<Shader>("Assets/Game/Modules/CharacterLab/Resources/CharacterCutinBlack.shader");
+                if (!shader) throw new FileNotFoundException("CharacterLab cut-in shader is missing.");
+                material = new Material(shader) { name = "CharacterCutinBlack" };
+                AssetDatabase.CreateAsset(material, path);
+            }
+            var template = new GameObject("Cut-in Template", typeof(MeshFilter), typeof(MeshRenderer));
+            template.transform.SetParent(parent, false);
+            var renderer = template.GetComponent<MeshRenderer>();
+            renderer.sharedMaterial = material;
+            template.SetActive(false);
+            return renderer;
+        }
+
         private static RectTransform ScrollList(string name,Transform parent,Vector2 position,Vector2 size)
         {
             var root=Panel(name,parent,position,size);

@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
+using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -32,6 +34,68 @@ namespace AstralOath.Tests
             foreach (var item in effects) item.Dispose();
             effects.Clear();
             if (root) Object.DestroyImmediate(root);
+        }
+
+        [Test]
+        public void WindowsActionFeedbackRetainsSourceTexels()
+        {
+            if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.StandaloneWindows64 ||
+                SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null)
+                Assert.Ignore("Requires the Windows import target and a graphics device for GPU readback.");
+            const string folder = "Assets/Game/Modules/BattleScene/Res/Effects/ActionFeedback";
+            var images = AssetDatabase.FindAssets("t:Texture2D", new[] { folder })
+                .Select(AssetDatabase.GUIDToAssetPath).ToArray();
+            Assert.That(images, Is.Not.Empty);
+            var changed = new System.Collections.Generic.List<string>();
+            foreach (var path in images)
+            {
+                var imported = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+                var source = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+                try
+                {
+                    Assert.That(ImageConversion.LoadImage(source, File.ReadAllBytes(path)), Is.True, path);
+                    if (imported.width != source.width || imported.height != source.height)
+                    {
+                        changed.Add($"{imported.name}: {source.width}x{source.height} -> {imported.width}x{imported.height}");
+                        continue;
+                    }
+                    var original = ReadTexels(source);
+                    var actual = ReadTexels(imported);
+                    int count = 0, worst = 0;
+                    for (int i = 0; i < original.Length; ++i)
+                    {
+                        var a = original[i];
+                        var b = actual[i];
+                        int delta = Math.Max(Math.Max(Math.Abs(a.r - b.r), Math.Abs(a.g - b.g)),
+                            Math.Max(Math.Abs(a.b - b.b), Math.Abs(a.a - b.a)));
+                        if (delta > 1) count++;
+                        worst = Math.Max(worst, delta);
+                    }
+                    if (count > 0) changed.Add($"{imported.name} ({imported.format}): {count}/{actual.Length} texels, peak {worst}/255");
+                }
+                finally { Object.DestroyImmediate(source); }
+            }
+            Assert.That(changed, Is.Empty, string.Join("\n", changed));
+        }
+
+        private static Color32[] ReadTexels(Texture2D source)
+        {
+            var target = RenderTexture.GetTemporary(source.width, source.height, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);
+            var previous = RenderTexture.active;
+            var readback = new Texture2D(source.width, source.height, TextureFormat.RGBA32, false);
+            try
+            {
+                Graphics.Blit(source, target);
+                RenderTexture.active = target;
+                readback.ReadPixels(new Rect(0, 0, target.width, target.height), 0, 0);
+                return readback.GetPixels32();
+            }
+            finally
+            {
+                RenderTexture.active = previous;
+                RenderTexture.ReleaseTemporary(target);
+                Object.DestroyImmediate(readback);
+            }
         }
 
         [Test]

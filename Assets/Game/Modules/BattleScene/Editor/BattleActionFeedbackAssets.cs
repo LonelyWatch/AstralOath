@@ -35,18 +35,38 @@ namespace AstralOath.Client.BattleScene.Editor
                 else if (suffix == ".cfx" || suffix == ".particle") asset.document = Required<TextAsset>(path);
                 else
                 {
-                    if (AssetImporter.GetAtPath(path) is TextureImporter importer &&
-                        (importer.mipmapEnabled || importer.alphaIsTransparency || !importer.sRGBTexture || importer.textureCompression != TextureImporterCompression.Uncompressed || importer.wrapMode != TextureWrapMode.Clamp))
-                    {
-                        importer.mipmapEnabled = false; importer.alphaIsTransparency = false;
-                        importer.sRGBTexture = true; importer.textureCompression = TextureImporterCompression.Uncompressed;
-                        importer.wrapMode = TextureWrapMode.Clamp; importer.SaveAndReimport();
-                    }
+                    PreserveFeedbackTexture(path);
                     asset.texture = Required<Texture2D>(path);
                 }
                 result.Add(asset);
             }
             return result.ToArray();
+        }
+
+        private static void PreserveFeedbackTexture(string path)
+        {
+            var importer = (TextureImporter)AssetImporter.GetAtPath(path);
+            var windows = importer.GetPlatformTextureSettings("Standalone");
+            if (importer.userData == "AstralOath.ImportOverride" && !importer.mipmapEnabled &&
+                !importer.alphaIsTransparency && importer.sRGBTexture && importer.npotScale == TextureImporterNPOTScale.None &&
+                importer.wrapMode == TextureWrapMode.Clamp && importer.textureCompression == TextureImporterCompression.Uncompressed &&
+                windows.overridden && windows.format == TextureImporterFormat.RGBA32 &&
+                windows.textureCompression == TextureImporterCompression.Uncompressed) return;
+
+            // PMA color and coverage must stay paired. A Windows DXT5 override otherwise
+            // compresses the two channels independently when the page dimensions allow it.
+            importer.userData = "AstralOath.ImportOverride";
+            importer.mipmapEnabled = false;
+            importer.alphaIsTransparency = false;
+            importer.sRGBTexture = true;
+            importer.npotScale = TextureImporterNPOTScale.None;
+            importer.textureCompression = TextureImporterCompression.Uncompressed;
+            importer.wrapMode = TextureWrapMode.Clamp;
+            windows.overridden = true;
+            windows.format = TextureImporterFormat.RGBA32;
+            windows.textureCompression = TextureImporterCompression.Uncompressed;
+            importer.SetPlatformTextureSettings(windows);
+            importer.SaveAndReimport();
         }
 
         // Called after the existing skill collector; it also supports repeated scene regeneration.

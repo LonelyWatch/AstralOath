@@ -2486,6 +2486,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 8180ffedb899561da270484d5969aa0d, type: 3}
   - {fileID: 21300000, guid: 06f8e8db729a6ea4c85c4638e0ba76f5, type: 3}
   - {fileID: 21300000, guid: 32939fcbd143f4345a2e36eed3e2acdf, type: 3}
+  - {fileID: 21300000, guid: 0598a7b92a7f540a9acdbe620aca9a60, type: 3}
   - {fileID: 21300000, guid: bdce93b558d345038c65ae9d0198cba0, type: 3}
   - {fileID: 21300000, guid: 12ec0e5fc33d57169bd0f8fb8d4350e6, type: 3}
   - {fileID: 21300000, guid: faf8a3eec90655669647ecd525efc2c5, type: 3}
@@ -4330,6 +4331,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: a6915fd344da67448999de64d8ddd921, type: 3}
     - {fileID: 2800000, guid: f5b7f56e0be7b3f449cf8f6c3de07a58, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1002_3.webp
@@ -4360,6 +4362,61 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 1eb837dfc01571e4488f2b05ee2d6999, type: 3}
     - {fileID: 2800000, guid: c33a3ca6a7151fc408fddb9baf272a06, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: cut/fhd/sk_c1003_3.webp
+    document: {fileID: 4900000, guid: 246c415b9b023164783d2acbbab686b8, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages:
+    - {fileID: 2800000, guid: d29109bb766dc9846a016d66961a660a, type: 3}
+    - {fileID: 2800000, guid: 6938677333f0189499398d2070c76216, type: 3}
+    - {fileID: 2800000, guid: 82ce52b67279af84493bdc19f77ba404, type: 3}
+    - {fileID: 2800000, guid: f7d0706ceca50bc46aede89ce9fa17cc, type: 3}
+    - {fileID: 2800000, guid: 6741755bf909ed9468461b0db0ab4af3, type: 3}
+    - {fileID: 2800000, guid: d55f9a8f9b13d284899805a58572948b, type: 3}
+    - {fileID: 2800000, guid: 7c481c8536c436d48828c328bd2eae98, type: 3}
+    - {fileID: 2800000, guid: 83ea07153184e3a4ba2f069ec248c34e, type: 3}
+    - {fileID: 2800000, guid: d6ff71c1cc9b49b4a9f19c51eb68b543, type: 3}
+    - {fileID: 2800000, guid: bbba0ee0e1ce24642b4333b2c206407c, type: 3}
+    - {fileID: 2800000, guid: 1d43893a22a973b48813b33ce74edb89, type: 3}
+    - {fileID: 2800000, guid: 1eae3b99f8b01304d8be30afcc8632d4, type: 3}
+    - {fileID: 2800000, guid: ffd931fb4ace17f4db82aa42283bef46, type: 3}
+    - {fileID: 2800000, guid: e62cca8b0aa21ca46b0509b689f0f790, type: 3}
+    - {fileID: 2800000, guid: 750fbd093f2b22c49942c7c0c1287916, type: 3}
+    - {fileID: 2800000, guid: 72768890086b8e341b46aa33a07890b3, type: 3}
+    - {fileID: 2800000, guid: 61afbc9a390f5534cbb5111c992158aa, type: 3}
+    - {fileID: 2800000, guid: 88bcd6f21b2545e49a3be6bf806c860b, type: 3}
+    - {fileID: 2800000, guid: f4336cb70156203489f72edb7119af16, type: 3}
+    - {fileID: 2800000, guid: 98c0bfc100595524a80d438e752b4c8f, type: 3}
+    - {fileID: 2800000, guid: e38a1d13717bee442911c61845fc4523, type: 3}
+    - {fileID: 2800000, guid: ef2c9f3f85392034ea9099386664a20b, type: 3}
+    - {fileID: 2800000, guid: 57c76ba329fdae24b9e0f7eb404de464, type: 3}
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: cut/fhd/sk_c1004_3.webp
+    document: {fileID: 4900000, guid: 476e9f87f8e24e842b99beba0701e927, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages:
+    - {fileID: 2800000, guid: fd4ac5840e2d081428108e46e8113a3a, type: 3}
+    - {fileID: 2800000, guid: 716ac993f51e97c42837cfca1b35d902, type: 3}
+    - {fileID: 2800000, guid: 4d4dfffe8426af34791f366d8fc94c2b, type: 3}
+    - {fileID: 2800000, guid: 56f2ad4588a167549a64e2a70f2b5fde, type: 3}
+    - {fileID: 2800000, guid: a52f2a8059a7af9478c315878440cd07, type: 3}
+    - {fileID: 2800000, guid: 3cbd8e59face43b42a6f4ca98d337cf3, type: 3}
+    - {fileID: 2800000, guid: eda9c25eeb55ba143ae88f2251d923bf, type: 3}
+    - {fileID: 2800000, guid: 9f467d8ad76cd0641a450dc11dba66fe, type: 3}
+    - {fileID: 2800000, guid: f3ca16a1398f109468e62c4217adc079, type: 3}
+    - {fileID: 2800000, guid: f26142ccce083e04e9053d6d7941b41c, type: 3}
+    - {fileID: 2800000, guid: e167d174472edc3479447bbb4dcd5f4d, type: 3}
+    - {fileID: 2800000, guid: e93ca2456c2e62746b6eab6f5c2b38b4, type: 3}
+    - {fileID: 2800000, guid: a564a5f7a539eac49bcdbdce816676c3, type: 3}
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1005_3.webp
@@ -4389,6 +4446,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 6df14ffdc27b5a0ab613afc8b14f8030, type: 3}
     - {fileID: 2800000, guid: c85237800c075d5593f2daf990751b64, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1006_3_1.webp
@@ -4405,6 +4463,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: d3bbd8ea1a1af5f4c95369bfbdca6543, type: 3}
     - {fileID: 2800000, guid: 066b493f645c1b142b1ca4fc42885b04, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1006_3_2.webp
@@ -4424,6 +4483,67 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 07056246c2f91e2478aecd0c79240b98, type: 3}
     - {fileID: 2800000, guid: 6029ec37d455cd848b00be369f1d8e41, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: cut/fhd/sk_c1007_3.webp
+    document: {fileID: 4900000, guid: 419926438ddd2284ba7dd5fb66ceda90, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages:
+    - {fileID: 2800000, guid: 62bd1baeea9728f45ab27d0637b3450d, type: 3}
+    - {fileID: 2800000, guid: 9febd95aec0be9948a0488662f368819, type: 3}
+    - {fileID: 2800000, guid: 9e5b03e58c10fda48a55495c8f9b090e, type: 3}
+    - {fileID: 2800000, guid: 7e537ddc3749db240942d6ecb84ddcd1, type: 3}
+    - {fileID: 2800000, guid: c07860ac5c14c2649a6c1a1b31abf6eb, type: 3}
+    - {fileID: 2800000, guid: dc5abc182635b244cbcd77610b6d0edd, type: 3}
+    - {fileID: 2800000, guid: 899167f2530a70e4fa22d0f47684eb4f, type: 3}
+    - {fileID: 2800000, guid: 2bcb03001dea1a440b2f7044355adeb0, type: 3}
+    - {fileID: 2800000, guid: 768f6ac3bd33e4f4f8b71c90c6bd0116, type: 3}
+    - {fileID: 2800000, guid: 9b2bb8b9a3abd0c40b8c50bea090bdf6, type: 3}
+    - {fileID: 2800000, guid: 6ca4d214d3de6a748ac53c6c26c8ca63, type: 3}
+    - {fileID: 2800000, guid: 3e30fe9476ba492428dae80db3809c1c, type: 3}
+    - {fileID: 2800000, guid: 860adc31bb188ee4c8daa687aa3efc70, type: 3}
+    - {fileID: 2800000, guid: f0b09d912ceda5249b63968eb04db4d1, type: 3}
+    - {fileID: 2800000, guid: 36d69fcf1893b14418de781eb5fcc071, type: 3}
+    - {fileID: 2800000, guid: 119442203a9810c4e96455f7004f6ef7, type: 3}
+    - {fileID: 2800000, guid: 62ec9cb528a586f439dd231471030674, type: 3}
+    - {fileID: 2800000, guid: 4d9424ba53578084188bfe59d80943a0, type: 3}
+    - {fileID: 2800000, guid: 9e89ba79e9234ba4abd182e6d5a5eb51, type: 3}
+    - {fileID: 2800000, guid: 4c81166ce9245f644848d2864bb83094, type: 3}
+    - {fileID: 2800000, guid: 4e1e613fcc364c541ab34fd00cd58794, type: 3}
+    - {fileID: 2800000, guid: b773c9aef36b9e44d82aa6f2ab6ba87d, type: 3}
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: cut/fhd/sk_c1008_3.webp
+    document: {fileID: 4900000, guid: 4cc779b2910885e45a51b41a22f2da12, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages:
+    - {fileID: 2800000, guid: 790a9b2d8a6b82242957097b5fc460d1, type: 3}
+    - {fileID: 2800000, guid: 9a21ab66aa762a443bd1efcbafaf67f5, type: 3}
+    - {fileID: 2800000, guid: 63d9881dab4979449ac0ca33f383a016, type: 3}
+    - {fileID: 2800000, guid: a5bf26e63fb19f948be8dcdf9bcc50ad, type: 3}
+    - {fileID: 2800000, guid: fca9ffc0d93091445acb6ede1ffb8245, type: 3}
+    - {fileID: 2800000, guid: d15c602e2ad5d854ba041533ccf0449d, type: 3}
+    - {fileID: 2800000, guid: 15939681dcb4b094d9779810c3ee5500, type: 3}
+    - {fileID: 2800000, guid: 64074be1d04ea2a4cbfd625be4dffff4, type: 3}
+    - {fileID: 2800000, guid: ce88ef8e050ab614191f60659082f581, type: 3}
+    - {fileID: 2800000, guid: 68bed9f5730df0042a21cf6b8ee4256c, type: 3}
+    - {fileID: 2800000, guid: 35c572fa5bb9c634492c5fe89ad9116d, type: 3}
+    - {fileID: 2800000, guid: 824f589e613d57c42b8b2d6ad28ad66a, type: 3}
+    - {fileID: 2800000, guid: 092fd92a3da10da48b7596a69fcf89ce, type: 3}
+    - {fileID: 2800000, guid: 0183961a6de62b2458c62dc06c990e39, type: 3}
+    - {fileID: 2800000, guid: 22e69b5576342594e9d82f3a25dc0615, type: 3}
+    - {fileID: 2800000, guid: 8d103a1b1f376704c8d4e200ea3601c2, type: 3}
+    - {fileID: 2800000, guid: e100be47cfcaf2d4d904db50b9bfe061, type: 3}
+    - {fileID: 2800000, guid: f349a70af04126c4abead55d039514b3, type: 3}
+    - {fileID: 2800000, guid: e6e438380f3210d45a6f40a66057b59a, type: 3}
+    - {fileID: 2800000, guid: 58a8fe13c0806d54e9537771cbcf6af2, type: 3}
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1009_3_1.webp
@@ -4450,6 +4570,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 104c02b864b2ebb4882e0891fb6e757c, type: 3}
     - {fileID: 2800000, guid: b250ae5fd1b60a54fbda937b8a6af2c7, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1009_3_2.webp
@@ -4475,6 +4596,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: adb1744723d825f48a5fe07644bdbe4c, type: 3}
     - {fileID: 2800000, guid: 9ae139495a447a6418de6c0b4686fcd0, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1010_3.webp
@@ -4500,6 +4622,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 9101d67f207284a43bb0f9091b15590a, type: 3}
     - {fileID: 2800000, guid: 305b63912e0b2d24ab1d2100c1b3a503, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1011_3.webp
@@ -4525,6 +4648,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: c62b43c3657bbf9458f064a1a3ebbcdc, type: 3}
     - {fileID: 2800000, guid: 912f4c3ad51bc0d4ebcef2eefdd80cc8, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1012_3.webp
@@ -4552,6 +4676,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 6745f4924babe644ea1fd86aaff7c4fe, type: 3}
     - {fileID: 2800000, guid: 204eac3e2f67fa649a0a568229b755a7, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1013_3.webp
@@ -4578,6 +4703,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: fe858ee924678b042865dd54b2c7c394, type: 3}
     - {fileID: 2800000, guid: 7acaedc3ca7837b49b45525d54073d5f, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1014_3.webp
@@ -4606,6 +4732,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 1e4b8f2a93d320746885fb801031282d, type: 3}
     - {fileID: 2800000, guid: ba0af8152ebbbb14b8315489ee7af9ff, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1015_3.webp
@@ -4635,6 +4762,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 2d049b4d1a0538447af52797b7ba4a49, type: 3}
     - {fileID: 2800000, guid: f1ec6597455a34e43a2a702a01ff6ac0, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1016_3.webp
@@ -4659,6 +4787,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 971057bf43c127c45b99200c6063f48d, type: 3}
     - {fileID: 2800000, guid: 8ef63e7c8efa9f542b5c420634ae82ae, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1017_3.webp
@@ -4688,6 +4817,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 558bbadfef4580745a4ee96b6fa62fa1, type: 3}
     - {fileID: 2800000, guid: c99e602b89451a04dbc9d7bc10570e30, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1018_3.webp
@@ -4715,6 +4845,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 332df6081bda2d444ad6f7da2a82426b, type: 3}
     - {fileID: 2800000, guid: 55964d2d32cde934aa9f2deb88b2fdfb, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1019_3.webp
@@ -4753,6 +4884,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 9c00b425d474aae46bc8e819d52041c5, type: 3}
     - {fileID: 2800000, guid: 74282fbb93e54bd4198b307104b6b3ba, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1020_3.webp
@@ -4783,6 +4915,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 8ad565a8d30dd8a4e875b9a4636cb513, type: 3}
     - {fileID: 2800000, guid: 0fd4618c087be7140931ac5792f7fe09, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1021_3.webp
@@ -4813,6 +4946,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: e25e1053d784bd44b89ee857c661e7f8, type: 3}
     - {fileID: 2800000, guid: 287775e78b958f5479984c2854b861e9, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1022_3.webp
@@ -4841,6 +4975,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: a283212b54d628841af2fda13a288161, type: 3}
     - {fileID: 2800000, guid: 8a3bcfe1f72eeed4ab7ebcc7512482dc, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1023_3.webp
@@ -4870,6 +5005,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: dca7b2780c772e347a9e88a3f4c4cde8, type: 3}
     - {fileID: 2800000, guid: bde5865011d71304485dc274751b677e, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1024_3.webp
@@ -4905,6 +5041,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: c04c6a33406305247891e059e38baea3, type: 3}
     - {fileID: 2800000, guid: 1a0174072a615824d9a62798ff6aab4c, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1027_3.webp
@@ -4925,6 +5062,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 702859094ac0f9b4091e527f2e01def5, type: 3}
     - {fileID: 2800000, guid: baa5010b58cbdbd4082f8fe6a6afd16c, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1028_3.webp
@@ -4948,6 +5086,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 34439861cdf9bcd41804d78ef2109c42, type: 3}
     - {fileID: 2800000, guid: a1369730e294d6543a03d5559739ed3d, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1029_3.webp
@@ -4977,6 +5116,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 6d49bd71a6b934848978996b26237198, type: 3}
     - {fileID: 2800000, guid: e433818547a11ff4f8f0a58562e9f2aa, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1030_3.webp
@@ -4999,6 +5139,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 05ea0153571cd3141bd042fe64956f3b, type: 3}
     - {fileID: 2800000, guid: ef44f01a856f7394782974384599e9c7, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1031_3.webp
@@ -5023,6 +5164,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: f8d0490cf56d0c14c90c655df0cc79b8, type: 3}
     - {fileID: 2800000, guid: 95f28310b4880a841b5d3c67575e0033, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1032_3.webp
@@ -5049,6 +5191,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: e3877725bb0a01f48bdfb974eda32c7e, type: 3}
     - {fileID: 2800000, guid: cba2d99fb73eaec42a9fcaa9df4a47ea, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1033_3.webp
@@ -5078,6 +5221,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: c5bfa7f0ba1b6e448952ebaad4f9011a, type: 3}
     - {fileID: 2800000, guid: a95a7b6c4e2838d41a630bfc21024785, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1034_3.webp
@@ -5106,6 +5250,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 17d5928e40e511e48a534c53fee20b64, type: 3}
     - {fileID: 2800000, guid: 78587389891f5c043818d37d4b6e38a1, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1035_3.webp
@@ -5129,6 +5274,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 1518b35394bc62049ad6786502b7a7f3, type: 3}
     - {fileID: 2800000, guid: 1444948a0b0d60445940d34713924c3e, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1036_3.webp
@@ -5153,6 +5299,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 2e8dfccdb4a3f7b4fa09cdf38a24e6fe, type: 3}
     - {fileID: 2800000, guid: 169ef3c6ad9b3234ba792f84e6cd3dc2, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1037_3.webp
@@ -5179,6 +5326,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: d27a06085779197408ee0cdb5ad076e4, type: 3}
     - {fileID: 2800000, guid: d196aa5e71227fd4da2fb7852c0ef303, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1038_3.webp
@@ -5208,6 +5356,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 882d3913d207845488be39469c183b62, type: 3}
     - {fileID: 2800000, guid: 87d35e8249ea3e3408d179f56f9cdffd, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1039_3.webp
@@ -5236,6 +5385,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: ad978949343deef4895760deba53b006, type: 3}
     - {fileID: 2800000, guid: c5c9c0a5454869d49a9a1451c2728986, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1040_3.webp
@@ -5264,6 +5414,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 36f8bbf482435f44c84ad1d5a2ad2ec9, type: 3}
     - {fileID: 2800000, guid: 92378f949e7fc6a42b711e251984fd3a, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1042_3.webp
@@ -5296,6 +5447,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 043ccd566caae7c458be505d25705a98, type: 3}
     - {fileID: 2800000, guid: 990e062ff88945040bcbfe7a1206a851, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1043_3.webp
@@ -5321,6 +5473,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 1555fd84156accf47a2739d99e9cc2bc, type: 3}
     - {fileID: 2800000, guid: b5c453a6f7f81ce4e8c809f79b629c49, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1044_3.webp
@@ -5357,6 +5510,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 7646e884e7eeec44bb79a3058020a654, type: 3}
     - {fileID: 2800000, guid: 116a6e04c17ecfb4ebc28feaecc3b0b4, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1046_3.webp
@@ -5384,6 +5538,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 0e7ef89868a399442a684a6426594f33, type: 3}
     - {fileID: 2800000, guid: 9d16809e8b1d82146865fde5e5a0abbe, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1047_3.webp
@@ -5414,6 +5569,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: fb869c1969effba4ab7b9700f057c667, type: 3}
     - {fileID: 2800000, guid: 5b9f8d06a88ce3a4c9a8f4b151d02833, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1048_3.webp
@@ -5437,6 +5593,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: a967831bcb674a34fb31208b502ad9fd, type: 3}
     - {fileID: 2800000, guid: defeb682579699e4ebfe0620042b0a9a, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1049_3_1.webp
@@ -5452,6 +5609,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 1cd870e6de7228c4594df705618d0cda, type: 3}
     - {fileID: 2800000, guid: 1950677287bc5f54e8e16b3c2e297a79, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1049_3_2.webp
@@ -5472,6 +5630,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 6e47b03be17ae2f40816d300bad84427, type: 3}
     - {fileID: 2800000, guid: d5393bf3b14e40f43beee8578a8ada9a, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1050_3.webp
@@ -5502,6 +5661,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 6e2de083cc6f219449d36fbd463f9346, type: 3}
     - {fileID: 2800000, guid: 673952feb1e6eb64db09222cea930787, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1053_3.webp
@@ -5527,6 +5687,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: f2aeb4630e111d248af7675fd6b8c541, type: 3}
     - {fileID: 2800000, guid: 51841c09e2da7ef4e82675d18644a04b, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1054_3.webp
@@ -5556,6 +5717,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 5706ae20d8a1660459dbb22b3a9ded89, type: 3}
     - {fileID: 2800000, guid: 9b7ea96de7c514240a9ea9e12d2d0720, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1055_3.webp
@@ -5586,6 +5748,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 02f89e82470067943bddb255cf93231f, type: 3}
     - {fileID: 2800000, guid: d2b58df5cf790f14fbadeb7f3ee7bfcf, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1060_3.webp
@@ -5616,6 +5779,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 8e666a500973fd74bb00c63e9efd6e90, type: 3}
     - {fileID: 2800000, guid: 7e8fd9fcfd229944aa787c7bf8b7229c, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1062_3.webp
@@ -5644,6 +5808,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 703c653076951354baf82a244ebc93e1, type: 3}
     - {fileID: 2800000, guid: 786f8171e64a19e42807897c151c61cc, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1065_3.webp
@@ -5674,6 +5839,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: ff1de23aae93e8d4baf95bb0512ba07f, type: 3}
     - {fileID: 2800000, guid: 89cb618a91b1c474b999f3bf0b7fa53c, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1066_3.webp
@@ -5703,6 +5869,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: ae1ebab29ccc53847bafa305232a294f, type: 3}
     - {fileID: 2800000, guid: 19e2ed9aeb4d9e24cb5a03e395ea9af2, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1067_3.webp
@@ -5747,6 +5914,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: c5c2cdc0dabf21140ab40a64d7c12a6c, type: 3}
     - {fileID: 2800000, guid: 41a568e9ddeda9e4fa875829966ed8e6, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1069_3.webp
@@ -5771,6 +5939,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 1da2ac6b7e087194d8c9ac270cb25c16, type: 3}
     - {fileID: 2800000, guid: 5e6f6da8554337b4a99a00ef574ed8e3, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1070_3_1.webp
@@ -5782,6 +5951,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: ca1d2866dd32f1949bc81cb3a8e8ba50, type: 3}
     - {fileID: 2800000, guid: 984e26b16147afd4695e88d3eee5bba3, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1070_3_2.webp
@@ -5797,6 +5967,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: d76d6a8b6ebc562418d5289f84c0b084, type: 3}
     - {fileID: 2800000, guid: 8b23d127bbb46d747ae6862db03e1db9, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1070_3_3.webp
@@ -5820,6 +5991,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 0d3d2d7cdffbd124a9f644e91f56da81, type: 3}
     - {fileID: 2800000, guid: 378041ab534e11447bda7d254e0c0e8d, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1071_3.webp
@@ -5846,6 +6018,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 8cbcb10a50a784e47a4d43c75d41b485, type: 3}
     - {fileID: 2800000, guid: 49dfed0a0e25da249b9d737ed0b87eab, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1072_3.webp
@@ -5873,6 +6046,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 5a98628b26ea019499c972b563b1ba2f, type: 3}
     - {fileID: 2800000, guid: 440b2580bd4d5144b82dda321b3af898, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1073_3.webp
@@ -5902,6 +6076,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: a75d42e4e11095b499910fc7206d1fd8, type: 3}
     - {fileID: 2800000, guid: f6cebeda9fad85b49adbed130124e0d6, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1074_3.webp
@@ -5928,6 +6103,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 3540a8eaa469c7340afef62cc1469d50, type: 3}
     - {fileID: 2800000, guid: 64b4e707eb996c64a841adec85cac448, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1076_3.webp
@@ -5955,6 +6131,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: bd77418fd3280ad4580390e87b558f37, type: 3}
     - {fileID: 2800000, guid: ef7ed1edc4bd16740b9f31a3f960f357, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1079_3.webp
@@ -5985,6 +6162,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: bc7bd508c1a2ff247b7244abf99470df, type: 3}
     - {fileID: 2800000, guid: 45d91e2d46f2951419917e6b53581a77, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1080_3.webp
@@ -6029,6 +6207,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 2235d26226a073442a44660484e8c17f, type: 3}
     - {fileID: 2800000, guid: 1cc32ecc6b0b1a043b2084b20933d2e9, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1081_3.webp
@@ -6064,6 +6243,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: c5921ecc1326ce6498aea2d442bf3d08, type: 3}
     - {fileID: 2800000, guid: 12f8015e553936b44b853dcee9512c0b, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1082_3.webp
@@ -6088,6 +6268,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 5426959c7fc23eb40abdad109eacd14e, type: 3}
     - {fileID: 2800000, guid: ae73a8705193580449a017be1edb7603, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1083_3.webp
@@ -6119,6 +6300,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: a22dcb2aaff7c7a40b1aa12708e3be18, type: 3}
     - {fileID: 2800000, guid: f35c88e568ee8ae449633b97d27fd88b, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1085_3.webp
@@ -6151,6 +6333,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 7a9d87d9ac5d770439674239897365aa, type: 3}
     - {fileID: 2800000, guid: f780ad0071f96c24d9b5e8d098a34e35, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1086_3.webp
@@ -6178,6 +6361,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 4c778a0069be961439d5585240c2ddc3, type: 3}
     - {fileID: 2800000, guid: d53b21653c07abe41a87831ab36795a6, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1087_3.webp
@@ -6214,6 +6398,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: 3d83f001b0748594c8d10617786b6a70, type: 3}
     - {fileID: 2800000, guid: d6ae78d8ffc84b346940d888c0f30d34, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: cut/fhd/sk_c1088_3.webp
@@ -6252,6 +6437,7 @@ MonoBehaviour:
     - {fileID: 2800000, guid: eb712273b390b314d8409ba565d05b00, type: 3}
     - {fileID: 2800000, guid: 93cff1bfa52c96a4bae8c70366878934, type: 3}
     texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   - source: effect/2_1_dust.scsp

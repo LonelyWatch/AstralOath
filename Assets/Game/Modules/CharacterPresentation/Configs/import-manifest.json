@@ -12235,6 +12235,540 @@
       }
     },
     {
+      "source": "cut/fhd/sk_c1003_3.webp",
+      "sourceSha256": "7670a65098e72cfa73e82f210bef06a2cf0eee239f476dc2432ebfc4229e11f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Effects/cut/fhd/sk_c1003_3_frames/0000.png",
+      "address": "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0000",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "fb47eab7e52df998d0026ec65d15cdedfe60b2d601f50deb5ed5354a11734180",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 0
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1003_3.webp",
+      "sourceSha256": "7670a65098e72cfa73e82f210bef06a2cf0eee239f476dc2432ebfc4229e11f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Effects/cut/fhd/sk_c1003_3_frames/0001.png",
+      "address": "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0001",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "bf37ff9907f988d61eecfdd3e69adf506063fcdc55f13961dcde077027564f0e",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 1
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1003_3.webp",
+      "sourceSha256": "7670a65098e72cfa73e82f210bef06a2cf0eee239f476dc2432ebfc4229e11f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Effects/cut/fhd/sk_c1003_3_frames/0002.png",
+      "address": "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0002",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "44aa2efe1a62d4d852ff4a86b8979e699bdf158cd74e784e7445e2bf92390f5d",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 2
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1003_3.webp",
+      "sourceSha256": "7670a65098e72cfa73e82f210bef06a2cf0eee239f476dc2432ebfc4229e11f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Effects/cut/fhd/sk_c1003_3_frames/0003.png",
+      "address": "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0003",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "ca718393e8f2aacb98e36167196cbee24410d2639367028ddbad50808e5027a8",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 3
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1003_3.webp",
+      "sourceSha256": "7670a65098e72cfa73e82f210bef06a2cf0eee239f476dc2432ebfc4229e11f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Effects/cut/fhd/sk_c1003_3_frames/0004.png",
+      "address": "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0004",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "d09198e35e4eca29310e9753cbd63573fef1992c74fb82e6c1cb3e62c5ca3953",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 4
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1003_3.webp",
+      "sourceSha256": "7670a65098e72cfa73e82f210bef06a2cf0eee239f476dc2432ebfc4229e11f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Effects/cut/fhd/sk_c1003_3_frames/0005.png",
+      "address": "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0005",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "5c40111b36abaff7ee238b0d7858f074a2f3d13fe8b2c65cf0e51aea5c3cb25a",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 5
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1003_3.webp",
+      "sourceSha256": "7670a65098e72cfa73e82f210bef06a2cf0eee239f476dc2432ebfc4229e11f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Effects/cut/fhd/sk_c1003_3_frames/0006.png",
+      "address": "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0006",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "8da5e6fb4420bfe6f285a2cd17c94a9515736b52d42b0a3eaa28a9af9e9406ce",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 6
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1003_3.webp",
+      "sourceSha256": "7670a65098e72cfa73e82f210bef06a2cf0eee239f476dc2432ebfc4229e11f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Effects/cut/fhd/sk_c1003_3_frames/0007.png",
+      "address": "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0007",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "8a4af99ed2e3e8e9be34e154d3e51ba49b1eb73f038b2786b8552a9ee82d899a",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 7
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1003_3.webp",
+      "sourceSha256": "7670a65098e72cfa73e82f210bef06a2cf0eee239f476dc2432ebfc4229e11f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Effects/cut/fhd/sk_c1003_3_frames/0008.png",
+      "address": "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0008",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "ddbeb89581520107e39b96e822fa0f757a9b4e010c0a03104e8f22017506b96b",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 8
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1003_3.webp",
+      "sourceSha256": "7670a65098e72cfa73e82f210bef06a2cf0eee239f476dc2432ebfc4229e11f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Effects/cut/fhd/sk_c1003_3_frames/0009.png",
+      "address": "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0009",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "b58edb75b4198fe89adcfdc62b065b83f1292f1e96f5327024695b232efedf1a",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 9
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1003_3.webp",
+      "sourceSha256": "7670a65098e72cfa73e82f210bef06a2cf0eee239f476dc2432ebfc4229e11f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Effects/cut/fhd/sk_c1003_3_frames/0010.png",
+      "address": "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0010",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "9b92900a9e0947ebeb28e373d9b25314e2901d8b48b4ed0cecc555dc664adf3d",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 10
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1003_3.webp",
+      "sourceSha256": "7670a65098e72cfa73e82f210bef06a2cf0eee239f476dc2432ebfc4229e11f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Effects/cut/fhd/sk_c1003_3_frames/0011.png",
+      "address": "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0011",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "f75fe9df60c35c7241b6ee895e0bea686efbaa4eb0cc7e23fd74c7b5f5678b3b",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 11
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1003_3.webp",
+      "sourceSha256": "7670a65098e72cfa73e82f210bef06a2cf0eee239f476dc2432ebfc4229e11f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Effects/cut/fhd/sk_c1003_3_frames/0012.png",
+      "address": "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0012",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "0f98a619418ba47d9926f197803ce0195e7d5d7131fdb63bf078a7df2ac4883d",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 12
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1003_3.webp",
+      "sourceSha256": "7670a65098e72cfa73e82f210bef06a2cf0eee239f476dc2432ebfc4229e11f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Effects/cut/fhd/sk_c1003_3_frames/0013.png",
+      "address": "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0013",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "4b8d3712eb117aff3dfd15878dfb3dafb648180a5c2778a073994b9e60740799",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 13
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1003_3.webp",
+      "sourceSha256": "7670a65098e72cfa73e82f210bef06a2cf0eee239f476dc2432ebfc4229e11f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Effects/cut/fhd/sk_c1003_3_frames/0014.png",
+      "address": "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0014",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "48dd5d25f0a12b2d8e0cc121e272db2247b008b580125cc21ec38a69dc0ed3d0",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 14
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1003_3.webp",
+      "sourceSha256": "7670a65098e72cfa73e82f210bef06a2cf0eee239f476dc2432ebfc4229e11f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Effects/cut/fhd/sk_c1003_3_frames/0015.png",
+      "address": "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0015",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "18e4dd75128d477e9976cd1a6324deb0f5472e45e3903f707bc872b4394eb65a",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 15
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1003_3.webp",
+      "sourceSha256": "7670a65098e72cfa73e82f210bef06a2cf0eee239f476dc2432ebfc4229e11f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Effects/cut/fhd/sk_c1003_3_frames/0016.png",
+      "address": "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0016",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "bc0147abcd2282356ddd68d54a79788810135c0391540f62d0375411d231c5b7",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 16
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1003_3.webp",
+      "sourceSha256": "7670a65098e72cfa73e82f210bef06a2cf0eee239f476dc2432ebfc4229e11f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Effects/cut/fhd/sk_c1003_3_frames/0017.png",
+      "address": "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0017",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "8b062dc519fdbbd4a201faa528d7b7525fdd5f8147a3a249e27b2b555a4a1ac3",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 17
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1003_3.webp",
+      "sourceSha256": "7670a65098e72cfa73e82f210bef06a2cf0eee239f476dc2432ebfc4229e11f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Effects/cut/fhd/sk_c1003_3_frames/0018.png",
+      "address": "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0018",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "0b69936a85bdae765cea8614baf368a7aec8e4d2cd2ecd6bdaa9180cc62168db",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 18
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1003_3.webp",
+      "sourceSha256": "7670a65098e72cfa73e82f210bef06a2cf0eee239f476dc2432ebfc4229e11f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Effects/cut/fhd/sk_c1003_3_frames/0019.png",
+      "address": "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0019",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "17122c6b19fb705aced74efe5e0d50ac7a02fb90f4bcf25a6176a97372d2e4b5",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 19
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1003_3.webp",
+      "sourceSha256": "7670a65098e72cfa73e82f210bef06a2cf0eee239f476dc2432ebfc4229e11f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Effects/cut/fhd/sk_c1003_3_frames/0020.png",
+      "address": "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0020",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "738c8a8b9ba1138238fddb0e37e9450df0a8686b79bfb40d35476ddc7c7a82f9",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 20
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1003_3.webp",
+      "sourceSha256": "7670a65098e72cfa73e82f210bef06a2cf0eee239f476dc2432ebfc4229e11f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Effects/cut/fhd/sk_c1003_3_frames/0021.png",
+      "address": "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0021",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "43702f4a4bfab919ab9cee090ae89f12ebf080ff93b3d7216bd144bb91ef02dd",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 21
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1003_3.webp",
+      "sourceSha256": "7670a65098e72cfa73e82f210bef06a2cf0eee239f476dc2432ebfc4229e11f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Effects/cut/fhd/sk_c1003_3_frames/0022.png",
+      "address": "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0022",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "bb4ff8c802203e466ed01e4cb1228699c1a5eccb3bfa212e52a9ab1207e8f91a",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 22
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1003_3.webp",
+      "sourceSha256": "7670a65098e72cfa73e82f210bef06a2cf0eee239f476dc2432ebfc4229e11f4",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Effects/cut/fhd/sk_c1003_3.cutin.json",
+      "address": "characterlab/source/cut/fhd/sk_c1003_3.webp",
+      "type": "cutin",
+      "dependencies": [
+        "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0000",
+        "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0001",
+        "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0002",
+        "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0003",
+        "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0004",
+        "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0005",
+        "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0006",
+        "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0007",
+        "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0008",
+        "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0009",
+        "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0010",
+        "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0011",
+        "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0012",
+        "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0013",
+        "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0014",
+        "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0015",
+        "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0016",
+        "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0017",
+        "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0018",
+        "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0019",
+        "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0020",
+        "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0021",
+        "characterlab/source/cut/fhd/sk_c1003_3.webp/frame/0022"
+      ],
+      "outputSha256": "10b4a26209a78f76c9e9d57005eac4e7b4b81c2f78eea32878c48eef3d76a40d",
+      "conversion": {
+        "status": "converted",
+        "frameCount": 23,
+        "durationSeconds": 1.9400000000000002
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1004_3.webp",
+      "sourceSha256": "aa6f971ff126d1a63bd6162765c058e1e1ec316905e30cfc1012a1ec09508c94",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1004/Effects/cut/fhd/sk_c1004_3_frames/0000.png",
+      "address": "characterlab/source/cut/fhd/sk_c1004_3.webp/frame/0000",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "ac21f108501cd80762a4476a4b1a7cc528fa94349af6333294f88d5387f50a3a",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 0
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1004_3.webp",
+      "sourceSha256": "aa6f971ff126d1a63bd6162765c058e1e1ec316905e30cfc1012a1ec09508c94",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1004/Effects/cut/fhd/sk_c1004_3_frames/0001.png",
+      "address": "characterlab/source/cut/fhd/sk_c1004_3.webp/frame/0001",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "461846ac48da16ce267210c6da46f9ef3fa469157420f5ff0d2814379e9e1f69",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 1
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1004_3.webp",
+      "sourceSha256": "aa6f971ff126d1a63bd6162765c058e1e1ec316905e30cfc1012a1ec09508c94",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1004/Effects/cut/fhd/sk_c1004_3_frames/0002.png",
+      "address": "characterlab/source/cut/fhd/sk_c1004_3.webp/frame/0002",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "6f0c572fb9f3752b60a3cd43ef916e69648aff41fed5c296c6eb23668b22facc",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 2
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1004_3.webp",
+      "sourceSha256": "aa6f971ff126d1a63bd6162765c058e1e1ec316905e30cfc1012a1ec09508c94",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1004/Effects/cut/fhd/sk_c1004_3_frames/0003.png",
+      "address": "characterlab/source/cut/fhd/sk_c1004_3.webp/frame/0003",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "ed9130acebc62186296f7ae8d364cd6c67e95e10627a5174838600e47f13820e",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 3
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1004_3.webp",
+      "sourceSha256": "aa6f971ff126d1a63bd6162765c058e1e1ec316905e30cfc1012a1ec09508c94",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1004/Effects/cut/fhd/sk_c1004_3_frames/0004.png",
+      "address": "characterlab/source/cut/fhd/sk_c1004_3.webp/frame/0004",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "a16d83c3a61e5ac38d0d2840d6f0853f9aef644af0c9fe21f3521ba54075b306",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 4
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1004_3.webp",
+      "sourceSha256": "aa6f971ff126d1a63bd6162765c058e1e1ec316905e30cfc1012a1ec09508c94",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1004/Effects/cut/fhd/sk_c1004_3_frames/0005.png",
+      "address": "characterlab/source/cut/fhd/sk_c1004_3.webp/frame/0005",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "9279ef74e70b267f0f996c54be972a9105c99b5c34896052a6d4af32c6a23d5e",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 5
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1004_3.webp",
+      "sourceSha256": "aa6f971ff126d1a63bd6162765c058e1e1ec316905e30cfc1012a1ec09508c94",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1004/Effects/cut/fhd/sk_c1004_3_frames/0006.png",
+      "address": "characterlab/source/cut/fhd/sk_c1004_3.webp/frame/0006",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "f73b4e75d931b838e38f596e38ad75feb8c6e76d38f7f59242b742f16e1d63ce",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 6
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1004_3.webp",
+      "sourceSha256": "aa6f971ff126d1a63bd6162765c058e1e1ec316905e30cfc1012a1ec09508c94",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1004/Effects/cut/fhd/sk_c1004_3_frames/0007.png",
+      "address": "characterlab/source/cut/fhd/sk_c1004_3.webp/frame/0007",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "7b44c7c682c14c42495572bed32aad60b9c0dcf25f187386c70e4cbb509322c9",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 7
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1004_3.webp",
+      "sourceSha256": "aa6f971ff126d1a63bd6162765c058e1e1ec316905e30cfc1012a1ec09508c94",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1004/Effects/cut/fhd/sk_c1004_3_frames/0008.png",
+      "address": "characterlab/source/cut/fhd/sk_c1004_3.webp/frame/0008",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "3286fe39455ebabe98674da99ee4313b25baad6ec13881d127f66e7893a96b41",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 8
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1004_3.webp",
+      "sourceSha256": "aa6f971ff126d1a63bd6162765c058e1e1ec316905e30cfc1012a1ec09508c94",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1004/Effects/cut/fhd/sk_c1004_3_frames/0009.png",
+      "address": "characterlab/source/cut/fhd/sk_c1004_3.webp/frame/0009",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "169924985c272dc4a1ab5d4c19b1aa926a91f202e0cb1f8f7c65ee59dfb561d9",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 9
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1004_3.webp",
+      "sourceSha256": "aa6f971ff126d1a63bd6162765c058e1e1ec316905e30cfc1012a1ec09508c94",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1004/Effects/cut/fhd/sk_c1004_3_frames/0010.png",
+      "address": "characterlab/source/cut/fhd/sk_c1004_3.webp/frame/0010",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "dab596e4eba3c3b607a5fb04b37ee509a86b928975cf2c861834d7ffe3b80621",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 10
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1004_3.webp",
+      "sourceSha256": "aa6f971ff126d1a63bd6162765c058e1e1ec316905e30cfc1012a1ec09508c94",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1004/Effects/cut/fhd/sk_c1004_3_frames/0011.png",
+      "address": "characterlab/source/cut/fhd/sk_c1004_3.webp/frame/0011",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "de03989c21444862c63038098cbbcbba0bb36d11d170e87bac8823383a41f909",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 11
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1004_3.webp",
+      "sourceSha256": "aa6f971ff126d1a63bd6162765c058e1e1ec316905e30cfc1012a1ec09508c94",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1004/Effects/cut/fhd/sk_c1004_3_frames/0012.png",
+      "address": "characterlab/source/cut/fhd/sk_c1004_3.webp/frame/0012",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "d22a8a9a27ed92842bc0677aa1ba75fa08fdc1b3f785ac0a4004ff7d821ccfb2",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 12
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1004_3.webp",
+      "sourceSha256": "aa6f971ff126d1a63bd6162765c058e1e1ec316905e30cfc1012a1ec09508c94",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1004/Effects/cut/fhd/sk_c1004_3.cutin.json",
+      "address": "characterlab/source/cut/fhd/sk_c1004_3.webp",
+      "type": "cutin",
+      "dependencies": [
+        "characterlab/source/cut/fhd/sk_c1004_3.webp/frame/0000",
+        "characterlab/source/cut/fhd/sk_c1004_3.webp/frame/0001",
+        "characterlab/source/cut/fhd/sk_c1004_3.webp/frame/0002",
+        "characterlab/source/cut/fhd/sk_c1004_3.webp/frame/0003",
+        "characterlab/source/cut/fhd/sk_c1004_3.webp/frame/0004",
+        "characterlab/source/cut/fhd/sk_c1004_3.webp/frame/0005",
+        "characterlab/source/cut/fhd/sk_c1004_3.webp/frame/0006",
+        "characterlab/source/cut/fhd/sk_c1004_3.webp/frame/0007",
+        "characterlab/source/cut/fhd/sk_c1004_3.webp/frame/0008",
+        "characterlab/source/cut/fhd/sk_c1004_3.webp/frame/0009",
+        "characterlab/source/cut/fhd/sk_c1004_3.webp/frame/0010",
+        "characterlab/source/cut/fhd/sk_c1004_3.webp/frame/0011",
+        "characterlab/source/cut/fhd/sk_c1004_3.webp/frame/0012"
+      ],
+      "outputSha256": "3802dd91de0e02d014e4782196eb0794091729d605cf7906776d4d5d5b8010b5",
+      "conversion": {
+        "status": "converted",
+        "frameCount": 13,
+        "durationSeconds": 1.11
+      }
+    },
+    {
       "source": "cut/fhd/sk_c1005_3.webp",
       "sourceSha256": "c39a94e9c05bd6d15e4a71166c79f98ce0487b9331e5a4aeea690432d0ee3e5d",
       "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Effects/cut/fhd/sk_c1005_3_frames/0000.png",
@@ -12837,6 +13371,624 @@
         "status": "converted",
         "frameCount": 11,
         "durationSeconds": 0.75
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1007_3.webp",
+      "sourceSha256": "c0d6e23a07fc0e579cd00b212b6b8ac56a50d32d33a109bafafe07efdb373243",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1007/Effects/cut/fhd/sk_c1007_3_frames/0000.png",
+      "address": "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0000",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "eac2973af5f5ebbd86b0c00574a44ae9ec6b02b8fb326698255a0ce4510a7c88",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 0
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1007_3.webp",
+      "sourceSha256": "c0d6e23a07fc0e579cd00b212b6b8ac56a50d32d33a109bafafe07efdb373243",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1007/Effects/cut/fhd/sk_c1007_3_frames/0001.png",
+      "address": "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0001",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "e72e2e422778e962e89b56d4a45965bdef8a2cfcc3cdf17d75342256cf64ca66",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 1
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1007_3.webp",
+      "sourceSha256": "c0d6e23a07fc0e579cd00b212b6b8ac56a50d32d33a109bafafe07efdb373243",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1007/Effects/cut/fhd/sk_c1007_3_frames/0002.png",
+      "address": "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0002",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "af89a0eaeaef564a75e6ff682f4cb5a18c73604b38525eae8839a728b8896750",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 2
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1007_3.webp",
+      "sourceSha256": "c0d6e23a07fc0e579cd00b212b6b8ac56a50d32d33a109bafafe07efdb373243",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1007/Effects/cut/fhd/sk_c1007_3_frames/0003.png",
+      "address": "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0003",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "5a044ebf10cb6bf2048cbce6262f9debb339db9e8c3b7e36baff73b5f5a928e0",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 3
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1007_3.webp",
+      "sourceSha256": "c0d6e23a07fc0e579cd00b212b6b8ac56a50d32d33a109bafafe07efdb373243",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1007/Effects/cut/fhd/sk_c1007_3_frames/0004.png",
+      "address": "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0004",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "720c5c7b40b6e67d5ae5a85e2e1786c94a7ef75958e9ae951771c1c71822414c",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 4
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1007_3.webp",
+      "sourceSha256": "c0d6e23a07fc0e579cd00b212b6b8ac56a50d32d33a109bafafe07efdb373243",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1007/Effects/cut/fhd/sk_c1007_3_frames/0005.png",
+      "address": "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0005",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "bfa0b81e151ad22477b1e4a54eb542abe27dbc3ac4758d25748a4cc650b04622",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 5
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1007_3.webp",
+      "sourceSha256": "c0d6e23a07fc0e579cd00b212b6b8ac56a50d32d33a109bafafe07efdb373243",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1007/Effects/cut/fhd/sk_c1007_3_frames/0006.png",
+      "address": "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0006",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "78876257408044bce2d24c94ec9874c677017090338d660ff997b8b62c59bfd2",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 6
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1007_3.webp",
+      "sourceSha256": "c0d6e23a07fc0e579cd00b212b6b8ac56a50d32d33a109bafafe07efdb373243",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1007/Effects/cut/fhd/sk_c1007_3_frames/0007.png",
+      "address": "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0007",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "eaa9f87d8552de2f5a06e28868b4e3f3e73f5587fbd679a165791dfe1701be90",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 7
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1007_3.webp",
+      "sourceSha256": "c0d6e23a07fc0e579cd00b212b6b8ac56a50d32d33a109bafafe07efdb373243",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1007/Effects/cut/fhd/sk_c1007_3_frames/0008.png",
+      "address": "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0008",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "c2c106c04537d86692773e5430b89bda3945efd5140fee372b47ec5a37a65849",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 8
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1007_3.webp",
+      "sourceSha256": "c0d6e23a07fc0e579cd00b212b6b8ac56a50d32d33a109bafafe07efdb373243",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1007/Effects/cut/fhd/sk_c1007_3_frames/0009.png",
+      "address": "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0009",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "317853d760af78c478122e08e905cc69615499d9569fb6c4e59a20dfc7757a86",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 9
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1007_3.webp",
+      "sourceSha256": "c0d6e23a07fc0e579cd00b212b6b8ac56a50d32d33a109bafafe07efdb373243",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1007/Effects/cut/fhd/sk_c1007_3_frames/0010.png",
+      "address": "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0010",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "cf0b684ac0c5fd1c7e0aee2bcc46700f4f0ee663ecbca9603b3b66c19601247d",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 10
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1007_3.webp",
+      "sourceSha256": "c0d6e23a07fc0e579cd00b212b6b8ac56a50d32d33a109bafafe07efdb373243",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1007/Effects/cut/fhd/sk_c1007_3_frames/0011.png",
+      "address": "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0011",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "44b94891ece1cb4f309dab8c3e6847032d033254553561df642a438377b30f6c",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 11
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1007_3.webp",
+      "sourceSha256": "c0d6e23a07fc0e579cd00b212b6b8ac56a50d32d33a109bafafe07efdb373243",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1007/Effects/cut/fhd/sk_c1007_3_frames/0012.png",
+      "address": "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0012",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "2ebd5f6581fbd3e896d9e344d321a68796b38efaba343e6c1a9f488127964e86",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 12
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1007_3.webp",
+      "sourceSha256": "c0d6e23a07fc0e579cd00b212b6b8ac56a50d32d33a109bafafe07efdb373243",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1007/Effects/cut/fhd/sk_c1007_3_frames/0013.png",
+      "address": "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0013",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "f4f8faa3a7cd90a0b1592a8cacec410bd4d08f32de358f1cba54d71cdba457a0",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 13
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1007_3.webp",
+      "sourceSha256": "c0d6e23a07fc0e579cd00b212b6b8ac56a50d32d33a109bafafe07efdb373243",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1007/Effects/cut/fhd/sk_c1007_3_frames/0014.png",
+      "address": "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0014",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "e742ee2a067cdfbe29519a593ccf638ac3d5d398bdf629f0d19df041a64f3360",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 14
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1007_3.webp",
+      "sourceSha256": "c0d6e23a07fc0e579cd00b212b6b8ac56a50d32d33a109bafafe07efdb373243",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1007/Effects/cut/fhd/sk_c1007_3_frames/0015.png",
+      "address": "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0015",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "c9fd577d35faf36709d0783980dd798ebc29de3b7ee1bbd93a6bc0df1bf0afdd",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 15
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1007_3.webp",
+      "sourceSha256": "c0d6e23a07fc0e579cd00b212b6b8ac56a50d32d33a109bafafe07efdb373243",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1007/Effects/cut/fhd/sk_c1007_3_frames/0016.png",
+      "address": "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0016",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "faf352daa0deb8c5521364391b390784dbed343ee2009cc1e5692d90bf43dcf5",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 16
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1007_3.webp",
+      "sourceSha256": "c0d6e23a07fc0e579cd00b212b6b8ac56a50d32d33a109bafafe07efdb373243",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1007/Effects/cut/fhd/sk_c1007_3_frames/0017.png",
+      "address": "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0017",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "be3cde812e45a71a8f681f9606aa888d8a09be32c668b162c65f100152089ed9",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 17
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1007_3.webp",
+      "sourceSha256": "c0d6e23a07fc0e579cd00b212b6b8ac56a50d32d33a109bafafe07efdb373243",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1007/Effects/cut/fhd/sk_c1007_3_frames/0018.png",
+      "address": "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0018",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "9ca45a21691776e3dc091a04a859ae3c4e13f083f2a11f51ad9b7822d624daf8",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 18
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1007_3.webp",
+      "sourceSha256": "c0d6e23a07fc0e579cd00b212b6b8ac56a50d32d33a109bafafe07efdb373243",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1007/Effects/cut/fhd/sk_c1007_3_frames/0019.png",
+      "address": "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0019",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "06e21e2cf446b89fef71a7ea157a9bb754f6c0dfd9db3d54191610cba848aede",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 19
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1007_3.webp",
+      "sourceSha256": "c0d6e23a07fc0e579cd00b212b6b8ac56a50d32d33a109bafafe07efdb373243",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1007/Effects/cut/fhd/sk_c1007_3_frames/0020.png",
+      "address": "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0020",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "f14a928257052f1cbdd3d98946957ab183140c70c5db0db52ba1735c733987ca",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 20
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1007_3.webp",
+      "sourceSha256": "c0d6e23a07fc0e579cd00b212b6b8ac56a50d32d33a109bafafe07efdb373243",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1007/Effects/cut/fhd/sk_c1007_3_frames/0021.png",
+      "address": "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0021",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "d77c1969dfb654c47b46cbc43b818ec86251182ee84192685fd975e310052a09",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 21
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1007_3.webp",
+      "sourceSha256": "c0d6e23a07fc0e579cd00b212b6b8ac56a50d32d33a109bafafe07efdb373243",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1007/Effects/cut/fhd/sk_c1007_3.cutin.json",
+      "address": "characterlab/source/cut/fhd/sk_c1007_3.webp",
+      "type": "cutin",
+      "dependencies": [
+        "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0000",
+        "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0001",
+        "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0002",
+        "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0003",
+        "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0004",
+        "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0005",
+        "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0006",
+        "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0007",
+        "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0008",
+        "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0009",
+        "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0010",
+        "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0011",
+        "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0012",
+        "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0013",
+        "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0014",
+        "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0015",
+        "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0016",
+        "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0017",
+        "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0018",
+        "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0019",
+        "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0020",
+        "characterlab/source/cut/fhd/sk_c1007_3.webp/frame/0021"
+      ],
+      "outputSha256": "05a6921db3e8f460dc4972c32f772d23212f6ce46dbf952adf527b5a80d801b8",
+      "conversion": {
+        "status": "converted",
+        "frameCount": 22,
+        "durationSeconds": 1.6
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1008_3.webp",
+      "sourceSha256": "b3e9f2f54d3258439952ca6741a8fb40055d0aea3ffefc79f516dd6cdab6089d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1008/Effects/cut/fhd/sk_c1008_3_frames/0000.png",
+      "address": "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0000",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "b6a928cd66b8dac08d161e6aebd39c877bc656505c28ed5ba5e09d11b5a8c06f",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 0
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1008_3.webp",
+      "sourceSha256": "b3e9f2f54d3258439952ca6741a8fb40055d0aea3ffefc79f516dd6cdab6089d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1008/Effects/cut/fhd/sk_c1008_3_frames/0001.png",
+      "address": "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0001",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "5ca3f61c0be8e0b1c83a2713c461f87c026bb64fbd57cb944faa5d75ae7b40eb",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 1
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1008_3.webp",
+      "sourceSha256": "b3e9f2f54d3258439952ca6741a8fb40055d0aea3ffefc79f516dd6cdab6089d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1008/Effects/cut/fhd/sk_c1008_3_frames/0002.png",
+      "address": "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0002",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "1ae5e00b507520e046f22d4d7c0638901231a7c04719d2064fa1020402334c8e",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 2
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1008_3.webp",
+      "sourceSha256": "b3e9f2f54d3258439952ca6741a8fb40055d0aea3ffefc79f516dd6cdab6089d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1008/Effects/cut/fhd/sk_c1008_3_frames/0003.png",
+      "address": "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0003",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "37506040ee43e61ec322bc63168db9bf93490e1c234691f9c57289408cad6660",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 3
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1008_3.webp",
+      "sourceSha256": "b3e9f2f54d3258439952ca6741a8fb40055d0aea3ffefc79f516dd6cdab6089d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1008/Effects/cut/fhd/sk_c1008_3_frames/0004.png",
+      "address": "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0004",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "0ed3c5d4a0922df05dd9217aacfcfea6ca7c406920b796d8b4fd4a7fd94248c5",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 4
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1008_3.webp",
+      "sourceSha256": "b3e9f2f54d3258439952ca6741a8fb40055d0aea3ffefc79f516dd6cdab6089d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1008/Effects/cut/fhd/sk_c1008_3_frames/0005.png",
+      "address": "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0005",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "fc6f573cf579aab7c9726c0fab5a08a990d00480075c1cee24a3ae85cf2d9d53",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 5
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1008_3.webp",
+      "sourceSha256": "b3e9f2f54d3258439952ca6741a8fb40055d0aea3ffefc79f516dd6cdab6089d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1008/Effects/cut/fhd/sk_c1008_3_frames/0006.png",
+      "address": "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0006",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "e0458d7d73301a2a8d6af8c8617c1c57d5dbbd38cbea3b5eabc83b3b7f3a5f44",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 6
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1008_3.webp",
+      "sourceSha256": "b3e9f2f54d3258439952ca6741a8fb40055d0aea3ffefc79f516dd6cdab6089d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1008/Effects/cut/fhd/sk_c1008_3_frames/0007.png",
+      "address": "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0007",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "f53129e3e536f9a5ff008a99f12dfaf5955e4e19d036e7cfb2f8eb657fd95ae4",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 7
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1008_3.webp",
+      "sourceSha256": "b3e9f2f54d3258439952ca6741a8fb40055d0aea3ffefc79f516dd6cdab6089d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1008/Effects/cut/fhd/sk_c1008_3_frames/0008.png",
+      "address": "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0008",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "10cc2568a731370b2b0f622eb65a782b395a21c9ea5dc7f4f62ab3c008dd8bbe",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 8
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1008_3.webp",
+      "sourceSha256": "b3e9f2f54d3258439952ca6741a8fb40055d0aea3ffefc79f516dd6cdab6089d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1008/Effects/cut/fhd/sk_c1008_3_frames/0009.png",
+      "address": "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0009",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "7c210f25d448e2f09a158d27520f8b7a952f66e38d0af2ee138dfa057fbcefc4",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 9
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1008_3.webp",
+      "sourceSha256": "b3e9f2f54d3258439952ca6741a8fb40055d0aea3ffefc79f516dd6cdab6089d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1008/Effects/cut/fhd/sk_c1008_3_frames/0010.png",
+      "address": "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0010",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "d2bd735ac0615eef92f1a8797ebacb12e3bdd690e7a860f2d46b0c581806e19a",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 10
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1008_3.webp",
+      "sourceSha256": "b3e9f2f54d3258439952ca6741a8fb40055d0aea3ffefc79f516dd6cdab6089d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1008/Effects/cut/fhd/sk_c1008_3_frames/0011.png",
+      "address": "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0011",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "d0fd0366397040b750db96cfade66bc18a4c33951ce0d94c62e956f7fb329023",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 11
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1008_3.webp",
+      "sourceSha256": "b3e9f2f54d3258439952ca6741a8fb40055d0aea3ffefc79f516dd6cdab6089d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1008/Effects/cut/fhd/sk_c1008_3_frames/0012.png",
+      "address": "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0012",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "f8dad97a6183446ab96afaca4c81b179b385afa9f1e7e1d5d5c91aa65d357ec5",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 12
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1008_3.webp",
+      "sourceSha256": "b3e9f2f54d3258439952ca6741a8fb40055d0aea3ffefc79f516dd6cdab6089d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1008/Effects/cut/fhd/sk_c1008_3_frames/0013.png",
+      "address": "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0013",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "5e8ef23258985a724aec1f84087ec5d786150499bacd02eed8ebc2f624c6a0e1",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 13
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1008_3.webp",
+      "sourceSha256": "b3e9f2f54d3258439952ca6741a8fb40055d0aea3ffefc79f516dd6cdab6089d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1008/Effects/cut/fhd/sk_c1008_3_frames/0014.png",
+      "address": "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0014",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "f170662c463fd666b976ab9bccd4077105187bdd30a4bb30683fec6e0993383b",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 14
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1008_3.webp",
+      "sourceSha256": "b3e9f2f54d3258439952ca6741a8fb40055d0aea3ffefc79f516dd6cdab6089d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1008/Effects/cut/fhd/sk_c1008_3_frames/0015.png",
+      "address": "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0015",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "ea938bad1844f426a9532b60cf8689b800a30bb7ebeb043dcce798832eb91558",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 15
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1008_3.webp",
+      "sourceSha256": "b3e9f2f54d3258439952ca6741a8fb40055d0aea3ffefc79f516dd6cdab6089d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1008/Effects/cut/fhd/sk_c1008_3_frames/0016.png",
+      "address": "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0016",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "7099b5f1130311697fee9855676fcd34a79b815053a66e41996ca71b7056469d",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 16
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1008_3.webp",
+      "sourceSha256": "b3e9f2f54d3258439952ca6741a8fb40055d0aea3ffefc79f516dd6cdab6089d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1008/Effects/cut/fhd/sk_c1008_3_frames/0017.png",
+      "address": "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0017",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "8ee732f01dacb74adf10b76b554da62abe34e580d55a847f225f89ed63d652e2",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 17
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1008_3.webp",
+      "sourceSha256": "b3e9f2f54d3258439952ca6741a8fb40055d0aea3ffefc79f516dd6cdab6089d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1008/Effects/cut/fhd/sk_c1008_3_frames/0018.png",
+      "address": "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0018",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "b57280022d0a118dc62812ebe4cd7ca67c5782058016ec7c99a2dcb127f9fbed",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 18
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1008_3.webp",
+      "sourceSha256": "b3e9f2f54d3258439952ca6741a8fb40055d0aea3ffefc79f516dd6cdab6089d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1008/Effects/cut/fhd/sk_c1008_3_frames/0019.png",
+      "address": "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0019",
+      "type": "texture",
+      "dependencies": [],
+      "outputSha256": "57b0b72e4827529453abc0171f27d0a22ce4f239494ce9faacba5834e40eaee7",
+      "conversion": {
+        "status": "decoded-frame",
+        "frame": 19
+      }
+    },
+    {
+      "source": "cut/fhd/sk_c1008_3.webp",
+      "sourceSha256": "b3e9f2f54d3258439952ca6741a8fb40055d0aea3ffefc79f516dd6cdab6089d",
+      "path": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1008/Effects/cut/fhd/sk_c1008_3.cutin.json",
+      "address": "characterlab/source/cut/fhd/sk_c1008_3.webp",
+      "type": "cutin",
+      "dependencies": [
+        "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0000",
+        "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0001",
+        "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0002",
+        "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0003",
+        "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0004",
+        "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0005",
+        "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0006",
+        "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0007",
+        "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0008",
+        "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0009",
+        "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0010",
+        "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0011",
+        "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0012",
+        "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0013",
+        "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0014",
+        "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0015",
+        "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0016",
+        "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0017",
+        "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0018",
+        "characterlab/source/cut/fhd/sk_c1008_3.webp/frame/0019"
+      ],
+      "outputSha256": "c0cdad76131c6dfabfb0742dd3f67eb879c5749263cc6651bf276d85bd6f83a5",
+      "conversion": {
+        "status": "converted",
+        "frameCount": 20,
+        "durationSeconds": 1.47
       }
     },
     {
@@ -178066,6 +179218,7 @@
         "characterlab/source/camera/aming_skill_01_cm.scsp",
         "characterlab/source/camera/aming_skill_02_new_cm.scsp",
         "characterlab/source/camera/aming_skill_03_cm.scsp",
+        "characterlab/source/cut/fhd/sk_c1008_3.webp",
         "characterlab/source/effect/achates_wing2.particle",
         "characterlab/source/effect/aming_sheld_ready_pati.particle",
         "characterlab/source/effect/aming_shield_ready.atlas",
@@ -178110,7 +179263,7 @@
         "characterlab/source/particle/tri_pati_01.sct",
         "characterlab/source/particle/zodiac_star1.sct"
       ],
-      "outputSha256": "9b961e93d90a98ece1c787cdaecefc8f8c6ee2b9ef1efa4db82b4203dad6b057",
+      "outputSha256": "59cf5ad27d7a04c6eb7d0149e70f41e14ce3a903cc183bb16b4209c9f8fcd04f",
       "conversion": {
         "status": "converted"
       }
@@ -185972,6 +187125,7 @@
       "address": "characterlab/source/stagept/c_rose_skill_03.stg",
       "type": "graph",
       "dependencies": [
+        "characterlab/source/cut/fhd/sk_c1003_3.webp",
         "characterlab/source/effect/rose_skeff_sk3.cfx",
         "characterlab/source/effect/rose_skeff_sk3up_f.atlas",
         "characterlab/source/effect/rose_skeff_sk3up_f.scsp",
@@ -186003,7 +187157,7 @@
         "characterlab/source/particle/feather_01.sct",
         "characterlab/source/particle/pati_01.sct"
       ],
-      "outputSha256": "c0b96f873ffce03642e8cbb640e765d5c543ca61b1b4dcdd4f4d9c77a84cbf22",
+      "outputSha256": "7cb777cb6a1fa9ebd59bbaba591a45cbbc9176c49792b8ecf8ee5fb5d88ec575",
       "conversion": {
         "status": "converted"
       }
@@ -187466,6 +188620,7 @@
       "type": "graph",
       "dependencies": [
         "characterlab/source/camera/elf_cm.scsp",
+        "characterlab/source/cut/fhd/sk_c1004_3.webp",
         "characterlab/source/effect/charge_01.atlas",
         "characterlab/source/effect/charge_01.cfx",
         "characterlab/source/effect/charge_01.scsp",
@@ -187499,7 +188654,7 @@
         "characterlab/source/particle/rose_02.sct",
         "characterlab/source/particle/ticle_02.sct"
       ],
-      "outputSha256": "4e9a51c5b4fd4be987f8d6a4a6ccb19495125c8d98c06c30a7f3fef8d86bd203",
+      "outputSha256": "d848ee0b871263f8f83dced4441d2f7fa917480e54b3610d7f06f3fb03daa23b",
       "conversion": {
         "status": "converted"
       }
@@ -188791,6 +189946,7 @@
       "type": "graph",
       "dependencies": [
         "characterlab/source/camera/wildred_sk3_cm.scsp",
+        "characterlab/source/cut/fhd/sk_c1007_3.webp",
         "characterlab/source/effect/hit_new_blunt_01.atlas",
         "characterlab/source/effect/hit_new_blunt_01.scsp",
         "characterlab/source/effect/hit_new_blunt_01.sct",
@@ -188815,7 +189971,7 @@
         "characterlab/source/model/wildred.timeline",
         "characterlab/source/particle/ticle_02.sct"
       ],
-      "outputSha256": "045598c99e3ee4abcfd5984d4fef49065a4ba2d78ebcaebc9cadd85a8679500d",
+      "outputSha256": "95e3cf54edfd0bb178664485e7fa4ae1b16fad7c832e4819ebbfad952cc19468",
       "conversion": {
         "status": "converted"
       }

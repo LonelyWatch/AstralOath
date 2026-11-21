@@ -50,6 +50,7 @@ namespace AstralOath.Client.BattleScene
         private readonly BattleSoulGauge soulGauge;
         private readonly BattleActivePortrait activePortrait;
         private readonly BattleTurnEntryEffects turnEntryEffects;
+        private readonly BattleTurnFocus turnFocus;
         private readonly BattleActionFeedback actionFeedback;
         private readonly Dictionary<string, View> views = new Dictionary<string, View>(StringComparer.Ordinal);
         private readonly Queue<BattleFlowEvent> playback = new Queue<BattleFlowEvent>();
@@ -265,6 +266,8 @@ namespace AstralOath.Client.BattleScene
                 particles.Single(item => item.name == "soul_consume_pati.particle"),
                 particleTextures.ToDictionary(texture => texture.name + ".sct", StringComparer.Ordinal));
             turnEntryEffects = new BattleTurnEntryEffects(units, views.Values.Select(view => view.Actor), readyDust);
+            sprites.TryGetValue("focus", out var focusSprite);
+            turnFocus = new BattleTurnFocus(units, focusSprite);
             Refresh();
             if (!entering) ShowOpeningEffectWords();
             if (measureEntry)
@@ -357,9 +360,17 @@ namespace AstralOath.Client.BattleScene
                     resultPanel?.Tick(delta);
                     opponentSouls?.Tick(delta);
                 }
+                UpdateTurnFocus(IsPaused ? 0f : delta);
                 RefreshOnlineHud();
                 inspection?.Tick();
             }
+        }
+
+        private void UpdateTurnFocus(float delta)
+        {
+            var actor = !entering && !cinematicVisible && !Busy && !onlineInputSuspended &&
+                Snapshot.Outcome == BattleOutcome.InProgress ? Actor : null;
+            turnFocus.Tick(actor != null && actor.IsAlive ? views[actor.InstanceId].Actor : null, delta);
         }
 
         private void TickBattle(float delta)
@@ -1133,6 +1144,7 @@ namespace AstralOath.Client.BattleScene
         private void Refresh()
         {
             using var sample = RefreshMarker.Auto();
+            UpdateTurnFocus(0f);
             foreach (var state in Snapshot.Units)
             {
                 var view = views[state.InstanceId];
@@ -1449,6 +1461,7 @@ namespace AstralOath.Client.BattleScene
             soulGauge.Dispose();
             opponentSouls?.Dispose();
             turnEntryEffects.Dispose();
+            turnFocus.Dispose();
             actionFeedback.Dispose();
             foreach (var view in views.Values) view.Restore();
             skillBanner.Dispose();

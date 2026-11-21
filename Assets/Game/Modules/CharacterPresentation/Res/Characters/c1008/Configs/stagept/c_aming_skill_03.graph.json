@@ -399,6 +399,11 @@
       "type": "skeleton"
     },
     {
+      "source": "cut/fhd/sk_c1008_3.webp",
+      "address": "characterlab/source/cut/fhd/sk_c1008_3.webp",
+      "type": "cutin"
+    },
+    {
       "source": "effect/achates_wing2.particle",
       "address": "characterlab/source/effect/achates_wing2.particle",
       "type": "particle"
@@ -614,5 +619,27 @@
       "type": "texture"
     }
   ],
-  "diagnostics": []
+  "diagnostics": [],
+  "additions": {
+    "entities": [
+      {
+        "guid": 27,
+        "etty": "ONEVENT",
+        "ani": "skill3",
+        "name": "cutin"
+      },
+      {
+        "guid": 28,
+        "etty": "CUTIN",
+        "args": "sk_c1008_3",
+        "curtain_color": "0,0,0,255"
+      }
+    ],
+    "connections": [
+      {
+        "from": 27,
+        "to": 28
+      }
+    ]
+  }
 }

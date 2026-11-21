@@ -149,9 +149,11 @@ namespace AstralOath.Client.Tests
             Assert.That(glyphs.Length, Is.EqualTo(5), "The ordinary healing event must show +3402.");
             Assert.That(glyphs.All(glyph => glyph.canvas.rootCanvas == health.canvas.rootCanvas), Is.True);
             var healedActor = (BattlePreviewActor)unit.GetType().GetProperty("Actor", Instance).GetValue(unit);
-            var group = healedActor.GetComponentsInChildren<UnityEngine.Rendering.SortingGroup>()
-                .Single(candidate => candidate.transform.parent.name == "Native Feedback heal_hp_01");
-            Assert.That(health.canvas.rootCanvas.sortingOrder, Is.GreaterThan(group.sortingOrder),
+            var activeTreatment = healedActor.GetComponentsInChildren<Transform>()
+                .Single(t => t.name == "Native Feedback heal_hp_01");
+            var treatment = activeTreatment.GetComponentsInChildren<MeshRenderer>();
+            Assert.That(treatment.Length, Is.EqualTo(4));
+            Assert.That(health.canvas.rootCanvas.sortingOrder, Is.GreaterThan(treatment.Max(renderer => renderer.sortingOrder)),
                 "The health and feedback HUD must remain in front of the treatment.");
             yield return Capture("healing-with-hp-and-digits");
 
@@ -195,11 +197,14 @@ namespace AstralOath.Client.Tests
                 var fx = rear.transform.Find("Native Feedback heal_hp_01");
                 var emitters = fx.GetComponentsInChildren<MeshRenderer>();
                 Assert.That(emitters.Length, Is.EqualTo(4));
+                Assert.That(emitters.All(renderer => renderer.sortingLayerID == rearBody.sortingLayerID &&
+                    renderer.sortingOrder == rearBody.sortingOrder), Is.True, "Each track belongs to its recipient's formation depth.");
                 var solid = emitters.Single(renderer => renderer.sharedMaterial.mainTexture.name == "heal_cross_01");
                 Assert.That(solid.sharedMaterial.GetInt("_DstBlend"), Is.EqualTo((int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha));
                 Assert.That(emitters.Where(renderer => renderer != solid).All(renderer =>
                     renderer.sharedMaterial.GetInt("_DstBlend") == (int)UnityEngine.Rendering.BlendMode.One &&
-                    renderer.sortingOrder < solid.sortingOrder), Is.True, "Soft light must leave the filled cross readable.");
+                    renderer.transform.position.z > solid.transform.position.z &&
+                    renderer.transform.position.z < rearBody.bounds.center.z), Is.True, "Soft light must sit between the filled cross and the recipient.");
                 const int layer = 28;
                 rearBody.gameObject.layer = frontBody.gameObject.layer = layer;
                 foreach (var emitter in emitters) emitter.gameObject.layer = layer;
@@ -216,7 +221,6 @@ namespace AstralOath.Client.Tests
                     rearBody.enabled = showRear;
                     frontBody.enabled = showFront;
                     fx.gameObject.SetActive(heal);
-                    UnityEngine.Rendering.SortingGroup.UpdateAllSortingGroups();
                     sample.Render();
                     RenderTexture.active = target;
                     image.ReadPixels(new Rect(0, 0, 320, 320), 0, 0);

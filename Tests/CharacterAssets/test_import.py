@@ -5,6 +5,33 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[2]/"Tools"/"CharacterAsse
 import import_characters as importer
 
 class ImportBoundaryTests(unittest.TestCase):
+    def test_four_base_ults_play_the_cut_at_the_body_marker(self):
+        project = Path(__file__).resolve().parents[2]
+        for hero, model, expected_time in (
+            ("c1003", "rose", 1.1666), ("c1004", "silk", 0.5666),
+            ("c1007", "wildred", 1.4333), ("c1008", "arming", 1.2333),
+        ):
+            with self.subTest(hero=hero):
+                root = project / importer.RES / "Characters" / hero
+                graph_id = importer.primary_graphs(hero)[3]
+                graph = json.loads((root / "Configs/stagept" / (graph_id + ".graph.json")).read_text("utf-8"))
+                skeleton = json.loads((root / "Animations/model" / (model + ".spine.json")).read_text("utf-8"))
+                events = skeleton["animations"]["skill3"]["events"]
+                self.assertAlmostEqual(next(e["time"] for e in events if e["name"] == "cutin"), expected_time, places=4)
+                additions = graph.get("additions", {})
+                nodes = additions.get("entities", [])
+                self.assertEqual([e["etty"] for e in nodes], ["ONEVENT", "CUTIN"])
+                self.assertEqual((nodes[0]["ani"], nodes[0]["name"]), ("skill3", "cutin"))
+                self.assertIn({"from": nodes[0]["guid"], "to": nodes[1]["guid"]}, additions["connections"])
+                clip = "sk_" + hero + "_3"
+                self.assertEqual(nodes[1]["args"], clip)
+                self.assertIn("cut/fhd/" + clip + ".webp", [a["source"] for a in graph["assets"]])
+                movie = json.loads((root / "Effects/cut/fhd" / (clip + ".cutin.json")).read_text("utf-8"))
+                self.assertGreater(len(movie["frames"]), 1)
+                for index, frame in enumerate(movie["frames"]):
+                    self.assertGreater(frame["durationSeconds"], 0)
+                    self.assertTrue((root / "Effects/cut/fhd" / (clip + "_frames") / f"{index:04}.png").is_file())
+
     def test_character_allowlist_rejects_expansion(self):
         with self.assertRaises(ValueError): importer.select_characters(["c9999"])
         self.assertEqual(len(importer.select_characters(["c1001"])),1)

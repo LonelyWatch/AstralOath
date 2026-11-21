@@ -1,8 +1,14 @@
 # BattleScene
 
+当前行动者脚下使用原包 `focus.png`，椭圆固定在人物脚点，亮度约每 0.96 秒循环一次。联机、本地预览及操作被服务器退回时都从当前行动者恢复指示。[光圈原帧与场景测试](../../../../docs/delivery/2026-11-21-battle-active-ground-focus.md)
+
+复核大招时同时核对切入前后的战场角色。赛西莉亚飞枪镜头按原图移开敌方，汀果厨锅镜头按 `LAYOUT.alone` 只保留施法者。塞丽拉的模糊动画由源节点的振幅驱动。现有 70 个普通形态的录像对照和时点见[角色清单](../../../../docs/delivery/2026-11-21-s3-video-roster.tsv)和[镜头复核记录](../../../../docs/delivery/2026-11-21-serila-strageth-s3.md)。
+
 技能输入使用权威回合的本方行动者，选好技能与目标后隐藏控件。服务器验证后送出演出或恢复操作。新增的模拟战结算预制读取实际终态和本方四人，爱心固定为 1 级。头顶血条、队伍血条、行动条与跳字的节奏、身边回血及头顶增益的原包依赖见[战斗与召唤复核](../../../../docs/delivery/2026-11-21-battle-and-summon-r23.md)和[角色与结算复核](../../../../docs/delivery/2026-11-21-battle-presentation-review.md)。
 
 `BattleHudParticles` 的源粒子解释器也由 Arena 的确认特效复用，竞技场自行持有时钟、相机、图集和播放生命周期。
+
+治疗和状态获得等通用反馈的 Windows 纹理使用 RGBA32 保留原包 PMA 的色阶。治疗的软光、实色十字与受疗者共用排序层和队列，较近一排人物及 HUD 按场景顺序遮挡这些粒子。原生全屏、平台导入和像素复核见[Windows 战场清晰度](../../../../docs/delivery/2026-11-21-windows-display-clarity.md)。
 
 眩晕与睡眠通过权威事件及重连快照驱动角色原包的 `groggy` 循环。受击和技能骨骼占用结束时仍受控则回到该姿势，两种控制均解除后恢复待机。本批十个战斗模型均含此动作。原状态表 `cs_player` 205 / 205k 把五星环 `stse_stun.cfx` 挂到 `top`，缩放 1.7。206 / 206k 在同一骨骼挂睡眠 Z 字 `stse_sleep.cfx`，缩放 0.4、向下偏移 50 源像素。两组特效各自随附着骨骼移动，净化、到期、死亡或离场时按对应状态回收。`Tools/BattleScene/ImportBattleStunEffect.py --effect sleep --check` 可复查睡眠资源，换成 `--effect stun` 可复查眩晕。
 

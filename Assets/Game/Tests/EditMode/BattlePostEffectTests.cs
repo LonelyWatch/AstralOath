@@ -17,6 +17,51 @@ namespace AstralOath.Tests
         public void Cleanup() => effect?.Dispose();
 
         [Test]
+        public void DingosDarkPlateReproducesTheGraphsDisplayColor()
+        {
+            const string path = "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1021/Configs/stagept/c_dinggo_skill_03.graph.json";
+            var graph = JObject.Parse(AssetDatabase.LoadAssetAtPath<TextAsset>(path).text);
+            var plate = graph["source"]["entities"].OfType<JObject>().Single(node => (int)node["guid"] == 20);
+            Assert.That((string)plate["color"], Is.EqualTo("255,53,0,255"));
+            var root = new GameObject("Dingo plate camera", typeof(Camera));
+            try
+            {
+                var camera = root.GetComponent<Camera>();
+                camera.orthographic = true;
+                var type = Type.GetType("AstralOath.Client.BattleScene.BattleCinematicStage, AstralOath.Client.BattleScene", true);
+                using var stage = (IDisposable)Activator.CreateInstance(type, camera, null, null);
+                type.GetMethod("Begin").Invoke(stage, new object[] { null, Array.Empty<Transform>(), false });
+                type.GetMethod("Play").Invoke(stage, new object[] { plate });
+                type.GetMethod("Tick").Invoke(stage, new object[] { .1f });
+                var color = root.GetComponentsInChildren<MeshFilter>().Single(item => item.name.StartsWith("DARK ")).sharedMesh.colors[0];
+                var display = QualitySettings.activeColorSpace == ColorSpace.Linear ? color.gamma : color;
+                Assert.That((Color32)display, Is.EqualTo(new Color32(255, 53, 0, 255)));
+            }
+            finally { UnityEngine.Object.DestroyImmediate(root); }
+        }
+
+        [Test]
+        public void DingosForegroundSmokeUsesTheSkeletalSlotsAuthoredColorSpace()
+        {
+            const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+            var type = Type.GetType("AstralOath.Client.BattleScene.Editor.SkillTimelinePreviewSession, AstralOath.Client.BattleScene.Editor", true);
+            using var session = (IDisposable)Activator.CreateInstance(type, nonPublic: true);
+            type.GetMethod("LoadScenario", flags).Invoke(session, new object[]
+                { "c1021", "c_dinggo_skill_03", null, null, false, true, true, false, false });
+            type.GetMethod("Seek", flags).Invoke(session, new object[] { 3.5f });
+            type.GetMethod("Render", flags).Invoke(session, null);
+            var scene = (UnityEngine.SceneManagement.Scene)type.GetField("scene", flags).GetValue(session);
+            var smoke = scene.GetRootGameObjects().SelectMany(root => root.GetComponentsInChildren<MeshRenderer>())
+                .Single(renderer => renderer.name == "dingo_eff_sk3_p2");
+            var slots = smoke.GetComponent<MeshFilter>().sharedMesh.colors32;
+            Assert.That(slots, Does.Contain(new Color32(255, 165, 88, 255)), "The orange fire slot is active.");
+            Assert.That(slots, Does.Contain(new Color32(255, 255, 255, 255)), "The neutral slot is active.");
+            var properties = new MaterialPropertyBlock();
+            smoke.GetPropertyBlock(properties);
+            Assert.That(properties.GetFloat("_SrgbVertexTint"), Is.EqualTo(QualitySettings.activeColorSpace == ColorSpace.Linear ? 1f : 0f));
+        }
+
+        [Test]
         public void SourceSineModulationSharesTheBlurWindow()
         {
             var graph = JObject.Parse(AssetDatabase.LoadAssetAtPath<TextAsset>(RasThirdSkill).text);
@@ -33,6 +78,29 @@ namespace AstralOath.Tests
             Assert.That(ActiveRange(), Is.EqualTo(135.355f).Within(.001f));
             Call("Tick", .15f);
             Assert.That(ActiveRange(), Is.Null, "The shader is released when the 300 ms source interval ends.");
+        }
+
+        [TestCase("02", 31, 25f, .175f, 17.67767f)]
+        [TestCase("03", 36, 7.725425f, .2222222f, 25f)]
+        public void SerilasBlurTakesItsRangeFromTheConnectedSine(string skill, int id,
+            float initial, float sampleTime, float expected)
+        {
+            string path = $"Assets/Game/Modules/CharacterPresentation/Res/Characters/c1040/Configs/stagept/c_serilla_skill_{skill}.graph.json";
+            var graph = JObject.Parse(AssetDatabase.LoadAssetAtPath<TextAsset>(path).text)["source"];
+            var nodes = graph["entities"].OfType<JObject>().ToDictionary(node => (int)node["guid"]);
+            var edge = graph["connections"].Single(item => (int)item["from"] == id && (int?)item["when"] == 2);
+            var blur = nodes[id];
+            Assert.That(blur["u_range"], Is.Null);
+            var type = Type.GetType("AstralOath.Client.BattleScene.BattleSourcePostEffect, AstralOath.Client.BattleScene");
+            effect = (IDisposable)Activator.CreateInstance(type, new object[] { null });
+            Call("Play", blur, new[] { nodes[(int)edge["to"]] });
+            Assert.That(ActiveRange(), Is.EqualTo(initial).Within(.001f));
+            Call("Tick", sampleTime);
+            Assert.That(ActiveRange(), Is.EqualTo(expected).Within(.001f));
+            Call("Tick", .3f);
+            Assert.That(ActiveRange(), Is.Null);
+            Call("Play", blur, Array.Empty<JObject>());
+            Assert.That(ActiveRange(), Is.Null, "A missing base range needs a valid range provider.");
         }
 
         [Test]

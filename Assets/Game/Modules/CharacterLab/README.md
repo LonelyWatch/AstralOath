@@ -1,5 +1,7 @@
 # CharacterLab
 
+角色实验室窗口预制的 `cutinTemplate` 是实际播放时复制的网格渲染器。预制通过渲染器材质带入 shader，播放全黑不透明幕时使用原作 sRGB 混合。窗口从 YooAsset 载入时同时获得此依赖。素材与原视频时间点见[三技能核对](../../../../docs/delivery/2026-11-21-s3-video-review.md)。
+
 角色实验室业务程序集是 `AstralOath.Client.CharacterLab`，`autoReferenced: false`。稳定启动层经 Common 的 `ICharacterLabEntry` 创建入口并调用 `Tick`，不静态引用业务类型。
 
 `CharacterLabWindow.prefab` 由 `AstralOath.Editor.CharacterLabSceneBuilder.CreateScene` 生成；窗口是普通 C# `CharacterLabWindow : UIBaseView`，业务集中在 `CharacterLabWindowBinder`，预制体只使用 BindingMap 与通用显示组件。场景路径为 `Scenes/CharacterLab.unity`，稳定地址为 `characterlab/character-lab-window`。

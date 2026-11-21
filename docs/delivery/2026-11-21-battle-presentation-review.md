@@ -18,7 +18,9 @@
 
 国服秋季赛 P2 的 08:04.50–08:05.20 同屏出现绿色回复光、前排轮廓、行动提示和伤害数字。用户提供的近景另可见治疗绿十字与血条。原片没有给出粒子间的数值层号，录像发布日期、可见倍速和此处英雄形态未确认。[P2 对照段](https://www.bilibili.com/video/BV1n7x96DETN/?p=2&t=484)
 
-`heal_hp_01.cfx` 只有一个粒子 primitive，没有显式 `z` 或 `globalZ`。`heal_cross_01` 的原始混合是 ONE / ONE_MINUS_SRC_ALPHA，`cross_02`、`pati_01` 和 `flash` 是 SRC_ALPHA / ONE。工程将所有治疗粒子放在同一排序组内，软光先画，实色十字后画。组在受疗者之后、下一排身体之前绘制，血条和治疗跳字仍在 HUD Canvas 上。组内次序与深度间隔属于工程拟合。
+`heal_hp_01.cfx` 只有一个粒子 primitive，没有显式 `z` 或 `globalZ`。`heal_cross_01` 的原始混合是 ONE / ONE_MINUS_SRC_ALPHA，`cross_02`、`pati_01` 和 `flash` 是 SRC_ALPHA / ONE。四条粒子轨道使用受疗者的渲染层和队列值。战斗正交相机沿 +Z 朝前，软光比身体近 0.02 世界单位，实色十字近 0.04。较近一排的身体使用更高的队列值，能遮住后排治疗。HUD 上的血条和治疗字继续绘制在这些粒子之前。深度间隔为工程拟合。
+
+0.1.23 Windows 母包的 AOT 归档缺少两个 `SortingGroup` 排序 setter。改用母包提供的 `Renderer` 排序属性后，隔离 PlayMode 的前后排像素、血条与治疗字、其他动作与魂反馈共三项通过。报告为 `.artifacts/summon-result-r23/repro/heal-depth-aot-final.xml`，同批实帧见 `.artifacts/summon-result-r23/heal/depth-aot-final/`。
 
 复现时使用战场原有深度为 54、55 的两名角色，把前排移到与后排身体重叠的位置，只对后排回复。在相同相机、相同粒子时刻（0.24 秒）的 320×320 图中，修复前受影响的前排不透明像素为 22,634/22,634；修复后为 46/22,634，受疗者的身体仍有绿光。该计数选取单独治疗时 RGB 至少一项变化超过 40、前排 alpha 至少 254 的像素，再统计叠加前排后 RGB 仍有任一项变化超过 5 的像素。对照图在 `.artifacts/summon-result-r23/heal/healing-depth-comparison.png`，原片裁图在同目录 `0804-detail.jpg`。
 

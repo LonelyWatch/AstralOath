@@ -18,6 +18,7 @@ namespace AstralOath.Client.BattleScene
         public string[] pageNames;
         public Texture2D[] pages;
         public Texture2D texture;
+        public Shader blackCurtainShader;
         public bool premultipliedAlpha;
         public float scale;
     }
@@ -511,6 +512,7 @@ namespace AstralOath.Client.BattleScene
             switch (Kind(node))
             {
                 case "ANI": return model?.Duration((string)node["ani"]) ?? caster.GetBattleAnimationDuration((string)node["ani"]);
+                case "ANI_POS": return Seconds(node, "delay");
                 case "CUTIN": return 0f; // Wall-clock suspension; source successors remain at the same stage time.
                 case "DARK": return Number(node, "duration", -1f) < 0f ? 0f : Seconds(node, "duration") + Seconds(node, "fadeOut");
                 case "COLOR_BLEND" when IsTargetHide(node) && Number(node, "duration") > 0f:
@@ -925,6 +927,14 @@ namespace AstralOath.Client.BattleScene
             string anchorName = (string)node["locationParam"];
             var offset = new Vector2(Number(node, "x"), Number(node, "y"));
             bool disableAutoFlipX = (bool?)node["disableAutoFlipX"] == true;
+            if (!location.HasValue && string.IsNullOrEmpty(anchorName) && source == "iseria_skill_03_gate.cfx")
+            {
+                // At 13:30.5 the outer sword lights span 55% of the 1920-wide reference.
+                // The gate rig places them 1541 source units apart, with its origin near the lower edge.
+                Cfx(source, primary, targets, null, Number(node, "scale", 1f) * .69f,
+                    offset + new Vector2(0f, -378f), false, disableAutoFlipX: disableAutoFlipX);
+                return;
+            }
             // The ken_nbg_tx lettering stays at the same pixels through the source's 0.60 → 0.65 → 0.60 zoom.
             bool fixedArtwork = !location.HasValue && string.IsNullOrEmpty(anchorName) && disableAutoFlipX &&
                 source == "ken_skill_03_tx.cfx";
@@ -1202,6 +1212,12 @@ namespace AstralOath.Client.BattleScene
                 var renderer = player.Root.GetComponent<MeshRenderer>();
                 renderer.sortingOrder = order;
                 MaterialPropertyBlock opacityBlock = null;
+                if (QualitySettings.activeColorSpace == ColorSpace.Linear)
+                {
+                    opacityBlock = new MaterialPropertyBlock();
+                    opacityBlock.SetFloat("_SrgbVertexTint", 1f);
+                    renderer.SetPropertyBlock(opacityBlock);
+                }
                 var updateOpacity = PrimitiveOpacity(part, value =>
                 {
                     opacityBlock ??= new MaterialPropertyBlock();

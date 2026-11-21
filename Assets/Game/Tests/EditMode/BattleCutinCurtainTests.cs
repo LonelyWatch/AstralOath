@@ -92,6 +92,18 @@ namespace AstralOath.Tests
             Assert.That(camera.GetComponentsInChildren<MeshRenderer>().Length, Is.EqualTo(1));
         }
 
+        [TestCase("0,0,0,255", 1f, true)]
+        [TestCase("0,0,0,255", .5f, false)]
+        [TestCase("0,0,0,0", 1f, false)]
+        [TestCase("0,66,116,255", 1f, false)]
+        public void OnlyOpaqueBlackUsesTheSourceCutinBlend(string color, float opacity, bool black)
+        {
+            Call("PlayCutinWithNode", asset, new JObject { ["curtain_color"] = color, ["curtain_opacity"] = opacity });
+            var frame = camera.GetComponentsInChildren<MeshRenderer>().Single(item => item.name.StartsWith("CUTIN "));
+            Assert.That(frame.sharedMaterial.shader.name,
+                Is.EqualTo(black ? "AstralOath/CharacterCutinBlack" : "AstralOath/CharacterLabUnlit"));
+        }
+
         [Test] public void CurtainUsesTheCutinWallClockAndReleasesWithItsLastFrame()
         {
             Call("PlayCutin", asset);

@@ -1,10 +1,12 @@
-"""Import the original dust skeleton for battle entry, reusing its already imported atlas and page."""
+"""Import the battle turn's original landing dust and ground focus."""
 import argparse
 from hashlib import sha256
+from io import BytesIO
 import json
 from pathlib import Path
 import sys
 import uuid
+from PIL import Image
 
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO / "Tools/CharacterAssets"))
@@ -29,7 +31,12 @@ def write_asset(path, data, check):
     path.write_bytes(data)
     meta = path.with_name(path.name + ".meta")
     if not meta.exists():
-        write_meta(path, "TextScriptImporter:\n  externalObjects: {}\n")
+        if path.suffix == ".png":
+            template = REPO / "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Readiness/mob_icon3.png.meta"
+            body = template.read_text(encoding="utf-8").split("TextureImporter:", 1)[1]
+            write_meta(path, "TextureImporter:" + body.replace("textureCompression: 1", "textureCompression: 0"))
+        else:
+            write_meta(path, "TextScriptImporter:\n  externalObjects: {}\n")
 
 def write_meta(path, body):
     guid = uuid.uuid5(uuid.NAMESPACE_URL, "astraloath:" + path.relative_to(REPO).as_posix()).hex
@@ -59,8 +66,20 @@ def main():
     if "animation" not in document["animations"]:
         raise ValueError("Expected original dust animation is missing")
     skeleton = json_bytes(document, separators=(",", ":"))
+    original_focus = (source / "img/focus.png").read_bytes()
+    with Image.open(BytesIO(original_focus)) as image:
+        focus = image.convert("RGBA")
+        # Sprites/Default applies alpha during rendering. Keep the native PMA edge
+        # luminance by unpremultiplying its texels once before importing the sprite.
+        focus.putdata([(tuple(min(255, round(channel * 255 / alpha)) for channel in rgb) + (alpha,))
+                       if alpha else (0, 0, 0, 0) for *rgb, alpha in focus.getdata()])
+        encoded = BytesIO()
+        focus.save(encoded, format="PNG")
+        focus_png = encoded.getvalue()
     manifest = {
         "schemaVersion": 1,
+        "turnFocus": {"source": "原始资源/img/focus.png", "sourceSha256": digest(original_focus),
+                      "asset": "focus.png", "assetSha256": digest(focus_png), "alpha": "straight-from-source-pma"},
         "skeleton": {"source": "原始资源/effect/dust.scsp", "sourceSha256": digest(raw),
                      "asset": "dust.spine.json", "assetSha256": digest(skeleton)},
         "atlasAlias": {"source": "原始资源/effect/dust.atlas", "sourceSha256": digest(alias)},
@@ -75,8 +94,9 @@ def main():
         if not OUTPUT.with_name(OUTPUT.name + ".meta").exists():
             write_meta(OUTPUT, "folderAsset: yes\nDefaultImporter:\n  externalObjects: {}\n")
     write_asset(OUTPUT / "dust.spine.json", skeleton, args.check)
+    write_asset(OUTPUT / "focus.png", focus_png, args.check)
     write_asset(OUTPUT / "source.json", json_bytes(manifest, indent=2) + b"\n", args.check)
-    print("Verified turn-entry dust assets." if args.check else "Imported turn-entry dust assets.")
+    print("Verified turn dust and focus." if args.check else "Imported turn dust and focus.")
 
 if __name__ == "__main__":
     main()

@@ -191,12 +191,15 @@ namespace AstralOath.Client.BattleScene
 
             // This is the project's source-guided focus rule. Exact source layout coordinates and
             // fade/movement curves are not established. Keep slots and skeleton lifetimes intact.
-            bool offscreenPhase = Mathf.Abs(Number(node, "away_x")) >= 1280f;
+            // away_x is measured from the shot centre in 1280-wide source coordinates.
+            // Positive staging beyond the right edge is already offscreen in the caster shot.
+            float away = Number(node, "away_x");
+            bool casterOnly = (bool?)node["alone"] == true || away > 640f || away <= -1280f;
             RestoreLayout();
             foreach (var participant in participants ?? targets)
             {
                 if (!participant || ContainsActor(participant, caster)) continue;
-                if (!offscreenPhase && targets.Any(target => ContainsActor(participant, target))) continue;
+                if (!casterOnly && targets.Any(target => ContainsActor(participant, target))) continue;
 
                 foreach (var renderer in participant.GetComponentsInChildren<Renderer>(true))
                 {
@@ -241,7 +244,8 @@ namespace AstralOath.Client.BattleScene
             string curtainColor = (string)node?["curtain_color"];
             if (string.IsNullOrEmpty(curtainColor)) curtainColor = "0,0,0,255";
             float curtainOpacity = Mathf.Clamp01(Number(node, "curtain_opacity", 1f));
-            if (ColorValue(curtainColor).a * curtainOpacity > 0f)
+            var curtainTint = ColorValue(curtainColor);
+            if (curtainTint.a * curtainOpacity > 0f)
             {
                 // Source curtain composites behind transparent Cut-in pixels, including ordinary
                 // HUD. Pause controls remain above both at 31000; world actors retain visibility.
@@ -253,7 +257,10 @@ namespace AstralOath.Client.BattleScene
                 curtain.Node = new JObject { ["color"] = curtainColor, ["opacity"] = curtainOpacity };
                 curtain.Material.mainTexture = Texture2D.whiteTexture;
             }
-            var layer = AddLayer("CUTIN " + asset.source, 30000, "CharacterLabUnlit");
+            bool onBlack = curtainTint.r == 0f && curtainTint.g == 0f && curtainTint.b == 0f &&
+                curtainTint.a == 1f && curtainOpacity == 1f;
+            var layer = AddLayer("CUTIN " + asset.source, 30000, onBlack ? "CharacterCutinBlack" : "CharacterLabUnlit",
+                onBlack ? asset.blackCurtainShader : null);
             // CUTIN remains a single overlay above the captured world and is excluded from sprite blur.
             layer.Root.layer = 5;
             layer.Cutin = asset;
@@ -339,9 +346,9 @@ namespace AstralOath.Client.BattleScene
             return originalPosition;
         }
 
-        private Layer AddLayer(string name, int order, string shaderName)
+        private Layer AddLayer(string name, int order, string shaderName, Shader bundledShader = null)
         {
-            var shader = Resources.Load<Shader>(shaderName);
+            var shader = bundledShader ? bundledShader : Resources.Load<Shader>(shaderName);
             if (!shader) throw new InvalidOperationException("Missing cinematic shader " + shaderName);
 
             var item = new Layer
@@ -423,6 +430,7 @@ namespace AstralOath.Client.BattleScene
                 Color color = dark || layer.IsCutinCurtain
                     ? ColorValue((string)layer.Node["color"])
                     : Color.white;
+                if (dark && QualitySettings.activeColorSpace == ColorSpace.Linear) color = color.linear;
                 color.a *= alpha;
                 layer.Mesh.colors = new[] { color, color, color, color };
                 if ((string)layer.Node?["etty"] == "BGHATCH")

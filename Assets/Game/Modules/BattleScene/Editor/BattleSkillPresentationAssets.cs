@@ -14,6 +14,9 @@ namespace AstralOath.Client.BattleScene.Editor
         public static void Collect(SerializedProperty property, IReadOnlyList<TextAsset> graphs)
         {
             var paths = AddressMap();
+            var blackCurtainShader = AssetDatabase.LoadAssetAtPath<Shader>(
+                "Assets/Game/Modules/CharacterLab/Resources/CharacterCutinBlack.shader");
+            if (!blackCurtainShader) throw new InvalidOperationException("Missing opaque black cut-in shader.");
             var sources = graphs.SelectMany(graph => JObject.Parse(graph.text)["assets"])
                 .Where(IsBattleAsset).GroupBy(item => (string)item["source"], StringComparer.Ordinal)
                 .Select(group => group.First()).OrderBy(item => (string)item["source"], StringComparer.Ordinal).ToArray();
@@ -25,6 +28,7 @@ namespace AstralOath.Client.BattleScene.Editor
                 var row = property.GetArrayElementAtIndex(i);
                 string source = (string)dependency["source"];
                 string type = (string)dependency["type"];
+                row.FindPropertyRelative("blackCurtainShader").objectReferenceValue = type == "cutin" ? blackCurtainShader : null;
                 string address = (string)dependency["address"];
                 row.FindPropertyRelative("document").objectReferenceValue = null;
                 row.FindPropertyRelative("atlas").objectReferenceValue = null;

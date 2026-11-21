@@ -80,6 +80,34 @@ namespace AstralOath.Client.Tests
             Assert.That(bodies[5].enabled, Is.False);
             Call("Dispose"); Assert.That(bodies.All(x => x.enabled), Is.True);
         }
+        [Test] public void CeciliaTakeoffKeepsTheRecipientsOffscreenUntilTheTargetShot()
+        {
+            var positions = slots.Select(slot => slot.position).ToArray();
+            Call("Play", SourceNode("c1002", "c_cecilia_skill_new_03", 6));
+            Assert.That(bodies[0].enabled, Is.True);
+            Assert.That(bodies.Skip(1).All(body => !body.enabled), Is.True,
+                "The compilation at 19:00 shows the airborne caster against black, with no target underneath.");
+            Call("Play", SourceNode("c1002", "c_cecilia_skill_new_03", 12));
+            Assert.That(bodies.Take(5).All(body => body.enabled), Is.True);
+            Assert.That(bodies[5].enabled, Is.False);
+            Call("Play", SourceNode("c1002", "c_cecilia_skill_new_03", 16));
+            Assert.That(bodies.All(body => body.enabled), Is.True);
+            Assert.That(slots.Select(slot => slot.position), Is.EqualTo(positions));
+        }
+
+        [Test] public void DingoCooksAloneUntilTheCameraReturnsToHisParty()
+        {
+            Call("Play", SourceNode("c1021", "c_dinggo_skill_03", 13));
+            Assert.That(bodies[0].enabled, Is.True);
+            Assert.That(bodies.Skip(1).All(body => !body.enabled), Is.True,
+                "His four ally targets must not cover the orange silhouette close-up.");
+            Assert.That(targetShadow.enabled, Is.False);
+            Call("Play", SourceNode("c1021", "c_dinggo_skill_03", 26));
+            Assert.That(bodies.Take(5).All(body => body.enabled), Is.True);
+            Assert.That(targetShadow.enabled, Is.True);
+            Assert.That(bodies[5].enabled, Is.False);
+        }
+
         [Test] public void OriginalMercedesFocusLayoutKeepsAllTargetsAndHidesOnlySpectators()
         {
             Call("Play", SourceNode("c1005", "c_mercedes_skill_03", 4));

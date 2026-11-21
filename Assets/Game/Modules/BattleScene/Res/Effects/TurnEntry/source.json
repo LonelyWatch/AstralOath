@@ -1,5 +1,12 @@
 {
   "schemaVersion": 1,
+  "turnFocus": {
+    "source": "原始资源/img/focus.png",
+    "sourceSha256": "827e5b6af81924fc9ae03be117603c603fbe2a40ba88d9d306785287bdc42450",
+    "asset": "focus.png",
+    "assetSha256": "7c565c5e930497be8a0b6edfeb09c11a0a1db40dbafa039ca094195913d0fdb9",
+    "alpha": "straight-from-source-pma"
+  },
   "skeleton": {
     "source": "原始资源/effect/dust.scsp",
     "sourceSha256": "24016c82efc466d5e2a0254223a024cdf4da67450250a18ad044c771ed710f4e",
@@ -22,5 +29,5 @@
     "asset": "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/Textures/effect/effect.png",
     "assetSha256": "3cbcd0375e969df6c5c10230abbaf2aab28c4950ffed1eccc189c2e443a672ba"
   },
-  "converterSha256": "e21ad97f26c4ebb05611e8d2c3458844aca329dbd955592a37a7bf7cbd191309"
+  "converterSha256": "a3328010183864f67e4b6d3ea94bf97e079d67693610b6ff537442fb13d1cfe9"
 }

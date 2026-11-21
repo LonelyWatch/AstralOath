@@ -292,6 +292,11 @@
   },
   "assets": [
     {
+      "source": "cut/fhd/sk_c1003_3.webp",
+      "address": "characterlab/source/cut/fhd/sk_c1003_3.webp",
+      "type": "cutin"
+    },
+    {
       "source": "effect/rose_skeff_sk3.cfx",
       "address": "characterlab/source/effect/rose_skeff_sk3.cfx",
       "type": "effect"
@@ -442,5 +447,27 @@
       "type": "texture"
     }
   ],
-  "diagnostics": []
+  "diagnostics": [],
+  "additions": {
+    "entities": [
+      {
+        "guid": 21,
+        "etty": "ONEVENT",
+        "ani": "skill3",
+        "name": "cutin"
+      },
+      {
+        "guid": 22,
+        "etty": "CUTIN",
+        "args": "sk_c1003_3",
+        "curtain_color": "0,0,0,255"
+      }
+    ],
+    "connections": [
+      {
+        "from": 21,
+        "to": 22
+      }
+    ]
+  }
 }

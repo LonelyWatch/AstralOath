@@ -1,5 +1,7 @@
 # CharacterPresentation
 
+萝季、席可、维德瑞和亚敏的三技能从普通身体的 `skill3/cutin` 标记触发各自的 WebP，并沿用源帧时长。角色索引、形态辨认和可复查的录像时码见[三技能逐人核对](../../../../docs/delivery/2026-11-21-s3-video-review.md)。
+
 热更业务程序集 `AstralOath.Client.CharacterPresentation`，不结算战斗和奖励。
 
 `PresentationClock` 统一管理播放时间、速度和有声资格。暂停不推进时间；seek、逐帧和速度变化会锁定静音，只有从零 reset 恢复正常 1x 声画播放。`PresentationGraphScheduler` 是已验证时序数据的独立纯 C# 调度器，支持并行、延迟和按 actor/name 匹配的事件相对时序；未验证节点不会执行。

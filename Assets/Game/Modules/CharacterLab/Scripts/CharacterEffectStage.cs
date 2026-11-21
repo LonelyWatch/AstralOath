@@ -20,6 +20,7 @@ namespace AstralOath.Client.CharacterLab
         private readonly ISkeletonPlayer caster;
         private readonly Action<string> report;
         private readonly bool experimental;
+        private readonly MeshRenderer cutinTemplate;
         private readonly string skillId;
         private readonly Dictionary<string,JObject> documents=new Dictionary<string,JObject>(StringComparer.Ordinal);
         private readonly Dictionary<string,SkeletonPlayerSource> skeletons=new Dictionary<string,SkeletonPlayerSource>(StringComparer.Ordinal);
@@ -41,9 +42,10 @@ namespace AstralOath.Client.CharacterLab
         private bool disposed;
         private readonly CharacterScreenEffects screen;
         private bool assistTriggered;
-        public CharacterEffectStage(CharacterLabLaunchContext context,BindingScope scope,ISkeletonPlayer caster,string skillId,bool experimental,Action<string> report,CharacterBlurPreview blur=null)
+        public CharacterEffectStage(CharacterLabLaunchContext context,BindingScope scope,ISkeletonPlayer caster,string skillId,bool experimental,Action<string> report,MeshRenderer cutinTemplate,CharacterBlurPreview blur=null)
         {
             this.context=context;this.scope=scope;this.caster=caster;this.skillId=skillId;this.experimental=experimental;this.report=report;
+            this.cutinTemplate=cutinTemplate;
             assets=context.Services.Get<IAssetService>();casterPosition=caster.Root.transform.localPosition;casterScale=caster.Root.transform.localScale;
             cameraPosition=context.PreviewCamera.transform.position;cameraSize=context.PreviewCamera.orthographicSize;
             screen=new CharacterScreenEffects(context,scope,skeletons,report,blur);scope.Add(screen.Dispose);
@@ -200,7 +202,7 @@ namespace AstralOath.Client.CharacterLab
                 else report("Strict mode retains unsupported "+kind+" fields: "+node.ToString(Newtonsoft.Json.Formatting.None));
                 return;
             }
-            if(kind=="CUTIN"){Cutin((string)node["args"]);return;}
+            if(kind=="CUTIN"){Cutin(node);return;}
             string source=(string)node["source"]??(string)node["effect"];
             if(string.IsNullOrEmpty(source))return;
             int location=node["location"]?.Value<int>()??5;
@@ -308,17 +310,24 @@ namespace AstralOath.Client.CharacterLab
             if(id==null||!named.TryGetValue(id,out var values))return;
             foreach(var value in values){active.Remove(value);value.Root.SetActive(false);}named.Remove(id);
         }
-        private void Cutin(string name)
+        private void Cutin(JObject node)
         {
+            string name = (string)node["args"];
             string path="cut/fhd/"+name+".webp";
             if(!documents.TryGetValue(path,out var descriptor)){report("Missing CUTIN "+path);return;}
-            var root=new GameObject("CUTIN "+name,typeof(MeshFilter),typeof(MeshRenderer));
-            var shader=Resources.Load<Shader>("CharacterLabUnlit");
+            var root=UnityEngine.Object.Instantiate(cutinTemplate.gameObject,context.PreviewCamera.transform,false);
+            var renderer=root.GetComponent<MeshRenderer>();
+            root.name="CUTIN "+name;
+            root.SetActive(true);
+            var curtain = (string)node["curtain_color"];
+            bool onBlack = (string.IsNullOrEmpty(curtain) || curtain == "0,0,0,255") &&
+                Number(node["curtain_opacity"], 1f) >= 1f;
+            var shader=onBlack ? renderer.sharedMaterial.shader : Resources.Load<Shader>("CharacterLabUnlit");
             if(!shader){UnityEngine.Object.Destroy(root);report("Missing CharacterLabUnlit shader.");return;}
             var material=new Material(shader);
-            root.GetComponent<MeshRenderer>().sharedMaterial=material;
+            renderer.sharedMaterial=material;
             var mesh=Quad();root.GetComponent<MeshFilter>().sharedMesh=mesh;
-            root.transform.SetParent(context.PreviewCamera.transform,false);root.transform.localPosition=new Vector3(0,0,2);
+            root.transform.localPosition=new Vector3(0,0,2);
             float height=context.PreviewCamera.orthographicSize*2;
             root.transform.localScale=new Vector3(height*Number(descriptor["width"],1920)/Number(descriptor["height"],1080),height,1);
             scope.Add(()=>{UnityEngine.Object.Destroy(root);UnityEngine.Object.Destroy(mesh);UnityEngine.Object.Destroy(material);});

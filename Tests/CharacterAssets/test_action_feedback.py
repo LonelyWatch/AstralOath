@@ -18,19 +18,35 @@ class ActionFeedbackImportTests(unittest.TestCase):
         return module
     def test_only_the_reviewed_native_roots_are_imported(self):
         module = self.importer()
-        self.assertEqual(set(module.ROOTS), {"effect/ui_livepvp_soulburn_eff.cfx",
-            "effect/stse_counter.cfx", "effect/stse_chain.cfx", "effect/stse_addturn.cfx"})
-    def test_native_particle_white_gradients_are_preserved_premultiplied(self):
+        names = (
+            "ui_livepvp_soulburn_eff", "stse_counter", "stse_chain", "stse_addturn",
+            "heal_hp_01", "stse_attackpower_up", "stse_defense_up", "stse_immune_weak",
+            "stse_speed_up", "stse_evade", "stse_immortality", "stse_defense_reflect", "stse_critup",
+        )
+        reviewed = [f"effect/{name}.cfx" for name in names]
+        manifest = json.loads((module.OUTPUT / "source.json").read_text(encoding="utf-8"))
+        self.assertCountEqual(module.ROOTS, reviewed)
+        self.assertCountEqual(manifest["roots"], reviewed)
+
+    def test_native_particle_gradients_keep_premultiplied_white_and_green(self):
         from PIL import Image
         module = self.importer()
         manifest = json.loads((module.OUTPUT / "source.json").read_text(encoding="utf-8"))
         textures = [row for row in manifest["files"] if row["source"].startswith("原始资源/particle/")]
-        self.assertEqual(len(textures), 5)
+        names = ("aura_02", "aura_03", "aura_04", "cross_02", "flash", "heal_cross_01", "pati_01", "ticle_02")
+        self.assertCountEqual([row["source"] for row in textures], [f"原始资源/particle/{name}.sct" for name in names])
         for row in textures:
             with self.subTest(source=row["source"]), Image.open(module.OUTPUT / row["asset"]) as image:
-                samples = [pixel for pixel in image.convert("RGBA").getdata() if 5 < pixel[3] < 250]
+                rgba = image.convert("RGBA")
+                samples = [pixel for pixel in rgba.getdata() if 5 < pixel[3] < 250]
                 self.assertGreater(len(samples), 100)
-                self.assertTrue(all(pixel[0] == pixel[1] == pixel[2] == pixel[3] for pixel in samples))
+                if row["source"].endswith("/heal_cross_01.sct"):
+                    # SHA-256 of the original SCT1 RGBA8888 payload after LZ4 block decompression.
+                    self.assertEqual(hashlib.sha256(rgba.tobytes()).hexdigest(),
+                                     "aafad85ed812a2c6cf7609d88219d1e97beb5a4c4e1e13727de2858d78635f9d")
+                    self.assertTrue(all(b <= r <= g <= a for r, g, b, a in samples))
+                else:
+                    self.assertTrue(all(r == g == b == a for r, g, b, a in samples))
 
     def test_generated_payload_keeps_source_bytes_and_complete_dependencies(self):
         module = self.importer()
@@ -52,4 +68,11 @@ class ActionFeedbackImportTests(unittest.TestCase):
         soul = json.loads(payloads["ui_livepvp_soulburn_eff.cfx.json"])["primitive"]
         self.assertEqual(soul[0]["ani"], "intro,loop")
         self.assertEqual(soul[0]["loop"], 1)
+        healing = json.loads(payloads["Particles/heal_hp_01.particle.json"])["emitters"]
+        self.assertEqual([(e["textureFileName"], e["blendFuncSource"], e["blendFuncDestination"]) for e in healing], [
+            ("particle/heal_cross_01.sct", 1, 771),
+            ("particle/cross_02.sct", 770, 1),
+            ("particle/pati_01.sct", 770, 1),
+            ("particle/flash.sct", 770, 1),
+        ])
 if __name__ == "__main__": unittest.main()

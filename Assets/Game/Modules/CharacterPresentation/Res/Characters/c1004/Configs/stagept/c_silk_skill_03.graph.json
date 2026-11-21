@@ -514,6 +514,11 @@
       "type": "skeleton"
     },
     {
+      "source": "cut/fhd/sk_c1004_3.webp",
+      "address": "characterlab/source/cut/fhd/sk_c1004_3.webp",
+      "type": "cutin"
+    },
+    {
       "source": "effect/charge_01.atlas",
       "address": "characterlab/source/effect/charge_01.atlas",
       "type": "atlas"
@@ -674,5 +679,27 @@
       "type": "texture"
     }
   ],
-  "diagnostics": []
+  "diagnostics": [],
+  "additions": {
+    "entities": [
+      {
+        "guid": 34,
+        "etty": "ONEVENT",
+        "ani": "skill3",
+        "name": "cutin"
+      },
+      {
+        "guid": 35,
+        "etty": "CUTIN",
+        "args": "sk_c1004_3",
+        "curtain_color": "0,0,0,255"
+      }
+    ],
+    "connections": [
+      {
+        "from": 34,
+        "to": 35
+      }
+    ]
+  }
 }

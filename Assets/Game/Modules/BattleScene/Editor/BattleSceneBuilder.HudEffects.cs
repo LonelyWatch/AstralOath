@@ -249,6 +249,7 @@ namespace AstralOath.Client.BattleScene.Editor
                     "_hero_s_frame_enemy", "cm_hero_circool1", "game_hud_arrow", "game_hud_target1", "game_hud_target2", "game_hud_soul_dot", "Faces/pet_slime1_n_grade1_1_s" })
                     .Distinct(StringComparer.Ordinal).Select(name => Asset<Sprite>(HudTextures + name + ".png")))
                 .Concat(Enumerable.Range(1, 4).Select(number => Asset<Sprite>(HudTextures + $"itxt_num{number}_b.png")))
+                .Append(Asset<Sprite>("Assets/Game/Modules/BattleScene/Res/Effects/TurnEntry/focus.png"))
                 .Concat(BattleTurnHudAssets.Sprites()).Concat(BattleDamageFeedbackAssets.Sprites()).Distinct().ToArray());
             if (rosterOnly)
             {

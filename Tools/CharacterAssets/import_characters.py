@@ -105,7 +105,11 @@ STATUS_FORMS = {"c1067": {"Idol": ("tamarinne_t", ("c_tamarinne_skill_01_1","c_t
 GRAPH_ANIMATION_INDEX = {"stagept/c_iterre_skill_01.stg": 1}
 # Base STG omits this cue; the base skeleton marker and skin STG corroborate its timing.
 ANIMATION_CUTINS={
+    "stagept/c_rose_skill_03.stg": ("model/rose.scsp", "skill3", "cutin", "sk_c1003_3"),
+    "stagept/c_silk_skill_03.stg": ("model/silk.scsp", "skill3", "cutin", "sk_c1004_3"),
     "stagept/c_mercedes_skill_03.stg": ("model/mercedes.scsp", "skill3", "cutin", "sk_c1005_3"),
+    "stagept/c_wilderd_skill_03.stg": ("model/wildred.scsp", "skill3", "cutin", "sk_c1007_3"),
+    "stagept/c_aming_skill_03.stg": ("model/arming.scsp", "skill3", "cutin", "sk_c1008_3"),
     "stagept/c_jerato_skill_03.stg": ("model/zerato.scsp", "skill3", "cutin", "sk_c1010_3"),
     "stagept/c_karin_skill_03.stg": ("model/karin.scsp", "skill3_2", "cutin", "sk_c1011_3"),
     "stagept/c_cartuja_skill_03.stg": ("model/kartua.scsp", "skill3", "cutin", "sk_c1013_3"),

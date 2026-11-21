@@ -20,6 +20,82 @@ namespace AstralOath.Tests
         private const string HeroDirectory = "Assets/Game/Modules/CharacterPresentation/Res/Characters/";
         private const BindingFlags Instance = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
+        [Test]
+        public void BaalAnimationPositionsSeparateTheCutinFromTheExplosion()
+        {
+            var type = Type.GetType(PreviewTypeName, true);
+            using var session = (IDisposable)Activator.CreateInstance(type, nonPublic: true);
+            type.GetMethod("Load", Instance).Invoke(session,
+                new object[] { "c1015", "c_baal_skill_03", null, "c1001", false, false, false });
+            var cues = (IReadOnlyList<(float At, JObject Node, float Duration, JObject[] Modulators)>)
+                type.GetProperty("Cues", Instance).GetValue(session);
+            float At(int id) => cues.Single(cue => (int?)cue.Node["guid"] == id).At;
+            float bodyStart = At(6);
+            Assert.That(At(55) - bodyStart, Is.EqualTo(1.1666f).Within(.001f), "The native body marker starts the CUT.");
+            Assert.That(At(8) - bodyStart, Is.EqualTo(1.188f).Within(.001f), "Horizontal movement starts after the CUT returns.");
+            Assert.That(At(12) - bodyStart, Is.EqualTo(1.980f).Within(.001f), "The target explosion follows the horizontal flight.");
+        }
+
+        [TestCase(false, 960)]
+        [TestCase(true, 960)]
+        [TestCase(false, 1280)]
+        [TestCase(true, 1280)]
+        public void IseriaGateFillsTheCameraBeforeTheCutin(bool casterOnRight, int width)
+        {
+            if (SystemInfo.graphicsDeviceType == GraphicsDeviceType.Null) Assert.Ignore("剑门验收需要图形设备。");
+            var type = Type.GetType(PreviewTypeName, true);
+            using var session = (IDisposable)Activator.CreateInstance(type, nonPublic: true);
+            type.GetMethod("Load", Instance).Invoke(session,
+                new object[] { "c1024", "c_iseria_skill_03", null, "c1001", casterOnRight, false, false });
+            var cues = (IReadOnlyList<(float At, JObject Node, float Duration, JObject[] Modulators)>)
+                type.GetProperty("Cues", Instance).GetValue(session);
+            var gate = cues.Single(cue => (int?)cue.Node["guid"] == 33);
+            var cutin = cues.Single(cue => (int?)cue.Node["guid"] == 25);
+            var camera = (Camera)type.GetField("camera", Instance).GetValue(session);
+            var scene = (Scene)type.GetField("scene", Instance).GetValue(session);
+            void Seek(float at) => type.GetMethod("SeekStage", Instance).Invoke(session, new object[] { at });
+            bool HasGate() => scene.GetRootGameObjects().SelectMany(root => root.GetComponentsInChildren<MeshRenderer>())
+                .Any(renderer => renderer.name == "iseria_skill_03_gateopen");
+            var original = camera.targetTexture;
+            var target = RenderTexture.GetTemporary(width, 540, 24, RenderTextureFormat.ARGB32);
+            var previous = RenderTexture.active;
+            var readback = new Texture2D(target.width, target.height, TextureFormat.RGBA32, false);
+            try
+            {
+                camera.targetTexture = target;
+                camera.aspect = width / 540f;
+                Seek(gate.At - .05f);
+                Assert.That(HasGate(), Is.False, "The gate should be absent before the sky shot.");
+                Seek(gate.At + .22f);
+                Assert.That(HasGate(), Is.True);
+                type.GetMethod("Render", Instance).Invoke(session, null);
+                RenderTexture.active = target;
+                readback.ReadPixels(new Rect(0, 0, target.width, target.height), 0, 0);
+                var pixels = readback.GetPixels32();
+                for (int half = 0; half < 2; half++)
+                {
+                    int lit = 0;
+                    for (int y = 100; y < 415; y++)
+                        for (int x = width / 2 - 350 + 350 * half; x < width / 2 + 350 * half; x++)
+                        {
+                            var pixel = pixels[y * width + x];
+                            if (pixel.b > 100 && pixel.b > pixel.r + 15) lit++;
+                        }
+                    TestContext.WriteLine($"Gate half {half}, {width} × 540: {lit} lit pixels.");
+                    Assert.That(lit, Is.GreaterThan(5000), "Blue sword trails must cross both halves of the shot.");
+                }
+                Seek(cutin.At + .1f);
+                Assert.That(HasGate(), Is.False, "After the CUT resumes the stage, subsequent hits use their own effects.");
+            }
+            finally
+            {
+                RenderTexture.active = previous;
+                camera.targetTexture = original;
+                RenderTexture.ReleaseTemporary(target);
+                Object.DestroyImmediate(readback);
+            }
+        }
+
         [TestCase("c1001", "c_ras_skill_02", false)]
         [TestCase("c1005", "c_mercedes_skill_03", true)]
         public void IsolatedPreviewUsesAuthoredClocksAndReplaysTheSameFrame(string heroId, string skillId, bool hasCutin)

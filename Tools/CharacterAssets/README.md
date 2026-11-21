@@ -19,6 +19,8 @@
 
 ## API 和资源契约
 
+玩家录屏中的普通形态特写可用 `CompareCutinVideo.py` 定位。工具使用本地 FFmpeg 和现有专用 Python 环境，将视频的时间戳和非透明原画像素逐帧比对。安排列入导入白名单前，同时检查原骨骼事件、对应动作和录像画面；同名皮肤有独立素材。[本次 70 名英雄的原片核对](../../docs/delivery/2026-11-21-s3-video-review.md)
+
 `convert.py` 提供 `convert_scsp(source: Path, destination: Path) -> dict`、`convert_sct(...) -> dict`；失败抛异常。`decode_scsp(bytes)` 返回 `(标准Spine对象, 诊断)`；`decode_sct(bytes)` 返回 `(Pillow RGBA图像, 诊断)`。未知格式、压缩/段长度不符、未消费尾部、未知时间线、重复动画名、非法索引必须失败，不能静态降级或跳过动画。
 
 SCSP 保留 `2.1.27` / `3.8.99` 原版本。2.1 的 type5/type6 分别为事件和完整 draw-order；type9/type10 分别为骨骼 FlipX/FlipY，依据固定官方 2.1 C 核心枚举和 spFlipTimeline 结构解析。参考查看器对这四个编号的命名错误，严格入口不调用它们的相关分支。翻转帧的骨骼索引、轴标记、时间、布尔值、重复轨道及原始到 JSON 的完整映射全部校验，禁止把这些轨道当作辅助排序或事件丢弃。2.1 曲线、FFD、源浮点精度均保留，不添加关键帧或修补旋转。3.8 缓存曲线的九个采样点经三次方程恢复控制点，并检查所有采样点残差（≤0.00002），输出官方3.8的 `curve/c2/c3/c4` 字段。保留缓存字段输出到 `.artifacts/character-import/conversion-reports.json`；旧报告将 type9 称为 engineDrawOrder 的判断已废止，兼容字段保持为空。当前 SCSP 转换器标记为 `astraloath-scsp/3`，清单记录版本与逐动画、逐骨骼翻转轨/帧数；报告另保留所有原始时间线类型计数。未识别的引擎字段仍不宣称已还原。

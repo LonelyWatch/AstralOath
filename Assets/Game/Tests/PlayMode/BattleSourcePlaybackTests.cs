@@ -186,10 +186,15 @@ namespace AstralOath.Client.Tests
                 if (captureTarget)
                 {
                     Assert.That(map.Require<Image>("activePortrait").sprite.name, Is.EqualTo(id + "_su"));
+                    var battleSprites = HostField<Sprite[]>(host, "battleSprites");
                     foreach (var equipped in catalog.skills.Where(row => row.heroId == id))
                     {
                         var button = map.Require<GameButton>("skill" + equipped.slot);
-                        Assert.That(((Image)button.targetGraphic).sprite.name, Is.EqualTo(Path.GetFileNameWithoutExtension(equipped.iconAsset)));
+                        var expected = Path.GetFileNameWithoutExtension(equipped.iconAsset);
+                        var passive = $"pa_{id}_{equipped.slot}";
+                        if (equipped.target == "passive" && battleSprites.Any(sprite => sprite && sprite.name == passive))
+                            expected = passive;
+                        Assert.That(((Image)button.targetGraphic).sprite.name, Is.EqualTo(expected));
                     }
                     File.WriteAllBytes(Path.Combine(captureDirectory, id + "-formation.png"), RenderFrame(null, null, null).Composite);
                 }

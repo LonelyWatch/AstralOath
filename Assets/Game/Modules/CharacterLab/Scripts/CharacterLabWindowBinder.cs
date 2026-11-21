@@ -301,7 +301,7 @@ namespace AstralOath.Client.CharacterLab
                 skillBodies=bodies;
             }
             var caster=skillBodies?.Source??player;
-            effects=new CharacterEffectStage(context,owner,caster,(string)graph["id"]??skill.id,experimental,Diagnose,blurPreview);
+            effects=new CharacterEffectStage(context,owner,caster,(string)graph["id"]??skill.id,experimental,Diagnose,view.CutinTemplate,blurPreview);
             owner.Add(effects.Dispose);
             await effects.PrepareAsync(graph,selected,catalog,skillBodies?.VisibleForm?.timelineAddress);
             owner.Token.ThrowIfCancellationRequested();
