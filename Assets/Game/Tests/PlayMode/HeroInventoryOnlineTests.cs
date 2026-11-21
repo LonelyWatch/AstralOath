@@ -561,13 +561,42 @@ namespace AstralOath.Client.Tests
                 Assert.That(row.Require<Image>("artifactCardPortrait").sprite, Is.SameAs(entry.combatIcon));
                 Assert.That(row.Require<Image>("artifactCardBanner").sprite, Is.SameAs(entry.portrait));
                 Assert.That(row.Require<GameText>("artifactCardName").text, Is.EqualTo(entry.template.Name));
+                var instance = items[row.name];
+                int rank = 1 + instance.level / 3, maximum = 6 + instance.limitBreaks;
+                Assert.That(row.Require<GameText>("artifactCardLimit").text,
+                    Is.EqualTo(rank == maximum ? $"Lv. Max / {maximum}" : $"Lv. {rank} / {maximum}"));
+                Assert.That(row.Require<BindingMap>("artifactCardBadge").gameObject.activeSelf, Is.EqualTo(instance.level > 0));
                 Assert.That(map.Require<Image>("artifactPortrait").sprite, Is.SameAs(entry.card));
                 Assert.That(map.Require<GameText>("artifactAttack").text, Does.Contain(entry.template.AttackAt(items[row.name].level).ToString()));
                 Assert.That(map.Require<GameText>("artifactHealth").text, Does.Contain(entry.template.HealthAt(items[row.name].level).ToString()));
                 Assert.That(map.Require<GameText>("artifactSkill").text, Is.EqualTo(entry.template.DescriptionAt(items[row.name].level)));
+                Click(map, "artifactDetailStoryTab");
+                Assert.That(map.Require<Image>("artifactDetailStoryActive").enabled, Is.True);
+                Assert.That(map.Require<GameText>("artifactSkill").text, Is.Not.Empty.And.Not.EqualTo(entry.template.Description));
+                Assert.That(map.Require<GameText>("artifactSkill").text, Does.Not.StartWith("home.artifacts."));
+                Click(map, "artifactDetailSkillTab");
+                Assert.That(map.Require<GameText>("artifactSkill").text, Is.EqualTo(entry.template.DescriptionAt(instance.level)));
             }
             yield return Capture("owned-artifact-bag", 1478, 720);
             yield return Capture("owned-artifact-bag-16x10", 1536, 960);
+            var selectedBeforeNotice = map.Require<GameText>("artifactTitle").text;
+            var listBeforeNotice = map.Require<ScrollRect>("artifactItems").content.anchoredPosition;
+            ClickVisibleCenter(map,"artifactCapacityClick");
+            Assert.That(map.Require<GameObject>("artifactCapacityNotice").activeInHierarchy, Is.True);
+            yield return null;
+            ClickVisibleCenter(map,"artifactCapacityOk");
+            Assert.That(map.Require<GameObject>("artifactCapacityNotice").activeSelf, Is.False);
+            Assert.That(map.Require<GameText>("artifactTitle").text, Is.EqualTo(selectedBeforeNotice));
+            Assert.That(map.Require<ScrollRect>("artifactItems").content.anchoredPosition, Is.EqualTo(listBeforeNotice));
+            ClickVisibleCenter(map,"artifactSort");
+            var options = map.Require<BindingMap>("artifactListOptions");
+            Assert.That(options.gameObject.activeInHierarchy, Is.True);
+            Click(options, "order4");
+            Assert.That(map.Require<GameText>("artifactSortLabel").text, Is.EqualTo("名称"));
+            Click(options, "order0");
+            Click(options, "dismiss");
+            // Restore the same item before exercising its lock and sale actions.
+            Click(Cards().Single(row => row.name == cards[2].name), "artifactCardButton");
             Click(map, "artifactAction_lock");
             Click(map, "artifactAction_confirm");
             yield return Wait(() => !map.Require<GameObject>("artifactConfirmation").activeSelf, "Lock did not complete.");
@@ -575,13 +604,22 @@ namespace AstralOath.Client.Tests
             Click(map, "artifactAction_lock");
             Click(map, "artifactAction_confirm");
             yield return Wait(() => !map.Require<GameObject>("artifactConfirmation").activeSelf, "Unlock did not complete.");
+            string targetName = map.Require<GameText>("artifactTitle").text;
             Click(map, "artifactAction_enhance");
-            Click(map, "artifactAction_chooseCopy");
-            yield return Wait(() => Cards().Length > 0 && map.Require<GameButton>("artifactPickerClose").gameObject.activeSelf, "Material picker did not open.");
-            yield return Capture("artifact-material-picker", 1478, 720);
-            Click(Cards()[0], "artifactCardButton");
-            Assert.That(map.Require<GameButton>("artifactAction_confirm").interactable, Is.True);
-            Click(map, "artifactAction_cancel");
+            var enhancement = map.Require<BindingMap>("artifactEnhancement");
+            BindingMap[] Materials() => VisibleRows(enhancement, "candidates");
+            yield return Wait(() => enhancement.gameObject.activeInHierarchy && Materials().Length > 0,
+                "The enhancement page did not open with its own material list.");
+            Click(enhancement, "submit");
+            Assert.That(enhancement.Require<GameText>("status").text, Is.Not.Empty);
+            Click(Materials()[0], "artifactCardButton");
+            Assert.That(enhancement.Require<Image>("material0").sprite, Is.Not.Null);
+            yield return Capture("artifact-enhancement", 1478, 720);
+            Click(enhancement, "remove0");
+            Assert.That(enhancement.Require<Image>("material0").enabled, Is.False);
+            Click(enhancement, "back");
+            Assert.That(enhancement.gameObject.activeSelf, Is.False);
+            Assert.That(map.Require<GameText>("artifactTitle").text, Is.EqualTo(targetName));
             int beforeSale = Cards().Length;
             Click(map, "artifactAction_sell");
             Click(map, "artifactAction_confirm");
@@ -601,16 +639,25 @@ namespace AstralOath.Client.Tests
             }
             int beforeUpgrade = Cards().Length;
             Click(map, "artifactAction_enhance");
-            Click(map, "artifactAction_chooseCopy");
-            yield return Wait(() => Cards().Length > 0 && map.Require<GameButton>("artifactPickerClose").gameObject.activeSelf, "The picker must reopen.");
-            string fodder = Cards()[0].name;
-            Click(Cards()[0], "artifactCardButton");
-            Click(map, "artifactAction_confirm");
-            yield return Wait(() => !map.Require<GameObject>("artifactConfirmation").activeSelf && Cards().Length == beforeUpgrade - 1, "Enhancement did not consume one material.");
+            yield return Wait(() => enhancement.gameObject.activeInHierarchy && Materials().Any(row => items.ContainsKey(row.name)),
+                "The enhancement page must include a consumable artifact.");
+            var material = Materials().First(row => items.ContainsKey(row.name));
+            string fodder = material.name;
+            Click(material, "artifactCardButton");
+            var quote = enhancement.Require<GameText>("cost").text;
+            Assert.That(quote, Is.Not.EqualTo("0"));
+            Click(enhancement, "submit");
+            yield return Wait(() => enhancement.gameObject.activeInHierarchy && !enhancement.Require<Image>("material0").enabled &&
+                enhancement.Require<GameText>("cost").text == "0", "The server did not settle enhancement on its page.");
+            Assert.That(map.Require<GameObject>("artifactConfirmation").activeSelf, Is.False);
+            Click(enhancement, "back");
+            yield return Wait(() => Cards().Length == beforeUpgrade - 1, "Enhancement did not consume exactly one material.");
             var upgraded = api.FetchAsync(scope.Token);
             yield return Wait(() => upgraded.IsCompleted, "Could not verify the enhanced artifact.");
             Assert.That(upgraded.Result.artifacts.Any(item => item.instanceId == fodder), Is.False);
             Assert.That(upgraded.Result.artifacts.Any(item => item.experience > 0 || item.limitBreaks > 0), Is.True);
+            Assert.That(upgraded.Result.materials.gold, Is.EqualTo(balance.Result.materials.gold -
+                int.Parse(quote, System.Globalization.NumberStyles.AllowThousands, System.Globalization.CultureInfo.CurrentCulture)));
         }
 
         [UnityTest, Timeout(60000)]
@@ -628,21 +675,42 @@ namespace AstralOath.Client.Tests
             var open = OpenArtifactWindow(true, scope, heroes, api, art);
             yield return Wait(() => open.IsCompleted, "Hero inventory did not open.");
             var map = open.GetAwaiter().GetResult();
+            var page = map.Require<BindingMap>("artifactHeroEquipment");
             Click(map, "artifactSlot");
-            yield return Wait(() => VisibleRows(map, "artifactItems").Length > 0, "No compatible artifacts in the equipment picker.");
-            var row = VisibleRows(map, "artifactItems")[0];
+            if (page.Require<GameObject>("popup").activeInHierarchy) Click(page, "change");
+            yield return Wait(() => VisibleRows(page, "list").Length > 0, "No compatible artifacts in the equipment picker.");
+            ClickVisibleCenter(page,"capacityClick");
+            Assert.That(map.Require<GameObject>("artifactCapacityNotice").activeInHierarchy,Is.True);
+            yield return null;
+            ClickVisibleCenter(map,"artifactCapacityOk");
+            yield return null;
+            ClickVisibleCenter(page,"sort");
+            var options = map.Require<BindingMap>("artifactListOptions");
+            Assert.That(options.gameObject.activeInHierarchy,Is.True);
+            Click(options,"dismiss");
+            var row = VisibleRows(page, "list")[0];
             Click(row, "artifactCardButton");
+            string instanceId = row.name;
             var emblem = row.Require<Image>("artifactCardPortrait").sprite;
             yield return Capture("artifact-equip-picker", 1478, 720);
-            Click(map, "artifactAction_equip");
-            Click(map, "artifactAction_confirm");
+            if (page.Require<GameButton>("equip").gameObject.activeInHierarchy)
+                Click(page, "equip");
+            if (map.Require<GameObject>("artifactConfirmation").activeInHierarchy) Click(map,"artifactAction_confirm");
             yield return Wait(() => map.Require<Image>("artifactSlotImage").sprite == emblem, "Equipped slot must show the newly equipped emblem.");
-            Click(map, "artifactAction_unequip");
-            Click(map, "artifactAction_confirm");
+            if (page.gameObject.activeInHierarchy) Click(page,"back");
+            Click(map,"artifactSlot");
+            yield return Wait(() => page.Require<GameObject>("popup").activeInHierarchy, "Worn artifact must open its detail panel first.");
+            Click(page,"storyTab");
+            Assert.That(page.Require<GameText>("popupBody").text, Is.Not.Empty);
+            yield return Capture("artifact-worn-detail", 1478, 720);
+            Click(page,"popupZoom");
+            Assert.That(page.Require<GameObject>("painting").activeInHierarchy,Is.True);
+            Click(page,"paintBack");
+            Click(page,"remove");
             yield return Wait(() => !map.Require<Image>("artifactSlotImage").enabled, "Unequipped artifact still occupies the hero slot.");
             var persisted = api.FetchAsync(scope.Token);
             yield return Wait(() => persisted.IsCompleted, "Could not read the updated inventory.");
-            Assert.That(string.IsNullOrEmpty(persisted.Result.artifacts.Single(item => item.instanceId == row.name).heroInstanceId), Is.True);
+            Assert.That(string.IsNullOrEmpty(persisted.Result.artifacts.Single(item => item.instanceId == instanceId).heroInstanceId), Is.True);
         }
 
         [UnityTest, Timeout(60000)]
@@ -844,7 +912,8 @@ namespace AstralOath.Client.Tests
             home = SceneManager.CreateScene("Artifact inventory test");
             SceneManager.SetActiveScene(home);
             new GameObject("Inventory camera", typeof(Camera));
-            var canvas = new GameObject("Inventory canvas", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler));
+            var canvas = new GameObject("Inventory canvas", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
+            if (!EventSystem.current) new GameObject("Inventory events",typeof(EventSystem));
             canvas.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
             var scaler = canvas.GetComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
@@ -898,6 +967,24 @@ namespace AstralOath.Client.Tests
                 map.gameObject.name == name || map.gameObject.name == name + "(Clone)");
 
         private static void Click(BindingMap window, string key) => Click(window.Require<GameButton>(key), key);
+
+        private static void ClickVisibleCenter(BindingMap window, string key)
+        {
+            Canvas.ForceUpdateCanvases();
+            var button = window.Require<GameButton>(key);
+            var rect = (RectTransform)button.transform;
+            var point = new PointerEventData(EventSystem.current) {
+                position = RectTransformUtility.WorldToScreenPoint(null,rect.TransformPoint(rect.rect.center))
+            };
+            var hits = new List<RaycastResult>();
+            rect.GetComponentInParent<GraphicRaycaster>().Raycast(point,hits);
+            var hit = hits.FirstOrDefault().gameObject;
+            Assert.That(hit,Is.Not.Null,key);
+            Assert.That(ExecuteEvents.GetEventHandler<IPointerClickHandler>(hit),Is.EqualTo(button.gameObject),
+                key + " at " + point.position + " on " + Screen.width + "x" + Screen.height + ", hits " +
+                string.Join(", ", hits.Take(6).Select(result => result.gameObject.name)));
+            ExecuteEvents.ExecuteHierarchy(hit,point,ExecuteEvents.pointerClickHandler);
+        }
 
         private static void Click(GameButton button, string key)
         {

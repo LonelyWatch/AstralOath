@@ -50,6 +50,35 @@ namespace AstralOath.Editor
             UIViewRegistry.ValidatePrefab<EquipmentSlot>(Load<GameObject>(EquipmentSlotPrefabPath));
         }
 
+        private static void AuthorWornEquipmentCard(BindingMap slot, bool showMainStat)
+        {
+            var root = (RectTransform)slot.transform;
+            var frame = slot.Require<Image>("frame");
+            var placeholder = slot.Require<Image>("placeholder");
+            var badge = slot.Require<BindingMap>("badge");
+            // The equipment-only generator can also run against a previously generated inventory.
+            var existing = root.Find("Worn equipment");
+            if (existing) Object.DestroyImmediate(existing.gameObject);
+            var holder = Area(root, "Worn equipment", 0, 0, 1, 1);
+            holder.gameObject.AddComponent<CanvasGroup>().blocksRaycasts = false;
+            var card = showMainStat
+                ? InstantiateEquipmentItemCard(holder, "Worn equipment card")
+                : SingleSlotThumbnail(holder, 0, 0, 1, 1);
+            if (showMainStat) Place((RectTransform)card.transform, 0, 0, 1, 1);
+            var select = card.Require<GameButton>("select");
+            select.enabled = false;
+            var icon = card.Require<Image>("icon");
+            icon.enabled = false;
+            card.gameObject.SetActive(false);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(select);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(icon);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(card.transform);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(card.gameObject);
+            Bind(root, ("frame", frame), ("placeholder", placeholder), ("item", icon),
+                ("badge", badge), ("wornCard", card));
+            PrefabUtility.RecordPrefabInstancePropertyModifications(slot);
+        }
+
         private static RectTransform InstantiateEquipmentSlot(RectTransform parent, string name, Sprite frame,
             Sprite placeholder, bool rightAligned, bool artifact = false)
         {

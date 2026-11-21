@@ -185,6 +185,30 @@
       "outputSha256": "eb1d9b97322f473f745dfa764a4168e4b537012b93b1a320d1082aa07ddf0ea6",
       "width": 34,
       "height": 11
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Bag/cm_icon_etcbin.png",
+      "source": "img/cm_icon_etcbin.png",
+      "sourceSha256": "ff680afc59e0108cfdcf9cb33a3e8df0cb99e052dce8438ef0ce210c88f6c31a",
+      "outputSha256": "ff680afc59e0108cfdcf9cb33a3e8df0cb99e052dce8438ef0ce210c88f6c31a",
+      "width": 27,
+      "height": 30
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Bag/cm_icon_etclocked.png",
+      "source": "img/cm_icon_etclocked.png",
+      "sourceSha256": "47b7cfbdb2a00978297d54d260a6adcf7205c7e8d95af10e1cc4f0caaad58f8d",
+      "outputSha256": "47b7cfbdb2a00978297d54d260a6adcf7205c7e8d95af10e1cc4f0caaad58f8d",
+      "width": 26,
+      "height": 31
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Bag/cm_icon_etclockun.png",
+      "source": "img/cm_icon_etclockun.png",
+      "sourceSha256": "1a60c9abb832e0b3e1d5cab3afd14bf7d3c37099683afe6b4a6c365d694360e3",
+      "outputSha256": "1a60c9abb832e0b3e1d5cab3afd14bf7d3c37099683afe6b4a6c365d694360e3",
+      "width": 33,
+      "height": 31
     }
   ]
 }

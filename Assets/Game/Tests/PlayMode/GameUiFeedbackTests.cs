@@ -13,6 +13,55 @@ namespace AstralOath.Client.Tests
 {
     public sealed class GameUiFeedbackTests
     {
+        [UnityTest]
+        public IEnumerator PressDimsTheCompleteButtonAndRestoresEachTint()
+        {
+            var canvas = new GameObject("Button press", typeof(Canvas));
+            var events = new GameObject("Press events", typeof(EventSystem));
+            var item = new GameObject("Draw", typeof(RectTransform), typeof(Image), typeof(GameButton));
+            item.transform.SetParent(canvas.transform, false);
+            var price = new GameObject("Price", typeof(RectTransform), typeof(GameText)).GetComponent<GameText>();
+            price.transform.SetParent(item.transform, false);
+            var nested = new GameObject("Independent button", typeof(RectTransform), typeof(Image), typeof(GameButton));
+            nested.transform.SetParent(item.transform, false);
+            var thumbnail = new GameObject("Passive equipment card", typeof(RectTransform), typeof(Image), typeof(GameButton));
+            thumbnail.transform.SetParent(item.transform, false);
+            thumbnail.GetComponent<GameButton>().enabled = false;
+            try
+            {
+                var button = item.GetComponent<GameButton>();
+                button.targetGraphic = item.GetComponent<Image>();
+                button.transition = Selectable.Transition.SpriteSwap;
+                var tint = new Color(.9f, .72f, .37f, .64f);
+                price.canvasRenderer.SetColor(tint);
+                var pointer = new PointerEventData(events.GetComponent<EventSystem>());
+                button.OnPointerEnter(pointer);
+                button.OnPointerDown(pointer);
+                Assert.That(button.image.canvasRenderer.GetColor().r, Is.LessThan(.8f));
+                var held = price.canvasRenderer.GetColor();
+                Assert.That(held.r, Is.LessThan(tint.r * .8f));
+                Assert.That(held.a, Is.EqualTo(tint.a).Within(.005f));
+                Assert.That(nested.GetComponent<Image>().canvasRenderer.GetColor(), Is.EqualTo(Color.white));
+                Assert.That(thumbnail.GetComponent<Image>().canvasRenderer.GetColor().r, Is.LessThan(.8f));
+                button.OnPointerUp(pointer);
+                Assert.That(price.canvasRenderer.GetColor().r, Is.EqualTo(tint.r).Within(.005f));
+                Assert.That(button.image.canvasRenderer.GetColor(), Is.EqualTo(Color.white));
+                Assert.That(thumbnail.GetComponent<Image>().canvasRenderer.GetColor(), Is.EqualTo(Color.white));
+
+                button.OnSubmit(new BaseEventData(events.GetComponent<EventSystem>()));
+                Assert.That(price.canvasRenderer.GetColor().r, Is.LessThan(tint.r * .8f));
+                item.SetActive(false);
+                item.SetActive(true);
+                Assert.That(price.canvasRenderer.GetColor().g, Is.EqualTo(tint.g).Within(.005f));
+                yield return null;
+            }
+            finally
+            {
+                Object.Destroy(canvas);
+                Object.Destroy(events);
+            }
+        }
+
 #if UNITY_EDITOR
         [UnityTest]
         public IEnumerator AuthoredPulseBeginsFilledThenOpensIntoARing()

@@ -652,6 +652,24 @@
       "conversion": "sRGB black-overlay transmission to linear alpha"
     },
     {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/_btn_circle_black_76_linear.png",
+      "source": "img/_btn_circle_black_76.png",
+      "sourceSha256": "8bbb2cdd455212f223de2babc313472c624c821a9338deb33c37e64c7d11ea2c",
+      "outputSha256": "bf685bb65c35ff35db06efe4093e3b242f85a08bb5ce7247f18b3aea8cbe8b1d",
+      "width": 76,
+      "height": 76,
+      "conversion": "sRGB black-overlay transmission to linear alpha"
+    },
+    {
+      "asset": "Assets/Game/Modules/Summon/Res/Textures/_btn_circle_black_76_p_linear.png",
+      "source": "img/_btn_circle_black_76_p.png",
+      "sourceSha256": "ca6c820becc56d0189ae2984d9350ae62770babb73e4aa01a1a9fa848eb45f1f",
+      "outputSha256": "923097fcc2fb6002f704670f471e52bed445eb6dd5d3f1ed12d79947e562657f",
+      "width": 76,
+      "height": 76,
+      "conversion": "sRGB black-overlay transmission to linear alpha"
+    },
+    {
       "asset": "Assets/Game/Modules/Summon/Res/Textures/gacha_wish_bg_2.png",
       "source": "banner/gacha_wish_bg_2.png",
       "sourceSha256": "ad8c37caca978be4948adce03f5f88b49e3e3667c41f4a0018e38d3863fdb586",

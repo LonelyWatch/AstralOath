@@ -59,8 +59,13 @@ namespace AstralOath.Editor
                 bindings.Add(("filter_" + keys[index], button));
                 bindings.Add(("filterActive_" + keys[index], active));
             }
-            var sort = BagSortPlate(filters, 26, 91, "sort_level");
+            var sort = BagSortPlate(filters, 26, 91, "sort_power");
             bindings.Add(("bagSortLabel", sort));
+            var sortPlate = (RectTransform)sort.transform.parent;
+            Place(sort.rectTransform, .27f, .04f, .49f, .88f);
+            bindings.Add(("bagSortAttack", Picture(sortPlate, "Attack stat", InventoryArt("Equipment/cm_icon_stat_att"),
+                .75f, .24f, .17f, .50f, true)));
+            bindings.Add(("bagSort", Button(Area(sortPlate, "Open sort and filters", 0, 0, 1, 1), null, Color.clear)));
 
             var bagScroll = InventoryScroll(bag, "Bag hero rows", 0, 0, 0, 1);
             var scrollFrame = (RectTransform)bagScroll.transform;
@@ -70,6 +75,7 @@ namespace AstralOath.Editor
             bindings.Add(("bagRow", BuildNativeBagRow(bag)));
             AddEmptyBagCategory(bag, bindings, false, classes);
             AddEmptyBagCategory(bag, bindings, true, classes);
+            bindings.Add(("wornFilters", BuildWornBagFilters(bag)));
             return bindings;
         }
 
@@ -239,6 +245,7 @@ namespace AstralOath.Editor
             Place(badge, .637f, .003f, 31f / 123, 30f / 137);
             PrefabUtility.RecordPrefabInstancePropertyModifications(badge);
             bindings.Add(("bagArtifactSlot", artifact));
+            BuildWornArtifactMarkers((RectTransform)artifact.transform, "bagArtifact", bindings);
             bindings.Add(("emptyArtifact", artifact.Require<Image>("frame")));
             bindings.Add(("bagEquippedArtifact", equippedArt));
             var exclusive = BuildBagEquipmentSlot(row, "Empty exclusive equipment slot", BagArt("cm_item_slot_private"),
@@ -249,6 +256,17 @@ namespace AstralOath.Editor
             PrefabUtility.RecordPrefabInstancePropertyModifications(exclusive.gameObject);
             bindings.Add(("emptyExclusive", exclusive.Require<Image>("frame")));
 
+            void HotZone(string key, float x, float y, float width, float height)
+            {
+                var button = Button(BagRowArea(row, key, x, y, width, height), null, Color.clear);
+                button.transition = Selectable.Transition.None;
+                bindings.Add((key, button));
+            }
+            HotZone("bagPortrait", 0, 20, 104, 105);
+            HotZone("bagManage", 105, 49, 108, 55);
+            for (int i = 0; i < gearCenters.Length; i++)
+                HotZone("bagInspect" + i, gearCenters[i] - 45, 12.95f, 90, 116.1f);
+            HotZone("bagArtifact", 533.65f, 10.35f, 110.7f, 123.3f);
             Bind(row, bindings.ToArray());
             row.gameObject.SetActive(false);
             return row.gameObject;

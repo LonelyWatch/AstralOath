@@ -14,6 +14,47 @@ namespace AstralOath.Client.Tests
         private const string CommonPath = "Assets/Game/Common/Res/Prefab/";
 
         [Test]
+        public void ArtifactInventoryUsesReusableBannerWithSeparateEnhancementStarsAndOwner()
+        {
+            var page = AssetDatabase.LoadAssetAtPath<GameObject>(HeroPath).GetComponent<BindingMap>();
+            var template = page.Require<GameObject>("artifactCard");
+            Assert.That(PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(template),
+                Is.EqualTo("Assets/Game/Modules/Home/Res/Prefab/ArtifactInventoryCard.prefab"));
+            var card = template.GetComponent<BindingMap>();
+            var badge = card.Require<BindingMap>("artifactCardBadge");
+            Assert.That(PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(badge.gameObject),
+                Is.EqualTo(CommonPath + "NotificationBadge.prefab"));
+            Assert.That(card.Require<GameText>("artifactCardLevel"), Is.EqualTo(badge.Require<GameText>("label")));
+            Assert.That(card.Require<BindingMap>("artifactCardWearer").Require<Image>("portrait"), Is.Not.Null);
+            Assert.That(card.Require<Image>("star4"), Is.Not.Null);
+            Assert.That(card.Require<Image>("break4"), Is.Not.Null);
+        }
+
+        [Test]
+        public void WornEquipmentUsesTheSameItemCardAcrossHeroBagAndManager()
+        {
+            var page = AssetDatabase.LoadAssetAtPath<GameObject>(HeroPath).GetComponent<BindingMap>();
+            var bagRow = page.Require<GameObject>("bagRow").GetComponent<BindingMap>();
+            var manager = page.Require<BindingMap>("gearBrowser");
+            string[] heroKeys = { "weapon", "helm", "armor", "neck", "ring", "boots" };
+            string[] apiKeys = { "weapon", "helmet", "armor", "necklace", "ring", "boots" };
+            for (int i = 0; i < heroKeys.Length; ++i)
+            {
+                var bag = bagRow.Require<Image>("emptyGear" + i).GetComponentInParent<BindingMap>(true);
+                foreach (var slot in new[] { page.Require<BindingMap>("equipmentSlot_" + heroKeys[i]), bag,
+                    manager.Require<BindingMap>("manageCurrent_" + apiKeys[i]), manager.Require<BindingMap>("managePreview_" + apiKeys[i]) })
+                {
+                    var card = slot.Require<BindingMap>("wornCard");
+                    Assert.That(PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(card.gameObject),
+                        Is.EqualTo(CommonPath + "EquipmentItemCard.prefab"));
+                    Assert.That(slot.Require<Image>("item"), Is.EqualTo(card.Require<Image>("icon")));
+                    Assert.That(card.gameObject.activeSelf, Is.False);
+                    Assert.That(card.Require<GameText>("stat").transform.parent.gameObject.activeSelf, Is.EqualTo(slot == bag));
+                }
+            }
+        }
+
+        [Test]
         public void EquipmentManagerAuthorsCurrentAndPreviewLoadoutsBesideCandidates()
         {
             var browser = AssetDatabase.LoadAssetAtPath<GameObject>(HeroPath).GetComponent<BindingMap>().Require<BindingMap>("gearBrowser");
@@ -147,6 +188,38 @@ namespace AstralOath.Client.Tests
                 var slot = row.Require<Image>(key).GetComponentInParent<BindingMap>(true);
                 Assert.That(PrefabUtility.GetCorrespondingObjectFromSource(slot.gameObject), Is.EqualTo(slotAsset), key);
             }
+        }
+
+        [Test]
+        public void ArtifactBagDetailsUseThePaintingEmblemTabsAndActionIcons()
+        {
+            var page = AssetDatabase.LoadAssetAtPath<GameObject>(HeroPath).GetComponent<BindingMap>();
+            foreach (string key in new[] { "artifactDetailSkillTab", "artifactDetailStoryTab", "artifactDetailZoom", "artifactChange" })
+                Assert.That(page.Require<GameButton>(key).targetGraphic.raycastTarget, Is.True, key);
+            Assert.That(page.Require<Image>("artifactSellGlyph").sprite.name, Is.EqualTo("cm_icon_etcbin"));
+            Assert.That(page.Require<Image>("artifactLockOn").sprite.name, Is.EqualTo("cm_icon_etclocked"));
+            Assert.That(page.Require<Image>("artifactLockOff").sprite.name, Is.EqualTo("cm_icon_etclockun"));
+            Assert.That(page.Require<BindingMap>("artifactDetailBadge"), Is.Not.Null);
+            Assert.That(page.Require<Image>("artifactDetailEmblem"), Is.Not.Null);
+            Assert.That(page.Require<Image>("artifactDetailWearer"), Is.Not.Null);
+        }
+
+        [Test]
+        public void WornEquipmentBagBindsRowActionsAndReusableFilterChoices()
+        {
+            var page = AssetDatabase.LoadAssetAtPath<GameObject>(HeroPath).GetComponent<BindingMap>();
+            var row = page.Require<GameObject>("bagRow").GetComponent<BindingMap>();
+            foreach (string key in new[] { "bagManage", "bagPortrait", "bagArtifact", "bagInspect0", "bagInspect1",
+                         "bagInspect2", "bagInspect3", "bagInspect4", "bagInspect5" })
+                Assert.That(row.Require<GameButton>(key).targetGraphic.raycastTarget, Is.True, key);
+            Assert.That(page.Require<GameButton>("bagSort").targetGraphic.raycastTarget, Is.True);
+            var menu = page.Require<BindingMap>("wornFilters");
+            Assert.That(menu.gameObject.activeSelf, Is.False);
+            foreach (string key in new[] { "sort_stars", "sort_level", "sort_element", "sort_name", "sort_acquired",
+                         "sort_ability", "reverse", "hideMax", "hideFull", "close" })
+                Assert.That(menu.Require<GameButton>(key), Is.Not.Null, key);
+            foreach (string option in new[] { "fire", "ice", "wind", "light", "dark", "all" })
+                Assert.That(menu.Require<BindingMap>("element_" + option).Require<GameButton>("button"), Is.Not.Null);
         }
 
         [Test]

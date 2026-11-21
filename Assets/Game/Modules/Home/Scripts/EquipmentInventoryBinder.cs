@@ -36,7 +36,8 @@ namespace AstralOath.Client.Home
         private readonly Func<HeroInventoryItem,BattleStats> baseStats;
         private readonly Func<string,(int attack,int health)> artifactStats;
         private readonly Action changed;
-        private readonly EquipmentSlotBinder[] slots;
+        private readonly WornSlot[] slots;
+        private readonly WornSlot[] managerCurrent, managerPreview;
         private readonly Dictionary<string,Sprite> art;
         private readonly Dictionary<string,EquipmentInventoryItem[]> loadouts = new Dictionary<string,EquipmentInventoryItem[]>();
         private readonly List<GameObject> cards = new List<GameObject>(), targets = new List<GameObject>();
@@ -74,7 +75,9 @@ namespace AstralOath.Client.Home
             bagThumbnail = new EquipmentItemCardBinder(bagPane.Require<BindingMap>("thumbnail"));
             bagMain = new EquipmentStatRowBinder(Get<BindingMap>("bagMain"));
             bagSubs = Enumerable.Range(0,4).Select(i => new EquipmentStatRowBinder(Get<BindingMap>("bagSub" + i))).ToArray();
-            slots = AuthoredSlots.Select(key => new EquipmentSlotBinder(page.Require<BindingMap>("equipmentSlot_" + key))).ToArray();
+            slots = AuthoredSlots.Select(key => new WornSlot(page.Require<BindingMap>("equipmentSlot_" + key))).ToArray();
+            managerCurrent = Slots.Select(key => new WornSlot(Get<BindingMap>("manageCurrent_" + key))).ToArray();
+            managerPreview = Slots.Select(key => new WornSlot(Get<BindingMap>("managePreview_" + key))).ToArray();
             art = Slots.ToDictionary(key => key,key => Get<Image>("icon_" + key).sprite);
             art.Add("training_speed_weapon", Get<Image>("icon_training_speed_weapon").sprite);
             art.Add("training_critical_weapon", Get<Image>("icon_training_critical_weapon").sprite);
@@ -163,12 +166,37 @@ namespace AstralOath.Client.Home
             Refresh();
         }
 
-        internal (Sprite portrait, int level) Equipped(string hero, string slot)
+        internal sealed class WornSlot
         {
-            if (string.IsNullOrEmpty(hero) || !loadouts.TryGetValue(hero,out var loadout)) return (null,0);
-            int index = Array.IndexOf(Slots,slot);
-            var item = index < 0 ? null : loadout[index];
-            return item == null ? (null, 0) : (Icon(item), item.enhanceLevel);
+            internal readonly EquipmentItemCardBinder Card;
+            internal readonly GameObject Root;
+            internal readonly Image Placeholder;
+
+            internal WornSlot(BindingMap slot)
+            {
+                var card = slot.Require<BindingMap>("wornCard");
+                Card = new EquipmentItemCardBinder(card);
+                Root = card.gameObject;
+                Placeholder = slot.Require<Image>("placeholder");
+            }
+        }
+
+        internal void PaintWornSlots(WornSlot[] targets, string hero)
+        {
+            loadouts.TryGetValue(hero ?? string.Empty, out var worn);
+            for (int i = 0; i < targets.Length; ++i)
+                PaintWornSlot(targets[i], worn?[i]);
+        }
+
+        private void PaintWornSlot(WornSlot target, EquipmentInventoryItem item)
+        {
+            target.Placeholder.enabled = item == null && target.Placeholder.sprite;
+            if (item == null)
+                target.Card.Set(null, null, null, null, null, 0, 0, null);
+            else
+                target.Card.Set(Icon(item), GradeArt(item), SetArt(item), StatArt(item.mainStat), null,
+                    item.itemLevel, item.enhanceLevel, StatValue(item.mainStat));
+            target.Root.SetActive(item != null);
         }
 
         private void AcceptSnapshot(EquipmentInventorySnapshot fresh)
@@ -194,11 +222,7 @@ namespace AstralOath.Client.Home
 
         internal void PaintSlots(string hero)
         {
-            for (int i = 0; i < Slots.Length; ++i)
-            {
-                var (portrait, level) = Equipped(hero, Slots[i]);
-                slots[i].Set(portrait,level);
-            }
+            PaintWornSlots(slots, hero);
             var sets = EquipmentStatCalculator.ActiveSets(Pieces(hero));
             page.Require<GameText>("gearSets").text = sets.Count == 0 ? locale.Resolve("home.hero_inventory.roster_no_set") :
                 string.Join("  ", sets.Select(pair => F("setCount",SetName(pair.Key),pair.Value)));

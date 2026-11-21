@@ -1,0 +1,145 @@
+{
+  "sources": {
+    "effect/itemupgrade_mainbg.sct": "00812e58e8b041d4769d9658cf384492a4db47ad8722cd6100415f66eae2e58e",
+    "effect/itemupgrade_mainbg.atlas": "929b0def19bc559e1547da6262c642a8ecdb605232d0c82f2d4c09cdd5914e2b",
+    "effect/itemupgrade_mainbg.scsp": "0adec11191cee0933d143cfa3734af5683169dd20d418a929943bb11b2d6781e",
+    "effect/itemupgrade_main.sct": "1cd5a9c1ebbf6cbde952fe718f2465ef6b109b9d2c4780a1c9b7400bb05a7616",
+    "effect/itemupgrade_main.atlas": "aa42f45e23d2307e01e7e71d11863f366e98a084061fb9cb156127aca8f87d0a",
+    "effect/itemupgrade_main.scsp": "424f5d11a062cc9864150b8781ffc79e4bc6e71359015a38c2fc5efd5b0b18d7",
+    "wnd/unit_item_upgrade.csb": "5f7e2b08ed3c0ac17f5a035cebe350449d837dce1fa0ee6d851c6578778e07a5"
+  },
+  "assets": [
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/ArtifactEnhancement/token_gold.png",
+      "source": "item/token_gold.png",
+      "sourceSha256": "ca0605538c5670319765b091ae49661f196830f27f56bc600fd8b550df82b03a",
+      "outputSha256": "ca0605538c5670319765b091ae49661f196830f27f56bc600fd8b550df82b03a",
+      "width": 84,
+      "height": 84
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/ArtifactEnhancement/icon_bottle_01.png",
+      "source": "item/icon_bottle_01.png",
+      "sourceSha256": "3628133e8da8464359bba384045dacef068bae055638e6c04bbe5260a0b9d5f3",
+      "outputSha256": "3628133e8da8464359bba384045dacef068bae055638e6c04bbe5260a0b9d5f3",
+      "width": 84,
+      "height": 84
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/ArtifactEnhancement/game_eff_unit_expup.png",
+      "source": "img/game_eff_unit_expup.png",
+      "sourceSha256": "7d6fe9b7152fa2a60917f3ab1cb5d76954aa555796f5b1b8297a89dc993be0ab",
+      "outputSha256": "7d6fe9b7152fa2a60917f3ab1cb5d76954aa555796f5b1b8297a89dc993be0ab",
+      "width": 83,
+      "height": 43
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/ArtifactEnhancement/icon_stone_art1.png",
+      "source": "item_arti/icon_stone_art1.png",
+      "sourceSha256": "2dd06e333955e2b992b8dac9b19f869f4f57b9ad6c3c51b1115a4543089f42a3",
+      "outputSha256": "2dd06e333955e2b992b8dac9b19f869f4f57b9ad6c3c51b1115a4543089f42a3",
+      "width": 116,
+      "height": 128
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/ArtifactEnhancement/stone_art1_l.jpg",
+      "source": "item_arti/stone_art1_l.jpg",
+      "sourceSha256": "09296da3f68f62d83d92619be69996851d33fbab53b7dfd0e0640a2cdaeee815",
+      "outputSha256": "09296da3f68f62d83d92619be69996851d33fbab53b7dfd0e0640a2cdaeee815",
+      "width": 260,
+      "height": 92
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/ArtifactEnhancement/icon_stone_art2.png",
+      "source": "item_arti/icon_stone_art2.png",
+      "sourceSha256": "3739842dec12806cc5dc01614fb0220c733afe51dd68b5d8aab15047e6a29dd8",
+      "outputSha256": "3739842dec12806cc5dc01614fb0220c733afe51dd68b5d8aab15047e6a29dd8",
+      "width": 116,
+      "height": 128
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/ArtifactEnhancement/stone_art2_l.jpg",
+      "source": "item_arti/stone_art2_l.jpg",
+      "sourceSha256": "64eb27dfe41126621db6f762523c0cbc27db9e5d4174f623e8a6f6f7d236bcd7",
+      "outputSha256": "64eb27dfe41126621db6f762523c0cbc27db9e5d4174f623e8a6f6f7d236bcd7",
+      "width": 260,
+      "height": 92
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/ArtifactEnhancement/icon_stone_art3.png",
+      "source": "item_arti/icon_stone_art3.png",
+      "sourceSha256": "f2bfc160ebdddf71f17f8d33749f0230684d8a8da2d7cfacbf4fcda08e30caa2",
+      "outputSha256": "f2bfc160ebdddf71f17f8d33749f0230684d8a8da2d7cfacbf4fcda08e30caa2",
+      "width": 116,
+      "height": 128
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/ArtifactEnhancement/stone_art3_l.jpg",
+      "source": "item_arti/stone_art3_l.jpg",
+      "sourceSha256": "f1324636c3ccf7ecbc69cb6cedbe9385270b46fc8f6de2a0874c3b5e0bc586a0",
+      "outputSha256": "f1324636c3ccf7ecbc69cb6cedbe9385270b46fc8f6de2a0874c3b5e0bc586a0",
+      "width": 260,
+      "height": 92
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/ArtifactEnhancement/upgrade_bg.png",
+      "region": "upgrade_bg",
+      "source": "effect/itemupgrade_mainbg",
+      "outputSha256": "c6750e9e51bf35f0d405520fe3fd17d20eaa7ee8529797570c2f1bbd20298aee"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/ArtifactEnhancement/panta_bg.png",
+      "region": "panta_bg",
+      "source": "effect/itemupgrade_mainbg",
+      "outputSha256": "0d1ff741e51b428caca0f09eef94f58dde336739c26e8abf4d3ae7df0de754bb"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/ArtifactEnhancement/star_01.png",
+      "region": "star_01",
+      "source": "effect/itemupgrade_mainbg",
+      "outputSha256": "e349123e3a0e36788c7083fa9598151091f611c74a2bb38da7c82fe607ba5600"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/ArtifactEnhancement/star_02.png",
+      "region": "star_02",
+      "source": "effect/itemupgrade_mainbg",
+      "outputSha256": "ac115fcc6a1c88f4f8d7b1f796b1ecd8175909c9d977cfba88616717a38f691e"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/ArtifactEnhancement/star_03.png",
+      "region": "star_03",
+      "source": "effect/itemupgrade_mainbg",
+      "outputSha256": "23b25888216b97800503c05c9c58007f70dd03b2e9ed9cd8d1c86b4544509f97"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/ArtifactEnhancement/stone.png",
+      "region": "stone",
+      "source": "effect/itemupgrade_main",
+      "outputSha256": "7c0878acb0c914037e0b69d58a30cb798cffde9493b9797afc6594115b42a62f"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/ArtifactEnhancement/stone_b.png",
+      "region": "stone_b",
+      "source": "effect/itemupgrade_main",
+      "outputSha256": "4efc533a18840f0657ca2045a8576c05b79677cdb5a335e214b98d3064a2270a"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/ArtifactEnhancement/panta_in.png",
+      "region": "panta_in",
+      "source": "effect/itemupgrade_main",
+      "outputSha256": "7fb2b4d75665b85680360836c7522fb4e31b37ae0f55ab88d3e9e5342271888d"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/ArtifactEnhancement/stone_glow.png",
+      "region": "stone_glow",
+      "source": "effect/itemupgrade_main",
+      "outputSha256": "c587add8bf8cbcc36241e676595ddace3d20cc13adb77955325a32d0f8487b4d"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/ArtifactEnhancement/flash.png",
+      "region": "flash",
+      "source": "effect/itemupgrade_main",
+      "outputSha256": "0c8905f41677123c892ff234d688795518f27c725c7a5a87672906d801bf4375"
+    }
+  ]
+}

@@ -144,7 +144,7 @@ def main():
                for name in NATIVE_UI]
     artwork.append(import_sprite(root, "img/renew_popup_bg_2_alpha.png",
                                  SUMMON / "Res/Textures/renew_popup_bg_2_linear.png", opts.check, linear_rules=True))
-    for name in ("_btn_small_black", "_btn_small_black_p"):
+    for name in ("_btn_small_black", "_btn_small_black_p", "_btn_circle_black_76", "_btn_circle_black_76_p"):
         artwork.append(import_sprite(root, f"img/{name}.png",
                                      SUMMON / "Res/Textures" / (name + "_linear.png"), opts.check, linear_price=True))
     for name in ("gacha_wish_bg_2", "gacha_wish_bg_3", "banner_gacha_wish", "gacha_c1024_01_bg", "gacha_c1024_01_banner"):

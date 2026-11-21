@@ -69,14 +69,9 @@ namespace AstralOath.Client.Home
 
         private void PaintLoadout(string group, EquipmentInventoryItem[] gear, EquipmentPiece[] pieces, int[] values, int[] baseline)
         {
-            for (int i = 0; i < Slots.Length; ++i)
-            {
-                var map = Get<BindingMap>(group + "_" + Slots[i]);
-                var item = gear[i];
-                new EquipmentSlotBinder(map).Set(item == null ? null : Icon(item),item?.enhanceLevel ?? 0);
-                map.Require<Image>("frame").sprite = item == null ?
-                    page.Require<BindingMap>("equipmentSlot_" + AuthoredSlots[i]).Require<Image>("frame").sprite : GradeArt(item);
-            }
+            var targets = group == "managePreview" ? managerPreview : managerCurrent;
+            for (int i = 0; i < targets.Length; ++i)
+                PaintWornSlot(targets[i], gear[i]);
             for (int i = 0; i < PanelKeys.Length; ++i)
             {
                 var map = Get<BindingMap>(group + "_" + PanelKeys[i]);

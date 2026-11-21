@@ -62,11 +62,13 @@ namespace AstralOath.Client.Tests
                 var portrait = summon.Require<Image>("confirmHeroPortrait");
                 Assert.That(portrait.sprite.name, Is.EqualTo("c1024_s"));
                 yield return Capture("summon-featured-confirm");
-                var pausedFrame = preview.uvRect;
-                yield return new WaitForSecondsRealtime(.15f);
-                Assert.That(preview.uvRect, Is.EqualTo(pausedFrame), "The running skill preview should pause while confirming.");
+                var frameAtOpen = preview.uvRect;
+                yield return new WaitForSecondsRealtime(.2f);
+                Assert.That(Panel(summon, "mainPage"), Is.True);
+                Assert.That(preview.uvRect, Is.Not.EqualTo(frameAtOpen), "The skill preview must keep advancing through the transparent confirmation.");
+                var frameAtClose = preview.uvRect;
                 Click(summon, "confirmNo");
-                yield return Until(() => preview.uvRect != pausedFrame, "The skill preview did not resume.");
+                Assert.That(preview.uvRect, Is.EqualTo(frameAtClose), "Closing the confirmation reset the playing preview.");
                 var heroLayer = summon.Require<GameText>("featuredHero").GetComponentInParent<CanvasGroup>();
                 var artifactLayer = summon.Require<Image>("artifactArt").GetComponentInParent<CanvasGroup>();
                 yield return Until(() => preview.enabled && heroLayer.alpha > .8f && artifactLayer.alpha < .05f,
@@ -87,6 +89,12 @@ namespace AstralOath.Client.Tests
             foreach (var key in new[] { "info", "storage", "settings" })
             {
                 var control = summon.Require<GameButton>(key);
+                Assert.That(((RectTransform)control.transform).sizeDelta, Is.EqualTo(new Vector2(114f, 114f)));
+                if (QualitySettings.activeColorSpace == ColorSpace.Linear)
+                {
+                    Assert.That(control.image.sprite.name, Is.EqualTo("_btn_circle_black_76_linear"));
+                    Assert.That(control.spriteState.pressedSprite.name, Is.EqualTo("_btn_circle_black_76_p_linear"));
+                }
                 var icon = (RectTransform)control.transform.Find("Native " + key + " icon");
                 var rest = icon.anchoredPosition;
                 var pointer = new UnityEngine.EventSystems.PointerEventData(UnityEngine.EventSystems.EventSystem.current);
@@ -168,7 +176,13 @@ namespace AstralOath.Client.Tests
             Assert.That(result.Length, Is.EqualTo(10));
             Assert.That(summon.Require<GameText>("balance").text, Does.Contain("10"));
             Assert.That(summon.Require<GameButton>("free").IsInteractable(), Is.True);
-            Assert.That(result.All(row => row.Require<Image>("icon").sprite), Is.True);
+            foreach (var row in result)
+            {
+                bool artifact = row.Require<GameObject>("artifact").activeSelf;
+                var art = row.Require<Image>(artifact ? "artifactArtwork" : "icon");
+                Assert.That(art.enabled && art.sprite, Is.True, row.Require<GameText>("name").text);
+                if (artifact) Assert.That(row.Require<Image>("artifactBadge").sprite, Is.Not.Null);
+            }
             string[] labels = result.Select(row => row.Require<GameText>("name").text).ToArray();
             SummonCardLayoutChecks.Verify(summon, (RectTransform)result[0].transform);
             var bannerPage = summon.Require<GameObject>("mainPage");

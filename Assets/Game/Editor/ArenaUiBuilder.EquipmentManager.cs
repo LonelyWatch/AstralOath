@@ -32,6 +32,7 @@ namespace AstralOath.Editor
                 for (int i = 0; i < slots.Length; ++i)
                 {
                     var step = InstantiateEquipmentSlot(group.Item2,slots[i],CommonArt("_box_equip_0"),RosterArt("cm_icon_par" + authored[i]));
+                    AuthorWornEquipmentCard(step, false);
                     Place((RectTransform)step.transform,i % 3 * .35f,i / 3 * .19f,.294f,.17f);
                     var symbol = step.Require<Image>("placeholder");
                     Place(symbol.rectTransform,.12f,.55f,.34f,.34f);

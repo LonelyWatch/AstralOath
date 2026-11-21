@@ -53,6 +53,9 @@ namespace AstralOath.Client.Home
         private EquipmentInventoryItem WornSlotItem() =>
             Items.FirstOrDefault(item => item.equippedHeroId == slotHero && item.slot == slotName);
 
+        internal bool HasWornItem(string hero, int index) =>
+            hero != null && loadouts.TryGetValue(hero, out var worn) && worn[index] != null;
+
         private EquipmentInventoryItem CandidateSlotItem() =>
             Items.FirstOrDefault(item => item.instanceId == candidateId && item.slot == slotName && item.equippedHeroId != slotHero);
 

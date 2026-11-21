@@ -16,6 +16,50 @@ namespace AstralOath.Client.Tests
     public sealed partial class HeroInventoryOnlineTests
     {
         [UnityTest]
+        public IEnumerator WornBagFiltersOpensTheWearerAndReturnsToItsRows()
+        {
+            string url = Environment.GetEnvironmentVariable("ASTRAL_EQUIPMENT_TEST_URL");
+            if (!Uri.TryCreate(url, UriKind.Absolute, out var endpoint) || !endpoint.IsLoopback)
+                Assert.Ignore("Requires a loopback service with training equipment.");
+            using var scope = new AstralOath.Client.Core.BindingScope(CancellationToken.None);
+            using var arena = new Arena.ArenaApi(endpoint, scope.Token);
+            var login = arena.GetSessionTokenAsync("Worn bag QA", scope.Token);
+            yield return Wait(() => login.IsCompleted, "Guest login did not complete.");
+            string bearer = login.GetAwaiter().GetResult();
+            Task<string> Token(CancellationToken _) => Task.FromResult(bearer);
+            using var heroes = new HeroInventoryApi(endpoint, Token, scope.Token);
+            using var api = new EquipmentInventoryApi(endpoint, Token, scope.Token);
+            var opening = OpenArtifactWindow(false, scope, heroes, null, null, api);
+            yield return Wait(() => opening.IsCompleted, "The worn bag did not open.");
+            var page = opening.GetAwaiter().GetResult();
+            var filters = page.Require<BindingMap>("wornFilters");
+            Click(page, "bagSort");
+            Assert.That(filters.gameObject.activeInHierarchy, Is.True);
+            Click(filters.Require<BindingMap>("element_ice"), "button");
+            Assert.That(VisibleRows(page, "bagScroll").Single().Require<GameText>("name").text, Is.EqualTo("安洁莉卡"));
+            Click(filters.Require<BindingMap>("element_all"), "button");
+            Click(filters, "sort_acquired");
+            if (filters.gameObject.activeSelf) Click(filters, "close");
+            Click(page, "filter_knight");
+            var row = VisibleRows(page, "bagScroll").Single();
+            Assert.That(row.Require<GameText>("name").text, Is.EqualTo("拉斯"));
+            Click(row, "bagManage");
+            var browser = page.Require<BindingMap>("gearBrowser");
+            Assert.That(browser.Require<GameObject>("pickerSurface").activeInHierarchy, Is.True);
+            Click(browser, "close");
+            Assert.That(page.Require<GameObject>("roster").activeInHierarchy, Is.True);
+            Assert.That(page.Require<GameText>("detailName").text, Is.EqualTo("拉斯"));
+            Click(page, "back");
+            Assert.That(page.Require<GameObject>("bag").activeInHierarchy, Is.True);
+            Assert.That(VisibleRows(page, "bagScroll").Single().name, Is.EqualTo(row.name));
+            Click(page, "filter_all");
+            Assert.That(VisibleRows(page, "bagScroll").Length, Is.EqualTo(3));
+            Click(page, "bagSort");
+            Assert.That(filters.gameObject.activeSelf, Is.True);
+            Click(filters, "close");
+        }
+
+        [UnityTest]
         public IEnumerator EquipmentManagerPreviewsCancelsAndConfirmsOneRealChange()
         {
             var url = Environment.GetEnvironmentVariable("ASTRAL_EQUIPMENT_TEST_URL");

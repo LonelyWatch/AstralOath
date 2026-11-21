@@ -31,7 +31,10 @@ namespace AstralOath.Client.Tests
             Assert.That(material.IsKeywordEnabled("OUTLINE_ON"), Is.True);
             Assert.That(material.GetFloat("_OutlineWidth"), Is.GreaterThan(0));
             Assert.That(material.GetFloat("_OutlineSoftness"), Is.Zero);
-            Assert.That(material.GetColor("_OutlineColor").grayscale, Is.LessThan(.2f));
+            var outline = (Color32)material.GetColor("_OutlineColor");
+            Assert.That(Mathf.Max(outline.r, outline.g, outline.b), Is.LessThanOrEqualTo(5),
+                "The thin border of the gold level digits should stay near black over bright item art.");
+            Assert.That(outline.a, Is.EqualTo(255));
             Assert.That(material.IsKeywordEnabled("UNDERLAY_ON"), Is.True);
             Assert.That(material.GetFloat("_UnderlayOffsetY"), Is.LessThan(0));
             Assert.That(level.color.r, Is.GreaterThan(level.color.b));

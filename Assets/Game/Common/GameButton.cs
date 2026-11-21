@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AstralOath.Client.Core;
@@ -24,7 +25,9 @@ namespace AstralOath.Client.Common
         [SerializeField] private RectTransform pressedContent;
         [SerializeField] private Vector2 pressedOffset;
         private Vector2 restingPosition;
-        private bool contentPressed;
+        private bool feedbackPressed;
+        private List<(Graphic graphic, Color tint)> pressedGraphics;
+        private static readonly Color PressTint = new Color(.7f, .7f, .7f, 1f);
         private BindingScope current;
         private bool retainBindingWhileHidden;
         private bool dispatching;
@@ -63,14 +66,64 @@ namespace AstralOath.Client.Common
         {
             base.DoStateTransition(state, instant);
             bool pressed = state == SelectionState.Pressed;
-            if (pressedContent && contentPressed != pressed)
+            if (pressed && transition == Transition.ColorTint && targetGraphic)
+                targetGraphic.CrossFadeColor(colors.pressedColor * colors.colorMultiplier * PressTint, 0f, true, true);
+            SetPressFeedback(pressed);
+        }
+
+        protected override void InstantClearState()
+        {
+            SetPressFeedback(false);
+            base.InstantClearState();
+        }
+
+        private void SetPressFeedback(bool pressed)
+        {
+            if (feedbackPressed == pressed) return;
+            feedbackPressed = pressed;
+            if (pressedContent)
             {
                 if (pressed) restingPosition = pressedContent.anchoredPosition;
                 pressedContent.anchoredPosition = pressed ? restingPosition + pressedOffset : restingPosition;
-                contentPressed = pressed;
             }
             foreach (var decoration in pressDecorations)
-                if (decoration.image) decoration.image.overrideSprite = state == SelectionState.Pressed ? decoration.pressed : null;
+                if (decoration.image) decoration.image.overrideSprite = pressed ? decoration.pressed : null;
+            if (pressed)
+            {
+                pressedGraphics ??= new List<(Graphic, Color)>();
+                TintOwnedGraphics(transform);
+            }
+            else if (pressedGraphics != null)
+            {
+                foreach (var (graphic, tint) in pressedGraphics)
+                    if (graphic) graphic.canvasRenderer.SetColor(tint);
+                pressedGraphics.Clear();
+            }
+        }
+
+        private void TintOwnedGraphics(Transform node)
+        {
+            if (node != transform && node.TryGetComponent<Selectable>(out var nested) &&
+                nested.isActiveAndEnabled && nested.IsInteractable()) return;
+            if (node.TryGetComponent<Graphic>(out var graphic) && !HasAuthoredPressedTint(graphic))
+            {
+                var renderer = graphic.canvasRenderer;
+                var tint = renderer.GetColor();
+                pressedGraphics.Add((graphic, tint));
+                renderer.SetColor(tint * PressTint);
+            }
+            for (int i = 0; i < node.childCount; i++)
+                TintOwnedGraphics(node.GetChild(i));
+        }
+
+        private bool HasAuthoredPressedTint(Graphic graphic)
+        {
+            if (graphic == targetGraphic && (transition == Transition.ColorTint ||
+                transition == Transition.SpriteSwap && spriteState.pressedSprite && graphic is Image image &&
+                image.sprite != spriteState.pressedSprite)) return true;
+            foreach (var decoration in pressDecorations)
+                if (decoration.image == graphic && decoration.pressed && decoration.image.sprite != decoration.pressed) return true;
+            return false;
         }
 
         protected override void OnEnable()

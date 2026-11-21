@@ -308,16 +308,16 @@ namespace AstralOath.Editor
         }
 
         private static RectTransform SummonFooterButton(RectTransform root, List<(string Key, Object Target)> bindings,
-            string key, string artwork, bool right, float x, float bottom, float width, float height)
+            string key, string artwork, bool right, float x, float bottom, float width, float height, string variant = "")
         {
             var rect = Area(root, key, 0, 0, 0, 0);
             rect.anchorMin = rect.anchorMax = new Vector2(right ? 1 : 0, 0);
             rect.pivot = Vector2.zero;
             rect.anchoredPosition = new Vector2(x, bottom) * SummonCanvasScale;
             rect.sizeDelta = new Vector2(width, height) * SummonCanvasScale;
-            var normal = SummonArt(artwork);
+            var normal = SummonArt(artwork + variant);
             var button = Button(rect, normal, Color.white);
-            PressSprites(button, normal, SummonArt(artwork + "_p"));
+            PressSprites(button, normal, SummonArt(artwork + "_p" + variant));
             ((Image)button.targetGraphic).pixelsPerUnitMultiplier = 1f / SummonCanvasScale;
             bindings.Add((key, button));
             return rect;
@@ -361,7 +361,8 @@ namespace AstralOath.Editor
         private static void SummonFooterIcon(RectTransform root, List<(string Key, Object Target)> bindings,
             string key, string artwork, float left, float centerX, float centerY, float width, float height)
         {
-            var rect = SummonFooterButton(root, bindings, key, "_btn_circle_black_76", false, left, 19, 76, 76);
+            var variant = QualitySettings.activeColorSpace == ColorSpace.Linear ? "_linear" : "";
+            var rect = SummonFooterButton(root, bindings, key, "_btn_circle_black_76", false, left, 19, 76, 76, variant);
             var icon = Picture(rect, "Native " + key + " icon", SummonArt(artwork),
                 (centerX - width * .5f) / 76f, (76f - centerY - height * .5f) / 76f, width / 76f, height / 76f, true);
             if (key != "epic")

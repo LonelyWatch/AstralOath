@@ -40,7 +40,6 @@ namespace AstralOath.Client.Summon
         private HeroRosterPortrait featuredPortrait, revealPortrait;
         private SummonReward displayedReward;
         private SummonSkillLoop.Player featuredSkill;
-        private string activePanel;
         private UIPageLayers layers;
         private string wishRoleFilter;
         private HeroRosterPortrait[] wishPortraits;
@@ -120,7 +119,13 @@ namespace AstralOath.Client.Summon
             Hook("help", _ => ShowInfo());
             Hook("storage", OpenStorage);
             Hook("settings", _ => { ShowPanel("settingsPanel"); return Task.CompletedTask; });
-            Hook("previewToggle", _ => { PreviewEnabled = !PreviewEnabled; RefreshSummonSettings(); return Task.CompletedTask; });
+            Hook("previewToggle", _ =>
+            {
+                PreviewEnabled = !PreviewEnabled;
+                RefreshSummonSettings();
+                UpdateFeaturedSkill();
+                return Task.CompletedTask;
+            });
             Hook("settingsClose", ClosePanel);
             Hook("recovery", Recover);
             RefreshSummonSettings();
@@ -297,7 +302,7 @@ namespace AstralOath.Client.Summon
             view.Text("previewState").text = L(PreviewEnabled ? "settings.preview_on" : "settings.preview_off");
 
         private void UpdateFeaturedSkill() =>
-            featuredSkill?.SetState(PreviewEnabled && bannerId == Up && Banner != null, activePanel != null || busy);
+            featuredSkill?.SetState(PreviewEnabled && bannerId == Up && Banner != null, !view.Panel("mainPage").activeSelf);
 
         private void RenderWishRoster(bool visible)
         {
@@ -882,8 +887,6 @@ namespace AstralOath.Client.Summon
         private void ShowPanel(string active)
         {
             notice?.Hide();
-            activePanel = active;
-            UpdateFeaturedSkill();
             switch (active)
             {
                 case null:
@@ -905,6 +908,7 @@ namespace AstralOath.Client.Summon
                     layers.ShowOverlay(view.Panel(active), () => ClosePanel(screen.Token));
                     break;
             }
+            UpdateFeaturedSkill();
             if (active != "revealPanel") revealPortrait?.SetVisible(false);
         }
 

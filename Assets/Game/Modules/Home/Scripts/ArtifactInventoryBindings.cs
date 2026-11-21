@@ -33,6 +33,13 @@ namespace AstralOath.Client.Home
             _ = Get<Image>("Portrait");
             _ = Get<Image>("SlotImage");
             _ = Get<BindingMap>("EquipmentSlot");
+            _ = Get<BindingMap>("DetailBadge");
+            _ = Get<ScrollRect>("DescriptionScroll");
+            foreach (string key in new[] { "DetailZoom", "DetailSkillTab", "DetailStoryTab", "Change" })
+                _ = Get<GameButton>(key);
+            foreach (string key in new[] { "DetailEmblem", "DetailClass", "DetailWearer", "DetailSkillGlyph",
+                "LockOn", "LockOff", "SellGlyph" })
+                _ = Get<Image>(key);
             foreach (string item in new[] { "Card", "Detail", "Confirmation", "Materials", "EmptyIcon", "EmptyMessage" })
                 _ = Get<GameObject>(item);
             foreach (string key in new[] { "Capacity", "Level", "Attack", "Health", "Status", "Title", "Wearer",

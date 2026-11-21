@@ -12,7 +12,7 @@ using UnityEngine.UI;
 
 namespace AstralOath.Client.Home
 {
-    public sealed class HeroInventoryBinder
+    public sealed partial class HeroInventoryBinder
     {
         private const string TextPrefix = "home.hero_inventory.";
         private enum Tab { Heroes, Equipment, Artifacts }
@@ -26,7 +26,8 @@ namespace AstralOath.Client.Home
         private readonly ArtifactInventoryBinder artifacts;
         private readonly EquipmentInventoryBinder equipment;
         private readonly Func<string, CancellationToken, Task> startTrial;
-        private readonly List<Card> cards = new List<Card>();
+        private readonly List<Card> bagCards = new List<Card>(), rosterCards = new List<Card>();
+        private List<Card> cards => roster ? rosterCards : bagCards;
 
         private BindingScope screen;
         private HeroInventorySnapshot snapshot;
@@ -62,7 +63,8 @@ namespace AstralOath.Client.Home
             star = art.star;
             if (artifactArt != null && artifactApi != null)
                 artifacts = new ArtifactInventoryBinder(view.Artifacts, artifactApi, artifactArt, locale,
-                    () => selected, ClassForTemplate, HeroNameForInstance, OnArtifactsChanged, fetchArtifacts);
+                    () => selected, ClassForTemplate, HeroNameForInstance, OnArtifactsChanged, fetchArtifacts, EquipmentWearerPortrait,
+                    id => snapshot?.heroes?.FirstOrDefault(hero => hero.instanceId == id));
             if (equipmentApi != null)
                 equipment = new EquipmentInventoryBinder(view.Root.GetComponent<BindingMap>(),locale,equipmentApi,readEquipment,
                     () => snapshot?.heroes ?? Array.Empty<HeroInventoryItem>(), () => selected, EquipmentHeroName,
@@ -82,31 +84,18 @@ namespace AstralOath.Client.Home
             view.Show();
             view.FitInventoryLayout(roster);
             Scroll = roster ? view.RosterScroll : view.BagScroll;
-            if (roster)
-            {
-                rosterStage = view.RosterDetail;
-                focusedRoster = FocusedRosterScroll.Bind(Scroll, scope, null, SelectFocusedInstance);
-                Canvas.willRenderCanvases += OnRosterResized;
-                scope.Add(() => Canvas.willRenderCanvases -= OnRosterResized);
-                var currentPortrait = new HeroRosterPortrait(view.DetailPortrait, portraitSources);
-                portrait = currentPortrait;
-                Canvas.willRenderCanvases += currentPortrait.Tick;
-                scope.Add(() =>
-                {
-                    Canvas.willRenderCanvases -= currentPortrait.Tick;
-                    currentPortrait.Dispose();
-                    portrait = null;
-                });
-            }
+            if (roster) BindRosterPresentation(scope);
+            else BindWornFilters(scope);
             scope.Add(() =>
             {
-                foreach (var card in cards)
+                foreach (var card in bagCards.Concat(rosterCards))
                 {
                     if (!card.Root) continue;
                     card.Root.gameObject.SetActive(false);
                     UnityEngine.Object.Destroy(card.Root.gameObject);
                 }
-                cards.Clear();
+                bagCards.Clear();
+                rosterCards.Clear();
                 if (view.Root) view.Hide();
                 screen = null;
             });
@@ -117,7 +106,6 @@ namespace AstralOath.Client.Home
             view.TabArtifactsLabel.Bind(locale, scope, TextPrefix + "artifacts");
             view.SearchHint.Bind(locale, scope, TextPrefix + "roster_search");
             view.RosterSortCaption.Bind(locale, scope, TextPrefix + "roster_sort_level");
-            view.BagCaption("Sort").Bind(locale, scope, TextPrefix + "sort_level");
             view.BagCaption("EquipmentSort").Bind(locale, scope, TextPrefix + "sort_equipment_score");
             view.BagCaption("ArtifactSort").Bind(locale, scope, TextPrefix + "sort_upgrade");
             view.BagCaption("EquipmentEmpty").Bind(locale, scope, TextPrefix + "empty_equipment");
@@ -136,8 +124,8 @@ namespace AstralOath.Client.Home
             view.Bag.SetActive(!roster);
             view.Roster.SetActive(roster);
             var trialButton = view.ArtifactTrial;
-            trialButton.gameObject.SetActive(roster && startTrial != null);
-            if (roster && startTrial != null)
+            trialButton.gameObject.SetActive(startTrial != null);
+            if (startTrial != null)
             {
                 view.ArtifactTrialLabel.text = locale.Resolve(TextPrefix + "artifact_trial");
                 view.ArtifactTrialStatus.text = locale.Resolve(TextPrefix + "artifact_trial_failed");
@@ -145,14 +133,14 @@ namespace AstralOath.Client.Home
                 trialButton.onClick.AddListener(StartTrial);
                 scope.Add(() => { if (trialButton) trialButton.onClick.RemoveListener(StartTrial); });
             }
-            view.Back.BindBack(scope, () => equipment?.Back() == true || artifacts?.Back() == true ? Task.CompletedTask : expanded ? ToggleExpanded() : goHome());
-            view.Expand.Bind(scope, _ => ToggleExpanded());
+            view.Back.BindBack(scope, NavigateBack);
+            view.Expand.BindBack(scope, ToggleExpanded);
             view.Retry.Bind(scope, ReloadAsync);
-            view.TabHeroes.Bind(scope, ct => SelectTab(Tab.Heroes, ct));
-            view.TabEquipment.Bind(scope, ct => SelectTab(Tab.Equipment, ct));
-            view.TabArtifacts.Bind(scope, ct => SelectTab(Tab.Artifacts, ct));
+            view.TabHeroes.BindBack(scope, () => SelectTab(Tab.Heroes, scope.Token));
+            view.TabEquipment.BindBack(scope, () => SelectTab(Tab.Equipment, scope.Token));
+            view.TabArtifacts.BindBack(scope, () => SelectTab(Tab.Artifacts, scope.Token));
             foreach (string name in HeroInventory.ClassNames)
-                view.ClassFilter(name).Bind(scope, _ => SelectClass(name));
+                view.ClassFilter(name).BindBack(scope, () => SelectClass(name));
             SetExpanded(false);
             artifacts?.Bind(scope);
             equipment?.Bind(scope);
@@ -163,6 +151,13 @@ namespace AstralOath.Client.Home
 
         private int Columns => roster && expanded ? 4 : 1;
         private float GridRowHeight => roster ? 142.5f : 217.5f;
+
+        private Task NavigateBack()
+        {
+            if (equipment?.Back() == true || artifacts?.Back() == true || CloseWornFilters()) return Task.CompletedTask;
+            if (expanded) return ToggleExpanded();
+            return ReturnToWornBag() ? Task.CompletedTask : goHome();
+        }
 
         private Task ReloadAsync(CancellationToken token) => ReloadAsync(token, null);
 
@@ -236,6 +231,11 @@ namespace AstralOath.Client.Home
 
         private void OnArtifactsChanged()
         {
+            if (!roster && tab == Tab.Heroes && snapshot != null)
+            {
+                Refresh(resetScroll: false);
+                return;
+            }
             SetDetail();
             ShowCards();
         }
@@ -277,12 +277,13 @@ namespace AstralOath.Client.Home
         private void OnScroll(Vector2 _) => ShowCards();
         private void OnRosterResized()
         {
+            if (!roster) return;
             view.FitInventoryLayout(true);
             if (!expanded && compactViewport != Scroll.viewport.rect.size) ShowCards();
         }
         private void SelectFocusedInstance(int index)
         {
-            if (selected != visible[index]) Select(visible[index]);
+            if (roster && index >= 0 && index < visible.Length && selected != visible[index]) Select(visible[index]);
         }
         private void Select(HeroInventoryItem hero)
         {
@@ -302,13 +303,9 @@ namespace AstralOath.Client.Home
         {
             bool heroes = roster || tab == Tab.Heroes;
             string query = roster ? view.Search.text.Trim() : "";
-            visible = !heroes || snapshot?.heroes == null
-                ? Array.Empty<HeroInventoryItem>()
-                : snapshot.heroes.Where(item =>
-                    (query.Length == 0 || Name(item).IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0) &&
-                    (roster || classFilter == "all" || artwork.TryGetValue(item.templateId, out var art) && art.heroClass == classFilter))
-                    .OrderByDescending(item => item.level)
-                    .ToArray();
+            var owned = heroes ? snapshot?.heroes ?? Array.Empty<HeroInventoryItem>() : Array.Empty<HeroInventoryItem>();
+            visible = roster ? owned.Where(item => query.Length == 0 || Name(item).IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0)
+                .OrderByDescending(item => item.level).ToArray() : WornHeroes(owned).ToArray();
             selected = visible.FirstOrDefault(item => item.instanceId == selected?.instanceId) ?? visible.FirstOrDefault();
             view.Title.text = roster && selected != null ? Name(selected) : locale.Resolve(TextPrefix + (roster ? "heroes" : "bag"));
             var capacity = roster ? view.RosterCapacity : view.Capacity;
@@ -364,6 +361,7 @@ namespace AstralOath.Client.Home
             {
                 var card = new Card(UnityEngine.Object.Instantiate(roster ? view.RosterRow : view.BagRow, Scroll.content, false), roster);
                 if (roster) card.Button.onClick.AddListener(() => Select(card.Item));
+                else BindWornRow(card);
                 cards.Add(card);
             }
             int selectedIndex = Array.IndexOf(visible, selected);
@@ -394,7 +392,7 @@ namespace AstralOath.Client.Home
                 card.Display(item, Name(item), Level(item), art, star, active);
                 if (!roster)
                 {
-                    card.DisplayArtifact(artifacts?.EquippedCard(item.instanceId) ?? (null, 0));
+                    card.DisplayArtifact(artifacts?.EquippedCard(item.instanceId) ?? default);
                     if (equipment != null) card.DisplayGear(item.instanceId,equipment);
                 }
             }
@@ -513,7 +511,9 @@ namespace AstralOath.Client.Home
             private readonly Image firstLevelDigit, secondLevelDigit, maximumLevel;
             private readonly Sprite[] levelDigits;
             private readonly EquipmentSlotBinder artifactSlot;
-            private readonly EquipmentSlotBinder[] gearSlots;
+            private readonly Image[] artifactStars;
+            private readonly Image artifactLock;
+            private readonly EquipmentInventoryBinder.WornSlot[] gearSlots;
             private readonly bool roster;
 
             internal readonly RectTransform Root;
@@ -541,23 +541,23 @@ namespace AstralOath.Client.Home
                 {
                     level = map.Require<GameText>("level");
                     artifactSlot = new EquipmentSlotBinder(map.Require<BindingMap>("bagArtifactSlot"));
-                    gearSlots = Enumerable.Range(0,6).Select(i => new EquipmentSlotBinder(map.Require<Image>("emptyGear" + i)
+                    artifactStars = Enumerable.Range(0,5).Select(i => map.Require<Image>("bagArtifactStar" + i)).ToArray();
+                    artifactLock = map.Require<Image>("bagArtifactLock");
+                    gearSlots = Enumerable.Range(0,6).Select(i => new EquipmentInventoryBinder.WornSlot(map.Require<Image>("emptyGear" + i)
                         .GetComponentInParent<BindingMap>(true))).ToArray();
                 }
             }
 
-            internal void DisplayArtifact((Sprite Portrait, int Level) equipped)
+            internal void DisplayArtifact((Sprite Portrait, int Level, int Stars, bool Locked) equipped)
             {
                 artifactSlot.Set(equipped.Portrait, equipped.Level);
+                for (int i = 0; i < artifactStars.Length; ++i) artifactStars[i].enabled = i < equipped.Stars;
+                artifactLock.enabled = equipped.Locked;
             }
 
             internal void DisplayGear(string heroId, EquipmentInventoryBinder gear)
             {
-                for (int i = 0; i < gearSlots.Length; ++i)
-                {
-                    var (icon,level) = gear.Equipped(heroId,EquipmentInventoryBinder.Slots[i]);
-                    gearSlots[i].Set(icon,level);
-                }
+                gear.PaintWornSlots(gearSlots, heroId);
             }
 
             internal void Display(HeroInventoryItem item, string title, string levelText, HomeHeroArt.Hero art, Sprite star,

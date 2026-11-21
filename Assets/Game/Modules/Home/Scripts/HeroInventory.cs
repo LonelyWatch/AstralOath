@@ -98,6 +98,9 @@ namespace AstralOath.Client.Home
         internal Image DetailIllustration => Bindings.Require<Image>("detailIllustration");
         internal RawImage DetailPortrait => Bindings.Require<RawImage>("detailPortrait");
         internal GameObject BagFilter => Bindings.Require<GameObject>("bagFilter");
+        internal BindingMap WornFilters => Bindings.Require<BindingMap>("wornFilters");
+        internal GameButton WornSort => Bindings.Require<GameButton>("bagSort");
+        internal Image WornSortAttack => Bindings.Require<Image>("bagSortAttack");
         internal static readonly string[] ClassNames = { "all", "knight", "warrior", "mage", "ranger", "thief", "soul_weaver" };
         internal GameButton ClassFilter(string key) => Bindings.Require<GameButton>("filter_" + key);
         internal Image ClassSelection(string key) => Bindings.Require<Image>("filterActive_" + key);

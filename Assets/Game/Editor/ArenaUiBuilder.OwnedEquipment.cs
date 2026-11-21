@@ -66,9 +66,12 @@ namespace AstralOath.Editor
                 PrefabUtility.RecordPrefabInstancePropertyModifications(plate);
                 return button;
             }
+            var wornRow = ((GameObject)outer.First(pair => pair.Key == "bagRow").Target).GetComponent<BindingMap>();
             for (int i = 0; i < slots.Length; i++)
             {
                 var slot = (BindingMap)outer.First(pair => pair.Key == "equipmentSlot_" + authored[i]).Target;
+                AuthorWornEquipmentCard(slot, false);
+                AuthorWornEquipmentCard(wornRow.Require<Image>("emptyGear" + i).GetComponentInParent<BindingMap>(true), true);
                 var button = slot.GetComponent<GameButton>() ?? slot.gameObject.AddComponent<GameButton>();
                 var plate = slot.Require<Image>("frame");
                 plate.raycastTarget = true;

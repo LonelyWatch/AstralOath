@@ -101,8 +101,8 @@ namespace AstralOath.Editor
             material.EnableKeyword("OUTLINE_ON");
             material.EnableKeyword("UNDERLAY_ON");
             material.SetFloat("_FaceDilate", .21f);
-            material.SetFloat("_OutlineWidth", .23f);
-            material.SetColor("_OutlineColor", new Color32(31, 17, 8, 255));
+            material.SetFloat("_OutlineWidth", .25f);
+            material.SetColor("_OutlineColor", new Color32(3, 2, 1, 255));
             material.SetFloat("_UnderlayOffsetX", .12f);
             material.SetFloat("_UnderlayOffsetY", -.54f);
             material.SetColor("_UnderlayColor", new Color32(14, 7, 3, 230));

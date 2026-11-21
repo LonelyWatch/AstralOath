@@ -17,6 +17,7 @@ SPRITES = (
     "cm_item_slot", "cm_item_slot_arti", "cm_item_slot_private", "cm_icon_parprivate",
     "icon_menu_private", "icon_menu_stuff", "icon_menu_reward_box", "icon_menu_equipstorage",
     "cm_icon_arti_public", "hero_lv_max", "_box_equip_0", "arti_gauge_bar",
+    "cm_icon_etcbin", "cm_icon_etclocked", "cm_icon_etclockun",
 )
 LAYOUTS = ("inventory_renewal", "inventory_wearing", "sorting_renewal",
            "artifact_bar", "artifact_detail_sub", "inventory_artifact_popup")
