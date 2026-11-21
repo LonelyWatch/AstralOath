@@ -71,12 +71,6 @@ namespace AstralOath.Client.Arena
         {
             this.endpoint = endpoint ?? throw new ArgumentNullException(nameof(endpoint));
             this.lifetime = lifetime;
-            if (transport == null)
-            {
-                // Unity's Mono HTTP backend uses ServicePoint for the per-origin limit.
-                var route = ServicePointManager.FindServicePoint(endpoint, endpoint.IsLoopback ? null : WebRequest.DefaultWebProxy);
-                route.ConnectionLimit = Math.Max(route.ConnectionLimit, 8);
-            }
             http = new HttpClient(transport ?? new HttpClientHandler { AllowAutoRedirect = false, UseProxy = !endpoint.IsLoopback })
             {
                 MaxResponseContentBufferSize = 2 * 1024 * 1024
