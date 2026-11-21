@@ -12,7 +12,7 @@
 
 ## 六种装备槽
 
-原库 `sound/ui1.yml` 和 `sound/events.yml` 分别给出装备事件、采样和 GUID。戒指已有成交流程的录像验证。其余五槽按用户确认的原库依据接入，尚缺同版实机中这五种物品分别配戴成功的录音。
+原库 `sound/ui1.yml` 和 `sound/events.yml` 分别给出装备事件、采样和 GUID。戒指已有成交流程的录像验证。其余五槽按原库各自的配戴事件接入，尚缺同版实机中这五种物品分别配戴成功的录音。
 
 - 武器使用 `equip_weapon` 和原始采样 `SE_UI2_LOBBY_HERO_EQUIP_WEAPON.wav`。
 - 头盔使用 `equip_helm` 和 `SE_UI2_LOBBY_HERO_EQUIP_HEAD.wav`。
@@ -26,6 +26,10 @@
 将录像与原库音轨转为 12 kHz 单声道，对差分后的前 133 ms 做归一化互相关，再核对命中位置前后画面。英雄入场声另比对整段和后半段，区别共用起音的候选事件。发行使用 FMOD Studio 2.03.15 在原生 48 kHz 下重放事件得到的双声道 PCM。没有把录像的音乐、语音或环境声拷进客户端。[原事件、采样、帧数及 SHA-256](../../Assets/Game/Common/Res/Textures/ui-feedback-source.json)
 
 独立 Unity 工程的初测有 14 项失败，包括旧镜像未含卡片滑动声。最终 `InventoryFeedbackAudioTests` 的 17 项通过，逐项打开实际启动场景，核对枚举、音频依赖、资源路径并读取非静音 PCM。已对 13 个新增事件再次渲染，逐字节相同。录像配对试听文件 `.artifacts/inventory-audio-r32/source-game-audition.wav` 依次包含戒指、神器、解除与锁，每组先录屏后发行原声；`wearer-audition.wav` 按武器、头盔、护甲、项链、戒指、鞋、神器、解除排列。
+
+D3D11 图形客户端连接 R32 训练服的四项操作检查全部通过。配戴、替换和解除，每次成功回包只发出一次相应的专属音。服务器实际返回 HTTP 409、玩家取消时，专属音均为零次。另测长按、拖出、右键及禁用静音，普通短击和键盘确认各触发一次。检查回执为 `.artifacts/inventory-audio-r32/edge-qa/pointer/PlayMode.xml`。
+
+用 UGUI 鼠标按下、松开和单击事件再次验证了三条真实服务器路径。取消和 409 各只触发普通按钮声，配戴成功时普通按钮声在武器配戴声之前。该验证记录根 Canvas 上的实际播放调用，同时另行读取发行音频的 PCM。批处理环境的主混音录制取得零个采样，未据此评定音箱输出。
 
 ```powershell
 .tools/dotnet/dotnet.exe build Tools/BattleScene/AudioProbe -c Release -o .artifacts/inventory-audio-tools
