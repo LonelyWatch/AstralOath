@@ -38,7 +38,7 @@ namespace AstralOath.Client.FoundationDemo
                     if (verifySummon)
                         await SummonPlayerSmoke.RunAsync(context, navigation, scope.Token);
                     else if (verifyRoom)
-                        await ArenaRoomPlayerSmoke.RunAsync(context, scope.Token);
+                        ArenaRoomPlayerSmoke.Start(context, scope.Token);
                     else
                         ArenaBattlePlayerSmoke.StartIfRequested(context, scope.Token);
                     return;

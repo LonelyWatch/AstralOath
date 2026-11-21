@@ -25,7 +25,7 @@ function Open-TestPlayer([string]$role) {
     $start.EnvironmentVariables['ASTRAL_ROOM_SMOKE_ROLE'] = $role
     $start.EnvironmentVariables['ASTRAL_ROOM_SMOKE_ID'] = $run
     $log = Join-Path $out "$role.log"
-    $start.Arguments = "-screen-fullscreen 0 -screen-width 960 -screen-height 540 -force-d3d11 -astral-startup-smoke -astral-arena-room-smoke -logFile `"$log`""
+    $start.Arguments = "-screen-fullscreen 0 -screen-width 960 -screen-height 540 -force-d3d11 -astral-arena-battle-smoke -astral-arena-room-smoke -logFile `"$log`""
     [Diagnostics.Process]::Start($start)
 }
 
@@ -35,6 +35,7 @@ try {
     $hostLog = Join-Path $out 'host.log'
     $clock = [Diagnostics.Stopwatch]::StartNew()
     while (!(Test-Path -LiteralPath $hostLog) -or
+        !(Select-String -LiteralPath $hostLog -SimpleMatch "ASTRAL_CONTENT_ACTIVE version=$ExpectedRelease recovered=False" -Quiet) -or
         !(Select-String -LiteralPath $hostLog -SimpleMatch 'ASTRAL_ROOM_ENTERED host' -Quiet)) {
         if ($players.host.HasExited -or $clock.Elapsed.TotalSeconds -gt 180) { throw "Host did not enter its room. See $hostLog" }
         Start-Sleep -Milliseconds 150

@@ -15,11 +15,35 @@ namespace AstralOath.Client.FoundationDemo
         internal static bool IsRequested()
         {
             string[] args = Environment.GetCommandLineArgs();
-            return Debug.isDebugBuild && Array.IndexOf(args, "-astral-startup-smoke") >= 0 &&
+            return !Application.isEditor && Debug.isDebugBuild && Array.IndexOf(args, "-astral-arena-battle-smoke") >= 0 &&
                 Array.IndexOf(args, "-astral-arena-room-smoke") >= 0;
         }
 
-        internal static async Task RunAsync(GameLaunchContext context, CancellationToken token)
+        internal static void Start(GameLaunchContext context, CancellationToken token)
+        {
+            Application.runInBackground = true;
+            _ = RunAndQuitAsync(context, token);
+        }
+
+        private static async Task RunAndQuitAsync(GameLaunchContext context, CancellationToken token)
+        {
+            try
+            {
+                // Let the bootstrap confirm this process's launch before another Player opens the same cache.
+                await Task.Yield();
+                token.ThrowIfCancellationRequested();
+                await RunAsync(context, token);
+                Application.Quit(0);
+            }
+            catch (OperationCanceledException) when (token.IsCancellationRequested) { }
+            catch (Exception error)
+            {
+                Debug.LogException(error);
+                Application.Quit(1);
+            }
+        }
+
+        private static async Task RunAsync(GameLaunchContext context, CancellationToken token)
         {
             if (!context.Services.Get<GameServerEndpoint>().Address.IsLoopback)
                 throw new InvalidOperationException("The room UI smoke requires a loopback server.");
