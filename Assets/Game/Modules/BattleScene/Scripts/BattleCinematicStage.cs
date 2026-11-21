@@ -84,6 +84,7 @@ namespace AstralOath.Client.BattleScene
             originalSize = inherited?.Size ?? camera.orthographicSize;
             originalClear = inherited?.Clear ?? camera.backgroundColor;
             originalBackground = inherited?.Background ?? (background && background.activeSelf);
+            backgroundTransition = inherited?.Transition ?? new BackgroundTransition(camera, background, originalBackground, originalClear);
             time = 0f;
             cutinTime = 0f;
             basePosition = camera.transform.position;
@@ -143,9 +144,7 @@ namespace AstralOath.Client.BattleScene
                     ApplyLayout(node);
                     break;
                 case "BGSHOW":
-                    bool show = (bool?)node["show"] ?? false;
-                    if (background) background.SetActive(show && originalBackground);
-                    camera.backgroundColor = show ? originalClear : Color.black;
+                    backgroundTransition.Set((bool?)node["show"] == true, Number(node, "time") / 1000f);
                     break;
                 case "DARK":
                     int darkOrder = Number(node, "globalZ", -1f) > 0f ? 91 : -20;
@@ -305,6 +304,7 @@ namespace AstralOath.Client.BattleScene
             UpdateViewport();
             time += Mathf.Max(0f, delta);
             cutinTime += Mathf.Max(0f, delta);
+            backgroundTransition.Tick(Mathf.Max(0f, delta));
             if (zoom is { } scale)
             {
                 float progress = Progress(scale.Start, scale.Duration);
@@ -549,11 +549,14 @@ namespace AstralOath.Client.BattleScene
                 originalSize = pendingHandoff.Size;
                 originalClear = pendingHandoff.Clear;
                 originalBackground = pendingHandoff.Background;
+                backgroundTransition = pendingHandoff.Transition;
                 AdoptBackdrop(pendingHandoff);
                 pendingHandoff = null;
                 running = true;
             }
             if (running && camera) UpdateViewport();
+            backgroundTransition?.RestoreColors();
+            backgroundTransition = null;
             RestoreLayout();
             postEffects.Reset();
             ReleaseCameraMotion();

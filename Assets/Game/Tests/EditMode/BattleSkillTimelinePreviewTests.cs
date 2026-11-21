@@ -110,6 +110,41 @@ namespace AstralOath.Tests
             }
         }
 
+        [Test]
+        public void IseriaOpeningDarkensTheBattlefieldOverTheSourceTwoHundredMilliseconds()
+        {
+            if (SystemInfo.graphicsDeviceType == GraphicsDeviceType.Null) Assert.Ignore("需要图形设备。");
+            var type = Type.GetType(PreviewTypeName, true);
+            using var session = (IDisposable)Activator.CreateInstance(type, nonPublic: true);
+            type.GetMethod("Load", Instance).Invoke(session,
+                new object[] { "c1024", "c_iseria_skill_03", null, "c1001", false, false, false });
+            var target = (RenderTexture)type.GetProperty("Texture", Instance).GetValue(session);
+            var previous = RenderTexture.active;
+            var readback = new Texture2D(48, 32, TextureFormat.RGB24, false);
+            try
+            {
+                float Brightness(float seconds)
+                {
+                    type.GetMethod("Seek", Instance).Invoke(session, new object[] { seconds });
+                    type.GetMethod("Render", Instance).Invoke(session, null);
+                    RenderTexture.active = target;
+                    readback.ReadPixels(new Rect(target.width * .8f, target.height * .65f, 48, 32), 0, 0);
+                    return (float)readback.GetPixels32().Average(p => (p.r + p.g + p.b) / (3f * 255f));
+                }
+                float initial = Brightness(0f), middle = Brightness(.1f), final = Brightness(.21f);
+                TestContext.WriteLine($"Map opening luminance at 0, 100, 210 ms: {initial:F3}, {middle:F3}, {final:F3}.");
+                Assert.That(initial, Is.GreaterThan(.12f));
+                Assert.That(middle, Is.GreaterThan(final + .04f));
+                Assert.That(middle, Is.LessThan(initial - .03f));
+                Assert.That(final, Is.LessThan(.05f));
+            }
+            finally
+            {
+                RenderTexture.active = previous;
+                Object.DestroyImmediate(readback);
+            }
+        }
+
         [TestCase(false)]
         [TestCase(true)]
         public void IseriaFinalSwordTravelsWithTheAuthoredEffectObject(bool casterOnRight)

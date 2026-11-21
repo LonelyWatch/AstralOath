@@ -14,6 +14,7 @@ namespace AstralOath.Client.BattleScene
             internal float Size;
             internal Color Clear;
             internal bool Background;
+            internal BackgroundTransition Transition;
             internal SpriteRenderer Backdrop;
             internal Vector3 BackdropPosition, BackdropScale;
             internal Bounds BackdropBounds, MapBounds;
@@ -34,7 +35,7 @@ namespace AstralOath.Client.BattleScene
             var inherited = new HandoffState
             {
                 Position = originalPosition, Size = originalSize, Clear = originalClear,
-                Background = originalBackground, Backdrop = farBackdrop,
+                Background = originalBackground, Transition = backgroundTransition, Backdrop = farBackdrop,
                 BackdropPosition = backdropPosition, BackdropScale = backdropScale,
                 BackdropBounds = backdropBounds, MapBounds = mapBounds, HasMapBounds = hasMapBounds
             };
@@ -45,6 +46,7 @@ namespace AstralOath.Client.BattleScene
             var backdrop = farBackdrop;
             Vector3 displayedPosition = backdrop ? backdrop.transform.position : Vector3.zero;
             Vector3 displayedScale = backdrop ? backdrop.transform.localScale : Vector3.one;
+            backgroundTransition = null; // The receiving stage resumes an in-flight BGSHOW fade.
             Reset();
             camera.transform.position = position;
             camera.orthographicSize = size;
