@@ -927,12 +927,14 @@ namespace AstralOath.Client.BattleScene
             string anchorName = (string)node["locationParam"];
             var offset = new Vector2(Number(node, "x"), Number(node, "y"));
             bool disableAutoFlipX = (bool?)node["disableAutoFlipX"] == true;
+            if (!location.HasValue && TryPlayEffectObject(node, primary, targets, offset))
+                return;
             if (!location.HasValue && string.IsNullOrEmpty(anchorName) && source == "iseria_skill_03_gate.cfx")
             {
                 // At 13:30.5 the outer sword lights span 55% of the 1920-wide reference.
                 // The gate rig places them 1541 source units apart, with its origin near the lower edge.
                 Cfx(source, primary, targets, null, Number(node, "scale", 1f) * .69f,
-                    offset + new Vector2(0f, -378f), false, disableAutoFlipX: disableAutoFlipX);
+                    offset + new Vector2(0f, -350f), false, disableAutoFlipX: disableAutoFlipX);
                 return;
             }
             // The ken_nbg_tx lettering stays at the same pixels through the source's 0.60 → 0.65 → 0.60 zoom.
@@ -980,9 +982,60 @@ namespace AstralOath.Client.BattleScene
                 ((int?)link["from"], (int?)link["when"] ?? 0, Number(link, "delay"));
         }
 
+        private bool TryPlayEffectObject(JObject node, BattlePreviewActor primary, BattlePreviewActor[] targets,
+            Vector2 offset)
+        {
+            string id = (string)node["id"];
+            if (string.IsNullOrEmpty(id) || !primary) return false;
+            var tracks = cache.Cues[(caster, currentPresentationId)].Where(cue => (string)cue.Node["targetId"] == id &&
+                Kind(cue.Node) is "OBJ_MOVE_BY" or "OBJ_SCALE_TO").ToArray();
+            if (tracks.Length == 0) return false;
+
+            var effectObject = new GameObject("Skill object " + id).transform;
+            cinematic.FrameSourceObject();
+            effectObject.SetParent(root, false);
+            float side = caster.FacingDirection;
+            primary.TryGetPresentationAnchor(null, out var anchor);
+            effectObject.position = anchor + new Vector3(offset.x * side, offset.y) * SourcePixel;
+            effectObject.localScale = Vector3.one * Number(node, "scale", 1f);
+            string source = (string)node["source"];
+            active.Add((time + EffectDuration(source), _ => { }, () =>
+            {
+                if (effectObject) DestroyVisual(effectObject.gameObject);
+            }, false));
+            Cfx(source, primary, targets, null, 1f, Vector2.zero, false, effectObject: effectObject);
+            foreach (var track in tracks)
+            {
+                var motion = track.Node;
+                Schedule(track.At, () =>
+                {
+                    if (!effectObject) return;
+                    bool scale = Kind(motion) == "OBJ_SCALE_TO";
+                    var start = scale ? effectObject.localScale : effectObject.localPosition;
+                    var end = scale ? Vector3.one * Number(motion, "scale", 1f) :
+                        start + new Vector3(side * Number(motion, "x"), Number(motion, "y")) * SourcePixel;
+                    float from = time, duration = Seconds(motion, "time");
+                    bool hasCurve = BattleCinematicStage.TryParseCurve((string)motion["curve"], out var curve);
+                    void Set(float progress)
+                    {
+                        if (!effectObject) return;
+                        float eased = hasCurve ? BattleCinematicStage.EvaluateCurve(progress, curve) : progress;
+                        var value = Vector3.LerpUnclamped(start, end, eased);
+                        if (scale) effectObject.localScale = value;
+                        else effectObject.localPosition = value;
+                    }
+                    if (duration > 0f)
+                        active.Add((from + duration, _ => Set(Mathf.Clamp01((time - from) / duration)), () => Set(1f), false));
+                    else Set(1f);
+                });
+            }
+            return true;
+        }
+
         private void Cfx(string source, BattlePreviewActor primary, BattlePreviewActor[] targets, int? location,
             float scale, Vector2 offset, bool hit, Vector2 spread = default, string anchorName = null,
-            bool modelTimeline = false, bool disableAutoFlipX = false, bool fixedArtwork = false)
+            bool modelTimeline = false, bool disableAutoFlipX = false, bool fixedArtwork = false,
+            Transform effectObject = null)
         {
             string key = source.StartsWith(EffectPath, StringComparison.Ordinal) ? source : EffectPath + source;
             if (!key.EndsWith(".cfx", StringComparison.Ordinal)) key += ".cfx";
@@ -990,7 +1043,7 @@ namespace AstralOath.Client.BattleScene
 
             if (!location.HasValue)
             {
-                if (!camera)
+                if (!camera && !effectObject)
                 {
                     WarnSource($"Screen CFX '{key}' needs a camera.");
                     return;
@@ -1006,7 +1059,8 @@ namespace AstralOath.Client.BattleScene
                     // Keep source layers ordered around the actors, below the full-screen flash and HUD.
                     int order = depth < 0f ? -10 + Array.IndexOf(behind, depth) : 65 + Array.IndexOf(inFront, depth);
                     Schedule(time + Seconds(part, "delay"), () =>
-                        Spawn(key, part, null, null, scale, offset, side, true, order, disableAutoFlipX: disableAutoFlipX));
+                        Spawn(key, part, null, null, scale, offset, side, true, order,
+                            disableAutoFlipX: disableAutoFlipX, effectObject: effectObject));
                 }
                 return;
             }
@@ -1122,7 +1176,7 @@ namespace AstralOath.Client.BattleScene
 
         private void Spawn(string key, JObject part, Func<Vector3> position, BattlePreviewActor anchor, float scale,
             Vector2 offset, float side, bool follow, int? screenOrder = null, bool modelTimeline = false,
-            bool disableAutoFlipX = false, bool fixedArtwork = false)
+            bool disableAutoFlipX = false, bool fixedArtwork = false, Transform effectObject = null)
         {
             string source = (string)part["source"];
             if (string.IsNullOrWhiteSpace(source)) return;
@@ -1135,7 +1189,7 @@ namespace AstralOath.Client.BattleScene
             int order = screenOrder ??
                 ((renderer ? renderer.sortingOrder : 55) + (int)Mathf.Sign(Number(part, "globalZ", 1f)) * 2);
             var group = new GameObject("Skill CFX " + key.Substring(EffectPath.Length)).transform;
-            group.SetParent(root, false);
+            group.SetParent(effectObject ? effectObject : root, false);
             // STG offsets locate the effect on the formation. Its primitives can retain their authored orientation.
             float visualFacing = disableAutoFlipX ? 1f : side;
             Vector3 translation = new Vector3(offset.x * side + Number(part, "x") * visualFacing,
@@ -1169,7 +1223,12 @@ namespace AstralOath.Client.BattleScene
 
             void UpdatePosition(bool initial)
             {
-                if (screenOrder.HasValue)
+                if (effectObject)
+                {
+                    group.localPosition = translation;
+                    group.localScale = partScale;
+                }
+                else if (screenOrder.HasValue)
                 {
                     group.position = cinematic.SourceScreenPoint(root.position, translation);
                     group.localScale = partScale * cinematic.SourceScreenScale;
@@ -1215,7 +1274,13 @@ namespace AstralOath.Client.BattleScene
                 if (QualitySettings.activeColorSpace == ColorSpace.Linear)
                 {
                     opacityBlock = new MaterialPropertyBlock();
-                    opacityBlock.SetFloat("_SrgbVertexTint", 1f);
+                    // Iseria's luminous rigs stack authored additive colours. At 13:30.72
+                    // the gate's six white cores occupy 14% of the central shot.
+                    if (source is "iseria_skill_03_gateopen" or "iseria_skill_03_swordswing_01")
+                        opacityBlock.SetFloat("_PresentationBrightness", .80f);
+                    else if (source is "iseria_skill_03_final_front" or "iseria_skill_03_final_back")
+                        opacityBlock.SetFloat("_PresentationBrightness", .90f);
+                    else opacityBlock.SetFloat("_SrgbVertexTint", 1f);
                     renderer.SetPropertyBlock(opacityBlock);
                 }
                 var updateOpacity = PrimitiveOpacity(part, value =>

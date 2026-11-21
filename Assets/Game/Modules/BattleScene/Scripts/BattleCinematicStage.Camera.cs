@@ -95,6 +95,17 @@ namespace AstralOath.Client.BattleScene
         private BattlePreviewViewport viewport;
         private int viewportRevision;
         private float viewportBaseline;
+        private float objectShotCrop = 1f;
+
+        // World-space CFX objects are composed against a 720-high source frame.
+        // The project camera frames its normal combat layout at 1080 design pixels.
+        internal void FrameSourceObject()
+        {
+            objectShotCrop = 720f / 1080f;
+            if (!caster || targets.Contains(caster)) return;
+            var casterSlot = participants?.FirstOrDefault(slot => slot && ContainsActor(slot, caster));
+            HideLayoutParticipant(casterSlot ? casterSlot : caster);
+        }
 
         private void CaptureViewport()
         {
@@ -204,6 +215,7 @@ namespace AstralOath.Client.BattleScene
                 }
             }
             camera.transform.position = requested;
+            camera.orthographicSize *= objectShotCrop;
         }
 
         public void PlayShake(JObject node, SkeletonPlayerSource source)
@@ -242,6 +254,7 @@ namespace AstralOath.Client.BattleScene
         {
             foreach (var shake in cameraShakes) shake.Player.Dispose();
             cameraShakes.Clear(); shakeOffset = Vector3.zero; hasFocus = false;
+            objectShotCrop = 1f;
             if (farBackdrop)
             {
                 farBackdrop.transform.position = backdropPosition;

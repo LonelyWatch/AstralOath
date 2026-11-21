@@ -84,6 +84,20 @@ namespace AstralOath.Tests
                     TestContext.WriteLine($"Gate half {half}, {width} × 540: {lit} lit pixels.");
                     Assert.That(lit, Is.GreaterThan(5000), "Blue sword trails must cross both halves of the shot.");
                 }
+                Seek(gate.At + .63f);
+                type.GetMethod("Render", Instance).Invoke(session, null);
+                readback.ReadPixels(new Rect(0, 0, target.width, target.height), 0, 0);
+                var peak = readback.GetPixels32();
+                int white = 0;
+                for (int y = 148; y < 520; y++)
+                    for (int x = width / 2 - 304; x < width / 2 + 304; x++)
+                    {
+                        var pixel = peak[y * width + x];
+                        if (pixel.r > 209 && pixel.g > 209 && pixel.b > 209) white++;
+                    }
+                float whiteCoverage = white / (608f * 372f);
+                TestContext.WriteLine($"Gate bright cores: {whiteCoverage:P2} white.");
+                Assert.That(whiteCoverage, Is.InRange(.10f, .20f), "Overlapping sword light has a white core.");
                 Seek(cutin.At + .1f);
                 Assert.That(HasGate(), Is.False, "After the CUT resumes the stage, subsequent hits use their own effects.");
             }
@@ -93,6 +107,96 @@ namespace AstralOath.Tests
                 camera.targetTexture = original;
                 RenderTexture.ReleaseTemporary(target);
                 Object.DestroyImmediate(readback);
+            }
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void IseriaFinalSwordTravelsWithTheAuthoredEffectObject(bool casterOnRight)
+        {
+            var type = Type.GetType(PreviewTypeName, true);
+            using var session = (IDisposable)Activator.CreateInstance(type, nonPublic: true);
+            type.GetMethod("Load", Instance).Invoke(session,
+                new object[] { "c1024", "c_iseria_skill_03", null, "c1001", casterOnRight, false, false });
+            var cues = (IReadOnlyList<(float At, JObject Node, float Duration, JObject[] Modulators)>)
+                type.GetProperty("Cues", Instance).GetValue(session);
+            var cutin = cues.Single(cue => (int?)cue.Node["guid"] == 25);
+            var world = (Scene)type.GetField("scene", Instance).GetValue(session);
+            var seek = type.GetMethod("SeekStage", Instance);
+            seek.Invoke(session, new object[] { cutin.At + .015f });
+            var sword = world.GetRootGameObjects().SelectMany(o => o.GetComponentsInChildren<MeshRenderer>())
+                .Single(r => r.name == "iseria_skill_03_final_front").transform;
+            float initialY = sword.position.y, initialScale = Mathf.Abs(sword.lossyScale.x);
+            seek.Invoke(session, new object[] { cutin.At + .68f });
+            float settledScale = Mathf.Abs(sword.lossyScale.x);
+            Assert.That(initialScale / settledScale, Is.EqualTo(2.4f).Within(.05f),
+                "The 650 ms scale track has to update the entire sword, even after a particle starts.");
+            Assert.That(sword.position.y - initialY, Is.GreaterThan(7f),
+                "The authored 900-unit lift must bring the blade back into the hit shot.");
+            seek.Invoke(session, new object[] { cutin.At + 2f });
+            Assert.That(Mathf.Abs(sword.lossyScale.x), Is.EqualTo(settledScale).Within(.001f));
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void IseriaVinesFillBothSidesOfTheImpactShotAndReleaseTheCamera(bool casterOnRight)
+        {
+            if (SystemInfo.graphicsDeviceType == GraphicsDeviceType.Null) Assert.Ignore("需要图形设备。");
+            var type = Type.GetType(PreviewTypeName, true);
+            using var session = (IDisposable)Activator.CreateInstance(type, nonPublic: true);
+            type.GetMethod("Load", Instance).Invoke(session,
+                new object[] { "c1024", "c_iseria_skill_03", null, "c1001", casterOnRight, false, false });
+            var camera = (Camera)type.GetField("camera", Instance).GetValue(session);
+            float originalSize = camera.orthographicSize;
+            var seek = type.GetMethod("Seek", Instance);
+            seek.Invoke(session, new object[] { 8.8f });
+            var caster = (Component)type.GetField("caster", Instance).GetValue(session);
+            var recipient = (Component)type.GetField("primaryTarget", Instance).GetValue(session);
+            var casterBody = caster.GetComponentsInChildren<MeshRenderer>(true).First();
+            Assert.That(casterBody.enabled, Is.False, "Only the recipient is visible in the reverse impact shot.");
+            Assert.That(recipient.GetComponentsInChildren<MeshRenderer>(true).Any(r => r.enabled), Is.True);
+            type.GetMethod("Render", Instance).Invoke(session, null);
+            var target = camera.targetTexture;
+            var previous = RenderTexture.active;
+            var image = new Texture2D(target.width, target.height, TextureFormat.RGB24, false);
+            try
+            {
+                RenderTexture.active = target;
+                image.ReadPixels(new Rect(0, 0, target.width, target.height), 0, 0);
+                var pixels = image.GetPixels32();
+                int brightCores = 0;
+                for (int y = target.height * 25 / 135; y < target.height * 132 / 135; y++)
+                    for (int x = target.width * 55 / 240; x < target.width * 182 / 240; x++)
+                    {
+                        var pixel = pixels[y * target.width + x];
+                        if (pixel.r > 209 && pixel.g > 209 && pixel.b > 209) brightCores++;
+                    }
+                float brightArea = brightCores / (target.width * (127f / 240f) * target.height * (107f / 135f));
+                TestContext.WriteLine($"Impact white cores: {brightArea:P2}.");
+                Assert.That(brightArea, Is.InRange(.08f, .35f), "The final crest and vines have white centres.");
+                for (int side = 0; side < 2; side++)
+                {
+                    int start = target.width * (side == 0 ? 55 : 365) / 480;
+                    int end = start + target.width / 8;
+                    int cyan = 0;
+                    for (int y = target.height / 6; y < target.height * 4 / 5; y++)
+                        for (int x = start; x < end; x++)
+                        {
+                            var p = pixels[y * target.width + x];
+                            if (p.b > 170 && p.g > 155 && p.b > p.r * 1.25f && p.g > p.r * 1.24f) cyan++;
+                        }
+                    float coverage = cyan / (float)((end - start) * target.height * 19 / 30);
+                    TestContext.WriteLine($"Sword vine side {side}: {coverage:P2} cyan coverage.");
+                    Assert.That(coverage, Is.GreaterThan(.065f), "The native vines reach the outer impact lanes.");
+                }
+                seek.Invoke(session, new object[] { 11f });
+                Assert.That(camera.orthographicSize, Is.EqualTo(originalSize).Within(.01f));
+                Assert.That(casterBody.enabled, Is.True, "Returning to the battlefield restores the caster.");
+            }
+            finally
+            {
+                RenderTexture.active = previous;
+                Object.DestroyImmediate(image);
             }
         }
 

@@ -135,7 +135,7 @@ namespace AstralOath.Client.BattleScene
                     }
                     else
                     {
-                        zoom = (camera.orthographicSize, targetSize, time,
+                        zoom = (EffectiveSize(), targetSize, time,
                             Number(node, "time") / 1000f, (string)node["curve"]);
                     }
                     break;
@@ -184,6 +184,7 @@ namespace AstralOath.Client.BattleScene
             int mode = (int?)node["mode"] ?? 0;
             if (mode == 1)
             {
+                objectShotCrop = 1f;
                 RestoreLayout();
                 return;
             }
@@ -200,13 +201,17 @@ namespace AstralOath.Client.BattleScene
             {
                 if (!participant || ContainsActor(participant, caster)) continue;
                 if (!casterOnly && targets.Any(target => ContainsActor(participant, target))) continue;
+                HideLayoutParticipant(participant);
+            }
+        }
 
-                foreach (var renderer in participant.GetComponentsInChildren<Renderer>(true))
-                {
-                    if (!layoutVisibility.ContainsKey(renderer))
-                        layoutVisibility.Add(renderer, renderer.enabled);
-                    renderer.enabled = false;
-                }
+        private void HideLayoutParticipant(Transform participant)
+        {
+            foreach (var renderer in participant.GetComponentsInChildren<Renderer>(true))
+            {
+                if (!layoutVisibility.ContainsKey(renderer))
+                    layoutVisibility.Add(renderer, renderer.enabled);
+                renderer.enabled = false;
             }
         }
 
