@@ -138,7 +138,7 @@ namespace AstralOath.Client.Arena
             using var deadline = CancellationTokenSource.CreateLinkedTokenSource(token, lifetime);
             deadline.CancelAfter(TimeSpan.FromSeconds(10));
             using var request = new HttpRequestMessage(HttpMethod.Get, new Uri(endpoint, "/api/arena/" + Room(id) + "/events"));
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-ndjson"));
+            request.Headers.TryAddWithoutValidation("Accept", "application/x-ndjson");
             var account = session ?? throw new ArenaRequestException("unauthorized");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", account.token);
             try

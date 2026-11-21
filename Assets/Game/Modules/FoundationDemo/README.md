@@ -48,6 +48,8 @@ Windows 开发包同时传入 `-astral-startup-smoke -astral-summon-smoke` 可�
 
 Windows Development 客户端在回环测试服上可使用 `-astral-startup-smoke -astral-summon-resize-smoke`。使用专属访客十连并切换原生窗口尺寸，成功写入 ASTRAL_SUMMON_RESIZE_OK 和 ASTRAL_SUMMON_PLAYER_OK。
 
+使用 `Tools/Test-WindowsArenaRoomEvents.ps1 -Player <客户端程序路径> -ExpectedRelease <版本号>` 验证已打包的房间界面。传入发行目录中 `client/AstralOath.exe` 的路径。脚本以独立测试身份启动两个 Windows 图形进程，房主从主页创建临时房，客方从目录加入。双方各发一条消息，在实际聊天列表检查各显示一次，并验证成员数和离房。成功记录在 `.artifacts/room-events-player` 下。此开关限定 Development 客户端及回环服务。
+
 第 31–40 名批次将实验室收集清单扩大到 3722 项。第 41–50 名新增 1114 项，合计 4836 项。角色实验室构建输入校验读取相同的收集器、地址及资源目录。[第 31–40 名角色与实测记录](../../../../docs/delivery/2026-11-20-roster31-40.md)
 
 第 51–60 名新增 1,253 个收集地址，清单现含 6,089 项。塔玛林尔的两种战斗模型与对应时间轴分别登记，旧地址继续解析到原资源。 [本批角色交付](../../../../docs/delivery/2026-11-20-roster51-60.md)

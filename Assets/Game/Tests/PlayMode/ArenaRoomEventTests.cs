@@ -53,6 +53,7 @@ namespace AstralOath.Client.Tests
                 var response = new HttpResponseMessage(HttpStatusCode.OK);
                 if (path.EndsWith("/events", StringComparison.Ordinal))
                 {
+                    Assert.That(request.Headers.GetValues("Accept"), Is.EqualTo(new[] { "application/x-ndjson" }));
                     var listener = new TcpListener(IPAddress.Loopback, 0);
                     listener.Start();
                     try

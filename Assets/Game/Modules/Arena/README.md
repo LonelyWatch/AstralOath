@@ -20,6 +20,8 @@
 
 房间长连接使用 0.1.23 母包现有的 HTTP 传输。业务请求共用原有客户端，通知触发的房间、消息和草案补读顺序执行。该母包已裁掉修改 `ServicePoint.ConnectionLimit` 的接口。
 
+事件订阅沿用普通竞技场请求的 `TryAddWithoutValidation`，将固定的 `Accept: application/x-ndjson` 写到请求头。R25 曾在房间已经创建、准备建立订阅时报告 `MissingMethodException`。0.1.23 Windows 母包保留了 `MediaTypeWithQualityHeaderValue` 类型和无参构造方法，裁掉了接收一个字符串的构造方法。发布验证须在已分发母包中实际创建、加入房间，并收到另一位玩家的聊天。
+
 目录由玩家手动更新。设密房间从目录打开独立的 `ArenaPasswordEntry` 预制体。密码保留四位数字，在弹窗确认时提交到服务器，接口只返回是否设密。无效密码、房间操作被拒绝和创建参数错误显示共用的底栏提示并播放禁止音。会话由服务端发放，客户端在同一进程内持有令牌。网络使用与 Foundation 一致的 HTTPS 或本机回环 HTTP 地址。竞技场复用同一个托管 HTTP 客户端发送请求，回环地址直连，请求取消随窗口和入口生命周期传播，退出入口时释放连接。
 
 `arena/directory`、`arena/create-room`、`arena/room`、`arena/draft`、`arena/draft-art` 和 `arena/zh-hans` 加入 Foundation 的 `HomeArena` 收集组。原版素材与截图对照见 `Res/Textures/source-manifest.json` 和[操作与验收](../../../../docs/development/arena-lobby.md)。
