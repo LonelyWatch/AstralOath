@@ -89,6 +89,7 @@ pwsh -File Tools/Content/Release.ps1 -Action Verify -Key .artifacts/keys/dev/pub
 
 - 母包固定 Bootstrap、Core、Common、稳定骨骼桥接、原生插件、裁剪结果与桥接能力。GameText、GameButton、UIBaseView 和稳定入口接口属于此边界。改动这些内容或引入归档里缺失的 AOT 类型和成员时，需要重新构建母包；业务 View/Binder 所在的已登记程序集才属于热更业务。
 - Foundation Windows 兼容检查与热更打包读取母包的 ScriptingAssemblies.json。Foundation 中可直接寻址的 ScriptableObject 必须使用母包登记过的程序集。0.1.19 的召唤演出和技能资源使用已登记的 AstralOath.Client.Home，业务界面代码仍在 AstralOath.Client.Summon。
+- 对热更 DLL 的 AOT 构造调用，签名前还须用原母包裁剪归档核对声明类型。R25 的 `MediaTypeWithQualityHeaderValue(string)` 已被 0.1.23 Windows 母包裁掉。dnlib 会为这个引用返回基类 `MediaTypeHeaderValue(string)`，但原生 Player 在创建房间时抛出 `MissingMethodException`。项目检查此时中止构建，正常继承方法保持原解析规则，泛型实例的构造核对其开放类型，数组构造由运行时提供。回归用例为 `HotUpdateBuildTests.AotConstructorsMustExistOnTheDeclaringType`。
 - 热更重编译已登记的程序集，并重新分析新 DLL 所需的 AOT 泛型元数据。锁定的 HybridCLR 9.0.3 分析器分别运行 20 和 21 轮上限，比较公开的单调增长泛型集合计数，若仍增长则拒绝构建。发布包包含母包初始元数据和新增所需模块，全部补充 DLL 从原母包的 `stripped-aot` 取用。元数据模块缺失、归档哈希不符或兼容分析失败时中止构建。反射动态引入的泛型及原生桥接行为仍需目标 Player 验收。
 - 配置改动从 Luban 源表生成，资源改动进入对应平台和变体的 YooAsset 包。Foundation 即使只改配置或资源，也以该母包为目标生成同批代码与资源的完整签名发布包。CharacterLab 当前重新构建独立离线测试包，按其实验室流程验证。
 

@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using dnlib.DotNet;
 using HybridCLR.CodeGen.AOT;
 using HybridCLR.Meta;
-using HybridCLR.Mod;
 
 namespace AstralOath.Editor
 {
@@ -19,6 +19,8 @@ namespace AstralOath.Editor
             var collector = new AssemblyReferenceDeepCollector(resolver, hotAssemblies.ToList());
             try
             {
+                foreach (var module in collector.GetLoadedModulesOfRootAssemblies())
+                    RequireDeclaredAotConstructors(module, archiveNames);
                 var bounded = Analyze(collector, AnalysisIterations);
                 var analyzer = Analyze(collector, AnalysisIterations + 1);
                 // HybridCLR 9.0.3 enqueues work only when its public GenericMethods set grows.
@@ -47,6 +49,22 @@ namespace AstralOath.Editor
             }
         }
 
+        private static void RequireDeclaredAotConstructors(ModuleDefMD hot, HashSet<string> archiveNames)
+        {
+            foreach (var member in hot.GetMemberRefs())
+            {
+                if (member.Name != ".ctor" || member.MethodSig == null) continue;
+                var type = member.DeclaringType;
+                // Array constructors are supplied by the runtime. Generic constructors belong to the open type.
+                if (type.ToTypeSig().ElementType is ElementType.Array or ElementType.SZArray) continue;
+                var owner = type.ScopeType.ResolveTypeDef();
+                if (owner == null || !archiveNames.Contains(owner.Module.Assembly.Name.String)) continue;
+                // dnlib can resolve a stripped derived constructor to the identically shaped base constructor.
+                if (member.ResolveMethod()?.DeclaringType != owner)
+                    throw new InvalidDataException($"{hot.Name} 引用的构造方法未保留在母包声明类型上：{member.FullName}");
+            }
+        }
+
         private static AOTReferenceAnalyzer Analyze(AssemblyReferenceDeepCollector collector, int iterations)
         {
             var analyzer = new AOTReferenceAnalyzer(new AOTReferenceAnalyzer.Options
@@ -58,7 +76,7 @@ namespace AstralOath.Editor
             return analyzer;
         }
 
-        private sealed class BuildAssemblyResolver : IAssemblyResolver
+        private sealed class BuildAssemblyResolver : HybridCLR.Mod.IAssemblyResolver
         {
             private readonly Dictionary<string, string> paths = new Dictionary<string, string>(StringComparer.Ordinal);
 

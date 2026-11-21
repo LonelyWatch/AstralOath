@@ -137,6 +137,51 @@ namespace AstralOath.Client.Tests
             }
         }
 
+        [TestCase(false)]
+        [TestCase(true)]
+        public void AotConstructorsMustExistOnTheDeclaringType(bool keepDerivedConstructor)
+        {
+            string root = Path.GetFullPath(Path.Combine("Temp", "ConstructorProbe", Guid.NewGuid().ToString("N")));
+            string aot = Directory.CreateDirectory(Path.Combine(root, "aot")).FullName;
+            string hot = Directory.CreateDirectory(Path.Combine(root, "hot")).FullName;
+            try
+            {
+                File.Copy(typeof(object).Assembly.Location, Path.Combine(aot, "mscorlib.dll"));
+                using var archived = NewFixtureModule("ArchiveProbe");
+                var parent = AddFixtureType(archived, "Base");
+                var child = AddFixtureType(archived, "Derived");
+                child.BaseType = parent;
+                var signature = MethodSig.CreateInstance(archived.CorLibTypes.Void, archived.CorLibTypes.String);
+                void AddConstructor(TypeDef type)
+                {
+                    var ctor = AddFixtureMethod(type, ".ctor", signature);
+                    ctor.Attributes = MethodAttributes.Public | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName;
+                    ctor.Body.Instructions.Add(Instruction.Create(OpCodes.Ret));
+                }
+                AddConstructor(parent);
+                if (keepDerivedConstructor) AddConstructor(child);
+                archived.Write(Path.Combine(aot, "ArchiveProbe.dll"));
+
+                using var candidate = NewFixtureModule("HotProbe");
+                var archiveRef = new AssemblyRefUser("ArchiveProbe", new Version(1, 0, 0, 0));
+                var childRef = new TypeRefUser(candidate, "Fixture", "Derived", archiveRef);
+                var member = new MemberRefUser(candidate, ".ctor",
+                    MethodSig.CreateInstance(candidate.CorLibTypes.Void, candidate.CorLibTypes.String), childRef);
+                var call = AddFixtureMethod(AddFixtureType(candidate, "Consumer"), "Create",
+                    MethodSig.CreateStatic(candidate.CorLibTypes.Object));
+                call.Body.Instructions.Add(Instruction.Create(OpCodes.Ldstr, "application/x-ndjson"));
+                call.Body.Instructions.Add(Instruction.Create(OpCodes.Newobj, member));
+                call.Body.Instructions.Add(Instruction.Create(OpCodes.Ret));
+                candidate.Write(Path.Combine(hot, "HotProbe.dll"));
+
+                void Check() => HotUpdateAotMetadata.GetRequiredNames(hot, new[] { "HotProbe" }, aot,
+                    new[] { "mscorlib", "ArchiveProbe" }, new[] { "mscorlib" });
+                if (keepDerivedConstructor) Assert.DoesNotThrow(Check);
+                else StringAssert.Contains("Fixture.Derived::.ctor", Assert.Throws<InvalidDataException>(Check).Message);
+            }
+            finally { Directory.Delete(root, true); }
+        }
+
         private static ModuleDefUser NewFixtureModule(string name)
         {
             var module = new ModuleDefUser(name + ".dll") { Kind = ModuleKind.Dll };
