@@ -54,6 +54,59 @@ namespace AstralOath.Tests
             Assert.That(camera.transform.position, Is.EqualTo(new Vector3(1,2,-10))); Assert.That(background.activeSelf, Is.True);
         }
 
+        [Test] public void AuthoredBackgroundFadeKeepsLayerTintAndInstantCommandsCanInterruptIt()
+        {
+            root = new GameObject("Background transition");
+            var camera = root.AddComponent<Camera>();
+            camera.orthographic = true;
+            camera.backgroundColor = Color.gray;
+            var map = new GameObject("Stage");
+            map.transform.SetParent(root.transform);
+            var sprite = map.AddComponent<SpriteRenderer>();
+            var original = new Color(.8f, .6f, .4f, .75f);
+            sprite.color = original;
+            var type = Type.GetType("AstralOath.Client.BattleScene.BattleCinematicStage, " + RuntimeAssembly, true);
+            stage = Activator.CreateInstance(type, new object[] { camera, null, map });
+            Call("Begin", root.transform, Array.Empty<Transform>(), false);
+            Call("Play", JObject.Parse("{'etty':'BGSHOW','time':200}"));
+            Assert.That(map.activeSelf, Is.True);
+            Call("Tick", .1f);
+            Assert.That(sprite.color.r, Is.EqualTo(original.r * .5f).Within(.01f));
+            Assert.That(sprite.color.a, Is.EqualTo(original.a).Within(.01f));
+            Call("Play", JObject.Parse("{'etty':'BGSHOW','show':true,'time':200}"));
+            Call("Tick", .1f);
+            Assert.That(sprite.color.r, Is.EqualTo(original.r * .75f).Within(.01f));
+            var mercedesGraph = AssetDatabase.LoadAssetAtPath<TextAsset>(
+                "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1005/Configs/stagept/c_mercedes_skill_03.graph.json");
+            var instant = JObject.Parse(mercedesGraph.text)["source"]["entities"].OfType<JObject>()
+                .Where(n => (string)n["etty"] == "BGSHOW" && n["time"] == null).ToArray();
+            Call("Play", instant.First(n => (bool?)n["show"] != true));
+            Assert.That(map.activeSelf, Is.False, "A graph without time changes the backdrop in the same frame.");
+            Call("Play", instant.First(n => (bool?)n["show"] == true));
+            Assert.That(sprite.color.r, Is.EqualTo(original.r).Within(.01f));
+            Assert.That(map.activeSelf, Is.True);
+            Call("Play", JObject.Parse("{'etty':'BGSHOW','time':200}"));
+            Call("Tick", .075f);
+            Call("Reset");
+            Assert.That(sprite.color.r, Is.EqualTo(original.r).Within(.01f));
+            Assert.That(camera.backgroundColor, Is.EqualTo(Color.gray));
+
+            Call("Begin", root.transform, Array.Empty<Transform>(), false);
+            Call("Play", JObject.Parse("{'etty':'BGSHOW','time':200}"));
+            Call("Tick", .05f);
+            var next = Activator.CreateInstance(type, new object[] { camera, null, map });
+            Call("HandoffTo", next);
+            stage = next;
+            Call("Begin", root.transform, Array.Empty<Transform>(), false);
+            Call("Tick", .1f);
+            Assert.That(sprite.color.r, Is.EqualTo(original.r * .25f).Within(.01f));
+            Call("Tick", .06f);
+            Assert.That(map.activeSelf, Is.False);
+            Call("Reset");
+            Assert.That(map.activeSelf, Is.True);
+            Assert.That(sprite.color.r, Is.EqualTo(original.r).Within(.01f));
+        }
+
         [Test] public void CutinUsesAllSourceFrameDurationsRatherThanPointFourFiveSeconds()
         {
             var type = Type.GetType("AstralOath.Client.BattleScene.BattleCinematicStage, " + RuntimeAssembly); Assert.That(type, Is.Not.Null);
