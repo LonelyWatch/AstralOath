@@ -1,5 +1,7 @@
 # BattleScene
 
+普通伊赛丽亚的三技能在仰拍镜头中投影交叉剑阵。普通巴尔＆塞尚依据 `ANI_POS.delay` 在立绘后横飞并引爆目标。两名角色的原片秒数、素材和图节点依据见[三技能镜头复核](../../../../docs/delivery/2026-11-21-battle-presentation-review.md)。
+
 当前行动者脚下使用原包 `focus.png`，椭圆固定在人物脚点，亮度约每 0.96 秒循环一次。联机、本地预览及操作被服务器退回时都从当前行动者恢复指示。[光圈原帧与场景测试](../../../../docs/delivery/2026-11-21-battle-active-ground-focus.md)
 
 复核大招时同时核对切入前后的战场角色。赛西莉亚飞枪镜头按原图移开敌方，汀果厨锅镜头按 `LAYOUT.alone` 只保留施法者。塞丽拉的模糊动画由源节点的振幅驱动。现有 70 个普通形态的录像对照和时点见[角色清单](../../../../docs/delivery/2026-11-21-s3-video-roster.tsv)和[镜头复核记录](../../../../docs/delivery/2026-11-21-serila-strageth-s3.md)。
