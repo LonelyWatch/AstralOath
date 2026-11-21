@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -96,27 +98,58 @@ namespace AstralOath.Client.Summon
         }
 
         public SummonRequest Pending { get; set; }
-        public event Action InventoryMayChange;
+        public event Action<SummonReward[]> InventoryGranted;
+        public event Action InventoryUncertain;
+        private readonly HashSet<string> appliedDraws = new HashSet<string>(StringComparer.Ordinal);
+        private SummonStorage lastStorage;
         public Task<SummonReceipt> LatestAsync(CancellationToken token) =>
             Send<SummonReceipt>(HttpMethod.Get, "/draw/latest", null, token, missingAllowed: true);
 
         public Task<SummonState> GetAsync(CancellationToken token) => Send<SummonState>(HttpMethod.Get, "", null, token);
-        public Task<SummonReceipt> DrawAsync(SummonRequest request, CancellationToken token) =>
-            Send<SummonReceipt>(HttpMethod.Post, "/draw", request, token);
-        public Task<SummonReceipt> ReceiptAsync(string id, CancellationToken token) =>
-            Send<SummonReceipt>(HttpMethod.Get, "/draw/" + id, null, token, missingAllowed: true);
+        public async Task<SummonReceipt> DrawAsync(SummonRequest request, CancellationToken token)
+        {
+            var receipt = await Send<SummonReceipt>(HttpMethod.Post, "/draw", request, token);
+            ApplyReceipt(request.requestId, receipt);
+            return receipt;
+        }
+        public async Task<SummonReceipt> ReceiptAsync(string id, CancellationToken token)
+        {
+            var receipt = await Send<SummonReceipt>(HttpMethod.Get, "/draw/" + id, null, token, missingAllowed: true);
+            if (receipt != null && Pending?.requestId == id) ApplyReceipt(id, receipt);
+            return receipt;
+        }
+        private void ApplyReceipt(string id, SummonReceipt receipt)
+        {
+            if (receipt?.requestId != id || receipt?.results == null || receipt.results.Length != receipt.count ||
+                receipt.count is not (1 or 10) || receipt.results.Any(item => !ValidGrant(item)))
+            {
+                InventoryUncertain?.Invoke();
+                throw new IOException("Invalid summon grant receipt.");
+            }
+            if (appliedDraws.Add(id))
+                InventoryGranted?.Invoke(receipt.results.Where(item => !item.inStorage).ToArray());
+        }
+        private static bool ValidGrant(SummonReward item) =>
+            item != null && item.kind is ("hero" or "artifact") && !string.IsNullOrEmpty(item.instanceId) &&
+            !string.IsNullOrEmpty(item.templateId) && item.stars >= 1 && item.stars <= 6;
         public Task<SummonState> SaveWishesAsync(string[] heroes, string[] artifacts, CancellationToken token) =>
             Send<SummonState>(HttpMethod.Put, "/wishlist", new WishList { heroes = heroes, artifacts = artifacts }, token);
-        public Task<SummonStorage> StorageAsync(CancellationToken token) =>
-            Send<SummonStorage>(HttpMethod.Get, "/storage", null, token);
-        public Task<SummonStorage> ClaimAsync(string[] ids, CancellationToken token) =>
-            Send<SummonStorage>(HttpMethod.Post, "/storage/claim", new Claims { instanceIds = ids }, token);
+        public async Task<SummonStorage> StorageAsync(CancellationToken token) =>
+            lastStorage = await Send<SummonStorage>(HttpMethod.Get, "/storage", null, token);
+        public async Task<SummonStorage> ClaimAsync(string[] ids, CancellationToken token)
+        {
+            var claimed = lastStorage?.items?.Where(item => ValidGrant(item) && Array.IndexOf(ids, item.instanceId) >= 0).ToArray();
+            lastStorage = await Send<SummonStorage>(HttpMethod.Post, "/storage/claim", new Claims { instanceIds = ids }, token);
+            if (claimed?.Length == ids.Length) InventoryGranted?.Invoke(claimed);
+            else InventoryUncertain?.Invoke();
+            return lastStorage;
+        }
 
         private async Task<T> Send<T>(HttpMethod method, string path, object body, CancellationToken cancellation,
             bool missingAllowed = false) where T : class
         {
             using var deadline = CancellationTokenSource.CreateLinkedTokenSource(lifetime, cancellation);
-            if (method == HttpMethod.Post) InventoryMayChange?.Invoke();
+            bool submitted = false;
             deadline.CancelAfter(TimeSpan.FromSeconds(16));
             try
             {
@@ -124,6 +157,7 @@ namespace AstralOath.Client.Summon
                 using var request = new HttpRequestMessage(method, service.AbsoluteUri + path);
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", session);
                 if (body != null) request.Content = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json");
+                submitted = method == HttpMethod.Post;
                 using var response = await http.SendAsync(request, HttpCompletionOption.ResponseContentRead, deadline.Token);
                 if (missingAllowed && response.StatusCode == HttpStatusCode.NotFound) return null;
                 if (!response.IsSuccessStatusCode)
@@ -150,11 +184,14 @@ namespace AstralOath.Client.Summon
             }
             catch (OperationCanceledException) when (!lifetime.IsCancellationRequested && !cancellation.IsCancellationRequested)
             {
+                if (submitted) InventoryUncertain?.Invoke();
                 throw new IOException("Summon request timed out.");
             }
-            finally
+            catch (Exception error) when (submitted && !lifetime.IsCancellationRequested &&
+                !(error is SummonRequestException rejection && rejection.Status >= 400 && rejection.Status < 500))
             {
-                if (method == HttpMethod.Post) InventoryMayChange?.Invoke();
+                InventoryUncertain?.Invoke();
+                throw;
             }
         }
 

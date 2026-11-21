@@ -11,15 +11,13 @@ internal static class ArenaDraftEndpoints
     {
         var room = authenticated.MapGroup("/rooms/{id}");
         room.MapPost("/draft/settings", async (string id, ArenaDraftSettingsRequest request, HttpContext http,
-            ArenaStore store, ArenaBattleCatalog catalog, ArenaChatSignal chat, CancellationToken cancellation) =>
+            ArenaStore store, ArenaBattleCatalog catalog, CancellationToken cancellation) =>
         {
             if (request is { PrebanCount: null, FirstPick: null, BanProtection: null } ||
                 request.PrebanCount is < 0 or > 3 || request.FirstPick is not (null or "host" or "guest"))
                 throw new ArenaProblem(400, "invalid_draft_settings");
             string roomId = RoomId(id);
-            var (state, messageAdded) = await store.UpdateDraftSettings(roomId, Player(http), request, catalog, cancellation);
-            if (messageAdded) chat.Publish(roomId);
-            return Results.Ok(state);
+            return Results.Ok(await store.UpdateDraftSettings(roomId, Player(http), request, catalog, cancellation));
         }).WithMetadata(new RequestSizeLimitAttribute(512));
         room.MapPost("/draft/ready", async (string id, ArenaDraftReadyRequest request, HttpContext http,
             ArenaStore store, ArenaBattleCatalog catalog, CancellationToken cancellation) =>

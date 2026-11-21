@@ -12,7 +12,7 @@ internal sealed partial class ArenaStore
 {
     private const int MinimumHeroesForDraft = 10;
 
-    public async Task<(ArenaRoomState State, bool MessageAdded)> UpdateDraftSettings(string id, ArenaPlayer player, ArenaDraftSettingsRequest request,
+    public async Task<ArenaRoomState> UpdateDraftSettings(string id, ArenaPlayer player, ArenaDraftSettingsRequest request,
         ArenaBattleCatalog catalog, CancellationToken token)
     {
         await using var connection = await Open(token);
@@ -58,8 +58,8 @@ internal sealed partial class ArenaStore
         }
         var readyPlayers = await DraftReadyPlayers(connection, transaction, id, token);
         await RenewLease(connection, transaction, player.Id, token);
-        await transaction.CommitAsync(token);
-        return (State(updated, members, readyPlayers), settingsChanged);
+        await Commit(transaction, token, id, settingsChanged ? RoomChange.Room | RoomChange.Chat : 0);
+        return State(updated, members, readyPlayers);
     }
 
     public async Task<ArenaRoomState> SetDraftReady(string id, ArenaPlayer player, bool ready, ArenaBattleCatalog catalog,
@@ -78,15 +78,16 @@ internal sealed partial class ArenaStore
         if (player.Id != room.HostId && player.Id != opponent.Id) throw new ArenaProblem(403, "draft_players_only");
         using var change = Command(connection, transaction, ready
             ? """
-              INSERT INTO arena_room_draft_ready (player_id) VALUES (@player)
-              ON DUPLICATE KEY UPDATE player_id = arena_room_draft_ready.player_id;
+              INSERT INTO arena_room_draft_ready (player_id)
+              SELECT @player WHERE NOT EXISTS (SELECT 1 FROM arena_room_draft_ready WHERE player_id = @player);
               """
             : "DELETE FROM arena_room_draft_ready WHERE player_id = @player;", ("@player", player.Id));
-        if (await change.ExecuteNonQueryAsync(token) > 0)
+        bool changed = await change.ExecuteNonQueryAsync(token) > 0;
+        if (changed)
             await AuditRoom(connection, transaction, ready ? "arena.draft.ready" : "arena.draft.unready", player, id, token);
         var state = State(room, members, await DraftReadyPlayers(connection, transaction, id, token));
         await RenewLease(connection, transaction, player.Id, token);
-        await transaction.CommitAsync(token);
+        await Commit(transaction, token, id, changed ? RoomChange.Room : 0);
         return state;
     }
 
@@ -141,7 +142,7 @@ internal sealed partial class ArenaStore
         var current = await LoadDraft(connection, transaction, id, token);
         if (current?.StartRequestId == key && current.Host.Player.Id == player.Id)
         {
-            await transaction.CommitAsync(token);
+            await Commit(transaction, token);
             return current.View(player, catalog);
         }
         if (room.Rule != "basic") throw new ArenaProblem(409, "draft_rule_unsupported");
@@ -176,7 +177,7 @@ internal sealed partial class ArenaStore
         await ClearDraftReady(connection, transaction, id, token);
         await RenewLease(connection, transaction, player.Id, token);
         await AuditRoom(connection, transaction, "arena.draft.start", player, id, token);
-        await transaction.CommitAsync(token);
+        await Commit(transaction, token, id, RoomChange.Room);
         return draft.View(player, catalog);
     }
 
@@ -193,7 +194,7 @@ internal sealed partial class ArenaStore
             await AdvanceExpiredDraft(connection, transaction, draft, catalog, token);
         }
         await RenewLease(connection, transaction, player.Id, token);
-        await transaction.CommitAsync(token);
+        await Commit(transaction, token);
         return draft?.View(player, catalog);
     }
 
@@ -212,12 +213,12 @@ internal sealed partial class ArenaStore
         catch (ArenaProblem)
         {
             // Preserve any authoritative advancement caused by an expired deadline.
-            await transaction.CommitAsync(token);
+            await Commit(transaction, token);
             throw;
         }
         if (changed) await SaveDraft(connection, transaction, draft, token);
         await RenewLease(connection, transaction, player.Id, token);
-        await transaction.CommitAsync(token);
+        await Commit(transaction, token);
         return draft.View(player, catalog);
     }
 
@@ -237,7 +238,7 @@ internal sealed partial class ArenaStore
         catch (ArenaProblem)
         {
             // Preexisting timeout transitions are authoritative even when late input fails.
-            await transaction.CommitAsync(token);
+            await Commit(transaction, token);
             throw;
         }
         if (changed)
@@ -251,7 +252,7 @@ internal sealed partial class ArenaStore
                 await AuditRoom(connection, transaction, "arena.battle.start", player, id, token);
         }
         await RenewLease(connection, transaction, player.Id, token);
-        await transaction.CommitAsync(token);
+        await Commit(transaction, token);
         return draft.View(player, catalog);
     }
 
@@ -274,7 +275,7 @@ internal sealed partial class ArenaStore
         room = await AdvanceBattleClock(connection, transaction, draft, room, catalog, token);
         var update = room.Read(after) with { Clock = draft.BattleClock?.View(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()) };
         await RenewLease(connection, transaction, player.Id, token);
-        await transaction.CommitAsync(token);
+        await Commit(transaction, token);
         return update;
     }
 
@@ -306,13 +307,13 @@ internal sealed partial class ArenaStore
             reply = reply with { Events = room.Read(0).Events };
         reply = reply with { Clock = draft.BattleClock?.View(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()) };
         await RenewLease(connection, transaction, player.Id, token);
-        await transaction.CommitAsync(token);
+        await Commit(transaction, token);
         if (reply.Status == BattleCommandStatus.Accepted)
             catalog.RememberBattle(draft.Id, request.Sequence, room);
         return reply;
     }
 
-    private static async Task<ArenaDraft> RequireBattle(MySqlConnection connection, MySqlTransaction transaction, string id,
+    private async Task<ArenaDraft> RequireBattle(MySqlConnection connection, MySqlTransaction transaction, string id,
         ArenaPlayer player, CancellationToken token)
     {
         await LockActiveRoom(connection, transaction, id, token);

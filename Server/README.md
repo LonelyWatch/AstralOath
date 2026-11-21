@@ -30,6 +30,20 @@
 
 使用忽略目录中的专用测试配置设置 `ASTRALOATH_MYSQL_TEST`，执行 `dotnet test Server/Tests --filter FullyQualifiedName~ArenaRoomTests`。覆盖两会话的房间发现、公开过滤、错误密码、重复入场、并发入场、房主转移、跨服务重启恢复、聊天读写与禁聊。
 
+### 房间实时通知
+
+房间成员用竞技场 Bearer 连接 `GET /api/arena/rooms/{id}/events`。响应为 `application/x-ndjson`，每条 JSON 独占一行并立即刷新。服务端先登记订阅，再校验成员资格，首次连接及重连的第一条消息均为 `{"kind":"sync"}`。客户端据此读取自己的房间、草案与聊天快照。
+
+- `room` 表示已经提交的成员进出、房主移交、租约回收、准备状态、房间设置或选禁开始。客户端重新读取房间和本人的草案视角。
+- `chat` 表示文字、表情或系统通知已提交。客户端按最后收到的消息 ID 查询后续历史。房主修改设置时，同一事务产生的两个通知依次为 `room` 和 `chat`。
+- `heartbeat` 每 15 秒重新验证身份和成员资格并续租。房间动态变化时仍执行这个周期。退出、租约失效或会话失效会关闭连接。新连接缺少身份时返回 401，非成员返回 403，房间已清理时返回 404。
+
+订阅由当前服务进程按房间管理，等待通知期间释放数据库连接。每个订阅只保存待刷新的两类标记，读取缓慢时合并同类通知。服务重启、跨实例写入和网络中断由客户端重连及周期性重新读取快照校准。原有房间读取、消息游标和聊天长轮询继续供旧客户端使用，无新增数据库迁移。
+
+在隔离库执行 `dotnet test Server/Tests --filter FullyQualifiedName~ArenaChatWaitTests` 可复验双会话推送、设置系统消息、租约清理、重连初始同步及旧聊天长轮询。
+
+2026-11-21 用本机独立 Kestrel 和 MySQL 8.4，通过两条持续 HTTP 连接测量从一端发起 POST 到另一端读完通知行的时间。入场 14.68 毫秒、聊天 7.08 毫秒、离场 6.91 毫秒，连续十次准备切换为 3.74–39.82 毫秒。客户端完成这些操作后又等待 14.865 秒收到首个心跳，随后仍能收到离场消息。此组计时止于网络通知，不含 Unity 绘制。
+
 ## 基本模拟战选禁和联机战斗
 
 更新服务前应用 `006_arena_draft.sql`。为运行账号增加 `arena_room_draft_settings` 的 SELECT/INSERT，`arena_room_draft` 的 SELECT/INSERT/UPDATE/DELETE，以及 `arena_battle_command` 的 SELECT/INSERT。迁移由原有专用账户执行。选禁和战斗使用与目录、成员相同的 Arena Bearer，联机接口无需开启独立的本机战斗验证开关。

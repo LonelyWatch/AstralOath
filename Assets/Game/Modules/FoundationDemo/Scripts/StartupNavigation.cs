@@ -55,11 +55,13 @@ namespace AstralOath.Client.FoundationDemo
             pages = new HomePagePreparation(views, assets, parent, lifetime);
             firstReads = new HomeFirstReads(inventory, artifacts, lifetime.Token);
             lifetime.Add(portraits.Clear);
-            summon.InventoryMayChange += firstReads.Invalidate;
+            summon.InventoryGranted += firstReads.ApplyGrants;
+            summon.InventoryUncertain += firstReads.ReconcileInventories;
             artifacts.InventoryMayChange += firstReads.InvalidateArtifacts;
             lifetime.Add(() =>
             {
-                summon.InventoryMayChange -= firstReads.Invalidate;
+                summon.InventoryGranted -= firstReads.ApplyGrants;
+                summon.InventoryUncertain -= firstReads.ReconcileInventories;
                 artifacts.InventoryMayChange -= firstReads.InvalidateArtifacts;
             });
             token = lifetime.Token;

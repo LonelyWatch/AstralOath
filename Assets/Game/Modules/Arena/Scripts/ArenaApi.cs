@@ -45,6 +45,7 @@ namespace AstralOath.Client.Arena
         [Serializable, Preserve] private sealed class Identity { public string displayName, avatarId; }
         [Serializable, Preserve] private sealed class Directory { public ArenaRoomInfo[] rooms; }
         [Serializable, Preserve] private sealed class History { public ArenaMessage[] messages; }
+        [Serializable, Preserve] private sealed class RoomEvent { public string kind; }
         [Serializable, Preserve] private sealed class Password { public string password; }
         [Serializable, Preserve] private sealed class Chat { public string text; }
         [Serializable, Preserve] private sealed class Sticker { public string kind = "sticker"; public string stickerId; }
@@ -70,6 +71,12 @@ namespace AstralOath.Client.Arena
         {
             this.endpoint = endpoint ?? throw new ArgumentNullException(nameof(endpoint));
             this.lifetime = lifetime;
+            if (transport == null)
+            {
+                // Unity's Mono HTTP backend uses ServicePoint for the per-origin limit.
+                var route = ServicePointManager.FindServicePoint(endpoint, endpoint.IsLoopback ? null : WebRequest.DefaultWebProxy);
+                route.ConnectionLimit = Math.Max(route.ConnectionLimit, 8);
+            }
             http = new HttpClient(transport ?? new HttpClientHandler { AllowAutoRedirect = false, UseProxy = !endpoint.IsLoopback })
             {
                 MaxResponseContentBufferSize = 2 * 1024 * 1024
@@ -131,6 +138,64 @@ namespace AstralOath.Client.Arena
             Send<ArenaRoomState>("rooms/current", null, token);
         public Task<ArenaRoomState> GetAsync(string id, CancellationToken token) =>
             Send<ArenaRoomState>(Room(id), null, token);
+
+        internal async Task WatchRoomEventsAsync(string id, Func<string, Task> receive, CancellationToken token)
+        {
+            using var deadline = CancellationTokenSource.CreateLinkedTokenSource(token, lifetime);
+            deadline.CancelAfter(TimeSpan.FromSeconds(10));
+            using var request = new HttpRequestMessage(HttpMethod.Get, new Uri(endpoint, "/api/arena/" + Room(id) + "/events"));
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-ndjson"));
+            var account = session ?? throw new ArenaRequestException("unauthorized");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", account.token);
+            try
+            {
+                using var response = await http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, deadline.Token);
+                if (!response.IsSuccessStatusCode)
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized && session == account) session = null;
+                    throw ResponseError(await response.Content.ReadAsStringAsync());
+                }
+                using var stream = await response.Content.ReadAsStreamAsync();
+                using var onCancel = deadline.Token.Register(stream.Dispose);
+                // One record can span reads. Bound the pending bytes even if a proxy returns an invalid body.
+                var buffer = new byte[512];
+                int pending = 0;
+                while (true)
+                {
+                    deadline.CancelAfter(TimeSpan.FromSeconds(45));
+                    int read = await stream.ReadAsync(buffer, pending, buffer.Length - pending, deadline.Token);
+                    deadline.Token.ThrowIfCancellationRequested();
+                    if (read == 0) throw new ArenaRequestException("unavailable");
+                    deadline.CancelAfter(Timeout.Infinite);
+                    int used = pending + read, start = 0;
+                    for (int i = pending; i < used; ++i)
+                    {
+                        if (buffer[i] != '\n') continue;
+                        var json = Encoding.UTF8.GetString(buffer, start, i - start);
+                        start = i + 1;
+                        string kind;
+                        try { kind = JsonUtility.FromJson<RoomEvent>(json)?.kind; }
+                        catch (ArgumentException) { throw new ArenaRequestException("invalid_response"); }
+                        if (kind is "sync" or "room" or "chat" or "heartbeat")
+                        {
+                            token.ThrowIfCancellationRequested();
+                            lifetime.ThrowIfCancellationRequested();
+                            await receive(kind);
+                        }
+                    }
+                    pending = used - start;
+                    if (pending == buffer.Length) throw new ArenaRequestException("invalid_response");
+                    if (pending > 0) Buffer.BlockCopy(buffer, start, buffer, 0, pending);
+                }
+            }
+            catch (ArenaRequestException) { throw; }
+            catch (Exception error) when (error is OperationCanceledException or IOException or HttpRequestException or ObjectDisposedException)
+            {
+                token.ThrowIfCancellationRequested();
+                lifetime.ThrowIfCancellationRequested();
+                throw new ArenaRequestException("unavailable");
+            }
+        }
         public Task LeaveAsync(string id, CancellationToken token) => Send<Error>(Room(id) + "/leave", new object(), token);
         public async Task<ArenaMessage[]> ReadMessagesAsync(string id, long after, CancellationToken token, bool waitForNewMessages = false)
         {
@@ -195,13 +260,7 @@ namespace AstralOath.Client.Arena
 
                 string json = await response.Content.ReadAsStringAsync();
                 deadline.Token.ThrowIfCancellationRequested();
-                if (!response.IsSuccessStatusCode)
-                {
-                    string code = null;
-                    try { if (!string.IsNullOrEmpty(json)) code = JsonUtility.FromJson<Error>(json)?.code; }
-                    catch (ArgumentException) { }
-                    throw new ArenaRequestException(code ?? "request_failed");
-                }
+                if (!response.IsSuccessStatusCode) throw ResponseError(json);
                 try { return JsonUtility.FromJson<T>(json) ?? throw new ArenaRequestException("invalid_response"); }
                 catch (ArgumentException) { throw new ArenaRequestException("invalid_response"); }
             }
@@ -215,6 +274,14 @@ namespace AstralOath.Client.Arena
                 lifetime.ThrowIfCancellationRequested();
                 throw new ArenaRequestException("unavailable");
             }
+        }
+
+        private static ArenaRequestException ResponseError(string json)
+        {
+            string code = null;
+            try { if (!string.IsNullOrEmpty(json)) code = JsonUtility.FromJson<Error>(json)?.code; }
+            catch (ArgumentException) { }
+            return new ArenaRequestException(code ?? "request_failed");
         }
     }
 }

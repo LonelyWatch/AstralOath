@@ -41,4 +41,4 @@ Foundation 包和既有冷启动验签链继续使用。新增 Home、Arena 业�
 
 本次录像复核、原版音效和泛光来源、窗口约定以及本机测试范围见[录像对照交付](../delivery/2026-11-14-arena-recording.md)。更新服务时应用 `003_game_operation_audit.sql`，权限及打点语义见[操作留痕](operation-audit.md)。
 
-房间聊天收到服务端确认后立即显示自己的消息，其他客户端通过长轮询接收。成员状态与消息读取独立运行。房间表情使用第 `004_arena_chat_stickers.sql` 号迁移。Windows 包默认可缩放小窗，主页右上角或 F11 切换显示模式。录像对照、表情素材和平台验证见[本轮复核](../delivery/2026-11-14-arena-ui-fidelity.md)。
+发送端立即显示权威回执。其余成员通过同一条房间事件流收到聊天或成员变更通知，然后按游标补取消息或刷新房间状态。健康连接每两分钟校准，断线重连成功后立即补读。房间表情使用第 `004_arena_chat_stickers.sql` 号迁移。Windows 包默认可缩放小窗，主页右上角或 F11 切换显示模式。录像对照、表情素材和平台验证见[本轮复核](../delivery/2026-11-14-arena-ui-fidelity.md)。

@@ -59,9 +59,13 @@ namespace AstralOath.Client.Tests
             private readonly Task worker;
             internal readonly ConcurrentQueue<string> Calls = new ConcurrentQueue<string>();
             internal readonly TaskCompletionSource<bool> AllowResponse = new TaskCompletionSource<bool>();
+            internal readonly TaskCompletionSource<bool> SignalRoomChange = new TaskCompletionSource<bool>();
             internal readonly TaskCompletionSource<bool> AllowDirectoryList = new TaskCompletionSource<bool>();
             internal bool CrossFreeReset, FailFirstArtifact, KeepArenaRoom, SlowDirectory;
             internal int InventoryVersion;
+            internal string DrawReceipt;
+            internal bool RejectDraw;
+            internal string StoredRewards = "{\"items\":[]}";
             internal volatile string DraftId = "settled-draft";
             internal volatile bool BattleEnded;
             private volatile bool stopping;
@@ -69,53 +73,83 @@ namespace AstralOath.Client.Tests
             internal ReadServer() { listener.Start(); worker = Task.Run(Run); }
             private async Task Run()
             {
+                var connections = new List<Task>();
                 try
                 {
-                    while (true)
+                    while (!stopping)
                     {
-                        using var client = await listener.AcceptTcpClientAsync();
-                        using var stream = client.GetStream();
-                        using var reader = new StreamReader(stream, Encoding.ASCII, false, 1024, true);
-                        var line = (await reader.ReadLineAsync()).Split(' ');
-                        Calls.Enqueue(line[0] + " " + line[1]);
-                        while (!string.IsNullOrEmpty(await reader.ReadLineAsync())) { }
-                        await AllowResponse.Task.ConfigureAwait(false);
-                        string schedule = CrossFreeReset ? "\"serverTimeUtc\":\"2030-01-01T01:00:00Z\",\"freeResetUtc\":\"2030-01-01T01:00:00.001Z\"," : "";
-                        string body = line[1].Contains("summon") ? "{" + schedule + "\"banners\":[{\"id\":\"covenant\",\"entries\":[]}],\"wishHeroes\":[],\"wishArtifacts\":[]}" :
-                            "{\"capacity\":" + (1000 + InventoryVersion) + ",\"used\":0,\"heroes\":[],\"artifacts\":[],\"materials\":{}}";
-                        bool fail = FailFirstArtifact && line[1].EndsWith("/artifacts") && Calls.Count(x => x.EndsWith("/artifacts")) == 1;
-                        string status = fail ? "503 Unavailable" : "200 OK";
-                        if (line[1] == "/api/arena/rooms/current") { status = "204 No Content"; body = ""; }
-                        if (line[1].StartsWith("/api/arena/rooms?", StringComparison.Ordinal)) body = "{\"rooms\":[]}";
-                        if ((KeepArenaRoom || SlowDirectory) && line[1].StartsWith("/api/arena/rooms", StringComparison.Ordinal))
-                        {
-                            status = "200 OK";
-                            const string host = "{\"id\":\"host\",\"displayName\":\"Host\",\"avatarId\":\"c1001\"}";
-                            const string guest = "{\"id\":\"test\",\"displayName\":\"Guest\",\"avatarId\":\"c1001\"}";
-                            if (line[1].EndsWith("/leave"))
-                            {
-                                status = KeepArenaRoom ? "503 Unavailable" : "204 No Content";
-                                body = KeepArenaRoom ? "{\"code\":\"unavailable\"}" : "";
-                            }
-                            else if (SlowDirectory && BattleEnded && line[1].EndsWith("/current")) { status = "204 No Content"; body = ""; }
-                            else if (line[1].Contains("/rooms?"))
-                            {
-                                await AllowDirectoryList.Task.ConfigureAwait(false);
-                                body = "{\"rooms\":[]}";
-                            }
-                            else if (line[1].Contains("/messages?")) body = "{\"messages\":[]}";
-                            else if (line[1].EndsWith("/draft"))
-                            {
-                                string phase = BattleEnded && DraftId == "settled-draft" ? "battle" : "preban";
-                                body = "{\"id\":\"" + DraftId + "\",\"roomId\":\"surviving-room\",\"phase\":\"" + phase +
-                                    "\",\"battleId\":\"finished-battle\",\"firstPick\":\"host\",\"mySide\":\"guest\",\"eligibleHeroIds\":[],\"host\":{\"player\":" +
-                                    host + ",\"prebans\":[],\"picks\":[],\"formation\":[]},\"guest\":{\"player\":" + guest + ",\"prebans\":[],\"picks\":[],\"formation\":[]}}";
-                            }
-                            else body = "{\"room\":{\"id\":\"surviving-room\",\"name\":\"Recovered room\",\"rule\":\"basic\",\"firstPick\":\"host\",\"capacity\":2,\"memberCount\":2,\"host\":" + host + "},\"members\":[" + host + "," + guest + "]}";
-                        }
-                        byte[] data = Encoding.ASCII.GetBytes("HTTP/1.1 " + status + "\r\nContent-Type: application/json\r\nConnection: close\r\nContent-Length: " + body.Length + "\r\n\r\n" + body);
-                        await stream.WriteAsync(data, 0, data.Length);
+                        var client = await listener.AcceptTcpClientAsync();
+                        connections.Add(Respond(client));
                     }
+                }
+                catch (ObjectDisposedException) when (stopping) { }
+                catch (SocketException) when (stopping) { }
+                finally { await Task.WhenAll(connections); }
+            }
+
+            private async Task Respond(TcpClient client)
+            {
+                using var connection = client;
+                try
+                {
+                    using var stream = client.GetStream();
+                    using var reader = new StreamReader(stream, Encoding.ASCII, false, 1024, true);
+                    var line = (await reader.ReadLineAsync()).Split(' ');
+                    Calls.Enqueue(line[0] + " " + line[1]);
+                    while (!string.IsNullOrEmpty(await reader.ReadLineAsync())) { }
+                    await AllowResponse.Task.ConfigureAwait(false);
+                    if (line[1].EndsWith("/events", StringComparison.Ordinal))
+                    {
+                        var header = Encoding.ASCII.GetBytes("HTTP/1.1 200 OK\r\nContent-Type: application/x-ndjson\r\nConnection: close\r\n\r\n{\"kind\":\"sync\"}\n");
+                        await stream.WriteAsync(header, 0, header.Length);
+                        await SignalRoomChange.Task;
+                        var change = Encoding.ASCII.GetBytes("{\"kind\":\"room\"}\n");
+                        await stream.WriteAsync(change, 0, change.Length);
+                        return;
+                    }
+                    string schedule = CrossFreeReset ? "\"serverTimeUtc\":\"2030-01-01T01:00:00Z\",\"freeResetUtc\":\"2030-01-01T01:00:00.001Z\"," : "";
+                    string body = line[1].Contains("summon") ? "{" + schedule + "\"banners\":[{\"id\":\"covenant\",\"entries\":[]}],\"wishHeroes\":[],\"wishArtifacts\":[]}" :
+                        "{\"capacity\":" + (1000 + InventoryVersion) + ",\"used\":0,\"heroes\":[],\"artifacts\":[],\"materials\":{}}";
+                    bool fail = FailFirstArtifact && line[1].EndsWith("/artifacts") && Calls.Count(x => x.EndsWith("/artifacts")) == 1;
+                    string status = fail ? "503 Unavailable" : "200 OK";
+                    if (line[1] == "/api/summon/draw" && DrawReceipt != null) body = DrawReceipt;
+                    if (line[1] == "/api/summon/draw" && RejectDraw)
+                    {
+                        status = "409 Conflict";
+                        body = "{\"code\":\"insufficient_bookmarks\"}";
+                    }
+                    if (line[1] == "/api/summon/storage") body = StoredRewards;
+                    if (line[1] == "/api/summon/storage/claim") body = "{\"items\":[]}";
+                    if (line[1] == "/api/arena/rooms/current") { status = "204 No Content"; body = ""; }
+                    if (line[1].StartsWith("/api/arena/rooms?", StringComparison.Ordinal)) body = "{\"rooms\":[]}";
+                    if ((KeepArenaRoom || SlowDirectory) && line[1].StartsWith("/api/arena/rooms", StringComparison.Ordinal))
+                    {
+                        status = "200 OK";
+                        const string host = "{\"id\":\"host\",\"displayName\":\"Host\",\"avatarId\":\"c1001\"}";
+                        const string guest = "{\"id\":\"test\",\"displayName\":\"Guest\",\"avatarId\":\"c1001\"}";
+                        if (line[1].EndsWith("/leave"))
+                        {
+                            status = KeepArenaRoom ? "503 Unavailable" : "204 No Content";
+                            body = KeepArenaRoom ? "{\"code\":\"unavailable\"}" : "";
+                        }
+                        else if (SlowDirectory && BattleEnded && line[1].EndsWith("/current")) { status = "204 No Content"; body = ""; }
+                        else if (line[1].Contains("/rooms?"))
+                        {
+                            await AllowDirectoryList.Task.ConfigureAwait(false);
+                            body = "{\"rooms\":[]}";
+                        }
+                        else if (line[1].Contains("/messages?")) body = "{\"messages\":[]}";
+                        else if (line[1].EndsWith("/draft"))
+                        {
+                            string phase = BattleEnded && DraftId == "settled-draft" ? "battle" : "preban";
+                            body = "{\"id\":\"" + DraftId + "\",\"roomId\":\"surviving-room\",\"phase\":\"" + phase +
+                                "\",\"battleId\":\"finished-battle\",\"firstPick\":\"host\",\"mySide\":\"guest\",\"eligibleHeroIds\":[],\"host\":{\"player\":" +
+                                host + ",\"prebans\":[],\"picks\":[],\"formation\":[]},\"guest\":{\"player\":" + guest + ",\"prebans\":[],\"picks\":[],\"formation\":[]}}";
+                        }
+                        else body = "{\"room\":{\"id\":\"surviving-room\",\"name\":\"Recovered room\",\"rule\":\"basic\",\"firstPick\":\"host\",\"capacity\":2,\"memberCount\":2,\"host\":" + host + "},\"members\":[" + host + "," + guest + "]}";
+                    }
+                    byte[] data = Encoding.ASCII.GetBytes("HTTP/1.1 " + status + "\r\nContent-Type: application/json\r\nConnection: close\r\nContent-Length: " + body.Length + "\r\n\r\n" + body);
+                    await stream.WriteAsync(data, 0, data.Length);
                 }
                 catch (ObjectDisposedException) { }
                 catch (InvalidOperationException) when (stopping) { }
@@ -126,6 +160,7 @@ namespace AstralOath.Client.Tests
             {
                 stopping = true;
                 listener.Stop();
+                SignalRoomChange.TrySetResult(true);
                 AllowResponse.TrySetResult(true);
                 AllowDirectoryList.TrySetResult(true);
                 worker.GetAwaiter().GetResult();
@@ -145,7 +180,7 @@ namespace AstralOath.Client.Tests
         private const BindingFlags PrivateInstance = BindingFlags.Instance | BindingFlags.NonPublic;
 
         [UnityTest]
-        public IEnumerator LocalWritesInvalidateOnlyAffectedLoginSnapshotsAndAccountsDoNotShareReads()
+        public IEnumerator SettledDrawsUpdateResidentInventoriesBeforeTheHeroPageOpens()
         {
             using var server = new ReadServer();
             server.AllowResponse.SetResult(true);
@@ -203,21 +238,54 @@ namespace AstralOath.Client.Tests
                     requestType.GetField("requestId").SetValue(request, Guid.NewGuid().ToString("N"));
                     requestType.GetField("bannerId").SetValue(request, "covenant");
                     requestType.GetField("count").SetValue(request, 1);
-                    var drawing = (Task)draw.Invoke(summon, new object[] { request, owner.Token });
-                    yield return new WaitUntil(() => drawing.IsCompleted);
-                    drawing.GetAwaiter().GetResult();
-                    Assert.That(Value("Heroes"), Is.Null);
-                    Assert.That(Value("Artifacts"), Is.Null);
-                    var reload = Task.WhenAll(Fetch("ReadHeroesAsync"), Fetch("ReadArtifactsAsync"));
-                    yield return new WaitUntil(() => reload.IsCompleted);
-                    reload.GetAwaiter().GetResult();
-                    Assert.That(((HeroInventorySnapshot)Value("Heroes")).capacity, Is.EqualTo(1012));
-                    Assert.That(((ArtifactInventorySnapshot)Value("Artifacts")).capacity, Is.EqualTo(1012));
+                    var newHero = Guid.NewGuid().ToString("N");
+                    var newArtifact = Guid.NewGuid().ToString("N");
+                    foreach (var reward in new[] { ("hero", newHero, false), ("hero", newHero, false),
+                        ("hero", Guid.NewGuid().ToString("N"), true), ("artifact", newArtifact, false) })
+                    {
+                        string requestId = Guid.NewGuid().ToString("N");
+                        requestType.GetField("requestId").SetValue(request, requestId);
+                        string template = reward.Item1 == "hero" ? "c1001" : "ef0001";
+                        server.DrawReceipt = "{\"requestId\":\"" + requestId + "\",\"count\":1,\"results\":[{\"kind\":\"" +
+                            reward.Item1 + "\",\"templateId\":\"" + template + "\",\"instanceId\":\"" + reward.Item2 +
+                            "\",\"stars\":3,\"inStorage\":" + (reward.Item3 ? "true" : "false") + "}]}";
+                        var drawing = (Task)draw.Invoke(summon, new object[] { request, owner.Token });
+                        yield return new WaitUntil(() => drawing.IsCompleted);
+                        drawing.GetAwaiter().GetResult();
+                        Assert.That(Value("Heroes"), Is.Not.Null, "A confirmed draw evicted the login roster.");
+                        Assert.That(Value("Artifacts"), Is.Not.Null);
+                    }
+                    var granted = (HeroInventorySnapshot)Value("Heroes");
+                    Assert.That(granted.used, Is.EqualTo(1));
+                    Assert.That(granted.heroes.Single().instanceId, Is.EqualTo(newHero));
+                    Assert.That(granted.heroes.Single().level, Is.EqualTo(1));
+                    Assert.That(((ArtifactInventorySnapshot)Value("Artifacts")).artifacts.Single().instanceId, Is.EqualTo(newArtifact));
+                    server.RejectDraw = true;
+                    var rejected = (Task)draw.Invoke(summon, new object[] { request, owner.Token });
+                    yield return new WaitUntil(() => rejected.IsCompleted);
+                    Assert.That(rejected.Exception?.InnerException?.GetType().Name, Is.EqualTo("SummonRequestException"));
+                    Assert.That(Value("Heroes"), Is.SameAs(granted));
+                    string storedId = Guid.NewGuid().ToString("N");
+                    server.StoredRewards = "{\"items\":[{\"kind\":\"hero\",\"templateId\":\"c1001\",\"instanceId\":\"" +
+                        storedId + "\",\"stars\":3}]}";
+                    var storage = (Task)summon.GetType().GetMethod("StorageAsync").Invoke(summon, new object[] { owner.Token });
+                    yield return new WaitUntil(() => storage.IsCompleted);
+                    storage.GetAwaiter().GetResult();
+                    var claim = (Task)summon.GetType().GetMethod("ClaimAsync").Invoke(summon, new object[] { new[] { storedId }, owner.Token });
+                    yield return new WaitUntil(() => claim.IsCompleted);
+                    claim.GetAwaiter().GetResult();
+                    Assert.That(((HeroInventorySnapshot)Value("Heroes")).heroes.Select(hero => hero.instanceId),
+                        Is.EqualTo(new[] { newHero, storedId }));
+                    var inventory = (Task)navigationType.GetMethod("OpenInventory", PrivateInstance)
+                        .Invoke(nav, new object[] { true, owner.Token });
+                    yield return new WaitUntil(() => inventory.IsCompleted);
+                    inventory.GetAwaiter().GetResult();
+                    Assert.That(server.Calls.Count(x => x == "GET /api/inventory/heroes"), Is.EqualTo(1));
                 }
                 finally { owner.Dispose(); Object.Destroy(canvas); }
             }
-            Assert.That(server.Calls.Count(x => x == "GET /api/inventory/heroes"), Is.EqualTo(3));
-            Assert.That(server.Calls.Count(x => x == "GET /api/inventory/artifacts"), Is.EqualTo(4));
+            Assert.That(server.Calls.Count(x => x == "GET /api/inventory/heroes"), Is.EqualTo(2));
+            Assert.That(server.Calls.Count(x => x == "GET /api/inventory/artifacts"), Is.EqualTo(3));
         }
 
         [UnityTest]
@@ -316,7 +384,8 @@ namespace AstralOath.Client.Tests
                 else
                 {
                     assets.Gate.SetResult(true);
-                    yield return new WaitUntil(() => !server.Calls.IsEmpty);
+                    yield return new WaitUntil(() => !server.Calls.IsEmpty || start.IsCompleted);
+                    if (start.IsFaulted || start.IsCanceled) start.GetAwaiter().GetResult();
                     Assert.That(cover.activeInHierarchy, Is.True, "The account read is still pending.");
                     Assert.That(Page("HomeWindow").gameObject.activeInHierarchy, Is.False);
                     server.AllowResponse.SetResult(true);
@@ -365,11 +434,12 @@ namespace AstralOath.Client.Tests
                     Assert.That(server.Calls.Count(x => x == "GET /api/arena/rooms/current"), Is.EqualTo(2));
                     Assert.That(Page("ArenaRoom").gameObject.activeInHierarchy, Is.True);
                     Assert.That(Page("ArenaDirectory").gameObject.activeInHierarchy, Is.False);
-                    int polls = server.Calls.Count(x => x.EndsWith("/draft"));
-                    yield return new WaitUntil(() => server.Calls.Count(x => x.EndsWith("/draft")) > polls);
+                    yield return new WaitUntil(() => server.Calls.Count(x => x.EndsWith("/events")) >= 2);
+                    yield return new WaitUntil(() => server.Calls.Count(x => x.EndsWith("/draft")) >= 2);
                     yield return new WaitForSecondsRealtime(.1f);
                     Assert.That(assets.Loaded.Count(x => x == "arena/draft"), Is.EqualTo(1), "The resumed room reopened the settled draft.");
                     server.DraftId = "new-draft";
+                    server.SignalRoomChange.SetResult(true);
                     yield return new WaitUntil(() => Page("ArenaDraft") && Page("ArenaDraft").gameObject.activeInHierarchy);
                     Assert.That(assets.Loaded.Count(x => x == "arena/draft"), Is.EqualTo(2));
                     yield break;

@@ -48,7 +48,7 @@ namespace AstralOath.Client.Arena
         private BindingScope screen, roster;
         private ArenaRoomState state;
         private long cursor;
-        private string memberSignature, roomError, chatError, actionError;
+        private string memberSignature, roomError, actionError;
         private bool leaving, sending, starting, transitioning, savingSettings;
         private int settingsRevision;
 
@@ -90,84 +90,86 @@ namespace AstralOath.Client.Arena
                 view.Emoji.Bind(screen, ignored => { ToggleStickerPicker(); return Task.CompletedTask; });
             }
             _ = WatchRoomAsync(initial.room.id, screen.Token);
-            if (openDraft != null && initial.room.rule == "basic") _ = WatchDraftAsync(initial.room.id, screen.Token);
-            _ = WatchChatAsync(initial.room.id, screen.Token);
             return Task.CompletedTask;
         }
 
         private async Task WatchRoomAsync(string id, CancellationToken token)
         {
+            var sinceSync = new System.Diagnostics.Stopwatch();
+            int retrySeconds = 1;
             try
             {
-                while (true)
+                while (!token.IsCancellationRequested)
                 {
+                    var connected = System.Diagnostics.Stopwatch.StartNew();
                     try
                     {
-                        int revision = settingsRevision;
-                        var current = await api.GetAsync(id, token);
-                        if (token.IsCancellationRequested) return;
-                        if (revision == settingsRevision && !savingSettings)
-                            Render(current);
-                        RefreshMessageAges();
-                        roomError = null;
-                        ShowStatus();
+                        await api.WatchRoomEventsAsync(id, Receive, token);
                     }
                     catch (ArenaRequestException error)
                     {
-                        if (token.IsCancellationRequested) return;
-                        if (IsRoomClosed(error) && !leaving) { await ReturnToDirectoryAsync(); return; }
-                        roomError = ArenaError.Text(locale, error);
-                        ShowStatus();
-                    }
-                    await Task.Delay(TimeSpan.FromSeconds(GuestSeat != null ? 1 : 5), token);
-                }
-            }
-            catch (OperationCanceledException) when (token.IsCancellationRequested) { }
-            catch (Exception error) { Debug.LogException(error); }
-        }
-
-        private async Task WatchChatAsync(string id, CancellationToken token)
-        {
-            var minimumIdleInterval = TimeSpan.FromSeconds(2);
-            try
-            {
-                while (true)
-                {
-                    var elapsed = System.Diagnostics.Stopwatch.StartNew();
-                    try
-                    {
-                        var incoming = await api.ReadMessagesAsync(id, cursor, token, waitForNewMessages: true);
-                        if (incoming.Length > 0)
+                        token.ThrowIfCancellationRequested();
+                        if (IsRoomClosed(error)) { await ReturnToDirectoryAsync(); return; }
+                        // A subscription can fail while ordinary reads still work (including older servers).
+                        if (!sinceSync.IsRunning || sinceSync.Elapsed.TotalSeconds >= 30)
                         {
-                            AppendMessages(incoming);
-                            cursor = incoming[incoming.Length - 1].id;
-                            if (incoming.Any(message => message.kind == "system") && !savingSettings)
+                            sinceSync.Restart();
+                            try { await Receive("sync"); }
+                            catch (ArenaRequestException snapshotError)
                             {
-                                int revision = settingsRevision;
-                                var current = await api.GetAsync(id, token);
-                                if (!token.IsCancellationRequested && revision == settingsRevision && !savingSettings)
-                                    Render(current);
+                                token.ThrowIfCancellationRequested();
+                                if (IsRoomClosed(snapshotError)) { await ReturnToDirectoryAsync(); return; }
+                                roomError = ArenaError.Text(locale, snapshotError);
+                                ShowStatus();
                             }
                         }
-                        chatError = null;
-                        ShowStatus();
-                        if (incoming.Length > 0) continue;
                     }
-                    catch (ArenaRequestException error)
-                    {
-                        if (token.IsCancellationRequested) return;
-                        if (IsRoomClosed(error) && !leaving) { await ReturnToDirectoryAsync(); return; }
-                        chatError = ArenaError.Text(locale, error);
-                        ShowStatus();
-                    }
-                    // Older servers return empty reads immediately.
-                    var remaining = minimumIdleInterval - elapsed.Elapsed;
-                    if (remaining > TimeSpan.Zero)
-                        await Task.Delay(remaining, token);
+                    if (connected.Elapsed.TotalSeconds >= 30) retrySeconds = 1;
+                    await Task.Delay(TimeSpan.FromSeconds(retrySeconds), token);
+                    retrySeconds = Math.Min(15, retrySeconds * 2);
                 }
             }
             catch (OperationCanceledException) when (token.IsCancellationRequested) { }
             catch (Exception error) { Debug.LogException(error); }
+
+            async Task Receive(string kind)
+            {
+                token.ThrowIfCancellationRequested();
+                bool sync = kind == "sync" || sinceSync.Elapsed.TotalMinutes >= 2;
+                if (sync || kind == "room")
+                {
+                    int revision = settingsRevision;
+                    var current = await api.GetAsync(id, token);
+                    token.ThrowIfCancellationRequested();
+                    if (revision == settingsRevision && !savingSettings) Render(current);
+                }
+                if (sync || kind == "heartbeat") RefreshMessageAges();
+                if (sync || kind == "chat")
+                {
+                    ArenaMessage[] incoming;
+                    do
+                    {
+                        incoming = await api.ReadMessagesAsync(id, cursor, token);
+                        token.ThrowIfCancellationRequested();
+                        if (incoming.Length == 0) break;
+                        AppendMessages(incoming);
+                        cursor = incoming[incoming.Length - 1].id;
+                    } while (incoming.Length == ChatHistoryLimit);
+                }
+                if ((sync || kind == "room") && openDraft != null && state.room.rule == "basic" &&
+                    !transitioning && !starting && !leaving)
+                {
+                    ArenaDraftState draft = null;
+                    try { draft = await api.DraftAsync(id, token); }
+                    catch (ArenaRequestException error) when (error.Code == "draft_not_seated") { }
+                    token.ThrowIfCancellationRequested();
+                    if (draft != null) await EnterDraftAsync(draft);
+                }
+                token.ThrowIfCancellationRequested();
+                if (sync) sinceSync.Restart();
+                roomError = null;
+                ShowStatus();
+            }
         }
 
         private void Render(ArenaRoomState next)
@@ -406,25 +408,6 @@ namespace AstralOath.Client.Arena
             bool scopeStillOpen() => screen == owner && !owner.Token.IsCancellationRequested;
         }
 
-        private async Task WatchDraftAsync(string id, CancellationToken token)
-        {
-            try
-            {
-                while (!token.IsCancellationRequested)
-                {
-                    await Task.Delay(750, token);
-                    if (transitioning || starting || leaving || savingSettings) continue;
-                    try { await EnterDraftAsync(await api.DraftAsync(id, token)); }
-                    catch (ArenaRequestException error) when (error.Code is "not_in_room" or "room_not_found")
-                    { return; }
-                    catch (ArenaRequestException) { }
-                    if (token.IsCancellationRequested) return;
-                }
-            }
-            catch (OperationCanceledException) when (token.IsCancellationRequested) { }
-            catch (Exception error) { Debug.LogException(error); }
-        }
-
         private async Task EnterDraftAsync(ArenaDraftState draft)
         {
             if (draft == null || draft.phase == "cancelled" || transitioning || screen == null || screen.Token.IsCancellationRequested) return;
@@ -645,7 +628,7 @@ namespace AstralOath.Client.Arena
 
         private void ShowStatus()
         {
-            string text = actionError ?? chatError ?? roomError ?? string.Empty;
+            string text = actionError ?? roomError ?? string.Empty;
             view.Status.text = text;
             view.StatusBoard.SetActive(text.Length != 0);
         }
@@ -661,7 +644,7 @@ namespace AstralOath.Client.Arena
                 if (row.Root) { row.Root.gameObject.SetActive(false); UnityEngine.Object.Destroy(row.Root.gameObject); }
             messages.Clear();
             cursor = 0;
-            memberSignature = roomError = chatError = actionError = null;
+            memberSignature = roomError = actionError = null;
             state = null;
             if (view.Root) view.Hide();
         }

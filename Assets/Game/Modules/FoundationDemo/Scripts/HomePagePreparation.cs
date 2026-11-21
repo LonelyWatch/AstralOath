@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AstralOath.Client.Common;
@@ -84,6 +86,12 @@ namespace AstralOath.Client.FoundationDemo
             }
             internal T Value => current?.Status == TaskStatus.RanToCompletion ? current.Result : null;
             internal void Invalidate() => current = null;
+            internal void Replace(T snapshot) => current = Task.FromResult(snapshot);
+            internal void Reconcile()
+            {
+                Invalidate();
+                if (!login.IsCancellationRequested) _ = Optional(GetAsync, login);
+            }
 
             internal async Task<T> GetAsync(CancellationToken caller)
             {
@@ -171,10 +179,45 @@ namespace AstralOath.Client.FoundationDemo
         private static bool Parse(string value, out DateTimeOffset result) =>
             DateTimeOffset.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out result);
 
-        internal void Invalidate()
+        internal void ApplyGrants(SummonReward[] rewards)
         {
-            heroes.Invalidate();
-            InvalidateArtifacts();
+            summon = null;
+            if (rewards.Length == 0) return;
+            if (Array.Exists(rewards, reward => reward.kind == "hero"))
+            {
+                var roster = heroes.Value;
+                if (roster == null) heroes.Reconcile();
+                else
+                {
+                    var ids = new HashSet<string>(roster.heroes.Select(item => item.instanceId), StringComparer.Ordinal);
+                    var added = rewards.Where(r => r.kind == "hero" && ids.Add(r.instanceId)).Select(r =>
+                        new HeroInventoryItem { instanceId = r.instanceId, templateId = r.templateId, stars = r.stars, level = 1 }).ToArray();
+                    if (roster.used + added.Length > roster.capacity) heroes.Reconcile();
+                    else if (added.Length > 0) heroes.Replace(new HeroInventorySnapshot { capacity = roster.capacity,
+                        used = roster.used + added.Length, heroes = roster.heroes.Concat(added).ToArray() });
+                }
+            }
+            if (Array.Exists(rewards, reward => reward.kind == "artifact"))
+            {
+                var bag = artifacts.Value;
+                if (bag == null) artifacts.Reconcile();
+                else
+                {
+                    var ids = new HashSet<string>(bag.artifacts.Select(item => item.instanceId), StringComparer.Ordinal);
+                    var added = rewards.Where(r => r.kind == "artifact" && ids.Add(r.instanceId)).Select(r =>
+                        new ArtifactInventoryItem { instanceId = r.instanceId, templateId = r.templateId, source = "summon" }).ToArray();
+                    if (bag.used + added.Length > bag.capacity) artifacts.Reconcile();
+                    else if (added.Length > 0) artifacts.Replace(new ArtifactInventorySnapshot { capacity = bag.capacity,
+                        used = bag.used + added.Length, artifacts = bag.artifacts.Concat(added).ToArray(), materials = bag.materials });
+                }
+            }
+        }
+
+        internal void ReconcileInventories()
+        {
+            summon = null;
+            heroes.Reconcile();
+            artifacts.Reconcile();
         }
 
         internal void InvalidateArtifacts()

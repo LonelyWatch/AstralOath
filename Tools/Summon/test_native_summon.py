@@ -1,15 +1,61 @@
 import json
+from statistics import median
 import unittest
 from pathlib import Path
+
+from PIL import Image, ImageStat
 
 from ImportSummonPresentation import DEST, ROOTS, collect_visual, validate_music_stream
 
 
+def featured_frame(seconds):
+    folder = DEST / "IseriaSkillLoop"
+    layout = json.loads((folder / "loop.json").read_text(encoding="utf-8"))
+    index = round(seconds * layout["framesPerSecond"])
+    columns, rows = layout["columns"], layout["rows"]
+    page, tile = divmod(index, columns * rows)
+    width, height, gutter = layout["width"], layout["height"], layout["gutterPixels"]
+    x = tile % columns * (width + 2 * gutter) + gutter
+    y = tile // columns * (height + 2 * gutter) + gutter
+    with Image.open(folder / layout["pages"][page]) as atlas:
+        return atlas.crop((x, y, x + width, y + height)).convert("RGB").resize((640, 360))
+
+
 class NativeSummonPresentation(unittest.TestCase):
+    def test_featured_sword_gate_flash_covers_the_full_frame(self):
+        for index in (68, 69, 70):
+            with self.subTest(frame=index):
+                frame = featured_frame(index / 24).convert("L")
+                bands = [ImageStat.Stat(frame.crop((160, y, 480, y + 40))).mean[0] for y in (50, 285)]
+                self.assertGreater(min(bands), 180, "Both halves of the sword gate must flash.")
+                self.assertLess(abs(bands[0] - bands[1]), 20)
+
     def test_featured_skill_captures_a_slime_as_the_only_enemy(self):
         loop = json.loads((DEST / "IseriaSkillLoop/loop.json").read_text(encoding="utf-8"))
         self.assertEqual("preview.slime", loop.get("sourceTargetModel"))
         self.assertEqual(1, loop["sourceTargetCount"])
+
+    def test_featured_sword_hits_the_visible_slime(self):
+        # In the original at 13:33.756 the victim stands under the blade, near (319, 305).
+        # The preview uses the ice slime. Its pink cheek is visible until the first impact.
+        target_box = (300, 279, 340, 322)
+        waiting = featured_frame(5.625).crop(target_box)
+        cheek = [(i % waiting.width, i // waiting.width) for i, (r, g, b) in enumerate(waiting.getdata())
+                 if b > 100 and r > max(124, b * .78) and g < r * .76]
+        self.assertGreater(len(cheek), 12, "The ice slime must be visible where the strike lands.")
+        center = (round(median(x for x, _ in cheek)), round(median(y for _, y in cheek)))
+        # First HIT at stage 4.7666 s plus the 1.670 s portrait cut.
+        hit = featured_frame(6.4366).crop(target_box)
+        self.assertGreater(min(hit.getpixel(center)), 210, "The sword's bright core must cross the victim.")
+
+    def test_featured_sword_crest_is_framed_above_the_impact(self):
+        # At 13:35.356 the gold crest is above the contact point, with the entire blade in view.
+        frame = featured_frame(181 / 24)
+        crest = frame.crop((275, 60, 365, 335))
+        gold_rows = [60 + i // crest.width for i, (r, g, b) in enumerate(crest.getdata())
+                     if 75 < r < 212 and g > b + 23 and r > b + 23 and abs(r - g) < 36]
+        self.assertGreater(len(gold_rows), 60)
+        self.assertTrue(100 < median(gold_rows) < 230, f"Sword crest is at y={median(gold_rows)}/360.")
 
     def test_streamed_music_advances_past_the_decoder_buffer(self):
         for name in ("Theme.wav", "Ceremony.wav"):

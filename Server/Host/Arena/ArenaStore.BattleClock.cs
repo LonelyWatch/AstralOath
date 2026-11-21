@@ -26,7 +26,7 @@ internal sealed partial class ArenaStore
             await SaveDraft(connection, transaction, draft, token);
         var update = room.Read(after) with { Clock = draft.BattleClock?.View(now) };
         await RenewLease(connection, transaction, player.Id, token);
-        await transaction.CommitAsync(token);
+        await Commit(transaction, token);
         return update;
     }
 
