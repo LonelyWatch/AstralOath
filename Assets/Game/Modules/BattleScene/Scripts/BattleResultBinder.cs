@@ -57,6 +57,9 @@ namespace AstralOath.Client.BattleScene
                     emblem.Root.SetActive(true);
                     emblem.Play(prefix + "_instant", false);
                     emblem.Tick(0);
+                    var audio = instance.GetComponent<AudioSource>();
+                    audio.clip = won ? assets.resultVictory : assets.resultDefeat;
+                    audio.PlayOneShot(audio.clip);
                 }
                 BindTeam(BattleSide.Ally, 0);
                 BindTeam(BattleSide.Enemy, 4);

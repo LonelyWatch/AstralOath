@@ -17,12 +17,13 @@ namespace AstralOath.Client.BattleScene.Editor
         [MenuItem("Tools/战斗场景/生成竞技场结算界面")]
         public static void Generate()
         {
-            var font = Load<TMP_FontAsset>("Assets/Game/Modules/FoundationDemo/Res/Fonts/FoundationFont.asset");
-            var root = new GameObject("BattleResult", typeof(RectTransform), typeof(BindingMap), typeof(Canvas), typeof(GraphicRaycaster));
+            var font = Load<TMP_FontAsset>("Assets/Game/Common/Res/Fonts/EpicSeven.asset");
+            var root = new GameObject("BattleResult", typeof(RectTransform), typeof(BindingMap), typeof(Canvas), typeof(GraphicRaycaster), typeof(AudioSource));
             try
             {
                 var rect = (RectTransform)root.transform;
                 Stretch(rect);
+                root.GetComponent<AudioSource>().playOnAwake = false;
                 var bindings = new Dictionary<string, Object>();
                 var center = Vector2.one * .5f;
                 var left = new Vector2(0, .5f);
@@ -55,7 +56,7 @@ namespace AstralOath.Client.BattleScene.Editor
                     bindings["friendship" + i] = Text(row, "Friendship", center, 0, 48.3f, 32, 35, 20);
                 }
                 Button(rect, "details", rightBottom, -273, 56, 152, 72, false);
-                Button(rect, "confirm", rightBottom, -104, 56, 180, 72, true);
+                Button(rect, "confirm", rightBottom, -110, 56, 178, 72, true);
 
                 var statistics = Rect(rect, "Statistics", center, 0, 0, 0, 0);
                 Stretch(statistics);
@@ -95,6 +96,8 @@ namespace AstralOath.Client.BattleScene.Editor
                 var prefab = PrefabUtility.SaveAsPrefabAsset(root, Module + "Res/Prefab/BattleResult.prefab");
                 var config = new SerializedObject(Load<BattleOnlineTransitionAssets>(Module + "Configs/AstralOathOnlineTransition.asset"));
                 config.FindProperty("resultPrefab").objectReferenceValue = prefab;
+                config.FindProperty("resultVictory").objectReferenceValue = Load<AudioClip>(Module + "Res/Sounds/PvpGate/ResultVictory.wav");
+                config.FindProperty("resultDefeat").objectReferenceValue = Load<AudioClip>(Module + "Res/Sounds/PvpGate/ResultDefeat.wav");
                 var emblem = config.FindProperty("resultEmblem");
                 const string source = Art + "eff_pvp_outro_victory";
                 emblem.FindPropertyRelative("skeleton").objectReferenceValue = Load<TextAsset>(source + ".spine.json");
@@ -127,7 +130,8 @@ namespace AstralOath.Client.BattleScene.Editor
                     button.transition = Selectable.Transition.SpriteSwap;
                     button.spriteState = new SpriteState { pressedSprite = Load<Sprite>(texture + "_p.png") };
                     bindings[key] = button;
-                    bindings[key + "Label"] = Text(image.rectTransform, "Label", center, 0, 0, w - 8, h, 24);
+                    // result_base places its 0.41-scale button label five source pixels above center.
+                    bindings[key + "Label"] = Text(image.rectTransform, "Label", center, 0, 5, w - 8, h, 22);
                 }
             }
             finally { Object.DestroyImmediate(root); }

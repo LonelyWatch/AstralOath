@@ -35,6 +35,36 @@
       "sampleRate": 48000,
       "sampleFrames": 76800,
       "channels": 2
+    },
+    {
+      "name": "ui/pvp/result_win",
+      "eventId": "d06af45b-59ea-48c5-a976-cf6ffb490c1d",
+      "sourceSamples": [
+        "assets\\ui\\se_ui_colosseum_battle_win_01.wav",
+        "assets\\ui\\se_ui_colosseum_battle_win_02.wav",
+        "assets\\ui\\se_ui_colosseum_battle_win_03.wav"
+      ],
+      "bank": "ui1",
+      "asset": "ResultVictory.wav",
+      "sha256": "6f63c73d1c0c362c74e47260ed082f38ef44df93e76b6000e52ba6764d0ce866",
+      "sampleRate": 48000,
+      "sampleFrames": 272640,
+      "channels": 2
+    },
+    {
+      "name": "ui/pvp/result_lose",
+      "eventId": "808fb8d9-40e3-4f9c-ac9b-01354474a39d",
+      "sourceSamples": [
+        "assets\\ui\\se_ui_colosseum_battle_lose_01.wav",
+        "assets\\ui\\se_ui_colosseum_battle_lose_02.wav",
+        "assets\\ui\\se_ui_colosseum_battle_lose_03.wav"
+      ],
+      "bank": "ui1",
+      "asset": "ResultDefeat.wav",
+      "sha256": "6781f018d47475b660bc38e1e283232fbd3a61557e1b1bd3da122baac063de72",
+      "sampleRate": 48000,
+      "sampleFrames": 240480,
+      "channels": 2
     }
   ],
   "sources": [

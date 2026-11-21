@@ -152,6 +152,11 @@ static class Program
             string native = Path.Combine(root, "Assets/ThirdParty/FMOD/Plugins/x86_64/fmodstudioL.dll");
             NativeLibrary.SetDllImportResolver(typeof(FMOD.System).Assembly, (name, assembly, path) =>
                 name.StartsWith("fmod", StringComparison.Ordinal) ? NativeLibrary.Load(native) : IntPtr.Zero);
+            if (args.Length == 7 && args[2] == "--record-ui-event")
+            {
+                RecordUiEvent(sounds, args[3], args[4], args[5], int.Parse(args[6]), true);
+                return 0;
+            }
             if (args.Length == 4 && args[2] == "--record-button")
             {
                 RecordUiEvent(sounds, args[3], "event:/ui/btn_normal", "{1d184b0f-78fa-4e74-b456-1388254dc51f}", 900, false);

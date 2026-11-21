@@ -1,4 +1,4 @@
-"""Import the original FMOD World Arena door and Soul Burn sound events as deterministic PCM clips."""
+"""Render the original FMOD World Arena gate, Soul Burn and result events to PCM."""
 
 import argparse
 import io
@@ -23,18 +23,25 @@ CLIPS = (
      "e04705e6-c46c-40db-abbd-a8874d1431ab", 98_880),
     ("SoulBurnRelease", "soul-burn", r"effect\ui_livepvp_soulburn_eff", r"assets\ui\ui_livepvp_soulburn_eff.wav",
      "5f151765-7475-467b-8c1e-f0f559099301", 76_800),
+    ("ResultVictory", "result-win", r"ui\pvp\result_win",
+     tuple(rf"assets\ui\se_ui_colosseum_battle_win_0{i}.wav" for i in range(1, 4)),
+     "d06af45b-59ea-48c5-a976-cf6ffb490c1d", 272_640),
+    ("ResultDefeat", "result-lose", r"ui\pvp\result_lose",
+     tuple(rf"assets\ui\se_ui_colosseum_battle_lose_0{i}.wav" for i in range(1, 4)),
+     "808fb8d9-40e3-4f9c-ac9b-01354474a39d", 240_480),
 )
 MIXER_PADDING = 5120
 FOLDER_IMPORTER = "folderAsset: yes\nDefaultImporter:\n  externalObjects: {}\n"
 TEXT_IMPORTER = "TextScriptImporter:\n  externalObjects: {}\n  userData:\n  assetBundleName:\n  assetBundleVariant:\n"
 
 
-def rendered(probe, source, temp, direction, output_frames):
+def rendered(probe, source, temp, direction, native_name, event_id, output_frames):
     target = temp / (direction + ".wav")
     # Keep native temporary writes on the project drive.
     environment = dict(os.environ, TEMP=str(temp), TMP=str(temp), TMPDIR=str(temp))
     subprocess.run([str(probe[0]), str(probe[1]), str(TOOLS.parent), str(source / "sound"),
-                    "--record-pvp-" + direction, str(target)], check=True, env=environment)
+                    "--record-ui-event", str(target), "event:/" + native_name.replace("\\", "/"),
+                    "{" + event_id + "}", str(max(3000, output_frames // 48 + 500))], check=True, env=environment)
     with wave.open(str(target), "rb") as raw:
         if (raw.getnchannels(), raw.getsampwidth(), raw.getframerate()) != (2, 2, 48_000):
             raise ValueError("Unexpected PCM format from original PvP event: " + direction)
@@ -77,20 +84,23 @@ def main():
     with tempfile.TemporaryDirectory(prefix="pvp-gate-audio-", dir=artifact_dir) as tmp:
         for clip, direction, native_name, sample, event_id, frames in CLIPS:
             match = re.search(r"(?m)^" + re.escape(native_name) + r":\n((?: +.+\n)+)", index)
-            if not match or event_id not in match[1] or sample not in match[1] or "Bank Name: ui1" not in match[1]:
+            samples = (sample,) if isinstance(sample, str) else sample
+            if (not match or event_id not in match[1] or "Bank Name: ui1" not in match[1]
+                    or any(s not in match[1] for s in samples)):
                 raise ValueError("Unexpected original FMOD PvP event mapping: " + native_name)
-            wave_data = rendered((args.dotnet.resolve(), args.probe.resolve()), source, Path(tmp), direction, frames)
+            wave_data = rendered((args.dotnet.resolve(), args.probe.resolve()), source, Path(tmp), direction, native_name, event_id, frames)
             filename = clip + ".wav"
             output = OUTPUT / filename
             write(output, wave_data, args.check)
             metadata(output, args.check, importer)
             manifest["events"].append({"name": native_name.replace("\\", "/"), "eventId": event_id,
-                "sourceSample": sample, "bank": "ui1", "asset": filename, "sha256": digest(wave_data),
+                ("sourceSample" if isinstance(sample, str) else "sourceSamples"): sample,
+                "bank": "ui1", "asset": filename, "sha256": digest(wave_data),
                 "sampleRate": 48000, "sampleFrames": frames, "channels": 2})
     output = OUTPUT / "source.json"
     write(output, json_bytes(manifest), args.check)
     metadata(output, args.check, TEXT_IMPORTER)
-    print(f"{'Verified' if args.check else 'Imported'} three native World Arena events (resolved FMOD IDs + PCM).")
+    print(f"{'Verified' if args.check else 'Imported'} {len(CLIPS)} native World Arena events (resolved FMOD IDs + PCM).")
 
 
 if __name__ == "__main__":

@@ -22,6 +22,7 @@ namespace AstralOath.Client.BattleScene
         [SerializeField] internal TextAsset hudScoreLayout;
         [SerializeField] internal BattleHudPreview.SpineEffect arrivalWarning, arrivalDust;
         [SerializeField] internal GameObject resultPrefab;
+        [SerializeField] internal AudioClip resultVictory, resultDefeat;
         [SerializeField] internal BattleHudPreview.SpineEffect resultEmblem;
 
         [Serializable, Preserve]
@@ -56,7 +57,7 @@ namespace AstralOath.Client.BattleScene
                 !asset.arenaBackdrop || !asset.zhHans ||
                 !asset.hudScoreLayout || asset.hudSprites == null || asset.hudSprites.Length == 0 || asset.hudSprites.Any(item => !item) ||
                 IsIncomplete(asset.arrivalWarning) || IsIncomplete(asset.arrivalDust) ||
-                !asset.resultPrefab || IsIncomplete(asset.resultEmblem) ||
+                !asset.resultPrefab || IsIncomplete(asset.resultEmblem) || !asset.resultVictory || !asset.resultDefeat ||
                 asset.particles == null || asset.particles.Any(item => !item) ||
                 asset.textures == null || asset.textures.Any(item => !item))
                 throw new InvalidOperationException("Online battle transition resources are incomplete.");

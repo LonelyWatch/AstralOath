@@ -83,6 +83,8 @@ MonoBehaviour:
     atlas: {fileID: 4900000, guid: 0cd68dd25b274dd491c4ad3638733ab9, type: 3}
     page: {fileID: 2800000, guid: c71807804bf14623b2c1a0d04835cc63, type: 3}
   resultPrefab: {fileID: 3025131350415242843, guid: 84564f3c4bb6e86468074f5fc462f1d8, type: 3}
+  resultVictory: {fileID: 8300000, guid: 1e6c8b2e0f8c54659f8dda5c8f2fc9be, type: 3}
+  resultDefeat: {fileID: 8300000, guid: a5f392f24f1b57bb8f22b174610147ed, type: 3}
   resultEmblem:
     skeleton: {fileID: 4900000, guid: f13c6e9327cd4753b4223f7fee13b3cc, type: 3}
     atlas: {fileID: 4900000, guid: d92e47f7119e4150bb3a44f3827e456d, type: 3}

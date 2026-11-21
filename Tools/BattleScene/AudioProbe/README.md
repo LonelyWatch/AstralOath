@@ -31,3 +31,5 @@
 变体探针等待上一次的原生播放和回调结束，再开始下一次测量。省略后缀会要求至少两套日语样本，使用 `技能ID@1` 验证固定序列。杰拉图 S3 使用 `c_jerato_skill_03@1`，源事件包含 `voc_c1010_sk3_1_1` 和 `voc_c1010_sk3_1_2` 两段连续语音。
 
 附属录音命令 `--record-button <绝对 WAV 路径>` 只加载原 master/master.strings/ui1，校验 `event:/ui/btn_normal` 的 GUID，再用 FMOD `WAVWRITER` 写出完整事件。Unity 通用按钮使用剪去首尾多余静音的独立 PCM 文件。
+
+`ImportPvpGateAudio.py` 使用探针的 `--record-ui-event` 离线重放 ui1 声音事件，校验源 GUID 和每个采样的映射。它导出开门、关门、灵魂燃烧以及模拟战的胜负声。可先运行 `dotnet build Tools/BattleScene/AudioProbe -c Release -o .artifacts/arena-draft/gate-audio-bin`，再运行 `Tools/BattleScene/ImportPvpGateAudio.py --check` 逐字节比对五份 PCM。胜利声与原录像的匹配时间见[胜败结算复核](../../../docs/delivery/2026-11-21-result-r24.md)。

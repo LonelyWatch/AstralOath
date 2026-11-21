@@ -47,6 +47,28 @@ namespace AstralOath.Client.Tests
                         host.transform, resources, copy, result, sprites, (Func<string, string>)(key => key), (Action)(() => exits++) }, null);
                     type.GetMethod("Tick", Members).Invoke(panel, new object[] { 2f });
                     var view = host.GetComponentsInChildren<BindingMap>(true).Single(map => map.name == "BattleResult");
+                    var sound = view.GetComponent<AudioSource>();
+                    Assert.That(sound, Is.Not.Null, "Opening the result must trigger the corresponding native event.");
+                    string cue = outcome == BattleOutcome.AllyVictory ? "ResultVictory" : outcome == BattleOutcome.EnemyVictory ? "ResultDefeat" : null;
+                    Assert.That(sound.clip ? sound.clip.name : null, Is.EqualTo(cue));
+                    if (cue != null)
+                    {
+                        Assert.That(sound.playOnAwake || sound.loop, Is.False);
+                        Assert.That(sound.isPlaying, Is.True);
+                    }
+                    foreach (string key in new[] { "details", "confirm" })
+                    {
+                        var button = view.Require<GameButton>(key);
+                        var label = view.Require<GameText>(key + "Label");
+                        Assert.That(label.font.name, Is.EqualTo("EpicSeven"), "Result labels must use the game's regular UI font.");
+                        Assert.That(label.color, Is.EqualTo(Color.white));
+                        var shade = view.transform.Find("Shade");
+                        Assert.That(button.transform.parent, Is.EqualTo(shade.parent));
+                        Assert.That(button.transform.GetSiblingIndex(), Is.GreaterThan(shade.GetSiblingIndex()));
+                        Assert.That(button.transform.GetSiblingIndex(), Is.GreaterThan(view.transform.Find("Vignette").GetSiblingIndex()));
+                        Assert.That(label.transform.IsChildOf(button.transform));
+                        Assert.That(label.canvasRenderer.GetInheritedAlpha(), Is.EqualTo(1f).Within(.005f));
+                    }
                     var allies = result.Units.Where(unit => unit.Slot.Side == BattleSide.Ally).OrderBy(unit => unit.Slot.Position).ToArray();
                     for (int i = 0; i < allies.Length; ++i)
                     {
@@ -57,7 +79,18 @@ namespace AstralOath.Client.Tests
                     Assert.That(badge.GetComponentsInChildren<MeshFilter>().Any(mesh => mesh.sharedMesh && mesh.sharedMesh.vertexCount > 0),
                         Is.EqualTo(outcome != BattleOutcome.Draw));
                     Assert.That(view.Require<GameText>("draw").gameObject.activeSelf, Is.EqualTo(outcome == BattleOutcome.Draw));
-                    yield return BattleActionFeedbackVisualTests.CaptureScene(scene, outcome.ToString(), Environment.GetEnvironmentVariable("ASTRAL_RESULT_CAPTURE_DIR"));
+                    string capture = Environment.GetEnvironmentVariable("ASTRAL_RESULT_CAPTURE_DIR");
+                    yield return BattleActionFeedbackVisualTests.CaptureScene(scene, outcome.ToString(), capture);
+                    if (outcome == BattleOutcome.AllyVictory && !string.IsNullOrWhiteSpace(capture))
+                    {
+                        var shade = view.transform.Find("Shade").gameObject;
+                        var vignette = view.transform.Find("Vignette").gameObject;
+                        shade.SetActive(false);
+                        vignette.SetActive(false);
+                        yield return BattleActionFeedbackVisualTests.CaptureScene(scene, "VictoryWithoutBackdrop", capture);
+                        shade.SetActive(true);
+                        vignette.SetActive(true);
+                    }
                     view.Require<GameButton>("details").onClick.Invoke();
                     Assert.That(view.Require<GameObject>("statistics").activeSelf);
                     Assert.That(view.Require<GameText>("unit0").text, Does.Contain($"{allies[0].CurrentHealth}/{allies[0].MaximumHealth}"));
