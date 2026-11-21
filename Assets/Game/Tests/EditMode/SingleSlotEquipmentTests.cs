@@ -10,6 +10,41 @@ namespace AstralOath.Client.Tests
     public sealed class SingleSlotEquipmentTests
     {
         [Test]
+        public void ComparisonTextRetainsSolidStrokesAtItsDisplayedSize()
+        {
+            var page = AssetDatabase.LoadAssetAtPath<GameObject>(
+                "Assets/Game/Modules/Home/Res/Prefab/SingleSlotEquipment.prefab").GetComponent<BindingMap>();
+            var title = page.Require<GameText>("title");
+            var ink = title.fontSharedMaterial;
+            Assert.That(ink, Is.Not.EqualTo(title.font.material), "The detail page has its own SDF edge response.");
+            Assert.That(ink.GetFloat("_Sharpness"), Is.GreaterThan(0f));
+            Assert.That(ink.GetFloat("_OutlineWidth"), Is.Zero);
+            Assert.That(ink.mainTexture, Is.EqualTo(title.font.atlasTexture));
+            void Check(GameText value) => Assert.That(value.fontSharedMaterial, Is.EqualTo(ink), value.name);
+            foreach (var key in new[] { "current", "candidate", "popupItem" })
+            {
+                var column = page.Require<BindingMap>(key);
+                foreach (var text in new[] { "name", "grade", "set", "description" })
+                    Check(column.Require<GameText>(text));
+                foreach (var keyWithRegularStrokes in new[] { "grade", "name", "set" })
+                    Assert.That(column.Require<GameText>(keyWithRegularStrokes).fontStyle, Is.EqualTo(TMPro.FontStyles.Normal));
+                Assert.That(column.Require<GameText>("set").richText, Is.True, "Only the set name is bold.");
+                foreach (var row in new[] { "main", "sub0", "sub1", "sub2", "sub3", "score" })
+                {
+                    var map = column.Require<BindingMap>(row);
+                    Check(map.Require<GameText>("label"));
+                    Check(map.Require<GameText>("value"));
+                }
+                Assert.That(column.Require<BindingMap>("score").Require<GameText>("label").fontStyle, Is.EqualTo(TMPro.FontStyles.Normal));
+            }
+            var candidate = page.Require<GameObject>("row").GetComponent<BindingMap>();
+            Check(candidate.Require<GameText>("stat"));
+            Check(candidate.Require<GameText>("name"));
+            Check(page.Require<GameButton>("unequip").GetComponentInChildren<GameText>(true));
+            Check(page.Require<GameButton>("equip").GetComponentInChildren<GameText>(true));
+        }
+
+        [Test]
         public void ComparisonAndEquippedDetailShowDescriptionAndItemScore()
         {
             var view = AssetDatabase.LoadAssetAtPath<GameObject>(

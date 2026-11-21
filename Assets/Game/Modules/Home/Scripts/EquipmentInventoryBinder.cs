@@ -250,11 +250,13 @@ namespace AstralOath.Client.Home
             new EquipmentStatRowBinder(Get<BindingMap>(key)).Set(locale.Resolve("home.hero_inventory.sort_equipment_score"),Num(ItemScore(item)));
         }
         private string SetName(string key) => key == "speed" ? L("speedSet") : key == "critical" ? L("criticalSet") : key;
-        private string SetProgress(EquipmentInventoryItem item)
+        private string SetProgress(EquipmentInventoryItem item, bool emphasizeName = false)
         {
             int count = string.IsNullOrEmpty(item.equippedHeroId) ? 0 :
                 Items.Count(other => other.equippedHeroId == item.equippedHeroId && other.setId == item.setId);
-            return SetName(item.setId) + " (" + count + "/" + (item.setId == "speed" ? 4 : 2) + ")";
+            string name = SetName(item.setId);
+            if (emphasizeName) name = "<b><noparse>" + name + "</noparse></b>";
+            return name + " (" + count + "/" + (item.setId == "speed" ? 4 : 2) + ")";
         }
         private static string Num(int value) => value.ToString(CultureInfo.InvariantCulture);
         private static string Percent(int bp) => (bp / 100m).ToString("0.##",CultureInfo.InvariantCulture) + "%";

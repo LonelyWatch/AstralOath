@@ -190,7 +190,7 @@ namespace AstralOath.Client.Home
             var emblem = map.Require<Image>("setIcon");
             emblem.sprite = SetArt(item);
             emblem.enabled = emblem.sprite;
-            map.Require<GameText>("set").text = SetProgress(item);
+            map.Require<GameText>("set").text = SetProgress(item, emphasizeName: true);
         }
 
         private void SubmitSlotItem(string operation)

@@ -3,6 +3,7 @@ using AstralOath.Client.Home;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.TextCore.LowLevel;
 using UnityEngine.UI;
 
 namespace AstralOath.Editor
@@ -44,8 +45,11 @@ namespace AstralOath.Editor
             PrefabUtility.RecordPrefabInstancePropertyModifications(rim);
             PrefabUtility.RecordPrefabInstancePropertyModifications(wearerRect);
             PrefabUtility.RecordPrefabInstancePropertyModifications(wearer);
-            var level = EquipmentCardNumber(Area(art, "Item level", .092f, .064f, .55f, .223f),
-                numberFont, 21, new Color32(255, 222, 114, 255), TextAlignmentOptions.MidlineLeft);
+            var level = EquipmentCardNumber(Area(art, "Item level", .14f, .094f, .55f, .223f),
+                EquipmentLevelDigits(), 22,
+                new Color32(255, 221, 128, 255), TextAlignmentOptions.MidlineLeft);
+            level.fontStyle = FontStyles.Normal;
+            level.overflowMode = TextOverflowModes.Overflow;
 
             var badgeInstance = (GameObject)PrefabUtility.InstantiatePrefab(Load<GameObject>(BadgePrefabPath), art);
             var badgeRect = (RectTransform)badgeInstance.transform;
@@ -72,6 +76,40 @@ namespace AstralOath.Editor
                 ("selectedPlate", selected), ("highlight", highlight));
             Save(card.gameObject, EquipmentItemCardPath);
             UIViewRegistry.ValidatePrefab<EquipmentItemCard>(Load<GameObject>(EquipmentItemCardPath));
+        }
+
+        private static TMP_FontAsset EquipmentLevelDigits()
+        {
+            const string path = Common + "Fonts/EquipmentItemLevelDigits.asset";
+            var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(path);
+            if (!font)
+            {
+                font = TMP_FontAsset.CreateFontAsset(Load<Font>(Common + "Fonts/EpicSeven.ttf"),
+                    64, 8, GlyphRenderMode.SDFAA, 256, 256, AtlasPopulationMode.Dynamic, false);
+                if (!font || !font.TryAddCharacters("0123456789"))
+                    throw new System.IO.InvalidDataException("Could not bake the ten equipment level digits.");
+                font.name = "EquipmentItemLevelDigits";
+                font.atlasPopulationMode = AtlasPopulationMode.Static;
+                font.atlasTexture.name = font.name + " Atlas";
+                font.material.name = font.name + " Material";
+                AssetDatabase.CreateAsset(font, path);
+                AssetDatabase.AddObjectToAsset(font.atlasTexture, font);
+                AssetDatabase.AddObjectToAsset(font.material, font);
+                EditorUtility.SetDirty(font);
+            }
+            var material = font.material;
+            material.EnableKeyword("OUTLINE_ON");
+            material.EnableKeyword("UNDERLAY_ON");
+            material.SetFloat("_FaceDilate", .21f);
+            material.SetFloat("_OutlineWidth", .23f);
+            material.SetColor("_OutlineColor", new Color32(31, 17, 8, 255));
+            material.SetFloat("_UnderlayOffsetX", .12f);
+            material.SetFloat("_UnderlayOffsetY", -.54f);
+            material.SetColor("_UnderlayColor", new Color32(14, 7, 3, 230));
+            EditorUtility.SetDirty(material);
+            AssetDatabase.SaveAssetIfDirty(font);
+            AssetDatabase.SaveAssetIfDirty(material);
+            return font;
         }
 
         private static GameText EquipmentCardNumber(RectTransform rect, TMP_FontAsset numberFont, int size,

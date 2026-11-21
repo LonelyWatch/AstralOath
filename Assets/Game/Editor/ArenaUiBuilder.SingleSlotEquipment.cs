@@ -103,6 +103,15 @@ namespace AstralOath.Editor
                 new Color32(255,216,138,255),TextAlignmentOptions.Center,true)));
             keys.Add(("retry",Action(root,"Reload inventory","home.gear.retry",23,
                 .437f,.841f,.126f,.06f,out _,BagArt("_btn_small_black"),Color.white)));
+            var textMaterial = Load<Material>(Home + "Res/Materials/EquipmentDetailText.mat");
+            foreach (var label in root.GetComponentsInChildren<GameText>(true))
+            {
+                if (label.font != font || PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(label) == EquipmentItemCardPath)
+                    continue;
+                label.fontSharedMaterial = textMaterial;
+                if (PrefabUtility.IsPartOfPrefabInstance(label))
+                    PrefabUtility.RecordPrefabInstancePropertyModifications(label);
+            }
             Bind(root,keys.ToArray());
             Save(root.gameObject,SingleSlotPath);
             var source = Load<GameObject>(SingleSlotPath);
@@ -136,7 +145,6 @@ namespace AstralOath.Editor
             float textX=popup ? .272f : .255f;
             var grade = Text(detail,"Quality and slot",null,28,textX,popup ? .012f : .044f,1-textX,.049f);
             var name = Text(detail,"Equipment name",null,29,textX,popup ? .053f : .083f,1-textX,.057f);
-            grade.fontStyle = name.fontStyle = FontStyles.Bold;
             keys.Add(("grade",grade));
             keys.Add(("name",name));
             keys.Add(("description",Text(detail,"Item description",null,24,.018f,popup ? .191f : .206f,.956f,.097f,
@@ -180,13 +188,14 @@ namespace AstralOath.Editor
             {
                 var text = score.Require<GameText>(binding);
                 text.fontSize = 29;
+                text.fontStyle = FontStyles.Normal;
                 PrefabUtility.RecordPrefabInstancePropertyModifications(text);
             }
             keys.Add(("score", score));
             Paint(Area(detail,"Set band",.005f,setY,.984f,.066f),null,new Color32(78,82,98,10));
             keys.Add(("setIcon",Picture(detail,"Set icon",null,.018f,setY+.005f,.080f,.056f,true)));
             var set = Text(detail,"Equipped set pieces",null,29,.103f,setY,.875f,.066f);
-            set.fontStyle = FontStyles.Bold;
+            set.richText = true;
             keys.Add(("set",set));
             Bind(root,keys.ToArray());
             return root.GetComponent<BindingMap>();

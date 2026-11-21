@@ -16,6 +16,30 @@ namespace AstralOath.Client.Tests
         private const string GearArt = "Assets/Game/Modules/Home/Res/Textures/Inventory/Equipment/";
 
         [Test]
+        public void ItemLevelKeepsAGoldFaceAndSeparateDarkEdgeOverTheArtwork()
+        {
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(PathToCard);
+            var map = prefab.GetComponent<BindingMap>();
+            var level = map.Require<GameText>("level");
+            var material = level.fontSharedMaterial;
+            Assert.That(level.font.faceInfo.familyName, Is.EqualTo("EpicSeven"));
+            Assert.That(level.font.atlasPopulationMode, Is.EqualTo(TMPro.AtlasPopulationMode.Static));
+            Assert.That(level.font.fallbackFontAssetTable, Is.Null.Or.Empty);
+            foreach (char digit in "0123456789")
+                Assert.That(level.font.HasCharacter(digit), Is.True, digit.ToString());
+            Assert.That(material.mainTexture, Is.SameAs(level.font.atlasTexture));
+            Assert.That(material.IsKeywordEnabled("OUTLINE_ON"), Is.True);
+            Assert.That(material.GetFloat("_OutlineWidth"), Is.GreaterThan(0));
+            Assert.That(material.GetFloat("_OutlineSoftness"), Is.Zero);
+            Assert.That(material.GetColor("_OutlineColor").grayscale, Is.LessThan(.2f));
+            Assert.That(material.IsKeywordEnabled("UNDERLAY_ON"), Is.True);
+            Assert.That(material.GetFloat("_UnderlayOffsetY"), Is.LessThan(0));
+            Assert.That(level.color.r, Is.GreaterThan(level.color.b));
+            Assert.That(map.Require<GameText>("stat").fontSharedMaterial, Is.Not.SameAs(material));
+            Assert.That(map.Require<GameText>("enhancement").fontSharedMaterial, Is.Not.SameAs(material));
+        }
+
+        [Test]
         public void ThumbnailKeepsTheQualityBorderSetAndFramedWearerInSourceProportions()
         {
             var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(PathToCard);
@@ -83,6 +107,7 @@ namespace AstralOath.Client.Tests
                     Assert.That(map.Require<Image>(key).enabled, Is.False, key);
                 Assert.That(badge.gameObject.activeSelf, Is.False);
                 Assert.That(map.Require<GameText>("stat").text, Is.Empty);
+                Assert.That(map.Require<GameText>("level").text, Is.Empty);
             }
             finally { Object.DestroyImmediate(instance); }
         }
@@ -117,7 +142,7 @@ namespace AstralOath.Client.Tests
                     ((RectTransform)instance.transform).anchoredPosition = new Vector2(i == 0 ? -78 : 78, 0);
                     var card = new EquipmentItemCardBinder(instance.GetComponent<BindingMap>());
                     card.Set(LoadGear("icon_eq_weapon_arena026"), LoadGear("_itembg_equip_1"),
-                        LoadGear("icon_set_speed"), LoadGear("cm_icon_stat_att"), null, 85, 0, "42");
+                        LoadGear("icon_set_speed"), LoadGear("cm_icon_stat_att"), null, 88, 0, "42");
                     card.SetSelected(i == 1);
                 }
                 foreach (var child in canvas.GetComponentsInChildren<Transform>(true)) child.gameObject.layer = 29;
