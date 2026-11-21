@@ -16,8 +16,12 @@ internal static class OwnedBattleTrialEndpoints
     {
         using var artifactData = typeof(OwnedBattleTrialEndpoints).Assembly.GetManifestResourceStream("AstralOath.ArtifactCatalog")
             ?? throw new InvalidDataException("The artifact catalog resource is missing.");
+        using var equipmentData = typeof(OwnedBattleTrialEndpoints).Assembly.GetManifestResourceStream("AstralOath.TrainingEquipment")
+            ?? throw new InvalidDataException("The equipment catalog resource is missing.");
         string artifactHash = Convert.ToHexString(SHA256.HashData(artifactData));
-        string matchHash = Convert.ToHexString(SHA256.HashData(Encoding.ASCII.GetBytes(rooms.ContentHash + artifactHash)));
+        string equipmentHash = Convert.ToHexString(SHA256.HashData(equipmentData));
+        string matchHash = Convert.ToHexString(SHA256.HashData(Encoding.ASCII.GetBytes(
+            rooms.ContentHash + artifactHash + equipmentHash + EquipmentStatCalculator.RulesVersion)));
 
         routes.MapPost("/owned-trial", async (HttpContext http, OwnedBattleTrial request, ArenaStore sessions,
             InventoryStore inventory, CancellationToken cancellation) =>

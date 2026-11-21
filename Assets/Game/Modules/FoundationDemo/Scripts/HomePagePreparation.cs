@@ -64,12 +64,15 @@ namespace AstralOath.Client.FoundationDemo
         private double started, summonReceived;
         private readonly Snapshot<HeroInventorySnapshot> heroes;
         private readonly Snapshot<ArtifactInventorySnapshot> artifacts;
+        private readonly Snapshot<EquipmentInventorySnapshot> equipment;
+        private long lastEquipmentVersion = -1;
         private SummonState summon;
 
-        internal HomeFirstReads(HeroInventoryApi heroApi, ArtifactInventoryApi artifactApi, CancellationToken login)
+        internal HomeFirstReads(HeroInventoryApi heroApi, ArtifactInventoryApi artifactApi, EquipmentInventoryApi equipmentApi, CancellationToken login)
         {
             heroes = new Snapshot<HeroInventorySnapshot>(heroApi.FetchAsync, login);
             artifacts = new Snapshot<ArtifactInventorySnapshot>(artifactApi.FetchAsync, login);
+            equipment = new Snapshot<EquipmentInventorySnapshot>(equipmentApi.FetchAsync, login);
         }
 
         // A page can stop waiting without cancelling another page's read of the same account.
@@ -85,6 +88,7 @@ namespace AstralOath.Client.FoundationDemo
                 this.login = login;
             }
             internal T Value => current?.Status == TaskStatus.RanToCompletion ? current.Result : null;
+            internal bool IsReading => current != null && !current.IsCompleted;
             internal void Invalidate() => current = null;
             internal void Replace(T snapshot) => current = Task.FromResult(snapshot);
             internal void Reconcile()
@@ -115,6 +119,26 @@ namespace AstralOath.Client.FoundationDemo
 
         internal Task<HeroInventorySnapshot> ReadHeroesAsync(CancellationToken token) => heroes.GetAsync(token);
         internal Task<ArtifactInventorySnapshot> ReadArtifactsAsync(CancellationToken token) => artifacts.GetAsync(token);
+        internal async Task<EquipmentInventorySnapshot> ReadEquipmentAsync(CancellationToken token)
+        {
+            var value = await equipment.GetAsync(token);
+            lastEquipmentVersion = Math.Max(lastEquipmentVersion, value.version);
+            return value;
+        }
+        internal EquipmentInventorySnapshot Equipment => equipment.Value;
+
+        internal void ApplyEquipment(EquipmentInventorySnapshot updated)
+        {
+            // A replayed request can return an older, already committed receipt.
+            if (updated.version < Math.Max(lastEquipmentVersion, equipment.Value?.version ?? -1) ||
+                (updated.version == lastEquipmentVersion && equipment.Value == null)) return;
+            lastEquipmentVersion = updated.version;
+            // If another client forced reconciliation, the outstanding GET might predate this write.
+            if (equipment.IsReading) equipment.Reconcile();
+            else equipment.Replace(updated);
+        }
+
+        internal void ReconcileEquipment() => equipment.Reconcile();
 
         internal async Task PrepareAsync(Func<CancellationToken, Task<string>> session, SummonApi summonApi, CancellationToken lifetime)
         {
@@ -123,12 +147,13 @@ namespace AstralOath.Client.FoundationDemo
             deadline.CancelAfter(TimeSpan.FromSeconds(5));
             try
             {
-                // For development guests establish one identity before dispatching the three GETs.
+                // Establish one guest identity before launching this account's reads in parallel.
                 await session(deadline.Token);
                 var heroRead = Optional(ReadHeroesAsync, deadline.Token);
                 var artifactRead = Optional(ReadArtifactsAsync, deadline.Token);
+                var equipmentRead = Optional(ReadEquipmentAsync, deadline.Token);
                 var summonRead = ReadSummon();
-                await Task.WhenAll(heroRead, artifactRead, summonRead);
+                await Task.WhenAll(heroRead, artifactRead, equipmentRead, summonRead);
                 summon = await summonRead;
             }
             catch (Exception error) when (!lifetime.IsCancellationRequested)

@@ -31,19 +31,23 @@ namespace AstralOath.Client.FoundationDemo
         private const string MoreOverlay = "home-more";
         private readonly ArenaApi api;
         private readonly ArtifactInventoryApi artifacts;
+        private readonly EquipmentInventoryApi equipment;
         private readonly SummonApi summon;
         private readonly Uri endpoint;
         private readonly CancellationToken token;
         private string roomId, activeDraftId;
         private string returnedRoomId, returnedDraftId;
+        private bool lostFocus;
+        private Task equipmentFocusRead;
 
         private StartupNavigation(BindingScope lifetime, HomeWindow homeView, ArenaDirectory directoryView,
             ArenaCreateRoom createView, ArenaRoom roomView, UIViewRegistry views, IAssetService assets, ISceneAssetService scenes, Transform parent,
             ILocaleService locale, ArenaApi api, HeroInventoryApi inventory, ArtifactInventoryApi artifacts,
-            SummonApi summon, Uri endpoint, string playerName, DesktopDisplayMode display)
+            EquipmentInventoryApi equipment, SummonApi summon, Uri endpoint, string playerName, DesktopDisplayMode display)
         {
             this.api = api;
             this.artifacts = artifacts;
+            this.equipment = equipment;
             this.summon = summon;
             this.endpoint = endpoint;
             this.views = views;
@@ -53,18 +57,24 @@ namespace AstralOath.Client.FoundationDemo
             this.lifetime = lifetime;
             this.locale = locale;
             pages = new HomePagePreparation(views, assets, parent, lifetime);
-            firstReads = new HomeFirstReads(inventory, artifacts, lifetime.Token);
+            firstReads = new HomeFirstReads(inventory, artifacts, equipment, lifetime.Token);
             lifetime.Add(portraits.Clear);
             summon.InventoryGranted += firstReads.ApplyGrants;
             summon.InventoryUncertain += firstReads.ReconcileInventories;
             artifacts.InventoryMayChange += firstReads.InvalidateArtifacts;
+            equipment.InventoryChanged += firstReads.ApplyEquipment;
+            equipment.InventoryUncertain += firstReads.ReconcileEquipment;
             lifetime.Add(() =>
             {
                 summon.InventoryGranted -= firstReads.ApplyGrants;
                 summon.InventoryUncertain -= firstReads.ReconcileInventories;
                 artifacts.InventoryMayChange -= firstReads.InvalidateArtifacts;
+                equipment.InventoryChanged -= firstReads.ApplyEquipment;
+                equipment.InventoryUncertain -= firstReads.ReconcileEquipment;
             });
             token = lifetime.Token;
+            Application.focusChanged += OnFocusChanged;
+            lifetime.Add(() => Application.focusChanged -= OnFocusChanged);
             windows = new WindowCoordinator(token);
             lifetime.Add(windows.Dispose);
             home = new HomeWindowBinder(homeView, locale, OpenDirectory, OpenMore,
@@ -73,6 +83,27 @@ namespace AstralOath.Client.FoundationDemo
             room = new ArenaRoomBinder(roomView, locale, api, windows, ReturnToDirectory, OpenDraft);
             BattleOnlineLaunch.Returning += ReturnFromBattleAsync;
             lifetime.Add(() => BattleOnlineLaunch.Returning -= ReturnFromBattleAsync);
+        }
+
+        private void OnFocusChanged(bool focused)
+        {
+            if (!focused) { lostFocus = true; return; }
+            if (!lostFocus) return;
+            lostFocus = false;
+            if (equipmentFocusRead == null || equipmentFocusRead.IsCompleted)
+                equipmentFocusRead = RefreshEquipmentOnReturnAsync();
+        }
+
+        private async Task RefreshEquipmentOnReturnAsync()
+        {
+            var current = firstReads.Equipment;
+            if (current == null || token.IsCancellationRequested) return;
+            try { await equipment.RefreshIfChangedAsync(current.version, token); }
+            catch (OperationCanceledException) { }
+            catch (Exception error) when (!token.IsCancellationRequested)
+            {
+                Debug.LogWarning("Equipment version check: " + error.GetType().Name);
+            }
         }
 
         internal static async Task<StartupNavigation> StartAsync(GameLaunchContext context, BindingScope owner)
@@ -137,12 +168,14 @@ namespace AstralOath.Client.FoundationDemo
 
             var inventory = new HeroInventoryApi(endpoint, Bearer, owner.Token);
             var artifacts = new ArtifactInventoryApi(endpoint, Bearer, owner.Token);
+            var equipment = new EquipmentInventoryApi(endpoint, Bearer, owner.Token);
             var summon = new SummonApi(endpoint, Bearer, owner.Token);
             owner.Add(inventory.Dispose);
             owner.Add(artifacts.Dispose);
+            owner.Add(equipment.Dispose);
             owner.Add(summon.Dispose);
             var navigation = new StartupNavigation(owner, home, directory, create, room, views, assets, scenes,
-                context.ViewRoot, locale, api, inventory, artifacts, summon, endpoint, name, display);
+                context.ViewRoot, locale, api, inventory, artifacts, equipment, summon, endpoint, name, display);
             await Task.WhenAll(navigation.pages.PrepareAsync(owner.Token),
                 navigation.firstReads.PrepareAsync(Bearer, summon, owner.Token));
             var first = navigation.firstReads.Heroes?.heroes?.OrderByDescending(hero => hero.level).FirstOrDefault();
@@ -241,8 +274,8 @@ namespace AstralOath.Client.FoundationDemo
                 if (Debug.isDebugBuild && endpoint.IsLoopback)
                     startTrial = (hero, ct) => StartArtifactTrialAsync(hero, artifactArt, ct);
                 var binder = new HeroInventoryBinder(view, art, locale, firstReads.ReadHeroesAsync, ShowHome,
-                    artifactArt, artifacts, startTrial, firstReads.ReadArtifactsAsync, portraits);
-                return binder.OpenAsync(roster, scope, firstReads.Heroes, firstReads.Artifacts);
+                    artifactArt, artifacts, startTrial, firstReads.ReadArtifactsAsync, portraits, equipment, firstReads.ReadEquipmentAsync);
+                return binder.OpenAsync(roster, scope, firstReads.Heroes, firstReads.Artifacts, firstReads.Equipment);
             });
         }
 

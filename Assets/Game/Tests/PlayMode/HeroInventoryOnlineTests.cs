@@ -672,8 +672,142 @@ namespace AstralOath.Client.Tests
             yield return Capture("artifact-bag-empty", 1478, 720);
         }
 
+        [UnityTest, Timeout(60000)]
+        public IEnumerator TrainingBagChoosesARecipientAndPersistsThePiece()
+        {
+            yield return ExerciseTrainingGear(false);
+        }
+
+        [UnityTest, Timeout(60000)]
+        public IEnumerator TrainingHeroReplacesAndRemovesOneWeaponAndRestoresStats()
+        {
+            yield return ExerciseTrainingGear(true);
+        }
+
+        [UnityTest, Timeout(60000)]
+        public IEnumerator EquipmentReadFailureLeavesHeroesAvailableAndRetriesInTheBag()
+        {
+            if (!Uri.TryCreate(Environment.GetEnvironmentVariable("ASTRAL_EQUIPMENT_TEST_URL"),UriKind.Absolute,out var endpoint) ||
+                !endpoint.IsLoopback) Assert.Ignore("Requires the local training equipment fixture.");
+            using var scope = new BindingScope(CancellationToken.None);
+            using var arena = new AstralOath.Client.Arena.ArenaApi(endpoint,scope.Token);
+            var admission = arena.GetSessionTokenAsync("Gear retry",scope.Token);
+            yield return Wait(() => admission.IsCompleted,"Test guest could not sign in.");
+            string bearer = admission.GetAwaiter().GetResult();
+            Task<string> Token(CancellationToken _) => Task.FromResult(bearer);
+            using var heroes = new HeroInventoryApi(endpoint,Token,scope.Token);
+            using var equipment = new EquipmentInventoryApi(endpoint,Token,scope.Token);
+            int reads = 0;
+            Task<EquipmentInventorySnapshot> Read(CancellationToken ct) => ++reads == 1
+                ? Task.FromException<EquipmentInventorySnapshot>(new IOException("Test error")) : equipment.FetchAsync(ct);
+            var open = OpenArtifactWindow(false,scope,heroes,null,null,equipment,Read);
+            yield return Wait(() => open.IsCompleted,"A failed equipment read blocked the hero bag.");
+            var page = open.GetAwaiter().GetResult();
+            Assert.That(VisibleRows(page,"bagScroll"),Is.Not.Empty);
+            Click(page,"tabEquipment");
+            var browser = page.Require<BindingMap>("gearBrowser");
+            Assert.That(browser.Require<GameText>("status").text,Is.EqualTo("装备数据加载失败。"));
+            Click(browser,"retry");
+            yield return Wait(() => VisibleRows(browser,"items").Length == 7,"Equipment retry did not render the inventory.");
+            Assert.That(browser.Require<GameButton>("retry").gameObject.activeSelf,Is.False);
+        }
+
+        private IEnumerator ExerciseTrainingGear(bool roster)
+        {
+            string url = Environment.GetEnvironmentVariable("ASTRAL_EQUIPMENT_TEST_URL");
+            if (!Uri.TryCreate(url,UriKind.Absolute,out var endpoint) || !endpoint.IsLoopback)
+                Assert.Ignore("Requires a loopback service with training equipment enabled.");
+            using var scope = new BindingScope(CancellationToken.None);
+            using var arena = new AstralOath.Client.Arena.ArenaApi(endpoint,scope.Token);
+            var admission = arena.GetSessionTokenAsync("Gear QA",scope.Token);
+            yield return Wait(() => admission.IsCompleted,"Test guest could not sign in.");
+            string bearer = admission.GetAwaiter().GetResult();
+            Task<string> Token(CancellationToken _) => Task.FromResult(bearer);
+            using var heroes = new HeroInventoryApi(endpoint,Token,scope.Token);
+            using var equipment = new EquipmentInventoryApi(endpoint,Token,scope.Token);
+            var opening = OpenArtifactWindow(roster,scope,heroes,null,null,equipment);
+            yield return Wait(() => opening.IsCompleted,"Equipment inventory did not open.");
+            var page = opening.GetAwaiter().GetResult();
+            var browser = page.Require<BindingMap>("gearBrowser");
+            var load = equipment.FetchAsync(scope.Token);
+            yield return Wait(() => load.IsCompleted,"Could not verify the fixture.");
+            var items = load.GetAwaiter().GetResult().items;
+            Assert.That(items.Length,Is.EqualTo(7));
+            var weapons = items.Where(i => i.slot == "weapon").OrderBy(i => i.mainStat.value).ToArray();
+            Assert.That(weapons.Length,Is.EqualTo(2));
+            var weaponSlot = page.Require<BindingMap>("equipmentSlot_weapon").Require<Image>("item");
+            string initialAttack = page.Require<GameText>("detailStat_attack").text;
+            if (roster) Click(page,"gearOpen_weapon");
+            else
+            {
+                Click(page,"tabEquipment");
+                Assert.That(VisibleRows(browser,"items").Length,Is.EqualTo(7));
+                Assert.That(page.Require<GameObject>("emptyEquipmentChrome").activeInHierarchy,Is.False);
+                Assert.That(VisibleRows(browser,"items").All(row => row.Require<Image>("icon").isActiveAndEnabled &&
+                    row.Require<Image>("icon").sprite && row.Require<Image>("icon").color.a >= .99f), Is.True);
+                Assert.That(browser.Require<Image>("portrait").isActiveAndEnabled,Is.True);
+                yield return Capture("equipment-bag",1478,720);
+                Click(browser,"filter_weapon");
+            }
+            Assert.That(VisibleRows(browser,"items").Length,Is.EqualTo(2));
+            string wearer = null;
+            for (int index = 0; index < (roster ? 2 : 1); ++index)
+            {
+                var item = weapons[index];
+                Click(VisibleRows(browser,"items").Single(m => m.name == item.instanceId),"select");
+                Click(browser,"apply");
+                if (!roster) Click(VisibleRows(browser,"targets")[0],"select");
+                Assert.That(browser.Require<GameText>("change").text,Does.Contain("→"));
+                Click(browser,"confirm");
+                yield return Wait(() => !browser.Require<GameObject>("dialog").activeSelf,"The server did not confirm equipment.");
+                var read = equipment.FetchAsync(scope.Token);
+                yield return Wait(() => read.IsCompleted,"Could not read server equipment after the change.");
+                var saved = read.GetAwaiter().GetResult().items;
+                string nextWearer = saved.Single(value => value.instanceId == item.instanceId).equippedHeroId;
+                Assert.That(nextWearer,Is.Not.Null.And.Not.Empty);
+                if (wearer != null) Assert.That(nextWearer,Is.EqualTo(wearer));
+                wearer = nextWearer;
+                Assert.That(saved.Count(value => value.slot == "weapon" && value.equippedHeroId == wearer),Is.EqualTo(1));
+                if (roster)
+                {
+                    Assert.That(weaponSlot.enabled,Is.True);
+                    Assert.That(page.Require<GameText>("detailStat_attack").text,Is.Not.EqualTo(initialAttack));
+                    Assert.That(weaponSlot.sprite.name,Is.EqualTo("icon_eq_weapon_arena026"));
+                }
+            }
+            if (roster)
+            {
+                Click(browser,"close");
+                yield return Capture("equipment-equipped-hero",1478,720);
+                yield return Capture("equipment-equipped-hero-narrow",1040,960);
+                Click(page,"gearOpen_weapon");
+                Click(browser,"remove");
+                Click(browser,"confirm");
+                yield return Wait(() => !weaponSlot.enabled,"Unequipping the weapon must clear its icon.");
+                Assert.That(page.Require<GameText>("detailStat_attack").text,Is.EqualTo(initialAttack));
+            }
+            else
+            {
+                Click(browser,"remove");
+                Assert.That(browser.Require<GameObject>("dialog").activeSelf,Is.True);
+                using var otherClient = new EquipmentInventoryApi(endpoint,Token,scope.Token);
+                var pending = otherClient.FetchAsync(scope.Token);
+                yield return Wait(() => pending.IsCompleted,"Second client could not read the equipped weapon.");
+                long previous = pending.GetAwaiter().GetResult().version;
+                var remove = otherClient.ChangeAsync("unequip",Guid.NewGuid().ToString("N"),wearer,weapons[0].instanceId,"weapon",previous,scope.Token);
+                yield return Wait(() => remove.IsCompleted,"Second client did not finish unequipping.");
+                remove.GetAwaiter().GetResult();
+                var refresh = equipment.RefreshIfChangedAsync(previous,scope.Token);
+                yield return Wait(() => refresh.IsCompleted,"HUD inventory did not refresh on returning to the foreground.");
+                refresh.GetAwaiter().GetResult();
+                Assert.That(browser.Require<GameObject>("dialog").activeSelf,Is.False,"The old confirmation stayed open after a remote mutation.");
+                Assert.That(browser.Require<GameText>("wearer").text,Is.EqualTo("未佩戴"));
+            }
+        }
+
         private async Task<BindingMap> OpenArtifactWindow(bool roster, BindingScope scope, HeroInventoryApi heroes,
-            ArtifactInventoryApi api, ArtifactArtCatalog art)
+            ArtifactInventoryApi api, ArtifactArtCatalog art, EquipmentInventoryApi equipment = null,
+            Func<CancellationToken,Task<EquipmentInventorySnapshot>> readEquipment = null)
         {
             priorScene = SceneManager.GetActiveScene();
             home = SceneManager.CreateScene("Artifact inventory test");
@@ -691,13 +825,21 @@ namespace AstralOath.Client.Tests
             var view = await registry.CreateAsync<HeroInventory>(assets, canvas.transform, scope);
             var locale = await AstralOath.Client.Arena.ArenaLabels.LoadAsync(assets, scope, "zh-Hans", "ja");
             var heroArt = AssetDatabase.LoadAssetAtPath<HomeHeroArt>("Assets/Game/Modules/Home/Configs/HomeHeroArt.asset");
-            var binder = new HeroInventoryBinder(view, heroArt, locale, heroes.FetchAsync, () => Task.CompletedTask, art, api);
+            var binder = new HeroInventoryBinder(view, heroArt, locale, heroes.FetchAsync, () => Task.CompletedTask, art, api,
+                equipmentApi: equipment,readEquipment: readEquipment);
             await binder.OpenAsync(roster, scope);
             return view.Root.GetComponent<BindingMap>();
         }
 
         private static bool ShowsEmptyTab(BindingMap bag, string chrome)
         {
+            if (chrome == "emptyEquipmentChrome")
+            {
+                var browser = bag.Require<BindingMap>("gearBrowser");
+                if (browser.gameObject.activeInHierarchy)
+                    return !browser.Require<GameObject>("detail").activeSelf && VisibleRows(browser,"items").Length == 0 &&
+                        !browser.Require<GameButton>("retry").gameObject.activeSelf;
+            }
             return bag.Require<GameObject>(chrome).activeInHierarchy && !bag.Require<GameText>("status").gameObject.activeInHierarchy &&
                 VisibleRows(bag, "bagScroll").Length == 0;
         }

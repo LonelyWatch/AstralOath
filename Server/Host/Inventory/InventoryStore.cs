@@ -8,7 +8,7 @@ using MySqlConnector;
 namespace AstralOath.Server.Inventory;
 
 internal sealed partial class InventoryStore(string? connectionString, ArtifactCatalog? artifactCatalog = null,
-    ArenaBattleCatalog? heroes = null, bool development = false)
+    ArenaBattleCatalog? heroes = null, bool development = false, bool grantTrainingEquipment = false)
 {
     internal const int DefaultCapacity = 1000;
 
@@ -104,7 +104,7 @@ internal sealed partial class InventoryStore(string? connectionString, ArtifactC
         return Convert.ToInt32(await capacity.ExecuteScalarAsync(cancellation));
     }
 
-    private static MySqlCommand Command(MySqlConnection connection, MySqlTransaction transaction, string sql, string playerId)
+    private static MySqlCommand Command(MySqlConnection connection, MySqlTransaction? transaction, string sql, string playerId)
     {
         var command = new MySqlCommand(sql, connection, transaction);
         command.Parameters.AddWithValue("@player", playerId);

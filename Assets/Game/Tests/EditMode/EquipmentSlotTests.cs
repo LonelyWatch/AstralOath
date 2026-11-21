@@ -13,6 +13,21 @@ namespace AstralOath.Client.Tests
         private const string HeroPath = "Assets/Game/Modules/Home/Res/Prefab/HeroInventory.prefab";
         private const string CommonPath = "Assets/Game/Common/Res/Prefab/";
 
+        [Test]
+        public void OwnedGearBrowserAndSixActionsAreAuthoredInTheHeroPrefab()
+        {
+            var map = AssetDatabase.LoadAssetAtPath<GameObject>(HeroPath).GetComponent<BindingMap>();
+            var browser = map.Require<BindingMap>("gearBrowser");
+            Assert.That(browser.gameObject.activeSelf, Is.False);
+            foreach (string slot in new[] { "weapon", "helmet", "armor", "necklace", "ring", "boots" })
+            {
+                Assert.That(map.Require<GameButton>("gearOpen_" + slot), Is.Not.Null);
+                Assert.That(browser.Require<Image>("icon_" + slot).sprite, Is.Not.Null);
+            }
+            Assert.That(browser.Require<GameButton>("apply"), Is.Not.Null);
+            Assert.That(browser.Require<GameButton>("confirm"), Is.Not.Null);
+        }
+
         [TestCase(HeroPath, "rosterScroll")]
         [TestCase("Assets/Game/Modules/Arena/Res/Prefab/ArenaDraft.prefab", "roster")]
         public void RosterPageContainsItsInactiveScrollController(string path, string key)

@@ -32,13 +32,16 @@ namespace AstralOath.Client.FoundationDemo
             {
                 bool verifySummon = SummonPlayerSmoke.IsRequested();
                 bool verifyRoom = ArenaRoomPlayerSmoke.IsRequested();
-                if (context.ShowHome || verifySummon || verifyRoom)
+                bool verifyEquipment = EquipmentPlayerSmoke.IsRequested();
+                if (context.ShowHome || verifySummon || verifyRoom || verifyEquipment)
                 {
                     var navigation = await StartupNavigation.StartAsync(context, scope);
                     if (verifySummon)
                         await SummonPlayerSmoke.RunAsync(context, navigation, scope.Token);
                     else if (verifyRoom)
                         ArenaRoomPlayerSmoke.Start(context, scope.Token);
+                    else if (verifyEquipment)
+                        EquipmentPlayerSmoke.Start(context, scope.Token);
                     else
                         ArenaBattlePlayerSmoke.StartIfRequested(context, scope.Token);
                     return;

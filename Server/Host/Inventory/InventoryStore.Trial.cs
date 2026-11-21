@@ -32,6 +32,10 @@ internal sealed partial class InventoryStore
         await using var transaction = await connection.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellation);
         await LockInventoryOwner(connection, transaction, playerId, cancellation);
         await EnsureStarters(connection, transaction, playerId, cancellation);
+        var gear = await ReadEquippedItems(connection, transaction, playerId, ids, cancellation);
+        var byHero = gear.ToLookup(item => item.EquippedHeroId!, item =>
+            new EquipmentPiece(item.SetId, new EquipmentStat(item.MainStat.Kind, item.MainStat.Value),
+                item.Substats.Select(stat => new EquipmentStat(stat.Kind, stat.Value)).ToArray()), StringComparer.Ordinal);
         var selected = new Dictionary<string, BattleOwnedHero>(ids.Length, StringComparer.Ordinal);
         var parameters = ids.Select((_, index) => "@hero" + index).ToArray();
         using (var query = Command(connection, transaction, """
@@ -58,8 +62,9 @@ internal sealed partial class InventoryStore
                         throw new EntryProblem(503, "trial_loadout_unavailable");
                     artifactLevel = artifactCatalog.LevelForExperience(reader.GetInt32(5), reader.GetInt32(6));
                 }
-                selected.Add(reader.GetString(0),
-                    new BattleOwnedHero(reader.GetString(1), reader.GetInt32(2), reader.GetInt32(3), 0, artifact, artifactLevel));
+                var heroId = reader.GetString(0);
+                selected.Add(heroId, new BattleOwnedHero(reader.GetString(1), reader.GetInt32(2), reader.GetInt32(3),
+                    0, artifact, artifactLevel, byHero[heroId].ToArray()));
             }
         }
 

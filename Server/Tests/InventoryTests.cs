@@ -122,7 +122,7 @@ public sealed class InventoryTests
                     ["Entry:AllowLegacyArenaGuests"] = "true" }));
         });
 
-    private static async Task<string> OpenGuest(HttpClient client, string name, CancellationToken ct)
+    internal static async Task<string> OpenGuest(HttpClient client, string name, CancellationToken ct)
     {
         using var response = await client.PostAsJsonAsync("/api/arena/sessions", new { displayName = name }, ct);
         response.EnsureSuccessStatusCode();

@@ -63,6 +63,9 @@ namespace AstralOath.Client.Tests
             internal readonly TaskCompletionSource<bool> AllowDirectoryList = new TaskCompletionSource<bool>();
             internal bool CrossFreeReset, FailFirstArtifact, KeepArenaRoom, SlowDirectory;
             internal int InventoryVersion;
+            internal int EquipmentVersion = 1;
+            internal bool RejectEquipment;
+            internal string LastEquipmentValidator;
             internal string DrawReceipt;
             internal bool RejectDraw;
             internal string StoredRewards = "{\"items\":[]}";
@@ -96,8 +99,44 @@ namespace AstralOath.Client.Tests
                     using var reader = new StreamReader(stream, Encoding.ASCII, false, 1024, true);
                     var line = (await reader.ReadLineAsync()).Split(' ');
                     Calls.Enqueue(line[0] + " " + line[1]);
-                    while (!string.IsNullOrEmpty(await reader.ReadLineAsync())) { }
+                    string validator = null, field;
+                    int contentLength = 0;
+                    bool sendContinue = false;
+                    while (!string.IsNullOrEmpty(field = await reader.ReadLineAsync()))
+                    {
+                        if (field.StartsWith("If-None-Match:", StringComparison.OrdinalIgnoreCase))
+                            validator = field.Substring("If-None-Match:".Length).Trim();
+                        else if (field.StartsWith("Content-Length:", StringComparison.OrdinalIgnoreCase))
+                            contentLength = int.Parse(field.Substring("Content-Length:".Length).Trim());
+                        else if (field.Equals("Expect: 100-continue", StringComparison.OrdinalIgnoreCase))
+                            sendContinue = true;
+                    }
+                    if (sendContinue)
+                    {
+                        var interim = Encoding.ASCII.GetBytes("HTTP/1.1 100 Continue\r\n\r\n");
+                        await stream.WriteAsync(interim, 0, interim.Length);
+                    }
+                    if (contentLength > 0)
+                    {
+                        // Drain the request before closing. An unread POST body can reset this test socket on Windows.
+                        var payload = new char[Math.Min(contentLength, 1024)];
+                        while (contentLength > 0)
+                        {
+                            int consumed = await reader.ReadAsync(payload, 0, Math.Min(contentLength, payload.Length));
+                            if (consumed == 0) return;
+                            contentLength -= consumed;
+                        }
+                    }
                     await AllowResponse.Task.ConfigureAwait(false);
+                    if (line[0] == "HEAD" && line[1] == "/api/inventory/equipment")
+                    {
+                        LastEquipmentValidator = validator;
+                        string tag = "\"" + EquipmentVersion + "\"";
+                        string statusLine = tag == validator ? "304 Not Modified" : "200 OK";
+                        var bytes = Encoding.ASCII.GetBytes("HTTP/1.1 " + statusLine + "\r\nETag: " + tag + "\r\nConnection: close\r\n\r\n");
+                        await stream.WriteAsync(bytes, 0, bytes.Length);
+                        return;
+                    }
                     if (line[1].EndsWith("/events", StringComparison.Ordinal))
                     {
                         var header = Encoding.ASCII.GetBytes("HTTP/1.1 200 OK\r\nContent-Type: application/x-ndjson\r\nConnection: close\r\n\r\n{\"kind\":\"sync\"}\n");
@@ -109,9 +148,18 @@ namespace AstralOath.Client.Tests
                     }
                     string schedule = CrossFreeReset ? "\"serverTimeUtc\":\"2030-01-01T01:00:00Z\",\"freeResetUtc\":\"2030-01-01T01:00:00.001Z\"," : "";
                     string body = line[1].Contains("summon") ? "{" + schedule + "\"banners\":[{\"id\":\"covenant\",\"entries\":[]}],\"wishHeroes\":[],\"wishArtifacts\":[]}" :
-                        "{\"capacity\":" + (1000 + InventoryVersion) + ",\"used\":0,\"heroes\":[],\"artifacts\":[],\"materials\":{}}";
+                        "{\"capacity\":" + (1000 + InventoryVersion) + ",\"used\":0,\"version\":1,\"items\":[],\"heroes\":[],\"artifacts\":[],\"materials\":{}}";
                     bool fail = FailFirstArtifact && line[1].EndsWith("/artifacts") && Calls.Count(x => x.EndsWith("/artifacts")) == 1;
                     string status = fail ? "503 Unavailable" : "200 OK";
+                    if (line[1].StartsWith("/api/inventory/equipment", StringComparison.Ordinal))
+                    {
+                        body = "{\"capacity\":100,\"used\":0,\"version\":" + EquipmentVersion + ",\"items\":[]}";
+                        if (line[0] == "POST" && RejectEquipment)
+                        {
+                            status = "409 Conflict";
+                            body = "{\"code\":\"equipment_version_conflict\"}";
+                        }
+                    }
                     if (line[1] == "/api/summon/draw" && DrawReceipt != null) body = DrawReceipt;
                     if (line[1] == "/api/summon/draw" && RejectDraw)
                     {
@@ -216,7 +264,46 @@ namespace AstralOath.Client.Tests
                     var heroes = (HeroInventorySnapshot)Value("Heroes");
                     Assert.That(heroes.capacity, Is.EqualTo(1000 + login * 10));
                     Assert.That(((ArtifactInventorySnapshot)Value("Artifacts")).capacity, Is.EqualTo(1000 + login * 10));
+                    Assert.That(((EquipmentInventorySnapshot)Value("Equipment")).version, Is.EqualTo(server.EquipmentVersion));
                     if (login == 2) continue;
+
+                    var equipment = (EquipmentInventoryApi)navigationType.GetField("equipment", PrivateInstance).GetValue(nav);
+                    string item = Guid.NewGuid().ToString("N"), ownerId = Guid.NewGuid().ToString("N");
+                    Task<EquipmentInventorySnapshot> Change() => equipment.ChangeAsync("equip", Guid.NewGuid().ToString("N"),
+                        ownerId, item, "weapon", 1, owner.Token);
+                    server.EquipmentVersion = 2;
+                    var equip = Change();
+                    yield return new WaitUntil(() => equip.IsCompleted);
+                    Assert.That(Value("Equipment"), Is.SameAs(equip.GetAwaiter().GetResult()));
+                    Assert.That(server.Calls.Count(x => x == "GET /api/inventory/equipment"), Is.EqualTo(1));
+                    server.EquipmentVersion = 3;
+                    server.RejectEquipment = true;
+                    var conflict = Change();
+                    yield return new WaitUntil(() => conflict.IsCompleted);
+                    Assert.That((conflict.Exception?.InnerException as EquipmentRequestException)?.Code, Is.EqualTo("equipment_version_conflict"));
+                    var reload = Fetch("ReadEquipmentAsync");
+                    yield return new WaitUntil(() => reload.IsCompleted);
+                    reload.GetAwaiter().GetResult();
+                    Assert.That(((EquipmentInventorySnapshot)Value("Equipment")).version, Is.EqualTo(3));
+                    cache.GetType().GetMethod("ApplyEquipment", PrivateInstance).Invoke(cache, new object[] { equip.Result });
+                    Assert.That(((EquipmentInventorySnapshot)Value("Equipment")).version, Is.EqualTo(3),
+                        "Replaying an older equipment receipt must preserve the reconciled inventory.");
+                    Assert.That(server.Calls.Count(x => x == "GET /api/inventory/equipment"), Is.EqualTo(2));
+                    Assert.That(Value("Heroes"), Is.SameAs(heroes));
+                    var focus = navigationType.GetMethod("RefreshEquipmentOnReturnAsync", PrivateInstance);
+                    Assert.That(focus, Is.Not.Null, "Switching back to this client must validate the known equipment version.");
+                    Task Refocus() => (Task)focus.Invoke(nav, null);
+                    var unchanged = Refocus();
+                    yield return new WaitUntil(() => unchanged.IsCompleted);
+                    unchanged.GetAwaiter().GetResult();
+                    Assert.That(server.LastEquipmentValidator, Is.EqualTo("\"3\""));
+                    Assert.That(server.Calls.Count(x => x == "GET /api/inventory/equipment"), Is.EqualTo(2));
+                    server.EquipmentVersion = 4;
+                    var remoteChange = Refocus();
+                    yield return new WaitUntil(() => remoteChange.IsCompleted);
+                    remoteChange.GetAwaiter().GetResult();
+                    Assert.That(((EquipmentInventorySnapshot)Value("Equipment")).version, Is.EqualTo(4));
+                    Assert.That(server.Calls.Count(x => x == "GET /api/inventory/equipment"), Is.EqualTo(3));
 
                     ++server.InventoryVersion;
                     var artifacts = (ArtifactInventoryApi)navigationType.GetField("artifacts", PrivateInstance).GetValue(nav);
@@ -396,7 +483,9 @@ namespace AstralOath.Client.Tests
                 start.GetAwaiter().GetResult();
                 Assert.That(Page("HomeWindow").gameObject.activeInHierarchy, Is.True);
                 Assert.That(assets.Loaded.Distinct().Count(), Is.EqualTo(12), "All seven first-open dependencies should be resident.");
-                Assert.That(server.Calls.Count, Is.EqualTo(3), string.Join(", ", server.Calls));
+                Assert.That(server.Calls.Count(x => x == "GET /api/inventory/equipment"), Is.EqualTo(1),
+                    "Equipment must load during the login curtain, before the first page opens.");
+                Assert.That(server.Calls.Count, Is.EqualTo(4), string.Join(", ", server.Calls));
                 Assert.That(server.Calls.All(x => x.StartsWith("GET ")), Is.True);
                 int beforeClicks = assets.Loaded.Count;
                 var home = Page("HomeWindow");
@@ -449,7 +538,7 @@ namespace AstralOath.Client.Tests
                 var inventory = Page("HeroInventory");
                 if (failFirstArtifact)
                 {
-                    yield return new WaitUntil(() => server.Calls.Count == 4);
+                    yield return new WaitUntil(() => server.Calls.Count == 5);
                     Assert.That(server.Calls.Count(x => x.EndsWith("/artifacts")), Is.EqualTo(2));
                     inventory.Require<GameButton>("back").onClick.Invoke();
                     home.Require<GameButton>("more").onClick.Invoke();
@@ -469,15 +558,16 @@ namespace AstralOath.Client.Tests
                     Assert.That(assets.Loaded.Count, Is.EqualTo(beforeClicks));
                     Assert.That(server.Calls.Count(x => x == "GET /api/inventory/heroes"), Is.EqualTo(1));
                     Assert.That(server.Calls.Count(x => x == "GET /api/inventory/artifacts"), Is.EqualTo(1));
+                    Assert.That(server.Calls.Count(x => x == "GET /api/inventory/equipment"), Is.EqualTo(1));
                     yield break;
                 }
                 inventory.Require<GameButton>("back").onClick.Invoke();
                 home.Require<GameButton>("more").onClick.Invoke();
                 Page("HomeMoreMenu").Require<GameButton>("summon").onClick.Invoke();
                 yield return new WaitUntil(() => Page("SummonWindow") && Page("SummonWindow").gameObject.activeInHierarchy);
-                if (crossFreeReset) yield return new WaitUntil(() => server.Calls.Count == 4);
+                if (crossFreeReset) yield return new WaitUntil(() => server.Calls.Count == 5);
                 Assert.That(Page("SummonWindow").Require<GameButton>("covenant").interactable, Is.True);
-                Assert.That(server.Calls.Count, Is.EqualTo(crossFreeReset ? 4 : 3), string.Join(", ", server.Calls));
+                Assert.That(server.Calls.Count, Is.EqualTo(crossFreeReset ? 5 : 4), string.Join(", ", server.Calls));
                 Assert.That(assets.Loaded.Count, Is.EqualTo(beforeClicks));
                 Debug.Log("Home warm login: " + beforeClicks + " asset loads, " + string.Join(", ", server.Calls) + "; bag, heroes and summon reused all reads.");
             }

@@ -109,6 +109,10 @@ namespace AstralOath.Shared.Battle
     {
         public BattleOwnedHero(string heroId, int level, int stars, int awakenings,
             ArtifactTemplate artifact = null, int artifactLevel = 0)
+            : this(heroId, level, stars, awakenings, artifact, artifactLevel, null) { }
+
+        public BattleOwnedHero(string heroId, int level, int stars, int awakenings,
+            ArtifactTemplate artifact, int artifactLevel, IReadOnlyList<EquipmentPiece> equipment)
         {
             HeroId = heroId;
             Level = level;
@@ -116,6 +120,7 @@ namespace AstralOath.Shared.Battle
             Awakenings = awakenings;
             Artifact = artifact;
             ArtifactLevel = artifactLevel;
+            Equipment = equipment == null ? Array.Empty<EquipmentPiece>() : Array.AsReadOnly(equipment.ToArray());
         }
 
         public string HeroId { get; }
@@ -124,6 +129,7 @@ namespace AstralOath.Shared.Battle
         public int Awakenings { get; }
         public ArtifactTemplate Artifact { get; }
         public int ArtifactLevel { get; }
+        public IReadOnlyList<EquipmentPiece> Equipment { get; }
     }
 
     public static class BattlePreviewFactory
@@ -203,7 +209,8 @@ namespace AstralOath.Shared.Battle
                     definitions.Add(id, hero);
                 }
                 return BattleUnit.CreateHero(prefix + slot, hero, new BattleSlot(side, slot), ownedHero?.Level ?? row.level,
-                    ownedHero?.Stars ?? row.stars, ownedHero?.Awakenings ?? row.awakenings, ownedHero?.Artifact, ownedHero?.ArtifactLevel ?? 0);
+                    ownedHero?.Stars ?? row.stars, ownedHero?.Awakenings ?? row.awakenings, ownedHero?.Artifact,
+                    ownedHero?.ArtifactLevel ?? 0, ownedHero?.Equipment);
             }
         }
 

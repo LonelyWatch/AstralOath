@@ -1,0 +1,9 @@
+[
+  { "templateId": "training_speed_weapon", "slot": "weapon", "setId": "speed", "mainStat": { "kind": "attack", "value": 20 }, "substats": [{ "kind": "speed", "value": 2 }] },
+  { "templateId": "training_speed_helmet", "slot": "helmet", "setId": "speed", "mainStat": { "kind": "health", "value": 80 }, "substats": [] },
+  { "templateId": "training_speed_armor", "slot": "armor", "setId": "speed", "mainStat": { "kind": "defense", "value": 15 }, "substats": [] },
+  { "templateId": "training_speed_necklace", "slot": "necklace", "setId": "speed", "mainStat": { "kind": "critDamageBp", "value": 600 }, "substats": [] },
+  { "templateId": "training_critical_ring", "slot": "ring", "setId": "critical", "mainStat": { "kind": "attackPct", "value": 500 }, "substats": [] },
+  { "templateId": "training_critical_boots", "slot": "boots", "setId": "critical", "mainStat": { "kind": "speed", "value": 5 }, "substats": [] },
+  { "templateId": "training_critical_weapon", "slot": "weapon", "setId": "critical", "mainStat": { "kind": "attack", "value": 30 }, "substats": [{ "kind": "health", "value": 20 }] }
+]

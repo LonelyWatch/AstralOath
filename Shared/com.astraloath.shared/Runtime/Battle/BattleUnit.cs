@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace AstralOath.Shared.Battle
 {
@@ -40,11 +41,17 @@ namespace AstralOath.Shared.Battle
         }
 
         public static BattleUnit CreateHero(string instanceId, HeroDefinition definition, BattleSlot slot,
-            int level, int stars, int awakenings, ArtifactTemplate artifact = null, int artifactLevel = 0)
+            int level, int stars, int awakenings, ArtifactTemplate artifact = null, int artifactLevel = 0) =>
+            CreateHero(instanceId, definition, slot, level, stars, awakenings, artifact, artifactLevel, null);
+
+        internal static BattleUnit CreateHero(string instanceId, HeroDefinition definition, BattleSlot slot,
+            int level, int stars, int awakenings, ArtifactTemplate artifact, int artifactLevel,
+            IReadOnlyList<EquipmentPiece> equipment)
         {
             if (definition == null)
                 throw new ArgumentNullException(nameof(definition));
             var stats = HeroStatCalculator.Calculate(definition.GrowthPreset, level, stars, awakenings, definition.AwakeningSteps);
+            if (equipment != null && equipment.Count > 0) stats = EquipmentStatCalculator.Calculate(stats, equipment);
             if ((artifact == null && artifactLevel != 0) || artifactLevel < 0 || artifactLevel > 30)
                 throw new ArgumentOutOfRangeException(nameof(artifactLevel));
             if (artifact != null)

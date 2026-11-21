@@ -83,6 +83,17 @@ SMTP 使用 `Entry__Smtp__Host`、`Entry__Smtp__Port`、`Entry__Smtp__From` 以�
 - 目前仅提供读取。后续写入入口须在同一事务内锁定对应背包头并检查剩余容量。既有选禁模板池仍独立。
 - 实际测试命令为 `dotnet test Server/Tests --filter 'FullyQualifiedName~InventoryTests|FullyQualifiedName~EntryAccountTests'`。须在隔离 MySQL 8.4 测试库设置 `ASTRALOATH_MYSQL_TEST`。覆盖首次发放、并发、重启、重复模板、两账号隔离、失效令牌，以及相同密码对应不同随机盐和实际派生摘要。
 
+## 普通装备
+
+`014_player_equipment.sql` 建立区服装备容量、实例、实际副属性、穿戴槽和请求回执。默认每名玩家有 500 格，穿在英雄身上的物品同样占一格。升级现有账号后，装备库存从空、版本 0 开始。迁移会把英雄原有的归属与取得顺序索引声明为唯一，以便数据库外键约束英雄和装备属于同一区服、同一玩家。英雄 ID 始终使用实例 ID。
+
+- `GET /api/inventory/equipment` 使用选服 Bearer，返回 `{capacity,used,version,items}`。每件包含 `instanceId,templateId,slot,setId,itemLevel,enhanceLevel,grade,mainStat,substats,equippedHeroId`。空闲物品的 `equippedHeroId` 为 null。词条结构为 `{kind,value}`，百分比采用万分比整数。接口随获得顺序返回物品，各件副词条按固定位置排列。
+- `HEAD /api/inventory/equipment` 使用同一 Bearer，只读当前玩家和区服的版本，返回十进制加双引号的 `ETag` 及 `Cache-Control: no-store`，无记录时为 `"0"`。回前台时可将已知版本作为 `If-None-Match` 传入。匹配时返回 304，版本改变返回 200 和新标签，再按需读取完整装备。探测不发放奖励，也不创建背包。
+- `POST /api/inventory/equipment/actions` 传入 `{requestId,action,instanceId,heroInstanceId,slot,expectedVersion}`。动作支持 `equip` 和 `unequip`，ID 使用 32 位无横杠 GUID。服务端从物品实例读取实际部位并核对可选的 `slot`。换装从原穿戴者取下物品，并替换目标英雄同部位的旧件。卸装检查请求中的英雄确实正在穿戴该件。阶段一穿脱免费。
+- 成功返回完整装备快照。账号锁覆盖鉴权后库存操作中的归属检查、换槽、版本更新、回执和审计。相同请求重试会取回第一次操作的完整回执。复用请求号但改参数返回 409 `request_conflict`。使用过期版本返回 409 `equipment_version_conflict`，客户端刷新后用新请求号重新确认。部位不符返回 400 `equipment_slot_mismatch`，英雄或物品不属于当前玩家返回 404。
+- 开发环境显式设置 `Inventory__DevelopmentEquipmentGrant=true` 后，首次访问装备接口可一次领取七件 Lv.15、+0 的训练装备。包括速度四件、暴击两件以及一把替换武器。训练数值保存在实例与副属性行，目录源在 [training-equipment.json](Host/Inventory/training-equipment.json)。默认配置与生产环境均无训练发放。
+- 在独立 MySQL 8.4 实例设置 `ASTRALOATH_MYSQL_TEST`，执行 `dotnet test Server/Tests --filter FullyQualifiedName~EquipmentInventoryTests`。用例通过真实 HTTP 和数据库检查六槽穿脱、换装、重复英雄模板、两端争抢、跨账号访问、固定奖励及精确回执。阶段边界和后续养成见[普通装备方案](../docs/plans/2026-11-21-equipment-system.md)。
+
 ### 本机联调服务复启
 
 已有测试数据库、已发布的服务 DLL 和已签名的资源目录时，在主工程根目录运行：

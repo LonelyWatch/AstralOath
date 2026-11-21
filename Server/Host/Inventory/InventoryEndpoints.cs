@@ -2,6 +2,7 @@ using AstralOath.Server.Arena;
 using AstralOath.Server.Battle;
 using AstralOath.Server.Entry;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using MySqlConnector;
 
 namespace AstralOath.Server.Inventory;
@@ -14,7 +15,8 @@ internal static class InventoryEndpoints
         services.AddSingleton(provider => new InventoryStore(provider.GetRequiredService<IConfiguration>()
             .GetConnectionString("MySql"), provider.GetRequiredService<AstralOath.Shared.Battle.ArtifactCatalog>(),
             provider.GetRequiredService<ArenaBattleCatalog>(),
-            provider.GetRequiredService<IHostEnvironment>().IsDevelopment()));
+            provider.GetRequiredService<IHostEnvironment>().IsDevelopment(),
+            provider.GetRequiredService<IConfiguration>().GetValue<bool>("Inventory:DevelopmentEquipmentGrant")));
     }
 
     internal static void MapInventory(this WebApplication app)
@@ -27,21 +29,41 @@ internal static class InventoryEndpoints
         inventory.MapGet("/artifacts", (HttpContext http, ArenaStore sessions, InventoryStore store,
             CancellationToken cancellation) => Handle(app, http, sessions,
                 id => store.ReadArtifacts(id, cancellation), cancellation));
+        inventory.MapGet("/equipment", (HttpContext http, ArenaStore sessions, InventoryStore store,
+            CancellationToken cancellation) => Handle(app, http, sessions,
+                id => store.ReadEquipment(id, cancellation), cancellation));
+        inventory.MapMethods("/equipment", [HttpMethods.Head], (HttpContext http, ArenaStore sessions, InventoryStore store,
+            CancellationToken cancellation) => Handle(app, http, sessions, id => store.ReadEquipmentVersion(id, cancellation),
+                cancellation, version => EquipmentVersionResponse(http, version)));
+        inventory.MapPost("/equipment/actions", (HttpContext http, EquipmentMutation request, ArenaStore sessions,
+            InventoryStore store, CancellationToken cancellation) => Handle(app, http, sessions,
+                id => store.ChangeEquipment(id, request, cancellation), cancellation))
+            .WithMetadata(new RequestSizeLimitAttribute(4096));
         inventory.MapPost("/artifacts/{instanceId}/{action}", (HttpContext http, string instanceId, string action,
             ArtifactMutation request, ArenaStore sessions, InventoryStore store, CancellationToken cancellation) =>
             Handle(app, http, sessions, id => store.ChangeArtifact(id, instanceId, action, request, cancellation), cancellation))
             .WithMetadata(new RequestSizeLimitAttribute(16 * 1024));
     }
 
+    private static IResult EquipmentVersionResponse(HttpContext http, long version)
+    {
+        var tag = new EntityTagHeaderValue(FormattableString.Invariant($"\"{version}\""));
+        http.Response.GetTypedHeaders().ETag = tag;
+        bool unchanged = http.Request.GetTypedHeaders().IfNoneMatch?.Any(known =>
+            known == EntityTagHeaderValue.Any || tag.Compare(known, useStrongComparison: false)) == true;
+        return Results.StatusCode(unchanged ? StatusCodes.Status304NotModified : StatusCodes.Status200OK);
+    }
+
     private static async Task<IResult> Handle<T>(WebApplication app, HttpContext http, ArenaStore sessions,
-        Func<string, Task<T>> work, CancellationToken cancellation)
+        Func<string, Task<T>> work, CancellationToken cancellation, Func<T, IResult>? respond = null)
     {
         http.Response.Headers.CacheControl = "no-store";
         try
         {
             var player = await sessions.Authenticate(http.Request.Headers.Authorization.ToString(), cancellation);
             if (player is null) return Problem(StatusCodes.Status401Unauthorized, "unauthorized");
-            return Results.Ok(await work(player.Id));
+            var result = await work(player.Id);
+            return respond == null ? Results.Ok(result) : respond(result);
         }
         catch (EntryProblem problem) { return Problem(problem.Status, problem.Code); }
         catch (ArenaProblem problem) { return Problem(problem.Status, problem.Code); }

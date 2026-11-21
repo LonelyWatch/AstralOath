@@ -1,4 +1,12 @@
 {
+  "trainingEquipmentIcons": [
+    {"source":"item/icon_eq_armor_arena026.png","sha256":"28f137bad3b0b76623417dad68ebaf26e6835538f7f41fc2d632e20c16f8e8bf"},
+    {"source":"item/icon_eq_boot_arena026.png","sha256":"65c1c089401ce94b9ead51f9ee7110ae5964b72460e465ed78bf178eee332892"},
+    {"source":"item/icon_eq_helmet_arena026.png","sha256":"608325a9fe3dde7469d660a358751a3be6e9a2ed6bc319fbedc483716eba7d09"},
+    {"source":"item/icon_eq_neck_arena026.png","sha256":"f024699296fb5ff24dfea2c0e216e5da341750a7a67743e04bb8a23e1a48add6"},
+    {"source":"item/icon_eq_ring_arena026.png","sha256":"70e97242a7006680e31877c7263c26b3814952379b2d52c1b50d6f1c12bd406e"},
+    {"source":"item/icon_eq_weapon_arena026.png","sha256":"85a921b3757770edb07a0035f1480d18fa96ee63eaae3860a23d7dc6ce09525d"}
+  ],
   "referenceLayouts": [
     {
       "source": "wnd/inventory_renewal.csb",
