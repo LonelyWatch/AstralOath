@@ -54,6 +54,8 @@ namespace AstralOath.Client.Tests
             var preview = browser.Require<BindingMap>("managePreview_weapon").Require<Image>("item");
             Assert.That(current.enabled,Is.False);
             Assert.That(preview.isActiveAndEnabled && preview.sprite,Is.True);
+            Assert.That(browser.Require<GameText>("manageDescription").text,Is.Not.Empty);
+            Assert.That(int.TryParse(browser.Require<BindingMap>("manageScore").Require<GameText>("value").text,out _),Is.True);
             string proposed = browser.Require<BindingMap>("managePreview_attack").Require<GameText>("value").text;
             var difference = browser.Require<GameText>("manageDelta_attack");
             Assert.That(difference.text,Does.StartWith("+"));

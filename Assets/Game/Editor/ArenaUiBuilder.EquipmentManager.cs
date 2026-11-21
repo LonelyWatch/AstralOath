@@ -79,14 +79,20 @@ namespace AstralOath.Editor
             keys.Add(("portrait",thumb.Require<Image>("icon")));
             keys.Add(("quality",Text(info,"Quality",null,23,.413f,.048f,.44f,.06f,new Color32(247,204,131,255))));
             keys.Add(("name",Text(info,"Name",null,26,.413f,.107f,.44f,.09f,Color.white)));
+            keys.Add(("manageDescription",Text(info,"Item description",null,21,.149f,.194f,.692f,.092f,Mist,TextAlignmentOptions.TopLeft,true)));
+            var subList = EquipmentStatList(info,.149f,.377f,.692f,.31f);
             for (int i = 0; i < 5; ++i)
             {
-                var row = AddEquipmentStatRow(info,"Item stat " + i);
-                Place((RectTransform)row.transform,.149f,(i == 0 ? .246f : .33f + (i-1)*.066f),.692f,.058f);
+                var row = AddEquipmentStatRow(i == 0 ? info : subList,"Item stat " + i);
+                if (i == 0) Place((RectTransform)row.transform,.149f,.302f,.692f,.058f);
+                else row.AddComponent<LayoutElement>().preferredHeight = 53;
                 PrefabUtility.RecordPrefabInstancePropertyModifications(row.transform);
                 keys.Add(("manageItemStat"+i,row.GetComponent<BindingMap>()));
             }
-            keys.Add(("manageSet",Text(info,"Set",null,24,.149f,.626f,.692f,.09f,Color.white)));
+            var score = AddEquipmentScoreRow(subList,0,0,1,1);
+            score.gameObject.AddComponent<LayoutElement>().preferredHeight = 54;
+            keys.Add(("manageScore",score));
+            keys.Add(("manageSet",Text(info,"Set",null,24,.149f,.71f,.692f,.085f,Color.white)));
             keys.Add(("wearer",Text(info,"Wearer",null,20,.149f,.83f,.692f,.12f,Color.white,TextAlignmentOptions.Center,true)));
             keys.Add(("managePrompt",Text(pane,"Candidate prompt","home.gear.manageSelect",24,.273f,.586f,.17f,.13f,Mist,TextAlignmentOptions.Center,true)));
             for (int i = 0; i < slots.Length; ++i)

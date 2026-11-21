@@ -76,6 +76,8 @@ namespace AstralOath.Client.Home
             bagSubs = Enumerable.Range(0,4).Select(i => new EquipmentStatRowBinder(Get<BindingMap>("bagSub" + i))).ToArray();
             slots = AuthoredSlots.Select(key => new EquipmentSlotBinder(page.Require<BindingMap>("equipmentSlot_" + key))).ToArray();
             art = Slots.ToDictionary(key => key,key => Get<Image>("icon_" + key).sprite);
+            art.Add("training_speed_weapon", Get<Image>("icon_training_speed_weapon").sprite);
+            art.Add("training_critical_weapon", Get<Image>("icon_training_critical_weapon").sprite);
         }
 
         internal void Bind(BindingScope scope)
@@ -229,8 +231,24 @@ namespace AstralOath.Client.Home
         }
 
         private void Filter(string key) { if (!busy) { filter = key; selected = null; Refresh(); } }
-        private Sprite Icon(EquipmentInventoryItem item) => art.TryGetValue(item.slot, out var sprite) ? sprite : null;
+        private Sprite Icon(EquipmentInventoryItem item)
+        {
+            if (!string.IsNullOrEmpty(item.templateId) && art.TryGetValue(item.templateId, out var icon)) return icon;
+            return art.TryGetValue(item.slot, out var fallback) ? fallback : null;
+        }
         private string ItemName(EquipmentInventoryItem item) => F("title", L(item.slot));
+        private string ItemDescription(EquipmentInventoryItem item)
+        {
+            try { return L("description." + item.templateId); }
+            catch (KeyNotFoundException) { return F("description.unknown", SetName(item.setId), L(item.slot)); }
+        }
+
+        private static int ItemScore(EquipmentInventoryItem item) => EquipmentScoreCalculator.Calculate(item.ToPiece());
+
+        private void PaintEquipmentScore(string key, EquipmentInventoryItem item)
+        {
+            new EquipmentStatRowBinder(Get<BindingMap>(key)).Set(locale.Resolve("home.hero_inventory.sort_equipment_score"),Num(ItemScore(item)));
+        }
         private string SetName(string key) => key == "speed" ? L("speedSet") : key == "critical" ? L("criticalSet") : key;
         private string SetProgress(EquipmentInventoryItem item)
         {
@@ -324,6 +342,8 @@ namespace AstralOath.Client.Home
             BindSlotArt(bagThumbnail,selected);
             bagPane.Require<Image>("plate").sprite = Get<Image>("detail_" + selected.grade).sprite;
             bagPane.Require<GameText>("quality").text = L(selected.grade) + L(selected.slot);
+            bagPane.Require<GameText>("description").text = ItemDescription(selected);
+            PaintEquipmentScore("bagScore",selected);
             var set = bagPane.Require<Image>("setIcon");
             set.sprite = SetArt(selected);
             set.enabled = set.sprite;
@@ -332,7 +352,8 @@ namespace AstralOath.Client.Home
             for (int i = 0; i < bagSubs.Length; ++i)
             {
                 var value = i < selected.substats.Length ? selected.substats[i] : null;
-                bagSubs[i].Set(value == null ? "" : L(value.kind),value == null ? "" : StatValue(value));
+                Get<BindingMap>("bagSub" + i).gameObject.SetActive(value != null);
+                if (value != null) bagSubs[i].Set(L(value.kind),StatValue(value));
             }
         }
 

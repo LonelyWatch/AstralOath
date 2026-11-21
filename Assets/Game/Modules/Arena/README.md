@@ -1,5 +1,7 @@
 # Arena
 
+普通训练装的描述按模板 ID 存在 `home.gear.description.*`，由背包、配戴和管理详情共用。七件训练装使用本项目文案，切换同部位的两把武器也会更新描述。
+
 首页装备背包、单槽配戴和管理页沿用本模块的中文词库 `Configs/arena-zh-hans.json`。单槽区分「配戴中」「选择中」和两种空状态，管理页使用「当前属性」「预览属性」「更换装备」。各状态与录屏的对应关系见[装备界面参考](../../../../docs/development/equipment-ui-reference.md)。
 
 与主页共用的简体中文表 `Configs/arena-zh-hans.json` 中，`home.gear.*` 用于英雄装备槽、背包筛选、穿脱确认和库存冲突提示。[主页装备界面](../Home/README.md)

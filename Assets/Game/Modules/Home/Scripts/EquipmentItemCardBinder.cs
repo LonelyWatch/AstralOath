@@ -24,6 +24,7 @@ namespace AstralOath.Client.Home
             SetImage(view.GradeFrame, gradeFrame);
             SetImage(view.SetIcon, setIcon);
             SetImage(view.WearerIcon, wearerIcon);
+            view.Wearer.gameObject.SetActive(wearerIcon != null);
             SetImage(view.StatIcon, statIcon);
             view.StatIcon.gameObject.SetActive(statIcon);
             view.Level.text = level > 0 ? level.ToString(CultureInfo.InvariantCulture) : string.Empty;

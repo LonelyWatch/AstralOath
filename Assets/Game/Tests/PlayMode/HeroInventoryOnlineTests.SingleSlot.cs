@@ -67,6 +67,7 @@ namespace AstralOath.Client.Tests
             void ChooseAndQuote()
             {
                 Click(WeaponRow(), "select");
+                AssertDescribedScore(selected);
                 Click(slot, "equip");
                 Assert.That(dialog.activeInHierarchy, Is.True);
                 Assert.That(browser.Require<GameText>("change").text, Does.Contain("原佩戴者").And.Contain("梅赛德丝"));
@@ -104,7 +105,9 @@ namespace AstralOath.Client.Tests
             Assert.That(selected.Require<GameObject>("empty").activeInHierarchy, Is.True);
             Assert.That(VisibleRows(slot, "candidates").Any(r => r.name == weapon.instanceId), Is.False);
             Assert.That(slot.Require<GameButton>("equip").gameObject.activeSelf, Is.False);
-            Assert.That(slot.Require<BindingMap>("current").Require<GameText>("owner").text, Does.Contain("拉斯"));
+            var equipped = slot.Require<BindingMap>("current");
+            Assert.That(equipped.Require<BindingMap>("card").Require<Image>("wearerIcon").isActiveAndEnabled, Is.True);
+            AssertDescribedScore(equipped);
 
             var restored = EquipRemote(donor, weapon, version);
             yield return Wait(() => restored.IsCompleted, "Could not restore donor for a fresh transfer.");
@@ -131,6 +134,7 @@ namespace AstralOath.Client.Tests
             Click(page, "gearOpen_weapon");
             Canvas.ForceUpdateCanvases();
             AssertSingleSlotArt(slot.Require<BindingMap>("popupItem"));
+            AssertDescribedScore(slot.Require<BindingMap>("popupItem"));
             loseNextRead = true;
             Click(slot, "popupRemove");
             yield return Wait(() => feedback.text.Contains("请重试"), "A lost post-write refresh needs a visible retry.");
@@ -145,6 +149,17 @@ namespace AstralOath.Client.Tests
             var replayed = remote.FetchAsync(token);
             yield return Wait(() => replayed.IsCompleted, "Could not verify the idempotent replay.");
             Assert.That(replayed.GetAwaiter().GetResult().version, Is.EqualTo(firstReceipt.version));
+        }
+
+        private static void AssertDescribedScore(BindingMap column)
+        {
+            var description = column.Require<GameText>("description");
+            Assert.That(description.isActiveAndEnabled, Is.True);
+            Assert.That(description.text, Is.Not.Empty);
+            Assert.That(description.text, Does.Not.StartWith("home."));
+            var score = column.Require<BindingMap>("score");
+            Assert.That(score.Require<GameText>("label").text, Is.EqualTo("装备分数"));
+            Assert.That(int.TryParse(score.Require<GameText>("value").text, out int points) && points > 0, Is.True);
         }
 
         private static void AssertSingleSlotArt(BindingMap owner)

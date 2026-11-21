@@ -3,6 +3,7 @@ using AstralOath.Client.Home;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace AstralOath.Editor
 {
@@ -28,6 +29,33 @@ namespace AstralOath.Editor
             row.name = name;
             PrefabUtility.RecordPrefabInstancePropertyModifications(row);
             return row;
+        }
+
+        private static BindingMap AddEquipmentScoreRow(RectTransform parent, float x, float y, float w, float h)
+        {
+            var row = AddEquipmentStatRow(parent, "Equipment score");
+            Place((RectTransform)row.transform,x,y,w,h);
+            var map = row.GetComponent<BindingMap>();
+            foreach (string key in new[] { "label", "value" })
+            {
+                var text = map.Require<GameText>(key);
+                text.fontSize = 25;
+                text.fontStyle = FontStyles.Bold;
+                text.color = new Color32(255,212,99,255);
+                PrefabUtility.RecordPrefabInstancePropertyModifications(text);
+            }
+            PrefabUtility.RecordPrefabInstancePropertyModifications(row.transform);
+            return map;
+        }
+
+        private static RectTransform EquipmentStatList(RectTransform parent, float x, float y, float w, float h)
+        {
+            var list = Area(parent,"Secondary properties and score",x,y,w,h);
+            var layout = list.gameObject.AddComponent<VerticalLayoutGroup>();
+            layout.childControlHeight = true;
+            layout.childForceExpandHeight = false;
+            layout.childControlWidth = layout.childForceExpandWidth = true;
+            return list;
         }
     }
 }

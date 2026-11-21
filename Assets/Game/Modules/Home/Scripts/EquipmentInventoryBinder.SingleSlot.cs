@@ -170,7 +170,7 @@ namespace AstralOath.Client.Home
                 _ => new Color32(200,193,180,255)
             };
             map.Require<GameText>("name").text = ItemName(item);
-            map.Require<GameText>("owner").text = string.IsNullOrEmpty(item.equippedHeroId) ? "" : F("owner",heroName(item.equippedHeroId));
+            map.Require<GameText>("description").text = ItemDescription(item);
             if (key != "popupItem")
             {
                 var image=map.Require<Image>("mainIcon");
@@ -185,6 +185,8 @@ namespace AstralOath.Client.Home
                 row.gameObject.SetActive(hasStat);
                 if (hasStat) new EquipmentStatRowBinder(row).Set(L(item.substats[i].kind),StatValue(item.substats[i]));
             }
+            new EquipmentStatRowBinder(map.Require<BindingMap>("score")).Set(
+                locale.Resolve("home.hero_inventory.sort_equipment_score"), Num(ItemScore(item)));
             var emblem = map.Require<Image>("setIcon");
             emblem.sprite = SetArt(item);
             emblem.enabled = emblem.sprite;

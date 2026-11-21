@@ -25,7 +25,8 @@ namespace AstralOath.Editor
             Paint(Area(backArea,"Header rule",0,.984f,1,.016f),null,new Color32(121,140,168,55));
             var back = SharedHeaderBack(backArea);
             keys.Add(("back",back));
-            var title = Text(backArea, "Equipping", "home.gear.singleTitle", 34, 0, 0, .40f, 1, Color.white);
+            var title = Text(backArea, "Equipping", "home.gear.singleTitle", 37, 0, 0, .40f, 1, Color.white);
+            title.fontStyle = FontStyles.Bold;
             title.rectTransform.offsetMin = new Vector2(((RectTransform)back.transform).rect.width + 4f * HomeDesignScale, 0);
             keys.Add(("title",title));
             DrawNativeTopBarIcons(compare, dimmed: true);
@@ -33,20 +34,22 @@ namespace AstralOath.Editor
             Paint(Area(body, "Current equipment shade", 0, 0, .374f, 1), null, Black(.13f));
             Paint(Area(body, "Candidate list shade", .678f, 0, .322f, 1), null, Black(.56f));
             Paint(Area(body, "Candidate list edge", .6775f, .015f, .001f, .974f), null, new Color32(157,171,174,89));
-            var current = Area(body, "Currently equipped", .077f, .009f, .288f, .975f);
-            var candidate = Area(body, "Selected candidate", .376f, .009f, .289f, .975f);
+            var current = Area(body, "Currently equipped", .080f, .009f, .286f, .975f);
+            var candidate = Area(body, "Selected candidate", .381f, .009f, .284f, .975f);
             keys.Add(("current", SingleSlotColumn(current, "singleWorn", "singleNoWorn", false)));
             keys.Add(("candidate", SingleSlotColumn(candidate, "singleChoosing", "singleNoChoice", false)));
 
-            keys.Add(("unequip", Action(current, "Remove", "home.gear.singleRemove", 26,
-                .015f,.891f,.963f,.10f,out _,CommonArt("_btn_gold"),Color.white)));
-            keys.Add(("equip", Action(candidate, "Wear", "home.gear.singleEquip", 26,
-                .015f,.891f,.963f,.10f,out _,CommonArt("_btn_green"),Color.white)));
-            Text(body, "Current sorting", "home.gear.singleSort", 24, .696f, .021f, .099f, .06f,
+            keys.Add(("unequip", Action(current, "Remove", "home.gear.singleRemove", 30,
+                .013f,.889f,.978f,.110f,out var unequipCaption,CommonArt("_btn_gold"),Color.white)));
+            keys.Add(("equip", Action(candidate, "Wear", "home.gear.singleEquip", 30,
+                .013f,.889f,.978f,.110f,out var equipCaption,CommonArt("_btn_green"),Color.white)));
+            unequipCaption.fontStyle = equipCaption.fontStyle = FontStyles.Bold;
+            unequipCaption.characterSpacing = equipCaption.characterSpacing = -6;
+            Text(body, "Current sorting", "home.gear.singleSort", 27, .696f, .021f, .099f, .06f,
                 new Color32(190,197,204,255), TextAlignmentOptions.Center);
-            keys.Add(("capacity", Text(body, "Slot count", null, 24, .800f,.021f,.126f,.06f,
+            keys.Add(("capacity", Text(body, "Slot count", null, 27, .800f,.021f,.126f,.06f,
                 new Color32(202,213,223,255), TextAlignmentOptions.Center)));
-            var list = InventoryScroll(body, "Available equipment", .684f, .11f, .274f, .89f);
+            var list = InventoryScroll(body, "Available equipment", .684f, .11f, .247f, .89f);
             var layout = list.content.gameObject.AddComponent<VerticalLayoutGroup>();
             layout.childControlHeight = layout.childControlWidth = true;
             layout.childForceExpandHeight = false;
@@ -64,8 +67,9 @@ namespace AstralOath.Editor
             outline.enabled = false;
             var card = SingleSlotThumbnail(row, .015f, .04f, .28f, .90f);
             var icon = Picture(row, "Main property symbol", null, .315f,.17f,.065f,.24f,true);
-            var stat = Text(row, "Main property value", null, 34, .390f,.10f,.58f,.38f);
-            var name = Text(row, "Candidate name", null, 23, .315f,.48f,.655f,.34f, new Color32(169,174,182,255));
+            var stat = Text(row, "Main property value", null, 39, .390f,.10f,.58f,.38f);
+            stat.fontStyle = FontStyles.Bold;
+            var name = Text(row, "Candidate name", null, 25, .315f,.48f,.655f,.34f, new Color32(185,187,193,255));
             Bind(row, ("select",select), ("highlight",outline), ("card",card), ("statIcon",icon), ("stat",stat), ("name",name));
             row.gameObject.SetActive(false);
             keys.Add(("row",row.gameObject));
@@ -77,10 +81,17 @@ namespace AstralOath.Editor
             var panel = Area(popup,"Equipment details",.352f,.034f,.296f,.87f);
             keys.Add(("popupPlate",Paint(panel,null,Color.white,true)));
             keys.Add(("popupItem",SingleSlotColumn(Area(panel,"Worn item",.091f,.064f,.818f,.85f),null,null,true)));
-            keys.Add(("popupRemove",Action(panel,"Remove equipment","home.gear.singleRemove",24,
-                .11f,.872f,.242f,.081f,out _,BagArt("_btn_small_black"),Color.white)));
-            keys.Add(("change",Action(panel,"Change equipment","home.gear.singleChange",24,
-                .369f,.872f,.242f,.081f,out _,BagArt("_btn_small_black"),Color.white)));
+            keys.Add(("popupRemove",Action(panel,"Remove equipment","home.gear.singleRemove",27,
+                .11f,.857f,.242f,.09f,out var removeCaption,BagArt("_btn_small_black"),Color.white)));
+            keys.Add(("change",Action(panel,"Change equipment","home.gear.singleChange",27,
+                .369f,.857f,.242f,.09f,out var changeCaption,BagArt("_btn_small_black"),Color.white)));
+            foreach (var caption in new[] { removeCaption, changeCaption })
+            {
+                caption.fontStyle = FontStyles.Bold;
+                caption.enableAutoSizing = true;
+                caption.fontSizeMin = 16;
+                caption.fontSizeMax = 27;
+            }
             Text(popup,"Close hint","home.gear.singleDismiss",22,.32f,.931f,.36f,.05f,
                 new Color32(180,186,193,255),TextAlignmentOptions.Center);
             string[] grades = { "normal","good","rare","heroic","epic" };
@@ -102,43 +113,6 @@ namespace AstralOath.Editor
             parentKeys.Add(("singleSlot",instance.GetComponent<BindingMap>()));
         }
 
-        private static BindingMap SingleSlotThumbnail(RectTransform parent, float x, float y, float w, float h)
-        {
-            var holder = Area(parent,"Square equipment art",x,y,w,h);
-            var square = Area(holder,"Square",0,0,1,1);
-            square.gameObject.SetActive(false);
-            var aspect = square.gameObject.AddComponent<AspectRatioFitter>();
-            // In edit-mode None measures width/height, both zero before the prefab is on a canvas.
-            aspect.aspectMode = AspectRatioFitter.AspectMode.FitInParent;
-            aspect.aspectRatio = 1;
-            square.gameObject.SetActive(true);
-            var card = InstantiateEquipmentItemCard(square,"Equipment thumbnail");
-            var rect = (RectTransform)card.transform;
-            Place(rect,0,0,1,1);
-            PrefabUtility.RecordPrefabInstancePropertyModifications(rect);
-            // Single-slot rows carry the value beside the artwork, so use the square portion of the common card.
-            var select = card.Require<GameButton>("select");
-            select.interactable = false;
-            select.targetGraphic.enabled = false;
-            PrefabUtility.RecordPrefabInstancePropertyModifications(select);
-            PrefabUtility.RecordPrefabInstancePropertyModifications(select.targetGraphic);
-            foreach (var key in new[] { "icon", "gradeFrame", "setIcon", "wearerIcon", "level", "badge" })
-            {
-                var child = key == "level" ? card.Require<GameText>(key).rectTransform :
-                    key == "badge" ? (RectTransform)card.Require<BindingMap>(key).transform : card.Require<Image>(key).rectTransform;
-                if (key == "icon" || key == "gradeFrame") Place(child,0,0,1,1);
-                else if (key == "setIcon") Place(child,.69f,.65f,.36f,.38f);
-                else if (key == "wearerIcon") Place(child,-.055f,.65f,.42f,.43f);
-                else if (key == "level") Place(child,.07f,.035f,.60f,.24f);
-                else Place(child,.64f,-.05f,.44f,.28f);
-                PrefabUtility.RecordPrefabInstancePropertyModifications(child);
-            }
-            var footer = card.Require<GameText>("stat").transform.parent.gameObject;
-            footer.SetActive(false);
-            PrefabUtility.RecordPrefabInstancePropertyModifications(footer);
-            return card;
-        }
-
         private static BindingMap SingleSlotColumn(RectTransform root, string heading, string emptyKey, bool popup)
         {
             var keys = new List<(string,Object)>();
@@ -156,38 +130,64 @@ namespace AstralOath.Editor
             {
                 var accent = heading == "singleWorn" ? new Color32(210,154,62,255) : new Color32(97,193,40,255);
                 Paint(Area(detail,"Selection side rule",0,0,.007f,.19f),null,accent);
-                Text(detail,"Item state","home.gear."+heading,22,.019f,0,.83f,.035f,accent);
+                Text(detail,"Item state","home.gear."+heading,24,.019f,0,.83f,.038f,accent);
             }
-            keys.Add(("card",SingleSlotThumbnail(detail,.016f,popup ? 0 : .046f,popup ? .245f : .21f,popup ? .166f : .147f)));
+            keys.Add(("card",SingleSlotThumbnail(detail,.016f,popup ? 0 : .038f,popup ? .245f : .223f,popup ? .166f : .156f)));
             float textX=popup ? .272f : .255f;
-            keys.Add(("grade",Text(detail,"Quality and slot",null,25,textX,popup ? .014f : .047f,1-textX,.045f)));
-            keys.Add(("name",Text(detail,"Equipment name",null,27,textX,popup ? .059f : .092f,1-textX,.061f)));
-            keys.Add(("owner",Text(detail,"Equipped by",null,21,.02f,.201f,.96f,.05f,new Color32(163,172,182,255))));
-            float mainY=popup ? .304f : .319f, setY=popup ? .726f : .698f;
+            var grade = Text(detail,"Quality and slot",null,28,textX,popup ? .012f : .044f,1-textX,.049f);
+            var name = Text(detail,"Equipment name",null,29,textX,popup ? .053f : .083f,1-textX,.057f);
+            grade.fontStyle = name.fontStyle = FontStyles.Bold;
+            keys.Add(("grade",grade));
+            keys.Add(("name",name));
+            keys.Add(("description",Text(detail,"Item description",null,24,.018f,popup ? .191f : .206f,.956f,.097f,
+                new Color32(163,167,180,255), TextAlignmentOptions.TopLeft, true)));
+            float mainY = popup ? .300f : .315f;
+            float setY = popup ? .716f : .697f;
             Paint(Area(detail,"Main property band",.005f,mainY,.984f,.069f),null,new Color32(105,119,147,17));
             if (!popup) keys.Add(("mainIcon",Picture(detail,"Main property icon",null,.022f,mainY+.009f,.068f,.05f,true)));
-            BindingMap StatRow(string name,float x,float top,float height,int size)
+            BindingMap StatRow(RectTransform parent, string rowName, float x, float top, float width, float height,
+                int size, bool primary)
             {
-                var obj=AddEquipmentStatRow(detail,name);
+                var obj=AddEquipmentStatRow(parent,rowName);
                 var rect=(RectTransform)obj.transform;
-                Place(rect,x,top,.966f-x,height);
+                Place(rect,x,top,width,height);
                 PrefabUtility.RecordPrefabInstancePropertyModifications(rect);
                 var map=obj.GetComponent<BindingMap>();
                 foreach(string binding in new[]{"label","value"})
                 {
                     var label=map.Require<GameText>(binding);
-                    label.fontSize=size;
-                    label.fontStyle=name == "main" ? FontStyles.Bold : FontStyles.Normal;
-                    label.color=name == "main" ? Color.white : new Color32(200,204,210,255);
+                    label.fontSize=primary && binding == "value" ? size + 3 : size;
+                    label.fontStyle=primary ? FontStyles.Bold : FontStyles.Normal;
+                    label.color=primary ? Color.white : new Color32(205,208,217,255);
                     PrefabUtility.RecordPrefabInstancePropertyModifications(label);
                 }
                 return map;
             }
-            keys.Add(("main",StatRow("main",popup ? .02f : .099f,mainY,.069f,31)));
-            for(int i=0;i<4;i++) keys.Add(("sub"+i,StatRow("sub"+i,.018f,mainY+.087f+i*.041f,.04f,24)));
+            float mainX = popup ? .02f : .099f;
+            keys.Add(("main",StatRow(detail,"main",mainX,mainY,.966f-mainX,.069f,35,true)));
+            // Four rolled lines at 01:34 are 24–25 px apart in the 720 px reference crop.
+            var stats = EquipmentStatList(detail,.018f,mainY+.083f,.948f,.28f);
+            for (int i=0; i<4; ++i)
+            {
+                string id = "sub" + i;
+                var sub = StatRow(stats,id,0,0,1,1,27,false);
+                sub.gameObject.AddComponent<LayoutElement>().preferredHeight = 36.5f;
+                keys.Add((id,sub));
+            }
+            var score = AddEquipmentScoreRow(stats,0,0,1,1);
+            score.gameObject.AddComponent<LayoutElement>().preferredHeight = 45;
+            foreach (var binding in new[] { "label", "value" })
+            {
+                var text = score.Require<GameText>(binding);
+                text.fontSize = 29;
+                PrefabUtility.RecordPrefabInstancePropertyModifications(text);
+            }
+            keys.Add(("score", score));
             Paint(Area(detail,"Set band",.005f,setY,.984f,.066f),null,new Color32(78,82,98,10));
-            keys.Add(("setIcon",Picture(detail,"Set icon",null,.021f,setY+.008f,.072f,.05f,true)));
-            keys.Add(("set",Text(detail,"Equipped set pieces",null,25,.102f,setY,.87f,.066f)));
+            keys.Add(("setIcon",Picture(detail,"Set icon",null,.018f,setY+.005f,.080f,.056f,true)));
+            var set = Text(detail,"Equipped set pieces",null,29,.103f,setY,.875f,.066f);
+            set.fontStyle = FontStyles.Bold;
+            keys.Add(("set",set));
             Bind(root,keys.ToArray());
             return root.GetComponent<BindingMap>();
         }

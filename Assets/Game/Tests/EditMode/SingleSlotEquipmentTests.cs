@@ -10,6 +10,33 @@ namespace AstralOath.Client.Tests
     public sealed class SingleSlotEquipmentTests
     {
         [Test]
+        public void ComparisonAndEquippedDetailShowDescriptionAndItemScore()
+        {
+            var view = AssetDatabase.LoadAssetAtPath<GameObject>(
+                "Assets/Game/Modules/Home/Res/Prefab/SingleSlotEquipment.prefab").GetComponent<BindingMap>();
+            foreach (var key in new[] { "current", "candidate", "popupItem" })
+            {
+                var column = view.Require<BindingMap>(key);
+                var description = column.Require<GameText>("description");
+                var score = column.Require<BindingMap>("score");
+                Assert.That(description.enableWordWrapping, Is.True);
+                Assert.That(score.Require<GameText>("value").color.g, Is.GreaterThan(.7f));
+                Assert.That(score.Require<GameText>("value").color.b, Is.LessThan(.6f));
+                Assert.That(score.transform.parent.GetComponent<VerticalLayoutGroup>(), Is.Not.Null,
+                    "The gold score row must follow the last visible substat, including on one-substat training gear.");
+            }
+            foreach (var key in new[] { "equip", "unequip" })
+            {
+                var button = view.Require<GameButton>(key);
+                var rect = (RectTransform)button.transform;
+                Assert.That(rect.anchorMax.y - rect.anchorMin.y, Is.GreaterThan(.107f));
+                var caption = button.GetComponentInChildren<GameText>(true);
+                Assert.That(caption.fontSize, Is.GreaterThanOrEqualTo(30));
+                Assert.That(caption.fontStyle.HasFlag(TMPro.FontStyles.Bold), Is.True);
+            }
+        }
+
+        [Test]
         public void HeroSlotsHaveAnIndependentComparisonAndAnEquippedItemPopup()
         {
             const string home = "Assets/Game/Modules/Home/Res/Prefab/";

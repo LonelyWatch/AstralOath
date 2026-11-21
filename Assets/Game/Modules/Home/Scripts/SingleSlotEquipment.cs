@@ -25,6 +25,8 @@ namespace AstralOath.Client.Home
                 var item = Bindings.Require<BindingMap>(key);
                 item.Require<BindingMap>("card");
                 item.Require<BindingMap>("main");
+                item.Require<GameText>("description");
+                item.Require<BindingMap>("score");
                 for (int i = 0; i < 4; i++) item.Require<BindingMap>("sub" + i);
             }
         }

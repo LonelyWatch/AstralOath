@@ -737,6 +737,7 @@ namespace AstralOath.Client.Tests
             Assert.That(items.Length,Is.EqualTo(7));
             var weapons = items.Where(i => i.slot == "weapon").OrderBy(i => i.mainStat.value).ToArray();
             Assert.That(weapons.Length,Is.EqualTo(2));
+            var trainingWeaponIcons = new[] { "icon_eq_weapon_orb001", "icon_eq_weapon_insect006" };
             var weaponSlot = page.Require<BindingMap>("equipmentSlot_weapon").Require<Image>("item");
             string initialAttack = page.Require<GameText>("detailStat_attack").text;
             if (!roster)
@@ -747,6 +748,9 @@ namespace AstralOath.Client.Tests
                 Assert.That(VisibleRows(bag,"items").All(row => row.Require<Image>("icon").isActiveAndEnabled &&
                     row.Require<Image>("icon").sprite && row.Require<Image>("icon").color.a >= .99f), Is.True);
                 Assert.That(bag.Require<Image>("portrait").isActiveAndEnabled,Is.True);
+                Assert.That(bag.Require<GameText>("description").text,Is.Not.Empty);
+                Assert.That(bag.Require<GameText>("description").text,Does.Not.StartWith("home."));
+                Assert.That(int.TryParse(browser.Require<BindingMap>("bagScore").Require<GameText>("value").text,out _),Is.True);
                 yield return Capture("equipment-bag",1478,720);
                 yield return Capture("equipment-bag-narrow",1040,960);
                 Click(bag,"filter_weapon");
@@ -766,6 +770,8 @@ namespace AstralOath.Client.Tests
                     }
                     Assert.That(single.Require<BindingMap>("candidate").Require<GameObject>("empty").activeInHierarchy, Is.True);
                     var candidate = VisibleRows(single,"candidates").Single(m => m.name == item.instanceId);
+                    Assert.That(candidate.Require<BindingMap>("card").Require<Image>("icon").sprite.name,
+                        Is.EqualTo(trainingWeaponIcons[index]));
                     Click(candidate,"select");
                     Assert.That(single.Require<BindingMap>("candidate").Require<GameObject>("detail").activeInHierarchy, Is.True);
                     if (index > 0)
@@ -797,7 +803,7 @@ namespace AstralOath.Client.Tests
                 {
                     Assert.That(weaponSlot.enabled,Is.True);
                     Assert.That(page.Require<GameText>("detailStat_attack").text,Is.Not.EqualTo(initialAttack));
-                    Assert.That(weaponSlot.sprite.name,Is.EqualTo("icon_eq_weapon_arena026"));
+                    Assert.That(weaponSlot.sprite.name,Is.EqualTo(trainingWeaponIcons[index]));
                 }
             }
             if (roster)

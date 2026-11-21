@@ -12,6 +12,7 @@ namespace AstralOath.Client.Home
         internal Image SetIcon { get; private set; }
         internal Image StatIcon { get; private set; }
         internal Image WearerIcon { get; private set; }
+        internal BindingMap Wearer { get; private set; }
         internal Image SelectedPlate { get; private set; }
         internal Image Highlight { get; private set; }
         internal GameText Level { get; private set; }
@@ -29,6 +30,7 @@ namespace AstralOath.Client.Home
             SetIcon = Bindings.Require<Image>("setIcon");
             StatIcon = Bindings.Require<Image>("statIcon");
             WearerIcon = Bindings.Require<Image>("wearerIcon");
+            Wearer = Bindings.Require<BindingMap>("wearer");
             SelectedPlate = Bindings.Require<Image>("selectedPlate");
             Highlight = Bindings.Require<Image>("highlight");
             Level = Bindings.Require<GameText>("level");

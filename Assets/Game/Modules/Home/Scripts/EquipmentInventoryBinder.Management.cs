@@ -53,6 +53,8 @@ namespace AstralOath.Client.Home
             Get<Image>("manageDetailPlate").sprite = Get<Image>("managePlate_" + selected.grade).sprite;
             BindSlotArt(new EquipmentItemCardBinder(Get<BindingMap>("manageThumbnail")),selected);
             Get<GameText>("name").text = ItemName(selected);
+            Get<GameText>("manageDescription").text = ItemDescription(selected);
+            PaintEquipmentScore("manageScore",selected);
             Get<GameText>("quality").text = L(selected.grade) + L(selected.slot);
             Get<GameText>("wearer").text = string.IsNullOrEmpty(selected.equippedHeroId) ? L("unworn") : F("owner",heroName(selected.equippedHeroId));
             Get<GameText>("manageSet").text = SetProgress(selected);

@@ -103,6 +103,8 @@ namespace AstralOath.Editor
             {
                 keys.Add((key, Picture(catalog, key, InventoryArt("Equipment/" + sprite), 0, 0, 1, 1, true)));
             }
+            Catalog("icon_training_speed_weapon", "icon_eq_weapon_orb001");
+            Catalog("icon_training_critical_weapon", "icon_eq_weapon_insect006");
             string[] grades = { "normal", "good", "rare", "heroic", "epic" };
             for (int i = 0; i < grades.Length; ++i)
             {
@@ -209,13 +211,16 @@ namespace AstralOath.Editor
             controls.Add(("portrait",preview.Require<Image>("icon")));
             controls.Add(("quality",Text(info,"Grade and slot",null,25,.34f,.065f,.54f,.046f,new Color32(246,196,119,255))));
             controls.Add(("name",Text(info,"Item name",null,29,.34f,.113f,.55f,.064f,Color.white)));
-            controls.Add(("wearer",Text(info,"Wearer",null,20,.11f,.211f,.78f,.075f,new Color32(171,164,159,255))));
+            controls.Add(("description",Text(info,"Item description",null,22,.11f,.213f,.78f,.095f,new Color32(192,183,176,255),TextAlignmentOptions.TopLeft,true)));
+            controls.Add(("wearer",Text(info,"Wearer",null,20,.11f,.79f,.78f,.066f,new Color32(171,164,159,255))));
             var statBand = new Color32(82,81,77,18);
             Paint(Area(info,"Main stat highlight",.095f,.32f,.81f,.075f),null,statBand);
+            var subList = EquipmentStatList(info,.119f,.405f,.757f,.28f);
             void StatRow(string key, float top, float height, bool primary)
             {
-                var row = AddEquipmentStatRow(info,key);
-                Place((RectTransform)row.transform,.119f,top,.757f,height);
+                var row = AddEquipmentStatRow(primary ? info : subList,key);
+                if (primary) Place((RectTransform)row.transform,.119f,top,.757f,height);
+                else row.AddComponent<LayoutElement>().preferredHeight = 40;
                 var map = row.GetComponent<BindingMap>();
                 foreach (string part in new[] { "label", "value" })
                 {
@@ -229,7 +234,10 @@ namespace AstralOath.Editor
                 keys.Add((key,map));
             }
             StatRow("bagMain",.32f,.075f,true);
-            for (int i = 0; i < 4; ++i) StatRow("bagSub" + i,.405f + .045f*i,.045f,false);
+            for (int i = 0; i < 4; ++i) StatRow("bagSub" + i,0,1,false);
+            var score = AddEquipmentScoreRow(subList,0,0,1,1);
+            score.gameObject.AddComponent<LayoutElement>().preferredHeight = 46;
+            keys.Add(("bagScore",score));
             Paint(Area(info,"Set band",.095f,.704f,.81f,.066f),null,statBand);
             controls.Add(("setIcon",Picture(info,"Set icon",null,.119f,.712f,.064f,.047f,true)));
             controls.Add(("set",Text(info,"Set name and count",null,23,.190f,.705f,.68f,.066f,Color.white)));

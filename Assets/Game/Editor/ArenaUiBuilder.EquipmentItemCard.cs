@@ -29,17 +29,27 @@ namespace AstralOath.Editor
             highlight.pixelsPerUnitMultiplier = 1.25f;
             highlight.enabled = false;
 
-            // The original top field is square. The right-hand set emblem straddles its lower edge.
-            var grade = Picture(card, "Quality", null, .055f, .045f, .89f, .69f, true);
-            var icon = Picture(card, "Equipment", null, .055f, .045f, .89f, .69f, true);
-            var set = Picture(card, "Equipment set", null, .68f, .47f, .35f, .296f, true);
-            var wearer = Picture(card, "Wearer", null, -.015f, .48f, .33f, .26f, true);
-            var level = EquipmentCardNumber(Area(card, "Item level", .095f, .059f, .55f, .172f),
+            // A 96px grade sprite has a visible 84px plate. Keep the source 84px item inside it.
+            var art = Area(card, "Square illustration", 0, 0, 1, 86f / 111f);
+            var grade = Picture(art, "Quality", null, 0, 0, 1, 1, true);
+            var icon = Picture(art, "Equipment", null, 6f/96, 6f/96, 84f/96, 84f/96, true);
+            var set = Picture(art, "Equipment set", null, .628f, .578f, 44f/96, 44f/96, true);
+            var wearer = (GameObject)PrefabUtility.InstantiatePrefab(Load<GameObject>(CommonUiPrefabs.AvatarPath), art);
+            var wearerRect = (RectTransform)wearer.transform;
+            Place(wearerRect, -.055f, .55f, .50f, .50f);
+            var avatar = wearer.GetComponent<BindingMap>();
+            var rim = avatar.Require<Image>("frame");
+            rim.sprite = CommonArt("_hero_s_frame_ally");
+            wearer.SetActive(false);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(rim);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(wearerRect);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(wearer);
+            var level = EquipmentCardNumber(Area(art, "Item level", .092f, .064f, .55f, .223f),
                 numberFont, 21, new Color32(255, 222, 114, 255), TextAlignmentOptions.MidlineLeft);
 
-            var badgeInstance = (GameObject)PrefabUtility.InstantiatePrefab(Load<GameObject>(BadgePrefabPath), card);
+            var badgeInstance = (GameObject)PrefabUtility.InstantiatePrefab(Load<GameObject>(BadgePrefabPath), art);
             var badgeRect = (RectTransform)badgeInstance.transform;
-            Place(badgeRect, .70f, -.025f, .34f, .235f);
+            Place(badgeRect, .65f, -.055f, .405f, .29f);
             badgeInstance.SetActive(false);
             PrefabUtility.RecordPrefabInstancePropertyModifications(badgeRect);
             PrefabUtility.RecordPrefabInstancePropertyModifications(badgeInstance);
@@ -56,8 +66,8 @@ namespace AstralOath.Editor
             glyphSize.preferredWidth = glyphSize.preferredHeight = 26;
             var stat = EquipmentCardNumber(Area(footer, "Stat value", 0, 0, 1, 1), numberFont, 21,
                 Color.white, TextAlignmentOptions.Center);
-            Bind(card, ("select", button), ("icon", icon), ("gradeFrame", grade), ("setIcon", set),
-                ("wearerIcon", wearer), ("statIcon", statIcon), ("stat", stat), ("level", level),
+            Bind(card, ("select", button), ("art", art), ("icon", icon), ("gradeFrame", grade), ("setIcon", set),
+                ("wearer", avatar), ("wearerIcon", avatar.Require<Image>("portrait")), ("statIcon", statIcon), ("stat", stat), ("level", level),
                 ("badge", badge), ("enhancement", badge.Require<GameText>("label")),
                 ("selectedPlate", selected), ("highlight", highlight));
             Save(card.gameObject, EquipmentItemCardPath);
@@ -78,6 +88,35 @@ namespace AstralOath.Editor
             text.raycastTarget = false;
             text.text = string.Empty;
             return text;
+        }
+
+        private static BindingMap SingleSlotThumbnail(RectTransform parent, float x, float y, float w, float h)
+        {
+            var holder = Area(parent,"Square equipment art",x,y,w,h);
+            var square = Area(holder,"Square",0,0,1,1);
+            square.gameObject.SetActive(false);
+            var aspect = square.gameObject.AddComponent<AspectRatioFitter>();
+            // In edit-mode None measures width/height, both zero before the prefab is on a canvas.
+            aspect.aspectMode = AspectRatioFitter.AspectMode.FitInParent;
+            aspect.aspectRatio = 1;
+            square.gameObject.SetActive(true);
+            var card = InstantiateEquipmentItemCard(square,"Equipment thumbnail");
+            var rect = (RectTransform)card.transform;
+            Place(rect,0,0,1,1);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(rect);
+            // Single-slot rows carry the value beside the artwork, so use the square portion of the common card.
+            var select = card.Require<GameButton>("select");
+            select.interactable = false;
+            select.targetGraphic.enabled = false;
+            PrefabUtility.RecordPrefabInstancePropertyModifications(select);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(select.targetGraphic);
+            var art = card.Require<RectTransform>("art");
+            Place(art,0,0,1,1);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(art);
+            var footer = card.Require<GameText>("stat").transform.parent.gameObject;
+            footer.SetActive(false);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(footer);
+            return card;
         }
 
         private static BindingMap InstantiateEquipmentItemCard(RectTransform parent, string name)

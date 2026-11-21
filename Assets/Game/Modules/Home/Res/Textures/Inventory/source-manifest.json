@@ -1,5 +1,7 @@
 {
   "trainingEquipmentIcons": [
+    {"templateId":"training_speed_weapon","source":"item/icon_eq_weapon_orb001.png","sha256":"9de810c87c47b08021a030418f7642d8d965d7af331ed1f9ce6033fd893d0600"},
+    {"templateId":"training_critical_weapon","source":"item/icon_eq_weapon_insect006.png","sha256":"66c26a3c5ad952b1067dbc763cd7acbe0aaf056b193728383b52a6339560251c"},
     {"source":"item/icon_eq_armor_arena026.png","sha256":"28f137bad3b0b76623417dad68ebaf26e6835538f7f41fc2d632e20c16f8e8bf"},
     {"source":"item/icon_eq_boot_arena026.png","sha256":"65c1c089401ce94b9ead51f9ee7110ae5964b72460e465ed78bf178eee332892"},
     {"source":"item/icon_eq_helmet_arena026.png","sha256":"608325a9fe3dde7469d660a358751a3be6e9a2ed6bc319fbedc483716eba7d09"},
@@ -92,6 +94,14 @@
     }
   ],
   "assets": [
+    {
+      "asset": "Assets/Game/Common/Res/Textures/_hero_s_frame_ally.png",
+      "source": "img/_hero_s_frame_ally.png",
+      "sourceSha256": "2f6c420bf7f6f60be177f87d1cfae9a11d69bc0fd8961b1df6181f6ae51dd48b",
+      "outputSha256": "2f6c420bf7f6f60be177f87d1cfae9a11d69bc0fd8961b1df6181f6ae51dd48b",
+      "width": 126,
+      "height": 126
+    },
     {
       "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Equipment/_box_equip_1.png",
       "source": "img/_box_equip_1.png",

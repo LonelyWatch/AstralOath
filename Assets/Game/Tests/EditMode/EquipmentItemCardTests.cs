@@ -16,6 +16,35 @@ namespace AstralOath.Client.Tests
         private const string GearArt = "Assets/Game/Modules/Home/Res/Textures/Inventory/Equipment/";
 
         [Test]
+        public void ThumbnailKeepsTheQualityBorderSetAndFramedWearerInSourceProportions()
+        {
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(PathToCard);
+            var instance = Object.Instantiate(prefab);
+            try
+            {
+                var map = instance.GetComponent<BindingMap>();
+                var quality = map.Require<Image>("gradeFrame").rectTransform;
+                var equipment = map.Require<Image>("icon").rectTransform;
+                var set = map.Require<Image>("setIcon").rectTransform;
+                var avatar = map.Require<BindingMap>("wearer");
+                Assert.That(equipment.parent, Is.SameAs(quality.parent));
+                Assert.That(equipment.rect.width / quality.rect.width, Is.EqualTo(84f / 96f).Within(.005f));
+                Assert.That(set.rect.width / quality.rect.width, Is.EqualTo(44f / 96f).Within(.005f));
+                Assert.That(((RectTransform)avatar.transform).rect.width / quality.rect.width,
+                    Is.EqualTo(.50f).Within(.005f));
+                Assert.That(avatar.Require<Image>("frame").sprite.name, Is.EqualTo("_hero_s_frame_ally"));
+                Assert.That(avatar.Require<Image>("portrait").GetComponentInParent<Mask>(true), Is.Not.Null);
+                var binder = new EquipmentItemCardBinder(map);
+                var icon = LoadGear("icon_eq_weapon_arena026");
+                binder.Set(icon, LoadGear("_itembg_equip_2"), null, null, icon, 15, 0, null);
+                Assert.That(avatar.gameObject.activeSelf, Is.True);
+                binder.Set(icon, LoadGear("_itembg_equip_2"), null, null, null, 15, 0, null);
+                Assert.That(avatar.gameObject.activeSelf, Is.False, "The plate and gold rim must clear with the wearer.");
+            }
+            finally { Object.DestroyImmediate(instance); }
+        }
+
+        [Test]
         public void CardUsesIndependentSelectionAndAnAuthoredEnhancementBadge()
         {
             var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(PathToCard);

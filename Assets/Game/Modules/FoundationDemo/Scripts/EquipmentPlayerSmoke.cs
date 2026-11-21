@@ -61,6 +61,10 @@ namespace AstralOath.Client.FoundationDemo
             var mainStat = equipment.Require<BindingMap>("bagMain").Require<GameText>("value");
             if (!helmet.Require<Image>("icon").sprite || string.IsNullOrEmpty(mainStat.text))
                 throw new InvalidOperationException("The packaged helmet card is missing its image or attributes.");
+            string description = browser.Require<GameText>("description").text;
+            string score = equipment.Require<BindingMap>("bagScore").Require<GameText>("value").text;
+            if (string.IsNullOrWhiteSpace(description) || !int.TryParse(score, out _))
+                throw new InvalidOperationException("The packaged helmet is missing its description or score.");
             string instance = helmet.name;
             Click(bag, "back");
             await Until(() => Page("HomeWindow"), "return home", token);
@@ -82,13 +86,18 @@ namespace AstralOath.Client.FoundationDemo
                 "show the same helmet in the slot picker", token);
             Click(Card(single, "candidates"), "select");
             await Until(() => single.Require<BindingMap>("candidate").Require<GameObject>("detail").activeInHierarchy, "preview the candidate", token);
+            var candidate = single.Require<BindingMap>("candidate");
+            if (candidate.Require<GameText>("description").text != description ||
+                candidate.Require<BindingMap>("score").Require<GameText>("value").text != score)
+                throw new InvalidOperationException("The bag and slot picker disagree on the helmet description or score.");
             Click(single, "equip");
             await Until(() => !browser.gameObject.activeSelf && item.enabled && item.sprite && health.text == (baseline + 80).ToString(), "equip and add 80 HP", token);
             Click(hero, "gearOpen_helmet");
             await Until(() => single.Require<GameObject>("popup").activeInHierarchy, "inspect the equipped helmet", token);
             Click(single, "popupRemove");
             await Until(() => !browser.gameObject.activeSelf && !item.enabled && health.text == baseline.ToString(), "restore the unequipped panel", token);
-            Debug.Log("ASTRAL_EQUIPMENT_PLAYER_OK items=7 health=" + baseline + "," + (baseline + 80) + "," + baseline);
+            Debug.Log("ASTRAL_EQUIPMENT_PLAYER_OK items=7 health=" + baseline + "," + (baseline + 80) + "," + baseline +
+                " helmetScore=" + score + " descriptionMatches=True");
         }
 
         private static int CardCount(BindingMap browser, string list = "items")
