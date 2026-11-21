@@ -128,7 +128,7 @@ namespace AstralOath.Tests
             Set("turnHud", hud);
             var hudMap = root.GetComponent<BindingMap>();
             var skillBanner = Activator.CreateInstance(BattleType("BattleSkillBanner"), Instance, null,
-                new object[] { (RectTransform)root.transform.Find("Top Bar"), hudMap.Require<GameText>("activeName"),
+                new object[] { (RectTransform)root.transform.Find("Top Bar"), hudMap.Require<GameText>("wave"),
                     new Dictionary<string, Sprite>() }, null);
             Set("skillBanner", skillBanner);
             Set("voice", FormatterServices.GetUninitializedObject(BattleType("BattleVoice")));

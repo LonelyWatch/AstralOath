@@ -259,7 +259,7 @@ namespace AstralOath.Client.BattleScene
             rect.sizeDelta = new Vector2(720f, 160f);
             rect.anchoredPosition = Vector2.zero;
             stageTitle = title.GetComponent<GameText>();
-            var template = hud.Require<GameText>("activeName");
+            var template = hud.Require<GameText>("wave");
             stageTitle.font = template.font;
             stageTitle.fontSharedMaterial = template.fontSharedMaterial;
             stageTitle.fontSize = 43f;

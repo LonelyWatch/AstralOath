@@ -57,7 +57,7 @@ namespace AstralOath.Client.BattleScene
                 var card = Rect(panel, "Background", Vector2.zero, new Vector2(580f, 370f)).gameObject.AddComponent<Image>();
                 card.color = new Color32(25, 32, 43, 250);
                 card.raycastTarget = false;
-                var font = map.Require<GameText>("activeName");
+                var font = map.Require<GameText>("wave");
                 Caption(panel, "Title", label("battle.pause.title"), font, new Vector2(0f, 115f), 36f);
                 Continue = Button(panel, "Continue", label("battle.pause.continue"), font, new Vector2(0f, 15f), confirmPrefab);
                 Restart = Button(panel, "Restart", label("battle.pause.restart"), font, new Vector2(0f, -95f), confirmPrefab);

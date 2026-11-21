@@ -43,6 +43,48 @@ namespace AstralOath.Client.Tests
         }
 
         [Test]
+        public void CurrentActorNameUsesThePackagedOriginalChineseGlyphs()
+        {
+            const string path = "Assets/Game/Modules/BattleScene/Res/Prefab/BattleHud.prefab";
+            var hud = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            var name = hud.transform.Find("Active Unit/Active Name").GetComponent<AstralOath.Client.Common.GameText>();
+            Assert.That(name.font.faceInfo.familyName, Is.EqualTo("EpicSeven"));
+            Assert.That(name.color, Is.EqualTo(Color.white));
+            Assert.That(name.fontSize, Is.EqualTo(36f), "The 24-point unit plate maps from 720 to 1080.");
+            var nameMaterial = name.fontSharedMaterial;
+            Assert.That(nameMaterial.mainTexture, Is.SameAs(name.font.atlasTexture));
+            Assert.That(nameMaterial.GetColor(TMPro.ShaderUtilities.ID_OutlineColor), Is.EqualTo(Color.black));
+            Assert.That(nameMaterial.GetFloat(TMPro.ShaderUtilities.ID_OutlineWidth), Is.GreaterThan(0));
+            var ordinary = hud.transform.Find("Top Bar/Wave").GetComponent<AstralOath.Client.Common.GameText>();
+            Assert.That(ordinary.font.name, Is.EqualTo("FoundationFont"));
+            Assert.That(AssetDatabase.GetDependencies(path),
+                Does.Contain("Assets/Game/Common/Res/Fonts/EpicSeven.ttf"));
+            foreach (char glyph in "尤贝乌斯")
+                Assert.That(name.font.HasCharacter(glyph, false, true), Is.True, glyph.ToString());
+        }
+
+        [Test]
+        public void OlderProfilesUseTheSameEffectWordStrokeAsThePackagedMaterial()
+        {
+            var font = AssetDatabase.LoadAssetAtPath<TMPro.TMP_FontAsset>("Assets/Game/Common/Res/Fonts/EpicSeven.asset");
+            var material = AssetDatabase.LoadAssetAtPath<Material>(
+                "Assets/Game/Modules/BattleScene/Res/Fonts/BattleEffectWordOutline.mat");
+            var marker = new GameObject("Test status", typeof(RectTransform));
+            try
+            {
+                var type = Type.GetType("AstralOath.Client.BattleScene.BattleEffectWords, AstralOath.Client.BattleScene", true);
+                using var words = (IDisposable)Activator.CreateInstance(type, marker.transform, font, null);
+                type.GetMethod("Show").Invoke(words, new object[] { "额外回合", null, false });
+                var caption = marker.GetComponentInChildren<AstralOath.Client.Common.GameText>();
+                float width = caption.fontSharedMaterial.GetFloat(TMPro.ShaderUtilities.ID_OutlineWidth);
+                Assert.That(width, Is.InRange(.17f, .22f));
+                Assert.That(width, Is.EqualTo(material.GetFloat(TMPro.ShaderUtilities.ID_OutlineWidth)).Within(.001f));
+                Assert.That(caption.fontSharedMaterial.GetFloat(TMPro.ShaderUtilities.ID_FaceDilate), Is.EqualTo(.29f).Within(.001f));
+            }
+            finally { Object.DestroyImmediate(marker); }
+        }
+
+        [Test]
         public void ActorEffectWordsKeepSeparateRowsAndFollowTheProjectedStatusMarker()
         {
             var prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Game/Modules/BattleScene/Res/Prefab/BattleActor.prefab");
@@ -65,7 +107,7 @@ namespace AstralOath.Client.Tests
                 Assert.That(outline, Is.Not.Null);
                 Assert.That(outline.shader.name, Is.EqualTo("TextMeshPro/Distance Field"),
                     "Use the outline rendered by the base SDF pass in both editor and player.");
-                Assert.That(outline.GetFloat(TMPro.ShaderUtilities.ID_OutlineWidth), Is.InRange(.08f, .16f));
+                Assert.That(outline.GetFloat(TMPro.ShaderUtilities.ID_OutlineWidth), Is.InRange(.17f, .22f));
                 Assert.That(outline.GetColor(TMPro.ShaderUtilities.ID_OutlineColor), Is.EqualTo(Color.black));
                 Assert.That(outline.mainTexture, Is.SameAs(font.atlasTexture));
                 words = (IDisposable)Activator.CreateInstance(type, (RectTransform)marker.transform, font, outline);

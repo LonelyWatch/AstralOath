@@ -80,7 +80,7 @@ namespace AstralOath.Client.BattleScene
             this.closeInspection = closeInspection;
             this.statusArt = statusArt;
             this.damageFont = damageFont;
-            textSource = map.Require<GameText>("activeName");
+            textSource = map.Require<GameText>("wave");
             numberSource = map.Require<GameText>("activeHp");
             var hourglass = map.Require<Image>("orderHourglass");
             hourglassSprite = hourglass.sprite;

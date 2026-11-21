@@ -138,7 +138,7 @@ namespace AstralOath.Client.BattleScene
                 : null;
             var sleepSymbols = BattleStatusSkeletonEffect.Prepare(unitPresentation.SleepSymbols, unitPresentation.SleepSymbolsEffect);
             var frostbite = BattleStatusSkeletonEffect.PrepareOneShot(unitPresentation.FrostbiteApplication, unitPresentation.FrostbiteApplicationEffect);
-            var text = hud.Require<GameText>("activeName");
+            var text = hud.Require<GameText>("wave");
             try
             {
                 foreach (var state in Snapshot.Units)

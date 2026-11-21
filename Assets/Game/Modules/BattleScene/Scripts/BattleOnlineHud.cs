@@ -67,7 +67,7 @@ namespace AstralOath.Client.BattleScene
             if (scoreGlyphs?.Length != scoreDigits.Length || scoreGlyphs.Any(glyph =>
                 glyph.advance <= 0 || glyph.right <= glyph.left || glyph.bottom <= glyph.top))
                 throw new InvalidOperationException("Online HUD score glyph metrics are missing or invalid.");
-            var font = map.Require<GameText>("activeName");
+            var font = map.Require<GameText>("wave");
             // Sibling of the ordinary HUD: team identities remain visible during the entry HUD fade.
             root = Rect(map.transform.parent, "Online PvP HUD", Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
             root.SetSiblingIndex(map.transform.GetSiblingIndex() + 1);

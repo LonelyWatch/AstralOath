@@ -50,7 +50,10 @@ namespace AstralOath.Client.BattleScene.Editor
             bindings.Add("activePortrait", Picture(active, "Ras Portrait", "Faces/c1001_su", 218, 103, 436, 206));
             Picture(active, "Element", "cm_icon_promfire", 418, 66, 28, 28);
             Picture(active, "Class", "cm_icon_role_knight", 450, 66, 26, 26);
-            bindings.Add("activeName", Text(active, "Active Name", "拉斯", 338, 66, 136, 28, 20, TextAlignmentOptions.MidlineRight));
+            var activeName = Text(active, "Active Name", "拉斯", 303, 66, 206, 26, 24, TextAlignmentOptions.MidlineRight,
+                Asset<TMP_FontAsset>("Assets/Game/Common/Res/Fonts/EpicSeven.asset"));
+            activeName.fontSharedMaterial = Asset<Material>(Module + "/Res/Fonts/BattleActiveNameOutline.mat");
+            bindings.Add("activeName", activeName);
             var activeHp = Item(active, "Active HP Fill", 437, 34, 85, 8).gameObject.AddComponent<BattleActiveHealthBar>();
             activeHp.raycastTarget = false;
             SetFill(activeHp, 1f);
