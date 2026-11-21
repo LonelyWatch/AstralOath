@@ -23,7 +23,7 @@ using UnityEngine.UI;
 
 namespace AstralOath.Client.Tests
 {
-    public sealed class HeroInventoryOnlineTests
+    public sealed partial class HeroInventoryOnlineTests
     {
         private const string HomePath = "Assets/Game/Modules/Home/Scenes/GameHome.unity";
         private static readonly string[] StarterNames = { "拉斯", "梅赛德丝", "安洁莉卡" };
@@ -705,7 +705,7 @@ namespace AstralOath.Client.Tests
             var page = open.GetAwaiter().GetResult();
             Assert.That(VisibleRows(page,"bagScroll"),Is.Not.Empty);
             Click(page,"tabEquipment");
-            var browser = page.Require<BindingMap>("gearBrowser");
+            var browser = page.Require<BindingMap>("gearBrowser").Require<BindingMap>("bagPane");
             Assert.That(browser.Require<GameText>("status").text,Is.EqualTo("装备数据加载失败。"));
             Click(browser,"retry");
             yield return Wait(() => VisibleRows(browser,"items").Length == 7,"Equipment retry did not render the inventory.");
@@ -729,6 +729,8 @@ namespace AstralOath.Client.Tests
             yield return Wait(() => opening.IsCompleted,"Equipment inventory did not open.");
             var page = opening.GetAwaiter().GetResult();
             var browser = page.Require<BindingMap>("gearBrowser");
+            var bag = browser.Require<BindingMap>("bagPane");
+            var single = browser.Require<BindingMap>("singleSlot");
             var load = equipment.FetchAsync(scope.Token);
             yield return Wait(() => load.IsCompleted,"Could not verify the fixture.");
             var items = load.GetAwaiter().GetResult().items;
@@ -737,29 +739,52 @@ namespace AstralOath.Client.Tests
             Assert.That(weapons.Length,Is.EqualTo(2));
             var weaponSlot = page.Require<BindingMap>("equipmentSlot_weapon").Require<Image>("item");
             string initialAttack = page.Require<GameText>("detailStat_attack").text;
-            if (roster) Click(page,"gearOpen_weapon");
-            else
+            if (!roster)
             {
                 Click(page,"tabEquipment");
-                Assert.That(VisibleRows(browser,"items").Length,Is.EqualTo(7));
+                Assert.That(VisibleRows(bag,"items").Length,Is.EqualTo(7));
                 Assert.That(page.Require<GameObject>("emptyEquipmentChrome").activeInHierarchy,Is.False);
-                Assert.That(VisibleRows(browser,"items").All(row => row.Require<Image>("icon").isActiveAndEnabled &&
+                Assert.That(VisibleRows(bag,"items").All(row => row.Require<Image>("icon").isActiveAndEnabled &&
                     row.Require<Image>("icon").sprite && row.Require<Image>("icon").color.a >= .99f), Is.True);
-                Assert.That(browser.Require<Image>("portrait").isActiveAndEnabled,Is.True);
+                Assert.That(bag.Require<Image>("portrait").isActiveAndEnabled,Is.True);
                 yield return Capture("equipment-bag",1478,720);
-                Click(browser,"filter_weapon");
+                yield return Capture("equipment-bag-narrow",1040,960);
+                Click(bag,"filter_weapon");
+                Assert.That(VisibleRows(bag,"items").Length,Is.EqualTo(2));
             }
-            Assert.That(VisibleRows(browser,"items").Length,Is.EqualTo(2));
             string wearer = null;
             for (int index = 0; index < (roster ? 2 : 1); ++index)
             {
                 var item = weapons[index];
-                Click(VisibleRows(browser,"items").Single(m => m.name == item.instanceId),"select");
-                Click(browser,"apply");
-                if (!roster) Click(VisibleRows(browser,"targets")[0],"select");
-                Assert.That(browser.Require<GameText>("change").text,Does.Contain("→"));
-                Click(browser,"confirm");
-                yield return Wait(() => !browser.Require<GameObject>("dialog").activeSelf,"The server did not confirm equipment.");
+                if (roster)
+                {
+                    Click(page,"gearOpen_weapon");
+                    if (index > 0)
+                    {
+                        Assert.That(single.Require<GameObject>("popup").activeInHierarchy, Is.True);
+                        Click(single,"change");
+                    }
+                    Assert.That(single.Require<BindingMap>("candidate").Require<GameObject>("empty").activeInHierarchy, Is.True);
+                    var candidate = VisibleRows(single,"candidates").Single(m => m.name == item.instanceId);
+                    Click(candidate,"select");
+                    Assert.That(single.Require<BindingMap>("candidate").Require<GameObject>("detail").activeInHierarchy, Is.True);
+                    if (index > 0)
+                    {
+                        yield return Capture("equipment-slot-compare",1478,720);
+                        yield return Capture("equipment-slot-compare-narrow",1040,960);
+                    }
+                    Click(single,"equip");
+                    yield return Wait(() => !browser.gameObject.activeSelf, "Single-slot equip did not return to the hero.");
+                }
+                else
+                {
+                    Click(VisibleRows(bag,"items").Single(m => m.name == item.instanceId),"select");
+                    Click(bag,"apply");
+                    Click(VisibleRows(browser,"targets")[0],"select");
+                    Assert.That(browser.Require<GameText>("change").text,Does.Contain("→"));
+                    Click(browser,"confirm");
+                    yield return Wait(() => !browser.Require<GameObject>("dialog").activeSelf,"The server did not confirm equipment.");
+                }
                 var read = equipment.FetchAsync(scope.Token);
                 yield return Wait(() => read.IsCompleted,"Could not read server equipment after the change.");
                 var saved = read.GetAwaiter().GetResult().items;
@@ -777,18 +802,18 @@ namespace AstralOath.Client.Tests
             }
             if (roster)
             {
-                Click(browser,"close");
                 yield return Capture("equipment-equipped-hero",1478,720);
                 yield return Capture("equipment-equipped-hero-narrow",1040,960);
                 Click(page,"gearOpen_weapon");
-                Click(browser,"remove");
-                Click(browser,"confirm");
+                Assert.That(single.Require<GameObject>("popup").activeInHierarchy, Is.True);
+                yield return Capture("equipment-equipped-detail",1478,720);
+                Click(single,"popupRemove");
                 yield return Wait(() => !weaponSlot.enabled,"Unequipping the weapon must clear its icon.");
                 Assert.That(page.Require<GameText>("detailStat_attack").text,Is.EqualTo(initialAttack));
             }
             else
             {
-                Click(browser,"remove");
+                Click(bag,"remove");
                 Assert.That(browser.Require<GameObject>("dialog").activeSelf,Is.True);
                 using var otherClient = new EquipmentInventoryApi(endpoint,Token,scope.Token);
                 var pending = otherClient.FetchAsync(scope.Token);
@@ -801,7 +826,7 @@ namespace AstralOath.Client.Tests
                 yield return Wait(() => refresh.IsCompleted,"HUD inventory did not refresh on returning to the foreground.");
                 refresh.GetAwaiter().GetResult();
                 Assert.That(browser.Require<GameObject>("dialog").activeSelf,Is.False,"The old confirmation stayed open after a remote mutation.");
-                Assert.That(browser.Require<GameText>("wearer").text,Is.EqualTo("未佩戴"));
+                Assert.That(bag.Require<GameText>("wearer").text,Is.EqualTo("未佩戴"));
             }
         }
 
@@ -835,7 +860,7 @@ namespace AstralOath.Client.Tests
         {
             if (chrome == "emptyEquipmentChrome")
             {
-                var browser = bag.Require<BindingMap>("gearBrowser");
+                var browser = bag.Require<BindingMap>("gearBrowser").Require<BindingMap>("bagPane");
                 if (browser.gameObject.activeInHierarchy)
                     return !browser.Require<GameObject>("detail").activeSelf && VisibleRows(browser,"items").Length == 0 &&
                         !browser.Require<GameButton>("retry").gameObject.activeSelf;

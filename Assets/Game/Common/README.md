@@ -2,6 +2,8 @@
 
 Common 提供通用组件和资源，业务文案、图标数据、事件和生命周期由调用方持有。
 
+普通装备网格使用 `EquipmentItemCard.prefab`，包含品质底、装备图、等级、套装、佩戴者、选中框、主属性以及嵌套的强化角标。装备详情、单槽比较使用 `EquipmentStatRow.prefab`，名称靠左，数值靠右。两份预制只挂基础控件与 BindingMap，使用它们的装备 View/Binder 归属 Home 热更程序集。父页面可在嵌套实例上调整尺寸和字级。[原版录屏及复用范围](../../../docs/development/equipment-ui-reference.md)
+
 `EquipmentSlot.prefab` 内置底板、空位符号、装备图和一个嵌套的 `NotificationBadge.prefab`。各界面在自己的预制体中摆放槽位实例并指定底板、占位图和位置，`EquipmentSlotBinder.Set` 绑定当前物品和强化值。空槽只显示占位图，有装备时显示实际装备图，强化等级大于零时角标显示 `+N`。`NotificationBadgeBinder` 也可独立用于无数字红点；重复绑定会清除上一件物品的图和角标。
 
 - `Res/Prefab/ConfirmButton.prefab` 提供九宫格绿底、按下状态、`GameButton`、`GameText` 和本地点击音效。右键 `UI/通用确认按钮` 可创建预制体实例，通过 `BindingMap` 的 `button` 与 `label` 绑定行为及本地化文本。当前战斗暂停菜单复用该按钮。

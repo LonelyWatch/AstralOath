@@ -14,6 +14,72 @@ namespace AstralOath.Client.Tests
         private const string CommonPath = "Assets/Game/Common/Res/Prefab/";
 
         [Test]
+        public void EquipmentManagerAuthorsCurrentAndPreviewLoadoutsBesideCandidates()
+        {
+            var browser = AssetDatabase.LoadAssetAtPath<GameObject>(HeroPath).GetComponent<BindingMap>().Require<BindingMap>("gearBrowser");
+            foreach (string group in new[] { "manageCurrent", "managePreview" })
+            {
+                foreach (string slot in new[] { "weapon", "helmet", "armor", "necklace", "ring", "boots" })
+                {
+                    var map = browser.Require<BindingMap>(group + "_" + slot);
+                    Assert.That(PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(map.gameObject),
+                        Is.EqualTo(CommonPath + "EquipmentSlot.prefab"));
+                }
+                var row = browser.Require<BindingMap>(group + "_attack");
+                Assert.That(PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(row.gameObject),
+                    Is.EqualTo(CommonPath + "EquipmentStatRow.prefab"));
+            }
+            Assert.That(browser.Require<ScrollRect>("items").GetComponent<RectTransform>().anchorMin.x,Is.GreaterThan(.45f));
+        }
+
+        [Test]
+        public void BagUsesSharedItemCardsAndSeparateStatRows()
+        {
+            var page = AssetDatabase.LoadAssetAtPath<GameObject>(HeroPath).GetComponent<BindingMap>();
+            var browser = page.Require<BindingMap>("gearBrowser");
+            var card = browser.Require<GameObject>("template");
+            Assert.That(PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(card),
+                Is.EqualTo(CommonPath + "EquipmentItemCard.prefab"));
+            foreach (var key in new[] { "bagMain", "bagSub0", "bagSub1", "bagSub2", "bagSub3" })
+            {
+                var row = browser.Require<BindingMap>(key);
+                Assert.That(PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(row.gameObject),
+                    Is.EqualTo(CommonPath + "EquipmentStatRow.prefab"), key);
+            }
+            var grid = browser.Require<ScrollRect>("bagItems").content.GetComponent<GridLayoutGroup>();
+            Assert.That(grid.cellSize, Is.EqualTo(new Vector2(129, 166.5f)));
+            Assert.That(grid.spacing, Is.EqualTo(new Vector2(19.5f, 33)));
+        }
+
+        [TestCase(2217f,8)]
+        [TestCase(1170f,3)]
+        public void BagToolbarAndGridFitAvailableWidth(float width,int expectedColumns)
+        {
+            var page = AssetDatabase.LoadAssetAtPath<GameObject>(HeroPath).GetComponent<BindingMap>();
+            var source = page.Require<BindingMap>("gearBrowser").Require<BindingMap>("bagPane");
+            var root = (RectTransform)new GameObject("Bag layout",typeof(RectTransform)).transform;
+            try
+            {
+                root.sizeDelta = new Vector2(width,1080f);
+                var bag = Object.Instantiate(source,root,false);
+                bag.gameObject.SetActive(true);
+                var last = new Vector3[4];
+                var sort = new Vector3[4];
+                ((RectTransform)bag.Require<GameButton>("filter_boots").transform).GetWorldCorners(last);
+                ((RectTransform)bag.Require<GameButton>("sort").transform).GetWorldCorners(sort);
+                Assert.That(last[2].x,Is.LessThan(sort[0].x),"The rightmost slot must have an independent hit area.");
+                var list = bag.Require<ScrollRect>("items");
+                var grid = list.content.GetComponent<GridLayoutGroup>();
+                float available = list.viewport.rect.width - grid.padding.horizontal;
+                int columns = Mathf.FloorToInt((available+grid.spacing.x)/(grid.cellSize.x+grid.spacing.x));
+                Assert.That(columns,Is.EqualTo(expectedColumns));
+                Assert.That(PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(source.Require<BindingMap>("thumbnail").gameObject),
+                    Is.EqualTo(CommonPath+"EquipmentItemCard.prefab"));
+            }
+            finally { Object.DestroyImmediate(root.gameObject); }
+        }
+
+        [Test]
         public void OwnedGearBrowserAndSixActionsAreAuthoredInTheHeroPrefab()
         {
             var map = AssetDatabase.LoadAssetAtPath<GameObject>(HeroPath).GetComponent<BindingMap>();

@@ -24,4 +24,10 @@
 - 属性名和数字使用一份横向属性行预制。主属性、副属性、单槽比较页可分别设置背景、字号与颜色。英雄的装备位沿用已有槽位及角标预制。物品名、属性、是否已穿和数值均由 Binder 根据实际装备传入。
 - R27 功能试玩中，背包和英雄槽位共用浏览面板。与以上参考对照，物品等级位置、主属性栏、右侧详情层次以及单槽和管理入口的布局均有差异。后续须按同一入口复拍。缺乏原版画面的异常状态或收费条件单独记录，不能用常态图推断。
 
+## 项目复拍
+
+同一比例的游戏可见区按 1478×720 复拍，窄窗按 1040×960 复拍。本机目录为 `.artifacts/equipment-reference/verification/`。背包对照 `equipment-bag.png`，单槽候选与已穿详情对照 `equipment-slot-compare.png`、`equipment-equipped-detail.png`，管理入口对照 `equipment-manager-before.png`、`equipment-manager-preview.png`、`equipment-manager-confirm.png` 和 `equipment-manager-applied.png`。
+
+第一轮图形回归能穿脱装备，但单槽中四处缩略图空白。离屏生成时先按零尺寸父节点测量宽高比，导致预制保存了 NaN。指定布局模式后再写入比例 1，重建父预制，复拍能同时看到当前、候选、列表和已穿详情里的物品图。另逐帧比较背包和单槽主属性栏与套装栏，降低了过亮的底纹。训练账号的物品数量、品质、套装与参考账号不同，录像中的收费确认和总战力不能代替服务端规则。当前按装备等级排序，换装确认列实际属性差值。
+
 固定包 `pack-15-r4262` 的教学图位于只读 `D:/sevenepic/原始资源/tutorial/`。其中 `help_infoinve1_1_1_image.png` 可补充背包排布，`help_infoitem_1_1_image.png` 可补充管理页，`equip_install_01.png` 是英文卸装提示的 250 金币示例。本次中文实录能直接核对的状态以上述时间点为准。原视频和整包资源不入库。

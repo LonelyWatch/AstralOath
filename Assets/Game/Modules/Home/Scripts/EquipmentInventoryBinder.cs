@@ -15,12 +15,17 @@ using Object = UnityEngine.Object;
 
 namespace AstralOath.Client.Home
 {
-    internal sealed class EquipmentInventoryBinder
+    internal sealed partial class EquipmentInventoryBinder
     {
         internal static readonly string[] Slots = { "weapon", "helmet", "armor", "necklace", "ring", "boots" };
         private static readonly string[] AuthoredSlots = { "weapon", "helm", "armor", "neck", "ring", "boots" };
         private const string Prefix = "home.gear.";
-        private readonly BindingMap page, ui;
+        private readonly BindingMap page, ui, bagPane;
+        private readonly Func<string,Sprite> heroPortrait;
+        private readonly Dictionary<string,EquipmentItemCardBinder> itemCards = new Dictionary<string,EquipmentItemCardBinder>();
+        private readonly EquipmentStatRowBinder bagMain;
+        private readonly EquipmentItemCardBinder bagThumbnail;
+        private readonly EquipmentStatRowBinder[] bagSubs;
         private readonly ILocaleService locale;
         private readonly EquipmentInventoryApi api;
         private readonly Func<CancellationToken, Task<EquipmentInventorySnapshot>> fetch;
@@ -40,15 +45,17 @@ namespace AstralOath.Client.Home
         private string filter, targetId, action, requestId;
         private long quotedVersion;
         private bool picker, busy, loadFailed;
+        private bool orderByLevelAscending;
         private EquipmentInventoryItem[] Items => snapshot?.items ?? Array.Empty<EquipmentInventoryItem>();
         private string L(string key) => locale.Resolve(Prefix + key);
         private string F(string key, params object[] args) => GameText.Format(locale, Prefix + key, args);
         private T Get<T>(string key) where T : Object => ui.Require<T>(key);
+        private BindingMap Pane => picker ? ui : bagPane;
 
         internal EquipmentInventoryBinder(BindingMap page, ILocaleService locale, EquipmentInventoryApi api,
             Func<CancellationToken,Task<EquipmentInventorySnapshot>> fetch, Func<HeroInventoryItem[]> heroes,
             Func<HeroInventoryItem> currentHero, Func<string,string> heroName, Func<HeroInventoryItem,BattleStats> baseStats,
-            Func<string,(int attack,int health)> artifactStats, Action changed)
+            Func<string,(int attack,int health)> artifactStats, Func<string,Sprite> heroPortrait, Action changed)
         {
             this.page = page;
             this.locale = locale;
@@ -60,8 +67,13 @@ namespace AstralOath.Client.Home
             this.heroName = heroName;
             this.baseStats = baseStats;
             this.artifactStats = artifactStats;
+            this.heroPortrait = heroPortrait;
             this.changed = changed;
             ui = page.Require<BindingMap>("gearBrowser");
+            bagPane = Get<BindingMap>("bagPane");
+            bagThumbnail = new EquipmentItemCardBinder(bagPane.Require<BindingMap>("thumbnail"));
+            bagMain = new EquipmentStatRowBinder(Get<BindingMap>("bagMain"));
+            bagSubs = Enumerable.Range(0,4).Select(i => new EquipmentStatRowBinder(Get<BindingMap>("bagSub" + i))).ToArray();
             slots = AuthoredSlots.Select(key => new EquipmentSlotBinder(page.Require<BindingMap>("equipmentSlot_" + key))).ToArray();
             art = Slots.ToDictionary(key => key,key => Get<Image>("icon_" + key).sprite);
         }
@@ -74,24 +86,31 @@ namespace AstralOath.Client.Home
                 scope.Add(() => { if (button) button.onClick.RemoveListener(handler); });
             }
             foreach (string slot in Slots)
-            {
                 Listen(page.Require<GameButton>("gearOpen_" + slot), () => Show(true,slot));
-                Listen(Get<GameButton>("filter_" + slot), () => Filter(slot));
+            foreach (var pane in new[] { ui, bagPane })
+            {
+                foreach (string slot in Slots) Listen(pane.Require<GameButton>("filter_" + slot), () => Filter(slot));
+                Listen(pane.Require<GameButton>("apply"), () => Prepare("equip"));
+                Listen(pane.Require<GameButton>("retry"), () => { if (!busy) _ = RetryAsync(scope.Token); });
             }
+            Listen(bagPane.Require<GameButton>("filter_all"), () => Filter(null));
+            Listen(bagPane.Require<GameButton>("remove"), () => Prepare("unequip"));
+            Listen(Get<GameButton>("manageReset"), () => { if (!busy) { selected = null; PaintDetail(); } });
+            Listen(Get<GameButton>("manageCancel"), CloseDialog);
+            Listen(Get<GameButton>("manageConfirm"), () => { if (!busy && targetId != null) _ = SubmitAsync(scope.Token); });
             Listen(page.Require<GameButton>("gearManage"), () => Show(true,null));
-            Listen(Get<GameButton>("filter_all"), () => Filter(null));
+            Listen(bagPane.Require<GameButton>("sort"), () => { orderByLevelAscending = !orderByLevelAscending; Refresh(); });
             Listen(Get<GameButton>("close"), () => Back());
             Listen(Get<GameButton>("shade"), () => Back());
             Listen(Get<GameButton>("cancel"), CloseDialog);
-            Listen(Get<GameButton>("apply"), () => Prepare("equip"));
-            Listen(Get<GameButton>("remove"), () => Prepare("unequip"));
-            Listen(Get<GameButton>("retry"), () => { if (!busy) _ = RetryAsync(scope.Token); });
             Listen(Get<GameButton>("confirm"), () => { if (!busy && targetId != null) _ = SubmitAsync(scope.Token); });
+            BindSingleSlot(scope);
             api.RemoteInventoryChanged += OnRemoteInventory;
             scope.Add(() =>
             {
                 api.RemoteInventoryChanged -= OnRemoteInventory;
                 Clear(cards);
+                itemCards.Clear();
                 Clear(targets);
                 if (ui) ui.gameObject.SetActive(false);
                 busy = false;
@@ -107,8 +126,9 @@ namespace AstralOath.Client.Home
             if (busy || !ui.gameObject.activeInHierarchy) return;
             bool staleQuote = Get<GameObject>("dialog").activeSelf;
             if (staleQuote) CloseDialog();
+            if (Managing) selected = null;
             Refresh();
-            if (staleQuote) Get<GameText>("status").text = L("conflict");
+            if (staleQuote) SetEquipmentStatus(L("conflict"));
         }
 
         internal async Task LoadAsync(EquipmentInventorySnapshot initial, CancellationToken token)
@@ -133,11 +153,11 @@ namespace AstralOath.Client.Home
         private async Task RetryAsync(CancellationToken token)
         {
             busy = true;
-            Get<GameButton>("retry").interactable = false;
+            Pane.Require<GameButton>("retry").interactable = false;
             await LoadAsync(null,token);
             if (token.IsCancellationRequested) return;
             busy = false;
-            Get<GameButton>("retry").interactable = true;
+            Pane.Require<GameButton>("retry").interactable = true;
             Refresh();
         }
 
@@ -184,34 +204,60 @@ namespace AstralOath.Client.Home
 
         internal void Show(bool fromHero, string slot)
         {
+            if (TryShowSingleSlot(fromHero,slot)) return;
             picker = fromHero;
-            filter = slot;
-            selected = fromHero ? Items.FirstOrDefault(row => row.equippedHeroId == currentHero()?.instanceId && row.slot == slot) : null;
+            filter = fromHero ? "weapon" : slot;
+            selected = null;
             ui.gameObject.SetActive(true);
+            Get<GameObject>("pickerSurface").SetActive(picker);
+            bagPane.gameObject.SetActive(!picker);
             Get<GameButton>("shade").gameObject.SetActive(picker);
             Get<GameButton>("close").gameObject.SetActive(picker);
             CloseDialog();
             Refresh();
         }
 
-        internal void Hide() { ui.gameObject.SetActive(false); }
+        internal void Hide() { ResetSingleSlot(); ui.gameObject.SetActive(false); }
         internal bool Back()
         {
             if (!ui.gameObject.activeInHierarchy) return false;
             if (Get<GameObject>("dialog").activeSelf) { if (!busy) CloseDialog(); return true; }
+            if (BackSingleSlot()) return true;
             if (!picker) return false;
             Hide();
             return true;
         }
 
-        private void Filter(string key) { filter = key; selected = null; Refresh(); }
+        private void Filter(string key) { if (!busy) { filter = key; selected = null; Refresh(); } }
         private Sprite Icon(EquipmentInventoryItem item) => art.TryGetValue(item.slot, out var sprite) ? sprite : null;
         private string ItemName(EquipmentInventoryItem item) => F("title", L(item.slot));
         private string SetName(string key) => key == "speed" ? L("speedSet") : key == "critical" ? L("criticalSet") : key;
+        private string SetProgress(EquipmentInventoryItem item)
+        {
+            int count = string.IsNullOrEmpty(item.equippedHeroId) ? 0 :
+                Items.Count(other => other.equippedHeroId == item.equippedHeroId && other.setId == item.setId);
+            return SetName(item.setId) + " (" + count + "/" + (item.setId == "speed" ? 4 : 2) + ")";
+        }
         private static string Num(int value) => value.ToString(CultureInfo.InvariantCulture);
         private static string Percent(int bp) => (bp / 100m).ToString("0.##",CultureInfo.InvariantCulture) + "%";
-        private string Stat(EquipmentStatValue s) => L(s.kind) + "  +" +
-            (s.kind.EndsWith("Pct",StringComparison.Ordinal) || s.kind.EndsWith("Bp",StringComparison.Ordinal) ? Percent(s.value) : Num(s.value));
+        private static string StatValue(EquipmentStatValue s) =>
+            s.kind.EndsWith("Pct",StringComparison.Ordinal) || s.kind.EndsWith("Bp",StringComparison.Ordinal) ? Percent(s.value) : Num(s.value);
+        private Sprite GradeArt(EquipmentInventoryItem item) => Get<Image>("grade_" + item.grade).sprite;
+        private Sprite SetArt(EquipmentInventoryItem item) => Get<Image>("set_" + item.setId).sprite;
+        private Sprite StatArt(EquipmentStatValue stat) => Get<Image>("stat_" + stat.kind.Replace("Pct",string.Empty)).sprite;
+        private Sprite WearerArt(EquipmentInventoryItem item) => string.IsNullOrEmpty(item.equippedHeroId) ? null : heroPortrait(item.equippedHeroId);
+
+        private EquipmentItemCardBinder CreateCard(EquipmentInventoryItem item, GameObject source, RectTransform parent, Action click)
+        {
+            var row = Object.Instantiate(source,parent,false);
+            row.name = item.instanceId;
+            var card = new EquipmentItemCardBinder(row.GetComponent<BindingMap>());
+            card.Set(Icon(item),GradeArt(item),SetArt(item),StatArt(item.mainStat),WearerArt(item),
+                item.itemLevel,item.enhanceLevel,StatValue(item.mainStat));
+            card.Select.onClick.AddListener(() => click());
+            row.SetActive(true);
+            return card;
+        }
 
         private static void Clear(List<GameObject> rows)
         {
@@ -221,52 +267,79 @@ namespace AstralOath.Client.Home
 
         private void Refresh()
         {
-            Get<GameText>("capacity").text = snapshot == null ? "" : snapshot.used + " / " + snapshot.capacity;
-            Get<Image>("active_all").enabled = filter == null;
-            foreach (string key in Slots) Get<Image>("active_" + key).enabled = filter == key;
-            var visible = Items.Where(row => filter == null || row.slot == filter).ToArray();
-            selected = visible.FirstOrDefault(row => row.instanceId == selected?.instanceId) ?? visible.FirstOrDefault();
+            if (RefreshSingleSlot()) return;
+            if (!picker)
+            {
+                bagPane.Require<GameText>("capacity").text = snapshot == null ? "" : snapshot.used + " / " + snapshot.capacity;
+                SetFilterActive("all",filter == null);
+            }
+            foreach (string key in Slots) SetFilterActive(key,filter == key);
+            var filtered = Items.Where(row => filter == null || row.slot == filter);
+            if (!picker)
+            {
+                var sorted = orderByLevelAscending ? filtered.OrderBy(i => i.itemLevel).ThenBy(i => i.enhanceLevel) :
+                    filtered.OrderByDescending(i => i.itemLevel).ThenByDescending(i => i.enhanceLevel);
+                filtered = sorted.ThenBy(i => i.instanceId,StringComparer.Ordinal);
+                bagPane.Require<GameText>("sortLabel").text = L("sortItemLevel") + (orderByLevelAscending ? " ↑" : " ↓");
+            }
+            var visible = filtered.ToArray();
+            selected = visible.FirstOrDefault(row => row.instanceId == selected?.instanceId) ?? (picker ? null : visible.FirstOrDefault());
             Clear(cards);
-            var content = Get<ScrollRect>("items").content;
+            itemCards.Clear();
+            var content = Pane.Require<ScrollRect>("items").content;
             foreach (var item in visible)
             {
-                var row = Object.Instantiate(Get<GameObject>("template"),content,false);
-                row.name = item.instanceId;
-                var map = row.GetComponent<BindingMap>();
-                SetItemArt(map.Require<Image>("icon"),item);
-                map.Require<GameText>("enhancement").text = "+" + Num(item.enhanceLevel);
-                map.Require<GameText>("level").text = "Lv. " + Num(item.itemLevel);
-                map.Require<GameButton>("select").onClick.AddListener(() => { selected = item; PaintDetail(); });
-                cards.Add(row);
-                row.SetActive(true);
+                var card = CreateCard(item,Get<GameObject>("template"),content,() => { selected = item; PaintDetail(); });
+                itemCards.Add(item.instanceId,card);
+                cards.Add(card.Select.gameObject);
             }
-            Get<ScrollRect>("items").verticalNormalizedPosition = 1f;
+            Pane.Require<ScrollRect>("items").verticalNormalizedPosition = 1f;
             PaintDetail();
+        }
+
+        private void SetFilterActive(string key,bool value)
+        {
+            var active = Pane.Require<Image>("active_" + key);
+            if (picker) active.enabled = value;
+            else active.gameObject.SetActive(value);
         }
 
         private void PaintDetail()
         {
-            foreach (var card in cards) card.GetComponent<BindingMap>().Require<Image>("highlight").enabled = card.name == selected?.instanceId;
-            Get<GameObject>("detail").SetActive(selected != null);
-            Get<GameText>("status").text = loadFailed ? L("loadFailed") : selected == null ? L("empty") : "";
-            Get<GameButton>("retry").gameObject.SetActive(loadFailed);
+            foreach (var pair in itemCards) pair.Value.SetSelected(pair.Key == selected?.instanceId);
+            Pane.Require<GameObject>("detail").SetActive(selected != null);
+            Pane.Require<GameText>("status").text = loadFailed ? L("loadFailed") : itemCards.Count == 0 ? L("empty") : "";
+            Pane.Require<GameButton>("retry").gameObject.SetActive(loadFailed);
+            if (picker) { PaintManager(); return; }
             if (selected == null) return;
-            SetItemArt(Get<Image>("portrait"),selected);
-            Get<GameText>("name").text = ItemName(selected);
-            Get<GameText>("quality").text = F("grade",selected.itemLevel,selected.enhanceLevel,L(selected.grade));
-            Get<GameText>("attributes").text = SetName(selected.setId) + "\n" + F("stats",Stat(selected.mainStat)) +
-                string.Concat(selected.substats.Select(s => "\n" + Stat(s)));
-            Get<GameText>("wearer").text = string.IsNullOrEmpty(selected.equippedHeroId) ? L("unworn") : F("owner",heroName(selected.equippedHeroId));
-            Get<GameText>("applyLabel").text = L(!picker && !string.IsNullOrEmpty(selected.equippedHeroId) ? "changeTarget" : "equip");
-            Get<GameButton>("apply").gameObject.SetActive(!picker || currentHero()?.instanceId != selected.equippedHeroId);
-            Get<GameButton>("remove").gameObject.SetActive(!string.IsNullOrEmpty(selected.equippedHeroId) && (!picker || currentHero()?.instanceId == selected.equippedHeroId));
+            Pane.Require<GameText>("name").text = ItemName(selected);
+            PaintBagStats();
+            Pane.Require<GameText>("wearer").text = string.IsNullOrEmpty(selected.equippedHeroId) ? L("unworn") : F("owner",heroName(selected.equippedHeroId));
+            Pane.Require<GameText>("applyLabel").text = L(!string.IsNullOrEmpty(selected.equippedHeroId) ? "changeTarget" : "equip");
+            Pane.Require<GameButton>("remove").gameObject.SetActive(!string.IsNullOrEmpty(selected.equippedHeroId));
         }
 
-        private void SetItemArt(Image image, EquipmentInventoryItem item)
+        private void PaintBagStats()
         {
-            image.sprite = Icon(item);
-            image.color = Color.white;
-            image.enabled = image.sprite;
+            BindSlotArt(bagThumbnail,selected);
+            bagPane.Require<Image>("plate").sprite = Get<Image>("detail_" + selected.grade).sprite;
+            bagPane.Require<GameText>("quality").text = L(selected.grade) + L(selected.slot);
+            var set = bagPane.Require<Image>("setIcon");
+            set.sprite = SetArt(selected);
+            set.enabled = set.sprite;
+            bagPane.Require<GameText>("set").text = SetProgress(selected);
+            bagMain.Set(L(selected.mainStat.kind),StatValue(selected.mainStat));
+            for (int i = 0; i < bagSubs.Length; ++i)
+            {
+                var value = i < selected.substats.Length ? selected.substats[i] : null;
+                bagSubs[i].Set(value == null ? "" : L(value.kind),value == null ? "" : StatValue(value));
+            }
+        }
+
+        private void SetEquipmentStatus(string message)
+        {
+            Pane.Require<GameText>("status").text = message;
+            SetSingleSlotFeedback(message);
         }
 
         private void Prepare(string operation)
@@ -276,6 +349,8 @@ namespace AstralOath.Client.Home
             requestId = Guid.NewGuid().ToString("N");
             quotedVersion = snapshot.version;
             targetId = operation == "unequip" ? selected.equippedHeroId : picker ? currentHero()?.instanceId : null;
+            Get<GameObject>("managementQuote").SetActive(Managing);
+            Get<GameObject>("ordinaryQuote").SetActive(!Managing);
             Get<GameObject>("dialog").SetActive(true);
             Clear(targets);
             if (targetId != null) { Quote(); return; }
@@ -300,6 +375,7 @@ namespace AstralOath.Client.Home
         {
             Get<ScrollRect>("targets").gameObject.SetActive(false);
             Get<GameButton>("confirm").interactable = true;
+            Get<GameButton>("manageConfirm").interactable = true;
             bool equip = action == "equip";
             Get<GameText>("summary").text = F(equip ? "equipSummary" : "removeSummary",heroName(targetId),ItemName(selected));
             var old = Items.Where(row => row.equippedHeroId == targetId).ToArray();
@@ -322,23 +398,19 @@ namespace AstralOath.Client.Home
                     newSets.TryGetValue(key,out int next);
                     if (before != next) lines.Add(SetName(key) + "　×" + before + " → ×" + next);
                 }
-                var first = EquipmentStatCalculator.Calculate(plain,beforePieces);
-                var last = EquipmentStatCalculator.Calculate(plain,afterPieces);
-                var artifact = artifactStats(targetId);
-                void Add(string key, int a, int b, bool percent = false)
+                var first = PanelValues(targetId,plain,beforePieces);
+                var last = PanelValues(targetId,plain,afterPieces);
+                for (int i = 0; i < first.Length; ++i)
                 {
-                    if (a != b) lines.Add(L(key) + "　" + (percent ? Percent(a) : Num(a)) + " → " + (percent ? Percent(b) : Num(b)));
+                    if (first[i] != last[i]) lines.Add(L(PanelKeys[i]) + "　" + PanelValue(i,first[i]) + " → " + PanelValue(i,last[i]));
                 }
-                Add("attack",first.Attack + artifact.attack,last.Attack + artifact.attack);
-                Add("health",first.MaxHealth + artifact.health,last.MaxHealth + artifact.health);
-                Add("defense",first.Defense,last.Defense);
-                Add("speed",first.Speed,last.Speed);
-                Add("critChanceBp",first.CritChanceBp,last.CritChanceBp,true);
-                Add("critDamageBp",first.CritDamageBp,last.CritDamageBp,true);
-                Add("effectivenessBp",first.EffectivenessBp,last.EffectivenessBp,true);
-                Add("resistanceBp",first.EffectResistanceBp,last.EffectResistanceBp,true);
             }
             Get<GameText>("change").text = lines.Count == 0 ? L("noStatChange") : string.Join("\n",lines);
+            if (Managing)
+            {
+                Get<GameText>("manageSummary").text = Get<GameText>("summary").text;
+                Get<GameText>("manageChange").text = Get<GameText>("change").text;
+            }
         }
 
         private void CloseDialog()
@@ -353,6 +425,7 @@ namespace AstralOath.Client.Home
         {
             busy = true;
             Get<GameButton>("confirm").interactable = false;
+            Get<GameButton>("manageConfirm").interactable = false;
             try
             {
                 var response = await api.ChangeAsync(action,requestId,targetId,selected.instanceId,selected.slot,quotedVersion,token);
@@ -361,7 +434,9 @@ namespace AstralOath.Client.Home
                 AcceptSnapshot(fresh);
                 busy = false;
                 CloseDialog();
-                Refresh();
+                if (Managing) selected = null;
+                OnSingleSlotApplied();
+                if (ui.gameObject.activeSelf) Refresh();
                 changed();
             }
             catch (OperationCanceledException) when (token.IsCancellationRequested) { }
@@ -372,15 +447,19 @@ namespace AstralOath.Client.Home
                 {
                     busy = false;
                     CloseDialog();
+                    if (Managing) selected = null;
                     await LoadAsync(null,token);
                     if (token.IsCancellationRequested) return;
                     Refresh();
-                    if (!loadFailed) Get<GameText>("status").text = L("conflict");
+                    if (!loadFailed) SetEquipmentStatus(L("conflict"));
                 }
                 else
                 {
                     Get<GameText>("change").text = L("failed");
+                    Get<GameText>("manageChange").text = L("failed");
+                    SetSingleSlotFeedback(L("failed"));
                     Get<GameButton>("confirm").interactable = true;
+                    Get<GameButton>("manageConfirm").interactable = true;
                 }
             }
             finally { if (!token.IsCancellationRequested) busy = false; }

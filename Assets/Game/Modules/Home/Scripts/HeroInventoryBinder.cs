@@ -66,7 +66,7 @@ namespace AstralOath.Client.Home
             if (equipmentApi != null)
                 equipment = new EquipmentInventoryBinder(view.Root.GetComponent<BindingMap>(),locale,equipmentApi,readEquipment,
                     () => snapshot?.heroes ?? Array.Empty<HeroInventoryItem>(), () => selected, EquipmentHeroName,
-                    BaseStats, id => artifacts?.EquippedStats(id) ?? (0,0), OnArtifactsChanged);
+                    BaseStats, id => artifacts?.EquippedStats(id) ?? (0,0), EquipmentWearerPortrait, OnArtifactsChanged);
         }
 
         public Task OpenAsync(bool roster, BindingScope scope) => OpenAsync(roster, scope, null, null);
@@ -217,6 +217,12 @@ namespace AstralOath.Client.Home
         {
             var item = snapshot?.heroes?.FirstOrDefault(hero => hero.instanceId == instanceId);
             return item == null ? locale.Resolve(TextPrefix + "unknown_hero") : Name(item);
+        }
+
+        private Sprite EquipmentWearerPortrait(string instanceId)
+        {
+            var hero = snapshot?.heroes?.FirstOrDefault(item => item.instanceId == instanceId);
+            return hero != null && artwork.TryGetValue(hero.templateId,out var art) ? art.portrait : null;
         }
 
         private string EquipmentHeroName(string instanceId)

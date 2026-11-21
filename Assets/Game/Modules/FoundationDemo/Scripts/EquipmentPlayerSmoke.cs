@@ -51,13 +51,15 @@ namespace AstralOath.Client.FoundationDemo
             await Until(() => Page("HeroInventory"), "open the bag", token);
             var bag = Page("HeroInventory");
             Click(bag, "tabEquipment");
-            var browser = bag.Require<BindingMap>("gearBrowser");
+            var equipment = bag.Require<BindingMap>("gearBrowser");
+            var browser = equipment.Require<BindingMap>("bagPane");
             await Until(() => browser.gameObject.activeInHierarchy && CardCount(browser) == 7, "show seven training items", token);
             Click(browser, "filter_helmet");
             await Until(() => CardCount(browser) == 1, "filter to the training helmet", token);
             var helmet = Card(browser);
             Click(helmet, "select");
-            if (!helmet.Require<Image>("icon").sprite || string.IsNullOrEmpty(browser.Require<GameText>("attributes").text))
+            var mainStat = equipment.Require<BindingMap>("bagMain").Require<GameText>("value");
+            if (!helmet.Require<Image>("icon").sprite || string.IsNullOrEmpty(mainStat.text))
                 throw new InvalidOperationException("The packaged helmet card is missing its image or attributes.");
             string instance = helmet.name;
             Click(bag, "back");
@@ -73,34 +75,33 @@ namespace AstralOath.Client.FoundationDemo
             await Until(() => int.TryParse(health.text, out _) && !item.enabled, "read the unequipped panel", token);
             int baseline = int.Parse(health.text);
             browser = hero.Require<BindingMap>("gearBrowser");
+            var single = browser.Require<BindingMap>("singleSlot");
             Click(hero, "gearOpen_helmet");
-            await Until(() => browser.gameObject.activeInHierarchy && CardCount(browser) == 1 && Card(browser).name == instance,
+            await Until(() => single.Require<GameObject>("comparison").activeInHierarchy &&
+                CardCount(single, "candidates") == 1 && Card(single, "candidates").name == instance,
                 "show the same helmet in the slot picker", token);
-            Click(Card(browser), "select");
-            var dialog = browser.Require<GameObject>("dialog");
-            Click(browser, "apply");
-            await Until(() => dialog.activeInHierarchy && !string.IsNullOrEmpty(browser.Require<GameText>("change").text), "preview the stat change", token);
-            Click(browser, "confirm");
-            await Until(() => !dialog.activeSelf && item.enabled && item.sprite && health.text == (baseline + 80).ToString(), "equip and add 80 HP", token);
-            Click(browser, "remove");
-            await Until(() => dialog.activeInHierarchy, "preview removal", token);
-            Click(browser, "confirm");
-            await Until(() => !dialog.activeSelf && !item.enabled && health.text == baseline.ToString(), "restore the unequipped panel", token);
-            Click(browser, "close");
+            Click(Card(single, "candidates"), "select");
+            await Until(() => single.Require<BindingMap>("candidate").Require<GameObject>("detail").activeInHierarchy, "preview the candidate", token);
+            Click(single, "equip");
+            await Until(() => !browser.gameObject.activeSelf && item.enabled && item.sprite && health.text == (baseline + 80).ToString(), "equip and add 80 HP", token);
+            Click(hero, "gearOpen_helmet");
+            await Until(() => single.Require<GameObject>("popup").activeInHierarchy, "inspect the equipped helmet", token);
+            Click(single, "popupRemove");
+            await Until(() => !browser.gameObject.activeSelf && !item.enabled && health.text == baseline.ToString(), "restore the unequipped panel", token);
             Debug.Log("ASTRAL_EQUIPMENT_PLAYER_OK items=7 health=" + baseline + "," + (baseline + 80) + "," + baseline);
         }
 
-        private static int CardCount(BindingMap browser)
+        private static int CardCount(BindingMap browser, string list = "items")
         {
             int count = 0;
-            foreach (Transform child in browser.Require<ScrollRect>("items").content)
+            foreach (Transform child in browser.Require<ScrollRect>(list).content)
                 if (child.gameObject.activeInHierarchy) count++;
             return count;
         }
 
-        private static BindingMap Card(BindingMap browser)
+        private static BindingMap Card(BindingMap browser, string list = "items")
         {
-            foreach (Transform child in browser.Require<ScrollRect>("items").content)
+            foreach (Transform child in browser.Require<ScrollRect>(list).content)
                 if (child.gameObject.activeInHierarchy) return child.GetComponent<BindingMap>();
             throw new InvalidOperationException("The filtered item is missing.");
         }
