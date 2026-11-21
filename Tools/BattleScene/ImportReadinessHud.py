@@ -6,7 +6,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 DEST = REPO / 'Assets/Game/Modules/BattleScene/Res/Textures/Hud/Readiness'
-FILES = ['img/_grow_s_white.png', 'img/_btn_small_white.png', 'img/cm_icon_etctime_b2.png',
+FILES = ['img/_grow_s_white.png', 'img/_btn_small_white.png', 'img/cm_icon_etctime_b2.png', 'img/mob_icon3.png',
          'buff/stic_att_up.png', 'buff/stic_def_up.png', 'buff/stic_debuf_impossible.png',
          'buff/stic_protect.png', 'buff/stic_stun.png',
          'face/m0001_s.png', 'face/m0002_s.png', 'face/m0003_s.png', 'face/m0005_s.png']

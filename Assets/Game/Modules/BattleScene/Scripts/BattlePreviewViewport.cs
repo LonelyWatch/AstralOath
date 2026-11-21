@@ -32,7 +32,7 @@ namespace AstralOath.Client.BattleScene
         private Vector2Int appliedSize;
         private Rect appliedSafeArea;
         private Canvas canvas;
-        private RectTransform hud, top, rail, active, soul, skills, detailsClose;
+        private RectTransform hud, top, rail, active, soul, skills, detailsClose, detailsBackdrop;
         private readonly List<(RectTransform Item, Vector2 Position)> topRight = new List<(RectTransform, Vector2)>();
         private Backdrop sky, ground;
         private SpriteRenderer onlineBackdrop;
@@ -199,7 +199,10 @@ namespace AstralOath.Client.BattleScene
             if (!rail || railScale.x <= 0 || railScale.y <= 0) return;
             // The rail is docked to the safe area. Its close surface still covers the physical screen.
             if (!detailsClose)
+            {
                 detailsClose = rail.Find("Live Readiness/Readiness Details/Close Surface") as RectTransform;
+                detailsBackdrop = rail.Find("Live Readiness/Readiness Details/Details Background") as RectTransform;
+            }
             if (!detailsClose) return;
             var origin = new Vector2(-railPosition.x / railScale.x, -railPosition.y / railScale.y);
             var size = new Vector2(layoutScreen.x / railScale.x, layoutScreen.y / railScale.y);
@@ -207,6 +210,13 @@ namespace AstralOath.Client.BattleScene
             detailsClose.anchorMin = detailsClose.anchorMax = detailsClose.pivot = Vector2.zero;
             detailsClose.anchoredPosition = origin;
             detailsClose.sizeDelta = size;
+            if (detailsBackdrop)
+            {
+                // The source gradient is rotated ninety degrees. Its local width spans the physical screen height.
+                float width = detailsBackdrop.sizeDelta.y;
+                detailsBackdrop.sizeDelta = new Vector2(size.y, width);
+                detailsBackdrop.anchoredPosition = origin + new Vector2(width, size.y) * .5f;
+            }
         }
 
         internal void UseOnlineBackdrop(SpriteRenderer renderer)

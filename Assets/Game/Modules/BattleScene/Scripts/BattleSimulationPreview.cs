@@ -21,10 +21,14 @@ namespace AstralOath.Client.BattleScene
         private readonly BattleMatch match;
         private readonly BattleOnlineSession online;
         private readonly BattleOnlineTransitionAssets.Copy onlineCopy;
+        private readonly BattleOnlineTransitionAssets onlineAssets;
+        private BattleResultBinder resultPanel;
         private readonly BattleOnlineHud onlineHud;
         private readonly BattleOpponentSoulRail opponentSouls;
         private bool entering;
         private bool onlineInputSuspended;
+        private string rejectedActionMessage;
+        private float rejectionRemaining;
         private readonly BattleAiPolicy ai;
         private readonly Func<string, (string Name, Sprite Icon)> artifactCue;
         private readonly BattleHudBinder binder;
@@ -80,7 +84,7 @@ namespace AstralOath.Client.BattleScene
         public BattleSimulationPreview(Scene scene, BindingMap hud, BattleHudBinder binder, BattleCatalogData catalog,
             Sprite[] icons, TextAsset[] graphs, BattleSkillPresentationAsset[] skillAssets, TextAsset audioCatalog,
             TextAsset[] audioBanks, TMP_FontAsset damageFont, TextAsset impactBank, GameObject stageBackground,
-            BattleHudPreview.SpineEffect soulDisplay, BattleHudPreview.SpineEffect soulConsume,
+            BattleHudPreview.SpineEffect soulDisplay, BattleHudPreview.SpineEffect soulConsume, BattleSoulFlights.Art soulGain,
             TextAsset[] particles, Texture2D[] particleTextures, BattleMatch match, GameObject inspectionPrefab = null,
             BattleHudPreview.SpineEffect readyDust = null, TextAsset skillTimelineOverrides = null,
             BattleOnlineSession online = null, BattleOnlineTransitionAssets.Copy onlineCopy = null,
@@ -107,6 +111,7 @@ namespace AstralOath.Client.BattleScene
             this.match = match;
             this.online = online;
             this.onlineCopy = onlineCopy;
+            this.onlineAssets = onlineAssets;
             entering = online != null;
             ai = new BattleAiPolicy(catalog);
             var units = scene.GetRootGameObjects().Single(root => root.name == "Units").transform;
@@ -253,9 +258,9 @@ namespace AstralOath.Client.BattleScene
             double buildRemainingHud = measureEntry ? Time.realtimeSinceStartupAsDouble : 0d;
             turnHud = new BattleTurnHud(hud, unit => Label(unit.NameKey), sprites, damageFont,
                 (unit, slot, image) => InspectSkill(unit, slot, image, true),
-                InspectStatus, CloseInspection, statusArt, skills);
-            turnHud.SetMissFeedbackLabel(Label("battle.feedback.miss"));
-            soulGauge = new BattleSoulGauge(soulFill, soul, match?.MaximumSoul ?? BattleFlowRules.StandardMaximumSoul, soulDisplay, soulConsume,
+                InspectStatus, CloseInspection, statusArt, skills, unitPresentation,
+                EffectWordLabel("battle.hud.cooldown_turns"));
+            soulGauge = new BattleSoulGauge(soulFill, soul, match?.MaximumSoul ?? BattleFlowRules.StandardMaximumSoul, soulDisplay, soulConsume, soulGain,
                 particles.Single(item => item.name == "soul_pati_01.particle"),
                 particles.Single(item => item.name == "soul_consume_pati.particle"),
                 particleTextures.ToDictionary(texture => texture.name + ".sct", StringComparer.Ordinal));
@@ -331,7 +336,7 @@ namespace AstralOath.Client.BattleScene
         private bool onlineCanAct;
         private bool CanAct => !entering && !autoBattle && !IsPaused && !Busy && !onlineInputSuspended &&
             Snapshot.Outcome == BattleOutcome.InProgress &&
-            (online == null || online.CanSubmit && !IsTurnEntryPlaying) &&
+            (online == null || online.CanSubmit) &&
             Actor?.Slot.Side == BattleSide.Ally && !ai.IsForcedAction(Snapshot);
 
         public void Tick(float delta)
@@ -349,6 +354,7 @@ namespace AstralOath.Client.BattleScene
                     activePortrait.Tick(delta);
                     actionFeedback.Tick(delta);
                     onlineHud?.Tick(delta);
+                    resultPanel?.Tick(delta);
                     opponentSouls?.Tick(delta);
                 }
                 RefreshOnlineHud();
@@ -361,6 +367,8 @@ namespace AstralOath.Client.BattleScene
             if (IsPaused || entering) return;
             if (online != null)
             {
+                if (rejectionRemaining > 0f && (rejectionRemaining -= delta) <= 0f && banner.text == rejectedActionMessage)
+                    ShowPrompt();
                 ReadOnlineEvents();
                 // Actor ambient Update ends b_idle_ready independently of network replies.
                 // Refresh input on that transition even if this window's clock was already running.
@@ -400,7 +408,7 @@ namespace AstralOath.Client.BattleScene
             if (CanAct && TrySkill(selected, out var skill) && TryGetWorldPress(out var press))
             {
                 Ray ray = camera.ScreenPointToRay(press);
-                var target = views.Where(pair => ai.CanSelectTarget(Snapshot, skill.id, pair.Key, useSoulBurn) &&
+                var target = views.Where(pair => IsTargetCandidate(skill.id, pair.Key) &&
                     pair.Value.Contains(ray, allowInactive: skill.target == "one_ally_including_dead"))
                     .OrderBy(pair => ((Vector2)camera.WorldToScreenPoint(pair.Value.Center) - press).sqrMagnitude)
                     .Select(pair => pair.Key).FirstOrDefault();
@@ -454,7 +462,7 @@ namespace AstralOath.Client.BattleScene
                 // when no finite action or cue is left. Cut-in freezes the source clock.
                 float visualDelta = float.IsPositiveInfinity(nextTime) ? step : advanced;
                 foreach (var view in views.Values) view.TickVisual(visualDelta);
-                turnHud.Tick(advanced);
+                turnHud.Tick(visualDelta);
                 if (float.IsPositiveInfinity(nextTime)) return;
                 actionElapsed = advanced >= untilNext ? nextTime : actionElapsed + advanced;
                 remaining -= step;
@@ -501,7 +509,7 @@ namespace AstralOath.Client.BattleScene
         public void ChooseSkill(int index)
         {
             if (!CanAct || !TrySkill(index, out var skill) || (useSoulBurn && index != selected) ||
-                !IsSkillAvailable(skill, useSoulBurn)) return;
+                !CanPreviewSkill(skill)) return;
             double now = Time.unscaledTimeAsDouble;
             bool quickCast = lastClickedSkill == index && now - lastSkillClickTime <= SkillQuickCastSeconds;
             lastClickedSkill = index;
@@ -562,7 +570,7 @@ namespace AstralOath.Client.BattleScene
             {
                 bool hasSkill = TrySkill(index, out var skill);
                 bool passive = hasSkill && skill.target == "passive";
-                bool available = hasSkill && !passive && (!useSoulBurn || index == selected) && IsSkillAvailable(skill, useSoulBurn);
+                bool available = hasSkill && !passive && (!useSoulBurn || index == selected) && CanPreviewSkill(skill);
                 button.interactable = CanAct && available;
                 ((Image)button.targetGraphic).color = !(available || passive)
                     ? new Color(.35f, .35f, .35f, 1f) : Color.white;
@@ -573,12 +581,12 @@ namespace AstralOath.Client.BattleScene
         private void SyncTargetSelection()
         {
             BattleCatalogData.SkillRow skill = null;
-            if (CanAct && TrySkill(selected, out var choice) && IsSkillAvailable(choice, useSoulBurn))
+            if (CanAct && TrySkill(selected, out var choice) && CanPreviewSkill(choice))
                 skill = choice;
             var snapshot = Snapshot;
             foreach (var unit in snapshot.Units)
             {
-                bool eligible = skill != null && ai.CanSelectTarget(snapshot, skill.id, unit.InstanceId, useSoulBurn);
+                bool eligible = skill != null && IsTargetCandidate(skill.id, unit.InstanceId);
                 Sprite art = eligible ? targetBadgeArt : null;
                 int rank = eligible ? turnHud.GetTargetRank(unit.InstanceId) : 0;
                 Sprite digit = rank >= 1 && rank <= targetDigits.Length ? targetDigits[rank - 1] : null;
@@ -591,9 +599,16 @@ namespace AstralOath.Client.BattleScene
         public bool ChooseTarget(string id)
         {
             if (inspection?.IsOpen == true || !CanAct || !TrySkill(selected, out var skill)) return false;
-            if (!ai.CanSelectTarget(Snapshot, skill.id, id, useSoulBurn)) return false;
+            if (!IsTargetCandidate(skill.id, id)) return false;
             return Submit(skill.id, id, useSoulBurn);
         }
+
+        private bool CanPreviewSkill(BattleCatalogData.SkillRow skill) =>
+            skill.target != "passive" && (online != null || IsSkillAvailable(skill, useSoulBurn));
+
+        private bool IsTargetCandidate(string skill, string target) => online != null
+            ? ai.IsTargetForSkill(Snapshot, skill, target, useSoulBurn)
+            : ai.CanSelectTarget(Snapshot, skill, target, useSoulBurn);
 
         private bool Submit(string skill, string target, bool burn)
         {
@@ -601,6 +616,7 @@ namespace AstralOath.Client.BattleScene
             if (online != null)
             {
                 if (!online.Submit(skill, target, burn)) return false;
+                rejectionRemaining = 0f;
                 SuspendOnlineInput();
                 return true;
             }
@@ -648,15 +664,33 @@ namespace AstralOath.Client.BattleScene
                     SuspendOnlineInput();
                     banner.text = online.ClockUnavailable ? onlineCopy.clockUnavailable :
                         online.Terminated ? onlineCopy.connectionEnded : onlineCopy.reconnecting;
-                    if (online.Terminated) binder.ShowOnlineReturn();
+                    if (online.Terminated && resultPanel == null) binder.ShowOnlineReturn();
                 }
                 return;
             }
+            bool rejected = update.Status.HasValue && update.Status != BattleCommandStatus.Accepted &&
+                update.Status != BattleCommandStatus.Duplicate;
+            if (rejected)
+            {
+                rejectedActionMessage = update.PresentationPending ? onlineCopy.presentationPending :
+                    update.Status == BattleCommandStatus.SkillOnCooldown ? onlineCopy.skillOnCooldown : onlineCopy.invalidCommand;
+                rejectionRemaining = 2f;
+                banner.text = rejectedActionMessage;
+            }
             if (!update.Reset && update.Events.Length == 0)
             {
+                if (rejected)
+                {
+                    onlineInputSuspended = false;
+                    lastClickedSkill = -1;
+                    useSoulBurn = false;
+                    Refresh();
+                    return;
+                }
                 if (onlineInputSuspended || couldAct != CanAct)
                 {
                     onlineInputSuspended = false;
+                    SetPlayerControlsVisible(CanAct);
                     UpdateSkillAvailability();
                     hud.Require<GameButton>("soulBurn").interactable = CanAct && BurnSlot() >= 0;
                     ShowPrompt();
@@ -674,6 +708,7 @@ namespace AstralOath.Client.BattleScene
                 actionFeedback.Clear(Snapshot.LastEventSequence);
                 onlineHud?.ClearFeedback();
                 opponentSouls.Restore(Snapshot.EnemySoul);
+                soulGauge.ClearFlights();
                 foreach (var view in views.Values) view.ClearTransientFeedback();
                 Refresh();
                 return;
@@ -700,6 +735,7 @@ namespace AstralOath.Client.BattleScene
         {
             if (onlineInputSuspended) return;
             onlineInputSuspended = true;
+            SetPlayerControlsVisible(false);
             SyncTargetSelection();
             UpdateSkillAvailability();
             hud.Require<GameButton>("soulBurn").interactable = false;
@@ -720,7 +756,7 @@ namespace AstralOath.Client.BattleScene
                         turnHud.ResetFeedbackCombo();
                     bool allyPrimary = item.Origin == BattleActionOrigin.Primary &&
                         Snapshot.GetUnit(item.SourceId).Slot.Side == BattleSide.Ally && item.SourceId != forcedActorId;
-                    SetPlayerControlsVisible(allyPrimary);
+                    SetPlayerControlsVisible(allyPrimary && online == null);
                     var primary = item.TargetId != null && views.TryGetValue(item.TargetId, out var target)
                         ? target.Actor : null;
                     var actionEvents = playback.TakeWhile(next => next.Kind != BattleFlowEventKind.Action).ToArray();
@@ -805,6 +841,7 @@ namespace AstralOath.Client.BattleScene
                         {
                             var view = views[item.TargetId];
                             view.ApplyStatus(item.Status);
+                            actionFeedback.PresentStatusGain(item, view.Actor);
                             if (item.Status.Kind != BattleStatusKind.Barrier || item.Status.Strength > 0)
                                 ShowStatusWord(view, item.Status.Kind);
                         });
@@ -854,7 +891,12 @@ namespace AstralOath.Client.BattleScene
                     }
                     break;
                 case BattleFlowEventKind.SoulChanged:
-                    if (item.Side == BattleSide.Ally) soulGauge.Show(item.Amount);
+                    if (item.Side == BattleSide.Ally)
+                    {
+                        if (views.TryGetValue(item.SourceId, out var gainingUnit))
+                            soulGauge.Show(item.Amount, sourceOnScreen: camera.WorldToScreenPoint(gainingUnit.Actor.Bounds.center));
+                        else soulGauge.Show(item.Amount);
+                    }
                     else if (item.Side == BattleSide.Enemy) opponentSouls?.Show(item.Amount, animateGain: true);
                     break;
                 case BattleFlowEventKind.TurnStarted:
@@ -876,7 +918,7 @@ namespace AstralOath.Client.BattleScene
                 case BattleFlowEventKind.ReadinessChanged:
                     ScheduleFeedback(LastFeedbackAt(item.TargetId), item.TargetId, () =>
                     {
-                        int change = turnHud.SetReadiness(item.TargetId, item.Amount);
+                        int change = turnHud.ShowReadinessChange(item.TargetId, item.Amount);
                         if (change != 0)
                             views[item.TargetId].ShowEffectWord(EffectWordLabel(change > 0
                                 ? "battle.feedback.readiness_up" : "battle.feedback.readiness_down"));
@@ -965,7 +1007,7 @@ namespace AstralOath.Client.BattleScene
             var view = views[item.TargetId];
             if (absorbed > 0) view.AbsorbShield(absorbed);
             view.ApplyDamageHit(item.Amount, item.MaximumHealth ?? Snapshot.GetUnit(item.TargetId).MaximumHealth, false);
-            turnHud.PlayReadinessHit(item.TargetId);
+            if (item.Amount > 0 || absorbed > 0) turnHud.PlayReadinessHit(item.TargetId);
             turnHud.ShowPeriodicDamage(item, view.FeedbackAnchor, view.Actor.Bounds.center, camera);
             if (item.StatusKind.HasValue && (item.Amount > 0 || absorbed > 0))
                 ShowStatusWord(view, item.StatusKind.Value);
@@ -993,7 +1035,12 @@ namespace AstralOath.Client.BattleScene
                 absorbed -= shieldLoss;
                 ScheduleFeedback(hit.At, item.TargetId, () =>
                 {
-                    if (first) voice.PlayHit(unit.DefinitionId, presentedSkillId);
+                    if (first)
+                    {
+                        voice.PlayHit(unit.DefinitionId, presentedSkillId);
+                        if (item.HitKind == BattleHitKind.Miss)
+                            view.ShowEffectWord(EffectWordLabel("battle.feedback.miss"));
+                    }
                     // Shield-only and fatal hits still react. Preserve authored NODE_ANI poses.
                     if (!skillPresentation.OwnsNodeAnimationPose(view.Actor))
                         view.Actor.PlayBattleAnimation("attacked");
@@ -1047,6 +1094,7 @@ namespace AstralOath.Client.BattleScene
             view.AdjustHealth(item.Amount, item.MaximumHealth ?? Snapshot.GetUnit(item.TargetId).MaximumHealth);
             if (item.Amount > 0)
             {
+                actionFeedback.PresentHealing(item, view.Actor);
                 turnHud.ShowImpact(item, view.FeedbackAnchor, view.Actor.Bounds.center, camera);
                 if (item.StatusKind.HasValue) ShowStatusWord(view, item.StatusKind.Value);
             }
@@ -1099,7 +1147,11 @@ namespace AstralOath.Client.BattleScene
             turnHud.Refresh(Snapshot);
             var actor = Actor;
             displayedActor = actor;
-            if (!entering && online != null && Snapshot.Outcome != BattleOutcome.InProgress) binder.ShowOnlineReturn();
+            if (!entering && online != null && !Busy && Snapshot.Outcome != BattleOutcome.InProgress)
+            {
+                if (online.IsOwnedTrial) binder.ShowOnlineReturn();
+                else resultPanel ??= new BattleResultBinder(hud.transform, onlineAssets, onlineCopy, Snapshot, sprites, Label, binder.PauseBattle);
+            }
             if (!entering && actor?.IsAlive == true && Snapshot.Outcome == BattleOutcome.InProgress)
             {
                 var ready = (Snapshot.TurnNumber, actor.InstanceId);
@@ -1110,7 +1162,7 @@ namespace AstralOath.Client.BattleScene
                 }
             }
             SetPlayerControlsVisible(!entering && actor?.Slot.Side == BattleSide.Ally && Snapshot.Outcome == BattleOutcome.InProgress &&
-                !ai.IsForcedAction(Snapshot));
+                !ai.IsForcedAction(Snapshot) && (online == null || !onlineInputSuspended && online.CanSubmit));
             if (actor != null)
             {
                 sprites.TryGetValue(actor.DefinitionId + "_su", out var actorPortrait);
@@ -1153,9 +1205,9 @@ namespace AstralOath.Client.BattleScene
                 if (TrySkill(index, out var skill) && SkillIcon(skill, SkillVariantForUnit(skill, actor)) is Sprite icon)
                     image.sprite = icon;
                 int turns = TrySkill(index, out skill) ? actor.GetCooldown(skill.id) : 0;
-                button.interactable = CanAct && skill != null && IsSkillAvailable(skill);
+                button.interactable = CanAct && skill != null && CanPreviewSkill(skill);
                 bool passive = skill?.target == "passive";
-                turnHud.SetSkillStyle(index, passive);
+                turnHud.SetSkillStyle(index, passive, skill?.cooldownTurns ?? 0);
                 image.color = button.interactable || turns > 0 || passive ? Color.white : new Color(0.45f, 0.45f, 0.45f, 1f);
                 turnHud.SetCooldown(index++, turns);
             }
@@ -1211,7 +1263,7 @@ namespace AstralOath.Client.BattleScene
         {
             skillBanner.Hide();
             SyncTargetSelection();
-            banner.text = entering ? string.Empty : Snapshot.Outcome switch
+            banner.text = entering ? string.Empty : rejectionRemaining > 0f ? rejectedActionMessage : Snapshot.Outcome switch
             {
                 BattleOutcome.AllyVictory => "战斗胜利",
                 BattleOutcome.EnemyVictory => "战斗失败",
@@ -1401,6 +1453,7 @@ namespace AstralOath.Client.BattleScene
             foreach (var view in views.Values) view.Restore();
             skillBanner.Dispose();
             onlineHud?.Dispose();
+            resultPanel?.Dispose();
             RemoveOwnedObject(banner ? banner.gameObject : null);
             restore();
         }

@@ -1,8 +1,8 @@
-# 战斗角色从 10 名扩充到 100 名
+# 战斗角色从 10 名扩充到 150 名
 
 ## 顺序和计数
 
-保留已接入的 c1001–c1009 与 c1062，按官方简中英雄索引中尚未接入的 `c1xxx` 实际条目递增。安洁莉卡 c1062 已占首批一个名额，到该 ID 时直接跳过。索引缺号、重名演出记录 c0001/c0002、NPC、换装和同英雄的演出变体不增加人数。以索引和现有资源的角色身份校验元素，光之瑞儿 c1022 等在此编号段的可用独立英雄照常纳入。按此口径 #11 杰拉图 c1010，#12 卡琳 c1011，#13 科尔布思 c1012，#100 札哈克 c1119。原始索引的本地快照位于 `.artifacts/roster-data/official.source`，SHA-256 为 `a37c7a85128deef78ab8865eec2e7da76f1992c79b571c3001eb13add4998580`。采用固定索引与本地 r4262 素材基线。 [Smilegate 角色索引](https://static-pubcomm.onstove.com/gameRecord/epic7/epic7_hero.json)
+保留已接入的 c1001–c1009 与 c1062，按官方简中英雄索引中尚未接入的 `c1xxx` 实际条目递增。安洁莉卡 c1062 已占首批一个名额，到该 ID 时直接跳过。索引缺号、重名演出记录 c0001/c0002、NPC、换装和同英雄的演出变体不增加人数。以索引和现有资源的角色身份校验元素，光之瑞儿 c1022 等在此编号段的可用独立英雄照常纳入。按此口径 #11 杰拉图 c1010，#12 卡琳 c1011，#13 科尔布思 c1012，#100 札哈克 c1119，#150 休塔尔克 c1174。原始索引的本地快照位于 `.artifacts/roster-data/official.source`，SHA-256 为 `a37c7a85128deef78ab8865eec2e7da76f1992c79b571c3001eb13add4998580`。采用固定索引与本地 r4262 素材基线。 [Smilegate 角色索引](https://static-pubcomm.onstove.com/gameRecord/epic7/epic7_hero.json)
 
 顺序检查确认后续 90 名候选的基础立绘 SCSP、atlas、SCT 和两类头像路径存在。技能图标以实际技能表选型，例如索尔 c1092 的第二槽为 `pa_c1092_2.png`。以上检查只覆盖根文件名，逐人确认战斗模型、正式 STG、分支、音频和闭包。
 
@@ -54,7 +54,12 @@
 - .NET 专属回归 12/12，覆盖开局及多段受击斗志、额外回合、目标限制、觉醒与魂燃治疗、强化后不屈减条、独立抗性、减益转移成功与抵抗、不可驱散。服务端全量 128 项通过，MySQL 集成跳过 1 项。Windows FMOD 24/24，三个技能各观察到三个日语取样，均实际有音效事件和 DSP 输出。Unity 战斗场景与角色实验室 PlayMode 2/2，覆盖 S1–S3 三图播放和收尾复位，技能时间轴 EditMode 9/9。
 - S2 的 CFX 动作 `Fire` 未映射，S3 的第 15 号混色方式仍待比对。原作同版逐帧、Player 构建、Android 及实机复核未执行。
 
-百人清单用 `Tools/CharacterAssets/ExportRosterQueue.py` 从固定官方索引和当前配表导出到 `.artifacts/roster-data/roster-100.json`。当前 30 人已入表、70 人待入表。状态仅反映配表，逐人通过及实机边界以本页为准。
+`Tools/CharacterAssets/ExportRosterQueue.py` 读取固定官方索引和当前配表。默认仍导出前 100 名，路径为 `.artifacts/roster-data/roster-100.json`。指定 `--count 150` 将完整顺序导出到 `.artifacts/roster-data/roster-150.json`，可用 `--output` 指定 `.artifacts` 下的其他路径。当前 30 人已入表。清单的 `configured` 只表示已经进入配表，每 10 人单独记录机制、资源及实测结果，通过后提交。
+
+```powershell
+& ./.tools/character-assets/Scripts/python.exe -X utf8 -B Tools/CharacterAssets/ExportRosterQueue.py --count 150
+& ./.tools/character-assets/Scripts/python.exe -X utf8 -B -m unittest discover -s Tests/CharacterAssets -p test_roster_queue.py
+```
 
 ## #14 卡尔图哈 c1013
 

@@ -25,6 +25,7 @@ namespace AstralOath.Editor
         private static void BuildSummonWishPanel(RectTransform root, List<(string Key, Object Target)> bindings)
         {
             var wish = SummonPanel(root, bindings, "wishPanel", .117f, .033f, .765f, .889f, SummonArt("renew_popup_bg_alpha"));
+            BakeSummonDesignRect(wish);
             var face = wish.GetComponent<Image>();
             face.type = Image.Type.Sliced;
             face.color = new Color32(255, 255, 255, 229);

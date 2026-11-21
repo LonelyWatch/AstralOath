@@ -1834,6 +1834,17 @@ MonoBehaviour:
     skeleton: {fileID: 4900000, guid: 908307748af346b0a6d3e2e140a3dfdd, type: 3}
     atlas: {fileID: 4900000, guid: 4bc5acdf74c4431c8ad17c5c13fb7e50, type: 3}
     page: {fileID: 2800000, guid: 9e25a1a633d2479087f3d130d35c5bac, type: 3}
+  soulGain:
+    drop:
+      skeleton: {fileID: 4900000, guid: 855d2d67b5d84309ab079385a8a24997, type: 3}
+      atlas: {fileID: 4900000, guid: 8289c1cd9ebc4fdda66b4724456559b4, type: 3}
+      page: {fileID: 2800000, guid: 2cfe014fbb874ccd8cf64738b491507b, type: 3}
+    arrival:
+      skeleton: {fileID: 4900000, guid: 32196f64fb2241b5b4ed76f6ac2fa180, type: 3}
+      atlas: {fileID: 4900000, guid: 609cf5bea13e49268066a09f59b96180, type: 3}
+      page: {fileID: 2800000, guid: 580a0260b2d94509a81b59bb5e124aa8, type: 3}
+    dropParticles: {fileID: 4900000, guid: 35c1fdd77cba48b2bce10b0d53dc3217, type: 3}
+    arrivalParticles: {fileID: 4900000, guid: 6d7317accccd4e23b5ecf83aaa66dfcc, type: 3}
   readyDust:
     skeleton: {fileID: 4900000, guid: d7aa2303b8755242bec2f1b644aae802, type: 3}
     atlas: {fileID: 4900000, guid: a03eaa41147d1b5409d8a979e19b3e5a, type: 3}
@@ -1848,6 +1859,8 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 39d06815d1c64e24eaf85627394dd84d, type: 3}
   - {fileID: 4900000, guid: 56b88927ad76b674fb483f37608eb39a, type: 3}
   - {fileID: 4900000, guid: d8a65514ef41456fbb90c7681710d742, type: 3}
+  - {fileID: 4900000, guid: 35c1fdd77cba48b2bce10b0d53dc3217, type: 3}
+  - {fileID: 4900000, guid: 6d7317accccd4e23b5ecf83aaa66dfcc, type: 3}
   particleTextures:
   - {fileID: 2800000, guid: c44065a5cb966564dbd630ab0c865e0e, type: 3}
   - {fileID: 2800000, guid: 5817b9720ad20af428b4a907953bd3cf, type: 3}
@@ -2473,12 +2486,14 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 8180ffedb899561da270484d5969aa0d, type: 3}
   - {fileID: 21300000, guid: 06f8e8db729a6ea4c85c4638e0ba76f5, type: 3}
   - {fileID: 21300000, guid: 32939fcbd143f4345a2e36eed3e2acdf, type: 3}
+  - {fileID: 21300000, guid: bdce93b558d345038c65ae9d0198cba0, type: 3}
   - {fileID: 21300000, guid: 12ec0e5fc33d57169bd0f8fb8d4350e6, type: 3}
   - {fileID: 21300000, guid: faf8a3eec90655669647ecd525efc2c5, type: 3}
   - {fileID: 21300000, guid: 4a3b1c3504675088beecc08e4586d6ba, type: 3}
   - {fileID: 21300000, guid: 84aa065abde35feeb772c9cb797cdef3, type: 3}
   - {fileID: 21300000, guid: e09db169d2255101bfac4265891b5e34, type: 3}
   - {fileID: 21300000, guid: 0433c2d7f8ad5879bb6ace8329f6f9c7, type: 3}
+  - {fileID: 21300000, guid: 0b9ed0698d225d42ada6458e537902c2, type: 3}
   - {fileID: 21300000, guid: acfa4e4827dd51dcb57191b9029f0b28, type: 3}
   - {fileID: 21300000, guid: 16dcae0f7ab7b69438053bc4d5538987, type: 3}
   - {fileID: 21300000, guid: 75b2c0d93a23cea46a26e73c0f1c3b74, type: 3}
@@ -23755,6 +23770,256 @@ MonoBehaviour:
     pageNames: []
     pages: []
     texture: {fileID: 2800000, guid: 925c14f0023b7e24cbe99968f3101a10, type: 3}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/heal_hp_01.cfx
+    document: {fileID: 4900000, guid: 90fd69d63f055f12882a106d5f66979a, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/heal_hp_01.particle
+    document: {fileID: 4900000, guid: 3966da1d3ada51c8b0a9b4986d8ec0ad, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_attackpower_up.cfx
+    document: {fileID: 4900000, guid: a9d30451d1db5dcf94b88a97630d6b20, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_attackpower_up.scsp
+    document: {fileID: 4900000, guid: d1cce9127b365cee862b9185ba3b438b, type: 3}
+    atlas: {fileID: 4900000, guid: 73a9d274b2925c13a2078bf85fddb328, type: 3}
+    pageNames:
+    - stse_attackpower_up.sct
+    pages:
+    - {fileID: 2800000, guid: d2f67d1080ca5a0cb9a2a915fb5b9d76, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_attackpower_up.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: d2f67d1080ca5a0cb9a2a915fb5b9d76, type: 3}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_critup.cfx
+    document: {fileID: 4900000, guid: 2704abebc1a85e8398072017e6abb18a, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_critup.scsp
+    document: {fileID: 4900000, guid: c7b954de39825dba945dc1a168f8bc1b, type: 3}
+    atlas: {fileID: 4900000, guid: 1a79d2c34c2a53d1889237fb90ca2fa1, type: 3}
+    pageNames:
+    - stse_critup.sct
+    pages:
+    - {fileID: 2800000, guid: 67ee27ca28ae56f592673e566daa87a7, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_critup.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: 67ee27ca28ae56f592673e566daa87a7, type: 3}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_defense_reflect.cfx
+    document: {fileID: 4900000, guid: b37aee340dd0566d98b01d3d3b850863, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_defense_reflect.scsp
+    document: {fileID: 4900000, guid: 8e3f54cc3e325662ad89fe3fa3007e2b, type: 3}
+    atlas: {fileID: 4900000, guid: b2c3264f89e057a6a4d15565415fb50b, type: 3}
+    pageNames:
+    - stse_defense_reflect.sct
+    pages:
+    - {fileID: 2800000, guid: 828eaad3e9eb5cb1b20963d96cc1e9c9, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_defense_reflect.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: 828eaad3e9eb5cb1b20963d96cc1e9c9, type: 3}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_defense_up.cfx
+    document: {fileID: 4900000, guid: adf25a073b53535db65db4c334f63f3e, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_defense_up.scsp
+    document: {fileID: 4900000, guid: 00bbaba80cc5528c8c448cf5acf7941d, type: 3}
+    atlas: {fileID: 4900000, guid: 02bdc979cd7c5ab7af4c163a2735e7ee, type: 3}
+    pageNames:
+    - stse_defense_up.sct
+    pages:
+    - {fileID: 2800000, guid: 9a9cf21979ea50ed9c4c6c639189e47a, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_defense_up.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: 9a9cf21979ea50ed9c4c6c639189e47a, type: 3}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_evade.cfx
+    document: {fileID: 4900000, guid: f12ef575aa775d06be83c37e65cf667a, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_evade.scsp
+    document: {fileID: 4900000, guid: 3e3d439be3a458b5bdbe005f7e70b35e, type: 3}
+    atlas: {fileID: 4900000, guid: c2852e34fffc5758bfe5ff547aa40d38, type: 3}
+    pageNames:
+    - stse_evade.sct
+    pages:
+    - {fileID: 2800000, guid: 08367932ce6d50088853526c39fae578, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_evade.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: 08367932ce6d50088853526c39fae578, type: 3}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_immortality.cfx
+    document: {fileID: 4900000, guid: 538ed31cc55c5f2dace40db545527638, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_immortality.scsp
+    document: {fileID: 4900000, guid: d0ddd39bbc745f879b31893b3c09fabc, type: 3}
+    atlas: {fileID: 4900000, guid: d977142ecf635d70b88fe17bc97e2b2a, type: 3}
+    pageNames:
+    - stse_immortality.sct
+    pages:
+    - {fileID: 2800000, guid: 7854ce721bdf5f10af8d64da8eea4c7f, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_immortality.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: 7854ce721bdf5f10af8d64da8eea4c7f, type: 3}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_immune_weak.cfx
+    document: {fileID: 4900000, guid: 59c6398c6bba587aafb90cf7191b9ca9, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_immune_weak.scsp
+    document: {fileID: 4900000, guid: 6cb65ddcf3005c4da61992d256cf8ff4, type: 3}
+    atlas: {fileID: 4900000, guid: 9b91ebfad22b5cf6a3998c35d7001d02, type: 3}
+    pageNames:
+    - stse_immune_weak.sct
+    pages:
+    - {fileID: 2800000, guid: a506de42a5755081910c49335ee01ff5, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_immune_weak.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: a506de42a5755081910c49335ee01ff5, type: 3}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_immune_weak2.scsp
+    document: {fileID: 4900000, guid: e2f281a70e8e553185752f93e8d162a1, type: 3}
+    atlas: {fileID: 4900000, guid: 23503b089cb4520d9d5219f7e3758434, type: 3}
+    pageNames:
+    - stse_immune_weak2.sct
+    pages:
+    - {fileID: 2800000, guid: 78a4f75ecd605c2e831d3c5cd8ba2dca, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_immune_weak2.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: 78a4f75ecd605c2e831d3c5cd8ba2dca, type: 3}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_speed.scsp
+    document: {fileID: 4900000, guid: 88a1aae2c91f5098b1040c8d49caad30, type: 3}
+    atlas: {fileID: 4900000, guid: baa1112a48c05541ad57b4560f963b17, type: 3}
+    pageNames:
+    - stse_speed.sct
+    pages:
+    - {fileID: 2800000, guid: ac685aadc5ff5b53903e02c2f512e339, type: 3}
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_speed.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: ac685aadc5ff5b53903e02c2f512e339, type: 3}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/stse_speed_up.cfx
+    document: {fileID: 4900000, guid: 45d5bfe16dce5c4bbc84b48d1f37d003, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: particle/heal_cross_01.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: 65c1ef66beb954b0b6c94cb4fafb1aaf, type: 3}
     premultipliedAlpha: 1
     scale: 0.01
   audioCatalog: {fileID: 4900000, guid: c0e9bd68f30f77b43a84e4c1337460f8, type: 3}

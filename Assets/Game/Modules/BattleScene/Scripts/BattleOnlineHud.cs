@@ -19,7 +19,7 @@ namespace AstralOath.Client.BattleScene
         private readonly BattleNativeFeedbackEffect[] soulBurnEffects = new BattleNativeFeedbackEffect[2];
         private readonly AudioSource soulBurnAudio;
         private readonly RectTransform[] soulBurnAnchors = new RectTransform[2];
-        private readonly Image allyHealth, enemyHealth;
+        private readonly TeamBar allyHealth, enemyHealth;
         private readonly GameText turn;
         private readonly RectTransform clockRoot;
         private readonly Image clockProgress;
@@ -140,7 +140,7 @@ namespace AstralOath.Client.BattleScene
             localPingRoot.SetActive(false);
             clockRoot.gameObject.SetActive(false);
 
-            Image Team(bool ally, string name, string avatarId, Sprite avatar)
+            TeamBar Team(bool ally, string name, string avatarId, Sprite avatar)
             {
                 string side = ally ? "Local" : "Opponent";
                 var start = new Vector2(ally ? .215f : .545f, 1f);
@@ -148,11 +148,17 @@ namespace AstralOath.Client.BattleScene
                 var background = Picture(root, side + " Health Background", art["game_hud_bar_hp_red"], start, end,
                     new Vector2(0, -73.5f), new Vector2(0, 31.5f));
                 background.color = new Color(.15f, .09f, .06f, .9f);
-                var health = Picture(root, side + " Team Health", art["game_hud_bar_hp"], start, end,
-                    new Vector2(0, -73.5f), new Vector2(0, 31.5f));
-                health.type = Image.Type.Filled;
-                health.fillMethod = Image.FillMethod.Horizontal;
-                health.fillOrigin = ally ? 0 : 1;
+                Image Fill(string label, Sprite sprite)
+                {
+                    var image = Picture(root, side + label, sprite, start, end,
+                        new Vector2(0, -73.5f), new Vector2(0, 31.5f));
+                    image.type = Image.Type.Filled;
+                    image.fillMethod = Image.FillMethod.Horizontal;
+                    image.fillOrigin = ally ? 1 : 0;
+                    return image;
+                }
+                var damage = Fill(" Team Damage", art["game_hud_bar_hp_red"]);
+                var health = Fill(" Team Health", art["game_hud_bar_hp"]);
                 var marks = Rect(root, side + " Health Dividers", start, end, new Vector2(0, -73.5f), new Vector2(0, 31.5f))
                     .gameObject.AddComponent<BattleHealthSegments>();
                 marks.SourceSprite = art["game_hud_bar_split"];
@@ -183,7 +189,7 @@ namespace AstralOath.Client.BattleScene
                     new Vector2(1.5f, -73.5f), Vector2.one * 132.3f);
                 soulBurnAnchors[ally ? 0 : 1] = Rect(root, side + " Soul Burn Anchor", faceAnchor, faceAnchor,
                     new Vector2(0, -72f), Vector2.zero);
-                return health;
+                return new TeamBar(health, damage);
             }
         }
 
@@ -207,6 +213,8 @@ namespace AstralOath.Client.BattleScene
 
         internal void Tick(float delta)
         {
+            allyHealth.Tick(delta);
+            enemyHealth.Tick(delta);
             for (int index = 0; index < soulBurnEffects.Length; index++)
             {
                 var effect = soulBurnEffects[index];
@@ -233,8 +241,43 @@ namespace AstralOath.Client.BattleScene
 
         internal void SetHealth(long allyCurrent, long allyMaximum, long enemyCurrent, long enemyMaximum)
         {
-            allyHealth.fillAmount = Ratio(allyCurrent, allyMaximum);
-            enemyHealth.fillAmount = Ratio(enemyCurrent, enemyMaximum);
+            allyHealth.Set(Ratio(allyCurrent, allyMaximum), allyMaximum);
+            enemyHealth.Set(Ratio(enemyCurrent, enemyMaximum), enemyMaximum);
+        }
+
+        private sealed class TeamBar
+        {
+            private readonly Image health, damage;
+            private float before, time;
+            private long maximum = -1;
+
+            internal TeamBar(Image health, Image damage)
+            {
+                this.health = health;
+                this.damage = damage;
+            }
+
+            internal void Set(float value, long capacity)
+            {
+                if (capacity != maximum || value > health.fillAmount)
+                    damage.fillAmount = value;
+                else if (value < health.fillAmount)
+                {
+                    before = damage.fillAmount;
+                    time = 0f;
+                }
+                maximum = capacity;
+                health.fillAmount = value;
+            }
+
+            internal void Tick(float delta)
+            {
+                if (damage.fillAmount <= health.fillAmount || delta <= 0f) return;
+                time += delta;
+                // P2 08:10.83–08:12.13. The red end initially holds, then accelerates.
+                float progress = Mathf.Clamp01((time - .24f) / 1.06f);
+                damage.fillAmount = Mathf.Lerp(before, health.fillAmount, progress * progress);
+            }
         }
 
         internal void ShowTurn(BattleSide? side, bool visible, BattleTurnClockView clock = null, double elapsed = 0)

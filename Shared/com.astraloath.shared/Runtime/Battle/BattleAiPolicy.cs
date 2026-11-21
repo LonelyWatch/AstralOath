@@ -61,9 +61,15 @@ namespace AstralOath.Shared.Battle
 
         public bool CanSelectTarget(BattleSnapshot snapshot, string skillId, string targetId, bool useSoulBurn = false)
         {
-            if (!IsSkillAvailable(snapshot, skillId, useSoulBurn)) return false;
+            return IsSkillAvailable(snapshot, skillId, useSoulBurn) && IsTargetForSkill(snapshot, skillId, targetId, useSoulBurn);
+        }
+
+        // Target previews may be requested before the server decides whether the skill is ready.
+        public bool IsTargetForSkill(BattleSnapshot snapshot, string skillId, string targetId, bool useSoulBurn = false)
+        {
             var actor = CurrentActor(snapshot);
-            return BattleTargeting.CanSelect(snapshot, actor, BattleTargeting.PrimaryRule(skills[skillId], actor, useSoulBurn), targetId);
+            return actor != null && skillId != null && skills.TryGetValue(skillId, out var skill) &&
+                BattleTargeting.CanSelect(snapshot, actor, BattleTargeting.PrimaryRule(skill, actor, useSoulBurn), targetId);
         }
 
         public bool IsForcedAction(BattleSnapshot snapshot)

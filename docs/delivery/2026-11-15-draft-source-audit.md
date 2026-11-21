@@ -15,7 +15,8 @@
 ## 预先禁用
 
 - `pvplive_ready_pre_ben_item.csb` 的头像叠层使用 `_hero_s_bg_ally`、原版小头像和 `_hero_s_frame_ally`。星级用 `cm_icon_star` 原图，30 像素宽，原始步进 20 像素。主工程的主列表、最近选择和底部已选都复用这一张头像卡。星数取战斗目录的初始星级，选人槽仍展示参战等级和觉醒星级。
-- 点击头像播放 `effect/ui_pre_banned.cfx` 引用的 `preben_effect_spine` 划痕。导入工具从原始 SCT 的 atlas 区域裁出主体、闪光和发光层，校验值记在竞技场的 `source-manifest.json`。界面按源 Spine 的关键时刻驱动图层，划痕收束后保留微亮红光，取消选择清除全部层。粒子系统的逐粒子表现尚待原作对照。
+- 用本地留存的国服秋季赛 P2（1920×1080、30 fps）对照 04:04.67–04:05.50。最近选择的两张头像依次中心闪白、出现亮黄色火星，红色圆环和斜杠定格。此处为预禁头像，录像发布日期、播放倍速及对应英雄皮肤未核实。[P2 选格片段](https://www.bilibili.com/video/BV1n7x96DETN/?p=2&t=244)
+- 选格使用 `ui_pre_banned.cfx` 引用的完整 `preben_effect_spine` 骨骼，`intro` 播放半秒后接 `loop`。三条粒子轨跟随 `icon`，源延迟为 0、30、80 ms，对应 Z 为 5、3、10。点同一张取消时释放离屏相机、网格和粒子。导入闭包和哈希见 `Res/Animations/DraftFeedback/source.json`。Unity 图形测试采样中心暖白和定格红色笔画，7728 双会话实测双方各两名。原片和工程实拍帧分别留存在 `.artifacts/summon-result-r23/repro/preban-time.jpg` 与 `preban-verified/arena-draft-preban-settled.png`。逐粒子随机轨迹未做逐像素比对。
 - 验收时同时确认主列表、最近选择中的划痕和底栏的缩小头像。划痕的峰值在选中后的前 0.27 秒内，建议截一帧动画和一帧稳定画面。
 
 ## 04 选人

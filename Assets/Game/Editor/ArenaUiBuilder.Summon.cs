@@ -294,6 +294,19 @@ namespace AstralOath.Editor
         // Summon layouts use a 720-high design surface. The UI canvas uses a reference height of 1080.
         private const float SummonCanvasScale = 1080f / 720f;
 
+        // Bake the normalized region at the reference viewport. Reopening a cached window only rescales it.
+        private static RectTransform BakeSummonDesignRect(RectTransform rect)
+        {
+            var designSize = new Vector2(2464f * 1080f / 1200f, 1080f);
+            Vector2 size = Vector2.Scale(rect.anchorMax - rect.anchorMin, designSize);
+            Vector2 center = (rect.anchorMin + rect.anchorMax) * .5f;
+            rect.anchorMin = rect.anchorMax = center;
+            rect.pivot = new Vector2(.5f, .5f);
+            rect.anchoredPosition = Vector2.zero;
+            rect.sizeDelta = size;
+            return rect;
+        }
+
         private static RectTransform SummonFooterButton(RectTransform root, List<(string Key, Object Target)> bindings,
             string key, string artwork, bool right, float x, float bottom, float width, float height)
         {
@@ -389,9 +402,9 @@ namespace AstralOath.Editor
             const float left = (1f - layerWidth) * .5f;
             var material = Load<Material>(SummonPath + "Res/Materials/SummonWishPortrait.mat");
             var nameOutline = Load<Material>(SummonPath + "Res/Materials/SummonWishNameOutline.mat");
-            var portraits = Area(root, "Clipped originals", left, 0, layerWidth, 1);
+            var portraits = BakeSummonDesignRect(Area(root, "Clipped originals", left, 0, layerWidth, 1));
             Cover(root, "Original gradient over portraits", SummonArt("gacha_wish_bg_2"));
-            var captions = Area(root, "Roster captions", left, 0, layerWidth, 1);
+            var captions = BakeSummonDesignRect(Area(root, "Roster captions", left, 0, layerWidth, 1));
             bindings.Add(("wishPortraitStrip", portraits));
             bindings.Add(("wishCaptionStrip", captions));
 

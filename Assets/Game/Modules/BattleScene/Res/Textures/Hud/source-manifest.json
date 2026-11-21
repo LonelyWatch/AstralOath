@@ -5963,6 +5963,19 @@
         82,
         84
       ]
+    },
+    {
+      "asset": "Skills/cm_cool_skill.png",
+      "source": "原始资源/img/cm_cool_skill.png",
+      "sha256": "b2ecd6b0f8ad188ebdfa73f4849c267507125eb92bed23c38215cd895bf18b34",
+      "width": 68,
+      "height": 71,
+      "alphaBoundsLTRB": [
+        0,
+        0,
+        68,
+        71
+      ]
     }
   ],
   "layoutSchemaReference": "https://raw.githubusercontent.com/cocos2d/cocos2d-x/v3/cocos/editor-support/cocostudio/fbs-files/CSParseBinary.fbs"

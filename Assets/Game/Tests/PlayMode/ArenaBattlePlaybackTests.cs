@@ -45,7 +45,7 @@ namespace AstralOath.Client.Tests
 
             var sessionType = typeof(BattleOnlineLaunch).Assembly.GetType("AstralOath.Client.BattleScene.BattleOnlineSession", true);
             using var session = (IDisposable)Activator.CreateInstance(sessionType, Members, null,
-                new object[] { new Uri("http://localhost"), "room", "draft-match", "test-hash", "token", host }, null);
+                new object[] { new Uri("http://localhost"), "room", "draft-match", "test-hash", "token", host, null }, null);
             sessionType.GetField("heroes", Members).SetValue(session, catalog.heroes.ToDictionary(row => row.id, StringComparer.Ordinal));
             var wire = Newtonsoft.Json.Linq.JObject.Parse(JsonConvert.SerializeObject(
                 new { ContentHash = "test-hash", Snapshot = result.Snapshot, SnapshotReset = false, Events = result.Events },
@@ -146,6 +146,44 @@ namespace AstralOath.Client.Tests
             }
             yield return null;
             Assert.That(GameObject.Find("Online Battle Gate"), Is.Null);
+        }
+
+        [Test]
+        public void TeamHealthRetainsTheHitAtTheOuterEdgeBeforeRetracting()
+        {
+            var art = AssetDatabase.LoadAssetAtPath<BattleOnlineTransitionAssets>("Assets/Game/Modules/BattleScene/Configs/AstralOathOnlineTransition.asset");
+            var canvas = new GameObject("Team HP test", typeof(RectTransform), typeof(Canvas));
+            try
+            {
+                var prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Game/Modules/BattleScene/Res/Prefab/BattleHud.prefab");
+                var map = UnityEngine.Object.Instantiate(prefab, canvas.transform, false).GetComponent<BindingMap>();
+                var load = typeof(BattleOnlineTransitionAssets).GetNestedType("Copy", BindingFlags.NonPublic)
+                    .GetMethod("Load", BindingFlags.NonPublic | BindingFlags.Static);
+                var copy = load.Invoke(null, new[] { art.GetType().GetField("zhHans", Members).GetValue(art) });
+                var type = typeof(BattleOnlineLaunch).Assembly.GetType("AstralOath.Client.BattleScene.BattleOnlineHud");
+                using var view = (IDisposable)Activator.CreateInstance(type, Members, null, new object[] { map, null, copy, null, art, null }, null);
+                void Health(long hp) => type.GetMethod("SetHealth", Members).Invoke(view, new object[] { hp, 100L, hp, 100L });
+                void Tick(float delta) => type.GetMethod("Tick", Members).Invoke(view, new object[] { delta });
+                var images = canvas.GetComponentsInChildren<UnityEngine.UI.Image>(true);
+                foreach (string side in new[] { "Local", "Opponent" })
+                {
+                    var fill = images.Single(image => image.name == side + " Team Health");
+                    Assert.That(fill.fillOrigin, Is.EqualTo(side == "Local" ? 1 : 0), side);
+                }
+                Health(100);
+                Health(75);
+                var tail = images.Single(image => image.name == "Local Team Damage");
+                Tick(.18f);
+                Assert.That(tail.fillAmount, Is.EqualTo(1f));
+                Health(75);
+                Tick(.72f);
+                Assert.That(tail.fillAmount, Is.InRange(.751f, .999f));
+                Tick(.55f);
+                Assert.That(tail.fillAmount, Is.EqualTo(.75f));
+                Health(90);
+                Assert.That(tail.fillAmount, Is.EqualTo(.90f).Within(.001f));
+            }
+            finally { UnityEngine.Object.DestroyImmediate(canvas); }
         }
 
         [UnityTest]

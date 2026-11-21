@@ -166,7 +166,7 @@ namespace AstralOath.Client.Tests
             Assert.That(hp.fillAmount, Is.InRange(.35f, 1f));
             Assert.That(trail.rectTransform.rect.width, Is.GreaterThan(0f));
             Capture("damage-010");
-            Call("TickVisual", .6f);
+            Call("TickVisual", 1.25f);
             Assert.That(hp.fillAmount, Is.EqualTo(.35f).Within(.001f));
             Assert.That(trail.enabled, Is.False);
             Capture("damage-settled");
@@ -424,8 +424,8 @@ namespace AstralOath.Client.Tests
             view.GetType().GetMethod("TickVisual").Invoke(view, new object[] { .3f });
             Assert.That(RedWidth(), Is.InRange(.001f, redAtLastHpHit - .001f), "Red retracts after the last hit.");
             Capture("damage-trail-retracting", new Vector2Int(1920, 1080));
-            view.GetType().GetMethod("TickVisual").Invoke(view, new object[] { .6f });
-Assert.That(RedWidth(), Is.Zero, "The red segment is cleared after the transition.");
+            view.GetType().GetMethod("TickVisual").Invoke(view, new object[] { 1.05f });
+            Assert.That(RedWidth(), Is.Zero, "The red segment is cleared after the transition.");
             Assert.That(healthValue.GetValue(view), Is.EqualTo(previousHealth - 1800));
             Assert.That(friendlyIcons.GetChild(0).GetComponent<Image>().sprite.name, Is.EqualTo("stic_def_up"));
             CollectionAssert.DoesNotContain(VisibleIcons(), "stic_att_up");
@@ -648,7 +648,7 @@ Assert.That(RedWidth(), Is.Zero, "The red segment is cleared after the transitio
             Assert.That(injury.enabled, Is.True);
             Assert.That(injury.rectTransform.anchorMax.x - injury.rectTransform.anchorMin.x, Is.EqualTo(.2f).Within(.001f));
             Assert.That(trail.enabled, Is.True);
-            Call("TickVisual", 1f);
+            Call("TickVisual", 1.35f);
             Assert.That(trail.enabled, Is.False);
             Assert.That(injury.enabled, Is.True);
             yield return null;

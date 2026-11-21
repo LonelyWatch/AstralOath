@@ -20,6 +20,11 @@ namespace AstralOath.Client.BattleScene
         private readonly RectTransform portraitLayer;
         private readonly RectTransform details;
         private readonly RectTransform detailRows;
+        private readonly Image detailsBackdrop;
+        private readonly CanvasGroup expandedRows;
+        private readonly Image detailsTrack;
+        private const float SpreadSeconds = .30f, BackdropSeconds = .24f;
+        private float detailsElapsed;
         private readonly GameButton closeDetailsButton;
         private readonly UnityAction closeDetails;
         private readonly RectTransform feedbackLayer;
@@ -33,6 +38,7 @@ namespace AstralOath.Client.BattleScene
         private readonly IReadOnlyDictionary<string, BattleCatalogData.SkillRow> skillDefinitions;
         private Sprite PassiveFrame => sprites.GetValueOrDefault("_frame_passive");
         private Sprite PassiveCooldown => sprites.GetValueOrDefault("cm_cool_skill_passive");
+        private Sprite ActiveCooldown => sprites.GetValueOrDefault("cm_cool_skill");
         private readonly Action<BattleUnitSnapshot, int, Image> inspectSkill;
         private readonly Action<BattleStatusSnapshot, Image> inspectStatus;
         private readonly Action closeInspection;
@@ -63,7 +69,8 @@ namespace AstralOath.Client.BattleScene
             IReadOnlyDictionary<string, Sprite> sprites, TMP_FontAsset damageFont,
             Action<BattleUnitSnapshot, int, Image> inspectSkill,
             Action<BattleStatusSnapshot, Image> inspectStatus, Action closeInspection,
-            BattleStatusArt statusArt, IReadOnlyDictionary<string, BattleCatalogData.SkillRow> skillDefinitions)
+            BattleStatusArt statusArt, IReadOnlyDictionary<string, BattleCatalogData.SkillRow> skillDefinitions,
+            BattleUnitPresentationProfile presentation = null, string cooldownFormat = "{0}")
         {
             this.sprites = sprites;
             this.skillDefinitions = skillDefinitions;
@@ -106,22 +113,29 @@ namespace AstralOath.Client.BattleScene
             // inbattle_order_detail.csb: full-screen close surface and a left-side expanded queue.
             details = Layer(liveRail, "Readiness Details");
             var closeSurface = Layer(details, "Close Surface").gameObject.AddComponent<Image>();
-            closeSurface.color = new Color(0f, 0f, 0f, 0.20f);
+            closeSurface.color = Color.clear;
             closeSurface.raycastTarget = true;
+            closeSurface.canvasRenderer.cullTransparentMesh = false;
             closeDetailsButton = closeSurface.gameObject.AddComponent<GameButton>();
             closeDetailsButton.targetGraphic = closeSurface;
             closeDetailsButton.transition = Selectable.Transition.None;
-            var background = Rect(details, "Details Background", new Vector2(600f, 540f),
-                new Vector2(1200f, 1080f)).gameObject.AddComponent<Image>();
-            background.sprite = sprites.GetValueOrDefault("_grow_s_white");
-            background.color = new Color32(23, 29, 35, 255);
-            background.raycastTarget = false;
-            var detailTrack = Rect(details, "Details Track", new Vector2(32f * SourceScale, 355f * SourceScale),
+            // bg_glow is a vertical source gradient rotated across the screen, with a stretched opaque cap.
+            const float glowWidth = 209f * 5.5f * SourceScale;
+            detailsBackdrop = Rect(details, "Details Background", new Vector2(glowWidth * .5f, 540f),
+                new Vector2(800f * SourceScale, glowWidth)).gameObject.AddComponent<Image>();
+            detailsBackdrop.rectTransform.localEulerAngles = new Vector3(0f, 0f, 90f);
+            detailsBackdrop.sprite = sprites.GetValueOrDefault("_grow_s_white");
+            detailsBackdrop.type = Image.Type.Sliced;
+            detailsBackdrop.pixelsPerUnitMultiplier = 1f / (5.5f * SourceScale);
+            detailsBackdrop.color = new Color32(23, 29, 35, 255);
+            detailsBackdrop.raycastTarget = false;
+            detailsTrack = Rect(details, "Details Track", new Vector2(32f * SourceScale, 355f * SourceScale),
                 new Vector2(5.6f * SourceScale, 648f * SourceScale)).gameObject.AddComponent<Image>();
-            detailTrack.sprite = sprites.GetValueOrDefault("_btn_small_white");
-            detailTrack.color = new Color(1f, 1f, 1f, 76f / 255f);
-            detailTrack.raycastTarget = false;
+            detailsTrack.sprite = sprites.GetValueOrDefault("_btn_small_white");
+            detailsTrack.color = new Color(1f, 1f, 1f, 76f / 255f);
+            detailsTrack.raycastTarget = false;
             detailRows = Layer(details, "Rows");
+            expandedRows = detailRows.gameObject.AddComponent<CanvasGroup>();
             details.gameObject.SetActive(false);
             toggleDetails = () => SetDetailsVisible(!details.gameObject.activeSelf);
             closeDetails = () => SetDetailsVisible(false);
@@ -132,7 +146,7 @@ namespace AstralOath.Client.BattleScene
             {
                 var button = map.Require<GameButton>("skill" + index);
                 var frame = button.transform.parent.Find($"Skill {index} Frame")?.GetComponent<Image>();
-                cooldowns.Add(new Cooldown(button, frame, textSource));
+                cooldowns.Add(new Cooldown(button, frame, textSource, presentation, cooldownFormat));
             }
         }
 
@@ -148,6 +162,7 @@ namespace AstralOath.Client.BattleScene
                 }
                 portrait.Unit = unit;
                 portrait.ReadinessBp = unit.ReadinessBp;
+                if (!unit.IsAlive && portrait.Visible) portrait.ResetFeedback();
                 portrait.Visible = unit.IsAlive;
             }
             ArrangePortraits();
@@ -185,6 +200,14 @@ namespace AstralOath.Client.BattleScene
             return change;
         }
 
+        internal int ShowReadinessChange(string id, int readinessBp)
+        {
+            int change = SetReadiness(id, readinessBp);
+            if (change > 0 && !details.gameObject.activeSelf)
+                portraits[id].StartAdvance();
+            return change;
+        }
+
         internal void RestoreUnit(string id)
         {
             if (!portraits.TryGetValue(id, out var portrait)) return;
@@ -198,12 +221,12 @@ namespace AstralOath.Client.BattleScene
             if (!portraits.TryGetValue(id, out var portrait))
                 return;
             portrait.Visible = false;
-            portrait.TickHit(Portrait.HitSeconds);
+            portrait.ResetFeedback();
             ArrangePortraits();
         }
 
-        internal void SetSkillStyle(int index, bool passive) =>
-            cooldowns[index].SetStyle(passive ? PassiveFrame : null, passive ? PassiveCooldown : null);
+        internal void SetSkillStyle(int index, bool passive, int maximumTurns) =>
+            cooldowns[index].SetStyle(passive ? PassiveFrame : null, passive ? PassiveCooldown : ActiveCooldown, maximumTurns);
 
         internal void SetCooldown(int index, int turns) => cooldowns[index].Show(turns);
 
@@ -215,13 +238,18 @@ namespace AstralOath.Client.BattleScene
 
         internal void Tick(float delta)
         {
+            if (delta <= 0f) return;
+            bool open = details.gameObject.activeSelf;
+            if (open && detailsElapsed < SpreadSeconds + BackdropSeconds)
+                SetDetailsProgress(detailsElapsed + delta);
             float ease = 1f - Mathf.Exp(-delta * 11f);
+            bool restoreOrder = false;
             foreach (var portrait in portraits.Values)
             {
                 if (!portrait.Visible) continue;
-                portrait.Root.anchoredPosition = Vector2.Lerp(portrait.Root.anchoredPosition, portrait.Position, ease);
-                portrait.TickHit(delta);
+                restoreOrder |= portrait.Tick(delta, ease, open, Mathf.Clamp01(detailsElapsed / SpreadSeconds));
             }
+            if (restoreOrder) ArrangePortraits();
             TickFeedback(delta);
         }
 
@@ -246,6 +274,8 @@ namespace AstralOath.Client.BattleScene
             else
                 Text(root, "Slot", unit.Slot.Position.ToString(), Vector2.zero, new Vector2(38f, 35f),
                     26f, numberSource, material: numberSource.font.material).color = ElementColor(unit.Element);
+            var flash = Icon(root, "Hit Flash", sprites.GetValueOrDefault("mob_icon3"), baseSize * .88f, Color.red);
+            flash.enabled = false;
             var ring = sprites.GetValueOrDefault("cm_hero_circool1");
             Color sideColor = ally ? Color.white : new Color32(241, 42, 48, 255);
             float ringSize = 82f * 0.7f * SourceScale;
@@ -276,10 +306,30 @@ namespace AstralOath.Client.BattleScene
             {
                 liveRail.parent.SetAsLastSibling();
                 ArrangePortraits();
+                foreach (var portrait in portraits.Values)
+                    portrait.StartSpread();
+                SetDetailsProgress(0f);
             }
-            else liveRail.parent.SetSiblingIndex(originalRailSibling);
-            portraitLayer.gameObject.SetActive(!visible);
-            track.gameObject.SetActive(!visible);
+            else
+            {
+                liveRail.parent.SetSiblingIndex(originalRailSibling);
+                portraitLayer.gameObject.SetActive(true);
+                track.gameObject.SetActive(true);
+            }
+        }
+
+        private void SetDetailsProgress(float elapsed)
+        {
+            detailsElapsed = elapsed;
+            bool spreadComplete = elapsed >= SpreadSeconds;
+            expandedRows.alpha = spreadComplete ? 1f : 0f;
+            expandedRows.blocksRaycasts = spreadComplete;
+            detailsTrack.enabled = spreadComplete;
+            portraitLayer.gameObject.SetActive(!spreadComplete);
+            track.gameObject.SetActive(!spreadComplete);
+            var color = detailsBackdrop.color;
+            color.a = Mathf.Clamp01((elapsed - SpreadSeconds) / BackdropSeconds);
+            detailsBackdrop.color = color;
         }
 
         private float TrackBottom => track.anchoredPosition.y - track.rect.height / 2f + 36f;
@@ -313,6 +363,8 @@ namespace AstralOath.Client.BattleScene
                 portrait.Detail.Root.anchoredPosition = new Vector2(33f, detailY) * SourceScale;
                 portrait.Detail.Update(portrait.Unit, portrait.ReadinessBp, acting);
             }
+            foreach (var portrait in ordered)
+                if (portrait.Advancing) portrait.Root.SetAsLastSibling();
         }
 
         private int ComparePortraits(Portrait left, Portrait right)
@@ -406,10 +458,11 @@ namespace AstralOath.Client.BattleScene
 
         private sealed class Portrait
         {
-            internal const float HitSeconds = .17f;
-            private static readonly Color HitTint = new Color(1f, .48f, .42f);
-            private readonly Image face, detailFace;
-            private float hitRemaining;
+            private const float HitSeconds = 4f / 30f, AdvanceSeconds = 13f / 30f;
+            private readonly Image flash, detailFlash;
+            private readonly RectTransform detailPortrait;
+            private Vector2 railPosition, startPosition, shake;
+            private float hitRemaining, advanceRemaining;
 
             internal Portrait(RectTransform root, Image highlight, DetailRow detail)
             {
@@ -418,39 +471,78 @@ namespace AstralOath.Client.BattleScene
                 var badgeOffset = new Vector2(45f, 0f);
                 var badgeSize = new Vector2(42f, 48f);
                 TargetNumber = new BattleTargetBadge(root, badgeOffset, badgeSize);
-                DetailTargetNumber = new BattleTargetBadge((RectTransform)detail.Root.Find("Portrait"), badgeOffset, badgeSize);
+                detailPortrait = (RectTransform)detail.Root.Find("Portrait");
+                DetailTargetNumber = new BattleTargetBadge(detailPortrait, badgeOffset, badgeSize);
                 Detail = detail;
-                face = root.Find("Face")?.GetComponent<Image>();
-                detailFace = detail.Root.Find("Portrait/Face")?.GetComponent<Image>();
+                railPosition = root.anchoredPosition;
+                flash = root.Find("Hit Flash").GetComponent<Image>();
+                detailFlash = detailPortrait.Find("Hit Flash").GetComponent<Image>();
             }
 
             internal void PlayHit()
             {
                 hitRemaining = HitSeconds;
-                DrawHit(1f);
+                DrawHit();
             }
 
-            internal void TickHit(float delta)
+            internal bool Advancing => advanceRemaining > 0f;
+
+            internal void StartAdvance()
             {
-                if (hitRemaining <= 0f) return;
-                hitRemaining = Mathf.Max(0f, hitRemaining - delta);
-                DrawHit(hitRemaining / HitSeconds);
+                startPosition = railPosition;
+                advanceRemaining = AdvanceSeconds;
+                Root.localScale = Vector3.one * 2.9f;
+                Root.SetAsLastSibling();
             }
 
-            private void DrawHit(float strength)
+            internal void StartSpread()
             {
-                Color tint = Color.Lerp(Color.white, HitTint, strength);
-                float x = Mathf.Cos((1f - strength) * 4f * Mathf.PI) * strength * 4f;
-                var offset = new Vector2(x, 0f);
-                Apply(face);
-                Apply(detailFace);
+                startPosition = railPosition;
+                advanceRemaining = 0f;
+                Root.localScale = Vector3.one;
+            }
 
-                void Apply(Image image)
+            internal void ResetFeedback()
+            {
+                hitRemaining = advanceRemaining = 0f;
+                Root.localScale = Vector3.one;
+                DrawHit();
+            }
+
+            internal bool Tick(float delta, float ease, bool spread, float spreadProgress)
+            {
+                bool advancing = Advancing;
+                if (spread)
+                    railPosition = Vector2.Lerp(startPosition, Detail.Root.anchoredPosition,
+                        Mathf.SmoothStep(0f, 1f, spreadProgress));
+                else if (advancing)
                 {
-                    if (!image) return;
-                    image.color = tint;
-                    image.rectTransform.anchoredPosition = offset;
+                    advanceRemaining = Mathf.Max(0f, advanceRemaining - delta);
+                    float remaining = advanceRemaining / AdvanceSeconds;
+                    railPosition = Vector2.Lerp(startPosition, Position, 1f - Mathf.Pow(remaining, 1.5f));
+                    Root.localScale = Vector3.one * (1f + 1.9f * Mathf.Sqrt(remaining));
                 }
+                else
+                    railPosition = Vector2.Lerp(railPosition, Position, ease);
+
+                if (hitRemaining > 0f)
+                {
+                    hitRemaining = Mathf.Max(0f, hitRemaining - delta);
+                    DrawHit();
+                }
+                Root.anchoredPosition = railPosition + shake;
+                return advancing && !Advancing;
+            }
+
+            private void DrawHit()
+            {
+                float strength = hitRemaining / HitSeconds;
+                float phase = (1f - strength) * Mathf.PI * 3f;
+                shake = new Vector2(Mathf.Cos(phase) * 4f, Mathf.Sin(phase) * 3f) * strength;
+                flash.enabled = detailFlash.enabled = hitRemaining > 0f;
+                flash.color = detailFlash.color = strength > .5f ? Color.red : Color.white;
+                Root.anchoredPosition = railPosition + shake;
+                detailPortrait.anchoredPosition = shake;
             }
 
             internal RectTransform Root { get; }
@@ -472,11 +564,14 @@ namespace AstralOath.Client.BattleScene
             private readonly Sprite originalFrame;
             private readonly Vector2 originalPosition, originalSize;
             private readonly GameText number;
-            private Sprite passiveCooldown;
+            private readonly string format;
+            private int maximumTurns;
             private int previousTurns;
 
-            internal Cooldown(GameButton button, Image frame, GameText source)
+            internal Cooldown(GameButton button, Image frame, GameText source,
+                BattleUnitPresentationProfile presentation, string format)
             {
+                this.format = format ?? "{0}";
                 icon = (Image)button.targetGraphic;
                 this.frame = frame;
                 if (frame)
@@ -486,10 +581,22 @@ namespace AstralOath.Client.BattleScene
                     originalSize = frame.rectTransform.sizeDelta;
                 }
                 Shade = Layer(button.transform, "Cooldown Overlay").gameObject.AddComponent<Image>();
-                Shade.color = new Color(0f, 0f, 0f, 0.56f);
+                // P2 08:29.500 retains about 40% of the uncovered icon's sRGB brightness.
+                float retained = QualitySettings.activeColorSpace == ColorSpace.Linear ? Mathf.GammaToLinearSpace(.4f) : .4f;
+                Shade.color = new Color(0f, 0f, 0f, 1f - retained);
+                Shade.type = Image.Type.Filled;
+                Shade.fillMethod = Image.FillMethod.Radial360;
+                Shade.fillOrigin = (int)Image.Origin360.Top;
+                Shade.fillClockwise = false;
                 Shade.raycastTarget = false;
                 number = Text(Shade.transform, "Cooldown Number", "", Vector2.zero, icon.rectTransform.sizeDelta,
-                    24f, source);
+                    28.5f, source, TextAlignmentOptions.MidlineGeoAligned);
+                if (presentation && presentation.EffectWordFont && presentation.EffectWordOutline)
+                {
+                    number.font = presentation.EffectWordFont;
+                    number.fontSharedMaterial = presentation.EffectWordOutline;
+                    number.UpdateMeshPadding();
+                }
                 number.rectTransform.anchorMin = number.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
                 number.rectTransform.anchoredPosition = Vector2.zero;
                 Shade.gameObject.SetActive(false);
@@ -497,22 +604,28 @@ namespace AstralOath.Client.BattleScene
 
             private Image Shade { get; }
 
-            internal void SetStyle(Sprite passiveFrame, Sprite cooldownMask)
+            internal void SetStyle(Sprite passiveFrame, Sprite cooldownMask, int turnsWhenUsed)
             {
-                passiveCooldown = cooldownMask;
+                maximumTurns = turnsWhenUsed;
+                Shade.sprite = cooldownMask;
+                Vector2 inset = passiveFrame ? icon.rectTransform.sizeDelta * .075f : Vector2.zero;
+                Vector2 center = Vector2.zero;
                 if (frame)
                 {
                     frame.sprite = passiveFrame ? passiveFrame : originalFrame;
                     frame.rectTransform.anchoredPosition = passiveFrame
                         ? icon.rectTransform.anchoredPosition : originalPosition;
                     frame.rectTransform.sizeDelta = passiveFrame ? icon.rectTransform.sizeDelta : originalSize;
+                    center = frame.rectTransform.anchoredPosition - icon.rectTransform.anchoredPosition;
                 }
+                Shade.rectTransform.offsetMin = center + inset;
+                Shade.rectTransform.offsetMax = center - inset;
                 if (previousTurns > 0) Show(previousTurns);
             }
 
             internal void Dispose()
             {
-                SetStyle(null, null);
+                SetStyle(null, null, 0);
                 Remove(Shade);
             }
 
@@ -520,19 +633,9 @@ namespace AstralOath.Client.BattleScene
             {
                 if (turns > 0)
                 {
-                    Shade.sprite = passiveCooldown ? passiveCooldown : icon.overrideSprite;
-                    if (passiveCooldown)
-                    {
-                        Shade.rectTransform.offsetMin = icon.rectTransform.sizeDelta * .075f;
-                        Shade.rectTransform.offsetMax = -Shade.rectTransform.offsetMin;
-                    }
-                    else
-                    {
-                        Shade.rectTransform.offsetMin = Vector2.zero;
-                        Shade.rectTransform.offsetMax = Vector2.zero;
-                    }
+                    Shade.fillAmount = maximumTurns > 0 ? Mathf.Clamp01((float)turns / maximumTurns) : 1f;
                     if (previousTurns != turns)
-                        number.text = $"{turns}回合";
+                        number.text = string.Format(format, turns);
                 }
                 if (previousTurns != turns)
                     Shade.gameObject.SetActive(turns > 0);

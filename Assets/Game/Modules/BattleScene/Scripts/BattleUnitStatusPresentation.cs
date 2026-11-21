@@ -7,9 +7,9 @@ namespace AstralOath.Client.BattleScene
     // Owned by the unit's presentation View. Never changes authoritative health or actor transforms.
     internal sealed class BattleUnitStatusPresentation : IDisposable
     {
-        private static readonly Color32 TrailColor = new Color32(231, 44, 53, 255);
-        private static readonly Color32 TrailFlashColor = new Color32(255, 128, 116, 255);
-        private const float TrailFlashSeconds = .14f;
+        private static readonly Color32 TrailColor = new Color32(218, 3, 7, 255);
+        private static readonly Color32 TrailFlashColor = new Color32(248, 18, 19, 255);
+        private const float TrailFlashSeconds = .07f;
         private readonly RectTransform marker, frame;
         private readonly Image health, trail, shield, injury, frameImage;
         private readonly Sprite normalFrame;
@@ -32,8 +32,8 @@ namespace AstralOath.Client.BattleScene
         // Project presentation defaults. Original E7 millisecond timings are not yet proven.
         public float DamageSeconds { get; set; } = .16f;
         public float HealSeconds { get; set; } = .18f;
-        public float TrailDelaySeconds { get; set; } = .15f;
-        public float TrailSeconds { get; set; } = .50f;
+        public float TrailDelaySeconds { get; set; } = .25f;
+        public float TrailSeconds { get; set; } = 1.05f;
         // Reference Canvas units, relative to the source top anchor. This is explicit calibration.
         public Vector2 AnchorOffset { get; set; }
         public Transform ScaleAnchor { get; set; }
@@ -55,7 +55,7 @@ namespace AstralOath.Client.BattleScene
             if (!canvas) throw new ArgumentException("The unit marker must belong to a Canvas.", nameof(marker));
             originalPosition = marker.localPosition; originalScale = marker.localScale; originalFill = health.fillAmount;
             referenceProjection = ProjectionInCanvasUnits(camera);
-            var trailObject = new GameObject("Damage Trail", typeof(RectTransform), typeof(Image));
+            var trailObject = new GameObject("Damage Trail", typeof(RectTransform), typeof(BattleHealthTrail));
             trailObject.transform.SetParent(health.transform, false);
             trail = trailObject.GetComponent<Image>();
             trail.color = TrailColor;
@@ -262,7 +262,7 @@ namespace AstralOath.Client.BattleScene
                     trailTime += delta;
                     float tailProgress = TrailSeconds <= 0 ? (trailTime >= TrailDelaySeconds ? 1 : 0) :
                         Mathf.Clamp01((trailTime - Mathf.Max(0, TrailDelaySeconds)) / TrailSeconds);
-                    visibleTrail = Mathf.Max(visibleHealth, Mathf.Lerp(trailStart, target, Smooth(tailProgress)));
+                    visibleTrail = Mathf.Max(visibleHealth, Mathf.Lerp(trailStart, target, tailProgress * tailProgress));
                     if (tailProgress >= 1f) retractingDamageTrail = false;
                 }
                 else visibleTrail = visibleHealth;
@@ -397,6 +397,31 @@ namespace AstralOath.Client.BattleScene
             if (!item) return;
             item.SetActive(false); item.transform.SetParent(null, false);
             if (Application.isPlaying) UnityEngine.Object.Destroy(item); else UnityEngine.Object.DestroyImmediate(item);
+        }
+    }
+
+    internal sealed class BattleHealthTrail : Image
+    {
+        protected override void OnPopulateMesh(VertexHelper vertices)
+        {
+            vertices.Clear();
+            Rect rect = GetPixelAdjustedRect();
+            Row(0f, .76f);
+            Row(.63f, 1f);
+            Row(1f, .86f);
+            for (int i = 0; i < 4; i += 2)
+            {
+                vertices.AddTriangle(i, i + 2, i + 1);
+                vertices.AddTriangle(i + 1, i + 2, i + 3);
+            }
+
+            void Row(float position, float brightness)
+            {
+                var shade = new Color(color.r * brightness, color.g * brightness, color.b * brightness, color.a);
+                float y = Mathf.Lerp(rect.yMin, rect.yMax, position);
+                vertices.AddVert(new Vector3(rect.xMin, y), shade, Vector2.zero);
+                vertices.AddVert(new Vector3(rect.xMax, y), shade, Vector2.zero);
+            }
         }
     }
 }

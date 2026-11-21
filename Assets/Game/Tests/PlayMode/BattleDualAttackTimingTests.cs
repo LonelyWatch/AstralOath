@@ -174,10 +174,8 @@ namespace AstralOath.Client.Tests
             var simulation = Field(host, "simulation");
             var queue = (Queue<BattleFlowEvent>)Field(simulation, "playback");
             var rail = map.transform.Find("Combat Readiness/Live Readiness/Readiness Portraits");
-            var face = rail.Find("enemy-1/Face").GetComponent<Image>();
-            var other = rail.Find("enemy-2/Face").GetComponent<Image>();
-            var normal = face.color;
-            var otherNormal = other.color;
+            var flash = rail.Find("enemy-1/Hit Flash").GetComponent<Image>();
+            var other = rail.Find("enemy-2/Hit Flash").GetComponent<Image>();
             queue.Enqueue(Event(BattleFlowEventKind.Damage, "ally-1", "c1001.s2", null, BattleActionOrigin.Primary, amount: 900));
             Call(simulation, "Present", Event(BattleFlowEventKind.Action, "ally-1", "c1001.s2", "c_ras_skill_02", BattleActionOrigin.Primary));
             var hits = (float[])Field(simulation, "hitTimes");
@@ -185,11 +183,11 @@ namespace AstralOath.Client.Tests
             foreach (float hit in hits)
             {
                 Call(simulation, "Tick", hit - (float)Field(simulation, "actionElapsed") + .001f);
-                Assert.That(face.color, Is.Not.EqualTo(normal), "Every authored hit flashes the damaged unit.");
-                Assert.That(other.color, Is.EqualTo(otherNormal));
+                Assert.That(flash.enabled, Is.True, "Every authored hit flashes the damaged unit.");
+                Assert.That(flash.color, Is.EqualTo(Color.red));
+                Assert.That(other.enabled, Is.False);
                 Call(simulation, "Tick", .2f);
-                Assert.That(face.color, Is.EqualTo(normal));
-                Assert.That(face.rectTransform.anchoredPosition, Is.EqualTo(Vector2.zero));
+                Assert.That(flash.enabled, Is.False);
             }
         }
 

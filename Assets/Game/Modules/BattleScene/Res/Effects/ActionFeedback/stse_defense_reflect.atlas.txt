@@ -1,0 +1,76 @@
+
+stse_defense_reflect.sct
+size: 357,492
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+buff_arow
+  rotate: false
+  xy: 242, 427
+  size: 25, 46
+  orig: 25, 46
+  offset: 0, 0
+  index: -1
+cross_02
+  rotate: false
+  xy: 282, 413
+  size: 68, 68
+  orig: 68, 68
+  offset: 0, 0
+  index: -1
+flare/blight
+  rotate: false
+  xy: 2, 2
+  size: 174, 142
+  orig: 174, 142
+  offset: 0, 0
+  index: -1
+flare/shockwave03_01
+  rotate: false
+  xy: 178, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+flare/shockwave03_04
+  rotate: false
+  xy: 2, 146
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 317
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+light_shield
+  rotate: true
+  xy: 173, 173
+  size: 143, 158
+  orig: 143, 158
+  offset: 0, 0
+  index: -1
+light_shield2
+  rotate: false
+  xy: 173, 427
+  size: 67, 63
+  orig: 67, 63
+  offset: 0, 0
+  index: -1
+lightning_core_05
+  rotate: false
+  xy: 173, 318
+  size: 107, 107
+  orig: 107, 107
+  offset: 0, 0
+  index: -1
+shield_nomal
+  rotate: false
+  xy: 282, 318
+  size: 73, 93
+  orig: 73, 93
+  offset: 0, 0
+  index: -1

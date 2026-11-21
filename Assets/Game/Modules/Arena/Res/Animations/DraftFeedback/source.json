@@ -2,6 +2,7 @@
   "schemaVersion": 1,
   "converterSha256": "a3328010183864f67e4b6d3ea94bf97e079d67693610b6ff537442fb13d1cfe9",
   "roots": [
+    "effect/ui_pre_banned.cfx",
     "effect/ui_livepvp_bann_eff.cfx",
     "effect/ui_livepvp_arrow_blue.cfx",
     "effect/ui_livepvp_arrow_red.cfx",
@@ -17,6 +18,74 @@
     "effect/ui_livepvp_slot_red5_set.cfx"
   ],
   "files": [
+    {
+      "source": "原始资源/effect/pre_banned_pati_1.particle",
+      "sourceSha256": "68bce338533f175807f5da9ee2273be75de0b06130e886b5dc09dbc2149edb69",
+      "asset": "Particles/pre_banned_pati_1.particle.json",
+      "dependencies": [
+        "Particles/pati_01.png",
+        "Particles/ticle_02.png"
+      ],
+      "assetSha256": "696d59570d938d9786f7c4a9dc1f6bfc732333aecb91023682ed1870430b561a"
+    },
+    {
+      "source": "原始资源/effect/pre_banned_pati_2.particle",
+      "sourceSha256": "908a633ef37e7e84002780e34e8919ea44f9fceef9a538f4b1a17b20d0048e44",
+      "asset": "Particles/pre_banned_pati_2.particle.json",
+      "dependencies": [
+        "Particles/pati_01.png"
+      ],
+      "assetSha256": "7d115848dffc9558f48769c21727c06bab7b198f113c95a7438e5477bd3445d4"
+    },
+    {
+      "source": "原始资源/effect/preben_effect_spine.atlas",
+      "sourceSha256": "a125fbf322b17412b0480a1514848be313db45503e68d84dab7f8e4b3140faad",
+      "asset": "preben_effect_spine.atlas.txt",
+      "dependencies": [
+        "preben_effect_spine.png"
+      ],
+      "assetSha256": "a125fbf322b17412b0480a1514848be313db45503e68d84dab7f8e4b3140faad"
+    },
+    {
+      "source": "原始资源/effect/preben_effect_spine.scsp",
+      "sourceSha256": "6c553cd987167fc9a7e30b2e5a64b6eb8c65fe3879b042f5aa59a0a16119b069",
+      "asset": "preben_effect_spine.spine.json",
+      "dependencies": [
+        "preben_effect_spine.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "intro",
+          "duration": 0.5
+        },
+        {
+          "name": "loop",
+          "duration": 1.0
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "preben_effect_spine.sct",
+          "asset": "preben_effect_spine.png"
+        }
+      ],
+      "assetSha256": "c04a15e3cf07a1824a6dd63532403155bf4f193a5a5897194ad475a0e05cdb11"
+    },
+    {
+      "source": "原始资源/effect/preben_effect_spine.sct",
+      "sourceSha256": "caa562b90996061e7ca646f190d549898434fd56487efa3f524db067246bb7c2",
+      "asset": "preben_effect_spine.png",
+      "dependencies": [],
+      "texture": {
+        "width": 173,
+        "height": 274,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved",
+        "premultipliedAlpha": true
+      },
+      "assetSha256": "bb8d1d22e2fccaafba0e1768af3f5086b9732b1f2aa83bd6b8d8e36a55e52e3c"
+    },
     {
       "source": "原始资源/effect/ui_livepvp_arrow_blue.atlas",
       "sourceSha256": "863b315dbab3a1f12c9f232252ec13a6fb7edab968a449c33ba4ff3175e98a16",
@@ -706,6 +775,31 @@
         "Particles/ui_livepvp_slot_red5_pati1.particle.json"
       ],
       "assetSha256": "4b0190e3a56ca55141383f5f59e084f3426c14cf4ee7eeae5ac0504c92dfa4f7"
+    },
+    {
+      "source": "原始资源/effect/ui_pre_banned.cfx",
+      "sourceSha256": "a735dc79678208a2e0cd78a20e2f67db0de4cebc6966f87a265269ceab2c7229",
+      "asset": "ui_pre_banned.cfx.json",
+      "dependencies": [
+        "Particles/pre_banned_pati_1.particle.json",
+        "Particles/pre_banned_pati_2.particle.json",
+        "preben_effect_spine.spine.json"
+      ],
+      "assetSha256": "ccda5a350aa59b77423c8e1f97de236e884ce9dbbf23fc2324dafd0e30a494cf"
+    },
+    {
+      "source": "原始资源/particle/pati_01.sct",
+      "sourceSha256": "c54340504fd79d0844917fd4e69d46ba4261e31061c3f1edfaf005263410db59",
+      "asset": "Particles/pati_01.png",
+      "dependencies": [],
+      "texture": {
+        "width": 120,
+        "height": 120,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved",
+        "premultipliedAlpha": true
+      },
+      "assetSha256": "b781ef81c5198b0e2f2124edba9756e7de944947f1edc54eba66672bf2251fd5"
     },
     {
       "source": "原始资源/particle/pati_03.sct",

@@ -160,8 +160,8 @@ MonoBehaviour:
   FrostbiteApplicationEffect: {fileID: 4900000, guid: f200737634b058a89aa3f5a042f92163, type: 3}
   DamageSeconds: 0.16
   HealSeconds: 0.18
-  TrailSeconds: 0.5
-  TrailDelaySeconds: 0.15
+  TrailSeconds: 1.05
+  TrailDelaySeconds: 0.25
   DeathParticles: {fileID: 4900000, guid: 04365e071684586897e7c48ac73ef717, type: 3}
   OnlineDeathParticles: {fileID: 4900000, guid: a326531ce472593c87735d768b4e0db7, type: 3}
   DeathTextures:

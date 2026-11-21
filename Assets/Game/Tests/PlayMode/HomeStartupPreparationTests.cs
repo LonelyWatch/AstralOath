@@ -63,7 +63,7 @@ namespace AstralOath.Client.Tests
             internal bool CrossFreeReset, FailFirstArtifact, KeepArenaRoom, SlowDirectory;
             internal int InventoryVersion;
             internal volatile string DraftId = "settled-draft";
-            private bool left;
+            internal volatile bool BattleEnded;
             private volatile bool stopping;
             internal Uri Address => new Uri("http://127.0.0.1:" + ((IPEndPoint)listener.LocalEndpoint).Port);
             internal ReadServer() { listener.Start(); worker = Task.Run(Run); }
@@ -94,11 +94,10 @@ namespace AstralOath.Client.Tests
                             const string guest = "{\"id\":\"test\",\"displayName\":\"Guest\",\"avatarId\":\"c1001\"}";
                             if (line[1].EndsWith("/leave"))
                             {
-                                left = true;
                                 status = KeepArenaRoom ? "503 Unavailable" : "204 No Content";
                                 body = KeepArenaRoom ? "{\"code\":\"unavailable\"}" : "";
                             }
-                            else if (SlowDirectory && left && line[1].EndsWith("/current")) { status = "204 No Content"; body = ""; }
+                            else if (SlowDirectory && BattleEnded && line[1].EndsWith("/current")) { status = "204 No Content"; body = ""; }
                             else if (line[1].Contains("/rooms?"))
                             {
                                 await AllowDirectoryList.Task.ConfigureAwait(false);
@@ -107,7 +106,7 @@ namespace AstralOath.Client.Tests
                             else if (line[1].Contains("/messages?")) body = "{\"messages\":[]}";
                             else if (line[1].EndsWith("/draft"))
                             {
-                                string phase = left && DraftId == "settled-draft" ? "battle" : "preban";
+                                string phase = BattleEnded && DraftId == "settled-draft" ? "battle" : "preban";
                                 body = "{\"id\":\"" + DraftId + "\",\"roomId\":\"surviving-room\",\"phase\":\"" + phase +
                                     "\",\"battleId\":\"finished-battle\",\"firstPick\":\"host\",\"mySide\":\"guest\",\"eligibleHeroIds\":[],\"host\":{\"player\":" +
                                     host + ",\"prebans\":[],\"picks\":[],\"formation\":[]},\"guest\":{\"player\":" + guest + ",\"prebans\":[],\"picks\":[],\"formation\":[]}}";
@@ -140,7 +139,7 @@ namespace AstralOath.Client.Tests
         [UnityTest] public IEnumerator BagRetriesOnlyTheUnavailableInitialRead() => Check(false, false, failFirstArtifact: true);
         [UnityTest, Timeout(65000)]
         public IEnumerator BagAndHeroSnapshotsStayResidentWhileWaitingInTheArena() => Check(false, false, waitInArena: true);
-        [UnityTest] public IEnumerator BattleReturnReopensTheRoomWhenLeaveFailsAndCurrentStillContainsTheGuest() => Check(false, false, recoverRoom: true);
+        [UnityTest] public IEnumerator BattleReturnReopensTheOriginalRoomWithoutLeavingOrReplayingDraft() => Check(false, false, recoverRoom: true);
         [UnityTest] public IEnumerator ReturnedDirectoryCanCloseWhileTheRoomListIsStillLoading() => Check(false, false, slowDirectory: true);
 
         private const BindingFlags PrivateInstance = BindingFlags.Instance | BindingFlags.NonPublic;
@@ -345,6 +344,7 @@ namespace AstralOath.Client.Tests
                 {
                     home.Require<GameButton>("arena").onClick.Invoke();
                     yield return new WaitUntil(() => Page("ArenaDraft") && Page("ArenaDraft").gameObject.activeInHierarchy);
+                    server.BattleEnded = true;
                     var returning = BattleOnlineLaunch.ExitAsync();
                     if (slowDirectory)
                     {
@@ -361,7 +361,7 @@ namespace AstralOath.Client.Tests
                     }
                     yield return new WaitUntil(() => returning.IsCompleted);
                     returning.GetAwaiter().GetResult();
-                    Assert.That(server.Calls.Count(x => x == "POST /api/arena/rooms/surviving-room/leave"), Is.EqualTo(1));
+                    Assert.That(server.Calls.Count(x => x == "POST /api/arena/rooms/surviving-room/leave"), Is.Zero);
                     Assert.That(server.Calls.Count(x => x == "GET /api/arena/rooms/current"), Is.EqualTo(2));
                     Assert.That(Page("ArenaRoom").gameObject.activeInHierarchy, Is.True);
                     Assert.That(Page("ArenaDirectory").gameObject.activeInHierarchy, Is.False);

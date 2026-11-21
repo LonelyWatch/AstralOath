@@ -34,7 +34,8 @@ namespace AstralOath.Client.Arena
         {
             foreach (string key in new[] { "title", "timer", "preTimer", "host", "guest", "hint", "preCount", "actionLabel", "preActionLabel", "status", "rosterFilterLabel" })
                 _ = Label(key);
-            foreach (string key in new[] { "action", "preAction", "openRosterFilters" }) _ = Button(key);
+            foreach (string key in new[] { "action", "preAction", "openRosterFilters", "preSort" }) _ = Button(key);
+            _ = Label("preSortLabel");
             foreach (string key in new[] { "preban", "formation", "preSelected", "revealedOwn", "revealedEnemy", "rosterEmpty", "rosterFilters", "row", "gridCell", "chip", "recent", "preHeader", "reveal", "revealHeroes" })
                 _ = Node(key);
             foreach (string key in new[] { "roster", "grid" }) _ = Scroll(key);
@@ -66,6 +67,7 @@ namespace AstralOath.Client.Arena
             }
             foreach (string key in new[] { "row", "gridCell", "chip" })
                 ValidateCard(Node(key).GetComponent<BindingMap>());
+            _ = Node("gridCell").GetComponent<BindingMap>().Require<RawImage>("prebanEffect");
         }
 
         private static void ValidateCard(BindingMap card)

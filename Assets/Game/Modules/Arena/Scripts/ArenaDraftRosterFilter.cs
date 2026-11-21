@@ -12,7 +12,8 @@ namespace AstralOath.Client.Arena
 {
     internal sealed class ArenaDraftRosterFilter
     {
-        private const string Overlay = "arena/draft-roster-filter";
+        private readonly bool preban;
+        private string Overlay => preban ? "arena/draft-preban-filter" : "arena/draft-roster-filter";
         private const string LabelPrefix = "arena.draft.filter.";
         private static readonly string[] SortKeys = { "stars", "level", "name", "attack", "defense", "health", "speed" };
         private readonly ArenaDraft view;
@@ -21,21 +22,24 @@ namespace AstralOath.Client.Arena
         private readonly Action refreshRoster;
         private readonly BindingMap panel;
         private readonly Dictionary<string, HashSet<string>> selections = new Dictionary<string, HashSet<string>>(StringComparer.Ordinal);
-        private string sort = "level";
+        private string sort;
         private bool ascending, hideMax;
 
-        internal ArenaDraftRosterFilter(ArenaDraft view, ILocaleService locale, WindowCoordinator windows, Action refreshRoster)
+        internal ArenaDraftRosterFilter(ArenaDraft view, ILocaleService locale, WindowCoordinator windows,
+            Action refreshRoster, bool preban = false)
         {
             this.view = view;
             this.locale = locale;
             this.windows = windows;
             this.refreshRoster = refreshRoster;
+            this.preban = preban;
+            sort = preban ? "stars" : "level";
             panel = view.Node("rosterFilters").GetComponent<BindingMap>();
         }
 
         internal void Bind(BindingScope scope)
         {
-            view.Button("openRosterFilters").Bind(scope, _ =>
+            view.Button(preban ? "preSort" : "openRosterFilters").Bind(scope, _ =>
             {
                 if (windows.IsOverlayOpen(Overlay)) Close();
                 else windows.ShowOverlay(Overlay, Open);
@@ -50,6 +54,7 @@ namespace AstralOath.Client.Arena
 
         private void Open(BindingScope scope)
         {
+            panel.transform.SetAsLastSibling();
             panel.gameObject.SetActive(true);
             scope.Add(() => { if (panel) panel.gameObject.SetActive(false); });
             Listen(scope, panel.Require<GameButton>("close"), Close);
@@ -187,7 +192,7 @@ namespace AstralOath.Client.Arena
 
         private void DrawToolbar()
         {
-            var label = view.Label("rosterFilterLabel");
+            var label = view.Label(preban ? "preSortLabel" : "rosterFilterLabel");
             label.text = locale.Resolve(LabelPrefix + sort);
             label.color = selections.Values.Any(items => items.Count > 0) || hideMax ? Mist : Color.white;
         }

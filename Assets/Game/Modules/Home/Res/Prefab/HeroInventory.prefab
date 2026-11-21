@@ -25576,6 +25576,7 @@ GameObject:
   - component: {fileID: 7358770186253765996}
   - component: {fileID: 3500322708350718217}
   - component: {fileID: 3795675573539608134}
+  - component: {fileID: 2149317810233701273}
   m_Layer: 0
   m_Name: Hero card template
   m_TagString: Untagged
@@ -25583,6 +25584,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!114 &2149317810233701273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6065274066497871937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.4}
+  m_EffectDistance: {x: 0, y: -5}
+  m_UseGraphicAlpha: 1
 --- !u!224 &7562204538067968304
 RectTransform:
   m_ObjectHideFlags: 0

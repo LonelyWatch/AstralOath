@@ -1,0 +1,76 @@
+
+stse_critup.sct
+size: 512,234
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 2, 2
+  size: 163, 163
+  orig: 163, 163
+  offset: 0, 0
+  index: -1
+force_01
+  rotate: true
+  xy: 34, 167
+  size: 64, 59
+  orig: 64, 59
+  offset: 0, 0
+  index: -1
+force_02
+  rotate: false
+  xy: 195, 166
+  size: 49, 53
+  orig: 49, 53
+  offset: 0, 0
+  index: -1
+force_03
+  rotate: true
+  xy: 2, 167
+  size: 65, 30
+  orig: 65, 30
+  offset: 0, 0
+  index: -1
+light_up_L
+  rotate: false
+  xy: 167, 2
+  size: 92, 162
+  orig: 92, 162
+  offset: 0, 0
+  index: -1
+lightning_core_05
+  rotate: false
+  xy: 261, 107
+  size: 107, 107
+  orig: 107, 107
+  offset: 0, 0
+  index: -1
+powerup_1
+  rotate: true
+  xy: 261, 2
+  size: 103, 147
+  orig: 103, 147
+  offset: 0, 0
+  index: -1
+powerup_2
+  rotate: false
+  xy: 410, 98
+  size: 90, 124
+  orig: 90, 124
+  offset: 0, 0
+  index: -1
+spark_01
+  rotate: false
+  xy: 410, 2
+  size: 100, 94
+  orig: 100, 94
+  offset: 0, 0
+  index: -1
+spark_02
+  rotate: false
+  xy: 95, 167
+  size: 98, 59
+  orig: 98, 59
+  offset: 0, 0
+  index: -1

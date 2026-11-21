@@ -67,11 +67,70 @@ namespace AstralOath.Client.Tests
             var ringColor = enemyRing.color;
 
             Invoke("PlayReadinessHit", enemy.InstanceId);
-            Assert.That(enemyFace.color, Is.Not.EqualTo(Color.white));
+            var hit = portraits.Find(enemy.InstanceId + "/Hit Flash")?.GetComponent<Image>();
+            Assert.That(hit, Is.Not.Null, "The native impact covers the face in a solid red disc.");
+            Assert.That(hit.color, Is.EqualTo(Color.red));
+            Assert.That(hit.enabled, Is.True);
+            Assert.That(portraits.Find(ally.InstanceId + "/Hit Flash").GetComponent<Image>().enabled, Is.False);
             Assert.That(enemyRing.color, Is.EqualTo(ringColor));
+            var shaken = enemyRing.transform.parent.localPosition;
+            Invoke("Tick", 0f);
+            Assert.That(enemyRing.transform.parent.localPosition, Is.EqualTo(shaken));
+            Invoke("Tick", .075f);
+            Assert.That(hit.color, Is.EqualTo(Color.white));
             Invoke("Tick", .2f);
+            Assert.That(hit.enabled, Is.False);
             Assert.That(enemyFace.color, Is.EqualTo(Color.white));
             Assert.That(enemyRing.enabled, Is.True);
+        }
+
+        [Test]
+        public void ReadinessGainLiftsOnlyTheAffectedPortraitAndReturnsToItsTrack()
+        {
+            string id = snapshot.Units.First(unit => unit.InstanceId != snapshot.CurrentActorId).InstanceId;
+            var portrait = (RectTransform)portraits.Find(id);
+            Invoke("SetReadiness", id, 1000);
+            Invoke("Tick", 2f);
+            Assert.That(portrait.localScale, Is.EqualTo(Vector3.one));
+            var origin = portrait.anchoredPosition;
+            Invoke("ShowReadinessChange", id, 8000);
+            Invoke("Tick", .12f);
+            Assert.That(portrait.localScale.x, Is.GreaterThan(1.5f));
+            Assert.That(portrait.anchoredPosition.x, Is.EqualTo(origin.x).Within(.01f));
+            Assert.That(portrait.anchoredPosition.y, Is.LessThan(origin.y));
+            var raised = portrait.anchoredPosition;
+            Invoke("Tick", 0f);
+            Assert.That(portrait.anchoredPosition, Is.EqualTo(raised));
+            Invoke("Tick", 1f);
+            Assert.That(portrait.localScale, Is.EqualTo(Vector3.one));
+            Assert.That(portrait.anchoredPosition.x, Is.EqualTo(origin.x).Within(.01f));
+            var destination = portrait.anchoredPosition;
+            Invoke("SetReadiness", id, 1000);
+            Invoke("Tick", 1f);
+            Invoke("SetReadiness", id, 8000);
+            Invoke("Tick", 1f);
+            Assert.That(Vector2.Distance(portrait.anchoredPosition, destination), Is.LessThan(.1f));
+        }
+
+        [Test]
+        public void OpeningReadinessDetailsMovesPortraitsBeforeFadingInTheLeftBackground()
+        {
+            var toggle = root.transform.Find("Combat Readiness/Live Readiness/Readiness Details Button").GetComponent<GameButton>();
+            toggle.onClick.Invoke();
+            var background = details.Find("Details Background").GetComponent<Image>();
+            var rows = details.Find("Rows").GetComponent<CanvasGroup>();
+            Assert.That(rows, Is.Not.Null);
+            Assert.That(rows.alpha, Is.Zero);
+            Assert.That(background.color.a, Is.Zero);
+            Assert.That(portraits.gameObject.activeInHierarchy, Is.True);
+            Invoke("Tick", .65f);
+            Assert.That(rows.alpha, Is.EqualTo(1));
+            Assert.That(background.color.a, Is.GreaterThan(.95f));
+            Assert.That(portraits.gameObject.activeInHierarchy, Is.False);
+            Assert.That(details.Find("Close Surface").GetComponent<Image>().color.a, Is.Zero);
+            toggle.onClick.Invoke();
+            Assert.That(details.gameObject.activeSelf, Is.False);
+            Assert.That(portraits.gameObject.activeInHierarchy, Is.True);
         }
 
         [Test]
@@ -199,7 +258,8 @@ namespace AstralOath.Client.Tests
                     new object[] { kind, turns, strength }, null);
                 return (BattleUnitSnapshot)Activator.CreateInstance(typeof(BattleUnitSnapshot), PrivateInstance, null,
                     new object[] { unit, current.CurrentHealth, current.ReadinessBp, current.Cooldowns, new[] { effect },
-                        0, current.InjuryAmount, current.OpeningAttackBonus, Array.Empty<string>() }, null);
+                        0, current.InjuryAmount, current.OpeningAttackBonus, Array.Empty<string>(),
+                        null, current.IsExtinct, current.LethalProtectionConsumed }, null);
             }
             var updated = WithStatus(BattleStatusKind.DefenseDown, 2, 7000);
             var update = rowView.GetType().GetMethod("Update", PrivateInstance);

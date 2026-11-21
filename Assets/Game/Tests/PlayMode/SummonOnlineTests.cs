@@ -25,32 +25,8 @@ namespace AstralOath.Client.Tests
         [UnityTest, Timeout(165000)]
         public IEnumerator MoreOpensNativeSummonAndSkipShowsRecoverableTenResult()
         {
-            string endpoint = Environment.GetEnvironmentVariable("ASTRAL_SUMMON_TEST_URL");
-            if (string.IsNullOrWhiteSpace(endpoint))
-                Assert.Ignore("Set ASTRAL_SUMMON_TEST_URL to a local Development service with migrations 011 and 012.");
-            Assert.That(new Uri(endpoint).IsLoopback, Is.True);
-
-            priorEndpoint = Environment.GetEnvironmentVariable("ASTRAL_FOUNDATION_URL");
-            priorSkipEntry = Environment.GetEnvironmentVariable("ASTRAL_TEST_SKIP_ENTRY");
-            changedSettings = true;
-            Environment.SetEnvironmentVariable("ASTRAL_FOUNDATION_URL", endpoint);
-            Environment.SetEnvironmentVariable("ASTRAL_TEST_SKIP_ENTRY", "1");
-            priorScene = SceneManager.GetActiveScene();
-            home = EditorSceneManager.LoadSceneInPlayMode(HomePath, new LoadSceneParameters(LoadSceneMode.Additive));
-            yield return Until(() => home.IsValid() && home.isLoaded && FindWindow("HomeWindow"), "Home did not load.");
-            Assert.That(SceneManager.SetActiveScene(home), Is.True);
-
-            Click(FindWindow("HomeWindow"), "more");
-            yield return Until(() => FindWindow("HomeMoreMenu"), "More did not open.");
-            yield return new WaitForSecondsRealtime(.20f);
-            yield return Capture("home-more");
-            Click(FindWindow("HomeMoreMenu"), "summon");
-            yield return Until(() =>
-            {
-                var current = FindWindow("SummonWindow");
-                return current && current.Require<GameText>("balance").text.Contains("60");
-            }, "The real server did not initialize the developer's 60 bookmarks.");
-
+            yield return OpenHome();
+            yield return OpenSummon("60", true);
             Assert.That(FindWindow("HomeMoreMenu"), Is.Null);
             var summon = FindWindow("SummonWindow");
             foreach (string key in new[] { "single", "ten", "free", "resultClose", "resultAgain" })
@@ -278,6 +254,100 @@ namespace AstralOath.Client.Tests
             Click(summon, "resultClose");
             Click(summon, "back");
             yield return Until(() => FindWindow("HomeWindow") && !FindWindow("SummonWindow"), "Back did not restore Home.");
+        }
+
+        [UnityTest, Timeout(120000)]
+        public IEnumerator ReopenedSummonKeepsTheSingleAndTenResultCardsAndWishlistUsable()
+        {
+            yield return OpenHome();
+            yield return OpenSummon("60");
+            var window = FindWindow("SummonWindow");
+            var groups = new[]
+            {
+                window.Require<RectTransform>("resultItems"), window.Require<RectTransform>("wishPortraitStrip"),
+                window.Require<RectTransform>("wishCaptionStrip"), (RectTransform)window.Require<GameText>("wishTitle").transform.parent
+            };
+            Canvas.ForceUpdateCanvases();
+            var initial = groups.Select(group => group.rect.size).ToArray();
+            foreach (var size in initial) Assert.That(Mathf.Min(size.x, size.y), Is.GreaterThan(1f));
+
+            foreach (int count in new[] { 1, 10 })
+            {
+                Click(window, "back");
+                yield return Until(() => FindWindow("HomeWindow") && !FindWindow("SummonWindow"), "Back did not restore Home.");
+                yield return OpenSummon(count == 1 ? "60" : "55");
+                Assert.That(FindWindow("SummonWindow"), Is.SameAs(window), "The preloaded page should be reused.");
+                Click(window, "covenant");
+                string draw = count == 1 ? "single" : "ten";
+                yield return Until(() => window.Require<GameButton>(draw).isActiveAndEnabled &&
+                    window.Require<GameButton>(draw).IsInteractable(), "The covenant draw did not become available.");
+                Click(window, draw);
+                Click(window, "confirmYes");
+                yield return Until(() => Panel(window, "revealPanel"), "Summon did not reach the reveal.");
+                Click(window, "skip");
+                yield return Until(() => Panel(window, "resultPanel"), "The result summary did not open.");
+                yield return Capture("reopen-" + count + "-result");
+                Canvas.ForceUpdateCanvases();
+                var rows = Rows(window, "resultItems");
+                Assert.That(rows.Length, Is.EqualTo(count));
+                for (int i = 0; i < groups.Length; i++)
+                    Assert.That(groups[i].rect.size, Is.EqualTo(initial[i]), groups[i].name + " after reopening");
+                foreach (var row in rows)
+                {
+                    var name = row.Require<GameText>("name");
+                    var firstStar = row.Require<Image>("star0");
+                    var artifact = row.Require<GameObject>("artifact");
+                    var artwork = row.Require<Image>(artifact.activeSelf ? "artifactArtwork" : "icon");
+                    Assert.That(name.text, Is.Not.Empty);
+                    Assert.That(firstStar.isActiveAndEnabled && artwork.isActiveAndEnabled && artwork.sprite, Is.True);
+                    foreach (var rect in new[] { (RectTransform)row.transform, name.rectTransform, firstStar.rectTransform, artwork.rectTransform })
+                        Assert.That(Mathf.Min(rect.rect.width, rect.rect.height), Is.GreaterThan(1f), rect.name);
+                }
+                SummonCardLayoutChecks.Verify(window, (RectTransform)rows[0].transform);
+                Click(rows[0], "button");
+                Assert.That(Panel(window, "revealPanel"), Is.True);
+                Click(window, "next");
+                Click(window, "resultClose");
+                Click(window, "wish");
+                var selected = Rows(window, "wishSelectedItems");
+                Assert.That(selected.Length, Is.EqualTo(14));
+                SummonCardLayoutChecks.Verify(window, (RectTransform)selected[0].transform);
+                if (count == 10) yield return Capture("reopen-wishlist");
+                Click(window, "wishClose");
+            }
+        }
+
+        private IEnumerator OpenHome()
+        {
+            string endpoint = Environment.GetEnvironmentVariable("ASTRAL_SUMMON_TEST_URL");
+            if (string.IsNullOrWhiteSpace(endpoint))
+                Assert.Ignore("Set ASTRAL_SUMMON_TEST_URL to a local Development service with migrations 011 and 012.");
+            Assert.That(new Uri(endpoint).IsLoopback, Is.True);
+
+            priorEndpoint = Environment.GetEnvironmentVariable("ASTRAL_FOUNDATION_URL");
+            priorSkipEntry = Environment.GetEnvironmentVariable("ASTRAL_TEST_SKIP_ENTRY");
+            changedSettings = true;
+            Environment.SetEnvironmentVariable("ASTRAL_FOUNDATION_URL", endpoint);
+            Environment.SetEnvironmentVariable("ASTRAL_TEST_SKIP_ENTRY", "1");
+            priorScene = SceneManager.GetActiveScene();
+            home = EditorSceneManager.LoadSceneInPlayMode(HomePath, new LoadSceneParameters(LoadSceneMode.Additive));
+            yield return Until(() => home.IsValid() && home.isLoaded && FindWindow("HomeWindow"), "Home did not load.");
+            Assert.That(SceneManager.SetActiveScene(home), Is.True);
+        }
+
+        private IEnumerator OpenSummon(string expectedBalance, bool captureMenu = false)
+        {
+            Click(FindWindow("HomeWindow"), "more");
+            yield return Until(() => FindWindow("HomeMoreMenu"), "More did not open.");
+            yield return new WaitForSecondsRealtime(.20f);
+            if (captureMenu) yield return Capture("home-more");
+            Click(FindWindow("HomeMoreMenu"), "summon");
+            yield return Until(() =>
+            {
+                var current = FindWindow("SummonWindow");
+                return current && current.Require<GameButton>("covenant").IsInteractable() &&
+                    current.Require<GameText>("status").text == "" && current.Require<GameText>("balance").text == expectedBalance;
+            }, "The summon page did not finish loading the expected balance.");
         }
 
         private static void PressRepeatPrice(BindingMap summon)

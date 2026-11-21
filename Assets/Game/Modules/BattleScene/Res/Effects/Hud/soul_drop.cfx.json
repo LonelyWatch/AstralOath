@@ -1,0 +1,17 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "soul_drop",
+      "ani": "intro,loop",
+      "scale": "0.6",
+      "format": "spine",
+      "loop": 1
+    },
+    {
+      "source": "soul_dorp_pati",
+      "z": "10",
+      "format": "particle"
+    }
+  ]
+}

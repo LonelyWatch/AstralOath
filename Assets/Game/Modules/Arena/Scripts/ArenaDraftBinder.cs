@@ -23,7 +23,7 @@ namespace AstralOath.Client.Arena
         private readonly IAssetService assets;
         private readonly ISceneAssetService scenes;
         private readonly Func<Task> returnToRoom;
-        private readonly ArenaDraftRosterFilter rosterFilter;
+        private readonly ArenaDraftRosterFilter rosterFilter, prebanFilter;
         private readonly ScrollRect rosterScroll;
         private Choice[] visibleRoster = Array.Empty<Choice>();
         private float lastRosterOffset = float.NaN, lastRosterWidth, lastRosterHeight, lastRosterStep;
@@ -75,6 +75,7 @@ namespace AstralOath.Client.Arena
             this.scenes = scenes;
             this.returnToRoom = returnToRoom;
             rosterFilter = new ArenaDraftRosterFilter(view, locale, windows, ApplySearch);
+            prebanFilter = new ArenaDraftRosterFilter(view, locale, windows, ApplySearch, preban: true);
             rosterScroll = view.Scroll("roster");
             this.artwork = artwork;
             art = artwork.Heroes.ToDictionary(hero => hero.Id, StringComparer.Ordinal);
@@ -160,6 +161,7 @@ namespace AstralOath.Client.Arena
             Listen(view.Button("action"), SubmitAsync);
             Listen(view.Button("preAction"), SubmitAsync);
             rosterFilter.Bind(owner);
+            prebanFilter.Bind(owner);
             for (int index = 0; index < 5; index++)
             {
                 int slot = index;
@@ -190,8 +192,17 @@ namespace AstralOath.Client.Arena
         {
             if (scope == null || launching || !view.Root) return;
             view.FitLayout();
-            if (prebanReveal.Tick(seconds)) Render();
+            if (prebanReveal.Tick(seconds))
+            {
+                Render();
+                WarmBattleRoster();
+            }
             UpdateTimer();
+            if (draft?.phase == "preban")
+            {
+                foreach (var card in grid) card.AdvancePreban(seconds);
+                foreach (var card in recent) card.AdvancePreban(seconds);
+            }
             LayoutRoster();
             FitGrid(prebanLayout, gridViewport.rect.width);
             FitGrid(recentLayout, recentGrid.rect.width);
@@ -320,22 +331,10 @@ namespace AstralOath.Client.Arena
             {
                 candidate = null;
                 swapIndex = -1;
-                if (scope != null && battlePreload == null && draft.phase is "pick" or "ban" or "formation")
-                    battlePreload = BattleOnlineLaunch.BeginPreload(assets, scenes, scope.Token);
                 if (draft.phase == "formation") formation = DraftFormation();
             }
             bool hostPicked = previousPhase == "pick" && Count(draft.host.picks) > priorHostPicks;
             bool guestPicked = previousPhase == "pick" && Count(draft.guest.picks) > priorGuestPicks;
-            if (battlePreload != null && (changedPhase || hostPicked || guestPicked) &&
-                draft.phase is "pick" or "ban" or "formation")
-            {
-                // Only the public, locked selections supply model IDs. A highlighted candidate
-                // or an unacknowledged click must never affect the warmed roster.
-                string ownBan = draft.phase == "formation" ? draft.Opponent.ban : null;
-                string enemyBan = draft.phase == "formation" ? draft.Own.ban : null;
-                battlePreload.WarmRoster((draft.Own.picks ?? Empty).Where(id => !string.IsNullOrEmpty(id) && id != ownBan)
-                    .Concat((draft.Opponent.picks ?? Empty).Where(id => !string.IsNullOrEmpty(id) && id != enemyBan)));
-            }
             if (hostPicked || guestPicked)
             {
                 candidate = null;
@@ -366,11 +365,22 @@ namespace AstralOath.Client.Arena
                     artwork.FinalBan, particleTextures);
             else if (draft.phase != "pick" && prebanReveal.IsPlaying)
                 prebanReveal.Clear();
+            if (!prebanReveal.IsPlaying && (changedPhase || hostPicked || guestPicked)) WarmBattleRoster();
             view.Label("status").text = "";
             Render();
             if (hostPicked || guestPicked) feature.PlaySelectionFeedback();
             if (hostPicked) PlayPicks(draft.IsHost, priorHostPicks, draft.host.picks.Length);
             if (guestPicked) PlayPicks(!draft.IsHost, priorGuestPicks, draft.guest.picks.Length);
+        }
+
+        private void WarmBattleRoster()
+        {
+            if (scope == null || draft == null || !(draft.phase is "pick" or "ban" or "formation")) return;
+            battlePreload ??= BattleOnlineLaunch.BeginPreload(assets, scenes, scope.Token);
+            string ownBan = draft.phase == "formation" ? draft.Opponent.ban : null;
+            string enemyBan = draft.phase == "formation" ? draft.Own.ban : null;
+            battlePreload?.WarmRoster((draft.Own.picks ?? Empty).Where(id => !string.IsNullOrEmpty(id) && id != ownBan)
+                .Concat((draft.Opponent.picks ?? Empty).Where(id => !string.IsNullOrEmpty(id) && id != enemyBan)));
         }
 
         private void PlayPicks(bool own, int first, int count)
@@ -417,6 +427,7 @@ namespace AstralOath.Client.Arena
             bool filtersAllowed = !pre && !showingReveal && draft.phase != "battle";
             view.Button("openRosterFilters").interactable = filtersAllowed;
             if (!filtersAllowed) rosterFilter.Close();
+            if (!pre) prebanFilter.Close();
             var own = draft.Own.player;
             var opponent = draft.Opponent.player;
             ArenaArt.SetText(view.Label("host"), own.displayName);
@@ -719,11 +730,6 @@ namespace AstralOath.Client.Arena
             float pulse = Mathf.SmoothStep(0f, 1f, Mathf.Abs(Mathf.Repeat(now, 1f) * 2f - 1f));
             foreach (var card in left) card.AnimatePick(pulse);
             foreach (var card in right) card.AnimatePick(pulse);
-            if (draft?.phase == "preban")
-            {
-                foreach (var card in grid) card.AnimatePreban(now);
-                foreach (var card in recent) card.AnimatePreban(now);
-            }
 
             double remaining = deadline == default ? -1 : (deadline - DateTimeOffset.UtcNow).TotalSeconds;
             int picksTaken = Count(draft?.Own.picks) + Count(draft?.Opponent.picks);
@@ -783,6 +789,13 @@ namespace AstralOath.Client.Arena
             LayoutRoster();
             if (changed) rosterScrollController.ResetMotion();
             Filter(grid, view.Search("preSearch").text);
+            int index = 0;
+            foreach (var choice in prebanFilter.Order(grid, row => art[row.Id]))
+            {
+                var row = choice.Button.transform;
+                if (row.GetSiblingIndex() != index) row.SetSiblingIndex(index);
+                index++;
+            }
         }
 
         private void Filter(List<Choice> list, string query)
@@ -794,6 +807,7 @@ namespace AstralOath.Client.Arena
                 bool matches = term.Length == 0 || hero.Name.IndexOf(term, StringComparison.OrdinalIgnoreCase) >= 0 ||
                     hero.Id.IndexOf(term, StringComparison.OrdinalIgnoreCase) >= 0;
                 if (ReferenceEquals(list, roster)) matches &= rosterFilter.Matches(hero);
+                if (ReferenceEquals(list, grid)) matches &= prebanFilter.Matches(hero);
                 if (choice.Button.gameObject.activeSelf != matches) choice.Button.gameObject.SetActive(matches);
             }
         }
@@ -867,7 +881,7 @@ namespace AstralOath.Client.Arena
             row.name = id;
             bool rosterCard = template == "row";
             var card = new Choice(row.GetComponent<BindingMap>(), artwork.LevelDigits, rosterCard: rosterCard,
-                prebanCard: template == "gridCell");
+                prebanArt: template == "gridCell" ? artwork : null, particleTextures: particleTextures);
             card.Set(id, GetArt(id), asCard: rosterCard, tags: template != "chip");
             UnityAction select = () => Select(card.Id);
             card.Button.onClick.AddListener(select);
@@ -896,6 +910,8 @@ namespace AstralOath.Client.Arena
 
         public void Dispose()
         {
+            foreach (var card in grid) card.ReleasePreban();
+            foreach (var card in recent) card.ReleasePreban();
             feature.Dispose();
             blueGuide.Dispose();
             redGuide.Dispose();
@@ -909,6 +925,7 @@ namespace AstralOath.Client.Arena
         private void Close()
         {
             rosterFilter.Close();
+            prebanFilter.Close();
             battlePreload?.Dispose();
             battlePreload = null;
             scope = null;
@@ -930,6 +947,7 @@ namespace AstralOath.Client.Arena
         {
             foreach (var item in list)
             {
+                item.ReleasePreban();
                 if (!item.Button) continue;
                 item.Button.gameObject.SetActive(false);
                 UnityEngine.Object.Destroy(item.Button.gameObject);
@@ -959,17 +977,16 @@ namespace AstralOath.Client.Arena
             private readonly Image[] grade, speed;
             private readonly Image pickedIcon, bannedIcon;
             private readonly GameText title, stars, state;
-            private readonly Image prebanFlash, prebanGlow;
+            private readonly RawImage prebanSurface;
+            private readonly ArenaDraftArt prebanArt;
+            private readonly IReadOnlyDictionary<string, Texture2D> particleTextures;
+            private ArenaDraftPortrait prebanEffect;
+            private bool marked;
             private ArenaDraftArt.Hero displayedHero;
             private bool provisional;
-            private float prebanStarted;
-            // Scale keys from preben_effect_spine/intro. The mark holds its settled pose during the loop.
-            private static readonly AnimationCurve PrebanStrikeScale = new AnimationCurve(
-                new Keyframe(0f, 5f), new Keyframe(.1f, 1f), new Keyframe(.1333f, 3f),
-                new Keyframe(.2f, 1f), new Keyframe(.2333f, 1.05f), new Keyframe(.3333f, 1f));
-
             internal Choice(BindingMap map, Sprite[] digits = null, bool teamSlot = false, bool protectedSlot = false,
-                bool miniature = false, bool rosterCard = false, bool prebanCard = false)
+                bool miniature = false, bool rosterCard = false, ArenaDraftArt prebanArt = null,
+                IReadOnlyDictionary<string, Texture2D> particleTextures = null)
             {
                 Button = map.Require<GameButton>("button");
                 Portrait = map.Require<Image>("portrait");
@@ -1008,10 +1025,11 @@ namespace AstralOath.Client.Arena
                     pickedIcon = map.Require<Image>("pickedIcon");
                     bannedIcon = map.Require<Image>("bannedIcon");
                 }
-                if (prebanCard)
+                if (prebanArt)
                 {
-                    prebanFlash = map.Require<Image>("prebanFlash");
-                    prebanGlow = map.Require<Image>("prebanGlow");
+                    this.prebanArt = prebanArt;
+                    this.particleTextures = particleTextures;
+                    prebanSurface = map.Require<RawImage>("prebanEffect");
                     grade = Enumerable.Range(0, 6).Select(index => map.Require<Image>("star" + index)).ToArray();
                 }
             }
@@ -1027,6 +1045,14 @@ namespace AstralOath.Client.Arena
                     starVisibility.gameObject.SetActive(hero != null);
                     if (hero != null)
                     {
+                        if (hero.Card)
+                        {
+                            // The full face sheet shares the tray's outer edge, including transparent padding.
+                            var rect = Portrait.rectTransform;
+                            var clip = (RectTransform)rect.parent;
+                            float width = rect.rect.height * hero.Card.rect.width / hero.Card.rect.height;
+                            rect.anchorMin = new Vector2(rect.anchorMax.x - width / clip.rect.width, rect.anchorMin.y);
+                        }
                         tens.sprite = levelDigits[Mathf.Clamp(hero.Level / 10, 0, 9)];
                         units.sprite = levelDigits[Mathf.Clamp(hero.Level % 10, 0, 9)];
                         for (int index = 0; index < grade.Length; index++) grade[index].enabled = index < hero.Stars;
@@ -1041,7 +1067,7 @@ namespace AstralOath.Client.Arena
                 role.enabled = tags && role.sprite;
                 stars.text = grade == null && tags && hero != null ? new string('★', hero.Stars) : "";
                 if (speed != null && hero != null) SetRosterDetails(hero);
-                if (prebanFlash && hero != null) SetPrebanGrade(hero);
+                if (prebanSurface && hero != null) SetPrebanGrade(hero);
             }
 
             private void SetPrebanGrade(ArenaDraftArt.Hero hero)
@@ -1063,32 +1089,32 @@ namespace AstralOath.Client.Arena
 
             internal void SetPrebanMark(bool visible)
             {
-                if (Mark.enabled == visible) return;
-                Mark.enabled = visible;
-                if (visible)
-                {
-                    prebanStarted = Time.unscaledTime;
-                    AnimatePreban(prebanStarted);
-                }
-                else
-                {
-                    prebanFlash.enabled = prebanGlow.enabled = false;
-                }
+                if (marked == visible) return;
+                marked = visible;
+                if (marked) AdvancePreban(0f);
+                else ReleasePreban();
             }
 
-            internal void AnimatePreban(float now)
+            internal void AdvancePreban(float seconds)
             {
-                if (!Mark.enabled || !Mark.gameObject.activeInHierarchy) return;
-                float elapsed = now - prebanStarted;
-                float size = PrebanStrikeScale.Evaluate(elapsed);
-                Mark.rectTransform.localScale = new Vector3(size, size, 1f);
-                SetOpacity(Mark, Mathf.Clamp01(elapsed / .1f));
-                prebanFlash.enabled = true;
-                float pulse = .5f + .5f * Mathf.Cos(Mathf.Max(0f, elapsed - .5f) * Mathf.PI * 2f);
-                float flare = 1f - Mathf.Clamp01(elapsed / .2666f);
-                prebanFlash.color = new Color(1f, .114f, 0f, Mathf.Lerp(.27f, .47f, pulse) + flare * .43f);
-                prebanGlow.enabled = elapsed < .2333f;
-                if (prebanGlow.enabled) SetOpacity(prebanGlow, 1f - elapsed / .2333f);
+                if (!marked) return;
+                if (!prebanSurface.gameObject.activeInHierarchy) { ReleasePreban(); return; }
+                if (prebanEffect == null)
+                {
+                    prebanEffect = new ArenaDraftPortrait(prebanSurface, nativeEffectSize: new Vector2(660f, 684f),
+                        centralBanLight: true, prebanCell: true);
+                    if (!prebanEffect.PlayOneShot(prebanArt.Preban.MakeSource(), "intro", loopAfter: "loop")) return;
+                    prebanEffect.AddParticleTrack(prebanArt.Preban.Particles, particleTextures, .08f, 0f, 10, "icon");
+                    prebanEffect.AddParticleTrack(prebanArt.PrebanFlashParticles, particleTextures, 0f, 0f, 5, "icon");
+                    prebanEffect.AddParticleTrack(prebanArt.PrebanFlashParticles, particleTextures, .03f, 0f, 3, "icon");
+                }
+                prebanEffect.Tick(seconds);
+            }
+
+            internal void ReleasePreban()
+            {
+                prebanEffect?.Dispose();
+                prebanEffect = null;
             }
 
             internal void SetProvisional(bool value)

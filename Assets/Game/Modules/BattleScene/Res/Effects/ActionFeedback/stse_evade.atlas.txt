@@ -1,0 +1,48 @@
+
+stse_evade.sct
+size: 418,197
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+evade_01
+  rotate: false
+  xy: 167, 32
+  size: 86, 139
+  orig: 86, 139
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 32
+  size: 163, 163
+  orig: 163, 163
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: false
+  xy: 2, 2
+  size: 414, 28
+  orig: 414, 28
+  offset: 0, 0
+  index: -1
+uplight_1
+  rotate: false
+  xy: 314, 32
+  size: 48, 109
+  orig: 48, 109
+  offset: 0, 0
+  index: -1
+uplight_2
+  rotate: false
+  xy: 255, 32
+  size: 57, 123
+  orig: 57, 123
+  offset: 0, 0
+  index: -1
+upmark
+  rotate: false
+  xy: 167, 173
+  size: 26, 20
+  orig: 26, 20
+  offset: 0, 0
+  index: -1

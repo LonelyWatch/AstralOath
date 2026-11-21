@@ -18,15 +18,13 @@ namespace AstralOath.Client.BattleScene
         private const float ComboFade = 0.19f;
         private static readonly Color CriticalTop = new Color32(255, 68, 58, 255);
         private static readonly Color CriticalBottom = new Color32(255, 255, 99, 255);
-        private static readonly Color HealingTop = new Color32(176, 255, 104, 255);
-        private static readonly Color HealingBottom = new Color32(82, 212, 30, 255);
+        private static readonly Color DamageBottom = new Color32(139, 139, 139, 255);
+        private static readonly Color HealingTop = new Color32(235, 255, 232, 255);
+        private static readonly Color HealingBottom = new Color32(49, 251, 49, 255);
         private readonly List<Feedback> impactLabels = new List<Feedback>();
         private readonly Dictionary<string, DamageTotal> damageTotals = new Dictionary<string, DamageTotal>(StringComparer.Ordinal);
-        private string missFeedbackLabel = "";
         private int hitCount;
         private HitCombo hitCombo;
-
-        internal void SetMissFeedbackLabel(string label) => missFeedbackLabel = label;
 
         internal void BeginFeedbackAction() => damageTotals.Clear();
 
@@ -57,7 +55,7 @@ namespace AstralOath.Client.BattleScene
             if (!anchor || amount < 0)
                 return;
             RecordComboHit();
-            if (amount == 0 && hitKind != BattleHitKind.Miss)
+            if (amount == 0)
                 return;
             if (!damageTotals.TryGetValue(targetId, out var total))
             {
@@ -74,8 +72,7 @@ namespace AstralOath.Client.BattleScene
                 total.Label.Total = total;
             }
 
-            ShowNumber(total.Label, targetId, total.Amount, total.Kind, false, anchor, targetWorld, worldCamera,
-                showMissCaption: hitKind == BattleHitKind.Miss);
+            ShowNumber(total.Label, targetId, total.Amount, total.Kind, false, anchor, targetWorld, worldCamera);
         }
 
         private Feedback AcquireFeedback()
@@ -91,14 +88,13 @@ namespace AstralOath.Client.BattleScene
                 amount.font = damageFont;
                 amount.fontSharedMaterial = damageFont.material;
             }
-            var caption = Text(root, "Impact Caption", "", new Vector2(0f, 54f), new Vector2(240f, 40f), 27f, textSource);
-            popup = new Feedback(root, amount, caption, AddFeedbackAlpha(root));
+            popup = new Feedback(root, amount, AddFeedbackAlpha(root));
             impactLabels.Add(popup);
             return popup;
         }
 
         private void ShowNumber(Feedback popup, string targetId, long amount, BattleHitKind kind, bool healing,
-            RectTransform anchor, Vector3 targetWorld, Camera worldCamera, bool showMissCaption = false)
+            RectTransform anchor, Vector3 targetWorld, Camera worldCamera)
         {
             popup.Root.name = targetId;
             popup.Root.SetAsLastSibling();
@@ -111,22 +107,23 @@ namespace AstralOath.Client.BattleScene
             bool miss = kind == BattleHitKind.Miss;
             float scale = critical ? 1.5f : kind == BattleHitKind.Crushing ? 1.24f : miss ? 0.88f : 1.08f;
             popup.BounceHeight = critical ? 79f : 64f;
+            popup.Healing = healing;
+            popup.Critical = critical;
             popup.Top = healing ? HealingTop : critical ? CriticalTop : Color.white;
-            popup.Bottom = healing ? HealingBottom : critical ? CriticalBottom : Color.white;
-            string digits = showMissCaption && amount == 0
-                ? ""
-                : (healing ? "+" : "") + amount.ToString(CultureInfo.InvariantCulture);
+            popup.Bottom = healing ? HealingBottom : critical ? CriticalBottom : DamageBottom;
+            string digits = (healing ? "+" : "") + amount.ToString(CultureInfo.InvariantCulture);
             popup.GlyphCount = digits.Length != 0 && LayoutGlyphs(popup, digits, scale) ? digits.Length : 0;
             for (int index = popup.GlyphCount; index < popup.Glyphs.Count; index++)
                 popup.Glyphs[index].gameObject.SetActive(false);
 
-            float lastDigitDelay = Mathf.Max(DigitDelay(0, popup.GlyphCount), DigitDelay(popup.GlyphCount - 1, popup.GlyphCount));
+            float lastDigitDelay = Mathf.Max(DigitDelay(0, popup), DigitDelay(popup.GlyphCount - 1, popup));
             popup.FadeStart = GlyphBounce + lastDigitDelay + NumberHold;
             popup.Amount.gameObject.SetActive(popup.GlyphCount == 0 && digits.Length != 0);
             popup.Amount.text = popup.GlyphCount == 0 ? digits : "";
             popup.Amount.fontSize = 54f * scale;
-            popup.Amount.color = Color.Lerp(popup.Top, popup.Bottom, 0.5f);
-            popup.Caption.text = showMissCaption ? missFeedbackLabel : "";
+            popup.Amount.color = Color.white;
+            popup.Amount.enableVertexGradient = true;
+            popup.Amount.colorGradient = new TMPro.VertexGradient(popup.Top, popup.Top, popup.Bottom, popup.Bottom);
             popup.Root.gameObject.SetActive(true);
             AnimateFeedback(popup);
         }
@@ -214,7 +211,7 @@ namespace AstralOath.Client.BattleScene
             for (int index = 0; index < popup.GlyphCount; index++)
             {
                 var image = popup.Glyphs[index];
-                float phase = Mathf.Clamp01((popup.Elapsed - DigitDelay(index, popup.GlyphCount)) / GlyphBounce);
+                float phase = Mathf.Clamp01((popup.Elapsed - DigitDelay(index, popup)) / GlyphBounce);
                 float rise = Mathf.InverseLerp(0f, 0.40f, phase);
                 float fall = Mathf.InverseLerp(0.40f, 1f, phase);
                 float y = phase < 0.40f
@@ -222,15 +219,18 @@ namespace AstralOath.Client.BattleScene
                     : Mathf.Lerp(popup.BounceHeight, 0f, fall * (2f - fall));
                 image.rectTransform.anchoredPosition = image.RestPosition + Vector2.up * y;
                 image.rectTransform.localScale = Vector3.one * (Mathf.Lerp(0.86f, 1f, phase) + 0.17f * Mathf.Sin(phase * Mathf.PI));
-                float tint = Mathf.InverseLerp(0.20f, 0.85f, phase);
+                float tint = popup.Critical ? Mathf.InverseLerp(0.20f, 0.85f, phase) : 1f;
                 image.SetGradient(Color.Lerp(Color.white, popup.Top, tint), Color.Lerp(Color.white, popup.Bottom, tint));
             }
         }
 
-        private static float DigitDelay(int index, int count)
+        private static float DigitDelay(int index, Feedback popup)
         {
+            int count = popup.GlyphCount;
             if (count <= 1)
                 return 0f;
+            if (popup.Healing)
+                return Mathf.Min(4, count - 1 - index) * GlyphStagger;
             float distanceFromCenter = Mathf.Abs(index - (count - 1) * 0.5f);
             float outsideDelay = Mathf.Min(4f, Mathf.Floor(distanceFromCenter)) * GlyphStagger;
             return outsideDelay + (index % 2 == 0 ? 0f : GlyphStagger * 0.55f);
@@ -302,17 +302,15 @@ namespace AstralOath.Client.BattleScene
 
         private sealed class Feedback
         {
-            internal Feedback(RectTransform root, GameText amount, GameText caption, CanvasGroup alpha)
+            internal Feedback(RectTransform root, GameText amount, CanvasGroup alpha)
             {
                 Root = root;
                 Amount = amount;
-                Caption = caption;
                 Alpha = alpha;
             }
 
             internal RectTransform Root { get; }
             internal GameText Amount { get; }
-            internal GameText Caption { get; }
             internal CanvasGroup Alpha { get; }
             internal List<DamageFeedbackGlyph> Glyphs { get; } = new List<DamageFeedbackGlyph>();
             internal RectTransform Anchor;
@@ -323,6 +321,7 @@ namespace AstralOath.Client.BattleScene
             internal float Elapsed;
             internal float FadeStart;
             internal float BounceHeight;
+            internal bool Healing, Critical;
             internal Color Top;
             internal Color Bottom;
         }

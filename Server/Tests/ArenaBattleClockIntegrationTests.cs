@@ -1,8 +1,8 @@
-using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using AstralOath.Server.Foundation;
+using AstralOath.Shared.Battle;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
@@ -55,10 +55,22 @@ public sealed class ArenaBattleClockIntegrationTests
             var opening = await Read(host, battle);
             Assert.Equal(JsonValueKind.Null, opening.GetProperty("clock").GetProperty("deadlineUnixMilliseconds").ValueKind);
             var snapshot = opening.GetProperty("snapshot");
-            var command = Command(snapshot, draft.GetProperty("contentHash").GetString()!);
+            string hash = draft.GetProperty("contentHash").GetString()!;
             bool hostTurn = snapshot.GetProperty("currentActorId").GetString()!.StartsWith("ally-", StringComparison.Ordinal);
-            using (var early = await (hostTurn ? host : guest).PostAsJsonAsync(Api(battle + "/commands"), command, ct))
-                Assert.Equal(HttpStatusCode.Conflict, early.StatusCode);
+            var acting = hostTurn ? host : guest;
+            var rejected = await Send(acting, battle + "/commands", Command(snapshot, hash, "unowned.skill"));
+            Assert.Equal((int)BattleCommandStatus.UnknownSkill, rejected.GetProperty("status").GetInt32());
+            Assert.Equal(snapshot.GetRawText(), rejected.GetProperty("snapshot").GetRawText());
+            Assert.Equal(opening.GetProperty("events").GetRawText(), rejected.GetProperty("events").GetRawText());
+            Assert.Equal(JsonValueKind.Null, rejected.GetProperty("clock").GetProperty("deadlineUnixMilliseconds").ValueKind);
+            var first = await Send(acting, battle + "/commands", Command(snapshot, hash));
+            Assert.Equal((int)BattleCommandStatus.Accepted, first.GetProperty("status").GetInt32());
+            snapshot = first.GetProperty("snapshot");
+            Assert.Equal(1UL, snapshot.GetProperty("lastCommandSequence").GetUInt64());
+            Assert.Equal(snapshot.GetRawText(), (await Read(hostTurn ? guest : host, battle)).GetProperty("snapshot").GetRawText());
+            Assert.Equal(JsonValueKind.Null, first.GetProperty("clock").GetProperty("deadlineUnixMilliseconds").ValueKind);
+            hostTurn = snapshot.GetProperty("currentActorId").GetString()!.StartsWith("ally-", StringComparison.Ordinal);
+            var command = Command(snapshot, hash);
             var firstReady = await Send(host, battle + "/ready", Ready(snapshot));
             Assert.Equal(JsonValueKind.Null, firstReady.GetProperty("clock").GetProperty("deadlineUnixMilliseconds").ValueKind);
             var readyRace = await Task.WhenAll(Send(guest, battle + "/ready", Ready(snapshot)),
@@ -89,12 +101,12 @@ public sealed class ArenaBattleClockIntegrationTests
             using (var count = new MySqlCommand("SELECT COUNT(*) FROM arena_battle_command WHERE draft_id = @id", sql))
             {
                 count.Parameters.AddWithValue("@id", id);
-                Assert.Equal(1L, Convert.ToInt64(await count.ExecuteScalarAsync(ct)));
+                Assert.Equal(2L, Convert.ToInt64(await count.ExecuteScalarAsync(ct)));
             }
             var advanced = await Read(resumed, battle);
             Assert.Equal((await Read(host, battle)).GetProperty("snapshot").GetRawText(),
                 advanced.GetProperty("snapshot").GetRawText());
-            Assert.True(advanced.GetProperty("snapshot").GetProperty("lastCommandSequence").GetUInt64() >= 1);
+            Assert.Equal(2UL, advanced.GetProperty("snapshot").GetProperty("lastCommandSequence").GetUInt64());
             Assert.Equal(JsonValueKind.Null, advanced.GetProperty("clock").GetProperty("deadlineUnixMilliseconds").ValueKind);
             // A stale ready from before timeout cannot start this new window.
             var stale = await Send(guest, battle + "/ready", Ready(snapshot));
@@ -145,7 +157,7 @@ public sealed class ArenaBattleClockIntegrationTests
     private static object Ready(JsonElement state) => new { battleId = state.GetProperty("battleId").GetString(),
         commandSequence = state.GetProperty("lastCommandSequence").GetUInt64(), eventSequence = state.GetProperty("lastEventSequence").GetUInt64(),
         actorId = state.GetProperty("currentActorId").GetString() };
-    private static object Command(JsonElement state, string hash)
+    private static object Command(JsonElement state, string hash, string? skill = null)
     {
         string actor = state.GetProperty("currentActorId").GetString()!;
         var unit = state.GetProperty("units").EnumerateArray().Single(row => row.GetProperty("instanceId").GetString() == actor);
@@ -153,7 +165,7 @@ public sealed class ArenaBattleClockIntegrationTests
         string target = state.GetProperty("units").EnumerateArray().First(row => row.GetProperty("instanceId").GetString()!.StartsWith(enemyPrefix, StringComparison.Ordinal) && row.GetProperty("currentHealth").GetInt32() > 0).GetProperty("instanceId").GetString()!;
         return new { battleId = state.GetProperty("battleId").GetString(), rulesVersion = state.GetProperty("rulesVersion").GetUInt32(),
             sequence = state.GetProperty("lastCommandSequence").GetUInt64() + 1, commandId = Key(), actorId = actor,
-            skillId = unit.GetProperty("form").GetProperty("skillIds")[0].GetString(), targetId = target, useSoulBurn = false, contentHash = hash };
+            skillId = skill ?? unit.GetProperty("form").GetProperty("skillIds")[0].GetString(), targetId = target, useSoulBurn = false, contentHash = hash };
     }
     private static WebApplicationFactory<Program> Configure(WebApplicationFactory<Program> source, string connection) =>
         source.WithWebHostBuilder(builder => builder.UseEnvironment("Development").ConfigureAppConfiguration((_, config) =>

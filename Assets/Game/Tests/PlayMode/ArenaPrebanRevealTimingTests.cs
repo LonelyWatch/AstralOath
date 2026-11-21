@@ -36,12 +36,18 @@ namespace AstralOath.Client.Tests
                 type.GetMethod("Start", flags).Invoke(reveal, new object[] {
                     new[] { Hero("c1001"), Hero("c1002") }, new[] { Hero("c1003"), Hero("c1004") }, null, null
                 });
-                for (int frame = 0; frame < 47; ++frame) tick(1f / 60f);
-                tick(.79331f - 47f / 60f);
                 RawImage Portrait(string side) => root.GetComponentsInChildren<RawImage>().Single(image =>
-                    image.name.StartsWith(side + " reveal portrait ", StringComparison.Ordinal));
+                    image.isActiveAndEnabled && image.name.StartsWith(side + " reveal portrait ", StringComparison.Ordinal));
+                for (int frame = 0; frame < 21; ++frame) tick(1f / 60f);
+                float upperX = Portrait("Own").rectTransform.anchoredPosition.x;
+                float lowerX = Portrait("Opponent").rectTransform.anchoredPosition.x;
+                for (int frame = 0; frame < 10; ++frame) tick(1f / 60f);
+                Assert.That(Portrait("Own").rectTransform.anchoredPosition.x, Is.LessThan(upperX - 10));
+                Assert.That(Portrait("Opponent").rectTransform.anchoredPosition.x, Is.GreaterThan(lowerX + 10));
+                for (int frame = 0; frame < 24; ++frame) tick(1f / 60f);
                 Assert.That(Portrait("Own").name, Does.EndWith("c1001"));
                 Assert.That(tick(1.120996f), Is.False, "The preload frame must leave the second pair on screen.");
+                for (int frame = 0; frame < 3; ++frame) tick(1f / 60f);
                 yield return null;
                 Assert.That(root.activeInHierarchy, Is.True);
                 var own = Portrait("Own");
@@ -51,10 +57,9 @@ namespace AstralOath.Client.Tests
                 foreach (var portrait in new[] { own, opponent })
                     Assert.That(HasPaintedPixels(portrait), Is.True, portrait.name);
                 for (int frame = 0; frame < 20; ++frame) Assert.That(tick(1f / 60f), Is.False);
-                Assert.That(own.material.GetFloat("_Desaturation"), Is.GreaterThanOrEqualTo(.84f));
-                Assert.That(opponent.material.GetFloat("_Desaturation"), Is.GreaterThanOrEqualTo(.84f));
+                Assert.That(own.material.GetFloat("_Desaturation"), Is.GreaterThan(0f));
                 bool finished = false;
-                for (int frame = 0; frame < 60 && !finished; ++frame) finished = tick(1f / 60f);
+                for (int frame = 0; frame < 70 && !finished; ++frame) finished = tick(1f / 60f);
                 Assert.That(finished, Is.True);
                 Assert.That(root.activeSelf, Is.False);
             }

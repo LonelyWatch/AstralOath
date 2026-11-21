@@ -246,16 +246,16 @@ namespace AstralOath.Client.Tests
             var rect = Trail().rectTransform;
             Assert.That(rect.anchorMin.x, Is.EqualTo(.8f));
             Assert.That(rect.anchorMax.x, Is.EqualTo(1f));
-            Assert.That(Trail().color.g, Is.GreaterThan(44f / 255f), "A hit briefly brightens the red trail.");
+            Assert.That(Trail().color.g, Is.LessThan(.10f), "The impact stays red through the hit.");
             Call("Tick", 1f);
-            Assert.That((Color32)Trail().color, Is.EqualTo(new Color32(231, 44, 53, 255)));
+            Assert.That((Color32)Trail().color, Is.EqualTo(new Color32(218, 3, 7, 255)));
             Assert.That(rect.anchorMax.x, Is.EqualTo(1f));
             Call("ApplyDamageHit", 500L, 1000, true);
             Call("UpdateHealth", 500L, 1000, false);
-            Call("Tick", .15f);
+            Call("Tick", .25f);
             Assert.That(rect.anchorMin.x, Is.EqualTo(.5f));
             Assert.That(rect.anchorMax.x, Is.EqualTo(1f));
-            Call("Tick", .25f);
+            Call("Tick", 1.05f / Mathf.Sqrt(2f));
             Assert.That(rect.anchorMax.x, Is.EqualTo(.75f).Within(.001f));
             Call("Tick", 1f);
             Assert.That(TrailWidth(), Is.Zero);
@@ -290,7 +290,7 @@ namespace AstralOath.Client.Tests
             Assert.That(red.rectTransform.anchorMax.x, Is.EqualTo(.8f).Within(.001f));
 
             Call("FinishDamageSequence");
-            Call("Tick", .4f);
+            Call("Tick", .25f + 1.05f / Mathf.Sqrt(2f));
             Assert.That(red.rectTransform.anchorMax.x, Is.EqualTo(.65f).Within(.001f));
             Call("FinishDamageSequence");
             Call("Tick", .1f);
@@ -302,7 +302,7 @@ namespace AstralOath.Client.Tests
             Assert.That(red.rectTransform.anchorMax.x, Is.EqualTo(.5f).Within(.001f));
             Assert.That(red.color, Is.EqualTo(firstFlash));
             Call("FinishDamageSequence");
-            Call("Tick", .8f);
+            Call("Tick", 1.35f);
             Assert.That(TrailWidth(), Is.Zero);
         }
 
@@ -314,7 +314,7 @@ namespace AstralOath.Client.Tests
             Assert.That(Trail().rectTransform.anchorMin.x, Is.Zero);
             Assert.That(Trail().rectTransform.anchorMax.x, Is.EqualTo(.25f));
             Call("ApplyDamageHit", 750L, 1000, true);
-            Call("Tick", .4f);
+            Call("Tick", .25f + 1.05f / Mathf.Sqrt(2f));
             Assert.That(Trail().rectTransform.anchorMin.x, Is.EqualTo(.125f).Within(.001f));
             Assert.That(Trail().rectTransform.anchorMax.x, Is.EqualTo(.25f));
             Call("UpdateHealth", 900L, 1000, false);

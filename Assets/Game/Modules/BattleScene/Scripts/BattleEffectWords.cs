@@ -149,7 +149,7 @@ namespace AstralOath.Client.BattleScene
                     var shader = Shader.Find("TextMeshPro/Distance Field");
                     if (shader) fallbackOutline.shader = shader;
                     fallbackOutline.SetColor(ShaderUtilities.ID_OutlineColor, Color.black);
-                    fallbackOutline.SetFloat(ShaderUtilities.ID_OutlineWidth, .24f);
+                    fallbackOutline.SetFloat(ShaderUtilities.ID_OutlineWidth, .12f);
                     fallbackOutline.SetFloat(ShaderUtilities.ID_FaceDilate, .29f);
                     if (!shader) fallbackOutline.EnableKeyword(ShaderUtilities.Keyword_Outline);
                 }

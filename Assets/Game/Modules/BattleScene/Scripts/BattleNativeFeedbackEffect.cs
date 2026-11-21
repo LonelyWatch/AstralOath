@@ -5,6 +5,7 @@ using System.Linq;
 using AstralOath.Client.Skeletons;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 using Object = UnityEngine.Object;
 
 namespace AstralOath.Client.BattleScene
@@ -13,6 +14,7 @@ namespace AstralOath.Client.BattleScene
     // Presentation lifetime never owns an action or delays a hit.
     internal sealed class BattleNativeFeedbackEffect : IDisposable
     {
+        internal const string HealingSource = "heal_hp_01";
         internal sealed class Library
         {
             private readonly Dictionary<string, BattleSkillPresentationAsset> assets;
@@ -68,6 +70,7 @@ namespace AstralOath.Client.BattleScene
         private float time, finishAt;
         private bool disposed, heldForOwner, finishRequested;
         internal readonly GameObject Root;
+        private readonly SortingGroup healingGroup;
         internal bool Active { get; private set; }
         internal float Duration => (heldForOwner ? finishAt : duration) + fadeSeconds;
         internal float Elapsed => time;
@@ -133,6 +136,15 @@ namespace AstralOath.Client.BattleScene
                 }
                 if (duration <= 0) throw new FormatException("Native feedback requires a finite authored animation: " + source);
                 foreach (var part in parts) if (part.Duration <= 0) part.Duration = duration - part.Delay;
+                if (source == HealingSource)
+                {
+                    // heal_hp_01 has one particle primitive. Keep its soft additive light under the
+                    // filled cross, which uses PMA coverage to retain its green silhouette.
+                    var part = parts.Single();
+                    healingGroup = part.Root.AddComponent<SortingGroup>();
+                    foreach (var renderer in part.Renderers)
+                        renderer.sortingOrder = renderer.sharedMaterial.GetInt("_DstBlend") == (int)BlendMode.OneMinusSrcAlpha ? 1 : 0;
+                }
             }
             catch { Dispose(); throw; }
         }
@@ -232,6 +244,22 @@ namespace AstralOath.Client.BattleScene
             Active = false;
             foreach (var part in parts) part.Particles?.Stop();
             if (Root) Root.SetActive(false);
+        }
+
+        internal void SetActorSorting(Renderer body)
+        {
+            if (healingGroup)
+            {
+                // Adjacent formation orders may differ by only one. Use the back of the next order
+                // so the owner's body is lit and an opaque nearer hero still covers the particles.
+                healingGroup.sortingLayerID = body.sortingLayerID;
+                healingGroup.sortingOrder = body.sortingOrder + 1;
+                var anchor = healingGroup.transform.position;
+                anchor.z = body.bounds.center.z + .02f;
+                healingGroup.transform.position = anchor;
+                return;
+            }
+            SetSorting(body.sortingLayerID, body.sortingOrder + 5);
         }
 
         internal void SetSorting(int layer, int order)

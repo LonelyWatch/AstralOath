@@ -25,6 +25,7 @@ def table(name):
 def roster_art(heroes, skills, source):
     files = {
         "Skills/_frame_passive.png": "skill/_frame_passive.png",
+        "Skills/cm_cool_skill.png": "img/cm_cool_skill.png",
         "Skills/cm_cool_skill_passive.png": "img/cm_cool_skill_passive.png",
     }
     for hero in heroes:

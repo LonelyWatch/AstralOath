@@ -1,4 +1,4 @@
-"""Write the fixed, locally sourced order for the first 100 battle characters."""
+"""Write the fixed, locally sourced battle character order."""
 
 import argparse
 import csv
@@ -11,10 +11,9 @@ import re
 
 REPO = Path(__file__).resolve().parents[2]
 SOURCE = Path(".artifacts/roster-data/official.source")
-OUTPUT = Path(".artifacts/roster-data/roster-100.json")
 HEROES = Path("Config/Tables/battle_heroes.csv")
 PINNED_SHA256 = "a37c7a85128deef78ab8865eec2e7da76f1992c79b571c3001eb13add4998580"
-TARGET_COUNT = 100
+DEFAULT_COUNT = 100
 FIRST_TEN = tuple(f"c{number}" for number in range(1001, 1010)) + ("c1062",)
 HERO_ID = re.compile(r"c1[0-9]{3}")
 SHA256 = re.compile(r"[0-9a-f]{64}")
@@ -45,7 +44,9 @@ def read_configured_ids(text: str) -> set[str]:
     return configured
 
 
-def build_queue(source: dict, configured: set[str]) -> list[dict]:
+def build_queue(source: dict, configured: set[str], count: int = DEFAULT_COUNT) -> list[dict]:
+    if count < len(FIRST_TEN):
+        raise ValueError(f"Expected at least {len(FIRST_TEN)} queue entries, requested {count}.")
     rows = source.get("zh-CN") if isinstance(source, dict) else None
     if not isinstance(rows, list):
         raise ValueError("Official source must contain a zh-CN hero list.")
@@ -65,9 +66,9 @@ def build_queue(source: dict, configured: set[str]) -> list[dict]:
     if missing:
         raise ValueError(f"Missing first-ten heroes in official source: {', '.join(missing)}.")
     remaining = sorted(set(candidates) - set(FIRST_TEN), key=lambda hero_id: int(hero_id[1:]))
-    selected = FIRST_TEN + tuple(remaining[:TARGET_COUNT - len(FIRST_TEN)])
-    if len(selected) != TARGET_COUNT:
-        raise ValueError(f"Expected {TARGET_COUNT} queue entries, selected {len(selected)}.")
+    selected = FIRST_TEN + tuple(remaining[:count - len(FIRST_TEN)])
+    if len(selected) != count:
+        raise ValueError(f"Expected {count} queue entries, selected {len(selected)}.")
 
     queue = []
     for ordinal, hero_id in enumerate(selected, start=1):
@@ -84,11 +85,12 @@ def main() -> None:
     parser.add_argument("--source", type=Path, default=SOURCE, help="Local official hero JSON. No network request is made.")
     parser.add_argument("--expected-sha256", default=PINNED_SHA256, help="Explicit digest for an alternative pinned source.")
     parser.add_argument("--heroes", type=Path, default=HEROES, help="Current battle hero CSV.")
-    parser.add_argument("--output", type=Path, default=OUTPUT, help="Output JSON under the repository .artifacts directory.")
+    parser.add_argument("--count", type=int, default=DEFAULT_COUNT, help="Number of heroes in the fixed order (default: %(default)s).")
+    parser.add_argument("--output", type=Path, help="JSON under .artifacts (default: .artifacts/roster-data/roster-<count>.json).")
     args = parser.parse_args()
 
     source = (REPO / args.source).resolve()
-    output = (REPO / args.output).resolve()
+    output = (REPO / (args.output or Path(f".artifacts/roster-data/roster-{args.count}.json"))).resolve()
     if not output.is_relative_to((REPO / ".artifacts").resolve()):
         parser.error("The queue output must be under the repository .artifacts directory.")
     if output == source:
@@ -97,7 +99,7 @@ def main() -> None:
         raw = source.read_bytes()
         digest = verify_source(raw, args.expected_sha256)
         configured = read_configured_ids((REPO / args.heroes).read_text(encoding="utf-8-sig"))
-        rows = build_queue(json.loads(raw), configured)
+        rows = build_queue(json.loads(raw), configured, count=args.count)
         output.parent.mkdir(parents=True, exist_ok=True)
         document = {"schemaVersion": 1, "sourceSha256": digest, "characters": rows}
         output.write_text(json.dumps(document, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")

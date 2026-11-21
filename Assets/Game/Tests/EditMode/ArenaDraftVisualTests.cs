@@ -12,6 +12,24 @@ namespace AstralOath.Client.Tests
     {
         private const string Path = "Assets/Game/Modules/Arena/Res/Prefab/ArenaDraft.prefab";
 
+        [Test]
+        public void DraftAndInventoryShareTheRosterPlateShadow()
+        {
+            var draft = AssetDatabase.LoadAssetAtPath<GameObject>(Path);
+            var hero = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Game/Modules/Home/Res/Prefab/HeroInventory.prefab");
+            var normal = draft.GetComponentsInChildren<Image>(true).Single(image => image.name == "Normal plate");
+            var card = hero.GetComponentsInChildren<Image>(true).Single(image => image.name == "Hero card template");
+            var draftShadow = normal.GetComponent<Shadow>();
+            var heroShadow = card.GetComponent<Shadow>();
+            Assert.That(draftShadow, Is.Not.Null);
+            Assert.That(heroShadow, Is.Not.Null);
+            Assert.That(draftShadow.effectDistance, Is.EqualTo(heroShadow.effectDistance));
+            Assert.That(draftShadow.effectDistance.y, Is.LessThan(0));
+            Assert.That(draftShadow.effectColor, Is.EqualTo(heroShadow.effectColor));
+            Assert.That(draftShadow.effectColor.a, Is.InRange(.2f, .6f));
+            Assert.That(draftShadow.useGraphicAlpha && heroShadow.useGraphicAlpha, Is.True);
+        }
+
         [TestCase("Assets/Game/Modules/Arena/Configs/ArenaDraftArt.asset", "Heroes", "Id", "Face", "Card", "PortraitSkeleton", "ModelSkeleton")]
         [TestCase("Assets/Game/Modules/Home/Configs/HomeHeroArt.asset", "heroes", "id", "portrait", "cardPortrait", "skeleton", "modelSkeleton")]
         public void RosterArtworkCoversEveryBattleHero(string asset, string rows, string idField, params string[] artFields)

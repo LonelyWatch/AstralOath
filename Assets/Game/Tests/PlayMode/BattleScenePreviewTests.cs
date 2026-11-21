@@ -557,6 +557,65 @@ namespace AstralOath.Client.Tests
         }
 
         [UnityTest]
+        public IEnumerator DodgeUsesTheTargetEffectWordsOnceAcrossMultipleImpactFrames()
+        {
+            scene = LoadPlayerOpeningScene();
+            yield return null;
+            yield return null;
+            var roots = scene.GetRootGameObjects();
+            var preview = roots.Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            var hud = roots.SelectMany(root => root.GetComponentsInChildren<BindingMap>()).Single();
+            var snapshot = preview.SimulationSnapshot;
+            var target = snapshot.GetUnit("enemy-1");
+            var words = hud.transform.Find("Unit Status/Enemies").GetChild(target.Slot.Position - 1).Find("Effect Words");
+            var simulation = typeof(BattleHudPreview).GetField("simulation", PrivateInstance).GetValue(preview);
+            var type = simulation.GetType();
+            type.GetField("hitTimes", PrivateInstance).SetValue(simulation, new[] { .1f, .3f });
+
+            void Present(ulong seq, BattleFlowEventKind kind, BattleHitKind hit, BattleEffectRejection? rejection = null)
+            {
+                var item = BattlePresentationWire.Event(seq, snapshot.TurnNumber, kind, snapshot.CurrentActorId,
+                    target.InstanceId, kind == BattleFlowEventKind.Damage ? 80 : 0, null, null, BattleActionOrigin.Primary,
+                    null, null, null, null, hit, rejection, false, null, target.MaximumHealth);
+                type.GetMethod("Present", PrivateInstance).Invoke(simulation, new object[] { item });
+            }
+            void Advance(float at)
+            {
+                type.GetField("actionElapsed", PrivateInstance).SetValue(simulation, at);
+                type.GetMethod("ShowDueFeedback", PrivateInstance).Invoke(simulation, null);
+            }
+            int Count(string text) => words.GetComponentsInChildren<GameText>().Count(label => label.text == text);
+
+            Present(1, BattleFlowEventKind.Damage, BattleHitKind.Miss);
+            Present(2, BattleFlowEventKind.EffectRejected, BattleHitKind.None, BattleEffectRejection.Missed);
+            Present(3, BattleFlowEventKind.EffectRejected, BattleHitKind.None, BattleEffectRejection.Resisted);
+            Assert.That(Count("闪避"), Is.Zero);
+            Advance(.1f);
+            Assert.That(Count("闪避"), Is.EqualTo(1), "The first impact announces evasion on its target.");
+            Advance(.3f);
+            Assert.That(Count("闪避"), Is.EqualTo(1), "Later animation hits and rejected rider effects must not duplicate evasion.");
+            Assert.That(Count("抵抗"), Is.EqualTo(1));
+            var popup = hud.transform.Find("Battle Feedback/" + target.InstanceId);
+            Assert.That(popup, Is.Not.Null, "The authoritative reduced damage must remain visible.");
+            var amount = popup.Find("Impact").GetComponent<GameText>();
+            var digits = popup.GetComponentsInChildren<RawImage>();
+            Assert.That(digits.Length, Is.EqualTo(2));
+            for (int i = 0; i < digits.Length; i++)
+            {
+                var glyph = amount.font.characterLookupTable["80"[i]].glyph.glyphRect;
+                Assert.That(digits[i].uvRect.x * digits[i].texture.width, Is.EqualTo(glyph.x).Within(.01f));
+                Assert.That(digits[i].uvRect.y * digits[i].texture.height, Is.EqualTo(glyph.y).Within(.01f));
+            }
+            Assert.That(popup.GetComponentsInChildren<GameText>().Any(label => label.text == "未命中" || label.text == "闪避"), Is.False);
+            string output = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_CAPTURE_DIR");
+            if (!string.IsNullOrWhiteSpace(output))
+            {
+                yield return null;
+                Capture(hud.GetComponentInParent<Canvas>().worldCamera, output, "battle-dodge.png");
+            }
+        }
+
+        [UnityTest]
         public IEnumerator RosesS3ShowsStatusIconsAndReadinessWordsOnTheAffectedActor()
         {
             scene = LoadPlayerOpeningScene("c1003");
@@ -652,14 +711,13 @@ namespace AstralOath.Client.Tests
             var simulation = typeof(BattleHudPreview).GetField("simulation", PrivateInstance).GetValue(host);
             var gauge = simulation.GetType().GetField("soulGauge", PrivateInstance).GetValue(simulation);
             var present = simulation.GetType().GetMethod("Present", PrivateInstance);
-            var constructor = typeof(BattleFlowEvent).GetConstructors(PrivateInstance).Single();
             var root = map.transform.Find("Soul Gauge/Soul Indicators");
             var fill = map.Require<Image>("soulFill");
 
             void SetSoul(int amount, BattleSide side = BattleSide.Ally) =>
-                present.Invoke(simulation, new[] { constructor.Invoke(new object[] { 1UL, 1, BattleFlowEventKind.SoulChanged,
-                    "ally-1", null, amount, null, null, BattleActionOrigin.Primary, null, null, side, null,
-                    BattleHitKind.None, null, false, null, null }) });
+                present.Invoke(simulation, new object[] { BattlePresentationWire.Event(1, 1, BattleFlowEventKind.SoulChanged,
+                    side == BattleSide.Ally ? "ally-1" : "enemy-1", null, amount, null, null, BattleActionOrigin.Primary,
+                    null, null, side, null, BattleHitKind.None, null, false, null, null) });
             int VisibleSouls() => root.Cast<Transform>().Count(slot => slot.gameObject.activeSelf);
 
             Assert.That(root.childCount, Is.EqualTo(8));
@@ -670,7 +728,24 @@ namespace AstralOath.Client.Tests
             SetSoul(9);
             Assert.That(VisibleSouls(), Is.Zero);
             Assert.That(fill.fillAmount, Is.EqualTo(.9f).Within(.001f));
+            var flights = map.transform.Find("Soul Gauge/Soul Flights");
+            Assert.That(flights, Is.Not.Null);
+            Assert.That(flights.childCount, Is.Zero, "Initialization, enemy gains and spending do not launch player souls.");
             SetSoul(10);
+            SetSoul(10);
+            Assert.That(flights.childCount, Is.EqualTo(1), "Only a real increase launches a new flight.");
+            var orb = flights.GetChild(0);
+            var start = orb.localPosition;
+            var advance = gauge.GetType().GetMethod("Tick");
+            advance.Invoke(gauge, new object[] { .32f });
+            Assert.That(orb.localPosition.y, Is.LessThan(start.y), "The soul travels toward the bottom gauge.");
+            string captureDir = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_CAPTURE_DIR");
+            if (!string.IsNullOrWhiteSpace(captureDir))
+                Capture(map.GetComponentInParent<Canvas>().worldCamera, captureDir, "battle-soul-flight.png");
+            advance.Invoke(gauge, new object[] { .5f });
+            Assert.That(orb.Find("Arrival").gameObject.activeInHierarchy, Is.True);
+            advance.Invoke(gauge, new object[] { 2f });
+            Assert.That(orb.gameObject.activeSelf, Is.False);
             Assert.That(VisibleSouls(), Is.EqualTo(1));
             Assert.That(fill.fillAmount, Is.Zero);
             SetSoul(79);
@@ -935,8 +1010,10 @@ namespace AstralOath.Client.Tests
                 "Fully absorbed damage must not create a zero-damage floating number.");
             Assert.That(feedbackRoot.GetComponentsInChildren<GameText>().Any(text => text.text == "0"), Is.False);
             if (absorbedHit.HitKind == BattleHitKind.Miss)
-                Assert.That(feedbackRoot.GetComponentsInChildren<GameText>().Any(text => text.text == "未命中"), Is.True,
-                    "An absorbed miss still shows its localized caption.");
+            {
+                var words = map.transform.Find("Unit Status/Allies").GetChild(hitTarget.Slot.Position - 1).Find("Effect Words");
+                Assert.That(words.GetComponentsInChildren<GameText>().Count(text => text.text == "闪避"), Is.EqualTo(1));
+            }
         }
 
         [UnityTest]

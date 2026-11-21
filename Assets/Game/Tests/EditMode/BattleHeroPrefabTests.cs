@@ -65,7 +65,7 @@ namespace AstralOath.Client.Tests
                 Assert.That(outline, Is.Not.Null);
                 Assert.That(outline.shader.name, Is.EqualTo("TextMeshPro/Distance Field"),
                     "Use the outline rendered by the base SDF pass in both editor and player.");
-                Assert.That(outline.GetFloat(TMPro.ShaderUtilities.ID_OutlineWidth), Is.GreaterThanOrEqualTo(.2f));
+                Assert.That(outline.GetFloat(TMPro.ShaderUtilities.ID_OutlineWidth), Is.InRange(.08f, .16f));
                 Assert.That(outline.GetColor(TMPro.ShaderUtilities.ID_OutlineColor), Is.EqualTo(Color.black));
                 Assert.That(outline.mainTexture, Is.SameAs(font.atlasTexture));
                 words = (IDisposable)Activator.CreateInstance(type, (RectTransform)marker.transform, font, outline);

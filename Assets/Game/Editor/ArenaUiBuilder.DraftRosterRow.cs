@@ -15,6 +15,7 @@ namespace AstralOath.Editor
             var button = Button(root, null, Color.clear);
             button.BlockedFeedback = true;
             var plate = RosterPicture(root, "Normal plate", DraftSprite("hero_bg_normal"), 0, 0, 361, 112);
+            AddRosterPlateShadow(plate);
             var selection = RosterPicture(root, "Selected plate", DraftSprite("hero_bg_selected"), 0, 0, 361, 112);
             selection.enabled = false;
             button.targetGraphic = plate;
@@ -61,6 +62,13 @@ namespace AstralOath.Editor
             Bind(root, keys.ToArray());
             root.gameObject.SetActive(false);
             return root;
+        }
+
+        private static void AddRosterPlateShadow(Graphic plate)
+        {
+            var shadow = plate.gameObject.AddComponent<Shadow>();
+            shadow.effectColor = new Color(0f, 0f, 0f, .40f);
+            shadow.effectDistance = new Vector2(0f, -5f);
         }
 
         private static GameText RosterName(RectTransform parent)

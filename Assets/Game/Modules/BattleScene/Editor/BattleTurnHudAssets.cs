@@ -16,8 +16,11 @@ namespace AstralOath.Client.BattleScene.Editor
             {
                 string path = file.Replace('\\', '/');
                 var importer = (TextureImporter)AssetImporter.GetAtPath(path);
+                bool gradient = Path.GetFileName(path) == "_grow_s_white.png";
+                var gradientBorder = new Vector4(19, 91, 0, 20);
                 if (importer.textureType == TextureImporterType.Sprite && importer.spriteImportMode == SpriteImportMode.Single &&
-                    importer.npotScale == TextureImporterNPOTScale.None && !importer.mipmapEnabled)
+                    importer.npotScale == TextureImporterNPOTScale.None && !importer.mipmapEnabled &&
+                    (!gradient || importer.spriteBorder == gradientBorder))
                     continue;
                 importer.textureType = TextureImporterType.Sprite;
                 importer.spriteImportMode = SpriteImportMode.Single;
@@ -25,6 +28,7 @@ namespace AstralOath.Client.BattleScene.Editor
                 importer.mipmapEnabled = false;
                 importer.alphaIsTransparency = true;
                 importer.wrapMode = TextureWrapMode.Clamp;
+                if (gradient) importer.spriteBorder = gradientBorder;
                 importer.SaveAndReimport();
             }
         }
@@ -38,6 +42,7 @@ namespace AstralOath.Client.BattleScene.Editor
             foreach (string file in Directory.GetFiles(skills, "pa_*.png"))
                 yield return AssetDatabase.LoadAssetAtPath<Sprite>(file.Replace('\\', '/'));
             yield return AssetDatabase.LoadAssetAtPath<Sprite>(skills + "/_frame_passive.png");
+            yield return AssetDatabase.LoadAssetAtPath<Sprite>(skills + "/cm_cool_skill.png");
             yield return AssetDatabase.LoadAssetAtPath<Sprite>(skills + "/cm_cool_skill_passive.png");
         }
     }

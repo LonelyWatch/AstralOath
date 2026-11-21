@@ -20,7 +20,7 @@ namespace AstralOath.Editor
             var hint = Text(result, "Native summary guide", "summon.result.hint", 28.08f, .021f, .118f, .19f, .063f,
                 new Color32(79, 149, 221, 255), TextAlignmentOptions.TopLeft, wrap: true);
             ApplySummonTextOutline(hint);
-            bindings.Add(("resultItems", Area(result, "Result cards", 0, 0, 1, 1)));
+            bindings.Add(("resultItems", BakeSummonDesignRect(Area(result, "Result cards", 0, 0, 1, 1))));
 
             var back = SummonFooterButton(result, bindings, "resultClose", "_btn_gold", false, 32, 21, 248, 72);
             ApplySummonTextOutline(Text(back, "Text", "summon.button.back", 32.25f, .04f, .045f, .92f, .91f, alignment: TextAlignmentOptions.Center), light: true);

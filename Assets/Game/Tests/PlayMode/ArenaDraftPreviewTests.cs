@@ -35,6 +35,107 @@ namespace AstralOath.Client.Tests
         }
 
         [Test]
+        public void PrebanSortsByOriginalStarsAndPlaysTheSelectedPortraitStrike()
+        {
+            var canvas = new GameObject("Preban selection test", typeof(RectTransform), typeof(Canvas));
+            canvas.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+            using var lifetime = new BindingScope(CancellationToken.None);
+            using var windows = new WindowCoordinator(lifetime.Token);
+            var assets = new DraftAssets();
+            var registry = new UIViewRegistry();
+            registry.Register<ArenaDraft>();
+            var view = registry.CreateAsync<ArenaDraft>(assets, canvas.transform, lifetime).GetAwaiter().GetResult();
+            var locale = ArenaLabels.LoadAsync(assets, lifetime, "zh-Hans", "ja").GetAwaiter().GetResult();
+            var art = AssetDatabase.LoadAssetAtPath<ArenaDraftArt>("Assets/Game/Modules/Arena/Configs/ArenaDraftArt.asset");
+            var binder = new ArenaDraftBinder(view, null, locale, art, windows, null, null, null);
+            var bindings = view.Root.GetComponent<BindingMap>();
+            var heroes = art.Heroes.OrderBy(hero => hero.BaseStars).Take(3)
+                .Concat(art.Heroes.OrderByDescending(hero => hero.BaseStars).Take(3)).ToArray();
+            ArenaDraftSeat Seat() => new ArenaDraftSeat { player = new ArenaPlayer { avatarId = heroes[0].Id, displayName = "test" },
+                picks = Array.Empty<string>(), prebans = Array.Empty<string>(), formation = Array.Empty<string>() };
+            var state = new ArenaDraftState { id = "preban-test", roomId = "room", version = 1, phase = "preban",
+                mySide = "host", activeSide = "both", firstPick = "host", host = Seat(), guest = Seat(),
+                eligibleHeroIds = heroes.Select(hero => hero.Id).ToArray(), prebanCount = 2 };
+            try
+            {
+                windows.ShowPageAsync(page => binder.OpenAsync(state, page)).GetAwaiter().GetResult();
+                var grid = bindings.Require<ScrollRect>("grid").content;
+                var filters = bindings.Require<GameObject>("rosterFilters").GetComponent<BindingMap>();
+                var expected = heroes.OrderByDescending(hero => hero.BaseStars).ThenBy(hero => hero.Id, StringComparer.Ordinal);
+                Assert.That(grid.Cast<Transform>().Select(row => row.name), Is.EqualTo(expected.Select(hero => hero.Id)));
+                bindings.Require<GameButton>("preSort").onClick.Invoke();
+                Assert.That(filters.gameObject.activeInHierarchy, Is.True);
+                filters.Require<GameButton>("sort_stars").onClick.Invoke();
+                filters.Require<GameButton>("close").onClick.Invoke();
+                Assert.That(grid.GetChild(0).name, Is.EqualTo(heroes[0].Id));
+                Canvas.ForceUpdateCanvases();
+                var choice = grid.GetChild(0).GetComponent<BindingMap>();
+                choice.Require<GameButton>("button").onClick.Invoke();
+                Canvas.ForceUpdateCanvases();
+                var effect = choice.Require<RawImage>("prebanEffect");
+                Assert.That(effect.enabled && effect.texture, Is.True);
+                Assert.That(grid.GetChild(1).GetComponent<BindingMap>().Require<RawImage>("prebanEffect").enabled, Is.False);
+                var tick = typeof(ArenaDraftBinder).GetMethod("Tick", BindingFlags.Instance | BindingFlags.NonPublic);
+                for (int frame = 0; frame < 3; frame++) tick.Invoke(binder, new object[] { 1f / 30 });
+                var camera = Resources.FindObjectsOfTypeAll<Camera>().Single(candidate => candidate.targetTexture == effect.texture);
+                Assert.That(camera.transform.parent.GetComponentsInChildren<MeshRenderer>().Count(), Is.EqualTo(6),
+                    "The stamp skeleton and all five emitters from the three CFX tracks must share the selected card's camera.");
+                bool graphics = SystemInfo.graphicsDeviceType != UnityEngine.Rendering.GraphicsDeviceType.Null;
+                if (graphics)
+                {
+                    var impact = ReadStrike(camera, "preban-impact");
+                    Assert.That(impact.Count(pixel => pixel.r > 230 && pixel.g > 215 && pixel.b > 190),
+                        Is.GreaterThan(500), "The initial impact must contain a visible white-hot center.");
+                }
+                for (int frame = 0; frame < 21; frame++) tick.Invoke(binder, new object[] { 1f / 30 });
+                Assert.That(effect.enabled, Is.True, "The native intro must settle into its red loop.");
+                if (graphics)
+                {
+                    var idle = ReadStrike(camera, "preban-loop");
+                    Assert.That(idle.Count(pixel => pixel.r > pixel.g * 1.7f && pixel.r > 80 && pixel.a > 160),
+                        Is.GreaterThan(500), "The settled stamp requires an opaque red slash across the portrait.");
+                }
+                Assert.That(bindings.Require<GameText>("preCount").text, Is.EqualTo("(1/2)"));
+                choice.Require<GameButton>("button").onClick.Invoke();
+                Assert.That(effect.enabled, Is.False);
+                Assert.That(effect.texture, Is.Null);
+                Assert.That(bindings.Require<GameText>("preCount").text, Is.EqualTo("(0/2)"));
+            }
+            finally
+            {
+                lifetime.Dispose();
+                binder.Dispose();
+                Object.DestroyImmediate(canvas);
+            }
+        }
+
+        private static Color32[] ReadStrike(Camera camera, string name)
+        {
+            var target = camera.targetTexture;
+            var prior = RenderTexture.active;
+            var scan = new Texture2D(target.width, target.height, TextureFormat.RGBA32, false);
+            try
+            {
+                camera.Render();
+                RenderTexture.active = target;
+                scan.ReadPixels(new Rect(0, 0, target.width, target.height), 0, 0);
+                scan.Apply();
+                var path = Environment.GetEnvironmentVariable("ASTRAL_ARENA_CAPTURE_DIR");
+                if (!string.IsNullOrWhiteSpace(path))
+                {
+                    System.IO.Directory.CreateDirectory(path);
+                    System.IO.File.WriteAllBytes(System.IO.Path.Combine(path, name + ".png"), scan.EncodeToPNG());
+                }
+                return scan.GetPixels32();
+            }
+            finally
+            {
+                RenderTexture.active = prior;
+                Object.DestroyImmediate(scan);
+            }
+        }
+
+        [Test]
         public void DraftGuidesFollowPickOwnershipWithoutReplayingOnRefresh()
         {
             var canvas = new GameObject("Draft guide regression", typeof(RectTransform), typeof(Canvas));
@@ -116,6 +217,43 @@ namespace AstralOath.Client.Tests
                 lifetime.Dispose();
                 binder.Dispose();
                 Object.DestroyImmediate(canvas);
+            }
+        }
+
+        [TestCase("blue2")]
+        [TestCase("red2")]
+        public void ProtectedSlotKeepsFullPortraitHeightAcrossDifferentSourceWidths(string slot)
+        {
+            var art = AssetDatabase.LoadAssetAtPath<ArenaDraftArt>("Assets/Game/Modules/Arena/Configs/ArenaDraftArt.asset");
+            var instance = Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(
+                "Assets/Game/Modules/Arena/Res/Prefab/ArenaDraft.prefab"));
+            try
+            {
+                var card = instance.GetComponent<BindingMap>().Require<BindingMap>(slot);
+                var portrait = card.Require<Image>("portrait");
+                var rect = portrait.rectTransform;
+                var originalEdge = rect.anchorMax.x;
+                var originalHeight = rect.rect.height;
+                Assert.That(originalHeight, Is.GreaterThan(0));
+
+                const BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
+                var choice = typeof(ArenaDraftBinder).GetNestedType("Choice", BindingFlags.NonPublic);
+                var item = Activator.CreateInstance(choice, flags, null,
+                    new object[] { card, art.LevelDigits, true, true, false, false, false }, null);
+                foreach (string id in new[] { "c1088", "c1001", "c1088" })
+                {
+                    var hero = art.Heroes.Single(entry => entry.Id == id);
+                    choice.GetMethod("Set", flags).Invoke(item, new object[] { id, hero, true, true, true });
+                    Assert.That(portrait.sprite, Is.SameAs(hero.Card));
+                    Assert.That(rect.rect.width, Is.EqualTo(originalHeight * hero.Card.rect.width / hero.Card.rect.height)
+                        .Within(.01f), id + " must use the native face width at the slot's full height.");
+                    Assert.That(rect.anchorMax.x, Is.EqualTo(originalEdge));
+                    Assert.That(rect.rect.height, Is.EqualTo(originalHeight).Within(.01f));
+                }
+            }
+            finally
+            {
+                Object.DestroyImmediate(instance);
             }
         }
 

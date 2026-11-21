@@ -19,7 +19,7 @@ namespace AstralOath.Client.Arena
         private readonly bool miniature;
         private readonly Vector2? nativeEffectSize;
         private readonly Vector2? effectRightFade;
-        private readonly bool blendCardLight, centralBanLight, turnGuide;
+        private readonly bool blendCardLight, centralBanLight, turnGuide, prebanCell;
         private readonly List<Color> guideTints;
         private Mesh guideMesh;
         private RectTransform effectPlacement;
@@ -36,9 +36,14 @@ namespace AstralOath.Client.Arena
         private Camera camera;
         private RenderTexture target;
         private Material material;
-        private BattleHudParticles particles;
-        private GameObject particleAnchor;
-        private float particleDelay;
+        private sealed class ParticleTrack
+        {
+            internal BattleHudParticles Particles;
+            internal GameObject Anchor;
+            internal string Bone;
+            internal float Delay;
+        }
+        private readonly List<ParticleTrack> particleTracks = new List<ParticleTrack>();
         private Bounds framingBounds;
         private int stageIndex = -1;
         private bool disposed;
@@ -56,7 +61,7 @@ namespace AstralOath.Client.Arena
 
         internal ArenaDraftPortrait(RawImage output, bool miniature = false, Vector2? nativeEffectSize = null,
             Vector2? effectRightFade = null, bool blendCardLight = false, bool centralBanLight = false,
-            bool turnGuide = false)
+            bool turnGuide = false, bool prebanCell = false)
         {
             this.output = output ? output : throw new ArgumentNullException(nameof(output));
             this.miniature = miniature;
@@ -67,6 +72,7 @@ namespace AstralOath.Client.Arena
             this.blendCardLight = blendCardLight;
             this.centralBanLight = centralBanLight;
             this.turnGuide = turnGuide;
+            this.prebanCell = prebanCell;
             if (turnGuide && QualitySettings.activeColorSpace == ColorSpace.Linear)
                 guideTints = new List<Color>(16); // Four authored additive quads.
             originalMaterial = output.material;
@@ -130,22 +136,43 @@ namespace AstralOath.Client.Arena
 
         internal bool IsVisible => output && output.enabled;
 
+        internal void SetRenderCameraActive(bool active)
+        {
+            if (camera) camera.enabled = active;
+        }
+
         internal void AddParticles(TextAsset definition, IReadOnlyDictionary<string, Texture2D> textures,
             float delay, float angle)
         {
-            if (!definition || !stage) return;
             ReleaseParticles();
-            particleAnchor = new GameObject("Draft effect particles") { layer = PreviewLayer };
+            AddParticleTrack(definition, textures, delay, angle, 5);
+        }
+
+        internal void AddParticleTrack(TextAsset definition, IReadOnlyDictionary<string, Texture2D> textures,
+            float delay, float angle, int order, string bone = null)
+        {
+            if (!definition || !stage) return;
+            var particleAnchor = new GameObject("Draft effect particles") { layer = PreviewLayer };
             particleAnchor.transform.SetParent(stage.transform, false);
             particleAnchor.transform.localRotation = Quaternion.Euler(0f, 0f, angle);
             particleAnchor.transform.localScale = Vector3.one * effectScale;
-            particleDelay = delay;
-            particles = new BattleHudParticles(definition, textures, particleAnchor.transform, Vector2.zero, .01f, 5,
+            var particles = new BattleHudParticles(definition, textures, particleAnchor.transform, Vector2.zero, .01f, order,
                 premultiplied: true, sourceColorsSrgb: true);
+            var track = new ParticleTrack { Particles = particles, Anchor = particleAnchor, Delay = delay, Bone = bone };
+            particleTracks.Add(track);
+            PositionTrack(track);
             if (blendCardLight || BanLight)
                 foreach (var renderer in particleAnchor.GetComponentsInChildren<MeshRenderer>(true))
                     ConfigureEffectLight(renderer, particle: true);
             if (delay == 0f) particles.Play();
+        }
+
+        private void PositionTrack(ParticleTrack track)
+        {
+            if (track.Bone == null || !player.TryGetBoneSkeletonPosition(track.Bone, out var center)) return;
+            track.Anchor.transform.position = player.Root.transform.TransformPoint(center);
+            if (player.TryGetBonePose(track.Bone, out var pose))
+                track.Anchor.transform.localScale = new Vector3(pose.LocalScale.x, pose.LocalScale.y, 1f) * effectScale;
         }
 
         internal void SetDesaturation(float amount)
@@ -182,23 +209,24 @@ namespace AstralOath.Client.Arena
             FrameOutput();
             // Formation can load four previews in the frame that starts the ban reveal.
             // Keep the stamp's impact visible instead of consuming its whole clip in that frame.
-            if (oneShot && BanLight) unscaledDeltaTime = Mathf.Min(unscaledDeltaTime, .10f);
+            if (oneShot && BanLight && !prebanCell) unscaledDeltaTime = Mathf.Min(unscaledDeltaTime, .10f);
             float before = player.Time;
             if (unscaledDeltaTime > 0)
             {
                 player.Tick(unscaledDeltaTime);
                 if (guideMesh) ApplyGuideOpacity();
             }
-            if (particles != null && unscaledDeltaTime > 0f)
+            foreach (var track in particleTracks)
             {
+                PositionTrack(track);
                 float activeTime = unscaledDeltaTime;
-                if (particleDelay > 0f)
+                if (track.Delay > 0f)
                 {
-                    activeTime = Mathf.Max(0f, unscaledDeltaTime - particleDelay);
-                    particleDelay = Mathf.Max(0f, particleDelay - unscaledDeltaTime);
-                    if (particleDelay == 0f) particles.Play();
+                    activeTime = Mathf.Max(0f, unscaledDeltaTime - track.Delay);
+                    track.Delay = Mathf.Max(0f, track.Delay - unscaledDeltaTime);
+                    if (track.Delay == 0f) track.Particles.Play();
                 }
-                particles.Tick(activeTime);
+                if (activeTime > 0f) track.Particles.Tick(activeTime);
             }
             if (oneShot && player.Time >= player.Duration)
             {
@@ -402,7 +430,7 @@ namespace AstralOath.Client.Arena
             camera.allowHDR = nativeEffectSize.HasValue && SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.ARGBHalf);
             camera.allowMSAA = false;
             camera.depth = -100;
-            int size = miniature ? 384 : 768;
+            int size = prebanCell || miniature ? 384 : 768;
             var format = camera.allowHDR ? RenderTextureFormat.ARGBHalf : RenderTextureFormat.ARGB32;
             target = new RenderTexture(turnGuide ? 512 : size, turnGuide ? 1280 : size, 16, format)
             {
@@ -483,12 +511,14 @@ namespace AstralOath.Client.Arena
 
         private void ReleaseParticles()
         {
-            particles?.Dispose();
-            particles = null;
-            if (!particleAnchor) return;
-            particleAnchor.SetActive(false);
-            Object.Destroy(particleAnchor);
-            particleAnchor = null;
+            foreach (var track in particleTracks)
+            {
+                track.Particles.Dispose();
+                if (!track.Anchor) continue;
+                track.Anchor.SetActive(false);
+                Object.Destroy(track.Anchor);
+            }
+            particleTracks.Clear();
         }
 
         private void ReleaseStage()

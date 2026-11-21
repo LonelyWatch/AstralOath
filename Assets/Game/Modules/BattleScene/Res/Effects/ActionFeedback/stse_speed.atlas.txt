@@ -1,0 +1,76 @@
+
+stse_speed.sct
+size: 228,276
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cross_02
+  rotate: false
+  xy: 111, 167
+  size: 65, 65
+  orig: 65, 65
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 2
+  size: 163, 163
+  orig: 163, 163
+  offset: 0, 0
+  index: -1
+lightning_core_05
+  rotate: false
+  xy: 2, 167
+  size: 107, 107
+  orig: 107, 107
+  offset: 0, 0
+  index: -1
+niddle
+  rotate: false
+  xy: 158, 234
+  size: 13, 24
+  orig: 13, 24
+  offset: 0, 0
+  index: -1
+niddle_spin
+  rotate: false
+  xy: 201, 238
+  size: 23, 23
+  orig: 23, 23
+  offset: 0, 0
+  index: -1
+uplight_1
+  rotate: false
+  xy: 178, 127
+  size: 48, 109
+  orig: 48, 109
+  offset: 0, 0
+  index: -1
+uplight_2
+  rotate: false
+  xy: 167, 2
+  size: 57, 123
+  orig: 57, 123
+  offset: 0, 0
+  index: -1
+upmark
+  rotate: false
+  xy: 173, 238
+  size: 26, 20
+  orig: 26, 20
+  offset: 0, 0
+  index: -1
+wach
+  rotate: true
+  xy: 111, 238
+  size: 36, 45
+  orig: 36, 45
+  offset: 0, 0
+  index: -1
+wach_middle
+  rotate: false
+  xy: 167, 127
+  size: 4, 4
+  orig: 4, 4
+  offset: 0, 0
+  index: -1

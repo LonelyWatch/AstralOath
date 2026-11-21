@@ -41,6 +41,24 @@ namespace AstralOath.Client.Tests
             });
         }
 
+        [TestCase(true)]
+        [TestCase(false)]
+        public void TheActingSeatCanSelectBeforeTheClockStartsAndCannotSubmitTwice(bool host)
+        {
+            WithSession(host, (type, session, wire) =>
+            {
+                wire["clock"]["deadlineUnixMilliseconds"] = JValue.CreateNull();
+                var update = Read(type, session, wire);
+                var state = (BattleSnapshot)update.GetType().GetField("Snapshot", Members).GetValue(update);
+                type.GetProperty("Snapshot", Members).SetValue(session, state);
+                type.GetMethod("ApplyClock", Members).Invoke(session, new[] { update });
+                var canSubmit = type.GetProperty("CanSubmit", Members);
+                Assert.That(canSubmit.GetValue(session), Is.EqualTo(state.GetUnit(state.CurrentActorId).Slot.Side == BattleSide.Ally));
+                type.GetProperty("Submitting", Members).SetValue(session, true);
+                Assert.That(canSubmit.GetValue(session), Is.False);
+            });
+        }
+
         [TestCase("missing")]
         [TestCase("version")]
         [TestCase("deadline")]
@@ -73,7 +91,7 @@ namespace AstralOath.Client.Tests
                 new[] { "c1001", "c1002", "c1008", "c1005" }, new[] { "c1003", "c1004", "c1062", "c1007" }, duel: true);
             var type = Type.GetType("AstralOath.Client.BattleScene.BattleOnlineSession, AstralOath.Client.BattleScene", true);
             using var session = (IDisposable)Activator.CreateInstance(type, Members, null,
-                new object[] { new Uri("http://localhost"), "room", "clock-match", "test-hash", "token", host }, null);
+                new object[] { new Uri("http://localhost"), "room", "clock-match", "test-hash", "token", host, null }, null);
             type.GetField("heroes", Members).SetValue(session, catalog.heroes.ToDictionary(row => row.id, StringComparer.Ordinal));
             var clock = new BattleTurnClockView { CommandSequence = match.Snapshot.LastCommandSequence,
                 EventSequence = match.Snapshot.LastEventSequence, ActorId = match.Snapshot.CurrentActorId,

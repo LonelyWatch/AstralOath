@@ -1,0 +1,55 @@
+
+stse_immune_weak2.sct
+size: 243,204
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 2, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+wing/wing_01
+  rotate: true
+  xy: 173, 2
+  size: 56, 62
+  orig: 56, 62
+  offset: 0, 0
+  index: -1
+wing/wing_02
+  rotate: false
+  xy: 173, 60
+  size: 24, 99
+  orig: 24, 99
+  offset: 0, 0
+  index: -1
+wing/wing_03
+  rotate: false
+  xy: 199, 60
+  size: 25, 78
+  orig: 25, 78
+  offset: 0, 0
+  index: -1
+wing/wing_04
+  rotate: true
+  xy: 180, 161
+  size: 18, 61
+  orig: 18, 61
+  offset: 0, 0
+  index: -1
+wing/wing_05
+  rotate: true
+  xy: 180, 181
+  size: 17, 44
+  orig: 17, 44
+  offset: 0, 0
+  index: -1
+wing/wing_06
+  rotate: true
+  xy: 2, 173
+  size: 29, 176
+  orig: 29, 176
+  offset: 0, 0
+  index: -1

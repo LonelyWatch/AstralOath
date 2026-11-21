@@ -1,0 +1,33 @@
+{
+  "info": {},
+  "primitive": [
+    {
+      "source": "preben_effect_spine",
+      "ani": "intro,loop",
+      "z": "2",
+      "format": "spine",
+      "loop": 1
+    },
+    {
+      "source": "pre_banned_pati_1",
+      "z": "10",
+      "delay": "80",
+      "format": "particle",
+      "attach": "preben_effect_spine/icon"
+    },
+    {
+      "source": "pre_banned_pati_2",
+      "z": "5",
+      "delay": "0",
+      "format": "particle",
+      "attach": "preben_effect_spine/icon"
+    },
+    {
+      "source": "pre_banned_pati_2",
+      "z": "3",
+      "delay": "30",
+      "format": "particle",
+      "attach": "preben_effect_spine/icon"
+    }
+  ]
+}

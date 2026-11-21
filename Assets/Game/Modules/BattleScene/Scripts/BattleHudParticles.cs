@@ -24,7 +24,7 @@ namespace AstralOath.Client.BattleScene
             public string name, textureFileName;
             public string[] colorBlends;
             public bool disable;
-            public int emitterType, burningType, repeat, blendFuncSource, blendFuncDestination;
+            public int emitterType, burningType, positionType, repeat, blendFuncSource, blendFuncDestination;
             public float maxParticles, startDelay, startDelayVar, interval, duration, emissionRate, scale;
             public float angle, angleVariance, speed, speedVariance, gravityx, gravityy;
             public float sourcePositionx, sourcePositiony, sourcePositionVariancex, sourcePositionVariancey;
@@ -146,12 +146,17 @@ namespace AstralOath.Client.BattleScene
 
             public bool HasParticles => particles.Count != 0;
 
-            public void Tick(double previous, double time, System.Random random, bool emit)
+            public void Tick(double previous, double time, System.Random random, bool emit, Vector3 movement)
             {
                 float delta = (float)(time - previous);
+                // Cocos FREE emitters leave each particle at its birth position as the source moves.
+                Vector2 offset = data.positionType == 0 && movement != Vector3.zero
+                    ? (Vector2)root.transform.InverseTransformVector(-movement) : Vector2.zero;
                 for (int index = particles.Count - 1; index >= 0; index--)
                 {
                     Particle particle = particles[index];
+                    particle.Position += offset;
+                    particle.Origin += offset;
                     if (Advance(ref particle, delta))
                         particles[index] = particle;
                     else
@@ -164,7 +169,7 @@ namespace AstralOath.Client.BattleScene
                     {
                         float age = (float)(time - delay - nextBurst * data.interval);
                         for (int count = 0; count < capacity && particles.Count < capacity; count++)
-                            Spawn(random, age);
+                            Spawn(random, age, offset * (delta > 0 ? Mathf.Clamp01(age / delta) : 0f));
                         nextBurst++;
                     }
                 }
@@ -180,19 +185,22 @@ namespace AstralOath.Client.BattleScene
                         double maxLife = Math.Max(0.01, data.particleLifespan + Math.Abs(data.particleLifespanVariance));
                         first = Math.Max(first, Math.Ceiling((time - maxLife - start) * data.emissionRate));
                         for (double emission = first; emission <= last && particles.Count < capacity; emission++)
-                            Spawn(random, (float)(time - start - emission / data.emissionRate));
+                        {
+                            float age = (float)(time - start - emission / data.emissionRate);
+                            Spawn(random, age, offset * (delta > 0 ? Mathf.Clamp01(age / delta) : 0f));
+                        }
                     }
                 }
 
                 Draw();
             }
 
-            private void Spawn(System.Random random, float age)
+            private void Spawn(System.Random random, float age, Vector2 birthOffset)
             {
                 float startSize = Math.Max(0, Sample(random, data.startParticleSize, data.startParticleSizeVariance));
                 float startRadius = Sample(random, data.maxRadius, data.maxRadiusVariance);
                 float angle = Sample(random, data.angle, data.angleVariance) * Mathf.Deg2Rad;
-                Vector2 origin = new Vector2(
+                Vector2 origin = birthOffset + new Vector2(
                     Sample(random, data.sourcePositionx, data.sourcePositionVariancex),
                     Sample(random, data.sourcePositiony, data.sourcePositionVariancey));
                 var particle = new Particle
@@ -379,7 +387,9 @@ namespace AstralOath.Client.BattleScene
             Tick(0);
         }
 
-        public void Tick(float delta)
+        public void Tick(float delta) => TickMoving(delta, Vector3.zero);
+
+        internal void TickMoving(float delta, Vector3 movement)
         {
             if (!playing)
                 return;
@@ -388,7 +398,7 @@ namespace AstralOath.Client.BattleScene
             double previous = time;
             time += delta;
             foreach (var emitter in emitters)
-                emitter.Tick(previous, time, random, emitting);
+                emitter.Tick(previous, time, random, emitting, movement);
         }
 
         // Opt-in for an owner that wants the original particle lifespan tail.

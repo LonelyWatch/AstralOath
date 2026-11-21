@@ -1,11 +1,14 @@
-"""Import the reviewed native Soul Burn and derived-action feedback closure only."""
+"""Import the verified battle action, healing, and status gain feedback closures."""
 import argparse
 from pathlib import Path
 from ImportHudEffects import MODULE, RAW_DIRECTORY, collect
 
 OUTPUT = MODULE / "Res/Effects/ActionFeedback"
 ROOTS = ("effect/ui_livepvp_soulburn_eff.cfx", "effect/stse_counter.cfx",
-         "effect/stse_chain.cfx", "effect/stse_addturn.cfx")
+         "effect/stse_chain.cfx", "effect/stse_addturn.cfx", "effect/heal_hp_01.cfx",
+         "effect/stse_attackpower_up.cfx", "effect/stse_defense_up.cfx", "effect/stse_immune_weak.cfx",
+         "effect/stse_speed_up.cfx", "effect/stse_evade.cfx", "effect/stse_immortality.cfx",
+         "effect/stse_defense_reflect.cfx", "effect/stse_critup.cfx")
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)

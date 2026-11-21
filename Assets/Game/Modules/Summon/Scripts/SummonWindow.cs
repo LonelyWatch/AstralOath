@@ -65,30 +65,12 @@ namespace AstralOath.Client.Summon
         internal GameObject WishTemplate => Bindings.Require<GameObject>("wishTemplate");
         internal GameObject RowTemplate => Bindings.Require<GameObject>("rowTemplate");
 
-        // The recording has a 2464 × 1200 game viewport after the device margin.
-        // Use its aspect at the game canvas's 1080-unit design height.
-        private static readonly Vector2 CardDesignSize = new Vector2(2217.6f, 1080f);
-
         internal void BindCardLayout(AstralOath.Client.Core.BindingScope scope)
         {
             var wishDialog = (RectTransform)Text("wishTitle").transform.parent;
-            var groups = new[] { Items("wishPortraitStrip"), Items("wishCaptionStrip"), Items("resultItems"), wishDialog };
-            foreach (var group in groups)
-            {
-                Vector2 center = (group.anchorMin + group.anchorMax) * .5f;
-                Vector2 size = Vector2.Scale(group.anchorMax - group.anchorMin, CardDesignSize);
-                group.anchorMin = group.anchorMax = center;
-                group.pivot = new Vector2(.5f, .5f);
-                group.anchoredPosition = Vector2.zero;
-                group.sizeDelta = size;
-            }
-
-            // Each portrait camera renders to a square. The tilted mask crops that square.
-            for (int index = 0; index < 7; index++)
-            {
-                RectTransform portrait = Raw("wishHero" + index).rectTransform;
-                portrait.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, portrait.rect.height);
-            }
+            var results = Items("resultItems");
+            var groups = new[] { Items("wishPortraitStrip"), Items("wishCaptionStrip"), results, wishDialog };
+            var designSize = results.sizeDelta;
 
             var infoSheet = Items("infoSheet");
             var viewport = (RectTransform)Root.transform;
@@ -100,7 +82,7 @@ namespace AstralOath.Client.Summon
                 lastSize = size;
                 float sheetScale = Mathf.Min(size.x / (infoSheet.sizeDelta.x + 24f), size.y / 1080f);
                 infoSheet.localScale = new Vector3(sheetScale, sheetScale, 1f);
-                float scale = Mathf.Min(size.x / CardDesignSize.x, size.y / CardDesignSize.y);
+                float scale = Mathf.Min(size.x / designSize.x, size.y / designSize.y);
                 foreach (var group in groups)
                     group.localScale = new Vector3(scale, scale, 1f);
             }

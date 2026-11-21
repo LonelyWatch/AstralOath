@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using AstralOath.Client.Arena;
@@ -16,7 +18,6 @@ using TMPro;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
@@ -28,6 +29,7 @@ namespace AstralOath.Client.Tests
         private const string HomePath = "Assets/Game/Modules/Home/Scenes/GameHome.unity";
         private Scene home;
         private Scene previous;
+        private HttpClient peerHttp;
         private string endpoint, priorEndpoint, priorSkipEntry, peerToken, roomPath;
 
         [UnityTest, Timeout(140000)]
@@ -36,10 +38,17 @@ namespace AstralOath.Client.Tests
         [UnityTest, Timeout(90000)]
         public IEnumerator DraftRosterScrollPreviewsOnlyAvailableHeroes() => DraftFromHome(checkRosterOnly: true);
 
-        private IEnumerator DraftFromHome(bool checkRosterOnly)
+        [UnityTest, Timeout(90000)]
+        public IEnumerator PrebanGridShowsStrikeAndSubmitsBothSelectedHeroes() => DraftFromHome(checkRosterOnly: false, prebanOnly: true);
+
+        private IEnumerator DraftFromHome(bool checkRosterOnly, bool prebanOnly = false)
         {
             endpoint = Environment.GetEnvironmentVariable("ASTRAL_ARENA_TEST_URL");
             if (string.IsNullOrWhiteSpace(endpoint)) Assert.Ignore("Set ASTRAL_ARENA_TEST_URL to the local arena server.");
+            peerHttp = new HttpClient(new HttpClientHandler { AllowAutoRedirect = false, UseProxy = !new Uri(endpoint).IsLoopback })
+            {
+                Timeout = TimeSpan.FromSeconds(8)
+            };
             priorEndpoint = Environment.GetEnvironmentVariable("ASTRAL_FOUNDATION_URL");
             priorSkipEntry = Environment.GetEnvironmentVariable("ASTRAL_TEST_SKIP_ENTRY");
             Environment.SetEnvironmentVariable("ASTRAL_FOUNDATION_URL", endpoint);
@@ -101,6 +110,11 @@ namespace AstralOath.Client.Tests
                 Is.GreaterThan(1f), "The slash must cover the gold portrait frame.");
             yield return new WaitForSecondsRealtime(.35f);
             yield return Capture("arena-draft-preban");
+            if (prebanOnly)
+            {
+                yield return new WaitForSecondsRealtime(.7f);
+                yield return Capture("arena-draft-preban-settled");
+            }
             Click(draft, "preAction");
             yield return ObserveHostSubmission(route, "preban", next => state = next);
             Assert.That(state["host"]["prebans"].Count(), Is.EqualTo(0));
@@ -109,21 +123,32 @@ namespace AstralOath.Client.Tests
             Assert.That(draft.Require<GameButton>("preAction").targetGraphic.color.r, Is.LessThan(.5f));
             yield return Capture("bp-preban-waiting");
             yield return PeerAction(route, state, "preban", pool.Skip(2).Take(2).ToArray(), next => state = next);
+            if (prebanOnly)
+            {
+                CollectionAssert.AreEquivalent(pool.Take(2), state["host"]["prebans"].Values<string>());
+                CollectionAssert.AreEquivalent(pool.Skip(2).Take(2), state["guest"]["prebans"].Values<string>());
+                yield return Peer(roomPath + "/leave", new { });
+                yield return Wait(() => Screen("ArenaRoom"), "The host did not return after the preban match closed.");
+                yield break;
+            }
             if (checkRosterOnly)
             {
                 yield return Wait(() => draft.Require<GameButton>("openRosterFilters").interactable &&
                     Hero(draft, "roster", pool[4])?.interactable == true, "Pick roster did not open.");
                 var list = draft.Require<ScrollRect>("roster");
-                float Position(int index) => ((RectTransform)Hero(draft, "roster", pool[index]).transform).anchoredPosition.y;
-                float step = Position(0) - Position(1);
+                var rows = pool.OrderByDescending(id => ((RectTransform)Hero(draft, "roster", id).transform).anchoredPosition.y).ToArray();
+                float step = list.scrollSensitivity;
                 Assert.That(step, Is.GreaterThan(0f));
                 int version = (int)state["version"];
-                list.content.anchoredPosition = new Vector2(0, Position(0) - Position(5) + .27f * step);
-                yield return ReadUntil(route, next => (string)next["previewHeroId"] == pool[5], next => state = next);
-                // Both guests prebanned the first four rows. The closest legal index to row one is four.
-                list.content.anchoredPosition = new Vector2(0, step);
-                yield return ReadUntil(route, next => (string)next["previewHeroId"] == pool[4], next => state = next);
-                Assert.That(list.content.anchoredPosition.y, Is.EqualTo(Position(0) - Position(4)).Within(1f));
+                int banned = Array.IndexOf(rows, pool[1]);
+                var legal = Enumerable.Range(0, rows.Length).Where(i => !pool.Take(4).Contains(rows[i])).ToArray();
+                int nearest = legal.OrderBy(i => Math.Abs(i - banned)).ThenByDescending(i => i).First();
+                int other = legal.First(i => i != nearest && i > 0);
+                list.content.anchoredPosition = new Vector2(0, (other + .27f) * step);
+                yield return ReadUntil(route, next => (string)next["previewHeroId"] == rows[other], next => state = next);
+                list.content.anchoredPosition = new Vector2(0, banned * step);
+                yield return ReadUntil(route, next => (string)next["previewHeroId"] == rows[nearest], next => state = next);
+                Assert.That(list.content.anchoredPosition.y, Is.EqualTo(nearest * step).Within(1f));
                 Assert.That((int)state["version"], Is.EqualTo(version));
                 Assert.That(state["host"]["picks"].Count(), Is.Zero);
                 yield return Peer(roomPath + "/leave", new { });
@@ -135,9 +160,10 @@ namespace AstralOath.Client.Tests
             var prebanReveal = draft.Require<GameObject>("reveal");
             var revealedHeader = draft.Require<GameObject>("preHeader");
             yield return Wait(() => prebanReveal.activeInHierarchy, "Preban reveal did not show.");
-            var halves = prebanReveal.GetComponentsInChildren<RawImage>()
-                .Where(half => half.name.StartsWith("Own reveal portrait ", StringComparison.Ordinal) ||
-                    half.name.StartsWith("Opponent reveal portrait ", StringComparison.Ordinal)).ToArray();
+            RawImage[] VisibleHalves() => prebanReveal.GetComponentsInChildren<RawImage>()
+                .Where(half => half.isActiveAndEnabled && (half.name.StartsWith("Own reveal portrait ", StringComparison.Ordinal) ||
+                    half.name.StartsWith("Opponent reveal portrait ", StringComparison.Ordinal))).ToArray();
+            var halves = VisibleHalves();
             Assert.That(halves, Has.Length.EqualTo(2), "Each round needs one diagonal portrait surface per side.");
             Assert.That(halves.All(half => half.texture && !half.raycastTarget), Is.True);
             Assert.That(revealedHeader.activeInHierarchy, Is.False, "The footer must wait for the full reveal.");
@@ -146,7 +172,7 @@ namespace AstralOath.Client.Tests
             Assert.That(stamp.texture, Is.Not.Null);
             var stampPage = stamp.texture;
             yield return Capture("arena-draft-preban-reveal");
-            yield return Wait(() => halves.Select(half => half.name).Zip(firstPair, (current, first) => current != first).All(changed => changed),
+            yield return Wait(() => (halves = VisibleHalves()).Length == 2 && halves.All(half => !firstPair.Contains(half.name)),
                 "The second preban pair did not replace both portraits.");
             Assert.That(prebanReveal.activeInHierarchy, Is.True);
             yield return Wait(() => halves.All(half => half.material.HasProperty("_Desaturation") &&
@@ -628,6 +654,8 @@ namespace AstralOath.Client.Tests
             if (previous.IsValid() && previous.isLoaded) SceneManager.SetActiveScene(previous);
             if (home.IsValid() && home.isLoaded) yield return SceneManager.UnloadSceneAsync(home);
             if (roomPath != null && peerToken != null) yield return Peer(roomPath + "/leave", new { });
+            peerHttp?.Dispose();
+            peerHttp = null;
             if (endpoint != null)
             {
                 Environment.SetEnvironmentVariable("ASTRAL_FOUNDATION_URL", priorEndpoint);
@@ -692,21 +720,16 @@ namespace AstralOath.Client.Tests
 
         private IEnumerator Peer(string route, object payload, Action<JObject> receive = null)
         {
-            using var request = new UnityWebRequest(new Uri(new Uri(endpoint), "/api/arena/" + route),
-                payload == null ? UnityWebRequest.kHttpVerbGET : UnityWebRequest.kHttpVerbPOST)
-            {
-                downloadHandler = new DownloadHandlerBuffer(),
-                timeout = 8
-            };
+            var uri = new Uri(new Uri(endpoint), "/api/arena/" + route);
+            using var request = new HttpRequestMessage(payload == null ? HttpMethod.Get : HttpMethod.Post, uri);
             if (payload != null)
-            {
-                request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload)));
-                request.SetRequestHeader("Content-Type", "application/json");
-            }
-            if (peerToken != null) request.SetRequestHeader("Authorization", "Bearer " + peerToken);
-            yield return request.SendWebRequest();
-            Assert.That(request.result, Is.EqualTo(UnityWebRequest.Result.Success), $"{route}: HTTP {request.responseCode}");
-            if (receive != null) receive(JObject.Parse(request.downloadHandler.text));
+                request.Content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
+            if (peerToken != null) request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", peerToken);
+            var pending = peerHttp.SendAsync(request);
+            yield return new WaitUntil(() => pending.IsCompleted);
+            using var response = pending.GetAwaiter().GetResult();
+            Assert.That(response.IsSuccessStatusCode, Is.True, $"{route}: HTTP {(int)response.StatusCode}");
+            if (receive != null) receive(JObject.Parse(response.Content.ReadAsStringAsync().GetAwaiter().GetResult()));
         }
 
         private static IEnumerator Wait(Func<bool> condition, string message, float seconds = 15)

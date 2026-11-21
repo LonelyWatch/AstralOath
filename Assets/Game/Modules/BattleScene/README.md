@@ -1,5 +1,7 @@
 # BattleScene
 
+技能输入使用权威回合的本方行动者，选好技能与目标后隐藏控件。服务器验证后送出演出或恢复操作。新增的模拟战结算预制读取实际终态和本方四人，爱心固定为 1 级。头顶血条、队伍血条、行动条与跳字的节奏、身边回血及头顶增益的原包依赖见[战斗与召唤复核](../../../../docs/delivery/2026-11-21-battle-and-summon-r23.md)和[角色与结算复核](../../../../docs/delivery/2026-11-21-battle-presentation-review.md)。
+
 `BattleHudParticles` 的源粒子解释器也由 Arena 的确认特效复用，竞技场自行持有时钟、相机、图集和播放生命周期。
 
 眩晕与睡眠通过权威事件及重连快照驱动角色原包的 `groggy` 循环。受击和技能骨骼占用结束时仍受控则回到该姿势，两种控制均解除后恢复待机。本批十个战斗模型均含此动作。原状态表 `cs_player` 205 / 205k 把五星环 `stse_stun.cfx` 挂到 `top`，缩放 1.7。206 / 206k 在同一骨骼挂睡眠 Z 字 `stse_sleep.cfx`，缩放 0.4、向下偏移 50 源像素。两组特效各自随附着骨骼移动，净化、到期、死亡或离场时按对应状态回收。`Tools/BattleScene/ImportBattleStunEffect.py --effect sleep --check` 可复查睡眠资源，换成 `--effect stun` 可复查眩晕。
@@ -218,10 +220,10 @@ Luban 快照 `Configs/battle-catalog.json` 含四十名英雄、成长模板、�
 
 ### 在线结算返回
 
-完成战斗入场后选禁界面即隐藏。发起结算返回时，战斗场景保留到竞技场导航完成离房并查回当前房间。服务端仍返回房间时恢复房间页，已经离房则显示竞技场大厅。目的页选定后才恢复起始场景的 Canvas、摄像机和输入；角色试用按其原入口恢复。用户退出大厅时，随页面取消的房间查询正常结束。
+完成战斗入场后选禁界面即隐藏。结算返回时，战斗场景保留到竞技场导航查清当前房间。服务端仍返回房间时恢复房间页，成员关系已结束则显示竞技场大厅。目的页选定后才恢复起始场景的 Canvas、摄像机和输入。角色试用按其原入口恢复。
 
 `BattleReturnNavigationTests` 通过两个真实 additive 场景延迟房间响应，逐帧检查主客双方返回时旧选禁不可见，并检查最后激活的场景。`ArenaDraftOnlineTests.HomeAndAuthenticatedOpponentDraftAndLoadBattle` 在真实双人对局的退出通知和画布渲染时采样。`HomeStartupPreparationTests.ClosingTheReturnedDirectoryWhileItsRoomReadIsPendingIsANormalExit` 覆盖在实际 HTTP 请求期间关闭大厅。
 
-离房请求超时后，客户端重新读取当前房间。如果服务端仍返回原房，房间的定时选禁查询会继续运行；同一房间、同一选禁 ID 且已到 battle 阶段的响应不会再次启动已退出的战斗。该记录属于本次登录，新一局的选禁 ID 可正常进入。若当前房间返回 204，大厅立即接管画面并显示加载状态，房间列表查询随大厅页面运行，用户可以在列表返回前退出大厅。
+回到原房时恢复选禁轮询，记录本次登录刚刚退出的选禁 ID，新局 ID 可正常进入。若当前房间返回 204，大厅接管画面，用户可以在列表返回前退出大厅。
 
-`BattleReturnReopensTheRoomWhenLeaveFailsAndCurrentStillContainsTheGuest` 通过正常主页入口、真实房间 Binder 和 HTTP 轮询依次返回旧局、新局；`ReturnedDirectoryCanCloseWhileTheRoomListIsStillLoading` 将列表响应扣住，验证返回已完成且大厅可退。两项通过独立回环服务控制响应时序。
+`BattleReturnReopensTheOriginalRoomWithoutLeavingOrReplayingDraft` 通过主页入口和真实房间 Binder 验证零次主动离房、旧局跳过和新局可进入。`ReturnedDirectoryCanCloseWhileTheRoomListIsStillLoading` 验证返回已完成时大厅可退。

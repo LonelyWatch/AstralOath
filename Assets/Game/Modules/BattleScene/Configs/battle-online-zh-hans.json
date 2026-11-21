@@ -7,5 +7,14 @@
   "opponentPlayer": "对手",
   "reconnecting": "正在重新连接对战",
   "connectionEnded": "对战连接已结束",
-  "clockUnavailable": "战斗服务版本未就绪，请更新客户端或服务后重试"
+  "clockUnavailable": "战斗服务版本未就绪，请更新客户端或服务后重试",
+  "invalidCommand": "操作不合法，请重新选择技能和目标",
+  "skillOnCooldown": "该技能仍在冷却，请重新选择",
+  "presentationPending": "对方仍在播放战斗演出，请稍后重新选择",
+  "resultDetails": "战斗结果",
+  "resultConfirm": "确认",
+  "resultClose": "关闭",
+  "resultDraw": "平局",
+  "resultTurn": "第 {0} 回合",
+  "resultHealth": "剩余生命"
 }

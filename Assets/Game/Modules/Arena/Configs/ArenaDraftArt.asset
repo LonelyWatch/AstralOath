@@ -69,9 +69,16 @@ MonoBehaviour:
     Atlas: {fileID: 4900000, guid: 38a89270facc52c0842ecaec3c0d563f, type: 3}
     Particles: {fileID: 0}
     Page: {fileID: 2800000, guid: 2fa6d66de05d5b428af832ef9e80a253, type: 3}
+  Preban:
+    Skeleton: {fileID: 4900000, guid: a65b0e9ae6ac555587a8415e1ccbebf3, type: 3}
+    Atlas: {fileID: 4900000, guid: 4dd1e58f99bb53a6bba92e3747ed000a, type: 3}
+    Particles: {fileID: 4900000, guid: f658f0020def52dd9dd9f71524990079, type: 3}
+    Page: {fileID: 2800000, guid: 2f54931d35aa5970ab0e2d6c495e3bad, type: 3}
+  PrebanFlashParticles: {fileID: 4900000, guid: 6879a0a26a1d5d55a8e5ca7328a0f77b, type: 3}
   ParticleTextures:
   - {fileID: 2800000, guid: 78d168fc867d5e2288fb3671aa940a1b, type: 3}
   - {fileID: 2800000, guid: af6b0801568d58958ff86f9feea7da33, type: 3}
+  - {fileID: 2800000, guid: 889d14cc3e0e5f2aa0139dbafc5e6e0e, type: 3}
   Heroes:
   - Id: c1001
     Name: "\u62C9\u65AF"

@@ -11,6 +11,8 @@ namespace AstralOath.Client.BattleScene
         private readonly HashSet<ulong> shown = new HashSet<ulong>();
         private ulong resetSequence;
 
+        internal bool TryMark(ulong sequence) => sequence > resetSequence && shown.Add(sequence);
+
         internal bool TryTake(ulong sequence, BattleFlowEventKind kind, BattleActionOrigin origin, bool soulBurn,
             out BattleFeedbackCue cue, out bool burn)
         {

@@ -271,6 +271,10 @@ namespace AstralOath.Client.BattleScene.Editor
             SetSpine("soulUse", "ui_soul_burn_use");
             SetSpine("soulDisplay", "soul_01");
             SetSpine("soulConsume", "soul_grow");
+            SetSpine("soulGain.drop", "soul_drop");
+            SetSpine("soulGain.arrival", "soul_hit");
+            SetObject("soulGain.dropParticles", Asset<TextAsset>(HudEffects + "Particles/soul_dorp_pati.particle.json"));
+            SetObject("soulGain.arrivalParticles", Asset<TextAsset>(HudEffects + "Particles/soul_hit_pati.particle.json"));
             const string sharedDustAtlas = "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1003/";
             var dust = properties.FindProperty("readyDust");
             dust.FindPropertyRelative("skeleton").objectReferenceValue = Asset<TextAsset>(

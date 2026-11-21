@@ -1,13 +1,43 @@
 {
   "schemaVersion": 1,
-  "converterSha256": "6dacb9c4857aca8051a20a24f17cdd64ce72d058a0cbbe1cf8ad06f78025a707",
+  "converterSha256": "a3328010183864f67e4b6d3ea94bf97e079d67693610b6ff537442fb13d1cfe9",
   "roots": [
     "effect/ui_livepvp_soulburn_eff.cfx",
     "effect/stse_counter.cfx",
     "effect/stse_chain.cfx",
-    "effect/stse_addturn.cfx"
+    "effect/stse_addturn.cfx",
+    "effect/heal_hp_01.cfx",
+    "effect/stse_attackpower_up.cfx",
+    "effect/stse_defense_up.cfx",
+    "effect/stse_immune_weak.cfx",
+    "effect/stse_speed_up.cfx",
+    "effect/stse_evade.cfx",
+    "effect/stse_immortality.cfx",
+    "effect/stse_defense_reflect.cfx",
+    "effect/stse_critup.cfx"
   ],
   "files": [
+    {
+      "source": "原始资源/effect/heal_hp_01.cfx",
+      "sourceSha256": "2f4aa7230326126bcf31466ec63e9c6470d2466ee844c0cdcf1e3a2535f0f263",
+      "asset": "heal_hp_01.cfx.json",
+      "dependencies": [
+        "Particles/heal_hp_01.particle.json"
+      ],
+      "assetSha256": "c62c9bda768e1a5cc0fa661083489f44de1abbc079b643e2ffff0689b7e1409f"
+    },
+    {
+      "source": "原始资源/effect/heal_hp_01.particle",
+      "sourceSha256": "e76d82ee8f2f3c817b6784ae6dc09e15a31d7cc67ad477774d1d8c6accd682ef",
+      "asset": "Particles/heal_hp_01.particle.json",
+      "dependencies": [
+        "Particles/cross_02.png",
+        "Particles/flash.png",
+        "Particles/heal_cross_01.png",
+        "Particles/pati_01.png"
+      ],
+      "assetSha256": "2db9fc3dae963c269ebfc17df9245324f875d30ba869e8e2ce2827bdac63cefc"
+    },
     {
       "source": "原始资源/effect/stse_addturn.cfx",
       "sourceSha256": "7e75434eee0e7321d91daca40202ddc0edb8b6572f49b338590f29ed718b5ce7",
@@ -70,6 +100,59 @@
         "alpha": "source-preserved"
       },
       "assetSha256": "6de66020e151d6d76b6c642030dfcfb65eee0804a32826cd813aad27f9b3773e"
+    },
+    {
+      "source": "原始资源/effect/stse_attackpower_up.atlas",
+      "sourceSha256": "dbeae73f67b2c6db51b74abe789d5b7215bff5e020dd778d9c305791c65dd242",
+      "asset": "stse_attackpower_up.atlas.txt",
+      "dependencies": [
+        "stse_attackpower_up.png"
+      ],
+      "assetSha256": "dbeae73f67b2c6db51b74abe789d5b7215bff5e020dd778d9c305791c65dd242"
+    },
+    {
+      "source": "原始资源/effect/stse_attackpower_up.cfx",
+      "sourceSha256": "3f06ab96d3fee3da930845ca7c161c8903a78b2b078276e289126ceb96fa570d",
+      "asset": "stse_attackpower_up.cfx.json",
+      "dependencies": [
+        "stse_attackpower_up.spine.json"
+      ],
+      "assetSha256": "196cca3a3de41f78e19b3b849bb1aa10428dbc8eff6f5713f26a74a2f00a3ea9"
+    },
+    {
+      "source": "原始资源/effect/stse_attackpower_up.scsp",
+      "sourceSha256": "9f968336e499ea96585936f6f8c3adeaf9644ddc6f3618011ccd4e2749fe19a2",
+      "asset": "stse_attackpower_up.spine.json",
+      "dependencies": [
+        "stse_attackpower_up.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 1.8666000366210938
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "stse_attackpower_up.sct",
+          "asset": "stse_attackpower_up.png"
+        }
+      ],
+      "assetSha256": "2c4493070b8ab8303afff604946b20782da9ab8880cfc55420f749bd4da7ac0d"
+    },
+    {
+      "source": "原始资源/effect/stse_attackpower_up.sct",
+      "sourceSha256": "1b0077e296598e065de3dbc0d6e26067c29e4e0c905be8bddca65755a74052e9",
+      "asset": "stse_attackpower_up.png",
+      "dependencies": [],
+      "texture": {
+        "width": 708,
+        "height": 249,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "74b5471f11d03de7c3e971b120b7bc48a5ef269341f830c34d62e2a491b27b91"
     },
     {
       "source": "原始资源/effect/stse_chain.atlas",
@@ -223,6 +306,422 @@
       "assetSha256": "a2e3fb9900cda8e01bf2bc1b0239575884f4654cf8823ab62877e07b049886bd"
     },
     {
+      "source": "原始资源/effect/stse_critup.atlas",
+      "sourceSha256": "bdf57bba3ea5a34c29ac10d2e3f7381f288ae6ed0c258b1208709d544c342b79",
+      "asset": "stse_critup.atlas.txt",
+      "dependencies": [
+        "stse_critup.png"
+      ],
+      "assetSha256": "bdf57bba3ea5a34c29ac10d2e3f7381f288ae6ed0c258b1208709d544c342b79"
+    },
+    {
+      "source": "原始资源/effect/stse_critup.cfx",
+      "sourceSha256": "3caef1f1bfd8079cc23647a5e3db251adf5e373e26421d22c2e04bb06ee92388",
+      "asset": "stse_critup.cfx.json",
+      "dependencies": [
+        "stse_critup.spine.json"
+      ],
+      "assetSha256": "d217db18ce937250b49345a73511db558b19dcf2c2ed7c8a37ad759b0588ffd1"
+    },
+    {
+      "source": "原始资源/effect/stse_critup.scsp",
+      "sourceSha256": "a4f8a04a20f414eed51be620d5c96aeea064ffc07a199d7e9cb77082e6f960d8",
+      "asset": "stse_critup.spine.json",
+      "dependencies": [
+        "stse_critup.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 1.166599988937378
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "stse_critup.sct",
+          "asset": "stse_critup.png"
+        }
+      ],
+      "assetSha256": "83e2730c7376993906fd66a2feb396623d1007ecab9e6ceedb8c208a103ad9bc"
+    },
+    {
+      "source": "原始资源/effect/stse_critup.sct",
+      "sourceSha256": "f21f4c17241b60854562373a40421f9e46a8c8a431d40e87492b2e7bb0d6618a",
+      "asset": "stse_critup.png",
+      "dependencies": [],
+      "texture": {
+        "width": 512,
+        "height": 234,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "7153a5821ecc7cca28196cf53b77529af076e5fef4a2c25ada855ea4d40a3fad"
+    },
+    {
+      "source": "原始资源/effect/stse_defense_reflect.atlas",
+      "sourceSha256": "078d87d06ab5e24999b63bf11010fbb703ab7ecd5a62bf06f4faca0889e429b5",
+      "asset": "stse_defense_reflect.atlas.txt",
+      "dependencies": [
+        "stse_defense_reflect.png"
+      ],
+      "assetSha256": "078d87d06ab5e24999b63bf11010fbb703ab7ecd5a62bf06f4faca0889e429b5"
+    },
+    {
+      "source": "原始资源/effect/stse_defense_reflect.cfx",
+      "sourceSha256": "5ee92e69106ea99d6258a5667539005ba6264db7d8491ead7a71074d8e40f1b6",
+      "asset": "stse_defense_reflect.cfx.json",
+      "dependencies": [
+        "stse_defense_reflect.spine.json"
+      ],
+      "assetSha256": "a4fc62263502f66c5d907d4d4c1fe692d800fbb82106da4ea2d755afde3d91c1"
+    },
+    {
+      "source": "原始资源/effect/stse_defense_reflect.scsp",
+      "sourceSha256": "851746d3ccce74ea29ffc1a165a2332cf5b62132cce5b4647222d67e81c9791f",
+      "asset": "stse_defense_reflect.spine.json",
+      "dependencies": [
+        "stse_defense_reflect.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 1.833299994468689
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "stse_defense_reflect.sct",
+          "asset": "stse_defense_reflect.png"
+        }
+      ],
+      "assetSha256": "673699397c02b828e24498ed02be2336c0bc6b8a01d8c202c3457c38dc442405"
+    },
+    {
+      "source": "原始资源/effect/stse_defense_reflect.sct",
+      "sourceSha256": "b7b72b9c0d81f80766aa4d04cd31b470495ab85747339bab4a483fc9d5af51c1",
+      "asset": "stse_defense_reflect.png",
+      "dependencies": [],
+      "texture": {
+        "width": 357,
+        "height": 492,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "64a3144051fad1358023be4a603deac4eba99f2d66be0b7c1435b74446ac951c"
+    },
+    {
+      "source": "原始资源/effect/stse_defense_up.atlas",
+      "sourceSha256": "10305f17eadc06736976aa1663284d5aa5d9fd1fc14cf2dbf3a8d8c03b329faa",
+      "asset": "stse_defense_up.atlas.txt",
+      "dependencies": [
+        "stse_defense_up.png"
+      ],
+      "assetSha256": "10305f17eadc06736976aa1663284d5aa5d9fd1fc14cf2dbf3a8d8c03b329faa"
+    },
+    {
+      "source": "原始资源/effect/stse_defense_up.cfx",
+      "sourceSha256": "f4e02002974a5ebb135d85864a922ad61d0f2af28c1386fa9d94ee9e57367fc5",
+      "asset": "stse_defense_up.cfx.json",
+      "dependencies": [
+        "stse_defense_up.spine.json"
+      ],
+      "assetSha256": "583aa13677367a3ceedbe474c55c36f20e1826c04e03eef9fa36b34a184636a0"
+    },
+    {
+      "source": "原始资源/effect/stse_defense_up.scsp",
+      "sourceSha256": "f496558dd56bdfc87b8ceac7f1eec97586a09831b415fafc8391a7f2ee841a93",
+      "asset": "stse_defense_up.spine.json",
+      "dependencies": [
+        "stse_defense_up.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 1.833299994468689
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "stse_defense_up.sct",
+          "asset": "stse_defense_up.png"
+        }
+      ],
+      "assetSha256": "c7bb0e176af3cf407adabac4ac0f1f4cf2375cccd5b451edcf7a793a0eca6f1c"
+    },
+    {
+      "source": "原始资源/effect/stse_defense_up.sct",
+      "sourceSha256": "bb4e39c75ed518fed89905e2030c3e29741a444c27e717535b692439709a719e",
+      "asset": "stse_defense_up.png",
+      "dependencies": [],
+      "texture": {
+        "width": 636,
+        "height": 227,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "2c017296cc592721050336e02c83f62daf760f31dde1f11fe53a7f43f9fcada1"
+    },
+    {
+      "source": "原始资源/effect/stse_evade.atlas",
+      "sourceSha256": "3437ede56f8ee9bb637ceadf5b508876426eec077edf18226b4f08a4836d47b0",
+      "asset": "stse_evade.atlas.txt",
+      "dependencies": [
+        "stse_evade.png"
+      ],
+      "assetSha256": "3437ede56f8ee9bb637ceadf5b508876426eec077edf18226b4f08a4836d47b0"
+    },
+    {
+      "source": "原始资源/effect/stse_evade.cfx",
+      "sourceSha256": "5fb7cba53d8f14b94049ac5449273832b80314ef065a985c5dad0ca3780b3135",
+      "asset": "stse_evade.cfx.json",
+      "dependencies": [
+        "stse_evade.spine.json"
+      ],
+      "assetSha256": "209d0232b0af0c1a96d68f61173239b7e5f2a9c103640a5f669ba4e7d2014d0e"
+    },
+    {
+      "source": "原始资源/effect/stse_evade.scsp",
+      "sourceSha256": "7dfb8bbbf0a57805b1cbe2e517db85e397c8b293d12304867a9337086864d997",
+      "asset": "stse_evade.spine.json",
+      "dependencies": [
+        "stse_evade.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 1.7000000476837158
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "stse_evade.sct",
+          "asset": "stse_evade.png"
+        }
+      ],
+      "assetSha256": "1b64068af8cc63288920f89b19b5f42b2add7ce64ab93b0949702a9dd8ec6971"
+    },
+    {
+      "source": "原始资源/effect/stse_evade.sct",
+      "sourceSha256": "f0f27aaa1042de8f81d9b97510f215a7bcb4b92c97cdaff30dcd830a22852d8d",
+      "asset": "stse_evade.png",
+      "dependencies": [],
+      "texture": {
+        "width": 418,
+        "height": 197,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "00bc5673bea346a78b4e3e0297d15dd9c0f615e29df1ee6bfbb3884f4208f2a6"
+    },
+    {
+      "source": "原始资源/effect/stse_immortality.atlas",
+      "sourceSha256": "6bbb46e81ab4f514b2715608a6e92fe1913a4ad62a5c715cb88adb0f1ddf84ae",
+      "asset": "stse_immortality.atlas.txt",
+      "dependencies": [
+        "stse_immortality.png"
+      ],
+      "assetSha256": "6bbb46e81ab4f514b2715608a6e92fe1913a4ad62a5c715cb88adb0f1ddf84ae"
+    },
+    {
+      "source": "原始资源/effect/stse_immortality.cfx",
+      "sourceSha256": "82c06deff88b1123d90c28e94526124ddd25cb94176b33ef7bab0fd8a4928a9f",
+      "asset": "stse_immortality.cfx.json",
+      "dependencies": [
+        "stse_immortality.spine.json"
+      ],
+      "assetSha256": "0d713feff422d44f97694eef4cb8a02a0b8c603efcaff58b33da3d57418aa9bb"
+    },
+    {
+      "source": "原始资源/effect/stse_immortality.scsp",
+      "sourceSha256": "eb47ea594ce15f6482bb709935c51f052fb9065a678931ec3597791c2c1af0d0",
+      "asset": "stse_immortality.spine.json",
+      "dependencies": [
+        "stse_immortality.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 1.5042999982833862
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "stse_immortality.sct",
+          "asset": "stse_immortality.png"
+        }
+      ],
+      "assetSha256": "f5890afddf8a196b25a05f95d50801899c0e504eca21d14914440f1423734816"
+    },
+    {
+      "source": "原始资源/effect/stse_immortality.sct",
+      "sourceSha256": "014473f3bab77486756f9cf5740d3441924314e25f481f2124cdd0376e591107",
+      "asset": "stse_immortality.png",
+      "dependencies": [],
+      "texture": {
+        "width": 576,
+        "height": 252,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "594537057c3d1b8115b66ad4e3899b0278a9b19948c59a62ae5f3df20b6e60f6"
+    },
+    {
+      "source": "原始资源/effect/stse_immune_weak.atlas",
+      "sourceSha256": "c2d06505c92fcbeeebba15ade6f9d185c6793f7491e6464ed6ca502cb8258715",
+      "asset": "stse_immune_weak.atlas.txt",
+      "dependencies": [
+        "stse_immune_weak.png"
+      ],
+      "assetSha256": "c2d06505c92fcbeeebba15ade6f9d185c6793f7491e6464ed6ca502cb8258715"
+    },
+    {
+      "source": "原始资源/effect/stse_immune_weak.cfx",
+      "sourceSha256": "6ffd8cbbea6cd3e1c8b41419e3641a6df3700db8fbc1b391e5bbbdcb68cb0400",
+      "asset": "stse_immune_weak.cfx.json",
+      "dependencies": [
+        "stse_immune_weak.spine.json",
+        "stse_immune_weak2.spine.json"
+      ],
+      "assetSha256": "bcd13465fcc9c82d64f9d8f267e92321714f63277d1146a52ba290f2988e45f9"
+    },
+    {
+      "source": "原始资源/effect/stse_immune_weak.scsp",
+      "sourceSha256": "e85262fcc9e5738b8f70d4f99996b5dd209eb8f02c72d690f4285ff9e167be5f",
+      "asset": "stse_immune_weak.spine.json",
+      "dependencies": [
+        "stse_immune_weak.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 1.5
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "stse_immune_weak.sct",
+          "asset": "stse_immune_weak.png"
+        }
+      ],
+      "assetSha256": "5f7f3e20bcac2ee17a4aa381a8fca7f9ea9e48ce71fde076eb6258c88bdd5b4f"
+    },
+    {
+      "source": "原始资源/effect/stse_immune_weak.sct",
+      "sourceSha256": "9849526cb84ba28280ccefd66b5e16d9e5d2c7f39851a165b74d05bd7054fb75",
+      "asset": "stse_immune_weak.png",
+      "dependencies": [],
+      "texture": {
+        "width": 579,
+        "height": 507,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "08243b534abbefa9efda4fdd9907dff710e173c83ed667225576b1baaa3fb26c"
+    },
+    {
+      "source": "原始资源/effect/stse_immune_weak2.atlas",
+      "sourceSha256": "db353058bed0bf26b695e9da69c561581732acd900bd0fdb4507b12b8338920a",
+      "asset": "stse_immune_weak2.atlas.txt",
+      "dependencies": [
+        "stse_immune_weak2.png"
+      ],
+      "assetSha256": "db353058bed0bf26b695e9da69c561581732acd900bd0fdb4507b12b8338920a"
+    },
+    {
+      "source": "原始资源/effect/stse_immune_weak2.scsp",
+      "sourceSha256": "c1666b47a055716421fbce793f9672161dc4ffab3ed3cfffcb6d1bafb4187fd8",
+      "asset": "stse_immune_weak2.spine.json",
+      "dependencies": [
+        "stse_immune_weak2.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 1.0333000421524048
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "stse_immune_weak2.sct",
+          "asset": "stse_immune_weak2.png"
+        }
+      ],
+      "assetSha256": "9e289c7efeb26934c305a1adb405568533a1e0ccad097d3649b6616b66dd9d93"
+    },
+    {
+      "source": "原始资源/effect/stse_immune_weak2.sct",
+      "sourceSha256": "1523c2c63f0f7390e8bd15db664856edb85ad2317b2619caea030fd0877e53da",
+      "asset": "stse_immune_weak2.png",
+      "dependencies": [],
+      "texture": {
+        "width": 243,
+        "height": 204,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "f422e69d6ca14c876fa743b6b3d325ec851385df12c5e46128312b51cf0874f6"
+    },
+    {
+      "source": "原始资源/effect/stse_speed.atlas",
+      "sourceSha256": "3fc27f4dfff1092ed8cc956b1d4920fa957a31f616cf959725d424dd81019799",
+      "asset": "stse_speed.atlas.txt",
+      "dependencies": [
+        "stse_speed.png"
+      ],
+      "assetSha256": "3fc27f4dfff1092ed8cc956b1d4920fa957a31f616cf959725d424dd81019799"
+    },
+    {
+      "source": "原始资源/effect/stse_speed.scsp",
+      "sourceSha256": "2f2c896cac5174ac8c719ffbeddfd5964212b95ff08fafe22b0f6c0b9559d612",
+      "asset": "stse_speed.spine.json",
+      "dependencies": [
+        "stse_speed.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 1.7666000127792358
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "stse_speed.sct",
+          "asset": "stse_speed.png"
+        }
+      ],
+      "assetSha256": "21bf660b5a7fbfb3f7429def14f10d0ebbd9196d1b30e868265d3ebe0d4a13fe"
+    },
+    {
+      "source": "原始资源/effect/stse_speed.sct",
+      "sourceSha256": "e3246515f6a79bfd45607754b4d99ae759c8b18fa74a2c5ee99fa1612fe650be",
+      "asset": "stse_speed.png",
+      "dependencies": [],
+      "texture": {
+        "width": 228,
+        "height": 276,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "98d2353646fe02a12b0298cda61343d11a578ece7d0ba0fa41ea40eff6ba4dbc"
+    },
+    {
+      "source": "原始资源/effect/stse_speed_up.cfx",
+      "sourceSha256": "142f88ae2eb026ece118ef2686f3cc66f28caf3169ec7ac19f8a500f45d0b3ef",
+      "asset": "stse_speed_up.cfx.json",
+      "dependencies": [
+        "stse_speed.spine.json"
+      ],
+      "assetSha256": "7c642bc31444b2a4469f824dc8d42e33bf387b12d8b508144a9caffe2fcc73d9"
+    },
+    {
       "source": "原始资源/effect/ui_livepvp_soulburn_eff.atlas",
       "sourceSha256": "97d81fa3e010523b484b519f72981f382e1829dfe31bd8d2ed0df3feb8396238",
       "asset": "ui_livepvp_soulburn_eff.atlas.txt",
@@ -330,6 +829,45 @@
         "alpha": "source-preserved"
       },
       "assetSha256": "27ea6b15b4f9f7b0fe98760741f7cd79061514d3b48029e10e0eb034a03da5f4"
+    },
+    {
+      "source": "原始资源/particle/cross_02.sct",
+      "sourceSha256": "51cefc789db01e0c6461f571eb6df75d21f285797b1f407612c69d3da0dad05d",
+      "asset": "Particles/cross_02.png",
+      "dependencies": [],
+      "texture": {
+        "width": 103,
+        "height": 103,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "d3d0ed6042d397b03ec8149e5931e4b2e0070c88891f26585cb8d9df9586b1f8"
+    },
+    {
+      "source": "原始资源/particle/flash.sct",
+      "sourceSha256": "8dace73fcd75d8a7e93906cf39f1e763e7411da502eba2bee09b31f2acd61e62",
+      "asset": "Particles/flash.png",
+      "dependencies": [],
+      "texture": {
+        "width": 256,
+        "height": 256,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "d7ff6211ef9fb2b48807c040e8acf7b85fb7fa32812a43c90cf7ae29170254ae"
+    },
+    {
+      "source": "原始资源/particle/heal_cross_01.sct",
+      "sourceSha256": "7512bc382666e72e8d9021629d675907805cfd5360f10b9f0cebedab6e0401aa",
+      "asset": "Particles/heal_cross_01.png",
+      "dependencies": [],
+      "texture": {
+        "width": 256,
+        "height": 256,
+        "encoding": "SCT1:RGBA8888",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "79b4816786b148f265ddf6c65299f27c2376357ef43c84baa1a3d5f9e365caab"
     },
     {
       "source": "原始资源/particle/pati_01.sct",

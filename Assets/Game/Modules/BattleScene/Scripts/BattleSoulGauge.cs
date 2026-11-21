@@ -28,11 +28,12 @@ namespace AstralOath.Client.BattleScene
         private readonly int capacity;
         private readonly GameObject root;
         private readonly GameObject consumptionRoot;
+        private readonly BattleSoulFlights gains;
         private int displayed = -1;
         private int occupied;
 
         public BattleSoulGauge(Image fill, GameText count, int capacity, BattleHudPreview.SpineEffect effect,
-            BattleHudPreview.SpineEffect consumeEffect, TextAsset particles, TextAsset consumeParticles,
+            BattleHudPreview.SpineEffect consumeEffect, BattleSoulFlights.Art gainEffect, TextAsset particles, TextAsset consumeParticles,
             IReadOnlyDictionary<string, Texture2D> textures)
         {
             this.fill = fill;
@@ -43,6 +44,7 @@ namespace AstralOath.Client.BattleScene
             var canvas = fill.GetComponentInParent<Canvas>();
             try
             {
+                gains = new BattleSoulFlights((RectTransform)fill.transform.parent, canvas, gainEffect, textures);
                 var factory = new SkeletonPlayerFactory();
                 float scale = CanvasPixelsPerSourcePixel / SpineExportScale;
                 var source = effect.CreateSource(scale * SoulScale);
@@ -85,7 +87,7 @@ namespace AstralOath.Client.BattleScene
             }
         }
 
-        public void Show(int amount, bool animateConsumption = false)
+        public void Show(int amount, bool animateConsumption = false, Vector2? sourceOnScreen = null)
         {
             amount = Mathf.Clamp(amount, 0, capacity);
             if (amount == displayed) return;
@@ -96,21 +98,33 @@ namespace AstralOath.Client.BattleScene
                 slots[i].Hide();
                 if (animateConsumption) consumption[i].Play();
             }
+            bool earned = displayed >= 0 && amount > displayed;
             occupied = nextOccupied;
             displayed = amount;
             count.text = $"{amount} / {capacity}";
             fill.fillAmount = nextOccupied < slots.Length
                 ? (amount % BattleFlowRules.SoulPerSlot) / (float)BattleFlowRules.SoulPerSlot : 0f;
+            if (earned && sourceOnScreen.HasValue)
+            {
+                var rect = fill.rectTransform.rect;
+                var destination = fill.rectTransform.TransformPoint(new Vector2(
+                    Mathf.Lerp(rect.xMin, rect.xMax, fill.fillAmount), rect.center.y));
+                gains.Play(sourceOnScreen.Value, destination);
+            }
         }
+
+        public void ClearFlights() => gains.Clear();
 
         public void Tick(float delta)
         {
             for (int i = 0; i < occupied; i++) slots[i].Tick(delta);
             foreach (var effect in consumption) effect.Tick(delta);
+            gains.Tick(delta);
         }
 
         public void Dispose()
         {
+            gains?.Dispose();
             foreach (var slot in slots) slot?.Dispose();
             foreach (var effect in consumption) effect?.Dispose();
             DestroyRoot(root);

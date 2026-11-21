@@ -25,6 +25,23 @@ class RosterQueueTests(unittest.TestCase):
         self.assertEqual(data[11]["status"], "pending")
         self.assertEqual(sum(item["id"] == "c1062" for item in data), 1)
 
+    def test_extended_queue_preserves_the_established_prefix(self):
+        source = self.source(last=1160)
+        configured = {"c1001", "c1062", "c1140"}
+        original = build_queue(source, configured)
+        extended = build_queue(source, configured, count=150)
+        self.assertEqual(extended[:100], original)
+        self.assertEqual(len(extended), 150)
+        self.assertEqual(extended[-1], {"id": "c1150", "name": "角色1150", "ordinal": 150, "status": "pending"})
+        self.assertEqual(extended[139]["status"], "configured")
+
+    def test_refuses_counts_below_the_first_ten_or_above_available_characters(self):
+        source = self.source(last=1149)
+        with self.assertRaisesRegex(ValueError, "at least 10"):
+            build_queue(source, set(), count=9)
+        with self.assertRaisesRegex(ValueError, "150.*149"):
+            build_queue(source, set(), count=150)
+
     def test_refuses_incomplete_roster_or_required_hero(self):
         with self.assertRaisesRegex(ValueError, "100"):
             build_queue(self.source(last=1099), set())

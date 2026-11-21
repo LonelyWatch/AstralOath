@@ -1,0 +1,27 @@
+
+soul_drop.sct
+size: 104,59
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+ball_ring
+  rotate: false
+  xy: 47, 2
+  size: 33, 33
+  orig: 33, 33
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 2
+  size: 43, 43
+  orig: 43, 43
+  offset: 0, 0
+  index: -1
+line_light_01
+  rotate: false
+  xy: 2, 47
+  size: 100, 10
+  orig: 100, 10
+  offset: 0, 0
+  index: -1

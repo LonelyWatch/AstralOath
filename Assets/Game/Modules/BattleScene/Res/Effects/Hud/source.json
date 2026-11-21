@@ -1,9 +1,11 @@
 {
   "schemaVersion": 1,
-  "converterSha256": "6dacb9c4857aca8051a20a24f17cdd64ce72d058a0cbbe1cf8ad06f78025a707",
+  "converterSha256": "a3328010183864f67e4b6d3ea94bf97e079d67693610b6ff537442fb13d1cfe9",
   "roots": [
     "effect/soul_burn_bt.scsp",
     "effect/soul_01.cfx",
+    "effect/soul_drop.cfx",
+    "effect/soul_gain.cfx",
     "effect/hud_soul_consume.cfx",
     "effect/hud_skill_select_nomal.cfx",
     "effect/hud_skill_select_burn.cfx",
@@ -317,6 +319,83 @@
       "assetSha256": "e18e1c9b2785f5a21cb357771a992140067b4efbdb7f38d419070e192971ec5c"
     },
     {
+      "source": "原始资源/effect/soul_dorp_pati.particle",
+      "sourceSha256": "11fd5ee02a4afc8374193155ebc44fee116889360b7000f9cf70e22068b572a5",
+      "asset": "Particles/soul_dorp_pati.particle.json",
+      "dependencies": [
+        "Particles/pati_01.png"
+      ],
+      "assetSha256": "3725bbefa42b78c0de8ff9c742cc4976df8b3a69b15ac57ab7260547ab0334ef"
+    },
+    {
+      "source": "原始资源/effect/soul_drop.atlas",
+      "sourceSha256": "4b9c9d5d3a114c8c1fec5bd41ae950d1db03f119992e19521fc1a42fa5a98751",
+      "asset": "soul_drop.atlas.txt",
+      "dependencies": [
+        "soul_drop.png"
+      ],
+      "assetSha256": "4b9c9d5d3a114c8c1fec5bd41ae950d1db03f119992e19521fc1a42fa5a98751"
+    },
+    {
+      "source": "原始资源/effect/soul_drop.cfx",
+      "sourceSha256": "effd4b45ec1ccf505d4689a7f305f09e067228959fd0c870d8c7c002b8e5fc7a",
+      "asset": "soul_drop.cfx.json",
+      "dependencies": [
+        "Particles/soul_dorp_pati.particle.json",
+        "soul_drop.spine.json"
+      ],
+      "assetSha256": "afb726b7799b0a2d8d12623b6960bb8921625deb80d37ea1c74c6cb1677c7a77"
+    },
+    {
+      "source": "原始资源/effect/soul_drop.scsp",
+      "sourceSha256": "a861af7fc0c614eaba7590f5ab14f8d92d5c2bf0247774b28d8086f1a4be7928",
+      "asset": "soul_drop.spine.json",
+      "dependencies": [
+        "soul_drop.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "intro",
+          "duration": 0.16660000383853912
+        },
+        {
+          "name": "loop",
+          "duration": 0.733299970626831
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "soul_drop.sct",
+          "asset": "soul_drop.png"
+        }
+      ],
+      "assetSha256": "af8e8c53a206901ef9ce3cb71e66b3a97ebdd875efa33edc1afa505717bbd912"
+    },
+    {
+      "source": "原始资源/effect/soul_drop.sct",
+      "sourceSha256": "0121700dc17a559e4850f24d2d24d14047f4fe3eead047c7437a48400859293f",
+      "asset": "soul_drop.png",
+      "dependencies": [],
+      "texture": {
+        "width": 104,
+        "height": 59,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "5bd76baa89e9d908e30deafab4b18caaf78ea91534a5714bf02545f7bd1eaefb"
+    },
+    {
+      "source": "原始资源/effect/soul_gain.cfx",
+      "sourceSha256": "222be0ca71aabb4d61b28342f6796ea43836831849e3a4816abdd83633968d95",
+      "asset": "soul_gain.cfx.json",
+      "dependencies": [
+        "soul_hit.spine.json",
+        "Particles/soul_hit_pati.particle.json"
+      ],
+      "assetSha256": "c098ca2b481562edc102d16eaba1db514ff87f4e5d407e64a40f8160d67116ec"
+    },
+    {
       "source": "原始资源/effect/soul_grow.atlas",
       "sourceSha256": "3271aeffd02158c36167e8c94f75c915e810187d1379088aeb66a8d78c9a4118",
       "asset": "soul_grow.atlas.txt",
@@ -359,6 +438,59 @@
         "alpha": "source-preserved"
       },
       "assetSha256": "7dcd12fa2eb39a27ec78f0b69f4c0d83a568da21b60266bb90713f60a000f074"
+    },
+    {
+      "source": "原始资源/effect/soul_hit.atlas",
+      "sourceSha256": "901728d7d88338facf71d146df76eb95ffca683fcf9f59490f0b20687750e25a",
+      "asset": "soul_hit.atlas.txt",
+      "dependencies": [
+        "soul_hit.png"
+      ],
+      "assetSha256": "901728d7d88338facf71d146df76eb95ffca683fcf9f59490f0b20687750e25a"
+    },
+    {
+      "source": "原始资源/effect/soul_hit.scsp",
+      "sourceSha256": "5fae3a2a5fbb309bcdecfb25839a4943a78b5f6602c6457f5daf7fa1b9e404a1",
+      "asset": "soul_hit.spine.json",
+      "dependencies": [
+        "soul_hit.atlas.txt"
+      ],
+      "spineVersion": "2.1.27",
+      "animations": [
+        {
+          "name": "animation",
+          "duration": 0.6665999889373779
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "soul_hit.sct",
+          "asset": "soul_hit.png"
+        }
+      ],
+      "assetSha256": "7eeaa57e9a0644afe42e3aa7c36c3d4f1137ea8ab5bfdc1335c656e3a34fb39f"
+    },
+    {
+      "source": "原始资源/effect/soul_hit.sct",
+      "sourceSha256": "eb573db422786665b5d8d6c12b0aa1d0b6fd292d84f3f41ee530a2d5cc8ff683",
+      "asset": "soul_hit.png",
+      "dependencies": [],
+      "texture": {
+        "width": 203,
+        "height": 111,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "4de1fbd232a11feb4d09598b8924dbe0a6136fe5debd82c9714830f544e71b43"
+    },
+    {
+      "source": "原始资源/effect/soul_hit_pati.particle",
+      "sourceSha256": "4e7fae7827606d3e4b90fcde6ef21d6e96fe67b92f16903a192e441d7c2a0781",
+      "asset": "Particles/soul_hit_pati.particle.json",
+      "dependencies": [
+        "Particles/pati_01.png"
+      ],
+      "assetSha256": "7de5453e7fbba1236b8158856a50277f1b38cf854aa754b19207c2a41e42a62b"
     },
     {
       "source": "原始资源/effect/soul_pati_01.particle",

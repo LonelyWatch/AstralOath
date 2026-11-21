@@ -57,6 +57,7 @@ namespace AstralOath.Client.BattleScene
         [SerializeField] private SpineEffect soulUse;
         [SerializeField] private SpineEffect soulDisplay;
         [SerializeField] private SpineEffect soulConsume;
+        [SerializeField] private BattleSoulFlights.Art soulGain;
         [SerializeField] private SpineEffect readyDust;
         [SerializeField] private TextAsset[] particles;
         [SerializeField] private Texture2D[] particleTextures;
@@ -322,7 +323,7 @@ namespace AstralOath.Client.BattleScene
             double binderReady = Time.realtimeSinceStartupAsDouble;
             simulation = new BattleSimulationPreview(gameObject.scene, hud, binder, catalog, battleSprites, battleGraphs,
                 skillAssets, audioCatalog, audioBanks, battleDamageFont, impactBank, stageBackground,
-                soulDisplay, soulConsume, particles, particleTextures, nextMatch, inspectionPrefab, readyDust: readyDust,
+                soulDisplay, soulConsume, soulGain, particles, particleTextures, nextMatch, inspectionPrefab, readyDust: readyDust,
                 skillTimelineOverrides: skillTimelineOverrides, online: online, onlineCopy: onlineCopy, onlineAssets: onlineAssets,
                 artifactCue: artifactCue);
             binder.AttachSimulation(simulation, online != null);

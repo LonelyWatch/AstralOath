@@ -18,6 +18,8 @@ RAW_DIRECTORY = "原始资源"
 ROOTS = (
     "effect/soul_burn_bt.scsp",
     "effect/soul_01.cfx",
+    "effect/soul_drop.cfx",
+    "effect/soul_gain.cfx",
     "effect/hud_soul_consume.cfx",
     "effect/hud_skill_select_nomal.cfx",
     "effect/hud_skill_select_burn.cfx",

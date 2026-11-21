@@ -1,5 +1,7 @@
 # FoundationDemo
 
+模拟战结算的确认按钮先读取当前房间成员关系，仍在房内就直接恢复原房间，房间已经关闭则返回目录。旧局的选禁 ID 会在这一登录会话内跳过，直到房主开启新局。[返回流程回归](../../../../docs/delivery/2026-11-21-battle-and-summon-r23.md)
+
 演示场景的 Echo 和游戏主页共用本机游戏服务 `http://localhost:7728`。进程环境变量 `ASTRAL_FOUNDATION_URL` 可覆盖场景中保存的地址。
 
 正式 GameHome 先由母包完成登录、选服与更新，再调用 FoundationEntry。YooAsset 的 `entry/theme` 和活动背景由 Luban 源表及收集器登记，随签名资源发布。 [启动和更新边界](../../../../docs/development/game-entry.md)

@@ -350,10 +350,10 @@ namespace AstralOath.Client.BattleScene
                         string source = (string)node["source"];
                         fullEnd = Mathf.Max(fullEnd, frame.At + EffectDuration(source));
                         actionEnd = Mathf.Max(actionEnd, frame.At + EffectDuration(source, includeAfterglow: false));
-                        Schedule(frame.At, () => Cfx(source, actor, recipients, 1,
+                        Schedule(frame.At, () => Cfx(source, actor, recipients, (int?)node["location"] ?? 1,
                             Number(node, "scale", 1f), new Vector2(Number(node, "x"), Number(node, "y")),
                             false, anchorName: (string)node["locationBone"] ?? (string)node["locationParam"],
-                            allowAfterglow: true));
+                            modelTimeline: true));
                         break;
                     case "shake":
                         actionEnd = Mathf.Max(actionEnd, frame.At + ShakeDuration(node));
@@ -972,7 +972,7 @@ namespace AstralOath.Client.BattleScene
 
         private void Cfx(string source, BattlePreviewActor primary, BattlePreviewActor[] targets, int? location,
             float scale, Vector2 offset, bool hit, Vector2 spread = default, string anchorName = null,
-            bool allowAfterglow = false, bool disableAutoFlipX = false, bool fixedArtwork = false)
+            bool modelTimeline = false, bool disableAutoFlipX = false, bool fixedArtwork = false)
         {
             string key = source.StartsWith(EffectPath, StringComparison.Ordinal) ? source : EffectPath + source;
             if (!key.EndsWith(".cfx", StringComparison.Ordinal)) key += ".cfx";
@@ -1062,7 +1062,7 @@ namespace AstralOath.Client.BattleScene
                     float side = caster.FacingDirection;
                     Schedule(time + Seconds(part, "delay"),
                         () => Spawn(key, part, position, anchor, scale, offset + variation, side, follow,
-                            allowAfterglow: allowAfterglow, disableAutoFlipX: disableAutoFlipX, fixedArtwork: fixedArtwork));
+                            modelTimeline: modelTimeline, disableAutoFlipX: disableAutoFlipX, fixedArtwork: fixedArtwork));
                 }
             }
         }
@@ -1111,15 +1111,17 @@ namespace AstralOath.Client.BattleScene
             float.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out value) && float.IsFinite(value);
 
         private void Spawn(string key, JObject part, Func<Vector3> position, BattlePreviewActor anchor, float scale,
-            Vector2 offset, float side, bool follow, int? screenOrder = null, bool allowAfterglow = false,
+            Vector2 offset, float side, bool follow, int? screenOrder = null, bool modelTimeline = false,
             bool disableAutoFlipX = false, bool fixedArtwork = false)
         {
             string source = (string)part["source"];
             if (string.IsNullOrWhiteSpace(source)) return;
             string format = (string)part["format"];
-            float size = Mathf.Max(0.01f, Number(part, "scale", 1f) * scale *
-                (anchor ? Mathf.Abs(anchor.transform.lossyScale.x) : 1f));
-            var renderer = anchor ? anchor.GetComponentInChildren<MeshRenderer>() : null;
+            var renderer = anchor ? anchor.PresentationRenderer : null;
+            // Model timeline meshes and emitter offsets use the same source space as the visible body.
+            float anchorScale = anchor ? Mathf.Abs(anchor.transform.lossyScale.x) : 1f;
+            float bodyScale = modelTimeline && renderer ? Mathf.Abs(renderer.transform.lossyScale.x) : anchorScale;
+            float size = Mathf.Max(0.01f, Number(part, "scale", 1f) * scale * bodyScale);
             int order = screenOrder ??
                 ((renderer ? renderer.sortingOrder : 55) + (int)Mathf.Sign(Number(part, "globalZ", 1f)) * 2);
             var group = new GameObject("Skill CFX " + key.Substring(EffectPath.Length)).transform;
@@ -1127,7 +1129,7 @@ namespace AstralOath.Client.BattleScene
             // STG offsets locate the effect on the formation. Its primitives can retain their authored orientation.
             float visualFacing = disableAutoFlipX ? 1f : side;
             Vector3 translation = new Vector3(offset.x * side + Number(part, "x") * visualFacing,
-                offset.y + Number(part, "y"), 0f) * SourcePixel;
+                offset.y + Number(part, "y"), 0f) * (SourcePixel * (modelTimeline ? bodyScale : 1f));
             group.localRotation = Quaternion.Euler(0f, 0f, -Number(part, "rotate") * visualFacing);
             var partScale = new Vector3(Number(part, "scaleX", 1f), Number(part, "scaleY", 1f), 1f);
             Vector3 viewportAnchor = default;
@@ -1142,8 +1144,8 @@ namespace AstralOath.Client.BattleScene
                     case "particle":
                         SpawnParticles(source, part, group, size, order, () =>
                         {
-                            if (!allowAfterglow || caster) UpdatePosition(false);
-                        }, allowAfterglow);
+                            if (!modelTimeline || caster) UpdatePosition(false);
+                        }, modelTimeline);
                         break;
                     default:
                         throw new FormatException("Unsupported primitive format " + format);

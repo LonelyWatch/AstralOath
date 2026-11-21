@@ -135,11 +135,15 @@ namespace AstralOath.Editor
             var dim = Area(root, "Preban modal", 0, 0, 1, 1);
             Paint(dim, null, Black(.45f), true);
             Add("preban", dim.gameObject);
-            var panel = Area(dim, "Preban blue panel", .029f, .047f, .942f, .906f);
+            var panel = Area(dim, "Preban blue panel", .031f, .061f, .942f, .874f);
             Paint(panel, DraftSprite("renew_popup_bg"), Color.white, true, true);
-            Text(panel, "Preban title", "arena.draft.preban", 34, .032f, .024f, .49f, .082f).fontStyle = FontStyles.Bold;
-            NativeRule(panel, "Preban line", .025f, .114f, .763f, .014f, Mist);
-            Add("preSearch", DraftSearch(panel, "Find preban hero", .657f, .031f, .13f, .069f));
+            Text(panel, "Preban title", "arena.draft.preban", 38, .038f, .024f, .49f, .082f);
+            NativeRule(panel, "Preban line", .025f, .114f, .768f, .014f, Mist);
+            var preSort = FilterButton(Area(panel, "Sort preban heroes", .552f, .032f, .111f, .066f));
+            Picture((RectTransform)preSort.transform, "Filter icon", Art("_sorting2"), .055f, .18f, .19f, .64f, true);
+            Add("preSort", preSort);
+            Add("preSortLabel", FilterText((RectTransform)preSort.transform, "Active sorting", "stars", 23, .267f, 0, .725f, 1));
+            Add("preSearch", DraftSearch(panel, "Find preban hero", .671f, .032f, .118f, .066f));
             var grid = Scroll(panel, "Preban grid", .027f, .127f, .759f, .672f);
             var sourceLayout = grid.content.GetComponent<VerticalLayoutGroup>();
             Object.DestroyImmediate(sourceLayout);
@@ -153,6 +157,7 @@ namespace AstralOath.Editor
             VerticalRule(panel, "Recent border", .801f, .122f, .006f, .664f, Mist);
             Text(panel, "Recent picks caption", "arena.draft.recent", 24, .817f, .025f, .155f, .08f,
                 Mist, TextAlignmentOptions.Center);
+            NativeRule(panel, "Recent picks header divider", .819f, .114f, .161f, .011f, Mist);
             var recent = Area(panel, "Recent choices", .821f, .141f, .153f, .56f);
             var recentLayout = recent.gameObject.AddComponent<GridLayoutGroup>();
             recentLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
@@ -162,7 +167,10 @@ namespace AstralOath.Editor
             recentLayout.childAlignment = TextAnchor.UpperCenter;
             Add("recent", recent.gameObject);
             Paint(Area(panel, "Selected band", .014f, .805f, .972f, .176f), null, new Color32(21, 39, 66, 195));
-            Add("preCount", Text(panel, "Selected hero count", null, 28, .036f, .828f, .21f, .123f, Mist, wrap: true));
+            Text(panel, "Selected hero caption", "arena.draft.preban_selected", 31, .018f, .823f, .09f, .049f,
+                Mist, TextAlignmentOptions.Center);
+            Add("preCount", Text(panel, "Selected hero count", null, 38, .018f, .875f, .09f, .069f,
+                alignment: TextAlignmentOptions.Center));
             var selected = Area(panel, "Selected preban chips", .268f, .826f, .367f, .136f);
             var selectedLayout = selected.gameObject.AddComponent<GridLayoutGroup>();
             // pvplive_ready_pre_ben: 92 x 97 native pixels, 90 px stride from the right.
@@ -173,7 +181,7 @@ namespace AstralOath.Editor
             selectedLayout.constraintCount = 1;
             selectedLayout.childAlignment = TextAnchor.MiddleRight;
             Add("preSelected", selected.gameObject);
-            Text(panel, "Remaining time caption", "arena.draft.remaining", 22, .685f, .826f, .126f, .043f,
+            Text(panel, "Remaining time caption", "arena.draft.remaining", 29, .685f, .826f, .126f, .043f,
                 Mist, TextAlignmentOptions.Center);
             Add("preTimer", DraftTimer(panel, "Preban timer", .685f, .862f, .126f, .101f, refs, "preTimer"));
             var preAction = Button(Area(panel, "Confirm preban", .814f, .847f, .168f, .104f), DraftSprite("_btn_red"), Color.white);
@@ -181,7 +189,7 @@ namespace AstralOath.Editor
             preAction.BlockedFeedback = true;
             Add("preAction", preAction);
             Add("preActionLabel", Text((RectTransform)preAction.transform, "Preban action", "arena.draft.choose", 31,
-                0, -.054f, 1, 1, alignment: TextAlignmentOptions.Center));
+                0, 0, 1, 1, alignment: TextAlignmentOptions.Center));
 
             var reveal = Area(root, "Preban reveal", 0, 0, 1, 1);
             Paint(reveal, DraftSprite("base_pvplive_eff"), Color.white, true);
@@ -283,15 +291,11 @@ namespace AstralOath.Editor
                     star.enabled = false;
                     keys.Add(("star" + index, star));
                 }
-                var flash = Picture(root, "Preban red flash", DraftSprite("preban_flash"), -.15f, -.13f, 1.3f, 1.3f, true);
-                var glow = Picture(root, "Preban strike glow", DraftSprite("preban_icon_glow"), -.04f, -.02f, 1.08f, 1.08f, true);
                 mark.sprite = DraftSprite("preban_banned_icon");
                 // The sprite is padded. Its visible red ring extends just beyond the gold frame.
                 Place(mark.rectTransform, -.032f, -.111f, 1.064f, 1.161f);
                 mark.transform.SetAsLastSibling();
-                flash.enabled = glow.enabled = false;
-                keys.Add(("prebanFlash", flash));
-                keys.Add(("prebanGlow", glow));
+                keys.Add(("prebanEffect", Raw(root, "Native preban strike", -1f, -1.035f, 3f, 3f)));
             }
             if (miniature)
             {
@@ -439,10 +443,12 @@ namespace AstralOath.Editor
             catalog.RedPick = Enumerable.Range(1, 5).Select(index => Effect(
                 "ui_livepvp_slot_eff_0" + index, "ui_livepvp_slot_red" + index + "_pati1")).ToArray();
             catalog.FinalBan = Effect("ui_livepvp_bann_eff", "ui_livepvp_bann_pati1");
+            catalog.Preban = Effect("preben_effect_spine", "pre_banned_pati_1");
+            catalog.PrebanFlashParticles = Load<TextAsset>(feedback + "Particles/pre_banned_pati_2.particle.json");
             catalog.BlueGuide = Effect("ui_livepvp_arrow_blue");
             catalog.RedGuide = Effect("ui_livepvp_arrow_red");
             catalog.ParticleTextures = new[] { Load<Texture2D>(feedback + "Particles/pati_03.png"),
-                Load<Texture2D>(feedback + "Particles/ticle_02.png") };
+                Load<Texture2D>(feedback + "Particles/ticle_02.png"), Load<Texture2D>(feedback + "Particles/pati_01.png") };
             ArenaDraftArt.NativeEffect Effect(string rig, string particle = null) => new ArenaDraftArt.NativeEffect
             {
                 Skeleton = Load<TextAsset>(feedback + rig + ".spine.json"),

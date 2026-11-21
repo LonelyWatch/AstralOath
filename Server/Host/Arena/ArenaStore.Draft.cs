@@ -291,12 +291,8 @@ internal sealed partial class ArenaStore
             throw new ArenaProblem(403, "battle_wrong_seat");
         // A valid late command cannot race ahead of the default action at its deadline.
         room = await AdvanceBattleClock(connection, transaction, draft, room, catalog, token);
-        if (request.Sequence == room.Read(0).Snapshot.LastCommandSequence + 1 && draft.BattleClock != null &&
-            !draft.BattleClock.DeadlineUnixMilliseconds.HasValue)
-        {
-            await transaction.CommitAsync(token);
-            throw new ArenaProblem(409, "battle_presentation_pending");
-        }
+        // Readiness starts the decision clock. The acting player may submit a validated
+        // choice while the other client is still presenting the preceding action.
         var reply = room.Submit(side, request) ?? throw new ArenaProblem(403, "battle_wrong_seat");
         if (reply.Status == BattleCommandStatus.Accepted)
         {

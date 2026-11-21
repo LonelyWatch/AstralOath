@@ -1,0 +1,20 @@
+
+soul_hit.sct
+size: 203,111
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flash
+  rotate: false
+  xy: 2, 2
+  size: 86, 86
+  orig: 86, 86
+  offset: 0, 0
+  index: -1
+line_light_01
+  rotate: false
+  xy: 2, 90
+  size: 199, 19
+  orig: 199, 19
+  offset: 0, 0
+  index: -1

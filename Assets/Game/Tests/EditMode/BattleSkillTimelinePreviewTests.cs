@@ -175,6 +175,50 @@ namespace AstralOath.Tests
             }
         }
 
+        [TestCase(false)]
+        [TestCase(true)]
+        public void VioletS3ModelLayersStayWithBothAnimatedBodiesAtOnlineScale(bool casterOnRight)
+        {
+            const string graphId = "c_violetto_skill_03";
+            var graph = AssetDatabase.LoadAssetAtPath<TextAsset>(HeroDirectory +
+                "c1074/Configs/stagept/" + graphId + ".graph.json");
+            var type = Type.GetType(PreviewTypeName, true);
+            using var session = (IDisposable)Activator.CreateInstance(type, nonPublic: true);
+            type.GetMethod("Load", Instance).Invoke(session,
+                new object[] { "c1074", graphId, graph.text, "c1001", casterOnRight, false, false });
+            var actor = (Component)type.GetField("caster", Instance).GetValue(session);
+            actor.GetType().GetMethod("SetBattleDisplayScale", Instance).Invoke(actor, new object[] { 1.17f });
+            var body = (Renderer)actor.GetType().GetProperty("PresentationRenderer", Instance).GetValue(actor);
+            var player = (AstralOath.Client.Skeletons.ISkeletonPlayer)actor.GetType().GetField("player", Instance).GetValue(actor);
+            var playback = type.GetField("playback", Instance).GetValue(session);
+            var effects = (Transform)playback.GetType().GetField("root", Instance).GetValue(playback);
+            var cues = (IReadOnlyList<(float At, JObject Node, float Duration, JObject[] Modulators)>)
+                type.GetProperty("Cues", Instance).GetValue(session);
+
+            foreach (int phase in new[] { 1, 2 })
+            {
+                string animation = "skill3_" + phase;
+                var cue = cues.Single(item => (string)item.Node["ani"] == animation);
+                type.GetMethod("SeekStage", Instance).Invoke(session, new object[] { cue.At + .48f });
+                Assert.That(player.CurrentAnimation, Is.EqualTo(animation));
+                Assert.That(player.Time, Is.EqualTo(.48f).Within(.025f));
+                var sword = effects.GetComponentsInChildren<MeshRenderer>()
+                    .Single(layer => layer.name == "violetto_eff_skill_3_" + phase);
+                Assert.That(sword.transform.lossyScale.x, Is.EqualTo(body.transform.lossyScale.x).Within(.001f),
+                    "The rapier arc and caster have independent native motion tracks in one coordinate system.");
+                Assert.That(sword.transform.lossyScale.y, Is.EqualTo(body.transform.lossyScale.y).Within(.001f));
+                if (phase == 2)
+                {
+                    Vector3 origin = sword.transform.position;
+                    type.GetMethod("SeekStage", Instance).Invoke(session, new object[] { cue.At + 1.6f });
+                    Assert.That(Vector3.Distance(actor.transform.position, origin), Is.GreaterThan(20f),
+                        "The source deliberately parks the caster offscreen for the finishing slash.");
+                    Assert.That(Vector3.Distance(sword.transform.position, origin), Is.LessThan(.01f),
+                        "Location 5 keeps the rapier sweep at its emission point through the final hits.");
+                }
+            }
+        }
+
         [Test]
         public void AitherShotUsesTheOriginalLaunchWindowAndExpiresAtHitOnEitherSide()
         {

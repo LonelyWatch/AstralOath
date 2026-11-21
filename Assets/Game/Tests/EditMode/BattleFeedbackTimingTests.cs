@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using AstralOath.Client.Common;
@@ -36,27 +37,76 @@ namespace AstralOath.Tests
             if (root) Object.DestroyImmediate(root);
         }
 
-        [Test]
-        public void ZeroDamageMissShowsOnlyItsLocalizedCaption()
+        [TestCase(BattleHitKind.Miss)]
+        [TestCase(BattleHitKind.Normal)]
+        public void ZeroDamageCreatesNoDamageNumberPopup(BattleHitKind kind)
         {
-            Call(hud, "SetMissFeedbackLabel", "未命中");
-            Call(hud, "ShowDamageHit", "target", 0, BattleHitKind.Miss,
-                (RectTransform)root.transform, Vector3.zero, null);
-
-            var popup = root.transform.Find("Battle Feedback/target");
-            Assert.That(popup, Is.Not.Null, "An absorbed miss still needs its localized caption.");
-            Assert.That(popup.Find("Impact Caption").GetComponent<GameText>().text, Is.EqualTo("未命中"));
-            Assert.That(popup.Find("Impact").GetComponent<GameText>().text, Is.Empty);
-            Assert.That(popup.GetComponentsInChildren<RawImage>(), Is.Empty);
-        }
-
-        [Test]
-        public void ZeroDamageNormalHitShowsNoPopup()
-        {
-            Call(hud, "ShowDamageHit", "target", 0, BattleHitKind.Normal,
+            Call(hud, "ShowDamageHit", "target", 0, kind,
                 (RectTransform)root.transform, Vector3.zero, null);
 
             Assert.That(root.transform.Find("Battle Feedback/target"), Is.Null);
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void PooledDigitsReapplyTheHealingAndOrdinaryDamageGradients(bool nativeFont)
+        {
+            if (nativeFont)
+            {
+                var font = AssetDatabase.LoadAssetAtPath<TMPro.TMP_FontAsset>(
+                    "Assets/Game/Modules/BattleScene/Res/Fonts/BattleDamageDigits.asset");
+                Object.DestroyImmediate(root);
+                root = Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(
+                    "Assets/Game/Modules/BattleScene/Res/Prefab/BattleHud.prefab"));
+                hud = Activator.CreateInstance(BattleType("BattleTurnHud"), Instance, null,
+                    new object[] { root.GetComponent<BindingMap>(), new Func<BattleUnitSnapshot, string>(unit => unit.NameKey),
+                        new Dictionary<string, Sprite>(), font }, null);
+            }
+            var anchor = (RectTransform)root.transform;
+            var healing = BattlePresentationWire.Event(1, 1, BattleFlowEventKind.Healing, "caster", "target", 3402,
+                null, null, BattleActionOrigin.Primary, null, null, null, null, BattleHitKind.None, null, false, null, null);
+            Call(hud, "ShowImpact", healing, anchor, Vector3.zero, null);
+            var label = root.transform.Find("Battle Feedback/target");
+            var digits = label.GetComponentsInChildren<RawImage>();
+            if (nativeFont)
+            {
+                Assert.That(digits.Length, Is.EqualTo(5));
+                Call(hud, "TickFeedback", .045f);
+                var heights = digits.Select(glyph => glyph.rectTransform.anchoredPosition.y).ToArray();
+                Assert.That(heights.Max() - heights.Min(), Is.GreaterThan(20f), "Recovery digits bounce independently.");
+            }
+            void CheckGradient(bool green)
+            {
+                Color32 top, bottom;
+                if (nativeFont)
+                {
+                    var glyph = label.GetComponentsInChildren<RawImage>().First();
+                    using var mesh = new VertexHelper();
+                    typeof(Graphic).GetMethod("OnPopulateMesh", Instance, null, new[] { typeof(VertexHelper) }, null)
+                        .Invoke(glyph, new object[] { mesh });
+                    var vertex = default(UIVertex);
+                    mesh.PopulateUIVertex(ref vertex, 0);
+                    bottom = vertex.color;
+                    mesh.PopulateUIVertex(ref vertex, 1);
+                    top = vertex.color;
+                }
+                else
+                {
+                    var text = label.GetComponentInChildren<GameText>();
+                    Assert.That(text.enableVertexGradient, Is.True);
+                    top = text.colorGradient.topLeft;
+                    bottom = text.colorGradient.bottomLeft;
+                }
+                Assert.That(top.r, Is.GreaterThan(215));
+                Assert.That(bottom.r, Is.LessThan(green ? 82 : 165));
+                if (green) Assert.That(bottom.g, Is.GreaterThan(220));
+                else Assert.That(bottom.g, Is.EqualTo(bottom.r));
+            }
+            CheckGradient(true);
+            Call(hud, "TickFeedback", 2f);
+            Call(hud, "ShowDamageHit", "target", 8640, BattleHitKind.Normal, anchor, Vector3.zero, null);
+            Assert.That(root.transform.Find("Battle Feedback/target"), Is.SameAs(label));
+            CheckGradient(false);
         }
 
         [Test]

@@ -14,7 +14,7 @@ from ImportHudEffects import collect, json_bytes
 
 
 OUTPUT = MODULES / "Arena/Res/Animations/DraftFeedback"
-ROOTS = ("effect/ui_livepvp_bann_eff.cfx", "effect/ui_livepvp_arrow_blue.cfx",
+ROOTS = ("effect/ui_pre_banned.cfx", "effect/ui_livepvp_bann_eff.cfx", "effect/ui_livepvp_arrow_blue.cfx",
          "effect/ui_livepvp_arrow_red.cfx") + tuple(
     f"effect/ui_livepvp_slot_{side}{slot}_set.cfx"
     for slot in range(1, 6)

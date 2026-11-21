@@ -10,8 +10,8 @@ namespace AstralOath.Client.BattleScene
     {
         private readonly BattleFeedbackCueTracker cues = new BattleFeedbackCueTracker();
         private readonly BattleNativeFeedbackEffect.Library library;
-        private readonly Dictionary<(BattlePreviewActor, BattleFeedbackCue), BattleNativeFeedbackEffect> effects =
-            new Dictionary<(BattlePreviewActor, BattleFeedbackCue), BattleNativeFeedbackEffect>();
+        private readonly Dictionary<(BattlePreviewActor Actor, string Source, string Bone), BattleNativeFeedbackEffect> effects =
+            new Dictionary<(BattlePreviewActor, string, string), BattleNativeFeedbackEffect>();
         private bool disposed;
 
         internal BattleActionFeedback(BattleSkillPresentationAsset[] assets)
@@ -21,25 +21,53 @@ namespace AstralOath.Client.BattleScene
         {
             if (disposed || item == null || item.Kind != BattleFlowEventKind.Action) return false;
             if (!cues.TryTake(item.Sequence, item.Kind, item.Origin, item.UseSoulBurn, out var cue, out bool burn)) return false;
-            Show(cue, actor);
+            Show(BattleFeedbackCueTracker.SourceFor(cue), actor);
             return burn;
         }
 
         internal void PresentExtraTurn(BattleFlowEvent item, BattlePreviewActor actor)
         {
             if (disposed || item == null || item.Kind != BattleFlowEventKind.ExtraTurnGranted) return;
-            if (cues.TryTake(item.Sequence, item.Kind, item.Origin, false, out var cue, out _)) Show(cue, actor);
+            if (cues.TryTake(item.Sequence, item.Kind, item.Origin, false, out var cue, out _))
+                Show(BattleFeedbackCueTracker.SourceFor(cue), actor);
         }
 
-        private void Show(BattleFeedbackCue cue, BattlePreviewActor actor)
+        internal void PresentHealing(BattleFlowEvent item, BattlePreviewActor recipient)
         {
-            if (cue == BattleFeedbackCue.None || !actor) return;
+            if (!disposed && recipient && item?.Kind == BattleFlowEventKind.Healing && item.Amount > 0 && cues.TryMark(item.Sequence))
+                Show(BattleNativeFeedbackEffect.HealingSource, recipient, "target");
+        }
+
+        internal void PresentStatusGain(BattleFlowEvent item, BattlePreviewActor recipient)
+        {
+            if (disposed || !recipient || item?.Kind != BattleFlowEventKind.StatusApplied || item.Status == null) return;
+            // cs_player.cs_effect and cs_eff_bone describe the gain animation separately from the HUD icon.
+            (string source, string bone) = item.Status.Kind switch
+            {
+                BattleStatusKind.AttackUp or BattleStatusKind.GreaterAttackUp => ("stse_attackpower_up", "top"),
+                BattleStatusKind.DefenseUp or BattleStatusKind.CriticalResistanceUp or BattleStatusKind.EffectivenessUp
+                    or BattleStatusKind.SkillNullifier => ("stse_defense_up", "top"),
+                BattleStatusKind.SpeedUp or BattleStatusKind.GreaterSpeedUp => ("stse_speed_up", "top"),
+                BattleStatusKind.Immunity => ("stse_immune_weak", "top"),
+                BattleStatusKind.Counter => ("stse_counter", "top"),
+                BattleStatusKind.EvasionUp => ("stse_evade", "top"),
+                BattleStatusKind.Immortality => ("stse_immortality", "top"),
+                BattleStatusKind.Reflect => ("stse_defense_reflect", "top"),
+                BattleStatusKind.CriticalChanceUp => ("stse_critup", "shadow"),
+                BattleStatusKind.ContinuousHealing => (BattleNativeFeedbackEffect.HealingSource, "target"),
+                _ => (null, null)
+            };
+            if (source != null && cues.TryMark(item.Sequence)) Show(source, recipient, bone);
+        }
+
+        private void Show(string source, BattlePreviewActor actor, string bone = null)
+        {
+            if (source == null || !actor) return;
             // P2 08:05.2 and 08:06.9 show the chain lightning at counter-action onset.
             // stse_counter is a buff-add icon, not this action cue. Dual/extra attack
             // retain the brief chain reuse pending their own video occurrence.
-            string source = BattleFeedbackCueTracker.SourceFor(cue);
             if (!library.Contains(source)) return; // Older isolated fixtures can omit feedback assets.
-            var key = (actor, cue);
+            var key = (actor, source, bone);
             if (!effects.TryGetValue(key, out var effect))
             {
                 var renderer = actor.PresentationRenderer;
@@ -51,7 +79,7 @@ namespace AstralOath.Client.BattleScene
                 effects.Add(key, effect);
             }
             effect.Play();
-            Place(actor, effect);
+            Place(actor, effect, bone);
         }
 
         internal void Tick(float delta)
@@ -60,24 +88,25 @@ namespace AstralOath.Client.BattleScene
             foreach (var pair in effects)
             {
                 if (!pair.Value.Active) continue;
-                if (!pair.Key.Item1) { pair.Value.Stop(); continue; }
-                Place(pair.Key.Item1, pair.Value);
+                if (!pair.Key.Actor) { pair.Value.Stop(); continue; }
+                Place(pair.Key.Actor, pair.Value, pair.Key.Bone);
                 pair.Value.Tick(delta);
             }
         }
 
-        private static void Place(BattlePreviewActor actor, BattleNativeFeedbackEffect effect)
+        private static void Place(BattlePreviewActor actor, BattleNativeFeedbackEffect effect, string bone)
         {
             var body = actor.PresentationRenderer;
             if (!body || !effect.Root) return;
             // P2 counters and ONE MORE TURN are centered on the body, not the
             // status/top bone. Native CFX offsets (including addturn y=-100) stay intact.
-            effect.Root.transform.position = actor.Bounds.center;
+            effect.Root.transform.position = bone != null && actor.TryGetPresentationAnchor(bone, out var anchor)
+                ? anchor : actor.Bounds.center;
             var parentScale = effect.Root.transform.parent.lossyScale;
             var bodyScale = body.transform.lossyScale;
             effect.Root.transform.localScale = new Vector3(Mathf.Abs(bodyScale.x) / Mathf.Max(.000001f, Mathf.Abs(parentScale.x)),
                 Mathf.Abs(bodyScale.y) / Mathf.Max(.000001f, Mathf.Abs(parentScale.y)), 1f);
-            effect.SetSorting(body.sortingLayerID, body.sortingOrder + 5);
+            effect.SetActorSorting(body);
             // Never queue stale flashes through a full cut-in; visual time still expires.
             effect.Root.SetActive(effect.Active && BattlePreviewActor.IsBodyVisible(body));
         }

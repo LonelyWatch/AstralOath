@@ -1,0 +1,69 @@
+
+stse_immortality.sct
+size: 576,252
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dust_sct_1_1
+  rotate: true
+  xy: 476, 129
+  size: 119, 78
+  orig: 119, 78
+  offset: 0, 0
+  index: -1
+dust_sct_1_2
+  rotate: false
+  xy: 2, 173
+  size: 78, 77
+  orig: 78, 77
+  offset: 0, 0
+  index: -1
+dust_sct_2_1
+  rotate: true
+  xy: 344, 2
+  size: 157, 84
+  orig: 157, 84
+  offset: 0, 0
+  index: -1
+dust_sct_2_2
+  rotate: false
+  xy: 353, 161
+  size: 121, 84
+  orig: 121, 84
+  offset: 0, 0
+  index: -1
+energy_1
+  rotate: false
+  xy: 219, 173
+  size: 132, 38
+  orig: 132, 38
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 2, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1
+ic_immotality
+  rotate: true
+  xy: 430, 2
+  size: 125, 144
+  orig: 125, 144
+  offset: 0, 0
+  index: -1
+wave_1
+  rotate: true
+  xy: 82, 173
+  size: 70, 135
+  orig: 70, 135
+  offset: 0, 0
+  index: -1
+wind_shock
+  rotate: false
+  xy: 173, 2
+  size: 169, 169
+  orig: 169, 169
+  offset: 0, 0
+  index: -1

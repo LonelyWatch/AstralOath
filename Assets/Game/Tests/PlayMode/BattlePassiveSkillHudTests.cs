@@ -56,6 +56,23 @@ namespace AstralOath.Client.Tests
             Assert.That(shade.gameObject.activeSelf, Is.False);
             Assert.That(icon.color, Is.EqualTo(Color.white));
 
+            // Silk's active S3 cools down for five turns. One elapsed turn uncovers a clockwise sector.
+            var activeMask = map.Require<GameButton>("skill3").transform.Find("Cooldown Overlay").GetComponent<Image>();
+            setCooldown.Invoke(turnHud, new object[] { 2, 4 });
+            Assert.That(activeMask.sprite.name, Is.EqualTo("cm_cool_skill"));
+            Assert.That(activeMask.type, Is.EqualTo(Image.Type.Filled));
+            Assert.That(activeMask.fillMethod, Is.EqualTo(Image.FillMethod.Radial360));
+            Assert.That(activeMask.fillOrigin, Is.EqualTo((int)Image.Origin360.Top));
+            Assert.That(activeMask.fillClockwise, Is.False);
+            Assert.That(activeMask.fillAmount, Is.EqualTo(4f / 5f).Within(.001f));
+            var caption = activeMask.transform.Find("Cooldown Number").GetComponent<GameText>();
+            Assert.That(caption.text, Is.EqualTo("4回合"));
+            Assert.That(caption.font.name, Is.EqualTo("EpicSeven"));
+            Assert.That(caption.fontSharedMaterial.GetFloat(TMPro.ShaderUtilities.ID_OutlineWidth), Is.Positive);
+            Assert.That(caption.alignment, Is.EqualTo(TMPro.TextAlignmentOptions.MidlineGeoAligned));
+            setCooldown.Invoke(turnHud, new object[] { 2, 0 });
+            Assert.That(activeMask.gameObject.activeSelf, Is.False);
+
             map.transform.Find("Combat Readiness/Live Readiness/Readiness Details Button")
                 .GetComponent<GameButton>().onClick.Invoke();
             var row = map.transform.Find("Combat Readiness/Live Readiness/Readiness Details/Rows/" +

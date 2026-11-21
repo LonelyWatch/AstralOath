@@ -8,16 +8,16 @@ namespace AstralOath.Client.Arena
 {
     internal sealed class ArenaPrebanReveal : IDisposable
     {
-        private const float PairSeconds = .83f;
-        private const float DismissSeconds = .18f;
+        // 30 fps reference: the second pair enters 28 frames after the first.
+        private const float PairSeconds = 28f / 30f;
+        private const float DismissSeconds = 8f / 30f;
+        private const float CrossSeconds = 3f / 30f;
         private readonly GameObject root;
         private readonly CanvasGroup opacity;
         private readonly Portrait own, opponent;
         private readonly ArenaDraftPortrait stamp;
         private readonly Graphic divider, stampSurface;
-        private ArenaDraftArt.Hero[] ownHeroes = Array.Empty<ArenaDraftArt.Hero>();
-        private ArenaDraftArt.Hero[] opponentHeroes = Array.Empty<ArenaDraftArt.Hero>();
-        private int pairCount, pairIndex;
+        private int pairCount;
         private float elapsed;
         private bool disposed;
 
@@ -53,13 +53,14 @@ namespace AstralOath.Client.Arena
         {
             if (disposed || !root || !opacity) return;
             Clear();
-            ownHeroes = local;
-            opponentHeroes = remote;
             pairCount = Mathf.Max(local.Length, remote.Length);
             if (!IsPlaying) return;
             opacity.alpha = 1f;
             root.SetActive(true);
-            ShowPair();
+            own.Prepare(local);
+            opponent.Prepare(remote);
+            own.Update(0f, 0f);
+            opponent.Update(0f, 0f);
             if (effect != null && stamp.PlayOneShot(effect.MakeSource(), "intro", loopAfter: "loop"))
                 stamp.AddParticles(effect.Particles, particles, .10f, 7f);
         }
@@ -86,36 +87,19 @@ namespace AstralOath.Client.Arena
             {
                 opacity.alpha = 1f - Mathf.SmoothStep(0f, 1f, (elapsed - sequenceEnd) / DismissSeconds);
             }
-            else
-            {
-                int nextPair = (int)(elapsed / PairSeconds);
-                if (pairIndex != nextPair)
-                {
-                    pairIndex = nextPair;
-                    ShowPair();
-                }
-                float time = elapsed - pairIndex * PairSeconds;
-                own.Update(time, seconds);
-                opponent.Update(time, seconds);
-            }
+            own.Update(elapsed, seconds);
+            opponent.Update(elapsed, seconds);
             stamp.Tick(seconds);
             return false;
-        }
-
-        private void ShowPair()
-        {
-            own.Show(pairIndex < ownHeroes.Length ? ownHeroes[pairIndex] : null);
-            opponent.Show(pairIndex < opponentHeroes.Length ? opponentHeroes[pairIndex] : null);
         }
 
         internal void Clear()
         {
             if (disposed) return;
-            pairCount = pairIndex = 0;
+            pairCount = 0;
             elapsed = 0f;
-            ownHeroes = opponentHeroes = Array.Empty<ArenaDraftArt.Hero>();
-            own.Show(null);
-            opponent.Show(null);
+            own.Clear();
+            opponent.Clear();
             stamp.Clear();
             if (root) root.SetActive(false);
         }
@@ -151,62 +135,93 @@ namespace AstralOath.Client.Arena
         private sealed class Portrait : IDisposable
         {
             private readonly bool upper;
-            private readonly string surfaceName;
-            private readonly RawImage surface;
-            private readonly Image fallback;
-            private readonly ArenaDraftPortrait player;
+            private readonly string side;
+            private readonly RectTransform mask;
+            private readonly List<Layer> layers = new();
+            private static readonly AnimationCurve Slide = new(
+                new Keyframe(0f, .76f, -4f, -4f),
+                new Keyframe(.20f, .21f, -.85f, -.85f),
+                new Keyframe(.67f, -.08f, -.65f, -.65f),
+                new Keyframe(.83f, -.23f, -1.55f, -1.55f),
+                new Keyframe(PairSeconds + CrossSeconds, -.91f, -4f, -4f));
+
+            private sealed class Layer
+            {
+                internal RawImage Surface;
+                internal Image Fallback;
+                internal ArenaDraftPortrait Player;
+                internal bool HasSkeleton;
+            }
 
             internal Portrait(RectTransform root, string side, bool upper)
             {
                 this.upper = upper;
+                this.side = side;
                 var shape = Child<ArenaPrebanPortraitMask>(root, side + " diagonal half", Vector2.zero, Vector2.one);
                 shape.Above = upper;
                 shape.raycastTarget = false;
                 shape.gameObject.AddComponent<Mask>().showMaskGraphic = false;
-
-                Vector2 min = upper ? new Vector2(-.10f, -.005f) : new Vector2(.20f, -.48f);
-                Vector2 max = upper ? new Vector2(.70f, 1.30f) : new Vector2(1.14f, .81f);
-                surfaceName = side + " reveal portrait";
-                fallback = Child<Image>(shape.rectTransform, side + " fallback illustration", min, max);
-                fallback.raycastTarget = false;
-                fallback.preserveAspect = true;
-                surface = Child<RawImage>(shape.rectTransform, surfaceName, min, max);
-                player = new ArenaDraftPortrait(surface);
+                mask = shape.rectTransform;
             }
 
-            internal void Show(ArenaDraftArt.Hero hero)
+            internal void Prepare(ArenaDraftArt.Hero[] heroes)
             {
-                if (!surface || !fallback)
+                Vector2 min = upper ? new Vector2(-.10f, -.005f) : new Vector2(.20f, -.48f);
+                Vector2 max = upper ? new Vector2(.70f, 1.30f) : new Vector2(1.14f, .81f);
+                foreach (var hero in heroes)
                 {
-                    player.Clear();
-                    return;
+                    var surface = Child<RawImage>(mask, side + " reveal portrait " + hero?.Id, min, max);
+                    var fallback = Child<Image>(mask, side + " fallback illustration", min, max);
+                    fallback.raycastTarget = false;
+                    fallback.preserveAspect = true;
+                    fallback.sprite = hero != null ? hero.Illustration ? hero.Illustration : hero.Card : null;
+                    var player = new ArenaDraftPortrait(surface);
+                    bool ready = player.Show(hero?.MakePortrait());
+                    player.SetRenderCameraActive(false);
+                    surface.enabled = fallback.enabled = false;
+                    layers.Add(new Layer { Surface = surface, Fallback = fallback, Player = player, HasSkeleton = ready });
                 }
-                surface.name = hero != null ? surfaceName + " " + hero.Id : surfaceName;
-                fallback.sprite = hero != null ? hero.Illustration ? hero.Illustration : hero.Card : null;
-                fallback.enabled = !player.Show(hero?.MakePortrait()) && fallback.sprite;
-                Update(0f, 0f);
             }
 
             internal void Update(float time, float seconds)
             {
-                if (!surface || !fallback) return;
-                float slide = Mathf.SmoothStep(1f, 0f, time / .13f)
-                    - Mathf.SmoothStep(0f, .78f, (time - .69f) / .14f);
-                float offset = (upper ? -1f : 1f) * slide * surface.rectTransform.rect.width * .15f;
-                surface.rectTransform.anchoredPosition = fallback.rectTransform.anchoredPosition = new Vector2(offset, 0);
-                // The upper portrait reads as gray under the stamp; the lower starts warmer
-                // and both finish almost monochrome before sliding to the next pair.
-                float wash = Mathf.SmoothStep(0f, 1f, time / (upper ? .19f : .27f));
-                player.SetDesaturation(Mathf.Lerp(upper ? .71f : .47f, .98f, wash));
-                var tint = Color.Lerp(new Color(.91f, .92f, .96f), new Color(.73f, .75f, .79f), wash);
-                if (fallback.color != tint) fallback.color = tint;
-                player.Tick(seconds);
+                for (int index = 0; index < layers.Count; index++)
+                {
+                    var layer = layers[index];
+                    float local = time - index * PairSeconds;
+                    bool visible = local >= 0 && local < PairSeconds + CrossSeconds;
+                    layer.Player.SetRenderCameraActive(visible);
+                    layer.Surface.enabled = visible && layer.HasSkeleton;
+                    layer.Fallback.enabled = visible && !layer.HasSkeleton && layer.Fallback.sprite;
+                    if (!visible) continue;
+                    float x = Slide.Evaluate(local) * mask.rect.width * (upper ? 1f : -1f);
+                    layer.Surface.rectTransform.anchoredPosition = layer.Fallback.rectTransform.anchoredPosition = new Vector2(x, 0f);
+                    float wash = Mathf.SmoothStep(.12f, .93f, Mathf.InverseLerp(.17f, .85f, local));
+                    layer.Player.SetDesaturation(wash);
+                    layer.Fallback.color = Color.Lerp(Color.white, new Color(.76f, .76f, .78f), wash);
+                    layer.Player.Tick(seconds);
+                }
+            }
+
+            internal void Clear()
+            {
+                foreach (var layer in layers)
+                {
+                    layer.Player.Dispose();
+                    if (layer.Surface) Object.Destroy(layer.Surface.gameObject);
+                    if (layer.Fallback)
+                    {
+                        layer.Fallback.enabled = false;
+                        Object.Destroy(layer.Fallback.gameObject);
+                    }
+                }
+                layers.Clear();
             }
 
             public void Dispose()
             {
-                player.Dispose();
-                if (surface) Object.Destroy(surface.transform.parent.gameObject);
+                Clear();
+                if (mask) Object.Destroy(mask.gameObject);
             }
         }
     }

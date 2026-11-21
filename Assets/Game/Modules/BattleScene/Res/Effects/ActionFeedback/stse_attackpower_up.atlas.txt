@@ -1,0 +1,118 @@
+
+stse_attackpower_up.sct
+size: 708,249
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cross_02
+  rotate: false
+  xy: 499, 167
+  size: 65, 65
+  orig: 65, 65
+  offset: 0, 0
+  index: -1
+flash
+  rotate: false
+  xy: 385, 2
+  size: 163, 163
+  orig: 163, 163
+  offset: 0, 0
+  index: -1
+lighting_sword
+  rotate: false
+  xy: 296, 188
+  size: 13, 18
+  orig: 13, 18
+  offset: 0, 0
+  index: -1
+lightning_core_05
+  rotate: false
+  xy: 566, 104
+  size: 107, 107
+  orig: 107, 107
+  offset: 0, 0
+  index: -1
+line_light
+  rotate: false
+  xy: 2, 219
+  size: 414, 28
+  orig: 414, 28
+  offset: 0, 0
+  index: -1
+shine_01
+  rotate: false
+  xy: 2, 2
+  size: 215, 215
+  orig: 215, 215
+  offset: 0, 0
+  index: -1
+sword_blade_broke_1
+  rotate: false
+  xy: 258, 168
+  size: 16, 37
+  orig: 16, 37
+  offset: 0, 0
+  index: -1
+sword_blade_broke_2
+  rotate: true
+  xy: 228, 208
+  size: 8, 12
+  orig: 8, 12
+  offset: 0, 0
+  index: -1
+sword_blade_broke_3
+  rotate: false
+  xy: 219, 208
+  size: 7, 9
+  orig: 7, 9
+  offset: 0, 0
+  index: -1
+sword_blade_broke_4
+  rotate: true
+  xy: 242, 208
+  size: 7, 12
+  orig: 7, 12
+  offset: 0, 0
+  index: -1
+sword_blade_broke_5
+  rotate: false
+  xy: 276, 168
+  size: 18, 35
+  orig: 18, 35
+  offset: 0, 0
+  index: -1
+sword_blade_light
+  rotate: true
+  xy: 550, 2
+  size: 100, 156
+  orig: 100, 156
+  offset: 0, 0
+  index: -1
+sword_blade_nomal
+  rotate: true
+  xy: 296, 168
+  size: 18, 62
+  orig: 18, 62
+  offset: 0, 0
+  index: -1
+sword_guard
+  rotate: false
+  xy: 219, 168
+  size: 37, 38
+  orig: 37, 38
+  offset: 0, 0
+  index: -1
+sword_spin
+  rotate: false
+  xy: 418, 167
+  size: 79, 79
+  orig: 79, 79
+  offset: 0, 0
+  index: -1
+wind_shock
+  rotate: false
+  xy: 219, 2
+  size: 164, 164
+  orig: 164, 164
+  offset: 0, 0
+  index: -1

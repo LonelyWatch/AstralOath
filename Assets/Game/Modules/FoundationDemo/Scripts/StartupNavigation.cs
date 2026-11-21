@@ -318,9 +318,15 @@ namespace AstralOath.Client.FoundationDemo
             }
             try
             {
-                try { await api.LeaveAsync(roomId, token); }
-                catch (ArenaRequestException) { /* The directory checks the current room again. */ }
+                var membership = await api.CurrentAsync(token);
                 token.ThrowIfCancellationRequested();
+                if (membership?.room != null)
+                    await OpenRoom(membership, token);
+                else
+                    await ShowDirectory(directory.OpenAfterBattleAsync);
+            }
+            catch (ArenaRequestException) when (!token.IsCancellationRequested)
+            {
                 await ShowDirectory(directory.OpenAfterBattleAsync);
             }
             catch (OperationCanceledException) when (token.IsCancellationRequested) { }

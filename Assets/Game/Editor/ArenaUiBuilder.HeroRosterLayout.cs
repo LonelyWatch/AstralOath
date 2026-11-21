@@ -308,6 +308,7 @@ namespace AstralOath.Editor
         {
             var card = Area(parent, "Hero card template", 0, 0, 1, 1);
             var button = Button(card, DraftSprite("hero_bg_normal"), Color.white);
+            AddRosterPlateShadow(button.targetGraphic);
             button.transition = Selectable.Transition.None;
             var selection = Picture(card, "Selected plate", DraftSprite("hero_bg_selected"), 0, 0, 1, 1);
             selection.enabled = false;

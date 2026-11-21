@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "converterSha256": "a3328010183864f67e4b6d3ea94bf97e079d67693610b6ff537442fb13d1cfe9",
+  "roots": [
+    "effect/eff_pvp_outro_victory.cfx",
+    "effect/eff_pvp_outro_defeat.cfx",
+    "img/hero_love_icon_1.png",
+    "img/_dim.png",
+    "img/_gradient.png",
+    "img/_bar_6.png"
+  ],
+  "files": [
+    {
+      "source": "原始资源/effect/eff_pvp_outro_defeat.cfx",
+      "sourceSha256": "427a8a93aab09c2f1cc264472334d16555b3cdcd3d78ab53b43e23494e7e3982",
+      "asset": "eff_pvp_outro_defeat.cfx.json",
+      "dependencies": [
+        "eff_pvp_outro_victory.spine.json"
+      ],
+      "assetSha256": "a9c790004b05ea0fdf1e97622d269d1625f4e5f4cca35eb856c5348fd3182f4f"
+    },
+    {
+      "source": "原始资源/effect/eff_pvp_outro_victory.atlas",
+      "sourceSha256": "d489cd93a1f58c3c65ee6f5860986a10ea515ef446a77d984a6bb6e28d0de438",
+      "asset": "eff_pvp_outro_victory.atlas.txt",
+      "dependencies": [
+        "eff_pvp_outro_victory.png"
+      ],
+      "assetSha256": "d489cd93a1f58c3c65ee6f5860986a10ea515ef446a77d984a6bb6e28d0de438"
+    },
+    {
+      "source": "原始资源/effect/eff_pvp_outro_victory.cfx",
+      "sourceSha256": "0a3e2d082cac30acb1913aa828a40ec824e54da46e66506036f6e89c2f7d0c6f",
+      "asset": "eff_pvp_outro_victory.cfx.json",
+      "dependencies": [
+        "eff_pvp_outro_victory.spine.json"
+      ],
+      "assetSha256": "f2bddabef621cc29a11509d511c57e1a1cf7212ef864aa0cab6b74bca7eafd25"
+    },
+    {
+      "source": "原始资源/effect/eff_pvp_outro_victory.scsp",
+      "sourceSha256": "811b70a2fa8351ea6a181f7b6223bd9d776ed5e83736a8775117e69fbf6f07b0",
+      "asset": "eff_pvp_outro_victory.spine.json",
+      "dependencies": [
+        "eff_pvp_outro_victory.atlas.txt"
+      ],
+      "spineVersion": "3.8.99",
+      "animations": [
+        {
+          "name": "defeat_instant",
+          "duration": 1.666700005531311
+        },
+        {
+          "name": "defeat_loop",
+          "duration": 15.0
+        },
+        {
+          "name": "victory_instant",
+          "duration": 1.666700005531311
+        },
+        {
+          "name": "victory_loop",
+          "duration": 15.0
+        }
+      ],
+      "pages": [
+        {
+          "pageName": "eff_pvp_outro_victory.sct",
+          "asset": "eff_pvp_outro_victory.png"
+        }
+      ],
+      "assetSha256": "a0f018adcb1fc88bb8d0008d2065562e7ec1ad8428afdc72882253ad4d2e4e9b"
+    },
+    {
+      "source": "原始资源/effect/eff_pvp_outro_victory.sct",
+      "sourceSha256": "d7194ba9e8b6681112ff8cf3d750fd34c75db3435b6c79b6bc1a3ee79e12d2c6",
+      "asset": "eff_pvp_outro_victory.png",
+      "dependencies": [],
+      "texture": {
+        "width": 964,
+        "height": 1301,
+        "encoding": "SCT1:RGB565+A8",
+        "alpha": "source-preserved"
+      },
+      "assetSha256": "176eb9dbe58c797d182542a50fdbc95dd5eae751c8008ebe67cf33b885350fad"
+    },
+    {
+      "source": "原始资源/img/_bar_6.png",
+      "sourceSha256": "2fc389ee41f3aed0b5145d9de33381d80ae01187aeb5a2cef63955dc128d1ee5",
+      "asset": "_bar_6.png",
+      "dependencies": [],
+      "assetSha256": "2fc389ee41f3aed0b5145d9de33381d80ae01187aeb5a2cef63955dc128d1ee5"
+    },
+    {
+      "source": "原始资源/img/_dim.png",
+      "sourceSha256": "d0120d3ec050aebffa9882fe147ff45bf7ff6d1a13cc3c7bbcfee3ec712d28cf",
+      "asset": "_dim.png",
+      "dependencies": [],
+      "assetSha256": "d0120d3ec050aebffa9882fe147ff45bf7ff6d1a13cc3c7bbcfee3ec712d28cf"
+    },
+    {
+      "source": "原始资源/img/_gradient.png",
+      "sourceSha256": "ad6239607a225a4271eda8810d539dd4b5e3be047bee2fa853eadaa46c0b43ec",
+      "asset": "_gradient.png",
+      "dependencies": [],
+      "assetSha256": "ad6239607a225a4271eda8810d539dd4b5e3be047bee2fa853eadaa46c0b43ec"
+    },
+    {
+      "source": "原始资源/img/hero_love_icon_1.png",
+      "sourceSha256": "f90d0c8daab44558d577f4ba27102c17950af79c814eb205a59a7f9ccc6cade6",
+      "asset": "hero_love_icon_1.png",
+      "dependencies": [],
+      "assetSha256": "f90d0c8daab44558d577f4ba27102c17950af79c814eb205a59a7f9ccc6cade6"
+    }
+  ]
+}

@@ -27,8 +27,8 @@ namespace AstralOath.Client.BattleScene
         public TextAsset SleepSymbolsEffect;
         public BattleSkillPresentationAsset FrostbiteApplication;
         public TextAsset FrostbiteApplicationEffect;
-        [Min(.001f)] public float DamageSeconds = .16f, HealSeconds = .18f, TrailSeconds = .50f;
-        [Min(0)] public float TrailDelaySeconds = .15f;
+        [Min(.001f)] public float DamageSeconds = .16f, HealSeconds = .18f, TrailSeconds = 1.05f;
+        [Min(0)] public float TrailDelaySeconds = .25f;
         public TextAsset DeathParticles, OnlineDeathParticles;
         public Texture2D[] DeathTextures;
         [Min(.001f)] public float DeathDarkenSeconds = BattleDeathPresentation.DefaultDarkenSeconds,

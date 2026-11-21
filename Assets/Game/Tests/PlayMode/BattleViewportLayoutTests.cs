@@ -71,6 +71,12 @@ namespace AstralOath.Client.Tests
                         Assert.That(camera.orthographicSize * camera.aspect, Is.GreaterThanOrEqualTo(9.59f));
                         foreach (string key in new[] { "pause", "speed", "auto", "soulBurn", "skill1", "skill2", "skill3" })
                             AssertInside(hud.Require<GameButton>(key).GetComponent<RectTransform>(), camera, safe, key);
+                        var backdrop = (RectTransform)hud.transform.Find("Combat Readiness/Live Readiness/Readiness Details/Details Background");
+                        var corners = new Vector3[4];
+                        backdrop.GetWorldCorners(corners);
+                        var screenY = corners.Select(point => RectTransformUtility.WorldToScreenPoint(camera, point).y);
+                        Assert.That(screenY.Min(), Is.EqualTo(0f).Within(1f));
+                        Assert.That(screenY.Max(), Is.EqualTo(size.y).Within(1f));
                         AssertStatusFollowsActors(units, hud.transform.Find("Unit Status"), camera, statusAnchor);
                         var sky = roots.Select(root => root.transform.Find("Sky")).First(item => item);
                         var ground = roots.Select(root => root.transform.Find("Ground")).First(item => item);

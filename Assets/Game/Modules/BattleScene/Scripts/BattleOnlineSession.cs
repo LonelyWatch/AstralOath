@@ -25,6 +25,7 @@ namespace AstralOath.Client.BattleScene
             internal BattleFlowEvent[] Events;
             internal bool Reset;
             internal BattleCommandStatus? Status;
+            internal bool PresentationPending;
             internal BattleTurnClockView Clock;
             internal double ClockSampleTime;
             internal int LatencyMilliseconds;
@@ -56,9 +57,7 @@ namespace AstralOath.Client.BattleScene
         internal double ClockElapsed => Math.Max(0d, Time.realtimeSinceStartupAsDouble - clockSampleTime);
         internal bool IsOwnedTrial { get; }
         internal bool CanSubmit => Healthy && !Terminated && !Submitting && Snapshot?.Outcome == BattleOutcome.InProgress &&
-            (IsOwnedTrial ? Snapshot.GetUnit(Snapshot.CurrentActorId)?.Slot.Side == BattleSide.Ally :
-                Clock != null && Clock.CommandSequence == Snapshot.LastCommandSequence && Clock.EventSequence == Snapshot.LastEventSequence &&
-                Clock.ActorId == Snapshot.CurrentActorId && Clock.DeadlineUnixMilliseconds.HasValue && Clock.RemainingSeconds(ClockElapsed) > 0);
+            Snapshot.GetUnit(Snapshot.CurrentActorId)?.Slot.Side == BattleSide.Ally;
 
         internal BattleOnlineSession(Uri endpoint, string roomId, string battleId, string contentHash,
             string bearer, bool localIsHost, string trialBattleContentHash = null)
@@ -179,8 +178,19 @@ namespace AstralOath.Client.BattleScene
             clockSampleTime = update.ClockSampleTime;
         }
 
-        private async Task<Update> SendAsync(JObject command, ulong cursor, CancellationToken token, bool ready = false) =>
-            Decode(await FetchResponseAsync(command, cursor, token, ready), command, cursor, ready);
+        private sealed class PresentationPendingException : Exception { }
+
+        private async Task<Update> SendAsync(JObject command, ulong cursor, CancellationToken token, bool ready = false)
+        {
+            try { return Decode(await FetchResponseAsync(command, cursor, token, ready), command, cursor, ready); }
+            catch (PresentationPendingException)
+            {
+                var latest = Decode(await FetchResponseAsync(null, cursor, token), null, cursor, false);
+                latest.Status = BattleCommandStatus.InvalidAction;
+                latest.PresentationPending = true;
+                return latest;
+            }
+        }
 
         private async Task<(JObject Payload, double SentAt, double ReceivedAt)> FetchResponseAsync(
             JObject command, ulong cursor, CancellationToken token, bool ready = false)
@@ -212,6 +222,8 @@ namespace AstralOath.Client.BattleScene
                     JObject conflict = null;
                     try { conflict = JObject.Parse(json); }
                     catch (JsonException) { }
+                    if (!ready && command != null && (string)conflict?["code"] == "battle_presentation_pending")
+                        throw new PresentationPendingException();
                     if ((string)conflict?["code"] is "battle_content_mismatch" or "battle_changed")
                         throw new InvalidDataException("The battle version changed.");
                     if ((string)conflict?["code"] == "battle_not_started")
