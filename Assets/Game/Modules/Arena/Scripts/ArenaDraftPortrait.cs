@@ -386,6 +386,10 @@ namespace AstralOath.Client.Arena
                     }
                     continue;
                 }
+                // ui_pre_banned's additive emitters explicitly author SRC_ALPHA, ONE.
+                // Their atlas is premultiplied; the native blend still attenuates the soft edges.
+                if (prebanCell)
+                    layer.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
                 // The broad native halo and compact sparks use different textures.
                 // Keep the spark cores bright while letting the halo fall away quickly.
                 bool banHalo = BanLight && layer.mainTexture && layer.mainTexture.name == "pati_03";

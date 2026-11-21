@@ -135,6 +135,150 @@ namespace AstralOath.Client.Tests
             }
         }
 
+        [TestCase(false)]
+        [TestCase(true)]
+        public void PrebanFlashClearsTheFaceAndLeavesAdjacentPortraitsReadable(bool clickRecent)
+        {
+            if (SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null)
+                Assert.Ignore("Preban compositing requires a graphics device.");
+            const string historyKey = "arena.draft.recent";
+            var previousHistory = PlayerPrefs.HasKey(historyKey) ? PlayerPrefs.GetString(historyKey) : null;
+            var screen = new GameObject("Preban UI camera", typeof(Camera)).GetComponent<Camera>();
+            var target = new RenderTexture(1280, 720, 24, RenderTextureFormat.ARGB32);
+            screen.targetTexture = target;
+            screen.clearFlags = CameraClearFlags.SolidColor;
+            screen.backgroundColor = Color.black;
+            screen.enabled = false;
+            var canvas = new GameObject("Preban UI", typeof(RectTransform), typeof(Canvas)).GetComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceCamera;
+            canvas.worldCamera = screen;
+            canvas.planeDistance = 1f;
+            using var lifetime = new BindingScope(CancellationToken.None);
+            using var windows = new WindowCoordinator(lifetime.Token);
+            var assets = new DraftAssets();
+            var registry = new UIViewRegistry();
+            registry.Register<ArenaDraft>();
+            var view = registry.CreateAsync<ArenaDraft>(assets, canvas.transform, lifetime).GetAwaiter().GetResult();
+            var labels = ArenaLabels.LoadAsync(assets, lifetime, "zh-Hans", "ja").GetAwaiter().GetResult();
+            var art = AssetDatabase.LoadAssetAtPath<ArenaDraftArt>("Assets/Game/Modules/Arena/Configs/ArenaDraftArt.asset");
+            var binder = new ArenaDraftBinder(view, null, labels, art, windows, null, null, null);
+            var ids = art.Heroes.OrderByDescending(hero => hero.BaseStars).ThenBy(hero => hero.Id, StringComparer.Ordinal)
+                .Take(18).Select(hero => hero.Id).ToArray();
+            ArenaDraftSeat Seat() => new ArenaDraftSeat { player = new ArenaPlayer { avatarId = ids[0], displayName = "test" },
+                picks = Array.Empty<string>(), prebans = Array.Empty<string>(), formation = Array.Empty<string>() };
+            var state = new ArenaDraftState { id = "strike-footprint", roomId = "room", version = 1, phase = "preban",
+                mySide = "host", activeSide = "both", firstPick = "host", host = Seat(), guest = Seat(),
+                eligibleHeroIds = ids, prebanCount = 2 };
+            var tick = typeof(ArenaDraftBinder).GetMethod("Tick", BindingFlags.Instance | BindingFlags.NonPublic);
+            void Advance(float seconds) => tick.Invoke(binder, new object[] { seconds });
+            try
+            {
+                PlayerPrefs.SetString(historyKey, string.Join(",", ids.Take(8)));
+                windows.ShowPageAsync(page => binder.OpenAsync(state, page)).GetAwaiter().GetResult();
+                Canvas.ForceUpdateCanvases();
+                Advance(0f);
+                Canvas.ForceUpdateCanvases();
+                var bindings = view.Root.GetComponent<BindingMap>();
+                var grid = bindings.Require<ScrollRect>("grid").content;
+                var recent = bindings.Require<GameObject>("recent").transform;
+                var lists = new[] { grid.transform, recent };
+                string click = clickRecent ? "recent" : "grid";
+                string selectedId = ids[clickRecent ? 2 : 1];
+                var cells = lists.Select(list => list.Find(selectedId).GetComponent<BindingMap>()).ToArray();
+                Rect Portrait(Transform cell)
+                {
+                    var rect = cell.GetComponent<BindingMap>().Require<GameButton>("button").targetGraphic.rectTransform;
+                    var corners = new Vector3[4];
+                    rect.GetWorldCorners(corners);
+                    Vector2 a = screen.WorldToScreenPoint(corners[0]), b = screen.WorldToScreenPoint(corners[2]);
+                    return Rect.MinMaxRect(Mathf.Min(a.x, b.x), Mathf.Min(a.y, b.y), Mathf.Max(a.x, b.x), Mathf.Max(a.y, b.y));
+                }
+                var faces = cells.Select(cell => Portrait(cell.transform)).ToArray();
+                var neighbors = lists.Select((list, i) => list.Cast<Transform>()
+                    .Where(child => child != cells[i].transform && child.gameObject.activeInHierarchy)
+                    .Select(Portrait).Where(face => Vector2.Distance(face.center, faces[i].center) < 1.55f * faces[i].width)
+                    .ToArray()).ToArray();
+                foreach (var face in faces)
+                {
+                    Assert.That(face.width, Is.GreaterThan(35), "The test must capture the laid-out portrait.");
+                    Assert.That(new Rect(0, 0, target.width, target.height).Contains(face.center), Is.True);
+                    TestContext.WriteLine($"{click} face center={face.center} diameter={face.width:F2}");
+                }
+                Assert.That(neighbors.All(adjacent => adjacent.Length >= 2), Is.True);
+                var baseline = ReadStrike(screen, click + "-baseline");
+                cells[clickRecent ? 1 : 0].Require<GameButton>("button").onClick.Invoke();
+                var effects = cells.Select(cell => cell.Require<RawImage>("prebanEffect")).ToArray();
+                var cameras = effects.Select(effect => Resources.FindObjectsOfTypeAll<Camera>()
+                    .Single(camera => camera.targetTexture && camera.targetTexture == effect.texture)).ToArray();
+                var peak = new float[2];
+                var report = new System.Collections.Generic.List<(int List, int Frame, float White, float Neighbor, float Red)>();
+                for (int frame = 1; frame <= 24; frame++)
+                {
+                    Advance(1f / 30f);
+                    if (frame > 8 && frame != 11 && frame != 14 && frame != 24) continue;
+                    foreach (var camera in cameras) camera.Render();
+                    var shown = ReadStrike(screen, click + "-frame-" + frame.ToString("00"));
+                    for (int i = 0; i < faces.Length; i++)
+                    {
+                        float white = ChangedFaceFraction(faces[i], target.width, baseline, shown, white: true);
+                        float neighbor = neighbors[i].Max(face => ChangedFaceFraction(face, target.width, baseline, shown, white: true));
+                        float red = ChangedFaceFraction(faces[i], target.width, baseline, shown, white: false);
+                        if (frame <= 4) peak[i] = Mathf.Max(peak[i], white);
+                        report.Add((i, frame, white, neighbor, red));
+                        TestContext.WriteLine($"{click} list={i} frame={frame} white={white:F3} neighbor={neighbor:F3} red={red:F3}");
+                    }
+                }
+                for (int i = 0; i < faces.Length; i++)
+                {
+                    string list = i == 0 ? "main list" : "recent choices";
+                    var samples = report.Where(sample => sample.List == i).ToArray();
+                    Assert.That(peak[i], Is.GreaterThan(.25f), list + " lost its initial white impact.");
+                    // P2 at 245.000 s begins with two broad flashes. By +0.267 s only 38%
+                    // of the selected face and 8% of either adjacent face are newly white.
+                    var receding = samples.Single(sample => sample.Frame == 8);
+                    Assert.That(receding.White, Is.LessThan(.58f), list + " kept the whole face white after the impact.");
+                    Assert.That(samples.Where(sample => sample.Frame >= 8).Max(sample => sample.Neighbor), Is.LessThan(.16f),
+                        list + " covered an adjacent portrait after the flash should have receded.");
+                    var settled = samples.Single(sample => sample.Frame == 14);
+                    Assert.That(settled.White, Is.LessThan(.14f), list + " retained a white disk over the red stamp.");
+                    Assert.That(settled.Neighbor, Is.LessThan(.045f), list + " retained white light over a neighboring face.");
+                    Assert.That(settled.Red, Is.GreaterThan(.20f), list + " did not reveal the red slash by 0.467 seconds.");
+                    Assert.That(samples.Single(sample => sample.Frame == 24).Red, Is.GreaterThan(.25f),
+                        list + " failed to retain its red stamp.");
+                }
+            }
+            finally
+            {
+                if (previousHistory == null) PlayerPrefs.DeleteKey(historyKey);
+                else PlayerPrefs.SetString(historyKey, previousHistory);
+                lifetime.Dispose();
+                binder.Dispose();
+                screen.targetTexture = null;
+                Object.DestroyImmediate(canvas.gameObject);
+                Object.DestroyImmediate(screen.gameObject);
+                Object.DestroyImmediate(target);
+            }
+        }
+
+        private static float ChangedFaceFraction(Rect face, int stride, Color32[] before, Color32[] after, bool white)
+        {
+            int changed = 0, pixels = 0;
+            float radius = Mathf.Min(face.width, face.height) * .48f;
+            for (int y = Mathf.CeilToInt(face.yMin); y < face.yMax; y++)
+                for (int x = Mathf.CeilToInt(face.xMin); x < face.xMax; x++)
+                {
+                    if ((new Vector2(x + .5f, y + .5f) - face.center).sqrMagnitude > radius * radius) continue;
+                    var a = before[y * stride + x];
+                    var b = after[y * stride + x];
+                    bool newWhite = b.r >= 245 && b.g >= 235 && b.b >= 215 && (b.b - a.b >= 20 || b.g - a.g >= 20);
+                    bool newRed = b.r > 80 && b.r > b.g * 1.65f && b.r > b.b * 1.5f &&
+                        (b.r - b.g) - (a.r - a.g) > 15;
+                    if (white ? newWhite : newRed) changed++;
+                    pixels++;
+                }
+            return (float)changed / pixels;
+        }
+
         [Test]
         public void DraftGuidesFollowPickOwnershipWithoutReplayingOnRefresh()
         {
