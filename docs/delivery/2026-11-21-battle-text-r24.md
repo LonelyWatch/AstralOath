@@ -18,4 +18,6 @@ R23 的姓名已是白色，实际字族为 Noto Sans SC Thin，设计稿字号�
 
 证据目录为 `.artifacts/r24-battle-text/`。同目录 `source.py` 生成原参数记录 `unit-plate.json`；`CaptureBattleFont.cs` 在隔离 Unity 工程中实例化正式预制和效果提示类；`compare.py` 以改前及最终渲染生成 `text-comparison.png`、`metrics.json`。原录像姓名裁图为 `original-hud.jpg`。
 
-旧版本的字族及两处描边断言均失败，见 `.artifacts/summon-result-r23/repro/r24-text-red.xml`。仅替换字族的版本仍在原版字号断言处失败，见 `native-red.xml`。最终 `BattleHeroPrefabTests` 七项全部通过，见 `native-green.xml`。附加检查 `hud-suite.xml` 中行动者立绘与反馈时序通过，原有 `BattleInspectionContentTests` 针对隐藏状态 `AttackGrowth` 也要求有中文详情，与当前不展示该状态的实现冲突，单独记录。
+旧版本的字族及两处描边断言均失败，见 `.artifacts/summon-result-r23/repro/r24-text-red.xml`。仅替换字族的版本仍在原版字号断言处失败，见 `native-red.xml`。最终 `BattleHeroPrefabTests` 七项全部通过，见 `native-green.xml`。
+
+HUD 组合用例首次通过 15/16，见 `hud-suite.xml`。露露卡的永久攻击成长 `AttackGrowth` 来自隐藏被动 `pa_c1082_3`，旧用例却要求为它提供可见状态详情。修订后用例单独验证此被动保持隐藏，逐项验证其余状态可见且有中文名称及说明，并保留全部技能文案断言。以相同筛选器重跑英雄预制、反馈时序、当前行动者立绘和详情文案，16/16 通过，见 `hud-suite-green.xml`。

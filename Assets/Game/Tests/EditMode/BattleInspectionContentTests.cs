@@ -12,7 +12,7 @@ namespace AstralOath.Client.Tests
         private const string Catalog = "Assets/Game/Modules/BattleScene/Configs/battle-catalog.json";
 
         [Test]
-        public void EverySkillAndStatusHasReadableChineseInspectionCopy()
+        public void EverySkillAndVisibleStatusHasReadableChineseInspectionCopy()
         {
             var catalog = JsonUtility.FromJson<BattleCatalogData>(File.ReadAllText(Catalog));
             Assert.That(catalog.skills, Is.Not.Empty);
@@ -30,8 +30,16 @@ namespace AstralOath.Client.Tests
                 else
                     Assert.That(burn, Is.Empty, skill.id);
             }
+            var statusArt = type.Assembly.GetType("AstralOath.Client.BattleScene.BattleStatusArt", true);
+            var isDisplayed = (Func<BattleStatusKind, bool>)statusArt
+                .GetMethod("IsDisplayed", BindingFlags.Static | BindingFlags.NonPublic)
+                .CreateDelegate(typeof(Func<BattleStatusKind, bool>));
+            Assert.That(isDisplayed(BattleStatusKind.AttackGrowth), Is.False,
+                "Luluca's permanent attack increase is a hidden passive.");
             foreach (BattleStatusKind kind in Enum.GetValues(typeof(BattleStatusKind)))
             {
+                if (kind == BattleStatusKind.AttackGrowth) continue;
+                Assert.That(isDisplayed(kind), Is.True, kind.ToString());
                 Assert.That(Read("StatusName", kind), Does.Match("[\\u4e00-\\u9fff]"), kind.ToString());
                 Assert.That(Read("StatusDescription", kind), Does.Match("[\\u4e00-\\u9fff]"), kind.ToString());
             }
