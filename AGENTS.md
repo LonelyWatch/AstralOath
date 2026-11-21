@@ -6,6 +6,7 @@
 - `D:\sevenepic` 是只读外部来源；不得修改、批量导入或提交整个解包目录。
 - 业务模块独立；Common 不得引用业务模块。共享战斗逻辑不得依赖 Unity、网络或数据库。
 - 客户端 View 只维护组件和显示，C# Binder 管理界面业务；禁止在动画回调中结算战斗或发放奖励。
+- 接到涉及界面、交互、动画或特效的需求，制作前须逐页、逐区域、逐状态找到并实际查看对应效果图或原版实机录像，向用户出示依据。缺少某处参考、关键过程看不清或不同版本相互冲突时，先向用户索要该处截图、录像或时间段，补齐后再制作该部分。详见[通用规范](docs/development/project-standards.md#ui-与交互)。
 - UI 命名为项目通用约束：`Foo.prefab` 对应普通 C# `Foo.cs` / `Foo : UIBaseView`，业务 Binder 统一命名 `FooBinder`（文件为 `FooBinder.cs`）。文件名与类型名严格保持大小写一致；不额外追加 View 后缀。
 - 预制体只挂通用 `BindingMap`，业务 View/Binder 不作为预制体组件。`UIBaseView`、`UIViewRegistry`、`BindingMap` 等通用设施不属于逐预制体命名范围。重命名同步修改引用、生成器、契约及文档，移动已有 `.meta` 保留 GUID；资源地址不随文件重命名自动改变。详见 `docs/development/ui-binder.md`。
 - 客户端只使用 HybridCLR 热更。稳定 AOT 启动层通过公共接口启动业务程序集，禁止静态引用热更业务。代码在冷启动激活，AOT 归档按母包及平台固定。战斗权威由服务端掌握，共享 Battle 为纯 C#，服务端同源编译并独立发布。
