@@ -41,6 +41,28 @@ namespace AstralOath.Tests
                 "The editor main range must not wait for ambient particle maxima after the authored return choreography.");
         }
 
+        [TestCase(false)]
+        [TestCase(true)]
+        public void KayronEnhancedFirstSkillRestoresTheBattlefieldWhenTheSlashBackdropEnds(bool casterOnRight)
+        {
+            var type = Type.GetType(PreviewTypeName, throwOnError: true);
+            using var session = (IDisposable)Activator.CreateInstance(type, nonPublic: true);
+            type.GetMethod("Load", Instance).Invoke(session,
+                new object[] { "c1023", "c_kylon_skill_02", null, "c1001", casterOnRight, true, false });
+            var cues = (IReadOnlyList<(float At, JObject Node, float Duration, JObject[] Modulators)>)
+                type.GetProperty("Cues", Instance).GetValue(session);
+            var body = cues.Single(cue => (string)cue.Node["ani"] == "skill2" && (string)cue.Node["etty"] == "ANI");
+            var reveal = cues.Single(cue => (string)cue.Node["etty"] == "BGSHOW" && (bool?)cue.Node["show"] == true);
+            Assert.That(reveal.At, Is.EqualTo(body.At + body.Duration).Within(.002f),
+                "The caster and backdrop finish together. Camera return must not wait for the last red particle to disappear.");
+            Assert.That(reveal.Duration, Is.EqualTo(.2f).Within(.001f));
+            Assert.That((float)type.GetProperty("MainStageDuration", Instance).GetValue(session),
+                Is.EqualTo(3.5f + .7666f).Within(.005f), "The final slash still plays its entire Spine clip.");
+            Assert.That((float)type.GetProperty("StageDuration", Instance).GetValue(session), Is.EqualTo(8f).Within(.005f));
+            Assert.That((IReadOnlyList<float>)type.GetProperty("HitTimes", Instance).GetValue(session),
+                Is.EqualTo(new[] { 1.534f, 1.934f, 2.8f, 2.934f, 3.068f }).Within(.001f));
+        }
+
         [Test]
         public void AmbientTailRemainsVisibleAfterReleasingTheCasterAndRewinds()
         {

@@ -40,14 +40,15 @@ namespace AstralOath.Client.Tests
                     : Response.Task;
         }
 
-        public enum SocketScenario { ClosingRoom, LiveRoom, ClosingDraft, LiveDraft }
+        public enum SocketScenario { ClosingRoom, LiveRoom, ClosingDraft, LiveDraft, ClosingRoomWebRead, LiveRoomWebRead }
         private static readonly SocketScenario[] SocketScenarios = (SocketScenario[])Enum.GetValues(typeof(SocketScenario));
 
         [UnityTest, Timeout(5000)]
         public IEnumerator WindowsSocketAbortRespectsRoomAndDraftLifetimes([ValueSource(nameof(SocketScenarios))] SocketScenario scenario)
         {
-            bool feed = scenario == SocketScenario.ClosingRoom || scenario == SocketScenario.LiveRoom;
-            bool leaving = scenario == SocketScenario.ClosingRoom || scenario == SocketScenario.ClosingDraft;
+            bool webRead = scenario is SocketScenario.ClosingRoomWebRead or SocketScenario.LiveRoomWebRead;
+            bool feed = webRead || scenario is SocketScenario.ClosingRoom or SocketScenario.LiveRoom;
+            bool leaving = scenario is SocketScenario.ClosingRoom or SocketScenario.ClosingDraft or SocketScenario.ClosingRoomWebRead;
             using var scope = new CancellationTokenSource();
             var transport = new SocketTransport();
             using var api = new ArenaApi(new Uri("http://localhost/"), default,
@@ -59,9 +60,10 @@ namespace AstralOath.Client.Tests
                 api.DraftAsync("r", scope.Token);
             Assert.That(request.IsCompleted, Is.False);
             if (leaving) scope.Cancel();
-            var socket = new SocketException((int)(leaving ? SocketError.OperationAborted : SocketError.ConnectionReset));
-            if (feed) transport.Stream.PendingRead.SetException(socket);
-            else transport.Response.SetException(socket);
+            var socket = new SocketException((int)(leaving || webRead ? SocketError.OperationAborted : SocketError.ConnectionReset));
+            Exception failure = webRead ? new WebException("Read failed", new IOException("Connection read failed", socket)) : socket;
+            if (feed) transport.Stream.PendingRead.SetException(failure);
+            else transport.Response.SetException(failure);
             yield return new WaitUntil(() => request.IsCompleted);
             if (leaving)
                 Assert.That(() => request.GetAwaiter().GetResult(), Throws.InstanceOf<OperationCanceledException>());
@@ -69,7 +71,7 @@ namespace AstralOath.Client.Tests
             {
                 var error = Assert.Throws<ArenaRequestException>(() => request.GetAwaiter().GetResult());
                 Assert.That(error.Message, Is.EqualTo("unavailable"));
-                Assert.That(error.InnerException, Is.SameAs(socket));
+                Assert.That(error.InnerException, Is.SameAs(failure));
             }
         }
 

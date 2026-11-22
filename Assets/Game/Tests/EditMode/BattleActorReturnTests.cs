@@ -693,6 +693,60 @@ namespace AstralOath.Client.Tests
             Assert.That(target.transform.localPosition, Is.EqualTo(slot));
         }
 
+        [TestCase(false)]
+        [TestCase(true)]
+        public void DieneS3HidesTheCasterAndRevealsTheIndependentIdlePose(bool checkReveal)
+        {
+            const string file = "Assets/Game/Modules/CharacterPresentation/Res/Characters/c1076/Configs/stagept/c_diene_skill_03.graph.json";
+            var graph = JObject.Parse(File.ReadAllText(file));
+            var source = graph["source"];
+            var keep = new HashSet<int> { 2, 3, 20, 18, 5, 19, 22 };
+            var nodes = source["entities"].Where(node => keep.Contains((int)node["guid"])).ToArray();
+            var edges = new JArray(source["connections"].Where(edge =>
+                keep.Contains((int)edge["from"]) && keep.Contains((int)edge["to"])));
+            // Stand in for the full-screen movie/effect clocks. Retain the source IDLE -> STOP ordering.
+            edges.Add(new JObject { ["from"] = 3, ["to"] = 5, ["when"] = 1, ["delay"] = 5750 });
+            edges.Add(new JObject { ["from"] = 5, ["to"] = 22, ["when"] = 1, ["delay"] = 300 });
+            source["entities"] = new JArray(nodes);
+            source["connections"] = edges;
+            graph["assets"] = new JArray();
+            var text = new TextAsset(graph.ToString());
+            assets.Add(text);
+            var model = ReadModel("diene");
+            var caster = Create(model.json, model.atlas, model.page);
+            var target = Create(model.json, model.atlas, model.page);
+            var recipients = Array.CreateInstance(ActorType, 1);
+            recipients.SetValue(target, 0);
+            var player = Player(caster);
+            var body = player.Root.GetComponent<Renderer>();
+            var type = ActorType.Assembly.GetType("AstralOath.Client.BattleScene.BattleSkillPresentation", true);
+            var assetType = ActorType.Assembly.GetType("AstralOath.Client.BattleScene.BattleSkillPresentationAsset", true);
+            using var playback = (IDisposable)Activator.CreateInstance(type, root.transform, new[] { text },
+                Array.CreateInstance(assetType, 0), null, null, null);
+            type.GetMethod("Begin").Invoke(playback, new object[] { (string)graph["id"], caster, target, recipients });
+            void Tick(float delta) => type.GetMethod("Tick").Invoke(playback, new object[] { delta });
+            Tick(3.65f);
+            Assert.That(player.CurrentAnimation, Is.EqualTo("skill3_2"));
+            Assert.That(body.forceRenderingOff, Is.False);
+            Tick(.02f);
+            if (!checkReveal)
+            {
+                Assert.That(body.forceRenderingOff, Is.True, "The caster disappears at source cue 18 while the sky takes over.");
+                Assert.That(Player(target).Root.GetComponent<Renderer>().forceRenderingOff, Is.False);
+                return;
+            }
+            Tick(2.08f);
+            Assert.That(body.forceRenderingOff, Is.False);
+            var expected = Player(target);
+            expected.Play("idle", true);
+            Assert.That(player.CurrentAnimation, Is.EqualTo("idle"));
+            var vertices = player.Root.GetComponent<MeshFilter>().sharedMesh.vertices;
+            var idleVertices = expected.Root.GetComponent<MeshFilter>().sharedMesh.vertices;
+            Assert.That(vertices.Length, Is.EqualTo(idleVertices.Length), "Return-frame attachments must already be idle.");
+            Assert.That(vertices.Zip(idleVertices, Vector3.Distance).Max(), Is.LessThan(.0001f),
+                "The first uncovered frame must already match the idle pose after the white flash.");
+        }
+
         [TestCase("c1076", "diene", 9, 12, .25f, 0f)]
         [TestCase("c1087", "furious", 22, 23, .2f, .2f)]
         [TestCase("c1088", "vivian", 16, 0, .2f, .2f)]

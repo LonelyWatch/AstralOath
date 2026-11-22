@@ -1,5 +1,7 @@
 # AstralOath.Shared
 
+`BattleFlowEvent.CooldownReduction` 是技能效果实际扣除的冷却回合数，`Amount` 继续表示扣除后的剩余值。常规回合递减及设置技能冷却时，前者为零。塔玛林尔在偶像状态下可见的技能由 `BattleSkillResolver.IsSkillVisibleInForm` 判定，战斗命令校验和客户端技能栏共用此规则。[行为和样例](../../docs/delivery/2026-11-22-battle-followup.md)
+
 反击动作通过已有可空 `StatusKind` 区分反击状态与被动、闪避或神器来源。来源取自本次触发的权威分支，客户端可据此选择效果词图标。[反击与回放约定](../../docs/delivery/2026-11-22-battle-action-recovery.md)
 
 `Runtime/Battle` 是客户端模拟战与服务端共用的纯 C# 战斗内核。服务端的 `BattleMatch.Submit` 校验回合、选定目标和魂力，再由 `BattleSkillResolver` 按正式配表生成事件。战斗种子控制命中、抗性、协攻及随机技能分支。角色表现消费已选定的表现图和事件。

@@ -21,6 +21,32 @@ namespace AstralOath.Tests
         private const BindingFlags Instance = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
         [Test]
+        public void DieneS3RestoresTheBattlefieldUnderWhiteBeforeBuffsAndFadesIntoIdle()
+        {
+            var type = Type.GetType(PreviewTypeName, true);
+            using var session = (IDisposable)Activator.CreateInstance(type, nonPublic: true);
+            type.GetMethod("Load", Instance).Invoke(session,
+                new object[] { "c1076", "c_diene_skill_03", null, null, false, true, true });
+            var cues = (IReadOnlyList<(float At, JObject Node, float Duration, JObject[] Modulators)>)
+                type.GetProperty("Cues", Instance).GetValue(session);
+            float reveal = cues.Single(c => (string)c.Node["etty"] == "BGSHOW" && (bool?)c.Node["show"] == true).At;
+            float buff = cues.Single(c => (string)c.Node["etty"] == "HIT").At;
+            var camera = (Camera)type.GetField("camera", Instance).GetValue(session);
+            float WhiteAt(float at)
+            {
+                type.GetMethod("SeekStage", Instance).Invoke(session, new object[] { at });
+                var overlay = camera.transform.Find("DARK wh");
+                return overlay ? overlay.GetComponent<MeshFilter>().sharedMesh.colors[0].a : 0f;
+            }
+            Assert.That(WhiteAt(reveal - .017f), Is.GreaterThan(.98f), "Cover the old backdrop before changing the camera.");
+            Assert.That(WhiteAt(reveal + .017f), Is.GreaterThan(.98f), "The battlefield must return while fully covered.");
+            Assert.That(buff - reveal, Is.EqualTo(.3f).Within(.001f), "The original return-to-buff cue spacing is retained.");
+            Assert.That(WhiteAt(buff), Is.GreaterThan(.93f), "In the reference, the buff text appears over white.");
+            Assert.That(WhiteAt(buff + .25f), Is.InRange(.43f, .55f));
+            Assert.That(WhiteAt(buff + .52f), Is.Zero);
+        }
+
+        [Test]
         public void BaalAnimationPositionsSeparateTheCutinFromTheExplosion()
         {
             var type = Type.GetType(PreviewTypeName, true);

@@ -35,13 +35,32 @@ namespace AstralOath.Client.BattleScene
                 !string.IsNullOrEmpty((string)node["id"])) ||
              (Number(node, "duration") > 0f && string.IsNullOrEmpty((string)node["id"])));
 
+        private static bool IsCasterHideUntilIdle(JObject node, float at,
+            (float At, JObject Node, float Duration, JObject[] Modulators)[] cues)
+        {
+            string id = (string)node["id"];
+            if (node["blend_target"] != null || node["category"] != null || node["color"] != null ||
+                string.IsNullOrEmpty(id) || Number(node, "alpha_channel", 1f) != 0f ||
+                Number(node, "duration") != -1f || Number(node, "fadeIn") != 0f || Number(node, "fadeOut") != 0f)
+                return false;
+            // Diene's sky cut hides her body until the neutral pose and its matching STOP share a frame.
+            return cues.Any(stop => stop.At >= at && Kind(stop.Node) == "STOP" &&
+                (string)stop.Node["targetId"] == id && Number(stop.Node, "time") == 0f &&
+                cues.Any(idle => idle.At == stop.At && Kind(idle.Node) == "IDLE"));
+        }
+
         private void HoldTargetLayer(JObject node, BattlePreviewActor[] recipients)
         {
             string id = (string)node["id"];
             if (string.IsNullOrEmpty(id)) id = "\0" + (int)node["guid"];
             if (targetLayers.ContainsKey(id)) return;
             // The fixed graphs explicitly call 55 "cb_without_self" and 66 "target_hide".
-            var affected = (int?)node["blend_target"] == 55 ? participants.Where(actor => actor != caster) : recipients;
+            IEnumerable<BattlePreviewActor> affected = (int?)node["blend_target"] switch
+            {
+                null => new[] { caster },
+                55 => participants.Where(actor => actor != caster),
+                _ => recipients
+            };
             var layer = new TargetLayer
             {
                 Bodies = affected.Where(actor => actor && actor.PresentationRenderer)

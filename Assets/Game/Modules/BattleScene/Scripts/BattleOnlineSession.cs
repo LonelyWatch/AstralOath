@@ -354,7 +354,7 @@ namespace AstralOath.Client.BattleScene
                 side.HasValue ? Side(side.Value) : null, outcome.HasValue ? Outcome(outcome.Value) : null,
                 ReadEnum<BattleHitKind>(row["hitKind"]), ReadOptional<BattleEffectRejection>(row["effectRejection"]),
                 (bool)row["useSoulBurn"], (int?)row["remainingHealth"], (int?)row["maximumHealth"],
-                (bool?)row["immortalityPreventedLethalDamage"] ?? false);
+                (bool?)row["immortalityPreventedLethalDamage"] ?? false, (int?)row["cooldownReduction"] ?? 0);
         }
 
         private BattleSide Side(BattleSide side) => localIsHost ? side :

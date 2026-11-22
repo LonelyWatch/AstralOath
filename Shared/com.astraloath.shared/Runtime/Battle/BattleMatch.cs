@@ -238,8 +238,8 @@ namespace AstralOath.Shared.Battle
                     break;
                 case BattleFlowEventKind.CooldownChanged:
                     int cooldown = unit.Cooldowns.TryGetValue(change.SkillId, out int value) ? value : 0;
-                    ChangeCooldown(unit, source, change.SkillId,
-                        (int)Math.Clamp((long)cooldown + change.Amount, 0L, 60L), events);
+                    int nextCooldown = (int)Math.Clamp((long)cooldown + change.Amount, 0L, 60L);
+                    ChangeCooldown(unit, source, change.SkillId, nextCooldown, events, Math.Max(0, cooldown - nextCooldown));
                     break;
                 case BattleFlowEventKind.StatusApplied:
                     var kind = change.Status.Value;
@@ -355,11 +355,13 @@ namespace AstralOath.Shared.Battle
             Emit(events, BattleFlowEventKind.ResourceChanged, source, unit.Id, next);
         }
 
-        private void ChangeCooldown(State unit, string source, string skill, int value, List<BattleFlowEvent> events)
+        private void ChangeCooldown(State unit, string source, string skill, int value, List<BattleFlowEvent> events,
+            int cooldownReduction = 0)
         {
             if (value == 0) unit.Cooldowns.Remove(skill);
             else unit.Cooldowns[skill] = value;
-            Emit(events, BattleFlowEventKind.CooldownChanged, source, unit.Id, value, skillId: skill);
+            Emit(events, BattleFlowEventKind.CooldownChanged, source, unit.Id, value, skillId: skill,
+                cooldownReduction: cooldownReduction);
         }
 
         private void FinishTurn(State unit, BattleStatusSnapshot[] previous, List<BattleFlowEvent> events,
@@ -475,10 +477,10 @@ namespace AstralOath.Shared.Battle
             BattleStatusSnapshot status = null, BattleSide? side = null, BattleOutcome? result = null,
             BattleHitKind hitKind = BattleHitKind.None, BattleEffectRejection? rejection = null,
             bool useSoulBurn = false, int? remainingHealth = null, int? maximumHealth = null,
-            bool immortalityPreventedLethalDamage = false) =>
+            bool immortalityPreventedLethalDamage = false, int cooldownReduction = 0) =>
             events.Add(new BattleFlowEvent(++eventSequence, turn, kind, source, target, amount, skillId, presentationId,
                 origin, statusKind, status, side, result, hitKind, rejection, useSoulBurn, remainingHealth, maximumHealth,
-                immortalityPreventedLethalDamage));
+                immortalityPreventedLethalDamage, cooldownReduction));
 
         private sealed class State
         {

@@ -129,16 +129,24 @@ public sealed class BattleRoster51To60Tests
         Assert.DoesNotContain(Use(match, "c1073.s1", "enemy1").Events, e => e.Origin == BattleActionOrigin.ExtraAttack);
     }
 
-    [Fact]
-    public void VioletUsesFullFocusToResetButterflyCut()
+    [Theory]
+    [InlineData(0, 6)]
+    [InlineData(3, 5)]
+    public void VioletUsesFullFocusToResetButterflyCut(int skillRank, int cooldownReduction)
     {
-        var match = Encounter("c1074");
-        Use(match, "c1074.s2", "hero");
+        var match = Encounter("c1074", violetThirdRank: skillRank);
+        var normalTurn = Use(match, "c1074.s2", "hero");
+        Assert.DoesNotContain(normalTurn.Events, e => e.CooldownReduction > 0);
         Assert.NotNull(match.Snapshot.GetUnit("hero").GetStatus(BattleStatusKind.Perception));
         Use(match, "c1074.s1", "enemy1");
         Use(match, "c1074.s1", "enemy1");
         Assert.Equal(5, match.Snapshot.GetUnit("hero").Resource.Amount);
         var result = Use(match, "c1074.s3", "enemy1");
+        var feedback = Assert.Single(result.Events, e => e.CooldownReduction > 0);
+        Assert.Equal("hero", feedback.TargetId);
+        Assert.Equal("c1074.s3", feedback.SkillId);
+        Assert.Equal(cooldownReduction, feedback.CooldownReduction);
+        Assert.Equal(0, feedback.Amount);
         Assert.Equal(0, result.Snapshot.GetUnit("hero").GetCooldown("c1074.s3"));
         Assert.Equal(0, result.Snapshot.GetUnit("hero").Resource.Amount);
     }
@@ -174,7 +182,7 @@ public sealed class BattleRoster51To60Tests
     }
 
     private static BattleMatch Encounter(string heroId, int targetDamage = 0, bool incomingAttack = false, bool reviveAtOpening = false,
-        bool lastTarget = false, int reflectingEnemy = 0)
+        bool lastTarget = false, int reflectingEnemy = 0, int violetThirdRank = 0)
     {
         using var stream = typeof(Program).Assembly.GetManifestResourceStream("AstralOath.BattleCatalog")!;
         var data = JsonSerializer.Deserialize<BattleCatalogData>(stream, new JsonSerializerOptions { IncludeFields = true })!;
@@ -228,7 +236,8 @@ public sealed class BattleRoster51To60Tests
         }
         roster.AddRange(enemies);
         return new BattleMatch("roster", BattlePreviewFactory.RulesVersion, 1,
-            new BattleFormation(roster), new BattleSkillResolver(data, includePreviewSlime: true, randomDualChanceBp: 0),
+            new BattleFormation(roster), new BattleSkillResolver(data, includePreviewSlime: true,
+                enhancementRank: (_, skill) => skill == "c1074.s3" ? violetThirdRank : 0, randomDualChanceBp: 0),
             new BattleFlowRules(initialAllySoul: 40));
     }
 

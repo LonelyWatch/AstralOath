@@ -225,8 +225,8 @@ namespace AstralOath.Client.BattleScene
             ArrangePortraits();
         }
 
-        internal void SetSkillStyle(int index, bool passive, int maximumTurns) =>
-            cooldowns[index].SetStyle(passive ? PassiveFrame : null, passive ? PassiveCooldown : ActiveCooldown, maximumTurns);
+        internal void SetSkillStyle(int index, bool passive, int maximumTurns, bool visible) =>
+            cooldowns[index].SetStyle(passive ? PassiveFrame : null, passive ? PassiveCooldown : ActiveCooldown, maximumTurns, visible);
 
         internal void SetCooldown(int index, int turns) => cooldowns[index].Show(turns);
 
@@ -604,14 +604,16 @@ namespace AstralOath.Client.BattleScene
 
             private Image Shade { get; }
 
-            internal void SetStyle(Sprite passiveFrame, Sprite cooldownMask, int turnsWhenUsed)
+            internal void SetStyle(Sprite passiveFrame, Sprite cooldownMask, int turnsWhenUsed, bool visible)
             {
+                icon.gameObject.SetActive(visible);
                 maximumTurns = turnsWhenUsed;
                 Shade.sprite = cooldownMask;
                 Vector2 inset = passiveFrame ? icon.rectTransform.sizeDelta * .075f : Vector2.zero;
                 Vector2 center = Vector2.zero;
                 if (frame)
                 {
+                    frame.gameObject.SetActive(visible);
                     frame.sprite = passiveFrame ? passiveFrame : originalFrame;
                     frame.rectTransform.anchoredPosition = passiveFrame
                         ? icon.rectTransform.anchoredPosition : originalPosition;
@@ -625,7 +627,7 @@ namespace AstralOath.Client.BattleScene
 
             internal void Dispose()
             {
-                SetStyle(null, null, 0);
+                SetStyle(null, null, 0, true);
                 Remove(Shade);
             }
 

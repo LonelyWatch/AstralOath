@@ -83,10 +83,13 @@ namespace AstralOath.Shared.Battle
             target = "one_enemy", soulBurnKind = "none", attackRateBp = 10000, powerBp = 10000
         };
 
+        public static bool IsSkillVisibleInForm(BattleUnitSnapshot actor, string skillId) =>
+            skillId != "c1067.s3" || actor.GetStatus(BattleStatusKind.Idol) == null;
+
         internal static bool CanUseSkill(BattleSnapshot snapshot, BattleUnitSnapshot actor,
             BattleCatalogData.SkillRow skill, bool useSoulBurn, int resourceDiscount = 0) =>
             actor.IsAlive && skill.target != "passive" && actor.GetCooldown(skill.id) == 0 &&
-            !(skill.id == "c1067.s3" && actor.GetStatus(BattleStatusKind.Idol) != null) &&
+            IsSkillVisibleInForm(actor, skill.id) &&
             (skill.slot == 1 && !useSoulBurn || BattleTargeting.ActiveProvoker(snapshot, actor) == null) &&
             (skill.slot <= 1 || actor.GetStatus(BattleStatusKind.Silence) == null) &&
             (actor.Resource?.Amount ?? 0) >= Math.Max(0, skill.resourceCost - resourceDiscount) &&

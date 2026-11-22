@@ -37,6 +37,17 @@
       "channels": 2
     },
     {
+      "name": "effect/stse_chain",
+      "eventId": "6fc907ae-9e8e-4159-8dee-914c28f8dbfb",
+      "sourceSample": "assets\\model\\se_chr_cm_bonus_turn.wav",
+      "bank": "ui1",
+      "asset": "ChainFlash.wav",
+      "sha256": "923157d3029d216819a3ddbbc0aec48efebb80538553408d050fae85abbaea58",
+      "sampleRate": 48000,
+      "sampleFrames": 55536,
+      "channels": 2
+    },
+    {
       "name": "ui/pvp/result_win",
       "eventId": "d06af45b-59ea-48c5-a976-cf6ffb490c1d",
       "sourceSamples": [

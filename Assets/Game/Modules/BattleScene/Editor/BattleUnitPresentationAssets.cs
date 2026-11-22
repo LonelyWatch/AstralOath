@@ -62,6 +62,9 @@ namespace AstralOath.Client.BattleScene.Editor
             const string shield = Root + "Res/Effects/Shield/stse_protect";
             profile.Shield = AssetDatabase.LoadAssetAtPath<Sprite>(Root + "Res/Textures/Hud/game_hud_bar_sh.png");
             profile.StatusManifest = AssetDatabase.LoadAssetAtPath<TextAsset>(status + "source.json");
+            profile.ChainFlash = AssetDatabase.LoadAssetAtPath<AudioClip>(Root + "Res/Sounds/PvpGate/ChainFlash.wav");
+            if (!profile.ChainFlash)
+                throw new InvalidOperationException("Run ImportPvpGateAudio.py to import the chained action sound.");
             profile.EffectWordCopy = AssetDatabase.LoadAssetAtPath<TextAsset>(Root + "Res/Configs/BattleEffectWords.zh-Hans.json");
             profile.EffectWordFont = AssetDatabase.LoadAssetAtPath<TMPro.TMP_FontAsset>(
                 "Assets/Game/Common/Res/Fonts/EpicSeven.asset");

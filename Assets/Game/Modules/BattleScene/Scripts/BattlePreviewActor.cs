@@ -456,11 +456,11 @@ namespace AstralOath.Client.BattleScene
                 PlayIdleLoop();
         }
 
-        private void PlayIdleLoop()
+        private void PlayIdleLoop(float mixSeconds = IdleRecoveryMixSeconds)
         {
             string animation = actionBlocked ? incapacitatedAnimation ?? idleAnimation : turnReady ? turnIdleAnimation : idleAnimation;
             if (player.CurrentAnimation != animation)
-                player.Play(animation, true, IdleRecoveryMixSeconds);
+                player.Play(animation, true, mixSeconds);
         }
 
         internal void PlayBattleIdle()
@@ -471,7 +471,10 @@ namespace AstralOath.Client.BattleScene
             if (turnEntryPending && !paused && presentationPauseCount == 0 && presentationControlCount == 0)
                 ApplyTurnIdleIfFree();
             else
-                PlayIdleLoop();
+            {
+                var body = PresentationRenderer;
+                PlayIdleLoop(body && body.forceRenderingOff ? 0f : IdleRecoveryMixSeconds);
+            }
         }
 
         internal float GetBattleAnimationDuration(string animation)

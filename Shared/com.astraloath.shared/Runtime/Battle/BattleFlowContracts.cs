@@ -248,13 +248,14 @@ namespace AstralOath.Shared.Battle
             BattleStatusKind? statusKind = null, BattleStatusSnapshot status = null, BattleSide? side = null,
             BattleOutcome? outcome = null, BattleHitKind hitKind = BattleHitKind.None,
             BattleEffectRejection? effectRejection = null, bool useSoulBurn = false, int? remainingHealth = null,
-            int? maximumHealth = null, bool immortalityPreventedLethalDamage = false)
+            int? maximumHealth = null, bool immortalityPreventedLethalDamage = false, int cooldownReduction = 0)
         {
             Sequence = sequence; TurnNumber = turn; Kind = kind; SourceId = sourceId; TargetId = targetId;
             Amount = amount; SkillId = skillId; PresentationId = presentationId; Origin = origin;
             StatusKind = statusKind; Status = status; Side = side; Outcome = outcome; HitKind = hitKind;
             EffectRejection = effectRejection; UseSoulBurn = useSoulBurn; RemainingHealth = remainingHealth; MaximumHealth = maximumHealth;
             ImmortalityPreventedLethalDamage = immortalityPreventedLethalDamage;
+            CooldownReduction = cooldownReduction;
         }
         public ulong Sequence { get; }
         public int TurnNumber { get; }
@@ -273,6 +274,7 @@ namespace AstralOath.Shared.Battle
         public BattleEffectRejection? EffectRejection { get; }
         public bool UseSoulBurn { get; }
         public bool ImmortalityPreventedLethalDamage { get; }
+        public int CooldownReduction { get; }
         public int? RemainingHealth { get; }
         public int? MaximumHealth { get; }
     }
@@ -451,9 +453,9 @@ namespace AstralOath.Shared.Battle
             int amount, string skillId, string presentationId, BattleActionOrigin origin, BattleStatusKind? statusKind,
             BattleStatusSnapshot status, BattleSide? side, BattleOutcome? outcome, BattleHitKind hitKind,
             BattleEffectRejection? effectRejection, bool useSoulBurn, int? remainingHealth, int? maximumHealth,
-            bool immortalityPreventedLethalDamage = false) =>
+            bool immortalityPreventedLethalDamage = false, int cooldownReduction = 0) =>
             new BattleFlowEvent(sequence, turn, kind, sourceId, targetId, amount, skillId, presentationId,
                 origin, statusKind, status, side, outcome, hitKind, effectRejection, useSoulBurn, remainingHealth, maximumHealth,
-                immortalityPreventedLethalDamage);
+                immortalityPreventedLethalDamage, cooldownReduction);
     }
 }

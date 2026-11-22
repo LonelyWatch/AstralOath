@@ -26,6 +26,34 @@ namespace AstralOath.Client.Tests
         private object feedback, onlineHud;
 
         [UnityTest]
+        public IEnumerator TriggeredActionPlaysNativeChainSoundOnce()
+        {
+            scene = BattleScenePreviewTests.LoadPlayerOpeningScene();
+            yield return null;
+            yield return null;
+            var roots = scene.GetRootGameObjects();
+            var host = roots.Select(x => x.GetComponent<BattleHudPreview>()).Single(x => x);
+            var cues = Field(Field(host, "simulation"), "actionFeedback");
+            var actor = roots.SelectMany(x => x.GetComponentsInChildren<BattlePreviewActor>()).First();
+            var sound = host.GetComponentsInChildren<AudioSource>(true).SingleOrDefault(a => a.clip && a.clip.name == "ChainFlash");
+            Assert.That(sound, Is.Not.Null, "Battle setup must provide the original stse_chain event.");
+            Call(cues, "Clear", 100UL);
+            ulong sequence = 101;
+            foreach (var origin in new[] { BattleActionOrigin.Primary, BattleActionOrigin.ExtraAttack,
+                BattleActionOrigin.Counter, BattleActionOrigin.DualAttack, BattleActionOrigin.Passive })
+            {
+                var action = Event(sequence++, BattleFlowEventKind.Action, origin, false);
+                Call(cues, "PresentAction", action, actor);
+                Assert.That(sound.isPlaying, Is.EqualTo(origin != BattleActionOrigin.Primary), origin.ToString());
+                sound.Stop();
+                Call(cues, "PresentAction", action, actor);
+                Assert.That(sound.isPlaying, Is.False, "Replayed events must stay silent.");
+            }
+            Call(cues, "PresentExtraTurn", Event(sequence++, BattleFlowEventKind.ExtraTurnGranted, BattleActionOrigin.Primary, false), actor);
+            Assert.That(sound.isPlaying, Is.False, "The extra-turn banner has its own effect.");
+        }
+
+        [UnityTest]
         public IEnumerator NativeActionFlashesAndBothSoulBurnAvatarsRenderAndClear()
         {
             scene = BattleScenePreviewTests.LoadPlayerOpeningScene();
@@ -36,7 +64,7 @@ namespace AstralOath.Client.Tests
             Call(simulation, "SetPaused", true);
             var assets = (BattleSkillPresentationAsset[])Field(host, "skillAssets");
             Assert.That(assets.Any(a => a.source == "effect/stse_chain.cfx"), Is.True, "Regenerate BattleScene feedback asset references first.");
-            feedback = Create("BattleActionFeedback", (object)assets);
+            feedback = Create("BattleActionFeedback", assets, null, null);
             var map = roots.SelectMany(x => x.GetComponentsInChildren<BindingMap>()).Single();
             var onlineAssets = AssetDatabase.LoadAssetAtPath<BattleOnlineTransitionAssets>(
                 "Assets/Game/Modules/BattleScene/Configs/AstralOathOnlineTransition.asset");
@@ -114,7 +142,7 @@ namespace AstralOath.Client.Tests
             var host = roots.Select(x => x.GetComponent<BattleHudPreview>()).Single(x => x);
             var assets = (BattleSkillPresentationAsset[])Field(host, "skillAssets");
             Assert.That(assets.Any(a => a.source == "effect/heal_hp_01.cfx"), Is.True);
-            feedback = Create("BattleActionFeedback", (object)assets);
+            feedback = Create("BattleActionFeedback", assets, null, null);
             var actors = roots.SelectMany(x => x.GetComponentsInChildren<BattlePreviewActor>()).ToArray();
             var actor = actors.First(x => x.name.StartsWith("Ras ", StringComparison.Ordinal));
             var other = actors.First(x => x != actor);
@@ -200,7 +228,7 @@ namespace AstralOath.Client.Tests
             var roots = scene.GetRootGameObjects();
             var host = roots.Select(x => x.GetComponent<BattleHudPreview>()).Single(x => x);
             var assets = (BattleSkillPresentationAsset[])Field(host, "skillAssets");
-            feedback = Create("BattleActionFeedback", (object)assets);
+            feedback = Create("BattleActionFeedback", assets, null, null);
             var actors = roots.SelectMany(x => x.GetComponentsInChildren<BattlePreviewActor>()).ToArray();
             Renderer Body(BattlePreviewActor actor) => (Renderer)typeof(BattlePreviewActor).GetProperty("PresentationRenderer", Instance).GetValue(actor);
             var rear = actors.First(actor => Body(actor).sortingOrder == 54);

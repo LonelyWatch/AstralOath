@@ -13,6 +13,7 @@ namespace AstralOath.Client.BattleScene
         public Sprite HealthDivider, Shield;
         public Sprite ResourceFrame, FocusFill, FightingSpiritFill;
         public TextAsset StatusManifest, EffectWordCopy;
+        public AudioClip ChainFlash;
         public TMP_FontAsset EffectWordFont;
         public Material EffectWordOutline;
         public Sprite[] StatusGlyphs, StatusDigits, LevelDigits;

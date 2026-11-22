@@ -116,6 +116,7 @@ namespace AstralOath.Client.BattleScene
             private readonly GameText readiness;
             private readonly GameText health;
             private readonly Image healthFill;
+            private readonly Image[] skillIcons;
             private readonly Image[] cooldowns;
             private readonly GameText[] turns;
             private readonly RectTransform states;
@@ -131,6 +132,7 @@ namespace AstralOath.Client.BattleScene
                 this.readiness = readiness;
                 this.health = health;
                 this.healthFill = healthFill;
+                this.skillIcons = skillIcons;
                 this.cooldowns = cooldowns;
                 this.turns = turns;
                 this.states = states;
@@ -158,7 +160,9 @@ namespace AstralOath.Client.BattleScene
                 healthFill.rectTransform.anchorMax = new Vector2(unit.CurrentHealth / (float)unit.MaximumHealth, 1f);
                 for (int slot = 0; slot < cooldowns.Length; slot++)
                 {
-                    int remaining = slot < unit.Form.SkillIds.Count ? unit.GetCooldown(unit.Form.SkillIds[slot]) : 0;
+                    string skillId = slot < unit.Form.SkillIds.Count ? unit.Form.SkillIds[slot] : null;
+                    skillIcons[slot].gameObject.SetActive(skillIcons[slot].sprite && BattleSkillResolver.IsSkillVisibleInForm(unit, skillId));
+                    int remaining = skillId != null ? unit.GetCooldown(skillId) : 0;
                     cooldowns[slot].gameObject.SetActive(remaining > 0);
                     turns[slot].text = remaining.ToString();
                 }

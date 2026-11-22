@@ -229,7 +229,7 @@ namespace AstralOath.Client.BattleScene
                 opponentSouls.Restore(Snapshot.EnemySoul);
             }
             skillBanner = new BattleSkillBanner((RectTransform)hud.transform.Find("Top Bar"), text, sprites);
-            actionFeedback = new BattleActionFeedback(skillAssets);
+            actionFeedback = new BattleActionFeedback(skillAssets, hud.transform, unitPresentation.ChainFlash);
             actionFeedback.Clear(Snapshot.LastEventSequence);
             double buildGraphs = measureEntry ? Time.realtimeSinceStartupAsDouble : 0d;
             skillPresentation = new BattleSkillPresentation(units, graphs, skillAssets, camera, SetCinematicVisible, stageBackground,
@@ -316,6 +316,7 @@ namespace AstralOath.Client.BattleScene
             lastClickedSkill = -1;
             foreach (var view in views.Values) view.Actor.SetPaused(value || view.DeathStarted);
             voice.SetPaused(value);
+            actionFeedback.SetPaused(value);
             UpdateSkillAvailability();
             hud.Require<GameButton>("soulBurn").interactable = CanAct && BurnSlot() >= 0;
             binder.SetAutoInteractable(!value && !useSoulBurn && Snapshot.Outcome == BattleOutcome.InProgress);
@@ -614,7 +615,7 @@ namespace AstralOath.Client.BattleScene
         }
 
         private bool CanPreviewSkill(BattleCatalogData.SkillRow skill) =>
-            skill.target != "passive" && (online != null
+            skill.target != "passive" && BattleSkillResolver.IsSkillVisibleInForm(Actor, skill.id) && (online != null
                 ? Snapshot.GetUnit(Snapshot.CurrentActorId).GetCooldown(skill.id) == 0
                 : IsSkillAvailable(skill, useSoulBurn));
 
@@ -897,6 +898,9 @@ namespace AstralOath.Client.BattleScene
                     ScheduleFeedback(LastFeedbackAt(item.TargetId), item.TargetId, () => ShowHealing(item));
                     break;
                 case BattleFlowEventKind.CooldownChanged:
+                    if (item.CooldownReduction > 0)
+                        ScheduleFeedback(AfterLastHitAt(item.TargetId), item.TargetId, () =>
+                            views[item.TargetId].ShowEffectWord(string.Format(EffectWordLabel("battle.feedback.cooldown_reduction"), item.CooldownReduction)));
                     if (displayedActor?.InstanceId == item.TargetId)
                     {
                         int index = Array.IndexOf(displayedActor.Form.SkillIds.ToArray(), item.SkillId);
@@ -1202,7 +1206,8 @@ namespace AstralOath.Client.BattleScene
                 int turns = TrySkill(index, out skill) ? actor.GetCooldown(skill.id) : 0;
                 button.interactable = CanAct && skill != null && CanPreviewSkill(skill);
                 bool passive = skill?.target == "passive";
-                turnHud.SetSkillStyle(index, passive, skill?.cooldownTurns ?? 0);
+                turnHud.SetSkillStyle(index, passive, skill?.cooldownTurns ?? 0,
+                    skill == null || BattleSkillResolver.IsSkillVisibleInForm(actor, skill.id));
                 image.color = button.interactable || turns > 0 || passive ? Color.white : new Color(0.45f, 0.45f, 0.45f, 1f);
                 turnHud.SetCooldown(index++, turns);
             }
@@ -1333,7 +1338,8 @@ namespace AstralOath.Client.BattleScene
         private void InspectSkill(BattleUnitSnapshot unit, int slot, Image image, bool detailRow)
         {
             if (inspection == null || IsPaused || cinematicVisible || unit == null || slot >= unit.Form.SkillIds.Count ||
-                !skills.TryGetValue(unit.Form.SkillIds[slot], out var skill)) return;
+                !skills.TryGetValue(unit.Form.SkillIds[slot], out var skill) ||
+                !BattleSkillResolver.IsSkillVisibleInForm(unit, skill.id)) return;
 
             // Holding consumes the gesture and also breaks an existing quick-cast pair.
             lastClickedSkill = -1;

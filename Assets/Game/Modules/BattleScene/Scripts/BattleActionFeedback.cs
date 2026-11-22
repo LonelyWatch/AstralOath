@@ -10,12 +10,21 @@ namespace AstralOath.Client.BattleScene
     {
         private readonly BattleFeedbackCueTracker cues = new BattleFeedbackCueTracker();
         private readonly BattleNativeFeedbackEffect.Library library;
+        private readonly AudioSource chainSound;
         private readonly Dictionary<(BattlePreviewActor Actor, string Source, string Bone), BattleNativeFeedbackEffect> effects =
             new Dictionary<(BattlePreviewActor, string, string), BattleNativeFeedbackEffect>();
         private bool disposed;
 
-        internal BattleActionFeedback(BattleSkillPresentationAsset[] assets)
-            => library = new BattleNativeFeedbackEffect.Library(assets);
+        internal BattleActionFeedback(BattleSkillPresentationAsset[] assets, Transform soundHost, AudioClip chainFlash)
+        {
+            library = new BattleNativeFeedbackEffect.Library(assets);
+            if (chainFlash && soundHost)
+            {
+                chainSound = soundHost.gameObject.AddComponent<AudioSource>();
+                chainSound.playOnAwake = false;
+                chainSound.clip = chainFlash;
+            }
+        }
 
         internal bool PresentAction(BattleFlowEvent item, BattlePreviewActor actor)
         {
@@ -79,6 +88,7 @@ namespace AstralOath.Client.BattleScene
                 effects.Add(key, effect);
             }
             effect.Play();
+            if (source == "stse_chain" && chainSound) chainSound.PlayOneShot(chainSound.clip);
             Place(actor, effect, bone);
         }
 
@@ -114,13 +124,26 @@ namespace AstralOath.Client.BattleScene
         internal void Clear(ulong lastEventSequence = 0)
         {
             cues.Clear(lastEventSequence);
+            if (chainSound) chainSound.Stop();
             foreach (var effect in effects.Values) effect.Stop();
+        }
+
+        internal void SetPaused(bool paused)
+        {
+            if (!chainSound) return;
+            if (paused) chainSound.Pause();
+            else chainSound.UnPause();
         }
 
         public void Dispose()
         {
             if (disposed) return;
             disposed = true;
+            if (chainSound)
+            {
+                chainSound.Stop();
+                UnityEngine.Object.Destroy(chainSound);
+            }
             foreach (var effect in effects.Values) effect.Dispose();
             effects.Clear();
         }

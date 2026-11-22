@@ -11,6 +11,7 @@ using AstralOath.Shared.Battle;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
@@ -282,7 +283,8 @@ namespace AstralOath.Client.Tests
             yield return LoadBattle(value => roots = value);
             var host = roots.Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
             typeof(BattleHudPreview).GetField("allyHeroIds", PrivateInstance).SetValue(host, Enumerable.Repeat("c1067", 4).ToArray());
-            typeof(BattleHudPreview).GetField("enemyHeroIds", PrivateInstance).SetValue(host, BattleScenePreviewTests.SlowEnemyIds());
+            // A sustain team keeps the encounter alive until the same singer completes her idol turns.
+            typeof(BattleHudPreview).GetField("enemyHeroIds", PrivateInstance).SetValue(host, Enumerable.Repeat("c1062", 4).ToArray());
             host.enabled = true;
             host.StartBattle();
             var opening = host.SimulationSnapshot;
@@ -291,7 +293,38 @@ namespace AstralOath.Client.Tests
             var tick = type.GetMethod("Tick");
             var canAct = type.GetProperty("CanAct", PrivateInstance);
             var map = HostField<BindingMap>(host, "hud");
+            var skill2 = map.Require<GameButton>("skill2");
+            var skill3 = map.Require<GameButton>("skill3");
+            var thirdFrame = skill3.transform.parent.Find("Skill 3 Frame").GetComponent<Image>();
+            var raycaster = map.GetComponentInParent<GraphicRaycaster>();
+            var events = roots.Select(root => root.GetComponent<EventSystem>()).Single(system => system);
+            var rail = map.transform.Find("Combat Readiness/Live Readiness");
+            var detailsToggle = rail.Find("Readiness Details Button").GetComponent<GameButton>();
+            string Icon(int slot) => ((Image)map.Require<GameButton>("skill" + slot).targetGraphic).sprite.name;
+
+            void CheckThirdSlot(string unitId, bool visible)
+            {
+                Assert.That(skill3.gameObject.activeInHierarchy, Is.EqualTo(visible));
+                Assert.That(thirdFrame.isActiveAndEnabled, Is.EqualTo(visible), "The gold frame is a sibling of the icon.");
+                Canvas.ForceUpdateCanvases();
+                foreach (var button in new[] { skill2, skill3 })
+                {
+                    var rect = (RectTransform)button.transform;
+                    var point = RectTransformUtility.WorldToScreenPoint(raycaster.eventCamera, rect.TransformPoint(rect.rect.center));
+                    var hits = new List<RaycastResult>();
+                    raycaster.Raycast(new PointerEventData(events) { position = point }, hits);
+                    bool hitButton = hits.Any(hit => hit.gameObject.GetComponentInParent<GameButton>() == button);
+                    Assert.That(hitButton, Is.EqualTo(button != skill3 || visible),
+                        $"Pointer at {button.name}, {point}, depth {button.targetGraphic.depth}, camera {raycaster.eventCamera.pixelRect}");
+                }
+                detailsToggle.onClick.Invoke();
+                var detailSlot = rail.Find($"Readiness Details/Rows/{unitId}/Skill 3");
+                Assert.That(detailSlot.gameObject.activeInHierarchy, Is.EqualTo(visible), "Turn order detail for the same unit.");
+                detailsToggle.onClick.Invoke();
+            }
+
             string transformed = null;
+            bool sawIdol = false;
             for (int step = 0; step < 5000; step++)
             {
                 var snapshot = host.SimulationSnapshot;
@@ -299,12 +332,16 @@ namespace AstralOath.Client.Tests
                 if ((bool)canAct.GetValue(simulation))
                 {
                     var current = snapshot.GetUnit(snapshot.CurrentActorId);
-                    if (current.GetStatus(BattleStatusKind.Idol) != null)
+                    bool isIdol = current.GetStatus(BattleStatusKind.Idol) != null;
+                    if (isIdol && !sawIdol)
                     {
+                        // The simulation advances several substeps per rendered frame. Let UGUI register
+                        // the newly visible Graphics with the raycaster after the cinematic releases them.
+                        yield return null;
                         Assert.That(current.InstanceId, Is.EqualTo(transformed));
-                        string Icon(int slot) => ((Image)map.Require<GameButton>("skill" + slot).targetGraphic).sprite.name;
                         Assert.That(Icon(1), Is.EqualTo("sk_c1067_4"));
                         Assert.That(Icon(2), Is.EqualTo("sk_c1067_5"));
+                        CheckThirdSlot(current.InstanceId, false);
                         var views = (IDictionary)type.GetField("views", PrivateInstance).GetValue(simulation);
                         var unit = views[current.InstanceId];
                         var actor = (BattlePreviewActor)unit.GetType().GetProperty("Actor").GetValue(unit);
@@ -315,9 +352,20 @@ namespace AstralOath.Client.Tests
                         // Reconciliation also runs on a restored or resynchronized authoritative snapshot.
                         unit.GetType().GetMethod("RefreshStatuses").Invoke(unit, new object[] { opening.GetUnit(current.InstanceId) });
                         Assert.That(((TextAsset)body.GetValue(actor)).name, Is.EqualTo("tamarinne.spine"));
+                        unit.GetType().GetMethod("RefreshStatuses").Invoke(unit, new object[] { current });
+                        sawIdol = true;
+                    }
+                    else if (sawIdol && !isIdol && current.InstanceId == transformed)
+                    {
+                        yield return null;
+                        Assert.That(Icon(1), Is.EqualTo("sk_c1067_1"));
+                        Assert.That(Icon(2), Is.EqualTo("sk_c1067_2"));
+                        Assert.That(Icon(3), Is.EqualTo("sk_c1067_3"));
+                        CheckThirdSlot(current.InstanceId, true);
                         yield break;
                     }
 
+                    Assert.That(skill3.gameObject.activeInHierarchy, Is.EqualTo(!isIdol));
                     int slot = current.GetCooldown("c1067.s3") == 0 && transformed == null ? 3 :
                         current.GetCooldown("c1067.s2") == 0 ? 2 : 1;
                     map.Require<GameButton>("skill" + slot).onClick.Invoke();
@@ -332,7 +380,7 @@ namespace AstralOath.Client.Tests
                 tick.Invoke(simulation, new object[] { .2f });
                 if (step % 12 == 0) yield return null;
             }
-            Assert.Fail("A normal S1/S2 rotation must unlock the opening S3 and yield an idol turn.");
+            Assert.Fail("The same Tamarinne must unlock S3, take her idol turns and regain her ordinary three-skill HUD.");
         }
 
         [UnityTest]

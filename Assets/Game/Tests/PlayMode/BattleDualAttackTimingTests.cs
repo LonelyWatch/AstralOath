@@ -193,9 +193,34 @@ namespace AstralOath.Client.Tests
             }
         }
 
+        [UnityTest]
+        public IEnumerator OnlyAnExplicitCooldownReductionShowsItsActualTurns()
+        {
+            scene = BattleScenePreviewTests.LoadPlayerOpeningScene("c1001");
+            yield return null;
+            yield return null;
+            var host = scene.GetRootGameObjects().Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            var simulation = Field(host, "simulation");
+            var words = host.GetComponentInChildren<BindingMap>().transform.Find("Unit Status/Allies/01 Front/Effect Words");
+            Assert.That(words, Is.Not.Null);
+            string[] Captions() => words.GetComponentsInChildren<TMPro.TMP_Text>(true)
+                .Select(caption => caption.text).ToArray();
+
+            Call(simulation, "Present", Event(BattleFlowEventKind.CooldownChanged, "ally-1", "c1074.s3", null,
+                BattleActionOrigin.Primary, amount: 4, target: "ally-1"));
+            Call(simulation, "ShowDueFeedback");
+            Assert.That(Captions().Any(text => text.Contains("冷却")), Is.False);
+
+            Call(simulation, "Present", Event(BattleFlowEventKind.CooldownChanged, "ally-1", "c1074.s3", null,
+                BattleActionOrigin.Primary, amount: 0, target: "ally-1", cooldownReduction: 5));
+            Call(simulation, "ShowDueFeedback");
+            Assert.That(Captions(), Does.Contain("技能冷却时间减少5回合"));
+        }
+
         internal static BattleFlowEvent Event(BattleFlowEventKind kind, string source, string skill, string presentation, BattleActionOrigin origin,
             BattleStatusKind? statusKind = null, int amount = 30, string target = "enemy-1",
-            int statusTurns = 2, int statusStrength = 5000, int? remainingHealth = 3000, BattleHitKind hitKind = BattleHitKind.Normal)
+            int statusTurns = 2, int statusStrength = 5000, int? remainingHealth = 3000, BattleHitKind hitKind = BattleHitKind.Normal,
+            int cooldownReduction = 0)
         {
             var ctor = typeof(BattleFlowEvent).GetConstructors(Instance).Single();
             var values = ctor.GetParameters().Select(p => p.HasDefaultValue ? p.DefaultValue : p.ParameterType == typeof(ulong) ? (object)1UL : p.ParameterType == typeof(int) ? 1 : (object)kind).ToArray();
@@ -203,6 +228,7 @@ namespace AstralOath.Client.Tests
                 new[] { typeof(BattleStatusKind), typeof(int), typeof(int) }, null)
                 .Invoke(new object[] { statusKind.Value, statusTurns, statusStrength }) : null;
             var named = new Dictionary<string, object> { ["kind"] = kind, ["sourceId"] = source, ["targetId"] = target, ["skillId"] = skill, ["presentationId"] = presentation, ["origin"] = origin, ["amount"] = amount, ["statusKind"] = statusKind, ["status"] = status, ["hitKind"] = hitKind, ["remainingHealth"] = remainingHealth };
+            named["cooldownReduction"] = cooldownReduction;
             foreach (var p in ctor.GetParameters()) if (named.TryGetValue(p.Name, out var value)) values[p.Position] = value;
             return (BattleFlowEvent)ctor.Invoke(values);
         }

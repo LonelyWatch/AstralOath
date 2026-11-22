@@ -185,7 +185,7 @@ namespace AstralOath.Client.Arena
             }
             catch (ArenaRequestException) { throw; }
             catch (Exception error) when (error is OperationCanceledException or IOException or HttpRequestException
-                or ObjectDisposedException or SocketException)
+                or ObjectDisposedException or SocketException or WebException)
             {
                 token.ThrowIfCancellationRequested();
                 lifetime.ThrowIfCancellationRequested();

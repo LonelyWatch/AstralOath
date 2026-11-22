@@ -1,4 +1,4 @@
-"""Render the original FMOD World Arena gate, Soul Burn and result events to PCM."""
+"""Render the original FMOD gate, Soul Burn, chained action and result events to PCM."""
 
 import argparse
 import io
@@ -23,6 +23,8 @@ CLIPS = (
      "e04705e6-c46c-40db-abbd-a8874d1431ab", 98_880),
     ("SoulBurnRelease", "soul-burn", r"effect\ui_livepvp_soulburn_eff", r"assets\ui\ui_livepvp_soulburn_eff.wav",
      "5f151765-7475-467b-8c1e-f0f559099301", 76_800),
+    ("ChainFlash", "chain-flash", r"effect\stse_chain", r"assets\model\se_chr_cm_bonus_turn.wav",
+     "6fc907ae-9e8e-4159-8dee-914c28f8dbfb", 55_536),
     ("ResultVictory", "result-win", r"ui\pvp\result_win",
      tuple(rf"assets\ui\se_ui_colosseum_battle_win_0{i}.wav" for i in range(1, 4)),
      "d06af45b-59ea-48c5-a976-cf6ffb490c1d", 272_640),

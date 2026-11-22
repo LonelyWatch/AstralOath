@@ -1,5 +1,7 @@
 # AstralOath.Server
 
+战斗响应中的 `cooldownReduction` 随技能结算给出实减的回合数。菲奥雷托满专注使用「蝴蝶斩击」时，三技能未强化减少 6 回合，强化到 +3 减少 5 回合，两种情况下剩余值均为零。旧响应缺少该字段时，新客户端按零读取。[战斗复核](../docs/delivery/2026-11-22-battle-followup.md)
+
 开发版 GM 在回环地址的 Development 游戏服注册 `GET /api/development/gm` 与 `POST /api/development/gm/actions`。已有会话的任一账号可查看和设置自己的 12 项余额，按目录发放英雄、神器及训练装备。绝对余额的范围为 0 至 10 亿，每次发放 1 至 10 件。账号取自 Bearer 会话，服务端在同一账号锁和事务内检查容量、登记请求、写库存及审计。同一请求 ID 的同参数重试读取当前结果，参数冲突返回 409。正式环境和对外监听不注册这组路由。测试入口为 `DevelopmentGmTests`。
 
 共享战斗规则会随反击动作回传实际触发来源；查尔斯反击状态和技能被动反击分别回归。[动作事件与客户端表现](../docs/delivery/2026-11-22-battle-action-recovery.md)

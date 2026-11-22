@@ -350,7 +350,7 @@ namespace AstralOath.Client.BattleScene
                         Schedule(at, () => PlayNodeAnimation(node, at, recipients));
                         break;
                     case "COLOR_BLEND":
-                        if (IsTargetHide(node) && !nodes.Any(other => Kind(other) == "STOP" &&
+                        if ((IsTargetHide(node) || IsCasterHideUntilIdle(node, at, cues)) && !nodes.Any(other => Kind(other) == "STOP" &&
                             (string)other["targetId"] == (string)node["id"] && Number(other, "time") != 0f &&
                             ((int?)node["blend_target"] != 55 || Number(other, "time") != Number(node, "fadeOut"))))
                             Schedule(at, () => HoldTargetLayer(node, recipients));
