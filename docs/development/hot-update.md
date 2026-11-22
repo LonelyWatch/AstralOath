@@ -6,6 +6,8 @@
 
 ## 默认选择与最小包
 
+开发版 GM 拖动入口和列表布局随 R34 热更分发。0.1.25 的母包归档已包含指针事件所需运行时类型。R34 使用同一内置公钥验签，复用 R33 的 91 项签名内容。原生桌面游戏程序从 5303 实际下载 7 项、22,954,423 字节，随后完成装备穿脱，再从训练启动脚本重开时业务资源下载为零。缓存保留 R33 回退，两个原游戏窗口在验收期间继续运行。签名、安装与重开回执位于主工作区 `.artifacts/windows-r34/build/receipt.json`、`desktop-independent-install.json` 和 `desktop-independent-verifycmd.json`（后两项在 `.artifacts/windows-r34/`）。[GM 操作与回归](../../Assets/Game/Modules/FoundationDemo/README.md)
+
 本机 R33 热更复用 R32 母包，原启动器与游戏程序均继续使用。R32 缓存中只需下载 9 项、52.44 MiB，原生客户端冷启动 R33 后再开业务下载为零。[R33 传输与桌面验收](../delivery/2026-11-22-windows-r33.md)
 
 本机独立训练版 R32 使用 0.1.25 Win64 IL2CPP 母包。角色卡滚动反馈和英雄、背包的声音路由涉及 Common AOT 与启动场景，须使用对应母包。签名内容监听 5303，训练服监听 `127.0.0.4:7728`。[R32 交付](../delivery/2026-11-22-windows-r32.md)
