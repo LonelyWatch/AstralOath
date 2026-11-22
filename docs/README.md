@@ -18,6 +18,7 @@
 - 新系统/模块：[通用规范](development/project-standards.md)、目标模块 README、[AI 开发流程](development/ai-workflow.md)。
 - UI：[UIBaseView / Binder / 控件](development/ui-binder.md)、[控件决策](architecture/adr/009-ui-controls.md)。
 - 账号和英雄背包：[录像、数据模型与验收](plans/2026-11-17-hero-inventory.md)、[服务端接口与迁移](../Server/README.md)。
+- 游戏内邮件：[玩家收件、开发 GM 自发、服务端名单与整区投递的设计](plans/2026-11-22-game-mail.md)。
 - 普通装备：[背包、单槽配戴和管理页的原版画面与时间点](development/equipment-ui-reference.md)、[原作六部位、强化与套装规则及项目实施方案](plans/2026-11-21-equipment-system.md)。
 - 主页与竞技场：[启动、房间与聊天](development/arena-lobby.md)、[Arena](../Assets/Game/Modules/Arena/README.md)。
 - 操作留痕：[规则和接口](development/operation-audit.md)、[窗口与交互 ADR](architecture/adr/016-window-feedback-operation-audit.md)。
