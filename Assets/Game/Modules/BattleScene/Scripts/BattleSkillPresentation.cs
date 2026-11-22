@@ -397,6 +397,19 @@ namespace AstralOath.Client.BattleScene
             return (impactTime, actionEnd);
         }
 
+        internal float WallDuration(BattlePreviewActor actor, string graphId, float stageDuration)
+        {
+            float duration = stageDuration;
+            foreach (var cue in cache.Cues[(actor, graphId)])
+            {
+                if (cue.At > stageDuration || Kind(cue.Node) != "CUTIN") continue;
+                string key = "cut/fhd/" + (string)cue.Node["args"] + ".webp";
+                if (assets.TryGetValue(key, out var asset) && asset.document)
+                    duration += BattleCinematicStage.CutinDuration(JObject.Parse(asset.document.text));
+            }
+            return duration;
+        }
+
         private JObject ResolvePostModulator(JObject modulator)
         {
             if (Kind(modulator) != "RANDOM_VALUE" || (string)modulator["name"] != "u_range") return modulator;

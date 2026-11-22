@@ -255,6 +255,9 @@ namespace AstralOath.Client.FoundationDemo
                 var poster = bindings.Require<CanvasGroup>("featuredActorLayer");
                 while (!preview.enabled || !preview.texture || poster.alpha > .05f || preview.color.a < .95f)
                     await Task.Delay(50, cancellation);
+                if (!(preview.texture is RenderTexture live) || !live.IsCreated())
+                    throw new InvalidOperationException("The packaged skill preview has no live battle render target.");
+                Debug.Log($"ASTRAL_SUMMON_FEATURED_LIVE target={live.width}x{live.height} screen={Screen.width}x{Screen.height}");
             }
             bindings.Require<GameButton>("covenant").onClick.Invoke();
             if (preview.enabled || !bindings.Require<GameObject>("wishRoster").activeInHierarchy)

@@ -1,86 +1,40 @@
 using System;
+using AstralOath.Client.BattleScene;
 using AstralOath.Client.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace AstralOath.Client.Summon
 {
+    [UnityEngine.Scripting.APIUpdating.MovedFrom(true, "AstralOath.Client.Summon", "AstralOath.Client.Home", "SummonSkillLoop")]
     public sealed class SummonSkillLoop : ScriptableObject
     {
         public const string Address = "summon/iseria-skill";
-        [SerializeField] private Texture2D[] pages;
+        [SerializeField] private BattleSkillPreviewDefinition preview;
         [SerializeField] private AudioClip originalAudio;
-        [SerializeField] private int frameCount, columns, rows, gutterPixels;
-        [SerializeField] private float framesPerSecond;
 
         private const double PosterSeconds = 3.25d;
         private const double PosterFade = .375d;
-        private const double MovieFade = .45d;
+        private const double SkillFade = .45d;
         private const double HeroReturn = 1.10d;
         private const double HeroHold = 2.65d;
         private const double ExitFade = .5d;
         private const double PosterReturn = .65d;
-        private double SkillSeconds => frameCount / (double)framesPerSecond;
-        private int PageCapacity => columns * rows;
 
-        public void Configure(Texture2D[] pages, int frameCount, float framesPerSecond, int columns, int rows,
-            int gutterPixels, AudioClip originalAudio = null)
+        public void Configure(BattleSkillPreviewDefinition preview, AudioClip originalAudio)
         {
-            this.pages = pages;
-            this.frameCount = frameCount;
-            this.framesPerSecond = framesPerSecond;
-            this.columns = columns;
-            this.rows = rows;
-            this.gutterPixels = gutterPixels;
+            this.preview = preview ? preview : throw new ArgumentNullException(nameof(preview));
             this.originalAudio = originalAudio;
-            Validate();
         }
 
         public Player CreatePlayer(RawImage output, AudioSource audio, BindingScope owner,
             CanvasGroup scenery, CanvasGroup hero, CanvasGroup offer)
         {
             owner.Token.ThrowIfCancellationRequested();
-            Validate();
+            if (!preview) throw new InvalidOperationException("Summon banner has no battle skill preview.");
             var player = new Player(this, output, audio, scenery, hero, offer);
             owner.Add(player.Dispose);
             return player;
-        }
-
-        private void Validate()
-        {
-            if (frameCount < 1 || frameCount > 1200 || !float.IsFinite(framesPerSecond) || framesPerSecond <= 0f ||
-                columns < 1 || columns > 16 || rows < 1 || rows > 16 || gutterPixels < 0 ||
-                pages == null || pages.Length != (frameCount + PageCapacity - 1) / PageCapacity)
-                throw new InvalidOperationException("Invalid summon skill loop frame layout.");
-
-            foreach (var page in pages)
-                if (!page || page.width % columns != 0 || page.height % rows != 0 ||
-                    page.width / columns <= 2 * gutterPixels + 1 || page.height / rows <= 2 * gutterPixels + 1)
-                    throw new InvalidOperationException("Invalid summon skill loop atlas.");
-        }
-
-        private void Render(RawImage output, int frame)
-        {
-            int tile = frame % PageCapacity;
-            var page = pages[frame / PageCapacity];
-            float width = page.width / columns, height = page.height / rows;
-            float inset = gutterPixels + .5f;
-            output.texture = page;
-            var tileRect = new Rect(
-                ((tile % columns) * width + inset) / page.width,
-                ((rows - 1 - tile / columns) * height + inset) / page.height,
-                (width - 2f * inset) / page.width, (height - 2f * inset) / page.height);
-            Rect viewport = output.rectTransform.rect;
-            if (viewport.width > 0f && viewport.height > 0f)
-            {
-                float relativeAspect = (viewport.width / viewport.height) /
-                    ((width - 2f * gutterPixels) / (height - 2f * gutterPixels));
-                Vector2 center = tileRect.center;
-                if (relativeAspect > 1f) tileRect.height /= relativeAspect;
-                else tileRect.width *= relativeAspect;
-                tileRect.center = center;
-            }
-            output.uvRect = tileRect;
         }
 
         public sealed class Player : IDisposable
@@ -97,7 +51,9 @@ namespace AstralOath.Client.Summon
             private readonly bool savedLoop;
             private bool selected, paused, disposed;
             private double elapsed, lastTime;
-            private int displayedFrame = -1;
+            private BattleSkillPreviewSession battle;
+            private int lastRenderedFrame = -1;
+            private double skillSeconds;
 
             internal Player(SummonSkillLoop clip, RawImage output, AudioSource audio, CanvasGroup scenery, CanvasGroup hero, CanvasGroup offer)
             {
@@ -134,7 +90,7 @@ namespace AstralOath.Client.Summon
                     elapsed = 0;
                     HideSkill();
                 }
-                else if (audio && clip.originalAudio && displayedFrame >= 0)
+                else if (audio && clip.originalAudio && battle != null)
                 {
                     if (pause) audio.Pause();
                     else audio.UnPause();
@@ -145,60 +101,87 @@ namespace AstralOath.Client.Summon
 
             private void Tick()
             {
-                if (disposed || !selected || paused || !output) return;
+                if (disposed || !selected || paused || !output || lastRenderedFrame == Time.frameCount) return;
+                lastRenderedFrame = Time.frameCount;
+                try { Advance(); }
+                catch (Exception error)
+                {
+                    // Allow the page to remain usable if the local preview could not be rendered.
+                    selected = false;
+                    HideSkill();
+                    Debug.LogException(error);
+                }
+            }
+
+            private void Advance()
+            {
                 double now = Time.realtimeSinceStartupAsDouble;
-                elapsed += Math.Max(0d, now - lastTime);
+                double frameSeconds = Math.Max(0d, now - lastTime);
+                elapsed += frameSeconds;
                 lastTime = now;
 
-                double movieStart = PosterSeconds + PosterFade;
-                double movieTime = elapsed - movieStart;
-                double exitTime = movieTime - clip.SkillSeconds - HeroHold;
+                double skillStart = PosterSeconds + PosterFade;
+                double skillTime = elapsed - skillStart;
+                if (skillTime < 0)
+                {
+                    scenery.alpha = hero.alpha = offer.alpha = Ramp(-skillTime / PosterFade);
+                    return;
+                }
+                if (battle == null)
+                {
+                    battle = clip.preview.Create(output);
+                    skillSeconds = battle.Duration;
+                    output.enabled = true;
+                    if (audio && clip.originalAudio)
+                    {
+                        audio.time = 0f;
+                        audio.Play();
+                    }
+                    // Resource preparation can take time on the first visit. Start sound and
+                    // motion together once the live stage can present its first frame.
+                    elapsed = skillStart;
+                    lastTime = Time.realtimeSinceStartupAsDouble;
+                    skillTime = 0;
+                    frameSeconds = 0;
+                }
+                double exitTime = skillTime - skillSeconds - HeroHold;
                 if (exitTime >= ExitFade + PosterReturn)
                 {
-                    elapsed %= movieStart + clip.SkillSeconds + HeroHold + ExitFade + PosterReturn;
+                    elapsed = 0d;
                     HideSkill();
                     return;
                 }
 
-                if (movieTime < 0 || exitTime >= ExitFade)
+                if (exitTime >= ExitFade)
                 {
-                    float poster = movieTime < 0 ? Ramp(-movieTime / PosterFade) : Ramp((exitTime - ExitFade) / PosterReturn);
-                    scenery.alpha = hero.alpha = offer.alpha = poster;
+                    scenery.alpha = hero.alpha = offer.alpha = Ramp((exitTime - ExitFade) / PosterReturn);
                     output.enabled = false;
                     return;
                 }
 
                 float exitOpacity = 1f - Ramp(exitTime / ExitFade);
                 scenery.alpha = offer.alpha = 0f;
-                hero.alpha = Ramp((movieTime - clip.SkillSeconds + HeroReturn) / HeroReturn) * exitOpacity;
+                hero.alpha = Ramp((skillTime - skillSeconds + HeroReturn) / HeroReturn) * exitOpacity;
                 var tint = originalColor;
-                tint.a *= Ramp(movieTime / MovieFade) * exitOpacity;
+                tint.a *= Ramp(skillTime / SkillFade) * exitOpacity;
                 output.color = tint;
-                int frame = Mathf.Min(clip.frameCount - 1, (int)(movieTime * clip.framesPerSecond));
-                clip.Render(output, frame);
-                if (displayedFrame < 0)
-                {
-                    output.enabled = true;
-                    if (audio && clip.originalAudio)
-                    {
-                        audio.time = Mathf.Clamp((float)movieTime, 0f,
-                            Mathf.Max(0f, clip.originalAudio.length - .001f));
-                        audio.Play();
-                    }
-                }
-                displayedFrame = frame;
+                battle.Step((float)frameSeconds);
             }
 
             private static float Ramp(double value) => Mathf.SmoothStep(0f, 1f, Mathf.Clamp01((float)value));
 
             private void HideSkill()
             {
+                if (battle != null)
+                {
+                    if (audio) audio.Stop();
+                    battle.Dispose();
+                    battle = null;
+                }
                 if (output) { output.enabled = false; output.color = originalColor; }
                 if (scenery) scenery.alpha = 1f;
                 if (hero) hero.alpha = 1f;
                 if (offer) offer.alpha = 1f;
-                if (audio && displayedFrame >= 0) audio.Stop();
-                displayedFrame = -1;
             }
 
             public void Dispose()

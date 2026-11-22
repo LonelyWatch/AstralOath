@@ -2,7 +2,7 @@
   "name": "AstralOath.Client.Summon",
   "references": [
     "AstralOath.Client.Common", "AstralOath.Client.Core", "AstralOath.Client.Home",
-    "AstralOath.Battle", "AstralOath.Client.Skeletons", "UnityEngine.UI", "Unity.TextMeshPro"
+    "AstralOath.Battle", "AstralOath.Client.BattleScene", "AstralOath.Client.Skeletons", "UnityEngine.UI", "Unity.TextMeshPro"
   ],
   "autoReferenced": false
 }

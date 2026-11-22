@@ -12,27 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaa6794cb7154c8a9aeff7b6a69f04a0, type: 3}
   m_Name: IseriaSkillLoop
   m_EditorClassIdentifier: 
-  pages:
-  - {fileID: 2800000, guid: a79cc3aa7fa25ca5951c818c55edcd75, type: 3}
-  - {fileID: 2800000, guid: 987066d4be8b53c0b4d5e1d158a149cb, type: 3}
-  - {fileID: 2800000, guid: a5a4bb82a6715ce9bffe8816ff33ed15, type: 3}
-  - {fileID: 2800000, guid: ad07f97b803c566c81328f4e39f404b2, type: 3}
-  - {fileID: 2800000, guid: d34d5dcfa1ce594db3b4f1b64ed05ea3, type: 3}
-  - {fileID: 2800000, guid: 3e96807c8277539eb5325d54cf145aa1, type: 3}
-  - {fileID: 2800000, guid: 70076801255a5bec93b76dd7db2292ff, type: 3}
-  - {fileID: 2800000, guid: 15709f368389510ba48b9e22425e22e5, type: 3}
-  - {fileID: 2800000, guid: 73f7516c20025ef5a5af390fe76420c8, type: 3}
-  - {fileID: 2800000, guid: 25e11e15122652ce9e5709f3d29947d9, type: 3}
-  - {fileID: 2800000, guid: 4ad96ec0b18159c1a4c5b4401d5bd7c4, type: 3}
-  - {fileID: 2800000, guid: d7795340ca4751b28588b0c82d83192d, type: 3}
-  - {fileID: 2800000, guid: e75cd05d70c25c7299d562a56469369d, type: 3}
-  - {fileID: 2800000, guid: 67070518a7e65b4aba3a2c96531ef0dd, type: 3}
-  - {fileID: 2800000, guid: ede4ac5c295357cc99ddd31beb374229, type: 3}
-  - {fileID: 2800000, guid: 22aa103227b45366bf62e111d7205d57, type: 3}
-  - {fileID: 2800000, guid: 7f4f62e29a855a45ab5af85678b73944, type: 3}
+  preview: {fileID: 11400000, guid: f85d565b76fb49a2b1f3b7c5283fe915, type: 2}
   originalAudio: {fileID: 8300000, guid: 0366066feada42459d74dc77c2340ecd, type: 3}
-  frameCount: 269
-  columns: 4
-  rows: 4
-  gutterPixels: 2
-  framesPerSecond: 24

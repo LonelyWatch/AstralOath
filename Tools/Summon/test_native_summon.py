@@ -22,6 +22,14 @@ def featured_frame(seconds):
 
 
 class NativeSummonPresentation(unittest.TestCase):
+    def test_featured_banner_depends_on_the_battle_preview(self):
+        folder = DEST / "IseriaSkillLoop"
+        loop = (folder / "IseriaSkillLoop.asset").read_text(encoding="utf-8")
+        self.assertNotIn("  pages:", loop, "The banner still takes its frames from the JPEG atlas.")
+        guid = next(line.split()[1] for line in (folder / "BattleSkillPreviewDefinition.asset.meta")
+                    .read_text(encoding="utf-8").splitlines() if line.startswith("guid:"))
+        self.assertIn("preview: {fileID: 11400000, guid: " + guid, loop)
+
     def test_featured_sword_gate_flash_covers_the_full_frame(self):
         for index in (68, 69, 70):
             with self.subTest(frame=index):

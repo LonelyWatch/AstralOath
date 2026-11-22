@@ -22,6 +22,26 @@ namespace AstralOath.Client.Tests
         private string priorEndpoint, priorSkipEntry;
         private bool changedSettings;
 
+        private static Color32[] SamplePreview(Texture preview)
+        {
+            var reduced = RenderTexture.GetTemporary(32, 18, 0);
+            var pixels = new Texture2D(32, 18, TextureFormat.RGBA32, false);
+            var previous = RenderTexture.active;
+            try
+            {
+                Graphics.Blit(preview, reduced);
+                RenderTexture.active = reduced;
+                pixels.ReadPixels(new Rect(0, 0, 32, 18), 0, 0);
+                return pixels.GetPixels32();
+            }
+            finally
+            {
+                RenderTexture.active = previous;
+                RenderTexture.ReleaseTemporary(reduced);
+                UnityEngine.Object.Destroy(pixels);
+            }
+        }
+
         [UnityTest, Timeout(165000)]
         public IEnumerator MoreOpensNativeSummonAndSkipShowsRecoverableTenResult()
         {
@@ -52,23 +72,30 @@ namespace AstralOath.Client.Tests
                 Assert.That(summon.Require<GameText>("eventCountdown").text, Is.Not.Empty);
                 yield return Capture("summon-iseria-up");
                 yield return Until(() => preview.enabled && preview.texture, "The UP pool did not start the real Iseria S3 preview.");
+                Assert.That(preview.texture, Is.InstanceOf<RenderTexture>(), "The banner must render the battle skill at run time.");
                 yield return new WaitForSecondsRealtime(3.15f);
                 Assert.That(summon.Require<GameText>("featuredHero").GetComponentInParent<CanvasGroup>().alpha, Is.LessThan(.05f));
                 Assert.That(summon.Require<Image>("artifactArt").GetComponentInParent<CanvasGroup>().alpha, Is.LessThan(.05f));
                 Assert.That(preview.rectTransform.rect.width, Is.EqualTo(((RectTransform)summon.transform).rect.width).Within(1));
+                var displaySize = new Vector2Int(preview.texture.width, preview.texture.height);
                 yield return Capture("summon-iseria-s3-cutin");
                 Click(summon, "ten");
                 Assert.That(Panel(summon, "confirmPanel"), Is.True);
                 var portrait = summon.Require<Image>("confirmHeroPortrait");
                 Assert.That(portrait.sprite.name, Is.EqualTo("c1024_s"));
                 yield return Capture("summon-featured-confirm");
-                var frameAtOpen = preview.uvRect;
-                yield return new WaitForSecondsRealtime(.2f);
+                // Screenshot capture temporarily projects the canvas through a different camera.
+                // Compare live frames only after the normal viewport has its own target again.
+                yield return Until(() => preview.texture is RenderTexture live && live.IsCreated() &&
+                    live.width == displaySize.x && live.height == displaySize.y,
+                    "The skill preview did not return to the display size after capture.");
+                Texture targetAtOpen = preview.texture;
+                var pixelsAtOpen = SamplePreview(targetAtOpen);
+                yield return Until(() => preview.texture == targetAtOpen && !pixelsAtOpen.SequenceEqual(SamplePreview(targetAtOpen)),
+                    "The skill preview pixels did not advance behind the confirmation.");
                 Assert.That(Panel(summon, "mainPage"), Is.True);
-                Assert.That(preview.uvRect, Is.Not.EqualTo(frameAtOpen), "The skill preview must keep advancing through the transparent confirmation.");
-                var frameAtClose = preview.uvRect;
                 Click(summon, "confirmNo");
-                Assert.That(preview.uvRect, Is.EqualTo(frameAtClose), "Closing the confirmation reset the playing preview.");
+                Assert.That(preview.texture, Is.SameAs(targetAtOpen), "Closing the confirmation replaced the live preview.");
                 var heroLayer = summon.Require<GameText>("featuredHero").GetComponentInParent<CanvasGroup>();
                 var artifactLayer = summon.Require<Image>("artifactArt").GetComponentInParent<CanvasGroup>();
                 yield return Until(() => preview.enabled && heroLayer.alpha > .8f && artifactLayer.alpha < .05f,

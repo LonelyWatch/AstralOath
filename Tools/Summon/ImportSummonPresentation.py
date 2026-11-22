@@ -57,36 +57,42 @@ def decode_skeleton(name, data):
     if name != "gacha_eff_3_intro_1":
         return convert.decode_scsp(data)
 
-    # In this particular export, two pivot timelines occur twice with exactly
-    # the same binary keys and curve data. Permit only those precise duplicates.
+    # This export repeats the same pivot rotation. Only accept an exact copy
+    # of the original key and curve bytes for this animation.
     original = convert._record_curve_source
-    repeated = set()
+    repeated_rotation = False
 
     def record(reader, skeleton, animation, kind, start, blocks):
+        nonlocal repeated_rotation
         try:
             original(reader, skeleton, animation, kind, start, blocks)
         except ValueError as error:
-            if kind not in (0, 1) or not str(error).startswith("Duplicate curve timeline:"):
+            if kind != 1 or animation.name != "animation" or not str(error).startswith("Duplicate curve timeline:"):
                 raise
             index = struct.unpack_from("<I", reader.data, start + 4)[0]
-            property_name = ("scale", "rotate")[kind]
-            if skeleton.bones[index].name != "pivot" or property_name in repeated:
+            if skeleton.bones[index].name != "pivot" or repeated_rotation:
                 raise
             now = reader.curveBlocks[-1]
-            before = skeleton.curveSource[(animation.name, "bones", "pivot", property_name)]
+            before = skeleton.curveSource[(animation.name, "bones", "pivot", "rotate")]
             before_start = before["offset"] - (now["offset"] - start)
             if reader.data[before_start:before["end"]] != reader.data[start:now["end"]]:
                 raise
-            repeated.add(property_name)
+            repeated_rotation = True
 
     convert._record_curve_source = record
     try:
-        result = convert.decode_scsp(data)
-        if repeated != {"scale", "rotate"}:
-            raise ValueError("Native summon pivot record changed; reverify choreography.")
-        return result
+        document, report = convert.decode_scsp(data)
     finally:
         convert._record_curve_source = original
+    # The shared decoder now preserves additional scale tracks explicitly.
+    # This one repeats the canonical track. Keep the published JSON stable
+    # after checking every decoded key and curve for exact equality.
+    animation = document["animations"]["animation"]
+    pivot_scale = animation["bones"]["pivot"]["scale"]
+    if not repeated_rotation or animation.get(convert.ORDERED_SCALE_FIELD) != {"pivot": [pivot_scale]}:
+        raise ValueError("Native summon pivot record changed; reverify choreography.")
+    del animation[convert.ORDERED_SCALE_FIELD]
+    return document, report
 
 
 def collect_visual(source):

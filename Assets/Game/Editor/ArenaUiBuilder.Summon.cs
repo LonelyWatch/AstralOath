@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using AstralOath.Client.BattleScene;
 using AstralOath.Client.Common;
 using AstralOath.Client.Home;
 using AstralOath.Client.Summon;
@@ -60,26 +61,16 @@ namespace AstralOath.Editor
             Save(BuildSummonWindow(), SummonPrefabPath);
         }
 
-        [Serializable]
-        private sealed class FeaturedSkillLayout
-        {
-            public int frameCount, columns, rows, gutterPixels;
-            public float framesPerSecond;
-            public string[] pages;
-        }
-
         private static void BuildFeaturedSkillLoop()
         {
             const string directory = SummonPath + "Res/Presentation/IseriaSkillLoop/";
-            var layout = JsonUtility.FromJson<FeaturedSkillLayout>(Load<TextAsset>(directory + "loop.json").text);
             var skill = AssetDatabase.LoadAssetAtPath<SummonSkillLoop>(FeaturedSkillAssetPath);
             if (!skill)
             {
                 skill = ScriptableObject.CreateInstance<SummonSkillLoop>();
                 AssetDatabase.CreateAsset(skill, FeaturedSkillAssetPath);
             }
-            skill.Configure(layout.pages.Select(page => Load<Texture2D>(directory + page)).ToArray(),
-                layout.frameCount, layout.framesPerSecond, layout.columns, layout.rows, layout.gutterPixels,
+            skill.Configure(Load<BattleSkillPreviewDefinition>(directory + "BattleSkillPreviewDefinition.asset"),
                 Load<AudioClip>(directory + "native-audio.wav"));
             EditorUtility.SetDirty(skill);
         }

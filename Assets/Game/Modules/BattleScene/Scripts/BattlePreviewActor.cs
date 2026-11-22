@@ -43,6 +43,7 @@ namespace AstralOath.Client.BattleScene
         // end at the battle idle pose. Keep the displayed pose while entering idle.
         private const float IdleRecoveryMixSeconds = .15f;
         private bool paused;
+        private bool externallyClocked;
         private int presentationPauseCount;
         private int presentationControlCount;
         private SharedSource sourceLease, warmedSource;
@@ -600,7 +601,20 @@ namespace AstralOath.Client.BattleScene
                 TurnEntryCue?.Invoke(this, item);
         }
 
-        private void Update() => AdvanceAmbient(Time.deltaTime, Time.unscaledDeltaTime);
+        internal void ConfigureOffscreenPreview(BattleSkillPresentationAsset model, string modelSkin,
+            string label, string definitionId)
+        {
+            externallyClocked = true;
+            drawOrder = 55;
+            UseBattleModel(model, modelSkin, label, definitionId);
+        }
+
+        internal void StepPreviewAmbient(float delta) => AdvanceAmbient(delta, delta);
+
+        private void Update()
+        {
+            if (!externallyClocked) AdvanceAmbient(Time.deltaTime, Time.unscaledDeltaTime);
+        }
 
         private void AdvanceAmbient(float idleDelta, float battleDelta)
         {

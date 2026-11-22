@@ -31,3 +31,11 @@ R34 项目为复用图集播放器，先在编辑器中用战斗预览播放伊�
 原版素材清单共 91,428 条，可识别的整段视频容器只有 6 个，文件名分别对应事件、宣传或拉斯等内容。召唤界面含 `gacha_view_run_preview` 节点，战斗符号表含 `getSkillPreviewOpts`、`isSkillPreview`，资源中还有技能预览怪物组表。伊赛丽亚 S3 的 44 个演出节点中只有 1 个 CUTIN，所用 WebP 为 1280×723、27 帧、1.670 秒。对战斗合集中普通伊赛丽亚 13:31.540、13:32.240、13:32.606 的近景与该源素材对照，脸部朝向和绘制细节能对应；项目保存的这 27 帧与原 WebP 解码像素和时长相同。[眼部同帧对照](../../.artifacts/clarity-r35/summon/eyes-4k.png) · [资源与影片测量](../../.artifacts/clarity-r35/summon/metrics.json)
 
 11 月 18 日国服录屏的 00:06.5–00:14.5、00:30–00:39、00:47.5–00:54 均可见技能演出时卡池按钮和顶栏继续覆盖画面，之后恢复立绘。第一段为梅铃，同片其他卡池和 4K 合集的角色与场地分别核对。录屏未显示游戏内倍速与原视频发布日期。这些证据支持通过战斗演出组合技能和手绘切入，现有文件与录像无法直接确认原客户端内部的场景类及调用顺序。[卡池录像连续帧](../../.artifacts/clarity-r35/summon/native-summon-flow.jpg) · [本地资源清单核对](../../.artifacts/clarity-r35/summon/native-receipt.json)
+
+用户指定的 `Screenrecorder-2026-11-18-19-54-29-795.mp4` 片长 04:08.22，分辨率 2608×1200，SHA-256 为 `9abb843f3bbaab81a545c913713f09b752adcc72850dd054ae62fbcc13c923d6`。逐段核对卡池名字，00:13.85 梅铃收招时右侧仍有两只敌人，00:25.3 起为兔女郎黑手党优芬妮，00:41.8 起为神秘召唤。00:53.4 兔女郎名侦探茱萝的立绘逐渐覆盖大殿里的本人和受击单位，00:54.8 显示全名。后半段有抽取、结果、誓约愿望单和其他召唤页。全片没有辨认出具名的伊赛丽亚 UP 演示。当前伊赛丽亚的森林与单只冰史莱姆沿用项目已有编排，同角色的技能取景依据大招合集。[完整录像核对](../../.artifacts/clarity-r35/summon/recording-audit.md) · [三个卡池身份](../../.artifacts/clarity-r35/summon/full-pool-identities.jpg)
+
+项目现从 `summon/iseria-skill` 加载该英雄的技能图、角色、史莱姆、场地及演出依赖。原始手绘切入保持 27 帧和原时长，其余画面在独立战斗镜头内绘制。摄像机在两种视口分别输出 1920×1080 与 3840×2160；同一眼部局部可见旧 360p 帧丢失的睫毛轮廓。切池或关闭窗口会释放舞台和渲染目标，重新打开从海报开始。[参考、旧包和实时画面对照](../../.artifacts/clarity-r35/summon/reference-old-live-4k.png) · [场景与切入的五个时点](../../.artifacts/clarity-r35/summon/runtime-delivery-overview.jpg)
+
+GPU 回归覆盖开场、剑门上下两处闪白、史莱姆脸颊在命中前可见及随后被剑光覆盖、双实例、改分辨率与关闭后重开。联网从大厅打开伊赛丽亚 UP 池，检验十连确认框后的技能继续播放、取消确认、返回立绘、切换常驻池及十连结果。卸载大厅时，开发 GM 浮窗按根对象实际生命周期清理。召唤导入器核对重复缩放与旋转轨的实际内容，现有 81 份视觉产物和 52 项音频可重现；扩展名单中的 40 名英雄尚缺取得语音。[GPU 断言](../../.artifacts/skill-preview-runtime/impact.xml) · [联网实测](../../.artifacts/clarity-r35/summon/online/Verified/results.xml) · [导入复核](../../.artifacts/windows-r35/build/summon-source-proof.json)
+
+修正前，技能计时到达终点后，间隔 0.35 秒读取的史莱姆网格完全相同。修正后，立绘停留的 2.65 秒内，场地继续绘制，双方待机及剩余粒子独立推进，技能命中计时保持结束。D3D11 图形与本机开发服联合回归共 5 项，全部通过。[修正前的定格](../../.artifacts/skill-preview-runtime/hold-red.xml) · [最终图形与联网结果](../../.artifacts/clarity-r35/summon/online/HoldAftermath/results.xml)

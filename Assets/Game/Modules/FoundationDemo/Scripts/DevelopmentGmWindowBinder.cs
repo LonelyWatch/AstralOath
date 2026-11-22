@@ -97,7 +97,7 @@ namespace AstralOath.Client.FoundationDemo
                 if (battleArea) Object.Destroy(battleArea);
             });
             Listen(entry, owner, () => windows.ShowOverlay(Overlay, Open));
-            owner.Add(view.Hide);
+            owner.Add(() => { if (view.Root) view.Hide(); });
         }
 
         private void Open(BindingScope scope)

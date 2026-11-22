@@ -1,0 +1,923 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92ed57e67c1744f7a80fe83b3a945afd, type: 3}
+  m_Name: BattleSkillPreviewDefinition
+  m_EditorClassIdentifier:
+  HeroId: c1024
+  GraphId: c_iseria_skill_03
+  CasterSkin: default
+  TargetSkin: ice
+  CasterModel:
+    source: characterlab/source/model/iseria.scsp
+    document: {fileID: 4900000, guid: cafe34b3962c22d4795cf0e48ca4732a, type: 3}
+    atlas: {fileID: 4900000, guid: 52075197569ec2a4ab149e0c49189990, type: 3}
+    pageNames:
+    - iseria.sct
+    pages:
+    - {fileID: 2800000, guid: bfa5ac20439dc9d4db18067829252f19, type: 3}
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  TargetModel:
+    source: preview.slime
+    document: {fileID: 4900000, guid: e666b98074af06043a19dc4e5ae95648, type: 3}
+    atlas: {fileID: 4900000, guid: 89d84a1c7e1e03445be01f8e8f7ae58b, type: 3}
+    pageNames:
+    - slime.sct
+    pages:
+    - {fileID: 2800000, guid: 392ef189957e08547a3da625481d724e, type: 3}
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  Graph: {fileID: 4900000, guid: 524b0d355deb67447aa54738afb606ce, type: 3}
+  TimelineOverrides: {fileID: 4900000, guid: 5ed7d169d4b347de8b383e99d679f8ae, type: 3}
+  SkillAssets:
+  - source: camera/iseria_skill_03_final_shake.scsp
+    document: {fileID: 4900000, guid: d08cd92b19548d74cb184c777752c178, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: cut/fhd/sk_c1024_3.webp
+    document: {fileID: 4900000, guid: 8218c7897a4f8b54ea27ad756731ac04, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages:
+    - {fileID: 2800000, guid: 952f39e9d79ce1743a4f5e89147cd71f, type: 3}
+    - {fileID: 2800000, guid: a4a7225b157211b43928a95d8c5fd9f5, type: 3}
+    - {fileID: 2800000, guid: ee769d02a396e8042aeb24b0aee72749, type: 3}
+    - {fileID: 2800000, guid: 1d56cd38646397049a8273c142560dbf, type: 3}
+    - {fileID: 2800000, guid: 419d389bd02a3f44fa067a1a6fd12912, type: 3}
+    - {fileID: 2800000, guid: 153d38d2b150f5a4ca389621ac0a1f63, type: 3}
+    - {fileID: 2800000, guid: 534a4cb7479c6b946a2af3e7dadba93a, type: 3}
+    - {fileID: 2800000, guid: 09e814dfa33fc5249ba783bf28965b81, type: 3}
+    - {fileID: 2800000, guid: b10725db6e3e69740a42468f69b437e2, type: 3}
+    - {fileID: 2800000, guid: e64334d275a012b4bbd865a22f0b362f, type: 3}
+    - {fileID: 2800000, guid: 763aa7ca31b254b4e80600413971f109, type: 3}
+    - {fileID: 2800000, guid: 4a30cf1c842d6f04e9f66a16f4db25ca, type: 3}
+    - {fileID: 2800000, guid: 942aef7f087891d4abe4b19c9f456189, type: 3}
+    - {fileID: 2800000, guid: f0527a57c7659024eaa9b9563ddcf894, type: 3}
+    - {fileID: 2800000, guid: f5d9d2afcd78e9c429c888c41463ea0f, type: 3}
+    - {fileID: 2800000, guid: 30957481fa31bbe46a12fbb25776e783, type: 3}
+    - {fileID: 2800000, guid: aede2559bc319a04aa1369d1fec9ff44, type: 3}
+    - {fileID: 2800000, guid: 1ce06c09b6ef72e45957509e573e26a1, type: 3}
+    - {fileID: 2800000, guid: 82aff82446745a34e8723b67727b6937, type: 3}
+    - {fileID: 2800000, guid: 3b7829058e56ea247b2bd40e48b978a4, type: 3}
+    - {fileID: 2800000, guid: 654563573e51fc843be3321dd30bef78, type: 3}
+    - {fileID: 2800000, guid: 53a7b7680a30253489603387503d03bc, type: 3}
+    - {fileID: 2800000, guid: 2df270dc93464364abddce3632710381, type: 3}
+    - {fileID: 2800000, guid: 533eb75031c9998418a89e0999048847, type: 3}
+    - {fileID: 2800000, guid: 94ef1997b6dcbe14c9f7c15a606dc038, type: 3}
+    - {fileID: 2800000, guid: c04c6a33406305247891e059e38baea3, type: 3}
+    - {fileID: 2800000, guid: 1a0174072a615824d9a62798ff6aab4c, type: 3}
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 4800000, guid: 37f1da7a014a3ff4188d1c6f059ce340, type: 3}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/hit_new_blunt_01.scsp
+    document: {fileID: 4900000, guid: 68b12416106d5b64db7782a663760eb3, type: 3}
+    atlas: {fileID: 4900000, guid: 3c30954438e454849a4df0cb8b984851, type: 3}
+    pageNames:
+    - hit_new_blunt_01.sct
+    pages:
+    - {fileID: 2800000, guid: a1af46382ea7daf4b8d3dc584261292f, type: 3}
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/hit_new_blunt_normal.cfx
+    document: {fileID: 4900000, guid: 1d36e6e5e5fdcb449bdee7d6d7281c8f, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/hit_new_blunt_yellow_nm_pati.particle
+    document: {fileID: 4900000, guid: 5105968325c68b24e9da888992674855, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/hit_new_slash_01.scsp
+    document: {fileID: 4900000, guid: 9c942a94ca2840341a57ec567f0ed191, type: 3}
+    atlas: {fileID: 4900000, guid: 7575ead430bd9e74c84fbe6b38c6c454, type: 3}
+    pageNames:
+    - hit_new_slash_01.sct
+    pages:
+    - {fileID: 2800000, guid: 0d5d6834f19766c4887e54048c463bef, type: 3}
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/hit_new_slash_normal.cfx
+    document: {fileID: 4900000, guid: fad00d08300f9d140b6a75ff53470c7a, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/hit_new_slash_yellow_nm_pati.particle
+    document: {fileID: 4900000, guid: 75c84a0be2722474eb279db4180ee1a2, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_bidle_auraburst1.cfx
+    document: {fileID: 4900000, guid: 03833b741b48f4448b4968cc6f475a7b, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_bidle_auraburst2.cfx
+    document: {fileID: 4900000, guid: 0898bfd073dcebf488effb3959f29784, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_bidle_orbburst.cfx
+    document: {fileID: 4900000, guid: 10d77ce546176464d805611f1bea3ffa, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_bidle_pati1.particle
+    document: {fileID: 4900000, guid: c53b2d1805f41b84497aa18cbbc8443d, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_bidle_pati2.particle
+    document: {fileID: 4900000, guid: 3856f02358bf60d4f981e3e3d865a463, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_bidle_pati3.particle
+    document: {fileID: 4900000, guid: 090b186b53935af43b4dced9b9d69747, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_bidle_pati4.particle
+    document: {fileID: 4900000, guid: 22e196a716fd983499ff690306a14f77, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_bidle_pati5.particle
+    document: {fileID: 4900000, guid: fe9de88efb67c0749b8ae1324d6f7911, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_camp_pati.cfx
+    document: {fileID: 4900000, guid: 30c7cdbc2dd86fc42a44fbe8881d500c, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_camp_pati.particle
+    document: {fileID: 4900000, guid: ef454a7ff1b185249bc8effdb1caef5d, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_fly_pati.cfx
+    document: {fileID: 4900000, guid: 23d3aa061fa47de45be096bd5d73100d, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_fly_pati.particle
+    document: {fileID: 4900000, guid: 8eac1a2e8b28d1f409ae20c3561c7adf, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_idle_aura.cfx
+    document: {fileID: 4900000, guid: 364489b3e89a72b4aa7f2788f00813e1, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_idle_aura2.cfx
+    document: {fileID: 4900000, guid: 696d8b6908b43a84cb92114b67af680d, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_idle_orb.cfx
+    document: {fileID: 4900000, guid: 6f23fe9b766f78343a44a70074c90f58, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_idle_orb_b.cfx
+    document: {fileID: 4900000, guid: 0ae1ea4af3d29b34da1a56d91ad40cb8, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_idle_pati1.particle
+    document: {fileID: 4900000, guid: 522f6787a001cc144b9ce074129e1485, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_idle_pati2.particle
+    document: {fileID: 4900000, guid: 72e1c728e7138ec4eb8ba4f37865a4ad, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_idle_pati3.particle
+    document: {fileID: 4900000, guid: eead253ffc136874ebc61fa9a37e8396, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_idle_pati4.particle
+    document: {fileID: 4900000, guid: 6413b94e14a50904194f95f957439164, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_idle_pati5.particle
+    document: {fileID: 4900000, guid: 51dd7f357f688aa48a34c9d1ffc816ee, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_idle_pati6.particle
+    document: {fileID: 4900000, guid: 056b14b6ad77cf8498cdf0cb0337e48c, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_run_trail.cfx
+    document: {fileID: 4900000, guid: 8244ce5bcb7a83a4da85c4d6bdee5d15, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_run_trail.particle
+    document: {fileID: 4900000, guid: a7a1591b086ddde41b887b7f8904560d, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_01_renewal_motion.cfx
+    document: {fileID: 4900000, guid: dbe5af4af678f0e46a12ffa7e8517d5e, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_01_renewal_motion.particle
+    document: {fileID: 4900000, guid: 53ff2abbf55b3d945a8bcd45dc5e62ea, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_01_renewal_motion2.particle
+    document: {fileID: 4900000, guid: b27fcd3e349f89a45a4379bb9041bc08, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_01_swtel.scsp
+    document: {fileID: 4900000, guid: b858213a90731ed4e8cb95add788c01d, type: 3}
+    atlas: {fileID: 4900000, guid: fb662fc8d305c994eaaa7c149c14ad6f, type: 3}
+    pageNames:
+    - iseria_skill_01_swtel.sct
+    pages:
+    - {fileID: 2800000, guid: b150c41d56ca7e645bdef3253ea51ad3, type: 3}
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/iseria_skill_02.cfx
+    document: {fileID: 4900000, guid: 712c42bfb8c916e4c8a0cd6171d03b09, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_02_afterpati.particle
+    document: {fileID: 4900000, guid: e13057810f4d574459aa13f96c87d045, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_02_circle_pati.particle
+    document: {fileID: 4900000, guid: a6abd606175562b46884a61a58d1dde1, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_02_field.scsp
+    document: {fileID: 4900000, guid: 0bec292abd68bde49a100c9315eafd47, type: 3}
+    atlas: {fileID: 4900000, guid: 13abe2a3d7867e945bb684e0fe636027, type: 3}
+    pageNames:
+    - iseria_skill_02_field.sct
+    pages:
+    - {fileID: 2800000, guid: 8aa8515c01c34964494a81ddab884398, type: 3}
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/iseria_skill_02_sowrd_trail.particle
+    document: {fileID: 4900000, guid: cbcb2328547b7e94fafd536e2234bb47, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_02_sowrds.scsp
+    document: {fileID: 4900000, guid: 672e012ff14ce4b4487bf761643f040a, type: 3}
+    atlas: {fileID: 4900000, guid: 312a753a04d211d43a2070138a236779, type: 3}
+    pageNames:
+    - iseria_skill_02_sowrds.sct
+    pages:
+    - {fileID: 2800000, guid: 8829b4674f6d5ed4e9dee4e98ca48b8e, type: 3}
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/iseria_skill_02_sword_burst.particle
+    document: {fileID: 4900000, guid: 04a2c2a23f1c987498b05c92148df851, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_02_tree_pati1.particle
+    document: {fileID: 4900000, guid: 00fe2f3f41dc71a418c4b8991e49e1a6, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_02_treecircle.particle
+    document: {fileID: 4900000, guid: 3464f66fc9b2bc245b6cf39c60498805, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_02_trees.scsp
+    document: {fileID: 4900000, guid: a7aae811b7de7214b9cf44e3ba8d3e7c, type: 3}
+    atlas: {fileID: 4900000, guid: 3bb507172111a1443ae1f98beafa11da, type: 3}
+    pageNames:
+    - iseria_skill_02_trees.sct
+    pages:
+    - {fileID: 2800000, guid: b7e7160d20f6a0a449d9b7a852f9c692, type: 3}
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/iseria_skill_03_circle.cfx
+    document: {fileID: 4900000, guid: 4b573d8c3b42af041bdb0d290fb9c478, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_03_circle_pati.particle
+    document: {fileID: 4900000, guid: 65d0b95f70be50f4f9d5269eace125e2, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_03_final.cfx
+    document: {fileID: 4900000, guid: 0e9f1c9b6a2da604c9a2a6b66ca04c44, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_03_final_back.scsp
+    document: {fileID: 4900000, guid: a03c41ef804305e408487635f3e220ae, type: 3}
+    atlas: {fileID: 4900000, guid: c9368fef3b39b9240b1beeee17cbd462, type: 3}
+    pageNames:
+    - iseria_skill_03_final_back.sct
+    pages:
+    - {fileID: 2800000, guid: db7679337de8291438c3d2fc675fe5e2, type: 3}
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/iseria_skill_03_final_blast.particle
+    document: {fileID: 4900000, guid: a9c11018d87f71349b44b95bd8d349ec, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_03_final_front.scsp
+    document: {fileID: 4900000, guid: 44a297a60517fe24f9454acea7d7c513, type: 3}
+    atlas: {fileID: 4900000, guid: c5870bf2442d4e14d86989b1102ae439, type: 3}
+    pageNames:
+    - iseria_skill_03_final_front.sct
+    pages:
+    - {fileID: 2800000, guid: 83bbefd7de7e18847915dece033affd8, type: 3}
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/iseria_skill_03_final_leaf2.particle
+    document: {fileID: 4900000, guid: 9401583c1a15ee34fb249e2d73cb3502, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_03_final_leaf3.particle
+    document: {fileID: 4900000, guid: 879ea7fc83cd6c5428ece1c88695e608, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_03_final_leaf4.particle
+    document: {fileID: 4900000, guid: 81bee12a2336f754f94c3e45187169c3, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_03_final_leafs.particle
+    document: {fileID: 4900000, guid: 40a45e665bc725643b6d6a48f501ebef, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_03_final_pati1.particle
+    document: {fileID: 4900000, guid: 6ad40f699dfa713429239ab105b3c357, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_03_final_pati2.particle
+    document: {fileID: 4900000, guid: 7fc35138e6be068428bc88e09562771a, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_03_final_pati3.particle
+    document: {fileID: 4900000, guid: 2a1653b3a4c8589489376e9521a88f7a, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_03_final_pati4.particle
+    document: {fileID: 4900000, guid: 12d6d9e39e5597c43a236878f31d8c83, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_03_final_pati5.particle
+    document: {fileID: 4900000, guid: 38fc44165c2348d42be28d7c7b83a7d8, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_03_final_pati7.particle
+    document: {fileID: 4900000, guid: e03fb4cd51fd1454a92636f79e9fd1f8, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_03_final_white.scsp
+    document: {fileID: 4900000, guid: 2240fa47e6c5c904ca6bfcd53688a16f, type: 3}
+    atlas: {fileID: 4900000, guid: 29b1040991317fc4fbedea9cad611db7, type: 3}
+    pageNames:
+    - iseria_skill_03_final_white.sct
+    pages:
+    - {fileID: 2800000, guid: 5a15c8973ee13134cb87009647a6bc09, type: 3}
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/iseria_skill_03_gate.cfx
+    document: {fileID: 4900000, guid: a0074888f85065c45ac583b58404eb15, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_03_gateopen.scsp
+    document: {fileID: 4900000, guid: 5797be854fafc824e9b77b1bb41582a7, type: 3}
+    atlas: {fileID: 4900000, guid: 904711eb85a46c94cacbe6ee5437f1b8, type: 3}
+    pageNames:
+    - iseria_skill_03_gateopen.sct
+    pages:
+    - {fileID: 2800000, guid: bd6322249ab9b114ead349abac1fd7d4, type: 3}
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/iseria_skill_03_light_pati.cfx
+    document: {fileID: 4900000, guid: 3718fdda02d733a4a843c19e202e67f4, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_03_light_pati.particle
+    document: {fileID: 4900000, guid: 9de3c16d3327828478d6a99dd54f29b7, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_03_magiccircle1.scsp
+    document: {fileID: 4900000, guid: 3cbb5b728020a4945aeaa9f9aebfa54d, type: 3}
+    atlas: {fileID: 4900000, guid: fb39a5a12a63f044f89c787fce548fa4, type: 3}
+    pageNames:
+    - iseria_skill_03_magiccircle1.sct
+    pages:
+    - {fileID: 2800000, guid: b93ff2ca6b77e7e46adadf9fbd4b84a3, type: 3}
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/iseria_skill_03_magiccircle2.scsp
+    document: {fileID: 4900000, guid: 509a313f2a584284b83ee36ef827c69b, type: 3}
+    atlas: {fileID: 4900000, guid: 173d995c6553274419a80298ca433c6f, type: 3}
+    pageNames:
+    - iseria_skill_03_magiccircle2.sct
+    pages:
+    - {fileID: 2800000, guid: 334a6d57dd446fb41bc2b9c23d9f4788, type: 3}
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/iseria_skill_03_magiccircle3.scsp
+    document: {fileID: 4900000, guid: 47113d0708a647e47ae91a514eb5f88c, type: 3}
+    atlas: {fileID: 4900000, guid: 8ff1a70b4797dba4d8925d06b274e492, type: 3}
+    pageNames:
+    - iseria_skill_03_magiccircle3.sct
+    pages:
+    - {fileID: 2800000, guid: cfd01464af1150e4e8ba6f4b88f47a58, type: 3}
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/iseria_skill_03_sword.cfx
+    document: {fileID: 4900000, guid: 90f7ce8ee540b0241a995f481b4ce90d, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/iseria_skill_03_swordswing_01.scsp
+    document: {fileID: 4900000, guid: 4c4d23f1e74468647bfbc5db54291f7c, type: 3}
+    atlas: {fileID: 4900000, guid: 4c06a94f8f2f3fd408511810ba538b17, type: 3}
+    pageNames:
+    - iseria_skill_03_swordswing_01.sct
+    pages:
+    - {fileID: 2800000, guid: c2801fd21d2986645b5df85a30f5a8db, type: 3}
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/iseria_skill_03_swordswing_01_back.scsp
+    document: {fileID: 4900000, guid: b2af1145743b6314ba6ec983e38da044, type: 3}
+    atlas: {fileID: 4900000, guid: 99a8bb4433453e34cb2a14684c4d88e6, type: 3}
+    pageNames:
+    - iseria_skill_03_swordswing_01_back.sct
+    pages:
+    - {fileID: 2800000, guid: b6eed94a771618540a124e8372624016, type: 3}
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 1
+    scale: 0.01
+  - source: effect/iseria_tree_piece_pati1.particle
+    document: {fileID: 4900000, guid: e5049f2990959784db5690fd7336a005, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: model/iseria.timeline
+    document: {fileID: 4900000, guid: 976d67032724c824aaeb8ffa5f320544, type: 3}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 0}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: particle/blur_ticle_01.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: 3673b9f369b293745ab8c3c6accf1542, type: 3}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: particle/blur_ticle_02.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: b1167ac18f108db4fa80767ce8d6c5c9, type: 3}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: particle/blur_ticle_03.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: 3735dfcd136d3324e926df2b6971992c, type: 3}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: particle/flash.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: 180d8bd4011f3114a8e8a387f279889c, type: 3}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: particle/ice_pati_01.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: 8a4df933f6b5dc742a4838488cc2621b, type: 3}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: particle/orb_02.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: d343097988445554fa28241120a801ec, type: 3}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: particle/pati_01.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: 0c49e339a4938394aad8434f754c275f, type: 3}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: particle/rose_01.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: ca5f7f6fecb2891478765d1a1d1bdd48, type: 3}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: particle/rose_02.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: 57bcd24f6df7db047aff5fa1aeb4d600, type: 3}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: particle/ticle_01.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: 54870812414cad642b7cdefd130ac125, type: 3}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: particle/ticle_02.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: 2df7e5700b9d1f540a4f247c024ca21e, type: 3}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: particle/tri_pati_01.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: 86cded8a3882310469ed76bde61180ea, type: 3}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: particle/zodiac_star1.sct
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: 1f262cd185fb0c44f88a216fff54d305, type: 3}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/bg_hatch_1.png
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: 5bb8a89efd2e4ed98547e7ca8cfa4e39, type: 3}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/bg_hatch_2.png
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: a30cb95108394e7e81f8d6af4b70a5af, type: 3}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  - source: effect/bg_hatch_3.png
+    document: {fileID: 0}
+    atlas: {fileID: 0}
+    pageNames: []
+    pages: []
+    texture: {fileID: 2800000, guid: a6a17aac7e874edca6f7190adcb07cd0, type: 3}
+    blackCurtainShader: {fileID: 0}
+    premultipliedAlpha: 0
+    scale: 0
+  Background: {fileID: 8069187316828005085, guid: 804e0cc4549097c43a8257524736c8f6, type: 3}
+  Shadow: {fileID: 21300000, guid: e88525371fc562c47a0d6993cbfe8e1f, type: 3}
