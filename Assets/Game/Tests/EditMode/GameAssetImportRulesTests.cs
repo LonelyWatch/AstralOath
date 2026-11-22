@@ -86,6 +86,29 @@ namespace AstralOath.Client.Tests
             Assert.That(((TextureImporter)AssetImporter.GetAtPath(path)).isReadable, Is.True);
         }
 
+        [TestCase("Modules/Home/Res/Textures/lobby_bg3.png")]
+        [TestCase("Modules/Home/Res/Textures/main_hud_btn_arena.png")]
+        [TestCase("Modules/Home/Res/Textures/renew_cm_hud_epicpass.png")]
+        [TestCase("Modules/Home/Res/Textures/Inventory/icon_menu_equip.png")]
+        [TestCase("Modules/Arena/Res/Textures/room_courtyard.png")]
+        [TestCase("Modules/Arena/Res/Textures/icon_menu_arena.png")]
+        [TestCase("Modules/BattleScene/Res/Textures/Hud/Faces/c1001_s.png")]
+        public void DesktopNavigationAndPortraitsKeepSourceColorAfterReimport(string relativePath)
+        {
+            string path = "Assets/Game/" + relativePath;
+            Import(path);
+            var importer = (TextureImporter)AssetImporter.GetAtPath(path);
+            var desktop = importer.GetPlatformTextureSettings("Standalone");
+            Assert.That(desktop.overridden, Is.True);
+            Assert.That(desktop.format, Is.EqualTo(TextureImporterFormat.RGBA32));
+            Assert.That(desktop.textureCompression, Is.EqualTo(TextureImporterCompression.Uncompressed));
+            if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.StandaloneWindows64)
+                Assert.That(AssetDatabase.LoadAssetAtPath<Texture2D>(path).format, Is.EqualTo(TextureFormat.RGBA32));
+            var android = importer.GetPlatformTextureSettings("Android");
+            Assert.That(android.format, Is.EqualTo(TextureImporterFormat.Automatic));
+            Assert.That(android.textureCompression, Is.EqualTo(TextureImporterCompression.Compressed));
+        }
+
         private static void Import(string path) => AssetDatabase.ImportAsset(path,
             ImportAssetOptions.ForceUpdate | ImportAssetOptions.ForceSynchronousImport);
 

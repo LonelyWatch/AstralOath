@@ -176,8 +176,8 @@ namespace AstralOath.Client.Arena
                     fallback.preserveAspect = true;
                     fallback.sprite = hero != null ? hero.Illustration ? hero.Illustration : hero.Card : null;
                     var player = new ArenaDraftPortrait(surface);
-                    bool ready = player.Show(hero?.MakePortrait());
                     player.SetRenderCameraActive(false);
+                    bool ready = player.Show(hero?.MakePortrait());
                     surface.enabled = fallback.enabled = false;
                     layers.Add(new Layer { Surface = surface, Fallback = fallback, Player = player, HasSkeleton = ready });
                 }

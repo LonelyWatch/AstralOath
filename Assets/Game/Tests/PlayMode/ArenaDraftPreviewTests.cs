@@ -34,6 +34,147 @@ namespace AstralOath.Client.Tests
             }
         }
 
+        private sealed class DraftScreen : IDisposable
+        {
+            internal readonly Camera Camera = new GameObject("Draft viewport", typeof(Camera)).GetComponent<Camera>();
+            private readonly Canvas canvas = new GameObject("Draft canvas", typeof(Canvas)).GetComponent<Canvas>();
+            private readonly BindingScope lifetime = new(CancellationToken.None);
+            internal readonly ArenaDraft View;
+            internal readonly BindingMap Map;
+            internal readonly ArenaDraftArt Art = AssetDatabase.LoadAssetAtPath<ArenaDraftArt>(
+                "Assets/Game/Modules/Arena/Configs/ArenaDraftArt.asset");
+
+            internal DraftScreen()
+            {
+                Camera.enabled = false;
+                Camera.orthographic = true;
+                Camera.transform.position = new Vector3(0, 0, -10);
+                // Screen-space canvases inherit the batchmode Game View's aspect even when
+                // their camera points to a 4K texture. Project one canvas unit per physical pixel.
+                canvas.renderMode = RenderMode.WorldSpace;
+                canvas.worldCamera = Camera;
+                var registry = new UIViewRegistry();
+                registry.Register<ArenaDraft>();
+                View = registry.CreateAsync<ArenaDraft>(new DraftAssets(), canvas.transform, lifetime).GetAwaiter().GetResult();
+                View.Show();
+                Map = View.Root.GetComponent<BindingMap>();
+                Resize(1920, 1080);
+            }
+
+            internal void Resize(int width, int height)
+            {
+                var previous = Camera.targetTexture;
+                Camera.targetTexture = new RenderTexture(width, height, 0);
+                Camera.aspect = width / (float)height;
+                Camera.orthographicSize = height * .5f;
+                ((RectTransform)canvas.transform).sizeDelta = new Vector2(width, height);
+                if (previous) Object.DestroyImmediate(previous);
+                Canvas.ForceUpdateCanvases();
+                typeof(ArenaDraft).GetMethod("FitLayout", Internal).Invoke(View, null);
+                Canvas.ForceUpdateCanvases();
+            }
+
+            internal void AssertResolution(RawImage surface)
+            {
+                var corners = new Vector3[4];
+                surface.rectTransform.GetWorldCorners(corners);
+                var origin = (Vector2)Camera.WorldToScreenPoint(corners[0]);
+                var width = Mathf.RoundToInt(Vector2.Distance(origin, Camera.WorldToScreenPoint(corners[3])));
+                var height = Mathf.RoundToInt(Vector2.Distance(origin, Camera.WorldToScreenPoint(corners[1])));
+                var texture = (RenderTexture)surface.texture;
+                Assert.That(texture, Is.Not.Null, surface.name);
+                TestContext.WriteLine($"{Camera.pixelWidth}x{Camera.pixelHeight} {surface.name} projects to {width}x{height}, target {texture.width}x{texture.height}");
+                var maxSide = Mathf.Min(4096, SystemInfo.maxTextureSize);
+                float scale = Mathf.Min(1f, Mathf.Min(maxSide / (float)Mathf.Max(width, height),
+                    Mathf.Sqrt((3840f * 2160f) / ((float)width * height))));
+                Assert.That(texture.width, Is.EqualTo(width * scale).Within(1), surface.name + " width");
+                Assert.That(texture.height, Is.EqualTo(height * scale).Within(1), surface.name + " height");
+            }
+
+            public void Dispose()
+            {
+                lifetime.Dispose();
+                var texture = Camera.targetTexture;
+                Camera.targetTexture = null;
+                Object.DestroyImmediate(texture);
+                Object.DestroyImmediate(canvas.gameObject);
+                Object.DestroyImmediate(Camera.gameObject);
+            }
+        }
+
+        private const BindingFlags Internal = BindingFlags.Instance | BindingFlags.NonPublic;
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void DraftPortraitTracksItsProjectedPrefabSlotAcrossWindowChanges(bool miniature)
+        {
+            using var screen = new DraftScreen();
+            var surface = miniature ? screen.Map.Require<BindingMap>("formation0").Require<RawImage>("model")
+                : screen.Map.Require<RawImage>("featured");
+            for (var parent = surface.transform; parent; parent = parent.parent) parent.gameObject.SetActive(true);
+            var type = typeof(ArenaDraftArt).Assembly.GetType("AstralOath.Client.Arena.ArenaDraftPortrait", true);
+            using var preview = (IDisposable)Activator.CreateInstance(type, Internal, null, new object[] { surface, miniature }, null);
+            var source = typeof(ArenaDraftArt.Hero).GetMethod(miniature ? "MakeModel" : "MakePortrait", Internal)
+                .Invoke(screen.Art.Heroes.First(hero => hero.ModelSkeleton && hero.PortraitSkeleton), null);
+            type.GetMethod("Show", Internal).Invoke(preview, new[] { source, null, null });
+            var player = (ISkeletonPlayer)type.GetField("player", Internal).GetValue(preview);
+            var tick = type.GetMethod("Tick", Internal);
+            var uv = surface.uvRect;
+            foreach (var size in new[] { new Vector2Int(1920, 1080), new Vector2Int(3840, 2160), new Vector2Int(5120, 1800) })
+            {
+                screen.Resize(size.x, size.y);
+                tick.Invoke(preview, new object[] { .03f });
+                screen.AssertResolution(surface);
+                var current = surface.texture;
+                tick.Invoke(preview, new object[] { .03f });
+                Assert.That(surface.texture, Is.SameAs(current));
+                Assert.That(surface.uvRect, Is.EqualTo(uv));
+                Assert.That(type.GetField("player", Internal).GetValue(preview), Is.SameAs(player));
+                Assert.That(player.Time, Is.GreaterThan(0f));
+            }
+        }
+
+        [Test]
+        public void DraftPrebanRevealRendersOnlyVisiblePairsAndResumesAfterAnInterruptedReveal()
+        {
+            using var screen = new DraftScreen();
+            var root = screen.Map.Require<GameObject>("reveal");
+            var type = typeof(ArenaDraftArt).Assembly.GetType("AstralOath.Client.Arena.ArenaPrebanReveal", true);
+            using var reveal = (IDisposable)Activator.CreateInstance(type, Internal, null,
+                new object[] { root, screen.Map.Require<GameObject>("revealHeroes") }, null);
+            var heroes = screen.Art.Heroes.Where(hero => hero.PortraitSkeleton).Take(4).ToArray();
+            var parameters = new object[] { heroes.Take(2).ToArray(), heroes.Skip(2).ToArray(), screen.Art.FinalBan,
+                screen.Art.ParticleTextures.ToDictionary(texture => texture.name, StringComparer.Ordinal) };
+            void Start() => type.GetMethod("Start", Internal).Invoke(reveal, parameters);
+            void Tick(float seconds) => type.GetMethod("Tick", Internal).Invoke(reveal, new object[] { seconds });
+            RawImage[] Surfaces() => root.GetComponentsInChildren<RawImage>(true)
+                .Where(image => image.name.Contains(" reveal portrait ")).ToArray();
+            Start();
+            var portraits = Surfaces();
+            var stamp = root.transform.Find("Preban BANNED stamp").GetComponent<RawImage>();
+            Assert.That(portraits.Count(image => image.texture), Is.EqualTo(2));
+            foreach (var size in new[] { new Vector2Int(1920, 1080), new Vector2Int(3840, 2160) })
+            {
+                screen.Resize(size.x, size.y);
+                Tick(.033f);
+                screen.AssertResolution(stamp);
+                if (SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.ARGBHalf))
+                    Assert.That(((RenderTexture)stamp.texture).format, Is.EqualTo(RenderTextureFormat.ARGBHalf));
+                foreach (var surface in portraits.Where(image => image.enabled)) screen.AssertResolution(surface);
+            }
+            for (int frame = 0; frame < 27; frame++) Tick(1f / 30);
+            Assert.That(portraits.Count(image => image.texture), Is.EqualTo(4), "Both pairs share the three-frame crossfade.");
+            for (int frame = 0; frame < 4; frame++) Tick(1f / 30);
+            Assert.That(portraits.Count(image => image.texture), Is.EqualTo(2));
+            type.GetMethod("Clear", Internal).Invoke(reveal, null);
+            Assert.That(portraits.All(image => !image.texture), Is.True);
+            Assert.That(stamp.texture, Is.Null);
+            Start();
+            Tick(.033f);
+            Assert.That(Surfaces().Count(image => image.texture), Is.EqualTo(2));
+            screen.AssertResolution(stamp);
+        }
+
         [Test]
         public void PrebanSortsByOriginalStarsAndPlaysTheSelectedPortraitStrike()
         {
@@ -85,7 +226,7 @@ namespace AstralOath.Client.Tests
                 {
                     var impact = ReadStrike(camera, "preban-impact");
                     Assert.That(impact.Count(pixel => pixel.r > 230 && pixel.g > 215 && pixel.b > 190),
-                        Is.GreaterThan(500), "The initial impact must contain a visible white-hot center.");
+                        Is.GreaterThan(impact.Length * 500f / (384 * 384)), "The initial impact must contain a visible white-hot center.");
                 }
                 for (int frame = 0; frame < 21; frame++) tick.Invoke(binder, new object[] { 1f / 30 });
                 Assert.That(effect.enabled, Is.True, "The native intro must settle into its red loop.");
@@ -93,7 +234,7 @@ namespace AstralOath.Client.Tests
                 {
                     var idle = ReadStrike(camera, "preban-loop");
                     Assert.That(idle.Count(pixel => pixel.r > pixel.g * 1.7f && pixel.r > 80 && pixel.a > 160),
-                        Is.GreaterThan(500), "The settled stamp requires an opaque red slash across the portrait.");
+                        Is.GreaterThan(idle.Length * 500f / (384 * 384)), "The settled stamp requires an opaque red slash across the portrait.");
                 }
                 Assert.That(bindings.Require<GameText>("preCount").text, Is.EqualTo("(1/2)"));
                 choice.Require<GameButton>("button").onClick.Invoke();
@@ -383,7 +524,7 @@ namespace AstralOath.Client.Tests
                 const BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
                 var choice = typeof(ArenaDraftBinder).GetNestedType("Choice", BindingFlags.NonPublic);
                 var item = Activator.CreateInstance(choice, flags, null,
-                    new object[] { card, art.LevelDigits, true, true, false, false, false }, null);
+                    new object[] { card, art.LevelDigits, true, true, false, false, null, null }, null);
                 foreach (string id in new[] { "c1088", "c1001", "c1088" })
                 {
                     var hero = art.Heroes.Single(entry => entry.Id == id);

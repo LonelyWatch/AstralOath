@@ -11,6 +11,8 @@ namespace AstralOath.Client.Arena
     internal sealed class ArenaDraftPortrait : IDisposable
     {
         private const int PreviewLayer = 30;
+        // A pair of portraits overlaps the next pair briefly behind the HDR stamp.
+        private const float MaxSurfacePixels = 3840f * 2160f;
         // Unlit gold at the point of the native draft rails (left/right midpoint).
         private static readonly Color GuideRailColor = new Color32(200, 173, 136, 255);
         private static readonly Color GuideRailLinear = GuideRailColor.linear;
@@ -35,6 +37,7 @@ namespace AstralOath.Client.Arena
         private GameObject stage;
         private Camera camera;
         private RenderTexture target;
+        private bool renderRequested = true;
         private Material material;
         private sealed class ParticleTrack
         {
@@ -138,7 +141,10 @@ namespace AstralOath.Client.Arena
 
         internal void SetRenderCameraActive(bool active)
         {
-            if (camera) camera.enabled = active;
+            if (renderRequested == active) return;
+            renderRequested = active;
+            if (!active) ReleaseTarget();
+            else if (camera && player != null) FrameOutput();
         }
 
         internal void AddParticles(TextAsset definition, IReadOnlyDictionary<string, Texture2D> textures,
@@ -318,7 +324,6 @@ namespace AstralOath.Client.Arena
                 }
                 framingBounds = mesh.bounds;
                 FrameOutput();
-                output.texture = target;
                 output.material = material;
                 output.enabled = true;
                 return true;
@@ -425,6 +430,7 @@ namespace AstralOath.Client.Arena
             var cameraObject = new GameObject("Preview camera", typeof(Camera)) { hideFlags = HideFlags.HideAndDontSave };
             cameraObject.transform.SetParent(stage.transform, false);
             camera = cameraObject.GetComponent<Camera>();
+            camera.enabled = false;
             camera.clearFlags = CameraClearFlags.SolidColor;
             camera.backgroundColor = Color.clear;
             camera.cullingMask = 1 << PreviewLayer;
@@ -434,14 +440,6 @@ namespace AstralOath.Client.Arena
             camera.allowHDR = nativeEffectSize.HasValue && SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.ARGBHalf);
             camera.allowMSAA = false;
             camera.depth = -100;
-            int size = prebanCell || miniature ? 384 : 768;
-            var format = camera.allowHDR ? RenderTextureFormat.ARGBHalf : RenderTextureFormat.ARGB32;
-            target = new RenderTexture(turnGuide ? 512 : size, turnGuide ? 1280 : size, 16, format)
-            {
-                name = "Arena draft preview",
-                hideFlags = HideFlags.HideAndDontSave
-            };
-            camera.targetTexture = target;
             material = new Material(shader) { hideFlags = HideFlags.HideAndDontSave };
             if (nativeEffectSize.HasValue && !turnGuide) material.SetFloat("_SoftEffectEdges", 1f);
             if (blendCardLight) material.SetFloat("_BlendCardLight", 1f);
@@ -499,6 +497,57 @@ namespace AstralOath.Client.Arena
                 camera.orthographicSize = 3f;
                 camera.transform.localPosition = new Vector3(-1f / 120f, 735f / 120f, -10);
             }
+            if (renderRequested) FitRenderTarget();
+        }
+
+        private void FitRenderTarget()
+        {
+            var canvas = output.canvas;
+            if (canvas) canvas = canvas.rootCanvas;
+            var uiCamera = canvas && canvas.renderMode != RenderMode.ScreenSpaceOverlay ? canvas.worldCamera : null;
+            var surface = output.rectTransform;
+            var rect = surface.rect;
+            Vector2 Project(float x, float y) =>
+                RectTransformUtility.WorldToScreenPoint(uiCamera, surface.TransformPoint(new Vector3(x, y)));
+            var origin = Project(rect.xMin, rect.yMin);
+            var width = Mathf.RoundToInt(Vector2.Distance(origin, Project(rect.xMax, rect.yMin)));
+            var height = Mathf.RoundToInt(Vector2.Distance(origin, Project(rect.xMin, rect.yMax)));
+            if (width <= 0 || height <= 0) { ReleaseTarget(); return; }
+
+            var maxSide = Mathf.Min(4096, SystemInfo.maxTextureSize);
+            float scale = Mathf.Min(1f, maxSide / (float)Mathf.Max(width, height));
+            scale = Mathf.Min(scale, Mathf.Sqrt(MaxSurfacePixels / ((float)width * height)));
+            width = Mathf.Max(1, Mathf.RoundToInt(width * scale));
+            height = Mathf.Max(1, Mathf.RoundToInt(height * scale));
+            if (target && target.width == width && target.height == height) return;
+
+            ReleaseTarget();
+            var format = camera.allowHDR ? RenderTextureFormat.ARGBHalf : RenderTextureFormat.ARGB32;
+            // Skeletons and particles use ordered transparent passes with ZWrite Off.
+            target = new RenderTexture(width, height, 0, format)
+            {
+                name = "Arena draft preview",
+                hideFlags = HideFlags.HideAndDontSave,
+                filterMode = FilterMode.Bilinear,
+                wrapMode = TextureWrapMode.Clamp
+            };
+            camera.targetTexture = target;
+            output.texture = target;
+            camera.enabled = true;
+        }
+
+        private void ReleaseTarget()
+        {
+            if (!target) return;
+            if (camera)
+            {
+                camera.enabled = false;
+                camera.targetTexture = null;
+            }
+            if (output) output.texture = null;
+            target.Release();
+            Object.Destroy(target);
+            target = null;
         }
 
         private static float MiniaturePixelsPerUnit(Bounds bounds)
@@ -528,18 +577,14 @@ namespace AstralOath.Client.Arena
         private void ReleaseStage()
         {
             ResetFeedback();
+            ReleaseTarget();
             if (output)
             {
                 output.texture = null;
                 output.material = originalMaterial;
                 output.enabled = false;
             }
-            if (camera)
-            {
-                camera.enabled = false;
-                camera.targetTexture = null;
-                camera = null;
-            }
+            camera = null;
             ReleaseParticles();
             guideMesh = null;
             player?.Dispose();
@@ -554,12 +599,6 @@ namespace AstralOath.Client.Arena
             {
                 ActiveStages.Remove(stageIndex);
                 stageIndex = -1;
-            }
-            if (target)
-            {
-                target.Release();
-                Object.Destroy(target);
-                target = null;
             }
             if (material)
             {

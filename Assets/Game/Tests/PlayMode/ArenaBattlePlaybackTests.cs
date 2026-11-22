@@ -244,6 +244,58 @@ namespace AstralOath.Client.Tests
             yield return null;
         }
 
+        [TestCase(1920, 1080, 1920, 1080, false)]
+        [TestCase(1920, 1080, 1920, 1080, true)]
+        [TestCase(3840, 2160, 3840, 2160, false)]
+        [TestCase(3840, 2160, 3840, 2160, true)]
+        [TestCase(5120, 1800, 4096, 1440, false)]
+        [TestCase(1800, 5120, 1440, 4096, true)]
+        public void GateRendersViewportPixelsWithAuthoredFraming(int width, int height, int expectedWidth, int expectedHeight, bool ignition)
+        {
+            if (SystemInfo.graphicsDeviceType == GraphicsDeviceType.Null || SystemInfo.maxTextureSize < Mathf.Max(width, height))
+                Assert.Ignore("This graphics device cannot render the requested viewport.");
+            var type = typeof(BattleOnlineLaunch).Assembly.GetType("AstralOath.Client.BattleScene.BattleOnlineGate", true);
+            var resource = AssetDatabase.LoadAssetAtPath<BattleOnlineTransitionAssets>("Assets/Game/Modules/BattleScene/Configs/AstralOathOnlineTransition.asset");
+            using var token = new CancellationTokenSource();
+            using var gate = (IDisposable)Activator.CreateInstance(type, Members, null, new[] { resource }, null);
+            var canvas = ((GameObject)type.GetField("overlay", Members).GetValue(gate)).GetComponent<Canvas>();
+            var effectCamera = (Camera)type.GetField("camera", Members).GetValue(gate);
+            var viewport = new GameObject("Gate output camera", typeof(Camera)).GetComponent<Camera>();
+            var output = RenderTexture.GetTemporary(width, height, 0);
+            try
+            {
+                viewport.enabled = false;
+                viewport.targetTexture = output;
+                canvas.renderMode = RenderMode.ScreenSpaceCamera;
+                canvas.worldCamera = viewport;
+                Canvas.ForceUpdateCanvases();
+                string phase = ignition ? "IgniteAsync" : "OpenAsync";
+                var task = (Task)type.GetMethod(phase, Members).Invoke(gate, new object[] { token.Token });
+                if (task.IsFaulted) task.GetAwaiter().GetResult();
+                var target = effectCamera.targetTexture;
+                if (Environment.GetEnvironmentVariable("ASTRAL_ARENA_CAPTURE_DIR") is string captureDir && captureDir.Length > 0)
+                {
+                    var advance = type.GetMethod("Advance", Members);
+                    int frames = ignition ? 40 : 21;
+                    for (int frame = 1; frame <= frames; ++frame)
+                        advance.Invoke(gate, new object[] { frame / 60f, 1f / 60f });
+                    effectCamera.Render();
+                    CaptureTransition(gate, type, $"gate-{phase}-{width}x{height}", false);
+                }
+                var aspect = width / (float)height;
+                float frameScale = ignition ? Mathf.Max(1f, (16f / 9f) / aspect) : Mathf.Min(1f, (16f / 9f) / aspect);
+                Assert.That(effectCamera.orthographicSize, Is.EqualTo(3.6f * frameScale).Within(.001f));
+                Assert.That(new Vector2Int(target.width, target.height), Is.EqualTo(new Vector2Int(expectedWidth, expectedHeight)));
+            }
+            finally
+            {
+                token.Cancel();
+                viewport.targetTexture = null;
+                RenderTexture.ReleaseTemporary(output);
+                UnityEngine.Object.Destroy(viewport.gameObject);
+            }
+        }
+
         [UnityTest]
         public IEnumerator IgnitionCoversTheCanvasAtWideAndTabletAspectRatios()
         {

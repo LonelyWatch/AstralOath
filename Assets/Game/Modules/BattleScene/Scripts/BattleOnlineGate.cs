@@ -19,7 +19,6 @@ namespace AstralOath.Client.BattleScene
         private const float InverseScale = .01f;
         private const float DesignAspect = SourceWidth / SourceHeight;
         private const float IgnitionSkeletonScale = .5f;
-        private const int MaxRenderWidth = 2560;
         private readonly BattleOnlineTransitionAssets assets;
         private readonly GameObject stage, overlay;
         private readonly Camera camera;
@@ -245,8 +244,12 @@ namespace AstralOath.Client.BattleScene
             if (output.width <= 1f || output.height <= 1f)
                 output = new Rect(0f, 0f, Screen.width, Screen.height);
             float aspect = output.height > 1f && output.width > 1f ? output.width / output.height : DesignAspect;
-            int height = Mathf.Max(1, Mathf.FloorToInt(Mathf.Min(SourceHeight, MaxRenderWidth / aspect)));
-            int width = Mathf.Max(1, Mathf.RoundToInt(height * aspect));
+            // The authored 720-unit height determines framing. Sample the overlay at its display resolution.
+            int maxDimension = Mathf.Min(4096, SystemInfo.maxTextureSize);
+            float longestSide = Mathf.Max(1f, Mathf.Max(output.width, output.height));
+            float pixelScale = Mathf.Min(1f, maxDimension / longestSide);
+            int width = Mathf.Max(1, Mathf.RoundToInt(output.width * pixelScale));
+            int height = Mathf.Max(1, Mathf.RoundToInt(output.height * pixelScale));
 
             // The doors cover the viewport. The smaller IGNITION title fits it, while its
             // translucent strip can render to the full width of the output.
