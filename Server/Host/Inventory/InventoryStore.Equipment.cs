@@ -10,6 +10,7 @@ namespace AstralOath.Server.Inventory;
 internal sealed partial class InventoryStore
 {
     private static readonly Lazy<IReadOnlyList<TrainingEquipment>> TrainingItems = new(TrainingEquipment.Read);
+    internal static string[] DevelopmentEquipmentIds => TrainingItems.Value.Select(item => item.TemplateId).Distinct().ToArray();
 
     internal Task<EquipmentInventory> ReadEquipment(string playerId, CancellationToken cancellation) =>
         EquipmentTransaction(playerId, null, cancellation);
@@ -181,7 +182,35 @@ internal sealed partial class InventoryStore
     private static async Task GrantTrainingEquipment(MySqlConnection connection, MySqlTransaction tx, string playerId,
         int capacity, CancellationToken ct)
     {
-        var items = TrainingItems.Value;
+        await InsertTrainingItems(connection, tx, playerId, capacity, TrainingItems.Value, "development-training-v1", ct);
+        using var issued = Command(connection, tx, """
+            UPDATE inventory_equipment_capacity SET revision = revision + 1, training_granted = TRUE
+            WHERE player_id = @player AND realm_id = @realm;
+            """, playerId);
+        await issued.ExecuteNonQueryAsync(ct);
+        await OperationAudit.Record(connection, tx, "inventory.equipment.development_grant", "arena_player",
+            playerId, "realm", EntryEndpoints.RealmId, null, ct);
+    }
+
+    internal static async Task GrantGmEquipment(MySqlConnection connection, MySqlTransaction tx, string playerId,
+        string template, int quantity, string requestId, CancellationToken ct)
+    {
+        var item = TrainingItems.Value.FirstOrDefault(row => row.TemplateId == template)
+            ?? throw new EntryProblem(400, "invalid_gm_template");
+        using var header = Command(connection, tx, """
+            SELECT capacity FROM inventory_equipment_capacity WHERE player_id = @player AND realm_id = @realm;
+            """, playerId);
+        int capacity = Convert.ToInt32(await header.ExecuteScalarAsync(ct));
+        await InsertTrainingItems(connection, tx, playerId, capacity, Enumerable.Repeat(item, quantity).ToArray(), "gm-" + requestId, ct);
+        using var revision = Command(connection, tx, """
+            UPDATE inventory_equipment_capacity SET revision = revision + 1 WHERE player_id = @player AND realm_id = @realm;
+            """, playerId);
+        await revision.ExecuteNonQueryAsync(ct);
+    }
+
+    private static async Task InsertTrainingItems(MySqlConnection connection, MySqlTransaction tx, string playerId,
+        int capacity, IReadOnlyList<TrainingEquipment> items, string source, CancellationToken ct)
+    {
         using var count = Command(connection, tx, """
             SELECT COUNT(*) FROM inventory_equipment WHERE player_id = @player AND realm_id = @realm;
             """, playerId);
@@ -194,7 +223,7 @@ internal sealed partial class InventoryStore
             using var add = Command(connection, tx, """
                 INSERT INTO inventory_equipment (instance_id,player_id,realm_id,template_id,slot,set_id,item_level,
                     enhance_level,grade,main_kind,main_value,source_ref,source_index)
-                VALUES (@id,@player,@realm,@template,@slot,@set,15,0,@grade,@kind,@value,'development-training-v1',@index);
+                VALUES (@id,@player,@realm,@template,@slot,@set,15,0,@grade,@kind,@value,@source,@index);
                 """, playerId);
             add.Parameters.AddWithValue("@id", instance);
             add.Parameters.AddWithValue("@template", item.TemplateId);
@@ -204,6 +233,7 @@ internal sealed partial class InventoryStore
             add.Parameters.AddWithValue("@kind", item.MainStat.Kind);
             add.Parameters.AddWithValue("@value", item.MainStat.Value);
             add.Parameters.AddWithValue("@index", index);
+            add.Parameters.AddWithValue("@source", source);
             await add.ExecuteNonQueryAsync(ct);
             for (int i = 0; i < item.Substats.Length; i++)
             {
@@ -217,13 +247,6 @@ internal sealed partial class InventoryStore
                 await sub.ExecuteNonQueryAsync(ct);
             }
         }
-        using var issued = Command(connection, tx, """
-            UPDATE inventory_equipment_capacity SET revision = revision + 1, training_granted = TRUE
-            WHERE player_id = @player AND realm_id = @realm;
-            """, playerId);
-        await issued.ExecuteNonQueryAsync(ct);
-        await OperationAudit.Record(connection, tx, "inventory.equipment.development_grant", "arena_player",
-            playerId, "realm", EntryEndpoints.RealmId, null, ct);
     }
 
     internal static Task<IReadOnlyList<OwnedEquipment>> ReadEquippedItems(MySqlConnection connection, MySqlTransaction transaction,

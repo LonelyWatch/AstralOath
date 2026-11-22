@@ -80,6 +80,8 @@ app.MapArena();
 app.MapEntry();
 app.MapInventory();
 app.MapSummon();
+if (isDevelopment && IPAddress.IsLoopback(bindAddress))
+    app.MapDevelopmentGm();
 if (app.Configuration.GetValue<bool>("BattlePreview:Enabled"))
 {
     if (!isDevelopment || !IPAddress.IsLoopback(bindAddress))

@@ -116,3 +116,6 @@ Windows 完整包入口临时关闭构建设置中的 `Create Visual Studio Solu
 正式启动场景为 Home/Scenes/GameHome.unity，Foundation 仍使用原 FoundationEntry 及签名流程。清单增加 AstralOath.Client.Home 和 AstralOath.Client.Arena，HomeArena 组随同发布。启动契约、内置启动场景或立绘桥变更按新母包构建。含热更新脚本的联机 BattleScene 及转场配置在 Foundation YooAsset 中交付，0.1.9 升级该入场路径需要带新场景加载器的母包。 [主界面与模拟战](arena-lobby.md)
 
 第 41–50 名角色使用更新的 Spine 2.1 AOT 读取器处理同一槽的多条颜色轨和同一骨骼的多条缩放轨。对仍内置旧读取器的平台，交付这批内容需要重建相应 IL2CPP 母包，并与规则 14 服务端、配置和表现资源配套发布。本次角色制作未发布安装包。[角色交付记录](../delivery/2026-11-20-roster41-50.md)
+### R32 本地试玩的首次下载
+
+R31 至 R32 同时更换了母包身份和本机试玩产品目录。原生启动按产品及 `FoundationContent/<baselineId>` 隔离缓存，因此 R32 首次激活实测下载 2,238,374,796 字节，同一缓存第二次启动的内容传输为 0 字节。两版签名清单中有 91/98 个文件内容相同。母包兼容时继续向同一产品分发签名热更，下载器核验活动版本和前一版本的本地文件，只请求未命中的文件。单独的 `Play-R32.exe` 负责启动本机训练服及资源源，Unity 客户端程序是 `client-r32/AstralOath.exe`。[R32 验收回执](../delivery/2026-11-22-windows-r32.md)

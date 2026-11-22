@@ -144,11 +144,11 @@ internal sealed partial class SummonStore
     }
 
     private static async Task Grant(MySqlConnection connection, MySqlTransaction transaction, string player,
-        string kind, string template, int stars, string instance, CancellationToken ct)
+        string kind, string template, int stars, string instance, CancellationToken ct, string source = "summon")
     {
         if (kind == "artifact")
         {
-            await InventoryStore.GrantArtifact(connection, transaction, player, template, instance, ct);
+            await InventoryStore.GrantArtifact(connection, transaction, player, template, instance, ct, source);
             return;
         }
         using var issue = Command(connection, transaction, player, """

@@ -1,5 +1,7 @@
 # AstralOath.Server
 
+开发版 GM 在回环地址的 Development 游戏服注册 `GET /api/development/gm` 与 `POST /api/development/gm/actions`。已有会话的任一账号可查看和设置自己的 12 项余额，按目录发放英雄、神器及训练装备。绝对余额的范围为 0 至 10 亿，每次发放 1 至 10 件。账号取自 Bearer 会话，服务端在同一账号锁和事务内检查容量、登记请求、写库存及审计。同一请求 ID 的同参数重试读取当前结果，参数冲突返回 409。正式环境和对外监听不注册这组路由。测试入口为 `DevelopmentGmTests`。
+
 共享战斗规则会随反击动作回传实际触发来源；查尔斯反击状态和技能被动反击分别回归。[动作事件与客户端表现](../docs/delivery/2026-11-22-battle-action-recovery.md)
 
 装备分数从当前主副属性计算。服务端测试直接调用与客户端同源的共享方法，用六组国服实录数值校验。现有库存协议已包含计算所需字段。[装备评分与取整](../Shared/com.astraloath.shared/README.md)

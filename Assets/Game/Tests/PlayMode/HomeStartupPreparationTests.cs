@@ -35,6 +35,7 @@ namespace AstralOath.Client.Tests
             private static readonly Dictionary<string, string> Files = new Dictionary<string, string>
             {
                 ["arena/zh-hans"]="Arena/Configs/arena-zh-hans.json", ["home/main"]="Home/Res/Prefab/HomeWindow.prefab",
+                ["development/gm-window"]="FoundationDemo/Res/Prefab/DevelopmentGmWindow.prefab",
                 ["arena/directory"]="Arena/Res/Prefab/ArenaDirectory.prefab", ["arena/create-room"]="Arena/Res/Prefab/ArenaCreateRoom.prefab",
                 ["arena/room"]="Arena/Res/Prefab/ArenaRoom.prefab", ["home/more-menu"]="Home/Res/Prefab/HomeMoreMenu.prefab",
                 ["arena/draft"]="Arena/Res/Prefab/ArenaDraft.prefab", ["arena/draft-art"]="Arena/Configs/ArenaDraftArt.asset",
@@ -69,6 +70,8 @@ namespace AstralOath.Client.Tests
             internal string DrawReceipt;
             internal bool RejectDraw;
             internal string StoredRewards = "{\"items\":[]}";
+            internal readonly ConcurrentQueue<string> GmRequests = new ConcurrentQueue<string>();
+            internal string GmAuthorization;
             internal volatile string DraftId = "settled-draft";
             internal volatile bool BattleEnded;
             private volatile bool stopping;
@@ -104,6 +107,8 @@ namespace AstralOath.Client.Tests
                     bool sendContinue = false;
                     while (!string.IsNullOrEmpty(field = await reader.ReadLineAsync()))
                     {
+                        if (line[1].StartsWith("/api/development/gm") && field.StartsWith("Authorization: "))
+                            GmAuthorization = field.Substring("Authorization: ".Length);
                         if (field.StartsWith("If-None-Match:", StringComparison.OrdinalIgnoreCase))
                             validator = field.Substring("If-None-Match:".Length).Trim();
                         else if (field.StartsWith("Content-Length:", StringComparison.OrdinalIgnoreCase))
@@ -120,12 +125,15 @@ namespace AstralOath.Client.Tests
                     {
                         // Drain the request before closing. An unread POST body can reset this test socket on Windows.
                         var payload = new char[Math.Min(contentLength, 1024)];
+                        var gmPayload = line[1] == "/api/development/gm/actions" ? new StringBuilder() : null;
                         while (contentLength > 0)
                         {
                             int consumed = await reader.ReadAsync(payload, 0, Math.Min(contentLength, payload.Length));
                             if (consumed == 0) return;
+                            gmPayload?.Append(payload, 0, consumed);
                             contentLength -= consumed;
                         }
+                        if (gmPayload != null) GmRequests.Enqueue(gmPayload.ToString());
                     }
                     await AllowResponse.Task.ConfigureAwait(false);
                     if (line[0] == "HEAD" && line[1] == "/api/inventory/equipment")
@@ -151,6 +159,11 @@ namespace AstralOath.Client.Tests
                         "{\"capacity\":" + (1000 + InventoryVersion) + ",\"used\":0,\"version\":1,\"items\":[],\"heroes\":[],\"artifacts\":[],\"materials\":{}}";
                     bool fail = FailFirstArtifact && line[1].EndsWith("/artifacts") && Calls.Count(x => x.EndsWith("/artifacts")) == 1;
                     string status = fail ? "503 Unavailable" : "200 OK";
+                    if (line[1].StartsWith("/api/development/gm"))
+                    {
+                        body = "{\"playerId\":\"test\",\"realmId\":\"test-realm\",\"resources\":[{\"key\":\"gold\",\"value\":30},{\"key\":\"bookmarks\",\"value\":50},{\"key\":\"skystones\",\"value\":250}],\"heroes\":[\"c1001\",\"c1002\",\"c1003\"],\"artifacts\":[],\"equipment\":[]}";
+                        if (line[0] == "POST" && GmRequests.Count == 1) status = "503 Unavailable";
+                    }
                     if (line[1].StartsWith("/api/inventory/equipment", StringComparison.Ordinal))
                     {
                         body = "{\"capacity\":100,\"used\":0,\"version\":" + EquipmentVersion + ",\"items\":[]}";
@@ -215,9 +228,88 @@ namespace AstralOath.Client.Tests
             }
         }
 
+        [UnityTest]
+        public IEnumerator LobbyPortraitMatches1080pAnd4kWithoutChangingFraming()
+        {
+            using var owner = new BindingScope(default);
+            var assets = new Art();
+            assets.Gate.SetResult(true);
+            var camera = new GameObject("Lobby resolution test", typeof(Camera)).GetComponent<Camera>();
+            var canvas = new GameObject("Lobby resolution canvas", typeof(Canvas)).GetComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceCamera;
+            canvas.worldCamera = camera;
+            canvas.planeDistance = 1f;
+            RenderTexture screen = null;
+            try
+            {
+                var views = new UIViewRegistry();
+                views.Register<HomeWindow>();
+                var view = views.CreateAsync<HomeWindow>(assets, canvas.transform, owner).GetAwaiter().GetResult();
+                var locale = ArenaLabels.LoadAsync(assets, owner, "zh-Hans", "ja").GetAwaiter().GetResult();
+                var binder = new HomeWindowBinder(view, locale, null, null, null, null);
+                using var page = new BindingScope(owner.Token);
+                binder.OpenAsync(page).GetAwaiter().GetResult();
+                var actor = view.Root.GetComponentsInChildren<RawImage>().Single(image => image.name == "Charlotte portrait");
+                var target = (RenderTexture)actor.texture;
+                var portraitCamera = Resources.FindObjectsOfTypeAll<Camera>().Single(c => c.targetTexture == target);
+                foreach (var height in new[] {1080, 2160, 1080})
+                {
+                    camera.targetTexture = null;
+                    if (screen) RenderTexture.ReleaseTemporary(screen);
+                    screen = RenderTexture.GetTemporary(height * 16 / 9, height, 16);
+                    camera.targetTexture = screen;
+                    yield return null;
+                    Canvas.ForceUpdateCanvases();
+                    portraitCamera.Render();
+                    Assert.That(portraitCamera.orthographicSize, Is.EqualTo(3.10f).Within(.001f));
+                    Assert.That(portraitCamera.transform.localPosition, Is.EqualTo(new Vector3(0, 4.85f, -10)));
+                    var expected = Mathf.RoundToInt(height * 1.10f);
+                    var folder = Environment.GetEnvironmentVariable("ASTRAL_LOBBY_CAPTURE");
+                    if (!string.IsNullOrEmpty(folder))
+                    {
+                        camera.Render();
+                        var active = RenderTexture.active;
+                        var shot = new Texture2D(screen.width, screen.height, TextureFormat.RGB24, false);
+                        try
+                        {
+                            RenderTexture.active = screen;
+                            shot.ReadPixels(new Rect(0, 0, screen.width, screen.height), 0, 0);
+                            shot.Apply();
+                            Directory.CreateDirectory(folder);
+                            File.WriteAllBytes(Path.Combine(folder, $"lobby-{height}.png"), shot.EncodeToPNG());
+                        }
+                        finally { RenderTexture.active = active; Object.Destroy(shot); }
+                    }
+                    Assert.That(actor.texture, Is.SameAs(target), "The source actor must retain ownership of its target.");
+                    Assert.That(target.width, Is.EqualTo(expected).Within(1), $"Lobby portrait at {height}p");
+                    Assert.That(target.height, Is.EqualTo(target.width));
+                }
+                page.Dispose();
+                Assert.That(actor.texture, Is.Null);
+            }
+            finally
+            {
+                camera.targetTexture = null;
+                if (screen) RenderTexture.ReleaseTemporary(screen);
+                Object.Destroy(canvas.gameObject);
+                Object.Destroy(camera.gameObject);
+            }
+        }
+
         [UnityTest] public IEnumerator HomeReusesLoginResourcesForBagHeroesAndSummon() => Check(false, false);
+        [UnityTest, Timeout(120000)] public IEnumerator GmActionsRetryAndRefreshTheAccount() => Check(false, false, gm: true);
         [UnityTest] public IEnumerator CancellingLoginRemovesTheBlackScreen() => Check(true, false);
         [UnityTest] public IEnumerator FailedHomeLoadRemovesTheBlackScreen() => Check(false, true);
+        [UnityTest] public IEnumerator FullPageFadeSamplesBothRampsWhileGameTimeIsPaused()
+        {
+            float previous = Time.timeScale;
+            try
+            {
+                Time.timeScale = 0f;
+                yield return Check(false, false, sampleFade: true);
+            }
+            finally { Time.timeScale = previous; }
+        }
         [UnityTest] public IEnumerator SummonRereadsStateAfterTheFreeReset() => Check(false, false, crossFreeReset: true);
         [UnityTest] public IEnumerator BagRetriesOnlyTheUnavailableInitialRead() => Check(false, false, failFirstArtifact: true);
         [UnityTest, Timeout(65000)]
@@ -439,7 +531,7 @@ namespace AstralOath.Client.Tests
             finally { Object.Destroy(canvas); }
         }
 
-        private static IEnumerator Check(bool cancel, bool fail, bool crossFreeReset = false, bool failFirstArtifact = false, bool recoverRoom = false, bool slowDirectory = false, bool waitInArena = false)
+        private static IEnumerator Check(bool cancel, bool fail, bool crossFreeReset = false, bool failFirstArtifact = false, bool recoverRoom = false, bool slowDirectory = false, bool waitInArena = false, bool sampleFade = false, bool gm = false)
         {
             using var server = new ReadServer { CrossFreeReset = crossFreeReset, FailFirstArtifact = failFirstArtifact, KeepArenaRoom = recoverRoom, SlowDirectory = slowDirectory };
             using var owner = new BindingScope(default);
@@ -465,6 +557,18 @@ namespace AstralOath.Client.Tests
                 Assert.That(cover, Is.Not.Null, "The admitted player must see black while the first load is pending.");
                 Assert.That(cover.GetComponent<Image>().color, Is.EqualTo(Color.black));
                 Assert.That(cover.GetComponent<Image>().raycastTarget, Is.True);
+                var fade = cover.GetComponent<CanvasGroup>();
+                Assert.That(fade, Is.Not.Null, "The cover must fade between the two pages.");
+                if (!cancel)
+                {
+                    if (sampleFade)
+                    {
+                        yield return new WaitUntil(() => fade.alpha > 0f);
+                        Assert.That(fade.alpha, Is.LessThan(1f), "Fade to black must draw intermediate frames.");
+                    }
+                    yield return new WaitUntil(() => fade.alpha >= 1f);
+                    Assert.That(cover.activeInHierarchy, Is.True);
+                }
                 Assert.That(Page("HomeWindow"), Is.Null);
                 if (cancel) owner.Dispose();
                 else if (fail) assets.Gate.SetException(new IOException("Test unavailable asset"));
@@ -476,19 +580,78 @@ namespace AstralOath.Client.Tests
                     Assert.That(cover.activeInHierarchy, Is.True, "The account read is still pending.");
                     Assert.That(Page("HomeWindow").gameObject.activeInHierarchy, Is.False);
                     server.AllowResponse.SetResult(true);
+                    if (sampleFade)
+                    {
+                        yield return new WaitUntil(() => fade.alpha < 1f || start.IsCompleted);
+                        Assert.That(fade.alpha, Is.GreaterThan(0f), "Reveal the new page over multiple frames.");
+                        Assert.That(Page("HomeWindow").gameObject.activeInHierarchy, Is.True);
+                    }
                 }
                 yield return new WaitUntil(() => start.IsCompleted);
                 Assert.That(GameObject.Find("Home loading curtain"), Is.Null);
                 if (cancel || fail) { Assert.That(start.IsCanceled || start.IsFaulted, Is.True); yield break; }
                 start.GetAwaiter().GetResult();
                 Assert.That(Page("HomeWindow").gameObject.activeInHierarchy, Is.True);
-                Assert.That(assets.Loaded.Distinct().Count(), Is.EqualTo(12), "All seven first-open dependencies should be resident.");
+                Assert.That(Page("DevelopmentGmWindow"), Is.Not.Null, "A signed-in Editor account must have a floating GM entry.");
+                Assert.That(Page("DevelopmentGmWindow").Require<GameObject>("panel").activeSelf, Is.False);
+                Assert.That(assets.Loaded.Distinct().Count(), Is.EqualTo(13), "The developer entry and seven first-open dependencies should be resident.");
                 Assert.That(server.Calls.Count(x => x == "GET /api/inventory/equipment"), Is.EqualTo(1),
                     "Equipment must load during the login curtain, before the first page opens.");
                 Assert.That(server.Calls.Count, Is.EqualTo(4), string.Join(", ", server.Calls));
                 Assert.That(server.Calls.All(x => x.StartsWith("GET ")), Is.True);
                 int beforeClicks = assets.Loaded.Count;
                 var home = Page("HomeWindow");
+                if (gm)
+                {
+                    var panel = Page("DevelopmentGmWindow");
+                    void Click(string key) => panel.Require<GameButton>(key).onClick.Invoke();
+                    GameButton Row() => panel.Require<ScrollRect>("items").content.GetComponentsInChildren<GameButton>()
+                        .FirstOrDefault(button => button.gameObject.activeInHierarchy);
+                    yield return DevelopmentGmCapture.Frame(canvas, "entry");
+                    Click("entry");
+                    yield return new WaitUntil(() => Row() != null);
+                    Assert.That(server.GmAuthorization, Is.EqualTo("Bearer sample-test-session"));
+                    yield return DevelopmentGmCapture.Frame(canvas, "resources");
+                    Click("diagnostics");
+                    Assert.That(panel.Require<GameText>("report").text, Does.Contain("test-realm").And.Not.Contain("sample-test-session"));
+                    yield return new WaitUntil(() => !panel.Require<GameText>("report").text.Contains("— FPS"));
+                    yield return DevelopmentGmCapture.Frame(canvas, "diagnostics");
+                    Click("inventory");
+                    Row().onClick.Invoke();
+                    yield return DevelopmentGmCapture.Frame(canvas, "inventory");
+                    panel.Require<TMPro.TMP_InputField>("amount").text = "11";
+                    Click("submit");
+                    Assert.That(server.GmRequests, Is.Empty);
+                    panel.Require<TMPro.TMP_InputField>("amount").text = "2";
+                    Click("submit");
+                    yield return new WaitUntil(() => panel.Require<GameText>("submitLabel").text == "重试原请求");
+                    Click("close");
+                    Assert.That(panel.Require<GameObject>("panel").activeSelf, Is.False);
+                    Click("entry");
+                    yield return new WaitUntil(() => panel.Require<GameText>("status").text.Contains("尚未确认"));
+                    Click("submit");
+                    yield return new WaitUntil(() => panel.Require<GameText>("status").text.Contains("已生效"));
+                    var payloads = server.GmRequests.ToArray();
+                    Assert.That(payloads.Length, Is.EqualTo(2));
+                    Assert.That(payloads[1], Is.EqualTo(payloads[0]));
+                    Assert.That(payloads[0], Does.Contain("\"action\":\"hero\"").And.Contain("\"key\":\"c1001\"").And.Contain("\"value\":2"));
+                    yield return new WaitUntil(() => server.Calls.Count(call => call == "GET /api/inventory/heroes") >= 3);
+                    Click("resources");
+                    panel.Require<TMPro.TMP_InputField>("amount").text = "1000000001";
+                    Click("submit");
+                    Assert.That(panel.Require<GameText>("status").text, Does.Contain("1,000,000,000"));
+                    Assert.That(server.GmRequests.Count, Is.EqualTo(2));
+                    panel.Require<TMPro.TMP_InputField>("amount").text = "123";
+                    Click("submit");
+                    yield return new WaitUntil(() => panel.Require<GameText>("status").text.Contains("已生效"));
+                    Assert.That(server.GmRequests.Last(), Does.Contain("\"action\":\"set\"").And.Contain("\"key\":\"gold\"").And.Contain("\"value\":123"));
+                    Click("close");
+                    yield return DevelopmentGmCapture.BattleRoundTrip(canvas, panel);
+                    owner.Dispose();
+                    yield return null;
+                    Assert.That(Page("DevelopmentGmWindow"), Is.Null);
+                    yield break;
+                }
                 if (waitInArena)
                 {
                     home.Require<GameButton>("arena").onClick.Invoke();
@@ -551,6 +714,10 @@ namespace AstralOath.Client.Tests
                 inventory.Require<GameButton>("back").onClick.Invoke();
                 home.Require<GameButton>("more").onClick.Invoke();
                 Page("HomeMoreMenu").Require<GameButton>("heroes").onClick.Invoke();
+                Assert.That(cover.activeInHierarchy, Is.True, "The hero route must reuse the login curtain.");
+                Assert.That(Page("HomeMoreMenu").gameObject.activeInHierarchy, Is.False, "Dismiss the quick menu before the lobby fades.");
+                yield return new WaitUntil(() => !cover.activeInHierarchy);
+                Assert.That(inventory.gameObject.activeInHierarchy, Is.True);
                 Assert.That(Page("HeroInventory"), Is.SameAs(inventory));
                 if (waitInArena)
                 {

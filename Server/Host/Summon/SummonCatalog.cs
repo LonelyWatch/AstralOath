@@ -33,6 +33,8 @@ internal sealed class SummonCatalog
             throw new InvalidDataException("Invalid summon banner configuration.");
         var heroCatalog = JsonSerializer.Deserialize<HeroSource>(heroes, JsonOptions)
             ?? throw new InvalidDataException("Missing hero catalog.");
+        HeroGrades = heroCatalog.Heroes.ToDictionary(hero => hero.Id, hero => hero.BaseStars, StringComparer.Ordinal);
+        ArtifactGrades = artifacts.Templates.ToDictionary(item => item.Id, item => item.Stars, StringComparer.Ordinal);
         var eligible = heroCatalog.Heroes.Where(hero => config.Heroes.Contains(hero.Id, StringComparer.Ordinal)).ToArray();
         if (eligible.Length != config.Heroes.Length)
             throw new InvalidDataException("An eligible summon hero is missing from the battle catalog.");
@@ -59,6 +61,8 @@ internal sealed class SummonCatalog
     }
 
     internal int DevelopmentBooks => config.DevelopmentBooks;
+    internal IReadOnlyDictionary<string, int> HeroGrades { get; }
+    internal IReadOnlyDictionary<string, int> ArtifactGrades { get; }
     internal int StorageCapacity => config.StorageCapacity;
     internal string[] WishHeroCandidates { get; }
     internal string[] WishArtifactCandidates { get; }

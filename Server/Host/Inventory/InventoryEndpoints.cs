@@ -1,6 +1,7 @@
 using AstralOath.Server.Arena;
 using AstralOath.Server.Battle;
 using AstralOath.Server.Entry;
+using AstralOath.Server.Summon;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using MySqlConnector;
@@ -43,6 +44,18 @@ internal static class InventoryEndpoints
             ArtifactMutation request, ArenaStore sessions, InventoryStore store, CancellationToken cancellation) =>
             Handle(app, http, sessions, id => store.ChangeArtifact(id, instanceId, action, request, cancellation), cancellation))
             .WithMetadata(new RequestSizeLimitAttribute(16 * 1024));
+    }
+
+    internal static void MapDevelopmentGm(this WebApplication app)
+    {
+        var gm = app.MapGroup("/api/development/gm");
+        gm.WithRequestTimeout(TimeSpan.FromSeconds(10));
+        gm.WithMetadata(new RequestSizeLimitAttribute(4096));
+        gm.MapGet("", (HttpContext http, ArenaStore auth, SummonStore store, InventoryStore inventory, CancellationToken ct) =>
+            Handle(app, http, auth, id => store.DevelopmentGm(id, null, inventory, ct), ct));
+        gm.MapPost("/actions", (DevelopmentGmAction action, HttpContext http, ArenaStore auth, SummonStore store,
+            InventoryStore inventory, CancellationToken ct) =>
+            Handle(app, http, auth, id => store.DevelopmentGm(id, action, inventory, ct), ct));
     }
 
     private static IResult EquipmentVersionResponse(HttpContext http, long version)

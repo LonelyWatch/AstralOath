@@ -35,6 +35,7 @@ namespace AstralOath.Client.Home
         private readonly ScrollRect scroll;
         private readonly RectTransform browser;
         private readonly EquipmentSlotBinder equipmentSlot;
+        private readonly CenteredRarityStars slotStars;
         private readonly GameButton slotButton;
         private readonly Sprite[] classIcons = new Sprite[FilterClasses.Length];
         private readonly List<ArtifactInventoryCardBinder> cards = new List<ArtifactInventoryCardBinder>();
@@ -58,6 +59,7 @@ namespace AstralOath.Client.Home
             this.ui = ui;
             equipmentSlot = new EquipmentSlotBinder(ui.Get<BindingMap>("EquipmentSlot"));
             slotButton = ui.Get<GameButton>("Slot");
+            slotStars = new CenteredRarityStars(Enumerable.Range(0, 5).Select(i => ui.Get<Image>("SlotStar" + i)).ToArray());
             this.api = api;
             this.fetch = fetch ?? api.FetchAsync;
             this.art = art;
@@ -187,7 +189,7 @@ namespace AstralOath.Client.Home
             slotButton.interactable = hero != null;
             var worn = hero == null ? default : EquippedCard(hero.instanceId);
             equipmentSlot.Set(worn.Art, worn.Level);
-            for (int i = 0; i < 5; ++i) ui.Get<Image>("SlotStar" + i).enabled = i < worn.Stars;
+            slotStars.Show(worn.Stars);
             ui.Get<Image>("SlotLock").enabled = worn.Locked;
         }
 

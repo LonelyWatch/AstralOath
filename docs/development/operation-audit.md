@@ -10,6 +10,8 @@
 
 ## 客户端语义事件
 
+开发服的 GM 修改按 `development.gm.set`、`development.gm.hero`、`development.gm.artifact` 和 `development.gm.equipment` 留痕，关联当前会话的玩家及请求 ID。库存登记、余额流水与该条审计共用事务。相同请求重试只产生一次写入。
+
 `POST /api/arena/telemetry` 接受 `eventId`（32 位十六进制 GUID）和白名单动作 `directory_refresh`、`directory_filter`、`directory_search`、`create_dialog_open`。服务端从 Bearer 会话解析身份、按会话和事件 ID 去重，并限制每次请求大小和频率。客户端保持少量并发，离开应用取消，请求失败不影响界面和实际业务结果。相同 ID 的重试只记一次。客户端事件仅用于定位交互路径，不能当作权威操作结果。
 
 应用 MySQL 迁移 `003_game_operation_audit.sql`。运行账号仅需对审计表的 INSERT 权限，查看留痕使用独立只读账号。上线前由服务维护确定留存期限、备份和清理方式。当前该表随数据库备份，未配置自动清理。

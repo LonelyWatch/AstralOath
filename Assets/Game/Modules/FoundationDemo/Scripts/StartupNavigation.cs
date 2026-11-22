@@ -16,6 +16,7 @@ namespace AstralOath.Client.FoundationDemo
     internal sealed class StartupNavigation
     {
         private readonly WindowCoordinator windows;
+        private readonly ScreenFadeTransition fade;
         private readonly HomeWindowBinder home;
         private readonly ArenaDirectoryBinder directory;
         private readonly ArenaRoomBinder room;
@@ -39,8 +40,9 @@ namespace AstralOath.Client.FoundationDemo
         private string returnedRoomId, returnedDraftId;
         private bool lostFocus;
         private Task equipmentFocusRead;
+        private Func<Task> refreshGmPage;
 
-        private StartupNavigation(BindingScope lifetime, HomeWindow homeView, ArenaDirectory directoryView,
+        private StartupNavigation(BindingScope lifetime, ScreenFadeTransition fade, HomeWindow homeView, ArenaDirectory directoryView,
             ArenaCreateRoom createView, ArenaRoom roomView, UIViewRegistry views, IAssetService assets, ISceneAssetService scenes, Transform parent,
             ILocaleService locale, ArenaApi api, HeroInventoryApi inventory, ArtifactInventoryApi artifacts,
             EquipmentInventoryApi equipment, SummonApi summon, Uri endpoint, string playerName, DesktopDisplayMode display)
@@ -55,6 +57,7 @@ namespace AstralOath.Client.FoundationDemo
             this.scenes = scenes;
             this.parent = parent;
             this.lifetime = lifetime;
+            this.fade = fade;
             this.locale = locale;
             pages = new HomePagePreparation(views, assets, parent, lifetime);
             firstReads = new HomeFirstReads(inventory, artifacts, equipment, lifetime.Token);
@@ -108,28 +111,13 @@ namespace AstralOath.Client.FoundationDemo
 
         internal static async Task<StartupNavigation> StartAsync(GameLaunchContext context, BindingScope owner)
         {
-            var curtain = new GameObject("Home loading curtain", typeof(RectTransform), typeof(Canvas), typeof(GraphicRaycaster), typeof(Image));
-            var overlay = curtain.GetComponent<Canvas>();
-            overlay.renderMode = RenderMode.ScreenSpaceOverlay;
-            overlay.sortingOrder = short.MaxValue;
-            curtain.GetComponent<Image>().color = Color.black;
-            void CloseCurtain()
-            {
-                if (!curtain) return;
-                curtain.SetActive(false);
-                UnityEngine.Object.Destroy(curtain);
-            }
-            var detach = owner.Add(CloseCurtain);
-            try
-            {
-                await Task.Yield();
-                owner.Token.ThrowIfCancellationRequested();
-                return await LoadHomeAsync(context, owner);
-            }
-            finally { detach(); CloseCurtain(); }
+            var fade = new ScreenFadeTransition(owner);
+            StartupNavigation navigation = null;
+            await fade.RunAsync(async () => { navigation = await LoadHomeAsync(context, owner, fade); }, owner.Token);
+            return navigation;
         }
 
-        private static async Task<StartupNavigation> LoadHomeAsync(GameLaunchContext context, BindingScope owner)
+        private static async Task<StartupNavigation> LoadHomeAsync(GameLaunchContext context, BindingScope owner, ScreenFadeTransition fade)
         {
             var views = new UIViewRegistry();
             views.Register<HomeWindow>();
@@ -174,7 +162,7 @@ namespace AstralOath.Client.FoundationDemo
             owner.Add(artifacts.Dispose);
             owner.Add(equipment.Dispose);
             owner.Add(summon.Dispose);
-            var navigation = new StartupNavigation(owner, home, directory, create, room, views, assets, scenes,
+            var navigation = new StartupNavigation(owner, fade, home, directory, create, room, views, assets, scenes,
                 context.ViewRoot, locale, api, inventory, artifacts, equipment, summon, endpoint, name, display);
             await Task.WhenAll(navigation.pages.PrepareAsync(owner.Token),
                 navigation.firstReads.PrepareAsync(Bearer, summon, owner.Token));
@@ -193,10 +181,39 @@ namespace AstralOath.Client.FoundationDemo
             }
             owner.Token.ThrowIfCancellationRequested();
             await navigation.ShowHome();
+            if (Application.isEditor || Debug.isDebugBuild)
+                await navigation.InstallDevelopmentGmAsync(Bearer);
             context.Services.Add<ILocaleService>(locale);
             context.OpenButton.gameObject.SetActive(false);
             context.StartupStatus.gameObject.SetActive(false);
             return navigation;
+        }
+
+        private async Task InstallDevelopmentGmAsync(Func<CancellationToken, Task<string>> bearer)
+        {
+            views.Register<DevelopmentGmWindow>();
+            var gmView = await views.CreateAsync<DevelopmentGmWindow>(assets, parent, lifetime);
+            var client = new DevelopmentGmApi(endpoint, bearer);
+            lifetime.Add(client.Dispose);
+            string Name(string kind, string id)
+            {
+                if (kind == "hero") return pages.Heroes.Loaded?.heroes.FirstOrDefault(item => item.id == id)?.name;
+                if (kind == "artifact") return pages.Artifacts.Loaded?.Find(id)?.template.Name;
+                if (kind == "equipment" && id.StartsWith("training_", StringComparison.Ordinal))
+                {
+                    var slot = id.Substring(id.LastIndexOf('_') + 1);
+                    try { return GameText.Format(locale, "home.gear.title", locale.Resolve("home.gear." + slot)); }
+                    catch (System.Collections.Generic.KeyNotFoundException) { return id; }
+                }
+                return null;
+            }
+            void Reconcile()
+            {
+                firstReads.ReconcileInventories();
+                firstReads.ReconcileEquipment();
+            }
+            new DevelopmentGmWindowBinder(gmView, windows, client, locale, Name, Reconcile,
+                () => refreshGmPage?.Invoke() ?? Task.CompletedTask).Install(lifetime);
         }
 
         private async Task OpenMore(CancellationToken cancellation)
@@ -207,10 +224,17 @@ namespace AstralOath.Client.FoundationDemo
             windows.ShowOverlay(MoreOverlay, scope =>
             {
                 home.HideArenaWhile(scope);
-                var binder = new HomeMoreMenuBinder(view, locale, ct => OpenInventory(true, ct), OpenSummon,
+                var binder = new HomeMoreMenuBinder(view, locale, OpenHeroes, OpenSummon,
                     () => windows.CloseOverlay(MoreOverlay));
                 binder.Open(scope);
             });
+        }
+
+        private Task OpenHeroes(CancellationToken request)
+        {
+            request.ThrowIfCancellationRequested();
+            windows.CloseOverlay(MoreOverlay);
+            return fade.RunAsync(() => OpenInventory(true, token), token);
         }
 
         internal async Task VerifySummonAsync(CancellationToken cancellation, SummonApi isolatedGuest = null)
@@ -256,6 +280,8 @@ namespace AstralOath.Client.FoundationDemo
             cancellation.ThrowIfCancellationRequested();
             await windows.ShowPageAsync(scope =>
             {
+                refreshGmPage = () => ShowSummonPageAsync(token, isolatedGuest);
+                scope.Add(() => refreshGmPage = null);
                 var binder = new SummonWindowBinder(view, isolatedGuest ?? summon, art, artifactArt, presentation, featuredLoop, locale, ShowHome);
                 return binder.OpenAsync(scope, isolatedGuest == null ? firstReads.TakeSummon() : null);
             });
@@ -270,6 +296,8 @@ namespace AstralOath.Client.FoundationDemo
             cancellation.ThrowIfCancellationRequested();
             await windows.ShowPageAsync(scope =>
             {
+                refreshGmPage = () => OpenInventory(roster, token);
+                scope.Add(() => refreshGmPage = null);
                 Func<string, CancellationToken, Task> startTrial = null;
                 if (Debug.isDebugBuild && endpoint.IsLoopback)
                     startTrial = (hero, ct) => StartArtifactTrialAsync(hero, artifactArt, ct);

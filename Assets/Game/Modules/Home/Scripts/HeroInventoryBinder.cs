@@ -513,7 +513,7 @@ namespace AstralOath.Client.Home
             private readonly Image firstLevelDigit, secondLevelDigit, maximumLevel;
             private readonly Sprite[] levelDigits;
             private readonly EquipmentSlotBinder artifactSlot;
-            private readonly Image[] artifactStars;
+            private readonly CenteredRarityStars bagPortraitStars, artifactStars;
             private readonly Image artifactLock;
             private readonly EquipmentInventoryBinder.WornSlot[] gearSlots;
             private readonly bool roster;
@@ -543,7 +543,9 @@ namespace AstralOath.Client.Home
                 {
                     level = map.Require<GameText>("level");
                     artifactSlot = new EquipmentSlotBinder(map.Require<BindingMap>("bagArtifactSlot"));
-                    artifactStars = Enumerable.Range(0,5).Select(i => map.Require<Image>("bagArtifactStar" + i)).ToArray();
+                    bagPortraitStars = new CenteredRarityStars(stars, portrait.rectTransform);
+                    artifactStars = new CenteredRarityStars(Enumerable.Range(0, 5)
+                        .Select(i => map.Require<Image>("bagArtifactStar" + i)).ToArray());
                     artifactLock = map.Require<Image>("bagArtifactLock");
                     gearSlots = Enumerable.Range(0,6).Select(i => new EquipmentInventoryBinder.WornSlot(map.Require<Image>("emptyGear" + i)
                         .GetComponentInParent<BindingMap>(true))).ToArray();
@@ -553,7 +555,7 @@ namespace AstralOath.Client.Home
             internal void DisplayArtifact((Sprite Portrait, int Level, int Stars, bool Locked) equipped)
             {
                 artifactSlot.Set(equipped.Portrait, equipped.Level);
-                for (int i = 0; i < artifactStars.Length; ++i) artifactStars[i].enabled = i < equipped.Stars;
+                artifactStars.Show(equipped.Stars);
                 artifactLock.enabled = equipped.Locked;
             }
 
@@ -589,6 +591,7 @@ namespace AstralOath.Client.Home
                 selection.enabled = selected;
                 for (int index = 0; index < stars.Length; ++index)
                     SetSprite(stars[index], index < item.stars ? star : null);
+                bagPortraitStars?.Show(star ? item.stars : 0);
                 Root.gameObject.SetActive(true);
             }
         }

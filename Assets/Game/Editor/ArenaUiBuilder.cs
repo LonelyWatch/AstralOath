@@ -44,6 +44,7 @@ namespace AstralOath.Editor
             (SummonPrefabPath, SummonWindow.Address),
             (SummonPresentationBuilder.AssetPath, SummonPresentation.Address),
             (FeaturedSkillAssetPath, SummonSkillLoop.Address),
+            (GmPath, AstralOath.Client.FoundationDemo.DevelopmentGmWindow.Address),
         };
         private static readonly Color Gold = new Color32(166, 139, 92, 255);
         private static readonly Color Mist = new Color32(180, 206, 216, 255);
@@ -65,6 +66,7 @@ namespace AstralOath.Editor
             labels = JsonUtility.FromJson<LabelFile>(File.ReadAllText(Assets[4].Path)).rows
                 .ToDictionary(row => row.key, row => row.text);
             Save(BuildHome(), Assets[0].Path);
+            Save(BuildDevelopmentGmWindow(), GmPath);
             BuildPasswordEntryPrefabs();
             Save(BuildDirectory(), Assets[1].Path);
             Save(BuildCreate(), Assets[2].Path);

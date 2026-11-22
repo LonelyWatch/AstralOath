@@ -8,6 +8,7 @@ namespace AstralOath.Client.Home
     {
         private readonly ArtifactInventoryCard view;
         private readonly NotificationBadgeBinder enhancement;
+        private readonly CenteredRarityStars rarity;
         internal RectTransform Root { get; }
         internal GameButton Button => view.Select;
         internal ArtifactInventoryItem Item { get; private set; }
@@ -17,6 +18,7 @@ namespace AstralOath.Client.Home
             Root = (RectTransform)instance.transform;
             view = new ArtifactInventoryCard(instance);
             enhancement = new NotificationBadgeBinder(view.Enhancement);
+            rarity = new CenteredRarityStars(view.Stars, view.Emblem.rectTransform);
         }
 
         internal void Display(ArtifactInventoryItem item, ArtifactArtCatalog.Entry entry, Sprite roleIcon,
@@ -38,9 +40,9 @@ namespace AstralOath.Client.Home
             view.Wearer.enabled = wearer;
             view.WearerFrame.SetActive(wearer);
             enhancement.Set(false, item.level);
-            for (int i = 0; i < view.Stars.Length; i++)
+            rarity.Show(entry.template.Stars);
+            for (int i = 0; i < view.Breaks.Length; i++)
             {
-                view.Stars[i].enabled = i < entry.template.Stars;
                 view.Breaks[i].enabled = i < item.limitBreaks;
                 view.BreakSlots[i].enabled = true;
             }
@@ -65,8 +67,9 @@ namespace AstralOath.Client.Home
             view.Role.enabled = view.Lock.enabled = view.Selection.enabled = false;
             view.WearerFrame.SetActive(false);
             enhancement.Set(false);
-            for (int i = 0; i < view.Stars.Length; i++)
-                view.Stars[i].enabled = view.Breaks[i].enabled = view.BreakSlots[i].enabled = false;
+            rarity.Show(0);
+            for (int i = 0; i < view.Breaks.Length; i++)
+                view.Breaks[i].enabled = view.BreakSlots[i].enabled = false;
             view.Show();
         }
     }

@@ -105,7 +105,7 @@ internal sealed partial class InventoryStore
             VALUES (@id, @player, @realm, @template, @source);
             """, token, ("@id", instanceId), ("@template", templateId), ("@source", source));
 
-    private static async Task<bool> BeginOperation(MySqlConnection connection, MySqlTransaction transaction,
+    internal static async Task<bool> BeginOperation(MySqlConnection connection, MySqlTransaction transaction,
         string playerId, string requestId, byte[] digest, CancellationToken token)
     {
         using var read = Command(connection, transaction, """
@@ -278,7 +278,7 @@ internal sealed partial class InventoryStore
             DELETE FROM inventory_artifact WHERE player_id = @player AND realm_id = @realm AND instance_id = @id;
             """, token, ("@id", instance));
 
-    private static async Task<Dictionary<string, int>> ReadMaterialBalances(MySqlConnection connection,
+    internal static async Task<Dictionary<string, int>> ReadMaterialBalances(MySqlConnection connection,
         MySqlTransaction transaction, string playerId, CancellationToken token)
     {
         var balances = new Dictionary<string, int>(StringComparer.Ordinal);
@@ -292,7 +292,7 @@ internal sealed partial class InventoryStore
         return balances;
     }
 
-    private static async Task PostMaterial(MySqlConnection connection, MySqlTransaction transaction, string playerId,
+    internal static async Task PostMaterial(MySqlConnection connection, MySqlTransaction transaction, string playerId,
         string request, string material, int delta, CancellationToken token)
     {
         if (delta > 0)

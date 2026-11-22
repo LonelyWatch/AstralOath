@@ -195,6 +195,14 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 
+      - CollectPath: Assets/Game/Modules/FoundationDemo/Res/Prefab/DevelopmentGmWindow.prefab
+        CollectorGUID: c1a029901a9b35042a270c04b77305cf
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
     - GroupName: EntryTheme
       GroupDesc:
       AssetTags:

@@ -20,6 +20,10 @@ C:/Users/Admin/AppData/LocalLow/AstralOath/AstralOath 已迁至 D:/AstralOathDat
 
 ## 后续启动
 
+2026-11-22 在原生 Windows 进程与 Codex 桌面应用中发现两套 LocalLow 视图。在本机从 Codex 读取普通 C 盘路径，看到的是应用容器的重定向目录。核实磁盘占用时还要检查本机管理共享 `\\localhost\C$\Users\Admin\AppData\LocalLow`，检查目录的 ReparsePoint、实际联接目标与文件数，统计物理占用时跳过联接。
+
+原生 Windows 的整个 `LocalLow/AstralOath` 已改为指向 `D:/AstralOathData/windows-native/LocalLow/AstralOath` 的 NTFS junction。旧目录包含四个产品目录，合计 1,344 个文件、30,020,594,063 字节。复制后核对逐文件 SHA-256，切换后通过旧路径再次核对，删除源副本前复核其内容。操作时 C 盘可用空间由 6,369,255,424 增至 36,377,477,120 字节。原版本的配置、缓存和存档按目录保留，新产品名继承父目录的 D 盘位置。清单和回执在 `.artifacts/disk-migration/native-runtime-sha256.json` 与同目录的 `native-runtime-sha256.receipt.json`。
+
 使用项目PowerShell执行 Tools/Open-Unity.ps1（工作目录 D:/UnityProjects/AstralOath）。此入口检查同工程已运行时仅报告，不开第二实例。当前Editor不被追溯修改环境；保存并正常退出后，下一次从新入口启动才继承缓存位置。不要用结束进程代替保存退出。
 
 Tools/ProjectEnvironment.ps1 统一设置进程范围 TEMP/TMP/TMPDIR、UPM、NuGet包及HTTP缓存、dotnet用户目录、Gradle、pip/uv/npm、Python字节码和MCP日志位置。有效非系统盘自定义目录保留并创建；C盘目录、驱动器相对路径、指向C盘的junction回落到仓库本地。Windows PowerShell5.1与项目PowerShell7均有回归；非Windows CI使用仓库相对默认值。不改机器/用户全局环境，不移动已有共享缓存。

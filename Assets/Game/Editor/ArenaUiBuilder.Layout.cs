@@ -67,7 +67,8 @@ namespace AstralOath.Editor
                 out var windowLabel, Art("_box_r_op80"), Color.white);
             var (more, bag) = BuildNativeTopBarIcons(root);
             Bind(root, ("arena", arena), ("arenaLabel", label), ("arenaNavigation", navigation), ("profile", profileName),
-                ("displayMode", displayMode), ("displayModeLabel", windowLabel), ("more", more), ("bag", bag));
+                ("displayMode", displayMode), ("displayModeLabel", windowLabel), ("more", more), ("bag", bag),
+                ("lobbyPortrait", raw));
             return root.gameObject;
         }
 

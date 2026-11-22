@@ -3,6 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using AstralOath.Client.Core;
 using AstralOath.Client.Common;
+using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace AstralOath.Client.Home
 {
@@ -30,6 +32,23 @@ namespace AstralOath.Client.Home
         {
             view.Show();
             screen.Add(() => { if (view.Root) view.Hide(); });
+            var actor = view.LobbyPortrait;
+            void FitPortrait(ScriptableRenderContext _, Camera camera)
+            {
+                var target = camera.targetTexture;
+                if (!target || target != actor.texture) return;
+                var displaySize = UiRenderSurface.ScreenPixels(actor);
+                int size = Mathf.Clamp(Mathf.Max(displaySize.x, displaySize.y), 1, UiRenderSurface.MaxDimension);
+                if (target.width == size && target.height == size) return;
+                // The prefab's existing player releases this target when hidden. Keep its identity and framing.
+                camera.targetTexture = null;
+                target.Release();
+                target.width = target.height = size;
+                target.Create();
+                camera.targetTexture = target;
+            }
+            RenderPipelineManager.beginCameraRendering += FitPortrait;
+            screen.Add(() => RenderPipelineManager.beginCameraRendering -= FitPortrait);
             view.ArenaLabel.Bind(locale, screen, "home.arena");
             view.Profile.Bind(locale, screen, "home.profile");
             view.Arena.Bind(screen, openArena);

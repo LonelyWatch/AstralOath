@@ -21,6 +21,7 @@ namespace AstralOath.Client.FoundationDemo
             private readonly Func<Task<T>> load;
             private Task<T> resident;
             internal Resource(Func<Task<T>> load) => this.load = load;
+            internal T Loaded => resident?.Status == TaskStatus.RanToCompletion ? resident.Result : default;
             internal Task<T> Get() => resident == null || resident.IsCanceled || resident.IsFaulted ? resident = load() : resident;
         }
 
