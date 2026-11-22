@@ -39,3 +39,9 @@ R34 项目为复用图集播放器，先在编辑器中用战斗预览播放伊�
 GPU 回归覆盖开场、剑门上下两处闪白、史莱姆脸颊在命中前可见及随后被剑光覆盖、双实例、改分辨率与关闭后重开。联网从大厅打开伊赛丽亚 UP 池，检验十连确认框后的技能继续播放、取消确认、返回立绘、切换常驻池及十连结果。卸载大厅时，开发 GM 浮窗按根对象实际生命周期清理。召唤导入器核对重复缩放与旋转轨的实际内容，现有 81 份视觉产物和 52 项音频可重现；扩展名单中的 40 名英雄尚缺取得语音。[GPU 断言](../../.artifacts/skill-preview-runtime/impact.xml) · [联网实测](../../.artifacts/clarity-r35/summon/online/Verified/results.xml) · [导入复核](../../.artifacts/windows-r35/build/summon-source-proof.json)
 
 修正前，技能计时到达终点后，间隔 0.35 秒读取的史莱姆网格完全相同。修正后，立绘停留的 2.65 秒内，场地继续绘制，双方待机及剩余粒子独立推进，技能命中计时保持结束。D3D11 图形与本机开发服联合回归共 5 项，全部通过。[修正前的定格](../../.artifacts/skill-preview-runtime/hold-red.xml) · [最终图形与联网结果](../../.artifacts/clarity-r35/summon/online/HoldAftermath/results.xml)
+
+预览在实时画面首帧起播原 FMOD 技能事件和日语语音的混音。音轨总时长 11.208 秒，前 11.108 秒的 PCM 采样与 FMOD 母带相同，末尾淡出 0.100 秒。本次测得实时动作长 11.771 秒，技能音轨在动作结束前 0.562 秒播完。逐个命中点的扬声器录音尚未比对。[音源与原始编排](2026-11-18-native-summon-presentation.md)
+
+Windows R35 签名后重新解码实际发布资源。119 张指定源图中有 105 张进入本版，跨包共 250 份，全部为 RGBA32。与源 PNG 对比的 4,211,387 个完全不透明像素中，R34 有 4,085,061 个颜色不同，R35 的不同像素数为 0。该检查针对桌面颜色压缩，素材固有分辨率和半透明像素不在这个数字内。[R35 签名包像素复核](../../.artifacts/clarity-r35/import/r35-packed.json)
+
+从已分发的 Win64 IL2CPP 游戏程序进入 R35 召唤页，在 1280×720、1920×1080 和 3840×2160 分别确认技能镜头成功创建、实际渲染尺寸与游戏窗口相等，且演出推进到完全显现。三次运行均完成切池、十连显示 10 张结果和五种窗口尺寸切换，正常退出。此次原生测试未测整段演出的最低帧率。[720p](../../.artifacts/windows-r35/summon/0f95288541794286890f4024bbe076f5/verified.json) · [1080p](../../.artifacts/windows-r35/summon/904e939ec7df42f09fc1990403e850c2/verified.json) · [4K](../../.artifacts/windows-r35/summon/a4c54b23b0584d49bf5b48256105219c/verified.json)
