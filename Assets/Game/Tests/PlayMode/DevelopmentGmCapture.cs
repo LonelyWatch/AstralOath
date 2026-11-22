@@ -18,9 +18,58 @@ namespace AstralOath.Client.Tests
 {
     internal static class DevelopmentGmCapture
     {
+        internal static void DragAndTapEntry(BindingMap gm)
+        {
+            var button = gm.Require<GameButton>("entry");
+            var entry = (RectTransform)button.transform;
+            var parent = (RectTransform)entry.parent;
+            var raycaster = gm.GetComponent<GraphicRaycaster>();
+            var camera = raycaster.eventCamera;
+            Canvas.ForceUpdateCanvases();
+            Vector2 Center() => RectTransformUtility.WorldToScreenPoint(camera, entry.TransformPoint(entry.rect.center));
+            var center = Center();
+            var press = center + new Vector2(-5, 3);
+            var desired = RectTransformUtility.WorldToScreenPoint(camera, parent.TransformPoint(parent.rect.center));
+            var pointer = new PointerEventData(EventSystem.current)
+            {
+                pointerId = -1, position = press, pressPosition = press, eligibleForClick = true,
+                pointerPressRaycast = new RaycastResult { module = raycaster }
+            };
+            var target = button.gameObject;
+            ExecuteEvents.Execute(target, pointer, ExecuteEvents.pointerDownHandler);
+            pointer.position = press + desired - center;
+            ExecuteEvents.Execute(target, pointer, ExecuteEvents.beginDragHandler);
+            ExecuteEvents.Execute(target, pointer, ExecuteEvents.dragHandler);
+            Assert.That(Vector2.Distance(Center(), desired), Is.LessThan(2f), "Dragging should preserve the pointer's offset on the badge.");
+            pointer.position += new Vector2(-Screen.width * 2f, Screen.height * 2f);
+            ExecuteEvents.Execute(target, pointer, ExecuteEvents.dragHandler);
+            var corners = new Vector3[4];
+            entry.GetWorldCorners(corners);
+            var bounds = parent.rect;
+            foreach (var point in corners)
+            {
+                var local = parent.InverseTransformPoint(point);
+                Assert.That(local.x, Is.InRange(bounds.xMin - .1f, bounds.xMax + .1f));
+                Assert.That(local.y, Is.InRange(bounds.yMin - .1f, bounds.yMax + .1f));
+            }
+            ExecuteEvents.Execute(target, pointer, ExecuteEvents.pointerUpHandler);
+            if (pointer.eligibleForClick) ExecuteEvents.Execute(target, pointer, ExecuteEvents.pointerClickHandler);
+            ExecuteEvents.Execute(target, pointer, ExecuteEvents.endDragHandler);
+            Assert.That(gm.Require<GameObject>("panel").activeSelf, Is.False, "Releasing a drag should leave the page visible.");
+            Assert.That(Vector2.Distance(Center(), center), Is.GreaterThan(10f));
+            pointer.position = pointer.pressPosition = Center();
+            pointer.eligibleForClick = true;
+            ExecuteEvents.Execute(target, pointer, ExecuteEvents.pointerDownHandler);
+            ExecuteEvents.Execute(target, pointer, ExecuteEvents.pointerUpHandler);
+            ExecuteEvents.Execute(target, pointer, ExecuteEvents.pointerClickHandler);
+            Assert.That(gm.Require<GameObject>("panel").activeSelf, Is.True, "Tapping the relocated badge should open GM.");
+        }
+
         internal static IEnumerator BattleRoundTrip(GameObject home, BindingMap gm)
         {
             var previous = SceneManager.GetActiveScene();
+            var entry = (RectTransform)gm.Require<GameButton>("entry").transform;
+            Vector2 movedAnchor = entry.anchorMin;
             var battle = EditorSceneManager.LoadSceneInPlayMode(BattleOnlineLaunch.ScenePath, new LoadSceneParameters(LoadSceneMode.Additive));
             try
             {
@@ -32,6 +81,7 @@ namespace AstralOath.Client.Tests
                 yield return null;
                 Assert.That(gm.GetComponent<Canvas>().isActiveAndEnabled, Is.True);
                 Assert.That(gm.gameObject.scene, Is.EqualTo(battle));
+                Assert.That(entry.anchorMin, Is.EqualTo(movedAnchor), "The relocated entry should keep its position in battle.");
                 bool paused = host.IsPaused;
                 gm.Require<GameButton>("entry").onClick.Invoke();
                 gm.Require<GameButton>("diagnostics").onClick.Invoke();
@@ -55,6 +105,7 @@ namespace AstralOath.Client.Tests
                 SceneManager.UnloadSceneAsync(battle);
             }
             Assert.That(gm.transform.IsChildOf(home.transform), Is.True);
+            Assert.That(entry.anchorMin, Is.EqualTo(movedAnchor));
         }
 
         internal static IEnumerator Frame(GameObject root, string name)

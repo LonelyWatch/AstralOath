@@ -161,7 +161,12 @@ namespace AstralOath.Client.Tests
                     string status = fail ? "503 Unavailable" : "200 OK";
                     if (line[1].StartsWith("/api/development/gm"))
                     {
-                        body = "{\"playerId\":\"test\",\"realmId\":\"test-realm\",\"resources\":[{\"key\":\"gold\",\"value\":30},{\"key\":\"bookmarks\",\"value\":50},{\"key\":\"skystones\",\"value\":250}],\"heroes\":[\"c1001\",\"c1002\",\"c1003\"],\"artifacts\":[],\"equipment\":[]}";
+                        var otherBalances = new[] { "epicBookmarks", "goldTransmitStones", "galaxyBookmarks", "mysticMedals",
+                            "lesserCharm", "greaterCharm", "epicCharm", "bottle", "powder" };
+                        var resources = "{\"key\":\"gold\",\"value\":30},{\"key\":\"bookmarks\",\"value\":50},{\"key\":\"skystones\",\"value\":250}," +
+                            string.Join(",", otherBalances.Select(key => "{\"key\":\"" + key + "\",\"value\":0}"));
+                        body = "{\"playerId\":\"test\",\"realmId\":\"test-realm\",\"resources\":[" + resources + "]," +
+                            "\"heroes\":[\"c1001\",\"c1002\",\"c1003\",\"c1004\",\"c1005\",\"c1006\",\"c1007\",\"c1008\",\"c1009\",\"c1010\"],\"artifacts\":[],\"equipment\":[]}";
                         if (line[0] == "POST" && GmRequests.Count == 1) status = "503 Unavailable";
                     }
                     if (line[1].StartsWith("/api/inventory/equipment", StringComparison.Ordinal))
@@ -538,6 +543,14 @@ namespace AstralOath.Client.Tests
             using var services = new ServiceRegistry(owner.Token);
             using var entry = new FoundationEntry();
             var canvas = new GameObject("Prepared home test", typeof(Canvas));
+            if (gm)
+            {
+                canvas.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+                var scaler = canvas.AddComponent<CanvasScaler>();
+                scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+                scaler.referenceResolution = new Vector2(1920, 1080);
+                scaler.matchWidthOrHeight = 1;
+            }
             var assets = new Art();
             services.Add<IAssetService>(assets);
             services.Add<ISceneAssetService>(assets);
@@ -608,7 +621,7 @@ namespace AstralOath.Client.Tests
                     GameButton Row() => panel.Require<ScrollRect>("items").content.GetComponentsInChildren<GameButton>()
                         .FirstOrDefault(button => button.gameObject.activeInHierarchy);
                     yield return DevelopmentGmCapture.Frame(canvas, "entry");
-                    Click("entry");
+                    DevelopmentGmCapture.DragAndTapEntry(panel);
                     yield return new WaitUntil(() => Row() != null);
                     Assert.That(server.GmAuthorization, Is.EqualTo("Bearer sample-test-session"));
                     yield return DevelopmentGmCapture.Frame(canvas, "resources");
@@ -646,6 +659,7 @@ namespace AstralOath.Client.Tests
                     yield return new WaitUntil(() => panel.Require<GameText>("status").text.Contains("已生效"));
                     Assert.That(server.GmRequests.Last(), Does.Contain("\"action\":\"set\"").And.Contain("\"key\":\"gold\"").And.Contain("\"value\":123"));
                     Click("close");
+                    yield return DevelopmentGmCapture.Frame(canvas, "entry-dragged");
                     yield return DevelopmentGmCapture.BattleRoundTrip(canvas, panel);
                     owner.Dispose();
                     yield return null;

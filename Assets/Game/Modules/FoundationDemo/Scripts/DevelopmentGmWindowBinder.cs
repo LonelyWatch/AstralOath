@@ -57,10 +57,13 @@ namespace AstralOath.Client.FoundationDemo
             canvas.overrideSorting = true;
             canvas.sortingOrder = 150;
             view.Root.AddComponent<GraphicRaycaster>();
+            var entry = view.Button("entry");
+            var entryDrag = new DevelopmentGmEntryDrag(entry, owner);
             var home = view.Root.transform.parent;
             GameObject battleArea = null;
             void AttachToScene(Scene previous, Scene next)
             {
+                entryDrag.Cancel();
                 windows.CloseOverlay(Overlay);
                 if (next.path == BattleOnlineLaunch.ScenePath)
                 {
@@ -93,7 +96,7 @@ namespace AstralOath.Client.FoundationDemo
                 SceneManager.activeSceneChanged -= AttachToScene;
                 if (battleArea) Object.Destroy(battleArea);
             });
-            Listen(view.Button("entry"), owner, () => windows.ShowOverlay(Overlay, Open));
+            Listen(entry, owner, () => windows.ShowOverlay(Overlay, Open));
             owner.Add(view.Hide);
         }
 
