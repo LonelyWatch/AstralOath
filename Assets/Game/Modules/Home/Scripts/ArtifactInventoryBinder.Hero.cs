@@ -20,6 +20,7 @@ namespace AstralOath.Client.Home
         private ArtifactInventoryItem[] heroChoices = Array.Empty<ArtifactInventoryItem>();
         private ArtifactInventoryItem bagReturnItem;
         private bool inspectingWorn, paintingOpen, storyTab;
+        private ScrollRect descriptionScroll;
         private float lastHeroListWidth;
         private int lastGestureFrame;
         private float previousPinch;
@@ -62,6 +63,7 @@ namespace AstralOath.Client.Home
         {
             heroPage = ui.Get<BindingMap>("HeroEquipment");
             heroList = HeroControl<ScrollRect>("list");
+            descriptionScroll = HeroControl<GameText>("popupBody").GetComponentInParent<ScrollRect>(true);
             void Click(string key, Action action) => BindAction(scope, HeroControl<GameButton>(key), _ =>
             {
                 if (!busy) action();
@@ -72,8 +74,8 @@ namespace AstralOath.Client.Home
             HeroControl<GameButton>("paintBack").FeedbackSound = GameUiFeedback.Sound.PageBack;
             Click("back", () => ClosePicker());
             Click("change", () => { inspectingWorn = false; Refresh(true); });
-            Click("skillTab", () => { storyTab = false; DrawHeroItem(); });
-            Click("storyTab", () => { storyTab = true; DrawHeroItem(); });
+            Click("skillTab", () => { storyTab = false; DrawHeroItem(); ResetWornDescription(); });
+            Click("storyTab", () => { storyTab = true; DrawHeroItem(); ResetWornDescription(); });
             Click("cardZoom", OpenArtifactPainting);
             Click("popupZoom", OpenArtifactPainting);
             Click("paintBack", () => { paintingOpen = false; Refresh(false); });
@@ -155,9 +157,17 @@ namespace AstralOath.Client.Home
             HeroControl<GameObject>("content").SetActive(selected != null);
             if (reset) { heroList.StopMovement(); heroList.content.anchoredPosition=Vector2.zero; }
             DrawHeroItem();
+            if (reset && inspectingWorn) ResetWornDescription();
             DrawHeroRows();
             if (pending != null) DrawConfirmation();
             return true;
+        }
+
+        private void ResetWornDescription()
+        {
+            if (!descriptionScroll) return;
+            descriptionScroll.StopMovement();
+            descriptionScroll.content.anchoredPosition = Vector2.zero;
         }
 
         private void DrawHeroItem()

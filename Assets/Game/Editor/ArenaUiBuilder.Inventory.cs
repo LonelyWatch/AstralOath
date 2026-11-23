@@ -80,6 +80,7 @@ namespace AstralOath.Editor
             bindings.AddRange(rosterBindings);
             BuildNativeArtifactManagement(root, bag, heroComposition, bindings);
             BuildOwnedEquipment(root, heroComposition, bindings);
+            ApplyHeroRosterPresentation(bindings);
             Bind(root, bindings.ToArray());
             roster.gameObject.SetActive(false);
             return root.gameObject;

@@ -30,7 +30,7 @@ namespace AstralOath.Client.Tests
                 Assert.That(item.activeSelf, Is.False);
                 Assert.That(canvas.GetComponent<AudioSource>(), Is.Not.Null);
                 yield return null;
-                Assert.That(canvas.GetComponent<AudioSource>().isPlaying, Is.True,
+                Assert.That(UiAudioLifetimeTests.Playing(button.GetComponent<AudioSource>().clip), Is.Not.Empty,
                     "A confirmation that closes its own button still plays its click.");
             }
             finally

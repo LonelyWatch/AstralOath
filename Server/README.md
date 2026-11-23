@@ -8,6 +8,24 @@
 
 装备分数从当前主副属性计算。服务端测试直接调用与客户端同源的共享方法，用六组国服实录数值校验。现有库存协议已包含计算所需字段。[装备评分与取整](../Shared/com.astraloath.shared/README.md)
 
+## 开发 GM 自定义锻造
+
+开发端读取 `GET /api/development/gm` 的 `forgeRules`，按服务端给出的部位、等级、品质、套装、主属性和副属性范围填写配方。提交到 `POST /api/development/gm/actions`，动作是 `forgeEquipment`，`key` 为六部位之一，`value` 为生成件数（1 至 10）。`forge` 包含 `itemLevel`、`enhanceLevel`、`grade`、`setId`、`mainKind`、按解锁顺序排列的 `substats[{kind,value,rolls}]`。15 级训练装备仍用原有 `equipment` 动作按模板发放。
+
+70 和 85 级可选 +0 至 +15，90 级仅可选 +15。套装可选速度或暴击。武器主攻击，头盔主生命，铠甲主防御。项链、戒指、鞋可选攻防生的固定值或百分比，项链另可选暴击率和暴击伤害，戒指另可选效果命中和抗性，鞋另可选速度。武器副属性排除防御及防御百分比，铠甲副属性排除攻击及攻击百分比。主副属性和同件副属性不能重名。每项主属性值为该档的 `mainBase + mainStep × enhanceLevel`。有 `rolls` 次掷值的副属性，数值必须在 `rollMin × rolls` 和 `rollMax × rolls` 之间，并符合 `step`。接口的百分比数值以基点表示，100 基点为 1%。各档数值以项目的 [DevelopmentEquipmentForge.cs](Host/Inventory/DevelopmentEquipmentForge.cs) 为准。
+
+各档计算可直接用等级索引 `r` 复算，70、85、90 级的 `r` 依次为 0、1、2。`e` 为强化等级，百分比行以界面显示的百分点表示。以下范围为单掷的上下限，单位均为整数。
+
+- 固定攻击主属性为 `60 + 20r + (22 + 4r)e`，副属性每掷为 `12 + 2r` 至 `22 + 4r`。固定生命主属性为 `280 + 80r + (110 + 20r)e`，每掷为 `65 + 10r` 至 `115 + 15r`。
+- 固定防御主属性为 `40 + 10r + (15 + 3r)e`，每掷为 `10 + 2r` 至 `20 + 2r`。速度主属性为 `6 + 2r + 2e`，每掷为 `1 + r` 至 `3 + r`。
+- 攻防生百分比、效果命中和抗性的主属性为 `8 + 2r + 3e`，每掷为 `3 + r` 至 `6 + r` 个百分点。暴击率主属性为 `4 + r + 3e`，每掷为 `2 + r` 至 `4 + r` 个百分点。暴击伤害主属性为 `10 + 2r + 4e`，每掷为 `3 + r` 至 `6 + r` 个百分点。
+
+每个品质的四个副属性槽按强化等级开放，0 表示初始开放。普通为 [3, 6, 9, 12]，高级为 [0, 3, 6, 9]，稀有为 [0, 0, 9, 12]，英雄为 [0, 0, 0, 12]，传说为 [0, 0, 0, 0]。普通的解锁顺序由本项目设定。每个 +3 里程碑只增加一掷，用于解锁新词条或提升已开放的词条。全件掷数须等于初始词条数加强化等级整除 3，较晚解锁的词条还要共享其后可用的里程碑。例如英雄品质第 4 条于 +12 获得 1 掷，到 +15 最多有 2 掷。高级至传说的开放顺序参照[工具作者公开记录](https://github.com/meowyih/meowyih.github.io/blob/master/epic7-gear/README.md#number-of-substats-for-different-gears)。
+
+请求只向当前认证账号发放。配方不合法返回 `400 invalid_gm_forge`，数量非法返回 `400 invalid_gm_action`，装备容量不足返回 `409 equipment_inventory_full`。账号锁内一次提交库存、库存版本和审计。配方纳入请求摘要，同 ID 同配方重试不会重复入库。开发路由、旧训练发放、并发重试、容量回滚和锻造规则的 15 项服务端测试已通过，含隔离 MySQL 用例，报告位于 `.artifacts/equipment-manage-followup/server/all.trx`。Windows 开发母包内的实际发放和库存刷新需另行验收。
+
+## 服务端运行与测试
+
 .NET 10 模块单体入口位于 `Host`。Foundation 模块持久化 Echo 请求并提供健康检查，`Tests` 覆盖协议和真实 MySQL 集成。开发、迁移和运维命令见 [服务端开发手册](../docs/development/server.md)，模块边界和数据访问决定见 [服务端架构](../docs/architecture/server.md)。
 
 战斗验证入口按房间串行处理两侧命令，并通过事件游标与快照续接。它使用构建时嵌入的 Luban 战斗快照，只在本机 Development 显式开启。启动与请求协议见[战斗第三步](../docs/development/battle-execution.md)。

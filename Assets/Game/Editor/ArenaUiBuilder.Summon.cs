@@ -481,7 +481,7 @@ namespace AstralOath.Editor
 
         private static void BuildSummonModalPanels(RectTransform root, List<(string Key, Object Target)> bindings)
         {
-            var confirm = SummonPanel(root, bindings, "confirmPanel", 0f, .104f, 1f, .792f, SummonArt(QualitySettings.activeColorSpace == ColorSpace.Linear ? "renew_popup_bg_2_linear" : "renew_popup_bg_2_alpha"));
+            var confirm = SummonPanel(root, bindings, "confirmPanel", 0f, .104f, 1f, .792f, softSurface: true);
             confirm.anchorMin = new Vector2(0f, .5f);
             confirm.anchorMax = new Vector2(1f, .5f);
             confirm.pivot = new Vector2(.5f, .5f);
@@ -625,14 +625,14 @@ namespace AstralOath.Editor
         }
 
         private static RectTransform SummonPanel(RectTransform root, List<(string Key, Object Target)> bindings,
-            string key, float x, float y, float width, float height, Sprite background = null)
+            string key, float x, float y, float width, float height, Sprite background = null, bool softSurface = false)
         {
             var host = Area(root, key, 0, 0, 1, 1);
             Paint(host, null, Black(.61f), true);
             bindings.Add((key, host.gameObject));
             var panel = Area(host, "Native panel", x, y, width, height);
-            var surface = background ? background : SummonArt("renew_popup_bg_alpha");
-            Paint(panel, surface, Color.white, true);
+            if (softSurface) PaintSoftModal(panel);
+            else Paint(panel, background ? background : SummonArt("renew_popup_bg_alpha"), Color.white, true);
             host.gameObject.SetActive(false);
             return panel;
         }

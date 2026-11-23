@@ -1212,6 +1212,54 @@ namespace AstralOath.Client.Tests
         }
 
         [UnityTest]
+        public IEnumerator StunnedTurnShowsItsPortraitAndFeedbackBeforeTheNextTurn()
+        {
+            scene = LoadPlayerOpeningScene();
+            yield return null;
+            yield return null;
+            var host = scene.GetRootGameObjects().Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            var simulation = typeof(BattleHudPreview).GetField("simulation", PrivateInstance).GetValue(host);
+            var type = simulation.GetType();
+            var snapshot = (BattleSnapshot)type.GetProperty("Snapshot", PrivateInstance | BindingFlags.Public).GetValue(simulation);
+            var victim = snapshot.Units.First(unit => unit.Slot.Side != snapshot.GetUnit(snapshot.CurrentActorId).Slot.Side);
+            var playback = (System.Collections.Generic.Queue<BattleFlowEvent>)type.GetField("playback", PrivateInstance).GetValue(simulation);
+            var names = (BindingMap)type.GetField("hud", PrivateInstance).GetValue(simulation);
+            var label = names.Require<GameText>("activeName");
+            string followingHero = label.text;
+            BattleFlowEvent Cue(ulong offset, BattleFlowEventKind kind, string actor, BattleStatusKind? status = null) =>
+                BattlePresentationWire.Event(snapshot.LastEventSequence + offset, snapshot.TurnNumber, kind, actor, null, 0,
+                    null, null, BattleActionOrigin.Primary, status, null, null, null, BattleHitKind.None, null, false, null, null);
+            playback.Enqueue(Cue(1, BattleFlowEventKind.TurnStarted, victim.InstanceId));
+            playback.Enqueue(Cue(2, BattleFlowEventKind.TurnSkipped, victim.InstanceId, BattleStatusKind.Stun));
+            playback.Enqueue(Cue(3, BattleFlowEventKind.TurnEnded, victim.InstanceId));
+            playback.Enqueue(Cue(4, BattleFlowEventKind.TurnStarted, snapshot.CurrentActorId));
+
+            var tick = type.GetMethod("Tick");
+            tick.Invoke(simulation, new object[] { .26f });
+            Assert.That(label.text, Is.Not.EqualTo(followingHero));
+            Assert.That(names.Require<Image>("activePortrait").sprite.name, Is.EqualTo(victim.DefinitionId + "_su"));
+            Assert.That(names.Require<GameButton>("skill1").gameObject.activeInHierarchy, Is.False);
+            Assert.That(scene.GetRootGameObjects().SelectMany(root => root.GetComponentsInChildren<GameText>())
+                .Any(text => text.text == "无法行动"), Is.True);
+            string capture = Environment.GetEnvironmentVariable("ASTRAL_BATTLE_CAPTURE_DIR");
+            if (!string.IsNullOrEmpty(capture))
+            {
+                // The capture yields a player-loop frame. Keep its wall time out of the manual turn clock.
+                var pause = type.GetMethod("SetPaused");
+                pause.Invoke(simulation, new object[] { true });
+                try { yield return BattleActionFeedbackVisualTests.CaptureScene(scene, "stunned-turn", capture); }
+                finally { pause.Invoke(simulation, new object[] { false }); }
+            }
+            Assert.That(playback.Count, Is.EqualTo(2));
+            tick.Invoke(simulation, new object[] { .59f });
+            Assert.That(label.text, Is.Not.EqualTo(followingHero));
+            Assert.That(playback.Count, Is.EqualTo(2));
+            tick.Invoke(simulation, new object[] { .19f });
+            Assert.That(playback, Is.Empty);
+            Assert.That(label.text, Is.EqualTo(followingHero));
+        }
+
+        [UnityTest]
         public IEnumerator StunStarsFollowTheCharacterAndStopWhenTheStatusClears()
         {
             scene = LoadPlayerOpeningScene();

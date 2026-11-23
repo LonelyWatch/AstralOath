@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AstralOath.Client.Common;
 using AstralOath.Client.Core;
 using UnityEngine.SceneManagement;
 using YooAsset;
@@ -62,6 +63,26 @@ namespace AstralOath.Client.Bootstrap
             await WaitAsync(version, deadline.Token);
             await WaitAsync(package.UpdatePackageManifestAsync(version.PackageVersion, 15), deadline.Token);
             PackageVersion = version.PackageVersion;
+            if (packageId == PackageName) UiAudioPlayback.AcquireClipLease = RetainUiClip;
+        }
+
+        private Action RetainUiClip(UnityEngine.AudioClip clip)
+        {
+            string address = UiAudioPlayback.ClipAddress(clip.name);
+            if (!package.CheckLocationValid(address)) return null; // Runtime clips and built-in entry sounds can have no package entry.
+            if (package.IsNeedDownloadFromRemote(address))
+                throw new InvalidOperationException("UI audio was not prepared locally: " + address);
+            var handle = package.LoadAssetSync<UnityEngine.AudioClip>(address);
+            if (handle.Status != EOperationStatus.Succeed)
+            {
+                string error = handle.LastError;
+                handle.Release();
+                throw new InvalidOperationException($"Cannot retain UI audio {address}: {error}");
+            }
+            if (handle.AssetObject == clip) return () => { if (handle.IsValid) handle.Release(); };
+            // A Resources clip can share its name with a packaged clip, e.g. the startup confirm button.
+            handle.Release();
+            return null;
         }
 
         public async Task<T> LoadAsync<T>(string address, BindingScope scope) where T : UnityEngine.Object
@@ -160,6 +181,7 @@ namespace AstralOath.Client.Bootstrap
             if (disposed)
                 return;
             disposed = true;
+            if (packageId == PackageName) UiAudioPlayback.AcquireClipLease = null;
             YooAssets.Destroy();
         }
     }

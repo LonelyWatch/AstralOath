@@ -16,6 +16,55 @@ namespace AstralOath.Client.Tests
     public sealed partial class HeroInventoryOnlineTests
     {
         [UnityTest]
+        public IEnumerator ManagementTransferConfirmationShowsEveryNoteAndCancelsWithoutMutation()
+        {
+            var url = Environment.GetEnvironmentVariable("ASTRAL_EQUIPMENT_TEST_URL");
+            if (!Uri.TryCreate(url,UriKind.Absolute,out var endpoint) || !endpoint.IsLoopback)
+                Assert.Ignore("Requires the isolated training equipment service.");
+            using var scope = new AstralOath.Client.Core.BindingScope(CancellationToken.None);
+            using var arena = new Arena.ArenaApi(endpoint,scope.Token);
+            var login = arena.GetSessionTokenAsync("Gear transfer QA",scope.Token);
+            yield return Wait(() => login.IsCompleted,"Guest login did not complete.");
+            string bearer = login.GetAwaiter().GetResult();
+            Task<string> Token(CancellationToken _) => Task.FromResult(bearer);
+            using var heroes = new HeroInventoryApi(endpoint,Token,scope.Token);
+            using var equipment = new EquipmentInventoryApi(endpoint,Token,scope.Token);
+            var roster = heroes.FetchAsync(scope.Token);
+            var read = equipment.FetchAsync(scope.Token);
+            yield return Wait(() => roster.IsCompleted && read.IsCompleted,"Could not read the training account.");
+            var owned = roster.GetAwaiter().GetResult().heroes;
+            var inventory = read.GetAwaiter().GetResult();
+            var weapons = inventory.items.Where(item => item.slot == "weapon").ToArray();
+            var first = equipment.ChangeAsync("equip",Guid.NewGuid().ToString("N"),owned[0].instanceId,
+                weapons[0].instanceId,"weapon",inventory.version,scope.Token);
+            yield return Wait(() => first.IsCompleted,"Could not equip the first hero.");
+            var second = equipment.ChangeAsync("equip",Guid.NewGuid().ToString("N"),owned[1].instanceId,
+                weapons[1].instanceId,"weapon",first.GetAwaiter().GetResult().version,scope.Token);
+            yield return Wait(() => second.IsCompleted,"Could not equip the second hero.");
+            long version = second.GetAwaiter().GetResult().version;
+            var opening = OpenArtifactWindow(true,scope,heroes,null,null,equipment);
+            yield return Wait(() => opening.IsCompleted,"Could not open equipment management.");
+            var page = opening.GetAwaiter().GetResult();
+            Click(page,"gearManage");
+            var browser = page.Require<BindingMap>("gearBrowser");
+            Click(VisibleRows(browser,"items").Single(row => row.name == weapons[1].instanceId),"select");
+            Click(browser,"apply");
+            var notes = browser.Require<GameText>("manageChange");
+            Assert.That(notes.text.Split('\n').Length,Is.GreaterThanOrEqualTo(2));
+            Canvas.ForceUpdateCanvases();
+            notes.ForceMeshUpdate();
+            Assert.That(notes.isTextOverflowing,Is.False,"Replacement and transfer notes must both be readable.");
+            yield return Capture("equipment-manager-transfer-confirm",1478,720);
+            Click(browser,"manageCancel");
+            read = equipment.FetchAsync(scope.Token);
+            yield return Wait(() => read.IsCompleted,"Could not verify cancelled transfer.");
+            var after = read.GetAwaiter().GetResult();
+            Assert.That(after.version,Is.EqualTo(version));
+            Assert.That(after.items.Single(item => item.instanceId == weapons[0].instanceId).equippedHeroId,Is.EqualTo(owned[0].instanceId));
+            Assert.That(after.items.Single(item => item.instanceId == weapons[1].instanceId).equippedHeroId,Is.EqualTo(owned[1].instanceId));
+        }
+
+        [UnityTest]
         public IEnumerator WornBagFiltersOpensTheWearerAndReturnsToItsRows()
         {
             string url = Environment.GetEnvironmentVariable("ASTRAL_EQUIPMENT_TEST_URL");
@@ -85,12 +134,21 @@ namespace AstralOath.Client.Tests
             var weapon = weapons.Last();
             Click(page,"gearManage");
             Assert.That(browser.Require<GameObject>("pickerSurface").activeInHierarchy,Is.True);
+            foreach (string slot in new[] {"weapon","helmet","armor","necklace","ring","boots"})
+            {
+                var rect = (RectTransform)browser.Require<BindingMap>("managePreview_" + slot).transform;
+                Assert.That(float.IsNaN(rect.anchoredPosition.y) || float.IsInfinity(rect.anchoredPosition.y),Is.False,slot);
+            }
             Assert.That(browser.Require<GameObject>("detail").activeSelf,Is.False);
             Assert.That(browser.Require<GameText>("managePrompt").isActiveAndEnabled,Is.True);
             Assert.That(browser.Require<GameButton>("apply").interactable,Is.False);
+            Assert.That(browser.Require<GameButton>("apply").targetGraphic.color.r,Is.LessThan(.6f));
+            Assert.That(browser.Require<BindingMap>("managePreview_attack").gameObject.activeSelf,Is.True);
             yield return Capture("equipment-manager-before",1478,720);
-            Click(browser,"filter_helmet");
+            yield return CheckManagementFilters(browser);
+            Click(browser,"managePreviewSelect_helmet");
             Assert.That(VisibleRows(browser,"items").Length,Is.EqualTo(1));
+            Assert.That(browser.Require<Image>("active_helmet").enabled, Is.True);
             Click(browser,"filter_weapon");
             Assert.That(VisibleRows(browser,"items").Length,Is.EqualTo(2));
             Click(VisibleRows(browser,"items").Single(m => m.name == weapon.instanceId),"select");
@@ -98,6 +156,9 @@ namespace AstralOath.Client.Tests
             var preview = browser.Require<BindingMap>("managePreview_weapon").Require<Image>("item");
             Assert.That(current.enabled,Is.False);
             Assert.That(preview.isActiveAndEnabled && preview.sprite,Is.True);
+            var previewFrame = browser.Require<BindingMap>("managePreview_weapon").Require<Image>("frame");
+            Assert.That(previewFrame.rectTransform.rect.width,Is.GreaterThan(20));
+            Assert.That(previewFrame.rectTransform.rect.height,Is.GreaterThan(20));
             Assert.That(browser.Require<GameText>("manageDescription").text,Is.Not.Empty);
             Assert.That(int.TryParse(browser.Require<BindingMap>("manageScore").Require<GameText>("value").text,out _),Is.True);
             string proposed = browser.Require<BindingMap>("managePreview_attack").Require<GameText>("value").text;
@@ -105,9 +166,15 @@ namespace AstralOath.Client.Tests
             Assert.That(difference.text,Does.StartWith("+"));
             Assert.That((Color32)difference.color,Is.EqualTo(new Color32(255,149,41,255)));
             yield return Capture("equipment-manager-preview",1478,720);
+            yield return Capture("equipment-manager-preview-4x3",1280,960);
+            yield return Capture("equipment-manager-preview-21x9",1920,823);
             Click(browser,"apply");
             Assert.That(browser.Require<GameObject>("managementQuote").activeInHierarchy,Is.True);
-            Assert.That(browser.Require<GameText>("manageChange").text,Does.Contain("→"));
+            Assert.That(browser.Require<GameText>("manageQuoteBefore").text,Does.Contain("53"));
+            Assert.That(browser.Require<GameText>("manageQuoteAfter").text,Does.Contain(proposed));
+            var deltaText = browser.Require<GameText>("manageQuoteDelta");
+            Assert.That(deltaText.text,Does.Contain("+30"));
+            Assert.That(deltaText.richText,Is.True);
             yield return Capture("equipment-manager-confirm",1478,720);
             Click(browser,"manageCancel");
             read = equipment.FetchAsync(scope.Token);

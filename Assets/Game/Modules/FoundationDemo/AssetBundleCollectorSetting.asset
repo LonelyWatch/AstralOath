@@ -224,6 +224,35 @@ MonoBehaviour:
         FilterRuleName: EntryThemeFilterRule
         AssetTags:
         UserData:
+    - GroupName: UiAudio
+      GroupDesc:
+      AssetTags:
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Game/Common/Res/Sounds
+        CollectorGUID: 71707becd2955c3b8d7fa1b58277691a
+        CollectorType: 0
+        AddressRuleName: UiAudioClipAddress
+        PackRuleName: PackDirectory
+        FilterRuleName: UiAudioClipFilter
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/Summon/Res/Presentation
+        CollectorGUID: 0a8afb2f7f495e73a0bafd0f372e17dc
+        CollectorType: 0
+        AddressRuleName: UiAudioClipAddress
+        PackRuleName: PackDirectory
+        FilterRuleName: UiAudioClipFilter
+        AssetTags:
+        UserData:
+      - CollectPath: Assets/Game/Modules/BattleScene/Res/Sounds/PvpGate
+        CollectorGUID: 2e19e5cda1af51f69d42011045e906e5
+        CollectorType: 0
+        AddressRuleName: UiAudioClipAddress
+        PackRuleName: PackDirectory
+        FilterRuleName: UiAudioClipFilter
+        AssetTags:
+        UserData:
   - PackageName: CharacterLab
     PackageDesc:
     EnableAddressable: 1

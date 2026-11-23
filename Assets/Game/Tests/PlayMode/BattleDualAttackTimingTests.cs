@@ -22,6 +22,35 @@ namespace AstralOath.Client.Tests
         private Scene scene;
 
         [UnityTest]
+        public IEnumerator AitherShowsEveryGlyphOfHisFirstSkillOnTheHud()
+        {
+            scene = BattleScenePreviewTests.LoadPlayerOpeningScene("c1018");
+            yield return null;
+            yield return null;
+            var host = scene.GetRootGameObjects().Select(root => root.GetComponent<BattleHudPreview>()).Single(item => item);
+            var simulation = Field(host, "simulation");
+            var map = host.GetComponentInChildren<BindingMap>();
+            map.Require<GameButton>("skill1").onClick.Invoke();
+            Assert.That(host.TrySelectBattleTarget("enemy-1"), Is.True);
+            Call(simulation, "Tick", .16f);
+            var banner = map.transform.Find("Top Bar/Skill Use Banner");
+            Assert.That(banner.gameObject.activeInHierarchy, Is.True);
+            var name = banner.Find("Skill Name").GetComponent<GameText>();
+            Assert.That(banner.Find("Caster Name").GetComponent<GameText>().text, Is.EqualTo("埃德勒"));
+            Assert.That(name.text, Is.EqualTo("精灵的絮语"));
+            Canvas.ForceUpdateCanvases();
+            name.ForceMeshUpdate();
+            var glyphs = name.textInfo.characterInfo.Take(name.textInfo.characterCount).Where(glyph => glyph.isVisible)
+                .Select(glyph => glyph.character).ToArray();
+            Assert.That(new string(glyphs), Is.EqualTo(name.text), "Each character must produce a visible TMP quad in the second row.");
+            Assert.That(banner.GetComponent<Canvas>().sortingOrder, Is.GreaterThan(map.Require<GameButton>("pause").GetComponent<Canvas>().sortingOrder));
+            // Hold this action frame while the capture helper switches the camera to its 1080p target.
+            Call(simulation, "SetPaused", true);
+            yield return BattleActionFeedbackVisualTests.CaptureScene(scene, "aither-skill-banner", Environment.GetEnvironmentVariable("ASTRAL_BATTLE_CAPTURE_DIR"));
+            Assert.That(banner.gameObject.activeInHierarchy, Is.True);
+        }
+
+        [UnityTest]
         public IEnumerator PassiveSupportPresentsAllAuthoritativeRecipients()
         {
             scene = EditorSceneManager.LoadSceneInPlayMode("Assets/Game/Modules/BattleScene/Scenes/BattleScene.unity",

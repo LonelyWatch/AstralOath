@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AstralOath.Client.Common;
 using AstralOath.Client.Skeletons;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
@@ -26,6 +27,7 @@ namespace AstralOath.Client.BattleScene
         private readonly RawImage picture;
         private RenderTexture texture;
         private readonly AudioSource audio;
+        private readonly UiAudioPlayback.OneShots doorSounds = new UiAudioPlayback.OneShots();
         private readonly Dictionary<string, ISkeletonPlayer> players = new Dictionary<string, ISkeletonPlayer>(StringComparer.Ordinal);
         private readonly Dictionary<string, Texture2D> textures;
         private readonly Dictionary<string, TextAsset> particles;
@@ -141,20 +143,23 @@ namespace AstralOath.Client.BattleScene
                         throw new FormatException($"Unsupported online battle transition layer '{source}'.");
                 }
             }
-            if (sound) audio.PlayOneShot(sound);
-
-            float elapsed = 0f;
-            bool playing = Advance(elapsed, 0f);
-            while (playing)
+            var cue = sound ? doorSounds.Play(audio, sound) : null;
+            try
             {
-                await Task.Yield();
-                token.ThrowIfCancellationRequested();
-                UpdateProjection();
-                float delta = FrameDelta();
-                elapsed += delta;
-                playing = Advance(elapsed, delta);
+                float elapsed = 0f;
+                bool playing = Advance(elapsed, 0f);
+                while (playing)
+                {
+                    await Task.Yield();
+                    token.ThrowIfCancellationRequested();
+                    UpdateProjection();
+                    float delta = FrameDelta();
+                    elapsed += delta;
+                    playing = Advance(elapsed, delta);
+                }
+                if (!hold) ClearEffects();
             }
-            if (!hold) ClearEffects();
+            finally { if (cue && token.IsCancellationRequested) cue.FadeOut(); }
         }
 
         private void AddLayer(JObject row, ISkeletonPlayer player)
@@ -302,6 +307,7 @@ namespace AstralOath.Client.BattleScene
         {
             if (disposed) return;
             disposed = true;
+            doorSounds.FadeOut();
             ClearEffects();
             foreach (var player in players.Values) player.Dispose();
             players.Clear();

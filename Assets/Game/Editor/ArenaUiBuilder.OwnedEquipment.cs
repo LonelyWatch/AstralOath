@@ -34,6 +34,9 @@ namespace AstralOath.Editor
                 if (previous) Object.DestroyImmediate(previous.gameObject);
                 var roster = (RectTransform)retained.First(item => item.Key == "rosterComposition").Target;
                 BuildOwnedEquipment((RectTransform)root.transform,roster,retained);
+                ApplyHeroRosterPresentation(retained);
+                var artifact = (BindingMap)retained.First(item => item.Key == "artifactHeroEquipment").Target;
+                ApplyWornArtifactInsets(artifact.Require<GameText>("popupBody").rectTransform);
                 Bind((RectTransform)root.transform,retained.ToArray());
                 if (!PrefabUtility.SaveAsPrefabAsset(root,HeroInventoryPrefabPath))
                     throw new IOException("Unable to save the equipment inventory panel.");
@@ -81,7 +84,6 @@ namespace AstralOath.Editor
                 outer.Add(("gearOpen_" + slots[i], button));
             }
             outer.Add(("gearManage", Clickable(detail.Find("roster_manage_equipment").GetComponent<Image>())));
-            outer.Add(("gearSets", detail.Find("No equipment set").GetComponent<GameText>()));
 
             var frame = Area(root, "Equipment browser", 0, 0, 1, 1);
             var shade = Button(Area(frame, "Dismiss backdrop", 0, 0, 1, 1), null, Black(.68f));
@@ -113,7 +115,6 @@ namespace AstralOath.Editor
             {
                 Catalog("grade_" + grades[i], "_itembg_equip_" + (i + 1));
                 Catalog("detail_" + grades[i], "_box_equip_" + (i + 1) + "b");
-                Catalog("managePlate_" + grades[i], "_box_equip_" + (i + 1));
             }
             Catalog("set_speed", "icon_set_speed");
             Catalog("set_critical", "icon_set_cri");

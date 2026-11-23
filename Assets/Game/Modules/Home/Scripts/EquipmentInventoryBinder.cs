@@ -91,7 +91,11 @@ namespace AstralOath.Client.Home
                 scope.Add(() => { if (button) button.onClick.RemoveListener(handler); });
             }
             foreach (string slot in Slots)
+            {
                 Listen(page.Require<GameButton>("gearOpen_" + slot), () => Show(true,slot));
+                Listen(Get<GameButton>("manageCurrentSelect_" + slot), () => Filter(slot));
+                Listen(Get<GameButton>("managePreviewSelect_" + slot), () => Filter(slot));
+            }
             foreach (var pane in new[] { ui, bagPane })
             {
                 foreach (string slot in Slots) Listen(pane.Require<GameButton>("filter_" + slot), () => Filter(slot));
@@ -101,6 +105,8 @@ namespace AstralOath.Client.Home
             Listen(bagPane.Require<GameButton>("filter_all"), () => Filter(null));
             Listen(bagPane.Require<GameButton>("remove"), () => Prepare("unequip"));
             Listen(Get<GameButton>("manageReset"), () => { if (!busy) { selected = null; PaintDetail(); } });
+            Listen(Get<GameButton>("manageSetFilter"), NextManagementSet);
+            Listen(Get<GameButton>("manageSort"), ToggleManagementSort);
             Listen(Get<GameButton>("manageCancel"), CloseDialog);
             Listen(Get<GameButton>("manageConfirm"), () => { if (!busy && targetId != null) _ = SubmitAsync(scope.Token); });
             Listen(page.Require<GameButton>("gearManage"), () => Show(true,null));
@@ -111,6 +117,7 @@ namespace AstralOath.Client.Home
             Listen(Get<GameButton>("cancel"), CloseDialog);
             Listen(Get<GameButton>("confirm"), () => { if (!busy && targetId != null) _ = SubmitAsync(scope.Token); });
             BindSingleSlot(scope);
+            BindManagementFilters(scope);
             api.RemoteInventoryChanged += OnRemoteInventory;
             scope.Add(() =>
             {
@@ -224,9 +231,7 @@ namespace AstralOath.Client.Home
         internal void PaintSlots(string hero)
         {
             PaintWornSlots(slots, hero);
-            var sets = EquipmentStatCalculator.ActiveSets(Pieces(hero));
-            page.Require<GameText>("gearSets").text = sets.Count == 0 ? locale.Resolve("home.hero_inventory.roster_no_set") :
-                string.Join("  ", sets.Select(pair => F("setCount",SetName(pair.Key),pair.Value)));
+            PaintRosterSets(hero);
         }
 
         internal void Show(bool fromHero, string slot)
@@ -234,6 +239,9 @@ namespace AstralOath.Client.Home
             if (TryShowSingleSlot(fromHero,slot)) return;
             picker = fromHero;
             filter = fromHero ? "weapon" : slot;
+            managementSet = 0;
+            ResetManagementFilters();
+            managementSortByScore = false;
             selected = null;
             ui.gameObject.SetActive(true);
             Get<GameObject>("pickerSurface").SetActive(picker);
@@ -249,6 +257,7 @@ namespace AstralOath.Client.Home
         {
             if (!ui.gameObject.activeInHierarchy) return false;
             if (Get<GameObject>("dialog").activeSelf) { if (!busy) CloseDialog(); return true; }
+            if (CloseManagementFilter()) return true;
             if (BackSingleSlot()) return true;
             if (!picker) return false;
             Hide();
@@ -261,7 +270,8 @@ namespace AstralOath.Client.Home
             if (!string.IsNullOrEmpty(item.templateId) && art.TryGetValue(item.templateId, out var icon)) return icon;
             return art.TryGetValue(item.slot, out var fallback) ? fallback : null;
         }
-        private string ItemName(EquipmentInventoryItem item) => F("title", L(item.slot));
+        private string ItemName(EquipmentInventoryItem item) => F(
+            item.templateId?.StartsWith("gm_forge_", StringComparison.Ordinal) == true ? "forgeTitle" : "title", L(item.slot));
         private string ItemDescription(EquipmentInventoryItem item)
         {
             try { return L("description." + item.templateId); }
@@ -320,6 +330,7 @@ namespace AstralOath.Client.Home
             }
             foreach (string key in Slots) SetFilterActive(key,filter == key);
             var filtered = Items.Where(row => filter == null || row.slot == filter);
+            if (Managing) filtered = ManagementCandidates(filtered);
             if (!picker)
             {
                 var sorted = orderByLevelAscending ? filtered.OrderBy(i => i.itemLevel).ThenBy(i => i.enhanceLevel) :
@@ -430,6 +441,7 @@ namespace AstralOath.Client.Home
             var after = old.Where(row => row.slot != selected.slot).ToList();
             if (equip) after.Add(selected);
             var lines = new List<string>();
+            int[] first = null, last = null;
             var prior = old.FirstOrDefault(row => row.slot == selected.slot);
             if (equip && prior != null) lines.Add(F("replace",ItemName(prior)));
             if (equip && !string.IsNullOrEmpty(selected.equippedHeroId)) lines.Add(F("transfer",heroName(selected.equippedHeroId)));
@@ -446,18 +458,17 @@ namespace AstralOath.Client.Home
                     newSets.TryGetValue(key,out int next);
                     if (before != next) lines.Add(SetName(key) + "　×" + before + " → ×" + next);
                 }
-                var first = PanelValues(targetId,plain,beforePieces);
-                var last = PanelValues(targetId,plain,afterPieces);
-                for (int i = 0; i < first.Length; ++i)
-                {
-                    if (first[i] != last[i]) lines.Add(L(PanelKeys[i]) + "　" + PanelValue(i,first[i]) + " → " + PanelValue(i,last[i]));
-                }
+                first = PanelValues(targetId,plain,beforePieces);
+                last = PanelValues(targetId,plain,afterPieces);
+                if (!Managing)
+                    for (int i = 0; i < first.Length; ++i)
+                        if (first[i] != last[i]) lines.Add(L(PanelKeys[i]) + "　" + PanelValue(i,first[i]) + " → " + PanelValue(i,last[i]));
             }
             Get<GameText>("change").text = lines.Count == 0 ? L("noStatChange") : string.Join("\n",lines);
             if (Managing)
             {
                 Get<GameText>("manageSummary").text = Get<GameText>("summary").text;
-                Get<GameText>("manageChange").text = Get<GameText>("change").text;
+                PaintManagementQuote(first,last,lines);
             }
         }
 

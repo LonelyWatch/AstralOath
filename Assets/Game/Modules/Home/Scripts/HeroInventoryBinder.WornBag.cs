@@ -28,12 +28,21 @@ namespace AstralOath.Client.Home
             Canvas.willRenderCanvases += OnRosterResized;
             var current = portrait = new HeroRosterPortrait(view.DetailPortrait, portraitSources);
             Canvas.willRenderCanvases += current.Tick;
-            owner.Add(() =>
+            bool released = false;
+            void Release()
             {
+                if (released) return;
+                released = true;
                 Canvas.willRenderCanvases -= OnRosterResized;
                 Canvas.willRenderCanvases -= current.Tick;
                 current.Dispose();
-                portrait = null;
+                if (portrait == current) portrait = null;
+            }
+            var onDestroy = view.Root.GetComponent<BindingMap>().destroyCancellationToken.Register(Release);
+            owner.Add(() =>
+            {
+                onDestroy.Dispose();
+                Release();
             });
         }
 
@@ -74,6 +83,9 @@ namespace AstralOath.Client.Home
             }
             view.Search.SetTextWithoutNotify("");
             selected = wearer;
+            preferredRosterId = wearer.instanceId;
+            ResetRosterFilterValues();
+            PaintRosterFilters();
             SetExpanded(false);
             Refresh(resetScroll: true, revealSelected: true);
             if (manage) equipment.Show(true, null);

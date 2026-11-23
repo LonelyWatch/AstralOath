@@ -31,6 +31,7 @@ namespace AstralOath.Client.Common
         private BindingScope current;
         private bool retainBindingWhileHidden;
         private bool dispatching;
+        private UiAudioPlayback.OneShots standaloneSounds;
 
         public GameUiFeedback.Sound FeedbackSound { get => feedbackSound; set => feedbackSound = value; }
         public bool BlockedFeedback { get => blockedFeedback; set => blockedFeedback = value; }
@@ -139,6 +140,9 @@ namespace AstralOath.Client.Common
             if (!dispatching && IsActive() && IsInteractable()) GameUiFeedback.Play(this, feedbackSound, clickAudio);
         }
 
+        internal void PlayStandaloneSound(AudioSource settings, AudioClip clip) =>
+            (standaloneSounds ??= new UiAudioPlayback.OneShots()).Play(settings, clip);
+
         // A header can be covered by an exclusive child page. Its navigation action belongs
         // to the window scope, including a return already in flight when it is covered.
         public void BindBack(BindingScope owner, Func<Task> navigate)
@@ -200,7 +204,7 @@ namespace AstralOath.Client.Common
         protected override void OnDisable()
         {
             onClick.RemoveListener(PlayClickSound);
-            if (clickAudio) clickAudio.Stop();
+            standaloneSounds?.FadeOut();
             try { if (!retainBindingWhileHidden) Unbind(); }
             finally { base.OnDisable(); }
         }

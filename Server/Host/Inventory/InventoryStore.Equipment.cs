@@ -182,7 +182,8 @@ internal sealed partial class InventoryStore
     private static async Task GrantTrainingEquipment(MySqlConnection connection, MySqlTransaction tx, string playerId,
         int capacity, CancellationToken ct)
     {
-        await InsertTrainingItems(connection, tx, playerId, capacity, TrainingItems.Value, "development-training-v1", ct);
+        await InsertEquipment(connection, tx, playerId, capacity, TrainingItems.Value.Select(item => item.ToGrant()).ToArray(),
+            "development-training-v1", ct);
         using var issued = Command(connection, tx, """
             UPDATE inventory_equipment_capacity SET revision = revision + 1, training_granted = TRUE
             WHERE player_id = @player AND realm_id = @realm;
@@ -192,24 +193,26 @@ internal sealed partial class InventoryStore
             playerId, "realm", EntryEndpoints.RealmId, null, ct);
     }
 
+    internal static EquipmentGrant GetTrainingGrant(string template) =>
+        TrainingItems.Value.FirstOrDefault(row => row.TemplateId == template)?.ToGrant()
+        ?? throw new EntryProblem(400, "invalid_gm_template");
+
     internal static async Task GrantGmEquipment(MySqlConnection connection, MySqlTransaction tx, string playerId,
-        string template, int quantity, string requestId, CancellationToken ct)
+        EquipmentGrant item, int quantity, string requestId, CancellationToken ct)
     {
-        var item = TrainingItems.Value.FirstOrDefault(row => row.TemplateId == template)
-            ?? throw new EntryProblem(400, "invalid_gm_template");
         using var header = Command(connection, tx, """
             SELECT capacity FROM inventory_equipment_capacity WHERE player_id = @player AND realm_id = @realm;
             """, playerId);
         int capacity = Convert.ToInt32(await header.ExecuteScalarAsync(ct));
-        await InsertTrainingItems(connection, tx, playerId, capacity, Enumerable.Repeat(item, quantity).ToArray(), "gm-" + requestId, ct);
+        await InsertEquipment(connection, tx, playerId, capacity, Enumerable.Repeat(item, quantity).ToArray(), "gm-" + requestId, ct);
         using var revision = Command(connection, tx, """
             UPDATE inventory_equipment_capacity SET revision = revision + 1 WHERE player_id = @player AND realm_id = @realm;
             """, playerId);
         await revision.ExecuteNonQueryAsync(ct);
     }
 
-    private static async Task InsertTrainingItems(MySqlConnection connection, MySqlTransaction tx, string playerId,
-        int capacity, IReadOnlyList<TrainingEquipment> items, string source, CancellationToken ct)
+    private static async Task InsertEquipment(MySqlConnection connection, MySqlTransaction tx, string playerId,
+        int capacity, IReadOnlyList<EquipmentGrant> items, string source, CancellationToken ct)
     {
         using var count = Command(connection, tx, """
             SELECT COUNT(*) FROM inventory_equipment WHERE player_id = @player AND realm_id = @realm;
@@ -223,13 +226,15 @@ internal sealed partial class InventoryStore
             using var add = Command(connection, tx, """
                 INSERT INTO inventory_equipment (instance_id,player_id,realm_id,template_id,slot,set_id,item_level,
                     enhance_level,grade,main_kind,main_value,source_ref,source_index)
-                VALUES (@id,@player,@realm,@template,@slot,@set,15,0,@grade,@kind,@value,@source,@index);
+                VALUES (@id,@player,@realm,@template,@slot,@set,@level,@enhance,@grade,@kind,@value,@source,@index);
                 """, playerId);
             add.Parameters.AddWithValue("@id", instance);
             add.Parameters.AddWithValue("@template", item.TemplateId);
             add.Parameters.AddWithValue("@slot", item.Slot);
             add.Parameters.AddWithValue("@set", item.SetId);
-            add.Parameters.AddWithValue("@grade", item.Substats.Length == 0 ? "normal" : "good");
+            add.Parameters.AddWithValue("@grade", item.Grade);
+            add.Parameters.AddWithValue("@level", item.ItemLevel);
+            add.Parameters.AddWithValue("@enhance", item.EnhanceLevel);
             add.Parameters.AddWithValue("@kind", item.MainStat.Kind);
             add.Parameters.AddWithValue("@value", item.MainStat.Value);
             add.Parameters.AddWithValue("@index", index);

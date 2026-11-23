@@ -10,6 +10,21 @@ namespace AstralOath.Client.Tests
     public sealed class SingleSlotEquipmentTests
     {
         [Test]
+        public void EquippedPopupKeepsPortraitProportionsAndSolidReadingSurface()
+        {
+            var window = AssetDatabase.LoadAssetAtPath<GameObject>(
+                "Assets/Game/Modules/Home/Res/Prefab/SingleSlotEquipment.prefab").GetComponent<BindingMap>();
+            var panel = window.Require<GameObject>("popup").transform.Find("Detail safe area/Equipment details");
+            var ratio = panel.GetComponent<AspectRatioFitter>();
+            Assert.That(ratio, Is.Not.Null);
+            Assert.That(ratio.aspectMode, Is.EqualTo(AspectRatioFitter.AspectMode.FitInParent));
+            Assert.That(ratio.aspectRatio, Is.InRange(.64f,.68f));
+            var surface = panel.GetComponent<Image>();
+            Assert.That(surface.sprite, Is.Null);
+            Assert.That(surface.color.a, Is.EqualTo(1f));
+        }
+
+        [Test]
         public void ComparisonTextRetainsSolidStrokesAtItsDisplayedSize()
         {
             var page = AssetDatabase.LoadAssetAtPath<GameObject>(
@@ -92,7 +107,9 @@ namespace AstralOath.Client.Tests
             }
             var current = slot.Require<BindingMap>("current");
             var candidate = slot.Require<BindingMap>("candidate");
-            var fitters = slot.GetComponentsInChildren<AspectRatioFitter>(true);
+            var fitters = new[] { current, candidate, slot.Require<BindingMap>("popupItem"),
+                slot.Require<GameObject>("row").GetComponent<BindingMap>() }
+                .SelectMany(column => column.Require<BindingMap>("card").GetComponentsInParent<AspectRatioFitter>(true).Take(1)).ToArray();
             Assert.That(fitters.Length, Is.EqualTo(4));
             Assert.That(fitters.All(f => f.aspectMode == AspectRatioFitter.AspectMode.FitInParent && f.aspectRatio == 1f),
                 "The square thumbnail ratios must survive serialization off-canvas.");

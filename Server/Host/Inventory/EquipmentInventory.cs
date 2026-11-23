@@ -6,12 +6,17 @@ internal sealed record EquipmentInventory(int Capacity, int Used, long Version, 
 internal sealed record OwnedEquipment(string InstanceId, string TemplateId, string Slot, string SetId, int ItemLevel,
     int EnhanceLevel, string Grade, OwnedEquipmentStat MainStat, IReadOnlyList<OwnedEquipmentStat> Substats, string? EquippedHeroId);
 internal sealed record OwnedEquipmentStat(string Kind, int Value);
+internal sealed record EquipmentGrant(string TemplateId, string Slot, string SetId, int ItemLevel, int EnhanceLevel,
+    string Grade, OwnedEquipmentStat MainStat, OwnedEquipmentStat[] Substats);
 internal sealed record EquipmentMutation(string? RequestId, string? Action, string? InstanceId,
     string? HeroInstanceId, string? Slot, long? ExpectedVersion);
 
 internal sealed record TrainingEquipment(string TemplateId, string Slot, string SetId, OwnedEquipmentStat MainStat,
     OwnedEquipmentStat[] Substats)
 {
+    internal EquipmentGrant ToGrant() =>
+        new(TemplateId, Slot, SetId, 15, 0, Substats.Length == 0 ? "normal" : "good", MainStat, Substats);
+
     internal static IReadOnlyList<TrainingEquipment> Read()
     {
         using var resource = typeof(TrainingEquipment).Assembly.GetManifestResourceStream("AstralOath.TrainingEquipment")

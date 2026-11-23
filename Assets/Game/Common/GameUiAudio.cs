@@ -6,6 +6,7 @@ namespace AstralOath.Client.Common
     internal sealed class GameUiAudio : MonoBehaviour
     {
         private AudioSource output;
+        private readonly UiAudioPlayback.OneShots sounds = new UiAudioPlayback.OneShots();
 
         internal void Play(AudioClip clip, float volume)
         {
@@ -16,10 +17,10 @@ namespace AstralOath.Client.Common
                 output.spatialBlend = 0f;
                 output.ignoreListenerPause = true;
             }
-            output.PlayOneShot(clip, volume);
+            sounds.Play(output, clip, volume);
         }
 
-        private void OnDisable() { if (output) output.Stop(); }
+        private void OnDisable() => sounds.FadeOut();
         private void OnDestroy() { if (output) Destroy(output); }
     }
 }

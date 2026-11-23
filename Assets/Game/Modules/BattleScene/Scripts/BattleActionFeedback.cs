@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AstralOath.Client.Common;
 using AstralOath.Shared.Battle;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ namespace AstralOath.Client.BattleScene
         private readonly BattleFeedbackCueTracker cues = new BattleFeedbackCueTracker();
         private readonly BattleNativeFeedbackEffect.Library library;
         private readonly AudioSource chainSound;
+        private readonly UiAudioPlayback.OneShots chainCues = new UiAudioPlayback.OneShots();
         private readonly Dictionary<(BattlePreviewActor Actor, string Source, string Bone), BattleNativeFeedbackEffect> effects =
             new Dictionary<(BattlePreviewActor, string, string), BattleNativeFeedbackEffect>();
         private bool disposed;
@@ -88,7 +90,7 @@ namespace AstralOath.Client.BattleScene
                 effects.Add(key, effect);
             }
             effect.Play();
-            if (source == "stse_chain" && chainSound) chainSound.PlayOneShot(chainSound.clip);
+            if (source == "stse_chain" && chainSound) chainCues.Play(chainSound, chainSound.clip);
             Place(actor, effect, bone);
         }
 
@@ -124,26 +126,18 @@ namespace AstralOath.Client.BattleScene
         internal void Clear(ulong lastEventSequence = 0)
         {
             cues.Clear(lastEventSequence);
-            if (chainSound) chainSound.Stop();
+            chainCues.FadeOut();
             foreach (var effect in effects.Values) effect.Stop();
         }
 
-        internal void SetPaused(bool paused)
-        {
-            if (!chainSound) return;
-            if (paused) chainSound.Pause();
-            else chainSound.UnPause();
-        }
+        internal void SetPaused(bool paused) => chainCues.SetPaused(paused);
 
         public void Dispose()
         {
             if (disposed) return;
             disposed = true;
-            if (chainSound)
-            {
-                chainSound.Stop();
-                UnityEngine.Object.Destroy(chainSound);
-            }
+            chainCues.FadeOut();
+            if (chainSound) UnityEngine.Object.Destroy(chainSound);
             foreach (var effect in effects.Values) effect.Dispose();
             effects.Clear();
         }

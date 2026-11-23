@@ -41,9 +41,6 @@ namespace AstralOath.Client.BattleScene
                 canvas.overrideSorting = true;
                 canvas.sortingLayerID = owner.sortingLayerID;
                 canvas.sortingOrder = 31002;
-                var draw = map.Require<GameText>("draw");
-                draw.text = copy.resultDraw;
-                draw.gameObject.SetActive(snapshot.Outcome == BattleOutcome.Draw);
                 if (snapshot.Outcome != BattleOutcome.Draw)
                 {
                     bool won = snapshot.Outcome == BattleOutcome.AllyVictory;
@@ -59,12 +56,13 @@ namespace AstralOath.Client.BattleScene
                     emblem.Tick(0);
                     var audio = instance.GetComponent<AudioSource>();
                     audio.clip = won ? assets.resultVictory : assets.resultDefeat;
-                    audio.PlayOneShot(audio.clip);
+                    var resultSound = UiAudioPlayback.Play(audio, audio.clip);
+                    if (resultSound) scope.Add(resultSound.FadeOut);
                 }
                 BindTeam(BattleSide.Ally, 0);
                 BindTeam(BattleSide.Enemy, 4);
                 map.Require<GameText>("turn").text = string.Format(copy.resultTurn, snapshot.TurnNumber);
-                map.Require<GameText>("title").text = copy.resultDetails;
+                map.Require<GameText>("title").text = snapshot.Outcome == BattleOutcome.Draw ? copy.resultDraw : copy.resultDetails;
                 map.Require<GameText>("allies").text = copy.localPlayer + " · " + copy.resultHealth;
                 map.Require<GameText>("enemies").text = copy.opponentPlayer + " · " + copy.resultHealth;
                 map.Require<GameText>("detailsLabel").text = copy.resultDetails;

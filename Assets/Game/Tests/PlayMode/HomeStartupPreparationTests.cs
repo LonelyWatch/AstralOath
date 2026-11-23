@@ -71,6 +71,9 @@ namespace AstralOath.Client.Tests
             internal bool RejectDraw;
             internal string StoredRewards = "{\"items\":[]}";
             internal readonly ConcurrentQueue<string> GmRequests = new ConcurrentQueue<string>();
+            internal int HoldGmRequest;
+            internal readonly TaskCompletionSource<bool> ReleaseGmFailure =
+                new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
             internal string GmAuthorization;
             internal volatile string DraftId = "settled-draft";
             internal volatile bool BattleEnded;
@@ -166,8 +169,14 @@ namespace AstralOath.Client.Tests
                         var resources = "{\"key\":\"gold\",\"value\":30},{\"key\":\"bookmarks\",\"value\":50},{\"key\":\"skystones\",\"value\":250}," +
                             string.Join(",", otherBalances.Select(key => "{\"key\":\"" + key + "\",\"value\":0}"));
                         body = "{\"playerId\":\"test\",\"realmId\":\"test-realm\",\"resources\":[" + resources + "]," +
-                            "\"heroes\":[\"c1001\",\"c1002\",\"c1003\",\"c1004\",\"c1005\",\"c1006\",\"c1007\",\"c1008\",\"c1009\",\"c1010\"],\"artifacts\":[],\"equipment\":[]}";
+                            "\"heroes\":[\"c1001\",\"c1002\",\"c1003\",\"c1004\",\"c1005\",\"c1006\",\"c1007\",\"c1008\",\"c1009\",\"c1010\"],\"artifacts\":[],\"equipment\":[],\"forgeRules\":" +
+                            DevelopmentGmForgeChecks.Rules + "}";
                         if (line[0] == "POST" && GmRequests.Count == 1) status = "503 Unavailable";
+                        if (line[0] == "POST" && GmRequests.Count == HoldGmRequest)
+                        {
+                            await ReleaseGmFailure.Task.ConfigureAwait(false);
+                            status = "503 Unavailable";
+                        }
                     }
                     if (line[1].StartsWith("/api/inventory/equipment", StringComparison.Ordinal))
                     {
@@ -228,6 +237,7 @@ namespace AstralOath.Client.Tests
                 listener.Stop();
                 SignalRoomChange.TrySetResult(true);
                 AllowResponse.TrySetResult(true);
+                ReleaseGmFailure.TrySetResult(true);
                 AllowDirectoryList.TrySetResult(true);
                 worker.GetAwaiter().GetResult();
             }
@@ -658,6 +668,9 @@ namespace AstralOath.Client.Tests
                     Click("submit");
                     yield return new WaitUntil(() => panel.Require<GameText>("status").text.Contains("已生效"));
                     Assert.That(server.GmRequests.Last(), Does.Contain("\"action\":\"set\"").And.Contain("\"key\":\"gold\"").And.Contain("\"value\":123"));
+                    server.HoldGmRequest = server.GmRequests.Count + 1;
+                    yield return DevelopmentGmForgeChecks.Check(panel, server.GmRequests, canvas,
+                        () => server.ReleaseGmFailure.TrySetResult(true));
                     Click("close");
                     yield return DevelopmentGmCapture.Frame(canvas, "entry-dragged");
                     yield return DevelopmentGmCapture.BattleRoundTrip(canvas, panel);

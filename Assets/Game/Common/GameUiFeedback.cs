@@ -79,7 +79,7 @@ namespace AstralOath.Client.Common
             if (!clip) return;
             if (!root)
             {
-                if (custom) custom.PlayOneShot(clip);
+                if (custom && source is GameButton button) button.PlayStandaloneSound(custom, clip);
                 return;
             }
             if (!root.TryGetComponent<GameUiAudio>(out var output)) output = root.gameObject.AddComponent<GameUiAudio>();

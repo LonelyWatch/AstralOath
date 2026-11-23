@@ -128,7 +128,7 @@ namespace AstralOath.Editor
             fit.aspectMode=AspectRatioFitter.AspectMode.HeightControlsWidth;
             fit.aspectRatio=232f/362f;
             Paint(dialog,BagArt("_box_equip_0"),Color.white,true,true);
-            var inside=Area(dialog,"Detail contents",.045f,.035f,.91f,.923f);
+            var inside=Area(dialog,"Detail contents",0,0,1,1);
             var portrait=Area(inside,"Thumbnail",.013f,.012f,.605f,.603f);
             portrait=Area(portrait,"Card proportions",0,0,1,1);
             var portraitFit=portrait.gameObject.AddComponent<AspectRatioFitter>();
@@ -155,7 +155,9 @@ namespace AstralOath.Editor
             Caption(inside,"popupHealth",null,28,.645f,.444f,.34f,.058f,Color.white);
             Act(inside,"skillTab",ArtifactInventoryPrefix+"skill_heading",23,.008f,.631f,.495f,.066f,Art("_btn_white_flat"));
             Act(inside,"storyTab",ArtifactInventoryPrefix+"story_tab",23,.506f,.631f,.485f,.066f,Art("_btn_white_flat"));
-            Caption(inside,"popupBody",null,24,.023f,.706f,.959f,.178f,Color.white,true).alignment=TextAlignmentOptions.TopLeft;
+            var popupBody = Caption(inside,"popupBody",null,24,0,0,1,1,Color.white,true);
+            popupBody.alignment=TextAlignmentOptions.TopLeft;
+            ApplyWornArtifactInsets(popupBody.rectTransform);
             Act(inside,"remove","home.gear.singleRemove",24,.016f,.902f,.269f,.088f,BagArt("_btn_small_black"));
             Act(inside,"change","home.gear.singleChange",24,.294f,.902f,.27f,.088f,BagArt("_btn_small_black"));
             Act(inside,"enhance",ArtifactInventoryPrefix+"enhance",26,.652f,.902f,.328f,.088f,SummonArt("_btn_blue_r_3"));
@@ -176,6 +178,42 @@ namespace AstralOath.Editor
             Bind(page,keys.ToArray());
             owner.Add(("artifactHeroEquipment",page.GetComponent<BindingMap>()));
             page.gameObject.SetActive(false);
+        }
+
+        private static void ApplyWornArtifactInsets(RectTransform body)
+        {
+            var scroll = body.GetComponentInParent<ScrollRect>(true);
+            var contents = (RectTransform)(scroll ? scroll.transform.parent : body.parent);
+            Place(contents, .061f, .038f, .878f, .919f);
+            var dialog = (RectTransform)contents.parent;
+            if (!dialog.Find("Detail lining"))
+            {
+                var lining = Area(dialog,"Detail lining",.044f,.034f,.912f,.925f);
+                Paint(lining,null,new Color32(18,29,46,255));
+                lining.SetAsFirstSibling();
+            }
+            if (!scroll)
+            {
+                var viewport = Area(contents,"Description viewport",.009f,.716f,.982f,.166f);
+                scroll = viewport.gameObject.AddComponent<ScrollRect>();
+                scroll.viewport = viewport;
+                scroll.content = body;
+                scroll.horizontal = false;
+                scroll.movementType = ScrollRect.MovementType.Clamped;
+                scroll.scrollSensitivity = 38f;
+                viewport.gameObject.AddComponent<RectMask2D>();
+                Paint(viewport,null,new Color32(19,27,43,250),true);
+                body.SetParent(viewport,false);
+                body.gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            }
+            var text = body.GetComponent<GameText>();
+            text.fontSize = 24f;
+            text.lineSpacing = 12f;
+            text.margin = new Vector4(0,5f,0,5f);
+            text.color = new Color32(231,235,241,255);
+            text.overflowMode = TextOverflowModes.Overflow;
+            body.pivot = new Vector2(.5f,1f);
+            Place(body,.029f,0,.942f,0);
         }
     }
 }

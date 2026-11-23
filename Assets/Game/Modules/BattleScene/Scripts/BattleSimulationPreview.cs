@@ -325,8 +325,10 @@ namespace AstralOath.Client.BattleScene
 
         private BattleUnitSnapshot Actor => Snapshot.GetUnit(Snapshot.CurrentActorId);
         private bool IsTurnEntryPlaying => Actor != null && views.TryGetValue(Actor.InstanceId, out var view) && view.Actor.IsTurnEntryPlaying;
-        private bool HasActionPresentation => actionElapsed < actionDuration || pendingFeedback.Count != 0 ||
+        private bool HasActionPresentation => skippedTurnRemaining > 0f || actionElapsed < actionDuration || pendingFeedback.Count != 0 ||
             (recoveryStages != null && recoveryStages.Count != 0);
+        private const float SkippedTurnSeconds = 1f;
+        private float skippedTurnRemaining;
         private bool Busy
         {
             get
@@ -451,6 +453,16 @@ namespace AstralOath.Client.BattleScene
                 ShowDueFeedback();
                 PresentReadyEvents();
                 ShowDueFeedback();
+                if (skippedTurnRemaining > 0f)
+                {
+                    float hold = Mathf.Min(remaining, skippedTurnRemaining);
+                    skippedTurnRemaining -= hold;
+                    remaining -= hold;
+                    foreach (var view in views.Values) view.TickVisual(hold);
+                    turnHud.Tick(hold);
+                    if (skippedTurnRemaining > 0f) return;
+                    continue;
+                }
                 if (remaining <= 0f) return;
 
                 // Advance the STG pose to each cue before sampling that cue's world anchor.
@@ -495,7 +507,7 @@ namespace AstralOath.Client.BattleScene
 
         private void PresentReadyEvents()
         {
-            while (playback.Count != 0)
+            while (skippedTurnRemaining <= 0f && playback.Count != 0)
             {
                 var item = playback.Peek();
                 if (item.Kind == BattleFlowEventKind.Action)
@@ -511,7 +523,8 @@ namespace AstralOath.Client.BattleScene
                         recoveryStages.Add((previous, actionDuration));
                     }
                 }
-                else if (IsPeriodicDamage(item) ? HasActionPresentation : actionElapsed < impactSeconds) return;
+                else if ((IsPeriodicDamage(item) || item.Kind == BattleFlowEventKind.TurnSkipped)
+                    ? HasActionPresentation : actionElapsed < impactSeconds) return;
                 playback.Dequeue();
                 Present(item);
             }
@@ -983,7 +996,12 @@ namespace AstralOath.Client.BattleScene
                     break;
                 case BattleFlowEventKind.TurnSkipped:
                     turnHud.SetReadiness(item.SourceId, 0);
-                    banner.text = $"{Label(Snapshot.GetUnit(item.SourceId).NameKey)} · 眩晕";
+                    displayedActor = Snapshot.GetUnit(item.SourceId);
+                    ShowActorPortrait(displayedActor);
+                    SetPlayerControlsVisible(false);
+                    skillBanner.Hide();
+                    views[item.SourceId].ShowEffectWord(EffectWordLabel("battle.feedback.unable_to_act"));
+                    skippedTurnRemaining = SkippedTurnSeconds;
                     break;
             }
         }
@@ -1162,24 +1180,7 @@ namespace AstralOath.Client.BattleScene
             }
             SetPlayerControlsVisible(!entering && actor?.Slot.Side == BattleSide.Ally && Snapshot.Outcome == BattleOutcome.InProgress &&
                 !ai.IsForcedAction(Snapshot) && (online == null || !onlineInputSuspended && online.CanSubmit));
-            if (actor != null)
-            {
-                sprites.TryGetValue(actor.DefinitionId + "_su", out var actorPortrait);
-                activePortrait.ShowTurn(actorPortrait, actor.InstanceId, () =>
-                {
-                    hud.Require<GameText>("activeName").text = Label(actor.NameKey);
-                    hud.Require<GameText>("activeHp").text = $"{actor.CurrentHealth}/{actor.MaximumHealth}";
-                    hud.Require<Image>("activeHpFill").fillAmount = actor.CurrentHealth / (float)actor.MaximumHealth;
-                    SetActorArt("Element", "cm_icon_prom" + actor.Element.ToString().ToLowerInvariant());
-                    string role = classes.TryGetValue(actor.DefinitionId, out var heroClass) ? heroClass : "";
-                    SetActorArt("Class", "cm_icon_role_" + (role switch
-                    {
-                        "soul_weaver" => "manauser",
-                        "thief" => "assassin",
-                        _ => role
-                    }));
-                });
-            }
+            if (actor != null) ShowActorPortrait(actor);
             if (Snapshot.Outcome != BattleOutcome.InProgress && autoBattle)
             {
                 autoBattle = false;
@@ -1259,15 +1260,37 @@ namespace AstralOath.Client.BattleScene
             if (image.enabled) image.sprite = sprite;
         }
 
+        private void ShowActorPortrait(BattleUnitSnapshot actor)
+        {
+            sprites.TryGetValue(actor.DefinitionId + "_su", out var portrait);
+            activePortrait.ShowTurn(portrait, actor.InstanceId, () =>
+            {
+                var view = views[actor.InstanceId];
+                hud.Require<GameText>("activeName").text = Label(actor.NameKey);
+                hud.Require<GameText>("activeHp").text = $"{view.PresentedHealth}/{view.PresentedMaximumHealth}";
+                hud.Require<Image>("activeHpFill").fillAmount = view.PresentedHealth / (float)view.PresentedMaximumHealth;
+                SetActorArt("Element", "cm_icon_prom" + actor.Element.ToString().ToLowerInvariant());
+                string role = classes.TryGetValue(actor.DefinitionId, out var heroClass) ? heroClass : "";
+                SetActorArt("Class", "cm_icon_role_" + (role switch
+                {
+                    "soul_weaver" => "manauser",
+                    "thief" => "assassin",
+                    _ => role
+                }));
+            });
+        }
+
         private void ShowPrompt()
         {
             skillBanner.Hide();
             SyncTargetSelection();
-            banner.text = entering ? string.Empty : rejectionRemaining > 0f ? rejectedActionMessage : Snapshot.Outcome switch
+            if (entering || Snapshot.Outcome != BattleOutcome.InProgress)
             {
-                BattleOutcome.AllyVictory => "战斗胜利",
-                BattleOutcome.EnemyVictory => "战斗失败",
-                BattleOutcome.Draw => "战斗平局",
+                banner.text = string.Empty;
+                return;
+            }
+            banner.text = rejectionRemaining > 0f ? rejectedActionMessage : Actor switch
+            {
                 _ when Actor?.Slot.Side == BattleSide.Enemy => online == null ? "敌方行动" : string.Empty,
                 _ when ai.IsForcedAction(Snapshot) => Label("battle.prompt.forced_action"),
                 _ when autoBattle => Label("battle.auto.active"),

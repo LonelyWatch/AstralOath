@@ -60,6 +60,10 @@ namespace AstralOath.Client.Home
         internal GameObject RosterExpandedHint => Bindings.Require<GameObject>("rosterExpandedHint");
         internal RectTransform RosterCollapsedFooter => Bindings.Require<RectTransform>("rosterCollapsedFooter");
         internal GameText RosterSortCaption => Bindings.Require<GameText>("rosterSortCaption");
+        internal BindingMap RosterTools => Bindings.Require<BindingMap>("rosterTools");
+        internal GameButton RosterFilterButton => Bindings.Require<GameButton>("rosterFilterButton");
+        internal GameButton RosterSearchButton => Bindings.Require<GameButton>("rosterSearchButton");
+        internal GameText RosterSearchCaption => Bindings.Require<GameText>("rosterSearchCaption");
         internal GameObject EmptyEquipment => Bindings.Require<GameObject>("emptyEquipmentChrome");
         internal GameObject EmptyArtifacts => Bindings.Require<GameObject>("emptyArtifactChrome");
         internal GameText BagCaption(string key) => Bindings.Require<GameText>("bag" + key + "Label");
@@ -123,6 +127,7 @@ namespace AstralOath.Client.Home
             _ = DetailPortrait; _ = BagFilter;
             _ = RosterCapacity; _ = RosterExpandIcon; _ = RosterCollapseIcon; _ = RosterExpandedHint;
             _ = RosterCollapsedFooter; _ = RosterSortCaption; _ = EmptyEquipment; _ = EmptyArtifacts;
+            _ = RosterFilterButton; _ = RosterSearchButton; RosterTools.Validate();
             _ = DetailElementName; _ = DetailRoleName; _ = DetailZodiac; _ = DetailZodiacName;
             for (int index = 0; index < 6; ++index)
                 _ = DetailStar(index);

@@ -225,9 +225,6 @@ namespace AstralOath.Editor
                 bindings.Add(("detailStat_" + key, value));
                 bindings.Add(("detailStatLabel_" + key, label));
             }
-            Picture(detail, "No set icon", RosterArt("cm_icon_etcbp"), .072f, .940f, .016f, .026f, true)
-                .color = RosterMuted;
-            Text(detail, "No equipment set", InventoryPrefix + "roster_no_set", 23, .095f, .934f, .18f, .038f, RosterMuted);
         }
 
         private static void BuildHeroRosterList(RectTransform roster, RectTransform header, List<(string Key, Object Target)> bindings)
@@ -245,10 +242,6 @@ namespace AstralOath.Editor
             var expandLabel = Text(controls, "Expand roster label", null, 1, 0, 0, 0, 0, Color.clear);
             expandLabel.gameObject.SetActive(false);
 
-            var search = BuildRosterSearch(controls, out var searchHint);
-            Picture(controls, "Sorting icon", Art("_sorting2"), .833f, .21f, .021f, .56f, true).color = RosterMuted;
-            var sortCaption = Text(controls, "Sort caption", InventoryPrefix + "roster_sort_level", 25,
-                .855f, .09f, .063f, .78f, RosterMuted);
             Picture(controls, "Capacity plus", RosterArt("_plus"), .919f, .19f, .017f, .58f, true).color = RosterMuted;
             var capacity = Text(controls, "Roster capacity", null, 25, .935f, .09f, .061f, .78f, RosterMuted);
 
@@ -277,10 +270,10 @@ namespace AstralOath.Editor
 
             bindings.AddRange(new (string Key, Object Target)[]
             {
-                ("rosterSidebar", sidebar), ("search", search), ("searchHint", searchHint),
+                ("rosterSidebar", sidebar),
                 ("expand", expand), ("expandLabel", expandLabel), ("rosterExpandIcon", expandPlate.gameObject),
                 ("rosterCollapseIcon", collapsePlate.gameObject), ("rosterCollapsedFooter", footer),
-                ("rosterExpandedHint", expandedHint.gameObject), ("rosterCapacity", capacity), ("rosterSortCaption", sortCaption),
+                ("rosterExpandedHint", expandedHint.gameObject), ("rosterCapacity", capacity),
                 ("rosterScroll", scroll), ("rosterRow", BuildHeroRosterCard(roster))
             });
         }

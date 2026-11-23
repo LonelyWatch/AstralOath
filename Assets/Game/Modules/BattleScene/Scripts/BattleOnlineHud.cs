@@ -18,6 +18,7 @@ namespace AstralOath.Client.BattleScene
         private const float SoulBurnLoopPixelScale = .50f;
         private readonly BattleNativeFeedbackEffect[] soulBurnEffects = new BattleNativeFeedbackEffect[2];
         private readonly AudioSource soulBurnAudio;
+        private readonly UiAudioPlayback.OneShots soulBurnCues = new UiAudioPlayback.OneShots();
         private readonly RectTransform[] soulBurnAnchors = new RectTransform[2];
         private readonly TeamBar allyHealth, enemyHealth;
         private readonly GameText turn;
@@ -198,7 +199,7 @@ namespace AstralOath.Client.BattleScene
         {
             const string source = "ui_livepvp_soulburn_eff";
             if (!root) return;
-            if (soulBurnAudio) soulBurnAudio.PlayOneShot(soulBurnAudio.clip);
+            if (soulBurnAudio) soulBurnCues.Play(soulBurnAudio, soulBurnAudio.clip);
             if (!feedbackLibrary.Contains(source)) return;
             int index = side == BattleSide.Ally ? 0 : 1;
             soulBurnAnchors[index].localScale = Vector3.one;
@@ -236,7 +237,7 @@ namespace AstralOath.Client.BattleScene
         internal void ClearFeedback()
         {
             foreach (var effect in soulBurnEffects) effect?.Stop();
-            if (soulBurnAudio) soulBurnAudio.Stop();
+            soulBurnCues.FadeOut();
         }
 
         internal void SetHealth(long allyCurrent, long allyMaximum, long enemyCurrent, long enemyMaximum)
@@ -386,6 +387,7 @@ namespace AstralOath.Client.BattleScene
 
         public void Dispose()
         {
+            soulBurnCues.FadeOut();
             foreach (var effect in soulBurnEffects) effect?.Dispose();
             foreach (var (item, active) in hidden) if (item) item.SetActive(active);
             hidden.Clear();

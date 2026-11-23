@@ -11,6 +11,26 @@ namespace AstralOath.Client.Tests
     {
         private const string Prefab = "Assets/Game/Modules/FoundationDemo/Res/Prefab/DevelopmentGmWindow.prefab";
 
+        [Test]
+        public void ForgeTabOffersSixSelectorsAndFourEditableSubstatRows()
+        {
+            var map = AssetDatabase.LoadAssetAtPath<GameObject>(Prefab).GetComponent<BindingMap>();
+            Assert.That(map.Require<GameButton>("forge"), Is.Not.Null);
+            var body = map.Require<GameObject>("forgePanel").transform;
+            foreach (string key in new[] { "forgeSlot", "forgeTier", "forgeGrade", "forgeSet", "forgeMain", "forgeMake" })
+                Assert.That(map.Require<GameButton>(key).transform.IsChildOf(body), Is.True, key);
+            foreach (string key in new[] { "forgeEnhance", "forgeCount" })
+                Assert.That(map.Require<TMP_InputField>(key).contentType, Is.EqualTo(TMP_InputField.ContentType.IntegerNumber));
+            for (int index = 0; index < 4; index++)
+            {
+                var row = map.Require<CanvasGroup>("forgeRow" + index).transform;
+                Assert.That(map.Require<GameButton>("forgeSub" + index).transform.IsChildOf(row), Is.True);
+                Assert.That(map.Require<TMP_InputField>("forgeRolls" + index).transform.IsChildOf(row), Is.True);
+                Assert.That(map.Require<TMP_InputField>("forgeValue" + index).transform.IsChildOf(row), Is.True);
+                Assert.That(map.Require<GameText>("forgeRange" + index).transform.IsChildOf(row), Is.True);
+            }
+        }
+
         [TestCase(1920, 1080)]
         [TestCase(1440, 810)]
         [TestCase(1280, 720)]

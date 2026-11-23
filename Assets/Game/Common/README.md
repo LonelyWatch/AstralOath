@@ -1,6 +1,12 @@
 # Common UI
 
-启动 Canvas 保存页面与装备反馈的原音引用，按钮关闭、页面隐藏后仍由根 Canvas 的声源播放。背包和英雄页的返回声与竞技场取消声可分别配置。[原声音轨与验收](../../../docs/delivery/2026-11-22-inventory-audio.md)
+`UiAudioPlayback` 为每次二维播放创建独立音源，保留该次播放的音量、音高与混音通道。音源所属的 Canvas、控件或演出关闭时，正在播放的声音按非缩放时间淡出 0.20 秒。重叠点击和新页面的音量各自独立，音效自然结束时立即回收。已接入通用点击、召唤演出与获得语音、战斗合击提示、灵魂燃烧、竞技场门和胜败结算。角色普通日语语音的 `VoiceService` 和 FMOD 原生事件另有各自的播放生命周期。[本轮证据与限制](../../../docs/delivery/2026-11-23-equipment-battle-review.md)
+
+Foundation 通过 `ui/audio/<小写文件名，不含扩展名>` 收集这些音效。每次播放由 Bootstrap 对已安装且与传入对象相同的 AudioClip 单独持有 YooAsset 句柄，播放结束释放。窗口立即释放自身的预制和配置句柄，音效尾声继续引用所需音频包。启动内置音和运行时生成的 AudioClip 使用直接引用。该改动涉及 Common 与 Bootstrap AOT。
+
+`SoftModalSurface` 是项目深蓝软边底板，UGUI 九宫格保留边缘，内部实色层保障正文可读。
+
+启动 Canvas 保存页面与装备反馈的原音引用，按钮关闭后声音可继续播放，根 Canvas 关闭时才开始淡出。背包和英雄页的返回声与竞技场取消声可分别配置。[原声音轨与验收](../../../docs/delivery/2026-11-22-inventory-audio.md)
 
 战斗技能图标可保持按住时的原亮度。共用角色滑条在玩家输入或惯性带动卡片跨过焦点时播放原版短音，初始化、筛选和代码定位保持安静。[原声匹配及回归](../../../docs/development/roster-scroll-audio.md)
 

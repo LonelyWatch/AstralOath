@@ -153,6 +153,7 @@ namespace AstralOath.Editor
                     PackRuleName = path == OnlineBattleScene || path == SummonPresentationBuilder.AssetPath ||
                         path == FeaturedSkillAssetPath ? nameof(PackSeparately) : nameof(PackDirectory)
                 });
+            UiAudioCollector.Refresh();
             EditorUtility.SetDirty(settings);
             AssetDatabase.SaveAssets();
         }
@@ -250,6 +251,13 @@ namespace AstralOath.Editor
             image.preserveAspect = aspect;
             image.enabled = sprite;
             return image;
+        }
+
+        private static Image PaintSoftModal(RectTransform rect)
+        {
+            var edge = Paint(rect, CommonArt("SoftModalSurface"), Color.white, raycast: true, sliced: true);
+            Paint(Area(rect,"Readable interior",.006f,.009f,.988f,.982f),null,new Color32(17,29,47,248));
+            return edge;
         }
 
         private static void Cover(RectTransform parent, string name, Sprite sprite)

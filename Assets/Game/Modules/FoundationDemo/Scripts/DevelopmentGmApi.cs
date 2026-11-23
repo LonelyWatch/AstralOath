@@ -16,6 +16,7 @@ namespace AstralOath.Client.FoundationDemo
         public string playerId, realmId;
         public GmBalance[] resources;
         public string[] heroes, artifacts, equipment;
+        public GmForgeRules forgeRules;
 
         [Serializable, Preserve]
         internal sealed class GmBalance
@@ -26,10 +27,49 @@ namespace AstralOath.Client.FoundationDemo
     }
 
     [Serializable, Preserve]
-    internal sealed class GmAction
+    internal class GmAction
     {
         public string requestId, action, key;
         public int value;
+    }
+
+    [Serializable, Preserve]
+    internal sealed class GmForgeAction : GmAction
+    {
+        public GmForgeRecipe forge;
+    }
+
+    [Serializable, Preserve]
+    internal sealed class GmForgeRecipe
+    {
+        public int itemLevel, enhanceLevel;
+        public string grade, setId, mainKind;
+        public GmForgeSubstat[] substats;
+    }
+
+    [Serializable, Preserve]
+    internal sealed class GmForgeSubstat
+    {
+        public string kind;
+        public int rolls, value;
+    }
+
+    [Serializable, Preserve]
+    internal sealed class GmForgeRules
+    {
+        public Tier[] tiers;
+        public Slot[] slots;
+        public Grade[] grades;
+        public string[] sets;
+        [Serializable, Preserve] internal sealed class Tier { public int itemLevel, minEnhance, maxEnhance; public Stat[] stats; }
+        [Serializable, Preserve] internal sealed class Slot { public string slot; public string[] mainKinds, subKinds; }
+        [Serializable, Preserve] internal sealed class Grade
+        {
+            public string grade;
+            public int initialSubstats;
+            public int[] unlockEnhancements;
+        }
+        [Serializable, Preserve] internal sealed class Stat { public string kind; public int mainBase, mainStep, rollMin, rollMax, step; }
     }
 
     internal sealed class GmRejectedException : IOException

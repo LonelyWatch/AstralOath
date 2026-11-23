@@ -219,18 +219,13 @@ namespace AstralOath.Client.Tests
                 var tick = typeof(ArenaDraftBinder).GetMethod("Tick", BindingFlags.Instance | BindingFlags.NonPublic);
                 for (int frame = 0; frame < 3; frame++) tick.Invoke(binder, new object[] { 1f / 30 });
                 var camera = Resources.FindObjectsOfTypeAll<Camera>().Single(candidate => candidate.targetTexture == effect.texture);
-                Assert.That(camera.transform.parent.GetComponentsInChildren<MeshRenderer>().Count(), Is.EqualTo(6),
-                    "The stamp skeleton and all five emitters from the three CFX tracks must share the selected card's camera.");
-                bool graphics = SystemInfo.graphicsDeviceType != UnityEngine.Rendering.GraphicsDeviceType.Null;
-                if (graphics)
-                {
-                    var impact = ReadStrike(camera, "preban-impact");
-                    Assert.That(impact.Count(pixel => pixel.r > 230 && pixel.g > 215 && pixel.b > 190),
-                        Is.GreaterThan(impact.Length * 500f / (384 * 384)), "The initial impact must contain a visible white-hot center.");
-                }
+                var texture = effect.texture;
+                Assert.That(effect.uvRect.width, Is.LessThan(1f), "The impact briefly enlarges the stamp within its cell.");
                 for (int frame = 0; frame < 21; frame++) tick.Invoke(binder, new object[] { 1f / 30 });
-                Assert.That(effect.enabled, Is.True, "The native intro must settle into its red loop.");
-                if (graphics)
+                Assert.That(effect.enabled, Is.True, "The stamp remains visible after the pulse.");
+                Assert.That(effect.uvRect, Is.EqualTo(new Rect(0, 0, 1, 1)));
+                Assert.That(effect.texture, Is.SameAs(texture), "Pulsing the stamp must not reallocate its render target.");
+                if (SystemInfo.graphicsDeviceType != UnityEngine.Rendering.GraphicsDeviceType.Null)
                 {
                     var idle = ReadStrike(camera, "preban-loop");
                     Assert.That(idle.Count(pixel => pixel.r > pixel.g * 1.7f && pixel.r > 80 && pixel.a > 160),
@@ -373,9 +368,12 @@ namespace AstralOath.Client.Tests
                 {
                     string list = i == 0 ? "main list" : "recent choices";
                     var samples = report.Where(sample => sample.List == i).ToArray();
-                    Assert.That(peak[i], Is.GreaterThan(.25f), list + " lost its initial white impact.");
-                    // P2 at 245.000 s begins with two broad flashes. By +0.267 s only 38%
-                    // of the selected face and 8% of either adjacent face are newly white.
+                    if (i == (clickRecent ? 1 : 0))
+                        Assert.That(peak[i], Is.InRange(.03f, .65f), list + " must briefly highlight a portion of the clicked face.");
+                    else
+                        Assert.That(peak[i], Is.LessThan(.03f), list + " must mirror the ban without replaying the click.");
+                    Assert.That(samples.Max(sample => sample.Neighbor), Is.LessThan(.03f),
+                        list + " must leave adjacent faces readable even on the first impact frame.");
                     var receding = samples.Single(sample => sample.Frame == 8);
                     Assert.That(receding.White, Is.LessThan(.58f), list + " kept the whole face white after the impact.");
                     Assert.That(samples.Where(sample => sample.Frame >= 8).Max(sample => sample.Neighbor), Is.LessThan(.16f),

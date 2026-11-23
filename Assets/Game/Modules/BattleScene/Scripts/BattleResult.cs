@@ -14,7 +14,7 @@ namespace AstralOath.Client.BattleScene
         {
             foreach (string key in new[] { "details", "confirm", "close" })
                 Bindings.Require<GameButton>(key);
-            foreach (string key in new[] { "detailsLabel", "confirmLabel", "closeLabel", "draw", "turn", "title", "allies", "enemies" })
+            foreach (string key in new[] { "detailsLabel", "confirmLabel", "closeLabel", "turn", "title", "allies", "enemies" })
                 Bindings.Require<GameText>(key);
             Bindings.Require<RectTransform>("emblem");
             Bindings.Require<GameObject>("statistics");

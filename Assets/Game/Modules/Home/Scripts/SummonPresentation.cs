@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AstralOath.Client.Common;
 using AstralOath.Client.Home;
 using AstralOath.Client.Skeletons;
 using UnityEngine;
@@ -70,8 +71,11 @@ namespace AstralOath.Client.Summon
             }
 
             private readonly RawImage output;
-            private readonly AudioSource audio, voice;
-            private AudioSource soundtrack;
+            private readonly AudioSource audio;
+            private readonly List<UiAudioPlayback> effects = new List<UiAudioPlayback>();
+            private AudioSource musicSettings;
+            private AudioClip themeClip;
+            private UiAudioPlayback voice, soundtrack;
             private readonly GameObject scene;
             private readonly Camera camera;
             private readonly Material canvasMaterial;
@@ -108,10 +112,6 @@ namespace AstralOath.Client.Summon
 
                 scene = new GameObject("Native summon scene") { layer = RenderLayer, hideFlags = HideFlags.HideAndDontSave };
                 scene.transform.position = new Vector3(32000, 20000, 0);
-                voice = scene.AddComponent<AudioSource>();
-                voice.playOnAwake = false;
-                voice.spatialBlend = 0;
-                voice.outputAudioMixerGroup = audio.outputAudioMixerGroup;
                 camera = new GameObject("Summon scene camera").AddComponent<Camera>();
                 camera.transform.SetParent(scene.transform, false);
                 camera.transform.localPosition = new Vector3(0, 0, -10f);
@@ -177,11 +177,10 @@ namespace AstralOath.Client.Summon
             {
                 ThrowIfDisposed();
                 if (!music || music == audio) throw new ArgumentException("Summon theme requires its own audio source.", nameof(music));
-                music.Stop();
-                music.clip = cues[ceremony ? "Ceremony" : "Theme"];
-                music.loop = true;
-                music.Play();
-                soundtrack = music;
+                UiAudioPlayback.End(ref soundtrack);
+                musicSettings = music;
+                themeClip = cues[ceremony ? "Ceremony" : "Theme"];
+                soundtrack = UiAudioPlayback.Play(musicSettings, themeClip, loop: true);
             }
 
             // Use while presenting the card overview. Reveal and NEW are separate original bank events.
@@ -195,9 +194,10 @@ namespace AstralOath.Client.Summon
             public void PlaySummary(bool playCue = true)
             {
                 ThrowIfDisposed();
-                audio.Stop();
+                StopEffects();
                 StopHeroVoice();
-                if (soundtrack && !soundtrack.isPlaying) soundtrack.Play();
+                if (!soundtrack || !soundtrack.IsPlaying)
+                    soundtrack = UiAudioPlayback.Play(musicSettings, themeClip, loop: true);
                 SetScenes("3_b");
                 Advance(2.4f);
                 camera.Render();
@@ -219,17 +219,14 @@ namespace AstralOath.Client.Summon
             public void PlayHeroVoice(string heroId)
             {
                 ThrowIfDisposed();
-                voice.Stop();
+                StopHeroVoice();
                 if (cues.TryGetValue("Voice_" + heroId, out var clip) && clip)
-                {
-                    voice.clip = clip;
-                    voice.Play();
-                }
+                    voice = UiAudioPlayback.Play(audio, clip);
             }
 
             public void StopHeroVoice()
             {
-                if (voice) voice.Stop();
+                UiAudioPlayback.End(ref voice);
             }
 
             public void PlayCardReady()
@@ -243,12 +240,12 @@ namespace AstralOath.Client.Summon
                 var pending = playback;
                 playback = null;
                 if (pending != null) pending.Cancel();
+                StopEffects();
+                StopHeroVoice();
+                UiAudioPlayback.End(ref soundtrack);
                 ClearScene();
                 if (output) output.enabled = false;
                 if (camera) camera.enabled = false;
-                if (audio) audio.Stop();
-                StopHeroVoice();
-                if (soundtrack) soundtrack.Stop();
             }
 
             public void Dispose()
@@ -275,7 +272,12 @@ namespace AstralOath.Client.Summon
             {
                 ThrowIfDisposed();
                 token.ThrowIfCancellationRequested();
-                playback?.Cancel();
+                if (playback != null)
+                {
+                    playback.Cancel();
+                    StopEffects();
+                    StopHeroVoice();
+                }
                 var next = CancellationTokenSource.CreateLinkedTokenSource(lifetime.Token, token);
                 playback = next;
                 return next;
@@ -298,7 +300,18 @@ namespace AstralOath.Client.Summon
 
             private void Play(string id)
             {
-                if (audio && cues.TryGetValue(id, out var clip) && clip) audio.PlayOneShot(clip);
+                if (!cues.TryGetValue(id, out var clip)) return;
+                var sound = UiAudioPlayback.Play(audio, clip);
+                if (!sound) return;
+                effects.RemoveAll(item => !item);
+                effects.Add(sound);
+            }
+
+            private void StopEffects()
+            {
+                foreach (var sound in effects)
+                    if (sound) sound.FadeOut();
+                effects.Clear();
             }
 
             private void SetHallScene(string grade, string heroClass)

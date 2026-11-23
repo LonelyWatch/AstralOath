@@ -42,7 +42,7 @@ namespace AstralOath.Editor
             Paint(panel, null, new Color(0, 0, 0, .68f), true);
             keys.Add(("panel", panel.gameObject));
             var modal = Area(panel, "Dialog", 0, .06f, 1, .88f);
-            Paint(modal, DraftSprite("renew_popup_bg_2_alpha"), Color.white, true, true);
+            PaintSoftModal(modal);
             Text(modal, "Title", "gm.title", 40, .23f, .014f, .54f, .082f, Color.white, TextAlignmentOptions.Center);
             Rule(modal, "Title line", .21f, .105f, .58f, .0025f);
 
@@ -64,9 +64,10 @@ namespace AstralOath.Editor
                 layout.childForceExpandHeight = false;
             }
 
-            Command(modal, "resources", .19f, .122f, .19f, .083f);
-            Command(modal, "inventory", .405f, .122f, .19f, .083f);
-            Command(modal, "diagnostics", .62f, .122f, .19f, .083f);
+            Command(modal, "resources", .145f, .122f, .165f, .083f);
+            Command(modal, "inventory", .325f, .122f, .165f, .083f);
+            Command(modal, "forge", .505f, .122f, .165f, .083f);
+            Command(modal, "diagnostics", .685f, .122f, .165f, .083f);
             var editor = Area(modal, "Selected module", .145f, .22f, .71f, .59f);
             keys.Add(("editor", editor.gameObject));
             Stack(editor);
@@ -101,6 +102,47 @@ namespace AstralOath.Editor
             keys.Add(("amount", amount));
             Command(body, "submit", .63f, .70f, .33f, .18f, "_btn_green").FeedbackSound = GameUiFeedback.Sound.Confirm;
 
+            var forge = Area(modal, "Equipment forge", .09f, .23f, .82f, .57f);
+            keys.Add(("forgePanel", forge.gameObject));
+            void Choice(RectTransform parent, string key, float x, float y, float width, float height)
+            {
+                var button = Action(parent, key, null, 24, x, y, width, height, out _, CommonArt("_btn_small_black"), Color.white);
+                keys.Add((key, button));
+            }
+            void NumberBox(RectTransform parent, string key, float x, float y, float width, float height)
+            {
+                var field = Input(parent, key, null, 8, x, y, width, height);
+                field.contentType = TMP_InputField.ContentType.IntegerNumber;
+                keys.Add((key, field));
+            }
+            void Heading(RectTransform parent, string key, float x, float y, float width, float height) =>
+                Text(parent, key, "gm." + key, 23, x, y, width, height, Mist, TextAlignmentOptions.Center);
+            Choice(forge, "forgeSlot", 0, 0, .19f, .15f);
+            Choice(forge, "forgeTier", .20f, 0, .19f, .15f);
+            Choice(forge, "forgeGrade", 0, .18f, .19f, .15f);
+            Choice(forge, "forgeSet", .20f, .18f, .19f, .15f);
+            Choice(forge, "forgeMain", 0, .36f, .39f, .16f);
+            Heading(forge, "forgeEnhance", 0, .56f, .185f, .10f);
+            Heading(forge, "forgeCount", .205f, .56f, .185f, .10f);
+            NumberBox(forge, "forgeEnhance", 0, .67f, .185f, .15f);
+            NumberBox(forge, "forgeCount", .205f, .67f, .185f, .15f);
+            var attributes = Area(forge, "Substats", .425f, 0, .575f, 1);
+            Heading(attributes, "forgeSub", 0, 0, .31f, .11f);
+            Heading(attributes, "forgeRolls", .32f, 0, .15f, .11f);
+            Heading(attributes, "forgeValue", .49f, 0, .18f, .11f);
+            Heading(attributes, "forgeRange", .68f, 0, .32f, .11f);
+            for (int index = 0; index < 4; index++)
+            {
+                var line = Area(attributes, "Substat " + index, 0, .14f + index * .17f, 1, .14f);
+                keys.Add(("forgeRow" + index, line.gameObject.AddComponent<CanvasGroup>()));
+                Choice(line, "forgeSub" + index, 0, 0, .31f, 1);
+                NumberBox(line, "forgeRolls" + index, .32f, 0, .15f, 1);
+                NumberBox(line, "forgeValue" + index, .49f, 0, .18f, 1);
+                keys.Add(("forgeRange" + index, Text(line, "Range", null, 23, .68f, 0, .32f, 1, Mist, TextAlignmentOptions.Center)));
+            }
+            keys.Add(("forgeBudget", Text(forge, "Roll budget", null, 24, 0, .84f, .56f, .15f, Mist, TextAlignmentOptions.MidlineLeft)));
+            Command(forge, "forgeMake", .67f, .83f, .33f, .16f, "_btn_green").FeedbackSound = GameUiFeedback.Sound.Confirm;
+            forge.gameObject.SetActive(false);
             keys.Add(("report", Text(modal, "Diagnostics", null, 27, .17f, .26f, .66f, .39f,
                 Color.white, TextAlignmentOptions.Center, true)));
             Command(modal, "copy", .41f, .66f, .18f, .10f);

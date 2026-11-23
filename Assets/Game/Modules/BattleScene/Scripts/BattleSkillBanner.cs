@@ -44,8 +44,8 @@ namespace AstralOath.Client.BattleScene
 
             icon = Art(root, "Skill Icon", null, new Vector2(0f, -1f), new Vector2(79f, 79f));
             icon.preserveAspect = true;
-            casterName = Label(root, style, "Caster Name", new Vector2(96f, -9f), 22f, new Color32(215, 183, 124, 255));
-            skillName = Label(root, style, "Skill Name", new Vector2(96f, -40f), 25f, Color.white);
+            casterName = Label(root, style, "Caster Name", new Vector2(96f, -6f), 22f, new Color32(215, 183, 124, 255));
+            skillName = Label(root, style, "Skill Name", new Vector2(96f, -37f), 25f, Color.white);
             Hide();
         }
 
@@ -108,6 +108,7 @@ namespace AstralOath.Client.BattleScene
         {
             var rect = (RectTransform)new GameObject(name, typeof(RectTransform)).transform;
             rect.SetParent(parent, false);
+            rect.gameObject.layer = parent.gameObject.layer;
             rect.anchorMin = rect.anchorMax = rect.pivot = Vector2.up;
             rect.anchoredPosition = position;
             rect.sizeDelta = size;
@@ -125,10 +126,14 @@ namespace AstralOath.Client.BattleScene
 
         private static GameText Label(Transform parent, GameText style, string name, Vector2 position, float size, Color color)
         {
-            var text = Rect(parent, name, position, new Vector2(246f, 32f)).gameObject.AddComponent<GameText>();
+            // TMP uses the font's ascent/descent for ellipsis. A 32-unit row can elide even a short CJK name.
+            var text = Rect(parent, name, position, new Vector2(258f, 40f)).gameObject.AddComponent<GameText>();
             text.font = style.font;
             text.fontSharedMaterial = style.fontSharedMaterial;
             text.fontSize = size;
+            text.enableAutoSizing = true;
+            text.fontSizeMin = 14f;
+            text.fontSizeMax = size;
             text.color = color;
             text.alignment = TextAlignmentOptions.MidlineLeft;
             text.enableWordWrapping = false;

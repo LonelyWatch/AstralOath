@@ -9,10 +9,11 @@ using MySqlConnector;
 
 namespace AstralOath.Server.Summon;
 
-internal sealed record DevelopmentGmAction(string? RequestId, string? Action, string? Key, [property: JsonRequired] int Value);
+internal sealed record DevelopmentGmAction(string? RequestId, string? Action, string? Key, [property: JsonRequired] int Value,
+    GmForgeInput? Forge = null);
 internal sealed record DevelopmentGmResource(string Key, int Value);
 internal sealed record DevelopmentGmState(string PlayerId, string RealmId, DevelopmentGmResource[] Resources,
-    string[] Heroes, string[] Artifacts, string[] Equipment);
+    string[] Heroes, string[] Artifacts, string[] Equipment, ForgeRules ForgeRules);
 
 internal sealed partial class SummonStore
 {
@@ -28,9 +29,11 @@ internal sealed partial class SummonStore
     {
         if (!development) throw new EntryProblem(404, "not_found");
         string? request = null;
+        EquipmentGrant? equipment = null;
         if (input != null)
         {
             request = ParsedId(input.RequestId);
+            if (input.Action != "forgeEquipment" && input.Forge != null) throw new EntryProblem(400, "invalid_gm_forge");
             bool allowed = input.Action switch
             {
                 "set" => input.Key != null && (GmWalletColumns.ContainsKey(input.Key) || GmMaterials.Contains(input.Key))
@@ -38,11 +41,18 @@ internal sealed partial class SummonStore
                 "hero" => input.Key != null && catalog.HeroGrades.ContainsKey(input.Key) && input.Value is >= 1 and <= 10,
                 "artifact" => input.Key != null && catalog.ArtifactGrades.ContainsKey(input.Key) && input.Value is >= 1 and <= 10,
                 "equipment" => InventoryStore.DevelopmentEquipmentIds.Contains(input.Key) && input.Value is >= 1 and <= 10,
+                "forgeEquipment" => input.Value is >= 1 and <= 10,
                 _ => false
             };
             if (!allowed) throw new EntryProblem(400, "invalid_gm_action");
+            equipment = input.Action switch
+            {
+                "equipment" => InventoryStore.GetTrainingGrant(input.Key!),
+                "forgeEquipment" => DevelopmentEquipmentForge.Create(input.Key, input.Forge),
+                _ => null
+            };
             // Initialize the normal header and its configured starter grant before issuing additional equipment.
-            if (input.Action == "equipment") await inventory.ReadEquipment(player, ct);
+            if (equipment != null) await inventory.ReadEquipment(player, ct);
         }
 
         await using var connection = await Open(ct);
@@ -61,7 +71,11 @@ internal sealed partial class SummonStore
         foreach (string key in GmMaterials) resources[key] = materials.GetValueOrDefault(key);
         if (input != null)
         {
-            var digest = SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new { kind = "development.gm", input.Action, input.Key, input.Value }));
+            // Keep pre-forge request digests valid across a server upgrade.
+            var fingerprint = input.Forge == null
+                ? JsonSerializer.SerializeToUtf8Bytes(new { kind = "development.gm", input.Action, input.Key, input.Value })
+                : JsonSerializer.SerializeToUtf8Bytes(new { kind = "development.gm", input.Action, input.Key, input.Value, input.Forge });
+            var digest = SHA256.HashData(fingerprint);
             if (!await InventoryStore.BeginOperation(connection, tx, player, request!, digest, ct))
             {
                 string key = input.Key!;
@@ -76,8 +90,8 @@ internal sealed partial class SummonStore
                     }
                     resources[key] = input.Value;
                 }
-                else if (input.Action == "equipment")
-                    await InventoryStore.GrantGmEquipment(connection, tx, player, key, input.Value, request!, ct);
+                else if (equipment != null)
+                    await InventoryStore.GrantGmEquipment(connection, tx, player, equipment, input.Value, request!, ct);
                 else
                 {
                     var room = await ReadRoom(connection, tx, player, ct);
@@ -95,7 +109,7 @@ internal sealed partial class SummonStore
         await tx.CommitAsync(ct);
         return new DevelopmentGmState(player, EntryEndpoints.RealmId, resources.Select(pair => new DevelopmentGmResource(pair.Key, pair.Value)).ToArray(),
             catalog.HeroGrades.Keys.Order(StringComparer.Ordinal).ToArray(), catalog.ArtifactGrades.Keys.Order(StringComparer.Ordinal).ToArray(),
-            InventoryStore.DevelopmentEquipmentIds);
+            InventoryStore.DevelopmentEquipmentIds, DevelopmentEquipmentForge.Rules);
     }
 
     private static async Task SetGmCurrency(MySqlConnection connection, MySqlTransaction tx, string player, string request,

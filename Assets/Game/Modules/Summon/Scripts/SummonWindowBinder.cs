@@ -99,7 +99,6 @@ namespace AstralOath.Client.Summon
                 foreach (var portrait in wishPortraits) portrait.Dispose();
                 player.Dispose();
                 if (!view.Root) return;
-                if (view.Music) view.Music.Stop();
                 foreach (string list in new[] { "infoHeroColumn", "infoArtifactColumn", "wishItems", "wishSelectedHeroes", "wishSelectedArtifacts", "storageItems", "resultItems" })
                     Clear(list);
                 if (view.Root) view.Hide();

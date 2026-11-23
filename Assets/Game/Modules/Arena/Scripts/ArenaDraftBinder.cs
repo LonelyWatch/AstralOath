@@ -621,7 +621,7 @@ namespace AstralOath.Client.Arena
             feature.SetDesaturation(ban ? .72f : 0f);
         }
 
-        private void Select(string id)
+        private void Select(string id, Choice clicked = null)
         {
             if (!CanSelect(id) || sending || (draft.phase == "pick" && !draft.OwnTurn)) return;
             if (draft.phase == "preban")
@@ -630,6 +630,7 @@ namespace AstralOath.Client.Arena
                 {
                     if (prebans.Count == draft.prebanCount) { GameUiFeedback.Play(view.Button("preAction"), GameUiFeedback.Sound.Blocked); return; }
                     prebans.Add(id);
+                    clicked?.SetPrebanMark(true, impact: true);
                 }
                 SyncChips(selected, "preSelected", prebans);
             }
@@ -881,9 +882,9 @@ namespace AstralOath.Client.Arena
             row.name = id;
             bool rosterCard = template == "row";
             var card = new Choice(row.GetComponent<BindingMap>(), artwork.LevelDigits, rosterCard: rosterCard,
-                prebanArt: template == "gridCell" ? artwork : null, particleTextures: particleTextures);
+                prebanArt: template == "gridCell" ? artwork : null);
             card.Set(id, GetArt(id), asCard: rosterCard, tags: template != "chip");
-            UnityAction select = () => Select(card.Id);
+            UnityAction select = () => Select(card.Id, card);
             card.Button.onClick.AddListener(select);
             list.Add(card);
             row.SetActive(true);
@@ -979,14 +980,15 @@ namespace AstralOath.Client.Arena
             private readonly GameText title, stars, state;
             private readonly RawImage prebanSurface;
             private readonly ArenaDraftArt prebanArt;
-            private readonly IReadOnlyDictionary<string, Texture2D> particleTextures;
             private ArenaDraftPortrait prebanEffect;
             private bool marked;
+            private const float StampImpactSeconds = .20f;
+            private static readonly int StampFlash = Shader.PropertyToID("_WhiteFlash");
+            private float stampElapsed = StampImpactSeconds;
             private ArenaDraftArt.Hero displayedHero;
             private bool provisional;
             internal Choice(BindingMap map, Sprite[] digits = null, bool teamSlot = false, bool protectedSlot = false,
-                bool miniature = false, bool rosterCard = false, ArenaDraftArt prebanArt = null,
-                IReadOnlyDictionary<string, Texture2D> particleTextures = null)
+                bool miniature = false, bool rosterCard = false, ArenaDraftArt prebanArt = null)
             {
                 Button = map.Require<GameButton>("button");
                 Portrait = map.Require<Image>("portrait");
@@ -1028,7 +1030,6 @@ namespace AstralOath.Client.Arena
                 if (prebanArt)
                 {
                     this.prebanArt = prebanArt;
-                    this.particleTextures = particleTextures;
                     prebanSurface = map.Require<RawImage>("prebanEffect");
                     grade = Enumerable.Range(0, 6).Select(index => map.Require<Image>("star" + index)).ToArray();
                 }
@@ -1087,11 +1088,15 @@ namespace AstralOath.Client.Arena
                 }
             }
 
-            internal void SetPrebanMark(bool visible)
+            internal void SetPrebanMark(bool visible, bool impact = false)
             {
                 if (marked == visible) return;
                 marked = visible;
-                if (marked) AdvancePreban(0f);
+                if (marked)
+                {
+                    stampElapsed = impact ? 0f : StampImpactSeconds;
+                    AdvancePreban(0f);
+                }
                 else ReleasePreban();
             }
 
@@ -1103,18 +1108,26 @@ namespace AstralOath.Client.Arena
                 {
                     prebanEffect = new ArenaDraftPortrait(prebanSurface, nativeEffectSize: new Vector2(660f, 684f),
                         centralBanLight: true, prebanCell: true);
-                    if (!prebanEffect.PlayOneShot(prebanArt.Preban.MakeSource(), "intro", loopAfter: "loop")) return;
-                    prebanEffect.AddParticleTrack(prebanArt.Preban.Particles, particleTextures, .08f, 0f, 10, "icon");
-                    prebanEffect.AddParticleTrack(prebanArt.PrebanFlashParticles, particleTextures, 0f, 0f, 5, "icon");
-                    prebanEffect.AddParticleTrack(prebanArt.PrebanFlashParticles, particleTextures, .03f, 0f, 3, "icon");
+                    if (!prebanEffect.Show(prebanArt.Preban.MakeSource(), animation: "loop")) return;
                 }
                 prebanEffect.Tick(seconds);
+                if (stampElapsed >= StampImpactSeconds) return;
+                stampElapsed = Mathf.Min(StampImpactSeconds, stampElapsed + seconds);
+                float t = stampElapsed / StampImpactSeconds;
+                float scale = t < .32f ? Mathf.SmoothStep(.88f, 1.04f, t / .32f)
+                    : Mathf.SmoothStep(1.04f, 1f, (t - .32f) / .68f);
+                // Zoom the sampled stamp inside a fixed target so the short pulse allocates no new textures.
+                float span = 1f / scale;
+                prebanSurface.uvRect = new Rect((1f - span) * .5f, (1f - span) * .5f, span, span);
+                prebanSurface.material.SetFloat(StampFlash, 1f - Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(.15f, .8f, t)));
             }
 
             internal void ReleasePreban()
             {
                 prebanEffect?.Dispose();
                 prebanEffect = null;
+                stampElapsed = StampImpactSeconds;
+                if (prebanSurface) prebanSurface.uvRect = new Rect(0f, 0f, 1f, 1f);
             }
 
             internal void SetProvisional(bool value)

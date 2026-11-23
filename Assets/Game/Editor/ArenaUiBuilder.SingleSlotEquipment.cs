@@ -77,14 +77,20 @@ namespace AstralOath.Editor
             var popup = Area(root,"Equipped item detail",0,0,1,1);
             keys.Add(("popup",popup.gameObject));
             keys.Add(("dismiss",Button(Area(popup,"Dismiss outside",0,0,1,1),null,Black(.72f))));
-            // The original board artwork has transparent margins outside its visible corners.
-            var panel = Area(popup,"Equipment details",.352f,.034f,.296f,.87f);
-            keys.Add(("popupPlate",Paint(panel,null,Color.white,true)));
-            keys.Add(("popupItem",SingleSlotColumn(Area(panel,"Worn item",.091f,.064f,.818f,.85f),null,null,true)));
+            var bounds = Area(popup, "Detail safe area", .034f,.058f,.932f,.831f);
+            var panel = Area(bounds,"Equipment details",0,0,1,1);
+            panel.gameObject.SetActive(false);
+            var proportions = panel.gameObject.AddComponent<AspectRatioFitter>();
+            proportions.aspectMode = AspectRatioFitter.AspectMode.FitInParent;
+            proportions.aspectRatio = .652f;
+            panel.gameObject.SetActive(true);
+            Paint(panel,null,new Color32(19,30,48,255),true);
+            PaintSoftModal(Area(panel,"Frame",0,0,1,1)).raycastTarget = false;
+            keys.Add(("popupItem",SingleSlotColumn(Area(panel,"Worn item",.060f,.055f,.880f,.832f),null,null,true)));
             keys.Add(("popupRemove",Action(panel,"Remove equipment","home.gear.singleRemove",27,
-                .11f,.857f,.242f,.09f,out var removeCaption,BagArt("_btn_small_black"),Color.white)));
+                .151f,.857f,.337f,.089f,out var removeCaption,BagArt("_btn_small_black"),Color.white)));
             keys.Add(("change",Action(panel,"Change equipment","home.gear.singleChange",27,
-                .369f,.857f,.242f,.09f,out var changeCaption,BagArt("_btn_small_black"),Color.white)));
+                .512f,.857f,.337f,.089f,out var changeCaption,CommonArt("_btn_green"),Color.white)));
             foreach (var caption in new[] { removeCaption, changeCaption })
             {
                 caption.fontStyle = FontStyles.Bold;
@@ -94,11 +100,6 @@ namespace AstralOath.Editor
             }
             Text(popup,"Close hint","home.gear.singleDismiss",22,.32f,.931f,.36f,.05f,
                 new Color32(180,186,193,255),TextAlignmentOptions.Center);
-            string[] grades = { "normal","good","rare","heroic","epic" };
-            var catalog = Area(root,"Popup plates",0,0,.01f,.01f);
-            for (int i=0; i<grades.Length; ++i)
-                keys.Add(("plate_"+grades[i], Picture(catalog,grades[i],InventoryArt("Equipment/_box_equip_"+(i+1)),0,0,1,1)));
-            catalog.gameObject.SetActive(false);
             keys.Add(("feedback",Text(root,"Request feedback",null,22,.315f,.77f,.39f,.07f,
                 new Color32(255,216,138,255),TextAlignmentOptions.Center,true)));
             keys.Add(("retry",Action(root,"Reload inventory","home.gear.retry",23,
@@ -150,7 +151,7 @@ namespace AstralOath.Editor
             keys.Add(("description",Text(detail,"Item description",null,24,.018f,popup ? .191f : .206f,.956f,.097f,
                 new Color32(163,167,180,255), TextAlignmentOptions.TopLeft, true)));
             float mainY = popup ? .300f : .315f;
-            float setY = popup ? .716f : .697f;
+            float setY = popup ? .764f : .697f;
             Paint(Area(detail,"Main property band",.005f,mainY,.984f,.069f),null,new Color32(105,119,147,17));
             if (!popup) keys.Add(("mainIcon",Picture(detail,"Main property icon",null,.022f,mainY+.009f,.068f,.05f,true)));
             BindingMap StatRow(RectTransform parent, string rowName, float x, float top, float width, float height,

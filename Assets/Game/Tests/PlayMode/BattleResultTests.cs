@@ -54,7 +54,7 @@ namespace AstralOath.Client.Tests
                     if (cue != null)
                     {
                         Assert.That(sound.playOnAwake || sound.loop, Is.False);
-                        Assert.That(sound.isPlaying, Is.True);
+                        Assert.That(UiAudioLifetimeTests.Playing(sound.clip), Is.Not.Empty);
                     }
                     foreach (string key in new[] { "details", "confirm" })
                     {
@@ -78,7 +78,8 @@ namespace AstralOath.Client.Tests
                     var badge = view.Require<RectTransform>("emblem");
                     Assert.That(badge.GetComponentsInChildren<MeshFilter>().Any(mesh => mesh.sharedMesh && mesh.sharedMesh.vertexCount > 0),
                         Is.EqualTo(outcome != BattleOutcome.Draw));
-                    Assert.That(view.Require<GameText>("draw").gameObject.activeSelf, Is.EqualTo(outcome == BattleOutcome.Draw));
+                    Assert.That(view.transform.Find("Draw"), Is.Null, "The emblem area has no additional result caption.");
+                    Assert.That(view.Require<GameText>("title").text, Is.EqualTo(outcome == BattleOutcome.Draw ? "平局" : "战斗结果"));
                     string capture = Environment.GetEnvironmentVariable("ASTRAL_RESULT_CAPTURE_DIR");
                     yield return BattleActionFeedbackVisualTests.CaptureScene(scene, outcome.ToString(), capture);
                     if (outcome == BattleOutcome.AllyVictory && !string.IsNullOrWhiteSpace(capture))

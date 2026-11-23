@@ -1,5 +1,6 @@
 using System;
 using AstralOath.Client.BattleScene;
+using AstralOath.Client.Common;
 using AstralOath.Client.Core;
 using UnityEngine;
 using UnityEngine.UI;
@@ -47,8 +48,8 @@ namespace AstralOath.Client.Summon
             private readonly Texture savedTexture;
             private readonly Rect savedUv;
             private readonly bool savedEnabled, savedRaycast;
-            private readonly AudioClip savedAudio;
-            private readonly bool savedLoop;
+            private UiAudioPlayback sound;
+            private int resumeSample = -1;
             private bool selected, paused, disposed;
             private double elapsed, lastTime;
             private BattleSkillPreviewSession battle;
@@ -70,13 +71,6 @@ namespace AstralOath.Client.Summon
                 savedRaycast = output.raycastTarget;
                 output.enabled = false;
                 output.raycastTarget = false;
-                if (audio)
-                {
-                    savedAudio = audio.clip;
-                    savedLoop = audio.loop;
-                    audio.clip = clip.originalAudio;
-                    audio.loop = false;
-                }
                 Canvas.willRenderCanvases += Tick;
             }
 
@@ -92,8 +86,16 @@ namespace AstralOath.Client.Summon
                 }
                 else if (audio && clip.originalAudio && battle != null)
                 {
-                    if (pause) audio.Pause();
-                    else audio.UnPause();
+                    if (pause)
+                    {
+                        resumeSample = sound ? sound.SamplePosition : -1;
+                        UiAudioPlayback.End(ref sound);
+                    }
+                    else if (resumeSample >= 0)
+                    {
+                        sound = UiAudioPlayback.Play(audio, clip.originalAudio, startSample: resumeSample);
+                        resumeSample = -1;
+                    }
                 }
                 selected = showFeaturedBanner;
                 paused = pause;
@@ -132,11 +134,7 @@ namespace AstralOath.Client.Summon
                     battle = clip.preview.Create(output);
                     skillSeconds = battle.Duration;
                     output.enabled = true;
-                    if (audio && clip.originalAudio)
-                    {
-                        audio.time = 0f;
-                        audio.Play();
-                    }
+                    sound = UiAudioPlayback.Play(audio, clip.originalAudio);
                     // Resource preparation can take time on the first visit. Start sound and
                     // motion together once the live stage can present its first frame.
                     elapsed = skillStart;
@@ -172,9 +170,10 @@ namespace AstralOath.Client.Summon
 
             private void HideSkill()
             {
+                UiAudioPlayback.End(ref sound);
+                resumeSample = -1;
                 if (battle != null)
                 {
-                    if (audio) audio.Stop();
                     battle.Dispose();
                     battle = null;
                 }
@@ -196,11 +195,6 @@ namespace AstralOath.Client.Summon
                     output.uvRect = savedUv;
                     output.enabled = savedEnabled;
                     output.raycastTarget = savedRaycast;
-                }
-                if (audio)
-                {
-                    audio.clip = savedAudio;
-                    audio.loop = savedLoop;
                 }
             }
         }

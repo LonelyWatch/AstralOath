@@ -176,7 +176,7 @@ namespace AstralOath.Client.Tests
                 Assert.That(canvas.GetComponent<AudioSource>(), Is.Not.Null);
                 Assert.That(resolve.Invoke(feedback, new object[] { GameUiFeedback.Sound.Blocked }), Is.SameAs(blocked));
                 yield return null;
-                Assert.That(canvas.GetComponent<AudioSource>().isPlaying, Is.True);
+                Assert.That(UiAudioLifetimeTests.Playing(blocked), Is.Not.Empty);
             }
             finally
             {
@@ -199,11 +199,9 @@ namespace AstralOath.Client.Tests
             var sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.one * .5f);
             try
             {
-                var type = Type.GetType("AstralOath.Client.Common.GameUiFeedback, AstralOath.Client.Common");
-                Assert.That(type, Is.Not.Null, "The root Canvas needs shared click feedback.");
-                var feedback = target.AddComponent(type);
-                type.GetMethod("Configure").Invoke(feedback, new object[] { sprite, sprite, null, null, null, null, null, null, null, null });
-                var track = type.GetMethod("Track", BindingFlags.Instance | BindingFlags.NonPublic);
+                var feedback = target.AddComponent<GameUiFeedback>();
+                feedback.Configure(sprite, sprite, null, null, null);
+                var track = typeof(GameUiFeedback).GetMethod("Track", BindingFlags.Instance | BindingFlags.NonPublic);
                 Assert.That(track, Is.Not.Null);
                 var center = new Vector2(Screen.width * .5f, Screen.height * .5f);
                 track.Invoke(feedback, new object[] { 9, center, true, false, false });

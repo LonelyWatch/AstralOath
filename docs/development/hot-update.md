@@ -6,6 +6,8 @@
 
 ## 默认选择与最小包
 
+2026-11-23 的二维界面音频淡出同时修改 Common 音源和 Bootstrap 的 YooAsset 句柄管理。交付这项改动需要为目标平台构建新 IL2CPP 母包，并配套含 `ui/audio/` 地址的 Foundation 签名资源。本次离线 Editor 验证包仅供验收，当前已分发的 Windows 0.1.25 / R35 尚未包含这项改动。[验收范围](../delivery/2026-11-23-equipment-battle-review.md)
+
 本机 Windows R35 的业务源码为 `32715b06`，沿用 0.1.25 母包、内置公钥与基线 `e009595d3a8a4186a1ffaad76323e806`。R35 签名清单含 98 项，已有 R34 缓存可复用 85 项，变更的 10 个资源包及 3 个清单相关文件共 120,989,032 字节（115.38 MiB）。原训练启动器为 `.artifacts/windows-r32/Play-R32.exe`，其所在目录的 `client-r32/AstralOath.exe` 是游戏主程序。召唤预览引用实时技能定义和独立音轨，签名构建检查了 169 项预览依赖，其中没有旧预录 JPEG 图集。[签名差量回执](../../.artifacts/windows-r35/build/receipt.json) · [画质与原版对照](../delivery/2026-11-22-client-image-quality.md)
 
 普通 Windows 桌面账户使用原游戏程序从 5303 实际下载了上述 13 个文件，冷启动激活 R35。随后经原训练脚本再次启动，业务资源下载为 0 字节，装备穿脱回归通过，R34 仍可回退。工具会话曾在写入本机联接的临时安装目录时失败，当次实际传输为零。桌面安装及重开分别记录。[首次安装](../../.artifacts/windows-r35/desktop-independent-install.json) · [桌面重开](../../.artifacts/windows-r35/desktop-independent-verifycmd.json) · [工具会话日志](../../.artifacts/windows-r35/non-desktop-install/player.log)

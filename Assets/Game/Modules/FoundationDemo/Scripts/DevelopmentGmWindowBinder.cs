@@ -16,7 +16,7 @@ using Object = UnityEngine.Object;
 
 namespace AstralOath.Client.FoundationDemo
 {
-    internal sealed class DevelopmentGmWindowBinder
+    internal sealed partial class DevelopmentGmWindowBinder
     {
         private const string Overlay = "development-gm";
         private readonly DevelopmentGmWindow view;
@@ -128,6 +128,7 @@ namespace AstralOath.Client.FoundationDemo
             });
             Tab("resources", "set");
             Tab("inventory", "hero");
+            Tab("forge", "forgeEquipment");
             Tab("diagnostics", "diagnostics");
             foreach (var category in new[] { "hero", "artifact", "equipment" }) Tab(category, category);
             view.Filter.onValueChanged.AddListener(Search);
@@ -136,10 +137,13 @@ namespace AstralOath.Client.FoundationDemo
 
             view.Button("close").Bind(scope, _ => CloseAsync());
             view.Button("refresh").Bind(scope, _ => FetchAsync(scope, true));
-            Listen(view.Button("submit"), scope, () =>
+            void Submit()
             {
                 if (reading != scope && (write == null || write.IsCompleted)) write = SubmitAsync(scope);
-            });
+            }
+            Listen(view.Button("submit"), scope, Submit);
+            BindForge(scope);
+            Listen(view.Button("forgeMake"), scope, Submit);
             Listen(view.Button("copy"), scope, () =>
             {
                 GUIUtility.systemCopyBuffer = Report();
@@ -198,7 +202,12 @@ namespace AstralOath.Client.FoundationDemo
 
         private async Task SubmitAsync(BindingScope scope)
         {
-            if (pending == null)
+            if (pending == null && kind == "forgeEquipment")
+            {
+                pending = ForgeRequest(out string error);
+                if (pending == null) { view.Label("status").text = error; return; }
+            }
+            else if (pending == null)
             {
                 if (selected == null) { Status("select"); return; }
                 if (!int.TryParse(view.Amount.text, NumberStyles.None, CultureInfo.InvariantCulture, out var amount) ||
@@ -211,6 +220,11 @@ namespace AstralOath.Client.FoundationDemo
                 pending = new GmAction { requestId = Guid.NewGuid().ToString("N"), action = kind, key = selected, value = amount };
             }
 
+            if (pending is GmForgeAction)
+            {
+                sendingForge = true;
+                DrawForge();
+            }
             Status("sending");
             try
             {
@@ -234,6 +248,14 @@ namespace AstralOath.Client.FoundationDemo
                     if (opening == scope) { Draw(); Status("uncertain", pending.key, pending.value); }
                 }
             }
+            finally
+            {
+                if (sendingForge)
+                {
+                    sendingForge = false;
+                    if (opening == scope) DrawForge();
+                }
+            }
         }
 
         private string T(string key, params object[] args) => GameText.Format(locale, "gm." + key, args);
@@ -246,6 +268,7 @@ namespace AstralOath.Client.FoundationDemo
         private void ShowRejection(GmRejectedException error)
         {
             if (error.Code == "gm_inventory_full" || error.Code == "equipment_inventory_full") Status("full");
+            else if (error.Code == "invalid_gm_forge") Status("forgeInvalid");
             else if (error.Status == 404) Status("disabled");
             else if (error.Status == 401) Status("expired");
             else Status("rejected", error.Status);
@@ -254,14 +277,17 @@ namespace AstralOath.Client.FoundationDemo
         private void Draw()
         {
             bool diag = kind == "diagnostics";
-            bool inventory = !diag && kind != "set";
-            view.Editor.SetActive(!diag);
+            bool forge = kind == "forgeEquipment";
+            bool inventory = !diag && !forge && kind != "set";
+            view.Editor.SetActive(!diag && !forge);
+            view.ForgePanel.SetActive(forge);
             view.InventoryKinds.SetActive(inventory);
             view.Label("report").gameObject.SetActive(diag);
             view.Button("copy").gameObject.SetActive(diag);
-            foreach (var tab in new[] { "resources", "inventory", "diagnostics", "hero", "artifact", "equipment" })
+            foreach (var tab in new[] { "resources", "inventory", "forge", "diagnostics", "hero", "artifact", "equipment" })
             {
-                bool active = tab == kind || tab == "resources" && kind == "set" || tab == "inventory" && inventory;
+                bool active = tab == kind || tab == "resources" && kind == "set" || tab == "inventory" && inventory ||
+                    tab == "forge" && forge;
                 var button = view.Button(tab);
                 button.interactable = !active;
                 button.GetComponentInChildren<GameText>(true).color = active ? new Color32(251, 209, 128, 255) : Color.white;
@@ -269,13 +295,14 @@ namespace AstralOath.Client.FoundationDemo
             view.Label("report").text = diag ? Report() : "";
             view.Label("submitLabel").text = T(pending != null ? "retry" : kind == "set" ? "submit" : "grant");
             view.Label("amountLabel").text = T(kind == "set" ? "targetBalance" : "grantCount");
+            if (forge) DrawForge();
             DrawRows();
         }
 
         private void DrawRows()
         {
             ClearRows();
-            if (snapshot == null || kind == "diagnostics") return;
+            if (snapshot == null || kind == "diagnostics" || kind == "forgeEquipment") return;
             IEnumerable<string> keys = kind switch
             {
                 "set" => snapshot.resources.Select(row => row.key),

@@ -106,7 +106,7 @@ namespace AstralOath.Client.Home
             view.TabEquipmentLabel.Bind(locale, scope, TextPrefix + "equipment");
             view.TabArtifactsLabel.Bind(locale, scope, TextPrefix + "artifacts");
             view.SearchHint.Bind(locale, scope, TextPrefix + "roster_search");
-            view.RosterSortCaption.Bind(locale, scope, TextPrefix + "roster_sort_level");
+            BindRosterTools(scope);
             view.BagCaption("EquipmentSort").Bind(locale, scope, TextPrefix + "sort_equipment_score");
             view.BagCaption("ArtifactSort").Bind(locale, scope, TextPrefix + "sort_upgrade");
             view.BagCaption("EquipmentEmpty").Bind(locale, scope, TextPrefix + "empty_equipment");
@@ -116,6 +116,7 @@ namespace AstralOath.Client.Home
             view.RetryLabel.Bind(locale, scope, TextPrefix + "retry");
             var search = view.Search;
             search.SetTextWithoutNotify("");
+            PaintRosterSearchCaption();
             search.onValueChanged.AddListener(OnSearch);
             scope.Add(() => { if (search) search.onValueChanged.RemoveListener(OnSearch); });
             var scroll = Scroll;
@@ -156,7 +157,7 @@ namespace AstralOath.Client.Home
 
         private Task NavigateBack()
         {
-            if (equipment?.Back() == true || artifacts?.Back() == true || CloseWornFilters()) return Task.CompletedTask;
+            if (equipment?.Back() == true || artifacts?.Back() == true || CloseRosterTools() || CloseWornFilters()) return Task.CompletedTask;
             if (expanded) return ToggleExpanded();
             return ReturnToWornBag() ? Task.CompletedTask : goHome();
         }
@@ -251,6 +252,7 @@ namespace AstralOath.Client.Home
 
         private Task ToggleExpanded()
         {
+            CloseRosterTools();
             SetExpanded(!expanded);
             Refresh(resetScroll: true, revealSelected: !expanded);
             return Task.CompletedTask;
@@ -275,11 +277,15 @@ namespace AstralOath.Client.Home
             view.ExpandLabel.text = locale.Resolve(TextPrefix + (expanded ? "collapse" : "expand"));
         }
 
-        private void OnSearch(string _) => Refresh(resetScroll: true);
+        private void OnSearch(string _)
+        {
+            PaintRosterSearchCaption();
+            Refresh(resetScroll: true, revealSelected: true);
+        }
         private void OnScroll(Vector2 _) => ShowCards();
         private void OnRosterResized()
         {
-            if (!roster) return;
+            if (!roster || !view.Root || !Scroll || !Scroll.viewport) return;
             view.FitInventoryLayout(true);
             if (!expanded && compactViewport != Scroll.viewport.rect.size) ShowCards();
         }
@@ -290,6 +296,7 @@ namespace AstralOath.Client.Home
         private void Select(HeroInventoryItem hero)
         {
             selected = hero;
+            preferredRosterId = hero.instanceId;
             if (expanded)
             {
                 SetExpanded(false);
@@ -306,9 +313,10 @@ namespace AstralOath.Client.Home
             bool heroes = roster || tab == Tab.Heroes;
             string query = roster ? view.Search.text.Trim() : "";
             var owned = heroes ? snapshot?.heroes ?? Array.Empty<HeroInventoryItem>() : Array.Empty<HeroInventoryItem>();
-            visible = roster ? owned.Where(item => query.Length == 0 || Name(item).IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0)
-                .OrderByDescending(item => item.level).ToArray() : WornHeroes(owned).ToArray();
-            selected = visible.FirstOrDefault(item => item.instanceId == selected?.instanceId) ?? visible.FirstOrDefault();
+            visible = roster ? RosterHeroes(owned, query).ToArray() : WornHeroes(owned).ToArray();
+            string preferred = roster ? preferredRosterId ?? selected?.instanceId : selected?.instanceId;
+            selected = visible.FirstOrDefault(item => item.instanceId == preferred) ?? visible.FirstOrDefault();
+            if (roster && preferredRosterId == null) preferredRosterId = selected?.instanceId;
             view.Title.text = roster && selected != null ? Name(selected) : locale.Resolve(TextPrefix + (roster ? "heroes" : "bag"));
             var capacity = roster ? view.RosterCapacity : view.Capacity;
             capacity.gameObject.SetActive(heroes && snapshot != null);
@@ -330,7 +338,8 @@ namespace AstralOath.Client.Home
             string status = !heroes ? null
                 : loading ? "loading" : failed ? "load_failed" : visible.Length == 0 ? "empty_heroes" : null;
             view.Status.gameObject.SetActive(status != null);
-            if (status != null) view.Status.text = locale.Resolve(TextPrefix + status);
+            if (status != null) view.Status.text = locale.Resolve(status == "empty_heroes" && roster && owned.Length > 0
+                ? "arena.draft.filter.empty" : TextPrefix + status);
             view.Retry.gameObject.SetActive(heroes && failed);
             bool compact = roster && !expanded;
             if (compact)

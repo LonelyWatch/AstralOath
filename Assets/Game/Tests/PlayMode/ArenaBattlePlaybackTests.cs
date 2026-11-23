@@ -139,6 +139,17 @@ namespace AstralOath.Client.Tests
                         CaptureTransition(gate, type, "pvp-gate-closed", true);
                     }
                 }
+                using var cancel = new CancellationTokenSource();
+                var interrupted = (Task)type.GetMethod("CloseAsync", Members).Invoke(gate, new object[] { cancel.Token });
+                var closingSound = UiAudioLifetimeTests.Playing(closeAudio).Single();
+                cancel.Cancel();
+                while (!interrupted.IsCompleted) yield return null;
+                Assert.That(interrupted.IsCanceled, Is.True);
+                gate.Dispose();
+                Assert.That(closingSound && closingSound.isPlaying, Is.True);
+                yield return new WaitForSecondsRealtime(.27f);
+                yield return null;
+                Assert.That(!closingSound, Is.True);
             }
             finally
             {

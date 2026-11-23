@@ -906,7 +906,8 @@ namespace AstralOath.Client.Tests
 
         private async Task<BindingMap> OpenArtifactWindow(bool roster, BindingScope scope, HeroInventoryApi heroes,
             ArtifactInventoryApi api, ArtifactArtCatalog art, EquipmentInventoryApi equipment = null,
-            Func<CancellationToken,Task<EquipmentInventorySnapshot>> readEquipment = null)
+            Func<CancellationToken,Task<EquipmentInventorySnapshot>> readEquipment = null,
+            HeroInventorySnapshot initialHeroes = null, ArtifactInventorySnapshot initialArtifacts = null)
         {
             priorScene = SceneManager.GetActiveScene();
             home = SceneManager.CreateScene("Artifact inventory test");
@@ -927,7 +928,7 @@ namespace AstralOath.Client.Tests
             var heroArt = AssetDatabase.LoadAssetAtPath<HomeHeroArt>("Assets/Game/Modules/Home/Configs/HomeHeroArt.asset");
             var binder = new HeroInventoryBinder(view, heroArt, locale, heroes.FetchAsync, () => Task.CompletedTask, art, api,
                 equipmentApi: equipment,readEquipment: readEquipment);
-            await binder.OpenAsync(roster, scope);
+            await binder.OpenAsync(roster, scope, initialHeroes, initialArtifacts);
             return view.Root.GetComponent<BindingMap>();
         }
 

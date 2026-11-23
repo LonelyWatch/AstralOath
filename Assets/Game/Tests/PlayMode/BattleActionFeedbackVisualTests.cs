@@ -43,14 +43,21 @@ namespace AstralOath.Client.Tests
                 BattleActionOrigin.Counter, BattleActionOrigin.DualAttack, BattleActionOrigin.Passive })
             {
                 var action = Event(sequence++, BattleFlowEventKind.Action, origin, false);
+                var before = UiAudioLifetimeTests.Playing(sound.clip);
                 Call(cues, "PresentAction", action, actor);
-                Assert.That(sound.isPlaying, Is.EqualTo(origin != BattleActionOrigin.Primary), origin.ToString());
-                sound.Stop();
+                var after = UiAudioLifetimeTests.Playing(sound.clip);
+                Assert.That(after.Except(before).Count(), Is.EqualTo(origin == BattleActionOrigin.Primary ? 0 : 1), origin.ToString());
                 Call(cues, "PresentAction", action, actor);
-                Assert.That(sound.isPlaying, Is.False, "Replayed events must stay silent.");
+                Assert.That(UiAudioLifetimeTests.Playing(sound.clip), Is.EquivalentTo(after), "Replayed events must stay silent.");
             }
+            var chain = UiAudioLifetimeTests.Playing(sound.clip);
             Call(cues, "PresentExtraTurn", Event(sequence++, BattleFlowEventKind.ExtraTurnGranted, BattleActionOrigin.Primary, false), actor);
-            Assert.That(sound.isPlaying, Is.False, "The extra-turn banner has its own effect.");
+            Assert.That(UiAudioLifetimeTests.Playing(sound.clip), Is.EquivalentTo(chain), "The extra-turn banner has its own effect.");
+            Call(cues, "SetPaused", true);
+            yield return null;
+            Assert.That(UiAudioLifetimeTests.Playing(sound.clip), Is.Empty);
+            Call(cues, "SetPaused", false);
+            Assert.That(UiAudioLifetimeTests.Playing(sound.clip), Is.EquivalentTo(chain));
         }
 
         [UnityTest]

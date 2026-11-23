@@ -38,7 +38,6 @@ namespace AstralOath.Client.BattleScene.Editor
                 band.color = new Color(0, 0, 0, .32f);
                 VerticalBand(band.rectTransform);
                 bindings["emblem"] = Rect(rect, "Emblem", new Vector2(.5f, 520f / 720f), 0, 0, 0, 0);
-                bindings["draw"] = Text(rect, "Draw", new Vector2(.5f, 520f / 720f), 0, 0, 400, 100, 56);
 
                 // result_base/n_pvp/n_intimacy uses a single authored rail and four of its six positions.
                 var rail = ImageAt(rect, "Friendship Rail", Art + "_gradient.png", left, -14.5f, 0, 301, 0);
