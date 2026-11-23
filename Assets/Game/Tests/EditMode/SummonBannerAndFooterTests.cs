@@ -1,5 +1,6 @@
 using AstralOath.Client.Common;
 using NUnit.Framework;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -49,7 +50,7 @@ namespace AstralOath.Client.Tests
         public void SummonHeaderUsesSharedControlsAndWhiteLabelsHaveARealOutline()
         {
             var map = AssetDatabase.LoadAssetAtPath<GameObject>(Prefab).GetComponent<BindingMap>();
-            foreach (var key in new[] { "singleLabel", "tenLabel", "wishHero0Name", "wishHero6Name" })
+            foreach (var key in new[] { "singleLabel", "tenLabel" })
             {
                 var material = map.Require<GameText>(key).fontSharedMaterial;
                 Assert.That(material.IsKeywordEnabled("OUTLINE_ON"), Is.True, key);
@@ -66,6 +67,23 @@ namespace AstralOath.Client.Tests
             Assert.That(back.spriteState.pressedSprite.name, Is.EqualTo("cm_hud_top_btn_back_p"));
             Assert.That(map.Require<GameButton>("settings").transform.Find("Native settings icon")
                 .GetComponent<Image>().sprite.name, Is.EqualTo("renew_icon_quick_setting"));
+        }
+
+        [Test]
+        public void CovenantRosterNamesHaveLightItalicStrokesAndAThinDarkOutline()
+        {
+            var map = AssetDatabase.LoadAssetAtPath<GameObject>(Prefab).GetComponent<BindingMap>();
+            for (int index = 0; index < 7; index++)
+            {
+                string key = $"wishHero{index}Name";
+                var label = map.Require<GameText>(key);
+                var material = label.fontSharedMaterial;
+                Assert.That(label.fontStyle, Is.EqualTo(FontStyles.Italic), key);
+                Assert.That(material.GetFloat("_FaceDilate"), Is.InRange(0f, .12f), key);
+                Assert.That(material.IsKeywordEnabled("OUTLINE_ON"), Is.True, key);
+                Assert.That(material.GetFloat("_OutlineWidth"), Is.InRange(.05f, .12f), key);
+                Assert.That(material.GetColor("_OutlineColor").maxColorComponent, Is.LessThan(.1f), key);
+            }
         }
 
         [Test]

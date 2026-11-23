@@ -27,7 +27,7 @@ namespace AstralOath.Client.Tests
                     Assert.That(caption.color, Is.EqualTo(Color.white));
                     Assert.That(nameMaterial.GetColor("_FaceColor"), Is.EqualTo(Color.white));
                     Assert.That(nameMaterial.IsKeywordEnabled("OUTLINE_ON"), Is.True);
-                    Assert.That(nameMaterial.GetFloat("_OutlineWidth"), Is.GreaterThan(.15f));
+                    Assert.That(nameMaterial.GetFloat("_OutlineWidth"), Is.InRange(.05f, .12f));
                     var outline = nameMaterial.GetColor("_OutlineColor");
                     Assert.That(outline.a, Is.EqualTo(1f));
                     Assert.That(outline.maxColorComponent, Is.LessThan(.1f));
